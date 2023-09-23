@@ -1,158 +1,76 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0953419B
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 00:16:25 +0000 (UTC)
-Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2109.outbound.protection.outlook.com [40.107.121.109])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24976136;
-	Fri, 22 Sep 2023 17:16:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oYCuaa334oUPY3X20/novqLzWcRdog9k8WIFBZKG3IjR/mCjFV6zX3RVMl5keqoMgHRatU/wxMQiZgx3cJDrI3gOAEl5e6ji7k9orxrdtme748sa6rpuEHaz6TFcdTjblKCIo/BoU2Wvt+IXZaEukVeZK8kWsQHzw4IKAJtLuBGuhxed2kVnoqnwWKbLk2XwuWywt4jiwQm4RvucrU24Dbk+fk74Yf9sZRu+A0tsGcUsnfC5+HbpA1tPTI3J9rL8lF/kGiP0JH27oi/D++g0cZTTddyVQsfg7UKvI8DMr3SSORfLPAj2B6mH8Ku1pgMu0CAUwuN9gIvV8kkE/IjlIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iZKgbhtk3IzghVwYsYUz+eucFoFGCdKh5iFTrbrhbU0=;
- b=U/uenD0Mssz7c5MFuVYmYUBtRwwpubzXFrOdAeMQPUGeWynEiUfb4jy+8+fIc8lVqynfPq0Cy/xGqXvX7YiIZLsA9tC/otT7u21vmmSqQXArDlnOAr4m5RO47T85TlV66Ox6Nhmoq6llK6rG1lEPLEVcz1rh6t/TxfCL0Yo9dlsc0ncP7SWJlu8sKZHT9VVOo8Vvq6Z/csSdthIW7iZY20IwN3U7i7LWc0XK5JPgLxojKTxERl8bvkD2biha+anNHoh5OggQwkJJ6oahdE2Z4vql7d73K6D6KR02xtnxFqJTJb/kkf9p96628DCTaFdM3ORh8cMPPrVnHCTzo//ovw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iZKgbhtk3IzghVwYsYUz+eucFoFGCdKh5iFTrbrhbU0=;
- b=sLbRHmFyHbr+iLUh5fdYFV4NQdAl7GOFW+n2qLyCd6lbxinbf952JdJV/UpeBvm8oDWzUBC+A3UyH3Ty5NVunzDK0XlsOnEX0qUG/MsDqK5weyS2f2XnzMuEGSlPwe3KFEJprDkFMkSrpFPMPs2X+UzSsHUe/M28GAX2lcsMU+g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB6861.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f9::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.25; Sat, 23 Sep
- 2023 00:16:21 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::7965:8756:9ad5:df1d]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::7965:8756:9ad5:df1d%6]) with mapi id 15.20.6813.017; Sat, 23 Sep 2023
- 00:16:21 +0000
-Date: Sat, 23 Sep 2023 08:16:04 +0800
-From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
- linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Message-ID: <20230923081604.6e2de521@gary-lowrisc-laptop>
-In-Reply-To: <CAH5fLgj_wQtmW4A6-4wPeP-Qmk2ga2NoVRwZDujjYvHWY7Bk3A@mail.gmail.com>
-References: <20230921213440.202017-1-wedsonaf@gmail.com>
-	<20230921213440.202017-3-wedsonaf@gmail.com>
-	<CAH5fLgj_wQtmW4A6-4wPeP-Qmk2ga2NoVRwZDujjYvHWY7Bk3A@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: TYCPR01CA0126.jpnprd01.prod.outlook.com
- (2603:1096:400:26d::6) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE48437A
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 01:37:02 +0000 (UTC)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF2EE8
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Sep 2023 18:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=aSRKuyzfnQNMq7OV8saLFfkI71wV5inrtW9rl4FSlD0=; b=Jp
+	Xjz/osCG8keWjzNUhXFOtehHliXH9yed4Rm8pdd+ld0OhAclX/iau5p9RG85H/AqN/kOP4EtC4qbw
+	X3meuBkI4LLFOkZ6jkag7rVkR6OZ1iEF3qXMKMYss6w180uv4uU10Er7jBFP9Re2fMLb/OHX9QGbA
+	GIoRStIGyzM79Jo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qjrZp-007GZi-Nb; Sat, 23 Sep 2023 03:36:57 +0200
+Date: Sat, 23 Sep 2023 03:36:57 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file
+ to the ETHERNET PHY LIBRARY
+Message-ID: <3dc9a1ea-fb04-4b9e-abf9-08165ea3b8c5@lunn.ch>
+References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
+ <20230913133609.1668758-4-fujita.tomonori@gmail.com>
+ <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
+ <20230917.213248.712797486250583805.ubuntu@gmail.com>
+ <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
+ <1299bee8-9378-4a13-8cb2-3b47e0dee417@lunn.ch>
+ <CANiq72nkmL5jEqdnj+OoDk+Vja_jVUdD+EGneF3h+kdFSOJqPA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6861:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bdbca71-8fb1-4612-98aa-08dbbbca506d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	nSZ3miYc9yRhAsVNa/mpSMtvQp3E+dLZ8bovZqoPeTyoP1ba+MWMo2wDfdf2RGrdgQ8I8FXiRtA5hPQygWzPAoFpKTKMzQCuHq+N++BachHhs5ePgXtgNCd7Cl9NDirAT47VefmmAxVa0tclcwOV0v1ncNLDN5YHHRDC3kewCVGSe8BKdiUcZsSBIWAg5xJcTYg9vMPD/7OGDJdGzzQ4Gc8V5H8IYYMIPtM9ZgaiIMTqEYfS7JnXLPSqKMmpZqRPbp2fz4zGZZHHL/ZMnR+eBN9ZGKRlfV8sHZ7vVO7uFydE0MGA4JdxXVFahHBjANSMVLZj9QAUmOyX5MePrkUhwUXquwLRuXkfVvVkqU/5g82iGCaWw8c5Fh0+a8ZeIDHaQPpjIjXYtc5M4XVDCXcvzn95FiNuSLtuMyp2jfEjmks4T1a0vXovcE6VD/srUyNxk+ET5gBfGFZO+GfiDWRdKHcEj6ujduroeDFDgfRjMhtXIbVMKT19UIcxfL2ico7lw9PSfeH2z4Zzdo5Z+guf3eadY6asapN+ZQ1iBTi/e6Lu8XHgrJpiu47IZ5ZGYGBfzs/lXK2VVTB1A9HUU/346LCPfkEQ5QJcjz56+peqkP0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39830400003)(396003)(376002)(346002)(136003)(366004)(186009)(1800799009)(451199024)(1076003)(6486002)(53546011)(45080400002)(6506007)(6666004)(478600001)(9686003)(26005)(41300700001)(6512007)(2906002)(7416002)(33716001)(5660300002)(316002)(6916009)(54906003)(66476007)(66556008)(4326008)(66946007)(8676002)(8936002)(86362001)(38100700002)(81973001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V3BiQXhVMm8wcEIzWGFrT255bDJpaW9XNGt1OUxKQk9vVTlxa1NkK0phWXJx?=
- =?utf-8?B?UTJXK1QvTkN5WEExQmpDek5rOHlVSzhKVnFnbjFHZWlNRFdaMW1BN05sb1Jy?=
- =?utf-8?B?ak9hSnNQQ1N4ajZxdTV3cDVsa2pyL1hBRURlSm51T3g0M1pBNlQxdjlEYit3?=
- =?utf-8?B?QkZ4Y1NqNnpBSUdKU2lGWGladERSZml2WlRxdFVQcGtmZityQ29rZjNNWTFG?=
- =?utf-8?B?RGhPQzYvejV4RURZM0M5cDJLY0hNaEJZaUFRSGNnRzVGSk50dE5QanBJOUdw?=
- =?utf-8?B?ditqdkord1BPcEZFYlRGdEcyRHZ2ZURCMURaQmZwLzZLcVhmWEVWTUtsSis0?=
- =?utf-8?B?QTRWcTBFQS9QQ3BJdlFIWDRaRHdZaXdOb0RxNXpmL0RKRjdxcFBwR0R5M2Yx?=
- =?utf-8?B?T29yMTdvMi9HcUtWVGhueWZtQzlib0dGdVdVaWZic2lSV1F6V0Y2S2Z0SkVC?=
- =?utf-8?B?WWdTeGZQOXcrbkM3WnhXK1R4S0hDZjJkc3Bsc0NCcGRDL1BCU2pTb2YzUFl1?=
- =?utf-8?B?Q2NlMU9ncFJSQjZxSnBYaVE5N2dsaFRuRDdNRGtXWGtOdU94ZGpna09ZRzRq?=
- =?utf-8?B?dHFYUXFLalhNbHVpQ2Z2RkxBazFrbGNsRXp6aFZiWFlWS2xnaXJCNGZhOEt3?=
- =?utf-8?B?MWxOQXhoUEFHTnFSUlRMUVE4WWU1SGtja0FMbTllMUJtem1vdmJiclRnalhE?=
- =?utf-8?B?Vmh0VG1ndUFGUE8rcHBMUFRjSUYxM016MnJGZ1c0a0xFL2pwVWpMNVBCZ0xv?=
- =?utf-8?B?TVVBU0dLaXc3a3lZakNCRndJR2x6QlRzdXhEdWkvRUt6WjMzWlU2TXprWFZv?=
- =?utf-8?B?YldybDVIRjR1M2JyMWtrYzFIZEpFdDNTcWVYeWR0UTQwb1BHeEJTSEJNNmFP?=
- =?utf-8?B?RDdsczRZYm9GZENLbGphNXhpLzZIeUMxMDF0ZnZ1eW53MjVwak9nTjBmODFP?=
- =?utf-8?B?bFVQMGJCRGxFNW9YbUpiVXhlTzh5UHdMbzdYK09oUFRnSjVqRHFwSy9sK2Yx?=
- =?utf-8?B?U0Y2OGRFcVFHMGlPNlA2UXpLcVNPeVluOVhJMTFvTTdJQUhjVGZaVXk4YkxH?=
- =?utf-8?B?RXE4WXNhZXBwc1FkTmNMclBWSTZlRjczMEdEWTEvVTVYNTlzU1ZSTExocU16?=
- =?utf-8?B?cTU2RU1xVEVJaGo1Y3BhbjljUGsySStCTjdFVURDbVNzQ0dVajZzeC9FTllr?=
- =?utf-8?B?ZzROSWRBZzE0NVUvTlh3QVRQbEdSbVltS0lvQmMzZlMvd2dKQ1BTZ1lFa2RD?=
- =?utf-8?B?UHBFTW1VamI4bHZpMlZtNHNiUkxnbFBzSG1nZ1Q0RTMwN3lyRU9LWHo0blNy?=
- =?utf-8?B?ZThIckZOVFkrQ0plWHFmWWlNNWg4MmNJV1BBcWp1OVhZL1hUVzN0NEU0UkxZ?=
- =?utf-8?B?cm1LRlIxZ3JVMWdoR0hxUWlGb3BldXZIVm1jdlE2WU9FcVR5NVJYQTNyMUE4?=
- =?utf-8?B?TTBYVUc0bFFUbzF5cmErM1JPRnNyNHpTTVl1VFR0bzFhZlV3VzlaUCt6NVdH?=
- =?utf-8?B?RDEzdndabHFEUTVMMmN0ZFJ6ajdvQlc0TzR2K0lIM2Z0TlpldXQwR3JPWHZJ?=
- =?utf-8?B?WENhcUJtdEdvZ1M1UzJPNzRFTnZLNnBzR1NhV3BuUm1mN2V2TmtqczhuQnNT?=
- =?utf-8?B?VUphL2NrNEFJa2NQOTJPK2NyQWZxZk9tSUZsVFQxWlFEQUFPa3QrY0ppbHRa?=
- =?utf-8?B?dkxKaURqaWFmQlVrTGRCVnFpOUFhemdwd1VmWVdDWXM1RGcyNUV3NFQzQVFa?=
- =?utf-8?B?TDZiZkFNb21WWFJCRW9TdC9za21CelFWbW4zT1RjWndCVmVLcU1sQnhaNUNW?=
- =?utf-8?B?cC9HWjY2SkRZek9CTkxJUUtBU2o0RHExN1hmMVRtZEc1UkVrbEZVdUR5bUZi?=
- =?utf-8?B?RVdiVVgvWjZmbHhwQ0hsVFk5ZTUxWjNIKy90NFdnNU5LaTR4V0lkbmFqbEZN?=
- =?utf-8?B?eDlJamlBWS9Hc3FpUjlCTVJVSkR5TEt0RW83dnJoWENyYVpqd1I3RTJuendx?=
- =?utf-8?B?Z0F3ZTBQOGEzUFRWT2g1UFBYczBqcHUxU21XdDJ0bUU2a1BiTnZqTEdEOHpO?=
- =?utf-8?B?TUxIQ2VjK21JV2NLZTdobHVFMmw5VjVnUmc2bDd0bU9SUThZOE1GRngxVGZs?=
- =?utf-8?Q?JbTJXts3PQ+EM1UC5IFCF5GM6?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bdbca71-8fb1-4612-98aa-08dbbbca506d
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2023 00:16:21.0990
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mONA7g61Y2eYYj2MYCo8IwWXH1xmcPugvBUkXBzTn0rshYk0ZyjZoSMLDKEmhPZsJ81Zhken2Qy6zrhtG5eRxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6861
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nkmL5jEqdnj+OoDk+Vja_jVUdD+EGneF3h+kdFSOJqPA@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, 22 Sep 2023 17:29:58 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> On Thu, Sep 21, 2023 at 11:35=E2=80=AFPM Wedson Almeida Filho
-> <wedsonaf@gmail.com> wrote:
+On Sat, Sep 23, 2023 at 02:05:45AM +0200, Miguel Ojeda wrote:
+> On Tue, Sep 19, 2023 at 6:33 PM Andrew Lunn <andrew@lunn.ch> wrote:
 > >
-> > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> >
-> > With GATs, we don't need a separate type to represent a borrowed object
-> > with a refcount, we can just use Rust's regular shared borrowing. In
-> > this case, we use `&WithRef<T>` instead of `ArcBorrow<'_, T>`.
-> >
-> > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com> =20
->=20
-> I wonder whether "WithArc" is a better name? After all, arc is short
-> for "atomic refcount".
-> I also think it's nice to include Arc in the name of the type.
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > So a question from a none Rust person. Why would it need to be in the
+> > 'kernel' crate?
+> 
+> Sorry, I missed this one.
+> 
+> Rust requires to perform some work on dependencies given there are no
+> headers. One could definitely put the abstractions elsewhere, but
+> properly sharing them requires a more involved build system. Thus, for
+> simplicity, abstractions go for the moment in a single translation
+> unit (called the `kernel` crate) that gets compiled first.
 
-Or just call it with `WithRc` -- we don't use `aloc::rc::Rc` in the
-kernel so there's no need to emphasis that this one is atomic :)
+My limited understanding of the Kernel Makefiles is that they all end
+up being one huge Makefile. So i think in principle you can place the
+files anywhere, and direct any object file towards any target. So i
+think you should be able to put the file for the kernel crate anywhere
+in the tree.
 
-I personally think the `WithRef` name is fine, we have a smart pointer
-called `ARef` after all :)
+I would prefer to keep the Rust file next to the C file to make
+Maintenance easier. We are less likely to make breaking changes if
+everything is kept together in the source tree.
 
-Best,
-Gary
+	Andrew
