@@ -1,79 +1,105 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC751DF44
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 14:43:09 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D8B192
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 07:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=aHcGLODmb94Rp9gfB6v26ri1pWTqJSanws7wonAH6/o=; b=Sm
-	NeMVzI1jSrZafNxuUCCJp1QLwGzC5bnmRKvY+InSRAKPNmu5WQVM9B63lYbjS3L/wDZkV2V5UMU6O
-	wm7fqRKoypmzFhpbzM5eja6qzZUfFbAZAstrKTLBqG3CQ9MEzkHizJLNgfPF3i4xqkx9if5UHBP26
-	ACUPXkvLfik2nu4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qk3qR-007INR-II; Sat, 23 Sep 2023 16:42:55 +0200
-Date: Sat, 23 Sep 2023 16:42:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file
- to the ETHERNET PHY LIBRARY
-Message-ID: <4659894c-ae10-4e21-87da-6291c940af3c@lunn.ch>
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
- <20230913133609.1668758-4-fujita.tomonori@gmail.com>
- <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
- <20230917.213248.712797486250583805.ubuntu@gmail.com>
- <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
- <1299bee8-9378-4a13-8cb2-3b47e0dee417@lunn.ch>
- <CANiq72nkmL5jEqdnj+OoDk+Vja_jVUdD+EGneF3h+kdFSOJqPA@mail.gmail.com>
- <3dc9a1ea-fb04-4b9e-abf9-08165ea3b8c5@lunn.ch>
- <CANiq72nnX5T4TLVpn9g7_9EDP0gudQAAqOc1oSvotsgKYUs8Jw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D4963A1
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 14:49:49 +0000 (UTC)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F9C180;
+	Sat, 23 Sep 2023 07:49:48 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1c1ff5b741cso35261425ad.2;
+        Sat, 23 Sep 2023 07:49:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695480587; x=1696085387; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eD2lVLlB4OLw7jI90rwo5u6A+4KqLp/ELPGmjNIkRoA=;
+        b=O8BGlc8B957os7Z5tsmDipviv4BD/iqiQmF1g4Wp0HeXDpZ0G89n735etSbhvrdsdC
+         y7cqtDL4nr5g1Kjs1GLnU41+m/E7OEzB0XY3Jga+ZP/6sjUFM3xCbET1ZiqWKZcIF8yh
+         w4LkDAcT3BixCXrRSiu/VlAdCWsh0guNJ4JRXbcSFhWsMbyJQWcMDUndErD4PGO6WQWg
+         12y8jeWKS2V4CvVLWckqoh7/Q4h1iOBDwUvM94BtDzArKzIHzQNhIcGh7CjZ0p8wV2hp
+         rLU2EDpofEhACMo4b2UvQKEWf/U19dTpxm3Anj6gAL4Yz3Kiql6zk792tam6Nlfpv160
+         YJPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695480587; x=1696085387;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eD2lVLlB4OLw7jI90rwo5u6A+4KqLp/ELPGmjNIkRoA=;
+        b=D10xxcsnwmXHJIlmrLpBVoAvvvs93PISJiAFw3B7RlctEQlZ0QJg46u0sxrYSgYhvG
+         NHcNBWYc52BguYLcgYJhrmYFwCDdD5scIVJHOD/s5F14PSmvdHcrr5JkwpQjXlzZ00A5
+         OO4HYnDc9b2nGPEgOaRPOJESuk+QHVFtRM6JHrIeyPONYf2u5iJJ9wvAUWea1PR/ARlu
+         uyzfiKlM0A4jpCgq5AvIs7csge6yZ0QHztfpl4PN+XTjXnNqABWXDRa68PtJNAHxDDR/
+         B13n6XcvbqMNWWjMX3LKQC45tpKrg1kWzhR/YYIjIekRJYidDYN6QQVa8OHfnUk9Y39F
+         mr6Q==
+X-Gm-Message-State: AOJu0YzTu2U7yCffldDeUyaE8+8EUe4s15db5VX2Ry0LwFYre2s4KABG
+	fA0WvexCA1TAPoyvrnBDHBw4TjUoELg=
+X-Google-Smtp-Source: AGHT+IFzt8/0XMKvSNig08HSswOaMVfL6evLAH+gjA54WeEXNTvU0QBg3r3emrnnDAIc9cKUDSvIKw==
+X-Received: by 2002:a17:903:32ce:b0:1c4:3cd5:4298 with SMTP id i14-20020a17090332ce00b001c43cd54298mr3344030plr.18.1695480587548;
+        Sat, 23 Sep 2023 07:49:47 -0700 (PDT)
+Received: from wedsonaf-dev.home.lan ([189.124.190.154])
+        by smtp.googlemail.com with ESMTPSA id s3-20020a170902ea0300b001c42d4b3675sm5392806plg.309.2023.09.23.07.49.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Sep 2023 07:49:47 -0700 (PDT)
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: [PATCH v2 0/2] Remove `ArcBorrow`
+Date: Sat, 23 Sep 2023 11:49:36 -0300
+Message-Id: <20230923144938.219517-1-wedsonaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nnX5T4TLVpn9g7_9EDP0gudQAAqOc1oSvotsgKYUs8Jw@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Sep 23, 2023 at 12:19:06PM +0200, Miguel Ojeda wrote:
-> On Sat, Sep 23, 2023 at 3:36 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > My limited understanding of the Kernel Makefiles is that they all end
-> > up being one huge Makefile. So i think in principle you can place the
-> > files anywhere, and direct any object file towards any target. So i
-> > think you should be able to put the file for the kernel crate anywhere
-> > in the tree.
-> 
-> Files composing a Rust crate are automatically found by the compiler
-> following a pattern starting with the root of the translation unit,
-> i.e. it is unlike C.
-> 
-> It could still be done hacking things around, but we preferred to keep
-> things clean and then go for the new build system.
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-O.K. Fine. We can move it later. We seem to be having quite a lot of
-useful discussion with this driver, but no new version yet. It might
-actually be that by the time it is ready for merging you have the
-build system sorted out.
+In this small series we remove `ArcBorrow<'_, T>` and replace it with
+`&WithRef<T>`, which we used to call `ArcInner` --  it is renamed
+because it is now public, so we chose a more meaningful name.
 
-> If everything goes well, I would like to have something for LPC.
+This simplifies the code because we remove a type and have simpler
+syntax to refer to borrowed arcs: `ArcBorrow<'a, T>` vs 
+`&'a WithRef<T>`.
 
-I hope to attend LPC, so i will try to pop into some of the sessions.
+This became possible when we adopted GATs in 2021 but we only realised
+it recently (thanks Boqun!), more details on this zulip thread:
+https://rust-for-linux.zulipchat.com/#narrow/stream/291566-Library/topic/Isn't.20.60ArcBorrow.60.20just.20.60.26ArcInner.3CT.3E.60.3F
 
-       Andrew
+Changes v1 -> v2:
+* Moved the definition of `WithRef` to where `ArcBorrow` was.
+* Updated documentation of `as_arc_borrow`.
+
+Wedson Almeida Filho (2):
+  rust: arc: rename `ArcInner` to `WithRef`
+  rust: arc: remove `ArcBorrow` in favour of `WithRef`
+
+ rust/kernel/sync.rs                |   2 +-
+ rust/kernel/sync/arc.rs            | 146 +++++++++--------------------
+ rust/kernel/sync/arc/std_vendor.rs |   4 +-
+ 3 files changed, 47 insertions(+), 105 deletions(-)
+
+
+base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
+-- 
+2.34.1
+
