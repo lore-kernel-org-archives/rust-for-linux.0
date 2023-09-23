@@ -1,59 +1,88 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A337715E96
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 15:03:56 +0000 (UTC)
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F35B7196;
-	Sat, 23 Sep 2023 08:03:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=57b3cr2nfbdyjf3g77ru3a4vem.protonmail; t=1695481430; x=1695740630;
-	bh=Chjm2AZttFwpleadM5PaZGr2osi32W+sjTU8gNi8vpk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=DSJR2d3fX6MoAtThQRR0nCfRm0iMFhpoB2fT/bCzn3gZjaK36NE8NJOj/Vef5zPlV
-	 TT87q0ztojoXNCgb23vIJ3HQgesl5e2zcWDxZGb79ZgVZD89cwt35LnToIzFIJWlmx
-	 LJQNg/Hl5q9P4pvXAGZtNR0Dr8KCclr8xJ0LvbCgTh+buGZNfbg+pH+AAXSfVM84Ax
-	 f7BocvfNbrX4IHqBElON8y/dUDoLwa0ESyJQDb+nnfhmkoQ1AUSTURcxR3WapktA2H
-	 k8KCZyS9L7lLi9emAle9o55j5V9xHsSz5p96FsURpq4RNr2w4pluysl/RQPiqlOG6v
-	 HT2IJ8NGqTikg==
-Date: Sat, 23 Sep 2023 15:03:40 +0000
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Ben Gooding <ben.gooding.dev@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: remove ignores for `clippy::new_ret_no_self`
-Message-ID: <600d5369-5520-c2b3-2e1b-2af9ae3f77c3@proton.me>
-In-Reply-To: <20230923024707.47610-1-gary@garyguo.net>
-References: <20230923024707.47610-1-gary@garyguo.net>
-Feedback-ID: 71780778:user:proton
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9104E210F1
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 19:33:35 +0000 (UTC)
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785D7FB;
+	Sat, 23 Sep 2023 12:33:33 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-692b43bd804so1676856b3a.1;
+        Sat, 23 Sep 2023 12:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695497613; x=1696102413; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=V2uhQYW0dA/MmHO+MVwE4AWGk/2906LanaDbbQRTzq8=;
+        b=dWICs9SzszukHq2ezCzjq2uXSBxdul0u/zp32c7RIW8rAx+Mnc6Ndm5qrB/6J1roXG
+         Q+XVHk6Sdnwn9v5vZp/EyMChMCnH2Hta6zA0ZTQLFaS6LOfsipG/pwydqpUyn7ewCLzI
+         ZSxE05U1eu5zP/2NT9c4GZGDNh6TfVAEY4GBjfmNcMHuh6Vk7KogWkktb2mpdzVIusE1
+         bo4TjqAm4QsaDJV0Dcn5Bj/wtkVHVn62myu9uotpfekR98aMV/LsFdVHS8x2PiMHrpWj
+         TFfYRuOvMN6VyZaK0P91dRPrkZD8+FvUIng2kVrapnhwxG5lu5pkjs+L6IX8Y9aMStE0
+         6oEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695497613; x=1696102413;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V2uhQYW0dA/MmHO+MVwE4AWGk/2906LanaDbbQRTzq8=;
+        b=etWENF1VMf65ibi8JpPxtZOPhaK07YE5FEYqvIesL4xJh+xVS2nFZ/3dAKh0Eqc5HO
+         UwcDxRKGBH/u7FFhbrQruC5kPc71vZVFd43k/CpYUzVPWXrBsHcOoRo8eTK/0ACgsHxL
+         MpOlZYmVFFHYKpI9BRs9xijngTqVbJBXaoOLcV9D259IbD5x/RUDZd04WPqGjUeWET1R
+         7y06fLlMEqlvxXYE5AOIgQimib8yZ5bQzer+ZnbrG3eXZCFjS5KDSwhk1ZFC/9HRwLtd
+         YUUyIn2GpbUHoooxe8IA+/cBuGbQm/O4L39n3OJZAI4d2sj0Ynyhfzh4XsyTwSqV5Aci
+         V1DA==
+X-Gm-Message-State: AOJu0Yzm0IuzXVnPGj/MebjiA+xWfPyjbCNCoeoZVCv1H4R9rpXU3cmZ
+	r5KjWYhcjYWvLoC/h4VZztE=
+X-Google-Smtp-Source: AGHT+IH63fxYdv4NUEWQREcnUWlg7lC1Pejc1RlForkJPuVlLNWZcUashfYmlqFGFS33mFPo21LU/Q==
+X-Received: by 2002:a05:6a20:3caa:b0:135:110c:c6e1 with SMTP id b42-20020a056a203caa00b00135110cc6e1mr2606684pzj.7.1695497612884;
+        Sat, 23 Sep 2023 12:33:32 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id n11-20020a170902d2cb00b001c06dcd453csm5685740plc.236.2023.09.23.12.33.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Sep 2023 12:33:32 -0700 (PDT)
+Message-ID: <9b8aaa7a-55e0-4696-a0f1-c4f7af0e46b0@gmail.com>
+Date: Sat, 23 Sep 2023 16:31:47 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] rust: arc: rename `ArcInner` to `WithRef`
+Content-Language: en-US
+To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+ Wedson Almeida Filho <walmeida@microsoft.com>
+References: <20230923144938.219517-1-wedsonaf@gmail.com>
+ <20230923144938.219517-2-wedsonaf@gmail.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230923144938.219517-2-wedsonaf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 23.09.23 04:46, Gary Guo wrote:
-> The clippy false positive triggering `new_ret_no_self` lint when using
-> `pin_init!` macro is fixed in 1.67, so remove all `#[allow]`s ignoring
-> the lint.
->=20
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On 9/23/23 11:49, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+> 
+> This is in preparation for removing `ArcBorrow` and making `WithRef`
+> public.
+> 
+> This is a pure name change with no functional changes intended.
+> 
+> Suggested-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > ---
->   rust/kernel/init.rs         | 20 ++++++++++----------
->   rust/kernel/sync/condvar.rs |  1 -
->   rust/kernel/sync/lock.rs    |  1 -
->   3 files changed, 10 insertions(+), 12 deletions(-)
->=20
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
+> [...]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
