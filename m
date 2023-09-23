@@ -1,85 +1,145 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B8118F
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 00:05:58 +0000 (UTC)
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5551B1A5
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Sep 2023 17:05:57 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-59f1dff5298so28195637b3.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Sep 2023 17:05:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695427556; x=1696032356; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cpw7ux50huWSMrlaSSPYRdfTbjey4TFgRpvARmmvyIw=;
-        b=hSSWw7Z7PzafL9Cv1JbvroKwSj55OJuEm+uXww0A7h4oV6ENIakkAlQMyhnsR5C4qM
-         VtDCwI638UtcVEZishPfPatcoAFoVhC3PiAcMrQFuA4YTNDciWF4JxIH8+WRNprQ5no7
-         xdkLpQ3Dxk7MR8HmtPBEPjKlHxd9d3dI5aBuby0zg/k01j3t/oSt5l+8VuELKtlnV0Tk
-         0nphxUe4fe08e2rmpj0Zav1VtkgITqM9DJ3IlAI3PXpHB7iLnlunDVQCx6GZTG97+Gt2
-         i4CyFUnSDpp5FajHK6itntPddFPqhPRltdUYwLZ7ExT4Wiy8nr/iIQJRdYL8U9aYG7yc
-         uo8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695427556; x=1696032356;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cpw7ux50huWSMrlaSSPYRdfTbjey4TFgRpvARmmvyIw=;
-        b=EEZDSnnbgag+kIKYqx2qbkKGybnYge9K5UwgAgMtV2YX8wCbc+LfZGM851GkHh8x+X
-         1ImLYDJpO2pXD6VK6DH9B+06z9Pd/kkZXl5Yl8pAS1kztJzWXAzEFcDnC0RW+Dk+5N5U
-         oVZJq1mFUWMWUz4k15ZIWq840LFArqLu5XO0BAjchVRW+QK5aLhfCQhLZT5/mZi0meUz
-         MVIQsuiTbTbWd81HooRJB8Q4SYKsgu9QAA6u0xcegRVTTn1BIPjRkHi+QKJbljUkr27y
-         TO/OnNUql+WiGXFZaAlYIJ1mjbLzyoazOtuLPSFO6Tc9SF+LCqG5OU8Vm1/fOgXtvsU4
-         hmFA==
-X-Gm-Message-State: AOJu0YzPq4X03EBgRNlCEa2LUe+hxl/23acoKHymkb7R/W7GlOwFRiOR
-	PI5dBK4J/JLCeEXDU0DUpFOlEOfF279D7jXIzGM0LWaPrPUXO2yl
-X-Google-Smtp-Source: AGHT+IFwHUJHKWD3RYx/JEwEY0BT0ZB16lXaeg7Bfs3g5wpd3z5fbHLJzOV05tNJJyl540C08gwbE/7y1yusgP+Gfjs=
-X-Received: by 2002:a81:7b83:0:b0:595:89b0:6b41 with SMTP id
- w125-20020a817b83000000b0059589b06b41mr1192393ywc.38.1695427556501; Fri, 22
- Sep 2023 17:05:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE854363
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 00:07:18 +0000 (UTC)
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2121.outbound.protection.outlook.com [40.107.10.121])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BF601A5;
+	Fri, 22 Sep 2023 17:07:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bOAeO7tUFFpHYXeiv67W1A+uKuHL7rUKyM4dEXCnZbOT9NnP8P3O5EYmy1ml4VylmM8YWRYMJ+9e4Kotq4Mk2ZNvCBrF4c2CWablvGxq6xvt6voHoPSDQnACEH9DB3lnmNiqQUQZXR4/TAuIN8qFdFZgX6i0mqn2/kIKZvse1WIloweja8QRvdtkHpZODNg32XrJOEwjkRM1P7PKIsUg2lcpJOtu9hi+q968nkbZR0FcEJhfm/HAPbI4eBPKT+UhlYsKpn9xa3I7R/tuxjbcsz/Tk7OA+fV6BhuYZLoXKSoGW4Yvt50Wf/Xl5b3sC8fCqdCrfd5gvi0GMKDA+MNRqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oMxMPilv7+ukwN2t3e8yJv/XHcUE7uS3SBvBuEVAu38=;
+ b=KdA59zUX0EJFQIjZDvGwde516xQxo9rSnuaStgAlR8KOzSYTDmSYbq3n6MTXtpNk8ci1F5+lnMugXZ6oJqZ6nVYohPNOTUNQx1toDKWH1SJ+1qn7cGjRJCEMMdyRuHCdXiZW6wEQ4QY/mKJBdmwb2sHuuZ1TORpoOOOJMl63Vbwe/azaXK8YFtu4FHCLCBr907tY8MPMSRO+Kue0O3574arD2ynlYphpMxA9BdYzWDweessDXCCy4j4uNxXTsiwfiu9MZu83wL3PBzUzLu/ovl+EcCn5A6tDm+8twGmlnsFvXWjSslTsvPMAXxmc7puBEBP11JCYvKP3BkSQlVaXUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oMxMPilv7+ukwN2t3e8yJv/XHcUE7uS3SBvBuEVAu38=;
+ b=hCFKCDKMiKzoh6KGGdA5IOxyUVcmHF+YovypyKUcIMWz8JQkyun2fZ3X5PgWUzrolC563hjvykFirI0BI8s4L54ZaWoqQELZ5OLdE2HbcXPMmqQts5wG2Ze+mzXuQjrWBOA2kXWKbSh6RA0CMhWEcW413MPP4yJJbUVSVXX38iM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWLP265MB7358.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ff::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.25; Sat, 23 Sep
+ 2023 00:07:14 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::7965:8756:9ad5:df1d]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::7965:8756:9ad5:df1d%6]) with mapi id 15.20.6813.017; Sat, 23 Sep 2023
+ 00:07:14 +0000
+Date: Sat, 23 Sep 2023 08:06:57 +0800
+From: Gary Guo <gary@garyguo.net>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
+ Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida
+ Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH 1/2] rust: arc: rename `ArcInner` to `WithRef`
+Message-ID: <20230923080657.277819c2@gary-lowrisc-laptop>
+In-Reply-To: <20230921213440.202017-2-wedsonaf@gmail.com>
+References: <20230921213440.202017-1-wedsonaf@gmail.com>
+	<20230921213440.202017-2-wedsonaf@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: TYWPR01CA0035.jpnprd01.prod.outlook.com
+ (2603:1096:400:aa::22) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
- <20230913133609.1668758-4-fujita.tomonori@gmail.com> <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
- <20230917.213248.712797486250583805.ubuntu@gmail.com> <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
- <1299bee8-9378-4a13-8cb2-3b47e0dee417@lunn.ch>
-In-Reply-To: <1299bee8-9378-4a13-8cb2-3b47e0dee417@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 23 Sep 2023 02:05:45 +0200
-Message-ID: <CANiq72nkmL5jEqdnj+OoDk+Vja_jVUdD+EGneF3h+kdFSOJqPA@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file to
- the ETHERNET PHY LIBRARY
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB7358:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0840a382-d7b9-4dc1-958a-08dbbbc90ab8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	0RyXMsPrNff/kA035pwpxjZnSmawKs1wXe5LjnZJ5J6j/HYRHZMs89CqXN9C3RciX/QYPnmS7PVH98vewQ0eL9A1UtpIDhgLG2qX9sOo2OwZGGrGt2RKG1vo4MnFNCysd/zXhVdtmngj/PvjvgdUUHOZFlzH6dSTvsabH5p2r9Z2M+0vuCOrBluaOZWAAzVssh0yI8/8RmvyAU+eIe3XPTtxRhcNH7uNUu+b2pvXsy4vvbfiPbTbsUNaXFky9ZjX2MsYUpX1FzygjKXkiFBfDc8zCfop5V096NoP41f9tAgjkXlQYVqwf9nfJkDhLqqseezPMLvK7yKYcBcIbj0gn7/ATGQy10gvr900W8pvAi8qsAb2yHOhBul5UAcx7LK3JDwkkOm0MJ04F5H+oC18HxTpvWKxbu7jvTntFpsAAJhah3YGjfbIoSN/wEwAKyeYICBU/MLp6SuVYmHPHkGXhEX21KUynPIDL5tZWdoh56obXIXM+hbjaWImVeEZrqkzx3XfbvjxUJVfZwTiHFB8F/O0fzJl3QT8ocY8ChkNA4fnVRTG+J7fdNVNYUS52Lc3EziIyDHnoBVkv1TlRK02sJpxhw4i3wOCjtOh1SPDnic=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39830400003)(396003)(376002)(346002)(136003)(366004)(186009)(1800799009)(451199024)(1076003)(6486002)(45080400002)(6506007)(6666004)(478600001)(9686003)(26005)(83380400001)(41300700001)(6512007)(4744005)(2906002)(7416002)(33716001)(5660300002)(316002)(6916009)(54906003)(66476007)(66556008)(4326008)(66946007)(8676002)(8936002)(86362001)(66574015)(38100700002)(81973001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a1RxR2p6WlIvczZNUE1jRDJtWGF0MUpvMHQxUWhYNmRSTEhhdDJUcG9aV2k2?=
+ =?utf-8?B?Sy9Ra2VIWTFhNndOenNIMVdQVGZYSTF2akJpRXpMK0ZRa0FBbm1RNVExLzdE?=
+ =?utf-8?B?U05sR2p6Q3Bscm5PaFpUendkSk1UMmgzVmtGNnZKYlpsdG5xNENiSmJSS21r?=
+ =?utf-8?B?RzZocVZPTVd4ZUwralczelZDLzlNU3k4QVY4ZkJoTHpCeGtBeVlzcWM4UnRP?=
+ =?utf-8?B?SnprT2Y1MVdCOTk0SC9yWFhTaHNwVVE1VTFyOVlwMDU1UVpqRkJkVjU0QzJq?=
+ =?utf-8?B?WmEyem4zRWpJRVVORFRidUUwSmszS09vVmptWlJHYkJoeThPVG1ZNUlaSllj?=
+ =?utf-8?B?WkMzWElHcHJlY3pFQXJMa3JXenJDQ3IzYjZ5UWp6S1hPVHNXUkUzd2NqSmxM?=
+ =?utf-8?B?QWZUWlhTNkNVTWtIcUxINmpPYWNUbUVuTTNaNW5zUEJnTHpPTEY1M2wzdlB5?=
+ =?utf-8?B?T2NZNTk3bTQ4ekZ0d295VW1UNDBEWHlSODg0Q0ZwOUFsWXhrMU45SWN2WTV2?=
+ =?utf-8?B?V0JQZGpJektmcTFhVldENHJINUg1R3NVVjcydVp5N2Q5TGFmTE9ENm5mbFNj?=
+ =?utf-8?B?SWJxcUZ3Q1I4MFhJdVU5c2VnZHJxbTBVS096N28wTmg5NzVrb1hRd1QvUVJq?=
+ =?utf-8?B?TlR3emZ3R1JDd0YrSW5iQ2orekhHYVVvcnk2b2RiVVpHZWY4R05vQWFoTC9G?=
+ =?utf-8?B?ZzRocmpmOEJiblNzK1BwQ1VRdk45YlhiMEdVWENnS1ZjZUNncG90ZDlqa2JG?=
+ =?utf-8?B?VHFnUVRacVFFcDRIWWdkQWJSMzMyeVF0ajZlSTBKenFxSjBQUDYwWFUvK21T?=
+ =?utf-8?B?ODg3cjIwcVl5b2RETXRMT3N2a3pLck9hRGY4YjVZVEVBekpjWXo0Y2s1MHBN?=
+ =?utf-8?B?SFZBQ2tIMTBZWHgwNmphYXhzUktKclVqK1ErWHpSZVdDUXVpSy9SSWxza2FE?=
+ =?utf-8?B?SkVZQnpZMjdqWFk4UjRENXZGUm14NWVzUXQ2aU0rRjk5R1AxT2NUUUoyd1hV?=
+ =?utf-8?B?UWl3L1J5eXBBenFKcDg5V2FYZjlkNy9CNEFJTzJVTUtCeTlOSGY4bGNLLzc4?=
+ =?utf-8?B?OFhvSW9GMTBpb252c29Rb2RlaWh0bWRGRWtPdWFrU3hpb1JFWXFsM1lCM1N3?=
+ =?utf-8?B?RW1RZ0RHdnpmWHhZZngzV1JhL1JocTl6a1NzeDdyU05OVjdSMEQyMGNrK3lz?=
+ =?utf-8?B?OHJxdEIvanRoWkJmVzl5aURRZ0ZpZjhwYjlETlNzT1V5ZXdUeWdUd2c3MVdh?=
+ =?utf-8?B?MTFtNm40eCtvVmZQbXFYQitHZUVEREFod2M1MmU1L3RqY1lCeUVKazIwd0tZ?=
+ =?utf-8?B?RURYVmI1c2xtL0VIRy85Y0VJVVl3ZnlUa3BGd2RuZVJFeUpYYm43N0Y4WmxK?=
+ =?utf-8?B?TDZSeTlVWkxsZ1VJSW9LOUI4WWJPZmJHSHFjVmcvSG9jb0taRit3djRjUkht?=
+ =?utf-8?B?Wi9RdzVMTWZIdyt0VU1HSk5mLzBaZGlzUUZleUpuMzJZNTBCZ1Rwdi9mejFm?=
+ =?utf-8?B?QmZhTWtGTzl3TTJueXhNTHM2VjB6bThBYkdWMlE2UGN3a1ZxaXJzU3FWcTFv?=
+ =?utf-8?B?SExBS1hVWGhqb2F6M0UzS2hIUlRHbVZ3WDg5bHpPMHVFN2tHbjIycnRVWmEx?=
+ =?utf-8?B?ZXVCbFZheDJTWTZJZ3VGdS9yd09ldng1UnQvKzhTc24zSnpvc0dCUGlJNGk4?=
+ =?utf-8?B?VGxYUys1TnVVQ1hMcEllbzBTTkhsbElXalVXTVhqMFpBM0Z5eHhlYkdVQmFu?=
+ =?utf-8?B?Z2lEVTYwUjB1YWJjTmIvMU9OOTEyaGp5YmdBZVNKOWN1aDF0ZnVuelNKb1Ux?=
+ =?utf-8?B?dFZqaFA1Z25WQ3p0V05OYldYSS9VSDluNWJDSm5QcEJvdzAxSW0zeEZSd1Ra?=
+ =?utf-8?B?bXdhSlNPYklzcStjVDdsYUM3b1NtRnZBd0FBQUdTemgwOE9rbHVhVVB5cjlY?=
+ =?utf-8?B?UnZQZGtxWGYvRXpaWGVMZWVobHZFYndFdGxPSndkM01wWi9QWldDN1ozZVpE?=
+ =?utf-8?B?bU94K1NNRjhhVEoxWE5ZMTFoV1g2R0E1UldYQm5GRnlldEVTbS8zLzJSZFJn?=
+ =?utf-8?B?enhKSjFjNU5RQVg1MDJMU2VqcnVaMlJJVE1HOUtSTmxMcDJ2V0hnYng3SlZs?=
+ =?utf-8?Q?alyldsv23iPVSkVmY9DXngBIz?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0840a382-d7b9-4dc1-958a-08dbbbc90ab8
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2023 00:07:14.6704
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eT2Kl90p1RH2ZNRuFawxJeKp5y/DwGNblXHuX1PAKTlKPOGXeztIHW7wL1neulTfty6wWHeGidSboK4TaCIcyQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7358
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Sep 19, 2023 at 6:33=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> So a question from a none Rust person. Why would it need to be in the
-> 'kernel' crate?
+On Thu, 21 Sep 2023 18:34:39 -0300
+Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 
-Sorry, I missed this one.
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>=20
+> This is in preparation for removing `ArcBorrow` and making `WithRef`
+> public.
+>=20
+> This is a pure name change with no functional changes intended.
+>=20
+> Suggested-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 
-Rust requires to perform some work on dependencies given there are no
-headers. One could definitely put the abstractions elsewhere, but
-properly sharing them requires a more involved build system. Thus, for
-simplicity, abstractions go for the moment in a single translation
-unit (called the `kernel` crate) that gets compiled first.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Like Trevor said, leaf modules that use those abstractions can be
-already placed in the usual places.
-
-Cheers,
-Miguel
+> ---
+>  rust/kernel/sync/arc.rs            | 20 ++++++++++----------
+>  rust/kernel/sync/arc/std_vendor.rs |  4 ++--
+>  2 files changed, 12 insertions(+), 12 deletions(-)
