@@ -1,94 +1,83 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA1BDDAB
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 10:37:08 +0000 (UTC)
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB7AA9;
-	Sat, 23 Sep 2023 03:37:06 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-59f57ad6126so4532607b3.3;
-        Sat, 23 Sep 2023 03:37:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8231F63A1
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 12:01:21 +0000 (UTC)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F98199;
+	Sat, 23 Sep 2023 05:01:20 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1c43b4b02c1so27448885ad.3;
+        Sat, 23 Sep 2023 05:01:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695465426; x=1696070226; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L5/b7ryqYnd2PGys4t8MfFqM18gaemddOGExKYfSuvk=;
-        b=GVQ6umqu2Jtx8J6LsjilDu3cryimkt5CpDVM+rXg3uLJaECAA/6FEtXLc4HR0tXewm
-         LqENuFQ7DO8Mz9YrNz8Y45taLwA/JRsIJuQE0KOMN+sItqXoc7E53xZWhRZy2Dli1/z6
-         frCqaGONE+MSJCYvNuxGAWtcFbLSvaAsW4kRX/oue/9blqbQ8ycNDvuJZqVvBM2Q1FWc
-         tX9oXOYYlchoS+5oChpCiEP6mQxBG1+AvRCZUYdEl/jaedXyLw1VB9+Yvnr3/yKeD6AL
-         IO4359VuyWufecALG+uclbJ8IQbngB6hUiCR2fTeFyG8VFlGQEagSMfrUrAJ08afSsVD
-         TDGQ==
+        d=gmail.com; s=20230601; t=1695470480; x=1696075280; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sJWHJJeLFmU6KDncYm3wKtsS+KVAxGKhS7/lOBgShv4=;
+        b=i8Qz1bVJZ+I7xuKSetG8za08TB4zxMxGb0yWdbVKwLvCh9YRpxb6zzrfcNl9ku7hc5
+         NL8fEtdy2d9OnzZhxhMNhC/4bC3M2kuCzc5ggC3sTqmdzi2sqsjUtyM29jXg64/Ntudg
+         dLy3a6LGCDrKkTM7nzG+AHpFLAn73xtSLHA5PkBwde7/b9La9VlfeIlKS63zwgzA2OEy
+         Qezno5fnYZXG+YvdysCu5ek/VE0BtliSgBP44ZDl59scEFSPB06yNeXS+dTpA4dH1BJc
+         GlFmkDpT/WBpmJdlgdi4oIJDq5/vxlU0kSzpFZOWKIK8fVFwupHvvvNU7OnQKlyY3Yf7
+         EOcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695465426; x=1696070226;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L5/b7ryqYnd2PGys4t8MfFqM18gaemddOGExKYfSuvk=;
-        b=BLFaXRkP3wLzYzCu9dQLaowqxJUQ46BOPsyqvPMlSU/FSls/PyukGkWrspf+zEp4rw
-         gYFVJck31pHYibk/jyonOC8KIag5Ti9E2F638YHdFdNYWh+hYsF7OWGN1txx2jlh5K+f
-         NfEtrHPMBlpbAlG8gZ1FGO+iwilBwTw331cil0ustA0pnZ85BBpJdpWWl5nLj5c8qhmS
-         OAM1qozQSX6n+lJR/rlrWX6QlA6nBqonI8CxCTb3ymre/IDQHZY3ifiWf6fMyxRdyKLs
-         sOzB6btm7j6VBIq1eF//iEa/yzmgt5kSSenXxbLdAASi5Iu8qfPqC6XIwrjv9W4N4D3x
-         XSiA==
-X-Gm-Message-State: AOJu0Yy3HBUyTxTqUykuKi24Bvdd3JSmxkmKVIvFIktBuglV66Pae/6m
-	fqaEa392fqPbLjYZHtx6Zof1EonsTkcEK7AZ6/N0SWWd2IznJozk
-X-Google-Smtp-Source: AGHT+IFppYuzXzdG/r1u0vJuGlE83f9sKVVT2F5A6sqPc6g8omrWrmcOyV2RU9KHUYYVfqsGUColXegmpB1dNQOgWEU=
-X-Received: by 2002:a0d:ea96:0:b0:59b:3d66:ed50 with SMTP id
- t144-20020a0dea96000000b0059b3d66ed50mr1724091ywe.6.1695465426152; Sat, 23
- Sep 2023 03:37:06 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695470480; x=1696075280;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sJWHJJeLFmU6KDncYm3wKtsS+KVAxGKhS7/lOBgShv4=;
+        b=b11/pL08COpjnWWE8I1vGoCd9WkBVZU2PKIuCnbNLKfJv/d63yEcdxzQocmHdBQmzk
+         iKDcJzbjWYhHJ497dxET/iiabbc1AzXlFyN0jnPk7jVe2s9PbjbY3184gFzKqhC0X3lz
+         Zsp0DqoMucLJRlEbv62Wq8GDFGe8fXw547X0sKXhrt+/byu/kVs/GDXVYFy4a9OJVgIG
+         n7e5rLOhZ2ClnDfvoSB3NpT3s1p9KGZRuMthwtBv609xt0uyibZUrkXG9eCe6GtKmjtZ
+         EwHckTYRAaxTDgKiKFp6ZA6NwxWP6wu4cC8UIQ29mWM8d64Vu3p/Znj7zgyDjneKmade
+         ++7w==
+X-Gm-Message-State: AOJu0YxuM3+ZnUPhnyKrjjXelVmzNe9rctRlLHAVRUwgbDKArZMC8Je3
+	kfgevsunmJtHnQi/sHtS1nw=
+X-Google-Smtp-Source: AGHT+IG4jyw87UMOFg4woBJBSopS7D4Xf3N48wJmixTGXy858/8LwVZ5fwfyAr30EHXBI1uWA29z0Q==
+X-Received: by 2002:a17:902:e84d:b0:1c4:50fd:7cd1 with SMTP id t13-20020a170902e84d00b001c450fd7cd1mr1545907plg.11.1695470479727;
+        Sat, 23 Sep 2023 05:01:19 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id y18-20020a1709029b9200b001b8a897cd26sm5154518plp.195.2023.09.23.05.01.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Sep 2023 05:01:19 -0700 (PDT)
+Message-ID: <7690993b-f130-4e18-9c5e-ce955fe00b2a@gmail.com>
+Date: Sat, 23 Sep 2023 09:01:14 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230923024707.47610-1-gary@garyguo.net>
-In-Reply-To: <20230923024707.47610-1-gary@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 23 Sep 2023 12:36:54 +0200
-Message-ID: <CANiq72mvMM5v9nQKwCV9EeBPUut-NRASNKqLjN2vAM-va5jdQQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] rust: remove ignores for `clippy::new_ret_no_self`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Ben Gooding <ben.gooding.dev@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, Ben Gooding <ben.gooding.dev@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230923024707.47610-1-gary@garyguo.net>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230923024707.47610-1-gary@garyguo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Sep 23, 2023 at 4:47=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
->
+On 9/22/23 23:46, Gary Guo wrote:
 > The clippy false positive triggering `new_ret_no_self` lint when using
 > `pin_init!` macro is fixed in 1.67, so remove all `#[allow]`s ignoring
 > the lint.
-
-+1, thanks Gary, this is one I found thanks to the `#[expect]` series
-I have to send. There are a couple others that I clean up there
-(`non_send_fields_in_send_ty`, `dbg_macro`). Since you sent this one,
-I will take your patch :)
-
-If you don't mind, I will reword it a bit to add the couple links I had:
-
-    rust: kernel: remove `#[allow(clippy::new_ret_no_self)]`
-
-    Since Rust 1.67.0, Clippy's `new_ret_no_self` lint learnt to not
-    warn about `-> impl Trait<Self>` [1][2].
-
-    The kernel is nowadays on Rust 1.71.1, thus remove the `allow`.
-
-    Link: https://github.com/rust-lang/rust-clippy/issues/7344 [1]
-    Link: https://github.com/rust-lang/rust-clippy/pull/9733 [2]
-
-Cheers,
-Miguel
+> 
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+> [...]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
