@@ -1,89 +1,102 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B372210F1
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 19:33:40 +0000 (UTC)
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ECE119A;
-	Sat, 23 Sep 2023 12:33:38 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-690d2e13074so3308616b3a.1;
-        Sat, 23 Sep 2023 12:33:38 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136137FC
+	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 06:49:19 +0000 (UTC)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA6BCA
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 23:49:18 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-690f2719ab2so1137172b3a.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 23:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695497618; x=1696102418; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LOtuPFxlpOJnlPD5je6/bnBdPybRwVi7VM0GipzcDdc=;
-        b=DOQYnZ42H59KrQGYue6thfs1UTe1VuW8UeqkdqHSNrUN4MFWsGwNZKK9j38HJ/75oK
-         mYTV6XaYxSiFdQRZdDmVwqJukwYRaAgqw3OhwaJgtDKJVttbCExFh5CQXSTHW04McvC7
-         sFbmYoHy413fp5mH7TxwQ0MYllgSnmlNH3S6Siq/ZbtqoL6eklgNMe3GH6qs9Z0NBn+k
-         d8ywd1eoou9IKbDLLH41ueTnofmoxZxD59tYiFd2O9eMGEEudDaLyJHawxWNF/eo1lCX
-         GhF84tOWg8MPlDgye9FiGuZGBvyw/chwwuj7HZcITBJwrL9z5JPHRhPr40T4Fdh1sdEW
-         fbsg==
+        d=gmail.com; s=20230601; t=1695538157; x=1696142957; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ghi16J3BrlW4TPN3K2aA+Kf8CE+MxHSqfJ06TEv+IsM=;
+        b=bUk+X6kEGlU/sN/0oEL3DBf1F9vxPzY9EystBnerXZSMVCOsfjKkIix6YKu7oyA3e0
+         rGNYgP84ZrJDcI94k7iYJz3FuaezC5oizQkW1Oh1aXLDmY0A9VjRESuaLEKPSAq3jqhy
+         URJa0YcmOHMGM8FsvhjNM+LOfsLnD9JcYgsR20ImVB1Lc4W6Kz2WvMDkNeFAa7Sxr5yX
+         qzJQQ1n0y2KmWxgqpTBo9MCM3dJWii4TtFDI65+aVrnDDhOuPHEUWNR9VIs7iBI6MCmS
+         U7pVuvn0BSX6t/CWlOWdPUYpHvAbIdCBro8rH8ftm9oThiCnwyAQlPxcOC3sjzAlJz5u
+         daaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695497618; x=1696102418;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LOtuPFxlpOJnlPD5je6/bnBdPybRwVi7VM0GipzcDdc=;
-        b=GCsa7YUcSP4yReugQmnzXR9GxHUCdk6V4mK9JT+ZGi4WA63c+OIx39HaIIfRYVuYxs
-         9NJ4e051QaCJWxqE1FzmfW5ykSMLIqAyVQ8brwwGethmKMO9YWFmTryAwKit5w+2hWdP
-         f3e8cIg0lFiVfjFZR/84k+DIodL1oQQRJF/mMAKhTRxP+UzByVHEJnBrTdEQaVDvTz6c
-         MdggJdY0wvV76PD/scCdXdDs0yqeclqKZFtbw9op19K7E31VPIkbwWM4SChrRnC1MIrN
-         VKowhaZHC+0eruUU+57ii4/6rwPzCNZ5XmcCnqKy78E415oTt1WWaJrNkZrPc2IWYNE0
-         9EiQ==
-X-Gm-Message-State: AOJu0YxEepAI2luucp0uc7QU+fRFd4b7/1kr8rzwq3+UEcVWzMc1hRDt
-	bE4Y00ImxT+IOUtOSAiRBws=
-X-Google-Smtp-Source: AGHT+IEfWrUgOrnrsPPCxQ5cuVt858pXyvz8DywujqeysyDyjc4YXMT9fH9xqjI3t3RUgdgy2OvKLw==
-X-Received: by 2002:a05:6a21:328e:b0:12e:98a3:77b7 with SMTP id yt14-20020a056a21328e00b0012e98a377b7mr2289038pzb.59.1695497617879;
-        Sat, 23 Sep 2023 12:33:37 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id n11-20020a170902d2cb00b001c06dcd453csm5685740plc.236.2023.09.23.12.33.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Sep 2023 12:33:37 -0700 (PDT)
-Message-ID: <3eb24e38-710a-48cd-b9bb-3e258d914fc2@gmail.com>
-Date: Sat, 23 Sep 2023 16:32:03 -0300
+        d=1e100.net; s=20230601; t=1695538157; x=1696142957;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ghi16J3BrlW4TPN3K2aA+Kf8CE+MxHSqfJ06TEv+IsM=;
+        b=M/aJF2rNX6yQ+KDRLYTnnU/TEagyXSYbcIEXchm8pX/v1YoitaUlLNTRrcEbHoY6i4
+         E1fTTX0kDp4eGwVbo634dO45xD2px2j6hDHgbomGkMgQl+kaN5/isbgIeCVDK6hjxyqO
+         +8Gre1wTFYbmFfXTNoA5ITPNz7e+HFRYprZqAeGVfnUoUkD1NPy8LvfFVbMqF+dlVPa6
+         6Y3zHW9wGjAoeEXtNw+jBqqPKYuC977CRCaFgynZQRIhmk5li3gM8gBzMNkBcxYjl41l
+         eWDN2+3yrt9shriiofmCYTTz0DZ3/ihsFQ4H+sx2z4ltZhXmn0tK4lSQm/snfmRzjLJ7
+         JHqQ==
+X-Gm-Message-State: AOJu0Yw7ZQFeyO7Iu55MYvi1Z1d9ogqxI8BIr1MvnjXG2alNkqJpkBlB
+	j5zXsHGZzWpWFPDzuCQcS841O7cYfCQw0Bao
+X-Google-Smtp-Source: AGHT+IH12XXZqVCQhOvheMZkZJJutxxxEfPsUvdpLtndN0iARvWyKU6iWS7fL9K9IV4MzLuDdtKWmQ==
+X-Received: by 2002:a05:6a20:5481:b0:15a:4634:e4c with SMTP id i1-20020a056a20548100b0015a46340e4cmr6040749pzk.5.1695538157572;
+        Sat, 23 Sep 2023 23:49:17 -0700 (PDT)
+Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id y5-20020aa78545000000b0068fd653321esm5827711pfn.58.2023.09.23.23.49.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Sep 2023 23:49:17 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: andrew@lunn.ch,
+	tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com
+Subject: [RFC PATCH v2 2/3] MAINTAINERS: add Rust PHY abstractions file to the ETHERNET PHY LIBRARY
+Date: Sun, 24 Sep 2023 15:49:01 +0900
+Message-Id: <20230924064902.1339662-3-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
+References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Content-Language: en-US
-To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- Wedson Almeida Filho <walmeida@microsoft.com>
-References: <20230923144938.219517-1-wedsonaf@gmail.com>
- <20230923144938.219517-3-wedsonaf@gmail.com>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230923144938.219517-3-wedsonaf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 9/23/23 11:49, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
-> 
-> With GATs, we don't need a separate type to represent a borrowed object
-> with a refcount, we can just use Rust's regular shared borrowing. In
-> this case, we use `&WithRef<T>` instead of `ArcBorrow<'_, T>`.
-> 
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
-> [...]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Adds me as a maintainer for these Rust bindings too.
+
+The files are placed at rust/kernel/ directory for now but the files
+are likely to be moved to net/ directory once a new Rust build system
+is implemented.
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 90f13281d297..20e0ccd4fcaa 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7768,6 +7768,7 @@ F:	net/bridge/
+ ETHERNET PHY LIBRARY
+ M:	Andrew Lunn <andrew@lunn.ch>
+ M:	Heiner Kallweit <hkallweit1@gmail.com>
++M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+ R:	Russell King <linux@armlinux.org.uk>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+@@ -7797,6 +7798,7 @@ F:	include/trace/events/mdio.h
+ F:	include/uapi/linux/mdio.h
+ F:	include/uapi/linux/mii.h
+ F:	net/core/of_net.c
++F:	rust/kernel/net/phy.rs
+ 
+ EXEC & BINFMT API
+ R:	Eric Biederman <ebiederm@xmission.com>
+-- 
+2.34.1
+
