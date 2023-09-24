@@ -1,140 +1,96 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFAF7F
-	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 09:12:46 +0000 (UTC)
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AD03E8
-	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 02:12:45 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6927528c01dso711315b3a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 02:12:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3097F
+	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 09:38:40 +0000 (UTC)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44321F1
+	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 02:38:39 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1c5cc63ce27so5944245ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 02:38:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695546764; x=1696151564; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695548319; x=1696153119; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SjP8D/yqyQJmnm6cj8McTFozy5qTPky0K9X1jzqI+18=;
-        b=SmTWBtIXnS3Bz37GdRiI7a35GiV2tFuH2OvED+ToRZwsrl9OoIe1yxOaQzftWnLKpv
-         mHCDT/SOGGu206ZcPiOrid4M0BwTycZxt5HVMlUYc3Z33h1K3Ag4Tq3rNb3AH+HN7KXb
-         TkGVT0nBbUyCZb3LvZiBzGvZLd8FGUZv3S8OZu7n4yFgwbB9679W/WsxJ58HMTPqtWmB
-         LPROHA/V5PBaAsUSr8dQDNbIffGAyvZfRdnCUloQ+NCDK3Od7k58crmo+BEHvp2NupzP
-         UGtLNUW+OkQ+T/T6ZoJUqBFHvbL4wkgSEcod0fzL6hfOWrc2Suv5aJD4FLthaCfMOVuJ
-         7I8A==
+        bh=CBVxYt95kIeJYqZ+3afrtCLsRt6Pynft246oxEJxxqE=;
+        b=c9Wfx6XNHsMPELYY8QSnKT72zTC7h1QXIuv640oCEsxRWC/dsa/hrvG1eC7VyrEw7a
+         3wwYMQ12qYxzzBMSjdU1JlRX+5gWF7NXtOZCTFIt2qQ1f91hyhssdUrPoOXIa83zw2We
+         5SJ0MpB/5kWksyruGX5jZeivLc1PMVftPGgt4BYOI1FW7yJV7P35xCTTVOVLfrX3BX+s
+         GmSGIs2xROohgiCLLtAsi7duOEWAqnFL4M3/jUlxl3Olz6uHXROlbpaHd++6HCdeHfzh
+         st7oaf0CE/6e5syxWmE7AexflTNuKUBr9XzlOdg5MVN93yGXuDBvoNm1bGCteef8Us5C
+         vsiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695546764; x=1696151564;
+        d=1e100.net; s=20230601; t=1695548319; x=1696153119;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=SjP8D/yqyQJmnm6cj8McTFozy5qTPky0K9X1jzqI+18=;
-        b=rzLjOgtjj+Flq0YNX28y/55w6pKqCOUW4zflEn/6ZAVI1/UpgWYpxkoj76ZGsDBym5
-         j/1AxIGN31ttPSF68+8nSvLPAy651p74CAcx76fLJXDKIVX8CEo8ZfHGYpxUMms1CZql
-         gwN0DBf1oUWlJwnADLkUrqfeAA0ewWF3pKQOVW8AXge4Ug71U4wakLezVzrxk1vZLvI2
-         9rj78Y8kpOfveLsPVFtAG0hi6rbk8a58zXlZZZsX7oRkGhHlnYd7SJVFbmLd0ZZpwZZC
-         GypTtt5hgAJ8zSrGz0jEBydkWPvplgJ/vCS5VQL2smnqhv9zNsxeRUybZSmb3a5CXb1l
-         8KWw==
-X-Gm-Message-State: AOJu0Yyw28AX1nM4DjtcTYd2JwRpst3EXXki6znSvpSX5Vtn1m3h6cU5
-	WNL2shdFJLgmnEJBb2ciubk=
-X-Google-Smtp-Source: AGHT+IGO0lYKdrvPIKqJaJLXutHFXlSbrz1lmUJJBHnCoTowh+m1tN9R8ukSG4vnn1n73852TH8b4w==
-X-Received: by 2002:a05:6a00:2f4d:b0:68f:c9f6:f366 with SMTP id ff13-20020a056a002f4d00b0068fc9f6f366mr4786769pfb.0.1695546764407;
-        Sun, 24 Sep 2023 02:12:44 -0700 (PDT)
+        bh=CBVxYt95kIeJYqZ+3afrtCLsRt6Pynft246oxEJxxqE=;
+        b=TkFPYlBoT9cMVSn52JgN6C0u36KtYsam/JgrnDHG6yaD6wRGMi3xqMpKGfbSjMp789
+         VfOB+of5b1z+tJlExsKclaXVxcq4z7Q3ts8voLTCkvt/OWKdvZIPPJQI+ar76rKED1ex
+         hgHWd8VqVrxf5JBOmZEzGllf6CeUp+t5QJeFeoNnG+vNK3jDkiySHW4hsR5d0lPoJ9A9
+         xWn8f07Ij2eigdx/1wKRiAKONz+yPHD6+70jNvU8dGiSK9ZY3UnCThY14YeY2932qlLg
+         AFbWeh87rPentZla9N1kKzK0qk6VnZKPGD66EQw+20fiQK6wkv25DC2QAJQ2zLJkcOtK
+         eAbg==
+X-Gm-Message-State: AOJu0YxVVaxJ90ZVb8AgwP8KU5bp+YMKtw8qpJiKBJ6dXI/ni13uMSmq
+	cRuc98Jq8ZMTm083a8tf15s=
+X-Google-Smtp-Source: AGHT+IHTqu1hN4cYnttgBaC03R6z5g2+MsBMqoN1jSRGGG5/p76eWwaKHWrrCr7d5WaV3CaaDvMxdA==
+X-Received: by 2002:a17:902:da91:b0:1c3:6d97:e897 with SMTP id j17-20020a170902da9100b001c36d97e897mr4695137plx.5.1695548318585;
+        Sun, 24 Sep 2023 02:38:38 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id g1-20020a62e301000000b0068bbd43a6e2sm6178757pfh.10.2023.09.24.02.12.43
+        by smtp.gmail.com with ESMTPSA id jb22-20020a170903259600b001b81a97860asm6568975plb.27.2023.09.24.02.38.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Sep 2023 02:12:43 -0700 (PDT)
-Date: Sun, 24 Sep 2023 18:12:43 +0900 (JST)
-Message-Id: <20230924.181243.1273348818055860481.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 4/4] sample: rust: add Asix PHY driver
+        Sun, 24 Sep 2023 02:38:38 -0700 (PDT)
+Date: Sun, 24 Sep 2023 18:38:37 +0900 (JST)
+Message-Id: <20230924.183837.147734556664207389.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ andrew@lunn.ch, tmgross@umich.edu
+Subject: Re: [RFC PATCH v2 3/3] net: phy: add Rust Asix PHY driver
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <964973ce-84ee-4ce1-b060-cdc0d46868e1@lunn.ch>
-References: <0b6f8110-b4fd-4d20-a97f-9d7df26c23f0@lunn.ch>
-	<20230918.173527.1946752214085636243.ubuntu@gmail.com>
-	<964973ce-84ee-4ce1-b060-cdc0d46868e1@lunn.ch>
+In-Reply-To: <CANiq72miU6stf5fmxuRo4gb2zxUYoQuQV9T2zpcBrH5pn0KWSA@mail.gmail.com>
+References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
+	<20230924064902.1339662-4-fujita.tomonori@gmail.com>
+	<CANiq72miU6stf5fmxuRo4gb2zxUYoQuQV9T2zpcBrH5pn0KWSA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi, sorry about the delay,
-
-On Mon, 18 Sep 2023 15:37:12 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
->> >> >> +    fn read_status(dev: &mut phy::Device) -> Result {
->> >> >> +        dev.update_link()?;
->> >> >> +        if !dev.link() {
->> >> >> +            return Ok(());
->> >> >> +        }
->> >> >> +        let ret = dev.read(MII_BMCR)?;
->> >> >> +
->> >> >> +        if ret as u32 & BMCR_SPEED100 != 0 {
->> >> > 
->> >> > PHY registers are u16. phy_read() returns an int, so it can have
->> >> > negative return codes. But if it is not negative, the positive values
->> >> > are in the range of 0 to 65535.
->> 
->> Sorry, I should have commented in the previous reply. ret can't be a
->> negative here due to how to hanle an error in Rust.
->> 
->> let ret = dev.read(MII_BMCR)?;
->> 
->> Here '?' means that if an error happens, return with an error
->> immediately. So the ret is set only if dev.read() is sucessful.
-> 
-> Ah, that is going to take a while to get used to. It is also going to
-> make reviewing the error paths in drivers more interesting. Good
-> practice is that when something fails, you need to undo what has
-> already been done in a function, particularly resource allocations. So
-> you see the pattern:
-> 
->     err = foo(bar):
->     if (err < 0)
->        goto out_foo:
-> 
-> Where the code at out_foo: undoes anything which has happened so far.
-
-Indeed, this is an interesting topic; different from C's way.
-
-fn probe(dev: &mut Device) -> Result {
-   // heap memory allocation; kmalloc
-   let a = Box::try_new(MyDeviceData::new())?;
-
-   foo(dev)?;
-
-   dev.driver_data = a;
-
-   Ok(())
-}
-
-With the above example, if foo() fails, this function returns
-immediately due to '?'. When this function ends, 'a' is dropped since
-nobody has reference to it. The destructor of 'a' calls kfree().
-
-fn probe(dev: &mut Device) -> Result {
-   // register the device.
-   let reg = Registration(dev)?;
-
-   foo(dev)?;
-
-   dev.driver_data = reg;
-
-   Ok(())
-}
-
-If you register something and foo() fails, the destructor of
-Registraiton object needs to unregister the device.
-
-The registration in the abstractions for PHY drivers is designed in
-the same way. The destructor of the registration struct calls
-phy_drivers_unregister().
+SGksDQoNCk9uIFN1biwgMjQgU2VwIDIwMjMgMTA6MDU6MzAgKzAyMDANCk1pZ3VlbCBPamVkYSA8
+bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT24gU3VuLCBTZXAg
+MjQsIDIwMjMgYXQgODo0OeKAr0FNIEZVSklUQSBUb21vbm9yaQ0KPiA8ZnVqaXRhLnRvbW9ub3Jp
+QGdtYWlsLmNvbT4gd3JvdGU6DQo+Pg0KPj4gK2NvbmZpZyBBWDg4Nzk2Ql9DX1BIWQ0KPj4gK2Nv
+bmZpZyBBWDg4Nzk2Ql9SVVNUX1BIWQ0KPiANCj4gUGVyaGFwcyBmb3IgdGhpcyBraW5kIG9mICJS
+dXN0IHJlZmVyZW5jZSBkcml2ZXIiIChhbiBleGNlcHRpb24gdG8gdGhlDQo+ICJubyBkdXBsaWNh
+dGUgZHJpdmVycyIgcnVsZSkgd2UgY291bGQgZG8gaXQgYXMgYSBzdWZmaXggb2YgdGhlIG1haW4N
+Cj4gb3B0aW9uLCBlLmcuIGBBWDg4Nzk2Ql9QSFlfQ2AgYW5kIGBBWDg4Nzk2Ql9QSFlfUlVTVGAg
+aW5zdGVhZCBvZiBpbg0KPiB0aGUgbWlkZGxlLg0KDQpMb29rcyBsaWtlIHRoZSBjb25maWcgbmFt
+ZXMgb2YgYWxsIFBIWSBkcml2ZXJzIGVuZCB3aXRoIF9QSFkgc28gSSBwdXQNCml0IGluIHRoZSBt
+aWRkbGUuIEkgaGF2ZSBubyBwcmVmZXJlbmNlLg0KDQo+IEluIGFkZGl0aW9uLCBtb3JlIHRoYW4g
+MiBjaG9pY2VzIGlzIHVubGlrZWx5ICh0aGlzIGlzIGFscmVhZHkgYW4NCj4gZXhjZXB0aW9uKSwg
+c28gcGVyaGFwcyBgY2hvaWNlYCBpcyBvdmVya2lsbCBoZXJlLiBXaGF0IGFib3V0IGluc3RlYWQg
+YQ0KPiBgYm9vbGAgd2l0aCB0aXRsZSAiVXNlIFJ1c3QgaW1wbGVtZW50YXRpb24iIGluc3RlYWQg
+YW5kIGRlZmF1bHQgTj8NCg0KV2l0aCB0aGF0IGFwcHJvYWNoLCB5b3UgY2FuIGVuYWJsZSBib3Ro
+IEMgYW5kIFJ1c3QgdmVyc2lvbnM/IEl0IG1pZ2h0DQpicmVha3MgYXV0by1tb2R1bGUtbG9hZGlu
+Zy4NCg0KPj4gLW9iai0kKENPTkZJR19BWDg4Nzk2Ql9QSFkpICAgICArPSBheDg4Nzk2Yi5vDQo+
+PiAraWZkZWYgQ09ORklHX0FYODg3OTZCX1BIWQ0KPj4gKyAgaWZkZWYgQ09ORklHX0FYODg3OTZC
+X0NfUEhZDQo+PiArICAgIG9iai0kKENPTkZJR19BWDg4Nzk2Ql9QSFkpICs9IGF4ODg3OTZiLm8N
+Cj4+ICsgIGVsc2UNCj4+ICsgICAgb2JqLSQoQ09ORklHX0FYODg3OTZCX1BIWSkgKz0gYXg4ODc5
+NmJfcnVzdC5vDQo+PiArICBlbmRpZg0KPj4gK2VuZGlmDQo+IA0KPiBJcyB0aGUgb3V0ZXIgYGlm
+ZGVmYCBuZWVkZWQ/DQoNClRoZXJlIGFyZSBvdGhlciBtb2R1bGVzIHRoYXQgc2VsZWN0IENPTkZJ
+R19BWDg4Nzk2Ql9QSFkuIEkgY2FuJ3QgZmluZA0KYSB3YXkgdG8gbWFrZSBhIG1vZHVsZSBzZWxl
+Y3Qgb25lIG9mIG11bHRpcGxlIG9waXRpb25zLA0KQ09ORklHX0FYODg3OTZCX0NfUEhZIG9yIENP
+TkZJR19BWDg4Nzk2Ql9SVVNUX1BIWS4NCg0KSWYgYSBtb2R1bGUgc2VsZWN0cyBDT05GSUdfQVg4
+ODc5NkJfUEhZLCB0aGVuIHdlIG5lZWQNCkNPTkZJR19BWDg4Nzk2Ql9DX1BIWSBvciBDT05GSUdf
+QVg4ODc5NkJfUlVTVF9QSFkuDQo=
