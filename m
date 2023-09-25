@@ -1,100 +1,106 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA03C224F8
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 19:49:30 +0000 (UTC)
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B367109;
-	Mon, 25 Sep 2023 12:49:29 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1bdf4752c3cso49131875ad.2;
-        Mon, 25 Sep 2023 12:49:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695671369; x=1696276169; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x9jR0bp9vcQzOLj43wS440EgIxc19Wrw9EkXUEXKDdI=;
-        b=SXiVLe5l9yyuB0kjgeGJpedkOkfsbyQ5m9cSqwzL2BanCbLbNL3FqVC/0O4QFTF+m6
-         XRxLMaWOCD1g68OCUrw8jmITr9HnA6kEkxKqorYtWBSRr4fHy8i6WhXlpKAtQ6f64zDQ
-         8q5q6+k7LAs1toHyfUQuvW64Kixmmqi1B7IWNmVtXBix4csjO1CCz2oKR/390hXW/Tox
-         DdosY6wRu6AWmYQTUgi70RocejtJstv7HJPEpHVm8hvXJAnuw7v9Zo7IUu1xfCbgWZdw
-         Cn7wdpAunL+IU6b8JtlxUs4dtPbJWVBnqJt+98ll7PDGuruFYfWrdLvof2GzNCtA0CmD
-         GIig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695671369; x=1696276169;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x9jR0bp9vcQzOLj43wS440EgIxc19Wrw9EkXUEXKDdI=;
-        b=d8+ahb0HO8lvloshALnmj2Vbacsvpw9LYIUjRin6dmnh43vlapRJPvtpQj0vQOBuSE
-         W9BdoQJZxr0sA3JY3/MdCt/TNPy+sgCRmtXb4p6NKJ1bTBl91U72ZpUOfKyugLSccs5x
-         VftYhntmt1MtVaN9nZWwKXJDnFf0736AeSjF4mxpdJ/TyC74/hhs/wlZ5xfdrI/tnqCm
-         ttvaWlh0ZfAyBkybtfv55HNSDLKj8UPa7L/TA/OXzdMAuZ14DgDqNDL6aDSZ1UO8khF7
-         fZaRr/3YCQ86viDRQzDq5MKVtt+vXq9CcJz+GpzHbap+yFb/RxHpEUIS1M2ATb+qY/0B
-         I5Mw==
-X-Gm-Message-State: AOJu0YwiVcYszKT9QPNp04RdX2XxqxK8g3zo+eVfvKPyzLWacXLot8Gj
-	tsJ7sMJrxjCe8ymg8jadsS4=
-X-Google-Smtp-Source: AGHT+IEP3hHqgdcijF5/i7dWkK16W0tXHGtF0wS9J7MqWj4+boWTkXWnA5AiJ8GRiQB/Fud6wGq6BQ==
-X-Received: by 2002:a17:902:f549:b0:1c5:ba50:2b14 with SMTP id h9-20020a170902f54900b001c5ba502b14mr6078472plf.12.1695671368887;
-        Mon, 25 Sep 2023 12:49:28 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:400::4:dfcd])
-        by smtp.gmail.com with ESMTPSA id b8-20020a170902d50800b001b891259eddsm9250970plg.197.2023.09.25.12.49.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 12:49:28 -0700 (PDT)
-Sender: Tejun Heo <htejun@gmail.com>
-Date: Mon, 25 Sep 2023 09:49:26 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v4 0/7] rust: workqueue: add bindings for the workqueue
-Message-ID: <ZRHkRpZJemtn67rf@slm.duckdns.org>
-References: <20230828104807.1581592-1-aliceryhl@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9821170A
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 21:04:05 +0000 (UTC)
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD5010F;
+	Mon, 25 Sep 2023 14:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1695675840; x=1695935040;
+	bh=EUihDlu4xMCW4pJXMQT++Wi78DVs4G1Y5sE4xVXS7LI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=CRf33zD4C8pjNv/GD/F85p0HUQw3v8OTbTEU2ZF+jvfUOqycYXwfLtBYCfUhjsx/t
+	 Ope6Pc881DenM1TOSpCxO3DsOe8vWXuBTx6itY0H2NK2G87xCAu2aTb7vTwnmbL35W
+	 6z6CeoA5qwIBewfSTSgA6QjRVbSmcfLotvTUeNcZZBT3VqgqTvdPlIXv9tkIvSc3JX
+	 DHq6JRsrUTayn0/nto3uhKAD/4UX2ZHFAsysERo/lkqHIGY9v4JNy/c2wn4NXU/5YX
+	 fatZfNnSHRtr472RziosIsSQBnZZS2pVUHYO7zzAmK97VQgOHHOIlPUuumBK+tz8sX
+	 zttnQSU55HqZw==
+Date: Mon, 25 Sep 2023 21:03:52 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of `WithRef`
+Message-ID: <c5134a1a-a60d-73bb-9faa-aa1dfc3bc30d@proton.me>
+In-Reply-To: <ZRHWqbvYlXBXEOh-@boqun-archlinux>
+References: <20230923144938.219517-1-wedsonaf@gmail.com> <20230923144938.219517-3-wedsonaf@gmail.com> <CAH5fLggxsewmtzXjehbawDCTHO0C7kteU_CLnh80eMNj=QyP9Q@mail.gmail.com> <969eab7f-ad40-0dfb-18b9-6002fc54e12b@proton.me> <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home> <14513589-cc31-8985-8ff6-a97d2882f593@proton.me> <ZRGyRQuBcWvgtdNR@Boquns-Mac-mini.home> <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me> <ZRHWqbvYlXBXEOh-@boqun-archlinux>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230828104807.1581592-1-aliceryhl@google.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Aug 28, 2023 at 10:48:00AM +0000, Alice Ryhl wrote:
-> This patchset contains bindings for the kernel workqueue.
-> 
-> One of the primary goals behind the design used in this patch is that we
-> must support embedding the `work_struct` as a field in user-provided
-> types, because this allows you to submit things to the workqueue without
-> having to allocate, making the submission infallible. If we didn't have
-> to support this, then the patch would be much simpler. One of the main
-> things that make it complicated is that we must ensure that the function
-> pointer in the `work_struct` is compatible with the struct it is
-> contained within.
-> 
-> The original version of the workqueue bindings was written by Wedson,
-> but I have rewritten much of it so that it uses the pin-init
-> infrastructure and can be used with containers other than `Arc`.
-> 
-> This patchset depends on the patch [1] that changes `Opaque` to be
-> `!Unpin` for correctness. The patchset is based on the rust-6.6 tag,
-> since that tag includes that patch.
+On 25.09.23 20:51, Boqun Feng wrote:
+> On Mon, Sep 25, 2023 at 05:00:45PM +0000, Benno Lossin wrote:
+>> On 25.09.23 18:16, Boqun Feng wrote:
+>>> On Mon, Sep 25, 2023 at 03:07:44PM +0000, Benno Lossin wrote:
+>>>> ```rust
+>>>> struct MutatingDrop {
+>>>>        value: i32,
+>>>> }
+>>>>
+>>>> impl Drop for MutatingDrop {
+>>>>        fn drop(&mut self) {
+>>>>            self.value =3D 0;
+>>>>        }
+>>>> }
+>>>>
+>>>> let arc =3D Arc::new(MutatingDrop { value: 42 });
+>>>> let wr =3D arc.as_with_ref(); // this creates a shared `&` reference t=
+o the MutatingDrop
+>>>> let arc2: Arc<MutatingDrop> =3D wr.into(); // increments the reference=
+ count to 2
+>>>
+>>> More precisely, here we did a
+>>>
+>>> =09&WithRef<_> -> NonNull<WithRef<_>>
+>>>
+>>> conversion, and later on, we may use the `NonNull<WithRef<_>>` in
+>>> `drop` to get a `Box<WithRef<_>>`.
+>>
+>> Indeed.
+>>
+>=20
+> Can we workaround this issue by (ab)using the `UnsafeCell` inside
+> `WithRef<T>`?
+>=20
+> impl<T: ?Sized> From<&WithRef<T>> for Arc<T> {
+>      fn from(b: &WithRef<T>) -> Self {
+>          // SAFETY: The existence of the references proves that
+> =09// `b.refcount.get()` is a valid pointer to `WithRef<T>`.
+> =09let ptr =3D unsafe { NonNull::new_unchecked(b.refcount.get().cast::<Wi=
+thRef<T>>()) };
+>=20
+> =09// SAFETY: see the SAFETY above `let ptr =3D ..` line.
+>          ManuallyDrop::new(unsafe { Arc::from_inner(ptr) })
+>              .deref()
+>              .clone()
+>      }
+> }
+>=20
+> This way, the raw pointer in the new Arc no longer derives from the
+> reference of `WithRef<T>`.
 
-Applied to wq/for-6.7-rust-bindings with Boqun's reviewed-by's added.
+No, the code above only obtains a pointer that has provenance valid
+for a `bindings::refcount_t` (or type with the same layout, such as
+`Opaque<bindings::refcount_t>`). But not the whole `WithRef<T>`, so accessi=
+ng
+it by reading/writing will still be UB.
 
-Thanks.
+--=20
+Cheers,
+Benno
 
--- 
-tejun
+
