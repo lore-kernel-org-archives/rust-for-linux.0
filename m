@@ -1,37 +1,32 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129111095B
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 16:54:06 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BF9BE
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 09:54:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=vkkaL5TElRILLB1Y9pYtnPi8v2BI6Yw6/PGI6h7mqao=; b=xu
-	ZxnTCyxZlyln5tqSncoKPjIVxX0HPdViNHd0GtfRA1JN1YbiKrS3JzG/nY16+KAkDMyBkMGT+Cdnb
-	448GMk0wRgt7Zs0ig4qgbrj6dfzIbhdOo1/4TjdLL98QykFfI4FmRE4rP0g1Tvrju4IGKEWEhYxlv
-	ZnA123scXIBVUts=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qkoqM-007TWr-0R; Mon, 25 Sep 2023 18:53:58 +0200
-Date: Mon, 25 Sep 2023 18:53:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <98bc5ab9-890c-4163-8a50-01ca6d07a60b@lunn.ch>
-References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
- <20230924064902.1339662-2-fujita.tomonori@gmail.com>
- <97600770-f800-473a-af5c-870d4f8ce152@lunn.ch>
- <CANiq72mQ6NWr=t=eCcr11oO6kEyZ-45=h27fiUBdVU7xZw9NWQ@mail.gmail.com>
- <da479834-a649-4a93-9083-9ea59d519cbd@lunn.ch>
- <CANiq72nB+7P8Pby-_Vxq0Fq_g0L8tC2XG6UT-T4kPqhMnKqLnQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7DBD297
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 17:01:01 +0000 (UTC)
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722E810E
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 10:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1695661255; x=1695920455;
+	bh=dBleu0jN78l+uvIeZgOInZlyGwL7BuWHC8ozonaYPQY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=g6J/6X/fXeETdS++BX6h2ye9N4wqwJDwNBz+fgVOE3hSonkzZl3NO5tZg7h5P1n2v
+	 bBAeMKh/lUH0dbTi1/g+etgbwniH7EsapiFaATMPMmbCkSvPKAMYEc787xCesLxtDa
+	 SGdgDZ+jfCi6xgp5d57W1BqGrAwjqeXNTtfFtsqEEp54y+jG81W3TW6Y6ZwBxd1Hzw
+	 Gvxbx2H9DdVHopoQj+cu4VaovtPGQKYeneCSKsk/nidRaxPXxGNCbKwTd2fOEyXjgf
+	 +tcijNWCvDM8GPRgSdM/UBHuTOOjfzmvRn+fw4nVzQdduGk68kZs0mWCT4iSEkHecy
+	 4REm3i7mAyAUQ==
+Date: Mon, 25 Sep 2023 17:00:45 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of `WithRef`
+Message-ID: <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
+In-Reply-To: <ZRGyRQuBcWvgtdNR@Boquns-Mac-mini.home>
+References: <20230923144938.219517-1-wedsonaf@gmail.com> <20230923144938.219517-3-wedsonaf@gmail.com> <CAH5fLggxsewmtzXjehbawDCTHO0C7kteU_CLnh80eMNj=QyP9Q@mail.gmail.com> <969eab7f-ad40-0dfb-18b9-6002fc54e12b@proton.me> <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home> <14513589-cc31-8985-8ff6-a97d2882f593@proton.me> <ZRGyRQuBcWvgtdNR@Boquns-Mac-mini.home>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -39,53 +34,65 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nB+7P8Pby-_Vxq0Fq_g0L8tC2XG6UT-T4kPqhMnKqLnQ@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Sep 25, 2023 at 05:42:51PM +0200, Miguel Ojeda wrote:
-> On Mon, Sep 25, 2023 at 3:43 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > I think the end goal should be that if there is no Rust PHY driver
-> > module loaded, the Rust PHY abstraction should also not be loaded. I
-> 
-> Agreed, that is the goal.
-> 
-> > think best practice would also be, if the kernel configuration does
-> > not contain a Rust PHY driver, don't even build the Rust PHY
-> > abstraction.
-> 
-> I am not sure about this one: a user may want to have abstractions
-> built-in but the drivers as loadable modules.
+On 25.09.23 18:16, Boqun Feng wrote:
+> On Mon, Sep 25, 2023 at 03:07:44PM +0000, Benno Lossin wrote:
+>> ```rust
+>> struct MutatingDrop {
+>>       value: i32,
+>> }
+>>
+>> impl Drop for MutatingDrop {
+>>       fn drop(&mut self) {
+>>           self.value =3D 0;
+>>       }
+>> }
+>>
+>> let arc =3D Arc::new(MutatingDrop { value: 42 });
+>> let wr =3D arc.as_with_ref(); // this creates a shared `&` reference to =
+the MutatingDrop
+>> let arc2: Arc<MutatingDrop> =3D wr.into(); // increments the reference c=
+ount to 2
+>=20
+> More precisely, here we did a
+>=20
+> =09&WithRef<_> -> NonNull<WithRef<_>>
+>=20
+> conversion, and later on, we may use the `NonNull<WithRef<_>>` in
+> `drop` to get a `Box<WithRef<_>>`.
 
-Kconfig should allow this. A module with a DEPENDS ON, just ensures
-that the option it points to is available in the configuration in a
-way it is usable. The Lack of a DEPENDS ON on an Kconfig symbol does
-not force it off. The user can enable it, even if there is no user.
+Indeed.
 
-> One also needs to consider out-of-tree modules even if we know
-> everything that got built as a module in-tree.
+>=20
+>> drop(arc); // this decrements the reference count to 1
+>> drop(arc2); // this decrements the reference count to 0, so it will drop=
+ it
+>> ```
+>> When dropping `arc2` it will run the destructor for `MutatingDrop`,
+>> which mutates `value`. This is a problem, because the mutable reference
+>> supplied was derived from a `&`, that is not allowed in Rust.
+>>
+>=20
+> Is this an UB? I kinda wonder what's the real damage we can get, because
+> in this case, we just use a reference to carry a value of a pointer,
+> i.e.
+>=20
+> =09ptr -> reference -> ptr
+>=20
+> I cannot think of any real damage compiler can make, but I'm happy to be
+> surprised ;-)
 
-At least in networking, out of tree modules are towards the very
-bottom of the feature list. I would be quite happy to break them if
-they prevent in kernel features, bloat the kernel, or make maintenance
-harder.
+This is UB, so anything can happen :)
 
-> > This 'always built-in' is the issues i was trying to point to. phylib
-> 
-> Yeah, we are aware of the limitation. This was another consequence of
-> the way we had to build things in a simple way given Kbuild does not
-> map well to Rust, and thus the need for the new build system.
+--=20
+Cheers,
+Benno
 
-So i think your need to add a DEPENDS ON PHYLIB for the moment, until
-the new build system is available. Otherwise we are going to get
-broken builds reported by 0-day, and the randconf build bots, assuming
-they even try to build Rust at the moment. But at some point, they
-will...
 
-       Andrew
