@@ -1,90 +1,157 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B38E7489
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 15:43:32 +0000 (UTC)
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CED41989
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 08:43:03 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d81adf0d57fso7876017276.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 08:43:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC831BDEC
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 16:02:58 +0000 (UTC)
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADCE092;
+	Mon, 25 Sep 2023 09:02:56 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-99bdcade7fbso812760066b.1;
+        Mon, 25 Sep 2023 09:02:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695656582; x=1696261382; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1695657775; x=1696262575; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Wv8hDBe33rGskYGv0VBbFklyzA8uuz3o3ss9p741Ybk=;
-        b=CsS7/jROYeZtJtHumXRWObxAfdhqnCbM2LQ+ViA51TvWtwJMN+sK5UF2Z67ppZMhnP
-         gU0wPpIJ6BNupBz9jRNzt4HchbILnHmC/geV3aQu2AtT4Eyb9Xe5uXBDD9/zcR1G00xB
-         Qf6U9AAg/l5PjuRz9pgcBSUAwB6kARYsdirYMEFrGVaGykoNBbXlWGjyKfXEYeaerhMo
-         OrzNkHp7auoy7JJHxO3QzY2/rwin6OPyQBC9HdoFZgniHIVpIJzAaWV/Tg57g1ILWtwl
-         5eleB7IoCWAIS9KazzDc6yH15K8IiMRwj4P3bdd0rFg1Gbulrmd1KsGy+uVrbEHFP96e
-         08ig==
+        bh=d2UmPgaSrDYavCWMmIxY3UB+Wc5RLpCTVeJXM3UZ7x4=;
+        b=GhN+nUeGn2VybaIu1e0/GPXKutMutXW8awkVK50JMM6EJP2HKfzgB5+rbKzNdMq5O6
+         ER63EeB+yGX1KUnviQeQGs5cYjlXGZzEHLptZotFs4Za6SXy1l+3lC7lWANYHfe9wdRR
+         7vhM3xK0fKcmbCeo/THV9vAGVWBQvvEHsqQdTCVpZVviQkVIPiduNBHffiJFkhK0XeYS
+         2RSr/GnrsZZb9q4+rnBCMWnmGoRgmHr7H0rDEl+GMrxwl9wa5aOuILtAO/og/z3B3ZIi
+         VxbJO6ClTJl5ZJ0amPILnVXokEN8JuKFbOGqw1OtAKxric7fB05Z/68h9c9LNNMCoXdi
+         D7Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695656582; x=1696261382;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1695657775; x=1696262575;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Wv8hDBe33rGskYGv0VBbFklyzA8uuz3o3ss9p741Ybk=;
-        b=NdN7u3Fn4wi6/tiOManlvaZUbg2QGOkT5zH3pbazzlDPWjuXFmncjHRQBvN9VwzSej
-         VjE4NvM6hH3QQ6iYqXS6Z7rCd8xozKRiRBK7REKjg9UbxW45/SEVSu8jXYbuKt7HqDos
-         7XRJe7SMrrQI5waTDYLth2ONk5sDl5SIotHeOkgIVNbfYTMOlMC+/wHkKyA8mTPLcYQN
-         6dfMtOa3SY0l9+kmHOQfvjdZ6YCk90NB2tUewycYzoCvq3N1rdSfW6TvxVEdMH6M7azK
-         7uZ2VJZpJDAKLIT1LZU+zUxP5iw62zPMuD4f4EiCyB03EH7Ow9zk5rLtawh4c417Ym7Y
-         1siw==
-X-Gm-Message-State: AOJu0YyH5oDQOgpf1ZvA1EoXq9j3CmrJY1Fm3CxmicJ0PiJThO7o5VSU
-	g1NAkonrV8uELu0pH+yMl/81ou1dCK7Cpy+b4HI=
-X-Google-Smtp-Source: AGHT+IESB3sh3SBLsE3wJYVRTysggDWN9jObQaLnAGkaaN4GcEZcuGg6QYolBODmwXto1KXMTXG4Hcg7vF6nvbQheP4=
-X-Received: by 2002:a5b:54b:0:b0:d06:f99e:6345 with SMTP id
- r11-20020a5b054b000000b00d06f99e6345mr5426472ybp.22.1695656582391; Mon, 25
- Sep 2023 08:43:02 -0700 (PDT)
+        bh=d2UmPgaSrDYavCWMmIxY3UB+Wc5RLpCTVeJXM3UZ7x4=;
+        b=V3khMeYydaANPYkTEz2VcaanRYCTsE6zJBaEToQbiwMwFjfi3XjBbwdJboUpr79J8B
+         WL6GhkG0muJiTUFxbX+g9smlLCU9iEkAezplT29rMXdaViH5bd4arpnY3wnugurOtwQL
+         5lAkn+EK9p3VEktKU9xFjGLkQRF/lNKopLVCtDjsEcU+Y+RckLEvLEKS+liFbXdH/AI6
+         Rz4U+N64cngwPn3MJRqDr4PwybOaem426V/vV/J4/JwZSofN8qZQYVYyIBXBy5Vldpmo
+         O/R7uFvsHNXlpDYFlMp1J8t4yoJ5rQOox5aw6MfJ8TYklrnqTR/pwRjUpyUsWTaDMZhR
+         2ciQ==
+X-Gm-Message-State: AOJu0YwR+yDk5dcV2sEWPrXhMstYXxFkmhuXNMag8EZaWV5NL/+ZO5F6
+	2JsnMLrcF5jlDlRyKY4UvsQ=
+X-Google-Smtp-Source: AGHT+IHXWW8FgENY2i1TZ92MCSuBa9qUKEpJiJATcz+PcVQHsEMoJnNdLCGCH5PcI1VFy5IacyUshw==
+X-Received: by 2002:a17:906:53d8:b0:9ae:5643:6493 with SMTP id p24-20020a17090653d800b009ae56436493mr5955062ejo.74.1695657774826;
+        Mon, 25 Sep 2023 09:02:54 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id q26-20020a1709064c9a00b009ad87fd4e65sm6537614eju.108.2023.09.25.09.02.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Sep 2023 09:02:54 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 0359127C0060;
+	Mon, 25 Sep 2023 12:02:52 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Mon, 25 Sep 2023 12:02:52 -0400
+X-ME-Sender: <xms:Kq8RZQbXlFQPvdiCKyHpfE0ODOpy_dHsdxb1zVIeXGbXFh3cMW_eow>
+    <xme:Kq8RZbYNDXIvi3DIHN7J3mqV5KtsyfxKRW-4gNm8zBBIUuMODnq-KdboxbzffwqKE
+    zpp9xc5VaUXE0P1Pg>
+X-ME-Received: <xmr:Kq8RZa-yCLnW5SHYEKFk6HB1QLIMrOzmpfIctQWR-C9D_fRZNvai_jQX_1E>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgedgleehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeeitdefvefhteeklefgtefhgeelkeefffelvdevhfehueektdevhfettddv
+    teevvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:Kq8RZaq6dFl4q3vDLWgHyr4T-l69mIMqvK7xdQglkTbwyNMBVsVFRg>
+    <xmx:Kq8RZbr6Y7PiSr7tzy4Y4A-oh0QG-PDB235RZ5JBBUFeSARpvXn5GA>
+    <xmx:Kq8RZYR5MyWI-D77CpGEsPs5s6b2UuqrBpqOnmX5BkY49CnzOBd6YA>
+    <xmx:LK8RZUT1aqdTAfLof0ZYVwLN_-VIPD-evpBJcQ40Z31VZaxB67CDZA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 Sep 2023 12:02:49 -0400 (EDT)
+Date: Mon, 25 Sep 2023 09:02:48 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <alice@ryhl.io>
+Cc: Alice Ryhl <aliceryhl@google.com>, a.hindborg@samsung.com,
+	alex.gaynor@gmail.com, benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com, gary@garyguo.net,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, walmeida@microsoft.com,
+	wedsonaf@gmail.com
+Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
+ `WithRef`
+Message-ID: <ZRGvKPhgJXWfluyZ@Boquns-Mac-mini.home>
+References: <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
+ <20230925150047.1961646-1-aliceryhl@google.com>
+ <ZRGknJCB6tFgX3Gr@Boquns-Mac-mini.home>
+ <0b7fc71c-b3c7-4c29-92a9-587daa46ad59@ryhl.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
- <20230924064902.1339662-2-fujita.tomonori@gmail.com> <97600770-f800-473a-af5c-870d4f8ce152@lunn.ch>
- <CANiq72mQ6NWr=t=eCcr11oO6kEyZ-45=h27fiUBdVU7xZw9NWQ@mail.gmail.com> <da479834-a649-4a93-9083-9ea59d519cbd@lunn.ch>
-In-Reply-To: <da479834-a649-4a93-9083-9ea59d519cbd@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 25 Sep 2023 17:42:51 +0200
-Message-ID: <CANiq72nB+7P8Pby-_Vxq0Fq_g0L8tC2XG6UT-T4kPqhMnKqLnQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY drivers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b7fc71c-b3c7-4c29-92a9-587daa46ad59@ryhl.io>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Sep 25, 2023 at 3:43=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> I think the end goal should be that if there is no Rust PHY driver
-> module loaded, the Rust PHY abstraction should also not be loaded. I
+On Mon, Sep 25, 2023 at 05:30:05PM +0200, Alice Ryhl wrote:
+> On 9/25/23 17:17, Boqun Feng wrote:
+> > On Mon, Sep 25, 2023 at 03:00:47PM +0000, Alice Ryhl wrote:
+> > > > > > I'm concerned about this change, because an `&WithRef<T>` only has
+> > > > > > immutable permissions for the allocation. No pointer derived from it
+> > > > > > may be used to modify the value in the Arc, however, the drop
+> > > > > > implementation of Arc will do exactly that.
+> > > > > 
+> > > > > That is indeed a problem. We could put the value in an `UnsafeCell`, but
+> > > > > that would lose us niche optimizations and probably also other optimizations.
+> > > > > 
+> > > > 
+> > > > Not sure I understand the problem here, why do we allow modifying the
+> > > > value in the Arc if you only have a shared ownership?
+> > > 
+> > > Well, usually it's when you have exclusive access even though the value
+> > > is in an `Arc`.
+> > > 
+> > > The main example of this is the destructor of the `Arc`. When the last
+> > > refcount drops to zero, this gives you exclusive access. This lets you
+> > > run the destructor. The destructor requires mutable access.
+> > > 
+> > > Another example would be converting the `Arc` back into an `UniqueArc`
+> > > by checking that the refcount is 1. Once you have a `UniqueArc`, you can
+> > > use it to mutate the inner value.
+> > > 
+> > > Finally, there are methods like `Arc::get_mut_unchecked`, where you
+> > > unsafely assert that nobody else is using the value while you are
+> > > modifying it. We don't have that in our version of `Arc` right now, but
+> > > we might want to add it later.
+> > > 
+> > 
+> > Hmm.. but the only way to get an `Arc` from `&WithRef` is
+> > 
+> > 	impl From<&WithRef<T>> for Arc<T> {
+> > 	    ...
+> > 	}
+> > 
+> > , and we clone `Arc` in the that function (i.e. copying the raw
+> > pointer), so we are still good?
+> > 
+> 
+> No, the raw pointer in the Arc was created from the immutable reference, so
+> the raw pointer has the same restrictions as the immutable reference did.
+> 
 
-Agreed, that is the goal.
+I see, this was the part I was missing. Thanks!
 
-> think best practice would also be, if the kernel configuration does
-> not contain a Rust PHY driver, don't even build the Rust PHY
-> abstraction.
+Looks like the only fix is replacing `&WithRef<T>` with
+`&UnsafeCell<WithRef<T>>`? But that's a bit wordy and I'm not sure
+whether it's better than `ArcBorrow<'_, T>`...
 
-I am not sure about this one: a user may want to have abstractions
-built-in but the drivers as loadable modules. One also needs to
-consider out-of-tree modules even if we know everything that got built
-as a module in-tree.
+Regards,
+Boqun
 
-> This 'always built-in' is the issues i was trying to point to. phylib
-
-Yeah, we are aware of the limitation. This was another consequence of
-the way we had to build things in a simple way given Kbuild does not
-map well to Rust, and thus the need for the new build system.
-
-Cheers,
-Miguel
+> Alice
