@@ -1,152 +1,101 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CD01C295
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 14:49:49 +0000 (UTC)
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDFD719F;
-	Mon, 25 Sep 2023 07:49:46 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-3214d4ecd39so5529986f8f.1;
-        Mon, 25 Sep 2023 07:49:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84761C6BD
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 15:00:52 +0000 (UTC)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45C1101
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 08:00:51 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59e79a36097so199374667b3.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 08:00:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695653385; x=1696258185; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4he1UcNWD/nxAw2ufykX42VkaU3M4ltsQwdB7gsOnrY=;
-        b=SuzONUOC/Ky4LcBsGTnGYumIDYryZb+QfmmuzIa5gV0IUlMRsYLR3LDHAprfSOYLZ+
-         FUF2ztnwYxrkg+hAPea120yKHJlGbmRXENQ4pLytmtesB37oY9ILuFPBFYtV3C9WI0lK
-         wRoIfbBciIrRMh/GS80O7TltoyyyDd6qjXeJdOh2nHwV73pcK2Gkox3U3BD87ECol2hz
-         lIzOXIjxV3NJeDbV1VlACc5YoVWgqR6O1eniTHQ3MDd+ua43cekeWr8gUYJZBvh5+qTG
-         sK2p+TxsRPnJhxeDgvMQf2gdnRkZ0+XbxcEokLyy1gly1A8w8D3p66eO9H/6pGeFyfGN
-         WVEg==
+        d=google.com; s=20230601; t=1695654051; x=1696258851; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TtKOMgyIwOtWr+3ya9qqTPlv0NwOjHuIvkjyb/DX+BE=;
+        b=3BKev9YVvnPzsfrAugS3qRJHaxjmFwEMekowJymJNS8gawsESmtKsJN2kFkpCXwMXZ
+         jrggdFI0wUbCk7G0+nOxNdcydxktW/EtKmZR2BTh7TGYCzTpHeHdvHy6VttykOp8ZBOs
+         9CFyGUOny6BnAVC4yPQBUKgc/MJ7TTmxe528GnE0MJiohl8foN75iCoxr0i+njtQZFw+
+         VfHi2wKCc9JmhjehqYmnBWTUbWLO4pApFqxxNBDgqEyvgx8JxusNwL8qsXpgj4lA3nzl
+         o5raaRWbYquHgMB/MBfjZ+TqOY1IEjB4XuI89lKWuxk0aZqq57JeyBDLcCdNIXepmGtG
+         b4Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695653385; x=1696258185;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4he1UcNWD/nxAw2ufykX42VkaU3M4ltsQwdB7gsOnrY=;
-        b=BBzpg4mYXzo4h3lJMaORgjvgE68SRKzoSiF9cFTtdDCtMUzBUIotvXDxWgD9t+Webx
-         odSkBjLsv2OKvAAtLcxFdBNkzruQbqZ2gMwyJsuo5psrPuxlv5XarLoMW1uvLGgttUYj
-         TDuxxGW5JqZtbS2tmSW/qKuslR0PKNeNHGWX6gUAvI7Udff+7R8+2Zi4GVgaQ8Ac842A
-         rPzTYxLXKB3CbABUN8eR82ZVjLtaS4Urdb916g77eV8lrlIfoaAVofiBC3UcsdmTQi6k
-         U0lhmnTXXrBCQnZgZrv4FVOSjrS8M6nwfTnwhv0ZMg9Nsz7e9e25KDMei2Rha7PSzEdc
-         V6ow==
-X-Gm-Message-State: AOJu0YxQu7Ta6wg33ZazpKklm17mX9F56ZYiGcaHI5cu1d+4L3yiURsZ
-	NViT/NZfJoo0/fMwQb2sdmG/7L0bBrU=
-X-Google-Smtp-Source: AGHT+IF/zPqz+1SYvudIHyVhJ3r83Iwx17ga6vinQRcGcNx1/t8o27cl+WK/lm/CX4MVsCAlJ7vOAg==
-X-Received: by 2002:adf:fa0f:0:b0:321:7050:6fb6 with SMTP id m15-20020adffa0f000000b0032170506fb6mr6904770wrr.67.1695653384919;
-        Mon, 25 Sep 2023 07:49:44 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id p6-20020a170906228600b009adc743340fsm6401465eja.197.2023.09.25.07.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 07:49:44 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 56F1E27C005B;
-	Mon, 25 Sep 2023 10:49:42 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Mon, 25 Sep 2023 10:49:42 -0400
-X-ME-Sender: <xms:BZ4RZSdVSxKfkLGmouxmaHwX7PrPbHIzUKYOJwZCTyFcbHcN-XHE1g>
-    <xme:BZ4RZcNnfhImHJEYxPIdQ0B7soehZqLsRE7FPYIgB3s8hl0xDpd_yn2lrDcn1IH2j
-    8FJzeCB1__A9WnTVQ>
-X-ME-Received: <xmr:BZ4RZTi4LyrF1T_jU2Be8dyUUWoAkK0ddLK72-rTJUxJdhA3qYcJq3XxoUQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgedgkedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefh
-    gfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:BZ4RZf8rV34W18JflOmzaNSQOkPflPugkov6w9I7TL_t73niJDVPeg>
-    <xmx:BZ4RZeuZ_AkmkJ6r_h_3fFioEDalqM1-OHBpQ8nSFTnylSvzH0xtoA>
-    <xmx:BZ4RZWFHYWLFlzQ7nR44gWvJARYnSF4uHdycnRb7wPZZs5jrX3KUkw>
-    <xmx:Bp4RZfl8OfG0M9u_hNtXX99hl1r0b30qwVLMKQBasJ9-u5VkYVdz8A>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 Sep 2023 10:49:41 -0400 (EDT)
-Date: Mon, 25 Sep 2023 07:49:06 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	linux-kernel@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Message-ID: <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
-References: <20230923144938.219517-1-wedsonaf@gmail.com>
- <20230923144938.219517-3-wedsonaf@gmail.com>
- <CAH5fLggxsewmtzXjehbawDCTHO0C7kteU_CLnh80eMNj=QyP9Q@mail.gmail.com>
- <969eab7f-ad40-0dfb-18b9-6002fc54e12b@proton.me>
+        d=1e100.net; s=20230601; t=1695654051; x=1696258851;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TtKOMgyIwOtWr+3ya9qqTPlv0NwOjHuIvkjyb/DX+BE=;
+        b=FZjHlxOzJyuWB5wcmJDqjK9znUZ4iAfUH/rY7IkpSLt5Zrt2Kq+guJB83XnVvarGuE
+         tjXoZxAdecAZ6KMMnaycNf91r/ddA8gsBNABfvJvFeuC43a8DhIhbmft3yqTIBvmblCu
+         HWi/dS46iTvZ0k/78BNXtRvK0VmJGJ7Z10ext2V6UbK9PC8AhRWvOqRwSONobRpcwNfN
+         q588KdSkuwik404HoZDSqzt55041LxL8E3qu2eb2Qojp65b5jSbJXIPalpbeH5EOPIbS
+         S+UcnjE2wnoDl1mLfRCb1Z2kMiaaSz2Dm5Iqrzj/KNnIIysFrNuqdAUQQBCe3EJAix/O
+         9afQ==
+X-Gm-Message-State: AOJu0YxzgYnZzTQU6DkXjB0SGwiN3EqTxdl06+tE+bqdcBre5ERgAn8n
+	UIcgJBXu5fFVQphLUSxxLRogxW7YwvWJG10=
+X-Google-Smtp-Source: AGHT+IFwQVMuwmH5yhXVSkx3BMOINalxrfSul/+4LRz1fJCra4cA/e2tR6cK5GnZtIBLaO635mvVxcuNt6jqq20=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a81:b249:0:b0:56c:e9fe:3cb4 with SMTP id
+ q70-20020a81b249000000b0056ce9fe3cb4mr144361ywh.1.1695654050860; Mon, 25 Sep
+ 2023 08:00:50 -0700 (PDT)
+Date: Mon, 25 Sep 2023 15:00:47 +0000
+In-Reply-To: <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <969eab7f-ad40-0dfb-18b9-6002fc54e12b@proton.me>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Mime-Version: 1.0
+References: <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
+Message-ID: <20230925150047.1961646-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of `WithRef`
+From: Alice Ryhl <aliceryhl@google.com>
+To: boqun.feng@gmail.com
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, gary@garyguo.net, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, walmeida@microsoft.com, wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Sep 25, 2023 at 09:14:50AM +0000, Benno Lossin wrote:
-> On 25.09.23 08:29, Alice Ryhl wrote:
-> > On Sat, Sep 23, 2023 at 4:50 PM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
-> >>
-> >> From: Wedson Almeida Filho <walmeida@microsoft.com>
-> >>
-> >> With GATs, we don't need a separate type to represent a borrowed object
-> >> with a refcount, we can just use Rust's regular shared borrowing. In
-> >> this case, we use `&WithRef<T>` instead of `ArcBorrow<'_, T>`.
-> >>
-> >> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> >> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> >> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> >> ---
-> >>   rust/kernel/sync.rs     |   2 +-
-> >>   rust/kernel/sync/arc.rs | 134 ++++++++++++----------------------------
-> >>   2 files changed, 39 insertions(+), 97 deletions(-)
-> > 
-> > I'm concerned about this change, because an `&WithRef<T>` only has
-> > immutable permissions for the allocation. No pointer derived from it
-> > may be used to modify the value in the Arc, however, the drop
-> > implementation of Arc will do exactly that. 
+>>> I'm concerned about this change, because an `&WithRef<T>` only has
+>>> immutable permissions for the allocation. No pointer derived from it
+>>> may be used to modify the value in the Arc, however, the drop
+>>> implementation of Arc will do exactly that. 
+>> 
+>> That is indeed a problem. We could put the value in an `UnsafeCell`, but
+>> that would lose us niche optimizations and probably also other optimizations.
+>> 
 > 
-> That is indeed a problem. We could put the value in an `UnsafeCell`, but
-> that would lose us niche optimizations and probably also other optimizations.
-> 
+> Not sure I understand the problem here, why do we allow modifying the
+> value in the Arc if you only have a shared ownership?
 
-Not sure I understand the problem here, why do we allow modifying the
-value in the Arc if you only have a shared ownership? Also I fail to see
-why `ArcBorrow` doesn't have the problem. Maybe I'm missing something
-subtle here? Could you provide an example?
+Well, usually it's when you have exclusive access even though the value
+is in an `Arc`.
 
-Regards,
-Boqun
+The main example of this is the destructor of the `Arc`. When the last
+refcount drops to zero, this gives you exclusive access. This lets you
+run the destructor. The destructor requires mutable access.
 
-> > It also means that we
-> > can't convert an Arc with refcount 1 into a UniqueArc.
-> 
-> I think you still can, since to do that you would consume the `Arc<T>` by
-> value, thus guaranteeing that no references (and thus no `&WithRef<T>`) exist.
-> So I think this would still be fine.
-> 
-> -- 
-> Cheers,
-> Benno
-> 
-> 
+Another example would be converting the `Arc` back into an `UniqueArc`
+by checking that the refcount is 1. Once you have a `UniqueArc`, you can
+use it to mutate the inner value.
+
+Finally, there are methods like `Arc::get_mut_unchecked`, where you
+unsafely assert that nobody else is using the value while you are
+modifying it. We don't have that in our version of `Arc` right now, but
+we might want to add it later.
+
+> Also I fail to see why `ArcBorrow` doesn't have the problem. Maybe I'm
+> missing something subtle here? Could you provide an example?
+
+It's because `ArcBorrow` just has a raw pointer inside it. Immutable
+references give up write permissions, but raw pointers don't even if
+they are `*const T`.
+
+Alice
