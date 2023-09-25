@@ -1,111 +1,148 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA381B276
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 15:09:40 +0000 (UTC)
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFFD9107
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 08:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=y7eej5fl4jd6vjgp4a2o7ly5qi.protonmail; t=1695654576; x=1695913776;
-	bh=FHZe6kdKIqazFPSKKhdkgcbV19fe0HcjGBTZ7ywLRWA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=a2uK+brsqwOWC0ALmAmVM/RFq1+BFpG5Z6GFcrllZWUa9DLTRMbFO4oRS8TzVEUW5
-	 vj1Cm8b/jq5SbdtapHFsHxLuWHuGp6XuslwziMeiCx1X+BpaptCBhQbIscjwQPRRVD
-	 Al3FA+HnOcqsn2kEq3bSc6jAWVth0pjGNSNHhk67EFcn/rp8K7hje9nBbIiTkYmcIk
-	 yLQImqY1n660lJge1/5HabzqAiUW+E0TGnLljLzsCv1kNimdTmGdxr+ZzTj3npvCXE
-	 xp8L5sRHQqSmi3KnZy6wYeoIGq6kF8N4lk6CMhA27R5cqTa1o0k5aRzUHvcprMpVjp
-	 BfDz5mTnuQrvA==
-Date: Mon, 25 Sep 2023 15:07:44 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of `WithRef`
-Message-ID: <14513589-cc31-8985-8ff6-a97d2882f593@proton.me>
-In-Reply-To: <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
-References: <20230923144938.219517-1-wedsonaf@gmail.com> <20230923144938.219517-3-wedsonaf@gmail.com> <CAH5fLggxsewmtzXjehbawDCTHO0C7kteU_CLnh80eMNj=QyP9Q@mail.gmail.com> <969eab7f-ad40-0dfb-18b9-6002fc54e12b@proton.me> <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
-Feedback-ID: 71780778:user:proton
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C801CAA5
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 15:17:55 +0000 (UTC)
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87A509C;
+	Mon, 25 Sep 2023 08:17:54 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-99c93638322so1517828366b.1;
+        Mon, 25 Sep 2023 08:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695655073; x=1696259873; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cp05RJcC1kdlonhGXdkkByIHpEVtVJUJziov6gnH670=;
+        b=ZFVqU31W2m8GZQlgRKzGzniC2VYw+yfFaqsIsn0Q7VzHrk9gxtsY89C/Zm2R+rPD8R
+         W5es7notYtwI/Nj4o10WnuCgaTaSpMMhsXyiAnwsGmQka2bMRnZtFDTQKBpWPe3jSXaN
+         NHXpuOHzah/sTxd2GfkZlBCUv5Tf4RauYzRHWreamswERK5Z9ezqE54i5jRv4rkU5jfO
+         GzV/UBoWCmYr58fbWHLSN/EvmXRbHj2O1eJMg/SqTOXBdGYwebPow7+HdSwCF0kt+mtY
+         DX+zz80/amZ7pyIq4XUdWoz4dAViqcD9b4vZcmG+N9SdRaEoGzohRCdcfniUYxUVB5wF
+         fnjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695655073; x=1696259873;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cp05RJcC1kdlonhGXdkkByIHpEVtVJUJziov6gnH670=;
+        b=i/5Yjs+VGRsQMZaDsAmHS59Fey45NEjbCWqf4AqywIH5G6PsUSjnc9zvMKsZrdhPce
+         N7jBVs8XG/7b2YANH+djZQRvSHFeJZiFws+3DTNWbn2lmKd/K1Q+b7ZYwvP2OiXlkt/I
+         Is1cZoOETjfOdT//8lYs6v0O13Om5e4UcV/7YyOgItHbRfts3niHGLidGiZG+7XbpM6Z
+         p7lHF1vlmw7k7PHqtf7I+z5/V3rI9L9dLY+BXCEvb5y8fxa8eBQ31KRh3LjRWhtRsyar
+         BSdDolX32aWdeeCn1W6Yomt1NUcJHgAG1uU7w4CiMm22DGTob6RQSoYtrdZgsjHeFxtA
+         2DVg==
+X-Gm-Message-State: AOJu0Yz8VWFjBiD8uRfnW5U2cdxem3h2CXopHiuH2NJoteDGwoppcykm
+	SeUXA2DJxcGBehvbVRA2LEI=
+X-Google-Smtp-Source: AGHT+IH17sOAakA6E4KIl7AQ2cJ0ihfCuFvx8Dn3Ay6445MXkQDyU0l3BiWoooFZywY+fEu45pmmzQ==
+X-Received: by 2002:a17:907:60cc:b0:9a1:8993:9532 with SMTP id hv12-20020a17090760cc00b009a189939532mr15927357ejc.30.1695655072767;
+        Mon, 25 Sep 2023 08:17:52 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id s16-20020a05640217d000b0053420e55616sm1166104edy.75.2023.09.25.08.17.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Sep 2023 08:17:52 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 5254527C005C;
+	Mon, 25 Sep 2023 11:17:50 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Mon, 25 Sep 2023 11:17:50 -0400
+X-ME-Sender: <xms:nqQRZQRWdODf_W6EBlylGlOjcBsv_OtE8nAB2yb0Dh3rCSuic2HAYA>
+    <xme:nqQRZdxTdiL3aBr9kmz82XXiWcPYd7W8MBBmlqBBok4JxI8HQXsSjU8JnUWYmUUit
+    7LvK0QPUgJgyuvt6w>
+X-ME-Received: <xmr:nqQRZd206QmrRemHVyTsJp43-uTCAeuHJ4TMunNwxGEIykEEyWzzBrdwwao>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgedgkeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:nqQRZUD8n9cX46mi6HI8R3bwLCjTLbBXYP_QGxq7wPCV4GvvVJlp7Q>
+    <xmx:nqQRZZirA9NjzTfLdRDOzN3WF13EXe4FcLnegcaanlXSsi1sKaLlXQ>
+    <xmx:nqQRZQo8waW6EePgwQ-uB_dAqatYIowUGzdhDRIhVZKx1zM4lTTpgw>
+    <xmx:nqQRZeZTjOyuNGyEiyrdGKzIUUEJEN_z0eKd4bPh6_MGL2X00IgNlg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 Sep 2023 11:17:49 -0400 (EDT)
+Date: Mon, 25 Sep 2023 08:17:48 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com, gary@garyguo.net,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, walmeida@microsoft.com,
+	wedsonaf@gmail.com
+Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
+ `WithRef`
+Message-ID: <ZRGknJCB6tFgX3Gr@Boquns-Mac-mini.home>
+References: <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
+ <20230925150047.1961646-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230925150047.1961646-1-aliceryhl@google.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 25.09.23 16:49, Boqun Feng wrote:
-> On Mon, Sep 25, 2023 at 09:14:50AM +0000, Benno Lossin wrote:
->> On 25.09.23 08:29, Alice Ryhl wrote:
->>> On Sat, Sep 23, 2023 at 4:50=E2=80=AFPM Wedson Almeida Filho <wedsonaf@=
-gmail.com> wrote:
->>>>
->>>> From: Wedson Almeida Filho <walmeida@microsoft.com>
->>>>
->>>> With GATs, we don't need a separate type to represent a borrowed objec=
-t
->>>> with a refcount, we can just use Rust's regular shared borrowing. In
->>>> this case, we use `&WithRef<T>` instead of `ArcBorrow<'_, T>`.
->>>>
->>>> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
->>>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->>>> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
->>>> ---
->>>>    rust/kernel/sync.rs     |   2 +-
->>>>    rust/kernel/sync/arc.rs | 134 ++++++++++++-------------------------=
----
->>>>    2 files changed, 39 insertions(+), 97 deletions(-)
->>>
->>> I'm concerned about this change, because an `&WithRef<T>` only has
->>> immutable permissions for the allocation. No pointer derived from it
->>> may be used to modify the value in the Arc, however, the drop
->>> implementation of Arc will do exactly that.
->>
->> That is indeed a problem. We could put the value in an `UnsafeCell`, but
->> that would lose us niche optimizations and probably also other optimizat=
-ions.
->>
->=20
-> Not sure I understand the problem here, why do we allow modifying the
-> value in the Arc if you only have a shared ownership? Also I fail to see
-> why `ArcBorrow` doesn't have the problem. Maybe I'm missing something
-> subtle here? Could you provide an example?
+On Mon, Sep 25, 2023 at 03:00:47PM +0000, Alice Ryhl wrote:
+> >>> I'm concerned about this change, because an `&WithRef<T>` only has
+> >>> immutable permissions for the allocation. No pointer derived from it
+> >>> may be used to modify the value in the Arc, however, the drop
+> >>> implementation of Arc will do exactly that. 
+> >> 
+> >> That is indeed a problem. We could put the value in an `UnsafeCell`, but
+> >> that would lose us niche optimizations and probably also other optimizations.
+> >> 
+> > 
+> > Not sure I understand the problem here, why do we allow modifying the
+> > value in the Arc if you only have a shared ownership?
+> 
+> Well, usually it's when you have exclusive access even though the value
+> is in an `Arc`.
+> 
+> The main example of this is the destructor of the `Arc`. When the last
+> refcount drops to zero, this gives you exclusive access. This lets you
+> run the destructor. The destructor requires mutable access.
+> 
+> Another example would be converting the `Arc` back into an `UniqueArc`
+> by checking that the refcount is 1. Once you have a `UniqueArc`, you can
+> use it to mutate the inner value.
+> 
+> Finally, there are methods like `Arc::get_mut_unchecked`, where you
+> unsafely assert that nobody else is using the value while you are
+> modifying it. We don't have that in our version of `Arc` right now, but
+> we might want to add it later.
+> 
 
-Sure, here is the problem:
+Hmm.. but the only way to get an `Arc` from `&WithRef` is
 
-```rust
-struct MutatingDrop {
-     value: i32,
-}
+	impl From<&WithRef<T>> for Arc<T> {
+	    ...
+	}
 
-impl Drop for MutatingDrop {
-     fn drop(&mut self) {
-         self.value =3D 0;
-     }
-}
+, and we clone `Arc` in the that function (i.e. copying the raw
+pointer), so we are still good?
 
-let arc =3D Arc::new(MutatingDrop { value: 42 });
-let wr =3D arc.as_with_ref(); // this creates a shared `&` reference to the=
- MutatingDrop
-let arc2: Arc<MutatingDrop> =3D wr.into(); // increments the reference coun=
-t to 2
-drop(arc); // this decrements the reference count to 1
-drop(arc2); // this decrements the reference count to 0, so it will drop it
-```
-When dropping `arc2` it will run the destructor for `MutatingDrop`,
-which mutates `value`. This is a problem, because the mutable reference
-supplied was derived from a `&`, that is not allowed in Rust.
+Regards,
+Boqun
 
---=20
-Cheers,
-Benno
-
-
+> > Also I fail to see why `ArcBorrow` doesn't have the problem. Maybe I'm
+> > missing something subtle here? Could you provide an example?
+> 
+> It's because `ArcBorrow` just has a raw pointer inside it. Immutable
+> references give up write permissions, but raw pointers don't even if
+> they are `*const T`.
+> 
+> Alice
