@@ -1,182 +1,76 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE79D304
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 18:52:00 +0000 (UTC)
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D2D2B8;
-	Mon, 25 Sep 2023 11:51:58 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9ad8bf9bfabso896984666b.3;
-        Mon, 25 Sep 2023 11:51:57 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7C163A8
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 19:15:45 +0000 (UTC)
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB34C95
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 12:15:44 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-59c26aa19b7so87060637b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 12:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695667916; x=1696272716; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1695669344; x=1696274144; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SsKjzM3VWnsoW8OT4lS3fTqfMwcvnAnchQOe6+ytjKw=;
-        b=TUL/bhVzF5aKs8aKxYG5IAsTjGwPbS41kbQTy+uDf0x9OW6SfO/u7itbv07yURMUNd
-         oxnm3QvNuZg0arL86BOSIZmxhzR8ygnNy9y4MSMRQTZKzj8vZ+JyPJZbkZ+YBPDbtoX1
-         cXN9uRAxZ7AdqC9XwzVpScFumxae083pNZACmparK52bfU6z9k7k1GWnoh7fbzeT58+K
-         WInhsp9Dwyf8haSwKZ7Jtkq/BwX4N6FIxQ1J7xCs17LLoBZ4HaPnygppZYyQLiKuYj0l
-         Uz3Igq8M3C9dOuYV1Vkql//Ww+wSILouCca+86lyZNJkthMXQUUXWiTGzL9bv7U5E+Qf
-         y3vQ==
+        bh=LzrkBgBFK2ZMSv6J4sFMu8L3QXO645sK4mrUYordBBk=;
+        b=fC9b9mZr40qZ+LDawXrt1VjpJ7RWmWvMXcQ7dqhBJLGIDiFWiBYQu1GOK9K5KUOsH6
+         tLhp3xnHSEaQPZaYgWfgr94RZkiOlhLQUOcrvVY2uQYMtF08GW81ymgENDP2GJFJWJjn
+         DeV0Bdiwo79rhe6mnpRqa7xKaU0S8xdIgrZSbXRBDSpls0DbQ0LXIZ1j7nLJ34Gyx9Gc
+         pnp7R+zCYsQzqugNITQH+foChueXReLCRV1fKtc+DAAXafaJ1x5x7h/2VHyXLpsQw163
+         6dZQk2pxmditkZuQwPv/vHbLYlTemkRAUdIywNgTdiHsoOVee1DWp+vKyGABbStslw6Q
+         utqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695667916; x=1696272716;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1695669344; x=1696274144;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SsKjzM3VWnsoW8OT4lS3fTqfMwcvnAnchQOe6+ytjKw=;
-        b=kTqwwtvCsEdk2LVJil6xfQuP0MHRjSeqfDD6gpRCfjyecB1n7GjK7JJes4Pvxx5j08
-         vHub2ySeoBA2mWWfgmj/fvgKM7dzSE7jF1AWxrXgZxz2GEGHDrYqDTY4OpDIgDtEyHtq
-         wv136tYgZ0ksep7q8IYiJBcPY8HymuvGRASBtcekzEqrV7pvVrkcI8JTR7TtDGL5ULSB
-         L3k2frNnFPFtXFG8c82/XOGmBEFpFIFy/of3O/vT2pSPTl0mydhTXRX8nkfMjetwLiYt
-         RudldtncFHiDTDjKf+cw5zxh4pT31fcVS514tzrbeoh1UnyPh9gXPBaMkHhuxLUvtgd9
-         eHGw==
-X-Gm-Message-State: AOJu0YxcKSmbwzgUV1LF+uP/GaGeZcJnapM/LhQ/51X3Q3zj8XLqHxQg
-	ax9TSyNtaIFrpiUBdpDg2h8=
-X-Google-Smtp-Source: AGHT+IGc400/afEse+ow1fyXyoihqmAOpd+15G0wCSjS+gfKgGOcwkkDiuOkZ7L3Adg8rkM23VqXpA==
-X-Received: by 2002:a17:906:2189:b0:9ad:ece6:eeb with SMTP id 9-20020a170906218900b009adece60eebmr6397423eju.32.1695667916188;
-        Mon, 25 Sep 2023 11:51:56 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id rh27-20020a17090720fb00b0099b6becb107sm6731039ejb.95.2023.09.25.11.51.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 11:51:55 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailauth.nyi.internal (Postfix) with ESMTP id A461A27C005A;
-	Mon, 25 Sep 2023 14:51:53 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Mon, 25 Sep 2023 14:51:53 -0400
-X-ME-Sender: <xms:ydYRZfmhsVy3tlk0hqpUgla1M-gT2IY7Uxn6EzteuFbxZMu_Go8Q-g>
-    <xme:ydYRZS3JqZbgvpDwjKKvGsyPtVxyT_dc0aRzKJ0F4e8ox3RporV8nlzvqrsJg-Irn
-    apaicsVM4wEaO2dOw>
-X-ME-Received: <xmr:ydYRZVpu5SNaH2wbs7x1-Rb2WPq_GIM5-PCR2lxzJYn1fmUHntK0fb5xg3w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgedguddvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:ydYRZXlEsHUWA5kUbFlW50ykvz8osehngrBG5uzO6HKx9451j1KVHw>
-    <xmx:ydYRZd2hYcPUrZ6BktN_c5kYorEBxt1NP13NEO4e28FcA2qhM6JgFQ>
-    <xmx:ydYRZWsVoUYqtEbryqYj5KLmLLI8sqPrl8rpMPGqPjpDEJOHLfe77Q>
-    <xmx:ydYRZWtlmCcT_SJMHy6nS5h54XIN1oFZ7tConIotiJiGb-GtuXvHCg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 Sep 2023 14:51:52 -0400 (EDT)
-Date: Mon, 25 Sep 2023 11:51:21 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	linux-kernel@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Message-ID: <ZRHWqbvYlXBXEOh-@boqun-archlinux>
-References: <20230923144938.219517-1-wedsonaf@gmail.com>
- <20230923144938.219517-3-wedsonaf@gmail.com>
- <CAH5fLggxsewmtzXjehbawDCTHO0C7kteU_CLnh80eMNj=QyP9Q@mail.gmail.com>
- <969eab7f-ad40-0dfb-18b9-6002fc54e12b@proton.me>
- <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
- <14513589-cc31-8985-8ff6-a97d2882f593@proton.me>
- <ZRGyRQuBcWvgtdNR@Boquns-Mac-mini.home>
- <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
+        bh=LzrkBgBFK2ZMSv6J4sFMu8L3QXO645sK4mrUYordBBk=;
+        b=ES89WOuFxc1ExuqSbXK1qefAu1S4mrfp2bbhqhiSwEDsG1PuWxP+jD3MaiQzbkbk2s
+         H5lf48hmCi8gxRmBVO08c7xByfcXDvmsiPlN0YTJ17IUj5xHeMhXAaSBZvHkcm5eGXF0
+         xga1iwQunysOfHLOuOYUoSLCfNpj3QWB3F94eIfRxeU+RthHVETxTYWh50n9gkwZkGc8
+         yhfecfzRWXYXqcY2iXDOsthwfS/thH+EMvR37NF4hpZ3QWbXci56PJky1BKkSCz+Mn0y
+         Mb1nO+CHZFzKu11mO5+LSYGtN86B5q97gh0JpjIp7pxDelRb9R+pNMtKegGJOIYx3REj
+         4w5w==
+X-Gm-Message-State: AOJu0Yy54gw+wLUcICwgjGF7BDf/mAaPMLZmnOaFbFaC9sMaohyJ2XP5
+	h56M18wI+0xEEuTUWjGPBhT55h7HMqzCJo2IJ2k=
+X-Google-Smtp-Source: AGHT+IFZRTOOl7nKUPWfY6LnztxN4+CJfC8YVkv3PV1bTow1lGAFlNsBPecR3ac8qZ4Yr8GYzFHQc9LjQybWR/0M05U=
+X-Received: by 2002:a0d:d181:0:b0:595:887f:e180 with SMTP id
+ t123-20020a0dd181000000b00595887fe180mr7256334ywd.40.1695669344119; Mon, 25
+ Sep 2023 12:15:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
+References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
+ <20230924064902.1339662-2-fujita.tomonori@gmail.com> <b07d6626-f2db-4d87-8c34-ba8873cad5de@lunn.ch>
+In-Reply-To: <b07d6626-f2db-4d87-8c34-ba8873cad5de@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 25 Sep 2023 21:15:32 +0200
+Message-ID: <CANiq72=6rWpx4PGSyYMrYbwj5ojeiYJGR13SDpwQv9uO9_13Mw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY drivers
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org, 
+	tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Sep 25, 2023 at 05:00:45PM +0000, Benno Lossin wrote:
-> On 25.09.23 18:16, Boqun Feng wrote:
-> > On Mon, Sep 25, 2023 at 03:07:44PM +0000, Benno Lossin wrote:
-> >> ```rust
-> >> struct MutatingDrop {
-> >>       value: i32,
-> >> }
-> >>
-> >> impl Drop for MutatingDrop {
-> >>       fn drop(&mut self) {
-> >>           self.value = 0;
-> >>       }
-> >> }
-> >>
-> >> let arc = Arc::new(MutatingDrop { value: 42 });
-> >> let wr = arc.as_with_ref(); // this creates a shared `&` reference to the MutatingDrop
-> >> let arc2: Arc<MutatingDrop> = wr.into(); // increments the reference count to 2
-> > 
-> > More precisely, here we did a
-> > 
-> > 	&WithRef<_> -> NonNull<WithRef<_>>
-> > 
-> > conversion, and later on, we may use the `NonNull<WithRef<_>>` in
-> > `drop` to get a `Box<WithRef<_>>`.
-> 
-> Indeed.
-> 
+On Mon, Sep 25, 2023 at 8:32=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> Is this a FAQ? Is so, please point me at the documentation...
 
-Can we workaround this issue by (ab)using the `UnsafeCell` inside
-`WithRef<T>`?
+It is documented in `rust/exports.c`:
 
-impl<T: ?Sized> From<&WithRef<T>> for Arc<T> {
-    fn from(b: &WithRef<T>) -> Self {
-        // SAFETY: The existence of the references proves that
-	// `b.refcount.get()` is a valid pointer to `WithRef<T>`.
-	let ptr = unsafe { NonNull::new_unchecked(b.refcount.get().cast::<WithRef<T>>()) };
+* All symbols are exported as GPL-only to guarantee no GPL-only feature is
+* accidentally exposed.
 
-	// SAFETY: see the SAFETY above `let ptr = ..` line.
-        ManuallyDrop::new(unsafe { Arc::from_inner(ptr) })
-            .deref()
-            .clone()
-    }
-}
-
-This way, the raw pointer in the new Arc no longer derives from the
-reference of `WithRef<T>`.
-
-Regards,
-Boqun
-
-> > 
-> >> drop(arc); // this decrements the reference count to 1
-> >> drop(arc2); // this decrements the reference count to 0, so it will drop it
-> >> ```
-> >> When dropping `arc2` it will run the destructor for `MutatingDrop`,
-> >> which mutates `value`. This is a problem, because the mutable reference
-> >> supplied was derived from a `&`, that is not allowed in Rust.
-> >>
-> > 
-> > Is this an UB? I kinda wonder what's the real damage we can get, because
-> > in this case, we just use a reference to carry a value of a pointer,
-> > i.e.
-> > 
-> > 	ptr -> reference -> ptr
-> > 
-> > I cannot think of any real damage compiler can make, but I'm happy to be
-> > surprised ;-)
-> 
-> This is UB, so anything can happen :)
-> 
-> -- 
-> Cheers,
-> Benno
-> 
-> 
+Cheers,
+Miguel
