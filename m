@@ -1,132 +1,112 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938171C283
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 15:30:12 +0000 (UTC)
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B5D90;
-	Mon, 25 Sep 2023 08:30:10 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id ACC555C26A7;
-	Mon, 25 Sep 2023 11:30:09 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Mon, 25 Sep 2023 11:30:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-	1695655809; x=1695742209; bh=TgAuFtIu6cq6sGedGPSBpY1cujauqO84fvC
-	BuUD8cl0=; b=kXW43laceJenWVuo6y4LI4rWzr2fzjlUy+wFE9mUe7lI6wtTuEQ
-	O+GlgygxiI58JYlsOJo85VB+J1BsLHTOZ+rjkQKyKXqKG3FLxstDBbAYxr9vpU/c
-	UahN5mq97X+z4diXwEmzkVUlY7k7Zv2L15WMhuTnDvoFdulaxON98KqhbG4033TI
-	nUCNQPVJHCoN3ssCxRXNr3QAuRy2Z3EswSCS+dlFW+5zaIg1VklcmboeALwzRsxG
-	mZVGIGMHONvQ72h8NOg8jQjNE3hnlzGj3xYSqrDHxxdHSzQXobSiBFpzrX+tVgEF
-	xcNSyj9syr1aawFsgFebgrl+GmKq8x4Eo+A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1695655809; x=1695742209; bh=TgAuFtIu6cq6sGedGPSBpY1cujauqO84fvC
-	BuUD8cl0=; b=eqa9Pe/iz9+IhSailMcc0FYrcWXTuJjj943pDey/aqsnZJ/ZIUH
-	MvBuLeVNUsdP/yRnFSbNvu4qZnOmJ++pVLO0Rf3uUW1reEoFOd5/ReyAk038hxLL
-	vpT0zk5D/xaWP3iz/J0YVu3EEwM9+8JR5qRFNULwAM+ooC9ok0mU68Qh2sp8LUhd
-	pcK2TAqpXK9yS0eL0YAqErm+I2IfLcWr9NhsMzasw/ndwXr8rF5EUvaHjlq8wr6e
-	s+thtAWKEY/f/VCCSKSAGGKnZ6T0WYAZ/jqYO4PJvxlNdKF/Ptcj8yanqQUUzDdk
-	2rtpUNgecMSDlR3yseCrGCgZsK2sRBzsF3w==
-X-ME-Sender: <xms:gacRZVtl8U-yMgwwY3Bh9bERuAaDR4UhMu6pSosUnWCU-nx7IjcExQ>
-    <xme:gacRZecFsozXhr0-yGYjn0MY2mp83SssOqx9r8rOHrkWOBcdK4aWH-XC_Wd8FawZ_
-    kz4EQbP-IkGXlUXBg>
-X-ME-Received: <xmr:gacRZYxlbpPARpNXaCPHJHIEksTG7ZuSdBqiGF_li6tbsQ870UFSEZ6Pv7c6oTfRcTasfz7a4hKYI3MH1h_p0-YVvCnbUC_t4Hq1>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgedgkeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    efgfeugfdtgefhueeiudffjefhveeuheeuheekvdetfefgheehtdffuddtgfdujeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
-    hrhihhlhdrihho
-X-ME-Proxy: <xmx:gacRZcNwMD8U3k_m4hPPv__PTrkAgxAoSHs4-9CpEhRYDUFYYp5GHA>
-    <xmx:gacRZV_59radWZgSSahsDqZbhcuP-9M9X-Gd0YPb4h2d27GdC0muTw>
-    <xmx:gacRZcUjrpEY_c607O_pUQwD4ox2_cNcLbcxKTezyqv7b_doL13ybQ>
-    <xmx:gacRZW2hGpIvZ6xkiZ3LgfKVgV-rIgEOQdC_1-ilpT5za1KsM5Eqjw>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 Sep 2023 11:30:07 -0400 (EDT)
-Message-ID: <0b7fc71c-b3c7-4c29-92a9-587daa46ad59@ryhl.io>
-Date: Mon, 25 Sep 2023 17:30:05 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0C07489
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 15:42:15 +0000 (UTC)
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 151AE1BD5
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 08:41:54 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d8168d08bebso7607499276.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 08:41:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695656514; x=1696261314; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aLQQz1zdLbQfufVzk34FpL+pPcpblvS2JmAaXMdjyhQ=;
+        b=gkBVwfw3RMzqZf6jlXRMwrrFY88TjzTn0fyTNh1ip4/GeX7PPupNlmK4KPaiRG4y1c
+         aBgTTmGvXR5aS+Qm7xTrdofo2crW5asyv02ZGMzbQ1kLzbmsoSBDUB6MGb7LsGE19PO/
+         3RfNZ7k3L4BYUhwpLhqjCuWONhWry4RTwMKsqMKSS8nyOovM0QbfirBEz0DczCmPVmul
+         LsW6OFxOaRXvfMvKh0QHSKXLPYYhviQ6Joj1kR3npyXWjkDylO3AqdNpuZPFyHVW7w9L
+         pqTPlGgftiWRlkHnWgthTi5FbsjJD17ZrVYl+S0oPrYI71nCjB3HFxJ4uPEWJr4cIMOz
+         SYKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695656514; x=1696261314;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aLQQz1zdLbQfufVzk34FpL+pPcpblvS2JmAaXMdjyhQ=;
+        b=p3HkbVAY5jBUttIKQwJDf4t5XgDZiCckRUdDGXcLN/8FRpgLblMv43mSeDRJ0ktkDz
+         mFg1pVOmNoLp0fxxfLPIty0OLmIJJoehTh3eN0smgCVKotvcdwcwkmEcu+EB8nSsGDvR
+         ohautFd67V3DCkEJ1Uioy0Q9mGy9xc4OCQ3vsbWN/0gPgQ1NkUKi45qxteFypV68DSUu
+         8gxoWyemUe+jl/72c8TeJCIbcv0X0UezwDI6mnK/PffAPVA9XZKxVjFih00vI8lkM9Pe
+         Ao4GEOzVOZVNlLM6u2jlKYWmMGTqkO3CL9AK6wUtB3BHariIN3Ei/HYwNVkG6eT7Np6Z
+         AHHg==
+X-Gm-Message-State: AOJu0YwI5pGihe1zfguxRKUQBmDHwsfWmHxD1Muue16lbRFBsp2oeYO/
+	Q6oZVekbm7hIBokeeG51RKMEbqY8JZi5yQzE0ZQ=
+X-Google-Smtp-Source: AGHT+IFVJTY2bnG8fQRFQ1dVlElpOPiRrMDCytC9cB1zA+dFtqi1cwcfHplgJJ8Awsw/07O/jskKYNfoIgnOT3lFQGY=
+X-Received: by 2002:a25:f205:0:b0:d68:8a7f:127f with SMTP id
+ i5-20020a25f205000000b00d688a7f127fmr5981445ybe.52.1695656513042; Mon, 25 Sep
+ 2023 08:41:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Content-Language: en-US-large
-To: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me,
- bjorn3_gh@protonmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org,
- ojeda@kernel.org, rust-for-linux@vger.kernel.org, walmeida@microsoft.com,
- wedsonaf@gmail.com
-References: <ZRGd4lsNP30L2yB3@Boquns-Mac-mini.home>
- <20230925150047.1961646-1-aliceryhl@google.com>
- <ZRGknJCB6tFgX3Gr@Boquns-Mac-mini.home>
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <ZRGknJCB6tFgX3Gr@Boquns-Mac-mini.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
+ <20230924064902.1339662-2-fujita.tomonori@gmail.com> <70dbdfd2-9e8d-6985-ae42-0d4f1a7dcef9@proton.me>
+ <20230925.192433.108741056500744806.fujita.tomonori@gmail.com>
+In-Reply-To: <20230925.192433.108741056500744806.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 25 Sep 2023 17:41:41 +0200
+Message-ID: <CANiq72nO=Eje0dv_NCagvTzOLU7WkfM-bwqH33z_kC=f=m1m1A@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: benno.lossin@proton.me, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 9/25/23 17:17, Boqun Feng wrote:
-> On Mon, Sep 25, 2023 at 03:00:47PM +0000, Alice Ryhl wrote:
->>>>> I'm concerned about this change, because an `&WithRef<T>` only has
->>>>> immutable permissions for the allocation. No pointer derived from it
->>>>> may be used to modify the value in the Arc, however, the drop
->>>>> implementation of Arc will do exactly that.
->>>>
->>>> That is indeed a problem. We could put the value in an `UnsafeCell`, but
->>>> that would lose us niche optimizations and probably also other optimizations.
->>>>
->>>
->>> Not sure I understand the problem here, why do we allow modifying the
->>> value in the Arc if you only have a shared ownership?
->>
->> Well, usually it's when you have exclusive access even though the value
->> is in an `Arc`.
->>
->> The main example of this is the destructor of the `Arc`. When the last
->> refcount drops to zero, this gives you exclusive access. This lets you
->> run the destructor. The destructor requires mutable access.
->>
->> Another example would be converting the `Arc` back into an `UniqueArc`
->> by checking that the refcount is 1. Once you have a `UniqueArc`, you can
->> use it to mutate the inner value.
->>
->> Finally, there are methods like `Arc::get_mut_unchecked`, where you
->> unsafely assert that nobody else is using the value while you are
->> modifying it. We don't have that in our version of `Arc` right now, but
->> we might want to add it later.
->>
-> 
-> Hmm.. but the only way to get an `Arc` from `&WithRef` is
-> 
-> 	impl From<&WithRef<T>> for Arc<T> {
-> 	    ...
-> 	}
-> 
-> , and we clone `Arc` in the that function (i.e. copying the raw
-> pointer), so we are still good?
-> 
+On Mon, Sep 25, 2023 at 12:24=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> I'm not sure either. I have no preference though.
 
-No, the raw pointer in the Arc was created from the immutable reference, 
-so the raw pointer has the same restrictions as the immutable reference did.
+One way we used in other places in the past is:
 
-Alice
+    to_result(...)?;
+    Ok(...)
+
+By the way, for other kinds of conditions (i.e. if one cannot use
+`to_result`), I would suggest the early return style, i.e. the usual C
+kernel style:
+
+    if condition {
+        return Err(...);
+    }
+
+    Ok(...)
+
+Sometimes for the last one we do this too when the function is
+"symmetric" (personally I wouldn't mind just doing early for those
+cases too, to be consistent):
+
+    if condition {
+        Err(...)
+    } else {
+        Ok(...)
+    }
+
+What we should not do, however, is this (which you used in the patch
+before Benno's suggestions to use `to_result`), i.e. `return` and
+`else`:
+
+    if condition {
+        return Err(...);
+    } else {
+        Ok(...)
+    }
+
+(By the way, I just reported
+https://github.com/rust-lang/rust/issues/116150 since codegen seems to
+suffer in some cases)
+
+Cheers,
+Miguel
