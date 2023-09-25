@@ -1,97 +1,96 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49476DDC4
-	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 18:44:31 +0000 (UTC)
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FEECE
-	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 11:44:27 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-59bebd5bdadso61283417b3.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 11:44:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78A7A2A
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 01:13:20 +0000 (UTC)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81962E8
+	for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 18:13:18 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-277317a0528so456266a91.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 24 Sep 2023 18:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695581067; x=1696185867; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zfUgjEZvuftPy3VPAwt+m+N3N7hIucsng0APKWwHsDs=;
-        b=F/iPJ7ONtoHZLvvK3KVEmMRWN8rhqxF0bcbEQmgXGk/asx2HxDDX5RwdbFlRKNd7IL
-         TNJbkJ/KWtL52K1SjXX0Oau+torvN9/udI3MuQQYlBHW1YBkSG2Tp+ny81u4B84iiQWF
-         G+ZNWBsJlbCGvEr7ve/iJnhbtlAS7mMRJjNitPhaHB65CbFbOxRtIEPb2Qm4U3RgVqCa
-         Hi9wAIOOsycbltGodmJ/yUUhdx+sTOFDpltq0PLYZohimGsqawao5z4zMJCa79zOWnX3
-         UCeKEpM7uC24eJBtKFNeKKZK/Nsq83/4xGmaUPwo8TUs0JJk7Mgs2rGSFL8srdS5353p
-         hstQ==
+        d=gmail.com; s=20230601; t=1695604398; x=1696209198; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qnagk8r7yfaE4HNyIdB5nRlyyC83jBI1WWPF7Nua10Q=;
+        b=KlQLxuOChCTk2QPuYGGhph4gOtIIzWKAxoP+7pEDeLQsSaJmG6v1BiO0oIpakLyqHw
+         YJS+0ZJEML9g/8nF2jjzvhNaa12Ig+3ZGx9uB1uR7fpVD3ZvCIvcTfZRXu895AgzvWCn
+         PpxqQVmjjsGoLHDKjKoPZL+c6Q2EhzNfRomytnuPUbehkzrE213hvGtQWi0uf20xpwaq
+         GLQfes5/96joz9nI/cZPRw7lTUe7CffKXsPSR6dG1pdH31wlkYFzGKci3Q3OsX4KaHSW
+         g018zy5fQf5eM8nYV9ZBAQoQmNemeE6GdiibpYr5PK7ubSJtp2zJNMGgVQ9W2TcqUA92
+         4wbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695581067; x=1696185867;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zfUgjEZvuftPy3VPAwt+m+N3N7hIucsng0APKWwHsDs=;
-        b=fxndc3SZ/cBka7HxL4Ben7F1J5j5XaxGntsBdAeFpKZJIpkDRRZxx2MZDgPymxvIFL
-         nRTK+bjqpa5m4f2DORGuGZgYipY0fq9zfn7aokGgcCBZ8LAMJ549oCMlAR0kAAp5JwFy
-         3vcwrlvY4F3sUxkNrh5B5JjQcN3zUHf37e3zo/jKBoyVTl1r7hMWf3KN983KcIE1jHbm
-         dzaTHKkneGyp8vRTY+rR8VkQt0TpG55ovy/LGVz5zulEToitmcsj4brWMgAD4JRrJRTZ
-         6Q7OmZN/fTQXARupKyIAlcPrXicyIx1gsGU+w0pypQvPvT4Z2pJ2lr+RcicsBN7uudFu
-         vofA==
-X-Gm-Message-State: AOJu0YygpaR5feNTEGjeCXFHbM/aK0Ylnkn4CzokJdu4JZVm1CiqktoX
-	fDqLuE/j/UUogPcyDwgpqDnxNDxnHLw8+WhD2RA=
-X-Google-Smtp-Source: AGHT+IGE/MKEoE7Djp/zQ6woHUZge56Dq33QUDrWKz0TaYJ5W2TiAkTpluGJEBozRDWphQpchTrLG8xQRoaqqmsbU8Y=
-X-Received: by 2002:a81:7c41:0:b0:59b:fda7:9d7f with SMTP id
- x62-20020a817c41000000b0059bfda79d7fmr4825361ywc.49.1695581066918; Sun, 24
- Sep 2023 11:44:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695604398; x=1696209198;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Qnagk8r7yfaE4HNyIdB5nRlyyC83jBI1WWPF7Nua10Q=;
+        b=AlxJUZer8354dWVrEJQZMS0phcT2sUIrDtfjlKYnFPE3EpL/17BvzVr427m0jKx1sW
+         unSCsyGw1LuynYhuD69eXprgh4fh3uJwxTSGcoFw3hysLsOGxiVoVsqurX7HUylT7kTY
+         FZGpk1cR2csXCaiS8Ph0WB7LFnI4F3VfZJ0k6MkJHMlrdjgnfCcovBnkye3kV3G5XCj1
+         O+A+p12HIGcJyAOxUROSm/3H6uKlOZ8nDDTWp4KO8SG3rJHRxI5NgLLMLw3gKlixmin3
+         FjYbTDRk/8JrEeCMGiNOxz/E8qcscOdrcHsjkpwPtTDGfPLzdEikX9MDmxGYi72pZKtx
+         /qaQ==
+X-Gm-Message-State: AOJu0Yw9yN9nEcA5yS5ZRFprhYiP2yQZMWIvJ6B+RlYOQDZNnCFXywd0
+	LHFJuqWT9BT5lqlEMlqBn7Y=
+X-Google-Smtp-Source: AGHT+IFxE9+piitYAOoCVD+XdpOE+ERsTVt6FhEicZE2kiYYhImNgq4Fg1bM83qtTy7xB7tjp3Y1mA==
+X-Received: by 2002:a17:90a:bc9:b0:268:38a7:842e with SMTP id x9-20020a17090a0bc900b0026838a7842emr4837401pjd.2.1695604397818;
+        Sun, 24 Sep 2023 18:13:17 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id 7-20020a17090a034700b00273fc850342sm9389771pjf.20.2023.09.24.18.13.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Sep 2023 18:13:17 -0700 (PDT)
+Date: Mon, 25 Sep 2023 10:13:16 +0900 (JST)
+Message-Id: <20230925.101316.1428618195606780609.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: wedsonaf@gmail.com, fujita.tomonori@gmail.com,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com
+Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY
+ drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <aae808cd-68c2-44a4-9e01-2c5e01193fbf@lunn.ch>
+References: <20230924064902.1339662-2-fujita.tomonori@gmail.com>
+	<CANeycqo5Ujf+tMTkMOVqc8znz3Kd4MFUyhfvNw3cRNPdYVSxBg@mail.gmail.com>
+	<aae808cd-68c2-44a4-9e01-2c5e01193fbf@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <0b6f8110-b4fd-4d20-a97f-9d7df26c23f0@lunn.ch> <20230918.173527.1946752214085636243.ubuntu@gmail.com>
- <964973ce-84ee-4ce1-b060-cdc0d46868e1@lunn.ch> <20230924.181243.1273348818055860481.fujita.tomonori@gmail.com>
- <b6afe2b8-6d85-4b05-9b5f-7a3b2c402a16@lunn.ch> <CANiq72mcd7QfEh1ojBKSKQBNYAhqhfAkYRr=J6nG_D2Dj6bgdw@mail.gmail.com>
- <057cc481-01bc-475e-95d6-abdad5465801@lunn.ch>
-In-Reply-To: <057cc481-01bc-475e-95d6-abdad5465801@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 24 Sep 2023 20:44:15 +0200
-Message-ID: <CANiq72nN+9vEQ+shg_r6wS+vY2+XCM+GEj0ryRxeKE=ZiMvCiw@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 4/4] sample: rust: add Asix PHY driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sun, Sep 24, 2023 at 7:44=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> As somebody who does a lot of code reviews, i like C simplicity for
-> this. I don't need to know for each method if it has some implicit
-> undo when something else fails. I just need to see there is a full
-> collection of goto out; statements calling what looks like reasonable
-> undo methods.
+On Sun, 24 Sep 2023 17:42:16 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-Yeah, it is a bit shocking at first.
+>> > +    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
+>> > +    /// may read or write to the `phy_device` object.
+>> > +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
+>> 
+>> Is the requirement that nobody else may read or write to `phy_device` realistic?
+> 
+> In what scope?
 
-The key here is that, in C, you have to write all those jumps, calling
-the right functions and in the right order. Not only that, you have to
-do so for all functions using a particular resource.
+Inside a function in phy_driver like suspend().
 
-Worse, you need to maintain that over time. And a bug here easily
-leads to a vulnerability or a leak. Even "trivial" refactors can
-introduce mistakes.
+> The phylib core will use phy_device members. The MAC driver has a
+> callback which should use phy_device members. However, the phylib core
+> also has a mutex to protect phy_device members. Nearly all calls into
+> this driver and all calls into the MAC driver are made with this mutex
+> held. And phylib core also uses the mutex.
 
-In Rust, the equivalent function can be way shorter, like in the `f()`
-example above. To drive this home, an important use case of Rust in
-the kernel showed in Kangrejos a week ago an entire page of kernel
-cleanup code in a complex function getting reduced to a single
-character, `}`. That is very powerful.
+Thanks for clarification.
 
-As you say, an study of C vs. Rust kernel code in a few years will be
-very interesting. Although, note that destructors are just part of the
-whole package, e.g. the fact that these implicit calls can be part of
-safe code is what makes things very interesting (e.g. unlike C++).
-
-Cheers,
-Miguel
+I thought that inside calls in phy_driver, exclusive access to
+phy_device is guaranteed. Please let me know if any exceptions
+exist. I need to think about locking when adding such to the Rust
+bingings.
