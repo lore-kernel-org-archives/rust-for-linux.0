@@ -1,166 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33ED328E35
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 17:03:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B072C433C8;
-	Tue, 26 Sep 2023 17:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695747796;
-	bh=9mED4eKpjj9Ur/PRuc7rWRlqyOXRaHWAX1hUU0+idIU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QsvWBg2Qg19IjleOTBaFPabO854Zm8nRsbavEKImofml1Am9jaKk+r4Wo7KtJVuQH
-	 II2CzL6fTXLhu7E0iSpDMgwFIF/gFy+ixfvjihZK6115TmJWA2769Op3c9BYAHl7iS
-	 u9C8Rpu1G8TkJOVsuuKtuWmBsWnNG9qMqJMIkbKTZLL/n1oMCxZF4eI1XpNNsMnZYG
-	 We375T4Fa/hH6R2ZPzlDNC+d67g8TegHruArCnAEFySuWz+gdx4HGnc9WFvfwg5+73
-	 zO9+pYp2W+K3m8JlfFXDPb9scUYaQ6eaOmgKzQz0wHTyVY48eSJjWa5AWnl6GqQ5tk
-	 wvd8LSElf4j8A==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-1dce01b6f2eso3811266fac.1;
-        Tue, 26 Sep 2023 10:03:16 -0700 (PDT)
-X-Gm-Message-State: AOJu0Ywo7uiiMZwngvKueu2n5VW1nlh4Bp72efj5teEXF09DEaRm19z+
-	251wuaMcHSCSt8OhPA8k/cywnWFGTCRncK3VeEE=
-X-Google-Smtp-Source: AGHT+IG+sT59maIGuNwoFZzYMqgI+S6gDycz3usM1ScV1MgM9a8oIP9swU2ktS554Ry8Hxb/WwjaOqBVOxK/uZEYOIk=
-X-Received: by 2002:a05:6870:ac91:b0:1dd:7f3a:ad11 with SMTP id
- ns17-20020a056870ac9100b001dd7f3aad11mr1645598oab.17.1695747795976; Tue, 26
- Sep 2023 10:03:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC4129419
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 17:16:16 +0000 (UTC)
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B12E10E;
+	Tue, 26 Sep 2023 10:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1695748571; x=1696007771;
+	bh=xjSNMyPAuAuwyagMKncLEzGuE6Tzpt2miYsAvV5lTy8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=QfwSXO66k/SidC0CzWOVITuFy9fJE92O6v9/y5G7JpwcFDem4QLYDnYY2ZJie2fe9
+	 ajVewlu9DBhkeGWa1SwyixfIKl1sDjwyZEthgmiL83gCAHXEwdbTe1gLG5do3OWlK8
+	 CNIcxlPETmPd1TBIT7bwl+xYNJKNSUDdtVq434pcaEsjnTNXHWvFoi32qMNIKzzV4m
+	 hMZssn64knpy2H3bAewtEQ0yLWP5e68qZe49qHaq5BL0NScPVQBqCk5qsVQawfLF6D
+	 yLd1ntcfKi94mR7KmczshVbbGhGoVs/c+bIb7EDArDnXUmLHquxA23WJSmm+WJWw+q
+	 VghYTEt6+5gNA==
+Date: Tue, 26 Sep 2023 17:15:52 +0000
+To: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <alice@ryhl.io>, Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of `WithRef`
+Message-ID: <a4090608-d352-742b-fe5e-054db3a8e4a5@proton.me>
+In-Reply-To: <ZRMIOsi6-GjFaYLW@Boquns-Mac-mini.home>
+References: <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me> <ZRIB0hXNvmJtmyak@boqun-archlinux> <edc0b599-c5d1-4e9c-a51b-eb8ceaef7acc@ryhl.io> <ZRIDc_x9Qh5EJNC8@boqun-archlinux> <61ccfb87-54fd-3f1b-105c-253d0350cd56@proton.me> <20230926162659.6555bcdc@gary-lowrisc-laptop> <ZRL3mlWXqseER8xK@Boquns-Mac-mini.home> <CAH5fLggUPQtNjLg6BnYHcLmefuHdJpg0_eGVgX+dARUTRHexsA@mail.gmail.com> <ZRMIOsi6-GjFaYLW@Boquns-Mac-mini.home>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230918234412.363087-2-mmaurer@google.com>
-In-Reply-To: <20230918234412.363087-2-mmaurer@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 27 Sep 2023 02:02:39 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQNwHPR7nPjLff2Gos2tTgDz6m_NYwBOB8U0tq+odZufQ@mail.gmail.com>
-Message-ID: <CAK7LNAQNwHPR7nPjLff2Gos2tTgDz6m_NYwBOB8U0tq+odZufQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Respect HOSTCC when linking for host
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Tue, Sep 19, 2023 at 8:44=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
-> resulting in build failures in hermetic environments where `cc` does not
-> exist. This includes both hostprogs and proc-macros.
->
-> Since we are setting the linker to `HOSTCC`, we set the linker flavor to
-> `gcc` explicitly.
+On 26.09.23 18:35, Boqun Feng wrote:
+> On Tue, Sep 26, 2023 at 05:41:17PM +0200, Alice Ryhl wrote:
+>> On Tue, Sep 26, 2023 at 5:24=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com=
+> wrote:
+>>>
+>>> On Tue, Sep 26, 2023 at 04:26:59PM +0800, Gary Guo wrote:
+>>>> On Mon, 25 Sep 2023 22:26:56 +0000
+>>>> Benno Lossin <benno.lossin@proton.me> wrote:
+>>>>
+>>> [...]
+>>>>>
+>>>>> The pointer was originally derived by a call to `into_raw`:
+>>>>> ```
+>>>>>       pub fn into_raw(self) -> *const T {
+>>>>>           let ptr =3D self.ptr.as_ptr();
+>>>>>           core::mem::forget(self);
+>>>>>           // SAFETY: The pointer is valid.
+>>>>>           unsafe { core::ptr::addr_of!((*ptr).data) }
+>>>>>       }
+>>>>> ```
+>>>>> So in this function the origin (also the origin of the provenance)
+>>>>> of the pointer is `ptr` which is of type `NonNull<WithRef<T>>`.
+>>>>> Raw pointers do not lose this provenance information when you cast
+>>>>> it and when using `addr_of`/`addr_of_mut`. So provenance is something
+>>>>> that is not really represented in the type system for raw pointers.
+>>>>>
+>>>>> When doing a round trip through a reference though, the provenance is
+>>>>> newly assigned and thus would only be valid for a `T`:
+>>>>> ```
+>>>>> let raw =3D arc.into_raw();
+>>>>> let reference =3D unsafe { &*raw };
+>>>>> let raw: *const T =3D reference;
+>>>>> let arc =3D unsafe { Arc::from_raw(raw) };
+>>>>> ```
+>>>>> Miri would complain about the above code.
+>>>>>
+>>>>
+>>>> One thing we can do is to opt from strict provenance, so:
+>>>>
+>>>
+>>> A few questions about strict provenance:
+>>>
+>>>> ```
+>>>> let raw =3D arc.into_raw();
+>>>> let _ =3D raw as usize; // expose the provenance of raw
+>>>
+>>> Should this be a expose_addr()?
+>>
+>> Pointer to integer cast is equivalent to expose_addr.
+>>
+>>>> let reference =3D unsafe { &*raw };
+>>>> let raw =3D reference as *const T as usize as *const T;
+>>>
+>>> and this is a from_exposed_addr{_mut}(), right?
+>>
+>> Integer to pointer cast is equivalent to from_exposed_addr.
+>>
+>=20
+> Got it, thanks!
+>=20
+>>>> let arc =3D unsafe { Arc::from_raw(raw) };
+>>>> ```
+>>>>
+>>>
+>>> One step back, If we were to use strict provenance API (i.e.
+>>> expose_addr()/from_exposed_addr()), we could use it to "fix" the
+>>> original problem? By:
+>>>
+>>> *       expose_addr() in as_with_ref()
+>>> *       from_exposed_addr() in `impl From<&WithRef<T>> for Arc`
+>>>
+>>> right?
+>>>
+>>> More steps back, is the original issue only a real issue under strict
+>>> provenance rules? Don't make me wrong, I like the ideas behind strict
+>>> provenance, I just want to check, if we don't enable strict provenance
+>>> (as a matter of fact, we don't do it today),
+>>
+>> Outside of miri, strict provenance is not really something you enable.
+>> It's a set of rules that are stricter than the real rules, that are
+>> designed such that when you follow them, your code will be correct
+>> under any conceivable memory model we might end up with. They will
+>> never be the rules that the compiler actually uses.
+>>
+>> I think by "opt out from strict provenance", Gary just meant "use
+>> int2ptr and ptr2int casts to reset the provenance".
+>>
+>>> will the original issue found by Alice be a UB?
+>>
+>> Yes, it's UB under any ruleset that exists out there. There's no flag
+>> to turn it off.
+>>
+>>> Or is there a way to disable Miri's check on
+>>> strict provenance? IIUC, the cause of the original issue is that "you
+>>> cannot reborrow a pointer derived from a `&` to get a `&mut`, even when
+>>> there is no other alias to the same object". Maybe I'm still missing
+>>> something, but without strict provenance, is this a problem? Or is ther=
+e
+>>> a provenance model of Rust without strict provenance?
+>>
+>> It's a problem under all of the memory models. The rule being violated
+>> is exactly the same rule as the one behind this paragraph:
+>>
+>>> Transmuting an & to &mut is Undefined Behavior. While certain usages ma=
+y appear safe, note that the Rust optimizer is free to assume that a shared=
+ reference won't change through its lifetime and thus such transmutation wi=
+ll run afoul of those assumptions. So:
+>>>
+>>> Transmuting an & to &mut is always Undefined Behavior.
+>>> No you can't do it.
+>>> No you're not special.
+>> From: https://doc.rust-lang.org/nomicon/transmutes.html
+>=20
+> But here the difference it that we only derive a `*mut` from a `&`,
+> rather than transmute to a `&mut`, right? We only use `&` to get a
+> pointer value (a usize), so I don't think that rule applies here? Or in
+> other words, does the following implemenation look good to you?
+>=20
+> =09impl<T: ?Sized> Arc<T> {
+> =09    pub fn as_with_ref(&self) -> &WithRef<T> {
+> =09=09// expose
+> =09=09let _ =3D self.ptr.as_ptr() as usize;
+> =09=09unsafe { self.ptr.as_ref() }
+> =09    }
+> =09}
+>=20
+> =09impl<T: ?Sized> From<&WithRef<T>> for Arc<T> {
+> =09    fn from(b: &WithRef<T>) -> Self {
+> =09=09// from exposed
+> =09=09let ptr =3D unsafe { NonNull::new_unchecked(b as *const _ as usize =
+as *mut _) };
+> =09=09// SAFETY: The existence of `b` guarantees that the refcount is non=
+-zero. `ManuallyDrop`
+> =09=09// guarantees that `drop` isn't called, so it's ok that the tempora=
+ry `Arc` doesn't own the
+> =09=09// increment.
+> =09=09ManuallyDrop::new(unsafe { Arc::from_inner(ptr) })
+> =09=09    .deref()
+> =09=09    .clone()
+> =09    }
+> =09}
+>=20
+>=20
+> An equivalent code snippet is as below (in case anyone wants to try it
+> in miri):
+> ```rust
+>      let raw =3D Box::into_raw(arc);
+>=20
+>      // as_with_ref()
+>      let _ =3D raw as usize;
+>      let reference =3D unsafe { &*raw };
+>=20
+>      // from()
+>      let raw: *mut T =3D reference as *const _ as usize as  *mut _ ;
+>=20
+>      // drop()
+>      let arc =3D unsafe { Box::from_raw(raw) };
+> ```
 
-
-This sentence is unclear to me because it does not explain
-why we need both despite the spec mentions
-'linker-flavor' is inferred from the value of 'linker'.
-
-
-
-The answer exists in this thread.
-"
-As mentioned earlier, we could pass $HOSTLD, but if the linker isn't
-named something accurate (e.g. if the linker is not named lld, but is
-lld), we need to know how to pass a flavor:
-"
-
-Maybe it is worthing menting that HOSTCC may not be properly named.
-
-
-
-
-
-
-
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->
-> Updated the patch to reflect Nick's comment that KBUILD_HOSTLDFLAGS
-> should be respected as well.
->
-> I did not switch it to use HOSTLD for two reasons:
-> * That variable is not globally defined - it is only available in two
->   subdirectories of tools/
-> * C host scripts are linked by HOSTCC as well, even when linking a
->   collection of object files. It *prints* HOSTLD, but invokes HOSTCC.
->   See scripts/Makefile.host cmd_host-cmulti for an example.
->
->  rust/Makefile         | 4 ++++
->  scripts/Makefile.host | 4 ++++
->  2 files changed, 8 insertions(+)
->
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 87958e864be0..b60b7eb8c5a0 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -380,9 +380,13 @@ $(obj)/exports_bindings_generated.h: $(obj)/bindings=
-.o FORCE
->  $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
->         $(call if_changed,exports)
->
-> +KBUILD_HOSTLDFLAGS_SQ =3D '$(subst ','\'',$(KBUILD_HOSTLDFLAGS))'
-
-
-
-This is equivalent to a macro in scripts/Kbuild.include
-
-  escsq =3D $(subst $(squote),'\$(squote)',$1)
-
-
-
-
-
-I would write it directly in cmd_rustc_procmacro.
-
-
-
-
-
-> +
->  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
->        cmd_rustc_procmacro =3D \
->         $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
-> +               -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> +               -Clink-args=3D$(KBUILD_HOSTLDFLAGS_SQ) \
->                 --emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --exter=
-n proc_macro \
->                 --crate-type proc-macro \
->                 --crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
-> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-> index 8f7f842b54f9..dc0410cae5ca 100644
-> --- a/scripts/Makefile.host
-> +++ b/scripts/Makefile.host
-> @@ -87,10 +87,14 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
->                   $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
->                   $(HOSTCXXFLAGS_$(target-stem).o)
->
-> +KBUILD_HOSTLDFLAGS_SQ =3D '$(subst ','\'',$(KBUILD_HOSTLDFLAGS))'
-> +
->  # `--out-dir` is required to avoid temporaries being created by `rustc` =
-in the
->  # current working directory, which may be not accessible in the out-of-t=
-ree
->  # modules case.
->  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile) \
-> +                -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> +                -Clink-args=3D$(KBUILD_HOSTLDFLAGS_SQ) \
->                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
->                   $(HOSTRUSTFLAGS_$(target-stem))
->
-> --
-> 2.42.0.459.ge4e396fd5e-goog
->
-
+I don't understand why we are trying to use ptr2int to fix this.
+Simply wrapping the `T` field inside `WithRef` with `UnsafeCell`
+should be enough.
 
 --=20
-Best Regards
-Masahiro Yamada
+Cheers,
+Benno
+
+
