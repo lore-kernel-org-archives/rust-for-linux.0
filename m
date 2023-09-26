@@ -1,105 +1,66 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5192628B
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 23:24:51 +0000 (UTC)
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF2E101;
-	Mon, 25 Sep 2023 16:24:50 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-5031ccf004cso12226807e87.2;
-        Mon, 25 Sep 2023 16:24:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574AC637
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 01:19:33 +0000 (UTC)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3991101
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 18:19:30 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-273e3d8b57aso1620509a91.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 18:19:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695684288; x=1696289088; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aRn2eUojH5cYHTSFKhn78L78ZOiesxh0ceTCMdYPg6I=;
-        b=POQjTzmLWM1IIAXHdDDall+DJdoc6+iWL9EeQAfjjYbWlWVEZ3ueBIcLVD3ojKB5GG
-         5U6F+OKEF6fn/wOnVzk0BOmOcQoevEY4BnM/7u6XvI5+ecw+FeSRkW/OAroSNFf5yIcU
-         DprvGrBz7rU4vGBv86g2KziPQE1k2etFmHR+pql1p+b4IBKIiAR7IpG1GObn1rDE2DmP
-         uaIvcWQqTDAYujoIF55Kk4Rlbz3l9buAKCjF29gpEORAH/iPCHWjVd13VEY6OgeZKg//
-         oM8sGnCYaNC27/KrY7Q8eoXDYgWR2S1XHGrTBQnSfdk+0hHaT8aL1UbXldwovk7LKcm1
-         Iavw==
+        d=gmail.com; s=20230601; t=1695691170; x=1696295970; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fsJ1AG+PItAMxYQGXBlLsaQNPUUqgPIQhgj/xs3jUPE=;
+        b=l2ENZvLifjBQPX9BmoBcqQFC5Y9Cev7OtOPU9Ek11h+PV71ikxyEXgHFxTpkUSwnZ4
+         33PK2t/SIfFomRvPq5lPJMNSbAqv1bI6Z1HwtZNl7AVA+WfkhBH1boU26D2YisNt5e2g
+         bwjBvh+sBpQ9BftEw8xXqj7D2lCNlHAs5ZlUBU7y9tsvuJhW+ZjsRCvQjpW5C14dA/jX
+         wSI08aD4rNWb623AcC3BM1XIEziE0SzlJImA+Yg0CGXGKtOMXG1v7cEpRinmHIFxz22h
+         ofVfIhjATwDSlwJjyKBL10XVuqmPCxomNiVlXBhXb9DtnBSdsiv28gpedDApFPZcYnLE
+         n/pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695684288; x=1696289088;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aRn2eUojH5cYHTSFKhn78L78ZOiesxh0ceTCMdYPg6I=;
-        b=C+OkF7bqwCNqmJP32rz+aULbjBUr7BF+I2Vhzlu/J34L00hu++6kbO43MP8Sl1r2F7
-         umnwJTldBfAsx4hw6Sx5AqjUy+fCKrzgZQVJmDJlGbO+a0l2J1fEEwx8CCrFMF68clfd
-         BbE+GGBwgM8iv1+0BCZOAiElTcfQNW7z7SA9ZhIcFt1ZYeTt118xSSuBxvhbnAbQtU/6
-         3l9VO9UdSmi7uZb2zgS4NsLYrYudn6lIfTkfaG4MV57NUMaEinTSAUXcAjTxtg68Xzvr
-         LkQTiingstPUEwE8wsd7Ya2zLxO3IzLQ74hLXHQ+x822TcV6ICzeIISVwBUKn7GEXbuy
-         pduw==
-X-Gm-Message-State: AOJu0YzBHPzJt+ckyxESMZg6t07V8HDsOwPC+JkoRh9P377R0G6263MG
-	Xg8R8rm1VL1Nmey9IBOKYvE=
-X-Google-Smtp-Source: AGHT+IHKljnrGeJbIfz2RhZgpIhu/Pm8h7UegD6DUEjx0OEUGy9MMy5JIE64YHfBFKZmoPoqonJauw==
-X-Received: by 2002:a05:6512:3af:b0:500:9839:b13a with SMTP id v15-20020a05651203af00b005009839b13amr5714411lfp.66.1695684288421;
-        Mon, 25 Sep 2023 16:24:48 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id g7-20020aa7d1c7000000b0053112d6a40esm6103001edp.82.2023.09.25.16.24.46
+        d=1e100.net; s=20230601; t=1695691170; x=1696295970;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fsJ1AG+PItAMxYQGXBlLsaQNPUUqgPIQhgj/xs3jUPE=;
+        b=dwZvmD4REbV6RUUwdjCYCxi/an3gawznctBpO6ioaclV5iMLJ1ej0wzSo0l3lbsYOK
+         9G51MygyarOXyENC2+WowyHs5UnFe625Nv3r9xOIm/QCSHks/gxQ5mh6bEgj+wY6uc2Q
+         UF/iZPQer8yCiyiiyNPKwmyQoes6LJMjee27CFizh4r9jjENejv/wG3neTJ63uW/V0be
+         OsF40gxHu/TsOP9kv3OzahA6ZifRNeGi6q4ubhFVyLcoJ7jq/HpXwP/Yr4tw/oEaoiME
+         lOsR0NwTfhkTuNiHB+Jb1IUrx6kYPBMMcrPlWegSKGgkSYVKfMuE/42xsz+5MnVh89uJ
+         mezQ==
+X-Gm-Message-State: AOJu0YySus7iBuBzJ3IAU1nsLmKBRrJhi9usBg0EV8u1StKg6K9vNKFs
+	FXAlVJnV4KQBYeUlHbmK1/A=
+X-Google-Smtp-Source: AGHT+IGUhlQK6S0wR7xttCmtEql+IAiGd2z0Ql0JAy15bdgKU4AfnAtTtSu+pd5ze0IOFeD4RK9j3A==
+X-Received: by 2002:a17:90a:3046:b0:26d:1eff:619f with SMTP id q6-20020a17090a304600b0026d1eff619fmr7219092pjl.2.1695691170044;
+        Mon, 25 Sep 2023 18:19:30 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id mg6-20020a17090b370600b0027722832498sm4105283pjb.52.2023.09.25.18.19.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 16:24:47 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 8398927C0054;
-	Mon, 25 Sep 2023 19:24:45 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 25 Sep 2023 19:24:45 -0400
-X-ME-Sender: <xms:vRYSZSrISRUVxy2t2BqE8GtvM9RGKy2rd2Ij_s2aqdkhUisKnWZFqw>
-    <xme:vRYSZQoS7pTbwJD-EMXUS4LTVVwWw6FwEusuNOZoYLnJ79v7vjLB0pzXjBJOYcQhz
-    sdAuORK7BEX2Wp_8g>
-X-ME-Received: <xmr:vRYSZXMCK5JYC9GHFanJV6L18DSyGGQknK05dA43VFhVAiaqhmcCVRPEgnI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelhedgvddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpefhkeduhfefffdvhffhvdethfevfffhfedtfedvheejgeekfedtgefgveff
-    hfevkeenucffohhmrghinhepphhtrhdrrghsnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
-    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
-    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:vRYSZR7JaiGWhQjRFiJMHPleHmw3-52DWA__lTjBVDL_D66WG8bTAw>
-    <xmx:vRYSZR5aFNOjakWpVF3t2sUlv0Yj74uIIz95qy7tdNO6UIXIvr8aJg>
-    <xmx:vRYSZRjvL8FL7wWn1gyq-1rv3gTPpKPVEuU5s07xE1jjimH95fdJ9A>
-    <xmx:vRYSZdj3fwL6qcxZK2upwCXFITldHCqx7qs3mHGTD4ot80J9Rm-kSw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 Sep 2023 19:24:44 -0400 (EDT)
-Date: Mon, 25 Sep 2023 16:24:08 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <alice@ryhl.io>, Alice Ryhl <aliceryhl@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	linux-kernel@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Message-ID: <ZRIWmPa0mN6s7Yoj@boqun-archlinux>
-References: <14513589-cc31-8985-8ff6-a97d2882f593@proton.me>
- <ZRGyRQuBcWvgtdNR@Boquns-Mac-mini.home>
- <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
- <ZRHWqbvYlXBXEOh-@boqun-archlinux>
- <c5134a1a-a60d-73bb-9faa-aa1dfc3bc30d@proton.me>
- <ZRIB0hXNvmJtmyak@boqun-archlinux>
- <edc0b599-c5d1-4e9c-a51b-eb8ceaef7acc@ryhl.io>
- <ZRIDc_x9Qh5EJNC8@boqun-archlinux>
- <61ccfb87-54fd-3f1b-105c-253d0350cd56@proton.me>
- <ZRILEIsKW6LsGdfb@boqun-archlinux>
+        Mon, 25 Sep 2023 18:19:29 -0700 (PDT)
+Date: Tue, 26 Sep 2023 10:19:28 +0900 (JST)
+Message-Id: <20230926.101928.767176570707357116.fujita.tomonori@gmail.com>
+To: wedsonaf@gmail.com
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com
+Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY
+ drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANeycqo5Ujf+tMTkMOVqc8znz3Kd4MFUyhfvNw3cRNPdYVSxBg@mail.gmail.com>
+References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
+	<20230924064902.1339662-2-fujita.tomonori@gmail.com>
+	<CANeycqo5Ujf+tMTkMOVqc8znz3Kd4MFUyhfvNw3cRNPdYVSxBg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZRILEIsKW6LsGdfb@boqun-archlinux>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -107,84 +68,419 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Sep 25, 2023 at 03:34:56PM -0700, Boqun Feng wrote:
-[...]
-> > >>>
-> > >>> Hmm... but we do the similar thing in `Arc::from_raw()`, right?
-> > >>>
-> > >>>       	pub unsafe fn from_raw(ptr: *const T) -> Self {
-> > >>> 	    ..
-> > >>> 	}
-> > >>>
-> > >>> , what we have is a pointer to T, and we construct a pointer to
-> > >>> `ArcInner<T>/WithRef<T>`, in that function. Because the `sub` on pointer
-> > >>> gets away from provenance? If so, we can also do a sub(0) in the above
-> > >>> code.
-> > >>
-> > >> Not sure what you mean. Operations on raw pointers leave provenance
-> > >> unchanged.
-> > > 
-> > > Let's look at the function from_raw(), the input is a pointer to T,
-> > > right? So you only have the provenance to T, but in that function, the
-> > > pointer is casted to a pointer to WithRef<T>/ArcInner<T>, that means you
-> > > have the provenance to the whole WithRef<T>/ArcInner<T>, right? My
-> > > question is: why isn't that a UB?
-> > 
-> > The pointer was originally derived by a call to `into_raw`:
-> > ```
-> >      pub fn into_raw(self) -> *const T {
-> >          let ptr = self.ptr.as_ptr();
-> >          core::mem::forget(self);
-> >          // SAFETY: The pointer is valid.
-> >          unsafe { core::ptr::addr_of!((*ptr).data) }
-> >      }
-> > ```
-> > So in this function the origin (also the origin of the provenance)
-> > of the pointer is `ptr` which is of type `NonNull<WithRef<T>>`.
-> > Raw pointers do not lose this provenance information when you cast
-> > it and when using `addr_of`/`addr_of_mut`. So provenance is something
-> > that is not really represented in the type system for raw pointers.
-> 
-> Ah, I see, that's the thing I was missing. Now it makes much sense to
-> me, thank you both!
-> 
-> > 
-> > When doing a round trip through a reference though, the provenance is
-> > newly assigned and thus would only be valid for a `T`:
-> > ```
-> > let raw = arc.into_raw();
-> > let reference = unsafe { &*raw };
-> > let raw: *const T = reference;
-> > let arc = unsafe { Arc::from_raw(raw) };
-> > ```
-> 
-> Agreed. This example demonstrates the key point: the provenances of raw
-> pointers are decided at derive time.
-> 
+Hi, thanks for reviewing!
 
-So the original problem the Alice brought up is also because of the
-provenance, right? To get a `&WithRef<T>`, we reborrow the pointer to
-get a `&`, and any pointer derived from that reference will have a
-different (and read-only) provenance, which causes the problem. Like:
+On Sun, 24 Sep 2023 09:56:29 -0300
+Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 
-```rust
-let raw = Box::into_raw(arc);
-let reference = unsafe { &*raw }; // as_with_ref()
-let raw: *mut T = reference as *const _ as  *mut _ ;
-let arc = unsafe { Box::from_raw(raw) };
-```
-
-Regards,
-Boqun
-
-> Regards,
-> Boqun
+>> +/// Corresponds to the kernel's `enum phy_state`.
+>> +#[derive(PartialEq)]
+>> +pub enum DeviceState {
+>> +    /// PHY device and driver are not ready for anything.
+>> +    Down,
+>> +    /// PHY is ready to send and receive packets.
+>> +    Ready,
+>> +    /// PHY is up, but no polling or interrupts are done.
+>> +    Halted,
+>> +    /// PHY is up, but is in an error state.
+>> +    Error,
+>> +    /// PHY and attached device are ready to do work.
+>> +    Up,
+>> +    /// PHY is currently running.
+>> +    Running,
+>> +    /// PHY is up, but not currently plugged in.
+>> +    NoLink,
+>> +    /// PHY is performing a cable test.
+>> +    CableTest,
+>> +}
+>> +
+>> +/// Represents duplex mode
 > 
+> nit: please add a period to the end of sentences. If nothing else, for
+> consistency with the rest of the Rust code.
+
+Oops, fixed.
+
+
+>> +pub enum DuplexMode {
+>> +    /// Full-duplex mode
+>> +    Half,
+>> +    /// Half-duplex mode
+>> +    Full,
+>> +    /// Unknown
+>> +    Unknown,
+>> +}
+>> +
+>> +/// Wraps the kernel's `struct phy_device`.
+>> +#[repr(transparent)]
+>> +pub struct Device(Opaque<bindings::phy_device>);
+>> +
+>> +impl Device {
+>> +    /// Creates a new [`Device`] instance from a raw pointer.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
+>> +    /// may read or write to the `phy_device` object.
+>> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
 > 
-> > Miri would complain about the above code.
-> > 
-> > -- 
-> > Cheers,
-> > Benno
-> > 
-> > 
+> Does this function need to be public? Can it be `pub(crate)`?
+
+Yeah, pub could be dropped. Should I?
+
+> Is the requirement that nobody else may read or write to `phy_device` realistic?
+
+Yes. The Device objects are used only inside the callbacks in
+phy_driver. PHY drivers assume exclusive access.
+
+As Andrew pointed out, resume/suspend dosn't hold phy_device's mutex
+but still looks like PHY drivers assume exclusive access. After
+googling, I leant that they have been trying to fix this locking
+issue. I'll update the code accordingly.
+
+
+>> +        unsafe { &mut *(ptr as *mut Self) }
+>> +    }
+>> +
+>> +    /// Gets the id of the PHY.
+>> +    pub fn id(&mut self) -> u32 {
+>> +        let phydev = Opaque::get(&self.0);
+> 
+> I don't think you need this verbose syntax, you could just do:
+> 
+> let phydev = self.0.get();
+> 
+> The same apply to all instances below.
+
+Nice, fixed.
+
+>> +        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
+>> +        unsafe { (*phydev).phy_id }
+>> +    }
+>> +
+>> +    /// Gets the state of the PHY.
+>> +    pub fn state(&mut self) -> DeviceState {
+>> +        let phydev = Opaque::get(&self.0);
+>> +        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
+>> +        let state = unsafe { (*phydev).state };
+>> +        match state {
+>> +            bindings::phy_state::PHY_DOWN => DeviceState::Down,
+>> +            bindings::phy_state::PHY_READY => DeviceState::Ready,
+>> +            bindings::phy_state::PHY_HALTED => DeviceState::Halted,
+>> +            bindings::phy_state::PHY_ERROR => DeviceState::Error,
+>> +            bindings::phy_state::PHY_UP => DeviceState::Up,
+>> +            bindings::phy_state::PHY_RUNNING => DeviceState::Running,
+>> +            bindings::phy_state::PHY_NOLINK => DeviceState::NoLink,
+>> +            bindings::phy_state::PHY_CABLETEST => DeviceState::CableTest,
+>> +        }
+> 
+> Wouldn't it make more sense to implement `TryFrom<T>` for
+> `DeviceState` (where `T` is the type of `phydev.state`)? This way
+> separate the concerns: `TryFrom` does the conversion and `state()`
+> fetches it from a PHY.
+
+Not sure. This is one of discussed issues on v1; what can/should we
+return when TryFrom fails? If it fails, the phylib state machine is
+already broken.
+
+
+>> +    /// Sets the speed of the PHY.
+>> +    pub fn set_speed(&mut self, speed: i32) {
+> 
+> Are negative speeds meaningful? If not, we should make `speed`
+> unsigned. (And convert appropriately when storing in phydev.speed.)
+
+Fixed.
+
+
+>> +        let phydev = Opaque::get(&self.0);
+>> +        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
+>> +        unsafe {
+>> +            (*phydev).speed = speed;
+>> +        }
+>> +    }
+>> +
+>> +    /// Sets duplex mode.
+>> +    pub fn set_duplex(&mut self, mode: DuplexMode) {
+>> +        let phydev = Opaque::get(&self.0);
+>> +        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
+>> +        unsafe {
+>> +            match mode {
+>> +                DuplexMode::Full => (*phydev).duplex = bindings::DUPLEX_FULL as i32,
+>> +                DuplexMode::Half => (*phydev).duplex = bindings::DUPLEX_HALF as i32,
+>> +                DuplexMode::Unknown => (*phydev).duplex = bindings::DUPLEX_UNKNOWN as i32,
+>> +            }
+>> +        }
+> 
+> To avoid repeating `(*phydev).duplex =` and to reduce the amount of
+> code inside the unsafe block, I suggest you do something like this
+> here:
+> 
+> let v = match mode {
+>     DuplexMode::Full => bindings::DUPLEX_FULL,
+>     DuplexMode::Half => bindings::DUPLEX_HALF,
+>     DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN,
+> };
+> 
+> // SAFETY: This object is initialized by the `from_raw` constructor,
+> so it's valid.
+> unsafe { (*phydev).duplex = v};
+
+Done.
+
+
+> In fact, for this enum, you wan to use #[repr(i32)] and assign values
+> from `bindings` so that you can avoid the match as convert using just
+> `mode as i32`. See for example:
+> 
+> https://github.com/wedsonaf/linux/blob/rtarfs/rust/kernel/fs.rs#L71
+
+I slightly prefer match but either works for me. As I wrote in another
+mail, I'm not sure if we can handle nicely.
+
+
+>> +    }
+>> +
+>> +    /// Reads a given C22 PHY register.
+>> +    pub fn read(&mut self, regnum: u16) -> Result<u16> {
+>> +        let phydev = Opaque::get(&self.0);
+>> +        // SAFETY: This object is initialized by the `from_raw` constructor,
+>> +        // so an FFI call with a valid pointer.
+>> +        let ret = unsafe {
+>> +            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum as u32)
+>> +        };
+>> +        if ret < 0 {
+>> +            Err(Error::from_errno(ret))
+>> +        } else {
+>> +            Ok(ret as u16)
+>> +        }
+>> +    }
+> 
+> Is there any reason why you can't use `to_result` here?
+> 
+> I'm thinking something along the lines of:
+> 
+>     // SAFETY: ...
+>     let ret = to_result(unsafe { bindings::mdiobus_read(...) })?;
+>     Ok(ret as u16)
+
+Can we? to_result() doens't return a value on success.
+
+pub fn to_result(err: core::ffi::c_int) -> Result {
+    if err < 0 {
+        Err(Error::from_errno(err))
+    } else {
+        Ok(())
+    }
+}
+
+something like to_result_with_value() might be useful, I guess.
+
+
+> The same applies to similar code below.
+
+Fixed where to_result() can be used.
+
+>> +/// PHY is internal.
+>> +pub const PHY_IS_INTERNAL: u32 = bit(0);
+>> +/// PHY needs to be reset after the refclk is enabled.
+>> +pub const PHY_RST_AFTER_CLK_EN: u32 = bit(1);
+>> +/// Polling is used to detect PHY status changes.
+>> +pub const PHY_POLL_CABLE_TEST: u32 = bit(2);
+>> +/// Don't suspend.
+>> +pub const PHY_ALWAYS_CALL_SUSPEND: u32 = bit(3);
+> 
+> To group these consts together so that it's clear they're related, we
+> normally create a module: see for example these file flags:
+> https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/file.rs#L25
+> 
+> /// Flags associated with a [`File`].
+> pub mod flags {
+>     /// File is opened in append mode.
+>     pub const O_APPEND: u32 = bindings::O_APPEND;
+> 
+>    /...
+> }
+
+I see, fixed.
+
+
+>> +/// An adapter for the registration of a PHY driver.
+>> +pub struct Adapter<T: Driver> {
+>> +    _p: PhantomData<T>,
+>> +}
+>> +
+>> +impl<T: Driver> Adapter<T> {
+>> +    /// Creates a new `Adapter` instance.
+>> +    pub const fn new() -> Adapter<T> {
+>> +        Self { _p: PhantomData }
+>> +    }
+>> +
+>> +    unsafe extern "C" fn soft_reset_callback(
+>> +        phydev: *mut bindings::phy_device,
+>> +    ) -> core::ffi::c_int {
+>> +        from_result(|| {
+>> +            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
+> 
+> I'm sure the C the API guarantees that it's valid. But does it
+> guarantee that nobody else is reading or writing to phydev? I haven't
+> looked at the code but I'd be very surprised if it did.
+>
+> In any case, this is part of the safety requirements of `from_raw`.
+> You need to address this likely unsoundness here and in the functions
+> below.
+
+As explained above, seems that that's how PHY drivers are implemented.
+
+
+>> +    unsafe extern "C" fn read_mmd_callback(
+>> +        phydev: *mut bindings::phy_device,
+>> +        devnum: i32,
+>> +        regnum: u16,
+>> +    ) -> i32 {
+>> +        from_result(|| {
+>> +            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
+>> +            let dev = unsafe { Device::from_raw(phydev) };
+>> +            let ret = T::read_mmd(dev, devnum as u8, regnum)?;
+> 
+> For devnum, I think it makes more sense to use `try_into` to convert
+> it to u8 and fail if it doesn't fit. Or have `T::read_mmd` take an
+> `i32` as argument.
+
+phylib makes sure that devnum is in a range before this funcation is
+called. it needs to be 0..31, not all u8 . We still need to use
+try_into() here?
+
+
+>> +    /// Creates the kernel's `phy_driver` instance.
+>> +    ///
+>> +    /// This is used by [`module_phy_driver`] macro to create a static array of phy_driver`.
+>> +    pub const fn create_phy_driver() -> Opaque<bindings::phy_driver> {
+>> +        Opaque::new(bindings::phy_driver {
+>> +            name: T::NAME.as_char_ptr() as *mut i8,
+>> +            flags: <T>::FLAGS,
+> 
+> I don't think you need these brackets around `T`, i.e., `T::FLAGS`
+> should suffice.
+> 
+> The same applies to all instances below.
+
+Ah, fixed.
+
+
+>> +/// Corresponds to functions in `struct phy_driver`.
+>> +#[vtable]
+> 
+> We use this only when the C side offers some default non-trivial
+> behaviour for some of the callbacks (in which case it doesn't make
+> sense to replicate in Rust). But if the default behaviour is similar
+> to our default implementations below (e.g., return `code::ENOTSUPP`),
+> then we can simply drop this tag and simplify the code above by
+> dropping the `HAS_XXX` checks.
+> 
+> Do you actually need vtable in PHY?
+
+I might misunderstand vtable.
+
+What PHY bindings want is: there are many callbacks in PHY drivers but
+most of PHY drivers implement only some. The callbacks are not
+implemented in a driver must be NULL.
+
+
+>> +pub trait Driver {
+>> +    /// Corresponds to `flags` in `struct phy_driver`.
+> 
+> Please document this properly. It's to ok to explain what it refers
+> to, but we should also say what it does and what the accepted  values
+> are. (For example, but putting the valid flags in a module -- as I
+> suggest above -- and say here that valid values are combinations of
+> the value in module `X`).
+> 
+> Part of the reason we're introducing Rust is to make it simpler (and
+> safer) to write kernel code. This includes better documentation and
+> not having to go read the C code to understand how things work.
+> 
+> In other words, if someone is writing a PHY driver in Rust, ideally
+> they should be able to just read the Rust documentation and know what
+> they need to do.
+> 
+> I know it's painful to do this (I've done it several times), but
+> that's part of the work we need to put in while building these
+> abstractions.
+
+Sure, I could copy-and-paste comments in phylib. 
+
+
+>> +/// Registration structure for a PHY driver.
+>> +pub struct Registration {
+>> +    module: &'static crate::ThisModule,
+>> +    drivers: Option<&'static [Opaque<bindings::phy_driver>]>,
+>> +}
+>> +
+>> +impl Registration {
+>> +    /// Creates a new `Registration` instance.
+>> +    pub fn new(module: &'static crate::ThisModule) -> Self {
+>> +        Registration {
+>> +            module,
+>> +            drivers: None,
+>> +        }
+>> +    }
+>> +
+>> +    /// Registers a PHY driver.
+>> +    pub fn register(&mut self, drivers: &'static [Opaque<bindings::phy_driver>]) -> Result {
+>> +        if drivers.len() > 0 {
+>> +            // SAFETY: Just an FFI call.
+> 
+> This is not a good-enough justification.
+> 
+> There's a bunch of pointers passed in. You need to justify why they're
+> good now and why they'll remain good. Does `phy_drivers_register`
+> require that pointers remain alive just during the call or until
+> they're unregistered? If the latter (which I assume to be the case),
+> you need to justify how it is that they remain valid. If they need to
+> be pinned, how are you guaranteeing that?
+
+Requiring a static array doesn't guarantee that?
+
+
+>> +            let ret = unsafe {
+>> +                bindings::phy_drivers_register(
+>> +                    drivers[0].get(),
+>> +                    drivers.len() as i32,
+>> +                    self.module.0,
+>> +                )
+>> +            };
+>> +            if ret != 0 {
+>> +                return Err(Error::from_errno(ret));
+>> +            }
+>> +            self.drivers = Some(drivers);
+>> +            Ok(())
+>> +        } else {
+>> +            Err(code::EINVAL)
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +impl Drop for Registration {
+>> +    fn drop(&mut self) {
+>> +        if let Some(drv) = self.drivers.take() {
+>> +            // SAFETY: Just an FFI call.
+> 
+> Again, this isn't really a good justification.
+> 
+> At the very least, these must have been previously registered (and not
+> unregistered since then).
+
+Will try to improve.
+
+
+>> +/// Declares a kernel module for PHYs drivers.
+>> +///
+>> +/// This creates a static array of `struct phy_driver] and registers it.
+> 
+> Typo: missing backtick.
+
+Oops, fixed.
+
+
+Thanks,
