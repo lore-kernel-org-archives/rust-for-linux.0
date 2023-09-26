@@ -1,42 +1,42 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224114A32
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 06:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0603A185A
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 06:54:25 +0000 (UTC)
 Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C968E6
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 23:20:35 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9a6190af24aso965962866b.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 23:20:35 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B4B0F3
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 23:54:24 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-991c786369cso962126966b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Sep 2023 23:54:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1695709234; x=1696314034; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1695711262; x=1696316062; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:references:in-reply-to
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pp/B9nL6NDpOnEbUyT1OfK+7D0Ozo/hUqBQXOVCXN+w=;
-        b=Ia4Wh8w2gkzzGjXbVIczNBTdeOmaS3Q5fyVB3QPruvAc+bADi9bbKUehqAQod955XF
-         TzX+Zl8S07xz9u6Y3jtlBlrC3F1+C6G2z94iC/1vIs9TKSkzJpJoeGvk6tKTgsM/aLsG
-         pTAMawo2vWjhU2Z/do997mop2RTpOhXHSVmol0cLJEIIvYREQDVuYku9vVB9Gc1ZgJlZ
-         7QxnSXc8KD//Vy0sWX6lcbMEOBXZrK2dKB2Ue+X7nBL0ggPEfg+hILDBj+MIC0HLRAQs
-         A9078PI2Ii6oyDxMM6Gptw7LctdWFFRKg6a8fnzzM6k5caKucOQsu9t+aiEa8OVhDAXN
-         /63w==
+        bh=mtaQFeErYEc5SwJkh4GjNe1ui54OdRbC163GbH+CxIE=;
+        b=ce66e2et3I0n2Ds6RlEAgVzIixZsYB2bMPCZsO2pL0GkxdtMnBgMJtnTNaPupLmTD6
+         mz0tiCUmz1hClQs/yL5A4KxSwb4lzUFj7FED10jxbXXdYHyFr2bYqy52WHaqyEbdPiRj
+         md+alJM4aMqrY16j2hxCbtNjOKinaiOoUIln2D8HKYq8LB/A23QOKBV5LAycmwHgdkIP
+         XMXbvaJFj3DEhwaeiWYOBdxcI/2Yt3Xa/yYi27eERegmwx1pWJoDZlmIxrhK8YYp1iq2
+         V0AfhWzxjhobV7G6WD5b1KQPA2YqRA47NBvjzC4rDrdJ9Rl8RrDQyQlS9czURzWBtnKD
+         WmnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695709234; x=1696314034;
+        d=1e100.net; s=20230601; t=1695711262; x=1696316062;
         h=cc:to:subject:message-id:date:from:references:in-reply-to
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pp/B9nL6NDpOnEbUyT1OfK+7D0Ozo/hUqBQXOVCXN+w=;
-        b=Vzl7gy0JffGnhPWJO0KTnwZNw28/0IsmS7AkqPRcykDkiIe7QmSFxyNXHEJNdwgsjU
-         FFuXMDRaQ/PmtQdaXMj9yyz8LinFp9YIc9BJUK7b0yD0VkAFkk/mO/Z6tsKTI2gt2sf4
-         hjXGzHOILYEvf/cLE/c7tP6O1z2Nsw3pDWi1kX89cJGvp7NoXVIowmxMtn5DHvnaHlRA
-         qdmXPSk1Zif1ehNS7Xi13jftXA2xtscHLox4WJO1icJPfItbfBlSbubRXhdnUIZmCOeL
-         Nt8Ys2F9GCfQdCLE8ILS8fcwLp3FYvt1byZkqaLpyA0ld6UKe8Z9sjGaGXPWemeMf4NQ
-         vvvA==
-X-Gm-Message-State: AOJu0YzdURpj7NbQAMeQiavIWCiyZoayi4n7Z6oeB5Ve3v+DeNUcqfQ5
-	IlKi0dRaVCI16iC8AFH+ijU920UKpJiVZqHHyDAEZA==
-X-Google-Smtp-Source: AGHT+IGZ9/R3lgoUOs46DVTLjXPu+AQM7ntpvbhAPMc6hFOPbAfbHzFV/2PxUfgXPKY7IoqgWJtEWm4t2PZhTII1dGQ=
-X-Received: by 2002:a17:906:9b1:b0:9a1:b950:abab with SMTP id
- q17-20020a17090609b100b009a1b950ababmr6331733eje.32.1695709233990; Mon, 25
- Sep 2023 23:20:33 -0700 (PDT)
+        bh=mtaQFeErYEc5SwJkh4GjNe1ui54OdRbC163GbH+CxIE=;
+        b=Q1izzQXPY5czkXhFKil9/BNL75dfY1t+zBYMzUXkUIbqECXBMRhsdqxZfAje6Ih3Uq
+         cStPEg/QFJ+dC34mk6VsAoDQa33yHnrs+ffCz/QR1A4p8GRtMc6B48SvbkN7JiZZcmvG
+         NvyDjF0vjvXEHmblmtLX4xOpihN1At4UTEle9rDGn68RFrndI2gPwn43vtv4HaEfwuXo
+         EyoYUuJ0qEluCsWN73Ie0aTRaYSsasiXbpMrZvnrFFyQMxNvOritMWSIBrmEL8Km9VS5
+         STLyz1mPlmzFcLV1TXhF5CEDAECdfJL1vqSO0IjaD/FiV0yVzNN/yUS1nqSBDtfHggS1
+         V6WQ==
+X-Gm-Message-State: AOJu0YzhOqael5cI0PlJbEVVfQvanmar+LDM7SF6m9eP3QiP8h0/5soA
+	JLm39Bzqr+/6Zsuyq7gBrslIp6PI+bc9IPWRpZIHmQ==
+X-Google-Smtp-Source: AGHT+IGPfbLtiHynR02TkddCLmQUtUZRNOqhYo0NjZP/hzU1k8a6JUhSCo0L+XzCYip9eCK9tCWctlh7tsZmbYLnJ4s=
+X-Received: by 2002:a17:906:5357:b0:9ae:6196:d80e with SMTP id
+ j23-20020a170906535700b009ae6196d80emr8041065ejo.18.1695711262477; Mon, 25
+ Sep 2023 23:54:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,48 +44,52 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Received: by 2002:a17:907:708:b0:9ae:22c3:5b8 with HTTP; Mon, 25 Sep 2023
- 23:20:33 -0700 (PDT)
-In-Reply-To: <20230924064902.1339662-4-fujita.tomonori@gmail.com>
-References: <20230924064902.1339662-1-fujita.tomonori@gmail.com> <20230924064902.1339662-4-fujita.tomonori@gmail.com>
+ 23:54:21 -0700 (PDT)
+In-Reply-To: <20230924064902.1339662-2-fujita.tomonori@gmail.com>
+References: <20230924064902.1339662-1-fujita.tomonori@gmail.com> <20230924064902.1339662-2-fujita.tomonori@gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 26 Sep 2023 02:20:33 -0400
-Message-ID: <CALNs47tecmP6yL=ogjEDPuLBS6q-E=fyya7xKQ-c2Uc7kTsx_A@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/3] net: phy: add Rust Asix PHY driver
+Date: Tue, 26 Sep 2023 02:54:21 -0400
+Message-ID: <CALNs47vE7p_m=q0Q5+bHUSVaNVEbfeJfZFHS9AkT1UaUMvuevQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY drivers
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
 	miguel.ojeda.sandonis@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 On 9/24/23, FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index e8811700239a..0588422e273c 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -14,6 +14,7 @@
+>  #![no_std]
+>  #![feature(allocator_api)]
+>  #![feature(coerce_unsized)]
+> +#![feature(const_maybe_uninit_zeroed)]
+>  #![feature(dispatch_from_dyn)]
+>  #![feature(new_uninit)]
+>  #![feature(receiver_trait)]
 
-> +struct RustAsixPhy;
-> +
-> +impl RustAsixPhy {
-> +    // Performs a software PHY reset using the standard
-> +    // BMCR_RESET bit and poll for the reset bit to be cleared.
-> +    // Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY
-> implementation
-> +    // such as used on the Individual Computers' X-Surf 100 Zorro card.
-> +    fn soft_reset(dev: &mut phy::Device) -> Result {
-> +        dev.write(uapi::MII_BMCR as u16, 0)?;
-> +        dev.genphy_soft_reset()
-> +    }
-> +}
 
-I don't think there is any reason for this to be a type rather than
-just a function?
+> +            // SAFETY: The rest is zeroed out to initialize `struct
+> phy_driver`,
+> +            // sets `Option<&F>` to be `None`.
+> +            ..unsafe {
+> core::mem::MaybeUninit::<bindings::phy_driver>::zeroed().assume_init() }
+> +        })
 
-    fn asix_soft_reset(dev: &mut phy::Device) -> Result {
-        dev.write(uapi::MII_BMCR as u16, 0)?;
-        dev.genphy_soft_reset()
-    }
+I think we may actually want to avoid using
+`const_maybe_uninit_zeroed` and other features that indirectly rely on
+`const_mut_refs`, just because some of the internals are still TBD.
+That means that the best solution is to create a `const
+DEFAULT_DRIVER: bindings::phy_driver` and use that to fill the
+remaining fields.
 
-Also, we should make sure that the user-available MII_X constants are
-available as a u16 rather than a c_int.
-
-- Trevor
+Which really isn't all that bad since it means that if any fields are
+ever added to `phy_driver`, we will need to confirm that our default
+is OK a single place.
