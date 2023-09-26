@@ -1,269 +1,164 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A1D18656
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 16:35:16 +0000 (UTC)
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE52BF;
-	Tue, 26 Sep 2023 09:35:14 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9a645e54806so1121117466b.0;
-        Tue, 26 Sep 2023 09:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695746112; x=1696350912; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=n9VUrp3V7HhkEVK8SdoBuIWv58SmS3/mbAJKD44Sc9g=;
-        b=E0Aqtm4IViZ0XpafzoDDSxs0ML+JWfHCOJxZFebC4pQmEOCc83YEj4A9RzsRGrVQ1x
-         DCBCisVUt/GLXXty+8Px5VOdYIk2BhVgjZNQ7TaQfWZLbl+ugP0furDpcCpuY8wmZw+o
-         J1TNDDM5gf2r81OOv47nGG0mGPPFi7H4NDc3yns8G2JIML/bdR73otTTEeUp7G/7c7xi
-         zaIQM1RmjUdPInwV8zGEDuThkSbQgvZGzZSEoxOwi88eRB4ldpSP12eGf3Aj/fOcyjYS
-         FCqqU+9fSwyO7s+2XXGOd9W0/TiBmi2IIYVEuO8C743PBlYAEZCoEw+Q0seXeLUvyY1n
-         WDIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695746112; x=1696350912;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n9VUrp3V7HhkEVK8SdoBuIWv58SmS3/mbAJKD44Sc9g=;
-        b=B/u83Jt1ENy4Ek1z88OXnKlQfQtw/sfEahlEEyVsgyEjisuxFq59RhTy7xWFuzbAb/
-         DklAWwedA/l/6DwSnsIZIWiaUbucKTg97ypOcwX+CiatpfPbP6yLH7mkMeDyK+Lcry4F
-         uO6I7mVfyiz7WZpheOai3Vkk3WXS9n3EBCuJF4suaqjEWH8KAbqnwXOU2kezIIa4Q3IO
-         RNKvGFXXAi4n/FMT0exot2R8cmkJvjOGJUhCJOFGsZyMfLi1DAYcMjaajqRf41tRztNb
-         5+eRT/e8nGYDeZT2B+AMjE0QpTGJAiKGGfrUwfsd5wj9ZPHmas4arHJHM6oadyPjs2G6
-         nQHw==
-X-Gm-Message-State: AOJu0YwtLwBrJD56ndZvC/khhcUJZs31UJAT8sWNFCuOsbSagGAegQFs
-	xl0cejaiQh87ijHjwECFH44=
-X-Google-Smtp-Source: AGHT+IEDLWkIJgDZ0H2XXbmFyqUel2oZalabN2K27PwNVCODwC/UED4KoXwMx6pVZlzANJ10qMJSnA==
-X-Received: by 2002:a17:906:2d7:b0:9b2:8323:d916 with SMTP id 23-20020a17090602d700b009b28323d916mr5182924ejk.17.1695746112168;
-        Tue, 26 Sep 2023 09:35:12 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id i18-20020a17090639d200b00982a352f078sm7904773eje.124.2023.09.26.09.35.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 09:35:11 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 3823227C0054;
-	Tue, 26 Sep 2023 12:35:09 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Tue, 26 Sep 2023 12:35:09 -0400
-X-ME-Sender: <xms:PAgTZSjx2OXrVQY8Y57C2hd0q4Qf5mwAT1LzWGF9ncPoLhVjp0CJzA>
-    <xme:PAgTZTC63g7_elbSXTlI2GsGl42eSxlQfFTMXX2yJYU6QzKPalxDBPtGjYOCU8aIQ
-    mQWhU9NeClnbzTnhg>
-X-ME-Received: <xmr:PAgTZaG-vKvDc_owcuQOh7Besoi7dk3MZ-7Q8NrX1w0TmqkgGgo5gjAstoY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddtgdejfecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpedtgeehvefghfegtdektdegtdfggfeitefgffetteetieeihfdtkeffieel
-    vdeigfenucffohhmrghinhepphhtrhdrrghspdhruhhsthdqlhgrnhhgrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
-    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
-    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
-    mhgv
-X-ME-Proxy: <xmx:PAgTZbQ88VF4AVOl2DEDirtKBBgOBEDV-HOZ49csbEGMepMLDbpvKA>
-    <xmx:PAgTZfxUdOpCEb_WxhewKb-l2GvV4-LBJCtdWdhqxJ9qG2DueDYSLA>
-    <xmx:PAgTZZ4zGblsopQnkZqHfyNkz29B3jKFCt_fp8lcg968yqXDC-ACWw>
-    <xmx:PQgTZd5p-xOW0KvirkyjoNZhe2iOCNJcZ_0o-lmRJDxoD7DR5DHIlg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 Sep 2023 12:35:07 -0400 (EDT)
-Date: Tue, 26 Sep 2023 09:35:06 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <alice@ryhl.io>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	linux-kernel@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Message-ID: <ZRMIOsi6-GjFaYLW@Boquns-Mac-mini.home>
-References: <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
- <ZRHWqbvYlXBXEOh-@boqun-archlinux>
- <c5134a1a-a60d-73bb-9faa-aa1dfc3bc30d@proton.me>
- <ZRIB0hXNvmJtmyak@boqun-archlinux>
- <edc0b599-c5d1-4e9c-a51b-eb8ceaef7acc@ryhl.io>
- <ZRIDc_x9Qh5EJNC8@boqun-archlinux>
- <61ccfb87-54fd-3f1b-105c-253d0350cd56@proton.me>
- <20230926162659.6555bcdc@gary-lowrisc-laptop>
- <ZRL3mlWXqseER8xK@Boquns-Mac-mini.home>
- <CAH5fLggUPQtNjLg6BnYHcLmefuHdJpg0_eGVgX+dARUTRHexsA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AF0341B5
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 16:52:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5237EC433CC;
+	Tue, 26 Sep 2023 16:52:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1695747149;
+	bh=jZbXXpwO2YkG3T9wZrnoHzJGOBu0lJuRvun8uFcnm80=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=oYeTi4U8bH1QgNPCJZfgga1Ep2Fw8dnKEc4zzysoAF/WId14gbXUq04eYGPcRBO7S
+	 FlQcf8Nf+p2nibebaTC8w/6Ed/QArZ/uzFAOrTxEjrRz/gHfCl+e9ojgGlP1d2Sdbr
+	 vVxN/bGTx3OQMuSrPbHgoeYC1Y+xyqt+AuiBbJSeJ4baDWlq7Ot29AeVSNds+guWkk
+	 l4+0XuqmFSlbmwCZeGBodUp4jF+ER0UjTkIKBElMi7zjjQ7AoBLJTZoZIoZAGB216J
+	 h/dA0bM8QDfTV2CGJIPt7hQusZhS7opBogPLS8fOvfum5eoCddyy00890+uYuCUi0L
+	 1vO3vWgNjJ4jg==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-1dd54aca17cso1754644fac.3;
+        Tue, 26 Sep 2023 09:52:29 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxGXmLAX8ESTdru+aGegIHe3BBLBAzwuoLnYDot0CVEk/+Omptg
+	TB88zmJhTByumHCnOsLesnKmiefAcGUSEfWXXm8=
+X-Google-Smtp-Source: AGHT+IGbDG6S94fbs66+E4Tj3DnXfB6VaDwQ0LhZUy+fsFfEeskapXLg2Vlht97zugGWE0UNsteaNj4DynwIk415vo8=
+X-Received: by 2002:a05:6870:2d5:b0:1d5:b0b9:f6f1 with SMTP id
+ r21-20020a05687002d500b001d5b0b9f6f1mr12460899oaf.8.1695747148628; Tue, 26
+ Sep 2023 09:52:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLggUPQtNjLg6BnYHcLmefuHdJpg0_eGVgX+dARUTRHexsA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+References: <20230915172900.3784163-1-mmaurer@google.com> <9966E047-44E7-4665-9628-169F3EBE2F06@kloenk.dev>
+ <SLZSYLg5E9OQKI546K87wxTYYLNlT1xM-LhC4W1JFhIate6PFsKq27RcBNhSjUkErYDlzsZB4F2Vc2KOP9tDThg58_tXycWn3K29mQXlFtU=@protonmail.com>
+ <0561303E-2089-43FC-AA31-836C7BB844B7@kloenk.dev> <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
+ <CAKwvOdnUdFjN+aCDrHKP6RzZCFB033ycN_KkB1WKucGd6VzUSg@mail.gmail.com>
+ <CAGSQo00E1Wtg=f9SAcB2na69r4ASJ1L40ASPCyZV9FX+81uJCw@mail.gmail.com>
+ <CAKwvOdnbbStoEeykYnx0jbnR=TAmmcdnOXbbA4Fx0BneFW8Fsg@mail.gmail.com> <CAGSQo01jMFVeqa=99Ne7tDXeOShcHWHBPgyiwZ+tm6x9qRJOfg@mail.gmail.com>
+In-Reply-To: <CAGSQo01jMFVeqa=99Ne7tDXeOShcHWHBPgyiwZ+tm6x9qRJOfg@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 27 Sep 2023 01:51:51 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATH59wQxaMRur9S5=HCi4bo9pREWK5LQjnNwZ5uOt7g=A@mail.gmail.com>
+Message-ID: <CAK7LNATH59wQxaMRur9S5=HCi4bo9pREWK5LQjnNwZ5uOt7g=A@mail.gmail.com>
+Subject: Re: [PATCH] rust: Respect HOSTCC when linking for host
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>, Finn Behrens <me@kloenk.dev>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 26, 2023 at 05:41:17PM +0200, Alice Ryhl wrote:
-> On Tue, Sep 26, 2023 at 5:24 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+On Tue, Sep 19, 2023 at 3:55=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> On Mon, Sep 18, 2023 at 11:43=E2=80=AFAM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
 > >
-> > On Tue, Sep 26, 2023 at 04:26:59PM +0800, Gary Guo wrote:
-> > > On Mon, 25 Sep 2023 22:26:56 +0000
-> > > Benno Lossin <benno.lossin@proton.me> wrote:
+> > On Mon, Sep 18, 2023 at 9:38=E2=80=AFAM Matthew Maurer <mmaurer@google.=
+com> wrote:
 > > >
-> > [...]
+> > > On Mon, Sep 18, 2023 at 8:25=E2=80=AFAM Nick Desaulniers
+> > > <ndesaulniers@google.com> wrote:
 > > > >
-> > > > The pointer was originally derived by a call to `into_raw`:
-> > > > ```
-> > > >      pub fn into_raw(self) -> *const T {
-> > > >          let ptr = self.ptr.as_ptr();
-> > > >          core::mem::forget(self);
-> > > >          // SAFETY: The pointer is valid.
-> > > >          unsafe { core::ptr::addr_of!((*ptr).data) }
-> > > >      }
-> > > > ```
-> > > > So in this function the origin (also the origin of the provenance)
-> > > > of the pointer is `ptr` which is of type `NonNull<WithRef<T>>`.
-> > > > Raw pointers do not lose this provenance information when you cast
-> > > > it and when using `addr_of`/`addr_of_mut`. So provenance is something
-> > > > that is not really represented in the type system for raw pointers.
-> > > >
-> > > > When doing a round trip through a reference though, the provenance is
-> > > > newly assigned and thus would only be valid for a `T`:
-> > > > ```
-> > > > let raw = arc.into_raw();
-> > > > let reference = unsafe { &*raw };
-> > > > let raw: *const T = reference;
-> > > > let arc = unsafe { Arc::from_raw(raw) };
-> > > > ```
-> > > > Miri would complain about the above code.
-> > > >
-> > >
-> > > One thing we can do is to opt from strict provenance, so:
-> > >
+> > > > What happens if you invoke the linker directly?
+> > > Rust unfortunately currently doesn't support invoking the linker
+> > > directly: https://github.com/rust-lang/rust/issues/73632
 > >
-> > A few questions about strict provenance:
+> > Wait; does Rust have its own linker? It doesn't use the system linker?
+> >  Perhaps that's necessary for the rust module format? If so, TIL.
+> It does use the system linker (this is what -C linker is controlling),
+> but the command line passed to the linker may change, extra object
+> files may be added to the command line, etc.
 > >
-> > > ```
-> > > let raw = arc.into_raw();
-> > > let _ = raw as usize; // expose the provenance of raw
+> > > > Generally, the kernel either invokes the compiler or the linker
+> > > > directly. (For assembler, it is typically preprocessed, as are link=
+er
+> > > > scripts!)  So invoking the linker directly is a common pattern in
+> > > > kbuild.  It also makes me slightly sad if the rust compiler ends up
+> > > > invoking a c compiler, even if it's simply to drive the linker.
+> > > As mentioned earlier, we could pass $HOSTLD, but if the linker isn't
+> > > named something accurate (e.g. if the linker is not named lld, but is
+> > > lld), we need to know how to pass a flavor:
+> > > https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-fla=
+vor
+> > > Would it be appropriate to just assume the linker is named correctly?
 > >
-> > Should this be a expose_addr()?
-> 
-> Pointer to integer cast is equivalent to expose_addr.
-> 
-> > > let reference = unsafe { &*raw };
-> > > let raw = reference as *const T as usize as *const T;
+> > If it were not, what does failure look like?
+> That depends. I think it will usually look like "unrecognized flag:
+> blah blah", but that's not guaranteed.
 > >
-> > and this is a from_exposed_addr{_mut}(), right?
-> 
-> Integer to pointer cast is equivalent to from_exposed_addr.
-> 
-
-Got it, thanks!
-
-> > > let arc = unsafe { Arc::from_raw(raw) };
-> > > ```
-> > >
+> > command not found: asdfadfasdf
+> This isn't about command-not-found, it's about "I set
+> HOSTLD=3Dfoo/bar/weirdname, and it is an lld-like linker. rustc invoked
+> it assuming it is an ld-like linker."
 > >
-> > One step back, If we were to use strict provenance API (i.e.
-> > expose_addr()/from_exposed_addr()), we could use it to "fix" the
-> > original problem? By:
+> > Seems fine to me. If the user mis-specifies HOSTLD=3D, then they will
+> > get a similar error, which should be prescriptive enough for them to
+> > figure out how exactly they're "holding it wrong."
 > >
-> > *       expose_addr() in as_with_ref()
-> > *       from_exposed_addr() in `impl From<&WithRef<T>> for Arc`
+> > > > For example, Android carries a downstream patch to set `-fuse-ld=3D=
+lld`
+> > > > for $KBUILD_HOSTCFLAGS, because its build environment doesn't conta=
+in
+> > > > GNU binutils ("guilty, officer").
+> > > Oddly, the Android kernel environment (Kleaf) is the one that I neede=
+d
+> > > this patch to build in, but it seemed to be working without a manual
+> > > KBUILD_HOSTCFLAGS forwarding.
 > >
-> > right?
+> > Surprising that worked.
 > >
-> > More steps back, is the original issue only a real issue under strict
-> > provenance rules? Don't make me wrong, I like the ideas behind strict
-> > provenance, I just want to check, if we don't enable strict provenance
-> > (as a matter of fact, we don't do it today),
-> 
-> Outside of miri, strict provenance is not really something you enable.
-> It's a set of rules that are stricter than the real rules, that are
-> designed such that when you follow them, your code will be correct
-> under any conceivable memory model we might end up with. They will
-> never be the rules that the compiler actually uses.
-> 
-> I think by "opt out from strict provenance", Gary just meant "use
-> int2ptr and ptr2int casts to reset the provenance".
-> 
-> > will the original issue found by Alice be a UB?
-> 
-> Yes, it's UB under any ruleset that exists out there. There's no flag
-> to turn it off.
-> 
-> > Or is there a way to disable Miri's check on
-> > strict provenance? IIUC, the cause of the original issue is that "you
-> > cannot reborrow a pointer derived from a `&` to get a `&mut`, even when
-> > there is no other alias to the same object". Maybe I'm still missing
-> > something, but without strict provenance, is this a problem? Or is there
-> > a provenance model of Rust without strict provenance?
-> 
-> It's a problem under all of the memory models. The rule being violated
-> is exactly the same rule as the one behind this paragraph:
-> 
-> > Transmuting an & to &mut is Undefined Behavior. While certain usages may appear safe, note that the Rust optimizer is free to assume that a shared reference won't change through its lifetime and thus such transmutation will run afoul of those assumptions. So:
+> > > Overall, it sounds like you'd prefer if I set this to use
+> > > `KBUILD_HOSTLD` and `KBUILD_HOSTLDFLAGS`, and leave the linker flavor
+> > > to autodetect?
 > >
-> > Transmuting an & to &mut is always Undefined Behavior.
-> > No you can't do it.
-> > No you're not special.
-> From: https://doc.rust-lang.org/nomicon/transmutes.html
+> > Yes for the first two.
+> >
+> > Dunno, what precisely is a linker flavor?  Is that like a flavor of ice=
+ cream?
+> > Oh, right looking at your link:
+> > https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-flavo=
+r
+> > Seems like if `LLVM=3D1` is set, or `LD=3Dld.lld`, or CONFIG_LD_IS_LLD,=
+ then
+> > the flavor should be set to ld.lld, else ld.  Then the
+> > KBUILD_HOSTLDFLAGS need to be passed, probably.
+> >
+> > But how are there "linker flavors" like ld or ld.lld if you just said
+> > "Rust unfortunately currently doesn't support invoking the linker
+> > directly: https://github.com/rust-lang/rust/issues/73632".  I'm having
+> > trouble reconciling the two.
+> Yes, what I meant by that is that *rustc* wants to invoke the linker,
+> rather than having the surrounding build system invoke the linker. The
+> exact command line passed to the linker in the final link, including
+> potential synthetic objects, is considered an internal detail.
+> >
+> > Can we do something more like the below?
+> >
+> > ifdef CONFIG_LD_IS_LLD
+> > hostrust_flags +=3D -C linker-flavor=3Dld.lld
+> > else
+> > hostrust_flags +=3D -C linker-flavor=3Dld
+> > endif
+> > hostrust_flags +=3D -C linker=3D$(HOSTLD) <todo: figure out how to pass
+> > KBUILD_HOSTLDFLAGS>
+> Yes, I can make host linking use `$(HOSTLD)` and pass the flavor based
+> on CONFIG_LD_IS_LLD. I'll send a variant that does that this
+> afternoon.
 
-But here the difference it that we only derive a `*mut` from a `&`,
-rather than transmute to a `&mut`, right? We only use `&` to get a
-pointer value (a usize), so I don't think that rule applies here? Or in
-other words, does the following implemenation look good to you?
 
-	impl<T: ?Sized> Arc<T> {
-	    pub fn as_with_ref(&self) -> &WithRef<T> {
-		// expose
-		let _ = self.ptr.as_ptr() as usize;
-		unsafe { self.ptr.as_ref() }
-	    }
-	}
+CONFIG_LD_IS_LLD=3Dy states that the linker for the
+kernel space is LLD.
 
-	impl<T: ?Sized> From<&WithRef<T>> for Arc<T> {
-	    fn from(b: &WithRef<T>) -> Self {
-		// from exposed
-		let ptr = unsafe { NonNull::new_unchecked(b as *const _ as usize as *mut _) };
-		// SAFETY: The existence of `b` guarantees that the refcount is non-zero. `ManuallyDrop`
-		// guarantees that `drop` isn't called, so it's ok that the temporary `Arc` doesn't own the
-		// increment.
-		ManuallyDrop::new(unsafe { Arc::from_inner(ptr) })
-		    .deref()
-		    .clone()
-	    }
-	}
+Host programs should not be affected.
 
 
-An equivalent code snippet is as below (in case anyone wants to try it
-in miri):
-```rust
-    let raw = Box::into_raw(arc);
-    
-    // as_with_ref()
-    let _ = raw as usize;
-    let reference = unsafe { &*raw };
-    
-    // from()
-    let raw: *mut T = reference as *const _ as usize as  *mut _ ;
 
-    // drop()
-    let arc = unsafe { Box::from_raw(raw) };
-```
-
-Regards,
-Boqun
-
-> 
-> Alice
-> 
+--=20
+Best Regards
+Masahiro Yamada
