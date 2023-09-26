@@ -1,98 +1,184 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E6F26E34
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 13:46:38 +0000 (UTC)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE1695
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 06:46:33 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c45c45efeeso9640795ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 06:46:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729777479
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 15:24:21 +0000 (UTC)
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D675C116;
+	Tue, 26 Sep 2023 08:24:18 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9adb9fa7200so2022015466b.0;
+        Tue, 26 Sep 2023 08:24:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695735992; x=1696340792; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SUOYDINzw29weh/n5c5Mj1zlRGPRWHz+wTMRFGWQy70=;
-        b=UcUcSYWYa41fWbWnD7Bw08B+EsIuOYkBddSGK7l+iHomJQPap4hNJPmc5mpxbMi62f
-         vNOFd2dbHuyEDiOqsdTykUctvioZCl4IkmCpsRm8QGSkLvPT04fqOAhJBENgjEpvFwmT
-         d4aVo3W5EOi/t5yUfogfT3nzxlV7d+AmVyU/HF6LiQN2Br8R5zxYGpYSgXNdEETdt73P
-         DiI6eRKaANaCMR8tbnRYS6ZcF/UvgDpVYRsHFMaxtl5OtiisacQOQmxRFGY4QYS3j9Sd
-         AWyIZp06RFVDOE0IrH3aqb0LJjgQI9FP1EY8n9o01EK0LDzp9tBf0f7pM3qgmHKlxg85
-         ePPA==
+        d=gmail.com; s=20230601; t=1695741857; x=1696346657; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TToXKTah65ZF4FvTwYn3ycaEKUB3HzvBDx4LOXb4agc=;
+        b=P+U4KcTmAtd1y6VPjzB455x7MDJtgEFkaYipRW7go8jo+BnIWT6iYlHGp1PqGT9QaP
+         XMUDANVGomYXojcFlIEAn4Ao2QMQ+343BKnqASXWAwEB0zzXieEymx4XgGrQEBZDYxrp
+         fINR15pIYBiuOJ2qm9PAv3TDVNGLCUmSqFmeBKq16ISuYG3Gd1ExrtRQ7ME+iSsmdf4l
+         0cFtTFCS3LdXboMsZQEAB/qEENLEfhfx+iXRFhOwbJaDmNkIIE6iZIRiA0Z5b6G180Ul
+         G+reSzupLpHhsu8wLi0+JUi6qpxQEnHTsXOR9RiKk1dp4k304dokPEA9c9B+R1wtoqx7
+         JiYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695735992; x=1696340792;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SUOYDINzw29weh/n5c5Mj1zlRGPRWHz+wTMRFGWQy70=;
-        b=LFnmaxYLx/7wIQY6MIAa9+ht2PxU11VjYATFGA5LqLWikzbGuFqPl7lbmNE1qfQ9NP
-         fgReXBV26CcmBRyLYdtDpt1lgOuUyOB/DYJLDX2eYhh2Ry/3Ahi/XG/Oj6nRP+M6KtxJ
-         4QbeQIoA02mTRtXIDJCwrTLkwgLtJjwuNt5WJTgshgQIJMxCmN5DZUQyx51H2qRdt+UL
-         CYGcEsoHjfQTIn5XDAPTuIouru4BSbyYLTS4AQBW8DHA/Y47Z6UZP+/drpFqh2P7xJ7L
-         rN7Af5FesgezxnIiLM500MYJHyddsYLH8ofCGJ+tPbmxJxGAudTNG1tTjLkzF2vdtN7u
-         i5sA==
-X-Gm-Message-State: AOJu0YxSde3OkCoYUe0gFUzagDln+BXv510fjfbEEpnbBqQ0RUj2GJc+
-	SC2akpX/J2DkArQmo+aQSuI=
-X-Google-Smtp-Source: AGHT+IFOxuHi2G99tEoTfs2Vk11D90G49Kk6eEqrfhuMKoqRjCcKMsm1RkGd7aSXGLcYckMsWx7z2A==
-X-Received: by 2002:a17:902:e74f:b0:1c4:1cd3:8062 with SMTP id p15-20020a170902e74f00b001c41cd38062mr11949936plf.2.1695735992410;
-        Tue, 26 Sep 2023 06:46:32 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id f11-20020a17090274cb00b001bc445e2497sm6971863plt.79.2023.09.26.06.46.31
+        d=1e100.net; s=20230601; t=1695741857; x=1696346657;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TToXKTah65ZF4FvTwYn3ycaEKUB3HzvBDx4LOXb4agc=;
+        b=UHl5WhYWcxoQMF4r73w5PtbQHdlGGTgOvpgvBTd99kRQt9h0U14cgGy6pHY3DQXhbp
+         Jt2ptK9oNmVxqHzyaM1R2yn0bDPCGDnIaxP26fLf0nITBRWTyK4PfMxLC0ueBnHtKwAI
+         zEh3xEPOPPNFuy/q/3DcRDbuiyEkdb7pUpMWgwDRGQg5jdUUZqKA7EIAYgkK9YdyVbrc
+         zpdaEai6e7oT6qqV4mKRdtayG3qA2WIPDdodWbZUJ5Cpsw1Ju2OQCj2HTpHBcxBpcLuW
+         3CKgDMMJBbnwIE+qxJF2zmZTUFLaPSaULE7dg7lfJuxYQq4rSO4h9D+F/BNK7c9oPWPr
+         YqTQ==
+X-Gm-Message-State: AOJu0Yx/FIJ+KVxOhxwQpb2wQze5sbmG9BFU5FU/RooFMF/zyghXDwGP
+	x10qzZpuXPYXq4Gc7K9RHTo=
+X-Google-Smtp-Source: AGHT+IFMNTCvp6Ivt4/5Hq8TYHYZg3LPpGv8htJYJYZ2sn1FaxGruh2TpVzD5BNZPbGzcXulA/sBvg==
+X-Received: by 2002:a17:907:75c2:b0:9a9:f042:deb9 with SMTP id jl2-20020a17090775c200b009a9f042deb9mr4400864ejc.19.1695741857040;
+        Tue, 26 Sep 2023 08:24:17 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id x18-20020a170906b09200b0099c53c44083sm7923906ejy.79.2023.09.26.08.24.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 06:46:31 -0700 (PDT)
-Date: Tue, 26 Sep 2023 22:46:30 +0900 (JST)
-Message-Id: <20230926.224630.1323587629112314285.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, benno.lossin@proton.me,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu
-Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY
- drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72nO=Eje0dv_NCagvTzOLU7WkfM-bwqH33z_kC=f=m1m1A@mail.gmail.com>
-References: <70dbdfd2-9e8d-6985-ae42-0d4f1a7dcef9@proton.me>
-	<20230925.192433.108741056500744806.fujita.tomonori@gmail.com>
-	<CANiq72nO=Eje0dv_NCagvTzOLU7WkfM-bwqH33z_kC=f=m1m1A@mail.gmail.com>
+        Tue, 26 Sep 2023 08:24:16 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 2665727C0054;
+	Tue, 26 Sep 2023 11:24:14 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Tue, 26 Sep 2023 11:24:14 -0400
+X-ME-Sender: <xms:nPcSZb37smFAezOWa4MyJebsZ36Tjlvoue6n9GcWq71-_HosHjUxyg>
+    <xme:nPcSZaEZk6cOIOV9DTb7FivhDdLbWBf2jkHKd2EL8hfTRBVfUQGiV6GhlgDFHCsmX
+    j02kCwZhYJR9cmyNQ>
+X-ME-Received: <xmr:nPcSZb7ndLih9kECBp3MyF6Yy46ne0OWLZzfyLPbCrpo13oEm23iT6gQx8M>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddtgdehkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephfekudfhfeffvdfhhfdvtefhveffhfeftdefvdehjeegkeeftdeggfevfffh
+    veeknecuffhomhgrihhnpehpthhrrdgrshenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
+    nhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngh
+    eppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:nPcSZQ3MBj7-E4n2h-qGjcfLrgGDKveMjRBxIovcEMh-3jBqfT2O2g>
+    <xmx:nPcSZeFTeCLd_wdwQ2Vn9t1ReWKv2Eb9xchE3-W-wYRAdeNFo7f7Fw>
+    <xmx:nPcSZR956rqL1eaLDvhtV1m6JJ_GbWOmJHvMLd2KoGzGOmd5Y3Z-Nw>
+    <xmx:nvcSZZ8RHQsLPMT4O6RaUjk7AlqpbWW6WFtN053WeZVqn_7yC0xGKg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 26 Sep 2023 11:24:12 -0400 (EDT)
+Date: Tue, 26 Sep 2023 08:24:10 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <alice@ryhl.io>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	linux-kernel@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
+ `WithRef`
+Message-ID: <ZRL3mlWXqseER8xK@Boquns-Mac-mini.home>
+References: <14513589-cc31-8985-8ff6-a97d2882f593@proton.me>
+ <ZRGyRQuBcWvgtdNR@Boquns-Mac-mini.home>
+ <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
+ <ZRHWqbvYlXBXEOh-@boqun-archlinux>
+ <c5134a1a-a60d-73bb-9faa-aa1dfc3bc30d@proton.me>
+ <ZRIB0hXNvmJtmyak@boqun-archlinux>
+ <edc0b599-c5d1-4e9c-a51b-eb8ceaef7acc@ryhl.io>
+ <ZRIDc_x9Qh5EJNC8@boqun-archlinux>
+ <61ccfb87-54fd-3f1b-105c-253d0350cd56@proton.me>
+ <20230926162659.6555bcdc@gary-lowrisc-laptop>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230926162659.6555bcdc@gary-lowrisc-laptop>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-SGksDQoNCk9uIE1vbiwgMjUgU2VwIDIwMjMgMTc6NDE6NDEgKzAyMDANCk1pZ3VlbCBPamVkYSA8
-bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT24gTW9uLCBTZXAg
-MjUsIDIwMjMgYXQgMTI6MjTigK9QTSBGVUpJVEEgVG9tb25vcmkNCj4gPGZ1aml0YS50b21vbm9y
-aUBnbWFpbC5jb20+IHdyb3RlOg0KPj4NCj4+IEknbSBub3Qgc3VyZSBlaXRoZXIuIEkgaGF2ZSBu
-byBwcmVmZXJlbmNlIHRob3VnaC4NCj4gDQo+IE9uZSB3YXkgd2UgdXNlZCBpbiBvdGhlciBwbGFj
-ZXMgaW4gdGhlIHBhc3QgaXM6DQo+IA0KPiAgICAgdG9fcmVzdWx0KC4uLik/Ow0KPiAgICAgT2so
-Li4uKQ0KPiANCj4gQnkgdGhlIHdheSwgZm9yIG90aGVyIGtpbmRzIG9mIGNvbmRpdGlvbnMgKGku
-ZS4gaWYgb25lIGNhbm5vdCB1c2UNCj4gYHRvX3Jlc3VsdGApLCBJIHdvdWxkIHN1Z2dlc3QgdGhl
-IGVhcmx5IHJldHVybiBzdHlsZSwgaS5lLiB0aGUgdXN1YWwgQw0KPiBrZXJuZWwgc3R5bGU6DQo+
-IA0KPiAgICAgaWYgY29uZGl0aW9uIHsNCj4gICAgICAgICByZXR1cm4gRXJyKC4uLik7DQo+ICAg
-ICB9DQo+IA0KPiAgICAgT2soLi4uKQ0KPiANCj4gU29tZXRpbWVzIGZvciB0aGUgbGFzdCBvbmUg
-d2UgZG8gdGhpcyB0b28gd2hlbiB0aGUgZnVuY3Rpb24gaXMNCj4gInN5bW1ldHJpYyIgKHBlcnNv
-bmFsbHkgSSB3b3VsZG4ndCBtaW5kIGp1c3QgZG9pbmcgZWFybHkgZm9yIHRob3NlDQo+IGNhc2Vz
-IHRvbywgdG8gYmUgY29uc2lzdGVudCk6DQo+IA0KPiAgICAgaWYgY29uZGl0aW9uIHsNCj4gICAg
-ICAgICBFcnIoLi4uKQ0KPiAgICAgfSBlbHNlIHsNCj4gICAgICAgICBPayguLi4pDQo+ICAgICB9
-DQo+IA0KPiBXaGF0IHdlIHNob3VsZCBub3QgZG8sIGhvd2V2ZXIsIGlzIHRoaXMgKHdoaWNoIHlv
-dSB1c2VkIGluIHRoZSBwYXRjaA0KPiBiZWZvcmUgQmVubm8ncyBzdWdnZXN0aW9ucyB0byB1c2Ug
-YHRvX3Jlc3VsdGApLCBpLmUuIGByZXR1cm5gIGFuZA0KPiBgZWxzZWA6DQo+IA0KPiAgICAgaWYg
-Y29uZGl0aW9uIHsNCj4gICAgICAgICByZXR1cm4gRXJyKC4uLik7DQo+ICAgICB9IGVsc2Ugew0K
-PiAgICAgICAgIE9rKC4uLikNCj4gICAgIH0NCg0KVGhhbmtzISBJIHVwZGF0ZWQgdGhlIGNvZGUu
-DQoNCk5vIGhlbHBlciBmdW5jdGlvbiBmb3IgYSBmdW5jdGlvbiB0aGF0IHJldHVybnMgYXZhbHVl
-IGxpa2UgdGhlDQpmb2xsb3dpbmc/DQoNCmxldCByZXQgPSB1bnNhZmUge2JpbmRpbmdzOjpzb21l
-X2Z1bmN0aW9uKCl9Ow0KaWYgcmV0IDwgMCB7DQogICBFcnIoRXJyb3I6OmZyb21fZXJybm8ocmV0
-KSkNCn0gZWxzZSB7DQogICBPayhyZXQpDQp9DQoNCmlmIHRvX3Jlc3VsdCgpIHJldHVybnMgYSB2
-YWx1ZSwgaXQgY2FuIGhhbmRsZSBib3RoIHR5cGVzLg0KDQoNCj4gKEJ5IHRoZSB3YXksIEkganVz
-dCByZXBvcnRlZA0KPiBodHRwczovL2dpdGh1Yi5jb20vcnVzdC1sYW5nL3J1c3QvaXNzdWVzLzEx
-NjE1MCBzaW5jZSBjb2RlZ2VuIHNlZW1zIHRvDQo+IHN1ZmZlciBpbiBzb21lIGNhc2VzKQ0KDQpI
-bW0sIGhvdyB0aGlzIGNhbiBoYXBwZW4/IFF1aXRlIHN1cnByaXNpbmchDQo=
+On Tue, Sep 26, 2023 at 04:26:59PM +0800, Gary Guo wrote:
+> On Mon, 25 Sep 2023 22:26:56 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+> 
+[...]
+> > 
+> > The pointer was originally derived by a call to `into_raw`:
+> > ```
+> >      pub fn into_raw(self) -> *const T {
+> >          let ptr = self.ptr.as_ptr();
+> >          core::mem::forget(self);
+> >          // SAFETY: The pointer is valid.
+> >          unsafe { core::ptr::addr_of!((*ptr).data) }
+> >      }
+> > ```
+> > So in this function the origin (also the origin of the provenance)
+> > of the pointer is `ptr` which is of type `NonNull<WithRef<T>>`.
+> > Raw pointers do not lose this provenance information when you cast
+> > it and when using `addr_of`/`addr_of_mut`. So provenance is something
+> > that is not really represented in the type system for raw pointers.
+> > 
+> > When doing a round trip through a reference though, the provenance is
+> > newly assigned and thus would only be valid for a `T`:
+> > ```
+> > let raw = arc.into_raw();
+> > let reference = unsafe { &*raw };
+> > let raw: *const T = reference;
+> > let arc = unsafe { Arc::from_raw(raw) };
+> > ```
+> > Miri would complain about the above code.
+> > 
+> 
+> One thing we can do is to opt from strict provenance, so:
+> 
+
+A few questions about strict provenance:
+
+> ```
+> let raw = arc.into_raw();
+> let _ = raw as usize; // expose the provenance of raw
+
+Should this be a expose_addr()?
+
+> let reference = unsafe { &*raw };
+> let raw = reference as *const T as usize as *const T;
+
+and this is a from_exposed_addr{_mut}(), right?
+
+> let arc = unsafe { Arc::from_raw(raw) };
+> ```
+> 
+
+One step back, If we were to use strict provenance API (i.e.
+expose_addr()/from_exposed_addr()), we could use it to "fix" the
+original problem? By:
+
+*	expose_addr() in as_with_ref()
+*	from_exposed_addr() in `impl From<&WithRef<T>> for Arc`
+
+right?
+
+More steps back, is the original issue only a real issue under strict
+provenance rules? Don't make me wrong, I like the ideas behind strict
+provenance, I just want to check, if we don't enable strict provenance
+(as a matter of fact, we don't do it today), will the original issue
+found by Alice be a UB? Or is there a way to disable Miri's check on
+strict provenance? IIUC, the cause of the original issue is that "you
+cannot reborrow a pointer derived from a `&` to get a `&mut`, even when
+there is no other alias to the same object". Maybe I'm still missing
+something, but without strict provenance, is this a problem? Or is there
+a provenance model of Rust without strict provenance?
+
+Regards,
+Boqun
