@@ -1,242 +1,121 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582D66FAB
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 08:27:24 +0000 (UTC)
-Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2104.outbound.protection.outlook.com [40.107.121.104])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53BBFC;
-	Tue, 26 Sep 2023 01:27:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W6P+B8q4ey/47TLLqjNpxjF+8lliyLpMafGtIkwCVBbxYE1fYaNov7LiO+3iV3fI9UKK/pin5grBvfkxJ3q8SvyODPVxqJa2fbQHvU4TahCLQj7LBbbfeq0XFrWWQQIWl3QR6JX8HKTx8HDaGaSIeG1bhl+JW1xZquxIUollyferZHd68Cl/R9UH6jEHTrd56CbVKEd7lBlAdr3DghQl1FVlhElnQUVs8qX8jRme+nf+pTsvZTMqb4TAugBrNHMd+qARcpCeegSG5UyNgaiOsY3sURwE3PGSzTu89/ryr8zNZ9y33+x1ennSn+0EOxUmVw/dFGZFNik8woR4NSx9MA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5AcxoBKS9YjbEwv2THSG18VHhGponiMjbqvC8lSyuqo=;
- b=oV8BD0GvmWPWbgk95No0uzNex7t4ZbePtRnZ4KyXWChSm306LVUWb3Lwp+G3vVGchJaG89UdlVlOihr2YpyZ5e4r1th/nZK6w3IVxjmoI2LO0fmZ+VQBIpxK0XY/syWIlnPO42MSO50NoGAvzPiLxZ+bbCpzVH+fTUjmahyxGcWjyHTpxdDEJHbJOkklrq5hHuwCIRUUFfc44BXwUn9cK/LTUUBiEYXYeu+f7R3PiVP49PNGYBHJFXKHDI0kl7FoorGh9DH1B34kqdaU1T9oan+2URB4TD4oe0oQ/jVXuyWWVU7WwKiQKy9I506pGrjp7sVETOmG39hjzDOPh8g5EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5AcxoBKS9YjbEwv2THSG18VHhGponiMjbqvC8lSyuqo=;
- b=gZYBEqab+cSXpmbGlZc47FQHTsWrWYib8ELPDuYQtQoR7axVy5zERNcrNCBO/LwUBHGB4D2fxq4fzRwurVyHMD5ckWSdPQ3sTssc89qRFMDhZbdvQr1Iuq2BwFZGbSURj7dMWEldbCHVl11+SEWx8XFAwqNKWVwNWmLVVUm5498=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO2P265MB2589.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:13c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.21; Tue, 26 Sep
- 2023 08:27:18 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::7965:8756:9ad5:df1d]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::7965:8756:9ad5:df1d%6]) with mapi id 15.20.6813.027; Tue, 26 Sep 2023
- 08:27:18 +0000
-Date: Tue, 26 Sep 2023 16:26:59 +0800
-From: Gary Guo <gary@garyguo.net>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <alice@ryhl.io>, Alice
- Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>,
- linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
- `WithRef`
-Message-ID: <20230926162659.6555bcdc@gary-lowrisc-laptop>
-In-Reply-To: <61ccfb87-54fd-3f1b-105c-253d0350cd56@proton.me>
-References: <CAH5fLggxsewmtzXjehbawDCTHO0C7kteU_CLnh80eMNj=QyP9Q@mail.gmail.com>
-	<14513589-cc31-8985-8ff6-a97d2882f593@proton.me>
-	<ZRGyRQuBcWvgtdNR@Boquns-Mac-mini.home>
-	<9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
-	<ZRHWqbvYlXBXEOh-@boqun-archlinux>
-	<c5134a1a-a60d-73bb-9faa-aa1dfc3bc30d@proton.me>
-	<ZRIB0hXNvmJtmyak@boqun-archlinux>
-	<edc0b599-c5d1-4e9c-a51b-eb8ceaef7acc@ryhl.io>
-	<ZRIDc_x9Qh5EJNC8@boqun-archlinux>
-	<61ccfb87-54fd-3f1b-105c-253d0350cd56@proton.me>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI1PR02CA0018.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::7) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F9012B70
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 10:01:37 +0000 (UTC)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AC6B97
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 03:01:34 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59ee66806d7so151417497b3.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 03:01:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695722494; x=1696327294; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PSjOVj3NEZLcZiR/Ha2dwc9eHr7RbUTNTjvX8TFLRcY=;
+        b=nWSZO9q4u/q4IPDeRiji0HqLaHHPRM3kcMAkUSYERcswAMLYk0Abw+ivGlrsM9UCAm
+         vr6+1ivoZ8r9z7WpBsLkVJtMZYS0tKVrUFgM4XYMvDfHbIQYLgPs/Gv0RfyJsywvxxrz
+         XvbMlcvow/goO825R3+5SVuaeswEfStLGcU7A7UDvhs63XLxgkH9awU3BK1pnHsrYaPa
+         ne2BuxxdGbi4agqR7kQb/XPB8qcK6dbelk6C2+NKJc+BBnefzQTVN76wCXy3Vbo/DPHN
+         w/iQ0UhB0A3vJy9/abYbrE/umXM2aueFLzu2mH6KtkVyrcJgs/Ox90mutoEEPqooT6uN
+         n7+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695722494; x=1696327294;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PSjOVj3NEZLcZiR/Ha2dwc9eHr7RbUTNTjvX8TFLRcY=;
+        b=TuMAMd+6mXb6kRZP/+Z3VmGBZ/ex2eB6zUIM24yRSXrNe0wS9Cx9wB4BOiJ9dEywDX
+         utg+GWNXt4HrLREpGXGj9sZDChbauOeNqHMBlVNllBp8yyPLkY/UQw9puo+IfoE9zMlu
+         c9He2rP14qrDqqAKdlpjzi63CQRnjtyivz6y5tlWan0el+TVghm6s/dH5quiP1J0XKZg
+         +9XOD4AY4bRNi2+O1GpmQNH/XWnl/F/Axd1TfFoYa2GSMAKbemjZXxRc1kLaSEsUQ/8q
+         YuakcI9icPYZa/n/MQIZZKrzZ0PYC7Px1tlVLpVg9hL0ISYJ/Vk2GHYMUg16ut7Ke0A8
+         42IQ==
+X-Gm-Message-State: AOJu0YzE1f5/SN5H7SknVpXKB/v4yyF4+D5drbKH412ZJMJDpA1IfVs/
+	cWZGSR0PcgWEaSLf8YmjQIRGQH2jHcjhfeI=
+X-Google-Smtp-Source: AGHT+IENb6kAQt3SlryXf26yUjvt3kHMvyFyfMBdt8l5kkIskKFOxg0e0rnYFWlj/Hfa6u+U/vGJjT4sf4b0An8=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a25:9c44:0:b0:d80:16bc:4e41 with SMTP id
+ x4-20020a259c44000000b00d8016bc4e41mr91493ybo.0.1695722493787; Tue, 26 Sep
+ 2023 03:01:33 -0700 (PDT)
+Date: Tue, 26 Sep 2023 10:01:30 +0000
+In-Reply-To: <ESFnxZLcZD-JbNp5PHtrjAdophrPm9gOJR1C5kwsvw6errySiqsG7zbs-0bKWKGrq3Phz7-of0M1znwoTNYAZATTHBhUaFehe5bHP1YksCw=@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB2589:EE_
-X-MS-Office365-Filtering-Correlation-Id: 46a46c79-e123-4930-d20f-08dbbe6a657a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	/P9xHlr9DbMEeRcMXQI9oSyEyK32FBr2F6tVMfJEtEJSM/+tVaiulyva4zq7t8Deqhax8E/V5trCpmucrH9v2bBLLBGm/p1gIOQwB/G5p5aMsE4Dcjh0IVGwrocTgclLRXGjldVJ+e8nYuGgwlWaAkTkt9GBA1UiUpJnrWXGEDltux4mN0QejhLNJAe7i4JwijFVKbblUzaej5XNLNOD3jKnQjV0KYNY5LimiPN9R70eHD/WFwckV0LnKL6M/BgHgyV47+EXqr39FVvJV+dI/QOYoHAd6frhIJRQ/hMXoqQkvDDNz7l2wbLlqxJLi8DBTmM5b5i7FefBNOX5/+P968tjBoRTxl4fIiW8/M7UjvAXrTDhGCNDT7tb7k53ttcVys2u4BChvJyHN2BsRO4U4xdo2b5nSWuRUsBHNRdjISI6hknflkIsJWJS9qs746tbLucA0PFvlBsAN7XMcaDHY5RkPmqCwmhuELwpXmf5aywdBAdJfFw8VLzxoicPmsXwUjxB1BZdZXHfDYVkaj+Poy26OhIm/kL9uwb2QO50C6tvsds/5vuEj1XwwVtW0Rd/om8s7zUftB6lQlhOrf/6u1Q19fg6ptRTMyYc2Vlk8aE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(366004)(346002)(396003)(136003)(39830400003)(230922051799003)(1800799009)(451199024)(186009)(41300700001)(6916009)(66946007)(66476007)(66556008)(54906003)(316002)(478600001)(38100700002)(6666004)(7416002)(2906002)(33716001)(86362001)(8936002)(4326008)(8676002)(5660300002)(26005)(83380400001)(1076003)(6486002)(53546011)(6506007)(9686003)(6512007)(81973001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Zztt07cjG5xoME4gX35X6n8aUckzEeny5vodkWXEJkULultUmKbm2pRcEmv0?=
- =?us-ascii?Q?SGpwvQG9RV5UE5FSHzF0RDZl/iYnonVy5vrq/llzKHnymyo42mtphOQU8D8V?=
- =?us-ascii?Q?NrvcNz7cImh3i05hs5xtzvpt6qanhqt8GvBMYFpehStckkfvwik9blEK0lVC?=
- =?us-ascii?Q?HPYLJwV7oHBELCB4YZ3ynN5ZY0wLUaxHo+igrRhuAzo2vCFO/rKYl73j6ZXK?=
- =?us-ascii?Q?5jhOiTCWnSaoImDzC1q+ikyzd3Q8gyT3KnFuGHFXTqEMt6cE1AzUfDi/lTR/?=
- =?us-ascii?Q?EueCYx+JL51nqK+VN+LOoieWgAf220VbLEo6dH0xxpLK6B9/kj3J6UA7+jI3?=
- =?us-ascii?Q?H/Gzuyy0Lt0iLFJEfXWnv0fYjemuNgLFcvR34lFnJDUxpQtwM5uX+DzIr6fZ?=
- =?us-ascii?Q?sqFTv1kPOjGChoXRGcdEcy3ib+niUVFtSBezmtFEMi0YkeYk1nAQu/HftynL?=
- =?us-ascii?Q?/08Kc1CtP5fdUhJYi4MXys834xhx7lyHPD1Gbn3BtDvr+lwEOiAFKOJdPbbQ?=
- =?us-ascii?Q?AWH2b6ehIP0qz2m5Bi7bCHpmAttYDEnGVd3IRpt2JprvDufLI5qmClhOrPoc?=
- =?us-ascii?Q?Titb0Ea1gnkh9rruKvyYdOmXsqd6di1qYxwrWHJhXtAWbv8KfUPZUbQIvCzk?=
- =?us-ascii?Q?y+y1jILnSrau6GY37flkpPhyjDW8L732ofALT+yfFeP/1PGAf9dOFIXNkGwZ?=
- =?us-ascii?Q?5NRuSHdcUfU9pHvJVHB5+2SLe+w9a2C6RRqtB5X4Z7KaPydkwD+7oh6EE52/?=
- =?us-ascii?Q?B0dPj8SAz5hP+ub3Ru8Z72FifkXI8OEsnscS3sQGO0dIOl/s6yHPSzvR/98z?=
- =?us-ascii?Q?zMD0/1q+8esirkd1QtpzUQDmveI5inul3g5h0jhessgLLeEE9YrwMAKA7r4z?=
- =?us-ascii?Q?xLRjHFbdvtcC94ZhGe8aEVANGBvmVEf0xE/6y3FL5w+j5LAOm7Zzu0w+2xAT?=
- =?us-ascii?Q?HzdAApxS/UY3t8pSTm/EHX1i6D35FhFXFHzSQ+xyHIcnHRfmbLMOhqF+HRFV?=
- =?us-ascii?Q?cRmm2qartBucXwyYkpXzUVQaoOo8odEs92J/u3QGqGwdcpDJ5yoyUlAXAqcK?=
- =?us-ascii?Q?wdhSBaPi+D5Xhsto8W+EDAygiccJf81HvTnthPi7MJn+4c9GUgEusMkxzT4l?=
- =?us-ascii?Q?1b2GqcZpnX/NP6MawubSjbjGNQdFyOts9pTtlR+1VKg9OjDOTHMZxwJ7jcZF?=
- =?us-ascii?Q?I0HOT/cLBRlCmsEkiVIZivnec7HVEykyANFRLLyRgJ0+nyShFXMJrp8uhGgZ?=
- =?us-ascii?Q?XvlOKC7P3/aM2vEFYCnndR9cdOZUaj9Nlcn7JePTn2YChIO8TM5OxDNVLIOv?=
- =?us-ascii?Q?JeQ/Cvkewj5xUae3zjA+7QWrVtO3Nw5K2P0LnVbZieUnFIss3Vc3GyBFWwdd?=
- =?us-ascii?Q?5OeQsRUbB0QHqTC4lIZvOgTWbJYBQKA9/e2SpY/NBhGsSwWiBbF+OUSEGwXV?=
- =?us-ascii?Q?RsGsiIw0BMqqP7BlIf2pP/A3xGj6ji3benNvPtx6AJ2E2c1EahoV7qYCMhor?=
- =?us-ascii?Q?hz7lhWQ2L6SE46ZE7/nZpKs5QCdY05x0N5T4wKcdfP+whAEBT6NFD80INGbl?=
- =?us-ascii?Q?ZnGuC5s6B/HRyi8cagC9Zi+UP0FC6OK/f3EwDgYf?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46a46c79-e123-4930-d20f-08dbbe6a657a
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2023 08:27:18.3089
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ghqLyDtl2lWAvVAYGZhoMbxHV0dWfEMCjXW+xNalCQhN9END2kYg05HTlmVavsTSgtmZ4FswDVRbDm/EBqvRgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2589
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+Mime-Version: 1.0
+References: <ESFnxZLcZD-JbNp5PHtrjAdophrPm9gOJR1C5kwsvw6errySiqsG7zbs-0bKWKGrq3Phz7-of0M1znwoTNYAZATTHBhUaFehe5bHP1YksCw=@proton.me>
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
+Message-ID: <20230926100130.2213190-1-aliceryhl@google.com>
+Subject: Re: [PATCH v4 4/7] rust: workqueue: add helper for defining
+ work_struct fields
+From: Alice Ryhl <aliceryhl@google.com>
+To: benno.lossin@proton.me
+Cc: alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, jiangshanlai@gmail.com, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, patches@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, 25 Sep 2023 22:26:56 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
-> On 26.09.23 00:02, Boqun Feng wrote:
-> > On Mon, Sep 25, 2023 at 11:58:46PM +0200, Alice Ryhl wrote:  
-> >> On 9/25/23 23:55, Boqun Feng wrote:  
-> >>> On Mon, Sep 25, 2023 at 09:03:52PM +0000, Benno Lossin wrote:  
-> >>>> On 25.09.23 20:51, Boqun Feng wrote:  
-> >>>>> On Mon, Sep 25, 2023 at 05:00:45PM +0000, Benno Lossin wrote:  
-> >>>>>> On 25.09.23 18:16, Boqun Feng wrote:  
-> >>>>>>> On Mon, Sep 25, 2023 at 03:07:44PM +0000, Benno Lossin wrote:  
-> >>>>>>>> ```rust
-> >>>>>>>> struct MutatingDrop {
-> >>>>>>>>          value: i32,
-> >>>>>>>> }
-> >>>>>>>>
-> >>>>>>>> impl Drop for MutatingDrop {
-> >>>>>>>>          fn drop(&mut self) {
-> >>>>>>>>              self.value = 0;
-> >>>>>>>>          }
-> >>>>>>>> }
-> >>>>>>>>
-> >>>>>>>> let arc = Arc::new(MutatingDrop { value: 42 });
-> >>>>>>>> let wr = arc.as_with_ref(); // this creates a shared `&` reference to the MutatingDrop
-> >>>>>>>> let arc2: Arc<MutatingDrop> = wr.into(); // increments the reference count to 2  
-> >>>>>>>
-> >>>>>>> More precisely, here we did a
-> >>>>>>>
-> >>>>>>> 	&WithRef<_> -> NonNull<WithRef<_>>
-> >>>>>>>
-> >>>>>>> conversion, and later on, we may use the `NonNull<WithRef<_>>` in
-> >>>>>>> `drop` to get a `Box<WithRef<_>>`.  
-> >>>>>>
-> >>>>>> Indeed.
-> >>>>>>  
-> >>>>>
-> >>>>> Can we workaround this issue by (ab)using the `UnsafeCell` inside
-> >>>>> `WithRef<T>`?
-> >>>>>
-> >>>>> impl<T: ?Sized> From<&WithRef<T>> for Arc<T> {
-> >>>>>        fn from(b: &WithRef<T>) -> Self {
-> >>>>>            // SAFETY: The existence of the references proves that
-> >>>>> 	// `b.refcount.get()` is a valid pointer to `WithRef<T>`.
-> >>>>> 	let ptr = unsafe { NonNull::new_unchecked(b.refcount.get().cast::<WithRef<T>>()) };
-> >>>>>
-> >>>>> 	// SAFETY: see the SAFETY above `let ptr = ..` line.
-> >>>>>            ManuallyDrop::new(unsafe { Arc::from_inner(ptr) })
-> >>>>>                .deref()
-> >>>>>                .clone()
-> >>>>>        }
-> >>>>> }
-> >>>>>
-> >>>>> This way, the raw pointer in the new Arc no longer derives from the
-> >>>>> reference of `WithRef<T>`.  
-> >>>>
-> >>>> No, the code above only obtains a pointer that has provenance valid
-> >>>> for a `bindings::refcount_t` (or type with the same layout, such as
-> >>>> `Opaque<bindings::refcount_t>`). But not the whole `WithRef<T>`, so accessing
-> >>>> it by reading/writing will still be UB.
-> >>>>  
-> >>>
-> >>> Hmm... but we do the similar thing in `Arc::from_raw()`, right?
-> >>>
-> >>>       	pub unsafe fn from_raw(ptr: *const T) -> Self {
-> >>> 	    ..
-> >>> 	}
-> >>>
-> >>> , what we have is a pointer to T, and we construct a pointer to
-> >>> `ArcInner<T>/WithRef<T>`, in that function. Because the `sub` on pointer
-> >>> gets away from provenance? If so, we can also do a sub(0) in the above
-> >>> code.  
-> >>
-> >> Not sure what you mean. Operations on raw pointers leave provenance
-> >> unchanged.  
-> > 
-> > Let's look at the function from_raw(), the input is a pointer to T,
-> > right? So you only have the provenance to T, but in that function, the
-> > pointer is casted to a pointer to WithRef<T>/ArcInner<T>, that means you
-> > have the provenance to the whole WithRef<T>/ArcInner<T>, right? My
-> > question is: why isn't that a UB?  
+>> +impl<T: ?Sized, const ID: u64> Work<T, ID> {
+>> +    /// Creates a new instance of [`Work`].
+>> +    #[inline]
+>> +    #[allow(clippy::new_ret_no_self)]
+>> +    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self>
+>> +    where
+>> +        T: WorkItem<ID>,
+>> +    {
+>> +        // SAFETY: The `WorkItemPointer` implementation promises that `run` can be used as the work
+>> +        // item function.
+>> +        unsafe {
+>> +            kernel::init::pin_init_from_closure(move |slot| {
+>> +                let slot = Self::raw_get(slot);
+>> +                bindings::init_work_with_key(
+>> +                    slot,
+>> +                    Some(T::Pointer::run),
+>> +                    false,
+>> +                    name.as_char_ptr(),
+>> +                    key.as_ptr(),
+>> +                );
+>> +                Ok(())
+>> +            })
+>> +        }
 > 
-> The pointer was originally derived by a call to `into_raw`:
+> I would suggest this instead:
 > ```
->      pub fn into_raw(self) -> *const T {
->          let ptr = self.ptr.as_ptr();
->          core::mem::forget(self);
->          // SAFETY: The pointer is valid.
->          unsafe { core::ptr::addr_of!((*ptr).data) }
->      }
+>         pin_init!(Self {
+>             // SAFETY: The `WorkItemPointer` implementation promises that `run` can be used as the
+>             // work item function.
+>             work <- Opaque::ffi_init(|slot| unsafe {
+>                 bindings::init_work_with_key(
+>                     slot,
+>                     Some(T::Pointer::run),
+>                     false,
+>                     name.as_char_ptr(),
+>                     key.as_ptr(),
+>                 )
+>             }),
+>             _inner: PhantomData,
+>         })
 > ```
-> So in this function the origin (also the origin of the provenance)
-> of the pointer is `ptr` which is of type `NonNull<WithRef<T>>`.
-> Raw pointers do not lose this provenance information when you cast
-> it and when using `addr_of`/`addr_of_mut`. So provenance is something
-> that is not really represented in the type system for raw pointers.
-> 
-> When doing a round trip through a reference though, the provenance is
-> newly assigned and thus would only be valid for a `T`:
-> ```
-> let raw = arc.into_raw();
-> let reference = unsafe { &*raw };
-> let raw: *const T = reference;
-> let arc = unsafe { Arc::from_raw(raw) };
-> ```
-> Miri would complain about the above code.
-> 
 
-One thing we can do is to opt from strict provenance, so:
+I tried setting up a patch with a few nits fixed, including this one.
+However, I ran into an error when adding #[pin_data] to the Work struct:
 
-```
-let raw = arc.into_raw();
-let _ = raw as usize; // expose the provenance of raw
-let reference = unsafe { &*raw };
-let raw = reference as *const T as usize as *const T;
-let arc = unsafe { Arc::from_raw(raw) };
-```
+error: defaults for const parameters are only allowed in `struct`, `enum`, `type`, or `trait` definitions
+   --> rust/kernel/workqueue.rs:192:28
+    |
+192 | pub struct Work<T: ?Sized, const ID: u64 = 0> {
+    |                            ^^^^^^^^^^^^^^^^^
+
+This nit can be fixed when #[pin_data] is updated to support default
+values in struct declarations.
+
+Alice
