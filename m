@@ -1,75 +1,73 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD62734CF1
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 17:44:03 +0000 (UTC)
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 395C59F;
-	Tue, 26 Sep 2023 10:44:01 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-5033918c09eso15000362e87.2;
-        Tue, 26 Sep 2023 10:44:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595CB38BD4
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 18:21:16 +0000 (UTC)
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DFAE5;
+	Tue, 26 Sep 2023 11:21:14 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-533edb5ac54so6579968a12.0;
+        Tue, 26 Sep 2023 11:21:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695750239; x=1696355039; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=u/0G7UZtp532WD4U9IqAMOL98DSIgotyWvhe40XiMkg=;
-        b=gMPJp9/s9SgjrOgSzz0ta4gA2skueshXH2kRgPvt7uVJYX374OBl3hJafPT3uWeJVb
-         DaLY5zZzGZKv2Ys3JGnpm6cAi4No3lSidclL1LK8X/vRgZRlWTs/6za3b644xdnAGC/R
-         MgM056r4EYsfrFe0yEiBAcNHQfEqGb7SM4yh2dX88tNqqnL2DIPsRov6IuYkdKW6pOfY
-         ZnV9Fe9MUS799nL44IAh3vb0G7W0hn4SIRU68D/15GXl5Ph0/sRpCWPMbrB4zn+SP0zB
-         8LwSVFnXMDQu5m7CveOCkUulh5cX0omFiwK2ZDV0n1j3quo9fUSb6ChfBA+4dPXfA+ro
-         K/KQ==
+        d=gmail.com; s=20230601; t=1695752473; x=1696357273; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IFaFCx2eXhg+kYgVes9eDxQpvEDaU+z47GYjWRCNqSM=;
+        b=MzKSnanZc14lbNKrjRbqvjQVGfq6qiAFqpFgAuLAg8E4TxIIj6Lm2nn3XNmGwi09Pk
+         ef9WB4sHL6QtGogLy6FYuh1hin8CZyAZ8a6h1R7KAjbFm60iLG5FHYAv/fR5BEg6JT/b
+         PNnJVfOOJcMpjBB9jMjeYN3FHEp5SAJqNly+4omhF5hIWPaFB26KGed39YoYM6tbjRcZ
+         vB9xc7FXlWpiugKhBGkUIPtgK2uJNoeTKP5/iRF2f48tgcaxCG1ecZBJArtiJU/2dPWa
+         vUl/GVPOVHb/nIxHfhKUqeE0jtSbEP42bpmucAG+p1ELK38fbU2+hZs/zi9Ax3kBT18V
+         8cTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695750239; x=1696355039;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u/0G7UZtp532WD4U9IqAMOL98DSIgotyWvhe40XiMkg=;
-        b=PrYwP+5f1FoxjFrK0MUorEjH3GGQwL9g/dcg9pwDXnvwAe2Rllar6Pn2CiL+Wi4vsG
-         75M64pLd8+DthZ068JJQAeRa21Iu7uNAZZAeyJeX39vYvyogUmjMopoH7Fh/ecdw7CaW
-         QkA97MBDOlB3QjlZTBBNTHF/nkmnZvVqCzWkhhAu6nASHnbA5PQxZA7oalZleFBTTdd9
-         SB3B425bYu1Ddo9I/KMpI4MDEn5dBLKVwm/wc+KOHnpRjasJozbJsTLiHaBCgKOMjUJC
-         GqABzX2QfMJvpuGeVGnOKZE2HfcL15oohA2dJ1wCS56mObXM0/ncZLnycqQ8JaiGLlsZ
-         FavQ==
-X-Gm-Message-State: AOJu0YwPJ7HaM8w/Zgec1ZBrnfScyBQvOBVZYZNU+eBiU1580U5zuhXo
-	5/p0EKxlKEKmHDwCRpXht4M=
-X-Google-Smtp-Source: AGHT+IFsX/wVv8Ede/cmBFlIzaEJe5rAVYEP0v4/CmTJc/zD0zRK0xlN+jAB2ZkmQAzuYZ8QcU5a2w==
-X-Received: by 2002:ac2:5e85:0:b0:502:a4f4:ced9 with SMTP id b5-20020ac25e85000000b00502a4f4ced9mr8301552lfq.62.1695750238924;
-        Tue, 26 Sep 2023 10:43:58 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id s13-20020a056402520d00b0053450b064e2sm1533521edd.3.2023.09.26.10.43.56
+        d=1e100.net; s=20230601; t=1695752473; x=1696357273;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IFaFCx2eXhg+kYgVes9eDxQpvEDaU+z47GYjWRCNqSM=;
+        b=Sxk+Pmh2o52L5kIqP0X0fcCuRZlfblbjJgmpxB9C8nGgoZhRB+fvPAL5Pjq/4sg4W0
+         LIHPwIye+/r+QBCFPAzUCwGY1VTEylgvPE4StQ8rLs4tSgCgxnBVMi63drMMZ/6HSuJM
+         07bb9bgCKBLKl7OgmGgYAW9tjz9fAhpdO9EBNd6If2kRAkntGADXmyp1sHPFQPs5+A1h
+         3cujgMzriM9LXCnqBrD3xFyBlV7/YxxQrdO25f+pDEdFYrDoMtJG0MAHeKbnO3FKfyLB
+         NgC9t5N/ZpuKQCeOjNAXwAgFMKcUAB3+pSfkqMD5D3nzZvTwTPjscj8pmYUG4gW09Trk
+         LJTA==
+X-Gm-Message-State: AOJu0Yx/C2KjSsupsBxnSf7nlnObPJ4UoX/amf4+kBDK8l+K4L3DS76c
+	9GLbCimZg7Jezyf2Fo1+AwM=
+X-Google-Smtp-Source: AGHT+IFB1sroSQhXMZMuX6Yue2IV2CKo7/5rEUglTcsDL5Mde2lSgpfWC3LxtXIJPVBwUfLdqiCRSQ==
+X-Received: by 2002:a17:906:9b92:b0:9a1:d915:637a with SMTP id dd18-20020a1709069b9200b009a1d915637amr11218733ejc.61.1695752472831;
+        Tue, 26 Sep 2023 11:21:12 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id p20-20020a1709060e9400b009ae587ce135sm8062937ejf.223.2023.09.26.11.21.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 10:43:58 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 0CFEE27C0054;
-	Tue, 26 Sep 2023 13:43:56 -0400 (EDT)
+        Tue, 26 Sep 2023 11:21:12 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 7256A27C005B;
+	Tue, 26 Sep 2023 14:21:10 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Tue, 26 Sep 2023 13:43:56 -0400
-X-ME-Sender: <xms:WxgTZR_2LsfcRzXuxNSz3XQvpRVtt44CWw7XD0CFC2bvNfh3OqOqqA>
-    <xme:WxgTZVvBqA4ROXoy_r5yeQaCrDncGwGC5zKxqXe0-IqAnwtaEA_cgC6nFpI9WjTW8
-    3-_yrqvuxQYWT_jtQ>
-X-ME-Received: <xmr:WxgTZfBt1vyaNKmlH0G_55WmakdvIkuw_dC2BNuqDedCGhMFjyl-Vbc9CgU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddtgdekiecutefuodetggdotefrodftvf
+  by compute4.internal (MEProxy); Tue, 26 Sep 2023 14:21:10 -0400
+X-ME-Sender: <xms:FSETZb_JazWP2z2KpHSxH2jPL_W0WkUKqqCDowcZPyd9TkheJBhNfQ>
+    <xme:FSETZXucMHz8PzwBRntT5IwXWfZrsD9GKufUEotRAPIsLynqcGo50zM_EDF-3JODM
+    mQkUVXrCV1J1VjOxA>
+X-ME-Received: <xmr:FSETZZB6DXBhdeSJ3d1yUbv3b5UM6yF2u4feNXaa56bmCuZFoI9Bolv7Dbo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddtgdelgecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpedtgeehvefghfegtdektdegtdfggfeitefgffetteetieeihfdtkeffieel
-    vdeigfenucffohhmrghinhepphhtrhdrrghspdhruhhsthdqlhgrnhhgrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
-    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
-    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
-    mhgv
-X-ME-Proxy: <xmx:WxgTZVfbNQw6e4N1yLp_oz9vDcLBkuQgTgZkPFDe3EE-sRx4Da0ojw>
-    <xmx:WxgTZWNSdngOYWeLfxGFSMC44W1lXgtIa3Ww4Qc1Y-lVQdXmYUld4g>
-    <xmx:WxgTZXmikOZ1B0b7PCdjQw9QD4zGJUa7oMlt8Se_BxVRKSl-WjUP0Q>
-    <xmx:XBgTZXlFaOkKgyRCPXqyvXBIVrUV0bQ4IXEtxo2ABbe4BBtohGGTCA>
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnheptdfffeetffffjefhkeeujeelgeegtddtfeeiffefhefhudffgfduleejudfg
+    geejnecuffhomhgrihhnpehpthhrrdgrshdpghgvthdrrghmnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
+    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
+    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:FSETZXf7ffN-gQLXJX5sSNPWTaA-JuCRMJBh4wpwAN8ybd4ekb56tA>
+    <xmx:FSETZQPAiBy2aUWOAtn0TbS5CQmxdOeYOXTVqi8bY_jbS1ri1xpB0g>
+    <xmx:FSETZZkPZyDlZ8jhzbsRdjqIQ-wZ4mNPW9JnoO9Jhm1aDp4pKXnRlg>
+    <xmx:FiETZZk6NLhQKXJl5IPKlNMKK_jkI2OyNbZTRppn5JzS7G15-JoBVQ>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 Sep 2023 13:43:54 -0400 (EDT)
-Date: Tue, 26 Sep 2023 10:43:21 -0700
+ 26 Sep 2023 14:21:08 -0400 (EDT)
+Date: Tue, 26 Sep 2023 11:20:35 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
@@ -83,7 +81,7 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
 	Wedson Almeida Filho <walmeida@microsoft.com>
 Subject: Re: [PATCH v2 2/2] rust: arc: remove `ArcBorrow` in favour of
  `WithRef`
-Message-ID: <ZRMYObRby6NDKNzD@boqun-archlinux>
+Message-ID: <ZRMg81kOYlBP023z@boqun-archlinux>
 References: <9d6d6c94-5da6-a56d-4e85-fbf8da26a0b0@proton.me>
  <ZRIB0hXNvmJtmyak@boqun-archlinux>
  <edc0b599-c5d1-4e9c-a51b-eb8ceaef7acc@ryhl.io>
@@ -100,125 +98,18 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <a4090608-d352-742b-fe5e-054db3a8e4a5@proton.me>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 On Tue, Sep 26, 2023 at 05:15:52PM +0000, Benno Lossin wrote:
-> On 26.09.23 18:35, Boqun Feng wrote:
-> > On Tue, Sep 26, 2023 at 05:41:17PM +0200, Alice Ryhl wrote:
-> >> On Tue, Sep 26, 2023 at 5:24 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >>>
-> >>> On Tue, Sep 26, 2023 at 04:26:59PM +0800, Gary Guo wrote:
-> >>>> On Mon, 25 Sep 2023 22:26:56 +0000
-> >>>> Benno Lossin <benno.lossin@proton.me> wrote:
-> >>>>
-> >>> [...]
-> >>>>>
-> >>>>> The pointer was originally derived by a call to `into_raw`:
-> >>>>> ```
-> >>>>>       pub fn into_raw(self) -> *const T {
-> >>>>>           let ptr = self.ptr.as_ptr();
-> >>>>>           core::mem::forget(self);
-> >>>>>           // SAFETY: The pointer is valid.
-> >>>>>           unsafe { core::ptr::addr_of!((*ptr).data) }
-> >>>>>       }
-> >>>>> ```
-> >>>>> So in this function the origin (also the origin of the provenance)
-> >>>>> of the pointer is `ptr` which is of type `NonNull<WithRef<T>>`.
-> >>>>> Raw pointers do not lose this provenance information when you cast
-> >>>>> it and when using `addr_of`/`addr_of_mut`. So provenance is something
-> >>>>> that is not really represented in the type system for raw pointers.
-> >>>>>
-> >>>>> When doing a round trip through a reference though, the provenance is
-> >>>>> newly assigned and thus would only be valid for a `T`:
-> >>>>> ```
-> >>>>> let raw = arc.into_raw();
-> >>>>> let reference = unsafe { &*raw };
-> >>>>> let raw: *const T = reference;
-> >>>>> let arc = unsafe { Arc::from_raw(raw) };
-> >>>>> ```
-> >>>>> Miri would complain about the above code.
-> >>>>>
-> >>>>
-> >>>> One thing we can do is to opt from strict provenance, so:
-> >>>>
-> >>>
-> >>> A few questions about strict provenance:
-> >>>
-> >>>> ```
-> >>>> let raw = arc.into_raw();
-> >>>> let _ = raw as usize; // expose the provenance of raw
-> >>>
-> >>> Should this be a expose_addr()?
-> >>
-> >> Pointer to integer cast is equivalent to expose_addr.
-> >>
-> >>>> let reference = unsafe { &*raw };
-> >>>> let raw = reference as *const T as usize as *const T;
-> >>>
-> >>> and this is a from_exposed_addr{_mut}(), right?
-> >>
-> >> Integer to pointer cast is equivalent to from_exposed_addr.
-> >>
-> > 
-> > Got it, thanks!
-> > 
-> >>>> let arc = unsafe { Arc::from_raw(raw) };
-> >>>> ```
-> >>>>
-> >>>
-> >>> One step back, If we were to use strict provenance API (i.e.
-> >>> expose_addr()/from_exposed_addr()), we could use it to "fix" the
-> >>> original problem? By:
-> >>>
-> >>> *       expose_addr() in as_with_ref()
-> >>> *       from_exposed_addr() in `impl From<&WithRef<T>> for Arc`
-> >>>
-> >>> right?
-> >>>
-> >>> More steps back, is the original issue only a real issue under strict
-> >>> provenance rules? Don't make me wrong, I like the ideas behind strict
-> >>> provenance, I just want to check, if we don't enable strict provenance
-> >>> (as a matter of fact, we don't do it today),
-> >>
-> >> Outside of miri, strict provenance is not really something you enable.
-> >> It's a set of rules that are stricter than the real rules, that are
-> >> designed such that when you follow them, your code will be correct
-> >> under any conceivable memory model we might end up with. They will
-> >> never be the rules that the compiler actually uses.
-> >>
-> >> I think by "opt out from strict provenance", Gary just meant "use
-> >> int2ptr and ptr2int casts to reset the provenance".
-> >>
-> >>> will the original issue found by Alice be a UB?
-> >>
-> >> Yes, it's UB under any ruleset that exists out there. There's no flag
-> >> to turn it off.
-> >>
-> >>> Or is there a way to disable Miri's check on
-> >>> strict provenance? IIUC, the cause of the original issue is that "you
-> >>> cannot reborrow a pointer derived from a `&` to get a `&mut`, even when
-> >>> there is no other alias to the same object". Maybe I'm still missing
-> >>> something, but without strict provenance, is this a problem? Or is there
-> >>> a provenance model of Rust without strict provenance?
-> >>
-> >> It's a problem under all of the memory models. The rule being violated
-> >> is exactly the same rule as the one behind this paragraph:
-> >>
-> >>> Transmuting an & to &mut is Undefined Behavior. While certain usages may appear safe, note that the Rust optimizer is free to assume that a shared reference won't change through its lifetime and thus such transmutation will run afoul of those assumptions. So:
-> >>>
-> >>> Transmuting an & to &mut is always Undefined Behavior.
-> >>> No you can't do it.
-> >>> No you're not special.
-> >> From: https://doc.rust-lang.org/nomicon/transmutes.html
+[...]
 > > 
 > > But here the difference it that we only derive a `*mut` from a `&`,
 > > rather than transmute to a `&mut`, right? We only use `&` to get a
@@ -268,22 +159,32 @@ On Tue, Sep 26, 2023 at 05:15:52PM +0000, Benno Lossin wrote:
 > should be enough.
 > 
 
-To me (and maybe the same for Wedson), it's actually Ok that we don't do
-the change (i.e. the ArcBorrow -> &WithRef) at all. It's more a
-code/concept simplification.
+BTW, how do you fix this with only wrapping `T` field in `WithRef`?
 
-Fixing with an `UnsafeCell` seems more like a workaround to me, because
-there is no interior mutable requirement here, so I just don't want to
-patch something unnecessary here just to make things work.
+Let say `WithRef` is defined as:
 
-Put it in another way, if `UnsafeCell` can fix this and no interior
-mutability is needed, we probably can fix this with another way or there
-is an API like `UnsafeCell` is missing here.
+struct WithRef<T> {
+    refcount: Opaque<bindings::refcount_t>,
+    data: UnsafeCell<T>,
+}
 
-Sorry for being stubborn here ;-) But I really want to find a better
-solution for the similar problems.
 
-What's the shortcoming of ptr2int?
+impl<T: ?Sized> From<&WithRef<T>> for Arc<T> {
+    fn from(b: &WithRef<T>) -> Self {
+        let data_ptr: *mut T = b.data.get();
+
+	let ptr = ?; // how to get a pointer to `WithRef<T>` with the
+                     // provenance to the whole data?
+
+        ManuallyDrop::new(unsafe { Arc::from_inner(ptr) })
+            .deref()
+            .clone()
+    }
+}
+
+The `data_ptr` above only has provenance to part of the struct for the
+similar reason that my proposal of (ab)using `b.refcount.get()`. Am I
+missing something here?
 
 Regards,
 Boqun
