@@ -1,87 +1,98 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5F26FD2
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 12:36:50 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ECA710A
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 05:36:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=iRvKJzBiRWJdVJyLdq1jhb/rq6t0+zTo8N7P//RTMNo=; b=Wm
-	duiFHDQATytNXGAy3KQyofSNpktTftAgWAG7ab4WzsAb6Qv8XT5e3GBaCFp0t3b0sr1QD08vzwg+Y
-	K6V/PmxfXKACyn/cLbM2sjphMXVO3e/2LrRfmMcV23uQ0VLvXlcRscxhC55kd1mPcbdHnFvfsmjqs
-	JOB08bnVbajwEJ4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ql7Iy-007Y9i-Dw; Tue, 26 Sep 2023 14:36:44 +0200
-Date: Tue, 26 Sep 2023 14:36:44 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Trevor Gross <tmgross@umich.edu>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/3] net: phy: add Rust Asix PHY driver
-Message-ID: <baa4cc4b-bcde-4b02-9286-c923404db972@lunn.ch>
-References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
- <20230924064902.1339662-4-fujita.tomonori@gmail.com>
- <CALNs47tecmP6yL=ogjEDPuLBS6q-E=fyya7xKQ-c2Uc7kTsx_A@mail.gmail.com>
- <20230926.160724.485514445673047276.fujita.tomonori@gmail.com>
- <CALNs47uYnQC+AXbJuk8d5506D25SDhZ-ZKuhimFkZnYOhhdfCg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E6F26E34
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 13:46:38 +0000 (UTC)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE1695
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 06:46:33 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c45c45efeeso9640795ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 06:46:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695735992; x=1696340792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SUOYDINzw29weh/n5c5Mj1zlRGPRWHz+wTMRFGWQy70=;
+        b=UcUcSYWYa41fWbWnD7Bw08B+EsIuOYkBddSGK7l+iHomJQPap4hNJPmc5mpxbMi62f
+         vNOFd2dbHuyEDiOqsdTykUctvioZCl4IkmCpsRm8QGSkLvPT04fqOAhJBENgjEpvFwmT
+         d4aVo3W5EOi/t5yUfogfT3nzxlV7d+AmVyU/HF6LiQN2Br8R5zxYGpYSgXNdEETdt73P
+         DiI6eRKaANaCMR8tbnRYS6ZcF/UvgDpVYRsHFMaxtl5OtiisacQOQmxRFGY4QYS3j9Sd
+         AWyIZp06RFVDOE0IrH3aqb0LJjgQI9FP1EY8n9o01EK0LDzp9tBf0f7pM3qgmHKlxg85
+         ePPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695735992; x=1696340792;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SUOYDINzw29weh/n5c5Mj1zlRGPRWHz+wTMRFGWQy70=;
+        b=LFnmaxYLx/7wIQY6MIAa9+ht2PxU11VjYATFGA5LqLWikzbGuFqPl7lbmNE1qfQ9NP
+         fgReXBV26CcmBRyLYdtDpt1lgOuUyOB/DYJLDX2eYhh2Ry/3Ahi/XG/Oj6nRP+M6KtxJ
+         4QbeQIoA02mTRtXIDJCwrTLkwgLtJjwuNt5WJTgshgQIJMxCmN5DZUQyx51H2qRdt+UL
+         CYGcEsoHjfQTIn5XDAPTuIouru4BSbyYLTS4AQBW8DHA/Y47Z6UZP+/drpFqh2P7xJ7L
+         rN7Af5FesgezxnIiLM500MYJHyddsYLH8ofCGJ+tPbmxJxGAudTNG1tTjLkzF2vdtN7u
+         i5sA==
+X-Gm-Message-State: AOJu0YxSde3OkCoYUe0gFUzagDln+BXv510fjfbEEpnbBqQ0RUj2GJc+
+	SC2akpX/J2DkArQmo+aQSuI=
+X-Google-Smtp-Source: AGHT+IFOxuHi2G99tEoTfs2Vk11D90G49Kk6eEqrfhuMKoqRjCcKMsm1RkGd7aSXGLcYckMsWx7z2A==
+X-Received: by 2002:a17:902:e74f:b0:1c4:1cd3:8062 with SMTP id p15-20020a170902e74f00b001c41cd38062mr11949936plf.2.1695735992410;
+        Tue, 26 Sep 2023 06:46:32 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id f11-20020a17090274cb00b001bc445e2497sm6971863plt.79.2023.09.26.06.46.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Sep 2023 06:46:31 -0700 (PDT)
+Date: Tue, 26 Sep 2023 22:46:30 +0900 (JST)
+Message-Id: <20230926.224630.1323587629112314285.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, benno.lossin@proton.me,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu
+Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY
+ drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72nO=Eje0dv_NCagvTzOLU7WkfM-bwqH33z_kC=f=m1m1A@mail.gmail.com>
+References: <70dbdfd2-9e8d-6985-ae42-0d4f1a7dcef9@proton.me>
+	<20230925.192433.108741056500744806.fujita.tomonori@gmail.com>
+	<CANiq72nO=Eje0dv_NCagvTzOLU7WkfM-bwqH33z_kC=f=m1m1A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALNs47uYnQC+AXbJuk8d5506D25SDhZ-ZKuhimFkZnYOhhdfCg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
->     > Also, we should make sure that the user-available MII_X constants are
->     > available as a u16 rather than a c_int.
-> 
->     I'm not sure what you mean. MII_ constatns are 0..31. That's IEEE
->     spec.
-> 
-> 
-> Thanks for pointing that out, interesting. I feel like we need some sort of
-> bridge since if our writes take u16, using `some_32bit_mii_constant as u16` is
-> going to be a footgun.
-> 
-> Maybe it’s still okay to create u16 consts for what is available since nothing
-> in mmi.h is > 0xffff?
-
-There are two protocols defined for talking to the PHY. These are
-called C22 and C45, because they are defined in Clause 22 and Clause
-45 of the IEEE 802.3 standard.
-
-The C22 protocol supports 32 registers. That was sufficient for a long
-time, but eventually became too small. So C45 extends it to 16 banks
-of 65536 registers. C drivers use phy_read() for C22 and
-phy_read_mmd() for C45. At the moment the Rust abstraction only covers
-C22.
-
-Of the C22 registers, many have well defined meanings. These are
-listed in include/uapi/linux/mii.h. However, some are reserved and
-some are left for vendors to use. The vendor ones don't have a name in
-mii.h. So you could create u16 consts for those which are listed in
-mii.h, but you also need to allow other values < 32. And if you do
-give them names, please follow what is in mii.h, to make review
-simpler.
-
-For C45, the named registers are much more sparse, and there are two
-banks of 65536 registers for vendors. So C drivers tend to have a
-collection of #defines giving names to registers which are not part of
-mii.h.
-
-	Andrew
-
+SGksDQoNCk9uIE1vbiwgMjUgU2VwIDIwMjMgMTc6NDE6NDEgKzAyMDANCk1pZ3VlbCBPamVkYSA8
+bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT24gTW9uLCBTZXAg
+MjUsIDIwMjMgYXQgMTI6MjTigK9QTSBGVUpJVEEgVG9tb25vcmkNCj4gPGZ1aml0YS50b21vbm9y
+aUBnbWFpbC5jb20+IHdyb3RlOg0KPj4NCj4+IEknbSBub3Qgc3VyZSBlaXRoZXIuIEkgaGF2ZSBu
+byBwcmVmZXJlbmNlIHRob3VnaC4NCj4gDQo+IE9uZSB3YXkgd2UgdXNlZCBpbiBvdGhlciBwbGFj
+ZXMgaW4gdGhlIHBhc3QgaXM6DQo+IA0KPiAgICAgdG9fcmVzdWx0KC4uLik/Ow0KPiAgICAgT2so
+Li4uKQ0KPiANCj4gQnkgdGhlIHdheSwgZm9yIG90aGVyIGtpbmRzIG9mIGNvbmRpdGlvbnMgKGku
+ZS4gaWYgb25lIGNhbm5vdCB1c2UNCj4gYHRvX3Jlc3VsdGApLCBJIHdvdWxkIHN1Z2dlc3QgdGhl
+IGVhcmx5IHJldHVybiBzdHlsZSwgaS5lLiB0aGUgdXN1YWwgQw0KPiBrZXJuZWwgc3R5bGU6DQo+
+IA0KPiAgICAgaWYgY29uZGl0aW9uIHsNCj4gICAgICAgICByZXR1cm4gRXJyKC4uLik7DQo+ICAg
+ICB9DQo+IA0KPiAgICAgT2soLi4uKQ0KPiANCj4gU29tZXRpbWVzIGZvciB0aGUgbGFzdCBvbmUg
+d2UgZG8gdGhpcyB0b28gd2hlbiB0aGUgZnVuY3Rpb24gaXMNCj4gInN5bW1ldHJpYyIgKHBlcnNv
+bmFsbHkgSSB3b3VsZG4ndCBtaW5kIGp1c3QgZG9pbmcgZWFybHkgZm9yIHRob3NlDQo+IGNhc2Vz
+IHRvbywgdG8gYmUgY29uc2lzdGVudCk6DQo+IA0KPiAgICAgaWYgY29uZGl0aW9uIHsNCj4gICAg
+ICAgICBFcnIoLi4uKQ0KPiAgICAgfSBlbHNlIHsNCj4gICAgICAgICBPayguLi4pDQo+ICAgICB9
+DQo+IA0KPiBXaGF0IHdlIHNob3VsZCBub3QgZG8sIGhvd2V2ZXIsIGlzIHRoaXMgKHdoaWNoIHlv
+dSB1c2VkIGluIHRoZSBwYXRjaA0KPiBiZWZvcmUgQmVubm8ncyBzdWdnZXN0aW9ucyB0byB1c2Ug
+YHRvX3Jlc3VsdGApLCBpLmUuIGByZXR1cm5gIGFuZA0KPiBgZWxzZWA6DQo+IA0KPiAgICAgaWYg
+Y29uZGl0aW9uIHsNCj4gICAgICAgICByZXR1cm4gRXJyKC4uLik7DQo+ICAgICB9IGVsc2Ugew0K
+PiAgICAgICAgIE9rKC4uLikNCj4gICAgIH0NCg0KVGhhbmtzISBJIHVwZGF0ZWQgdGhlIGNvZGUu
+DQoNCk5vIGhlbHBlciBmdW5jdGlvbiBmb3IgYSBmdW5jdGlvbiB0aGF0IHJldHVybnMgYXZhbHVl
+IGxpa2UgdGhlDQpmb2xsb3dpbmc/DQoNCmxldCByZXQgPSB1bnNhZmUge2JpbmRpbmdzOjpzb21l
+X2Z1bmN0aW9uKCl9Ow0KaWYgcmV0IDwgMCB7DQogICBFcnIoRXJyb3I6OmZyb21fZXJybm8ocmV0
+KSkNCn0gZWxzZSB7DQogICBPayhyZXQpDQp9DQoNCmlmIHRvX3Jlc3VsdCgpIHJldHVybnMgYSB2
+YWx1ZSwgaXQgY2FuIGhhbmRsZSBib3RoIHR5cGVzLg0KDQoNCj4gKEJ5IHRoZSB3YXksIEkganVz
+dCByZXBvcnRlZA0KPiBodHRwczovL2dpdGh1Yi5jb20vcnVzdC1sYW5nL3J1c3QvaXNzdWVzLzEx
+NjE1MCBzaW5jZSBjb2RlZ2VuIHNlZW1zIHRvDQo+IHN1ZmZlciBpbiBzb21lIGNhc2VzKQ0KDQpI
+bW0sIGhvdyB0aGlzIGNhbiBoYXBwZW4/IFF1aXRlIHN1cnByaXNpbmchDQo=
