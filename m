@@ -1,103 +1,60 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6186539E
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 07:07:27 +0000 (UTC)
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8D3F3
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 00:07:26 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3ae473c0bd6so401773b6e.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 00:07:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695712046; x=1696316846; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zTAHqRp3GCcNiTwFmobBPSIMHg4RBfAScyLuEZ5Fdmo=;
-        b=X/bBkYrG1v2c1Yu+/InD0wyRlnDJiVzvajtxhl2+AvR3usmiTE9BSF6aGDjTcH7PfL
-         5PYzvVlHWaK6WNWbtC14YFwHOtlxW8FnqRV0SMPfJdgu4qtQ8O13inPkP+ywdob0AXkd
-         IJmfexAcBDi8GwCjhFf22V7721VFDT5D4nAxGPczdXgS0j/9CoHa1kQ5oMI+bEayze3u
-         9UCvmN8CAeI5BcdpgzM6JH8lkADWNnzXbqb6VgNDFOEuDfhyWoBhjm9Ojwa8zyGRkQwW
-         6k9mOL1FeAGUbz5Qy7+T4prIaOvNIbWCKkIE43GHeKgPRBB93R0JlDwcYjYnopb6RE+d
-         Au6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695712046; x=1696316846;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zTAHqRp3GCcNiTwFmobBPSIMHg4RBfAScyLuEZ5Fdmo=;
-        b=W762SdyeIo3fpU044tiIL2ruulqOKToykmMEtLzlbPNvP0ZmXd44PUUStDurjOrF4I
-         LdGtdmAFeNjaoHzW5XShtpA5V6XlCmszuEFdIWtS9CvInNGsj+DIgnn5jGUD1MENLeFX
-         AolMkg1zqSqYeB+wkWgT1YJjYutDBhqgV88A6A/baCOrOKsu02iUxsXOiBP1kuriEGK6
-         y7aiXlQRABLDI33SwOd3yTcxfK/KKNxC6ecSxwMy+8JbUNNJ7lMRnfw3Zu/2VILvW0FP
-         QQoo0oea1BZKNF52lrixDTxRwQwiHL2PB2Fa6aBzKKl/ygHCzV84G928mhuMRthEKKuK
-         Y3ZA==
-X-Gm-Message-State: AOJu0Yxv/R8FN7O574ki8P92F5CnvcW/R92bBIg9CQ4flKTyQ2DTHGQa
-	zELIZwZhq6jkszi95T9K9S+QJz29gbwbQj4P
-X-Google-Smtp-Source: AGHT+IHUNM55KrEPSN93OGYRmmPuRgQ8OiKLvVwT1qhDbT9aEulug9UxExq2KDbV/+/aws9oKESvtQ==
-X-Received: by 2002:a05:6808:158c:b0:3a9:e8e2:579d with SMTP id t12-20020a056808158c00b003a9e8e2579dmr9860209oiw.2.1695712045728;
-        Tue, 26 Sep 2023 00:07:25 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id j17-20020aa78dd1000000b0068c1ac1784csm9276485pfr.59.2023.09.26.00.07.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 00:07:25 -0700 (PDT)
-Date: Tue, 26 Sep 2023 16:07:24 +0900 (JST)
-Message-Id: <20230926.160724.485514445673047276.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com
-Subject: Re: [RFC PATCH v2 3/3] net: phy: add Rust Asix PHY driver
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47tecmP6yL=ogjEDPuLBS6q-E=fyya7xKQ-c2Uc7kTsx_A@mail.gmail.com>
-References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
-	<20230924064902.1339662-4-fujita.tomonori@gmail.com>
-	<CALNs47tecmP6yL=ogjEDPuLBS6q-E=fyya7xKQ-c2Uc7kTsx_A@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A06F11CBC
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 08:16:51 +0000 (UTC)
+Received: from mail.socialglobal.pl (mail.socialglobal.pl [51.195.90.253])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAFDB19A6
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 01:16:46 -0700 (PDT)
+Received: by mail.socialglobal.pl (Postfix, from userid 1002)
+	id A526C254E0; Tue, 26 Sep 2023 08:15:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=socialglobal.pl;
+	s=mail; t=1695716204;
+	bh=XwhyqI/moZPDJ7KCfcA6Gip8fA7ZKcg5SWsKuF/26zk=;
+	h=Date:From:To:Subject:From;
+	b=WQ446BCHES/+KXMYtmPWgxppMxfiELNiy7t6FGHi3KK5ZXvy1eb4GmovpYgV4pLBm
+	 SXn2LBYvsr0hHDeSbSt/NwzXjDZsMRIPT21MP2MzRW5osIMgHjJSmdZamo0Wc0fl/l
+	 VLc0WzdhPaEXwhigkXirVY2kVCg523Q9nJ2fdQh7HRMwveK5TCcc6yNK1MfMNKthDD
+	 uHMkwD3yr15gPwT/qmd34Y1w77GJKBcoQItqv/ho0wZ6yYRG/2cMGXb3sOm9vZbxUx
+	 hie1wOqdTqmpNpctM5p86E9OpuzZ4CMSw7mwn0JCCdFkR1hISr/cwKCjXidYxxNZZc
+	 gt6blqCisMZHQ==
+Received: by mail.socialglobal.pl for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 08:15:14 GMT
+Message-ID: <20230926064500-0.1.8n.2yqmc.0.1qz2ynhqen@socialglobal.pl>
+Date: Tue, 26 Sep 2023 08:15:14 GMT
+From: "Dominik Perkowski" <dominik.perkowski@socialglobal.pl>
+To: <rust-for-linux@vger.kernel.org>
+Subject: Pozycjonowanie- informacja
+X-Mailer: mail.socialglobal.pl
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, 26 Sep 2023 02:20:33 -0400
-Trevor Gross <tmgross@umich.edu> wrote:
+Dzie=C5=84 dobry,=20
 
-> On 9/24/23, FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-> 
->> +struct RustAsixPhy;
->> +
->> +impl RustAsixPhy {
->> +    // Performs a software PHY reset using the standard
->> +    // BMCR_RESET bit and poll for the reset bit to be cleared.
->> +    // Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY
->> implementation
->> +    // such as used on the Individual Computers' X-Surf 100 Zorro card.
->> +    fn soft_reset(dev: &mut phy::Device) -> Result {
->> +        dev.write(uapi::MII_BMCR as u16, 0)?;
->> +        dev.genphy_soft_reset()
->> +    }
->> +}
-> 
-> I don't think there is any reason for this to be a type rather than
-> just a function?
-> 
->     fn asix_soft_reset(dev: &mut phy::Device) -> Result {
->         dev.write(uapi::MII_BMCR as u16, 0)?;
->         dev.genphy_soft_reset()
->     }
+jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
+j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
+e Google.=20
 
-A function is preferable than RustAsixPhy's method?
+Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
+=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
+w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
+owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
+dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
 
-> Also, we should make sure that the user-available MII_X constants are
-> available as a u16 rather than a c_int.
+Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
+edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
+edstawi=C4=87 ofert=C4=99?=20
 
-I'm not sure what you mean. MII_ constatns are 0..31. That's IEEE
-spec.
+
+Pozdrawiam serdecznie,
+Dominik Perkowski
