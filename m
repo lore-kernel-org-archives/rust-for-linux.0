@@ -1,66 +1,62 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59291851
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Sep 2023 03:39:48 +0000 (UTC)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1591B5BB7
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 20:39:47 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c724cd25f9so1081285ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Sep 2023 20:39:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4CF1170C
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Sep 2023 10:49:37 +0000 (UTC)
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0C8191
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Sep 2023 03:49:33 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-579de633419so133237287b3.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Sep 2023 03:49:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695785986; x=1696390786; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hocLd/uEKh7RhAqHXf9abGpBnXKXUuxbONu+Pka/TDI=;
-        b=B2b19Zuq++Mc9sULTSM7yNqYvVgUHFwIUB5jj8PWMWxKIu6MP7Sb8oi8YHlXvx9Myb
-         qvmTl6/7V0g+zbCIJ35ACztulfzlZy7aUlaWA0b6Mg7syXL1rW3BZdiMw0KRaD5tNc5Y
-         9BwE02vCO65PFLX0eFdBRC3OFmZoQLr8rIyKYS0ABvz4A5jGFFLxSdpA5y49gshq5L9u
-         p/v3HN1ItS7O526eF/p0DrBHJj24CWFs0qyXJXIikQsK2shbCr7AkueNcPe/ivYEWzHo
-         0dFyVqFR1U3ZC7TEBQu79v5Qz2PFSyUOr+eZTzrn46X4iEgAhQmaIRtl46nCgAKQnrPu
-         RYOg==
+        d=gmail.com; s=20230601; t=1695811772; x=1696416572; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qVrqixWQws7AjhyGGwpP2VQQM+Y9QTpgyK/LeNRBUPQ=;
+        b=J7nmtxICMt3l8+zDj0Z5OMvjLMs3j4b7JtOhvpgPvpYAQIaczbHkfpVkIgbEyE2jd7
+         Put7nxYsogKUB01oyQWEPRnO8KGIczXJD5E7WvH30zSijSasQwgWrotNSMdFd4TMc4BL
+         nzHh5N2VBrNSyu7yvPudjjO5xR9JQwPFM87qPj8iFLT5LFD//LJ8DIc2N0lPaHSxSYG8
+         zZbDo4EWUXjPKgxI366fjRRK6z/vXXpPPlZdCtsypvh6dN+yCik+0YeGKYWqjKqX+ovr
+         mUdHVowoZNLJQspVed3V4tfgKhDp15UHnYnxpJjVF7YeZPKC0tBptmw3MbqWHLbV8m43
+         NU4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695785986; x=1696390786;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hocLd/uEKh7RhAqHXf9abGpBnXKXUuxbONu+Pka/TDI=;
-        b=ai8QFYLtf77MKNRoffjssoCZi3A8gTrCJ2tuCHLrdP0LKIBHFcs89V4DYIidBmEOP8
-         Qx8dp/dAVUdGxFghWVihdXZyeTk3iTq9zDBOizghlVlGs9E2DdMiGE4YEPvj+uZkTQ+4
-         0oWy7yrX6WiyV7xUzuItbCGZiXISwC4qn1a2sS4avZ4koP9U9ZMYUBRczVK7PH6lnF0/
-         0xRk0mEkZ/2TXeLCR71QxThWGO6i+oeumdvH9p4dO1Rxz5hyPqb/k3dNGuGkN83FsdpE
-         nVjpzDwBSxsz1X4TZre2K2QDWA6zqn/adFvyBu+YYPDAOIOemfHsTwCivZZEWH/KXSk6
-         UpxA==
-X-Gm-Message-State: AOJu0Ywo4OkgSJZT19xOKpPz7cM1UoU/IgqxBzPuZlS5bR97kCsFtpRy
-	zZZRZVzszpL6MKug8ndZYpE=
-X-Google-Smtp-Source: AGHT+IHVVoQ+MXAVzzFBqPueT1MpAoufpoubSpRklCrZzllxgozUzSByH/ZkJz55FMYygqkRUQbWhw==
-X-Received: by 2002:a17:902:d48d:b0:1c3:4073:bf80 with SMTP id c13-20020a170902d48d00b001c34073bf80mr768592plg.0.1695785986408;
-        Tue, 26 Sep 2023 20:39:46 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id m1-20020a170902db0100b001b03f208323sm11793812plx.64.2023.09.26.20.39.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 20:39:45 -0700 (PDT)
-Date: Wed, 27 Sep 2023 12:39:45 +0900 (JST)
-Message-Id: <20230927.123945.1084774133034584337.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com
-Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY
- drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47vE7p_m=q0Q5+bHUSVaNVEbfeJfZFHS9AkT1UaUMvuevQ@mail.gmail.com>
-References: <20230924064902.1339662-1-fujita.tomonori@gmail.com>
-	<20230924064902.1339662-2-fujita.tomonori@gmail.com>
-	<CALNs47vE7p_m=q0Q5+bHUSVaNVEbfeJfZFHS9AkT1UaUMvuevQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1695811772; x=1696416572;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qVrqixWQws7AjhyGGwpP2VQQM+Y9QTpgyK/LeNRBUPQ=;
+        b=i8Sk9VJXjJEcvdUwEnlDIcoX16aS3xOi5btGzfg6eal4bZRMjHH5UczXLHwSgIa1DX
+         R0bY3GfV8b/OrlVM/b7inmQweWxqJuMdNhyjz2EIWeFbtlDDF2fxjBMlUVtaN8QRnHyc
+         EnS24lHBsmHgAQxORRcoptQysj9X8dc05KzH8pemABTw7dP2+SO16Jp3vjXOu88opihE
+         TQIkfDjBg29HyOOe9ix/JfmUc0yvWXeTbdnw0eGt/13D0icDTOpVMau6NLKN+Z/Z51Ly
+         43jgYc/HkjZBq3o+B28W8lCJZMb7phYjKs3qnH4i7upTLJHexpME262J6nmNwfOQVBe2
+         8SIw==
+X-Gm-Message-State: AOJu0Yw0YXSvknuIS7XPYSZWof21ed7u885RKHM2JRPU3U+Tm2FawQsY
+	ewcM2fx7ndyHO3M+0M+KM8B+ImT0U0aRmn0zXT4=
+X-Google-Smtp-Source: AGHT+IHVKoEjmIxD6prsTYtAViosRou4Vf7pznHVsN2URtBB2e/5Ms4Om8O8SM7HS9LyXQUeu1bmDEizwLLAcCrJMeE=
+X-Received: by 2002:a0d:ed85:0:b0:59e:8f6d:92e with SMTP id
+ w127-20020a0ded85000000b0059e8f6d092emr1720118ywe.49.1695811772580; Wed, 27
+ Sep 2023 03:49:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <70dbdfd2-9e8d-6985-ae42-0d4f1a7dcef9@proton.me>
+ <20230925.192433.108741056500744806.fujita.tomonori@gmail.com>
+ <CANiq72nO=Eje0dv_NCagvTzOLU7WkfM-bwqH33z_kC=f=m1m1A@mail.gmail.com> <20230926.224630.1323587629112314285.fujita.tomonori@gmail.com>
+In-Reply-To: <20230926.224630.1323587629112314285.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 27 Sep 2023 12:49:21 +0200
+Message-ID: <CANiq72m-9pALVX3gS4N99+xhDK8rS=Wss0H+aBoUyrZTBwmV3w@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: benno.lossin@proton.me, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -68,46 +64,51 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, 26 Sep 2023 02:54:21 -0400
-Trevor Gross <tmgross@umich.edu> wrote:
+On Tue, Sep 26, 2023 at 3:46=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Thanks! I updated the code.
 
-> On 9/24/23, FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
->> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
->> index e8811700239a..0588422e273c 100644
->> --- a/rust/kernel/lib.rs
->> +++ b/rust/kernel/lib.rs
->> @@ -14,6 +14,7 @@
->>  #![no_std]
->>  #![feature(allocator_api)]
->>  #![feature(coerce_unsized)]
->> +#![feature(const_maybe_uninit_zeroed)]
->>  #![feature(dispatch_from_dyn)]
->>  #![feature(new_uninit)]
->>  #![feature(receiver_trait)]
-> 
-> 
->> +            // SAFETY: The rest is zeroed out to initialize `struct
->> phy_driver`,
->> +            // sets `Option<&F>` to be `None`.
->> +            ..unsafe {
->> core::mem::MaybeUninit::<bindings::phy_driver>::zeroed().assume_init() }
->> +        })
-> 
-> I think we may actually want to avoid using
-> `const_maybe_uninit_zeroed` and other features that indirectly rely on
-> `const_mut_refs`, just because some of the internals are still TBD.
-> That means that the best solution is to create a `const
-> DEFAULT_DRIVER: bindings::phy_driver` and use that to fill the
-> remaining fields.
-> 
-> Which really isn't all that bad since it means that if any fields are
-> ever added to `phy_driver`, we will need to confirm that our default
-> is OK a single place.
+My pleasure!
 
-Such change to phy_driver would unlikely happen? Wth such change, all
-the PHY drivers need to be updated.
+> No helper function for a function that returns avalue like the
+> following?
+>
+> let ret =3D unsafe {bindings::some_function()};
+> if ret < 0 {
+>    Err(Error::from_errno(ret))
+> } else {
+>    Ok(ret)
+> }
+>
+> if to_result() returns a value, it can handle both types.
 
-const_maybe_uninit_zeroed was suggested during the review of my
-bindings patches for NICs. If there is a consensus not to use
-const_maybe_uninit_zeroed, I'll initialize all fields by hand.
+Do you mean a function that takes the `ok` value:
 
+    let ret =3D ...;
+    to_result_ok(ret, ret as u16)
+
+or simply having `to_result` return the value back in the ` Ok` case:
+
+    let ret =3D to_result(...)?;
+    Ok(ret as u16)
+
+? (which is what Wedson implicitly suggested, but `to_result` does not
+return the not-an-error-integer back at the moment in the happy path)?
+Or perhaps both?
+
+The returning one has the advantage that we see the explicit `Ok()` at
+the end, without having to remember what an extra function does or the
+order of its parameters. It also allows one-liners with `?` like the
+`map()` approach assuming one really, really needs/wants those:
+
+    Ok(to_result(...)? as u16)
+
+It also gives a chance to give a better name to the value when needed,
+since at that point it is not an "error-or-value integer" anymore, but
+the actual value we want, i.e.:
+
+    let my_thing =3D to_result(...)?;
+
+Cheers,
+Miguel
