@@ -1,48 +1,48 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA168839
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 Sep 2023 21:07:35 +0000 (UTC)
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E84B7;
-	Thu, 28 Sep 2023 14:07:34 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3ae0135c4deso7715463b6e.3;
-        Thu, 28 Sep 2023 14:07:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD0F5C98
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 Sep 2023 21:07:42 +0000 (UTC)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B165B19E;
+	Thu, 28 Sep 2023 14:07:39 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-692ada71d79so9505397b3a.1;
+        Thu, 28 Sep 2023 14:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695935253; x=1696540053; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1695935259; x=1696540059; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qIlKEJnw0fFoB8aDGwN3C/vOYWFmYPRhpPxSRX2qmyg=;
-        b=mrVe/8GS0+AGXo7bS4iO83gLxZFHgUceu6SGPlv3+TYdxLtcJXgmgG0hZFRVqgWuei
-         hFwj86nOxFyI1Ce21kFa24SHoHXrWyaOFn6xPYN+sewkxjeNUT4PV02UZFw1Wy2IlBGd
-         JaS2nElVhJA48t1IaMyfm7pIe+Flvp1v9XIXb/KBPDeCx1iQet8SdndPfGPiiF+x2KpF
-         2iI6k49ZpJYMsnKpllK5ijZBruXPzByyk9XLCFFn2B3T+Mf/GKRDHmykBQshUpEnYZLi
-         3l7Rb9RBATxyKkFkVLUz3zJBnwtnLE6op9TpaT2PSotsKIHYLBP8wexJNmaZbqxizUU0
-         B0uQ==
+        bh=E/JgCDvL4cTN//gomBsMCRt9yDQu7HdW6HJo7loOWOQ=;
+        b=BqHBz5ywqCUgxRSi7fQ8u8BwzcpSSB4uKzRS5+6qGHhiyNq0zXCifzeZTGzBLkFduh
+         wub7KGK1VrSHWZPTrvNHCE5YHeIgtruBaC6btUkAdoVGuSu3+XVbUcYqV6kM1EcKrZIk
+         tsnyLCWNuHEqVPU5UIk6op3vS8PaOSabwT8H++w+T5comXFV+EbHhEH9rtz1f07J+gAu
+         z/wgK3kExx5cM5+SYe3Op1JgqEh9CvwfD9zm3o/HW/tQzxieetJClNIg458Xvze3uy6X
+         q+zA1kzqcm9DnERka3bo+pTsWBWS08c5tyPFbce/sIaqRwJkKjxfKJ8QajLvpwJYNLjP
+         oi2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695935253; x=1696540053;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1695935259; x=1696540059;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qIlKEJnw0fFoB8aDGwN3C/vOYWFmYPRhpPxSRX2qmyg=;
-        b=hhEZ8z5tqEsdc1hVOQk1NqoRiHvuh/uP+3wj0TKJFMVtGhstYWXOuVq5D0d6vpdeb/
-         v8UycFjVAsJq0MOdpqeXHoNEiKK1gF71m3B1gyuOcYwlhCD9l4WwlLHFbqFbJ+MOPOus
-         icCz01mGKPkCn9BT0rqq6NIi8Of6lJz9mtXms8PN8F50gbC28plFKUytGhioy+5ZILvK
-         FE/f+4pL2/nZdeDFyU8lwgDDK1ZNOmwYBh/tgnZkTlA4zZBqsZya8C8wgB+1LUdeqm8v
-         lv2KJnKKE4uhc8QB17E9VhMfuJ9/cCN/xuDvNU0ZSHNLH/CEKBhoqkf70tikqUuDuVTk
-         b+eA==
-X-Gm-Message-State: AOJu0Yz4RVEsrIo7Py1WVzo+punqVDobK+FmKCsH8mscb85n4RVLLxYs
-	QcZ6jW64m76ICFl3r5tgITs=
-X-Google-Smtp-Source: AGHT+IG/wdC9TA1MZk6fSBU2RRw1BACeiIsuv/wTqo+LvBSGWzHVlF55AtGJGT7QdWxF+oHCueXdoQ==
-X-Received: by 2002:a05:6808:1450:b0:3a7:5309:f1f with SMTP id x16-20020a056808145000b003a753090f1fmr2846373oiv.45.1695935253446;
-        Thu, 28 Sep 2023 14:07:33 -0700 (PDT)
+        bh=E/JgCDvL4cTN//gomBsMCRt9yDQu7HdW6HJo7loOWOQ=;
+        b=rc0A3ZK/JdTx3W7gm+nAtpnKmuZ+S4UKqNzirz/Dx1i/agBhTg3yjCsobIQUtBd5LQ
+         If1k2RkgNq2ivbRaSsptJLuzhloopQxWlxGN6L+1JIS2G1x+wxb3zQBu3kG5o2KOVzrH
+         YL9l/JCaIhY37PNYKNGHdfQKqpRniX4l5bUq+HEoByyRCuDvdMQ/P0+BOjFkJgleYVQi
+         hZ8vHzlsP5U6SwqkDkAk4A/LHFvlDzzfN3qrXvxrv6xHM+2GNkwinMUErQshUG54aXWh
+         TtCWDCu+H/t8qyhxiqc4G1Xx43GF6OG8Q8PdxoG43+xPjaSsyDL5RZNQ7lgaOpytz5CR
+         A+7A==
+X-Gm-Message-State: AOJu0Yx3cLKGRr+RN8taT1/HP7+qydp0L24tJ3jcLiDV4WBVLehLDg0r
+	/Ou3J8OOCLig7HeRmnaUSXQ=
+X-Google-Smtp-Source: AGHT+IFFs6U8W6jkUYBh4GlltimkUb3hwkKsyE+x1ztQgT1CKdt45v5Q1p8JkhHNxcMIy5aOhvgaXQ==
+X-Received: by 2002:a05:6a20:104e:b0:159:1bd8:fc7a with SMTP id gt14-20020a056a20104e00b001591bd8fc7amr1810753pzc.40.1695935258707;
+        Thu, 28 Sep 2023 14:07:38 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id k12-20020aa7820c000000b0068fda1db80bsm13766692pfi.75.2023.09.28.14.07.28
+        by smtp.gmail.com with ESMTPSA id k12-20020aa7820c000000b0068fda1db80bsm13766692pfi.75.2023.09.28.14.07.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Sep 2023 14:07:32 -0700 (PDT)
-Message-ID: <91c25e18-ff97-46a2-a50a-493c00bbc156@gmail.com>
-Date: Thu, 28 Sep 2023 18:02:59 -0300
+        Thu, 28 Sep 2023 14:07:37 -0700 (PDT)
+Message-ID: <3e719461-d53c-4c54-86d3-ecb2eac4e9bd@gmail.com>
+Date: Thu, 28 Sep 2023 18:04:05 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,24 +50,20 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: Respect HOSTCC when linking for host
+Subject: Re: [PATCH] rust: Use grep -Ev rather than relying on GNU grep
+Content-Language: en-US
 To: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>
+ Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <benno.lossin@proton.me>,
  Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Nicolas Schier <nicolas@fjasle.eu>,
- Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev
-References: <20230928194801.2278999-1-mmaurer@google.com>
-Content-Language: en-US
+ <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20230928201421.2296518-1-mmaurer@google.com>
 From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230928194801.2278999-1-mmaurer@google.com>
+In-Reply-To: <20230928201421.2296518-1-mmaurer@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,24 +73,13 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 9/28/23 16:48, Matthew Maurer wrote:
-> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
-> resulting in build failures in hermetic environments where `cc` does not
-> exist. This includes both hostprogs and proc-macros.
-> 
-> Since we are setting the linker to `HOSTCC`, we set the linker flavor to
-> `gcc` explicitly. The linker-flavor selects both which linker to search
-> for if the linker is unset, and which kind of linker flags to pass.
-> Without this flag, `rustc` would attempt to determine which flags to
-> pass based on the name of the binary passed as `HOSTCC`. `gcc` is the
-> name of the linker-flavor used by `rustc` for all C compilers, including
-> both `gcc` and `clang`.
+On 9/28/23 17:14, Matthew Maurer wrote:
+> While GNU grep supports '\|' when in basic regular expression mode, not
+> all grep implementations do (notably toybox grep, used to build the
+> Android kernel, does not). Switching to grep -Ev enables extended
+> regular expresions which includes support for the '|' operator.
 > 
 > Signed-off-by: Matthew Maurer <mmaurer@google.com>
 > ---
-
-Psst, next time I'd recommend putting patch version to version changes
-here. Still, LGTM.
-
 > [...]
 Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
