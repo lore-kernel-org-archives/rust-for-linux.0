@@ -1,43 +1,43 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174F9168CF
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 17:47:13 +0000 (UTC)
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C86FCE5
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 10:47:11 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-59bc956b029so182188087b3.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 10:47:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55919B678
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 18:22:30 +0000 (UTC)
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4BDE3;
+	Sat, 30 Sep 2023 11:22:26 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-59e88a28b98so26070357b3.1;
+        Sat, 30 Sep 2023 11:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1696096031; x=1696700831; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696098146; x=1696702946; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1bRw5quNEV0M9cb0HcdjknkRgJ/siG4MMp5H13L+Cls=;
-        b=mQnoxRoolRZo3SzsJ2Sf6QDHx442H0O0UDytGSx7nAfy5aWa8ZSf8meFdmppMbUqfS
-         wsYtOovh5uGvsv65gxP1yXFOdBVhyUGfzSzJV1ioIt8hsEbpSJf1ryZtzm22VMcxTtes
-         S6EyDvZtFY95RZHereHjwxRuIESizrd+F6s4hAmKAG3aPKaDsIKf2gUUXGrnVRKPdGg9
-         m+KVXBQhT+rQvUecW/xlvVuNhR7sJEsdxla/ARCSO3STbtJ9xH7aJGzg8/9FznEc11RX
-         00Go+DbaTSWrRGxvz+WX40U3jntVfwzy7k7fElqMyNclNtBoFSobKS72PTz+Y3iqKhhu
-         WypQ==
+        bh=Cfk+kAIkYmF1E1ZqhKZzYdSWCH0DhBj9gaPb0BECOXU=;
+        b=WL84G1DI8mesKKFAJveYhma7HWdts81Usm6pkp6IlM+TVKh3bCvDK41hDSi1CRnXBg
+         374+cboZ5gEGYwjTR7ow+XSGujBlwkapa3c1HTSAV9O65kAnHfzwy74224jPJ8IHLCDC
+         K9WgHtkGnWbpYx/rYwAVhsR7Te6D8bHd6rXmF39O+n6LQxbdEWLhNhB3Jd4FO9iMf/pd
+         iMcGNvfLNdx/R7CLqT3Lwkbupr3ssngCi7Fxsub9uYvN7UX1BD02kCAV/DwL6wsrS/in
+         J9e+vaUqHVE1l47NQ1cLzNwA2SMYYHCRwJq+ayYOzKO+qBtPAA5tpV8spWvtEig0L5VF
+         vr3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696096031; x=1696700831;
+        d=1e100.net; s=20230601; t=1696098146; x=1696702946;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1bRw5quNEV0M9cb0HcdjknkRgJ/siG4MMp5H13L+Cls=;
-        b=RlHKaaomv6eKSwxbx4h9nC+fAuNApkhzMCFSpLn+dwraKyuYAMDA/IrdOBMboONs9Z
-         p5wn5ETEdb1Ib4KY58qL0rtfmxmLCLk2PPcPO7eFAdS77OA6E47WQxHbntmmULhOa3rl
-         fyl1stZRb2Dcf/WalqAfzN7ZwdTEX/xDA/qkXMJYlf18PAvJHXTzuF6wxXaChfH8y3BT
-         AIImyn0/tvDJkWTKjymHyVtYLSNC8MTotUWx60kAC1OoVaqDv1Ld/0EYYC3HgceFsXFs
-         JqPLSeWQXHkbxXuXHUomBag2x55Yj5VIsZCyj1nJT4sWMHVxS+dsDoUaLZKUS4YqZ+/g
-         QrnA==
-X-Gm-Message-State: AOJu0YwqvmjVEfQMnjoL+C3nyiJRdf/qDP0kxuV+w4Th9AgdwBmpMOsZ
-	JZ1SEeZCKFPG0QmoBIyGGZ4qE0Mb4S/eg/4r/jPvcw==
-X-Google-Smtp-Source: AGHT+IENFMeQdLk+rR/U55AmckbI5FKhXjp8G3li3k+tIvbb7G4Nd/lRvb13bcWvSJRQjCirrEzryGpeVGHfAN/lqDY=
-X-Received: by 2002:a0d:d086:0:b0:598:bad6:8e67 with SMTP id
- s128-20020a0dd086000000b00598bad68e67mr6880097ywd.30.1696096030870; Sat, 30
- Sep 2023 10:47:10 -0700 (PDT)
+        bh=Cfk+kAIkYmF1E1ZqhKZzYdSWCH0DhBj9gaPb0BECOXU=;
+        b=k3qHuNRE4stidbKLyxojUGrfwjsndAasPCWedXRF/+ZiPHlNO3wMKhAaTcvlgxIhli
+         4b8DKIJAChajC+S9u5YGuBJUJJW7CfigNy/eTzr6bd4a47Dr6f2S9il4hUJ5oxESlbGf
+         St+yAXDShoZg4Ufvxd1ncUI7C4vw8jl2tPGrRC2aX89Ij4UtOEB22SUMF7jkPGiAhDTZ
+         ic0jqSy+aS3HINp8NRTIyBJywj5kU8HrlQmEq3jmqurS78GP/dk3/Inch9Q9bRNhJKK7
+         ST/7NtTf3+eHuB7HWxXDOmfO1BX1dFAC+eJFYRE9ecEQbB7NR/qAAuJeqn8oENEBvw5n
+         Uh9Q==
+X-Gm-Message-State: AOJu0YwQ1us+m02xY7ktqCIhGwpDkz53//nZHzQ4Hb+u97/+2boBemRc
+	krhWJhZzn44MAdf7BOd8JNitFqFuJ7VMwXLxtUo=
+X-Google-Smtp-Source: AGHT+IGUDWQoToowUPLFmKQ3hhUmZu70ON3P0B5xXTXZjO886NCuvZ9XxU6OpyeXoaUmL14L4RdF/94Glu6JT+d0zG8=
+X-Received: by 2002:a0d:ebca:0:b0:589:f9c3:8b2e with SMTP id
+ u193-20020a0debca000000b00589f9c38b2emr8915242ywe.20.1696098145893; Sat, 30
+ Sep 2023 11:22:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,9 +46,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20230930161443.58812-1-xubo3006@163.com>
 In-Reply-To: <20230930161443.58812-1-xubo3006@163.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Sat, 30 Sep 2023 13:47:00 -0400
-Message-ID: <CALNs47s7HKb7n14waq0Gyty4Py3csKrJ1YFidJht=CMiXo9gCA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 30 Sep 2023 20:22:14 +0200
+Message-ID: <CANiq72k6YR_T9cni+eGVFLzXcym2tifb7eRQW0TV6DwWSXvH7g@mail.gmail.com>
 Subject: Re: [PATCH 1/2] rust: add Soft-RoCE driver basic structure
 To: AllenX <xubo3006@163.com>
 Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
@@ -57,32 +57,46 @@ Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Sep 30, 2023 at 12:32=E2=80=AFPM AllenX <xubo3006@163.com> wrote:
+On Sat, Sep 30, 2023 at 6:16=E2=80=AFPM AllenX <xubo3006@163.com> wrote:
 >
 > add soft-Roce rxe device net driver basic structure and Rust security abs=
 tration interface
+>
+> This patch add Rust abstration for rdma Soft-RoCE drrivers.
+> The basic architecture is completed, initialization is implemented and in=
+terfaces are set aside. Network driver-related support is currently not per=
+fect, and the specific functions of data frame parsing need to be further i=
+mplemented.
+> [PATCH 2/2] is the driver of rdma infiniband mlx4 and also completes a si=
+milar basic architecture.
 
-It looks like your patch hit the list twice, see [1] and [2]. Also,
-the body should be hard wrapped [3].
+Thanks for the patches! It is nice to see people interested in Rust
+for more use cases.
 
-Since it's usually the first thing to be asked, do you have a
-real-world driver that this is intended for? Typically new
-abstractions don't get merged upstream unless there is an in-tree use
-case.
+On top of what Trevor said, please see:
 
-We can still give the patch a cursory review from the Rust side even
-if it isn't meant for upstreaming as-is. For future reference, you can
-have "RFC PATCH" in the subject to make this clear (`git format-patch
---rfc` does this)
+    https://rust-for-linux.com/contributing
 
-[1]: https://lore.kernel.org/rust-for-linux/20230930163256.60779-1-xubo3006=
-@163.com/
-[2]: https://lore.kernel.org/rust-for-linux/20230930161443.58812-1-xubo3006=
-@163.com/
-[3]: https://www.kernel.org/doc/html/v4.17/process/submitting-patches.html#=
-the-canonical-patch-format
+There is some extra information there that is important, such as
+Cc'ing the relevant C side maintainers and lists, since they are the
+ones that will have to agree to take these abstractions. In this case,
+I would imagine that would be, at least, the InfiniBand maintainers
+and the rdma list.
+
+Moreover, please note that these patches seem to be on top of the
+`rust` branch. Patches sent to the mailing list should generally be
+based on top of one of the latest Linus' tags or `rust-next`. If your
+abstractions require dependencies that have not arrived yet into
+mainline, those will need to be upstreamed too. Please see the website
+above for more details on this, e.g.
+
+    https://rust-for-linux.com/branches
+
+Cheers,
+Miguel
