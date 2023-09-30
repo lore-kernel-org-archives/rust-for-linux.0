@@ -1,43 +1,43 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55919B678
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 18:22:30 +0000 (UTC)
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4BDE3;
-	Sat, 30 Sep 2023 11:22:26 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-59e88a28b98so26070357b3.1;
-        Sat, 30 Sep 2023 11:22:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84615699
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 18:49:12 +0000 (UTC)
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7853CD3;
+	Sat, 30 Sep 2023 11:49:11 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id af79cd13be357-7740aa4b545so1019294685a.3;
+        Sat, 30 Sep 2023 11:49:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696098146; x=1696702946; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696099750; x=1696704550; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Cfk+kAIkYmF1E1ZqhKZzYdSWCH0DhBj9gaPb0BECOXU=;
-        b=WL84G1DI8mesKKFAJveYhma7HWdts81Usm6pkp6IlM+TVKh3bCvDK41hDSi1CRnXBg
-         374+cboZ5gEGYwjTR7ow+XSGujBlwkapa3c1HTSAV9O65kAnHfzwy74224jPJ8IHLCDC
-         K9WgHtkGnWbpYx/rYwAVhsR7Te6D8bHd6rXmF39O+n6LQxbdEWLhNhB3Jd4FO9iMf/pd
-         iMcGNvfLNdx/R7CLqT3Lwkbupr3ssngCi7Fxsub9uYvN7UX1BD02kCAV/DwL6wsrS/in
-         J9e+vaUqHVE1l47NQ1cLzNwA2SMYYHCRwJq+ayYOzKO+qBtPAA5tpV8spWvtEig0L5VF
-         vr3Q==
+        bh=ieQO9sxh6KCnuOiZjBddD3RDHajg+Mr+k5MS8yorB18=;
+        b=HyRjyADivtqdDV0lBqprqNX9evdD3TGSCN/gklL/H0YfLn3x9zAWnh+T+K9C6dwxFn
+         DnyXdvUlQvi1UmEes/+7ERvk/5rNd9R8260pv8g/ocYZ7IeuR278enOugy1ByFD29Axu
+         7Wj+Co5l9LHry5qM8f6nVaqR7fc2hseJCiiavi3bYOqdN3nBPIW5pTe4fW3811mv20k2
+         DUvN/RfhaT0ot5wZddJN46orkhox5fmH6XcrQn0619hR32jbJVAWF7XLviRhUm0HM19u
+         0l5TTxGVJkGqA3iNwSKq6X2cQzgrP0yQGJvvO9VJCG4fDu8AQl0RpM/4HoGr20Ow2PmL
+         R0gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696098146; x=1696702946;
+        d=1e100.net; s=20230601; t=1696099750; x=1696704550;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Cfk+kAIkYmF1E1ZqhKZzYdSWCH0DhBj9gaPb0BECOXU=;
-        b=k3qHuNRE4stidbKLyxojUGrfwjsndAasPCWedXRF/+ZiPHlNO3wMKhAaTcvlgxIhli
-         4b8DKIJAChajC+S9u5YGuBJUJJW7CfigNy/eTzr6bd4a47Dr6f2S9il4hUJ5oxESlbGf
-         St+yAXDShoZg4Ufvxd1ncUI7C4vw8jl2tPGrRC2aX89Ij4UtOEB22SUMF7jkPGiAhDTZ
-         ic0jqSy+aS3HINp8NRTIyBJywj5kU8HrlQmEq3jmqurS78GP/dk3/Inch9Q9bRNhJKK7
-         ST/7NtTf3+eHuB7HWxXDOmfO1BX1dFAC+eJFYRE9ecEQbB7NR/qAAuJeqn8oENEBvw5n
-         Uh9Q==
-X-Gm-Message-State: AOJu0YwQ1us+m02xY7ktqCIhGwpDkz53//nZHzQ4Hb+u97/+2boBemRc
-	krhWJhZzn44MAdf7BOd8JNitFqFuJ7VMwXLxtUo=
-X-Google-Smtp-Source: AGHT+IGUDWQoToowUPLFmKQ3hhUmZu70ON3P0B5xXTXZjO886NCuvZ9XxU6OpyeXoaUmL14L4RdF/94Glu6JT+d0zG8=
-X-Received: by 2002:a0d:ebca:0:b0:589:f9c3:8b2e with SMTP id
- u193-20020a0debca000000b00589f9c38b2emr8915242ywe.20.1696098145893; Sat, 30
- Sep 2023 11:22:25 -0700 (PDT)
+        bh=ieQO9sxh6KCnuOiZjBddD3RDHajg+Mr+k5MS8yorB18=;
+        b=ZVoRH2iQWO8KQFu7861sPq3kwOup2ug/eNxqEYAixZwoxccBTL15fk2303bO9kk+c9
+         or7ViEzsyMZAozy18TQq9EQljxANpC4ZF40JJ7tnBMkQ1w2jfBlmfQYevPCXx1loux/w
+         zUsCkFCQ0aABmjkIclSxjdb1gUsqv1TPSXzO6dBYgynyyj6GWCwzDbsFRrsWpagZcLwJ
+         8AJgHV5Xe5LLB2x76zJW1TLgaztIRzi6VqUjD3ZJ3aKDS1BF43rwCHsPQKSFq6Xkmu/9
+         M4ua+gM8//K32K8C65qLHtYB6Ef9xhJjgpAiCsgJ+yzOouWKY6kZ7PNepgYT+WpOLqdT
+         ogVw==
+X-Gm-Message-State: AOJu0YzW+K/rAGo48HRpphdy9klnxRBFY3YATSYEDhn5yiV0QZuhBnc0
+	lgPDC7KN9eZ7yCeqnNTaQKLxPR5qgr66XUFFmAmdYgFzENHfoDxd
+X-Google-Smtp-Source: AGHT+IGAs5IUo3HjONoakmz3HhBHE4LyPQIyeV6Zjld+8Pcc19WNiV+RgIdnJANX3yZwUsGSOqRMb79WYySzjhBpUvw=
+X-Received: by 2002:a05:620a:d85:b0:774:179d:6576 with SMTP id
+ q5-20020a05620a0d8500b00774179d6576mr8245459qkl.50.1696099750524; Sat, 30 Sep
+ 2023 11:49:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,8 +47,8 @@ MIME-Version: 1.0
 References: <20230930161443.58812-1-xubo3006@163.com>
 In-Reply-To: <20230930161443.58812-1-xubo3006@163.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 30 Sep 2023 20:22:14 +0200
-Message-ID: <CANiq72k6YR_T9cni+eGVFLzXcym2tifb7eRQW0TV6DwWSXvH7g@mail.gmail.com>
+Date: Sat, 30 Sep 2023 20:48:59 +0200
+Message-ID: <CANiq72n+xr+3TqQMaoP3xOzM2ZqUyzKvGm2wDMd8SbsqBK7nvg@mail.gmail.com>
 Subject: Re: [PATCH 1/2] rust: add Soft-RoCE driver basic structure
 To: AllenX <xubo3006@163.com>
 Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
@@ -58,45 +58,141 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+Hi Allen,
+
+A quick few notes I noticed that you will probably want to address
+before sending this to the Infiniband/rdma maintainers. Please note
+that some of these apply in more than one instance, and that these are
+just surface-level -- I have not actually looked at what the code is
+doing or whether it is sound.
+
 On Sat, Sep 30, 2023 at 6:16=E2=80=AFPM AllenX <xubo3006@163.com> wrote:
 >
-> add soft-Roce rxe device net driver basic structure and Rust security abs=
-tration interface
->
-> This patch add Rust abstration for rdma Soft-RoCE drrivers.
-> The basic architecture is completed, initialization is implemented and in=
-terfaces are set aside. Network driver-related support is currently not per=
-fect, and the specific functions of data frame parsing need to be further i=
-mplemented.
-> [PATCH 2/2] is the driver of rdma infiniband mlx4 and also completes a si=
-milar basic architecture.
+> +//! Infiniband soft-Roce devices.
 
-Thanks for the patches! It is nice to see people interested in Rust
-for more use cases.
+Please follow the formatting/coding style of the rest of the code
+already upstream. For instance, a newline should be placed here.
 
-On top of what Trevor said, please see:
+> +/// Soft-Roce transport registration.
+> +///
 
-    https://rust-for-linux.com/contributing
+Docs should not end in an empty line.
 
-There is some extra information there that is important, such as
-Cc'ing the relevant C side maintainers and lists, since they are the
-ones that will have to agree to take these abstractions. In this case,
-I would imagine that would be, at least, the InfiniBand maintainers
-and the rdma list.
+> +impl<T: RxeOperation> Registration<T> {
+> +    /// Creates a new [`Registration`] but does not register it yet.
+> +    ///
+> +    /// It is allowed to move.
+> +    pub fn new(name: &'static CStr) -> Self {
+> +        // INVARIANT: `registered` is `false`
 
-Moreover, please note that these patches seem to be on top of the
-`rust` branch. Patches sent to the mailing list should generally be
-based on top of one of the latest Linus' tags or `rust-next`. If your
-abstractions require dependencies that have not arrived yet into
-mainline, those will need to be upstreamed too. Please see the website
-above for more details on this, e.g.
+There is no `# Invariants` section in the type. Please check other
+types we have to see how it is usually done.
 
-    https://rust-for-linux.com/branches
+> +    /// Registers a infiniband soft-Roce device
+
+Docs should only have a single first line/sentence and end in a period.
+
+> +        // SAFETY: The adapter is compatible with the rdma_link_register
+
+Please use Markdown in code comments, just like in the documentation,
+and end sentences and comments in a period for consistency with the
+rest of the code; e.g.
+
+    with the `rdma_link_register`.
+
+> +        pr_info!("loaded");
+
+Debugging code?
+
+> +/// soft-Roce register net sockets
+
+Please be consistent in the documentation, e.g. you used "Soft-Roce" above.
+
+> +    /// Init ipv4 socket
+> +    fn ipv4_init(&mut self) -> Result<()> {
+> +        let mut udp_cfg =3D bindings::udp_port_cfg::default();
+> +        let mut tnl_cfg =3D bindings::udp_tunnel_sock_cfg::default();
+> +        let mut sock: *mut bindings::socket =3D ptr::null_mut();
+> +
+> +        udp_cfg.family =3D bindings::AF_INET as u8;
+> +        udp_cfg.local_udp_port =3D 46866;
+> +        // SAFETY: [`bindings::init_net`] and [`udp_cfg`] can be safely =
+passed to [`bindings::udp_sock_create4`]
+> +        // [`sock`] will be pass to [`self.sk4`] later, it will live at =
+least as long as the module, which is an implicit requirement
+> +        let err =3D
+> +            unsafe { bindings::udp_sock_create4(&mut bindings::init_net,=
+ &mut udp_cfg, &mut sock) };
+> +
+> +        if err < 0 {
+> +            pr_err!("Failed to create IPv4 UDP tunnel\n");
+> +            return Err(Error::from_kernel_errno(err));
+> +        }
+> +
+> +        tnl_cfg.encap_type =3D 1;
+> +        tnl_cfg.encap_rcv =3D RxeUdpEncapRecvFuncTable::<T>::build_func(=
+);
+> +
+> +        // SAFETY: [`bindings::init_net`] and [`tnl_cfg`] can be safely =
+passed to [`bindings::setup_udp_tunnel_sock`]
+> +        // [`sock`] will be pass to [`self.sk4`] later, it will live at =
+least as long as the module, which is an implicit requirement
+> +        unsafe { bindings::setup_udp_tunnel_sock(&mut bindings::init_net=
+, sock, &mut tnl_cfg) }
+> +        self.sk4 =3D Some(sock);
+> +        Ok(())
+> +    }
+
+Some networking abstractions will be needed here, instead of calling
+the C APIs directly. There are some networking discussions going on in
+the list and in our Zulip -- please take a look!
+
+> +            if err < 0 {
+> +                // EAFNOSUPPORT
+> +                if err =3D=3D -97 {
+
+The error code should be added to the list that we import from the C
+headers, instead of hardcoding the value.
+
+> +                    pr_err!("IPv6 is not supported, can not create a UDP=
+v6 socket\n");
+> +                    return Ok(());
+
+Should this really return `Ok`?
+
+Does the C side print errors too?
+
+> +            if self.rxe_net_notifier.is_some() {
+> +                // SAFETY: [`self.rxe_net_notifier`] is Some, it was pre=
+viously created by
+> +                // RxeNotifyFuncTable::<T>::build().
+> +                unsafe {
+> +                    bindings::unregister_netdevice_notifier(
+> +                        &mut self.rxe_net_notifier.take().unwrap(),
+> +                    )
+> +                };
+> +            }
+> +            return Err(Error::from_kernel_errno(err));
+
+This looks like it is undoing an operation before returning in an
+error path -- there are usually better patterns for this, like RAII or
+the `ScopeGuard` type (already in-tree).
+
+> +config SAMPLE_RUST_RXE
+> +       tristate "Soft-Roce"
+> +       help
+> +         This option builds the self test cases for Rust.
+
+Nowadays we have KUnit support for running Rust code documentation
+tests -- you may be interested in those.
+
+Also, more documentation, including `# Examples` sections in the
+abstractions would be very helpful, I would imagine.
 
 Cheers,
 Miguel
