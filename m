@@ -1,34 +1,33 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B5D18035
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 16:31:56 +0000 (UTC)
-X-Greylist: delayed 935 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 30 Sep 2023 09:31:53 PDT
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E3F9CA70
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 16:33:29 +0000 (UTC)
 Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.220])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 33099CF;
-	Sat, 30 Sep 2023 09:31:52 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 16244C6;
+	Sat, 30 Sep 2023 09:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Gj0MA
-	5aagPZFzD46nJUbswYyljTBp8VizZmvHaX2u6w=; b=EDZhHbv07wHalj0L0ReeI
-	N+z2setN3oTLgPCngCa4/vaO8So0ZwPLWbHECGRtptg0VTVURctZdfrIR99UMPn9
-	7fLvH4V5DIOaj83ufbYHtK6OB8E6OA9gnXz2e1wyt9vigAlDvAF91Ehrso8CFDvm
-	ZIZdRgnosDloQM8s6VjYhM=
+	5aagPZFzD46nJUbswYyljTBp8VizZmvHaX2u6w=; b=kRqTdMAgow9JhbtlufvyK
+	wxPRDJ5XxXxIXeEYRbiet2/R8N1xB0RDhVgSbxqo2pKCHWZQzPgi8Ij1yng+B7ee
+	cxxqgcRnUbQEJha0BC3Ly4h98DfQAWuH7Uf/cXtOT20eeJtrZGuH/KpzjgJsYsFa
+	pDovvX+tp9XMgYQMcxKUlw=
 Received: from localhost.localdomain (unknown [221.12.59.213])
-	by zwqz-smtp-mta-g2-1 (Coremail) with SMTP id _____wAXTT+rSRhlQrg8Dg--.48618S2;
-	Sun, 01 Oct 2023 00:15:40 +0800 (CST)
+	by zwqz-smtp-mta-g2-1 (Coremail) with SMTP id _____wAXGWW9TRhli6s9Dg--.48336S2;
+	Sun, 01 Oct 2023 00:33:02 +0800 (CST)
 From: AllenX <xubo3006@163.com>
 To: rust-for-linux@vger.kernel.org,
-	ojeda@kernel.org
-Cc: alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	linux-kernel@vger.kernel.org,
 	AllenX <xubo3006@163.com>
 Subject: [PATCH 1/2] rust: add Soft-RoCE driver basic structure
-Date: Sun,  1 Oct 2023 00:14:42 +0800
-Message-Id: <20230930161443.58812-1-xubo3006@163.com>
+Date: Sun,  1 Oct 2023 00:32:56 +0800
+Message-Id: <20230930163256.60779-1-xubo3006@163.com>
 X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -37,13 +36,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXTT+rSRhlQrg8Dg--.48618S2
+X-CM-TRANSID:_____wAXGWW9TRhli6s9Dg--.48336S2
 X-Coremail-Antispam: 1Uf129KBjvAXoWfJFy5uFW8Ary8tryxJw4DXFb_yoW8XF45Wo
 	Zaqrs7Wwn5tr1xA34xJ343Gr43XrZ8GFs3Xrn5Kws8Crn7trWUC34fCw18XFWDGF18KFy5
-	u343JFZYvan5XFn5n29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvj4iMmhmDUUUU
+	u343JFZYvan5XFn5n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvj4R0eHJUUUUU
 X-Originating-IP: [221.12.59.213]
-X-CM-SenderInfo: 50xe0jqqqwqiywtou0bp/xtbBFhT6rlgi66JaHwABsh
+X-CM-SenderInfo: 50xe0jqqqwqiywtou0bp/1tbiWQD6rlWB07v09AAAsx
 X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
 	FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
