@@ -1,90 +1,118 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3264EF9F6
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Sep 2023 23:29:27 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F00EB;
-	Fri, 29 Sep 2023 16:29:26 -0700 (PDT)
-Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1FD741A05D2;
-	Fri, 29 Sep 2023 23:29:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf07.hostedemail.com (Postfix) with ESMTPA id B10482002E;
-	Fri, 29 Sep 2023 23:29:18 +0000 (UTC)
-Message-ID: <02ce99b98cd21c67f30d5be1e5fd4fd130e0413d.camel@perches.com>
-Subject: Re: [PATCH] rust: Use awk instead of recent xargs
-From: Joe Perches <joe@perches.com>
-To: David Laight <David.Laight@ACULAB.COM>, Matthew Maurer
- <mmaurer@google.com>,  Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
-	 <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
-	Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	"rust-for-linux@vger.kernel.org"
-	 <rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>
-Date: Fri, 29 Sep 2023 16:29:17 -0700
-In-Reply-To: <be10d55a785d4d9b983b2dae6ed65942@AcuMS.aculab.com>
-References: <20230928202116.2298150-1-mmaurer@google.com>
-	 <106c8bdb960da1568d0b3879efa76cd2acec032e.camel@perches.com>
-	 <be10d55a785d4d9b983b2dae6ed65942@AcuMS.aculab.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71331FA8
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 Sep 2023 05:59:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A14C43395;
+	Sat, 30 Sep 2023 05:59:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1696053561;
+	bh=fEN/S6mVsSDNV0g4PBlvUaE2VUJdNNjgVZ+Xtar4unE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jr7i7wgkNdL6Y8zEWyvi5nBrCFgRd7bSuk6cLgxK67kkorEKo48vijY4DenStKNc9
+	 pwG5cS56mxBLCh8ucvI8a1Mzidbx+V4E2jQahFgerDpxwNk2vfOsYpKDpqsbnO4F5s
+	 Z3OkmpQepD5VNw99P29rkUOriPTvtdRrW7pbWN+r6VirTBO+Qc3bB9Kai6EWixggKW
+	 qf6CyA1Nzqy3OO831ByicN9VkrFBzv/su7MdxK4cYLZyVAS6HDX7qLKfujLpoKdoCn
+	 Sx8ellEqDgmvSxdf6blQmCx5l6XA7V13adGOZUMnOdTxunY3IECNF5FzQreRYG11Hw
+	 HabW0qll/rgNg==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-1dce0c05171so6648989fac.3;
+        Fri, 29 Sep 2023 22:59:21 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yzd2TqML4IZCZRj6k5n2ENUh3AF/E1d35FRRqbSH/1/Qr1q7eNA
+	73CttS6kUF4debVsepqNWuXs16rklq56ClWSLNk=
+X-Google-Smtp-Source: AGHT+IFKcDm5fCe1sGczV8wBd4zz/FAmio9dMBK8EbaraHgpWebWUkbRDlLwZeet8rw3+QxNOAa9smfzO/vfW/H4jC8=
+X-Received: by 2002:a05:6870:2216:b0:1c0:937:455d with SMTP id
+ i22-20020a056870221600b001c00937455dmr6904202oaf.47.1696053560507; Fri, 29
+ Sep 2023 22:59:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: B10482002E
-X-Stat-Signature: 5x7bqnseu4i4qrk95mmsjmjjnwursijh
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
-X-Rspamd-Server: rspamout01
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19KqW6+BJFwy7aVcBLC/jBgbHDcPJORu8k=
-X-HE-Tag: 1696030158-560548
-X-HE-Meta: U2FsdGVkX19EIcvhOKccUk/K+iP+kHV0hP9ENaBwmQ8psiN52dkc7wSX+48GZZ2KcARzX4yokh3pcBT40s/ioX5czzUzm1lNUuw/CWchRfz7wkXDGyqGPdELmsykIs8/3lmw+fhhsLilM4AWnF/P8h4yAnqHpkO95g5z4EyMQnBZOa1PlwkW+6J53DBwMYG+RWPolxSDRW5x5SHmbIAdPSIyWB1QESgEjXIp3rPvBS4mJhB/R+Su8CPW3rT7YKtJfFEkMxqZ1kSLIaPe9ahqKhevDZaP96WR7Gh3avJko2GiAn5FASJFHNRhUiV2wQCZ
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+References: <20230928194801.2278999-1-mmaurer@google.com>
+In-Reply-To: <20230928194801.2278999-1-mmaurer@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 30 Sep 2023 14:58:43 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQP9FVCArnw=JDBbtbu-3bxx162kqT24bUbffPtwE18uA@mail.gmail.com>
+Message-ID: <CAK7LNAQP9FVCArnw=JDBbtbu-3bxx162kqT24bUbffPtwE18uA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: Respect HOSTCC when linking for host
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2023-09-29 at 21:36 +0000, David Laight wrote:
-> From: Joe Perches
-> > Sent: 28 September 2023 21:33
-> >=20
-> > On Thu, 2023-09-28 at 20:21 +0000, Matthew Maurer wrote:
-> > > `awk` is already required by the kernel build, and the `xargs` featur=
-e
-> > > used in current Rust detection is not present in all `xargs` (notably=
-,
-> > > toybox based xargs, used in the Android kernel build).
-> > []
-> > > diff --git a/rust/Makefile b/rust/Makefile
-> > []
-> > > @@ -365,8 +365,7 @@ quiet_cmd_exports =3D EXPORTS $@
-> > >        cmd_exports =3D \
-> > >  	$(NM) -p --defined-only $< \
-> > >  		| grep -E ' (T|R|D) ' | cut -d ' ' -f 3 \
-> > > -		| xargs -Isymbol \
-> > > -		echo 'EXPORT_SYMBOL_RUST_GPL(symbol);' > $@
-> > > +		| awk 'NF {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$0}' > $@
-> >=20
-> > Perhaps remove the cut as well and use $$3 instead of $$0 ?
-> > Maybe integrate the grep as well.
->=20
-> Or keep the grep and use a shell loop?
-> 	grep -E ' (T|R|D) ' | while read val flag symbol; do \
-> 		echo "EXPORT_SYMBOL_RUST_GPL($symbol);"; done
->=20
-> (The grep is typically much faster than a shell conditional.)
->=20
+On Fri, Sep 29, 2023 at 4:48=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
+> resulting in build failures in hermetic environments where `cc` does not
+> exist. This includes both hostprogs and proc-macros.
+>
+> Since we are setting the linker to `HOSTCC`, we set the linker flavor to
+> `gcc` explicitly. The linker-flavor selects both which linker to search
+> for if the linker is unset, and which kind of linker flags to pass.
+> Without this flag, `rustc` would attempt to determine which flags to
+> pass based on the name of the binary passed as `HOSTCC`. `gcc` is the
+> name of the linker-flavor used by `rustc` for all C compilers, including
+> both `gcc` and `clang`.
+>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> ---
+>  rust/Makefile         | 2 ++
+>  scripts/Makefile.host | 2 ++
+>  2 files changed, 4 insertions(+)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 87958e864be0..da664d7aed51 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -383,6 +383,8 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FO=
+RCE
+>  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
+>        cmd_rustc_procmacro =3D \
+>         $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
+> +               -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
+> +               -Clink-args=3D'$(subst ','\'',$(KBUILD_HOSTLDFLAGS))' \
 
-Bikeshed:
 
-no grep just a single awk with whatever the appropriate syntax is like
 
-awk '{ if ($$2 ~ /^[TRD]$/) { printf "EXPORT_SYMBOL_RUST(%s);\n", $$3 } }'
+Why not consistently use the escsq macro here too ?
 
+
+
+
+
+
+>                 --emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --exter=
+n proc_macro \
+>                 --crate-type proc-macro \
+>                 --crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
+> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+> index 8f7f842b54f9..08d83d9db31a 100644
+> --- a/scripts/Makefile.host
+> +++ b/scripts/Makefile.host
+> @@ -91,6 +91,8 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
+>  # current working directory, which may be not accessible in the out-of-t=
+ree
+>  # modules case.
+>  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile) \
+> +                -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
+> +                -Clink-args=3D'$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
+>                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
+>                   $(HOSTRUSTFLAGS_$(target-stem))
+>
+> --
+> 2.42.0.582.g8ccd20d70d-goog
+>
+
+
+--
+Best Regards
+Masahiro Yamada
