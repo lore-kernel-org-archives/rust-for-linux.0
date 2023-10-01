@@ -1,45 +1,45 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49844439
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Oct 2023 11:40:53 +0000 (UTC)
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1007ABD;
-	Sun,  1 Oct 2023 04:40:51 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.nyi.internal (Postfix) with ESMTP id 844E15C0003;
-	Sun,  1 Oct 2023 07:40:48 -0400 (EDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025F65666
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Oct 2023 12:12:33 +0000 (UTC)
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6B492;
+	Sun,  1 Oct 2023 05:12:32 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailout.west.internal (Postfix) with ESMTP id D44D23201263;
+	Sun,  1 Oct 2023 08:12:28 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Sun, 01 Oct 2023 07:40:48 -0400
+  by compute4.internal (MEProxy); Sun, 01 Oct 2023 08:12:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
 	:content-transfer-encoding:content-type:content-type:date:date
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-	1696160448; x=1696246848; bh=8WHq2F+cLXArKpm8huR5coHN798rdLB0zNl
-	u5b4ay5c=; b=Aunk1TX/6EGVjJFbTyvja9usoQL+74imS/TSloa7lVkRaqL9ljf
-	eU2gVjg1jjZWOj91XJ9CyavWEXy6tRtSlcRkIaL7Ibva3uu7DfGXTIpr3zJ8eNu1
-	1gZZovH3MFAhZdKSzx9F7aoGmxRXGv/A9+hM1IYIfOyRfijU48nzhSieNKNGIxRD
-	DG3YcWX4ByhMgiTMKqfzGa6YzOue+SPfb7kSBGxC954AwZXOJ1V4E3y/0GbV/ErE
-	kJ8PqZyv+CkHte3Pt6zy1DGG/LJTtbfMNf1g2HAf0qouW5MIQVgmtyPha6SzxBdH
-	uArfcUVe3R1nvsno75m58oMCs2UvmGIErtA==
+	1696162348; x=1696248748; bh=/AsSColXGkWSjllLUN3EiONCeSGJj3ZeJ8O
+	xXQx3U9M=; b=D8ltTHChN8dMBqYyS1l2aj6kPoQiN7CzWyqeefEjExnLRNE61VP
+	r7X5sP7CvuVBUOgnwGdtc5ffRlfMVdDVX1pzorMNNcsuoBqGqyw11axHlUa+roNQ
+	CL+MBD8G6oD1H5r+a3ecwmBAEkXCUBlRG29dY15hQSHBpZySpJWc7ho5lWhzZYdl
+	kXAMvLXEmkdrM5t1GTXm7FzLVpHIIdKz3H2w8PLyti+THLW7TXfzoHUcryTt1mUo
+	BtTmIsaoqnBQDfryx7B8tW6GppRS+3b139RIKjt4mk2VXv98yuWLZZ/mpapz68iR
+	Tiu4FH6HDuXyCA0HZQJ0BZwJ8uxPN9FcPEA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
 	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1696160448; x=1696246848; bh=8WHq2F+cLXArKpm8huR5coHN798rdLB0zNl
-	u5b4ay5c=; b=SiwNYMHGYXs8MyO/rRfLK4XXRik3FEostUwb7kox5QY10NHKgWt
-	1ZPG1+WLeSuirHUu0zob9lJ00O/HIlT/MtNIt76VCw1FI3tKHtadL8ikcsA6PKYM
-	O7movabugSgyAeaMV+JG/8wMEQDDrncOC9QTAIlkA0Y7XCjcmp5eTHwgxht95W+9
-	xoqhEUE71q7Dp5pypjPF5NYqIpHuBM/MxZachM2o5OmPT9iju9cIqoeVTQiVMgkS
-	4LG3xpLhFTm3urrvpmBg2n7vHOXSvRv9ptvDjl/Ep7v/epBqhHmlLvwLxrgKNfsI
-	QfjymGqK9m9fvMUk/0CKhAsSxFs3TtPT4oQ==
-X-ME-Sender: <xms:v1oZZZ2l2NnrdBWMicA8mzkt1vwsRx1WgRuIJc5d3nJCy5iycOOK_A>
-    <xme:v1oZZQGuu4Ah3ZQnMrvz34i7qqwlc-gseZUF0AjHp6_l7clCiXEgnGj2h2VqtjA5-
-    vYVVc0J-Cwh77Jqaw>
-X-ME-Received: <xmr:v1oZZZ5UiqxQdN2ak8rdvg7eD_ZQOoZ218WjipQT531en3Vl2IsKYyPmqA0CJSbkmeywHXCMa0_vcg2ENY1tJcguTNdZI0UqWxU5>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtgddujecutefuodetggdotefrodftvf
+	1696162348; x=1696248748; bh=/AsSColXGkWSjllLUN3EiONCeSGJj3ZeJ8O
+	xXQx3U9M=; b=cyEalKmaFcRXmBvSO1C3+ZCqDhUIR3h2WANHk8uUuqhbQXprRdp
+	52+46QXlaRiXcFFA3I+BguFKDjTyxRJ4jlooWS60Eh3RxFX1EGHQfXAZm1qyg+Rt
+	pL11gt4d6Gda/26WTaTQ33mB6Cstx95YNCUI1wcaJ+2UHStqij8iGJPNQ5ynvsY9
+	u5X4AspgxEdOZWBgODKA1naN0X3l9qutstzo1gH3fb3zG4lFTllqXRmMv96pbGDO
+	8hw37gGCzh7++CczKCdfpjNvEjxEfSQV9rBtfPObkzxB2YJ7357V0kB1iRergozT
+	zD9LbjjIinth9kGgQlSsIe48VX1wAUnoOmg==
+X-ME-Sender: <xms:K2IZZS0c6YVOELAvj2rCtFZwszUpAdCgPk7Pzi044HA198TYcaSWzQ>
+    <xme:K2IZZVGJA7u1fsLbXtzp5R5qUVvla1Ox3HckRtjz53hh3z9p2Iv9Es8PFAiA4-cV_
+    xVp3sDE5x7bv-HxHg>
+X-ME-Received: <xmr:K2IZZa6V7JmwTNNYY-C5ckSshCWTix1CTnDqiN0Ozjr7Si1_XyczCnpJvYukZN6Dt2PWYHBhXNOr00Yn7D5h3zoMZSf9pdfRukxW>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtgddvgecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlihgt
@@ -47,15 +47,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtgddujecutefuodetggdote
     fguefgtdeghfeuieduffejhfevueehueehkedvteefgfehhedtffdutdfgudejnecuvehl
     uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
     ihhhhlrdhioh
-X-ME-Proxy: <xmx:wFoZZW1ndwluBc4tjUvx23ip-akb1AGgGnNgCPE0wOcMJZrgpje-Nw>
-    <xmx:wFoZZcG7gmm5fmjcf79r4pytCE9HQgMEouo7R5Ltyd_bN-IrEyXgtw>
-    <xmx:wFoZZX_zK1bDrl-ACUJaIFd2jdJ-ajfVpeDredVZFpkzEtL-8dPelQ>
-    <xmx:wFoZZU_Ag9OBLK-rj5ty7iDjRyS2PfjqWlxAECpyaYfSWa2t2MjJ2A>
+X-ME-Proxy: <xmx:K2IZZT17gT0xOWKvlOZMZTeirz99xOTkClMQNOXWQZIeWJPSj_h5Lg>
+    <xmx:K2IZZVELWkOwEq9INNxwdl2oTUQ4lu7ntfwGYG6LrBoI46Rzbj5YUw>
+    <xmx:K2IZZc8zFMGFm98P3nTEaorjgJFHv7CqO_aDPRvwVFP80l8x71BIRQ>
+    <xmx:LGIZZdGudjo6bBgpGV3mygpFbBiwsHutBqGFWpgp5NGvdRh6m5h02w>
 Feedback-ID: i56684263:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 1 Oct 2023 07:40:45 -0400 (EDT)
-Message-ID: <c2691aad-a73f-4bcc-a3d1-741335b4f63e@ryhl.io>
-Date: Sun, 1 Oct 2023 13:40:43 +0200
+ 1 Oct 2023 08:12:24 -0400 (EDT)
+Message-ID: <45f5151e-76bc-4a86-a68f-3d8844e81323@ryhl.io>
+Date: Sun, 1 Oct 2023 14:12:23 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,39 +63,56 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: error: fix the description for `ECHILD`
+Subject: Re: [PATCH] rust: bindings: rename const binding using sed
 Content-Language: en-US-large
-To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
+To: Gary Guo <gary@garyguo.net>
+Cc: Wedson Almeida Filho <walmeida@microsoft.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
  Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- Wedson Almeida Filho <walmeida@microsoft.com>
-References: <20230930144958.46051-1-wedsonaf@gmail.com>
+ <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+ Vlastimil Babka <vbabka@suse.cz>
+References: <20230930133704.13313-1-gary@garyguo.net>
 From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230930144958.46051-1-wedsonaf@gmail.com>
+In-Reply-To: <20230930133704.13313-1-gary@garyguo.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 9/30/23 16:49, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
+On 9/30/23 15:36, Gary Guo wrote:
+> Current for consts that bindgen don't recognise, we define a helper
+> constant with
 > 
-> A mistake was made and the description of `ECHILD` is wrong (it reuses
-> the description of `ENOEXEC`). This fixes it to reflect what's in
-> `errno-base.h`.
+>      const <TYPE> BINDINGS_<NAME> = <NAME>;
 > 
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->   rust/kernel/error.rs | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> in `bindings_helper.h` and then we put
 > 
+>      pub const <NAME>: <TYPE> = BINDINGS_<NAME>;
+> 
+> in `bindings/lib.rs`. This is fine that we currently only have 3
+> constants that are defined this way, but is going to be more annoying
+> when more constants are added since every new constant needs to be
+> defined in two places.
+> 
+> This patch changes the way we define constant helpers to
+> 
+>      const <TYPE> RUST_BINDING_<NAME> = <NAME>;
+> 
+> and then use `sed` to postprocess Rust code by generated by bindgen to
+> remove the distinct prefix, so user of the binding crate can refer to
+> the name directly.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Maybe it would make sense to use a less generic name for this sed 
+replacement? E.g., maybe RUST_CONST_HELPER_ or something that's less 
+likely to overlap with things that are not constants.
+
+Alice
