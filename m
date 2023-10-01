@@ -1,118 +1,114 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025F65666
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Oct 2023 12:12:33 +0000 (UTC)
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6B492;
-	Sun,  1 Oct 2023 05:12:32 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.west.internal (Postfix) with ESMTP id D44D23201263;
-	Sun,  1 Oct 2023 08:12:28 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Sun, 01 Oct 2023 08:12:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-	1696162348; x=1696248748; bh=/AsSColXGkWSjllLUN3EiONCeSGJj3ZeJ8O
-	xXQx3U9M=; b=D8ltTHChN8dMBqYyS1l2aj6kPoQiN7CzWyqeefEjExnLRNE61VP
-	r7X5sP7CvuVBUOgnwGdtc5ffRlfMVdDVX1pzorMNNcsuoBqGqyw11axHlUa+roNQ
-	CL+MBD8G6oD1H5r+a3ecwmBAEkXCUBlRG29dY15hQSHBpZySpJWc7ho5lWhzZYdl
-	kXAMvLXEmkdrM5t1GTXm7FzLVpHIIdKz3H2w8PLyti+THLW7TXfzoHUcryTt1mUo
-	BtTmIsaoqnBQDfryx7B8tW6GppRS+3b139RIKjt4mk2VXv98yuWLZZ/mpapz68iR
-	Tiu4FH6HDuXyCA0HZQJ0BZwJ8uxPN9FcPEA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1696162348; x=1696248748; bh=/AsSColXGkWSjllLUN3EiONCeSGJj3ZeJ8O
-	xXQx3U9M=; b=cyEalKmaFcRXmBvSO1C3+ZCqDhUIR3h2WANHk8uUuqhbQXprRdp
-	52+46QXlaRiXcFFA3I+BguFKDjTyxRJ4jlooWS60Eh3RxFX1EGHQfXAZm1qyg+Rt
-	pL11gt4d6Gda/26WTaTQ33mB6Cstx95YNCUI1wcaJ+2UHStqij8iGJPNQ5ynvsY9
-	u5X4AspgxEdOZWBgODKA1naN0X3l9qutstzo1gH3fb3zG4lFTllqXRmMv96pbGDO
-	8hw37gGCzh7++CczKCdfpjNvEjxEfSQV9rBtfPObkzxB2YJ7357V0kB1iRergozT
-	zD9LbjjIinth9kGgQlSsIe48VX1wAUnoOmg==
-X-ME-Sender: <xms:K2IZZS0c6YVOELAvj2rCtFZwszUpAdCgPk7Pzi044HA198TYcaSWzQ>
-    <xme:K2IZZVGJA7u1fsLbXtzp5R5qUVvla1Ox3HckRtjz53hh3z9p2Iv9Es8PFAiA4-cV_
-    xVp3sDE5x7bv-HxHg>
-X-ME-Received: <xmr:K2IZZa6V7JmwTNNYY-C5ckSshCWTix1CTnDqiN0Ozjr7Si1_XyczCnpJvYukZN6Dt2PWYHBhXNOr00Yn7D5h3zoMZSf9pdfRukxW>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtgddvgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlihgt
-    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhepfe
-    fguefgtdeghfeuieduffejhfevueehueehkedvteefgfehhedtffdutdfgudejnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
-    ihhhhlrdhioh
-X-ME-Proxy: <xmx:K2IZZT17gT0xOWKvlOZMZTeirz99xOTkClMQNOXWQZIeWJPSj_h5Lg>
-    <xmx:K2IZZVELWkOwEq9INNxwdl2oTUQ4lu7ntfwGYG6LrBoI46Rzbj5YUw>
-    <xmx:K2IZZc8zFMGFm98P3nTEaorjgJFHv7CqO_aDPRvwVFP80l8x71BIRQ>
-    <xmx:LGIZZdGudjo6bBgpGV3mygpFbBiwsHutBqGFWpgp5NGvdRh6m5h02w>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 1 Oct 2023 08:12:24 -0400 (EDT)
-Message-ID: <45f5151e-76bc-4a86-a68f-3d8844e81323@ryhl.io>
-Date: Sun, 1 Oct 2023 14:12:23 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587459CA61
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Oct 2023 13:08:21 +0000 (UTC)
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D37FAC
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Oct 2023 06:08:19 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-273e3d8b57aso3382655a91.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 01 Oct 2023 06:08:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696165699; x=1696770499; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=blMA5AE9xPiVXKPYsL8Q8O6mpr0V8KxlUe//SkaXdn0=;
+        b=l1c3ohX9Sia8TE2BLRxhNqvEE6bcG4m+JNOvnpbF5h4l4Ed38RxJmyN2d/OTnRKkZ4
+         xqiFVxLHMfHSnbo350t6Hkj3uxsw7emnPIngHrfqZVpDLNWeoHdLUHRPQgPXcH7r50M+
+         Ql04F1+LWtMICRSqwU1pEDdERvNdsWehFD7SoNT9dbm0jgs5xjffCH5dnTRYSJZ9SspG
+         InU8C2S7qW8KUUq+NCwC3jSOExWywr4KVICFfLMx09xtrG5Lql6zvu1Wt4eifMYr4VlP
+         T5v8pj/ZKFqyHoQpWN7PQYPBQb6B27rtxhVmNL3AuTMucyyKWEenbTRcs625PWxMD0yc
+         b2NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696165699; x=1696770499;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=blMA5AE9xPiVXKPYsL8Q8O6mpr0V8KxlUe//SkaXdn0=;
+        b=N/iH5/VjOLkPftbuhYKKNMoh190NYwIl2wztRDDAyEEp/RshbWoaaVSEebhZ6SzJQZ
+         WL0+B7c8EJUf6HEe7Gd5lDSUAX/FPXg1s93qCzzZHvOQqXzY+jcMTb51sT56ATfp2/ix
+         Rn7J6AqvTsybL6TiqipZJpG2DLngjODTw4w7l1hZP4ivcj6oSjtgrUzuKPZycFSaE1p3
+         7LSVozpY7b7+jRfbJh/4qgR/iEbJ0cQGu4ql/UnqJh3fPhFdoZwJulopMua2YlGFvMmE
+         ok1VTg2yUknoUMJW6pYHwrQ8iYH0MOuk6Rgn8nmRODxLQ2c/UfojhvY3p1WJrm9UMSE8
+         Dixw==
+X-Gm-Message-State: AOJu0YwY6ffxnoL/nIZpDkSIdMwb7sZ72KziPpyOXDJRXrZ/PaO77+24
+	CbKa0oLFny2PGgeGCZqe0nw=
+X-Google-Smtp-Source: AGHT+IEIdwE1Z9HlzaRc7qWkHnuvbLNcrCfKKEsTZSgGYtlGGrfAxKpx03rQTDlOSTRgnPG5AL5tkA==
+X-Received: by 2002:a17:902:ea0c:b0:1c2:c60:8388 with SMTP id s12-20020a170902ea0c00b001c20c608388mr10318853plg.6.1696165698856;
+        Sun, 01 Oct 2023 06:08:18 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id kg14-20020a170903060e00b001c0aa301703sm20234402plb.63.2023.10.01.06.08.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Oct 2023 06:08:18 -0700 (PDT)
+Date: Sun, 01 Oct 2023 22:08:17 +0900 (JST)
+Message-Id: <20231001.220817.560585176336523991.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com
+Cc: gregkh@linuxfoundation.org, rust-for-linux@vger.kernel.org,
+ andrew@lunn.ch, benno.lossin@proton.me, wedsonaf@gmail.com
+Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
+ drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20230929.173856.1751823335892887678.fujita.tomonori@gmail.com>
+References: <20230928225518.2197768-2-fujita.tomonori@gmail.com>
+	<2023092900-manpower-runaround-859a@gregkh>
+	<20230929.173856.1751823335892887678.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: bindings: rename const binding using sed
-Content-Language: en-US-large
-To: Gary Guo <gary@garyguo.net>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
- Vlastimil Babka <vbabka@suse.cz>
-References: <20230930133704.13313-1-gary@garyguo.net>
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230930133704.13313-1-gary@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 9/30/23 15:36, Gary Guo wrote:
-> Current for consts that bindgen don't recognise, we define a helper
-> constant with
-> 
->      const <TYPE> BINDINGS_<NAME> = <NAME>;
-> 
-> in `bindings_helper.h` and then we put
-> 
->      pub const <NAME>: <TYPE> = BINDINGS_<NAME>;
-> 
-> in `bindings/lib.rs`. This is fine that we currently only have 3
-> constants that are defined this way, but is going to be more annoying
-> when more constants are added since every new constant needs to be
-> defined in two places.
-> 
-> This patch changes the way we define constant helpers to
-> 
->      const <TYPE> RUST_BINDING_<NAME> = <NAME>;
-> 
-> and then use `sed` to postprocess Rust code by generated by bindgen to
-> remove the distinct prefix, so user of the binding crate can refer to
-> the name directly.
+On Fri, 29 Sep 2023 17:38:56 +0900 (JST)
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-Maybe it would make sense to use a less generic name for this sed 
-replacement? E.g., maybe RUST_CONST_HELPER_ or something that's less 
-likely to overlap with things that are not constants.
+>>> +    /// Gets the id of the PHY.
+>>> +    pub fn id(&mut self) -> u32 {
+>>> +        let phydev = self.0.get();
+>>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>>> +        unsafe { (*phydev).phy_id }
+>>> +    }
+>>> +
+>>> +    /// Gets the state of the PHY.
+>>> +    pub fn state(&mut self) -> DeviceState {
+>>> +        let phydev = self.0.get();
+>>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>>> +        let state = unsafe { (*phydev).state };
+>>> +        match state {
+>>> +            bindings::phy_state::PHY_DOWN => DeviceState::Down,
+>>> +            bindings::phy_state::PHY_READY => DeviceState::Ready,
+>>> +            bindings::phy_state::PHY_HALTED => DeviceState::Halted,
+>>> +            bindings::phy_state::PHY_ERROR => DeviceState::Error,
+>>> +            bindings::phy_state::PHY_UP => DeviceState::Up,
+>>> +            bindings::phy_state::PHY_RUNNING => DeviceState::Running,
+>>> +            bindings::phy_state::PHY_NOLINK => DeviceState::NoLink,
+>>> +            bindings::phy_state::PHY_CABLETEST => DeviceState::CableTest,
+>> 
+>> Again, this feels like a maintance nightmare.
+> 
+> As I wrote above, it's guaranteed that C and Rust code never
+> diverge. However, as you said, suley it's troublesome to maintain this.
+> 
+> We could directly use enum generated from C's enum at compile
+> time. Then we can remove this conversion. The names are not pretty
+> from Rust's view though.
+> 
+> Any concerns from Rust side?
 
-Alice
+Thanks a lot for the comments, Trevor and Miguel!
+
+I leave this patch alone. Seems there is a good chance that bindgen
+would support a feature to automatically generate something
+useful. Once the requirement on the C side becomes clear, we can
+propose changes to PHYLIB.
+
+I'll drop RFC and send the patchset to netdev tomorrow.
