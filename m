@@ -1,58 +1,55 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FB1468C;
-	Mon,  2 Oct 2023 14:52:49 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A2F6A7;
-	Mon,  2 Oct 2023 07:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=F9ebOW58mJqTQNBYhfDZiXNY/bfWZLi0CCo+kl+A+Hg=; b=u/eFfoBIyo3jbVzuNPQDr8LL1n
-	GuUmlpZryZ7jXCQEWDFYsTOxOJb080n6i/F7quh2g2pno0dXMTW3uAZRNQownI954U3MXRPqz2UYP
-	8h38AL3w7m3BmN4Mr/MfC6AqQeKUKmMoN9EQXtbHXlmKGkHAhk9e6RYeeEZhLaDIAon0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qnKHt-0081q0-7b; Mon, 02 Oct 2023 16:52:45 +0200
-Date: Mon, 2 Oct 2023 16:52:45 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH v1 1/3] rust: core abstractions for network PHY drivers
-Message-ID: <ec65611a-d52a-459a-af60-6a0b441b0999@lunn.ch>
-References: <20231002085302.2274260-1-fujita.tomonori@gmail.com>
- <20231002085302.2274260-2-fujita.tomonori@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4451A725
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 15:12:46 +0000 (UTC)
+Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a01:4f8:c012:b874::])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08B9A6;
+	Mon,  2 Oct 2023 08:12:44 -0700 (PDT)
+From: Finn Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1696259561; bh=eerMweugb1e+pAObgiSP70IzG+W20gWNH6v/k+kjU9I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Llw38KDq7Ef2Hi3lEOXA+EXY77PvI1geg3x55MsJF6Z9zQbpXVaYfHxK8vi6TW/5L
+	 AHs/t/BEnN7oIZGhO1++B85t5VmMA7ww7SJs0t04I2ZVOrJqHv9JjcPYQLGijQzwZa
+	 GU641tTrYMLn6KQGZUIgjC/ApCeifxFrGLu8/w00=
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH] rust: error: fix the description for `ECHILD`
+Date: Mon, 02 Oct 2023 17:12:39 +0200
+Message-ID: <5F69306E-719A-41CD-B58C-63D79D35B1E7@kloenk.dev>
+In-Reply-To: <20230930144958.46051-1-wedsonaf@gmail.com>
+References: <20230930144958.46051-1-wedsonaf@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231002085302.2274260-2-fujita.tomonori@gmail.com>
+Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> +//! Networking.
-> +
-> +#[cfg(CONFIG_PHYLIB)]
 
-I brought this up on the rust for linux list, but did not get a answer
-which convinced me.
 
-Have you tried building this with PHYLIB as a kernel module? 
+On 30 Sep 2023, at 16:49, Wedson Almeida Filho wrote:
 
-My understanding is that at the moment, this binding code is always
-built in. So you somehow need to force phylib core to also be builtin.
-Or you don't build the binding, and also don't allow a module to use
-the binding.
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>
+> A mistake was made and the description of `ECHILD` is wrong (it reuses
+> the description of `ENOEXEC`). This fixes it to reflect what's in
+> `errno-base.h`.
+>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> ---
 
-	Andrew
+Reviewed-by: Finn Behrens <me@kloenk.dev>
