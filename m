@@ -1,153 +1,180 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5816A63DF;
-	Mon,  2 Oct 2023 09:14:43 +0000 (UTC)
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 774DC9D;
-	Mon,  2 Oct 2023 02:14:40 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.nyi.internal (Postfix) with ESMTP id 23D7A5C023A;
-	Mon,  2 Oct 2023 05:14:38 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Mon, 02 Oct 2023 05:14:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1696238078; x=1696324478; bh=Gi
-	67L2nf6jw6VX+/CjPRuyOklRqWd3cHNR+4mWcy4TQ=; b=PklC6y2/Uv3YeyWbWW
-	gLHl6SWf1vj2irTu2KZVK+Iv2qntqrls4scjNP2a3Mlh6Me2nVfdkQdxjPJaIOq6
-	XqrrdMqHC6OAwc4qy75LN4G9KbmiVoUD0IzkJuWH3zkegmUw66VQtIvf3yyyQLVv
-	X8v7T6rEo5y5qZwIgvpilZxNca5UOKuwyGLCCGtjySfZutSF3rlEVf6JixozE6yz
-	eTY4urTUyEI7Bm4brSeNQ0GibJ0n74Qp4kWBqUb/61WbzLfh6B+sXr6un116Qx1n
-	Kz6CHx0AY/XPjSgGP7dweepXrjP5UNTP6aCgDezkEOe9RCFxyCKpVq5oNenNZcxF
-	JiSg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1696238078; x=1696324478; bh=Gi67L2nf6jw6V
-	X+/CjPRuyOklRqWd3cHNR+4mWcy4TQ=; b=aOHgjYtf9RaA38+X9GwpL6H748EBd
-	Ovou/xCCu9FRpGrMItexL+F4ovlhXWYWyb01Oa2nyQFsAlFu8RsmkuTeOx1uQ/8H
-	r6+LMKYZwd1dVY7d24nI+D49SVT+FA8ejzSlWENQVyg/RUkveJ4znGovx5I1ssSW
-	kyItO//+Q5UDYCtgWPztGmt+Bmpbyojk+ZuhYYGNBf8ihQ2q34mGo4EecCXwjzs4
-	JlX4b+2dRbj3QxGLzXql6URJMtVwJapyO0XaL7r7+jq03dstJvU7nR9f7GogWzbm
-	Yg89LPHCkH3l9FrFUXPKKgvMX1po9jYtRRlDiS9jX/5lW0BUrCdmC3/8w==
-X-ME-Sender: <xms:_YkaZVjvl75UpEFGItU5kjx9DD0T15IgHFbuCg_pW-YOnJBpOmIlaQ>
-    <xme:_YkaZaAU0OTISNBNDx3UzI2nBlJ3nJApRJcKrKh4qSN_51gTakfDShzJtWUDCbl_L
-    u63Y0hotlqhMQ>
-X-ME-Received: <xmr:_YkaZVHgABpuoUUxh-qif-UokYMEoRDYjDd3ovG6ffDQe8xRsJxIM4mag_HgJO6q86YQMxO5-101s6fMaf7UvDjF9yhjqzIR7eB69dxOndc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdelgddufecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
-    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:_YkaZaS0dyk7rAdcbnrJbeM_TjfEb6rHx5Uf4FIKuxnC2Bur_4V7Gg>
-    <xmx:_YkaZSwGty8nKR5QChxmehhuc6vCmoXLsvu9YUQoIGHZLKrxXdYeeQ>
-    <xmx:_YkaZQ7F7xlyNlH6gqutbbxOyg3EqsobA4gFHcs6vPqql85_b6sWtQ>
-    <xmx:_okaZRl_XNgZZKYf87CQWww-OrHqTN-c_Ycu7TzA63vskmVRTA6k1g>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Oct 2023 05:14:37 -0400 (EDT)
-Date: Mon, 2 Oct 2023 11:14:36 +0200
-From: Greg KH <greg@kroah.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
-	miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH v1 1/3] rust: core abstractions for network PHY drivers
-Message-ID: <2023100237-satirical-prance-bd57@gregkh>
-References: <20231002085302.2274260-1-fujita.tomonori@gmail.com>
- <20231002085302.2274260-2-fujita.tomonori@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5A3883E
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 14:08:21 +0000 (UTC)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F0979B
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 07:08:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=rJ9sH4lDa+n6bmM84sIRAou5VpzELlZKX3ZkCj915sU=; b=WI
+	aHkk+CjIc8l/JFglNYy31wRhkp68XxK8UppYFLdfxm5MjCOpfYM6hN+lbr9nynK2t1fvD5qzo7/bo
+	vcMwGkeihLhW7ZGtFVGULl5SNKhQ9IBpwgZswCTO5D+g5Z/HTfGObG7UYYQ50ZKxUhKr+UDqcIfn+
+	tZlR31TQLfkFGDM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qnJal-0081cX-9U; Mon, 02 Oct 2023 16:08:11 +0200
+Date: Mon, 2 Oct 2023 16:08:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Trevor Gross <tmgross@umich.edu>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, gregkh@linuxfoundation.org,
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, wedsonaf@gmail.com
+Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
+ drivers
+Message-ID: <00d380b7-f0fc-4784-9f30-c98e630efacb@lunn.ch>
+References: <20230928225518.2197768-1-fujita.tomonori@gmail.com>
+ <20230928225518.2197768-2-fujita.tomonori@gmail.com>
+ <2023092900-manpower-runaround-859a@gregkh>
+ <20230929.173856.1751823335892887678.fujita.tomonori@gmail.com>
+ <CALNs47td-3UM-E59R35GAjaHMPT8c-H7Qy=PZ+-wgsXpw5EJAA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231002085302.2274260-2-fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALNs47td-3UM-E59R35GAjaHMPT8c-H7Qy=PZ+-wgsXpw5EJAA@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 02, 2023 at 05:53:00PM +0900, FUJITA Tomonori wrote:
-> +/// Corresponds to the kernel's `enum phy_state`.
-> +#[derive(PartialEq)]
-> +pub enum DeviceState {
-> +    /// PHY device and driver are not ready for anything.
-> +    Down,
-> +    /// PHY is ready to send and receive packets.
-> +    Ready,
-> +    /// PHY is up, but no polling or interrupts are done.
-> +    Halted,
-> +    /// PHY is up, but is in an error state.
-> +    Error,
-> +    /// PHY and attached device are ready to do work.
-> +    Up,
-> +    /// PHY is currently running.
-> +    Running,
-> +    /// PHY is up, but not currently plugged in.
-> +    NoLink,
-> +    /// PHY is performing a cable test.
-> +    CableTest,
-> +}
+On Fri, Sep 29, 2023 at 05:11:21AM -0400, Trevor Gross wrote:
+> On Fri, Sep 29, 2023 at 4:39 AM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> > [...]
+> > >> +    /// Gets the state of the PHY.
+> > >> +    pub fn state(&mut self) -> DeviceState {
+> > >> +        let phydev = self.0.get();
+> > >> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> > >> +        let state = unsafe { (*phydev).state };
+> > >> +        match state {
+> > >> +            bindings::phy_state::PHY_DOWN => DeviceState::Down,
+> > >> +            bindings::phy_state::PHY_READY => DeviceState::Ready,
+> > >> +            bindings::phy_state::PHY_HALTED => DeviceState::Halted,
+> > >> +            bindings::phy_state::PHY_ERROR => DeviceState::Error,
+> > >> +            bindings::phy_state::PHY_UP => DeviceState::Up,
+> > >> +            bindings::phy_state::PHY_RUNNING => DeviceState::Running,
+> > >> +            bindings::phy_state::PHY_NOLINK => DeviceState::NoLink,
+> > >> +            bindings::phy_state::PHY_CABLETEST => DeviceState::CableTest,
+> > >
+> > > Again, this feels like a maintance nightmare.
+> >
+> > As I wrote above, it's guaranteed that C and Rust code never
+> > diverge. However, as you said, suley it's troublesome to maintain this.
+> >
+> > We could directly use enum generated from C's enum at compile
+> > time. Then we can remove this conversion. The names are not pretty
+> > from Rust's view though.
+> >
+> > Any concerns from Rust side?
+> > [...]
+> >
+> >  /// Corresponds to the kernel's `enum phy_state`.
+> > -#[derive(PartialEq)]
+> > -pub enum DeviceState {
+> > -    /// PHY device and driver are not ready for anything.
+> > -    Down,
+> > -    /// PHY is ready to send and receive packets.
+> > -    Ready,
+> > -    /// PHY is up, but no polling or interrupts are done.
+> > -    Halted,
+> > -    /// PHY is up, but is in an error state.
+> > -    Error,
+> > -    /// PHY and attached device are ready to do work.
+> > -    Up,
+> > -    /// PHY is currently running.
+> > -    Running,
+> > -    /// PHY is up, but not currently plugged in.
+> > -    NoLink,
+> > -    /// PHY is performing a cable test.
+> > -    CableTest,
+> > -}
+> > +///
+> > +///  PHY device and driver are not ready for anything.
+> > +///  PHY_DOWN
+> > +///  PHY is ready to send and receive packets.
+> > +///  PHY_READY
+> > +///  PHY is up, but no polling or interrupts are done.
+> > +///  PHY_HALTED
+> > +///  PHY is up, but is in an error state.
+> > +///  PHY_ERROR
+> > +///  PHY and attached device are ready to do work.
+> > +///  PHY_UP
+> > +///  PHY is currently running.
+> > +///  PHY_RUNNING
+> > +///  PHY is up, but not currently plugged in.
+> > +///  PHY_NOLINK
+> > +///  PHY is performing a cable test.
+> > +///  PHY_CABLETEST
+> > +pub use bindings::phy_state as DeviceState;
+> 
+> I think there are three reasons we may prefer to recreate an enum from
+> C in Rust:
+> 
+> 1. Size, C enums are typically an int but rust enums are u8 until they
+>    need to be bigger
+> 2. Name consistency, rust is almost always CamelCase for enum variant
+>    names but the ones from bindings don't
+> 3. Docs, if the enum is user-facing then there are benefits to documenting
+>    the variants rather than the entire enum (cleaner doc output, ide hints)
 
-I still think these should come straight from the C code, and that
-moving them to an enum makes sense to make this possible, but hey, it's
-not my subsystem to maintain!  :)
+Does Rust integrate with kerneldoc? The C enum has a header:
 
-> +/// Wraps the kernel's `struct phy_device`.
-> +///
-> +/// # Invariants
-> +///
-> +/// `self.0` is always in a valid state.
-> +#[repr(transparent)]
-> +pub struct Device(Opaque<bindings::phy_device>);
-> +
-> +impl Device {
-> +    /// Creates a new [`Device`] instance from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
-> +    /// may read or write to the `phy_device` object.
-> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
-> +        unsafe { &mut *ptr.cast() }
-> +    }
-> +
-> +    /// Gets the id of the PHY.
-> +    pub fn id(&mut self) -> u32 {
-> +        let phydev = self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-> +        unsafe { (*phydev).phy_id }
-> +    }
+/**
+ * enum phy_state - PHY state machine states:
+ *
+ * @PHY_DOWN: PHY device and driver are not ready for anything.  probe
+ * should be called if and only if the PHY is in this state,
+ * given that the PHY device exists.
+ * - PHY driver probe function will set the state to @PHY_READY
+ *
+ * @PHY_READY: PHY is ready to send and receive packets, but the
+ * controller is not.  By default, PHYs which do not implement
+ * probe will be set to this state by phy_probe().
+ * - start will set the state to UP
+ *
+ * @PHY_UP: The PHY and attached device are ready to do work.
+ * Interrupts should be started here.
+ * - timer moves to @PHY_NOLINK or @PHY_RUNNING
+ *
+ * @PHY_NOLINK: PHY is up, but not currently plugged in.
+ * - irq or timer will set @PHY_RUNNING if link comes back
+ * - phy_stop moves to @PHY_HALTED
+ *
+ * @PHY_RUNNING: PHY is currently up, running, and possibly sending
+ * and/or receiving packets
+ * - irq or timer will set @PHY_NOLINK if link goes down
+ * - phy_stop moves to @PHY_HALTED
+ *
+ * @PHY_CABLETEST: PHY is performing a cable test. Packet reception/sending
+ * is not expected to work, carrier will be indicated as down. PHY will be
+ * poll once per second, or on interrupt for it current state.
+ * Once complete, move to UP to restart the PHY.
+ * - phy_stop aborts the running test and moves to @PHY_HALTED
+ *
+ * @PHY_HALTED: PHY is up, but no polling or interrupts are done.
+ * - phy_start moves to @PHY_UP
+ *
+ * @PHY_ERROR: PHY is up, but is in an error state.
+ * - phy_stop moves to @PHY_HALTED
+ */
 
-Naming question, why are you making this "id" instead of "phy_id"
-like the C code has?  Same for many of these bindings.
+and this then appears in the kernel documentation:
 
-> +    /// Returns true if the link is up.
-> +    pub fn get_link(&mut self) -> bool {
-> +        const LINK_IS_UP: u32 = 1;
-> +        let phydev = self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-> +        unsafe { (*phydev).link() == LINK_IS_UP }
-> +    }
+https://docs.kernel.org/next/networking/kapi.html?c.phy_state#c.phy_state
 
-"get_" normally means to grab a reference, if this isn't matching a C
-call, why not just call it link_is_up or to match your other state
-checks "is_link_up"?
+Can we expect to see a section maybe referenced in
+https://docs.kernel.org/next/networking/phy.html generate from the
+Rust code?
 
-but hey, I'm just bikeshedding at this point in time, if they maintainer
-likes these as-is, keep them :)
-
-thanks,
-
-greg k-h
+	Andrew
