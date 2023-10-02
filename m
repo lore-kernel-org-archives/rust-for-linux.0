@@ -1,55 +1,107 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4451A725
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 15:12:46 +0000 (UTC)
-Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a01:4f8:c012:b874::])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08B9A6;
-	Mon,  2 Oct 2023 08:12:44 -0700 (PDT)
-From: Finn Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1696259561; bh=eerMweugb1e+pAObgiSP70IzG+W20gWNH6v/k+kjU9I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Llw38KDq7Ef2Hi3lEOXA+EXY77PvI1geg3x55MsJF6Z9zQbpXVaYfHxK8vi6TW/5L
-	 AHs/t/BEnN7oIZGhO1++B85t5VmMA7ww7SJs0t04I2ZVOrJqHv9JjcPYQLGijQzwZa
-	 GU641tTrYMLn6KQGZUIgjC/ApCeifxFrGLu8/w00=
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH] rust: error: fix the description for `ECHILD`
-Date: Mon, 02 Oct 2023 17:12:39 +0200
-Message-ID: <5F69306E-719A-41CD-B58C-63D79D35B1E7@kloenk.dev>
-In-Reply-To: <20230930144958.46051-1-wedsonaf@gmail.com>
-References: <20230930144958.46051-1-wedsonaf@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EBD1C2B0;
+	Mon,  2 Oct 2023 15:24:21 +0000 (UTC)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2105CA6;
+	Mon,  2 Oct 2023 08:24:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=nInV8NVdLeqVRHhAYLgKZnoZRLS4iv699Xy6XyUVeM4=; b=YESF0YYop1JVlyIfBv2P4dl/Hd
+	SlmMyGQuj6uh7lS/wkdx3/7tCstFcSUTwFhJp3tsAzznkQ7StcASRRyxKABp90IX57cE90M0/m5s3
+	KlQtwDmXVRs0t9TuHWT+nOF1kDVX+O4SI+gfpq1fAxKwulhHDE1yWi4mEXtrEB0pKSqM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qnKmP-00821U-Jw; Mon, 02 Oct 2023 17:24:17 +0200
+Date: Mon, 2 Oct 2023 17:24:17 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH v1 1/3] rust: core abstractions for network PHY drivers
+Message-ID: <c0c00289-3bb3-4091-be78-8616e2ba90ee@lunn.ch>
+References: <20231002085302.2274260-1-fujita.tomonori@gmail.com>
+ <20231002085302.2274260-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231002085302.2274260-2-fujita.tomonori@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+> +    /// Gets the id of the PHY.
+> +    pub fn id(&mut self) -> u32 {
+> +        let phydev = self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        unsafe { (*phydev).phy_id }
+> +    }
 
+I somewhat agree with GregKH here. It will be easier to review and
+maintain if the naming of well known things stay the same in the C and
+Rust world. So phy_id. However....
 
-On 30 Sep 2023, at 16:49, Wedson Almeida Filho wrote:
+> +    /// Gets the state of the PHY.
+> +    pub fn state(&mut self) -> DeviceState {
+> +        let phydev = self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        let state = unsafe { (*phydev).state };
+> +        match state {
+> +            bindings::phy_state::PHY_DOWN => DeviceState::Down,
+> +            bindings::phy_state::PHY_READY => DeviceState::Ready,
+> +            bindings::phy_state::PHY_HALTED => DeviceState::Halted,
+> +            bindings::phy_state::PHY_ERROR => DeviceState::Error,
+> +            bindings::phy_state::PHY_UP => DeviceState::Up,
+> +            bindings::phy_state::PHY_RUNNING => DeviceState::Running,
+> +            bindings::phy_state::PHY_NOLINK => DeviceState::NoLink,
+> +            bindings::phy_state::PHY_CABLETEST => DeviceState::CableTest,
+> +        }
+> +    }
+> +
+> +    /// Returns true if the link is up.
+> +    pub fn get_link(&mut self) -> bool {
+> +        const LINK_IS_UP: u32 = 1;
+> +        let phydev = self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        unsafe { (*phydev).link() == LINK_IS_UP }
+> +    }
 
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->
-> A mistake was made and the description of `ECHILD` is wrong (it reuses
-> the description of `ENOEXEC`). This fixes it to reflect what's in
-> `errno-base.h`.
->
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
+Naming is hard.
 
-Reviewed-by: Finn Behrens <me@kloenk.dev>
+This one is trickier and shows a difference between C and Rust. C just
+does phydev->link and treats it as a boolean, setter/getters are not
+needed. But Rust does seem to need setter/getters, and it is a lot
+less clear what link() does. get_link() is a bit more
+obvious. has_link() would also work. But as GregKH said, get_foo() and
+put_foo() are often used to represent getting a reference on an object
+and releasing it. I am however of the opinion that many driver writers
+don't understand locking, so it is best to hide all the locking in the
+core. I would not actually expect to see a PHY driver need to take a
+reference on anything.
+
+Since we forced into a world of getter/setter, the previous one
+probably should be get_phy_id() and we want consistent set_ and get_
+prefixes for plain accesses to members without further interpretation.
+
+> +
+> +    /// Returns true if auto-negotiation is enabled.
+> +    pub fn is_autoneg_enabled(&mut self) -> bool {
+> +        let phydev = self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        unsafe { (*phydev).autoneg() == bindings::AUTONEG_ENABLE }
+> +    }
+
+Should this maybe be get_autoneg_enabled()? I don't know.
+
+       Andrew
