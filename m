@@ -1,114 +1,90 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587459CA61
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Oct 2023 13:08:21 +0000 (UTC)
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D37FAC
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Oct 2023 06:08:19 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-273e3d8b57aso3382655a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Oct 2023 06:08:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6BA17F4
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 07:42:42 +0000 (UTC)
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CFE83
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 00:42:40 -0700 (PDT)
+Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-493545b4eaeso6193454e0c.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Oct 2023 00:42:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696165699; x=1696770499; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=blMA5AE9xPiVXKPYsL8Q8O6mpr0V8KxlUe//SkaXdn0=;
-        b=l1c3ohX9Sia8TE2BLRxhNqvEE6bcG4m+JNOvnpbF5h4l4Ed38RxJmyN2d/OTnRKkZ4
-         xqiFVxLHMfHSnbo350t6Hkj3uxsw7emnPIngHrfqZVpDLNWeoHdLUHRPQgPXcH7r50M+
-         Ql04F1+LWtMICRSqwU1pEDdERvNdsWehFD7SoNT9dbm0jgs5xjffCH5dnTRYSJZ9SspG
-         InU8C2S7qW8KUUq+NCwC3jSOExWywr4KVICFfLMx09xtrG5Lql6zvu1Wt4eifMYr4VlP
-         T5v8pj/ZKFqyHoQpWN7PQYPBQb6B27rtxhVmNL3AuTMucyyKWEenbTRcs625PWxMD0yc
-         b2NQ==
+        d=google.com; s=20230601; t=1696232559; x=1696837359; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vSh85qp98TAtPCnT67pcz20dczDxxqTD4YcLwPP44io=;
+        b=kCNawjjI/f4n+biV+vLjAA/Cfl6jcOXHeKOk6l1DA+XWCEw7e9oVx73OoewqH0LByQ
+         +bzuu0sAWaZYVwCLahYw+AukSMGBd7pll8bDsGEWTI0KsZB6jskePOTvjQBwKXBM0XAB
+         bwFAZNoS3nvrC759EuJ9C5P8R/AeSST675QPXxop/lqONFbnhx4tzfwsP+2aS1+tuq9y
+         3g6AnYWtZMCAniGXwxEg8IO43lILdpQBB9hVZ0p68LFPBqFrN+OuQWhR6tJLKxp804S+
+         +SjVQNgF7PS52qa5Lel7ragBcrINhcf0LT7zRq7aGv2DSQI47Hl5DsAw6T4OaJg6tGqm
+         l/cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696165699; x=1696770499;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=blMA5AE9xPiVXKPYsL8Q8O6mpr0V8KxlUe//SkaXdn0=;
-        b=N/iH5/VjOLkPftbuhYKKNMoh190NYwIl2wztRDDAyEEp/RshbWoaaVSEebhZ6SzJQZ
-         WL0+B7c8EJUf6HEe7Gd5lDSUAX/FPXg1s93qCzzZHvOQqXzY+jcMTb51sT56ATfp2/ix
-         Rn7J6AqvTsybL6TiqipZJpG2DLngjODTw4w7l1hZP4ivcj6oSjtgrUzuKPZycFSaE1p3
-         7LSVozpY7b7+jRfbJh/4qgR/iEbJ0cQGu4ql/UnqJh3fPhFdoZwJulopMua2YlGFvMmE
-         ok1VTg2yUknoUMJW6pYHwrQ8iYH0MOuk6Rgn8nmRODxLQ2c/UfojhvY3p1WJrm9UMSE8
-         Dixw==
-X-Gm-Message-State: AOJu0YwY6ffxnoL/nIZpDkSIdMwb7sZ72KziPpyOXDJRXrZ/PaO77+24
-	CbKa0oLFny2PGgeGCZqe0nw=
-X-Google-Smtp-Source: AGHT+IEIdwE1Z9HlzaRc7qWkHnuvbLNcrCfKKEsTZSgGYtlGGrfAxKpx03rQTDlOSTRgnPG5AL5tkA==
-X-Received: by 2002:a17:902:ea0c:b0:1c2:c60:8388 with SMTP id s12-20020a170902ea0c00b001c20c608388mr10318853plg.6.1696165698856;
-        Sun, 01 Oct 2023 06:08:18 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id kg14-20020a170903060e00b001c0aa301703sm20234402plb.63.2023.10.01.06.08.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Oct 2023 06:08:18 -0700 (PDT)
-Date: Sun, 01 Oct 2023 22:08:17 +0900 (JST)
-Message-Id: <20231001.220817.560585176336523991.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com
-Cc: gregkh@linuxfoundation.org, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, benno.lossin@proton.me, wedsonaf@gmail.com
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
- drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20230929.173856.1751823335892887678.fujita.tomonori@gmail.com>
-References: <20230928225518.2197768-2-fujita.tomonori@gmail.com>
-	<2023092900-manpower-runaround-859a@gregkh>
-	<20230929.173856.1751823335892887678.fujita.tomonori@gmail.com>
+        d=1e100.net; s=20230601; t=1696232559; x=1696837359;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vSh85qp98TAtPCnT67pcz20dczDxxqTD4YcLwPP44io=;
+        b=BobhCnsSKElRrGBxFxQtM7A5Aulpz83HkR0QaNfI+uC5FsxOQaB6p+3pn6AJ7y6Gpi
+         4+LTt+HXGu2elmYF12aaRoRI119pfyxI7eLiQlADDToxDdf+JuVhX2L27GhIrxyc+/j9
+         NL48N1965sk3q0I0dnYNRGR48xvmc0roe1LrqcD/XeIwfazf9hon467MgZYARz3+022n
+         OkJDzJUMz5GBaxtjmZXijEacDJ3nKjMmG9ciBslqmW31mpdpG6fGFQO6HZklSOsRPk5D
+         FFm5194Y/ASUybntd4M04TUGeinY+cjlLnXsELXsDL4nOH9sRuz6T/HTCSvv+PryXNWo
+         we1A==
+X-Gm-Message-State: AOJu0Yz2BQZBsxi4OgeDy/2yNYNEtOe2ehRhfD2CzUz7C4JUQ0WBFzjq
+	BUR3WmODVEKl6KkvypTGO2CRTFve6zeX6b980WsHEg==
+X-Google-Smtp-Source: AGHT+IHiH489RsoEvG5mrvyEeCxTptwArpNqWcQAsB6rSnXOWlpgRvQ3FVsqD93DxR1muZRoq/7CFunpI/fq4emM2Mw=
+X-Received: by 2002:a1f:ca82:0:b0:496:f00a:88b2 with SMTP id
+ a124-20020a1fca82000000b00496f00a88b2mr6397262vkg.7.1696232559619; Mon, 02
+ Oct 2023 00:42:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+MIME-Version: 1.0
+References: <20230928194801.2278999-1-mmaurer@google.com>
+In-Reply-To: <20230928194801.2278999-1-mmaurer@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 2 Oct 2023 09:42:28 +0200
+Message-ID: <CAH5fLgjUa+TRO_xOQp-uRo5wC8+iVgSh+MA573EjfFtiHbA4mg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: Respect HOSTCC when linking for host
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, 29 Sep 2023 17:38:56 +0900 (JST)
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+On Thu, Sep 28, 2023 at 9:48=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
+> resulting in build failures in hermetic environments where `cc` does not
+> exist. This includes both hostprogs and proc-macros.
+>
+> Since we are setting the linker to `HOSTCC`, we set the linker flavor to
+> `gcc` explicitly. The linker-flavor selects both which linker to search
+> for if the linker is unset, and which kind of linker flags to pass.
+> Without this flag, `rustc` would attempt to determine which flags to
+> pass based on the name of the binary passed as `HOSTCC`. `gcc` is the
+> name of the linker-flavor used by `rustc` for all C compilers, including
+> both `gcc` and `clang`.
+>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
->>> +    /// Gets the id of the PHY.
->>> +    pub fn id(&mut self) -> u32 {
->>> +        let phydev = self.0.get();
->>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->>> +        unsafe { (*phydev).phy_id }
->>> +    }
->>> +
->>> +    /// Gets the state of the PHY.
->>> +    pub fn state(&mut self) -> DeviceState {
->>> +        let phydev = self.0.get();
->>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->>> +        let state = unsafe { (*phydev).state };
->>> +        match state {
->>> +            bindings::phy_state::PHY_DOWN => DeviceState::Down,
->>> +            bindings::phy_state::PHY_READY => DeviceState::Ready,
->>> +            bindings::phy_state::PHY_HALTED => DeviceState::Halted,
->>> +            bindings::phy_state::PHY_ERROR => DeviceState::Error,
->>> +            bindings::phy_state::PHY_UP => DeviceState::Up,
->>> +            bindings::phy_state::PHY_RUNNING => DeviceState::Running,
->>> +            bindings::phy_state::PHY_NOLINK => DeviceState::NoLink,
->>> +            bindings::phy_state::PHY_CABLETEST => DeviceState::CableTest,
->> 
->> Again, this feels like a maintance nightmare.
-> 
-> As I wrote above, it's guaranteed that C and Rust code never
-> diverge. However, as you said, suley it's troublesome to maintain this.
-> 
-> We could directly use enum generated from C's enum at compile
-> time. Then we can remove this conversion. The names are not pretty
-> from Rust's view though.
-> 
-> Any concerns from Rust side?
-
-Thanks a lot for the comments, Trevor and Miguel!
-
-I leave this patch alone. Seems there is a good chance that bindgen
-would support a feature to automatically generate something
-useful. Once the requirement on the C side becomes clear, we can
-propose changes to PHYLIB.
-
-I'll drop RFC and send the patchset to netdev tomorrow.
+Tested-by: Alice Ryhl <aliceryhl@google.com>
