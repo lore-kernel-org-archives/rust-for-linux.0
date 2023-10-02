@@ -1,81 +1,117 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8457117C3
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 08:21:52 +0000 (UTC)
-Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D722AC6
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Oct 2023 01:21:49 -0700 (PDT)
-Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-49a885c5961so2687647e0c.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Oct 2023 01:21:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAF010A02;
+	Mon,  2 Oct 2023 08:53:24 +0000 (UTC)
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 415A5DC;
+	Mon,  2 Oct 2023 01:53:22 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3a707bc2397so2383170b6e.0;
+        Mon, 02 Oct 2023 01:53:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696234909; x=1696839709; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xtZPfMPTl+Ym7DWbaJlQ6UaM7njsrFPEooyegrWd6zo=;
-        b=debLAJ1cUIYHiB0yhRTCV7SGKClLFI05hRLuEwUJ+nrEtG1QIax2ytXE3Q91UzUg45
-         cP5JgUYStIaLBYJHo8a0RZNSnY6Uu2lfMJL5CVjCjHIZZqeQm+fL0PPkf1TmrVv09tW3
-         Rncva0Elip3txc9xvHrZVSg9D0aDN/Q97KD21IMMixmyXHyDI8D6AZZ4G48JLCInahdq
-         Dcy7HsVxKrEmrxbw+PMnh5mmoNCNGW3yFagbI4vao2Ed08rrVAW/Nso65A6lgJZt7eWZ
-         cEkUN1CzkHJYQxCph+prZJGFBRXxqn7GsEBtqiAhaIdyP1Of1eQrIueOGkttM1Xmtw8t
-         apBA==
+        d=gmail.com; s=20230601; t=1696236801; x=1696841601; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gZxcvuXQCGJdKauDfykcR6RyUoZDrW0lEXnuqeviIGA=;
+        b=TVHJllkJ0hXB6WQvQgKriHfqY2pYxSkD/YxtJqmgNPa5Gg09uGmLYeCJ8d512r5d77
+         A/WYz06nFKL+/UtyTiirtU2Z7jnfSFdlfqhlo1yuYEAma+Fn5qAu3gE1YrXWl8q+mW9x
+         SOc4NNAhSdy3FH42iGGGPq7cby+77DpW4fC9+uDlwcah3/nZPp+Yv7Nl4Hbomw1D1CFm
+         chWebwyZaiz9PobbrI7ELVub++hIqnFvAhtClr2LMrbfQZSx0BuDCnWR701toddriTwx
+         8D0Sc6/DrjFkulT/VG9kuHNab7Uo00MUTrT/3mH6BdStZvjiUfjDRZMzX27AsbJ53Bur
+         F58A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696234909; x=1696839709;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xtZPfMPTl+Ym7DWbaJlQ6UaM7njsrFPEooyegrWd6zo=;
-        b=bZVKzbRjZhev6OA5JRocsK5MVTtib3HIjwvSQF/NbHiMdt6nJY9HsUT2m0SJXuRJZW
-         wZGIzPN8xQMtWetAYVE+IOBtfSyo8ml+aCoQwj1HIJDx1eQY7CvfDqaovIYDwNDXZgVw
-         3FN5ALYk9Khag0hKIXVOVQ9vm5J+084ZYSDDqSIqVusw6yWLFVR+A4g2D+4Y8dnuikDS
-         5vSdF8QwyQVEAVtJ1mWDen3Ni3/C3RjmwNwEkFW3Uvi5B2Gx9+ipr0MZUvUlFxHiFXMT
-         7yd/GMmSNuubr4c2AgfqtAyp38OE1ZuusdBSIoTa3kf8TrY7CVYSUrKWIeEkjGZjKhvy
-         Ri8A==
-X-Gm-Message-State: AOJu0YwguV2cq14ND3kWdkClOg0Taai+yIQpM1LyyMjn79aurNV5m6RY
-	XCXcjkBUywg9Oa28GO1avXa8WoO1pgFRhPrwpETxEQ==
-X-Google-Smtp-Source: AGHT+IGZaySyVkdp0LlmnnPa66lTbn8IhoN+E6TJoqlqiOQdO8XjxPy4t0rOgUERdE3MrYyvmDu6wDLW/xV6+uP8+4U=
-X-Received: by 2002:a05:6122:1185:b0:49c:79f3:27a5 with SMTP id
- x5-20020a056122118500b0049c79f327a5mr7950821vkn.7.1696234908881; Mon, 02 Oct
- 2023 01:21:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696236801; x=1696841601;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gZxcvuXQCGJdKauDfykcR6RyUoZDrW0lEXnuqeviIGA=;
+        b=R7357+HUSQ9dIKkZBGZEFPG9e93Zhty59PIDr0V//HU14wMjEcb0ovzNX4EC7C1bTc
+         sUmX2VcgtWZ1vb4EW4Z8twJ5w9QNtG+8H7tEbREYcnUlGAzXVEnzEuFVVbJx5S7ffFO0
+         vnECnsASacge76DTR52z5Z4dhV6kex8a1dn3LOcPk0QUZv+PkzbB4UeP1MbSG2A4/y2l
+         8ODDPu+yd5Te0wvqD5ELZu+TDf8TsB81rc3VuT5PGheahnHPE+hGaGTayPyBQbn18hL6
+         eCTT1o00Xn6QJIFJdy4rjIwMdNZ73VaPYJ4ty/7CmcMNsB5QTJPaHt50iFjqAuwEu/j3
+         HbWQ==
+X-Gm-Message-State: AOJu0YycwCLzQzLNwcYZ7qVTWx0WJQDHQgJ+irSAgcR6SWAyE98RaOac
+	CGHq88+wtd3S4L7qZX3NaAQtKHimO10SkW1R
+X-Google-Smtp-Source: AGHT+IHQnDfc0OwbRvwBL7482lujg871ixrgEOZiQDep30iZ2eImk6ey7TdnQ/mzHHzJjxoLDxxdsg==
+X-Received: by 2002:a05:6808:f92:b0:3ae:df5:6d0d with SMTP id o18-20020a0568080f9200b003ae0df56d0dmr11877222oiw.2.1696236800599;
+        Mon, 02 Oct 2023 01:53:20 -0700 (PDT)
+Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id g4-20020a17090ace8400b00274c541ac9esm5656270pju.48.2023.10.02.01.53.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Oct 2023 01:53:20 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	miguel.ojeda.sandonis@gmail.com
+Subject: [PATCH v1 0/3] Rust abstractions for network PHY drivers
+Date: Mon,  2 Oct 2023 17:52:59 +0900
+Message-Id: <20231002085302.2274260-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230928205045.2375899-1-mmaurer@google.com>
-In-Reply-To: <20230928205045.2375899-1-mmaurer@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 2 Oct 2023 10:21:38 +0200
-Message-ID: <CAH5fLghT4EL8ZEk58jUzAqLmRPMO-5pmC5j=f5Lna5ebBE8PTQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Use awk instead of recent xargs
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Sep 28, 2023 at 10:50=E2=80=AFPM Matthew Maurer <mmaurer@google.com=
-> wrote:
->
-> `awk` is already required by the kernel build, and the `xargs` feature
-> used in current Rust detection is not present in all `xargs` (notably,
-> toybox based xargs, used in the Android kernel build).
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+This patchset adds Rust abstractions for network PHY drivers. It
+doesn't fully cover the C APIs for PHY drivers yet but I think that
+it's already useful. I implement two PHY drivers (Asix AX88772A PHYs
+and Realtek Generic FE-GE). Seems they work well with real hardware.
 
-Tested both in an Android and non-Android build.
+The first patch introduces Rust bindings for the C APIs for network
+PHY drivers.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
+The second patch adds the bindings to the ETHERNET PHY LIBRARY, and
+also me as a maintainer of the Rust bindings (as Andrew Lunn
+suggested).
+
+The last patch introduces the Rust version of Asix PHY drivers,
+drivers/net/phy/ax88796b.c. The features are equivalent to the C
+version. You can choose C (by default) or Rust version on kernel
+configuration.
+
+You can find discussions on the RFC patches at rust-for-linux ml:
+
+v1:
+https://lwn.net/ml/rust-for-linux/20230913133609.1668758-1-fujita.tomonori@gmail.com/
+v2:
+https://lwn.net/ml/rust-for-linux/20230924064902.1339662-1-fujita.tomonori@gmail.com/
+v3:
+https://lwn.net/ml/rust-for-linux/20230928225518.2197768-1-fujita.tomonori@gmail.com/
+
+
+FUJITA Tomonori (3):
+  rust: core abstractions for network PHY drivers
+  MAINTAINERS: add Rust PHY abstractions to the ETHERNET PHY LIBRARY
+  net: phy: add Rust Asix PHY driver
+
+ MAINTAINERS                      |   2 +
+ drivers/net/phy/Kconfig          |   7 +
+ drivers/net/phy/Makefile         |   6 +-
+ drivers/net/phy/ax88796b_rust.rs | 129 ++++++
+ rust/Makefile                    |   1 +
+ rust/bindings/bindings_helper.h  |   3 +
+ rust/kernel/lib.rs               |   3 +
+ rust/kernel/net.rs               |   6 +
+ rust/kernel/net/phy.rs           | 706 +++++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h          |   1 +
+ 10 files changed, 863 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/ax88796b_rust.rs
+ create mode 100644 rust/kernel/net.rs
+ create mode 100644 rust/kernel/net/phy.rs
+
+
+base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
+-- 
+2.34.1
+
