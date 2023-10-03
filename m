@@ -1,71 +1,140 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73AAD53B;
-	Tue,  3 Oct 2023 12:45:35 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E1BB91;
-	Tue,  3 Oct 2023 05:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OIEfIe4xKf94fD8/eEoIaOW0lqTEeFm26HPhDIowQDI=; b=XBvMf/ApA8A7i0LHzma7OvVRn7
-	DRAg1AO3zKfDPdP+vHM6AXz5E9ZjZxKsdVPsKPHeFWei15Go94lfU/A7Ml2QY0xa5cEBogfqocDKg
-	e154AP93rU8S9KdIzfdnJeJe/NRLaOAv8WH4YiTDXitc1lxTH/PPM+89Eelaq1lYnl14=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qnemI-0087Ha-6v; Tue, 03 Oct 2023 14:45:30 +0200
-Date: Tue, 3 Oct 2023 14:45:30 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: gregkh@linuxfoundation.org, miguel.ojeda.sandonis@gmail.com,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] rust: core abstractions for network PHY drivers
-Message-ID: <212ffb46-ddec-4f84-a121-42ad70019363@lunn.ch>
-References: <9efcbc51-f91d-4468-b7f3-9ded93786edb@lunn.ch>
- <20231003.124311.1007471622916115559.fujita.tomonori@gmail.com>
- <2023100317-glory-unbounded-af5c@gregkh>
- <20231003.154052.1399377054104937782.fujita.tomonori@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C4DD2EB
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Oct 2023 20:13:32 +0000 (UTC)
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1C6A7;
+	Tue,  3 Oct 2023 13:13:31 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailout.nyi.internal (Postfix) with ESMTP id C68EE5C02DC;
+	Tue,  3 Oct 2023 16:13:28 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 03 Oct 2023 16:13:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ftml.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:reply-to:sender:subject:subject:to:to; s=fm2; t=1696364008; x=
+	1696450408; bh=WsB9L9DWS7tkowlV7TtWLRR1ydB8yDugfdaCwbWVulY=; b=b
+	NKxAHlRC1f33oSkY8zGi9xwdwB+NVVDrI/qhLKFlPkCuWSzKs+MFpT/eGHHDFb7O
+	VHwyCCTykZzB2aVgb745gL7MxNDI/U0ko4MLXYcVFwpHI6nmRNlunkPUGU2TkVLo
+	0NxL/BEFzjJyUbBf2u4ComavzV7p7Gs/02e/Qc65b6L8CetXdUTKxeTuKBFoslzf
+	8D7F52dv5RrctHeNMqA1a7UJDzD0gJoh7qQP99Qntnc1Cqty99SA60y6SuUp1/Rk
+	0sc39Vx7J871TqC1wZrMNW1In9+k+GYlxgZKRIRtjx5XRaGM/Y/4GjwIHeG8ok42
+	NiWtfnzEOqyNCyZ3IZ1qQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1696364008; x=
+	1696450408; bh=WsB9L9DWS7tkowlV7TtWLRR1ydB8yDugfdaCwbWVulY=; b=D
+	GYb53HFuqWlBADhwaIRw5AgrR9HOXZCBRa/A0cybXWMIW1847XixBMRK+A72DVWg
+	f5KDXmB7StSewnXwTCpHeLI9WpeXjz/PEP4DlQs0BXcEueYpVum+o6zK2RW8pKIh
+	JLoMQ09tAgacggV/uNNZWJH57bTBvVcPeJw9Y2y1piJgrYILF7KNoJX+6t4qPLLY
+	qSCkBqhDjcmkAiAXWqBEsSQLKNWNtC/vO7kl5ywlDmNVFhI+jX7LRCRlHZCikaJe
+	tuIN2Z+tARu4Z6XawkJfkh6xClB9xiypQsp2CqOSYvOj5mN/qrmymNdPsY/g6KUB
+	xrwA+ciGEwilDNJHLcQKw==
+X-ME-Sender: <xms:6HUcZf5riEfriOqXPEosTd4e8sRHmKC8vVNAA31N0-fDRb4Y-YYa1Q>
+    <xme:6HUcZU5LOiBFdznF3yHfzHGmgF6p1jJP5lHWp7BjVrC4MWkGN4rQVLzEKNWgWAvsf
+    -zTsPKWAG7VMpWYlzk>
+X-ME-Received: <xmr:6HUcZWd8wh_ShxRKTp5c_75Gw68GRx9QgUB97sCthkz7XWiDssLPgKfz>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfeejgdehiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepggfgtgffufevvffhkffojgesthhqre
+    dtredtjeenucfhrhhomhepfdfmohhnshhtrghnthhinhcuufhhvghlvghkhhhinhdfuceo
+    khdrshhhvghlvghkhhhinhesfhhtmhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejff
+    ekjedujeekteetveeiveegvdfhieevudegtdeileduudekleetfeelveehudenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkrdhshhgvlhgvkh
+    hhihhnsehfthhmlhdrnhgvth
+X-ME-Proxy: <xmx:6HUcZQLuaofnC19tpGi4EXyZVcPMyHHmS-gfJz2Fkq1A605b2niCBg>
+    <xmx:6HUcZTLneBxVhuavGqlZAk_CIYuv_l7nXQnjTFRu1iHdW3RHoHwGHA>
+    <xmx:6HUcZZz4L77_GSJoHS-BA-XWBCmBHvueP8ro-rRU7MxdGqXU6_-z2w>
+    <xmx:6HUcZSYYUeeKoXfb06GT_KKwuAm-9PB_SHjlWajkEAYAyh1A4dI3bQ>
+Feedback-ID: ib7794740:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Oct 2023 16:13:26 -0400 (EDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231003.154052.1399377054104937782.fujita.tomonori@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 03 Oct 2023 23:13:25 +0300
+Subject: Re: [PATCH v4 7/7] rust: workqueue: add examples
+Cc: <alex.gaynor@gmail.com>, <benno.lossin@proton.me>,
+ <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <jiangshanlai@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <nmi@metaspace.dk>, <ojeda@kernel.org>, <patches@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <tj@kernel.org>, <wedsonaf@gmail.com>,
+ <yakoyoku@gmail.com>
+To: <aliceryhl@google.com>
+From: "Konstantin Shelekhin" <k.shelekhin@ftml.net>
+Message-Id: <CVZ2KU4KK5YH.2HVL1F6X93YLL@pogg>
+X-Mailer: aerc 0.15.2.r131.ga5d6a70
+In-Reply-To: <20230828104807.1581592-8-aliceryhl@google.com>
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PDS_OTHER_BAD_TLD,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> >> The following works. If you set the phylib as a module, the rust
-> >> option isn't available.
-> > 
-> > That does not seem wise.  Why not make the binding a module as well?
-> 
-> Agreed, as I wrote in the previous mail. But Rust bindings doesn't
-> support such now. I suppose that Miguel has worked on a new build
-> system for Rust. He might have plans.
++//! #[pin_data]
++//! struct MyStruct {
++//!     value: i32,
++//!     #[pin]
++//!     work: Work<MyStruct>,
++//! }
++//!
++//! impl_has_work! {
++//!     impl HasWork<Self> for MyStruct { self.work }
++//! }
++//!
++//! impl MyStruct {
++//!     fn new(value: i32) -> Result<Arc<Self>> {
++//!         Arc::pin_init(pin_init!(MyStruct {
++//!             value,
++//!             work <- new_work!("MyStruct::work"),
++//!         }))
++//!     }
++//! }
++//!
++//! impl WorkItem for MyStruct {
++//!     type Pointer =3D Arc<MyStruct>;
++//!
++//!     fn run(this: Arc<MyStruct>) {
++//!         pr_info!("The value is: {}", this.value);
++//!     }
++//! }
++//!
++//! /// This method will enqueue the struct for execution on the system wo=
+rkqueue, where its value
++//! /// will be printed.
++//! fn print_later(val: Arc<MyStruct>) {
++//!     let _ =3D workqueue::system().enqueue(val);
++//! }
 
-It would be nice to get the basic Kconfig symbols in place to support
-this, for when the build does support bindings in modules. And you
-should be able to use the same symbols now, just with slightly
-different semantics.
+I understand that this is highly opionated, but is it possible to make
+the initialization less verbose?
 
-The binding should have its own Kconfig Symbol, something like
-RUST_PHYLIB_BINDING, with a depends on RUST and a depends on
-PHYLIB. At the moment that should just cause the binding to be
-compile/not compiled as part of the core rust support. The dependency
-on PHYLIB will also ensure it is built in the correct way.
+Because the C version looks much, much cleaner and easier to grasp:
 
-In the future, it can be used to build the binding as a standalone
-module, built in, or not at all.
+    struct my_struct {
+        i32 value;
+        struct work_struct work;
+    };
 
-The PHY driver would then have a depends on RUST_PHYLIB_BINDING.
+    void log_value(struct work_struct *work)
+    {
+        struct my_struct *s =3D container_of(work, struct my_struct, work);
+        pr_info("The value is: %d\n", s->value);
+    }
 
-    Andrew
+    void print_later(struct my_struct &s)
+    {
+        INIT_WORK(&s->work, log_value);
+        schedule_work(&s->work);
+    }
