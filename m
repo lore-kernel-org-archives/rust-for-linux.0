@@ -1,217 +1,108 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103BF107AE
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Oct 2023 14:39:27 +0000 (UTC)
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D28BF;
-	Wed,  4 Oct 2023 07:39:26 -0700 (PDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-668d9c1f70fso12793526d6.3;
-        Wed, 04 Oct 2023 07:39:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696430365; x=1697035165; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IyzgdoMLwkq9+lVrAUZEty4x9uo3GaRubMI72epRsDU=;
-        b=ZgAQYSmucOo1FtSisfoy8tPBmPz70r8lR9YhBJkRsttTmb97RcFMP0aNsWD8oZyIFP
-         9pewtWDpu2qAwlTi1Cq6DInbVthcEdC3cToGEWyFScQ+2kcW/2/8Ld9x2ezHjBU5yCbz
-         iEEqRRzDV7csLqvdXSRFsltanqlqJCmPtoZMO6oDRT2GK0nNx1l4+x9qvU3s6R4Alin4
-         RBO1CX0aR6y3L7Tl2F1M3ZcPydlYTS47UeFBDoD71zebRxAiOTeHeRT0JJHHngYcCo+V
-         w4uHF0V23Dq3CW4XCNngwwe4PueneZkO+1mQqAT42p9cTiSTXvWLrm48snCnQYNwNORa
-         xwwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696430365; x=1697035165;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IyzgdoMLwkq9+lVrAUZEty4x9uo3GaRubMI72epRsDU=;
-        b=KXmniBuUr4yeqp86M36iTUzSrEWoGcQKTpJ8KgUF/1Kz4SfGOzWWRuh6T3jXMYNHh5
-         MArZnOnhLT/7szxoobfyGV9Zrek3Okyvvrz5XfmfvUpoG7nofygWk9aUk4c2MQ6aJS33
-         GIaYTW42bfbB7ne0D7hs0l4/87yo+DPGfFg742/mKILbf8rvV5wxhRkrqU1nW8aP2cak
-         dq4RoM/OzIhMAjpHuYMP7eJ8dj5RoqonIsZz8/jHDbfsqKY2Y/rI+RwxqAb4LwHkz2dh
-         M+CXWHb0ppVwF0wuT096jIlZ43HHRF4Cul5PwlGbAOFexYCC0jOtxs0gsqQ76P3PlF3S
-         KGWA==
-X-Gm-Message-State: AOJu0Yyj37LZ0+mnRL2cwOgCFZaa/ycXw3szYRboSE+6o9k49ghSy2QX
-	KqMgvfxoIzYFH06lRMMX6UM=
-X-Google-Smtp-Source: AGHT+IF1KZEFuDL4DVpwHFXUCLmxHbYge1cna81g9hxaNFnX+rH3ehgWL+MRSDKRalkM35UsNCfRuw==
-X-Received: by 2002:a0c:e308:0:b0:635:e0dd:db4b with SMTP id s8-20020a0ce308000000b00635e0dddb4bmr2454308qvl.37.1696430365398;
-        Wed, 04 Oct 2023 07:39:25 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id n15-20020a0ce48f000000b0065b10dbcd53sm1370449qvl.120.2023.10.04.07.39.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 07:39:24 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 64F0227C0054;
-	Wed,  4 Oct 2023 10:39:24 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 04 Oct 2023 10:39:24 -0400
-X-ME-Sender: <xms:G3kdZVVmcY7_-70pgDG9kuuthDFV7dMHOu8neNr5s12ePPXjCqoa-Q>
-    <xme:G3kdZVkMi9zr3Rk3x9rg6vTanyh3A0A9MlI0p-MJtUDbeA42vq1afPW4cyRWGB0G6
-    csB8jJUmlNE9YQPBA>
-X-ME-Received: <xmr:G3kdZRaQuFuxNur8kMhnSeeaBGfVWwGMi1z80PTd2LXNoXObpTRviwLG9Mo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrgedvgdejjecutefuodetggdotefrodftvf
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B69101DB
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Oct 2023 14:56:22 +0000 (UTC)
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 016641A3;
+	Wed,  4 Oct 2023 07:56:19 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailout.west.internal (Postfix) with ESMTP id 945C73200AB0;
+	Wed,  4 Oct 2023 10:56:15 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Wed, 04 Oct 2023 10:56:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ftml.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+	1696431375; x=1696517775; bh=E81iGMeNa+pNgKEkt1KkyiV7Sh5faYo5JX4
+	pY/PFDew=; b=lpTrPM7sGkdmKIxZMmVxe6Eij5ocLE05ifOF7+fTaJoqwmaR9DC
+	3omv1FtZIMcv0Q4KeKkXYfUh3bnHqwEZQO+4RmN8BWgd7HcQ8eNX8rsZOHD9UAJE
+	5Hn4FGqRQOKxKDaIKZzDkcEJ+Y3OKSPUbTwFNRaA8ZTxSsjPFdUYwQpQ/II9nWrg
+	i/hmeIqWrviPO0zwHsWOsnzoB5LBypT8kWLIHM6ehEqkrNGllczhwF9cq2MHywnT
+	Lt6AKvnaN2gzA4Yb42pgSHlz6Xc3RjSHvbD4bTcywff1HGQ/SitCKQ/pmTUyoPku
+	KI2Jg8VAv9JZvxBZqC0MqafNjKkerQn1lSg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1696431375; x=1696517775; bh=E81iGMeNa+pNgKEkt1KkyiV7Sh5faYo5JX4
+	pY/PFDew=; b=Wv464ROziTRdG3i/7r2TG9cDUxlYV//R+b+h9c6Grk03YU5IwdG
+	SegVxKIsosXLXyxdYoGXhwqTD770uMrOzo7duqeyK6cuf4wYoweNBpLrZLNKuLje
+	I3Tb8CoikGOBgbPRPkLw7hZsqX9AhK4CwWnKLKzbGWbgXLG1PsG/8eCTvqWuXvIk
+	i2ZBNaB6RrXUsUlta4RGR1NuA3I1KjTrQXoIPQMZGpGsnwvTo6epr0P5Ab9/vZLT
+	hzmfVXyzgJvk/+/xEssxunwAAp/uTBGY04SbT6QFtxsCsBg22ggLRVpUtxx0Y+MC
+	scAnPDpuLvInDjWK0kp7n6MpI2VZgNYNr9A==
+X-ME-Sender: <xms:Dn0dZbFCaZchcZYIU3KBL-MUPPbpt77PJ4TTEDrskT02FC4uuwvj_g>
+    <xme:Dn0dZYWH3kpKQGmY3LqLSg0QBYhqo09fYzkSmM34A6KnWRYeTYcPsoxb5hNHI69Nd
+    49_KGewoj9W2DW2zMI>
+X-ME-Received: <xmr:Dn0dZdKJfQrXebTf12W_DSd0Vwc_0bJiYEM-WllMkfpodLcvKSlW3BkJ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrgedvgdekudcutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
-    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:HHkdZYWJNAwjFRgNfFT-6OxgxzMv7XKtBW_thbwsQj8X3NLjOdzjDA>
-    <xmx:HHkdZfnPy741u5Ox_W-EkQlS_9GOZfPvFJ20vZqSYKCvLNHhA5ZT_Q>
-    <xmx:HHkdZVffE4I2lRUx1JcnW1Y8bbaL6ojF431YuH3DJnjJFa9z7kqXZA>
-    <xmx:HHkdZU83Rq-yatnIL9TkOF13EgeYk0Px9G1jRP47mFA-k8ujiHwm_A>
-Feedback-ID: iad51458e:Fastmail
+    fjughrpegggfgtfffkhffuvefvofhfjgesthhqredtredtjeenucfhrhhomhepfdfmohhn
+    shhtrghnthhinhcuufhhvghlvghkhhhinhdfuceokhdrshhhvghlvghkhhhinhesfhhtmh
+    hlrdhnvghtqeenucggtffrrghtthgvrhhnpeelhfdttdekudekffeuffektddvueeuffeh
+    ieelffdufedvvefftdefffeggfelgfenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehkrdhshhgvlhgvkhhhihhnsehfthhmlhdrnhgvth
+X-ME-Proxy: <xmx:Dn0dZZHGwa9BC2mZsTBLoU3G1blVi8VAOQkCP0v_t8y1mEHFxL_ouA>
+    <xmx:Dn0dZRWW1_Vpe7KGYzez018EFqOVmDbXbJ6bFYECZPxrFQj4lFnRrQ>
+    <xmx:Dn0dZUNh5G8WnO4rXlwRnRFzCqS5lUoZhQAUNbzonL9hqsI6STCuJw>
+    <xmx:D30dZWUo1NrCSmYHmMyJ0DjZro079xydoLj-qbkY9lCgqqiogPVsyQ>
+Feedback-ID: ib7794740:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Oct 2023 10:39:23 -0400 (EDT)
-Date: Wed, 4 Oct 2023 07:38:26 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Konstantin Shelekhin <k.shelekhin@ftml.net>
-Cc: Alice Ryhl <aliceryhl@google.com>, alex.gaynor@gmail.com,
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, gary@garyguo.net,
-	jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
-	nmi@metaspace.dk, ojeda@kernel.org, patches@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com,
-	yakoyoku@gmail.com
-Subject: Re: [PATCH v4 7/7] rust: workqueue: add examples
-Message-ID: <ZR144pugIJQRAFjj@boqun-archlinux>
-References: <CVZ2KU4KK5YH.2HVL1F6X93YLL@pogg>
- <20231003222947.374039-1-aliceryhl@google.com>
- <CVZLU74VWMKA.GQXYH7WUNPS4@pogg>
+ 4 Oct 2023 10:56:12 -0400 (EDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CVZLU74VWMKA.GQXYH7WUNPS4@pogg>
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PDS_OTHER_BAD_TLD,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=no autolearn_force=no version=3.4.6
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Oct 2023 17:56:09 +0300
+Message-Id: <CVZQQCDA444R.KWA6OPEZRIBG@ftml.net>
+From: "Konstantin Shelekhin" <k.shelekhin@ftml.net>
+Subject: Re: [PATCH v4 7/7] rust: workqueue: add examples
+Cc: "Alice Ryhl" <aliceryhl@google.com>, <alex.gaynor@gmail.com>,
+ <benno.lossin@proton.me>, <bjorn3_gh@protonmail.com>, <gary@garyguo.net>,
+ <jiangshanlai@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <nmi@metaspace.dk>, <ojeda@kernel.org>, <patches@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <tj@kernel.org>, <wedsonaf@gmail.com>,
+ <yakoyoku@gmail.com>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+X-Mailer: aerc 0.15.2.r182.g389d89a
+References: <CVZ2KU4KK5YH.2HVL1F6X93YLL@pogg>
+ <20231003222947.374039-1-aliceryhl@google.com>
+ <CVZLU74VWMKA.GQXYH7WUNPS4@pogg> <ZR144pugIJQRAFjj@boqun-archlinux>
+In-Reply-To: <ZR144pugIJQRAFjj@boqun-archlinux>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Oct 04, 2023 at 02:06:05PM +0300, Konstantin Shelekhin wrote:
-> On Wed Oct 4, 2023 at 1:29 AM MSK, Alice Ryhl wrote:
-> > On Tue, Oct 3, 2023 at 10:13PM Konstantin Shelekhin <k.shelekhin@ftml.net> wrote:
-> > > +//! #[pin_data]
-> > > +//! struct MyStruct {
-> > > +//!     value: i32,
-> > > +//!     #[pin]
-> > > +//!     work: Work<MyStruct>,
-> > > +//! }
-> > > +//!
-> > > +//! impl_has_work! {
-> > > +//!     impl HasWork<Self> for MyStruct { self.work }
-> > > +//! }
-> > > +//!
-> > > +//! impl MyStruct {
-> > > +//!     fn new(value: i32) -> Result<Arc<Self>> {
-> > > +//!         Arc::pin_init(pin_init!(MyStruct {
-> > > +//!             value,
-> > > +//!             work <- new_work!("MyStruct::work"),
-> > > +//!         }))
-> > > +//!     }
-> > > +//! }
-> > > +//!
-> > > +//! impl WorkItem for MyStruct {
-> > > +//!     type Pointer = Arc<MyStruct>;
-> > > +//!
-> > > +//!     fn run(this: Arc<MyStruct>) {
-> > > +//!         pr_info!("The value is: {}", this.value);
-> > > +//!     }
-> > > +//! }
-> > > +//!
-> > > +//! /// This method will enqueue the struct for execution on the system workqueue, where its value
-> > > +//! /// will be printed.
-> > > +//! fn print_later(val: Arc<MyStruct>) {
-> > > +//!     let _ = workqueue::system().enqueue(val);
-> > > +//! }
-> > >
-> > > I understand that this is highly opionated, but is it possible to make
-> > > the initialization less verbose?
-> >
-> > The short answer is yes. There are safe alternatives that are much less
-> > verbose. Unfortunately, those alternatives give up some of the features
-> > that this design has. Specifically, they give up the feature that allows
-> > you to embed the work_struct inside custom structs. I need to be able to
-> > embed the work_struct inside of custom structs, so I did not go that
-> > route.
-> 
-> My concern with the approach of using traits instead of calling an
-> initialization function is that a some of existing code uses the
-> following pattern:
-> 
->     static void nvmet_file_submit_buffered_io(struct nvmet_req *req)
->     {
->             INIT_WORK(&req->f.work, nvmet_file_buffered_io_work);
->             queue_work(buffered_io_wq, &req->f.work);
->     }
-> 
->     static void nvmet_file_execute_flush(struct nvmet_req *req)
->     {
->             if (!nvmet_check_transfer_len(req, 0))
->                     return;
->             INIT_WORK(&req->f.work, nvmet_file_flush_work);
->             queue_work(nvmet_wq, &req->f.work);
->     }
-> 
->     static void nvmet_file_execute_dsm(struct nvmet_req *req)
->     {
->             if (!nvmet_check_data_len_lte(req, nvmet_dsm_len(req)))
->                     return;
->             INIT_WORK(&req->f.work, nvmet_file_dsm_work);
->             queue_work(nvmet_wq, &req->f.work);
->     }
-> 
-> As you can see a single work struct is used here, and dispatching
-> happens beforehands. While it's possible to do the dispatching later in
-> run(), it's IMO cleaner to do this earlier.
+> This is not a problem until nvmet actually uses/switches to Rust, right?
+> ;-) We can certainly improve the API when a real user needs something.
+> Or you know someone is already working on this?
 
-This is not a problem until nvmet actually uses/switches to Rust, right?
-;-) We can certainly improve the API when a real user needs something.
-Or you know someone is already working on this?
+Nope, not at this moment. I have an itch to experiment with Rust and
+iSCSI, but that's my personal toy without any plans to at least propose
+it to the subsystem maintainers yet.
 
-[...]
-> 
-> I get where all this coming from, I just really dislike the idea to
-> write all this code every time I need to pass something down the
-> workqueue. Maybe it's possible to hide most of the boilerplate behind a
-> derive.
-> 
-> Something like this, for example:
-> 
->     #[pin_data, derive(WorkContainer)]
->     struct MyStruct {
->         value: i32,
->         #[pin, work(fn = log_value)]
->         work: Work,
->     }
-> 
->     fn log_value(s: Arc<MyStruct>) {
->         pr_info!("The value is: {}", s.value);
->     }
-> 
->     fn print_later(s: Arc<MyStruct>) {
->         workqueue::system().enqueue(s);
->     }
+> All of your suggestions make senses to me, but because we don't have
+> many users right now, it's actually hard to determine a "best" API. I
+> like what we have right now because it's explicit: people won't need to
+> learn much about procedure macros to understand how it works, and it
+> also provides better opportunities for people who's yet not familiar
+> with Rust to give some reviews. So starting with something relatively
+> simple and verbose may not be a bad idea ;-)
+>
+> Again, I like your idea, we need to explore that direction, but one
+> dragon at a time ;-)
 
-All of your suggestions make senses to me, but because we don't have
-many users right now, it's actually hard to determine a "best" API. I
-like what we have right now because it's explicit: people won't need to
-learn much about procedure macros to understand how it works, and it
-also provides better opportunities for people who's yet not familiar
-with Rust to give some reviews. So starting with something relatively
-simple and verbose may not be a bad idea ;-)
-
-Again, I like your idea, we need to explore that direction, but one
-dragon at a time ;-)
-
-Regards,
-Boqun
+Oh yeah, completely understand :)
