@@ -1,92 +1,105 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2701B266
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Oct 2023 15:53:09 +0000 (UTC)
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47E9FBF
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Oct 2023 08:53:05 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9ae75ece209so431949066b.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Oct 2023 08:53:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5322D4A3B
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Oct 2023 06:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="ST7za+wx"
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF77F6A67
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Oct 2023 23:32:41 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-59e88a28b98so5955837b3.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Oct 2023 23:32:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1696434784; x=1697039584; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=hZDNFZC6WiTT02ULBJ6jIt5/1FUgLgt3WVljz4aDHFY=;
-        b=Ls5YFI1iHeKJe7R9ObhOWxWOAdkDFbGSGmuerXZc5oJ9ZvxzqT6Z3Mjw//CJ0RogKo
-         U4S5BxK78MCXwDfKUtDC7WT4xdYtO31BSlskDlzX3I/7fLG7SLJnFN2EpfpgWqXJZ8y+
-         MHNh27Ai/0BPhPJ5nOpPVvTgMG8+sZpForTwXRqMHqmxcQB6OMLyGYTBquZkH2BNiKoq
-         s/Cpajy/G6f0vzNy1GmxkXOAldS/DJkfsYBiZs+GxUW3j9UQQu0l7EIwT8UUlcfo2Cvs
-         KGzSHJZ7yhy/+6eVyy5+zI3eCGlogsTFDigrVWoSQiEDiZyeZtowYevjeDNvuDO+40FR
-         Apiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696434784; x=1697039584;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1696487561; x=1697092361; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hZDNFZC6WiTT02ULBJ6jIt5/1FUgLgt3WVljz4aDHFY=;
-        b=pp27imbYpoWgYx1XY3nhoU24+IZ0HwzYp3948Hn0qbTsNyDU99Wg1bDTb4zioYtI36
-         c/2qU/vrN4JKAa+rC4YM+hruTOuz3cZoeyFYv1LdkZnurfBuyvhZ/gNIgwMcPwqBWYdj
-         cswBlFKt/FG3DBaC+ozHv4YhMKabzkkNEnApZ/6tkA3GDalgrCsGo891j2yErrwt1RAx
-         Cwg8a1gGCZgr6GDf3AMCfGcaYWNYBzLzBxYbzlh/e4/a7aQf5VdLZmQDfG6YqXckkxS+
-         n9AvVxGtrldUXqvqhW0ySmjuHVhOX6k98mysLas7deYVf73W5nDlZubuRQnOHahBqQQW
-         9zcA==
-X-Gm-Message-State: AOJu0Yx6Oe4Pq8qMD6rcg4AxOfbK2+dVT74Z+jB/0pc28tqMzLzHaU3l
-	YwprCkOsx7wNbi6uQx92W4inlA==
-X-Google-Smtp-Source: AGHT+IHyhGmibidLlX+i+h3CeE+RkyvRJ1BmsD82yqONASQWydT4Q9HuIszDXGT+fFfHOEohePFpdQ==
-X-Received: by 2002:a17:906:538f:b0:9a2:1ce5:1243 with SMTP id g15-20020a170906538f00b009a21ce51243mr2663645ejo.60.1696434783543;
-        Wed, 04 Oct 2023 08:53:03 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id gh18-20020a170906e09200b009b27d4153cfsm3034424ejb.176.2023.10.04.08.53.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 08:53:03 -0700 (PDT)
-References: <CVZ2KU4KK5YH.2HVL1F6X93YLL@pogg>
- <20231003222947.374039-1-aliceryhl@google.com>
- <CVZLU74VWMKA.GQXYH7WUNPS4@pogg> <ZR144pugIJQRAFjj@boqun-archlinux>
- <CVZQQCDA444R.KWA6OPEZRIBG@ftml.net>
-User-agent: mu4e 1.10.7; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Konstantin Shelekhin <k.shelekhin@ftml.net>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
- alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
- gary@garyguo.net, jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
- ojeda@kernel.org, patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
- tj@kernel.org, wedsonaf@gmail.com, yakoyoku@gmail.com
-Subject: Re: [PATCH v4 7/7] rust: workqueue: add examples
-Date: Wed, 04 Oct 2023 17:49:30 +0200
-In-reply-to: <CVZQQCDA444R.KWA6OPEZRIBG@ftml.net>
-Message-ID: <87v8bm5qqp.fsf@metaspace.dk>
+        bh=pGyR1Zzvv154X8Dccwt7gC98O0K89BtDve6Z1+jKdN4=;
+        b=ST7za+wx14hPc8p+oEfAiYxQPwckRjhw+YiKKsBblD0cPk3ICdaaopJG2uuc9wmYJZ
+         +4P4Mr4ARMZxKs6LndrbJxSmCGzMGD6IkR3mwR+5edGcK+t0xYzUAMoeJJk53QOP54rn
+         txYrLgBRvu8NYny32HygIAmRVq2GjLaef/mkr0hKJZOutx6qZGv/D6Mv1dwpeou4UG6X
+         dfIDZWkHxxhkJ571NLr5Xer0FjeBD7YvWApd6d9vlzYl2Fju78w9zRMJDLQr2YZyrMfo
+         x6QBDxYu3aD7XTCJkdHK7NkMJ6CSveyrtEnFDjJ0jNbpmCqmHeo+beT60Cq27epMFlWQ
+         fjKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696487561; x=1697092361;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pGyR1Zzvv154X8Dccwt7gC98O0K89BtDve6Z1+jKdN4=;
+        b=oMG3x9+YpxZVfBC27myecnwbyMfMtrM+gqrOgmJvEHhQPbMQbomPQP71CLEfzdRhvf
+         tk12K2LdGiXA2m5m8TLuC7Y+oLbvaJI0gydy9UeCnO6wwHFsnwEHFg9ULIqWZOlL1iiL
+         wBQHCVznr9ZnhAX4cRPohAXG0AJTXtVF89ypYLGsXksKsjYWLeUyzzFhOj5RP3Y3ENqV
+         QJ2EBELVJ7xXNyORGDzILB8ENP7+1DQ9VYjaLGsKueM33aota6TB9N90JSpAToIwCJm5
+         xgNeDfH4RPL85cHJAj9bfyL0pH6l6h9bZTu7+k6o00JVL3qd5NnVxRe7R8Qm+WS6d4Yy
+         uVPg==
+X-Gm-Message-State: AOJu0YxJ0Cv09CTg2pnq9rQQp/q+p+SxvkH7KAwcv6ItRek6C6/N2yoS
+	PaQ9+sLnBsSgu/eHfJr5EmlcjdQVYLuRFepBD34dzg==
+X-Google-Smtp-Source: AGHT+IHJAdiS+YNWfIdgWHzybEMmyvLq6s23YivEmEYidiPTA9ZiKm3Am2IIYO0pi7fIfuQ1zezOAfQglwsScJWCnr0=
+X-Received: by 2002:a81:6086:0:b0:59f:6440:7eff with SMTP id
+ u128-20020a816086000000b0059f64407effmr1449066ywb.15.1696487560949; Wed, 04
+ Oct 2023 23:32:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+References: <CVZ2KU4KK5YH.2HVL1F6X93YLL@pogg> <20231003222947.374039-1-aliceryhl@google.com>
+In-Reply-To: <20231003222947.374039-1-aliceryhl@google.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Thu, 5 Oct 2023 02:32:29 -0400
+Message-ID: <CALNs47s1=fjaXjymDM__G0-Qzv0mkftJ1hzOt4SZJt5Uy0WA1Q@mail.gmail.com>
+Subject: Re: [PATCH v4 7/7] rust: workqueue: add examples
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: k.shelekhin@ftml.net, alex.gaynor@gmail.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	jiangshanlai@gmail.com, linux-kernel@vger.kernel.org, nmi@metaspace.dk, 
+	ojeda@kernel.org, patches@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	tj@kernel.org, wedsonaf@gmail.com, yakoyoku@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_OTHER_BAD_TLD,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=no
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+On Tue, Oct 3, 2023 at 6:30=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+> On Tue, Oct 3, 2023 at 10:13PM Konstantin Shelekhin <k.shelekhin@ftml.net=
+> wrote:
+> > +//! #[pin_data]
+> > +//! struct MyStruct {
+> > +//!     value: i32,
+> > +//!     #[pin]
+> > +//!     work: Work<MyStruct>,
+> > +//! }
+> > +//!
+> > +//! impl_has_work! {
+> > +//!     impl HasWork<Self> for MyStruct { self.work }
+> > +//! }
+> > +//!
+> > +//! impl MyStruct {
+> > +//!     fn new(value: i32) -> Result<Arc<Self>> {
+> > +//!         Arc::pin_init(pin_init!(MyStruct {
+> > +//!             value,
+> > +//!             work <- new_work!("MyStruct::work"),
+> > +//!         }))
+> > +//!     }
+> > +//! }
+> > +//!
 
-Hi,
+For what it's worth, I think that using a binding for return items
+usually looks ever so slightly more clear than passing a multiline
+argument
 
-"Konstantin Shelekhin" <k.shelekhin@ftml.net> writes:
-
->> This is not a problem until nvmet actually uses/switches to Rust, right?
->> ;-) We can certainly improve the API when a real user needs something.
->> Or you know someone is already working on this?
->
-> Nope, not at this moment. I have an itch to experiment with Rust and
-> iSCSI, but that's my personal toy without any plans to at least propose
-> it to the subsystem maintainers yet.
-
-If you are so inclined, I would suggest you take a look at the blk-mq
-bindings and the nvme (pci) [1] and null_blk [2] Rust drivers. I am
-available if you have any questions!
-
-BR Andreas
-
-[1] https://github.com/metaspace/linux/tree/nvme-next-for-6.6
-[2] https://github.com/metaspace/linux/tree/null_blk-next-for-6.6
+    fn new(value: i32) -> Result<Arc<Self>> {
+        let tmp =3D pin_init!(MyStruct {
+            value,
+            work <- new_work!("MyStruct::work")
+        });
+        Arc::pin_init(tmp)
+    }
