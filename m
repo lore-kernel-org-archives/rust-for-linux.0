@@ -1,78 +1,68 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E94A28DAF
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 15:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3897A273F9;
+	Fri,  6 Oct 2023 16:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRjIXQz5"
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F174B6;
-	Fri,  6 Oct 2023 08:57:50 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c760b34d25so17896615ad.3;
-        Fri, 06 Oct 2023 08:57:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NVUz30t5"
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE09A6;
+	Fri,  6 Oct 2023 09:21:02 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-57c0775d4fcso307027eaf.0;
+        Fri, 06 Oct 2023 09:21:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696607870; x=1697212670; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dylRp2V5hDsi4674Tiw8VLIJ52LHz+mcDjR7Zr1Bs3Y=;
-        b=KRjIXQz5+/Ya8A1pTDQePtOVSP5DlMpVhnQ/w01LYosO7ncr//zOIrCLs4NfRz3DYC
-         0hQgoeX46OBM0KCalXQBb8S6q4urwNrcJlfIKHsL5Hfxv6/mAQjsz9lSpG9uNRaICHR0
-         OMnDoIGScsAsTwI0z/AixAM0xEMRloUD+9JYQHt1c40cOIl0F6Xl6BiMi/kxpd8XGNAH
-         ak4WOt8h+4oQKztlBv6Xgb9faH7RF4zPN5qN2xu5G/mpnTeM4CkY67CNDpRUfo5nSKh2
-         yTlHabnCqipVt+xqPoID+pF4jDoDNL2tMm1MSCFUimL1Dkzx6/O1VPZa2ZzPH+55hBSf
-         dxBA==
+        d=gmail.com; s=20230601; t=1696609262; x=1697214062; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Nw5/xjBCmUwohSuhLXL/rRAwQj9/lRA3/thm9H4Vl7E=;
+        b=NVUz30t58DJVQHoYLMJYJf0POpQciBUy6LovrfP+Kiz8V13sxtNd8jFBbEznqi50R/
+         cjdfGWEQoAFdLIt+lHx4kfBm0wGv37YIwvRaws00e8/GRVD0T5jzVbJFufuTeEHgygQa
+         a5G4Penf6ZgQCebndLwJ6JA067dokmomXeAHTjoL1HhrNnsTHHEDuwlGtCYJnqZtPqBZ
+         /DyvdBt1mqJ3MYDFfTq/AHXcmNXjqD008xHwxqx2J4+dOz4wKVoLgfSaySwV2Fl4yrc4
+         Dzwfa9d8uOqZkSvWdxkM81OBIINHCoPFzXtXmiHBZy6uzrKVwBEnoUOIsLy8iLVNK9RM
+         UV9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696607870; x=1697212670;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dylRp2V5hDsi4674Tiw8VLIJ52LHz+mcDjR7Zr1Bs3Y=;
-        b=KWhhxOFAnllSNKCMPxQCSQFsrEXIspAVPDVeUn5wYBjrLItrpP5/4dctytuCg1rMsU
-         Cbh3oETSbXlkFQF3w91oGFp5lc6CRKicnRdQg00UPu6i1TtN5rc5YPZ7O1uBjqSiSALU
-         QK33I03LDWLqmoIt6Xjn3OlRiiMEqRc+rrsdP9HUoaElaATXZ4vcuWbyCKW6T/q1Ic7Q
-         Fb7zZLfysIXzRri0PKui+WIUKHc0/goGq5bAbUlDX3Nkfed1yOAil5+FqcBMjiLvagd6
-         YSEgQs3xCr1S3rtr9H0lwK+ii18zJCOeRKD5G6IBL3LRp6BMJp5rdlCdnJNTzb2XOGhV
-         ohSg==
-X-Gm-Message-State: AOJu0YzC08lnTYXM6dgqqy+8XWISClzAEPGswbtJPFAb6yxLk9WYJSX4
-	OTA8LUC1+f6NTFHDTI9jEpo=
-X-Google-Smtp-Source: AGHT+IG7vWiKtSobRyxTqjlRPV7HrpoBU3Ji68aWY9K+5VbFhCnthI+zOioQEBbbot/nKuljTyayAw==
-X-Received: by 2002:a17:902:d2cd:b0:1c3:94a4:34bf with SMTP id n13-20020a170902d2cd00b001c394a434bfmr10084533plc.66.1696607869908;
-        Fri, 06 Oct 2023 08:57:49 -0700 (PDT)
-Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id p4-20020a170902eac400b001aaf2e8b1eesm4040797pld.248.2023.10.06.08.57.46
+        d=1e100.net; s=20230601; t=1696609262; x=1697214062;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Nw5/xjBCmUwohSuhLXL/rRAwQj9/lRA3/thm9H4Vl7E=;
+        b=sHTVdL7p7BdgWVPDn9fM1gyp4B6QWyEjF9mZTlmqDOrx0ct1h3Gi9Dsr9yda9VGZrB
+         BTVocOj25M2jKycIYsvKVq221CBow3c6rHJ6mgAkmQDS6nbwZpPO4abKzxApJawByYOf
+         VIYhCuITvzZWVZ8YGpVXLKiSi5dhwFmAwm9BrzSVfaCJe29t6N+5m2yL+OW0qr0di4Ru
+         5Z5+OryAmzYtWFnVEXxVvAUXcuBxCQnWNulg7TBWD8GqZYG7DR2JYGmDpsaMP1bFXEOI
+         Rl32DDUisWcH0rc5NkhwOe2FzFfVJrym0KFjK/crlWcVmOVaedS0+9lzrbbpeTIlFkOX
+         S0lA==
+X-Gm-Message-State: AOJu0Yy0Kv2NZbWe6W4ZWnvKGTERrrgQgTLGkxPrf434iAzHv9dGsBcL
+	zE2YwX1SAsXZFdhzHk0bEWctahf6Xvikgkg/
+X-Google-Smtp-Source: AGHT+IFnIp3CF0zJjjt5NEaLlDPrAPXopfdRr1AXulF4fnTUCf8iuvU/P8P2Se04qlZRVFTzHg/0tQ==
+X-Received: by 2002:a05:6359:219:b0:14a:cca4:5601 with SMTP id ej25-20020a056359021900b0014acca45601mr7654906rwb.3.1696609261983;
+        Fri, 06 Oct 2023 09:21:01 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id b2-20020aa78702000000b00690fb385ea9sm1671713pfo.47.2023.10.06.09.21.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Oct 2023 08:57:49 -0700 (PDT)
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-To: Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH 1/1] scripts: Build per module Rust crates
-Date: Fri,  6 Oct 2023 12:57:37 -0300
-Message-ID: <20231006155739.246381-2-yakoyoku@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231006155739.246381-1-yakoyoku@gmail.com>
-References: <20231006155739.246381-1-yakoyoku@gmail.com>
+        Fri, 06 Oct 2023 09:21:01 -0700 (PDT)
+Date: Sat, 07 Oct 2023 01:21:00 +0900 (JST)
+Message-Id: <20231007.012100.297660999016269225.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, gregkh@linuxfoundation.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH v2 3/3] net: phy: add Rust Asix PHY driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <3db1ad51-a2a0-4648-8bc5-7ed089a4e5dd@lunn.ch>
+References: <19161969-1033-4fd5-9a24-ec21d66c6735@lunn.ch>
+	<20231007.002609.681250079112313735.fujita.tomonori@gmail.com>
+	<3db1ad51-a2a0-4648-8bc5-7ed089a4e5dd@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -80,120 +70,81 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Enables compiling Rust crates as dependencies of kernel modules.
+On Fri, 6 Oct 2023 17:57:41 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-When a composite object depends on an `.rlib` file, which by the way is
-a current ar archive, Kbuild will compile it from its base Rust source
-and link it.
+>> Now I'm thinking that this is the best option. Kconfig would be the following:
+>> 
+>> config AX88796B_PHY
+>>         tristate "Asix PHYs"
+>>         help
+>>          Currently supports the Asix Electronics PHY found in the X-Surf 100
+>>          AX88796B package.
+>> 
+>> choice
+>>         prompt "Implementation options"
+>>         depends on AX88796B_PHY
+>>         help
+>>          There are two implementations for a driver for Asix PHYs; C and Rust.
+>>          If not sure, choose C.
+>> 
+>> config AX88796B_C_PHY
+>>         bool "The C version driver for Asix PHYs"
+>> 
+>> config AX88796B_RUST_PHY
+>>         bool "The Rust version driver for Asix PHYs"
+>>         depends on RUST
+>> 
+>> endchoice
+>> 
+>> 
+>> No hack in Makefile:
+>> 
+>> obj-$(CONFIG_AX88796B_C_PHY)    += ax88796b.o
+>> obj-$(CONFIG_AX88796B_RUST_PHY) += ax88796b_rust.o
+> 
+> This looks reasonable. Lets use this. But i still think we need some
+> sort of RUST_PHYLIB_BINDING.
 
-This makes possible to have Rust bindings for a subsystem that is
-compiled as a module.
+How about adding CONFIG_RUST_PHYLIB to the first patch. Not
+selectable, it's just a flag for Rust PHYLIB support.
 
-Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
----
- Makefile               |  4 ++--
- scripts/Makefile.build | 10 +++++++++-
- scripts/Makefile.lib   | 19 +++++++++++++------
- 3 files changed, 24 insertions(+), 9 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 7d6be12e4c3e..7774c97e8aa0 100644
---- a/Makefile
-+++ b/Makefile
-@@ -283,7 +283,7 @@ no-compiler-targets := $(no-dot-config-targets) install dtbs_install \
- 			headers_install modules_install modules_sign kernelrelease image_name
- no-sync-config-targets := $(no-dot-config-targets) %install modules_sign kernelrelease \
- 			  image_name
--single-targets := %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rsi %.s %.symtypes %/
-+single-targets := %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rlib %.rsi %.s %.symtypes %/
+diff --git a/init/Kconfig b/init/Kconfig
+index 4b4e3df1658d..2b6627aeb98c 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1889,7 +1889,7 @@ config RUST
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+	depends on PHYLIB=y
++	select RUST_PHYLIB
+ 	select CONSTRUCTORS
+ 	help
+ 	  Enables Rust support in the kernel.
+@@ -1904,6 +1904,10 @@ config RUST
  
- config-build	:=
- mixed-build	:=
-@@ -1919,7 +1919,7 @@ $(clean-dirs):
- clean: $(clean-dirs)
- 	$(call cmd,rmfiles)
- 	@find $(or $(KBUILD_EXTMOD), .) $(RCS_FIND_IGNORE) \
--		\( -name '*.[aios]' -o -name '*.rsi' -o -name '*.ko' -o -name '.*.cmd' \
-+		\( -name '*.[aios]' -o -name '*.rlib' -o -name '*.rsi' -o -name '*.ko' -o -name '.*.cmd' \
- 		-o -name '*.ko.*' \
- 		-o -name '*.dtb' -o -name '*.dtbo' \
- 		-o -name '*.dtb.S' -o -name '*.dtbo.S' \
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index da37bfa97211..627010518b27 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -246,7 +246,9 @@ $(obj)/%.o: $(src)/%.c $(recordmcount_source) FORCE
- # To make this rule robust against "Argument list too long" error,
- # ensure to add $(obj)/ prefix by a shell command.
- cmd_mod = printf '%s\n' $(call real-search, $*.o, .o, -objs -y -m) | \
--	$(AWK) '!x[$$0]++ { print("$(obj)/"$$0) }' > $@
-+	$(AWK) '!x[$$0]++ { print("$(obj)/"$$0) }' > $@ && \
-+	printf '%s\n' $(call real-search, $*.rlib, .rlib, -objs -y -m) | \
-+	$(AWK) '!x[$$0]++ { print("--library=$(obj)/"$$0) }' >> $@
+ 	  If unsure, say N.
  
- $(obj)/%.mod: FORCE
- 	$(call if_changed,mod)
-@@ -291,6 +293,12 @@ quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
- $(obj)/%.o: $(src)/%.rs FORCE
- 	$(call if_changed_dep,rustc_o_rs)
- 
-+quiet_cmd_rustc_rlib_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-+      cmd_rustc_rlib_rs = $(rust_common_cmd) -Ccodegen-units=1 --emit=link=$@ $<
++config RUST_PHYLIB
++	bool
 +
-+$(obj)/%.rlib: $(src)/%.rs FORCE
-+	$(call if_changed_dep,rustc_rlib_rs)
-+
- quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_rsi_rs = \
- 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 68d0134bdbf9..6e8cfbad015d 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -53,14 +53,18 @@ multi-search = $(sort $(foreach m, $1, $(if $(call suffix-search, $m, $2, $3 -),
- real-search = $(foreach m, $1, $(if $(call suffix-search, $m, $2, $3 -), $(call suffix-search, $m, $2, $3), $m))
- 
- # If $(foo-objs), $(foo-y), $(foo-m), or $(foo-) exists, foo.o is a composite object
--multi-obj-y := $(call multi-search, $(obj-y), .o, -objs -y)
--multi-obj-m := $(call multi-search, $(obj-m), .o, -objs -y -m)
-+multi-obj-y := $(call multi-search, $(obj-y), .o, -objs -y) \
-+	$(call multi-search, $(obj-y), .rlib, -objs -y)
-+multi-obj-m := $(call multi-search, $(obj-m), .o, -objs -y -m) \
-+	$(call multi-search, $(obj-m), .rlib, -objs -y -m)
- multi-obj-ym := $(multi-obj-y) $(multi-obj-m)
- 
- # Replace multi-part objects by their individual parts,
- # including built-in.a from subdirectories
--real-obj-y := $(call real-search, $(obj-y), .o, -objs -y)
--real-obj-m := $(call real-search, $(obj-m), .o, -objs -y -m)
-+real-obj-y := $(call real-search, $(obj-y), .o, -objs -y) \
-+	$(call real-search, $(obj-y), .rlib, -objs -y)
-+real-obj-m := $(call real-search, $(obj-m), .o, -objs -y -m) \
-+	$(call real-search, $(obj-m), .rlib, -objs -y -m)
- 
- always-y += $(always-m)
- 
-@@ -107,7 +111,8 @@ endif
- # Finds the multi-part object the current object will be linked into.
- # If the object belongs to two or more multi-part objects, list them all.
- modname-multi = $(sort $(foreach m,$(multi-obj-ym),\
--		$(if $(filter $*.o, $(call suffix-search, $m, .o, -objs -y -m)),$(m:.o=))))
-+		$(if $(filter $*.o, $(call suffix-search, $m, .o, -objs -y -m)),$(m:.o=)) \
-+		$(if $(filter $*.rlib, $(call suffix-search, $m, .rlib, -objs -y -m)),$(m:.rlib=))))
- 
- __modname = $(or $(modname-multi),$(basetarget))
- 
-@@ -210,7 +215,9 @@ _cpp_flags += -I $(srctree)/$(src) -I $(objtree)/$(obj)
- endif
- endif
- 
--part-of-module = $(if $(filter $(basename $@).o, $(real-obj-m)),y)
-+part-of-module =                                             \
-+	$(if $(or $(filter $(basename $@).o, $(real-obj-m)), \
-+		$(filter $(basename $@).rlib, $(real-obj-m))),y)
- quiet_modtag = $(if $(part-of-module),[M],   )
- 
- modkern_cflags =                                          \
--- 
-2.42.0
+ config RUSTC_VERSION_TEXT
+ 	string
+ 	depends on RUST
 
+
+Then the driver depends on RUST instead of RUST_PHYLIB.
+
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 82ecfffc276c..e0d7a19ca774 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -119,7 +119,7 @@ config AX88796B_C_PHY
+ 
+ config AX88796B_RUST_PHY
+ 	bool "The Rust version driver for Asix PHYs"
+-	depends on RUST
++	depends on RUST_PHYLIB
+ 
+ endchoice
