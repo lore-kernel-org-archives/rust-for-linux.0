@@ -1,96 +1,155 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83AF47349
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 23:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA9745F49;
+	Fri,  6 Oct 2023 23:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="HT6hfT0U"
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E980BD
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 16:37:27 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-59f6041395dso32729687b3.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Oct 2023 16:37:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iPEKTiCd"
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E70B4BF;
+	Fri,  6 Oct 2023 16:54:02 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6bc57401cb9so571867a34.0;
+        Fri, 06 Oct 2023 16:54:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1696635446; x=1697240246; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mnNECXNUu4GUPsDV49wIsglUJEpwf338rXw2kCJfHbI=;
-        b=HT6hfT0UsuHCle8JyqYPMje/lG9jAArD4P0I8c+IZC/b2uFXP/GcZ1yQ1PxRqT171o
-         T3swMBpLjOY4mqfyaZiekTVYkZfb/pzSPLi+74coUT5bDJPaC2bi6fPKMqhpYfZTztCQ
-         A6DalmfJ2k6cZMag/Jk6YLE/XLa4+9jSSWSxLa9LtxnN4OzoLfsyzg+nn3+2ZOV/w/Xf
-         N0bczYQfQrpEGXW/5E3sf2KNcKOhDD8YaL/JLRvwshWxe1vuLVm6WAvhFuiFxNgzVVOb
-         nX9+LWN8m+HgFQ7x/7EsxT5MPZXVn2dHcN0nvleOf/OYUAeuCLbszHlgoPyX7O6bdRl4
-         Iw5w==
+        d=gmail.com; s=20230601; t=1696636442; x=1697241242; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dpeFgirA9CAmdAoOjFBO59NuXFHrFxJjbPS/j6n9erE=;
+        b=iPEKTiCdh9im4Uv2LrLUivVeimTEF3cK3e6yQ9Cl5pa77/eDy1iPE4d3Iwf+JVG/Qm
+         psCitAbmbi/Kj9ZFVfL4TiKUgaNh503KzMmLAtQYSHeSCzJ+DOOzlGEUfQ2yqBVvvn50
+         o7wSOMvdVVeOnDmwlYA24CnoMFiI1Y5d5BjbmTOwR2Z/hFRciYZ5p6gBPwMf5ffr8pzU
+         bXI6YEv5eXuU+ACesuldv6WEuC1WIGjUYyHsmS9vIBN+gMLvQgh9Q2k6NkUjO5/bgSB+
+         MOMnfQHvKAqdU1EnUvW9ZNkJo2c0t+JGXVio31MvfAEuNzp8DAoVPtrLaUxexjUpdwIl
+         DSIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696635446; x=1697240246;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mnNECXNUu4GUPsDV49wIsglUJEpwf338rXw2kCJfHbI=;
-        b=DwWyxySrhQQRko6uCu3DcSt8+ihp0WuDNWsTGiBJx3r2ZmWpnz+gGhnv3x845pVbnE
-         rw1vElQPuY0jjpTt9+gOi/AIdsRb1wshmkEmxiMOwnCwyOi0kfefUvlb+Vzjij4SvDU9
-         jYxZ4CCgBAPogru8lx0oeqQCOr20upwQh0NzMDsjFinY68psGgH0WxnKkr9jnGQstWaH
-         hHHfh1kg8K5LB/E2OKHrgppiimrAWX3XY8QrpBKbnDACKmj0NCWllwMEJ42BfvGvFEja
-         mUIP8jisi5Nv04eHsorxs+V2vzyHo/3DlDU3pZKgjpf4551oqGarW/Vp2bKELd1K8VRw
-         gfKQ==
-X-Gm-Message-State: AOJu0YxR9WmzVi5QKTncekrQ40aqZe1c1e2fRiRhT3ywrDJKAmP9z7Nl
-	Jm+p8kCbgczdIcI+XyLpDjHh+QbZO2k9ilWsZUhSrAvQC5h/4O/EjtY=
-X-Google-Smtp-Source: AGHT+IEQ+m2hySCv8Rd/ab0Chl+30RvRvLxaKpLilGDdNuEScWQ/IIywZbSRjH1kGmdxWbFOf6BxN4uuiXSx4dRTevc=
-X-Received: by 2002:a0d:d606:0:b0:586:b686:8234 with SMTP id
- y6-20020a0dd606000000b00586b6868234mr10748355ywd.8.1696635446532; Fri, 06 Oct
- 2023 16:37:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696636442; x=1697241242;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dpeFgirA9CAmdAoOjFBO59NuXFHrFxJjbPS/j6n9erE=;
+        b=NrtxVj3SZrTnbgAsSw89Bz9wAKVQF8LKm95gAFoPXVq5P4kOCdDo9DTc6/gJ7dq8rR
+         G/AZpNyOOrvZ/df/eAF1LU2sj7VmP1jnlMP0236NBILa82CDVP/n+uGrbbaztRfzMM6R
+         0IKx50PwToGERmvsFnv6bRMx0FyhMBWw1/3nHOF6aKH3z3OS+biC4G6ffGxf0PXj+udv
+         BFDhWaerDOdkG8AX2NnFNN3WU35EMdOIibwwad9RWSXwDbEPMXOK/cJmeH64plNBwRnt
+         YYnLkBOZTHjOW55OeatPaDd3Y4Q+/9TEt0xnGmJ6IOuKQy6LR6/9PJSdPJpSspmi7uV/
+         vQfA==
+X-Gm-Message-State: AOJu0YzuuPbQPbIMmSH2ju4cFtbUWRzBtkDGFBAXVp8Yw0axwSfmDbQj
+	VWqNq5oCIFa82/DOzXgUC/I=
+X-Google-Smtp-Source: AGHT+IERv5CBqsCrZsSeIVD3UgEVn3ZyOALMXIqtYf4E8XP/yWOns8MrGG/ytOvhhGyEq0R6iyTLnQ==
+X-Received: by 2002:a05:6358:e91c:b0:143:6813:bffa with SMTP id gk28-20020a056358e91c00b001436813bffamr8356182rwb.0.1696636442068;
+        Fri, 06 Oct 2023 16:54:02 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id t5-20020a63b705000000b005776aeea638sm3457073pgf.21.2023.10.06.16.54.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Oct 2023 16:54:01 -0700 (PDT)
+Date: Sat, 07 Oct 2023 08:54:00 +0900 (JST)
+Message-Id: <20231007.085400.1040380280563980814.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, gregkh@linuxfoundation.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH v2 3/3] net: phy: add Rust Asix PHY driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <a8625fd5-6083-4a4d-872a-c755c214b891@lunn.ch>
+References: <3db1ad51-a2a0-4648-8bc5-7ed089a4e5dd@lunn.ch>
+	<20231007.012100.297660999016269225.fujita.tomonori@gmail.com>
+	<a8625fd5-6083-4a4d-872a-c755c214b891@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231006094911.3305152-1-fujita.tomonori@gmail.com>
- <6aac66e0-9cbd-4a7b-91e6-ea429dbe6831@lunn.ch> <20231006.230936.1469709863025123979.fujita.tomonori@gmail.com>
- <40859cee-2ee7-4065-82d0-3841e5d7838f@lunn.ch>
-In-Reply-To: <40859cee-2ee7-4065-82d0-3841e5d7838f@lunn.ch>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Fri, 6 Oct 2023 19:37:15 -0400
-Message-ID: <CALNs47ukgFCs631v7wiaMTH0wtW6y4AcHcZ7uOaAS505vOEnzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Rust abstractions for network PHY drivers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, miguel.ojeda.sandonis@gmail.com, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, greg@kroah.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 6, 2023 at 10:47=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
-> > So I think that merging the patchset through a single tree is easier;
-> > netdev or rust.
-> >
-> > Miguel, how do you prefer to merge the patchset?
->
-> What are the merge conflicts looking like? What has happened in the
-> past? [...]
+On Fri, 6 Oct 2023 18:55:23 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-Miguel has said before that if subsystems are comfortable bringing
-rust through their trees then they are welcome to do so, which helps
-get a better idea of how everything works together. If you prefer not
-to, it can come through rust-next with no problem.
+>> How about adding CONFIG_RUST_PHYLIB to the first patch. Not
+>> selectable, it's just a flag for Rust PHYLIB support.
+> 
+> We have to be careful with names. To some extent, CONFIG_PHYLIB means
+> the core of phylib. So it could be that CONFIG_RUST_PHYLIB means the
+> core of phylib written in rust? I doubt that will ever happen, but we
+> are setting a naming scheme here which i expect others will blindly
+> cut/paste. What we actually want is a symbol which represents the Rust
+> binding onto the phylib core. So i think it should have BINDING, or
+> WRAPPER or something like that in the name.
 
-There are no serious conflicts on the rust side since there is no net
-module yet. I think that most new things will need to touch lib.rs and
-the binding helper just to register themselves, but those are trivial
-(e.g. same for wq updates coming [1]).
+Good point. Let's save CONFIG_PHYLIB for someday.
 
-> Or is this the first driver to actually get this far towards
-> being merged?
->
->       Andrew
 
-I think that answer is yes :) at least for an actual leaf driver.
-Hence some of the build system rough edges.
+>> diff --git a/init/Kconfig b/init/Kconfig
+>> index 4b4e3df1658d..2b6627aeb98c 100644
+>> --- a/init/Kconfig
+>> +++ b/init/Kconfig
+>> @@ -1889,7 +1889,7 @@ config RUST
+>>  	depends on !GCC_PLUGINS
+>>  	depends on !RANDSTRUCT
+>>  	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+>> 	depends on PHYLIB=y
+>> +	select RUST_PHYLIB
+> 
+> I know the rust build system is rather limited at the moment, but is
+> this required? Is it possible to build the rust code without the
+> phylib binding? Can your `RUST_PHYLIB` add phylib.rs to a Makefile
+> target only if it is enabled?
 
-[1]: https://lore.kernel.org/rust-for-linux/20230828104807.1581592-1-alicer=
-yhl@google.com/
+A short-term solution could work, I think.
+
+config RUST
+	bool "Rust support"
+	depends on HAVE_RUST
+	depends on RUST_IS_AVAILABLE
+	depends on !MODVERSIONS
+	depends on !GCC_PLUGINS
+	depends on !RANDSTRUCT
+	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+	select CONSTRUCTORS
+	help
+	  Enables Rust support in the kernel.
+
+	  This allows other Rust-related options, like drivers written in Rust,
+	  to be selected.
+
+	  It is also required to be able to load external kernel modules
+	  written in Rust.
+
+	  See Documentation/rust/ for more information.
+
+	  If unsure, say N.
+
+config RUST_PHYLIB_BINDING
+	bool "PHYLIB bindings support"
+	depends on RUST
+	depends on PHYLIB=y
+	help
+          Adds support needed for PHY drivers written in Rust. It provides
+          a wrapper around the C phlib core.
+
+
+Then we can conditionally build build the PHYLIB bindings.
+
+diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
+index fbb6d9683012..33fc1531a6c0 100644
+--- a/rust/kernel/net.rs
++++ b/rust/kernel/net.rs
+@@ -2,4 +2,5 @@
+
+ //! Networking.
+
++#[cfg(CONFIG_RUST_BINDINGS_PHYLIB)]
+ pub mod phy;
+
+
+A long-term solution is under discussion.
+
+https://lore.kernel.org/rust-for-linux/20231006155739.246381-1-yakoyoku@gmail.com/
