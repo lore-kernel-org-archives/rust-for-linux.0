@@ -1,49 +1,54 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4221D554
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 15:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E94A28DAF
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 15:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E2fVgY8R"
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082CDB9
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 08:57:46 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1c87a85332bso18526505ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Oct 2023 08:57:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRjIXQz5"
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F174B6;
+	Fri,  6 Oct 2023 08:57:50 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c760b34d25so17896615ad.3;
+        Fri, 06 Oct 2023 08:57:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696607865; x=1697212665; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TMaXSdjxbXsiAirTGof/GcimC3N7kI+/btaqyHpj49Y=;
-        b=E2fVgY8R3+SrEKIJeL7dJ9LlVJhVTqUfqR0csS40j4TjmZ2dfr12ooQwfDX2gTACR1
-         sU66rcof2/WXeqCbYUXLygi0pJm+m3qrUPTCHTsXHa9+btpewka2aAZHoYhB6eagoAWy
-         2xIpMrnXURbKgRFVPk68YqVBQxlfK9MugOhTfp5D4xppcwY/5DCraIfSZH6eZhbSu4ZU
-         vgt82nyToWIqkcMDrZYmMoH8G9aUtgQOEKPc54pSz8Yiry9VrFrnR2W3PQNaTCjB7iHX
-         13YZ/Ip4csnue0hQNk9rykETJ23f48+7HiRwmM7rCMMx8/06FBYOvxleridAFyIQzzgv
-         eZ1A==
+        d=gmail.com; s=20230601; t=1696607870; x=1697212670; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dylRp2V5hDsi4674Tiw8VLIJ52LHz+mcDjR7Zr1Bs3Y=;
+        b=KRjIXQz5+/Ya8A1pTDQePtOVSP5DlMpVhnQ/w01LYosO7ncr//zOIrCLs4NfRz3DYC
+         0hQgoeX46OBM0KCalXQBb8S6q4urwNrcJlfIKHsL5Hfxv6/mAQjsz9lSpG9uNRaICHR0
+         OMnDoIGScsAsTwI0z/AixAM0xEMRloUD+9JYQHt1c40cOIl0F6Xl6BiMi/kxpd8XGNAH
+         ak4WOt8h+4oQKztlBv6Xgb9faH7RF4zPN5qN2xu5G/mpnTeM4CkY67CNDpRUfo5nSKh2
+         yTlHabnCqipVt+xqPoID+pF4jDoDNL2tMm1MSCFUimL1Dkzx6/O1VPZa2ZzPH+55hBSf
+         dxBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696607865; x=1697212665;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TMaXSdjxbXsiAirTGof/GcimC3N7kI+/btaqyHpj49Y=;
-        b=o7+mcaXjLAmDZU+kYo7+QVswQUtQ2HWW4njP0yrM/cRDciLXrNpG/y8Tx/gRRGMKut
-         nzVz+/KTLoleEKoPVn5ZYk/2vNqx55ipTHITezmM0BXQN9A7qJ9NgTdWcTORHVX+vlS6
-         SMlpbSW0UYssmHkPnl3PIQlwNOZ2KUZYUC9EJYINkcBtD6NveqKth6hHX4IUwmcNGbY+
-         8/R+1GnZZtoWa0yQpL4W8O19FyP496SLG502Ca62TZdc02jrG7YYmy8cJDT1Uke4T5Sd
-         /Phs5iKvB0r4XbbZqX3Zs+vhaJ1HaPlt8G2sc7BXYfqtTHAqVw02DJ4UswU8uPoKCkOe
-         DsxA==
-X-Gm-Message-State: AOJu0YxCAQOtTy9N9Mwh23wR06nmc2AtpAKdVKz+EbxRoHTSinbMMSIa
-	I3S6xlxiB9AYZzMwtuFMTnQ=
-X-Google-Smtp-Source: AGHT+IEhBhuGTi2CtNQboZ4D7jHQZWBTQVsg1o+NrcmVE4/6qmh4tDyC3SB+mQ4mPpSIDN7aN2NiWw==
-X-Received: by 2002:a17:903:124b:b0:1c8:791c:d78b with SMTP id u11-20020a170903124b00b001c8791cd78bmr8760716plh.29.1696607865385;
-        Fri, 06 Oct 2023 08:57:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696607870; x=1697212670;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dylRp2V5hDsi4674Tiw8VLIJ52LHz+mcDjR7Zr1Bs3Y=;
+        b=KWhhxOFAnllSNKCMPxQCSQFsrEXIspAVPDVeUn5wYBjrLItrpP5/4dctytuCg1rMsU
+         Cbh3oETSbXlkFQF3w91oGFp5lc6CRKicnRdQg00UPu6i1TtN5rc5YPZ7O1uBjqSiSALU
+         QK33I03LDWLqmoIt6Xjn3OlRiiMEqRc+rrsdP9HUoaElaATXZ4vcuWbyCKW6T/q1Ic7Q
+         Fb7zZLfysIXzRri0PKui+WIUKHc0/goGq5bAbUlDX3Nkfed1yOAil5+FqcBMjiLvagd6
+         YSEgQs3xCr1S3rtr9H0lwK+ii18zJCOeRKD5G6IBL3LRp6BMJp5rdlCdnJNTzb2XOGhV
+         ohSg==
+X-Gm-Message-State: AOJu0YzC08lnTYXM6dgqqy+8XWISClzAEPGswbtJPFAb6yxLk9WYJSX4
+	OTA8LUC1+f6NTFHDTI9jEpo=
+X-Google-Smtp-Source: AGHT+IG7vWiKtSobRyxTqjlRPV7HrpoBU3Ji68aWY9K+5VbFhCnthI+zOioQEBbbot/nKuljTyayAw==
+X-Received: by 2002:a17:902:d2cd:b0:1c3:94a4:34bf with SMTP id n13-20020a170902d2cd00b001c394a434bfmr10084533plc.66.1696607869908;
+        Fri, 06 Oct 2023 08:57:49 -0700 (PDT)
 Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id p4-20020a170902eac400b001aaf2e8b1eesm4040797pld.248.2023.10.06.08.57.42
+        by smtp.gmail.com with ESMTPSA id p4-20020a170902eac400b001aaf2e8b1eesm4040797pld.248.2023.10.06.08.57.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Oct 2023 08:57:45 -0700 (PDT)
+        Fri, 06 Oct 2023 08:57:49 -0700 (PDT)
 From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
+To: Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -51,16 +56,16 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>
-Cc: rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [RFC PATCH 0/1] rust: crates in other kernel directories
-Date: Fri,  6 Oct 2023 12:57:36 -0300
-Message-ID: <20231006155739.246381-1-yakoyoku@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH 1/1] scripts: Build per module Rust crates
+Date: Fri,  6 Oct 2023 12:57:37 -0300
+Message-ID: <20231006155739.246381-2-yakoyoku@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231006155739.246381-1-yakoyoku@gmail.com>
+References: <20231006155739.246381-1-yakoyoku@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,66 +80,120 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This RFC provides makes possible to have bindings for kernel subsystems
-that are compiled as modules.
+Enables compiling Rust crates as dependencies of kernel modules.
 
-Previously, if you wanted to have Rust bindings for a subsystem, like
-AMBA for example, you had to put it under `rust/kernel/` so it came
-part of the `kernel` crate, but this came with many downsides. Namely
-if you compiled said subsystem as a module you've a dependency on it
-from `kernel`, which is linked directly on `vmlinux`.
+When a composite object depends on an `.rlib` file, which by the way is
+a current ar archive, Kbuild will compile it from its base Rust source
+and link it.
 
-So instead of overpopulating `kernel` with a gazillion modules that
-throws you into dire straits you should rather have the bindings in the
-same directory as the subsystem you want to bind with and link it to
-it.
+This makes possible to have Rust bindings for a subsystem that is
+compiled as a module.
 
-For now I don't have a completely working example but I have an MWE as
-following...
-
-    # Add this line to drivers/usb/core/Kconfig
-    config USB_RUST
-    	bool "Rust USB bindings"
-    	depends on USB && RUST
-    	default n
-    	help
-    	  Enables Rust bindings for USB.
-
-    # Add this line to drivers/usb/core/Makefile
-    usbcore-$(CONFIG_USB_RUST)		+= usb.rlib
-
-    # Create this file drivers/usb/core/usb.rs
-    // SPDX-License-Identifier: GPL-2.0
-    
-    //! USB devices and drivers.
-    //!
-    //! C header: [`include/linux/usb.h`](../../../../include/linux/usb.h)
-    
-    use kernel::bindings;
-    
-    /// Check if USB is disabled.
-    pub fn disabled() -> bool {
-        // SAFETY: FFI call.
-        unsafe { bindings::usb_disabled() != 0 }
-    }
-
-    # Compile the .rlib with
-    make drivers/usb/core/usb.rlib LLVM=1
-
-If everything went well then you should have
-`drivers/usb/core/usb.rlib` ready to be linked.
-
-As of now this PR won't compile the kernel fully as it serves as an
-starting point and it's going to change in the future.
-
-Martin Rodriguez Reboredo (1):
-  scripts: Build per module Rust crates
-
+Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+---
  Makefile               |  4 ++--
  scripts/Makefile.build | 10 +++++++++-
  scripts/Makefile.lib   | 19 +++++++++++++------
  3 files changed, 24 insertions(+), 9 deletions(-)
 
+diff --git a/Makefile b/Makefile
+index 7d6be12e4c3e..7774c97e8aa0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -283,7 +283,7 @@ no-compiler-targets := $(no-dot-config-targets) install dtbs_install \
+ 			headers_install modules_install modules_sign kernelrelease image_name
+ no-sync-config-targets := $(no-dot-config-targets) %install modules_sign kernelrelease \
+ 			  image_name
+-single-targets := %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rsi %.s %.symtypes %/
++single-targets := %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rlib %.rsi %.s %.symtypes %/
+ 
+ config-build	:=
+ mixed-build	:=
+@@ -1919,7 +1919,7 @@ $(clean-dirs):
+ clean: $(clean-dirs)
+ 	$(call cmd,rmfiles)
+ 	@find $(or $(KBUILD_EXTMOD), .) $(RCS_FIND_IGNORE) \
+-		\( -name '*.[aios]' -o -name '*.rsi' -o -name '*.ko' -o -name '.*.cmd' \
++		\( -name '*.[aios]' -o -name '*.rlib' -o -name '*.rsi' -o -name '*.ko' -o -name '.*.cmd' \
+ 		-o -name '*.ko.*' \
+ 		-o -name '*.dtb' -o -name '*.dtbo' \
+ 		-o -name '*.dtb.S' -o -name '*.dtbo.S' \
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index da37bfa97211..627010518b27 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -246,7 +246,9 @@ $(obj)/%.o: $(src)/%.c $(recordmcount_source) FORCE
+ # To make this rule robust against "Argument list too long" error,
+ # ensure to add $(obj)/ prefix by a shell command.
+ cmd_mod = printf '%s\n' $(call real-search, $*.o, .o, -objs -y -m) | \
+-	$(AWK) '!x[$$0]++ { print("$(obj)/"$$0) }' > $@
++	$(AWK) '!x[$$0]++ { print("$(obj)/"$$0) }' > $@ && \
++	printf '%s\n' $(call real-search, $*.rlib, .rlib, -objs -y -m) | \
++	$(AWK) '!x[$$0]++ { print("--library=$(obj)/"$$0) }' >> $@
+ 
+ $(obj)/%.mod: FORCE
+ 	$(call if_changed,mod)
+@@ -291,6 +293,12 @@ quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+ $(obj)/%.o: $(src)/%.rs FORCE
+ 	$(call if_changed_dep,rustc_o_rs)
+ 
++quiet_cmd_rustc_rlib_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
++      cmd_rustc_rlib_rs = $(rust_common_cmd) -Ccodegen-units=1 --emit=link=$@ $<
++
++$(obj)/%.rlib: $(src)/%.rs FORCE
++	$(call if_changed_dep,rustc_rlib_rs)
++
+ quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+       cmd_rustc_rsi_rs = \
+ 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 68d0134bdbf9..6e8cfbad015d 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -53,14 +53,18 @@ multi-search = $(sort $(foreach m, $1, $(if $(call suffix-search, $m, $2, $3 -),
+ real-search = $(foreach m, $1, $(if $(call suffix-search, $m, $2, $3 -), $(call suffix-search, $m, $2, $3), $m))
+ 
+ # If $(foo-objs), $(foo-y), $(foo-m), or $(foo-) exists, foo.o is a composite object
+-multi-obj-y := $(call multi-search, $(obj-y), .o, -objs -y)
+-multi-obj-m := $(call multi-search, $(obj-m), .o, -objs -y -m)
++multi-obj-y := $(call multi-search, $(obj-y), .o, -objs -y) \
++	$(call multi-search, $(obj-y), .rlib, -objs -y)
++multi-obj-m := $(call multi-search, $(obj-m), .o, -objs -y -m) \
++	$(call multi-search, $(obj-m), .rlib, -objs -y -m)
+ multi-obj-ym := $(multi-obj-y) $(multi-obj-m)
+ 
+ # Replace multi-part objects by their individual parts,
+ # including built-in.a from subdirectories
+-real-obj-y := $(call real-search, $(obj-y), .o, -objs -y)
+-real-obj-m := $(call real-search, $(obj-m), .o, -objs -y -m)
++real-obj-y := $(call real-search, $(obj-y), .o, -objs -y) \
++	$(call real-search, $(obj-y), .rlib, -objs -y)
++real-obj-m := $(call real-search, $(obj-m), .o, -objs -y -m) \
++	$(call real-search, $(obj-m), .rlib, -objs -y -m)
+ 
+ always-y += $(always-m)
+ 
+@@ -107,7 +111,8 @@ endif
+ # Finds the multi-part object the current object will be linked into.
+ # If the object belongs to two or more multi-part objects, list them all.
+ modname-multi = $(sort $(foreach m,$(multi-obj-ym),\
+-		$(if $(filter $*.o, $(call suffix-search, $m, .o, -objs -y -m)),$(m:.o=))))
++		$(if $(filter $*.o, $(call suffix-search, $m, .o, -objs -y -m)),$(m:.o=)) \
++		$(if $(filter $*.rlib, $(call suffix-search, $m, .rlib, -objs -y -m)),$(m:.rlib=))))
+ 
+ __modname = $(or $(modname-multi),$(basetarget))
+ 
+@@ -210,7 +215,9 @@ _cpp_flags += -I $(srctree)/$(src) -I $(objtree)/$(obj)
+ endif
+ endif
+ 
+-part-of-module = $(if $(filter $(basename $@).o, $(real-obj-m)),y)
++part-of-module =                                             \
++	$(if $(or $(filter $(basename $@).o, $(real-obj-m)), \
++		$(filter $(basename $@).rlib, $(real-obj-m))),y)
+ quiet_modtag = $(if $(part-of-module),[M],   )
+ 
+ modkern_cflags =                                          \
 -- 
 2.42.0
 
