@@ -1,98 +1,72 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E1B41E5B
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Oct 2023 22:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07A25CB5
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 08:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHfcGq/r"
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A72C9E;
-	Thu,  5 Oct 2023 15:16:21 -0700 (PDT)
-Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6c7b3adbeb6so1037938a34.0;
-        Thu, 05 Oct 2023 15:16:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696544180; x=1697148980; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2CLq7Ru6JO/XafGfaqX2puFSQKrvbgIFrK81byfRpEo=;
-        b=KHfcGq/rY9BdaK1fLy43ICzGVHeMwWEDylzuaJU/gP4caIGLqFPj2udH9Imvb+JZIq
-         MWDT7qCPK+uX7eRvB5U7i5U4HKJesdJltLS+an1OFD71u8b400+0rTjRQZozbOXr3HxP
-         RbwZuP/DNa8KcdOseYd9A8iG/N/jT5KAyGFdzv8RC1ZpnFK6mU23eV+GR5MdlkrPIWbY
-         XjBBGym6iJHr7f2ZoA8okNLKgRpl/1tA9uCW/az75vH+UsW0oturb41DG1g575LdEiRw
-         hqkyRqdlWNfQX+M4aEh3nQZNHVNjLDoi7COkqSYTvm+7QBmybKjyMNSQkuqqsVQHQGxN
-         gZkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696544180; x=1697148980;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2CLq7Ru6JO/XafGfaqX2puFSQKrvbgIFrK81byfRpEo=;
-        b=BMN7pkrqb1MlJH40DQDjJA086ybQ/EeF12aY1DluaTByKeCG4MFgP7HYKiuuBRNARK
-         nD02TJQ5hQdLC/NgQK/0C19hOFBEo4CrsjRNk9e6LI/pETH2tR0KNam/CKNLydeukh/Y
-         +wOK5Ovz/KjBt6ZLqGIl5FCk3JQTLwuzvTD5yCCVRQrg+zfxq6IuK3UtEUo7XgP8C4XJ
-         TsO7zTBgD1xHcVw7T43vHzgykXd8ptuC4JQXyXU/NqhmDdh7Uey9JRZbfuAXPHbCrkFa
-         VTfHY10rO2c5aTuY5HLmVgvPnoCGQNBeYoR1Lul+WyoduWCihWZoHQEqKM0bd19GPLb4
-         flrA==
-X-Gm-Message-State: AOJu0YxEBFhcNOmkv4OkYcZSv4xoh9qNKmYDng1WRhkbL0iznbOUq/53
-	VRR6lfEYsZaQsjMyV5wzHto=
-X-Google-Smtp-Source: AGHT+IH98BqVGyK/k/oU7Mne+jf+9iNkFlEiTtZVtuB6Ggmo93JAZng1BoL01sTi3Kvov6V5PrYkIA==
-X-Received: by 2002:a05:6358:938f:b0:139:5a46:ea7e with SMTP id h15-20020a056358938f00b001395a46ea7emr6326524rwb.28.1696544180255;
-        Thu, 05 Oct 2023 15:16:20 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id w25-20020a639359000000b00553dcfc2179sm1950515pgm.52.2023.10.05.15.16.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Oct 2023 15:16:19 -0700 (PDT)
-Message-ID: <fe189597-7cd5-493c-ac10-082ff50b3a1a@gmail.com>
-Date: Thu, 5 Oct 2023 19:16:14 -0300
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="WSZjBfy9"
+Received: from gimli.kloenk.dev (gimli.kloenk.dev [49.12.72.200])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA5DCA;
+	Fri,  6 Oct 2023 01:14:22 -0700 (PDT)
+From: Finn Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1696580059; bh=babyumwyBW20VjVqFpkm/3kmDeKlpEdTsi76E18IrY0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WSZjBfy9mq6e/OnF60LDWW0QUgYpamzvi2OMn/HzEbGAAxAVJfZoyzfso8aw4BUsj
+	 F2DTP91IECgzMNtpezKf0dYka/NEmtB5us3BRB80Hi3QrmJ9vF6rZ/gx5fBi8XfEHu
+	 6aGnYQQL7N63gYi1P5IHK60drkqt8Y45u6Xk4ghY=
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev
+Subject: Re: [PATCH 2/3] rust: print: use explicit link in documentation
+Date: Fri, 06 Oct 2023 10:14:15 +0200
+Message-ID: <8887D7CE-BE4F-4EF4-92B4-33BAF229E590@kloenk.dev>
+In-Reply-To: <20231005210556.466856-3-ojeda@kernel.org>
+References: <20231005210556.466856-1-ojeda@kernel.org>
+ <20231005210556.466856-3-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] rust: Respect HOSTCC when linking for host
-Content-Language: en-US
-To: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Nicolas Schier <nicolas@fjasle.eu>,
- Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev
-References: <20231005214057.759089-1-mmaurer@google.com>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20231005214057.759089-1-mmaurer@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 10/5/23 18:39, Matthew Maurer wrote:
-> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
-> resulting in build failures in hermetic environments where `cc` does not
-> exist. This includes both hostprogs and proc-macros.
-> 
-> Since we are setting the linker to `HOSTCC`, we set the linker flavor to
-> `gcc` explicitly. The linker-flavor selects both which linker to search
-> for if the linker is unset, and which kind of linker flags to pass.
-> Without this flag, `rustc` would attempt to determine which flags to
-> pass based on the name of the binary passed as `HOSTCC`. `gcc` is the
-> name of the linker-flavor used by `rustc` for all C compilers, including
-> both `gcc` and `clang`.
-> 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+
+
+On 5 Oct 2023, at 23:05, Miguel Ojeda wrote:
+
+> The future `rustdoc` in the Rust 1.73.0 upgrade requires an explicit
+> link for `pr_info!`:
+>
+>     error: unresolved link to `pr_info`
+>        --> rust/kernel/print.rs:395:63
+>         |
+>     395 | /// Use only when continuing a previous `pr_*!` macro (e.g. [=
+`pr_info!`]).
+>         |                                                              =
+ ^^^^^^^^ no item named `pr_info` in scope
+>         |
+>         =3D note: `macro_rules` named `pr_info` exists in this crate, b=
+ut it is not in scope at this link's location
+>         =3D note: `-D rustdoc::broken-intra-doc-links` implied by `-D w=
+arnings`
+>
+> Thus do so to avoid a broken link while upgrading.
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
-> [...]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+
+Reviewed-by: Finn Behrens <me@kloenk.dev>
