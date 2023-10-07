@@ -1,32 +1,32 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CACE1D6AF;
-	Sat,  7 Oct 2023 14:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F2720314;
+	Sat,  7 Oct 2023 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4259V6/x"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ujKLv4NU"
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4026FB9;
-	Sat,  7 Oct 2023 07:48:00 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE04FBA;
+	Sat,  7 Oct 2023 08:13:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=mhXFaHuS2j0fqNHfQmC4j72FTsL7wOUo9d74uHVqouw=; b=4259V6/xAJMaC4niT4y7Fo4AJu
-	vguxFVOMngyaZUGQFyxY59mxNJpWNHd2KdXsPI5Gv56uLgT8H9ALUJYu1MpB7vEEzveFhdJ/Siv0h
-	o8Z9UtNPLWJlnS1A0Qc7gQLozr8u5go1drI+6reaG6ue/huEDLq2B989eY6eE/pTVIrQ=;
+	bh=t43UbWO5VvFPxgnRpq0+0SD6kkLI0LxFhGg55Vsxqno=; b=ujKLv4NU3aHEqqZ9cVh6ku9n3R
+	gmKIjCd0Met7btdyhXoo6Z1K0G40/KLoLlpW9VUaadeXAlQfKroAYu29fz/wnDAUWxZPCBxeXpIDG
+	dM3BB9HECcyR74+4cLp8C7o1rrXchKSeU2H+1cHmUmFEpkn98R2mpiV9mzCFeTYbHinM=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1qp8ax-000JjX-8j; Sat, 07 Oct 2023 16:47:55 +0200
-Date: Sat, 7 Oct 2023 16:47:55 +0200
+	id 1qp8ze-000K13-Pf; Sat, 07 Oct 2023 17:13:26 +0200
+Date: Sat, 7 Oct 2023 17:13:26 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Trevor Gross <tmgross@umich.edu>
 Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
 	greg@kroah.com
 Subject: Re: [PATCH v2 1/3] rust: core abstractions for network PHY drivers
-Message-ID: <96800001-5d19-4b48-b43e-0cfbeccb48c1@lunn.ch>
+Message-ID: <7edb5c43-f17b-4352-8c93-ae5bb9a54412@lunn.ch>
 References: <20231006094911.3305152-1-fujita.tomonori@gmail.com>
  <20231006094911.3305152-2-fujita.tomonori@gmail.com>
  <CALNs47sdj2onJS3wFUVoONYL_nEgT+PTLTVuMLcmE6W6JgZAXA@mail.gmail.com>
@@ -45,50 +45,71 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> > +    /// Sets the speed of the PHY.
-> > +    pub fn set_speed(&mut self, speed: u32) {
+> The safety comment here still needs something like
+> 
+>     with the exception of fields that are synchronized via the `lock` mutex
+
+I'm not sure that really adds much useful information. Which values
+are protected by the lock? More importantly, which are not protected
+by the lock?
+
+As a general rule of thumb, driver writers don't understand
+locking. Yes, there are some which do, but many don't. So the
+workaround to that is make it so they don't need to understand
+locking. All the locking happens in the core.
+
+The exception is suspend and resume, which are called without the
+lock. So if i was to add a comment about locking, i would only put a
+comment on those two.
+
+> > +    /// Executes software reset the PHY via BMCR_RESET bit.
+> > +    pub fn genphy_soft_reset(&mut self) -> Result {
 > > +        let phydev = self.0.get();
 > > +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-> > +        unsafe { (*phydev).speed = speed as i32 };
+> > +        // So an FFI call with a valid pointer.
+> > +        to_result(unsafe { bindings::genphy_soft_reset(phydev) })
+> > +    }
+> > +
+> > +    /// Initializes the PHY.
+> > +    pub fn init_hw(&mut self) -> Result {
+> > +        let phydev = self.0.get();
+> > +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> > +        // so an FFI call with a valid pointer.
+> > +        to_result(unsafe { bindings::phy_init_hw(phydev) })
 > > +    }
 > 
-> Since we're taking user input, it probably doesn't hurt to do some
-> sort of sanity check rather than casting. Maybe warn once then return
-> the biggest nowrapping value
+> Andrew, are there any restrictions about calling phy_init_hw more than
+> once? Or are there certain things that you are not allowed to do until
+> you call that function?
 
-After reading the thread, we first have a terminology problem. In the
-kernel world, 'user input' generally means from user space. And user
-space should never be trusted, but user space should also not be
-allowed to bring the system to its knees. Return -EINVAL to userspace
-is the correct thing to do and keep going. Don't do a kernel splat
-because the user passed 42 as a speed, not 10.
+phy_init_hw can be called multiple times. It used by drivers as a work
+around to broken hardware/firmware to get the device back into a good
+state. It is also used during resume, since often the PHY looses its
+settings when suspended.
 
-However, what Trevor was meaning is that whoever called set_speed()
-passed an invalid value. But what are valid values?
+> > +    unsafe extern "C" fn read_mmd_callback(
+> > +        phydev: *mut bindings::phy_device,
+> > +        devnum: i32,
+> > +        regnum: u16,
+> > +    ) -> i32 {
+> > +        from_result(|| {
+> > +            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
+> > +            let dev = unsafe { Device::from_raw(phydev) };
+> > +            let ret = T::read_mmd(dev, devnum as u8, regnum)?;
+> > +            Ok(ret.into())
+> > +        })
+> > +    }
+> 
+> Since your're reading a bus, it probably doesn't hurt to do a quick
+> check when converting
+> 
+>     let devnum_u8 = u8::try_from(devnum).(|_| {
+>         warn_once!("devnum {devnum} exceeds u8 limits");
+>         code::EINVAL
+>     })?
 
-We have this file which devices the KAPI
-https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/ethtool.h#L1883
+I would actually say this is the wrong place to do that. Such checks
+should happen in the core, so it checks all drivers, not just the
+current one Rust driver. Feel free to submit a C patch adding this.
 
-says:
-
-/* The forced speed, in units of 1Mb. All values 0 to INT_MAX are legal.
-
-and we also have
-
-#define SPEED_UNKNOWN		-1
-
-and there is a handy little helper:
-
-static inline int ethtool_validate_speed(__u32 speed)
-{
-	return speed <= INT_MAX || speed == (__u32)SPEED_UNKNOWN;
-}
-
-so if you want to validate speed, call this helper.
-
-However, this is a kernel driver, and we generally trust kernel
-drivers. There is not much we can do except trust them. And passing an
-invalid speed here is very unlikely to cause the kernel to explode
-sometime later.
-
-   Andrew
+	Andrew
