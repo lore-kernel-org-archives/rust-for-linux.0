@@ -1,89 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD299DDC8
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 15:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F6ADDC8;
+	Sat,  7 Oct 2023 15:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmTczBYx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AD3C433CD;
-	Sat,  7 Oct 2023 15:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696693102;
-	bh=9RxkWlQoVdIXC1kqthSAlbAWe5HDp6fdl+KbwgqaPQA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JmTczBYxUclmMypR5UJkRc2/LgJ6+KWaUof6cuKd+k6x7+b2EUZ8gPxeh75v3U41L
-	 qkqPe+YsDwPJXOldm/WFJg4UTwwlJdmAYFKGYAM9UOOXkSFIkQKgE/6Fi2WyeGD4Wc
-	 yr2Y2Ga+8qbdrmGKZQNNKbS2yONQt1nt8RNHnur9YhniSJCYcvVbJuUw0HikESU8ZJ
-	 +iPD3inze4KRTPDlpVgxhkc+xsaen8rSVSwVUjFkYvW0rLXnW/hVMxPfP+HkU405Rn
-	 kX8VpcrgVPLXgsMJ2ZsgAWJG0/N1C8ohcl6b2HRewTrgRB9Bj2E795vzvp3Q34S1tK
-	 CjUAU9sugmu4Q==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-1d544a4a2f2so2014675fac.3;
-        Sat, 07 Oct 2023 08:38:22 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwgB1foSHvgr7ELzbHzA8jJUyvfv7mwEh+RJSSFothqB6kLx5tm
-	iBK0IA8uL9T/q9ZPClLSTc8HJ0MjiHJpAt5xDME=
-X-Google-Smtp-Source: AGHT+IFjx6hBQQR76o5ah5rxZqz3wBxxDJuAHX1t4tCqPwUAXWHZTp/T+cfuRstjJssObOSnrdbHZUeMNYmK0l07/Ow=
-X-Received: by 2002:a05:6870:4710:b0:1d5:cba4:a6f6 with SMTP id
- b16-20020a056870471000b001d5cba4a6f6mr13705200oaq.6.1696693101851; Sat, 07
- Oct 2023 08:38:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rI1acNMf"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F23B9;
+	Sat,  7 Oct 2023 08:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sMf+V8nMVKrjhB8nBVy+ReB5cCuZ6Kdvix3SI9yE6xo=; b=rI1acNMfry8/msW8N68g/cfjLO
+	/hkHpAxUpLVN5BjKPg7UI11N9Cz6NgQCfooRnSRwEOziUfeqPw5Z/dStjiEuIZiOZii/21j8ydmc1
+	Zwfdq+b5unYs3MEi6n1drAJEMUSZMXQGuiCvfOUPydZUhbRfheJtW2u3UdvZCsaU8km4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qp9PD-000KL8-Bj; Sat, 07 Oct 2023 17:39:51 +0200
+Date: Sat, 7 Oct 2023 17:39:51 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: tmgross@umich.edu, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+	greg@kroah.com
+Subject: Re: [PATCH v2 3/3] net: phy: add Rust Asix PHY driver
+Message-ID: <2913e1bf-819e-4edb-8721-5b123e6c6c55@lunn.ch>
+References: <20231006094911.3305152-1-fujita.tomonori@gmail.com>
+ <20231006094911.3305152-4-fujita.tomonori@gmail.com>
+ <CALNs47syMxiZBUwKLk3vKxzmCbX0FS5A37FjwUzZO9Fn-iPaoA@mail.gmail.com>
+ <20231007.210734.448113675800173824.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231005214057.759089-1-mmaurer@google.com>
-In-Reply-To: <20231005214057.759089-1-mmaurer@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sun, 8 Oct 2023 00:37:45 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATBBk-a0EJcxpWGJ9n+9BHQUw3a4s41LTtC-R8fYrVMpw@mail.gmail.com>
-Message-ID: <CAK7LNATBBk-a0EJcxpWGJ9n+9BHQUw3a4s41LTtC-R8fYrVMpw@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: Respect HOSTCC when linking for host
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231007.210734.448113675800173824.fujita.tomonori@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Fri, Oct 6, 2023 at 6:41=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
-wrote:
->
-> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
-> resulting in build failures in hermetic environments where `cc` does not
-> exist. This includes both hostprogs and proc-macros.
->
-> Since we are setting the linker to `HOSTCC`, we set the linker flavor to
-> `gcc` explicitly. The linker-flavor selects both which linker to search
-> for if the linker is unset, and which kind of linker flags to pass.
-> Without this flag, `rustc` would attempt to determine which flags to
-> pass based on the name of the binary passed as `HOSTCC`. `gcc` is the
-> name of the linker-flavor used by `rustc` for all C compilers, including
-> both `gcc` and `clang`.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->
-> Edited to use escsq in both Makefiles, as per Masahiro Yamada's
-> suggestion.
+> reexporting all the BMCR_ values by hand doesn't sound fun. Can we
+> automaticall generate such?
 
+The C22 address space only have a max of 32, and no more are expected.
 
+C45 address space can have in theory 32 x 65536, although in practice
+it is sparsely populated. But new values are added every so often. So
+generated at build time from the #defines would be better.
 
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-
-if Miguel picked this up.
-
-
-Please let me know if I should pick this up.
-
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+	  Andrew
