@@ -1,320 +1,166 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511141FCE
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 05:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC60E54A
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 07:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="sgCMYs8s"
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8197BD
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 22:06:16 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-59f4db9e11eso33330007b3.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Oct 2023 22:06:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="pdAJcPai"
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2722DBF
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 00:19:33 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d868d8363e6so3294600276.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Oct 2023 00:19:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1696655176; x=1697259976; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1696663172; x=1697267972; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xJFbEA2LhcSHF5iy6HPEiwc3v3rv9bj6ovpPK8v+1BM=;
-        b=sgCMYs8sLVTTAfSSi+liNzMLlPUpyzdD+Z6962FoGJVulniTz5unr9uYMYQe/wrjf5
-         EpvlscIIE+oqqfVU3gHwyeqYTDSgCWT18HqPRRi72NtBrbazSTYdx3/0g6BXZnK3P78O
-         3FTCTE/Z8+vmKt6FsHzuT/4xSjCGBB3wfnm8fqT/gPLATC1IJQxUmUJBxabKtBkhyzAR
-         aWvmgznMzbza2/XKgmSXBnab02YHDyR3heTPeKOyr716XDKQd1EDStp0lCrTHUdv2wlj
-         3CKVMVnUVOHhs0sX11wj0gI9I1YzppoBqj4hYdqArTDba7iZ9rUqLDH6N1+ucv/I3EFE
-         ewnQ==
+        bh=WtrPmYOKGR0UXv+Z4lGb8ax2K62Yq7ToL0FjOLnOMOw=;
+        b=pdAJcPaiHO3CDXzPqNZYfI3/+0T0mpCxENb1VPzpzrZ9OnAdUbKD91XJJ2H+NDKBEN
+         rQXQhCoJtN6r4F/5xvzOX422jaMw3H7LGFM2LGAX2VU+gHgwFV/32cQ8IF7ZOBEiemV0
+         PA63T7Eia5NwrqL6TIx/iShGVZbIwgKYxrGEtxFQLHrJO12cGDUn5SVYuOT1WF8ebxzX
+         2h4nch+WsGNmhPdIygRYBUopK0/88gmOKJoWahSliqBCdyoXNms1sV+1EJmX/SZQr+Qp
+         Jo9+iDCsAa7csD3PI3suUkVZKAblFo09jC+cpx+A8Ct6iI54AU7L1/9BC4O2QCna6G9v
+         PvvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696655176; x=1697259976;
+        d=1e100.net; s=20230601; t=1696663172; x=1697267972;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xJFbEA2LhcSHF5iy6HPEiwc3v3rv9bj6ovpPK8v+1BM=;
-        b=PHVMIurHxMxbULcwe6xhOytcVD3F9/cp5FeJmQp/ME8Y8giCrQIwTHuctguow/COhg
-         wVmKjSdSIOqInARDB7SRsrbJDWFp7lWK1lP6mzmN+tfqGGlvNn99vE3BBDMuBzjU4ZDx
-         P2cqVVRvgPBusfG0G0XfmcjRIGHUtsn91Y++4vO46NjtX0DmPrYmQQw63yKdQe3fywAI
-         RW88hv7yoVX2kAGnunATZ2o8Mt8GTNrwMaljoxHkpz3QmyAwrp9SCRS0GQCmjga61PNT
-         LAl0YGqGddOksrYIlykL8kRoZvpqFp+QqIF3VN/FxWBsafH4wb+ySTfhrQSg0M9rpH2d
-         9XNw==
-X-Gm-Message-State: AOJu0YzkaIBsz7FRzCipet5ZLFATZPy8w9ycB5Zo5AvJMJCiYIj95LHm
-	An851u1Ec3cewl8DRgXXmsDmeMsF1dgDCIpUl5sK+w==
-X-Google-Smtp-Source: AGHT+IG/173MdRuZwr7/Aa2FuA5ysUdImNnIIsBZ0FTeQu6e2SR+P33Lef8ddV2i/F62oEoQgGL7PdP5ftzHPR9eKEM=
-X-Received: by 2002:a81:7242:0:b0:589:e4aa:7b67 with SMTP id
- n63-20020a817242000000b00589e4aa7b67mr10706719ywc.41.1696655175981; Fri, 06
- Oct 2023 22:06:15 -0700 (PDT)
+        bh=WtrPmYOKGR0UXv+Z4lGb8ax2K62Yq7ToL0FjOLnOMOw=;
+        b=WX+gvJwAqicFFzrRwsk88pSvdve/vl9lYN45qjXOipQA47JZp2XQ38YJRry5H51+MA
+         z4d3cJSPOgmcvEMNM93xd4uAp8UcFYQVaYpSAzY83Wm4ZTOdv9z3pQT73iUd/1u9A2dg
+         BfVjefhc/NvXCXVKFr4aUPurOAdsyXnTiWfBS0BjaQJYib0/fojpcnvyQgzsTMGJZYF9
+         oSqMOWI+j6pIl1eRUI/etCdI4eTu65fDkBp8zJ4XL/e5IclBS1BGaD2PwAW0awlyUyrT
+         h/1Zs0yPvCpPalVN3qrkRWpanZpyyclLmUQFZA2TrVAzL8e9FzszNrvS6hMd/PrHRNUy
+         obEw==
+X-Gm-Message-State: AOJu0YxCwoUVqcFjOAgKl/JNRTLqXifVGgb7Tp/EzBU/+g2SrpJyoEol
+	j4mMmYA/VLIuW/+Q0CxLX+ktuoFLp9a5rHhmaPk8bw==
+X-Google-Smtp-Source: AGHT+IEL6aPPa2Kk3pC8haZBn3D1JU9D/HZfdmMyk8WJN3fLkBiCGhMXlFxWyA29fOzIEfZ0+mHcrKDcLEE2N9FLcPA=
+X-Received: by 2002:a25:d7cd:0:b0:d86:56e1:7a36 with SMTP id
+ o196-20020a25d7cd000000b00d8656e17a36mr10631283ybg.56.1696663172222; Sat, 07
+ Oct 2023 00:19:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231006094911.3305152-1-fujita.tomonori@gmail.com> <20231006094911.3305152-2-fujita.tomonori@gmail.com>
-In-Reply-To: <20231006094911.3305152-2-fujita.tomonori@gmail.com>
+References: <20231006094911.3305152-1-fujita.tomonori@gmail.com> <20231006094911.3305152-4-fujita.tomonori@gmail.com>
+In-Reply-To: <20231006094911.3305152-4-fujita.tomonori@gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sat, 7 Oct 2023 01:06:04 -0400
-Message-ID: <CALNs47sdj2onJS3wFUVoONYL_nEgT+PTLTVuMLcmE6W6JgZAXA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: core abstractions for network PHY drivers
+Date: Sat, 7 Oct 2023 03:19:20 -0400
+Message-ID: <CALNs47syMxiZBUwKLk3vKxzmCbX0FS5A37FjwUzZO9Fn-iPaoA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] net: phy: add Rust Asix PHY driver
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
 	miguel.ojeda.sandonis@gmail.com, greg@kroah.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 On Fri, Oct 6, 2023 at 5:49=E2=80=AFAM FUJITA Tomonori
 <fujita.tomonori@gmail.com> wrote:
-> +/// Wraps the kernel's `struct phy_device`.
-> +///
-> +/// # Invariants
-> +///
-> +/// `self.0` is always in a valid state.
-> +#[repr(transparent)]
-> +pub struct Device(Opaque<bindings::phy_device>);
 
-Can you just add `An instance of a PHY` to the docs for reference?
+> diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_=
+rust.rs
+> new file mode 100644
+> index 000000000000..d11c82a9e847
+> --- /dev/null
+> +++ b/drivers/net/phy/ax88796b_rust.rs
 
-> +impl Device {
-> +    /// Creates a new [`Device`] instance from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For the duration of the lifetime 'a, the pointer must be valid f=
-or writing and nobody else
-> +    /// may read or write to the `phy_device` object.
-> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mu=
-t Self {
-> +        unsafe { &mut *ptr.cast() }
-> +    }
+Maybe want to link to the C version, just for the crossref?
 
-The safety comment here still needs something like
-
-    with the exception of fields that are synchronized via the `lock` mutex
-
-> +    /// Gets the id of the PHY.
-> +    pub fn phy_id(&mut self) -> u32 {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        unsafe { (*phydev).phy_id }
-> +    }
-> +
-> +    /// Gets the state of the PHY.
-> +    pub fn state(&mut self) -> DeviceState {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        let state =3D unsafe { (*phydev).state };
-> +        match state {
-> +            bindings::phy_state::PHY_DOWN =3D> DeviceState::Down,
-> +            bindings::phy_state::PHY_READY =3D> DeviceState::Ready,
-> +            bindings::phy_state::PHY_HALTED =3D> DeviceState::Halted,
-> +            bindings::phy_state::PHY_ERROR =3D> DeviceState::Error,
-> +            bindings::phy_state::PHY_UP =3D> DeviceState::Up,
-> +            bindings::phy_state::PHY_RUNNING =3D> DeviceState::Running,
-> +            bindings::phy_state::PHY_NOLINK =3D> DeviceState::NoLink,
-> +            bindings::phy_state::PHY_CABLETEST =3D> DeviceState::CableTe=
-st,
+> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
+> +        dev.genphy_update_link()?;
+> +        if !dev.get_link() {
+> +            return Ok(0);
 > +        }
-> +    }
 
-Could you add a comment like `// FIXME:enum-cast` or something? Then
-when we have a better solution for enums handling we can revise this.
+Looking at this usage, I think `get_link()` should be renamed to just
+`link()`. `get_link` makes me think that it is performing an action
+like calling `genphy_update_link`, just `link()` sounds more like a
+static accessor.
 
-> +    /// Sets the speed of the PHY.
-> +    pub fn set_speed(&mut self, speed: u32) {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        unsafe { (*phydev).speed =3D speed as i32 };
-> +    }
+Or maybe it's worth replacing `get_link` with a `get_updated_link`
+that calls `genphy_update_link` and then returns `link`, the user can
+store it if they need to reuse it. This seems somewhat less accident
+prone than someone calling `.link()`/`.get_link()` repeatedly and
+wondering why their phy isn't coming up.
 
-Since we're taking user input, it probably doesn't hurt to do some
-sort of sanity check rather than casting. Maybe warn once then return
-the biggest nowrapping value
+In any case, please make the docs clear about what behavior is
+executed and what the preconditions are, it should be clear what's
+going to wait for the bus vs. simple field access.
 
-    let speed_i32 =3D i32::try_from(speed).unwrap_or_else(|_| {
-        warn_once!("excessive speed {speed}");
-        i32::MAX
-    })
-    unsafe { (*phydev).speed =3D speed_i32 };
+> +        if ret as u32 & uapi::BMCR_SPEED100 !=3D 0 {
+> +            dev.set_speed(100);
+> +        } else {
+> +            dev.set_speed(10);
+> +        }
 
-> +    /// Executes software reset the PHY via BMCR_RESET bit.
-> +    pub fn genphy_soft_reset(&mut self) -> Result {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        // So an FFI call with a valid pointer.
-> +        to_result(unsafe { bindings::genphy_soft_reset(phydev) })
-> +    }
-> +
-> +    /// Initializes the PHY.
-> +    pub fn init_hw(&mut self) -> Result {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        // so an FFI call with a valid pointer.
-> +        to_result(unsafe { bindings::phy_init_hw(phydev) })
-> +    }
+Speed should probably actually be an enum since it has defined values.
+Something like
 
-Andrew, are there any restrictions about calling phy_init_hw more than
-once? Or are there certain things that you are not allowed to do until
-you call that function?
-
-If so, maybe a simple typestate would make sense here
-
-> +impl<T: Driver> Adapter<T> {
-> +    unsafe extern "C" fn soft_reset_callback(
-> +        phydev: *mut bindings::phy_device,
-> +    ) -> core::ffi::c_int {
-> +        from_result(|| {
-> +            // SAFETY: The C API guarantees that `phydev` is valid while=
- this function is running.
-> +            let dev =3D unsafe { Device::from_raw(phydev) };
-> +            T::soft_reset(dev)?;
-> +            Ok(0)
-> +        })
-> +    }
-
-All of these functions need a `# Safety` doc section, you could
-probably just say to follow `Device::from_raw`'s rules. And then you
-can update the comments to say caller guarantees preconditions
-
-If you care to, these functions are so similar that you could just use
-a macro to make your life easier
-
-    macro_rules! make_phydev_callback{
-        ($fn_name:ident, $c_fn_name:ident) =3D> {
-            /// ....
-            /// # Safety
-            /// `phydev` must be valid and registered
-            unsafe extern "C" fn $fn_name(
-                phydev: *mut ::bindings::phy_device
-            ) -> $ret_ty {
-                from_result(|| {
-                    // SAFETY: Preconditions ensure `phydev` is valid and
-                    let dev =3D unsafe { Device::from_raw(phydev) };
-                    T::$c_fn_name(dev)?;
-                    Ok(0)
-                }
-            }
-        }
+    #[non_exhaustive]
+    enum Speed {
+        Speed10M,
+        Speed100M,
+        Speed1000M,
+        // 2.5G, 5G, 10G, 25G?
     }
 
-    make_phydev_callback!(get_features_callback, get_features);
-    make_phydev_callback!(suspend_callback, suspend);
+    impl Speed {
+        fn as_mb(self) -> u32;
+    }
 
-> +    unsafe extern "C" fn read_mmd_callback(
-> +        phydev: *mut bindings::phy_device,
-> +        devnum: i32,
-> +        regnum: u16,
-> +    ) -> i32 {
-> +        from_result(|| {
-> +            // SAFETY: The C API guarantees that `phydev` is valid while=
- this function is running.
-> +            let dev =3D unsafe { Device::from_raw(phydev) };
-> +            let ret =3D T::read_mmd(dev, devnum as u8, regnum)?;
-> +            Ok(ret.into())
-> +        })
+
+> +        let duplex =3D if ret as u32 & uapi::BMCR_FULLDPLX !=3D 0 {
+> +            phy::DuplexMode::Full
+> +        } else {
+> +            phy::DuplexMode::Half
+> +        };
+
+BMCR_x and MII_x are generated as `u32` but that's just a bindgen
+thing. It seems we should reexport them as the correct types so users
+don't need to cast all over:
+
+    pub MII_BMCR: u8 =3D bindings::MII_BMCR as u8;
+    pub BMCR_RESV: u16 =3D bindings::BMCR_RESV as u16; ...
+    // (I'd just make a macro for this)
+
+But I'm not sure how to handle that since the uapi crate exposes its
+bindings directly. We're probably going to run into this issue with
+other uapi items at some point, any thoughts Miguel?
+
+> +        dev.genphy_read_lpa()?;
+
+Same question as with the `genphy_update_link`
+
+> +    fn link_change_notify(dev: &mut phy::Device) {
+> +        // Reset PHY, otherwise MII_LPA will provide outdated informatio=
+n.
+> +        // This issue is reproducible only with some link partner PHYs.
+> +        if dev.state() =3D=3D phy::DeviceState::NoLink {
+> +            let _ =3D dev.init_hw();
+> +            let _ =3D dev.start_aneg();
+> +        }
 > +    }
-
-Since your're reading a bus, it probably doesn't hurt to do a quick
-check when converting
-
-    let devnum_u8 =3D u8::try_from(devnum).(|_| {
-        warn_once!("devnum {devnum} exceeds u8 limits");
-        code::EINVAL
-    })?
-    // ...
-
-
-> +    unsafe extern "C" fn write_mmd_callback(
-> +        phydev: *mut bindings::phy_device,
-> +        devnum: i32,
-> +        regnum: u16,
-> +        val: u16,
-> +    ) -> i32 {
-> +        from_result(|| {
-> +            // SAFETY: The C API guarantees that `phydev` is valid while=
- this function is running.
-> +            let dev =3D unsafe { Device::from_raw(phydev) };
-> +            T::write_mmd(dev, devnum as u8, regnum, val)?;
-> +            Ok(0)
-> +        })
-> +    }
-
-Same as above with the conversion errors
-
-
-> +/// Creates the kernel's `phy_driver` instance.
-> +///
-> +/// This is used by [`module_phy_driver`] macro to create a static array=
- of phy_driver`.
-> +pub const fn create_phy_driver<T: Driver>() -> Opaque<bindings::phy_driv=
-er> {
-> +    Opaque::new(bindings::phy_driver {
-> +        name: T::NAME.as_char_ptr() as *mut i8,
-
-`.cast_mut()`, just makes the mutability change more clear
-
-I guess the C side could technically be `const char *name`
-
-> +        // SAFETY: The rest is zeroed out to initialize `struct phy_driv=
-er`,
-> +        // sets `Option<&F>` to be `None`.
-> +        ..unsafe { core::mem::MaybeUninit::<bindings::phy_driver>::zeroe=
-d().assume_init() }
-> +    })
 > +}
 
-Btw I double checked and this should be OK to use, hopefully will be
-stable in the near future
-https://github.com/rust-lang/rust/pull/116218
+Is it worth doing anything with these errors? I know that the C driver does=
+n't.
 
-> +/// Declares a kernel module for PHYs drivers.
-> +///
-> +/// This creates a static array of `struct phy_driver` and registers it.
-> +/// This also corresponds to the kernel's MODULE_DEVICE_TABLE macro, whi=
-ch embeds the information
-> +/// for module loading into the module binary file.
+---
 
-Could you add information about the relationship between drivers and
-device_table?
-
-> +/// # Examples
-> +///
-> +/// ```ignore
-> +///
-> +/// use kernel::net::phy::{self, DeviceId, Driver};
-> +/// use kernel::prelude::*;
-> +///
-> +/// kernel::module_phy_driver! {
-> +///     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
-> +///     device_table: [
-> +///         DeviceId::new_with_driver::<PhyAX88772A>(),
-> +///         DeviceId::new_with_driver::<PhyAX88772C>(),
-> +///         DeviceId::new_with_driver::<PhyAX88796B>()
-> +///     ],
-> +///     type: RustAsixPhy,
-> +///     name: "rust_asix_phy",
-> +///     author: "Rust for Linux Contributors",
-> +///     description: "Rust Asix PHYs driver",
-> +///     license: "GPL",
-> +/// }
-> +/// ```
-
-I can't find the discussion we had about this, but you said you have
-the `type` parameter to be consistent with `module!`, correct?
-
-I think that it is more important to be consistent with C's
-`MODULE_PHY_DRIVER` where you don't need to specify anything extra,
-since the module doesn't do anything else. And I think it is less
-confusing for users if they don't wonder why they need to define a
-type they never use.
-
-Why not just remove the field and create an internal type based on
-`name` for now? We can always make it an optional field later on if it
-turns out there is a use case.
+The overall driver looks correct to me, most of these comments are
+actually about [1/3]
 
 - Trevor
+
+[1]: https://lore.kernel.org/rust-for-linux/baa4cc4b-bcde-4b02-9286-c923404=
+db972@lunn.ch/
