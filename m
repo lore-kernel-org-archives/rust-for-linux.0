@@ -1,104 +1,87 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2672B80F
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 00:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AAB17E8;
+	Sat,  7 Oct 2023 03:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="nsB9FD2R"
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A90E6BE
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Oct 2023 17:42:49 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-59f4f80d084so31585957b3.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Oct 2023 17:42:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hqq2Wq5z"
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58772BD;
+	Fri,  6 Oct 2023 20:26:12 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-693400e09afso669996b3a.1;
+        Fri, 06 Oct 2023 20:26:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1696639369; x=1697244169; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zVMlXLjXbEq9vkPA0/Z3RLtT7q/8Tx9JfOtfoXdMJ+E=;
-        b=nsB9FD2RnHUhUX5pwQ15W+L57RxFQ6KmzQxVXcdbxBQFsoHh8q6jR/r43dCTWGJtgx
-         huA4KvDL5/1JfjNidR5FCsssJjLfrOZ0wPFrdemNRCmHn6ETFSS0KIxZvYlNU7Alq8Us
-         928Sm6zICYlGiiDfQUq6gYSZm5C3PhGnK6C5h9npqIPrvR+VG61CE+zDlKU85WPVXoY0
-         2iwV4beq+wOMzfSblrkbvjJNCST1ODNwihDiM3OP5FcjIBmfGHraw+Sg0JUrVPuuc20d
-         SLjMBWcyAzjcT0ohaaSexBS1HuRQGkfBsEViXjfzs5NTUelEaIVhSbbhXdS0oGzDLgrC
-         E5Qg==
+        d=gmail.com; s=20230601; t=1696649172; x=1697253972; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Mm7dva/66/XW0Rduewc2wXqRmP5u+1KTM/GhmC+YkQU=;
+        b=Hqq2Wq5z7V+/DIyD/UwP6diX/6FQ+vW+C+ndK516FY2u9kRe+fRqkujoLzujtUSnTG
+         d+HpQ+m+9nAK3emU6YruUuu6EO6vVgaqC+hbuKxCQ9MuWGN5VawsdaZNRKxrAYVgrHQm
+         iaonMBl68hixAWwS9lpNv/PXVnM7W/m/VlLwADJ33opl2FFEZOnHcgPMbmxjmucYzzWp
+         N/fYLyUgwArLxOJfi72aZe/Wr7iVkGFRh8rAN6PEkB37QeJN0/+gg1bB5K7hS35tzFZC
+         /iSwRHsccvVlwpSk1452+dYp8vE65xaXMPor935J7QMLrgNVs4w8fONYcT5h/A4kGnEe
+         eUpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696639369; x=1697244169;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zVMlXLjXbEq9vkPA0/Z3RLtT7q/8Tx9JfOtfoXdMJ+E=;
-        b=SbCXB5ybvdvMvtCWYxjcuq6aefoymoQ+ZhP9WLs/lnAu9hJk4T+Zn3YTxoCAPrbSXQ
-         x8rS9xlfMjjXW+J9pYiQ+09OwG/EUL4jzSwsEP6pxzWzFBKQ4L0ULOrauzOtOQennOlY
-         YlgNftJoyzDymLpo723Ojkyj/pbVa+URO4363meQeQrLRPsRORbJ7I3sNS4Gyi8gHhYy
-         0fQvjcteRmM2y3W3R2PgwAnPuBqXS/BoUvfzfVOjjV0wi4tnGs2tJAuiZ7kh99BHux5K
-         +G4GxkgYL5He4IXr8RG9FDFRZUM5JAvEf1mLhnq9OW9P7ZI/XhLo91shlbrPrNNZ/Ewv
-         wHLw==
-X-Gm-Message-State: AOJu0YyUCAQDyOyyUmqemw+ZTxfIBWrMw6RBxjPAvTO75tYsA2FujrOj
-	yznYqQa352nxSz07wCOXn4eRt8QWzeCHgXVk03ZJUwzCp6MAZGIZHlY9Hw==
-X-Google-Smtp-Source: AGHT+IGxNYP/x8ROOvJMkfr8xsFLz063uBLH6vkb57HGoVMrT4zefQCOGZM2pFi3Mn5almLSsA7UIlUVB859evCX7Sc=
-X-Received: by 2002:a81:83c1:0:b0:59f:64ca:45e5 with SMTP id
- t184-20020a8183c1000000b0059f64ca45e5mr9707365ywf.25.1696639368797; Fri, 06
- Oct 2023 17:42:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696649172; x=1697253972;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Mm7dva/66/XW0Rduewc2wXqRmP5u+1KTM/GhmC+YkQU=;
+        b=CxkQH6AJopAYg6Jl2LASEzlsiZXW0WPxwBOBtl759OeA2FqBEHqMlS746X5xTbnZRv
+         PVrE4oO0ITjOkthhoJBmBOVNq9AMb9PwT9jJraTGtpVqNH0Dhrtcpc8U+U8FkyHPDA2O
+         CZXOWLh/5ojek6NGMH7SZVwI8w5JE24fVBRkH7pnF/mTzPIKCqLW/bBVsYZ/xo1cuPmt
+         y6ktLotvskm4zDiuc+ENs0/U0uVhrvVnQTDXjnUgBG3dV1QQ7GfDSYiyDVjCObe71dIC
+         zUDPylPWmPSK7hdknFvGIJM9Vu5sBwnvcFa3pTISbiT+bmFvdjV8ZxbuEe/a1OR2GQ7g
+         gM5g==
+X-Gm-Message-State: AOJu0Yz0JZj62nFjU/h3FEsxbRzvyqM8k/OUq6PW4Z/yFZQBDj6Ixk9/
+	hDkI19Rxgg3yN4suKL/wmjY=
+X-Google-Smtp-Source: AGHT+IHj0aXMLVpb0kr8hV+yio6vBkDD+Ec2RnQik2azQv48NAlT1wqMn9GLGxhP0z2Kb8ZclBOfFw==
+X-Received: by 2002:a17:902:e80a:b0:1c4:1e65:1e5e with SMTP id u10-20020a170902e80a00b001c41e651e5emr10737491plg.0.1696649171698;
+        Fri, 06 Oct 2023 20:26:11 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id o9-20020a170902d4c900b001bbb25dd3a7sm4695940plg.187.2023.10.06.20.26.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Oct 2023 20:26:11 -0700 (PDT)
+Date: Sat, 07 Oct 2023 12:26:10 +0900 (JST)
+Message-Id: <20231007.122610.6850673637000283.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu
+Cc: andrew@lunn.ch, fujita.tomonori@gmail.com,
+ miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, greg@kroah.com
+Subject: Re: [PATCH v2 0/3] Rust abstractions for network PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CALNs47ukgFCs631v7wiaMTH0wtW6y4AcHcZ7uOaAS505vOEnzQ@mail.gmail.com>
+References: <20231006.230936.1469709863025123979.fujita.tomonori@gmail.com>
+	<40859cee-2ee7-4065-82d0-3841e5d7838f@lunn.ch>
+	<CALNs47ukgFCs631v7wiaMTH0wtW6y4AcHcZ7uOaAS505vOEnzQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231006094911.3305152-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20231006094911.3305152-1-fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Fri, 6 Oct 2023 20:42:37 -0400
-Message-ID: <CALNs47uzWDOt2ZS9JHOfPYRC4B4pm+bPrp1EnyT-PCRUwUVsFQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Rust abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, andrew@lunn.ch
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, greg@kroah.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Replying here to a missed followup on rfc v3 [1]
-
-On Mon, Oct 2, 2023 at 3:08=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
-> The kernel is documented using kerneldoc. It would seem odd to me to
-> have a second parallel set of Documentation for Rust. Just like Rust
-> is integrated into the kernel tree, is configured using Kconfig, built
-> using make at the top level, i would also expect it to integrate into
-> kerneldoc somehow. I see the Rust API for PHY drivers next to the C
-> API for PHY drivers. Its just another API in the kernel, nothing
-> special. I just use 'make htmldocs' at the top level and out come the
-> HTML documentation in Documentation/output/
->
-> But kerneldoc is not my subsystem. MAINTAINERS say:
->
-> DOCUMENTATION
-> M:      Jonathan Corbet <corbet@lwn.net>
-> L:      linux-doc@vger.kernel.org
-> S:      Maintained
->
-> So this discussion should really have Jonathon Corbet involved, if it
-> has not already been done.
->
->     Andrew
-
-Having the documentation in the same place and able to easily
-crosslink is a goal, but it's still a work in progress. It won't look
-the same of course but I think that the rustdoc output will be under
-kerneldoc, with some sort of automated crosslinking between related
-modules.
-
-The docs team is in the loop, see [2] which was merged. (I suppose it
-must not be getting published still)
-
-- Trevor
-
-[1]: https://lore.kernel.org/rust-for-linux/78da96fc-cf66-4645-a98f-80e4048=
-00d3e@lunn.ch/
-[2]: https://lore.kernel.org/rust-for-linux/20230718151534.4067460-1-carlos=
-.bilbao@amd.com/
+T24gRnJpLCA2IE9jdCAyMDIzIDE5OjM3OjE1IC0wNDAwDQpUcmV2b3IgR3Jvc3MgPHRtZ3Jvc3NA
+dW1pY2guZWR1PiB3cm90ZToNCg0KPiBPbiBGcmksIE9jdCA2LCAyMDIzIGF0IDEwOjQ34oCvQU0g
+QW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPiB3cm90ZToNCj4+ID4gU28gSSB0aGluayB0aGF0
+IG1lcmdpbmcgdGhlIHBhdGNoc2V0IHRocm91Z2ggYSBzaW5nbGUgdHJlZSBpcyBlYXNpZXI7DQo+
+PiA+IG5ldGRldiBvciBydXN0Lg0KPj4gPg0KPj4gPiBNaWd1ZWwsIGhvdyBkbyB5b3UgcHJlZmVy
+IHRvIG1lcmdlIHRoZSBwYXRjaHNldD8NCj4+DQo+PiBXaGF0IGFyZSB0aGUgbWVyZ2UgY29uZmxp
+Y3RzIGxvb2tpbmcgbGlrZT8gV2hhdCBoYXMgaGFwcGVuZWQgaW4gdGhlDQo+PiBwYXN0PyBbLi4u
+XQ0KPiANCj4gTWlndWVsIGhhcyBzYWlkIGJlZm9yZSB0aGF0IGlmIHN1YnN5c3RlbXMgYXJlIGNv
+bWZvcnRhYmxlIGJyaW5naW5nDQo+IHJ1c3QgdGhyb3VnaCB0aGVpciB0cmVlcyB0aGVuIHRoZXkg
+YXJlIHdlbGNvbWUgdG8gZG8gc28sIHdoaWNoIGhlbHBzDQo+IGdldCBhIGJldHRlciBpZGVhIG9m
+IGhvdyBldmVyeXRoaW5nIHdvcmtzIHRvZ2V0aGVyLiBJZiB5b3UgcHJlZmVyIG5vdA0KPiB0bywg
+aXQgY2FuIGNvbWUgdGhyb3VnaCBydXN0LW5leHQgd2l0aCBubyBwcm9ibGVtLg0KDQpJdCBtYWtl
+cyBzZW5zZSBiZWNhdXNlIHRoZXNlIGJpbmRpbmdzIGFyZSBtYWludGFpbmVkIGJ5IHN1YnN5c3Rl
+bXMuDQoNCkknbGwgc2VuZCBwYXRjaGVzIHdpdGggJ25ldC1uZXh0JyB0YWcgaW4gdGhlIG5leHQg
+cm91bmQuDQo=
