@@ -1,90 +1,90 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691424401
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 08:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1EB20E1;
+	Sun,  8 Oct 2023 09:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="m+NGVVtB"
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B0FBD8
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 01:55:05 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-5a4c073cc06so39006947b3.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Oct 2023 01:55:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWuvsU9R"
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA64BA;
+	Sun,  8 Oct 2023 02:02:59 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-693400e09afso970926b3a.1;
+        Sun, 08 Oct 2023 02:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1696755304; x=1697360104; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sozqiFhfaDdFNsWnFecr44dbKU0rGCrTDUgnGUt9NbU=;
-        b=m+NGVVtBHjkYxy6aGQPLMPEucCXJdMXSyVkmnNZDZyNN2AWTJ+W7FqsHjBm/AGelqc
-         CI+CzryRIQc/2KXwn99/Dk6P2pqvCbm48CN6DnR+JTmpXM61DEGhLmFoCHc9DAiWAO0f
-         LurwS5+I84t9U7Hi6taUnSFf+4SdBTS/ES8NN9BXh7G7Y8AXtKLNRIYEJtbgaOJ9lMPV
-         OJ4myF3aNhVTn0eI15Cp3H6EThi0vRPp8K0uP7mmk40XehFI1TPVBxPvn8zXR5uO8ZL2
-         aLl/GSyCdLKg4KbjT/2Gah7ThIaHfOFawXzE+mwOceYPRdgQpFpJTOTJzhtQscRl0Wae
-         kjHA==
+        d=gmail.com; s=20230601; t=1696755779; x=1697360579; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/sXnj1ztEEdQ/JZ/W7SHO7h+PsjiP4cYEHeArS/Gzz0=;
+        b=nWuvsU9RYaTft1+/hjE5UiWl09EQO7HpLpCYXSkwTCQakizLU/Myx1mb5F0vIUWzb+
+         mutlmNeRHchRPCPhWuDp0rlyrOIrDqzzeuL8KHUrWxgdr5ihhqwNhYxXeGPC5I8HHuGL
+         R5HP3so9ROv0EhExoSQvBOBvEYU6MgmUP/dSzX8M7iAgHch9jOKONAHwGuAwnQqIYwWY
+         JlZiq19gLGSBa2vzRzp6gB91m82subnqNFKAmc3UVJ5/Ro+1WlkgKaR1+BiYQIuWWzD/
+         0DmHdpJeJmvi6kLJwtBKmWHoyuLBm7ZPZZoHnO7Y5wQTt5jAxlsS7VPz9CLpByeAUdVe
+         x6tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696755304; x=1697360104;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sozqiFhfaDdFNsWnFecr44dbKU0rGCrTDUgnGUt9NbU=;
-        b=a+YtumSyvTbRhXHg2A57h4LLS+4iDEWZyrv6+9EG38iiuujBeRvcrH8Q6PRs+XZAtK
-         7WnOyrbPzeiidHnanEAX9W0Q7eioiZjPaIfPk0WVW/hDTB/A6sROLkXq4hmy6bSP3JmL
-         Vxs6e/zjcMs+VZQYTtgOAdn/obmMn93wtWiXgf+kcUa3wuM/0VtVAMwMTfdOE1qVqYqj
-         TMAQjR9uWvHJRmX4xxhci3FRMK5jE21C64bxGtB2PZsyYcCzIR6PlCk1u08xI3mW2gjk
-         ExLvzOIIFDGpib7NEnqtgQHaY7WHKgvFakLpnDpAAVHSHFjICommiH6F3p7/r1//oW/3
-         UUHw==
-X-Gm-Message-State: AOJu0Yx1nKC6Ost/K3LvpmpNZKBNygAE+HbY3f8yGqrDjvq+RblBIzrY
-	bagWvwviG3y0RKTZyZnPbiFt7yOEDquxAu2uGQ9q/A==
-X-Google-Smtp-Source: AGHT+IEiI4Uc7ilws7pewXKOFOHXrsFlPEdZhIyfTkQSsncmPod3sWk6tYVUHBvPBAkLMC+GIdgCa5YKcThdXYL4knw=
-X-Received: by 2002:a81:8402:0:b0:589:e815:8d71 with SMTP id
- u2-20020a818402000000b00589e8158d71mr6602767ywf.11.1696755304577; Sun, 08 Oct
- 2023 01:55:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696755779; x=1697360579;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/sXnj1ztEEdQ/JZ/W7SHO7h+PsjiP4cYEHeArS/Gzz0=;
+        b=IEqZAT1cleD6wFBezw6yATGEPe0IWXqZeXwKJTvsFdjkTN3W7zV1G38Y1iDYRouAOU
+         5JxC/1LWCcxlJLcQAb+zSMiCDmhbKlSs82l6y9Q2AKijeTeZ4uC4/z7UNc/2hmtc1NpL
+         SKouwxtk0yN4RkOzA6ZeLWCKAvkxB20CNnPtClyEEEl4im7h9X1VW/z1ysQQomK+/Tcc
+         TCS1TmlcXANNJRd0EZNJdwstv3TlG1H90Qr3jjkGwxAggrhxYD9l+0y3rYK/8fYe/iMb
+         57eN7GPCtJfsfQk9FH5MSCGplnTmUqAjgkG7i5dVneG5XzjG8cQlUtzc81QOcGmCdk7P
+         3aDw==
+X-Gm-Message-State: AOJu0YwXaCViKdY2BsQfqZWiHHUcI2uWbu0Rp7PYUe4o3X0xV3193EME
+	YlSiRtxiqgdqzBbgP6zswoQ=
+X-Google-Smtp-Source: AGHT+IG0EFQEt43AMzkbooNF05PLsbFwCuce59+GhZYEWNWJQ8sQiiDEwI/VU7UXHXglkDJ+Q1MaKg==
+X-Received: by 2002:a17:902:ea07:b0:1c3:a4f2:7cc1 with SMTP id s7-20020a170902ea0700b001c3a4f27cc1mr14544918plg.5.1696755778691;
+        Sun, 08 Oct 2023 02:02:58 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id s2-20020a170902ea0200b001bbd1562e75sm7124157plg.55.2023.10.08.02.02.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Oct 2023 02:02:58 -0700 (PDT)
+Date: Sun, 08 Oct 2023 18:02:57 +0900 (JST)
+Message-Id: <20231008.180257.1638765262944543712.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ miguel.ojeda.sandonis@gmail.com, greg@kroah.com
+Subject: Re: [PATCH v2 1/3] rust: core abstractions for network PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CALNs47sh+vAXrZRQR8aK2B_mVoUfiHMzFEF=vxbb-+TbgwGpQw@mail.gmail.com>
+References: <CALNs47v3cE-_LiJBTg0_Zkh_cinktHHP3xJ3tL3PAHn5+NBNCA@mail.gmail.com>
+	<20231008.164906.1151622782836568538.fujita.tomonori@gmail.com>
+	<CALNs47sh+vAXrZRQR8aK2B_mVoUfiHMzFEF=vxbb-+TbgwGpQw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231007.195857.292080693191739384.fujita.tomonori@gmail.com>
- <20231008.073343.1435734022238977973.fujita.tomonori@gmail.com>
- <CALNs47v3cE-_LiJBTg0_Zkh_cinktHHP3xJ3tL3PAHn5+NBNCA@mail.gmail.com> <20231008.164906.1151622782836568538.fujita.tomonori@gmail.com>
-In-Reply-To: <20231008.164906.1151622782836568538.fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 8 Oct 2023 04:54:52 -0400
-Message-ID: <CALNs47sh+vAXrZRQR8aK2B_mVoUfiHMzFEF=vxbb-+TbgwGpQw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	miguel.ojeda.sandonis@gmail.com, greg@kroah.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sun, Oct 8, 2023 at 3:49=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
-> I realized that we don't need `name`. The name of struct doesn't
-> matter so I use `Module`. I tried to use `name` for the name of
-> device_table however the variable name of the table isn't embeded into
-> the module binary so it doesn't matter.
->
-> FYI, I use paste! but got the following error:
->
-> =3D help: message: `"__mod_mdio__\"rust_asix_phy\"_device_table"` is not =
-a valid identifier
-> =3D note: this error originates in the macro `$crate::module_phy_driver` =
-which comes from the expansion of the
->   macro `kernel::module_phy_driver` (in Nightly builds, run with -Z macro=
--backtrace for more info)
-
-Too bad, this seems to be a limitation of our paste macro compared to
-the published one. What you have with `Module` seems fine so I think
-you don't need it?
-
-I'll submit a patch to fix paste sometime this week, don't wait on it
-though of course.
+T24gU3VuLCA4IE9jdCAyMDIzIDA0OjU0OjUyIC0wNDAwDQpUcmV2b3IgR3Jvc3MgPHRtZ3Jvc3NA
+dW1pY2guZWR1PiB3cm90ZToNCg0KPiBPbiBTdW4sIE9jdCA4LCAyMDIzIGF0IDM6NDnigK9BTSBG
+VUpJVEEgVG9tb25vcmkNCj4gPGZ1aml0YS50b21vbm9yaUBnbWFpbC5jb20+IHdyb3RlOg0KPj4g
+SSByZWFsaXplZCB0aGF0IHdlIGRvbid0IG5lZWQgYG5hbWVgLiBUaGUgbmFtZSBvZiBzdHJ1Y3Qg
+ZG9lc24ndA0KPj4gbWF0dGVyIHNvIEkgdXNlIGBNb2R1bGVgLiBJIHRyaWVkIHRvIHVzZSBgbmFt
+ZWAgZm9yIHRoZSBuYW1lIG9mDQo+PiBkZXZpY2VfdGFibGUgaG93ZXZlciB0aGUgdmFyaWFibGUg
+bmFtZSBvZiB0aGUgdGFibGUgaXNuJ3QgZW1iZWRlZCBpbnRvDQo+PiB0aGUgbW9kdWxlIGJpbmFy
+eSBzbyBpdCBkb2Vzbid0IG1hdHRlci4NCj4+DQo+PiBGWUksIEkgdXNlIHBhc3RlISBidXQgZ290
+IHRoZSBmb2xsb3dpbmcgZXJyb3I6DQo+Pg0KPj4gPSBoZWxwOiBtZXNzYWdlOiBgIl9fbW9kX21k
+aW9fX1wicnVzdF9hc2l4X3BoeVwiX2RldmljZV90YWJsZSJgIGlzIG5vdCBhIHZhbGlkIGlkZW50
+aWZpZXINCj4+ID0gbm90ZTogdGhpcyBlcnJvciBvcmlnaW5hdGVzIGluIHRoZSBtYWNybyBgJGNy
+YXRlOjptb2R1bGVfcGh5X2RyaXZlcmAgd2hpY2ggY29tZXMgZnJvbSB0aGUgZXhwYW5zaW9uIG9m
+IHRoZQ0KPj4gICBtYWNybyBga2VybmVsOjptb2R1bGVfcGh5X2RyaXZlcmAgKGluIE5pZ2h0bHkg
+YnVpbGRzLCBydW4gd2l0aCAtWiBtYWNyby1iYWNrdHJhY2UgZm9yIG1vcmUgaW5mbykNCj4gDQo+
+IFRvbyBiYWQsIHRoaXMgc2VlbXMgdG8gYmUgYSBsaW1pdGF0aW9uIG9mIG91ciBwYXN0ZSBtYWNy
+byBjb21wYXJlZCB0bw0KPiB0aGUgcHVibGlzaGVkIG9uZS4gV2hhdCB5b3UgaGF2ZSB3aXRoIGBN
+b2R1bGVgIHNlZW1zIGZpbmUgc28gSSB0aGluaw0KPiB5b3UgZG9uJ3QgbmVlZCBpdD8NCg0KWWVh
+aCwgbm93IEkgZG9uJ3QgdXNlIHBhc3RlISBpbiBQSFkgYmluZGluZ3MuDQo=
