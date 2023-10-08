@@ -1,117 +1,77 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666F9210D
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 09:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E828C15
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 09:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="q5dVvz0U"
-X-Greylist: delayed 283 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Oct 2023 02:56:04 PDT
-Received: from short-nisien.relay-egress.a.mail.umich.edu (relay-egress-host.us-east-2.a.mail.umich.edu [18.216.144.57])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D220EB;
-	Sun,  8 Oct 2023 02:56:04 -0700 (PDT)
-Received: from exalted-banshee.authn-relay.a.mail.umich.edu (ip-10-0-74-179.us-east-2.compute.internal [10.0.74.179])
-	by short-nisien.relay-egress.a.mail.umich.edu with ESMTPS
-	id 65227B97.15EC55FA.7AE301A9.81919;
-	Sun, 08 Oct 2023 05:51:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=umich.edu;
-	s=relay-2018-08-29; t=1696758678;
-	bh=I+o9SIX4PotCqWF/xeatcNnnqUwJ9aNzchabhWdrqjA=;
-	h=From:To:Cc:Subject:Date;
-	b=q5dVvz0UBP3d3l2RanJF9SMVehhIpvDqS+ES4mXq2bIa7WowwiVEGUP4oHkSj9r7h
-	 gOvtKBiDiv2LsAsHuT+UVcucyxzL6uiTAdICEwCVuGMDxQLl25uN/Yzr1USAJ1FxPG
-	 iSoIoW9N+LYweqBTUGJev5/5wn+sfABzdExCXhUtIa7LAtow7W4B0/V+wPaYicAGmI
-	 1md/jPLut7YAdXfT/iUGcHL7/YZJ/cVD+ZqpC4JF09PLwrqI3nOYo8gVK+UlGEdzXb
-	 q3qh0AI/Zb/Mws7VxOAm6XXVYj9YHA9SekhoEDIvXxxhWElVju16pzMhUQRB87v0tY
-	 ykDi2Dy3GS8rg==
-Authentication-Results: exalted-banshee.authn-relay.a.mail.umich.edu; 
-	iprev=pass policy.iprev=76.141.129.158 (c-76-141-129-158.hsd1.il.comcast.net);
-	auth=pass smtp.auth=tmgross
-Received: from localhost.localdomain (c-76-141-129-158.hsd1.il.comcast.net [76.141.129.158])
-	by exalted-banshee.authn-relay.a.mail.umich.edu with ESMTPSA
-	id 65227B96.46860EC.3A6166B1.881404;
-	Sun, 08 Oct 2023 05:51:18 -0400
-From: Trevor Gross <tmgross@umich.edu>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH] rust: macros: update 'paste!' macro to accept string literals
-Date: Sun,  8 Oct 2023 05:48:18 -0400
-Message-Id: <20231008094816.320424-1-tmgross@umich.edu>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="BylOMK7N"
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33233B9
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 02:58:42 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5a1ec43870cso44027137b3.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Oct 2023 02:58:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1696759121; x=1697363921; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4BUOfZ5u4Lzp581IO/H3NzM1c5ss1yPUdACAcJ9LVNM=;
+        b=BylOMK7NmVSahNBAlo1SDdHmhmy+RdGakW0TSqehnucOdj8zoJlzKZt/zkuNgaqtf9
+         TG/cqny8r6JOJfpjHOjA2zoBEyKq57KqB27zZLVCWVY3xdN2YgFRqCT81dida0mNrsYb
+         5fXnX6aAQjm0VXBHcd1bdSTJRktC8BqTBJ9P0p2sD833ccOk097rV8nbBnhTVDxHpbee
+         jhkOpzP3TWTziSWYnPuPaccCdKqvjEkh+Z/droVlNWXyCAfYoQ2/wJEB/m1Iqi7zJZU9
+         sx3jvAUF2qii4Mjt9dulG2zNCjkr/14ZMutsrE1nmmrE8KGdY+hEYWXNjRu04RhGVRvh
+         FJpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696759121; x=1697363921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4BUOfZ5u4Lzp581IO/H3NzM1c5ss1yPUdACAcJ9LVNM=;
+        b=HWX2qNPm1eEYYdFpeVCr4p5z1z51axIVy0pdSw3A4qiFhpBFNlf/oOeQZ+i/K6/gbh
+         R9h7dRjJPLxfmPyEB+C7zQ0DTE1zgknpG9vq/941Q8mqGo5qaMRhtQ1elnRD6N1F2hdY
+         gI2wCRcUy+/uYUL9c/Hw7k2tQCW09a10UbYCqLdIK/iRTK+cDggP8YpcumOngkatPzWe
+         cSV7odW9OWfwAOhorzAp1TXOEXo6Fjbg/64v9B6x0doaYmPdu3gn4AC/7ZyDgi05/lNS
+         F7QynPo++4NrYj9OLEeoFKIfoCSYWSiAXg2Oh9T2A5VnN/XEkQwJVul75OUE0W0gH+Ii
+         VIOA==
+X-Gm-Message-State: AOJu0YxPogrSSjXr4Rwci3W7Q1pIPFIZOrrD58tTs5FauhCVqKDiAGoK
+	HBKnR6URFeVlUmo4j7I9k1Kgxaou0qHGQOk5aqk7Ww==
+X-Google-Smtp-Source: AGHT+IFYOapup9gAZulsLb2yT23Pw+WtoQf6F8HLfw0peZSp+NaZDSv11chD2x3ak9BjYSOZSCCsE/cEu0u/YnZ14LI=
+X-Received: by 2002:a0d:cdc2:0:b0:59b:d3cd:ffb6 with SMTP id
+ p185-20020a0dcdc2000000b0059bd3cdffb6mr12651258ywd.33.1696759121425; Sun, 08
+ Oct 2023 02:58:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CALNs47v3cE-_LiJBTg0_Zkh_cinktHHP3xJ3tL3PAHn5+NBNCA@mail.gmail.com>
+ <20231008.164906.1151622782836568538.fujita.tomonori@gmail.com>
+ <CALNs47sh+vAXrZRQR8aK2B_mVoUfiHMzFEF=vxbb-+TbgwGpQw@mail.gmail.com> <20231008.180257.1638765262944543712.fujita.tomonori@gmail.com>
+In-Reply-To: <20231008.180257.1638765262944543712.fujita.tomonori@gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Sun, 8 Oct 2023 05:58:29 -0400
+Message-ID: <CALNs47u66Lr5LaD_+V14eh4vyrV_FKsQYdxyDTzgD35gBc5FOQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	miguel.ojeda.sandonis@gmail.com, greg@kroah.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
 	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Enable combining identifiers with string literals in the 'paste!' macro.
-This allows combining user-specified strings with affixes to create
-namespaced identifiers.
+On Sun, Oct 8, 2023 at 5:03=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Yeah, now I don't use paste! in PHY bindings.
 
-This sample code:
+Even better!
 
-    macro_rules! m {
-        ($name:lit) => {
-            paste!(struct [<_some_ $name _struct_>];)
-        }
-    }
-
-    m!("foo_bar");
-
-Would previously cause a compilation error. It will now generate:
-
-    struct _some_foo_bar_struct_;
-
-Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Signed-off-by: Trevor Gross <tmgross@umich.edu>
----
-
-Original mention of this problem in [1]
-
-[1]: https://lore.kernel.org/rust-for-linux/20231008.164906.1151622782836568538.fujita.tomonori@gmail.com/
-
- rust/macros/paste.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-index 385a78434224..f40d42b35b58 100644
---- a/rust/macros/paste.rs
-+++ b/rust/macros/paste.rs
-@@ -9,7 +9,15 @@ fn concat(tokens: &[TokenTree], group_span: Span) -> TokenTree {
-     loop {
-         match tokens.next() {
-             None => break,
--            Some(TokenTree::Literal(lit)) => segments.push((lit.to_string(), lit.span())),
-+            Some(TokenTree::Literal(lit)) => {
-+                // Allow us to concat string literals by stripping quotes
-+                let mut value = lit.to_string();
-+                if value.starts_with('"') && value.ends_with('"') {
-+                    value.remove(0);
-+                    value.pop();
-+                }
-+                segments.push((value, lit.span()));
-+            }
-             Some(TokenTree::Ident(ident)) => {
-                 let mut value = ident.to_string();
-                 if value.starts_with("r#") {
--- 
-2.34.1
-
+The fix was small so I sent it anyway,
+https://lore.kernel.org/rust-for-linux/20231008094816.320424-1-tmgross@umic=
+h.edu/T/#u
