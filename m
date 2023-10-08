@@ -1,63 +1,62 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8256442D
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 06:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD2C442F
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 06:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="iFaU5ccu"
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0BB3C6
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 23:07:56 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-59f6e6b206fso43560607b3.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Oct 2023 23:07:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="lm3THBdd"
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD16EC5
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 23:19:58 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-59e88a28b98so30505607b3.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Oct 2023 23:19:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1696745276; x=1697350076; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1696745998; x=1697350798; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Fxqx667kBWfkjF2qFi33yc23pvm6KglFMRleGmFUdZk=;
-        b=iFaU5ccuxSc52/07eMZt4dwDW0MzOHN1W1ZTojFb4jes+vSTt564qBw6deCx7V4Bxj
-         6P2Dzb8nSmlUIc7cGik5pl94DzJLbSMI65iwfTsnLXMujDMiH/BKSUXmnbO8+pYKJuSc
-         TS/RUNo2sb26k4+uoG++7F7VlDnmQJ9smaIEC1FeuJUsh4NFQyVtvSjhFV56hva5xOHq
-         CI/7R7Rws2Ki203KNKQXjAugZT6p6gLF9EPebueOCva42iiLm6SRMo+IrrC7PfkdJYhg
-         xvZxhlFhKsmxJC5Zlk+axt0cwIaWQx8ozDEuLUvVZWttY78KHUoD25lKiyHCXJzNxD+G
-         6FHw==
+        bh=NvlqHDu80lYPaqYg7RRMJBt2NvdYUJ9P9W8msMbILT4=;
+        b=lm3THBddP1lEZ0ea9cOiLpL8HiMHSHz7Yo/uU5XDK0J+36m4eSW0QaKUFRAIXekhtB
+         p6Xc2dxMmp35n+JX3E7umbZ18MmYApNz7rqSjaCqmk9rF20GxdRKC5w07xDz2Q7+YlDM
+         NETEfEfAXa2JHD+yZmmrcRH/gskr6F6OSdCzmCoVBgaZAW0ndV2NgatuZr4Rwn2gwTon
+         cyVt6WYgOJCWqqCfbx4MMYew7WOqtBpdXn3UlTsy7HscbpnwQRuNWCEkzDk/LjsWy7VD
+         JVisG3qGdc9v0PmB4WRsRMi8YHH2UQ42khDGcZXIvhM2PpizVdQUyk7vCMaAcdzIfgX5
+         hLlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696745276; x=1697350076;
+        d=1e100.net; s=20230601; t=1696745998; x=1697350798;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Fxqx667kBWfkjF2qFi33yc23pvm6KglFMRleGmFUdZk=;
-        b=FxIQIF3VhPVNmltwcQTv6Bg6o/sJzBamZwGfOd7lUqFYJY7XTWhjYLyq+wNV9myUn4
-         7zDJFEf0FKiFRIqQ0dVNhxHV+/Uw+lPKwzTOMtTaQ/TgDgCD7MMY4/Dd3XBzU0B9aBI0
-         wn/kk6ae2wfdfwCqzqpQUUBj9Xz2ZITHpLXqxQ14DrU4ClKEbGXhoaxyYvpcnOK0Y7lJ
-         tvoTejyZg6t6U5VIsklYMg66HDAi2azJDn0K/5pXlXYDVoePqdzu96JTPgl6fUlUwsXy
-         XGD3aY086g+gvo12VUlTmBD3AMqUqsYMExNUTm4gc2bpMdwysWeRKk8fhhJO6B6viDgZ
-         Ba8Q==
-X-Gm-Message-State: AOJu0YyJpST1/AB5VCaFdr0Gjl2de1bB1Nu2nglzqXZH00U86xi1vW2N
-	PYD+yh4KXkgX2cB5YgNy9h6/x6K3g6zgeCjx09HL2QUmWtq+TmW5/eq8Xg==
-X-Google-Smtp-Source: AGHT+IHnZjv1L+yTcIOxYDaalcI/MuZQ9D4pB9+JjwoSVbPY1u0GNT4LSDy25FqIlJV9ve7JzC3c6uZqWTMqhDzfHEQ=
-X-Received: by 2002:a0d:f387:0:b0:589:c065:b419 with SMTP id
- c129-20020a0df387000000b00589c065b419mr14486211ywf.34.1696745276185; Sat, 07
- Oct 2023 23:07:56 -0700 (PDT)
+        bh=NvlqHDu80lYPaqYg7RRMJBt2NvdYUJ9P9W8msMbILT4=;
+        b=k0qFVMp6QTHvSlNHIcRi9kKuBOEo3DKM1sFSJ+bimL9Kr5368vfFpUUL7p0T8SBl7W
+         HHPvgO7+10Q5Dmxt6vBxFPzP9UckwpozuaT22dAFTqk0tBFkaWqoW1maBjybmCQomde1
+         xPKDokdl0iUvpCc5iAaNdz0005KHBBO4HnD4PpqN5sGJ1LC1FRHFBCeGisP/wx7QfpcL
+         uRc8d0qEaccci2Sacq7x72njXtTr6XqUvf2AbuDNLvyROcUByEOCXAZetiHHSyKn4iqO
+         /TCfUMZryHlbLqM1VYrPdZ9zNT6JrP6wDkeQ1NmFtNNDfRGb2MqZzGZzjw6oGIhxCKrz
+         up/A==
+X-Gm-Message-State: AOJu0YxbeIDhEv1avjA7owgeH3BL9cbMjUzYpbPqTE+SufWVyuekPjCd
+	hciQF7uf/zCSoPkbdguESHdHPUGbb1DmYVH3spBsLg==
+X-Google-Smtp-Source: AGHT+IFG51UcHG144D2idULHDOshuEadd39hB2S6kNE6K6rp/AqFkZRUtld1jc5U81tbV7JzAEMl4DHayOGVvgWR+vI=
+X-Received: by 2002:a0d:d4d5:0:b0:59f:5293:9936 with SMTP id
+ w204-20020a0dd4d5000000b0059f52939936mr5023323ywd.16.1696745998114; Sat, 07
+ Oct 2023 23:19:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231006094911.3305152-1-fujita.tomonori@gmail.com>
- <20231006094911.3305152-2-fujita.tomonori@gmail.com> <CALNs47sdj2onJS3wFUVoONYL_nEgT+PTLTVuMLcmE6W6JgZAXA@mail.gmail.com>
- <7edb5c43-f17b-4352-8c93-ae5bb9a54412@lunn.ch>
-In-Reply-To: <7edb5c43-f17b-4352-8c93-ae5bb9a54412@lunn.ch>
+References: <20231006094911.3305152-2-fujita.tomonori@gmail.com>
+ <CALNs47sdj2onJS3wFUVoONYL_nEgT+PTLTVuMLcmE6W6JgZAXA@mail.gmail.com>
+ <20231007.195857.292080693191739384.fujita.tomonori@gmail.com> <20231008.073343.1435734022238977973.fujita.tomonori@gmail.com>
+In-Reply-To: <20231008.073343.1435734022238977973.fujita.tomonori@gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 8 Oct 2023 02:07:44 -0400
-Message-ID: <CALNs47ujBcwHG+sgeH3m7gvkW6JKWtD0ZS66ujmswLODuExJhg@mail.gmail.com>
+Date: Sun, 8 Oct 2023 02:19:46 -0400
+Message-ID: <CALNs47v3cE-_LiJBTg0_Zkh_cinktHHP3xJ3tL3PAHn5+NBNCA@mail.gmail.com>
 Subject: Re: [PATCH v2 1/3] rust: core abstractions for network PHY drivers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
-	greg@kroah.com
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	miguel.ojeda.sandonis@gmail.com, greg@kroah.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -66,82 +65,23 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Oct 7, 2023 at 11:13=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > The safety comment here still needs something like
-> >
-> >     with the exception of fields that are synchronized via the `lock` m=
-utex
->
-> I'm not sure that really adds much useful information. Which values
-> are protected by the lock? More importantly, which are not protected
-> by the lock?
->
-> As a general rule of thumb, driver writers don't understand
-> locking. Yes, there are some which do, but many don't. So the
-> workaround to that is make it so they don't need to understand
-> locking. All the locking happens in the core.
->
-> The exception is suspend and resume, which are called without the
-> lock. So if i was to add a comment about locking, i would only put a
-> comment on those two.
+On Sat, Oct 7, 2023 at 6:33=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+> To create an internal type based on `name`, we need to unstringify
+> `name`? I can't find a easy way to do it.
 
-This doesn't get used by driver implementations, it's only used within
-the abstractions here. I think anyone who needs the details can refer
-to the C side, I just suggested to note the locking caveat based on
-your second comment at
-https://lore.kernel.org/rust-for-linux/ec6d8479-f893-4a3f-bf3e-aa0c81c4adad=
-@lunn.ch/
+I think you should just be able to do it with `paste!`
 
-Fujita - since this doesn't get exposed, could this be pub(crate)?)
+    macro_rules! module_phy_driver {
+        (name: $name:expr) =3D> {
+            paste::paste! {
+                #[allow(non_camel_case_types)]
+                struct [<$name _ty>];
+            }
+        }
+    }
 
-> > Andrew, are there any restrictions about calling phy_init_hw more than
-> > once? Or are there certain things that you are not allowed to do until
-> > you call that function?
->
-> phy_init_hw can be called multiple times. It used by drivers as a work
-> around to broken hardware/firmware to get the device back into a good
-> state. It is also used during resume, since often the PHY looses its
-> settings when suspended.
-
-Great, thank you for the clarification
-
-> > > +    unsafe extern "C" fn read_mmd_callback(
-> > > +        phydev: *mut bindings::phy_device,
-> > > +        devnum: i32,
-> > > +        regnum: u16,
-> > > +    ) -> i32 {
-> > > +        from_result(|| {
-> > > +            // SAFETY: The C API guarantees that `phydev` is valid w=
-hile this function is running.
-> > > +            let dev =3D unsafe { Device::from_raw(phydev) };
-> > > +            let ret =3D T::read_mmd(dev, devnum as u8, regnum)?;
-> > > +            Ok(ret.into())
-> > > +        })
-> > > +    }
-> >
-> > Since your're reading a bus, it probably doesn't hurt to do a quick
-> > check when converting
-> >
-> >     let devnum_u8 =3D u8::try_from(devnum).(|_| {
-> >         warn_once!("devnum {devnum} exceeds u8 limits");
-> >         code::EINVAL
-> >     })?
->
-> I would actually say this is the wrong place to do that. Such checks
-> should happen in the core, so it checks all drivers, not just the
-> current one Rust driver. Feel free to submit a C patch adding this.
->
->         Andrew
-
-I guess it does that already:
-https://elixir.bootlin.com/linux/v6.6-rc4/source/drivers/net/phy/phy-core.c=
-#L556
-
-Fujita, I think we started doing comments when we know that
-lossy/bitwise `as` casts are correct. Maybe just leave the code as-is
-but add
-
-    // CAST: the C side verifies devnum < 32
-
-?
+    // creates struct `demo_driver_ty`
+    module_phy_driver! {
+        name: "demo_driver"
+    }
