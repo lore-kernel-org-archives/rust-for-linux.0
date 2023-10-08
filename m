@@ -1,45 +1,45 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F27328DB
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 23:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C01C187E
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Oct 2023 05:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="dPKmRGok"
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A5A2B9
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 16:27:06 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-59f55c276c3so41767947b3.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Oct 2023 16:27:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="nzLnkJsF"
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E4FBD
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Oct 2023 22:41:15 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-59f4bc88f9fso40956157b3.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Oct 2023 22:41:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1696721225; x=1697326025; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1696743675; x=1697348475; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eDeJryRDX5w6se3Vsm9C02vaZiH8zU+DjcUxg9FotIs=;
-        b=dPKmRGokM1HIUebRGBJSIsD0aiP++xodqweDGO4HJMNZvruz3m61B2cqDBBXn2UQZp
-         RsefIEB2Zy2mpAIu97CsZOopHyK/1CeIjpScF6V9Z96aeqnCzxHWGRPrwnQOOTWPMlhY
-         ugr3y9h99Lib7VJrPtYIcOwxvAZwkebiE7jRvtN9qwUmjdielDIwT5tGoZ/H9MQt5oo9
-         zexg7Ddlb0GcBluOCLzqoV+PMFkqK21hvoGnyjvHd8JHrnVV38NKkGeHU43NqYG0tkEN
-         ucWxPbAKvN456Wm06glmjxLQPpx8MnGgFmq9nzHsDxQ8PtIihU5lTY2MgzcBMcnCcuGN
-         LO9A==
+        bh=mCb4+UxH6VOx93WA8wa+Sb6s6TIg+WvR43TpytW6CYo=;
+        b=nzLnkJsF9VcVb2smT8/0i6FNDtEwwtbsv6GJ73++0BgDhLv51UKndPJRWZBj6+UkRY
+         YM37uNiYzUobsdEY9p91fX3epzXxg+SQafrN0tZ9em5gcCzz6VtucNwpXmHQMkctsAbA
+         fcj6WbrY4TDIrFNZBc2InQjCjyEKDYXZtPGh996fJiWuENakMX0cyQW6rZUT96mVK4Ti
+         CfNGSr1cITJ/Awg88R68v0QtayYvv+Sf9AyZ5OJVvXc6pCpBWJsad2Jy8p6HFA88qCw9
+         L7GRMN4Kvw+v8qf/1nfZ2QTE3qCFBhAtZF3T1yL9Y6iYOIeEDajIE6vkbl+dg+gmiLLM
+         W3YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696721225; x=1697326025;
+        d=1e100.net; s=20230601; t=1696743675; x=1697348475;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eDeJryRDX5w6se3Vsm9C02vaZiH8zU+DjcUxg9FotIs=;
-        b=eBZjFcgj8MFSloAWJK8+5PYKzuQ75v+u9O9rdkznppHA9loTPaVKuss6wuLxZoZ3kR
-         VI8P2M7gr7j/lT0Tc1DkxxRm7NExvHJq0kwxqTm+Ds6KpJX4Daa8so3ZASglZ3KueRYn
-         eLkbVn03+/UgYGzv8bKT0icqu/L40WIVgXylJ5PH/P7TKZu2wN8cyB+BjAjAXDV4ncwI
-         9RpC+cdNn+98CcgZYW3IVhMKuI94HSFFKKYOXAbnQwtMcvi1CnPUw5xvBlwzo1gxhWwk
-         d1U1oxQMcv8F3+2py9FwMghrEJSr6S4o5hfQcrwWrAbQpyNbsJVEH9aeOd+nNRn6ni/7
-         hi/A==
-X-Gm-Message-State: AOJu0Yxuz5WzQvzDstKHDlOTjpsUhJ8C8ghr5alCL8LljievaiBwduZr
-	jpLjeFpQfT7YotDl2uu/NP+xKo8IrLMdud4xhqkKjw==
-X-Google-Smtp-Source: AGHT+IGp+2Qks3GnpSuBNsh0KgVH0cCv0sejSyFBwLmdrpGyUpdcyK0d/iMvQJYDTp23NrTCYe0UldR5diyMpcISx8o=
-X-Received: by 2002:a81:4e47:0:b0:59f:52a1:254c with SMTP id
- c68-20020a814e47000000b0059f52a1254cmr13578988ywb.19.1696721225620; Sat, 07
- Oct 2023 16:27:05 -0700 (PDT)
+        bh=mCb4+UxH6VOx93WA8wa+Sb6s6TIg+WvR43TpytW6CYo=;
+        b=BozCYrodG50Hq264HqRj2s1WETFdG1D/B4hnGLocB9X/lU4xZFEKUmbeaLtaaZW0vA
+         qdkHNERUV6h0F7S8te7hxQkgKZqUDDbhbZSMTCwFYOawQde9zfsYgKqPK+/5RAI4L2ee
+         xCjRaCor2F+GmzP5Bgl/B00B2Rlmi/L7MKIMQSm4E9+LjpL/9ypgxdPwzuecrFY3Ipfb
+         Q/xuK37C5goNaZyayRdP5rfMoIeWvjA4SL1rrGgG8Ooxaqj/on8iLQo7K/XAvqJE4A8b
+         l+J8bIYyCYAoc56gqrozVkULWrG4CZ7LHFuki/tpoXxcNo338QPrUprqWFCxuu3tTZMW
+         lrsw==
+X-Gm-Message-State: AOJu0YxO24OGMIKjj0yGexy6v4kq7OHcxQJ/FuscEpKKJXhMQtNjvpoD
+	nUTpy8dbO866XHEr1swaZOlB9olTA8aQtfHaMpac/pQavOc8Q/FQWkG1dg==
+X-Google-Smtp-Source: AGHT+IG7CAHeV343kwOXw+s1arT79L8yQuwHXEmqFvrnHVrMxPcTGVs2/R5kuaWpladeD6jWZz3JodNt1cWKhnI27Gg=
+X-Received: by 2002:a81:8491:0:b0:59f:4e6d:b569 with SMTP id
+ u139-20020a818491000000b0059f4e6db569mr13248266ywf.4.1696743674934; Sat, 07
+ Oct 2023 22:41:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,196 +48,71 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20231006094911.3305152-1-fujita.tomonori@gmail.com>
  <20231006094911.3305152-2-fujita.tomonori@gmail.com> <CALNs47sdj2onJS3wFUVoONYL_nEgT+PTLTVuMLcmE6W6JgZAXA@mail.gmail.com>
- <20231007.195857.292080693191739384.fujita.tomonori@gmail.com>
-In-Reply-To: <20231007.195857.292080693191739384.fujita.tomonori@gmail.com>
+ <96800001-5d19-4b48-b43e-0cfbeccb48c1@lunn.ch>
+In-Reply-To: <96800001-5d19-4b48-b43e-0cfbeccb48c1@lunn.ch>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sat, 7 Oct 2023 19:26:54 -0400
-Message-ID: <CALNs47saY2AaBjp8XEadDfAw1+Su5+aszu_07RB=9X+rTW+_pg@mail.gmail.com>
+Date: Sun, 8 Oct 2023 01:41:02 -0400
+Message-ID: <CALNs47s0bpyL1Zo9VmXcyG2X1SKLB3WZdrG+OOCfWi_uQUiYjA@mail.gmail.com>
 Subject: Re: [PATCH v2 1/3] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	miguel.ojeda.sandonis@gmail.com, greg@kroah.com
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	greg@kroah.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Oct 7, 2023 at 6:59=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
-> > Can you just add `An instance of a PHY` to the docs for reference?
+On Sat, Oct 7, 2023 at 10:48=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+> After reading the thread, we first have a terminology problem. In the
+> kernel world, 'user input' generally means from user space. And user
+> space should never be trusted, but user space should also not be
+> allowed to bring the system to its knees. Return -EINVAL to userspace
+> is the correct thing to do and keep going. Don't do a kernel splat
+> because the user passed 42 as a speed, not 10.
+
+Yes, sorry about the terminology. I was indeed referring to a user of
+this function and am still figuring out the failure modes (thanks also
+Greg for the corrections).
+
+> However, what Trevor was meaning is that whoever called set_speed()
+> passed an invalid value. But what are valid values?
 >
-> You meant something like?
+> We have this file which devices the KAPI
+> https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/ethtool=
+.h#L1883
 >
-> /// An instance of a PHY device.
-> /// Wraps the kernel's `struct phy_device`.
-> ///
-> /// # Invariants
-> ///
-> /// `self.0` is always in a valid state.
-> #[repr(transparent)]
-> pub struct Device(Opaque<bindings::phy_device>);
-
-Seems good to me. I know that largely we want users to refer to the C
-docs, but I think a small hint is good.
-
-Fwiw they can be on the same line, Markdown combines them
-
-> >> +impl Device {
-> >> +    /// Creates a new [`Device`] instance from a raw pointer.
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// For the duration of the lifetime 'a, the pointer must be vali=
-d for writing and nobody else
-> >> +    /// may read or write to the `phy_device` object.
-> >> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a=
- mut Self {
-> >> +        unsafe { &mut *ptr.cast() }
-> >> +    }
-> >
-> > The safety comment here still needs something like
+> says:
 >
-> You meant the following?
+> /* The forced speed, in units of 1Mb. All values 0 to INT_MAX are legal.
 >
-> /// For the duration of the lifetime 'a, the pointer must be valid for wr=
-iting and nobody else
-> /// may read or write to the `phy_device` object with the exception of fi=
-elds that are
-> /// synchronized via the `lock` mutex.
+> and we also have
 >
-> What this means? We use Device only when an exclusive access is
-> gurannteed by device->lock. As discussed before, resume/suspend are
-> called without device->lock locked but still drivers assume an
-> exclusive access.
-
-This was in follow up to one of the notes on the RFC patches, I'll
-reply more to Andrew's comment about this
-
+> #define SPEED_UNKNOWN           -1
 >
-> >> +    /// Sets the speed of the PHY.
-> >> +    pub fn set_speed(&mut self, speed: u32) {
-> >> +        let phydev =3D self.0.get();
-> >> +        // SAFETY: `phydev` is pointing to a valid object by the type=
- invariant of `Self`.
-> >> +        unsafe { (*phydev).speed =3D speed as i32 };
-> >> +    }
-> >
-> > Since we're taking user input, it probably doesn't hurt to do some
-> > sort of sanity check rather than casting. Maybe warn once then return
-> > the biggest nowrapping value
-> >
-> >     let speed_i32 =3D i32::try_from(speed).unwrap_or_else(|_| {
-> >         warn_once!("excessive speed {speed}");
-> >         i32::MAX
-> >     })
-> >     unsafe { (*phydev).speed =3D speed_i32 };
+> and there is a handy little helper:
 >
-> warn_once() is available? I was thinking about adding it after the PHY
-> patchset.
+> static inline int ethtool_validate_speed(__u32 speed)
+> {
+>         return speed <=3D INT_MAX || speed =3D=3D (__u32)SPEED_UNKNOWN;
+> }
 >
-> I'll change set_speed to return Result.
-
-Nevermind, I guess we don't have `warn_once`. Andrew mentioned
-something about potentially lossy conversions, I'll follow up there.
-
-> >> +    /// Executes software reset the PHY via BMCR_RESET bit.
-> >> +    pub fn genphy_soft_reset(&mut self) -> Result {
-> >> +        let phydev =3D self.0.get();
-> >> +        // SAFETY: `phydev` is pointing to a valid object by the type=
- invariant of `Self`.
-> >> +        // So an FFI call with a valid pointer.
-> >> +        to_result(unsafe { bindings::genphy_soft_reset(phydev) })
-> >> +    }
-> >> +
-> >> +    /// Initializes the PHY.
-> >> +    pub fn init_hw(&mut self) -> Result {
-> >> +        let phydev =3D self.0.get();
-> >> +        // SAFETY: `phydev` is pointing to a valid object by the type=
- invariant of `Self`.
-> >> +        // so an FFI call with a valid pointer.
-> >> +        to_result(unsafe { bindings::phy_init_hw(phydev) })
-> >> +    }
-> >
-> > Andrew, are there any restrictions about calling phy_init_hw more than
-> > once? Or are there certain things that you are not allowed to do until
-> > you call that function?
+> so if you want to validate speed, call this helper.
 >
-> From quick look, you can call it multiple times.
-
-Thanks, no worries in that case
-
-
-> > If so, maybe a simple typestate would make sense here
-> >
-> >> +impl<T: Driver> Adapter<T> {
-> >> +    unsafe extern "C" fn soft_reset_callback(
-> >> +        phydev: *mut bindings::phy_device,
-> >> +    ) -> core::ffi::c_int {
-> >> +        from_result(|| {
-> >> +            // SAFETY: The C API guarantees that `phydev` is valid wh=
-ile this function is running.
-> >> +            let dev =3D unsafe { Device::from_raw(phydev) };
-> >> +            T::soft_reset(dev)?;
-> >> +            Ok(0)
-> >> +        })
-> >> +    }
-> >
-> > All of these functions need a `# Safety` doc section, you could
-> > probably just say to follow `Device::from_raw`'s rules. And then you
-> > can update the comments to say caller guarantees preconditions
-> >
-> > If you care to, these functions are so similar that you could just use
-> > a macro to make your life easier
-> >
-> >     macro_rules! make_phydev_callback{
-> >         ($fn_name:ident, $c_fn_name:ident) =3D> {
-> >             /// ....
-> >             /// # Safety
-> >             /// `phydev` must be valid and registered
-> >             unsafe extern "C" fn $fn_name(
-> >                 phydev: *mut ::bindings::phy_device
-> >             ) -> $ret_ty {
-> >                 from_result(|| {
-> >                     // SAFETY: Preconditions ensure `phydev` is valid a=
-nd
-> >                     let dev =3D unsafe { Device::from_raw(phydev) };
-> >                     T::$c_fn_name(dev)?;
-> >                     Ok(0)
-> >                 }
-> >             }
-> >         }
-> >     }
-> >
-> >     make_phydev_callback!(get_features_callback, get_features);
-> >     make_phydev_callback!(suspend_callback, suspend);
+> However, this is a kernel driver, and we generally trust kernel
+> drivers. There is not much we can do except trust them. And passing an
+> invalid speed here is very unlikely to cause the kernel to explode
+> sometime later.
 >
-> Looks nice. I use the following macro.
+>    Andrew
 
-Miguel mentioned on Zulip that we try to avoid macros (I did not know
-this), so I guess it's fine if redundant.
+I didn't mean the suggestion to be a way of handling untrusted input,
+just a means of providing a fallback value with module author feedback
+if something > INT_MAX winds up getting passed somehow.
 
-https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/.6=
-0bool.3A.3Athen.60.20helper/near/395398830
-
-> >> +/// Declares a kernel module for PHYs drivers.
-> >> +///
-> >> +/// This creates a static array of `struct phy_driver` and registers =
-it.
-> >> +/// This also corresponds to the kernel's MODULE_DEVICE_TABLE macro, =
-which embeds the information
-> >> +/// for module loading into the module binary file.
-> >
-> > Could you add information about the relationship between drivers and
-> > device_table?
->
-> device_table needs to have PHY Ids that one of the drivers can handle.
->
-> ?
-
-I think something like "Every driver needs an entry in device_table"
-is fine, just make it less easy to miss
-
-Thanks for the followup, all of these were very minor
+Agreed that this is more than necessary for such a trivial situation,
+the original is of course fine.
