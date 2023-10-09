@@ -1,59 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8457358A1;
-	Mon,  9 Oct 2023 15:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69A737151;
+	Mon,  9 Oct 2023 15:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyvZ7DRM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F347FC433C7;
-	Mon,  9 Oct 2023 15:11:53 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BM1W6Df9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105ABC433CA;
+	Mon,  9 Oct 2023 15:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1696864314;
-	bh=k/0FHcU9Z5oRcvhuVZGBQb8npBBzkse68C6uKrz+tGk=;
+	s=korg; t=1696864459;
+	bh=4rdIhdsejVNb8ZKMss+WiZZRfIt8DvPE82Y1gqQEaWg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DyvZ7DRMeBSeA5ukSsdB28CHCWPgpg8L2ltkrATEKA/Jf4sqSUmp9cuRnwib9pmf1
-	 U4V3nvX7fOCXmk/BEIR0D56JlucDuJB9VWMzA7ZfMAATz66KkfvLL7RVMe0PikAJ/8
-	 JEagGr99/ZBk79NVpqQAy5qeqhd2075DW44nayRE=
-Date: Mon, 9 Oct 2023 17:11:51 +0200
+	b=BM1W6Df9YODKz59EtphEFNNw3EjvEXbdaQqpjZsTzxixuXxEqlbRTbcExAvbYkCXC
+	 0/ZqbEclsUazFvYyvuaZn9V8FCGSmeGpEwEocfDYNDFlxRl7H64+Kj+M4Oa2DyQ7Xw
+	 jTtWJNrbrtz3FOqb8QzO9j6ZDOSFg/t4bANhB7zU=
+Date: Mon, 9 Oct 2023 17:14:16 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <2023100926-ambulance-mammal-8354@gregkh>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	Andrea Righi <andrea.righi@canonical.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
+Message-ID: <2023100926-polygon-robin-8327@gregkh>
 References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
- <20231009013912.4048593-2-fujita.tomonori@gmail.com>
- <CANiq72nBSyQw+vFayPco5b_-DDAKNqmhE7xiXSVbg920_ttAeQ@mail.gmail.com>
- <20231009.224907.206866439495105936.fujita.tomonori@gmail.com>
+ <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
+ <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
+ <2023100916-crushing-sprawl-30a4@gregkh>
+ <CANiq72nfN2e8oWtFDQ1ey0CJaTZ+W=g10k5YKukaWqckxH7Rmg@mail.gmail.com>
+ <2023100907-liable-uplifted-568d@gregkh>
+ <CANiq72=A_HMc3nwxk-EGzuDGRBSCfdzKGj=M-snbd8cidQLfuQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231009.224907.206866439495105936.fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=A_HMc3nwxk-EGzuDGRBSCfdzKGj=M-snbd8cidQLfuQ@mail.gmail.com>
 
-On Mon, Oct 09, 2023 at 10:49:07PM +0900, FUJITA Tomonori wrote:
-> On Mon, 9 Oct 2023 14:59:19 +0200
-> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Mon, Oct 09, 2023 at 05:06:45PM +0200, Miguel Ojeda wrote:
+> On Mon, Oct 9, 2023 at 4:52 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > Then the main CONFIG_HAVE_RUST should have that dependency, don't force
+> > it on each individual driver.
 > 
-> > A few nits I noticed. Please note that this is not really a full
-> > review, and that I recommend that other people like Wedson should take
-> > a look again and OK these abstractions before this is merged.
-> 
-> We have about two weeks before the merge window opens? It would great
-> if other people could review really soon.
-> 
-> We can improve the abstractions after it's merged. This patchset
-> doesn't add anything exported to users. This adds only one driver so
-> the APIs can be fixed anytime.
+> Yes, that is what I meant (well, `CONFIG_RUST` is where we have the
+> other restrictions).
 
-There is no rush, or deadline here.  Take the time to get it in proper
-shape first please.
+Oops, yes, add it there please.
+
+> > But note, that is probably not a good marketing statement as you are
+> > forced to make your system more insecure in order to use the "secure"
+> > language :(
+> 
+> Indeed, but until we catch up on that, it is what it is; i.e. it is
+> not something that we want to keep there, it has to go away to make it
+> viable.
+
+Is anyone working on the needed compiler changes for this to work
+properly on x86?
+
+> The other option we discussed back then was to print a big banner or
+> something at runtime, but that is also not great (and people would
+> still see warnings at build time -- for good reason).
+
+No, please don't do that, you would be making systems insecure and the
+mix of a kernel image with, and without, RET statements in it is going
+to be a huge mess.  Just disable CONFIG_RUST for now until proper
+retbleed support is added to the compiler.
 
 thanks,
 
