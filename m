@@ -1,34 +1,31 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF90328DB;
-	Mon,  9 Oct 2023 13:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B199BDF59;
+	Mon,  9 Oct 2023 13:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AzOPLoio"
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38BCD18C;
-	Mon,  9 Oct 2023 06:45:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1696859154; x=1697118354;
-	bh=dMqUwSLa3SeTGCAa8eakRnHMOOm1x+jefSWxaCHBezk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AzOPLoioSLo6ddt3m++0elqtw7Jr2zWtsUel59v4aY3w1XOzmZ+fwmuAR2P2wf9pX
-	 2WZrUiD7qM7MwLuNXhzUQLnzASUBu2nE9tG9XfbIBI1Yhgt1ssSsPSBVgWDllqmbjd
-	 aVmvCyATXMIBOqgbXzETn49HBleO2A1ypTeNS9ozvupzQpCxd+TL+Lw+X26A0vbuMj
-	 ZF2GDYECNluuOH/9LCgW3mEuUUIxK1O/qkelzDTfDrXLAYqB0TJaon1AOOFXrzLBdM
-	 LjN92vk2XnBo751Qs3+QtQKop588hro4LVrB6z2P2bzId6WaMzmaWl/hgfyAYaQ4KC
-	 I8IslWA7/5Sew==
-Date: Mon, 09 Oct 2023 13:45:49 +0000
-To: Andrew Lunn <andrew@lunn.ch>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, greg@kroah.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 3/3] net: phy: add Rust Asix PHY driver
-Message-ID: <803e270b-7123-0ebd-439a-6eb0cece1373@proton.me>
-In-Reply-To: <97058377-fd92-4315-9094-d1a4179d43fa@lunn.ch>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com> <20231009013912.4048593-4-fujita.tomonori@gmail.com> <3dafc9f4-f371-a3d8-1d11-1b452b1c227e@proton.me> <97058377-fd92-4315-9094-d1a4179d43fa@lunn.ch>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IO0bwW6S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC06C433C7;
+	Mon,  9 Oct 2023 13:46:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1696859216;
+	bh=Ew1XbL9SrrnXVmkQDxu2ljVL3wze4KKK3L5OJe2bKuk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IO0bwW6Ssa2ncFH5bBQSd+iCyZ/G/GDcVGP+xkL34MRALkLpJSNuVqSPIL+lqtDnu
+	 uidXjg2zGPP2xs1mcclBdCoRGrL0NkIsDdMXVEUa54XYN+IqzK06W5K6ysoqpnTOpy
+	 MEPjr2Y0iciyeDOmvvTvqmEClE0KIfSdtsqomndw=
+Date: Mon, 9 Oct 2023 15:06:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	Andrea Righi <andrea.righi@canonical.com>
+Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
+Message-ID: <2023100916-crushing-sprawl-30a4@gregkh>
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
+ <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
+ <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,52 +33,24 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
 
-On 09.10.23 15:15, Andrew Lunn wrote:
->>> +        if ret as u32 & uapi::BMCR_SPEED100 !=3D 0 {
->>> +            dev.set_speed(uapi::SPEED_100);
->>> +        } else {
->>> +            dev.set_speed(uapi::SPEED_10);
->>> +        }
->>
->> Maybe refactor to only have one `dev.set_speed` call?
->=20
-> This is a common pattern in the C code. This is basically a
-> re-implementation of
->=20
-> https://elixir.bootlin.com/linux/latest/source/drivers/net/phy/phy_device=
-.c#L2432
->=20
-> because this PHY is broken. Being one of the maintainers of the PHY
-> subsystem, it helps me review this code if it happens to look like the
-> existing code it is adding a workaround to.
->=20
-> Is there a Rust reason to only have one call?
+On Mon, Oct 09, 2023 at 02:53:00PM +0200, Miguel Ojeda wrote:
+> On Mon, Oct 9, 2023 at 2:48 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > Any ideas?
+> 
+> That is `RETHUNK` and `X86_KERNEL_IBT`.
+> 
+> Since this will keep confusing people, I will make it a `depends on !`
+> as discussed in the past. I hope it is OK for e.g. Andrea.
 
-My reason was consistency, since the call to `set_duplex`
-below that was changed to only have one call:
+That's not ok as you want that option enabled on systems that have those
+broken processors which need this option for proper security.  You would
+be forcing people to disable this to enable Rust support?
 
-+        let duplex =3D if ret as u32 & uapi::BMCR_FULLDPLX !=3D 0 {
-+            phy::DuplexMode::Full
-+        } else {
-+            phy::DuplexMode::Half
-+        };
-+        dev.set_duplex(duplex);
+confused,
 
-I think it should be consistent, I chose to reduce the number of
-function calls, since it is immediately obvious that only the argument
-is depending on the condition. But if you think it should mirror the C
-side, then maybe change the duplex back to calling twice?
-
---=20
-Cheers,
-Benno
-
-
+greg k-h
