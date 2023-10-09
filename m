@@ -1,94 +1,78 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17DA321D;
-	Mon,  9 Oct 2023 12:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBB2C8F8;
+	Mon,  9 Oct 2023 12:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nNN9YEwI"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC92A6;
-	Mon,  9 Oct 2023 05:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cq0Ah4r/9RVySFnKCKXP+J/XM6uImlqRxn1SBUfj2MA=; b=nNN9YEwI3UPla+E3R3aXQLGJft
-	vULgXtrELRpx9qWXB0go4iw5maABpV32SX7C0TvIBBDmkoq+Lroxt3UlgREj/HoMOmyqN6Tk75YEn
-	zFeRdmH1D1/MMQGANMs429smCH8ztACF2whVUZdGHnm3ji8QQQW0BDgPg2UiJvdyKzvY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qppgO-000sNz-SM; Mon, 09 Oct 2023 14:48:24 +0200
-Date: Mon, 9 Oct 2023 14:48:24 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com, greg@kroah.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
-Message-ID: <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qj+3v/rD"
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA13C9D;
+	Mon,  9 Oct 2023 05:53:12 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5a21ea6baccso54650617b3.1;
+        Mon, 09 Oct 2023 05:53:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696855992; x=1697460792; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XsH+1QX7hsku5ET4BmlWuuWtr+U2Xh27ghsMF+v5n9c=;
+        b=Qj+3v/rDefinMDB+HmlmkCS/Cbemmz+6WH+zxwKtOn+0veSoQn+eyUfWSSTcUgeKwg
+         Uefr9MQUVcz/w3O5LOLDGnvKaNSBvJbSFFMn9ydNE8ozbJp7YFp5z/9sjsOfEZIxdE04
+         jHAuViahn76q+HqYUS9h2+KRmSZ08Mz7lWBA/8VY4m7/29lB+mFHdxBg8gJHqBR2j6aa
+         TvuCfPg3gItd+c/PV5Bq3Uo6FSulHQ6nUYfE/IJ448S0JRxmDDRkgJ74cqgnbqpClqvr
+         HPUH+qQyzP7ySF6Dif5zRzatvKX3DDn+YjY+zhi8eGYNnKP5BhgZ+5nysxHKjh5+avem
+         cG9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696855992; x=1697460792;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XsH+1QX7hsku5ET4BmlWuuWtr+U2Xh27ghsMF+v5n9c=;
+        b=p7v14Hr4jNRDzb9LZzTJf3TlHJ8h/by5TGiiutMXKEkSTHSbvJa6RDYZwzHn9oRSDa
+         KFp8H87oRLYDG+pX6LtRrouSHZk0UQxFmb8YqC0Al9jOphLnPuY9Tep96yGWyKXFdteD
+         UQXno34Uvvjpq9tvuJUMBIkZw7vkW2Q4ymBF7nnCUNe+Je/rG2AJlWWfg+XRHaGnxYS8
+         poT165H1dky7sIVCX3DWDtDsA0qgXJza4YwtJkF6iQrIBX7N2dnMunj0KO/NtiYxNKCW
+         E9nEYej7uQTpsqUviP3OmiQynsVnRmOssrzTb56ueDpyAOPSzCUms03OB70Ox1/aiexe
+         wyyg==
+X-Gm-Message-State: AOJu0Yz5WLY+/xTTuj7fZe4DdFbYPVYv63nT6gAks0dWZofqifpqWj7U
+	r0FIXpVVrrYd0fpwZjJ7+Up+bwbGRisWjMPhYeQ=
+X-Google-Smtp-Source: AGHT+IGOPofh50OtRMO6gOE7TN3Wrw+Ctm2WnKWzL3gBLVfAT0ZVl+vOa/ZIJ+Vo+Yam0sPwIdK+d/lzuLx2L/S5kRo=
+X-Received: by 2002:a0d:f182:0:b0:5a4:3e67:35a3 with SMTP id
+ a124-20020a0df182000000b005a43e6735a3mr14879274ywf.49.1696855992056; Mon, 09
+ Oct 2023 05:53:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com> <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
+In-Reply-To: <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Oct 2023 14:53:00 +0200
+Message-ID: <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, greg@kroah.com, tmgross@umich.edu, 
+	Andrea Righi <andrea.righi@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 09, 2023 at 10:39:09AM +0900, FUJITA Tomonori wrote:
-> This patchset adds Rust abstractions for phylib. It doesn't fully
-> cover the C APIs yet but I think that it's already useful. I implement
-> two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
-> they work well with real hardware.
-> 
-> The first patch introduces Rust bindings for phylib.
-> 
-> The second patch updates the ETHERNET PHY LIBRARY entry in MAINTAINERS
-> file; adds the binding file and me as a maintainer of the Rust
-> bindings (as Andrew Lunn suggested).
-> 
-> The last patch introduces the Rust version of Asix PHY drivers,
-> drivers/net/phy/ax88796b.c. The features are equivalent to the C
-> version. You can choose C (by default) or Rust version on kernel
-> configuration.
+On Mon, Oct 9, 2023 at 2:48=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> Any ideas?
 
-I at last got around to installing a rust tool chain and tried to
-build the code. I get what looks like linker errors.
+That is `RETHUNK` and `X86_KERNEL_IBT`.
 
-linux$ make LLVM=1 rustavailable
-Rust is available!
+Since this will keep confusing people, I will make it a `depends on !`
+as discussed in the past. I hope it is OK for e.g. Andrea.
 
-dpkg says:
-
-+++-==============-============-============-=================================
-ii  llvm           1:16.0-57    amd64        Low-Level Virtual Machine (LLVM)
-
-I build with
-
-make LLVM=1
-
-and get lots of warnings like:
-
-vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeANtNtNtB4_5ascii10ascii_char9AsciiCharja_EB4_+0x0: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeFUPuENtNtNtB4_4task4wake8RawWakerEB4_+0x0: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeINtNtB4_6option6OptionINtNtNtNtB4_4iter8adapters7flatten7FlattenINtBJ_8IntoIterNtNtB4_4char11EscapeDebugEEEEB4_+0x0: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeNtNtB4_3fmt5ErrorEB4_+0x0: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placesEB4_+0x0: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f8classify+0x5a: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f16partial_classify+0x1f: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f13classify_bits+0x28: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f7next_up+0x32: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f9next_down+0x34: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f8midpoint+0xc3: 'naked' return found in RETHUNK build
-vmlinux.o: warning: objtool: _RNvNvMNtCs4KbNGwnAC5t_4core3f32f7to_bits13ct_f32_to_u32+0x4a: 'naked' return found in RETHUNK build
-
-Any ideas?
-
-    Andrew
+Cheers,
+Miguel
