@@ -1,39 +1,52 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7391C693;
-	Mon,  9 Oct 2023 17:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F87438DD4;
+	Mon,  9 Oct 2023 17:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vqCOr7Rg"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BEBAAF;
-	Mon,  9 Oct 2023 10:04:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=zU+K2+yrfsZfVEULhh5cTmfxulTUaZqpD8BIDKXNbwI=; b=vq
-	COr7Rg9kp4p8OdtCRsUdTKn4r7BkXPNSYgn2zy6WAj4whzWWDPnVJ+6Z3CBYp12VjtgVn8PpV7OTu
-	52r7SwpGZ0/zS+0XNnnKW3mwkicKHt1MAm4/WqdwgANG/4K70wKNBd/OXvWW0nYwxr2bg9ih+8STg
-	hsetrxNj1GO/LX8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qptfk-000wfo-DM; Mon, 09 Oct 2023 19:04:00 +0200
-Date: Mon, 9 Oct 2023 19:04:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8NkldTq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F2AC433CA;
+	Mon,  9 Oct 2023 17:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1696873023;
+	bh=BW2UXyZrvXyT/FZW+LrBqggagNr5D5MBdlmAiZdBZHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j8NkldTqlYjXAwPgzwSb89ZPTQnyDof4SI3tlaYG99WZSrp5QrGoEhumwJzN5ZtZK
+	 Z7kQmdB1MEZO39b4QGLSseg2+P1TNcvf4++UwpMBg/D3Tys23SK2POEaI0NNPPiVnI
+	 3UQmZwZApjsaLVdRjXh2JiRtifgw9pyaa7El88b8=
+Date: Mon, 9 Oct 2023 19:37:00 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, greg@kroah.com, tmgross@umich.edu,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <79ed3531-4f5f-4da4-99ba-4faa053554cc@lunn.ch>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
- <20231009013912.4048593-2-fujita.tomonori@gmail.com>
- <CANiq72nBSyQw+vFayPco5b_-DDAKNqmhE7xiXSVbg920_ttAeQ@mail.gmail.com>
- <183d4a59-acf1-4784-8194-da8e484ccb1b@lunn.ch>
- <CANiq72knE9zK1Z0W6RMW-dn0Mqq2gZjJXukQPeXN4=MFcCExyg@mail.gmail.com>
+Cc: Matthew Maurer <mmaurer@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Peter Zijlstra <peterz@infradead.org>, rcvalle@google.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@google.com>,
+	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+Message-ID: <2023100909-disperser-washable-4cbe@gregkh>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-26-ojeda@kernel.org>
+ <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
+ <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+ <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
+ <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
+ <CANiq72khuwOrAGN=CrFUX85UmPdJiZ2yM7_9_su_Zp951BHMMA@mail.gmail.com>
+ <CAGSQo00gJsE+mQObeK4NNGDYLpZDDAZsREr15JcjD8Fo0E4pkw@mail.gmail.com>
+ <CANiq72kK6ppBE7j=z7uua1cJMKaLoR5U3NUAZXT5MrNEs9ZhfQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,33 +56,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72knE9zK1Z0W6RMW-dn0Mqq2gZjJXukQPeXN4=MFcCExyg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+In-Reply-To: <CANiq72kK6ppBE7j=z7uua1cJMKaLoR5U3NUAZXT5MrNEs9ZhfQ@mail.gmail.com>
 
-On Mon, Oct 09, 2023 at 04:48:34PM +0200, Miguel Ojeda wrote:
-> On Mon, Oct 9, 2023 at 3:54 PM Andrew Lunn <andrew@lunn.ch> wrote:
+On Mon, Oct 09, 2023 at 06:31:13PM +0200, Miguel Ojeda wrote:
+> On Mon, Oct 9, 2023 at 6:01 PM Matthew Maurer <mmaurer@google.com> wrote:
 > >
-> > Can rustdoc be invoked in a similar way? Perform a check on a file,
-> > issue errors, but don't actually generate any documentation? If it
-> > can, it would be good to extend W=1 with this.
+> > If the IBT part would be helpful by itself immediately, I can split
+> > that out - it's only the KCFI portion that won't currently work.
 > 
-> The Rust docs (like the Rust code) are supposed to be warning-free
-> (and should remain like that, at the very least for `defconfig` and so
-> on -- modulo mistakes, of course).
+> Thanks Matthew. I don't think we are in a rush, but if it is not too
+> much work to split it, that would be great, instead of adding the
+> restriction.
+> 
+> For retthunk, by the way, I forgot to mention to Greg above that (in
+> the original discussion with PeterZ) that I did a quick test back then
+> to hack the equivalent of `-mfunction-return=thunk-extern` into
+> `rustc` to show that the compiler could use it via LLVM (by passing
+> the attribute in the IR). At least at a basic level it seemed to work:
+> I got a userspace program to count the times that it went through the
+> return thunk. I didn't try to do anything on the kernel side, but at
+> least for the compiler side, it seemed OK. So it may be way easier (on
+> the compiler side) than the CFI work?
 
-'supposed to' is often not enough.
+It should hopefully be much easier than CFI, it was a much simpler
+change to gcc and clang when it landed.
 
-The netdev CI results can be seen here:
+thanks,
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20231009013912.4048593-2-fujita.tomonori@gmail.com/
-
-It would of been nice if netdev/kdoc test had failed if rustdoc found
-problems.
-
-We could add a new test, if rustdoc can be run on individual files.
-
-   Andrew
+greg k-h
