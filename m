@@ -1,264 +1,94 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2037310A08
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 12:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17DA321D;
+	Mon,  9 Oct 2023 12:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="StNfl7JW"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 210269F
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 05:42:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1696855340; x=1697114540;
-	bh=N1m4LUydQPPpDCKC3oEdLhtybClqDZZWDHdecorqAXM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=StNfl7JWO4A7v7bLsoQffwUbfyKZ4OC67zXWWYnaFSeah6eXwLITNQgqE+rc1nWG3
-	 34w0cYGN60al0hOZj04RBVM/6jj5NLaPvHZXEOJVeSh4r2Qb/aUINfc/7sVM0oJf3W
-	 X6MYD8XbSRVuh2yzA7gbv8UDfYnnJr6dAamHayuABd5kKUQRSNSHD8/CO+cwotPWXd
-	 p3TZ6adAxUCmGjqZeXvKAOCKULiFdwkA1hxvSGRHGbbQEQ7XRRYBmEWDuaLoOseSpe
-	 O//vWpWRagEYCEW/o7okuESFkVhAxhSD0TZD+0JVwiATtQgnrsA/MuLAwWFtiCtJ5L
-	 4yoDKl4g4IvxQ==
-Date: Mon, 09 Oct 2023 12:42:15 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, greg@kroah.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 3/3] net: phy: add Rust Asix PHY driver
-Message-ID: <3dafc9f4-f371-a3d8-1d11-1b452b1c227e@proton.me>
-In-Reply-To: <20231009013912.4048593-4-fujita.tomonori@gmail.com>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com> <20231009013912.4048593-4-fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nNN9YEwI"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC92A6;
+	Mon,  9 Oct 2023 05:48:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=cq0Ah4r/9RVySFnKCKXP+J/XM6uImlqRxn1SBUfj2MA=; b=nNN9YEwI3UPla+E3R3aXQLGJft
+	vULgXtrELRpx9qWXB0go4iw5maABpV32SX7C0TvIBBDmkoq+Lroxt3UlgREj/HoMOmyqN6Tk75YEn
+	zFeRdmH1D1/MMQGANMs429smCH8ztACF2whVUZdGHnm3ji8QQQW0BDgPg2UiJvdyKzvY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qppgO-000sNz-SM; Mon, 09 Oct 2023 14:48:24 +0200
+Date: Mon, 9 Oct 2023 14:48:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com, greg@kroah.com, tmgross@umich.edu
+Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
+Message-ID: <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 09.10.23 03:39, FUJITA Tomonori wrote:
-> This is the Rust implementation of drivers/net/phy/ax88796b.c. The
-> features are equivalent. You can choose C or Rust versionon kernel
+On Mon, Oct 09, 2023 at 10:39:09AM +0900, FUJITA Tomonori wrote:
+> This patchset adds Rust abstractions for phylib. It doesn't fully
+> cover the C APIs yet but I think that it's already useful. I implement
+> two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
+> they work well with real hardware.
+> 
+> The first patch introduces Rust bindings for phylib.
+> 
+> The second patch updates the ETHERNET PHY LIBRARY entry in MAINTAINERS
+> file; adds the binding file and me as a maintainer of the Rust
+> bindings (as Andrew Lunn suggested).
+> 
+> The last patch introduces the Rust version of Asix PHY drivers,
+> drivers/net/phy/ax88796b.c. The features are equivalent to the C
+> version. You can choose C (by default) or Rust version on kernel
 > configuration.
->=20
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
 
-One small nit below, you can decide what to do with that.
+I at last got around to installing a rust tool chain and tried to
+build the code. I get what looks like linker errors.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+linux$ make LLVM=1 rustavailable
+Rust is available!
 
->   drivers/net/phy/Kconfig          |   7 ++
->   drivers/net/phy/Makefile         |   6 +-
->   drivers/net/phy/ax88796b_rust.rs | 129 +++++++++++++++++++++++++++++++
->   rust/uapi/uapi_helper.h          |   2 +
->   4 files changed, 143 insertions(+), 1 deletion(-)
->   create mode 100644 drivers/net/phy/ax88796b_rust.rs
->=20
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index 421d2b62918f..0317be180ac2 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -107,6 +107,13 @@ config AX88796B_PHY
->   =09  Currently supports the Asix Electronics PHY found in the X-Surf 10=
-0
->   =09  AX88796B package.
->=20
-> +config AX88796B_RUST_PHY
-> +=09bool "Rust version driver for Asix PHYs"
-> +=09depends on RUST_PHYLIB_BINDINGS && AX88796B_PHY
-> +=09help
-> +=09  Uses the Rust version driver for Asix PHYs (ax88796b_rust.ko)
-> +=09  instead of the C version.
-> +
->   config BROADCOM_PHY
->   =09tristate "Broadcom 54XX PHYs"
->   =09select BCM_NET_PHYLIB
-> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-> index c945ed9bd14b..58d7dfb095ab 100644
-> --- a/drivers/net/phy/Makefile
-> +++ b/drivers/net/phy/Makefile
-> @@ -41,7 +41,11 @@ aquantia-objs=09=09=09+=3D aquantia_hwmon.o
->   endif
->   obj-$(CONFIG_AQUANTIA_PHY)=09+=3D aquantia.o
->   obj-$(CONFIG_AT803X_PHY)=09+=3D at803x.o
-> -obj-$(CONFIG_AX88796B_PHY)=09+=3D ax88796b.o
-> +ifdef CONFIG_AX88796B_RUST_PHY
-> +  obj-$(CONFIG_AX88796B_PHY)=09+=3D ax88796b_rust.o
-> +else
-> +  obj-$(CONFIG_AX88796B_PHY)=09+=3D ax88796b.o
-> +endif
->   obj-$(CONFIG_BCM54140_PHY)=09+=3D bcm54140.o
->   obj-$(CONFIG_BCM63XX_PHY)=09+=3D bcm63xx.o
->   obj-$(CONFIG_BCM7XXX_PHY)=09+=3D bcm7xxx.o
-> diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_=
-rust.rs
-> new file mode 100644
-> index 000000000000..017f817f6f8d
-> --- /dev/null
-> +++ b/drivers/net/phy/ax88796b_rust.rs
-> @@ -0,0 +1,129 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
-> +
-> +//! Rust Asix PHYs driver
-> +//!
-> +//! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796b.=
-c)
-> +use kernel::c_str;
-> +use kernel::net::phy::{self, DeviceId, Driver};
-> +use kernel::prelude::*;
-> +use kernel::uapi;
-> +
-> +kernel::module_phy_driver! {
-> +    drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
-> +    device_table: [
-> +        DeviceId::new_with_driver::<PhyAX88772A>(),
-> +        DeviceId::new_with_driver::<PhyAX88772C>(),
-> +        DeviceId::new_with_driver::<PhyAX88796B>()
-> +    ],
-> +    name: "rust_asix_phy",
-> +    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
-> +    description: "Rust Asix PHYs driver",
-> +    license: "GPL",
-> +}
-> +
-> +// Performs a software PHY reset using the standard
-> +// BMCR_RESET bit and poll for the reset bit to be cleared.
-> +// Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implement=
-ation
-> +// such as used on the Individual Computers' X-Surf 100 Zorro card.
-> +fn asix_soft_reset(dev: &mut phy::Device) -> Result {
-> +    dev.write(uapi::MII_BMCR as u16, 0)?;
-> +    dev.genphy_soft_reset()
-> +}
-> +
-> +struct PhyAX88772A;
-> +
-> +#[vtable]
-> +impl phy::Driver for PhyAX88772A {
-> +    const FLAGS: u32 =3D phy::flags::IS_INTERNAL;
-> +    const NAME: &'static CStr =3D c_str!("Asix Electronics AX88772A");
-> +    const PHY_DEVICE_ID: phy::DeviceId =3D phy::DeviceId::new_with_exact=
-_mask(0x003b1861);
-> +
-> +    // AX88772A is not working properly with some old switches (NETGEAR =
-EN 108TP):
-> +    // after autoneg is done and the link status is reported as active, =
-the MII_LPA
-> +    // register is 0. This issue is not reproducible on AX88772C.
-> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
-> +        dev.genphy_update_link()?;
-> +        if !dev.get_link() {
-> +            return Ok(0);
-> +        }
-> +        // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to res=
-olve
-> +        // linkmode so use MII_BMCR as default values.
-> +        let ret =3D dev.read(uapi::MII_BMCR as u16)?;
-> +
-> +        if ret as u32 & uapi::BMCR_SPEED100 !=3D 0 {
-> +            dev.set_speed(uapi::SPEED_100);
-> +        } else {
-> +            dev.set_speed(uapi::SPEED_10);
-> +        }
+dpkg says:
 
-Maybe refactor to only have one `dev.set_speed` call?
++++-==============-============-============-=================================
+ii  llvm           1:16.0-57    amd64        Low-Level Virtual Machine (LLVM)
 
-> +
-> +        let duplex =3D if ret as u32 & uapi::BMCR_FULLDPLX !=3D 0 {
-> +            phy::DuplexMode::Full
-> +        } else {
-> +            phy::DuplexMode::Half
-> +        };
-> +        dev.set_duplex(duplex);
-> +
-> +        dev.genphy_read_lpa()?;
-> +
-> +        if dev.is_autoneg_enabled() && dev.is_autoneg_completed() {
-> +            dev.resolve_aneg_linkmode();
-> +        }
-> +
-> +        Ok(0)
-> +    }
-> +
-> +    fn suspend(dev: &mut phy::Device) -> Result {
-> +        dev.genphy_suspend()
-> +    }
-> +
-> +    fn resume(dev: &mut phy::Device) -> Result {
-> +        dev.genphy_resume()
-> +    }
-> +
-> +    fn soft_reset(dev: &mut phy::Device) -> Result {
-> +        asix_soft_reset(dev)
-> +    }
-> +
-> +    fn link_change_notify(dev: &mut phy::Device) {
-> +        // Reset PHY, otherwise MII_LPA will provide outdated informatio=
-n.
-> +        // This issue is reproducible only with some link partner PHYs.
-> +        if dev.state() =3D=3D phy::DeviceState::NoLink {
-> +            let _ =3D dev.init_hw();
-> +            let _ =3D dev.start_aneg();
-> +        }
-> +    }
-> +}
-> +
-> +struct PhyAX88772C;
-> +
-> +#[vtable]
-> +impl Driver for PhyAX88772C {
-> +    const FLAGS: u32 =3D phy::flags::IS_INTERNAL;
-> +    const NAME: &'static CStr =3D c_str!("Asix Electronics AX88772C");
-> +    const PHY_DEVICE_ID: phy::DeviceId =3D phy::DeviceId::new_with_exact=
-_mask(0x003b1881);
-> +
-> +    fn suspend(dev: &mut phy::Device) -> Result {
-> +        dev.genphy_suspend()
-> +    }
-> +
-> +    fn resume(dev: &mut phy::Device) -> Result {
-> +        dev.genphy_resume()
-> +    }
-> +
-> +    fn soft_reset(dev: &mut phy::Device) -> Result {
-> +        asix_soft_reset(dev)
-> +    }
-> +}
-> +
-> +struct PhyAX88796B;
-> +
-> +#[vtable]
-> +impl Driver for PhyAX88796B {
-> +    const NAME: &'static CStr =3D c_str!("Asix Electronics AX88796B");
-> +    const PHY_DEVICE_ID: phy::DeviceId =3D phy::DeviceId::new_with_model=
-_mask(0x003b1841);
-> +
-> +    fn soft_reset(dev: &mut phy::Device) -> Result {
-> +        asix_soft_reset(dev)
-> +    }
-> +}
-> diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-> index 301f5207f023..08f5e9334c9e 100644
-> --- a/rust/uapi/uapi_helper.h
-> +++ b/rust/uapi/uapi_helper.h
-> @@ -7,3 +7,5 @@
->    */
->=20
->   #include <uapi/asm-generic/ioctl.h>
-> +#include <uapi/linux/mii.h>
-> +#include <uapi/linux/ethtool.h>
-> --
-> 2.34.1
->=20
->=20
+I build with
 
+make LLVM=1
+
+and get lots of warnings like:
+
+vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeANtNtNtB4_5ascii10ascii_char9AsciiCharja_EB4_+0x0: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeFUPuENtNtNtB4_4task4wake8RawWakerEB4_+0x0: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeINtNtB4_6option6OptionINtNtNtNtB4_4iter8adapters7flatten7FlattenINtBJ_8IntoIterNtNtB4_4char11EscapeDebugEEEEB4_+0x0: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placeNtNtB4_3fmt5ErrorEB4_+0x0: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RINvNtCs4KbNGwnAC5t_4core3ptr13drop_in_placesEB4_+0x0: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f8classify+0x5a: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f16partial_classify+0x1f: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f13classify_bits+0x28: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f7next_up+0x32: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f9next_down+0x34: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RNvMNtCs4KbNGwnAC5t_4core3f32f8midpoint+0xc3: 'naked' return found in RETHUNK build
+vmlinux.o: warning: objtool: _RNvNvMNtCs4KbNGwnAC5t_4core3f32f7to_bits13ct_f32_to_u32+0x4a: 'naked' return found in RETHUNK build
+
+Any ideas?
+
+    Andrew
