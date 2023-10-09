@@ -1,68 +1,68 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC1E11738;
-	Mon,  9 Oct 2023 11:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F85018C10
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 12:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PBAvQfbX"
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3592994;
-	Mon,  9 Oct 2023 04:41:06 -0700 (PDT)
-Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-57c0775d4fcso546415eaf.0;
-        Mon, 09 Oct 2023 04:41:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H8saQurv"
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C58C6
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 05:01:21 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-59f55c276c3so55534797b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 05:01:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696851665; x=1697456465; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u3UMoGQQEfDpfmWMr3jSmUBbiLLCy8BHLNGDda2pd2Y=;
-        b=PBAvQfbXz0HcgJkTM4cX3NvywouWCWTGs1xMLxJjSA12dueZIAiaaYgVre9eR1RxjK
-         tfLNtX5zURtBHj5BVGRG44C4uOO5fQLCyQr/SIUasHoiA7DhBGkNnkaU+q5SExkO+0Xq
-         RNGFBNzclcBFacdj8bwMXd/4Y/G2hthsDVrHT1jvn96voaruKX9F54UvqscugM/UVp/n
-         ZYnA0uy8/W8ZOZGYUIZGB7QfyD/4Lsm105N1OTrs97kmvKmM051deUroNhautvNJokQr
-         1k2J6mrC0uao8qOnmBrgiQXze6TklYW2G9Ra+jSfrzL24KO9tTxFwNsMEb3FylXCqPNj
-         niEg==
+        d=gmail.com; s=20230601; t=1696852881; x=1697457681; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S8xlOdoGoANNG8/4z3J1BZ3qILcNZDx9JymkslqHebI=;
+        b=H8saQurv2QJLiLoXjgZWnPya3WYtbxksuYiqeVKdOQRmdewdOOXL6qG+pvaDjWjc+O
+         QHVx0Ekj7Txz3eJwMaO6vPoKgk8q1PZiEG57h6NzFEbfWKusb1M6hqu4bmoTo3R0wgE9
+         1NuFTag2PZDZZ56zYiO8K9qqSjvbYjIYEoPI7Cdqbnv11l5iLqySIaR8CAvpJ1Hy2S4F
+         1JxrCWKa0PcVzNf6yc14qFWxfT/xSeiftFxrsbLFeScFo6Tnntnpdkj2o4igqMqNEGu+
+         JNQEEXv1ssrcvWEpS49Kmv8T9G9zKzabKP+THukd8pTyU573mnaDId7v6Y4yHINk/8vO
+         KIQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696851665; x=1697456465;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=u3UMoGQQEfDpfmWMr3jSmUBbiLLCy8BHLNGDda2pd2Y=;
-        b=fbkCb288Pv4uIe9ZBDEDvy3SqHSLgmTI9UVNEuExmGhuJDzSjuZZMBed6QSecnjVeS
-         3cNS4nyoLdGakkwKJUBxHPXtsy+Tjyfmi+vpZydJSbyI4Jv60MlNntfis4P2jfTwr19Y
-         +dcoSR6Mwhm7aOtVEboHkSm9EQyvGzg7VeR/jdAc8i3t9mSYEt2UmKs4+POBITyow+1P
-         SoI7uVdGb3vqjocT1DxcKpykUtephHjRK7B0f2Ihy5DUSFkY2aRLyuzcpA/tewaJvgKO
-         tUgWlbfvYx5tQGBKch5k+bLsxGeDuqJHcEHXYV+AONBIifxD95pPJF/ROTSqfjtkSwVd
-         8/zQ==
-X-Gm-Message-State: AOJu0YxD5wgcPnscxiJaMrV0lSV7iiY1ZoZHcysBZaHiwNuudWK9/BDl
-	vakESqV9TmX+4ujIaJE2BM7h2uiKbH9x1wxb
-X-Google-Smtp-Source: AGHT+IFv25pJjbrFHs4iK+A4CgwscwJEMcqZJIUocS9cMXo8Lpt7uybhzzOKC07g4VJdaF81AKFX6Q==
-X-Received: by 2002:a05:6359:219:b0:14a:cca4:5601 with SMTP id ej25-20020a056359021900b0014acca45601mr10453087rwb.3.1696851665437;
-        Mon, 09 Oct 2023 04:41:05 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id bb16-20020a17090b009000b00274bbfc34c8sm10168730pjb.16.2023.10.09.04.41.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 04:41:05 -0700 (PDT)
-Date: Mon, 09 Oct 2023 20:41:04 +0900 (JST)
-Message-Id: <20231009.204104.218796704097737110.fujita.tomonori@gmail.com>
-To: jiri@resnulli.us
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, greg@kroah.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 3/3] net: phy: add Rust Asix PHY driver
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ZSOqWMqm/JQOieAd@nanopsycho>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
-	<20231009013912.4048593-4-fujita.tomonori@gmail.com>
-	<ZSOqWMqm/JQOieAd@nanopsycho>
+        d=1e100.net; s=20230601; t=1696852881; x=1697457681;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S8xlOdoGoANNG8/4z3J1BZ3qILcNZDx9JymkslqHebI=;
+        b=Y/YWlUpKXWDtps1U2upvpXFdEk1vWH5Ct/J4/LbE6W2s7zg4Hz9HVztZj5rs+djHf5
+         5M5qH4q75YxCQ0cL6scNWNEOQJvzKvDyHeaFH8HnmLsDxX+IFYnC/DF6Bo2vygSSIlZC
+         GES2jUadzIsJaDvGpcgUiJWXD1B+pxCXThGryPqfalI2RRTz88wdS7iBLLGgvlGz8pkm
+         aSCcvJAu5bti+vpRiSh6RH1LnVLk4WoEEY/iRuR4/U2JHwstb/9ebvyfvZYVbuwWonhF
+         ErqTpfcuvY6lSu0mgO+OlCOtfyqp7uFzqavFJ0eO6YZfy/Bcker39R0WtF0yO33EbVp7
+         JOXA==
+X-Gm-Message-State: AOJu0Yz6JQqKisy8ZA8AZwzfTzR/KQKAh4xDH1zWrjTF0/ZKjpmzPHft
+	RTPp0Sg6gAEeBuVarVC2k6pCzFfkKzNJCzww6T4=
+X-Google-Smtp-Source: AGHT+IH7s5WFh4TVf+bXzMwSO2Y6ijsHfTYRfD4CrHh3NkMPsS9azV+Yzbvm85DpSIEmX55bgdwBCe8HGeIEzKvFNEU=
+X-Received: by 2002:a0d:c886:0:b0:59f:9c08:8f12 with SMTP id
+ k128-20020a0dc886000000b0059f9c088f12mr18976846ywd.38.1696852881009; Mon, 09
+ Oct 2023 05:01:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20231006155739.246381-1-yakoyoku@gmail.com> <CANiq72m3mpcJfiOxaACLtyaUfBR2j8rtbLdj5eZT08zywKzCfw@mail.gmail.com>
+ <ca2cd71c-0aa1-4365-961c-c10737a9e9a6@gmail.com>
+In-Reply-To: <ca2cd71c-0aa1-4365-961c-c10737a9e9a6@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Oct 2023 14:01:10 +0200
+Message-ID: <CANiq72mM2BeWtZNqhvnbA3XR_ArfAi3CG3oxMuu+C74rB0+mBA@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] rust: crates in other kernel directories
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -70,23 +70,26 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, 9 Oct 2023 09:23:04 +0200
-Jiri Pirko <jiri@resnulli.us> wrote:
+On Sat, Oct 7, 2023 at 1:07=E2=80=AFAM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> Well, there's the network PHY driver series that is stuck on this
+> topic, I (and probably others) have local work that have the same issue
 
->>diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
->>index 301f5207f023..08f5e9334c9e 100644
->>--- a/rust/uapi/uapi_helper.h
->>+++ b/rust/uapi/uapi_helper.h
->>@@ -7,3 +7,5 @@
->>  */
->> 
->> #include <uapi/asm-generic/ioctl.h>
->>+#include <uapi/linux/mii.h>
->>+#include <uapi/linux/ethtool.h>
-> 
-> What is exactly the reason to change anything in uapi for phy driver?
-> Should be just kernel api implementation, no?
+No, that series is not stuck on this.
 
-It doesn't change anything. Like the C PHY drivers do, Rust PHY
-drivers use the defined values in header files in uapi like MII_*,
-BMCR_*, etc.
+> and said general case might not arrive that soon. So it'd better to
+> start on a feature that will benefit API users right away and can be
+> updated to fit needs. That's what I think.
+
+If there is an in-tree use case that will really require a solution to
+this very soon, then please focus on explaining that (e.g. what "local
+work" do you have and what are your plans for landing it upstream?)
+and we will do our best to reschedule priorities or we can provide a
+workaround for the time being.
+
+In any case, please note that this RFC breaks the kernel build and
+does not really solve the overall issue.
+
+Cheers,
+Miguel
