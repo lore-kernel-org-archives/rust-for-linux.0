@@ -1,95 +1,104 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6501F347D4;
-	Mon,  9 Oct 2023 14:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318593588E
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 14:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OqQJmm69"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 251978E;
-	Mon,  9 Oct 2023 07:13:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=8KIoAiTLoy24O+461/DD6A8O2EnQ0bSl9jjT1Lzcc6Q=; b=OqQJmm69msFWkp2bBIvQflKVjV
-	wD4n+UWZcBmWcfepJUZUI/16eJmW4kDOiQK53w6xOeVD6kC5iSYsqUvwtn3l8PYYqBqEUKxdqZsdo
-	I9QlNy4ckA/TnICxR/9KEKB/ZcXQs2K8xUJZWmLT01/tsmAXlGk9Y3bE0cuLYUEeG1LA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qpr0X-000tqR-OY; Mon, 09 Oct 2023 16:13:17 +0200
-Date: Mon, 9 Oct 2023 16:13:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
-	greg@kroah.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <a0a24765-8981-497c-a499-4dcf71897fda@lunn.ch>
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="LEZzENd3"
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D593410CA
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 07:21:13 -0700 (PDT)
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 859B33F699
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 14:21:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1696861272;
+	bh=B96PVjO/dQ3gfVlhgj+phv5BjtntXKadFzqOCRy8X5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To;
+	b=LEZzENd3Apw8U/A2X8k9QaHpAkI3V8KktjoLWg+Ti7dILU7+JD2lDRdp+p8X6Nhx1
+	 mvFZASIOSD5Mn8hLuen9/9jLDJLiPpoPUkDps+U5hLVM8kiA6fJmBcNNa8o5GY+0Zx
+	 raVSz63jUG5i3RSueT/l5Ab3c+tUrq6cpUzSaTYZ24oywX+GccXbk/LLxw4yrUD4ep
+	 51mCfayIyMKtt+8+3qwQRtJlzD9XbPI3FkToCrxP2xUXhzZmep7oUCmjMAzYMapoPo
+	 H/6p7KJ2afjdwVq8eIGLuo3Anam9ZXYGGroQ0etWptj0c4Y6M38NFvq7Az9kS9k/DL
+	 ua2aQDWSBIVZw==
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-51da39aa6dcso3710660a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 07:21:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696861271; x=1697466071;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B96PVjO/dQ3gfVlhgj+phv5BjtntXKadFzqOCRy8X5o=;
+        b=JsBvsHyRtKFzBgxvdckJDj52jsyPdNyPdna+uf+zsI9a7MyGMJpvKa3Yl+ujQ7Q1V9
+         XT1tFi1fF0dlNgbiDbJiiKaostFhPBq9NhZFZTxD5bKQAt5tFG1AjPqrRzMSW3X03IBc
+         ZZQJjHHOMbtsxOoHgP71Azldrxm/zt/85s5P5UCNcR45DLDgzyAFW0afeIu5oMoHT1OV
+         BHoAgRCZaavVLcaO9qu3enI7ZAhs6ZWauWwuDMd4u2U3hDbQiiZeVA6/RVySwTQsjHOS
+         wJRNAe4eobHwgSH2k1shVD/27vQH8g/TcwUge1Fi7x3SQCor4jg6JaJQzHWqYPAy1JRN
+         7fAw==
+X-Gm-Message-State: AOJu0YzL/d/K/nslOPb66GxI79cKgu2HGv5oWqJNP1p4dzV6TUv8gMQ9
+	Rucs05fTb79rTqr2fLlFC7aWyJxrXBrt6QOkcF8dIiaCWcgUGn9c0p5CwqU+FzkUuzbDfkDZ4os
+	LT4XRQusP+xWwzXNIwX0Bg/+t++Qzxut93F+roWCPhD/9
+X-Received: by 2002:aa7:de0b:0:b0:52f:fa53:9fb6 with SMTP id h11-20020aa7de0b000000b0052ffa539fb6mr13592181edv.10.1696861271601;
+        Mon, 09 Oct 2023 07:21:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGN5uHW2mQbyZfXtLTo4TlVZ+BI37A+D7RKCe90j3APgcSY4/uXNoFPWjpcwltgcTAQgtkoOA==
+X-Received: by 2002:aa7:de0b:0:b0:52f:fa53:9fb6 with SMTP id h11-20020aa7de0b000000b0052ffa539fb6mr13592151edv.10.1696861271298;
+        Mon, 09 Oct 2023 07:21:11 -0700 (PDT)
+Received: from localhost (host-79-19-77-113.retail.telecomitalia.it. [79.19.77.113])
+        by smtp.gmail.com with ESMTPSA id j13-20020aa7ca4d000000b00536275c28dbsm6058070edt.94.2023.10.09.07.21.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Oct 2023 07:21:10 -0700 (PDT)
+Date: Mon, 9 Oct 2023 16:21:09 +0200
+From: Andrea Righi <andrea.righi@canonical.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, greg@kroah.com, tmgross@umich.edu
+Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
+Message-ID: <ZSQMVc19Tq6MyXJT@gpd>
 References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
- <20231009013912.4048593-2-fujita.tomonori@gmail.com>
- <1aea7ddb-73b7-8228-161e-e2e4ff5bc98d@proton.me>
- <4ced711a-009c-4e57-a758-1d13d97e18d2@lunn.ch>
- <f5878806-5ba2-d932-858d-dda3f55ceb67@proton.me>
+ <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
+ <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f5878806-5ba2-d932-858d-dda3f55ceb67@proton.me>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> > Locking has been discussed a number of times already. What do you mean
-> > by timing?
+On Mon, Oct 09, 2023 at 02:53:00PM +0200, Miguel Ojeda wrote:
+> On Mon, Oct 9, 2023 at 2:48 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > Any ideas?
 > 
-> A few different things:
-> - atomic/raw atomic context
+> That is `RETHUNK` and `X86_KERNEL_IBT`.
+> 
+> Since this will keep confusing people, I will make it a `depends on !`
+> as discussed in the past. I hope it is OK for e.g. Andrea.
 
-PHY drivers need to access a slow MDIO bus, so you are always in
-thread context which can sleep. Even the interrupt handler is in
-thread context, and the device lock is held.
+Disabling RETHUNK or IBT is not acceptable for a general-purpose kernel.
+If that constraint is introduced we either need to revert that patch
+in the Ubuntu kernel or disable Rust support.
 
-> >>> +macro_rules! module_phy_driver {
-> >>> +    (@replace_expr $_t:tt $sub:expr) => {$sub};
-> >>> +
-> >>> +    (@count_devices $($x:expr),*) => {
-> >>> +        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
-> >>> +    };
-> >>> +
-> >>> +    (@device_table [$($dev:expr),+]) => {
-> >>> +        #[no_mangle]
-> >>> +        static __mod_mdio__phydev_device_table: [
-> >>
-> >> Shouldn't this have a unique name? If we define two different
-> >> phy drivers with this macro we would have a symbol collision?
-> > 
-> > I assume these are the equivalent of C static. It is not visible
-> > outside the scope of this object file. The kernel has lots of tables
-> > and they are mostly of very limited visibility scope, because only the
-> > method registering/unregistering the table needs to see it.
-> The `#[no_mangle]` attribute in Rust disables standard symbol name
-> mangling, see [2]. So if this macro is invoked twice, it will result
-> in a compile error.
+It would be nice to have a least something like
+CONFIG_RUST_IS_BROKEN_BUT_IM_HAPPY, off by default, and have
+`RUST_IS_BROKEN_BUT_IM_HAPPY || depends on !`.
 
-Invoked twice in what context? Within one object file? That i would
-say is O.K. In practice, you only every have one table per driver.
+-Andrea
 
-As i said, i expect these symbols are static, so not seen outside the
-object file. So if it is involved twice by different PHY drivers, that
-should not matter, they are not global symbols, so the linker will not
-complain about them. Also, in the Linux world, symbols are not visible
-outside of a kernel module unless there is an EXPORT_SYMBOL_GPL() on
-the symbol. So even if two kernel drivers do have global scope tables
-with the same name, they are still invisible to each other when built
-into the kernel, or loaded at runtime.
-
-       Andrew
+> 
+> Cheers,
+> Miguel
