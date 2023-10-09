@@ -1,61 +1,60 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBB2C8F8;
-	Mon,  9 Oct 2023 12:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C166211C8F;
+	Mon,  9 Oct 2023 12:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qj+3v/rD"
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA13C9D;
-	Mon,  9 Oct 2023 05:53:12 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5a21ea6baccso54650617b3.1;
-        Mon, 09 Oct 2023 05:53:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KKLPnSSx"
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A628F;
+	Mon,  9 Oct 2023 05:59:31 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5a24b03e22eso54701307b3.0;
+        Mon, 09 Oct 2023 05:59:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696855992; x=1697460792; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696856371; x=1697461171; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XsH+1QX7hsku5ET4BmlWuuWtr+U2Xh27ghsMF+v5n9c=;
-        b=Qj+3v/rDefinMDB+HmlmkCS/Cbemmz+6WH+zxwKtOn+0veSoQn+eyUfWSSTcUgeKwg
-         Uefr9MQUVcz/w3O5LOLDGnvKaNSBvJbSFFMn9ydNE8ozbJp7YFp5z/9sjsOfEZIxdE04
-         jHAuViahn76q+HqYUS9h2+KRmSZ08Mz7lWBA/8VY4m7/29lB+mFHdxBg8gJHqBR2j6aa
-         TvuCfPg3gItd+c/PV5Bq3Uo6FSulHQ6nUYfE/IJ448S0JRxmDDRkgJ74cqgnbqpClqvr
-         HPUH+qQyzP7ySF6Dif5zRzatvKX3DDn+YjY+zhi8eGYNnKP5BhgZ+5nysxHKjh5+avem
-         cG9A==
+        bh=5bl99KSZcP/27MEvX7HscmzAqUVMI6/bOdAU0krO6ho=;
+        b=KKLPnSSxOuBZM8K55VUBX3HK0zzaNvctPUsEVdosC9tbdNQ/URauRM/3Ky0JcMgh4+
+         pPnefERvZYE/RLWJlKEFOk4TWOFjL7QIAvsAdV4UZN3qhkGLrd61ekg0ajZZGlLCR6os
+         rVN9SnQc9VTZKqusJiw6yk/0jBaud5Btn982XdusbjFujJ1PYMa8YcZ2bLsRmbvEs5JR
+         17r6FS+h6n5yjWI1liAdRP8CQK+kPcsHbi+4v3LqAtNZGNipL78ZDeXsYzMrgDFETZq8
+         9xqEYkUucXZjoSKqIjDyBoG8ICVA9NOK3HaCrI9KwG/k1cOfRC8vbgno5vdb55dr8h13
+         U96g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696855992; x=1697460792;
+        d=1e100.net; s=20230601; t=1696856371; x=1697461171;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XsH+1QX7hsku5ET4BmlWuuWtr+U2Xh27ghsMF+v5n9c=;
-        b=p7v14Hr4jNRDzb9LZzTJf3TlHJ8h/by5TGiiutMXKEkSTHSbvJa6RDYZwzHn9oRSDa
-         KFp8H87oRLYDG+pX6LtRrouSHZk0UQxFmb8YqC0Al9jOphLnPuY9Tep96yGWyKXFdteD
-         UQXno34Uvvjpq9tvuJUMBIkZw7vkW2Q4ymBF7nnCUNe+Je/rG2AJlWWfg+XRHaGnxYS8
-         poT165H1dky7sIVCX3DWDtDsA0qgXJza4YwtJkF6iQrIBX7N2dnMunj0KO/NtiYxNKCW
-         E9nEYej7uQTpsqUviP3OmiQynsVnRmOssrzTb56ueDpyAOPSzCUms03OB70Ox1/aiexe
-         wyyg==
-X-Gm-Message-State: AOJu0Yz5WLY+/xTTuj7fZe4DdFbYPVYv63nT6gAks0dWZofqifpqWj7U
-	r0FIXpVVrrYd0fpwZjJ7+Up+bwbGRisWjMPhYeQ=
-X-Google-Smtp-Source: AGHT+IGOPofh50OtRMO6gOE7TN3Wrw+Ctm2WnKWzL3gBLVfAT0ZVl+vOa/ZIJ+Vo+Yam0sPwIdK+d/lzuLx2L/S5kRo=
-X-Received: by 2002:a0d:f182:0:b0:5a4:3e67:35a3 with SMTP id
- a124-20020a0df182000000b005a43e6735a3mr14879274ywf.49.1696855992056; Mon, 09
- Oct 2023 05:53:12 -0700 (PDT)
+        bh=5bl99KSZcP/27MEvX7HscmzAqUVMI6/bOdAU0krO6ho=;
+        b=wX6Xo0IlbdUxNMiDpSiR/rg38foQ9LIotRUshR0jujWvRpHvcAmtsb2sqDdm/qHMcK
+         w23sIo8m+lEmvfkYjF5/Oe5paM3JrkBhcmT5ivyAZAedphUA33bQpBCmXN1TEAskSP01
+         8Sm87rLFHFrT85x+2JkLQp2giXLW3PX3xMX14MhGk2Fi24L55/f1R/IeQzuRBCVneHdw
+         LljxFf3eMrY1U5L1Idvo2whBGe/8ziZte5nu95smoqtJ8jFUbVcWigmz2RIhmK0E2rh2
+         QfSDYR9N9MSLKUOg7rp5QxfEQm1BRMHJ/L1Q9IIoLZi1V463Cw1lCYUen78/9iDJHHBM
+         IW5Q==
+X-Gm-Message-State: AOJu0YzLrRwnF2d3WNnvrJHNb+cqCeS8uoO1RfJl+UvrVFBrSLHitE8V
+	bkey3p3uBa7Jiab51xcQtDFHD/wItJQ8+66SGjgBJIy71Bxs8OqU
+X-Google-Smtp-Source: AGHT+IEKCUPwPknGInIBeXg1s/cpwSP57kZF+tlo6eDk8DDZeA7HDjdHtUwt+Ah2ho3c0lme0Mj4/X/aSD3+XM9gprM=
+X-Received: by 2002:a81:7309:0:b0:59b:2458:f608 with SMTP id
+ o9-20020a817309000000b0059b2458f608mr16316028ywc.30.1696856370794; Mon, 09
+ Oct 2023 05:59:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com> <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
-In-Reply-To: <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com> <20231009013912.4048593-2-fujita.tomonori@gmail.com>
+In-Reply-To: <20231009013912.4048593-2-fujita.tomonori@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Oct 2023 14:53:00 +0200
-Message-ID: <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, greg@kroah.com, tmgross@umich.edu, 
-	Andrea Righi <andrea.righi@canonical.com>
+Date: Mon, 9 Oct 2023 14:59:19 +0200
+Message-ID: <CANiq72nBSyQw+vFayPco5b_-DDAKNqmhE7xiXSVbg920_ttAeQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	greg@kroah.com, tmgross@umich.edu, Wedson Almeida Filho <wedsonaf@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -65,14 +64,153 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 9, 2023 at 2:48=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+Hi Tomonori,
+
+A few nits I noticed. Please note that this is not really a full
+review, and that I recommend that other people like Wedson should take
+a look again and OK these abstractions before this is merged.
+
+On Mon, Oct 9, 2023 at 3:41=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> Any ideas?
+> +config RUST_PHYLIB_BINDINGS
 
-That is `RETHUNK` and `X86_KERNEL_IBT`.
+This should be called ABSTRACTIONS. Please see:
 
-Since this will keep confusing people, I will make it a `depends on !`
-as discussed in the past. I hope it is OK for e.g. Andrea.
+    https://docs.kernel.org/rust/general-information.html#abstractions-vs-b=
+indings
+
+Also, could this symbol go elsewhere?
+
+> +        bool "PHYLIB bindings support"
+
+Ditto.
+
+> +          a wrapper around the C phlib core.
+
+Typo.
+
+> +               --rustified-enum phy_state\
+
+As I said elsewhere, we should avoid `--rustified-enum` due tot he
+risk of UB unless we are explicit on the assumptions we are placing on
+the C side.
+
+> +#![feature(const_maybe_uninit_zeroed)]
+
+The patch message should justify this addition and warn about it.
+
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> new file mode 100644
+> index 000000000000..f31983bf0460
+> --- /dev/null
+> +++ b/rust/kernel/net/phy.rs
+> @@ -0,0 +1,733 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
+
+Newline missing.
+
+> +    /// Full-duplex mode
+
+Please use the style of the rest of the Rust comments.
+
+> +/// An instance of a PHY device.
+> +/// Wraps the kernel's `struct phy_device`.
+
+That should be separated.
+
+> +    /// For the duration of the lifetime 'a, the pointer must be valid f=
+or writing and nobody else
+
+Missing Markdown around the lifetime.
+
+> +        // FIXME: enum-cast
+
+Please explain what needs to be fixed.
+
+> +    /// Executes software reset the PHY via BMCR_RESET bit.
+
+Markdown missing (multiple instances).
+
+> +    /// Reads Link partner ability.
+
+Why is "link" capitalized here?
+
+> +/// Creates the kernel's `phy_driver` instance.
+> +///
+> +/// This is used by [`module_phy_driver`] macro to create a static array=
+ of phy_driver`.
+
+Broken formatting? Does `rustdoc` complain about it?
+
+> +/// The `drivers` points to an array of `struct phy_driver`, which is
+> +/// registered to the kernel via `phy_drivers_register`.
+
+Perhaps "The `drivers` field"?
+
+> +            // SAFETY: The type invariants guarantee that self.drivers i=
+s valid.
+
+Markdown.
+
+> +/// Represents the kernel's `struct mdio_device_id`.
+> +pub struct DeviceId {
+> +    /// Corresponds to `phy_id` in `struct mdio_device_id`.
+> +    pub id: u32,
+> +    mask: DeviceMask,
+> +}
+
+It would be nice to explain why the field is `pub`.
+
+> +    /// Get a mask as u32.
+
+Markdown.
+
+This patch could be split a bit too, but that is up to the maintainers.
+
+> +/// Declares a kernel module for PHYs drivers.
+> +///
+> +/// This creates a static array of `struct phy_driver` and registers it.
+
+"kernel's" or similar
+
+> +/// This also corresponds to the kernel's MODULE_DEVICE_TABLE macro, whi=
+ch embeds the information
+
+Markdown.
+
+> +/// for module loading into the module binary file. Every driver needs a=
+n entry in device_table.
+
+Markdown.
+
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +///
+> +/// use kernel::net::phy::{self, DeviceId, Driver};
+> +/// use kernel::prelude::*;
+> +///
+> +/// kernel::module_phy_driver! {
+> +///     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
+> +///     device_table: [
+> +///         DeviceId::new_with_driver::<PhyAX88772A>(),
+> +///         DeviceId::new_with_driver::<PhyAX88772C>(),
+> +///         DeviceId::new_with_driver::<PhyAX88796B>()
+> +///     ],
+> +///     name: "rust_asix_phy",
+> +///     author: "Rust for Linux Contributors",
+> +///     description: "Rust Asix PHYs driver",
+> +///     license: "GPL",
+> +/// }
+> +/// ```
+
+Please add an example above with the expansion of the macro so that it
+is easy to understand at a glance, see e.g. what Benno did in
+`pin-init` (`rust/init*`).
+
+Also, perhaps splitting the patches into a few would help.
 
 Cheers,
 Miguel
