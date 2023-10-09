@@ -1,79 +1,87 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C8D156C3;
-	Mon,  9 Oct 2023 21:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D6A42BF5
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 22:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="upSPK5b/"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5BBE1713;
-	Mon,  9 Oct 2023 14:21:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=y258R4tYn2ASUhxooXI9HDwo6MCdCIhW1mOUV2mlQ0c=; b=up
-	SPK5b/BclabmHhjQkAxJMFu2crAZSE5ThmtbPV2oyL3Rj5EebGp2wpp7GiuRaA4oMOBvJ+nlsRKIR
-	IBoIEonKAuqUE5KEeEuBMExUdGcfA6pes+zpy7sk5qPNb20je4XV5c8SX/mS5UewpT930b8q9Xy50
-	PnATn4x/DtOH0bs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qpxgd-0010Yf-BI; Mon, 09 Oct 2023 23:21:11 +0200
-Date: Mon, 9 Oct 2023 23:21:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Trevor Gross <tmgross@umich.edu>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, gregkh@linuxfoundation.org,
-	miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <16509b83-27a8-4b43-a27d-a895772e4693@lunn.ch>
-References: <CANiq72nBSyQw+vFayPco5b_-DDAKNqmhE7xiXSVbg920_ttAeQ@mail.gmail.com>
- <20231009.224907.206866439495105936.fujita.tomonori@gmail.com>
- <2023100926-ambulance-mammal-8354@gregkh>
- <20231010.002413.435110311325344494.fujita.tomonori@gmail.com>
- <CALNs47unEPkVtRVBZfqYJ_-tgf3HJ6mxz_pybL+y3=AXgX2o8g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRCJjEXm"
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0320A9;
+	Mon,  9 Oct 2023 15:00:50 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-59e88a28b98so43203227b3.1;
+        Mon, 09 Oct 2023 15:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696888850; x=1697493650; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YaFaP65UCsCQ7UFZs55oDxqvd/C/aEIgYAqZMLZc35k=;
+        b=QRCJjEXmn2gwi0XYp+xDv/TLLOhjeSuKIRzEfql676/7UqQG7PILVET/iAlqtAPcl0
+         MfofxQ80AXgrsaNe5eOlQypUfTuT0lc4DdrayDWUmLYC7zTEhv4JbFu+pF7gBJ/+NXQq
+         r0e4w+DaVA9E/WWYTKA9zH0EPt7S5wHcb21FnOFPRO8iulFuk0F/4vfYCI9Ha0hty5t/
+         QS5XWTMRsYcd9xxyH6gTD7AaHhJEcajPq35JR5TAao0Q7DMfsKB9RReerKYpR73jyZ91
+         +M08jCMKhTzxedOdyMhbfC6dixEqUVbrf7wOVfRo73ZiVqZLwmRnB9gssZp6bqqxeIg7
+         F+7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696888850; x=1697493650;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YaFaP65UCsCQ7UFZs55oDxqvd/C/aEIgYAqZMLZc35k=;
+        b=APBq+IxXl7DTEFwCoSgHE/WiEzkQL3YksvVmP0iD3l4WI1LoB4kqAJZC3cQq8+339W
+         aGlFfeJJzuZF8s38+o1dj2vHnzYHd6xhHd/bkwoUWwzh5SQQrRmdfaJbvSQNCWSi2GV0
+         Z+gDlvSnEJWlY4Otlhth7F29exn04odnF/11W5/BLalRruEzKZGxR0OQUr4vnHzUD1mA
+         k6Q8X8m0j0j7VBCZgc/xdBwiQ8zAQ2RePjLVS4AbsC+suBBkeCtN1tbyOIMkOR6/aE3o
+         4dxgAnNAH5+UCugJh/WMBnmePnXORcwJNTPOqL0lAMV/JRXVUx719HBIS0Yhk3mU1gcz
+         OdOQ==
+X-Gm-Message-State: AOJu0YxmgL4vA6Afl5gbn7dKXQkdKyGDqxZSU3z2rMis999+s4gKYWFu
+	UoB6gz4ImYY55RjYnR3hGQ9fj41RMoRTW1qR24c=
+X-Google-Smtp-Source: AGHT+IHJn5aLVv8I0nHEAFYZqkKXk9+RdR00KxRNGwBs89E5Tf4VBtacqDxZFEYWVNFBVlRVBv9vOmV6h2CUAHAtCNw=
+X-Received: by 2002:a81:6e44:0:b0:577:3f8c:fc60 with SMTP id
+ j65-20020a816e44000000b005773f8cfc60mr8032221ywc.1.1696888850022; Mon, 09 Oct
+ 2023 15:00:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALNs47unEPkVtRVBZfqYJ_-tgf3HJ6mxz_pybL+y3=AXgX2o8g@mail.gmail.com>
+References: <20231005214057.759089-1-mmaurer@google.com> <CAK7LNATBBk-a0EJcxpWGJ9n+9BHQUw3a4s41LTtC-R8fYrVMpw@mail.gmail.com>
+In-Reply-To: <CAK7LNATBBk-a0EJcxpWGJ9n+9BHQUw3a4s41LTtC-R8fYrVMpw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Oct 2023 00:00:38 +0200
+Message-ID: <CANiq72=Dsaa77n-OKDZCcv6TWgxZf7R00n=X137WbsUzwgU4RA@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: Respect HOSTCC when linking for host
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 09, 2023 at 05:07:18PM -0400, Trevor Gross wrote:
-> On Mon, Oct 9, 2023 at 11:24 AM FUJITA Tomonori
-> <fujita.tomonori@gmail.com> wrote:
-> > Trevor gave Reviewed-by. Not perfect but reasonable shape, IMHO. Seems
-> > that we have been discussing the same topics like locking, naming, etc
-> > again and again.
-> 
-> To be clear: this is ONLY for the rust design, I am not at all
-> qualified to review the build system integration. I provided a review
-> with the known caveats that:
+On Sat, Oct 7, 2023 at 5:38=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.or=
+g> wrote:
+>
+> Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+>
+> if Miguel picked this up.
+>
+> Please let me know if I should pick this up.
 
-There is this patch going through review at the moment.
+Thanks a lot for taking a look Masahiro -- either way is fine for me.
+If you want to take it, please feel free to add my `Acked-by`.
 
-https://lore.kernel.org/netdev/fad9a472-ae78-8672-6c93-58ddde1447d9@intel.com/T/
-
-Which says:
-
-+It's safe to assume that the maintainers know the community and the level
-+of expertise of the reviewers. The reviewers should not be concerned about
-+their comments impeding or derailing the patch flow.
-
-Even though Rust is new to netdev, there has been enough discussion
-that we should be able to figure out what reviewers domain of
-expertise is. That is part of the job of being a Maintainer for
-netdev.
-
-    Andrew
+Cheers,
+Miguel
