@@ -1,123 +1,83 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E12358A2
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 15:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C1C3589F;
+	Mon,  9 Oct 2023 15:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="auSPnnma"
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EFA59E
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 08:09:35 -0700 (PDT)
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D6FF13F0EF
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 15:09:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1696864172;
-	bh=g1ZxryJ9Fp89sg+aPudijHRzb5lOs8xwITYaOZXplaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=auSPnnmaOyn/GcW6R3ZlUpAgvKRn2PdFeyhqLyn5hasjJM86068jhxo9sPkFnLtg/
-	 ckRaAfBMHHoPR/J82tPx7zep/LZ6LYKrBSfgYU7THCNHzQFNSW7WDoPB5BtJ3ZN2zg
-	 Bgp72FqMa49wVMHauCHT5x2PLls8H1aVF7J+sO+2z9joIhxiLbBuSRWHgbRNUwPGx4
-	 GC8QQ8QGxoFPMs2s0Pi9zM69ncJWggzYHRg/x1b/UUCOHa9KmSqbHPKnbKH/8xHuup
-	 qa1punVI3TDOchhilS6LxaZ1SQgp0uJYAC3PyxX/Nk/0Byk9fSD0KrhjOuFd116JDB
-	 YkXwHaM25gAKA==
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-32661ca30d9so3065603f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 08:09:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YLcOIB/A"
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A92B7;
+	Mon,  9 Oct 2023 08:10:34 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-59f57ad6126so53889647b3.3;
+        Mon, 09 Oct 2023 08:10:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696864233; x=1697469033; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FMC88S0qrfafC1vEN5gaaHAmtL09HThTcq7GEvuJAPE=;
+        b=YLcOIB/Az+5L/+/0oXXLXDy9Knje3UqxIzmTz8jv78vciL0nUegBeWB4r7/D6jPesW
+         U4kbxK6q80QGgfxBMFIwXFPSp0ONcy87lSqLOeMyJNMv74iHJ1yRMmhLHIhLEg76OUd+
+         6A689bKyEYrQ8be/tbEDDDKd33WteKJA/EtdxWg76InOEtUFSMpYI7OdnKcw7ryrYOVq
+         HCt0g/L92/vIY+IdzRFZt7UgsrCWlX0tK5W5uBlDvCJnYRlhrwECO+1oJqMncNNT7oTK
+         L7M3kxUOu9mtZFaQveY6+dcS7N1vYOVTrqSCkslPqqjOH8NtB4DGVdjQKkWAt1engBTu
+         W6Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696864172; x=1697468972;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g1ZxryJ9Fp89sg+aPudijHRzb5lOs8xwITYaOZXplaA=;
-        b=QoMSwWz4NxrOUtc7/mjJaMynysT5hSz7ExEg8lkMsfx2AlZzJsHgakmkMiElPUdfRu
-         PWdxSkQrOxV+6U863Ehv2Y7u3eBtzUkzfSWkNrC3sOOt+9YsFVWt7bSZucpSCKdbCQt5
-         JEBics/gotmZGHFI5EbmUQtky9kZC0VyKhJjIDbN/Qx30EFx2GH1uDmVmMHoYsRRcfcY
-         QVkRG35LHPKqM73EYx2yjtjB69nLh7F3FWN7ws2ANONLOirgV8MUuOG9R7GO1QMUGc7v
-         8D/+DE9SNT9z+HnkPa+AP5H0ESSms7+BdmQaPKsOwJ+ihGh1bTuF4LsVoXSphuoKLvgA
-         HXTw==
-X-Gm-Message-State: AOJu0YxN+X+ScGSounVeHHzoK8DjUY65qnLonT/iyJT3gH0bo8s/t9io
-	crCXWorbypH3GMVtdIVpuqtJWJeG727SunXzhMdTSCyArZYwluTbCrb2VUX4O0+Ea34EuCCUnsT
-	UTFOMPXIqUMM+BHTlhYP6Vw+6ObVMwAhamANICjWi4YlK
-X-Received: by 2002:a5d:4b48:0:b0:319:7a91:7107 with SMTP id w8-20020a5d4b48000000b003197a917107mr12511712wrs.48.1696864172366;
-        Mon, 09 Oct 2023 08:09:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNdhhpK3/6huTJ/MSJwcUs4ijAlXc+xATCdR6O+yF7QfE/IfnubleLZztmPTkh4CJ2Hth6cw==
-X-Received: by 2002:a5d:4b48:0:b0:319:7a91:7107 with SMTP id w8-20020a5d4b48000000b003197a917107mr12511679wrs.48.1696864171687;
-        Mon, 09 Oct 2023 08:09:31 -0700 (PDT)
-Received: from localhost (host-79-19-77-113.retail.telecomitalia.it. [79.19.77.113])
-        by smtp.gmail.com with ESMTPSA id d15-20020a056402516f00b0051e1660a34esm6274494ede.51.2023.10.09.08.09.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 08:09:31 -0700 (PDT)
-Date: Mon, 9 Oct 2023 17:09:29 +0200
-From: Andrea Righi <andrea.righi@canonical.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
-Message-ID: <ZSQXqX2/lhf5ICZP@gpd>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
- <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch>
- <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
- <ZSQMVc19Tq6MyXJT@gpd>
- <2023100901-panic-strobe-5da7@gregkh>
+        d=1e100.net; s=20230601; t=1696864233; x=1697469033;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FMC88S0qrfafC1vEN5gaaHAmtL09HThTcq7GEvuJAPE=;
+        b=fN6GsOL5wZx+AG0FCkBZ+ymqjywg0byTDv88AjpUXufeJ4nL8qlIWJ+HtpXPDLYOTZ
+         RGRlqGL6E2ubkPylESrb9iO5SMMQkctQokU5ztzHL4kHG7fIpT8MZYxGrUe06+i/zfka
+         hiS+2R1N8YohI9OwwshMFaRW/h9It1o0Uq9pex7zfq8+0n5HS+trY0hxL1XURN8YyTBw
+         AJnaw8cfgoCv/eBGmy6h8VtYxq1GGsY8GXyxp5dnO67Im+rHOxXUNVaSYFR+nCHgw3nZ
+         sBi+KZFfhIzQx74PFM6lQN471gVB/azvryPLSLsmPrYJ/zHnrHFQC0GSnCCPpVd+4NQ1
+         ZAMg==
+X-Gm-Message-State: AOJu0YxglY4fZtsFusHscMKGA9Fetn0xlojcwsofxPDkfRADwmoJQlBS
+	J1clMV3lagMwI48n1Y/KSIbmnnol+UBuFxbEVKs=
+X-Google-Smtp-Source: AGHT+IEdEuB7xC+WUjlCyKLk9t5Ed59FyH/tK2PMhwif/tn2St2Ody7LWF8HzSES0hkEi1+Cwe2D4TfJNE8mGR+PsC8=
+X-Received: by 2002:a0d:c787:0:b0:583:b186:d817 with SMTP id
+ j129-20020a0dc787000000b00583b186d817mr15342503ywd.27.1696864233434; Mon, 09
+ Oct 2023 08:10:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023100901-panic-strobe-5da7@gregkh>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-	version=3.4.6
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
+ <5334dc69-1604-4408-9cce-3c89bc5d7688@lunn.ch> <CANiq72n6DMeXQrgOzS_+3VdgNYAmpcnneAHJnZERUQhMExg+0A@mail.gmail.com>
+ <ZSQMVc19Tq6MyXJT@gpd> <a3412fbc-0b32-4402-a3c8-6ccaf42a2ee4@lunn.ch> <2023100902-tactful-april-559f@gregkh>
+In-Reply-To: <2023100902-tactful-april-559f@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Oct 2023 17:10:21 +0200
+Message-ID: <CANiq72mDKVKv805n7zQ6SOLhtrp_P2Gi_C89Kis8SGgT1JhT6w@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/3] Rust abstractions for network PHY drivers
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrea Righi <andrea.righi@canonical.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 09, 2023 at 04:56:47PM +0200, Greg KH wrote:
-> On Mon, Oct 09, 2023 at 04:21:09PM +0200, Andrea Righi wrote:
-> > On Mon, Oct 09, 2023 at 02:53:00PM +0200, Miguel Ojeda wrote:
-> > > On Mon, Oct 9, 2023 at 2:48 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> > > >
-> > > > Any ideas?
-> > > 
-> > > That is `RETHUNK` and `X86_KERNEL_IBT`.
-> > > 
-> > > Since this will keep confusing people, I will make it a `depends on !`
-> > > as discussed in the past. I hope it is OK for e.g. Andrea.
-> > 
-> > Disabling RETHUNK or IBT is not acceptable for a general-purpose kernel.
-> > If that constraint is introduced we either need to revert that patch
-> > in the Ubuntu kernel or disable Rust support.
-> 
-> Why is rust enabled in the Ubuntu kernel as there is no in-kernel
-> support for any real functionality?  Or do you have out-of-tree rust
-> drivers added to your kernel already?
+On Mon, Oct 9, 2023 at 5:04=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> Is MIPS a proper target for rust yet?
 
-Rust in the Ubuntu kernel is just a "technology preview", enabled in the
-development release only. The idea is to provide all the toolchain,
-dependencies, headers, etc. in the generic distro kernel, so those who
-are willing to do experiments with Rust can do that without installing a
-custom kernel.
+The compiler has support for it
+(https://github.com/Rust-for-Linux/linux/issues/107), but I didn't do
+mips pre-merge.
 
-And as soon as new Rust abstractions will be merged upstream we already
-have the infrastructure that would allow anybody to use them with all
-the components provided by the distro.
+The ones I tried (and that we had in the CI back then pre-merge) were:
+arm, arm64, ppc64le, riscv64 and x86_64.
 
-So, we really don't have any out-of-tree module/driver that requires
-Rust at the moment.
-
--Andrea
-
-> 
-> thanks,
-> 
-> greg k-h
+Cheers,
+Miguel
