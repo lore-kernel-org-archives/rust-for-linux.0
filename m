@@ -1,110 +1,75 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C44374F0
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 16:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883B135894;
+	Mon,  9 Oct 2023 16:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aKrtAd/a"
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38D2F9E
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 09:01:13 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-534694a9f26so16313a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 09:01:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696867271; x=1697472071; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zy5f8ORtjUWrgt6sYe3zAtjW8P0Slkj5alaIenUuvkA=;
-        b=aKrtAd/apyvDwBTXOL2x+4v9FYk4wHTVm4maaxcAbTlxsn94pIijPz8X+b6ePHkKHU
-         KAaZK3Fcrjv1yTSxumGjzV2Sbzf0vujyKm15Ydm3/YWwrfbesw4MwinrmBodxn5gywn7
-         p6gpu3Vz/3MzwFppNPt1T0ZDmOKTG6W4SQN/CigA4JA3w/42nlj07+VP7gKWGoh73V3N
-         p62D+HvdSlhYsd/I4zrxHRbfw26ruG2T7VRysjliyDQVSSyRx/euuha62wj+d6B55sez
-         o5uXOJQfYOmlQ5FvFg1pwbrAcm4+DuuGFM0IB40Svk0JypLZKcsimph1gkUJgH5d/i+a
-         3YOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696867271; x=1697472071;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zy5f8ORtjUWrgt6sYe3zAtjW8P0Slkj5alaIenUuvkA=;
-        b=gk/sfHvG86fUxLOxpkDnVPjgngbGomt1AudNh0qKdXrcnHEcLvIef/youBQFvlHzQ1
-         JrAvmSOjtu+6qEGylZTEjRpqCZOi+vGZycYEmSJXYRvNZlScjSP+Kny8TkdCrM1Y6FLh
-         OFSkWrX+50EAZmMwOahe57zbC7fWuijt8XfNUN4ENE2JhdEZSEaYXpzGaQUbSljcSqFi
-         M1/qzZsFRJxJ+CrCq0Tk7hsTcJ+fPRUni4MK62Eaqe6U1iWVj092Gxw9rjPm46SeGS14
-         lal2EUf2HdU/8DaprTKgWJChPwHfbqG5So+pZmSJPut4dxGdCchmPW7ZZyz1h4fEoSyF
-         GW2g==
-X-Gm-Message-State: AOJu0YwhjaN4tEOea/FbCebOMJe+F61F4B8RWqWMJdkcrqZ24ea7Y3A4
-	cBKFpl2q4E9RCDUTsv0IKzf80ZswnrEx8+wX3oWTYQ==
-X-Google-Smtp-Source: AGHT+IHMBy+3dUtNsP01KGzd8vcaNjxx/WJQdaZekS0DI0TUctsOfctSoMaVeTw3eiPY4I0DEmZh1AWM2/zlPyQ93IQ=
-X-Received: by 2002:a50:9fa4:0:b0:538:5f9e:f0fc with SMTP id
- c33-20020a509fa4000000b005385f9ef0fcmr404150edf.0.1696867271482; Mon, 09 Oct
- 2023 09:01:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nneWO9Mh"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A7691;
+	Mon,  9 Oct 2023 09:09:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=tkLoPuAmDfRZ3pQKJbR2tXFKWqRix4Ak4xxSNx1VgGY=; b=nneWO9Mh/dNKEIJx//R4XX9bRW
+	L30QML+UJ8JEu1lJtm1zWTrlyvgqRlotSEh8ZOCMIeYe02JDHGJvhj/ckYIqF532byVYu2Y+OnxT5
+	iRu+vG2412jAZ3HEIiSTVxjnXSk7Inook2udnZnbVBdElAGJ/lGmu1ev2mH0c5lZ94QA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qpsp4-000vpT-Ct; Mon, 09 Oct 2023 18:09:34 +0200
+Date: Mon, 9 Oct 2023 18:09:34 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Jiri Pirko <jiri@resnulli.us>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, greg@kroah.com, tmgross@umich.edu,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Subject: Re: [PATCH net-next v3 3/3] net: phy: add Rust Asix PHY driver
+Message-ID: <59affc74-862f-45e1-ac42-9a2007db4c97@lunn.ch>
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
+ <20231009013912.4048593-4-fujita.tomonori@gmail.com>
+ <ZSOqWMqm/JQOieAd@nanopsycho>
+ <bdfac30f-364f-4625-a808-fcffab2f75b4@lunn.ch>
+ <CANiq72k4F4EY-cLYMsRFsAnjd9=xyMN_4eHS9T7G1s=eW7kHjw@mail.gmail.com>
+ <fd715b79-3ae2-44cb-8f51-7a903778274f@lunn.ch>
+ <CANiq72=OAREY7PNyE2XbFzLhZGqaMPGDg3Cbs5Lup0k5F7fnGg@mail.gmail.com>
+ <CANiq72mVRO18ZCFBnKPbJfxkD6A5hsOoVwk8Sef7rVX7GnTBzg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
- <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com> <CANiq72khuwOrAGN=CrFUX85UmPdJiZ2yM7_9_su_Zp951BHMMA@mail.gmail.com>
-In-Reply-To: <CANiq72khuwOrAGN=CrFUX85UmPdJiZ2yM7_9_su_Zp951BHMMA@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Mon, 9 Oct 2023 09:00:58 -0700
-Message-ID: <CAGSQo00gJsE+mQObeK4NNGDYLpZDDAZsREr15JcjD8Fo0E4pkw@mail.gmail.com>
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Peter Zijlstra <peterz@infradead.org>, rcvalle@google.com, 
-	Miguel Ojeda <ojeda@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@google.com>, David Gow <davidgow@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-	autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72mVRO18ZCFBnKPbJfxkD6A5hsOoVwk8Sef7rVX7GnTBzg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-I have a patchset enabling support for both KCFI and IBT in the
-kernel, but it uses changes not yet landed in stable rustc, which is
-why I haven't sent it to the list yet:
-https://github.com/Rust-for-Linux/linux/pull/1034
+> The goal of the call is to get the different parties involved, since
+> there are quite a few trying to upstream different bits and pieces
+> around networking. In particular, we want to discuss having
+> a`rust-net` branch where everybody can work together on the networking
+> abstractions and iterate there.
+> 
+> So that is another alternative. Of course, the `rust-net` branch could
+> be in the networking tree instead.
 
-We've backported the changes to rustc that need to be present onto the
-Android copy of the compiler, but it will take 6-12 weeks for them to
-hit stable rustc, which is what general Linux is using.
+My experience is, you need to use the netdev mailing list. Anything
+which is not developed in full few of netdev is very likely to get
+ripped to shreds and has no chance of being merged. As an extension to
+that, you should be targeting net-next.
 
-If the IBT part would be helpful by itself immediately, I can split
-that out - it's only the KCFI portion that won't currently work.
+The mailing list has multiple purposes, one of which is education. The
+netdev community needs to learn about Rust, in the same way the Rust
+community needs to learn about netdev. If this experiment is a
+success, i expect Rust code to be no different to C code. It gets
+posted to netdev, it gets run through the netdev CI, and eventually
+merged via net-next.
 
-On Fri, Oct 14, 2022 at 1:40=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, Oct 14, 2022 at 8:35 PM Sami Tolvanen <samitolvanen@google.com> w=
-rote:
-> >
-> > Thanks, Miguel. I also talked to Ramon about KCFI earlier this week
-> > and he expressed interest in helping with rustc support for it. In the
->
-> Ah, that is great to hear -- thanks a lot to you both! (Cc'ing Ramon)
->
-> > meanwhile, I think we can just add a depends on !CFI_CLANG to avoid
-> > issues here.
->
-> ACK, thanks -- if you want to send the patch, please feel free to do so.
->
-> Cheers,
-> Miguel
+	Andrew
