@@ -1,66 +1,65 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B423210B
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 12:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B3E9CA63
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 12:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1+68d3A"
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B7B9F
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 05:25:52 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-59c215f2f4aso54202117b3.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 05:25:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NY41CcjO"
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E336AC
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 05:26:56 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5a21ea6baccso54303097b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 05:26:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696854352; x=1697459152; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696854416; x=1697459216; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q6z5YYybfFDyzl7Y6Qs/2G20fX1dijl2UdcJ6VBd874=;
-        b=H1+68d3Ap5tdEAwR4YwkBYRIUPEhZgDqyrI0PrSz6HlXQ1hovwcf228xYGmMpkghBX
-         del/2edWwZJinWhHjqWYKV1DvETjT3Wn9cmV6yE+nXjGGgOAGyQxxBGOK+0C3xKn93pr
-         +VFHSF/hlXxnGnLTxdh5F/CNhfC91V/U/1Z6P3NvaqRvmgVsuqdl+/ypPO2Ui7Bz0bFK
-         V9kOuO/ZL7VsQwneQVH05Ne7H2Z5CniHtx3Y1raE6r/8BbbctaFKxATSFpvBgz4FD7Yu
-         55ku76/nX4iBVr5ll4yKJs5dWEdVj1XQs0T8qY45EzXi8jFTuwafZuRU4da42x17qPLZ
-         33Cg==
+        bh=CKzt7P2iZ4LK2JwRJ9XKaHpQMPz3IdmYJdBwe7/O7io=;
+        b=NY41CcjOyrZpV0V4o1FeJywwqBJnfMjnewsJeScXEj2090iN1h7S0rNo60NIS0mqA6
+         GQj+LF3RvaoWUCl26NCqcTwcj87z901qA53IgVFt+kjCylAGItwR4SBoAoTnBzVTUJYG
+         r4Kr44+wr6H8VdYxVwc7dEl5p2D0rIJkqXtN7dJCLpPoUwYT+FTk/mfbVAj6yLcB5Oev
+         g1OmAf1Acya+oM/yRN3crBrbPegWonZ/ZEpDrGaKNufUBJeR4OLCQ3VMsMOgvS7GhzDG
+         vngipTK9IMTenC+e8vrUcRl2hBWsNpYM3vI1SrgmYtWHVjqWPtXttOrUps6ZMgohTPLY
+         FUJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696854352; x=1697459152;
+        d=1e100.net; s=20230601; t=1696854416; x=1697459216;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Q6z5YYybfFDyzl7Y6Qs/2G20fX1dijl2UdcJ6VBd874=;
-        b=qVHLAL8FT6yGGLXGacHfQrRcS9ff1AeL1BCLMpNVVKAzWKw3XuD6+LmSyQNHa7hKdS
-         z9pcFPNFtedvOQyjorE9ptGFuEw4cWqhqiPaMKvewEPahIFoH2uPS7yzY44HXqlacxxA
-         LkiTxw5gqB7ao6A4K6gFxoSWnXYHjjYHBNTjUcGj8ySqCR892EkhnWgRi8yQuxQA7Uoa
-         UdZAhiBNfOgYYK4Ml7mADZKENqilK44sPhhwLZY9hLelvsI3mPuVduz5RqPjmUwJKZ05
-         Z7yFioSE2MtBcEVvqWWHrH8XN0BvqVafpw+GAzbo7GEZLyGt3forxzBFXWHwquaZSxiQ
-         ihuA==
-X-Gm-Message-State: AOJu0YyV3MzWe6P76ZVD3RWZSvbC+Y9Cb17HjHwkwTZ8WoU2Tw2jM42L
-	plq4+6SiHtxnxBcW/OCIJJJNlWwFG8QKh2qSF1s=
-X-Google-Smtp-Source: AGHT+IFVVGhxBTlHsIwVy12IlUS3FAGlp8FGeZA717aaxcTQCPemsjee7LodMZbVhYxXaEatpUaI1NRvqBStfcAoeaA=
-X-Received: by 2002:a81:8316:0:b0:59b:9f06:1706 with SMTP id
- t22-20020a818316000000b0059b9f061706mr15484170ywf.26.1696854351904; Mon, 09
- Oct 2023 05:25:51 -0700 (PDT)
+        bh=CKzt7P2iZ4LK2JwRJ9XKaHpQMPz3IdmYJdBwe7/O7io=;
+        b=A1EuvpGvmhRqEg/Ccsp2mkYwL0WjMg/7B5cYLbRPjc72j0nB63yoyPBHBBtzrG5gcp
+         tfzMVL42Id7wjL7LxBQOH70Rgi6LT7nobMmi8QEuDqroD22wFCKXnMR7pu9RXyJX5X8O
+         SXxF1WmwFBtDamEhCwLVxA+ukkVV19Z8jkHvsYt2/1XTNIuozvE5z3ivY5OnlDEdKLu5
+         PnxlH7S7JNaXnTpc2UPBoHnH7cJgD8UV2TqTdPlMpMlRY0WiM84MwpcN7dYjirnG9EL+
+         crsw2wgCphsL3/fZVO4n03vMr539PqMYRdNiitk/sz2oX23EeE4gpWx55TwjEyTsK14v
+         NHhw==
+X-Gm-Message-State: AOJu0YyT6k05a52flU46rb0DG+lqEFtQIY76ySPuavNJtZ1DucrXe+Me
+	+BSHiHzqGHQBYt/f+1X4zOrUIFDwRx9WIOPweiLXy4bA9W8UOg==
+X-Google-Smtp-Source: AGHT+IHX8bKTeTu9Bycg5yAGDJDueXtvKLVUIhIbmtC4yfqp0XZrphrKxWbHOHcpmioZW+FiE1FAsgfr7/+twvjNJ4E=
+X-Received: by 2002:a05:6902:18b:b0:d6e:3544:9871 with SMTP id
+ t11-20020a056902018b00b00d6e35449871mr12791135ybh.44.1696854415766; Mon, 09
+ Oct 2023 05:26:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230928225518.2197768-1-fujita.tomonori@gmail.com>
- <20230928225518.2197768-2-fujita.tomonori@gmail.com> <2023092900-manpower-runaround-859a@gregkh>
- <20230929.173856.1751823335892887678.fujita.tomonori@gmail.com>
- <CALNs47td-3UM-E59R35GAjaHMPT8c-H7Qy=PZ+-wgsXpw5EJAA@mail.gmail.com>
- <00d380b7-f0fc-4784-9f30-c98e630efacb@lunn.ch> <CANiq72n-w2Oknzn-yqa2F7NOWkSOv3AHPcmxw8OtpjFTKeJ5_Q@mail.gmail.com>
- <78da96fc-cf66-4645-a98f-80e404800d3e@lunn.ch>
-In-Reply-To: <78da96fc-cf66-4645-a98f-80e404800d3e@lunn.ch>
+References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
+ <20230913133609.1668758-4-fujita.tomonori@gmail.com> <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
+ <20230917.213248.712797486250583805.ubuntu@gmail.com> <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
+ <1299bee8-9378-4a13-8cb2-3b47e0dee417@lunn.ch> <CANiq72nkmL5jEqdnj+OoDk+Vja_jVUdD+EGneF3h+kdFSOJqPA@mail.gmail.com>
+ <3dc9a1ea-fb04-4b9e-abf9-08165ea3b8c5@lunn.ch> <CANiq72nnX5T4TLVpn9g7_9EDP0gudQAAqOc1oSvotsgKYUs8Jw@mail.gmail.com>
+ <4659894c-ae10-4e21-87da-6291c940af3c@lunn.ch>
+In-Reply-To: <4659894c-ae10-4e21-87da-6291c940af3c@lunn.ch>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Oct 2023 14:25:40 +0200
-Message-ID: <CANiq72n3kHrJKXApx2eZ6MFisdoh==4KQi2qHYkxmDi=TYaHew@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY drivers
+Date: Mon, 9 Oct 2023 14:26:44 +0200
+Message-ID: <CANiq72mirYM0E0qMe0xqQVJ8jqF4aa0NrwLg-CdroRtV15b0VA@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file to
+ the ETHERNET PHY LIBRARY
 To: Andrew Lunn <andrew@lunn.ch>
-Cc: Trevor Gross <tmgross@umich.edu>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	gregkh@linuxfoundation.org, rust-for-linux@vger.kernel.org, 
-	benno.lossin@proton.me, wedsonaf@gmail.com
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -70,59 +69,14 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 2, 2023 at 9:08=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On Sat, Sep 23, 2023 at 4:42=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> The kernel is documented using kerneldoc. It would seem odd to me to
-> have a second parallel set of Documentation for Rust. Just like Rust
-> is integrated into the kernel tree, is configured using Kconfig, built
-> using make at the top level, i would also expect it to integrate into
-> kerneldoc somehow. I see the Rust API for PHY drivers next to the C
-> API for PHY drivers. Its just another API in the kernel, nothing
-> special.
+> I hope to attend LPC, so i will try to pop into some of the sessions.
 
-There are several differences that make it unlike other kernel APIs.
-For instance, the Rust abstractions cannot be (in general) used by C
-[*]. Many concepts simply have no equivalent in C.
+That would be great -- thanks Andrew (and for the questions you are
+asking!). We will be in the Refereed track as well as the Rust MC.
 
-Furthermore, the goal is to develop safe APIs in Rust that then Rust
-modules can use. Modules are not supposed to mix the C and the Rust
-API, so ideally a Rust module developer needs to only care about the
-Rust APIs.
-
-Therefore, so far, our intention with the documentation of the Rust
-abstractions is that it can be used on its own as much as possible
-(possibly linking to C docs or similar approaches to avoid duplication
-as I was referring to in my previous message, but that is an
-implementation detail).
-
-In addition, the Rust native documentation system is quite good at
-what it does. If there exists a Rust plugin for Sphinx that is good
-enough, then yeah, we could use it.
-
-[*] To be clear: one can export functions to C, of course, and the
-kernel could actually have C functions that get reimplemented in Rust
-(keeping the same signature) where it may make sense. Some people have
-talked about this in the past, and it would be nice to see eventually.
-
-> I just use 'make htmldocs' at the top level and out come the
-> HTML documentation in Documentation/output/
-
-Yes, this was discussed in the past and agreed to, and Carlos implemented i=
-t.
-
-> But kerneldoc is not my subsystem. MAINTAINERS say:
->
-> DOCUMENTATION
-> M:      Jonathan Corbet <corbet@lwn.net>
-> L:      linux-doc@vger.kernel.org
-> S:      Maintained
->
-> So this discussion should really have Jonathon Corbet involved, if it
-> has not already been done.
-
-Yes, of course. I asked Jonathan about this early 2021 and he has been
-following (and reporting on) the Rust progress in the kernel for a
-long time (which is very nice).
+(Catching up on some emails...)
 
 Cheers,
 Miguel
