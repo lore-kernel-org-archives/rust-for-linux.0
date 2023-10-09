@@ -1,64 +1,69 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B267110A36;
-	Mon,  9 Oct 2023 15:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E89437152;
+	Mon,  9 Oct 2023 15:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRBvdASL"
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99ABA6;
-	Mon,  9 Oct 2023 08:19:28 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-59e88a28b98so39811807b3.1;
-        Mon, 09 Oct 2023 08:19:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e2XWBOHx"
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CACBA;
+	Mon,  9 Oct 2023 08:24:15 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-58974d4335aso374656a12.1;
+        Mon, 09 Oct 2023 08:24:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696864768; x=1697469568; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1NQgphY94HzWJF0y7pko/rMyJdGEhcOIox0qCNbTGxg=;
-        b=PRBvdASLmD7E6STntBYoErxOu6+G8HNOaHsJfLn0wb4lVTQH9kdcHC8NJWzeIrUza5
-         vwLszH7G4bPO44Q9atEpJEsnAo7mt5xTg/5VBrUBDDVIaQix5NQsjK5Z9sKlNxbWXVlZ
-         kN76yCZN4hNk8v6rELp7gz1rq8W61R7weitxdMO5TiNBSOB+btRRK8lwkfqb/tud50Hp
-         hUP6948EmitQKYqp+SGHLc8H8pcc4TkKHFvwLKX1Y/L7Ptab1qtj/zw0ZSH6p83pJu3p
-         5KmsdJ40RZWRYEwPoKKlEbIodh43W3FMeUw2qJ4z/j1RwQZb2PILBMp+Wuyd0hDdxjxW
-         at6Q==
+        d=gmail.com; s=20230601; t=1696865055; x=1697469855; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PFFV+g8beNv1qozuYbV2d5g+kPeKVI3jo7N7mHXEG7A=;
+        b=e2XWBOHxHDjXV4yfyaqAO5vZszcvRkZPL0lEOSzMZYnn04mXmFRJXrszoP01cqqhIy
+         4uBWJpwZgEOSpUnDsagfacEsSs6MGuSAPRb23Q8HFJhKy/4fr78gv9KUzyWkNZu3/rL5
+         MJEvhzOfRt7PkRR5Rrz/D3aV8c+Tkx/hqrSH08RqNI7GbBvDImnRAIIlKIwANaNoJ99M
+         j+9g1CNgYIvHHan1eS7qMzTFMC9wiV40mu7NOdZo6QQOg6hYvOAqLJXcZvYM0s/xooG7
+         2UIkKdjS12TCbXFih/JW1lNkWri4Burd0iJKSjAGuW2aGS4hizJUYB959V60hES/AJTM
+         YlVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696864768; x=1697469568;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1NQgphY94HzWJF0y7pko/rMyJdGEhcOIox0qCNbTGxg=;
-        b=bh/oMuA73QqCQr5RlpkY2jKj71wHDH4ZTkx9UNIuX1m0mIv+4/QBzOH0TF4cBpxXAW
-         iHx5E65QJdtGXsRBPSXQbZ7Lylhzu4DZt5r46auVzaSRrughirj3eiR6RYhHBStYabFQ
-         KVAaKxsapsPqoS4yvtTNTJ0cihDfO4oao5FaGTvL8MsbCcrI9vreV1ZO1s/BEV2jb/XU
-         ZTojrBhV6ZTwjKRTKpjQEk8ZZz6vjTlZOOJ3SatQ4HZadlvvxZ0EyRYo+c69J4M6uNiG
-         TYOQglewxKK5dyl14fziHvvp3E8n/BFw5PXrT46ZCmnlbzx7OloFfTvQ6Tss9FJKW6eD
-         l/QQ==
-X-Gm-Message-State: AOJu0Yx3XFnGFUMO5+nUz06hAvMAJNVRMUeIkSqQSwmQn6+SFYVtsatK
-	/575wtwfF2JpUdU1awMWYEPx681EhP4+sEuE9Go=
-X-Google-Smtp-Source: AGHT+IF49SOFoWhkhwkHNX54Ao5xnIzrZKnB5R8TEtlBUTMDCu2IQaEl2aU3tbQp3fDbjDfFJ+kiei2O3Yktvre13Yg=
-X-Received: by 2002:a81:49d7:0:b0:59b:5255:4882 with SMTP id
- w206-20020a8149d7000000b0059b52554882mr6688622ywa.20.1696864767975; Mon, 09
- Oct 2023 08:19:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696865055; x=1697469855;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PFFV+g8beNv1qozuYbV2d5g+kPeKVI3jo7N7mHXEG7A=;
+        b=Lc7zpVYCoYZ0ZykInMAHg1jP7nRwmwd11FmyaH+5OqviPu3kn0X/Q6yL4PwHvwGI6g
+         0AXnffzcrMiKVAxgCFcxA0yaNKZwxrUy1QmH2W8fNg6oYx1Ny8MwqDuE0v3XhBF+++oQ
+         T24ebYmrKz9zWzIv/Gs2W/+++JNhQTLlvtEpWwPYWQESLDvu5wtLnxmlqr0rDMnvfULn
+         F96mTHVlCOiBIFgVYeoIbF+NZZaNn3USvfbapJRHzitiVo4JpLNS2ZsVex0Pohabsbut
+         je6XcULawiOCbrr4t9PLfMPLlKwMsqHK/JNWFsechiSDqPT5qaynSVFtTk3iuOhThlCZ
+         Mosw==
+X-Gm-Message-State: AOJu0Yxqe4XbP01WDSVtSWApzlHbnAChkHcrZSuDyGfJlWrxYM0RfuTQ
+	r2ENcYigIzy8cFE6L7s0dHA=
+X-Google-Smtp-Source: AGHT+IHQFoSxyQfT09+Axx76HpGcNb2HvR6H/My8T5mVb9wIwbGq6CAjrjSihBCZm/+tn6MyvLmF1Q==
+X-Received: by 2002:a05:6a21:66c7:b0:16c:b5be:782d with SMTP id ze7-20020a056a2166c700b0016cb5be782dmr7654687pzb.4.1696865055007;
+        Mon, 09 Oct 2023 08:24:15 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id ka14-20020a056a00938e00b006a680745c8bsm1178694pfb.125.2023.10.09.08.24.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Oct 2023 08:24:14 -0700 (PDT)
+Date: Tue, 10 Oct 2023 00:24:13 +0900 (JST)
+Message-Id: <20231010.002413.435110311325344494.fujita.tomonori@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: fujita.tomonori@gmail.com, miguel.ojeda.sandonis@gmail.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ tmgross@umich.edu, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <2023100926-ambulance-mammal-8354@gregkh>
+References: <CANiq72nBSyQw+vFayPco5b_-DDAKNqmhE7xiXSVbg920_ttAeQ@mail.gmail.com>
+	<20231009.224907.206866439495105936.fujita.tomonori@gmail.com>
+	<2023100926-ambulance-mammal-8354@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CANiq72nBSyQw+vFayPco5b_-DDAKNqmhE7xiXSVbg920_ttAeQ@mail.gmail.com>
- <20231009.224907.206866439495105936.fujita.tomonori@gmail.com>
- <CANiq72nf1ystSiV_BavRvMHA79bO7XapA3TURag1Kw_wzUr2Og@mail.gmail.com> <20231010.001536.1522827516505306330.fujita.tomonori@gmail.com>
-In-Reply-To: <20231010.001536.1522827516505306330.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Oct 2023 17:19:16 +0200
-Message-ID: <CANiq72mawL=997yWzUigJscBLbf=R1wPtpwSv70GvT5-15-WvA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	greg@kroah.com, tmgross@umich.edu, wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -66,13 +71,28 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 9, 2023 at 5:15=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> It's up to PHY maintainers. I prefer that the patchset are merged very
-> soon. Much easier to improve the code in tree.
+On Mon, 9 Oct 2023 17:11:51 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-Yes, sorry, my message was meant for Andrew.
+> On Mon, Oct 09, 2023 at 10:49:07PM +0900, FUJITA Tomonori wrote:
+>> On Mon, 9 Oct 2023 14:59:19 +0200
+>> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+>> 
+>> > A few nits I noticed. Please note that this is not really a full
+>> > review, and that I recommend that other people like Wedson should take
+>> > a look again and OK these abstractions before this is merged.
+>> 
+>> We have about two weeks before the merge window opens? It would great
+>> if other people could review really soon.
+>> 
+>> We can improve the abstractions after it's merged. This patchset
+>> doesn't add anything exported to users. This adds only one driver so
+>> the APIs can be fixed anytime.
+> 
+> There is no rush, or deadline here.  Take the time to get it in proper
+> shape first please.
 
-Cheers,
-Miguel
+Trevor gave Reviewed-by. Not perfect but reasonable shape, IMHO. Seems
+that we have been discussing the same topics like locking, naming, etc
+again and again.
+
