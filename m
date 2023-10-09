@@ -1,86 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F87438DD4;
-	Mon,  9 Oct 2023 17:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D101BA4B
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 19:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8NkldTq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F2AC433CA;
-	Mon,  9 Oct 2023 17:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1696873023;
-	bh=BW2UXyZrvXyT/FZW+LrBqggagNr5D5MBdlmAiZdBZHQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j8NkldTqlYjXAwPgzwSb89ZPTQnyDof4SI3tlaYG99WZSrp5QrGoEhumwJzN5ZtZK
-	 Z7kQmdB1MEZO39b4QGLSseg2+P1TNcvf4++UwpMBg/D3Tys23SK2POEaI0NNPPiVnI
-	 3UQmZwZApjsaLVdRjXh2JiRtifgw9pyaa7El88b8=
-Date: Mon, 9 Oct 2023 19:37:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Matthew Maurer <mmaurer@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Peter Zijlstra <peterz@infradead.org>, rcvalle@google.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@google.com>,
-	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-Message-ID: <2023100909-disperser-washable-4cbe@gregkh>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
- <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
- <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
- <CANiq72khuwOrAGN=CrFUX85UmPdJiZ2yM7_9_su_Zp951BHMMA@mail.gmail.com>
- <CAGSQo00gJsE+mQObeK4NNGDYLpZDDAZsREr15JcjD8Fo0E4pkw@mail.gmail.com>
- <CANiq72kK6ppBE7j=z7uua1cJMKaLoR5U3NUAZXT5MrNEs9ZhfQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="hXWoJyQL"
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCA1A4
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 12:14:49 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-5a24b03e22eso59890217b3.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 12:14:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1696878888; x=1697483688; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qJkxWpfY6BylSbHsECCWxvdWvw5Xy177dBQc6H0SaVM=;
+        b=hXWoJyQLgoTUKPLXUo0OsDP6QlHu+vpi6ZjXxufvB4kQ0fcr2pH1yOq+jbv0/u1Oyz
+         b3910Jb5UJoKX7LExSy0W6hOT0JggAFRON3VcZSS+IZzOTH86I+LA0y27PR4DHiglOZM
+         rLX24z9JaBfPsV9c0NrlYssTzYTn23F2mQQXQjrnQMxrHjk/ylh/aGK23qk9ybyaD5tr
+         CbvqwVWN9HhQr2X1HXBhDkfl4fkjx2xzTWP73ld95iJadqtXzxHDL4i2ES9CYdnC5K8S
+         2fY9dGy79C8KbMzwsS6cseWJwNmqz/OJEy23WHNCYG7Uc5ECvWuMDcpkyCsyYKzNf/C8
+         Zjvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696878888; x=1697483688;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qJkxWpfY6BylSbHsECCWxvdWvw5Xy177dBQc6H0SaVM=;
+        b=F/aW+Zly0aG/Trro6rDb6APwZcKrfZZNLA+OdcMzwKLDvHXmHC07HBFDZ7Cm19zw33
+         IjR5ICwIXtall7HcDqI6/Qx18sDwhXOPSZ4TJdPCVpR8OnkA6qon648RkSQIR43cUR0g
+         34B1WnikdjT7rdO4uJud7EJCyE/H6okwxgfgSBXonyZH7R9dDQylWbiz7j5xTZlFuYXU
+         hf2va7Gyg56RpdQrLfMb0aVqADeoY9i3CfERbqWPhwIbw5m95RaXZiobspi7JBd/TYQ6
+         MLmflsTzLhEaEfMgAUp2dbY9LypU01tvNdgQZN3XDCJoJo3PYneurgO1w6Oh5D2qkAdc
+         Ubjw==
+X-Gm-Message-State: AOJu0YykGbXeYgvpWu+8v6Z+ieO/zD9y2jqDCmmws0X/qFvxvwnMAxzQ
+	dgAQ52mgfbHXTiRuARUNu0VWRjZQ/s8dJZrDxClgDw==
+X-Google-Smtp-Source: AGHT+IGoOGPmyv61/skaGAXztPhoFbdiRTQNoHUWul1/cEM2B5AjDtUCSOLoHBtqQYYPCDEmcZ2ozReE5JYRpwKHe1g=
+X-Received: by 2002:a81:9c14:0:b0:598:5bb5:1801 with SMTP id
+ m20-20020a819c14000000b005985bb51801mr14787290ywa.50.1696878888662; Mon, 09
+ Oct 2023 12:14:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kK6ppBE7j=z7uua1cJMKaLoR5U3NUAZXT5MrNEs9ZhfQ@mail.gmail.com>
+References: <20231008094816.320424-1-tmgross@umich.edu> <8a6a2133-92a0-4478-8f3a-e1c7ba38ff18@gmail.com>
+ <CALNs47vj=whnF1FcmmXHz=msB2j=GAnrnwx-OKHciW6iR+GUMw@mail.gmail.com> <CANiq72mn3f1w0RZo58BrzDuDHjcGNyBr3FhygVGfSx_xbYwgLg@mail.gmail.com>
+In-Reply-To: <CANiq72mn3f1w0RZo58BrzDuDHjcGNyBr3FhygVGfSx_xbYwgLg@mail.gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Mon, 9 Oct 2023 15:14:37 -0400
+Message-ID: <CALNs47v9Vk14Up2MMQsqZGtGzbvyA+b7QB_nmTH05zSBpbyxJg@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: update 'paste!' macro to accept string literals
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Mon, Oct 09, 2023 at 06:31:13PM +0200, Miguel Ojeda wrote:
-> On Mon, Oct 9, 2023 at 6:01 PM Matthew Maurer <mmaurer@google.com> wrote:
+On Mon, Oct 9, 2023 at 6:49=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Oct 9, 2023 at 5:04=E2=80=AFAM Trevor Gross <tmgross@umich.edu> w=
+rote:
 > >
-> > If the IBT part would be helpful by itself immediately, I can split
-> > that out - it's only the KCFI portion that won't currently work.
-> 
-> Thanks Matthew. I don't think we are in a rush, but if it is not too
-> much work to split it, that would be great, instead of adding the
-> restriction.
-> 
-> For retthunk, by the way, I forgot to mention to Greg above that (in
-> the original discussion with PeterZ) that I did a quick test back then
-> to hack the equivalent of `-mfunction-return=thunk-extern` into
-> `rustc` to show that the compiler could use it via LLVM (by passing
-> the attribute in the IR). At least at a basic level it seemed to work:
-> I got a userspace program to count the times that it went through the
-> return thunk. I didn't try to do anything on the kernel side, but at
-> least for the compiler side, it seemed OK. So it may be way easier (on
-> the compiler side) than the CFI work?
+> > Good point, thanks! I'll add that if there is a v2 (or Miguel can
+> > probably add it if not)
+>
+> Yes, I add them myself when I notice they are missing (e.g. most
+> recently 2 of the ones in `rust-fixes`), but patches should definitely
+> come with the `Fixes: ` tag themselves, i.e. it should be the
+> exceptional case.
+>
+> However, is this actually a fix? The title and commit message make it
+> sound like it is a new feature rather than a fix. And the docs of the
+> macro says literals are not supported, right?
 
-It should hopefully be much easier than CFI, it was a much simpler
-change to gcc and clang when it landed.
+I suppose it is something that augments current behavior and "fixes"
+the linked use case by making it possible. I am not sure what
+qualifies as a fix.
 
-thanks,
+> So this probably needs to update those docs too (and ideally add an
+> example with the newly supported construct too). Or am I
+> misunderstanding?
+>
+> Cheers,
+> Miguel
 
-greg k-h
+I will update the documentation, thanks for the catch.
