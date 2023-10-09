@@ -1,152 +1,95 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B3E4692
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 08:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D593E556
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 10:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H2Bj2kSv"
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EEF9A3;
-	Mon,  9 Oct 2023 01:49:55 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2bffc55af02so50227961fa.2;
-        Mon, 09 Oct 2023 01:49:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MrV3m5se"
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07C4497
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 03:02:38 -0700 (PDT)
+Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-7b07c3eaf9bso1322815241.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 03:02:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696841393; x=1697446193; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1696845757; x=1697450557; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jo6aI4gZvvCpMFiUGs+gs/M6BlZphmb01wWlOsiDfrc=;
-        b=H2Bj2kSvgKP+CH3itFfqGsifKd06Vlmx1nCBRu+7c+3Br85nA77Uf8YcuQK0UC/qGu
-         /e1QfT2Go0qUee74IIhFCxouEAXf41nOLfFDihSq6o/XUPn/v2GiZWQ0nfSG9d7qRsPz
-         c+QAZNWIK/Ly+DIAWmmsE5SPvVIVXu/6INOXB/yG55/E3436sYuQXT4QQkwHfIdDvke2
-         To9BKT6cQs/TvBDswoCX07gf6HTkRHrlpm4AWEClcdb3NCNPUm/hKlykilXfEq2rZPV7
-         xCSRuBFw7P2LcClYDTe2C9wIsoAxWulvsYK6Bn1q/eBUdXqWDAS1Ki/TLHFRQws2qiip
-         h/PA==
+        bh=TeHC4fUNzptIsm702Gc729/mLFYjfVybbm1yE9/t+ZU=;
+        b=MrV3m5se8NFOytbLB9GHYXxM2dcxfeOftqIP63agQ/mHJuDCvtKYkiI1jmGNNBz4AW
+         ageS6fInH34dctCeSNHRStHAY+aGDcFq2hfzuz3Jwm4Eq8ln7n5Up1ICOV5lSzajV+7z
+         ztMo+O7eJR5B/6WbabN0F9/SUcb1v1NlrGx8Je9/pwe9edeOMeBKCa0VVvdRNLDkRpi7
+         i7L1X74yJfEAwNFRfmmDiXt8Aex3zm3tGKagodo/X4mgaSrDf+MGY97TIMjpKwi151DK
+         pWnIEbO9a/KBE3uEr81uY/SonyTZH85HsPqi5ibIs5qpSMBcPvsmeWyvQtF0XBWVU/ec
+         K3Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696841393; x=1697446193;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jo6aI4gZvvCpMFiUGs+gs/M6BlZphmb01wWlOsiDfrc=;
-        b=m9EiB/RyXD/WA6llk3bwahLQE9BX6OkxPtEtpLMv3pLP3VYpzfNwKpAUZpJwDh6pDj
-         n6KoDZr+ENLg4Rhd/b1IL/pg3pGWAqdBXzx8KYTjCP4SPh2+ss9+BMMcd/8xbIHpuVwG
-         7xXGJuvesIfC+3JZxIKfg69bD8O90d8h2o5HIhVETdSDNe1cA0rQl8/HnivgG/MmN6jc
-         Vz2VvFwL276/ROFXin1tv5/t9UuJfxjvrsxCK2RvTw7YxMNAzLVXz2pszWVP872e2dtu
-         Az2raftOEfcBJObTV0b4VIbyZVFKCY6KDT1ZVBRyf590KkBvgGer3txIhwC1JJknEAeV
-         4XYw==
-X-Gm-Message-State: AOJu0YxhuiDZnLDD5NGqbwqK2cLLPiPtMgE8l+V58UvxizY5c61+03Xo
-	BbhtdWTNYjMReVifVfzf7LQ=
-X-Google-Smtp-Source: AGHT+IH1y1lLyCexGC0VNVkJhwZly2dg4RHXFhz+DgANrRNwfMwSA+OcjLwrQHPclRFcs+DB3BPN1g==
-X-Received: by 2002:a2e:97d2:0:b0:2bc:ed75:1ba with SMTP id m18-20020a2e97d2000000b002bced7501bamr12695953ljj.16.1696841393368;
-        Mon, 09 Oct 2023 01:49:53 -0700 (PDT)
-Received: from localhost ([146.70.182.19])
-        by smtp.gmail.com with ESMTPSA id u4-20020a2e9f04000000b002bcd94f9714sm1947547ljk.126.2023.10.09.01.49.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Oct 2023 01:49:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696845757; x=1697450557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TeHC4fUNzptIsm702Gc729/mLFYjfVybbm1yE9/t+ZU=;
+        b=dceBC+goPtIAeASbT2XHI+wbRhv3cjCnObl7FhNwX+6SwamNkBw0tR4Chq2t6nk+lI
+         sQw3Dbb3o5lzYhUpvIP0mvDun455aANBcIALaGe6xUxrcRyoIHDZacO4P+t5rbqRH/9h
+         b7fTkomC2cUUC2hJigAmsDSFGpfzZGpiYKZzmY9E1xrbGjqLz0yJ0YzW0ytxEZ4caJgQ
+         5WxhM+bwm5eF4d9AKxpzIKW1aK0d6PA47sFjr/sE95/qTJQkskMoWtSO825sljDk1woH
+         qmMai0rH+7key3ww1+S8+8cyISb7qVpAIcbvnY1RYaocFTbd0VFsLpJzIobPP6pcjRuO
+         ie3w==
+X-Gm-Message-State: AOJu0YyKj/0qGqyuLPPtgGDXc4ghL8MnWw1rWschAxRcUHXHcsxcgAdl
+	UZltlDBONQ7beDXEj8BdCKC9Pdzbg5M0XMINkzmX5w==
+X-Google-Smtp-Source: AGHT+IFb9TiFL2rRm2CJq/eWV+YaqZXixEAA+lusEldkhIm4jX1txiBO381BakZx7EsO6YdAN9AdFYadt8kGouypPZ0=
+X-Received: by 2002:a05:6102:3558:b0:454:6891:a53b with SMTP id
+ e24-20020a056102355800b004546891a53bmr13033111vss.13.1696845757062; Mon, 09
+ Oct 2023 03:02:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20231008094816.320424-1-tmgross@umich.edu>
+In-Reply-To: <20231008094816.320424-1-tmgross@umich.edu>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 9 Oct 2023 12:02:26 +0200
+Message-ID: <CAH5fLgg+3B5SCFwxLz_YJT1hqU+Ev+XvLT+hA4OLpBk7Oi6Xrw@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: update 'paste!' macro to accept string literals
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Oct 2023 10:49:51 +0200
-Message-Id: <CW3S2LWWUVG7.2STK9HS3VBQFR@gmail.com>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Alice Ryhl" <aliceryhl@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>, "Jonathan
- Corbet" <corbet@lwn.net>, <workflows@vger.kernel.org>,
- <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH 3/3] rust: upgrade to Rust 1.73.0
-From: "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>, "Alex Gaynor" <alex.gaynor@gmail.com>
-X-Mailer: aerc 0.15.2-211-g37d5fc691aff
-References: <20231005210556.466856-1-ojeda@kernel.org>
- <20231005210556.466856-4-ojeda@kernel.org>
-In-Reply-To: <20231005210556.466856-4-ojeda@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> The vast majority of changes are due to our `alloc` fork being upgraded
-> at once.
+On Sun, Oct 8, 2023 at 11:51=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+ote:
+> Enable combining identifiers with string literals in the 'paste!' macro.
+> This allows combining user-specified strings with affixes to create
+> namespaced identifiers.
+>
+> This sample code:
+>
+>     macro_rules! m {
+>         ($name:lit) =3D> {
+>             paste!(struct [<_some_ $name _struct_>];)
+>         }
+>     }
+>
+>     m!("foo_bar");
+>
+> Would previously cause a compilation error. It will now generate:
+>
+>     struct _some_foo_bar_struct_;
+>
+> Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Signed-off-by: Trevor Gross <tmgross@umich.edu>
 
-Ah this is annoying sometimes :/
-
->
-> There are two kinds of changes to be aware of: the ones coming from
-> upstream, which we should follow as closely as possible, and the updates
-> needed in our added fallible APIs to keep them matching the newer
-> infallible APIs coming from upstream.
->
-> Instead of taking a look at the diff of this patch, an alternative
-> approach is reviewing a diff of the changes between upstream `alloc` and
-> the kernel's. This allows to easily inspect the kernel additions only,
-> especially to check if the fallible methods we already have still match
-> the infallible ones in the new version coming from upstream.
->
-> Another approach is reviewing the changes introduced in the additions in
-> the kernel fork between the two versions. This is useful to spot
-> potentially unintended changes to our additions.
->
-> To apply these approaches, one may follow steps similar to the following
-> to generate a pair of patches that show the differences between upstream
-> Rust and the kernel (for the subset of `alloc` we use) before and after
-> applying this patch:
->
->     # Get the difference with respect to the old version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > old.patch
->     git -C linux restore rust/alloc
->
->     # Apply this patch.
->     git -C linux am rust-upgrade.patch
->
->     # Get the difference with respect to the new version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > new.patch
->     git -C linux restore rust/alloc
->
-> Now one may check the `new.patch` to take a look at the additions (first
-> approach) or at the difference between those two patches (second
-> approach). For the latter, a side-by-side tool is recommended.
->
-> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1=
-730-2023-10-05 [1]
-> Link: https://rust-for-linux.com/rust-version-policy [2]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [3]
-> Link: https://github.com/rust-lang/compiler-team/issues/596 [4]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  Documentation/process/changes.rst |  2 +-
->  rust/alloc/alloc.rs               | 22 --------------
->  rust/alloc/boxed.rs               | 48 ++++++++++++++++++++-----------
->  rust/alloc/lib.rs                 |  5 ++--
->  rust/alloc/raw_vec.rs             | 30 ++++++++++++-------
->  rust/alloc/vec/mod.rs             |  4 +--
->  rust/alloc/vec/spec_extend.rs     |  8 +++---
->  rust/compiler_builtins.rs         |  1 +
->  scripts/min-tool-version.sh       |  2 +-
->  9 files changed, 63 insertions(+), 59 deletions(-)
->
-> diff --git a/Documentation/process/changes.rst b/Documentation/process/ch=
-anges.rst
-> index 731cc104c56f..bb96ca0f774b 100644
-> --- a/Documentation/process/changes.rst
-
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
