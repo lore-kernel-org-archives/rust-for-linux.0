@@ -1,88 +1,89 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1A615AC4
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 12:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7699F199B7;
+	Mon,  9 Oct 2023 12:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P08UJOZA"
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55CBCAB
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Oct 2023 05:28:25 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5a21ea6baccso54322887b3.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Oct 2023 05:28:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696854504; x=1697459304; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VkfaKXMs1TeUmaFkYIgY2Vh2flF1VR9aeE/iw2H5+LA=;
-        b=P08UJOZAiM460OyV8Ph65w5tT13ga2u4LMARhGTDLaFYscfh9zumNfsWzxVZ4Rbze6
-         VcpuJtBpgVebq4SaH6cdg3ySIUBi9Jjv/pmO22a7GtQxJsZYn/DPqWOLuGgqOBcmH3B+
-         guY4YFyG9TiB4QV6knvfD9mFqdBFyBYgc0YtqWno+wdI+vdQGBTNScVQfja7F8rFtN8a
-         LVd5uCr3qlo11yCH9aP0E1H98c7g+oO0HX8iofKAFZ0IiRqRVHclmeMVnWHbSstmeouo
-         H9JHE/3Krprev3iwXjTX8j40c16S+XrsFZWPqVwcHmY9mVotZmYcc4sIejg0JyPU7/M/
-         rBjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696854504; x=1697459304;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VkfaKXMs1TeUmaFkYIgY2Vh2flF1VR9aeE/iw2H5+LA=;
-        b=AtVyYe0ePx6EUnC8SEtmceph40MkV/dkxi2KbIS44jCN/eIBzXJhoIedO7s3SP3Ok5
-         MWAe0lrLfCMgolZ6cLpJ4wZZFv/0YhTvfElu32p1Et6CfaUxqmwOMj6i+Rwmb1ln+0G7
-         S3F4tcWJsUkDtuCO1dk1BjTx9HD/FxM60XqZjVbJo55DO30Ej10rKIYfrEsQ9GkTxnZZ
-         bmP+RBRYX4uLfkbL+e5QEgkr91dPYBUv7g7nvgWb83A/xIRZWHZRL9YXvTnv0yyNI8og
-         OGu5bTecoEVzU+lIe1KbynRCEF5MEPqSLFp/6bPCZ/41Ln6+TZT0mBdQIXwQT0HgLTPq
-         FuPQ==
-X-Gm-Message-State: AOJu0Yyf7mzGbTmf1rr9+T4htTpRS3HH7P8x1a+ZkcJCyQgq6hKtrqLp
-	k6Mz8QZekwbthXrBuZ10sF1yXrU+iigC0jwhSQ3tkvf6DemkQp8P
-X-Google-Smtp-Source: AGHT+IEwH3j7284Asc1AoSJbpxlFnNXLpbQPnHcm+iXvKuo4m4alRm3DkGNRsiPg9bmdjIAkM7uR8E3PkVqsCc5OIEg=
-X-Received: by 2002:a0d:d9d6:0:b0:589:fc81:952e with SMTP id
- b205-20020a0dd9d6000000b00589fc81952emr15210509ywe.7.1696854504573; Mon, 09
- Oct 2023 05:28:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5KRGwMLa"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DCC31BE3;
+	Mon,  9 Oct 2023 05:32:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Yd7mHoNJ4kz2p4iN27vmSx0ftSZgGI9Oxq4feMbn1Xk=; b=5KRGwMLacCxqMcMIrXYkmrTdIH
+	Ba85cAhXbL2hKUIsA+q/jWlyGctKfz571HJMCS1zXmPmPlyh4wz/JBh/xhzQqWSdZ8SQwIPMIuwQe
+	Dmo3GTN36EcC6VLGOEfhqvrf5D+KW9eDdXIUnRG5mgWDxknK5xdDaJN27D8XNZwjrBQQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qppRE-000s8l-UV; Mon, 09 Oct 2023 14:32:44 +0200
+Date: Mon, 9 Oct 2023 14:32:44 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+	greg@kroah.com, tmgross@umich.edu
+Subject: Re: [PATCH net-next v3 3/3] net: phy: add Rust Asix PHY driver
+Message-ID: <bdfac30f-364f-4625-a808-fcffab2f75b4@lunn.ch>
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
+ <20231009013912.4048593-4-fujita.tomonori@gmail.com>
+ <ZSOqWMqm/JQOieAd@nanopsycho>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72nO=Eje0dv_NCagvTzOLU7WkfM-bwqH33z_kC=f=m1m1A@mail.gmail.com>
- <20230926.224630.1323587629112314285.fujita.tomonori@gmail.com>
- <CANiq72m-9pALVX3gS4N99+xhDK8rS=Wss0H+aBoUyrZTBwmV3w@mail.gmail.com> <20230927.201949.984780386551923087.fujita.tomonori@gmail.com>
-In-Reply-To: <20230927.201949.984780386551923087.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Oct 2023 14:28:13 +0200
-Message-ID: <CANiq72=VaNtZ_B0ji94xFftb4Pctfep+4c2cNWkmCcKhpZY2kQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/3] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: benno.lossin@proton.me, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZSOqWMqm/JQOieAd@nanopsycho>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 27, 2023 at 1:19=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> The latter. I think that to_result() would be more handy if it
-> returns an integer in the happy path like:
->
-> pub fn to_result(err: core::ffi::c_int) -> Result<core::ffi::c_int> {
->     if err < 0 {
->         Err(Error::from_errno(err))
->     } else {
->         Ok(err)
->     }
-> }
+> Wait. So you just add rust driver as a duplicate of existing c driver?
+> What's the point exactly to have 2 drivers for the same thing?
 
-We discussed this the other week in our weekly meeting and a few
-alternatives too -- I will send a patch series on this (and related
-bits).
+To tell the truth, i don't think the driver itself is very
+important. The important thing has been the discussion along the way
+to get to a driver.
 
-Cheers,
-Miguel
+For me as a Maintainer, the discussion about maintainability, how do
+we make the build fail when C and Rust diverge is important.  So it
+seems C enum are better than #defines for that. Maybe we will need to
+replace some #define lists with enum in core code? But we also have a
+lot of #defines which it would be good to be able to use.
+
+It took a while to get the code to actually register the driver
+instances. But this is something nearly every driver needs to do, so i
+hope the ideas and maybe some of the actual code can be used in other
+drivers.
+
+It has become much clearer the Rust build system needs work. It is too
+monolithic at the moment, and there are no good examples of kconfig
+integration. 
+
+Documentation is still an open question for me. I know Rust can
+generate documentation from the code, but how do we integrate that
+into the existing kernel documentation?
+
+Within netdev, our own tooling is not ready for Rust. Our patchwork
+instance did not recognise the patch was for netdev. That has been
+fixed now. But i'm pretty sure the latest version of the code was not
+built as part of our build testing. Jakub said the machine did not
+have a Rust toolchain.  I also think because of the Rust build system
+limitations, even if it did have the tools, i don't think with
+allmodconfig it would try to built the rust code.
+
+When i build it on my machine, i get a million warnings from i think
+the linker. That is not going to be acceptable to Mainline, so we need
+to investigate that.
+
+I hope some sort of lessons learned, best practices and TODO list can
+be distilled from the experience, to help guide the Rust Experiment.
+
+	Andrew
