@@ -1,135 +1,88 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6153927442
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Oct 2023 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565762746B
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Oct 2023 15:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J7EzO7R/"
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683DA99
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Oct 2023 08:39:11 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-4054496bde3so53745365e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Oct 2023 08:39:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696952350; x=1697557150; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q85Z+29P0POqGNSysfbjieXJTAmPSCNOKhS6TwE+BLQ=;
-        b=J7EzO7R/zAL/s8+fDz9SkEjHwONd2UIf285diDBSlzfEg+xbx1AdNYRNheiPRp5+a6
-         7kc27KO8aRTmtQlnVcuNzlLOihXjXrmRQR5YDytE9BTrDVTUUPlvMOu+vU5p7pVTCbTt
-         pKOcjGSBjIRaLicrZVYJa1muT0pUCSRtsJvlD9nI6WNd91e607Mn5xiBmRFL1neXFOxQ
-         vvgOmKIF25dFn/4UzAtyuy/7VHNKyWpqzDTpBmB7dZ18gGmZyhUXYWth+Mn7JvFE+cuF
-         bjX0TLC8o6e9NZjV1aW+bsQc34BFn+1uj8zAie8OQ2gFl/xotW32Df6/IvmtWYDnMZRa
-         +Spg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696952350; x=1697557150;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q85Z+29P0POqGNSysfbjieXJTAmPSCNOKhS6TwE+BLQ=;
-        b=YCiDhuyBsc4vFF1DavNaaoF5hXbtnFdX46gyRkamQvRKesS5E2KtedD4pNqCntMlV9
-         Toy7b054ohh+8qAvoe/SPwdjlS9QelqwKa+fyv2pXz8URQAehG/8QczG6OEBik2HpQis
-         Kjb2nI058/SFmgI2oqTqgqP10evTstCPEhWv9FUO8hYhCfBORpFHxOYGw8NCcZS868h+
-         F2AyC6nFDBrw23g/lf7K/eFHVAHTRtdmr3yMMTsI/LQG7rpeKcQKW47HdBFcf4ntCPGk
-         vUyYuwXt4e6GHgSEs8fMSCJ+8tFmWbmCmKl14yMVsMufHWI5nxqgrG2N/3HZmbaOoWKU
-         Gz7w==
-X-Gm-Message-State: AOJu0YwkylDDuH208LTn4cxS+6UB4AQ0dY1QKaAyShRZA+dfmzUUDPeC
-	NETmIzNeFQqfp0T65Iqebpr/zgbS3oMGaFOFEa8wFg==
-X-Google-Smtp-Source: AGHT+IGag0UvyVnSwYEnOyoH2ugnO1sNkoJ7csMjCJZTs0oRO+juByboNpvXU9ptXwj/6VOXxlAPomx+fqu8Lc2ACQ0=
-X-Received: by 2002:a7b:ce89:0:b0:402:f07c:4b48 with SMTP id
- q9-20020a7bce89000000b00402f07c4b48mr15737826wmj.28.1696952349723; Tue, 10
- Oct 2023 08:39:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mg8IuD3m"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0198B0;
+	Tue, 10 Oct 2023 08:49:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=hcO6nbqUQCaTitXMmYutkN0cL6Et6mB9aV0MG0pJiLk=; b=mg8IuD3mWYwtoSxIe0694DSttk
+	h9BJQEuppRy+URK+6LfaihMRw0WJDU2QDbIIqzprRjAof3NRISqdKdrBzRNjp0u11f0yILgiwFtGk
+	n7o9Vsek58Irbon9f4KcFpCE3iBlQgraRch16NRv656pEi1qC9nm9eHlBIbLPzt5VJKyGhCPeUTnd
+	mkD+Xq4M/RyQ4LY867kuGUBFmamYMCBeko+dynwJaxg3KWkHq14CKEcGHzMiJ6pPAvOTHi3eSoMJk
+	SN4rvt1A0ymaYo7gDY1GDjVAueWWPv1lnjwOj86MXjC3Pz2q1vv2H/DiKUedfKc4fkK+Bix3XbOA4
+	LrPWE7ng==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qqEyY-005RGN-Uu; Tue, 10 Oct 2023 15:48:51 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9C5B03006DD; Tue, 10 Oct 2023 17:48:50 +0200 (CEST)
+Date: Tue, 10 Oct 2023 17:48:50 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Matthew Maurer <mmaurer@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] x86: Enable IBT in Rust if enabled in C
+Message-ID: <20231010154850.GR377@noisy.programming.kicks-ass.net>
+References: <20231009224347.2076221-1-mmaurer@google.com>
+ <20231010081220.GD377@noisy.programming.kicks-ass.net>
+ <CAKwvOdk1c3N05R9fya6HsZwPZzrkDhC3LrK=nRVOoUwyXsiXQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231009224347.2076221-1-mmaurer@google.com> <20231010081220.GD377@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231010081220.GD377@noisy.programming.kicks-ass.net>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Tue, 10 Oct 2023 08:38:58 -0700
-Message-ID: <CAKwvOdk1c3N05R9fya6HsZwPZzrkDhC3LrK=nRVOoUwyXsiXQg@mail.gmail.com>
-Subject: Re: [PATCH] x86: Enable IBT in Rust if enabled in C
-To: Peter Zijlstra <peterz@infradead.org>, Matthew Maurer <mmaurer@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-	autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKwvOdk1c3N05R9fya6HsZwPZzrkDhC3LrK=nRVOoUwyXsiXQg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Oct 10, 2023 at 1:13=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Mon, Oct 09, 2023 at 10:42:54PM +0000, Matthew Maurer wrote:
-> > These flags are not made conditional on compiler support because at the
-> > moment exactly one version of rustc supported, and that one supports
-> > these flags.
+On Tue, Oct 10, 2023 at 08:38:58AM -0700, Nick Desaulniers wrote:
+> On Tue, Oct 10, 2023 at 1:13 AM Peter Zijlstra <peterz@infradead.org> wrote:
 > >
-> > Building without these additional flags will manifest as objtool
-> > printing a large number of errors about missing ENDBR and if CFI is
-> > enabled (not currently possible) will result in incorrectly structured
-> > function prefixes.
->
-> Well, I would also imagine running it on actual IBT enabled hardware
-> will get you a non-booting kernel.
-
-Do you know what machine type in QEMU first supports IBT?
-
->
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
-> > https://godbolt.org/z/bc4n6sq5q
-
-Intel asm syntax...my eyes!!!
-
-> > ---
+> > On Mon, Oct 09, 2023 at 10:42:54PM +0000, Matthew Maurer wrote:
+> > > These flags are not made conditional on compiler support because at the
+> > > moment exactly one version of rustc supported, and that one supports
+> > > these flags.
+> > >
+> > > Building without these additional flags will manifest as objtool
+> > > printing a large number of errors about missing ENDBR and if CFI is
+> > > enabled (not currently possible) will result in incorrectly structured
+> > > function prefixes.
 > >
-> > Split out the IBT additions as per
-> > https://lkml.kernel.org/linux-fsdevel/CANiq72kK6ppBE7j=3Dz7uua1cJMKaLoR=
-5U3NUAZXT5MrNEs9ZhfQ@mail.gmail.com/
-> >
-> > arch/x86/Makefile | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> > index 5bfe5caaa444..941f7abf6dbf 100644
-> > --- a/arch/x86/Makefile
-> > +++ b/arch/x86/Makefile
-> > @@ -81,6 +81,7 @@ ifeq ($(CONFIG_X86_KERNEL_IBT),y)
-> >  #   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D104816
-> >  #
-> >  KBUILD_CFLAGS +=3D $(call cc-option,-fcf-protection=3Dbranch -fno-jump=
--tables)
-> > +KBUILD_RUSTFLAGS +=3D -Zcf-protection=3Dbranch -Zno-jump-tables
->
-> One question, -Zcf-protection=3Dbranch, will that ever emit NOTRACK
-> prefix? The kernel very explicitly does not support (enable) NOTRACK.
->
-> >  else
-> >  KBUILD_CFLAGS +=3D $(call cc-option,-fcf-protection=3Dnone)
-> >  endif
-> > --
-> > 2.42.0.609.gbb76f46606-goog
-> >
->
+> > Well, I would also imagine running it on actual IBT enabled hardware
+> > will get you a non-booting kernel.
+> 
+> Do you know what machine type in QEMU first supports IBT?
 
+I'm not sure QEMU has IBT support at all atm -- the whole CET
+virtualization stuff is a bit of a mess.
 
---=20
-Thanks,
-~Nick Desaulniers
+But hardware wise it's Tigerlake (11) and everything after that - so
+Alderlake (12) and Saphire Rapids (4th gen scalable -- or somesuch
+nonsense).
