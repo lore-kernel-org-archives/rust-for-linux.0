@@ -1,62 +1,69 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CEA20330
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 14:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4940C182CA
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 14:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BJJPeGwb"
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C75194
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 07:28:18 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d9a3d737d66so2904447276.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 07:28:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XwBQQC9Q"
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19DCC4
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 07:59:26 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-692af7b641cso1254262b3a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 07:59:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697034498; x=1697639298; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xtowTnCiL9gS6f0UOABUGQOIRBeFw5pzMKB6/JA69oc=;
-        b=BJJPeGwb7smgY7unM9KVOy6DRzQxz15tf8onMwA0+Ky0xNqqYhZIBSjKLgQEd1TC4g
-         /cu5DjTd6skWMIFPplJZcEW26udBARkEmchtejS1tESCpkA1jEvpNqTqqCOZJ4pdR0qf
-         ObmhGrPcG0xjDQ72SgKe68o4UtJ777pmYdoywCjWAl6lByX3bbhTcnL/h8TtaoLzMTl9
-         DKo6LK1Uf0v7b6MwBd+3MHFbDumMOvqvNRr0O16MvXSi12j+rDIN9epNflTIKD2eK9y5
-         sqdqP2z3DdvvnphTYirx9GNm7/c3+HT6BeLT6DhATIZAjKJ17HaNlLSk6XyW2aTJxw9q
-         EMEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697034498; x=1697639298;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1697036366; x=1697641166; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xtowTnCiL9gS6f0UOABUGQOIRBeFw5pzMKB6/JA69oc=;
-        b=s7o/ZbOYqIVdfdQ5WtWxeuGkWVzag9jPLP7ynYESGC8xw0fZN6pnFkyl8QLQrXiyfq
-         rY7ZIrsaaYis8ieIQ5Ugo95eBrVbBVfpZrWdqF3AzKe5gKYiI65Q95DdY8GMfBs1nVKD
-         V7PfLuAKawg8fwVMLCIqASQ6BPpe6XFUAGie32HmWOjOHH3bbreXNT99mJuUjKVPKqFC
-         zJ47tmlLuWe+9X1nFthQSlrqxKaZyabJF10QCFvxRVtyfiPRm7qFasNJbr97k7eQNYTo
-         sBDTGkUnBWhDW6jYizbtGdjteFx2YCFfEeEEm5XADKla/UxrW0+xCTBbDJRAup0BnN4l
-         a6Qg==
-X-Gm-Message-State: AOJu0YwGIsxv/dSEulGfAqjisnFb6kaYVQtgJIrlALx3S0sJKrRMQKCI
-	QztxTlpq1tFZpzBOgl8Uw/g7Z1hnMsGOS34HUhY=
-X-Google-Smtp-Source: AGHT+IHydyj70Jx9NX/2aGmQG+/nxy/UxOdw77QeotsZwXmUu1/b3Gmor6U2InuZ++KP43+TWuKbn3SmH22JjSE+LIw=
-X-Received: by 2002:a25:74ce:0:b0:d9a:485f:5852 with SMTP id
- p197-20020a2574ce000000b00d9a485f5852mr6083130ybc.13.1697034497529; Wed, 11
- Oct 2023 07:28:17 -0700 (PDT)
+        bh=wesW2jyV3JIQNoZ40GiIVrAu1UFEdfdQyzZR3S8tZ3M=;
+        b=XwBQQC9QDMK4RXULzBL/HL8dbCr61cb8cZs0BVCH1YH6s3xI9veRCOZMiAEYfRhxF4
+         d4oJBb0MtUrheiZw1HqVzNy0bHmYE0U3Q02xf8xTlkuNpF/3NmSV8VUXHkqWT5n4mb90
+         N2D/0xebGTZR04aR5aE/5UBk3X5+38hmT79sVpaqljRUHLiBbrGbyu4U/wESNY4b+qoB
+         6IStI+aKEIHEySusE0e6zNCe7FI65bXR7zmjbpXEDNf2sJimJtndD0989PFHlH+Amggf
+         Mj5k2b6UzCnIDTgdU1tyH/xUa9+H1Pjg6Pc0Z731LKc5n0QYmAO1sBlYty3E5tjlgyY5
+         W4Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697036366; x=1697641166;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wesW2jyV3JIQNoZ40GiIVrAu1UFEdfdQyzZR3S8tZ3M=;
+        b=A4Ht9TrYILBP/JgEQOVsgPyUkaISWpnAbAuUv89BSvZiAIst8Abi3VfCuKneoESWwC
+         Q8UGA0kO92XCFY9KdsqTPpA95WxbO8/g7v+xYeMFU9ncXwCZHsUv6XKn4Rco7Xdf9KKV
+         p/e/1f/SbJQltCQHYPXK24FHof1hs8efoxw6fH3xB4f89WxxH7USQEaeQeb6UJyLWBtx
+         pGtg7cpHQsU8nWeIhypohNphn/XzlnrH/esp4PWUecg+9WwM6YOOXjz+lyfumiUaLlO/
+         kRaYEpWMXEZz70C8IK9k+omLvNMHXY5Tq612c+h8otntCq0VlSXjNjxS203CxPyz+13O
+         Wbmg==
+X-Gm-Message-State: AOJu0Yz3O2H1N5xgD5wHVq9FYkQdS8/mGa1ORe2oDtZibjfo8vKf/znU
+	Htox8xpM9rlpLJXlZENANkUVkRpY2tdlm3Gs
+X-Google-Smtp-Source: AGHT+IH/z3NDjKnrjqGw/vzHV6t/hIjZIG3KjXmcDo9B8mzG1GXanfonZsd1AaFMC0z9q6I93Yq3dA==
+X-Received: by 2002:a05:6a00:10c2:b0:68f:c9f6:f366 with SMTP id d2-20020a056a0010c200b0068fc9f6f366mr24243751pfu.0.1697036365936;
+        Wed, 11 Oct 2023 07:59:25 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id e9-20020a62ee09000000b00692e9bf82fcsm10119157pfi.182.2023.10.11.07.59.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Oct 2023 07:59:25 -0700 (PDT)
+Date: Wed, 11 Oct 2023 23:59:10 +0900 (JST)
+Message-Id: <20231011.235910.1137283342083567433.fujita.tomonori@gmail.com>
+To: wedsonaf@gmail.com
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+ benno.lossin@proton.me
+Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
+ drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANeycqrjD8VW-7oUV6Q9xYh1=WmAX4X-JEzMUaxvggu3OCXjFA@mail.gmail.com>
+References: <CANeycqoBEWBJfvmto4uCNpnTHa8U4Y8D8_tHOtvxZrNgL-Ro_g@mail.gmail.com>
+	<20231011.155656.1088666692728270489.fujita.tomonori@gmail.com>
+	<CANeycqrjD8VW-7oUV6Q9xYh1=WmAX4X-JEzMUaxvggu3OCXjFA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20230928225518.2197768-1-fujita.tomonori@gmail.com>
- <20230928225518.2197768-2-fujita.tomonori@gmail.com> <CANeycqoBEWBJfvmto4uCNpnTHa8U4Y8D8_tHOtvxZrNgL-Ro_g@mail.gmail.com>
- <20231011.155656.1088666692728270489.fujita.tomonori@gmail.com>
-In-Reply-To: <20231011.155656.1088666692728270489.fujita.tomonori@gmail.com>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Wed, 11 Oct 2023 11:28:06 -0300
-Message-ID: <CANeycqrjD8VW-7oUV6Q9xYh1=WmAX4X-JEzMUaxvggu3OCXjFA@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -64,164 +71,69 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, 11 Oct 2023 at 03:56, FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
->
-> On Tue, 10 Oct 2023 16:19:02 -0300
-> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
->
-> >> +impl Device {
-> >> +    /// Creates a new [`Device`] instance from a raw pointer.
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
-> >> +    /// may read or write to the `phy_device` object.
-> >> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
-> >
-> > We don't want `bindings` to be used in public functions. We will hide
-> > it from drivers eventually because we don't want them calling the C
-> > functions directly.
->
-> Sorry, I should have removed `pub` here. PHY drivers don't use this
-> function.
->
->
-> >> +/// Creates the kernel's `phy_driver` instance.
-> >> +///
-> >> +/// This is used by [`module_phy_driver`] macro to create a static array of phy_driver`.
-> >> +pub const fn create_phy_driver<T: Driver>() -> Opaque<bindings::phy_driver> {
-> >
-> > Another instance of `bindings` in a public function.
->
-> Reexporting works?
->
-> type DriverType = bindings::phy_driver;
+On Wed, 11 Oct 2023 11:28:06 -0300
+Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 
-No, that's a type alias. If you really want to expose it, you're
-better off creating a [transparent] new type that wraps
-bindings::phy_driver. This way `bindings` is never visible to drivers.
+>> >> +#[macro_export]
+>> >> +macro_rules! module_phy_driver {
+>> >> +    (@replace_expr $_t:tt $sub:expr) => {$sub};
+>> >> +
+>> >> +    (@count_devices $($x:expr),*) => {
+>> >> +        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
+>> >> +    };
+>> >> +
+>> >> +    (@device_table $name:ident, [$($dev:expr),+]) => {
+>> >> +        ::kernel::macros::paste! {
+>> >> +            #[no_mangle]
+>> >> +            static [<__mod_mdio__ $name _device_table>]: [
+>> >> +                kernel::bindings::mdio_device_id;
+>> >> +                $crate::module_phy_driver!(@count_devices $($dev),+) + 1
+>> >> +            ] = [
+>> >> +                $(kernel::bindings::mdio_device_id {
+>> >> +                    phy_id: $dev.id,
+>> >> +                    phy_id_mask: $dev.mask_as_int()
+>> >> +                }),+,
+>> >> +                kernel::bindings::mdio_device_id {
+>> >> +                    phy_id: 0,
+>> >> +                    phy_id_mask: 0
+>> >> +                }
+>> >> +            ];
+>> >> +        }
+>> >> +    };
+>> >> +
+>> >> +    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], type: $modname:ident, $($f:tt)*) => {
+>> >> +        struct Module<$modname> {
+>> >> +            _reg: kernel::net::phy::Registration,
+>> >> +            _p: core::marker::PhantomData<$modname>,
+>> >> +        }
+>> >
+>> > Why can't this struct be implemented in core::net::phy and just
+>> > referenced from this macro?
+>>
+>> Seems that driver! macro's type works only with type inside the
+>> current crate.
+> 
+> What `driver!` macro are you referring to? And where does this
+> requirement come from? (As a data point, other driver macros we
+> implemented in the past all use Module implementations in the kernel
+> crate.)
 
->
-> >> +/// Corresponds to functions in `struct phy_driver`.
-> >> +///
-> >> +/// This is used to register a PHY driver.
-> >> +#[vtable]
-> >> +pub trait Driver {
-> >> +    /// Defines certain other features this PHY supports.
-> >> +    const FLAGS: u32 = 0;
-> >
-> > Are these the flags defined in the `flags` module? If so, please add a
-> > reference here to the module containing the flags.
->
-> Ok
->
-> >> +    /// The friendly name of this PHY type.
-> >> +    const NAME: &'static CStr;
-> >
-> > Nit: please add a blank line between these. (and FLAGS & NAME).
->
-> Ok
->
-> >> +/// Registration structure for a PHY driver.
-> >> +///
-> >> +/// # Invariants
-> >> +///
-> >> +/// The `drivers` points to an array of `struct phy_driver`, which is
-> >> +/// registered to the kernel via `phy_drivers_register`.
-> >> +pub struct Registration {
-> >> +    drivers: Option<&'static [Opaque<bindings::phy_driver>]>,
-> >
-> > Why is this optional?
->
-> Oops, leftover of old code.
->
->
-> >> +}
-> >> +
-> >> +impl Registration {
-> >> +    /// Registers a PHY driver.
-> >> +    #[must_use]
-> >
-> > This function returns a `Result`, which itself already has `must_use`.
-> > Are you sure you need this here?
->
-> Ah, we don't need `must_use` here.
->
->
-> >> +    pub fn register(
-> >> +        module: &'static crate::ThisModule,
-> >> +        drivers: &'static [Opaque<bindings::phy_driver>],
-> >
-> > Another instance of `bindings` in a public function.
-> >
-> >> +    ) -> Result<Self> {
-> >> +        if drivers.len() == 0 {
-> >> +            return Err(code::EINVAL);
-> >> +        }
-> >> +        // SAFETY: `drivers` has static lifetime and used only in the C side.
-> >> +        to_result(unsafe {
-> >> +            bindings::phy_drivers_register(drivers[0].get(), drivers.len() as i32, module.0)
-> >
-> > driver.len().try_into()?
-> >
-> > If someone manages to create a slice that doesn't fit in an i32, we should fail.
->
-> Ok
->
-> >> +///     type: RustAsixPhy,
-> >> +///     name: "rust_asix_phy",
-> >> +///     author: "Rust for Linux Contributors",
-> >> +///     description: "Rust Asix PHYs driver",
-> >> +///     license: "GPL",
-> >> +/// }
-> >> +/// ```
-> >
-> > The example above doesn't compile. Please make sure your examples do.
-> > (For any functions you need to implement but are not used in the
-> > example, you can always use `todo!()`.)
->
-> Ok
->
-> >> +#[macro_export]
-> >> +macro_rules! module_phy_driver {
-> >> +    (@replace_expr $_t:tt $sub:expr) => {$sub};
-> >> +
-> >> +    (@count_devices $($x:expr),*) => {
-> >> +        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
-> >> +    };
-> >> +
-> >> +    (@device_table $name:ident, [$($dev:expr),+]) => {
-> >> +        ::kernel::macros::paste! {
-> >> +            #[no_mangle]
-> >> +            static [<__mod_mdio__ $name _device_table>]: [
-> >> +                kernel::bindings::mdio_device_id;
-> >> +                $crate::module_phy_driver!(@count_devices $($dev),+) + 1
-> >> +            ] = [
-> >> +                $(kernel::bindings::mdio_device_id {
-> >> +                    phy_id: $dev.id,
-> >> +                    phy_id_mask: $dev.mask_as_int()
-> >> +                }),+,
-> >> +                kernel::bindings::mdio_device_id {
-> >> +                    phy_id: 0,
-> >> +                    phy_id_mask: 0
-> >> +                }
-> >> +            ];
-> >> +        }
-> >> +    };
-> >> +
-> >> +    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], type: $modname:ident, $($f:tt)*) => {
-> >> +        struct Module<$modname> {
-> >> +            _reg: kernel::net::phy::Registration,
-> >> +            _p: core::marker::PhantomData<$modname>,
-> >> +        }
-> >
-> > Why can't this struct be implemented in core::net::phy and just
-> > referenced from this macro?
->
-> Seems that driver! macro's type works only with type inside the
-> current crate.
+Sorry, module! macro and please see the net-next v3 patchset because
+this macro was updateded. With your approach, I got the following
+error:
 
-What `driver!` macro are you referring to? And where does this
-requirement come from? (As a data point, other driver macros we
-implemented in the past all use Module implementations in the kernel
-crate.)
+error[E0117]: only traits defined in the current crate can be
+implemented for types defined outside of the crate
+  --> drivers/net/phy/ax88796b_rust.rs:13:1
+     |
+     13 | / kernel::module_phy_driver! {
+     14 | |     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
+     15 | |     device_table: [
+     16 | |         DeviceId::new_with_driver::<PhyAX88772A>(),
+     ...  |
+     23 | |     license: "GPL",
+     24 | | }
+        | | ^
+        | | |
+        | |_impl doesn't use only types from inside the current crate
+        |   `kernel::net::phy::Module` is not defined in the current crate
