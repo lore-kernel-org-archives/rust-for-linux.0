@@ -1,69 +1,69 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235F315E81
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 06:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B186AAB;
+	Wed, 11 Oct 2023 07:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RVy+TZRF"
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E776593
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Oct 2023 23:56:57 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1c746bc3bceso14704705ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Oct 2023 23:56:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dr3qP0gN"
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB208F;
+	Wed, 11 Oct 2023 00:04:59 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-690f8e63777so1706495b3a.0;
+        Wed, 11 Oct 2023 00:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697007417; x=1697612217; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697007899; x=1697612699; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NEJ1tL0vPGYu9XTXX2Dj0b58JK3w4UJ00dNSEqOmx5U=;
-        b=RVy+TZRFUxWEJTEQF6c7/v0GHHU7rJ+1vOw0ZNC3WCPuW5MA5HFn9b6gQ6dxlOsUQN
-         QKUCGV77ZeBr3F8+71fyn1st/JNKqH8X/Z85orXS6t13O/2Eux1ug55EA9BK2UGtGgPX
-         GQYaOsshgxOTml6rzrODEEmnEheTThBX3gZsPaImUwmfYAwV2pfMyMYFv8omFbyDeo7I
-         fwxSrs6faEtvztLomu1Yltoa5XKzvcNJydbQI+WL3zzooe0kkh0qoqR0PqEGHPpWiF6R
-         tPYkcPXkSKzObJIzbdYrus49dL8kdmqXOX9vGVHHmq4xvOzaHwbVxtJLS3WTQWIENumA
-         jOjg==
+        bh=SzkXH1LFEzjCCR/7DMEL+wPWEqFwEny0dN9u7sSoZdk=;
+        b=dr3qP0gNrk5VYmdeGG0W0Yi9gvyhrOV9T0se1fDd1JeZDD4zwK2FTBV9ONpff1Rjoe
+         EH3y60Cs0yIS+d95YmC9OLPrnkmAqfa/+mQZioXDOmy6iMxR3aOoBJ7D3/lJgqZpuGgX
+         nefrLGnIwNsidCvW+ycAZaXYk1b9bV/LNz7ZHfz32+TjntPsLkWE0lJciLlfs+2N071g
+         0YEXHa2l424ZmVYV+fH6BLEpcmuhrDl54532j+Qxbl3PSKZlPvUverC0cTZVZWyeWivr
+         1LjCzixly6aF8hz9xdJBphcV9I/uEg/FixaXz0WGpj5xKu6QtF44XuCrTExCmP4+GDfv
+         9N2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697007417; x=1697612217;
+        d=1e100.net; s=20230601; t=1697007899; x=1697612699;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=NEJ1tL0vPGYu9XTXX2Dj0b58JK3w4UJ00dNSEqOmx5U=;
-        b=VIIRKxPuKXIyA2aMqjQBBG28ZvMKIS5INZ5Zj5fzzuFXXUmERwzG0eeeU2T2JuTdb6
-         /rcdpofZ1OH7gr+gATeTFmBvHsCvb907KRuhLvq99Rtic/S+1oXrI71RogPhnI69zGaF
-         MwyeBYJAYCfC+EXe70VMuIEol7a0Ldi0b36Qwy3t5SgIh9ebyqUZR9m9/r8/wNsR7ff2
-         P1lO/grCcvLWlpW6bHcpGkrZ2zrqwjQMdkt4s6uCCxiH5TK64jF3jgHNoLnJX380Bx25
-         36gsAON4EjadcTdnDqnAmHWj7a9axNFFsDrjK5U4SXItv2TnlQJzw0nQLyK4CWkkOQzb
-         dP8Q==
-X-Gm-Message-State: AOJu0YzNbZHhbOJc0tXezjF8I84HUpuActJvmrk2usB/n6CuyMQcOBTJ
-	OdRYMH7I0qShP/yLCSZtYIc=
-X-Google-Smtp-Source: AGHT+IFAF/hREUQsJXSc4w/zZ5PmQRxh3SART9P8stlSKflptc7GlCl/2nl1XQdM/7um5Z+WBaMn/A==
-X-Received: by 2002:a17:90b:1bce:b0:27c:ebab:5c60 with SMTP id oa14-20020a17090b1bce00b0027cebab5c60mr3569816pjb.2.1697007417151;
-        Tue, 10 Oct 2023 23:56:57 -0700 (PDT)
+        bh=SzkXH1LFEzjCCR/7DMEL+wPWEqFwEny0dN9u7sSoZdk=;
+        b=YCYOeAAIOlchIriuvSjU3a62/lOp+081zNAtWNhblA60Ya8pys0qSgZu8BQJMoriQ/
+         d3n/dG1LBjITeSwWT1T7V/0TPlXCG3vaaKeYPxkC5szMXnBJv6lSVQtaa8L6MSK/5Ue/
+         ZmLoejrrvnXzZ4arTuBwBBbNqZX+ikVUWo/UpjSb4mm6aPfi29l+8DmT2hCgLGpkNhYP
+         A7j+sQ6NnjBrWM0d33Zs4lEuZaF8A2C+076auwdFqajbids7936ualn6piG6+n68XqPp
+         Q4UzP3BtPnKHGREVTLe1LPjbsTRfhzmAxFm5kZFB7JI9fSANL4W8lTFYzAbXJEj2HCfi
+         TZww==
+X-Gm-Message-State: AOJu0YxOpfVxy4MBGhHmdlH+SsfPwPQNsTBLzQvWY317I6Dg30jKRSDH
+	qSghjZiPkEWI3vIIvMMV9/U=
+X-Google-Smtp-Source: AGHT+IF5evrM/bmA16l9iFSxJEyYji1X+t1TkeGy3Ix0n/Sk0WpIBK/k6LZ0kaBKnl/6RCpZnTUexQ==
+X-Received: by 2002:a05:6a21:a5a0:b0:15d:a247:d20c with SMTP id gd32-20020a056a21a5a000b0015da247d20cmr26817375pzc.6.1697007899013;
+        Wed, 11 Oct 2023 00:04:59 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id l19-20020a17090b079300b002791491f811sm11095392pjz.8.2023.10.10.23.56.56
+        by smtp.gmail.com with ESMTPSA id ix3-20020a170902f80300b001b06c106844sm13095405plb.151.2023.10.11.00.04.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 23:56:56 -0700 (PDT)
-Date: Wed, 11 Oct 2023 15:56:56 +0900 (JST)
-Message-Id: <20231011.155656.1088666692728270489.fujita.tomonori@gmail.com>
-To: wedsonaf@gmail.com
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
- benno.lossin@proton.me
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
- drivers
+        Wed, 11 Oct 2023 00:04:58 -0700 (PDT)
+Date: Wed, 11 Oct 2023 16:04:58 +0900 (JST)
+Message-Id: <20231011.160458.2187571498289000541.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu
+Cc: fujita.tomonori@gmail.com, gregkh@linuxfoundation.org,
+ miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network
+ PHY drivers
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANeycqoBEWBJfvmto4uCNpnTHa8U4Y8D8_tHOtvxZrNgL-Ro_g@mail.gmail.com>
-References: <20230928225518.2197768-1-fujita.tomonori@gmail.com>
-	<20230928225518.2197768-2-fujita.tomonori@gmail.com>
-	<CANeycqoBEWBJfvmto4uCNpnTHa8U4Y8D8_tHOtvxZrNgL-Ro_g@mail.gmail.com>
+In-Reply-To: <CALNs47unEPkVtRVBZfqYJ_-tgf3HJ6mxz_pybL+y3=AXgX2o8g@mail.gmail.com>
+References: <2023100926-ambulance-mammal-8354@gregkh>
+	<20231010.002413.435110311325344494.fujita.tomonori@gmail.com>
+	<CALNs47unEPkVtRVBZfqYJ_-tgf3HJ6mxz_pybL+y3=AXgX2o8g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -71,153 +71,25 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, 10 Oct 2023 16:19:02 -0300
-Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
-
->> +impl Device {
->> +    /// Creates a new [`Device`] instance from a raw pointer.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
->> +    /// may read or write to the `phy_device` object.
->> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
-> 
-> We don't want `bindings` to be used in public functions. We will hide
-> it from drivers eventually because we don't want them calling the C
-> functions directly.
-
-Sorry, I should have removed `pub` here. PHY drivers don't use this
-function.
-
-
->> +/// Creates the kernel's `phy_driver` instance.
->> +///
->> +/// This is used by [`module_phy_driver`] macro to create a static array of phy_driver`.
->> +pub const fn create_phy_driver<T: Driver>() -> Opaque<bindings::phy_driver> {
-> 
-> Another instance of `bindings` in a public function.
-
-Reexporting works?
-
-type DriverType = bindings::phy_driver;
-
-
->> +/// Corresponds to functions in `struct phy_driver`.
->> +///
->> +/// This is used to register a PHY driver.
->> +#[vtable]
->> +pub trait Driver {
->> +    /// Defines certain other features this PHY supports.
->> +    const FLAGS: u32 = 0;
-> 
-> Are these the flags defined in the `flags` module? If so, please add a
-> reference here to the module containing the flags.
-
-Ok
-
->> +    /// The friendly name of this PHY type.
->> +    const NAME: &'static CStr;
-> 
-> Nit: please add a blank line between these. (and FLAGS & NAME).
-
-Ok
-
->> +/// Registration structure for a PHY driver.
->> +///
->> +/// # Invariants
->> +///
->> +/// The `drivers` points to an array of `struct phy_driver`, which is
->> +/// registered to the kernel via `phy_drivers_register`.
->> +pub struct Registration {
->> +    drivers: Option<&'static [Opaque<bindings::phy_driver>]>,
-> 
-> Why is this optional?
-
-Oops, leftover of old code.
-
-
->> +}
->> +
->> +impl Registration {
->> +    /// Registers a PHY driver.
->> +    #[must_use]
-> 
-> This function returns a `Result`, which itself already has `must_use`.
-> Are you sure you need this here?
-
-Ah, we don't need `must_use` here.
-
-
->> +    pub fn register(
->> +        module: &'static crate::ThisModule,
->> +        drivers: &'static [Opaque<bindings::phy_driver>],
-> 
-> Another instance of `bindings` in a public function.
-> 
->> +    ) -> Result<Self> {
->> +        if drivers.len() == 0 {
->> +            return Err(code::EINVAL);
->> +        }
->> +        // SAFETY: `drivers` has static lifetime and used only in the C side.
->> +        to_result(unsafe {
->> +            bindings::phy_drivers_register(drivers[0].get(), drivers.len() as i32, module.0)
-> 
-> driver.len().try_into()?
-> 
-> If someone manages to create a slice that doesn't fit in an i32, we should fail.
-
-Ok
-
->> +///     type: RustAsixPhy,
->> +///     name: "rust_asix_phy",
->> +///     author: "Rust for Linux Contributors",
->> +///     description: "Rust Asix PHYs driver",
->> +///     license: "GPL",
->> +/// }
->> +/// ```
-> 
-> The example above doesn't compile. Please make sure your examples do.
-> (For any functions you need to implement but are not used in the
-> example, you can always use `todo!()`.)
-
-Ok
-
->> +#[macro_export]
->> +macro_rules! module_phy_driver {
->> +    (@replace_expr $_t:tt $sub:expr) => {$sub};
->> +
->> +    (@count_devices $($x:expr),*) => {
->> +        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
->> +    };
->> +
->> +    (@device_table $name:ident, [$($dev:expr),+]) => {
->> +        ::kernel::macros::paste! {
->> +            #[no_mangle]
->> +            static [<__mod_mdio__ $name _device_table>]: [
->> +                kernel::bindings::mdio_device_id;
->> +                $crate::module_phy_driver!(@count_devices $($dev),+) + 1
->> +            ] = [
->> +                $(kernel::bindings::mdio_device_id {
->> +                    phy_id: $dev.id,
->> +                    phy_id_mask: $dev.mask_as_int()
->> +                }),+,
->> +                kernel::bindings::mdio_device_id {
->> +                    phy_id: 0,
->> +                    phy_id_mask: 0
->> +                }
->> +            ];
->> +        }
->> +    };
->> +
->> +    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], type: $modname:ident, $($f:tt)*) => {
->> +        struct Module<$modname> {
->> +            _reg: kernel::net::phy::Registration,
->> +            _p: core::marker::PhantomData<$modname>,
->> +        }
-> 
-> Why can't this struct be implemented in core::net::phy and just
-> referenced from this macro?
-
-Seems that driver! macro's type works only with type inside the
-current crate.
+T24gTW9uLCA5IE9jdCAyMDIzIDE3OjA3OjE4IC0wNDAwDQpUcmV2b3IgR3Jvc3MgPHRtZ3Jvc3NA
+dW1pY2guZWR1PiB3cm90ZToNCg0KPiBPbiBNb24sIE9jdCA5LCAyMDIzIGF0IDExOjI04oCvQU0g
+RlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwuY29tPiB3cm90ZToNCj4+
+IFRyZXZvciBnYXZlIFJldmlld2VkLWJ5LiBOb3QgcGVyZmVjdCBidXQgcmVhc29uYWJsZSBzaGFw
+ZSwgSU1ITy4gU2VlbXMNCj4+IHRoYXQgd2UgaGF2ZSBiZWVuIGRpc2N1c3NpbmcgdGhlIHNhbWUg
+dG9waWNzIGxpa2UgbG9ja2luZywgbmFtaW5nLCBldGMNCj4+IGFnYWluIGFuZCBhZ2Fpbi4NCj4g
+DQo+IFRvIGJlIGNsZWFyOiB0aGlzIGlzIE9OTFkgZm9yIHRoZSBydXN0IGRlc2lnbiwgSSBhbSBu
+b3QgYXQgYWxsDQo+IHF1YWxpZmllZCB0byByZXZpZXcgdGhlIGJ1aWxkIHN5c3RlbSBpbnRlZ3Jh
+dGlvbi4gSSBwcm92aWRlZCBhIHJldmlldw0KPiB3aXRoIHRoZSBrbm93biBjYXZlYXRzIHRoYXQ6
+DQoNCkkgdGhpbmsgdGhhdCBpdCdzIHNhZmUgdG8gYXNzdW1lIHRoYXQgc3Vic3lzdGVtIG1haW50
+YWluZXJzIHVuZGVyc3RhbmQgdGhhdC4NCg0KSSByZWFsbHkgYXBwcmVjYXRlIHlvdXIgZmVlZGJh
+Y2sgb24gdGhlIHBhdGNoc2V0Lg0KDQo+IDEuIFRoZSBjdXJyZW50IGVudW0gaGFuZGxpbmcgaXMg
+ZnJhZ2lsZSwgYnV0IG9ubHkgdG8gdGhlIGV4dGVudCB0aGF0DQo+IHdlIGRvIG5vdCBoYW5kbGUg
+dmFsdWVzIG5vdCBzcGVjaWZpZWQgaW4gdGhlIEMtc2lkZSBlbnVtLiBJIGFtIG5vdA0KPiBzdXJl
+IHdoYXQgd2UgY2FuIGRvIGJldHRlciBoZXJlIHVudGlsIGJpbmRnZW4gcHJvdmlkZXMgYmV0dGVy
+DQo+IHNvbHV0aW9ucy4NCj4gMi4gVHlwZXMgZm9yICNkZWZpbmUgYXJlIG5vdCBpZGVhbA0KPiBo
+dHRwczovL2xvcmUua2VybmVsLm9yZy9ydXN0LWZvci1saW51eC9DQUxOczQ3dG5YV00zYVZwZU5N
+a3VWWkFKS2M9c2VXeExBb0xnU3dxUDBKbXMrTWZjX0FAbWFpbC5nbWFpbC5jb20vDQo+IA0KPiBU
+aGVzZSBzZWVtIHRvIG1lIHRvIGJlIHJlYXNvbmFibGUgY29uY2Vzc2lvbnMgYXQgdGhpcyB0aW1l
+LCBidXQgb2YNCj4gY291cnNlIHRoZSBvdGhlciByZXZpZXdlcnMgd2lsbCByZXF1ZXN0IGZ1cnRo
+ZXIgY2hhbmdlcyBvciBwZXJoYXBzDQo+IGhhdmUgc3VnZ2VzdGlvbnMgZm9yIHRoZXNlIGl0ZW1z
+Lg0KDQpGb3IgbWUsIHRoZXkgYXJlIGFuIGxvbmctdGVybSBpc3N1ZS4NCg==
