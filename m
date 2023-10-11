@@ -1,146 +1,216 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302C222334;
-	Wed, 11 Oct 2023 18:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E523A12E48
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 18:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qf8lvhVZ"
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6227EA4;
-	Wed, 11 Oct 2023 11:31:06 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-5a7af20c488so1855897b3.1;
-        Wed, 11 Oct 2023 11:31:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697049065; x=1697653865; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pROmhzJcl0JhzCQUoJcYCAJN//967qK7eQOeMUViZlk=;
-        b=Qf8lvhVZXaU0sqASFkcdRSMpEr8j8flaRbypr7LGSVMITR4EwU7iV1n54tnFH2WYsn
-         3rxUW9N32IwwFbfOAVxLb6jZTzEV0TmUmRJoQZNjIoFMBA/+M4DPnfWlmWfUqp9GdZCC
-         TgauOHt5dJHjpoR/SBpnYnWTTJ9wP1OOF4J510p2mCgTLkmEKHY4e/gSyFrwsiXm2H8+
-         Z9VwseRu2vCu48YRvFywiW+GDQtZm2zJMJgO1EsvnJqWuGFuxKNbstXp2KhBajxH3YBk
-         W4Nh8xH6cHYknyoecG6JKDJ+c8X7ArN6aOOEx7HW0yqJ33PZvNFD9XyIvXZY7bvF8caO
-         9gdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697049065; x=1697653865;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pROmhzJcl0JhzCQUoJcYCAJN//967qK7eQOeMUViZlk=;
-        b=uahCbK+mChRUMQ74WA4cbU7REftVvfDyOf2huphJwEdTqNHi1jjh1YtzpPh/rgF+br
-         lk5pqsssQ8jPsdbLBzr4SVidTAQgD7OiiNa43w7hRpNsVCEr5Yqjgg6hBLwlEqq4eMly
-         KbDs3RBtFR2NyPpmbxLXkuv0FKaorWutOMdymQIgV1qi98drzmHyLtMzInddw3jkABip
-         ZO5LSbJeQAQ3NeixD8VXXx05uRi9Yhks89BijofZR5RhkqpObAKMS5jNJAcIFO3UuKyW
-         0SBbSDwOQQGQbEn9sL5eFhVBGvbzBiIfZDcKudwQ3tKjjyX+0UXcsCZ8AgnaQ06g7Jlo
-         KEdA==
-X-Gm-Message-State: AOJu0YwBpIxwEuE2zEL0JrGE7Ux+ZR2mdlr5F97PEQFFgjVcTjFByb63
-	Sd5QZtg2PewDTDN1AQ+1NnM=
-X-Google-Smtp-Source: AGHT+IGPgBNl1XsdqklS6f4h/VEZmBWGjm66godlVncJCwABKfUITz7CCQQExdTtfyOhWq1V+gh2QA==
-X-Received: by 2002:a25:21c2:0:b0:d00:cc5b:8a9f with SMTP id h185-20020a2521c2000000b00d00cc5b8a9fmr17976051ybh.16.1697049065490;
-        Wed, 11 Oct 2023 11:31:05 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id lf7-20020a0562142cc700b0065d0d0c752csm5853634qvb.116.2023.10.11.11.31.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 11:31:05 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailauth.nyi.internal (Postfix) with ESMTP id BE18E27C0054;
-	Wed, 11 Oct 2023 14:31:04 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 11 Oct 2023 14:31:04 -0400
-X-ME-Sender: <xms:6OkmZZYinfhMVOoEowGORCHwngEwCdyfReTUUK9KZ1jt7cCIwi2txQ>
-    <xme:6OkmZQaaOEbNI1TSPMRHrNMKBzxfXgihcSZY-xClDUcTgrVpzvkGcnKy8dqg_5itK
-    gnvkntqJixdtJIjpQ>
-X-ME-Received: <xmr:6OkmZb9QY-kX13AxfbvJBcREWS0OAuRLqE14mjdBA4Fr7MrtzD0h2OLAq4c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheekgdduvddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:6OkmZXpnzPBzicsAP05_NFysUp-sI-Ck2_CsrPXvmsd9iNU6huBF5g>
-    <xmx:6OkmZUpvu5hLdVtc_OBUwu0IeJM17RApovr779xIEQTI4HCdQjzA5g>
-    <xmx:6OkmZdR66bKF_gqyR7-ZZRXyWThwPLhjU_7cUvcCm5FmdDfripXg5A>
-    <xmx:6OkmZVdZkPHq8IDGhUYmxefJTR9sxlDlwiyO5UvzPBBjv-PM4pXYRQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Oct 2023 14:31:04 -0400 (EDT)
-Date: Wed, 11 Oct 2023 11:29:45 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
-	miguel.ojeda.sandonis@gmail.com, greg@kroah.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <ZSbpmdO2myMezHp6@boqun-archlinux>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
- <20231009013912.4048593-2-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ahKrAPkn"
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C18A4;
+	Wed, 11 Oct 2023 11:52:59 -0700 (PDT)
+Received: from [10.0.0.200] (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: david.heidelberg)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 53EF26607331;
+	Wed, 11 Oct 2023 19:52:57 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1697050378;
+	bh=YzHA3NH/bDved/9AaOvnwC4kNQAv87koiFVVigRebH8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ahKrAPknLzEKO2+3ucXqCRdwGrDhsROLXEl+y2H652vq4mxZX6G27hvWM9GDiOQqY
+	 S+S+LOjmQO0wEAt0rjEt2PUCZoxWZBvIdfk5Yson/NRbRqwQP6LgIjXsTAORK4VeMr
+	 5I5tDxW4W6/4G2UwFZgC2Uy5lWXWHPrUkAXOQdJ8puMTCwrNSKGwoxaEuMXh50Iobr
+	 LhZWq0L2VBTVmXYVp43sXWtumXjbgQrUrpU+MGJke6AZN90UdpAD2wIHwuGuxS8RX9
+	 9pmjniIXSTD47a/25Kk1AZiAo6fU6dAFbc8MkGo9MmM9nnhIM8N9unl+6l1VAsZ0tk
+	 vYa8hEwBobgnw==
+Message-ID: <9f9dda3e-c566-4386-bcc8-9f8439ad55ce@collabora.com>
+Date: Wed, 11 Oct 2023 20:52:56 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231009013912.4048593-2-fujita.tomonori@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] drm/ci: uprev mesa version - fix container build
+To: Helen Koike <helen.koike@collabora.com>, David Airlie
+ <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: robdclark@chromium.org, dmitry.baryshkov@linaro.org,
+ vignesh.raman@collabora.com, sergi.blanch.torne@collabora.com,
+ guilherme.gallo@collabora.com, quic_abhinavk@quicinc.com,
+ quic_jesszhan@quicinc.com, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20231009004953.203576-1-helen.koike@collabora.com>
+ <20231009004953.203576-2-helen.koike@collabora.com>
+Content-Language: en-US
+From: David Heidelberg <david.heidelberg@collabora.com>
+Autocrypt: addr=david.heidelberg@collabora.com; keydata=
+ xjMEYlvLOxYJKwYBBAHaRw8BAQdA5CoWEzz4igpwK4h6lK6ZformRk84+ymcfkGNPwqEeILN
+ MURhdmlkIEhlaWRlbGJlcmcgPGRhdmlkLmhlaWRlbGJlcmdAY29sbGFib3JhLmNvbT7ClgQT
+ FggAPhYhBEo7kSl22BK0F1Np/mn1Z4YcHsAUBQJiW8s7AhsDBQkFo5qABQsJCAcCBhUKCQgL
+ AgQWAgMBAh4BAheAAAoJEGn1Z4YcHsAU84kBAK5YqSWAOuIumAqgWvke6BEsaIGWGQzXSuKj
+ er/TXuFuAQCwc9ITSVXWWTSpdFt2+4z7Wch8tIGlbIFcS9dCFddwCc44BGJbyzsSCisGAQQB
+ l1UBBQEBB0AEk7jXEwDApGOwMH/X0UAPBH8Y3isjxhNMjpyRcnl2CwMBCAfCfgQYFggAJhYh
+ BEo7kSl22BK0F1Np/mn1Z4YcHsAUBQJiW8s7AhsMBQkFo5qAAAoJEGn1Z4YcHsAU0PEA/j0Y
+ uAOKJCnnwrkf3ozPP0sutA5bojoARwcIaZKO/zvIAP9PwTC9DGLg+8LJm7m2Lyf0LxLA8FXD
+ wueLHBdwHg6zAQ==
+In-Reply-To: <20231009004953.203576-2-helen.koike@collabora.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------8SxsX7rRjHsahaowqK5pdUkR"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 09, 2023 at 10:39:10AM +0900, FUJITA Tomonori wrote:
-[...]
-> +impl Device {
-> +    /// Creates a new [`Device`] instance from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
-> +    /// may read or write to the `phy_device` object.
-> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
-> +        unsafe { &mut *ptr.cast() }
-> +    }
-> +
-> +    /// Gets the id of the PHY.
-> +    pub fn phy_id(&mut self) -> u32 {
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------8SxsX7rRjHsahaowqK5pdUkR
+Content-Type: multipart/mixed; boundary="------------ny6E8kXJysBqGnGsTn23dceA";
+ protected-headers="v1"
+From: David Heidelberg <david.heidelberg@collabora.com>
+To: Helen Koike <helen.koike@collabora.com>, David Airlie
+ <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: robdclark@chromium.org, dmitry.baryshkov@linaro.org,
+ vignesh.raman@collabora.com, sergi.blanch.torne@collabora.com,
+ guilherme.gallo@collabora.com, quic_abhinavk@quicinc.com,
+ quic_jesszhan@quicinc.com, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Message-ID: <9f9dda3e-c566-4386-bcc8-9f8439ad55ce@collabora.com>
+Subject: Re: [PATCH 1/9] drm/ci: uprev mesa version - fix container build
+References: <20231009004953.203576-1-helen.koike@collabora.com>
+ <20231009004953.203576-2-helen.koike@collabora.com>
+In-Reply-To: <20231009004953.203576-2-helen.koike@collabora.com>
 
-This function doesn't modify the `self`, why does this need to be a
-`&mut self` function? Ditto for a few functions in this impl block.
+--------------ny6E8kXJysBqGnGsTn23dceA
+Content-Type: multipart/mixed; boundary="------------3IAS6kYbQNC0d0OEGq2HDpNM"
 
-It seems you used `&mut self` for all the functions, which looks like
-more design work is required here.
+--------------3IAS6kYbQNC0d0OEGq2HDpNM
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Regards,
-Boqun
+UmV2aWV3ZWQtYnk6IERhdmlkIEhlaWRlbGJlcmcgPGRhdmlkLmhlaWRlbGJlcmdAY29sbGFi
+b3JhLmNvbT4NCg0KT24gMDkvMTAvMjAyMyAwMjo0OSwgSGVsZW4gS29pa2Ugd3JvdGU6DQo+
+IFdoZW4gYnVpbGRpbmcgY29udGFpbmVycywgc29tZSBydXN0IHBhY2thZ2VzIHdlcmUgaW5z
+dGFsbGVkIHdpdGhvdXQNCj4gbG9ja2luZyB0aGUgZGVwZW5kZW5jaWVzIHZlcnNpb24sIHdo
+aWNoIGdvdCB1cGRhdGVkIGFuZCBzdGFydGVkIGdpdmluZw0KPiBlcnJvcnMgbGlrZToNCj4N
+Cj4gZXJyb3I6IGZhaWxlZCB0byBjb21waWxlIGBiaW5kZ2VuLWNsaSB2MC42Mi4wYCwgaW50
+ZXJtZWRpYXRlIGFydGlmYWN0cyBjYW4gYmUgZm91bmQgYXQgYC90bXAvY2FyZ28taW5zdGFs
+bGtOS1J3ZmANCj4gQ2F1c2VkIGJ5Og0KPiAgICBwYWNrYWdlIGBydXN0aXggdjAuMzguMTNg
+IGNhbm5vdCBiZSBidWlsdCBiZWNhdXNlIGl0IHJlcXVpcmVzIHJ1c3RjIDEuNjMgb3IgbmV3
+ZXIsIHdoaWxlIHRoZSBjdXJyZW50bHkgYWN0aXZlIHJ1c3RjIHZlcnNpb24gaXMgMS42MC4w
+DQo+DQo+IEEgcGF0Y2ggdG8gTWVzYSB3YXMgcmVjZW50bHkgYWRkZWQgZml4aW5nIHRoaXMg
+ZXJyb3IsIHNvIHVwZGF0ZSBpdC4NCj4NCj4gU2lnbmVkLW9mZi1ieTogSGVsZW4gS29pa2Ug
+PGhlbGVuLmtvaWtlQGNvbGxhYm9yYS5jb20+DQo+DQo+IC0tLQ0KPg0KPiBEZXJpdmVkIHdv
+cmsgZnJvbSBSRkM6IGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9kcmkt
+ZGV2ZWwvcGF0Y2gvMjAyMzA5MjAxNzQ0NDQuNDA5NTg2LTItaGVsZW4ua29pa2VAY29sbGFi
+b3JhLmNvbS8NCj4gQ2hhbmdlczoNCj4gLSBwb2ludCB0byB1cHN0cmVhbSBtZXNhDQo+IC0t
+LQ0KPiAgIGRyaXZlcnMvZ3B1L2RybS9jaS9naXRsYWItY2kueW1sICB8IDE1ICsrKysrKysr
+KysrKysrLQ0KPiAgIGRyaXZlcnMvZ3B1L2RybS9jaS9sYXZhLXN1Ym1pdC5zaCB8ICAyICst
+DQo+ICAgMiBmaWxlcyBjaGFuZ2VkLCAxNSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygt
+KQ0KPg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJtL2NpL2dpdGxhYi1jaS55bWwg
+Yi9kcml2ZXJzL2dwdS9kcm0vY2kvZ2l0bGFiLWNpLnltbA0KPiBpbmRleCAyYzRkZjUzZjVk
+ZmUuLjUyMmY4M2RiMWEwNyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9ncHUvZHJtL2NpL2dp
+dGxhYi1jaS55bWwNCj4gKysrIGIvZHJpdmVycy9ncHUvZHJtL2NpL2dpdGxhYi1jaS55bWwN
+Cj4gQEAgLTEsNiArMSw2IEBADQo+ICAgdmFyaWFibGVzOg0KPiAgICAgRFJNX0NJX1BST0pF
+Q1RfUEFUSDogJmRybS1jaS1wcm9qZWN0LXBhdGggbWVzYS9tZXNhDQo+IC0gIERSTV9DSV9D
+T01NSVRfU0hBOiAmZHJtLWNpLWNvbW1pdC1zaGEgMGRjOTYxNjQ1YzRmMDI0MWY4NTEyY2Iw
+ZWMzYWQ1OTYzNTg0MjA3Mg0KPiArICBEUk1fQ0lfQ09NTUlUX1NIQTogJmRybS1jaS1jb21t
+aXQtc2hhIDFjZGM0YmUxNGI2NjEwOGFlMGU4MDY5Njg2YWMzZWZlNTJiZWYzY2INCj4gICAN
+Cj4gICAgIFVQU1RSRUFNX1JFUE86IGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2Ry
+bS9kcm0NCj4gICAgIFRBUkdFVF9CUkFOQ0g6IGRybS1uZXh0DQo+IEBAIC0yNCw2ICsyNCw4
+IEBAIHZhcmlhYmxlczoNCj4gICAgIFBJUEVMSU5FX0FSVElGQUNUU19CQVNFOiAke1MzX0hP
+U1R9L2FydGlmYWN0cy8ke0NJX1BST0pFQ1RfUEFUSH0vJHtDSV9QSVBFTElORV9JRH0NCj4g
+ICAgICMgcGVyLWpvYiBhcnRpZmFjdCBzdG9yYWdlIG9uIE1pbklPDQo+ICAgICBKT0JfQVJU
+SUZBQ1RTX0JBU0U6ICR7UElQRUxJTkVfQVJUSUZBQ1RTX0JBU0V9LyR7Q0lfSk9CX0lEfQ0K
+PiArICAjIGRlZmF1bHQga2VybmVsIGZvciByb290ZnMgYmVmb3JlIGluamVjdGluZyB0aGUg
+Y3VycmVudCBrZXJuZWwgdHJlZQ0KPiArICBLRVJORUxfSU1BR0VfQkFTRTogaHR0cHM6Ly8k
+e1MzX0hPU1R9L21lc2EtbGF2YS9nZngtY2kvbGludXgvdjYuNC4xMi1mb3ItbWVzYS1jaS1m
+NmI0YWQ0NWY0OGQNCj4gICANCj4gICAgIExBVkFfSk9CX1BSSU9SSVRZOiAzMA0KPiAgIA0K
+PiBAQCAtODYsNiArODgsMTcgQEAgaW5jbHVkZToNCj4gICAgICAgICAtICcvLmdpdGxhYi1j
+aS9jb250YWluZXIvZ2l0bGFiLWNpLnltbCcNCj4gICAgICAgICAtICcvLmdpdGxhYi1jaS90
+ZXN0L2dpdGxhYi1jaS55bWwnDQo+ICAgICAgICAgLSAnLy5naXRsYWItY2kvbGF2YS9sYXZh
+LWdpdGxhYi1jaS55bWwnDQo+ICsgICAgICAtICcvc3JjL21pY3Jvc29mdC9jaS9naXRsYWIt
+Y2ktaW5jLnltbCcNCj4gKyAgICAgIC0gJy9zcmMvZ2FsbGl1bS9kcml2ZXJzL3ppbmsvY2kv
+Z2l0bGFiLWNpLWluYy55bWwnDQo+ICsgICAgICAtICcvc3JjL2dhbGxpdW0vZHJpdmVycy9j
+cm9jdXMvY2kvZ2l0bGFiLWNpLWluYy55bWwnDQo+ICsgICAgICAtICcvc3JjL2dhbGxpdW0v
+ZHJpdmVycy9zb2Z0cGlwZS9jaS9naXRsYWItY2ktaW5jLnltbCcNCj4gKyAgICAgIC0gJy9z
+cmMvZ2FsbGl1bS9kcml2ZXJzL2xsdm1waXBlL2NpL2dpdGxhYi1jaS1pbmMueW1sJw0KPiAr
+ICAgICAgLSAnL3NyYy9nYWxsaXVtL2RyaXZlcnMvdmlyZ2wvY2kvZ2l0bGFiLWNpLWluYy55
+bWwnDQo+ICsgICAgICAtICcvc3JjL2dhbGxpdW0vZHJpdmVycy9ub3V2ZWF1L2NpL2dpdGxh
+Yi1jaS1pbmMueW1sJw0KPiArICAgICAgLSAnL3NyYy9nYWxsaXVtL2Zyb250ZW5kcy9sYXZh
+cGlwZS9jaS9naXRsYWItY2ktaW5jLnltbCcNCj4gKyAgICAgIC0gJy9zcmMvaW50ZWwvY2kv
+Z2l0bGFiLWNpLWluYy55bWwnDQo+ICsgICAgICAtICcvc3JjL2ZyZWVkcmVuby9jaS9naXRs
+YWItY2ktaW5jLnltbCcNCj4gKyAgICAgIC0gJy9zcmMvYW1kL2NpL2dpdGxhYi1jaS1pbmMu
+eW1sJw0KPiAgICAgLSBkcml2ZXJzL2dwdS9kcm0vY2kvaW1hZ2UtdGFncy55bWwNCj4gICAg
+IC0gZHJpdmVycy9ncHUvZHJtL2NpL2NvbnRhaW5lci55bWwNCj4gICAgIC0gZHJpdmVycy9n
+cHUvZHJtL2NpL3N0YXRpYy1jaGVja3MueW1sDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2dw
+dS9kcm0vY2kvbGF2YS1zdWJtaXQuc2ggYi9kcml2ZXJzL2dwdS9kcm0vY2kvbGF2YS1zdWJt
+aXQuc2gNCj4gaW5kZXggMGM0NDU2YjIxYjBmLi4zNzlmMjZlYTg3Y2MgMTAwNzU1DQo+IC0t
+LSBhL2RyaXZlcnMvZ3B1L2RybS9jaS9sYXZhLXN1Ym1pdC5zaA0KPiArKysgYi9kcml2ZXJz
+L2dwdS9kcm0vY2kvbGF2YS1zdWJtaXQuc2gNCj4gQEAgLTIyLDcgKzIyLDcgQEAgY3AgIiRT
+Q1JJUFRTX0RJUiIvc2V0dXAtdGVzdC1lbnYuc2ggcmVzdWx0cy9qb2Itcm9vdGZzLW92ZXJs
+YXkvDQo+ICAgDQo+ICAgIyBQcmVwYXJlIGVudiB2YXJzIGZvciB1cGxvYWQuDQo+ICAgc2Vj
+dGlvbl9zdGFydCB2YXJpYWJsZXMgIlZhcmlhYmxlcyBwYXNzZWQgdGhyb3VnaDoiDQo+IC1L
+RVJORUxfSU1BR0VfQkFTRV9VUkw9Imh0dHBzOi8vJHtCQVNFX1NZU1RFTV9IT1NUX1BBVEh9
+IiBcDQo+ICtLRVJORUxfSU1BR0VfQkFTRT0iaHR0cHM6Ly8ke0JBU0VfU1lTVEVNX0hPU1Rf
+UEFUSH0iIFwNCj4gICAJYXJ0aWZhY3RzL2NpLWNvbW1vbi9nZW5lcmF0ZS1lbnYuc2ggfCB0
+ZWUgcmVzdWx0cy9qb2Itcm9vdGZzLW92ZXJsYXkvc2V0LWpvYi1lbnYtdmFycy5zaA0KPiAg
+IHNlY3Rpb25fZW5kIHZhcmlhYmxlcw0KPiAgIA0KDQotLSANCkRhdmlkIEhlaWRlbGJlcmcN
+CkNvbnN1bHRhbnQgU29mdHdhcmUgRW5naW5lZXINCg0KQ29sbGFib3JhIEx0ZC4NClBsYXRp
+bnVtIEJ1aWxkaW5nLCBTdCBKb2huJ3MgSW5ub3ZhdGlvbiBQYXJrLCBDYW1icmlkZ2UgQ0I0
+IDBEUywgVUsNClJlZ2lzdGVyZWQgaW4gRW5nbGFuZCAmIFdhbGVzLCBuby4gNTUxMzcxOA0K
+DQo=
+--------------3IAS6kYbQNC0d0OEGq2HDpNM
+Content-Type: application/pgp-keys; name="OpenPGP_0x69F567861C1EC014.asc"
+Content-Disposition: attachment; filename="OpenPGP_0x69F567861C1EC014.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-> +        let phydev = self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-> +        unsafe { (*phydev).phy_id }
-> +    }
-> +
-> +    /// Gets the state of the PHY.
-> +    pub fn state(&mut self) -> DeviceState {
-> +        let phydev = self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-> +        let state = unsafe { (*phydev).state };
-> +        // FIXME: enum-cast
-> +        match state {
-> +            bindings::phy_state::PHY_DOWN => DeviceState::Down,
-> +            bindings::phy_state::PHY_READY => DeviceState::Ready,
-> +            bindings::phy_state::PHY_HALTED => DeviceState::Halted,
-> +            bindings::phy_state::PHY_ERROR => DeviceState::Error,
-> +            bindings::phy_state::PHY_UP => DeviceState::Up,
-> +            bindings::phy_state::PHY_RUNNING => DeviceState::Running,
-> +            bindings::phy_state::PHY_NOLINK => DeviceState::NoLink,
-> +            bindings::phy_state::PHY_CABLETEST => DeviceState::CableTest,
-> +        }
-> +    }
-> +
-[...]
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xjMEYlvLOxYJKwYBBAHaRw8BAQdA5CoWEzz4igpwK4h6lK6ZformRk84+ymcfkGN
+PwqEeILNMURhdmlkIEhlaWRlbGJlcmcgPGRhdmlkLmhlaWRlbGJlcmdAY29sbGFi
+b3JhLmNvbT7ClgQTFggAPhYhBEo7kSl22BK0F1Np/mn1Z4YcHsAUBQJiW8s7AhsD
+BQkFo5qABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGn1Z4YcHsAU84kBAK5Y
+qSWAOuIumAqgWvke6BEsaIGWGQzXSuKjer/TXuFuAQCwc9ITSVXWWTSpdFt2+4z7
+Wch8tIGlbIFcS9dCFddwCc44BGJbyzsSCisGAQQBl1UBBQEBB0AEk7jXEwDApGOw
+MH/X0UAPBH8Y3isjxhNMjpyRcnl2CwMBCAfCfgQYFggAJhYhBEo7kSl22BK0F1Np
+/mn1Z4YcHsAUBQJiW8s7AhsMBQkFo5qAAAoJEGn1Z4YcHsAU0PEA/j0YuAOKJCnn
+wrkf3ozPP0sutA5bojoARwcIaZKO/zvIAP9PwTC9DGLg+8LJm7m2Lyf0LxLA8FXD
+wueLHBdwHg6zAQ=3D=3D
+=3DOQS+
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------3IAS6kYbQNC0d0OEGq2HDpNM--
+
+--------------ny6E8kXJysBqGnGsTn23dceA--
+
+--------------8SxsX7rRjHsahaowqK5pdUkR
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRKO5EpdtgStBdTaf5p9WeGHB7AFAUCZSbvCAAKCRBp9WeGHB7A
+FE99AQCfVO3V3/u7QmXTIk9sBRg/BuW6BhiGMCr4SWEYz4Nk1AEA2KsyzEZn04ll
+0F8f0RdoMcCxIQNeHA5CYB8cBYkiYQQ=
+=sv12
+-----END PGP SIGNATURE-----
+
+--------------8SxsX7rRjHsahaowqK5pdUkR--
