@@ -1,139 +1,95 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4940C182CA
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 14:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9A73993C
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 17:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XwBQQC9Q"
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19DCC4
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 07:59:26 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-692af7b641cso1254262b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 07:59:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="fhYDhEh3"
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDED1EE
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 10:35:46 -0700 (PDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5a7b91faf40so1174617b3.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 10:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697036366; x=1697641166; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wesW2jyV3JIQNoZ40GiIVrAu1UFEdfdQyzZR3S8tZ3M=;
-        b=XwBQQC9QDMK4RXULzBL/HL8dbCr61cb8cZs0BVCH1YH6s3xI9veRCOZMiAEYfRhxF4
-         d4oJBb0MtUrheiZw1HqVzNy0bHmYE0U3Q02xf8xTlkuNpF/3NmSV8VUXHkqWT5n4mb90
-         N2D/0xebGTZR04aR5aE/5UBk3X5+38hmT79sVpaqljRUHLiBbrGbyu4U/wESNY4b+qoB
-         6IStI+aKEIHEySusE0e6zNCe7FI65bXR7zmjbpXEDNf2sJimJtndD0989PFHlH+Amggf
-         Mj5k2b6UzCnIDTgdU1tyH/xUa9+H1Pjg6Pc0Z731LKc5n0QYmAO1sBlYty3E5tjlgyY5
-         W4Tg==
+        d=umich.edu; s=google-2016-06-03; t=1697045746; x=1697650546; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QIY5526cSOo5HuUd0WMK7b4fAyIKUG5CB3o0hLJzb50=;
+        b=fhYDhEh3qtBOHIJgJoxdq6G812gMM5TnlzaSQDH1KKpqe16f/lv31QkCQgOFYX1fjX
+         LueyBgIaV+ie3jNvTmStwmHK5OkQbAQV+XAFAnQDKEIL6nGHXqbLAtM3yp4CxJrXMGu1
+         d7WFeYnyTHJaxyz+QweoFSnbNxlyXX74m5VeB4MyjEJ0f+FwsKmzw7cL9RsMWO0ZrAaP
+         CNA1TwivFmkjVcUHgo686rdjtrKDLMqWnowHVHwcslD3YWRHHGhF/PRg9X2Vk8b9icVd
+         hXw0v9UAJM4ui2Yv/KT4M2TXFwZVNtbhVn92EfY0NPQvB6k6+SxI+hCv/0UyIJxlsdDc
+         09dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697036366; x=1697641166;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wesW2jyV3JIQNoZ40GiIVrAu1UFEdfdQyzZR3S8tZ3M=;
-        b=A4Ht9TrYILBP/JgEQOVsgPyUkaISWpnAbAuUv89BSvZiAIst8Abi3VfCuKneoESWwC
-         Q8UGA0kO92XCFY9KdsqTPpA95WxbO8/g7v+xYeMFU9ncXwCZHsUv6XKn4Rco7Xdf9KKV
-         p/e/1f/SbJQltCQHYPXK24FHof1hs8efoxw6fH3xB4f89WxxH7USQEaeQeb6UJyLWBtx
-         pGtg7cpHQsU8nWeIhypohNphn/XzlnrH/esp4PWUecg+9WwM6YOOXjz+lyfumiUaLlO/
-         kRaYEpWMXEZz70C8IK9k+omLvNMHXY5Tq612c+h8otntCq0VlSXjNjxS203CxPyz+13O
-         Wbmg==
-X-Gm-Message-State: AOJu0Yz3O2H1N5xgD5wHVq9FYkQdS8/mGa1ORe2oDtZibjfo8vKf/znU
-	Htox8xpM9rlpLJXlZENANkUVkRpY2tdlm3Gs
-X-Google-Smtp-Source: AGHT+IH/z3NDjKnrjqGw/vzHV6t/hIjZIG3KjXmcDo9B8mzG1GXanfonZsd1AaFMC0z9q6I93Yq3dA==
-X-Received: by 2002:a05:6a00:10c2:b0:68f:c9f6:f366 with SMTP id d2-20020a056a0010c200b0068fc9f6f366mr24243751pfu.0.1697036365936;
-        Wed, 11 Oct 2023 07:59:25 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id e9-20020a62ee09000000b00692e9bf82fcsm10119157pfi.182.2023.10.11.07.59.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 07:59:25 -0700 (PDT)
-Date: Wed, 11 Oct 2023 23:59:10 +0900 (JST)
-Message-Id: <20231011.235910.1137283342083567433.fujita.tomonori@gmail.com>
-To: wedsonaf@gmail.com
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
- benno.lossin@proton.me
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
- drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANeycqrjD8VW-7oUV6Q9xYh1=WmAX4X-JEzMUaxvggu3OCXjFA@mail.gmail.com>
-References: <CANeycqoBEWBJfvmto4uCNpnTHa8U4Y8D8_tHOtvxZrNgL-Ro_g@mail.gmail.com>
-	<20231011.155656.1088666692728270489.fujita.tomonori@gmail.com>
-	<CANeycqrjD8VW-7oUV6Q9xYh1=WmAX4X-JEzMUaxvggu3OCXjFA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1697045746; x=1697650546;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QIY5526cSOo5HuUd0WMK7b4fAyIKUG5CB3o0hLJzb50=;
+        b=hePVyWYBV8dunZLLIJ4pz335CEF8Qs6+Op1YeP1xaA3DKZV3y3LuTZYgFpy0EKoznS
+         +WzexFabqTl8fshpWWX8esu6pJe90ts0Trd+OBhxQxvWnc3DX/1Nz80XMUfmkRb3zb2c
+         eyb7rimHemoWH0S7Y+xsWnbQMCtn/aBUW9l9+awOez8qxxPG2DI3OyROGUoSey/+gqk7
+         dVj35aYRQ+d358+19XoMYnuU+C19Geevav9LXAtupRgvBnJKOa2Tvri9MFYY7PskLUa1
+         Kt7dxG4nHQA03cvoavk7Ds3apDNY47tFetOdjtCxrSfyQd3LEKVQpWxkkQyX0bv495iY
+         O3LQ==
+X-Gm-Message-State: AOJu0YzIe0eaqq6imzsuhACX40Mgb87ajKAx80ZTSTBMSgbat3JyRUlj
+	nwQdCCk25RptFP2SOgoMxseH/p754OFpByVl2xYV5cZxL1C7PodwuohNNw==
+X-Google-Smtp-Source: AGHT+IE7gMJ+zAQisyPRIG8GvX6qmBtkW7K07txufnZ7g4bXtRia6o8ZBb4QfXqGpCEf9HNJDUmENCRJd0K3oLxfkV8=
+X-Received: by 2002:a25:b1a0:0:b0:d9a:44dd:fe45 with SMTP id
+ h32-20020a25b1a0000000b00d9a44ddfe45mr6329144ybj.49.1697045745850; Wed, 11
+ Oct 2023 10:35:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20230928225518.2197768-1-fujita.tomonori@gmail.com>
+ <20230928225518.2197768-2-fujita.tomonori@gmail.com> <CANeycqoBEWBJfvmto4uCNpnTHa8U4Y8D8_tHOtvxZrNgL-Ro_g@mail.gmail.com>
+ <20231011.155656.1088666692728270489.fujita.tomonori@gmail.com>
+In-Reply-To: <20231011.155656.1088666692728270489.fujita.tomonori@gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Wed, 11 Oct 2023 13:35:34 -0400
+Message-ID: <CALNs47tegHJNBwckpif29UAorOOT0fbpBMMRxeU9e6UHzKA=Ag@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: wedsonaf@gmail.com, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, 11 Oct 2023 11:28:06 -0300
-Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+On Wed, Oct 11, 2023 at 2:57=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 
->> >> +#[macro_export]
->> >> +macro_rules! module_phy_driver {
->> >> +    (@replace_expr $_t:tt $sub:expr) => {$sub};
->> >> +
->> >> +    (@count_devices $($x:expr),*) => {
->> >> +        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
->> >> +    };
->> >> +
->> >> +    (@device_table $name:ident, [$($dev:expr),+]) => {
->> >> +        ::kernel::macros::paste! {
->> >> +            #[no_mangle]
->> >> +            static [<__mod_mdio__ $name _device_table>]: [
->> >> +                kernel::bindings::mdio_device_id;
->> >> +                $crate::module_phy_driver!(@count_devices $($dev),+) + 1
->> >> +            ] = [
->> >> +                $(kernel::bindings::mdio_device_id {
->> >> +                    phy_id: $dev.id,
->> >> +                    phy_id_mask: $dev.mask_as_int()
->> >> +                }),+,
->> >> +                kernel::bindings::mdio_device_id {
->> >> +                    phy_id: 0,
->> >> +                    phy_id_mask: 0
->> >> +                }
->> >> +            ];
->> >> +        }
->> >> +    };
->> >> +
->> >> +    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], type: $modname:ident, $($f:tt)*) => {
->> >> +        struct Module<$modname> {
->> >> +            _reg: kernel::net::phy::Registration,
->> >> +            _p: core::marker::PhantomData<$modname>,
->> >> +        }
->> >
->> > Why can't this struct be implemented in core::net::phy and just
->> > referenced from this macro?
->>
->> Seems that driver! macro's type works only with type inside the
->> current crate.
-> 
-> What `driver!` macro are you referring to? And where does this
-> requirement come from? (As a data point, other driver macros we
-> implemented in the past all use Module implementations in the kernel
-> crate.)
 
-Sorry, module! macro and please see the net-next v3 patchset because
-this macro was updateded. With your approach, I got the following
-error:
+> >> +}
+> >> +
+> >> +impl Registration {
+> >> +    /// Registers a PHY driver.
+> >> +    #[must_use]
+> >
+> > This function returns a `Result`, which itself already has `must_use`.
+> > Are you sure you need this here?
+>
+> Ah, we don't need `must_use` here.
+>
 
-error[E0117]: only traits defined in the current crate can be
-implemented for types defined outside of the crate
-  --> drivers/net/phy/ax88796b_rust.rs:13:1
-     |
-     13 | / kernel::module_phy_driver! {
-     14 | |     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
-     15 | |     device_table: [
-     16 | |         DeviceId::new_with_driver::<PhyAX88772A>(),
-     ...  |
-     23 | |     license: "GPL",
-     24 | | }
-        | | ^
-        | | |
-        | |_impl doesn't use only types from inside the current crate
-        |   `kernel::net::phy::Module` is not defined in the current crate
+Whoops, I suggested this but gave you the wrong position. I think that
+applying it to the `struct Registration` rather than the function
+would give the correct behavior of warning if the handle isn't held.
+Mind double checking this?
+
+It doesn't prevent all cases (still needs to be assigned to something
+like `_handle` and not just the black hole `_`), but it should give a
+hint if anyone uses it directly. You can also add a comment
+
+    #[must_use =3D "this must be assigned to ensure it is not
+immediately dropped and unregistered"]
