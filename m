@@ -1,62 +1,193 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022FA19BB1
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 08:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D631A282;
+	Wed, 11 Oct 2023 09:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=socialglobal.pl header.i=@socialglobal.pl header.b="jm4agzEu"
-Received: from mail.socialglobal.pl (mail.socialglobal.pl [51.195.90.253])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5104592
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 01:14:34 -0700 (PDT)
-Received: by mail.socialglobal.pl (Postfix, from userid 1002)
-	id 4D765269C4; Wed, 11 Oct 2023 08:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=socialglobal.pl;
-	s=mail; t=1697011962;
-	bh=XwhyqI/moZPDJ7KCfcA6Gip8fA7ZKcg5SWsKuF/26zk=;
-	h=Date:From:To:Subject:From;
-	b=jm4agzEugapQGY9Us1p7VvWkYPe2WvCxAmjOzOaLz7CoArrzlukUiAumXUFsnp5XO
-	 t/tRHK9TlPed+IGhm1FtZKU96XHBFZN2aTB9/4ONrstBdLn08VSLt2WXI4gpo0G0Mq
-	 DXyKAjJxB1fdNkULyL+UnD/+ybC5n0QCMDLzSMti6bnrZLzJddw0IuRO0OTBqPsFWy
-	 L/ttNhKLulAv0rVlVNNRHLCfPXjMpKL/PHe9nc8SqiXOCaWzTkoCwyjLRx3MFtQgLU
-	 8rpBjDd6nSzOtSzsvvKtB1T1HWq+12Yz46M+IhceItode+sEiKU7dfZhv1PXSPG2kO
-	 48Epegku50WGA==
-Received: by mail.socialglobal.pl for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 08:10:59 GMT
-Message-ID: <20231011064500-0.1.90.33y4x.0.ralgd5yq6b@socialglobal.pl>
-Date: Wed, 11 Oct 2023 08:10:59 GMT
-From: "Dominik Perkowski" <dominik.perkowski@socialglobal.pl>
-To: <rust-for-linux@vger.kernel.org>
-Subject: Pozycjonowanie- informacja
-X-Mailer: mail.socialglobal.pl
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IMV/ZQYl"
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 837FB92;
+	Wed, 11 Oct 2023 02:59:13 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5a7cc03dee5so16440287b3.3;
+        Wed, 11 Oct 2023 02:59:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697018352; x=1697623152; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rQbR9HXqUaZOVx7zCKLA9nx63LMEdkWSVsLjTwzrtdA=;
+        b=IMV/ZQYlyVHJ8m3+vY4bs5OJh05Q3WHzXH8GnjE4nqmg5O84FwlSJRs5exI50n8umt
+         5JgFIODh8iY9uG7oXbECMCKXphVYBdn4wTdW7kCAxOkftvAEpizp+YZ5AoDH71AV0vXs
+         JW5j8BYwrIHYTV4zQKzlK5IfpUziC0xupVcj2XZ8tsKLb1sI9KzNT7lFiYwddRHpBpmY
+         qckKv+k1kyg3fD8HP/tbRz/sDTolPnEEHSxIYjbIH1ZI9XCyojl/+dFcv13BSSqZKwfn
+         nAxgzJd6+aQIa7bi/a4c41Ntk/NllumDtiZUuqwL/Gi2J0JlbXVd/f+4/x55vzI9HjoG
+         8gyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697018352; x=1697623152;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rQbR9HXqUaZOVx7zCKLA9nx63LMEdkWSVsLjTwzrtdA=;
+        b=d8nOmLxS6RO3VFeeLW9KFr6kuufZZE9RiTvx/ynKid3scA59bk5aW1JMRZCnkdlspJ
+         9/ZrTZMS9gkO2oIvCwVcMYVbhsiPeoRp9KT41bqjoDPNgIK3q+l5QhmC0LmTP2zD9W3u
+         w1Lh31Dv+YrOFZL7FVvkbiFeX0WNfQNReHZKMyq0FeqCXXp5u2wG7EnregwY5Y0udNs2
+         ImerWbhM5PLXod03t5d/FS9HRScHJ6XsiEPkXe3FXp4kwE2Oczttf6pP+GRdyIFQPFjT
+         +sXCJy/gtfsTzqTHZ6Ubc6OpTDFh7Zb/AOsDFWsTgdKoH9ICVpb3dH2UHKxyfdRKPDFh
+         u1Pg==
+X-Gm-Message-State: AOJu0YxmAn/lP8iMFA49stAP2MlZNKUsyL8DTfiKWRBnk5gF/VO7hOm4
+	EA2OPJIy2qjtpAjT1bztkfIwOx2t0ZNFOyHKc+eMjIMxp9sqKA==
+X-Google-Smtp-Source: AGHT+IGdDQuCI6khk5rHYAY341aaAXtpLAGhxNDMmjVcNaGP4zMMbcOngMmWilsCHH7dycnCrElh+t4blzBDnjiNgk0=
+X-Received: by 2002:a0d:d782:0:b0:59f:4e6d:b56b with SMTP id
+ z124-20020a0dd782000000b0059f4e6db56bmr22124806ywd.5.1697018352671; Wed, 11
+ Oct 2023 02:59:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <2023100926-ambulance-mammal-8354@gregkh> <20231010.002413.435110311325344494.fujita.tomonori@gmail.com>
+ <CANiq72nj_04U82Kb4DfMx72NPgHzDCd-xbosc83xgF19nCqSfQ@mail.gmail.com> <20231010.005008.2269883065591704918.fujita.tomonori@gmail.com>
+In-Reply-To: <20231010.005008.2269883065591704918.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 11 Oct 2023 11:59:01 +0200
+Message-ID: <CANiq72=GAiR-Mps_ZuLtxmma28dJd2xKdXWh6fu1icLBmmaYAw@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: gregkh@linuxfoundation.org, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, 
+	wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Dzie=C5=84 dobry,=20
+On Mon, Oct 9, 2023 at 5:50=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> What feedback? enum stuff? I think that it's a long-term issue.
 
-jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
-j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
-e Google.=20
+Not just that. There has been other feedback, and since this message,
+we got new reviews too.
 
-Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
-=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
-w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
-owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
-dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+But, yes, the `--rustified-enum` is one of those. I am still
+uncomfortable with it. It is not a huge deal for a while, and things
+will work, and the risk of UB is low. But why do we want to risk it?
+The point of using Rust is precisely to avoid this sort of thing.
 
-Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
-edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
-edstawi=C4=87 ofert=C4=99?=20
+Why cannot we use one of the alternatives? If we really want to catch,
+right now, the "addition of new variant in the C enum" case, cannot we
+add a temporary check for that? e.g. it occurs to me we could make
+`bindgen` generate the `--rustified-enum` into a temporary file and
+compile a fixed `match` somewhere or something like that, for the
+purposes of checking. That way we avoid the UB in the actual code.
 
+But the best would be to work on adding to `bindgen` something like
+the `--safe-rustified-enum` I suggested (because we already know the
+maintainers find the idea reasonable -- thanks Trevor for creating the
+issue!), even if only to validate the idea with a prototype.
 
-Pozdrawiam serdecznie,
-Dominik Perkowski
+In short, what is the rush?
+
+> I'm not sure about it. For example, we reviewed the locking issue
+> three times. It can't be reviewed only on Rust side. It's mainly about
+> how the C side works.
+
+We have never said it has to be reviewed only on the Rust side. In
+fact, our instructions for contributing explain very clearly the
+opposite:
+
+    https://rust-for-linux.com/contributing#the-rust-subsystem
+
+The instructions also say that the code must be warning-free and so
+on, and yet after several iterations and pushing for merging several
+times, there are still "surface-level" things like missing `// SAFETY`
+comments and `bindings::` in public APIs; which we consider very
+important -- we want to get them enforced by the compiler in the
+future.
+
+Not only that, when I saw Wedson mentioning yesterday the
+`#[must_use]` bit, I wondered how this was even not being noticed by
+the compiler.
+
+So I just took the v3 patches and compiled them and, indeed, Clippy gives y=
+ou:
+
+    error: this function has an empty `#[must_use]` attribute, but
+returns a type already marked as `#[must_use]`
+    --> rust/kernel/net/phy.rs:547:5
+        |
+    547 | /     pub fn register(
+    548 | |         module: &'static crate::ThisModule,
+    549 | |         drivers: &'static [Opaque<bindings::phy_driver>],
+    550 | |     ) -> Result<Self> {
+        | |_____________________^
+        |
+        =3D help: either add some descriptive text or remove the attribute
+        =3D help: for further information visit
+https://rust-lang.github.io/rust-clippy/master/index.html#double_must_use
+        =3D note: `-D clippy::double-must-use` implied by `-D clippy::style=
+`
+
+    error: length comparison to zero
+    --> rust/kernel/net/phy.rs:551:12
+        |
+    551 |         if drivers.len() =3D=3D 0 {
+        |            ^^^^^^^^^^^^^^^^^^ help: using `is_empty` is
+clearer and more explicit: `drivers.is_empty()`
+        |
+        =3D help: for further information visit
+https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+        =3D note: `-D clippy::len-zero` implied by `-D clippy::style`
+
+    error: methods called `as_*` usually take `self` by reference or
+`self` by mutable reference
+    --> rust/kernel/net/phy.rs:642:21
+        |
+    642 |     const fn as_int(self) -> u32 {
+        |                     ^^^^
+        |
+        =3D help: consider choosing a less ambiguous name
+        =3D help: for further information visit
+https://rust-lang.github.io/rust-clippy/master/index.html#wrong_self_conven=
+tion
+        =3D note: `-D clippy::wrong-self-convention` implied by `-D clippy:=
+:style`
+
+And from `rustdoc`:
+
+    error: unresolved link to `module_phy_driver`
+    --> rust/kernel/net/phy.rs:408:23
+        |
+    408 | /// This is used by [`module_phy_driver`] macro to create a
+static array of phy_driver`.
+        |                       ^^^^^^^^^^^^^^^^^ no item named
+`module_phy_driver` in scope
+        |
+        =3D note: `macro_rules` named `module_phy_driver` exists in this
+crate, but it is not in scope at this link's location
+        =3D note: `-D rustdoc::broken-intra-doc-links` implied by `-D warni=
+ngs`
+
+    error: unresolved link to `PHY_DEVICE_ID`
+    --> rust/kernel/net/phy.rs:494:52
+        |
+    494 |     /// If not implemented, matching is based on [`PHY_DEVICE_ID`=
+].
+        |
+^^^^^^^^^^^^^ no item named `PHY_DEVICE_ID` in scope
+        |
+        =3D help: to escape `[` and `]` characters, add '\' before them
+like `\[` or `\]`
+
+So, no, it is not ready for merge. Yes, those things above are
+trivial, but fixing them is also trivial, and after several revisions
+it has not been done. And this sort of thing should be done before
+even submitting the very first version.
+
+Cheers,
+Miguel
