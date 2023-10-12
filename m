@@ -1,109 +1,116 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5140F12E43;
-	Thu, 12 Oct 2023 10:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F89F24A05;
+	Thu, 12 Oct 2023 11:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Lw5xjJoO"
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AB8BD3;
-	Thu, 12 Oct 2023 03:48:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XBhUlLUXpFNiQjcNWmFNytrRub9YUYcuDDd8SJGbp9M=; b=Lw5xjJoOsrdpqAGlBpja1izi61
-	modJ6b3F4IEVl9yWwMiyNTdVDHS8KTsti7HMPTMM0BTIcdH5Qw1ceOJjlpH6OvOJzA8BWjz9lCO8u
-	0JKk5o5FvEvmIcNxOer2v/BzfJeZtIlYiYXSxYL5680TwVUpEJhu9G41pL5BJc0xFYZ0QO2SIJfO2
-	e50Q/LO4jvU4iHP8ilGx8/E6yAsF0RcFoNbSGTGxmwLUbYpLnPrnRbMUFs+3zXf/lg784hwvDrg2B
-	cvew0YRQLU1UlK1xtJINQcK2tbgSIyAATDxShiiW4YeszBf/Yt081QQg19xEBA5dWRbiMr/nNJkgd
-	D/1Lc22w==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qqtEE-00GRER-Cd; Thu, 12 Oct 2023 10:47:42 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 11CE830036C; Thu, 12 Oct 2023 12:47:42 +0200 (CEST)
-Date: Thu, 12 Oct 2023 12:47:41 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@google.com>,
-	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-Message-ID: <20231012104741.GN6307@noisy.programming.kicks-ass.net>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
- <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
- <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O816NhHn"
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EE204EFD;
+	Thu, 12 Oct 2023 04:57:39 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-690d935dbc2so173570b3a.1;
+        Thu, 12 Oct 2023 04:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697111859; x=1697716659; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HQEM11ppiLh7tdmfqX7SGRNzgwI01XZbHBFYgkzMudM=;
+        b=O816NhHnCBuOb9KT1Ntwv0SYoB/JpObccZzBmZftnpMmFz73iSmlvQ1IMKWs1z2IwA
+         7M0bOgRmbO8NKTyRns5ls49hXiZfeTrfhUUJSwLH46bpf3ycl+uyIgv27BvZDa9rYO2T
+         8zmLz0uTeP3oaa3hHORabE8WVFMCT74BGVfVXmJ0xjW11r/fJxA4NrTIiFvcH8gDnZJK
+         3DnE71AUY3IkXkQy+k3HWuH1z9hewMeShu8GrwRwnrO3tar+xuckDf+ur3WB8hUltInn
+         M/lrIWIqN7QRpFJ0UFqBTKk9DdnUzwzqwaKwHyhSueMzCJAkSTyu9yE5C4D701PFbbNP
+         lsng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697111859; x=1697716659;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HQEM11ppiLh7tdmfqX7SGRNzgwI01XZbHBFYgkzMudM=;
+        b=aRQzXwUk97Ei5m/D7lIV8hVcelhlaUetZWpPZ1AD32zj8dV1lNvNPatBwwoo+Pc5G/
+         AbJ2LxiCsLwETguxfmIOHuvm/awRaEVv4eRyO3Ntd8TUgMNnzYCpSdRWrcq5rAte/gK5
+         SEA5K5d9IUHzk6NK2QWHO22ZQg9SL/cxbacwnF6bw4NV0PmYMPN+pIABliwqzxTkE7fY
+         FMY+VRYDEMzmdigz82rlefkMZLIKB0q+WDXpSAUkPKFtD5P0J8krNPDIT2CB8DyR0mbZ
+         eKewCSbvD0GKZG06w/p+b0lIZb8ULsXvQ0ilPSjdY4fDojMM+sYWsi+WXm0SFYTLLkTd
+         8D2w==
+X-Gm-Message-State: AOJu0YxlStsztDEp9OqwbNM2qckipNLy25oji+7V4QdJn36St99lTray
+	hEr9f8h42yKfWEk1YWB8h4M=
+X-Google-Smtp-Source: AGHT+IFQB4pa2UXDP3wFPGP2pMgjGtpDDufEZjp8IjMJWD2LoqE3iqudQD+MbIB1de4mu8iF0qOCuA==
+X-Received: by 2002:a05:6a00:3985:b0:68f:c8b3:3077 with SMTP id fi5-20020a056a00398500b0068fc8b33077mr25660139pfb.1.1697111858510;
+        Thu, 12 Oct 2023 04:57:38 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id v5-20020a63bf05000000b005894450b404sm1342433pgf.63.2023.10.12.04.57.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 04:57:38 -0700 (PDT)
+Date: Thu, 12 Oct 2023 20:57:37 +0900 (JST)
+Message-Id: <20231012.205737.1152392964209884159.fujita.tomonori@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu
+Subject: Re: [PATCH net-next v3 3/3] net: phy: add Rust Asix PHY driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <2023100955-scrambler-radio-e93a@gregkh>
+References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
+	<20231009013912.4048593-4-fujita.tomonori@gmail.com>
+	<2023100955-scrambler-radio-e93a@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 14, 2022 at 11:34:30AM -0700, Sami Tolvanen wrote:
-> On Fri, Oct 14, 2022 at 11:05 AM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > On Tue, Oct 11, 2022 at 1:16 AM Sami Tolvanen <samitolvanen@google.com> wrote:
-> > >
-> > > Rust supports IBT with -Z cf-protection=branch, but I don't see this
-> > > option being enabled in the kernel yet. Cross-language CFI is going to
-> > > require a lot more work though because the type systems are not quite
-> > > compatible:
-> > >
-> > > https://github.com/rust-lang/rfcs/pull/3296
-> >
-> > I have pinged Ramon de C Valle as he is the author of the RFC above
-> > and implementation work too; since a month or so ago he also leads the
-> > Exploit Mitigations Project Group in Rust.
+On Mon, 9 Oct 2023 12:10:11 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
+
+> On Mon, Oct 09, 2023 at 10:39:12AM +0900, FUJITA Tomonori wrote:
+>> This is the Rust implementation of drivers/net/phy/ax88796b.c. The
+>> features are equivalent. You can choose C or Rust versionon kernel
+>> configuration.
+>> 
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> ---
+>>  drivers/net/phy/Kconfig          |   7 ++
+>>  drivers/net/phy/Makefile         |   6 +-
+>>  drivers/net/phy/ax88796b_rust.rs | 129 +++++++++++++++++++++++++++++++
+>>  rust/uapi/uapi_helper.h          |   2 +
+>>  4 files changed, 143 insertions(+), 1 deletion(-)
+>>  create mode 100644 drivers/net/phy/ax88796b_rust.rs
+>> 
+>> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+>> index 421d2b62918f..0317be180ac2 100644
+>> --- a/drivers/net/phy/Kconfig
+>> +++ b/drivers/net/phy/Kconfig
+>> @@ -107,6 +107,13 @@ config AX88796B_PHY
+>>  	  Currently supports the Asix Electronics PHY found in the X-Surf 100
+>>  	  AX88796B package.
+>>  
+>> +config AX88796B_RUST_PHY
+>> +	bool "Rust version driver for Asix PHYs"
+>> +	depends on RUST_PHYLIB_BINDINGS && AX88796B_PHY
+>> +	help
+>> +	  Uses the Rust version driver for Asix PHYs (ax88796b_rust.ko)
+>> +	  instead of the C version.
 > 
-> Thanks, Miguel. I also talked to Ramon about KCFI earlier this week
-> and he expressed interest in helping with rustc support for it. In the
-> meanwhile, I think we can just add a depends on !CFI_CLANG to avoid
-> issues here.
+> This does not properly describe what hardware this driver supports.  And
 
-Having just read up on the thing it looks like the KCFI thing is
-resolved.
+I'll add (by copying the description of the C driver).
 
-I'm not sure I understand most of the objections in that thread through
--- enabling CFI *will* break stuff, so what.
 
-Squashing the integer types seems a workable compromise I suppose. One
-thing that's been floated in the past is adding a 'seed' attribute to
-some functions in order to distinguish functions of otherwise identical
-signature.
+> that's an odd way to describe the module name, but I see none of the
+> other entries in this file do that either, so maybe the PHY subsystm
+> doesn't require that?
 
-The Rust thing would then also need to support this attribute.
-
-Are there any concrete plans for this? It would allow, for example,
-to differentiate address_space_operations::swap_deactivate() from any
-other random function that takes only a file argument, say:
-locks_remove_file().
-
+I leave it to Andrew. This is the first driver in Rust so I thought
+that users had no idea the relationship between the source file name
+and the module file name.
