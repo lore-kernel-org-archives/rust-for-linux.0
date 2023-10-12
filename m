@@ -1,67 +1,64 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F443B28F
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 20:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E23E36AF1
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 21:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6sJn+OM"
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82544E5;
-	Thu, 12 Oct 2023 13:45:33 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5a7ba0828efso17550797b3.3;
-        Thu, 12 Oct 2023 13:45:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NzuDUfFa"
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BACB99D;
+	Thu, 12 Oct 2023 14:00:21 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5a7c95b8d14so18441317b3.3;
+        Thu, 12 Oct 2023 14:00:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697143532; x=1697748332; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697144421; x=1697749221; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dm71cAIR4dnc3VUdHD6qFWEMr+jee0/siUqiNF2HWtY=;
-        b=c6sJn+OMESOcOy4vgW7D1RZuXgyFwYRsgCl2ivAhkGQZY4E7+CFQaKlFr58GmFV8WF
-         +kLucTQBa9wDz1igCzEHEVaztBmqkwC6KKr3utTBQeTiulbUvYYNF4PxPioNm5fHyGUw
-         163O/Svb78IbhMV9kcFOMNuj543wUzMQMkpMhldgq1qINJrVlOdYbgzDwBM+Q0P/IH6o
-         5tKz37yrFaqrN6KlIt7YjWo4SruR77XKHiLI5/CKPplXU8V00Ole15UDqQrOXReVqBDH
-         HVgaV7EJtWtiM2APz9WAmkFglx3DtEtXqNY0Flysq+DhAA7C9HZcs2w0A32i9OCD1vZY
-         Ahkw==
+        bh=VS3Vk1hGFBjeGc8z4uoPu31TJIYHPUua8IaOwdxDOM8=;
+        b=NzuDUfFajTJq/BVkf9YErjLcZMAyBZ++IDdjQc5tGD3SRXvasbpYHoYcKFigJnoxx2
+         8W49eR+4c3peDRIllXbkXldgt+zSi4ufhfVIiY3ID9ZbEkFpFdfprv9lNnc96fvX0S5L
+         VBwLfPG2L5w/qhTPG13OpRkLj0ESZgAqx2dVggAfFRmuMIB7k+Zq37mixbljc9jS1DUe
+         NyWlo3xyqGeF+pCV56RRUVcK4eOYKnrKnrCDFyVYrPecTFeHvE/21HJZ+v+7G+1PYAgE
+         BH0W6F7+E67G9XjsH/lAeXb5HcUCrkPjqSFxbgqDiQfyB9nbWM5eKvBdkCJ6XLaCWOEW
+         OSRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697143532; x=1697748332;
+        d=1e100.net; s=20230601; t=1697144421; x=1697749221;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dm71cAIR4dnc3VUdHD6qFWEMr+jee0/siUqiNF2HWtY=;
-        b=EJr1VOzWUPYW3J4Pl66szR90XbvKUgiotOygWdZNCwFbp6cxwONuaRzkEQeKhP8oIh
-         cpO9NcEeBcp9d4Rm1/aga1+w+aVX3gTlFxJUUDtEVDqdaPk2IMflWZUAZFs578kMOg0z
-         +hyj0TuM7kC8YQED/+mUkajqwVU77iu6FHZle8cSeIly+kRqdpNjt/AATV0qPM28jUVs
-         53VunEH91XPbXok1kLaR4iJiTRs7jnF5z+e06s11jdVTWQhk7X6pL+f97JLAhuxjKocm
-         gPDCbx6F5NXj2uI1zoCYGDHx5UidbCpxZaVqYpdwECWVDW6fBBF/Iz/fO5mazt8ygFQ5
-         SQ8Q==
-X-Gm-Message-State: AOJu0YzFIgs84GH3ObzdbhEGgUeSa6CxHC0df/sRoSDuKeDaZHfgliqS
-	5VLw8cMxZyzEWi/eazLWrA0LOGo20vjdV/fqhN0=
-X-Google-Smtp-Source: AGHT+IFv+yC0f0vTaV9BEfJYe/+emnZEdaZ5U2pHDF7/5muhUYA8tdCFjUAesps6E4dSrwBKJaseCia0qQEE6zG0Pd4=
-X-Received: by 2002:a81:8141:0:b0:59b:1763:bff9 with SMTP id
- r62-20020a818141000000b0059b1763bff9mr29244314ywf.49.1697143532705; Thu, 12
- Oct 2023 13:45:32 -0700 (PDT)
+        bh=VS3Vk1hGFBjeGc8z4uoPu31TJIYHPUua8IaOwdxDOM8=;
+        b=sr8Dj1vaxBHA9noLMmF3KjU4bmP/A1N2gJoaEhzVqqSnGacyczn/Vxom+qcLL7UGGT
+         q9tWOUcfe3tCA/+p9DWhkWN7Nw6//zfFjOfo9stLTfXIRQTeel0y+YIu2rt2T2PeIERf
+         zc6NhqZoCdhT5yLtKN8NdYcESoYxyRrNfGbWv5kLZbNOgs5bvLO/1ifP+vVvM2cdmAfN
+         zft8a+77Kz7qJHgeKpAaJXOxDdbLhsuRs+QrIG31Dpya1CPTylax1jAbQC9F55EoRc7/
+         bLxcuH9jiG6gysOFqUz9J7qT8uhydbQjS4plxI668Av683Cavui1kkEUV48ng8KOoQYg
+         2PYA==
+X-Gm-Message-State: AOJu0YxEuEZdlbW8Q4yiCgYa8uK18oqymCaUS50syCYq7lkmPn/06jg+
+	MJyIYeOHdAwelzZTjd/nH4QZKbvJBAMmq3H7g7E=
+X-Google-Smtp-Source: AGHT+IHh8ujhu/UcLg8ViA9S7kui2bh28bpPnv7cNtkKSY5vYwn2QFDh8uegWuQ0WgvBvVJ6lgIuiz5oASaGMuY5Z74=
+X-Received: by 2002:a81:a247:0:b0:599:b570:2db7 with SMTP id
+ z7-20020a81a247000000b00599b5702db7mr24945063ywg.30.1697144420801; Thu, 12
+ Oct 2023 14:00:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231008094816.320424-1-tmgross@umich.edu> <8a6a2133-92a0-4478-8f3a-e1c7ba38ff18@gmail.com>
- <CALNs47vj=whnF1FcmmXHz=msB2j=GAnrnwx-OKHciW6iR+GUMw@mail.gmail.com>
- <CANiq72mn3f1w0RZo58BrzDuDHjcGNyBr3FhygVGfSx_xbYwgLg@mail.gmail.com> <CALNs47v9Vk14Up2MMQsqZGtGzbvyA+b7QB_nmTH05zSBpbyxJg@mail.gmail.com>
-In-Reply-To: <CALNs47v9Vk14Up2MMQsqZGtGzbvyA+b7QB_nmTH05zSBpbyxJg@mail.gmail.com>
+References: <20230930144958.46051-1-wedsonaf@gmail.com> <5122b6b6-12d5-0337-0c04-3e30da1f3898@proton.me>
+In-Reply-To: <5122b6b6-12d5-0337-0c04-3e30da1f3898@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 12 Oct 2023 22:45:21 +0200
-Message-ID: <CANiq72=4zCTJOk_V1sonN3-7NNWDCSA70j_bthsZo35KK7qT6w@mail.gmail.com>
-Subject: Re: [PATCH] rust: macros: update 'paste!' macro to accept string literals
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+Date: Thu, 12 Oct 2023 23:00:09 +0200
+Message-ID: <CANiq72n=y7GtYEEF3042-JLhcpLMAk2ammh2DGkO+1ELXBc=NA@mail.gmail.com>
+Subject: Re: [PATCH] rust: error: fix the description for `ECHILD`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -71,24 +68,40 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 9, 2023 at 9:14=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wro=
-te:
+On Mon, Oct 9, 2023 at 4:54=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
 >
-> I suppose it is something that augments current behavior and "fixes"
-> the linked use case by making it possible. I am not sure what
-> qualifies as a fix.
+> Strictly speaking, `errno-base.h` documents this as "No child
+> processes" (note the plural), but I am fine with taking it as-is.
 
-`Fixes` is meant for issues/bugs. So if the macro was broken, i.e. it
-does not do what it says it would, it would be a fix.
+Good catch.
 
-But if I understand correctly, the docs say this was not supported, so
-it is not a fix, it is just expanding the feature set.
+POSIX seems to use both (General Information vs. `<errno.h>`), so
+perhaps that is where Wedson picked it from.
 
-Similarly, `Reported-by` is not meant for feature requests.
-
-> I will update the documentation, thanks for the catch.
-
-Thanks!
+Given the kernel uses the plural, and that the commit message says it
+mimics `errno-base.h`, I have amended it.
 
 Cheers,
 Miguel
+
+1:  77983c791960 ! 1:  17bfcd6a8153 rust: error: fix the description
+for `ECHILD`
+    @@ Commit message
+         Fixes: 266def2a0f5b ("rust: error: add codes from `errno-base.h`")
+         Cc: stable@vger.kernel.org
+         Link: https://lore.kernel.org/r/20230930144958.46051-1-wedsonaf@gm=
+ail.com
+    +    [ Use the plural, as noticed by Benno. ]
+         Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+      ## rust/kernel/error.rs ##
+    @@ rust/kernel/error.rs: macro_rules! declare_err {
+          declare_err!(ENOEXEC, "Exec format error.");
+          declare_err!(EBADF, "Bad file number.");
+     -    declare_err!(ECHILD, "Exec format error.");
+    -+    declare_err!(ECHILD, "No child process.");
+    ++    declare_err!(ECHILD, "No child processes.");
+          declare_err!(EAGAIN, "Try again.");
+          declare_err!(ENOMEM, "Out of memory.");
+          declare_err!(EACCES, "Permission denied.");
