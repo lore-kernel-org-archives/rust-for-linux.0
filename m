@@ -1,145 +1,112 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFF3655
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 03:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADB2655
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 03:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="oF1uhh/I"
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9FA0A4
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 20:09:15 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-d9a518d66a1so600910276.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 20:09:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1MAi23G"
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 161D994
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 20:16:58 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-58974d4335aso67142a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 20:16:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1697080155; x=1697684955; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YqxraEpSTDJh31M15ngooGnPOgYQ3SDDAAgZGlwyHUM=;
-        b=oF1uhh/It9B4F5ef/7ECCirCiJqKtX7KJ+FNEsBMlCNcW7QLFfxZfKjQI9xHcnyYov
-         G9vAOUR8gRP7MnZLlm+gRyvlicaegPfEg/HralFlWMdnmRjS3w149q93xmllcQQ82qeu
-         LPoAznol+oUPOp/fUYRg0PEeBz+we5eoWW7FxD5vekJnGgLV1sZ2SCvdzNF/qdi6KxST
-         Z4TzenJOHegsoyErmDCxWuqrotA8ETDsxWM6UrMpqGsKU9rltdYQDyUGBfJQR5p+PNku
-         rOvivtT/KLERYpLlWVfTsOPo5wMCW4b0UJ9Ir/NiTEnJfYTm1hT7lWmnYm6Qva9V6Fsn
-         mqRg==
+        d=gmail.com; s=20230601; t=1697080617; x=1697685417; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0eWqIQSYsLz4aq4pyTdJK9AFQOVKqdrC/EFC3wh58XI=;
+        b=M1MAi23G902iQFPsuPg+gd820752KsP4BKYoqP7bL10PEf1qpDFx7bE48iwAWmx8gS
+         Iz9FjSAKIZiL7amvTXsfyQtAEROXwIoNNd99SleLuw8GDDqTv75LUlS9cU1hspuymkQ9
+         NDBHbJ9mNsmYaoM3zZgMrDXNHrXbtIGKvxiqeh5dqEk78rmTCyMBnrDcNRVoohsCOmfY
+         3NGRQ5hSUsjPcQLQPuDg6Tz+bA10QZpgdFPUY2PeP4WhRZQH3y2oC1cJUMJtbfAEnCHe
+         gWEFPjVQOyxtvausK62TnnzZHEZrb55+wGTFnR3H9uuYQ8TnwjWsz3ZCqbd1lJBzBHqk
+         lJ+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697080155; x=1697684955;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YqxraEpSTDJh31M15ngooGnPOgYQ3SDDAAgZGlwyHUM=;
-        b=ikpcO25siC+sZbqe0t4sMFDR6x9KdCNWb77gEysO3hSV3NXgXBvPtmXrjP49jfJODj
-         bMUAuW3GcBLzt26n23rRyBt6IsGaMObEacWnNqY00Y7PJpyLjCzr7AVXYfb0bBjwUbuG
-         b5ZDGoRgrKIrcvXpbQBhiwKk1YWdwFrCRUOaehsVakl8JlZhbMOrsHqDzMQX7CtTxutF
-         ayX6c64dKK4s+lzs30fz5bC9OZyozM/FonyTfl+0Do20zVTR+ypJk7NvqIGvrD3oLFBm
-         90UZDhszWjKNgd1h/0gNBGR4T2Hjt/WO4qGETbZAwQZzVpjQk6/KerYWsZ/gN5yKck8m
-         HadA==
-X-Gm-Message-State: AOJu0Yyxgqq2NsULb3+AV9J6Vz2C2L1nBKwblZgFdIGKxpKdQPeK1DHQ
-	pdYoHWwnA992MjHjSbjTw7pqDs8zXVqHgOXyYBwGTskV+c4o7b/5fa+rQA==
-X-Google-Smtp-Source: AGHT+IGAPoNukyvuyY0FjYu8se1steSOuAd0hVEapRBhsVQj20+XHDNuTIPM3xqFy9tEqA8V7GsmxWPVEaujUR5M7rc=
-X-Received: by 2002:a5b:a86:0:b0:d0a:8973:b1c with SMTP id h6-20020a5b0a86000000b00d0a89730b1cmr19324778ybq.12.1697080155010;
- Wed, 11 Oct 2023 20:09:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697080617; x=1697685417;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0eWqIQSYsLz4aq4pyTdJK9AFQOVKqdrC/EFC3wh58XI=;
+        b=sUFtVTIOifGVWEMCf0MEl1TQCrgUOqQVEfULZYEaIJCyW/vxoX12EANAdN5pqLVY2n
+         Mn8Acl3D0e/q1XMXV5dKEKtlIX01IBipuH9qPb4QNj4ITZqo/1Zply/8OgdVVm9cS6Mo
+         c4iNMcd8oM4vgvI+PG5st/Qmvyu1+k79Txro4wtzSZtkTvSqUWMsAIsZVSErXB3y9Mt6
+         z9TgJ6qhqemazNQsjRPSESwfWFcebYUmHq4iS8Xb5zPT1CmK5Z2178G5G48rTL2aJlHJ
+         +OTx5e6ZpGdIrx9fpsOYvYXss6M4l/Tu2BxKSeJxnEXTVdptpIkZCXP92k3lii3oeeDr
+         FbTQ==
+X-Gm-Message-State: AOJu0YzEm+T02qs6jyCn/sMeNuky2J3IW7IMs7d0KrcIMnHdBgCJ1eAV
+	n4Cuc8djZFWUXrDdWm40pik=
+X-Google-Smtp-Source: AGHT+IF+u2mPBzzffOp6P4x6Kv0ytWotBSnLZ+XXDgN+LKEyLhGMCW8Y1JL9leWUJhXIlSyI5PKSxA==
+X-Received: by 2002:a05:6a20:9417:b0:16c:4959:c372 with SMTP id hl23-20020a056a20941700b0016c4959c372mr11754041pzb.6.1697080617399;
+        Wed, 11 Oct 2023 20:16:57 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id u13-20020a170902e80d00b001c5fd2a28d3sm665032plg.28.2023.10.11.20.16.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Oct 2023 20:16:57 -0700 (PDT)
+Date: Thu, 12 Oct 2023 12:16:56 +0900 (JST)
+Message-Id: <20231012.121656.1502998233251919494.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com,
+ miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, benno.lossin@proton.me
+Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
+ drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CALNs47s_wjytz3sw6uXA-27NnZkN1z+WYztfQ2Hnw0qVqEWwDw@mail.gmail.com>
+References: <CALNs47uCJsTsPVPcL5-iYvzCgrJhPnEXgQ5Di-SEh5WD9vF1qQ@mail.gmail.com>
+	<20231012.085715.1926246245884454683.fujita.tomonori@gmail.com>
+	<CALNs47s_wjytz3sw6uXA-27NnZkN1z+WYztfQ2Hnw0qVqEWwDw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CALNs47svn98i7O5Gfm6nXo_N0VFod+1LVj0oe2j_q46yGAiZHw@mail.gmail.com>
- <CANiq72m4JhSmNjkTKh2AKwc2KJXyKh6taWFJUcjm0s_NCT-skA@mail.gmail.com>
- <CALNs47uCJsTsPVPcL5-iYvzCgrJhPnEXgQ5Di-SEh5WD9vF1qQ@mail.gmail.com> <20231012.085715.1926246245884454683.fujita.tomonori@gmail.com>
-In-Reply-To: <20231012.085715.1926246245884454683.fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 11 Oct 2023 23:09:03 -0400
-Message-ID: <CALNs47s_wjytz3sw6uXA-27NnZkN1z+WYztfQ2Hnw0qVqEWwDw@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, Alice Ryhl <aliceryhl@google.com>
-Cc: miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, 
-	rust-for-linux@vger.kernel.org, andrew@lunn.ch, benno.lossin@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Oct 11, 2023 at 7:57=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Tue, 10 Oct 2023 19:12:43 -0400
-> Trevor Gross <tmgross@umich.edu> wrote:
->
-> > On Tue, Oct 10, 2023 at 6:54=E2=80=AFPM Miguel Ojeda
-> > <miguel.ojeda.sandonis@gmail.com> wrote:
-> >>
-> >> On Wed, Oct 11, 2023 at 12:50=E2=80=AFAM Trevor Gross <tmgross@umich.e=
-du> wrote:
-> >> >
-> >> > I agree, but there needs to be a way to use a driver more than once
-> >> > with different IDs. See
-> >> > https://lore.kernel.org/rust-for-linux/CALNs47vyW+A5uwCQ-ug03373xj+Q=
-Mehx=3D1pXZ8ViS2jZ8KhfxQ@mail.gmail.com/
-> >> > and the followup, maybe you have a better suggestion
-> >>
-> >> Does it make sense to generate one of those based on the other, unless
-> >> both are provided, for instance?
-> >
-> > That is what I was aiming for with my example `{ phy: PhyAX88772A, id:
-> > some_other_device_id }`, it seems to make sense that we default
-> > somehow.
-> >
-> > Or, did you mean something specific like storing >1 device ID in the
-> > `Driver` trait? Changing from:
-> >
-> >     trait Driver{
-> >         const PHY_DEVICE_ID: DeviceId =3D DeviceId::new_with_custom_mas=
-k(0, 0);
-> >     }
-> >
-> > To:
-> >
-> >     trait Driver{
-> >         const PHY_DEVICE_IDS: &'static [DeviceId] =3D
-> >             &[DeviceId::new_with_custom_mask(0, 0)];
-> >     }
-> >
-> > Maybe that would be better because the information is all in one place
-> > and the macro doesn't need to gain any more syntax
->
-> 3. multiple phy drivers has one id in device_table.
->
-> How these approach can handle the case?
->
-> Also note that there is a driver doesn't define PHY_ID, uses
-> match_phy_device() instead.
-
-In this case you would just need to put the same `DeviceId` in the
-array for both drivers, perhaps as a const. I think this proposal
-would look roughly like this:
-https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=3D2021&gi=
-st=3Dc391891fd49db196c0f3b71fca68ce45
-
-But I am curious what Miguel had in mind. @Alice Ryhl mentioned at the
-meeting that there may be some better patterns for this sort of thing
-as well.
-
-Context for the new reviewers: our macro gets a list of `impl Driver`s
-and needs to create a static array based on drivers' `DeviceId`s.
-Usually each `impl Driver` has exactly one `DeviceId` (currently part
-of the `Driver` trait) but sometimes there can be >1, which is the
-tricky part. The macro in this patch works around this by requesting
-both a list of `Driver`s and a list of `DeviceId`s (e.g. [1]), but it
-would be nice to not have to duplicate this. I suggested something
-where we can specify in the macro when we need >1 mdio id [2], but it
-would be best if we could just store all `DeviceId`s in the trait
-somehow (see above).
-
-See [3] and its sibling messages for some more context
-
-[1]: https://lore.kernel.org/rust-for-linux/20231009013912.4048593-4-fujita=
-.tomonori@gmail.com/
-[2]: https://lore.kernel.org/rust-for-linux/CALNs47vyW+A5uwCQ-ug03373xj+QMe=
-hx=3D1pXZ8ViS2jZ8KhfxQ@mail.gmail.com/
-[3]: https://lore.kernel.org/rust-for-linux/20231011.080639.531402968625485=
-566.fujita.tomonori@gmail.com/
+T24gV2VkLCAxMSBPY3QgMjAyMyAyMzowOTowMyAtMDQwMA0KVHJldm9yIEdyb3NzIDx0bWdyb3Nz
+QHVtaWNoLmVkdT4gd3JvdGU6DQoNCj4gT24gV2VkLCBPY3QgMTEsIDIwMjMgYXQgNzo1N+KAr1BN
+IEZVSklUQSBUb21vbm9yaQ0KPiA8ZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNvbT4gd3JvdGU6DQo+
+Pg0KPj4gT24gVHVlLCAxMCBPY3QgMjAyMyAxOToxMjo0MyAtMDQwMA0KPj4gVHJldm9yIEdyb3Nz
+IDx0bWdyb3NzQHVtaWNoLmVkdT4gd3JvdGU6DQo+Pg0KPj4gPiBPbiBUdWUsIE9jdCAxMCwgMjAy
+MyBhdCA2OjU04oCvUE0gTWlndWVsIE9qZWRhDQo+PiA+IDxtaWd1ZWwub2plZGEuc2FuZG9uaXNA
+Z21haWwuY29tPiB3cm90ZToNCj4+ID4+DQo+PiA+PiBPbiBXZWQsIE9jdCAxMSwgMjAyMyBhdCAx
+Mjo1MOKAr0FNIFRyZXZvciBHcm9zcyA8dG1ncm9zc0B1bWljaC5lZHU+IHdyb3RlOg0KPj4gPj4g
+Pg0KPj4gPj4gPiBJIGFncmVlLCBidXQgdGhlcmUgbmVlZHMgdG8gYmUgYSB3YXkgdG8gdXNlIGEg
+ZHJpdmVyIG1vcmUgdGhhbiBvbmNlDQo+PiA+PiA+IHdpdGggZGlmZmVyZW50IElEcy4gU2VlDQo+
+PiA+PiA+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3J1c3QtZm9yLWxpbnV4L0NBTE5zNDd2eVcr
+QTV1d0NRLXVnMDMzNzN4aitRTWVoeD0xcFhaOFZpUzJqWjhLaGZ4UUBtYWlsLmdtYWlsLmNvbS8N
+Cj4+ID4+ID4gYW5kIHRoZSBmb2xsb3d1cCwgbWF5YmUgeW91IGhhdmUgYSBiZXR0ZXIgc3VnZ2Vz
+dGlvbg0KPj4gPj4NCj4+ID4+IERvZXMgaXQgbWFrZSBzZW5zZSB0byBnZW5lcmF0ZSBvbmUgb2Yg
+dGhvc2UgYmFzZWQgb24gdGhlIG90aGVyLCB1bmxlc3MNCj4+ID4+IGJvdGggYXJlIHByb3ZpZGVk
+LCBmb3IgaW5zdGFuY2U/DQo+PiA+DQo+PiA+IFRoYXQgaXMgd2hhdCBJIHdhcyBhaW1pbmcgZm9y
+IHdpdGggbXkgZXhhbXBsZSBgeyBwaHk6IFBoeUFYODg3NzJBLCBpZDoNCj4+ID4gc29tZV9vdGhl
+cl9kZXZpY2VfaWQgfWAsIGl0IHNlZW1zIHRvIG1ha2Ugc2Vuc2UgdGhhdCB3ZSBkZWZhdWx0DQo+
+PiA+IHNvbWVob3cuDQo+PiA+DQo+PiA+IE9yLCBkaWQgeW91IG1lYW4gc29tZXRoaW5nIHNwZWNp
+ZmljIGxpa2Ugc3RvcmluZyA+MSBkZXZpY2UgSUQgaW4gdGhlDQo+PiA+IGBEcml2ZXJgIHRyYWl0
+PyBDaGFuZ2luZyBmcm9tOg0KPj4gPg0KPj4gPiAgICAgdHJhaXQgRHJpdmVyew0KPj4gPiAgICAg
+ICAgIGNvbnN0IFBIWV9ERVZJQ0VfSUQ6IERldmljZUlkID0gRGV2aWNlSWQ6Om5ld193aXRoX2N1
+c3RvbV9tYXNrKDAsIDApOw0KPj4gPiAgICAgfQ0KPj4gPg0KPj4gPiBUbzoNCj4+ID4NCj4+ID4g
+ICAgIHRyYWl0IERyaXZlcnsNCj4+ID4gICAgICAgICBjb25zdCBQSFlfREVWSUNFX0lEUzogJidz
+dGF0aWMgW0RldmljZUlkXSA9DQo+PiA+ICAgICAgICAgICAgICZbRGV2aWNlSWQ6Om5ld193aXRo
+X2N1c3RvbV9tYXNrKDAsIDApXTsNCj4+ID4gICAgIH0NCj4+ID4NCj4+ID4gTWF5YmUgdGhhdCB3
+b3VsZCBiZSBiZXR0ZXIgYmVjYXVzZSB0aGUgaW5mb3JtYXRpb24gaXMgYWxsIGluIG9uZSBwbGFj
+ZQ0KPj4gPiBhbmQgdGhlIG1hY3JvIGRvZXNuJ3QgbmVlZCB0byBnYWluIGFueSBtb3JlIHN5bnRh
+eA0KPj4NCj4+IDMuIG11bHRpcGxlIHBoeSBkcml2ZXJzIGhhcyBvbmUgaWQgaW4gZGV2aWNlX3Rh
+YmxlLg0KPj4NCj4+IEhvdyB0aGVzZSBhcHByb2FjaCBjYW4gaGFuZGxlIHRoZSBjYXNlPw0KPj4N
+Cj4+IEFsc28gbm90ZSB0aGF0IHRoZXJlIGlzIGEgZHJpdmVyIGRvZXNuJ3QgZGVmaW5lIFBIWV9J
+RCwgdXNlcw0KPj4gbWF0Y2hfcGh5X2RldmljZSgpIGluc3RlYWQuDQo+IA0KPiBJbiB0aGlzIGNh
+c2UgeW91IHdvdWxkIGp1c3QgbmVlZCB0byBwdXQgdGhlIHNhbWUgYERldmljZUlkYCBpbiB0aGUN
+Cj4gYXJyYXkgZm9yIGJvdGggZHJpdmVycywgcGVyaGFwcyBhcyBhIGNvbnN0LiBJIHRoaW5rIHRo
+aXMgcHJvcG9zYWwNCg0KSSdtIG5vdCBzdXJlIG1vZHBvc3QgY2FuIGhhbmRsZSBpdC4NCg0KSSBn
+dWVzcyB0aGF0IHlvdSB3b3VsZCBoYXZlIHR3byBleGFjdCBzYW1lIGxpbmVzIGluIG1vZHVsZXMu
+YWxpYXMsDQp3aGljaCBtaWdodCB3b3JrcyBidXQgSSBkb24ndCB0aGluayB0aGF0IGl0J3Mgbm90
+IGRlc2lnbmVkIHRvIGhhbmRsZQ0Kc3VjaC4NCg0KT3IgdGhlIG1hY3JvIG5lZWRzIHRvIGZpbmQg
+dGhlIHNhbWUgaWQgYW5kIGtlZXAgb25seSBvbmUuDQo=
