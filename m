@@ -1,68 +1,68 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F89F24A05;
-	Thu, 12 Oct 2023 11:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE47E266DC;
+	Thu, 12 Oct 2023 12:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O816NhHn"
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EE204EFD;
-	Thu, 12 Oct 2023 04:57:39 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-690d935dbc2so173570b3a.1;
-        Thu, 12 Oct 2023 04:57:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9V9dEIt"
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300D7FB;
+	Thu, 12 Oct 2023 05:54:24 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-690f8e63777so237418b3a.0;
+        Thu, 12 Oct 2023 05:54:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697111859; x=1697716659; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HQEM11ppiLh7tdmfqX7SGRNzgwI01XZbHBFYgkzMudM=;
-        b=O816NhHnCBuOb9KT1Ntwv0SYoB/JpObccZzBmZftnpMmFz73iSmlvQ1IMKWs1z2IwA
-         7M0bOgRmbO8NKTyRns5ls49hXiZfeTrfhUUJSwLH46bpf3ycl+uyIgv27BvZDa9rYO2T
-         8zmLz0uTeP3oaa3hHORabE8WVFMCT74BGVfVXmJ0xjW11r/fJxA4NrTIiFvcH8gDnZJK
-         3DnE71AUY3IkXkQy+k3HWuH1z9hewMeShu8GrwRwnrO3tar+xuckDf+ur3WB8hUltInn
-         M/lrIWIqN7QRpFJ0UFqBTKk9DdnUzwzqwaKwHyhSueMzCJAkSTyu9yE5C4D701PFbbNP
-         lsng==
+        d=gmail.com; s=20230601; t=1697115263; x=1697720063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KARJWYDG1LXfd55izpQA/w+fD+DEi2wLeLv0QKgn6kA=;
+        b=M9V9dEIt5y2w4gAGykKLF1R0M7XxIJ9eBosoI2q8+6wszvYD/Yibg4BL3S2sgEdNUC
+         EDHtBu9iZ4RnWoaPGc/izR9rkJSg1ThdQXFLhYyzSmtFudznJQrGs0XQMSh/Vqv8wnIK
+         Oq2oNQct+9aBlzCF62PlaRL23/84sRXTxhnUaOD2DuO7kwlDdcUDE3QyiGRCWv5q1tf5
+         NIGIXBdGEe9aeXrWuCBfXp/7qtQGjDUX3yKloqDDtDUU8cKhYAXpMYmt3TsNHoIdh6tx
+         bd9SbiKT1GpdckshA+MceT55coCdV4LAQPED8XThp4E4i4Oy7xocf+ifmX6XQtiyhDHg
+         3l8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697111859; x=1697716659;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HQEM11ppiLh7tdmfqX7SGRNzgwI01XZbHBFYgkzMudM=;
-        b=aRQzXwUk97Ei5m/D7lIV8hVcelhlaUetZWpPZ1AD32zj8dV1lNvNPatBwwoo+Pc5G/
-         AbJ2LxiCsLwETguxfmIOHuvm/awRaEVv4eRyO3Ntd8TUgMNnzYCpSdRWrcq5rAte/gK5
-         SEA5K5d9IUHzk6NK2QWHO22ZQg9SL/cxbacwnF6bw4NV0PmYMPN+pIABliwqzxTkE7fY
-         FMY+VRYDEMzmdigz82rlefkMZLIKB0q+WDXpSAUkPKFtD5P0J8krNPDIT2CB8DyR0mbZ
-         eKewCSbvD0GKZG06w/p+b0lIZb8ULsXvQ0ilPSjdY4fDojMM+sYWsi+WXm0SFYTLLkTd
-         8D2w==
-X-Gm-Message-State: AOJu0YxlStsztDEp9OqwbNM2qckipNLy25oji+7V4QdJn36St99lTray
-	hEr9f8h42yKfWEk1YWB8h4M=
-X-Google-Smtp-Source: AGHT+IFQB4pa2UXDP3wFPGP2pMgjGtpDDufEZjp8IjMJWD2LoqE3iqudQD+MbIB1de4mu8iF0qOCuA==
-X-Received: by 2002:a05:6a00:3985:b0:68f:c8b3:3077 with SMTP id fi5-20020a056a00398500b0068fc8b33077mr25660139pfb.1.1697111858510;
-        Thu, 12 Oct 2023 04:57:38 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id v5-20020a63bf05000000b005894450b404sm1342433pgf.63.2023.10.12.04.57.37
+        d=1e100.net; s=20230601; t=1697115263; x=1697720063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KARJWYDG1LXfd55izpQA/w+fD+DEi2wLeLv0QKgn6kA=;
+        b=bMOg7i9RgGdPG0K7JkCBTcSNgw2CDS1fmJR0k/NumVI+eg4tgOpO7ctBMd1TU5HRUT
+         lk/ox3zNQ0HPwgPvxcoNGkcfxPE8I5MXOxQlLCnaogAaJ1qr1TPdYDyhLQrwz8WquES4
+         uSXFmwo+e+2zdVUIk3OPAwbdTV3vYddZIdqtoW0DpMuNO0yTk889vMpkFAQ2Ef67BEqh
+         +m64Q3ArUZuWPoF06t1kQWNVz80zV9oeWrwOpqtPRVJfgdDlQQB+nW5Juh5PwIZbefhp
+         3oM7c1MCFvTNkEXNP8T4/Vuve3Jb9eTbwm+kO5OICQsdEhGykxjwFSDTPncSYLIlVl9g
+         j/lQ==
+X-Gm-Message-State: AOJu0YxTNFr+DwPypiQeFJS60srrUre6ihgX3Aqh6QJUbAH+psV/0Z5Z
+	ezuS/3bxKoPsVJrWVCO9ipN+MOzQfJT40jxe
+X-Google-Smtp-Source: AGHT+IHtApxvMUI38ubpSyMmGD1NGTH8jr9a2XFGjDP/XceXVELShmS8BvXPBOWZEYpfvqPsvB4lTg==
+X-Received: by 2002:a17:902:d352:b0:1c9:e121:ccc1 with SMTP id l18-20020a170902d35200b001c9e121ccc1mr1409700plk.5.1697115263356;
+        Thu, 12 Oct 2023 05:54:23 -0700 (PDT)
+Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id r23-20020a170902be1700b001ba066c589dsm1886857pls.137.2023.10.12.05.54.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 04:57:38 -0700 (PDT)
-Date: Thu, 12 Oct 2023 20:57:37 +0900 (JST)
-Message-Id: <20231012.205737.1152392964209884159.fujita.tomonori@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 3/3] net: phy: add Rust Asix PHY driver
+        Thu, 12 Oct 2023 05:54:23 -0700 (PDT)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <2023100955-scrambler-radio-e93a@gregkh>
-References: <20231009013912.4048593-1-fujita.tomonori@gmail.com>
-	<20231009013912.4048593-4-fujita.tomonori@gmail.com>
-	<2023100955-scrambler-radio-e93a@gregkh>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	miguel.ojeda.sandonis@gmail.com,
+	tmgross@umich.edu,
+	boqun.feng@gmail.com,
+	wedsonaf@gmail.com,
+	benno.lossin@proton.me,
+	greg@kroah.com
+Subject: [PATCH net-next v4 0/4] Rust abstractions for network PHY drivers
+Date: Thu, 12 Oct 2023 21:53:45 +0900
+Message-Id: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -70,47 +70,67 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, 9 Oct 2023 12:10:11 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+This patchset adds Rust abstractions for phylib. It doesn't fully
+cover the C APIs yet but I think that it's already useful. I implement
+two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
+they work well with real hardware.
 
-> On Mon, Oct 09, 2023 at 10:39:12AM +0900, FUJITA Tomonori wrote:
->> This is the Rust implementation of drivers/net/phy/ax88796b.c. The
->> features are equivalent. You can choose C or Rust versionon kernel
->> configuration.
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  drivers/net/phy/Kconfig          |   7 ++
->>  drivers/net/phy/Makefile         |   6 +-
->>  drivers/net/phy/ax88796b_rust.rs | 129 +++++++++++++++++++++++++++++++
->>  rust/uapi/uapi_helper.h          |   2 +
->>  4 files changed, 143 insertions(+), 1 deletion(-)
->>  create mode 100644 drivers/net/phy/ax88796b_rust.rs
->> 
->> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
->> index 421d2b62918f..0317be180ac2 100644
->> --- a/drivers/net/phy/Kconfig
->> +++ b/drivers/net/phy/Kconfig
->> @@ -107,6 +107,13 @@ config AX88796B_PHY
->>  	  Currently supports the Asix Electronics PHY found in the X-Surf 100
->>  	  AX88796B package.
->>  
->> +config AX88796B_RUST_PHY
->> +	bool "Rust version driver for Asix PHYs"
->> +	depends on RUST_PHYLIB_BINDINGS && AX88796B_PHY
->> +	help
->> +	  Uses the Rust version driver for Asix PHYs (ax88796b_rust.ko)
->> +	  instead of the C version.
-> 
-> This does not properly describe what hardware this driver supports.  And
+The first patch introduces Rust bindings for phylib.
 
-I'll add (by copying the description of the C driver).
+The second patch add a macro to declare a kernel module for PHYs
+drivers.
+
+The third patch updates the ETHERNET PHY LIBRARY entry in MAINTAINERS
+file; adds the binding file and me as a maintainer of the Rust
+bindings (as Andrew Lunn suggested).
+
+The last patch introduces the Rust version of Asix PHY drivers,
+drivers/net/phy/ax88796b.c. The features are equivalent to the C
+version. You can choose C (by default) or Rust version on kernel
+configuration.
+
+v4:
+  - split the core patch
+  - making Device::from_raw() private
+  - comment improvement with code update
+  - commit message improvement
+  - avoiding using bindings::phy_driver in public functions
+  - using an anonymous constant in module_phy_driver macro
+v3: https://lore.kernel.org/netdev/20231011.231607.1747074555988728415.fujita.tomonori@gmail.com/T/
+  - changes the base tree to net-next from rust-next
+  - makes this feature optional; only enabled with CONFIG_RUST_PHYLIB_BINDINGS=y
+  - cosmetic code and comment improvement
+  - adds copyright
+v2: https://lore.kernel.org/netdev/20231006094911.3305152-2-fujita.tomonori@gmail.com/T/
+  - build failure fix
+  - function renaming
+v1: https://lore.kernel.org/netdev/20231002085302.2274260-3-fujita.tomonori@gmail.com/T/
 
 
-> that's an odd way to describe the module name, but I see none of the
-> other entries in this file do that either, so maybe the PHY subsystm
-> doesn't require that?
+FUJITA Tomonori (4):
+  rust: core abstractions for network PHY drivers
+  rust: net::phy add module_phy_driver macro
+  MAINTAINERS: add Rust PHY abstractions to the ETHERNET PHY LIBRARY
+  net: phy: add Rust Asix PHY driver
 
-I leave it to Andrew. This is the first driver in Rust so I thought
-that users had no idea the relationship between the source file name
-and the module file name.
+ MAINTAINERS                      |   2 +
+ drivers/net/phy/Kconfig          |   8 +
+ drivers/net/phy/Makefile         |   6 +-
+ drivers/net/phy/ax88796b_rust.rs | 129 +++++
+ init/Kconfig                     |   8 +
+ rust/Makefile                    |   1 +
+ rust/bindings/bindings_helper.h  |   3 +
+ rust/kernel/lib.rs               |   3 +
+ rust/kernel/net.rs               |   6 +
+ rust/kernel/net/phy.rs           | 813 +++++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h          |   2 +
+ 11 files changed, 980 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/ax88796b_rust.rs
+ create mode 100644 rust/kernel/net.rs
+ create mode 100644 rust/kernel/net/phy.rs
+
+
+base-commit: 21b2e2624d2ec69b831cd2edd202ca30ac6beae1
+-- 
+2.34.1
+
