@@ -1,98 +1,97 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662DFFC16;
-	Thu, 12 Oct 2023 07:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130BB15EAE
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 09:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKbT3Wi+"
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 468FCA9;
-	Thu, 12 Oct 2023 00:58:12 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-69361132a60so142755b3a.1;
-        Thu, 12 Oct 2023 00:58:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697097492; x=1697702292; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=75m1NY8R56xspS8q5Li9JybfkjSR/ekIxTCcniMnDmc=;
-        b=NKbT3Wi+mIEfVTb3JbMKUYf2Uh80ImFLbWZFOSsT5y2MJ+ZHhOrGNTXsJWtRi2ArcE
-         3nphHTDHgZJP20R122cMFxHjsNsVDvxyF5cMQu5xbaf0P1Q3ck/df16rdfAZX5oUVwyN
-         TZ9LwQ+qDDaiXmW8WdX9ErTWRCY07ySYRfvrB1sxiXyc+EnLoArIq08v0JzIN3A88KPI
-         GMZJ7StfnXEFlWao/Dmnj7AqZt9PG/Ts1J3HcOXbHXTykD/LBIZ4orYLy93DQCof0k26
-         0RdwCXvtnb952rkbfrKM52W8rEnZwAjIhGaxe+WmItLW8HdsvKF9A5Y2MLNT9hM+VOvM
-         L72w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697097492; x=1697702292;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=75m1NY8R56xspS8q5Li9JybfkjSR/ekIxTCcniMnDmc=;
-        b=WM04lmPZiVtXk01DlwW5qEVhOQEmRmJU/Pqy1VYvdHKYQtjt6pQjJbuXebYeRp/GAN
-         NYFhUL78sifyiefdxdGWDuIMjfTaDc2IYrEPwc4QOqmcNkTLoVqqI29Hg3tUFx5bibsP
-         2bu/uh/V3t8Ktvr9R1PzYZ06VAjifdtnhxR6zDreYdGmrUI+gIQrU9qVNQnBAsWJ7288
-         rz4hIjjctmZfcC8EG0yP/s43WVU6RYQ05G2lKlNrDrXLexW9c/x0vBcPkJqv1ItNJyzL
-         BurPhmGIR9IlJP0LbGpAZKqS/fW+cbkoC7t5YieINr1OOJ2iY/AnYIX+Di74YXVxD5XX
-         TFDA==
-X-Gm-Message-State: AOJu0YwcrmoAY9C2m5gn/gIO/lfb/7qAH4DFMrFtODqTmJOQxmIbb6AN
-	7iq+SSVraPy2ZonPuWrIVPU=
-X-Google-Smtp-Source: AGHT+IF2HCL1d45kVUP7IMWJmhprElPobYIpWXUgYrnoNDvY5+GXUf41LuPNLx+XJoTQz5AVbfVl4g==
-X-Received: by 2002:a05:6a20:1595:b0:163:ab09:195d with SMTP id h21-20020a056a20159500b00163ab09195dmr27010506pzj.0.1697097491499;
-        Thu, 12 Oct 2023 00:58:11 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id g23-20020a1709029f9700b001c74876f018sm1264349plq.18.2023.10.12.00.58.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 00:58:11 -0700 (PDT)
-Date: Thu, 12 Oct 2023 16:58:10 +0900 (JST)
-Message-Id: <20231012.165810.303016284319181876.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47tKwVE_GF-kec_mAi2NZLe53t2Jcsec=vsoJXT01AYLQQ@mail.gmail.com>
-References: <20231012.160246.2019423056896039320.fujita.tomonori@gmail.com>
-	<ZSeckzvOTyre3SVM@boqun-archlinux>
-	<CALNs47tKwVE_GF-kec_mAi2NZLe53t2Jcsec=vsoJXT01AYLQQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="D59rv2EE"
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8ECA9
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 02:10:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1697101855; x=1697361055;
+	bh=8jDZPX4hjFEpQv8WV/8kN1M/ScjjkFaT06ttwkOb56Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=D59rv2EE9Idi5ypnoOcSwq2/2rLprl/QZ8ZzpKnjs/78fPFwPr0JUZsKW0Fd863LW
+	 SkPd0b7jkZiVxF2szVO6LDzn1OwrvGA20ilRpMYGGRrgaiFiECJnt0dQau6pJSBmG/
+	 GVyekQMcoCwcG+SA62brZe1eGBjFq1tiq7n3kYUiJ218BQWZcjhhd355ipLvb0ThTA
+	 kdyrYTb0eYutoSb5HMcQ7bix7ChgTGQSYNzlUQX52DsTj1EagRnoBbwKu11M6X8Sc6
+	 6GhOf0Rv5AZpywYBPbnp5Iz3kz0DyK6cl4tnOIpRVp1m+ldOyTLghOgtexbU3LhHNY
+	 FCjo9rnd1f9aw==
+Date: Thu, 12 Oct 2023 09:10:41 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, tmgross@umich.edu
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: boqun.feng@gmail.com, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY drivers
+Message-ID: <f3fa33f8-f4b0-463c-8ba3-5f0a8b8f6788@proton.me>
+In-Reply-To: <20231012.165810.303016284319181876.fujita.tomonori@gmail.com>
+References: <20231012.160246.2019423056896039320.fujita.tomonori@gmail.com> <ZSeckzvOTyre3SVM@boqun-archlinux> <CALNs47tKwVE_GF-kec_mAi2NZLe53t2Jcsec=vsoJXT01AYLQQ@mail.gmail.com> <20231012.165810.303016284319181876.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-T24gVGh1LCAxMiBPY3QgMjAyMyAwMzozMjo0NCAtMDQwMA0KVHJldm9yIEdyb3NzIDx0bWdyb3Nz
-QHVtaWNoLmVkdT4gd3JvdGU6DQoNCj4gT24gVGh1LCBPY3QgMTIsIDIwMjMgYXQgMzoxM+KAr0FN
-IEJvcXVuIEZlbmcgPGJvcXVuLmZlbmdAZ21haWwuY29tPiB3cm90ZToNCj4gDQo+PiBJZiBgRGV2
-aWNlOjpmcm9tX3Jhd2AncyBzYWZldHkgcmVxdWlyZW1lbnQgaXMgIm9ubHkgY2FsbGVkIGluIGNh
-bGxiYWNrcw0KPj4gd2l0aCBwaHlkZXZpY2UtPmxvY2sgaGVsZCwgZXRjLiIsIHRoZW4gdGhlIGV4
-Y2x1c2l2ZSBhY2Nlc3MgaXMNCj4+IGd1YXJhbnRlZWQgYnkgdGhlIHNhZmV0eSByZXF1aXJlbWVu
-dCwgdGhlcmVmb3JlIGBtdXRgIGNhbiBiZSBkcm9wLiBJdCdzDQo+PiBhIG1hdHRlciBvZiB0aGUg
-ZXhhY3Qgc2VtYW50aWNzIG9mIHRoZSBBUElzLg0KPj4NCj4+IFJlZ2FyZHMsDQo+PiBCb3F1bg0K
-PiANCj4gVGhhdCBpcyBjb3JyZWN0IHRvIG15IHVuZGVyc3RhbmRpbmcsIHRoZSBjb3JlIGhhbmRs
-ZXMNCj4gbG9ja2luZy91bmxvY2tpbmcgYW5kIG5vIGRyaXZlciBmdW5jdGlvbnMgYXJlIGNhbGxl
-ZCBpZiB0aGUgY29yZQ0KPiBkb2Vzbid0IGhvbGQgYW4gZXhjbHVzaXZlIGxvY2sgZmlyc3QuIFdo
-aWNoIGFsc28gbWVhbnMgdGhlIHdyYXBwZXINCj4gdHlwZSBjYW4ndCBiZSBgU3luY2AuDQo+IA0K
-PiBBbmRyZXcgc2FpZCBhIGJpdCBhYm91dCBpdCBpbiB0aGUgc2Vjb25kIGNvbW1lbnQgaGVyZToN
-Cj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcnVzdC1mb3ItbGludXgvZWM2ZDg0NzktZjg5My00
-YTNmLWJmM2UtYWEwYzgxYzRhZGFkQGx1bm4uY2gvDQoNCnJlc3VtZS9zdXNwZW5kIGFyZSBjYWxs
-ZWQgd2l0aG91dCB0aGUgbXV0ZXggaG9sZCBidXQgd2UgZG9uJ3QgbmVlZCB0aGUNCmRldGFpbHMu
-IFBIWUxJQiBndWFyYW50ZWVzIHRoZSBleGNsdXNpdmUgYWNjZXNzIGluc2lkZSB0aGUNCmNhbGxi
-YWNrcy4gSSB1cGRhdGVkIHRoZSBjb21tZW50IGFuZCBkcm9wIG11dCBpbiBEZXZpY2UncyBtZXRo
-b2RzLg0KDQogICAvLy8gQ3JlYXRlcyBhIG5ldyBbYERldmljZWBdIGluc3RhbmNlIGZyb20gYSBy
-YXcgcG9pbnRlci4NCiAgIC8vLw0KICAgLy8vICMgU2FmZXR5DQogICAvLy8NCiAgIC8vLyBUaGlz
-IGZ1bmN0aW9uIGNhbiBiZSBjYWxsZWQgb25seSBpbiB0aGUgY2FsbGJhY2tzIGluIGBwaHlfZHJp
-dmVyYC4gUEhZTElCIGd1YXJhbnRlZXMNCiAgIC8vLyB0aGUgZXhjbHVzaXZlIGFjY2VzcyBmb3Ig
-dGhlIGR1cmF0aW9uIG9mIHRoZSBsaWZldGltZSBgJ2FgLg0KICAgdW5zYWZlIGZuIGZyb21fcmF3
-PCdhPihwdHI6ICptdXQgYmluZGluZ3M6OnBoeV9kZXZpY2UpIC0+ICYnYSBtdXQgU2VsZiB7DQoN
-Cg==
+On 12.10.23 09:58, FUJITA Tomonori wrote:
+> On Thu, 12 Oct 2023 03:32:44 -0400
+> Trevor Gross <tmgross@umich.edu> wrote:
+>=20
+>> On Thu, Oct 12, 2023 at 3:13=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com=
+> wrote:
+>>
+>>> If `Device::from_raw`'s safety requirement is "only called in callbacks
+>>> with phydevice->lock held, etc.", then the exclusive access is
+>>> guaranteed by the safety requirement, therefore `mut` can be drop. It's
+>>> a matter of the exact semantics of the APIs.
+>>>
+>>> Regards,
+>>> Boqun
+>>
+>> That is correct to my understanding, the core handles
+>> locking/unlocking and no driver functions are called if the core
+>> doesn't hold an exclusive lock first. Which also means the wrapper
+>> type can't be `Sync`.
+>>
+>> Andrew said a bit about it in the second comment here:
+>> https://lore.kernel.org/rust-for-linux/ec6d8479-f893-4a3f-bf3e-aa0c81c4a=
+dad@lunn.ch/
+>=20
+> resume/suspend are called without the mutex hold but we don't need the
+> details. PHYLIB guarantees the exclusive access inside the
+> callbacks. I updated the comment and drop mut in Device's methods.
+
+The details about this stuff are _extremely_ important, if there is a
+mistake with the way `unsafe` requirements are written/interpreted, then
+the Rust guarantee of "memory safety in safe code" flies out the window.
+The whole idea is to offload all the dangerous stuff into smaller regions
+that can be scrutinized more easily and for that we need all of the details=
+.
+
+What would be really helpful for me, as I have extremely limited
+knowledge of the C side, would be an explaining comment in the phy
+abstractions that explains the way the C side phy abstractions work. So
+for example it would say that locking is handled by the phy core and (at
+the moment) neither the Rust abstractions nor the driver code needs to
+concern itself with locking. There you could also write that `resume` and
+`suspend` are called without the mutex being held. We don't really have a
+precedent for this (as there have been no drivers merged), but it would be
+really helpful for me. If this exists in some other documentation, feel
+free to just link that.
+
+--=20
+Cheers,
+Benno
+
+
