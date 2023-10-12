@@ -1,61 +1,61 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A4A2B741
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 23:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEC2362;
+	Thu, 12 Oct 2023 00:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3wnINtE"
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A30090
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 16:57:17 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-277317a0528so87859a91.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Oct 2023 16:57:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ngsp8G4W"
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE1690;
+	Wed, 11 Oct 2023 17:29:20 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6a4ff9d7e86so103004b3a.0;
+        Wed, 11 Oct 2023 17:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697068637; x=1697673437; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697070560; x=1697675360; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cY6Tnae6S+Mp6KeCbogJOWeyqaBDSZuAOF8CpaeGZyo=;
-        b=Y3wnINtED2TOl3t1I0FsdrhU+DyaJ6dJlA1YcOXKCZjznxxZRAfcU7FSBvpLKpKx0N
-         4r7/vWZiVoOCLkBZgcUrGHUnx0T8bQWORX024Waaacj9BSK38JVbiVxtFBc+AKBEqV3h
-         2nBH5vUsfgtSwC67GTWh62KEPBrYFdtwQv27jJ7JBuVdY7ShMKslX1EKNA15TBM8VJgH
-         +Ce71qlERmgiRHPWbDo62z6TacJg0/BEFjicF9V1zOA02dDfKRmvkuGDyi8p1NEtGne5
-         uedE+FyBOvqAXlu/ewdrwC4wA5kfPrZIf+0atWWB9HOyjt9vHPof4SsDyRW5/LF3fWN1
-         oOgA==
+        bh=7Of32rICGsLz+YIinPsQ0xU9/iG5ETv/TUAcjMw/yj0=;
+        b=Ngsp8G4WcCQ7+s2F8Zynyj/75iOKT6K7E57KPL7xYRv2L15KZl1TtxfOy0ohOEFC0M
+         X9mIbQH2eVI874/2iW3x8j3ifC9VaHLs8gdUmyePzOynNG094q8IMBr9yIUwZsEOA+hB
+         KxIZfqkO3lYgMX45e+I0LwqCH4XMZZhtIGKudMw6wGsEEl+Edt3KI+JR7YS0RkLtWw0o
+         ltRl1EILUeg0H5+jrbW3yGvOHaqQfeNbkM6y1V/IiCjlvExoa6Vhlcdus7C1XDDSmPbH
+         rYPCV4jdrfRdnc1uIOJ9vnpRrawOjRA9cWlVuyEaCG5NVCQpvkFpmsj4vIknHCU4mwX9
+         gkDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697068637; x=1697673437;
+        d=1e100.net; s=20230601; t=1697070560; x=1697675360;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=cY6Tnae6S+Mp6KeCbogJOWeyqaBDSZuAOF8CpaeGZyo=;
-        b=OHKb7XtnRvfXpYxv3Ddm95AK5N91Q31IHGv8u2O662ag1d0X4fDbpcx97xIi0QQqeO
-         LTAR+tcTxnCGiUT70PaR+xfnl0iMsff8CUcMmI3KgxkKDWi5NTHjA60VNm+dAyJRJoPy
-         bY5wwbL+tYmkNti2bHtlAL8aB9+4FGMMpVQFJRoeNIDWnJpmus4eGb34lLpG8IqIPmsG
-         1YJOHLyujyLGsB/9aYBOux+AsbPTMC4V2tT1MDHM7al5joqJ3GN6a8wPfIhuIGQabZhi
-         2/ZfM54mOLdy3rpDDCHtEPmVxL1if7d9/tmDpyRQTT4+hFp5MusjDQ6QFCRFAyTg0RiP
-         qrWg==
-X-Gm-Message-State: AOJu0YzHnfiJPU38E4HCnWEvoN+kR0GY3jJ0ORgJdABZSM8Wuqwc7nLG
-	qc/JSPrcOEiCBTULFGmwnxI=
-X-Google-Smtp-Source: AGHT+IHbyMaR1NAZNyGdGIU46hIes5QFPBH+2kF9IAWTMonNpCGAngS3B1IkncON7jL1hCT4jrJngQ==
-X-Received: by 2002:a17:903:244d:b0:1c5:cd01:d846 with SMTP id l13-20020a170903244d00b001c5cd01d846mr25576969pls.3.1697068636798;
-        Wed, 11 Oct 2023 16:57:16 -0700 (PDT)
+        bh=7Of32rICGsLz+YIinPsQ0xU9/iG5ETv/TUAcjMw/yj0=;
+        b=oY+la//FG1meS8lXZnOn7vmzxOignRg6VPPE4FHRxUaLNWbRrx2yr5Ni7yfPj3pNmQ
+         P/KbAfZYNb0H6u0C8OMirbNNLUT9udX3Wycl6DS42OqQ+1WZY4J2J3JFFNtCJPZrG2I9
+         i1AsV2SXF0fltLDpAg9G/n7mfWDeIc5P7r2e1cMdXsP7hdfTSWDVU7EfPgNbE8VwQi8q
+         tFgUd0B2NZXYQWxhJFWFL97qBYvHekx6eoEjwoJJah0PK80RsSjLJ2kBmq6jCIWmlApk
+         ZUeiZRKox9wsAxyrPnCYlh7WEdc+Ojvr9u97qdiFJPmmkiqZDXbl0f6RP81nwlL8JOP5
+         Id1w==
+X-Gm-Message-State: AOJu0YxsQekBlRzm674cvC4g4aTKQCuMKckk4mdgVlhGPI8Qn22pzdLA
+	HRfX2J0NRrJmfL8BL5ctHZ4=
+X-Google-Smtp-Source: AGHT+IEjMVIj5BI3Od39/GEM7nS1eTMzVKUTgfAK/iax9/dZcVESkA+ylnQA93lgUhxhGwv6sDDT+Q==
+X-Received: by 2002:a05:6a00:398c:b0:68a:6cbe:35a7 with SMTP id fi12-20020a056a00398c00b0068a6cbe35a7mr25581351pfb.2.1697070560017;
+        Wed, 11 Oct 2023 17:29:20 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id o11-20020a170902778b00b001b9dab0397bsm453116pll.29.2023.10.11.16.57.16
+        by smtp.gmail.com with ESMTPSA id v5-20020aa78505000000b00696ca62d5f5sm10678170pfn.8.2023.10.11.17.29.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 16:57:16 -0700 (PDT)
-Date: Thu, 12 Oct 2023 08:57:15 +0900 (JST)
-Message-Id: <20231012.085715.1926246245884454683.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
- fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- benno.lossin@proton.me
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
- drivers
+        Wed, 11 Oct 2023 17:29:19 -0700 (PDT)
+Date: Thu, 12 Oct 2023 09:29:19 +0900 (JST)
+Message-Id: <20231012.092919.2198401301554307752.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, gregkh@linuxfoundation.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ tmgross@umich.edu, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network
+ PHY drivers
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47uCJsTsPVPcL5-iYvzCgrJhPnEXgQ5Di-SEh5WD9vF1qQ@mail.gmail.com>
-References: <CALNs47svn98i7O5Gfm6nXo_N0VFod+1LVj0oe2j_q46yGAiZHw@mail.gmail.com>
-	<CANiq72m4JhSmNjkTKh2AKwc2KJXyKh6taWFJUcjm0s_NCT-skA@mail.gmail.com>
-	<CALNs47uCJsTsPVPcL5-iYvzCgrJhPnEXgQ5Di-SEh5WD9vF1qQ@mail.gmail.com>
+In-Reply-To: <CANiq72=GAiR-Mps_ZuLtxmma28dJd2xKdXWh6fu1icLBmmaYAw@mail.gmail.com>
+References: <CANiq72nj_04U82Kb4DfMx72NPgHzDCd-xbosc83xgF19nCqSfQ@mail.gmail.com>
+	<20231010.005008.2269883065591704918.fujita.tomonori@gmail.com>
+	<CANiq72=GAiR-Mps_ZuLtxmma28dJd2xKdXWh6fu1icLBmmaYAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -66,35 +66,28 @@ Content-Type: Text/Plain; charset=utf-8
 Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-T24gVHVlLCAxMCBPY3QgMjAyMyAxOToxMjo0MyAtMDQwMA0KVHJldm9yIEdyb3NzIDx0bWdyb3Nz
-QHVtaWNoLmVkdT4gd3JvdGU6DQoNCj4gT24gVHVlLCBPY3QgMTAsIDIwMjMgYXQgNjo1NOKAr1BN
-IE1pZ3VlbCBPamVkYQ0KPiA8bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4gd3JvdGU6
-DQo+Pg0KPj4gT24gV2VkLCBPY3QgMTEsIDIwMjMgYXQgMTI6NTDigK9BTSBUcmV2b3IgR3Jvc3Mg
-PHRtZ3Jvc3NAdW1pY2guZWR1PiB3cm90ZToNCj4+ID4NCj4+ID4gSSBhZ3JlZSwgYnV0IHRoZXJl
-IG5lZWRzIHRvIGJlIGEgd2F5IHRvIHVzZSBhIGRyaXZlciBtb3JlIHRoYW4gb25jZQ0KPj4gPiB3
-aXRoIGRpZmZlcmVudCBJRHMuIFNlZQ0KPj4gPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9ydXN0
-LWZvci1saW51eC9DQUxOczQ3dnlXK0E1dXdDUS11ZzAzMzczeGorUU1laHg9MXBYWjhWaVMyalo4
-S2hmeFFAbWFpbC5nbWFpbC5jb20vDQo+PiA+IGFuZCB0aGUgZm9sbG93dXAsIG1heWJlIHlvdSBo
-YXZlIGEgYmV0dGVyIHN1Z2dlc3Rpb24NCj4+DQo+PiBEb2VzIGl0IG1ha2Ugc2Vuc2UgdG8gZ2Vu
-ZXJhdGUgb25lIG9mIHRob3NlIGJhc2VkIG9uIHRoZSBvdGhlciwgdW5sZXNzDQo+PiBib3RoIGFy
-ZSBwcm92aWRlZCwgZm9yIGluc3RhbmNlPw0KPiANCj4gVGhhdCBpcyB3aGF0IEkgd2FzIGFpbWlu
-ZyBmb3Igd2l0aCBteSBleGFtcGxlIGB7IHBoeTogUGh5QVg4ODc3MkEsIGlkOg0KPiBzb21lX290
-aGVyX2RldmljZV9pZCB9YCwgaXQgc2VlbXMgdG8gbWFrZSBzZW5zZSB0aGF0IHdlIGRlZmF1bHQN
-Cj4gc29tZWhvdy4NCj4gDQo+IE9yLCBkaWQgeW91IG1lYW4gc29tZXRoaW5nIHNwZWNpZmljIGxp
-a2Ugc3RvcmluZyA+MSBkZXZpY2UgSUQgaW4gdGhlDQo+IGBEcml2ZXJgIHRyYWl0PyBDaGFuZ2lu
-ZyBmcm9tOg0KPiANCj4gICAgIHRyYWl0IERyaXZlcnsNCj4gICAgICAgICBjb25zdCBQSFlfREVW
-SUNFX0lEOiBEZXZpY2VJZCA9IERldmljZUlkOjpuZXdfd2l0aF9jdXN0b21fbWFzaygwLCAwKTsN
-Cj4gICAgIH0NCj4gDQo+IFRvOg0KPiANCj4gICAgIHRyYWl0IERyaXZlcnsNCj4gICAgICAgICBj
-b25zdCBQSFlfREVWSUNFX0lEUzogJidzdGF0aWMgW0RldmljZUlkXSA9DQo+ICAgICAgICAgICAg
-ICZbRGV2aWNlSWQ6Om5ld193aXRoX2N1c3RvbV9tYXNrKDAsIDApXTsNCj4gICAgIH0NCj4gDQo+
-IE1heWJlIHRoYXQgd291bGQgYmUgYmV0dGVyIGJlY2F1c2UgdGhlIGluZm9ybWF0aW9uIGlzIGFs
-bCBpbiBvbmUgcGxhY2UNCj4gYW5kIHRoZSBtYWNybyBkb2Vzbid0IG5lZWQgdG8gZ2FpbiBhbnkg
-bW9yZSBzeW50YXgNCg0KMy4gbXVsdGlwbGUgcGh5IGRyaXZlcnMgaGFzIG9uZSBpZCBpbiBkZXZp
-Y2VfdGFibGUuDQoNCkhvdyB0aGVzZSBhcHByb2FjaCBjYW4gaGFuZGxlIHRoZSBjYXNlPw0KDQpB
-bHNvIG5vdGUgdGhhdCB0aGVyZSBpcyBhIGRyaXZlciBkb2Vzbid0IGRlZmluZSBQSFlfSUQsIHVz
-ZXMNCm1hdGNoX3BoeV9kZXZpY2UoKSBpbnN0ZWFkLg0K
+T24gV2VkLCAxMSBPY3QgMjAyMyAxMTo1OTowMSArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBNb24sIE9jdCA5LCAyMDIz
+IGF0IDU6NTDigK9QTSBGVUpJVEEgVG9tb25vcmkNCj4gPGZ1aml0YS50b21vbm9yaUBnbWFpbC5j
+b20+IHdyb3RlOg0KPj4NCj4+IFdoYXQgZmVlZGJhY2s/IGVudW0gc3R1ZmY/IEkgdGhpbmsgdGhh
+dCBpdCdzIGEgbG9uZy10ZXJtIGlzc3VlLg0KPiANCj4gTm90IGp1c3QgdGhhdC4gVGhlcmUgaGFz
+IGJlZW4gb3RoZXIgZmVlZGJhY2ssIGFuZCBzaW5jZSB0aGlzIG1lc3NhZ2UsDQo+IHdlIGdvdCBu
+ZXcgcmV2aWV3cyB0b28uDQo+IA0KPiBCdXQsIHllcywgdGhlIGAtLXJ1c3RpZmllZC1lbnVtYCBp
+cyBvbmUgb2YgdGhvc2UuIEkgYW0gc3RpbGwNCj4gdW5jb21mb3J0YWJsZSB3aXRoIGl0LiBJdCBp
+cyBub3QgYSBodWdlIGRlYWwgZm9yIGEgd2hpbGUsIGFuZCB0aGluZ3MNCj4gd2lsbCB3b3JrLCBh
+bmQgdGhlIHJpc2sgb2YgVUIgaXMgbG93LiBCdXQgd2h5IGRvIHdlIHdhbnQgdG8gcmlzayBpdD8N
+Cj4gVGhlIHBvaW50IG9mIHVzaW5nIFJ1c3QgaXMgcHJlY2lzZWx5IHRvIGF2b2lkIHRoaXMgc29y
+dCBvZiB0aGluZy4NCg0KUG9zc2libHksIEkgZG9uJ3QgY29ycmVjdGx5IHVuZGVyc3RhbmQgd2hh
+dCB5b3VyIHJpc2sgbWVhbnMuDQoNCllvdSBhcmUgdGFsa2luZyBhYm91dCB0aGUgcmlzayBvZiBV
+Qiwgd2hpY2ggaGFwcGVucyB3aGVuIFBIWUxJQiBzZXRzIGENCnJhbmRvbSB2YWx1ZSB0byB0aGUg
+c3RhdGUgZW51bSwgcmlnaHQ/IEl0IG9ubHkgaGFwcGVucyB3aGVuIFBIWUxJQiBoYXMNCmEgYnVn
+LiBJZiBQSFlMSUIgaGFzIHN1Y2ggYnVnLCBsaWtlbHkgdGhlIE5JQyBkb2Vzbid0IHdvcmssIHRo
+ZSB1c2VyDQp3b3VsZCByZXBvcnQgdGhlIHN5c3RlbSBmYWlsdXJlLg0KDQpJbiBzdWNoIHNpdHVh
+dGlvbiwgYSBSdXN0IFBIWSBkcml2ZXIgY2FuIGZpbmQgdGhhdCBidWcgaWYgQyBlbnVtIGlzbid0
+DQpub3QgdXNlZCBkaXJlY3RseS4gWW91IHRoaW5rIHRoYXQgdGhhdCdzIHdoYXQgUnVzdCBzaG91
+bGQgZG8/DQo=
