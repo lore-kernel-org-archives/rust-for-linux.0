@@ -1,104 +1,75 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292EC2E63B
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 13:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC6B21358
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 15:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LGoqwnxG"
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD80B7;
-	Thu, 12 Oct 2023 06:51:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1697118711; x=1697377911;
-	bh=sZo92moLqUkqI0jI/dO0Y971ELJaGFGAmjX34V13s3M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=LGoqwnxGIuYi04S470BbjvsEpFTxGMwJcZodOcbmnhMjw0RlmUkpixCAFHjXnRnQC
-	 /1RAgIlquVemum5j+lEiTKz8/+dZy3RPostUAQ2jIF9V2qOGfgJ1ch1gqWpSmoeCpt
-	 03Wce6EiJ7hRQ2XeDfIWWnZLoKc8b0N0/NGe7sLXRdPwBf1xLbEEj/7z3fyO//xVoR
-	 GU/ZD9yfMk+1bHGqFTDVNcHpGYfx1SMgqfo8fjxGnMupHsrb7f38npJrmVRG8KsPTO
-	 AqYrHnhi/GGKVscoqlWDL2wwLUZ96ncz4ieOjAYO6o+eS1zUe6lLot17ajy9Mswxpi
-	 1U3GV4cUnoVCA==
-Date: Thu, 12 Oct 2023 13:51:39 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: macros: improve `#[vtable]` documentation
-Message-ID: <64542ca3-180a-483d-9e86-bf03f0533254@proton.me>
-In-Reply-To: <CANeycqqMsqHU1cUSSQh+W9435zjA+XZ=K3Yxi6mNn_d4yZOazg@mail.gmail.com>
-References: <20231012132131.300014-1-benno.lossin@proton.me> <CANeycqqMsqHU1cUSSQh+W9435zjA+XZ=K3Yxi6mNn_d4yZOazg@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mvWpY4b4"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD202C9
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 08:05:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=hV6at56AtWw4Nl3t+wxr7gq5Sq8rX2IHLRrX4XpMVgk=; b=mvWpY4b4ZJ/IETPgODDS+EVYwW
+	lNyIC65gnZ7M2KI9VkbcVOFaq3L/natl/yLCfAjO+8YFumxwAWeV41uOae0qHFcR9+rY/X6E0VQRX
+	T8hnPbzlZGeOyWWeuM5uh4lMNbiJJSIcbapkPLnTS1jVNleNjSsnOTN8sXwkrDB8sj+o=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qqxG1-001x2d-C8; Thu, 12 Oct 2023 17:05:49 +0200
+Date: Thu, 12 Oct 2023 17:05:49 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Trevor Gross <tmgross@umich.edu>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, aliceryhl@google.com,
+	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
+	rust-for-linux@vger.kernel.org, benno.lossin@proton.me
+Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
+ drivers
+Message-ID: <03a0f800-e285-4144-90c6-70e9d707c21e@lunn.ch>
+References: <CALNs47uCJsTsPVPcL5-iYvzCgrJhPnEXgQ5Di-SEh5WD9vF1qQ@mail.gmail.com>
+ <20231012.085715.1926246245884454683.fujita.tomonori@gmail.com>
+ <CALNs47s_wjytz3sw6uXA-27NnZkN1z+WYztfQ2Hnw0qVqEWwDw@mail.gmail.com>
+ <20231012.121656.1502998233251919494.fujita.tomonori@gmail.com>
+ <CALNs47sT2mhP+q7ESEMwuJpQaOS8++xortWLv-Q95Xxr4YXg0Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALNs47sT2mhP+q7ESEMwuJpQaOS8++xortWLv-Q95Xxr4YXg0Q@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 12.10.23 15:48, Wedson Almeida Filho wrote:
-> On Thu, 12 Oct 2023 at 10:22, Benno Lossin <benno.lossin@proton.me> wrote=
-:
->> +
->> +/// Error message for calling a default function of a [`#[vtable]`](mac=
-ros::vtable) trait.
->> +pub const VTABLE_DEFAULT_ERROR: &str =3D
->> +    "This function must not be called, see the #[vtable] documentation.=
-";
->> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
->> index c42105c2ff96..dab9a1080b82 100644
->> --- a/rust/macros/lib.rs
->> +++ b/rust/macros/lib.rs
->> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
->>   /// implementation could just return `Error::EINVAL`); Linux typically=
- use C
->>   /// `NULL` pointers to represent these functions.
->>   ///
->> -/// This attribute is intended to close the gap. Traits can be declared=
- and
->> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associate=
-d constant
->> -/// will be generated for each method in the trait, indicating if the i=
-mplementor
->> -/// has overridden a method.
->> +/// This attribute closes that gap. A trait can be annotated with the `=
-#[vtable]` attribute.
->> +/// Implementers of the trait will then also have to annotate the trait=
- with `#[vtable]`. This
->> +/// attribute generates a `HAS_*` associated constant bool for each met=
-hod in the trait that is set
->> +/// to true if the implementer has overridden the associated method.
->> +///
->> +/// If you want to make a function optional, you must provide a default=
- implementation. But this
->=20
-> We should  standardise how we write our documentation. In the `rust`
-> branch, we avoided using the imperative mood like you have here; the
-> rationale was that the documentation was describing how things
-> are/work, so we shouldn't be giving orders to readers (they may be
-> authors of traits, implementers of some vtable trait, or neither, just
-> someone learning about things, etc.).
->=20
-> In the paragraph above, you'll find an example: "Implementers of the
-> trait will then also have to...".
->=20
-> For the specific case above, I'd suggest: 'For a function to be
-> optional, it must have a default implementation.', or using the
-> passive voice, 'To make a function optional, a default implementation
-> must be provided'.
+> Good point, scratch that. What about this logic:
+> 
+> 1. Leave `Driver` as you have it, one `DeviceId` with a null default
+> 2. Use the macro to create a `const fn` to build the mdio_device_table
+> so you can add logic (like in the playground I linked)
+> 3. Make this function skip anything that doesn't specify a `DeviceId`,
+> i.e. if the `DeviceID` is null don't add it to the table
+> 4. Any devices that don't specify a `DeviceId` must specify
+> `match_phy_device` (I think, since it will never get matched
+> otherwise?). This could be verified in `create_phy_driver`
+> 4. In the macro, allow specifying extra `DeviceId`s that aren't
+> specific to any phy.
 
-I agree, I also think we should just fix this now, so I will send a v2.
+To some extent, we try to avoid over engineering a solution. There
+might never be a Rust driver which needs to have different entries in
+these tables.
 
---=20
-Cheers,
-Benno
+For the moment, i suggest KISS. Have a 1:1 mapping between these two
+tables. If a Rust PHY driver ever comes along which needs something
+different, then solve the problem only then. And hopefully when that
+happens, there will be a lot more Rust drivers in general, and a
+better understanding of this problem in general, since it is not
+really limited to PHY drivers. Many drivers need two tables like this.
 
-
+	Andrew
