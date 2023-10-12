@@ -1,47 +1,48 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE47E266DC;
-	Thu, 12 Oct 2023 12:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E868725107;
+	Thu, 12 Oct 2023 12:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9V9dEIt"
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300D7FB;
-	Thu, 12 Oct 2023 05:54:24 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-690f8e63777so237418b3a.0;
-        Thu, 12 Oct 2023 05:54:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cqNmqQ0H"
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D875AC0;
+	Thu, 12 Oct 2023 05:54:25 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-693400e09afso232603b3a.1;
+        Thu, 12 Oct 2023 05:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697115263; x=1697720063; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KARJWYDG1LXfd55izpQA/w+fD+DEi2wLeLv0QKgn6kA=;
-        b=M9V9dEIt5y2w4gAGykKLF1R0M7XxIJ9eBosoI2q8+6wszvYD/Yibg4BL3S2sgEdNUC
-         EDHtBu9iZ4RnWoaPGc/izR9rkJSg1ThdQXFLhYyzSmtFudznJQrGs0XQMSh/Vqv8wnIK
-         Oq2oNQct+9aBlzCF62PlaRL23/84sRXTxhnUaOD2DuO7kwlDdcUDE3QyiGRCWv5q1tf5
-         NIGIXBdGEe9aeXrWuCBfXp/7qtQGjDUX3yKloqDDtDUU8cKhYAXpMYmt3TsNHoIdh6tx
-         bd9SbiKT1GpdckshA+MceT55coCdV4LAQPED8XThp4E4i4Oy7xocf+ifmX6XQtiyhDHg
-         3l8Q==
+        d=gmail.com; s=20230601; t=1697115265; x=1697720065; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p0Vjt05um3BpDubcIaNsNVDDn+m+9Vw9BFIrYTID0IU=;
+        b=cqNmqQ0Hzb0JDVL+0CaB032AFChrIsmltTid60i5BJwSqK5W3NBRn5kwzUtfHk9vIw
+         60XSGg9nyHZXg26HMwu7Le1JJgpJu6whnmlOa/uKjoKrIf9pA1G+eoPTt5saTERGHG6+
+         IuSwqRQ9AbfWUZxD0V2VCE1Ywf6SB/EcCg8qt+RO7dEjKkCBDOyXCUuYGL6uyvq4MxaL
+         5Zpr+3aNdZ3R/YQduh2+bv01wvEjOb/SwC9HlLSipNS8hfi0CqJuVSYkcWtfzbzx+fY/
+         Uk6BmZWXRdhub+g4xNroz7a7cWXZe/Sbkfa3CaZdJ2oAmGl+zC7SmhdiT3tqDdMNSxAE
+         nAbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697115263; x=1697720063;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KARJWYDG1LXfd55izpQA/w+fD+DEi2wLeLv0QKgn6kA=;
-        b=bMOg7i9RgGdPG0K7JkCBTcSNgw2CDS1fmJR0k/NumVI+eg4tgOpO7ctBMd1TU5HRUT
-         lk/ox3zNQ0HPwgPvxcoNGkcfxPE8I5MXOxQlLCnaogAaJ1qr1TPdYDyhLQrwz8WquES4
-         uSXFmwo+e+2zdVUIk3OPAwbdTV3vYddZIdqtoW0DpMuNO0yTk889vMpkFAQ2Ef67BEqh
-         +m64Q3ArUZuWPoF06t1kQWNVz80zV9oeWrwOpqtPRVJfgdDlQQB+nW5Juh5PwIZbefhp
-         3oM7c1MCFvTNkEXNP8T4/Vuve3Jb9eTbwm+kO5OICQsdEhGykxjwFSDTPncSYLIlVl9g
-         j/lQ==
-X-Gm-Message-State: AOJu0YxTNFr+DwPypiQeFJS60srrUre6ihgX3Aqh6QJUbAH+psV/0Z5Z
-	ezuS/3bxKoPsVJrWVCO9ipN+MOzQfJT40jxe
-X-Google-Smtp-Source: AGHT+IHtApxvMUI38ubpSyMmGD1NGTH8jr9a2XFGjDP/XceXVELShmS8BvXPBOWZEYpfvqPsvB4lTg==
-X-Received: by 2002:a17:902:d352:b0:1c9:e121:ccc1 with SMTP id l18-20020a170902d35200b001c9e121ccc1mr1409700plk.5.1697115263356;
-        Thu, 12 Oct 2023 05:54:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697115265; x=1697720065;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p0Vjt05um3BpDubcIaNsNVDDn+m+9Vw9BFIrYTID0IU=;
+        b=SPYYy9x/GppbL+tqerYYgKMye1YaRXGp2L4l6l9gzPaUta8kFjGqL7rfQHrc09lXhB
+         E/+c0xzn6+PDFJqDuL/kuJ1xbyoeP8BRFHRh+pNQ7jKWAH1ceMgOAXZjPG5cANm1MH0U
+         HzMTpJ5PLUWk6sxbpD6dgf3zzcI5Qvh/6KlqNwdGNldrufXbAm3T3Dqgib+zv9aZJNMb
+         gQdVVbkkGP7eNYafYOW7fuG2chKBVbzPv0idLALhfRClpawI3aEHUMk5G9lwNxib+QGN
+         ZJd4UoRf8Jd7Z65JtD3A0Br73zYwTW3PxIQ+/m9FVbPNrlNvxjFkN62Jt1gO6tdTjj9L
+         kJQQ==
+X-Gm-Message-State: AOJu0YyAN9YP8QR1TfwqqiSi9Kk8bAx4XF0FrZk4JH2Vy4kc/Wv7e3Y3
+	ReTO7qDLMeYr6qGKfBa7aUsW8/LpZOzV9O+3
+X-Google-Smtp-Source: AGHT+IG+m81EyDSBm7izQN8wcu/X9Qr8i8R8jMqpA3mILkuHdNolyAt9ljFFDnzm6j8hV2/zfwAHiA==
+X-Received: by 2002:a17:903:2306:b0:1bb:ac37:384b with SMTP id d6-20020a170903230600b001bbac37384bmr26794992plh.6.1697115265067;
+        Thu, 12 Oct 2023 05:54:25 -0700 (PDT)
 Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id r23-20020a170902be1700b001ba066c589dsm1886857pls.137.2023.10.12.05.54.22
+        by smtp.gmail.com with ESMTPSA id r23-20020a170902be1700b001ba066c589dsm1886857pls.137.2023.10.12.05.54.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 05:54:23 -0700 (PDT)
+        Thu, 12 Oct 2023 05:54:24 -0700 (PDT)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: netdev@vger.kernel.org
 Cc: rust-for-linux@vger.kernel.org,
@@ -52,10 +53,12 @@ Cc: rust-for-linux@vger.kernel.org,
 	wedsonaf@gmail.com,
 	benno.lossin@proton.me,
 	greg@kroah.com
-Subject: [PATCH net-next v4 0/4] Rust abstractions for network PHY drivers
-Date: Thu, 12 Oct 2023 21:53:45 +0900
-Message-Id: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
+Subject: [PATCH net-next v4 2/4] rust: net::phy add module_phy_driver macro
+Date: Thu, 12 Oct 2023 21:53:47 +0900
+Message-Id: <20231012125349.2702474-3-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
+References: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,67 +73,160 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This patchset adds Rust abstractions for phylib. It doesn't fully
-cover the C APIs yet but I think that it's already useful. I implement
-two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
-they work well with real hardware.
+This macro creates a static array of kernel's `struct phy_driver` and
+registers it. This also corresponds to the kernel's
+`MODULE_DEVICE_TABLE` macro, which embeds the information for module
+loading into the module binary file.
 
-The first patch introduces Rust bindings for phylib.
+A PHY driver should use this macro.
 
-The second patch add a macro to declare a kernel module for PHYs
-drivers.
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/net/phy.rs | 134 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 134 insertions(+)
 
-The third patch updates the ETHERNET PHY LIBRARY entry in MAINTAINERS
-file; adds the binding file and me as a maintainer of the Rust
-bindings (as Andrew Lunn suggested).
-
-The last patch introduces the Rust version of Asix PHY drivers,
-drivers/net/phy/ax88796b.c. The features are equivalent to the C
-version. You can choose C (by default) or Rust version on kernel
-configuration.
-
-v4:
-  - split the core patch
-  - making Device::from_raw() private
-  - comment improvement with code update
-  - commit message improvement
-  - avoiding using bindings::phy_driver in public functions
-  - using an anonymous constant in module_phy_driver macro
-v3: https://lore.kernel.org/netdev/20231011.231607.1747074555988728415.fujita.tomonori@gmail.com/T/
-  - changes the base tree to net-next from rust-next
-  - makes this feature optional; only enabled with CONFIG_RUST_PHYLIB_BINDINGS=y
-  - cosmetic code and comment improvement
-  - adds copyright
-v2: https://lore.kernel.org/netdev/20231006094911.3305152-2-fujita.tomonori@gmail.com/T/
-  - build failure fix
-  - function renaming
-v1: https://lore.kernel.org/netdev/20231002085302.2274260-3-fujita.tomonori@gmail.com/T/
-
-
-FUJITA Tomonori (4):
-  rust: core abstractions for network PHY drivers
-  rust: net::phy add module_phy_driver macro
-  MAINTAINERS: add Rust PHY abstractions to the ETHERNET PHY LIBRARY
-  net: phy: add Rust Asix PHY driver
-
- MAINTAINERS                      |   2 +
- drivers/net/phy/Kconfig          |   8 +
- drivers/net/phy/Makefile         |   6 +-
- drivers/net/phy/ax88796b_rust.rs | 129 +++++
- init/Kconfig                     |   8 +
- rust/Makefile                    |   1 +
- rust/bindings/bindings_helper.h  |   3 +
- rust/kernel/lib.rs               |   3 +
- rust/kernel/net.rs               |   6 +
- rust/kernel/net/phy.rs           | 813 +++++++++++++++++++++++++++++++
- rust/uapi/uapi_helper.h          |   2 +
- 11 files changed, 980 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/phy/ax88796b_rust.rs
- create mode 100644 rust/kernel/net.rs
- create mode 100644 rust/kernel/net/phy.rs
-
-
-base-commit: 21b2e2624d2ec69b831cd2edd202ca30ac6beae1
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 7b2a3a52ff25..df24c3860d40 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -677,3 +677,137 @@ const fn as_int(&self) -> u32 {
+         }
+     }
+ }
++
++/// Declares a kernel module for PHYs drivers.
++///
++/// This creates a static array of kernel's `struct phy_driver` and registers it.
++/// This also corresponds to the kernel's `MODULE_DEVICE_TABLE` macro, which embeds the information
++/// for module loading into the module binary file. Every driver needs an entry in `device_table`.
++///
++/// # Examples
++///
++/// ```ignore
++/// use kernel::c_str;
++/// use kernel::net::phy::{self, DeviceId};
++/// use kernel::prelude::*;
++///
++/// kernel::module_phy_driver! {
++///     drivers: [PhyAX88772A],
++///     device_table: [
++///         DeviceId::new_with_driver::<PhyAX88772A>(),
++///     ],
++///     name: "rust_asix_phy",
++///     author: "Rust for Linux Contributors",
++///     description: "Rust Asix PHYs driver",
++///     license: "GPL",
++/// }
++///
++/// struct PhyAX88772A;
++///
++/// impl phy::Driver for PhyAX88772A {
++///     const NAME: &'static CStr = c_str!("Asix Electronics AX88772A");
++///     const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x003b1861);
++/// }
++/// ```
++///
++/// This expands to the following code:
++///
++/// ```ignore
++/// use kernel::c_str;
++/// use kernel::net::phy::{self, DeviceId};
++/// use kernel::prelude::*;
++///
++/// struct Module {
++///     _reg: ::kernel::net::phy::Registration,
++/// }
++///
++/// module! {
++///     type: Module,
++///     name: "rust_asix_phy",
++///     author: "Rust for Linux Contributors",
++///     description: "Rust Asix PHYs driver",
++///     license: "GPL",
++/// }
++///
++/// const _: () = {
++///     static mut DRIVERS: [::kernel::net::phy::DriverType; 1] = [
++///         ::kernel::net::phy::create_phy_driver::<PhyAX88772A>::(),
++///     ];
++///
++///     impl ::kernel::Module for Module {
++///        fn init(module: &'static ThisModule) -> Result<Self> {
++///            let mut reg = unsafe { ::kernel::net::phy::Registration::register(module, &DRIVERS) }?;
++///            Ok(Module {
++///                _reg: reg,
++///            })
++///        }
++///     }
++/// }
++///
++/// static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; 2] = [
++///     ::kernel::bindings::mdio_device_id {
++///         phy_id: 0x003b1861,
++///         phy_id_mask: 0xffffffff,
++///     },
++///     ::kernel::bindings::mdio_device_id {
++///         phy_id: 0,
++///         phy_id_mask: 0,
++///     }
++/// ];
++/// ```
++#[macro_export]
++macro_rules! module_phy_driver {
++    (@replace_expr $_t:tt $sub:expr) => {$sub};
++
++    (@count_devices $($x:expr),*) => {
++        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
++    };
++
++    (@device_table [$($dev:expr),+]) => {
++        #[no_mangle]
++        static __mod_mdio__phydev_device_table: [
++            ::kernel::bindings::mdio_device_id;
++            $crate::module_phy_driver!(@count_devices $($dev),+) + 1
++        ] = [
++            $($dev.as_mdio_device_id()),+,
++            ::kernel::bindings::mdio_device_id {
++                phy_id: 0,
++                phy_id_mask: 0
++            }
++        ];
++    };
++
++    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], $($f:tt)*) => {
++        struct Module {
++            _reg: ::kernel::net::phy::Registration,
++        }
++
++        $crate::prelude::module! {
++            type: Module,
++            $($f)*
++        }
++
++        const _: () = {
++            static mut DRIVERS: [
++                ::kernel::net::phy::DriverType;
++                $crate::module_phy_driver!(@count_devices $($driver),+)
++            ] = [
++                $(::kernel::net::phy::create_phy_driver::<$driver>()),+
++            ];
++
++            impl ::kernel::Module for Module {
++                fn init(module: &'static ThisModule) -> Result<Self> {
++                    // SAFETY: The anonymous constant guarantees that nobody else can access the `DRIVERS` static.
++                    // The array is used only in the C side.
++                    let mut reg = unsafe { ::kernel::net::phy::Registration::register(module, &DRIVERS) }?;
++
++                    Ok(Module {
++                        _reg: reg,
++                    })
++                }
++            }
++        };
++
++        $crate::module_phy_driver!(@device_table [$($dev),+]);
++    }
++}
 -- 
 2.34.1
 
