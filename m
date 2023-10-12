@@ -1,182 +1,104 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB12C2942C
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 13:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292EC2E63B
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 13:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aB5ZrvpM"
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D537BA;
-	Thu, 12 Oct 2023 06:48:36 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-d9ad90e1038so458078276.3;
-        Thu, 12 Oct 2023 06:48:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697118515; x=1697723315; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jbsW+VEW2ckEOL33neXtq1kKRPj1Kbmo2QFoSTgB9hs=;
-        b=aB5ZrvpMSLrsmFWEv/z+RnlfOLEUuHjtO94fLazqlZdv3vK6zH72Qwj6mUDf0xe2A/
-         i0DrsYCRDeu0HJuQxq74/yxfDLf1GLOBkgAIRC5xcY8ySQLUz0E2nD+UNLyqoJ+9ajnB
-         0fnAlMyOGvAeQzRei1lU8KnI3a7HZz1aNsVPdS8TEZ351OgOK0ScGf9TLzUPKX/ocAWX
-         XffEkOMPhwwvXlzmEQJRDXGtSN9D6YR4zXH+WU/UZM9eLaJpjZc2StuhUF3uCRt56lcF
-         +nXIATStpfy8f4B9aa+rUn6QXy6yGDkEqqKiyFs89NzGNcQrwlPegLIYQVBK7whyp3+f
-         ObFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697118515; x=1697723315;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jbsW+VEW2ckEOL33neXtq1kKRPj1Kbmo2QFoSTgB9hs=;
-        b=cBdqovYQdQCcnF3YTIIKZcX+LFVofYf23P7/U1pCTjDFIyKesihSZEBHojl+VQUitN
-         0djE7CzgvPyqde+JGmynqblkbT/3ZuJkLVfGW2LkDcqfSeO+WvUI246T5EoX++beLMDS
-         yXoe02CV6ndjL4bem7ma+XiCnApDqoWp6E6Ltf/iUyAKrKO07tnmV/W5qVA/tquHXszE
-         sgSZkt+yPZaR1T93Bjex+O/uU94aaURcX2bcMDI7KkXLYOTbAsyirWwR4FmFc4uJVtUi
-         WIeLjTun6a4PCLuHvFl8eM1VoUgZGQgtbgx7f9US5t8oKCMvh+789fkDRvZxzKl5VUIr
-         QkiA==
-X-Gm-Message-State: AOJu0YyIHde2pYz+2IqMqy0gJbqUpkDbbPwCkNUq9LgjE+5CaWkJzidY
-	5MydGeYOA4+RwIyzr27/7tOj8W63CIrha/zt+Rw=
-X-Google-Smtp-Source: AGHT+IGT9O6yt5I0HCgZ4UVY5AlZSC/Ooh2p/JnY9MYIUX41pkLuypQ3Afi59+crNdF/jTI1GV6zDKwXYR8CZwhYWW4=
-X-Received: by 2002:a5b:c3:0:b0:d62:6514:45b7 with SMTP id d3-20020a5b00c3000000b00d62651445b7mr22289127ybp.37.1697118515444;
- Thu, 12 Oct 2023 06:48:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LGoqwnxG"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD80B7;
+	Thu, 12 Oct 2023 06:51:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1697118711; x=1697377911;
+	bh=sZo92moLqUkqI0jI/dO0Y971ELJaGFGAmjX34V13s3M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LGoqwnxGIuYi04S470BbjvsEpFTxGMwJcZodOcbmnhMjw0RlmUkpixCAFHjXnRnQC
+	 /1RAgIlquVemum5j+lEiTKz8/+dZy3RPostUAQ2jIF9V2qOGfgJ1ch1gqWpSmoeCpt
+	 03Wce6EiJ7hRQ2XeDfIWWnZLoKc8b0N0/NGe7sLXRdPwBf1xLbEEj/7z3fyO//xVoR
+	 GU/ZD9yfMk+1bHGqFTDVNcHpGYfx1SMgqfo8fjxGnMupHsrb7f38npJrmVRG8KsPTO
+	 AqYrHnhi/GGKVscoqlWDL2wwLUZ96ncz4ieOjAYO6o+eS1zUe6lLot17ajy9Mswxpi
+	 1U3GV4cUnoVCA==
+Date: Thu, 12 Oct 2023 13:51:39 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: macros: improve `#[vtable]` documentation
+Message-ID: <64542ca3-180a-483d-9e86-bf03f0533254@proton.me>
+In-Reply-To: <CANeycqqMsqHU1cUSSQh+W9435zjA+XZ=K3Yxi6mNn_d4yZOazg@mail.gmail.com>
+References: <20231012132131.300014-1-benno.lossin@proton.me> <CANeycqqMsqHU1cUSSQh+W9435zjA+XZ=K3Yxi6mNn_d4yZOazg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231012132131.300014-1-benno.lossin@proton.me>
-In-Reply-To: <20231012132131.300014-1-benno.lossin@proton.me>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Thu, 12 Oct 2023 10:48:24 -0300
-Message-ID: <CANeycqqMsqHU1cUSSQh+W9435zjA+XZ=K3Yxi6mNn_d4yZOazg@mail.gmail.com>
-Subject: Re: [PATCH] rust: macros: improve `#[vtable]` documentation
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, 12 Oct 2023 at 10:22, Benno Lossin <benno.lossin@proton.me> wrote:
->
-> Traits marked with `#[vtable]` need to provide default implementations
-> for optional functions. The C side represents these with `NULL` in the
-> vtable, so the default functions are never actually called. We do not
-> want to replicate the default behavior from C in Rust, because that is
-> not maintainable. Therefore we should use `build_error` in those default
-> implementations. The error message for that is provided at
-> `kernel::error::VTABLE_DEFAULT_ERROR`.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+On 12.10.23 15:48, Wedson Almeida Filho wrote:
+> On Thu, 12 Oct 2023 at 10:22, Benno Lossin <benno.lossin@proton.me> wrote=
+:
+>> +
+>> +/// Error message for calling a default function of a [`#[vtable]`](mac=
+ros::vtable) trait.
+>> +pub const VTABLE_DEFAULT_ERROR: &str =3D
+>> +    "This function must not be called, see the #[vtable] documentation.=
+";
+>> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+>> index c42105c2ff96..dab9a1080b82 100644
+>> --- a/rust/macros/lib.rs
+>> +++ b/rust/macros/lib.rs
+>> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
+>>   /// implementation could just return `Error::EINVAL`); Linux typically=
+ use C
+>>   /// `NULL` pointers to represent these functions.
+>>   ///
+>> -/// This attribute is intended to close the gap. Traits can be declared=
+ and
+>> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associate=
+d constant
+>> -/// will be generated for each method in the trait, indicating if the i=
+mplementor
+>> -/// has overridden a method.
+>> +/// This attribute closes that gap. A trait can be annotated with the `=
+#[vtable]` attribute.
+>> +/// Implementers of the trait will then also have to annotate the trait=
+ with `#[vtable]`. This
+>> +/// attribute generates a `HAS_*` associated constant bool for each met=
+hod in the trait that is set
+>> +/// to true if the implementer has overridden the associated method.
+>> +///
+>> +/// If you want to make a function optional, you must provide a default=
+ implementation. But this
+>=20
+> We should  standardise how we write our documentation. In the `rust`
+> branch, we avoided using the imperative mood like you have here; the
+> rationale was that the documentation was describing how things
+> are/work, so we shouldn't be giving orders to readers (they may be
+> authors of traits, implementers of some vtable trait, or neither, just
+> someone learning about things, etc.).
+>=20
+> In the paragraph above, you'll find an example: "Implementers of the
+> trait will then also have to...".
+>=20
+> For the specific case above, I'd suggest: 'For a function to be
+> optional, it must have a default implementation.', or using the
+> passive voice, 'To make a function optional, a default implementation
+> must be provided'.
 
-Reviewed-By: Wedson Almeida Filho <walmeida@microsoft.com>
+I agree, I also think we should just fix this now, so I will send a v2.
 
-> ---
->  rust/kernel/error.rs |  4 ++++
->  rust/macros/lib.rs   | 32 ++++++++++++++++++++++++--------
->  2 files changed, 28 insertions(+), 8 deletions(-)
->
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 05fcab6abfe6..1373cde025ef 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -335,3 +335,7 @@ pub(crate) fn from_result<T, F>(f: F) -> T
->          Err(e) => T::from(e.to_errno() as i16),
->      }
->  }
-> +
-> +/// Error message for calling a default function of a [`#[vtable]`](macros::vtable) trait.
-> +pub const VTABLE_DEFAULT_ERROR: &str =
-> +    "This function must not be called, see the #[vtable] documentation.";
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index c42105c2ff96..dab9a1080b82 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// implementation could just return `Error::EINVAL`); Linux typically use C
->  /// `NULL` pointers to represent these functions.
->  ///
-> -/// This attribute is intended to close the gap. Traits can be declared and
-> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associated constant
-> -/// will be generated for each method in the trait, indicating if the implementor
-> -/// has overridden a method.
-> +/// This attribute closes that gap. A trait can be annotated with the `#[vtable]` attribute.
-> +/// Implementers of the trait will then also have to annotate the trait with `#[vtable]`. This
-> +/// attribute generates a `HAS_*` associated constant bool for each method in the trait that is set
-> +/// to true if the implementer has overridden the associated method.
-> +///
-> +/// If you want to make a function optional, you must provide a default implementation. But this
+--=20
+Cheers,
+Benno
 
-We should  standardise how we write our documentation. In the `rust`
-branch, we avoided using the imperative mood like you have here; the
-rationale was that the documentation was describing how things
-are/work, so we shouldn't be giving orders to readers (they may be
-authors of traits, implementers of some vtable trait, or neither, just
-someone learning about things, etc.).
 
-In the paragraph above, you'll find an example: "Implementers of the
-trait will then also have to...".
-
-For the specific case above, I'd suggest: 'For a function to be
-optional, it must have a default implementation.', or using the
-passive voice, 'To make a function optional, a default implementation
-must be provided'.
-
-> +/// default implementation will never be executed, since these functions are exclusively called
-> +/// from callbacks from the C side. This is because the vtable will have a `NULL` entry and the C
-> +/// side will execute the default behavior. Since it is not maintainable to replicate the default
-> +/// behavior in Rust, you should use the following code:
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
-> +/// kernel::build_error(VTABLE_DEFAULT_ERROR)
-> +/// ```
-> +///
-> +/// note that you might need to import [`kernel::error::VTABLE_DEFAULT_ERROR`].
->  ///
-> -/// This attribute is not needed if all methods are required.
-> +/// This macro should not be used when all function are required.
->  ///
->  /// # Examples
->  ///
->  /// ```ignore
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
->  /// use kernel::prelude::*;
->  ///
->  /// // Declares a `#[vtable]` trait
->  /// #[vtable]
-> -/// pub trait Operations: Send + Sync + Sized {
-> +/// pub trait Operations {
->  ///     fn foo(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  ///
->  ///     fn bar(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  /// }
->  ///
-> @@ -125,6 +139,8 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// assert_eq!(<Foo as Operations>::HAS_FOO, true);
->  /// assert_eq!(<Foo as Operations>::HAS_BAR, false);
->  /// ```
-> +///
-> +/// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VTABLE_DEFAULT_ERROR.html
->  #[proc_macro_attribute]
->  pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
->      vtable::vtable(attr, ts)
->
-> base-commit: b2516f7af9d238ebc391bdbdae01ac9528f1109e
-> --
-> 2.41.0
->
->
