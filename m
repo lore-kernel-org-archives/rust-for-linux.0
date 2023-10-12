@@ -1,170 +1,87 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473CDDDD5;
-	Thu, 12 Oct 2023 07:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1598DF54
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 07:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ze0GqTHq"
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8E290;
-	Thu, 12 Oct 2023 00:13:27 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id af79cd13be357-77574c5979fso40660585a.3;
-        Thu, 12 Oct 2023 00:13:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="WFWUduTj"
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99383B7
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 00:32:56 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5a7dd65052aso9688787b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 00:32:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697094806; x=1697699606; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1697095976; x=1697700776; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=onIbXS7mX7OxdHiXd2X0ZIy8cdKHPNQxFa5d47QulWk=;
-        b=Ze0GqTHqKUHD2hesSgSeWjgda0rsvYNRHHSlfkCxibok/jYwVRhBiuzqtLTi0ouwbZ
-         4v1bTwCLZxL9i5zGzVaRlV+As5mXmvpb4ZANgJU0rOFrl9uDGmkWmSf+Uh6OplfaHVXT
-         +tJLVD/35krFXbggbBawhWXCjVuDbo/6Fg5wMgwOZpXlhChWijsN+8ETllv9fZSwjlZX
-         f19Kgob0APgHWPBZzfHR4chKTvR+jiuaRo37FEOG7m+XFainBx7IdCbfZwLdkx4BvqI5
-         OKj9AI1xw+xQo+Ir1orj2BDRe7yJ3kxuNTB5B/FKmVTuCld3yoNh7yqoilAK6YEVXayl
-         bZAQ==
+        bh=5RSBcWKzDInxa/puXq/LpkrmEMgpoQ4RI9D0wr5YKgU=;
+        b=WFWUduTjFSBTeWo9quLv0Vjfbo6R4wAKiaxBj29vg4LixrEdyu8TRiayF3arJN/yjW
+         aDUJ7xkd6gNlsabnucKxyOqWiCPQOMpzwlNzirL6GPl9gTL1n95iaYaolpS2xucAhlSu
+         KOYKDOCYc4qH5rVbKfclC1RRArOpfe7I/QsB5mU9Ju3A86tgwzeeYMv+tXXLq+JoWVN2
+         6q8a637Ef0LZe2o4t25ox2nVByEytTQZlodsvOPExqP7yY7AKOQvpi8Jq523ALPmgUV9
+         GVvsosWJF40975Ss75iO+bF+axjI4eW/iXvm506ftqVCgpT10ZDkKNOws0J42xOYn8WY
+         4YoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697094806; x=1697699606;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1697095976; x=1697700776;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=onIbXS7mX7OxdHiXd2X0ZIy8cdKHPNQxFa5d47QulWk=;
-        b=sbeL3HuSY5GHi3L6fLDjWpgmrxsjz3M3iWzw2pz2a9kigsMO00CHPVjqPEnZKozqFv
-         WGEMayjSumIPKLq9WK0AO0SOn9Xakc4BXIGWkbXf+ATwVIM+RNHhkmgHgeyKX8Nv/O8f
-         oEaS1Ds8ZFtpsi8mhT1Ri7TmpoxcUwuvtmqPCkUzAaNKj9dsMWUf87SIHgI8T9mDs34D
-         DLRCMpcXWCaljR3oBL2Js0Yqh8JZqNkLE9vsGVCBL0GfbBzD/6Ix3xdPxZuwt4zNMfm5
-         8eXs2977F6j2+3JQ1yGmVbDzPJWwt8oTtq7wvkQYhKnfBfKwdbS4drzC8wEln4rbdLs2
-         NWow==
-X-Gm-Message-State: AOJu0YxRvh4AftncpVve69wi3JqZHlZ9hjghIiPWkiHUr3Q2h92ETg9V
-	WaGKJCgXicyc4IEaODQSCpE=
-X-Google-Smtp-Source: AGHT+IFrQTBEZ0juUhNTxshwV6apRSItlTkGK93Zs3MXx46lv580Cya8pEExIaPHLWaLa/qanneySA==
-X-Received: by 2002:a05:620a:911:b0:774:2915:d180 with SMTP id v17-20020a05620a091100b007742915d180mr22221832qkv.37.1697094806075;
-        Thu, 12 Oct 2023 00:13:26 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id dt53-20020a05620a47b500b0076cc4610d0asm5822614qkb.85.2023.10.12.00.13.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 00:13:25 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 6D63227C005B;
-	Thu, 12 Oct 2023 03:13:25 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 12 Oct 2023 03:13:25 -0400
-X-ME-Sender: <xms:lZwnZd9Mmbka1YgQ2rvcRG7-aOIm2bqsD7jRRW8mMyYjJCyhAxkL5w>
-    <xme:lZwnZRsx4Ei74XuXA3OgG2LrBFuX-gCOoMEcP3-chqHpARH60vRUxzzVA__lx598e
-    pzPc9mxKbzemeCNmA>
-X-ME-Received: <xmr:lZwnZbCC1xmJSbEBxxUgaJ5kAUVK7N_TAndBQMwwAnvAiSWfmKfidpZ2mg0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheelgdduudefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:lZwnZRcxUP-3scd8_ZffukJOtMgVVd6uA6boWH6vdefTAz3hqX7GGw>
-    <xmx:lZwnZSNVtzBrb1T7sVPtL4RYDloK11MjnJDOEp5sUZrZRy6MeuTvXg>
-    <xmx:lZwnZTlOt8vLg-3jlR9oT2VkPM8YRVoe3SGdwxFgshVJ5qsyHEMT0A>
-    <xmx:lZwnZeCn_3JlasWF-KjYnrDXvBtcv4UvcoH3DFLPhUtU2AiSImnNGQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Oct 2023 03:13:24 -0400 (EDT)
-Date: Thu, 12 Oct 2023 00:13:23 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
-	miguel.ojeda.sandonis@gmail.com, greg@kroah.com, tmgross@umich.edu
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <ZSeckzvOTyre3SVM@boqun-archlinux>
-References: <20231012.145824.2016833275288545767.fujita.tomonori@gmail.com>
- <ZSeTag6jukYw-NGv@boqun-archlinux>
- <20231012.154444.1868411153601666717.fujita.tomonori@gmail.com>
- <20231012.160246.2019423056896039320.fujita.tomonori@gmail.com>
+        bh=5RSBcWKzDInxa/puXq/LpkrmEMgpoQ4RI9D0wr5YKgU=;
+        b=RuXXRKVL1/BA4pIFhvddv89BdQvoFmrHVdIDBy4ji1NsEi/KuEV0QJwL+sDDNdLtyo
+         p+mehJ/pxMMoPvqMCzc90G+1TbA1ccCMuQxSZ4CVbb0iKJNkdeYgyESd2uBB4SIy30y0
+         e0D196kMxXo1ieZwcNJlRkFZKOh9ZNL+B71GBQgDQxST3uLUHbcW4cPBL6pt/cEosJoW
+         8zuSiK+xG2VRKlvVsUscwErBJwplFA1gn68whYULJILGRE3z2Uos+a/+dNN67D3cKn35
+         pxK1eKxdzLIo2xLun7+kQXa6xRZyNt0QE1XkR2lLnZCdWvSVDLEzhEHFvf1vWsgI4I5H
+         gglw==
+X-Gm-Message-State: AOJu0YxXPtMFDNm0DngJWWWuWb0FKimCFJRDMXs1pBzh9SdWq54YJQTh
+	YymsSCW3X5NQ280UDwTC8ZkPkMGBnVT9fLCNhYVyKg==
+X-Google-Smtp-Source: AGHT+IErOAKv6IFWFct8gKddv05t/UhON/R/qbMneAluaCdZqcfrkXm6jm24iRuIc7A5cDyqV/pJZvwS31sGCNMIbRY=
+X-Received: by 2002:a0d:ccc5:0:b0:5a7:e462:84ef with SMTP id
+ o188-20020a0dccc5000000b005a7e46284efmr3986734ywd.19.1697095975846; Thu, 12
+ Oct 2023 00:32:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231012.160246.2019423056896039320.fujita.tomonori@gmail.com>
+References: <20231012.145824.2016833275288545767.fujita.tomonori@gmail.com>
+ <ZSeTag6jukYw-NGv@boqun-archlinux> <20231012.154444.1868411153601666717.fujita.tomonori@gmail.com>
+ <20231012.160246.2019423056896039320.fujita.tomonori@gmail.com> <ZSeckzvOTyre3SVM@boqun-archlinux>
+In-Reply-To: <ZSeckzvOTyre3SVM@boqun-archlinux>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Thu, 12 Oct 2023 03:32:44 -0400
+Message-ID: <CALNs47tKwVE_GF-kec_mAi2NZLe53t2Jcsec=vsoJXT01AYLQQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY drivers
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	miguel.ojeda.sandonis@gmail.com, greg@kroah.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Oct 12, 2023 at 04:02:46PM +0900, FUJITA Tomonori wrote:
-> On Thu, 12 Oct 2023 15:44:44 +0900 (JST)
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-> 
-> > On Wed, 11 Oct 2023 23:34:18 -0700
-> > Boqun Feng <boqun.feng@gmail.com> wrote:
-> > 
-> >> On Thu, Oct 12, 2023 at 02:58:24PM +0900, FUJITA Tomonori wrote:
-> >>> On Wed, 11 Oct 2023 11:29:45 -0700
-> >>> Boqun Feng <boqun.feng@gmail.com> wrote:
-> >>> 
-> >>> > On Mon, Oct 09, 2023 at 10:39:10AM +0900, FUJITA Tomonori wrote:
-> >>> > [...]
-> >>> >> +impl Device {
-> >>> >> +    /// Creates a new [`Device`] instance from a raw pointer.
-> >>> >> +    ///
-> >>> >> +    /// # Safety
-> >>> >> +    ///
-> >>> >> +    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
-> >>> >> +    /// may read or write to the `phy_device` object.
-> >>> >> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
-> >>> >> +        unsafe { &mut *ptr.cast() }
-> >>> >> +    }
-> >>> >> +
-> >>> >> +    /// Gets the id of the PHY.
-> >>> >> +    pub fn phy_id(&mut self) -> u32 {
-> >>> > 
-> >>> > This function doesn't modify the `self`, why does this need to be a
-> >>> > `&mut self` function? Ditto for a few functions in this impl block.
-> >>> > 
-> >>> > It seems you used `&mut self` for all the functions, which looks like
-> >>> > more design work is required here.
-> >>> 
-> >>> Ah, I can drop all the mut here.
-> >> 
-> >> It may not be that easy... IIUC, most of the functions in the `impl`
-> >> block can only be called correctly with phydev->lock held. In other
-> >> words, their usage requires exclusive accesses. We should somehow
-> >> express this in the type system, otherwise someone may lose track on
-> >> this requirement in the future (for example, calling any function
-> >> without the lock held).
-> >>
-> >> A simple type trick comes to me is that
-> >> 
-> >> impl Device {
-> >>     // rename `from_raw` into `assume_locked`
-> >>     pub unsafe fn assume_locked<'a>(ptr: *mut bindings::phy_device) -> &'a LockedDevice {
-> >> 	...
-> >>     }
-> >> }
-> > 
-> > Hmm, the concept of PHYLIB is that a driver never play with a
-> > lock. From the perspective of PHYLIB, this abstraction is a PHY
-> > driver. The abstraction should not touch the lock.
-> > 
-> > How can someone lose track on this requirement? The abstraction
-> > creates a Device instance only inside the callbacks.
-> 
-> Note `pub` isn't necessary here. I removed it.
-> 
-> No chance to misuse a Device instance as explained above, but if we
-> need to express the exclusive here, better to keep `mut`?
-> 
+On Thu, Oct 12, 2023 at 3:13=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
 
-If `Device::from_raw`'s safety requirement is "only called in callbacks
-with phydevice->lock held, etc.", then the exclusive access is
-guaranteed by the safety requirement, therefore `mut` can be drop. It's
-a matter of the exact semantics of the APIs.
+> If `Device::from_raw`'s safety requirement is "only called in callbacks
+> with phydevice->lock held, etc.", then the exclusive access is
+> guaranteed by the safety requirement, therefore `mut` can be drop. It's
+> a matter of the exact semantics of the APIs.
+>
+> Regards,
+> Boqun
 
-Regards,
-Boqun
+That is correct to my understanding, the core handles
+locking/unlocking and no driver functions are called if the core
+doesn't hold an exclusive lock first. Which also means the wrapper
+type can't be `Sync`.
+
+Andrew said a bit about it in the second comment here:
+https://lore.kernel.org/rust-for-linux/ec6d8479-f893-4a3f-bf3e-aa0c81c4adad=
+@lunn.ch/
