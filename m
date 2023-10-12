@@ -1,75 +1,136 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC6B21358
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 15:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5BA37144
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mvWpY4b4"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD202C9
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 08:05:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=hV6at56AtWw4Nl3t+wxr7gq5Sq8rX2IHLRrX4XpMVgk=; b=mvWpY4b4ZJ/IETPgODDS+EVYwW
-	lNyIC65gnZ7M2KI9VkbcVOFaq3L/natl/yLCfAjO+8YFumxwAWeV41uOae0qHFcR9+rY/X6E0VQRX
-	T8hnPbzlZGeOyWWeuM5uh4lMNbiJJSIcbapkPLnTS1jVNleNjSsnOTN8sXwkrDB8sj+o=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qqxG1-001x2d-C8; Thu, 12 Oct 2023 17:05:49 +0200
-Date: Thu, 12 Oct 2023 17:05:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Trevor Gross <tmgross@umich.edu>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, aliceryhl@google.com,
-	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
-	rust-for-linux@vger.kernel.org, benno.lossin@proton.me
-Subject: Re: [RFC PATCH v3 1/3] rust: core abstractions for network PHY
- drivers
-Message-ID: <03a0f800-e285-4144-90c6-70e9d707c21e@lunn.ch>
-References: <CALNs47uCJsTsPVPcL5-iYvzCgrJhPnEXgQ5Di-SEh5WD9vF1qQ@mail.gmail.com>
- <20231012.085715.1926246245884454683.fujita.tomonori@gmail.com>
- <CALNs47s_wjytz3sw6uXA-27NnZkN1z+WYztfQ2Hnw0qVqEWwDw@mail.gmail.com>
- <20231012.121656.1502998233251919494.fujita.tomonori@gmail.com>
- <CALNs47sT2mhP+q7ESEMwuJpQaOS8++xortWLv-Q95Xxr4YXg0Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3W2IPThL"
+Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8DA7CA
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 10:51:13 -0700 (PDT)
+Received: by mail-vs1-xe33.google.com with SMTP id ada2fe7eead31-4525cfe255bso1551352137.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 10:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697133073; x=1697737873; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R/kcvd3Ium4zd9I0dnayawEHaM8pcXlmWMrCCjUShbo=;
+        b=3W2IPThLUpR4uRpb6oTtQfLXnzANytWXRUZiYHiRYSFhKxf9lemNt20TYDEXYshlOr
+         i0sJ9ca542vaR2iT186pzEru/LiPQMEpsGKhKkB+s+NsXi+tdJ6TRV/bgSqnj+krUJ7S
+         3/1nz6DgSOEPcBgAg6VV4ss7/gBWvftrymcbkeEnwk0eebJNw70AeWeWQlEHiNIgmSXm
+         61sA/AAiL8cr88SacWq3D7hJaWMsMPm9XZfRnDa4fKrNYVmtc2rL45byNu5W51dyKYvv
+         OpP4yIez6M53AOheVIEEvhtPcTEnBE/DeVhF1WYu/LmdzdybqskNQh7AC87UQWSCZ3Yw
+         feEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697133073; x=1697737873;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R/kcvd3Ium4zd9I0dnayawEHaM8pcXlmWMrCCjUShbo=;
+        b=cwiSen+W7HsZkQY3AdN5h9yEAaKOXPqIbn8J0E4oNl1Ykkos3Xqn3Q888W/oWqbVch
+         KmvijKKlsY+dI5ugjxQPTjKmr61yzgGkDo+rVuyKkmB5DiYT3FCi6oybP5/Rzp9yIHhL
+         guFX15i/+xJ38wwWkNUTUpHvyHCqqPPtuozJh9eNyop7walrSgX3on9OCg6Khy8jbwcs
+         hi33yw0ekSglYSfDjheTkpxRzDAbE8dmoh7mX7uFuW+QEvhFopYfSqa6ZBS+KygsGgFx
+         KplfumNqEKLr5o2k2NbcqypO+hCgnG41S9S+ioKbRzU5u5UkHwpKbtfLws7j3zJX2jpW
+         6YTw==
+X-Gm-Message-State: AOJu0YwJkLv8jkwYA4c00CHesMYs/brcsiSWLCMuUX8MhOSLw4Mgugl5
+	AInitoyZx8UYUc1yDClwWALu+VAorzzHO88OkdtR1w==
+X-Google-Smtp-Source: AGHT+IFBDsg58VP5xYZQboRt0WLteQXM1skYg3czfbQs8hc1QGVa/ZbStRHvWCw3FQEgq8wuA3BSiMYUfa0Ix7/fOAY=
+X-Received: by 2002:a05:6102:579b:b0:452:6d82:56e3 with SMTP id
+ dh27-20020a056102579b00b004526d8256e3mr13976905vsb.6.1697133072474; Thu, 12
+ Oct 2023 10:51:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALNs47sT2mhP+q7ESEMwuJpQaOS8++xortWLv-Q95Xxr4YXg0Q@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
+ <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+ <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
+ <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com> <20231012104741.GN6307@noisy.programming.kicks-ass.net>
+In-Reply-To: <20231012104741.GN6307@noisy.programming.kicks-ass.net>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Thu, 12 Oct 2023 10:50:36 -0700
+Message-ID: <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@google.com>, David Gow <davidgow@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> Good point, scratch that. What about this logic:
-> 
-> 1. Leave `Driver` as you have it, one `DeviceId` with a null default
-> 2. Use the macro to create a `const fn` to build the mdio_device_table
-> so you can add logic (like in the playground I linked)
-> 3. Make this function skip anything that doesn't specify a `DeviceId`,
-> i.e. if the `DeviceID` is null don't add it to the table
-> 4. Any devices that don't specify a `DeviceId` must specify
-> `match_phy_device` (I think, since it will never get matched
-> otherwise?). This could be verified in `create_phy_driver`
-> 4. In the macro, allow specifying extra `DeviceId`s that aren't
-> specific to any phy.
+On Thu, Oct 12, 2023 at 3:47=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> On Fri, Oct 14, 2022 at 11:34:30AM -0700, Sami Tolvanen wrote:
+> > On Fri, Oct 14, 2022 at 11:05 AM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> > >
+> > > On Tue, Oct 11, 2022 at 1:16 AM Sami Tolvanen <samitolvanen@google.co=
+m> wrote:
+> > > >
+> > > > Rust supports IBT with -Z cf-protection=3Dbranch, but I don't see t=
+his
+> > > > option being enabled in the kernel yet. Cross-language CFI is going=
+ to
+> > > > require a lot more work though because the type systems are not qui=
+te
+> > > > compatible:
+> > > >
+> > > > https://github.com/rust-lang/rfcs/pull/3296
+> > >
+> > > I have pinged Ramon de C Valle as he is the author of the RFC above
+> > > and implementation work too; since a month or so ago he also leads th=
+e
+> > > Exploit Mitigations Project Group in Rust.
+> >
+> > Thanks, Miguel. I also talked to Ramon about KCFI earlier this week
+> > and he expressed interest in helping with rustc support for it. In the
+> > meanwhile, I think we can just add a depends on !CFI_CLANG to avoid
+> > issues here.
+>
+> Having just read up on the thing it looks like the KCFI thing is
+> resolved.
+>
+> I'm not sure I understand most of the objections in that thread through
+> -- enabling CFI *will* break stuff, so what.
+>
+> Squashing the integer types seems a workable compromise I suppose. One
+> thing that's been floated in the past is adding a 'seed' attribute to
+> some functions in order to distinguish functions of otherwise identical
+> signature.
+>
+> The Rust thing would then also need to support this attribute.
+>
+> Are there any concrete plans for this? It would allow, for example,
+> to differentiate address_space_operations::swap_deactivate() from any
+> other random function that takes only a file argument, say:
+> locks_remove_file().
 
-To some extent, we try to avoid over engineering a solution. There
-might never be a Rust driver which needs to have different entries in
-these tables.
+I haven't really had time to look into it, so no concrete plans yet.
+Adding an attribute shouldn't be terribly difficult, but Kees
+expressed interest in automatic salting as well, which might be a more
+involved project:
 
-For the moment, i suggest KISS. Have a 1:1 mapping between these two
-tables. If a Rust PHY driver ever comes along which needs something
-different, then solve the problem only then. And hopefully when that
-happens, there will be a lot more Rust drivers in general, and a
-better understanding of this problem in general, since it is not
-really limited to PHY drivers. Many drivers need two tables like this.
+https://github.com/ClangBuiltLinux/linux/issues/1736
 
-	Andrew
+Sami
