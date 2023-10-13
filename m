@@ -1,91 +1,80 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB8B33C8;
-	Fri, 13 Oct 2023 18:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C9E1BDE4;
+	Fri, 13 Oct 2023 18:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JooisrpC"
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F131CC;
-	Fri, 13 Oct 2023 11:43:33 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d9151fc5903so2690106276.2;
-        Fri, 13 Oct 2023 11:43:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697222612; x=1697827412; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KhqzVFcWjYiuIlC2M+OeCR9AdcATVr+y2STC1n31eYo=;
-        b=JooisrpCdmJUxGEsPHZpd/ORlMuRwMMBDodwFzUFOv2hvZmHiucP3CpeA7Ch2zvuRI
-         5o7Np1I7cG1GtlFRi8S3Scsv/S6QW6OnUlkyWB3jDPFKELniLdZ8VUfE1oLwq/JcHvAu
-         5q71dZtA5Dc7puip6PQA/lUvHzXyHQ3jkrRMOK1n8oMA/RZi7pGhGzjqSioxYeLbTX8f
-         zeYsBPD7kiH6Jtxg6QgNcqOTlxeSdPiq6bx7iz98qywN7X2JU1rPtIMP2Fwh5VHl3Nct
-         8GJRVrZ5jBq44nchFtxYKhZAxEmwMpseMEC/atiSc3AIeddIPXgEze1hFTyrHqrfLOOB
-         7X0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697222612; x=1697827412;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KhqzVFcWjYiuIlC2M+OeCR9AdcATVr+y2STC1n31eYo=;
-        b=Lm2Z7WiTXrLcyCush4+kxwUjyv1MfFR1Xypyx4tjyJR79gRU57Py7Fc5yrszbA7Ijy
-         uOMiMzDtqExnMNmh7DLNW8WyQVwECAScWaipaGlMdATHQKEPb15Q1mRTm5G6jmP0DDlV
-         gnn4nF9KB/DPWFvUcPWWIzCIzOl5YaDyIKQ9ep75RrwvLfa1NxfcJSgYW2y18cXzLZEF
-         cWeGhi9lbOmE8WLSZObYcqQ2md+gMyuEs7dwb5VMosSuRS/s7fEngZSI+5xdCO3u0SVa
-         2tRoVdY/qGkfo3rzeM5fP+DDTlKbbRTlrPvOfDyqjkSMBgB+yRwser0oR4cMN+3BQO7U
-         44lg==
-X-Gm-Message-State: AOJu0YzD7GjpBZwypyGB/uQM5mdchHMi2W45NDe2LUCaavFZc9Ppt2HH
-	VroVcNGR7T9Nm/4mSMLKZIyzqNd3Fg8xds+v8qA=
-X-Google-Smtp-Source: AGHT+IHzthzNwMY1wGOo43U10IWRRydm6kb1kVkU5f+tfS7oXqNqgcGLUuZdQUvwihOksy/SbGatuD+IPpoD2uZvs5E=
-X-Received: by 2002:a25:c7d2:0:b0:d9b:353b:9e24 with SMTP id
- w201-20020a25c7d2000000b00d9b353b9e24mr1839623ybe.11.1697222612455; Fri, 13
- Oct 2023 11:43:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0g4VdTy8"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FEFEBB;
+	Fri, 13 Oct 2023 11:49:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=dopeytwENW76hQH4O25uQJREIk9PlvPUQ+YaAx2KNAQ=; b=0g
+	4VdTy8KD7HH2jDJZQEaqa6NxHFe9ip9rQ8dZekwAhCUoGnElWrxKR9oIt5F/+hbYSHJN/Udnt0Fpo
+	iHkkmeWoWW784Lx4ShEvzdN9hD6T39jSlEQPyGse0aId5/IUl75uNITObmeb1AjSVphgpxyxBHAKI
+	CygVHNt593C1NaY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qrNE1-0027kL-Fv; Fri, 13 Oct 2023 20:49:29 +0200
+Date: Fri, 13 Oct 2023 20:49:29 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+	benno.lossin@proton.me, greg@kroah.com
+Subject: Re: [PATCH net-next v4 3/4] MAINTAINERS: add Rust PHY abstractions
+ to the ETHERNET PHY LIBRARY
+Message-ID: <0948fa3f-2421-47ad-89fc-8b0992d9f021@lunn.ch>
+References: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
+ <20231012125349.2702474-4-fujita.tomonori@gmail.com>
+ <ZSlVgAfz-O5UR_ps@Boquns-Mac-mini.home>
+ <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
+ <CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
- <20231012125349.2702474-4-fujita.tomonori@gmail.com> <ZSlVgAfz-O5UR_ps@Boquns-Mac-mini.home>
- <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
-In-Reply-To: <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 13 Oct 2023 20:43:21 +0200
-Message-ID: <CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 3/4] MAINTAINERS: add Rust PHY abstractions to
- the ETHERNET PHY LIBRARY
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	wedsonaf@gmail.com, benno.lossin@proton.me, greg@kroah.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 13, 2023 at 6:17=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> Thanks for the suggestion Boqun :) I would be happy to be a reviewer
-> for the rust components of networking.
+On Fri, Oct 13, 2023 at 08:43:21PM +0200, Miguel Ojeda wrote:
+> On Fri, Oct 13, 2023 at 6:17 PM Trevor Gross <tmgross@umich.edu> wrote:
+> >
+> > Thanks for the suggestion Boqun :) I would be happy to be a reviewer
+> > for the rust components of networking.
+> 
+> Thanks a lot Trevor!
+> 
+> > As Tomo mentioned I am not sure there is a good way to indicate this
+> > niche, maybe a new section with two lists? Andrew's call for what
+> > would be best here I suppose.
+> 
+> Yes, maintainers may prefer to split it or not (e.g. "ETHERNET PHY
+> LIBRARY [RUST]"). Then Tomo and you can be there.
+> 
+> That also allows to list only the relevant files in `F:`, to have an
+> extra `L:` for rust-for-linux (in the beginning), a different `S:`
+> level if needed, etc.
 
-Thanks a lot Trevor!
+Yes, this seems sensible.
 
-> As Tomo mentioned I am not sure there is a good way to indicate this
-> niche, maybe a new section with two lists? Andrew's call for what
-> would be best here I suppose.
+I would also suggest a new entry for the driver.
 
-Yes, maintainers may prefer to split it or not (e.g. "ETHERNET PHY
-LIBRARY [RUST]"). Then Tomo and you can be there.
+Play with ./script/get_maintainer.pl --file and make sure it picks the
+right people for a particular file.
 
-That also allows to list only the relevant files in `F:`, to have an
-extra `L:` for rust-for-linux (in the beginning), a different `S:`
-level if needed, etc.
-
-Cheers,
-Miguel
+      Andrew
