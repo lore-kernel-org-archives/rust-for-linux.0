@@ -1,111 +1,97 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E993D022;
-	Fri, 13 Oct 2023 05:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D74D307;
+	Fri, 13 Oct 2023 07:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9LbtW1o"
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5759CB8;
-	Thu, 12 Oct 2023 22:45:05 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1c45c45efeeso1499715ad.0;
-        Thu, 12 Oct 2023 22:45:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697175905; x=1697780705; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H4IYun4mylpcHufRD1D0e1Rplm2xIYgMbMkKj95rpro=;
-        b=P9LbtW1o9JcV8q8okFUseHcUvNax8SJ6TYVekaAElqHspUWC+wpiApmjlneSHX3cH9
-         ArNZViBWFu6V5ZJbtlkbdQ2q+MmhKSiXzgTX8zb1GEJJtJuLcgBF9RPsEj2ktbVm2mfr
-         /i3B1Fys7ZcpE9IKVqk5ijedW7UwhKOq+SF4cD95CkhZq5sYkVTHdagI5kzVDbLNN8zf
-         kk1RPKnAT/5pmPvhQyb6SrtfPiOuo8g+BxpA7vXuUuLI/glVrBZvE5+hjzkm+P8B3SQs
-         yUJvluVwkiuB9/WP6NtLPYdRgL//RD33w9MCoBoXaeeH6E1JPKuf+tVmfnaBcYSAsesH
-         4/Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697175905; x=1697780705;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=H4IYun4mylpcHufRD1D0e1Rplm2xIYgMbMkKj95rpro=;
-        b=UABq/GQ0V8xc8Ff5kekiHX6crw3ZQii2lW9sf7Z/FP76lwIxmg5hPdvKOVPBl/xP3t
-         czkLOO5+CX6rxws2fQfzqLCYE+fOiL/YDBBLBOBchf8sgzy8lK3TV/eBDw5jQko+5ipe
-         dEkZYbFW5IWZvB7USqWe61x7SdfTkZTnSTrL98ELT71qqKZhbZIz8Qid8L5FJb78d4ya
-         jqHkD0jWa4+gF9wuQovOB3f/QQJ7yYzbSiKEdr/WshTqFXceL+9goUdWt3Ax+x0kEpnI
-         ngDr9IJV/98v9JczSv3/e/hHwlL2FFCvtuS+cGctwRPF2t5FZqCHBpxSI584oAgpcwI0
-         xXhw==
-X-Gm-Message-State: AOJu0YwxYI69sj10y8eRPCayab4zRjFa3yGlwhi8LvrK5ySITWIQN7Zy
-	MFEQD7lOuP1D25Jb5WKL8eM=
-X-Google-Smtp-Source: AGHT+IFIkkCt2EoJ5aZfoCEdu80GIhMJierzUfsbJvup67uv/69+DTkLubOnPYpcxSDe+0kd3yFJYQ==
-X-Received: by 2002:a17:902:d2c7:b0:1c6:2b3d:d918 with SMTP id n7-20020a170902d2c700b001c62b3dd918mr29264504plc.3.1697175904699;
-        Thu, 12 Oct 2023 22:45:04 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id e1-20020a170902b78100b001bc675068e2sm2948743pls.111.2023.10.12.22.45.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 22:45:04 -0700 (PDT)
-Date: Fri, 13 Oct 2023 14:45:03 +0900 (JST)
-Message-Id: <20231013.144503.60824065586983673.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: benno.lossin@proton.me, fujita.tomonori@gmail.com, tmgross@umich.edu,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ZSjEyn-YNJiXPT4I@Boquns-Mac-mini.home>
-References: <20231012.165810.303016284319181876.fujita.tomonori@gmail.com>
-	<f3fa33f8-f4b0-463c-8ba3-5f0a8b8f6788@proton.me>
-	<ZSjEyn-YNJiXPT4I@Boquns-Mac-mini.home>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="i0dkNR48"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202D4BF;
+	Fri, 13 Oct 2023 00:50:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oiX2EcOICtWMCl8O283II31c/DVhUshikMhSt0dtcbs=; b=i0dkNR48dE8Mxm1KVD2599Pyx6
+	DmKGXdCjALh+8s6KMmM7qlfoEYO+LJHtza7ZMfvTDy4TmU8t+QbRwYz9JyWCoRoGdanlwF0/XA2Jz
+	iIn1cIw6DMhqxl5AyakiBAq0thCcllWjQeeeAr6EUYcedV52QwB1KdnYSqRdhPtbH8zCrwNtzWrTz
+	VQ88TKxaCd0Q0p45FIAXIMUfBmhy4S0VcG2VCUEfJP8oayX8gjBR12FoEnrLRL3gZA2eGCgBW9ldV
+	c7vy+sR/3J46YjZ07jSvoRLacZ/d6w334jFA6mhkcfD+CKBcnsEBHSwFImH+6n7rq0eOYpchM24Xg
+	S8ANZ/vg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qrCvu-004B18-3K; Fri, 13 Oct 2023 07:50:06 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id BEF04300365; Fri, 13 Oct 2023 09:50:05 +0200 (CEST)
+Date: Fri, 13 Oct 2023 09:50:05 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Ramon de C Valle <rcvalle@google.com>
+Cc: Kees Cook <keescook@chromium.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@google.com>,
+	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+Message-ID: <20231013075005.GB12118@noisy.programming.kicks-ass.net>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-26-ojeda@kernel.org>
+ <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
+ <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+ <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
+ <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
+ <20231012104741.GN6307@noisy.programming.kicks-ass.net>
+ <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
+ <202310121130.256F581823@keescook>
+ <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, 12 Oct 2023 21:17:14 -0700
-Boqun Feng <boqun.feng@gmail.com> wrote:
+On Thu, Oct 12, 2023 at 03:15:12PM -0700, Ramon de C Valle wrote:
 
-> After re-read my email exchange with Tomo, I realised I need to explain
-> this a little bit. The minimal requirement of a Rust binding is
-> soundness: it means if one only uses safe APIs, one cannot introduce
-> memory/type safety issue (i.e. cannot have an object in an invalid
-> state), this is a tall task, because you can have zero assumption of the
-> API users, you can only encode the usage requirement in the type system.
-> 
-> Of course the type system doesn't always work, hence we have unsafe API,
-> but still the soundness of Rust bindings means using safe APIs +
-> *correctly* using unsafe APIs cannot introduce memory/type safety
-> issues.
-> 
-> Tomo, this is why we gave you a hard time here ;-) Unsafe Rust APIs must
-> be very clear on the correct usage and safe Rust APIs must not assume
-> how users would call it. Hope this help explain a little bit, we are not
-> poking random things here, soundness is the team effort from everyone
-> ;-)
+> [1]:
+> https://doc.rust-lang.org/nightly/unstable-book/language-features/cfi-encoding.html
 
-Understood, so let me know if you still want to improve something in
-v4 patchset :) I tried to addressed all the review comments.
+I'm sorry, but that looks like a comment from where I'm sitting :-(
+Worst part is it being on a line of it's own and thus unrelated to
+anything.
 
-btw, what's the purpose of using Rust in linux kernel? Creating sound
-Rust abstractions? Making linux kernel more reliable, or something
-else?  For me, making linux kernel more reliable is the whole
-point. Thus I still can't understand the slogan that Rust abstractions
-can't trust subsystems.
+This rust syntax is horrific..
 
-Rust abstractions always must check the validity of values that
-subsysmtes give because subsysmtes might give an invalid value. Like
-the enum state issue, if PHYLIB has a bug then give a random value, so
-the abstraction have to prevent the invalid value in Rust with
-validity checking. But with such critical bug, likely the system
-cannot continue to run anyway. Preventing the invalid state in Rust
-aren't useful much for system reliability.
+
+> [2]:
+> https://doc.rust-lang.org/book/ch19-04-advanced-types.html#using-the-newtype-pattern-for-type-safety-and-abstraction
+
+I don't speak enough rust to even begin following this :/
+
+> [3]: Wrapping a type in a struct should achieve something similar even
+> without using the cfi_encoding attribute since the encoding for structs in
+> both are <length><name>, where <name> is <unscoped-name>.
+
+You're not talking about C, right?
 
