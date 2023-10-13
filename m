@@ -1,162 +1,176 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7023F4CB
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 22:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9482217EB;
+	Fri, 13 Oct 2023 04:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fc6Wu7Ax"
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA152C9
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 15:27:04 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9b6559cbd74so258380666b.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Oct 2023 15:27:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lmz+lOtb"
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537CAB7;
+	Thu, 12 Oct 2023 21:17:19 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id af79cd13be357-77574dec71bso111881385a.2;
+        Thu, 12 Oct 2023 21:17:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697149623; x=1697754423; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cHyo9fSi27Id6LrPtS/9KH9PdJ59imXr1RZnXM53Toc=;
-        b=Fc6Wu7AxnwLnFyy6wpgTW0M8x+YAUjXBLShtkcjTRNYBjS/G2TBOfw+BUwjEG4jwf2
-         uuDrECctgZN+L+YfhZ7xxs0+8+bdMTSXSAlsNi1YF5Zy2dVJrhZ+msZJfou8iQiBWDDJ
-         tZCacoKvCglAIwtzQ1bZF2Ovjh+vMbZyeE1nUwsZcfXy8Aq92fltbNtlRRl3gduOhXXX
-         KcMVzqHMb2FJsf9X7PIk0kj94OnVDPoYgPShWGooftLUHgFxZtm7dgqs/ARCXECeNnAy
-         c+vwDU6eS4fP/RMfLV9ed1Oe7lB/KQAsn3Ut80k/gQbeCXtgWSlJuBe+QLJDKqI0av0y
-         FyOw==
+        d=gmail.com; s=20230601; t=1697170638; x=1697775438; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=vigf1bBPQ+1WoAGs8QeZzRo58H4ASZSs5WvU9Xw1M7s=;
+        b=lmz+lOtbLagVcpBvky7qBbpYwZk3iHu295xLmteiJcYEnJ1Uim+UdxnWZLFeA1Pb75
+         YnerFt2CmaC28tvXpwEuT7UpQ2rdTfUXeng7qmFzi2Lf19wxlVkQ3kAEQJDOIBNhPSkm
+         IN1hGop66d9CPjwRwYHmeC3BVEiCmw3M3+kmvO2cZsBYWfXTHtyKKwHjAqLv/HwS8x6r
+         RfOacqZKHA2073j9YvQeHu1pSox3Kp8Z+OqHEEgUUn1cuwi2A8R51I+9BdOiqR6PovJW
+         2jT/aHuKayG0Yz1lVioFExGv3Vc7cLflOfT12Ez1i5czLN92k+O0Ny4MvZa5OWpxQiuf
+         J5eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697149623; x=1697754423;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cHyo9fSi27Id6LrPtS/9KH9PdJ59imXr1RZnXM53Toc=;
-        b=qzPnbVipDAKfWvajkq/x4Pew0Z1CdXjSnBtfpXS/u1SAt3gKthpf0ov3y9JmUVpmTx
-         HyzsAB/sEp+GhBxANqRyyjAxqdAYPFKOn1Px9fP8SSJLaIX/eI/0p1M7Ivh1S3jC2rYu
-         P8jsx/6h7Qr2fzZFLLLDeqjO53X4BGaY8+xdCpswECkR6zk19g8NCL8DskbCuz8TRqqc
-         8bJT5G9C9Pj0/xyl8bOxVOn31nr+Sox4BDNQa9IXhDrktwX1k3FFeafsYgk+016rLJ0T
-         IzMbkEcb3gqEIzq4kpA/8OIWDCuaTJE4daTt2pJHFKBK6Zvn7lq24Z+0vo3SbIVozRpY
-         MYxA==
-X-Gm-Message-State: AOJu0YwPzpzq6plAFPpPIvV7XVr+Y+ojiyx3X8zybgIkChGX0Y12mYU0
-	UZK06AbycNEOpClr/Oy8hnmyRF2WF6Pw74FnouFDVA==
-X-Google-Smtp-Source: AGHT+IGD1I7+hyhaygsRIBsksA6Z/9zQPJAvNgjGjr1zN+qJjt0GOQkR8nkHht+PI3KDyCs/v0xOZqolHjxki1yoH0A=
-X-Received: by 2002:a17:907:760a:b0:9bd:8bf6:887c with SMTP id
- jx10-20020a170907760a00b009bd8bf6887cmr2835890ejc.53.1697149623041; Thu, 12
- Oct 2023 15:27:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697170638; x=1697775438;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vigf1bBPQ+1WoAGs8QeZzRo58H4ASZSs5WvU9Xw1M7s=;
+        b=jSyoW4rXiRDXeWBf2xkSV+ryeni1YY5Tmk+CRj+HX2g7UeOBLL8MVY+kdBKLmUZZye
+         45MjDGwWelaH8OBB3lnTtKEDAD73mY9XR+Ty8n0jNsCFKHsgo4LA9cz4ejdAD43FqReX
+         U0hzAzLBu/YoUSsCPeHOzReB3ay2iwtPCNUAZQIqW+Aungvq7hIvbKYTBLlAevV3gjfO
+         hsC+KiLrgjEKYPmYuvDHMh2bSvVzrSN+pBFhbFFue28QzxF9GThBIV3qNrXQ28TIsLB7
+         ZqwlEqzpyq0O8C5yM9do1cXn0runP1aMpTWwUNCooHn4gAbpyZVK7mhlTWB1w3oJc9UG
+         QxwA==
+X-Gm-Message-State: AOJu0YzAUcNWuentNAfRuFfEZj8mkJuJebcmNwM98bX8xiYVQub5g1wC
+	Mhrd491SNjgM+fo8Or/gOQU=
+X-Google-Smtp-Source: AGHT+IELhuq4eWpRm5ZrNccU8/tTskXUopVlW6Z/AqaLDIEsNLXsa6f5kxLXif6UwRkfJRXGvEze1w==
+X-Received: by 2002:a05:620a:4d8:b0:76e:f73d:5fd3 with SMTP id 24-20020a05620a04d800b0076ef73d5fd3mr25528448qks.72.1697170638364;
+        Thu, 12 Oct 2023 21:17:18 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id m9-20020ae9f209000000b007742bc74184sm318873qkg.110.2023.10.12.21.17.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 21:17:17 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 632F827C0054;
+	Fri, 13 Oct 2023 00:17:17 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Fri, 13 Oct 2023 00:17:17 -0400
+X-ME-Sender: <xms:zcQoZc3IVW7QS8mxWQx0rg5nvZ0sGAD8eT9fjrQMjGJedWChJVvmnA>
+    <xme:zcQoZXHJ4DdfWxJTvKRMFg4xqH9m_yuWznNmILAkxJVwBMgi4P2TJ7jdF2Z-Tf5s2
+    wH5SEaqa2F7ta1QZA>
+X-ME-Received: <xmr:zcQoZU6jPWnwGhCyskolGqYvYCk7HzSnDPN8M7yUsijPFzqwDPZJGOP-edw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedriedugdektdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeejhfeikeekffejgeegueevffdtgeefudetleegjeelvdffteeihfelfeeh
+    vdegkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:zcQoZV0IwqStDMU5wEH57SEpFfCaY_1sPdfQ_rSRYGW1G_S_jLg4Dg>
+    <xmx:zcQoZfHhIBLr6Cp2O8VSQN_e7sym4Sj-bkp7KVizRp3Ua1dT5NGc-w>
+    <xmx:zcQoZe9VEQxJzwdC6sOdMiBDBSawwXJT2lLISS04qoR18h5YvLRjiA>
+    <xmx:zcQoZe2RQ4v4iR3z8BIpZm4Fg6EMhQQSAxsqUH5cYieZKm1SCnAEhQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 13 Oct 2023 00:17:16 -0400 (EDT)
+Date: Thu, 12 Oct 2023 21:17:14 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, tmgross@umich.edu,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY
+ drivers
+Message-ID: <ZSjEyn-YNJiXPT4I@Boquns-Mac-mini.home>
+References: <20231012.160246.2019423056896039320.fujita.tomonori@gmail.com>
+ <ZSeckzvOTyre3SVM@boqun-archlinux>
+ <CALNs47tKwVE_GF-kec_mAi2NZLe53t2Jcsec=vsoJXT01AYLQQ@mail.gmail.com>
+ <20231012.165810.303016284319181876.fujita.tomonori@gmail.com>
+ <f3fa33f8-f4b0-463c-8ba3-5f0a8b8f6788@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
- <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
- <20231012104741.GN6307@noisy.programming.kicks-ass.net> <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
- <202310121130.256F581823@keescook>
-In-Reply-To: <202310121130.256F581823@keescook>
-From: Ramon de C Valle <rcvalle@google.com>
-Date: Thu, 12 Oct 2023 15:26:51 -0700
-Message-ID: <CAOcBZOQ=M7zpXTA7Ue1=2436N4=MFgKVRPmTQ1H=b1mUwJEqEQ@mail.gmail.com>
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-To: Kees Cook <keescook@chromium.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@google.com>, 
-	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f3fa33f8-f4b0-463c-8ba3-5f0a8b8f6788@proton.me>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Oct 12, 2023 at 11:31=E2=80=AFAM Kees Cook <keescook@chromium.org> =
-wrote:
->
-> On Thu, Oct 12, 2023 at 10:50:36AM -0700, Sami Tolvanen wrote:
-> > On Thu, Oct 12, 2023 at 3:47=E2=80=AFAM Peter Zijlstra <peterz@infradea=
-d.org> wrote:
-> > >
-> > > On Fri, Oct 14, 2022 at 11:34:30AM -0700, Sami Tolvanen wrote:
-> > > > On Fri, Oct 14, 2022 at 11:05 AM Miguel Ojeda
-> > > > <miguel.ojeda.sandonis@gmail.com> wrote:
-> > > > >
-> > > > > On Tue, Oct 11, 2022 at 1:16 AM Sami Tolvanen <samitolvanen@googl=
-e.com> wrote:
-> > > > > >
-> > > > > > Rust supports IBT with -Z cf-protection=3Dbranch, but I don't s=
-ee this
-> > > > > > option being enabled in the kernel yet. Cross-language CFI is g=
-oing to
-> > > > > > require a lot more work though because the type systems are not=
- quite
-> > > > > > compatible:
-> > > > > >
-> > > > > > https://github.com/rust-lang/rfcs/pull/3296
-> > > > >
-> > > > > I have pinged Ramon de C Valle as he is the author of the RFC abo=
-ve
-> > > > > and implementation work too; since a month or so ago he also lead=
-s the
-> > > > > Exploit Mitigations Project Group in Rust.
-> > > >
-> > > > Thanks, Miguel. I also talked to Ramon about KCFI earlier this week
-> > > > and he expressed interest in helping with rustc support for it. In =
-the
-> > > > meanwhile, I think we can just add a depends on !CFI_CLANG to avoid
-> > > > issues here.
-> > >
-> > > Having just read up on the thing it looks like the KCFI thing is
-> > > resolved.
-> > >
-> > > I'm not sure I understand most of the objections in that thread throu=
-gh
-> > > -- enabling CFI *will* break stuff, so what.
-> > >
-> > > Squashing the integer types seems a workable compromise I suppose. On=
-e
-> > > thing that's been floated in the past is adding a 'seed' attribute to
-> > > some functions in order to distinguish functions of otherwise identic=
-al
-> > > signature.
-> > >
-> > > The Rust thing would then also need to support this attribute.
-> > >
-> > > Are there any concrete plans for this? It would allow, for example,
-> > > to differentiate address_space_operations::swap_deactivate() from any
-> > > other random function that takes only a file argument, say:
-> > > locks_remove_file().
-> >
-> > I haven't really had time to look into it, so no concrete plans yet.
-> > Adding an attribute shouldn't be terribly difficult, but Kees
-> > expressed interest in automatic salting as well, which might be a more
-> > involved project:
-> >
-> > https://github.com/ClangBuiltLinux/linux/issues/1736
->
-> Automatic would be nice, but having an attribute would let us at least
-> start the process manually (or apply salting from static analysis
-> output, etc).
+On Thu, Oct 12, 2023 at 09:10:41AM +0000, Benno Lossin wrote:
+> On 12.10.23 09:58, FUJITA Tomonori wrote:
+> > On Thu, 12 Oct 2023 03:32:44 -0400
+> > Trevor Gross <tmgross@umich.edu> wrote:
+> > 
+> >> On Thu, Oct 12, 2023 at 3:13 AM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >>
+> >>> If `Device::from_raw`'s safety requirement is "only called in callbacks
+> >>> with phydevice->lock held, etc.", then the exclusive access is
+> >>> guaranteed by the safety requirement, therefore `mut` can be drop. It's
+> >>> a matter of the exact semantics of the APIs.
+> >>>
+> >>> Regards,
+> >>> Boqun
+> >>
+> >> That is correct to my understanding, the core handles
+> >> locking/unlocking and no driver functions are called if the core
+> >> doesn't hold an exclusive lock first. Which also means the wrapper
+> >> type can't be `Sync`.
+> >>
+> >> Andrew said a bit about it in the second comment here:
+> >> https://lore.kernel.org/rust-for-linux/ec6d8479-f893-4a3f-bf3e-aa0c81c4adad@lunn.ch/
+> > 
+> > resume/suspend are called without the mutex hold but we don't need the
+> > details. PHYLIB guarantees the exclusive access inside the
+> > callbacks. I updated the comment and drop mut in Device's methods.
+> 
+> The details about this stuff are _extremely_ important, if there is a
+> mistake with the way `unsafe` requirements are written/interpreted, then
+> the Rust guarantee of "memory safety in safe code" flies out the window.
+> The whole idea is to offload all the dangerous stuff into smaller regions
+> that can be scrutinized more easily and for that we need all of the details.
+> 
 
-An idea would be to add something like the Rust cfi_encoding
-attribute[1] and use it with something similar to the Newtype
-Pattern[2], but in C[3], for aggregating function pointers that
-otherwise would be aggregated in the same group in different groups.
+Thank Benno for calling this out.
 
-[1]: https://doc.rust-lang.org/nightly/unstable-book/language-features/cfi-=
-encoding.html
-[2]: https://doc.rust-lang.org/book/ch19-04-advanced-types.html#using-the-n=
-ewtype-pattern-for-type-safety-and-abstraction
-[3]: Wrapping a type in a struct should achieve something similar even
-without using the cfi_encoding attribute since the encoding for
-structs is <length><name>, where <name> is <unscoped-name>.
+After re-read my email exchange with Tomo, I realised I need to explain
+this a little bit. The minimal requirement of a Rust binding is
+soundness: it means if one only uses safe APIs, one cannot introduce
+memory/type safety issue (i.e. cannot have an object in an invalid
+state), this is a tall task, because you can have zero assumption of the
+API users, you can only encode the usage requirement in the type system.
+
+Of course the type system doesn't always work, hence we have unsafe API,
+but still the soundness of Rust bindings means using safe APIs +
+*correctly* using unsafe APIs cannot introduce memory/type safety
+issues.
+
+Tomo, this is why we gave you a hard time here ;-) Unsafe Rust APIs must
+be very clear on the correct usage and safe Rust APIs must not assume
+how users would call it. Hope this help explain a little bit, we are not
+poking random things here, soundness is the team effort from everyone
+;-)
+
+Regards,
+Boqun
+
+> What would be really helpful for me, as I have extremely limited
+> knowledge of the C side, would be an explaining comment in the phy
+> abstractions that explains the way the C side phy abstractions work. So
+> for example it would say that locking is handled by the phy core and (at
+> the moment) neither the Rust abstractions nor the driver code needs to
+> concern itself with locking. There you could also write that `resume` and
+> `suspend` are called without the mutex being held. We don't really have a
+> precedent for this (as there have been no drivers merged), but it would be
+> really helpful for me. If this exists in some other documentation, feel
+> free to just link that.
+> 
+> -- 
+> Cheers,
+> Benno
+> 
+> 
