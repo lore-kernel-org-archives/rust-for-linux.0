@@ -1,97 +1,123 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D74D307;
-	Fri, 13 Oct 2023 07:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D757D307
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 07:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="i0dkNR48"
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202D4BF;
-	Fri, 13 Oct 2023 00:50:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=oiX2EcOICtWMCl8O283II31c/DVhUshikMhSt0dtcbs=; b=i0dkNR48dE8Mxm1KVD2599Pyx6
-	DmKGXdCjALh+8s6KMmM7qlfoEYO+LJHtza7ZMfvTDy4TmU8t+QbRwYz9JyWCoRoGdanlwF0/XA2Jz
-	iIn1cIw6DMhqxl5AyakiBAq0thCcllWjQeeeAr6EUYcedV52QwB1KdnYSqRdhPtbH8zCrwNtzWrTz
-	VQ88TKxaCd0Q0p45FIAXIMUfBmhy4S0VcG2VCUEfJP8oayX8gjBR12FoEnrLRL3gZA2eGCgBW9ldV
-	c7vy+sR/3J46YjZ07jSvoRLacZ/d6w334jFA6mhkcfD+CKBcnsEBHSwFImH+6n7rq0eOYpchM24Xg
-	S8ANZ/vg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qrCvu-004B18-3K; Fri, 13 Oct 2023 07:50:06 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id BEF04300365; Fri, 13 Oct 2023 09:50:05 +0200 (CEST)
-Date: Fri, 13 Oct 2023 09:50:05 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Ramon de C Valle <rcvalle@google.com>
-Cc: Kees Cook <keescook@chromium.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@google.com>,
-	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-Message-ID: <20231013075005.GB12118@noisy.programming.kicks-ass.net>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
- <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
- <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
- <20231012104741.GN6307@noisy.programming.kicks-ass.net>
- <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
- <202310121130.256F581823@keescook>
- <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TmXpMAyX"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8AE8BD
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 00:56:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1697183778; x=1697442978;
+	bh=UZGfM3Rzw5Jfe7SzIeQMyGeW+azbdrzWJPYuE7Tu0Hw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=TmXpMAyXR4uvg7TwsYpg4VdUGDSBznLK5V1AH8czm26vnD+ou72oE1TvevdBb/Ij4
+	 VFB7B+0+3fTus31hyJ2tdrVbt5n2Llq89Rm0bqPCpJb6MmnIlkO/xeId+GAmgyiGcP
+	 QLv+z1szzCxLWdRaWZ4vkIiG+UQwtLcrdvMO5Cz2BseXV6npr4vLMbBZsJJltitdGs
+	 YqXooDVOU4+XjsSSQjKieGkcZUJV/+b/+Co89FFKkHrLDKYGF8iXsOM8kDpm4fprpf
+	 OcSBp5/Vxnz0d9pmWcjCVbLQxrbGcyDXsUVXlMxVwuL3LSiLsw52Kb3Y3Mu98Vk2gE
+	 nrxy3JP3Wrbew==
+Date: Fri, 13 Oct 2023 07:56:07 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, boqun.feng@gmail.com
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: tmgross@umich.edu, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY drivers
+Message-ID: <1da8acc8-ca48-49ae-8293-5e2a7ed86653@proton.me>
+In-Reply-To: <20231013.144503.60824065586983673.fujita.tomonori@gmail.com>
+References: <20231012.165810.303016284319181876.fujita.tomonori@gmail.com> <f3fa33f8-f4b0-463c-8ba3-5f0a8b8f6788@proton.me> <ZSjEyn-YNJiXPT4I@Boquns-Mac-mini.home> <20231013.144503.60824065586983673.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Oct 12, 2023 at 03:15:12PM -0700, Ramon de C Valle wrote:
+On 13.10.23 07:45, FUJITA Tomonori wrote:
+> On Thu, 12 Oct 2023 21:17:14 -0700
+> Boqun Feng <boqun.feng@gmail.com> wrote:
+>=20
+>> After re-read my email exchange with Tomo, I realised I need to explain
+>> this a little bit. The minimal requirement of a Rust binding is
+>> soundness: it means if one only uses safe APIs, one cannot introduce
+>> memory/type safety issue (i.e. cannot have an object in an invalid
+>> state), this is a tall task, because you can have zero assumption of the
+>> API users, you can only encode the usage requirement in the type system.
+>>
+>> Of course the type system doesn't always work, hence we have unsafe API,
+>> but still the soundness of Rust bindings means using safe APIs +
+>> *correctly* using unsafe APIs cannot introduce memory/type safety
+>> issues.
+>>
+>> Tomo, this is why we gave you a hard time here ;-) Unsafe Rust APIs must
+>> be very clear on the correct usage and safe Rust APIs must not assume
+>> how users would call it. Hope this help explain a little bit, we are not
+>> poking random things here, soundness is the team effort from everyone
+>> ;-)
+>=20
+> Understood, so let me know if you still want to improve something in
+> v4 patchset :) I tried to addressed all the review comments.
+>=20
+> btw, what's the purpose of using Rust in linux kernel? Creating sound
+> Rust abstractions? Making linux kernel more reliable, or something
+> else?  For me, making linux kernel more reliable is the whole
+> point. Thus I still can't understand the slogan that Rust abstractions
+> can't trust subsystems.
 
-> [1]:
-> https://doc.rust-lang.org/nightly/unstable-book/language-features/cfi-encoding.html
+For me it is making the Linux kernel more reliable. The Rust abstractions
+are just a tool for that goal: we offload the difficult task of handling
+the C <-> Rust interactions and other `unsafe` features into those
+abstractions. Then driver authors do not need to concern themselves with
+that and can freely write drivers in safe Rust. Since there will be a lot
+more drivers than abstractions, this will pay off in the end, since we will
+have a lot less `unsafe` code than safe code.
 
-I'm sorry, but that looks like a comment from where I'm sitting :-(
-Worst part is it being on a line of it's own and thus unrelated to
-anything.
+Concentrating the difficult/`unsafe` code in the abstractions make it
+easier to review (compared to `unsafe` code in every driver) and easier to
+maintain, if we find a soundness issue, we only have to fix it in the
+abstractions.
 
-This rust syntax is horrific..
+> Rust abstractions always must check the validity of values that
+> subsysmtes give because subsysmtes might give an invalid value. Like
+> the enum state issue, if PHYLIB has a bug then give a random value, so
+> the abstraction have to prevent the invalid value in Rust with
+> validity checking. But with such critical bug, likely the system
+> cannot continue to run anyway. Preventing the invalid state in Rust
+> aren't useful much for system reliability.
 
+It's not that we do not trust the subsystems, for example when we register
+a callback `foo` and the C side documents that it is ok to sleep within
+`foo`, then we will assume so. If we would not trust the C side, then we
+would have to disallow sleeping there, since sleeping while holding a
+spinlock is UB (and the C side could accidentally be holding a spinlock).
 
-> [2]:
-> https://doc.rust-lang.org/book/ch19-04-advanced-types.html#using-the-newtype-pattern-for-type-safety-and-abstraction
+But there are certain things where we do not trust the subsystems, these
+are mainly things where we can afford it from a performance and usability
+perspective (in the example above we could not afford it from a usability
+perspective).
 
-I don't speak enough rust to even begin following this :/
+In the enum case it would also be incredibly simple for the C side to just
+make a slight mistake and set the integer to a value outside of the
+specified range. This strengthens the case for checking validity here.
+When an invalid value is given to Rust we have immediate UB. In Rust UB
+always means that anything can happen so we must avoid it at all costs.
+In this case having a check would not really hurt performance and in terms
+of usability it also seems reasonable. If it would be bad for performance,
+let us know.
 
-> [3]: Wrapping a type in a struct should achieve something similar even
-> without using the cfi_encoding attribute since the encoding for structs in
-> both are <length><name>, where <name> is <unscoped-name>.
+--=20
+Cheers,
+Benno
 
-You're not talking about C, right?
 
