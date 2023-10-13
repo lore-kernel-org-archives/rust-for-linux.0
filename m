@@ -1,101 +1,436 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A2C1D54C
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 19:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01804241FE
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 21:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HJu4weAc"
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C28DA9
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 12:27:28 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2c50cf61f6dso7507321fa.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 12:27:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1697225246; x=1697830046; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yMlHIs+RXRwcCam9b7W7YcpdMJXw0XO1+U1rinkBh7Y=;
-        b=HJu4weAci0EdD7kJ/nj91nfphjw6vaFvRJ7cum5gMnbN84Ti6FT3DM4wkvc3vPJF8L
-         sZ2U29flnM/Q4Qungpkf3fQSrTjCf7MNngmJxgqN0ISUbg07M9F0+4VonoKHl36Q5Ap/
-         YsK8drohAk2KhXfnNdripp+vrqJg4wbQhWho8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697225246; x=1697830046;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yMlHIs+RXRwcCam9b7W7YcpdMJXw0XO1+U1rinkBh7Y=;
-        b=B587AadGHI2n09U1tVPcm53LiWyo3B9KMGahvbOH+XalVa9aA+udYywBltpnWF7X4C
-         uofW9f7pmCYWcG+ylpa42v93fhh82ZnYr5h/mtOTxJa/QC/3/3FURoeid6vZ4UBqXOxo
-         hayBK21OY5hcNOun1EOlnK5BZAqxCDu8YAm/XnD/01g8gBed3ABoNKCW275hHpzbddrx
-         nxqlEjq0ec4a6abLvug8eK1FaCxKz7NhT9mu9CfiLE7fM3oqW0TH1ex5S8Dyr94QFuzM
-         B4v+N9t72SGHGoAP8N0EsevdABHjE2cMXnbpkUA/Mhulx6eL+V1DU7a53gquk4m8XfO/
-         SBvg==
-X-Gm-Message-State: AOJu0YxRQW1GinjGxXiKiu6SvZ6sU2Qwsiea+gOkCPnj71CSQfeKR7GN
-	I2LnMHqUG1GdPFmachXx1+BGwX6GuM6zPtCaucHb4ASF
-X-Google-Smtp-Source: AGHT+IGzyYA81OoFyaGgC3NvjbEdtN3CQuuwv84lqe9M/9kzU62ZZ+2L3BeFUcLMgnPt8el6bSxBGA==
-X-Received: by 2002:a2e:2e0f:0:b0:2bc:b70d:9cb5 with SMTP id u15-20020a2e2e0f000000b002bcb70d9cb5mr21850616lju.33.1697225246565;
-        Fri, 13 Oct 2023 12:27:26 -0700 (PDT)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
-        by smtp.gmail.com with ESMTPSA id l16-20020a2ea310000000b002b6ce8b0dd6sm4352385lje.75.2023.10.13.12.27.26
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Oct 2023 12:27:26 -0700 (PDT)
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2c5039d4e88so17381371fa.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 12:27:26 -0700 (PDT)
-X-Received: by 2002:a17:907:7790:b0:9b9:facb:d950 with SMTP id
- ky16-20020a170907779000b009b9facbd950mr17575861ejc.72.1697224939431; Fri, 13
- Oct 2023 12:22:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W3F9nVQ1"
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61A595
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 14:31:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1697232686; x=1697491886;
+	bh=xFnu/cVH22vc/MtKK0j1gDECBOUmGrUdl9GeHISpbck=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=W3F9nVQ1dq1l3UiNwNnSjWKoT92xd0S5C8qsclAE9yYse+FohNjFJ5kqOAkD7Mtmn
+	 N3W8q8is56KmnmHl3i8o2fLgoeM0HXaJaFcJJ9zGeSEhsX5LbtfKSArpxHRUXV3bQ+
+	 9awwW7gnfP2On7f3Alve2c2x/zYbNM4ekLG8QIhRh7PMXoqBZdwU/brm5sUC9okh1P
+	 z9qPkdXPV1uNcdsBv2/n61LVyUQRRESYeFUb7ITzj03x8C9dzf8CXhTy4a8s4gY8OX
+	 1RtThBiefXetfH8ocyQJyJviR0ZTEMrQB84Bl+RuWoaIyt+DvhFdWuVCvWksDTlrY3
+	 FHg/ldAmBzUYQ==
+Date: Fri, 13 Oct 2023 21:31:16 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network PHY drivers
+Message-ID: <85d5c498-efbc-4c1a-8d12-f1eca63c45cf@proton.me>
+In-Reply-To: <20231012125349.2702474-2-fujita.tomonori@gmail.com>
+References: <20231012125349.2702474-1-fujita.tomonori@gmail.com> <20231012125349.2702474-2-fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
- <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
- <20231012104741.GN6307@noisy.programming.kicks-ass.net> <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
- <202310121130.256F581823@keescook> <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
- <20231013075005.GB12118@noisy.programming.kicks-ass.net> <CAOcBZOTP_vQuFaqREqy-hkG69aBvJ+xrhEQi_EFKvtsNjne1dw@mail.gmail.com>
- <CAHk-=wjLUit_gae7anFNz4sV0o2Uc=TD_9P8sYeqMSeW_UG2Rg@mail.gmail.com> <5D8CA5EF-F5B0-4911-85B8-A363D9344FA7@zytor.com>
-In-Reply-To: <5D8CA5EF-F5B0-4911-85B8-A363D9344FA7@zytor.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 13 Oct 2023 12:22:02 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiiBpw-0MKBbPkvo54=Cvyi0b3_1bDtqbgiD4ixd+OPow@mail.gmail.com>
-Message-ID: <CAHk-=wiiBpw-0MKBbPkvo54=Cvyi0b3_1bDtqbgiD4ixd+OPow@mail.gmail.com>
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ramon de C Valle <rcvalle@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Kees Cook <keescook@chromium.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@google.com>, 
-	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, 13 Oct 2023 at 12:01, H. Peter Anvin <hpa@zytor.com> wrote:
+On 12.10.23 14:53, FUJITA Tomonori wrote:
+> This patch adds abstractions to implement network PHY drivers; the
+> driver registration and bindings for some of callback functions in
+> struct phy_driver and many genphy_ functions.
+>=20
+> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=3Dy.
+>=20
+> This patch enables unstable const_maybe_uninit_zeroed feature for
+> kernel crate to enable unsafe code to handle a constant value with
+> uninitialized data. With the feature, the abstractions can initialize
+> a phy_driver structure with zero easily; instead of initializing all
+> the members by hand. It's supposed to be stable in the not so distant
+> future.
+>=20
+> Link: https://github.com/rust-lang/rust/pull/116218
+>=20
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>   init/Kconfig                    |   8 +
+>   rust/Makefile                   |   1 +
+>   rust/bindings/bindings_helper.h |   3 +
+>   rust/kernel/lib.rs              |   3 +
+>   rust/kernel/net.rs              |   6 +
+>   rust/kernel/net/phy.rs          | 679 ++++++++++++++++++++++++++++++++
+>   6 files changed, 700 insertions(+)
+>   create mode 100644 rust/kernel/net.rs
+>   create mode 100644 rust/kernel/net/phy.rs
+>=20
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 6d35728b94b2..0fc6f5568748 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1903,6 +1903,14 @@ config RUST
+>=20
+>   =09  If unsure, say N.
+>=20
+> +config RUST_PHYLIB_ABSTRACTIONS
+> +        bool "PHYLIB abstractions support"
+> +        depends on RUST
+> +        depends on PHYLIB=3Dy
+> +        help
+> +          Adds support needed for PHY drivers written in Rust. It provid=
+es
+> +          a wrapper around the C phylib core.
+> +
+
+I find it a bit weird that this is its own option under "General". I think
+it would be reasonable to put it under "Rust", since that would also scale
+better when other subsystems do this.
+
+>   config RUSTC_VERSION_TEXT
+>   =09string
+>   =09depends on RUST
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 87958e864be0..f67e55945b36 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -331,6 +331,7 @@ quiet_cmd_bindgen =3D BINDGEN $@
+>         cmd_bindgen =3D \
+>   =09$(BINDGEN) $< $(bindgen_target_flags) \
+>   =09=09--use-core --with-derive-default --ctypes-prefix core::ffi --no-l=
+ayout-tests \
+> +=09=09--rustified-enum phy_state\
+
+Please change this to Miguel's solution.
+
+>   =09=09--no-debug '.*' \
+>   =09=09-o $@ -- $(bindgen_c_flags_final) -DMODULE \
+>   =09=09$(bindgen_target_cflags) $(bindgen_target_extra)
+
+[...]
+
+> +/// An instance of a PHY device.
+> +///
+> +/// Wraps the kernel's `struct phy_device`.
+> +///
+> +/// # Invariants
+> +///
+> +/// `self.0` is always in a valid state.
+> +#[repr(transparent)]
+> +pub struct Device(Opaque<bindings::phy_device>);
+> +
+> +impl Device {
+> +    /// Creates a new [`Device`] instance from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This function can be called only in the callbacks in `phy_driver=
+`. PHYLIB guarantees
+
+"can be called in" -> "must only be called from"
+
+> +    /// the exclusive access for the duration of the lifetime `'a`.
+
+In some other thread you mentioned that no lock is held for
+`resume`/`suspend`, how does this interact with it?
+
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Se=
+lf {
+> +        // SAFETY: The safety requirements guarantee the validity of the=
+ dereference, while the
+> +        // `Device` type being transparent makes the cast ok.
+> +        unsafe { &mut *ptr.cast() }
+
+please refactor to
+
+     // CAST: ...
+     let ptr =3D ptr.cast::<Self>();
+     // SAFETY: ...
+     unsafe { &mut *ptr }
+
+> +    }
+
+[...]
+
+> +    /// Returns true if auto-negotiation is completed.
+> +    pub fn is_autoneg_completed(&self) -> bool {
+> +        const AUTONEG_COMPLETED: u32 =3D 1;
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        let phydev =3D unsafe { *self.0.get() };
+> +        phydev.autoneg_complete() =3D=3D AUTONEG_COMPLETED
+> +    }
+> +
+> +    /// Sets the speed of the PHY.
+> +    pub fn set_speed(&self, speed: u32) {
+
+This function modifies state, but is `&self`?
+
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        let mut phydev =3D unsafe { *self.0.get() };
+> +        phydev.speed =3D speed as i32;
+> +    }
+> +
+> +    /// Sets duplex mode.
+> +    pub fn set_duplex(&self, mode: DuplexMode) {
+
+This function modifies state, but is `&self`?
+
+> +        let v =3D match mode {
+> +            DuplexMode::Full =3D> bindings::DUPLEX_FULL as i32,
+> +            DuplexMode::Half =3D> bindings::DUPLEX_HALF as i32,
+> +            DuplexMode::Unknown =3D> bindings::DUPLEX_UNKNOWN as i32,
+> +        };
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        let mut phydev =3D unsafe { *self.0.get() };
+> +        phydev.duplex =3D v;
+
+Note that this piece of code will actually not do the correct thing. It
+will create a copy of `phydev` on the stack and modify that instead of the
+pointee of `self`. I think the code was fine before this change.
+
+> +    }
+> +
+> +    /// Reads a given C22 PHY register.
+> +    pub fn read(&self, regnum: u16) -> Result<u16> {
+
+No idea if this function should be `&mut self` or `&self`. Would
+it be ok for mutltiple threads to call this function concurrently?
+If yes, then leave it as `&self`, if no then change it to `&mut self`.
+
+> +        let phydev =3D self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        // So an FFI call with a valid pointer.
+> +        let ret =3D unsafe {
+> +            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.ad=
+dr, regnum.into())
+> +        };
+> +        if ret < 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(ret as u16)
+> +        }
+> +    }
+> +
+> +    /// Writes a given C22 PHY register.
+> +    pub fn write(&self, regnum: u16, val: u16) -> Result {
+
+This should probably be `&mut self`, but not sure.
+
+> +        let phydev =3D self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        // So an FFI call with a valid pointer.
+> +        to_result(unsafe {
+> +            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.a=
+ddr, regnum.into(), val)
+> +        })
+> +    }
+> +
+> +    /// Reads a paged register.
+> +    pub fn read_paged(&self, page: u16, regnum: u16) -> Result<u16> {
+
+Again same question (also for all other functions below that call the C
+side).
+
+> +        let phydev =3D self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        // So an FFI call with a valid pointer.
+> +        let ret =3D unsafe { bindings::phy_read_paged(phydev, page.into(=
+), regnum.into()) };
+> +        if ret < 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(ret as u16)
+> +        }
+> +    }
+
+[...]
+
+> +}
+> +
+> +/// Defines certain other features this PHY supports (like interrupts).
+
+Maybe add a link where these flags can be used.
+
+> +pub mod flags {
+> +    /// PHY is internal.
+> +    pub const IS_INTERNAL: u32 =3D bindings::PHY_IS_INTERNAL;
+> +    /// PHY needs to be reset after the refclk is enabled.
+> +    pub const RST_AFTER_CLK_EN: u32 =3D bindings::PHY_RST_AFTER_CLK_EN;
+> +    /// Polling is used to detect PHY status changes.
+> +    pub const POLL_CABLE_TEST: u32 =3D bindings::PHY_POLL_CABLE_TEST;
+> +    /// Don't suspend.
+> +    pub const ALWAYS_CALL_SUSPEND: u32 =3D bindings::PHY_ALWAYS_CALL_SUS=
+PEND;
+> +}
+
+[...]
+
+> +
+> +/// Corresponds to functions in `struct phy_driver`.
+> +///
+> +/// This is used to register a PHY driver.
+> +#[vtable]
+> +pub trait Driver {
+> +    /// Defines certain other features this PHY supports.
+> +    /// It is a combination of the flags in the [`flags`] module.
+> +    const FLAGS: u32 =3D 0;
+
+What would happen if I set this to some value that is not a combination of
+the flag values above? I expect that bits that are not part of the flag
+values above to be ignored.
+
+> +    /// The friendly name of this PHY type.
+> +    const NAME: &'static CStr;
+> +
+> +    /// This driver only works for PHYs with IDs which match this field.
+
+Mention that the default value is 0.
+
+> +    const PHY_DEVICE_ID: DeviceId =3D DeviceId::new_with_custom_mask(0, =
+0);
+
+[...]
+
+> +}
+> +
+> +/// Registration structure for a PHY driver.
+> +///
+> +/// # Invariants
+> +///
+> +/// All elements of the `drivers` slice are valid and currently register=
+ed
+> +/// to the kernel via `phy_drivers_register`.
+
+Since `DriverType` is now safe a wrapper type, this invariant should be
+moved to that type instead.
+
+> +pub struct Registration {
+> +    drivers: &'static [DriverType],
+> +}
+> +
+> +impl Registration {
+> +    /// Registers a PHY driver.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The values of the `drivers` array must be initialized properly.
+
+With the above change you do not need this (since all instances of
+`DriverType` are always initialized). But I am not sure if it would be
+fine to call `phy_driver_register` multiple times with the same driver
+without unregistering it first.
+
+I thought about this implementation of `Registration` a bit and I think
+there are two possible ways to avoid both this `unsafe` function and the
+mutable static in the `module_phy_driver` macro from patch 2:
+
+Option 1:
+- make the constructor of `DriverType` register the driver and the `Drop`
+   impl unregister the driver.
+- remove the `Registration` type.
+- in the `module_phy_driver` macro create the array of `DriverType`s inside
+   of the `Module` struct.
+
+The disadvantage of this solution is that `phy_drivers_register` is called
+for every driver (and also `phy_drivers_unregister`). But if you and Andrew
+think that that is fine, then go with this option. The other advantage of
+this solution is that it also becomes safely usable without the
+`module_phy_driver` macro. For exmaple when a more complex `Module`
+struct is needed by a driver.
+
+Option 2:
+- remove the `Registration` type.
+- in the `module_phy_driver` macro: create the array of `DriverType`s insid=
+e
+   of the `Module` struct.
+- in the `module_phy_driver` macro: register the drivers in the
+   `Module::init` function and unregister them in the `Drop` impl of
+   `Module`.
+
+This approach only has one call to `phy_drivers_(un)register`, but cannot
+really be used safely without the `module_phy_driver` macro.
+
+> +    pub unsafe fn register(
+> +        module: &'static crate::ThisModule,
+> +        drivers: &'static [DriverType],
+> +    ) -> Result<Self> {
+> +        if drivers.is_empty() {
+> +            return Err(code::EINVAL);
+> +        }
+> +        // SAFETY: The safety requirements of the function ensure that `=
+drivers` array are initialized properly.
+> +        // So an FFI call with a valid pointer.
+> +        to_result(unsafe {
+> +            bindings::phy_drivers_register(drivers[0].0.get(), drivers.l=
+en().try_into()?, module.0)
+> +        })?;
+> +        // INVARIANT: The safety requirements of the function and the su=
+ccess of `phy_drivers_register` ensure
+> +        // the invariants.
+> +        Ok(Registration { drivers })
+> +    }
+> +}
+
+[...]
+
+> +
+> +    /// Get a `mask` as u32.
+> +    pub const fn mask_as_int(&self) -> u32 {
+> +        self.mask.as_int()
+> +    }
+> +
+> +    // macro use only
+> +    #[doc(hidden)]
+> +    pub const fn as_mdio_device_id(&self) -> bindings::mdio_device_id {
+
+I would name this just `mdio_device_id`.
+
+--=20
+Cheers,
+Benno
+
+> +        bindings::mdio_device_id {
+> +            phy_id: self.id,
+> +            phy_id_mask: self.mask.as_int(),
+> +        }
+> +    }
+> +}
+> +
+> +enum DeviceMask {
+> +    Exact,
+> +    Model,
+> +    Vendor,
+> +    Custom(u32),
+> +}
+> +
+> +impl DeviceMask {
+> +    const MASK_EXACT: u32 =3D !0;
+> +    const MASK_MODEL: u32 =3D !0 << 4;
+> +    const MASK_VENDOR: u32 =3D !0 << 10;
+> +
+> +    const fn as_int(&self) -> u32 {
+> +        match self {
+> +            DeviceMask::Exact =3D> Self::MASK_EXACT,
+> +            DeviceMask::Model =3D> Self::MASK_MODEL,
+> +            DeviceMask::Vendor =3D> Self::MASK_VENDOR,
+> +            DeviceMask::Custom(mask) =3D> *mask,
+> +        }
+> +    }
+> +}
+> --
+> 2.34.1
 >
-> Transparent unions have been standard C since C99.
 
-Ahh, I didn't realize they made it into the standard.
-
-In gcc, they've been usable for a lot longer (ie --std=gnu89 certainly
-is happy with them), but the kernel never really picked up on them.
-
-I think they've mainly been used by glibc for a couple of functions
-that can take a couple of different types without complaining.
-
-           Linus
