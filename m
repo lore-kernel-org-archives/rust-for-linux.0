@@ -1,121 +1,143 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCD814297
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 12:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1592718C2A;
+	Fri, 13 Oct 2023 14:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fN+CMP8c"
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C59C8A9
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 05:18:04 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-991c786369cso327856666b.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 05:18:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XAoIFRi6"
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78096BE;
+	Fri, 13 Oct 2023 07:34:46 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id af79cd13be357-77386822cfbso141642485a.0;
+        Fri, 13 Oct 2023 07:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697199483; x=1697804283; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1697207685; x=1697812485; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kfMcaSPK1nNALi0ZL2/STHAwFBjikJyI73GljAs8CFY=;
-        b=fN+CMP8czqx+zKvehOpSezbKnn4yGuWRS59DGkEVqSyFoz54Ky9XBIOIEPcp4BIzCm
-         1f3e2MenjsQ/U9J3UwBGHV7ykr055TonK5NvMg81vNxUvgzs1EjkllLqMcT0pt6Gfp05
-         UN3FwUZLPzVCZM8a/ANAUDnIS4BQTjPPyx0/OYWMTvNXrhIkDo7REemt2mCRXCT2pRqp
-         BXiFsBUEMlRCUoTBj0J7U4ZbLKQ95PrcP97yq8Ayf9H9/KWCbNG1POiFDoivyLgKlT93
-         j0mcTHDZ8yzHnH10kPWpuApqq+OuxtmXpCNvIe9V/ghixUb4yS+f+VrG5OSFboE5ACa8
-         +60Q==
+        bh=BiqOjv9CBy/YAIHlJ/Ek/j41xRRll4lh+8GJVCNSWig=;
+        b=XAoIFRi6sHgS7y3fopCCzMyyjlXmgt7lc0ko662dZz009IXW0GUdW/CSAcPdC+e7ik
+         LAcig2iA6UXWaJm4A++bVWb5wIqS8Z0JLF8W8Gol4OSTUIMHKMlYReDXx30zx80Qz9u5
+         muNYanYrmqye6L5xIZ+ad5kf1mxbBi5ggedL9QQ8KtPEZnz1o72rDlSlzzajOemowlD6
+         EmqQGoHltDiG99cB+fQh/sPHmxnlcNOCfZ2O6GtEaBLU/nzsNSTxf5U1Bif1hh2Mmk5b
+         AqVG8Utm7w3CwA0TVFGywRsmg12yqNlDtKWSPoLy/uCrkBTynJ6gm7r6Na8tkklnNfRX
+         aLDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697199483; x=1697804283;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1697207685; x=1697812485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kfMcaSPK1nNALi0ZL2/STHAwFBjikJyI73GljAs8CFY=;
-        b=PDptJ7cNxmjDo9RLwvp2zNeirK9CBeHwHjo/h3iE8PKgUmb4tsLfOJLkRgitTS6hyO
-         V4TlVkY1IiTvr9+oT0QPbBl3eCKuGoNG7bvdR9SuRLHVy0ZIJlzMIfXGyWt9IiXh+XMF
-         XYZaOZrPuGoNXiNPb5hGCZVhwxFJ9nqDyKSS+CWo0e5JA/pSDElVzvmwZMdqqXxOTaR+
-         OqvjiI/q2YRdnbcy/JeVTqQl65Pe4R0RzgzKI+ttS+ckjMyOlwZlz5nrGHwbwTzZRolj
-         v6siQSA0kIscVYhMqILa741vwHF90UPpo15bcFh6Q1G8s/4tDpoBpl+7MJCKAzQjcpaP
-         HEWA==
-X-Gm-Message-State: AOJu0YwlApIRnbsLwqUplnl59wXVDEia1EFJwrsd69x3gyINF3uBeZCt
-	/vEhxGT9IEOnobpVofx9c6qwGWimIpm1DEAwsHfSHA==
-X-Google-Smtp-Source: AGHT+IGQJ9SEIC8vE0aqfRJOcMNPn+seOjJOdw/SPreQJQAaFkIsSMzyhkSV+UwdtrZcN9HIBGcHUUvxmzb9X/Yth+w=
-X-Received: by 2002:a17:906:fe07:b0:9bd:e036:387d with SMTP id
- wy7-20020a170906fe0700b009bde036387dmr587057ejb.21.1697199483200; Fri, 13 Oct
- 2023 05:18:03 -0700 (PDT)
+        bh=BiqOjv9CBy/YAIHlJ/Ek/j41xRRll4lh+8GJVCNSWig=;
+        b=Gt3iEKZOvz9B7tpOPlbqu7VQUA/oaVFv9wn1zSqh1Q2IkOroXWprBrTQhfNUbLQ0du
+         Cv839rN0ZjDdgjfaT2Za7Qs5ZhjlwwrrBjXoXSrUk47dm+GaPqaoxCnBZsT6kNgAHWP3
+         NQoqA5HHKIoFXpdrYSe95yBYvDTLNHSIAYSHLeXXm0y8vF9/9rpGXkqksZnQyQDN+Kv9
+         epZtYoerAGQZIUVkv7WEepgXJhDk1bCOORIUrEjAyD1rhAztgEo80fm910dI1bZKKaqo
+         xAXq4cCUTk6HTGxWjXCGcw41PQe2Y4x+XG+bA6Dgap27wUqBFaro90XTqdUiwaEraVzU
+         doFg==
+X-Gm-Message-State: AOJu0YxutChN2A+l//gxwDQwDycv0PDMqy8lptjrwA4kA+WGXmOwPzbX
+	UeaKucUp0DOAMtJg5nlNwZk=
+X-Google-Smtp-Source: AGHT+IGzQlJa+bZAHv9r6/5L9A88yLN9vQ1HtjKY/22DandnrI3+Do5EuidEt5ufmvrDP6uLeAQndw==
+X-Received: by 2002:a05:620a:81d:b0:774:35da:75ac with SMTP id s29-20020a05620a081d00b0077435da75acmr26579669qks.55.1697207685443;
+        Fri, 13 Oct 2023 07:34:45 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id e5-20020a05620a12c500b007756c8ce8f5sm671072qkl.59.2023.10.13.07.34.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Oct 2023 07:34:44 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 9475727C005A;
+	Fri, 13 Oct 2023 10:34:43 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Fri, 13 Oct 2023 10:34:43 -0400
+X-ME-Sender: <xms:g1UpZQ0_l53NZT0QW29zfT45D7vnNCcl2wH_ApZD1tgZm0GB5EK72w>
+    <xme:g1UpZbGi_amYelqKBk9tvJ48b_jsndJVDEfEPHMtGnKr87EkEe_u1SX1cJlyj0OOv
+    r5TiVPpv4nI_yABPQ>
+X-ME-Received: <xmr:g1UpZY6jtbHrAyT0zfv8IF7Iyd_tvw4h3LNSafwwCe1MbkA7RXU6ZTSJl0w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrieefgdehhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
+    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:g1UpZZ2jEwuyjJAnvJTsu6hyRQeePDxA7KHaxoacuCcT9yA1FhoR_g>
+    <xmx:g1UpZTF8W5P4gNFtc9cJgE4AIwlvEkgWRMasZ9ntyEhDBu3Al70sVQ>
+    <xmx:g1UpZS-DmmskbJm5GVqlJHOkdsyeWoRO8dFYz38xT-If0InFnuyrrQ>
+    <xmx:g1UpZZaLbB6j-_U4ZUnO6ry3vRayUUQe5uxtZ4tZFxTgQApo1M1ykg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 13 Oct 2023 10:34:42 -0400 (EDT)
+Date: Fri, 13 Oct 2023 07:34:40 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+	miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu,
+	wedsonaf@gmail.com, benno.lossin@proton.me, greg@kroah.com
+Subject: Re: [PATCH net-next v4 3/4] MAINTAINERS: add Rust PHY abstractions
+ to the ETHERNET PHY LIBRARY
+Message-ID: <ZSlVgAfz-O5UR_ps@Boquns-Mac-mini.home>
+References: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
+ <20231012125349.2702474-4-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
- <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
- <20231012104741.GN6307@noisy.programming.kicks-ass.net> <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
- <202310121130.256F581823@keescook> <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
- <20231013075005.GB12118@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231013075005.GB12118@noisy.programming.kicks-ass.net>
-From: Ramon de C Valle <rcvalle@google.com>
-Date: Fri, 13 Oct 2023 05:17:50 -0700
-Message-ID: <CAOcBZOTP_vQuFaqREqy-hkG69aBvJ+xrhEQi_EFKvtsNjne1dw@mail.gmail.com>
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Kees Cook <keescook@chromium.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@google.com>, 
-	David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012125349.2702474-4-fujita.tomonori@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 13, 2023 at 12:50=E2=80=AFAM Peter Zijlstra <peterz@infradead.o=
-rg> wrote:
->
-> On Thu, Oct 12, 2023 at 03:15:12PM -0700, Ramon de C Valle wrote:
->
-> > [1]:
-> > https://doc.rust-lang.org/nightly/unstable-book/language-features/cfi-e=
-ncoding.html
->
-> I'm sorry, but that looks like a comment from where I'm sitting :-(
-> Worst part is it being on a line of it's own and thus unrelated to
-> anything.
->
-> This rust syntax is horrific..
+On Thu, Oct 12, 2023 at 09:53:48PM +0900, FUJITA Tomonori wrote:
+> Adds me as a maintainer for these Rust bindings too.
+> 
+> The files are placed at rust/kernel/ directory for now but the files
+> are likely to be moved to net/ directory once a new Rust build system
+> is implemented.
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 698ebbd78075..eb51a1d526b7 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7770,6 +7770,7 @@ F:	net/bridge/
+>  ETHERNET PHY LIBRARY
+>  M:	Andrew Lunn <andrew@lunn.ch>
+>  M:	Heiner Kallweit <hkallweit1@gmail.com>
+> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+>  R:	Russell King <linux@armlinux.org.uk>
 
-I understand where you're coming from. I'm still getting used to Rust synta=
-x.
+Since Trevor has been reviewing the series and showed a lot of
+expertise, I suggest having him as the reviewer in Rust networking, of
+course if he and everyone agree ;-)
 
->
->
-> > [2]:
-> > https://doc.rust-lang.org/book/ch19-04-advanced-types.html#using-the-ne=
-wtype-pattern-for-type-safety-and-abstraction
->
-> I don't speak enough rust to even begin following this :/
->
-> > [3]: Wrapping a type in a struct should achieve something similar even
-> > without using the cfi_encoding attribute since the encoding for structs=
- in
-> > both are <length><name>, where <name> is <unscoped-name>.
->
-> You're not talking about C, right?
+Trevor, what do you think?
 
-Both C and repr(C) Rust structs have this encoding, but I understand
-the problems with doing this in C since it doesn't have
-repr(transparent) structs so there would be a lot of casting back and
-forth. Maybe there is an alternative or this could be done for less
-used function pairs?
+Regards,
+Boqun
+
+>  L:	netdev@vger.kernel.org
+>  S:	Maintained
+> @@ -7799,6 +7800,7 @@ F:	include/trace/events/mdio.h
+>  F:	include/uapi/linux/mdio.h
+>  F:	include/uapi/linux/mii.h
+>  F:	net/core/of_net.c
+> +F:	rust/kernel/net/phy.rs
+>  
+>  EXEC & BINFMT API
+>  R:	Eric Biederman <ebiederm@xmission.com>
+> -- 
+> 2.34.1
+> 
