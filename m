@@ -1,133 +1,91 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642802B5DA;
-	Fri, 13 Oct 2023 18:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB8B33C8;
+	Fri, 13 Oct 2023 18:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MHScMKBt"
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB1A83;
-	Fri, 13 Oct 2023 11:34:10 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-5a81ab75f21so13040607b3.2;
-        Fri, 13 Oct 2023 11:34:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JooisrpC"
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F131CC;
+	Fri, 13 Oct 2023 11:43:33 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d9151fc5903so2690106276.2;
+        Fri, 13 Oct 2023 11:43:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697222050; x=1697826850; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697222612; x=1697827412; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PhAI2VdLXTYJFZcSYW7Y2lJryl/mHQRV9xRHqb4iE3g=;
-        b=MHScMKBtGqVobGO2qrviDXBrbqfJ0/4U8K42dCVA8/SBjXZO9AvZ5xOg3VsCQQ9cU4
-         GGsuGCCze1EhNHh/tYELBxNR+VkRxBW5RrMh2wqAs/9+Z6vYVOLqN0ydBn37nb2gT8+Z
-         oaXcgLtVfjgzA1lJjWfkV/glJMoG98p+YyTrZ3eEeyYh+Y0PChX8+X1sOQZb4Ax+ipYD
-         Xl9Kym3TK/I/jUGRDMdz9F9UyXQzNlSUuDrzcuzAbuerjYRFvBV+8hZ+Xqv2VLnsjUvk
-         JuNbtKVfqFafcZe6gJkEK7L2RWJ4+57mu0xTK0bhRKKmhbliHEjAumkOEPmNiBsOcIpv
-         4ztQ==
+        bh=KhqzVFcWjYiuIlC2M+OeCR9AdcATVr+y2STC1n31eYo=;
+        b=JooisrpCdmJUxGEsPHZpd/ORlMuRwMMBDodwFzUFOv2hvZmHiucP3CpeA7Ch2zvuRI
+         5o7Np1I7cG1GtlFRi8S3Scsv/S6QW6OnUlkyWB3jDPFKELniLdZ8VUfE1oLwq/JcHvAu
+         5q71dZtA5Dc7puip6PQA/lUvHzXyHQ3jkrRMOK1n8oMA/RZi7pGhGzjqSioxYeLbTX8f
+         zeYsBPD7kiH6Jtxg6QgNcqOTlxeSdPiq6bx7iz98qywN7X2JU1rPtIMP2Fwh5VHl3Nct
+         8GJRVrZ5jBq44nchFtxYKhZAxEmwMpseMEC/atiSc3AIeddIPXgEze1hFTyrHqrfLOOB
+         7X0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697222050; x=1697826850;
+        d=1e100.net; s=20230601; t=1697222612; x=1697827412;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PhAI2VdLXTYJFZcSYW7Y2lJryl/mHQRV9xRHqb4iE3g=;
-        b=JKRn3INo2xKKqyxcJCLb5vNMcpx+pK0t276uWz13a0DQEb/JY/b0W/KMgeELzb7oBd
-         b0dfZDb3zDSq0O7Ou/Zx1RFp1M4ypxTHlYUzNsLsHel7YlZ/PIv7eJ2El8VyjLlg3d8D
-         cTF5N2nOU+8Cu8oMR1RfyVO/cGB1xgCc3xExJrlS+/UGkjIl8gtqlUnlxfl9eu7b4w38
-         VdKm2p60qT9ubTco9oMoh5swZQD8H5xtMr5yaSOzPIaoqqoHaoF5eE9rfOO+JH7zgzmn
-         5YCThK3gpbOoHBibxc5Ki0sKv3+3wxCdlG1jX3D2BoDSphkELIxlFOuHFsgoNEP9hKYv
-         I15g==
-X-Gm-Message-State: AOJu0YyO7tclALG+ATz4XVr/qYwLVaOalR817OJjCzms0CbtKiEHeKeT
-	2XEdgP1cR96X92omB23YMWg4j0KR339NVkHV5Hg=
-X-Google-Smtp-Source: AGHT+IFMmDWNUvKvbKmtftXbzmXXMkA+ztHO85dK2UkvyagpP20YZveoBqr1h5/TfT9SUxWS4bX0q2AQzfK5cCDZJio=
-X-Received: by 2002:a81:4f82:0:b0:5a7:c906:14f with SMTP id
- d124-20020a814f82000000b005a7c906014fmr11580157ywb.11.1697222050134; Fri, 13
- Oct 2023 11:34:10 -0700 (PDT)
+        bh=KhqzVFcWjYiuIlC2M+OeCR9AdcATVr+y2STC1n31eYo=;
+        b=Lm2Z7WiTXrLcyCush4+kxwUjyv1MfFR1Xypyx4tjyJR79gRU57Py7Fc5yrszbA7Ijy
+         uOMiMzDtqExnMNmh7DLNW8WyQVwECAScWaipaGlMdATHQKEPb15Q1mRTm5G6jmP0DDlV
+         gnn4nF9KB/DPWFvUcPWWIzCIzOl5YaDyIKQ9ep75RrwvLfa1NxfcJSgYW2y18cXzLZEF
+         cWeGhi9lbOmE8WLSZObYcqQ2md+gMyuEs7dwb5VMosSuRS/s7fEngZSI+5xdCO3u0SVa
+         2tRoVdY/qGkfo3rzeM5fP+DDTlKbbRTlrPvOfDyqjkSMBgB+yRwser0oR4cMN+3BQO7U
+         44lg==
+X-Gm-Message-State: AOJu0YzD7GjpBZwypyGB/uQM5mdchHMi2W45NDe2LUCaavFZc9Ppt2HH
+	VroVcNGR7T9Nm/4mSMLKZIyzqNd3Fg8xds+v8qA=
+X-Google-Smtp-Source: AGHT+IHzthzNwMY1wGOo43U10IWRRydm6kb1kVkU5f+tfS7oXqNqgcGLUuZdQUvwihOksy/SbGatuD+IPpoD2uZvs5E=
+X-Received: by 2002:a25:c7d2:0:b0:d9b:353b:9e24 with SMTP id
+ w201-20020a25c7d2000000b00d9b353b9e24mr1839623ybe.11.1697222612455; Fri, 13
+ Oct 2023 11:43:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72=GAiR-Mps_ZuLtxmma28dJd2xKdXWh6fu1icLBmmaYAw@mail.gmail.com>
- <20231012.081826.1846197263913130802.fujita.tomonori@gmail.com>
- <CANiq72mgeVrcGcHXo1xjaRL1ix3vUsGbtk179kpyJ6GAe9MMVg@mail.gmail.com> <20231014.001514.876461873397203589.fujita.tomonori@gmail.com>
-In-Reply-To: <20231014.001514.876461873397203589.fujita.tomonori@gmail.com>
+References: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
+ <20231012125349.2702474-4-fujita.tomonori@gmail.com> <ZSlVgAfz-O5UR_ps@Boquns-Mac-mini.home>
+ <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
+In-Reply-To: <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 13 Oct 2023 20:33:58 +0200
-Message-ID: <CANiq72=JQseA6JFy7g489Wwk8kc7-xk2GLVVJC8+T9eMNxvitw@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: andrew@lunn.ch, gregkh@linuxfoundation.org, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com
+Date: Fri, 13 Oct 2023 20:43:21 +0200
+Message-ID: <CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 3/4] MAINTAINERS: add Rust PHY abstractions to
+ the ETHERNET PHY LIBRARY
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	wedsonaf@gmail.com, benno.lossin@proton.me, greg@kroah.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 13, 2023 at 5:15=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Fri, Oct 13, 2023 at 6:17=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wr=
+ote:
 >
-> I meant that defining Rust's enum corresponding to the kernel's enum
-> phy_state like.
->
-> +pub enum DeviceState {
-> +    /// PHY device and driver are not ready for anything.
-> +    Down,
-> +    /// PHY is ready to send and receive packets.
-> +    Ready,
-> +    /// PHY is up, but no polling or interrupts are done.
-> +    Halted,
-> +    /// PHY is up, but is in an error state.
-> +    Error,
-> +    /// PHY and attached device are ready to do work.
-> +    Up,
-> +    /// PHY is currently running.
-> +    Running,
-> +    /// PHY is up, but not currently plugged in.
-> +    NoLink,
-> +    /// PHY is performing a cable test.
-> +    CableTest,
-> +}
->
-> Then write match code by hand.
+> Thanks for the suggestion Boqun :) I would be happy to be a reviewer
+> for the rust components of networking.
 
-Yes, but that alone is not enough -- that is what we do normally, but
-we can still diverge with the C side. That is what the `bindgen`
-proposal would solve (plus better maintenance). The workaround also
-solves that, but with more maintenance effort. We could even go
-further, but I don't think it is worth it given that we really want to
-have it in `bindgen`.
+Thanks a lot Trevor!
 
-> I'll leave it to PHYLIB maintainers. The subsystem maintainers decide
-> whether they merges the code.
+> As Tomo mentioned I am not sure there is a good way to indicate this
+> niche, maybe a new section with two lists? Andrew's call for what
+> would be best here I suppose.
 
-Indeed, but the "no `--rustified-enum`" is a whole kernel policy we
-want to keep, i.e. we are NAK'ing that small bit because we want to a
-solution that does not introduce silent UB if a non-local mistake is
-made.
+Yes, maintainers may prefer to split it or not (e.g. "ETHERNET PHY
+LIBRARY [RUST]"). Then Tomo and you can be there.
 
-> Thanks, but we have to maintain the following code by hand? if so,
-> the maintanace nightmare problem isn't solved?
-
-That is correct, but that requires extra work on `bindgen`. What we
-can ensure with he workaround is that it does not get our of sync (in
-terms of the variants).
-
-If Andrew prefers to wait for a proper `bindgen` solution, that is
-fine with us; i.e. what we are only saying is "no, please" to the
-`--rustified-enum` approach.
-
-Also please note that there is still the question about the docs on
-the generated `enum`, even with the current `bindgen` proposal in
-place.
-
-> btw, I can't apply the patch, line wrapping?
-
-Yes, I just copy pasted it in Gmail to showcase the idea. I have
-pushed it here in case you want to play with it:
-https://github.com/ojeda/linux/tree/rust-bindgen-workaround
+That also allows to list only the relevant files in `F:`, to have an
+extra `L:` for rust-for-linux (in the beginning), a different `S:`
+level if needed, etc.
 
 Cheers,
 Miguel
