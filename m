@@ -1,80 +1,131 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C9E1BDE4;
-	Fri, 13 Oct 2023 18:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A021D550
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 18:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0g4VdTy8"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FEFEBB;
-	Fri, 13 Oct 2023 11:49:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=dopeytwENW76hQH4O25uQJREIk9PlvPUQ+YaAx2KNAQ=; b=0g
-	4VdTy8KD7HH2jDJZQEaqa6NxHFe9ip9rQ8dZekwAhCUoGnElWrxKR9oIt5F/+hbYSHJN/Udnt0Fpo
-	iHkkmeWoWW784Lx4ShEvzdN9hD6T39jSlEQPyGse0aId5/IUl75uNITObmeb1AjSVphgpxyxBHAKI
-	CygVHNt593C1NaY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qrNE1-0027kL-Fv; Fri, 13 Oct 2023 20:49:29 +0200
-Date: Fri, 13 Oct 2023 20:49:29 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun.feng@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
-	benno.lossin@proton.me, greg@kroah.com
-Subject: Re: [PATCH net-next v4 3/4] MAINTAINERS: add Rust PHY abstractions
- to the ETHERNET PHY LIBRARY
-Message-ID: <0948fa3f-2421-47ad-89fc-8b0992d9f021@lunn.ch>
-References: <20231012125349.2702474-1-fujita.tomonori@gmail.com>
- <20231012125349.2702474-4-fujita.tomonori@gmail.com>
- <ZSlVgAfz-O5UR_ps@Boquns-Mac-mini.home>
- <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
- <CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Mx2ED29C"
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D6083
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 11:55:07 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-99c3c8adb27so382528966b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 11:55:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1697223305; x=1697828105; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vTnCuQhHu4vMJ5ozMAEPYZByiFfPswag7KkaGVloQKk=;
+        b=Mx2ED29C1wuqbonqSCiF5/CxybV7V4+Cpm2VKFs2/hY0PMrPen9H4NsrGz6Ell641A
+         mMLQItBJpQ8oV4s+GtjhXTTMXuOlyfZilJAlxi4oTbl8ZwYh4libV3vj+lVraoLvNfcP
+         TMgNtgfwbAE+dzHDyuKGTyqCIkxsiCjWlcqNY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697223305; x=1697828105;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vTnCuQhHu4vMJ5ozMAEPYZByiFfPswag7KkaGVloQKk=;
+        b=Q8J0zVYhZr0h5JDtbi/cCF7a3tNqC03VjQ1EZZtTIZ/4dGlHu1LTeVyhBPS79cwTIF
+         J8lUGeQbP+zZwBZ/rvx2pqZ1wfqhCckhIoRqTO/KHGtUH6DedMOxkHwlEQe17G9HY4CG
+         kfRAJc0G1Z40wRBFj6u2dOxjchhCzej+dw9v/nCUPN42YceI1qEuJP0xaW1cUsDZoxAO
+         9bYEE7r6062beArA6ZU4TGCfWW/KWoL/5UfQ7Q0e2HWryujN6WVA2SZTHC5DEsWN4rBt
+         B2rEYXQRtJchEOxIoVaPIlrj8sOT9fS4boPe9rz+3xS2/3f8Fur8qxaTlnCLFq9kevTL
+         gNAg==
+X-Gm-Message-State: AOJu0YybQSOfmuJ93pf3f87OvGLj27TDHssTY+nz+iccH+shVuibTPHv
+	DMmXZlowNtGTIivc/Bo0zTW9Gd9Mg8NDfcD+JNeSug==
+X-Google-Smtp-Source: AGHT+IHfibqopGf+5ZBF/qdhL3Y7U/FByuHikCvZ85KpKKw/TE3iosq6eB3XzGskJfEodC7/YhLnUQ==
+X-Received: by 2002:a17:906:2101:b0:9b8:8bcf:8732 with SMTP id 1-20020a170906210100b009b88bcf8732mr24290363ejt.43.1697223305615;
+        Fri, 13 Oct 2023 11:55:05 -0700 (PDT)
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
+        by smtp.gmail.com with ESMTPSA id jl9-20020a17090775c900b009bd9ac83a9fsm1348001ejc.152.2023.10.13.11.55.03
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Oct 2023 11:55:03 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-99c3c8adb27so382520966b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Oct 2023 11:55:03 -0700 (PDT)
+X-Received: by 2002:a17:906:2189:b0:9ae:6ad0:f6db with SMTP id
+ 9-20020a170906218900b009ae6ad0f6dbmr23995223eju.71.1697223303355; Fri, 13 Oct
+ 2023 11:55:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
+ <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+ <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
+ <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
+ <20231012104741.GN6307@noisy.programming.kicks-ass.net> <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
+ <202310121130.256F581823@keescook> <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
+ <20231013075005.GB12118@noisy.programming.kicks-ass.net> <CAOcBZOTP_vQuFaqREqy-hkG69aBvJ+xrhEQi_EFKvtsNjne1dw@mail.gmail.com>
+In-Reply-To: <CAOcBZOTP_vQuFaqREqy-hkG69aBvJ+xrhEQi_EFKvtsNjne1dw@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 13 Oct 2023 11:54:46 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjLUit_gae7anFNz4sV0o2Uc=TD_9P8sYeqMSeW_UG2Rg@mail.gmail.com>
+Message-ID: <CAHk-=wjLUit_gae7anFNz4sV0o2Uc=TD_9P8sYeqMSeW_UG2Rg@mail.gmail.com>
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+To: Ramon de C Valle <rcvalle@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Kees Cook <keescook@chromium.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, patches@lists.linux.dev, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@google.com>, David Gow <davidgow@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 13, 2023 at 08:43:21PM +0200, Miguel Ojeda wrote:
-> On Fri, Oct 13, 2023 at 6:17 PM Trevor Gross <tmgross@umich.edu> wrote:
-> >
-> > Thanks for the suggestion Boqun :) I would be happy to be a reviewer
-> > for the rust components of networking.
-> 
-> Thanks a lot Trevor!
-> 
-> > As Tomo mentioned I am not sure there is a good way to indicate this
-> > niche, maybe a new section with two lists? Andrew's call for what
-> > would be best here I suppose.
-> 
-> Yes, maintainers may prefer to split it or not (e.g. "ETHERNET PHY
-> LIBRARY [RUST]"). Then Tomo and you can be there.
-> 
-> That also allows to list only the relevant files in `F:`, to have an
-> extra `L:` for rust-for-linux (in the beginning), a different `S:`
-> level if needed, etc.
+On Fri, 13 Oct 2023 at 05:18, Ramon de C Valle <rcvalle@google.com> wrote:
+>
+> Both C and repr(C) Rust structs have this encoding, but I understand
+> the problems with doing this in C since it doesn't have
+> repr(transparent) structs so there would be a lot of casting back and
+> forth. Maybe there is an alternative or this could be done for less
+> used function pairs?
 
-Yes, this seems sensible.
+We actually have some C variations of what I think people want to use
+"repr(transparent) struct" for in Rust.
 
-I would also suggest a new entry for the driver.
+Of course, that is depending on what kind of context you want to use
+it for, and I might have lost some background. But I'm assuming you're
+talking about the situation where you want to treat two or more types
+as being "compatible" within certain contexts.
 
-Play with ./script/get_maintainer.pl --file and make sure it picks the
-right people for a particular file.
+There's the actual standard C "_Generic()" alternative, which allows
+you to make macros etc that use different types transparently.
 
-      Andrew
+It's not very widely used in the kernel, because we only fairly
+recently moved to require recent enough compiler versions, but we do
+use it now in a couple of places.
+
+And there's the much more traditional gcc extension in the form of the
+__attribute__((__transparent_union__)) thing. In the kernel, that one
+is even less used, and that one use is likely going away since the
+need for it is going away.
+
+But while it's not standard C, it's actually been supported by
+relevant compilers for much longer than "_Generic" has, and is
+designed exactly for the "I have a function that can take arguments of
+different types", either because the types are bitwise identical (even
+if _conceptually_ not the same), or simply because you have a
+different argument that describes the type (the traditional C union
+model).
+
+I suspect, for example, that we *should* have used those transparent
+unions for the "this function can take either a folio or a page" case,
+instead of duplicating functions for the two uses.
+
+But probably because few people aren familiar with the syntax, that's
+not what happened.
+
+             Linus
