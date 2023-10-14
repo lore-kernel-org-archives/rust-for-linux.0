@@ -1,104 +1,216 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0CC12B60;
-	Sat, 14 Oct 2023 12:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7830E1C37;
+	Sat, 14 Oct 2023 14:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PKghD6JG"
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECABB3;
-	Sat, 14 Oct 2023 05:31:16 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c746bc3bceso8246835ad.1;
-        Sat, 14 Oct 2023 05:31:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697286676; x=1697891476; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XAh673/sMiPdZRJsfiaSE1uT304eWOLo/A/zUhJS0PQ=;
-        b=PKghD6JGpNZPPH9AgwI1pxi4JdaEcfxfCHT4YhNVb8vZ4e0aTyNkW/BbYvL+z1pGAK
-         RWUYFUjeYOYre9ZG2EPn4bOGLA++Qb3ezxnqn9IgDz3xRWdfXfN6HDg7nNmnDbibRq8B
-         JxzN/FQgnsRnnLWVsOF4v0+DTeQTuwCI9GSvH0sCNG3B7xVR3hJvWjaHwONSLXz0hyws
-         W3qyav1mrJr73iOa3491+UmWXNja4gu3rs4UzBEDrlkVLVmMiv36VgyVgV3Ew4tvwtxm
-         +0EzibGWeXaAo6TizIz0pdZYFfO/ZEEAukKnV1KKgYe2L1wAIKy9RJ11zj/X5C9+WjQy
-         TDRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697286676; x=1697891476;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XAh673/sMiPdZRJsfiaSE1uT304eWOLo/A/zUhJS0PQ=;
-        b=BWc6Ajcyw7yeCmtlpBQwtF4PvpNKvY7fggdZyCsoQdXf8KSN2+t4DodM2ie2s5b7z2
-         y1t6Fa5uJo9sbSpIzI2YUvYZDqyGSy85KjHeHU1+4n0CJZ7pFZBcmR5iwhp9j8wOKcy4
-         M0pfXXQPWSY87ZWeo6I0vOYsDSB2HxeT2+TKNAAWFp1t/X8xSYZdNDKS7+J9ZV7Qt/rJ
-         /smsPndZqtCA4wB91C8DTvi8HE7jXs6RGc800BAHKNlcGZVMIksLFltzp0wMwP3DTkOu
-         ZdC91JFh19LZUhDzqyKu+1xNL5dR4VJq5xZOxoXt6eHWI8GvQWGnI0Uski0uWhuxaN17
-         Ut9w==
-X-Gm-Message-State: AOJu0YyeGA62ZqgHWzdM9gTX1njAyizpYGL2nRgoQUjDLwI3j+i5urDK
-	CDzV7zhP20A+pn1hP0cSwcs=
-X-Google-Smtp-Source: AGHT+IEJ0DeI2XduBHABcfaGnTBvsi8W+hzUPIKdATb+K3AMthoSQanE2aS7INiLrKpRVTj259u7MQ==
-X-Received: by 2002:a17:903:22cc:b0:1b8:2ba0:c9a8 with SMTP id y12-20020a17090322cc00b001b82ba0c9a8mr32264192plg.2.1697286675865;
-        Sat, 14 Oct 2023 05:31:15 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id ij25-20020a170902ab5900b001c755810f89sm5558478plb.181.2023.10.14.05.31.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Oct 2023 05:31:15 -0700 (PDT)
-Date: Sat, 14 Oct 2023 21:31:14 +0900 (JST)
-Message-Id: <20231014.213114.1223712652378299068.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, andrew@lunn.ch, gregkh@linuxfoundation.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
- wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v3 1/3] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72=JQseA6JFy7g489Wwk8kc7-xk2GLVVJC8+T9eMNxvitw@mail.gmail.com>
-References: <CANiq72mgeVrcGcHXo1xjaRL1ix3vUsGbtk179kpyJ6GAe9MMVg@mail.gmail.com>
-	<20231014.001514.876461873397203589.fujita.tomonori@gmail.com>
-	<CANiq72=JQseA6JFy7g489Wwk8kc7-xk2GLVVJC8+T9eMNxvitw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fZV7pCx/"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B83BBCA;
+	Sat, 14 Oct 2023 07:54:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=aapgcoreyve7viqas4we2bfzem.protonmail; t=1697295277; x=1697554477;
+	bh=XXNmtZQfD1GZlm+M68oqWPkuIinrZT4vMVVECOA0CwQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=fZV7pCx/nRHzDSlA5snca/pM9VrOLzj76YNBykf34BZ1DnvvR2D/WL20/WS0mm4E7
+	 D18Yw2FqkAQNl6FA1BjS2L2KFT79+Q5fP2sSi7TdWpApOWnEAyqpYGQAbDNYTwl1MQ
+	 ki66jYG54Bdl/N5SE9sGPBZZOTeOD7jWShjJ5UDjsQjU1G0xriLqlV0viR+FwqiIzn
+	 H8N7+obzwkXv0UxqVxcG7eSEn4yOOD4std1TD/gDkqgInC1trTMQ4C66g7fDzn8EJy
+	 QdWrkb3kq3QivxqS/SmzMDJysuDfleUfWbeur4TpRKE3FXeEm4xzR+kRq3ws6sFGN4
+	 I1rvpICRTW/SA==
+Date: Sat, 14 Oct 2023 14:54:30 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network PHY drivers
+Message-ID: <3469de1c-0e6f-4fe5-9d93-2542f87ffd0d@proton.me>
+In-Reply-To: <20231014.193231.787565106108242584.fujita.tomonori@gmail.com>
+References: <85d5c498-efbc-4c1a-8d12-f1eca63c45cf@proton.me> <20231014.162210.522439670437191285.fujita.tomonori@gmail.com> <4791a460-09e0-4478-8f38-ae371e37416b@proton.me> <20231014.193231.787565106108242584.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-T24gRnJpLCAxMyBPY3QgMjAyMyAyMDozMzo1OCArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
-b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBGcmksIE9jdCAxMywgMjAy
-MyBhdCA1OjE14oCvUE0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwu
-Y29tPiB3cm90ZToNCj4+DQo+PiBJIG1lYW50IHRoYXQgZGVmaW5pbmcgUnVzdCdzIGVudW0gY29y
-cmVzcG9uZGluZyB0byB0aGUga2VybmVsJ3MgZW51bQ0KPj4gcGh5X3N0YXRlIGxpa2UuDQo+Pg0K
-Pj4gK3B1YiBlbnVtIERldmljZVN0YXRlIHsNCj4+ICsgICAgLy8vIFBIWSBkZXZpY2UgYW5kIGRy
-aXZlciBhcmUgbm90IHJlYWR5IGZvciBhbnl0aGluZy4NCj4+ICsgICAgRG93biwNCj4+ICsgICAg
-Ly8vIFBIWSBpcyByZWFkeSB0byBzZW5kIGFuZCByZWNlaXZlIHBhY2tldHMuDQo+PiArICAgIFJl
-YWR5LA0KPj4gKyAgICAvLy8gUEhZIGlzIHVwLCBidXQgbm8gcG9sbGluZyBvciBpbnRlcnJ1cHRz
-IGFyZSBkb25lLg0KPj4gKyAgICBIYWx0ZWQsDQo+PiArICAgIC8vLyBQSFkgaXMgdXAsIGJ1dCBp
-cyBpbiBhbiBlcnJvciBzdGF0ZS4NCj4+ICsgICAgRXJyb3IsDQo+PiArICAgIC8vLyBQSFkgYW5k
-IGF0dGFjaGVkIGRldmljZSBhcmUgcmVhZHkgdG8gZG8gd29yay4NCj4+ICsgICAgVXAsDQo+PiAr
-ICAgIC8vLyBQSFkgaXMgY3VycmVudGx5IHJ1bm5pbmcuDQo+PiArICAgIFJ1bm5pbmcsDQo+PiAr
-ICAgIC8vLyBQSFkgaXMgdXAsIGJ1dCBub3QgY3VycmVudGx5IHBsdWdnZWQgaW4uDQo+PiArICAg
-IE5vTGluaywNCj4+ICsgICAgLy8vIFBIWSBpcyBwZXJmb3JtaW5nIGEgY2FibGUgdGVzdC4NCj4+
-ICsgICAgQ2FibGVUZXN0LA0KPj4gK30NCj4+DQo+PiBUaGVuIHdyaXRlIG1hdGNoIGNvZGUgYnkg
-aGFuZC4NCj4gDQo+IFllcywgYnV0IHRoYXQgYWxvbmUgaXMgbm90IGVub3VnaCAtLSB0aGF0IGlz
-IHdoYXQgd2UgZG8gbm9ybWFsbHksIGJ1dA0KPiB3ZSBjYW4gc3RpbGwgZGl2ZXJnZSB3aXRoIHRo
-ZSBDIHNpZGUuIFRoYXQgaXMgd2hhdCB0aGUgYGJpbmRnZW5gDQo+IHByb3Bvc2FsIHdvdWxkIHNv
-bHZlIChwbHVzIGJldHRlciBtYWludGVuYW5jZSkuIFRoZSB3b3JrYXJvdW5kIGFsc28NCj4gc29s
-dmVzIHRoYXQsIGJ1dCB3aXRoIG1vcmUgbWFpbnRlbmFuY2UgZWZmb3J0LiBXZSBjb3VsZCBldmVu
-IGdvDQo+IGZ1cnRoZXIsIGJ1dCBJIGRvbid0IHRoaW5rIGl0IGlzIHdvcnRoIGl0IGdpdmVuIHRo
-YXQgd2UgcmVhbGx5IHdhbnQgdG8NCj4gaGF2ZSBpdCBpbiBgYmluZGdlbmAuDQoNCk5vdyB0aGVy
-ZSBpcyBzZXBhcmF0ZSBlbnRyeSBmb3IgUEhZTElCIFtSVVNUXSBpbiBNQUlOVEFJTkVSUyBzbyBp
-dA0KbWFrZXMgY2xlYXIgdGhhdCBJIGhhdmUgdG8gZG8gbW9yZSBtYWludGVuYW5jZSBlZmZvcnQu
-IFNvIGhvcGVmdWxseSwNCml0J3MgZmluZSBieSBBbmRyZXcuDQoNCkknbGwgdXNlIHlvdXIgd29y
-a2Fyb3VuZCBpbiB0aGUgbmV4dCB2ZXJzaW9uLg0KDQpJIGV4cGVjdCB0aGF0IHlvdSBkb24ndCB3
-YW50IGEgY29tbWl0IGludHJvZHVjaW5nIFVEIHNvIEkgc3F1YXNoIHlvdXINCnBhdGNoIHdpdGgg
-dGhlIGV4cGxhbmF0aW9uIHRvIHRoZSBjb21taXQgbG9nLiBJZiB5b3Ugd2FudCB0byBtZXJnZQ0K
-eW91ciB3b3JrIHRvIHRoZSBwYXRjaHNldCBpbiBhIGRpZmZlcmVudCB3YXksIHBsZWFzZSBsZXQg
-bWUga25vdy4NCg0KVGhhbmtzIGEgbG90IQ0K
+On 14.10.23 12:32, FUJITA Tomonori wrote:
+> On Sat, 14 Oct 2023 08:07:03 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>=20
+>> On 14.10.23 09:22, FUJITA Tomonori wrote:
+>>> On Fri, 13 Oct 2023 21:31:16 +0000
+>>> Benno Lossin <benno.lossin@proton.me> wrote:
+>>>>> +    /// the exclusive access for the duration of the lifetime `'a`.
+>>>>
+>>>> In some other thread you mentioned that no lock is held for
+>>>> `resume`/`suspend`, how does this interact with it?
+>>>
+>>> The same quesiton, 4th time?
+>>
+>> Yes, it is not clear to me from the code/safety comment alone why
+>> this is safe. Please improve the comment such that that is the case.
+>>
+>>> PHYLIB is implemented in a way that PHY drivers exlusively access to
+>>> phy_device during the callbacks.
+>>
+>> As I suggested in a previous thread, it would be extremely helpful
+>> if you add a comment on the `phy` abstractions module that explains
+>> how `PHYLIB` is implemented. Explain that it takes care of locking
+>> and other safety related things.
+>=20
+>  From my understanding, the callers of suspend() try to call suspend()
+> for a device only once. They lock a device and get the current state
+> and update the sate, then unlock the device. If the state is a
+> paticular value, then call suspend(). suspend() and resume() are also
+> called where only one thread can access a device.
+
+Maybe explain this in the docs? In the future, when I will come
+into contact with this again, I will probably have forgotten this
+conversation, but the docs are permanent and can be re-read.
+
+>>>>> +    /// Returns true if auto-negotiation is completed.
+>>>>> +    pub fn is_autoneg_completed(&self) -> bool {
+>>>>> +        const AUTONEG_COMPLETED: u32 =3D 1;
+>>>>> +        // SAFETY: `phydev` is pointing to a valid object by the typ=
+e invariant of `Self`.
+>>>>> +        let phydev =3D unsafe { *self.0.get() };
+>>>>> +        phydev.autoneg_complete() =3D=3D AUTONEG_COMPLETED
+>>>>> +    }
+>>>>> +
+>>>>> +    /// Sets the speed of the PHY.
+>>>>> +    pub fn set_speed(&self, speed: u32) {
+>>>>
+>>>> This function modifies state, but is `&self`?
+>>>
+>>> Boqun asked me to drop mut on v3 review and then you ask why on v4?
+>>> Trying to find a way to discourage developpers to write Rust
+>>> abstractions? :)
+>>>
+>>> I would recommend the Rust reviewers to make sure that such would
+>>> not happen. I really appreciate comments but inconsistent reviewing is
+>>> painful.
+>>
+>> I agree with Boqun. Before Boqun's suggestion all functions were
+>> `&mut self`. Now all functions are `&self`. Both are incorrect. A
+>> function that takes `&mut self` can modify the state of `Self`,
+>> but it is weird for it to not modify anything at all. Such a
+>> function also can only be called by a single thread (per instance
+>> of `Self`) at a time. Functions with `&self` cannot modify the
+>> state of `Self`, except of course with interior mutability. If
+>> they do modify state with interior mutability, then they should
+>> have a good reason to do that.
+>>
+>> What I want you to do here is think about which functions should
+>> be `&mut self` and which should be `&self`, since clearly just
+>> one or the other is wrong here.
+>=20
+> https://lore.kernel.org/netdev/20231011.231607.1747074555988728415.fujita=
+.tomonori@gmail.com/T/#mb7d219b2e17d3f3e31a0d05697d91eb8205c5c6e
+>=20
+> Hmm, I undertood that he suggested all mut.
+
+That remark seems to me to only apply to the return type of
+`assume_locked` in that thread.
+
+> Anyway,
+>=20
+> phy_id()
+> state()
+> get_link()
+> is_autoneg_enabled()
+> is_autoneg_completed()
+>=20
+> doesn't modify Self.
+
+yes, these should all be `&self`.
+
+> The rest modifies then need to be &mut self? Note that function like read=
+_*
+> updates the C data structure.
+
+What exactly does it update? In Rust there is interior mutability
+which is used to implement mutexes. Interior mutability allows
+you to modify values despite only having a `&T` (for more info
+see [1]). Our `Opaque<T>` type uses this pattern as well (since
+you get a `*mut T` from `&Opaque<T>`) and it is the job of the
+abstraction writer to figure out what mutability to use.
+
+[1]: https://doc.rust-lang.org/reference/interior-mutability.html
+
+I have no idea what exactly `read_*` modifies on the C side.
+Mapping C functions to `&self`, `&mut self` and other receiver types
+is not obvious in all cases. I would focus more on the following aspect
+of `&mut self` and `&self`:
+
+Since `&mut self` is unique, only one thread per instance of `Self`
+can call that function. So use this when the C side would use a lock.
+(or requires that only one thread calls that code)
+
+Since multiple `&self` references are allowed to coexist, you should
+use this for functions which perform their own serialization/do not
+require serialization.
+
+If you cannot decide what certain function receivers should be, then
+we can help you, but I would need more info on what the C side is doing.
+
+>>>>> +        let phydev =3D self.0.get();
+>>>>> +        // SAFETY: `phydev` is pointing to a valid object by the typ=
+e invariant of `Self`.
+>>>>> +        // So an FFI call with a valid pointer.
+>>>>> +        let ret =3D unsafe { bindings::phy_read_paged(phydev, page.i=
+nto(), regnum.into()) };
+>>>>> +        if ret < 0 {
+>>>>> +            Err(Error::from_errno(ret))
+>>>>> +        } else {
+>>>>> +            Ok(ret as u16)
+>>>>> +        }
+>>>>> +    }
+>>>>
+>>>> [...]
+>>>>
+>>>>> +}
+>>>>> +
+>>>>> +/// Defines certain other features this PHY supports (like interrupt=
+s).
+>>>>
+>>>> Maybe add a link where these flags can be used.
+>>>
+>>> I already put the link to here in trait Driver.
+>>
+>> I am asking about a link here, as it is a bit confusing when
+>> you just stumble over this flag module here. It doesn't hurt
+>> to link more.
+>=20
+> I can't find the code does the similar. What exactly do you expect?
+> Like this?
+>=20
+> /// Defines certain other features this PHY supports (like interrupts) fo=
+r [`Driver`]'s `FLAGS`.
+
+IIRC you can directly link to the field:
+
+     [`Driver::FLAGS`]
+
+Also maybe split the sentence. So one idea would be:
+
+     /// Defines certain other features this PHY supports (like interrupts)=
+.
+     ///
+     /// These flag values are used in [`Driver::FLAGS`].
+
+--=20
+Cheers,
+Benno
+
+
