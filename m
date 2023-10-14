@@ -1,89 +1,118 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CA71803B;
-	Sat, 14 Oct 2023 18:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18B31D541;
+	Sat, 14 Oct 2023 20:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbnI42wB"
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE5EBF;
-	Sat, 14 Oct 2023 11:18:57 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5a7e5dc8573so38842637b3.0;
-        Sat, 14 Oct 2023 11:18:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FoZNg/9m"
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18680B7;
+	Sat, 14 Oct 2023 13:25:27 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-79fe612beabso134480239f.3;
+        Sat, 14 Oct 2023 13:25:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697307537; x=1697912337; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1697315126; x=1697919926; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wr/i22JS+1cutyfhoerat9B9vOPYBkQ4u8mTCH/KaAI=;
-        b=BbnI42wB/KnBbPUic9R3mPsYWH8tLTgqFxyByvDeJy9DM2320o4uNy0VpSu3/GEPNn
-         drdmWPtCUQDVemtbVr/JJCaS4vHAIJcPOifhEb6OmJLZbdpKXkpVmaDUmzY55rCPl/nb
-         BzvNrF25Krr8rSZVonMbD7MUS3u4sq55IuDQPi0r5pmt+4T/JId9FKEMulsseuKIjV6G
-         MeXdHOzvhBbKt8C9xn74JT3lBrTAPOc83dLBUWuLlE/YuWuiJlbokmW5iNYx+HnMWGFt
-         /WkNX0ue73xEO3z0TRxzK5h+XgeazNoxjkTNugbIrbV+ue9JhX7Pr01YTVE6skE6isY/
-         4HrQ==
+        bh=E5emPS0MjB2QN+kJ9u45m+WJbhux12t/sQVDicjCU/8=;
+        b=FoZNg/9m2jGGR7OXBZEqZS1ob68oXOgCSQtor36JxX9h/EneI1/IbWE4TijMQHg6Te
+         2Jud98WUAs9qLmtXthB/MHwHVJoucMd2pK25NN2Cy0es07grH92gO5zE6V2qHn2IwrkW
+         cz8myndtn4WBQ8XLNCM8cq8Sm1y2hPsnVyCKcjWVFRe5gsdyZU1Xdrn7UI9JzmovWd4D
+         3Hk0Y/cIZsyxd9GTrSTTH5H38/hjuxIVnrqI5o/MQ5wXqNqP3/b/I+Cid4jdLYZPmq6u
+         9xbShp9RSv/WivYv3Y7mfudDE+Y24IAycY/GfEaRcbBKf10zeIDi2bavi+w0FTIA3pEQ
+         OUUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697307537; x=1697912337;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1697315126; x=1697919926;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wr/i22JS+1cutyfhoerat9B9vOPYBkQ4u8mTCH/KaAI=;
-        b=HEl/Z09YTS419xOMcPcy6gyattu6R7BU3EkBXu79/NwzfNWGkS2eaYubXlzu49LLyC
-         4fBxNp6KO2hNwzLcxn2oUGdgK3LHP3n0V4eSH/v2SQQfpQhzE/tuhm3ZpMQnz5WrC3Iw
-         X7N+wAHfRrj0kKhvpS9ihcXH647m6MB4/1zu4krlZZ/qYysuikK/1nn8FBzIpGtYrbDF
-         bm+t2SidOaoNzkeGhVDNDSy5lfDLqP7KCHp22wdjySRVMNglFo6rz2BUkZ9Kzu+jhoR0
-         meuHCUOBA8yrRE5oswqKBma8RoqjjGQGvE07aOZeJT/8SlBYbuyNZUj1J1DpdME5BMRl
-         UaBQ==
-X-Gm-Message-State: AOJu0YzcNfL/aEEC4klGtOsOEQhKOsIOwEw+Z3UojAvvFGpLRYf4jJ4r
-	S86yxyBwa7dwhMCky5fkZBJjmF4kvvrdaz551uA=
-X-Google-Smtp-Source: AGHT+IEJHtlh06wj/yDP6wQ/ay+4nDqiQ0DyxTgTcExu9EfxhnQU/QuM6WyYndpfgQ4LENPoZSkIOtlTL+fIIPJv9Lw=
-X-Received: by 2002:a81:4402:0:b0:5a7:b1d9:70cb with SMTP id
- r2-20020a814402000000b005a7b1d970cbmr16061421ywa.2.1697307536972; Sat, 14 Oct
- 2023 11:18:56 -0700 (PDT)
+        bh=E5emPS0MjB2QN+kJ9u45m+WJbhux12t/sQVDicjCU/8=;
+        b=n0scYJyKs/VkRdzrlS5xlICJVxPM3jMzeS8CMkGUcWvWPV83//y7Uk7fDW4EdZd0tk
+         dL9lIgQ+T+Ddda928raB4jPR3brPPULHUtR/+XXZy0do0lxk4El5xuHAzSU78BZ3i2nD
+         DeBmQmN/mRpU6wGWjhvHS/XnXojafruPki7kvUNrJc1EIykdQ65IzNdRHZVPji8TYV8x
+         nzQtCLp5U5RwS9PxhHvbSe51/wBJZmzEkWA3t3PMt5uF0/tdHAOgAmqbkwnPxPOgXabk
+         yTJne+xk72g/DxYORgzX6WrS3QaR/w51r7QI7OIXnTY79n4gS27WYOFLOJX2UT9vBDed
+         x0dQ==
+X-Gm-Message-State: AOJu0YyCusGpJf70DpLpNWTyd9KaNRZNlPJ4TCXyBlmdiTpUxSUeDFQY
+	oIe8/3t1pTQ4FF20wiK8g8k=
+X-Google-Smtp-Source: AGHT+IHQ0wSofw+mCUxwMOTU704LFNtov6E/5kWHV55+P8O46TcQpo0iXIpmVZ9xJ+NCX1B/ckWz1g==
+X-Received: by 2002:a5d:9d10:0:b0:79f:c9ad:19ce with SMTP id j16-20020a5d9d10000000b0079fc9ad19cemr30998453ioj.15.1697315126209;
+        Sat, 14 Oct 2023 13:25:26 -0700 (PDT)
+Received: from smtpclient.apple ([2601:647:4b00:6db0:ed49:22d9:e5d5:b7e4])
+        by smtp.gmail.com with ESMTPSA id x4-20020a170902ea8400b001c5076ae6absm5861510plb.126.2023.10.14.13.25.23
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 14 Oct 2023 13:25:25 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
- <CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
- <0948fa3f-2421-47ad-89fc-8b0992d9f021@lunn.ch> <20231014.141508.709941476709455265.fujita.tomonori@gmail.com>
-In-Reply-To: <20231014.141508.709941476709455265.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 14 Oct 2023 20:18:45 +0200
-Message-ID: <CANiq72nzJGnbr2a8SvtGA9az_JY2ydapZ=avYV2bEA17k19ihw@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 3/4] MAINTAINERS: add Rust PHY abstractions to
- the ETHERNET PHY LIBRARY
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: andrew@lunn.ch, tmgross@umich.edu, boqun.feng@gmail.com, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com, 
-	benno.lossin@proton.me, greg@kroah.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+From: comex <comexk@gmail.com>
+In-Reply-To: <5D8CA5EF-F5B0-4911-85B8-A363D9344FA7@zytor.com>
+Date: Sat, 14 Oct 2023 13:25:12 -0700
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Ramon de C Valle <rcvalle@google.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Kees Cook <keescook@chromium.org>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ patches@lists.linux.dev,
+ Jarkko Sakkinen <jarkko@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@google.com>,
+ David Gow <davidgow@google.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org,
+ linux-doc@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <BDD45A2A-1447-40DD-B5F3-29DEE976A3CD@gmail.com>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-26-ojeda@kernel.org>
+ <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
+ <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+ <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
+ <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
+ <20231012104741.GN6307@noisy.programming.kicks-ass.net>
+ <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com>
+ <202310121130.256F581823@keescook>
+ <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com>
+ <20231013075005.GB12118@noisy.programming.kicks-ass.net>
+ <CAOcBZOTP_vQuFaqREqy-hkG69aBvJ+xrhEQi_EFKvtsNjne1dw@mail.gmail.com>
+ <CAHk-=wjLUit_gae7anFNz4sV0o2Uc=TD_9P8sYeqMSeW_UG2Rg@mail.gmail.com>
+ <5D8CA5EF-F5B0-4911-85B8-A363D9344FA7@zytor.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Oct 14, 2023 at 7:15=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Looks good?
 
-Looks good to me!
 
-> get_maintainer.pl gives additional information. hopefully, we can move
-> phy.rs to drivers/net/phy soon.
+> On Oct 13, 2023, at 12:00=E2=80=AFPM, H. Peter Anvin <hpa@zytor.com> =
+wrote:
+>=20
+> Transparent unions have been standard C since C99.
 
-That should be fine for a while, and actually it is probably what we
-want initially, i.e. that the Rust subsystem people is contacted.
-
-Later on, when the driver is moved to the right folder, we can also
-drop the rust-for-linux@ list too, and we will not be contacted
-anymore :)
-
-Cheers,
-Miguel
+I don=E2=80=99t think that=E2=80=99s right.  Certainly =
+__attribute__((transparent_union)) is not standard C; are you referring =
+to a different feature?
