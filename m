@@ -1,83 +1,77 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAA326E27;
-	Sat, 14 Oct 2023 20:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46391C8C0;
+	Sat, 14 Oct 2023 21:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="cmEtZtL0"
-Received: from mail.zytor.com (unknown [IPv6:2607:7c80:54:3::138])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0FC9E9;
-	Sat, 14 Oct 2023 13:51:50 -0700 (PDT)
-Received: from [127.0.0.1] ([98.35.210.218])
-	(authenticated bits=0)
-	by mail.zytor.com (8.17.1/8.17.1) with ESMTPSA id 39EKoEiA2727570
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sat, 14 Oct 2023 13:50:15 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 39EKoEiA2727570
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2023101201; t=1697316617;
-	bh=LX/qZh+W7D0BjzC3kMTpoByXLORwLrw1issq1DeNzOI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=cmEtZtL0/Pi2yHywxxrW/vo69bVUWzREGKAQgcbfeQGp95YGmHSJanruTBO52bnTp
-	 c/NpKM0f69S6I4fKqBAVW4BQaQWygmM6rcwzaEkqlA6Z+6SkC94pbM+EhsrUOaxoBF
-	 Nz+Ig3h1APbpOVSA9QtIEVK4Dp0Vd72eRQqjE7uAyeeF7EVqWLrJ+EVZzpHEcVfeur
-	 +4Tc/tRbfMLQ8QgcoKkIWYylpJjzWGtY4MNezyAKCI2niAAY0FLfF+maHpaXpJnnw9
-	 nK5nIBxIgvaan1hi1DbfDAHRxBXik2Dka7C/Cl7KNf+o5Ruwp0qT/LUgs0qT43MYj9
-	 tS/QvgasZ2CMg==
-Date: Sat, 14 Oct 2023 13:50:09 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: comex <comexk@gmail.com>
-CC: Linus Torvalds <torvalds@linux-foundation.org>,
-        Ramon de C Valle <rcvalle@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        David Gow <davidgow@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?ISO-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-doc@vger.kernel.org
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-User-Agent: K-9 Mail for Android
-In-Reply-To: <BDD45A2A-1447-40DD-B5F3-29DEE976A3CD@gmail.com>
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org> <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com> <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com> <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com> <20231012104741.GN6307@noisy.programming.kicks-ass.net> <CABCJKufEagwJ=TQnmVSK07RDjsPUt=3JGtwnK9ASmFqb7Vx8JQ@mail.gmail.com> <202310121130.256F581823@keescook> <CAOcBZOTed1a1yOimdUN9yuuysZ1h6VXa57+5fLAE99SZxCwBMQ@mail.gmail.com> <20231013075005.GB12118@noisy.programming.kicks-ass.net> <CAOcBZOTP_vQuFaqREqy-hkG69aBvJ+xrhEQi_EFKvtsNjne1dw@mail.gmail.com> <CAHk-=wjLUit_gae7anFNz4sV0o2Uc=TD_9P8sYeqMSeW_UG2Rg@mail.gmail.com> <5D8CA5EF-F5B0-4911-85B8-A363D9344FA7@zytor.com> <BDD45A2A-1447-40DD-B5F3-29DEE976A3CD@gmail.com>
-Message-ID: <C0631F27-43CE-4F2F-9075-25988CBD97F0@zytor.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EhsPLu3R"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77BC8CC;
+	Sat, 14 Oct 2023 14:18:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=GUOYh/aQsCH7U/D4Ni685NDFLunCDbfhb1mVIHYQ3Sg=; b=EhsPLu3RzPX5mfqfqo/L1HtxNQ
+	BK9ZpBtmQzvz8SHpNWHgrvz/bbIkZQGCiMPVv7Eeb6jkdjFJgo3iaF5dMIUGfM6epfiLH67EflYPx
+	f7MJ/UyKSfLJTJKYTggsS6KciFRLybmonNQh3nt4qGu94iWBNqI0ZTaJvgZ5B5XB8lwQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qrm1e-002Cer-HG; Sat, 14 Oct 2023 23:18:22 +0200
+Date: Sat, 14 Oct 2023 23:18:22 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+	tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com,
+	greg@kroah.com
+Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <ca362a9e-2212-4f3a-bc35-3187ff905ec0@lunn.ch>
+References: <4791a460-09e0-4478-8f38-ae371e37416b@proton.me>
+ <20231014.193231.787565106108242584.fujita.tomonori@gmail.com>
+ <3469de1c-0e6f-4fe5-9d93-2542f87ffd0d@proton.me>
+ <20231015.011502.276144165010584249.fujita.tomonori@gmail.com>
+ <9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
 	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On October 14, 2023 1:25:12 PM PDT, comex <comexk@gmail=2Ecom> wrote:
->
->
->> On Oct 13, 2023, at 12:00=E2=80=AFPM, H=2E Peter Anvin <hpa@zytor=2Ecom=
-> wrote:
->>=20
->> Transparent unions have been standard C since C99=2E
->
->I don=E2=80=99t think that=E2=80=99s right=2E  Certainly __attribute__((t=
-ransparent_union)) is not standard C; are you referring to a different feat=
-ure?
->
+> What about these functions?
+> - resolve_aneg_linkmode
+> - genphy_soft_reset
+> - init_hw
+> - start_aneg
+> - genphy_read_status
+> - genphy_update_link
+> - genphy_read_lpa
+> - genphy_read_abilities
 
-My mistake=2E=2E=2E I was thinking about anonymous unions=2E
+If i'm understanding the discussion correctly, you want to know if
+these C functions can modify the phydev structure that is passed to
+them?
+
+Yes, they all do modify it.
+
+They also assume that phydev->lock is taken somewhere up the call
+chain, so they are safe to modify the structure without worrying about
+multiple threads being active.
+
+There are some functions which currently don't modify the phydev
+passed to them. However, we are pretty bad at putting on the const
+attribute. I also think it would be dangerous to assume such functions
+will forever not modify phydev.
+
+	Andrew
