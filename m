@@ -1,70 +1,70 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24607E;
-	Sat, 14 Oct 2023 04:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68B77E;
+	Sat, 14 Oct 2023 05:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kwTNqfNx"
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E18BC0;
-	Fri, 13 Oct 2023 21:50:09 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-2791d5f1a09so581226a91.1;
-        Fri, 13 Oct 2023 21:50:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="abyd2+Mi"
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32AE8BF;
+	Fri, 13 Oct 2023 22:15:10 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-69361132a60so547249b3a.1;
+        Fri, 13 Oct 2023 22:15:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697259009; x=1697863809; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697260509; x=1697865309; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uHIOABzd9pg0hiAHO27CaVAkEOv3e74bFJC5vZxEHSc=;
-        b=kwTNqfNxmyw5zCktRNpgz6lywklKexp3LEtxpDk681GRKl0zA0W+V/hCPiqcpxCn5l
-         XWHI4I4k9TK05OdoOpnAAJq8HAKUoCf3JU8qCCvF3O0WlI49Eq55oz9g2fvZWMDzkHg6
-         UJWMdSzkpSZFIEDlCgo0IiH7q3T2qPI5oy7JyZ086ka2Dh89GLNaPQv5b0QJJ6E3fus9
-         N1BnqDmUOkAynXhZkrP8sisx/2RputdTVGTVtFi4XHDDOKjNDa7ZBYnfaSDsbmrUhwOv
-         srdi/hFkSQO+jVT3s48i5q5R9uUcI6Y0zayfxOiXrIg556Gd9hwq2KHvUq2UtYtWPyIx
-         9CPA==
+        bh=ytPEO/GRfLMESHiZP0+jQ4is/7AAUxZMkGlziKXda8s=;
+        b=abyd2+MiQQY/+rKCOU0ZvsnM6gDHaUip5lsdEq/EenkfFD5aZ4xtKkMqv+vU0v9DWL
+         oqGtyrtinwN8XSymATYdpm2KmHo9N3HipN6zHnurvM6HZfj3tz5Hj4y5irUocrCPWYGh
+         T95+qzksPPQtVGTrA8wbXpaDvXpNIwQkEpMs9khx7JY0la9Zw3DheCyP2LTrCLJjtqo8
+         OhjAYuL6EyMoqa3K0c7r1YOlxRfN/x0YKieRJjgvxNVyw3FcJrDEjUEbFi4Q1I7ORFcd
+         VflLvpv1GeEVtvhQx+FCMqYlMkRkJJSTNKkTFs2sy553ZTnhsi+IYONdENonzaecNJSF
+         d57w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697259009; x=1697863809;
+        d=1e100.net; s=20230601; t=1697260509; x=1697865309;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=uHIOABzd9pg0hiAHO27CaVAkEOv3e74bFJC5vZxEHSc=;
-        b=M1IRlYwPdU/4cDi9UFKYKCXnFz4vDsH/XfE0DjFlGv87GgdGze2sTOMk25h6POTS16
-         eojZ+mK66qhoeYHg/qjOnGfJMylq0EtgglZtcZSWfMgY0kDVuaB+V5IkLU5XVIRMr70b
-         YO/XCAVOyKpByyD0TFU/zsl0k8dOl2RVwIpID5xcVWNpWY0dbiFWCHfFeVM58lsPUS0Y
-         TjXTMEdBPQQrUm1YwKDRYPxkCwkEvOHxnOSCzNFntt7IbvYgbUjcCQKEc2vEv23mnpq2
-         ynrjZdgWptlAp6kPyIic6KFyqK42/ldxuhfzihXj07iRwr+sp4PvXgrEK/cnZuN7QHGN
-         e66w==
-X-Gm-Message-State: AOJu0Yy0B2KYA5Pxfjjgn+8nX4OsuigN32YGLqmUncTepj9zq1Ei/LhN
-	EEDiEyFeM/lfABE4OtqelmY=
-X-Google-Smtp-Source: AGHT+IE1/3Ht9qpQH9+MVE7fN0v4C4ifsbcHUGpPP8NcadgjNrawv2lPKsJPCOsDiJOCoZmxGpkuxw==
-X-Received: by 2002:a17:903:280d:b0:1ca:273d:22f with SMTP id kp13-20020a170903280d00b001ca273d022fmr1308635plb.0.1697259008710;
-        Fri, 13 Oct 2023 21:50:08 -0700 (PDT)
+        bh=ytPEO/GRfLMESHiZP0+jQ4is/7AAUxZMkGlziKXda8s=;
+        b=GVKLpvZh+or/26OyI9T4iY0zqAC0gnQzj8KBdRHWo6gi1w51GffIxQUfd6p4Ls8xGQ
+         fvDb6AX/XNG1aT1Y7eVymFHcqlWamwYzix9nBy2LIyShlXVqXUw6QDDMh1P5SmLv1B1G
+         Kswc0tRgbMM9Ca9JM6LhY70O2df9fvxUqOroFem3s8YlyP2w1XOSgvxFTxTPBYOrvuUZ
+         /D8Kt4nzHo4/aPmBsIXeeCeGuO9NfUR5Pbc0KmqRlnQSWUn77e0KL/LRESp8z12IRkia
+         GTmsXbdtdbsoURmOcnOLCf0H1X1ZJxaqJPO4N09E9ZspOA3o96HL2v7Tu3NPmxpMsQU4
+         ATBg==
+X-Gm-Message-State: AOJu0Yy9ZLQhHMYfbvaTU2Hi0vnFpEszkUKMGmUZZNtH5IaqwZ4m2QBZ
+	LW/uNb3q6gTTLzKXKo5M1H2XejayyIFv7Fng
+X-Google-Smtp-Source: AGHT+IELGgunqWnk7XjsNajTK28OVIadvT1g3nsqlEKhLD90zAtPKRp1Qm68ymK722mxpn2XMS5QxA==
+X-Received: by 2002:a05:6a20:4407:b0:133:6e3d:68cd with SMTP id ce7-20020a056a20440700b001336e3d68cdmr39059121pzb.3.1697260509591;
+        Fri, 13 Oct 2023 22:15:09 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id l21-20020a170902d35500b001b9c960ffeasm4717183plk.47.2023.10.13.21.50.07
+        by smtp.gmail.com with ESMTPSA id v15-20020a63b64f000000b00528db73ed70sm3602804pgt.3.2023.10.13.22.15.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Oct 2023 21:50:08 -0700 (PDT)
-Date: Sat, 14 Oct 2023 13:50:07 +0900 (JST)
-Message-Id: <20231014.135007.2233950345551386934.fujita.tomonori@gmail.com>
+        Fri, 13 Oct 2023 22:15:09 -0700 (PDT)
+Date: Sat, 14 Oct 2023 14:15:08 +0900 (JST)
+Message-Id: <20231014.141508.709941476709455265.fujita.tomonori@gmail.com>
 To: andrew@lunn.ch
-Cc: benno.lossin@proton.me, fujita.tomonori@gmail.com,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
- wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network
- PHY drivers
+Cc: miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu,
+ boqun.feng@gmail.com, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+ benno.lossin@proton.me, greg@kroah.com
+Subject: Re: [PATCH net-next v4 3/4] MAINTAINERS: add Rust PHY abstractions
+ to the ETHERNET PHY LIBRARY
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <4b7096cd-076d-42fd-b0cc-f842d3b64ee4@lunn.ch>
-References: <20231012125349.2702474-2-fujita.tomonori@gmail.com>
-	<85d5c498-efbc-4c1a-8d12-f1eca63c45cf@proton.me>
-	<4b7096cd-076d-42fd-b0cc-f842d3b64ee4@lunn.ch>
+In-Reply-To: <0948fa3f-2421-47ad-89fc-8b0992d9f021@lunn.ch>
+References: <CALNs47u9ACA3MO2soPueeGZe=yZkieKb6rDr-G1fGQePjJ5npg@mail.gmail.com>
+	<CANiq72kS=--E_v9no=pFtxArxtxWNrAbgcAa4LUz28CYozbVWg@mail.gmail.com>
+	<0948fa3f-2421-47ad-89fc-8b0992d9f021@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -72,25 +72,45 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, 14 Oct 2023 04:12:57 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
->> > +config RUST_PHYLIB_ABSTRACTIONS
->> > +        bool "PHYLIB abstractions support"
->> > +        depends on RUST
->> > +        depends on PHYLIB=y
->> > +        help
->> > +          Adds support needed for PHY drivers written in Rust. It provides
->> > +          a wrapper around the C phylib core.
->> > +
->> 
->> I find it a bit weird that this is its own option under "General". I think
->> it would be reasonable to put it under "Rust", since that would also scale
->> better when other subsystems do this.
-> 
-> To some extent, this is just a temporary location. Once the
-> restrictions of the build systems are solved, i expect this will move
-> into drivers/net/phy/Kconfig, inside the 'if PHYLIB'. However, i
-> agree, this should be under the Rust menu.
-
-Sure, I'll do in the next patchset.
+T24gRnJpLCAxMyBPY3QgMjAyMyAyMDo0OToyOSArMDIwMA0KQW5kcmV3IEx1bm4gPGFuZHJld0Bs
+dW5uLmNoPiB3cm90ZToNCg0KPiBPbiBGcmksIE9jdCAxMywgMjAyMyBhdCAwODo0MzoyMVBNICsw
+MjAwLCBNaWd1ZWwgT2plZGEgd3JvdGU6DQo+PiBPbiBGcmksIE9jdCAxMywgMjAyMyBhdCA2OjE3
+4oCvUE0gVHJldm9yIEdyb3NzIDx0bWdyb3NzQHVtaWNoLmVkdT4gd3JvdGU6DQo+PiA+DQo+PiA+
+IFRoYW5rcyBmb3IgdGhlIHN1Z2dlc3Rpb24gQm9xdW4gOikgSSB3b3VsZCBiZSBoYXBweSB0byBi
+ZSBhIHJldmlld2VyDQo+PiA+IGZvciB0aGUgcnVzdCBjb21wb25lbnRzIG9mIG5ldHdvcmtpbmcu
+DQo+PiANCj4+IFRoYW5rcyBhIGxvdCBUcmV2b3IhDQo+PiANCj4+ID4gQXMgVG9tbyBtZW50aW9u
+ZWQgSSBhbSBub3Qgc3VyZSB0aGVyZSBpcyBhIGdvb2Qgd2F5IHRvIGluZGljYXRlIHRoaXMNCj4+
+ID4gbmljaGUsIG1heWJlIGEgbmV3IHNlY3Rpb24gd2l0aCB0d28gbGlzdHM/IEFuZHJldydzIGNh
+bGwgZm9yIHdoYXQNCj4+ID4gd291bGQgYmUgYmVzdCBoZXJlIEkgc3VwcG9zZS4NCj4+IA0KPj4g
+WWVzLCBtYWludGFpbmVycyBtYXkgcHJlZmVyIHRvIHNwbGl0IGl0IG9yIG5vdCAoZS5nLiAiRVRI
+RVJORVQgUEhZDQo+PiBMSUJSQVJZIFtSVVNUXSIpLiBUaGVuIFRvbW8gYW5kIHlvdSBjYW4gYmUg
+dGhlcmUuDQo+PiANCj4+IFRoYXQgYWxzbyBhbGxvd3MgdG8gbGlzdCBvbmx5IHRoZSByZWxldmFu
+dCBmaWxlcyBpbiBgRjpgLCB0byBoYXZlIGFuDQo+PiBleHRyYSBgTDpgIGZvciBydXN0LWZvci1s
+aW51eCAoaW4gdGhlIGJlZ2lubmluZyksIGEgZGlmZmVyZW50IGBTOmANCj4+IGxldmVsIGlmIG5l
+ZWRlZCwgZXRjLg0KPiANCj4gWWVzLCB0aGlzIHNlZW1zIHNlbnNpYmxlLg0KPg0KPiBJIHdvdWxk
+IGFsc28gc3VnZ2VzdCBhIG5ldyBlbnRyeSBmb3IgdGhlIGRyaXZlci4NCj4gDQo+IFBsYXkgd2l0
+aCAuL3NjcmlwdC9nZXRfbWFpbnRhaW5lci5wbCAtLWZpbGUgYW5kIG1ha2Ugc3VyZSBpdCBwaWNr
+cyB0aGUNCj4gcmlnaHQgcGVvcGxlIGZvciBhIHBhcnRpY3VsYXIgZmlsZS4NCg0KTG9va3MgZ29v
+ZD8NCg0KRVRIRVJORVQgUEhZIExJQlJBUlkgW1JVU1RdDQpNOiAgRlVKSVRBIFRvbW9ub3JpIDxm
+dWppdGEudG9tb25vcmlAZ21haWwuY29tPg0KUjogIFRyZXZvciBHcm9zcyA8dG1ncm9zc0B1bWlj
+aC5lZHU+DQpMOiAgbmV0ZGV2QHZnZXIua2VybmVsLm9yZw0KTDogIHJ1c3QtZm9yLWxpbnV4QHZn
+ZXIua2VybmVsLm9yZw0KUzogIE1haW50YWluZWQNCkY6ICBydXN0L2tlcm5lbC9uZXQvcGh5LnJz
+DQoNCmdldF9tYWludGFpbmVyLnBsIGdpdmVzIGFkZGl0aW9uYWwgaW5mb3JtYXRpb24uIGhvcGVm
+dWxseSwgd2UgY2FuIG1vdmUNCnBoeS5ycyB0byBkcml2ZXJzL25ldC9waHkgc29vbi4NCg0KdWJ1
+bnR1QGlwLTE3Mi0zMC00Ny0xMTQ6fi9naXQvbGludXgkIC4vc2NyaXB0cy9nZXRfbWFpbnRhaW5l
+ci5wbCAtLWZpbGUgcnVzdC9rZXJuZWwvbmV0L3BoeS5ycw0KRlVKSVRBIFRvbW9ub3JpIDxmdWpp
+dGEudG9tb25vcmlAZ21haWwuY29tPiAobWFpbnRhaW5lcjpFVEhFUk5FVCBQSFkgTElCUkFSWSBb
+UlVTVF0pDQpUcmV2b3IgR3Jvc3MgPHRtZ3Jvc3NAdW1pY2guZWR1PiAocmV2aWV3ZXI6RVRIRVJO
+RVQgUEhZIExJQlJBUlkgW1JVU1RdKQ0KTWlndWVsIE9qZWRhIDxvamVkYUBrZXJuZWwub3JnPiAo
+c3VwcG9ydGVyOlJVU1QpDQpBbGV4IEdheW5vciA8YWxleC5nYXlub3JAZ21haWwuY29tPiAoc3Vw
+cG9ydGVyOlJVU1QpDQpXZWRzb24gQWxtZWlkYSBGaWxobyA8d2Vkc29uYWZAZ21haWwuY29tPiAo
+c3VwcG9ydGVyOlJVU1QpDQpCb3F1biBGZW5nIDxib3F1bi5mZW5nQGdtYWlsLmNvbT4gKHJldmll
+d2VyOlJVU1QpDQpHYXJ5IEd1byA8Z2FyeUBnYXJ5Z3VvLm5ldD4gKHJldmlld2VyOlJVU1QpDQoi
+QmrDtnJuIFJveSBCYXJvbiIgPGJqb3JuM19naEBwcm90b25tYWlsLmNvbT4gKHJldmlld2VyOlJV
+U1QpDQpCZW5ubyBMb3NzaW4gPGJlbm5vLmxvc3NpbkBwcm90b24ubWU+IChyZXZpZXdlcjpSVVNU
+KQ0KQW5kcmVhcyBIaW5kYm9yZyA8YS5oaW5kYm9yZ0BzYW1zdW5nLmNvbT4gKHJldmlld2VyOlJV
+U1QpDQpBbGljZSBSeWhsIDxhbGljZXJ5aGxAZ29vZ2xlLmNvbT4gKHJldmlld2VyOlJVU1QpDQpu
+ZXRkZXZAdmdlci5rZXJuZWwub3JnIChvcGVuIGxpc3Q6RVRIRVJORVQgUEhZIExJQlJBUlkgW1JV
+U1RdKQ0KcnVzdC1mb3ItbGludXhAdmdlci5rZXJuZWwub3JnIChvcGVuIGxpc3Q6RVRIRVJORVQg
+UEhZIExJQlJBUlkgW1JVU1RdKQ0KbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZyAob3BlbiBs
+aXN0KQ0K
