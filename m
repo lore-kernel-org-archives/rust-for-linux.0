@@ -1,253 +1,96 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9CC26E16;
-	Sat, 14 Oct 2023 22:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C383B185A;
+	Sat, 14 Oct 2023 23:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3rhDgFz"
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12637C9;
-	Sat, 14 Oct 2023 15:39:31 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c9d132d92cso9222675ad.0;
-        Sat, 14 Oct 2023 15:39:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZT4GiDb4"
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BBEA9;
+	Sat, 14 Oct 2023 16:18:51 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-27d5fd02e3dso170378a91.1;
+        Sat, 14 Oct 2023 16:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697323170; x=1697927970; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697325531; x=1697930331; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uPFaQ1LTAbMrVygJhEFrkNUoW5dlpLhBgjY1bYITzXs=;
-        b=D3rhDgFzSeNGxDtWgl4q2NxQTBzk4cvychGD3N1B6k8+eqvzFFpAQR0IwjKM/SD4Iu
-         t+V88Vgb2047aAxySL/zK/prcUi8UKzjaYVHRKYfUegWLd3dBIYt5KrdDgrpnBA7kx7W
-         glRr8ar1yLhvEytOq4qvzSLD5HJ63mckBYUda6hcLUYYTy/6kiNHBjjGSCCp4LMl/qTi
-         i/QMwWXImJjfHsz7oRyu7+PboyOqPREcqcYqMAwCW7O6gKbS3jc6H9hjhcIPIksHePeP
-         oPMbmYiE1UhxYSvNR4e4Bpy3Qq4u6a8HO0Ie0s5ldbWum5xU2+RIySEiTD7yf+ZBarxh
-         mLrw==
+        bh=xyeTySPk0pqZaSpZ4hZukn7toOVHaM03Ut/LEiAi7Sc=;
+        b=ZT4GiDb4WwOJC8CMT5BGipxOLVQUg71TX1g8qIdFJfRMj0shEjFenH9kND6dYOJtWS
+         WKwLvvKn7l4GYpXw9QAUiBt6LFSl7fbvQBA7GUtYVrfvluZUM7QQmRa2NJScsOafHDRd
+         fBfrtgV2unh9zCJy/O49/p1IkniSO+Zeck/C1exb7c+SKDRbL6Ot5p6IzQBhl2ihTyVa
+         JqM0Dyao+3A0/tYfMkySYjozuLZb9TT7wx17Cq26aPHdWwxE03dZ9d8dy3TT5eDWb9UH
+         D0s5SI5eo78qB/gehiUUbqesuNoHanFf29+TR4jrFga1D0bt/nL1oAcpYERivCh3TXC0
+         naZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697323170; x=1697927970;
+        d=1e100.net; s=20230601; t=1697325531; x=1697930331;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=uPFaQ1LTAbMrVygJhEFrkNUoW5dlpLhBgjY1bYITzXs=;
-        b=euwNPyw4GVcmHLkUjVV0m/cDRKU5j3cXQgCiAZKvTw4yoqQKK+kjM6XdApJ0fq4OGc
-         B0wf1CTRfoFVB3FXStoP5CtqGLpEn1uJo7oWhh5ntfV42erKb4w6JTDKWFcQgutCjYq0
-         7MAj1UVJ3mNJQlW20qPgQXaeG/gUAx8KvceXxgU9BDF3FjVdn28c1tDY2M1g1w/DLkoT
-         uFo2h8H6tI1UMIt/dbefiXaDusb+jKrUxB/HkRXEwVyLAP57sst2XLV+WCWeqHwb8jSX
-         XhEMdrRtB2w/N7FlmqswtDSwl8iD8msYNjpToTB1Ahz/Y3oEQ43Ez58851sBxEXHOi8Z
-         2LTw==
-X-Gm-Message-State: AOJu0Yzpru7bxJtFxGFhqrzzFa53a/yz9JQJ/wGVIjYCJ8iqYDjFmOsI
-	xGHSTBI4TA6yuzHwmhuwBPxVehuT5gDDZtQw
-X-Google-Smtp-Source: AGHT+IHAqzwSlxWogHqzIsVcozo+6nCwl5Lh6L7CwjIU9doHT3b1Ny0FMs/nV+c7OGFYcBIU6iEjoA==
-X-Received: by 2002:a17:90a:4d88:b0:263:730b:f568 with SMTP id m8-20020a17090a4d8800b00263730bf568mr28626896pjh.3.1697323170256;
-        Sat, 14 Oct 2023 15:39:30 -0700 (PDT)
+        bh=xyeTySPk0pqZaSpZ4hZukn7toOVHaM03Ut/LEiAi7Sc=;
+        b=eGPzxIooU5ZdE1K+Z+XRY1fFvz+5gnmJtf25J1H4SJPYqlt0L5xhULYjSHleMfVmE+
+         xCGGBe69+RTtI5EonV8lYB4A1dNeUQlPFh4mGih1AEPGzHyI4N5lvBcPkivUU277G1qY
+         3FbGagui1OjpsZGFyQKKydEzG6/BbeSWDH8O12zXkLD3AxMH72OBx/5w1VtoijpbsmbG
+         sFuAtMAjmMzPv3lM5H3AthGGz1EYZOzymCP/quALig/qlUFOJnR19A2tcwhZEvzN49ok
+         oHtSqz7tJWYPGmaepZOncsRoTNGWBZPDswytyJwQoZ0dVyFqjL1Yf2ibR6uUf362A2cU
+         GuXg==
+X-Gm-Message-State: AOJu0YxjL3ANa8Ars1PjqLbjOhFKHwL1XPJQxT03CptL0HMS8GYgDx+R
+	PR7RCMSa5H3dqFtDS3X7rqQ=
+X-Google-Smtp-Source: AGHT+IFVKXx89vfE2eloqHxfmpRMaUSpBe/2YRAZzIT4cAAi0nQAaFsVV7Y5iJKRRjRuBphf8cXj1g==
+X-Received: by 2002:a17:902:d352:b0:1c9:e121:ccc1 with SMTP id l18-20020a170902d35200b001c9e121ccc1mr8973820plk.5.1697325530969;
+        Sat, 14 Oct 2023 16:18:50 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id 5-20020a17090a19c500b0027d0a60b9c9sm2326067pjj.28.2023.10.14.15.39.29
+        by smtp.gmail.com with ESMTPSA id ju10-20020a170903428a00b001bdb0483e65sm6001153plb.265.2023.10.14.16.18.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Oct 2023 15:39:29 -0700 (PDT)
-Date: Sun, 15 Oct 2023 07:39:29 +0900 (JST)
-Message-Id: <20231015.073929.156461103776360133.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
- wedsonaf@gmail.com, greg@kroah.com
+        Sat, 14 Oct 2023 16:18:50 -0700 (PDT)
+Date: Sun, 15 Oct 2023 08:18:49 +0900 (JST)
+Message-Id: <20231015.081849.2094682155986954086.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com
+Cc: benno.lossin@proton.me, fujita.tomonori@gmail.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ boqun.feng@gmail.com, wedsonaf@gmail.com, greg@kroah.com
 Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network
  PHY drivers
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me>
-References: <3469de1c-0e6f-4fe5-9d93-2542f87ffd0d@proton.me>
-	<20231015.011502.276144165010584249.fujita.tomonori@gmail.com>
-	<9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me>
+In-Reply-To: <CANiq72m3xp6ErPwCOj6DrHpG_7OE9WUqVpsZcUDk4OSuH62mKg@mail.gmail.com>
+References: <85d5c498-efbc-4c1a-8d12-f1eca63c45cf@proton.me>
+	<4b7096cd-076d-42fd-b0cc-f842d3b64ee4@lunn.ch>
+	<CANiq72m3xp6ErPwCOj6DrHpG_7OE9WUqVpsZcUDk4OSuH62mKg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, 14 Oct 2023 17:07:09 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
-> On 14.10.23 18:15, FUJITA Tomonori wrote:
->> On Sat, 14 Oct 2023 14:54:30 +0000
->> Benno Lossin <benno.lossin@proton.me> wrote:
->> 
->>> On 14.10.23 12:32, FUJITA Tomonori wrote:
->>>> On Sat, 14 Oct 2023 08:07:03 +0000
->>>> Benno Lossin <benno.lossin@proton.me> wrote:
->>>>
->>>>> On 14.10.23 09:22, FUJITA Tomonori wrote:
->>>>>> On Fri, 13 Oct 2023 21:31:16 +0000
->>>>>> Benno Lossin <benno.lossin@proton.me> wrote:
->>>>>>>> +    /// the exclusive access for the duration of the lifetime `'a`.
->>>>>>>
->>>>>>> In some other thread you mentioned that no lock is held for
->>>>>>> `resume`/`suspend`, how does this interact with it?
->>>>>>
->>>>>> The same quesiton, 4th time?
->>>>>
->>>>> Yes, it is not clear to me from the code/safety comment alone why
->>>>> this is safe. Please improve the comment such that that is the case.
->>>>>
->>>>>> PHYLIB is implemented in a way that PHY drivers exlusively access to
->>>>>> phy_device during the callbacks.
->>>>>
->>>>> As I suggested in a previous thread, it would be extremely helpful
->>>>> if you add a comment on the `phy` abstractions module that explains
->>>>> how `PHYLIB` is implemented. Explain that it takes care of locking
->>>>> and other safety related things.
->>>>
->>>>   From my understanding, the callers of suspend() try to call suspend()
->>>> for a device only once. They lock a device and get the current state
->>>> and update the sate, then unlock the device. If the state is a
->>>> paticular value, then call suspend(). suspend() and resume() are also
->>>> called where only one thread can access a device.
->>>
->>> Maybe explain this in the docs? In the future, when I will come
->>> into contact with this again, I will probably have forgotten this
->>> conversation, but the docs are permanent and can be re-read.
->> 
->> You meant adding this to the code?  like dding this to Device's #
->> Safety comment?
-> 
-> I would not put it in the `# Safety` section. Instead, put this
-> information on the phy module itself (the `//!` comments at the very
-> top of the file). I also would suggest to not take the above paragraph
-> word by word, but to improve and extend it.
-
-Sure, I'll try.
-
-
->>>> Anyway,
->>>>
->>>> phy_id()
->>>> state()
->>>> get_link()
->>>> is_autoneg_enabled()
->>>> is_autoneg_completed()
->>>>
->>>> doesn't modify Self.
->>>
->>> yes, these should all be `&self`.
->>>
->>>> The rest modifies then need to be &mut self? Note that function like read_*
->>>> updates the C data structure.
->>>
->>> What exactly does it update? In Rust there is interior mutability
->>> which is used to implement mutexes. Interior mutability allows
->>> you to modify values despite only having a `&T` (for more info
->>> see [1]). Our `Opaque<T>` type uses this pattern as well (since
->>> you get a `*mut T` from `&Opaque<T>`) and it is the job of the
->>> abstraction writer to figure out what mutability to use.
->>>
->>> [1]: https://doc.rust-lang.org/reference/interior-mutability.html
->>>
->>> I have no idea what exactly `read_*` modifies on the C side.
->>> Mapping C functions to `&self`, `&mut self` and other receiver types
->>> is not obvious in all cases. I would focus more on the following aspect
->>> of `&mut self` and `&self`:
->>>
->>> Since `&mut self` is unique, only one thread per instance of `Self`
->>> can call that function. So use this when the C side would use a lock.
->>> (or requires that only one thread calls that code)
->> 
->> I guess that the rest are &mut self but let me continue to make sure.
->> 
->> I think that you already know that Device instance only was created in
->> the callbacks. Before the callbacks are called, PHYLIB holds
->> phydev->lock except for resume()/suspend(). As explained in the
->> previous mail, only one thread calls resume()/suspend().
-> 
-> The information in this paragraph would also fit nicely into the
-> phy module docs.
-
-Ok.
-
->> btw, methods in Device calling a C side function like mdiobus_read,
->> mdiobus_write, etc which never touch phydev->lock. Note that the c
->> side functions in resume()/suspned() methods don't touch phydev->lock
->> too.
->> 
->> There are two types how the methods in Device changes the C side data.
->> 
->> 1. read/write/read_paged
->> 
->> They call the C side functions, mdiobus_read, mdiobus_write,
->> phy_read_paged, respectively.
->> 
->> phy_device has a pointer to mii_bus object. It has stats for
->> read/write. So everytime they are called, stats is updated.
-> 
-> I think for reading & updating some stats using `&self`
-> should be fine. `write` should probably be `&mut self`.
-
-Can you tell me why exactly you think in that way?
-
-Firstly, you think that reading & updating some stats using `&self` should be fine.
-
-What's the difference between read() and set_speed(), which you think, needs &mut self.
-
-Because set_speed() updates the member in phy_device and read()
-updates the object that phy_device points to?
-
-
-Secondly, What's the difference between read() and write(), where you
-think that read() is &self write() is &mut self.
-
-read() is reading from hardware register. write() is writing a value
-to hardware register. Both updates the object that phy_device points
-to?
-
-
->> 2. the rest
->> 
->> The C side functions in the rest of methods in Device updates some
->> members in phy_device like set_speed() method does.
-> 
-> Those setter functions should be `&mut self`.
-
-Ok.
-
->>> Since multiple `&self` references are allowed to coexist, you should
->>> use this for functions which perform their own serialization/do not
->>> require serialization.
->> 
->> just to be sure, the C side guarantees that only one reference exists.
-> 
-> I see, then the `from_raw` function should definitely return
-> a `&mut Device`. Note that you can still call `&T` functions
-> when you have a `&mut T`.
-
-It already returns &mut Device so no change is necessary here, right?
-
-unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self
-{
-
-If you want more additional comment on from_raw(), please let me know.
-
-
->>> If you cannot decide what certain function receivers should be, then
->>> we can help you, but I would need more info on what the C side is doing.
->> 
->> If you need more info on the C side, please let me know.
-> 
-> What about these functions?
-> - resolve_aneg_linkmode
-> - genphy_soft_reset
-> - init_hw
-> - start_aneg
-> - genphy_read_status
-> - genphy_update_link
-> - genphy_read_lpa
-> - genphy_read_abilities
-
-As Andrew replied, all the functions update some member in phy_device.
-
-
+T24gU2F0LCAxNCBPY3QgMjAyMyAxOTowMDo0NiArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBTYXQsIE9jdCAxNCwgMjAy
+MyBhdCA0OjEz4oCvQU0gQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPiB3cm90ZToNCj4+DQo+
+PiBUbyBzb21lIGV4dGVudCwgdGhpcyBpcyBqdXN0IGEgdGVtcG9yYXJ5IGxvY2F0aW9uLiBPbmNl
+IHRoZQ0KPj4gcmVzdHJpY3Rpb25zIG9mIHRoZSBidWlsZCBzeXN0ZW1zIGFyZSBzb2x2ZWQsIGkg
+ZXhwZWN0IHRoaXMgd2lsbCBtb3ZlDQo+PiBpbnRvIGRyaXZlcnMvbmV0L3BoeS9LY29uZmlnLCBp
+bnNpZGUgdGhlICdpZiBQSFlMSUInLiBIb3dldmVyLCBpDQo+PiBhZ3JlZSwgdGhpcyBzaG91bGQg
+YmUgdW5kZXIgdGhlIFJ1c3QgbWVudS4NCj4gDQo+IE5vLCBpdCBpcyBvcnRob2dvbmFsIHRvIHRo
+ZSBidWlsZCBzeXN0ZW0gcmVzdHJpY3Rpb25zLg0KPiANCj4gSW4gb3RoZXIgd29yZHMsIHRoZSBL
+Y29uZmlnIGVudHJ5IGNvdWxkIGJlIG1vdmVkIHRoZXJlIGFscmVhZHkuIEluDQo+IGZhY3QsIEkg
+d291bGQgc3VnZ2VzdCBzby4NCg0KQW5kcmV3LCBpZiB5b3UgcHJlZmVyLCBJJ2xsIG1vdmUgUlVT
+VF9QSFlMSUJfQUJTVFJBQ1RJT05TIHRvDQpkcml2ZXJzL25ldC9waHkvS2NvbmZpZy4NCg0KZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3BoeS9LY29uZmlnIGIvZHJpdmVycy9uZXQvcGh5L0tjb25m
+aWcNCmluZGV4IGU1NWI3MTkzN2YwMS4uMGQzOWI5N2E1NDZjIDEwMDY0NA0KLS0tIGEvZHJpdmVy
+cy9uZXQvcGh5L0tjb25maWcNCisrKyBiL2RyaXZlcnMvbmV0L3BoeS9LY29uZmlnDQpAQCAtNjYs
+NiArNjYsMTQgQEAgY29uZmlnIFNGUA0KIAlkZXBlbmRzIG9uIEhXTU9OIHx8IEhXTU9OPW4NCiAJ
+c2VsZWN0IE1ESU9fSTJDDQogDQorY29uZmlnIFJVU1RfUEhZTElCX0FCU1RSQUNUSU9OUw0KKyAg
+ICAgICAgYm9vbCAiUEhZTElCIGFic3RyYWN0aW9ucyBzdXBwb3J0Ig0KKyAgICAgICAgZGVwZW5k
+cyBvbiBSVVNUDQorICAgICAgICBkZXBlbmRzIG9uIFBIWUxJQj15DQorICAgICAgICBoZWxwDQor
+ICAgICAgICAgIEFkZHMgc3VwcG9ydCBuZWVkZWQgZm9yIFBIWSBkcml2ZXJzIHdyaXR0ZW4gaW4g
+UnVzdC4gSXQgcHJvdmlkZXMNCisgICAgICAgICAgYSB3cmFwcGVyIGFyb3VuZCB0aGUgQyBwaHls
+aWIgY29yZS4NCisNCiBjb21tZW50ICJNSUkgUEhZIGRldmljZSBkcml2ZXJzIg0KIA0KIGNvbmZp
+ZyBBTURfUEhZDQo=
