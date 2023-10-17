@@ -1,154 +1,185 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0123D156D9
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Oct 2023 07:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B83A747B;
+	Tue, 17 Oct 2023 07:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IQWp3b+D"
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559FE8E;
-	Tue, 17 Oct 2023 00:15:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1697526943; x=1697786143;
-	bh=acUd1lSaIk6mqFLWpDrtsFDJMd6E9whjQUC+IiZu2Vs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=IQWp3b+DXcNWxfbyrxfOxJC4DldaHNEsBjLcqtbHOlpMGxp/jZKEnQkG8zWouSp8T
-	 inCvh+IZS5Ewux0jJQBmR+Uvgaa4gmoyi7bG5i5HrzwQ2jKVIRq6PHEI2vJZGtivye
-	 QsfysrKVo6rhH5TdPCJ8F9YOBo+MP3GlwPbkDRohCk8JriYOgtVh2F3Q4GPx+MTtjR
-	 O1yj6se5a57k50iVh+3cii7qcI7Q4iSijRehyc08xKv/W5XZiLsN5QS1KeKnLC2oJB
-	 98m3Wc4cFEVSw7WOKQYKi4Vrm9ohrXhKNeIeRYNHui4gyAH9H/DAF4A8YUT9szHy0s
-	 c8sOJ1q8zUPRw==
-Date: Tue, 17 Oct 2023 07:15:16 +0000
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, Vlastimil Babka <vbabka@suse.cz>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: bindings: rename const binding using sed
-Message-ID: <f9e1a738-43f5-4ca6-9593-1b92053101ff@proton.me>
-In-Reply-To: <20230930133704.13313-1-gary@garyguo.net>
-References: <20230930133704.13313-1-gary@garyguo.net>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YE48KTM5"
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F16B593;
+	Tue, 17 Oct 2023 00:32:51 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-58962bf3f89so494845a12.0;
+        Tue, 17 Oct 2023 00:32:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697527971; x=1698132771; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OdztVy4CXH6kUCFsFARk6VsKQ6Jj/+IFMkgv+HYDI18=;
+        b=YE48KTM5eG5xWwQxkXMuoiCoU07QP4WBmzR0TuA5tZdPEq4+5BMtxYymy0XSjOCbBl
+         pMDJB7klVOkpZuDMZqz8eHN1R60hESjrtRkvA263IBTT/mFTlw1wDg3vs9GQyNB+jEVa
+         cm7/193qgji1a9yM/7OXc554+XMj1FDdL9aZWIGKh3W1T10lvic4Q5VF5zZs2AXZ8UtT
+         bLfVbR+0uXUMn1t4gyCCFysOTupWcSaPmPhBbgcdrviPOvKdtRDcDYou5R1gxr+ZqYly
+         hkQGJ3806LzJxa1/Rc/mjWG6DmUe4ZtgKgOQpWGNyIrEr4duEs1WfhS+Yq5C3UkjhHVp
+         Xv9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697527971; x=1698132771;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OdztVy4CXH6kUCFsFARk6VsKQ6Jj/+IFMkgv+HYDI18=;
+        b=uqOAXv5/uCvVUqwiFleFVdmjRXFXwBCaOhFxBK2I3jNrkOSJFZbVTD6XjUXblFXI0f
+         6GtNGU8XFgGWtiQoSTn50u6csJqKulqpfUqYpvei/TdFXEc935ds4kycc05Qi7AnBcjA
+         pZv/bj1q37iKohI4F+zSpDtvlkAlB4X0zbJt4+s9mJirAIZoYgsQ+Stz4Nrm76gs7D06
+         FXcbZRQlMKuDFXYRwMTv/5bd4MW23gt/ywsppnYtwvK7ziGpaUgmhlLn5ieGBYRkUQ3B
+         eFL+nCYaYWeADor/x/drXWe9qFYxlTOGD24rP9ZfosHjuTTbeRklSGSfWlOpXLMA1LsB
+         sdCg==
+X-Gm-Message-State: AOJu0YwEULobiFFDI0ZcOam5p04soV+NlCSpOeY2IcAY8Xtu0uQ9fqi7
+	C502iyGa0sM/3UpaPvJyFsg=
+X-Google-Smtp-Source: AGHT+IGo0BKqz0AoaYvhK3EsBI2NdSHTquCFwfppkth39MFX3gAOP9k+ewmoz4cOiZBGOa5A16/6og==
+X-Received: by 2002:a17:90b:38cf:b0:27d:32d8:5f23 with SMTP id nn15-20020a17090b38cf00b0027d32d85f23mr1548855pjb.2.1697527971087;
+        Tue, 17 Oct 2023 00:32:51 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id 7-20020a17090a030700b00279479e9105sm6424810pje.2.2023.10.17.00.32.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Oct 2023 00:32:50 -0700 (PDT)
+Date: Tue, 17 Oct 2023 16:32:49 +0900 (JST)
+Message-Id: <20231017.163249.1403385254279967838.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
+ wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <98471d44-c267-4c80-ba54-82ab2563e465@proton.me>
+References: <9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me>
+	<20231015.073929.156461103776360133.fujita.tomonori@gmail.com>
+	<98471d44-c267-4c80-ba54-82ab2563e465@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 30.09.23 15:36, Gary Guo wrote:
-> Current for consts that bindgen don't recognise, we define a helper
-> constant with
->=20
->      const <TYPE> BINDINGS_<NAME> =3D <NAME>;
->=20
-> in `bindings_helper.h` and then we put
->=20
->      pub const <NAME>: <TYPE> =3D BINDINGS_<NAME>;
->=20
-> in `bindings/lib.rs`. This is fine that we currently only have 3
-> constants that are defined this way, but is going to be more annoying
-> when more constants are added since every new constant needs to be
-> defined in two places.
->=20
-> This patch changes the way we define constant helpers to
->=20
->      const <TYPE> RUST_BINDING_<NAME> =3D <NAME>;
->=20
-> and then use `sed` to postprocess Rust code by generated by bindgen to
-> remove the distinct prefix, so user of the binding crate can refer to
-> the name directly.
->=20
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->   rust/Makefile                   | 2 ++
->   rust/bindings/bindings_helper.h | 6 +++---
->   rust/bindings/lib.rs            | 3 ---
->   rust/kernel/allocator.rs        | 2 +-
->   4 files changed, 6 insertions(+), 7 deletions(-)
->=20
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 14d93cf60a95..20889302b172 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -339,6 +339,8 @@ quiet_cmd_bindgen =3D BINDGEN $@
->=20
->   $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags =3D=
- \
->       $(shell grep -v '^#\|^$$' $(srctree)/$(src)/bindgen_parameters)
-> +$(obj)/bindings/bindings_generated.rs: private bindgen_target_extra =3D =
-; \
-> +    sed -Ei 's/pub const RUST_BINDING_([a-zA-Z0-9_]*)/pub const \1/g' $@
+On Tue, 17 Oct 2023 07:06:38 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-Would it make sense to use `^pub const...`?
+> On 15.10.23 00:39, FUJITA Tomonori wrote:
+>> On Sat, 14 Oct 2023 17:07:09 +0000
+>> Benno Lossin <benno.lossin@proton.me> wrote:
+>>>> btw, methods in Device calling a C side function like mdiobus_read,
+>>>> mdiobus_write, etc which never touch phydev->lock. Note that the c
+>>>> side functions in resume()/suspned() methods don't touch phydev->lock
+>>>> too.
+>>>>
+>>>> There are two types how the methods in Device changes the C side data.
+>>>>
+>>>> 1. read/write/read_paged
+>>>>
+>>>> They call the C side functions, mdiobus_read, mdiobus_write,
+>>>> phy_read_paged, respectively.
+>>>>
+>>>> phy_device has a pointer to mii_bus object. It has stats for
+>>>> read/write. So everytime they are called, stats is updated.
+>>>
+>>> I think for reading & updating some stats using `&self`
+>>> should be fine. `write` should probably be `&mut self`.
+>> 
+>> Can you tell me why exactly you think in that way?
+>> 
+>> Firstly, you think that reading & updating some stats using `&self` should be fine.
+>> 
+>> What's the difference between read() and set_speed(), which you think, needs &mut self.
+>> 
+>> Because set_speed() updates the member in phy_device and read()
+>> updates the object that phy_device points to?
+> 
+> `set_speed` is entirely implemented on the Rust side and is not protected
+> by a lock. Since data races in Rust are UB, this function must be `&mut`,
+> in order to guarantee that no data races occur. This is the case, because
+> our `Opaque` forces you to use interior mutability and thus sidestep this
+> rule (modifying through a `&T`).
 
-I also agree with Alice that we could use a less generic name as the
-prefix.
-
-With those things fixed:
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
---=20
-Cheers,
-Benno
-
->   $(obj)/bindings/bindings_generated.rs: $(src)/bindings/bindings_helper.=
-h \
->       $(src)/bindgen_parameters FORCE
->   =09$(call if_changed_dep,bindgen)
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 85f013ed4ca4..c41eaab4ddb2 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -15,6 +15,6 @@
->   #include <linux/workqueue.h>
->=20
->   /* `bindgen` gets confused at certain things. */
-> -const size_t BINDINGS_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
-> -const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
-> -const gfp_t BINDINGS___GFP_ZERO =3D __GFP_ZERO;
-> +const size_t RUST_BINDING_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
-> +const gfp_t RUST_BINDING_GFP_KERNEL =3D GFP_KERNEL;
-> +const gfp_t RUST_BINDING___GFP_ZERO =3D __GFP_ZERO;
-> diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-> index 9bcbea04dac3..40ddaee50d8b 100644
-> --- a/rust/bindings/lib.rs
-> +++ b/rust/bindings/lib.rs
-> @@ -48,6 +48,3 @@ mod bindings_helper {
->   }
->=20
->   pub use bindings_raw::*;
-> -
-> -pub const GFP_KERNEL: gfp_t =3D BINDINGS_GFP_KERNEL;
-> -pub const __GFP_ZERO: gfp_t =3D BINDINGS___GFP_ZERO;
-> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
-> index a8f3d5be1af1..4b057e837358 100644
-> --- a/rust/kernel/allocator.rs
-> +++ b/rust/kernel/allocator.rs
-> @@ -21,7 +21,7 @@ unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: La=
-yout, flags: bindings::gf
->=20
->       let mut size =3D layout.size();
->=20
-> -    if layout.align() > bindings::BINDINGS_ARCH_SLAB_MINALIGN {
-> +    if layout.align() > bindings::ARCH_SLAB_MINALIGN {
->           // The alignment requirement exceeds the slab guarantee, thus t=
-ry to enlarge the size
->           // to use the "power-of-two" size/alignment guarantee (see comm=
-ents in `kmalloc()` for
->           // more information).
-> --
-> 2.40.1
->=20
+Understood.
 
 
+>> Secondly, What's the difference between read() and write(), where you
+>> think that read() is &self write() is &mut self.
+> 
+> This is just the standard Rust way of using mutability. For reading one
+> uses `&self` and for writing `&mut self`. The only thing that is special
+> here is the stats that are updated. But I thought that it still could fit
+> Rust by the following pattern:
+> ```rust
+>      pub struct TrackingReader {
+>          buf: [u8; 64],
+>          num_of_reads: Mutex<usize>,
+>      }
+> 
+>      impl TrackingReader {
+>          pub fn read(&self, idx: usize) -> u8 {
+>              *self.num_of_reads.lock() += 1;
+>              self.buf[idx]
+>          }
+>      }
+> 
+> ```
+> 
+> And after taking a look at `mdiobus_read` I indeed found a mutex.
+
+Yes, both read() and write() update the stats with mdiobus's lock.
+
+
+>> read() is reading from hardware register. write() is writing a value
+>> to hardware register. Both updates the object that phy_device points
+>> to?
+> 
+> Indeed, I was just going with the standard way of suggesting `&self`
+> for reads, there are of course exceptions where `&mut self` would make
+> sense. That being said in this case both options are sound, since
+> the C side locks a mutex.
+
+I see. I use &mut self for both read() and write().
+
+
+>>>>> If you cannot decide what certain function receivers should be, then
+>>>>> we can help you, but I would need more info on what the C side is doing.
+>>>>
+>>>> If you need more info on the C side, please let me know.
+>>>
+>>> What about these functions?
+>>> - resolve_aneg_linkmode
+>>> - genphy_soft_reset
+>>> - init_hw
+>>> - start_aneg
+>>> - genphy_read_status
+>>> - genphy_update_link
+>>> - genphy_read_lpa
+>>> - genphy_read_abilities
+>> 
+>> As Andrew replied, all the functions update some member in phy_device.
+> 
+> Do all of these functions lock the `bus->mdio_lock`? If yes, then you
+> can just treat them like `read` or `write` (both `&self` and `&mut self`
+> will be sound) and use the standard Rust way of setting the mutability.
+> So if it changes some internal state, I would go with `&mut self`.
+
+They hold mdiobus's lock and update mdiobus stats. They also change
+some internal state in phy_device without touching any lock (it's safe
+since PHYLIB guarantes there is only one thread calling a callback for
+one device).
+
+I'll use &mut self for them.
+
+Thanks a lot!
