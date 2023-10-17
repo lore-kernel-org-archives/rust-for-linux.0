@@ -1,45 +1,45 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871671F61D;
-	Tue, 17 Oct 2023 15:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954954368F;
+	Tue, 17 Oct 2023 15:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H4Skp+qL"
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17960F0;
-	Tue, 17 Oct 2023 08:04:09 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d9a64ca9cedso5857782276.1;
-        Tue, 17 Oct 2023 08:04:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDuaXcTW"
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A968392;
+	Tue, 17 Oct 2023 08:17:52 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-579de633419so71470907b3.3;
+        Tue, 17 Oct 2023 08:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697555048; x=1698159848; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697555872; x=1698160672; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tvAYxPZq19QuYMm9V9Ix5MZ3K9vR5maAzHdfTAZ+zKk=;
-        b=H4Skp+qLB6OGmvpmQE+xvkEfRi+DniPQv1GGdqNYYhXAJAzT+Pg8St8E5jM7/gYDF8
-         qJvPx2yRIy/4hOVILzag2M1urXU0eEKZQFpXziXrrvy1bA9bYOabzvzybhRqcOVPx8dF
-         RZy1lba9nbHie5cz5FlDypV0CViZEFcNdkQscOIdtPYg8KgCtKaDwV6Ep3+h1KY5MZKn
-         SNJWk+7/xXYec/vY+E7cJ3VxmVAFGvrVDzWuPDRW1D6moxofdkTkQCiSXuQxW1wP8h+X
-         3gQMOYzoJaQW27aeUG0Bd4JgBKFeEEyYB8gnT892mMKVrRqGQ5FBhnTmrYJUsCpscgfP
-         upkg==
+        bh=v+bzE/J8ZGt17tl8akqeT/kIc+0mcRGIKAK2nciDey4=;
+        b=FDuaXcTWbUQ2tSnQmfehAt42ixyW2mP6yo210BVgZVbjT3zfNWy1rBb3tSuTn+cUh/
+         A3QLTsUwqB7/lz4uwYfCuOuGMlwBpxoXW+elOfrD2GGjtQZ50cpVpmGAc27vjGRLHvCK
+         Q6f524ttC8G9MZpk5FaJu4/WzlTPa95rNQfTWtkXeHiex/aysaKWNNKjmMeKHb9/unqh
+         HVX1FTqVepeeuKsszTqbC00ADuOe7as0ktrxKZUxnqyUrtMxq3KErWoTng8qmcRl2vTS
+         C/rODil09AwV8w+A0+hKdD30KpNsO0ZzVhfkURyMbMcPJBHPdjegELXqTCJve/wYMsIT
+         lwjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697555048; x=1698159848;
+        d=1e100.net; s=20230601; t=1697555872; x=1698160672;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tvAYxPZq19QuYMm9V9Ix5MZ3K9vR5maAzHdfTAZ+zKk=;
-        b=safdkJrM1TZ8+eH2nElQ7hZTwrgQyUtpAcUX6FRQRCVFlRIDgR57Wm/yimJcRvVflk
-         0fsF4EPG6a8EdoWZGwPMd2c0jGshhW9aSsUtQ5H6rIr5E9Uj4r6ivbmeKmI6T5ey6An2
-         eZbPShjOBM1JBhNl2azJZ+mCpHnO/EIUNXIbL+fsXdFY9aEUQJpBkqAYWT8KFOyEkDID
-         58zn6Czc/S3nI58hhgEX7am068AdpIR+JtKSoYnS7fEuoCD5i6x1As/215zZEW2+urBR
-         0GN3WCY9toiQoEByi5vNQUCNnjTc87CKldpI0y8DorBhrCNzVOY/oFDENr/tmEhjlgHu
-         hS+g==
-X-Gm-Message-State: AOJu0YyISY8AsV9E/yxeqw4pJ0IVgF+Wct2wrbCY7Mrm5nsTsNUu61KA
-	P1gOKBEMfYoRpO2pOe/OXH7Lc0/pUmSEtn8toX4=
-X-Google-Smtp-Source: AGHT+IHyuihFSV7ZqXD3w/W43HmuZVcseFccYATTXzUWRz6MlNPk/FaOqkHBEaW7p90DjJhD1eMyn/ltidiPpOcW7Ek=
-X-Received: by 2002:a25:d254:0:b0:d6e:3544:9871 with SMTP id
- j81-20020a25d254000000b00d6e35449871mr2542412ybg.44.1697555048064; Tue, 17
- Oct 2023 08:04:08 -0700 (PDT)
+        bh=v+bzE/J8ZGt17tl8akqeT/kIc+0mcRGIKAK2nciDey4=;
+        b=Go01fFYeYsZcMrMmy5Oi/f5/jke1zraEbJqjTafS69PteLcVbDH6/Tylt8+omFK0WM
+         8u5UX+o4BQFQYspdiAH0tRmqyRJoEue0wRd5tdhRWFqkQEVU7KbRLFuPgC4JltA2RHWY
+         T0ToA9PdNKU7DWJiV1YsKdu5QzYpJXB+rtMAFb4gIqPLbzmJWSyvEEzzQs9mJq8Xn/UF
+         qCw4qb07qJgRpLAk3oZzYEdtN709ERMy5fUKXtEP2GdFJ+chcBhs1Kh1PBzdFdinEfjQ
+         Vpat8v90ohvvl0SoQMp6iX14vMR2HL7Zh/+ugNZWkm67KNM1Rs3s4JiTv8Mlg6aWp//C
+         +7yQ==
+X-Gm-Message-State: AOJu0Yx0s7KUc4B1UPrjlPH7rVVFABquT4r77XFPz6j9Og62uCxe9y1K
+	0SHaqFaxwluV1uw2ObCEHnmuG7/AsYDmPPAa2vb+LQOghOo=
+X-Google-Smtp-Source: AGHT+IGAKy4racr1hrrzicGubeAKSnyPCiLhMUkxl1+lYzm0Dno5DLDsv13WcNo6GFT2Xlqy/hENKgz6JYtl96Z5YIs=
+X-Received: by 2002:a05:690c:f93:b0:5a8:2007:b5e4 with SMTP id
+ df19-20020a05690c0f9300b005a82007b5e4mr2961155ywb.36.1697555871607; Tue, 17
+ Oct 2023 08:17:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,13 +51,14 @@ References: <3469de1c-0e6f-4fe5-9d93-2542f87ffd0d@proton.me>
  <9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me> <20231015.073929.156461103776360133.fujita.tomonori@gmail.com>
  <98471d44-c267-4c80-ba54-82ab2563e465@proton.me> <1454c3e6-82d1-4f60-b07d-bc3b47b23662@lunn.ch>
  <f26a3e1a-7eb8-464e-9cbe-ebb8bdf69b20@proton.me> <2023101756-procedure-uninvited-f6c9@gregkh>
-In-Reply-To: <2023101756-procedure-uninvited-f6c9@gregkh>
+ <0f839f73-400f-47d5-9708-0fa40ed0d4e9@proton.me>
+In-Reply-To: <0f839f73-400f-47d5-9708-0fa40ed0d4e9@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Oct 2023 17:03:56 +0200
-Message-ID: <CANiq72nXcyig=FYY5NEP1RYADArk86XJEUxsoA5R2gGe7O3uLg@mail.gmail.com>
+Date: Tue, 17 Oct 2023 17:17:40 +0200
+Message-ID: <CANiq72nbhdyPDWebXFphKjwvYT2VdQq-ksDmbOTNezV9OarPpQ@mail.gmail.com>
 Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network PHY drivers
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Benno Lossin <benno.lossin@proton.me>, Andrew Lunn <andrew@lunn.ch>, 
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
 	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, tmgross@umich.edu, boqun.feng@gmail.com, 
 	wedsonaf@gmail.com
@@ -65,34 +66,17 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Oct 17, 2023 at 4:21=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
+On Tue, Oct 17, 2023 at 4:32=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> Again, no, deal with what we have today, kernel code is NOT
-> future-proof, that's not how we write this stuff.
+> This is not allowed in Rust, it is UB and will lead to bad things.
 
-That would make the abstractions "unsound", i.e. UB could be
-introduced from safe Rust code, which is what Rust aims to prevent.
-
-It is not so much that we care about "unwritten code" (or out-of-tree
-code), but rather that it prevents having UB in users of the
-abstractions.
-
-Put another way, there may be no code today that triggers UB, but
-there could be, tomorrow, with a new driver. Or when somebody modifies
-a module. The goal is to simply not allow broken users to compile to
-begin with.
-
-So if we allow unsound abstractions to be merged, then we are
-essentially losing that "layer" of protection that Rust gives, and
-thus one of its key advantages. Instead, if we manage to keep the
-abstractions sound, then we can review Rust modules that do not use
-`unsafe` and statically know that they are not introducing UB.
+Yeah, and to be clear, data races are also UB in C.
 
 Cheers,
 Miguel
