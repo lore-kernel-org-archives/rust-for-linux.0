@@ -1,48 +1,48 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7081441A93;
-	Tue, 17 Oct 2023 11:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C042841AB0;
+	Tue, 17 Oct 2023 11:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VtYtatVv"
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F0D9F;
-	Tue, 17 Oct 2023 04:30:24 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-27d5fd02e3dso677555a91.1;
-        Tue, 17 Oct 2023 04:30:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JS2ARWOl"
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CEDFF1;
+	Tue, 17 Oct 2023 04:30:26 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-27d1433c4ebso1134608a91.0;
+        Tue, 17 Oct 2023 04:30:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697542224; x=1698147024; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697542226; x=1698147026; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S5JpkfFDcQ2qhOKpbIw2Q9hWSWvGzyli2/kbRhFyDok=;
-        b=VtYtatVv2vkrrW6Y0rIxiidomBxdNRtLVjlLenIqoPTfi7FwBDW1lOTcG+gdn87EPd
-         YHMOPgAuGBPkwFGOi9IUuoYyPOZe3O9k+1+S9AMDRaHwliL6MSWHPZUYVBtVbw/3a/7f
-         VobK35UckblvWQPNhVUDcBIigQfUY9bCabr25og0NR/W3MLZufr3hLRboG8ZHyYlN96G
-         2ZNzLseYpMFiVJRpt3bjOCnZHLAjSQM/u0d5YNsJgOTAWxEDbAqyrm8MIsMUqChD/1RG
-         HxC0aqBcDVZlFJTd73BWAdOm4jLtu+po5MZvAw03d8q1aM+pPQuqOKrF8IRbxl2/5JOC
-         CR7Q==
+        bh=WpFPu0iSHmMUfFdOgy7yC5NRv4NQanN4znwfQNtiQgk=;
+        b=JS2ARWOlTzirYnPiX+n8vbC7f3roxV+Z5b0NPdrNDbeV2CeKc2Y1C1ATIuSqlGPr6T
+         UY6gLrEee2cYxJwtibD7EPRQk6UJ4/rtjn89c/yttyOPmOCLMY+hYbWFn/h4Tq86pBsg
+         zVcCCEzuXEkkPV3xc0S6qSGSzHbY+w5uUDcJUrN9auNbb4MqO9RykLW6KEn7Yf3ourqw
+         VnDq6Gl2jxPw5wo7sd++GQovZ7bFPTB56Kx9aOMhlA4hSfT/atIPjHfiu9+i+sXAhaB6
+         2vLzOjs1PANN2ETRL1PN5LxYUHJ37YNdQTrrMZV2Xg686vMP9XeoOzKj2+4tS4BxvCo+
+         2Rpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697542224; x=1698147024;
+        d=1e100.net; s=20230601; t=1697542226; x=1698147026;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S5JpkfFDcQ2qhOKpbIw2Q9hWSWvGzyli2/kbRhFyDok=;
-        b=WZBD1RnfSKXZljVO1zWsjENtAISv4PkjPh+F/FvdOIBaSzxfyast5xzkvZIlPfZcDr
-         9toS9XGRbsZOVoMmC7+4N3+XYQuKjF2mlZ7iPe1jfrsZJhxolD+4JHm/NFwf7I2gp7lR
-         FgfROw1ljHDyEFzUIyRwppgHVhyRCfuFj2CsI3aq4PyUmdcHwSSXm9DN45vsQMXgI8pf
-         dCD3e/WQGzyYctcfbm63OgyESB2wf2wtQN/Ql00So79SqyrWjZIfIxCgD0IOMf1Kayff
-         H963Ijso5Va46BtGvJVcI83IJ6fAo1OjvmVjc/4gYyGUZX2zllkilMMmPWdGHwrH6k4F
-         ZLiQ==
-X-Gm-Message-State: AOJu0YxdHmE5kxu9OOL9DC7kyglqwzXGgs5i5k+S0cLtWiuuHmV/boko
-	f/pDKDzrAJw5DoKcJyhvUrV5wKMYH7alYD6d
-X-Google-Smtp-Source: AGHT+IHOgXMc1FLWfbh8YGjPOTEJYNVnZ99dnjpkbKjV3sOrUQcpecmk31wFJ0BXAEJl4co+ZbnofA==
-X-Received: by 2002:a17:90b:1d81:b0:27d:6009:36c7 with SMTP id pf1-20020a17090b1d8100b0027d600936c7mr1978784pjb.4.1697542224110;
-        Tue, 17 Oct 2023 04:30:24 -0700 (PDT)
+        bh=WpFPu0iSHmMUfFdOgy7yC5NRv4NQanN4znwfQNtiQgk=;
+        b=RlwIribE+BdpzyArkSZZmvkYSdl6NaMsrhv9kkICttM+noI6LUrc9hRRXt27YwM4rE
+         CXBXL6K+aWWtHs9VGNIrNvuIFWqKOA2uIyLyjiU1M1AR9kVD26LWxhLzNUt44OB0p4dh
+         ygUUUjk86aQM+hoO8/w3rn66cY5dbA3WTCJKTIuTLgX8J+w70hQ/qvhrJboaDXHNv0mv
+         KakxUNqi9HCA09GQDmzUY2RkEWA1KBtpkF8FWBJPQaUPLqNIH7BF4VlV33XGN0T0hpwD
+         D4/wGXpLOgekpfBFYxJwvhapvcearR3WDr2BOtrDS8axbdQS8FUbgvK2HVPwDod+YuB6
+         0kLA==
+X-Gm-Message-State: AOJu0YxYdGUa3NISag4hhiczi/K1kVMvGbyuGFcpVVzvNK2zyyh5Nq+N
+	T9m6iMZEYRndifjE4yxkJeut2/waKwdF7dc/
+X-Google-Smtp-Source: AGHT+IGPyXFHzdZXrZaVdwdT206TaWRHCpQNSSreIFV+sQWTXAYJZ/+A3q0OZazd/xf2jI+4Ugz7tQ==
+X-Received: by 2002:a17:90b:4b04:b0:27c:fd8d:164a with SMTP id lx4-20020a17090b4b0400b0027cfd8d164amr2002904pjb.1.1697542225715;
+        Tue, 17 Oct 2023 04:30:25 -0700 (PDT)
 Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id r16-20020a17090ad41000b002635db431a0sm1116277pju.45.2023.10.17.04.30.23
+        by smtp.gmail.com with ESMTPSA id r16-20020a17090ad41000b002635db431a0sm1116277pju.45.2023.10.17.04.30.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 04:30:23 -0700 (PDT)
+        Tue, 17 Oct 2023 04:30:25 -0700 (PDT)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: netdev@vger.kernel.org
 Cc: rust-for-linux@vger.kernel.org,
@@ -53,9 +53,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	wedsonaf@gmail.com,
 	benno.lossin@proton.me,
 	greg@kroah.com
-Subject: [PATCH net-next v5 2/5] rust: net::phy add module_phy_driver macro
-Date: Tue, 17 Oct 2023 20:30:11 +0900
-Message-Id: <20231017113014.3492773-3-fujita.tomonori@gmail.com>
+Subject: [PATCH net-next v5 4/5] MAINTAINERS: add Rust PHY abstractions for ETHERNET PHY LIBRARY
+Date: Tue, 17 Oct 2023 20:30:13 +0900
+Message-Id: <20231017113014.3492773-5-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017113014.3492773-1-fujita.tomonori@gmail.com>
 References: <20231017113014.3492773-1-fujita.tomonori@gmail.com>
@@ -73,160 +73,36 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This macro creates a static array of kernel's `struct phy_driver` and
-registers it. This also corresponds to the kernel's
-`MODULE_DEVICE_TABLE` macro, which embeds the information for module
-loading into the module binary file.
+Adds me as a maintainer and Trevor as a reviewer.
 
-A PHY driver should use this macro.
+The files are placed at rust/kernel/ directory for now but the files
+are likely to be moved to net/ directory once a new Rust build system
+is implemented.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/net/phy.rs | 134 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 134 insertions(+)
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 7d4927ece32f..5b74a7450b36 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -699,3 +699,137 @@ const fn as_int(&self) -> u32 {
-         }
-     }
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ed33b9df8b3d..e85651c35cb9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7818,6 +7818,14 @@ F:	include/uapi/linux/mdio.h
+ F:	include/uapi/linux/mii.h
+ F:	net/core/of_net.c
+ 
++ETHERNET PHY LIBRARY [RUST]
++M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
++R:	Trevor Gross <tmgross@umich.edu>
++L:	netdev@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	rust/kernel/net/phy.rs
 +
-+/// Declares a kernel module for PHYs drivers.
-+///
-+/// This creates a static array of kernel's `struct phy_driver` and registers it.
-+/// This also corresponds to the kernel's `MODULE_DEVICE_TABLE` macro, which embeds the information
-+/// for module loading into the module binary file. Every driver needs an entry in `device_table`.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// use kernel::c_str;
-+/// use kernel::net::phy::{self, DeviceId};
-+/// use kernel::prelude::*;
-+///
-+/// kernel::module_phy_driver! {
-+///     drivers: [PhyAX88772A],
-+///     device_table: [
-+///         DeviceId::new_with_driver::<PhyAX88772A>(),
-+///     ],
-+///     name: "rust_asix_phy",
-+///     author: "Rust for Linux Contributors",
-+///     description: "Rust Asix PHYs driver",
-+///     license: "GPL",
-+/// }
-+///
-+/// struct PhyAX88772A;
-+///
-+/// impl phy::Driver for PhyAX88772A {
-+///     const NAME: &'static CStr = c_str!("Asix Electronics AX88772A");
-+///     const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x003b1861);
-+/// }
-+/// ```
-+///
-+/// This expands to the following code:
-+///
-+/// ```ignore
-+/// use kernel::c_str;
-+/// use kernel::net::phy::{self, DeviceId};
-+/// use kernel::prelude::*;
-+///
-+/// struct Module {
-+///     _reg: ::kernel::net::phy::Registration,
-+/// }
-+///
-+/// module! {
-+///     type: Module,
-+///     name: "rust_asix_phy",
-+///     author: "Rust for Linux Contributors",
-+///     description: "Rust Asix PHYs driver",
-+///     license: "GPL",
-+/// }
-+///
-+/// const _: () = {
-+///     static mut DRIVERS: [::kernel::net::phy::DriverType; 1] = [
-+///         ::kernel::net::phy::create_phy_driver::<PhyAX88772A>::(),
-+///     ];
-+///
-+///     impl ::kernel::Module for Module {
-+///        fn init(module: &'static ThisModule) -> Result<Self> {
-+///            let mut reg = unsafe { ::kernel::net::phy::Registration::register(module, &DRIVERS) }?;
-+///            Ok(Module {
-+///                _reg: reg,
-+///            })
-+///        }
-+///     }
-+/// }
-+///
-+/// static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; 2] = [
-+///     ::kernel::bindings::mdio_device_id {
-+///         phy_id: 0x003b1861,
-+///         phy_id_mask: 0xffffffff,
-+///     },
-+///     ::kernel::bindings::mdio_device_id {
-+///         phy_id: 0,
-+///         phy_id_mask: 0,
-+///     }
-+/// ];
-+/// ```
-+#[macro_export]
-+macro_rules! module_phy_driver {
-+    (@replace_expr $_t:tt $sub:expr) => {$sub};
-+
-+    (@count_devices $($x:expr),*) => {
-+        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
-+    };
-+
-+    (@device_table [$($dev:expr),+]) => {
-+        #[no_mangle]
-+        static __mod_mdio__phydev_device_table: [
-+            ::kernel::bindings::mdio_device_id;
-+            $crate::module_phy_driver!(@count_devices $($dev),+) + 1
-+        ] = [
-+            $($dev.mdio_device_id()),+,
-+            ::kernel::bindings::mdio_device_id {
-+                phy_id: 0,
-+                phy_id_mask: 0
-+            }
-+        ];
-+    };
-+
-+    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], $($f:tt)*) => {
-+        struct Module {
-+            _reg: ::kernel::net::phy::Registration,
-+        }
-+
-+        $crate::prelude::module! {
-+            type: Module,
-+            $($f)*
-+        }
-+
-+        const _: () = {
-+            static mut DRIVERS: [
-+                ::kernel::net::phy::DriverType;
-+                $crate::module_phy_driver!(@count_devices $($driver),+)
-+            ] = [
-+                $(::kernel::net::phy::create_phy_driver::<$driver>()),+
-+            ];
-+
-+            impl ::kernel::Module for Module {
-+                fn init(module: &'static ThisModule) -> Result<Self> {
-+                    // SAFETY: The anonymous constant guarantees that nobody else can access the `DRIVERS` static.
-+                    // The array is used only in the C side.
-+                    let mut reg = unsafe { ::kernel::net::phy::Registration::register(module, &DRIVERS) }?;
-+
-+                    Ok(Module {
-+                        _reg: reg,
-+                    })
-+                }
-+            }
-+        };
-+
-+        $crate::module_phy_driver!(@device_table [$($dev),+]);
-+    }
-+}
+ EXEC & BINFMT API
+ R:	Eric Biederman <ebiederm@xmission.com>
+ R:	Kees Cook <keescook@chromium.org>
 -- 
 2.34.1
 
