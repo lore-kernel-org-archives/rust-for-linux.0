@@ -1,77 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3925844498;
-	Tue, 17 Oct 2023 16:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01BE2D781
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Oct 2023 17:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JuOmF/O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED93AC433C7;
-	Tue, 17 Oct 2023 16:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1697559367;
-	bh=++5rVi+ySPKnY3Zse4S0U6+ylTHGyB3WPeAoWkJ/y9I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0JuOmF/O97uodM8GMATlFfPdhBkDgpX25ilRq6Kd7CwO5pFWiERm8bZQLGPGgxD6M
-	 Ku71F7f6NplDx7xQnD+TwPp/ujKGg5vPeS6+dAkJ9DSmEQP0LED41cz73IO4dcdEy5
-	 Gsvo5PLnH7scXTY4KmSPtdDyZowf5DPPxjTXLLYk=
-Date: Tue, 17 Oct 2023 18:15:44 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Andrew Lunn <andrew@lunn.ch>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	boqun.feng@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network PHY
- drivers
-Message-ID: <2023101758-scone-supernova-e9a1@gregkh>
-References: <3469de1c-0e6f-4fe5-9d93-2542f87ffd0d@proton.me>
- <20231015.011502.276144165010584249.fujita.tomonori@gmail.com>
- <9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me>
- <20231015.073929.156461103776360133.fujita.tomonori@gmail.com>
- <98471d44-c267-4c80-ba54-82ab2563e465@proton.me>
- <1454c3e6-82d1-4f60-b07d-bc3b47b23662@lunn.ch>
- <f26a3e1a-7eb8-464e-9cbe-ebb8bdf69b20@proton.me>
- <2023101756-procedure-uninvited-f6c9@gregkh>
- <0f839f73-400f-47d5-9708-0fa40ed0d4e9@proton.me>
- <CANiq72nbhdyPDWebXFphKjwvYT2VdQq-ksDmbOTNezV9OarPpQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TRQnN6PY"
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD5E83
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Oct 2023 10:47:24 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5a7b91faf40so72412147b3.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Oct 2023 10:47:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697564843; x=1698169643; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/hq7KwzFzn9R/YxGxNGLbGy7WRmGHM1T6CgFTdG+59I=;
+        b=TRQnN6PYaahTlkKJGgcjuPoEFDJEJ1d7PclMV1MO/YeekmpmMsZhrgOcRnLJ0UtlLc
+         dazwn3+EcAu6V/FieUnVVb3Jv1CUuz1Id7rsleuayy3R9o/B5S4gJSyx35xc89WhMhW6
+         RqTRUPrNgkueMeSBlhhBGDPCbn1cVMkWBi8G3nQa08LY6Ut3W6DfHCMFkSIZgiUZtQdB
+         4uF2dkx8vLUz+X2I1rH8Wz1PmM78q6gzHE8HaMOkbDlgr+YUDtwtj3OkISJLr6O9V12j
+         D0M0RvqRuMkNJu85U+/9Zpv1sKrDbg38w3pc5Gq/EhwA/sLBFop9tX0pe83cqkOCb+gy
+         TFpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697564843; x=1698169643;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/hq7KwzFzn9R/YxGxNGLbGy7WRmGHM1T6CgFTdG+59I=;
+        b=JlKIMTgrOH+MYJk0UZCApR224nMoO6GfEZpDsamVB4Sxpu2mihtq9I+HRLZ1DHZxnV
+         bcefJR8Z2y176/7TlUY1aAvrod7ec8gEh6wK3VUJvMRiNIpFBtvk+2FK90z7ZeNfkkK4
+         ud0aHvVUUJ5Q+cLnUHDwId5F8CIvw7hC0ldagDNkOXAi+gksqNCw2gemHw6hHSHABqmW
+         EbNlfWoGbcyGCT/cocsdBjpQZXmZ+xLyrvo0ahyZDWXyOgN63WD6VksD/oFuMN8+lBkm
+         0lWwZ6joRN06zOzWVbouQeCnVdtOArHSblqxQBR3VMiwKzWMPJovhG5aeHy1+n6OX4VX
+         2mCA==
+X-Gm-Message-State: AOJu0YxPT9w8x5UC6xiHFB/3cNybNrnEF65Nfvd6ilrsoNgZ+BO46ZGN
+	K2xoldSNT161E8tdOZQXsyKFskYnNFPBAJcBOuE=
+X-Google-Smtp-Source: AGHT+IHIzeA0UApVC4jYjNMGzuWFdqyTJIddDaDCF1Qg6gVC3K4W52pV+yEaSzzdtopnjMq0bSA0Y+LMOdcrLvIpSic=
+X-Received: by 2002:a81:a553:0:b0:59b:f18b:efa0 with SMTP id
+ v19-20020a81a553000000b0059bf18befa0mr2878172ywg.36.1697564843617; Tue, 17
+ Oct 2023 10:47:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nbhdyPDWebXFphKjwvYT2VdQq-ksDmbOTNezV9OarPpQ@mail.gmail.com>
+References: <20231016131523.1521965-1-Jamie.Cunliffe@arm.com>
+ <20231016131523.1521965-2-Jamie.Cunliffe@arm.com> <CANiq72mXdYCbxHCKDRGh6SpzpnuAs-iPNwpXkpZf1mneRPBb+g@mail.gmail.com>
+In-Reply-To: <CANiq72mXdYCbxHCKDRGh6SpzpnuAs-iPNwpXkpZf1mneRPBb+g@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 17 Oct 2023 19:47:11 +0200
+Message-ID: <CANiq72=r96X_36rv_yf6pfmR9BbKjsgnjHeYENMHBh9r=ppL7A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] arm64: rust: Enable Rust support for AArch64
+To: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
+	boqun.feng@gmail.com, Alice Ryhl <aliceryhl@google.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Tue, Oct 17, 2023 at 05:17:40PM +0200, Miguel Ojeda wrote:
-> On Tue, Oct 17, 2023 at 4:32 PM Benno Lossin <benno.lossin@proton.me> wrote:
-> >
-> > This is not allowed in Rust, it is UB and will lead to bad things.
-> 
-> Yeah, and to be clear, data races are also UB in C.
+On Tue, Oct 17, 2023 at 5:38=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> By the way, perhaps we could already add others like (untested):
+>
+>  ifeq ($(CONFIG_ARM64_USE_LSE_ATOMICS),y)
+> +KBUILD_RUSTFLAGS +=3D -Ctarget-feature=3D"+lse"
+>    ifneq ($(CONFIG_ARM64_LSE_ATOMICS),y)
+>         @echo "warning: LSE atomics not supported by binutils" >&2
+>    endif
 
-And to be clear, something we totally ignore in many places in the
-kernel because it flat out does not matter at all.
+Ignore this, sorry -- as Boqun reminded me, this uses an
+`ALTERNATIVE`, rather than enable it unconditionally. See
+https://github.com/Rust-for-Linux/linux/issues/970.
 
-Think about userspace writing 2 different values to the same sysfs file
-at the same time, which the kernel driver will then attempt to save into
-the same location at the "same" time.  Which one wins?  Who cares?
-Userspace did something foolish and it doesn't matter, and writes are
-pretty much "atomic" in that they do not split across memory locations
-so it's not a real issue.
-
-Same here with your "speed" value, it just doesn't matter, right?  One
-will "win" and the other one will not, so what is the problem?  Same
-thing would happen if you put a lock here, but a lock would be
-pointless.
-
-So yes, I agree, mark things in rust as "mut" if you are going to change
-them, that's good, but attempting to prevent multiple writes at the same
-time without a lock, that's not going to matter, if it did, you would
-have used a lock :)
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
