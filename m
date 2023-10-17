@@ -1,57 +1,61 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D23F41758;
-	Tue, 17 Oct 2023 10:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B76241777;
+	Tue, 17 Oct 2023 11:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2ytQAQi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C4EC433CA;
-	Tue, 17 Oct 2023 10:38:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697539094;
-	bh=A6qLcCYxkwgWjCL+CxEKfQPWGv0e7JNIKXIZW89MeuU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2ytQAQi1GJKjYWyS2S00/+UNBIvCCyZOAFkCE9TFt+3ZueDC4OLAjybipTBO++p7
-	 lSznrtrnBtPgpvlmBNt6OM2fAUeOwQxj4dQNjqNvWKTX+DMCwS4qNiSkTiXcgF7iXX
-	 IVWyV/5vgO1OM9YzlILfH8VzLtz/pCA9hqXZrvwDjhxZ+F6gUUJP9/OIEhYH1ElMue
-	 dFHIhx2GPCHJTtAQeuqceZ02h0gP8+H7GgB8vFa1SINkFD1W4N0B3HEMOSRPXrmsYA
-	 6ACuJiALmbS0dKkNEiRZKjV1i4jhjjf/Y7/5bJXdH8bcAESPGvcIcVX73YsDJgg5gO
-	 Wsuoqa5OLtQBQ==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Gary Guo <gary@garyguo.net>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Song Liu <song@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	bpf@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH 2/4] kbuild: avoid too many execution of scripts/pahole-flags.sh
-Date: Tue, 17 Oct 2023 19:37:40 +0900
-Message-Id: <20231017103742.130927-2-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231017103742.130927-1-masahiroy@kernel.org>
-References: <20231017103742.130927-1-masahiroy@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNOa1nYG"
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12D3EA;
+	Tue, 17 Oct 2023 04:30:23 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-27d797f349fso347975a91.1;
+        Tue, 17 Oct 2023 04:30:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697542223; x=1698147023; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cm8cSvNWKoxfm6hF/iwR7l0ep11grdZ9FoT/C19EihE=;
+        b=bNOa1nYGxlYtV38nO0DwgRneDal3CqqqOrNJeIMjlUI6ZDEroguOO5Tnq0yaSO3s6N
+         5MJV8ONpss5FdfbXvC6ZQPyOxd2mFpMRVafaCYAc+oVJcUumVnuIY7Bk8cWWgYIlRLgJ
+         EJfFklxmyiF3AdL6an1rucchXMjbsrpo+H8rnIoMdhW0PFCuXktb3dKSyJQSodw9agdZ
+         0qXq7/m68FIbXLXEsWnumBxy938Jsh9BYKQ7syx1xgjF5yRdJTFSaoDlCBtqFRo5Wslj
+         fgTdjqtlHGl11H8jbUquAEPyOtqo2E1mXAY1J7Ih2CWu0AsRhzByU+wsPRKkaT/KtsYf
+         H5rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697542223; x=1698147023;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cm8cSvNWKoxfm6hF/iwR7l0ep11grdZ9FoT/C19EihE=;
+        b=oiKbqrbm+rXNxy1iDFRIoNI1XYijfQjQdlEiCxamiiBUJs5L5izuUmVBzdaLjSxmjj
+         8hCtkwwYZ4l0kjY53Z0aiLt+4D4803t534liENMdK609a+wB2DhW/UY723R14eXapne3
+         FHCdD1T07LmBlgEAsXCYetrL8WgmYtwvKBnBinsaeSxo8UwKTjTbWpdCkIHhdkaGHEMR
+         XZ3K78Mr0TxMlpkMBd8jUVwiMG9G822bhkcN8wt0vKhqqGQ9xbeG8MiLT2hvZjPbU+z6
+         OF8zhhDEBvV8tSItdidEMdgY75amc3CKhz3ooIgR3jR/h2EYuISQQOIO63f2RWsqDV5C
+         3Tbg==
+X-Gm-Message-State: AOJu0YzcTsYkCa0bzWjYDe1c1U8bfK4cncixz8HnRqnbrfyIDYm0klFe
+	eOv4GZxRLFxAmKtYibxAljiKkP/FfULFGUF3
+X-Google-Smtp-Source: AGHT+IHPyIViyonxjUdtLwLaCaUDTfD0mTleeEpComj0W9Z5J3peYG1s6j0i/fhZBsIce9ojcr7bgQ==
+X-Received: by 2002:a17:90b:3eca:b0:263:730b:f568 with SMTP id rm10-20020a17090b3eca00b00263730bf568mr2016000pjb.3.1697542222817;
+        Tue, 17 Oct 2023 04:30:22 -0700 (PDT)
+Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id r16-20020a17090ad41000b002635db431a0sm1116277pju.45.2023.10.17.04.30.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Oct 2023 04:30:22 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	miguel.ojeda.sandonis@gmail.com,
+	tmgross@umich.edu,
+	boqun.feng@gmail.com,
+	wedsonaf@gmail.com,
+	benno.lossin@proton.me,
+	greg@kroah.com
+Subject: [PATCH net-next v5 0/5] Rust abstractions for network PHY drivers
+Date: Tue, 17 Oct 2023 20:30:09 +0900
+Message-Id: <20231017113014.3492773-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,142 +63,91 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-scripts/pahole-flags.sh is executed so many times.
+This patchset adds Rust abstractions for phylib. It doesn't fully
+cover the C APIs yet but I think that it's already useful. I implement
+two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
+they work well with real hardware.
 
-You can check how many times it is invoked during the build, as follows:
+The first patch introduces Rust bindings for phylib.
 
-  $ cat <<EOF >> scripts/pahole-flags.sh
-  > echo "scripts/pahole-flags.sh was executed" >&2
-  > EOF
+The second patch add a macro to declare a kernel module for PHYs
+drivers.
 
-  $ make -s
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-    [ lots of repeated lines suppressed... ]
+The third patch add Miguel's work to make sure that the C's enum is
+sync with Rust sides. If not, compiling fails. Note that this is a
+temporary solution. It will be replaced with bindgen when it supports
+generating the enum conversion code.
 
-This scripts is exectuted more than 20 times during the kernel build
-because PAHOLE_FLAGS is a recursively expanded variable and exported
-to sub-processes.
+The fourth add the Rust ETHERNET PHY LIBRARY entry to MAINTAINERS
+file; adds the binding file and me as a maintainer (as Andrew Lunn
+suggested) with Trevor Gross as a reviewer.
 
-With the GNU Make >= 4.4, it is executed more than 60 times because
-exported variables are also passed to other $(shell ) invocations.
-Without careful coding, it is known to cause an exponential fork
-explosion. [1]
+The last patch introduces the Rust version of Asix PHY drivers,
+drivers/net/phy/ax88796b.c. The features are equivalent to the C
+version. You can choose C (by default) or Rust version on kernel
+configuration.
 
-The use of $(shell ) in an exported recursive variable is likely wrong
-because $(shell ) is always evaluated due to the 'export' keyword, and
-the evaluation can occur multiple times by the nature of recursive
-variables.
+v5:
+  - drops the rustified-enum option, writes match by hand; no *risk* of UB
+  - adds Miguel's patch for enum checking
+  - moves CONFIG_RUST_PHYLIB_ABSTRACTIONS to drivers/net/phy/Kconfig
+  - adds a new entry for this abstractions in MAINTAINERS
+  - changes some of Device's methods to take &mut self
+  - comment improvment
+v4: https://lore.kernel.org/netdev/20231012125349.2702474-1-fujita.tomonori@gmail.com/
+  - split the core patch
+  - making Device::from_raw() private
+  - comment improvement with code update
+  - commit message improvement
+  - avoiding using bindings::phy_driver in public functions
+  - using an anonymous constant in module_phy_driver macro
+v3: https://lore.kernel.org/netdev/20231011.231607.1747074555988728415.fujita.tomonori@gmail.com/T/
+  - changes the base tree to net-next from rust-next
+  - makes this feature optional; only enabled with CONFIG_RUST_PHYLIB_BINDINGS=y
+  - cosmetic code and comment improvement
+  - adds copyright
+v2: https://lore.kernel.org/netdev/20231006094911.3305152-2-fujita.tomonori@gmail.com/T/
+  - build failure fix
+  - function renaming
+v1: https://lore.kernel.org/netdev/20231002085302.2274260-3-fujita.tomonori@gmail.com/T/
 
-Convert the shell script to a Makefile, which is included only when
-CONFIG_DEBUG_INFO_BTF=y.
 
-[1]: https://savannah.gnu.org/bugs/index.php?64746
+FUJITA Tomonori (4):
+  rust: core abstractions for network PHY drivers
+  rust: net::phy add module_phy_driver macro
+  MAINTAINERS: add Rust PHY abstractions for ETHERNET PHY LIBRARY
+  net: phy: add Rust Asix PHY driver
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+Miguel Ojeda (1):
+  WIP rust: add second `bindgen` pass for enum exhaustiveness checking
 
- Makefile                |  4 +---
- scripts/Makefile.btf    | 19 +++++++++++++++++++
- scripts/pahole-flags.sh | 30 ------------------------------
- 3 files changed, 20 insertions(+), 33 deletions(-)
- create mode 100644 scripts/Makefile.btf
- delete mode 100755 scripts/pahole-flags.sh
+ MAINTAINERS                          |  16 +
+ drivers/net/phy/Kconfig              |  16 +
+ drivers/net/phy/Makefile             |   6 +-
+ drivers/net/phy/ax88796b_rust.rs     | 129 +++++
+ rust/.gitignore                      |   1 +
+ rust/Makefile                        |  14 +
+ rust/bindings/bindings_enum_check.rs |  36 ++
+ rust/bindings/bindings_helper.h      |   3 +
+ rust/kernel/lib.rs                   |   3 +
+ rust/kernel/net.rs                   |   6 +
+ rust/kernel/net/phy.rs               | 835 +++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h              |   2 +
+ 12 files changed, 1066 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/ax88796b_rust.rs
+ create mode 100644 rust/bindings/bindings_enum_check.rs
+ create mode 100644 rust/kernel/net.rs
+ create mode 100644 rust/kernel/net/phy.rs
 
-diff --git a/Makefile b/Makefile
-index fed9a6cc3665..eaddec67e5e1 100644
---- a/Makefile
-+++ b/Makefile
-@@ -513,8 +513,6 @@ LZ4		= lz4c
- XZ		= xz
- ZSTD		= zstd
- 
--PAHOLE_FLAGS	= $(shell PAHOLE=$(PAHOLE) $(srctree)/scripts/pahole-flags.sh)
--
- CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
- 		  -Wbitwise -Wno-return-void -Wno-unknown-attribute $(CF)
- NOSTDINC_FLAGS :=
-@@ -605,7 +603,6 @@ export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
- export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
- export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
- export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
--export PAHOLE_FLAGS
- 
- # Files to ignore in find ... statements
- 
-@@ -1002,6 +999,7 @@ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
- # include additional Makefiles when needed
- include-y			:= scripts/Makefile.extrawarn
- include-$(CONFIG_DEBUG_INFO)	+= scripts/Makefile.debug
-+include-$(CONFIG_DEBUG_INFO_BTF)+= scripts/Makefile.btf
- include-$(CONFIG_KASAN)		+= scripts/Makefile.kasan
- include-$(CONFIG_KCSAN)		+= scripts/Makefile.kcsan
- include-$(CONFIG_KMSAN)		+= scripts/Makefile.kmsan
-diff --git a/scripts/Makefile.btf b/scripts/Makefile.btf
-new file mode 100644
-index 000000000000..82377e470aed
---- /dev/null
-+++ b/scripts/Makefile.btf
-@@ -0,0 +1,19 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+pahole-ver := $(CONFIG_PAHOLE_VERSION)
-+pahole-flags-y :=
-+
-+# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
-+ifeq ($(call test-le, $(pahole-ver), 121),y)
-+pahole-flags-$(call test-ge, $(pahole-ver), 118)	+= --skip_encoding_btf_vars
-+endif
-+
-+pahole-flags-$(call test-ge, $(pahole-ver), 121)	+= --btf_gen_floats
-+
-+pahole-flags-$(call test-ge, $(pahole-ver), 122)	+= -j
-+
-+pahole-flags-$(CONFIG_PAHOLE_HAS_LANG_EXCLUDE)		+= --lang_exclude=rust
-+
-+pahole-flags-$(call test-ge, $(pahole-ver), 125)	+= --skip_encoding_btf_inconsistent_proto --btf_gen_optimized
-+
-+export PAHOLE_FLAGS := $(pahole-flags-y)
-diff --git a/scripts/pahole-flags.sh b/scripts/pahole-flags.sh
-deleted file mode 100755
-index 728d55190d97..000000000000
---- a/scripts/pahole-flags.sh
-+++ /dev/null
-@@ -1,30 +0,0 @@
--#!/bin/sh
--# SPDX-License-Identifier: GPL-2.0
--
--extra_paholeopt=
--
--if ! [ -x "$(command -v ${PAHOLE})" ]; then
--	exit 0
--fi
--
--pahole_ver=$($(dirname $0)/pahole-version.sh ${PAHOLE})
--
--if [ "${pahole_ver}" -ge "118" ] && [ "${pahole_ver}" -le "121" ]; then
--	# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
--	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_vars"
--fi
--if [ "${pahole_ver}" -ge "121" ]; then
--	extra_paholeopt="${extra_paholeopt} --btf_gen_floats"
--fi
--if [ "${pahole_ver}" -ge "122" ]; then
--	extra_paholeopt="${extra_paholeopt} -j"
--fi
--if [ "${pahole_ver}" -ge "124" ]; then
--	# see PAHOLE_HAS_LANG_EXCLUDE
--	extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
--fi
--if [ "${pahole_ver}" -ge "125" ]; then
--	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_inconsistent_proto --btf_gen_optimized"
--fi
--
--echo ${extra_paholeopt}
+
+base-commit: a3c2dd96487f1dd734c9443a3472c8dafa689813
 -- 
-2.40.1
+2.34.1
 
