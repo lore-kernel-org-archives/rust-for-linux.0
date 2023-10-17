@@ -1,147 +1,89 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BFF42C00;
-	Tue, 17 Oct 2023 12:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11DF42BF6;
+	Tue, 17 Oct 2023 12:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="DLTrj+tO"
-X-Greylist: delayed 317 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 Oct 2023 05:35:20 PDT
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C54F2;
-	Tue, 17 Oct 2023 05:35:20 -0700 (PDT)
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 17 Oct 2023 14:29:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1697545797; bh=zLahxL+QXI3rfdx1iiel7NusxwDfyi7i9OT70ttG0sI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DLTrj+tOPB+cWfqo3Be1jRRCeHJzMzOdcWFEiMSPuJTH7boM/qyMZ+F31owpydLTi
-	 /dRJjk+1yCfUM9I46b96H/x9MmxF7O7mDQFUcKv6QvqT2d+0e2Qnca4cq+FVb/pu4T
-	 K4z+p/lIETLJdQmp5ev7O8R0hWHNAnt+uxQ05Tc4=
-Received: from buildd.core.avm.de (buildd-sv-01.avm.de [172.16.0.225])
-	by mail-auth.avm.de (Postfix) with ESMTPA id 8F52280C3A;
-	Tue, 17 Oct 2023 14:29:57 +0200 (CEST)
-Received: by buildd.core.avm.de (Postfix, from userid 1000)
-	id 7A521180CD9; Tue, 17 Oct 2023 14:29:57 +0200 (CEST)
-Date: Tue, 17 Oct 2023 14:29:57 +0200
-From: Nicolas Schier <n.schier@avm.de>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>, Gary Guo <gary@garyguo.net>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>, Song Liu <song@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>, bpf@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/4] kbuild: avoid too many execution of
- scripts/pahole-flags.sh
-Message-ID: <ZS5+RcXh766bgHz3@buildd.core.avm.de>
-Mail-Followup-To: Masahiro Yamada <masahiroy@kernel.org>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>, Gary Guo <gary@garyguo.net>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>, bpf@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-References: <20231017103742.130927-1-masahiroy@kernel.org>
- <20231017103742.130927-2-masahiroy@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5M/3Xm5p"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FC6F9;
+	Tue, 17 Oct 2023 05:38:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=DRUCa97weLstpEgGrG2ii/9I2YFUmwQzzThrFcklsaM=; b=5M/3Xm5pC1JQ5CSrwJDcm5z+sX
+	3BkHOcZ5gViu+XD17sJ9fLUI3fxR1crny7bkCopISjQUhvNi1qNu2R9WAGAABdiJ/EpGwWYMTpAsK
+	c3XHY9Zy/YA7M4BNLhprg/oi/ughaNy6wjG4iBJjPO9URiG4b4ZGX4S+JHeiRB/MwFE0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qsjLD-002Tgv-SA; Tue, 17 Oct 2023 14:38:31 +0200
+Date: Tue, 17 Oct 2023 14:38:31 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+	tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com,
+	greg@kroah.com
+Subject: Re: [PATCH net-next v4 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <1454c3e6-82d1-4f60-b07d-bc3b47b23662@lunn.ch>
+References: <3469de1c-0e6f-4fe5-9d93-2542f87ffd0d@proton.me>
+ <20231015.011502.276144165010584249.fujita.tomonori@gmail.com>
+ <9d70de37-c5ed-4776-a00f-76888e1230aa@proton.me>
+ <20231015.073929.156461103776360133.fujita.tomonori@gmail.com>
+ <98471d44-c267-4c80-ba54-82ab2563e465@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231017103742.130927-2-masahiroy@kernel.org>
-X-purgate-ID: 149429::1697545797-CBE3C0EE-94F75A2F/0/0
-X-purgate-type: clean
-X-purgate-size: 1635
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.6
+In-Reply-To: <98471d44-c267-4c80-ba54-82ab2563e465@proton.me>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> Subject: kbuild: avoid too many execution of scripts/pahole-flags.sh
-executions?
+> > Because set_speed() updates the member in phy_device and read()
+> > updates the object that phy_device points to?
+> 
+> `set_speed` is entirely implemented on the Rust side and is not protected
+> by a lock.
 
-On Tue, Oct 17, 2023 at 07:37:40PM +0900, Masahiro Yamada wrote:
-> scripts/pahole-flags.sh is executed so many times.
-> 
-> You can check how many times it is invoked during the build, as follows:
-> 
->   $ cat <<EOF >> scripts/pahole-flags.sh
->   > echo "scripts/pahole-flags.sh was executed" >&2
->   > EOF
-> 
->   $ make -s
->   scripts/pahole-flags.sh was executed
->   scripts/pahole-flags.sh was executed
->   scripts/pahole-flags.sh was executed
->   scripts/pahole-flags.sh was executed
->   scripts/pahole-flags.sh was executed
->     [ lots of repeated lines suppressed... ]
-> 
-> This scripts is exectuted more than 20 times during the kernel build
+With the current driver, all entry points into the driver are called
+from the phylib core, and the core guarantees that the lock is
+taken. So it should not matter if its entirely implemented in the Rust
+side, somewhere up the call stack, the lock was taken.
 
-executed
+> >> What about these functions?
+> >> - resolve_aneg_linkmode
+> >> - genphy_soft_reset
+> >> - init_hw
+> >> - start_aneg
+> >> - genphy_read_status
+> >> - genphy_update_link
+> >> - genphy_read_lpa
+> >> - genphy_read_abilities
+> > 
+> > As Andrew replied, all the functions update some member in phy_device.
+> 
+> Do all of these functions lock the `bus->mdio_lock`?
 
-> because PAHOLE_FLAGS is a recursively expanded variable and exported
-> to sub-processes.
-> 
-> With the GNU Make >= 4.4, it is executed more than 60 times because
-> exported variables are also passed to other $(shell ) invocations.
-> Without careful coding, it is known to cause an exponential fork
-> explosion. [1]
-> 
-> The use of $(shell ) in an exported recursive variable is likely wrong
-> because $(shell ) is always evaluated due to the 'export' keyword, and
-> the evaluation can occur multiple times by the nature of recursive
-> variables.
-> 
-> Convert the shell script to a Makefile, which is included only when
-> CONFIG_DEBUG_INFO_BTF=y.
-> 
-> [1]: https://savannah.gnu.org/bugs/index.php?64746
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
+When accessing the hardware, yes.
 
-Thanks, looks good to me!
+The basic architecture is that at the bottom we have an MDIO bus, and
+on top of that bus, we have a number of devices. The MDIO core will
+serialise access to the bus, so only one device on the bus can be
+accessed at once. The phylib core will serialise access to the PHY,
+but when there are multiple PHYs, the phylib core will allow parallel
+access to different PHYs.
 
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
+In summary, the core of each layer protects the drivers using that
+layer from multiple parallel accesses from above.
+
+       Andrew
