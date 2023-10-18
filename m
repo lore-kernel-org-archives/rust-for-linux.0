@@ -1,62 +1,129 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EAF3FB39
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 17:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CE33FB33;
+	Wed, 18 Oct 2023 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dRboJLM1"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE9A12C
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 10:57:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1697651829; x=1697911029;
-	bh=qg1FOCAW/ZNkhfLQUnB0m1HTCb5NKmRZ0oWQUjY7kLg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dRboJLM1CQ7qc7Ug/4scXZzoRb9hNkHsaj9XBRiea/xBLmykdWwbhiKlXU76Dejed
-	 VgYNU5sYzH4B9vsaN5hdD4+d+lAh80rnEv6cz39rsAKQmutnyzTZ4mtBY/lP3o2c/5
-	 vUHggxRe6+ySvwT4+bhYAsZK2PHJDNsi7kBzDrq8EfjyngIrpl9HeeMCt9lcIhJxev
-	 +hQvHB2F4xYhF5QNit1eV/3papqbnSyhxlERLL64JKpA/WMaAj8MPsg0+f3RXGEOJb
-	 TcHo76ycjFm4JWw85xzXPrnec1QDUpdtkZ937skpFLg6OgKAyFIknAuF8GfLopu0Ol
-	 ZrzHtuXnwUdqg==
-Date: Wed, 18 Oct 2023 17:56:52 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Carlos Bilbao <carlos.bilbao@amd.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Akira Yokosawa <akiyks@gmail.com>
-Subject: Re: [PATCH 2/2] kbuild: remove old Rust docs output path
-Message-ID: <c-GFV2p1lETIN6czmE3f0YFrusVTJ6kuiZXx_UA3FC_f6ORK3uGdQ5z_mCxLVkg4xktI79_Df3f-bTwhHUfzocoKJ8Go5TR4GRlcKxxMrrA=@proton.me>
-In-Reply-To: <20231018160145.1017340-2-ojeda@kernel.org>
-References: <20231018160145.1017340-1-ojeda@kernel.org> <20231018160145.1017340-2-ojeda@kernel.org>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lVKM+q1r"
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAE211C;
+	Wed, 18 Oct 2023 11:07:21 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so4452627276.1;
+        Wed, 18 Oct 2023 11:07:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697652441; x=1698257241; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=OSlrQAgM+k1wMB6Z68g3ftb4jGZMPolV8ubzXfKvFOg=;
+        b=lVKM+q1rD/IT31OBTqLMrlmagTGPpE8bghs1Lg1wpDFIuWW792U3l5q1vtX6x+ga8y
+         sSuhxUJ9ifrkfrDsE69Pq3NElzZAZNHlrQozSYNyCXzO8F6esohwKnM9G4lgDvnHQ0H5
+         wXnaEXSNuhg+vCE7UF7+ESkJCMe+g+wcMLSEsBQaT+pRSgUXnHtSTfYDpf4VxUX7lDBt
+         2ZcMnGTh/MpHyzOLMW1JadKxyKhcBqQB4wQXjPduc48PLA13JoCYofX46XKd/v7OXeP+
+         I6grVSYClnwzL2dgGjy02mJ7s1UMc9VAlCkrbvyjDgSxbEWgGS7Iz/nNRKuBjiSrISiI
+         rtmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697652441; x=1698257241;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OSlrQAgM+k1wMB6Z68g3ftb4jGZMPolV8ubzXfKvFOg=;
+        b=C1HH1dUqOHBnUEhk9NjeRuZB8AZm83Wxke/5lymvu7Hoxb2fpyvYCbaXqdxhx5+iPD
+         qr8aBm4NpxlRKs6wNf7lyehzf8KKus+DFJajhKhJCt/5Mt6QWLHU6s8rFn7SyZisZqZh
+         InKYdhYnxbQVdYn1HH5J6aBj44evJ9u5gqk9JmtISyf4zimZLvqfc7vNciN5Yzbr54CQ
+         fN5zSMow/HlFUhLLhgYd58Hp1XLWyFz9uSsY+0tITH6lV/+bvmm987vdWmkYKrlaxafN
+         Fn2xwzjhMMSEYb0vmSYOwkI15iPeMwbtg+kTwrSBEDJWw0ApDe+N2f1aW5DE/65Yiv5y
+         oo7A==
+X-Gm-Message-State: AOJu0Yz0WvuezvVKT4jqBodWAldIEjsNg/q6u3Xe7bCDKHVCXnw2PqwC
+	688Cs654f+vXKoqyN+BQqif61MDOpG9p8wrxYBDFZ07u6bM=
+X-Google-Smtp-Source: AGHT+IErHFbWAHGHjZ3maqQ1dsR4QQ1h9NIDIH0NlyP9vGkM0pfUGzywVvsepHUch37h+q3NBk2TdCB0TMmICGvIqrQ=
+X-Received: by 2002:a5b:94d:0:b0:d9a:cd2a:a18 with SMTP id x13-20020a5b094d000000b00d9acd2a0a18mr131846ybq.24.1697652441005;
+ Wed, 18 Oct 2023 11:07:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-20-wedsonaf@gmail.com>
+ <ZTAOfMvegVAc58Yn@casper.infradead.org> <CANeycqqTgj_cVyRx1ZvGFjZjK0ACBUPobDk93ovP41DSXK2Xmg@mail.gmail.com>
+ <ZTATyXETyGeAVSxd@casper.infradead.org>
+In-Reply-To: <ZTATyXETyGeAVSxd@casper.infradead.org>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Wed, 18 Oct 2023 15:07:10 -0300
+Message-ID: <CANeycqqU3tNTmCvQp2rjEUf1xB2qo+Q60h7G+i7hW3oE-HBW3g@mail.gmail.com>
+Subject: Re: [RFC PATCH 19/19] tarfs: introduce tar fs
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 18.10.23 18:01, Miguel Ojeda wrote:
-> The Rust code documentation output path moved from `rust/doc` to
-> `Documentation/output/rust/rustdoc`. The `make cleandocs` target
-> takes care of cleaning it now since it is integrated with the rest
-> of the documentation.
->=20
-> Thus remove the old reference.
->=20
-> Fixes: 48fadf440075 ("docs: Move rustdoc output, cross-reference it")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Wed, 18 Oct 2023 at 14:20, Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Wed, Oct 18, 2023 at 02:05:51PM -0300, Wedson Almeida Filho wrote:
+> > On Wed, 18 Oct 2023 at 13:57, Matthew Wilcox <willy@infradead.org> wrote:
+> > >
+> > > On Wed, Oct 18, 2023 at 09:25:18AM -0300, Wedson Almeida Filho wrote:
+> > > > +    fn read_folio(inode: &INode<Self>, mut folio: LockedFolio<'_>) -> Result {
+> > > > +        let pos = u64::try_from(folio.pos()).unwrap_or(u64::MAX);
+> > > > +        let size = u64::try_from(inode.size())?;
+> > > > +        let sb = inode.super_block();
+> > > > +
+> > > > +        let copied = if pos >= size {
+> > > > +            0
+> > > > +        } else {
+> > > > +            let offset = inode.data().offset.checked_add(pos).ok_or(ERANGE)?;
+> > > > +            let len = core::cmp::min(size - pos, folio.size().try_into()?);
+> > > > +            let mut foffset = 0;
+> > > > +
+> > > > +            if offset.checked_add(len).ok_or(ERANGE)? > sb.data().data_size {
+> > > > +                return Err(EIO);
+> > > > +            }
+> > > > +
+> > > > +            for v in sb.read(offset, len)? {
+> > > > +                let v = v?;
+> > > > +                folio.write(foffset, v.data())?;
+> > > > +                foffset += v.data().len();
+> > > > +            }
+> > > > +            foffset
+> > > > +        };
+> > > > +
+> > > > +        folio.zero_out(copied, folio.size() - copied)?;
+> > > > +        folio.mark_uptodate();
+> > > > +        folio.flush_dcache();
+> > > > +
+> > > > +        Ok(())
+> > > > +    }
+> > >
+> > > Who unlocks the folio here?
+> >
+> > The `Drop` implementation of `LockedFolio`.
+> >
+> > Note that `read_folio` is given ownership of `folio` (the last
+> > argument), so when it goes out of scope (or when it's explicitly
+> > dropped) its `drop` function is called automatically. You'll its
+> > implementation (and the call to `folio_unlock`) in patch 9.
+>
+> That works for synchronous implementations of read_folio(), but for
+> an asynchronous implementation, we need to unlock the folio once the
+> read completes, typically in the bio completion handler.  What's the
+> plan for that?  Hand ownership of the folio to the bio submission path,
+> which hands it to the bio completion path, which drops the folio?
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Yes, exactly. (I mentioned this in a github comment a few days back:
+https://github.com/Rust-for-Linux/linux/pull/1037#discussion_r1359706872.)
 
---=20
-Cheers,
-Benno
+The code as is doesn't allow a `LockedFolio` to outlive this call but
+we can add support as you described.
+
+Part of the reason support for this isn't included in this series is
+that are no Rust users of the async code path. And we've been told
+repeatedly by Greg and others that we must not add code that isn't
+used yet.
