@@ -1,225 +1,230 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694BD20307;
-	Wed, 18 Oct 2023 15:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDD21A278
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 15:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbbQz7uO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805DDC433CC;
-	Wed, 18 Oct 2023 15:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697642408;
-	bh=lrwp96Hw7hR0NmIZyK9E+Yck2vromf2V4V2XM+YwBrM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbbQz7uOjLBbcJOU77RCqez7qqCnwfeNfFfIy1x/tmueoX47XKwqdFDKFGTvYpH1t
-	 cn0NbHXwsx2nyphvX8w8Q3ImvYRiYty2VZVXAJ1d+XVLtaTlCYYpv4oULvYtcm5Rny
-	 /wU0RJWp/c2MLEjUj1y1/Ooz9i8vFL+l4kkNQFpOv0nGdbXt3eVxUAAdpBt/6mBml8
-	 6jjxz3ST6I+tLONlMYb55FbSGWFD8JB+8lpMK2Q4WHdO/HQDj0x3qkKKYqh8Nay62X
-	 godcax2rXU8iUZewPbVup/dPB3svnE1h6SKIhYXu/80y5yhoXCsEzb6DGO2feHwxVc
-	 B0WAv4z/9WT6A==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Nicolas Schier <n.schier@avm.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Gary Guo <gary@garyguo.net>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Song Liu <song@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	bpf@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [bpf-next PATCH v2 2/4] kbuild: avoid too many execution of scripts/pahole-flags.sh
-Date: Thu, 19 Oct 2023 00:19:48 +0900
-Message-Id: <20231018151950.205265-2-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231018151950.205265-1-masahiroy@kernel.org>
-References: <20231018151950.205265-1-masahiroy@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dQxncbks"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49362116
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 08:38:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1697643497; x=1697902697;
+	bh=GOjMqcIJx0+JWTcTd2nMkWtyAAk/mt7zT7hGLtJQlvY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=dQxncbkssdE3aFTAeLTnvKb5BfySKBnLLYavaW+mhtkdo/h752RM4+Vns4Wob6VjB
+	 3D2YONy/AJJw2ADeYnKRvV/6YRyR48+khcoYrTsgIvW/NYrZf8083aa4aZeFuAgCPU
+	 iE+5TmJHT3f2XjQ/slWvEW9RBhCYEl2y/O1f3puYLOVt9UftSl0BNrsj2A7JSNN+vM
+	 /qySPp5pX4hVFPBq1S1uDk1S1OIgRh4Rs7sMlwiwI0dMhAys//vnB3RdUJMkmsU9Ge
+	 jxkPkVTyNgoPRUeMe9qtqRAM9fckPSrWOZpSRy/8C8y55u2FdqxVpGH8iTUF3znj+z
+	 lDklaufxOJc0w==
+Date: Wed, 18 Oct 2023 15:38:09 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 01/19] rust: fs: add registration/unregistration of file systems
+Message-ID: <ku6rR-zBwLrTfSf1JW07NywKOZFCPMS7nF-mrdBKGJthn7WGBn9lcAQOhoN5V6igk1iGBguGfV5G0PDWQciDQTopf3OYYGt049OJYhsiivk=@proton.me>
+In-Reply-To: <20231018122518.128049-2-wedsonaf@gmail.com>
+References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-2-wedsonaf@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-scripts/pahole-flags.sh is executed so many times.
+On 18.10.23 14:25, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>=20
+> Allow basic registration and unregistration of Rust file system types.
+> Unregistration happens automatically when a registration variable is
+> dropped (e.g., when it goes out of scope).
+>=20
+> File systems registered this way are visible in `/proc/filesystems` but
+> cannot be mounted yet because `init_fs_context` fails.
+>=20
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> ---
+>   rust/bindings/bindings_helper.h |  1 +
+>   rust/kernel/error.rs            |  2 -
+>   rust/kernel/fs.rs               | 80 +++++++++++++++++++++++++++++++++
+>   rust/kernel/lib.rs              |  1 +
+>   4 files changed, 82 insertions(+), 2 deletions(-)
+>   create mode 100644 rust/kernel/fs.rs
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 3b620ae07021..9c23037b33d0 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -8,6 +8,7 @@
+>=20
+>   #include <kunit/test.h>
+>   #include <linux/errname.h>
+> +#include <linux/fs.h>
+>   #include <linux/slab.h>
+>   #include <linux/refcount.h>
+>   #include <linux/wait.h>
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 05fcab6abfe6..e6d7ce46be55 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -320,8 +320,6 @@ pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<=
+*mut T> {
+>   ///     })
+>   /// }
+>   /// ```
+> -// TODO: Remove `dead_code` marker once an in-kernel client is available=
+.
+> -#[allow(dead_code)]
+>   pub(crate) fn from_result<T, F>(f: F) -> T
+>   where
+>       T: From<i16>,
+> diff --git a/rust/kernel/fs.rs b/rust/kernel/fs.rs
+> new file mode 100644
+> index 000000000000..f3fb09db41ba
+> --- /dev/null
+> +++ b/rust/kernel/fs.rs
+> @@ -0,0 +1,80 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Kernel file systems.
+> +//!
+> +//! This module allows Rust code to register new kernel file systems.
+> +//!
+> +//! C headers: [`include/linux/fs.h`](../../include/linux/fs.h)
+> +
+> +use crate::error::{code::*, from_result, to_result, Error};
+> +use crate::types::Opaque;
+> +use crate::{bindings, init::PinInit, str::CStr, try_pin_init, ThisModule=
+};
+> +use core::{marker::PhantomPinned, pin::Pin};
+> +use macros::{pin_data, pinned_drop};
+> +
+> +/// A file system type.
+> +pub trait FileSystem {
+> +    /// The name of the file system type.
+> +    const NAME: &'static CStr;
+> +}
+> +
+> +/// A registration of a file system.
+> +#[pin_data(PinnedDrop)]
+> +pub struct Registration {
+> +    #[pin]
+> +    fs: Opaque<bindings::file_system_type>,
+> +    #[pin]
+> +    _pin: PhantomPinned,
 
-You can check how many times it is invoked during the build, as follows:
+Note that since commit 0b4e3b6f6b79 ("rust: types: make `Opaque` be
+`!Unpin`") you do not need an extra pinned `PhantomPinned` in your struct
+(if you already have a pinned `Opaque`), since `Opaque` already is
+`!Unpin`.
 
-  $ cat <<EOF >> scripts/pahole-flags.sh
-  > echo "scripts/pahole-flags.sh was executed" >&2
-  > EOF
+> +}
+> +
+> +// SAFETY: `Registration` doesn't provide any `&self` methods, so it is =
+safe to pass references
+> +// to it around.
+> +unsafe impl Sync for Registration {}
+> +
+> +// SAFETY: Both registration and unregistration are implemented in C and=
+ safe to be performed
+> +// from any thread, so `Registration` is `Send`.
+> +unsafe impl Send for Registration {}
+> +
+> +impl Registration {
+> +    /// Creates the initialiser of a new file system registration.
+> +    pub fn new<T: FileSystem + ?Sized>(module: &'static ThisModule) -> i=
+mpl PinInit<Self, Error> {
 
-  $ make -s
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-  scripts/pahole-flags.sh was executed
-    [ lots of repeated lines suppressed... ]
+I am a bit curious why you specify `?Sized` here, is it common
+for types that implement `FileSystem` to not be `Sized`?
 
-This scripts is executed more than 20 times during the kernel build
-because PAHOLE_FLAGS is a recursively expanded variable and exported
-to sub-processes.
+Or do you want to use `dyn FileSystem`?
 
-With the GNU Make >= 4.4, it is executed more than 60 times because
-exported variables are also passed to other $(shell ) invocations.
-Without careful coding, it is known to cause an exponential fork
-explosion. [1]
+> +        try_pin_init!(Self {
+> +            _pin: PhantomPinned,
+> +            fs <- Opaque::try_ffi_init(|fs_ptr: *mut bindings::file_syst=
+em_type| {
+> +                // SAFETY: `try_ffi_init` guarantees that `fs_ptr` is va=
+lid for write.
+> +                unsafe { fs_ptr.write(bindings::file_system_type::defaul=
+t()) };
+> +
+> +                // SAFETY: `try_ffi_init` guarantees that `fs_ptr` is va=
+lid for write, and it has
+> +                // just been initialised above, so it's also valid for r=
+ead.
+> +                let fs =3D unsafe { &mut *fs_ptr };
+> +                fs.owner =3D module.0;
+> +                fs.name =3D T::NAME.as_char_ptr();
+> +                fs.init_fs_context =3D Some(Self::init_fs_context_callba=
+ck);
+> +                fs.kill_sb =3D Some(Self::kill_sb_callback);
+> +                fs.fs_flags =3D 0;
+> +
+> +                // SAFETY: Pointers stored in `fs` are static so will li=
+ve for as long as the
+> +                // registration is active (it is undone in `drop`).
+> +                to_result(unsafe { bindings::register_filesystem(fs_ptr)=
+ })
+> +            }),
+> +        })
+> +    }
+> +
+> +    unsafe extern "C" fn init_fs_context_callback(
+> +        _fc_ptr: *mut bindings::fs_context,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| Err(ENOTSUPP))
+> +    }
+> +
+> +    unsafe extern "C" fn kill_sb_callback(_sb_ptr: *mut bindings::super_=
+block) {}
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for Registration {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY: If an instance of `Self` has been successfully create=
+d, a call to
+> +        // `register_filesystem` has necessarily succeeded. So it's ok t=
+o call
+> +        // `unregister_filesystem` on the previously registered fs.
 
-The use of $(shell ) in an exported recursive variable is likely wrong
-because $(shell ) is always evaluated due to the 'export' keyword, and
-the evaluation can occur multiple times by the nature of recursive
-variables.
+I would simply add an invariant on `Registration` that `self.fs` is
+registered, then you do not need such a lengthy explanation here.
 
-Convert the shell script to a Makefile, which is included only when
-CONFIG_DEBUG_INFO_BTF=y.
+--=20
+Cheers,
+Benno
 
-[1]: https://savannah.gnu.org/bugs/index.php?64746
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
-Tested-by: Alan Maguire <alan.maguire@oracle.com>
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
----
-
-Changes in v2:
- - Fix a typo in commit description
- - Update MAINTAINERS
-
- MAINTAINERS             |  2 +-
- Makefile                |  4 +---
- scripts/Makefile.btf    | 19 +++++++++++++++++++
- scripts/pahole-flags.sh | 30 ------------------------------
- 4 files changed, 21 insertions(+), 34 deletions(-)
- create mode 100644 scripts/Makefile.btf
- delete mode 100755 scripts/pahole-flags.sh
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 35977b269d5e..a08d558b1aaa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3742,7 +3742,7 @@ F:	net/sched/act_bpf.c
- F:	net/sched/cls_bpf.c
- F:	samples/bpf/
- F:	scripts/bpf_doc.py
--F:	scripts/pahole-flags.sh
-+F:	scripts/Makefile.btf
- F:	scripts/pahole-version.sh
- F:	tools/bpf/
- F:	tools/lib/bpf/
-diff --git a/Makefile b/Makefile
-index fed9a6cc3665..eaddec67e5e1 100644
---- a/Makefile
-+++ b/Makefile
-@@ -513,8 +513,6 @@ LZ4		= lz4c
- XZ		= xz
- ZSTD		= zstd
- 
--PAHOLE_FLAGS	= $(shell PAHOLE=$(PAHOLE) $(srctree)/scripts/pahole-flags.sh)
--
- CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
- 		  -Wbitwise -Wno-return-void -Wno-unknown-attribute $(CF)
- NOSTDINC_FLAGS :=
-@@ -605,7 +603,6 @@ export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
- export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
- export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
- export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
--export PAHOLE_FLAGS
- 
- # Files to ignore in find ... statements
- 
-@@ -1002,6 +999,7 @@ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
- # include additional Makefiles when needed
- include-y			:= scripts/Makefile.extrawarn
- include-$(CONFIG_DEBUG_INFO)	+= scripts/Makefile.debug
-+include-$(CONFIG_DEBUG_INFO_BTF)+= scripts/Makefile.btf
- include-$(CONFIG_KASAN)		+= scripts/Makefile.kasan
- include-$(CONFIG_KCSAN)		+= scripts/Makefile.kcsan
- include-$(CONFIG_KMSAN)		+= scripts/Makefile.kmsan
-diff --git a/scripts/Makefile.btf b/scripts/Makefile.btf
-new file mode 100644
-index 000000000000..82377e470aed
---- /dev/null
-+++ b/scripts/Makefile.btf
-@@ -0,0 +1,19 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+pahole-ver := $(CONFIG_PAHOLE_VERSION)
-+pahole-flags-y :=
-+
-+# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
-+ifeq ($(call test-le, $(pahole-ver), 121),y)
-+pahole-flags-$(call test-ge, $(pahole-ver), 118)	+= --skip_encoding_btf_vars
-+endif
-+
-+pahole-flags-$(call test-ge, $(pahole-ver), 121)	+= --btf_gen_floats
-+
-+pahole-flags-$(call test-ge, $(pahole-ver), 122)	+= -j
-+
-+pahole-flags-$(CONFIG_PAHOLE_HAS_LANG_EXCLUDE)		+= --lang_exclude=rust
-+
-+pahole-flags-$(call test-ge, $(pahole-ver), 125)	+= --skip_encoding_btf_inconsistent_proto --btf_gen_optimized
-+
-+export PAHOLE_FLAGS := $(pahole-flags-y)
-diff --git a/scripts/pahole-flags.sh b/scripts/pahole-flags.sh
-deleted file mode 100755
-index 728d55190d97..000000000000
---- a/scripts/pahole-flags.sh
-+++ /dev/null
-@@ -1,30 +0,0 @@
--#!/bin/sh
--# SPDX-License-Identifier: GPL-2.0
--
--extra_paholeopt=
--
--if ! [ -x "$(command -v ${PAHOLE})" ]; then
--	exit 0
--fi
--
--pahole_ver=$($(dirname $0)/pahole-version.sh ${PAHOLE})
--
--if [ "${pahole_ver}" -ge "118" ] && [ "${pahole_ver}" -le "121" ]; then
--	# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
--	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_vars"
--fi
--if [ "${pahole_ver}" -ge "121" ]; then
--	extra_paholeopt="${extra_paholeopt} --btf_gen_floats"
--fi
--if [ "${pahole_ver}" -ge "122" ]; then
--	extra_paholeopt="${extra_paholeopt} -j"
--fi
--if [ "${pahole_ver}" -ge "124" ]; then
--	# see PAHOLE_HAS_LANG_EXCLUDE
--	extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
--fi
--if [ "${pahole_ver}" -ge "125" ]; then
--	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_inconsistent_proto --btf_gen_optimized"
--fi
--
--echo ${extra_paholeopt}
--- 
-2.40.1
-
+> +        unsafe { bindings::unregister_filesystem(self.fs.get()) };
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 187d58f906a5..00059b80c240 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -34,6 +34,7 @@
+>   mod allocator;
+>   mod build_assert;
+>   pub mod error;
+> +pub mod fs;
+>   pub mod init;
+>   pub mod ioctl;
+>   #[cfg(CONFIG_KUNIT)]
+> --
+> 2.34.1
+>=20
+>
