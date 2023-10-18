@@ -1,208 +1,180 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99167450E9;
-	Wed, 18 Oct 2023 18:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3E347348;
+	Wed, 18 Oct 2023 18:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m1vlxzje"
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E755F118;
-	Wed, 18 Oct 2023 11:32:48 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d9c1989509bso2713894276.1;
-        Wed, 18 Oct 2023 11:32:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697653968; x=1698258768; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=h65u8wTc43iKX1/MDjpqRaX8azYjY2/nSFDLxF3Zi1Q=;
-        b=m1vlxzjeDsVINFlYrR0iW7BFeCK/XRknv03kUW3zedhwKX/HsqEmd79oOwQTuw8EsN
-         +VqferWYA3CHqkoX+K4FoWU3o0R+dDRduTFymUnWauPjkH4Owgyz9K7upb3XCPI3ocJc
-         cSBBSin0cX7sgjG5XdJMa/4/fXNOyarGEcmpjZ6+iI6daK906vOLvig4gBdRCguQMGXb
-         Pjgt+TK9Vo+gWRtgNIzY9HTuSPze97LZLaQjaUitNyHMqL6M9R1cM8n6dRoXEHcXq9a3
-         RWJA0iqAzCuSYU0h3tlZbl7UP9VYkeQRtlAiZasxTsxRDF5X5u9/kKMUEMiH9VrBco+y
-         g2pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697653968; x=1698258768;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h65u8wTc43iKX1/MDjpqRaX8azYjY2/nSFDLxF3Zi1Q=;
-        b=kr3zP6sQU36Tx9JTU3En6h5jEiY3C5dJjvJ6iWoNKleJ/DgFmW4H6ay1cXmiW+177H
-         7EWc1crc7OPmIi2e2b61KtZaDxGH+TYcK+gn9IjQWLu4QujyFfXsBRBMld7oKb7jatoE
-         2efPkvQyUmLBta2jUdtZHQAdNRg0cZ+oeWgTtw609rc3zfCFk+dyXuAsHU9AXzLNd0xz
-         nWOafX7HaPv5F0rD3gsuDTaLN6Fsj3vB+JuRG8KUnPgd/QvzaIVcu5xlzxtXCJW61z95
-         oXspdc3xtY7KntXkeG3AbdAbIUmq7pQ9b3wqXQkIDrlxpT+0SRfzrrWh0VSJxifMqUN2
-         BE6A==
-X-Gm-Message-State: AOJu0Yy+YAdDYhhEQYQE76W1ppatDKvSSDMBMQeIzFV0TzXk2f/Gt3y+
-	5lYlgQZmFQKVqfGN25md7wJg0jOo09XEkM20vx0=
-X-Google-Smtp-Source: AGHT+IFluTy5gW7IJuF0qYSmhlrpJX9E8iKprtx+i89+q3GSXdq3zUwOjapFJecGgOzIi5tYj9p4ACHZbpugbRJy/IU=
-X-Received: by 2002:a25:ce94:0:b0:d9a:68ef:9d24 with SMTP id
- x142-20020a25ce94000000b00d9a68ef9d24mr126975ybe.14.1697653967929; Wed, 18
- Oct 2023 11:32:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OwmQtJKw"
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2049.outbound.protection.outlook.com [40.107.95.49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CC9F7;
+	Wed, 18 Oct 2023 11:39:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iwT/cYsslehnFX+AXR4e4VZaklxi79wZZcNYzpANLXTeOKGd1VoiZLFAl9bcuFYbLYi5MvOO473oquCwkuv/o/wP84kjiMkmFEpW9H09JvAhv0uEphscmYqDOvIr1gbM0RxpOTW2hh9yA3Vo3yH1TrNdF5MRTJ8cVDoxvMytk25xNrepJx67qaEYVHY339HDzwVwckZcZ+WG9PehIpqLeqfrZeq6qP75VvHzWBLD8Uwe5WqX7NrVk2ptpxH/nb51Fsauj2Bt2gD95VfZqdzWHAoU1aN4+b9YyBAJXeOZuF2df8/LMdMzk6XO185zt2PFyIB1CB+OY3P2pd3gKApGwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OU6nctpme4VBYwdNpPP+ppDPSlae2DuoX26bmDkya8g=;
+ b=SizUYLF//lEiKjwcxHumnVgDJP8puUlJUcUKBy0zyVzz329Bm/6ZNVnr7ziZwrzsQ+NhfXPUuk2/cEDwUuqdfQ4mllsa+rUJnccDxK1PcjMIqVIJpe1wYizQ9OoQg3XUA/V3fCQpDGghrxsGEWmybpqrGM+NSN7f0vJYLWluPJnUrkU+Ng3a6+y8jXiN9zB5vNo8wye60AMyq3LwG424vE3e62f9d0/5mJRFhqnLCeEoh8q1M/+kLnVY9hUwV2JUnp0ngC6Lz7NkkAh6sDip3aUuWm8MV7huwEZXGVo6Q0+zrbmz9rOfBngyulIXrBMPWK2+MlPfQxv1qUWwqBhklg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OU6nctpme4VBYwdNpPP+ppDPSlae2DuoX26bmDkya8g=;
+ b=OwmQtJKwddk3eC52CndBT8qI2qLaQE4F/Fd1E7XhhTFRTt6vef3awybIvbSk3AKfYK352qLf7EuHDoDb2YBp/9EDD/p6WRI/wjzvbchffUgy6LzaZYC9/67xi5xAlTTC3qd8hFbTfElUBroVxX9bkMIchCZyHRXfAvBR4xehpYw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6280.namprd12.prod.outlook.com (2603:10b6:8:a2::11) by
+ IA1PR12MB7759.namprd12.prod.outlook.com (2603:10b6:208:420::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.44; Wed, 18 Oct
+ 2023 18:39:53 +0000
+Received: from DM4PR12MB6280.namprd12.prod.outlook.com
+ ([fe80::5aa2:3605:1718:3332]) by DM4PR12MB6280.namprd12.prod.outlook.com
+ ([fe80::5aa2:3605:1718:3332%7]) with mapi id 15.20.6886.034; Wed, 18 Oct 2023
+ 18:39:52 +0000
+Message-ID: <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
+Date: Wed, 18 Oct 2023 14:39:48 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
+Content-Language: en-US
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-kernel@vger.kernel.org, Rodrigo Siqueira
+ <rodrigo.siqueira@amd.com>, Harry Wentland <harry.wentland@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Arnd Bergmann <arnd@arndb.de>,
+ stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Nick Terrell <terrelln@fb.com>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Kees Cook <keescook@chromium.org>,
+ Zhaoyang Huang <zhaoyang.huang@unisoc.com>, Li Hua
+ <hucool.lihua@huawei.com>, Alexander Potapenko <glider@google.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Rae Moar <rmoar@google.com>,
+ rust-for-linux@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev
+References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
+ <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+In-Reply-To: <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQBPR0101CA0255.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:68::16) To DM4PR12MB6280.namprd12.prod.outlook.com
+ (2603:10b6:8:a2::11)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-10-wedsonaf@gmail.com>
- <ZTATIhi9U6ObAnN7@casper.infradead.org>
-In-Reply-To: <ZTATIhi9U6ObAnN7@casper.infradead.org>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Wed, 18 Oct 2023 15:32:36 -0300
-Message-ID: <CANeycqoWfWJ5bxuh+UWK99D9jYH0cKKy1=ikHJTpY=fP1ZJMrg@mail.gmail.com>
-Subject: Re: [RFC PATCH 09/19] rust: folio: introduce basic support for folios
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6280:EE_|IA1PR12MB7759:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4dc2bcf-2bab-4f3f-431d-08dbd0099de7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	nh1d9aWG59PxpJzKHLDyKN2xy3VVPnqbKEmk0YAi/e8H2/RxIK7dMdRuLsZFZUJpBZ+ebZa8qsFAXmYHClCEL9GbJRDkAv631tpqw0MXUV50slTEdnM8Uypc6Kr/pg2ulcKcRlF+xmhOkBRvZ6o6558gNu65dshbUY4f4vC4ek5akrM3Z9/R/yX8SGPgTJ0fT6n91G1tJLUQS1ZNjEw2epWSYHXFP2ml4xFupnG7DM3H8QA0Wpbqm2RMvrLHycXBwgfS6xm2ThP4KduiNvPcmC7H7M4nZu+MtysYBzyoD8KJK1TKdomzgc0mlSR9gkanI7XojZFJPzE+6IV9k0AF4oXiLWMvqczwGamxpr5FQAD9cQDwJQzs/fTY31FfXZxsA+mgXQqK1RyXbvU8KS3v8t8R5M1RYRFLBty7xYfMTYCgIaymINR6KfS1LTEo5DXKhMBhGslefu5IytgB7Bh19UifR8gCifw7QOlLx7IwsHGON0oiBKM4WHorPAuYpHLgHvlIVL3UyYLng0HOjuWZQKyXsMf6zCRzuYHkghN6CBc+nOk2wL2EvYUtLX+foHs/NNFcRPqD7rMXFW/tQznQZvF2uHFcwb3MAU7Ima/nnUOXaLq1Yj2+B17540L1V2jAg1l02BRBtJ6OywU7STb28Q==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6280.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(39860400002)(366004)(136003)(376002)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(6486002)(6916009)(2616005)(26005)(66556008)(66476007)(54906003)(66946007)(4326008)(8936002)(8676002)(316002)(53546011)(6512007)(36756003)(2906002)(478600001)(31696002)(6666004)(7416002)(6506007)(86362001)(83380400001)(5660300002)(38100700002)(31686004)(44832011)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aEhBcUlKeHF2WjRIcHR4Ym5MazVyUWVOVVRScHZGUXFLVjZKTGRFVjI2L3U3?=
+ =?utf-8?B?Ty85SGtpSlloQzhyeDRXRWxnZC8rWWxSd1FaRk15TkYwOUdvbjR0OU1ZOHJs?=
+ =?utf-8?B?U2I0c2MyVFdYczlUOWthblp5UjVvNE0xMkZyNVdsWFE0QUdvSy9UUXVTdkZT?=
+ =?utf-8?B?L2trSDFKUktpLzlEcnRhaFZFdWVuRmFPNnBKYWYzY2MxN1ptWGtUQ1J2NEIr?=
+ =?utf-8?B?Q1hjN3pXdmNNSmw0WE5mQ081Zmk4ZzU1RnJ3NktZWlVSNTZhQXZxdzR5OFFa?=
+ =?utf-8?B?VTFYQUFtaGFLYlZrd2t5ZHBCV2RXWGlRTlYzbkxZa21pdlEzQ2xJQzdxcVp1?=
+ =?utf-8?B?NWgrcXBNWTdFTUdnU0dRbmQ5TmY4NHFma2pOdmFEOGd3VFdtSkN3cng5bVh6?=
+ =?utf-8?B?cjRyVVdua0pLdHRicUd4LzByM20wQkJTT2FCaUw1TzNoWmIyUGd5Ti9vL0l5?=
+ =?utf-8?B?VVV6cTFVSzY2NklCa055eHNucDcyU2UyODY3K0k1b0FoUkdYelUvQlF0Y1hI?=
+ =?utf-8?B?RlJhYXorN3VsQVVEMHM3dzh4OGNyWFVhZ3UzdU9BZENzdDZyQmgzMnhXd2Za?=
+ =?utf-8?B?cHNQKzBQZVJVWit2bEE2ZjZVa1duK3lDUVY2ZEVQbWRWRWdQRWJCby9LVDNx?=
+ =?utf-8?B?UXI0WENIMVZtNVZNTTBkR3RDSUQ0ajFkZVh2OWRtYkpFRVZONGFiRDVSVCts?=
+ =?utf-8?B?Y21BcEh4SXhiQVE2SytUaC9VSUlDalNPNmZLUzVkY3o0b2h5b0ZxTzVBZWJB?=
+ =?utf-8?B?SEJjU2Vtc0VLSnhIMlhUaVR1d0p1cU5nd1VzTzBTNkdRWmQ0dlBETmZJdldx?=
+ =?utf-8?B?VVU0OUxodVFTendxSEM4MG1lcWM1ckpaUmJHb1N0SGh6L245MjczWjBKeFpv?=
+ =?utf-8?B?UDlERlp0RHhvaERodlQ3S01TRFhONzR4WmUxZXlRd3o2a1pxc05wZW9pOERk?=
+ =?utf-8?B?OUdEazhjd0RqcTY5R2tJWnduc0dhZ3d1MkdzanczVEhlOFVYZmJRZzhHT2Vm?=
+ =?utf-8?B?dnZjSy8rc3dDb1FnYjcvYUpOZGtxaHltZHo3SmprYmtzTElDNlEwS2FWcDRC?=
+ =?utf-8?B?c2F3TFc5K1BQeUFLMVY3QVhrRDBndWRWSEtaTTlub0xBYm5XU242bDh0Tkg1?=
+ =?utf-8?B?UDdUdUtpZkJpYmF6UFNrM2dUM20yS0NkSHRnaDJ5anRpMEE0b0h2enova0tu?=
+ =?utf-8?B?M2JwN1UwOWwrdnoyMHVLL28reDVEVTJGSk10SzVlME9oT3pvQU9qeGR1cDhF?=
+ =?utf-8?B?NjZKZTB6NytyWkxsdlp1VUZPNFZCMUFtWEtwbXZKUENSci95eGNPZ3hwM2RU?=
+ =?utf-8?B?N1d2OVJpQ3MzaHVReHg1SW0xUGZneGdGYmZQNkxCMUFUNXFGa0lxeVdSV0pH?=
+ =?utf-8?B?dUJtOWtWLzlyN1Buak1aeHFRWGVHMUNkMW5WNUlPZ1hvckFqZ0NnK1UvemtS?=
+ =?utf-8?B?OFY5dUNLTXNBTWc1cy83L1BoZXhvVlIyTnR6aEx5RGpPQ3RodFZxRlFpNnV3?=
+ =?utf-8?B?aVo1eGgzY2FpOVlNNVYzcUFub2lCdERGczUyZG8vNGZON1RkMGZUMjBjQUZa?=
+ =?utf-8?B?Rkl6R0dZbnlYYlQxM1NVQnl5TUN4N1RrVXRvQjg5SVE3SzVFR0dST1ArWjE4?=
+ =?utf-8?B?NXU1VmFOaURPZlBadENvOG5xZ242bCtHS1lVL3BzOWhqVGVxbFRUcmdlN0o1?=
+ =?utf-8?B?UllJY3JSd1NkTDB0bGExaHJ3dmN0R0g2QmdZaERFUUl0YitZQ1kzMGVxaFVy?=
+ =?utf-8?B?Uy9TZGdaZWVqR2tqVVkxcUczV0dOWW53UTl6bkFaVDExcXZER1hQMDFzNHJC?=
+ =?utf-8?B?S0xhazZEdjBTM2FnUjdDV2hRajV4S0RzQll3WFdwa05HZUp3UFNvUGNhMkpV?=
+ =?utf-8?B?QlZUbGtEbHd4a3JwVnBFS1E1Mll5R3NzanllM1RPaWZLS0ZCUXdKUm84K1NW?=
+ =?utf-8?B?Z2JTQTJITFlzUUJlbmJna1hwdXVxb1YwUW5OczZkVDJibDJKbzBNRGk4UjVV?=
+ =?utf-8?B?Q2VGd3duc0h1TmRHRkdFN1cxSUQ5a29CYTI2YVBnekFqaG9lYWhsU0hkTW5y?=
+ =?utf-8?B?TEZ4eG8vSmpYMmtwZjREalNTd2dvQ0hNOUhGVGJaQ1hLZUFiWlIrRjA3eDJu?=
+ =?utf-8?Q?f5UPbdn/fMl31rSoUa9jVNofW?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4dc2bcf-2bab-4f3f-431d-08dbd0099de7
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6280.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2023 18:39:52.7230
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PZjSgYglR0s5ZTXu8GLHDWLG67Pmzgq+hnEDwAi+9MLjp8O2mrhfbjOWE/zaNxL8DbZ9VOAlybzlefA/4pFWBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7759
 
-On Wed, 18 Oct 2023 at 14:17, Matthew Wilcox <willy@infradead.org> wrote:
->
-> On Wed, Oct 18, 2023 at 09:25:08AM -0300, Wedson Almeida Filho wrote:
-> > +void *rust_helper_kmap(struct page *page)
-> > +{
-> > +     return kmap(page);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_kmap);
-> > +
-> > +void rust_helper_kunmap(struct page *page)
-> > +{
-> > +     kunmap(page);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_kunmap);
->
-> I'm not thrilled by exposing kmap()/kunmap() to Rust code.  The vast
-> majority of code really only needs kmap_local_*() / kunmap_local().
-> Can you elaborate on why you need the old kmap() in new Rust code?
+On 10/18/23 14:29, Geert Uytterhoeven wrote:
+> Hi Hamza,
+> 
+> On Wed, Oct 18, 2023 at 8:24 PM Hamza Mahfooz <hamza.mahfooz@amd.com> wrote:
+>> With every release of LLVM, both of these sanitizers eat up more and
+>> more of the stack. So, set FRAME_WARN to 0 if either of them is enabled
+>> for a given build.
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+> 
+> Thanks for your patch!
+> 
+>> --- a/lib/Kconfig.debug
+>> +++ b/lib/Kconfig.debug
+>> @@ -429,11 +429,10 @@ endif # DEBUG_INFO
+>>   config FRAME_WARN
+>>          int "Warn for stack frames larger than"
+>>          range 0 8192
+>> -       default 0 if KMSAN
+>> +       default 0 if KASAN || KCSAN || KMSAN
+> 
+> Are kernels with KASAN || KCSAN || KMSAN enabled supposed to be bootable?
 
-The difficulty we have with kmap_local_*() has to do with the
-requirement that maps and unmaps need to be nested neatly. For
-example:
+They are all intended to be used for runtime debugging, so I'd imagine so.
 
-let a = folio1.map_local(...);
-let b = folio2.map_local(...);
-// Do something with `a` and `b`.
-drop(a);
-drop(b);
+> Stack overflows do cause crashes.
 
-The code obviously violates the requirements.
+It is worth noting that FRAME_WARN has been disabled for KMSAN for quite
+a while and as far as I can tell no one has complained.
 
-One way to enforce the rule is Rust is to use closures, so the code
-above would be:
+> 
+>>          default 2048 if GCC_PLUGIN_LATENT_ENTROPY
+>>          default 2048 if PARISC
+>>          default 1536 if (!64BIT && XTENSA)
+>> -       default 1280 if KASAN && !64BIT
+>>          default 1024 if !64BIT
+>>          default 2048 if 64BIT
+>>          help
+> 
+> Gr{oetje,eeting}s,
+> 
+>                          Geert
+> 
+-- 
+Hamza
 
-folio1.map_local(..., |a| {
-    folio2.map_local(..., |b| {
-        // Do something with `a` and `b`.
-    })
-})
-
-It isn't ergonomic the first option, but allows us to satisfy the
-nesting requirement.
-
-Any chance we can relax that requirement?
-
-(If not, and we really want to get rid of the non-local function, we
-can fall back to the closure-based implementation. In fact, you'll
-find that in this patch I already do this for a private function that
-used when writing into the folio, we could just make a version of it
-public.)
-
-> > +void rust_helper_folio_set_error(struct folio *folio)
-> > +{
-> > +     folio_set_error(folio);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_folio_set_error);
->
-> I'm trying to get rid of the error flag.  Can you share the situations
-> in which you've needed the error flag?  Or is it just copying existing
-> practices?
-
-I'm just mimicking C code. Happy to remove it.
-
-> > +    /// Returns the byte position of this folio in its file.
-> > +    pub fn pos(&self) -> i64 {
-> > +        // SAFETY: The folio is valid because the shared reference implies a non-zero refcount.
-> > +        unsafe { bindings::folio_pos(self.0.get()) }
-> > +    }
->
-> I think it's a mistake to make file positions an i64.  I estimate 64
-> bits will not be enough by 2035-2040.  We should probably have a numeric
-> type which is i64 on 32-bit and isize on other CPUs (I also project
-> 64-bit pointers will be insufficient by 2035-2040 and so we will have
-> 128-bit pointers around the same time, so we're not going to need i128
-> file offsets with i64 pointers).
-
-I'm also just mimicking C here -- we just don't have a type that has
-the properties you describe. I'm happy to switch once we have it, in
-fact, Miguel has plans that I believe align well with what you want.
-I'm not sure if he has already contacted you about it yet though.
-
-> > +/// A [`Folio`] that has a single reference to it.
-> > +pub struct UniqueFolio(pub(crate) ARef<Folio>);
->
-> How do we know it only has a single reference?  Do you mean "has at
-> least one reference"?  Or am I confusing Rust's notion of a reference
-> with Linux's notion of a reference?
-
-Instances of `UniqueFolio` are only produced by calls to
-`folio_alloc`. They encode the fact that it's safe for us to map the
-folio and know that there aren't any concurrent threads/CPUs doing the
-same to the same folio.
-
-Naturally, if you to increment the refcount on this folio and share it
-with other threads/CPUs, it's no longer unique. So we don't allow it.
-
-This is only used when using a synchronous bio to read blocks from a
-block device while setting up a new superblock, in particular, to read
-the superblock itself.
-
->
-> > +impl UniqueFolio {
-> > +    /// Maps the contents of a folio page into a slice.
-> > +    pub fn map_page(&self, page_index: usize) -> Result<MapGuard<'_>> {
-> > +        if page_index >= self.0.size() / bindings::PAGE_SIZE {
-> > +            return Err(EDOM);
-> > +        }
-> > +
-> > +        // SAFETY: We just checked that the index is within bounds of the folio.
-> > +        let page = unsafe { bindings::folio_page(self.0 .0.get(), page_index) };
-> > +
-> > +        // SAFETY: `page` is valid because it was returned by `folio_page` above.
-> > +        let ptr = unsafe { bindings::kmap(page) };
->
-> Surely this can be:
->
->            let ptr = unsafe { bindings::kmap_local_folio(folio, page_index * PAGE_SIZE) };
-
-The problem is the unmap path that can happen at arbitrary order in
-Rust, see my comment above.
-
->
-> > +        // SAFETY: We just mapped `ptr`, so it's valid for read.
-> > +        let data = unsafe { core::slice::from_raw_parts(ptr.cast::<u8>(), bindings::PAGE_SIZE) };
->
-> Can we hide away the "if this isn't a HIGHMEM system, this maps to the
-> end of the folio, but if it is, it only maps to the end of the page"
-> problem here?
-
-Do you have ideas on how this might look like? (Don't worry about
-Rust, just express it in some pseudo-C and we'll see if you can
-express it in Rust.)
-
-My approach here was to be conservative, since the common denominator
-was "maps to the end of the page", that's what I have.
-
-One possible way to do it with Rust would be an "Iterator" -- in
-HIGHMEM it would return one item per page, otherwise it would return a
-single item. (We have something similar for reading arbitrary ranges
-of a block device, it's broken up into several chunks, so we return an
-iterator.)
