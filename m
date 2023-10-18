@@ -1,230 +1,93 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDD21A278
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 15:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01665347D0;
+	Wed, 18 Oct 2023 15:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dQxncbks"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49362116
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 08:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1697643497; x=1697902697;
-	bh=GOjMqcIJx0+JWTcTd2nMkWtyAAk/mt7zT7hGLtJQlvY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dQxncbkssdE3aFTAeLTnvKb5BfySKBnLLYavaW+mhtkdo/h752RM4+Vns4Wob6VjB
-	 3D2YONy/AJJw2ADeYnKRvV/6YRyR48+khcoYrTsgIvW/NYrZf8083aa4aZeFuAgCPU
-	 iE+5TmJHT3f2XjQ/slWvEW9RBhCYEl2y/O1f3puYLOVt9UftSl0BNrsj2A7JSNN+vM
-	 /qySPp5pX4hVFPBq1S1uDk1S1OIgRh4Rs7sMlwiwI0dMhAys//vnB3RdUJMkmsU9Ge
-	 jxkPkVTyNgoPRUeMe9qtqRAM9fckPSrWOZpSRy/8C8y55u2FdqxVpGH8iTUF3znj+z
-	 lDklaufxOJc0w==
-Date: Wed, 18 Oct 2023 15:38:09 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 01/19] rust: fs: add registration/unregistration of file systems
-Message-ID: <ku6rR-zBwLrTfSf1JW07NywKOZFCPMS7nF-mrdBKGJthn7WGBn9lcAQOhoN5V6igk1iGBguGfV5G0PDWQciDQTopf3OYYGt049OJYhsiivk=@proton.me>
-In-Reply-To: <20231018122518.128049-2-wedsonaf@gmail.com>
-References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-2-wedsonaf@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOBM6IcD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DC7C433C7;
+	Wed, 18 Oct 2023 15:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697644556;
+	bh=QOxEFIuVVtPbHt6SDOXDaVCFqda4cdEMS/w7hpcXpcY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cOBM6IcDPq8PDGVpDXBEVv2ba4ZO3hdCRkDH99bm77Lm0p9dV07OIINqZGvUli5kW
+	 393SvZ2692e9Fm6JpK5M+pUYen/CfJ8cEkLgIPpHSnc8ZPsZUSzrEZKLTYOYIZXuws
+	 zctziMrDbUICAaZl8dzV9yyBm3Ij9I8MuBfYGe0x+ipPe2748ZDpdQebMcGCmuE8Ei
+	 RR2qjbaefdWlVhex7QO6OKYUhHCfKVR68q/klDBXpBimYRdUJA58dK2GK45ZJqLz+4
+	 5+4o702K+xpZPiVl6aK/cZgGZlX5jTGz3K0JHczF50iUsNM0qQ5+1pu7AYvcsO2PmN
+	 1kShxUpTolNRA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] rust: docs: fix logo replacement
+Date: Wed, 18 Oct 2023 17:55:27 +0200
+Message-ID: <20231018155527.1015059-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+Content-Transfer-Encoding: 8bit
 
-On 18.10.23 14:25, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->=20
-> Allow basic registration and unregistration of Rust file system types.
-> Unregistration happens automatically when a registration variable is
-> dropped (e.g., when it goes out of scope).
->=20
-> File systems registered this way are visible in `/proc/filesystems` but
-> cannot be mounted yet because `init_fs_context` fails.
->=20
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->   rust/bindings/bindings_helper.h |  1 +
->   rust/kernel/error.rs            |  2 -
->   rust/kernel/fs.rs               | 80 +++++++++++++++++++++++++++++++++
->   rust/kernel/lib.rs              |  1 +
->   4 files changed, 82 insertions(+), 2 deletions(-)
->   create mode 100644 rust/kernel/fs.rs
->=20
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 3b620ae07021..9c23037b33d0 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -8,6 +8,7 @@
->=20
->   #include <kunit/test.h>
->   #include <linux/errname.h>
-> +#include <linux/fs.h>
->   #include <linux/slab.h>
->   #include <linux/refcount.h>
->   #include <linux/wait.h>
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 05fcab6abfe6..e6d7ce46be55 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -320,8 +320,6 @@ pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<=
-*mut T> {
->   ///     })
->   /// }
->   /// ```
-> -// TODO: Remove `dead_code` marker once an in-kernel client is available=
-.
-> -#[allow(dead_code)]
->   pub(crate) fn from_result<T, F>(f: F) -> T
->   where
->       T: From<i16>,
-> diff --git a/rust/kernel/fs.rs b/rust/kernel/fs.rs
-> new file mode 100644
-> index 000000000000..f3fb09db41ba
-> --- /dev/null
-> +++ b/rust/kernel/fs.rs
-> @@ -0,0 +1,80 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Kernel file systems.
-> +//!
-> +//! This module allows Rust code to register new kernel file systems.
-> +//!
-> +//! C headers: [`include/linux/fs.h`](../../include/linux/fs.h)
-> +
-> +use crate::error::{code::*, from_result, to_result, Error};
-> +use crate::types::Opaque;
-> +use crate::{bindings, init::PinInit, str::CStr, try_pin_init, ThisModule=
-};
-> +use core::{marker::PhantomPinned, pin::Pin};
-> +use macros::{pin_data, pinned_drop};
-> +
-> +/// A file system type.
-> +pub trait FileSystem {
-> +    /// The name of the file system type.
-> +    const NAME: &'static CStr;
-> +}
-> +
-> +/// A registration of a file system.
-> +#[pin_data(PinnedDrop)]
-> +pub struct Registration {
-> +    #[pin]
-> +    fs: Opaque<bindings::file_system_type>,
-> +    #[pin]
-> +    _pin: PhantomPinned,
+The static files placement by `rustdoc` changed in Rust 1.67.0 [1],
+but the custom code we have to replace the logo in the generated
+HTML files did not get updated.
 
-Note that since commit 0b4e3b6f6b79 ("rust: types: make `Opaque` be
-`!Unpin`") you do not need an extra pinned `PhantomPinned` in your struct
-(if you already have a pinned `Opaque`), since `Opaque` already is
-`!Unpin`.
+Thus update it to have the Linux logo again in the output.
 
-> +}
-> +
-> +// SAFETY: `Registration` doesn't provide any `&self` methods, so it is =
-safe to pass references
-> +// to it around.
-> +unsafe impl Sync for Registration {}
-> +
-> +// SAFETY: Both registration and unregistration are implemented in C and=
- safe to be performed
-> +// from any thread, so `Registration` is `Send`.
-> +unsafe impl Send for Registration {}
-> +
-> +impl Registration {
-> +    /// Creates the initialiser of a new file system registration.
-> +    pub fn new<T: FileSystem + ?Sized>(module: &'static ThisModule) -> i=
-mpl PinInit<Self, Error> {
+Hopefully `rustdoc` will eventually support a custom logo from
+a local file [2], so that we do not need to maintain this hack
+on our side.
 
-I am a bit curious why you specify `?Sized` here, is it common
-for types that implement `FileSystem` to not be `Sized`?
+Link: https://github.com/rust-lang/rust/pull/101702 [1]
+Link: https://github.com/rust-lang/rfcs/pull/3226 [2]
+Fixes: 3ed03f4da06e ("rust: upgrade to Rust 1.68.2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/Makefile | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-Or do you want to use `dyn FileSystem`?
+diff --git a/rust/Makefile b/rust/Makefile
+index 87958e864be0..08af1f869f0c 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -93,15 +93,14 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+ # and then retouch the generated files.
+ rustdoc: rustdoc-core rustdoc-macros rustdoc-compiler_builtins \
+     rustdoc-alloc rustdoc-kernel
+-	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)
+-	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)
++	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)/static.files/
++	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)/static.files/
+ 	$(Q)find $(rustdoc_output) -name '*.html' -type f -print0 | xargs -0 sed -Ei \
+-		-e 's:rust-logo\.svg:logo.svg:g' \
+-		-e 's:rust-logo\.png:logo.svg:g' \
+-		-e 's:favicon\.svg:logo.svg:g' \
+-		-e 's:<link rel="alternate icon" type="image/png" href="[./]*favicon-(16x16|32x32)\.png">::g'
+-	$(Q)echo '.logo-container > img { object-fit: contain; }' \
+-		>> $(rustdoc_output)/rustdoc.css
++		-e 's:rust-logo-[0-9a-f]+\.svg:logo.svg:g' \
++		-e 's:favicon-[0-9a-f]+\.svg:logo.svg:g' \
++		-e 's:<link rel="alternate icon" type="image/png" href="[/.]+/static\.files/favicon-(16x16|32x32)-[0-9a-f]+\.png">::g'
++	$(Q)for f in $(rustdoc_output)/static.files/rustdoc-*.css; do \
++		echo ".logo-container > img { object-fit: contain; }" >> $$f; done
+ 
+ rustdoc-macros: private rustdoc_host = yes
+ rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
+-- 
+2.42.0
 
-> +        try_pin_init!(Self {
-> +            _pin: PhantomPinned,
-> +            fs <- Opaque::try_ffi_init(|fs_ptr: *mut bindings::file_syst=
-em_type| {
-> +                // SAFETY: `try_ffi_init` guarantees that `fs_ptr` is va=
-lid for write.
-> +                unsafe { fs_ptr.write(bindings::file_system_type::defaul=
-t()) };
-> +
-> +                // SAFETY: `try_ffi_init` guarantees that `fs_ptr` is va=
-lid for write, and it has
-> +                // just been initialised above, so it's also valid for r=
-ead.
-> +                let fs =3D unsafe { &mut *fs_ptr };
-> +                fs.owner =3D module.0;
-> +                fs.name =3D T::NAME.as_char_ptr();
-> +                fs.init_fs_context =3D Some(Self::init_fs_context_callba=
-ck);
-> +                fs.kill_sb =3D Some(Self::kill_sb_callback);
-> +                fs.fs_flags =3D 0;
-> +
-> +                // SAFETY: Pointers stored in `fs` are static so will li=
-ve for as long as the
-> +                // registration is active (it is undone in `drop`).
-> +                to_result(unsafe { bindings::register_filesystem(fs_ptr)=
- })
-> +            }),
-> +        })
-> +    }
-> +
-> +    unsafe extern "C" fn init_fs_context_callback(
-> +        _fc_ptr: *mut bindings::fs_context,
-> +    ) -> core::ffi::c_int {
-> +        from_result(|| Err(ENOTSUPP))
-> +    }
-> +
-> +    unsafe extern "C" fn kill_sb_callback(_sb_ptr: *mut bindings::super_=
-block) {}
-> +}
-> +
-> +#[pinned_drop]
-> +impl PinnedDrop for Registration {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        // SAFETY: If an instance of `Self` has been successfully create=
-d, a call to
-> +        // `register_filesystem` has necessarily succeeded. So it's ok t=
-o call
-> +        // `unregister_filesystem` on the previously registered fs.
-
-I would simply add an invariant on `Registration` that `self.fs` is
-registered, then you do not need such a lengthy explanation here.
-
---=20
-Cheers,
-Benno
-
-> +        unsafe { bindings::unregister_filesystem(self.fs.get()) };
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 187d58f906a5..00059b80c240 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -34,6 +34,7 @@
->   mod allocator;
->   mod build_assert;
->   pub mod error;
-> +pub mod fs;
->   pub mod init;
->   pub mod ioctl;
->   #[cfg(CONFIG_KUNIT)]
-> --
-> 2.34.1
->=20
->
