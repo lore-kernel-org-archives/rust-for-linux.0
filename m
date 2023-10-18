@@ -1,101 +1,72 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6BB3D984;
-	Wed, 18 Oct 2023 17:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645753C072
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 17:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UIQBdSCq"
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E64E35AC;
-	Wed, 18 Oct 2023 10:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NJ1BTP4enJNNNxCONLlghXCw4BKj6HZF59i7tPQQ3q4=; b=UIQBdSCq8VXUQ0YaI2sU7iCwpN
-	XO0OCWPf1TJbyHOFpE+2uvC11vloGWvOX+//b9ffLb2iKLoG75cmtiqNgUHxjkmZ0CZseXZ0n17pS
-	0YImBIUPE0Xo+0+qNVUmdq2lvv5Xq9bNxrSq5H3v0cunVktjL6aofUJeXBdpk8gdFQzqWhQBUCm72
-	fQUpazpLJchjdI0ZOM036PhyTnAKwNIPWKlnFK33DLQIvLVUnhjAhOywhErm6XAsHaG2l7ILbvHi+
-	g3noZWD5ZuAVYc5J9F8P0jWWvOuxDKTDF72Smp0VhjlcHPiwuLFNhDIfibnK1U97dv+D13XfJ8l3i
-	SSZY17Sg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qtADJ-0027gQ-Vj; Wed, 18 Oct 2023 17:20:10 +0000
-Date: Wed, 18 Oct 2023 18:20:09 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 19/19] tarfs: introduce tar fs
-Message-ID: <ZTATyXETyGeAVSxd@casper.infradead.org>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-20-wedsonaf@gmail.com>
- <ZTAOfMvegVAc58Yn@casper.infradead.org>
- <CANeycqqTgj_cVyRx1ZvGFjZjK0ACBUPobDk93ovP41DSXK2Xmg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="jgsUpik+"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A11119
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 10:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=bukk2el6ffc2jlr6cnysroyswa.protonmail; t=1697651532; x=1697910732;
+	bh=7YLZ6YBfW+uBf8TkCH/eJD44OCqiSuRU6iHamk93ONY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=jgsUpik+1bG0rtK7LxUJo4oXvzPZDqpiKWw93hIvyK6zyVQ2zgu2uz0qPlMz/AYaY
+	 UmBHKWJ7oJ+EvoOfYOG9KeDoS9lqqAx3X7tOruBfPaT+JW3VKqCCY4gXfYn4MRNq45
+	 BuTkyhxGJOtxW2a+I0q0lvoFSTcy7TiupGGxZ88O/1dz3Kia6NuFG67Qr5vNMyVfvo
+	 cZ5tNFMG50E0ldFjpg1CYCl/8YiRi0Gx+CLQ8zayOLDwdRrf8Rv81TFkxX7aa94NVY
+	 sSr9n5pi3cUsFQO8l6nv5DyhVBMRQvhGPi0cDCbCh9UtAw0tNls3GmqscCDua4bijT
+	 66RxZa2+sjBxg==
+Date: Wed, 18 Oct 2023 17:51:55 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: docs: fix logo replacement
+Message-ID: <d1107a9c-87b1-4571-841c-04bc60083f85@proton.me>
+In-Reply-To: <20231018155527.1015059-1-ojeda@kernel.org>
+References: <20231018155527.1015059-1-ojeda@kernel.org>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANeycqqTgj_cVyRx1ZvGFjZjK0ACBUPobDk93ovP41DSXK2Xmg@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Oct 18, 2023 at 02:05:51PM -0300, Wedson Almeida Filho wrote:
-> On Wed, 18 Oct 2023 at 13:57, Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Wed, Oct 18, 2023 at 09:25:18AM -0300, Wedson Almeida Filho wrote:
-> > > +    fn read_folio(inode: &INode<Self>, mut folio: LockedFolio<'_>) -> Result {
-> > > +        let pos = u64::try_from(folio.pos()).unwrap_or(u64::MAX);
-> > > +        let size = u64::try_from(inode.size())?;
-> > > +        let sb = inode.super_block();
-> > > +
-> > > +        let copied = if pos >= size {
-> > > +            0
-> > > +        } else {
-> > > +            let offset = inode.data().offset.checked_add(pos).ok_or(ERANGE)?;
-> > > +            let len = core::cmp::min(size - pos, folio.size().try_into()?);
-> > > +            let mut foffset = 0;
-> > > +
-> > > +            if offset.checked_add(len).ok_or(ERANGE)? > sb.data().data_size {
-> > > +                return Err(EIO);
-> > > +            }
-> > > +
-> > > +            for v in sb.read(offset, len)? {
-> > > +                let v = v?;
-> > > +                folio.write(foffset, v.data())?;
-> > > +                foffset += v.data().len();
-> > > +            }
-> > > +            foffset
-> > > +        };
-> > > +
-> > > +        folio.zero_out(copied, folio.size() - copied)?;
-> > > +        folio.mark_uptodate();
-> > > +        folio.flush_dcache();
-> > > +
-> > > +        Ok(())
-> > > +    }
-> >
-> > Who unlocks the folio here?
-> 
-> The `Drop` implementation of `LockedFolio`.
-> 
-> Note that `read_folio` is given ownership of `folio` (the last
-> argument), so when it goes out of scope (or when it's explicitly
-> dropped) its `drop` function is called automatically. You'll its
-> implementation (and the call to `folio_unlock`) in patch 9.
+On 18.10.23 17:55, Miguel Ojeda wrote:
+> The static files placement by `rustdoc` changed in Rust 1.67.0 [1],
+> but the custom code we have to replace the logo in the generated
+> HTML files did not get updated.
+>=20
+> Thus update it to have the Linux logo again in the output.
+>=20
+> Hopefully `rustdoc` will eventually support a custom logo from
+> a local file [2], so that we do not need to maintain this hack
+> on our side.
+>=20
+> Link: https://github.com/rust-lang/rust/pull/101702 [1]
+> Link: https://github.com/rust-lang/rfcs/pull/3226 [2]
+> Fixes: 3ed03f4da06e ("rust: upgrade to Rust 1.68.2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-That works for synchronous implementations of read_folio(), but for
-an asynchronous implementation, we need to unlock the folio once the
-read completes, typically in the bio completion handler.  What's the
-plan for that?  Hand ownership of the folio to the bio submission path,
-which hands it to the bio completion path, which drops the folio?
+Works for me.
+
+Tested-by: Benno Lossin <benno.lossin@proton.me>
+
+--=20
+Cheers,
+Benno
+
+
