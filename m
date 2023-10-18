@@ -1,415 +1,225 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6746538BA8
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 15:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694BD20307;
+	Wed, 18 Oct 2023 15:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZArW5i6Y"
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0D8F7
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Oct 2023 08:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1697641682; x=1697900882;
-	bh=+IKFV6e5sIzuS8thFVUuReFSKW1fjaZxUO9mhGaa0gY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=ZArW5i6YdG8AJzi6Rzz6d4VR+Mhf5/34g02G3/4xX1el5jO2QAxHOY95bq9u6aqv2
-	 w9qfr65vhT7OGJvEqDTpdopM5SWkLC6ulaab8iivGSHhpR+TZmfOuRcJ8G+MuCgqVY
-	 RzNh7wpVVNuC+0tP8Vo8W6ELtUV77sTiqATQ0w/OW4clmCE7fHL+lRmhKtbaQ4NB3N
-	 DdNtyMjS0YIskaKkZ9sfrbqfkNZi69onoOQF/vEERNRrH1aM3ynfcU9cMCuREKHqxT
-	 hL72b/OdIz2VB0+dmv0PKMwAZluYNXCoT3JFCuAR65jbR+jZhSuWVUZEz71qwMp7Vm
-	 diln6fC6nzeXQ==
-Date: Wed, 18 Oct 2023 15:07:52 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY drivers
-Message-ID: <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
-In-Reply-To: <20231017113014.3492773-2-fujita.tomonori@gmail.com>
-References: <20231017113014.3492773-1-fujita.tomonori@gmail.com> <20231017113014.3492773-2-fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbbQz7uO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805DDC433CC;
+	Wed, 18 Oct 2023 15:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697642408;
+	bh=lrwp96Hw7hR0NmIZyK9E+Yck2vromf2V4V2XM+YwBrM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bbbQz7uOjLBbcJOU77RCqez7qqCnwfeNfFfIy1x/tmueoX47XKwqdFDKFGTvYpH1t
+	 cn0NbHXwsx2nyphvX8w8Q3ImvYRiYty2VZVXAJ1d+XVLtaTlCYYpv4oULvYtcm5Rny
+	 /wU0RJWp/c2MLEjUj1y1/Ooz9i8vFL+l4kkNQFpOv0nGdbXt3eVxUAAdpBt/6mBml8
+	 6jjxz3ST6I+tLONlMYb55FbSGWFD8JB+8lpMK2Q4WHdO/HQDj0x3qkKKYqh8Nay62X
+	 godcax2rXU8iUZewPbVup/dPB3svnE1h6SKIhYXu/80y5yhoXCsEzb6DGO2feHwxVc
+	 B0WAv4z/9WT6A==
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: linux-kbuild@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Nicolas Schier <n.schier@avm.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Gary Guo <gary@garyguo.net>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Song Liu <song@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	bpf@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [bpf-next PATCH v2 2/4] kbuild: avoid too many execution of scripts/pahole-flags.sh
+Date: Thu, 19 Oct 2023 00:19:48 +0900
+Message-Id: <20231018151950.205265-2-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231018151950.205265-1-masahiroy@kernel.org>
+References: <20231018151950.205265-1-masahiroy@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+Content-Transfer-Encoding: 8bit
 
-On 17.10.23 13:30, FUJITA Tomonori wrote:
-> This patch adds abstractions to implement network PHY drivers; the
-> driver registration and bindings for some of callback functions in
-> struct phy_driver and many genphy_ functions.
->=20
-> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=3Dy.
->=20
-> This patch enables unstable const_maybe_uninit_zeroed feature for
-> kernel crate to enable unsafe code to handle a constant value with
-> uninitialized data. With the feature, the abstractions can initialize
-> a phy_driver structure with zero easily; instead of initializing all
-> the members by hand. It's supposed to be stable in the not so distant
-> future.
->=20
-> Link: https://github.com/rust-lang/rust/pull/116218
->=20
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->   drivers/net/phy/Kconfig         |   8 +
->   rust/bindings/bindings_helper.h |   3 +
->   rust/kernel/lib.rs              |   3 +
->   rust/kernel/net.rs              |   6 +
->   rust/kernel/net/phy.rs          | 701 ++++++++++++++++++++++++++++++++
->   5 files changed, 721 insertions(+)
->   create mode 100644 rust/kernel/net.rs
->   create mode 100644 rust/kernel/net/phy.rs
->=20
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index 421d2b62918f..0faebdb184ca 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -60,6 +60,14 @@ config FIXED_PHY
->=20
->   =09  Currently tested with mpc866ads and mpc8349e-mitx.
->=20
-> +config RUST_PHYLIB_ABSTRACTIONS
-> +        bool "PHYLIB abstractions support"
-> +        depends on RUST
-> +        depends on PHYLIB=3Dy
-> +        help
-> +          Adds support needed for PHY drivers written in Rust. It provid=
-es
-> +          a wrapper around the C phylib core.
-> +
->   config SFP
->   =09tristate "SFP cage support"
->   =09depends on I2C && PHYLINK
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index c91a3c24f607..ec4ee09a34ad 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -8,6 +8,9 @@
->=20
->   #include <kunit/test.h>
->   #include <linux/errname.h>
-> +#include <linux/ethtool.h>
-> +#include <linux/mdio.h>
-> +#include <linux/phy.h>
->   #include <linux/slab.h>
->   #include <linux/refcount.h>
->   #include <linux/wait.h>
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index e8811700239a..0588422e273c 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -14,6 +14,7 @@
->   #![no_std]
->   #![feature(allocator_api)]
->   #![feature(coerce_unsized)]
-> +#![feature(const_maybe_uninit_zeroed)]
->   #![feature(dispatch_from_dyn)]
->   #![feature(new_uninit)]
->   #![feature(receiver_trait)]
-> @@ -36,6 +37,8 @@
->   pub mod ioctl;
->   #[cfg(CONFIG_KUNIT)]
->   pub mod kunit;
-> +#[cfg(CONFIG_NET)]
-> +pub mod net;
->   pub mod prelude;
->   pub mod print;
->   mod static_assert;
-> diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
-> new file mode 100644
-> index 000000000000..fe415cb369d3
-> --- /dev/null
-> +++ b/rust/kernel/net.rs
-> @@ -0,0 +1,6 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Networking.
-> +
-> +#[cfg(CONFIG_RUST_PHYLIB_ABSTRACTIONS)]
-> +pub mod phy;
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> new file mode 100644
-> index 000000000000..7d4927ece32f
-> --- /dev/null
-> +++ b/rust/kernel/net/phy.rs
-> @@ -0,0 +1,701 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
-> +
-> +//! Network PHY device.
-> +//!
-> +//! C headers: [`include/linux/phy.h`](../../../../include/linux/phy.h).
-> +//!
+scripts/pahole-flags.sh is executed so many times.
 
-Add a new section "# Abstraction Overview" or similar.
+You can check how many times it is invoked during the build, as follows:
 
-> +//! The C side (PHYLIB) guarantees that there is only one thread accessi=
-ng to one `phy_device` instance
-> +//! during a callback in `phy_driver`. The callback safely accesses to t=
-he instance exclusively.
-> +//! Except for `resume()` and `suspend()`, PHYLIB holds `phy_device`'s l=
-ock during a callback.
+  $ cat <<EOF >> scripts/pahole-flags.sh
+  > echo "scripts/pahole-flags.sh was executed" >&2
+  > EOF
 
-I would start with "During the calls to most functions in [`Driver`],
-the C side (`PHYLIB`) holds a lock that is unique for every instance of
-[`Device`]". Then you can note the exception for `resume` and `suspend`
-(and also link them e.g. [`Driver::resume`]).
+  $ make -s
+  scripts/pahole-flags.sh was executed
+  scripts/pahole-flags.sh was executed
+  scripts/pahole-flags.sh was executed
+  scripts/pahole-flags.sh was executed
+  scripts/pahole-flags.sh was executed
+    [ lots of repeated lines suppressed... ]
 
-> +//! PHYLIB doesn't hold `phy_device`'s lock in both `resume()` and `susp=
-end()`. Instead, PHYLIB
-> +//! updates `phy_device`'s state with `phy_device`'s lock hold, to guara=
-ntee that resume() accesses
-> +//! to the instance exclusively. Note that `resume()` and `suspend()` al=
-so are called where only
-> +//! one thread can access to the instance.
+This scripts is executed more than 20 times during the kernel build
+because PAHOLE_FLAGS is a recursively expanded variable and exported
+to sub-processes.
 
-I would just write "`PHYLIB` uses a different serialization technique for
-[`Driver::resume`] and [`Driver::suspend`]: <use the above explanation>".
+With the GNU Make >= 4.4, it is executed more than 60 times because
+exported variables are also passed to other $(shell ) invocations.
+Without careful coding, it is known to cause an exponential fork
+explosion. [1]
 
-> +//! This abstractions creates [`Device`] instance only during a callback=
- so it's guaranteed that
-> +//! only one reference exists. All its methods can accesses to the insta=
-nce exclusively.
+The use of $(shell ) in an exported recursive variable is likely wrong
+because $(shell ) is always evaluated due to the 'export' keyword, and
+the evaluation can occur multiple times by the nature of recursive
+variables.
 
-Not really sure if this is needed, what are you trying to explain here?
+Convert the shell script to a Makefile, which is included only when
+CONFIG_DEBUG_INFO_BTF=y.
 
-> +//! All the PHYLIB helper functions for `phy_device` modify some members=
- in `phy_device`. Except for
-> +//! getter functions, [`Device`] methods take `&mut self`. This also app=
-lied to `read()`, which reads
-> +//! a hardware register and updates the stats.
+[1]: https://savannah.gnu.org/bugs/index.php?64746
 
-I would use [`Device`] instead of `phy_device`, since the Rust reader
-might not be aware what wraps `phy_device`.
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+Tested-by: Alan Maguire <alan.maguire@oracle.com>
+Reviewed-by: Nicolas Schier <n.schier@avm.de>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+---
 
-> +use crate::{bindings, error::*, prelude::vtable, str::CStr, types::Opaqu=
-e};
-> +use core::marker::PhantomData;
-> +
-> +/// Corresponds to the kernel's `enum phy_state`.
-> +#[derive(PartialEq)]
-> +pub enum DeviceState {
-> +    /// PHY device and driver are not ready for anything.
-> +    Down,
-> +    /// PHY is ready to send and receive packets.
-> +    Ready,
-> +    /// PHY is up, but no polling or interrupts are done.
-> +    Halted,
-> +    /// PHY is up, but is in an error state.
-> +    Error,
-> +    /// PHY and attached device are ready to do work.
-> +    Up,
-> +    /// PHY is currently running.
-> +    Running,
-> +    /// PHY is up, but not currently plugged in.
-> +    NoLink,
-> +    /// PHY is performing a cable test.
-> +    CableTest,
-> +}
-> +
-> +/// Represents duplex mode.
-> +pub enum DuplexMode {
-> +    /// PHY is in full-duplex mode.
-> +    Full,
-> +    /// PHY is in half-duplex mode.
-> +    Half,
-> +    /// PHY is in unknown duplex mode.
-> +    Unknown,
-> +}
-> +
-> +/// An instance of a PHY device.
-> +///
-> +/// Wraps the kernel's `struct phy_device`.
-> +///
-> +/// # Invariants
-> +///
-> +/// `self.0` is always in a valid state.
-> +#[repr(transparent)]
-> +pub struct Device(Opaque<bindings::phy_device>);
-> +
-> +impl Device {
-> +    /// Creates a new [`Device`] instance from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// This function must only be called from the callbacks in `phy_dri=
-ver`. PHYLIB guarantees
-> +    /// the exclusive access for the duration of the lifetime `'a`.
+Changes in v2:
+ - Fix a typo in commit description
+ - Update MAINTAINERS
 
-I would not put the second sentence in the `# Safety` section. Just move it
-above. The reason behind this is the following: the second sentence is not
-a precondition needed to call the function.
+ MAINTAINERS             |  2 +-
+ Makefile                |  4 +---
+ scripts/Makefile.btf    | 19 +++++++++++++++++++
+ scripts/pahole-flags.sh | 30 ------------------------------
+ 4 files changed, 21 insertions(+), 34 deletions(-)
+ create mode 100644 scripts/Makefile.btf
+ delete mode 100755 scripts/pahole-flags.sh
 
-> +    unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Se=
-lf {
-> +        // CAST: `Self` is a `repr(transparent)` wrapper around `binding=
-s::phy_device`.
-> +        let ptr =3D ptr.cast::<Self>();
-> +        // SAFETY: by the function requirements the pointer is valid and=
- we have unique access for
-> +        // the duration of `'a`.
-> +        unsafe { &mut *ptr }
-> +    }
-> +
-> +    /// Gets the id of the PHY.
-> +    pub fn phy_id(&self) -> u32 {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        unsafe { (*phydev).phy_id }
-> +    }
-> +
-> +    /// Gets the state of the PHY.
-> +    pub fn state(&self) -> DeviceState {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        let state =3D unsafe { (*phydev).state };
-> +        // TODO: this conversion code will be replaced with automaticall=
-y generated code by bindgen
-> +        // when it becomes possible.
-> +        // better to call WARN_ONCE() when the state is out-of-range (ne=
-eds to add WARN_ONCE support).
-> +        match state {
-> +            bindings::phy_state_PHY_DOWN =3D> DeviceState::Down,
-> +            bindings::phy_state_PHY_READY =3D> DeviceState::Ready,
-> +            bindings::phy_state_PHY_HALTED =3D> DeviceState::Halted,
-> +            bindings::phy_state_PHY_ERROR =3D> DeviceState::Error,
-> +            bindings::phy_state_PHY_UP =3D> DeviceState::Up,
-> +            bindings::phy_state_PHY_RUNNING =3D> DeviceState::Running,
-> +            bindings::phy_state_PHY_NOLINK =3D> DeviceState::NoLink,
-> +            bindings::phy_state_PHY_CABLETEST =3D> DeviceState::CableTes=
-t,
-> +            _ =3D> DeviceState::Error,
-> +        }
-> +    }
-> +
-> +    /// Returns true if the link is up.
-> +    pub fn get_link(&self) -> bool {
-
-I still think this name should be changed. My response at [1] has not yet
-been replied to. This has already been discussed before:
-- https://lore.kernel.org/rust-for-linux/2023100237-satirical-prance-bd57@g=
-regkh/
-- https://lore.kernel.org/rust-for-linux/20231004.084644.50784533959398755.=
-fujita.tomonori@gmail.com/
-- https://lore.kernel.org/rust-for-linux/CALNs47syMxiZBUwKLk3vKxzmCbX0FS5A3=
-7FjwUzZO9Fn-iPaoA@mail.gmail.com/
-
-And I want to suggest to change it to `is_link_up`.
-
-Reasons why I do not like the name:
-- `get_`/`put_` are used for ref counting on the C side, I would like to
-   avoid confusion.
-- `get` in Rust is often used to fetch a value from e.g. a datastructure
-   such as a hashmap, so I expect the call to do some computation.
-- getters in Rust usually are not prefixed with `get_`, but rather are
-   just the name of the field.
-- in this case I like the name `is_link_up` much better, since code becomes
-   a lot more readable with that.
-- I do not want this pattern as an example for other drivers.
-
-[1]: https://lore.kernel.org/rust-for-linux/f5878806-5ba2-d932-858d-dda3f55=
-ceb67@proton.me/
-
-> +        const LINK_IS_UP: u32 =3D 1;
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        let phydev =3D unsafe { *self.0.get() };
-> +        phydev.link() =3D=3D LINK_IS_UP
-> +    }
-
-[...]
-
-> +/// An instance of a PHY driver.
-> +///
-> +/// Wraps the kernel's `struct phy_driver`.
-> +///
-> +/// # Invariants
-> +///
-> +/// `self.0` is always in a valid state.
-> +#[repr(transparent)]
-> +pub struct DriverType(Opaque<bindings::phy_driver>);
-
-I think `DriverVTable` is a better name.
-
-> +/// Creates the kernel's `phy_driver` instance.
-
-This function returns a `DriverType`, not a `phy_driver`.
-
-> +///
-> +/// This is used by [`module_phy_driver`] macro to create a static array=
- of `phy_driver`.
-> +///
-> +/// [`module_phy_driver`]: crate::module_phy_driver
-> +pub const fn create_phy_driver<T: Driver>() -> DriverType {
-> +    // All the fields of `struct phy_driver` are initialized properly.
-> +    // It ensures the invariants.
-
-Use `// INVARIANT: `.
-
-> +    DriverType(Opaque::new(bindings::phy_driver {
-
-[...]
-
-> +
-> +/// Registration structure for a PHY driver.
-> +///
-> +/// # Invariants
-> +///
-> +/// The `drivers` slice are currently registered to the kernel via `phy_=
-drivers_register`.
-> +pub struct Registration {
-> +    drivers: &'static [DriverType],
-> +}
-
-You did not reply to my suggestion [2] to remove this type,
-what do you think?
-
-[2]: https://lore.kernel.org/rust-for-linux/85d5c498-efbc-4c1a-8d12-f1eca63=
-c45cf@proton.me/
-
---=20
-Cheers,
-Benno
-
-> +
-> +impl Registration {
-> +    /// Registers a PHY driver.
-> +    pub fn register(
-> +        module: &'static crate::ThisModule,
-> +        drivers: &'static [DriverType],
-> +    ) -> Result<Self> {
-> +        if drivers.is_empty() {
-> +            return Err(code::EINVAL);
-> +        }
-> +        // SAFETY: The type invariants of [`DriverType`] ensure that all=
- elements of the `drivers` slice
-> +        // are initialized properly. So an FFI call with a valid pointer=
-.
-> +        to_result(unsafe {
-> +            bindings::phy_drivers_register(drivers[0].0.get(), drivers.l=
-en().try_into()?, module.0)
-> +        })?;
-> +        // INVARIANT: The `drivers` slice is successfully registered to =
-the kernel via `phy_drivers_register`.
-> +        Ok(Registration { drivers })
-> +    }
-> +}
-
-[...]
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 35977b269d5e..a08d558b1aaa 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3742,7 +3742,7 @@ F:	net/sched/act_bpf.c
+ F:	net/sched/cls_bpf.c
+ F:	samples/bpf/
+ F:	scripts/bpf_doc.py
+-F:	scripts/pahole-flags.sh
++F:	scripts/Makefile.btf
+ F:	scripts/pahole-version.sh
+ F:	tools/bpf/
+ F:	tools/lib/bpf/
+diff --git a/Makefile b/Makefile
+index fed9a6cc3665..eaddec67e5e1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -513,8 +513,6 @@ LZ4		= lz4c
+ XZ		= xz
+ ZSTD		= zstd
+ 
+-PAHOLE_FLAGS	= $(shell PAHOLE=$(PAHOLE) $(srctree)/scripts/pahole-flags.sh)
+-
+ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
+ 		  -Wbitwise -Wno-return-void -Wno-unknown-attribute $(CF)
+ NOSTDINC_FLAGS :=
+@@ -605,7 +603,6 @@ export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
+ export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
+ export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
+ export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
+-export PAHOLE_FLAGS
+ 
+ # Files to ignore in find ... statements
+ 
+@@ -1002,6 +999,7 @@ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ # include additional Makefiles when needed
+ include-y			:= scripts/Makefile.extrawarn
+ include-$(CONFIG_DEBUG_INFO)	+= scripts/Makefile.debug
++include-$(CONFIG_DEBUG_INFO_BTF)+= scripts/Makefile.btf
+ include-$(CONFIG_KASAN)		+= scripts/Makefile.kasan
+ include-$(CONFIG_KCSAN)		+= scripts/Makefile.kcsan
+ include-$(CONFIG_KMSAN)		+= scripts/Makefile.kmsan
+diff --git a/scripts/Makefile.btf b/scripts/Makefile.btf
+new file mode 100644
+index 000000000000..82377e470aed
+--- /dev/null
++++ b/scripts/Makefile.btf
+@@ -0,0 +1,19 @@
++# SPDX-License-Identifier: GPL-2.0
++
++pahole-ver := $(CONFIG_PAHOLE_VERSION)
++pahole-flags-y :=
++
++# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
++ifeq ($(call test-le, $(pahole-ver), 121),y)
++pahole-flags-$(call test-ge, $(pahole-ver), 118)	+= --skip_encoding_btf_vars
++endif
++
++pahole-flags-$(call test-ge, $(pahole-ver), 121)	+= --btf_gen_floats
++
++pahole-flags-$(call test-ge, $(pahole-ver), 122)	+= -j
++
++pahole-flags-$(CONFIG_PAHOLE_HAS_LANG_EXCLUDE)		+= --lang_exclude=rust
++
++pahole-flags-$(call test-ge, $(pahole-ver), 125)	+= --skip_encoding_btf_inconsistent_proto --btf_gen_optimized
++
++export PAHOLE_FLAGS := $(pahole-flags-y)
+diff --git a/scripts/pahole-flags.sh b/scripts/pahole-flags.sh
+deleted file mode 100755
+index 728d55190d97..000000000000
+--- a/scripts/pahole-flags.sh
++++ /dev/null
+@@ -1,30 +0,0 @@
+-#!/bin/sh
+-# SPDX-License-Identifier: GPL-2.0
+-
+-extra_paholeopt=
+-
+-if ! [ -x "$(command -v ${PAHOLE})" ]; then
+-	exit 0
+-fi
+-
+-pahole_ver=$($(dirname $0)/pahole-version.sh ${PAHOLE})
+-
+-if [ "${pahole_ver}" -ge "118" ] && [ "${pahole_ver}" -le "121" ]; then
+-	# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
+-	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_vars"
+-fi
+-if [ "${pahole_ver}" -ge "121" ]; then
+-	extra_paholeopt="${extra_paholeopt} --btf_gen_floats"
+-fi
+-if [ "${pahole_ver}" -ge "122" ]; then
+-	extra_paholeopt="${extra_paholeopt} -j"
+-fi
+-if [ "${pahole_ver}" -ge "124" ]; then
+-	# see PAHOLE_HAS_LANG_EXCLUDE
+-	extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
+-fi
+-if [ "${pahole_ver}" -ge "125" ]; then
+-	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_inconsistent_proto --btf_gen_optimized"
+-fi
+-
+-echo ${extra_paholeopt}
+-- 
+2.40.1
 
