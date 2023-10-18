@@ -1,120 +1,208 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C173347DE;
-	Wed, 18 Oct 2023 18:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96CB4118;
-	Wed, 18 Oct 2023 11:29:23 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-d9a58aa4983so8508082276.0;
-        Wed, 18 Oct 2023 11:29:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99167450E9;
+	Wed, 18 Oct 2023 18:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m1vlxzje"
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E755F118;
+	Wed, 18 Oct 2023 11:32:48 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d9c1989509bso2713894276.1;
+        Wed, 18 Oct 2023 11:32:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697653968; x=1698258768; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=h65u8wTc43iKX1/MDjpqRaX8azYjY2/nSFDLxF3Zi1Q=;
+        b=m1vlxzjeDsVINFlYrR0iW7BFeCK/XRknv03kUW3zedhwKX/HsqEmd79oOwQTuw8EsN
+         +VqferWYA3CHqkoX+K4FoWU3o0R+dDRduTFymUnWauPjkH4Owgyz9K7upb3XCPI3ocJc
+         cSBBSin0cX7sgjG5XdJMa/4/fXNOyarGEcmpjZ6+iI6daK906vOLvig4gBdRCguQMGXb
+         Pjgt+TK9Vo+gWRtgNIzY9HTuSPze97LZLaQjaUitNyHMqL6M9R1cM8n6dRoXEHcXq9a3
+         RWJA0iqAzCuSYU0h3tlZbl7UP9VYkeQRtlAiZasxTsxRDF5X5u9/kKMUEMiH9VrBco+y
+         g2pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697653762; x=1698258562;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KHdbAm9LJTdw2SIGrMx1plxM0RiwW0DhdkjBzJkwfFA=;
-        b=PlC7PNhuqTgaY+5ZYrAXt7rwFQA/4CjUDKLzGfGYfrfIy2z9aJDA8l7KEhAdP7e84W
-         z0GsBMukfKapg1NxO27fH1zfSE842z7lu/iTV0Ft7/7ZJASV2Dw/BaJJR3/xWFHR9WJs
-         hEQsRXPTsQAUA0WiPkNoEIomJbxP8fS5m5Cnpa6vDDVbjikiBraBeP+85mOHuWgIV5ry
-         dh6+UfnFamw7BV4sNyQKUnSYc4dOe51cepKHKrc7kx0lKyNXKZEIUmyTTHrOg6U8z7oL
-         T2xaZe34YITFVBFBpqNzaouIBoBPYubHxiyNtzXxPC8iUOKDIn0U/uc9+HvP78X8J/tC
-         WkpA==
-X-Gm-Message-State: AOJu0Yz7bA6boUC/HSkm320mcCIp4bTZJoL2UwC8Vf92YyQyHF+ZGXXa
-	vxq5YjL1No9AI8atO6wG9R4oMQd4bLIAjQ==
-X-Google-Smtp-Source: AGHT+IEykxip7+YerGSaTPoJDCfm3UCymuhPaFoKYFOY9ppICjYvn36xr9EVrEH6ARZVeaNCahg64w==
-X-Received: by 2002:a25:9f8a:0:b0:d9a:c218:817c with SMTP id u10-20020a259f8a000000b00d9ac218817cmr164190ybq.4.1697653762541;
-        Wed, 18 Oct 2023 11:29:22 -0700 (PDT)
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com. [209.85.128.177])
-        by smtp.gmail.com with ESMTPSA id v1-20020a258481000000b00d9a577d8434sm1456016ybk.53.2023.10.18.11.29.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Oct 2023 11:29:21 -0700 (PDT)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5a7db1f864bso85298737b3.3;
-        Wed, 18 Oct 2023 11:29:21 -0700 (PDT)
-X-Received: by 2002:a0d:df44:0:b0:59b:ec85:54ee with SMTP id
- i65-20020a0ddf44000000b0059bec8554eemr81300ywe.39.1697653760779; Wed, 18 Oct
- 2023 11:29:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697653968; x=1698258768;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h65u8wTc43iKX1/MDjpqRaX8azYjY2/nSFDLxF3Zi1Q=;
+        b=kr3zP6sQU36Tx9JTU3En6h5jEiY3C5dJjvJ6iWoNKleJ/DgFmW4H6ay1cXmiW+177H
+         7EWc1crc7OPmIi2e2b61KtZaDxGH+TYcK+gn9IjQWLu4QujyFfXsBRBMld7oKb7jatoE
+         2efPkvQyUmLBta2jUdtZHQAdNRg0cZ+oeWgTtw609rc3zfCFk+dyXuAsHU9AXzLNd0xz
+         nWOafX7HaPv5F0rD3gsuDTaLN6Fsj3vB+JuRG8KUnPgd/QvzaIVcu5xlzxtXCJW61z95
+         oXspdc3xtY7KntXkeG3AbdAbIUmq7pQ9b3wqXQkIDrlxpT+0SRfzrrWh0VSJxifMqUN2
+         BE6A==
+X-Gm-Message-State: AOJu0Yy+YAdDYhhEQYQE76W1ppatDKvSSDMBMQeIzFV0TzXk2f/Gt3y+
+	5lYlgQZmFQKVqfGN25md7wJg0jOo09XEkM20vx0=
+X-Google-Smtp-Source: AGHT+IFluTy5gW7IJuF0qYSmhlrpJX9E8iKprtx+i89+q3GSXdq3zUwOjapFJecGgOzIi5tYj9p4ACHZbpugbRJy/IU=
+X-Received: by 2002:a25:ce94:0:b0:d9a:68ef:9d24 with SMTP id
+ x142-20020a25ce94000000b00d9a68ef9d24mr126975ybe.14.1697653967929; Wed, 18
+ Oct 2023 11:32:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
-In-Reply-To: <20231018182412.80291-1-hamza.mahfooz@amd.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 18 Oct 2023 20:29:07 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
-Message-ID: <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
-Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
-To: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc: linux-kernel@vger.kernel.org, Rodrigo Siqueira <rodrigo.siqueira@amd.com>, 
-	Harry Wentland <harry.wentland@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Nick Terrell <terrelln@fb.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Kees Cook <keescook@chromium.org>, Zhaoyang Huang <zhaoyang.huang@unisoc.com>, 
-	Li Hua <hucool.lihua@huawei.com>, Alexander Potapenko <glider@google.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Rae Moar <rmoar@google.com>, 
-	rust-for-linux@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev
+References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-10-wedsonaf@gmail.com>
+ <ZTATIhi9U6ObAnN7@casper.infradead.org>
+In-Reply-To: <ZTATIhi9U6ObAnN7@casper.infradead.org>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Wed, 18 Oct 2023 15:32:36 -0300
+Message-ID: <CANeycqoWfWJ5bxuh+UWK99D9jYH0cKKy1=ikHJTpY=fP1ZJMrg@mail.gmail.com>
+Subject: Re: [RFC PATCH 09/19] rust: folio: introduce basic support for folios
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Wedson Almeida Filho <walmeida@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi Hamza,
-
-On Wed, Oct 18, 2023 at 8:24=E2=80=AFPM Hamza Mahfooz <hamza.mahfooz@amd.co=
-m> wrote:
-> With every release of LLVM, both of these sanitizers eat up more and
-> more of the stack. So, set FRAME_WARN to 0 if either of them is enabled
-> for a given build.
+On Wed, 18 Oct 2023 at 14:17, Matthew Wilcox <willy@infradead.org> wrote:
 >
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+> On Wed, Oct 18, 2023 at 09:25:08AM -0300, Wedson Almeida Filho wrote:
+> > +void *rust_helper_kmap(struct page *page)
+> > +{
+> > +     return kmap(page);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_kmap);
+> > +
+> > +void rust_helper_kunmap(struct page *page)
+> > +{
+> > +     kunmap(page);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_kunmap);
+>
+> I'm not thrilled by exposing kmap()/kunmap() to Rust code.  The vast
+> majority of code really only needs kmap_local_*() / kunmap_local().
+> Can you elaborate on why you need the old kmap() in new Rust code?
 
-Thanks for your patch!
+The difficulty we have with kmap_local_*() has to do with the
+requirement that maps and unmaps need to be nested neatly. For
+example:
 
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -429,11 +429,10 @@ endif # DEBUG_INFO
->  config FRAME_WARN
->         int "Warn for stack frames larger than"
->         range 0 8192
-> -       default 0 if KMSAN
-> +       default 0 if KASAN || KCSAN || KMSAN
+let a = folio1.map_local(...);
+let b = folio2.map_local(...);
+// Do something with `a` and `b`.
+drop(a);
+drop(b);
 
-Are kernels with KASAN || KCSAN || KMSAN enabled supposed to be bootable?
-Stack overflows do cause crashes.
+The code obviously violates the requirements.
 
->         default 2048 if GCC_PLUGIN_LATENT_ENTROPY
->         default 2048 if PARISC
->         default 1536 if (!64BIT && XTENSA)
-> -       default 1280 if KASAN && !64BIT
->         default 1024 if !64BIT
->         default 2048 if 64BIT
->         help
+One way to enforce the rule is Rust is to use closures, so the code
+above would be:
 
-Gr{oetje,eeting}s,
+folio1.map_local(..., |a| {
+    folio2.map_local(..., |b| {
+        // Do something with `a` and `b`.
+    })
+})
 
-                        Geert
+It isn't ergonomic the first option, but allows us to satisfy the
+nesting requirement.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Any chance we can relax that requirement?
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+(If not, and we really want to get rid of the non-local function, we
+can fall back to the closure-based implementation. In fact, you'll
+find that in this patch I already do this for a private function that
+used when writing into the folio, we could just make a version of it
+public.)
+
+> > +void rust_helper_folio_set_error(struct folio *folio)
+> > +{
+> > +     folio_set_error(folio);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_folio_set_error);
+>
+> I'm trying to get rid of the error flag.  Can you share the situations
+> in which you've needed the error flag?  Or is it just copying existing
+> practices?
+
+I'm just mimicking C code. Happy to remove it.
+
+> > +    /// Returns the byte position of this folio in its file.
+> > +    pub fn pos(&self) -> i64 {
+> > +        // SAFETY: The folio is valid because the shared reference implies a non-zero refcount.
+> > +        unsafe { bindings::folio_pos(self.0.get()) }
+> > +    }
+>
+> I think it's a mistake to make file positions an i64.  I estimate 64
+> bits will not be enough by 2035-2040.  We should probably have a numeric
+> type which is i64 on 32-bit and isize on other CPUs (I also project
+> 64-bit pointers will be insufficient by 2035-2040 and so we will have
+> 128-bit pointers around the same time, so we're not going to need i128
+> file offsets with i64 pointers).
+
+I'm also just mimicking C here -- we just don't have a type that has
+the properties you describe. I'm happy to switch once we have it, in
+fact, Miguel has plans that I believe align well with what you want.
+I'm not sure if he has already contacted you about it yet though.
+
+> > +/// A [`Folio`] that has a single reference to it.
+> > +pub struct UniqueFolio(pub(crate) ARef<Folio>);
+>
+> How do we know it only has a single reference?  Do you mean "has at
+> least one reference"?  Or am I confusing Rust's notion of a reference
+> with Linux's notion of a reference?
+
+Instances of `UniqueFolio` are only produced by calls to
+`folio_alloc`. They encode the fact that it's safe for us to map the
+folio and know that there aren't any concurrent threads/CPUs doing the
+same to the same folio.
+
+Naturally, if you to increment the refcount on this folio and share it
+with other threads/CPUs, it's no longer unique. So we don't allow it.
+
+This is only used when using a synchronous bio to read blocks from a
+block device while setting up a new superblock, in particular, to read
+the superblock itself.
+
+>
+> > +impl UniqueFolio {
+> > +    /// Maps the contents of a folio page into a slice.
+> > +    pub fn map_page(&self, page_index: usize) -> Result<MapGuard<'_>> {
+> > +        if page_index >= self.0.size() / bindings::PAGE_SIZE {
+> > +            return Err(EDOM);
+> > +        }
+> > +
+> > +        // SAFETY: We just checked that the index is within bounds of the folio.
+> > +        let page = unsafe { bindings::folio_page(self.0 .0.get(), page_index) };
+> > +
+> > +        // SAFETY: `page` is valid because it was returned by `folio_page` above.
+> > +        let ptr = unsafe { bindings::kmap(page) };
+>
+> Surely this can be:
+>
+>            let ptr = unsafe { bindings::kmap_local_folio(folio, page_index * PAGE_SIZE) };
+
+The problem is the unmap path that can happen at arbitrary order in
+Rust, see my comment above.
+
+>
+> > +        // SAFETY: We just mapped `ptr`, so it's valid for read.
+> > +        let data = unsafe { core::slice::from_raw_parts(ptr.cast::<u8>(), bindings::PAGE_SIZE) };
+>
+> Can we hide away the "if this isn't a HIGHMEM system, this maps to the
+> end of the folio, but if it is, it only maps to the end of the page"
+> problem here?
+
+Do you have ideas on how this might look like? (Don't worry about
+Rust, just express it in some pseudo-C and we'll see if you can
+express it in Rust.)
+
+My approach here was to be conservative, since the common denominator
+was "maps to the end of the page", that's what I have.
+
+One possible way to do it with Rust would be an "Iterator" -- in
+HIGHMEM it would return one item per page, otherwise it would return a
+single item. (We have something similar for reading arbitrary ranges
+of a block device, it's broken up into several chunks, so we return an
+iterator.)
