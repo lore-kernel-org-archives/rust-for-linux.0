@@ -1,133 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6C7208B8;
-	Thu, 19 Oct 2023 20:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CBE3E012;
+	Thu, 19 Oct 2023 21:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJ+cw6Yu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE170C433C7;
-	Thu, 19 Oct 2023 20:51:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697748680;
-	bh=avvVhk562RDsloShDfVKbRwRR54xodJjv+T6J94vhjQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rJ+cw6Yu53WaCZw4SBhXOsLU55656lONyJVrRglH9t56UjH5t/DpaapyQldAZrWeZ
-	 MRJgZQBaWmn2reW0SrFN3YZAmcSvnfvFGKwIv4gTBRwLJBm+TRlPVL5v3ldSHwXc84
-	 utZz868f+bdzqjHsX9nFyzcZYScMeqEv++Wv4GLHiMtEoALOvIzrVH0wim6LaAvwVP
-	 /Qq0RA8xOHjLsB5N3jJ40NqlLeco5kc2Ejje+V+9kjj1vT2NpiorfWBEweKmmS3Lgr
-	 7j7IH7yb5s0p5v6paWW9zXY5d9GvJVbGBVmvTHVAIsWDOcbgNvhscLeC4qjk/iVRTc
-	 Xqx3C52GjjO6Q==
-Date: Thu, 19 Oct 2023 13:51:17 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Alexander Potapenko <glider@google.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-kernel@vger.kernel.org,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Nick Terrell <terrelln@fb.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Kees Cook <keescook@chromium.org>,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	Li Hua <hucool.lihua@huawei.com>, Rae Moar <rmoar@google.com>,
-	rust-for-linux@vger.kernel.org, bpf@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
-Message-ID: <20231019205117.GA839902@dev-arch.thelio-3990X>
-References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
- <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
- <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
- <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
- <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
- <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
- <20231019155600.GB60597@dev-arch.thelio-3990X>
- <a9237e7a-e08c-4904-b84a-f6198333a78c@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C7hdeVC2"
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CA6119;
+	Thu, 19 Oct 2023 14:51:04 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1cac20789e8so246155ad.1;
+        Thu, 19 Oct 2023 14:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697752264; x=1698357064; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ccTU4JHdhW2PD84y3IU7rRANDzK4xE53lg6HT1PfjiQ=;
+        b=C7hdeVC2Pk1+YRt8ogcjxDWiwh5P3EfrbU6xJgtCbEk3TpjBEp2yrLI7BURSXrK7Dg
+         2aVmccPK8/Kwrpad07F6PbecltIfEcpd5Shymi1b1L/kLTBj9EHB3RZC2TdocrrLqFb6
+         9KRewjydDQ2E/hRrIDHG3viXLBS/b1pWPV3lGtevDBp1r3Ai2srrtrCE5YhImlR72nL0
+         O8SzRPZgjrL0vomYH5goVQ0E4TlNLOtcZLbn+BDw77rvjRzVuckMAXEFflvwv0+enuNs
+         3xwcZWStqCKvLs1xZg6nGO8BhQcX2l0PRQ5HJ2IK8/bMBtfcB+UJD1ngOmlXfOvX1HyZ
+         F/PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697752264; x=1698357064;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ccTU4JHdhW2PD84y3IU7rRANDzK4xE53lg6HT1PfjiQ=;
+        b=iOu2xuSIyv0q9WzO39GmQnArfWmrDW6JAYwwEhV6GEHUEe1vZp9hJ0FVJ8uYPjyv9U
+         c1SyP0NhWW1dVSLTmQO7j+bpm3N29v3i78bOGDSGCf6KiHz8x8Rvyfq4P22MGKMS8JEP
+         Nmi83kv4Ew0RjryV/6qC+JLG6wArQRUB9ymBZZsXXiRbBB2rP5talIAlcLULZKQL1ZgZ
+         ZiP+wuKLvEYReoNFYaWCoaPPDNELFGr8UA1N5lmv27pdgEFGni+64bGjXQlFv5VW1hyH
+         tOi6LuRaXRr4f9FWpNW45rxLCRhF2s4lem6IF27y95wJPlqB7ILYzlfJizdLdBf9s7kQ
+         MObg==
+X-Gm-Message-State: AOJu0Yxr5LdmuoimHADACt0REvB+FWMVGz9XI73T23hN+hbQEPVjrDKw
+	AmkZH6Prcs+9EH7Q0k3S1hg=
+X-Google-Smtp-Source: AGHT+IEwNXoOInGQUhG6sOXN3imDQpxP2hAXkp+3zHC81bt0t+MiB/sYJWoNYHQoboBTHrEoRS5eIQ==
+X-Received: by 2002:a17:902:f98f:b0:1c4:1e65:1e5e with SMTP id ky15-20020a170902f98f00b001c41e651e5emr177033plb.0.1697752264329;
+        Thu, 19 Oct 2023 14:51:04 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id u17-20020a17090341d100b001c465bedaccsm183965ple.83.2023.10.19.14.51.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Oct 2023 14:51:03 -0700 (PDT)
+Date: Fri, 20 Oct 2023 06:51:03 +0900 (JST)
+Message-Id: <20231020.065103.1042445600809743171.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
+ wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <398ec812-3dce-40b1-b4eb-bfff7e3feb6a@proton.me>
+References: <64db34c0-a50a-4321-a3d8-b692e26899d9@proton.me>
+	<20231020.003219.1788909848908453261.fujita.tomonori@gmail.com>
+	<398ec812-3dce-40b1-b4eb-bfff7e3feb6a@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a9237e7a-e08c-4904-b84a-f6198333a78c@amd.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 19, 2023 at 04:17:26PM -0400, Hamza Mahfooz wrote:
-> On 10/19/23 11:56, Nathan Chancellor wrote:
-> > On Thu, Oct 19, 2023 at 02:53:01PM +0200, Arnd Bergmann wrote:
-> > > On Thu, Oct 19, 2023, at 12:04, Alexander Potapenko wrote:
-> > > > So the remaining option would be to just increase the frame size every
-> > > > time a new function surpasses the limit.
-> > > 
-> > > That is clearly not an option, though we could try to
-> > > add Kconfig dependencies that avoid the known bad combinations,
-> > > such as annotating the AMD GPU driver as
-> > > 
-> > >        depends on (CC_IS_GCC || CLANG_VERSION >=180000) || !(KASAN || KCSAN)
-> > 
-> > This would effectively disable the AMDGPU driver for allmodconfig, which
-> > is somewhat unfortunate as it is an easy testing target.
-> > 
-> > Taking a step back, this is all being done because of a couple of
-> > warnings in the AMDGPU code. If fixing those in the source is too much
-> > effort (I did note [1] that GCC is at the current limit for that file
-> > even with Rodrigo's series applied [2]), couldn't we just take the
-> > existing workaround that this Makefile has for this file and its high
-> > stack usage and just extend it slightly for clang?
+On Thu, 19 Oct 2023 16:37:46 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
+
+> On 19.10.23 17:32, FUJITA Tomonori wrote:
+>>> You can just do this (I omitted the `::kernel::` prefix for
+>>> readability, if you add this in the macro, please include it):
+>>>
+>>>       // CAST: `DriverVTable` is `repr(transparent)` and wrapping `bindings::phy_driver`.
+>>>       let ptr = drv.as_mut_ptr().cast::<bindings::phy_driver>();
+>>>       let len = drv.len().try_into()?;
+>>>       // SAFETY: ...
+>>>       to_result(unsafe { bindings::phy_drivers_register(ptr, len, module.0) })?;
+>>>
+>>>>                   })?;
+>> 
+>> The above solves DriverVTable.0 but still the macro can't access to
+>> kernel::ThisModule.0. I got the following error:
 > 
-> I personally don't mind fixing these issues in the driver, but the fact
-> that they the creep back every time a new major version of Clang rolls
-> out (that has been true for the past couple of years at the very
-> least), makes it rather annoying to deal with.
-
-I am not sure I agree with that characterization of the situation. clang
-has been pretty consistent for the most part (which is certainly on us),
-as all versions that the kernel supports warns about this code. I
-believe it is more so the fact that there is a new copy of the dcn code
-added every year that has none of the fixes applied from earlier
-generations... It is not just me that has fixed issues like this, just
-run 'git log --grep=stack drivers/gpu/drm/amd/display'. It is not just
-clang that complains about the code when sanitizers are turned on, GCC
-does as well since Stephen reported them.
-
-Cheers,
-Nathan
-
-> > diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-> > index 66431525f2a0..fd49e3526c0d 100644
-> > --- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-> > +++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-> > @@ -58,7 +58,7 @@ endif
-> >   endif
-> >   ifneq ($(CONFIG_FRAME_WARN),0)
-> > -frame_warn_flag := -Wframe-larger-than=2048
-> > +frame_warn_flag := -Wframe-larger-than=$(if $(CONFIG_CC_IS_CLANG),3072,2048)
-> >   endif
-> >   CFLAGS_$(AMDDALPATH)/dc/dml2/display_mode_core.o := $(dml2_ccflags) $(frame_warn_flag)
-> > 
-> > That would address the immediate concern of the warning breaking builds
-> > with CONFIG_WERROR=y while not raising the limit for other files in the
-> > kernel (just this one file in AMDGPU) and avoiding disabling the whole
-> > driver. The number could be lower, I think ~2500 bytes is the most usage
-> > I see with Rodrigo's series applied, so maybe 2800 would be a decent
-> > limit? Once there is a fix in the compiler, this expression could be
-> > changed to use clang-min-version or something of that sort.
-> > 
-> > [1]: https://lore.kernel.org/20231017172231.GA2348194@dev-arch.thelio-3990X/
-> > [2]: https://lore.kernel.org/20231016142031.241912-1-Rodrigo.Siqueira@amd.com/
-> > 
-> > Cheers,
-> > Nathan
-> -- 
-> Hamza
+> I think we could just provide an `as_ptr` getter function
+> for `ThisModule`. But need to check with the others.
 > 
+
+ThisModule.0 is *mut bindings::module. Drivers should not use
+bindings?
+
+
+>>>>> I suppose that it would be ok to call the register function multiple
+>>>>> times, since it only is on module startup/shutdown and it is not
+>>>>> performance critical.
+>>>>
+>>>> I think that we can use the current implantation using Reservation
+>>>> struct until someone requests manual creation. I doubt that we will
+>>>> need to support such.
+>>>
+>>> I would like to remove the mutable static variable and simplify
+>>> the macro.
+>> 
+>> It's worse than having public unsafe function (phy_drivers_unregister)?
+> 
+> Why would that function have to be public?
+
+If we don't make ThisModule.0 public, phy_drivers_unregister has to be
+public.
