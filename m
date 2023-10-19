@@ -1,126 +1,257 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BCF38C;
-	Thu, 19 Oct 2023 00:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B664B15AD2;
+	Thu, 19 Oct 2023 08:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmXMP/4y"
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1B0115;
-	Wed, 18 Oct 2023 17:41:48 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b390036045so1222529b3a.1;
-        Wed, 18 Oct 2023 17:41:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j3kAQcEK"
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5779D131;
+	Thu, 19 Oct 2023 01:47:43 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-53d9f001b35so13017109a12.2;
+        Thu, 19 Oct 2023 01:47:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697676108; x=1698280908; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xYnilDjHoPuUF5aYegr0iG9VgVec34Vh/+0lNHw8/zs=;
-        b=CmXMP/4ymEI2qmmfNXmvJ0m/6XHjiNA4fWEGFtjrgeaMKbMYiBkXmohlvoGqHcgOkA
-         fW+c2JpTrizytQXlVUPpCafTup5IflYkW5yC0btsUXRYS8/QCWmwgtf2QmCyBc/7nruk
-         jNfQnHpWpyULBwWYKTOnHQkW1ypJHHGIM4PCKODDlGcWIR1Bq0lPWjgME4S5OE99O8Wa
-         SwTxHcCehzwt+wRTcuyOysOmPMZ0CE342QausFdblx9bucDSa6ar+PLgajk1NsVXoJmq
-         uI/s1IJxq1FRYNBuA/lJG48R7kWTOBgnu4EqpA4vR9uFAIktdo4yBUHAhoQKI0aAXp/S
-         0h0w==
+        d=gmail.com; s=20230601; t=1697705262; x=1698310062; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yzLdLZsv3KpWToPZKdN9/qcoYkbhKAJA1zuy4Nsjj3k=;
+        b=j3kAQcEKdG9ETNSpc42DKQ24CvGpvGS+CRDZW04P6OEzLqdVfY/qcRA15Nd8mcTBhC
+         MtqgYkAHkbiW1D4wm+43MKcqLFQ0D8e3ri1nZio/Ir9f4efSyr5U9AOew31v7Pmffzx5
+         sjdOcSaIRpAblp5zm99UoschkbE6RP8xRBDI1ggwOFfdtv2F1ovrHVcLeupfe2wmK8Y1
+         ybPgERQwxp/e77BUOqjWIl8AYQiNK9xe4bf9CDLYollNMqDk69rPCepnsKcIHw87fI1L
+         SjlRini0hFj2A3NOVK5z5DlhA8X5v0izAV+bQd16S3nWRwsctmupglUxTx7HR3pCXIcu
+         oCvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697676108; x=1698280908;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xYnilDjHoPuUF5aYegr0iG9VgVec34Vh/+0lNHw8/zs=;
-        b=Tc3/jICBuWcV3Su1PxGv+Bsz2nAkX1Nka/ERxgyAjd5CR7I7oQWwCa62Kc+w26nP4R
-         80tIpnhoQ4+WRlLq3lEWbOKpviog73QFmRckRFjyF6hqnXx29UX2tPUh72bSx8+06WCG
-         ev8YOQkc3siTAASgZUTauu1lPKiQG6lVB+331DRFc9n3SVHwi5AWpOR6wW2cx5cC7PL5
-         qBg9l/44QpVBX9yBDm6S/WN8hxMiNjsrrexrk4GlLm9xJ8SHLjh1WciGpThqFZp3oRXx
-         zKjSxQvO0LRTtVpAkjEMFnB0o5FuNbvqIrTeanLp1CgvJpOit88oJ5CBa67O8yQml61O
-         jzyw==
-X-Gm-Message-State: AOJu0YxLZHI90dahaR9QZiHhaGyTQuyFcEoDGQjiJwAuS2QYAmiZwrnV
-	bqJjDb9xDEAL7DskBZymBHM=
-X-Google-Smtp-Source: AGHT+IHuhIIm3Sb5smbcYLBmb1wD289fqTDhfUqTNOe0ZZ6KFbvH10xe2Q+BMpBVNmLfvQx9VF5xTQ==
-X-Received: by 2002:a17:902:c994:b0:1bb:9e6e:a9f3 with SMTP id g20-20020a170902c99400b001bb9e6ea9f3mr891382plc.4.1697676108183;
-        Wed, 18 Oct 2023 17:41:48 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id y7-20020a17090322c700b001ca21e05c69sm538258plg.109.2023.10.18.17.41.47
+        d=1e100.net; s=20230601; t=1697705262; x=1698310062;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yzLdLZsv3KpWToPZKdN9/qcoYkbhKAJA1zuy4Nsjj3k=;
+        b=X9dSdPhr9f828guU4+hUJC45Utw0gj1Xd3OjovVx0dQ8QbE6MAKchE7dtLZLthKoSa
+         47iPOp3r6in/9/urWcklD8QJGoHOB3e0dJIUYikozT/4WzjbM3z4DU6tr44sYikrPrHp
+         cCcbWFfzPscYGhScOnUPkzoQKcph3pOg2jY29r2jVv5/SwBle59wcEjcb7KzdMasVOBJ
+         pZFGR4wbZ5YydzY+3MThXpRpLSNFWuwb8MlVREmg2Y/lJba5apsbCCIIYWf50BuYKLdo
+         tWL5iOzVGlAcVe7z6HtAKSG4pv27qfxQJRHb1zNvxmooIowUHPOjrLbjpgiOnBtIrQoS
+         tpug==
+X-Gm-Message-State: AOJu0YxMqPZbV9DSjKO3IUGmaOvuuOL8gnnRxi3KJ19JoII0rCnpobo0
+	K89uY2dosWZPZLj/JaEtFyc=
+X-Google-Smtp-Source: AGHT+IFfVB/qd36PJX41p+g4j/2+te/++EWuAUjTUuh1MzuKNTPNcG6jQSb8UnAVHLOPl2JP7v7GHA==
+X-Received: by 2002:a17:907:320d:b0:9bf:70ea:692e with SMTP id xg13-20020a170907320d00b009bf70ea692emr1331892ejb.60.1697705261615;
+        Thu, 19 Oct 2023 01:47:41 -0700 (PDT)
+Received: from krava (2001-1ae9-1c2-4c00-726e-c10f-8833-ff22.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:726e:c10f:8833:ff22])
+        by smtp.gmail.com with ESMTPSA id p14-20020a1709060dce00b0099cc3c7ace2sm3092009eji.140.2023.10.19.01.47.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 17:41:47 -0700 (PDT)
-Date: Thu, 19 Oct 2023 09:41:47 +0900 (JST)
-Message-Id: <20231019.094147.1808345526469629486.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
- tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com,
- benno.lossin@proton.me, greg@kroah.com
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <de9d1b30-ab19-44f9-99a3-073c6d2b36e1@lunn.ch>
-References: <20231017113014.3492773-1-fujita.tomonori@gmail.com>
-	<20231017113014.3492773-2-fujita.tomonori@gmail.com>
-	<de9d1b30-ab19-44f9-99a3-073c6d2b36e1@lunn.ch>
+        Thu, 19 Oct 2023 01:47:41 -0700 (PDT)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Thu, 19 Oct 2023 10:47:38 +0200
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Nicolas Schier <n.schier@avm.de>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>, Gary Guo <gary@garyguo.net>,
+	Hao Luo <haoluo@google.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>, Song Liu <song@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>, bpf@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [bpf-next PATCH v2 2/4] kbuild: avoid too many execution of
+ scripts/pahole-flags.sh
+Message-ID: <ZTDtKonBQeOAiZ/L@krava>
+References: <20231018151950.205265-1-masahiroy@kernel.org>
+ <20231018151950.205265-2-masahiroy@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231018151950.205265-2-masahiroy@kernel.org>
 
-On Wed, 18 Oct 2023 22:27:55 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
->> +    /// Reads a given C22 PHY register.
->> +    pub fn read(&mut self, regnum: u16) -> Result<u16> {
->> +        let phydev = self.0.get();
->> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->> +        // So an FFI call with a valid pointer.
->> +        let ret = unsafe {
->> +            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into())
+On Thu, Oct 19, 2023 at 12:19:48AM +0900, Masahiro Yamada wrote:
+> scripts/pahole-flags.sh is executed so many times.
 > 
-> If i've understood the discussion about &mut, it is not needed here,
-> and for write. Performing a read/write does not change anything in
-> phydev. There was mention of statistics, but they are in the mii_bus
-> structure, which is pointed to by this structure, but is not part of
-> this structure.
-
-If I understand correctly, he said that either (&self or &mut self) is
-fine for read().
-
-https://lore.kernel.org/netdev/3469de1c-0e6f-4fe5-9d93-2542f87ffd0d@proton.me/
-
-Since `&mut self` is unique, only one thread per instance of `Self`
-can call that function. So use this when the C side would use a lock.
-(or requires that only one thread calls that code)
-
-Since multiple `&self` references are allowed to coexist, you should
-use this for functions which perform their own serialization/do not
-require serialization.
-
-
-I applied the first case here.
-
-
->> +        };
->> +        if ret < 0 {
->> +            Err(Error::from_errno(ret))
->> +        } else {
->> +            Ok(ret as u16)
->> +        }
->> +    }
->> +
->> +    /// Writes a given C22 PHY register.
->> +    pub fn write(&mut self, regnum: u16, val: u16) -> Result {
->> +        let phydev = self.0.get();
->> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->> +        // So an FFI call with a valid pointer.
->> +        to_result(unsafe {
->> +            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into(), val)
->> +        })
->> +    }
->> +
->> +    /// Reads a paged register.
->> +    pub fn read_paged(&mut self, page: u16, regnum: u16) -> Result<u16> {
+> You can check how many times it is invoked during the build, as follows:
 > 
-> From my reading of the code, read_paged also does not modify phydev.
+>   $ cat <<EOF >> scripts/pahole-flags.sh
+>   > echo "scripts/pahole-flags.sh was executed" >&2
+>   > EOF
+> 
+>   $ make -s
+>   scripts/pahole-flags.sh was executed
+>   scripts/pahole-flags.sh was executed
+>   scripts/pahole-flags.sh was executed
+>   scripts/pahole-flags.sh was executed
+>   scripts/pahole-flags.sh was executed
+>     [ lots of repeated lines suppressed... ]
+> 
+> This scripts is executed more than 20 times during the kernel build
+> because PAHOLE_FLAGS is a recursively expanded variable and exported
+> to sub-processes.
+> 
+> With the GNU Make >= 4.4, it is executed more than 60 times because
+> exported variables are also passed to other $(shell ) invocations.
+> Without careful coding, it is known to cause an exponential fork
+> explosion. [1]
+> 
+> The use of $(shell ) in an exported recursive variable is likely wrong
+> because $(shell ) is always evaluated due to the 'export' keyword, and
+> the evaluation can occur multiple times by the nature of recursive
+> variables.
+> 
+> Convert the shell script to a Makefile, which is included only when
+> CONFIG_DEBUG_INFO_BTF=y.
+> 
+> [1]: https://savannah.gnu.org/bugs/index.php?64746
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+> Tested-by: Alan Maguire <alan.maguire@oracle.com>
+> Reviewed-by: Nicolas Schier <n.schier@avm.de>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-__phy_read is called so I use &mut self like read().
+nice!
+
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+
+thanks,
+jirka
+
+
+> ---
+> 
+> Changes in v2:
+>  - Fix a typo in commit description
+>  - Update MAINTAINERS
+> 
+>  MAINTAINERS             |  2 +-
+>  Makefile                |  4 +---
+>  scripts/Makefile.btf    | 19 +++++++++++++++++++
+>  scripts/pahole-flags.sh | 30 ------------------------------
+>  4 files changed, 21 insertions(+), 34 deletions(-)
+>  create mode 100644 scripts/Makefile.btf
+>  delete mode 100755 scripts/pahole-flags.sh
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 35977b269d5e..a08d558b1aaa 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3742,7 +3742,7 @@ F:	net/sched/act_bpf.c
+>  F:	net/sched/cls_bpf.c
+>  F:	samples/bpf/
+>  F:	scripts/bpf_doc.py
+> -F:	scripts/pahole-flags.sh
+> +F:	scripts/Makefile.btf
+>  F:	scripts/pahole-version.sh
+>  F:	tools/bpf/
+>  F:	tools/lib/bpf/
+> diff --git a/Makefile b/Makefile
+> index fed9a6cc3665..eaddec67e5e1 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -513,8 +513,6 @@ LZ4		= lz4c
+>  XZ		= xz
+>  ZSTD		= zstd
+>  
+> -PAHOLE_FLAGS	= $(shell PAHOLE=$(PAHOLE) $(srctree)/scripts/pahole-flags.sh)
+> -
+>  CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
+>  		  -Wbitwise -Wno-return-void -Wno-unknown-attribute $(CF)
+>  NOSTDINC_FLAGS :=
+> @@ -605,7 +603,6 @@ export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
+>  export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
+>  export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
+>  export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
+> -export PAHOLE_FLAGS
+>  
+>  # Files to ignore in find ... statements
+>  
+> @@ -1002,6 +999,7 @@ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+>  # include additional Makefiles when needed
+>  include-y			:= scripts/Makefile.extrawarn
+>  include-$(CONFIG_DEBUG_INFO)	+= scripts/Makefile.debug
+> +include-$(CONFIG_DEBUG_INFO_BTF)+= scripts/Makefile.btf
+>  include-$(CONFIG_KASAN)		+= scripts/Makefile.kasan
+>  include-$(CONFIG_KCSAN)		+= scripts/Makefile.kcsan
+>  include-$(CONFIG_KMSAN)		+= scripts/Makefile.kmsan
+> diff --git a/scripts/Makefile.btf b/scripts/Makefile.btf
+> new file mode 100644
+> index 000000000000..82377e470aed
+> --- /dev/null
+> +++ b/scripts/Makefile.btf
+> @@ -0,0 +1,19 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +pahole-ver := $(CONFIG_PAHOLE_VERSION)
+> +pahole-flags-y :=
+> +
+> +# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
+> +ifeq ($(call test-le, $(pahole-ver), 121),y)
+> +pahole-flags-$(call test-ge, $(pahole-ver), 118)	+= --skip_encoding_btf_vars
+> +endif
+> +
+> +pahole-flags-$(call test-ge, $(pahole-ver), 121)	+= --btf_gen_floats
+> +
+> +pahole-flags-$(call test-ge, $(pahole-ver), 122)	+= -j
+> +
+> +pahole-flags-$(CONFIG_PAHOLE_HAS_LANG_EXCLUDE)		+= --lang_exclude=rust
+> +
+> +pahole-flags-$(call test-ge, $(pahole-ver), 125)	+= --skip_encoding_btf_inconsistent_proto --btf_gen_optimized
+> +
+> +export PAHOLE_FLAGS := $(pahole-flags-y)
+> diff --git a/scripts/pahole-flags.sh b/scripts/pahole-flags.sh
+> deleted file mode 100755
+> index 728d55190d97..000000000000
+> --- a/scripts/pahole-flags.sh
+> +++ /dev/null
+> @@ -1,30 +0,0 @@
+> -#!/bin/sh
+> -# SPDX-License-Identifier: GPL-2.0
+> -
+> -extra_paholeopt=
+> -
+> -if ! [ -x "$(command -v ${PAHOLE})" ]; then
+> -	exit 0
+> -fi
+> -
+> -pahole_ver=$($(dirname $0)/pahole-version.sh ${PAHOLE})
+> -
+> -if [ "${pahole_ver}" -ge "118" ] && [ "${pahole_ver}" -le "121" ]; then
+> -	# pahole 1.18 through 1.21 can't handle zero-sized per-CPU vars
+> -	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_vars"
+> -fi
+> -if [ "${pahole_ver}" -ge "121" ]; then
+> -	extra_paholeopt="${extra_paholeopt} --btf_gen_floats"
+> -fi
+> -if [ "${pahole_ver}" -ge "122" ]; then
+> -	extra_paholeopt="${extra_paholeopt} -j"
+> -fi
+> -if [ "${pahole_ver}" -ge "124" ]; then
+> -	# see PAHOLE_HAS_LANG_EXCLUDE
+> -	extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
+> -fi
+> -if [ "${pahole_ver}" -ge "125" ]; then
+> -	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_inconsistent_proto --btf_gen_optimized"
+> -fi
+> -
+> -echo ${extra_paholeopt}
+> -- 
+> 2.40.1
+> 
