@@ -1,246 +1,110 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9822FE13;
-	Thu, 19 Oct 2023 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D596B30FB0;
+	Thu, 19 Oct 2023 15:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E0SCgWZs"
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30AE6CF;
-	Thu, 19 Oct 2023 08:32:21 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c9ba72f6a1so17187995ad.1;
-        Thu, 19 Oct 2023 08:32:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697729540; x=1698334340; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZLV9wzASWRyU6HzDxs4AfroURzmGIMRDucVF5MhGgYE=;
-        b=E0SCgWZs70xUCXa8215ZPBtDR9LmWvBH9rBmAF3bfcsApWRukjmBYJnuNtFnE8MAfP
-         iiDz4QVW1f5xbZMyvMWw6wwFfZylcyCoSkRqRQpJMhL7FSd7oEPijEe20FfP5MfB7n+b
-         6LAOxPajOZX2ba1Z129S6KVB0UkvW3DY5eHb9fn8Fb+6Zxccvj6Dykyh4f6GcT/uDmrw
-         dZf2XDVC9sX6aiRwEHWJrodiC9zUG7Z0RjmH6M8C+ihF1Ts2opTBqfAXkVY0/ETjCln4
-         3rTxOKdTNuUFwseP2RSnajhj7MWd5vhX2tVMvoPAT7r5kVqmCdQVZ9Y5kLMM1NUNQgpb
-         iS1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697729540; x=1698334340;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZLV9wzASWRyU6HzDxs4AfroURzmGIMRDucVF5MhGgYE=;
-        b=OMWug3fMomO/9fTQTjuNplMKTfwKrDhOSB1pq0831iTAT7kU0LccnhE7w/qFHFnNRy
-         gtVdkDee6OYoxS9rZhxRICtUd1QQv2D5BP+W1f+UOKCdlgvsYv0SU5GF4C3c8I/BYWLU
-         ypFVufsqIfIMn+PSf2Vm7YoKRqpN2toNPBCuTL52YeYCH5TlXdv6Yj7F/wan/YLISBjf
-         AkYjrmnImXBnhqTWiiWTi9WQnWO3TsuoOpyp7UyouEdSvMla9d7mFt8Vl890fJMnOeiP
-         lBS8m1GOmisHICuITjgncZbQkMxNcC7vvWUJjHKxRE/OaGIFiGS1FgQJ295PB4+WKEcd
-         k/5A==
-X-Gm-Message-State: AOJu0Yzmt2zrKmOjqLdECaIfsAmU2ZxAL+kVZ1qwQPnCyZTzMArXc1Os
-	lDdqfnE7fa9HbU4o7q8+uWI=
-X-Google-Smtp-Source: AGHT+IEaV9JiaMeNcqn7ZDN5n/GknnW7dZbn6QtiRLVfLpSWHihFVGOOhd2lvSk4jdX5o2qW3eCTwA==
-X-Received: by 2002:a17:902:db0c:b0:1c3:a4f2:7c99 with SMTP id m12-20020a170902db0c00b001c3a4f27c99mr2601780plx.4.1697729540466;
-        Thu, 19 Oct 2023 08:32:20 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id p4-20020a170902e74400b001a98f844e60sm2077698plf.263.2023.10.19.08.32.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Oct 2023 08:32:19 -0700 (PDT)
-Date: Fri, 20 Oct 2023 00:32:19 +0900 (JST)
-Message-Id: <20231020.003219.1788909848908453261.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
- wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <64db34c0-a50a-4321-a3d8-b692e26899d9@proton.me>
-References: <0e8d2538-284b-4811-a2e7-99151338c255@proton.me>
-	<20231019.234210.1772681043146865420.fujita.tomonori@gmail.com>
-	<64db34c0-a50a-4321-a3d8-b692e26899d9@proton.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDaKFfQE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F47C433CA;
+	Thu, 19 Oct 2023 15:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697730963;
+	bh=UdTLJEWjQLLbDTfkJJrqOSkrPFt3tUV8K30G7Qw7fHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RDaKFfQEqVlYYZxhyDmpBy3qGGGZtmxpAdGXPA/9qSuTBgNgPzDJz/QMIb47NzO6n
+	 meCy2xfdT29X7i5Ns9X6gThQnxZzRu0K+bFldhIbskVNg2R+0o82hu56yrxI9vSB94
+	 t1PEK0SOSnDiiS33daoKearQ1I3JajQaip6qgE4pLq06pj551afIUREXxwpz4oPKt4
+	 S8hvWeVcGRjK6JUQl1mKU3nGaIfMFZw2nmv0meXLoHr+NlWtk0Odjv8QyepSGe7rGj
+	 ISgesdES0lJxpCRT5qmji/cU3XaAzrOC4QN3Eg1nRmUKWJ6cT1RhfvPsClBlCkMZgg
+	 gBNMao2FqR7FQ==
+Date: Thu, 19 Oct 2023 08:56:00 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Alexander Potapenko <glider@google.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>, linux-kernel@vger.kernel.org,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Nick Terrell <terrelln@fb.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Tom Rix <trix@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Kees Cook <keescook@chromium.org>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Li Hua <hucool.lihua@huawei.com>, Rae Moar <rmoar@google.com>,
+	rust-for-linux@vger.kernel.org, bpf@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
+Message-ID: <20231019155600.GB60597@dev-arch.thelio-3990X>
+References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
+ <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
+ <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
+ <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
+ <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
+ <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
 
-On Thu, 19 Oct 2023 15:20:51 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
-> On 19.10.23 16:42, FUJITA Tomonori wrote:
->>>>>> +/// Registration structure for a PHY driver.
->>>>>> +///
->>>>>> +/// # Invariants
->>>>>> +///
->>>>>> +/// The `drivers` slice are currently registered to the kernel via `phy_drivers_register`.
->>>>>> +pub struct Registration {
->>>>>> +    drivers: &'static [DriverType],
->>>>>> +}
->>>>>
->>>>> You did not reply to my suggestion [2] to remove this type,
->>>>> what do you think?
->>>>>
->>>>> [2]: https://lore.kernel.org/rust-for-linux/85d5c498-efbc-4c1a-8d12-f1eca63c45cf@proton.me/
->>>>
->>>> I tried before but I'm not sure it simplifies the implementation.
->>>>
->>>> Firstly, instead of Reservation, we need a public function like
->>>>
->>>> pub fn phy_drivers_register(module: &'static crate::ThisModule, drivers: &[DriverVTable]) -> Result {
->>>>       to_result(unsafe {
->>>>           bindings::phy_drivers_register(drivers[0].0.get(), drivers.len().try_into()?, module.0)
->>>>       })
->>>> }
->>>>
->>>> This is because module.0 is private.
->>>
->>> Why can't this be part of the macro?
->> 
->> I'm not sure I correctly understand what you suggest so you meant the following?
->> 
->>      (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], $($f:tt)*) => {
->>          struct Module {
->>               _drv:  [
->>                  ::kernel::net::phy::DriverVTable;
->>                  $crate::module_phy_driver!(@count_devices $($driver),+)
->>              ],
->>          }
->>          unsafe impl Sync for Module {}
->> 
->>          $crate::prelude::module! {
->>              type: Module,
->>              $($f)*
->>          }
->> 
->>          impl ::kernel::Module for Module {
->>              fn init(module: &'static ThisModule) -> Result<Self> {
->>                  let drv = [
->>                      $(::kernel::net::phy::create_phy_driver::<$driver>()),+
->>                  ];
->>                  ::kernel::error::to_result(unsafe {
->>                      ::kernel::bindings::phy_drivers_register(drv[0].0.get(), drv.len().try_into()?, module.0)
+On Thu, Oct 19, 2023 at 02:53:01PM +0200, Arnd Bergmann wrote:
+> On Thu, Oct 19, 2023, at 12:04, Alexander Potapenko wrote:
+> > So the remaining option would be to just increase the frame size every
+> > time a new function surpasses the limit.
 > 
-> You can just do this (I omitted the `::kernel::` prefix for
-> readability, if you add this in the macro, please include it):
+> That is clearly not an option, though we could try to
+> add Kconfig dependencies that avoid the known bad combinations,
+> such as annotating the AMD GPU driver as
 > 
->      // CAST: `DriverVTable` is `repr(transparent)` and wrapping `bindings::phy_driver`.
->      let ptr = drv.as_mut_ptr().cast::<bindings::phy_driver>();
->      let len = drv.len().try_into()?;
->      // SAFETY: ...
->      to_result(unsafe { bindings::phy_drivers_register(ptr, len, module.0) })?;
-> 
->>                  })?;
+>       depends on (CC_IS_GCC || CLANG_VERSION >=180000) || !(KASAN || KCSAN)
 
-The above solves DriverVTable.0 but still the macro can't access to
-kernel::ThisModule.0. I got the following error:
+This would effectively disable the AMDGPU driver for allmodconfig, which
+is somewhat unfortunate as it is an easy testing target.
 
-error[E0616]: field `0` of struct `kernel::ThisModule` is private
-  --> drivers/net/phy/ax88796b_rust.rs:12:1
-     |
-     12 | / kernel::module_phy_driver! {
-     13 | |     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
-     14 | |     device_table: [
-     15 | |         DeviceId::new_with_driver::<PhyAX88772A>(),
-     ...  |
-     22 | |     license: "GPL",
-     23 | | }
-        | |_^ private field
-	   |
-	      = note: this error originates in the macro
-	      `kernel::module_phy_driver` (in Nightly builds, run with
-	      -Z macro-backtrace for more info)
+Taking a step back, this is all being done because of a couple of
+warnings in the AMDGPU code. If fixing those in the source is too much
+effort (I did note [1] that GCC is at the current limit for that file
+even with Rodrigo's series applied [2]), couldn't we just take the
+existing workaround that this Makefile has for this file and its high
+stack usage and just extend it slightly for clang?
 
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+index 66431525f2a0..fd49e3526c0d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+@@ -58,7 +58,7 @@ endif
+ endif
+ 
+ ifneq ($(CONFIG_FRAME_WARN),0)
+-frame_warn_flag := -Wframe-larger-than=2048
++frame_warn_flag := -Wframe-larger-than=$(if $(CONFIG_CC_IS_CLANG),3072,2048)
+ endif
+ 
+ CFLAGS_$(AMDDALPATH)/dc/dml2/display_mode_core.o := $(dml2_ccflags) $(frame_warn_flag)
 
->>                  Ok(Module {
->>                      _drv: drv,
->>                  })
->>              }
->>          }
->> 
->> Then we got the following error:
->> 
->> error[E0616]: field `0` of struct `DriverVTable` is private
->>    --> drivers/net/phy/ax88796b_rust.rs:12:1
->>       |
->>       12 | / kernel::module_phy_driver! {
->>       13 | |     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
->>       14 | |     device_table: [
->>       15 | |         DeviceId::new_with_driver::<PhyAX88772A>(),
->>       ...  |
->>       22 | |     license: "GPL",
->>       23 | | }
->>          | |_^ private field
->> 	   |
->> 	      = note: this error originates in the macro
->> 	      `kernel::module_phy_driver` (in Nightly builds, run with
->> 	      -Z macro-backtrace for more info)
->> 
->> error[E0616]: field `0` of struct `kernel::ThisModule` is private
->>    --> drivers/net/phy/ax88796b_rust.rs:12:1
->>       |
->>       12 | / kernel::module_phy_driver! {
->>       13 | |     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
->>       14 | |     device_table: [
->>       15 | |         DeviceId::new_with_driver::<PhyAX88772A>(),
->>       ...  |
->>       22 | |     license: "GPL",
->>       23 | | }
->>          | |_^ private field
->> 
->> 
->>>> Also if we keep DriverVtable.0 private, we need another public function.
->>>>
->>>> pub unsafe fn phy_drivers_unregister(drivers: &'static [DriverVTable])
->>>> {
->>>>       unsafe {
->>>>           bindings::phy_drivers_unregister(drivers[0].0.get(), drivers.len() as i32)
->>>>       };
->>>> }
->>>>
->>>> DriverVTable isn't guaranteed to be registered to the kernel so needs
->>>> to be unsafe, I guesss.
->>>
->>> In one of the options I suggest to make that an invariant of `DriverVTable`.
->>>
->>>>
->>>> Also Module trait support exit()?
->>>
->>> Yes, just implement `Drop` and do the cleanup there.
->>>
->>> In the two options that I suggested there is a trade off. I do not know
->>> which option is better, I hoped that you or Andrew would know more:
->>> Option 1:
->>> * advantages:
->>>     - manual creation of a phy driver module becomes possible.
->>>     - less complex `module_phy_driver` macro.
->>>     - no static variable needed.
->>> * disadvantages:
->>>     - calls `phy_drivers_register` for every driver on module
->>>       initialization.
->>>     - calls `phy_drivers_unregister` for every driver on module
->>>       exit.
->>>
->>> Option 2:
->>> * advantages:
->>>     - less complex `module_phy_driver` macro.
->>>     - no static variable needed.
->>>     - only a single call to
->>>       `phy_drivers_register`/`phy_drivers_unregister`.
->>> * disadvantages:
->>>     - no safe manual creation of phy drivers possible, the only safe
->>>       way is to use the `module_phy_driver` macro.
->>>
->>> I suppose that it would be ok to call the register function multiple
->>> times, since it only is on module startup/shutdown and it is not
->>> performance critical.
->> 
->> I think that we can use the current implantation using Reservation
->> struct until someone requests manual creation. I doubt that we will
->> need to support such.
-> 
-> I would like to remove the mutable static variable and simplify
-> the macro.
+That would address the immediate concern of the warning breaking builds
+with CONFIG_WERROR=y while not raising the limit for other files in the
+kernel (just this one file in AMDGPU) and avoiding disabling the whole
+driver. The number could be lower, I think ~2500 bytes is the most usage
+I see with Rodrigo's series applied, so maybe 2800 would be a decent
+limit? Once there is a fix in the compiler, this expression could be
+changed to use clang-min-version or something of that sort.
 
-It's worse than having public unsafe function (phy_drivers_unregister)?
+[1]: https://lore.kernel.org/20231017172231.GA2348194@dev-arch.thelio-3990X/
+[2]: https://lore.kernel.org/20231016142031.241912-1-Rodrigo.Siqueira@amd.com/
+
+Cheers,
+Nathan
