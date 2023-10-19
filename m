@@ -1,317 +1,194 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DF5225BD
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Oct 2023 18:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38E03D3B5;
+	Thu, 19 Oct 2023 20:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="m2wJ+3MK";
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="csM6umGn"
-X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 Oct 2023 11:50:22 PDT
-Received: from rcdn-iport-3.cisco.com (rcdn-iport-3.cisco.com [173.37.86.74])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D3012D;
-	Thu, 19 Oct 2023 11:50:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=4521; q=dns/txt; s=iport;
-  t=1697741422; x=1698951022;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=D/+/E60lqZfmaMHsilGLJXhgkmxQybBsA0YLBdnKWWA=;
-  b=m2wJ+3MKPpr0hr9Q9F5PZPgUlhnXN2lso9f9Txmi1qKLJleuMXDE+Bve
-   nhEQrsGRdS0JJlpA9RlbOyf7UdgZXUXfC2oDPi7ef/C8h7eKyJHQhJ5e8
-   aUs0ZEU4YEKZTtaSb9n5QIXEgJIUFsAgaC82BbN2oq1/e2CV6d9XQLEY1
-   I=;
-X-CSE-ConnectionGUID: CeXPj8MqQbabxxBg1Io/mw==
-X-CSE-MsgGUID: nEGa3RdgT2aS0E/BfGGIcw==
-X-IPAS-Result: =?us-ascii?q?A0DNAgDKeTFlmIgNJK1agQklgSqBZ1J4AlkqEkiIHgOFL?=
- =?us-ascii?q?YZAgiMDkleLJBSBEQNWDwEBAQ0BATETBAEBhQYChxUCJjQJDgECAgIBAQEBA?=
- =?us-ascii?q?wIDAQEBAQEBAQIBAQUBAQECAQcEFAEBAQEBAQEBHhkFDhAnhWgNhk0BAQEDE?=
- =?us-ascii?q?hUZAQE3AQ8CAQgYLjIlAgQOBQgaglwBgl4DAagsAYFAAoooeIEBM4EBggkBA?=
- =?us-ascii?q?QYEBbJsCYFIiAoBigYnG4FJRIEVgTyBbz6CYQKBRhoHhhoig3aDG4IgBzKBC?=
- =?us-ascii?q?gwJgQODLiqBFIooXiRHcBsDBwOBAxArBwQyGwcGCRYYFSUGUQQtJAkTEj4Eg?=
- =?us-ascii?q?WeBUQqBBj8PDhGCQyICBzY2GUuCWwkVDDVNdhAqBBQXgREEah8VHhIlERIXD?=
- =?us-ascii?q?QMIdh0CESM8AwUDBDQKFQ0LIQUUQwNHBkoLAwIcBQMDBIE2BQ0eAhAaBg4pA?=
- =?us-ascii?q?wMZTQIQFAMeHQMDBgMLMQMwgR4MWQNvHzYJPA8MMwNEHUADeD01FBttnQNwg?=
- =?us-ascii?q?mh7FCkGgVYqEB6WJwGNSKEuCoQMjAGVHkkDhUGkE4UqglKQQKgmAgQCBAUCD?=
- =?us-ascii?q?gEBBoFjOoFbcBWDIglJGQ+OOYNfhhWJZHY7AgcLAQEDCYtKAQE?=
-IronPort-PHdr: A9a23:s+3/hRUc7jhwxIt0sJQ9kz1HjpHV8K0yAWYlg6HPw5pHdqClupP6M
- 1OavLNmjUTCWsPQ7PcXw+bVsqW1QWUb+t7Bq3ENdpVQSgUIwdsbhQ0uAcOJSAX7IffmYjZ8H
- ZFqX15+9Hb9Ok9QS47lf1OHmnSp9nYJHwnncw98J+D7AInX2s2y1uuv/5TISw5JnzG6J7h1K
- Ub+oQDYrMJDmYJ5Me5x0k7Qv3JScuJKxGVlbV6ShEP64cG9vdZvpi9RoPkmscVHVM3H
-IronPort-Data: A9a23:FZbpL68k55thSQYpodhUDrUDXn6TJUtcMsCJ2f8bNWPcYEJGY0x3z
- WQZX26AOKyCN2b3L4x0PYmx8UxT6MTUn9FnTVdvritEQiMRo6IpJzg2wmQcns+2BpeeJK6yx
- 5xGMrEsFOhtEzmE4E/ra+C9xZVF/fngbqLmD+LZMTxGSwZhSSMw4TpugOdRbrRA2bBVOCvT/
- 4upyyHjEAX9gWUtajtFs/jrRC5H5ZwehhtJ5jTSWtgT1LPuvyF9JI4SI6i3M0z5TuF8dgJtb
- 7+epF0R1jqxEyYFUrtJoJ6iGqE5auK60Ty1t5Zjc/PKbi6uCcAF+v1T2PI0MS+7gtgS9jx74
- I0lWZeYEW/FMkBQ8QgQe0EwLs1wAUFJ0JTKEUC94emK9kfPeWv86fo3LUZxOJJNr46bAUkWn
- RAZADkJahbGjOWszffgDOJtnc8kasLsOevzuFk5kmqfVqhgGMuFGv6UjTNb9G9YasRmFPPfb
- NcdYCFHZxXbaBoJMVASYH47tL7y2CahL20E9jp5o4IxzkfalzZ934S3OeGNV5ugS+p6v02H8
- zeuE2PRW0FGa4P3JSC+2natgPLf2CD2QoQfEJWm+fNwxl6e3GoeDFsRT1TTieOkkVL7VdVFb
- kgV/Dc+hbY9+VbtTdTnWRC85nmesXYht8F4Guk+7kSGzbDZpl3fDWkfRTkHY9sj3CMredA0/
- nSEr+vrVRl2ibecQ2KN3LjNjDT1PDdAeAfuehQ4ZQcC5tDipqQ6gRTOUstvHcaJYjvdRGGYL
- 9ei8XdWulkDsSIY//7gpAya2lpAsrCMH1FtuFSGNo6wxl4hDLNJcbBE/rQyARxoAIufUl6H1
- JTvs5fAtrlWZX1hedDkfQngNLit4/DAOzrGjBs0WZIg7D+qvXWkeOi8AQ2Sxm83aa7omhewP
- yc/XD+9ArcPZBNGiocsPOqM5zwCl/SIKDgfatjab8BVfr96fxKd8SdlaCa4hj68zxZxyvFjY
- 87DLa5A6Er274w5lFJaoM9DidcWKtwWngs/uLiilU38iOrCDJJrYe5caQrmgh8FAFOs+VWJr
- Ik32zqiwBREW+q2eTjM7YMWNjg3wYsTW/jLRzhsXrfbeGJOQTh5Y9eImO9JU9I+xcx9yLyXl
- kxRr2cFkjLXn2PcEwyWZxhLMfW3NXqJhShlbXVE0JfB8yVLXLtDG49GKcVnJeJ2rLc8pRO2J
- tFcE/i97j10Ym2v0xwWbIL2q8ppcxHDuO5EF3PNjOQXF3K4ezH0xw==
-IronPort-HdrOrdr: A9a23:ZNI2d6mcfDbNg/FI43I/wjLEM//pDfNQiWdD5ihNYBxZY6Wkfp
- +V7ZcmPE7P6Ar5BktApTnZAtjwfZq9z/JICYl4B8baYOF/0FHYYr2KnrGSswEIfBeOt9K1tJ
- 0QPJSWbeeAb2SS4vyKnTVQf+xQp+VvtZrY+9s2rE0dDT2CCZsQkzuRYzzzeiYZNWw2YabRVq
- DsmfavzADQAUj/G/7LfEXtKNKz3OEj+qiWByIuNloM0iXLpzWu77LxDhif2Tkjcx4n+90f2F
- mAuTbUooG4vd+G6jK07QLuBpJt9+fJ+59mPoihm8IVIjLjhkKDf4J6QYCPuzgzvaWG9EsquM
- OkmWZjA+1Dr1fqOk2lqxrk3AftlBw07WX59FOeiXz/5eTkWTMBDdZbj44xSGqd16NghqA57E
- t45RPei3NlN2KYoM073amRa/herDvynZPlq59Js5UQa/pFVFYbl/1twKocKuZzIMu90vFlLA
- GrZ/usuMq/tjihHi3kl3gqz9q2UnspGBCaBkAEp8yOyjBT2Gt01k0C2aUk7z09Hb8GOtF5Dt
- 7/Q+9VvaALStVTYbN2Be8HT8fyAmvRQQjUOGbXJVj8DqkIN3/EtpayudwOla2XUY1NyIF3lI
- XKUVteu2J3c0XyCdeW1JkO9hzWWm2yUTnk18kb7Zlkvb/3QqbtLES4OR0Tutrlp+9aDtzQWv
- 61Np4TC/j/LXH2EYIMxAH6U4k6EwhWbCTUgKdMZ7ujmLO9FmSxjJ2vTB/6HsuYLQoZ
-X-Talos-CUID: =?us-ascii?q?9a23=3ARKliX2seNGZZWwnDlAtiOINK6IsOf03lzif1Ona?=
- =?us-ascii?q?yAGx5WJeaEH6Xv6Z7xp8=3D?=
-X-Talos-MUID: 9a23:nbGhtQhVcarYrPc0wlR7H8MpMupH6v+UBE8xy5w94+TDHyJfFBaWk2Hi
-X-IronPort-Anti-Spam-Filtered: true
-Received: from alln-core-3.cisco.com ([173.36.13.136])
-  by rcdn-iport-3.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:49:18 +0000
-Received: from alln-opgw-1.cisco.com (alln-opgw-1.cisco.com [173.37.147.229])
-	by alln-core-3.cisco.com (8.15.2/8.15.2) with ESMTPS id 39JInIAY025524
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Oct 2023 18:49:18 GMT
-X-CSE-ConnectionGUID: x+ljMh41Rpa49QSU+GIOSw==
-X-CSE-MsgGUID: A1l6kFD+SfO43jjnrCuyhQ==
-Authentication-Results: alln-opgw-1.cisco.com; dkim=pass (signature verified) header.i=@cisco.com; spf=Pass smtp.mailfrom=amiculas@cisco.com; dmarc=pass (p=quarantine dis=none) d=cisco.com
-X-IronPort-AV: E=Sophos;i="6.03,238,1694736000"; 
-   d="scan'208";a="5382320"
-Received: from mail-bn8nam12lp2169.outbound.protection.outlook.com (HELO NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.169])
-  by alln-opgw-1.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:49:16 +0000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="c6/FDmwx"
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2044.outbound.protection.outlook.com [40.107.102.44])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08274124;
+	Thu, 19 Oct 2023 13:17:36 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EjppLPqKvxboQGIjsTOQRF+wjYAjm4BZouDL+AvmGVzgRAQVyvyFjNCDawPAXwY2FToloYp/CPhkBpOYLoKeHOYQEWIXdfWAbsKDK/kNwUCAYBhuY23dJuyes2y05c3gUh3O4J+EjgDBTX1VRBf1b6CHBmREH0fihg5NVESxp3xint3p+LvpweDgRuKII8LLgAjRGpZ9viFk+CAJpHnCSxsor8eAVMy/06qLDTtIGw4/q5fgX9X/KhUf8W2wqbtEXUE6yzc75pS2p/eV/WlH833W/8SeEVIBOZDHfddxnEp1ziXKL/9xsfGS3Fyj7Ig89e7hJ6HoLiSerHseFYokuA==
+ b=aYTkTYgn1C7k+gulS0SXPggS4Ri1fY0uKt1HdZbDAhdkNFh6+zFDlsBenvE2hNa7MwJnXIzYvQKwO4orXCfK+6sYSUK3uvMjAXbLR+6OqZ0/H5W895UinH3mN5tNDq9gQiBjAGKj0KwVs4cX48BYLQG7O2hrZQdxrq3Lg2cU0+dApJK2QkfyPu7q9rYnsySjSONausb3vydRgGzL2o3y8AolGfPBxtVJ9150AebDvoz5Le6TeUeTwe9ZT8mSZDmkPN59gCu3qxxBGX69/bSjIOFV7Rs/SvRQ4r+NXZQbi+hSfu2gxF8ngERlJU4YC2QXRt6YA3/8eC4BrpLtqnoejw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z0RBuQO7tUtphn4pCKsUQ8do2EDtloDyT3gNv5aAJyg=;
- b=EAw3Gusn5YFPhY3k93P0lyBo2r9tR3xrccOlXVD3ke1Sl07jtss6tJn1Bx7B2dmtNrCDbCjwgyAQ1at39rhYZClrzhWUSmJ65qwfAISHUbqMXc+nHZmleo5kPbQ5tjfyU4yWOg8YkLxhnp0neBRFF5eBDXVF4VLA4XrTh3U9y++ays4ykanuOK0gvTSwaW159AXx5/XcyAwbKdnI2BlXD9tDOJwCnMT7YCOX3njLL4P/SOD2xY3aJLVGCQCh/MqioRyQNS7hAdeI2qjZ37+wbQiGav1xNw8Ulbj5nC9cPldoVukCb/K0YJoH/Jj61oPy/TYzdalU2Ao1zgH1HLhAxw==
+ bh=Q+1qGJ1b1W/hrmbe9VlayPZ0BGk79yLrvvAYCz9Z+Ic=;
+ b=EB51bvc8luL0XcOTcBIK8LmOw+FAIrkF/V3mvKKd1zGxi+mUBnXKLb9VZ8CvKYAQdnVygRPtqQWRcBGVwC6JHX9t2aPPQxS6hC2t6a417bSnGwH+cMk4S1pMqkU25s6REqGIkfJo/nuC40qQNUhP7xYQeDNGSAw6SBE7qIGkRBkz8/HYvu1xcIm18H+jrogLi0EVhkNFp1F5J4JrYZpnmfA5gQTzIH9x01bW9z6zYK1cL1Nv1MlCmq8osOYzuDQUj8KVPhrF7OGxA52X+JlDpDAHJEAwK2m5cOzLPXzQ/Cskydb2daV4LFMtW5l1fE+nk2IrIOvNjNnNPzwQRZmeDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cisco.com; dmarc=pass action=none header.from=cisco.com;
- dkim=pass header.d=cisco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cisco.com;
- s=selector1;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z0RBuQO7tUtphn4pCKsUQ8do2EDtloDyT3gNv5aAJyg=;
- b=csM6umGnX+BaPj+YQZZWzXhNeVVEvB+A32jTcBR2kTE6hhsPofpfSOSK18OxM6lxkcP8E2hsREzLJN8r8Tnp3H9v0nSjSd0mtl/2ibK2DouO6Z7I5k+EKPPGKNr3GBfFzDVjVC13+Zy9F1PqmqvbCuRRstCL+ADzCDmJWzJtqdk=
-Received: from CH0PR11MB5299.namprd11.prod.outlook.com (2603:10b6:610:be::21)
- by SJ0PR11MB4912.namprd11.prod.outlook.com (2603:10b6:a03:2ae::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.25; Thu, 19 Oct
- 2023 18:49:14 +0000
-Received: from CH0PR11MB5299.namprd11.prod.outlook.com
- ([fe80::6c6c:63b0:2c91:a8d9]) by CH0PR11MB5299.namprd11.prod.outlook.com
- ([fe80::6c6c:63b0:2c91:a8d9%7]) with mapi id 15.20.6907.021; Thu, 19 Oct 2023
- 18:49:14 +0000
-From: "Ariel Miculas (amiculas)" <amiculas@cisco.com>
-To: Benno Lossin <benno.lossin@proton.me>
-CC: Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho
-	<wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl
-	<aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-Thread-Topic: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-Thread-Index: AQHaArz0jXJRfEzbbUaGYI2Vxgswdw==
-Date: Thu, 19 Oct 2023 18:49:14 +0000
-Message-ID: <2tucqxnvhh3db4mc73fyahc7w2xxawaupzgxzvmhxavkbeffzn@sj4dhsipcs5a>
-References: <20231019171540.259173-1-benno.lossin@proton.me>
-In-Reply-To: <20231019171540.259173-1-benno.lossin@proton.me>
-Accept-Language: en-US
+ bh=Q+1qGJ1b1W/hrmbe9VlayPZ0BGk79yLrvvAYCz9Z+Ic=;
+ b=c6/FDmwx4W1xMVmG+lxU3pOHFRWdezlf3Eis1sYqACwuJ9rVI7JKSkHEYeJ8V/UIVLSONfKPeXUzOsGmTfp3TxIDvWeehgKfhpADFvX7JshfixIskCEeF/j3MQ/DSxYrxGL5AoKFoois7f9QyHJZqRWdW9UlSil6QWMCFtNWelw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6280.namprd12.prod.outlook.com (2603:10b6:8:a2::11) by
+ DS0PR12MB7632.namprd12.prod.outlook.com (2603:10b6:8:11f::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6907.24; Thu, 19 Oct 2023 20:17:31 +0000
+Received: from DM4PR12MB6280.namprd12.prod.outlook.com
+ ([fe80::5aa2:3605:1718:3332]) by DM4PR12MB6280.namprd12.prod.outlook.com
+ ([fe80::5aa2:3605:1718:3332%7]) with mapi id 15.20.6886.034; Thu, 19 Oct 2023
+ 20:17:31 +0000
+Message-ID: <a9237e7a-e08c-4904-b84a-f6198333a78c@amd.com>
+Date: Thu, 19 Oct 2023 16:17:26 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5299:EE_|SJ0PR11MB4912:EE_
-x-ms-office365-filtering-correlation-id: de70ca6c-5ba3-47be-1b9e-08dbd0d4175f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- XYn5+fusbyddk1IBQ+Fj2XvPEWQnVI1ttPcEjbCFBHP6Y8ll31BkUOERhkP0lip9CggUS+Uy8Fsw9q9VBHzUQ5DJYy9IfiATMakJyxTBIppcpqnfC6CTVAyRkJjjGlSh24YAQ6xRL51U6BTGfSHVIB5WBBbS7ys4yJV1rYqMuGeQdCZrYWmZyqGLvvfZq//UsWA3xYtcOQoFThem6Gnx6gyZBgetiRB1VL/GI+eRr2Z4H28kPP48ISRTdvN9DXrHqwavOB8dWzIlC392mb/QxsHamLkANsI2NZDj4fIQFDut/2JViHAfO725KsDW5xe9lSxfz210KKV4EHsKsdLpu+6qle/NqN9uNhYJRUEOULw2Mj3alm9ndQmDvPHD04KNJz3La1sfqB7abZz3ZRBN34QN/Tx4F9Oz+XGkGCvrS9RiYWSqSGnM7Z4s8DpoAZHuJZAzMUR4zxkR8O7gtuh0Pe7byMAWU2CvFqQmzY2s9phY0rYsy0O8C8JF73Frxv0+NUFP0GmFvfrprVwEl9c8K4A/qOisbIOykdn4whotfLifYgo6+ZcjAMAgZLLGM6fbHMZZiRzynhGs5RbltwUetICP4N0QLY9VunFMKj/gZC/WCi+QiMHElcgVjSVjTBRX
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5299.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(346002)(366004)(396003)(376002)(39860400002)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(38070700009)(2906002)(76116006)(66946007)(91956017)(66476007)(6916009)(54906003)(66556008)(66446008)(64756008)(316002)(5660300002)(71200400001)(8936002)(478600001)(6486002)(86362001)(41300700001)(8676002)(4326008)(7416002)(6506007)(38100700002)(9686003)(6512007)(83380400001)(26005)(122000001)(33716001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?DF90zfXi2UGhEG61nToo+JcmoTTK+UK5ajJ0SChE7xQQQaSrJETJaNKVwa?=
- =?iso-8859-1?Q?9L/zAZOAojbamnfFJYTvhC7ZMtMmZ+YoOOpoJueCln5lXEWBlxkmwjdOzj?=
- =?iso-8859-1?Q?bv2BEN18WcnrKhuf/ZZkH24yD25YiwsM1WWyGg+fJXWBOO2P1KxR6qgFwT?=
- =?iso-8859-1?Q?F6CIRSN0U9SvPITHQFxQI35Xtx1rB27j5yJU477CmRtN27yFIfAnmxud/t?=
- =?iso-8859-1?Q?PkXfNihnkmKTezewjj0AbNpvadvKvjih9KUfUSYZZc6lqN8pjxgCKzOiL2?=
- =?iso-8859-1?Q?5a47S5IiVbcATS2HmTyY4jpnkRkEe9/XH2BTIdPciZH8kszQ1bCgtFHg0n?=
- =?iso-8859-1?Q?GKYaGl2t805WE8M1+rYgkRE7pvKNfAHjdJlO1ix+4SxO1KZrftSs7dhr4O?=
- =?iso-8859-1?Q?/wZXnc6fSycPwyoEJvO71fdwRZcK7CxVBGH4ruT0NkrsqQtFfaThQiMZH2?=
- =?iso-8859-1?Q?93KSo4etzqGnSM4TC6nGdSyBJJgHUCfIgxlAk8VHohkJ6vhaXxxSI4EkNW?=
- =?iso-8859-1?Q?3QxDvOyps2EcvE8Cgsbfpzerq6rG5fR+p7Zcm4aoBFoE8XENuhm657pNIj?=
- =?iso-8859-1?Q?urSe16dYPAsrVrvq2mmP6cu8m7IeDfgCddVtEyv3W02EMFFFsRlbuqmpYN?=
- =?iso-8859-1?Q?7cfxySVYVlAUSHjaRUzQTSfEvOdZArbwvrb2ZLuCvY8jSUJ6SEkYidVz8b?=
- =?iso-8859-1?Q?JTl7TGDqoRdef38MgluymxioaLi1JHD9V0PuiUK28A8IFICtZaelK9Ee4x?=
- =?iso-8859-1?Q?zs/cMUCErGrHWmds1i+I+gfpivgkPuvy+tQn5sqNmV3lfbvjPOvAAHRx40?=
- =?iso-8859-1?Q?/02M2YdHM7MX+1oIqqJX/qVY8hQeO759hj99+cnXBni6xPZJxCG0qzpbUd?=
- =?iso-8859-1?Q?G/EUWRIsePDAtluaUkVv+Cpx5pLMX+sIBucseIsq9bkOT+kcBDqEK12IZU?=
- =?iso-8859-1?Q?e2L0eJdQBcpTejea0jayep3VOrsZz+94tYK91HHAwramD1u+TFU7Lr/UAJ?=
- =?iso-8859-1?Q?Mp8D5eIFnJpwwA3SayUoWHc9h0b3gyzm5gkS/FF2f4HQzwYkzABp0Ga77c?=
- =?iso-8859-1?Q?wWEEqpVyvB9P73Fo3dJcOB0tyQJnQNWvBtslemFMJgqKsDTyIB833rSXSs?=
- =?iso-8859-1?Q?VIgC/rv3Cs9/811O92BQ/9O+zdFsHO0I22/nFPVD8I8LIxNf4YAnxQ8zO0?=
- =?iso-8859-1?Q?ngUchDpgtYYBqm+rXgEVt0l+Ci+pxF00BX6s3gQtuVTY2XP4FdaJ6vNI2k?=
- =?iso-8859-1?Q?jwO1U+YWfLfUfDrW4SlN50kEWvcSnw7cjPA25Xb1aCx/2e//vbjMR7iQus?=
- =?iso-8859-1?Q?r8/av6VzNNPG0UCBLf/Dyq65Y9ffF9gaJ+AkwOgDbBiRD+s33wg0zGwa0d?=
- =?iso-8859-1?Q?sXGZlZFGbN/udQhDVdxa5p2yhzn8joPbXs5hoMxxTwEMcQ56JIip8qrdKH?=
- =?iso-8859-1?Q?Rept0EDmmL5G/WOrZlvEpx5ZL6q9538LoUA+gxmPMGDUAydym6suOvi/BL?=
- =?iso-8859-1?Q?QcLcromuJKajv0/6mqdaaPfd44AURfvZdIbqB3pMjEIrXoF9UHsw80YQW3?=
- =?iso-8859-1?Q?MsaTSrMenoIktj5NDPSeQ4uODpRXITGv9n1ypVbHjtP0gzxeOjsYg7xUJx?=
- =?iso-8859-1?Q?i6sLkmI/mDIpO3QF9BInuTi7yHAjV/6PAX?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <F1AFA628D1F9A345A76B447EB5E145CA@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+To: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: Alexander Potapenko <glider@google.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-kernel@vger.kernel.org,
+ Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+ Harry Wentland <harry.wentland@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Nick Terrell <terrelln@fb.com>, Nick Desaulniers <ndesaulniers@google.com>,
+ Tom Rix <trix@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Kees Cook <keescook@chromium.org>,
+ Zhaoyang Huang <zhaoyang.huang@unisoc.com>, Li Hua
+ <hucool.lihua@huawei.com>, Rae Moar <rmoar@google.com>,
+ rust-for-linux@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev
+References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
+ <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
+ <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
+ <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
+ <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
+ <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
+ <20231019155600.GB60597@dev-arch.thelio-3990X>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+In-Reply-To: <20231019155600.GB60597@dev-arch.thelio-3990X>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0208.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:67::31) To DM4PR12MB6280.namprd12.prod.outlook.com
+ (2603:10b6:8:a2::11)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: cisco.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6280:EE_|DS0PR12MB7632:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1758f286-9ebe-459b-f9a4-08dbd0e06c6a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	1YUWApU2IIWDF6DjVLrfsugTaHu+NQ5NGOoBZfg3WfZFNydhnrpdQei+AxxkLZtUtOyWgi7y4fLf9khvcw/yW/21NAEIRLQh+rB+HAfW11/vccRctgoUFQVOkO0le+M/oVcEXbQIsTP0U4xvJbgW6jXJlqf+pH/WiXq5Jz+rn++eNdz1nInESobUlhW1alN703tK1CzxvLirWVZ42ejJbSoA+G4EfI35RR30DvihnKz4lZsVrRJ4t+oLxbCDfOj4RoLFrm/lhWSDq38pSlP/NoMFUzOqrqunERnBWXeHkmfXjVmgutv7wePUF2lOxEsJ+kRlCS74fj/aP01m/sKzN05DVSTvPnAbOhvySki4z8UY0Cybcy6YCTJi7ftJenNj7zqO1K6CX+GRIeIyBkUV62AOAlJIa6BhDIktnadb6G5f1ZTyQeHwaz5QOJhSovnLdXhiej45soSiqESh1ieYcXld0hK4x59QoLnDSOYiOCJuJv22B4LhdUomX1GlFtD4dZfZlHOXcJbKrXtwJbSEBnIceFDGS+m+4FnlAzO7Orf3zAi9y3rGWgHZ3sRRT+wtiOoMAri00PDqFwIrDrTBHS6BnYKhkvqGcyMRJebW/hN2q7ECQQ7e8CgpS4OykJ+i6RnKXOImnQhzdYMTkzQ/CB5p6u4RFJkx37FrhReYeHflG+iOnAygwu874+Fq6YLQ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6280.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(366004)(39860400002)(396003)(346002)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(26005)(31686004)(38100700002)(83380400001)(54906003)(5660300002)(66946007)(8676002)(4326008)(7416002)(8936002)(86362001)(2906002)(110136005)(66476007)(44832011)(966005)(6486002)(66556008)(53546011)(6506007)(478600001)(6666004)(316002)(31696002)(66899024)(2616005)(36756003)(6512007)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K1ZsRUQrcFYxS1BBcDRWTnFxOWRsU2lhYVE0YmpJdE5GdFNOL0ZKQVJ0bWQ5?=
+ =?utf-8?B?OEJiTlRXZGtJZElPUW1uSU1lUWU1RHZaS1FVV1k3MXRqb0FBVmZ0M0VJUlJL?=
+ =?utf-8?B?ZThhdFhQMWdtRXBKa3h3WWdzYllPTVJqU0NRbTBsWGJrRERvVkpQMk1EVFBz?=
+ =?utf-8?B?V2lJMkxVdzY5RllURjNYMzU2aDZSWVFDdGZJaTB1MFlZSGEzMWlPanhJNGhv?=
+ =?utf-8?B?SGRKR28rUDUzcUVCbEJXSzZ0Y24vaTdBb2xpVENWaGJBZlBaNUNFNkUzc0k0?=
+ =?utf-8?B?aklXRlE5dkpiUFp6c0RJVlJBTE1CRVdwWE90dFU5bjNoM092NkhHL09vK1J4?=
+ =?utf-8?B?YjJyWjlNZStIdUtHMlIrOFlMTG9CT05wUTFwS0lic3lMbWR5VFprRlUzQlBH?=
+ =?utf-8?B?MHJnQzhYYUNXUzJmckNZb0FBM0RIZytWMTh1RDZKWmhFWkpqVG1YbEdRN0JI?=
+ =?utf-8?B?LytFUlpud2FVWFIvYXA3VmlVaFRMc2VTVm4zcFZvaDBvcHhRVW56QWUwamdS?=
+ =?utf-8?B?MGF1SXBxZXlPQjRNd2FZVjJOUlYveFZWV2JRdk4rVXRmRlJjZnZBcmpCanY4?=
+ =?utf-8?B?MDFqTUR1bndpUVR0NFN5dEJ1djFmd3lDclhRbzBhYkRTZG9nZGtHWTM0Ukwx?=
+ =?utf-8?B?YXN2WDZ1dFY3ZzUvUUhubXJFWTE3OTVjQ2RJZ2FMUWZibG8rWHdCRTIxaDVo?=
+ =?utf-8?B?OXRseExLZ2pOaGJ3OUdzRmJzZFJFMTFJVkdpUndQUUxQeWNVRTQ4UGluMWpU?=
+ =?utf-8?B?NzFLaE1Fb2kvK25DQTJ3WFF3TTBZUm5UN3VTQ08xRXc3aUkxRnVlcnR6SVFD?=
+ =?utf-8?B?NFB6NFJvVGhkUFNvekY1U3ZUaC9wajdaK2RwV3FReUhlZWVQcEJ1R3Q1dmw0?=
+ =?utf-8?B?SGdoWXBVRzRJcFpNY2xCc2xrRCtUTjZ4OXJ1Z0F5bUwwS1BnTXByRGVsazJH?=
+ =?utf-8?B?Q3J6RjlYTWpQZkVnNGJoWGNLeHZpK044ZWhpM0o0TFJLVDJ1S0JNcytTQ011?=
+ =?utf-8?B?bEJYMVV6eVU2Q3lXU2tkaElKcHBkZUM3L0N1MWkwMFROUHZDSlFiUCtCQ2Ru?=
+ =?utf-8?B?K2ZNNFRSUVRYQUtUTTd0THVtak1ESlJTN3JCTVJmRzNVdHdwYkFCYWZIOUpU?=
+ =?utf-8?B?MERyNk9oZVc2ZWxTWEdCQkRGY2o0aFcyMU1Kam14TnI2R294Tm1rSjY1dmNK?=
+ =?utf-8?B?WG5qTFdNN1JWYjZXRll4dzRORXQ0N0lTYXkrOERKaTRvU0JFcWNFK256cHBY?=
+ =?utf-8?B?V1N5T0FPUkI4NlZVRHZ4TDJ5SHMySmdFbTFWY3ZCZm5kb3NNRmZ6ZTZWQ250?=
+ =?utf-8?B?a1dSYUVscDAxR0YwK2dsWHRZOFBOTTdneXdmUWxneHlUcWFMK3R3QjBEZTQv?=
+ =?utf-8?B?RFpuRHI2TW4ycDc0blo4Z0lBdmZZUVE4cUZpV0FDTGlNNDM4UE9LRmZ2Q0Vs?=
+ =?utf-8?B?ckRUdFNnUndxN0pONGJrMUxpcVEwbTdRS2txQWpQdnZPTEdOckFaMWhTUHBq?=
+ =?utf-8?B?UDl0SWZwb3p6NE1IUEtUMFk4a2RXMDlJVmd5VXA5U09WbVcyMTJmeGVuYlEz?=
+ =?utf-8?B?blA4SzVOYlpJUS8xVUJEQWR3bzZhc3hPY0R1MWtnaGh0M0NpZDRaOXF3aFFF?=
+ =?utf-8?B?UzMrNUFzWEM3SDJ0R0x5S3ZkUTRFNkp6dC82dnZWZGZIQ08rWUlyY0V1MG5z?=
+ =?utf-8?B?TWJ3R1JXaWhYdU5tNlhRb050NENscm9oclh2eU5BbmxyRXkvNkVYUWR5Tk9T?=
+ =?utf-8?B?R200K2RjdEtCK2lVWE8yMGJYVEhYcWJkempsb0kwZ3NXUEp3UHRpOXdoMmh2?=
+ =?utf-8?B?ZWhvV2xlRDhxa2c4RUpjWXNNQ2RGL0U2azdQNDNQZGtzZmhwdTRLaFJWNktX?=
+ =?utf-8?B?TWU4dnNPczFsdTE5dDlDa1Q5bTV2VDBEZDNPbG9rRmQvQ2NsWFV3RTZDYW1l?=
+ =?utf-8?B?Z0sxcWViRVJISVcwT1hYWnRUaWh1WTlSS0tIWTdMOG1tbW1MNkFJbDg2OElt?=
+ =?utf-8?B?cTc4V0xSc2c5Yk9IdEpIKzFFMUdHTXpROFNISHl5am51eC9VQVE4Q0tQUzE5?=
+ =?utf-8?B?VGZHaUQra0lySWxiSE84SXROdjZtelJvbHlFdkg0cklWUE80MFIySWtUMWVK?=
+ =?utf-8?Q?RNsGZrR/C761Q0i+L6lJjCbLT?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1758f286-9ebe-459b-f9a4-08dbd0e06c6a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6280.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5299.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de70ca6c-5ba3-47be-1b9e-08dbd0d4175f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2023 18:49:14.6280
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2023 20:17:31.4993
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5ae1af62-9505-4097-a69a-c1553ef7840e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EMeZuv0vA5gA6W0agBaTWKSIQUvgPQ3RQqg0qzBdobtQLoE6mdz5DkX3OaVFJlC+KHTBjyiG2LxlAh7avpEP/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4912
-X-Outbound-SMTP-Client: 173.37.147.229, alln-opgw-1.cisco.com
-X-Outbound-Node: alln-core-3.cisco.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3ieGRtnbjL0PaAYTLLaRYZtkLrz/fyA6g8zaYKgOIYzyc3MPkojFvvLfOXjSakbcIJ9r/7n6iNVQJJF16dD8pw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7632
 
-On 23/10/19 05:15PM, Benno Lossin wrote:
-> Traits marked with `#[vtable]` need to provide default implementations
-> for optional functions. The C side represents these with `NULL` in the
-> vtable, so the default functions are never actually called. We do not
-> want to replicate the default behavior from C in Rust, because that is
-> not maintainable. Therefore we should use `build_error` in those default
-> implementations. The error message for that is provided at
-> `kernel::error::VTABLE_DEFAULT_ERROR`.
->=20
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
-> v1 -> v2:
-> - removed imperative mode in the paragraph describing optional
->   functions.
->=20
->  rust/kernel/error.rs |  4 ++++
->  rust/macros/lib.rs   | 32 ++++++++++++++++++++++++--------
->  2 files changed, 28 insertions(+), 8 deletions(-)
->=20
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 05fcab6abfe6..1373cde025ef 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -335,3 +335,7 @@ pub(crate) fn from_result<T, F>(f: F) -> T
->          Err(e) =3D> T::from(e.to_errno() as i16),
->      }
->  }
-> +
-> +/// Error message for calling a default function of a [`#[vtable]`](macr=
-os::vtable) trait.
-> +pub const VTABLE_DEFAULT_ERROR: &str =3D
-> +    "This function must not be called, see the #[vtable] documentation."=
-;
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index c42105c2ff96..daf1ef8baa62 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// implementation could just return `Error::EINVAL`); Linux typically u=
-se C
->  /// `NULL` pointers to represent these functions.
->  ///
-> -/// This attribute is intended to close the gap. Traits can be declared =
-and
-> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associated=
- constant
-> -/// will be generated for each method in the trait, indicating if the im=
-plementor
-> -/// has overridden a method.
-> +/// This attribute closes that gap. A trait can be annotated with the `#=
-[vtable]` attribute.
-> +/// Implementers of the trait will then also have to annotate the trait =
-with `#[vtable]`. This
-> +/// attribute generates a `HAS_*` associated constant bool for each meth=
-od in the trait that is set
-> +/// to true if the implementer has overridden the associated method.
-> +///
-> +/// For a function to be optional, it must have a default implementation=
-. But this default
-> +/// implementation will never be executed, since these functions are exc=
-lusively called from
-> +/// callbacks from the C side. This is because the vtable will have a `N=
-ULL` entry and the C side
-> +/// will execute the default behavior. Since it is not maintainable to r=
-eplicate the default
-> +/// behavior in Rust, the default implementation should be:
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
-> +/// kernel::build_error(VTABLE_DEFAULT_ERROR)
-> +/// ```
-> +///
-> +/// note that you might need to import [`kernel::error::VTABLE_DEFAULT_E=
-RROR`].
->  ///
-> -/// This attribute is not needed if all methods are required.
-> +/// This macro should not be used when all function are required.
+On 10/19/23 11:56, Nathan Chancellor wrote:
+> On Thu, Oct 19, 2023 at 02:53:01PM +0200, Arnd Bergmann wrote:
+>> On Thu, Oct 19, 2023, at 12:04, Alexander Potapenko wrote:
+>>> So the remaining option would be to just increase the frame size every
+>>> time a new function surpasses the limit.
+>>
+>> That is clearly not an option, though we could try to
+>> add Kconfig dependencies that avoid the known bad combinations,
+>> such as annotating the AMD GPU driver as
+>>
+>>        depends on (CC_IS_GCC || CLANG_VERSION >=180000) || !(KASAN || KCSAN)
+> 
+> This would effectively disable the AMDGPU driver for allmodconfig, which
+> is somewhat unfortunate as it is an easy testing target.
+> 
+> Taking a step back, this is all being done because of a couple of
+> warnings in the AMDGPU code. If fixing those in the source is too much
+> effort (I did note [1] that GCC is at the current limit for that file
+> even with Rodrigo's series applied [2]), couldn't we just take the
+> existing workaround that this Makefile has for this file and its high
+> stack usage and just extend it slightly for clang?
 
-Typo: should be `all functions`
->  ///
->  /// # Examples
->  ///
->  /// ```ignore
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
->  /// use kernel::prelude::*;
->  ///
->  /// // Declares a `#[vtable]` trait
->  /// #[vtable]
-> -/// pub trait Operations: Send + Sync + Sized {
-> +/// pub trait Operations {
->  ///     fn foo(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  ///
->  ///     fn bar(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  /// }
->  ///
-> @@ -125,6 +139,8 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// assert_eq!(<Foo as Operations>::HAS_FOO, true);
->  /// assert_eq!(<Foo as Operations>::HAS_BAR, false);
->  /// ```
-> +///
-> +/// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VT=
-ABLE_DEFAULT_ERROR.html
->  #[proc_macro_attribute]
->  pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
->      vtable::vtable(attr, ts)
->=20
-> base-commit: a7135d10754760f0c038497b44c2c2f2b0fb5651
-> --=20
-> 2.41.0
->=20
->=20
-With the above typo fixed,
-Reviewed-by: Ariel Miculas <amiculas@cisco.com>=
+I personally don't mind fixing these issues in the driver, but the fact
+that they the creep back every time a new major version of Clang rolls
+out (that has been true for the past couple of years at the very
+least), makes it rather annoying to deal with.
+
+> 
+> diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+> index 66431525f2a0..fd49e3526c0d 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+> +++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+> @@ -58,7 +58,7 @@ endif
+>   endif
+>   
+>   ifneq ($(CONFIG_FRAME_WARN),0)
+> -frame_warn_flag := -Wframe-larger-than=2048
+> +frame_warn_flag := -Wframe-larger-than=$(if $(CONFIG_CC_IS_CLANG),3072,2048)
+>   endif
+>   
+>   CFLAGS_$(AMDDALPATH)/dc/dml2/display_mode_core.o := $(dml2_ccflags) $(frame_warn_flag)
+> 
+> That would address the immediate concern of the warning breaking builds
+> with CONFIG_WERROR=y while not raising the limit for other files in the
+> kernel (just this one file in AMDGPU) and avoiding disabling the whole
+> driver. The number could be lower, I think ~2500 bytes is the most usage
+> I see with Rodrigo's series applied, so maybe 2800 would be a decent
+> limit? Once there is a fix in the compiler, this expression could be
+> changed to use clang-min-version or something of that sort.
+> 
+> [1]: https://lore.kernel.org/20231017172231.GA2348194@dev-arch.thelio-3990X/
+> [2]: https://lore.kernel.org/20231016142031.241912-1-Rodrigo.Siqueira@amd.com/
+> 
+> Cheers,
+> Nathan
+-- 
+Hamza
+
