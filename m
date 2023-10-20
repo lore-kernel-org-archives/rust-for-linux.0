@@ -1,90 +1,37 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6E66111
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 18:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAA91D6BE;
+	Fri, 20 Oct 2023 18:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4oRhXUR"
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7FE112;
-	Fri, 20 Oct 2023 11:33:41 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-773ac11de71so68800685a.2;
-        Fri, 20 Oct 2023 11:33:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697826820; x=1698431620; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8cj7GMM7RLClKlHfnFK4kXZdb0+sWcPsNsBicOEASd0=;
-        b=R4oRhXURwnS6CU+VLy/BcaiF6g3LxARtkKj62HmXlLF6xitosKSbgE5OYe2Ac68Vpk
-         gEJyE4agUdMEOXK0AIAhz41wBjpYk+tcj4eSvDrvmIzNwhrpAzC21RBRUH2xXG2K/+8i
-         cmcquuPD4OU8jvMKRRMTMOdw/FBCwYGp82DATWw8oU5JsxhHDusWNmYruKAK6ks/4Die
-         K/YZRQZt7x03RFXsn0rpOw1AUltlfXykgJOQtzws5M0q0ni/NiHGlycsNu4vQtL+nJHF
-         rOprgOci4FloEr6O0Yr6hITUDwq77bH5cWW3IdkxqDb32AGpUPFmSLaaUvYVheR7OOej
-         CeeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697826820; x=1698431620;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8cj7GMM7RLClKlHfnFK4kXZdb0+sWcPsNsBicOEASd0=;
-        b=MSxRwtI4aD3ZpRNc1wC3CIgbc7Q7bR8zjKVsVw4nwelUTZjwBSucrIvkUxQ9ctbf3i
-         n7XGLlc8xqSF/GGaObYLQDPgGpPnQneEfUeYoNOn8Oy7T8acUOC/OPCC6d99kRMHqkij
-         Hcygjx1MntRjBU8kp1IsxX2d3cSezGVWioacSvF+t7kANPdI+MmqQpKwerK5kYnVz2yI
-         8b4Ls9mkdJFar6q1K0MvmjnYMHVE1bNywV9x7PANJk+KnzPmo6wYQD4/o7nh++BtNwPO
-         Kp1OJm7H8kNGcAQKY3Jdel6mY/7jP7ck1QPl7Bx9qH7S/NjJFc7HCH/6yOB15gR23mgE
-         6GLA==
-X-Gm-Message-State: AOJu0YwovQiQMTu0wJN9KH29hkDRrf9FCfd8oXEa7dORyv6qCJ0OJhEG
-	9mNFvZPoXbaSVB2FlX6LIek=
-X-Google-Smtp-Source: AGHT+IHmKRqg3V73KQWHnpwBwu3Z6Fm3ew8wL9QAJvTqJVm2nI/O6b3sx8HX+C8Hm6WnPkMj+GgV5Q==
-X-Received: by 2002:a05:6214:2aa6:b0:64f:92af:9080 with SMTP id js6-20020a0562142aa600b0064f92af9080mr2653671qvb.21.1697826820229;
-        Fri, 20 Oct 2023 11:33:40 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id w5-20020a0cf705000000b0066d1d2242desm873943qvn.120.2023.10.20.11.33.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 11:33:39 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 4DC6427C0054;
-	Fri, 20 Oct 2023 14:33:39 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Fri, 20 Oct 2023 14:33:39 -0400
-X-ME-Sender: <xms:AsgyZRSpz_AH4GXHxtUSO2JBN3y0SkdeoHGoUW4iDhC4FMfxqxQGrQ>
-    <xme:AsgyZawRuZglCBTfaYRZurhos9I1x0UpZHNQeEE2Ew1qBfRnqj3KvF-j1UXDkZlaQ
-    QD8iaX94k04zBRJwQ>
-X-ME-Received: <xmr:AsgyZW1mnbaNP4BmBZCH9zpP6TxbpO3sHVQSfYiMTLPXLcFOwYS3DETgm9g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjeekgdduvdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:AsgyZZD2aWLPHM0PjXNMq7FTIc3f8kNJ8F0FY1z5UxLONGNSOtTnzA>
-    <xmx:AsgyZagfp4Pr9vSVdSIjIjSALlIZTNxd-_19K58j0Tliw-xd36V1TA>
-    <xmx:AsgyZdoGYJTsTvuMVyTStA4cwQJbe1A25H71KnP5cNXW7FadUIWxRQ>
-    <xmx:A8gyZRqEzYXmGV_T7_cxArXELzictf37Ty3H1E_Br0a0AJCN_jBzXA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Oct 2023 14:33:38 -0400 (EDT)
-Date: Fri, 20 Oct 2023 11:33:10 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, steve.capper@arm.com,
-	Asahi Lina <lina@asahilina.net>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-Message-ID: <ZTLH5o0GlFBYsAHq@boqun-archlinux>
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
- <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bri4C+w5"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC5D1A8;
+	Fri, 20 Oct 2023 11:42:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=fzLPwxBO4eTsZi7lhB7UsZ4CqCFBDHmJkwyiD5oBlHs=; b=bri4C+w5o+dRM/auPkE+tsUaGM
+	AfW58BYEC2JPdNoNmjK0Q3uBlCQ1xjncZgXawAg8KrIJ2PSU+sEA4lCRuBSP3Uvhnmhv/OqKLWrvQ
+	fDe0QwBThDZtaUvIhuJ6o9cAQbrLQL9iyBh7AG2n8Q9gyU9A9XTGWvLVhbYMOdW6bsRs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qtuRm-002oIw-SV; Fri, 20 Oct 2023 20:42:10 +0200
+Date: Fri, 20 Oct 2023 20:42:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+	tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com,
+	greg@kroah.com
+Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <4935f458-4719-4472-b937-0da8b16ebbaa@lunn.ch>
+References: <20231017113014.3492773-1-fujita.tomonori@gmail.com>
+ <20231017113014.3492773-2-fujita.tomonori@gmail.com>
+ <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -93,79 +40,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
+In-Reply-To: <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
 
-On Fri, Oct 20, 2023 at 07:21:08PM +0200, Andrew Lunn wrote:
-> > +``arm64``     Maintained        Little Endian only.
+> > +//! All the PHYLIB helper functions for `phy_device` modify some members in `phy_device`. Except for
+> > +//! getter functions, [`Device`] methods take `&mut self`. This also applied to `read()`, which reads
+> > +//! a hardware register and updates the stats.
 > 
-> This question is just out of curiosity, not the patchset itself.
+> I would use [`Device`] instead of `phy_device`, since the Rust reader
+> might not be aware what wraps `phy_device`.
+
+We don't want to hide phy_device too much, since at the moment, the
+abstraction is very minimal. Anybody writing a driver is going to need
+a good understanding of the C code in order to find the helpers they
+need, and then add them to the abstraction. So i would say we need to
+explain the relationship between the C structure and the Rust
+structure, to aid developers.
+
+> > +    /// Returns true if the link is up.
+> > +    pub fn get_link(&self) -> bool {
 > 
-> What is missing to make big endian work?
+> I still think this name should be changed. My response at [1] has not yet
+> been replied to. This has already been discussed before:
+> - https://lore.kernel.org/rust-for-linux/2023100237-satirical-prance-bd57@gregkh/
+> - https://lore.kernel.org/rust-for-linux/20231004.084644.50784533959398755.fujita.tomonori@gmail.com/
+> - https://lore.kernel.org/rust-for-linux/CALNs47syMxiZBUwKLk3vKxzmCbX0FS5A37FjwUzZO9Fn-iPaoA@mail.gmail.com/
 > 
-
-FWIW, I tried the following:
-
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 8784284988e5..b697c2d7da68 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -227,7 +227,7 @@ config ARM64
-        select HAVE_FUNCTION_ARG_ACCESS_API
-        select MMU_GATHER_RCU_TABLE_FREE
-        select HAVE_RSEQ
--       select HAVE_RUST if CPU_LITTLE_ENDIAN
-+       select HAVE_RUST
-        select HAVE_STACKPROTECTOR
-        select HAVE_SYSCALL_TRACEPOINTS
-        select HAVE_KPROBES
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 4562a8173e90..4621f1e00e06 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -41,7 +41,11 @@ KBUILD_CFLAGS        += -mgeneral-regs-only  \
- KBUILD_CFLAGS  += $(call cc-disable-warning, psabi)
- KBUILD_AFLAGS  += $(compat_vdso)
-
-+ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
-+KBUILD_RUSTFLAGS += --target aarch64_be-unknown-linux-gnu -C target-feature="-neon"
-+else
- KBUILD_RUSTFLAGS += --target aarch64-unknown-none -C target-feature="-neon"
-+endif
-
- KBUILD_CFLAGS  += $(call cc-option,-mabi=lp64)
- KBUILD_AFLAGS  += $(call cc-option,-mabi=lp64)
-
-and ran the following kunit command (it will run a few tests in a qemu
-emulated VM):
-
-	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch arm64 --kconfig_add CONFIG_RUST=y --kconfig_add CONFIG_CPU_BIG_ENDIAN=y
-
-The kernel was built successfully, and all Rust related tests passed.
-
-Of course this doesn't mean a lot, we still need people with deep
-Rust compiler knowledge to confirm whether the support is completed or
-not. But I think if people want to do experiments, the tool is there.
-
-P.S. An unrelated topic: I found a few clk related tests (in
-drivers/clk/clk-gate_test.c IIUC) don't pass (mostly due to that the
-expected values don't handle big endian), a sample failure output:
-
-[11:13:26]     # clk_gate_test_enable: EXPECTATION FAILED at drivers/clk/clk-gate_test.c:169
-[11:13:26]     Expected enable_val == ctx->fake_reg, but
-[11:13:26]         enable_val == 32 (0x20)
-[11:13:26]         ctx->fake_reg == 536870912 (0x20000000)
-[11:13:26] clk_unregister: unregistering prepared clock: test_gate
-[11:13:26] clk_unregister: unregistering prepared clock: test_parent
-[11:13:26] [FAILED] clk_gate_test_enable
-
-(Cc clk folks)
-
-Regards,
-Boqun
-
-> Network developers have expressed an interesting in testing Rust code
-> on big endian systems, since the code should work on both endians. It
-> might be easier to get an ARM board running big endian than get access
-> to an S390x machine.
+> And I want to suggest to change it to `is_link_up`.
 > 
->       Andrew
+> Reasons why I do not like the name:
+> - `get_`/`put_` are used for ref counting on the C side, I would like to
+>    avoid confusion.
+> - `get` in Rust is often used to fetch a value from e.g. a datastructure
+>    such as a hashmap, so I expect the call to do some computation.
+> - getters in Rust usually are not prefixed with `get_`, but rather are
+>    just the name of the field.
+> - in this case I like the name `is_link_up` much better, since code becomes
+>    a lot more readable with that.
+> - I do not want this pattern as an example for other drivers.
+> 
+> [1]: https://lore.kernel.org/rust-for-linux/f5878806-5ba2-d932-858d-dda3f55ceb67@proton.me/
+> 
+> > +        const LINK_IS_UP: u32 = 1;
+> > +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> > +        let phydev = unsafe { *self.0.get() };
+> > +        phydev.link() == LINK_IS_UP
+> > +    }
+
+During the reviews we have had a lot of misunderstanding what this
+actually does, given its name. Some thought it poked around in
+registers to get the current state of the link. Some thought it
+triggered the PHY to establish a link. When in fact its just a dumb
+getter. And we have a few other dumb getters and setters.
+
+So i would prefer something which indicates its a dumb getter. If the
+norm of Rust is just the field name, lets just use the field name. But
+we should do that for all the getters and setters. Is there a naming
+convention for things which take real actions?
+
+And maybe we need to add a comment: Get the current link state, as
+stored in the [`Device`]. Set the duplex value in [`Device`], etc.
+
+   Andrew
