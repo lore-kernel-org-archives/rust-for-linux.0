@@ -1,41 +1,39 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F052F1E53F
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 18:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A741802E;
+	Fri, 20 Oct 2023 19:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="n54Pe3SX"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="o9XlXrrg"
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1AAD6A;
-	Fri, 20 Oct 2023 11:47:17 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C04D57;
+	Fri, 20 Oct 2023 12:50:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=nZR1r8sDP/og3tmPVk5LjDm3XzizGLkOwpXN5b9xvCo=; b=n54Pe3SXFj3RMxwPjVp8Ju35h1
-	lM7L2Pbdc6fCmRBjAJRAyNmtaDa4ouPhyOy4FvcvzAM8iKZkBGMYYEUB4HMZKRmojFSBOSYHHyVzy
-	T9Kl5wK7G+Sporfg2qxXEIft/cFh7UFP7oUJjcgPjsvRLMwTltgRvYtYHvGuLZz6wYBw=;
+	bh=WGQNwyoQWo+MRR4XU1PpD0x0wGN+nDRTV2R1AIAROkE=; b=o9XlXrrgvDkaQB8dOSgWRKnbje
+	nEPc++gmlnk3C19A4gCMY5ttwsdiZLtN7NKuyjwBcxcvogbGeOvSAgoSa2rVMQirMBnGGm5h581zz
+	NDiM3dN1HtFXLp+jWrfzNmS4FNrMWmTFzVuGCGVYiH5abRxWYLD7dBScaMvT1q3f9A+8=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1qtuWb-002oKc-Rb; Fri, 20 Oct 2023 20:47:09 +0200
-Date: Fri, 20 Oct 2023 20:47:09 +0200
+	id 1qtvVx-002oW3-V3; Fri, 20 Oct 2023 21:50:33 +0200
+Date: Fri, 20 Oct 2023 21:50:33 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, steve.capper@arm.com,
-	Asahi Lina <lina@asahilina.net>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-Message-ID: <d0f11c35-b8a1-459e-9148-9f037089ecba@lunn.ch>
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
- <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
- <ZTLH5o0GlFBYsAHq@boqun-archlinux>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+	tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com,
+	greg@kroah.com
+Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <b58e0874-b0d4-4218-a457-4e2e753e0b17@lunn.ch>
+References: <20231017113014.3492773-1-fujita.tomonori@gmail.com>
+ <20231017113014.3492773-2-fujita.tomonori@gmail.com>
+ <de9d1b30-ab19-44f9-99a3-073c6d2b36e1@lunn.ch>
+ <20231019.094147.1808345526469629486.fujita.tomonori@gmail.com>
+ <64748f96-ac67-492b-89c7-aea859f1d419@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,13 +42,32 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZTLH5o0GlFBYsAHq@boqun-archlinux>
+In-Reply-To: <64748f96-ac67-492b-89c7-aea859f1d419@proton.me>
 
-> Of course this doesn't mean a lot, we still need people with deep
-> Rust compiler knowledge to confirm whether the support is completed or
-> not. But I think if people want to do experiments, the tool is there.
+> I will try to explain things a bit more.
+> 
+> So this case is a bit difficult to figure out, because what is
+> going on is not really a pattern that is used in Rust.
 
-Thanks for testing this, its good to know.
+It is however a reasonably common pattern in the kernel. It stems from
+driver writers often don't understand locking. So the core does the
+locking, leaving the driver writers to just handle the problems of the
+hardware.
 
-       Andrew
+Rust maybe makes locking more of a visible issue, but if driver
+writers don't understand locking, the language itself does not make
+much difference.
 
+> We already have exclusive access to the `phy_device`, so in Rust
+> you would not need to lock anything to also have exclusive access to the
+> embedded `mii_bus`.
+
+I would actually say its not the PHY drivers problem at all. The
+mii_bus is a property of the MDIO layers, and it is the MDIO layers
+problem to impose whatever locking it needs for its properties.
+
+Also, mii_bus is not embedded. Its a pointer to an mii_bus. The phy
+lock protects the pointer. But its the MDIO layer which needs to
+protect what the pointer points to.
+
+	Andrew
