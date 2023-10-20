@@ -1,260 +1,195 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5124320FB;
-	Fri, 20 Oct 2023 04:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149B311189
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 09:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MvH/RZcM"
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A54FA;
-	Thu, 19 Oct 2023 21:11:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0TRfYcY4FztgXN27eg6Q00CIuzPsmunhjJWurKwX5G8=; b=MvH/RZcMmLdb7Q69xTuPczSnac
-	3BU2DYEurlpQCzCZygRCaTxsHBcsrRQAPdtGu5BpkttRXz4h9wsG53XZWYhplEC1jIIy370YfWCSW
-	GhXnIfCIdZGmHupz8Q7r+lbP5+Dv3rgCAvcl4TVoKZPu3ki1EKWoJTW4sAmtVmGCOJQ1x+d0Db7FS
-	2wWIM3AXejW6NLBmBtcNbWi0BGIvyPuh+TUvSJpOIHYZTGNcetJjgUED79ZDnvU7fRkrSA1yY5fes
-	ajxydxygvgT8fFZzsnhccKkgveDrSd1IfFr2XONqxWAUg4FIKkTUt04ketkiL5XmKRCeWRKd5R1LH
-	Pcjl7Bew==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qtgrK-00B1CM-Pv; Fri, 20 Oct 2023 04:11:38 +0000
-Date: Fri, 20 Oct 2023 05:11:38 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 09/19] rust: folio: introduce basic support for folios
-Message-ID: <ZTH9+sF+NPyRjyRN@casper.infradead.org>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-10-wedsonaf@gmail.com>
- <ZTATIhi9U6ObAnN7@casper.infradead.org>
- <CANeycqoWfWJ5bxuh+UWK99D9jYH0cKKy1=ikHJTpY=fP1ZJMrg@mail.gmail.com>
- <ZTAwLGi4sCup+B1r@casper.infradead.org>
- <CANeycqrp_s20pCO_OJXHpqN5tZ_Uq5icTupWiVeLf69JOFj4cA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="g2i/QZnz"
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB814D57
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 02:17:57 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c50ec238aeso8570441fa.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 02:17:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1697793476; x=1698398276; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ewr0VgrpxOh4pcI8VnPDwCTgEV+obWfuNKFRv3Q2C3w=;
+        b=g2i/QZnzfAW5tnfDVv4EiB40ltuilP0yBTBkRK+zDJeUC404BaUCRMxATKu6nw06h/
+         jy3PSCMkGopwCabmwsjb7CKfz30fdgu23TxR9+pqW/Efixigzdr5pwIQzV8M0ZUYuNdK
+         ypgLTUivscCylQWYOoIz2kEPnSQQolBHmEVz4vjVLCpBvzxH5yuQetwVZKBinVq23xZq
+         BAG/z8S6uQ7RUPTz6JrOL1v1Zr1t6/55yp5aF2/E/0tY1PryfVpcZva50PIsuBjXHPpB
+         jzeEFBdy0v9s4FF3TAkkgqZFbmiyUKlR/Q02IPRnLrhrG22zVYvLABO67d+ICM2sgP+T
+         gDnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697793476; x=1698398276;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ewr0VgrpxOh4pcI8VnPDwCTgEV+obWfuNKFRv3Q2C3w=;
+        b=Y4VtwQC1IdrxkNLwPnTCH+cyeh13zDTuyFOjmi+eO0RqrL7D+wBhWKRTeUC9dU+e2r
+         PcFHxUeGsaSMlWvoGHUYLMeVXlVm3nCpbCW/A3Wln622RiIiE6Kvo2X8BDF+BuOkstQo
+         z8M4Xlnfb0nvaB7GUrZGrQr0yGqDOXNYD9yYxNYrCZxBDly/J5regOgus6Z5vFFJ86ph
+         +DyqMJH61GCM/y3plsqWa20c1uEmWe/khjnQveri29nTDP31nV6eG+R7wHqopi+gEdrm
+         /H4CSIlqK29cXMVjpY37qCsJH9ohp9FqTBByn+K4+T3MYDEpqrTvJT6Vq3rYGYLYzVmb
+         JL+Q==
+X-Gm-Message-State: AOJu0YxuEIp3QZLPNzu/pMiohGZ0KuAmWQoPUozfQJ++WpqdkWJL+i4C
+	Yg9YVI2QKYhL2AklWsI0PMgV6g==
+X-Google-Smtp-Source: AGHT+IE5IamQ1cJ1ao670l0NPAbOnWUtWHjpk8jFWkpNVke+n8eofIlzbwZbsT3ZRweX7oG5ER6MLQ==
+X-Received: by 2002:a2e:9904:0:b0:2c5:a6e:4bcc with SMTP id v4-20020a2e9904000000b002c50a6e4bccmr983274lji.39.1697793476049;
+        Fri, 20 Oct 2023 02:17:56 -0700 (PDT)
+Received: from localhost ([165.225.194.196])
+        by smtp.gmail.com with ESMTPSA id w15-20020a5d608f000000b0032dbf32bd56sm1257799wrt.37.2023.10.20.02.17.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Oct 2023 02:17:55 -0700 (PDT)
+References: <20231019171540.259173-1-benno.lossin@proton.me>
+User-agent: mu4e 1.10.7; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
+Date: Fri, 20 Oct 2023 11:06:46 +0200
+In-reply-to: <20231019171540.259173-1-benno.lossin@proton.me>
+Message-ID: <87fs25irel.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANeycqrp_s20pCO_OJXHpqN5tZ_Uq5icTupWiVeLf69JOFj4cA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 19, 2023 at 10:25:39AM -0300, Wedson Almeida Filho wrote:
-> On Wed, 18 Oct 2023 at 16:21, Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Wed, Oct 18, 2023 at 03:32:36PM -0300, Wedson Almeida Filho wrote:
-> > > On Wed, 18 Oct 2023 at 14:17, Matthew Wilcox <willy@infradead.org> wrote:
-> > > >
-> > > > On Wed, Oct 18, 2023 at 09:25:08AM -0300, Wedson Almeida Filho wrote:
-> > > > > +void *rust_helper_kmap(struct page *page)
-> > > > > +{
-> > > > > +     return kmap(page);
-> > > > > +}
-> > > > > +EXPORT_SYMBOL_GPL(rust_helper_kmap);
-> > > > > +
-> > > > > +void rust_helper_kunmap(struct page *page)
-> > > > > +{
-> > > > > +     kunmap(page);
-> > > > > +}
-> > > > > +EXPORT_SYMBOL_GPL(rust_helper_kunmap);
-> > > >
-> > > > I'm not thrilled by exposing kmap()/kunmap() to Rust code.  The vast
-> > > > majority of code really only needs kmap_local_*() / kunmap_local().
-> > > > Can you elaborate on why you need the old kmap() in new Rust code?
-> > >
-> > > The difficulty we have with kmap_local_*() has to do with the
-> > > requirement that maps and unmaps need to be nested neatly. For
-> > > example:
-> > >
-> > > let a = folio1.map_local(...);
-> > > let b = folio2.map_local(...);
-> > > // Do something with `a` and `b`.
-> > > drop(a);
-> > > drop(b);
-> > >
-> > > The code obviously violates the requirements.
-> >
-> > Is that the only problem, or are there situations where we might try
-> > to do something like:
-> >
-> > a = folio1.map.local()
-> > b = folio2.map.local()
-> > drop(a)
-> > a = folio3.map.local()
-> > drop(b)
-> > b = folio4.map.local()
-> > drop (a)
-> > a = folio5.map.local()
-> > ...
-> 
-> This is also a problem. We don't control the order in which users are
-> going to unmap.
 
-OK.  I have something in the works, but it's not quite ready yet.
+Benno Lossin <benno.lossin@proton.me> writes:
 
-> If you don't want to scan the whole array, we could have a solution
-> where we add an indirection between the available indices and the
-> stack of allocations; this way C could continue to work as is and Rust
-> would have a slightly different API that returns both the mapped
-> address and an index (which would be used to unmap).
-> 
-> It's simple to remember the index in Rust and it wouldn't have to be
-> exposed to end users, they'd still just do:
-> 
-> let a = folio1.map_local(...);
-> 
-> And when `a` is dropped, it would call unmap and pass the index back.
-> (It's also safe in the sense that users would not be able to
-> accidentally pass the wrong index.)
-> 
-> But if scanning the whole array is acceptable performance-wise, it's
-> definitely a simpler solution.
+> Traits marked with `#[vtable]` need to provide default implementations
+> for optional functions. The C side represents these with `NULL` in the
+> vtable, so the default functions are never actually called. We do not
+> want to replicate the default behavior from C in Rust, because that is
+> not maintainable. Therefore we should use `build_error` in those default
+> implementations. The error message for that is provided at
+> `kernel::error::VTABLE_DEFAULT_ERROR`.
+>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> ---
+> v1 -> v2:
+> - removed imperative mode in the paragraph describing optional
+>   functions.
+>
+>  rust/kernel/error.rs |  4 ++++
+>  rust/macros/lib.rs   | 32 ++++++++++++++++++++++++--------
+>  2 files changed, 28 insertions(+), 8 deletions(-)
+>
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 05fcab6abfe6..1373cde025ef 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -335,3 +335,7 @@ pub(crate) fn from_result<T, F>(f: F) -> T
+>          Err(e) =3D> T::from(e.to_errno() as i16),
+>      }
+>  }
+> +
+> +/// Error message for calling a default function of a [`#[vtable]`](macr=
+os::vtable) trait.
+> +pub const VTABLE_DEFAULT_ERROR: &str =3D
+> +    "This function must not be called, see the #[vtable] documentation.";
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index c42105c2ff96..daf1ef8baa62 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
+>  /// implementation could just return `Error::EINVAL`); Linux typically u=
+se C
+>  /// `NULL` pointers to represent these functions.
+>  ///
+> -/// This attribute is intended to close the gap. Traits can be declared =
+and
+> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associated=
+ constant
+> -/// will be generated for each method in the trait, indicating if the im=
+plementor
+> -/// has overridden a method.
+> +/// This attribute closes that gap. A trait can be annotated with the `#=
+[vtable]` attribute.
+> +/// Implementers of the trait will then also have to annotate the trait =
+with `#[vtable]`. This
+> +/// attribute generates a `HAS_*` associated constant bool for each meth=
+od in the trait that is set
+> +/// to true if the implementer has overridden the associated method.
+> +///
+> +/// For a function to be optional, it must have a default implementation=
+. But this default
+> +/// implementation will never be executed, since these functions are exc=
+lusively called from
+> +/// callbacks from the C side. This is because the vtable will have a `N=
+ULL` entry and the C side
+> +/// will execute the default behavior. Since it is not maintainable to r=
+eplicate the default
+> +/// behavior in Rust, the default implementation should be:
 
-Interesting idea.  There are some other possibilities too ... let's see.
+How about this?:
 
-> > > > > +/// A [`Folio`] that has a single reference to it.
-> > > > > +pub struct UniqueFolio(pub(crate) ARef<Folio>);
-> > > >
-> > > > How do we know it only has a single reference?  Do you mean "has at
-> > > > least one reference"?  Or am I confusing Rust's notion of a reference
-> > > > with Linux's notion of a reference?
-> > >
-> > > Instances of `UniqueFolio` are only produced by calls to
-> > > `folio_alloc`. They encode the fact that it's safe for us to map the
-> > > folio and know that there aren't any concurrent threads/CPUs doing the
-> > > same to the same folio.
-> >
-> > Mmm ... it's always safe to map a folio, even if other people have a
-> > reference to it.  And Linux can make temporary spurious references to
-> > folios appear, although those should be noticed by the other party and
-> > released again before they access the contents of the folio.  So from
-> > the point of view of being memory-safe, you can ignore them, but you
-> > might see the refcount of the folio as >1, even if you just got the
-> > folio back from the allocator.
-> 
-> Sure, it's safe to map a folio in general, but Rust has stricter rules
-> about aliasing and mutability that are part of how memory safety is
-> achieved. In particular, it requires that we never have mutable and
-> immutable pointers to the same memory at once (modulo interior
-> mutability).
-> 
-> So we need to avoid something like:
-> 
-> let a = folio.map(); // `a` is a shared pointer to the contents of the folio.
-> 
-> // While we have a shared (and therefore immutable) pointer, we're
-> changing the contents of the folio.
-> sb.sread(sector_number, sector_count, folio);
-> 
-> This violates Rust rules. `UniqueFolio` helps us address this for our
-> use case; if we try the above with a UniqueFolio, the compiler will
-> error out saying that  `a` has a shared reference to the folio, so we
-> can't call `sread` on it (because sread requires a mutable, and
-> therefore not shareable, reference to the folio).
+For a Rust trait method to be optional, it must have a default
+implementation. For a trait marked with `#[vtable]`, the default
+implementation will not be executed, as the only way the trait methods
+should be called is through function pointers installed in C side
+vtables. When a trait implementation marked with `#[vtable]` is missing
+a method, a `NULL` pointer will be installed in the corresponding C side
+vtable, and thus the Rust default implementation can not be called. The
+default implementation should be:
 
-This is going to be quite the impedance mismatch.  Still, I imagine
-you're used to dealing with those by now and have a toolbox of ideas.
+Not sure if it is more clear =F0=9F=A4=B7
 
-We don't have that rule for the pagecache as it is.  We do have rules that
-prevent data corruption!  For example, if the folio is !uptodate then you
-must have the lock to write to the folio in order to bring it uptodate
-(so we have a single writer rule in that regard).  But once the folio is
-uptodate, all bets are off in terms of who can be writing to it / reading
-it at the same time.  And that's going to have to continue to be true;
-multiple processes can have the same page mmaped writable and write to
-it at the same time.  There's no possible synchronisation between them.
+> +///
+> +/// ```compile_fail
+> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
+> +/// kernel::build_error(VTABLE_DEFAULT_ERROR)
+> +/// ```
+> +///
+> +/// note that you might need to import [`kernel::error::VTABLE_DEFAULT_E=
+RROR`].
+>  ///
+> -/// This attribute is not needed if all methods are required.
+> +/// This macro should not be used when all function are required.
+>  ///
+>  /// # Examples
+>  ///
+>  /// ```ignore
+> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
+>  /// use kernel::prelude::*;
+>  ///
+>  /// // Declares a `#[vtable]` trait
+>  /// #[vtable]
+> -/// pub trait Operations: Send + Sync + Sized {
+> +/// pub trait Operations {
+>  ///     fn foo(&self) -> Result<()> {
+> -///         Err(EINVAL)
+> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+>  ///     }
+>  ///
+>  ///     fn bar(&self) -> Result<()> {
+> -///         Err(EINVAL)
+> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+>  ///     }
+>  /// }
+>  ///
+> @@ -125,6 +139,8 @@ pub fn module(ts: TokenStream) -> TokenStream {
+>  /// assert_eq!(<Foo as Operations>::HAS_FOO, true);
+>  /// assert_eq!(<Foo as Operations>::HAS_BAR, false);
+>  /// ```
+> +///
+> +/// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VT=
+ABLE_DEFAULT_ERROR.html
+>  #[proc_macro_attribute]
+>  pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
+>      vtable::vtable(attr, ts)
+>
+> base-commit: a7135d10754760f0c038497b44c2c2f2b0fb5651
 
-But I think your concern is really more limited.  You're concerned
-with filesystem metadata obeying Rust's rules.  And for a read-write
-filesystem, you're going to have to have ... something ... which gets a
-folio from the page cache, and establishes that this is the only thread
-which can modify that folio (maybe it's an interior node of a Btree,
-maybe it's a free space bitmap, ...).  We could probably use the folio
-lock bit for that purpose,  For the read-only filesystems, you only need
-be concerned about freshly-allocated folios, but you need something more
-when it comes to doing an ext2 clone.
-
-There's general concern about the overuse of the folio lock bit, but
-this is a reasonable use -- preventing two threads from modifying the
-same folio at the same time.
-
-(I have simplified all this; both iomap and buffer heads support folios
-which are partially uptodate, but conceptually this is accurate)
-
-> > On systems without HIGHMEM, kmap() is a no-op.  So we could do something
-> > like this:
-> >
-> >         let data = unsafe { core::slice::from_raw_parts(ptr.cast::<u8>(),
-> >                 if (folio_test_highmem(folio))
-> >                         bindings::PAGE_SIZE
-> >                 else
-> >                         folio_size(folio) - page_idx * PAGE_SIZE) }
-> >
-> > ... modulo whatever the correct syntax is in Rust.
-> 
-> We can certainly do that. But since there's the possibility that the
-> array will be capped at PAGE_SIZE in the HIGHMEM case, callers would
-> still need a loop to traverse the whole folio, right?
-> 
-> let mut offset = 0;
-> while offset < folio.size() {
->     let a = folio.map(offset);
->     // Do something with a.
->     offset += a.len();
-> }
-> 
-> I guess the advantage is that we'd have a single iteration in systems
-> without HIGHMEM.
-
-Right.  You can see something similar to that in memcpy_from_folio() in
-highmem.h.
-
-> > Something I forgot to mention was that I found it more useful to express
-> > "map this chunk of a folio" in bytes rather than pages.  You might find
-> > the same, in which case it's just folio.map(offset: usize) instead of
-> > folio.map_page(page_index: usize)
-> 
-> Oh, thanks for the feedback. I'll switch to bytes then for v2.
-> (Already did in the example above.)
-
-Great!  Something else I think would be a good idea is open-coding some
-of the trivial accessors.  eg instead of doing:
-
-+size_t rust_helper_folio_size(struct folio *folio)
-+{
-+	return folio_size(folio);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_folio_size);
-[...]
-+    pub fn size(&self) -> usize {
-+        // SAFETY: The folio is valid because the shared reference implies a non-zero refcount.
-+        unsafe { bindings::folio_size(self.0.get()) }
-+    }
-
-add:
-
-impl Folio {
-...
-    pub fn order(&self) -> u8 {
-	if (self.flags & (1 << PG_head))
-	    self._flags_1 & 0xff
-	else
-	    0
-    }
-
-    pub fn size(&self) -> usize {
-	bindings::PAGE_SIZE << self.order()
-    }
-}
-
-... or have I misunderstood what is possible here?  My hope is that the
-compiler gets to "see through" the abstraction, which surely can't be
-done when there's a function call.
