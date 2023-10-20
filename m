@@ -1,166 +1,129 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA2180B;
-	Fri, 20 Oct 2023 00:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D974361;
+	Fri, 20 Oct 2023 00:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JhmSFgl9"
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D61C0;
-	Thu, 19 Oct 2023 17:31:26 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3af957bd7e9so202068b6e.3;
-        Thu, 19 Oct 2023 17:31:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Edk8FTJv"
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBF6A3;
+	Thu, 19 Oct 2023 17:34:48 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6ba8eb7e581so81665b3a.0;
+        Thu, 19 Oct 2023 17:34:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697761885; x=1698366685; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3r6n12dcvLAs9ctOBgjIkVIyGgOjKo0m6wllsB7zMSo=;
-        b=JhmSFgl9RH1o931YReUBSH6RJDA+IbbZlAk6NQpO4BhZeCpp9et8HQ5ODpM+pSlny2
-         ByoyiROScDssgoIjGFH/2gZ2Ko0hmbSoblTSHy2R3KrFvie3F0nlMu3UhPnw6EhdVV8f
-         CK138E7prjdQJk+E13wZiDC4/zRQOjc3EFAwgjSqdf9Ho+CMVmjg4UYLPz7wSmU0N9dS
-         BDZMLz8wuqlQFdcP3Iw6ZyFbJfppGpESoJXPseLULlD9BfCy49KYZ7P1M+4WqThiw/G0
-         9MifS6yZVxoZQpiJ0Trg3Eaw1J7n0e0T3dmO875baQeitFPyLD99MdF7SZLX6XOfpQ1a
-         6yEQ==
+        d=gmail.com; s=20230601; t=1697762088; x=1698366888; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=taa/SLU/9O/XadgncirKySx1+hAvtUl61CUryzFzv6o=;
+        b=Edk8FTJvy+/br0qS6sk9k4LZ3TwPcBmFWrqclxyyEko9FEdMF+yCNrGM9F97fb6ATk
+         7PDD4Zan0nGiCXyyvv8Ezdlt0v6oWlC2k84cYBQQaKQa5nHFgK/RmJ15YTzxny9SIgPU
+         0MMYUfhSHDNhRCe0D6gOw8O2M3jHTA/QYYR2gFGWt5ccBTBBReWwKwneYbj5XsKMCere
+         aLKgvyvZoDJkemvtCXk/TeGEeQKSPS9lR33B56VCfA0aVO4SjmA/y4ZbEHdh/D6JF3V9
+         8iFJWdqonG/JVA1GUcVZtTp+o2csqCYHXz+V/ArXC8Y6tFHjvVXWNWAnBaXNS89oa0JN
+         rQ0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697761885; x=1698366685;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3r6n12dcvLAs9ctOBgjIkVIyGgOjKo0m6wllsB7zMSo=;
-        b=uizyMRZ5UEubrrl8U93KPm3m8DKgVq9kKV8LTaMklkHIWH7dAyaId+r4aO58P5z6Ql
-         bvU1+1FSsxpYIT6X12g3Zm35jm/YV/7CFQbXX8fsfsc1FcBPiT3kLcK7OXZNe3sOqSZA
-         BlfXldLw/VRPecTVJXdjHh4+m2VWpAZVJ9AynH9ZK6WHL7ZF44BzQTooH/SjOXpXb9VW
-         V7SLZ7WRLUBTL1LnjbOpF/wsWCib2ktdIUXwmbGgpRAQ/K8TTSGHPwqLaaCoXesSuD/+
-         3CdUJAYeEZm++WTchi/+50I9Oo/B5qAS2v/tBWEK5HBlEWUYpEjIQmJjdLbwXU79ccnd
-         avsw==
-X-Gm-Message-State: AOJu0Yy0olTZYRH2hHF5metn7zAHyD2n6or7QVJnN6NqkXI/6RGHlYss
-	GCxO8PWSx+qeF21BhgONAzk=
-X-Google-Smtp-Source: AGHT+IEY/0huzIt4M9qHmp3pJrCuA078DjJ4RMTNmKb4LbMojTa+j9VtbdyXS18ZPFndKt1D9yPK9Q==
-X-Received: by 2002:a05:6808:1985:b0:3ae:1298:257a with SMTP id bj5-20020a056808198500b003ae1298257amr450011oib.1.1697761885357;
-        Thu, 19 Oct 2023 17:31:25 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id jy12-20020a0562142b4c00b0065823d20381sm266957qvb.8.2023.10.19.17.31.24
+        d=1e100.net; s=20230601; t=1697762088; x=1698366888;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=taa/SLU/9O/XadgncirKySx1+hAvtUl61CUryzFzv6o=;
+        b=dY8ZD7Vv4jUXzmuVNmLSWoh5ubW8zJ0+cGB+vhZbc/uuHcmVDdG4/uW+rhkg59kU8B
+         1r8oycnb7SEW8ZcO18HtYo9nqfaNtqp1tNqUGQWoOrXBIJazCX+VHDrtHR5jP5yWI7hE
+         A5KlR4N/u+hDRVFmrh0Ho/CicNKy0HRE8qTxYjMrs6a883u2iXZAs3Glli8vdLjDAMuN
+         yDSUh+Ha6XmnoDXr6aMJNtbmtpsnNk1hUNaGunNzcVHpS2jpJHc9olA0yP0kLP215qqa
+         AJzKPcWmiCkfZ6sdZDUp0RePtkY37dePpEleyoP6Ref+sTslQ02TZZOkHIBPPIowFy1x
+         YVIA==
+X-Gm-Message-State: AOJu0YzlmfkPDkvKxF0e46UGwPwvrghA07KgGxHf+h2pwZae5qLIIhm5
+	8w9XMDFUCyZBdVV0eGqLlsE=
+X-Google-Smtp-Source: AGHT+IHXMDBk79JAWPhogHZ6A3hYm9KcIHgmL44OUj5Ojv5u1/VqogMfdDb7nELy8u/54aygTlnqVA==
+X-Received: by 2002:a05:6a20:3d20:b0:17a:d292:25d1 with SMTP id y32-20020a056a203d2000b0017ad29225d1mr396062pzi.6.1697762087743;
+        Thu, 19 Oct 2023 17:34:47 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id q21-20020a631f55000000b0059b2316be86sm330934pgm.46.2023.10.19.17.34.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Oct 2023 17:31:25 -0700 (PDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 9FF8827C0067;
-	Thu, 19 Oct 2023 20:31:24 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Thu, 19 Oct 2023 20:31:24 -0400
-X-ME-Sender: <xms:WsoxZSs-BCawXg6xPOgxzM7x8KoHYbIpDMSffExRSWj_D1rVgCAq5w>
-    <xme:WsoxZXc2Q-G04xaDuGVbpI9n2U6JFL9S-NR9InQGBPRmj_-8moa6Efb3OPzoY2v0z
-    R6CqBkddErrv9Y_6Q>
-X-ME-Received: <xmr:WsoxZdxyoat_MdbwQO_Bd-LIjLUbRUhmvBWm9tarRiwgVyyjYlvo4WtHB64>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjeejgdefgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepiedtfeevhfetkeelgfethfegleekfeffledvvefhheeukedtvefhtedtvdet
-    vedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:WsoxZdP7ohA4VeZYvRn0l2fU-Q5meqt8iYGFNXhNRfm1E2qT3gGIPA>
-    <xmx:WsoxZS-PbOBmNwnuXiDXuf_2wKp8OCJVL-fT5uzgvhpaweyK9CSW2Q>
-    <xmx:WsoxZVXNF1lpe2YeHKdFHNvEEDEj_aImkB3subKxI2X31sQPglMYdg>
-    <xmx:XMoxZWTKQpo_Wl2PEkyy6jhZ0q-iuO_XW5mDFQiOtMoRt_iF7bTyBA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Oct 2023 20:31:22 -0400 (EDT)
-Date: Thu, 19 Oct 2023 17:30:57 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
-Message-ID: <ZTHKQdAciXClXnut@boqun-archlinux>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-7-wedsonaf@gmail.com>
+        Thu, 19 Oct 2023 17:34:47 -0700 (PDT)
+Date: Fri, 20 Oct 2023 09:34:46 +0900 (JST)
+Message-Id: <20231020.093446.482864708938996774.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
+ wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <64db34c0-a50a-4321-a3d8-b692e26899d9@proton.me>
+References: <0e8d2538-284b-4811-a2e7-99151338c255@proton.me>
+	<20231019.234210.1772681043146865420.fujita.tomonori@gmail.com>
+	<64db34c0-a50a-4321-a3d8-b692e26899d9@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231018122518.128049-7-wedsonaf@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 18, 2023 at 09:25:05AM -0300, Wedson Almeida Filho wrote:
-[...]
-> +/// An inode that is locked and hasn't been initialised yet.
-> +#[repr(transparent)]
-> +pub struct NewINode<T: FileSystem + ?Sized>(ARef<INode<T>>);
-> +
-> +impl<T: FileSystem + ?Sized> NewINode<T> {
-> +    /// Initialises the new inode with the given parameters.
-> +    pub fn init(self, params: INodeParams) -> Result<ARef<INode<T>>> {
-> +        // SAFETY: This is a new inode, so it's safe to manipulate it mutably.
-> +        let inode = unsafe { &mut *self.0 .0.get() };
-> +
-> +        let mode = match params.typ {
-> +            INodeType::Dir => {
-> +                // SAFETY: `simple_dir_operations` never changes, it's safe to reference it.
-> +                inode.__bindgen_anon_3.i_fop = unsafe { &bindings::simple_dir_operations };
-> +
-> +                // SAFETY: `simple_dir_inode_operations` never changes, it's safe to reference it.
-> +                inode.i_op = unsafe { &bindings::simple_dir_inode_operations };
-> +                bindings::S_IFDIR
-> +            }
-> +        };
-> +
-> +        inode.i_mode = (params.mode & 0o777) | u16::try_from(mode)?;
-> +        inode.i_size = params.size;
-> +        inode.i_blocks = params.blocks;
-> +
-> +        inode.__i_ctime = params.ctime.into();
-> +        inode.i_mtime = params.mtime.into();
-> +        inode.i_atime = params.atime.into();
-> +
-> +        // SAFETY: inode is a new inode, so it is valid for write.
-> +        unsafe {
-> +            bindings::set_nlink(inode, params.nlink);
-> +            bindings::i_uid_write(inode, params.uid);
-> +            bindings::i_gid_write(inode, params.gid);
-> +            bindings::unlock_new_inode(inode);
-> +        }
-> +
-> +        // SAFETY: We are manually destructuring `self` and preventing `drop` from being called.
-> +        Ok(unsafe { (&ManuallyDrop::new(self).0 as *const ARef<INode<T>>).read() })
+On Thu, 19 Oct 2023 15:20:51 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-How do we feel about using transmute here? ;-) I.e.
+> I would like to remove the mutable static variable and simplify
+> the macro.
 
-	// SAFETY: `NewINode` is transparent to `ARef<INode<_>>`, and
-	// the inode has been initialised, so it's safety to change the
-	// object type.
-	Ok(unsafe { core::mem::transmute(self) })
+How about adding DriverVTable array to Registration?
 
-What we actually want here is changing the type of the object (i.e.
-bitwise move from one type to another), seems to me that transmute is
-the best fit here.
+/// Registration structure for a PHY driver.
+///
+/// # Invariants
+///
+/// The `drivers` slice are currently registered to the kernel via `phy_drivers_register`.
+pub struct Registration<const N: usize> {
+    drivers: [DriverVTable; N],
+}
 
-Thoughts?
+impl<const N: usize> Registration<{ N }> {
+    /// Registers a PHY driver.
+    pub fn register(
+        module: &'static crate::ThisModule,
+        drivers: [DriverVTable; N],
+    ) -> Result<Self> {
+        let mut reg = Registration { drivers };
+        let ptr = reg.drivers.as_mut_ptr().cast::<bindings::phy_driver>();
+        // SAFETY: The type invariants of [`DriverVTable`] ensure that all elements of the `drivers` slice
+        // are initialized properly. So an FFI call with a valid pointer.
+        to_result(unsafe {
+            bindings::phy_drivers_register(ptr, reg.drivers.len().try_into()?, module.0)
+        })?;
+        // INVARIANT: The `drivers` slice is successfully registered to the kernel via `phy_drivers_register`.
+        Ok(reg)
+    }
+}
 
-Regards,
-Boqun
+Then the macro becomes simpler. No need to add any public
+functions. Also I think that this approach supports the manual
+registration.
 
 
-> +    }
-> +}
-> +
-> +impl<T: FileSystem + ?Sized> Drop for NewINode<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The new inode failed to be turned into an initialised inode, so it's safe (and
-> +        // in fact required) to call `iget_failed` on it.
-> +        unsafe { bindings::iget_failed(self.0 .0.get()) };
-> +    }
-> +}
-> +
-[...]
+    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], $($f:tt)*) => {
+        const N: usize = $crate::module_phy_driver!(@count_devices $($driver),+);
+        struct Module {
+            _reg: ::kernel::net::phy::Registration<N>,
+        }
+
+        $crate::prelude::module! {
+            type: Module,
+            $($f)*
+        }
+
+        impl ::kernel::Module for Module {
+            fn init(module: &'static ThisModule) -> Result<Self> {
+                let drivers = [$(::kernel::net::phy::create_phy_driver::<$driver>()),+];
+                let reg = ::kernel::net::phy::Registration::register(module, drivers)?;
+                Ok(Module { _reg: reg })
+            }
+        }
+
+        $crate::module_phy_driver!(@device_table [$($dev),+]);
+    }
