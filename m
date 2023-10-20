@@ -1,195 +1,157 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149B311189
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 09:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFD4182A9
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 10:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="g2i/QZnz"
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB814D57
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 02:17:57 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c50ec238aeso8570441fa.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 02:17:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="D32qKzB7"
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DDBB3
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 03:52:22 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-31fa15f4cc6so481778f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 03:52:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1697793476; x=1698398276; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ewr0VgrpxOh4pcI8VnPDwCTgEV+obWfuNKFRv3Q2C3w=;
-        b=g2i/QZnzfAW5tnfDVv4EiB40ltuilP0yBTBkRK+zDJeUC404BaUCRMxATKu6nw06h/
-         jy3PSCMkGopwCabmwsjb7CKfz30fdgu23TxR9+pqW/Efixigzdr5pwIQzV8M0ZUYuNdK
-         ypgLTUivscCylQWYOoIz2kEPnSQQolBHmEVz4vjVLCpBvzxH5yuQetwVZKBinVq23xZq
-         BAG/z8S6uQ7RUPTz6JrOL1v1Zr1t6/55yp5aF2/E/0tY1PryfVpcZva50PIsuBjXHPpB
-         jzeEFBdy0v9s4FF3TAkkgqZFbmiyUKlR/Q02IPRnLrhrG22zVYvLABO67d+ICM2sgP+T
-         gDnw==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1697799141; x=1698403941; darn=vger.kernel.org;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=omV/XyQj/EwUlpDEwxR2OKoBv2EHlF+FWnoupM0fP/Y=;
+        b=D32qKzB7pA/JbURmmYHLYXt1tlKMZzdILAy4UywgXU4VfYEEYFYEZx0g2RaNs381//
+         jwqcfxwXZr21jMmxNAhA4DtTUTrZjiijqo3dKURkLgqzkdzSipeUEvS+hcWvgNJSTIBN
+         cNXalHgoWgvU7h324lffiVpn3WvFHuJlCIFBuEadKYbGIQDmJiyVWHHLVu5yuY7AosC8
+         HKV0n1qVKRlSr+ur+ilDg2rkPhbf+34zalQVXtHuqrT4kidkjPcv49LOLDgVbeB3+jd+
+         RLUt4kJcVsN17KfvBRIJFUdMaTe7v0VWT+sKfdZOIwM9YKYQ2/6tnEFD8fr8KeXQ4a3W
+         iblw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697793476; x=1698398276;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ewr0VgrpxOh4pcI8VnPDwCTgEV+obWfuNKFRv3Q2C3w=;
-        b=Y4VtwQC1IdrxkNLwPnTCH+cyeh13zDTuyFOjmi+eO0RqrL7D+wBhWKRTeUC9dU+e2r
-         PcFHxUeGsaSMlWvoGHUYLMeVXlVm3nCpbCW/A3Wln622RiIiE6Kvo2X8BDF+BuOkstQo
-         z8M4Xlnfb0nvaB7GUrZGrQr0yGqDOXNYD9yYxNYrCZxBDly/J5regOgus6Z5vFFJ86ph
-         +DyqMJH61GCM/y3plsqWa20c1uEmWe/khjnQveri29nTDP31nV6eG+R7wHqopi+gEdrm
-         /H4CSIlqK29cXMVjpY37qCsJH9ohp9FqTBByn+K4+T3MYDEpqrTvJT6Vq3rYGYLYzVmb
-         JL+Q==
-X-Gm-Message-State: AOJu0YxuEIp3QZLPNzu/pMiohGZ0KuAmWQoPUozfQJ++WpqdkWJL+i4C
-	Yg9YVI2QKYhL2AklWsI0PMgV6g==
-X-Google-Smtp-Source: AGHT+IE5IamQ1cJ1ao670l0NPAbOnWUtWHjpk8jFWkpNVke+n8eofIlzbwZbsT3ZRweX7oG5ER6MLQ==
-X-Received: by 2002:a2e:9904:0:b0:2c5:a6e:4bcc with SMTP id v4-20020a2e9904000000b002c50a6e4bccmr983274lji.39.1697793476049;
-        Fri, 20 Oct 2023 02:17:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697799141; x=1698403941;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=omV/XyQj/EwUlpDEwxR2OKoBv2EHlF+FWnoupM0fP/Y=;
+        b=rFjLWadHreU9pA9VPuE8Ww6mZe23i7dFMSiFDjduROm99/tf2UgxN4a7LXezrIBiM9
+         6EbVSS6s3h0HqfrkCdc+rd+9egsgU3v/sD7yFwwUqLBeuoNqMgOxsuZQc2qD2m3GqY7R
+         vIwuN+Kih/Wt9QybJWyGFnsNB4S0Z33+pWqkC09iyBYTi9zJhy6FL0N25mVn1rb++lg9
+         gBm26EnWjGybQnRABqaBD7jtADRCNTKE2wN/Zyz6bMOvLIGOERjbeep1tfCFyj48trws
+         BkbqcNdNo7Mb7qRdOn8L1YLrkgNigPl7smR5+0yvhB8NilLkEPYk2PwgGp083LZn4sZX
+         SBEw==
+X-Gm-Message-State: AOJu0YxY46k901F0vwrX5JOEQbfZKbul43sSTA5H+O67kRsvPE0Yv67g
+	dsPdpY/YZzRxPSiUd0ABiX5d9h9Efkz59+NVzCc=
+X-Google-Smtp-Source: AGHT+IHhGS0/rlNF/T6OqaNRbkTGnu+qhnV8B72MBIUZlGM1PxAPzJXYRYgGRQ5CjHCfnwrDIeLuaA==
+X-Received: by 2002:a5d:6443:0:b0:32d:8a4b:2715 with SMTP id d3-20020a5d6443000000b0032d8a4b2715mr1144844wrw.8.1697799140853;
+        Fri, 20 Oct 2023 03:52:20 -0700 (PDT)
 Received: from localhost ([165.225.194.196])
-        by smtp.gmail.com with ESMTPSA id w15-20020a5d608f000000b0032dbf32bd56sm1257799wrt.37.2023.10.20.02.17.55
+        by smtp.gmail.com with ESMTPSA id h2-20020a5d5042000000b0032d886039easm1439008wrt.14.2023.10.20.03.52.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 02:17:55 -0700 (PDT)
-References: <20231019171540.259173-1-benno.lossin@proton.me>
+        Fri, 20 Oct 2023 03:52:20 -0700 (PDT)
+References: <20230930133704.13313-1-gary@garyguo.net>
 User-agent: mu4e 1.10.7; emacs 28.2.50
 From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-Date: Fri, 20 Oct 2023 11:06:46 +0200
-In-reply-to: <20231019171540.259173-1-benno.lossin@proton.me>
-Message-ID: <87fs25irel.fsf@metaspace.dk>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Martin
+ Rodriguez Reboredo <yakoyoku@gmail.com>, Vincenzo Palazzo
+ <vincenzopalazzodev@gmail.com>, Vlastimil Babka <vbabka@suse.cz>, Wedson
+ Almeida Filho <walmeida@microsoft.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: bindings: rename const binding using sed
+Date: Fri, 20 Oct 2023 12:51:57 +0200
+In-reply-to: <20230930133704.13313-1-gary@garyguo.net>
+Message-ID: <87bkctin18.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
 
-Benno Lossin <benno.lossin@proton.me> writes:
+Gary Guo <gary@garyguo.net> writes:
 
-> Traits marked with `#[vtable]` need to provide default implementations
-> for optional functions. The C side represents these with `NULL` in the
-> vtable, so the default functions are never actually called. We do not
-> want to replicate the default behavior from C in Rust, because that is
-> not maintainable. Therefore we should use `build_error` in those default
-> implementations. The error message for that is provided at
-> `kernel::error::VTABLE_DEFAULT_ERROR`.
+> Current for consts that bindgen don't recognise, we define a helper
+> constant with
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>     const <TYPE> BINDINGS_<NAME> = <NAME>;
+>
+> in `bindings_helper.h` and then we put
+>
+>     pub const <NAME>: <TYPE> = BINDINGS_<NAME>;
+>
+> in `bindings/lib.rs`. This is fine that we currently only have 3
+> constants that are defined this way, but is going to be more annoying
+> when more constants are added since every new constant needs to be
+> defined in two places.
+>
+> This patch changes the way we define constant helpers to
+>
+>     const <TYPE> RUST_BINDING_<NAME> = <NAME>;
+>
+> and then use `sed` to postprocess Rust code by generated by bindgen to
+> remove the distinct prefix, so user of the binding crate can refer to
+> the name directly.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+
 > ---
-> v1 -> v2:
-> - removed imperative mode in the paragraph describing optional
->   functions.
+>  rust/Makefile                   | 2 ++
+>  rust/bindings/bindings_helper.h | 6 +++---
+>  rust/bindings/lib.rs            | 3 ---
+>  rust/kernel/allocator.rs        | 2 +-
+>  4 files changed, 6 insertions(+), 7 deletions(-)
 >
->  rust/kernel/error.rs |  4 ++++
->  rust/macros/lib.rs   | 32 ++++++++++++++++++++++++--------
->  2 files changed, 28 insertions(+), 8 deletions(-)
->
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 05fcab6abfe6..1373cde025ef 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -335,3 +335,7 @@ pub(crate) fn from_result<T, F>(f: F) -> T
->          Err(e) =3D> T::from(e.to_errno() as i16),
->      }
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 14d93cf60a95..20889302b172 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -339,6 +339,8 @@ quiet_cmd_bindgen = BINDGEN $@
+>  
+>  $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags = \
+>      $(shell grep -v '^#\|^$$' $(srctree)/$(src)/bindgen_parameters)
+> +$(obj)/bindings/bindings_generated.rs: private bindgen_target_extra = ; \
+> +    sed -Ei 's/pub const RUST_BINDING_([a-zA-Z0-9_]*)/pub const \1/g' $@
+>  $(obj)/bindings/bindings_generated.rs: $(src)/bindings/bindings_helper.h \
+>      $(src)/bindgen_parameters FORCE
+>  	$(call if_changed_dep,bindgen)
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 85f013ed4ca4..c41eaab4ddb2 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -15,6 +15,6 @@
+>  #include <linux/workqueue.h>
+>  
+>  /* `bindgen` gets confused at certain things. */
+> -const size_t BINDINGS_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+> -const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+> -const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
+> +const size_t RUST_BINDING_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+> +const gfp_t RUST_BINDING_GFP_KERNEL = GFP_KERNEL;
+> +const gfp_t RUST_BINDING___GFP_ZERO = __GFP_ZERO;
+> diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+> index 9bcbea04dac3..40ddaee50d8b 100644
+> --- a/rust/bindings/lib.rs
+> +++ b/rust/bindings/lib.rs
+> @@ -48,6 +48,3 @@ mod bindings_helper {
 >  }
-> +
-> +/// Error message for calling a default function of a [`#[vtable]`](macr=
-os::vtable) trait.
-> +pub const VTABLE_DEFAULT_ERROR: &str =3D
-> +    "This function must not be called, see the #[vtable] documentation.";
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index c42105c2ff96..daf1ef8baa62 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// implementation could just return `Error::EINVAL`); Linux typically u=
-se C
->  /// `NULL` pointers to represent these functions.
->  ///
-> -/// This attribute is intended to close the gap. Traits can be declared =
-and
-> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associated=
- constant
-> -/// will be generated for each method in the trait, indicating if the im=
-plementor
-> -/// has overridden a method.
-> +/// This attribute closes that gap. A trait can be annotated with the `#=
-[vtable]` attribute.
-> +/// Implementers of the trait will then also have to annotate the trait =
-with `#[vtable]`. This
-> +/// attribute generates a `HAS_*` associated constant bool for each meth=
-od in the trait that is set
-> +/// to true if the implementer has overridden the associated method.
-> +///
-> +/// For a function to be optional, it must have a default implementation=
-. But this default
-> +/// implementation will never be executed, since these functions are exc=
-lusively called from
-> +/// callbacks from the C side. This is because the vtable will have a `N=
-ULL` entry and the C side
-> +/// will execute the default behavior. Since it is not maintainable to r=
-eplicate the default
-> +/// behavior in Rust, the default implementation should be:
-
-How about this?:
-
-For a Rust trait method to be optional, it must have a default
-implementation. For a trait marked with `#[vtable]`, the default
-implementation will not be executed, as the only way the trait methods
-should be called is through function pointers installed in C side
-vtables. When a trait implementation marked with `#[vtable]` is missing
-a method, a `NULL` pointer will be installed in the corresponding C side
-vtable, and thus the Rust default implementation can not be called. The
-default implementation should be:
-
-Not sure if it is more clear =F0=9F=A4=B7
-
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
-> +/// kernel::build_error(VTABLE_DEFAULT_ERROR)
-> +/// ```
-> +///
-> +/// note that you might need to import [`kernel::error::VTABLE_DEFAULT_E=
-RROR`].
->  ///
-> -/// This attribute is not needed if all methods are required.
-> +/// This macro should not be used when all function are required.
->  ///
->  /// # Examples
->  ///
->  /// ```ignore
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
->  /// use kernel::prelude::*;
->  ///
->  /// // Declares a `#[vtable]` trait
->  /// #[vtable]
-> -/// pub trait Operations: Send + Sync + Sized {
-> +/// pub trait Operations {
->  ///     fn foo(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  ///
->  ///     fn bar(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  /// }
->  ///
-> @@ -125,6 +139,8 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// assert_eq!(<Foo as Operations>::HAS_FOO, true);
->  /// assert_eq!(<Foo as Operations>::HAS_BAR, false);
->  /// ```
-> +///
-> +/// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VT=
-ABLE_DEFAULT_ERROR.html
->  #[proc_macro_attribute]
->  pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
->      vtable::vtable(attr, ts)
->
-> base-commit: a7135d10754760f0c038497b44c2c2f2b0fb5651
+>  
+>  pub use bindings_raw::*;
+> -
+> -pub const GFP_KERNEL: gfp_t = BINDINGS_GFP_KERNEL;
+> -pub const __GFP_ZERO: gfp_t = BINDINGS___GFP_ZERO;
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index a8f3d5be1af1..4b057e837358 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -21,7 +21,7 @@ unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: bindings::gf
+>  
+>      let mut size = layout.size();
+>  
+> -    if layout.align() > bindings::BINDINGS_ARCH_SLAB_MINALIGN {
+> +    if layout.align() > bindings::ARCH_SLAB_MINALIGN {
+>          // The alignment requirement exceeds the slab guarantee, thus try to enlarge the size
+>          // to use the "power-of-two" size/alignment guarantee (see comments in `kmalloc()` for
+>          // more information).
 
