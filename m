@@ -1,133 +1,191 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF73361;
-	Fri, 20 Oct 2023 00:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C89D137A
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 03:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bhjRURgg"
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1F8FA;
-	Thu, 19 Oct 2023 17:52:37 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-d9beb863816so298353276.1;
-        Thu, 19 Oct 2023 17:52:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697763156; x=1698367956; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lgzfp5LbJfR0YnY8IHn9QHYvXqGLG0fdjjho/GjjqQo=;
-        b=bhjRURggXuaXkZayDfggSw7AtQpk+SyGANqnJmNq4g/S45Mvc1Nb8tOjwHqUSUEn72
-         f2Gwh/6ZdchG3XC+XGcIN5DuSElKL4qP7uW08lnZ7+trbZon2g/FVu2rtY48WN9UT3Fa
-         RwdrWPxxcxbNxg3CkThFyJFeiZGuNJADWM+BhkVbUnzrmbkLPwtn2YfyFFGwAXvtLnjv
-         xZ3/4CYopIXVBBZtxQVGT4Aak9xda/MsNGZoE7AnM0FHd/lmdjTzIb8uZQuBtWHhBlLW
-         dXf087Z45GnC/P1SYsl0ssyGIupV66teX0GLzGUf9f80hLPQdpOZrGceVN+UssBU78eD
-         KRrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697763156; x=1698367956;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lgzfp5LbJfR0YnY8IHn9QHYvXqGLG0fdjjho/GjjqQo=;
-        b=HdS0hIKzIh7SFxAPW7Dok4kJhC0OE/5wjYM7tA6qplPKEE/WkbEkKBec0HqiiCUzma
-         EwPbmUkoKzFRgbK2DpYm+FFNgbDVKRtWm2VR3GM8sxsG9D9LKTOsAdG744ubkkp24M1q
-         ISFdioCT0jc4xDW9A+hgPkIeGOG06pcAXAZBWlu/W7SRnMK+8yxnlon7ppERmFZrS+Pp
-         MfWsS32Qc9zuoT9R2IeiGK/cCZ1m3qvfsMXcJNm/mnu7d71NTksYhsdCZ1YH08j0R8Qj
-         VyWW+aJSqgg2lmInXk9nF45kuH+JHgq5nEJwGhy2+wq8p4jqHGZshauZiuHLnH7cBMCJ
-         ztiw==
-X-Gm-Message-State: AOJu0Yxg1KTm7J4wUd6+1AUkrmrwC0CD57xZr4bkwmKp2S7rQqr2EUGQ
-	ru2TImxrLxPPCHJn0obM7+w=
-X-Google-Smtp-Source: AGHT+IGr4CBljgUlj1oAMTPExXWIhzlBiiQhawo9dvh3i4x9mYNTG6jZN1i8G0L6gebdIwNjAzPqRw==
-X-Received: by 2002:a25:9384:0:b0:d9a:e6d3:ae1c with SMTP id a4-20020a259384000000b00d9ae6d3ae1cmr396238ybm.53.1697763156198;
-        Thu, 19 Oct 2023 17:52:36 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id y3-20020ad457c3000000b0066d1e71e515sm269114qvx.113.2023.10.19.17.52.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Oct 2023 17:52:35 -0700 (PDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 81B5C27C005A;
-	Thu, 19 Oct 2023 20:52:35 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Thu, 19 Oct 2023 20:52:35 -0400
-X-ME-Sender: <xms:Us8xZdxR9SjmGliZYdwsp661qDr54stDxmRs-tRrlI1rliLugthT7w>
-    <xme:Us8xZdSexV6UsdcJBydP8TTQIWEaI5N8HoUnd11Jf_162B8WkoAdxvR1w6q6fszAG
-    uHsgVBUmw8jpAFfqw>
-X-ME-Received: <xmr:Us8xZXVwpyE4f3y9tLH0lkUDgKMYsV9-IBIJ4KGnRxJW44DekODM8GCyb9k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjeejgdefkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdtkeei
-    hedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
-    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:Us8xZfhrEyoPzmL27F1Aofh-jTb8sF6ejCNLxq0qqXy5G3NnN-niYw>
-    <xmx:Us8xZfCMKTLhbmgJ_NoUiAcLnJVM4_i780kqb-Q5MK-PeKh1sowFdQ>
-    <xmx:Us8xZYI-dz7SB1oNiJSTbYqotTrs9Zuz8cpKTC09D8EvkbHvL83beg>
-    <xmx:U88xZbt6O9_oxioQlEtQy9H1wcjZgBxbf8lAlGVH8xnhogoHcRMWqQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Oct 2023 20:52:34 -0400 (EDT)
-Date: Thu, 19 Oct 2023 17:52:09 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
-Message-ID: <ZTHPOfy4dhj0x5ch@boqun-archlinux>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-7-wedsonaf@gmail.com>
- <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="V3viAhn1"
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F3F4D51;
+	Thu, 19 Oct 2023 20:41:52 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2804:14d:e646:872b:8302:9b9b:d59b:1681])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: koike)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id BBE3D660734A;
+	Fri, 20 Oct 2023 04:41:43 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1697773310;
+	bh=dgc/3W1RM5H+2wd9VuA1Go44+FYuTaauVu5NymEAR6A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V3viAhn1/AWakXqzWODOWwtcgq5iEtJ3taYZJUOMC7AFbNxKO2P3Ro8GPAjdNrp9x
+	 SEZRNoQsrB0IK+K6Su/QqRA0fdiog5/3tn52Ki2JGdsofc/16gkoFl1wDt5wnkZKQ7
+	 sT3HS6Kl+jgY0o2IZuX60uK2G4MU2ntogTEJbq61bJAdXuytt4vDLf7Ao414a5fng7
+	 OEQRY7uK8CW8e7lMrPDROKASP34v9kkWyOlf0jPOb1ZM2pv3FvPgfy08i97ORRdDMf
+	 iABoNsCd8xmW6mJuo1prjg3TKhAsiHFY1/K0dB6/ClnUYNS3RS28EOlHCYqB55ZeIG
+	 Vyi17on468CrA==
+From: Helen Koike <helen.koike@collabora.com>
+To: dri-devel@lists.freedesktop.org,
+	Helen Koike <helen.koike@collabora.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Cc: robdclark@chromium.org,
+	dmitry.baryshkov@linaro.org,
+	vignesh.raman@collabora.com,
+	sergi.blanch.torne@collabora.com,
+	guilherme.gallo@collabora.com,
+	david.heidelberg@collabora.com,
+	quic_abhinavk@quicinc.com,
+	quic_jesszhan@quicinc.com,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 1/9] drm/ci: uprev mesa version: fix container build & crosvm
+Date: Fri, 20 Oct 2023 00:41:16 -0300
+Message-Id: <20231020034124.136295-2-helen.koike@collabora.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231020034124.136295-1-helen.koike@collabora.com>
+References: <20231020034124.136295-1-helen.koike@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 19, 2023 at 02:30:56PM +0000, Benno Lossin wrote:
-[...]
-> > +        let inode =
-> > +            ptr::NonNull::new(unsafe { bindings::iget_locked(self.0.get(), ino) }).ok_or(ENOMEM)?;
-> > +
-> > +        // SAFETY: `inode` is valid for read, but there could be concurrent writers (e.g., if it's
-> > +        // an already-initialised inode), so we use `read_volatile` to read its current state.
-> > +        let state = unsafe { ptr::read_volatile(ptr::addr_of!((*inode.as_ptr()).i_state)) };
-> 
-> Are you sure that `read_volatile` is sufficient for this use case? The
-> documentation [1] clearly states that concurrent write operations are still
-> UB:
-> 
->     Just like in C, whether an operation is volatile has no bearing
->     whatsoever on questions involving concurrent access from multiple
->     threads. Volatile accesses behave exactly like non-atomic accesses in
->     that regard. In particular, a race between a read_volatile and any
->     write operation to the same location is undefined behavior.
-> 
+When building containers, some rust packages were installed without
+locking the dependencies version, which got updated and started giving
+errors like:
 
-Right, `read_volatile` can have data race. I think what we can do here
-is:
+error: failed to compile `bindgen-cli v0.62.0`, intermediate artifacts can be found at `/tmp/cargo-installkNKRwf`
+Caused by:
+  package `rustix v0.38.13` cannot be built because it requires rustc 1.63 or newer, while the currently active rustc version is 1.60.0
 
-	// SAFETY: `i_state` in `inode` is `unsigned long`, therefore
-	// it's safe to treat it as `AtomicUsize` and do a relaxed read.
-	let state = unsafe { *(ptr::addr_of!((*inode.as_ptr()).i_state).cast::<AtomicUsize>()).load(Relaxed) };
+A patch to Mesa was added fixing this error, so update it.
 
-Regards,
-Boqun
+Also, commit in linux kernel 6.6 rc3 broke booting in crosvm.
+Mesa has upreved crosvm to fix this issue.
 
-> [1]: https://doc.rust-lang.org/core/ptr/fn.read_volatile.html
-> 
-> -- 
-> Cheers,
-> Benno
-> 
+Signed-off-by: Helen Koike <helen.koike@collabora.com>
+[crosvm mesa update]
+Co-Developed-by: Vignesh Raman <vignesh.raman@collabora.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+[v1 container build uprev]
+Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
+
+---
+
+v2:
+- update to an even newer version of mesa to integrate crosvm uprev
+---
+ drivers/gpu/drm/ci/build.yml      |  1 +
+ drivers/gpu/drm/ci/gitlab-ci.yml  | 20 +++++++++++++++++++-
+ drivers/gpu/drm/ci/image-tags.yml |  2 +-
+ drivers/gpu/drm/ci/lava-submit.sh |  2 +-
+ 4 files changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/ci/build.yml b/drivers/gpu/drm/ci/build.yml
+index e6503f1c5927..17ab38304885 100644
+--- a/drivers/gpu/drm/ci/build.yml
++++ b/drivers/gpu/drm/ci/build.yml
+@@ -1,6 +1,7 @@
+ .build:
+   extends:
+     - .build-rules
++    - .container+build-rules
+   stage: build
+   artifacts:
+     paths:
+diff --git a/drivers/gpu/drm/ci/gitlab-ci.yml b/drivers/gpu/drm/ci/gitlab-ci.yml
+index 2c4df53f5dfe..51b1af77b04f 100644
+--- a/drivers/gpu/drm/ci/gitlab-ci.yml
++++ b/drivers/gpu/drm/ci/gitlab-ci.yml
+@@ -1,6 +1,6 @@
+ variables:
+   DRM_CI_PROJECT_PATH: &drm-ci-project-path mesa/mesa
+-  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha 0dc961645c4f0241f8512cb0ec3ad59635842072
++  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha 26c2c96d6228e27cdaa1335f798bf962df147bf1
+ 
+   UPSTREAM_REPO: git://anongit.freedesktop.org/drm/drm
+   TARGET_BRANCH: drm-next
+@@ -24,6 +24,8 @@ variables:
+   PIPELINE_ARTIFACTS_BASE: ${S3_HOST}/artifacts/${CI_PROJECT_PATH}/${CI_PIPELINE_ID}
+   # per-job artifact storage on MinIO
+   JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
++  # default kernel for rootfs before injecting the current kernel tree
++  KERNEL_IMAGE_BASE: https://${S3_HOST}/mesa-lava/gfx-ci/linux/v6.4.12-for-mesa-ci-f6b4ad45f48d
+ 
+   LAVA_JOB_PRIORITY: 30
+ 
+@@ -86,6 +88,17 @@ include:
+       - '/.gitlab-ci/container/gitlab-ci.yml'
+       - '/.gitlab-ci/test/gitlab-ci.yml'
+       - '/.gitlab-ci/lava/lava-gitlab-ci.yml'
++      - '/src/microsoft/ci/gitlab-ci-inc.yml'
++      - '/src/gallium/drivers/zink/ci/gitlab-ci-inc.yml'
++      - '/src/gallium/drivers/crocus/ci/gitlab-ci-inc.yml'
++      - '/src/gallium/drivers/softpipe/ci/gitlab-ci-inc.yml'
++      - '/src/gallium/drivers/llvmpipe/ci/gitlab-ci-inc.yml'
++      - '/src/gallium/drivers/virgl/ci/gitlab-ci-inc.yml'
++      - '/src/gallium/drivers/nouveau/ci/gitlab-ci-inc.yml'
++      - '/src/gallium/frontends/lavapipe/ci/gitlab-ci-inc.yml'
++      - '/src/intel/ci/gitlab-ci-inc.yml'
++      - '/src/freedreno/ci/gitlab-ci-inc.yml'
++      - '/src/amd/ci/gitlab-ci-inc.yml'
+   - drivers/gpu/drm/ci/image-tags.yml
+   - drivers/gpu/drm/ci/container.yml
+   - drivers/gpu/drm/ci/static-checks.yml
+@@ -154,6 +167,11 @@ stages:
+     # Run automatically once all dependency jobs have passed
+     - when: on_success
+ 
++# When to automatically run the CI for container jobs
++.container+build-rules:
++  rules:
++    - !reference [.no_scheduled_pipelines-rules, rules]
++    - when: manual
+ 
+ .ci-deqp-artifacts:
+   artifacts:
+diff --git a/drivers/gpu/drm/ci/image-tags.yml b/drivers/gpu/drm/ci/image-tags.yml
+index f051b6c547c5..157d987149f0 100644
+--- a/drivers/gpu/drm/ci/image-tags.yml
++++ b/drivers/gpu/drm/ci/image-tags.yml
+@@ -1,5 +1,5 @@
+ variables:
+-   CONTAINER_TAG: "2023-08-10-mesa-uprev"
++   CONTAINER_TAG: "2023-10-11-mesa-uprev"
+    DEBIAN_X86_64_BUILD_BASE_IMAGE: "debian/x86_64_build-base"
+    DEBIAN_BASE_TAG: "${CONTAINER_TAG}"
+ 
+diff --git a/drivers/gpu/drm/ci/lava-submit.sh b/drivers/gpu/drm/ci/lava-submit.sh
+index 0c4456b21b0f..379f26ea87cc 100755
+--- a/drivers/gpu/drm/ci/lava-submit.sh
++++ b/drivers/gpu/drm/ci/lava-submit.sh
+@@ -22,7 +22,7 @@ cp "$SCRIPTS_DIR"/setup-test-env.sh results/job-rootfs-overlay/
+ 
+ # Prepare env vars for upload.
+ section_start variables "Variables passed through:"
+-KERNEL_IMAGE_BASE_URL="https://${BASE_SYSTEM_HOST_PATH}" \
++KERNEL_IMAGE_BASE="https://${BASE_SYSTEM_HOST_PATH}" \
+ 	artifacts/ci-common/generate-env.sh | tee results/job-rootfs-overlay/set-job-env-vars.sh
+ section_end variables
+ 
+-- 
+2.39.2
+
