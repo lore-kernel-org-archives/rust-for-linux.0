@@ -1,20 +1,34 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306682115
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 16:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AFCC433C8;
-	Fri, 20 Oct 2023 16:45:59 +0000 (UTC)
-Date: Fri, 20 Oct 2023 17:45:57 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD5C1A594
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 17:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kJsdoAsi"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A01E211B
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 10:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Lbh/Cr7a9ZUO75a7KtcW9LeyBaUnv3rX/1/MVy/+S2w=; b=kJsdoAsirowpitgzDgEufx/LhM
+	wupeP00D7EDVzX+NUNDGaPlm/KCJNpfx+N2g4TD9vEU4bBAowQq7zfPG+AnVWjlArJhDkE9JOexm2
+	KS1+iECTcXZ1XjBP1F17/2emRF7YGNQJV3JPlk6OUQJZf1ClIDY6AOWA2oMkM6DvjI68=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qttBM-002o3F-1C; Fri, 20 Oct 2023 19:21:08 +0200
+Date: Fri, 20 Oct 2023 19:21:08 +0200
+From: Andrew Lunn <andrew@lunn.ch>
 To: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>,
-	steve.capper@arm.com, Asahi Lina <lina@asahilina.net>,
-	boqun.feng@gmail.com, andrew@lunn.ch
+	Miguel Ojeda <ojeda@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, steve.capper@arm.com,
+	Asahi Lina <lina@asahilina.net>, boqun.feng@gmail.com
 Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-Message-ID: <ZTKuxaIeX3QMgdeI@arm.com>
+Message-ID: <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
 References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
  <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
 Precedence: bulk
@@ -27,20 +41,15 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
 
-On Fri, Oct 20, 2023 at 04:50:56PM +0100, Jamie Cunliffe wrote:
-> This commit provides the build flags for Rust for AArch64. The core Rust
-> support already in the kernel does the rest. This enables the PAC ret
-> and BTI options in the Rust build flags to match the options that are
-> used when building C.
-> 
-> The Rust samples have been tested with this commit.
-> 
-> Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-> Acked-by: Will Deacon <will@kernel.org>
+> +``arm64``     Maintained        Little Endian only.
 
-Miguel, Will acked this already so I think it's good to go. Do you plan
-to pick both patches via the Rust tree?
+This question is just out of curiosity, not the patchset itself.
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+What is missing to make big endian work?
 
-Thanks.
+Network developers have expressed an interesting in testing Rust code
+on big endian systems, since the code should work on both endians. It
+might be easier to get an ARM board running big endian than get access
+to an S390x machine.
+
+      Andrew
