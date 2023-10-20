@@ -1,114 +1,119 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B097C12E65;
-	Fri, 20 Oct 2023 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A651DA4F;
+	Fri, 20 Oct 2023 15:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kr6+Huzr"
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6223A9F;
-	Fri, 20 Oct 2023 05:54:51 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-27d8a1aed37so232742a91.1;
-        Fri, 20 Oct 2023 05:54:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697806491; x=1698411291; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XEXV5g2AMDhD5tUHctgvm/W0AnnHjxLT+J7kRoSHLnw=;
-        b=kr6+HuzrCHgzdCBPnCNRTwva9658q7LG0HL1qW7aV2lK68M4noom29s9yGUDv1DE97
-         e9B/fu1H62xLFk6wEtveqxGP9m4QMZgqeNwiqGsHMNnIkuwD9sUNau7qwqszDaR/Isnp
-         JEeCalsron9MQQaH7oMM6TZUrk/J+dBdIz2YWWpHVqugCG4Yg9BAYIxx6sbyZgg1fBEJ
-         b6zsrQcAJa1n7II5auMDxaoc9gwggt9AuwnC0ocxKo4OF8ijBQumV1pVaHDqadBxW7Vp
-         NR7ggEo6EpewDk9HZqC+gukpI8hR9M7gd0VcbdbwtS4wiVRKEYdJCa4rOy/S8jy4yKRZ
-         Tl6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697806491; x=1698411291;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XEXV5g2AMDhD5tUHctgvm/W0AnnHjxLT+J7kRoSHLnw=;
-        b=PQFlGH01yWH89Osajcnj/J0aOtt78+9OhEaa62vlzpN9H55dQ8G5eAVsnHp30R3M2k
-         4gAOZPEcJmaVp2y3ZsmqKeX/nTpth/mcp5TcfH5W/NuQ6wyzP3Iq05FkKOaG+rLrYOgp
-         xA4vgzBCbvho8xSwXet8JtTNUUC/cQ6U0Ofptf7Y7PWruj+jYymWSCKXUZ3nyvePBTO9
-         vpcllvxdV96bXAXpFckdgDxSY5NtK+SAl8ge0YK9TnKJu+ZWl/dKs2MqsxfuPih/HE35
-         sOApWtYWV6pxtiSS+s68PB7atRrg4nGgruSzUCYbGJpwwjJkhKxXO1Fdv8DfsxOG6T+t
-         5QeA==
-X-Gm-Message-State: AOJu0Yy1IyMVX/XekgPVBbsGd5QrZPrL4bbIlQRBJbw66wQ8gaLa0WPM
-	Gmp/5V26/DF7ab3w9hlNYVQ=
-X-Google-Smtp-Source: AGHT+IEGQBW9BXSeURIXYuFXu6tb1dTffVCM6IlaMAlR3MbYYh6jXP2O0Q5dBNKw5KrgvkZRP0kjfg==
-X-Received: by 2002:a17:90b:38d1:b0:27d:15e3:3aa9 with SMTP id nn17-20020a17090b38d100b0027d15e33aa9mr1812920pjb.3.1697806490639;
-        Fri, 20 Oct 2023 05:54:50 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id p20-20020a17090ad31400b0027d15bd9fa2sm3165482pju.35.2023.10.20.05.54.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 05:54:49 -0700 (PDT)
-Date: Fri, 20 Oct 2023 21:54:48 +0900 (JST)
-Message-Id: <20231020.215448.1421599168007259810.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
- wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20231020.093446.482864708938996774.fujita.tomonori@gmail.com>
-References: <20231019.234210.1772681043146865420.fujita.tomonori@gmail.com>
-	<64db34c0-a50a-4321-a3d8-b692e26899d9@proton.me>
-	<20231020.093446.482864708938996774.fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HGA+cwA5"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D847FD52;
+	Fri, 20 Oct 2023 08:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=RYGYs5XXTeoNP2XkujGDwK18zSEZgl2Ltx2KXN09L/Y=; b=HG
+	A+cwA59FKS0ShhrY88XTfJ/LpcVSQzq8tIHV1WGxSA1v1l31BNcd1Xa/qUhf1xo1uVC/RLp9kEmAj
+	bO1geBIpBP9NE2N6dx/3GjhQhi+YYBy5D8He5hRACOj5OlNOhUyV1qtjVsm1Pe+2csq/wJsEME6Js
+	n+Iz8bEbaHfQVbQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qtqyt-002nOE-GB; Fri, 20 Oct 2023 17:00:07 +0200
+Date: Fri, 20 Oct 2023 17:00:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH] docs: rust: add "The Rust experiment" section
+Message-ID: <5c3f3ef8-e93c-49f1-881f-11c02afdaf7d@lunn.ch>
+References: <20231018160922.1018962-1-ojeda@kernel.org>
+ <d47553f1-1832-4c69-8a8c-71c58048ff30@lunn.ch>
+ <CANiq72=E7TPLcq-yiQF9E8a33ghbogPcbv-yMqFKBxMQ0oOxNQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=E7TPLcq-yiQF9E8a33ghbogPcbv-yMqFKBxMQ0oOxNQ@mail.gmail.com>
 
-On Fri, 20 Oct 2023 09:34:46 +0900 (JST)
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-
-> On Thu, 19 Oct 2023 15:20:51 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
+On Wed, Oct 18, 2023 at 06:41:10PM +0200, Miguel Ojeda wrote:
+> On Wed, Oct 18, 2023 at 6:27 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > It very unlikely end users read this document.
 > 
->> I would like to remove the mutable static variable and simplify
->> the macro.
+> We can add a note to the Kconfig symbol too -- would that be OK with you?
 > 
-> How about adding DriverVTable array to Registration?
+> > And that statement is
+> > not limited to end users, it is true for everybody.
 > 
-> /// Registration structure for a PHY driver.
-> ///
-> /// # Invariants
-> ///
-> /// The `drivers` slice are currently registered to the kernel via `phy_drivers_register`.
-> pub struct Registration<const N: usize> {
->     drivers: [DriverVTable; N],
-> }
+> Agreed, but that bit is meant to emphasize that end users do not have
+> a reason to use it at all (unlike kernel developers etc. from the
+> previous paragraph)
 > 
-> impl<const N: usize> Registration<{ N }> {
->     /// Registers a PHY driver.
->     pub fn register(
->         module: &'static crate::ThisModule,
->         drivers: [DriverVTable; N],
->     ) -> Result<Self> {
->         let mut reg = Registration { drivers };
->         let ptr = reg.drivers.as_mut_ptr().cast::<bindings::phy_driver>();
->         // SAFETY: The type invariants of [`DriverVTable`] ensure that all elements of the `drivers` slice
->         // are initialized properly. So an FFI call with a valid pointer.
->         to_result(unsafe {
->             bindings::phy_drivers_register(ptr, reg.drivers.len().try_into()?, module.0)
->         })?;
->         // INVARIANT: The `drivers` slice is successfully registered to the kernel via `phy_drivers_register`.
->         Ok(reg)
->     }
-> }
+> > What we should be saying is that Rust for the Linux kernel in general
+> > is not ready for production use. Developing drivers in Rust is
+> > currently for experimentation only. Given the experimental nature of
+> > the work, there is some risk Rust will never be ready for production
+> > use.
+> 
+> The risk is that Rust gets dropped from the kernel because it is not
+> used enough, not so much that there is a fundamental problem to solve
+> in order to reach production.
 
-Scratch this.
+I've talked to a small number of netdev developers, not many, but
+some. The general impression i get is that it is unclear what
+experimental actually means, and they have no idea what makes it not
+production ready. The two are also not necessarily mutually exclusive.
 
-This doesn't work. Also simply putting slice of DriverVTable into
-Module strcut doesn't work.
+To me, it appears Rust is not production ready because:
 
-We cannot move a slice of DriverVTable. Except for static allocation,
-is there a simple way?
+You need to disable module versioning.
+You need to disable structure layout randomisation
 
+On X86, you need to disable X86_KERNEL_IBT and RETHUNK, both of which
+are part of the mitigation for speculative execution vulnerabilities
+
+So no vendor is going to release a kernel with these disabled.
+
+Networking also tends to be architecture independent, so production
+features need to run on X86, ARM, ARM64, and to a lesser extent MIPS,
+RISC-V, etc. I know this is documented, but it does not appear to be
+that well known within the networking community.
+
+Networking people also tend to be interested in endianness, does the
+code work on big endian as well as little endian? Big endian is dying
+out, but its not gone yet. However, with only x86 supported in
+mainline today, it does not seem possible to test big endian. I assume
+the rust type system will actually deal with this to a large extent?
+But are developers writing abstractions which are sound with respect
+to endianness?
+
+I think it would be good to describe the experiment a bit. With a
+multi year experiment, you often have short term goals and long term
+goals.  What are these goals? What is the Rust for linux community
+trying to prove in the next few kernel cycles? What do you consider to
+be 4 or more cycles away? What do you consider not so important now
+because its not needed for your short term goals? That might also help
+developers understand when it will transition to production ready, but
+still be experimental.
+
+And you obviously need a disclaimer, Rust for Linux is a community,
+developers are free to scratch their own itch, so things might happen
+in a different order. And information like this might help get people
+involved, helping solve some of the limitations, spur research into
+different goals etc.
+
+	Andrew
