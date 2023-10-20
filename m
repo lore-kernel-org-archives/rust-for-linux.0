@@ -1,191 +1,260 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C89D137A
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Oct 2023 03:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5124320FB;
+	Fri, 20 Oct 2023 04:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="V3viAhn1"
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F3F4D51;
-	Thu, 19 Oct 2023 20:41:52 -0700 (PDT)
-Received: from localhost.localdomain (unknown [IPv6:2804:14d:e646:872b:8302:9b9b:d59b:1681])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: koike)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id BBE3D660734A;
-	Fri, 20 Oct 2023 04:41:43 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1697773310;
-	bh=dgc/3W1RM5H+2wd9VuA1Go44+FYuTaauVu5NymEAR6A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V3viAhn1/AWakXqzWODOWwtcgq5iEtJ3taYZJUOMC7AFbNxKO2P3Ro8GPAjdNrp9x
-	 SEZRNoQsrB0IK+K6Su/QqRA0fdiog5/3tn52Ki2JGdsofc/16gkoFl1wDt5wnkZKQ7
-	 sT3HS6Kl+jgY0o2IZuX60uK2G4MU2ntogTEJbq61bJAdXuytt4vDLf7Ao414a5fng7
-	 OEQRY7uK8CW8e7lMrPDROKASP34v9kkWyOlf0jPOb1ZM2pv3FvPgfy08i97ORRdDMf
-	 iABoNsCd8xmW6mJuo1prjg3TKhAsiHFY1/K0dB6/ClnUYNS3RS28EOlHCYqB55ZeIG
-	 Vyi17on468CrA==
-From: Helen Koike <helen.koike@collabora.com>
-To: dri-devel@lists.freedesktop.org,
-	Helen Koike <helen.koike@collabora.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: robdclark@chromium.org,
-	dmitry.baryshkov@linaro.org,
-	vignesh.raman@collabora.com,
-	sergi.blanch.torne@collabora.com,
-	guilherme.gallo@collabora.com,
-	david.heidelberg@collabora.com,
-	quic_abhinavk@quicinc.com,
-	quic_jesszhan@quicinc.com,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 1/9] drm/ci: uprev mesa version: fix container build & crosvm
-Date: Fri, 20 Oct 2023 00:41:16 -0300
-Message-Id: <20231020034124.136295-2-helen.koike@collabora.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231020034124.136295-1-helen.koike@collabora.com>
-References: <20231020034124.136295-1-helen.koike@collabora.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MvH/RZcM"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A54FA;
+	Thu, 19 Oct 2023 21:11:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0TRfYcY4FztgXN27eg6Q00CIuzPsmunhjJWurKwX5G8=; b=MvH/RZcMmLdb7Q69xTuPczSnac
+	3BU2DYEurlpQCzCZygRCaTxsHBcsrRQAPdtGu5BpkttRXz4h9wsG53XZWYhplEC1jIIy370YfWCSW
+	GhXnIfCIdZGmHupz8Q7r+lbP5+Dv3rgCAvcl4TVoKZPu3ki1EKWoJTW4sAmtVmGCOJQ1x+d0Db7FS
+	2wWIM3AXejW6NLBmBtcNbWi0BGIvyPuh+TUvSJpOIHYZTGNcetJjgUED79ZDnvU7fRkrSA1yY5fes
+	ajxydxygvgT8fFZzsnhccKkgveDrSd1IfFr2XONqxWAUg4FIKkTUt04ketkiL5XmKRCeWRKd5R1LH
+	Pcjl7Bew==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qtgrK-00B1CM-Pv; Fri, 20 Oct 2023 04:11:38 +0000
+Date: Fri, 20 Oct 2023 05:11:38 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 09/19] rust: folio: introduce basic support for folios
+Message-ID: <ZTH9+sF+NPyRjyRN@casper.infradead.org>
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
+ <20231018122518.128049-10-wedsonaf@gmail.com>
+ <ZTATIhi9U6ObAnN7@casper.infradead.org>
+ <CANeycqoWfWJ5bxuh+UWK99D9jYH0cKKy1=ikHJTpY=fP1ZJMrg@mail.gmail.com>
+ <ZTAwLGi4sCup+B1r@casper.infradead.org>
+ <CANeycqrp_s20pCO_OJXHpqN5tZ_Uq5icTupWiVeLf69JOFj4cA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANeycqrp_s20pCO_OJXHpqN5tZ_Uq5icTupWiVeLf69JOFj4cA@mail.gmail.com>
 
-When building containers, some rust packages were installed without
-locking the dependencies version, which got updated and started giving
-errors like:
+On Thu, Oct 19, 2023 at 10:25:39AM -0300, Wedson Almeida Filho wrote:
+> On Wed, 18 Oct 2023 at 16:21, Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Wed, Oct 18, 2023 at 03:32:36PM -0300, Wedson Almeida Filho wrote:
+> > > On Wed, 18 Oct 2023 at 14:17, Matthew Wilcox <willy@infradead.org> wrote:
+> > > >
+> > > > On Wed, Oct 18, 2023 at 09:25:08AM -0300, Wedson Almeida Filho wrote:
+> > > > > +void *rust_helper_kmap(struct page *page)
+> > > > > +{
+> > > > > +     return kmap(page);
+> > > > > +}
+> > > > > +EXPORT_SYMBOL_GPL(rust_helper_kmap);
+> > > > > +
+> > > > > +void rust_helper_kunmap(struct page *page)
+> > > > > +{
+> > > > > +     kunmap(page);
+> > > > > +}
+> > > > > +EXPORT_SYMBOL_GPL(rust_helper_kunmap);
+> > > >
+> > > > I'm not thrilled by exposing kmap()/kunmap() to Rust code.  The vast
+> > > > majority of code really only needs kmap_local_*() / kunmap_local().
+> > > > Can you elaborate on why you need the old kmap() in new Rust code?
+> > >
+> > > The difficulty we have with kmap_local_*() has to do with the
+> > > requirement that maps and unmaps need to be nested neatly. For
+> > > example:
+> > >
+> > > let a = folio1.map_local(...);
+> > > let b = folio2.map_local(...);
+> > > // Do something with `a` and `b`.
+> > > drop(a);
+> > > drop(b);
+> > >
+> > > The code obviously violates the requirements.
+> >
+> > Is that the only problem, or are there situations where we might try
+> > to do something like:
+> >
+> > a = folio1.map.local()
+> > b = folio2.map.local()
+> > drop(a)
+> > a = folio3.map.local()
+> > drop(b)
+> > b = folio4.map.local()
+> > drop (a)
+> > a = folio5.map.local()
+> > ...
+> 
+> This is also a problem. We don't control the order in which users are
+> going to unmap.
 
-error: failed to compile `bindgen-cli v0.62.0`, intermediate artifacts can be found at `/tmp/cargo-installkNKRwf`
-Caused by:
-  package `rustix v0.38.13` cannot be built because it requires rustc 1.63 or newer, while the currently active rustc version is 1.60.0
+OK.  I have something in the works, but it's not quite ready yet.
 
-A patch to Mesa was added fixing this error, so update it.
+> If you don't want to scan the whole array, we could have a solution
+> where we add an indirection between the available indices and the
+> stack of allocations; this way C could continue to work as is and Rust
+> would have a slightly different API that returns both the mapped
+> address and an index (which would be used to unmap).
+> 
+> It's simple to remember the index in Rust and it wouldn't have to be
+> exposed to end users, they'd still just do:
+> 
+> let a = folio1.map_local(...);
+> 
+> And when `a` is dropped, it would call unmap and pass the index back.
+> (It's also safe in the sense that users would not be able to
+> accidentally pass the wrong index.)
+> 
+> But if scanning the whole array is acceptable performance-wise, it's
+> definitely a simpler solution.
 
-Also, commit in linux kernel 6.6 rc3 broke booting in crosvm.
-Mesa has upreved crosvm to fix this issue.
+Interesting idea.  There are some other possibilities too ... let's see.
 
-Signed-off-by: Helen Koike <helen.koike@collabora.com>
-[crosvm mesa update]
-Co-Developed-by: Vignesh Raman <vignesh.raman@collabora.com>
-Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
-[v1 container build uprev]
-Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
+> > > > > +/// A [`Folio`] that has a single reference to it.
+> > > > > +pub struct UniqueFolio(pub(crate) ARef<Folio>);
+> > > >
+> > > > How do we know it only has a single reference?  Do you mean "has at
+> > > > least one reference"?  Or am I confusing Rust's notion of a reference
+> > > > with Linux's notion of a reference?
+> > >
+> > > Instances of `UniqueFolio` are only produced by calls to
+> > > `folio_alloc`. They encode the fact that it's safe for us to map the
+> > > folio and know that there aren't any concurrent threads/CPUs doing the
+> > > same to the same folio.
+> >
+> > Mmm ... it's always safe to map a folio, even if other people have a
+> > reference to it.  And Linux can make temporary spurious references to
+> > folios appear, although those should be noticed by the other party and
+> > released again before they access the contents of the folio.  So from
+> > the point of view of being memory-safe, you can ignore them, but you
+> > might see the refcount of the folio as >1, even if you just got the
+> > folio back from the allocator.
+> 
+> Sure, it's safe to map a folio in general, but Rust has stricter rules
+> about aliasing and mutability that are part of how memory safety is
+> achieved. In particular, it requires that we never have mutable and
+> immutable pointers to the same memory at once (modulo interior
+> mutability).
+> 
+> So we need to avoid something like:
+> 
+> let a = folio.map(); // `a` is a shared pointer to the contents of the folio.
+> 
+> // While we have a shared (and therefore immutable) pointer, we're
+> changing the contents of the folio.
+> sb.sread(sector_number, sector_count, folio);
+> 
+> This violates Rust rules. `UniqueFolio` helps us address this for our
+> use case; if we try the above with a UniqueFolio, the compiler will
+> error out saying that  `a` has a shared reference to the folio, so we
+> can't call `sread` on it (because sread requires a mutable, and
+> therefore not shareable, reference to the folio).
 
----
+This is going to be quite the impedance mismatch.  Still, I imagine
+you're used to dealing with those by now and have a toolbox of ideas.
 
-v2:
-- update to an even newer version of mesa to integrate crosvm uprev
----
- drivers/gpu/drm/ci/build.yml      |  1 +
- drivers/gpu/drm/ci/gitlab-ci.yml  | 20 +++++++++++++++++++-
- drivers/gpu/drm/ci/image-tags.yml |  2 +-
- drivers/gpu/drm/ci/lava-submit.sh |  2 +-
- 4 files changed, 22 insertions(+), 3 deletions(-)
+We don't have that rule for the pagecache as it is.  We do have rules that
+prevent data corruption!  For example, if the folio is !uptodate then you
+must have the lock to write to the folio in order to bring it uptodate
+(so we have a single writer rule in that regard).  But once the folio is
+uptodate, all bets are off in terms of who can be writing to it / reading
+it at the same time.  And that's going to have to continue to be true;
+multiple processes can have the same page mmaped writable and write to
+it at the same time.  There's no possible synchronisation between them.
 
-diff --git a/drivers/gpu/drm/ci/build.yml b/drivers/gpu/drm/ci/build.yml
-index e6503f1c5927..17ab38304885 100644
---- a/drivers/gpu/drm/ci/build.yml
-+++ b/drivers/gpu/drm/ci/build.yml
-@@ -1,6 +1,7 @@
- .build:
-   extends:
-     - .build-rules
-+    - .container+build-rules
-   stage: build
-   artifacts:
-     paths:
-diff --git a/drivers/gpu/drm/ci/gitlab-ci.yml b/drivers/gpu/drm/ci/gitlab-ci.yml
-index 2c4df53f5dfe..51b1af77b04f 100644
---- a/drivers/gpu/drm/ci/gitlab-ci.yml
-+++ b/drivers/gpu/drm/ci/gitlab-ci.yml
-@@ -1,6 +1,6 @@
- variables:
-   DRM_CI_PROJECT_PATH: &drm-ci-project-path mesa/mesa
--  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha 0dc961645c4f0241f8512cb0ec3ad59635842072
-+  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha 26c2c96d6228e27cdaa1335f798bf962df147bf1
- 
-   UPSTREAM_REPO: git://anongit.freedesktop.org/drm/drm
-   TARGET_BRANCH: drm-next
-@@ -24,6 +24,8 @@ variables:
-   PIPELINE_ARTIFACTS_BASE: ${S3_HOST}/artifacts/${CI_PROJECT_PATH}/${CI_PIPELINE_ID}
-   # per-job artifact storage on MinIO
-   JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
-+  # default kernel for rootfs before injecting the current kernel tree
-+  KERNEL_IMAGE_BASE: https://${S3_HOST}/mesa-lava/gfx-ci/linux/v6.4.12-for-mesa-ci-f6b4ad45f48d
- 
-   LAVA_JOB_PRIORITY: 30
- 
-@@ -86,6 +88,17 @@ include:
-       - '/.gitlab-ci/container/gitlab-ci.yml'
-       - '/.gitlab-ci/test/gitlab-ci.yml'
-       - '/.gitlab-ci/lava/lava-gitlab-ci.yml'
-+      - '/src/microsoft/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/zink/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/crocus/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/softpipe/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/llvmpipe/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/virgl/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/nouveau/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/frontends/lavapipe/ci/gitlab-ci-inc.yml'
-+      - '/src/intel/ci/gitlab-ci-inc.yml'
-+      - '/src/freedreno/ci/gitlab-ci-inc.yml'
-+      - '/src/amd/ci/gitlab-ci-inc.yml'
-   - drivers/gpu/drm/ci/image-tags.yml
-   - drivers/gpu/drm/ci/container.yml
-   - drivers/gpu/drm/ci/static-checks.yml
-@@ -154,6 +167,11 @@ stages:
-     # Run automatically once all dependency jobs have passed
-     - when: on_success
- 
-+# When to automatically run the CI for container jobs
-+.container+build-rules:
-+  rules:
-+    - !reference [.no_scheduled_pipelines-rules, rules]
-+    - when: manual
- 
- .ci-deqp-artifacts:
-   artifacts:
-diff --git a/drivers/gpu/drm/ci/image-tags.yml b/drivers/gpu/drm/ci/image-tags.yml
-index f051b6c547c5..157d987149f0 100644
---- a/drivers/gpu/drm/ci/image-tags.yml
-+++ b/drivers/gpu/drm/ci/image-tags.yml
-@@ -1,5 +1,5 @@
- variables:
--   CONTAINER_TAG: "2023-08-10-mesa-uprev"
-+   CONTAINER_TAG: "2023-10-11-mesa-uprev"
-    DEBIAN_X86_64_BUILD_BASE_IMAGE: "debian/x86_64_build-base"
-    DEBIAN_BASE_TAG: "${CONTAINER_TAG}"
- 
-diff --git a/drivers/gpu/drm/ci/lava-submit.sh b/drivers/gpu/drm/ci/lava-submit.sh
-index 0c4456b21b0f..379f26ea87cc 100755
---- a/drivers/gpu/drm/ci/lava-submit.sh
-+++ b/drivers/gpu/drm/ci/lava-submit.sh
-@@ -22,7 +22,7 @@ cp "$SCRIPTS_DIR"/setup-test-env.sh results/job-rootfs-overlay/
- 
- # Prepare env vars for upload.
- section_start variables "Variables passed through:"
--KERNEL_IMAGE_BASE_URL="https://${BASE_SYSTEM_HOST_PATH}" \
-+KERNEL_IMAGE_BASE="https://${BASE_SYSTEM_HOST_PATH}" \
- 	artifacts/ci-common/generate-env.sh | tee results/job-rootfs-overlay/set-job-env-vars.sh
- section_end variables
- 
--- 
-2.39.2
+But I think your concern is really more limited.  You're concerned
+with filesystem metadata obeying Rust's rules.  And for a read-write
+filesystem, you're going to have to have ... something ... which gets a
+folio from the page cache, and establishes that this is the only thread
+which can modify that folio (maybe it's an interior node of a Btree,
+maybe it's a free space bitmap, ...).  We could probably use the folio
+lock bit for that purpose,  For the read-only filesystems, you only need
+be concerned about freshly-allocated folios, but you need something more
+when it comes to doing an ext2 clone.
 
+There's general concern about the overuse of the folio lock bit, but
+this is a reasonable use -- preventing two threads from modifying the
+same folio at the same time.
+
+(I have simplified all this; both iomap and buffer heads support folios
+which are partially uptodate, but conceptually this is accurate)
+
+> > On systems without HIGHMEM, kmap() is a no-op.  So we could do something
+> > like this:
+> >
+> >         let data = unsafe { core::slice::from_raw_parts(ptr.cast::<u8>(),
+> >                 if (folio_test_highmem(folio))
+> >                         bindings::PAGE_SIZE
+> >                 else
+> >                         folio_size(folio) - page_idx * PAGE_SIZE) }
+> >
+> > ... modulo whatever the correct syntax is in Rust.
+> 
+> We can certainly do that. But since there's the possibility that the
+> array will be capped at PAGE_SIZE in the HIGHMEM case, callers would
+> still need a loop to traverse the whole folio, right?
+> 
+> let mut offset = 0;
+> while offset < folio.size() {
+>     let a = folio.map(offset);
+>     // Do something with a.
+>     offset += a.len();
+> }
+> 
+> I guess the advantage is that we'd have a single iteration in systems
+> without HIGHMEM.
+
+Right.  You can see something similar to that in memcpy_from_folio() in
+highmem.h.
+
+> > Something I forgot to mention was that I found it more useful to express
+> > "map this chunk of a folio" in bytes rather than pages.  You might find
+> > the same, in which case it's just folio.map(offset: usize) instead of
+> > folio.map_page(page_index: usize)
+> 
+> Oh, thanks for the feedback. I'll switch to bytes then for v2.
+> (Already did in the example above.)
+
+Great!  Something else I think would be a good idea is open-coding some
+of the trivial accessors.  eg instead of doing:
+
++size_t rust_helper_folio_size(struct folio *folio)
++{
++	return folio_size(folio);
++}
++EXPORT_SYMBOL_GPL(rust_helper_folio_size);
+[...]
++    pub fn size(&self) -> usize {
++        // SAFETY: The folio is valid because the shared reference implies a non-zero refcount.
++        unsafe { bindings::folio_size(self.0.get()) }
++    }
+
+add:
+
+impl Folio {
+...
+    pub fn order(&self) -> u8 {
+	if (self.flags & (1 << PG_head))
+	    self._flags_1 & 0xff
+	else
+	    0
+    }
+
+    pub fn size(&self) -> usize {
+	bindings::PAGE_SIZE << self.order()
+    }
+}
+
+... or have I misunderstood what is possible here?  My hope is that the
+compiler gets to "see through" the abstraction, which surely can't be
+done when there's a function call.
