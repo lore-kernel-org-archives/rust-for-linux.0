@@ -1,77 +1,85 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC0BD2F3
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Oct 2023 13:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F247D52F
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Oct 2023 13:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DUm6hI/o"
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC96E7;
-	Sat, 21 Oct 2023 06:42:05 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5a7af20c488so18940337b3.1;
-        Sat, 21 Oct 2023 06:42:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697895725; x=1698500525; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UWvD7IHIUqyshOcL0r6h0e1PZfUfOzLb/jePav/l2nM=;
-        b=DUm6hI/oxe43rYTdatPKuKGbyPAiZ+K5iY7UykEkhH7O1T15GFWsDxwIzDl4cqZ1Dl
-         Vi6W0FAMTxHg3a9uJP7p4mbkX/w51SE8qFmCjZuJnOfdfljJqvutf0eyBnBx/z4avIwh
-         NIxdldO0VFzdMhybbKT7DxAPQCyzfmOEsrUyvSOlT0GdKdt6mQgrGVq4Lb0KE2hXudPF
-         lRnDBiVe/heiCuNUJvX5kkzmoIvRDcOgGvQMagwecMJH05rlNaO67EvInaeIbbadl2Qv
-         aKOMculCTXdkblgus2V7ZPwRl+Ttt2fOFI3F43mSoh5KrnZ7aKL8i4/D5A2TrQpFhAO0
-         FXnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697895725; x=1698500525;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UWvD7IHIUqyshOcL0r6h0e1PZfUfOzLb/jePav/l2nM=;
-        b=vBQDmBGfMMumUXvJPX/ggXU6QJK57grOJpruQKD5lbc/ZuxvuOV9n+YlIASHXv1z37
-         iM6WLiBmOI+5qGl0H47JdM0pV9rp42X316yEL37UpDFfRSF6RiUojJgPF8cUpK9aGI9f
-         c/cdVRnzio6+Zd5EwrSP1X4rmEj3T5wDGsWmMLhYQT6+jym6RhoAFJqK4LMf6qgOIrzy
-         RlWvjkz1zi3fFENVMMPPJpQEVZgCCZqz5Vt9Y4kSggb2BZXjja3RRj/KpGm4OcroQg4N
-         hKsokbAERGEJg9yuohdRZbvAzY8pPDXP4xGfhl/dJ01YdtXO0PcLbNiU6trN/2t0jXRr
-         SA+g==
-X-Gm-Message-State: AOJu0Yx2HNmCvq97pxwfQHX+ffLV4fhfUgm0SvJ7ebnv/UbWdxJ1jnMQ
-	b1piIVH5oJ3cTFwvbFe3u9lHocKXLCZ1ZGVrQSg=
-X-Google-Smtp-Source: AGHT+IFuYaPg1ybE22FyiKtvPvCNxCh9A2couonV/P/uYpqgWj97i+ZgsG8kj0sotcNLagiTG/o6ZONdZKeI351Lo+4=
-X-Received: by 2002:a05:690c:10c:b0:5a7:fb11:90f8 with SMTP id
- bd12-20020a05690c010c00b005a7fb1190f8mr4479643ywb.16.1697895724960; Sat, 21
- Oct 2023 06:42:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nDsloROd"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB84C13E
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Oct 2023 06:48:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1697896125; x=1698155325;
+	bh=RVGGArVlVQOjvH8ZJNaeBXrD66txIivcjqTNXntViuw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=nDsloROd8LcBEzvRSMth93Cdn5AlqMjNkCxSPTxHuc+JNXdL81lhnGcf4tdG2scbS
+	 /NA3gzBP8/ntKRbal9iNPwz9RZ/R7ZHrBD4wrTa1/GKHJCwQWFDPa3hjRhf5mKWIqD
+	 pegxtB3E8BHlwNfg90f+Lf7xl9JzhNERUQNZ2mIkLBIioXyqulOWZ9EDHWNjpfk1mt
+	 BAEWSsYGGx4FrYSz50wBkRx4k6NtIqn2G/OEdMmHIKqYzShWWs+qZk/Z1IwsXw57Aa
+	 8qN77VRBDnOTEUGhwB3dSsvgZGeTzyocZ5sn3ytyrt5198XCiu7nl2QUYUcsd4rZrZ
+	 NY3AD4KEPSa3A==
+Date: Sat, 21 Oct 2023 13:48:28 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
+Message-ID: <vT8j_VVzNv0Cx7iTO9OobT9H8zEc_I-dxmh2sF6GZWqRQ0nhjnaNZqtWPtYm37wOhwGek2vLUYwAM-jJ83AZEe8TXMDx9N6pZ3mZW1WdNNw=@proton.me>
+In-Reply-To: <ZTHPOfy4dhj0x5ch@boqun-archlinux>
+References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-7-wedsonaf@gmail.com> <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me> <ZTHPOfy4dhj0x5ch@boqun-archlinux>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
- <ZTLH5o0GlFBYsAHq@boqun-archlinux>
-In-Reply-To: <ZTLH5o0GlFBYsAHq@boqun-archlinux>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 21 Oct 2023 15:41:54 +0200
-Message-ID: <CANiq72kjJu=P=19kqq1+5uPpfdS=N4Ucv2okbcWFJVnvR+Hkug@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 20, 2023 at 8:33=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> But I think if people want to do experiments, the tool is there.
+On 20.10.23 02:52, Boqun Feng wrote:
+> On Thu, Oct 19, 2023 at 02:30:56PM +0000, Benno Lossin wrote:
+> [...]
+>>> +        let inode =3D
+>>> +            ptr::NonNull::new(unsafe { bindings::iget_locked(self.0.ge=
+t(), ino) }).ok_or(ENOMEM)?;
+>>> +
+>>> +        // SAFETY: `inode` is valid for read, but there could be concu=
+rrent writers (e.g., if it's
+>>> +        // an already-initialised inode), so we use `read_volatile` to=
+ read its current state.
+>>> +        let state =3D unsafe { ptr::read_volatile(ptr::addr_of!((*inod=
+e.as_ptr()).i_state)) };
+>>
+>> Are you sure that `read_volatile` is sufficient for this use case? The
+>> documentation [1] clearly states that concurrent write operations are st=
+ill
+>> UB:
+>>
+>>      Just like in C, whether an operation is volatile has no bearing
+>>      whatsoever on questions involving concurrent access from multiple
+>>      threads. Volatile accesses behave exactly like non-atomic accesses =
+in
+>>      that regard. In particular, a race between a read_volatile and any
+>>      write operation to the same location is undefined behavior.
+>>
+>=20
+> Right, `read_volatile` can have data race. I think what we can do here
+> is:
+>=20
+> =09// SAFETY: `i_state` in `inode` is `unsigned long`, therefore
+> =09// it's safe to treat it as `AtomicUsize` and do a relaxed read.
+> =09let state =3D unsafe { *(ptr::addr_of!((*inode.as_ptr()).i_state).cast=
+::<AtomicUsize>()).load(Relaxed) };
 
-Yeah. If the Arm maintainers are OK adding it, I think we should also
-put it in (next cycle perhaps) -- the sooner we have it in-tree, the
-more testing it will hopefully get over time, and we can eventually
-ask the CIs to add a run with it if they have the resources.
+I am not sure if that is enough. What kind of writes happen
+concurrently on the C side? If they are atomic, then this should
+be fine, if they are not synchronized at all, then it could be
+problematic, as miri says that it is still UB:
+https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=3D2021&gi=
+st=3Daa75fb6805c8d67ade8837531a2096d0
 
+--=20
 Cheers,
-Miguel
+Benno
