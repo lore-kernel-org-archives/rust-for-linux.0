@@ -1,106 +1,125 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3AF63D
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Oct 2023 12:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7575A48;
+	Sat, 21 Oct 2023 12:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="T9VHeW0z";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m0Y29Ie2"
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2A11A4;
-	Sat, 21 Oct 2023 05:45:16 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id DCA865C018A;
-	Sat, 21 Oct 2023 08:45:13 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Sat, 21 Oct 2023 08:45:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-	1697892313; x=1697978713; bh=Vz93kvNHnltIJPk151Ct3Vlh5dYIx/Zn9LB
-	X7dhQlAM=; b=T9VHeW0zSi66w42NwPQP5cGb2Cc9u8FP707io0qFOuvIiAObutw
-	V4jYgtOPz4t0L6DWWx0Y4TKKExp4NbCoULWk06DGmCyBxP649f269OHYac8A0hTZ
-	2LAX2gSzb/hCbYc21H3srBXglU9/BqXQgOFhEKkWTPk8AmpEKiUtMF2X7HtkM8v/
-	oDbUdj605yDQKjvIlUuJF7XMAClPsu2ChMvDFQcCdSWHIX14CiP9gpmvI43Ucc7h
-	HrYB3R6uh+cmZbySOnVnwtFklhe43iPAP5EHakj87OiMBgWWO5vZy3PODMF59+me
-	Q0YYdDYikJSn3CKCvOcHnvjskS0yndnEUKA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1697892313; x=1697978713; bh=Vz93kvNHnltIJPk151Ct3Vlh5dYIx/Zn9LB
-	X7dhQlAM=; b=m0Y29Ie2RPJn7Mg7LMQ33Rlq6QwZrO6QIdtYEn0ASAkiWZZOiju
-	2QxlbNNnbuaINVJEQg8nuJIHOvHCSkzNyhycravPn7aYDxCBmYbuNdGNIrQni1Em
-	Gs++5e0jHfgu6I45sIuG9phs8p7WS64tnQJe/Tv+bVZXQRS4vKqbgM1Ag2U/1SCW
-	IwRFKH1MXj3N3Z/XQ4siYy/8BMOUAbdLzYhLfhgGMEATfdOBvZ3r09H/gD/7jfsV
-	Brk1v1cigoQu0KFXvH8aBTGjyZ5+oWc9spwDLIYiwGf8Bc/t82D01F58H4Xh65so
-	vGUJMWe5v1OBIjvl35XmRmsKYCc6JTZlpCQ==
-X-ME-Sender: <xms:2MczZWYKM1Zuc4sc17iaJhXfR6YN9tuEVt4iTGcpdXVRPd4Six4QSQ>
-    <xme:2MczZZYtEeEc2uAEyMLX-zn1DUUGpo3CFkD9QtmrEoWxb0rNbWxgkHVWWLAGYtP1C
-    u9pcmm-RpreUP_EGw>
-X-ME-Received: <xmr:2MczZQ-F7VSxD8iHXAX-g061DZCwTEpPS2k_7gk510hZsDc30-AR0SNj0hYOdNnKxLtwnwvpJKlmvjhgCvA4pvxwl9vxn-GS1JMF>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrkedtgdehvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlihgt
-    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhepfe
-    fguefgtdeghfeuieduffejhfevueehueehkedvteefgfehhedtffdutdfgudejnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
-    ihhhhlrdhioh
-X-ME-Proxy: <xmx:2MczZYqNZH-9raD8sgdyMuxF2_X9hdUmFz6bV0EYbqTKTkVx21YdBA>
-    <xmx:2MczZRoEdviA2qOBFay0mF6g2F0HEQcuOZOtSfhNneH77LCxGQPJKQ>
-    <xmx:2MczZWS3zaZpm0uZH2lOwqJ2w1bZBB9bP-oZT9O_MLp9m5bn9u4FyQ>
-    <xmx:2cczZc0kQCF86zzjIYbaUuwQpXxn2cLRpbysqXqs9Uaf30Uy-w77fw>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 21 Oct 2023 08:45:11 -0400 (EDT)
-Message-ID: <1cc11492-248e-4b37-9608-b475acde3da2@ryhl.io>
-Date: Sat, 21 Oct 2023 14:45:09 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="imxkYajm"
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186DB1A4;
+	Sat, 21 Oct 2023 05:47:17 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-5a87ac9d245so18604647b3.3;
+        Sat, 21 Oct 2023 05:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697892436; x=1698497236; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ak0J9I1wxFXOFeFSUtB9w8Likk7tXaYYsKRE/whJO7k=;
+        b=imxkYajmixTDAXaGgQgmwQgfo6S9yksyu+7MDR6/F6Lqkx+jgREH2PzuZ5zaJY8Uch
+         0sOEic10PcGPqYtKCzYumGVmWKmCCQd916TJJYWi1gtjt4lpohqd99dZ1wv+2gWvvgX9
+         cD93pbVGM+Dej+chn91OFQXXtXqqZ+VEIjGNX9JTPjY9tBSSiEfr7XVusy47p7QTgWjO
+         akdcEwMzZxvwmraQeHZqUC0L4PPRekB4/crW3DApyCdYQiCari1S1y3BeAKPWA5KMpE9
+         IUSfAXDRQLnalX57Q+01okVLL5vjO/xXqlvSPtJ1co99qVv8UGyYaq2pc8B32w+FTUgC
+         GddQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697892436; x=1698497236;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ak0J9I1wxFXOFeFSUtB9w8Likk7tXaYYsKRE/whJO7k=;
+        b=g11McG/HGcHmgWVBL9W+CrrD3Yl6L+4Mv5yETZ1lOQgYbtg3pFiCIc8JOxdFPllgf7
+         f3qOAhtwcWM5YEoJB4wVMKPQwGYex5TO9qkpAEWgZciLek2j5lvDoAJaPGqjMO0fiYTy
+         OGqync3m/cUEcOip7yTumqSDtZe0lINJQQfaiZhOl4uY1OEWZnPxrspE1FTyxvywc2XM
+         gQWLYsN36DcN+nCoj11wKRgC0N+bdRhMiFMZmXCNZznRiJrfmGGBnvpgPMGO80I32HCu
+         XZAcopP1IWnYgeT4+d2+ZnxQY23cwIe+GAWfu9KEPw2iUFu/j0yy6uWk2y/u4ioZkuIq
+         bbkA==
+X-Gm-Message-State: AOJu0Yyr5kRzgiuGeiaNnDY7Ep9h6ZwBpU8QeEHg/z1R+EqTOnN++z1k
+	ydq0BqQT9wox5mtOiWPZaIxtoy5lsUUKhp+PKrPquT/Pp0Da2ULl
+X-Google-Smtp-Source: AGHT+IEeqtZaOp4XqRgyXGo/jA+okPIOTbzyiTwAKkpSrVQPXQcZCy/7MUrRMlw8uZKFEGWHDGRB177BLApEYx+MMtM=
+X-Received: by 2002:a05:690c:10:b0:5a7:b53f:c304 with SMTP id
+ bc16-20020a05690c001000b005a7b53fc304mr5334065ywb.37.1697892436166; Sat, 21
+ Oct 2023 05:47:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-Content-Language: en-US-large
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>
-References: <20231019171540.259173-1-benno.lossin@proton.me>
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20231019171540.259173-1-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231017113014.3492773-1-fujita.tomonori@gmail.com>
+ <20231017113014.3492773-2-fujita.tomonori@gmail.com> <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
+ <4935f458-4719-4472-b937-0da8b16ebbaa@lunn.ch>
+In-Reply-To: <4935f458-4719-4472-b937-0da8b16ebbaa@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 21 Oct 2023 14:47:04 +0200
+Message-ID: <CANiq72nOCv-TfE3ODgVyQoOxNc80BtH+5cV2XFBFZ=ztTgVhaw@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY drivers
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Benno Lossin <benno.lossin@proton.me>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	boqun.feng@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/19/23 19:15, Benno Lossin wrote:
-> Traits marked with `#[vtable]` need to provide default implementations
-> for optional functions. The C side represents these with `NULL` in the
-> vtable, so the default functions are never actually called. We do not
-> want to replicate the default behavior from C in Rust, because that is
-> not maintainable. Therefore we should use `build_error` in those default
-> implementations. The error message for that is provided at
-> `kernel::error::VTABLE_DEFAULT_ERROR`.
-> 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+On Fri, Oct 20, 2023 at 8:42=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> We don't want to hide phy_device too much, since at the moment, the
+> abstraction is very minimal. Anybody writing a driver is going to need
+> a good understanding of the C code in order to find the helpers they
+> need, and then add them to the abstraction. So i would say we need to
+> explain the relationship between the C structure and the Rust
+> structure, to aid developers.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I don't see how exposing `phy_device` in the documentation (note: not
+the implementation) helps with that. If someone has to add things to
+the abstraction, then at that point they need to be reading the
+implementation of the abstraction, and thus they should read the
+comments.
 
-There is a minor nit below, and in reviews sent by others, but overall 
-this looks fine to me.
+That is why the helpers should in general not be mentioned in the
+documentation, i.e. a Rust API user should not care / need to know
+about them.
 
->   /// # Examples
->   ///
->   /// ```ignore
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
->   /// use kernel::prelude::*;
-I probably wouldn't hide the import of VTABLE_DEFAULT_ERROR from this 
-example.
+If we mix things up in the docs, then it actually becomes harder later
+on to properly split it; and in the Rust side we want to maintain this
+ "API documentation" vs. "implementation comments" split. Thus it is
+important to do it right in the first examples we will have in-tree.
+
+And if an API is not abstracted yet, it should not be documented. APIs
+and their docs should be added together, in the same patch, wherever
+possible. Of course, implementation comments are different, and
+possibly a designer of an abstraction may establish some rules or
+guidelines for future APIs added -- that is fine, but if the user does
+not need to know, it should not be in the docs, even if it is added
+early.
+
+Regarding this, part of the `phy` module documentation (i.e. the three
+paragraphs) in this patch currently sounds more like an implementation
+comment to me. It should probably be rewritten/split properly in docs
+vs. comments.
+
+> During the reviews we have had a lot of misunderstanding what this
+> actually does, given its name. Some thought it poked around in
+> registers to get the current state of the link. Some thought it
+> triggered the PHY to establish a link. When in fact its just a dumb
+> getter. And we have a few other dumb getters and setters.
+>
+> So i would prefer something which indicates its a dumb getter. If the
+
+Agreed.
+
+> norm of Rust is just the field name, lets just use the field name. But
+> we should do that for all the getters and setters. Is there a naming
+> convention for things which take real actions?
+
+For the getters, there is
+https://rust-lang.github.io/api-guidelines/naming.html#getter-names-follow-=
+rust-convention-c-getter.
+
+For "actual actions" that are non-trivial, starting with a prefix that
+is not `set_*` would probably be ideal, i.e. things like read, load,
+push, init, register, attach, resolve, link, lock, add, create,
+find...
+
+Cheers,
+Miguel
