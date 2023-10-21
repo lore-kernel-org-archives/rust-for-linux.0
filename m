@@ -1,33 +1,33 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670B310F4;
-	Sat, 21 Oct 2023 13:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641710F4
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Oct 2023 13:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ETuzSGBK"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61843D63;
-	Sat, 21 Oct 2023 06:06:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="N6pMv6qs"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A544D51
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Oct 2023 06:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1697893567; x=1698152767;
-	bh=ky5vuudROl9mBaFjtQ2wP9XGF0JvQa4QEu594/a8Q98=;
+	s=protonmail; t=1697894224; x=1698153424;
+	bh=sCSYxlsGEw/QK9x9M3aySq+pUCU4iIWD6t3o6q6q0a0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ETuzSGBKtXvjj09UrA4oYX0oc6cJ2dcH8YzvpafWmRNDfigOsKQucHnmRRhK5bU0C
-	 NabYDj1+LNYuE/NrvhBnqUKfoyD60bXUIUDe+117ckgG6pj6Le9QF8uuEmaVZG8cm9
-	 lAyEXpT4na+03AdlGwHqoXQUGv9COAjDyT0EPhcc+0zE//JRt9FARLd4SVXeLyPwme
-	 M+E1XI6Gq1ps508OBjAcujcFBGhZJKJdvd3na0P0komipcf/zVjmuqLTYJROfF5kI+
-	 fT8Qlwr83FAsOIqJI5ITZtY0KScu3lznT1b66eLXLFPifOS0UqLpQ+1r6//H9Ez0l8
-	 k+3SWBuEeFsow==
-Date: Sat, 21 Oct 2023 13:05:59 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+	b=N6pMv6qsPg8lw9tQgNb5buHejJnDSOhFAgaZFFnRmDs3UpLYfqUl55aRSU4npHgj5
+	 dJMbU6qR9mB/JYlOt5Bd0E2UwB/xDty9IUQZXPmXOB9kTqEyPK5xOKG99nFaqiUckR
+	 HFqQvdJrVK7oddIYT9AH7bL7O8rSTJ9opFkjayfDRJ0jSGiDdxafy8KVbbSaERCBw4
+	 fETFnPhPVTVPBBB061Cf9ly60ZQxzzV/ztuRqhMf4ZkqJEvqDbHG+2QEDZO/lgQrvq
+	 1zbnLFS0FPUMVWb7qOyJU/8korZ+8TceYE0jQ40GuETYc1MHP6Go/R2IIwbwAFKXSm
+	 kbgfeA9dKlgew==
+Date: Sat, 21 Oct 2023 13:16:54 +0000
+To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY drivers
-Message-ID: <fb45d4aa-2816-4457-93e9-aec72f8ec64e@proton.me>
-In-Reply-To: <20231021.220012.2089903288409349337.fujita.tomonori@gmail.com>
-References: <d8b23faa-4041-4789-ae96-5d8bf87070ad@proton.me> <20231021.213834.76499402455687702.fujita.tomonori@gmail.com> <23348649-2ef2-4b2d-9745-86587a72ae5e@proton.me> <20231021.220012.2089903288409349337.fujita.tomonori@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
+Message-ID: <ba252f66-b204-43c1-9705-8ccd0cb12492@proton.me>
+In-Reply-To: <87fs25irel.fsf@metaspace.dk>
+References: <20231019171540.259173-1-benno.lossin@proton.me> <87fs25irel.fsf@metaspace.dk>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -38,53 +38,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 21.10.23 15:00, FUJITA Tomonori wrote:
-> On Sat, 21 Oct 2023 12:50:10 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
->>>>>> I think this is very weird, do you have any idea why this
->>>>>> could happen?
->>>>>
->>>>> DriverVtable is created on kernel stack, I guess.
->>>>
->>>> But how does that invalidate the function pointers?
->>>
->>> Not only funciton pointers. You can't store something on stack for
->>> later use.
->>
->> It is not stored on the stack, it is only created on the stack and
->> moved to a global static later on. The `module!` macro creates a
->> `static mut __MOD: Option<Module>` where the module data is stored in.
+On 20.10.23 11:06, Andreas Hindborg (Samsung) wrote:
+> Benno Lossin <benno.lossin@proton.me> writes:
+>> +/// Error message for calling a default function of a [`#[vtable]`](mac=
+ros::vtable) trait.
+>> +pub const VTABLE_DEFAULT_ERROR: &str =3D
+>> +    "This function must not be called, see the #[vtable] documentation.=
+";
+>> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+>> index c42105c2ff96..daf1ef8baa62 100644
+>> --- a/rust/macros/lib.rs
+>> +++ b/rust/macros/lib.rs
+>> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
+>>   /// implementation could just return `Error::EINVAL`); Linux typically=
+ use C
+>>   /// `NULL` pointers to represent these functions.
+>>   ///
+>> -/// This attribute is intended to close the gap. Traits can be declared=
+ and
+>> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associate=
+d constant
+>> -/// will be generated for each method in the trait, indicating if the i=
+mplementor
+>> -/// has overridden a method.
+>> +/// This attribute closes that gap. A trait can be annotated with the `=
+#[vtable]` attribute.
+>> +/// Implementers of the trait will then also have to annotate the trait=
+ with `#[vtable]`. This
+>> +/// attribute generates a `HAS_*` associated constant bool for each met=
+hod in the trait that is set
+>> +/// to true if the implementer has overridden the associated method.
+>> +///
+>> +/// For a function to be optional, it must have a default implementatio=
+n. But this default
+>> +/// implementation will never be executed, since these functions are ex=
+clusively called from
+>> +/// callbacks from the C side. This is because the vtable will have a `=
+NULL` entry and the C side
+>> +/// will execute the default behavior. Since it is not maintainable to =
+replicate the default
+>> +/// behavior in Rust, the default implementation should be:
 >=20
-> I know. The problem is that we call phy_drivers_register() with
-> DriverVTable on stack. Then it was moved.
+> How about this?:
+>=20
+> For a Rust trait method to be optional, it must have a default
+> implementation. For a trait marked with `#[vtable]`, the default
+> implementation will not be executed, as the only way the trait methods
+> should be called is through function pointers installed in C side
+> vtables. When a trait implementation marked with `#[vtable]` is missing
+> a method, a `NULL` pointer will be installed in the corresponding C side
+> vtable, and thus the Rust default implementation can not be called. The
+> default implementation should be:
+>=20
+> Not sure if it is more clear =F0=9F=A4=B7
 
-I see, what exactly is the problem with that? In other words:
-why does PHYLIB need `phy_driver` to stay at the same address?
+I think it misses the following important point: why is it not
+possible to just replicate the default behavior?
 
-This is an important requirement in Rust. Rust can ensure that
-types are not moved by means of pinning them. In this case, Wedson's
-patch below should fix the issue completely.
+What do you think of this?:
 
-But we should also fix this in the abstractions, the `DriverVTable`
-type should only be constructible in a pinned state. For this purpose
-we have the `pin-init` API [2].
-
-Are there any other things in PHY that must not change address?
-
-[2]: https://rust-for-linux.github.io/docs/v6.6-rc2/kernel/init/index.html
+For a trait method to be optional, it must have a default implementation.
+This is also the case for traits annotated with `#[vtable]`, but in this
+case the default implementation will never be executed. The reason for this
+is that the functions will be called through function pointers installed in
+C side vtables. When an optional method is not implemented on a `#[vtable]`
+trait, a NULL entry is installed in the vtable. Thus the default
+implementation is never called. Since these traits are not designed to be
+used on the Rust side, it should not be possible to call the default
+implementation. It is not possible to replicate the default behavior from C
+in Rust, since that is not maintainable. The default implementaiton should
+therefore call `kernel::build_error`, thus preventing calls to this
+function at compile time:
 
 --=20
 Cheers,
 Benno
 
->> It seems that constructing the driver table not at that location
->> is somehow interfering with something?
->>
->> Wedson has a patch [1] to create in-place initialized modules, but
->> it probably is not completely finished, as he has not yet begun to
->> post it to the list. But I am sure that it is mature enough for
->> you to test this hypothesis.
->>
->> [1]: https://github.com/wedsonaf/linux/commit/484ec70025ff9887d9ca228ec6=
-31264039cee35
 
