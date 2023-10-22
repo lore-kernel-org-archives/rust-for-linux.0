@@ -1,109 +1,165 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C18F10A04;
-	Sat, 21 Oct 2023 21:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200F81C3B;
+	Sun, 22 Oct 2023 06:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bEBGF0DS"
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C197E3;
-	Sat, 21 Oct 2023 14:45:03 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-27d27026dc2so612691a91.0;
-        Sat, 21 Oct 2023 14:45:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXLXU/Eo"
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B043E6;
+	Sat, 21 Oct 2023 23:30:12 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-27d5fd02e3dso632761a91.1;
+        Sat, 21 Oct 2023 23:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697924703; x=1698529503; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697956211; x=1698561011; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qSxWB/BuTCe6ijouqhC0kKQQiTmed/neUYNgs866ylU=;
-        b=bEBGF0DSBJerPMNdqDE73ZqWC4TJbzrhwAhV5WtetbRFUJthVaYEmGrBEUr4pQFlGV
-         5BLfn0PgE6cfl1n0+DoYHd4PJB2b0PqZgeq3HEsDmHnmRqCpEO2ClVp34jywK0aYnG8v
-         BiYaS3ct2Zqlx++SyRycJ9qq6+p3OUuqu5XnDbf1KGQZW7hPoC2d2UV0o3RqxXAa5As9
-         N/Bw1cPjYfYk02nC+dnjdVH3AO47taIbKIvsgcWCOZYiHcb53d7lHBcRrTLjLgH4WLQ0
-         TPGGVs+YvlbTM8HzKIVUHXN9ige0W9Bc89pguHWu5sepxLYWpOo9p3q+Hto2Hp3K+lRd
-         7Gzw==
+        bh=ikHvQ+mqtYjrNg+ceZzguZKr6AdCJaO/aWUwnRkjCxc=;
+        b=WXLXU/EofLA7GXSmkRsaU118e1G0meV9XLaEL8npaeDEkQdJlwz83ZtNhAAZPdIESu
+         02mUbr5XmHAF9sHBVBl+s8m1wWQkbLnJcFt1DiUW+V6ELBnxu/gI4Nf4JmeJHDaG6IIr
+         99wnnCepV9JQZxZk0Vq1xXX7W6UmVXCnKYO8W2MyMSWcUG4GIYcxDY51/uAUm8KE5o3t
+         aE6HjX50W4mKYuv+uJ1rmhPBeIjGk6dnJAM5PbpGgu1up1vlC+pqRRE1S+eQ7UAshtmF
+         oq2YDfoQn63UbRBPYUBpVn4w3W2hicod5lqE2v4XAvN+id4vLJO1mIDRHTB2gn/J2ypf
+         Crww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697924703; x=1698529503;
+        d=1e100.net; s=20230601; t=1697956211; x=1698561011;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=qSxWB/BuTCe6ijouqhC0kKQQiTmed/neUYNgs866ylU=;
-        b=V7l8lvPWLSxKXZDqFPg2s5n9nQjySKW12OwwsmxodUgO5mb5mMqvOtqxWTtHdfgDt6
-         ehtGjm0b8z8u/zTL5rml2JK4AuWNinXuML1mHGWbDGabpYqv2/u5DtBoLAvtmzRwwNrz
-         m1oWGh5v01+r+FWY3WQYfDCPzzjZ0ZZ8CzQKcnhr9oaoLEvQgb/ItUDKqXqbxNDGkvov
-         JHEgBTShK5c3LvVQB41TG1HpWZmepL5p9ewxruDtDcYyupoL8r3McqxpfN1c0B3cJg0j
-         PBDsEsGldBwh9upfmMCwynl8i+X2cEHhzuikP3QxdGiMVA8NvhUYZ1nmx7VVp3ZGkHEh
-         wWgw==
-X-Gm-Message-State: AOJu0YwLpPZS0hfcUzFZ+xNKW7FkebOo1yICkzkE5Q7cVYCtL+sBNAUp
-	BTIfecud6gLmKgagDI6OvUk=
-X-Google-Smtp-Source: AGHT+IGhMoItA07DV2rXa7mu9Gm3p22TC5Pf9yqQT6KvP95P0+iOkZIYrTfMdOWKQt1ZUZiCO9XMvw==
-X-Received: by 2002:a17:90b:1e45:b0:27d:6268:b75c with SMTP id pi5-20020a17090b1e4500b0027d6268b75cmr6206171pjb.4.1697924702866;
-        Sat, 21 Oct 2023 14:45:02 -0700 (PDT)
+        bh=ikHvQ+mqtYjrNg+ceZzguZKr6AdCJaO/aWUwnRkjCxc=;
+        b=TkBxvnzDsTc8uAMKFhrsvZpg18HF9W9dRzz0FdyY8zzOVRiUxPKj0PrcbrpsSyp6qh
+         R0h+VfiCRi6ANS7SrwGKcbjbM/5+pcKayu5Dco2cyX1n4SpvR3k2kLitzvmjkgzAO8Iz
+         Tnd4JDNvQsvJCmPERJ7cS7r9uwSTjBzKfyhqbQzqdA8yg4M0/oH6ObnmKbvHRsi/iVUM
+         SE9Pti+JOMy7LLNiT/nmsU4YIqvGoCR1V7okq0Yl2hCJi4SoYLs8FygmYycLIT4R12uN
+         W/OUrs5yXn9Vn11HwsLA1/uUxg89goPcqavfrMAgjPTQwFpz+YaztsFVdd2yjHkeJXbh
+         wWzQ==
+X-Gm-Message-State: AOJu0Yw033ojrbANlEiLOAboZtNNp9orOr12jcgD7AjbpKz6j/XthTT+
+	Mrd1huvjJfqHxgfvI65mXEQ=
+X-Google-Smtp-Source: AGHT+IGlZ5W1+BKcFq6yUdsecFwhWYVkoDmrh+oqE0DLZaeHaE8x+6o8EXHZZ9iTTNBe6/Pnvki3FQ==
+X-Received: by 2002:a17:902:f98f:b0:1c4:1e65:1e5e with SMTP id ky15-20020a170902f98f00b001c41e651e5emr5982497plb.0.1697956211116;
+        Sat, 21 Oct 2023 23:30:11 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id jh10-20020a170903328a00b001c736370245sm3583314plb.54.2023.10.21.14.45.02
+        by smtp.gmail.com with ESMTPSA id w17-20020a1709029a9100b001b89466a5f4sm3960982plp.105.2023.10.21.23.30.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Oct 2023 14:45:02 -0700 (PDT)
-Date: Sun, 22 Oct 2023 06:45:01 +0900 (JST)
-Message-Id: <20231022.064501.394351620043801227.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, tmgross@umich.edu, boqun.feng@gmail.com,
- wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network
- PHY drivers
+        Sat, 21 Oct 2023 23:30:10 -0700 (PDT)
+Date: Sun, 22 Oct 2023 15:30:09 +0900 (JST)
+Message-Id: <20231022.153009.202146429329494922.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, nmi@metaspace.dk, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+ boqun.feng@gmail.com, wedsonaf@gmail.com, benno.lossin@proton.me,
+ greg@kroah.com, ojeda@kernel.org
+Subject: Re: [PATCH net-next v5 3/5] WIP rust: add second `bindgen` pass
+ for enum exhaustiveness checking
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <cd3ff8e6-214e-4a80-980e-e92751223002@proton.me>
-References: <fb45d4aa-2816-4457-93e9-aec72f8ec64e@proton.me>
-	<20231021.223115.1115424295905877996.fujita.tomonori@gmail.com>
-	<cd3ff8e6-214e-4a80-980e-e92751223002@proton.me>
+In-Reply-To: <CANiq72nc+pZ2fsNzNkaB01im92X1F4mhESZonyvD2G1rd9dNDA@mail.gmail.com>
+References: <871qdpikq9.fsf@metaspace.dk>
+	<20231021.125125.1778736907764380293.fujita.tomonori@gmail.com>
+	<CANiq72nc+pZ2fsNzNkaB01im92X1F4mhESZonyvD2G1rd9dNDA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Sat, 21 Oct 2023 13:35:57 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
->> Currently, it needs &'static DriverVTable
->> array so it works.
-> 
-> That is actually also incorrect. As the C side is going to modify
-> the `DriverVTable`, you should actually use `&'static mut DriverVTable`.
-> But since it is not allowed to be moved you have to use
-> `Pin<&'static mut DriverVTable>`.
-
-I updated Registration::register(). Needs to add comments on requirement?
-
-impl Registration {
-    /// Registers a PHY driver.
-    pub fn register(
-        module: &'static crate::ThisModule,
-        drivers: Pin<&'static mut [DriverVTable]>,
-    ) -> Result<Self> {
-        // SAFETY: The type invariants of [`DriverVTable`] ensure that all elements of the `drivers` slice
-        // are initialized properly. So an FFI call with a valid pointer.
-        to_result(unsafe {
-            bindings::phy_drivers_register(drivers[0].0.get(), drivers.len().try_into()?, module.0)
-        })?;
-        // INVARIANT: The `drivers` slice is successfully registered to the kernel via `phy_drivers_register`.
-        Ok(Registration { drivers })
-    }
-}
-
-
->> The C side uses static allocation too. If someone asks for, we could
->> loosen the restriction with a complicated implentation. But I doubt
->> that someone would ask for such.
-> 
-> With Wedson's patch you also would be using the static allocation
-> from `module!`. What my problem is, is that you are using a `static mut`
-> which is `unsafe` and you do not actually have to use it (with
-> Wedson's patch of course).
-
-Like your vtable patch, I improve the code when something useful is
-available.
+T24gU2F0LCAyMSBPY3QgMjAyMyAxNDowNTo1MyArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBTYXQsIE9jdCAyMSwgMjAy
+MyBhdCA1OjUx4oCvQU0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwu
+Y29tPiB3cm90ZToNCj4+DQo+PiBIbW0sIHRoaXMgd29ya3MgZm9yIG1lLg0KPiANCj4gQW5kcmVh
+cyB3YXMgcHJvYmFibHkgdXNpbmcgYE89YCwgYnV0IHlvdSB3ZXJlIG5vdC4NCj4gDQo+IEF0IGxl
+YXN0IHRoYXQgaXMgd2hhdCBJIGd1ZXNzZWQgeWVzdGVyZGF5IGFuZCB3aGF0IHRoZSBzdWdnZXN0
+aW9uIEkgZ2F2ZSBmaXhlcy4NCg0KSSBzZWUsIHRoYW5rcy4NCg0KPiBUaGlzIGlzIGFsc28gd2h5
+IHNlbmRpbmcgdW5maW5pc2hlZCB3b3JrIGJ5IHNvbWVvbmUgZWxzZSBpcyBub3QgdGhlDQo+IGJl
+c3QgaWRlYS4gSSB3b3VsZCBhbHNvIGhhdmUgbWFya2VkIHRoYXQgcGF0Y2ggYXMgUkZDIGFuZCBw
+dXQgaXQgYXQNCj4gdGhlIGVuZCBwZXJoYXBzLCB0byBtYWtlIGl0IGNsZWFyZXIuDQo+IA0KPiBC
+eSB0aGUgd2F5LCB0aGUgcGF0Y2ggaXMgbWlzc2luZyB5b3VyIFNvQi4gSSB3b3VsZCByZWNvbW1l
+bmQgdXNpbmcNCj4gYC0tc2lnbm9mZmAgaW4gR2l0IGFuZCBiNCdzIGBhbWAsIGBjaGVycnktcGlj
+a2AgZXRjLg0KDQpJbmNvcnBvcmF0ZWQgdGhlIE1ha2VmaWxlIGZpeCBhbmQgYWRkZWQgbXkgU2ln
+bmVkLW9mZi1ieS4gWW91IHdvdWxkDQpsaWtlIHRvIGtlZXAgV0lQIGluIHRoZSBzdWJqZWN0Pw0K
+DQo9DQpGcm9tIGZmNWI1NjdhOGI0ZTRhNDhmOGEwYzdmMWFjNzFmOGVmMmMyZWQyMjYgTW9uIFNl
+cCAxNyAwMDowMDowMCAyMDAxDQpGcm9tOiBNaWd1ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+
+DQpEYXRlOiBGcmksIDEzIE9jdCAyMDIzIDEyOjM3OjU4ICswMjAwDQpTdWJqZWN0OiBbUEFUQ0hd
+IFdJUCBydXN0OiBhZGQgc2Vjb25kIGBiaW5kZ2VuYCBwYXNzIGZvciBlbnVtIGV4aGF1c3RpdmVu
+ZXNzDQogY2hlY2tpbmcNCg0KICAgIGVycm9yW0UwMDA1XTogcmVmdXRhYmxlIHBhdHRlcm4gaW4g
+ZnVuY3Rpb24gYXJndW1lbnQNCiAgICAgICAgIC0tPiBydXN0L2JpbmRpbmdzL2JpbmRpbmdzX2Vu
+dW1fY2hlY2sucnM6Mjk6Ng0KICAgICAgICAgIHwNCiAgICAyOSAgICB8ICAgICAgIChwaHlfc3Rh
+dGU6OlBIWV9ET1dODQogICAgICAgICAgfCAgX19fX19fXg0KICAgIDMwICAgIHwgfCAgICAgfCBw
+aHlfc3RhdGU6OlBIWV9SRUFEWQ0KICAgIDMxICAgIHwgfCAgICAgfCBwaHlfc3RhdGU6OlBIWV9I
+QUxURUQNCiAgICAzMiAgICB8IHwgICAgIHwgcGh5X3N0YXRlOjpQSFlfRVJST1INCiAgICAuLi4g
+ICAgIHwNCiAgICAzNSAgICB8IHwgICAgIHwgcGh5X3N0YXRlOjpQSFlfTk9MSU5LDQogICAgMzYg
+ICAgfCB8ICAgICB8IHBoeV9zdGF0ZTo6UEhZX0NBQkxFVEVTVCk6IHBoeV9zdGF0ZSwNCiAgICAg
+ICAgICB8IHxfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19eIHBhdHRlcm4gYHBoeV9zdGF0
+ZTo6UEhZX05FV2Agbm90IGNvdmVyZWQNCiAgICAgICAgICB8DQogICAgbm90ZTogYHBoeV9zdGF0
+ZWAgZGVmaW5lZCBoZXJlDQogICAgICAgICAtLT4gcnVzdC9iaW5kaW5ncy9iaW5kaW5nc19nZW5l
+cmF0ZWRfZW51bV9jaGVjay5yczo2MDczOToxMA0KICAgICAgICAgIHwNCiAgICA2MDczOSB8IHB1
+YiBlbnVtIHBoeV9zdGF0ZSB7DQogICAgICAgICAgfCAgICAgICAgICBeXl5eXl5eXl4NCiAgICAu
+Li4NCiAgICA2MDc0NSB8ICAgICBQSFlfTkVXID0gNSwNCiAgICAgICAgICB8ICAgICAtLS0tLS0t
+IG5vdCBjb3ZlcmVkDQogICAgICAgICAgPSBub3RlOiB0aGUgbWF0Y2hlZCB2YWx1ZSBpcyBvZiB0
+eXBlIGBwaHlfc3RhdGVgDQoNClNpZ25lZC1vZmYtYnk6IE1pZ3VlbCBPamVkYSA8b2plZGFAa2Vy
+bmVsLm9yZz4NClNpZ25lZC1vZmYtYnk6IEZVSklUQSBUb21vbm9yaSA8ZnVqaXRhLnRvbW9ub3Jp
+QGdtYWlsLmNvbT4NCi0tLQ0KIHJ1c3QvLmdpdGlnbm9yZSAgICAgICAgICAgICAgICAgICAgICB8
+ICAxICsNCiBydXN0L01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgfCAxNCArKysrKysr
+KysrKw0KIHJ1c3QvYmluZGluZ3MvYmluZGluZ3NfZW51bV9jaGVjay5ycyB8IDM2ICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysNCiAzIGZpbGVzIGNoYW5nZWQsIDUxIGluc2VydGlvbnMoKykN
+CiBjcmVhdGUgbW9kZSAxMDA2NDQgcnVzdC9iaW5kaW5ncy9iaW5kaW5nc19lbnVtX2NoZWNrLnJz
+DQoNCmRpZmYgLS1naXQgYS9ydXN0Ly5naXRpZ25vcmUgYi9ydXN0Ly5naXRpZ25vcmUNCmluZGV4
+IGQzODI5ZmZhYjgwYi4uMWE3NmFkMGQ2NjAzIDEwMDY0NA0KLS0tIGEvcnVzdC8uZ2l0aWdub3Jl
+DQorKysgYi9ydXN0Ly5naXRpZ25vcmUNCkBAIC0xLDYgKzEsNyBAQA0KICMgU1BEWC1MaWNlbnNl
+LUlkZW50aWZpZXI6IEdQTC0yLjANCiANCiBiaW5kaW5nc19nZW5lcmF0ZWQucnMNCitiaW5kaW5n
+c19nZW5lcmF0ZWRfZW51bV9jaGVjay5ycw0KIGJpbmRpbmdzX2hlbHBlcnNfZ2VuZXJhdGVkLnJz
+DQogZG9jdGVzdHNfa2VybmVsX2dlbmVyYXRlZC5ycw0KIGRvY3Rlc3RzX2tlcm5lbF9nZW5lcmF0
+ZWRfa3VuaXQuYw0KZGlmZiAtLWdpdCBhL3J1c3QvTWFrZWZpbGUgYi9ydXN0L01ha2VmaWxlDQpp
+bmRleCBhMjdmMzVmOTI0ZWMuLmIzNzg0MjEyMGI3NCAxMDA2NDQNCi0tLSBhL3J1c3QvTWFrZWZp
+bGUNCisrKyBiL3J1c3QvTWFrZWZpbGUNCkBAIC0xNSw2ICsxNSw3IEBAIGFsd2F5cy0kKENPTkZJ
+R19SVVNUKSArPSBsaWJtYWNyb3Muc28NCiBuby1jbGVhbi1maWxlcyArPSBsaWJtYWNyb3Muc28N
+CiANCiBhbHdheXMtJChDT05GSUdfUlVTVCkgKz0gYmluZGluZ3MvYmluZGluZ3NfZ2VuZXJhdGVk
+LnJzIGJpbmRpbmdzL2JpbmRpbmdzX2hlbHBlcnNfZ2VuZXJhdGVkLnJzDQorYWx3YXlzLSQoQ09O
+RklHX1JVU1QpICs9IGJpbmRpbmdzL2JpbmRpbmdzX2dlbmVyYXRlZF9lbnVtX2NoZWNrLnJzDQog
+b2JqLSQoQ09ORklHX1JVU1QpICs9IGFsbG9jLm8gYmluZGluZ3MubyBrZXJuZWwubw0KIGFsd2F5
+cy0kKENPTkZJR19SVVNUKSArPSBleHBvcnRzX2FsbG9jX2dlbmVyYXRlZC5oIGV4cG9ydHNfYmlu
+ZGluZ3NfZ2VuZXJhdGVkLmggXA0KICAgICBleHBvcnRzX2tlcm5lbF9nZW5lcmF0ZWQuaA0KQEAg
+LTM0MSw2ICszNDIsMTkgQEAgJChvYmopL2JpbmRpbmdzL2JpbmRpbmdzX2dlbmVyYXRlZC5yczog
+JChzcmMpL2JpbmRpbmdzL2JpbmRpbmdzX2hlbHBlci5oIFwNCiAgICAgJChzcmMpL2JpbmRnZW5f
+cGFyYW1ldGVycyBGT1JDRQ0KIAkkKGNhbGwgaWZfY2hhbmdlZF9kZXAsYmluZGdlbikNCiANCisk
+KG9iaikvYmluZGluZ3MvYmluZGluZ3NfZ2VuZXJhdGVkX2VudW1fY2hlY2sucnM6IHByaXZhdGUg
+YmluZGdlbl90YXJnZXRfZmxhZ3MgPSBcDQorICAgICQoc2hlbGwgZ3JlcCAtdiAnXiNcfF4kJCcg
+JChzcmN0cmVlKS8kKHNyYykvYmluZGdlbl9wYXJhbWV0ZXJzKSBcDQorICAgIC0tZGVmYXVsdC1l
+bnVtLXN0eWxlIHJ1c3QNCiskKG9iaikvYmluZGluZ3MvYmluZGluZ3NfZ2VuZXJhdGVkX2VudW1f
+Y2hlY2sucnM6IHByaXZhdGUgYmluZGdlbl90YXJnZXRfZXh0cmEgPSA7IFwNCisgICAgT0JKVFJF
+RT0kKGFic3BhdGggJChvYmp0cmVlKSkgJChSVVNUQ19PUl9DTElQUFkpICQocnVzdF9mbGFncykg
+JChydXN0Y190YXJnZXRfZmxhZ3MpIFwNCisgICAgICAgIC0tY3JhdGUtdHlwZSBybGliIC1MJChv
+Ymp0cmVlKS8kKG9iaikgXA0KKyAgICAgICAgLS1lbWl0PWRlcC1pbmZvPSQob2JqKS9iaW5kaW5n
+cy8uYmluZGluZ3NfZW51bV9jaGVjay5ycy5kIFwNCisgICAgICAgIC0tZW1pdD1tZXRhZGF0YT0k
+KG9iaikvYmluZGluZ3MvbGliYmluZGluZ3NfZW51bV9jaGVjay5ybWV0YSBcDQorICAgICAgICAt
+LWNyYXRlLW5hbWUgZW51bV9jaGVjayAkKHNyY3RyZWUpLyQoc3JjKS9iaW5kaW5ncy9iaW5kaW5n
+c19lbnVtX2NoZWNrLnJzDQorJChvYmopL2JpbmRpbmdzL2JpbmRpbmdzX2dlbmVyYXRlZF9lbnVt
+X2NoZWNrLnJzOiAkKHNyYykvYmluZGluZ3MvYmluZGluZ3NfaGVscGVyLmggXA0KKyAgICAkKHNy
+YykvYmluZGluZ3MvYmluZGluZ3NfZW51bV9jaGVjay5ycyAkKHNyYykvYmluZGdlbl9wYXJhbWV0
+ZXJzIEZPUkNFDQorCSQoY2FsbCBpZl9jaGFuZ2VkX2RlcCxiaW5kZ2VuKQ0KKw0KICQob2JqKS91
+YXBpL3VhcGlfZ2VuZXJhdGVkLnJzOiBwcml2YXRlIGJpbmRnZW5fdGFyZ2V0X2ZsYWdzID0gXA0K
+ICAgICAkKHNoZWxsIGdyZXAgLUV2ICdeI3xeJCQnICQoc3JjdHJlZSkvJChzcmMpL2JpbmRnZW5f
+cGFyYW1ldGVycykNCiAkKG9iaikvdWFwaS91YXBpX2dlbmVyYXRlZC5yczogJChzcmMpL3VhcGkv
+dWFwaV9oZWxwZXIuaCBcDQpkaWZmIC0tZ2l0IGEvcnVzdC9iaW5kaW5ncy9iaW5kaW5nc19lbnVt
+X2NoZWNrLnJzIGIvcnVzdC9iaW5kaW5ncy9iaW5kaW5nc19lbnVtX2NoZWNrLnJzDQpuZXcgZmls
+ZSBtb2RlIDEwMDY0NA0KaW5kZXggMDAwMDAwMDAwMDAwLi5lZWY3ZTljYTNjNTQNCi0tLSAvZGV2
+L251bGwNCisrKyBiL3J1c3QvYmluZGluZ3MvYmluZGluZ3NfZW51bV9jaGVjay5ycw0KQEAgLTAs
+MCArMSwzNiBAQA0KKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wDQorDQorLy8h
+IEJpbmRpbmdzJyBlbnVtIGV4aGF1c3RpdmVuZXNzIGNoZWNrLg0KKy8vIQ0KKy8vISBFdmVudHVh
+bGx5LCB0aGlzIHNob3VsZCBiZSByZXBsYWNlZCBieSBhIHNhZmUgdmVyc2lvbiBvZiBgLS1ydXN0
+aWZpZWQtZW51bWAsIHNlZQ0KKy8vISBodHRwczovL2dpdGh1Yi5jb20vcnVzdC1sYW5nL3J1c3Qt
+YmluZGdlbi9pc3N1ZXMvMjY0Ni4NCisNCisjIVtub19zdGRdDQorIyFbYWxsb3coDQorICAgIGNs
+aXBweTo6YWxsLA0KKyAgICBkZWFkX2NvZGUsDQorICAgIG1pc3NpbmdfZG9jcywNCisgICAgbm9u
+X2NhbWVsX2Nhc2VfdHlwZXMsDQorICAgIG5vbl91cHBlcl9jYXNlX2dsb2JhbHMsDQorICAgIG5v
+bl9zbmFrZV9jYXNlLA0KKyAgICBpbXByb3Blcl9jdHlwZXMsDQorICAgIHVucmVhY2hhYmxlX3B1
+YiwNCisgICAgdW5zYWZlX29wX2luX3Vuc2FmZV9mbg0KKyldDQorDQoraW5jbHVkZSEoY29uY2F0
+ISgNCisgICAgZW52ISgiT0JKVFJFRSIpLA0KKyAgICAiL3J1c3QvYmluZGluZ3MvYmluZGluZ3Nf
+Z2VuZXJhdGVkX2VudW1fY2hlY2sucnMiDQorKSk7DQorDQorZm4gY2hlY2tfcGh5X3N0YXRlKA0K
+KyAgICAocGh5X3N0YXRlOjpQSFlfRE9XTg0KKyAgICB8IHBoeV9zdGF0ZTo6UEhZX1JFQURZDQor
+ICAgIHwgcGh5X3N0YXRlOjpQSFlfSEFMVEVEDQorICAgIHwgcGh5X3N0YXRlOjpQSFlfRVJST1IN
+CisgICAgfCBwaHlfc3RhdGU6OlBIWV9VUA0KKyAgICB8IHBoeV9zdGF0ZTo6UEhZX1JVTk5JTkcN
+CisgICAgfCBwaHlfc3RhdGU6OlBIWV9OT0xJTksNCisgICAgfCBwaHlfc3RhdGU6OlBIWV9DQUJM
+RVRFU1QpOiBwaHlfc3RhdGUsDQorKSB7DQorfQ0KLS0gDQoyLjM0LjENCg0K
