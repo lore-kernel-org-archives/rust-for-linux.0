@@ -1,107 +1,180 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF429110F
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 11:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A407F15B0;
+	Sun, 22 Oct 2023 11:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hXdd767q"
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F28DD
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 04:07:39 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-99357737980so368723866b.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 04:07:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j/3PztOK"
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27C77EB;
+	Sun, 22 Oct 2023 04:37:46 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d9a389db3c7so1912226276.1;
+        Sun, 22 Oct 2023 04:37:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697972858; x=1698577658; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jb3zAnuSf9ARMNcEiLAfRD5vH0SKq8CXeDkHXb/awRU=;
-        b=hXdd767qQmVbM3MatfBLH+QoMNWQMUW3julOQw9b02SujcC1CNR8cB0LmzJffUNjtR
-         2rHndgkbNUABx+4yYKXTeM81Z/cFplJEyeXNhaDeZrELU6vg8VMt2qAx4Nfjrfxr7Sbt
-         /prG9d1+a8x/fMeUcrNMP/HdGPtlfUVnzPaD2ZFQQZEnbtSKdrSDVulJ20xrXR4AkNEE
-         iOiZy7GAA7i7LXE5mg+1XfbcFEX7j/0MsJV++Ak4QhrrIV9bhTYUeMuMiFU9tltqndlY
-         RUU/AJ/IoJG8dq4UqYwN2Velx58xE32nOqeJQNzJiLUr7GaYa4MvhfHHbK+2NMtoWonq
-         4p+g==
+        d=gmail.com; s=20230601; t=1697974665; x=1698579465; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hpneJp36dT4i16hqbyNdS9co0yw38waSAZJjrgbl2Xs=;
+        b=j/3PztOKEP8c9SCwM2/tZbHxvPHliGpjRQu+KR1alI8jCJSgMQUOjORLC1WwblKEDx
+         hOVBfKul4FNIJd8FHXmxKdd91V/zwkoiUGePl0+yutWS7b3kR1aIAhqWARh5O5Gb88mG
+         ua33tE7T11Te7mgVEnkHC3YhtirD0JhZ1O6oBLG8HHD0uZQF5l2GzIlOpOuocmPBhU25
+         LyzxOSxeaKk4ZqP5Mt1haX0+q3Mo9Tb2iaUpkTzqul3a3WGBEctUvoX0oFJFnZnIi57x
+         eddL9VboShfW7beoVRFXpUigTw+iFX4t1wm0ShR7gxDa2jYlXOJeTzQpA8IQ/XyFyLkf
+         9RzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697972858; x=1698577658;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1697974665; x=1698579465;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jb3zAnuSf9ARMNcEiLAfRD5vH0SKq8CXeDkHXb/awRU=;
-        b=NoSwgeUCgWB9F5dYSANeQLS3/oiS80+7tnDueS7djQ0NSdupdVxdOt/umf2PhmKDlU
-         8rk9OVOYikAUFt83+O6VG1maBJUtCi/3c1kFioKnmRwPtYCNgwTFi1TUL9HLt7c0Qlqb
-         fKY9WVkf4WMqhYwHewY8+gkfx7uCVhPN4YxITL3ltGAER1gBqhoH+dNZB3T6JbVWtctY
-         p9QyGQq/bPGOzYWz5ktAPH8zox3mtMarfonZxIcSHjzs+fJjouvq6bnHhLMOeNVvUmzY
-         pKkWWGmWxJ9HqBaFSak7KrwEF6I5CZRUUb7MvD+UQT4EEPRFNY5Xpg7sDPgJvmTTA0Lt
-         U7vQ==
-X-Gm-Message-State: AOJu0Yy2L1gZUnMOzuIslAfsZ6eJdsfuJ31O/AKs4i49CFL+mutc4upg
-	FsX9a+E2Z960wI40dSUYz2M=
-X-Google-Smtp-Source: AGHT+IEQaRFjYfmzW2FXD/UPO3e5wyOSet1aojJYxjy0SLRDFA2B8jRkvS6YgG0XmU3aP13Injg1TQ==
-X-Received: by 2002:a17:906:4fc4:b0:9be:e6d4:5751 with SMTP id i4-20020a1709064fc400b009bee6d45751mr5504007ejw.55.1697972857364;
-        Sun, 22 Oct 2023 04:07:37 -0700 (PDT)
-Received: from gmail.com (1F2EF1E7.nat.pool.telekom.hu. [31.46.241.231])
-        by smtp.gmail.com with ESMTPSA id v30-20020a50a45e000000b0053da3a9847csm4757874edb.42.2023.10.22.04.07.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Oct 2023 04:07:35 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Sun, 22 Oct 2023 13:07:33 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Will Deacon <will@kernel.org>, steve.capper@arm.com,
-	Asahi Lina <lina@asahilina.net>, boqun.feng@gmail.com,
-	andrew@lunn.ch, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
- of builtin targets
-Message-ID: <ZTUCdS0Vrev1iQOv@gmail.com>
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
- <ZTT/h5wKL7STeOhC@arm.com>
+        bh=hpneJp36dT4i16hqbyNdS9co0yw38waSAZJjrgbl2Xs=;
+        b=FVXxq1tMJYx/QkxJl3Rr9AVCZoeH/ZKkhgKQvWoD43zjgDHgSOLJ+1wGVz0Ux+HHJn
+         13iPNpSTRIiUQzhJCFuTs2xlWjo8HBjgNt4bZbSR9BIB/GAhBgFAwmfgvdLIrIrFHFUz
+         skUORI6THa73KDILbCXM+igAfLQpD98J4yoGeSU/9Bs9F+k+xeKTmUzbCJ/wtmVHQwZ3
+         LL2pEYv0ngorH9XQGgdNUIjdp2qL/G7cyl326vWfJhIgLDV+IodZK044nX6BOL38Lk9F
+         A6iaw25eRWfjxseqxtigEjWbvWHYXShurk4YzW0CDil7HyqMsphbxVlK5Lls2sj6aOiF
+         dN9A==
+X-Gm-Message-State: AOJu0YyUm0rHeUwfYOK8cDKL+U7vckYSV43s6F/X5Yzza64g2PkrQwdZ
+	yuOHp14xaGpTSIkYnwVEu1iDarthqhgyTszdB03+ZwfR0WEW2ZMN
+X-Google-Smtp-Source: AGHT+IEfzJRwRQHPNcT3S20/z0CmvS8Ra0Nk4dxw6xrw45+P7EX6ksONGqh+S4N29oyVqXueVA9f9vkyn1PzVue5F1A=
+X-Received: by 2002:a05:6902:507:b0:d9a:53cc:e58d with SMTP id
+ x7-20020a056902050700b00d9a53cce58dmr7498296ybs.10.1697974665232; Sun, 22 Oct
+ 2023 04:37:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZTT/h5wKL7STeOhC@arm.com>
+References: <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
+ <4935f458-4719-4472-b937-0da8b16ebbaa@lunn.ch> <CANiq72nOCv-TfE3ODgVyQoOxNc80BtH+5cV2XFBFZ=ztTgVhaw@mail.gmail.com>
+ <20231022.184702.1777825182430453165.fujita.tomonori@gmail.com>
+In-Reply-To: <20231022.184702.1777825182430453165.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 22 Oct 2023 13:37:33 +0200
+Message-ID: <CANiq72mDWJDb9Fhd4CHt8YKapdWaOrqhJMOrQZ9CDRtvNdrGqA@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: andrew@lunn.ch, benno.lossin@proton.me, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, boqun.feng@gmail.com, 
+	wedsonaf@gmail.com, greg@kroah.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sun, Oct 22, 2023 at 11:47=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Agreed that the first three paragraphs at the top of the file are
+> implementation comments. Are there any other comments in the file,
+> which look implementation comments to you? To me, the rest look the
+> docs for Rust API users.
 
-* Catalin Marinas <catalin.marinas@arm.com> wrote:
+I think some should be improved with that in mind, yeah. For instance,
+this one seems good to me:
 
-> On Fri, Oct 20, 2023 at 04:50:55PM +0100, Jamie Cunliffe wrote:
-> > Eventually we want all architectures to be using the target as defined
-> > by rustc. However currently some architectures can't do that and are
-> > using the target.json specification. This puts in place the foundation
-> > to allow the use of the builtin target definition or a target.json
-> > specification.
-> > 
-> > Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-> > ---
-> >  Makefile          | 1 -
-> >  arch/x86/Makefile | 1 +
-> >  rust/Makefile     | 5 ++++-
-> >  scripts/Makefile  | 4 +++-
-> >  4 files changed, 8 insertions(+), 3 deletions(-)
-> 
-> Adding the x86 maintainers - no functional change for x86, any objection
-> to this patch going in via the arm64 tree (part of the two-patch series
-> enabling Rust for arm64)?
-> 
-> Thanks.
-> 
-> (keeping the rest of the patch below for your reference)
+    /// An instance of a PHY driver.
 
-If Masahiro Yamada (kbuild maintainer, Cc:-ed) is fine with it,
-then it will be OK to me too.
+But this one is not:
 
-Thanks,
+    /// Creates the kernel's `phy_driver` instance.
 
-	Ingo
+It is especially bad because the first line of the docs is the "short
+description" used for lists by `rustdoc`.
+
+For similar reasons, this one is bad (and in this case it is the only line!=
+):
+
+    /// Corresponds to the kernel's `enum phy_state`.
+
+That line could be part of the documentation if you think it is
+helpful for a reader as a practical note explaining what it is
+supposed to map in the C side. But it should really not be the very
+first line / short description.
+
+Instead, the documentation should answer the question "What is this?".
+And the answer should be something like "The state of the PHY ......"
+as the short description. Then ideally a longer explanation of why it
+is needed, how it is intended to be used, what this maps to in the C
+side (if relevant), anything else that the user may need to know about
+it, particular subtleties if any, examples if relevant, etc.
+
+> I'm not sure that a comment on the relationship between C and Rust
+> structures like "Wraps the kernel's `struct phy_driver`" is API docs
+> but the in-tree files like mutex.rs have the similar so I assume it's
+> fine.
+
+Yes, documenting that something wraps/relies on/maps a particular C
+functionality is something we do for clarity and practicality (we also
+link the related C headers). This is, I assume, the kind of clarity
+Andrew was asking for, i.e. to be practical and let the user know what
+they are dealing with on the C side, especially early on.
+
+But if some detail is not needed to use the API, then we should avoid
+writing it in the documentation. And if it is needed, but it can be
+written in a way that does not depend/reference the C side, then it
+should be.
+
+For instance, as you can see from the `mutex.rs` you mention, the
+short description does not mention the C side -- it does so
+afterwards, and then it goes onto explaining why it is needed, how it
+is used (with examples), and so on. The fact that it exposes the C
+`struct mutex` is there, because it adds value ("oh, ok, so this is
+what I would use if I wanted the C mutex"), but that bit (and the
+rest) is not really about explaining how `Mutex` is implemented:
+
+    /// A mutual exclusion primitive.
+    ///
+    /// Exposes the kernel's [`struct mutex`]. When multiple threads
+attempt to lock the same mutex,
+    /// only one at a time is allowed to progress, the others will
+block (sleep) until the mutex is
+    /// unlocked, at which point another thread will be allowed to
+wake up and make progress.
+    ///
+    /// Since it may block, [`Mutex`] needs to be used with care in
+atomic contexts.
+    ///
+    /// Instances of [`Mutex`] need a lock class and to be pinned. The
+recommended way to create such
+    /// instances is with the [`pin_init`](crate::pin_init) and
+[`new_mutex`] macros.
+    ///
+    /// # Examples
+    ///
+    /// The following example shows how to declare, allocate and
+initialise a struct (`Example`) that
+    /// contains an inner struct (`Inner`) that is protected by a mutex.
+
+    ...
+
+    /// The following example shows how to use interior mutability to
+modify the contents of a struct
+    /// protected by a mutex despite only having a shared reference:
+
+    ...
+
+`Mutex`'s docs are, in fact, a good a good example of how to write docs!
+
+> Where the implementation comments are supposed to be placed?
+> Documentation/networking?
+
+No, they would be normal `//` comments and they should be as close to
+the relevant code as possible -- please see
+https://docs.kernel.org/rust/coding-guidelines.html#comments. They can
+still be read in the generated docs via the "source" buttons, so they
+will be there for those reading the actual implementation in the
+browser.
+
+Instead, `Documentation/` is detached from the actual code. For Rust
+code, we hope to use only those for out-of-line information that is
+not related to any particular API.
+
+For instance, the "coding guidelines" document I just linked. Or
+end-user / distributor documentation. Or, as another example, Wedson
+at some point considered adding some high-level design documents, and
+if those would not fit any particular API or if they are not intended
+for users of the API, they could perhaps go into `Doc/`. Or perhaps
+Boqun's idea of having a reviewers guide, etc.
+
+Cheers,
+Miguel
