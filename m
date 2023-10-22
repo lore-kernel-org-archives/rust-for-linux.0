@@ -1,100 +1,218 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5192D1FD9;
-	Sun, 22 Oct 2023 15:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B700810A2C
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 16:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AWXz3J/m"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B618E9;
-	Sun, 22 Oct 2023 08:34:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=txCRBNVhG01Iz4fCLIHgxiWEZs781Kdfj2fihtzyBDc=; b=AW
-	Xz3J/mIFTejtEn7p2Y/6H4rWL6lenlQQkA6mU09rH1Oq8m3cpjymmgzTrHRx+cG0kDOKadrblKQSa
-	Xbn954/3e7XUww3dsWUMVgZJgEIVkf+gnumP4RRrDoU/PHYYzsfqLPCj9IZA4jWp50rfThtRRtGtU
-	+ImUy+rSUF0OO+Y=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1quaSq-002x2V-G0; Sun, 22 Oct 2023 17:34:04 +0200
-Date: Sun, 22 Oct 2023 17:34:04 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, benno.lossin@proton.me,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com,
-	greg@kroah.com
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY
- drivers
-Message-ID: <798666eb-713b-445d-b9f0-72b6bbf957ff@lunn.ch>
-References: <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
- <4935f458-4719-4472-b937-0da8b16ebbaa@lunn.ch>
- <CANiq72nOCv-TfE3ODgVyQoOxNc80BtH+5cV2XFBFZ=ztTgVhaw@mail.gmail.com>
- <20231022.184702.1777825182430453165.fujita.tomonori@gmail.com>
- <CANiq72mDWJDb9Fhd4CHt8YKapdWaOrqhJMOrQZ9CDRtvNdrGqA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bGb3uP9O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4424EC433BA;
+	Sun, 22 Oct 2023 16:22:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697991722;
+	bh=EyY6Liyok0DHui9C4VISkQux2t3R8fPcaQ5dO9dxwAA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bGb3uP9OsVIlN+2R/fc6MSBPofWuRac66dz91Yx3zTQFh+IUTKsVw5UGuXQjcs1aN
+	 OgWOMmUKOOYWAB0dOKYg8vOi+8ZMy2XjFXCfDfEEVXy+1kuOe7gpQM8TqaD1soOFjT
+	 yHgFPWXqR//yjQPszWFoWZGn+sSOwA4mu6F5UmVZ3Crece0ABuhaWC/KMdiZIvW8/L
+	 opZ9cK0w7+/ngO47KWnoZtg+nOOIbcTxZWY3fU3tY3+DehuQOevaV3SsLFu+2EGlyd
+	 iTvPIcC4Fcj/vrpLeNZH44fgseOfKRyvoZ3qHVjH8D+9+MSHS9/DVGMOSS0PYHbv5y
+	 bsG2PS2GYi8fQ==
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6ce2bcb131fso1758265a34.1;
+        Sun, 22 Oct 2023 09:22:02 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yyd8RgSN20gqYuRU25l1VcaiwT+xLLU04mpVqKKYgWGG9QrYikz
+	Qom+MmGWSvt3E7QOzFqZDs7m1NxgyfoiJd53xT8=
+X-Google-Smtp-Source: AGHT+IFh2YRM97VqXOgn/xklDlMPFIckjOiqRen7B0reeS6WVLTJ4bVAnrYlwn54DePl+G4BKhCeBd0qthDgq+1bb8g=
+X-Received: by 2002:a05:6870:f212:b0:1e9:e975:4418 with SMTP id
+ t18-20020a056870f21200b001e9e9754418mr9011025oao.53.1697991721487; Sun, 22
+ Oct 2023 09:22:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mDWJDb9Fhd4CHt8YKapdWaOrqhJMOrQZ9CDRtvNdrGqA@mail.gmail.com>
+References: <20231006155739.246381-1-yakoyoku@gmail.com> <20231006155739.246381-2-yakoyoku@gmail.com>
+In-Reply-To: <20231006155739.246381-2-yakoyoku@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 23 Oct 2023 01:21:24 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQhPRkSpBQcn44dPMmnBVR=aTxMpG3vS4-=FkgQ5T2PVQ@mail.gmail.com>
+Message-ID: <CAK7LNAQhPRkSpBQcn44dPMmnBVR=aTxMpG3vS4-=FkgQ5T2PVQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/1] scripts: Build per module Rust crates
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 22, 2023 at 01:37:33PM +0200, Miguel Ojeda wrote:
-> On Sun, Oct 22, 2023 at 11:47 AM FUJITA Tomonori
-> <fujita.tomonori@gmail.com> wrote:
-> >
-> > Agreed that the first three paragraphs at the top of the file are
-> > implementation comments. Are there any other comments in the file,
-> > which look implementation comments to you? To me, the rest look the
-> > docs for Rust API users.
-> 
-> I think some should be improved with that in mind, yeah. For instance,
-> this one seems good to me:
-> 
->     /// An instance of a PHY driver.
-> 
-> But this one is not:
-> 
->     /// Creates the kernel's `phy_driver` instance.
-> 
-> It is especially bad because the first line of the docs is the "short
-> description" used for lists by `rustdoc`.
-> 
-> For similar reasons, this one is bad (and in this case it is the only line!):
-> 
->     /// Corresponds to the kernel's `enum phy_state`.
-> 
-> That line could be part of the documentation if you think it is
-> helpful for a reader as a practical note explaining what it is
-> supposed to map in the C side. But it should really not be the very
-> first line / short description.
-> 
-> Instead, the documentation should answer the question "What is this?".
-> And the answer should be something like "The state of the PHY ......"
+On Sat, Oct 7, 2023 at 12:57=E2=80=AFAM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> Enables compiling Rust crates as dependencies of kernel modules.
+>
+> When a composite object depends on an `.rlib` file, which by the way is
+> a current ar archive, Kbuild will compile it from its base Rust source
+> and link it.
+>
+> This makes possible to have Rust bindings for a subsystem that is
+> compiled as a module.
+>
+> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 
-Its the state of the state machine, not the state of the PHY. It is
-already documented in kernel doc, so we don't really want to duplicate
-it. So maybe just cross reference to the kdoc:
 
-https://docs.kernel.org/networking/kapi.html#c.phy_state
+I could not understand how this will work because
+there is no explanation how to use *.rlib in the later
+build steps.
 
-> Yes, documenting that something wraps/relies on/maps a particular C
-> functionality is something we do for clarity and practicality (we also
-> link the related C headers). This is, I assume, the kind of clarity
-> Andrew was asking for, i.e. to be practical and let the user know what
-> they are dealing with on the C side, especially early on.
+If I understand correctly, does this intend to link *.rlib
+as a part of modules?
 
-I don't think 'early on' is relevant. In the kernel, you pretty much
-always need the bigger picture, how a pieces of the puzzle fits in
-with what is above it and what is below it. Sometimes you need to
-extend what is above and below. Or a reviewer will tell you to move
-code into the core, so others can share it, etc.
+In C, there was a discussion about
+"that would be nice to be able to link static libraries",
+but we do not do it any more. [1]
 
-	Andrew
+Following that discussion, linking libraries does not
+seem what we want to do.
+
+
+[1]: https://lore.kernel.org/lkml/20200106032324.3147-1-masahiroy@kernel.or=
+g/
+
+
+
+
+> ---
+>  Makefile               |  4 ++--
+>  scripts/Makefile.build | 10 +++++++++-
+>  scripts/Makefile.lib   | 19 +++++++++++++------
+>  3 files changed, 24 insertions(+), 9 deletions(-)
+>
+> diff --git a/Makefile b/Makefile
+> index 7d6be12e4c3e..7774c97e8aa0 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -283,7 +283,7 @@ no-compiler-targets :=3D $(no-dot-config-targets) ins=
+tall dtbs_install \
+>                         headers_install modules_install modules_sign kern=
+elrelease image_name
+>  no-sync-config-targets :=3D $(no-dot-config-targets) %install modules_si=
+gn kernelrelease \
+>                           image_name
+> -single-targets :=3D %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rsi %.s %.=
+symtypes %/
+> +single-targets :=3D %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rlib %.rsi=
+ %.s %.symtypes %/
+>
+>  config-build   :=3D
+>  mixed-build    :=3D
+> @@ -1919,7 +1919,7 @@ $(clean-dirs):
+>  clean: $(clean-dirs)
+>         $(call cmd,rmfiles)
+>         @find $(or $(KBUILD_EXTMOD), .) $(RCS_FIND_IGNORE) \
+> -               \( -name '*.[aios]' -o -name '*.rsi' -o -name '*.ko' -o -=
+name '.*.cmd' \
+> +               \( -name '*.[aios]' -o -name '*.rlib' -o -name '*.rsi' -o=
+ -name '*.ko' -o -name '.*.cmd' \
+>                 -o -name '*.ko.*' \
+>                 -o -name '*.dtb' -o -name '*.dtbo' \
+>                 -o -name '*.dtb.S' -o -name '*.dtbo.S' \
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index da37bfa97211..627010518b27 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -246,7 +246,9 @@ $(obj)/%.o: $(src)/%.c $(recordmcount_source) FORCE
+>  # To make this rule robust against "Argument list too long" error,
+>  # ensure to add $(obj)/ prefix by a shell command.
+>  cmd_mod =3D printf '%s\n' $(call real-search, $*.o, .o, -objs -y -m) | \
+> -       $(AWK) '!x[$$0]++ { print("$(obj)/"$$0) }' > $@
+> +       $(AWK) '!x[$$0]++ { print("$(obj)/"$$0) }' > $@ && \
+> +       printf '%s\n' $(call real-search, $*.rlib, .rlib, -objs -y -m) | =
+\
+> +       $(AWK) '!x[$$0]++ { print("--library=3D$(obj)/"$$0) }' >> $@
+>
+>  $(obj)/%.mod: FORCE
+>         $(call if_changed,mod)
+> @@ -291,6 +293,12 @@ quiet_cmd_rustc_o_rs =3D $(RUSTC_OR_CLIPPY_QUIET) $(=
+quiet_modtag) $@
+>  $(obj)/%.o: $(src)/%.rs FORCE
+>         $(call if_changed_dep,rustc_o_rs)
+>
+> +quiet_cmd_rustc_rlib_rs =3D $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+> +      cmd_rustc_rlib_rs =3D $(rust_common_cmd) -Ccodegen-units=3D1 --emi=
+t=3Dlink=3D$@ $<
+> +
+> +$(obj)/%.rlib: $(src)/%.rs FORCE
+> +       $(call if_changed_dep,rustc_rlib_rs)
+> +
+>  quiet_cmd_rustc_rsi_rs =3D $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+>        cmd_rustc_rsi_rs =3D \
+>         $(rust_common_cmd) -Zunpretty=3Dexpanded $< >$@; \
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 68d0134bdbf9..6e8cfbad015d 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -53,14 +53,18 @@ multi-search =3D $(sort $(foreach m, $1, $(if $(call =
+suffix-search, $m, $2, $3 -),
+>  real-search =3D $(foreach m, $1, $(if $(call suffix-search, $m, $2, $3 -=
+), $(call suffix-search, $m, $2, $3), $m))
+>
+>  # If $(foo-objs), $(foo-y), $(foo-m), or $(foo-) exists, foo.o is a comp=
+osite object
+> -multi-obj-y :=3D $(call multi-search, $(obj-y), .o, -objs -y)
+> -multi-obj-m :=3D $(call multi-search, $(obj-m), .o, -objs -y -m)
+> +multi-obj-y :=3D $(call multi-search, $(obj-y), .o, -objs -y) \
+> +       $(call multi-search, $(obj-y), .rlib, -objs -y)
+> +multi-obj-m :=3D $(call multi-search, $(obj-m), .o, -objs -y -m) \
+> +       $(call multi-search, $(obj-m), .rlib, -objs -y -m)
+>  multi-obj-ym :=3D $(multi-obj-y) $(multi-obj-m)
+>
+>  # Replace multi-part objects by their individual parts,
+>  # including built-in.a from subdirectories
+> -real-obj-y :=3D $(call real-search, $(obj-y), .o, -objs -y)
+> -real-obj-m :=3D $(call real-search, $(obj-m), .o, -objs -y -m)
+> +real-obj-y :=3D $(call real-search, $(obj-y), .o, -objs -y) \
+> +       $(call real-search, $(obj-y), .rlib, -objs -y)
+> +real-obj-m :=3D $(call real-search, $(obj-m), .o, -objs -y -m) \
+> +       $(call real-search, $(obj-m), .rlib, -objs -y -m)
+>
+>  always-y +=3D $(always-m)
+>
+> @@ -107,7 +111,8 @@ endif
+>  # Finds the multi-part object the current object will be linked into.
+>  # If the object belongs to two or more multi-part objects, list them all=
+.
+>  modname-multi =3D $(sort $(foreach m,$(multi-obj-ym),\
+> -               $(if $(filter $*.o, $(call suffix-search, $m, .o, -objs -=
+y -m)),$(m:.o=3D))))
+> +               $(if $(filter $*.o, $(call suffix-search, $m, .o, -objs -=
+y -m)),$(m:.o=3D)) \
+> +               $(if $(filter $*.rlib, $(call suffix-search, $m, .rlib, -=
+objs -y -m)),$(m:.rlib=3D))))
+>
+>  __modname =3D $(or $(modname-multi),$(basetarget))
+>
+> @@ -210,7 +215,9 @@ _cpp_flags +=3D -I $(srctree)/$(src) -I $(objtree)/$(=
+obj)
+>  endif
+>  endif
+>
+> -part-of-module =3D $(if $(filter $(basename $@).o, $(real-obj-m)),y)
+> +part-of-module =3D                                             \
+> +       $(if $(or $(filter $(basename $@).o, $(real-obj-m)), \
+> +               $(filter $(basename $@).rlib, $(real-obj-m))),y)
+>  quiet_modtag =3D $(if $(part-of-module),[M],   )
+>
+>  modkern_cflags =3D                                          \
+> --
+> 2.42.0
+>
+
+
+--
+Best Regards
+Masahiro Yamada
