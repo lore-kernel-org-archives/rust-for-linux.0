@@ -1,80 +1,97 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427841118F
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 16:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0F42116
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 18:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDMgq8Ae"
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF6BC135;
-	Sun, 22 Oct 2023 09:30:54 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5a7be88e9ccso26354437b3.2;
-        Sun, 22 Oct 2023 09:30:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697992254; x=1698597054; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ABn/n+8mmup9EXD/zAYttFkzLIK8/Nr+mSKJhZ5ZCv0=;
-        b=jDMgq8AeNsg7PYdr7bTzY/JIWIy3hOd2ImX0MVw83aJ5YYjvwuJd7hzHzqVRVM9AxO
-         DA7aUzeOqKUJuqCO3N1xhbiQnO9LB6EbiQaVpEqsxH6gYoUgarqWr2IqGcfSnNDtoaok
-         T8uHX7ivzzcT36PMmKHJ9amLTGud8g2y744/J8c7vuqDnpEMQer0PfJeo3lQtYWzZTAs
-         B8XAqmOTHxQSSVf19CnEx7oTuq8TztjP9/UI8974GXCtDtQCQZZmljRcJvByLOJxSbcw
-         Zz/qAJMKRk5ExT9GYo7K+E5eAB5Hc5MtnsKOVvkrZr5/qcELR6CXtenwhzeqDp+reO6D
-         WWng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697992254; x=1698597054;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ABn/n+8mmup9EXD/zAYttFkzLIK8/Nr+mSKJhZ5ZCv0=;
-        b=R5k5ByRMi/77hheIaQulnyLW2njLW940zUvCRM646yWOFxbRYQz8xpVKmaGHACYZeq
-         IIqk9e0e602dM94L364e2pe0vFIHrCW9+PNm3OvHhTQh3XgBQXWYRpl01+CwJQvSzRoV
-         2vimA1OdyqPMpS4iY+ijsozbInqECaooDSSJAJUUdDYl8QeWzHhw+5Lby2zaGAwVeiH7
-         FjIKM2E09xTmkv0iyun1JKr6ueE6JAyoM3uZlE0mJRFuM+5myK2eB3GiMxVZuaFpnCG5
-         EtB4H5Ytv0DFdnHnrerfC7yd9QMN1cX4FugCwMMzZ/cjxphzYqlHFdUwshH5DjyDEqxH
-         zeTg==
-X-Gm-Message-State: AOJu0YzRkzcHiw5WWflxw5+dsOZ0lBX6dIbhZg2c2astMTEVQtIH3Y4L
-	Q02DNpvB9iG1zXAacZpW87vpiNefl9YZO+CAoUw=
-X-Google-Smtp-Source: AGHT+IEvRijoap0xQAKUpEH23qyv597Q3XJ39xgXEx10SClDSdTuyOSsBZvCAhVsHIc2RG4GfCdW+wNMH8BbqgSHd6A=
-X-Received: by 2002:a0d:ea91:0:b0:5a7:aa7b:cb9f with SMTP id
- t139-20020a0dea91000000b005a7aa7bcb9fmr7674024ywe.14.1697992253997; Sun, 22
- Oct 2023 09:30:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJyBooX9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47F1C433CD
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 18:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697998836;
+	bh=mEp++I8t5CKsdkk+WGXyvZfMPyEBzD2ehBmGFgB2fjM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WJyBooX9TgkRDI+B9zaL4p4RP5fdDtwWfjBt61C3Ae9dzCbSOxa0OoxgEXJNVyVqn
+	 c5x0vTTRPhxD4rcW0s626B2IHtq/llncMBsb2wvMSH2uo30dw4YJ9tn3dXx+i/QDYG
+	 bn+epxYaW84/+AOEGkXZ4elNvCKFJlMXgoYNAjMwTqIQyWiWuYB4IvA1PWhPlrIH7i
+	 aDyqJdNrC9ima2D9fasHb9coEpwdnIzxTpLou1oaT+6OqX81eKiI99o64mG5lljEYp
+	 ZqJBEq/Ofz3Z4yD9H7iJNmHMZj0w+lgvi9bWWZmeg1rbLf789ouXuMTOI9aPrf+8YS
+	 Eyz3Ti8m7dW0w==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-1dcfe9cd337so1334346fac.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 11:20:36 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxS1w4GQY7gIU8Dplms3XzbNb86eJPk6SgqS/+4zQLsb+TnPOEI
+	xjCMwG/TlG+YeaaggOe4M3r7RfBvx9knG5Dletw=
+X-Google-Smtp-Source: AGHT+IEjD8Slx30IEYd+xtbzAF0sakEzBn1Rc2ae3BD/CHMYgVq0LPEVA7T4yjHFbvZoOqvvvDl1uSPNnrWsEBDvZzg=
+X-Received: by 2002:a05:6870:6592:b0:1e9:858e:ff23 with SMTP id
+ fp18-20020a056870659200b001e9858eff23mr6439038oab.55.1697998836006; Sun, 22
+ Oct 2023 11:20:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231006155739.246381-1-yakoyoku@gmail.com> <20231006155739.246381-2-yakoyoku@gmail.com>
- <CAK7LNAQhPRkSpBQcn44dPMmnBVR=aTxMpG3vS4-=FkgQ5T2PVQ@mail.gmail.com>
-In-Reply-To: <CAK7LNAQhPRkSpBQcn44dPMmnBVR=aTxMpG3vS4-=FkgQ5T2PVQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 22 Oct 2023 18:30:43 +0200
-Message-ID: <CANiq72na6KoYPKoCYpv9Jyih0M7Z742+XiYUP=T5C6YsmdgNaw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] scripts: Build per module Rust crates
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20231006155739.246381-1-yakoyoku@gmail.com> <CANiq72m3mpcJfiOxaACLtyaUfBR2j8rtbLdj5eZT08zywKzCfw@mail.gmail.com>
+ <ca2cd71c-0aa1-4365-961c-c10737a9e9a6@gmail.com> <CANiq72mM2BeWtZNqhvnbA3XR_ArfAi3CG3oxMuu+C74rB0+mBA@mail.gmail.com>
+In-Reply-To: <CANiq72mM2BeWtZNqhvnbA3XR_ArfAi3CG3oxMuu+C74rB0+mBA@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 23 Oct 2023 03:19:59 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASWc8wn+wcf1qYPTtZvWx-VX27TwgdyimJ4kh1=4GBRcQ@mail.gmail.com>
+Message-ID: <CAK7LNASWc8wn+wcf1qYPTtZvWx-VX27TwgdyimJ4kh1=4GBRcQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] rust: crates in other kernel directories
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 22, 2023 at 6:22=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
+On Mon, Oct 9, 2023 at 9:01=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> I could not understand how this will work because
-> there is no explanation how to use *.rlib in the later
-> build steps.
+> On Sat, Oct 7, 2023 at 1:07=E2=80=AFAM Martin Rodriguez Reboredo
+> <yakoyoku@gmail.com> wrote:
+> >
+> > Well, there's the network PHY driver series that is stuck on this
+> > topic, I (and probably others) have local work that have the same issue
+>
+> No, that series is not stuck on this.
+>
+> > and said general case might not arrive that soon. So it'd better to
+> > start on a feature that will benefit API users right away and can be
+> > updated to fit needs. That's what I think.
+>
+> If there is an in-tree use case that will really require a solution to
+> this very soon, then please focus on explaining that (e.g. what "local
+> work" do you have and what are your plans for landing it upstream?)
+> and we will do our best to reschedule priorities or we can provide a
+> workaround for the time being.
+>
+> In any case, please note that this RFC breaks the kernel build and
+> does not really solve the overall issue.
+>
+> Cheers,
+> Miguel
+>
 
-It seems linux-kbuild was not Cc'd in the cover letter -- I replied to
-Martin there: https://lore.kernel.org/rust-for-linux/20231006155739.246381-=
-1-yakoyoku@gmail.com/
 
-Cheers,
-Miguel
+Does this rely on the assumption that usb.rlib is small enough
+because usb.rlib will be linked to every usb driver.
+
+So, usb.rlib is just a binding, not able to write the
+subsystem code in Rust, correct?
+
+
+
+
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
