@@ -1,180 +1,97 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A407F15B0;
-	Sun, 22 Oct 2023 11:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86182901
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 12:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j/3PztOK"
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27C77EB;
-	Sun, 22 Oct 2023 04:37:46 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d9a389db3c7so1912226276.1;
-        Sun, 22 Oct 2023 04:37:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aLWnKMtf"
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B73BFF7
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 05:14:16 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d9ac9573274so2233824276.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 05:14:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697974665; x=1698579465; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697976856; x=1698581656; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hpneJp36dT4i16hqbyNdS9co0yw38waSAZJjrgbl2Xs=;
-        b=j/3PztOKEP8c9SCwM2/tZbHxvPHliGpjRQu+KR1alI8jCJSgMQUOjORLC1WwblKEDx
-         hOVBfKul4FNIJd8FHXmxKdd91V/zwkoiUGePl0+yutWS7b3kR1aIAhqWARh5O5Gb88mG
-         ua33tE7T11Te7mgVEnkHC3YhtirD0JhZ1O6oBLG8HHD0uZQF5l2GzIlOpOuocmPBhU25
-         LyzxOSxeaKk4ZqP5Mt1haX0+q3Mo9Tb2iaUpkTzqul3a3WGBEctUvoX0oFJFnZnIi57x
-         eddL9VboShfW7beoVRFXpUigTw+iFX4t1wm0ShR7gxDa2jYlXOJeTzQpA8IQ/XyFyLkf
-         9RzQ==
+        bh=Nha/7EDH1/xPAS+LVMDqBw1Gl9LC8I8Um+Po+5nwgD0=;
+        b=aLWnKMtfy4XxAwnBv0ojlVX4h2uCheMkl2we5OhUqXM9rVunJqMlB2XwOhBUG6rKUj
+         5IL668MT623ZnRdbyVQ26NCnpn/3EUiIv822R3TkbtDYtgPPJofhvOY6iwIXTVg8/qVH
+         7Uqhpbl2fBzAWsi2n34o6/DX52w+9lXsHqzmizXejAqGPsiJNF0z++DSHXYCOZYYkiwx
+         WPPKjb8/2XkG4R1lHrQnRjuWjy2Kr9XGbvspYbiXH1b/oF7OFUo8+17dHBjLdk3asCjk
+         hRaZPyWF7RDbLaFaV/X3mEEmNNGu3ZRwq3RjAZ70j4cIux4JqqWB/TeOdJBbABxf34xg
+         wxlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697974665; x=1698579465;
+        d=1e100.net; s=20230601; t=1697976856; x=1698581656;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hpneJp36dT4i16hqbyNdS9co0yw38waSAZJjrgbl2Xs=;
-        b=FVXxq1tMJYx/QkxJl3Rr9AVCZoeH/ZKkhgKQvWoD43zjgDHgSOLJ+1wGVz0Ux+HHJn
-         13iPNpSTRIiUQzhJCFuTs2xlWjo8HBjgNt4bZbSR9BIB/GAhBgFAwmfgvdLIrIrFHFUz
-         skUORI6THa73KDILbCXM+igAfLQpD98J4yoGeSU/9Bs9F+k+xeKTmUzbCJ/wtmVHQwZ3
-         LL2pEYv0ngorH9XQGgdNUIjdp2qL/G7cyl326vWfJhIgLDV+IodZK044nX6BOL38Lk9F
-         A6iaw25eRWfjxseqxtigEjWbvWHYXShurk4YzW0CDil7HyqMsphbxVlK5Lls2sj6aOiF
-         dN9A==
-X-Gm-Message-State: AOJu0YyUm0rHeUwfYOK8cDKL+U7vckYSV43s6F/X5Yzza64g2PkrQwdZ
-	yuOHp14xaGpTSIkYnwVEu1iDarthqhgyTszdB03+ZwfR0WEW2ZMN
-X-Google-Smtp-Source: AGHT+IEfzJRwRQHPNcT3S20/z0CmvS8Ra0Nk4dxw6xrw45+P7EX6ksONGqh+S4N29oyVqXueVA9f9vkyn1PzVue5F1A=
-X-Received: by 2002:a05:6902:507:b0:d9a:53cc:e58d with SMTP id
- x7-20020a056902050700b00d9a53cce58dmr7498296ybs.10.1697974665232; Sun, 22 Oct
- 2023 04:37:45 -0700 (PDT)
+        bh=Nha/7EDH1/xPAS+LVMDqBw1Gl9LC8I8Um+Po+5nwgD0=;
+        b=YtAca8TLG2JbAo5uBRSd4wxSphEJyxk9MdEBc8xavYiQY7rx58tfBIKRkG4KI4x4et
+         YHK8YK/znJIlzZcXHnwMrMhPeAWafopdCwvoEcgOTe3veZJ8FI07Bl8btQvz4P07jlUL
+         nehLfj2vMrcz6OXN+kVqCf8hRBEqav5oyKW8rgmCwZcylKA5MNq662yBE2Gd4lXO/DtG
+         lGEz44mpbL0iFP4wr+aCbCassh4kgtChXoWkJmzYM9FkzSs2dQJsbUy5Fo3uPFCHQ1h9
+         aSFn/pJhTCn/KFyS9177BjNMZx7Hv5NEJvk4YvGUwcHcOFcgr+2gAM7HqNI7DY47EE8U
+         66tg==
+X-Gm-Message-State: AOJu0YxTUBxuq9MYIJOWcyr6BVJkx2sI4SJE3JxuEgleJUl+wTDUZW5c
+	VE8aipH0ceowqtXO47Ss1AgQnFJnAHU1O9MkX9M=
+X-Google-Smtp-Source: AGHT+IGnsPTxyFby6geqM8jechMXmbzeVqAK0argzy3xrQK44Z9naBRaDJK71v8EFXdT8MX0h3ta7/nZueyQe+d/Vm0=
+X-Received: by 2002:a25:455:0:b0:d7b:9211:51a5 with SMTP id
+ 82-20020a250455000000b00d7b921151a5mr5708525ybe.44.1697976855913; Sun, 22 Oct
+ 2023 05:14:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
- <4935f458-4719-4472-b937-0da8b16ebbaa@lunn.ch> <CANiq72nOCv-TfE3ODgVyQoOxNc80BtH+5cV2XFBFZ=ztTgVhaw@mail.gmail.com>
- <20231022.184702.1777825182430453165.fujita.tomonori@gmail.com>
-In-Reply-To: <20231022.184702.1777825182430453165.fujita.tomonori@gmail.com>
+References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
+ <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <ZTKuxaIeX3QMgdeI@arm.com>
+ <CANiq72=hpO8dP_B0=gOocCeaC-GDNQJx1MeA2HDZcEKDt4ZepA@mail.gmail.com> <ZTT+GMucKZ192yuv@arm.com>
+In-Reply-To: <ZTT+GMucKZ192yuv@arm.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 22 Oct 2023 13:37:33 +0200
-Message-ID: <CANiq72mDWJDb9Fhd4CHt8YKapdWaOrqhJMOrQZ9CDRtvNdrGqA@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: andrew@lunn.ch, benno.lossin@proton.me, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, boqun.feng@gmail.com, 
-	wedsonaf@gmail.com, greg@kroah.com
+Date: Sun, 22 Oct 2023 14:14:04 +0200
+Message-ID: <CANiq72kDxhDMwdEo2QTSK-aVskCB65sMK+30wEhVwHnRVur0hg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Jamie Cunliffe <Jamie.Cunliffe@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
+	boqun.feng@gmail.com, andrew@lunn.ch
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 22, 2023 at 11:47=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Sun, Oct 22, 2023 at 12:49=E2=80=AFPM Catalin Marinas
+<catalin.marinas@arm.com> wrote:
 >
-> Agreed that the first three paragraphs at the top of the file are
-> implementation comments. Are there any other comments in the file,
-> which look implementation comments to you? To me, the rest look the
-> docs for Rust API users.
+> The main reason I asked was that the first patch touches x86 and none of
+> the x86 maintainers have been cc'ed or acked the patch.
 
-I think some should be improved with that in mind, yeah. For instance,
-this one seems good to me:
+Ah, yeah, they should have been Cc'd.
 
-    /// An instance of a PHY driver.
+> I thought
+> there's some deal that Rust-related changes go via you tree.
 
-But this one is not:
+I see. The initial pieces went through our tree, yeah, and we are
+happy to take things if needed (without the intention to bypass
+maintainers), but if maintainers can take things already, that is way
+better; e.g. some subsystems have already started to do that (Kbuild,
+KUnit, wq...). So thanks a lot!
 
-    /// Creates the kernel's `phy_driver` instance.
+The only thing we ask for, for the time being, is that patches
+relevant to Rust or that contain Rust code are Cc'd into the
+rust-for-linux ML if possible (i.e. in addition to their usual lists),
+so that anybody that wants to follow things in the initial setup
+period can do so in a single place (e.g. maintainers that want to see
+the sort of thing to look out for in reviews).
 
-It is especially bad because the first line of the docs is the "short
-description" used for lists by `rustdoc`.
+> Thanks. I'll reply to the first patch and cc some x86 maintainers. I
+> assume your ack applies to the first patch as well.
 
-For similar reasons, this one is bad (and in this case it is the only line!=
-):
+Yeah, it does.
 
-    /// Corresponds to the kernel's `enum phy_state`.
-
-That line could be part of the documentation if you think it is
-helpful for a reader as a practical note explaining what it is
-supposed to map in the C side. But it should really not be the very
-first line / short description.
-
-Instead, the documentation should answer the question "What is this?".
-And the answer should be something like "The state of the PHY ......"
-as the short description. Then ideally a longer explanation of why it
-is needed, how it is intended to be used, what this maps to in the C
-side (if relevant), anything else that the user may need to know about
-it, particular subtleties if any, examples if relevant, etc.
-
-> I'm not sure that a comment on the relationship between C and Rust
-> structures like "Wraps the kernel's `struct phy_driver`" is API docs
-> but the in-tree files like mutex.rs have the similar so I assume it's
-> fine.
-
-Yes, documenting that something wraps/relies on/maps a particular C
-functionality is something we do for clarity and practicality (we also
-link the related C headers). This is, I assume, the kind of clarity
-Andrew was asking for, i.e. to be practical and let the user know what
-they are dealing with on the C side, especially early on.
-
-But if some detail is not needed to use the API, then we should avoid
-writing it in the documentation. And if it is needed, but it can be
-written in a way that does not depend/reference the C side, then it
-should be.
-
-For instance, as you can see from the `mutex.rs` you mention, the
-short description does not mention the C side -- it does so
-afterwards, and then it goes onto explaining why it is needed, how it
-is used (with examples), and so on. The fact that it exposes the C
-`struct mutex` is there, because it adds value ("oh, ok, so this is
-what I would use if I wanted the C mutex"), but that bit (and the
-rest) is not really about explaining how `Mutex` is implemented:
-
-    /// A mutual exclusion primitive.
-    ///
-    /// Exposes the kernel's [`struct mutex`]. When multiple threads
-attempt to lock the same mutex,
-    /// only one at a time is allowed to progress, the others will
-block (sleep) until the mutex is
-    /// unlocked, at which point another thread will be allowed to
-wake up and make progress.
-    ///
-    /// Since it may block, [`Mutex`] needs to be used with care in
-atomic contexts.
-    ///
-    /// Instances of [`Mutex`] need a lock class and to be pinned. The
-recommended way to create such
-    /// instances is with the [`pin_init`](crate::pin_init) and
-[`new_mutex`] macros.
-    ///
-    /// # Examples
-    ///
-    /// The following example shows how to declare, allocate and
-initialise a struct (`Example`) that
-    /// contains an inner struct (`Inner`) that is protected by a mutex.
-
-    ...
-
-    /// The following example shows how to use interior mutability to
-modify the contents of a struct
-    /// protected by a mutex despite only having a shared reference:
-
-    ...
-
-`Mutex`'s docs are, in fact, a good a good example of how to write docs!
-
-> Where the implementation comments are supposed to be placed?
-> Documentation/networking?
-
-No, they would be normal `//` comments and they should be as close to
-the relevant code as possible -- please see
-https://docs.kernel.org/rust/coding-guidelines.html#comments. They can
-still be read in the generated docs via the "source" buttons, so they
-will be there for those reading the actual implementation in the
-browser.
-
-Instead, `Documentation/` is detached from the actual code. For Rust
-code, we hope to use only those for out-of-line information that is
-not related to any particular API.
-
-For instance, the "coding guidelines" document I just linked. Or
-end-user / distributor documentation. Or, as another example, Wedson
-at some point considered adding some high-level design documents, and
-if those would not fit any particular API or if they are not intended
-for users of the API, they could perhaps go into `Doc/`. Or perhaps
-Boqun's idea of having a reviewers guide, etc.
+Thanks again Catalin & Will!
 
 Cheers,
 Miguel
