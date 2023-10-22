@@ -1,45 +1,45 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86182901
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 12:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FDA1C3B
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 12:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aLWnKMtf"
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B73BFF7
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 05:14:16 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d9ac9573274so2233824276.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 05:14:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B3aPGj5f"
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED32997;
+	Sun, 22 Oct 2023 05:57:35 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5a7dd65052aso26498297b3.0;
+        Sun, 22 Oct 2023 05:57:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697976856; x=1698581656; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1697979455; x=1698584255; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Nha/7EDH1/xPAS+LVMDqBw1Gl9LC8I8Um+Po+5nwgD0=;
-        b=aLWnKMtfy4XxAwnBv0ojlVX4h2uCheMkl2we5OhUqXM9rVunJqMlB2XwOhBUG6rKUj
-         5IL668MT623ZnRdbyVQ26NCnpn/3EUiIv822R3TkbtDYtgPPJofhvOY6iwIXTVg8/qVH
-         7Uqhpbl2fBzAWsi2n34o6/DX52w+9lXsHqzmizXejAqGPsiJNF0z++DSHXYCOZYYkiwx
-         WPPKjb8/2XkG4R1lHrQnRjuWjy2Kr9XGbvspYbiXH1b/oF7OFUo8+17dHBjLdk3asCjk
-         hRaZPyWF7RDbLaFaV/X3mEEmNNGu3ZRwq3RjAZ70j4cIux4JqqWB/TeOdJBbABxf34xg
-         wxlQ==
+        bh=e1ZIDfg4fDYHneg0YkS2Dov7fQ2ZHu14rSk3MyZYEMI=;
+        b=B3aPGj5ftV8QMLYR/ONMrC1yWO6Iq2NyWD6fqyDBakZk943W372YXUddbDq+qy+l6L
+         kzBXYudksSiHg+Imxg5VJlIWr6TOWs7HrxVqegjBq0ZIQNovyPKIsrsmhCeQItYZqXfy
+         qVe6aErnKbM6+KzQM7c1BU80utenGt+fSElmpVmkGjobcaf8ZeQhVU+hkrhcDucN0wrE
+         ibb7TZ3CmbK6odJSJvy7mNkybHVXx3S2LDcVyqOObMmHh9zjQzFQ73coJqU3HghDOuyG
+         7tcfkJNxvUhnkHYqBev6ypBbHMi0YvxzBGCn0BrL1Kx4x7kZSIrMoNUmqVzLHJ1xABgx
+         aLAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697976856; x=1698581656;
+        d=1e100.net; s=20230601; t=1697979455; x=1698584255;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Nha/7EDH1/xPAS+LVMDqBw1Gl9LC8I8Um+Po+5nwgD0=;
-        b=YtAca8TLG2JbAo5uBRSd4wxSphEJyxk9MdEBc8xavYiQY7rx58tfBIKRkG4KI4x4et
-         YHK8YK/znJIlzZcXHnwMrMhPeAWafopdCwvoEcgOTe3veZJ8FI07Bl8btQvz4P07jlUL
-         nehLfj2vMrcz6OXN+kVqCf8hRBEqav5oyKW8rgmCwZcylKA5MNq662yBE2Gd4lXO/DtG
-         lGEz44mpbL0iFP4wr+aCbCassh4kgtChXoWkJmzYM9FkzSs2dQJsbUy5Fo3uPFCHQ1h9
-         aSFn/pJhTCn/KFyS9177BjNMZx7Hv5NEJvk4YvGUwcHcOFcgr+2gAM7HqNI7DY47EE8U
-         66tg==
-X-Gm-Message-State: AOJu0YxTUBxuq9MYIJOWcyr6BVJkx2sI4SJE3JxuEgleJUl+wTDUZW5c
-	VE8aipH0ceowqtXO47Ss1AgQnFJnAHU1O9MkX9M=
-X-Google-Smtp-Source: AGHT+IGnsPTxyFby6geqM8jechMXmbzeVqAK0argzy3xrQK44Z9naBRaDJK71v8EFXdT8MX0h3ta7/nZueyQe+d/Vm0=
-X-Received: by 2002:a25:455:0:b0:d7b:9211:51a5 with SMTP id
- 82-20020a250455000000b00d7b921151a5mr5708525ybe.44.1697976855913; Sun, 22 Oct
- 2023 05:14:15 -0700 (PDT)
+        bh=e1ZIDfg4fDYHneg0YkS2Dov7fQ2ZHu14rSk3MyZYEMI=;
+        b=lWoK4dHoG1wepA+VFXTK1YWL9aYgZpICR55n97w5n9y6Ao7CpFYZaPFZ7zz0uaS3TI
+         0jIOAPOQdta35wknqRNpRkDViQbJLu7mIWkHhtfg3nGDVoffjDoKXP24Z9P1KYLetm/m
+         6DPUXmzv8wg0Z3wKJp2b/ac5zZ0BOO7yO33gjIOKnEFj4YkBdm9ZwfvTijBY2RLZLz+4
+         iE/SvISC3WO1gTN1Liy5br0LegsLhj3aq69ci+JxfBU0QJPg8n3o204Pc0x4irW7ijT9
+         GtZmybwKWD/ychYxXW7j1SFDTvJDVnJkjf6ifvGku9lD0F429IBxXFFPar7f28aLQ9Ep
+         dloA==
+X-Gm-Message-State: AOJu0YysB1HHJDvwDJmYmgjqFs4CJgUO8cMKNdscbkf6dHNeTS0hhjge
+	2AQ7F0b1CjH4eYK69OfMBUHWY1DqAtXAR0a4Rms=
+X-Google-Smtp-Source: AGHT+IHlxzvjMDtDv57xKv7QO/2RzbpOhi5sH43CfixyH80BjWJRX3PcjBegazo85eKdASftX6xKlVCdgRuxbS2Em0Q=
+X-Received: by 2002:a25:764a:0:b0:d81:85c9:cea9 with SMTP id
+ r71-20020a25764a000000b00d8185c9cea9mr6524086ybc.65.1697979455123; Sun, 22
+ Oct 2023 05:57:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,51 +47,57 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <ZTKuxaIeX3QMgdeI@arm.com>
- <CANiq72=hpO8dP_B0=gOocCeaC-GDNQJx1MeA2HDZcEKDt4ZepA@mail.gmail.com> <ZTT+GMucKZ192yuv@arm.com>
-In-Reply-To: <ZTT+GMucKZ192yuv@arm.com>
+ <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
+ <ZTLH5o0GlFBYsAHq@boqun-archlinux> <CANiq72kjJu=P=19kqq1+5uPpfdS=N4Ucv2okbcWFJVnvR+Hkug@mail.gmail.com>
+ <94ab3de4-8687-4bc9-a1eb-18a37d7944cd@lunn.ch>
+In-Reply-To: <94ab3de4-8687-4bc9-a1eb-18a37d7944cd@lunn.ch>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 22 Oct 2023 14:14:04 +0200
-Message-ID: <CANiq72kDxhDMwdEo2QTSK-aVskCB65sMK+30wEhVwHnRVur0hg@mail.gmail.com>
+Date: Sun, 22 Oct 2023 14:57:23 +0200
+Message-ID: <CANiq72nEVB2XPfiSa0OsLxyuYaz9ub8U78_Big4pcJDO4SRnDA@mail.gmail.com>
 Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jamie Cunliffe <Jamie.Cunliffe@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	boqun.feng@gmail.com, andrew@lunn.ch
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 22, 2023 at 12:49=E2=80=AFPM Catalin Marinas
-<catalin.marinas@arm.com> wrote:
+On Sat, Oct 21, 2023 at 6:03=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> The main reason I asked was that the first patch touches x86 and none of
-> the x86 maintainers have been cc'ed or acked the patch.
+> Maybe at the netdev conference next month, how to handle endiannes can
+> be part of the presentation? I'm guessing, but is it part of the type
+> system? So long as a type is marked as 'cpu endian', little endian, or
+> big endian, the compiler will take care of adding the needed swaps?
 
-Ah, yeah, they should have been Cc'd.
+Yeah, the type system can take care of ensuring that one does not
+forget which type of quantity one is handling.
 
-> I thought
-> there's some deal that Rust-related changes go via you tree.
+For instance, in this out-of-tree commit [1] from Wedson a `LE`
+generic is added, which allows you to use e.g. `LE<u32>` in your
+structs:
 
-I see. The initial pieces went through our tree, yeah, and we are
-happy to take things if needed (without the intention to bypass
-maintainers), but if maintainers can take things already, that is way
-better; e.g. some subsystems have already started to do that (Kbuild,
-KUnit, wq...). So thanks a lot!
+    struct Example {
+        a: LE<u32>,
+        b: LE<u32>,
+    }
 
-The only thing we ask for, for the time being, is that patches
-relevant to Rust or that contain Rust code are Cc'd into the
-rust-for-linux ML if possible (i.e. in addition to their usual lists),
-so that anybody that wants to follow things in the initial setup
-period can do so in a single place (e.g. maintainers that want to see
-the sort of thing to look out for in reviews).
+    fn sum(e: &Example) -> u32 {
+        // `value` extracts the value in cpu representation.
+        e.a.value() + e.b.value()
+    }
 
-> Thanks. I'll reply to the first patch and cc some x86 maintainers. I
-> assume your ack applies to the first patch as well.
+Relatedly, the primitive integer types also provide "raw"
+functionality for endianness, e.g. the `to_{le,be}` and
+`to_{le,be,ne}_bytes` methods [2][3], and there are third-party crates
+on this, e.g. [4].
 
-Yeah, it does.
-
-Thanks again Catalin & Will!
+[1] https://github.com/wedsonaf/linux/commit/ca4a93caff8b96a54a68fb05295980=
+1468bce01a
+[2] https://doc.rust-lang.org/std/primitive.u32.html#method.to_le
+[3] https://doc.rust-lang.org/std/primitive.u32.html#method.to_be_bytes
+[4] https://docs.rs/byteorder/latest/byteorder/
 
 Cheers,
 Miguel
