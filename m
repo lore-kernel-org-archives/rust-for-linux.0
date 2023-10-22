@@ -1,103 +1,100 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FDA1C3B
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Oct 2023 12:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5192D1FD9;
+	Sun, 22 Oct 2023 15:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B3aPGj5f"
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED32997;
-	Sun, 22 Oct 2023 05:57:35 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5a7dd65052aso26498297b3.0;
-        Sun, 22 Oct 2023 05:57:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697979455; x=1698584255; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e1ZIDfg4fDYHneg0YkS2Dov7fQ2ZHu14rSk3MyZYEMI=;
-        b=B3aPGj5ftV8QMLYR/ONMrC1yWO6Iq2NyWD6fqyDBakZk943W372YXUddbDq+qy+l6L
-         kzBXYudksSiHg+Imxg5VJlIWr6TOWs7HrxVqegjBq0ZIQNovyPKIsrsmhCeQItYZqXfy
-         qVe6aErnKbM6+KzQM7c1BU80utenGt+fSElmpVmkGjobcaf8ZeQhVU+hkrhcDucN0wrE
-         ibb7TZ3CmbK6odJSJvy7mNkybHVXx3S2LDcVyqOObMmHh9zjQzFQ73coJqU3HghDOuyG
-         7tcfkJNxvUhnkHYqBev6ypBbHMi0YvxzBGCn0BrL1Kx4x7kZSIrMoNUmqVzLHJ1xABgx
-         aLAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697979455; x=1698584255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e1ZIDfg4fDYHneg0YkS2Dov7fQ2ZHu14rSk3MyZYEMI=;
-        b=lWoK4dHoG1wepA+VFXTK1YWL9aYgZpICR55n97w5n9y6Ao7CpFYZaPFZ7zz0uaS3TI
-         0jIOAPOQdta35wknqRNpRkDViQbJLu7mIWkHhtfg3nGDVoffjDoKXP24Z9P1KYLetm/m
-         6DPUXmzv8wg0Z3wKJp2b/ac5zZ0BOO7yO33gjIOKnEFj4YkBdm9ZwfvTijBY2RLZLz+4
-         iE/SvISC3WO1gTN1Liy5br0LegsLhj3aq69ci+JxfBU0QJPg8n3o204Pc0x4irW7ijT9
-         GtZmybwKWD/ychYxXW7j1SFDTvJDVnJkjf6ifvGku9lD0F429IBxXFFPar7f28aLQ9Ep
-         dloA==
-X-Gm-Message-State: AOJu0YysB1HHJDvwDJmYmgjqFs4CJgUO8cMKNdscbkf6dHNeTS0hhjge
-	2AQ7F0b1CjH4eYK69OfMBUHWY1DqAtXAR0a4Rms=
-X-Google-Smtp-Source: AGHT+IHlxzvjMDtDv57xKv7QO/2RzbpOhi5sH43CfixyH80BjWJRX3PcjBegazo85eKdASftX6xKlVCdgRuxbS2Em0Q=
-X-Received: by 2002:a25:764a:0:b0:d81:85c9:cea9 with SMTP id
- r71-20020a25764a000000b00d8185c9cea9mr6524086ybc.65.1697979455123; Sun, 22
- Oct 2023 05:57:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AWXz3J/m"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B618E9;
+	Sun, 22 Oct 2023 08:34:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=txCRBNVhG01Iz4fCLIHgxiWEZs781Kdfj2fihtzyBDc=; b=AW
+	Xz3J/mIFTejtEn7p2Y/6H4rWL6lenlQQkA6mU09rH1Oq8m3cpjymmgzTrHRx+cG0kDOKadrblKQSa
+	Xbn954/3e7XUww3dsWUMVgZJgEIVkf+gnumP4RRrDoU/PHYYzsfqLPCj9IZA4jWp50rfThtRRtGtU
+	+ImUy+rSUF0OO+Y=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1quaSq-002x2V-G0; Sun, 22 Oct 2023 17:34:04 +0200
+Date: Sun, 22 Oct 2023 17:34:04 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, benno.lossin@proton.me,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, boqun.feng@gmail.com, wedsonaf@gmail.com,
+	greg@kroah.com
+Subject: Re: [PATCH net-next v5 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <798666eb-713b-445d-b9f0-72b6bbf957ff@lunn.ch>
+References: <e361ef91-607d-400b-a721-f846c21e2400@proton.me>
+ <4935f458-4719-4472-b937-0da8b16ebbaa@lunn.ch>
+ <CANiq72nOCv-TfE3ODgVyQoOxNc80BtH+5cV2XFBFZ=ztTgVhaw@mail.gmail.com>
+ <20231022.184702.1777825182430453165.fujita.tomonori@gmail.com>
+ <CANiq72mDWJDb9Fhd4CHt8YKapdWaOrqhJMOrQZ9CDRtvNdrGqA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
- <ZTLH5o0GlFBYsAHq@boqun-archlinux> <CANiq72kjJu=P=19kqq1+5uPpfdS=N4Ucv2okbcWFJVnvR+Hkug@mail.gmail.com>
- <94ab3de4-8687-4bc9-a1eb-18a37d7944cd@lunn.ch>
-In-Reply-To: <94ab3de4-8687-4bc9-a1eb-18a37d7944cd@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 22 Oct 2023 14:57:23 +0200
-Message-ID: <CANiq72nEVB2XPfiSa0OsLxyuYaz9ub8U78_Big4pcJDO4SRnDA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mDWJDb9Fhd4CHt8YKapdWaOrqhJMOrQZ9CDRtvNdrGqA@mail.gmail.com>
 
-On Sat, Oct 21, 2023 at 6:03=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> Maybe at the netdev conference next month, how to handle endiannes can
-> be part of the presentation? I'm guessing, but is it part of the type
-> system? So long as a type is marked as 'cpu endian', little endian, or
-> big endian, the compiler will take care of adding the needed swaps?
+On Sun, Oct 22, 2023 at 01:37:33PM +0200, Miguel Ojeda wrote:
+> On Sun, Oct 22, 2023 at 11:47 AM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > Agreed that the first three paragraphs at the top of the file are
+> > implementation comments. Are there any other comments in the file,
+> > which look implementation comments to you? To me, the rest look the
+> > docs for Rust API users.
+> 
+> I think some should be improved with that in mind, yeah. For instance,
+> this one seems good to me:
+> 
+>     /// An instance of a PHY driver.
+> 
+> But this one is not:
+> 
+>     /// Creates the kernel's `phy_driver` instance.
+> 
+> It is especially bad because the first line of the docs is the "short
+> description" used for lists by `rustdoc`.
+> 
+> For similar reasons, this one is bad (and in this case it is the only line!):
+> 
+>     /// Corresponds to the kernel's `enum phy_state`.
+> 
+> That line could be part of the documentation if you think it is
+> helpful for a reader as a practical note explaining what it is
+> supposed to map in the C side. But it should really not be the very
+> first line / short description.
+> 
+> Instead, the documentation should answer the question "What is this?".
+> And the answer should be something like "The state of the PHY ......"
 
-Yeah, the type system can take care of ensuring that one does not
-forget which type of quantity one is handling.
+Its the state of the state machine, not the state of the PHY. It is
+already documented in kernel doc, so we don't really want to duplicate
+it. So maybe just cross reference to the kdoc:
 
-For instance, in this out-of-tree commit [1] from Wedson a `LE`
-generic is added, which allows you to use e.g. `LE<u32>` in your
-structs:
+https://docs.kernel.org/networking/kapi.html#c.phy_state
 
-    struct Example {
-        a: LE<u32>,
-        b: LE<u32>,
-    }
+> Yes, documenting that something wraps/relies on/maps a particular C
+> functionality is something we do for clarity and practicality (we also
+> link the related C headers). This is, I assume, the kind of clarity
+> Andrew was asking for, i.e. to be practical and let the user know what
+> they are dealing with on the C side, especially early on.
 
-    fn sum(e: &Example) -> u32 {
-        // `value` extracts the value in cpu representation.
-        e.a.value() + e.b.value()
-    }
+I don't think 'early on' is relevant. In the kernel, you pretty much
+always need the bigger picture, how a pieces of the puzzle fits in
+with what is above it and what is below it. Sometimes you need to
+extend what is above and below. Or a reviewer will tell you to move
+code into the core, so others can share it, etc.
 
-Relatedly, the primitive integer types also provide "raw"
-functionality for endianness, e.g. the `to_{le,be}` and
-`to_{le,be,ne}_bytes` methods [2][3], and there are third-party crates
-on this, e.g. [4].
-
-[1] https://github.com/wedsonaf/linux/commit/ca4a93caff8b96a54a68fb05295980=
-1468bce01a
-[2] https://doc.rust-lang.org/std/primitive.u32.html#method.to_le
-[3] https://doc.rust-lang.org/std/primitive.u32.html#method.to_be_bytes
-[4] https://docs.rs/byteorder/latest/byteorder/
-
-Cheers,
-Miguel
+	Andrew
