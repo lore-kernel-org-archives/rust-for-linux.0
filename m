@@ -1,140 +1,129 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9B015E83
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Oct 2023 17:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D32210EA;
+	Mon, 23 Oct 2023 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Lvy6KPbJ"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD56EE;
-	Mon, 23 Oct 2023 10:19:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1698081562; x=1698340762;
-	bh=o/kXFPMyJifrFRkXdqNgBwO5a87jm2R3z9kVsG8BBZI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Lvy6KPbJhQll4AotxXYUAz1N/fFLkHQCcD994EtQU6QGK0N9SSOnHNSg1JGG7npF1
-	 nX+yM74MxptOB06C0KbNcGtpJ4MSXx1mBPh+Oh2v96dULoSvRabzNEGSIMf8LgoQJe
-	 zcDjhNTHqIkc+xPRkTZj5JsRADKCCtKSycz6vruUKz2dcBblYPMeuAeJnIPCbSTJTw
-	 wmxyV2RCluL+G0zJbT6jy5BfIsmgUPC6wcUPvm8pcJ4xEVCFj0/muUZUoDo4AqG8kW
-	 WjiYXk9k9IRtLQyu4H1qCitBXKWWdgVRgfrOojjn2u4SPkSStA/3SDNpYnt0dSvnpD
-	 vX4JG9ZW2FhjA==
-Date: Mon, 23 Oct 2023 17:19:12 +0000
-To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-Message-ID: <816030ec-32a7-4be0-816d-6764fd5dbb8e@proton.me>
-In-Reply-To: <878r7thh3w.fsf@metaspace.dk>
-References: <20231019171540.259173-1-benno.lossin@proton.me> <87fs25irel.fsf@metaspace.dk> <ba252f66-b204-43c1-9705-8ccd0cb12492@proton.me> <878r7thh3w.fsf@metaspace.dk>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHJfJAgG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B35EC433C8;
+	Mon, 23 Oct 2023 17:45:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698083116;
+	bh=x+AnEYyCYS2x5kfZRpQSdT2vBC5eC4hfcf5UNbmXbyI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sHJfJAgGebHbRUreMFoDdC8Zx8dwCATh8GgoqOwJdOdKi6QiUQNgPthgDj+l7nyvc
+	 anHJUj49RvwOHDH1ZNUq4L7n6uhCGow7ZrZ7z9YQrom2xQCdZcg8Hj10u69GREJvE0
+	 7nEAeAd30mv52yNgOCDf1i2373ZrpBAhzltQROTz2U4qG/0nIXfXfIdUuL3uQGwWrz
+	 tbVYFGsgJrrF8Mo7oOyay4W9phJbcAlGKYKccfiOMnMaozXelfFstGSLZcinX4+nbz
+	 JWfiF5wchZHfTlrOJBdvEtztk14mKxsIDTrb0ypSpz+Epg8ZTXnJNFGs86m1ZMqc8C
+	 3YPtcv8wiyirQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	x86@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH 1/4] x86/rust: support RETPOLINE
+Date: Mon, 23 Oct 2023 19:44:45 +0200
+Message-ID: <20231023174449.251550-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 23.10.23 10:30, Andreas Hindborg (Samsung) wrote:
->=20
-> Benno Lossin <benno.lossin@proton.me> writes:
->=20
->> On 20.10.23 11:06, Andreas Hindborg (Samsung) wrote:
->>> Benno Lossin <benno.lossin@proton.me> writes:
->>>> +/// Error message for calling a default function of a [`#[vtable]`](m=
-acros::vtable) trait.
->>>> +pub const VTABLE_DEFAULT_ERROR: &str =3D
->>>> +    "This function must not be called, see the #[vtable] documentatio=
-n.";
->>>> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
->>>> index c42105c2ff96..daf1ef8baa62 100644
->>>> --- a/rust/macros/lib.rs
->>>> +++ b/rust/macros/lib.rs
->>>> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
->>>>    /// implementation could just return `Error::EINVAL`); Linux typica=
-lly use C
->>>>    /// `NULL` pointers to represent these functions.
->>>>    ///
->>>> -/// This attribute is intended to close the gap. Traits can be declar=
-ed and
->>>> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associa=
-ted constant
->>>> -/// will be generated for each method in the trait, indicating if the=
- implementor
->>>> -/// has overridden a method.
->>>> +/// This attribute closes that gap. A trait can be annotated with the=
- `#[vtable]` attribute.
->>>> +/// Implementers of the trait will then also have to annotate the tra=
-it with `#[vtable]`. This
->>>> +/// attribute generates a `HAS_*` associated constant bool for each m=
-ethod in the trait that is set
->>>> +/// to true if the implementer has overridden the associated method.
->>>> +///
->>>> +/// For a function to be optional, it must have a default implementat=
-ion. But this default
->>>> +/// implementation will never be executed, since these functions are =
-exclusively called from
->>>> +/// callbacks from the C side. This is because the vtable will have a=
- `NULL` entry and the C side
->>>> +/// will execute the default behavior. Since it is not maintainable t=
-o replicate the default
->>>> +/// behavior in Rust, the default implementation should be:
->>>
->>> How about this?:
->>>
->>> For a Rust trait method to be optional, it must have a default
->>> implementation. For a trait marked with `#[vtable]`, the default
->>> implementation will not be executed, as the only way the trait methods
->>> should be called is through function pointers installed in C side
->>> vtables. When a trait implementation marked with `#[vtable]` is missing
->>> a method, a `NULL` pointer will be installed in the corresponding C sid=
-e
->>> vtable, and thus the Rust default implementation can not be called. The
->>> default implementation should be:
->>>
->>> Not sure if it is more clear =F0=9F=A4=B7
->>
->> I think it misses the following important point: why is it not
->> possible to just replicate the default behavior?
->>
->> What do you think of this?:
->>
->> For a trait method to be optional, it must have a default implementation=
-.
->> This is also the case for traits annotated with `#[vtable]`, but in this
->> case the default implementation will never be executed. The reason for t=
-his
->> is that the functions will be called through function pointers installed=
- in
->> C side vtables. When an optional method is not implemented on a `#[vtabl=
-e]`
->> trait, a NULL entry is installed in the vtable. Thus the default
->> implementation is never called. Since these traits are not designed to b=
-e
->> used on the Rust side, it should not be possible to call the default
->> implementation.
->=20
->> It is not possible to replicate the default behavior from C
->> in Rust, since that is not maintainable.
->=20
-> I don't feel that this bit should be included. It's not a matter of
-> maintainability. Why would we reimplement something that is already
-> present in a subsystem? The functionality is already present, so we use
-> it.
+Support the `RETPOLINE` speculation mitigation by enabling the target
+features that Clang does.
 
-But we don't use it on the Rust side. You cannot write this:
+The existing target feature being enabled was a leftover from
+our old `rust` branch, and it is not enough: the target feature
+`retpoline-external-thunk` only implies `retpoline-indirect-calls`, but
+not `retpoline-indirect-branches` (see LLVM's `X86.td`), unlike Clang's
+flag of the same name `-mretpoline-external-thunk` which does imply both
+(see Clang's `lib/Driver/ToolChains/Arch/X86.cpp`).
 
-     fn foo<T: Operations>(t: &T) -> Result<usize> {
-         t.seek(0)?
-     }
+Without this, `objtool` would complain if enabled for individual object
+files (like it is planned in the future), e.g.
 
-if the `seek` function is optional.
+    rust/core.o: warning: objtool:
+    _R...escape_default+0x13: indirect jump found in RETPOLINE build
 
---=20
-Cheers,
-Benno
+In addition, change the comment to note that LLVM is the one disabling
+jump tables when retpoline is enabled, thus we do not need to use
+`-Zno-jump-tables` for Rust here -- see commit c58f2166ab39 ("Introduce
+the "retpoline" x86 mitigation technique ...") [1]:
 
+    The goal is simple: avoid generating code which contains an indirect
+    branch that could have its prediction poisoned by an attacker. In
+    many cases, the compiler can simply use directed conditional
+    branches and a small search tree. LLVM already has support for
+    lowering switches in this way and the first step of this patch is
+    to disable jump-table lowering of switches and introduce a pass to
+    rewrite explicit indirectbr sequences into a switch over integers.
+
+As well as a live example at [2].
+
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://github.com/llvm/llvm-project/commit/c58f2166ab3987f37cb0d7815b561bff5a20a69a [1]
+Link: https://godbolt.org/z/esT8xnaxj [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ arch/x86/Makefile               | 2 +-
+ scripts/generate_rust_target.rs | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 5bfe5caaa444..3df7c7c81918 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -195,7 +195,7 @@ ifdef CONFIG_RETPOLINE
+   KBUILD_CFLAGS += $(RETPOLINE_CFLAGS)
+   # Additionally, avoid generating expensive indirect jumps which
+   # are subject to retpolines for small number of switch cases.
+-  # clang turns off jump table generation by default when under
++  # LLVM turns off jump table generation by default when under
+   # retpoline builds, however, gcc does not for x86. This has
+   # only been fixed starting from gcc stable version 8.4.0 and
+   # onwards, but not for older ones. See gcc bug #86952.
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 3c6cbe2b278d..163089ae13ba 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -156,7 +156,14 @@ fn main() {
+         );
+         let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
+         if cfg.has("RETPOLINE") {
++            // The kernel uses `-mretpoline-external-thunk` (for Clang), which Clang maps to the
++            // target feature of the same name plus the other two target features in
++            // `clang/lib/Driver/ToolChains/Arch/X86.cpp`. These should be eventually enabled via
++            // `-Ctarget-feature` when `rustc` starts recognizing them (or via a new dedicated
++            // flag); see https://github.com/rust-lang/rust/issues/116852.
+             features += ",+retpoline-external-thunk";
++            features += ",+retpoline-indirect-branches";
++            features += ",+retpoline-indirect-calls";
+         }
+         ts.push("features", features);
+         ts.push("llvm-target", "x86_64-linux-gnu");
+
+base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
+-- 
+2.42.0
 
