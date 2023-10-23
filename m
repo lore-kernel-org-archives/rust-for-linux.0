@@ -1,108 +1,88 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E192A15E83;
-	Mon, 23 Oct 2023 12:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151EF1B260
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Oct 2023 13:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c1ZZjpkQ"
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F77A4;
-	Mon, 23 Oct 2023 05:55:20 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d9ad67058fcso3099002276.1;
-        Mon, 23 Oct 2023 05:55:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aaNdziOy"
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE2310C0;
+	Mon, 23 Oct 2023 06:59:05 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d9ace5370a0so2537072276.0;
+        Mon, 23 Oct 2023 06:59:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698065720; x=1698670520; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2GEmnLY/y4cnT/cNmjbWbHgeKn48HWvMLTB6wSvznDU=;
-        b=c1ZZjpkQdikEDE8GRFFuTltsSnuXa3CSt8lHD/ZH38sOcbopsSeo/R3Uw/yI+PRlTN
-         4k8x5ZTtVirmqqFNTRqVMAmBw/x8e4SWDY5m+yUpkZ9RyF7DqtOwsjrv5pe2HIUu8ZSf
-         PdD4FcMBB0B9Hz2ER2tpNunp+GXFrt/HefzXsN4Kh+2FWgoacRiW4HPTOAy1pY5ti5KD
-         7/SmGq5eeFOZ5XsxKuljPWG5zluU7/RLPFNvrTv5QTtXVl8paHvgZ42VJqZcOPBPr8/M
-         zNFaT5yaJlJi5gwCH1nzimVYIMjp7zEbY08i1WwhsULzG9K0BLLqOK+TDINWnCneFbM3
-         KGEg==
+        d=gmail.com; s=20230601; t=1698069545; x=1698674345; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PsfVtKRf9ybpzEArPxCGBZ2gJkO2N8IB8u3WGmqpZq8=;
+        b=aaNdziOy0qX/koYnSuY0RVglIw4v2nZbB0J6d6qrkFRfAh4tYe0H9/7P9Ps/2VcCPj
+         NqbwtaWrEznoBz2erXHpIagW16RsKD2qho8ltlrM5DUUEO709Q5ED7X3aipVMM9bhMT5
+         mShqgamHqYTuMzeq7o0H99+KD2Z9oQSZi3DgxGVSLlr3a44XMncXH7zIxxTx9R1vErD+
+         xq5zqdfw3r1Lrivt6nbPKWvbQMK7gZbxccB4w1xKWma+AdfW0zOLQouMHp/1GmodIpwf
+         23nYzPwHvVZsX8sEI0YAHw1DHKLAQjB73SqWc26u4F/jRNHpSjUo2uz5lsfhC54Rdzt9
+         O3JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698065720; x=1698670520;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2GEmnLY/y4cnT/cNmjbWbHgeKn48HWvMLTB6wSvznDU=;
-        b=bUXaQ5Q8sJyMBF8ctMhwz3VtxMz4/RtDNHGDPETGg3kr+dqyC7aDfnZxscBscbr0ZK
-         k01lSXrLx8LnXRWY8llHtlWToeVRLG/jGGQbn86blBzLCgtxtYOQ5Gw1xYIL+y256Mfe
-         loMEmdEAmZmdvXucYdgjIvrYNQxiIjwMIZD1zo+QCBtUC00Kdm/G2MLi5y9yU1w3e83V
-         Dwc9tJl82FwbG5hnSAVNniiMct6AmUuD6K66i1RtBLySqzHyYdJi6Ug8TIMaXeRM+zWy
-         F8rHhHbQB2M+E1Lcscq223oSk0Qk0hEcn/cPPfGl3zwoXXjkRsiYjhUWUxLSSjK8ide/
-         odVw==
-X-Gm-Message-State: AOJu0YyKnIh69WHssw5SpT1eiHK4ER0R/sYhnIxfx3pomnAOkRhyetI5
-	+S2cg3yz2u57eXHE4tsldBRqbjJybev7Z1bJdyvIAlGqAAM=
-X-Google-Smtp-Source: AGHT+IGypnu4eR6g0KW78S6tOCPmJM0twixOTu0jtgKNq5sPrZ7+f4Nnwxi7M/fFF91Mgf8QJ1yO9A2U2pNLvorPixs=
-X-Received: by 2002:a25:cc0c:0:b0:d9a:d20d:7d5b with SMTP id
- l12-20020a25cc0c000000b00d9ad20d7d5bmr9776221ybf.19.1698065719747; Mon, 23
- Oct 2023 05:55:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698069545; x=1698674345;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PsfVtKRf9ybpzEArPxCGBZ2gJkO2N8IB8u3WGmqpZq8=;
+        b=RHu/E5rCBWQyk7FMmG69cHMmcpb9+NyBCTSu+JTmhls9KjQM/L02ca2BGQXI3jxH2I
+         jqtCSPJId8LG+Af9Q23ioQshTlvEjzt7cMo+pWYlFM5c7P1X+1E/h2l8nJmK+wNT+m3h
+         B94p0H5VanDi1APHCODBTRCutCAIBlvD9+6JkyYVOvV6ip3pLoD8oj96n4PthveuHEPG
+         q2c73ZAqRzh8qbhJeVQmglLTmn2Wh0mve66swECP6wOQeEdarlzGTxjGHz8K6Fb2KFoy
+         /5ebv5DsmEtUQl7GF622nHqbv0Y+hClV8UjTlmeoASgVA4vr+rUyMLLCGXCeooclHCBR
+         6bVw==
+X-Gm-Message-State: AOJu0Yxsd9uFPJdwV77eQz7gyykoyCfcRRzfG130pi5AlWDk/jFM29Ji
+	GsFjwlHnYcE/rXhEvBebsBcYZ7BI59fNq70f2D8=
+X-Google-Smtp-Source: AGHT+IEhm5iIz9QRAioPkjkoON0WJZN8cZe7j7MCUTL7a/EtExgikOEKZmfc/44+Sn+9FlSE5Y32tBE2XxHutXYqG6c=
+X-Received: by 2002:a25:c70b:0:b0:d9a:4da4:b793 with SMTP id
+ w11-20020a25c70b000000b00d9a4da4b793mr8312256ybe.62.1698069544706; Mon, 23
+ Oct 2023 06:59:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-7-wedsonaf@gmail.com>
- <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me>
- <ZTHPOfy4dhj0x5ch@boqun-archlinux> <vT8j_VVzNv0Cx7iTO9OobT9H8zEc_I-dxmh2sF6GZWqRQ0nhjnaNZqtWPtYm37wOhwGek2vLUYwAM-jJ83AZEe8TXMDx9N6pZ3mZW1WdNNw=@proton.me>
- <ZTP06kdjBQzZ3KYD@Boquns-Mac-mini.home> <ZTQDztmY0ivPcGO/@casper.infradead.org>
- <ZTQnpeFcPwMoEcgO@Boquns-Mac-mini.home> <ZTYE0PSDwITrWMHv@dread.disaster.area>
-In-Reply-To: <ZTYE0PSDwITrWMHv@dread.disaster.area>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Mon, 23 Oct 2023 09:55:08 -0300
-Message-ID: <CANeycqq49Ubj-3BKcUaMOKeEwFastZzC17z_uk_VE3RDDv2wfw@mail.gmail.com>
-Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
-To: Dave Chinner <david@fromorbit.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-	Benno Lossin <benno.lossin@proton.me>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Kent Overstreet <kent.overstreet@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>, 
-	Marco Elver <elver@google.com>
+References: <20231009224347.2076221-1-mmaurer@google.com> <20231010081220.GD377@noisy.programming.kicks-ass.net>
+ <CAGSQo01=NRosJCzRCWcqZfvdHzH+d6dThN02SpvkF2EHsFXD-g@mail.gmail.com>
+ <20231010142448.GN377@noisy.programming.kicks-ass.net> <CAGSQo03wwtjzba-W9Vs4gOW3Jin=dnC937hNijxgHEd-jDev6w@mail.gmail.com>
+ <20231010145601.GP377@noisy.programming.kicks-ass.net>
+In-Reply-To: <20231010145601.GP377@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Oct 2023 15:58:53 +0200
+Message-ID: <CANiq72n_iA14X5J82-MGsfYr7Vm00wH0-5PmcP6jFL-fpXjNBQ@mail.gmail.com>
+Subject: Re: [PATCH] x86: Enable IBT in Rust if enabled in C
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, "H.J. Lu" <hjl.tools@gmail.com>, 
+	Nick Desaulniers <ndesaulniers@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 23 Oct 2023 at 02:29, Dave Chinner <david@fromorbit.com> wrote:
+On Tue, Oct 10, 2023 at 4:56=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
 >
-> On Sat, Oct 21, 2023 at 12:33:57PM -0700, Boqun Feng wrote:
-> > On Sat, Oct 21, 2023 at 06:01:02PM +0100, Matthew Wilcox wrote:
-> > > I'm only an expert on the page cache, not the rest of the VFS.  So
-> > > what are the rules around modifying i_state for the VFS?
-> >
-> > Agreed, same question here.
+> I'm not sure -- if they happen, objtool should warn about them. So I
+> suppose we'll take it from there.
 >
-> inode->i_state should only be modified under inode->i_lock.
->
-> And in most situations, you have to hold the inode->i_lock to read
-> state flags as well so that reads are serialised against
-> modifications which are typically non-atomic RMW operations.
->
-> There is, I think, one main exception to read side locking and this
-> is find_inode_rcu() which does an unlocked check for I_WILL_FREE |
-> I_FREEING. In this case, the inode->i_state updates in iput_final()
-> use WRITE_ONCE under the inode->i_lock to provide the necessary
-> semantics for the unlocked READ_ONCE() done under rcu_read_lock().
->
-> IOWs, if you follow the general rule that any inode->i_state access
-> (read or write) needs to hold inode->i_lock, you probably won't
-> screw up.
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-I don't see filesystems doing this though. In particular, see
-iget_locked() -- if a new inode is returned, then it is locked, but if
-a cached one is found, it's not locked.
+Applied to `rust-next` -- thanks!
 
-So we're in this situation where a returned inode may or may not be
-locked. And the way to determine if it's locked or not is to read
-i_state.
+For subsequent patches, do you want that they go through the tip tree?
+If so, please let me know, I think it would be ideal.
 
-Here are examples of kernfs, ext2, ext4 and squashfs doing it:
-https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/kernfs/inode.c#L252
-https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/ext2/inode.c#L1392
-https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/ext4/inode.c#L4707
-https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/squashfs/inode.c#L82
+Thanks!
 
-They all call iget_locked(), and if I_NEW is set, they initialise the
-inode and unlock it with unlock_new_inode(); otherwise they just
-return the unlocked inode.
+Cheers,
+Miguel
