@@ -1,88 +1,110 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151EF1B260
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Oct 2023 13:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3E6134DF;
+	Mon, 23 Oct 2023 14:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aaNdziOy"
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE2310C0;
-	Mon, 23 Oct 2023 06:59:05 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d9ace5370a0so2537072276.0;
-        Mon, 23 Oct 2023 06:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698069545; x=1698674345; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PsfVtKRf9ybpzEArPxCGBZ2gJkO2N8IB8u3WGmqpZq8=;
-        b=aaNdziOy0qX/koYnSuY0RVglIw4v2nZbB0J6d6qrkFRfAh4tYe0H9/7P9Ps/2VcCPj
-         NqbwtaWrEznoBz2erXHpIagW16RsKD2qho8ltlrM5DUUEO709Q5ED7X3aipVMM9bhMT5
-         mShqgamHqYTuMzeq7o0H99+KD2Z9oQSZi3DgxGVSLlr3a44XMncXH7zIxxTx9R1vErD+
-         xq5zqdfw3r1Lrivt6nbPKWvbQMK7gZbxccB4w1xKWma+AdfW0zOLQouMHp/1GmodIpwf
-         23nYzPwHvVZsX8sEI0YAHw1DHKLAQjB73SqWc26u4F/jRNHpSjUo2uz5lsfhC54Rdzt9
-         O3JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698069545; x=1698674345;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PsfVtKRf9ybpzEArPxCGBZ2gJkO2N8IB8u3WGmqpZq8=;
-        b=RHu/E5rCBWQyk7FMmG69cHMmcpb9+NyBCTSu+JTmhls9KjQM/L02ca2BGQXI3jxH2I
-         jqtCSPJId8LG+Af9Q23ioQshTlvEjzt7cMo+pWYlFM5c7P1X+1E/h2l8nJmK+wNT+m3h
-         B94p0H5VanDi1APHCODBTRCutCAIBlvD9+6JkyYVOvV6ip3pLoD8oj96n4PthveuHEPG
-         q2c73ZAqRzh8qbhJeVQmglLTmn2Wh0mve66swECP6wOQeEdarlzGTxjGHz8K6Fb2KFoy
-         /5ebv5DsmEtUQl7GF622nHqbv0Y+hClV8UjTlmeoASgVA4vr+rUyMLLCGXCeooclHCBR
-         6bVw==
-X-Gm-Message-State: AOJu0Yxsd9uFPJdwV77eQz7gyykoyCfcRRzfG130pi5AlWDk/jFM29Ji
-	GsFjwlHnYcE/rXhEvBebsBcYZ7BI59fNq70f2D8=
-X-Google-Smtp-Source: AGHT+IEhm5iIz9QRAioPkjkoON0WJZN8cZe7j7MCUTL7a/EtExgikOEKZmfc/44+Sn+9FlSE5Y32tBE2XxHutXYqG6c=
-X-Received: by 2002:a25:c70b:0:b0:d9a:4da4:b793 with SMTP id
- w11-20020a25c70b000000b00d9a4da4b793mr8312256ybe.62.1698069544706; Mon, 23
- Oct 2023 06:59:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RQgR5MdW"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 561A9DD;
+	Mon, 23 Oct 2023 07:28:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=eJ9wptQOy3DXDZN8YbGeVcfaYB+0Ek+ymB3Thh5UoEU=; b=RQgR5MdWu7alC+E8XMn/GCeCtl
+	oqT+IVASajqYJp/YWUEoMbj3gr9x2OELGrz07E8RGC3vHSOY5+MXU5RBG1ztPRHRliZKrjmk+769O
+	rgNvcDcPHamAdKTLnCd93aV3h2eSUS4w+EVcfuw2xDs8vBWCDWtOhZ+Df0wve4/7IrJungvP/DqSl
+	jAHZeyordi6IYUIZknSeYFb+tyOIvPdUF5L5BLBTiQrH5KHQqCvpuNxJFFQ/NPPjapQ6/lbXj+Zob
+	qc8rtsTSsAO95oYo7vn0aC9Vk+Pq65ADTb3XD+nzGqIHOB52r15OR2t9c2xU+lMYgV+yejNFXH5Ap
+	I3E7JVFg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1quvv3-00EH5J-PT; Mon, 23 Oct 2023 14:28:37 +0000
+Date: Mon, 23 Oct 2023 15:28:37 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 09/19] rust: folio: introduce basic support for folios
+Message-ID: <ZTaDFe/s2wvyI9u2@casper.infradead.org>
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
+ <20231018122518.128049-10-wedsonaf@gmail.com>
+ <ZTATIhi9U6ObAnN7@casper.infradead.org>
+ <CANeycqoWfWJ5bxuh+UWK99D9jYH0cKKy1=ikHJTpY=fP1ZJMrg@mail.gmail.com>
+ <ZTAwLGi4sCup+B1r@casper.infradead.org>
+ <CANeycqrp_s20pCO_OJXHpqN5tZ_Uq5icTupWiVeLf69JOFj4cA@mail.gmail.com>
+ <ZTH9+sF+NPyRjyRN@casper.infradead.org>
+ <87h6mhfwbm.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231009224347.2076221-1-mmaurer@google.com> <20231010081220.GD377@noisy.programming.kicks-ass.net>
- <CAGSQo01=NRosJCzRCWcqZfvdHzH+d6dThN02SpvkF2EHsFXD-g@mail.gmail.com>
- <20231010142448.GN377@noisy.programming.kicks-ass.net> <CAGSQo03wwtjzba-W9Vs4gOW3Jin=dnC937hNijxgHEd-jDev6w@mail.gmail.com>
- <20231010145601.GP377@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231010145601.GP377@noisy.programming.kicks-ass.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Oct 2023 15:58:53 +0200
-Message-ID: <CANiq72n_iA14X5J82-MGsfYr7Vm00wH0-5PmcP6jFL-fpXjNBQ@mail.gmail.com>
-Subject: Re: [PATCH] x86: Enable IBT in Rust if enabled in C
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, "H.J. Lu" <hjl.tools@gmail.com>, 
-	Nick Desaulniers <ndesaulniers@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h6mhfwbm.fsf@metaspace.dk>
 
-On Tue, Oct 10, 2023 at 4:56=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> I'm not sure -- if they happen, objtool should warn about them. So I
-> suppose we'll take it from there.
->
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+On Mon, Oct 23, 2023 at 12:48:33PM +0200, Andreas Hindborg (Samsung) wrote:
+> The build system and Rust compiler can inline and optimize across
+> function calls and languages when LTO is enabled. Some patches are
+> needed to make it work though.
 
-Applied to `rust-next` -- thanks!
+That's fine, but something like folio_put() is performance-critical.
 
-For subsequent patches, do you want that they go through the tip tree?
-If so, please let me know, I think it would be ideal.
+Relying on the linker to figure out that it _should_ inline through
 
-Thanks!
++void rust_helper_folio_put(struct folio *folio)
++{
++	folio_put(folio);
++}
++EXPORT_SYMBOL_GPL(rust_helper_folio_put);
 
-Cheers,
-Miguel
+seems like a very bad idea to me.  For reference, folio_put() is
+defined as:
+
+static inline void folio_put(struct folio *folio)
+{
+        if (folio_put_testzero(folio))
+                __folio_put(folio);
+}
+
+which turns into (once you work your way through all the gunk that hasn't
+been cleaned up yet)
+
+	if (atomic_dec_and_test(&folio->_refcount))
+		__folio_put(folio)
+
+ie it's a single dec-and-test insn followed by a conditional function
+call.  Yes, there's some expensive debug you can turn on in there, but
+it's an incredibly frequent call, and we shouldn't be relying on linker
+magic to optimise it all away.
+
+Of course, I don't want to lose the ability to turn on the debug code,
+so folio.put() can't be as simple as the call to atomic_dec_and_test(),
+but I hope you see my point.
+
+Wedson wrote in a later email,
+> Having said that, while it's possible to do what you suggested above,
+> we try to avoid it so that maintainers can continue to have a single
+> place they need to change if they ever decide to change things. A
+> simple example from above is order(), if you decide to implement it
+> differently (I don't know, if you change the flag, you decide to have
+> an explicit field, whatever), then you'd have to change the C _and_
+> the Rust versions. Worse yet, there's a chance that forgetting to
+> update the Rust version wouldn't break the build, which would make it
+> harder to catch mismatched versions.
+
+I understand that concern!  Indeed, I did change the implementation
+of folio_order() recently.  I'm happy to commit to keeping the Rust
+implementation updated as I modify the C implementation of folios,
+but I appreciate that other maintainers may not be willing to make such
+a commitment.
+
+I'm all the way up to Chapter 5: References in the Blandy book now!
+I expect to understand the patches you're sending any week now ;-)
