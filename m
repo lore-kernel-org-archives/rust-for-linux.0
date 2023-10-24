@@ -1,111 +1,258 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1550135890
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 15:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AE838F96
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 16:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RNbrf33W"
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3511B19B4;
-	Tue, 24 Oct 2023 08:19:34 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5a7a80a96dbso46292157b3.0;
-        Tue, 24 Oct 2023 08:19:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698160774; x=1698765574; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Se2flEy1odRQEOyO7azgGeUowuD+rL3cXR3aXywEh3c=;
-        b=RNbrf33WCAwZ+8mo6FliZEVBuV/miIoLs/LeZOSt1u05QHNXSoa5/W2xSUTrDCFZYB
-         hfmraXQIQOfSa2esBWgrfyAI1ACcG+GD6XyYEIgL5Qjle8fka7XtBVoRFqmrwg2EShRp
-         UasAzqukluQm42zwrJlBrTiFiW+zmArr8DiIuIwnzfKxv1qUdZcttL2Sm6jthNbioQ4O
-         fJOUkb4GY7nNgMyJdzcWfUesotbUDqkaqCgc2jmVuS3rCXbYniQSL0L/caKWpouRyRH0
-         AbOtAOOIbATB+ojh7X23q21qNIo4BHQM5Ve1cnxtyzwjMQAdB7HV7oMoINz5689Oxjir
-         hOXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698160774; x=1698765574;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Se2flEy1odRQEOyO7azgGeUowuD+rL3cXR3aXywEh3c=;
-        b=i2CKXjOvkcvOJwQU07UhOKjk7LV8LeWeGQ0gTP3ga7t6/JRdOocJja2itYz5xLm9sN
-         dzoH3VEKpuGBAiJ+mQRCX6vXdZMdx7nGfxLHC69nAEQJwiEIU/upCr0IsL9T2bJIYGp1
-         /sur/U/gehOpYY3ZWg3fofKRb9iJsaKB4Ma6/F7NDF+sqUXDy5HvFP8LHXIoLv2p3h/5
-         zktyBkUAqkITsMVUR0quwVMENS0Psxa5xdX4aJBJlVkRrRwEYLJENIob9lG1IL1hRVnc
-         28VfmfTwPkg5HTZle8PTwn2T9EuYmAJKqULkSoXXrDkwg8kG6mml1YxgAW1Cia9ZmRed
-         vHIw==
-X-Gm-Message-State: AOJu0YxQhYDdIhnmXbwJzGwKdKBBDo/0zd11/3yaHjPR7kYVchvv3xMv
-	060rhESLmZN2bHlEIfF7vLoa3YzlFuMSRBuegfwwEwjVK0c/bA==
-X-Google-Smtp-Source: AGHT+IEAxsj19P2vVAjwasqGHSMNvXTaA8KgEPHIp4DN6X2moMi49ivpFTHHTNOnZAaBFvgbO/aNpTrjrHR07I8/Fwk=
-X-Received: by 2002:a05:690c:d83:b0:5a7:b545:dcaa with SMTP id
- da3-20020a05690c0d8300b005a7b545dcaamr15942777ywb.23.1698160773826; Tue, 24
- Oct 2023 08:19:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FeRf3q57"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7A510CF
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 09:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=zcv7pcgwfngtfhiy4puqsu6o44.protonmail; t=1698164627; x=1698423827;
+	bh=5U/dEfgJXHyTK/sepiAPLQXu8435jTLdFMh5GjWgAT4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=FeRf3q57tVN20zHAyMJ/tUHMpHGiEmVEkhAYPnwLwu9uHCtP4j4bpZrmv2PKzwclF
+	 iGnWthuiXBPHBZcdN1qlRbIZKxrK9ls3XlAGlj/gFrPpCN0+XdOoSTYQn9HsrrCZCk
+	 FCnDjl1ZuLPbnUNUWM2G9X3htJ61mPySTMqX7I5rwyxccWkFZnLMOnyytVjQ/Rnzip
+	 mb9zJb+M9Z9/vGfEUbV3BolrBpzrBKb7mtQfA3BIY53+1TgaIqgsqzE+27KdUcs9C3
+	 MuPr/bU9PbsPkSn1YpsESwAIN+G+vwIH1EcPtuBXDMDhoEcRh6a54IgttwKNCHpCOm
+	 VN1vCmHLZ7Tkw==
+Date: Tue, 24 Oct 2023 16:23:20 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v6 1/5] rust: core abstractions for network PHY drivers
+Message-ID: <1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me>
+In-Reply-To: <20231024005842.1059620-2-fujita.tomonori@gmail.com>
+References: <20231024005842.1059620-1-fujita.tomonori@gmail.com> <20231024005842.1059620-2-fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAM+6MoE1DyOay-fMWQP0hsenz174hSuGJnKM7symh0C-y1mqZw@mail.gmail.com>
-In-Reply-To: <CAM+6MoE1DyOay-fMWQP0hsenz174hSuGJnKM7symh0C-y1mqZw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Oct 2023 17:19:22 +0200
-Message-ID: <CANiq72=LGW-7qMSFKs7ZLOfOGfJKJthR8nd06j-zfqSpZQY3zQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Pratham Patel <thefirst1322@gmail.com>
-Cc: boqun.feng@gmail.com, Jamie.Cunliffe@arm.com, andrew@lunn.ch, 
-	catalin.marinas@arm.com, lina@asahilina.net, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	mturquette@baylibre.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	sboyd@kernel.org, steve.capper@arm.com, will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 24, 2023 at 4:18=E2=80=AFPM Pratham Patel <thefirst1322@gmail.c=
-om> wrote:
->
-> This comes from a nobody (quite literally my first email on the kernel
-> mailing list), but I would rather that the support for AArch64 BE be
-> not added at all. My reasoning for this is because the rustc target
-> `aarch64_be-unknown-linux-gnu` is in the tier 3 of support.
+On 24.10.23 02:58, FUJITA Tomonori wrote:
+> This patch adds abstractions to implement network PHY drivers; the
+> driver registration and bindings for some of callback functions in
+> struct phy_driver and many genphy_ functions.
+>=20
+> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=3Dy.
+>=20
+> This patch enables unstable const_maybe_uninit_zeroed feature for
+> kernel crate to enable unsafe code to handle a constant value with
+> uninitialized data. With the feature, the abstractions can initialize
+> a phy_driver structure with zero easily; instead of initializing all
+> the members by hand. It's supposed to be stable in the not so distant
+> future.
+>=20
+> Link: https://github.com/rust-lang/rust/pull/116218
+>=20
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-We are aware of the tier list support, but please note that e.g. for
-x86, we are not even using one of the built-in targets (for the moment
-at least), and that we use a range of other unstable features. It is
-under discussion between the two projects how these details will be
-properly supported.
+[...]
 
-> but from a developer's and packager's
-> perspective, this will lead to a few wasted hours until the
-> metaphorical person figures out why said Rust code failed to build for
-> AArch64 BE.
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> new file mode 100644
+> index 000000000000..2d821c2475e1
+> --- /dev/null
+> +++ b/rust/kernel/net/phy.rs
+> @@ -0,0 +1,708 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
+> +
+> +//! Network PHY device.
+> +//!
+> +//! C headers: [`include/linux/phy.h`](../../../../include/linux/phy.h).
+> +
+> +use crate::{
+> +    bindings,
+> +    error::*,
+> +    prelude::{vtable, Pin},
+> +    str::CStr,
+> +    types::Opaque,
+> +};
+> +use core::marker::PhantomData;
+> +
+> +/// PHY state machine states.
+> +///
+> +/// Corresponds to the kernel's [`enum phy_state`](https://docs.kernel.o=
+rg/networking/kapi.html#c.phy_state).
 
-Why would the code fail to build? i.e. as far as I understand, Boqun
-successfully compiled and QEMU-booted a BE image.
+Please use `rustfmt`, this line is 109 characters long.
 
-If you mean that it could stop compiling at any point because it is
-not officially supported, then note that we pin the compiler, and that
-it also applies to the rest of the code due to other unstable features
-too, which is why we need to get the Rust project to support the
-kernel properly for the use cases we need (not just targets, but also
-features).
+Also it might make sense to use a relative link, since then it also
+works offline (though you have to build the C docs).
 
-Also please note that, even if everything else was formally supported,
-it would still be a good idea to add this support early (possibly with
-a warning or gate or similar if not intended to be used by end users
-yet) so that we have the first big-endian target around.
+> +/// Some of PHY drivers access to the state of PHY's software state mach=
+ine.
+> +#[derive(PartialEq)]
+> +pub enum DeviceState {
+> +    /// PHY device and driver are not ready for anything.
+> +    Down,
+> +    /// PHY is ready to send and receive packets.
+> +    Ready,
+> +    /// PHY is up, but no polling or interrupts are done.
+> +    Halted,
+> +    /// PHY is up, but is in an error state.
+> +    Error,
+> +    /// PHY and attached device are ready to do work.
+> +    Up,
+> +    /// PHY is currently running.
+> +    Running,
+> +    /// PHY is up, but not currently plugged in.
+> +    NoLink,
+> +    /// PHY is performing a cable test.
+> +    CableTest,
+> +}
+> +
+> +/// A mode of Ethernet communication.
+> +///
+> +/// PHY drivers get duplex information from hardware and update the curr=
+ent state.
+> +pub enum DuplexMode {
+> +    /// PHY is in full-duplex mode.
+> +    Full,
+> +    /// PHY is in half-duplex mode.
+> +    Half,
+> +    /// PHY is in unknown duplex mode.
+> +    Unknown,
+> +}
+> +
+> +/// An instance of a PHY device.
+> +///
+> +/// Wraps the kernel's [`struct phy_device`](https://docs.kernel.org/net=
+working/kapi.html#c.phy_device).
+> +/// A [`Device`] instance is created when a callback in [`Driver``] is e=
+xecuted. A PHY driver executes
+> +/// [`Driver`]'s methods during the callback.
+> +///
+> +/// # Invariants
+> +///
+> +/// `self.0` is always in a valid state.
+> +// During the calls to most functions in [`Driver`], the C side (`PHYLIB=
+`) holds a lock that is unique
+> +// for every instance of [`Device`]. `PHYLIB` uses a different serializa=
+tion technique for
+> +// [`Driver::resume`] and [`Driver::suspend`]: `PHYLIB` updates `phy_dev=
+ice`'s state with the lock held,
+> +// thus guaranteeing that [`Driver::resume`] has exclusive access to the=
+ instance. [`Driver::resume`] and
+> +// [`Driver::suspend`] also are called where only one thread can access =
+to the instance.
+> +#[repr(transparent)]
+> +pub struct Device(Opaque<bindings::phy_device>);
+> +
+> +impl Device {
+> +    /// Creates a new [`Device`] instance from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This function must only be called from the callbacks in `phy_dri=
+ver`.
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Se=
+lf {
+> +        // CAST: `Self` is a `repr(transparent)` wrapper around `binding=
+s::phy_device`.
+> +        let ptr =3D ptr.cast::<Self>();
+> +        // SAFETY: by the function requirements the pointer is valid and=
+ we have unique access for
+> +        // the duration of `'a`.
+> +        unsafe { &mut *ptr }
+> +    }
+> +
+> +    /// Gets the id of the PHY.
+> +    pub fn phy_id(&self) -> u32 {
+> +        let phydev =3D self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        unsafe { (*phydev).phy_id }
+> +    }
+> +
+> +    /// Gets the state of the PHY.
+> +    pub fn state(&self) -> DeviceState {
+> +        let phydev =3D self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        let state =3D unsafe { (*phydev).state };
+> +        // TODO: this conversion code will be replaced with automaticall=
+y generated code by bindgen
+> +        // when it becomes possible.
+> +        // better to call WARN_ONCE() when the state is out-of-range (ne=
+eds to add WARN_ONCE support).
+> +        match state {
+> +            bindings::phy_state_PHY_DOWN =3D> DeviceState::Down,
+> +            bindings::phy_state_PHY_READY =3D> DeviceState::Ready,
+> +            bindings::phy_state_PHY_HALTED =3D> DeviceState::Halted,
+> +            bindings::phy_state_PHY_ERROR =3D> DeviceState::Error,
+> +            bindings::phy_state_PHY_UP =3D> DeviceState::Up,
+> +            bindings::phy_state_PHY_RUNNING =3D> DeviceState::Running,
+> +            bindings::phy_state_PHY_NOLINK =3D> DeviceState::NoLink,
+> +            bindings::phy_state_PHY_CABLETEST =3D> DeviceState::CableTes=
+t,
+> +            _ =3D> DeviceState::Error,
+> +        }
+> +    }
+> +
+> +    /// Gets the current link state. It returns true if the link is up.
+> +    pub fn get_link(&self) -> bool {
+> +        const LINK_IS_UP: u32 =3D 1;
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        let phydev =3D unsafe { *self.0.get() };
+> +        phydev.link() =3D=3D LINK_IS_UP
+> +    }
 
-> P.S. This is my first time sending an email to a mailing list, sorry
-> if I mucked something up.
+Can we please change this name? I think Tomo is waiting for Andrew to
+give his OK. All the other getter functions already follow the Rust
+naming convention, so this one should as well. I think using
+`is_link_up` would be ideal, since `link()` reads a bit weird in code:
 
-The content looks fine :)
+     if dev.link() {
+         // ...
+     }
 
-However, I think the proper `In-Reply-To` header is not there so Lore
-gets confused -- did you use the suggested parameters at the bottom of
-e.g. [1]?
+vs
 
-[1] https://lore.kernel.org/rust-for-linux/CAM+6MoE1DyOay-fMWQP0hsenz174hSu=
-GJnKM7symh0C-y1mqZw@mail.gmail.com/
+     if dev.is_link_up() {
+         // ...
+     }
 
+> +
+> +    /// Gets the current auto-negotiation configuration. It returns true=
+ if auto-negotiation is enabled.
+
+Move the second sentence into a new line, it should not be part of the
+one-line summary.
+
+> +    pub fn is_autoneg_enabled(&self) -> bool {
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        let phydev =3D unsafe { *self.0.get() };
+> +        phydev.autoneg() =3D=3D bindings::AUTONEG_ENABLE
+> +    }
+> +
+> +    /// Gets the current auto-negotiation state. It returns true if auto=
+-negotiation is completed.
+Same here.
+
+--
 Cheers,
-Miguel
+Benno
+
+> +    pub fn is_autoneg_completed(&self) -> bool {
+> +        const AUTONEG_COMPLETED: u32 =3D 1;
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        let phydev =3D unsafe { *self.0.get() };
+> +        phydev.autoneg_complete() =3D=3D AUTONEG_COMPLETED
+> +    }
+[...]
+
