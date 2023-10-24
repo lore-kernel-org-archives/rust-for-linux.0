@@ -1,81 +1,61 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FABE3A260;
-	Tue, 24 Oct 2023 16:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBEA3B2A4;
+	Tue, 24 Oct 2023 16:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TNtI6T01"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BC0210E9;
-	Tue, 24 Oct 2023 09:29:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1698164960; x=1698424160;
-	bh=9wCN5hqgjoeWJfYj6IaF7NWT36bB8jzQnGe4cq5/zwM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=TNtI6T01vp/iSJsaJUbpm4T4Kiv5eI7YMO/RV8vS1VQCcuLxdgE9+aC7Cn2lF7ts0
-	 BfdBy0hINwLrWMiaJOQ5oVH/NSUlz2tInL1XUdxwgkD7eFXhraLomhl+/WWkFuXUBX
-	 NcTAK2YsS7eynRP2j4kzSfLV0dtmKAOMyXcxVjbNvWCLKpLMZYDu9xypuul0W2tEJl
-	 G+o8xP/octkC6pVRharnhuQ/TXlwxdAah/yvKb1VSPxTQv/53jwQiRhFztx0bM6Hhm
-	 0SFKHkii1JHkQNWmdV5Bpcfh/3EOVV5hmMfhTNKDBn0H9CEk3ZRX6dLTu6tBfP6vOB
-	 N6cSvOslplE1Q==
-Date: Tue, 24 Oct 2023 16:29:16 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com, Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH net-next v6 3/5] rust: add second `bindgen` pass for enum exhaustiveness checking
-Message-ID: <6412a54b-844a-497c-a7e2-2b5f94005226@proton.me>
-In-Reply-To: <20231024005842.1059620-4-fujita.tomonori@gmail.com>
-References: <20231024005842.1059620-1-fujita.tomonori@gmail.com> <20231024005842.1059620-4-fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QJNjVowj"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4317AC;
+	Tue, 24 Oct 2023 09:44:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=qYz02loAPguf4pV3Qtc9mcE4k49YLy1EJ6YkscJLCXA=; b=QJNjVowjZMOHaqUTgHLghWPTXr
+	3Tquo2wZDD09vksgeYNmMjP8E+DdPLWkpvcsKyu+E4tJXJKZ3PNaxodtGipbWTTKk+je/9qdICQSx
+	HYrdo0NPSvrcwFnwQzwj1t+4CuSPLpTIT7F/b3/CHQlbkiir8XNCVm0EVh5Tegwac1xg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qvKWH-000625-AF; Tue, 24 Oct 2023 18:44:41 +0200
+Date: Tue, 24 Oct 2023 18:44:41 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v6 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <06be812d-2371-4c75-88cc-d2a8466cc3bd@lunn.ch>
+References: <20231024005842.1059620-1-fujita.tomonori@gmail.com>
+ <20231024005842.1059620-2-fujita.tomonori@gmail.com>
+ <1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me>
 
-On 24.10.23 02:58, FUJITA Tomonori wrote:
-> From: Miguel Ojeda <ojeda@kernel.org>
+> Can we please change this name? I think Tomo is waiting for Andrew to
+> give his OK. All the other getter functions already follow the Rust
+> naming convention, so this one should as well. I think using
+> `is_link_up` would be ideal, since `link()` reads a bit weird in code:
+> 
+>      if dev.link() {
+>          // ...
+>      }
+> 
+> vs
+> 
+>      if dev.is_link_up() {
+>          // ...
+>      }
 
-I think this commit message should also explain what it is
-doing and not only the error below.
+is_link_up() is fine for me.
 
---=20
-Cheers,
-Benno
-
->      error[E0005]: refutable pattern in function argument
->           --> rust/bindings/bindings_enum_check.rs:29:6
->            |
->      29    |       (phy_state::PHY_DOWN
->            |  ______^
->      30    | |     | phy_state::PHY_READY
->      31    | |     | phy_state::PHY_HALTED
->      32    | |     | phy_state::PHY_ERROR
->      ...     |
->      35    | |     | phy_state::PHY_NOLINK
->      36    | |     | phy_state::PHY_CABLETEST): phy_state,
->            | |______________________________^ pattern `phy_state::PHY_NEW=
-` not covered
->            |
->      note: `phy_state` defined here
->           --> rust/bindings/bindings_generated_enum_check.rs:60739:10
->            |
->      60739 | pub enum phy_state {
->            |          ^^^^^^^^^
->      ...
->      60745 |     PHY_NEW =3D 5,
->            |     ------- not covered
->            =3D note: the matched value is of type `phy_state`
->=20
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
-
-[...]
-
-
+	Andrew
