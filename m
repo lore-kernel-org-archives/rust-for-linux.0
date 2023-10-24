@@ -1,160 +1,99 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0013B7A9;
-	Tue, 24 Oct 2023 18:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A50219ED
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 18:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4EO/ByEB"
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2069.outbound.protection.outlook.com [40.107.243.69])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50ADB111;
-	Tue, 24 Oct 2023 11:15:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E1hmKYSjcRs8dsNAsUfhp2sZPlqxt8qP+3YudfyF4H5h73eMEEpFu+YNK9KOSja51WrCeP90CBl/kUbDjM07RO5irdLEAfBbzSUcWgLDZCgkkLWGa8i7YGPCLh1PzTFeVlXf/RY24QhZ6kn5BkQOX+cJcEh3fr9vszpyYsS1O8AwV9B15kOZutdKLQG6fa0/LZxYQhwA1nOf84Zl+lXqsDF7tJO7RQxCHJsFI+6Dt1dyTC6ETXbun8IylkIIb26QgUwuggN7NJlkAOV7IOJ2kivYLhFVLz1hW4ScpvwkrleX1m2usY5S9dAlZRO3UqMa73fJgoXoxZMeu/cNx3B55w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xywl0cRE7kq4q1dgu8cSh76YoAEBIbjHDpmqMj5n7H8=;
- b=Jop++RZTlOBiTbBttt5A7S+kolGoMKFDvdnzCG0JyEas0BrVX6+RFJxiTEQQsfkSsBLxfaF16kTuOTBjTojQfqrRUY6G77GSrGt2ok96iFuHthAHxNpHSD1awBrPjmhBtyDu3v+g4Be/JikQYGwITX91r93UOgIVPS2Q+bHrz7hiZo1M3L9tBILz0507o5UIXk7yZW1bf1ZQjF3Y/THvK4AzhKSQdC6kSvhhy50XVs2iZAJXwwOAjm+WzgTwotJHTOR2RHI77Oq5nH7Titjc47DmU8rP0PT7GBna/BUcbOKeWgtAmWMHT4HZbPy8368UMI6Lu/5uAuAx4UvflRMqmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xywl0cRE7kq4q1dgu8cSh76YoAEBIbjHDpmqMj5n7H8=;
- b=4EO/ByEBhnw5OJQ9B6eCgdI1UU+qBKjR3RZwTkLEBvJ4fo2SxWd5OAS4EAXa/4F912zMkIVHBvistgxlnrnxTq7LGsmMeuypSGPgLljOWcr+vnx5vHnQBcbGqw+WQJE1JSk0nVpWIzjrBpsGVQF/7q+Zpg+1dOmlGPT2ED2eQrs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5874.namprd12.prod.outlook.com (2603:10b6:208:396::17)
- by MN0PR12MB6127.namprd12.prod.outlook.com (2603:10b6:208:3c5::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Tue, 24 Oct
- 2023 18:15:26 +0000
-Received: from BL1PR12MB5874.namprd12.prod.outlook.com
- ([fe80::7e38:5c00:e469:bde]) by BL1PR12MB5874.namprd12.prod.outlook.com
- ([fe80::7e38:5c00:e469:bde%6]) with mapi id 15.20.6907.030; Tue, 24 Oct 2023
- 18:15:26 +0000
-Message-ID: <4f53ddf7-f92b-84ed-046a-da2ac7a2cedd@amd.com>
-Date: Tue, 24 Oct 2023 13:15:24 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] docs: rust: add "The Rust experiment" section
-Content-Language: en-US
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Andrew Lunn <andrew@lunn.ch>,
- linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20231018160922.1018962-1-ojeda@kernel.org>
- <dcb9d0bb-67a3-2f50-9d17-251baa24b066@amd.com>
- <CANiq72kjbrU7gDOx6m+KY89B0YhAk0FQ8L9BvSXEF2UeYqP88w@mail.gmail.com>
-From: Carlos Bilbao <carlos.bilbao@amd.com>
-In-Reply-To: <CANiq72kjbrU7gDOx6m+KY89B0YhAk0FQ8L9BvSXEF2UeYqP88w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DM6PR06CA0060.namprd06.prod.outlook.com
- (2603:10b6:5:54::37) To BL1PR12MB5874.namprd12.prod.outlook.com
- (2603:10b6:208:396::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JFIA/tsm"
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 890CDD7D;
+	Tue, 24 Oct 2023 11:48:40 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b1e46ca282so4765953b3a.2;
+        Tue, 24 Oct 2023 11:48:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698173320; x=1698778120; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DFRAuWK32VTGr08EDsBUV/zh4O1jsXdg+48RuQhbEtQ=;
+        b=JFIA/tsmUdlZ1PiPIhtHARJSNTuDiZlV/kAp0Xeh2QHQHm2/ZLj8iZxtP1MduvwU/B
+         /t09e0YHwmQimj295PtaUENLJhMQ0QBN6s+7e5gMtjJ6q0kCGgFs+i/xJMNS0W1KSfk/
+         oNCSy/y89EKG3IZ5jlOsJZ2iXdAXmwyg6Hdjydhh3rgpte6IGDyZbL3I1wONayC2pJkl
+         02EKRIpCCRmzTIGg6//m4sRWAxDIJ90/Uhr89REe6k0ndPsRd12dgYta2U9OEIpWkg9I
+         zaCRnGv14G3KEMy4Cn91aQubZXqGME3VR8MFYjp509AeCim0dcftgUCz7Bmr0A1wp2FT
+         22bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698173320; x=1698778120;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DFRAuWK32VTGr08EDsBUV/zh4O1jsXdg+48RuQhbEtQ=;
+        b=bCw/kEFHADIBesASZLKTmQ3Q8WVCPKs11TEthb39HPXgSFSi6+ISmXuc0d6KftS76B
+         4HPsTxXgSPDFke+io5eg9YjOZF2ti3Fa2hyqnr4iYFlszowpGNLgs/EZ4FN0CB0c7ifU
+         LDIpqdJeL1Wu3snne1k34mcwKh87eBClBfoKVfF4Ih/we+g0k8/IQbrXGK/BXxf9nTbd
+         ZwiGycJRh4GHgo+Hxea2UOdt3CvA3O5v7twpCYIiIvHNr4/SCeIkw4sQzyvqhyFXtACh
+         WpKNEkioW94mLCT8OV7cCXT1lhs1PzxmQ9q7vqq9v7e/BTfrq69HEoJINyUe16XaT74z
+         0uaA==
+X-Gm-Message-State: AOJu0YxQ6xQahET/lQrLSVGskl8BKzh8h1qk9ktGyyeAUjW0wdJhNMR4
+	BCqtEdp2zu6PMlaqD02L0jc=
+X-Google-Smtp-Source: AGHT+IGYqlQhFzyXGwIJxZYzz10J32/aPAHvTNFD/mHPn6Cz/ujm1FsJgr5vpKqfqwNFp0i0LrBu2A==
+X-Received: by 2002:a05:6a21:1448:b0:16b:c725:1dc with SMTP id oc8-20020a056a21144800b0016bc72501dcmr3160186pzb.35.1698173319867;
+        Tue, 24 Oct 2023 11:48:39 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id h1-20020a625301000000b006be484e5b9asm8297905pfb.188.2023.10.24.11.48.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Oct 2023 11:48:39 -0700 (PDT)
+Message-ID: <cd0eb23b-6c46-4069-ba29-9820c99b8ca8@gmail.com>
+Date: Tue, 24 Oct 2023 15:48:33 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5874:EE_|MN0PR12MB6127:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc90a391-98ba-4162-bb40-08dbd4bd3279
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	y1jQUPVzntJ2yo9b+qTICLQVT7MJRe25+jI2EVCkaThaH6BroQQYbuh5cVjIf6/wMTAQ+SGE3jKvMOPEhS5Whe7QMRzJws5RwI/1H3eyEoaNv71+G4k0Hw+rLHYcUNmHcSE/SH6FFHAJMjRohvSfMdkSYati9roRfRH4mcghxmOCo8ibcStT07FL4NrK+vMLtECumOdJhV5EGRwgP1TGBIuMfu1I5fYYULMdtimaSKTst8+OAL2WWH1SWRRvkscR6R+eYnuuGxyFckn+nrxHInKYCttxTvyKwbDi6psoAG034ReShINw+KO0EoICs1tCwMksIU+monFXKD3ItOZ0ELZF/dvDEY9PbX41f52tK6Xzdeuw+DFEWAXHBcwXyCbM6IKMeGBXhLqKEpU9K/cgP0H7gDc1IVfBT3mk0CoAbr3gPRNga4QBOpd7Rw9KDx2ndsTZDEVbqf4gZisdGLl6qFh4T443VA7rGjehnSjc/9Q9p9j2xdmHnKtLCAMO925uxsblrnIXcAZXhhyJc+mFjLJWhPNxlnjS1Et/ncHlqipANL4+BNdBZrXz1gai7q3TJqiiNiHNhKs944iKC6JNeVQFFn7P3NunMhCLfFpa/h1HT4XPAPkRXJOIyZrt488BkAJq0Vcz+U+B65xDfCL/ZA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5874.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(346002)(376002)(396003)(39860400002)(230922051799003)(64100799003)(186009)(1800799009)(451199024)(6506007)(6512007)(53546011)(6486002)(26005)(478600001)(54906003)(66946007)(316002)(66476007)(6916009)(66556008)(31686004)(86362001)(38100700002)(2616005)(36756003)(31696002)(4326008)(8936002)(41300700001)(8676002)(44832011)(7416002)(2906002)(5660300002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T0tLeEJpUUxMcmN2RmZ4TWxQaGs4UVJZK2lnQTNOQThhdUhMRzlEaDhLSU9U?=
- =?utf-8?B?MGRja0JwelJFWlJhZ2xQY2EreDdIQnpLSlNxS2laWktySU5MR2hmL2R4ODUv?=
- =?utf-8?B?UzNFSFVDWE01QUJPTWt6VndXYlBwakZrSkVXb2QzdllsQk8xeHp0Zkl4R096?=
- =?utf-8?B?eEZpWXdLVTFpTDUxVGlscTc5ZlRHalhwZ0NJNWdNdE1oTmF4RGhyQWc0aFNq?=
- =?utf-8?B?K1N4SjlmY3BJQ0ptTUd6QWZRcE4vK2F2NUIwc3QvRHk1YXZENUVxakNnc3Bm?=
- =?utf-8?B?WCt1MVFsbW5MTFFnbHdvTHBGS3F0WE9QRFZkSzdxVjhVSVRHTlJ6SzNrSldW?=
- =?utf-8?B?WjExZWFRdnRaZXFzQjIraU5HcnAyUmg2SmVuRTI3M2JLNUw4a3lJdGczS2Ja?=
- =?utf-8?B?SERCUm52b2tWMytzYnI0SS8wVG82S1BpSzRrd3dZRURJR3F2MStCc1Q3WXpG?=
- =?utf-8?B?YWVSaGhaRzZxOThveXlMd3NDZ0RPcEtSWE1PK3F1UURCTDdzVVpnMnNWVHd3?=
- =?utf-8?B?SlNEZjJzZEg1Z2hZQUVWUUtheHRpTjBkZXhrU3FGT1Z0M2oyQ2I4WUFkNm1N?=
- =?utf-8?B?YWhFMERoR1dEYnY0YnRGcnptL01GY29JZnc4elRSWXpYVGFMREhEVWQ3djFl?=
- =?utf-8?B?cWEwYmZKZjh6T3RqVklhNitMbXVkSkw0RU5Wb01pSEsrQ1lRZE5Nb3FKWXE4?=
- =?utf-8?B?c3YzZEJUM3pOYlZkUklvcWVLVkNac2JxMU9HMnpWbG5YNHhINjdQayswbEE3?=
- =?utf-8?B?dzdFdkpTU0N0RjNLUWx1WEppQVVxNHJWeFJCczRMbldNUFNPU0FObXg3bXIr?=
- =?utf-8?B?eGdPVUpMeTl1MTVRM1FUVlFSTmlqRWlybmlwTlBZSVFGTElOV3JvRmxXelBB?=
- =?utf-8?B?b2QrVFM2VEErV3p3VHo1MFFvaVpBUkE2OGs0UWJEdVJhYjhEL2pqTExRSlA1?=
- =?utf-8?B?WmZhYjZTWHh5OU5YYnpyT1UraVZBdUpMRm9ZMWR1TVk3eUcrYk92VjJGZ2Rx?=
- =?utf-8?B?NHRlV25zd3BJM3IzUTUvRGJOaGdFMElzQUVuYXcyUHBBaXJwcE1PY2l2L1RN?=
- =?utf-8?B?ZUpaVWpxSHhveFcvbkp0RkZsN1BjSlRPM0JsQXpxN2ZaWXVTNXhndS9XbTZa?=
- =?utf-8?B?WVNRaDFZTllGcnZVejJvc3c4cDNHOUJUSmlpMnhwd3BNbWtWM3pGaEc0RVRQ?=
- =?utf-8?B?ckEwbWlWVGZ0UFV4c09yeEJWOTQ2T1E5dXkwM3paZmRDUDRpVXNqaW5LdTkx?=
- =?utf-8?B?SHozdE82SGdTenBqdlBLN1hFamZxSXpXK0tlcnU5UzdWRXQwOWJQWExDMDNm?=
- =?utf-8?B?M1JDcUJwdW1vOUlLMVQ3VTljS0JKWDdHZU1wSTdoa0FHTzkzM0c5S2xwK3V1?=
- =?utf-8?B?US9JZnZMelhGU2F6cURsSFNkU1Y5dEtPcHNDYUZlemFRajFpYWVLYytsd3Rh?=
- =?utf-8?B?czdMWS9SMHVlekRqQkFZNnk1a1hwd3ZpakZLSkZzeTRPNDJPcjNPM2E2L05D?=
- =?utf-8?B?YjBIbDFiN2RNcndWZzg4akdrVG1SV2dMNVFNTDVXd1hTSmxyOURHZU9EZjJl?=
- =?utf-8?B?emxoKzN4SHZGaU00ZVFYUXNSMlVLbjlhclhVdnE5bEpCYXdzc3pMVEhvaGtu?=
- =?utf-8?B?eEMzaDJLRC9wNnBhUTBXV2Y5dFF4b1RacWlycnN6MXVZTjJjUGlSd3ZUZ0FK?=
- =?utf-8?B?KzlvbW5ySHl0REVkZnZxSkdJK1I5dEdYa3o4YkFIdnV4NFFNYUJuZTI3Mzho?=
- =?utf-8?B?TlVVbHordzVsSDdjbGZqSW0wYis4RTNTdWdNL0Vtb0Q4R005UHdBRGJXQk9G?=
- =?utf-8?B?TG9Nejhybjc4amR1WVJyNVhpdXpPaktYUTFMS1FrelRKYlNqc2x6Vkx1MGQ1?=
- =?utf-8?B?QWpERVNFL05QbFN5QXpja3d6eG1tMXVxcTF3ckhBRThoaEgxTHh3Yk80Q0pa?=
- =?utf-8?B?OWVScWF5a2FGS1NZU3Iyd2pLdVFQV2VRV0ZXYkRXZDU3S3JpZVh2c2FwRmVu?=
- =?utf-8?B?Q2FZRDNWM290ajBNbnNlZEpJTnltbjlRTjhNdjlIcHlvR3EySGJCUmxZeWl3?=
- =?utf-8?B?c2dyUm5aUWlHckRTV3pDMUpraXRtdW1Rc25JZEJORUJHQjAxcTZraW54WTFj?=
- =?utf-8?Q?0xVJ4RACGq6Q/wdw2HXbKQDKv?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc90a391-98ba-4162-bb40-08dbd4bd3279
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5874.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2023 18:15:26.5609
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FdFrywpbAOboHtCv7RJgZwQxYTcqHIrEgm4JEqWLMhe3/+UJcSABpUAkz9Kwj82aIMpCn1lQbAY4bTdnwGlYuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6127
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] x86/rust: depend on !RETHUNK
+Content-Language: en-US
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, x86@kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20231023174449.251550-1-ojeda@kernel.org>
+ <20231023174449.251550-3-ojeda@kernel.org>
+ <f53536ca-ec5b-4cdc-a340-e9c739ee30c4@gmail.com>
+ <CANiq72nTE_qua9w+EeqiPCukst4876Gi7gHeusFLofYZRoJCDw@mail.gmail.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <CANiq72nTE_qua9w+EeqiPCukst4876Gi7gHeusFLofYZRoJCDw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 10/24/23 04:16, Miguel Ojeda wrote:
-> On Mon, Oct 23, 2023 at 4:34 PM Carlos Bilbao <carlos.bilbao@amd.com> wrote:
+On 10/23/23 19:15, Miguel Ojeda wrote:
+> On Mon, Oct 23, 2023 at 8:43 PM Martin Rodriguez Reboredo
+> <yakoyoku@gmail.com> wrote:
 >>
->> Personally, I would rephrase this to:
->>
->> "Please note that, as an end user, there are currently no in-tree drivers
->> or modules suitable or intended for production use."
+>> I'll mention that I've tested boots, both in bare metal and QEMU, with
+>> `RUST=y` and `RETHUNK=y` and they were alright regardless of `objtool`
+>> warnings. Although, if you had an issue in the past then I'd like to know
+>> about it.
 > 
-> Yeah, I think the "yet" -> "currently" change helps, so I took it. I
-> haven't changed the "if" to "as" because some readers are not really
-> end users but kernel developers/maintainers, so I think it could be a
-> bit confusing.
+> These are mitigations -- things do functionally work if they are not
+> applied, but you would be vulnerable.
 > 
->> I think this will be helpful.
->>
->> Reviewed-by: Carlos Bilbao <carlos.bilbao@amd.com>
-> 
-> Thanks! I have changed the paragraph to this, can I still use your
-> `Reviewed-by`?
-
-Yes, that's perfect.
-
-> 
->    If you are an end user, please note that there are currently no in-tree
->    drivers/modules suitable or intended for production use, and that the Rust
->    support is still in development/experimental, especially for certain kernel
->    configurations.
+> In other words, it is not like e.g. IBT where you could have noticed
+> it breaking by running it normally if you happened to have a supported
+> platform.
 > 
 > Cheers,
 > Miguel
 
-Thanks,
-Carlos
+'Guess you have a point...
+
+Acked-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
