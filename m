@@ -1,57 +1,60 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3576B12B78
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 11:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CB82033F
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 12:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="pNm7UBDP"
-Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2107.outbound.protection.outlook.com [40.107.121.107])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B6CFE;
-	Tue, 24 Oct 2023 04:24:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Q/PX/KXc"
+Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2135.outbound.protection.outlook.com [40.107.121.135])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEBF3AC;
+	Tue, 24 Oct 2023 05:54:57 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SSFlsNgXW24MJ9h4eXD97sM5v9fCwvUgod8lLGu837V11MGVUbIDDetqdcpa/MPDSxpt3InNWR1AG+wZA3zGwJA/VL6yNH3eNGulzxAm2hHv/TUUQCXqniVsR0XQU7vM1CR/Crfp9/OAbO5JafVZ2EdLwJaoXL7HVTGvSOtI0mRHMtKJbDj2LLtkl4JY/ndcWp2ed/p/dD4o656CBm1tZavZGYl/Oz5ta0ipBp/OA40FFWHrwb1gEnH3JeV5mIQhSabnHJA33DeBlKoeulysy99nGv5vJGstKW4bV/wdvBNWgCxgXxj18OGWRu4/Ww/0GnfpeGOu6+xnvyhqkmFTMw==
+ b=Ez8alrB9izFeNxDO/e7WVbsDdEtR/UNqlGf4cvQ7nqQy/v2SBsc/Zi/iLgkB6uFimEutqrUu9guGBvnM6R7E520bcCz7WqigyX+qVZ6hy+DRQK5J0b1Ydvx6RhhKHauGURa06TL5DVbee3r7jVLz2Q5rLt2JInHvz9G1UZu8D656GiVGv9WRQtt/hydNyowqqzNCRPThiWaH4P+N7V7OLysRcXofaLrAALWT/Olc0V23nwp/sF96eAKqMDJau33rz4O9vqEeXZXvwud/wHezqr0LGow3DClCkIG4UrZxaf1zZHi6vHLHMUCLHNPznAYoWEXxr2t8VCOryOy7RGyeZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JAYQfY9DfQeZ8+GcppYXBrRnxAoSBIwx+Tv5+6g1exw=;
- b=HDYG8XkruusyVbFv3GEclEnjne0zfr45KgQjHuATJ/lYPZfmC3fXIO/BeN0zvzh6y7j1mw8KHudzIyL1InFuzBmLEILTta9HkFAWTSisqiDazR2eBhq+WPBmubx+5lbPeNU+YWH2vpKWf7LuV0ofN+KKizb2T82D8KurpdHZa8KKl1VjO7CDL2qNJ1bL5bNzWoKdgtGiB1KPpDSyepNN808HmbI3lS6ABuHD0CwEDvE/hzsbOSbSeY6Mc9Ll889HlIf4xSUlTK7zRvOKHv22kCI9rHsW+v7n05ht7ia3AJYQkr1j8dE9JVUR/yHsKO+7WSAZzK+Ha5gLajnX0nnNaA==
+ bh=bH4TUAkmJB8ZpWgOzu+hyrttw/cx+f+zZ0Ot0Grp/q0=;
+ b=T4DhBKeY735C/cX+s9raaxTpNAN0mgzd8TypRRGsN3Q076OO/ggLEUpy6o/b57kIUAm4Q69xDCctdtFRPj/5BghIWSClLo0OuDPTAYaN+BZc7O4Mq88EHJ/QPuoTku/z4Np4FXj7PqzIXwK1EVyTOe3cTl+8uEGO1y4CAVyRDYcOwNpI2BNCGZMwzCoXoumwOOkmqzs+UzIKijIXjTBCp/9X3smFpUYu3YykvJHh0+75fuRtL3hfZLmUTvSj7TNWXkFzHmUpE5irEsgA1h9RDkeBONLBlpHAhcVk6WwlChQMOS6yO9YcubRiV0gJHhkr8nMSUfJkLViSMOCUfZRaAw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JAYQfY9DfQeZ8+GcppYXBrRnxAoSBIwx+Tv5+6g1exw=;
- b=pNm7UBDP22PVGUxhdF1z3zl8mX1wTjT2dqqYwOkeBjq+7f5uuw3eGcLHqNXWNTX0R5JDP0FO8DhBt90YrQSPD2EpHqUNR+3zQYp6Y9G52jKXc02XAAyYsIhnFpo8ZXSTjeUfzx7IU6CUER8+Af5gDTsHogDqQ289xPmSH47Wt2w=
+ bh=bH4TUAkmJB8ZpWgOzu+hyrttw/cx+f+zZ0Ot0Grp/q0=;
+ b=Q/PX/KXciGYXSsgu8qUwNFQO/aH8tG1CDDPXxsjmvQIaiVL81msccObD5eRDQ1aMatmQtmqXAKSQ0bYRww6pBAoyGwG4zt0rTJUzGCBP2hcPPGmVnfv/W5nw9KJ/i+tGs69O/CGSPYEqzLIh5RDKebEWQNj7rNs+twS3A+BZBhE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:15f::14)
- by LO2P265MB5856.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:268::11) with
+ by CWLP265MB6877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f9::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26; Tue, 24 Oct
- 2023 11:24:26 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Tue, 24 Oct
+ 2023 12:54:55 +0000
 Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6af2:36f2:4aa:6e43]) by CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6af2:36f2:4aa:6e43%6]) with mapi id 15.20.6907.032; Tue, 24 Oct 2023
- 11:24:26 +0000
-Date: Tue, 24 Oct 2023 12:24:23 +0100
+ 12:54:55 +0000
+Date: Tue, 24 Oct 2023 13:54:52 +0100
 From: Gary Guo <gary@garyguo.net>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
  <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas
- Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-Message-ID: <20231024122423.383ea1bb@eugeo>
-In-Reply-To: <20231019171540.259173-1-benno.lossin@proton.me>
-References: <20231019171540.259173-1-benno.lossin@proton.me>
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, FUJITA
+ Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH] rust: macros: update 'paste!' macro to accept string
+ literals
+Message-ID: <20231024135452.223d8d85@eugeo>
+In-Reply-To: <20231008094816.320424-1-tmgross@umich.edu>
+References: <20231008094816.320424-1-tmgross@umich.edu>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0248.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:350::8) To CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO2P265CA0461.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a2::17) To CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:400:15f::14)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -60,164 +63,110 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB5186:EE_|LO2P265MB5856:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dfa16f7-801d-4c23-8906-08dbd483c7b5
+X-MS-TrafficTypeDiagnostic: CWLP265MB5186:EE_|CWLP265MB6877:EE_
+X-MS-Office365-Filtering-Correlation-Id: e52f65b2-45a9-4bd2-be95-08dbd4906bb2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	bazps4AwFhuUCDJKizZXT4XtxXjuCcmyJbfUEY6x83F0dWtztGFUHeiASkkGW2lIpCh1QW769f35/DfanlcYvuTo0fe/CzpwXFkGj3cS+jkPCubf6XXXEvAzOdxSLLBLMR0bbvlUNFpSccxVybYT0h07cwo/fdbw56WWjWnhZ9WwTXeMBFrygkRixBLPbPk77t13vh88A+IwONS5nxW/PWGeEgSzGn8tyFHGl9z95pSCMaZlqcB0HZhnEVgPUrv5V8kpVc4UHqEXPhVZRvjKzR/gLZMPWqGDdzbgBTU6pUI9vxEAsesHdXjwwaoyRyV+DCt5CIDRTEgRThFyhTZDm2aALIc+ZAjvW81QTGkupZQlFszfnqDTVb+yg0J2PHM3oL5oChKNbZIFkiulVXv9kDSmp9c09xKRZ7DrXs6w6tnhpUW/beFaEm/oSqionUAmxiyWDfjUO7Krh6F2BFMLrOVkNiEdZwBzfV/WnCXrCQHSuX7kPTSeoWOPODIIMxFRFRdTHeWF7K4pscjgeM+QVa6rlZ69xlX2K2U0LubrZZu2z9zPnqp8SOwSz0LuSmoW
+	hBHmTL3OGO2R3SkJsHbjm3syM8aFYS99l7509jhohZuhIT+FhtfpjAeLPgpJOI1ObwBU5LVo8ER7MI02k7XwWeLA5IT8Ix/PhfW4gTUpEXJy76oqNvc13Wm9jBZxhoc77QLGU8ZkZc0wm9L59dpztyj/7Otcb34eA9Wm48gqmtBlPALcnWte6FZ7mwAo3zUxXcHe1w+O3IojUqTGGPWaevc+xodMaAZxM4nyLFDzBkytoW5IU4qy8Rgpgd6lKVUFe1CLhMd79a8WrSK7Cgc0RGQJtk00mmo1OF3qMqrBobcT523tK4O0KwbmB9pvm6KMtLFcW2HNc7m1eCAZFkVUeUOvKfBnIpWX6kBI/7JBiuo8JhkbxrSkRsfQ5+I8FzUx5jJldNwqds+intPAoYUWJECDl+bV/JMNMqqDr5YBuHisbPtLSxk9zJyQ0PEBSn+U/5llK0kZwubTX19yaBeBjtxi0GTarqxnj9OCJQIxnwD1cfegr2228ur9zmPSDFlZ6jNG6eNVopZ1OKaUyy4yP0FSQIwVtrxMiqpCw07vQGE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(136003)(346002)(396003)(39830400003)(376002)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(2906002)(7416002)(54906003)(316002)(6916009)(6512007)(86362001)(66946007)(9686003)(66556008)(66476007)(38100700002)(6506007)(33716001)(6666004)(6486002)(478600001)(83380400001)(4326008)(1076003)(26005)(41300700001)(5660300002)(8676002)(8936002);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(39830400003)(136003)(366004)(396003)(346002)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(26005)(33716001)(38100700002)(41300700001)(2906002)(86362001)(5660300002)(7416002)(8936002)(8676002)(4326008)(6506007)(1076003)(478600001)(6666004)(66946007)(66476007)(54906003)(6916009)(316002)(66556008)(83380400001)(6486002)(966005)(9686003)(6512007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xfI0cZQHHSzsuVgW3dFACN2KL0nMs8cxlxUi1gvqkUq41m9+Wi9KV/hbfDc4?=
- =?us-ascii?Q?UBKhLHFQCRtM9FLwhf/84tFrwBL/VLpIvpGydHCnLerNvkm4c1T4EvERd7I9?=
- =?us-ascii?Q?03r44JAvNXvpRH8gezH0a0M89nObTGDhz3KxfCvmb1/8kzDJgk/S+XYXwUaS?=
- =?us-ascii?Q?m418fz0ftjIbghWKVk/8nQhuHXndXpzGdVYwK0+G8/zFnro34Cku4Jlo/172?=
- =?us-ascii?Q?AJdNKLmi82YQ2owgWFqRaLCp3dbc0x7rYCsslhAqKEmTkOSJJYB+KrqiGxd8?=
- =?us-ascii?Q?HxU1gFtXZxyinHz3KXb2vW0SvzowPyOFzcON9ku9IhzV8s6D1gMuIJgbNeag?=
- =?us-ascii?Q?UYDqWXsNJiADhpk3/hcHt1Or1kWuJb4C+KTX64qRIcXBdSQZLO8MIZxpYlkj?=
- =?us-ascii?Q?cxlI4NRyk2cWn9HSYGLw5uZq29/vyrh4cFsx0e492qdLqVcEmKO3P/+h8Plc?=
- =?us-ascii?Q?jYUGLfNHRF6+UnTtF7lGcNJcI8thRoq3bvdxSjDlx4iQ1r2E4+xJPzQ5bKmZ?=
- =?us-ascii?Q?6Hc6+83X7O+4fSJg4AVUtTSRnWJ11UNoPj5oIDUkWZA1+2RI0ib6uzmpKHz2?=
- =?us-ascii?Q?WJ4dI4tq4ofQafhyevdTSX/jKan5Jx3FdHAPqZEuZcDCTYfr9+ox7+J1ouJw?=
- =?us-ascii?Q?E9DQqyB4w1nY5ekJD2ZW1H/w/GKXqAXA6xJKHo1lHkVN71qURXDpQqTCGZEl?=
- =?us-ascii?Q?IGJ3H65nX0ly8oI/vTiMTjtXBy67yOBd+U4UsI5kD4rD3hmESNqZOD+8GAYK?=
- =?us-ascii?Q?8VK5KU5YZnhL4iFwtFrd/rzkZ11/Tbwvhu8OSV0BGPSON6WQLhX/a9iG8Eg7?=
- =?us-ascii?Q?o6zMn0eBn26vcwTonnvEIN0FOr9BXOuTup4ajmLzql5mU7HA/gfa5mp9VD2e?=
- =?us-ascii?Q?AD9a0VqGp9VTg9LebW4qhluEz4dZ5gZplz9Ts149+PVfXBEI6vOlSuI+qFqr?=
- =?us-ascii?Q?R2wmLeMx2Nhdv0S0xd9/Md9vHBEHD0Wv0cmQkJA7/epRAD63ihfNKFVtttdb?=
- =?us-ascii?Q?mxZHkuvpyJOz8TLibPJQocj7JSLJmlcF0P4o/SDKCzvyYhfBTXfHjmg9WI+4?=
- =?us-ascii?Q?OqMzIJ3ViHQDPfIEM1j64SpBHha98W6/b1Ck0SZErAxq5mYqlhb/iVwFupce?=
- =?us-ascii?Q?8vT//V5AWIOfBt2vG/0dWRtlIyq/iIeljIDX1xmMFX1ZUCV0biV/+X9G3oew?=
- =?us-ascii?Q?IfZfEeS2GloWBHFmsWQC4D6MwUaHV/j2u9opvz8bn9QjpWc5w4ScrMm06OZ9?=
- =?us-ascii?Q?KngG9q9EPGo652Lm6XoPghuGX1+tZ2HSLudUDGZat71/qQkV3ZYhbeRTnMM+?=
- =?us-ascii?Q?nNzdwL0tm6Pk6oBvqrGt9ufHqwOt5LYhVP6TQo8T+ngowDVORGLV8wZX8A0E?=
- =?us-ascii?Q?kBAbOhzUWmXUWfsUE1scR7EoLZnYU4gOjaaz0oz4moIJZ9gX5HpzxmCxErYi?=
- =?us-ascii?Q?V+0NXzGb7cu8GcLRdPRNo2eI1XlTejdsmxYFSa8mBlIdK07Pauv4DHGgdVoz?=
- =?us-ascii?Q?SOhbFPjSjS4dWCA68/5SWYrEl/K4glQBwuvo4cFTx/rDIYRxEm8ESaSu94jH?=
- =?us-ascii?Q?+1YQSPJ6tvcz4bVebORjwJVpIurES3sCMM0fMTBq?=
+	=?us-ascii?Q?VeM/wipxsDTPMX5iNHdVccGXss+fvOjvaom23KQS1nPDLF57RqEQc9yo2RGj?=
+ =?us-ascii?Q?QvcMEIrKLELx1PwZ0ZXKDc4kQkSRhjDyzaVwnvYTbkrp1JIiBbxdj8O2EmZL?=
+ =?us-ascii?Q?pTyp/fw/6Rzfqpi7zY2QnfcnGucy2ew5TtZg1HPWWN24Enr98vpTNXc/MSy5?=
+ =?us-ascii?Q?zuDajrxP9oRkZ8KAJhEbxn0YHeqjGDWkNfMuKJ/DNf9vmMq6IMusgBeXAUNy?=
+ =?us-ascii?Q?HkxH1rYUoKFEhS6xRi7yvqPEe6sJzu2t5KKsso3715r3gCYeQy6hK3hbZNjJ?=
+ =?us-ascii?Q?y4i/IZIiTfQvZ/d96JV5d/+KPc07tgrKUiXzchU1PA+KiouKKrjdWen0VP6m?=
+ =?us-ascii?Q?ZxXxiSMDPGl+nX9kCxHrPACov9xwomZlWUD18rjmpkEI2aoSTKO5TploW8HT?=
+ =?us-ascii?Q?m+mfk5Cn5RK0mgbDJu9HpdD6XWYSc9UrEjSwozV/hA8eYmIDcNv7OT22N73T?=
+ =?us-ascii?Q?qAVNdXfDLokM9mnwSQ+EGAgWWWO8U2UwxDTJ4l2HB8WXSjZu2IP3i8c01VOJ?=
+ =?us-ascii?Q?9FY3z7dK6bdd40ibr8rJk8yjMyeaZzlzTGlcxki0bvDZBgs/K+TmMAiwvHz3?=
+ =?us-ascii?Q?NGxl80D+IsETG+SF46hPVmwh+m1/Z41RAiqcV1FH9aDpgKUjTI66fGNxsxOp?=
+ =?us-ascii?Q?A5HnbOA+7s7AbF+pNUvyG/UQuQmLYNhmEIL668Hphi3+86K8Ppj8oO2kAecE?=
+ =?us-ascii?Q?TcGoIWoKGVBSXGzYM2g79mvuPLinPp3jduNhjqXqLtTl1xE4HWbbVzEfluQB?=
+ =?us-ascii?Q?+RdXFxUMpJ5Cw4MRjaYdL3MaimqxBTvSL9y73wBLemKKOwYCc/3oGT+C0qdF?=
+ =?us-ascii?Q?vD+UQG8VnO1wVqHyClHvh7Xtzv8mlkw2NEjwgGg9kRBaLL+VfxWFk0CQAktu?=
+ =?us-ascii?Q?+4+nTMlub32Ib5Of3FHjGl/zWEN/646en3E+jg2IEG7//Zhx0ApCA44aEzHY?=
+ =?us-ascii?Q?A7jwfp28WDauHYT/h5DLYq8o/Ch9YrbAkAMUUT1zSXyD2h3gj9mi3rCLfDNz?=
+ =?us-ascii?Q?st7x4zaPG4DQAt13fRaw4Jr9cRlMXtNwrYCeJXCzXYmMyUd0TGJNmoHEoAxv?=
+ =?us-ascii?Q?o2rE/24Ofc0Pc2x4K8RtGgFhv9jjekQ7ubcJYdTaER+x/Wney+Nn5qYOVKJb?=
+ =?us-ascii?Q?YVfmj+mGMm3M2ENHnwGYAm4QhYu1i09ygnjxYh0j7CpjEoa3hQxUrJfg2NZB?=
+ =?us-ascii?Q?6fuVAlAXfm4wA45kwYznMTCtdZmFpaWEubfdjGoArCtAgGV4Pp7ZAxSKkenM?=
+ =?us-ascii?Q?jGldj9Ww01THhvF5p1hZHlti7XQBIgLAsL2Y/2qHvYDatYyiVMQVOftSagQy?=
+ =?us-ascii?Q?XGocDb0yVj+l6xD9AhE3rc0rDJ8Fpv4v/mBl5E4V2u5tBI0gqXHH9taUIenx?=
+ =?us-ascii?Q?4iFDpNh0Jw3h9nQj4U6VKeCnM8C1PD0/r/66h0S8lZ7N4SL/JLBcm7K7dve+?=
+ =?us-ascii?Q?hmF/IkzzQTJHtr0htab4vHJeS60m8I2c4cjW8k1m2C4ITfo6C9RBDCsGh19s?=
+ =?us-ascii?Q?CibfcwsFNeNrZquonbXAezX5Wh2s4/hspqWn5PDaWINTjmGys38KzmKB22VO?=
+ =?us-ascii?Q?JjE6A0NYikwloXFHwZGcYUv3J+r256/rP2oB/IYp?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dfa16f7-801d-4c23-8906-08dbd483c7b5
+X-MS-Exchange-CrossTenant-Network-Message-Id: e52f65b2-45a9-4bd2-be95-08dbd4906bb2
 X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2023 11:24:26.1079
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2023 12:54:55.2456
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GN5IsK7zRWTyC5+JcBQVJdr7EytR67QVdhtBKUsfrZIwrIiKmMoWV/IPTtCimMmBnMN4HxS2WQskcQ3P1dV7vA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5856
+X-MS-Exchange-CrossTenant-UserPrincipalName: Qtd1xtbOrIIe7iC/rtEgD9xivJv9pItMbvzBke7a7lrWE6QdqhQ856hjia7o+tRhnNyG6sH9xprx93kGVa1JIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6877
 
-On Thu, 19 Oct 2023 17:15:53 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+On Sun,  8 Oct 2023 05:48:18 -0400
+Trevor Gross <tmgross@umich.edu> wrote:
 
-> Traits marked with `#[vtable]` need to provide default implementations
-> for optional functions. The C side represents these with `NULL` in the
-> vtable, so the default functions are never actually called. We do not
-> want to replicate the default behavior from C in Rust, because that is
-> not maintainable. Therefore we should use `build_error` in those default
-> implementations. The error message for that is provided at
-> `kernel::error::VTABLE_DEFAULT_ERROR`.
+> Enable combining identifiers with string literals in the 'paste!' macro.
+> This allows combining user-specified strings with affixes to create
+> namespaced identifiers.
 > 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> This sample code:
+> 
+>     macro_rules! m {
+>         ($name:lit) => {
+>             paste!(struct [<_some_ $name _struct_>];)
+>         }
+>     }
+> 
+>     m!("foo_bar");
+> 
+> Would previously cause a compilation error. It will now generate:
+> 
+>     struct _some_foo_bar_struct_;
+> 
+> Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Signed-off-by: Trevor Gross <tmgross@umich.edu>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
-> v1 -> v2:
-> - removed imperative mode in the paragraph describing optional
->   functions.
 > 
->  rust/kernel/error.rs |  4 ++++
->  rust/macros/lib.rs   | 32 ++++++++++++++++++++++++--------
->  2 files changed, 28 insertions(+), 8 deletions(-)
+> Original mention of this problem in [1]
 > 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 05fcab6abfe6..1373cde025ef 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -335,3 +335,7 @@ pub(crate) fn from_result<T, F>(f: F) -> T
->          Err(e) => T::from(e.to_errno() as i16),
->      }
->  }
-> +
-> +/// Error message for calling a default function of a [`#[vtable]`](macros::vtable) trait.
-> +pub const VTABLE_DEFAULT_ERROR: &str =
-> +    "This function must not be called, see the #[vtable] documentation.";
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index c42105c2ff96..daf1ef8baa62 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -87,27 +87,41 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// implementation could just return `Error::EINVAL`); Linux typically use C
->  /// `NULL` pointers to represent these functions.
->  ///
-> -/// This attribute is intended to close the gap. Traits can be declared and
-> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associated constant
-> -/// will be generated for each method in the trait, indicating if the implementor
-> -/// has overridden a method.
-> +/// This attribute closes that gap. A trait can be annotated with the `#[vtable]` attribute.
-> +/// Implementers of the trait will then also have to annotate the trait with `#[vtable]`. This
-> +/// attribute generates a `HAS_*` associated constant bool for each method in the trait that is set
-> +/// to true if the implementer has overridden the associated method.
-> +///
-> +/// For a function to be optional, it must have a default implementation. But this default
-> +/// implementation will never be executed, since these functions are exclusively called from
-> +/// callbacks from the C side. This is because the vtable will have a `NULL` entry and the C side
-> +/// will execute the default behavior. Since it is not maintainable to replicate the default
-> +/// behavior in Rust, the default implementation should be:
-> +///
-> +/// ```compile_fail
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
-> +/// kernel::build_error(VTABLE_DEFAULT_ERROR)
-
-Note that `build_error` function is considered impl detail and is
-hidden. This should use the macro version instead:
-
-kernel::build_error!(VTABLE_DEFAULT_ERROR)
-
-Actually, the string here provides little use other than documentation,
-since the string provided to build_error is only visible in const eval,
-so this you might just omit that and write
-
-kernel::build_error!()
-
-> +/// ```
-> +///
-> +/// note that you might need to import [`kernel::error::VTABLE_DEFAULT_ERROR`].
->  ///
-> -/// This attribute is not needed if all methods are required.
-> +/// This macro should not be used when all function are required.
->  ///
->  /// # Examples
->  ///
->  /// ```ignore
-> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
->  /// use kernel::prelude::*;
->  ///
->  /// // Declares a `#[vtable]` trait
->  /// #[vtable]
-> -/// pub trait Operations: Send + Sync + Sized {
-> +/// pub trait Operations {
->  ///     fn foo(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  ///
->  ///     fn bar(&self) -> Result<()> {
-> -///         Err(EINVAL)
-> +///         kernel::build_error(VTABLE_DEFAULT_ERROR)
->  ///     }
->  /// }
->  ///
-> @@ -125,6 +139,8 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  /// assert_eq!(<Foo as Operations>::HAS_FOO, true);
->  /// assert_eq!(<Foo as Operations>::HAS_BAR, false);
->  /// ```
-> +///
-> +/// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VTABLE_DEFAULT_ERROR.html
->  #[proc_macro_attribute]
->  pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
->      vtable::vtable(attr, ts)
+> [1]: https://lore.kernel.org/rust-for-linux/20231008.164906.1151622782836568538.fujita.tomonori@gmail.com/
 > 
-> base-commit: a7135d10754760f0c038497b44c2c2f2b0fb5651
+>  rust/macros/paste.rs | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
+> index 385a78434224..f40d42b35b58 100644
+> --- a/rust/macros/paste.rs
+> +++ b/rust/macros/paste.rs
+> @@ -9,7 +9,15 @@ fn concat(tokens: &[TokenTree], group_span: Span) -> TokenTree {
+>      loop {
+>          match tokens.next() {
+>              None => break,
+> -            Some(TokenTree::Literal(lit)) => segments.push((lit.to_string(), lit.span())),
+> +            Some(TokenTree::Literal(lit)) => {
+> +                // Allow us to concat string literals by stripping quotes
+> +                let mut value = lit.to_string();
+> +                if value.starts_with('"') && value.ends_with('"') {
+> +                    value.remove(0);
+> +                    value.pop();
+> +                }
+> +                segments.push((value, lit.span()));
+> +            }
+>              Some(TokenTree::Ident(ident)) => {
+>                  let mut value = ident.to_string();
+>                  if value.starts_with("r#") {
 
