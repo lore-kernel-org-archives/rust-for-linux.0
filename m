@@ -1,172 +1,130 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CB82033F
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 12:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A433E2773A
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Oct 2023 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Q/PX/KXc"
-Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2135.outbound.protection.outlook.com [40.107.121.135])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEBF3AC;
-	Tue, 24 Oct 2023 05:54:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ez8alrB9izFeNxDO/e7WVbsDdEtR/UNqlGf4cvQ7nqQy/v2SBsc/Zi/iLgkB6uFimEutqrUu9guGBvnM6R7E520bcCz7WqigyX+qVZ6hy+DRQK5J0b1Ydvx6RhhKHauGURa06TL5DVbee3r7jVLz2Q5rLt2JInHvz9G1UZu8D656GiVGv9WRQtt/hydNyowqqzNCRPThiWaH4P+N7V7OLysRcXofaLrAALWT/Olc0V23nwp/sF96eAKqMDJau33rz4O9vqEeXZXvwud/wHezqr0LGow3DClCkIG4UrZxaf1zZHi6vHLHMUCLHNPznAYoWEXxr2t8VCOryOy7RGyeZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bH4TUAkmJB8ZpWgOzu+hyrttw/cx+f+zZ0Ot0Grp/q0=;
- b=T4DhBKeY735C/cX+s9raaxTpNAN0mgzd8TypRRGsN3Q076OO/ggLEUpy6o/b57kIUAm4Q69xDCctdtFRPj/5BghIWSClLo0OuDPTAYaN+BZc7O4Mq88EHJ/QPuoTku/z4Np4FXj7PqzIXwK1EVyTOe3cTl+8uEGO1y4CAVyRDYcOwNpI2BNCGZMwzCoXoumwOOkmqzs+UzIKijIXjTBCp/9X3smFpUYu3YykvJHh0+75fuRtL3hfZLmUTvSj7TNWXkFzHmUpE5irEsgA1h9RDkeBONLBlpHAhcVk6WwlChQMOS6yO9YcubRiV0gJHhkr8nMSUfJkLViSMOCUfZRaAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bH4TUAkmJB8ZpWgOzu+hyrttw/cx+f+zZ0Ot0Grp/q0=;
- b=Q/PX/KXciGYXSsgu8qUwNFQO/aH8tG1CDDPXxsjmvQIaiVL81msccObD5eRDQ1aMatmQtmqXAKSQ0bYRww6pBAoyGwG4zt0rTJUzGCBP2hcPPGmVnfv/W5nw9KJ/i+tGs69O/CGSPYEqzLIh5RDKebEWQNj7rNs+twS3A+BZBhE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:15f::14)
- by CWLP265MB6877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f9::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Tue, 24 Oct
- 2023 12:54:55 +0000
-Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6af2:36f2:4aa:6e43]) by CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6af2:36f2:4aa:6e43%6]) with mapi id 15.20.6907.032; Tue, 24 Oct 2023
- 12:54:55 +0000
-Date: Tue, 24 Oct 2023 13:54:52 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, FUJITA
- Tomonori <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH] rust: macros: update 'paste!' macro to accept string
- literals
-Message-ID: <20231024135452.223d8d85@eugeo>
-In-Reply-To: <20231008094816.320424-1-tmgross@umich.edu>
-References: <20231008094816.320424-1-tmgross@umich.edu>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0461.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a2::17) To CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:15f::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LhSTlCJL"
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7F7C4;
+	Tue, 24 Oct 2023 07:18:18 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9be02fcf268so661954666b.3;
+        Tue, 24 Oct 2023 07:18:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698157097; x=1698761897; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=k2PK1fU8QWuwhD6iIY5Em92nwMiyyUjXYffcjg6qNGA=;
+        b=LhSTlCJLitHnBYmOH79Q1bEk63DIg8DPmf4NeJD+mTr2MV79+L/9ENzUDh/N0QUDWA
+         v2O8N0c1lCH1XduMXtsJHAaw5QOkMLNTE5zLCdMKOo73xyxznBozRBKMJO3h9lQKzTeJ
+         DZevPU1jKwlkykGoDbCKPK+NNK+vSIhHqI78Xecsw51B1edhBSUKzaxp+Csj4jT1pXB8
+         XHRsm7ISisDKoxn1a9EjsU8mRZVYoSkuaNAMFKgWRgXZ2fPkxz5/y7aN3crE0KQVI6Y+
+         QKCTP7RJo3gGtXfuNECLvjGytALzOx93PUOUlXF2sUuSWTQLZY096H5ZFd5d2ryPhjRb
+         +yaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698157097; x=1698761897;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=k2PK1fU8QWuwhD6iIY5Em92nwMiyyUjXYffcjg6qNGA=;
+        b=uJ0VOgQhJtD3CsKx5NYzFfAEeCWIsvFL/KVM4goOm1wNoFEBSD6xLbzXBVT2M8Pctc
+         qCwGZbELWQS+TyK3BfVLHMQLDwiwbmuOoge3MqSr/x3c2kX6ub8ahvQWEFQLpSLthIvR
+         rLxBlGU5TVe4xccpK6M4U2RPyI4OlfDjEesBR67dWjp5hjfE+X/3NrdvG4OULhZUgLJq
+         qASKDWrKasqdE8Z90chRgvTvlQ5a/Euy96QvtkIl/qgjRqSPXQ6vBzOfu5IKCVQbt8wS
+         9JHqhCYunmtgt5f5OsS0mDAVJeV8gUZfBCH3RM+DLCEpgyYK3sUaF17GetzpKvfYYYof
+         wtUw==
+X-Gm-Message-State: AOJu0YyZbHegvGwNmtYwyHDyRSvnPN29HU9wh2WcxgeopFfiMFzLH3Eq
+	SKNUvMF+8cJlHvvVXPMUPyQeTtAFBNWGFi9ghANz0/4ltk1T
+X-Google-Smtp-Source: AGHT+IGBMOD8/0GagH9LdaLzB0aYbQMv1yqCrUSOzjESFzYdKqb3PjjAOJSYq92IFXqOfZ821NgeGfxdi6UgMT69VIg=
+X-Received: by 2002:a17:906:6a13:b0:9ae:74d1:4b45 with SMTP id
+ qw19-20020a1709066a1300b009ae74d14b45mr10412646ejc.65.1698157096776; Tue, 24
+ Oct 2023 07:18:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB5186:EE_|CWLP265MB6877:EE_
-X-MS-Office365-Filtering-Correlation-Id: e52f65b2-45a9-4bd2-be95-08dbd4906bb2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	hBHmTL3OGO2R3SkJsHbjm3syM8aFYS99l7509jhohZuhIT+FhtfpjAeLPgpJOI1ObwBU5LVo8ER7MI02k7XwWeLA5IT8Ix/PhfW4gTUpEXJy76oqNvc13Wm9jBZxhoc77QLGU8ZkZc0wm9L59dpztyj/7Otcb34eA9Wm48gqmtBlPALcnWte6FZ7mwAo3zUxXcHe1w+O3IojUqTGGPWaevc+xodMaAZxM4nyLFDzBkytoW5IU4qy8Rgpgd6lKVUFe1CLhMd79a8WrSK7Cgc0RGQJtk00mmo1OF3qMqrBobcT523tK4O0KwbmB9pvm6KMtLFcW2HNc7m1eCAZFkVUeUOvKfBnIpWX6kBI/7JBiuo8JhkbxrSkRsfQ5+I8FzUx5jJldNwqds+intPAoYUWJECDl+bV/JMNMqqDr5YBuHisbPtLSxk9zJyQ0PEBSn+U/5llK0kZwubTX19yaBeBjtxi0GTarqxnj9OCJQIxnwD1cfegr2228ur9zmPSDFlZ6jNG6eNVopZ1OKaUyy4yP0FSQIwVtrxMiqpCw07vQGE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(39830400003)(136003)(366004)(396003)(346002)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(26005)(33716001)(38100700002)(41300700001)(2906002)(86362001)(5660300002)(7416002)(8936002)(8676002)(4326008)(6506007)(1076003)(478600001)(6666004)(66946007)(66476007)(54906003)(6916009)(316002)(66556008)(83380400001)(6486002)(966005)(9686003)(6512007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VeM/wipxsDTPMX5iNHdVccGXss+fvOjvaom23KQS1nPDLF57RqEQc9yo2RGj?=
- =?us-ascii?Q?QvcMEIrKLELx1PwZ0ZXKDc4kQkSRhjDyzaVwnvYTbkrp1JIiBbxdj8O2EmZL?=
- =?us-ascii?Q?pTyp/fw/6Rzfqpi7zY2QnfcnGucy2ew5TtZg1HPWWN24Enr98vpTNXc/MSy5?=
- =?us-ascii?Q?zuDajrxP9oRkZ8KAJhEbxn0YHeqjGDWkNfMuKJ/DNf9vmMq6IMusgBeXAUNy?=
- =?us-ascii?Q?HkxH1rYUoKFEhS6xRi7yvqPEe6sJzu2t5KKsso3715r3gCYeQy6hK3hbZNjJ?=
- =?us-ascii?Q?y4i/IZIiTfQvZ/d96JV5d/+KPc07tgrKUiXzchU1PA+KiouKKrjdWen0VP6m?=
- =?us-ascii?Q?ZxXxiSMDPGl+nX9kCxHrPACov9xwomZlWUD18rjmpkEI2aoSTKO5TploW8HT?=
- =?us-ascii?Q?m+mfk5Cn5RK0mgbDJu9HpdD6XWYSc9UrEjSwozV/hA8eYmIDcNv7OT22N73T?=
- =?us-ascii?Q?qAVNdXfDLokM9mnwSQ+EGAgWWWO8U2UwxDTJ4l2HB8WXSjZu2IP3i8c01VOJ?=
- =?us-ascii?Q?9FY3z7dK6bdd40ibr8rJk8yjMyeaZzlzTGlcxki0bvDZBgs/K+TmMAiwvHz3?=
- =?us-ascii?Q?NGxl80D+IsETG+SF46hPVmwh+m1/Z41RAiqcV1FH9aDpgKUjTI66fGNxsxOp?=
- =?us-ascii?Q?A5HnbOA+7s7AbF+pNUvyG/UQuQmLYNhmEIL668Hphi3+86K8Ppj8oO2kAecE?=
- =?us-ascii?Q?TcGoIWoKGVBSXGzYM2g79mvuPLinPp3jduNhjqXqLtTl1xE4HWbbVzEfluQB?=
- =?us-ascii?Q?+RdXFxUMpJ5Cw4MRjaYdL3MaimqxBTvSL9y73wBLemKKOwYCc/3oGT+C0qdF?=
- =?us-ascii?Q?vD+UQG8VnO1wVqHyClHvh7Xtzv8mlkw2NEjwgGg9kRBaLL+VfxWFk0CQAktu?=
- =?us-ascii?Q?+4+nTMlub32Ib5Of3FHjGl/zWEN/646en3E+jg2IEG7//Zhx0ApCA44aEzHY?=
- =?us-ascii?Q?A7jwfp28WDauHYT/h5DLYq8o/Ch9YrbAkAMUUT1zSXyD2h3gj9mi3rCLfDNz?=
- =?us-ascii?Q?st7x4zaPG4DQAt13fRaw4Jr9cRlMXtNwrYCeJXCzXYmMyUd0TGJNmoHEoAxv?=
- =?us-ascii?Q?o2rE/24Ofc0Pc2x4K8RtGgFhv9jjekQ7ubcJYdTaER+x/Wney+Nn5qYOVKJb?=
- =?us-ascii?Q?YVfmj+mGMm3M2ENHnwGYAm4QhYu1i09ygnjxYh0j7CpjEoa3hQxUrJfg2NZB?=
- =?us-ascii?Q?6fuVAlAXfm4wA45kwYznMTCtdZmFpaWEubfdjGoArCtAgGV4Pp7ZAxSKkenM?=
- =?us-ascii?Q?jGldj9Ww01THhvF5p1hZHlti7XQBIgLAsL2Y/2qHvYDatYyiVMQVOftSagQy?=
- =?us-ascii?Q?XGocDb0yVj+l6xD9AhE3rc0rDJ8Fpv4v/mBl5E4V2u5tBI0gqXHH9taUIenx?=
- =?us-ascii?Q?4iFDpNh0Jw3h9nQj4U6VKeCnM8C1PD0/r/66h0S8lZ7N4SL/JLBcm7K7dve+?=
- =?us-ascii?Q?hmF/IkzzQTJHtr0htab4vHJeS60m8I2c4cjW8k1m2C4ITfo6C9RBDCsGh19s?=
- =?us-ascii?Q?CibfcwsFNeNrZquonbXAezX5Wh2s4/hspqWn5PDaWINTjmGys38KzmKB22VO?=
- =?us-ascii?Q?JjE6A0NYikwloXFHwZGcYUv3J+r256/rP2oB/IYp?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e52f65b2-45a9-4bd2-be95-08dbd4906bb2
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2023 12:54:55.2456
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qtd1xtbOrIIe7iC/rtEgD9xivJv9pItMbvzBke7a7lrWE6QdqhQ856hjia7o+tRhnNyG6sH9xprx93kGVa1JIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6877
+From: Pratham Patel <thefirst1322@gmail.com>
+Date: Tue, 24 Oct 2023 19:47:40 +0530
+Message-ID: <CAM+6MoE1DyOay-fMWQP0hsenz174hSuGJnKM7symh0C-y1mqZw@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
+To: boqun.feng@gmail.com
+Cc: Jamie.Cunliffe@arm.com, andrew@lunn.ch, catalin.marinas@arm.com, 
+	lina@asahilina.net, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, mturquette@baylibre.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, sboyd@kernel.org, steve.capper@arm.com, 
+	will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun,  8 Oct 2023 05:48:18 -0400
-Trevor Gross <tmgross@umich.edu> wrote:
+On Fri, 20 Oct 2023 11:33:10 -0700, Boqun Feng wrote:
+> FWIW, I tried the following:
+>
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 8784284988e5..b697c2d7da68 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -227,7 +227,7 @@ config ARM64
+>         select HAVE_FUNCTION_ARG_ACCESS_API
+>         select MMU_GATHER_RCU_TABLE_FREE
+>         select HAVE_RSEQ
+> -       select HAVE_RUST if CPU_LITTLE_ENDIAN
+> +       select HAVE_RUST
+>         select HAVE_STACKPROTECTOR
+>         select HAVE_SYSCALL_TRACEPOINTS
+>         select HAVE_KPROBES
+> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+> index 4562a8173e90..4621f1e00e06 100644
+> --- a/arch/arm64/Makefile
+> +++ b/arch/arm64/Makefile
+> @@ -41,7 +41,11 @@ KBUILD_CFLAGS        +=3D -mgeneral-regs-only  \
+>  KBUILD_CFLAGS  +=3D $(call cc-disable-warning, psabi)
+>  KBUILD_AFLAGS  +=3D $(compat_vdso)
+>
+> +ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
+> +KBUILD_RUSTFLAGS +=3D --target aarch64_be-unknown-linux-gnu -C target-fe=
+ature=3D"-neon"
+> +else
+>  KBUILD_RUSTFLAGS +=3D --target aarch64-unknown-none -C target-feature=3D=
+"-neon"
+> +endif
+>
+>  KBUILD_CFLAGS  +=3D $(call cc-option,-mabi=3Dlp64)
+>  KBUILD_AFLAGS  +=3D $(call cc-option,-mabi=3Dlp64)
+>
 
-> Enable combining identifiers with string literals in the 'paste!' macro.
-> This allows combining user-specified strings with affixes to create
-> namespaced identifiers.
-> 
-> This sample code:
-> 
->     macro_rules! m {
->         ($name:lit) => {
->             paste!(struct [<_some_ $name _struct_>];)
->         }
->     }
-> 
->     m!("foo_bar");
-> 
-> Would previously cause a compilation error. It will now generate:
-> 
->     struct _some_foo_bar_struct_;
-> 
-> Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Signed-off-by: Trevor Gross <tmgross@umich.edu>
+This comes from a nobody (quite literally my first email on the kernel
+mailing list), but I would rather that the support for AArch64 BE be
+not added at all. My reasoning for this is because the rustc target
+`aarch64_be-unknown-linux-gnu` is in the tier 3 of support. More
+details can be found in the official documentation [0], but a few,
+**select** key points from that section:
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+> At this tier, the Rust project provides no official support for a target,=
+ so we place minimal requirements on the introduction of targets.
 
-> ---
-> 
-> Original mention of this problem in [1]
-> 
-> [1]: https://lore.kernel.org/rust-for-linux/20231008.164906.1151622782836568538.fujita.tomonori@gmail.com/
-> 
->  rust/macros/paste.rs | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-> index 385a78434224..f40d42b35b58 100644
-> --- a/rust/macros/paste.rs
-> +++ b/rust/macros/paste.rs
-> @@ -9,7 +9,15 @@ fn concat(tokens: &[TokenTree], group_span: Span) -> TokenTree {
->      loop {
->          match tokens.next() {
->              None => break,
-> -            Some(TokenTree::Literal(lit)) => segments.push((lit.to_string(), lit.span())),
-> +            Some(TokenTree::Literal(lit)) => {
-> +                // Allow us to concat string literals by stripping quotes
-> +                let mut value = lit.to_string();
-> +                if value.starts_with('"') && value.ends_with('"') {
-> +                    value.remove(0);
-> +                    value.pop();
-> +                }
-> +                segments.push((value, lit.span()));
-> +            }
->              Some(TokenTree::Ident(ident)) => {
->                  let mut value = ident.to_string();
->                  if value.starts_with("r#") {
+> Tier 3 targets should attempt to implement as much of the standard librar=
+ies as possible and appropriate (core for most targets, alloc for targets t=
+hat can support dynamic memory allocation, std for targets with an operatin=
+g system or equivalent layer of system-provided functionality), but may lea=
+ve some code unimplemented (either unavailable or stubbed out as appropriat=
+e), whether because the target makes it impossible to implement or challeng=
+ing to implement. The authors of pull requests are not obligated to avoid c=
+alling any portions of the standard library on the basis of a tier 3 target=
+ not implementing those portions.
 
+I am not an owner of any AArch64 BE machines, but if I were, this
+would be concerning to _me_. I would prefer waiting for the Rust side
+to be a bit more stable, at least in tier 2 support, for adding
+AArch64 BE support. Though from the user of the Linux kernel, it may
+not be that much of an issue, but from a developer's and packager's
+perspective, this will lead to a few wasted hours until the
+metaphorical person figures out why said Rust code failed to build for
+AArch64 BE.
+
+[0]: https://doc.rust-lang.org/rustc/target-tier-policy.html#tier-3-target-=
+policy
+
+P.S. This is my first time sending an email to a mailing list, sorry
+if I mucked something up.
