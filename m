@@ -1,105 +1,194 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C089D2D610
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 02:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C05168C0
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 07:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELrs+b1Q"
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D20BA10D5;
-	Tue, 24 Oct 2023 19:01:55 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so751471a12.1;
-        Tue, 24 Oct 2023 19:01:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698199314; x=1698804114; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GM5rExFFAkHF7RtOeKmV3ULAewVErHQqCo+hgEVi4RA=;
-        b=ELrs+b1Q0EA3DqOPVXTS28zAClNcEOzMuAUYl6yTuBKg9SQP7OnY6MLof9tQ0DgUQv
-         mIs5YOLVbI14gBxQXUoZqWsU7Cxr11SP5e9DyJy6RFDoJP/KUTs76C7q/R2l3xzB25kU
-         qnUHDzEdcqXMz7bK9oFqh0YafDjDMansZWcgVGZCGl4hj5mSF5CXuIZLXpD7tuhPRNyX
-         vHxavCKPsxEyQohbjwPPzNiykE3XlzZG8lrAdZv6U/OyKE7e2BamhiifY0gOAQ+lVJiS
-         qZx7VRGEtA4xy0t0/xsNnke9tuk9+R/r5TVs8QESlCjkEEESakYDWyvUR6Bq1KFkNBws
-         i2Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698199314; x=1698804114;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GM5rExFFAkHF7RtOeKmV3ULAewVErHQqCo+hgEVi4RA=;
-        b=gJ8LpjAOVGGJXAJ5cmkmumm4U9iDFy1s34x2JCF6X7vkjTxdklgDWBYcROS79RuqE1
-         /Ut/6jtnTxeqCQoHj1YGjSuGWzI+2tpXRMnHQQff6jBLlPipSI+K4b8R3+hmtiNLkFm8
-         OfZJTFAY6APHNmG4eul5VEibKpEhOAZtDbw8umkiqVNPtbi1eKDF8YH2ZvLGWnezMMkY
-         jKv3J7OUQA3k/CW3moeKc017hpMdhvhBPg4qyoiM6gB0T4rA1YMZIF8jNqroO1I1o47F
-         1RM7XMgBfpaTJ7gM4fuf75+7v2ArdLM+Ja/seQ8aUlROMcccH/uqaQOE2HGYhVrZY6Z6
-         ivOQ==
-X-Gm-Message-State: AOJu0Ywi3b48Q5bfhCoZJO6RQQC20O5H0V6cIlxGkFwr1H5QcrzMZEYq
-	C7ThoK1UuX4LDvnXXVGFprMYDnUTNaej0awvvg==
-X-Google-Smtp-Source: AGHT+IF5wNjXCrU3e3AhnULwTZzACMqTHWJmcxngSuiAJ4OzxgmbLU15VCielhFiQyycbsVTC2YVJ3uRiPEmjWkMwUI=
-X-Received: by 2002:a17:906:6a13:b0:9ad:8a96:ad55 with SMTP id
- qw19-20020a1709066a1300b009ad8a96ad55mr16665902ejc.14.1698199314119; Tue, 24
- Oct 2023 19:01:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UdT00F8R"
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 864B399
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 00:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1698218662; x=1698477862;
+	bh=hLPUnAQmcv+2moapPNcEY4GyhmvLPh8pt/AJMsWAKHE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=UdT00F8RI5b96NFbHX2ffdLniDKZKSHBFYK4a4oseLKmITQQoGoUTn7Z1wS5OY9xd
+	 ONmyNaTHryLTqKswE0j1/8/pMBC0ktrypUmsGG85VZP0BpPEwkRHhcPAuf/2/e2Cdb
+	 4IX95UAB1sdc68gynVOqEDfKFZNhzNfC+LrjYXF9LrJ6Rn28eEP69Vntfq4lQKz6qM
+	 llG9Q0RBGT5a19hwQEXXvTVqUX/i7X2/GXNjWpbc/WJTV4DcdbOj5u4VZ8zHQQrIwN
+	 JIo0cS89lVkW8L6tN/NhWWhbJhz9F8Gbcft9P1WFaxieTpRrJ2L27UHxACjibxI+Oh
+	 jfXBwrrVdHWcQ==
+Date: Wed, 25 Oct 2023 07:24:00 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v6 1/5] rust: core abstractions for network PHY drivers
+Message-ID: <46b4ea56-1b66-4a8f-8c30-ecea895638b2@proton.me>
+In-Reply-To: <20231025.101046.1989690650451477174.fujita.tomonori@gmail.com>
+References: <20231024005842.1059620-1-fujita.tomonori@gmail.com> <20231024005842.1059620-2-fujita.tomonori@gmail.com> <1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me> <20231025.101046.1989690650451477174.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAM+6MoE1DyOay-fMWQP0hsenz174hSuGJnKM7symh0C-y1mqZw@mail.gmail.com>
- <CANiq72=LGW-7qMSFKs7ZLOfOGfJKJthR8nd06j-zfqSpZQY3zQ@mail.gmail.com>
-In-Reply-To: <CANiq72=LGW-7qMSFKs7ZLOfOGfJKJthR8nd06j-zfqSpZQY3zQ@mail.gmail.com>
-From: Pratham Patel <thefirst1322@gmail.com>
-Date: Wed, 25 Oct 2023 07:31:17 +0530
-Message-ID: <CAM+6MoFOF3CgP2pgRNcpSFdFtPA1V++JK3WURkFTfZdsR7aadA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: boqun.feng@gmail.com, Jamie.Cunliffe@arm.com, andrew@lunn.ch, 
-	catalin.marinas@arm.com, lina@asahilina.net, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	mturquette@baylibre.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	sboyd@kernel.org, steve.capper@arm.com, will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 24 Oct 2023 at 20:49, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
-> > but from a developer's and packager's
-> > perspective, this will lead to a few wasted hours until the
-> > metaphorical person figures out why said Rust code failed to build for
-> > AArch64 BE.
->
-> Why would the code fail to build? i.e. as far as I understand, Boqun
-> successfully compiled and QEMU-booted a BE image.
->
-> If you mean that it could stop compiling at any point because it is
-> not officially supported, then note that we pin the compiler, and that
-> it also applies to the rest of the code due to other unstable features
-> too, which is why we need to get the Rust project to support the
-> kernel properly for the use cases we need (not just targets, but also
-> features).
+On 25.10.23 03:10, FUJITA Tomonori wrote:
+> On Tue, 24 Oct 2023 16:23:20 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>=20
+>> On 24.10.23 02:58, FUJITA Tomonori wrote:
+>>> This patch adds abstractions to implement network PHY drivers; the
+>>> driver registration and bindings for some of callback functions in
+>>> struct phy_driver and many genphy_ functions.
+>>>
+>>> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=3Dy.
+>>>
+>>> This patch enables unstable const_maybe_uninit_zeroed feature for
+>>> kernel crate to enable unsafe code to handle a constant value with
+>>> uninitialized data. With the feature, the abstractions can initialize
+>>> a phy_driver structure with zero easily; instead of initializing all
+>>> the members by hand. It's supposed to be stable in the not so distant
+>>> future.
+>>>
+>>> Link: https://github.com/rust-lang/rust/pull/116218
+>>>
+>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>
+>> [...]
+>>
+>>> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+>>> new file mode 100644
+>>> index 000000000000..2d821c2475e1
+>>> --- /dev/null
+>>> +++ b/rust/kernel/net/phy.rs
+>>> @@ -0,0 +1,708 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>> +
+>>> +//! Network PHY device.
+>>> +//!
+>>> +//! C headers: [`include/linux/phy.h`](../../../../include/linux/phy.h=
+).
+>>> +
+>>> +use crate::{
+>>> +    bindings,
+>>> +    error::*,
+>>> +    prelude::{vtable, Pin},
+>>> +    str::CStr,
+>>> +    types::Opaque,
+>>> +};
+>>> +use core::marker::PhantomData;
+>>> +
+>>> +/// PHY state machine states.
+>>> +///
+>>> +/// Corresponds to the kernel's [`enum phy_state`](https://docs.kernel=
+.org/networking/kapi.html#c.phy_state).
+>>
+>> Please use `rustfmt`, this line is 109 characters long.
+>=20
+> Hmm, `make rustfmt` doesn't warn on my env. `make rustfmtcheck` or
+> `make rustdoc` doesn't.
 
-Yes, apologies for not clarifying it. I meant exactly that: the code
-would stop compiling if either the target was dropped for any reason,
-or supporting AArch64 BE would hold back upgrading the compiler for
-other architectures. Though, this is from a very high level overview.
-If you feel like this won't be an issue, I don't have any problems
-with this :)
+Sorry, my bad, `rustfmt` does not format comments, so you have to do
+them manually.
 
-> Also please note that, even if everything else was formally supported,
-> it would still be a good idea to add this support early (possibly with
-> a warning or gate or similar if not intended to be used by end users
-> yet) so that we have the first big-endian target around.
+> What's the limit?
 
+The limit is 100 characters.
 
-> > P.S. This is my first time sending an email to a mailing list, sorry
-> > if I mucked something up.
->
-> The content looks fine :)
->
-> However, I think the proper `In-Reply-To` header is not there so Lore
-> gets confused -- did you use the suggested parameters at the bottom of
-> e.g. [1]?
->
-> [1] https://lore.kernel.org/rust-for-linux/CAM+6MoE1DyOay-fMWQP0hsenz174hSuGJnKM7symh0C-y1mqZw@mail.gmail.com/
+>> Also it might make sense to use a relative link, since then it also
+>> works offline (though you have to build the C docs).
+>=20
+> /// Corresponds to the kernel's [`enum phy_state`](../../../../../network=
+ing/kapi.html#c.phy_state).
+>=20
+> 101 characters too long?
+>=20
+> Then we could write:
+>=20
+> /// PHY state machine states.
+> ///
+> /// Corresponds to the kernel's
+> /// [`enum phy_state`](../../../../../networking/kapi.html#c.phy_state).
+> ///
+> /// Some of PHY drivers access to the state of PHY's software state machi=
+ne.
 
-Yes, I appear to have missed copying the `In-Reply-To` header in this
-reply thread. Sorry about that.
+That is one way, another would be to do:
+
+/// PHY state machine states.
+///
+/// Corresponds to the kernel's [`enum phy_state`].
+///
+/// Some of PHY drivers access to the state of PHY's software state machine=
+.
+///
+/// [`enum phy_state`]: ../../../../../networking/kapi.html#c.phy_state
+
+But as I noted before, then people who only build the rustdoc will not
+be able to view it. I personally would prefer to have the correct link
+offline, but do not know about others.
+
+>>> +    /// Gets the current link state. It returns true if the link is up=
+.
+
+I just noticed this as well, here also please split the line.
+
+>>> +    pub fn get_link(&self) -> bool {
+>>> +        const LINK_IS_UP: u32 =3D 1;
+>>> +        // SAFETY: `phydev` is pointing to a valid object by the type =
+invariant of `Self`.
+>>> +        let phydev =3D unsafe { *self.0.get() };
+>>> +        phydev.link() =3D=3D LINK_IS_UP
+>>> +    }
+>>
+>> Can we please change this name? I think Tomo is waiting for Andrew to
+>> give his OK. All the other getter functions already follow the Rust
+>> naming convention, so this one should as well. I think using
+>> `is_link_up` would be ideal, since `link()` reads a bit weird in code:
+>>
+>>       if dev.link() {
+>>           // ...
+>>       }
+>>
+>> vs
+>>
+>>       if dev.is_link_up() {
+>>           // ...
+>>       }
+>=20
+> I'll go with is_link_up()
+>=20
+>=20
+>>> +    /// Gets the current auto-negotiation configuration. It returns tr=
+ue if auto-negotiation is enabled.
+>>
+>> Move the second sentence into a new line, it should not be part of the
+>> one-line summary.
+>=20
+> Oops, make one-line?
+>=20
+> /// Gets the current auto-negotiation configuration and returns true if a=
+uto-negotiation is enabled.
+>=20
+> Or
+>=20
+> /// Gets the current auto-negotiation configuration.
+> ///
+> /// It returns true if auto-negotiation is enabled.
+
+I would prefer this, since the function name itself already is
+pretty self-explanatory. If someone really wants to understand
+it, they probably have to read the source code.
+
+--=20
+Cheers,
+Benno
+
