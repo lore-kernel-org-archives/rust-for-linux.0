@@ -1,98 +1,87 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C28D8480
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 13:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE19C8EA
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 14:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hIktdwxp"
-Received: from mail-vk1-xa32.google.com (mail-vk1-xa32.google.com [IPv6:2607:f8b0:4864:20::a32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E7812A
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 06:30:08 -0700 (PDT)
-Received: by mail-vk1-xa32.google.com with SMTP id 71dfb90a1353d-49dd647a477so2094543e0c.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 06:30:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698240607; x=1698845407; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9FCfEKDsSxj0UbnaNrhG13AiQF2xaylJwEFbU7V7KMs=;
-        b=hIktdwxpd9E3a7a/b45fH2I/23koFstKRUL0OUVCY/6eEPeerRP8Sk0f+GP044xPj2
-         fM+6cmb8yqX7AXWr90cqddHS7krSZZerL5gWsAy2xNonzoCTWwN6RvZ+gAYK3gT6hjil
-         R0o+6KxKkSet9cDuNKgZJLOVEorn1vjyoWDg2nVQhiyD2MYZRqwPkk5LMladSs8MHiYr
-         QtCiaSd72ERGxRwIgLNazjmOr/JPeyl986oAbHU4u+c0c4sZM9oXq8C81uMgLQ7fmB/c
-         Y2p75VP372Ybhmd73h/xysJ9zHCbhfz37FQsGQGjng2wReEZah9glRoMYvgP5oirYbSR
-         caNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698240607; x=1698845407;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9FCfEKDsSxj0UbnaNrhG13AiQF2xaylJwEFbU7V7KMs=;
-        b=I5ZkXiyeHvuaGL3N6jLX20KGgiEUd3mexBUSosXITrufp5S3LWzowWTKZmgrpAmJt0
-         p50FS+/wULsBtb2HfVjkuDG/P/5Zq1FrvbGij44IeKNTGd4JbdMeGOuqEWCRv94A/vBC
-         2vo+4GxGopnj7n8oRaHqvxFJU/EHkCoMWUixzHlhcW/Ai1DGWCRVaoXlHUeFwpLYRDyd
-         u7OvLMxvOuN1t1n37vKdIpALb/KOI74nhGmFtbZqjzIHYzQP/cC1f9fogeslUCoUTZMp
-         NcgKYY/R3T94Bw0Bp3RSQb+9pmteqhTaKg5j3asDmSECNQusp2RPwFwH5CEZdRy9KvpK
-         Oorg==
-X-Gm-Message-State: AOJu0YwvM/7hIe3Q7fqXUvdIrrKpkYhHBu1Da+JS264uql8Pp2nrAWTh
-	u+JxzAS5UvUIxIQK1zvYKbraTweFJ87VS6AXt92KSg==
-X-Google-Smtp-Source: AGHT+IEZIO89GvjY7p6Onv9qJsiFS8XSTMJNgINxOt+FqqhdyaLpY0c4XnNgQgLeJNXkNJv6us7+wxUzs2ulyGkppzw=
-X-Received: by 2002:a05:6122:d0e:b0:49a:6742:b176 with SMTP id
- az14-20020a0561220d0e00b0049a6742b176mr14979846vkb.16.1698240607437; Wed, 25
- Oct 2023 06:30:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LE82qEIg"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB8318D
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 07:55:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1698245699; x=1698504899;
+	bh=HgfdZA+aX6ashpUW7mR1qIlhX8QoSG0tj5NOpoTVPHI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LE82qEIgmePO6sG/GOgBuqn9SjRCKaVeaGA/PRPr3bp/YS4c/A8QTWCHB5uOB/QaH
+	 yepMu8tGnuCurN6BTOh+pEXESkprwDF3ksfB4ph0mYc7t051oMT3ORAIpGcLJ5wdP2
+	 gRlaFeBxXQ/cFPRrNk9twFT6nb5CMZ8mUGsr0s5g4PqFTrSXwSIp09NAS7Lnp87HHa
+	 PYzkSx0nATke9gcjulqcX8rTY5AOJhVvHy0H4mQkVoz7QKZXAdR4TGcMZRYMYGZMVS
+	 lq5tV1TxJjqfVZbOsMUQ1gjhH3zuhuAJTBT0WLJEWv9QFCIshKz8hNaCi7/qc53u73
+	 YyMMu8ujvD9HA==
+Date: Wed, 25 Oct 2023 14:54:42 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v6 1/5] rust: core abstractions for network PHY drivers
+Message-ID: <f99c8f3b-95eb-4e68-af25-62a5a0a8de64@proton.me>
+In-Reply-To: <20231025.195741.1692073290373860448.fujita.tomonori@gmail.com>
+References: <1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me> <20231025.101046.1989690650451477174.fujita.tomonori@gmail.com> <46b4ea56-1b66-4a8f-8c30-ecea895638b2@proton.me> <20231025.195741.1692073290373860448.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231019171540.259173-1-benno.lossin@proton.me>
- <1cc11492-248e-4b37-9608-b475acde3da2@ryhl.io> <06d27457-6b6c-4392-9be1-d1fecfbfd9f3@proton.me>
-In-Reply-To: <06d27457-6b6c-4392-9be1-d1fecfbfd9f3@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 25 Oct 2023 15:29:56 +0200
-Message-ID: <CAH5fLgiT4A1jMcsUhPdnXZC0cd=GMWuwDmLjnAGxe55+9HBiJA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <alice@ryhl.io>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 23, 2023 at 9:01=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 21.10.23 14:45, Alice Ryhl wrote:
-> > On 10/19/23 19:15, Benno Lossin wrote:
-> >> Traits marked with `#[vtable]` need to provide default implementations
-> >> for optional functions. The C side represents these with `NULL` in the
-> >> vtable, so the default functions are never actually called. We do not
-> >> want to replicate the default behavior from C in Rust, because that is
-> >> not maintainable. Therefore we should use `build_error` in those defau=
-lt
-> >> implementations. The error message for that is provided at
-> >> `kernel::error::VTABLE_DEFAULT_ERROR`.
-> >>
-> >> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> >
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> > There is a minor nit below, and in reviews sent by others, but overall
-> > this looks fine to me.
-> >
-> >>    /// # Examples
-> >>    ///
-> >>    /// ```ignore
-> >> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
-> >>    /// use kernel::prelude::*;
-> > I probably wouldn't hide the import of VTABLE_DEFAULT_ERROR from this
-> > example.
->
-> What do you guys think of putting the const it in the prelude?
+On 25.10.23 12:57, FUJITA Tomonori wrote:
+> On Wed, 25 Oct 2023 07:24:00 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>=20
+>>> /// PHY state machine states.
+>>> ///
+>>> /// Corresponds to the kernel's
+>>> /// [`enum phy_state`](../../../../../networking/kapi.html#c.phy_state)=
+.
+>>> ///
+>>> /// Some of PHY drivers access to the state of PHY's software state mac=
+hine.
+>>
+>> That is one way, another would be to do:
+>=20
+> This looks nicer.
+>=20
+>> /// PHY state machine states.
+>> ///
+>> /// Corresponds to the kernel's [`enum phy_state`].
+>> ///
+>> /// Some of PHY drivers access to the state of PHY's software state mach=
+ine.
+>> ///
+>> /// [`enum phy_state`]: ../../../../../networking/kapi.html#c.phy_state
+>>
+>> But as I noted before, then people who only build the rustdoc will not
+>> be able to view it. I personally would prefer to have the correct link
+>> offline, but do not know about others.
+>=20
+> I prefer a link to online docs but either is fine by me. You prefer a
+> link to a header file like?
+>=20
+> /// [`enum phy_state`]:  ../../../include/linux/phy.h
 
-I think it's fine to just import it.
+No. I think the header file should be mentioned for the whole
+abstraction. I personally always use [1] to search for C symbols, so
+the name suffices for me. And the documentation is (for me at least)
+less accessible (if there is a nice tool for that as well, please tell me).
 
-Alice
+[1]: https://elixir.bootlin.com/linux/latest/source
+
+--=20
+Cheers,
+Benno
+
+
