@@ -1,33 +1,34 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967DB328A5
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 21:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A45286B0
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 21:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Yg1ptZ7I"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iRbIVns0"
 Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88DA8133
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 14:34:12 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8CC191
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 14:51:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1698269649; x=1698528849;
-	bh=uiUe6WVCm0aaHbhBXNo4kkWYKw5SBau4ovvcrSad9DA=;
+	s=protonmail; t=1698270694; x=1698529894;
+	bh=+mIMtJy5g/3pP0bfV4kNM3vtmyjGkqlYbw5iT4J0tl8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Yg1ptZ7Iu2gnfRFp2pWfcsbc7FROFS4YsR6RmgxZ2PNEyB71jVvLhP+ZgIt8dgDQ6
-	 Wkd0PpRGoBIhtXEaw8saacjcjyLckAafe7bLCpYpvXSmkUZg2WwWBhggxckLuC0jX6
-	 EugVoKUPe9Jfe/wp1BMqrYYobDUPRJdc2jazg7WbY7VwszxWMmAtIvZTH+l0GCKKv0
-	 4QpnPyQOjeTr9CLWNBACO0sE/PfpLuPf87DI1RTGI/BiS9S4jA++5lsu3Cxq7K+L/g
-	 8KzQHFk08/PFcGf8BXtX9MgUnYpBlaus8jPZBnt8zbO6uLaHyo2jAX1ULInJHjSsA8
-	 W30LQWeP2ztAA==
-Date: Wed, 25 Oct 2023 21:34:02 +0000
-To: Gary Guo <gary@garyguo.net>
+	b=iRbIVns0Dvfe0uo4iphsA8sVRHbI3fybSM6Y3MW1meOEMhMW3SdN9huZmKHpXxX2A
+	 oAK5DOYYJZdr4M/kC5NJ+cqGDRzHm0csHrZ4b6h6eWh/WH8RjXWL5YFH4eqIncxgIJ
+	 EDkHDM3DRwaW+RxWzN2/5QYQpFRbt83ITw/C427DwracoFThk79D0EYG8u3lo7UpQs
+	 FS7NOh7g+xWsN0rozPH61QKY3ppBd5gPVD4R5zuO4AN2dgdGKfGi97VAyLAaXJOs9/
+	 9+4MysEB0mgU9ipH7wCJyhJkoNKt1bVhQErSz7YIkKG7dA/2UiizCzBeuMdLrL5lPb
+	 nu1WNLGiBcOsQ==
+Date: Wed, 25 Oct 2023 21:51:28 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: macros: improve `#[vtable]` documentation
-Message-ID: <e3a2ff70-3d10-4c0f-a9f7-5dd07a198f8c@proton.me>
-In-Reply-To: <20231025201445.497f6ef4.gary@garyguo.net>
-References: <20231019171540.259173-1-benno.lossin@proton.me> <20231024122423.383ea1bb@eugeo> <5c8b516d-323e-4a0b-8b8a-c0f0aec38b06@proton.me> <20231025201445.497f6ef4.gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, Alexander Viro
+	<viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, kent.overstreet@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, Matthew Wilcox <willy@infradead.org>, Dave Chinner <david@fromorbit.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC] rust: types: Add read_once and write_once
+Message-ID: <VEhpQqgTM0U-aNYRUQ89ICIHW9Eehr66yw92DrmBZcZOah2mLqlz24HxEwDwYPVDOnaigDiZDEVl5mWqZJxoAtRheqTMjzpxuTKe0sr1uZs=@proton.me>
+In-Reply-To: <20231025195339.1431894-1-boqun.feng@gmail.com>
+References: <20231025195339.1431894-1-boqun.feng@gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -38,83 +39,151 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 25.10.23 21:14, Gary Guo wrote:
-> On Tue, 24 Oct 2023 14:43:30 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
+> In theory, `read_volatile` and `write_volatile` in Rust can have UB in
+> case of the data races [1]. However, kernel uses volatiles to implement
+
+I would not write "In theory", but rather state that data races involving
+`read_volatile` is documented to still be UB.
+
+> READ_ONCE() and WRITE_ONCE(), and expects races on these marked accesses
+
+Missing "`"?
+
+> don't cause UB. And they are proven to have a lot of usages in kernel.
 >=20
->> On 24.10.23 13:24, Gary Guo wrote:
->>> On Thu, 19 Oct 2023 17:15:53 +0000
->>> Benno Lossin <benno.lossin@proton.me> wrote:
->>
->> [...]
->>
->>>> -/// This attribute is intended to close the gap. Traits can be declar=
-ed and
->>>> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associa=
-ted constant
->>>> -/// will be generated for each method in the trait, indicating if the=
- implementor
->>>> -/// has overridden a method.
->>>> +/// This attribute closes that gap. A trait can be annotated with the=
- `#[vtable]` attribute.
->>>> +/// Implementers of the trait will then also have to annotate the tra=
-it with `#[vtable]`. This
->>>> +/// attribute generates a `HAS_*` associated constant bool for each m=
-ethod in the trait that is set
->>>> +/// to true if the implementer has overridden the associated method.
->>>> +///
->>>> +/// For a function to be optional, it must have a default implementat=
-ion. But this default
->>>> +/// implementation will never be executed, since these functions are =
-exclusively called from
->>>> +/// callbacks from the C side. This is because the vtable will have a=
- `NULL` entry and the C side
->>>> +/// will execute the default behavior. Since it is not maintainable t=
-o replicate the default
->>>> +/// behavior in Rust, the default implementation should be:
->>>> +///
->>>> +/// ```compile_fail
->>>> +/// # use kernel::error::VTABLE_DEFAULT_ERROR;
->>>> +/// kernel::build_error(VTABLE_DEFAULT_ERROR)
->>>
->>> Note that `build_error` function is considered impl detail and is
->>> hidden.
->>
->> I see, we should mention that in the docs on `build_error`.
+> To close this gap, `read_once` and `write_once` are introduced, they
+> have the same semantics as `READ_ONCE` and `WRITE_ONCE` especially
+> regarding data races under the assumption that `read_volatile` and
+
+I would separate implementation from specification. We specify
+`read_once` and `write_once` to have the same semantics as `READ_ONCE`
+and `WRITE_ONCE`. But we implement them using
+`read_volatile`/`write_volatile`, so we might still encounter UB, but it
+is still a sort of best effort. As soon as we have the actual thing in
+Rust, we will switch the implementation.
+
+> `write_volatile` have the same behavior as a volatile pointer in C from
+> a compiler point of view.
 >=20
-> Well, it's marked as `#[doc(hidden)]`...
-
-Yes, but I did not even build the docs, but read it directly
-inside of the `build_error` crate and thus I did not see the
-`#[doc(hidden)]`.
-
->>> This should use the macro version instead:
->>>
->>> kernel::build_error!(VTABLE_DEFAULT_ERROR)
->>
->> Is there a reason that it is a macro? Why is it re-exported in the
->> kernel crate? The macro could just use `::bulid_error::build_error()`.
+> Longer term solution is to work with Rust language side for a better way
+> to implement `read_once` and `write_once`. But so far, it should be good
+> enough.
 >=20
-> The original intention is to allow format strings, but Rust const
-> panic is not powerful enough to support it at the moment. Macro
-> allows higher flexibility.
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://doc.rust-lang.org/std/ptr/fn.read_volatile.html#safety [1]
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+>=20
+> Notice I also make the primitives only work on T: Copy, since I don't
+> think Rust side and C side will use a !Copy type to communicate, but we
+> can always remove that constrait later.
+>=20
+>=20
+>  rust/kernel/prelude.rs |  2 ++
+>  rust/kernel/types.rs   | 43 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 45 insertions(+)
+>=20
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index ae21600970b3..351ad182bc63 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -38,3 +38,5 @@
+>  pub use super::init::{InPlaceInit, Init, PinInit};
+>=20
+>  pub use super::current;
+> +
+> +pub use super::types::{read_once, write_once};
 
-That is what I thought. But should we then not always require a
-string literal? So
+Do we really want people to use these so often that they should be in
+the prelude?
 
-     kernel::build_error!("{}", VTABLE_DEFAULT_ERROR)
+Sure there will not really be any name conflicts, but I think an
+explicit import might make sense.
 
-> It's re-exported so the macro can reference them (note that downstream
-> crates can't reference build_error directly). Perhaps I should put it
-> inside __private_reexport or something instead.
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index d849e1979ac7..b0872f751f97 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
 
-I see, I did not know that they cannot reference build error directly.
-Is that some limitation of the build system? If it is possible to not
-re-export it, I think that would be better, otherwise just put it in
-`__private`.
+I don't think this should go into `types.rs`. But I do not have a good
+name for the new module.
 
---=20
+> @@ -432,3 +432,46 @@ pub enum Either<L, R> {
+>      /// Constructs an instance of [`Either`] containing a value of type =
+`R`.
+>      Right(R),
+>  }
+> +
+> +/// (Concurrent) Primitives to interact with C side, which are considere=
+d as marked access:
+> +///
+> +/// tools/memory-memory/Documentation/access-marking.txt
+> +
+
+Accidental empty line? Or is this meant as a comment for both
+functions?
+
+> +/// The counter part of C `READ_ONCE()`.
+> +///
+> +/// The semantics is exactly the same as `READ_ONCE()`, especially when =
+used for intentional data
+> +/// races.
+
+It would be great if these semantics are either linked or spelled out
+here. Ideally both.
+
+> +///
+> +/// # Safety
+> +///
+> +/// * `src` must be valid for reads.
+> +/// * `src` must be properly aligned.
+> +/// * `src` must point to a properly initialized value of value `T`.
+> +#[inline(always)]
+> +pub unsafe fn read_once<T: Copy>(src: *const T) -> T {
+
+Why only `T: Copy`?
+
+> +    // SAFETY: the read is valid because of the function's safety requir=
+ement, plus the assumption
+> +    // here is that 1) a volatile pointer dereference in C and 2) a `rea=
+d_volatile` in Rust have the
+> +    // same semantics, so this function should have the same behavior as=
+ `READ_ONCE()` regarding
+> +    // data races.
+
+I would explicitly state that we might have UB here due to data races.
+But that we have not seen any invalid codegen and thus assume there to
+be no UB (you might also want to write this in the commit message).
+
+--
 Cheers,
 Benno
 
-
+> +    unsafe { src.read_volatile() }
+> +}
+> +
+> +/// The counter part of C `WRITE_ONCE()`.
+> +///
+> +/// The semantics is exactly the same as `WRITE_ONCE()`, especially when=
+ used for intentional data
+> +/// races.
+> +///
+> +/// # Safety
+> +///
+> +/// * `dst` must be valid for writes.
+> +/// * `dst` must be properly aligned.
+> +#[inline(always)]
+> +pub unsafe fn write_once<T: Copy>(dst: *mut T, value: T) {
+> +    // SAFETY: the write is valid because of the function's safety requi=
+rement, plus the assumption
+> +    // here is that 1) a write to a volatile pointer dereference in C an=
+d 2) a `write_volatile` in
+> +    // Rust have the same semantics, so this function should have the sa=
+me behavior as
+> +    // `WRITE_ONCE()` regarding data races.
+> +    unsafe {
+> +        core::ptr::write_volatile(dst, value);
+> +    }
+> +}
+> --
+> 2.41.0
