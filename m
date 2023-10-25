@@ -1,320 +1,99 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A221E37159;
-	Wed, 25 Oct 2023 23:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF0B266BC;
+	Wed, 25 Oct 2023 23:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jXCfQ4Mk"
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB3CBB;
-	Wed, 25 Oct 2023 16:03:32 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d81d09d883dso196429276.0;
-        Wed, 25 Oct 2023 16:03:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="idxEv0GZ"
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30E4DE;
+	Wed, 25 Oct 2023 16:19:14 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6bcdfcde944so52394b3a.1;
+        Wed, 25 Oct 2023 16:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698275012; x=1698879812; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=61JSi82jmprMEy2wjLB3v55zpvhJh5bM0LopIsNdZBI=;
-        b=jXCfQ4MkgGZo0vVIaUkQGcBd881pWRRXMSrwxv/sCVleGYRejRAr87UbXvghsAPxHn
-         l3i0yypXGre04zp0ZRfEVy8Fmc8+khED2wJDIgRWowq2mBfQWtUCkiJy7vgSsoXwnsso
-         +za+35BYb2yeBGUzDoKB3VYs7+Oqpi80RryGtFaME5ulMd/9ByVYFJuEHC5X+yPIuVQl
-         PYQypJ6mPdz9Y5NxBX4IjjIXv4/5pb9IuKIdaB+63q4gBhFvHZNxE7u/LdX3DW5G9Lmp
-         In5Nzr2ce/PxOEnXw1ciR4y/5OXaqAd3dkwa3onqoe/gpI3hHwEbX8hiiOKN5bZBd8yH
-         ZpHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698275012; x=1698879812;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1698275954; x=1698880754; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=61JSi82jmprMEy2wjLB3v55zpvhJh5bM0LopIsNdZBI=;
-        b=TnkJ7udCbkcQL66SWDbbdCgGzyb0kXp5ZGNPMVcAq+waQ4EcSnYfe+hD/NdB0L3R6G
-         br+xf+bZcZ8SD57X6XJJTniSrrPNOUZlCxdMZHgtDHT98wlQ7pnYF48OI2BlEwOJ7+WP
-         XgRprXnjiYPg3FNoiB+ZXeR2IbLXTbHwy3Xv3vb4v8vAIJkxr86oy8VS4C4MvNUNgzPr
-         fD9MUEF45tXKjeFGWdLf4/awwYpmgRuopCCHLuEyNEu+EiE184FInLF/Gx8bGxaKt84V
-         xBgOgFzJFHqBZHUP74LGxJncB6G3Mlhc+ecMdX8AkLpSIo33j8KIhXbobsOms97lF4Xx
-         KyTQ==
-X-Gm-Message-State: AOJu0Yy28fr0NaeZHBnDjSDR3ZI0ebm1vyD8KK3ADoM3Fkwa1BXqFd2R
-	FrMQp9x4L84/E7BiMJ7W1eA=
-X-Google-Smtp-Source: AGHT+IHzO+kZQE6t+6SokT/XjMJiUdNBfvOO3vMCUbf3gh0kZ9vOkSrhSIeP9wvnukh1IIjW55IOtw==
-X-Received: by 2002:a25:cfc9:0:b0:da0:68a0:7cc6 with SMTP id f192-20020a25cfc9000000b00da068a07cc6mr3923847ybg.17.1698275011722;
-        Wed, 25 Oct 2023 16:03:31 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id m10-20020a258c8a000000b00d9a4aad7f40sm4722392ybl.24.2023.10.25.16.03.30
+        bh=eBIEEn8kYXOXlQ5FZ8ZKXcmFkULtjFrSQCuI8zWKuW0=;
+        b=idxEv0GZQGjRPG2wWLC0PzeoS8GB83jOj6Y8AsVRsJ3lfOA0XD0e3MgxdoENk7F8ca
+         wmq6fU3EKPP0YeV8Rt95aAEXCRngBOsFaYpmgTDENdoonD517Ni+NLE/kPcjtIC3jopa
+         2gIsHBkQo60Q/ZA1B5tFUc62HxXaq0I4SYjQAR/FMw6MMlofHTYe15/l6N1CmLkbbUP7
+         soklH39ju3O+xeCTUXu1nxo1HTIzPhETXiDIF/8SCE/YMWaA7lRq5CEcE3sXW4X8Dhid
+         YAss68a1Aq2umFVJ0Ugf2NV5myZ3zf4krzmuLOxMdvzUvQAxMAd/j4lH41G/EOQONoa2
+         q2cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698275954; x=1698880754;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eBIEEn8kYXOXlQ5FZ8ZKXcmFkULtjFrSQCuI8zWKuW0=;
+        b=dpL/e61dFv7eP7SAkq9nFyaaj2YzriBVP0SRdkMmWj10ITOkc/UjTB1/KV7XK5JQXX
+         /g4vkIiccFpTJuRutQEHQi4Tn6/sUbXTlDQpJz1BEFCFcEmlvMDKu3qva/BcxXJ9KEYm
+         BWyirOmSvO23r+LvtY+ppP8uw9EnOzVvAbvZuLQ6ganP5RTKxu1SGpm0Y7NvEspWpiWO
+         cX+H9NrR5l44zpQNEFEATGki33Yk0htg1MWV0plszgKIZlnaIJNidaT472uBVc/IYdZJ
+         zJbaDVd3LfnX/2BuhFJuAsE45KIkAlFZQGckrGhXDXYj92+46455zefirj6ZZF5LSKCk
+         9rqg==
+X-Gm-Message-State: AOJu0YxB2fREPzss3v3Wd9KD7J3L8EyipFgab2Z9Cts+liQ3LGgpqUim
+	uJ6nYy0vnv/q+qWjDPNUHwlIeOijXl44MAWd
+X-Google-Smtp-Source: AGHT+IFnOGvKql4F2nSoXjfKHHIm6+FZIbSYInNcOe7vnO98vxx23NnA/iZpSptDpGLE9swrYVfmnA==
+X-Received: by 2002:a05:6a20:8e19:b0:163:ab09:195d with SMTP id y25-20020a056a208e1900b00163ab09195dmr19244103pzj.0.1698275954200;
+        Wed, 25 Oct 2023 16:19:14 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id w3-20020aa79a03000000b006933f85bc29sm9918198pfj.111.2023.10.25.16.19.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 16:03:31 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 15D0227C005B;
-	Wed, 25 Oct 2023 19:03:30 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 25 Oct 2023 19:03:30 -0400
-X-ME-Sender: <xms:wZ45ZXhrsAQv86EZB20iNdVStWugNJLSiSs8UqlV8WOzkdpe3iscVg>
-    <xme:wZ45ZUCuQeq1Fm7OMN92dciAz3VWEIKPi3isoU5Jy_HhjiwzD_MfmO3hxdl73AXqq
-    a9wQ14E2glff84OkA>
-X-ME-Received: <xmr:wZ45ZXEJ5dqgov2_NYos_099EEN_Matr_EBjJtuXtODoXPxOeC9MHdFg1eE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrledugdduiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtugfgjgesthekrodttddtjeenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeelgfegfeehtdeftedvjeffffdutddtvdduvddutdeigfffheehjeeutdeu
-    keeuieenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
-    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
-    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:wZ45ZUT3D_EgD3vYO4rUAkdJ_hj7h1AKSYudX2jVrHUrRPsJrL5ACg>
-    <xmx:wZ45ZUwk5yKED0_O9mfPn1S6DyCpCrQEmzr1U-03ZkU6bGSLR_qkHw>
-    <xmx:wZ45Za5Y_WVxM_VIkdzobstZ76uBfYKYIPpNf_yGiTzqLqsPJg-8jQ>
-    <xmx:wp45ZVRw4Nc-eD9_tWFDJqqPeb_AOUnatoLTu8HK250Oa41qsU7erA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Oct 2023 19:03:28 -0400 (EDT)
-Date: Wed, 25 Oct 2023 16:02:45 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,	Tom Rix <trix@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Matthew Wilcox <willy@infradead.org>,	Dave Chinner <david@fromorbit.com>,
- linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC] rust: types: Add read_once and write_once
-Message-ID: <ZTmelWlSncdtExXp@boqun-archlinux>
-References: <20231025195339.1431894-1-boqun.feng@gmail.com>
- <VEhpQqgTM0U-aNYRUQ89ICIHW9Eehr66yw92DrmBZcZOah2mLqlz24HxEwDwYPVDOnaigDiZDEVl5mWqZJxoAtRheqTMjzpxuTKe0sr1uZs=@proton.me>
+        Wed, 25 Oct 2023 16:19:13 -0700 (PDT)
+Date: Thu, 26 Oct 2023 08:19:13 +0900 (JST)
+Message-Id: <20231026.081913.30894727187541245.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v6 1/5] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <f99c8f3b-95eb-4e68-af25-62a5a0a8de64@proton.me>
+References: <46b4ea56-1b66-4a8f-8c30-ecea895638b2@proton.me>
+	<20231025.195741.1692073290373860448.fujita.tomonori@gmail.com>
+	<f99c8f3b-95eb-4e68-af25-62a5a0a8de64@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <VEhpQqgTM0U-aNYRUQ89ICIHW9Eehr66yw92DrmBZcZOah2mLqlz24HxEwDwYPVDOnaigDiZDEVl5mWqZJxoAtRheqTMjzpxuTKe0sr1uZs=@proton.me>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 25, 2023 at 09:51:28PM +0000, Benno Lossin wrote:
-> > In theory, `read_volatile` and `write_volatile` in Rust can have UB in
-> > case of the data races [1]. However, kernel uses volatiles to implement
+On Wed, 25 Oct 2023 14:54:42 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
+
+>>> /// PHY state machine states.
+>>> ///
+>>> /// Corresponds to the kernel's [`enum phy_state`].
+>>> ///
+>>> /// Some of PHY drivers access to the state of PHY's software state machine.
+>>> ///
+>>> /// [`enum phy_state`]: ../../../../../networking/kapi.html#c.phy_state
+>>>
+>>> But as I noted before, then people who only build the rustdoc will not
+>>> be able to view it. I personally would prefer to have the correct link
+>>> offline, but do not know about others.
+>> 
+>> I prefer a link to online docs but either is fine by me. You prefer a
+>> link to a header file like?
+>> 
+>> /// [`enum phy_state`]:  ../../../include/linux/phy.h
 > 
-> I would not write "In theory", but rather state that data races involving
-> `read_volatile` is documented to still be UB.
+> No. I think the header file should be mentioned for the whole
+> abstraction. I personally always use [1] to search for C symbols, so
+> the name suffices for me. And the documentation is (for me at least)
+> less accessible (if there is a nice tool for that as well, please tell me).
 > 
+> [1]: https://elixir.bootlin.com/linux/latest/source
 
-Good point.
+Understood. I use links to the PHY header file like other Rust
+abstractions do.
 
-> > READ_ONCE() and WRITE_ONCE(), and expects races on these marked accesses
-> 
-> Missing "`"?
-> 
-
-Yeah, but these are C macros, and here is the commit log, so I wasn't so
-sure I want to add "`", but I guess it's good for consistency.
-
-> > don't cause UB. And they are proven to have a lot of usages in kernel.
-> > 
-> > To close this gap, `read_once` and `write_once` are introduced, they
-> > have the same semantics as `READ_ONCE` and `WRITE_ONCE` especially
-> > regarding data races under the assumption that `read_volatile` and
-> 
-> I would separate implementation from specification. We specify
-> `read_once` and `write_once` to have the same semantics as `READ_ONCE`
-> and `WRITE_ONCE`. But we implement them using
-> `read_volatile`/`write_volatile`, so we might still encounter UB, but it
-> is still a sort of best effort. As soon as we have the actual thing in
-> Rust, we will switch the implementation.
-> 
-
-Sounds good, I will use this in the next version.
-
-> > `write_volatile` have the same behavior as a volatile pointer in C from
-> > a compiler point of view.
-> > 
-> > Longer term solution is to work with Rust language side for a better way
-> > to implement `read_once` and `write_once`. But so far, it should be good
-> > enough.
-> > 
-> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> > Link: https://doc.rust-lang.org/std/ptr/fn.read_volatile.html#safety [1]
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > ---
-> > 
-> > Notice I also make the primitives only work on T: Copy, since I don't
-> > think Rust side and C side will use a !Copy type to communicate, but we
-> > can always remove that constrait later.
-> > 
-> > 
-> >  rust/kernel/prelude.rs |  2 ++
-> >  rust/kernel/types.rs   | 43 ++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 45 insertions(+)
-> > 
-> > diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> > index ae21600970b3..351ad182bc63 100644
-> > --- a/rust/kernel/prelude.rs
-> > +++ b/rust/kernel/prelude.rs
-> > @@ -38,3 +38,5 @@
-> >  pub use super::init::{InPlaceInit, Init, PinInit};
-> > 
-> >  pub use super::current;
-> > +
-> > +pub use super::types::{read_once, write_once};
-> 
-> Do we really want people to use these so often that they should be in
-> the prelude?
-> 
-
-The reason I prelude them is because that `READ_ONCE` and `WRITE_ONCE`
-have total ~7000 users in kernel, but now think about it, maybe it's
-better not.
-
-> Sure there will not really be any name conflicts, but I think an
-> explicit import might make sense.
-> 
-> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index d849e1979ac7..b0872f751f97 100644
-> > --- a/rust/kernel/types.rs
-> > +++ b/rust/kernel/types.rs
-> 
-> I don't think this should go into `types.rs`. But I do not have a good
-> name for the new module.
-> 
-
-kernel::sync?
-
-> > @@ -432,3 +432,46 @@ pub enum Either<L, R> {
-> >      /// Constructs an instance of [`Either`] containing a value of type `R`.
-> >      Right(R),
-> >  }
-> > +
-> > +/// (Concurrent) Primitives to interact with C side, which are considered as marked access:
-> > +///
-> > +/// tools/memory-memory/Documentation/access-marking.txt
-> > +
-> 
-> Accidental empty line? Or is this meant as a comment for both
-> functions?
-> 
-
-Right, it's the documentation for both functions.
-
-> > +/// The counter part of C `READ_ONCE()`.
-> > +///
-> > +/// The semantics is exactly the same as `READ_ONCE()`, especially when used for intentional data
-> > +/// races.
-> 
-> It would be great if these semantics are either linked or spelled out
-> here. Ideally both.
-> 
-
-Actually I haven't found any document about `READ_ONCE()` races with
-writes is not UB: we do have document saying `READ_ONCE()` will disable
-KCSAN checks, but no document says (explicitly) that it's not a UB.
-
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// * `src` must be valid for reads.
-> > +/// * `src` must be properly aligned.
-> > +/// * `src` must point to a properly initialized value of value `T`.
-> > +#[inline(always)]
-> > +pub unsafe fn read_once<T: Copy>(src: *const T) -> T {
-> 
-> Why only `T: Copy`?
-> 
-
-I actually explained this above, after "---" of the commit log, but
-maybe it's worth its own documentation? The reason that it only works
-with `T: Copy`, is that these primitives should be mostly used for
-C/Rust communication, and using a `T: !Copy` is probably wrong (or at
-least complicated) for communication, since users need to handle which
-one should be used after `read_once()`. This is in the same spirit as
-`read_volatile` documentation:
-
-```
-Like read, read_volatile creates a bitwise copy of T, regardless of
-whether T is Copy. If T is not Copy, using both the returned value and
-the value at *src can violate memory safety. However, storing non-Copy
-types in volatile memory is almost certainly incorrect.
-```
-
-I want to start with restrict usage.
-
-> > +    // SAFETY: the read is valid because of the function's safety requirement, plus the assumption
-> > +    // here is that 1) a volatile pointer dereference in C and 2) a `read_volatile` in Rust have the
-> > +    // same semantics, so this function should have the same behavior as `READ_ONCE()` regarding
-> > +    // data races.
-> 
-> I would explicitly state that we might have UB here due to data races.
-> But that we have not seen any invalid codegen and thus assume there to
-
-I'd rather not claim this (no invalid codegen), not because it's not
-true, but because it's not under our control. We have written doc in
-Rust says:
-
-```
-... so the precise semantics of what “volatile” means here is subject
-to change over time. That being said, the semantics will almost always
-end up pretty similar to C11’s definition of volatile.
-```
-
-, so we have some confidence to say `read_volatile` equals to a volatile
-read, and `write_volatile` equals to a volatile write. Therefore, we can
-assume they have the same behaviors as `READ_ONCE()` and `WRITE_ONCE()`,
-but that's it. Going futher to talk about codegen means we have more
-guarantee from Rust compiler implementation.
-
-In other words, we are not saying racing `read_volatile`s don't have
-UBs, we are saying racing `read_volatile`s behave the same as a volatile
-read on UBs.
-
-Regards,
-Boqun
-
-> be no UB (you might also want to write this in the commit message).
-> 
-> --
-> Cheers,
-> Benno
-> 
-> > +    unsafe { src.read_volatile() }
-> > +}
-> > +
-> > +/// The counter part of C `WRITE_ONCE()`.
-> > +///
-> > +/// The semantics is exactly the same as `WRITE_ONCE()`, especially when used for intentional data
-> > +/// races.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// * `dst` must be valid for writes.
-> > +/// * `dst` must be properly aligned.
-> > +#[inline(always)]
-> > +pub unsafe fn write_once<T: Copy>(dst: *mut T, value: T) {
-> > +    // SAFETY: the write is valid because of the function's safety requirement, plus the assumption
-> > +    // here is that 1) a write to a volatile pointer dereference in C and 2) a `write_volatile` in
-> > +    // Rust have the same semantics, so this function should have the same behavior as
-> > +    // `WRITE_ONCE()` regarding data races.
-> > +    unsafe {
-> > +        core::ptr::write_volatile(dst, value);
-> > +    }
-> > +}
-> > --
-> > 2.41.0
-> 
+IMHO, adding a link to kerneldoc would be nice but consistency in all
+the abstractions is needed.
