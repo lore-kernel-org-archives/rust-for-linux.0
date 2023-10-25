@@ -1,61 +1,61 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893A72909;
-	Wed, 25 Oct 2023 00:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5E41386;
+	Wed, 25 Oct 2023 01:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AIweEYBh"
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F292DA;
-	Tue, 24 Oct 2023 17:02:45 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6bcbfecf314so1080450b3a.1;
-        Tue, 24 Oct 2023 17:02:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DHK7FWUx"
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6095128;
+	Tue, 24 Oct 2023 18:10:48 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1ca3c63d7f0so3720405ad.1;
+        Tue, 24 Oct 2023 18:10:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698192164; x=1698796964; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1698196248; x=1698801048; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iKXYRj+plrKzQKjbCKs5zOy4joHAux8MW+g+eW9+NN4=;
-        b=AIweEYBhm59KjmljHnp39v/iIQByc0wuzgI7CWK3/qj/vuUmbCXCtCu2RjYkecrPqN
-         GsLqrfSTFwgJ5ZUtCZWmcEJqQ/VaE6E5ZgodPFBUL78KZJzfzsjrhX9GgOtgG6px7uf4
-         qBSBXWdtkxmXoA7SlPh6b5vcX18XRojbOpkSeH9lA/jJdcQ2PJ5Q30W5C+zd9W6G1WI6
-         vGG/3phwv8UmH7DCWYy4dyAO64abVdC0/SIcrW5GyPiNhHM05Ftm8ncXE8FQkNsbf2Hu
-         hhLfmLUbQK/g3SFbLdisazPKYOwUTRfPKn9cnknlXxC1PoSm7ANJ9cvPTTnU33H7NIG1
-         lMiQ==
+        bh=I8VsaG1wKGdFyl+TUgEaSdhXE2Oopz1FxFnSoh/fLtY=;
+        b=DHK7FWUxbBSJEKuO80CaPCsLAHaQpRz5ysglhfq4+29sjV6RctIzx7C/0dNBA9asNc
+         ZjfGB2Gxb3fjhr6Q+AeB6WAs8jJOYKKXEFrftIR8Z/nZSJFOc+3sG3j+htGwNxZgxKD2
+         Tyy1HrRFEkiY7o1cEW5qBlwRzDLAz+x2dRfz1aKNKkPg5QVsX7vb3cdiecMm76yUFRRk
+         ZVHoDgIYY6OhQd2fdyzdrzDI9CKHgQcE2/6kr4kLbP8zxpO0KOfUeC2Tqw/SDwkLmG6C
+         vv8W1mskb/w/75V770NEfY8UgJBgu/iSMuADIY8PTws1nzI/kzkZ4vRNNBgpvICgPueI
+         OABw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698192164; x=1698796964;
+        d=1e100.net; s=20230601; t=1698196248; x=1698801048;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=iKXYRj+plrKzQKjbCKs5zOy4joHAux8MW+g+eW9+NN4=;
-        b=ZeG1QxAyxHnsF+COGzekvzfDadjbjn5ntGKCEfjsQxCCBJbPszy7alRpL0QwMX9F4z
-         A986gp065P0C7DIy0fBrrTQlgSiCzy3buGqJY1zdNgPrctQKE4jeXtxVuh4FswfLAq+v
-         KbI9lYPXPjrKrH7TlTaVn8yr9GYPizVgKlREaYRChN6E3RI2tmC84HPMEOGgt/kk/9eW
-         J1DQXXJdyNu1VK5ZVCXainFtys+xbBX7+eHXV7w6SFQX91fq1rljonNLtvEdXAo9u1rQ
-         /jUoSGMLhUTZzd7i4pPRiMDmu7FgH+Iai0jxLyxeMWiyrnPPNoM0ZAQy9FDMs9HN9gO8
-         ykmA==
-X-Gm-Message-State: AOJu0Yzgj9f62Nt6CiEpBuVYiTkdxfz7/YfBjFHAfK5Ezf6gmFzlqpKm
-	8JRumuzNktZX0HN2QUxOzTw=
-X-Google-Smtp-Source: AGHT+IH2tJH7hm3pPDGwPhv6OkIAT0W1oxeOJ7re+s6wKYXod0O27hcGW/YGNyJbOXy5ReLoRI0rpQ==
-X-Received: by 2002:a05:6a20:c188:b0:15a:2c0b:6c81 with SMTP id bg8-20020a056a20c18800b0015a2c0b6c81mr16992215pzb.3.1698192164370;
-        Tue, 24 Oct 2023 17:02:44 -0700 (PDT)
+        bh=I8VsaG1wKGdFyl+TUgEaSdhXE2Oopz1FxFnSoh/fLtY=;
+        b=xM6Gp27mLoQw8+g8Qy7RgXowco0EHx8QuSZ32sOJHEBnasDN63voS4Ipg/GSAvOtvT
+         5qAMEM2dPPjvDkvmgfMCkDaxbD+oVEgFblvBRcgMhEeN2F92t/Q6IwfO7jSyLa7gJaVX
+         mwXEXJxS5g3YTnMkj5bdQBuJr8C06s92oEAeVjAranBD2RRTeeLttOcq3anRG0HWtgXe
+         TybpMc1bShvHub4A5/tQuDfCtqRXRzyD6ecJ5jquPz0HpZLkqateW9Gd1ZBAXKofh0NU
+         bjZWjRGBAubsI37UULZPizOtwixa6GkjHGtf3evRTZ8PNdTiefxu27V/869s6qTFHmRc
+         bvNw==
+X-Gm-Message-State: AOJu0YzOi+SER8rajBN4TiEpzNWp9iuxmDMomiCumSaAhmmminM4R34M
+	R6CRnayBqBS7W2dhJUEBosY=
+X-Google-Smtp-Source: AGHT+IFKKaTURKwmieMtxz02OWk4MaUAsC/cpidlOIBJwmFZ8raUk7tnWac/Ki9j83ZlJkM2JnGaXg==
+X-Received: by 2002:a17:902:654d:b0:1ca:273d:22f with SMTP id d13-20020a170902654d00b001ca273d022fmr13136929pln.0.1698196247868;
+        Tue, 24 Oct 2023 18:10:47 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id w16-20020aa79a10000000b006be1dc1537csm8170308pfj.59.2023.10.24.17.02.43
+        by smtp.gmail.com with ESMTPSA id jh1-20020a170903328100b001c55e13bf2asm8004560plb.283.2023.10.24.18.10.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 17:02:44 -0700 (PDT)
-Date: Wed, 25 Oct 2023 09:02:43 +0900 (JST)
-Message-Id: <20231025.090243.1437967503809186729.fujita.tomonori@gmail.com>
+        Tue, 24 Oct 2023 18:10:47 -0700 (PDT)
+Date: Wed, 25 Oct 2023 10:10:46 +0900 (JST)
+Message-Id: <20231025.101046.1989690650451477174.fujita.tomonori@gmail.com>
 To: benno.lossin@proton.me
 Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
  rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
  miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v6 2/5] rust: net::phy add module_phy_driver
- macro
+Subject: Re: [PATCH net-next v6 1/5] rust: core abstractions for network
+ PHY drivers
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ca5873fb-3139-4198-8ff8-c3abc6c40347@proton.me>
+In-Reply-To: <1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me>
 References: <20231024005842.1059620-1-fujita.tomonori@gmail.com>
-	<20231024005842.1059620-3-fujita.tomonori@gmail.com>
-	<ca5873fb-3139-4198-8ff8-c3abc6c40347@proton.me>
+	<20231024005842.1059620-2-fujita.tomonori@gmail.com>
+	<1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,187 +65,141 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Oct 2023 16:28:02 +0000
+On Tue, 24 Oct 2023 16:23:20 +0000
 Benno Lossin <benno.lossin@proton.me> wrote:
 
 > On 24.10.23 02:58, FUJITA Tomonori wrote:
->> This macro creates an array of kernel's `struct phy_driver` and
->> registers it. This also corresponds to the kernel's
->> `MODULE_DEVICE_TABLE` macro, which embeds the information for module
->> loading into the module binary file.
+>> This patch adds abstractions to implement network PHY drivers; the
+>> driver registration and bindings for some of callback functions in
+>> struct phy_driver and many genphy_ functions.
 >> 
->> A PHY driver should use this macro.
+>> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
+>> 
+>> This patch enables unstable const_maybe_uninit_zeroed feature for
+>> kernel crate to enable unsafe code to handle a constant value with
+>> uninitialized data. With the feature, the abstractions can initialize
+>> a phy_driver structure with zero easily; instead of initializing all
+>> the members by hand. It's supposed to be stable in the not so distant
+>> future.
+>> 
+>> Link: https://github.com/rust-lang/rust/pull/116218
 >> 
 >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>   rust/kernel/net/phy.rs | 129 +++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 129 insertions(+)
->> 
+> 
+> [...]
+> 
 >> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
->> index 2d821c2475e1..f346b2b4d3cb 100644
->> --- a/rust/kernel/net/phy.rs
+>> new file mode 100644
+>> index 000000000000..2d821c2475e1
+>> --- /dev/null
 >> +++ b/rust/kernel/net/phy.rs
->> @@ -706,3 +706,132 @@ const fn as_int(&self) -> u32 {
->>           }
->>       }
->>   }
+>> @@ -0,0 +1,708 @@
+>> +// SPDX-License-Identifier: GPL-2.0
 >> +
->> +/// Declares a kernel module for PHYs drivers.
+>> +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> +
+>> +//! Network PHY device.
+>> +//!
+>> +//! C headers: [`include/linux/phy.h`](../../../../include/linux/phy.h).
+>> +
+>> +use crate::{
+>> +    bindings,
+>> +    error::*,
+>> +    prelude::{vtable, Pin},
+>> +    str::CStr,
+>> +    types::Opaque,
+>> +};
+>> +use core::marker::PhantomData;
+>> +
+>> +/// PHY state machine states.
 >> +///
->> +/// This creates a static array of kernel's `struct phy_driver` and registers it.
->> +/// This also corresponds to the kernel's `MODULE_DEVICE_TABLE` macro, which embeds the information
->> +/// for module loading into the module binary file. Every driver needs an entry in `device_table`.
->> +///
->> +/// # Examples
->> +///
->> +/// ```ignore
+>> +/// Corresponds to the kernel's [`enum phy_state`](https://docs.kernel.org/networking/kapi.html#c.phy_state).
 > 
-> Is this example ignored, because it does not compile?
+> Please use `rustfmt`, this line is 109 characters long.
 
-The old version can't be compiled but the current version can so I'll
-drop ignore.
+Hmm, `make rustfmt` doesn't warn on my env. `make rustfmtcheck` or
+`make rustdoc` doesn't.
 
-
-> I think Wedson was wrapping his example with `module!` inside
-> of a module, so maybe try that?
-
-I'm not sure what you mean.
+What's the limit?
 
 
->> +/// use kernel::c_str;
->> +/// use kernel::net::phy::{self, DeviceId};
->> +/// use kernel::prelude::*;
->> +///
->> +/// kernel::module_phy_driver! {
->> +///     drivers: [PhyAX88772A],
->> +///     device_table: [
->> +///         DeviceId::new_with_driver::<PhyAX88772A>(),
->> +///     ],
->> +///     name: "rust_asix_phy",
->> +///     author: "Rust for Linux Contributors",
->> +///     description: "Rust Asix PHYs driver",
->> +///     license: "GPL",
->> +/// }
->> +///
->> +/// struct PhyAX88772A;
->> +///
->> +/// impl phy::Driver for PhyAX88772A {
->> +///     const NAME: &'static CStr = c_str!("Asix Electronics AX88772A");
->> +///     const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x003b1861);
->> +/// }
->> +/// ```
->> +///
->> +/// This expands to the following code:
->> +///
->> +/// ```ignore
->> +/// use kernel::c_str;
->> +/// use kernel::net::phy::{self, DeviceId};
->> +/// use kernel::prelude::*;
->> +///
->> +/// struct Module {
->> +///     _reg: ::kernel::net::phy::Registration,
->> +/// }
->> +///
->> +/// module! {
->> +///     type: Module,
->> +///     name: "rust_asix_phy",
->> +///     author: "Rust for Linux Contributors",
->> +///     description: "Rust Asix PHYs driver",
->> +///     license: "GPL",
->> +/// }
->> +///
->> +/// const _: () = {
->> +///     static mut DRIVERS: [::kernel::net::phy::DriverVTable; 1] = [
->> +///         ::kernel::net::phy::create_phy_driver::<PhyAX88772A>::(),
->> +///     ];
->> +///
->> +///     impl ::kernel::Module for Module {
->> +///        fn init(module: &'static ThisModule) -> Result<Self> {
->> +///            let mut reg = unsafe { ::kernel::net::phy::Registration::register(module, Pin::static_mut(&mut DRIVERS)) }?;
+> Also it might make sense to use a relative link, since then it also
+> works offline (though you have to build the C docs).
+
+/// Corresponds to the kernel's [`enum phy_state`](../../../../../networking/kapi.html#c.phy_state).
+
+101 characters too long?
+
+Then we could write:
+
+/// PHY state machine states.
+///
+/// Corresponds to the kernel's
+/// [`enum phy_state`](../../../../../networking/kapi.html#c.phy_state).
+///
+/// Some of PHY drivers access to the state of PHY's software state machine.
+
+
+>> +    /// Gets the current link state. It returns true if the link is up.
+>> +    pub fn get_link(&self) -> bool {
+>> +        const LINK_IS_UP: u32 = 1;
+>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>> +        let phydev = unsafe { *self.0.get() };
+>> +        phydev.link() == LINK_IS_UP
+>> +    }
 > 
-> Can you please format this as well?
-
-Done.
-
-
->> +///            Ok(Module { _reg: reg })
->> +///        }
->> +///     }
->> +/// }
->> +///
->> +/// static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; 2] = [
->> +///     ::kernel::bindings::mdio_device_id {
->> +///         phy_id: 0x003b1861,
->> +///         phy_id_mask: 0xffffffff,
->> +///     },
->> +///     ::kernel::bindings::mdio_device_id {
->> +///         phy_id: 0,
->> +///         phy_id_mask: 0,
->> +///     }
->> +/// ];
->> +/// ```
->> +#[macro_export]
->> +macro_rules! module_phy_driver {
->> +    (@replace_expr $_t:tt $sub:expr) => {$sub};
->> +
->> +    (@count_devices $($x:expr),*) => {
->> +        0usize $(+ $crate::module_phy_driver!(@replace_expr $x 1usize))*
->> +    };
->> +
->> +    (@device_table [$($dev:expr),+]) => {
->> +        #[no_mangle]
->> +        static __mod_mdio__phydev_device_table: [
->> +            ::kernel::bindings::mdio_device_id;
->> +            $crate::module_phy_driver!(@count_devices $($dev),+) + 1
->> +        ] = [
->> +            $($dev.mdio_device_id()),+,
->> +            ::kernel::bindings::mdio_device_id {
->> +                phy_id: 0,
->> +                phy_id_mask: 0
->> +            }
->> +        ];
->> +    };
->> +
->> +    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], $($f:tt)*) => {
->> +        struct Module {
->> +            _reg: ::kernel::net::phy::Registration,
->> +        }
->> +
->> +        $crate::prelude::module! {
->> +            type: Module,
->> +            $($f)*
->> +        }
->> +
->> +        const _: () = {
->> +            static mut DRIVERS: [
->> +                ::kernel::net::phy::DriverVTable;
->> +                $crate::module_phy_driver!(@count_devices $($driver),+)
->> +            ] = [
->> +                $(::kernel::net::phy::create_phy_driver::<$driver>()),+
->> +            ];
->> +
->> +            impl ::kernel::Module for Module {
->> +                fn init(module: &'static ThisModule) -> Result<Self> {
->> +                    // SAFETY: The anonymous constant guarantees that nobody else can access the `DRIVERS` static.
->> +                    // The array is used only in the C side.
->> +                    let mut reg = unsafe { ::kernel::net::phy::Registration::register(module, core::pin::Pin::static_mut(&mut DRIVERS)) }?;
+> Can we please change this name? I think Tomo is waiting for Andrew to
+> give his OK. All the other getter functions already follow the Rust
+> naming convention, so this one should as well. I think using
+> `is_link_up` would be ideal, since `link()` reads a bit weird in code:
 > 
-> Can you put the safe operations outside of the `unsafe` block?
+>      if dev.link() {
+>          // ...
+>      }
+> 
+> vs
+> 
+>      if dev.is_link_up() {
+>          // ...
+>      }
 
-fn init(module: &'static ThisModule) -> Result<Self> {
-    // SAFETY: The anonymous constant guarantees that nobody else can access
-    // the `DRIVERS` static. The array is used only in the C side.
-    let mut reg = ::kernel::net::phy::Registration::register(
-        module,
-        core::pin::Pin::static_mut(unsafe { &mut DRIVERS }),
-    )?;
-    Ok(Module { _reg: reg })
-}
+I'll go with is_link_up()
 
-> Since `rustfmt` does not work well within `macro_rules`, you
-> have to manually format this code. One trick I use to do this
-> is to replace all meta variables with normal variables and
-> just put it in `rustfmt` and then revert the replacement in
-> the output.
 
-Understood, done.
+>> +    /// Gets the current auto-negotiation configuration. It returns true if auto-negotiation is enabled.
+> 
+> Move the second sentence into a new line, it should not be part of the
+> one-line summary.
+
+Oops, make one-line? 
+
+/// Gets the current auto-negotiation configuration and returns true if auto-negotiation is enabled.
+
+Or
+
+/// Gets the current auto-negotiation configuration.
+///
+/// It returns true if auto-negotiation is enabled.
+
+>> +    pub fn is_autoneg_enabled(&self) -> bool {
+>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>> +        let phydev = unsafe { *self.0.get() };
+>> +        phydev.autoneg() == bindings::AUTONEG_ENABLE
+>> +    }
+>> +
+>> +    /// Gets the current auto-negotiation state. It returns true if auto-negotiation is completed.
+> Same here.
+> 
+> --
+> Cheers,
+> Benno
+> 
+>> +    pub fn is_autoneg_completed(&self) -> bool {
+>> +        const AUTONEG_COMPLETED: u32 = 1;
+>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>> +        let phydev = unsafe { *self.0.get() };
+>> +        phydev.autoneg_complete() == AUTONEG_COMPLETED
+>> +    }
+> [...]
+> 
+> 
