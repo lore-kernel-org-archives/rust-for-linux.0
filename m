@@ -1,133 +1,77 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBF920B00;
-	Wed, 25 Oct 2023 09:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EFC2510F;
+	Wed, 25 Oct 2023 10:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FiSLMs+u"
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A805A185;
-	Wed, 25 Oct 2023 02:13:58 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6bbfb8f7ac4so1195863b3a.0;
-        Wed, 25 Oct 2023 02:13:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DrAXUVV+"
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8235EDD;
+	Wed, 25 Oct 2023 03:13:03 -0700 (PDT)
+Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3add37de892so3212982b6e.1;
+        Wed, 25 Oct 2023 03:13:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698225238; x=1698830038; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RyqDut8pN6zzcaoMCQkUEiW6cTOrJm1rttsonkL2zF0=;
-        b=FiSLMs+u3XIX/2SmbOMo+OweNqUg+KvAgpNmL4Sv18wuJLGWKuPyYq6L2ImDw94Gid
-         NVpAyMKnmIM05ut7qrt4TzGFlwa+Me1R9oYi5vKZllcVDElmdQRAzzGFPO5YJ0Ceteww
-         rWxjTVoURSxtRcNn3adIc9N1q60vCbwmWxHt2q7m0ZkLM8yKpxiMrMrL3/vFY5/iOe76
-         SyQK/yBmARZoOmd4VqaMDzhgvmBRHB4z4DIcp5ID40l1x5e/GwEWKN9q54UgSaTvCMSJ
-         Qs9s13RCqPKWYrRHIzGkjsq0dTlXnCpUFDiEnBNabMVMKq0/S6I2nNB+Xcbc4iMkIOfQ
-         fXrg==
+        d=gmail.com; s=20230601; t=1698228783; x=1698833583; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l6sBwVBt8OxRl40mrORA03RRhCm4IDWP2fYbv2hXwz8=;
+        b=DrAXUVV+HetekIYy4BhQtpBzj4CmK/ypIeJCX3upEo2f6U2M8PNA0QzlviapzdvBb/
+         bN363txQrBLneJgaMhKSPCNKEOWZMV1g0CBMtAnFzaBSFLgrTv25Ck/Ugi6UT92LkhOK
+         2ABdGoW9rfL6zl4iB8S4M5H3toFZ7lYwMfZNEtJR6deBZCIVF65zb0UnEoq9JY5xFV8m
+         tGXMiRJjqdcmXyVlkmAbplPFYbzTge6oDmpqRK5VZ14BQrsY1dbkoElWwTz0C48qNRHG
+         OUX9mCwDdpmoFoyQm3wBq4SGi/yL1W2BYKOH3bl+AxOXbXx8Ins/kPYwZutjaGeny2bo
+         /ktg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698225238; x=1698830038;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RyqDut8pN6zzcaoMCQkUEiW6cTOrJm1rttsonkL2zF0=;
-        b=OfUmQ3b7s3jKp2hsJODbsR3HHlBWqqGQI+FsF9ZznOcQtMSH5IRda1U7aRIlnst1tt
-         XmBlgcZCxF78pHwSWoEtgmic4kurek2DN6bPNPrB4iTGdOrxEp96KINqAq1SrDVHNoP/
-         Ufd8IdciXP+/9bYHwoRNtgG1kmeSSW7cMZtr9ed4m8nEyjN9aNUUUq9iXsoauSOjV6JR
-         XXJmqKQTxqJnbIZcugjTQiTl3YWHEDqXdozND/O8w6Hst/bZE1H1JSytLV3GLpU5fr1U
-         xyiAkoxWs/I1DZwxnsKUmB+0Zjlcj/WWCfU6PwqGUU77H7i6p2jIPsMzywjqNDZKKof4
-         AhJw==
-X-Gm-Message-State: AOJu0YyJtOsA03v3+kNTcZXx6SvML/8SDxBUZAFyt+MIlB2D03pwBZDt
-	FYYC5O7hrK2YmNKtDVabiZ8=
-X-Google-Smtp-Source: AGHT+IFpFH/gvZciQu9JqbOAT0OqurdTHWD7qgWXyUDsZvV0vlPconVc3dmKw+y7JrsvBB+bmBrZoQ==
-X-Received: by 2002:a05:6a21:7881:b0:16e:26fd:7c02 with SMTP id bf1-20020a056a21788100b0016e26fd7c02mr19716577pzc.2.1698225237971;
-        Wed, 25 Oct 2023 02:13:57 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id d15-20020a170903230f00b001b8b07bc600sm8675366plh.186.2023.10.25.02.13.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 02:13:57 -0700 (PDT)
-Date: Wed, 25 Oct 2023 18:13:57 +0900 (JST)
-Message-Id: <20231025.181357.1412247050293754016.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
-Subject: Re: [PATCH net-next v6 2/5] rust: net::phy add module_phy_driver
- macro
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <04c4c645-d70c-41b2-9ff6-e5784dc84785@proton.me>
-References: <42eeb38d-6d24-4c56-8ffd-27c48405cae9@proton.me>
-	<20231025.165710.1134967889825495180.fujita.tomonori@gmail.com>
-	<04c4c645-d70c-41b2-9ff6-e5784dc84785@proton.me>
+        d=1e100.net; s=20230601; t=1698228783; x=1698833583;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l6sBwVBt8OxRl40mrORA03RRhCm4IDWP2fYbv2hXwz8=;
+        b=vwC3Q1sfbbRd/rEIj9NlMm39DwgBBFIpkd7p28chff2MUMwxwe35eN8BPonSKxCKLo
+         r6DZXfoPp5537NI5/hPJ9brkBHxOZ2Ht+oYJsrc/wcM7LX9HmBbHY97gyvYhDjk02ePu
+         JQyuq9s3orgP7H72xQ3LM1tgJcqwERl27skxXkgKsoJuD4MU/sGiP3uZMXi2IrgaWboW
+         /JfXGgTVKS+1Z5852dwshNq8OzgPFqaS8rytild06M0aQtH2y1RhcI7Blz+W4DIvXJiJ
+         Dhe9MRR6om2TB4Lk7fLTFRAZsTSFmixcVODMRGf7XyWijLPFY7Tiqyz/bJWrI4ApCL+W
+         6svA==
+X-Gm-Message-State: AOJu0YyBqxZRIcJ2TlId8AHOL7YZ8TCY7xn227pvG5+gZt5JYWBHUnjn
+	BARQlhYyWNQK2nSiClOe2t8LMW2evK9HjCtQA6U=
+X-Google-Smtp-Source: AGHT+IGdPmbTgUijRvTiwVeUamc6sPEBS/RzZl71q6s9s7fFlZ1Uy8nbWtq0fhT33/wRwFselXnTZPMPUwXcZT7qz78=
+X-Received: by 2002:a05:6808:14d6:b0:3b2:e56d:b335 with SMTP id
+ f22-20020a05680814d600b003b2e56db335mr15826575oiw.4.1698228782693; Wed, 25
+ Oct 2023 03:13:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20231018160922.1018962-1-ojeda@kernel.org>
+In-Reply-To: <20231018160922.1018962-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 25 Oct 2023 12:12:51 +0200
+Message-ID: <CANiq72m2s1SUa2DVSRZ+B+1v_Y4Cpa0Hz8cjRjHacGWh586+3w@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: add "The Rust experiment" section
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Lunn <andrew@lunn.ch>, linux-doc@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 25 Oct 2023 08:08:53 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+On Wed, Oct 18, 2023 at 6:09=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Clarify that the Rust experiment is still going on to avoid
+> confusion for both kernel maintainers and end users.
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
->>>>>> +/// Declares a kernel module for PHYs drivers.
->>>>>> +///
->>>>>> +/// This creates a static array of kernel's `struct phy_driver` and registers it.
->>>>>> +/// This also corresponds to the kernel's `MODULE_DEVICE_TABLE` macro, which embeds the information
->>>>>> +/// for module loading into the module binary file. Every driver needs an entry in `device_table`.
->>>>>> +///
->>>>>> +/// # Examples
->>>>>> +///
->>>>>> +/// ```ignore
->>>>>
->>>>> Is this example ignored, because it does not compile?
->>>>
->>>> The old version can't be compiled but the current version can so I'll
->>>> drop ignore.
->>>>
->>>>
->>>>> I think Wedson was wrapping his example with `module!` inside
->>>>> of a module, so maybe try that?
->>>>
->>>> I'm not sure what you mean.
->>>
->>> Wedson did this [1], note the `# mod module_fs_sample`:
->>>
->>> /// # Examples
->>> ///
->>> /// ```
->>> /// # mod module_fs_sample {
->>> /// use kernel::prelude::*;
->>> /// use kernel::{c_str, fs};
->>> ///
->>> /// kernel::module_fs! {
->>> ///     type: MyFs,
->>> ///     name: "myfs",
->>> ///     author: "Rust for Linux Contributors",
->>> ///     description: "My Rust fs",
->>> ///     license: "GPL",
->>> /// }
->>> ///
->>> /// struct MyFs;
->>> /// impl fs::FileSystem for MyFs {
->>> ///     const NAME: &'static CStr = c_str!("myfs");
->>> /// }
->>> /// # }
->>> /// ```
->>>
->>> [1]: https://github.com/wedsonaf/linux/commit/e909f439481cf6a3df00c7064b0d64cee8630fe9#diff-9b893393ed2a537222d79f6e2fceffb7e9d8967791c2016962be3171c446210fR104-R124
->> 
->> You are suggesting like the following?
->> 
->> /// # Examples
->> ///
->> /// ```
->> /// # mod module_phy_driver_sample {
->> ...
->> /// # }
->> /// ```
->> 
->> What benefits?
-> 
-> IIRC Wedson mentioned that without that it did not compile. So
-> if it compiles for you without it, I would not add it.
+Applied to `rust-next`, with the new paragraph -- thanks everyone!
 
-Ah, it's necessary.
+Cheers,
+Miguel
