@@ -1,179 +1,199 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570D61DA5B;
-	Wed, 25 Oct 2023 15:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9794A26E32
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Oct 2023 16:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="CMG7H6+U";
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="YrCwPVoM"
-Received: from rcdn-iport-7.cisco.com (rcdn-iport-7.cisco.com [173.37.86.78])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD26189;
-	Wed, 25 Oct 2023 08:51:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="kQBBePWp";
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="oFUDbj21"
+Received: from rcdn-iport-3.cisco.com (rcdn-iport-3.cisco.com [173.37.86.74])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC028137;
+	Wed, 25 Oct 2023 09:18:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=7267; q=dns/txt; s=iport;
-  t=1698249082; x=1699458682;
+  d=cisco.com; i=@cisco.com; l=1216; q=dns/txt; s=iport;
+  t=1698250723; x=1699460323;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-id:content-transfer-encoding:
    mime-version;
-  bh=lCKjMLUJdUP3EFoFHy18LFUezCTt/2c92MD7lZk2rQM=;
-  b=CMG7H6+U9UxsKC65ibqPS2sTzL+wABepQOVDvkW8IWIzyfno5gU6FAq8
-   LYYUPmOIOgBjvvd1BlQN0OZzPRtDl2VSQK3zQXs+n+KuWZ4tDBW+or0ge
-   UQA4YKtze8p73vwwzE6bsa5Nk5S8n+CylhBmcI/hgIttH5VaGcW+gSd8C
-   s=;
-X-CSE-ConnectionGUID: K+4WcsqVQp2U7K13/AGXxA==
-X-CSE-MsgGUID: ogQThVdeRVWyrMLVhc9ucw==
-X-IPAS-Result: =?us-ascii?q?A0DzAgAdODllmIoNJK1aHgEBCxIMQCWBHwuBZ1J4AlkqE?=
- =?us-ascii?q?kiIHgOFLYZAgiIDgRORRYslgSUDVg8BAQENAQExEwQBAYUGAocYAiY0CQ4BA?=
- =?us-ascii?q?gICAQEBAQMCAwEBAQEBAQECAQEFAQEBAgEHBBQBAQEBAQEBAR4ZBQ4QJ4VoD?=
- =?us-ascii?q?YZMAQEBAQMSCwoTBgEBNwEPAgEIFQMeEDIlAgQOBQgaglwBgl4DAagGAYFAA?=
- =?us-ascii?q?oooeIEBM4EBggkBAQYEBUmyIwmBSIgKAYoGJxuBSUSBFYE7gTc4PoJhAoFgh?=
- =?us-ascii?q?kODdYU8BzKCIoMvKYETinteI0dwGwMHA4EDECsHBC0bBwYJFhgVJQZRBC0kC?=
- =?us-ascii?q?RMSPgSBZ4FRCoEDPw8OEYJCIgIHNjYZS4JbCRUMNU12ECoEFBeBEQRqHxUeE?=
- =?us-ascii?q?iUREhcNAwh2HQIRIzwDBQMENAoVDQshBRRDA0QGSgsDAhoFAwMEgTYFDR4CE?=
- =?us-ascii?q?BoGDScDAxlNAhAUAx4dAwMGAwsxAzCBHgxZA2wfNgk8DwwfAjkNKyQDRB1AA?=
- =?us-ascii?q?3g9NRQbbZ4ugk0gL0wJCgGBMBRrHBIcknA5gmMBjBiiYQqEDIwBlR9JA4Nrk?=
- =?us-ascii?q?2GSGB6YHpZWjEaFDAIEAgQFAg4BAQaBYzqBW3AVgyIJSRkPjiAZg1+EUYFEi?=
- =?us-ascii?q?WR2OwIHCwEBAwmLSgEB?=
-IronPort-PHdr: A9a23:0JEZxB9LJnaHw/9uWO3oyV9kXcBvk6//MghQ7YIolPcSNK+i5J/le
- kfY4KYlgFzIWNDD4ulfw6rNsq/mUHAd+5vJrn0YcZJNWhNEwcUblgAtGoiEXGXwLeXhaGoxG
- 8ERHER98SSDOFNOUN37e0WUp3Sz6TAIHRCqPA90LfnxE5X6hMWs3Of08JrWME1EgTOnauZqJ
- Q6t5UXJ49ALiJFrLLowzBaBrnpTLuJRw24pbV7GlBfn7cD295lmmxk=
-IronPort-Data: A9a23:zmzbWaybtJY+ew1otEZ6t+fgxirEfRIJ4+MujC+fZmUNrF6WrkUGy
- DMfCzyDPPbfNzamL48nYYng90oBv5KAzNIyS1Ru+FhgHilAwSbn6Xt1DatR0we6dJCroJdPt
- p1GAjX4BJlpCCea/lH0auSJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYw6TSCK13L4
- YiaT/H3Ygf/gGcsaD9MscpvlTs21BjMkGJA1rABTagjUG/2zxE9EJ8ZLKetGHr0KqE88jmSH
- rurIBmRpws1zj91Yj+Xuu+Tnn4iHtY+CTOzZk9+AMBOtPTtShsaic7XPNJEAateZq7gc9pZk
- L2hvrToIesl0zGldOk1C3Fl/y9C0aJu2/ybHnOkqPKq1xf7LFi1mLJHI3EmFNhNkgp3KTkmG
- f0wITQJaFWIgPi7he/9Qeh3jcNlJ87uVG8dkig/lneCU7B/GtaaGPWiCdxwhF/cguhHGPfVe
- s4QchJkbQ/LZFtEPVJ/5JcWxb332SOvL2AIwL6Tja042lTT8gB86obSIcDwXuKKTpRIlVnN8
- woq+EygUk1Fa7Rz0wGt6G+3mqrBmjm+XIMUCa2Q6PFnmhuQy3YVBRlQUkG0ydG9i0ijS5dRM
- EAZ5CcqhbY9+VbtTdTnWRC85nmesXYht8F4Guk+7kSGzbDZplvfDWkfRTkHY9sj3CMredA0/
- nzKw+ziHiVRiaXPdC2+r+zThByCKQFAeAfuehQ4ZQcC5tDipqQ6gRTOUstvHcaJYjvdRGCYL
- 9ei8XdWulkDsSIY//7gpAya2lpAsrCMH1FtuFSGNo6wxl4hDLNJcbBE/rQyARxoAIufUl6H1
- JTvs5fAtrlWZX1hedDkfQngNLit4/DAOzrGjBsyWZIg7D+qvXWkeOi8AQ2Sxm83aa7omhewP
- Sc/XD+9ArcPZhNGiocsMuqM5zwCl/SIKDgcfqm8giBySpZwbhSb2ypleFSd2Wvg+GB1z/BvY
- MjBK5rwXSZAYUiC8NZQb7lEuVPM7n1vrV4/ubigp/ha+ePEPSXMGett3KWmN7xgsstoXzk5A
- /4GZ5fVlH2zocX1YzLc9sYIPEsWIH0gba0aWOQJHtNv1jFOQTl7Y9eImOtJU9U8w8x9yLySl
- lnjARAw9bYKrSCdQel8Qio9OOqHsFcWhS9TABHAyn73iyF9PNz+svZ3mlleVeBPydGPBMVcF
- pEtU86BGf9IDD/A/lwggVPV9eSOqDzDadqyAheY
-IronPort-HdrOrdr: A9a23:9izDLKxafh0sI324iEfgKrPxUOgkLtp133Aq2lEZdPULSL36qy
- n+ppQmPEHP6Qr5AEtQ6OxoWJPtfZvdnaQFmLX4pd+ZLUfbURiTXfFfBOzZsnzd8kzFh6FgPM
- JbAspD4bLLfCVHZKrBkW6F+pMbsae6GcOT9KfjJhVWPH1Xgshbhm8TZHf/YylLrUt9dOUE/f
- Gnl7J6Tk+bCA4qh7OAdwI4tob41rv2vaOjSyQrQzQg7w6Dhy6p7rnVLzi0ty11bxp/hZ0Z3S
- zgiQLW2oWP2svX9vbb7QDuxqUTvOGk5spIBcSKhMRQAC7rkByUaINoXKDHlCwpocm0gWxa0u
- XkklMFBYBe+nnRdma6rV/GwA/7ygsj7Hfk1BuxnWbjm8rkXzg3YvAxwL6xMyGpr3bIjusMlp
- 6j7Fjp7qa/yimwxBgV0uK4EC2CUHDE+kbK39Rj1UC3GrFuG4O55bZvjn+9Vq1wXx4TLOscYb
- VT5Aa23ocKTXqKK3/epWVh29qqQzA6GQqHWFELvoiP3yFRh20R9TpT+CUzpAZJyHsGcegO28
- 3UdqBz0L1eRM4faqxwQO8HXMusE2TIBRbBKnibL1jrHLwOfyulke+63JwloOWxPJAYxpo7n5
- rMFFteqG4pYkrrTcmDxodC/BzBSHi0GT7t1sZd7Z5kvaCUfsunDQSTDFQ118ewqfQWBcPWH/
- 61JZJNGvfmaXDjHI5YtjeOEqW66UNuJvH9luxLLG5m+Pi7X7ECntarBMruGA==
-X-Talos-CUID: 9a23:GpismW+xsLCT6Z2Q6gaVv21XRv8uaWTj9W+KHhCbUD0uYZKlWXbFrQ==
-X-Talos-MUID: 9a23:WQsKMQqk4fgVMCNtO8kezzZtDfto3aijMn4ygI8jn/eEPn1tMCjI2Q==
+  bh=72O1JVfrMZfSzETYO7dQDjQyEGNZizdfWFRas7lRlEc=;
+  b=kQBBePWp5ILB/clTMg6Tb6BR5moWy3xfsnfouGXJkRv6aIyhmLvziJUK
+   YB3zfVdnP4Z44nVen2YQWWiA4VcktLwtWm1qlulWBoTLPljl/c5V1hW0l
+   h+4mh7J5XlCxrZ5no9CxCqUy9UWK5rByd5yeb1epdq5ZluD2NTBuZtxvZ
+   A=;
+X-CSE-ConnectionGUID: AkB173jmT1OtEIHhfiGObw==
+X-CSE-MsgGUID: oQYH0Hm8RauRh/cM65G5hA==
+X-IPAS-Result: =?us-ascii?q?A0BVAABjPjllmI0NJK1aHQEBAQEJARIBBQUBQCWBGAYBC?=
+ =?us-ascii?q?wGBZlJ4WzxIhFKDTAOFLYZAgiWSWIslgSUDVg8BAQENAQFEBAEBhQYCFocCA?=
+ =?us-ascii?q?iY2Bw4BAgICAQEBAQMCAwEBAQEBAQECAQEFAQEBAgEHBBQBAQEBAQEBAR4ZB?=
+ =?us-ascii?q?Q4QJ4VoDYZNAQEBAxIREQwBATcBDwIBCBgCAiYCAgIwFRACBA4FCBqCXIJfA?=
+ =?us-ascii?q?wGnewGBQAKKKHqBMoEBggkBAQYEBbJsCYEaLgGICQGBUIg2JxuBSUSEPz6CY?=
+ =?us-ascii?q?QKBYBeDRIJog3WCLYMPBzKBSVmDLymEAogOCVUjR3AbAwcDgQMQKwcELRsHB?=
+ =?us-ascii?q?gkWGBUlBlEELSQJExI+BIFngVEKgQM/Dw4RgkIrNjYZS4JbCRUMNU12ECoEF?=
+ =?us-ascii?q?BeBEQRqHxUeEiUREhcNAwh2HQIRIzwDBQMENAoVDQshBRRDA0QGSgsDAhoFA?=
+ =?us-ascii?q?wMEgTYFDR4CEBoGDScDAxlNAhAUAx4dAwMGAwsxAzCBHgxZA2wfNgk8CwQMH?=
+ =?us-ascii?q?wI5DSsnA0QdQAN4PTUUG0Qpni+EBHo7dHWSMYMvAUmuMAqEDKEgSQOpZJg8o?=
+ =?us-ascii?q?w2FGwIEAgQFAg4BAQaBagkqO4EgcBUagwhSGQ+OIBmDX495djsCBwEKAQEDC?=
+ =?us-ascii?q?YtKAQE?=
+IronPort-PHdr: A9a23:PBHoNhUrkgfgAjZO6f1W2Lu42bbV8K0yAWYlg6HPw5pUeailupP6M
+ 1OaubNmjUTCWsPQ7PcXw+bVsqW1QWUb+t7Bq3ENdpVQSgUIwdsbhQ0uAcOJSAX7IffmYjZ8H
+ ZFqX15+9Hb9Ok9QS47lf1OHmnSp9nYJHwnncw98J+D7AInX2s2y1uuv/5TISw5JnzG6J7h1K
+ Ub+oQDYrMJDmYJ5Me5x0k7Qv3JScuJKxGVlbV6ShEP64cG9vdZvpi9RoPkmscVHVM3H
+IronPort-Data: A9a23:MKrLaaKS3FoM484gFE+RBZUlxSXFcZb7ZxGr2PjKsXjdYENS1j0Am
+ mUdCGiGbPvbZ2Xwc41zaYq2p0ICsceGmtBrSAMd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
+ 63yUvGZcYZsCCea/0/xWlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVvW0
+ T/Oi5eHYgT8g2Qpajh8B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKmWDNrfnL
+ wpr5OjRElLxp3/BOPv8+lrIWhFirorpAOS7oiE+t55OLfR1jndaPq4TbJLwYKrM4tmDt4gZJ
+ N5l7fRcReq1V0HBsLx1bvVWL81xFYRF0uaYenq6jZW002DnU3viwtpJBl5jaOX0+s4vaY1P3
+ fUcLDZIZReZiqfmhrm6UeJrwM8kKaEHPqtG5Somlm+fVK1gGMyaK0nJzYcwMDMYj8VPFuvab
+ tExYjt0ZxOGaBpKUrsSIMtkzLr43yijK1W0rnqSnJsXu0jWnDZ4zYLtd9HwJIGlGMV8yxPwS
+ mXupjSlXU5y2Mak4SCY6W7piOjV2Cf6Xp8CPKO3++Qsg1CJwGEXThoMWjOTpfi/l177WN9FL
+ UEQ0jQhoLJ090GxSNT5GRqirxa5UgU0Ut5UFagx7xuAj/qS6AeCDW9CRTlEADA7iCMobRUp/
+ AbWxNHsOWVIrJC0aXKT95izpyznbED5MlQ+TSMDSAIE5fzqr4cykg/DQ75f/Eid04yd9dbYn
+ m/ikcQuu1kApZVQjvnmpDgrlxrp98eREF9kjunCdj/9hj6VcrJJcGBBBbLzwftGMIGfJrVql
+ CdawZHGhAzi4G3kqcBgaOwJGLfs7PGfPXiMx1VuBJImsT+q/hZPnLy8AhkgeC+F0e5dJFcFh
+ XM/XysNv/e/21P2NMdKj3qZUZhC8EQZPY2NugroRtRPeINtUwSM4TtjY0Wdt0i0zhl8yP5lY
+ 8vHIZb2ZZr/NUiB5GTvLwv6+eJ6rh3SOUuILXwG5039iOHHNCL9pUktaQfXMIjVE59oUC2Mo
+ 4oAaKNmOj1UUfb1ZWHM4JUPIFURRUXX9riow/G7gtWre1I8cEl4Uqe56ep4J+RNwf8P/s+Wp
+ S7VZ6Ot4Ael7ZExAV/UOikLhXKGdcsXkE/XygRzbQ/2hiJyP9fHAWV2X8JfQITLPddLlJZcZ
+ /IEYM6HRP9IT1z6F/41NvERcKQKmMyXuD+z
+IronPort-HdrOrdr: A9a23:FcwtLaC4Lu0NT4blHejQsseALOsnbusQ8zAXPh9KOH9om52j9/
+ xGws576fatskdhZJhBo7y90KnpewKkyXbsibNhc4tKLzOWyFdAS7sSrLcKogeQVBEWk9Qtt5
+ uIHJIOdeEYYWIK6voSpTPIberIo+P3sJxA592us0uFJDsCA8oPnmIJbjpzUHcGOzWubqBJbK
+ Z0k/A33QZIDk5nFfhTaEN1OdTrlpngrr6jSxgAABIs9QmJih2VyJOSKXKl9yZbeQlihZM5/0
+ b4syGR3MieWveApSP05iv21dB7idHhwtxMCIinkc4OMAjhjQ6uecBIR6CClCpdmpDs1H8a1P
+ 335zswNcV67H3cOkuvpwH25gXm2DEyr1f/1F6jh2f5q8CRfkN+NyMBv/McTvLq0TtngDhO6t
+ MT44tfjesOMfr0plW72zEPbWAwqqP7mwt5rQdZtQ0tbWJXUs4ikWVYxjIXLH/FdxiKtLzO14
+ JVfZzhzecTflWAY3/DuG5zhNSqQ3QoBx+DBlMPo8qPzlFt7TpEJmYjtYQid007hdkAYogB4/
+ 6BPrVjlblIQMNTZaVhBP0ZSc/yDmDWWxrDPG+bPFyiTcg8Sj7wgo+y5K9w6PCheZQOwpd3kJ
+ PdUElAvWp3f071E8WB0JBC7xiISmSgWjbmzN1Y+vFCy/DBbauuNTfGREElksOmrflaCsrHW+
+ yrMJYTGPPnJXuGI/cB4+Q/YeglFZAzarxjhj9gYSP6niviEPyfitDm
+X-Talos-CUID: =?us-ascii?q?9a23=3AeGmj42p/8Wpg9DlgrxqVjJjmUekmWCSCl3XVHxa?=
+ =?us-ascii?q?fFUtIaL2bSHC38rwxxg=3D=3D?=
+X-Talos-MUID: 9a23:u0YjEQY/uxX/BuBTsAbdpGlCMZdS6rmUCAcGtMtblJSEHHkl
 X-IronPort-Anti-Spam-Filtered: true
-Received: from alln-core-5.cisco.com ([173.36.13.138])
-  by rcdn-iport-7.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2023 15:51:20 +0000
+Received: from alln-core-8.cisco.com ([173.36.13.141])
+  by rcdn-iport-3.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2023 16:18:41 +0000
 Received: from rcdn-opgw-4.cisco.com (rcdn-opgw-4.cisco.com [72.163.7.165])
-	by alln-core-5.cisco.com (8.15.2/8.15.2) with ESMTPS id 39PFpKMq005200
+	by alln-core-8.cisco.com (8.15.2/8.15.2) with ESMTPS id 39PGIfXk014147
 	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Oct 2023 15:51:20 GMT
-X-CSE-ConnectionGUID: FXUCs7RqSB6KMEeidYhesA==
-X-CSE-MsgGUID: nLhkDKhaSp+BRJkKw8ADKQ==
+	Wed, 25 Oct 2023 16:18:41 GMT
+X-CSE-ConnectionGUID: 1Bi7zO/TTX6hKhEMmGYV8A==
+X-CSE-MsgGUID: gJ9wIajtQ22HAM8mYZQTGA==
 Authentication-Results: rcdn-opgw-4.cisco.com; dkim=pass (signature verified) header.i=@cisco.com; spf=Pass smtp.mailfrom=amiculas@cisco.com; dmarc=pass (p=quarantine dis=none) d=cisco.com
 X-IronPort-AV: E=Sophos;i="6.03,250,1694736000"; 
-   d="scan'208";a="5696294"
-Received: from mail-dm6nam12lp2169.outbound.protection.outlook.com (HELO NAM12-DM6-obe.outbound.protection.outlook.com) ([104.47.59.169])
-  by rcdn-opgw-4.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2023 15:51:20 +0000
+   d="scan'208";a="5699731"
+Received: from mail-bn8nam12lp2168.outbound.protection.outlook.com (HELO NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.168])
+  by rcdn-opgw-4.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2023 16:18:40 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Gr5wUULufqpRhsTIpWlhZRonuE/O+6p0c069qwAsLr+EI5eZHyEglh7iEMMA0h7meDtPpGT0VPHykOqjaKBLqKwIjAJGEDToNF6RwHjix31L5IID8di6G2v2H+BTX/XamB3DXXDSOeDfDCabYTaXHyz4btMIlWyLxUhqYFDwd6zx89SSJtdiUiHssPHeB9e6MlO/eS3PAxaG43oM1CamIB/daSdcs+V580YUASz7NzCvDX8SWbNi5lNCqE5U79UissldiEwAqL6MjoFLGXxsVJhC/eF9YffnEtuI+wxlNN5a9Ss7VlENoO5/2mw72Cyd4ON8DPwcIdH4zT8aoXDTVg==
+ b=OIUjSERK/o4rGmaAt5GTQm1LffeXRcma5Ge+BFErNHD1lgQ5MUQ6JBFMgUUFVrcW+0Rv2acNNyLQbiUBFP+wuBdqEHiJIDN7ZU48e63fyP7EiWP2oBGLByfwo2tku37zFU8Yh3eoppvUzIK/InqiurbsoGjVoaK+vXeN7Q5BSBeJgOmp/xm8md+jwHFokaRrqIxLGofv6FJblrE2YFcIWKeCCZGNCjqRsIKiLlyS+7dPzZ6sMI6D6Yc2b+ieWejnFGCnB661weHxSKqKFG1hCkzd/6h889xHTpUz1D11APYfTk3ZFi3YhGyIMxaQwZfZ9WBlL3i67YZUJKUyvdIFKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fv17TDTXUFGbC4RS8M7ai1kjpWRD6eqPadHakI64xRI=;
- b=RzdCjdCTIBc9VW42fc81wBIRd0eZf39T6FpfucLRleJtTMed/hU9AsgQGCyKj3HCgLyIPF9NUjsdg5T0BMysuEWbINdwq8445gm9k5snizWiOncYKGvrgW/nod/ayH/hS4vlMf6xNmMC7zSmlWFO/6eWxxkEjjgOe/HZqhh/49i7E6XcX230YKmKevnZ5jeHni0ma0D5lzK8nH5rDi/zlgR2CO6W76gxxpdJaZLkoz5q4NbuxamGxINWCPaGO7DXEbhLmogDoePl7fgAFoV4ulCv7Vcfv0YszaivQ6wd8IGG1ZZ/O+n6HJiqJ9InrDXbF6flwRMZOfCi+vm4AwyQwg==
+ bh=72O1JVfrMZfSzETYO7dQDjQyEGNZizdfWFRas7lRlEc=;
+ b=BOTUxxtIsicsgTlOK2X3SRkEXu2LlAhXFMLiWXC79Rn0pKdu4KTDdBJAzOEjv7qOxGjKEruDHpWtKWc4PvQoIc7GKBtzRGMByo27SIFd89NE7Uy4i2AsCsaKvwwqnMLhM8j3YI2uNUqkkZ/9tdfY5bYliI6gY9DN905Zoq/gqwEV3HCVlQdlYc8d+VTuQIVgk8Tyx5q3VBbraq2+ieMuQa9DhIJ2xFgB1fNi7WdjrECVLr+8Hv+z4Tgv0VIe5YMlrqZX7EatPfGjOAUeMqsYhyHslHuBvlq3TcpOPfEDpXtINGih6cpQiB35NURZ3++tE3vH5Oly+VV+z8b5nqxWSw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cisco.com; dmarc=pass action=none header.from=cisco.com;
  dkim=pass header.d=cisco.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cisco.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fv17TDTXUFGbC4RS8M7ai1kjpWRD6eqPadHakI64xRI=;
- b=YrCwPVoMd2e8dLp9GLgyQla3obn9LXs6rhicfxEynNADBang6ouy0gSF3TByMDB7GzRR8TMDDWk/xkFV6FtjrtseAVzMaD8c1INwdH8s2MVu5II9wScNjbeIlQZytHmBRwkj0npaxqB0ydmXeVzQsOFWjCUhDAlhzPYDqqfJUW4=
+ bh=72O1JVfrMZfSzETYO7dQDjQyEGNZizdfWFRas7lRlEc=;
+ b=oFUDbj2112v+w1FqxlqafZ7TKQTYEqwwnNVJE+Q87ITdkPFwc/d6KxC0hKcDFqJH9a22XTq1SjV0eoq5R4DSswIKPmWzTdzP289mHy616vi+CCjRg2GgVpi2WGIMDcptUcTbSUmGdYNlxoM6foLz45H7cZO2oo24cpqxLC1siII=
 Received: from CH0PR11MB5299.namprd11.prod.outlook.com (2603:10b6:610:be::21)
- by DM4PR11MB7760.namprd11.prod.outlook.com (2603:10b6:8:100::19) with
+ by PH0PR11MB4998.namprd11.prod.outlook.com (2603:10b6:510:32::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Wed, 25 Oct
- 2023 15:51:18 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26; Wed, 25 Oct
+ 2023 16:18:38 +0000
 Received: from CH0PR11MB5299.namprd11.prod.outlook.com
  ([fe80::dbd8:84b0:9c4:d12b]) by CH0PR11MB5299.namprd11.prod.outlook.com
  ([fe80::dbd8:84b0:9c4:d12b%5]) with mapi id 15.20.6907.032; Wed, 25 Oct 2023
- 15:51:18 +0000
+ 16:18:38 +0000
 From: "Ariel Miculas (amiculas)" <amiculas@cisco.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-CC: Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner
-	<brauner@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Kent Overstreet
-	<kent.overstreet@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: Alice Ryhl <aliceryhl@google.com>,
+        "ariel.miculas@gmail.com"
+	<ariel.miculas@gmail.com>,
+        "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
+        "asahi@lists.linux.dev" <asahi@lists.linux.dev>,
+        "benno.lossin@proton.me"
+	<benno.lossin@proton.me>,
+        "bjorn3_gh@protonmail.com"
+	<bjorn3_gh@protonmail.com>,
+        "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+        "gary@garyguo.net" <gary@garyguo.net>,
+        "lina@asahilina.net"
+	<lina@asahilina.net>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "ojeda@kernel.org" <ojeda@kernel.org>,
         "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        Wedson
- Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 14/19] rust: fs: add per-superblock data
-Thread-Topic: [RFC PATCH 14/19] rust: fs: add per-superblock data
-Thread-Index: AQHaB1sXdnRF70b1u0yz1Gv375vewg==
-Date: Wed, 25 Oct 2023 15:51:17 +0000
-Message-ID: <lzh3l55hgultewxmi3u6ytn7qx3pltn4sesakolvvk4ecpy2rd@7obdythtr5pb>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-15-wedsonaf@gmail.com>
-In-Reply-To: <20231018122518.128049-15-wedsonaf@gmail.com>
+        "wedsonaf@gmail.com" <wedsonaf@gmail.com>
+Subject: Re: [PATCH] rust: kernel: str: Implement Debug for CString
+Thread-Topic: [PATCH] rust: kernel: str: Implement Debug for CString
+Thread-Index: AQHaB17pyf2qEV03vUqsAMeJkagKAw==
+Date: Wed, 25 Oct 2023 16:18:38 +0000
+Message-ID: <hwqyfgbzbnquby5v6zby4u4pbyezzcsttt4ee5x7lw5etpv7se@kvarclpucc7w>
+References:
+ <CAPDJoNv1HW-5uCj21PX3t23rJ+sbTL4Gm5pDis8HGJ-VTr4dug@mail.gmail.com>
+ <20230714140201.383439-1-aliceryhl@google.com>
+ <CANiq72n8-b992D4RbwUtuEUxXfJYQLNwfibgWSyspx-HYJ8+8A@mail.gmail.com>
+In-Reply-To:
+ <CANiq72n8-b992D4RbwUtuEUxXfJYQLNwfibgWSyspx-HYJ8+8A@mail.gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5299:EE_|DM4PR11MB7760:EE_
-x-ms-office365-filtering-correlation-id: 0ef98df1-3992-4a33-cb38-08dbd57239fe
+x-ms-traffictypediagnostic: CH0PR11MB5299:EE_|PH0PR11MB4998:EE_
+x-ms-office365-filtering-correlation-id: 1b5c99b9-3cf3-416b-c916-08dbd5760be8
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- ar/pvf6FthnT4v+QKz60KmFs+DiIdew8528ccj/8Y7ND/2Yn9zu2nCVVFMgLhMCn1FNKjqJftfhaN7rxKqh+w5NMndlu8hrfJN/shxWrZO7t/twXd14reAWO7Tt/2hwY5IR2LUi4P4vK0IsBEGgarQWAb1TakSNtOhAHxvdtRX88vHoCD+IFCaw/2sx03bzZqwdkdYJWs3EDuGcCbIYnjIZAgl0pNYP6eGDRPqKaNV66VNUnltYMPEk+iTdS0uf+qzV0Q+Irckj1w1GhE6SIV7eBYoqH/z8DvIhXWOzTJPffJ0QsuQBbuSq+L40LcTeXHQUHWXgfsX6CG+ULlIKk7sSqyTlhndxadFOPdt2Km4Sp5JzzWyByVKoeijyBMXK1gWKOLRI9tU/fvS1IHAu+okhUMtWHadQbhAHCzOPsBroLUKCveXfj2f4PRWhEsSM2uMRNyX6aaBgwLcJTcWGRsH6VyILkk0KD+WFFQibm737oSZDNDBB7JN4XZuNAyVht/DU4veQY/3td9tshzdonPoVmIzrMJVfPbGMsPpap+gVHLrcd532OqQjaPD9l1CMcdMMXBJEUEeHJVBTRXHbFmNPsVqx6MHrsbsSuCYH9an1eF5mlPONgZGBPhihIM09A
+ /Y8oRzrfyfrWKjgG/k790K+d1OHnayrl3u1c857ijn1ezpHdD9bP7w6vrmqIns4x9bzLgiDln08qBqKg3H7fHNMEnd7J1hObQI/5fA3mSaCZO42xj4JgZFAPvZ4mKdtIbGpQNLVjKSYQmVQk9ZffuDnHbwb+2JpfoEOt/QZV1LB6GgWFH2qGLPhW1NIJU2+AbK5G4mmWlCnVlmXkzgmdfnQgRSUb7yYyWJh3oBBg7Rs7/ZR4hQAvrpOpMK9GFJthTUPaCjuBymE3nkFS2Ph+viNiZ3Cqq6irtHBucnBE54NBmqsYVzH1TW9i7pA1QC/NsQa1eSXe59FNvXNTYZ3jFVr35WEH/wHaoeuCbaXols3LacrycnwH6WhUoYwjI9D1JgdTfghhXFTO4O3VasMsabl9sWO9viPunGTUt2ag6LXJ2x0TlK+Hx7upq54pRx+9tLwtNnwT40eAhQpGAKBOrqsrlZl6e/rUHp1YQ8QG3ueLp1BNZor7DJvJyG0VxuJ2XfVFid6ngcmtwIxUGZaJpzZv58mZV1LQOG5EjsJNWAcZgBnz84wcOxpg5FVyOT330sxIhMs+Uu8u41lVDGx8sf5zujL9XUpV5GqjdYol0zvMenFRPTAwXHICK69jmnbQ
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5299.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(136003)(366004)(346002)(376002)(39860400002)(230922051799003)(1800799009)(64100799003)(451199024)(186009)(86362001)(2906002)(122000001)(64756008)(91956017)(66476007)(66556008)(54906003)(66446008)(66946007)(6916009)(76116006)(38100700002)(478600001)(6506007)(6486002)(71200400001)(9686003)(6512007)(83380400001)(4326008)(8676002)(5660300002)(41300700001)(8936002)(38070700009)(26005)(33716001)(316002);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5299.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(366004)(39860400002)(396003)(376002)(346002)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(64756008)(9686003)(316002)(66446008)(66946007)(66476007)(54906003)(76116006)(66556008)(6916009)(91956017)(26005)(6506007)(53546011)(6512007)(38070700009)(71200400001)(478600001)(4744005)(8936002)(5660300002)(8676002)(7416002)(4326008)(38100700002)(41300700001)(86362001)(2906002)(33716001)(122000001)(6486002);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?OTxBfh7C8/O6XRZl5BJIkyc8csMmpGNoaIlXYIug/yZ6Kdg7xTmUTRBMSqKm?=
- =?us-ascii?Q?QG0II2G/MOzKnuoCBxwEORa97FW4a20srv44T+I/Mjbs5ROCcBiZgacKAaP7?=
- =?us-ascii?Q?VzbK3ZDLCkbv3ZL2lx4mPdl8yv/HQiFCNOg4wrky3Yq2MpQCdqmX7fM5bWKO?=
- =?us-ascii?Q?4F8uvAxUiPuCRksbmPBHL8pfbSSQNzk8ijO/eRvdsyWBhKSR6Cn9EwOrJtYz?=
- =?us-ascii?Q?wlXkag7+Iq91P7YgN6TGMRGcdwExgPgdfLDdL56C5zN1HdrRLPlbrEaBQqJ8?=
- =?us-ascii?Q?ST8NHfEUA0QXP83bYW5LEYasisi8jIt/cSfHwRh3XV3BQZSQRKPaT4ZaT/mB?=
- =?us-ascii?Q?3rPNTM2m4irEwOc8SCs80uL80KVzBy1FILEwkWZ/bG1tj3tRsCPWB7GI/xG8?=
- =?us-ascii?Q?/S9B53OpY+4c5TV/lmZ0ZZsTh3A9pPp7ToEGGu2QBtT9QqYUxJ/7UK5X7CFM?=
- =?us-ascii?Q?19Lc/oSAHGjr8cuAmu8HcOFnUgDbPnmRPfEeKnrqKxH3R3Nube6NV+V7urM4?=
- =?us-ascii?Q?4VW97zIxWyT685JE3QrqbqRhnb4jjqIRbKcmDPGj38tCH1a4Xp3uy/LEBIKh?=
- =?us-ascii?Q?pUGC3YW77/QxIQ7qc2znu3Xkcu3g91tg4DnVUWEDopcmd+gSsjLF5K7DtmRK?=
- =?us-ascii?Q?WNemZRXqUXiFS0ANTjaj7O5sk+bifNQj5QrLGwZTbdigfQsSDq4FxWXhswBI?=
- =?us-ascii?Q?rWDmewMjagPNsI6NHOb33HhvO9K9QQT5UkBjTkRKq827JZ7EhNSZKTrmpkNN?=
- =?us-ascii?Q?IO2NteCnAjYh2QF1ugleD13iAtvufQqWtjl8xDv3TWBb26GRyYVADtCNz/rC?=
- =?us-ascii?Q?P2ONIOb03S8nDGHmGSLgB6q711U5lFzBZO+2Id1/QS5X+B1ZdK76Tj8WRgpl?=
- =?us-ascii?Q?0pyevpqJJw2TQ/IpzsSWJhl+dyd2OwHoVpYnRA9zW4gT4HIohIyOrTudBNQB?=
- =?us-ascii?Q?Wx58HOt/7MF6JUf6rMVM3Ef3JO+AKd6LM6VjTcwYfUf0IbjDHssG9VbMo4Hi?=
- =?us-ascii?Q?WGhrUoy6zTbgK/bSrhm5vfs4kg/mz84FG8JT3f3v1kdnve40cpXkGX5g4LNz?=
- =?us-ascii?Q?6mjMW6z22yj7FcncoNg/b3cwQA5n9Ait9z94zoJQFCR8EwJ+FrQNBIN5YRIj?=
- =?us-ascii?Q?LXWMPy3ijGhsGQWD2MFxdNeqgeGbo+gGK3aWEBckLMMdWWTaTD6brnOLugt+?=
- =?us-ascii?Q?Xr2d9dNta7VX+s8ZpXQ7VNiDPsUDhPcPgI7/T1OnKDd+eBAD0R5ho01FvkK0?=
- =?us-ascii?Q?g5GKY5cP2lEa3H1khn1aXBu1VTXEjQ8gTaAZ3m3FtaXvQuf0Uv+0SdWIWt2p?=
- =?us-ascii?Q?q0/EWcq0dePVACF97TJEArx6RJ60WhUCwVDZx1OvAePW/gdP4RyTl/s6+TFQ?=
- =?us-ascii?Q?z+sZuufn/53wTR8MFM0UvMDqzh+AbzwE3yJ4Xy0v0U4iVAk1rbPz7lGGxnmM?=
- =?us-ascii?Q?iOoJ20TWrIjTNJxmKnU/ZuZk3NaDx4ALVgUIiWWfqDsr21zO68E/DrcqLHpE?=
- =?us-ascii?Q?gjSsFzW3aVUKWe5A5yb9/TYoutURQvzrB3//NuU/dZh1imaVzkAYKdrygmns?=
- =?us-ascii?Q?/t1mdb3JV9EmDuzLtru1mkh4voco5tkzqy3+c2iV?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <FCD37227D15E994DA836D081F6DFD718@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+ =?utf-8?B?ZFc3K2JiZnMwUlpacTNYQkpYMDBYd3BGZFJsR1pHMmNhTmIwM21vN2hncENI?=
+ =?utf-8?B?VWRiTzBlZ1NGdnNJQVpCRlV4L21NVkpXa2tlT2tZQWI5dHM3WVdhUU1haXU0?=
+ =?utf-8?B?bXFSZE5YVDB3QmZQeVpuT0VTcThqNVhFOGEzSSt6cDFWMW1xMWtzK0N3cy9u?=
+ =?utf-8?B?QTNZM09pc0JYaXcrQkk3M01odElnMVdtZEROOURkY2JScXZMNVZLaVFSdjF4?=
+ =?utf-8?B?Y3lrUkd4K3BkRkVzT2ZtS1ZxcDVpMm1FTDRPeDZTNy9OV29CeEhVQlZOdVg5?=
+ =?utf-8?B?ZXA1UVVjMGtkQXM5Sk5nb2h2UVJuSEZEVStGTjJ6Zk43MjdONkhQRi9XbnpF?=
+ =?utf-8?B?MW54VmEvbEFLWXFObkhsdHY0TlZoM094aHhaeGtoR3E3WDRNWlJzbUhES2dS?=
+ =?utf-8?B?YVh6K3Z6dCttb09iWG1WYzNwVHl3cDlZaE1FYUhvVDJtN2tLK1VUY1hXME5t?=
+ =?utf-8?B?TFRDMXdESEpaOVR1V0dIZFV5UjhXYlZIWGtHTDZscWYwMXhsK09oVStJc2Nw?=
+ =?utf-8?B?SitEZ2drVS9xRCtiNFVBNGY0eHpqelVFbU84cUw3bUM0UjRXa00zUUZEY0Iy?=
+ =?utf-8?B?M2t1RVE4WWVoSHZrbkJHWkNzRHJoQmx0djFqZzZSNWJseTR2RDJ6UTlMVE1v?=
+ =?utf-8?B?NkFIdnByK3dsaUNiVXRhdHMyTTlydXFzM0dKOTlQbnNZT2REVVU2a0YzYTJ6?=
+ =?utf-8?B?N3lGN2M3cWQ2M3l6cDFwTC9OaFdwbCtjbGpiaUpGQ2FHZXRSdFZNd0NaVkJj?=
+ =?utf-8?B?NURJL0FJcXBkbzQ1dWJidEpqeEpEUkZ0YVNnL0FueTlRN0lvQkVmNXRiN2hw?=
+ =?utf-8?B?SmZPZzFvKzR0TzRhVGVlK29ZcDVmbDAxM0JKZVg1eC8xRHNpRmpJS2JCaXVF?=
+ =?utf-8?B?ZnRQN1R0bkN5eFpCMk0zbXNycmZnMitKczdGVFJjWGwraTd1Rk1QNWl1Rld6?=
+ =?utf-8?B?TEM3eUhKa3pMb1lnaVU4eXVyb2t0TmJsSTMzUlhlUjNmd3BBTTdEQVpVWSt1?=
+ =?utf-8?B?bnMyZ3dNQVplN3NEUHM4VEVUZVpYTkVBaE5pRDdWOUU1VExNUXhZZmptT1Rl?=
+ =?utf-8?B?M3NsNkhmWWhZaTJTR0lyT2xiWkV2K2NlS1hHaDBrU1ZLTUJhUThWUDVzMFJR?=
+ =?utf-8?B?L0tHNHlaU1NjajZsb2gyd1J1UytDdENhd2VVbWR5Y0hCY1g5cnhKMVMyNTBV?=
+ =?utf-8?B?aU10Q3NKU3g4Z1hyL2gwWVAwZGt2R243dWEyUGVacjN5Y1pUVFZmZk5ESUFN?=
+ =?utf-8?B?bUlqOWNWNTJ6ZlFFem5kTm45TmJyanpPcWJuZXV3R1lKcXdZb1ZqMDNONzJw?=
+ =?utf-8?B?d0M5bVNJWmFpOXYrRnY0Nk0yR2I2VTNjeGJ4cmk4RlprT1RJR2JjZGNETHZq?=
+ =?utf-8?B?K1pmTUU5UFZBNnNkaXlhMnVnMktoK0pTekR1WVVlSDNZdE1BamxqK3RNZEV3?=
+ =?utf-8?B?QlRjSmxlSUtCQWVNbHZuTjdCakdCS1BDelYxRkZWeUZSWis5UFpGNWY5Z3o5?=
+ =?utf-8?B?Y3pTeTdiY0J0M0treitVM2gxNDg1M08vVEJ1QjRiVXNaK2tFMXVJTVRVRkx4?=
+ =?utf-8?B?VGRqeEMwZmUxM3RNK243ckZkQkJrb0dtUjRlQXh5WktweXJyVEdVMVlaQis3?=
+ =?utf-8?B?dnVZclBmSzVxL2pTUDlGelp1MTVEcVgwZHFQeEx6TWllVTkwV1VZR0tHMzBT?=
+ =?utf-8?B?aFNURzhvYnRZOW1GeEFtMEp2OTNjWjVwWFdVRlhYRG5CeU41WExOSWo0amhU?=
+ =?utf-8?B?MVV1V2hKNERvekpjTXV3d0ZGTUczcVlnYVN4QmxwRnNmaXBEVEp1WHVtU24r?=
+ =?utf-8?B?K20rNU10d1JHcnV0RHlMU1RCK0VPM3ZmRTlEcnZFdHR2R1M0MDB3OVE1TGo4?=
+ =?utf-8?B?ZUdpZFJ0UVlJTFlxc2xnLy90RUJpVXRqdXhxa1BUYkI4WEFnWW01RTFEN0Vj?=
+ =?utf-8?B?eHhSeVhnTmpCL2xtM0tVT2JDa3d5TDQ3NXFMcXZrSVhtdWdDVHVHQ096Zmln?=
+ =?utf-8?B?Wm10ajhZRWZjQmJ4UTNmRWlWSkt2aXdyVW52UmFCbFR5djQ4M2tNb3lMeVVo?=
+ =?utf-8?B?Yi9zTm5LK09FdzJodm5IVE9PQVk2Mys5L3VORHFvKzYvRjd5b0h3cURQT20w?=
+ =?utf-8?Q?CxJq2Ad/c5t1dLXmNWWrXW9nj?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <722F02AB8C72004CA6E72E5D6BB2C2D8@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -183,201 +203,30 @@ MIME-Version: 1.0
 X-OriginatorOrg: cisco.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5299.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ef98df1-3992-4a33-cb38-08dbd57239fe
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Oct 2023 15:51:17.8793
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b5c99b9-3cf3-416b-c916-08dbd5760be8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Oct 2023 16:18:38.5525
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 5ae1af62-9505-4097-a69a-c1553ef7840e
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8c/NYRvITv3YgtgQp/dXL7LdKBjAHKzImUUSAFUBMWvCknr/vCUQp4VnFkVlwNx0MYvpF2fxVE0KHI996fkxgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7760
+X-MS-Exchange-CrossTenant-userprincipalname: 4aRi3OJIv+/ag/xNv2aZwDb9L5UcdG5XuliWzfzMh5MaD/Kj/IL8QqzmLONMaLXK6Dtvl5jP8ymZE4B4eMtn5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4998
 X-Outbound-SMTP-Client: 72.163.7.165, rcdn-opgw-4.cisco.com
-X-Outbound-Node: alln-core-5.cisco.com
+X-Outbound-Node: alln-core-8.cisco.com
 
-On 23/10/18 09:25AM, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->=20
-> Allow Rust file systems to associate [typed] data to super blocks when
-> they're created. Since we only have a pointer-sized field in which to
-> store the state, it must implement the `ForeignOwnable` trait.
->=20
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->  rust/kernel/fs.rs         | 42 +++++++++++++++++++++++++++++++++------
->  samples/rust/rust_rofs.rs |  4 +++-
->  2 files changed, 39 insertions(+), 7 deletions(-)
->=20
-> diff --git a/rust/kernel/fs.rs b/rust/kernel/fs.rs
-> index 5b7eaa16d254..e9a9362d2897 100644
-> --- a/rust/kernel/fs.rs
-> +++ b/rust/kernel/fs.rs
-> @@ -7,7 +7,7 @@
->  //! C headers: [`include/linux/fs.h`](../../include/linux/fs.h)
-> =20
->  use crate::error::{code::*, from_result, to_result, Error, Result};
-> -use crate::types::{ARef, AlwaysRefCounted, Either, Opaque};
-> +use crate::types::{ARef, AlwaysRefCounted, Either, ForeignOwnable, Opaqu=
-e};
->  use crate::{
->      bindings, folio::LockedFolio, init::PinInit, str::CStr, time::Timesp=
-ec, try_pin_init,
->      ThisModule,
-> @@ -20,11 +20,14 @@
-> =20
->  /// A file system type.
->  pub trait FileSystem {
-> +    /// Data associated with each file system instance (super-block).
-> +    type Data: ForeignOwnable + Send + Sync;
-> +
->      /// The name of the file system type.
->      const NAME: &'static CStr;
-> =20
->      /// Returns the parameters to initialise a super block.
-> -    fn super_params(sb: &NewSuperBlock<Self>) -> Result<SuperParams>;
-> +    fn super_params(sb: &NewSuperBlock<Self>) -> Result<SuperParams<Self=
-::Data>>;
-> =20
->      /// Initialises and returns the root inode of the given superblock.
->      ///
-> @@ -174,7 +177,7 @@ pub fn new<T: FileSystem + ?Sized>(module: &'static T=
-hisModule) -> impl PinInit<
->                  fs.owner =3D module.0;
->                  fs.name =3D T::NAME.as_char_ptr();
->                  fs.init_fs_context =3D Some(Self::init_fs_context_callba=
-ck::<T>);
-> -                fs.kill_sb =3D Some(Self::kill_sb_callback);
-> +                fs.kill_sb =3D Some(Self::kill_sb_callback::<T>);
->                  fs.fs_flags =3D 0;
-> =20
->                  // SAFETY: Pointers stored in `fs` are static so will li=
-ve for as long as the
-> @@ -195,10 +198,22 @@ pub fn new<T: FileSystem + ?Sized>(module: &'static=
- ThisModule) -> impl PinInit<
->          })
->      }
-> =20
-> -    unsafe extern "C" fn kill_sb_callback(sb_ptr: *mut bindings::super_b=
-lock) {
-> +    unsafe extern "C" fn kill_sb_callback<T: FileSystem + ?Sized>(
-> +        sb_ptr: *mut bindings::super_block,
-> +    ) {
->          // SAFETY: In `get_tree_callback` we always call `get_tree_nodev=
-`, so `kill_anon_super` is
->          // the appropriate function to call for cleanup.
->          unsafe { bindings::kill_anon_super(sb_ptr) };
-> +
-> +        // SAFETY: The C API contract guarantees that `sb_ptr` is valid =
-for read.
-> +        let ptr =3D unsafe { (*sb_ptr).s_fs_info };
-> +        if !ptr.is_null() {
-> +            // SAFETY: The only place where `s_fs_info` is assigned is `=
-NewSuperBlock::init`, where
-> +            // it's initialised with the result of an `into_foreign` cal=
-l. We checked above that
-> +            // `ptr` is non-null because it would be null if we never re=
-ached the point where we
-> +            // init the field.
-> +            unsafe { T::Data::from_foreign(ptr) };
-> +        }
->      }
->  }
-> =20
-> @@ -429,6 +444,14 @@ pub struct INodeParams {
->  pub struct SuperBlock<T: FileSystem + ?Sized>(Opaque<bindings::super_blo=
-ck>, PhantomData<T>);
-> =20
->  impl<T: FileSystem + ?Sized> SuperBlock<T> {
-> +    /// Returns the data associated with the superblock.
-> +    pub fn data(&self) -> <T::Data as ForeignOwnable>::Borrowed<'_> {
-> +        // SAFETY: This method is only available after the `NeedsData` t=
-ypestate, so `s_fs_info`
-
-`NeedsData` typestate no longer exists in your latest patch version.
-
-Cheers,
-Ariel
-> +        // has been initialised initialised with the result of a call to=
- `T::into_foreign`.
-> +        let ptr =3D unsafe { (*self.0.get()).s_fs_info };
-> +        unsafe { T::Data::borrow(ptr) }
-> +    }
-> +
->      /// Tries to get an existing inode or create a new one if it doesn't=
- exist yet.
->      pub fn get_or_create_inode(&self, ino: Ino) -> Result<Either<ARef<IN=
-ode<T>>, NewINode<T>>> {
->          // SAFETY: The only initialisation missing from the superblock i=
-s the root, and this
-> @@ -458,7 +481,7 @@ pub fn get_or_create_inode(&self, ino: Ino) -> Result=
-<Either<ARef<INode<T>>, New
->  /// Required superblock parameters.
->  ///
->  /// This is returned by implementations of [`FileSystem::super_params`].
-> -pub struct SuperParams {
-> +pub struct SuperParams<T: ForeignOwnable + Send + Sync> {
->      /// The magic number of the superblock.
->      pub magic: u32,
-> =20
-> @@ -472,6 +495,9 @@ pub struct SuperParams {
-> =20
->      /// Granularity of c/m/atime in ns (cannot be worse than a second).
->      pub time_gran: u32,
-> +
-> +    /// Data to be associated with the superblock.
-> +    pub data: T,
->  }
-> =20
->  /// A superblock that is still being initialised.
-> @@ -522,6 +548,9 @@ impl<T: FileSystem + ?Sized> Tables<T> {
->              sb.0.s_blocksize =3D 1 << sb.0.s_blocksize_bits;
->              sb.0.s_flags |=3D bindings::SB_RDONLY;
-> =20
-> +            // N.B.: Even on failure, `kill_sb` is called and frees the =
-data.
-> +            sb.0.s_fs_info =3D params.data.into_foreign().cast_mut();
-> +
->              // SAFETY: The callback contract guarantees that `sb_ptr` is=
- a unique pointer to a
->              // newly-created (and initialised above) superblock.
->              let sb =3D unsafe { &mut *sb_ptr.cast() };
-> @@ -934,8 +963,9 @@ fn init(module: &'static ThisModule) -> impl PinInit<=
-Self, Error> {
->  ///
->  /// struct MyFs;
->  /// impl fs::FileSystem for MyFs {
-> +///     type Data =3D ();
->  ///     const NAME: &'static CStr =3D c_str!("myfs");
-> -///     fn super_params(_: &NewSuperBlock<Self>) -> Result<SuperParams> =
-{
-> +///     fn super_params(_: &NewSuperBlock<Self>) -> Result<SuperParams<S=
-elf::Data>> {
->  ///         todo!()
->  ///     }
->  ///     fn init_root(_sb: &SuperBlock<Self>) -> Result<ARef<INode<Self>>=
-> {
-> diff --git a/samples/rust/rust_rofs.rs b/samples/rust/rust_rofs.rs
-> index 95ce28efa1c3..093425650f26 100644
-> --- a/samples/rust/rust_rofs.rs
-> +++ b/samples/rust/rust_rofs.rs
-> @@ -52,14 +52,16 @@ struct Entry {
-> =20
->  struct RoFs;
->  impl fs::FileSystem for RoFs {
-> +    type Data =3D ();
->      const NAME: &'static CStr =3D c_str!("rust-fs");
-> =20
-> -    fn super_params(_sb: &NewSuperBlock<Self>) -> Result<SuperParams> {
-> +    fn super_params(_sb: &NewSuperBlock<Self>) -> Result<SuperParams<Sel=
-f::Data>> {
->          Ok(SuperParams {
->              magic: 0x52555354,
->              blocksize_bits: 12,
->              maxbytes: fs::MAX_LFS_FILESIZE,
->              time_gran: 1,
-> +            data: (),
->          })
->      }
-> =20
-> --=20
-> 2.34.1
-> =
+T24gMjMvMDcvMTQgMDU6MDFQTSwgTWlndWVsIE9qZWRhIHdyb3RlOg0KPiBPbiBGcmksIEp1bCAx
+NCwgMjAyMyBhdCA0OjAy4oCvUE0gQWxpY2UgUnlobCA8YWxpY2VyeWhsQGdvb2dsZS5jb20+IHdy
+b3RlOg0KPiA+DQo+ID4gQWRkaW5nIHNvbWUgc29ydCBvZiBtb3RpdmF0aW9uIHVzdWFsbHkgd29y
+a3MgcXVpdGUgd2VsbCwgZS5nLjoNCj4gPg0KPiA+IE1ha2UgaXQgcG9zc2libGUgdG8gdXNlIGEg
+Q1N0cmluZyB3aXRoIHRoZSBgcHJfKmAgbWFjcm9zIGRpcmVjdGx5LCB0aGF0DQo+ID4gaXMsIGlu
+c3RlYWQgb2YNCj4gPg0KPiA+ICAgICAgICAgcHJfZGVidWchKCJ0cnlpbmcgdG8gb3BlbiB7Oj99
+XG4iLCAmKmZpbGVuYW1lKTsNCj4gPg0KPiA+IHdlIGNhbiBub3cgd3JpdGUNCj4gPg0KPiA+ICAg
+ICAgICAgcHJfZGVidWchKCJ0cnlpbmcgdG8gb3BlbiB7Oj99XG4iLCBmaWxlbmFtZSk7DQo+IA0K
+PiBJbmRlZWQsIHRoaXMgd291bGQgYmUgdGhlIG1vc3QgaW1wb3J0YW50IGJpdCwgaS5lLiBhbnN3
+ZXJpbmcgdGhlICJ3aHk/Ii4NCj4gDQo+IFRoZSAid2hhdD8iIGFuZCB0aGUgImhvdz8iIGFyZSBw
+cmV0dHkgbXVjaCBleHBsYWluZWQgYnkgdGhlIHRpdGxlLCBidXQNCj4gaXQgaXMgYWxzbyBmaW5l
+IGdpdmluZyBtb3JlIGRldGFpbHMgKGJ1dCBpZiB0aGUgaW1wbGVtZW50YXRpb24NCj4gcmVxdWly
+ZXMgYW4gZXhwbGFuYXRpb24sIHRoZW4gaXQgaXMgdXN1YWxseSBiZXN0IHRvIHdyaXRlIGFuIGFj
+dHVhbA0KPiBzb3VyY2UgY29kZSBjb21tZW50IGluc3RlYWQpLg0KPiANCj4gQ2hlZXJzLA0KPiBN
+aWd1ZWwNCg0KQW55IGZvbGxvdy11cCBvbiB0aGlzPyBJdCBzdXJlIHdvdWxkIG1ha2UgbXkgbG9n
+Z2luZyBjbGVhbmVyLg0KDQpDaGVlcnMsDQpBcmllbA==
