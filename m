@@ -1,77 +1,104 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EFC2510F;
-	Wed, 25 Oct 2023 10:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E2E1A58E;
+	Wed, 25 Oct 2023 10:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DrAXUVV+"
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8235EDD;
-	Wed, 25 Oct 2023 03:13:03 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3add37de892so3212982b6e.1;
-        Wed, 25 Oct 2023 03:13:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jx1ldWRH"
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F93131;
+	Wed, 25 Oct 2023 03:57:43 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6bcbfecf314so1207874b3a.1;
+        Wed, 25 Oct 2023 03:57:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698228783; x=1698833583; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l6sBwVBt8OxRl40mrORA03RRhCm4IDWP2fYbv2hXwz8=;
-        b=DrAXUVV+HetekIYy4BhQtpBzj4CmK/ypIeJCX3upEo2f6U2M8PNA0QzlviapzdvBb/
-         bN363txQrBLneJgaMhKSPCNKEOWZMV1g0CBMtAnFzaBSFLgrTv25Ck/Ugi6UT92LkhOK
-         2ABdGoW9rfL6zl4iB8S4M5H3toFZ7lYwMfZNEtJR6deBZCIVF65zb0UnEoq9JY5xFV8m
-         tGXMiRJjqdcmXyVlkmAbplPFYbzTge6oDmpqRK5VZ14BQrsY1dbkoElWwTz0C48qNRHG
-         OUX9mCwDdpmoFoyQm3wBq4SGi/yL1W2BYKOH3bl+AxOXbXx8Ins/kPYwZutjaGeny2bo
-         /ktg==
+        d=gmail.com; s=20230601; t=1698231463; x=1698836263; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZPV1eC0VX1GKRD0tECZNDnHG0ZRaMmkIackM1YSkXwI=;
+        b=Jx1ldWRHDZItvKx8ZqhFtdq+QuHi/UPmImcQJuvazN0Kh7UvsK4kcfCVkN4kS/2yax
+         lRsLUbOa7JEJ5RZ3YFRN8UDJ78zLyqrpnLXXCVr+fbX3UpEV1XlGM+L2Rbzc7BSSMEwZ
+         r4f0wP5cBRIjui6bOZVqS+X8hTPaWpk1hkch3K7Qhx1/owB6/5MnTowwcwjrn8451VEQ
+         PJzBaGvlQfEZ8rHpCi3v9s49q2GFKynRLXYaf+jCP1Yqav6aiWT1V76yckB2CIGAW/JM
+         zravFl2FzeiEK5ZWcdNRbztXQffzr1juSUijtyLYF9sTIvpn1xMiTfyKukNrksvZPmjE
+         KMEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698228783; x=1698833583;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l6sBwVBt8OxRl40mrORA03RRhCm4IDWP2fYbv2hXwz8=;
-        b=vwC3Q1sfbbRd/rEIj9NlMm39DwgBBFIpkd7p28chff2MUMwxwe35eN8BPonSKxCKLo
-         r6DZXfoPp5537NI5/hPJ9brkBHxOZ2Ht+oYJsrc/wcM7LX9HmBbHY97gyvYhDjk02ePu
-         JQyuq9s3orgP7H72xQ3LM1tgJcqwERl27skxXkgKsoJuD4MU/sGiP3uZMXi2IrgaWboW
-         /JfXGgTVKS+1Z5852dwshNq8OzgPFqaS8rytild06M0aQtH2y1RhcI7Blz+W4DIvXJiJ
-         Dhe9MRR6om2TB4Lk7fLTFRAZsTSFmixcVODMRGf7XyWijLPFY7Tiqyz/bJWrI4ApCL+W
-         6svA==
-X-Gm-Message-State: AOJu0YyBqxZRIcJ2TlId8AHOL7YZ8TCY7xn227pvG5+gZt5JYWBHUnjn
-	BARQlhYyWNQK2nSiClOe2t8LMW2evK9HjCtQA6U=
-X-Google-Smtp-Source: AGHT+IGdPmbTgUijRvTiwVeUamc6sPEBS/RzZl71q6s9s7fFlZ1Uy8nbWtq0fhT33/wRwFselXnTZPMPUwXcZT7qz78=
-X-Received: by 2002:a05:6808:14d6:b0:3b2:e56d:b335 with SMTP id
- f22-20020a05680814d600b003b2e56db335mr15826575oiw.4.1698228782693; Wed, 25
- Oct 2023 03:13:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698231463; x=1698836263;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZPV1eC0VX1GKRD0tECZNDnHG0ZRaMmkIackM1YSkXwI=;
+        b=Fdieh3luf+3eJm903J3hV4R65hnJQRBHj7Nq/b/SKBTRBOEUD0pmIvmd9qgVl6GCJK
+         cRFWDvpcKg0tfdCbuDQC8yF7yTnK/D0m65BKZMV6c4mphgTosTEEPMmV1xltR9E7nuOL
+         7fbPXPWCIocNzkua5ugHLE5d+VZw3CDE54/xLfr9upc622x/Q10WEuefJ6F2yZe/6wVB
+         FTKdv8oRqRybbqAVXYfuJUmyZ2oFn6fX67oL9fSuB5K5STVSVPmMnx/ax1+s9UM+ja8s
+         TOUROCq0pzDg2Xu718ChQ1Mvk1WHSXe2RhPahJ+TDUVuY2Fn5rlN6nGqCIVCohVpu7UJ
+         dLZA==
+X-Gm-Message-State: AOJu0Yx6QOeGSqNrVFZtLUmvOqx9rkRCKwH6cvkFLRK//AlWo9cRVLKw
+	NxlbZ3OfpBh+9A3+zj6uL87pinQHavBAu7vG
+X-Google-Smtp-Source: AGHT+IGX64kVo/YlorKG9TSNQ3dIMcsdZWIZIfYl1HgrB+BFik7GHlYG0UeebHLEFudnkGtpZDd0yw==
+X-Received: by 2002:a05:6a21:8cc5:b0:17b:170c:2d11 with SMTP id ta5-20020a056a218cc500b0017b170c2d11mr14041640pzb.6.1698231463117;
+        Wed, 25 Oct 2023 03:57:43 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id e28-20020aa7981c000000b006a7083f9f6esm9107629pfl.23.2023.10.25.03.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Oct 2023 03:57:42 -0700 (PDT)
+Date: Wed, 25 Oct 2023 19:57:41 +0900 (JST)
+Message-Id: <20231025.195741.1692073290373860448.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, greg@kroah.com
+Subject: Re: [PATCH net-next v6 1/5] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <46b4ea56-1b66-4a8f-8c30-ecea895638b2@proton.me>
+References: <1f61dda0-1e5e-4cdb-991b-1107439ecc99@proton.me>
+	<20231025.101046.1989690650451477174.fujita.tomonori@gmail.com>
+	<46b4ea56-1b66-4a8f-8c30-ecea895638b2@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231018160922.1018962-1-ojeda@kernel.org>
-In-Reply-To: <20231018160922.1018962-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 25 Oct 2023 12:12:51 +0200
-Message-ID: <CANiq72m2s1SUa2DVSRZ+B+1v_Y4Cpa0Hz8cjRjHacGWh586+3w@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: add "The Rust experiment" section
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Lunn <andrew@lunn.ch>, linux-doc@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 18, 2023 at 6:09=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Clarify that the Rust experiment is still going on to avoid
-> confusion for both kernel maintainers and end users.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Wed, 25 Oct 2023 07:24:00 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-Applied to `rust-next`, with the new paragraph -- thanks everyone!
+>> /// PHY state machine states.
+>> ///
+>> /// Corresponds to the kernel's
+>> /// [`enum phy_state`](../../../../../networking/kapi.html#c.phy_state).
+>> ///
+>> /// Some of PHY drivers access to the state of PHY's software state machine.
+> 
+> That is one way, another would be to do:
 
-Cheers,
-Miguel
+This looks nicer.
+
+> /// PHY state machine states.
+> ///
+> /// Corresponds to the kernel's [`enum phy_state`].
+> ///
+> /// Some of PHY drivers access to the state of PHY's software state machine.
+> ///
+> /// [`enum phy_state`]: ../../../../../networking/kapi.html#c.phy_state
+> 
+> But as I noted before, then people who only build the rustdoc will not
+> be able to view it. I personally would prefer to have the correct link
+> offline, but do not know about others.
+
+I prefer a link to online docs but either is fine by me. You prefer a
+link to a header file like?
+
+/// [`enum phy_state`]:  ../../../include/linux/phy.h
+
+
+>>>> +    /// Gets the current link state. It returns true if the link is up.
+> 
+> I just noticed this as well, here also please split the line.
+
+Fixed all.
