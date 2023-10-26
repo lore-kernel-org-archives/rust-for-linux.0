@@ -1,94 +1,68 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1939211C9E
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Oct 2023 21:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D3218050;
+	Thu, 26 Oct 2023 23:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LuP+gdWI"
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD2DDC;
-	Thu, 26 Oct 2023 14:40:03 -0700 (PDT)
-Received: by mail-oo1-xc30.google.com with SMTP id 006d021491bc7-5845213c583so813093eaf.0;
-        Thu, 26 Oct 2023 14:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698356403; x=1698961203; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/kCC9Xleu4oCsZEw8qSGwEvAQ/otiVovpFVr+FE6EI=;
-        b=LuP+gdWIsdfpnbiBETNDxhrm31VQ5VhJhRsC8bm0EExMag/bhQxs0WBJJg0IVa7/me
-         2k5VLrYQgqIBBBfgp9VxwQbEfg7iFzoIKe1V9qG/WsSQUTfrqdi2LTNyAyWovpDSzubl
-         A0/wgUxzvI9KUzSv4UXFkLLodVwgWo6C+m4rfGUzzSi1WOwpYkMSajfmElZnBhkm3u0g
-         4bSV6gpWR29CBWAbAbdM3Vfnf/rUER7azakJ/KIU9al4b+cBI+b4gylZrEMQ57145JqN
-         T/wBTVrj4I46OAa94q4+wbUe3Y1XjODXoCeYxZAxTVIdFZLQkBn4Wz1omf0nNrjqwoKC
-         wuJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698356403; x=1698961203;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/kCC9Xleu4oCsZEw8qSGwEvAQ/otiVovpFVr+FE6EI=;
-        b=NGO7TizRbS14k0vOATmEdMU5a01r9bYlW73u/PfC9l4ZX+OX5NjEBbNYWgyGIiPg8b
-         vHrxEMXOffCBcsa9Z0IHLOGOF6wpGZNB5L3V/xYUlmXooW/wAQ35GNkbHtp04/M6ZIEG
-         uH9dRxU+cr4cN3QXXKnKMkLrYLLmtCJpern6OjTnqu7unsxrUNSIVDLhXIkUmHj3LCom
-         2pfM1k/Jv02Xa+y0h1rdothjMrEuifwgktsCpi+hQQIiQ37M9FpJ40nKEoC2BUK7eshN
-         FB10OjLe5dS08MqHut04KtjPSqc7olZeuNEIvDzZvhXnTaiwFxmwav8xseoXsDUk/jLK
-         YnaQ==
-X-Gm-Message-State: AOJu0Yw2/nAzrVWOvky7Ffmr+djIAJI1EEj4W4s6Ii4Un8dVoyCc9ncU
-	Dm5UOkvk5LFTOvCCZHnH9O4=
-X-Google-Smtp-Source: AGHT+IF4vcJJttRendP+WhRmxvB3EgbznP32Mj3wnikyVDUtJeOLULzTVgObhondXeewdPg9BV47cw==
-X-Received: by 2002:a05:6358:5292:b0:168:d3b3:7173 with SMTP id g18-20020a056358529200b00168d3b37173mr1469635rwa.25.1698356403089;
-        Thu, 26 Oct 2023 14:40:03 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id c26-20020a63961a000000b005891f3af36asm68472pge.87.2023.10.26.14.39.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Oct 2023 14:40:02 -0700 (PDT)
-Message-ID: <14fc783f-43a3-46cd-98a1-01556b9f99f6@gmail.com>
-Date: Thu, 26 Oct 2023 18:39:57 -0300
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DGNSsf1w"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C6F41A5;
+	Thu, 26 Oct 2023 16:48:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=A1G3XwA17+lul+TwoDNyC2Tm65smi0FiIfd0a7wJkmI=; b=DG
+	NSsf1wo+zxHxtQ4wyo3G7pEz0CPXgLSdSATU8ZMmG62awi2YJBArddxWorXWOMwzoji9qGJWwgua0
+	YigXFlLTzRpsrT38Z5/bHNb3fhbVYBrV/YyxWp1za6eYziSxMiBbCeaE5L/MQqb7KO6bjcLsV31si
+	urVzJJTtjQUXxuA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qwA5i-000IDP-36; Fri, 27 Oct 2023 01:48:42 +0200
+Date: Fri, 27 Oct 2023 01:48:42 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	benno.lossin@proton.me, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
+Message-ID: <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: macros: improve `#[vtable]` documentation
-Content-Language: en-US
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>, Asahi Lina <lina@asahilina.net>,
- Sven Van Asbroeck <thesven73@gmail.com>, Viktor Garske <viktor@v-gar.de>,
- Finn Behrens <me@kloenk.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231026201855.1497680-1-benno.lossin@proton.me>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20231026201855.1497680-1-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
 
-On 10/26/23 17:19, Benno Lossin wrote:
-> Traits marked with `#[vtable]` need to provide default implementations
-> for optional functions. The C side represents these with `NULL` in the
-> vtable, so the default functions are never actually called. We do not
-> want to replicate the default behavior from C in Rust, because that is
-> not maintainable. Therefore we should use `build_error` in those default
-> implementations. The error message for that is provided at
-> `kernel::error::VTABLE_DEFAULT_ERROR`.
+On Thu, Oct 26, 2023 at 12:39:46PM +0200, Miguel Ojeda wrote:
+> On Thu, Oct 26, 2023 at 2:16 AM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > This patchset adds Rust abstractions for phylib. It doesn't fully
+> > cover the C APIs yet but I think that it's already useful. I implement
+> > two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
+> > they work well with real hardware.
 > 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
-> v2 -> v3:
-> - don't hide the import of the constant in the example
-> - fixed "function" typo
-> - improve paragraph about optional functions
-> - do not remove the `Send + Sync + Sized` bounds on the example
-> 
-> v1 -> v2:
-> - removed imperative mode in the paragraph describing optional
->    functions.
-> 
-> [...]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> This patch series has had 8 versions in a month. It would be better to
+> wait more between revisions for this kind of patch series, especially
+> when there is discussion still going on in the previous ones and it is
+> a new "type" of code.
+
+That is actually about right for netdev. As i said, netdev moves fast,
+review comments are expected within about 3 days. We also say don't
+post a new version within 24 hours. So that gives you an idea of the
+min and max.
+
+It is however good to let discussion reach some sort of conclusion,
+but that also requires prompt discussion. And if that discussion is
+not prompt, posting a new version is a way to kick reviewers into
+action.
+
+	Andrew
