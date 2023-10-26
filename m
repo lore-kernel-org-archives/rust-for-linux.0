@@ -1,114 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58792381C4;
-	Thu, 26 Oct 2023 17:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14283C078
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Oct 2023 20:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvKAZN2M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A6EC433C7;
-	Thu, 26 Oct 2023 17:08:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698340108;
-	bh=q5nu5IfnRwPtcWkLDIu4aKyLwlMTLZH09mIm5x2Tuis=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=kvKAZN2MMSkl1+CvCbw+bKVWIonlMLlGvoyOkrluhiKxg6aAKGv7elmEkFI6RMlk1
-	 L2WGU4VBOmRIzvFLMQIivxqRBZldlSs8hE8LrXKkZvVdM2jdW0IhKifYjRnNGI7dp0
-	 7GQYBSYrAQlElOlklY4PCPR1C1dNMK0Uw2AOLO2LFZDz38HOx9uPZRUVr74ZD42lkF
-	 uppRnkPjzY+r3oIpxavk/wSZbZ/WlJA9yD6XOQadktbY7anFw+dikPBP35tY9L6fPm
-	 qG6bVF1QQPHi3CLYEyTauxQqHXJDcKe4/mmhnOyBtQH8L5gr09L5S4iXS8vUROldXF
-	 udSXExCrBk2jA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id E3628CE0D12; Thu, 26 Oct 2023 10:08:27 -0700 (PDT)
-Date: Thu, 26 Oct 2023 10:08:27 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Matthew Wilcox <willy@infradead.org>,
-	Dave Chinner <david@fromorbit.com>, linux-fsdevel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [RFC] rust: types: Add read_once and write_once
-Message-ID: <272fb0fa-bff7-4ccf-bea1-fba388c5d512@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20231025195339.1431894-1-boqun.feng@gmail.com>
- <20231026081345.GJ31411@noisy.programming.kicks-ass.net>
- <20231026113610.1425be1b@eugeo>
- <20231026111625.GK33965@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dGbPzAOc"
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD86191
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Oct 2023 13:19:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1698351593; x=1698610793;
+	bh=MY6UhJS4wgOAoosPta+TuxtbXCsYhD59Xf2pfqIYj2s=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=dGbPzAOcCpW+TbJACsMXT18aTk1rLFR5+rb05l3gHLPdhgtMrVbqZVRZ50zxXpY2o
+	 B7mIbgbT0foKPJ/yVeAjyepHdQbl8FwlcawjHZ3G9k940FIvLuXSVKIGt+Ya41Rnfl
+	 hclu30YXG9ikEA3d98cRg+N9ZFlE5ULWNGl/2Azr+CspZVqq8ncu3jmlU4DsNHvc4B
+	 sDvr5sJzuAsXe2dfSTsitxxpvm5+FVKPGITNVgASvMAjGcl5v/UdRYDj16Yh2FESpP
+	 Jh3bz3+/HbJvj674iAU5dmrPCQEUJlRyWlHFFGEl+TWqTpxsOiSXaX52w9YrVY40lo
+	 uJwBTi5C/5K7g==
+Date: Thu, 26 Oct 2023 20:19:33 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Sven Van Asbroeck <thesven73@gmail.com>, Viktor Garske <viktor@v-gar.de>, Finn Behrens <me@kloenk.dev>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] rust: macros: improve `#[vtable]` documentation
+Message-ID: <20231026201855.1497680-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231026111625.GK33965@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 26, 2023 at 01:16:25PM +0200, Peter Zijlstra wrote:
-> On Thu, Oct 26, 2023 at 11:36:10AM +0100, Gary Guo wrote:
-> 
-> > There's two reasons that we are using volatile read/write as opposed to
-> > relaxed atomic:
-> > * Rust lacks volatile atomics at the moment. Non-volatile atomics are
-> >   not sufficient because the compiler is allowed (although they
-> >   currently don't) optimise atomics. If you have two adjacent relaxed
-> >   loads, they could be merged into one.
-> 
-> Ah yes, that would be problematic, eg, if lifted out of a loop things
-> could go sideways fast.
-> 
-> > * Atomics only works for integer types determined by the platform. On
-> >   some 32-bit platforms you wouldn't be able to use 64-bit atomics at
-> >   all, and on x86 you get less optimal sequence since volatile load is
-> >   permitted to tear while atomic load needs to use LOCK CMPXCHG8B.
-> 
-> We only grudgingly allowed u64 READ_ONCE() on 32bit platforms because
-> the fallout was too numerous to fix. Some of them are probably bugs.
-> 
-> Also, I think cmpxchg8b without lock prefix would be sufficient, but
-> I've got too much of a head-ache to be sure. Worse is that we still
-> support targets without cmpxchg8b.
+Traits marked with `#[vtable]` need to provide default implementations
+for optional functions. The C side represents these with `NULL` in the
+vtable, so the default functions are never actually called. We do not
+want to replicate the default behavior from C in Rust, because that is
+not maintainable. Therefore we should use `build_error` in those default
+implementations. The error message for that is provided at
+`kernel::error::VTABLE_DEFAULT_ERROR`.
 
-Plus cmpxchg8b can be quite a bit heavier weight than READ_ONCE(),
-in some cases to the point that you would instead use some other
-concurrency design.
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
+v2 -> v3:
+- don't hide the import of the constant in the example
+- fixed "function" typo
+- improve paragraph about optional functions
+- do not remove the `Send + Sync + Sized` bounds on the example
 
-> It might be interesting to make the Rust side more strict in this regard
-> and see where/when we run into trouble.
+v1 -> v2:
+- removed imperative mode in the paragraph describing optional
+  functions.
 
-And maybe have some other name for READ_ONCE() that is permitted to tear.
+ rust/kernel/error.rs |  4 ++++
+ rust/macros/lib.rs   | 37 ++++++++++++++++++++++++++++++-------
+ 2 files changed, 34 insertions(+), 7 deletions(-)
 
-> > * Atomics doesn't work for complex structs. Although I am not quite sure
-> >   of the value of supporting it.
-> 
-> So on the C side we mandate the size is no larger than machine word,
-> with the exception of the u64 on 32bit thing. We don't mandate strict
-> integer types because things like pte_t are wrapper types.
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 05fcab6abfe6..1373cde025ef 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -335,3 +335,7 @@ pub(crate) fn from_result<T, F>(f: F) -> T
+         Err(e) =3D> T::from(e.to_errno() as i16),
+     }
+ }
++
++/// Error message for calling a default function of a [`#[vtable]`](macros=
+::vtable) trait.
++pub const VTABLE_DEFAULT_ERROR: &str =3D
++    "This function must not be called, see the #[vtable] documentation.";
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index c42105c2ff96..917a51183c23 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -87,27 +87,48 @@ pub fn module(ts: TokenStream) -> TokenStream {
+ /// implementation could just return `Error::EINVAL`); Linux typically use=
+ C
+ /// `NULL` pointers to represent these functions.
+ ///
+-/// This attribute is intended to close the gap. Traits can be declared an=
+d
+-/// implemented with the `#[vtable]` attribute, and a `HAS_*` associated c=
+onstant
+-/// will be generated for each method in the trait, indicating if the impl=
+ementor
+-/// has overridden a method.
++/// This attribute closes that gap. A trait can be annotated with the `#[v=
+table]` attribute.
++/// Implementers of the trait will then also have to annotate the trait wi=
+th `#[vtable]`. This
++/// attribute generates a `HAS_*` associated constant bool for each method=
+ in the trait that is set
++/// to true if the implementer has overridden the associated method.
++///
++/// For a trait method to be optional, it must have a default implementati=
+on.
++/// This is also the case for traits annotated with `#[vtable]`, but in th=
+is
++/// case the default implementation will never be executed. The reason for=
+ this
++/// is that the functions will be called through function pointers install=
+ed in
++/// C side vtables. When an optional method is not implemented on a `#[vta=
+ble]`
++/// trait, a NULL entry is installed in the vtable. Thus the default
++/// implementation is never called. Since these traits are not designed to=
+ be
++/// used on the Rust side, it should not be possible to call the default
++/// implementation. This is done to ensure that we call the vtable methods
++/// through the C vtable, and not through the Rust vtable. Therefore, the
++/// default implementation should call `kernel::build_error`, which preven=
+ts
++/// calls to this function at compile time:
++///
++/// ```compile_fail
++/// # use kernel::error::VTABLE_DEFAULT_ERROR;
++/// kernel::build_error(VTABLE_DEFAULT_ERROR)
++/// ```
++///
++/// note that you might need to import [`kernel::error::VTABLE_DEFAULT_ERR=
+OR`].
+ ///
+-/// This attribute is not needed if all methods are required.
++/// This macro should not be used when all functions are required.
+ ///
+ /// # Examples
+ ///
+ /// ```ignore
++/// use kernel::error::VTABLE_DEFAULT_ERROR;
+ /// use kernel::prelude::*;
+ ///
+ /// // Declares a `#[vtable]` trait
+ /// #[vtable]
+ /// pub trait Operations: Send + Sync + Sized {
+ ///     fn foo(&self) -> Result<()> {
+-///         Err(EINVAL)
++///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+ ///     }
+ ///
+ ///     fn bar(&self) -> Result<()> {
+-///         Err(EINVAL)
++///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+ ///     }
+ /// }
+ ///
+@@ -125,6 +146,8 @@ pub fn module(ts: TokenStream) -> TokenStream {
+ /// assert_eq!(<Foo as Operations>::HAS_FOO, true);
+ /// assert_eq!(<Foo as Operations>::HAS_BAR, false);
+ /// ```
++///
++/// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VTAB=
+LE_DEFAULT_ERROR.html
+ #[proc_macro_attribute]
+ pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
+     vtable::vtable(attr, ts)
 
-On C-language atomics, people who have talked about implementing atomics
-for objects too large for tear-free loads and stores have tended to want
-ot invent locks.  :-(
+base-commit: 3857af38e57a80b15b994e19d1f4301cac796481
+--=20
+2.41.0
 
-							Thanx, Paul
+
