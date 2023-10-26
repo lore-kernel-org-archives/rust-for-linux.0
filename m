@@ -1,91 +1,89 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9992D799;
-	Thu, 26 Oct 2023 11:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BE22D782;
+	Thu, 26 Oct 2023 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gg8lM5d+"
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50191AE;
-	Thu, 26 Oct 2023 04:54:35 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-51f64817809so99636a12.1;
-        Thu, 26 Oct 2023 04:54:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dZTNdywl"
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 929931AE;
+	Thu, 26 Oct 2023 05:22:35 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b2b1af09c5so464025b6e.0;
+        Thu, 26 Oct 2023 05:22:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698321275; x=1698926075; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D5Q4sKw20IDYCQXVbEgRDRjEjEctNoIjeFaPqJNC/rc=;
-        b=gg8lM5d+v+Xudbnf8Wlj5+yZos22AMGP5ruaxqdfbmji4NiWItW6cvOod0+zXN+0k4
-         Wn4Ez3dPv3Y8cxj+DZxG4rFVG6YvwoUND2FSmbNKpPG8KLv4xHJyjOfrECmdMARWPI8+
-         hUmJhP+FaBLI/focenNeoTDch5u2cFQfemMQChtmAutFubr4er1pnvy9roLF+/hmPAkG
-         Bt8MhpCDxt4c3Lnh/h78EUPseYmjhOC+wN3DFSoxDUBdyKNzbHAitT5bmIRnzrYllxfQ
-         lKYi+YUNdzAXDuv0/FBDT7c22d8h0Kyxc6KTZ9RzR9YBrxkhvacRz8gCtxXOpwo68QA/
-         CnUg==
+        d=gmail.com; s=20230601; t=1698322955; x=1698927755; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gj9G8F7ts5VApr8eLYiKxxaoSqqOh3fiVYzbTmY/nQ4=;
+        b=dZTNdywlRMsMWTp4xYwnH7u//w0HCot6eFphGLcfjq2+i+HdkuodNHWtY17T+K97lk
+         IH+WSg8EPAERH2QJNRVNR8g6IeZAKy4wpFfchecxe102cjk0vHXWIuQ9bS/PTjwH7fIR
+         nFCXC7htgC7lzzsF2IN8XtksgHDm3cQZ8GEwRN2rCUt9sHrGKreSmpkeE1hHQZHB33oY
+         akjWuBEhqP03yiWafHP7dXIO6RBY7Mk4z7Mj4Y7V4cWX1n+9maDN9mzLYDLwKWTIHujD
+         XHCMxiO1qrEDfQF9y0E10IyrBiwg5wZTzedzeoT821pKGN5EZl4CAZNWyKFqG8IEPYoc
+         h0Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698321275; x=1698926075;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=D5Q4sKw20IDYCQXVbEgRDRjEjEctNoIjeFaPqJNC/rc=;
-        b=JyzWRBVI5yVKjerqB6GSAWsP4TgzUyjI9ZSe0uatIQn8gNLt0BY4sc/bNoZFaSijiX
-         1Yb6nyJePqMsD0xhWnwU+daERUn7Tocmr/KuTMAzEJ6OTQ5ngCNguPY5B6pSp+mk2Twc
-         chZzK2hjHJXKNm9TpeVtGHCEyCLYkVpR7ItqUNRVjk/h4ODdQ1OEqw4H1R9cRdEYNII5
-         6EOQme19FZCBtWxAooV5iIBlVZywwkI9Kel212JOB/pHKg3EW8S8Mz7NxT0yOs8xg+BR
-         fUR9sAp8/t8WklsAwM1GwOkYTHJ2anUBTTxah4OWW954CYhrL6VIKciSSpFk9PXAtzea
-         bQLA==
-X-Gm-Message-State: AOJu0YxnjRL/NioY/BSProqT8hzOj3TJXsj7OttaNMfjBXOQM9jh7p2k
-	wkCllEvcne1q04tX97EZCko=
-X-Google-Smtp-Source: AGHT+IHkE6Z2sn4JakvHISr7KVCogjXHvU+PXjauonII13+9RFcxWzaevHmt2KXLxZnYf1nhP9EqMQ==
-X-Received: by 2002:a05:6a20:4420:b0:163:f945:42c4 with SMTP id ce32-20020a056a20442000b00163f94542c4mr24703115pzb.1.1698321275323;
-        Thu, 26 Oct 2023 04:54:35 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id h7-20020a655187000000b0056b6d1ac949sm8780610pgq.13.2023.10.26.04.54.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 04:54:35 -0700 (PDT)
-Date: Thu, 26 Oct 2023 20:54:34 +0900 (JST)
-Message-Id: <20231026.205434.963307210202715112.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- benno.lossin@proton.me, wedsonaf@gmail.com, ojeda@kernel.org
-Subject: Re: [PATCH net-next v7 3/5] rust: add second `bindgen` pass for
- enum exhaustiveness checking
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72n6Cvxydcef03kEo9fy=5Zd7MXYqFUGX1MBaTKF2o63nw@mail.gmail.com>
-References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
-	<20231026001050.1720612-4-fujita.tomonori@gmail.com>
-	<CANiq72n6Cvxydcef03kEo9fy=5Zd7MXYqFUGX1MBaTKF2o63nw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1698322955; x=1698927755;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Gj9G8F7ts5VApr8eLYiKxxaoSqqOh3fiVYzbTmY/nQ4=;
+        b=RSS6VrYAV/xlS3Gm9OFITTli1M6fRyEjbFDdYwq5xrp4hkE1rvxdfUgAZrsLiObuS4
+         18WJVlukCkfXMcR8EPYx6hsIabEPiUVem3qD6UY9OmUc6SFe8FUz9crKpOTM2+J0++Pm
+         ouxUWKb02b9NXB1Xx8evEkzM56Pdf+qotJDWqqzDU6V/r+rOUArIRRc+EIBA1jEZKCFS
+         s3Kg30mxIZRRD2Tnt3x20vOd7PQ/VmntIrVlSJ/SJC7YT9QWGKvqCLYhJ7KeXZ1gW1/j
+         0o42KqMbcccVZzhxi/4Zw2VahOw3PbLVU0F1QuuatoIBH15jm6qoGvuqYQlGUg1M92ug
+         X76Q==
+X-Gm-Message-State: AOJu0YzTcy6hswngg5eE3mdAUcoOdIRSQn6WkVzoJ+WRGDfmeGxYEw1L
+	2odU1RFxSjK8XdHUNhTGPzfmsftiTnbSpXi+Csjtc0sT6k3xAQ==
+X-Google-Smtp-Source: AGHT+IE8pljuqrs+PF23/bNeXZENbNpAGwK9/6GDGs4QWb6U8aA/p+sqpeUuvbmjin9No8afMm11aA6r7JFN8xe2iuY=
+X-Received: by 2002:a05:6808:b29:b0:3ab:8956:ada4 with SMTP id
+ t9-20020a0568080b2900b003ab8956ada4mr15500877oij.10.1698322954778; Thu, 26
+ Oct 2023 05:22:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <20231026001050.1720612-4-fujita.tomonori@gmail.com> <CANiq72n6Cvxydcef03kEo9fy=5Zd7MXYqFUGX1MBaTKF2o63nw@mail.gmail.com>
+ <20231026.205434.963307210202715112.fujita.tomonori@gmail.com>
+In-Reply-To: <20231026.205434.963307210202715112.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Oct 2023 14:22:23 +0200
+Message-ID: <CANiq72=QgT2tG3wy5pioTQ9n416kksZrL1791pehwR=1ZGP52w@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 3/5] rust: add second `bindgen` pass for enum
+ exhaustiveness checking
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	tmgross@umich.edu, benno.lossin@proton.me, wedsonaf@gmail.com, 
+	ojeda@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gVGh1LCAyNiBPY3QgMjAyMyAxMzowMjo1NyArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
-b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBUaHUsIE9jdCAyNiwgMjAy
-MyBhdCAyOjE24oCvQU0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwu
-Y29tPiB3cm90ZToNCj4+DQo+PiBGcm9tOiBNaWd1ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+
-DQo+Pg0KPj4gVGhpcyBwYXRjaCBtYWtlcyBzdXJlIHRoYXQgdGhlIEMncyBlbnVtIGlzIHN5bmMg
-d2l0aCBSdXN0IHNpZGVzLiBJZg0KPj4gdGhlIGVudW0gaXMgb3V0IG9mIHN5bmMsIGNvbXBpbGlu
-ZyBmYWlscyB3aXRoIGFuIGVycm9yIGxpa2UgdGhlDQo+PiBmb2xsb3dpbmcuDQo+Pg0KPj4gTm90
-ZSB0aGF0IHRoaXMgaXMgYSB0ZW1wb3Jhcnkgc29sdXRpb24uIEl0IHdpbGwgYmUgcmVwbGFjZWQg
-d2l0aA0KPj4gYmluZGdlbiB3aGVuIGl0IHN1cHBvcnRzIGdlbmVyYXRpbmcgdGhlIGVudW0gY29u
-dmVyc2lvbiBjb2RlLg0KPiANCj4+IFNpZ25lZC1vZmYtYnk6IE1pZ3VlbCBPamVkYSA8b2plZGFA
-a2VybmVsLm9yZz4NCj4+IFNpZ25lZC1vZmYtYnk6IEZVSklUQSBUb21vbm9yaSA8ZnVqaXRhLnRv
-bW9ub3JpQGdtYWlsLmNvbT4NCj4gDQo+IFBsZWFzZSBkbyBub3QgbW9kaWZ5IHBhdGNoZXMgZnJv
-bSBvdGhlcnMgd2l0aG91dCB3YXJuaW5nIHRoYXQgeW91IGRpZA0KPiBzby4gSSBkaWQgbm90IHdy
-aXRlIHRoaXMgY29tbWl0IG1lc3NhZ2Ugbm9yIGFncmVlZCB0byB0aGlzLCBidXQgaXQNCj4gbG9v
-a3MgYXMgaWYgSSBkaWQuIEkgZXZlbiBleHBsaWNpdGx5IHNhaWQgSSB3b3VsZCBzZW5kIHRoZSBw
-YXRjaA0KPiBpbmRlcGVuZGVudGx5Lg0KPg0KPiBBcyBJIHJlY2VudGx5IHRvbGQgeW91LCBpZiB5
-b3Ugd2FudCB0byBwaWNrIGl0IHVwIGluIHlvdXIgc2VyaWVzIHRvDQo+IHNob3djYXNlIGhvdyBp
-dCB3b3VsZCB3b3JrLCB5b3Ugc2hvdWxkIGhhdmUgYXQgbGVhc3Qga2VwdCB0aGUgV0lQLCBwdXQN
-Cj4gaXQgYXQgdGhlIGVuZCBvZiB0aGUgc2VyaWVzIGFuZCBhZGRlZCBSRkMgc2luY2UgaXQgaXMg
-bm90IGludGVuZGVkIHRvDQo+IGJlIG1lcmdlZCB3aXRoIHlvdXIgb3RoZXIgcGF0Y2hlcy4NCg0K
-U29ycnksIEkgdG90YWxseSBtaXN1bmRlcnN0YW5kIHlvdXIgaW50ZW50aW9uLiBJIHRob3VnaHQg
-dGhhdCB0aGUgUEhZDQphYnN0cmFjdGlvbnMgbmVlZHMgdG8gYmUgbWVyZ2VkIHdpdGggeW91ciBw
-YXRjaCB0b2dldGhlci4NCg0KSSdsbCBkcm9wIHlvdXIgcGF0Y2ggaW4gdGhlIG5leHQgdmVyc2lv
-biBhbmQgZm9jdXMgb24gbXkgcGF0Y2hlcy4NCg==
+On Thu, Oct 26, 2023 at 1:54=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Sorry, I totally misunderstand your intention. I thought that the PHY
+> abstractions needs to be merged with your patch together.
+>
+> I'll drop your patch in the next version and focus on my patches.
+
+No harm done! I understand you were trying to help, and I apologize if
+I sounded too harsh.
+
+Your abstractions are not blocked on this patch -- they could go in
+without this, that is why I suggested marking this one as RFC and
+putting it at the end of the series. The exhaustiveness check here is
+an extra feature that prevents a class of bugs, which is great, but it
+does not really affect the abstractions, i.e. there is no unsoundness
+in your code whether this patch is in or not.
+
+I will send the patch soon, and assuming it lands, then you can start
+using the feature if you wish. I would recommend basing your patches
+on top of that patch (or `rust-next` when the patch lands), so that
+your PHY series contains the addition of `check_phy_state`.
+
+Cheers,
+Miguel
