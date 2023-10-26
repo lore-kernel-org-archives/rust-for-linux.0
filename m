@@ -1,192 +1,136 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D362E65D;
-	Thu, 26 Oct 2023 14:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F1D8829
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Oct 2023 14:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qsort+ud"
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD82C1A2;
-	Thu, 26 Oct 2023 07:23:24 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-d9ca471cf3aso675304276.2;
-        Thu, 26 Oct 2023 07:23:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698330204; x=1698935004; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qmQ12llQk3IZSo1cj6ehbveeVOkoR+zL/LYihr+kgBA=;
-        b=Qsort+udxHwK3UZgVeua4g2+z/2T7uXFTeokbC0yqQCMMJ7VGRZBwzf2xib7SljoCK
-         lYYS0JcQgOQYLj7JHxSkzFfUTf2OEDKLwJFYYUu8Ti4mTiFm4S30XWJi7TaCvngrIxZ1
-         sx9m+lKb7U+nCWnB0EG/PSSKhepWoxwN5pe8mdjevGLr9MbzgErufgIh756mQzFy/Ijd
-         BIpK692GUs6RpLRGNc2IQifyE3TNpb1wRUexyDoDF8oCw/wPoEvAXdquJ3fie+2Phmes
-         RAtBNHtuRmVIf4j99MXmdHpUIZc+hiewP4IQ66XOklNa30w2hQ1xi4oGwJFjNSA8iUXq
-         IELQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698330204; x=1698935004;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qmQ12llQk3IZSo1cj6ehbveeVOkoR+zL/LYihr+kgBA=;
-        b=fEX5Gs9VeLWZWeJp1zS2Ie9G5boLeu7PGgsnQ4q2GoO+p2vhL71H4O40PeFwscvfGI
-         UoqMMfQsFC+Bhs4dNJzPNusfBh780TuS6ymJDNW8ks34Z1GnJW5OUmBy9i7iW3WQ4NjW
-         IRMpmH+/XtURG/ehMQfwg8nfM7Z5/+2DePFJ3Hr5ex4Ukr6bKqOjOzkjdhe0dvyveN2V
-         Vxu8/TUgsc5DTtTIxOXFYNirFqiD/XLoswBQs441ZIrWVXTRZWi53otCcfZj5T1kjZEZ
-         x+I5rurZAIy/2AhgLMleIUp6e6AtVO9vinWxOuaQt6Jmo5XAd9h/Ah44y/syCrhpe3Qe
-         gOTQ==
-X-Gm-Message-State: AOJu0YwDBRplwBeWLsD7rc0yHGVdqGXr9JX4SnmsBHvbOlmhNYp/Mq4u
-	BLP/55kMuqJCT0wWOVsTgxw=
-X-Google-Smtp-Source: AGHT+IH1fP8m0ZfURzq/DYK3dN0nkQ4K1zNYSBgKw8eHs+E9drhtEjW1W3aytItYucb04Mw1q71plA==
-X-Received: by 2002:a25:aca7:0:b0:d9c:fd8d:833a with SMTP id x39-20020a25aca7000000b00d9cfd8d833amr19746794ybi.59.1698330204037;
-        Thu, 26 Oct 2023 07:23:24 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id 205-20020a2505d6000000b00d814d8dfd69sm5314546ybf.27.2023.10.26.07.23.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 07:23:23 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailauth.nyi.internal (Postfix) with ESMTP id A68B127C005B;
-	Thu, 26 Oct 2023 10:23:22 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 26 Oct 2023 10:23:22 -0400
-X-ME-Sender: <xms:WnY6ZXn4lB9TVEVhjEs-iMQ9zSHVUF7Brqfa3pebbcmICW4qc1-epA>
-    <xme:WnY6Za2dLI94QaOdsGzzxDYwgH4jbKkYMI2jLX_H5AqoCUD_hHvTwuPsl-uc2J0Yv
-    ZV5GmpIhA6KvHlGUw>
-X-ME-Received: <xmr:WnY6ZdrohGQwXZCTCBX8y3wgWXGPxQW0ied1kmNm-PKN5gslsVoPX1-kodA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrledvgdejiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
-    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:WnY6Zflspi88sF3fgu01H4l2D0B37XPK_uXRLMaRv-2LcyiuWY0dHw>
-    <xmx:WnY6ZV3gk2_I24ou6ijCgALyVCEzmtKZEcc60DuXfHxUIXZDP2aIHg>
-    <xmx:WnY6ZeuxLFr0iJhu9Gs7yct3EP3TeJ3owikW4OPYePen44xv2Z0Q8w>
-    <xmx:WnY6ZSK-H_V8jB0yAOJA6Ttrl4PfsNmA3jL339jK2qrz7MGEyht4JQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Oct 2023 10:23:21 -0400 (EDT)
-Date: Thu, 26 Oct 2023 07:23:21 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,	Tom Rix <trix@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Matthew Wilcox <willy@infradead.org>,	Dave Chinner <david@fromorbit.com>,
- linux-fsdevel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [RFC] rust: types: Add read_once and write_once
-Message-ID: <ZTp2WVlMxqmlC4Rb@Boquns-Mac-mini.home>
-References: <20231025195339.1431894-1-boqun.feng@gmail.com>
- <20231026081345.GJ31411@noisy.programming.kicks-ass.net>
- <20231026113610.1425be1b@eugeo>
- <20231026111625.GK33965@noisy.programming.kicks-ass.net>
- <ZTp2AVY5twZOKEtX@Boquns-Mac-mini.home>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="hiC2E1MN"
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2099.outbound.protection.outlook.com [40.107.10.99])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9267B9
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Oct 2023 07:45:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=R6wtf8GVOSHuHzg2N6q2wUjtc166QUBRuOKV+aSqnUdKqXEEkBCSlTZQnVDmNL5xP9NtR2gyv/uHgZSpHMbRKlc9Kf44pZQnkfRUQSU1AIjCr89rF/oYHIi/PABUhI4OaOEhNPqu96MoPPWsPII17XaI/zqegcF+PnD2RYvlsp6D92uLco1uVAKrmCLu7YAX1+vNsWJPFsvgFvdtd3bkVQ50rHTVAJyUDylByCMrCWuLAXFb5xiYRs726huTRWkXao21g2x66XdntX+MmI1iP3EZ4nIX0FGJXW6Qdxf40qrKEBb+NmuiY4JiTV42qC0EVPjaQzb/4bzESUYv2bQW+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DOiaV1UyCDVImevHBlIJ5po4gzcPvtJpZxrzaXR0iTo=;
+ b=b0egUSYYGsBlLzlbKa6sEEZbX/Zk0aVFIRPKJ1KBqI/JSQUM+adfop1LI0tH0qSDd0H83kU+p2pRvWkEf8dFTFiGwnkNqz7eyCEgdE0c8eHmaP6FTjx6RgwwScAHN1sqY68ac7UY3/KXHFTm2xS9k2uyj4P9zhfcIiy21+SMCe7RdR6qLVlxQ2Ion20lL5/qcFPxYaKNW5zQJE6C/vkC9HcJgo8h0hJ0J+nZQgVMatbCyAg556dO6h5fwAez/UhUMyJOcpxbWh7SL0jmzgRMwfj/FOZMfuO/Ep/X+5osWhAYL9aNkA17SPuRTvz/Fj1cg9uqOyeBnpz8KTsP6G3Fmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DOiaV1UyCDVImevHBlIJ5po4gzcPvtJpZxrzaXR0iTo=;
+ b=hiC2E1MNqIxzQd2huv2eupidObD5J0tJtQGYLIYGn72gP+F/ygdYMVYcCzzX0ByuuE3WSALz/5wENo3ZGPyh5rgXWFdd14O27Cai4uPpOT53RxQ1wt0LgJPnYG9EVWoNhDbdF9ZYHQJUbBCIz6XEgNuU0E94TCf0q63FRSNSJ70=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO4P265MB6682.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f4::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Thu, 26 Oct
+ 2023 14:45:28 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6331:81d5:43cc:a9a2]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6331:81d5:43cc:a9a2%6]) with mapi id 15.20.6933.019; Thu, 26 Oct 2023
+ 14:45:28 +0000
+Date: Thu, 26 Oct 2023 15:45:25 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: fix relative links to kernel header files
+Message-ID: <20231026154525.6d14b495@eugeo>
+In-Reply-To: <CANiq72=dAYc=EQnJOuBvV5cKLo85O=A1AP03F9B6nJdDwdAT1w@mail.gmail.com>
+References: <20231026.110919.517001374342898485.fujita.tomonori@gmail.com>
+	<CANiq72=dAYc=EQnJOuBvV5cKLo85O=A1AP03F9B6nJdDwdAT1w@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: LO2P123CA0040.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600::28)
+ To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZTp2AVY5twZOKEtX@Boquns-Mac-mini.home>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6682:EE_
+X-MS-Office365-Filtering-Correlation-Id: e90f7afc-1b3d-41fe-e19b-08dbd63231ef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	mUR2B0gViAAj+GimRjCZlIEpfrANx3hsz3Ro+YToL8EZkPobFsuWgY1YirHgOLTbPX7DMCG9DhlRzgXt2+3+HIue7+njHZwix1nLoitQj7WOJ/pxSoS7gELkEBhdDQq8dy/ZWb/ghQrYAvAgichP5Sky0fOsNuQXsYyw4teSljPpz2Jo+daN75H6xATr/NnS7orlYy4br263cGt/fJ+E+MrwJJ1x/9PnyKbgL2SjhvopqPCPUhFuS+LVeF7MnYFoyqVgXWR86p++Nvalk3JjtLBI6z3L7PodAznsThxhmYQW14T1XStbgNvdnSoCEKXNzTGIj7pZ9j9grYoAsdSNy7igVZQddp7UqWPi185qT1y1TnsLnnYc4GSoC6/rNu7QjfRJp6XjsqkToxlNTCDAbhFevYqS/n9i8+R2DOmSto8GeLiYZUZRrOb+NmPYRr/sdlXgChtKEtzl5LUFKiooGuhBg30pkpSKOvtLuJjBCFzEzZcdhZYPJjQ4PzOXWYJ3bjIHBsgLFu0YtoUj8BOh/4hUij/ZBFgfyUknolmbXJYUuIS6PxCeI87ZImwdJTom
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(366004)(136003)(376002)(39830400003)(396003)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(6512007)(478600001)(6486002)(9686003)(6506007)(6666004)(53546011)(38100700002)(86362001)(33716001)(2906002)(4744005)(26005)(1076003)(4326008)(66476007)(66556008)(5660300002)(66946007)(41300700001)(8676002)(6916009)(316002)(8936002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MTJtT1RLc25yb0xia1RIN0ZDblpHRzhlVjJINU9jZVBMZWtUbW90V2tjd3Rs?=
+ =?utf-8?B?S21hWFI2MXRyTldaMWE0eW4yNWVPVzNmRWovc3l2NjEwL0dOMnlwdEdrZ2J5?=
+ =?utf-8?B?L0RJUWJiT1hWNHJpU3BHdjVpaXhxcTdVL0dwajhVdmdIa2ZpYzBMbTdFUzhX?=
+ =?utf-8?B?Rm5CZ01NNFNzV1BFS1V0YnVnaHoyd3BQZ3laRGRqa1ordFZ2TmNsc05DRDhS?=
+ =?utf-8?B?Y1owTTJreFBrZ0hFcGd6Q1BRWk00MEthTExCbnlacVFMZE9uMXl2SUtJZmk0?=
+ =?utf-8?B?R2RxdkhCbWozcFRTczc3YWJEZjc4dTFRSnhuZlpQdFdJWExIQmQ1Wkt4WHUw?=
+ =?utf-8?B?N0F4b0ZrY3owRkRWeUkzazU5RGlDL2EySzVUZm5xQ1BNWWxyeDVQWXhoNW4y?=
+ =?utf-8?B?UXNqOEpyUGFINDBEMHRCTDRxV0ZXVEMvU3RjRzZGRXJla0FxQ1dhdStXL0dq?=
+ =?utf-8?B?UG5rMHdIVHpuVDRlbTdUaFRwWVFqOVdxelZtamxCNFBwc3g3SDQ2OTBLUWo2?=
+ =?utf-8?B?OEl5OUhIQ29VYW1pMkwxWWtMVHg2VDhVc3VyWGVSckErZW0yYzI5WXU1VlpC?=
+ =?utf-8?B?MzNRZ2prclhwenVaSlMwclR0UVVuWEg1bEUza29ybWpEM0NCZjZKVFRUTkVn?=
+ =?utf-8?B?UWp2NDFQQlRUSDhBWkUrY3hJLzdpdDhSMU0wQWxGZWx1ZG1PUWJIWXVvVUt6?=
+ =?utf-8?B?OVRvYUJ2TDZHZzEvczJSZG91bkVEdXVzdWx6OHdGK0xnUUVnVjU5MzEzb3V5?=
+ =?utf-8?B?VytUV2VmZzJldjhEUWc1TUVtbnZXaSt2QmZpUW55RStLOUJOTTQ3dWNRZFlp?=
+ =?utf-8?B?K3h6QjVVS0RPVlRsMEQzekFuRVBmV1d5MHJUYWlwRmNZdG45ZjJhbnZyeUg5?=
+ =?utf-8?B?Z1QzMlYzaTM3bzhlYjd3bVFvdklCQkRsbmNLQnlENE80d29zYWxjK0JWOVRK?=
+ =?utf-8?B?cDZyd0I4aWNEQ2MrYlRxc3lDdTdrN3BNQ2tyRlVwUFhPbzNPMHpLQUpGSzV1?=
+ =?utf-8?B?OVJjeXlZQTd0WnJNZ0xIcWkyZGU3TmJOcXlvcU5waWVtUForUThDQmlTS00w?=
+ =?utf-8?B?anU5dTBFOUxyNEZoODR5amhVN0lhQktlWENYeDNiZk82TEVLUHpnZThPVGQ4?=
+ =?utf-8?B?TU4yTDZmbVUxRkdCdm9qMkswRDRRNGY1L2ZiYk85YjFFNkJjd0FGSTMvSTFv?=
+ =?utf-8?B?ZUF0OGFPTFd4aXFickhERGtUVWdJV0VPc0dHcXdvcUtPdm85Ry9ZMEZzNnV1?=
+ =?utf-8?B?Q2dEM2Vmd21mOHJNVVhaUFh5TTVDWVAzS1hUUnk2b2psa0RYZUZLQzRGVkh4?=
+ =?utf-8?B?U2dneHllZFppdlRBRHJUeitKQWMxSDV4SjFQS1ZCc0lLbWxPeEZzYXp0UGda?=
+ =?utf-8?B?dTZDemd2dWMxeEgvV3RjaVBGR3BDTjZFL2VxM0Z2d3VZalkwODUyVVNKS1ZP?=
+ =?utf-8?B?S3BVTmZJbm5LME8rbDg1THhyOWZ4YnlRQWk1YkhNVVNKbVdBU3NCbmdYOW5R?=
+ =?utf-8?B?YWdYVHludG1KZnYzQ0d4bGZZNTZvZWpHK3N5eG45UnBhN0FuVEx3cytTaVA3?=
+ =?utf-8?B?RDdUbnNhbytGNEhXaE1hTjZQb2tYeGYxb2k3YmJOREg5TWZpUXc3enh1MVo4?=
+ =?utf-8?B?V0llbE1aSy91ODVyZ3VEOEZwRElpVnZia0VQZWlRRmdrQU5xRE1mS0lCdTZR?=
+ =?utf-8?B?eFM0OHBPbzNNZXV2SFBNWWl5US8yQndDcmdpRVg4RVgwRmhRWXNzYkdzU1pN?=
+ =?utf-8?B?bSt1eFZCbFh4Yi9vd0ZySzhsUEk5WU9TNHZKMG5USjkwL01YTXpwOVB4QlpT?=
+ =?utf-8?B?ZzVwSm8ya2h0RTJZeUxwWnI5VkVzWTkwWUlQeGpiUlBqTWtSbHNhVWhhK3A2?=
+ =?utf-8?B?U1c1Wm45Uy9YOFFYalhtUFA5SSs0V0FyVC9WdTJ2RWhOUHV2QmY5SDI5VlVD?=
+ =?utf-8?B?N3lNeGNiVFJ0Q0JDWk9WU1VobHJaZ3lMekdLWkNpUWIrWCtJQktPbmNSeXlT?=
+ =?utf-8?B?Tmg1Mi96WHpOUVBKYStqNWVtS0szK3pPay9ENkFjcU1nVmViN3gvVys5OHBT?=
+ =?utf-8?B?ck04eGtIR1dlMWFWUFdpN2ZrYVVOL2w5S055ZmlzZDBEQlB1ZlRDc0tFMUdy?=
+ =?utf-8?Q?uEl0Pu91ZKVMCxXdXm3WXYi3t?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: e90f7afc-1b3d-41fe-e19b-08dbd63231ef
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2023 14:45:27.9660
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bLX99mNZvaUR0s9MgDsQoc8VpPlSfbENhQw9+EPZzqlCM/6vM9gpiaaMnIfxAbKKiuH7ekmInGy99V3WPwLVkw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6682
 
-On Thu, Oct 26, 2023 at 07:21:53AM -0700, Boqun Feng wrote:
-> On Thu, Oct 26, 2023 at 01:16:25PM +0200, Peter Zijlstra wrote:
-> > On Thu, Oct 26, 2023 at 11:36:10AM +0100, Gary Guo wrote:
-> > 
-> > > There's two reasons that we are using volatile read/write as opposed to
-> > > relaxed atomic:
-> > > * Rust lacks volatile atomics at the moment. Non-volatile atomics are
-> > >   not sufficient because the compiler is allowed (although they
-> > >   currently don't) optimise atomics. If you have two adjacent relaxed
-> > >   loads, they could be merged into one.
-> > 
-> > Ah yes, that would be problematic, eg, if lifted out of a loop things
-> > could go sideways fast.
-> > 
-> 
-> Maybe we can workaround this limitation by using compiler barriers, i.e.
-> 
-> 	compiler_fence(SeqCst);
-> 	load(Relaxed);
-> 	compiler_fence(Acquire);
-> 
-> this is slightly stronger than a volatile atomic.
-> 
-> > > * Atomics only works for integer types determined by the platform. On
-> > >   some 32-bit platforms you wouldn't be able to use 64-bit atomics at
-> > >   all, and on x86 you get less optimal sequence since volatile load is
-> > >   permitted to tear while atomic load needs to use LOCK CMPXCHG8B.
-> > 
-> > We only grudgingly allowed u64 READ_ONCE() on 32bit platforms because
-> > the fallout was too numerous to fix. Some of them are probably bugs.
-> > 
-> > Also, I think cmpxchg8b without lock prefix would be sufficient, but
-> > I've got too much of a head-ache to be sure. Worse is that we still
-> > support targets without cmpxchg8b.
-> > 
-> > It might be interesting to make the Rust side more strict in this regard
-> > and see where/when we run into trouble.
-> > 
-> 
-> Sounds good to me. If the compiler barriers make sense for now, then
-> we can do:
-> 
-> 	pub unsafe fn read_once_usize(ptr: *const usize) -> usize {
-> 		core::sync::atomic::compiler_fence(SeqCst);
-> 		let r = unsafe { *ptr.cast::<AtomicUsize>() }.load(Relaxed);
-> 		core::sync::atomic::compiler_fence(Acquire);
-> 		r
-> 	}
-> 
+On Thu, 26 Oct 2023 13:16:05 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-I forgot to mention, this can also resolve the comments from Marco, i.e.
-switching implemention to Acquire if ARM64 & LTO.
+> On Thu, Oct 26, 2023 at 4:09=E2=80=AFAM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > Relative links to kernel header files are broken due to the move of
+> > the output path? Looks like some of links has been broken before that. =
+=20
+>=20
+> Yeah, we wanted to clean these up when these paths stabilized  --
+> thanks for this!
 
-Regards,
-Boqun
+Would it be possible to use source-relative paths and then have them
+fixed-up later when generating the docs? It's quite ugly and not very
+maintainable to count the number of dotdots.
 
-> and if the other side (i.e. write) is also atomic (e.g. WRITE_ONCE()),
-> we don't have data race.
-> 
-> However, there are still cases where data races are ignored in C code,
-> for example inode::i_state: reads out of locks race with writes inside
-> locks, since writes are done by plain accesses. Nothing can be done to
-> fix that from Rust side only, and fixing the C side is a separate topic.
-> 
-> Thoughts?
-> 
-> Regards,
-> Boqun
-> 
-> > > * Atomics doesn't work for complex structs. Although I am not quite sure
-> > >   of the value of supporting it.
-> > 
-> > So on the C side we mandate the size is no larger than machine word,
-> > with the exception of the u64 on 32bit thing. We don't mandate strict
-> > integer types because things like pte_t are wrapper types.
-> > 
-> > 
+Best,
+Gary
