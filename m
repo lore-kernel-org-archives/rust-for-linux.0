@@ -1,207 +1,135 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248F18F45;
-	Fri, 27 Oct 2023 00:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3019810F7;
+	Fri, 27 Oct 2023 02:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EZREnKhc"
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE123D4A;
-	Thu, 26 Oct 2023 17:35:32 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b1e46ca282so1483859b3a.2;
-        Thu, 26 Oct 2023 17:35:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Klr+QpIl"
+Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65257187;
+	Thu, 26 Oct 2023 19:06:24 -0700 (PDT)
+Received: by mail-vs1-xe33.google.com with SMTP id ada2fe7eead31-457c441555cso694860137.3;
+        Thu, 26 Oct 2023 19:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698366932; x=1698971732; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6jF6tp7iLgrDkXUoNDLA4js3d0RVuMKJhGaRJ7F1v1g=;
-        b=EZREnKhczMikgbT0z44xR7RyqBYaeJdysrMiWp4E/AzcHAY1mo30kxuIAdY2GOJ6Z/
-         8BYuJjYEURolltfJatDf7BgPbrkK92Zb2RIqv3IW3Cy0iIwjd69dcyBeRPAQ9fcrBE6e
-         yYiohmjR66oOG48tbDpR/4poWJG9X6cJK5ISBHPqAygrd9GEY55W0HtdItHa724ORuwZ
-         AY8PO84UROMjSfGyZYXXqwR00IUHJD34VUF9LBA0ZcwSzZNGmfIavV8vrWUlRL8pJs1y
-         tT1iC4kaiOvWufVPe+U+jlcZqTP1l5NWtaSa1JIR1XR37fPUkzPTwVV8mCONlZxCqBMj
-         U31A==
+        d=gmail.com; s=20230601; t=1698372383; x=1698977183; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=kZs7O2u/plePQaOCB1yVLsFRWwAAB+J3QFH9mqRARyE=;
+        b=Klr+QpIllrk3zH9s6uTRwqHYUOI57/pNUGEMjsaOCtV4rTuJg3cHIDgQAZn/QX9EMK
+         HsGyS5lXrYeVEcNIRP6rn0ba5RNglM0XumNqpwIoLQrWK+FW6MP2d2i8BQrp9ftoMCxZ
+         ibKoBPR3WKtYdMUQoZzjU58Kn6OK0L2k5/QsGBRU/l21uzp/3nNNeK/u4PBpc4DxgLVo
+         RqWlrYs7rbFskFTq/SYLybrfEYMeuGSYsK+rg1iMDtVIaQ2rosNKXHOhUqLXatXbLQus
+         aavDwUOOUgVwU5TnKndIAbztVIW9GWQXwEIDv1gtcD/IAIoGMARLVaN3IXGaRD+sWQ+u
+         A/Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698366932; x=1698971732;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6jF6tp7iLgrDkXUoNDLA4js3d0RVuMKJhGaRJ7F1v1g=;
-        b=nxxlJZun2r9YB13EQklrv3Cksh3ooLE40rgUv5jUzJncDUfrAAsXmqerS/6w9jNAAn
-         cfYlrIUOJ4QcBwJup7kdaXmyamddhnLqmG7ss1cjKB9E2kqtmgfd197xLpdmCKae8WVd
-         L6fWb89zfm0hJOyCSuT81aJaJ4a/Z8S0XX8DGFhUTc4+vdUBV3Pbd6esGN8Fsf1WxXPu
-         Eh+hGyq/WWWu71NiY5Hgi9qQg2q1n4ON0PjrxKWz2UMRiBJLUapIcUDrCOb1i7xi+Hhe
-         Ne6Mo8KoHJWMBFRV4fWB/zG+6Z3FdIk5UGdfeh4S8VTGGmJVnwcZK2fkCSJRtCc4MUY8
-         mC7g==
-X-Gm-Message-State: AOJu0YyjehWLaK4Q/d+AwAuuMyCODVe3+2hvWwpFCFhskaGRt1oeQjmW
-	neKYqLoLIUet0epltmx9Cmg=
-X-Google-Smtp-Source: AGHT+IFz6oXD38WsJde6gD+qt++j7ELzVs8PFzKfelLAn6P4nI1pgwfW5Erb2KpLlEdWx9jBthh3qA==
-X-Received: by 2002:a05:6a00:1143:b0:6b2:69c:346a with SMTP id b3-20020a056a00114300b006b2069c346amr1231533pfm.19.1698366931881;
-        Thu, 26 Oct 2023 17:35:31 -0700 (PDT)
-Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id g21-20020aa78755000000b006be683108cesm183096pfo.213.2023.10.26.17.35.28
+        d=1e100.net; s=20230601; t=1698372383; x=1698977183;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kZs7O2u/plePQaOCB1yVLsFRWwAAB+J3QFH9mqRARyE=;
+        b=sTjf6YYqMaUtNkts6fDMvHHkBWXm1rQhjYKQRdSq6c+NbOax/sxg3w7bqjGZO2esKt
+         ViB2Pt33O8bujRXpLeHvxaYmED8W7BTsZRifAaIqbQDfOKqcMJzFcQcoHgCJGHk4vmNj
+         hoJs7hkxMFCJVL1isOmUq64Ew1RFu6HdMqNDyZXlzgF3w4LBtA4ozSwcomStNvzwCN1u
+         wZ3NKDRnPvDYFc9u6oA3/N8P+XITmT+MO99RBTwZmLO+i6d7UbiDl8B6poqp5ZU9NZMQ
+         v5Nag9pmjr49qJzidQtEl+sSWcKL4QZ821g+DAXLTqLX51A3aJouEtk7awGEJt05Mz1Y
+         j53Q==
+X-Gm-Message-State: AOJu0Yx4Ri5t3OXRQNdEPj+YkFovRWrYHqF9tf2WxrYw+5JEPbOENbLL
+	jREtOOxn6Wgi1K0ikGzLkdc=
+X-Google-Smtp-Source: AGHT+IEp5rB+0mmnsNUP7K9wy+H1mibKGdaEWvD1isMfVpg01Lhz1LLWfTnEcH1VGWR3kxmrew1IiA==
+X-Received: by 2002:a67:c309:0:b0:454:5a16:890d with SMTP id r9-20020a67c309000000b004545a16890dmr1493417vsj.24.1698372383301;
+        Thu, 26 Oct 2023 19:06:23 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id a16-20020a5b0ed0000000b00d8674371317sm270303ybs.36.2023.10.26.19.06.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 17:35:31 -0700 (PDT)
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH v2 2/2] samples: rust: Add USB sample bindings
-Date: Thu, 26 Oct 2023 21:34:51 -0300
-Message-ID: <20231027003504.146703-3-yakoyoku@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231027003504.146703-1-yakoyoku@gmail.com>
-References: <20231027003504.146703-1-yakoyoku@gmail.com>
+        Thu, 26 Oct 2023 19:06:22 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 35B1027C0054;
+	Thu, 26 Oct 2023 22:06:22 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Thu, 26 Oct 2023 22:06:22 -0400
+X-ME-Sender: <xms:HRs7ZfPhViSRhPruAI_NsRT6pjjS5gTZNLBUuDrgp43m0hBTIbgP3g>
+    <xme:HRs7ZZ-i-NWkeqiZ_bpWDvITUqoxZLbCuE7f9NuyR8qP0BK-woHNAQdyOUPIq265_
+    LrfMavJSb8BkZRkpA>
+X-ME-Received: <xmr:HRs7ZeRv7EBZbUfjdbJDnZBJF5nv8b5QzwRulvQ_wTce-QgLpl13TSdYCQc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleefgdehiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeevgffhueevkedutefgveduuedujeefledthffgheegkeekiefgudekhffg
+    geelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:HRs7ZTvoRTRgfjMX_gjgvyEztzhbDLxa_idbz8pdcGQKdNYbUf2HUw>
+    <xmx:HRs7ZXenEI2Jt6W1QuQcQhmrm3tYqyCIxtg0JO_Z_SDOd1vS-N7LCw>
+    <xmx:HRs7Zf3TJhvvES4R4F6TQIycaHmDhS068vGhHr5B9LkWkxEsMSrfYg>
+    <xmx:Hhs7ZZsS3Idzc2sf1sHmxGAu2GQvTM_1_2kvl5BmSncazErxet-jAw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Oct 2023 22:06:21 -0400 (EDT)
+Date: Thu, 26 Oct 2023 19:06:19 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	benno.lossin@proton.me, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
+Message-ID: <ZTsbG7JMzBwcYzhy@Boquns-Mac-mini.home>
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
+ <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
 
-This is a demonstration of the capabilities of doing bindings with
-subsystems that may or may not be statically linked.
+On Fri, Oct 27, 2023 at 01:48:42AM +0200, Andrew Lunn wrote:
+> On Thu, Oct 26, 2023 at 12:39:46PM +0200, Miguel Ojeda wrote:
+> > On Thu, Oct 26, 2023 at 2:16 AM FUJITA Tomonori
+> > <fujita.tomonori@gmail.com> wrote:
+> > >
+> > > This patchset adds Rust abstractions for phylib. It doesn't fully
+> > > cover the C APIs yet but I think that it's already useful. I implement
+> > > two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
+> > > they work well with real hardware.
+> > 
+> > This patch series has had 8 versions in a month. It would be better to
+> > wait more between revisions for this kind of patch series, especially
+> > when there is discussion still going on in the previous ones and it is
+> > a new "type" of code.
+> 
+> That is actually about right for netdev. As i said, netdev moves fast,
+> review comments are expected within about 3 days. We also say don't
+> post a new version within 24 hours. So that gives you an idea of the
+> min and max.
+> 
+> It is however good to let discussion reach some sort of conclusion,
+> but that also requires prompt discussion. And if that discussion is
+> not prompt, posting a new version is a way to kick reviewers into
+> action.
+> 
 
-Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
----
- drivers/usb/core/Kconfig        |  7 +++++++
- drivers/usb/core/Makefile       |  3 +++
- drivers/usb/core/usb.rs         | 13 +++++++++++++
- samples/rust/Kconfig            | 10 ++++++++++
- samples/rust/Makefile           |  3 +++
- samples/rust/rust_usb_simple.rs | 22 ++++++++++++++++++++++
- 6 files changed, 58 insertions(+)
- create mode 100644 drivers/usb/core/usb.rs
- create mode 100644 samples/rust/rust_usb_simple.rs
+I wonder whether that actually helps, if a reviewer takes average four
+days to review a version (wants to give accurate comments and doesn't
+work on this full time), and the developer send a new version every
+three days, there is no possible way for the developer to get the
+reviews.
 
-diff --git a/drivers/usb/core/Kconfig b/drivers/usb/core/Kconfig
-index 351ede4b5de2..4b5604282129 100644
---- a/drivers/usb/core/Kconfig
-+++ b/drivers/usb/core/Kconfig
-@@ -116,3 +116,10 @@ config USB_AUTOSUSPEND_DELAY
- 	  The default value Linux has always had is 2 seconds.  Change
- 	  this value if you want a different delay and cannot modify
- 	  the command line or module parameter.
-+
-+config USB_RUST
-+	bool "Rust USB bindings"
-+	depends on USB && RUST
-+	default n
-+	help
-+	  Enables Rust bindings for USB.
-diff --git a/drivers/usb/core/Makefile b/drivers/usb/core/Makefile
-index 7d338e9c0657..00e116913591 100644
---- a/drivers/usb/core/Makefile
-+++ b/drivers/usb/core/Makefile
-@@ -11,6 +11,7 @@ usbcore-y += phy.o port.o
- usbcore-$(CONFIG_OF)		+= of.o
- usbcore-$(CONFIG_USB_PCI)		+= hcd-pci.o
- usbcore-$(CONFIG_ACPI)		+= usb-acpi.o
-+usbcore-$(CONFIG_USB_RUST)		+= libusb.rlib
- 
- ifdef CONFIG_USB_ONBOARD_HUB
- usbcore-y			+= ../misc/onboard_usb_hub_pdevs.o
-@@ -18,4 +19,6 @@ endif
- 
- obj-$(CONFIG_USB)		+= usbcore.o
- 
-+rust-libs			:= ./usb
-+
- obj-$(CONFIG_USB_LEDS_TRIGGER_USBPORT)	+= ledtrig-usbport.o
-diff --git a/drivers/usb/core/usb.rs b/drivers/usb/core/usb.rs
-new file mode 100644
-index 000000000000..3f7ad02153f5
---- /dev/null
-+++ b/drivers/usb/core/usb.rs
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! USB devices and drivers.
-+//!
-+//! C header: [`include/linux/usb.h`](../../../../include/linux/usb.h)
-+
-+use kernel::bindings;
-+
-+/// Check if USB is disabled.
-+pub fn disabled() -> bool {
-+    // SAFETY: FFI call.
-+    unsafe { bindings::usb_disabled() != 0 }
-+}
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index b0f74a81c8f9..12116f6fb526 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -30,6 +30,16 @@ config SAMPLE_RUST_PRINT
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_USB_SIMPLE
-+	tristate "USB simple device driver"
-+	help
-+	  This option builds the Rust USB simple driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_usb_simple.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 03086dabbea4..f1ab58a9ecdd 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -2,5 +2,8 @@
- 
- obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-+obj-$(CONFIG_SAMPLE_RUST_USB_SIMPLE)		+= rust_usb_simple.o
-+
-+rust-libs					:= ../../drivers/usb/core/usb
- 
- subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-diff --git a/samples/rust/rust_usb_simple.rs b/samples/rust/rust_usb_simple.rs
-new file mode 100644
-index 000000000000..3523f81d5eb8
---- /dev/null
-+++ b/samples/rust/rust_usb_simple.rs
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust USB sample.
-+
-+use kernel::prelude::*;
-+
-+module! {
-+    type: UsbSimple,
-+    name: "rust_usb_simple",
-+    author: "Martin Rodriguez Reboredo",
-+    description: "Rust USB sample",
-+    license: "GPL v2",
-+}
-+
-+struct UsbSimple;
-+
-+impl kernel::Module for UsbSimple {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("usb enabled: {}", !usb::disabled());
-+        Ok(UsbSimple)
-+    }
-+}
--- 
-2.42.0
+(Honestly, if people could reach out to a conclusion for anything in
+three days, the world would be a much more peaceful place ;-))
 
+Regards,
+Boqun
+
+> 	Andrew
+> 
