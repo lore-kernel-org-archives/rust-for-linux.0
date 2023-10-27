@@ -1,66 +1,91 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A1ABA50
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Oct 2023 11:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0046E5CBC;
+	Fri, 27 Oct 2023 13:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ioxs3arB"
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0802E9C
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Oct 2023 04:38:17 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6cd09f51fe0so1050813a34.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Oct 2023 04:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698406696; x=1699011496; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=e6mlpirKcTFiHw+bhQw2Vb9+Weax8IHEhYJnZrgyywk=;
-        b=ioxs3arBNkEmPFbaG9lys6QmASqjw0v6sIaUDDwjSfZkYEbbvGqoW4weA4q+VEfdHS
-         LV3UruZsp6osE4FsuNsNMSJ5h0qgsojJFPuJyvHChYAq2vi0Sc7aWT+f+ItCTWpUxtev
-         ZVxwPjSX9cwwmugxh+BX2AzfJgCMvRUQQ5yEPEu69EcWDvTe+A32sc8qOfii20t0FLcI
-         5R+1S5DCiZILFsLBqEhXMf8I5pFK39ObsM8rjzC2Gb7p4CJ+2cqahV256+4bl6UWw+Ix
-         9oIbVQ2CVtqj01Farnxc/qmfHwkBkuu5b1iaIlH/7y8O5MVduJx8WuPQ4LIVrqH040G/
-         CjQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698406696; x=1699011496;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e6mlpirKcTFiHw+bhQw2Vb9+Weax8IHEhYJnZrgyywk=;
-        b=ORNITu8WfDiPEdPNtTcelnRfP6IpZNYibNrpWebzvV1KZ6Eg6WoYz8mjtbZkz6F03k
-         W+r00/EW8bdDdATRDVhgolj8FzYJY0jWoOLlhP1fVIMTV9JXOUE7LDpjW54NV9nQISjN
-         kBwguy/F9QAwqI58aofc+GV4LXSgK+9SeQoyGbt4hFfT4XPGwOgs8BR9Sn3QDqqV2Djg
-         mCE7TJkJNHxajQe+EdUp+CdDYq3en66vatCAuYr2ibsgWMy7ExWTPY0czMw6u0zL5kLy
-         HzktO6VvsmhuJLL68/zIg2AScI/0exJB/NyCMyYPI57QDpR3Eh/SAXQMwqaKeAqHO+qN
-         Hbtg==
-X-Gm-Message-State: AOJu0YzEFIdrBQjNlfQRXjePYlqVjhj7gtJtIfsJaO6eFeg0L2UDh50/
-	jtUR1vsblj4Dta8fZGPN8JvKW7LXCwAEFJV33uAU4z6x1wc1wA==
-X-Google-Smtp-Source: AGHT+IGS2lT0J7BmlykY45b3hSRBSI8Ze//KnjH46XVq989jwanJVZn/Ikk2O/MZ8EfAwvU/LpP7525igrww3CZzHRs=
-X-Received: by 2002:a05:6870:d890:b0:1e9:e923:9520 with SMTP id
- oe16-20020a056870d89000b001e9e9239520mr3094249oac.11.1698406696242; Fri, 27
- Oct 2023 04:38:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LIhuElef"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 475EA129;
+	Fri, 27 Oct 2023 06:00:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=34TFNELcRwb0DEJVWK6Vdvd41rU1dvOB0Wf82pfyYng=; b=LIhuElef+PFF7bZIJ0tGlYuono
+	lXcK5vol/SD1w3bbteFTXN0h+02yCXpDD3tcYJbqpsML6Vkj2n7zhdjmdiEA2L++zp/Tt8nc9OLXZ
+	seoq1Es/qf2W4+YbQby/j69NtyGd4TcC6SVkNr1KppItPzCTdhSJeuzMKn9j/XcmT4y8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qwMRh-000L8r-Bm; Fri, 27 Oct 2023 15:00:13 +0200
+Date: Fri, 27 Oct 2023 15:00:13 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	benno.lossin@proton.me, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
+Message-ID: <669d8fba-f6bb-4dc8-a06b-752fb83902b4@lunn.ch>
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
+ <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
+ <ZTsbG7JMzBwcYzhy@Boquns-Mac-mini.home>
+ <c40722eb-e78a-467d-8f91-ef9e8afe736d@lunn.ch>
+ <ZTsqROr8s18aWwSY@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 27 Oct 2023 13:38:05 +0200
-Message-ID: <CANiq72=3Uve5ZcbZdZDryz_iwSyc9E3j_-fWDnxUYa2mT56GSw@mail.gmail.com>
-Subject: Trimming and quoting
-To: rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZTsqROr8s18aWwSY@boqun-archlinux>
 
-Hi,
+> Do the CI tests support Rust now? Does Tomo's patch pass CI? Looks like
+> something we'd like to see (and help).
 
-When sending emails to the ML, please remember to trim your replies
-(including when sending tags only). It makes it easier to read the
-threads in Lore and in clients that do not automatically hide the
-quotes.
+Its work in progress.
 
-Please see https://subspace.kernel.org/etiquette.html.
+https://patchwork.kernel.org/project/netdevbpf/patch/20231026001050.1720612-6-fujita.tomonori@gmail.com/
 
-Thanks!
+These are the current tests we have. You can see it fails two tests. I
+would say neither are blockers. netdev does try to stick to 80
+character line length, so it would be nice to fix that. The checkpatch
+warning about the Kconfig help can also be ignored.
 
-Cheers,
-Miguel
+There are currently a few builds performed for each patch, once with
+gcc and once with clang/llvm. These use the allmodconfig kernel
+configuration, since that generally builds the most code. However,
+Rust is not enabled in the configuration. So i submitted a new test,
+based on the clang build, which massages the kernel configuration to
+actually enable Rust, and to ensure the dependencies are fulfilled to
+allow the PHY driver to be enabled, and then enable it. We want the
+build with a patch to have equal or less errors and warning from the
+toolchain.
+
+Its not clear how long it will take before this new test becomes
+active. The build machine does not have a Rust toolchain yet, etc.  To
+make up for that, i just build the series myself on my machine, and it
+builds cleanly for me.
+
+We are also open to add more tests. You will get more return on
+investment if you extend the C=1 checks, since that is used in a lot
+more places than networking. But we can add more tests to the
+networking CI system, if you can tell us what to test, how to test it,
+and how to evaluate the results.
+
+> > likely will be merged. Real problems can be fixed up later, if need
+> > be.
+> 
+> But this doesn't apply to pure API, right? So if some one post a pure
+> Rust API with no user, but some tests, and the CI passes, the API won't
+> get merged? Even though no review is fine and if API has problems, we
+> can fix it later?
+
+There is always a human involved. If a reviewer does not pick up the
+missing user, the Maintainer should and reject the patch.
+
+	Andrew
