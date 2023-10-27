@@ -1,80 +1,122 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A62160;
-	Fri, 27 Oct 2023 00:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A5D8F57
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Oct 2023 00:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XQ/4E0qz"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61138198;
-	Thu, 26 Oct 2023 17:07:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=R2G3EbMAjFyFArxWxFusjiN0c6cLZqQgdNFPGps24BE=; b=XQ
-	/4E0qz2mr+JApLyfY6LbbVPToucWNdb3Q3kzGkFo9a1Ku4IXUyHfb5h3MzVNfAW36QcBO7In2DOad
-	cDJk6Fh307oH2nan+13Xf1RgvK1n91+qI3p7f3YfyOyDlJ0W9OuKylvdzhMVDBCmdshONnRoRA8mT
-	4dGkdYjGuQUevOM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qwAO1-000IJ0-31; Fri, 27 Oct 2023 02:07:37 +0200
-Date: Fri, 27 Oct 2023 02:07:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	benno.lossin@proton.me, wedsonaf@gmail.com, ojeda@kernel.org
-Subject: Re: [PATCH net-next v7 3/5] rust: add second `bindgen` pass for enum
- exhaustiveness checking
-Message-ID: <feb34b35-e847-43f4-824f-157b1b96c7f0@lunn.ch>
-References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
- <20231026001050.1720612-4-fujita.tomonori@gmail.com>
- <CANiq72n6Cvxydcef03kEo9fy=5Zd7MXYqFUGX1MBaTKF2o63nw@mail.gmail.com>
- <20231026.205434.963307210202715112.fujita.tomonori@gmail.com>
- <CANiq72=QgT2tG3wy5pioTQ9n416kksZrL1791pehwR=1ZGP52w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aRBYX/lB"
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB911B6;
+	Thu, 26 Oct 2023 17:35:12 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b9af7d41d2so1489807b3a.0;
+        Thu, 26 Oct 2023 17:35:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698366912; x=1698971712; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=usbHaxcBxH3v5TUXsmVVZxNrcj87lpTiZe9iPVq/oHc=;
+        b=aRBYX/lB+H0RHOWogdS8RKa99kEzBMZiDlD62iuK36d8oFDXCBpkGNTYjGU55rq/lU
+         tsmL7mEu8hI0wfFPDfTr6FYIjmZbWswBFFIh1Za3wV9bX2NL8idm2gFtMI1RUU9SKW5b
+         dQ4yutTa4uIcvzZVacDjVrzpZAEpgmcPKv/gufNpzwjJKjPj5pYvh2UEjgodrUo9XZGn
+         nerU8QUYrLHC0vOQ4+0LlvtjATdCTVQBQtvMQj+Bi+xqdpHJfgQfYp0euGLrxiz/Ng7y
+         MnZE4puqYICFPnhDFD+/739gBV8I0LfHHxInatCeqSjnMDytI6mHiAzGBoEOn0Hj4xB6
+         /yiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698366912; x=1698971712;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=usbHaxcBxH3v5TUXsmVVZxNrcj87lpTiZe9iPVq/oHc=;
+        b=Jjgd5qTw8C8DmSKnaIo4eQXUZPG8nDoGrp8SkE6em4Gj/VrlfdzbqNBLW0dos5jBqL
+         CcbzAXEUx5BgimILbYrxvyaNNa75eT8egPTAdF6gFYd7vwcX5JR8ZLwXhBVhU8YBSic8
+         z54P1+8FVww/XfsyMZl5E1fw+2Lu4hBccgn5Tp3+4s0Qb95+OjxcZqKQ8DRS93VRAw5d
+         iGDk23c8jpq8y6k/lSPApKdsHhYaVm78a/X1pXBLZppcdmT9G8Tk12CV5UyX4zQLmDE8
+         0Xx4ajJaioaPxrR4C2PtyEx+TYJ/cR+UJSY8u7nC0prkNzaC2n7758IdvuYloXEMaGOm
+         yjoA==
+X-Gm-Message-State: AOJu0YwYShrKfPixxRdL+sDqo+xZCDFbwCbQKk4Syd6Pjcn/sz7o0YFi
+	dJ/Gpg2ebxHV8lmghhwCjgk=
+X-Google-Smtp-Source: AGHT+IF7e19PsOJXZ79tU9gqfcLbOm3UW/Lf7l3/z0dKRoeJf+SPUfv4Z7C8Gx/vWwd5f4tmdBlzjA==
+X-Received: by 2002:a05:6a00:1810:b0:68e:3bc8:17d1 with SMTP id y16-20020a056a00181000b0068e3bc817d1mr1467842pfa.29.1698366911825;
+        Thu, 26 Oct 2023 17:35:11 -0700 (PDT)
+Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id g21-20020aa78755000000b006be683108cesm183096pfo.213.2023.10.26.17.35.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 17:35:11 -0700 (PDT)
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH v2 0/2] rust: crates in other kernel directories
+Date: Thu, 26 Oct 2023 21:34:49 -0300
+Message-ID: <20231027003504.146703-1-yakoyoku@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=QgT2tG3wy5pioTQ9n416kksZrL1791pehwR=1ZGP52w@mail.gmail.com>
 
-On Thu, Oct 26, 2023 at 02:22:23PM +0200, Miguel Ojeda wrote:
-> On Thu, Oct 26, 2023 at 1:54 PM FUJITA Tomonori
-> <fujita.tomonori@gmail.com> wrote:
-> >
-> > Sorry, I totally misunderstand your intention. I thought that the PHY
-> > abstractions needs to be merged with your patch together.
-> >
-> > I'll drop your patch in the next version and focus on my patches.
-> 
-> No harm done! I understand you were trying to help, and I apologize if
-> I sounded too harsh.
-> 
-> Your abstractions are not blocked on this patch -- they could go in
-> without this, that is why I suggested marking this one as RFC and
-> putting it at the end of the series.
+This RFC provides makes possible to have bindings for kernel subsystems
+that are compiled as modules.
 
-That is not how netdev works. It messes up the patch flow, since the
-machinery expects to commit all or nothing.
+Previously, if you wanted to have Rust bindings for a subsystem, like
+AMBA for example, you had to put it under `rust/kernel/` so it came
+part of the `kernel` crate, but this came with many downsides. Namely
+if you compiled said subsystem as a module you've a dependency on it
+from `kernel`, which is linked directly on `vmlinux`.
 
-The best way forwards is you create a stable branch with this
-patch. The netdev Maintainer can then pull that branch into netdev,
-and Tomonori can then add his patches using it on top. When everything
-meets up in linux-next, git then recognises it has the same patch
-twice and drops one of them, depending on the order of the merge.
+So instead of overpopulating `kernel` with a gazillion modules that
+throws you into dire straits you should rather have the bindings in the
+same directory as the subsystem you want to bind with and link it to
+it.
 
-> I will send the patch soon, and assuming it lands, then you can start
-> using the feature if you wish. I would recommend basing your patches
-> on top of that patch (or `rust-next` when the patch lands),
+With this patch Rust sources can be compiled into libraries for them to
+be consumed. These libraries are ar archives that follow the `.rlib`
+structure, namely a libfoo.rlib thin archive with a foo.foo.o object
+and a libfoo.rmeta rustc metadata as members. Such Rust crates get
+their symbols exposed and the `bindings` crate is made available for
+them.
 
-That does not work. Networking patches need to be on net-next. The
-stable branch solves that when we have cross subsystem dependencies.
+Also included there's a sample usage of this in another patch, but it
+is not meant to be merged as it remains as an example.
 
-       Andrew
+If you want to use a crate with your Rust module just add a `rust-libs`
+variable in your Makefile with a value of the relative directory of
+said crate plus its name, e.g.
+
+    # Link with the foo crate
+    rust-libs += ../path/to/foo
+
+Martin Rodriguez Reboredo (2):
+  kbuild: Build Rust crates as libraries
+  samples: rust: Add USB sample bindings
+
+ .gitignore                      |  2 ++
+ Makefile                        |  4 +--
+ drivers/usb/core/Kconfig        |  7 +++++
+ drivers/usb/core/Makefile       |  3 ++
+ drivers/usb/core/usb.rs         | 13 +++++++++
+ samples/rust/Kconfig            | 10 +++++++
+ samples/rust/Makefile           |  3 ++
+ samples/rust/rust_usb_simple.rs | 22 +++++++++++++++
+ scripts/Makefile.build          | 49 ++++++++++++++++++++++++++++++---
+ scripts/Makefile.lib            | 18 ++++++++++--
+ scripts/Makefile.modfinal       |  7 ++++-
+ 11 files changed, 128 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/usb/core/usb.rs
+ create mode 100644 samples/rust/rust_usb_simple.rs
+
+-- 
+2.42.0
+
