@@ -1,114 +1,121 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DB0156F7
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Oct 2023 09:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067751802F;
+	Fri, 27 Oct 2023 10:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IL+7giNU"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01EC8CC
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Oct 2023 02:32:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1698399144; x=1698658344;
-	bh=qX0sYQ68NldqQzH0zn7TigorKLiFCKmIhJbiP6fSiqI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=IL+7giNUcJyqpQUi2c2jyzZTSiUh18R83I751zNBpFaBvZK0UOYMQdvjSCEbbvCq8
-	 iWNtNmjTTHPAot/8NL1ZmWZRHW9p22nfl9Zz5HM60Unzs0GFMhkvt/cRGHyiqLeM9E
-	 0d+ySgq8T1PdZ3cch52qpUJsq6o4S181eOIIkMYO29hFaOdM/Zqir5Pnpull9Ca5QK
-	 Dzt99S1ewo+UVrgOl0neWh+f4zN6tmRsOpZ06gudneKIU+JbV3fSAz+aWKa6ucKBpg
-	 rswgWAhIh6zls1CcROfLWWE0t1m8SkuZZKa86Lge/raK1tNSX5l8/XjGbphSLXBWvB
-	 2i8PJymaG8aWg==
-Date: Fri, 27 Oct 2023 09:32:19 +0000
-To: "Ariel Miculas (amiculas)" <amiculas@cisco.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Sven Van Asbroeck <thesven73@gmail.com>, Viktor Garske <viktor@v-gar.de>, Finn Behrens <me@kloenk.dev>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: macros: improve `#[vtable]` documentation
-Message-ID: <f5526059-66b1-4e28-aae2-b1cc1532ade0@proton.me>
-In-Reply-To: <au3adook2dsnveqlz3i7inmbzx7b5sel7qg2cn7efcacicthiy@fm5io4kam3s2>
-References: <20231026201855.1497680-1-benno.lossin@proton.me> <au3adook2dsnveqlz3i7inmbzx7b5sel7qg2cn7efcacicthiy@fm5io4kam3s2>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F788/YGc"
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6405CDC;
+	Fri, 27 Oct 2023 03:21:45 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3b2e330033fso1065244b6e.3;
+        Fri, 27 Oct 2023 03:21:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698402104; x=1699006904; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jOA5n4+aeaz4PKMBVniFLZW5T/elOQF7U5fSbJ0rn30=;
+        b=F788/YGcdmxWXpD+W3pPvX//pz7TzyUQOf8UiBdmqiX+gWk+gbOzyp7bCL8/KCA/Ew
+         ssKVx9jSOH4I6Jdpg5jxzCmv5YaWQcmQoySV/hs7CQaCPOHr/ez/My/L/1rb8MUrxaKa
+         iQQNGAUqymysmgAyl6b3tZKWM2BsVkmuSeHayfEvOs+rQSHka4vFFRoQTQIovL3wT/5W
+         r+MlXZr950KD6befmhUfTOL69oeK9ruZcwBHf3tBI7KmnDwrjR+HhTSfC+5GkxuWWIRG
+         yuTNlCBISoqYTXuUS1LNQWTL32pLd3XdQYFQUtDnft7/RuFxRMiZsQsdSopid9dazPKp
+         cB4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698402104; x=1699006904;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jOA5n4+aeaz4PKMBVniFLZW5T/elOQF7U5fSbJ0rn30=;
+        b=RoFe1VkddhcGJrSqI5Og5Ty24AKDhKQn91Tzk0x8bsmFPBV7Oxq9OS0jJGDqltKHBc
+         l3pEyv0h0DhpGTTGI6xG0uZAHSIsb/U1wumzP9ji2DUt2wSdEQXK+dr1dflFKWMXys0b
+         7MfGGdnInYFvcD5Gxyk5GK0l12oCsTv2LVH6FJBDWJJfMYywdktyyZAZ4+LKa4fb5w5W
+         /mqv7rFWQ43UZmx0GUp2YScX8UH+4aRnypRqPVuGUwXrOHhBp1mG7kYoAXvDlp3y8SAE
+         9RdF9wteaWI6YRyOU3Thah2siKkeLT0XiagcqoKOYDE4hJzxCrghfcWugRWZkYtvxwne
+         5I/g==
+X-Gm-Message-State: AOJu0YyZp9fHbG6EsE89EVCpnPwIBiOAweXR5M3bml3+R5/XV/Z6QYwT
+	Ivi1Dnc/HXN2S9gTgn2kni5NzbUGXJSvi7hErnuV8Xmrm2/1vw==
+X-Google-Smtp-Source: AGHT+IGNUL6cclD/kMRyUR4nqWwXlH0qxTYwwpnNeLIIEuMZznbp52dhqPsCxAHgwY943rEl/jKsIXz6yPx1IoXB2cU=
+X-Received: by 2002:a54:4008:0:b0:3ae:5e0e:1671 with SMTP id
+ x8-20020a544008000000b003ae5e0e1671mr2184974oie.4.1698402104647; Fri, 27 Oct
+ 2023 03:21:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com> <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
+In-Reply-To: <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 27 Oct 2023 12:21:33 +0200
+Message-ID: <CANiq72mDVQg9dbtbAYLSoxQo4ZTgyKk=e-DCe8itvwgc0=HOZw@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, benno.lossin@proton.me, 
+	wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 10/26/23 23:12, Ariel Miculas (amiculas) wrote:
-> On 23/10/26 08:19PM, Benno Lossin wrote:
->> Traits marked with `#[vtable]` need to provide default implementations
->> for optional functions. The C side represents these with `NULL` in the
->> vtable, so the default functions are never actually called. We do not
->> want to replicate the default behavior from C in Rust, because that is
->> not maintainable. Therefore we should use `build_error` in those default
->> implementations. The error message for that is provided at
->> `kernel::error::VTABLE_DEFAULT_ERROR`.
->>
->> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->> ---
->> v2 -> v3:
->> - don't hide the import of the constant in the example
->> - fixed "function" typo
->> - improve paragraph about optional functions
->> - do not remove the `Send + Sync + Sized` bounds on the example
->>
->> v1 -> v2:
->> - removed imperative mode in the paragraph describing optional
->>   functions.
->>
->>  rust/kernel/error.rs |  4 ++++
->>  rust/macros/lib.rs   | 37 ++++++++++++++++++++++++++++++-------
->>  2 files changed, 34 insertions(+), 7 deletions(-)
->>
->> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
->> index 05fcab6abfe6..1373cde025ef 100644
->> --- a/rust/kernel/error.rs
->> +++ b/rust/kernel/error.rs
->> @@ -335,3 +335,7 @@ pub(crate) fn from_result<T, F>(f: F) -> T
->>          Err(e) =3D> T::from(e.to_errno() as i16),
->>      }
->>  }
->> +
->> +/// Error message for calling a default function of a [`#[vtable]`](mac=
-ros::vtable) trait.
->> +pub const VTABLE_DEFAULT_ERROR: &str =3D
->> +    "This function must not be called, see the #[vtable] documentation.=
-";
->> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
->> index c42105c2ff96..917a51183c23 100644
->> --- a/rust/macros/lib.rs
->> +++ b/rust/macros/lib.rs
->> @@ -87,27 +87,48 @@ pub fn module(ts: TokenStream) -> TokenStream {
->>  /// implementation could just return `Error::EINVAL`); Linux typically =
-use C
->>  /// `NULL` pointers to represent these functions.
->>  ///
->> -/// This attribute is intended to close the gap. Traits can be declared=
- and
->> -/// implemented with the `#[vtable]` attribute, and a `HAS_*` associate=
-d constant
->> -/// will be generated for each method in the trait, indicating if the i=
-mplementor
->> -/// has overridden a method.
->> +/// This attribute closes that gap. A trait can be annotated with the `=
-#[vtable]` attribute.
->> +/// Implementers of the trait will then also have to annotate the trait=
- with `#[vtable]`. This
->> +/// attribute generates a `HAS_*` associated constant bool for each met=
-hod in the trait that is set
->> +/// to true if the implementer has overridden the associated method.
->=20
-> The above paragraph seems to be wrapped at 100 characters while the
-> paragraph below seems to be wrapped at 80 characters.
+On Fri, Oct 27, 2023 at 1:48=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> That is actually about right for netdev. As i said, netdev moves fast,
+> review comments are expected within about 3 days. We also say don't
+> post a new version within 24 hours. So that gives you an idea of the
+> min and max.
 
-Oh I forgot about that. Miguel, would it be reasonable for you to fix
-this when picking the patch?
+And as I said when you told us that, that may be the right policy for
+C netdev, which has been around for a long time, has a well supported
+infrastructure, the code base is well-known, etc.
 
---=20
+For Rust, it is not, for multiple reasons. For starters, we are not
+talking here about just another patch to your subsystem. This is a
+whole new subsystem API, in a new language, that needs careful design.
+Moreover, Rust abstractions are supposed to be "sound" (a property
+that C APIs do not need).
+
+On top of that, two subsystems are reviewing it, and on our side we
+simply do not have the resources to commit to netdev review pace, as
+we told you privately. I am aware of at least 3 reviewers who have not
+had the time to look into the more recent versions yet, and it is
+unlikely they will have time before LPC. I would really recommend they
+are given the chance to give feedback.
+
+So, if you appreciate/want/need our feedback, you will need to be a
+bit more patient.
+
+By the way, your docs say patches are triaged in less than 48 hours as
+well as "Generally speaking". From that wording, I wouldn't expect
+every single patch to take 48 hours to be fully reviewed (not just
+triaged), and I would say the "very first Rust abstractions code" is
+not a common situation.
+
+> It is however good to let discussion reach some sort of conclusion,
+> but that also requires prompt discussion.
+
+I don't see why that would require "prompt discussion".
+
+> And if that discussion is
+> not prompt, posting a new version is a way to kick reviewers into
+> action.
+
+No, sorry, posting a new version in order to push reviewers is not the
+right thing to do. The patches were not being ignored.
+
+From your own (netdev) docs -- not even the general kernel ones:
+
+    "Do not post a new version of the code if the discussion about the
+previous version is still ongoing, unless directly instructed by a
+reviewer."
+
+    "Asking the maintainer for status updates on your patch is a good
+way to ensure your patch is ignored or pushed to the bottom of the
+priority list."
+
+    "Make sure you address all the feedback in your new posting."
+
 Cheers,
-Benno
-
+Miguel
