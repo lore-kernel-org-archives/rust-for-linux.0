@@ -1,54 +1,80 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437218050;
-	Thu, 26 Oct 2023 23:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A62160;
+	Fri, 27 Oct 2023 00:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="A/RZIoOq"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XQ/4E0qz"
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B984390;
-	Thu, 26 Oct 2023 16:53:32 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61138198;
+	Thu, 26 Oct 2023 17:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ja/pCI99bhd2S/j3eMKq6Poj/Qhho61OZAFcUHEY6sk=; b=A/RZIoOqh4H53MHSVhUXRGuNEU
-	duPFqRFAbIoluiCuf3oOxZE7hzAQ9fhh8foiC6K3aD1vGOxqvDYz60JYsX6LuRSzHmd0LAHLVWi02
-	v+PSVHa9nRz8AsL3pmaxxPyltqCzNORxlf9JNjGl990SPOfnz8J30ooodbdcJLQASyZg=;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=R2G3EbMAjFyFArxWxFusjiN0c6cLZqQgdNFPGps24BE=; b=XQ
+	/4E0qz2mr+JApLyfY6LbbVPToucWNdb3Q3kzGkFo9a1Ku4IXUyHfb5h3MzVNfAW36QcBO7In2DOad
+	cDJk6Fh307oH2nan+13Xf1RgvK1n91+qI3p7f3YfyOyDlJ0W9OuKylvdzhMVDBCmdshONnRoRA8mT
+	4dGkdYjGuQUevOM=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1qwAAN-000IGU-4s; Fri, 27 Oct 2023 01:53:31 +0200
-Date: Fri, 27 Oct 2023 01:53:31 +0200
+	id 1qwAO1-000IJ0-31; Fri, 27 Oct 2023 02:07:37 +0200
+Date: Fri, 27 Oct 2023 02:07:37 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 4/5] MAINTAINERS: add Rust PHY abstractions
- for ETHERNET PHY LIBRARY
-Message-ID: <48ea5d93-353c-408a-9fbd-aacd141d0623@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	benno.lossin@proton.me, wedsonaf@gmail.com, ojeda@kernel.org
+Subject: Re: [PATCH net-next v7 3/5] rust: add second `bindgen` pass for enum
+ exhaustiveness checking
+Message-ID: <feb34b35-e847-43f4-824f-157b1b96c7f0@lunn.ch>
 References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
- <20231026001050.1720612-5-fujita.tomonori@gmail.com>
+ <20231026001050.1720612-4-fujita.tomonori@gmail.com>
+ <CANiq72n6Cvxydcef03kEo9fy=5Zd7MXYqFUGX1MBaTKF2o63nw@mail.gmail.com>
+ <20231026.205434.963307210202715112.fujita.tomonori@gmail.com>
+ <CANiq72=QgT2tG3wy5pioTQ9n416kksZrL1791pehwR=1ZGP52w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231026001050.1720612-5-fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=QgT2tG3wy5pioTQ9n416kksZrL1791pehwR=1ZGP52w@mail.gmail.com>
 
-On Thu, Oct 26, 2023 at 09:10:49AM +0900, FUJITA Tomonori wrote:
-> Adds me as a maintainer and Trevor as a reviewer.
+On Thu, Oct 26, 2023 at 02:22:23PM +0200, Miguel Ojeda wrote:
+> On Thu, Oct 26, 2023 at 1:54 PM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > Sorry, I totally misunderstand your intention. I thought that the PHY
+> > abstractions needs to be merged with your patch together.
+> >
+> > I'll drop your patch in the next version and focus on my patches.
 > 
-> The files are placed at rust/kernel/ directory for now but the files
-> are likely to be moved to net/ directory once a new Rust build system
-> is implemented.
+> No harm done! I understand you were trying to help, and I apologize if
+> I sounded too harsh.
 > 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Your abstractions are not blocked on this patch -- they could go in
+> without this, that is why I suggested marking this one as RFC and
+> putting it at the end of the series.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+That is not how netdev works. It messes up the patch flow, since the
+machinery expects to commit all or nothing.
 
-    Andrew
+The best way forwards is you create a stable branch with this
+patch. The netdev Maintainer can then pull that branch into netdev,
+and Tomonori can then add his patches using it on top. When everything
+meets up in linux-next, git then recognises it has the same patch
+twice and drops one of them, depending on the order of the merge.
+
+> I will send the patch soon, and assuming it lands, then you can start
+> using the feature if you wish. I would recommend basing your patches
+> on top of that patch (or `rust-next` when the patch lands),
+
+That does not work. Networking patches need to be on net-next. The
+stable branch solves that when we have cross subsystem dependencies.
+
+       Andrew
