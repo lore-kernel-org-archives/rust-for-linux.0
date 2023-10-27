@@ -1,91 +1,131 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0046E5CBC;
-	Fri, 27 Oct 2023 13:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AA219BA9;
+	Fri, 27 Oct 2023 13:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LIhuElef"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 475EA129;
-	Fri, 27 Oct 2023 06:00:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=34TFNELcRwb0DEJVWK6Vdvd41rU1dvOB0Wf82pfyYng=; b=LIhuElef+PFF7bZIJ0tGlYuono
-	lXcK5vol/SD1w3bbteFTXN0h+02yCXpDD3tcYJbqpsML6Vkj2n7zhdjmdiEA2L++zp/Tt8nc9OLXZ
-	seoq1Es/qf2W4+YbQby/j69NtyGd4TcC6SVkNr1KppItPzCTdhSJeuzMKn9j/XcmT4y8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qwMRh-000L8r-Bm; Fri, 27 Oct 2023 15:00:13 +0200
-Date: Fri, 27 Oct 2023 15:00:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	benno.lossin@proton.me, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
-Message-ID: <669d8fba-f6bb-4dc8-a06b-752fb83902b4@lunn.ch>
-References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
- <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
- <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
- <ZTsbG7JMzBwcYzhy@Boquns-Mac-mini.home>
- <c40722eb-e78a-467d-8f91-ef9e8afe736d@lunn.ch>
- <ZTsqROr8s18aWwSY@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GSGns7Tj"
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFC82129;
+	Fri, 27 Oct 2023 06:07:22 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-2800dfa0dd6so502186a91.1;
+        Fri, 27 Oct 2023 06:07:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698412042; x=1699016842; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VTm3HKZDTpXr+VU+k3Pt24Lznstzm73j1R8bDymP3Wk=;
+        b=GSGns7Tjf7fucutgLUDFZO19+W0BO6jw7n3tFqNSQ29uSY0TzPv3TqU2wnYcgogKpv
+         ceRSiHmBmXSV8P+uLRfSfuGTKdzX3Lvn8FsMDu/61EH6sVP8Llquqct6WP8W8oU8+FM4
+         xwEDeRNCo50y3CLtLzsUm2zLq7QsRgmdeMp7CuumYBE7UeqdB20n2kLAf32V32EVwpY5
+         CO49pFBLFO0m8UBpeP3ft/ggBQdk468bQZc5i+WOUa2FEMQ44Ui9WY9N1WUgospAZaky
+         SrFuveYxLfPH4Nr5lE3OlJAawHe0GSDfJLwH9RQalsSHfw3wzisHfKGCS9t6vLmpzw00
+         SZkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698412042; x=1699016842;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VTm3HKZDTpXr+VU+k3Pt24Lznstzm73j1R8bDymP3Wk=;
+        b=gTmqSvPn1s14mnDoHxjemozk4pMuFUrY0i5gIb0vS/wu2bhlD9e+V8KZl1WI6SrP6/
+         Upim8ku/AVZ4E5CPaJxHMwQWb3qcC2Rb/H0nQX+K01TkRe7ecNR1X9FGB63IiSInV4jS
+         +9gIDi+wQN6gtoxUHv6lmFlPgDG24SxzVEUAPk2aLVPuZxHhLS46/MYq/dtT3xqv6RTG
+         oPq1/vJw44RwsLmGfHiXYcROvIAstg1Ej6wjdDsvXIs36TzOVu1eZHYAJxf0LHUMkDtO
+         R2Bx82HS7izskXR7jnGJZ/pe8bZhBu+liVQfZD0WQhE6C7aIQSPflsz83n+wAQrR8St0
+         pb5w==
+X-Gm-Message-State: AOJu0Yxi5x9MAWd0nLsfmkG9y4Cy/Leqaw8REpaiOhs65dysjddLS8xV
+	jsldcGYaX8+onKfjp40tO2s=
+X-Google-Smtp-Source: AGHT+IF15Rq+MqE77offCAjFJQ4Arvms17cTaQ5u6/PwZPez6e80HdF17UnZWYX0sssEBRHCfqPf+w==
+X-Received: by 2002:a17:90a:357:b0:27d:5964:4eec with SMTP id 23-20020a17090a035700b0027d59644eecmr2455669pjf.1.1698412040581;
+        Fri, 27 Oct 2023 06:07:20 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id p13-20020a17090a348d00b002609cadc56esm1326781pjb.11.2023.10.27.06.07.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Oct 2023 06:07:20 -0700 (PDT)
+Message-ID: <25158cfc-5a8f-4419-b1ca-08743277ee23@gmail.com>
+Date: Fri, 27 Oct 2023 10:07:14 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZTsqROr8s18aWwSY@boqun-archlinux>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 2/2] samples: rust: Add USB sample bindings
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20231027003504.146703-1-yakoyoku@gmail.com>
+ <20231027003504.146703-3-yakoyoku@gmail.com>
+ <2023102737-juniper-trodden-afb4@gregkh>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <2023102737-juniper-trodden-afb4@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Do the CI tests support Rust now? Does Tomo's patch pass CI? Looks like
-> something we'd like to see (and help).
-
-Its work in progress.
-
-https://patchwork.kernel.org/project/netdevbpf/patch/20231026001050.1720612-6-fujita.tomonori@gmail.com/
-
-These are the current tests we have. You can see it fails two tests. I
-would say neither are blockers. netdev does try to stick to 80
-character line length, so it would be nice to fix that. The checkpatch
-warning about the Kconfig help can also be ignored.
-
-There are currently a few builds performed for each patch, once with
-gcc and once with clang/llvm. These use the allmodconfig kernel
-configuration, since that generally builds the most code. However,
-Rust is not enabled in the configuration. So i submitted a new test,
-based on the clang build, which massages the kernel configuration to
-actually enable Rust, and to ensure the dependencies are fulfilled to
-allow the PHY driver to be enabled, and then enable it. We want the
-build with a patch to have equal or less errors and warning from the
-toolchain.
-
-Its not clear how long it will take before this new test becomes
-active. The build machine does not have a Rust toolchain yet, etc.  To
-make up for that, i just build the series myself on my machine, and it
-builds cleanly for me.
-
-We are also open to add more tests. You will get more return on
-investment if you extend the C=1 checks, since that is used in a lot
-more places than networking. But we can add more tests to the
-networking CI system, if you can tell us what to test, how to test it,
-and how to evaluate the results.
-
-> > likely will be merged. Real problems can be fixed up later, if need
-> > be.
+On 10/27/23 04:15, Greg Kroah-Hartman wrote:
+> On Thu, Oct 26, 2023 at 09:34:51PM -0300, Martin Rodriguez Reboredo wrote:
+>> [...]
+>> +
+>> +config USB_RUST
+>> +	bool "Rust USB bindings"
+>> +	depends on USB && RUST
+>> +	default n
 > 
-> But this doesn't apply to pure API, right? So if some one post a pure
-> Rust API with no user, but some tests, and the CI passes, the API won't
-> get merged? Even though no review is fine and if API has problems, we
-> can fix it later?
+> Nit, "n" is the default, this line is not needed.
+> 
+> Also, if you want to get really picky, _which_ USB is this for, the
+> "host" apis (you plug a USB device into a Linux maching), or the
+> "gadget" apis (i.e. Linux is running in the device that you plug into a
+> USB host)?  Linux supports both :)
 
-There is always a human involved. If a reviewer does not pick up the
-missing user, the Maintainer should and reject the patch.
+Nice one! I'll probably target host APIs as of now due to what I have in
+my hands.
 
-	Andrew
+>> +	help
+>> +	  Enables Rust bindings for USB.
+>> [...]
+>> +//! Rust USB sample.
+>> +
+>> +use kernel::prelude::*;
+>> +
+>> +module! {
+>> +    type: UsbSimple,
+>> +    name: "rust_usb_simple",
+>> +    author: "Martin Rodriguez Reboredo",
+>> +    description: "Rust USB sample",
+>> +    license: "GPL v2",
+>> +}
+>> +
+>> +struct UsbSimple;
+> 
+> "USBSimple" please.
+> 
+>> +
+>> +impl kernel::Module for UsbSimple {
+>> +    fn init(_module: &'static ThisModule) -> Result<Self> {
+>> +        pr_info!("usb enabled: {}", !usb::disabled());
+>> +        Ok(UsbSimple)
+>> +    }
+>> +}
+> 
+> I know this is just a fake patch to test the bindings logic, so sorry
+> for the noise, just wanted to get terminology right :)
+> 
+> thanks,
+> 
+> greg k-h
+
+No, you are right. Because Rust uses upper camel case for struct names
+there's the tendency of lowering initialisms, so you can either leave it
+as `USBSimple` or as `UsbSimple`. When I publish my USB host bindings
+I'll take your comment into account for sure.
