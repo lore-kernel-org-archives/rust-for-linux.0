@@ -1,86 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CE4182D2;
-	Fri, 27 Oct 2023 13:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC381A738;
+	Fri, 27 Oct 2023 13:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUBPquW9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64CDC433C9;
-	Fri, 27 Oct 2023 13:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1698412101;
-	bh=wUSE0lZzh01i6zCnbE4aWfTvei7j5EMjOcX3g2jyxM0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mUBPquW9x5Dbtkhk+pz89BmAhLYNFjqDU4YMrOwWzJaYlGsDWMBwBm3y54EH8MiNS
-	 rN/dgBYf/5MCZs0dpXF81e0Hdm/HmWfHEC7Fb1vECpbTzCZ4TIwZfTO1trxSZc6526
-	 4WhzrOBGOkNwGgmW3JnuRmtSci8ou/FZqxaba9FY=
-Date: Fri, 27 Oct 2023 15:08:18 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/2] samples: rust: Add USB sample bindings
-Message-ID: <2023102703-rabid-dealing-7694@gregkh>
-References: <20231027003504.146703-1-yakoyoku@gmail.com>
- <20231027003504.146703-3-yakoyoku@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dACx6wfW"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7F818A;
+	Fri, 27 Oct 2023 06:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=vL/LUB6nOOmefweeZ3ko/vRVrkJA310HuEs8O1np44E=; b=dA
+	Cx6wfWNnJsAb2aSpeL6NsQpS6EVryxUh9Epv2kM10m8rEfpL7tXCeFXfnngYYFUYf4NRghIur2xny
+	GE5F3ETHAkPYG4Q4DE4uSctTVm2kt787WZwbycLLou1RKmGVJQrCbMbXG6kPdc5KJ5Hhzizt37ppP
+	CuRXJd9PbAR3eOs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qwMaD-000LAn-4R; Fri, 27 Oct 2023 15:09:01 +0200
+Date: Fri, 27 Oct 2023 15:09:01 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	benno.lossin@proton.me, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
+Message-ID: <bed6f04f-48ab-4cd9-8342-e4f619c91369@lunn.ch>
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
+ <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
+ <ZTsbG7JMzBwcYzhy@Boquns-Mac-mini.home>
+ <c40722eb-e78a-467d-8f91-ef9e8afe736d@lunn.ch>
+ <CANiq72nwy6n1_LXGxq7SU6wFmoci_aE2qn5qyzuW7jo8mqTvQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231027003504.146703-3-yakoyoku@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nwy6n1_LXGxq7SU6wFmoci_aE2qn5qyzuW7jo8mqTvQg@mail.gmail.com>
 
-On Thu, Oct 26, 2023 at 09:34:51PM -0300, Martin Rodriguez Reboredo wrote:
-> This is a demonstration of the capabilities of doing bindings with
-> subsystems that may or may not be statically linked.
+On Fri, Oct 27, 2023 at 12:22:07PM +0200, Miguel Ojeda wrote:
+> On Fri, Oct 27, 2023 at 4:47 AM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > It should also be noted, patches don't need reviews to be merged. If
+> > there is no feedback within three days, and it passes the CI tests, it
+> > likely will be merged. Real problems can be fixed up later, if need
+> > be.
 > 
-> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> ---
->  drivers/usb/core/Kconfig        |  7 +++++++
->  drivers/usb/core/Makefile       |  3 +++
->  drivers/usb/core/usb.rs         | 13 +++++++++++++
->  samples/rust/Kconfig            | 10 ++++++++++
->  samples/rust/Makefile           |  3 +++
->  samples/rust/rust_usb_simple.rs | 22 ++++++++++++++++++++++
->  6 files changed, 58 insertions(+)
->  create mode 100644 drivers/usb/core/usb.rs
->  create mode 100644 samples/rust/rust_usb_simple.rs
-> 
+> Passing CI tests does not tell you whether abstractions are
+> well-designed or sound, which is the key property Rust abstractions
+> need.
 
-Hi,
+We see CI as a tool to do the boring stuff. Does the code even compile
+without adding errors/warnings. Does it have the needed signed-off-by,
+does checkpatch spot anything nasty going on. Part of being able to
+handle the volume of patches in netdev is automating all this sort of
+stuff.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+> And I hope by "don't need reviews to be merged" you mean "at least
+> somebody, perhaps the applier, has taken a look".
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+A human is always involved, looking at the CI results, and if nothing
+bad is reported, looking at the code if there are no Acked-by, or
+Reviewed-by from trusted people.
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+The API being unsound is just another bug. I nobody spots the problem
+it can be fixed, just like any other bug. 
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+	Andrew
