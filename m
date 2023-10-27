@@ -1,39 +1,90 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5203A38BAC;
-	Fri, 27 Oct 2023 22:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498653FB00;
+	Fri, 27 Oct 2023 23:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IpV9dsQC"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC1F1B8;
-	Fri, 27 Oct 2023 15:55:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=8BJbEzI3b4RN/xcGusAHw9OPgretZQ0T2NC2/av2UlQ=; b=IpV9dsQCA839lbeS8qlJ8dUbMP
-	+beKq06CQA3qjAXfuOSEVbK/k5XRnIW2jG0fneKb7XE0Lx54TVDuXsPQSjfBkPND2sb+BTgPOpQcQ
-	L2/m8dK5wa18V4P/u7G1qaDlZs14V0P7yUn04P47/49UvIP/Lis0/+6//ZJhbVaFXzp0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qwVjn-000NZx-Kv; Sat, 28 Oct 2023 00:55:31 +0200
-Date: Sat, 28 Oct 2023 00:55:31 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	benno.lossin@proton.me, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
-Message-ID: <ca9fc28e-f68a-4b80-b21f-08a3edf3903a@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SI7ODx2m"
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46261C2;
+	Fri, 27 Oct 2023 16:27:45 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6934202b8bdso2593207b3a.1;
+        Fri, 27 Oct 2023 16:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698449265; x=1699054065; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LpAhr4zamMyGLCVpG4M5/2VF+niJFUPKlaEUgDB55GA=;
+        b=SI7ODx2mH8LOXrJ4Bb6sgcEzvmqTG3W38zEllWCJfZMrPWEBuUgH9K3BXKXFvCHY1E
+         wRO10csXAYOJua1rmiO1sWE6PnJRcLc8tnMUqQop0bjL4/zBVPagILk62dS4H8JMJCx3
+         Ni75bA+Kl1xbGDvzAzIXt/3dJNyaiBdiUNEzoQziaaFRuARZVygok/Rfn3MF4H8mnRjj
+         Qk6jpZACNuLPuLxBioa1PUNQDWYvfX4LqawgSWnAhN4XBppyXchrTsYENw+2K5AA4Z6L
+         La53N+xuxXAHcOs1wKnh2fpwCSDhN/VW66oyAnJF8NZCvc4ELRTq7t4tZh9yTwLrH/8v
+         g0lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698449265; x=1699054065;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LpAhr4zamMyGLCVpG4M5/2VF+niJFUPKlaEUgDB55GA=;
+        b=OjXqY9sXy+DGk7kEM3tGfzsGQlKBb2UPKS1Jihz5gpXDKXemUnLhSZ9zhDcrYrGzNU
+         Vnx2S/6GPEs5Op3EXqIeuxZERwS3RNVdmqI0QuYOPchOOnI0t3dAruaF2rcmcdAL2VwW
+         Ns1f8dnok1YBbKZg8YvmX9LSVFprQYdH3X4HJ5b4Aew+6lKia7tHN3QhZ60dcUJvovro
+         su2p0pM898mqTmxIOPYXDBx9xRf7bPyjII8/3yWyfqPKCTQKO7OgndVjSuuUahWPYZsQ
+         3MQd6O+PZsp7nuR8V+RzcuQpdZF3nmo4p62emHDqJUmsfugMslu0fXt5fg5DoP+6Qp28
+         a5ow==
+X-Gm-Message-State: AOJu0YwaCAqtoHrNkudz5A33Qx0mfI5tvbql7Hf2gYiLRVE19qIuET8b
+	rJMzTtb3M4zxTWXvy55liOLIplAynMo=
+X-Google-Smtp-Source: AGHT+IGoOkWNEkeA7tRVN1FPHHu4DaFgT/HO5w3DayVg4mr2MPgY2fmjLoQnapvRMiVimZZGn0Qk5g==
+X-Received: by 2002:a05:620a:2890:b0:76d:93e1:99fd with SMTP id j16-20020a05620a289000b0076d93e199fdmr4295197qkp.11.1698449243911;
+        Fri, 27 Oct 2023 16:27:23 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id d10-20020a05620a158a00b00774292e636dsm994430qkk.63.2023.10.27.16.27.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Oct 2023 16:27:23 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 2014927C0054;
+	Fri, 27 Oct 2023 19:27:23 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Fri, 27 Oct 2023 19:27:23 -0400
+X-ME-Sender: <xms:Wkc8ZXgdymcHCLJZ-wuIf8mvD1eJZJyD-WT7jlQCj8TV80y898IoPQ>
+    <xme:Wkc8ZUB4Hkr9AXU3UjYcT5hUbweYi5eTKF3rCj8upiiQzSFD1p0eUl1K89e3Z-oQa
+    8utwstijpIvmvyg-g>
+X-ME-Received: <xmr:Wkc8ZXELY0EcOsX4eKEKLjQg-xwPLe5o98AHFQHZ1CFbdUNbOEDF4GUExbA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleehgddvvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhepjeffheetffdvveevuefgfeejkefgledvvdevvdetteekffefffeffefgfeei
+    hfdtnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgpdhgohgusgholhhtrdhorh
+    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsgho
+    qhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqd
+    dujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihm
+    vgdrnhgrmhgv
+X-ME-Proxy: <xmx:Wkc8ZUTRgqIbrRE35hTCbCY1pyaCHZO-A9CSNihEU1pvSj61CxADHQ>
+    <xmx:Wkc8ZUz2qdiFAdZ_hCHEjx5UTFzgqP5Ulkj3al2uV4dBzeLV_eM8Hg>
+    <xmx:Wkc8Za7CnGoaPEQPS8REpuOjkPv12ou6g2QRXfISaK9-9tBLQ2Yt4A>
+    <xmx:W0c8ZXySFn6xjUto3puSrZNUpLlEDqQcZKBm6q75XaUZCjcwY-nyIA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 27 Oct 2023 19:27:22 -0400 (EDT)
+Date: Fri, 27 Oct 2023 16:26:32 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <ZTxHKCWTAA7T-MJd@boqun-archlinux>
 References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
- <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
- <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
- <CANiq72mDVQg9dbtbAYLSoxQo4ZTgyKk=e-DCe8itvwgc0=HOZw@mail.gmail.com>
- <20231027072621.03df3ec0@kernel.org>
- <CANiq72n=ySX08MMMM6NGL9T5nkaXJXnV2ZsoiXjkwDtfDG11Rw@mail.gmail.com>
+ <20231026001050.1720612-2-fujita.tomonori@gmail.com>
+ <ZTwWse0COE3w6_US@boqun-archlinux>
+ <ba9614cf-bff6-4617-99cb-311fe40288c1@proton.me>
+ <ZTw3_--yDkJ9ZwIP@boqun-archlinux>
+ <77c78010-781e-4eb4-a7ba-3e9f9a07bf67@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,28 +93,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72n=ySX08MMMM6NGL9T5nkaXJXnV2ZsoiXjkwDtfDG11Rw@mail.gmail.com>
+In-Reply-To: <77c78010-781e-4eb4-a7ba-3e9f9a07bf67@proton.me>
 
-> For instance, as a trivial example, Andrew raised the maximum length
-> of a line in one of the last messages. We would like to avoid this
-> kind of difference between parts of the kernel -- it is the only
-> chance we will get, and there is really no reason to be inconsistent
-> (ideally, even automated, where possible).
+On Fri, Oct 27, 2023 at 10:50:45PM +0000, Benno Lossin wrote:
+[...]
+> > 
+> > Hmm... but does it mean even `set_speed()` has the similar issue?
+> > 
+> > 	let phydev: *mut phy_device = self.0.get();
+> > 	unsafe { (*phydev).speed = ...; }
+> 
+> No that should be fine, take a look at the MIR output of the following 
+> code [1]:
+> 
+>     struct Foo {
+>         a: usize,
+>         b: usize,
+>     }
+>     
+>     fn foo(ptr: *mut Foo) {
+>         unsafe { (*ptr).b = 0; }
+>     }
+>     
+>     fn bar(ptr: *mut Foo) {
+>         unsafe { (&mut *ptr).b = 0; }
+>     }
+> 
+> Aside from some alignment checking, foo's MIR looks like this:
+> 
+>     bb1: {
+>         ((*_1).1: usize) = const 0_usize;
+>         return;
+>     }
+> 
+> And bar's MIR like this:
+> 
+>     bb1: {
+>         _2 = &mut (*_1);
+>         ((*_2).1: usize) = const 0_usize;
+>         return;
+>     }
+> 
+> [1]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=f7c4d87bf29a64af0acc09ff75d3716d
+> 
+> So I think that is fine, but maybe Gary has something else to say about it.
+> 
 
-It should be noted that netdev prefers 80, which the coding standard
-expresses as the preferred value. checkpatch however now allows up to
-100. The netdev CI job adds an extra parameter to checkpatch to
-enforce the preferred 80.
+Well when `-C opt-level=2`, they are the same:
 
-You will probably find different levels of acceptance of 80 to 100 in
-different subsystems. So i'm not sure you will be able to achieve
-consistence.
+	https://godbolt.org/z/hxxo75YYh
 
-It should also be noted that 80, or 100, is not a strict limit. Being
-able to grep the kernel for strings is important. So the coding
-standard allows you to go passed this limit in order that you don't
-need to break a string. checkpatch understands this. I don't know if
-your automated tools support such exceptions.
-
-     Andrew
-
+Regards,
+Boqun
