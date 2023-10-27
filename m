@@ -1,77 +1,112 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC381A738;
-	Fri, 27 Oct 2023 13:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CFC13FF5;
+	Fri, 27 Oct 2023 14:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dACx6wfW"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="K/mlniQo"
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7F818A;
-	Fri, 27 Oct 2023 06:09:03 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02332187;
+	Fri, 27 Oct 2023 07:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=vL/LUB6nOOmefweeZ3ko/vRVrkJA310HuEs8O1np44E=; b=dA
-	Cx6wfWNnJsAb2aSpeL6NsQpS6EVryxUh9Epv2kM10m8rEfpL7tXCeFXfnngYYFUYf4NRghIur2xny
-	GE5F3ETHAkPYG4Q4DE4uSctTVm2kt787WZwbycLLou1RKmGVJQrCbMbXG6kPdc5KJ5Hhzizt37ppP
-	CuRXJd9PbAR3eOs=;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=hekSSprq4jGUgYm6GeOL17z6wq6xiPTdJAuxe1N8hTU=; b=K/mlniQopKP5dReS0joMOqiYpi
+	/4JfzuH7WuCvkfGed2u6iEs2tLMq3zi9XjUinegwLjGqKvAdUzKrk4wF3dp0q9TUFXttTvlj49oFp
+	4sBY5usauIcSmfzeF9BAsjpua6l1ifK3ECJCiwvo2nc/5vRjM7GyIZBqqVJB00JYU9aY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1qwMaD-000LAn-4R; Fri, 27 Oct 2023 15:09:01 +0200
-Date: Fri, 27 Oct 2023 15:09:01 +0200
+	id 1qwNn4-000LTZ-53; Fri, 27 Oct 2023 16:26:22 +0200
+Date: Fri, 27 Oct 2023 16:26:22 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
 	benno.lossin@proton.me, wedsonaf@gmail.com
 Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
-Message-ID: <bed6f04f-48ab-4cd9-8342-e4f619c91369@lunn.ch>
+Message-ID: <a378ced1-71f1-46f7-bbba-b5aacb9a66a6@lunn.ch>
 References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
  <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
  <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
  <ZTsbG7JMzBwcYzhy@Boquns-Mac-mini.home>
  <c40722eb-e78a-467d-8f91-ef9e8afe736d@lunn.ch>
- <CANiq72nwy6n1_LXGxq7SU6wFmoci_aE2qn5qyzuW7jo8mqTvQg@mail.gmail.com>
+ <ZTsqROr8s18aWwSY@boqun-archlinux>
+ <ZTs73ZBgGZ-oHwF4@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nwy6n1_LXGxq7SU6wFmoci_aE2qn5qyzuW7jo8mqTvQg@mail.gmail.com>
+In-Reply-To: <ZTs73ZBgGZ-oHwF4@boqun-archlinux>
 
-On Fri, Oct 27, 2023 at 12:22:07PM +0200, Miguel Ojeda wrote:
-> On Fri, Oct 27, 2023 at 4:47 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > It should also be noted, patches don't need reviews to be merged. If
-> > there is no feedback within three days, and it passes the CI tests, it
-> > likely will be merged. Real problems can be fixed up later, if need
-> > be.
+On Thu, Oct 26, 2023 at 09:26:05PM -0700, Boqun Feng wrote:
+> On Thu, Oct 26, 2023 at 08:11:00PM -0700, Boqun Feng wrote:
+> [...]
+> > > likely will be merged. Real problems can be fixed up later, if need
+> > > be.
+> > 
+> > But this doesn't apply to pure API, right? So if some one post a pure
+> > Rust API with no user, but some tests, and the CI passes, the API won't
+> > get merged? Even though no review is fine and if API has problems, we
+> > can fix it later?
+> > 
 > 
-> Passing CI tests does not tell you whether abstractions are
-> well-designed or sound, which is the key property Rust abstractions
-> need.
+> I brought this up because (at least) at this stage one of the focus
+> areas of Rust is: how to wrap C structs and functions into a sound and
+> reasonable API. So it's ideal if we can see more API proposals.
+> 
+> As you may already see in the reviews of this patchset, a lot of effort
+> was spent on reviewing the API based on its designed semantics (rather
+> than its usage in the last patch). This is the extra effort of using
+> Rust. Is it worth? I don't know, the experiment will answer that in the
+> end ;-) But at least having an API design with a clear semantics and
+> some future guards is great.
+> 
+> The review because of this may take longer time than C code, so if we
+> really want to keep up with netdev speed, maybe we relax the
+> must-have-in-tree-user rule, so that we can review API design and
+> soundness in our pace.
 
-We see CI as a tool to do the boring stuff. Does the code even compile
-without adding errors/warnings. Does it have the needed signed-off-by,
-does checkpatch spot anything nasty going on. Part of being able to
-handle the volume of patches in netdev is automating all this sort of
-stuff.
+The rule about having a user is there for a few reasons:
 
-> And I hope by "don't need reviews to be merged" you mean "at least
-> somebody, perhaps the applier, has taken a look".
+Without seeing the user, you cannot say if the API makes sense.  How
+is the user using the API? Is the architecture of the user correct?
+Fixing the architecture of the user could change the API. As an
+example, i've seen Rust wrapper on top of sockets. The read/write
+method use a plain block of memory. However, for a network filesystem,
+what you actually need to send is probably represented by a folio of
+pages in the buffer cache. Its more efficient to hand the folio over
+to the network stack. If the data is coming from user space, its
+probably coming via a socket. So its probably in the form of a list of
+chunks of data, maybe still in userspace, maybe with a header added in
+kernel space. You want to pass that representation to the stack, which
+can already handle it in an optimal way. A plain block of memory could
+in fact be correct, there are use cases where its simple command being
+sent to a modem. But its impossible to say what is correct unless you
+can use the user.
 
-A human is always involved, looking at the CI results, and if nothing
-bad is reported, looking at the code if there are no Acked-by, or
-Reviewed-by from trusted people.
+Another point is that internal API are unstable. Any developer can
+change any API anywhere in the kernel, if they can justify it. That is
+an important feature of the kernel, and we don't like making it harder
+to change APIs. If you cannot see both sides of an API, its hard to
+know if you can change it, or how you need to change it. And at the
+moment, there are very few Rust developers. An API in Rust is going to
+be harder for a developer to change. So we have a strong reason to
+keep Rust APIs minimal, with clear users.
 
-The API being unsound is just another bug. I nobody spots the problem
-it can be fixed, just like any other bug. 
+But this API unstableness plays both ways. You don't need a perfect
+API before it is merged. You just need it good enough. You can keep
+working on it once its merged. If you missed something which makes is
+unsound, not a problem, its just a bug, fix it an move on, like any
+other bug.
 
-	Andrew
+	Andrew    
+
+
+
