@@ -1,58 +1,58 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0213D38B;
-	Fri, 27 Oct 2023 19:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3A06128;
+	Fri, 27 Oct 2023 20:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BxW6ekIX"
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB9CE1;
-	Fri, 27 Oct 2023 12:10:33 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3b3f55e1bbbso1539411b6e.2;
-        Fri, 27 Oct 2023 12:10:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eo1spTKR"
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E17F1B6;
+	Fri, 27 Oct 2023 13:00:40 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id af79cd13be357-7788ebea620so180645985a.3;
+        Fri, 27 Oct 2023 13:00:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698433833; x=1699038633; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1698436839; x=1699041639; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qxvIjQdVa06LKaV9Nu0kZXGR351C/x8779nzEl3SZRc=;
-        b=BxW6ekIXSJtkmzEo3CZIVM0t7pMOdJpPjuxBxC0P5ALA/DtGqZDc8jUjVR3Pn2lc7C
-         2DBlgdTUEN95MPMcSY/cTuszWpR8/AnY0+IzCDmsgCLTEbXxMeMFrgcYeihDlUNdoTHx
-         ghsqHrXBbcN2VtsyDwKB/qxCP1yIpJn3ip9z1r+F00Rz0oGOzt/MHfSNao+tvJ7PF9LV
-         TG/h3Ow+FT9lNFdyGv14CnA1/UDnj/tpTCWWE3GX8iI4mw24n745qBohr0R1sFwjRz9x
-         2VwJP0czo+e+NKN99zYTEnr1oV6UeY1E53ylu4m3UecjcVX3mBC8j8n+Lg51rhnq1kTg
-         akWw==
+        bh=pLT90tRb5HJaALohaE70MPpSJV6pYFxfWNdd1Rc8FiA=;
+        b=Eo1spTKRDp4V32Lpb1ZduLbgjM8y9xJZK+zJV+daVLCGXs4cWrQPxb+fab4SbEfeDX
+         X8T1NE/tfAVB8NNsO7QZ0AxaItyQ+XflZIAzvNItbbdQZmTrgCjN5N54aFnZNp8tr2uY
+         /8rDJunZnP90PWulahTQKDj2DX4IMgjfIg/lqnGTb6RDh741826bQWl6gqbMIkOtLhCS
+         s8gSs6H9yjHZHOTj9JQivvjnMpMXmtLhp7domnMQLqsyBgWqHa/OEuyvrK60X67qod4q
+         wzGEJaXcT7aG/QftOAdnN+V4o43A7VK+380WUjsZsLBq6oEqfWbFo1xzFvBYPq0b4MB3
+         VbRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698433833; x=1699038633;
+        d=1e100.net; s=20230601; t=1698436839; x=1699041639;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qxvIjQdVa06LKaV9Nu0kZXGR351C/x8779nzEl3SZRc=;
-        b=jbBdYtikZNZG82Fwdq0mAIF+ujIzj5wByczg650c4DoXNOyxLbuelMwd+vmEEEiv/v
-         emkG7oYmE8lkOJ2BjZf6dzjvOABpW7HCLftYYq5GXrmE2pd5EoanSo2Jr2lx7voNbY0B
-         6e5kPWQfz9MBHAiLyJvjyOv1lXrah+LDNMfW4KqWTms6Va72dLIOn4C5dPuQrj1ICD+L
-         ZLqJ5KR1obhp0GL+ADH1bRf8aifPPbl1Jh2bO1/PrWx4td3PqYkiQF2+HxW88WLeLaix
-         88su5Fr7tyBWBvGrICpypGhgLH+eC8X7FB4DMjVvUw+BTTlxgnBYtotVC20cgixl84py
-         wSSw==
-X-Gm-Message-State: AOJu0YwovMDbv5PC892Bok5j07czzsNQMPb/QzIwaU9FM2oRnifuoVGO
-	xBFZBq1z8nHiJGJOMmdnrD/7npkFs4Y=
-X-Google-Smtp-Source: AGHT+IH9/gqsXSNkD5ozlrDAwevpEhjz/n9VvOuMskz8+IFagr3VNqVwfxtZzBCxEedYzObrOjQF5w==
-X-Received: by 2002:a05:6808:308c:b0:3af:709c:1b2b with SMTP id bl12-20020a056808308c00b003af709c1b2bmr4291602oib.32.1698433833033;
-        Fri, 27 Oct 2023 12:10:33 -0700 (PDT)
+        bh=pLT90tRb5HJaALohaE70MPpSJV6pYFxfWNdd1Rc8FiA=;
+        b=Fij/c8B0mNS8erRb/ZFLu9H7Ko7I12/sdJiXfqq96KSJpfLGWQQ779MFn2JkKO4yA+
+         yTa1jlOLIKatPn/aPNdQYUF+s3u50kXRplaHmBy/zU3VDnxDWZMOTXDyRoCez7U0/9Vb
+         nSfbgFxm8Bg0lxSBJuZF3xXfvI7v37KLIdj41fmCI9TRhlfO48ITLvLWvlHTwNs5quta
+         35PWCgpatpR0BHw1huESy1s+iEDcVTi25Ywf07JH8zpthfjTl0vB7fntwIPcGWSURT7A
+         lrVzsrWut84Z8VclphjaSu1NGdPY4REqNJPqnm8MsS/8tWHo8yKpc9kW7ZdRLaR+ktaT
+         dQew==
+X-Gm-Message-State: AOJu0YxxuS40qbdDgQKMKG218trqMxDusUu1xuTDjEuItbTDnAsidfy6
+	uG2xmZh2B/iQCiLAdSHEq90=
+X-Google-Smtp-Source: AGHT+IEQk0Pq5FzSYrvByDRJs5B+TpFsix7YoitI42mi24bqMX+nsqF7ZORheJ0Uyamr7b/wNGR7rQ==
+X-Received: by 2002:a05:620a:40d2:b0:776:fad0:cc3b with SMTP id g18-20020a05620a40d200b00776fad0cc3bmr3954599qko.1.1698436838996;
+        Fri, 27 Oct 2023 13:00:38 -0700 (PDT)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id v71-20020a25abcd000000b00da082362238sm899292ybi.0.2023.10.27.12.10.32
+        by smtp.gmail.com with ESMTPSA id o18-20020a05620a22d200b007671678e325sm835768qki.88.2023.10.27.13.00.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Oct 2023 12:10:32 -0700 (PDT)
+        Fri, 27 Oct 2023 13:00:38 -0700 (PDT)
 Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailauth.nyi.internal (Postfix) with ESMTP id CD38727C0054;
-	Fri, 27 Oct 2023 15:10:31 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Fri, 27 Oct 2023 15:10:31 -0400
-X-ME-Sender: <xms:Jws8ZaSZEkJRnDBu0OwipSod2L0YkkUzO6n6C1uF9_Lq2Eo-A4Kd9g>
-    <xme:Jws8ZfzeGvvsoYh8IYMKd4QpvzSFfaACWL_Q8KC8gHnyjNFuPwB_8RFITXN9PZp2O
-    Q317fFndy2K0xFFOA>
-X-ME-Received: <xmr:Jws8ZX2xdx55fE9l3xOwD-huokLR1rTbshdSkUH9lLxyLm93CpVpgPAiOaw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleeggddufeehucetufdoteggodetrfdotf
+	by mailauth.nyi.internal (Postfix) with ESMTP id 6DE3627C0054;
+	Fri, 27 Oct 2023 16:00:35 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 27 Oct 2023 16:00:35 -0400
+X-ME-Sender: <xms:4hY8ZZUU77XBlTQF0_6PJBWBcXsusXfo9lkHlViVeARG5OBiIbNOtA>
+    <xme:4hY8ZZm9m7rqojV24VhQAjknYS-II7Ue3823wMy4lYWv_bmKtBrymLTEAUb7YlNWW
+    D9xGvec1Ormn7Rc7Q>
+X-ME-Received: <xmr:4hY8ZVaIE89AUwuX1tBUTkUAKA_HgBRjKLGFlMXxTVJv-vG6jORUBU2R9vY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleeggddugeehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
@@ -62,14 +62,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleeggddufeehucetufdoteggod
     gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
     gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
     igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:Jws8ZWBMjMzAe2OTg8krkWQAUHsYgfYZwnrBwRwtpCgoosiRb-rB1Q>
-    <xmx:Jws8ZTiJHglPF-WDWrFWR7fQvVfe3iHlgV82PenQ6usD0bf0IIGo1A>
-    <xmx:Jws8ZSpZz-EH3c0AHdTt-OUPTtiE5fqsBYJzgSJhrAei-H6rDoXOxA>
-    <xmx:Jws8ZTggKnQ8GD-ceupxhCS8EvhOczhPF4fuWRQwkXOO3NRFmoZcMQ>
+X-ME-Proxy: <xmx:4xY8ZcW8-T83glCxnjZgl9SPrQYFD9q0TzYSNGl8ilQUWO5psK1coQ>
+    <xmx:4xY8ZTkizrTqXJU7ab__p5OFSMAN_LvYoSrfihvttvYdp9SlJZPAqw>
+    <xmx:4xY8ZZdk9qnqsIAkDCR3F1kvAk2xywCm0UCVIdfYwBc-wrwtgdNWhg>
+    <xmx:4xY8ZRXgw9Ra4PouMbkWEwYry7ZfzSoiGqFrr5ALwBkMwJJEiaOHAQ>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Oct 2023 15:10:30 -0400 (EDT)
-Date: Fri, 27 Oct 2023 12:09:41 -0700
+ 27 Oct 2023 16:00:34 -0400 (EDT)
+Date: Fri, 27 Oct 2023 12:59:45 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
@@ -77,7 +77,7 @@ Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
 	benno.lossin@proton.me, wedsonaf@gmail.com
 Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
  drivers
-Message-ID: <ZTwK9c0sf8sxNgdr@boqun-archlinux>
+Message-ID: <ZTwWse0COE3w6_US@boqun-archlinux>
 References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
  <20231026001050.1720612-2-fujita.tomonori@gmail.com>
 Precedence: bulk
@@ -92,21 +92,53 @@ In-Reply-To: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
 
 On Thu, Oct 26, 2023 at 09:10:46AM +0900, FUJITA Tomonori wrote:
 [...]
-> +config RUST_PHYLIB_ABSTRACTIONS
-> +        bool "PHYLIB abstractions support"
+> +    /// Gets the current link state.
+> +    ///
+> +    /// It returns true if the link is up.
+> +    pub fn is_link_up(&self) -> bool {
+> +        const LINK_IS_UP: u32 = 1;
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        let phydev = unsafe { *self.0.get() };
 
-bool "Rust PHYLIB abstractions support"
+Tomo, FWIW, the above line means *copying* the content pointed by
+`self.0.get()` into `phydev`, i.e. `phydev` is the semantically a copy
+of the `phy_device` instead of an alias. In C code, it means you did:
 
-maybe? Make it easier for menuconfig users to know this is the option
-to enable Rust support.
+	struct phy_device phydev = *ptr;
+
+Sure, both compilers can figure this out, therefore no extra copy is
+done, but still it's better to avoid this copy semantics by doing:
+
+	let phydev = unsafe { &*self.0.get() };
+
+it's equal to C code:
+
+	struct phy_device *phydev = ptr;
+
+Ditto for is_autoneg_enabled() and is_autoneg_completed().
 
 Regards,
 Boqun
 
-> +        depends on RUST
-> +        depends on PHYLIB=y
-> +        help
-> +          Adds support needed for PHY drivers written in Rust. It provides
-> +          a wrapper around the C phylib core.
+> +        phydev.link() == LINK_IS_UP
+> +    }
 > +
+> +    /// Gets the current auto-negotiation configuration.
+> +    ///
+> +    /// It returns true if auto-negotiation is enabled.
+> +    pub fn is_autoneg_enabled(&self) -> bool {
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        let phydev = unsafe { *self.0.get() };
+> +        phydev.autoneg() == bindings::AUTONEG_ENABLE
+> +    }
+> +
+> +    /// Gets the current auto-negotiation state.
+> +    ///
+> +    /// It returns true if auto-negotiation is completed.
+> +    pub fn is_autoneg_completed(&self) -> bool {
+> +        const AUTONEG_COMPLETED: u32 = 1;
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        let phydev = unsafe { *self.0.get() };
+> +        phydev.autoneg_complete() == AUTONEG_COMPLETED
+> +    }
 [...]
