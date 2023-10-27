@@ -1,90 +1,125 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29E61C2B;
-	Fri, 27 Oct 2023 03:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CE44412;
+	Fri, 27 Oct 2023 04:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0quwld0"
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BEDA192;
-	Thu, 26 Oct 2023 20:21:13 -0700 (PDT)
-Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-5b8f68ba4e5so1378578a12.1;
-        Thu, 26 Oct 2023 20:21:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OEZODO5C"
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50DDB1AD;
+	Thu, 26 Oct 2023 21:26:55 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5ac376d311aso12744777b3.1;
+        Thu, 26 Oct 2023 21:26:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698376873; x=1698981673; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1698380814; x=1698985614; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aOrCwkVqAlNg8XVEkShhR/7wXoZRdI3BqowEgZUE1O4=;
-        b=g0quwld0z1luK9L41eHrVxqC9I4m0j22pE44IL1XxLqhsl99HfJ0vnVRYbIvltD0nl
-         XxreSnJxoi8Q9nnnO0zC11IUcciA1iBiBgfyFJBC4XiT8iKXiZ6Id8N059efF7cS7rST
-         c0LmwVCizpj1YD2Sna9a+l5DKoopY5CMwh1+gEB0h8Pyq/9zDjjU3qaXm2WtxTBpDgCs
-         hdEE5qypBjtxqd5qUkwHT0knkOBIvavm/cpfU6s2e+T6CzpMXqmu1721of0uGAYbJGur
-         EELxlrCTseF/XxKvv3wsBi8WC1ddrgf4QYnITOAQfKGhbMM1ItrTaHNt65pMZNV6sEdx
-         mQNg==
+        bh=doe7YWrWJJLJ7oYMXyVmtX9wV3FS+h0xz0bDDyzaqhw=;
+        b=OEZODO5Cfzg6gXBwIkDABrGF70/hPsHzMni2yDi5SCzwa6BNmgxZoZE9cYJkQo1I0V
+         VQJG73ewuPaOKMC3c3i4ArDjxdg3v5P2yIW5GNGmQ0HpdEZewahdeh8o3m5eUc+4ChCu
+         934bHPfi2xe7oWtPh7b56AMj/mjDP4xS2kF9LVP4SxAYKJk/WfNbP4jl5w+mPsHKiMRc
+         lUY8LBjhCDfeGFFql+nlfgCTpHuIJazm1cu9n7jRwIdeZS4/l8ThdmLx3g1gVeuB3Hw/
+         wVQ7gop0LMF0FmIFoeT7r1R9f7lN0XD1pbqTE88ttB2QPQuajvpo7OS/vpFUZbOnK7Zp
+         Uqyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698376873; x=1698981673;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1698380814; x=1698985614;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aOrCwkVqAlNg8XVEkShhR/7wXoZRdI3BqowEgZUE1O4=;
-        b=cBAjNUz5nIqjD1TnWzSPnwX/s9xPR4pWmdxKF72R1icWMeRWAKerekUBPKr1pYPOsz
-         LmFewH4xHIcj8WHg7lq09YLPVt2AcvYmirQz3qHE7wVn+/cOSO8Tm0bRpntRh47S1eQp
-         q7KvGf20g+64/gVailCXZHt7K6EuP4wDMtt8zROMRJk75mhVgE5pImb+9r7+vRJ0jB7S
-         NHw9IbJ5IBniTgdOSsANVKk//sMPNt4J7HQtt3t42EamBdlXBIZmnb8xOJnYw5n4ihzp
-         khF+L1r2Mgprw5c8vGBDQVFANDwaPbRxJBOcuLyWDuiD4tbPlMLU1uBk9oCiwTxQjXaW
-         wGaw==
-X-Gm-Message-State: AOJu0YxMZ7SUljgrfILVV3Blsvy8LYS6eq0ctt9OQ8Z1cx6237ByyTtD
-	CmOBx+LYE7vh7XdPmko5HSc=
-X-Google-Smtp-Source: AGHT+IF8GaXXXaQ/WstxXLpkxPjYdO2zjaPFKSKhpF7yx6Jep1hBAhsv1xFt67SGFv5fu3Se3+hWkg==
-X-Received: by 2002:a05:6a20:8417:b0:16b:f4ca:e3d9 with SMTP id c23-20020a056a20841700b0016bf4cae3d9mr2091859pzd.27.1698376872720;
-        Thu, 26 Oct 2023 20:21:12 -0700 (PDT)
-Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id s2-20020a170902ea0200b001c41e1e9ca7sm409771plg.215.2023.10.26.20.21.09
+        bh=doe7YWrWJJLJ7oYMXyVmtX9wV3FS+h0xz0bDDyzaqhw=;
+        b=nb1x3h+ULJhPMToyRqLAA3SKvMQUgYW09272jvoDso1fShAf2SDglow0rtt6grFieL
+         7EdGsWrzuaV56RAcDf8KIlPrE74OnH9+9oG1H0o/n97Z7AtZQhx+HDuigjqED6SaZ1Vt
+         vv+FyPis5hNzvdRojmAX9yKtIVyakHky0oYcCgDqAR+UTeidSyBnKCr7T5nCqG6pfQfu
+         oXb1uwCGSdKnu5zxzwo+foVHfjb7hD4P5Vsr1p64xIs7J8tptjvV/WYeXYJD8WKC0kbi
+         qYPwyNgOmdZuLRKvwsNJ30xsDDZiR9rujrXJLaRjglXq8Nq7x868FyJ02e9/GTDj7z7X
+         T6Dg==
+X-Gm-Message-State: AOJu0YwKnA6jvYt45MbJXDbeGqTN7dgDFlyXX4XzKAsbxK84OV2al4ZH
+	zDXP0Vmfo3DYQ3ngwYxTMig=
+X-Google-Smtp-Source: AGHT+IGoZqx/kSfIrValUrw1CKwM1cxje2N35tbksDYlZKJgaWEYy9wPo8oOVgo7foiOWs0zcrAdmA==
+X-Received: by 2002:a25:770f:0:b0:da0:93bf:2691 with SMTP id s15-20020a25770f000000b00da093bf2691mr1342930ybc.26.1698380814441;
+        Thu, 26 Oct 2023 21:26:54 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id v15-20020a25910f000000b00da07d9e47b4sm347213ybl.55.2023.10.26.21.26.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 20:21:12 -0700 (PDT)
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-To: yakoyoku@gmail.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: gregkh@linuxfoundation.org,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH v2 2/2] samples: rust: Add USB sample bindings
-Date: Fri, 27 Oct 2023 00:21:03 -0300
-Message-ID: <20231027032106.155493-1-yakoyoku@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231027003504.146703-3-yakoyoku@gmail.com>
-References: <20231027003504.146703-3-yakoyoku@gmail.com>
+        Thu, 26 Oct 2023 21:26:53 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 1096C27C0054;
+	Fri, 27 Oct 2023 00:26:53 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Fri, 27 Oct 2023 00:26:53 -0400
+X-ME-Sender: <xms:DDw7ZVM3XIg8bVUYPPa2m3AJuHHVfGeZvsfd-d2Aeg1R1wrxJ_mmyg>
+    <xme:DDw7ZX88ciu2gQ7QDLstWm-FdAQ0GeBGi3lkLixchg7hMGqLUhjywTwkouznJ0PPR
+    uIBMuGGi229CG0uOA>
+X-ME-Received: <xmr:DDw7ZUQ0cgBM2FlviXsGeqHTBHekkxvCoOMqQ5EvzsuvTZ4wo90lovxo6qs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleefgdekhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
+    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:DDw7ZRvFKDdNQBfbbEAfaJ_dtQdD0KBPyASZs-Cqg3NH2CsdRWAOug>
+    <xmx:DDw7ZdfymXjVuGLzxxJVfK8dn2mICaqtoQAtaMnhgqb8miMujmGrWw>
+    <xmx:DDw7Zd0r1Hqia4ce9SMBlI84GHmM9yHPdhzTfG3LJbcYPCYP95r79A>
+    <xmx:DTw7ZXvkb-hPZH2RVY0anVAnDgP2wHJG_DzHMC2SAnZmE4YX0KNR9w>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 27 Oct 2023 00:26:52 -0400 (EDT)
+Date: Thu, 26 Oct 2023 21:26:05 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	benno.lossin@proton.me, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
+Message-ID: <ZTs73ZBgGZ-oHwF4@boqun-archlinux>
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
+ <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
+ <ZTsbG7JMzBwcYzhy@Boquns-Mac-mini.home>
+ <c40722eb-e78a-467d-8f91-ef9e8afe736d@lunn.ch>
+ <ZTsqROr8s18aWwSY@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZTsqROr8s18aWwSY@boqun-archlinux>
 
-This was missing in the patch, but you get the point...
+On Thu, Oct 26, 2023 at 08:11:00PM -0700, Boqun Feng wrote:
+[...]
+> > likely will be merged. Real problems can be fixed up later, if need
+> > be.
+> 
+> But this doesn't apply to pure API, right? So if some one post a pure
+> Rust API with no user, but some tests, and the CI passes, the API won't
+> get merged? Even though no review is fine and if API has problems, we
+> can fix it later?
+> 
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index c41eaab4ddb2..845cdd856981 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -10,6 +10,7 @@
- #include <linux/errname.h>
- #include <linux/slab.h>
- #include <linux/refcount.h>
-+#include <linux/usb.h>
- #include <linux/wait.h>
- #include <linux/sched.h>
- #include <linux/workqueue.h>
+I brought this up because (at least) at this stage one of the focus
+areas of Rust is: how to wrap C structs and functions into a sound and
+reasonable API. So it's ideal if we can see more API proposals.
+
+As you may already see in the reviews of this patchset, a lot of effort
+was spent on reviewing the API based on its designed semantics (rather
+than its usage in the last patch). This is the extra effort of using
+Rust. Is it worth? I don't know, the experiment will answer that in the
+end ;-) But at least having an API design with a clear semantics and
+some future guards is great.
+
+The review because of this may take longer time than C code, so if we
+really want to keep up with netdev speed, maybe we relax the
+must-have-in-tree-user rule, so that we can review API design and
+soundness in our pace.
+
+Regards,
+Boqun
