@@ -1,99 +1,112 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717C528E2
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Oct 2023 08:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5274D2595;
+	Sat, 28 Oct 2023 09:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ke9uTE4l"
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6051611F
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Oct 2023 01:35:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1698482150; x=1698741350;
-	bh=CCUKTpfWXiqM0w1ZeBbNt5hS5uZwregLAu471m/tXFI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=ke9uTE4l9iPeaiolP+Rl9Ag5lYgxoUWhiUw2J8CwD6/681ijxc+dPHhFoOa+JZt/I
-	 qVjYwX7tZZYS5SZ8gm9VTO25CsQQngcR0+V6soc2grx4kQFS2+VgRFUtsFQFcEOY1v
-	 /haWUFHzsDrFq10PQ2mTv0KtLJ1cSm+wIEWrzQ9yxJe5aA4SyB1IbjrtL5YdkthRmN
-	 aY5JDatBSHGPwGj1t0FlATtDXp5+QYWZgTz12LQ+2nhe5PE0HDgqCwER3fByp8EPHb
-	 ngkJJt1YnOP7N7Z/0k0HWbFKfKkl/2YMBAHJUg1yjkAOCvhvSmrddgcQqI5Vld1QkO
-	 lCb03e8Abqx1Q==
-Date: Sat, 28 Oct 2023 08:35:38 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY drivers
-Message-ID: <e7da93d6-b938-4558-95b2-e9d2e0194621@proton.me>
-In-Reply-To: <ZTxHKCWTAA7T-MJd@boqun-archlinux>
-References: <20231026001050.1720612-1-fujita.tomonori@gmail.com> <20231026001050.1720612-2-fujita.tomonori@gmail.com> <ZTwWse0COE3w6_US@boqun-archlinux> <ba9614cf-bff6-4617-99cb-311fe40288c1@proton.me> <ZTw3_--yDkJ9ZwIP@boqun-archlinux> <77c78010-781e-4eb4-a7ba-3e9f9a07bf67@proton.me> <ZTxHKCWTAA7T-MJd@boqun-archlinux>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a74tq0Xi"
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1ECF0;
+	Sat, 28 Oct 2023 02:27:25 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6bcdfcde944so739064b3a.1;
+        Sat, 28 Oct 2023 02:27:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698485245; x=1699090045; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oe6k9URnl0hGpafNj5yK6ToO4iREfmFUhc0Lu2xjTfA=;
+        b=a74tq0XipV6rs2lGFzn+mYWgvrdt1bCOYp44e7ikgaN9+rxn4TmMIwTAle6HUbRytY
+         Sz+f4OXgVBS8dFHpqjHbPWGDKQqz4OJMcI3mTcRbxS4CB00gGMzoxtCvNfArhmX56tRT
+         oxNWSPiio9M/gHN3bzrCLXNoJJ5zlVaNGxe9j5L5spVffyCo1PLy8lqq3bRziUsaYFy3
+         1jSwkyk8woO5HZBInu7YvOaO9X4zxWpXLZZtdjnAkxIbsUrNWXcsv3O7kWNlG6t14a2w
+         XjUedKvCr1uPwZfVeYhQyeQW4jhzYv6d9jbN9zy3xoasLDuG1E4Ok01UDiri8ge3Ao3O
+         gbRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698485245; x=1699090045;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oe6k9URnl0hGpafNj5yK6ToO4iREfmFUhc0Lu2xjTfA=;
+        b=e9bI3bRSWVGk1/SvB/xfVz6zr0Hlcoclfs9Ac9PIbPKX80iEqoDHBeD66cfvjNRdki
+         BeubLEWeQc28kG+JfOKwXdGyMNgCIle+bIq+e8rlp/82S2nQM6UqW6zD/WEVnFB85Lar
+         G5A5TUepPLhNh3Z+ytpJBvTJKGsQMfo/ObTKl4X/NLqQG6TGXRvkqEWBz1wkZW7Oa/F/
+         HvlW4ykm50lqN9LB8OBjqWswFE78sY7Dba1cMp8AqAAmtFrGplJcem2V0rR/ROHexN9G
+         yIZyicm9c4WBjldzbDaJRZVXwONoSvESqERN3FGLWRBK4m0HK7RXt3IYYp1uohhJCSVn
+         YuFA==
+X-Gm-Message-State: AOJu0YyIE0aEIp5D63/FJQpmZu0LlXcrCc4GWgOisoqKJK5jPKtwdxlw
+	X+fMH49y9B2VPWWuZgsirmi7QQdVm9Vq1w==
+X-Google-Smtp-Source: AGHT+IHXNok7nLFWAgysk5569g6xbuTE37WjdJM6vDESMGdoh3rkp1zAmmMt2cOuFt+YJ110ET7Ddg==
+X-Received: by 2002:a17:902:d28b:b0:1c7:5581:f9c with SMTP id t11-20020a170902d28b00b001c755810f9cmr4980380plc.0.1698485244753;
+        Sat, 28 Oct 2023 02:27:24 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id y10-20020a17090322ca00b001a98f844e60sm2847089plg.263.2023.10.28.02.27.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Oct 2023 02:27:24 -0700 (PDT)
+Date: Sat, 28 Oct 2023 18:27:23 +0900 (JST)
+Message-Id: <20231028.182723.123878459003900402.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ba9614cf-bff6-4617-99cb-311fe40288c1@proton.me>
+References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
+	<ZTwWse0COE3w6_US@boqun-archlinux>
+	<ba9614cf-bff6-4617-99cb-311fe40288c1@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On 28.10.23 01:26, Boqun Feng wrote:
-> On Fri, Oct 27, 2023 at 10:50:45PM +0000, Benno Lossin wrote:
-> [...]
->>>
->>> Hmm... but does it mean even `set_speed()` has the similar issue?
->>>
->>> =09let phydev: *mut phy_device =3D self.0.get();
->>> =09unsafe { (*phydev).speed =3D ...; }
->>
->> No that should be fine, take a look at the MIR output of the following
->> code [1]:
->>
->>      struct Foo {
->>          a: usize,
->>          b: usize,
->>      }
->>
->>      fn foo(ptr: *mut Foo) {
->>          unsafe { (*ptr).b =3D 0; }
->>      }
->>
->>      fn bar(ptr: *mut Foo) {
->>          unsafe { (&mut *ptr).b =3D 0; }
->>      }
->>
->> Aside from some alignment checking, foo's MIR looks like this:
->>
->>      bb1: {
->>          ((*_1).1: usize) =3D const 0_usize;
->>          return;
->>      }
->>
->> And bar's MIR like this:
->>
->>      bb1: {
->>          _2 =3D &mut (*_1);
->>          ((*_2).1: usize) =3D const 0_usize;
->>          return;
->>      }
->>
->> [1]: https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=
-=3D2021&gist=3Df7c4d87bf29a64af0acc09ff75d3716d
->>
->> So I think that is fine, but maybe Gary has something else to say about =
-it.
->>
->=20
-> Well when `-C opt-level=3D2`, they are the same:
->=20
-> =09https://godbolt.org/z/hxxo75YYh
+On Fri, 27 Oct 2023 21:19:38 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-It doesn't matter what the optimizer does, `bar` is unsound in our use-case
-and `foo` is fine (I think).
+> On 10/27/23 21:59, Boqun Feng wrote:
+>> On Thu, Oct 26, 2023 at 09:10:46AM +0900, FUJITA Tomonori wrote:
+>> [...]
+>>> +    /// Gets the current link state.
+>>> +    ///
+>>> +    /// It returns true if the link is up.
+>>> +    pub fn is_link_up(&self) -> bool {
+>>> +        const LINK_IS_UP: u32 = 1;
+>>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>>> +        let phydev = unsafe { *self.0.get() };
+>> 
+>> Tomo, FWIW, the above line means *copying* the content pointed by
+>> `self.0.get()` into `phydev`, i.e. `phydev` is the semantically a copy
+>> of the `phy_device` instead of an alias. In C code, it means you did:
+> 
+> Good catch. `phy_device` is rather large (did not look at the exact
+> size) and this will not be optimized on debug builds, so it could lead
+> to stackoverflows.
+> 
+>> 	struct phy_device phydev = *ptr;
+>> 
+>> Sure, both compilers can figure this out, therefore no extra copy is
+>> done, but still it's better to avoid this copy semantics by doing:
+>> 
+>> 	let phydev = unsafe { &*self.0.get() };
+> 
+> We need to be careful here, since doing this creates a reference
+> `&bindings::phy_device` which asserts that it is immutable. That is not
+> the case, since the C side might change it at any point (this is the
+> reason we wrap things in `Opaque`, since that allows mutatation even
+> through sharde references).
 
---=20
-Cheers,
-Benno
+You meant that the C code might modify it independently anytime, not
+the C code called the Rust abstractions might modify it, right?
 
 
+> I did not notice this before, but this means we cannot use the `link`
+> function from bindgen, since that takes `&self`. We would need a
+> function that takes `*const Self` instead.
+
+Implementing functions to access to a bitfield looks tricky so we need
+to add such feature to bindgen or we add getters to the C side?
