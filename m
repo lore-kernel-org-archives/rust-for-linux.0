@@ -1,75 +1,81 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE2A8F79;
-	Sat, 28 Oct 2023 15:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CE6642;
+	Sat, 28 Oct 2023 15:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="M7VMSn7M"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E82B5CC;
-	Sat, 28 Oct 2023 08:00:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=P0WIR46xGD0VkmUZan9VV5KmHH/pDARsFc/IdndysxI=; b=M7
-	VMSn7MpWwpIctjG5mdCOqdukwUEG7FzpLGWcjnpw8ZVpiutU89WjR8MCbg6lm6rpbtaAE+Mnpslmg
-	+tBqnWOUJl1JitMm2ZJwQFp6A/1x1hDY12EFJ10QZGoeEXV0jX7P2W2cxw6Tn04l0FrSSmbeC6kXf
-	wwyMjGLSf2mpWK8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qwko3-000PKI-LJ; Sat, 28 Oct 2023 17:00:55 +0200
-Date: Sat, 28 Oct 2023 17:00:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	benno.lossin@proton.me, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
-Message-ID: <ada8d010-52ac-46c1-b839-8d3b3ed59ae1@lunn.ch>
-References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
- <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
- <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch>
- <CANiq72mDVQg9dbtbAYLSoxQo4ZTgyKk=e-DCe8itvwgc0=HOZw@mail.gmail.com>
- <20231027072621.03df3ec0@kernel.org>
- <CANiq72n=ySX08MMMM6NGL9T5nkaXJXnV2ZsoiXjkwDtfDG11Rw@mail.gmail.com>
- <ca9fc28e-f68a-4b80-b21f-08a3edf3903a@lunn.ch>
- <CANiq72k4MFe2qL5XrweObo-bxT9qPA6+GAF4bSwLzyQJRX-mJw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SeEZI6xD"
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03974C0;
+	Sat, 28 Oct 2023 08:12:02 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-5a7afd45199so25559917b3.0;
+        Sat, 28 Oct 2023 08:12:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698505921; x=1699110721; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wAIcFay2mJQ/MIHPS/30VW7e6mQ/ldNPB7+UODDmJtI=;
+        b=SeEZI6xDm2h634oUFni404ELNV2s14PfER1jGXz1szvA5+RaGeJFDiLCiEdEqvDjMV
+         eYhPs/3E0r4HwzZZ/nVOjO5w9aPoGpWXKJnF0Ta4oIf+pzJXb4h6nvwfOnLR0DULCgrm
+         o69O7HkWNbB+fx8YEaGstFCuCxcL4nNtv/LWRksueMtciEnppywDF6sk81sJcq6cQXC2
+         qRiR3B9VS9fgiu5iX5cxesYHVgBQko8Vt3pGR2t225AekfqHW2pRB8x5vxoF1mHV4LNs
+         1xmN2+UeoDsEV8O9DaRlFe00THrkqsee0BY805wvojRr2YGlOnl67zNDxInzY/hvKMGs
+         OdNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698505921; x=1699110721;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wAIcFay2mJQ/MIHPS/30VW7e6mQ/ldNPB7+UODDmJtI=;
+        b=QxPznv6SYAn1lw6Oz/Y/yswnDBrnAa89XGiSlrqMX3m4VmHAUf7S4Wf7+ZYlpJKtoB
+         f2+Zu9KIBe4+Y1/JhIxPaSNEJ66nbj9nUBAM4a/kBzFCSXfnvuOj5Qn5SVkp/jSni5LS
+         tOga8PKX3VZNBAWu0HWu8akrDamb032yeqEYt4e+86TfAvz7RehAk0IZXzIFCrnTKT5i
+         bswVOUiO+CmaTBB2rNQiaJeiYKN/NScWikLbiNPS8lWTHH3Eo20HoepVlU0t+Lv7JAfi
+         b6NNTfvTWW9FRCPygkausaomj29/HWDS2kWHmT3lt2iU/lJvVg1yB4PQYLzzU6rDpcWg
+         lDBQ==
+X-Gm-Message-State: AOJu0YzB2GpjmhLlGxoHuqZu0s/tuRYCdaCJt2Z0X6fHVoHWivvbAjFS
+	GFp83uCFmyPV91VjabHS+WqmIEeX1WF1teyu+q4=
+X-Google-Smtp-Source: AGHT+IFy5UgsARBoD+eDXpWYeQapwrjHE7Hx01EtgKzxq515XyOaHQbS9Yb+k7p2CLPFMIhZYo5MnRCVyBxftpby8/c=
+X-Received: by 2002:a05:690c:f13:b0:5a7:d133:370d with SMTP id
+ dc19-20020a05690c0f1300b005a7d133370dmr7080914ywb.16.1698505921160; Sat, 28
+ Oct 2023 08:12:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72k4MFe2qL5XrweObo-bxT9qPA6+GAF4bSwLzyQJRX-mJw@mail.gmail.com>
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <CANiq72mktqtv2iZSiE6sKJ-gaee_KaEmziqd=a=Vp2ojA+2TPQ@mail.gmail.com>
+ <e167ba14-b605-453f-b67d-b807baffc3e1@lunn.ch> <CANiq72mDVQg9dbtbAYLSoxQo4ZTgyKk=e-DCe8itvwgc0=HOZw@mail.gmail.com>
+ <20231027072621.03df3ec0@kernel.org> <CANiq72n=ySX08MMMM6NGL9T5nkaXJXnV2ZsoiXjkwDtfDG11Rw@mail.gmail.com>
+ <ca9fc28e-f68a-4b80-b21f-08a3edf3903a@lunn.ch> <CANiq72k4MFe2qL5XrweObo-bxT9qPA6+GAF4bSwLzyQJRX-mJw@mail.gmail.com>
+ <1e8b5a62-047a-4b87-9815-0ea320ccc466@proton.me>
+In-Reply-To: <1e8b5a62-047a-4b87-9815-0ea320ccc466@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 28 Oct 2023 17:11:49 +0200
+Message-ID: <CANiq72=Ugc4bqJCQxnAOw1f3gtD-a_aYdrjbCp4A0aX2hqDaVA@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 0/5] Rust abstractions for network PHY drivers
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 28, 2023 at 01:07:43PM +0200, Miguel Ojeda wrote:
-> On Sat, Oct 28, 2023 at 12:55 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > You will probably find different levels of acceptance of 80 to 100 in
-> > different subsystems. So i'm not sure you will be able to achieve
-> > consistence.
-> 
-> I would definitely agree if this were C. I happen to maintain
-> `.clang-format`, and it was an interesting process to approximate a
-> "common enough" style as the base one.
-> 
-> But for Rust, it is easy, because all the code is new. All Rust files
-> are formatted the same way, across the entire kernel.
+On Sat, Oct 28, 2023 at 1:41=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> We have it disabled on the `pub mod code` in error.rs line 20:
+> https://elixir.bootlin.com/linux/latest/source/rust/kernel/error.rs#L20
 
-I would say this is not a technical issue, but a social one. In order
-to keep the netdev people happy, you are going to limit it to 80. But
-i would not be too surprised if another subsystem says the code would
-be more readable with 100, like the C code in our subsystem. We want
-Rust to be 100 as well.
+Thanks Benno -- I checked the `rust` branch, and forgot about that one.
 
-Linux can be very fragmented like this across subsystems. Its just the
-way it is, and you might just have to fit in. I don't know, we will
-see.
+It is an interesting example though, because it could have gone either
+way: we were not using it for the same code in the `rust` branch -- it
+was an aesthetic improvement for consistency. In fact, if we do the
+macro differently, it would not be needed.
 
-	Andrew
+Cheers,
+Miguel
