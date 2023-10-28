@@ -1,71 +1,79 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFD5621
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Oct 2023 16:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4D863A5
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Oct 2023 17:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="B8opr7k1"
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 516AA9E
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Oct 2023 09:39:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=x4bvcsa3tbh4voqt5ttz7sjomm.protonmail; t=1698511154; x=1698770354;
-	bh=D+y3FgN/2SDAom2IzHOF0qtYMSU9LzuvA7GEm7I35Io=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=B8opr7k1aJ7R7iNQSTL4pJSZfRGiW8Vm/qBNctA3qeP5xQzUfGzHPJPFosHzmvowB
-	 Cxs853AP2DLDNl1ueIr2tUT9kymhtaANkSbnYebixdx8EtVqfAkz0PJ3cL2uJjGDIR
-	 +cdNWEGvQ75lpPHR4jptFzleIGa0Xl1utYWwiIF4DnjxLR1gmH4T/r9IlKNH5OiUk1
-	 31lDCGGn9w5FOsSV+K63s4pOZHdMYuhNIMucaHk6mgoo0yEVTr54KXuTQ+CEPyBf30
-	 txxsuSjOdEV+GH5kgOoL6EoGNSoxXTMKucrOnAXBj8OJMkb9eCBDGKg+jBlti8cDFt
-	 eGshkdES3BUWg==
-Date: Sat, 28 Oct 2023 16:39:08 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, andrew@lunn.ch
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: boqun.feng@gmail.com, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY drivers
-Message-ID: <91cba75f-0997-43e8-93d0-b795b3783eff@proton.me>
-In-Reply-To: <20231029.010905.2203628525080155252.fujita.tomonori@gmail.com>
-References: <ba9614cf-bff6-4617-99cb-311fe40288c1@proton.me> <20231028.182723.123878459003900402.fujita.tomonori@gmail.com> <f0bf3628-c4ef-4f80-8c1a-edaf01d77457@lunn.ch> <20231029.010905.2203628525080155252.fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YnDDXvYh"
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A576E1;
+	Sat, 28 Oct 2023 10:46:19 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5ae143e08b1so25235977b3.1;
+        Sat, 28 Oct 2023 10:46:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698515178; x=1699119978; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sFhnQuUqv8UTHRqRrIkRXb7c02Iw0Hc4wKGalfdouzc=;
+        b=YnDDXvYhdL916cjF5wonSCIgWZ4G2Bza81/N8rr60y6PLDgcTM3Z7bQFcUjNw3kcIS
+         87e5WhA3F9UQw9fj+m3fg9tIMsh9awOEV7DERJy+46YhjXVnTsRILgGLnEDNnLdRbSSK
+         IRCd/l8Mjjr47HgjL+85/wGDg71pxwzK1/9FpAvvZ2x+XeLeM85LWFrjpCHnrrxVYRnk
+         yQM7EyW2kzmbTfr3/uYoWPfWD+1tnIDgWB5+wEVYDDlC+kcPllWKfE8DNymnmpdMP97o
+         U965+KCEtyfcUkw3DEKOJ2/SXS48j++wKGaqYV1shizN5HnOrTBch9ZcsclcZgSC/QJ4
+         nFQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698515178; x=1699119978;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sFhnQuUqv8UTHRqRrIkRXb7c02Iw0Hc4wKGalfdouzc=;
+        b=aTy9MQ70Dv2oJ0Sp5DEUJOng5kIK0D46KXWI49l/fOGCt7ro+jSaY51CTihzBagSUs
+         l1eQY993ND4vmp2IxlQeBsDft1jvAyfqoqrWR7WR0AGsJ2lfNOcH8bjF1/nWHmJMFkkw
+         9ZPpvg3SRarsqoOFBAL4yPpi9zo4/+rhgligxwV9q5oUY/EOfPiz523S0oZSz2llfES9
+         DjGK7lmaisfXHHetrrvtPrvsGGFzDxjgXerC4254LILZJqfm9ZCQgIBq1VJM4W6HpEaE
+         1zXZ3v0LRuTQHgQiicnP/7fW+dF8FBfRkhu7nRSjGQ6C671Yn1xlp0nyA2BJ7MAh67Qk
+         P+EQ==
+X-Gm-Message-State: AOJu0Yxuo/dkO7UUfvQtbkXYs/JSU6e9TOpuovS7naHLVZpCgfeEjDgu
+	qGudeCWHGlXdc7R52pEVTOeoiv0zAiAlVflmboU=
+X-Google-Smtp-Source: AGHT+IHAxMPBGirG7gH46wHtSu0aBHOeNtb/ZOn1UoqO0DTDtNy8aeRXKoNbZJXOEdCZkY6oxpO+PxGDP+soAskdUW8=
+X-Received: by 2002:a81:e445:0:b0:5ae:b86a:f384 with SMTP id
+ t5-20020a81e445000000b005aeb86af384mr6227239ywl.2.1698515178514; Sat, 28 Oct
+ 2023 10:46:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20231023174449.251550-1-ojeda@kernel.org> <20231023174449.251550-3-ojeda@kernel.org>
+In-Reply-To: <20231023174449.251550-3-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 28 Oct 2023 19:46:07 +0200
+Message-ID: <CANiq72kmtSPp_qi7BWexfr5eOBCSVMgkkYaivtboRrNexKWMpA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] x86/rust: depend on !RETHUNK
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, x86@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Andrea Righi <andrea.righi@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 28.10.23 18:09, FUJITA Tomonori wrote:
-> On Sat, 28 Oct 2023 16:53:30 +0200
-> Andrew Lunn <andrew@lunn.ch> wrote:
->=20
->>>> We need to be careful here, since doing this creates a reference
->>>> `&bindings::phy_device` which asserts that it is immutable. That is no=
-t
->>>> the case, since the C side might change it at any point (this is the
->>>> reason we wrap things in `Opaque`, since that allows mutatation even
->>>> through sharde references).
->>>
->>> You meant that the C code might modify it independently anytime, not
->>> the C code called the Rust abstractions might modify it, right?
->>
->> The whole locking model is base around that not happening. Things
->> should only change with the lock held. I you make a call into the C
->> side, then yes, it can and will change it. So you should not cache a
->> value over a C call.
->=20
-> Yeah, I understand that. But if I understand Benno correctly, from
-> Rust perspective, such might happen.
+On Mon, Oct 23, 2023 at 7:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> The Rust compiler does not support the equivalent of
+> `-mfunction-return=3Dthunk-extern` yet [1]. Thus, currently, `objtool`
+> warns about it, e.g.:
 
-Yes, that is what I meant. Sure the C side might never modify the
-value, but this is not good enough for Rust. It must somehow be ensured
-that it never is modified, in order for us to rely on it.
+I just realized I did not Cc Andrea when I sent this, which was my
+intention -- done here, sorry!
 
---=20
 Cheers,
-Benno
-
-
+Miguel
