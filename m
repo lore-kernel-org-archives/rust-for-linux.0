@@ -1,122 +1,58 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3D523A5;
-	Sat, 28 Oct 2023 16:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D8C168B6;
+	Sat, 28 Oct 2023 16:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="MLN9dH3Y";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="a1lCYYoR"
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14535ED;
-	Sat, 28 Oct 2023 09:37:54 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.west.internal (Postfix) with ESMTP id B70C73200312;
-	Sat, 28 Oct 2023 12:37:52 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Sat, 28 Oct 2023 12:37:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-	1698511072; x=1698597472; bh=dMa7bkda/jUzx0xX9fiF353eZ/NQo4woDy/
-	hHwVKMRo=; b=MLN9dH3YBA+tgJQfIbJgmZBbrKlBo6fTui7Fwsm/86yHJrW283q
-	844IWDT/W+PMPiGyQOFyst9/l3xxxqb1byVgAJe2SBzEXlUMQSjKAAf4ASE6o22W
-	7dASywHzD3GC04m/SCFWTqCFKRsfUQfAy8rcrGYgZZN3S11rkqH6mP7S4coPtBrf
-	knxiceI2/x4q+Vtur/E4aldZdViafpdABkuPoUjjkl7ZsdUlmNJomC58icxVr15I
-	bY62dwC5q2CyekqFqq0DUuO01f6Gqdatdm0O8FA796wd7mhaBHGKpIqkol6wowXc
-	n7sbOxAlsQgtajlxbr3m/Ho/p2Br64lt8FQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1698511072; x=1698597472; bh=dMa7bkda/jUzx0xX9fiF353eZ/NQo4woDy/
-	hHwVKMRo=; b=a1lCYYoRN3GQ5t/4tlbqR1Q5tD87I6Te/cBcAfy0I6C2dj5KoD4
-	rFdTVrSSAddteIXiUxbbU8rRpwI5imZ5kSJa8k61tapjao3ZgK5a1FVuyK/ufr4Z
-	YupMeRWVGyQiJyGt5iabCIi5FLCW9VEOnQsji+NdicRv2+o/SDztXbnJ5u2rJxYs
-	qGAWZBfGGWZA9eavIc/at3CAv+RXZil6mAnS8t2p9QYUHWlN93IbZBW7jX13gfnK
-	LcrUx0U/vbp/fg3IBVDgQxIcnQvdjWPrQDbfllXGVcqrJ3O8jsj8NNTIbTmjzQ1q
-	MeqOmxnTd8Ye9FGG8WX/lwS0Dh7kFaDyeXQ==
-X-ME-Sender: <xms:3zg9ZSP4Jf5Ja6tBeme7J6Vow__-AtFf4pvUlQvK2WiI_dFwIpEccg>
-    <xme:3zg9ZQ81VLWGJ0idsAD-WDUJ-qQ8zdNr9y9yfiSPbYhchCsNATRRttsXoqAvPtFIa
-    BP8E6XT94ckoKZlhg>
-X-ME-Received: <xmr:3zg9ZZRpur-O5M7hOmWg3jzjY3Nq12aRq57EJqUnpgfe2E2cb0kp-6q2HvVPWFRg5UeV75TRzq2VfnweVPc8890Y1Cvzn-hZXTb8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleeigdejlecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlihgt
-    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhephf
-    eghfelgeffleegffffveegtdfhleetgeefveeihedufedtffffledufefhgeehnecuffho
-    mhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegrlhhitggvsehrhihhlhdrihho
-X-ME-Proxy: <xmx:3zg9ZStYjQ6i05ZlXF2V0sizQlFuh0dA4Bv6OpKfv1Ceas8yOZ-dAA>
-    <xmx:3zg9ZafwTP3cpnxUAqtswRzvwx2-DJF9ltCjtWSd8kFysM1zlhKuVw>
-    <xmx:3zg9ZW0d0yb3NS5L9HJWqMMIPQ-S5qybUkQPvUU-iy99tyhx17UnPw>
-    <xmx:4Dg9ZRzf5rHXeBHlEjbIr_Rta3zupCLiNwQahtGKjGLIbcaPlgWj5w>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 28 Oct 2023 12:37:49 -0400 (EDT)
-Message-ID: <4b19dd7d-b946-4a5c-8746-f7e9c2f55d25@ryhl.io>
-Date: Sat, 28 Oct 2023 18:39:04 +0200
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Okm4VtjS"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAE0E5;
+	Sat, 28 Oct 2023 09:38:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1698511082; x=1698770282;
+	bh=fRSFyiOLkK6B3P8cY3NNFYg4XR+tS5wvzFwTik49HSA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Okm4VtjSXtZo8ZDgP0kmnqy0JRix+aa2TvB85UkIvpjG0+8YI+1sBfRdDI6YR+Wnz
+	 7ypMtneTaNTxlomsPX1wLt0Zu5uf9mjlFZQ1K5NrOJS+qBbu4ocB1WOzY6PYTulJUj
+	 4Xs73H9zrxmu3zfggKL1yVN1lEGLObQvK+Oh2T75FVlJSfEMa6ivaedhuFPafTtORt
+	 loDvbtjeL2LQCjyoLIfIKpE1bqobqhsFK3V4MkNnaJN4iUdhNq/JIE0nFDNE3WZxvX
+	 vTnFJBm6QmuPEJY0ztyhBWqBFpxguRT1FBlXB0xqzn6iymRG+WBBBweCmDM3HuYu2l
+	 BhRoYO1pnk8ng==
+Date: Sat, 28 Oct 2023 16:37:53 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: boqun.feng@gmail.com, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY drivers
+Message-ID: <45b9c77c-e19c-4c06-a2ea-0cf7e4f17422@proton.me>
+In-Reply-To: <20231028.182723.123878459003900402.fujita.tomonori@gmail.com>
+References: <20231026001050.1720612-2-fujita.tomonori@gmail.com> <ZTwWse0COE3w6_US@boqun-archlinux> <ba9614cf-bff6-4617-99cb-311fe40288c1@proton.me> <20231028.182723.123878459003900402.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 04/19] rust: fs: introduce `FileSystem::super_params`
-Content-Language: en-US, da
-To: Benno Lossin <benno.lossin@proton.me>,
- Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Wedson Almeida Filho <walmeida@microsoft.com>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-5-wedsonaf@gmail.com>
- <E5dn4WQzlLvA0snHR_r_i2h1IPRjiiTIwssBSR403Rda6JA2Fgd-7lOonQQ6Oz1DMqp45cvtDfyW0JwRFgSZurzvtXIk3KGNhtSBqvvBnF0=@proton.me>
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <E5dn4WQzlLvA0snHR_r_i2h1IPRjiiTIwssBSR403Rda6JA2Fgd-7lOonQQ6Oz1DMqp45cvtDfyW0JwRFgSZurzvtXIk3KGNhtSBqvvBnF0=@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 10/18/23 18:34, Benno Lossin wrote:>> +        from_result(|| {
->> +            // SAFETY: The C callback API guarantees that `fc_ptr` is valid.
->> +            let fc = unsafe { &mut *fc_ptr };
-> 
-> This safety comment is not enough, the pointer needs to be unique and
-> pointing to a valid value for this to be ok. I would recommend to do
-> this instead:
-> 
->      unsafe { addr_of_mut!((*fc_ptr).ops).write(&Tables::<T>::CONTEXT) };
+On 28.10.23 11:27, FUJITA Tomonori wrote:
+> On Fri, 27 Oct 2023 21:19:38 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>> I did not notice this before, but this means we cannot use the `link`
+>> function from bindgen, since that takes `&self`. We would need a
+>> function that takes `*const Self` instead.
+>=20
+> Implementing functions to access to a bitfield looks tricky so we need
+> to add such feature to bindgen or we add getters to the C side?
 
-It doesn't really need to be unique. Or at least, that wording gives the 
-wrong intuition even if it's technically correct when you use the right 
-definition of "unique".
+Indeed, I just opened an issue [1] on the bindgen repo.
 
-To clarify what I mean: Using `ptr::write` on a raw pointer is valid if 
-and only if creating a mutable reference and using that to write is 
-valid. (Assuming the type has no destructor.)
+[1]: https://github.com/rust-lang/rust-bindgen/issues/2674
 
-Of course, in this case you *also* have the difference of whether you 
-create a mutable to the entire struct or just the field.
->> +                // SAFETY: This is a newly-created inode. No other references to it exist, so it is
->> +                // safe to mutably dereference it.
->> +                let inode = unsafe { &mut *inode };
-> 
-> The inode also needs to be initialized and have valid values as its fields.
-> Not sure if this is kept and it would probably be better to keep using raw
-> pointers here.
+--=20
+Cheers,
+Benno
 
-My understanding is that this is just a safety invariant, and not a 
-validity invariant, so as long as the uninitialized memory is not read, 
-it's fine.
-
-See e.g.:
-https://github.com/rust-lang/unsafe-code-guidelines/issues/346
-
-Alice
