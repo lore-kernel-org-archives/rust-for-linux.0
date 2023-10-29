@@ -1,40 +1,37 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E83D2E3;
-	Sun, 29 Oct 2023 19:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71FF3FED;
+	Sun, 29 Oct 2023 20:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RREIpnKL"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72A5E9B;
-	Sun, 29 Oct 2023 12:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=oRVVqSOTof9H8bPDmz4Hcyr5UUkAKhHeyVygab/6wAE=; b=RREIpnKLmD1tyIaRcYuMOl5Yzr
-	FhMtQ1FrPfmcVYr0nxUybxcDp/ZoFwLiRXOIzH4Qx+NqZTy+9JgymrqxZhez42DBlEkFYdugBWTuM
-	jnUS+Rm74ABOeGRFwXAkKj5+DQgS2Cj68JTtHFnyBkH/kLiHNNHmXAQ0+48sD/3ZPGAY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qxBdQ-000SaV-98; Sun, 29 Oct 2023 20:39:44 +0100
-Date: Sun, 29 Oct 2023 20:39:44 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, benno.lossin@proton.me,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
- drivers
-Message-ID: <c8d6d56f-bd8f-4d2c-a95a-4ed11bf952b8@lunn.ch>
-References: <45b9c77c-e19c-4c06-a2ea-0cf7e4f17422@proton.me>
- <b045970a-9d0f-48a1-9a06-a8057d97f371@lunn.ch>
- <0e858596-51b7-458c-a4eb-fa1e192e1ab3@proton.me>
- <20231029.132112.1989077223203124314.fujita.tomonori@gmail.com>
- <ZT6M6WPrCaLb-0QO@Boquns-Mac-mini.home>
- <ZT6fzfV9GUQOZnlx@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="B1fPnGb1"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00B4BD;
+	Sun, 29 Oct 2023 13:32:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=jZsNeLgG9aNq/nQBR2OAHUt2uM+tRZYRfWQG3TV8SQ0=; b=B1fPnGb1zrseB1YnkCL8DkGj5O
+	reDt0YDpJN7u1Xw3WUzZdCdloPfRV0oO3LrVH9ZarZqHnVt6LuFpVt8NwQBai8hi6Hu8MJUmTOSn0
+	jYWX6BzZBBZnvxh7HrAO/mLhcxvzPdtX7vYBXOZYAGxlcQdkKOA4f3VU8z9P2m4mzMJroU63ehsCZ
+	QHYHDSvNiI4tCwQs0wc9pv4MEVSMzaoMxBGcHIQsEpvKeTmT4Z/NPW4vb7uWaT69BTSXIlhFPED2j
+	KKI7dds2stG8yayOG5EQsP0TtakNfE6awDQWNuUzgrnQObgx292j+DbGLZHkiJClHN12wpGVZchcI
+	PrRSr7aQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qxCRx-00HYSp-Hq; Sun, 29 Oct 2023 20:31:58 +0000
+Date: Sun, 29 Oct 2023 20:31:57 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
+Message-ID: <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,26 +40,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZT6fzfV9GUQOZnlx@boqun-archlinux>
+In-Reply-To: <20231018122518.128049-1-wedsonaf@gmail.com>
 
-> Of course, it's not maintainable in longer term since it relies on
-> hard-coding the bit offset of these bit fields. But I think it's best we
-> can do from Linux kernel side. It's up to Andrew and Miguel whether this
-> temporary solution is OK.
+On Wed, Oct 18, 2023 at 09:24:59AM -0300, Wedson Almeida Filho wrote:
+> Rust file system modules can be declared with the `module_fs` macro and are
+> required to implement the following functions (which are part of the
+> `FileSystem` trait):
+> 
+> impl FileSystem for MyFS {
+>     fn super_params(sb: &NewSuperBlock<Self>) -> Result<SuperParams<Self::Data>>;
+>     fn init_root(sb: &SuperBlock<Self>) -> Result<ARef<INode<Self>>>;
+>     fn read_dir(inode: &INode<Self>, emitter: &mut DirEmitter) -> Result;
+>     fn lookup(parent: &INode<Self>, name: &[u8]) -> Result<ARef<INode<Self>>>;
+>     fn read_folio(inode: &INode<Self>, folio: LockedFolio<'_>) -> Result;
+> }
 
-What is the likely time scale for getting a new version of bindgen
-with the necessary bit field support?
+Does it make sense to describe filesystem methods like this?  As I
+understand (eg) how inodes are laid out, we typically malloc a
 
-We have probably missed the merge window for v6.7. So there is around
-9 weeks to the next merge window. If a working bindgen is likely to be
-available by then, we should not bother with a workaround, just wait.
+foofs_inode {
+	x; y; z;
+	struct inode vfs_inode;
+};
 
-If you think bindgen is going to take longer than that, then we should
-consider workarounds. But we have no rush, its still 9 weeks before we
-need working code.
+and then the first line of many functions that take an inode is:
 
-Zooming out a bit. Is there any other in mainline Rust code, or about
-to be submitted for this merge window code, using bit fields? I assume
-that is equally broken?
+	struct ext2_inode_info *ei = EXT2_I(dir);
 
-	Andrew
+That feels like unnecessary boilerplate, and might lead to questions like
+"What if I'm passed an inode that isn't an ext2 inode".  Do we want to
+always pass in the foofs_inode instead of the inode?
+
+Also, I see you're passing an inode to read_dir.  Why did you decide to
+do that?  There's information in the struct file that's either necessary
+or useful to have in the filesystem.  Maybe not in toy filesystems, but eg
+network filesystems need user credentials to do readdir, which are stored
+in struct file.  Block filesystems store readahead data in struct file.
