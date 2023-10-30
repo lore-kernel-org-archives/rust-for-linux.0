@@ -1,87 +1,75 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CF2190;
-	Mon, 30 Oct 2023 00:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4077812
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 02:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DVe6GuPZ"
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF14A7;
-	Sun, 29 Oct 2023 17:20:40 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-7789a4c01easo283416885a.0;
-        Sun, 29 Oct 2023 17:20:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="E/Y3MToH"
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8128BBE
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Oct 2023 19:29:51 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c77449a6daso34075025ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Oct 2023 19:29:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698625240; x=1699230040; darn=vger.kernel.org;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1698632991; x=1699237791; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bh0qEMgw8kUGUxyaP3+8TT5GZg+SrpIWEti4LnQlQ2c=;
-        b=DVe6GuPZoVxWQARU6Rd59vbpx5scQvtD3cSKpxSnfS51o6j7rJlYT2kbB3OC1oE8YG
-         Fj9gS3gbzSu+J5QeaBg60S9UTollR/CwNbaGYwFmMjA6lYv5bOOqNkHa3VtCiaTKW0JH
-         V6ESXFAqcejAdoGr+PRcpMRTVYjzE0Uh1//p76dubAmZtrUwFoCxMFgJQUhCcQIAeToP
-         64SM74mSYiVUQbfl4C9M9wEtGyir1jtmHEkhUYZtGSsbSU+68ihMXi6EGcD9vQqdhC4S
-         mAOZPs0GhGbkl93SnxUFcw5A70qjVYAT3p8LLzW/Ph/4rVL4xzCSvOKMFE4E8FvzbVQj
-         IQgw==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4bCdvSlpz1hDv7p4GSr2XVNxtMcsUc8tGdKVI0ksdEg=;
+        b=E/Y3MToH1WN7+WIkBdtvDPc9tveLAn0fZqYCltdshwHJFeqdaNDf59UgiMXlw/CfQF
+         XIg0bGhXuk+oczexzJolId4yRD5XGb+SOMPokdmbwSTkFXl8xTMMUvIETAKQKCiRE5sZ
+         32kVTozhRTUTo7BnK7EufDg1GRhy+cusS48ANVUa5FzcbLcvtc9cXzfPCStYz27Dm7JY
+         fZB5ju1k5Lxb2e5Dyl/D5GYDKLeVXtsN7EyNp0I648wjfqn1xjWMsZXa3sCsg3IrrRQs
+         HVe7zx3YTz6hMZRlbU41/CdQHJ560XNi/nDW7/CgSplJQJsEEFV/sHlEQRSK2/th24w6
+         sJfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698625240; x=1699230040;
+        d=1e100.net; s=20230601; t=1698632991; x=1699237791;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bh0qEMgw8kUGUxyaP3+8TT5GZg+SrpIWEti4LnQlQ2c=;
-        b=KpV8isJoQkIgC/sjhdW73R7ZgTxsj3yF94ExLpN8TvbDCwvq3wEmOp7/DkAw+ps2BJ
-         8B3ndrwy/tQnlFBN/SAepmArSjK3E0OERUNl0l2sDVbX0zH+d2tgvQFeSJ1MV3Sr5Tt9
-         niVYbRxKdw5c7og5mS/AQzTyYdntdKMdOxWKE4SBWHwHS0zUFK8+pHXgK99KdWZhjHIu
-         43OYQzfm5/JdcXKeWuNlufUA5tAls7A4C7P0S0aVZ6r2Q/wu6Iy7MlIcY98MVjNzi0Hr
-         xxEQeg4imVnpxUUKLZQYWAGfavbI3E0XjGpZ024qUMLTiGQakma3rCMQbXyW2gvkaz3P
-         VsBg==
-X-Gm-Message-State: AOJu0Yw37OEI+TSbF8hqpY1raSkvtmXd12VcDOL6xxaG074B9exnrvTx
-	U8PAGNDzMcmj8eVBi9U9BG4=
-X-Google-Smtp-Source: AGHT+IHOUTqpyMtPLrt2FH0AB6QE0rP4oBJJlswk1gLq0bWNlvelN0ja8+ZxiNlr7FpuhyW+PlxLHg==
-X-Received: by 2002:a05:620a:8b0d:b0:777:ee89:c03a with SMTP id qw13-20020a05620a8b0d00b00777ee89c03amr7507227qkn.77.1698625239805;
-        Sun, 29 Oct 2023 17:20:39 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id u11-20020ae9c00b000000b0077892023fc5sm2877026qkk.120.2023.10.29.17.20.39
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4bCdvSlpz1hDv7p4GSr2XVNxtMcsUc8tGdKVI0ksdEg=;
+        b=lxQLObq8jc5Kv8sp8ZOOmNDFpU29AC4XB49fOp2o7819XPLpHfIsOvNyXks78o6ElN
+         jfYWDp97NaM4hm7oH1stZDCMx/xq3GgCtGOC4s8+JrxtOSUW2g4Dxte0XCwj6DUh40Yf
+         2G7B3VvY6O+FmD/L+5wS9hF4RMS+PvGnkOZNrje5a/lKfgCKEU9E0cetotVD/sH0jTCF
+         N6p910gDL1xoROqqmhjYEX0S2QzK00qlTY89M+GcMHNiii5QC8XuHcxvU/+ZlZ5pxbva
+         xfxf0cCAVjr5IGeH7Bkk/KUxjbFstecxU3ssvn0vWK3u+P82XnvQj8Jqn6aHeM3eGycf
+         n+Iw==
+X-Gm-Message-State: AOJu0YyvX/XG5JubfVSpGfkloI67lyqymxJu3mttg/PECDqu8geVJ5o7
+	m/xgMj2lslEqi7YLTvv9P6KBiR5bX1I6FEFw42A=
+X-Google-Smtp-Source: AGHT+IGdFyNqQZGTK3X91Bqwn5ScSLeGF8Jk6HTe0zARBVHvUCJ4yYQ04EWIJEqJ/Lok7o/AK7oHKA==
+X-Received: by 2002:a17:903:32c3:b0:1cc:45d0:470b with SMTP id i3-20020a17090332c300b001cc45d0470bmr2938121plr.7.1698632990924;
+        Sun, 29 Oct 2023 19:29:50 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-20-59.pa.nsw.optusnet.com.au. [49.180.20.59])
+        by smtp.gmail.com with ESMTPSA id f12-20020a170902684c00b001b9f032bb3dsm5282609pln.3.2023.10.29.19.29.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Oct 2023 17:20:39 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailauth.nyi.internal (Postfix) with ESMTP id E4F9527C005B;
-	Sun, 29 Oct 2023 20:20:38 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Sun, 29 Oct 2023 20:20:38 -0400
-X-ME-Sender: <xms:1vY-ZR0MKyo2XawwelfnZ0uCqDy533ojknfIQP8qsXDxGCgzndp92g>
-    <xme:1vY-ZYFS6DlsxdIvoTPUKSdSYaKN8AMsT7l3-y-RyvGWHUy0kKMxEP5VbgHVZ-SrR
-    kvozn2pdq_AzPqjVA>
-X-ME-Received: <xmr:1vY-ZR5fV0aTn0y33LKM_G0dt7LL21sqakp5dVZoiOHu2wY_AkYO4bO1Zu4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrleelgddvudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdtkeei
-    hedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
-    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:1vY-Ze3fM2uPnhP7mcg3aUx16w-_MWDkP3pOMomZbhQOIPrxQ20MlA>
-    <xmx:1vY-ZUEKBXG6ZvrnLzm9jDaXZiJR0Y_4DHGP73Meybx7UM5GmDojvg>
-    <xmx:1vY-Zf9fLvmDl3VvS6FOvG0-Rj2EYUSj4MG4L3LnqWks0wn98zL2Fw>
-    <xmx:1vY-Zf1-fzmkIPd1Klq8OhdIktM-2xzkSp4Wk6Lwk9R7x5UaUCntlQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 29 Oct 2023 20:20:38 -0400 (EDT)
-Date: Sun, 29 Oct 2023 17:19:42 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: benno.lossin@proton.me, andrew@lunn.ch, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
- drivers
-Message-ID: <ZT72no2gdASP0STS@boqun-archlinux>
-References: <0e858596-51b7-458c-a4eb-fa1e192e1ab3@proton.me>
- <20231029.132112.1989077223203124314.fujita.tomonori@gmail.com>
- <ZT6M6WPrCaLb-0QO@Boquns-Mac-mini.home>
- <20231030.075852.213658405543618455.fujita.tomonori@gmail.com>
+        Sun, 29 Oct 2023 19:29:50 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.96)
+	(envelope-from <david@fromorbit.com>)
+	id 1qxI2F-005jod-05;
+	Mon, 30 Oct 2023 13:29:47 +1100
+Date: Mon, 30 Oct 2023 13:29:47 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>,
+	Marco Elver <elver@google.com>
+Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
+Message-ID: <ZT8VG0MTKNNpGDOC@dread.disaster.area>
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
+ <20231018122518.128049-7-wedsonaf@gmail.com>
+ <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me>
+ <ZTHPOfy4dhj0x5ch@boqun-archlinux>
+ <vT8j_VVzNv0Cx7iTO9OobT9H8zEc_I-dxmh2sF6GZWqRQ0nhjnaNZqtWPtYm37wOhwGek2vLUYwAM-jJ83AZEe8TXMDx9N6pZ3mZW1WdNNw=@proton.me>
+ <ZTP06kdjBQzZ3KYD@Boquns-Mac-mini.home>
+ <ZTQDztmY0ivPcGO/@casper.infradead.org>
+ <ZTQnpeFcPwMoEcgO@Boquns-Mac-mini.home>
+ <ZTYE0PSDwITrWMHv@dread.disaster.area>
+ <CANeycqq49Ubj-3BKcUaMOKeEwFastZzC17z_uk_VE3RDDv2wfw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -90,52 +78,100 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231030.075852.213658405543618455.fujita.tomonori@gmail.com>
+In-Reply-To: <CANeycqq49Ubj-3BKcUaMOKeEwFastZzC17z_uk_VE3RDDv2wfw@mail.gmail.com>
 
-On Mon, Oct 30, 2023 at 07:58:52AM +0900, FUJITA Tomonori wrote:
-> On Sun, 29 Oct 2023 09:48:41 -0700
-> Boqun Feng <boqun.feng@gmail.com> wrote:
+On Mon, Oct 23, 2023 at 09:55:08AM -0300, Wedson Almeida Filho wrote:
+> On Mon, 23 Oct 2023 at 02:29, Dave Chinner <david@fromorbit.com> wrote:
+> >
+> > On Sat, Oct 21, 2023 at 12:33:57PM -0700, Boqun Feng wrote:
+> > > On Sat, Oct 21, 2023 at 06:01:02PM +0100, Matthew Wilcox wrote:
+> > > > I'm only an expert on the page cache, not the rest of the VFS.  So
+> > > > what are the rules around modifying i_state for the VFS?
+> > >
+> > > Agreed, same question here.
+> >
+> > inode->i_state should only be modified under inode->i_lock.
+> >
+> > And in most situations, you have to hold the inode->i_lock to read
+> > state flags as well so that reads are serialised against
+> > modifications which are typically non-atomic RMW operations.
+> >
+> > There is, I think, one main exception to read side locking and this
+> > is find_inode_rcu() which does an unlocked check for I_WILL_FREE |
+> > I_FREEING. In this case, the inode->i_state updates in iput_final()
+> > use WRITE_ONCE under the inode->i_lock to provide the necessary
+> > semantics for the unlocked READ_ONCE() done under rcu_read_lock().
+> >
+> > IOWs, if you follow the general rule that any inode->i_state access
+> > (read or write) needs to hold inode->i_lock, you probably won't
+> > screw up.
 > 
-> > On Sun, Oct 29, 2023 at 01:21:12PM +0900, FUJITA Tomonori wrote:
-> > [...]
-> >> 
-> >> The current code is fine from Rust perspective because the current
-> >> code copies phy_driver on stack and makes a reference to the copy, if
-> >> I undertand correctly.
-> >> 
-> > 
-> > I had the same thought Benno brought the issue on `&`, but unfortunately
-> > it's not true ;-) In the following code:
-> > 
-> > 	let phydev = unsafe { *self.0.get() };
-> > 
-> > , semantically the *whole* `bindings::phy_device` is being read, so if
-> > there is any modification (i.e. write) that may happen in the meanwhile,
-> > it's data race, and data races are UB (even in C).
+> I don't see filesystems doing this though. In particular, see
+> iget_locked() -- if a new inode is returned, then it is locked, but if
+> a cached one is found, it's not locked.
+
+I did say "if you follow the general rule".
+
+And where there is a "general rule" there is the implication that
+there are special cases where the "general rule" doesn't get
+applied, yes? :)
+
+I_NEW is the exception to the general rule, and very few people
+writing filesystems actually know about it let alone care about
+it...
+
+> So we're in this situation where a returned inode may or may not be
+> locked. And the way to determine if it's locked or not is to read
+> i_state.
 > 
-> Benno said so? I'm not sure about the logic (whole v.s. partial). Even
-
-We can wait for Benno's response, but there is an example where Miri
-says it's data race:
-
-	https://play.rust-lang.org/?version=stable&mode=release&edition=2021&gist=c7097644aa5f02a0a436e5b8b8624824
-
-> if you read partially, the part might be modified by the C side during
-> reading.
-
-If you read the part protected by phy_device->lock, C side shouldn't
-modify it, but the case here is not all fields in phy_device stay
-unchanged when phy_device->lock (and Rust side doesn't mark them
-interior mutable), see the discussion drom Andrew and me.
-
+> Here are examples of kernfs, ext2, ext4 and squashfs doing it:
+> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/kernfs/inode.c#L252
+> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/ext2/inode.c#L1392
+> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/ext4/inode.c#L4707
+> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/squashfs/inode.c#L82
 > 
-> For me, the issue is that creating &T for an object that might be
-> modified.
+> They all call iget_locked(), and if I_NEW is set, they initialise the
+> inode and unlock it with unlock_new_inode(); otherwise they just
+> return the unlocked inode.
 
-The reason a `&phy_device` cannot be created here is because concurrent
-writes may cause a invalid phy_device (i.e. data race), the same applies
-to a copy.
+All of them are perfectly fine.
 
-Regards,
-Boqun
+I_NEW is the bit we use to synchronise inode initialisation - we
+have to ensure there is only a single initialisation running while
+there are concurrent lookups that can find the inode whilst it is
+being initialised. We cannot hold a spin lock over inode
+initialisation (it may have to do IO!), so we set the I_NEW flag
+under the i_lock and the inode_hash_lock during hash insertion so
+that they are set atomically from the hash lookup POV. If the inode
+is then found in cache, wait_on_inode() does the serialisation
+against the running initialisation indicated by the __I_NEW bit in
+the i_state word.
 
+Hence if the caller of iget_locked() ever sees I_NEW, it is
+guaranteed to have exclusive access to the inode and -must- first
+initialise the inode and then call unlock_new_inode() when it has
+completed. It doesn't need to hold inode->i_lock in this case
+because there's nothing it needs to serialise against as
+iget_locked() has already done all that work.
+
+If the inode is found in cache by iget_locked, then the
+wait_on_inode() call is guaranteed to ensure that I_NEW is not set
+when it returns. The atomic bit operations on __I_NEW and the memory
+barriers in unlock_new_inode() plays an important part in this
+dance, and they guarantee that I_NEW has been cleared before
+iget_locked() returns. No need for inode->i_lock to be held in this
+case, either, because iget_locked() did all the serialisation for
+us.
+
+This special dance is an optimisation that avoids the need to take
+inode->i_lock in the inode lookup fast path just to check I_NEW. It
+is an exception to the general rule but internal it uses
+inode->i_lock in the places it is needed to ensure anything using
+the general rule about accessing i_state still behaves correctly.
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
