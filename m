@@ -1,104 +1,96 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9504414264;
-	Mon, 30 Oct 2023 12:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA19171CC
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 13:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gbWPENcJ"
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68804C9;
-	Mon, 30 Oct 2023 05:49:08 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6bcdfcde944so1298522b3a.1;
-        Mon, 30 Oct 2023 05:49:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pw/SRXYo"
+Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB36CC9
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 06:58:53 -0700 (PDT)
+Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-542d910f34bso1437667a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 06:58:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698670148; x=1699274948; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l2XCfmBBtk169C6lE2Ret5wQ4hD1gmLeVoFyIcMAyYw=;
-        b=gbWPENcJ3fUEAdK/c9fWvAwlyxQcc8I6qMU74kfk2vh3MVkt904KvmyiHMyYptUPmx
-         Jqw08h0jUcOP+LCzfdeuGTB1kDiJeDdHBc5UwPaGs2o1gdtmSAPMdSbTB2vx1Pm+pjha
-         s62VwGHHsnLwzT+VIrI6hns8G3FXzDgCOca2Rf9ihysX8EXPdMPpdSgmx7AcQVa+hvBX
-         L0bfkU/XxIciPqgWWk45/Yodap9/gE8tjLx1fuVgAcnbpbVbQhv2aawbGv36LIBsaIb8
-         rmLNwnRsMaEpNkalc9bz5+M8Px1qsHRWarhjFUIQ08rJ173fLrUlEq2AD+n7PICXqDQh
-         cdfg==
+        d=google.com; s=20230601; t=1698674332; x=1699279132; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pwv0nNI/GXb5sK6crMnTZzX7DXnGnuo4VkjJxSyGGBE=;
+        b=Pw/SRXYoxDLks3cmJ83KKdDUaLJOw/++8rzzczrv5QNwLvEh6F/aVJ4p8Vm04Tu5ST
+         uxoT1x1n7FxzK7ZAn2srR/K/yTwAfdbIeAYEuxwpyr3Iz/H/slZDCFi2x3TM/QbHZTXy
+         0fgOZvmzkr2c96W96XsJemLGGtK9rGVnG832Z7lJDXfDsrFvh/JIq2H20S+6La/asCPF
+         XE1qRMs36ns1Vpzu/g4yS1N+6xp03dknrCTZrLJeVBh3YUu4oo2IPGZHOgxkPVauPDlI
+         2wf2LzII9tsSqUiPPYy0trkBFEKk5NJ82FQCOhJbHqfx+Ys3qx8Y2dDSdi/Rg4roxr3W
+         FkGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698670148; x=1699274948;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=l2XCfmBBtk169C6lE2Ret5wQ4hD1gmLeVoFyIcMAyYw=;
-        b=rdTBkEUmipzP4M0zIa79ZWNMeAMS336K0yx68QncmPqZRddu2ijbGnh2g7jWvJIOxc
-         k1ERXqDSmJ4b1ArlpgEZLkb+qw2Vz07ms5R42Mcb6aDctl7vtUF7UzKQYZIKFDQDzAFi
-         EXLLbEq0MpqnVPUcvh/ot/+bQDRCF4NMdf3FTssbj14OMKnc7oU6Dz3fzfawGxZ4WdQ2
-         MinjdTI18858+pW1iIO/Z3UqzLGPT4yL2ryfzRHCL8GJ2q4IJhZ0GUuDcyuar8E+gwNy
-         ZMpMveHYFh+r0u8w6h9PsRFhOx8yt3KIgiIV8pWGc4eZ201QuRT0G/qvZYMEf6kTlxe5
-         nekA==
-X-Gm-Message-State: AOJu0YyaDdXGWl4sVVhHOCPQWCnUgFUW9IO1R+pRlRi5NwmPt2IgXf0p
-	drDADVu5NaUDu83NvJiXfV4=
-X-Google-Smtp-Source: AGHT+IHONf43flwPodj2bEXmQA8/Q3IP7kAmDSwFZVlQc3WFfAmWTxFS1qba6Z3eUFGT69UMXV3ylw==
-X-Received: by 2002:a05:6a20:440d:b0:163:ab09:195d with SMTP id ce13-20020a056a20440d00b00163ab09195dmr13716984pzb.0.1698670147751;
-        Mon, 30 Oct 2023 05:49:07 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id d5-20020a056a0010c500b006bfb903599esm5864769pfu.139.2023.10.30.05.49.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Oct 2023 05:49:07 -0700 (PDT)
-Date: Mon, 30 Oct 2023 21:49:06 +0900 (JST)
-Message-Id: <20231030.214906.1040067379741914267.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com, andrew@lunn.ch,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <41e9ec99-6993-4bb4-a5e5-ade7cf4927a4@proton.me>
-References: <20231030.075852.213658405543618455.fujita.tomonori@gmail.com>
-	<ZT72no2gdASP0STS@boqun-archlinux>
-	<41e9ec99-6993-4bb4-a5e5-ade7cf4927a4@proton.me>
+        d=1e100.net; s=20230601; t=1698674332; x=1699279132;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pwv0nNI/GXb5sK6crMnTZzX7DXnGnuo4VkjJxSyGGBE=;
+        b=gTCd0hptU3Rlbr8itvlMxQoPMY4etwmhMNpQ0T+MRJkFQPKVu0EJwcTdR2x++IIxLr
+         tl/P3Ksr1FwIEVkDR33xMxB31URQ889DEFqp5ui6gkx2MXuVD+fwDdOHC5oEBxXxuGFc
+         VDKrQWvZmLfYbVnYCE8ksJ7pM3uSEGzpka6J5cDuxQOPCzM8egfl2cg2MP5p7jPgdc69
+         l0h0uNTlcuNoCgDHrLpm/GtB2UWn/BQU0RyfyFEeExTO8WwevERIuOBn72+eDl3siAyd
+         ELlNZX2wkYx5KsEc83v+XQohWd69rZWsIFychxzae5Uqk1E9Wb//VowY+HkBj/QaNm5S
+         mFzQ==
+X-Gm-Message-State: AOJu0YxuXaJ7Qc3Sr1Gx1qlKzRVW9r2KDP68dIhCgN6fCaeoraOLBFU1
+	+qvRjtyThqyYywO2DwpI+LRnN0hBn95ac3U=
+X-Google-Smtp-Source: AGHT+IGNKlEATVPDh6rVqDOpRvWhA0c/AXkrrys3npUtceRNXpU/wxHpIZOuNkZ6upnlTs5QHBR1A23TFUXF5l4=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6402:f19:b0:53e:b944:d5ca with SMTP
+ id i25-20020a0564020f1900b0053eb944d5camr92691eda.0.1698674332155; Mon, 30
+ Oct 2023 06:58:52 -0700 (PDT)
+Date: Mon, 30 Oct 2023 13:58:49 +0000
+In-Reply-To: <ZTmelWlSncdtExXp@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <ZTmelWlSncdtExXp@boqun-archlinux>
+X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
+Message-ID: <20231030135849.1587717-1-aliceryhl@google.com>
+Subject: Re: [RFC] rust: types: Add read_once and write_once
+From: Alice Ryhl <aliceryhl@google.com>
+To: boqun.feng@gmail.com
+Cc: a.hindborg@samsung.com, akiyks@gmail.com, alex.gaynor@gmail.com, 
+	aliceryhl@google.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	brauner@kernel.org, david@fromorbit.com, dhowells@redhat.com, 
+	dlustig@nvidia.com, elver@google.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, j.alglave@ucl.ac.uk, joel@joelfernandes.org, 
+	kent.overstreet@gmail.com, linux-arch@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, luc.maranget@inria.fr, nathan@kernel.org, 
+	ndesaulniers@google.com, npiggin@gmail.com, ojeda@kernel.org, 
+	parri.andrea@gmail.com, paulmck@kernel.org, peterz@infradead.org, 
+	rust-for-linux@vger.kernel.org, stern@rowland.harvard.edu, trix@redhat.com, 
+	viro@zeniv.linux.org.uk, wedsonaf@gmail.com, will@kernel.org, 
+	willy@infradead.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, 30 Oct 2023 08:34:46 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
-> On 30.10.23 01:19, Boqun Feng wrote:
->> On Mon, Oct 30, 2023 at 07:58:52AM +0900, FUJITA Tomonori wrote:
->>> if you read partially, the part might be modified by the C side during
->>> reading.
+Boqun Feng <boqun.feng@gmail.com> writes:
+>> On Wed, Oct 25, 2023 at 09:51:28PM +0000, Benno Lossin wrote:
+>>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>>> index d849e1979ac7..b0872f751f97 100644
+>>> --- a/rust/kernel/types.rs
+>>> +++ b/rust/kernel/types.rs
 >> 
->> If you read the part protected by phy_device->lock, C side shouldn't
->> modify it, but the case here is not all fields in phy_device stay
->> unchanged when phy_device->lock (and Rust side doesn't mark them
->> interior mutable), see the discussion drom Andrew and me.
->> 
->>>
->>> For me, the issue is that creating &T for an object that might be
->>> modified.
->> 
->> The reason a `&phy_device` cannot be created here is because concurrent
->> writes may cause a invalid phy_device (i.e. data race), the same applies
->> to a copy.
+>> I don't think this should go into `types.rs`. But I do not have a good
+>> name for the new module.
 > 
-> Both comments by Boqun above are correct. Additionally even if the write
-> would not have a data race with the read, it would still be UB. (For example
-> when the write is by the same thread)
-> 
-> If you just read the field itself then it should be fine, since it is
-> protected by a lock, see Boqun's patch for manually accessing the bitfields.
+> kernel::sync?
 
-The rust code can access to only fields in phy_device that the C side
-doesn't modify; these fields are protected by a lock or in other ways
-(resume/suspend cases).
+I think `kernel::sync` is a reasonable choice, but here's another
+possibility: Put them in the `bindings` crate.
 
-Right?
+Why? Well, they are a utility that intends to replicate the C
+`READ_ONCE` and `WRITE_ONCE` macros. All of our other methods that do
+the same thing for C functions are functions in the bindings crate.
 
-> But I would wait until we see a response from the bindgen devs on the issue.
+Similarly, if we ever decide to reimplement a C function in Rust for
+performance/inlining reasons, then I also think that it is reasonable to
+put that Rust-reimplementation in the bindings crate. This approach also
+makes it easy to transparently handle cases where we only reimplement a
+function in Rust under some configurations.
 
-You meant that they might have a different option on this?
+Alice
