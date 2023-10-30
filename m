@@ -1,177 +1,106 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4077812
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 02:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D433D26C
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 08:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="E/Y3MToH"
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8128BBE
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Oct 2023 19:29:51 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c77449a6daso34075025ad.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Oct 2023 19:29:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1698632991; x=1699237791; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4bCdvSlpz1hDv7p4GSr2XVNxtMcsUc8tGdKVI0ksdEg=;
-        b=E/Y3MToH1WN7+WIkBdtvDPc9tveLAn0fZqYCltdshwHJFeqdaNDf59UgiMXlw/CfQF
-         XIg0bGhXuk+oczexzJolId4yRD5XGb+SOMPokdmbwSTkFXl8xTMMUvIETAKQKCiRE5sZ
-         32kVTozhRTUTo7BnK7EufDg1GRhy+cusS48ANVUa5FzcbLcvtc9cXzfPCStYz27Dm7JY
-         fZB5ju1k5Lxb2e5Dyl/D5GYDKLeVXtsN7EyNp0I648wjfqn1xjWMsZXa3sCsg3IrrRQs
-         HVe7zx3YTz6hMZRlbU41/CdQHJ560XNi/nDW7/CgSplJQJsEEFV/sHlEQRSK2/th24w6
-         sJfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698632991; x=1699237791;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4bCdvSlpz1hDv7p4GSr2XVNxtMcsUc8tGdKVI0ksdEg=;
-        b=lxQLObq8jc5Kv8sp8ZOOmNDFpU29AC4XB49fOp2o7819XPLpHfIsOvNyXks78o6ElN
-         jfYWDp97NaM4hm7oH1stZDCMx/xq3GgCtGOC4s8+JrxtOSUW2g4Dxte0XCwj6DUh40Yf
-         2G7B3VvY6O+FmD/L+5wS9hF4RMS+PvGnkOZNrje5a/lKfgCKEU9E0cetotVD/sH0jTCF
-         N6p910gDL1xoROqqmhjYEX0S2QzK00qlTY89M+GcMHNiii5QC8XuHcxvU/+ZlZ5pxbva
-         xfxf0cCAVjr5IGeH7Bkk/KUxjbFstecxU3ssvn0vWK3u+P82XnvQj8Jqn6aHeM3eGycf
-         n+Iw==
-X-Gm-Message-State: AOJu0YyvX/XG5JubfVSpGfkloI67lyqymxJu3mttg/PECDqu8geVJ5o7
-	m/xgMj2lslEqi7YLTvv9P6KBiR5bX1I6FEFw42A=
-X-Google-Smtp-Source: AGHT+IGdFyNqQZGTK3X91Bqwn5ScSLeGF8Jk6HTe0zARBVHvUCJ4yYQ04EWIJEqJ/Lok7o/AK7oHKA==
-X-Received: by 2002:a17:903:32c3:b0:1cc:45d0:470b with SMTP id i3-20020a17090332c300b001cc45d0470bmr2938121plr.7.1698632990924;
-        Sun, 29 Oct 2023 19:29:50 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-20-59.pa.nsw.optusnet.com.au. [49.180.20.59])
-        by smtp.gmail.com with ESMTPSA id f12-20020a170902684c00b001b9f032bb3dsm5282609pln.3.2023.10.29.19.29.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Oct 2023 19:29:50 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1qxI2F-005jod-05;
-	Mon, 30 Oct 2023 13:29:47 +1100
-Date: Mon, 30 Oct 2023 13:29:47 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Matthew Wilcox <willy@infradead.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Marco Elver <elver@google.com>
-Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
-Message-ID: <ZT8VG0MTKNNpGDOC@dread.disaster.area>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-7-wedsonaf@gmail.com>
- <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me>
- <ZTHPOfy4dhj0x5ch@boqun-archlinux>
- <vT8j_VVzNv0Cx7iTO9OobT9H8zEc_I-dxmh2sF6GZWqRQ0nhjnaNZqtWPtYm37wOhwGek2vLUYwAM-jJ83AZEe8TXMDx9N6pZ3mZW1WdNNw=@proton.me>
- <ZTP06kdjBQzZ3KYD@Boquns-Mac-mini.home>
- <ZTQDztmY0ivPcGO/@casper.infradead.org>
- <ZTQnpeFcPwMoEcgO@Boquns-Mac-mini.home>
- <ZTYE0PSDwITrWMHv@dread.disaster.area>
- <CANeycqq49Ubj-3BKcUaMOKeEwFastZzC17z_uk_VE3RDDv2wfw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="I7gJn1G+"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DBBAB
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 01:21:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=jrmnpnmyqvcb3ipaajjxsfef54.protonmail; t=1698654082; x=1698913282;
+	bh=ecIJyYrbZM2RfM1hkjnhx0W3o9KwdDqY6+ZLK4zmkp4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=I7gJn1G+Q0FRJDQi0VGsEDUQBlhsepzTsCU8hAr3EycHCWpwQviy08GYQjJb+mFL5
+	 1x6CT/Xcdkpnms9snhO9J6iioUtDFLzK5tDPH25pMPC5mDr3y4CvH7gMNQpyXIIXJl
+	 9AtwD7ERKQW6594wPcI8TXo7zwiXiVARsnb+sKJ9/wUeopSk4J0CHWu1nlIuyZZBDT
+	 xzqVMnBEdJmF8me0AV8AgI52Ofq4RnTW7+9AHWR/makNEeyAdyDEl48M7Ago/5y+wR
+	 F52+RDU4wdIjByWgxXP9R5M7Y7r/3D1Yhcjp3ErkdnOXg2fntaYdw8Uotz6f/FsZmL
+	 K1tF1c1bQ3Vxw==
+Date: Mon, 30 Oct 2023 08:21:04 +0000
+To: Alice Ryhl <alice@ryhl.io>, Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 04/19] rust: fs: introduce `FileSystem::super_params`
+Message-ID: <5479e7c1-6616-4930-b33c-0075772c266e@proton.me>
+In-Reply-To: <4b19dd7d-b946-4a5c-8746-f7e9c2f55d25@ryhl.io>
+References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-5-wedsonaf@gmail.com> <E5dn4WQzlLvA0snHR_r_i2h1IPRjiiTIwssBSR403Rda6JA2Fgd-7lOonQQ6Oz1DMqp45cvtDfyW0JwRFgSZurzvtXIk3KGNhtSBqvvBnF0=@proton.me> <4b19dd7d-b946-4a5c-8746-f7e9c2f55d25@ryhl.io>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANeycqq49Ubj-3BKcUaMOKeEwFastZzC17z_uk_VE3RDDv2wfw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 23, 2023 at 09:55:08AM -0300, Wedson Almeida Filho wrote:
-> On Mon, 23 Oct 2023 at 02:29, Dave Chinner <david@fromorbit.com> wrote:
-> >
-> > On Sat, Oct 21, 2023 at 12:33:57PM -0700, Boqun Feng wrote:
-> > > On Sat, Oct 21, 2023 at 06:01:02PM +0100, Matthew Wilcox wrote:
-> > > > I'm only an expert on the page cache, not the rest of the VFS.  So
-> > > > what are the rules around modifying i_state for the VFS?
-> > >
-> > > Agreed, same question here.
-> >
-> > inode->i_state should only be modified under inode->i_lock.
-> >
-> > And in most situations, you have to hold the inode->i_lock to read
-> > state flags as well so that reads are serialised against
-> > modifications which are typically non-atomic RMW operations.
-> >
-> > There is, I think, one main exception to read side locking and this
-> > is find_inode_rcu() which does an unlocked check for I_WILL_FREE |
-> > I_FREEING. In this case, the inode->i_state updates in iput_final()
-> > use WRITE_ONCE under the inode->i_lock to provide the necessary
-> > semantics for the unlocked READ_ONCE() done under rcu_read_lock().
-> >
-> > IOWs, if you follow the general rule that any inode->i_state access
-> > (read or write) needs to hold inode->i_lock, you probably won't
-> > screw up.
-> 
-> I don't see filesystems doing this though. In particular, see
-> iget_locked() -- if a new inode is returned, then it is locked, but if
-> a cached one is found, it's not locked.
+On 28.10.23 18:39, Alice Ryhl wrote:
+> On 10/18/23 18:34, Benno Lossin wrote:>> +        from_result(|| {
+>>> +            // SAFETY: The C callback API guarantees that `fc_ptr` is =
+valid.
+>>> +            let fc =3D unsafe { &mut *fc_ptr };
+>>
+>> This safety comment is not enough, the pointer needs to be unique and
+>> pointing to a valid value for this to be ok. I would recommend to do
+>> this instead:
+>>
+>>       unsafe { addr_of_mut!((*fc_ptr).ops).write(&Tables::<T>::CONTEXT) =
+};
+>=20
+> It doesn't really need to be unique. Or at least, that wording gives the
+> wrong intuition even if it's technically correct when you use the right
+> definition of "unique".
+>=20
+> To clarify what I mean: Using `ptr::write` on a raw pointer is valid if
+> and only if creating a mutable reference and using that to write is
+> valid. (Assuming the type has no destructor.)
 
-I did say "if you follow the general rule".
+I tried looking in the nomicon and UCG, but was not able to find this
+statement, where is it from?
 
-And where there is a "general rule" there is the implication that
-there are special cases where the "general rule" doesn't get
-applied, yes? :)
+> Of course, in this case you *also* have the difference of whether you
+> create a mutable to the entire struct or just the field.
+>>> +                // SAFETY: This is a newly-created inode. No other ref=
+erences to it exist, so it is
+>>> +                // safe to mutably dereference it.
+>>> +                let inode =3D unsafe { &mut *inode };
+>>
+>> The inode also needs to be initialized and have valid values as its fiel=
+ds.
+>> Not sure if this is kept and it would probably be better to keep using r=
+aw
+>> pointers here.
+>=20
+> My understanding is that this is just a safety invariant, and not a
+> validity invariant, so as long as the uninitialized memory is not read,
+> it's fine.
+>=20
+> See e.g.:
+> https://github.com/rust-lang/unsafe-code-guidelines/issues/346
 
-I_NEW is the exception to the general rule, and very few people
-writing filesystems actually know about it let alone care about
-it...
+I'm not so sure that that discussion is finished and agreed upon. The
+nomicon still writes "It is illegal to construct a reference to
+uninitialized data" [1].
 
-> So we're in this situation where a returned inode may or may not be
-> locked. And the way to determine if it's locked or not is to read
-> i_state.
-> 
-> Here are examples of kernfs, ext2, ext4 and squashfs doing it:
-> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/kernfs/inode.c#L252
-> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/ext2/inode.c#L1392
-> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/ext4/inode.c#L4707
-> https://elixir.bootlin.com/linux/v6.6-rc7/source/fs/squashfs/inode.c#L82
-> 
-> They all call iget_locked(), and if I_NEW is set, they initialise the
-> inode and unlock it with unlock_new_inode(); otherwise they just
-> return the unlocked inode.
+Using this pattern (&mut uninit to initialize data) is also dangerous
+if the underlying type has drop impls, since then by doing
+`foo.bar =3D baz;` you drop the old uninitialized value. Sure in
+our bindings there are no types that implement drop (AFAIK) so
+it is less of an issue.
 
-All of them are perfectly fine.
+If we decide to do this, we should have a comment that explains that
+this reference might point to uninitialized memory. Since otherwise
+it might be easy to give the reference to another safe function that
+then e.g. reads a bool.
 
-I_NEW is the bit we use to synchronise inode initialisation - we
-have to ensure there is only a single initialisation running while
-there are concurrent lookups that can find the inode whilst it is
-being initialised. We cannot hold a spin lock over inode
-initialisation (it may have to do IO!), so we set the I_NEW flag
-under the i_lock and the inode_hash_lock during hash insertion so
-that they are set atomically from the hash lookup POV. If the inode
-is then found in cache, wait_on_inode() does the serialisation
-against the running initialisation indicated by the __I_NEW bit in
-the i_state word.
+[1]: https://doc.rust-lang.org/nomicon/unchecked-uninit.html
 
-Hence if the caller of iget_locked() ever sees I_NEW, it is
-guaranteed to have exclusive access to the inode and -must- first
-initialise the inode and then call unlock_new_inode() when it has
-completed. It doesn't need to hold inode->i_lock in this case
-because there's nothing it needs to serialise against as
-iget_locked() has already done all that work.
-
-If the inode is found in cache by iget_locked, then the
-wait_on_inode() call is guaranteed to ensure that I_NEW is not set
-when it returns. The atomic bit operations on __I_NEW and the memory
-barriers in unlock_new_inode() plays an important part in this
-dance, and they guarantee that I_NEW has been cleared before
-iget_locked() returns. No need for inode->i_lock to be held in this
-case, either, because iget_locked() did all the serialisation for
-us.
-
-This special dance is an optimisation that avoids the need to take
-inode->i_lock in the inode lookup fast path just to check I_NEW. It
-is an exception to the general rule but internal it uses
-inode->i_lock in the places it is needed to ensure anything using
-the general rule about accessing i_state still behaves correctly.
-
+--=20
 Cheers,
+Benno
 
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+
