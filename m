@@ -1,33 +1,33 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D433D26C
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 08:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E174BD2F8;
+	Mon, 30 Oct 2023 08:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="I7gJn1G+"
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DBBAB
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 01:21:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="j1QpPpKz"
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12515A7;
+	Mon, 30 Oct 2023 01:35:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=jrmnpnmyqvcb3ipaajjxsfef54.protonmail; t=1698654082; x=1698913282;
-	bh=ecIJyYrbZM2RfM1hkjnhx0W3o9KwdDqY6+ZLK4zmkp4=;
+	s=protonmail; t=1698654905; x=1698914105;
+	bh=BVHa12NNwhvoHATpYYKQ2nf2GNNOt16CBd5GvICmLvc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=I7gJn1G+Q0FRJDQi0VGsEDUQBlhsepzTsCU8hAr3EycHCWpwQviy08GYQjJb+mFL5
-	 1x6CT/Xcdkpnms9snhO9J6iioUtDFLzK5tDPH25pMPC5mDr3y4CvH7gMNQpyXIIXJl
-	 9AtwD7ERKQW6594wPcI8TXo7zwiXiVARsnb+sKJ9/wUeopSk4J0CHWu1nlIuyZZBDT
-	 xzqVMnBEdJmF8me0AV8AgI52Ofq4RnTW7+9AHWR/makNEeyAdyDEl48M7Ago/5y+wR
-	 F52+RDU4wdIjByWgxXP9R5M7Y7r/3D1Yhcjp3ErkdnOXg2fntaYdw8Uotz6f/FsZmL
-	 K1tF1c1bQ3Vxw==
-Date: Mon, 30 Oct 2023 08:21:04 +0000
-To: Alice Ryhl <alice@ryhl.io>, Wedson Almeida Filho <wedsonaf@gmail.com>
+	b=j1QpPpKzhxpgt3iVbdeVdT9BqA7UGmkbAnfvBrpvSB6RjDJr3qPCi/8yoMJnI44mJ
+	 5hFj0mh93NxMSUF/9fFvLSdXMd9a1Y1F9qtZoXu2LymwCsdJQ/xIfmRahwBjmSXywS
+	 FO+PBm315CB+pDomNGAkQPuDH82QRaULiB0XQlv69wBSD4rpB0eVryn5NcK4Qkm/XD
+	 qtQGtdxbMGKhbh/21VJOMvpEakHmS0F00jVetB0sIIeBkn7xwTjJWM8T8vh18DmCVQ
+	 h/4IwwdNWsJPEpXIbzqIhqiRN0YNCZf1G5/TV02G4pQcJ7m172wIkbzqP+OQYpB6w+
+	 V1iQ6SM0WDCQg==
+Date: Mon, 30 Oct 2023 08:34:46 +0000
+To: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 04/19] rust: fs: introduce `FileSystem::super_params`
-Message-ID: <5479e7c1-6616-4930-b33c-0075772c266e@proton.me>
-In-Reply-To: <4b19dd7d-b946-4a5c-8746-f7e9c2f55d25@ryhl.io>
-References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-5-wedsonaf@gmail.com> <E5dn4WQzlLvA0snHR_r_i2h1IPRjiiTIwssBSR403Rda6JA2Fgd-7lOonQQ6Oz1DMqp45cvtDfyW0JwRFgSZurzvtXIk3KGNhtSBqvvBnF0=@proton.me> <4b19dd7d-b946-4a5c-8746-f7e9c2f55d25@ryhl.io>
+Cc: andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY drivers
+Message-ID: <41e9ec99-6993-4bb4-a5e5-ade7cf4927a4@proton.me>
+In-Reply-To: <ZT72no2gdASP0STS@boqun-archlinux>
+References: <0e858596-51b7-458c-a4eb-fa1e192e1ab3@proton.me> <20231029.132112.1989077223203124314.fujita.tomonori@gmail.com> <ZT6M6WPrCaLb-0QO@Boquns-Mac-mini.home> <20231030.075852.213658405543618455.fujita.tomonori@gmail.com> <ZT72no2gdASP0STS@boqun-archlinux>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -38,66 +38,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 28.10.23 18:39, Alice Ryhl wrote:
-> On 10/18/23 18:34, Benno Lossin wrote:>> +        from_result(|| {
->>> +            // SAFETY: The C callback API guarantees that `fc_ptr` is =
-valid.
->>> +            let fc =3D unsafe { &mut *fc_ptr };
+On 30.10.23 01:19, Boqun Feng wrote:
+> On Mon, Oct 30, 2023 at 07:58:52AM +0900, FUJITA Tomonori wrote:
+>> if you read partially, the part might be modified by the C side during
+>> reading.
+>=20
+> If you read the part protected by phy_device->lock, C side shouldn't
+> modify it, but the case here is not all fields in phy_device stay
+> unchanged when phy_device->lock (and Rust side doesn't mark them
+> interior mutable), see the discussion drom Andrew and me.
+>=20
 >>
->> This safety comment is not enough, the pointer needs to be unique and
->> pointing to a valid value for this to be ok. I would recommend to do
->> this instead:
->>
->>       unsafe { addr_of_mut!((*fc_ptr).ops).write(&Tables::<T>::CONTEXT) =
-};
+>> For me, the issue is that creating &T for an object that might be
+>> modified.
 >=20
-> It doesn't really need to be unique. Or at least, that wording gives the
-> wrong intuition even if it's technically correct when you use the right
-> definition of "unique".
->=20
-> To clarify what I mean: Using `ptr::write` on a raw pointer is valid if
-> and only if creating a mutable reference and using that to write is
-> valid. (Assuming the type has no destructor.)
+> The reason a `&phy_device` cannot be created here is because concurrent
+> writes may cause a invalid phy_device (i.e. data race), the same applies
+> to a copy.
 
-I tried looking in the nomicon and UCG, but was not able to find this
-statement, where is it from?
+Both comments by Boqun above are correct. Additionally even if the write
+would not have a data race with the read, it would still be UB. (For exampl=
+e
+when the write is by the same thread)
 
-> Of course, in this case you *also* have the difference of whether you
-> create a mutable to the entire struct or just the field.
->>> +                // SAFETY: This is a newly-created inode. No other ref=
-erences to it exist, so it is
->>> +                // safe to mutably dereference it.
->>> +                let inode =3D unsafe { &mut *inode };
->>
->> The inode also needs to be initialized and have valid values as its fiel=
-ds.
->> Not sure if this is kept and it would probably be better to keep using r=
-aw
->> pointers here.
->=20
-> My understanding is that this is just a safety invariant, and not a
-> validity invariant, so as long as the uninitialized memory is not read,
-> it's fine.
->=20
-> See e.g.:
-> https://github.com/rust-lang/unsafe-code-guidelines/issues/346
+If you just read the field itself then it should be fine, since it is
+protected by a lock, see Boqun's patch for manually accessing the bitfields=
+.
 
-I'm not so sure that that discussion is finished and agreed upon. The
-nomicon still writes "It is illegal to construct a reference to
-uninitialized data" [1].
-
-Using this pattern (&mut uninit to initialize data) is also dangerous
-if the underlying type has drop impls, since then by doing
-`foo.bar =3D baz;` you drop the old uninitialized value. Sure in
-our bindings there are no types that implement drop (AFAIK) so
-it is less of an issue.
-
-If we decide to do this, we should have a comment that explains that
-this reference might point to uninitialized memory. Since otherwise
-it might be easy to give the reference to another safe function that
-then e.g. reads a bool.
-
-[1]: https://doc.rust-lang.org/nomicon/unchecked-uninit.html
+But I would wait until we see a response from the bindgen devs on the issue=
+.
 
 --=20
 Cheers,
