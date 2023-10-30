@@ -1,33 +1,33 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E174BD2F8;
-	Mon, 30 Oct 2023 08:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED24D2F8
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 08:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="j1QpPpKz"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lE64VVpA"
 Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12515A7;
-	Mon, 30 Oct 2023 01:35:07 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3547CAF
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 01:37:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1698654905; x=1698914105;
-	bh=BVHa12NNwhvoHATpYYKQ2nf2GNNOt16CBd5GvICmLvc=;
+	s=protonmail; t=1698655064; x=1698914264;
+	bh=0MjG7vhtzY0IVoXAS8UeP+C/VlIo+0UC/dER+pqvngY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=j1QpPpKzhxpgt3iVbdeVdT9BqA7UGmkbAnfvBrpvSB6RjDJr3qPCi/8yoMJnI44mJ
-	 5hFj0mh93NxMSUF/9fFvLSdXMd9a1Y1F9qtZoXu2LymwCsdJQ/xIfmRahwBjmSXywS
-	 FO+PBm315CB+pDomNGAkQPuDH82QRaULiB0XQlv69wBSD4rpB0eVryn5NcK4Qkm/XD
-	 qtQGtdxbMGKhbh/21VJOMvpEakHmS0F00jVetB0sIIeBkn7xwTjJWM8T8vh18DmCVQ
-	 h/4IwwdNWsJPEpXIbzqIhqiRN0YNCZf1G5/TV02G4pQcJ7m172wIkbzqP+OQYpB6w+
-	 V1iQ6SM0WDCQg==
-Date: Mon, 30 Oct 2023 08:34:46 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>
+	b=lE64VVpATEY/30Wm7MeQN+PPjDys7QwAiQJ6U4wJT8BPZGb0t7jyH+hZMKvO6IJQN
+	 SeR/yO707sBdOPUoNaeq2uG4XN5xzGcblo9aOJsIaCG72pNJNh3p5/RaBTqIwXUKzH
+	 kVG4+5JeidQTrjUbjMgTlS+H2XyB8vItktff70HQWEvm9T5Y/4KfEWEElMCb26RUVa
+	 wKyIISqhm+ca6AINzTc42L7PpJKf1hnP42y1AN6eilBSt8zFKyjXMLE8MAPy1MYAiP
+	 c/NDYHdkHfy7ioq5RTEVanDEfcM0VkBBPkucyMrWZc83NkFt4m8RAXEWHczq03lUov
+	 UWqlF6YgL9Wnw==
+Date: Mon, 30 Oct 2023 08:37:33 +0000
+To: Andrew Lunn <andrew@lunn.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Cc: boqun.feng@gmail.com, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
 Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY drivers
-Message-ID: <41e9ec99-6993-4bb4-a5e5-ade7cf4927a4@proton.me>
-In-Reply-To: <ZT72no2gdASP0STS@boqun-archlinux>
-References: <0e858596-51b7-458c-a4eb-fa1e192e1ab3@proton.me> <20231029.132112.1989077223203124314.fujita.tomonori@gmail.com> <ZT6M6WPrCaLb-0QO@Boquns-Mac-mini.home> <20231030.075852.213658405543618455.fujita.tomonori@gmail.com> <ZT72no2gdASP0STS@boqun-archlinux>
+Message-ID: <c3fbe144-9b17-4e25-929d-9785901dfaa4@proton.me>
+In-Reply-To: <03089090-6822-439b-a725-bd907b6d69ce@lunn.ch>
+References: <45b9c77c-e19c-4c06-a2ea-0cf7e4f17422@proton.me> <b045970a-9d0f-48a1-9a06-a8057d97f371@lunn.ch> <0e858596-51b7-458c-a4eb-fa1e192e1ab3@proton.me> <20231029.132112.1989077223203124314.fujita.tomonori@gmail.com> <03089090-6822-439b-a725-bd907b6d69ce@lunn.ch>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -38,35 +38,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 30.10.23 01:19, Boqun Feng wrote:
-> On Mon, Oct 30, 2023 at 07:58:52AM +0900, FUJITA Tomonori wrote:
->> if you read partially, the part might be modified by the C side during
->> reading.
->=20
-> If you read the part protected by phy_device->lock, C side shouldn't
-> modify it, but the case here is not all fields in phy_device stay
-> unchanged when phy_device->lock (and Rust side doesn't mark them
-> interior mutable), see the discussion drom Andrew and me.
->=20
+On 29.10.23 18:32, Andrew Lunn wrote:
+>> The current code is fine from Rust perspective because the current
+>> code copies phy_driver on stack and makes a reference to the copy, if
+>> I undertand correctly.
 >>
->> For me, the issue is that creating &T for an object that might be
->> modified.
+>> It's not nice to create an 500-bytes object on stack. It turned out
+>> that it's not so simple to avoid it.
 >=20
-> The reason a `&phy_device` cannot be created here is because concurrent
-> writes may cause a invalid phy_device (i.e. data race), the same applies
-> to a copy.
+> Does it also copy the stack version over the 'real' version before
+> exiting? If not, it is broken, since modifying state in phy_device is
+> often why the driver is called. But copying the stack version is also
+> broken, since another thread taking the phydev->lock is going to get
+> lost from the linked list of waiters.
 
-Both comments by Boqun above are correct. Additionally even if the write
-would not have a data race with the read, it would still be UB. (For exampl=
-e
-when the write is by the same thread)
+It does not copy the stack version over the original. Since we only read
+the `link` field in the discussed function and we hold the lock, it should
+not get modified, right? So from a functional viewpoint there is no issue.
+(Aside from increased stack size and the data race issue etc.)
 
-If you just read the field itself then it should be fine, since it is
-protected by a lock, see Boqun's patch for manually accessing the bitfields=
-.
+> Taking a copy of the C structure does seem very odd, to me as a C
+> programmer.
 
-But I would wait until we see a response from the bindgen devs on the issue=
-.
+It is also odd in Rust.
 
 --=20
 Cheers,
