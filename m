@@ -1,95 +1,55 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC546360
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Oct 2023 00:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA2F360
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Oct 2023 07:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="IC7f6XIh"
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B456A9
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 17:24:51 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5a7fb84f6ceso42602027b3.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Oct 2023 17:24:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1698711890; x=1699316690; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0ZyY4h9nyPS5deoSFzKu3srKHn2nQp1lqv2qMRKBafU=;
-        b=IC7f6XIhuQxhzw9ovP6cx5GhPNiVgE5gNpbUU7Hdg57DW6u0nPh/oC+ggNkGgEoXxC
-         GiM9aQw6N0lcX/PZSYtkxsOy9FU7KVzPuVszLal9O/MDCpAWZ/HO4okNBnbhZ8A4n3FT
-         sH5XdlvbZ0LSNAg+tOJWd0tLUq0E+USKUz6CAydmu+kuqRDMOio8Ctcx8DJpHJusMqqz
-         jxxjitdguF/e4/D1xKJyGB3edfirU26841dOjtNbGsyT5mth/gFn2bFAuIf6x0Hs0NtW
-         QFXMxJ1fIoOkkWXcvwEIXCmWDMkiZGpERKmCXN18O9WWsOElh2p50x9Oe3PQ4dwWJRv5
-         kLyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698711890; x=1699316690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0ZyY4h9nyPS5deoSFzKu3srKHn2nQp1lqv2qMRKBafU=;
-        b=Pn4S+5OOkPobFVBEDyCa5UNGTrwEUiZRYEYlu+Fys8jlM8uecuyHC0kqH7nVPfEloJ
-         eAs4srKbOFU1U6UH2QpKj2p1ELaQWTjTUfvM5WWXpaRKbo7X6wnv8M3tme9BNpmsN9ar
-         Lix7ixfvpm7yqN9JZg0yGC1dhzI24yzKFrJTV24Hx5NFGOg8XReYEbd7iuIyXPQ17mK4
-         nfvoKJq7mdH0+e7O24r5CWbRFOyXIfIfbFtZX20MB4Z6UTJ9aEulREtZKOLEkTWtS2WI
-         7BWisH1xjGSUFEI65MnQQFAZZtxPBJXFMe8anu+oI5dBKeW/Oxwo5wJLzeLb2P4ocOiT
-         tySw==
-X-Gm-Message-State: AOJu0Yw68gmRLpw/0DI5TAFXm8UhIIG6LBJ9z2Yv2cKlhSgc5TzVurze
-	xRj+YwLzBIS9WJ83En9FuSA1lR1mx6ESbcCzCGtaKw==
-X-Google-Smtp-Source: AGHT+IF39wsSRIslmfqaY/jvQl9/P/3a7uBW9zWUq8MPAkfRbRZNd+eKM1IuCUk/bAtSUCAV1lHWN4+hyqg8YHP4GiM=
-X-Received: by 2002:a81:ac4c:0:b0:5a8:2744:1565 with SMTP id
- z12-20020a81ac4c000000b005a827441565mr8679890ywj.4.1698711890564; Mon, 30 Oct
- 2023 17:24:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uHbyo8jz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D6680C433C8;
+	Tue, 31 Oct 2023 07:02:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698735740;
+	bh=BXGcEAglGwy9z8P3i6RzMqsNfIVS7BW6JTPm2va0dRI=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=uHbyo8jzMPSB8hMXZpoW3fqzOpHHYgw+NFs4y1XokOtJooMLaP0jArjQcUJxni5zV
+	 IJiOA9NskUexQoBaNAqeNQpr0SJP4peGn6OLx2O+L1nbr4ldVK0OASeTmomrGiuoSe
+	 02zwMrlJ3oNYaY5u+1qgwImDyClsHEPkNWvl7cDQvWEf0aBA9sXbjoE4YxrFU2fikA
+	 oXYWa6umj1jpQAmvLtPyteZQ83g1a+W5DJlYbGyYYfAhBdV/sk20fVUBG0REF7dvo0
+	 6UysuyJsc0Xwc7SyIQjrGUVIYLPekV1YeODpaMe1yQ9b66AP3YkrufC7q6E5jziC4i
+	 fGE8Q7T2YhtCg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C1D5DC4316B;
+	Tue, 31 Oct 2023 07:02:20 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust for 6.7
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20231027182558.199011-1-ojeda@kernel.org>
+References: <20231027182558.199011-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20231027182558.199011-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-6.7
+X-PR-Tracked-Commit-Id: 3857af38e57a80b15b994e19d1f4301cac796481
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 455cdcb45f8fa9e7c70273e7bec0537ff02d5247
+Message-Id: <169873574078.30696.17579733283212756284.pr-tracker-bot@kernel.org>
+Date: Tue, 31 Oct 2023 07:02:20 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-2-Jamie.Cunliffe@arm.com> <ZTT/h5wKL7STeOhC@arm.com> <ZTUCdS0Vrev1iQOv@gmail.com>
-In-Reply-To: <ZTUCdS0Vrev1iQOv@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 30 Oct 2023 20:24:39 -0400
-Message-ID: <CALNs47vb+-_wD0uKQJYVMswHdivOr-1v6ajQ3hQw4wNs4Da0rg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
- of builtin targets
-To: Ingo Molnar <mingo@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jamie Cunliffe <Jamie.Cunliffe@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	boqun.feng@gmail.com, andrew@lunn.ch, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 22, 2023 at 7:14=E2=80=AFAM Ingo Molnar <mingo@kernel.org> wrot=
-e:
->
->
-> * Catalin Marinas <catalin.marinas@arm.com> wrote:
-> >
-> > Adding the x86 maintainers - no functional change for x86, any objectio=
-n
-> > to this patch going in via the arm64 tree (part of the two-patch series
-> > enabling Rust for arm64)?
-> >
-> > Thanks.
-> >
-> > (keeping the rest of the patch below for your reference)
->
-> If Masahiro Yamada (kbuild maintainer, Cc:-ed) is fine with it,
-> then it will be OK to me too.
->
-> Thanks,
->
->         Ingo
->
+The pull request you sent on Fri, 27 Oct 2023 20:25:58 +0200:
 
-I don't think this has been picked up yet. Is it only waiting on
-Masahiro 's ack or is a new version expected?
+> https://github.com/Rust-for-Linux/linux.git tags/rust-6.7
 
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/455cdcb45f8fa9e7c70273e7bec0537ff02d5247
 
-- Trevor
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
