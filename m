@@ -1,128 +1,109 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C551DFE8;
-	Tue, 31 Oct 2023 20:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C11E22335
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Oct 2023 20:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NEwQVD8e"
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58F1F5;
-	Tue, 31 Oct 2023 13:14:20 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-d9ac31cb051so5541260276.3;
-        Tue, 31 Oct 2023 13:14:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EGHI4CJy"
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74598F3
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Oct 2023 13:18:18 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5b0c27d504fso1904177b3.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 31 Oct 2023 13:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698783260; x=1699388060; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hH/Y3bTLE66gvwan6iYnqa0I9rCjLlt9oT6IPVZRNMg=;
-        b=NEwQVD8elMXf7is88L6G0OKdcFsHHeSrOlPKlksFgg/sc9Kj5GsTo2C9VYcpCybXLC
-         3DQxlCGHE3bda5JmLvCIwRALXaQtYppY6Wy7kstXTDy99mok16uQiJXIWAoZZF4mJS6W
-         4tGTHCJcbQR4VNlRBjz34ZWXZobIN6ek5RD/3wclS1xtGihlX3SKMz18OexMbsCD2x7T
-         lEroAbp843P9BQauWOT0lRtT1KVqt1sSloHwbgWOCbEHiCEfmkcODjR1yE5N7XiVIBao
-         RvBRFgAGhBDpCD9vc+tzHhW6J7UwHha/e4Hb8aqAr2MU1g5dUEbez0O/lePTCEIXrz/U
-         Ad+w==
+        d=google.com; s=20230601; t=1698783497; x=1699388297; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ztq39AVKtcPBQkDEgvD9lSUG5ylL2QPNBxZOTT2U9hc=;
+        b=EGHI4CJywkrKHWz4oREJwLIPp6QyfyEiQeyA23EfZYk0zf+UB8FaTgGtnIX4Yz/5zq
+         0wfaPxBX7kOFTa7t8SErD2Hdr9/BpS/09YMO+DydsO14aCCNLpEF5gRDbAdvSyeOlVqc
+         UPdwDfxNFzQZxJxlIYSyVEJZg41aUPEyzyBuf8phKhuMelMvnPjr5Pz6KgLXeK4ZyOyT
+         +hM/LYAkG4A9YLNg1vZwyyDl7cXlnZ1Ny2Pzc8JTvWpSyKt02vk6NaI7jNgmL1ZlNAAc
+         3b2rz5CYEcRrjjIGqzCRVZFOm/ke01G8uUhp01YYpIQ64333Vi174EbMtHL1aCTM9ObF
+         psUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698783260; x=1699388060;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hH/Y3bTLE66gvwan6iYnqa0I9rCjLlt9oT6IPVZRNMg=;
-        b=GYGcP6CsorwlMrLtOtktW4XA9Zd3OYT+Cf2DmLIAjz5vYd28nfh6JfH70a/NR06lvg
-         pEjijBvLvTmcwJclXnGEnZAmoDe7YPCmob5eWn2PxEl9BlamC9KaUlqw+znJfCI2TtIP
-         cknXraPfh2ZtaKGyQyCWyHlcYTlIY0B/ygY69wESOmParI72wL2YaPj4aCNpENNpmazO
-         UU8Xk5T//fiQI2oFDf2JdzNXrHEf/J7Bs1LNKins2+l+cB8lFryDsyrcGcnH3vU4tQCY
-         oHz2DcCUmNwI1bcYAxHLcuj4EQufjtH7JUCchpzxccF39J8zpWzY1JowANqe2Dn7xaqp
-         mxCw==
-X-Gm-Message-State: AOJu0YzjRUFcWjt16bSUKUBI3kqdjJWkR0XQbEalnUtpLjn7kVnRrrbA
-	ZiWZdRkupdEDZC+r1j0pzcjI2pF4Bu0peBJJX6s=
-X-Google-Smtp-Source: AGHT+IEapJom88s2TF5FkEIzywMTyVpY+Ly1D4FOxirRlEOTtJl5AcNvRFjFpIQAtXZ3uxwB+mlHG9bB9Y0w8yLp2es=
-X-Received: by 2002:a25:aa47:0:b0:d9a:5895:2c74 with SMTP id
- s65-20020a25aa47000000b00d9a58952c74mr12278461ybi.42.1698783259737; Tue, 31
- Oct 2023 13:14:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698783497; x=1699388297;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ztq39AVKtcPBQkDEgvD9lSUG5ylL2QPNBxZOTT2U9hc=;
+        b=LvYI+N39P/FCLW4RaHFqZyuYVLP6q1MB5GacY0Qk3VIFejohEqnRiaZr3h14AFxkzu
+         RMn51Jx499jB5yMLG845Q5QpFblN+XqeSQOuRPuG4d1DGp/eGplAHt6uboolFo/eZKqY
+         4DMOaS674p+mR2EDerUlYUTQDr126X0bPz20pYm4kDPqqDxDt3DXjrf7h1+23MBnM5Vn
+         b2KlA32Gy3KbRmWdeTEIfdAttY1bPHmrWQPfRBPjvNdvM5r4mObUpTeLoBA+rQ8gM1D4
+         3SREoLmErNxQoEgnTO0H2unV2u0o+79xiSaI+Mmh9vB4d8jmv2Uph9D3gnQHwi6onV/+
+         EfiA==
+X-Gm-Message-State: AOJu0YzJ/rKAsuVISoaXmWQl4D7V+GHX3WvVkL5xFgnk/88yHjU5h/Bp
+	qJ0DX99HvNzP1IhVw51+TgJP87+3NkFN
+X-Google-Smtp-Source: AGHT+IE8r9R0/YNE2aMmXBt/5jdVEq82GPS8cQwktw+16arRhB9NYq/NvvqS8Dt8j29bFV2jrKzq4QjdO3vj
+X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
+ (user=mmaurer job=sendgmr) by 2002:a0d:d684:0:b0:58c:e8da:4d1a with SMTP id
+ y126-20020a0dd684000000b0058ce8da4d1amr89719ywd.2.1698783497681; Tue, 31 Oct
+ 2023 13:18:17 -0700 (PDT)
+Date: Tue, 31 Oct 2023 20:10:14 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231018122518.128049-1-wedsonaf@gmail.com> <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
-In-Reply-To: <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Tue, 31 Oct 2023 17:14:08 -0300
-Message-ID: <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Wedson Almeida Filho <walmeida@microsoft.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
+Message-ID: <20231031201752.1189213-1-mmaurer@google.com>
+Subject: [PATCH] rust: Suppress searching builtin sysroot
+From: Matthew Maurer <mmaurer@google.com>
+To: Jamie.Cunliffe@arm.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: will@kernel.org, Matthew Maurer <mmaurer@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 29 Oct 2023 at 17:32, Matthew Wilcox <willy@infradead.org> wrote:
-> > impl FileSystem for MyFS {
-> >     fn super_params(sb: &NewSuperBlock<Self>) -> Result<SuperParams<Self::Data>>;
-> >     fn init_root(sb: &SuperBlock<Self>) -> Result<ARef<INode<Self>>>;
-> >     fn read_dir(inode: &INode<Self>, emitter: &mut DirEmitter) -> Result;
-> >     fn lookup(parent: &INode<Self>, name: &[u8]) -> Result<ARef<INode<Self>>>;
-> >     fn read_folio(inode: &INode<Self>, folio: LockedFolio<'_>) -> Result;
-> > }
->
-> Does it make sense to describe filesystem methods like this?  As I
-> understand (eg) how inodes are laid out, we typically malloc a
->
-> foofs_inode {
->         x; y; z;
->         struct inode vfs_inode;
-> };
->
-> and then the first line of many functions that take an inode is:
->
->         struct ext2_inode_info *ei = EXT2_I(dir);
->
-> That feels like unnecessary boilerplate, and might lead to questions like
-> "What if I'm passed an inode that isn't an ext2 inode".  Do we want to
-> always pass in the foofs_inode instead of the inode?
+By default, if Rust is passed `--target=foo` rather than a target.json
+file, it will infer a default sysroot if that component is installed. As
+the proposed aarch64 support uses `aarch64-unknown-none` rather than a
+target.json file, this is needed to prevent rustc from being confused
+between the custom kernel sysroot and the pre-installed one.
 
-We're well aligned here. :)
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
 
-Note that the type is `&INode<Self>` -- `Self` is an alias for the
-type implementing this filesystem. For example, in tarfs, the type is
-really `&INode<TarFs>`, so it is what you're asking for: the TarFs
-filesystem only sees TarFs inodes and superblocks (through the
-FileSystem trait, maybe they have to deal with other inodes for other
-reasons).
+This patch is prompted by the issue I encountered at
+https://lore.kernel.org/all/CAGSQo01pOixiPXkW867h4vPUaAjtKtHGKhkV-rpifJvKxAf4Ww@mail.gmail.com/
+but should be generically more hermetic even if we don't end up landing
+that patch.
 
-In fact, when you have inode of type `INode<TarFs>`, and you have a call like:
+ rust/Makefile          | 1 +
+ scripts/Makefile.build | 1 +
+ 2 files changed, 2 insertions(+)
 
-let d = inode.data();
+diff --git a/rust/Makefile b/rust/Makefile
+index a27f35f924ec..0403e88e19fd 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -400,6 +400,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
+ 		--emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
+ 		--crate-type rlib -L$(objtree)/$(obj) \
+ 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
++		--sysroot=/dev/null \
+ 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
+ 
+ rust-analyzer:
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 82e3fb19fdaf..6e4ee513cc3c 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -275,6 +275,7 @@ rust_common_cmd = \
+ 	--extern alloc --extern kernel \
+ 	--crate-type rlib -L $(objtree)/rust/ \
+ 	--crate-name $(basename $(notdir $@)) \
++	--sysroot=/dev/null \
+ 	--out-dir $(dir $@) --emit=dep-info=$(depfile)
+ 
+ # `--emit=obj`, `--emit=asm` and `--emit=llvm-ir` imply a single codegen unit
+-- 
+2.42.0.820.g83a721a137-goog
 
-What you get back has the type declared in `TarFs::INodeData`.
-Similarly, if you do:
-
-let d = inode.super_block().data();
-
-What you get back has the type declared in `TarFs::Data`.
-
-So all `container_of` calls are hidden away, and we store super-block
-data in `s_fs_info` and inode data by having a new struct that
-contains the data the fs wants plus a struct inode (this is done with
-generics, it's called `INodeWithData`). This is required for type
-safety: you always get the right type. If someone changes the type in
-one place but forgets to change it in another place, they'll get a
-compilation error.
-
-> Also, I see you're passing an inode to read_dir.  Why did you decide to
-> do that?  There's information in the struct file that's either necessary
-> or useful to have in the filesystem.  Maybe not in toy filesystems, but eg
-> network filesystems need user credentials to do readdir, which are stored
-> in struct file.  Block filesystems store readahead data in struct file.
-
-Because the two file systems we have don't use anything from `struct
-file` beyond the inode.
-
-Passing a `file` to `read_dir` would require us to introduce an
-unnecessary abstraction that no one uses, which we've been told not to
-do.
-
-There is no technical reason that makes it impractical though. We can
-add it when the need arises.
