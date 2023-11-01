@@ -1,57 +1,56 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22F615E8E
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 18:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD1218E0C
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 18:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0dEpA8xc"
-Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A1D1DB
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 11:02:17 -0700 (PDT)
-Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-54045f31f49so32801a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 11:02:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3YrywKWG"
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E6C3119
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 11:02:24 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7c97d5d5aso1403077b3.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 11:02:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698861736; x=1699466536; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aFozjuDAANrgZnAjuK/1IHbGUpI+cUUrllm7behZPhk=;
-        b=0dEpA8xcecw/gkP3ABzn3pEbYEx9mezcPwSzegS8uUWwdb/HEZEvNYx74QqJyz+uj3
-         hDWfVormsr8xoAaDivFIS69SmPRoEUiujcqIMjDJxbeCQWBJJci6tAOXm+9HgucDg90U
-         2kdb+/00lc3/uDnf6XCWoidH4sqtGbclEIP373rC8a0LeBEt6r/IznFe9vQHHLR1n1QY
-         +/OXL4S0GMnI7rIji/AA1aHohuIudLVPfXc42xO4PsHuTAJRbm2Bfxl1ugwhFK5udwpV
-         KkZ5PD30sCKnpQ2BUnTRoO1klpDArDEQ715fmGF1P7t3IqLr16Ya+m+cJK7T3ZgkIgCn
-         VSfg==
+        d=google.com; s=20230601; t=1698861743; x=1699466543; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i/6XZfo1xt29cN1naYzGKiL8MPrRh+1U9L/srRftA7U=;
+        b=3YrywKWGyYmXrknlbPpezb3RIrA5WjlJNYjBnWXF2JFRaQ0nYrxVVLfV8ns3xB+4Q/
+         W/sbaYfN61KLCSbTXcMUK1PiszvLX1WaaMc1iZfML8hfJ5sQMVApI0JYb7CD1N1wtO3S
+         FjA35e1fCkRxhrchRnFEayCR2n96Fekp6GEiL4znrizXjlP7hLrnauro/WJFYC3B8uj5
+         qlbypJu2fiUlP4g4+/NB6odigQ5DYdzMF89v747ojKvwLgc0BP0v5J6GQrHca8WzXPRN
+         4fhIRyguYFRJOXzoZE8aoaKAnl0qMAlzYjk5sJwKLtJ++8qok7fXBuhjSGZiWNnbnG4G
+         shzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698861736; x=1699466536;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aFozjuDAANrgZnAjuK/1IHbGUpI+cUUrllm7behZPhk=;
-        b=rDh7Cb5BSRdkkL26E1PbV+XIhpfrLnx5pSCK1rb5WGLPJgBLVFVkt00OVGlhtF042x
-         9LKrkc2zHe/L4m8oMFcY8ixniUgK3RIwIwJH8EIOlwQeIcDYdO3yzOPFNgKvcDhelU7I
-         GEds8GaFJHfci4WV2cLj/3kd9WsaAqQaNbYGyPXoFZVP7wBw08gLCCNQPdICgK7jf9wg
-         FFDvoVO6mMvJ4bw172FENReAOgDXeu0gZotK5oTAzfQAzxgUtxXMs5OUbU3OkIYQ8Hn/
-         KPBX75nO8XDZlEIBy2qaZJZIGiPanhT+E5ve1H8B4rASnB4M05hXHU1uk0+14JhVCn1O
-         1Vfw==
-X-Gm-Message-State: AOJu0Yz/1o5Q63gC/UYjI0BdXG/AQTPtsDe4/1iz0Gl+Tohk/JFIS2dd
-	+k3jv5OE8aDvRB4b/s6dcGvD49mnT2bUr/E=
-X-Google-Smtp-Source: AGHT+IFUaXhJ5qPS37yTw5LubfbKLg/KVrUKXfKWxzXfRjMdfp7/zEFUu6jARrbqXLAOZNZwtJPZFuDDVjlvOm0=
+        d=1e100.net; s=20230601; t=1698861743; x=1699466543;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i/6XZfo1xt29cN1naYzGKiL8MPrRh+1U9L/srRftA7U=;
+        b=mLWFmIMJ5NX6aqbD4lO+Cmsy9chVBALCgxSNA+nWqpWTMwc98BFT9zve04jhkuv6ec
+         O++u+8BjjIIwBv2kZVZ/1HN1bRI5JoMHHGnsVjFNNzAZE2w5oZ9afPjvfWzmEvxp0aKx
+         yYF/s8Y37WUGUKOuLuKJOHcF83aGjDSc/PLR7eO21lu5JOXgoP2rvNYzlRNBVXZ1uq8w
+         RC3OQEJnKVf1A/07POkFcrhw+TJYMyYkiSB81BvN4OM8WUxemDiMi+8fwrP9LW9q4GxW
+         PAYzhf/JErHSGcec5L/lvWMxby5z0cYZjbSUKMp3ntle/nhpr4b+/e3+jfhdyz7XYgI0
+         t+Iw==
+X-Gm-Message-State: AOJu0YxByRxYUUCera0NsMfLYjzH5EgGUuTjYy1daPAr/BIE6iUwm6gE
+	opw2idmCXG2xLL3AebEFLFtW738lJDOjop0=
+X-Google-Smtp-Source: AGHT+IGqn74LjGR/sVJ+qbXwXxOttmhUAfZDP6KBl1T1M4PcxndATg7rg5w83LFZHG39m2MvHB/X4Bepxn6n6eY=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:aa7:dbd0:0:b0:543:8f2a:eb99 with SMTP id
- v16-20020aa7dbd0000000b005438f2aeb99mr33436edt.6.1698861735786; Wed, 01 Nov
- 2023 11:02:15 -0700 (PDT)
-Date: Wed, 01 Nov 2023 18:01:30 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a25:9392:0:b0:da0:cbe9:6bac with SMTP id
+ a18-20020a259392000000b00da0cbe96bacmr335247ybm.11.1698861743329; Wed, 01 Nov
+ 2023 11:02:23 -0700 (PDT)
+Date: Wed, 01 Nov 2023 18:01:33 +0000
+In-Reply-To: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAHuSQmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2NDQwND3aLS4hLdpMy8lNQiXRMzkyQLSzNTQwsLcyWgjqTE4lTdpKLEvOQ MkB5kpUVpySAVBUWpaZkVYPuilYLcnJVia2sBwqgeLIQAAAA=
+References: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
-Subject: [PATCH RFC 00/20] Setting up Binder for the future
+Message-ID: <20231101-rust-binder-v1-3-08ba9197f637@google.com>
+Subject: [PATCH RFC 03/20] rust_binder: add threading support
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
@@ -64,389 +63,602 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@samsung.com>, Matt Gilbride <mattgilbride@google.com>, 
 	Jeffrey Vander Stoep <jeffv@google.com>, Matthew Maurer <mmaurer@google.com>, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-We're generally not proponents of rewrites (nasty uncomfortable things
-that make you late for dinner!). So why rewrite Binder?=20
+The binder driver needs to keep track of the threads that a process
+uses with the driver for several reasons:
 
-Binder has been evolving over the past 15+ years to meet the evolving
-needs of Android. Its responsibilities, expectations, and complexity
-have grown considerably during that time. While we expect Binder to
-continue to evolve along with Android, there are a number of factors
-that currently constrain our ability to develop/maintain it. Briefly
-those are:
+ 1. When replying to a transaction, it is assumed that you are replying
+    to the "currently active transaction" on the thread you made the
+    syscall from. The syscall does not provide any way to specify which
+    transaction you are replying to.
 
-1. Complexity: Binder is at the intersection of everything in Android and
-   fulfills many responsibilities beyond IPC. It has become many things
-   to many people, and due to its many features and their interactions
-   with each other, its complexity is quite high. In just 6kLOC it must
-   deliver transactions to the right threads. It must correctly parse
-   and translate the contents of transactions, which can contain several
-   objects of different types (e.g., pointers, fds) that can interact
-   with each other. It controls the size of thread pools in userspace,
-   and ensures that transactions are assigned to threads in ways that
-   avoid deadlocks where the threadpool has run out of threads. It must
-   track refcounts of objects that are shared by several processes by
-   forwarding refcount changes between the processes correctly.  It must
-   handle numerous error scenarios and it combines/nests 13 different
-   locks, 7 reference counters, and atomic variables. Finally, It must
-   do all of this as fast and efficiently as possible. Minor performance
-   regressions can cause a noticeably degraded user experience.
+ 2. When a thread is sleeping while waiting for incoming transactions,
+    the driver needs to keep track of where it can deliver a transaction
+    to.
 
-2. Things to improve: Thousand-line functions [1], error-prone error
-   handling [2], and confusing structure can occur as a code base grows
-   organically. After more than a decade of development, this codebase
-   could use an overhaul.
+ 3. The BINDER_GET_EXTENDED_ERROR ioctl gives you the last error
+    triggered by a syscall on the same thread, so it needs to keep track
+    of this value for each thread.
 
-3. Security critical: Binder is a critical part of Android's sandboxing
-   strategy. Even Android's most de-privileged sandboxes (e.g. the
-   Chrome renderer, or SW Codec) have direct access to Binder. More than
-   just about any other component, it's important that Binder provide
-   robust security, and itself be robust against security
-   vulnerabilities.
+ 4. For binder servers, the driver keeps track of whether a process has
+    enough threads in its transaction thread pool.
 
-It's #1 (high complexity) that has made continuing to evolve Binder and
-resolving #2 (tech debt) exceptionally difficult without causing #3
-(security issues). For Binder to continue to meet Android's needs, we
-need better ways to manage (and reduce!) complexity without increasing
-the risk.
+Note that not all of the above items are implemented yet. Some of them
+will appear in later patches.
 
-The biggest change is obviously the choice of programming language. We
-decided to use Rust because it directly addresses a number of the
-challenges within Binder that we have faced during the last years. It
-prevents mistakes with ref counting, locking, bounds checking, and also
-does a lot to reduce the complexity of error handling. Additionally,
-we've been able to use the more expressive type system to encode the
-ownership semantics of the various structs and pointers, which takes the
-complexity of managing object lifetimes out of the hands of the
-programmer, reducing the risk of use-after-frees and similar problems.
+In this patch, we add the structures to keep track of the threads and
+implement item 3 and 4 in the above list.
 
-Rust has many different pointer types that it uses to encode ownership
-semantics into the type system, and this is probably one of the most
-important aspects of how it helps in Binder. The Binder driver has a lot
-of different objects that have complex ownership semantics; some
-pointers own a refcount, some pointers have exclusive ownership, and
-some pointers just reference the object and it is kept alive in some
-other manner. With Rust, we can use a different pointer type for each
-kind of pointer, which enables the compiler to enforce that the
-ownership semantics are implemented correctly.
-
-Another useful feature is Rust's error handling. Rust allows for more
-simplified error handling with features such as destructors, and you get
-compilation failures if errors are not properly handled. This means that
-even though Rust requires you to spend more lines of code than C on
-things such as writing down invariants that are left implicit in C, the
-Rust driver is still slightly smaller than C binder: Rust is 5.5kLOC and
-C is 5.8kLOC. (These numbers are excluding blank lines, comments,
-binderfs, and any debugging facilities in C that are not yet implemented
-in the Rust driver. The numbers include abstractions in rust/kernel/
-that are unlikely to be used by other drivers than Binder.)
-
-Although this rewrite completely rethinks how the code is structured and
-how assumptions are enforced, we do not fundamentally change *how* the
-driver does the things it does. A lot of careful thought has gone into
-the existing design. The rewrite is aimed rather at improving code
-health, structure, readability, robustness, security, maintainability
-and extensibility. We also include more inline documentation, and
-improve how assumptions in the code are enforced. Furthermore, all
-unsafe code is annotated with a SAFETY comment that explains why it is
-correct.
-
-We have left the binderfs filesystem component in C. Rewriting it in
-Rust would be a large amount of work and requires a lot of bindings to
-the file system interfaces. Binderfs has not historically had the same
-challenges with security and complexity, so rewriting binderfs seems to
-have lower value than the rest of Binder.
-
-Correctness and feature parity
-------------------------------
-
-Rust binder passes all tests that validate the correctness of Binder in
-the Android Open Source Project. We can boot a device, and run a variety
-of apps and functionality without issues. We have performed this both on
-the Cuttlefish Android emulator device, and on a Pixel 6 Pro.
-
-As for feature parity, Rust binder currently implements all features
-that C binder supports, with the exception of some debugging facilities.
-The missing debugging facilities will be added before we submit the Rust
-implementation upstream.
-
-Performance numbers
--------------------
-
-We have tested the driver using two different benchmarks:
-binderThroughputTest [3] and binderRpcBenchmark [4]. These benchmarks
-show that the Rust implementation has very promising performance
-characteristics. That said, these are only microbenchmarks with very
-simple workloads, and there is still a lot of work to be done before we
-can truly understand how the drivers compare in the real world.
-
-binderThroughputTest:
-Some visualizations of the benchmarking results are available at the
-following links:
-
-Average latency with no payload: https://raw.githubusercontent.com/Darksonn=
-/linux/rust-binder-rfc/img-for-rust-binder-rfc/Average%20latency%20with%20n=
-o%20payload.png
-Average latency with 4k payload: https://raw.githubusercontent.com/Darksonn=
-/linux/rust-binder-rfc/img-for-rust-binder-rfc/Average%20latency%20with%204=
-k%20payload.png
-99 percentile latency with no payload: https://raw.githubusercontent.com/Da=
-rksonn/linux/rust-binder-rfc/img-for-rust-binder-rfc/99%20percentile%20late=
-ncy%20with%20no%20payload.png
-99 percentile latency with 4k payload: https://raw.githubusercontent.com/Da=
-rksonn/linux/rust-binder-rfc/img-for-rust-binder-rfc/99%20percentile%20late=
-ncy%20with%204k%20payload.png
-
-Raw data with empty payloads:
-    +-----------+----------+---------+----------+---------+----------+-----=
------+
-    | c/s pairs | Rust avg |  C avg  | Rust 99p |  C 99p  | Avg frac | 99p =
-frac |
-    +-----------+----------+---------+----------+---------+----------+-----=
------+
-    |         1 |   17.517 |  17.278 |   31.169 |  34.464 |   +1.38% |   -9=
-.56% |
-    |         2 |   17.405 |  17.425 |   36.051 |  36.825 |   -0.11% |   -2=
-.10% |
-    |         4 |   27.623 |  27.524 |   46.305 |  45.776 |   +0.36% |   +1=
-.16% |
-    |         8 |   25.152 |  25.461 |   61.442 |  61.279 |   -1.21% |   +0=
-.27% |
-    |        16 |   50.251 |  49.987 |  120.158 | 121.297 |   +0.53% |   -0=
-.94% |
-    |        32 |   99.439 | 100.537 |  238.891 | 238.404 |   -1.09% |   +0=
-.20% |
-    +-----------+----------+---------+----------+---------+----------+-----=
------+
-Raw data with 4k payloads:
-    +-----------+----------+---------+----------+---------+----------+-----=
------+
-    | c/s pairs | Rust avg |  C avg  | Rust 99p |  C 99p  | Avg frac | 99p =
-frac |
-    +-----------+----------+---------+----------+---------+----------+-----=
------+
-    |         1 |   19.422 |  19.811 |   30.233 |  31.616 |   -1.96% |   -4=
-.37% |
-    |         2 |   18.393 |  18.277 |   34.790 |  35.319 |   +0.63% |   -1=
-.50% |
-    |         4 |   29.350 |  29.283 |   48.544 |  47.730 |   +0.23% |   +1=
-.71% |
-    |         8 |   25.075 |  25.283 |   66.040 |  65.226 |   -0.82% |   +1=
-.25% |
-    |        16 |   58.608 |  58.949 |  156.657 | 159.709 |   -0.58% |   -1=
-.91% |
-    |        32 |  127.404 | 129.459 |  321.249 | 326.945 |   -1.59% |   -1=
-.74% |
-    +-----------+----------+---------+----------+---------+----------+-----=
------+
-These tables depict roundtrip latencies of transactions as measured by
-binderThroughputTest. Each measurement is given in microseconds. Each
-row has a sample size of 10 million iterations. Negative percentages are
-better for Rust.
-
-We've found that Rust binder has similar performance to C binder on the
-binderThroughputTest benchmark. The average latencies fluctuate between
--1.96% and +1.38%.
-
-binderRpcBenchmark:
-    +---------------------+-----------+---------+----------+---------+-----=
-------+----------+
-    |      Benchmark      | Time Rust | Time C  | CPU Rust |   CPU C | Time=
- frac | CPU frac |
-    +---------------------+-----------+---------+----------+---------+-----=
-------+----------+
-    | pingTransaction     |    21.595 |  22.167 |    9.625 |   9.692 |    -=
-2.58% |   -0.69% |
-    | repeatBinder        |    33.982 |  34.648 |   16.252 |  16.681 |    -=
-1.92% |   -2.57% |
-    | throughput/64       |    26.774 |  26.587 |   11.995 |  11.823 |    +=
-0.70% |   +1.45% |
-    | throughput/1024     |    33.679 |  33.867 |   15.140 |  15.137 |    -=
-0.56% |   +0.02% |
-    | throughput/2048     |    39.744 |  40.092 |   17.898 |  17.926 |    -=
-0.87% |   -0.16% |
-    | throughput/4096     |    52.585 |  53.457 |   23.788 |  24.067 |    -=
-1.63% |   -1.16% |
-    | throughput/8182     |    76.352 |  77.148 |   35.135 |  35.228 |    -=
-1.03% |   -0.26% |
-    | throughput/16364    |   121.875 | 122.877 |   57.342 |  57.614 |    -=
-0.82% |   -0.47% |
-    | throughput/32728    |   212.380 | 212.765 |  101.838 | 101.589 |    -=
-0.18% |   +0.25% |
-    | throughput/65535    |   442.983 | 421.935 |  222.642 | 212.494 |    +=
-4.99% |   +4.78% |
-    | throughput/65536    |   431.250 | 416.916 |  216.634 | 210.160 |    +=
-3.44% |   +3.08% |
-    | throughput/65537    |   512.902 | 492.272 |  242.472 | 232.786 |    +=
-4.19% |   +4.16% |
-    | repeatTwoPageString |   456.546 | 445.398 |  222.921 | 219.821 |    +=
-2.50% |   +1.41% |
-    +---------------------+-----------+---------+----------+---------+-----=
-------+----------+
-This table depicts wall clock time and cpu time measurements over
-various test cases. Each measurement is given in microseconds. The
-throughput benchmarks correspond to the
-BM_throughputForTransportAndBytes test case, and the number is the size
-of the payload. Negative percentages are better for Rust.
-
-From the above, we find that Rust binder is competitive for all test
-cases except for those with very large transaction sizes. However, this
-is a very rare case in practice [5] and we've been able to fix all other
-performance issues that we've run into, so there's no reason to think
-that we won't also be able to fix this issue. We did not fix it for this
-RFC because we prioritized getting the RFC out to provide context for
-the upcoming discussion at Linux Plumbers Conference [6].
-
-We ran all of the benchmarks with cross-language LTO enabled, so that C
-code can be inlined into Rust code. We get similar results on the
-Cuttlefish Android emulator (which has an x86 architecture).
-
-The Binder driver is very performance critical, and although our initial
-numbers are promising, we must gain a better understanding of how it
-performs in realistic workloads and not just in simple benchmarks. What
-we ultimately care about is the performance impact that it has on the
-whole system. Much work remains to be done on this front.
-
-Dependencies
-------------
-
-When implementing kernel drivers in Rust, you must write bindings for
-each subsystem that we need to call into from Rust. Binder requires
-quite a few of them. We have not included them in this patch series, but
-you can view them at the following branch:
-
-https://github.com/Darksonn/linux/commits/rust-binder-rfc
-
-The branch is based on top of commit 639409a4ac8e ("Merge tag
-'wq-for-6.7-rust-bindings' of git://git.kernel.org/pub/scm/linux/kernel/git=
-/tj/wq"),
-which is available in mainline. I did not base it on a tag, since there
-is not yet any tag that includes the Rust workqueue abstractions.
-
-This RFC uses the kernel's red-black tree for key/value mappings, but we
-are aware that the red-black tree is deprecated. We did this to make the
-performance comparison more fair, since C binder also uses rbtree for
-this. We intend to replace these with XArrays instead. That said, we
-don't think that XArray is a good fit for the range allocator, and we
-propose to continue using the red-black tree for the range allocator.
-(see patch 6)
-
-Thank you
----------
-
- * Wedson Almeida Filho who wrote the first version of the driver and
-   started the project.
-
- * Miguel Ojeda for his support, and leading the Rust-for-Linux effort,
-   and helping us navigate the upstream community.
-
- * Matt Gilbride for his work on the range allocator and oneway spam
-   detection.
-
- * Carlos Llamas for patiently answering all my questions to help me
-   understand the C driver, and co-presenting with me at LPC and
-   Kangrejos.
-
- * Greg KH for reviews and guidance on upstream development.
-
- * Todd Kjos for reviewing the cover letter, answering questions, and
-   pointers on benchmarking the driver.
-
- * Matthew Maurer for his mentorship and help with navigating the build
-   system, including getting LTO working.
-
- * John Stultz for his help with debugging a performance issue.
-
- * Andreas Hindborg for his help with getting LTO working.
-
- * Benno Lossin, Gary Guo, Andreas Hindborg, Miguel Ojeda, Wedson
-   Almeida Filho, Martin Rodriguez Reboredo, Bj=C3=B6rn Roy Baron, Boqun
-   Feng, Tejun Heo, Nathan Huckleberry for reviewing various bindings
-   needed by Binder.
-
-Thank you,
-Alice
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/drivers/android/binder.c?h=3Dv6.5#n2896
-[2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/drivers/android/binder.c?h=3Dv6.5#n3658
-[3]: https://android-review.googlesource.com/c/platform/frameworks/native/+=
-/2680818
-[4]: https://cs.android.com/android/platform/superproject/main/+/main:frame=
-works/native/libs/binder/tests/binderRpcBenchmark.cpp
-[5]: https://cs.android.com/android/_/android/platform/frameworks/native/+/=
-b85e7f7dbd0463d2ba78d53d50e64489fcb01ec4:libs/binder/tests/binderRpcBenchma=
-rk.cpp;l=3D206-217;bpv=3D1;bpt=3D0
-[6]: https://lpc.events/event/17/contributions/1427/
-
+Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Co-developed-by: Matt Gilbride <mattgilbride@google.com>
+Signed-off-by: Matt Gilbride <mattgilbride@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (15):
-      rust_binder: add binderfs support to Rust binder
-      rust_binder: add threading support
-      rust_binder: add work lists
-      rust_binder: add nodes and context managers
-      rust_binder: add oneway transactions
-      rust_binder: serialize oneway transactions
-      rust_binder: send nodes in transactions
-      rust_binder: add BINDER_TYPE_PTR support
-      rust_binder: add BINDER_TYPE_FD support
-      rust_binder: add BINDER_TYPE_FDA support
-      rust_binder: add process freezing
-      rust_binder: add TF_UPDATE_TXN support
-      rust_binder: add binder_logs/state
-      rust_binder: add vma shrinker
-      binder: delete the C implementation
+ drivers/android/defs.rs        |  36 ++++++-
+ drivers/android/error.rs       |  52 +++++++++++
+ drivers/android/process.rs     | 108 +++++++++++++++++++--
+ drivers/android/rust_binder.rs |   2 +
+ drivers/android/thread.rs      | 206 +++++++++++++++++++++++++++++++++++++++++
+ scripts/Makefile.build         |   2 +-
+ 6 files changed, 396 insertions(+), 10 deletions(-)
 
-Matt Gilbride (1):
-      rust_binder: add oneway spam detection
+diff --git a/drivers/android/defs.rs b/drivers/android/defs.rs
+index 8fdcb856ccad..86173add2616 100644
+--- a/drivers/android/defs.rs
++++ b/drivers/android/defs.rs
+@@ -2,24 +2,50 @@
+ 
+ use core::ops::{Deref, DerefMut};
+ use kernel::{
+-    bindings,
++    bindings::{self, *},
+     io_buffer::{ReadableFromBytes, WritableToBytes},
+ };
+ 
++macro_rules! pub_no_prefix {
++    ($prefix:ident, $($newname:ident),+) => {
++        $(pub(crate) const $newname: u32 = kernel::macros::concat_idents!($prefix, $newname);)+
++    };
++}
++
++pub_no_prefix!(
++    binder_driver_return_protocol_,
++    BR_DEAD_REPLY,
++    BR_FAILED_REPLY,
++    BR_NOOP,
++    BR_SPAWN_LOOPER,
++    BR_TRANSACTION_COMPLETE,
++    BR_OK
++);
++
++pub_no_prefix!(
++    binder_driver_command_protocol_,
++    BC_ENTER_LOOPER,
++    BC_EXIT_LOOPER,
++    BC_REGISTER_LOOPER
++);
++
+ macro_rules! decl_wrapper {
+     ($newname:ident, $wrapped:ty) => {
+         #[derive(Copy, Clone, Default)]
+         #[repr(transparent)]
+         pub(crate) struct $newname($wrapped);
++
+         // SAFETY: This macro is only used with types where this is ok.
+         unsafe impl ReadableFromBytes for $newname {}
+         unsafe impl WritableToBytes for $newname {}
++
+         impl Deref for $newname {
+             type Target = $wrapped;
+             fn deref(&self) -> &Self::Target {
+                 &self.0
+             }
+         }
++
+         impl DerefMut for $newname {
+             fn deref_mut(&mut self) -> &mut Self::Target {
+                 &mut self.0
+@@ -28,7 +54,9 @@ fn deref_mut(&mut self) -> &mut Self::Target {
+     };
+ }
+ 
++decl_wrapper!(BinderWriteRead, bindings::binder_write_read);
+ decl_wrapper!(BinderVersion, bindings::binder_version);
++decl_wrapper!(ExtendedError, bindings::binder_extended_error);
+ 
+ impl BinderVersion {
+     pub(crate) fn current() -> Self {
+@@ -37,3 +65,9 @@ pub(crate) fn current() -> Self {
+         })
+     }
+ }
++
++impl ExtendedError {
++    pub(crate) fn new(id: u32, command: u32, param: i32) -> Self {
++        Self(bindings::binder_extended_error { id, command, param })
++    }
++}
+diff --git a/drivers/android/error.rs b/drivers/android/error.rs
+new file mode 100644
+index 000000000000..41fc4347ab55
+--- /dev/null
++++ b/drivers/android/error.rs
+@@ -0,0 +1,52 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use kernel::prelude::*;
++
++use crate::defs::*;
++
++/// An error that will be returned to userspace via the `BINDER_WRITE_READ` ioctl rather than via
++/// errno.
++pub(crate) struct BinderError {
++    pub(crate) reply: u32,
++    source: Option<Error>,
++}
++
++/// Convert an errno into a `BinderError` and store the errno used to construct it. The errno
++/// should be stored as the thread's extended error when given to userspace.
++impl From<Error> for BinderError {
++    fn from(source: Error) -> Self {
++        Self {
++            reply: BR_FAILED_REPLY,
++            source: Some(source),
++        }
++    }
++}
++
++impl From<core::alloc::AllocError> for BinderError {
++    fn from(_: core::alloc::AllocError) -> Self {
++        Self {
++            reply: BR_FAILED_REPLY,
++            source: Some(ENOMEM),
++        }
++    }
++}
++
++impl core::fmt::Debug for BinderError {
++    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
++        match self.reply {
++            BR_FAILED_REPLY => match self.source.as_ref() {
++                Some(source) => f
++                    .debug_struct("BR_FAILED_REPLY")
++                    .field("source", source)
++                    .finish(),
++                None => f.pad("BR_FAILED_REPLY"),
++            },
++            BR_DEAD_REPLY => f.pad("BR_DEAD_REPLY"),
++            BR_TRANSACTION_COMPLETE => f.pad("BR_TRANSACTION_COMPLETE"),
++            _ => f
++                .debug_struct("BinderError")
++                .field("reply", &self.reply)
++                .finish(),
++        }
++    }
++}
+diff --git a/drivers/android/process.rs b/drivers/android/process.rs
+index 2f16e4cedbf1..47d074dd8465 100644
+--- a/drivers/android/process.rs
++++ b/drivers/android/process.rs
+@@ -13,11 +13,12 @@
+ use kernel::{
+     bindings,
+     cred::Credential,
+-    file::{File, PollTable},
+-    io_buffer::IoBufferWriter,
++    file::{self, File, PollTable},
++    io_buffer::{IoBufferReader, IoBufferWriter},
+     list::{HasListLinks, ListArc, ListArcSafe, ListItem, ListLinks},
+     mm,
+     prelude::*,
++    rbtree::RBTree,
+     sync::{Arc, ArcBorrow, SpinLock},
+     task::Task,
+     types::ARef,
+@@ -25,7 +26,9 @@
+     workqueue::{self, Work},
+ };
+ 
+-use crate::{context::Context, defs::*};
++use crate::{context::Context, defs::*, thread::Thread};
++
++use core::mem::take;
+ 
+ const PROC_DEFER_FLUSH: u8 = 1;
+ const PROC_DEFER_RELEASE: u8 = 2;
+@@ -33,6 +36,14 @@
+ /// The fields of `Process` protected by the spinlock.
+ pub(crate) struct ProcessInner {
+     is_dead: bool,
++    threads: RBTree<i32, Arc<Thread>>,
++
++    /// The number of requested threads that haven't registered yet.
++    requested_thread_count: u32,
++    /// The maximum number of threads used by the process thread pool.
++    max_threads: u32,
++    /// The number of threads the started and registered with the thread pool.
++    started_thread_count: u32,
+ 
+     /// Bitmap of deferred work to do.
+     defer_work: u8,
+@@ -42,9 +53,23 @@ impl ProcessInner {
+     fn new() -> Self {
+         Self {
+             is_dead: false,
++            threads: RBTree::new(),
++            requested_thread_count: 0,
++            max_threads: 0,
++            started_thread_count: 0,
+             defer_work: 0,
+         }
+     }
++
++    fn register_thread(&mut self) -> bool {
++        if self.requested_thread_count == 0 {
++            return false;
++        }
++
++        self.requested_thread_count -= 1;
++        self.started_thread_count += 1;
++        true
++    }
+ }
+ 
+ /// A process using binder.
+@@ -127,10 +152,56 @@ fn new(ctx: Arc<Context>, cred: ARef<Credential>) -> Result<Arc<Self>> {
+         Ok(process)
+     }
+ 
++    fn get_thread(self: ArcBorrow<'_, Self>, id: i32) -> Result<Arc<Thread>> {
++        {
++            let inner = self.inner.lock();
++            if let Some(thread) = inner.threads.get(&id) {
++                return Ok(thread.clone());
++            }
++        }
++
++        // Allocate a new `Thread` without holding any locks.
++        let ta = Thread::new(id, self.into())?;
++        let node = RBTree::try_allocate_node(id, ta.clone())?;
++
++        let mut inner = self.inner.lock();
++
++        // Recheck. It's possible the thread was created while we were not holding the lock.
++        if let Some(thread) = inner.threads.get(&id) {
++            return Ok(thread.clone());
++        }
++
++        inner.threads.insert(node);
++        Ok(ta)
++    }
++
+     fn version(&self, data: UserSlicePtr) -> Result {
+         data.writer().write(&BinderVersion::current())
+     }
+ 
++    pub(crate) fn register_thread(&self) -> bool {
++        self.inner.lock().register_thread()
++    }
++
++    fn remove_thread(&self, thread: Arc<Thread>) {
++        self.inner.lock().threads.remove(&thread.id);
++        thread.release();
++    }
++
++    fn set_max_threads(&self, max: u32) {
++        self.inner.lock().max_threads = max;
++    }
++
++    pub(crate) fn needs_thread(&self) -> bool {
++        let mut inner = self.inner.lock();
++        let ret =
++            inner.requested_thread_count == 0 && inner.started_thread_count < inner.max_threads;
++        if ret {
++            inner.requested_thread_count += 1
++        }
++        ret
++    }
++
+     fn deferred_flush(&self) {
+         // NOOP for now.
+     }
+@@ -139,6 +210,17 @@ fn deferred_release(self: Arc<Self>) {
+         self.inner.lock().is_dead = true;
+ 
+         self.ctx.deregister_process(&self);
++
++        // Move the threads out of `inner` so that we can iterate over them without holding the
++        // lock.
++        let mut inner = self.inner.lock();
++        let threads = take(&mut inner.threads);
++        drop(inner);
++
++        // Release all threads.
++        for thread in threads.values() {
++            thread.release();
++        }
+     }
+ 
+     pub(crate) fn flush(this: ArcBorrow<'_, Process>) -> Result {
+@@ -161,22 +243,32 @@ pub(crate) fn flush(this: ArcBorrow<'_, Process>) -> Result {
+ /// The ioctl handler.
+ impl Process {
+     fn write(
+-        _this: ArcBorrow<'_, Process>,
++        this: ArcBorrow<'_, Process>,
+         _file: &File,
+-        _cmd: u32,
+-        _reader: &mut UserSlicePtrReader,
++        cmd: u32,
++        reader: &mut UserSlicePtrReader,
+     ) -> Result<i32> {
+-        Err(EINVAL)
++        let thread = this.get_thread(kernel::current!().pid())?;
++        match cmd {
++            bindings::BINDER_SET_MAX_THREADS => this.set_max_threads(reader.read()?),
++            bindings::BINDER_THREAD_EXIT => this.remove_thread(thread),
++            _ => return Err(EINVAL),
++        }
++        Ok(0)
+     }
+ 
+     fn read_write(
+         this: ArcBorrow<'_, Process>,
+-        _file: &File,
++        file: &File,
+         cmd: u32,
+         data: UserSlicePtr,
+     ) -> Result<i32> {
++        let thread = this.get_thread(kernel::current!().pid())?;
++        let blocking = (file.flags() & file::flags::O_NONBLOCK) == 0;
+         match cmd {
++            bindings::BINDER_WRITE_READ => thread.write_read(data, blocking)?,
+             bindings::BINDER_VERSION => this.version(data)?,
++            bindings::BINDER_GET_EXTENDED_ERROR => thread.get_extended_error(data)?,
+             _ => return Err(EINVAL),
+         }
+         Ok(0)
+diff --git a/drivers/android/rust_binder.rs b/drivers/android/rust_binder.rs
+index 6de2f40846fb..64fd24ea8be1 100644
+--- a/drivers/android/rust_binder.rs
++++ b/drivers/android/rust_binder.rs
+@@ -14,7 +14,9 @@
+ 
+ mod context;
+ mod defs;
++mod error;
+ mod process;
++mod thread;
+ 
+ module! {
+     type: BinderModule,
+diff --git a/drivers/android/thread.rs b/drivers/android/thread.rs
+new file mode 100644
+index 000000000000..593c8e4f184e
+--- /dev/null
++++ b/drivers/android/thread.rs
+@@ -0,0 +1,206 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! This module defines the `Thread` type, which represents a userspace thread that is using
++//! binder.
++//!
++//! The `Process` object stores all of the threads in an rb tree.
++
++use kernel::{
++    bindings,
++    io_buffer::{IoBufferReader, IoBufferWriter},
++    prelude::*,
++    sync::{Arc, SpinLock},
++    user_ptr::UserSlicePtr,
++};
++
++use crate::{defs::*, process::Process};
++
++use core::mem::size_of;
++
++/// The fields of `Thread` protected by the spinlock.
++struct InnerThread {
++    /// Determines the looper state of the thread. It is a bit-wise combination of the constants
++    /// prefixed with `LOOPER_`.
++    looper_flags: u32,
++
++    /// Determines if thread is dead.
++    is_dead: bool,
++
++    /// Extended error information for this thread.
++    extended_error: ExtendedError,
++}
++
++const LOOPER_REGISTERED: u32 = 0x01;
++const LOOPER_ENTERED: u32 = 0x02;
++const LOOPER_EXITED: u32 = 0x04;
++const LOOPER_INVALID: u32 = 0x08;
++
++impl InnerThread {
++    fn new() -> Self {
++        use core::sync::atomic::{AtomicU32, Ordering};
++
++        fn next_err_id() -> u32 {
++            static EE_ID: AtomicU32 = AtomicU32::new(0);
++            EE_ID.fetch_add(1, Ordering::Relaxed)
++        }
++
++        Self {
++            looper_flags: 0,
++            is_dead: false,
++            extended_error: ExtendedError::new(next_err_id(), BR_OK, 0),
++        }
++    }
++
++    fn looper_enter(&mut self) {
++        self.looper_flags |= LOOPER_ENTERED;
++        if self.looper_flags & LOOPER_REGISTERED != 0 {
++            self.looper_flags |= LOOPER_INVALID;
++        }
++    }
++
++    fn looper_register(&mut self, valid: bool) {
++        self.looper_flags |= LOOPER_REGISTERED;
++        if !valid || self.looper_flags & LOOPER_ENTERED != 0 {
++            self.looper_flags |= LOOPER_INVALID;
++        }
++    }
++
++    fn looper_exit(&mut self) {
++        self.looper_flags |= LOOPER_EXITED;
++    }
++
++    /// Determines whether the thread is part of a pool, i.e., if it is a looper.
++    fn is_looper(&self) -> bool {
++        self.looper_flags & (LOOPER_ENTERED | LOOPER_REGISTERED) != 0
++    }
++}
++
++/// This represents a thread that's used with binder.
++#[pin_data]
++pub(crate) struct Thread {
++    pub(crate) id: i32,
++    pub(crate) process: Arc<Process>,
++    #[pin]
++    inner: SpinLock<InnerThread>,
++}
++
++impl Thread {
++    pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
++        Arc::pin_init(pin_init!(Thread {
++            id,
++            process,
++            inner <- kernel::new_spinlock!(InnerThread::new(), "Thread::inner"),
++        }))
++    }
++
++    pub(crate) fn get_extended_error(&self, data: UserSlicePtr) -> Result {
++        let mut writer = data.writer();
++        let ee = self.inner.lock().extended_error;
++        writer.write(&ee)?;
++        Ok(())
++    }
++
++    fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
++        let write_start = req.write_buffer.wrapping_add(req.write_consumed);
++        let write_len = req.write_size - req.write_consumed;
++        let mut reader = UserSlicePtr::new(write_start as _, write_len as _).reader();
++
++        while reader.len() >= size_of::<u32>() {
++            let before = reader.len();
++            let cmd = reader.read::<u32>()?;
++            match cmd {
++                BC_REGISTER_LOOPER => {
++                    let valid = self.process.register_thread();
++                    self.inner.lock().looper_register(valid);
++                }
++                BC_ENTER_LOOPER => self.inner.lock().looper_enter(),
++                BC_EXIT_LOOPER => self.inner.lock().looper_exit(),
++
++                // Fail if given an unknown error code.
++                // BC_ATTEMPT_ACQUIRE and BC_ACQUIRE_RESULT are no longer supported.
++                _ => return Err(EINVAL),
++            }
++            // Update the number of write bytes consumed.
++            req.write_consumed += (before - reader.len()) as u64;
++        }
++
++        Ok(())
++    }
++
++    fn read(self: &Arc<Self>, req: &mut BinderWriteRead, _wait: bool) -> Result {
++        let read_start = req.read_buffer.wrapping_add(req.read_consumed);
++        let read_len = req.read_size - req.read_consumed;
++        let mut writer = UserSlicePtr::new(read_start as _, read_len as _).writer();
++        let in_pool = self.inner.lock().is_looper();
++
++        // Reserve some room at the beginning of the read buffer so that we can send a
++        // BR_SPAWN_LOOPER if we need to.
++        let mut has_noop_placeholder = false;
++        if req.read_consumed == 0 {
++            if let Err(err) = writer.write(&BR_NOOP) {
++                pr_warn!("Failure when writing BR_NOOP at beginning of buffer.");
++                return Err(err);
++            }
++            has_noop_placeholder = true;
++        }
++
++        // Loop doing work while there is room in the buffer.
++        #[allow(clippy::never_loop)]
++        while writer.len() >= size_of::<bindings::binder_transaction_data_secctx>() + 4 {
++            // There is enough space in the output buffer to process another work item.
++            //
++            // However, we have not yet added work items to the driver, so we immediately break
++            // from the loop.
++            break;
++        }
++
++        req.read_consumed += read_len - writer.len() as u64;
++
++        // Write BR_SPAWN_LOOPER if the process needs more threads for its pool.
++        if has_noop_placeholder && in_pool && self.process.needs_thread() {
++            let mut writer = UserSlicePtr::new(req.read_buffer as _, req.read_size as _).writer();
++            writer.write(&BR_SPAWN_LOOPER)?;
++        }
++        Ok(())
++    }
++
++    pub(crate) fn write_read(self: &Arc<Self>, data: UserSlicePtr, wait: bool) -> Result {
++        let (mut reader, mut writer) = data.reader_writer();
++        let mut req = reader.read::<BinderWriteRead>()?;
++
++        // Go through the write buffer.
++        if req.write_size > 0 {
++            if let Err(err) = self.write(&mut req) {
++                pr_warn!(
++                    "Write failure {:?} in pid:{}",
++                    err,
++                    self.process.task.pid_in_current_ns()
++                );
++                req.read_consumed = 0;
++                writer.write(&req)?;
++                return Err(err);
++            }
++        }
++
++        // Go through the work queue.
++        let mut ret = Ok(());
++        if req.read_size > 0 {
++            ret = self.read(&mut req, wait);
++            if ret.is_err() && ret != Err(EINTR) {
++                pr_warn!(
++                    "Read failure {:?} in pid:{}",
++                    ret,
++                    self.process.task.pid_in_current_ns()
++                );
++            }
++        }
++
++        // Write the request back so that the consumed fields are visible to the caller.
++        writer.write(&req)?;
++        ret
++    }
++
++    pub(crate) fn release(self: &Arc<Self>) {
++        self.inner.lock().is_dead = true;
++    }
++}
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index f78d2e75a795..b388f3d75d49 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -262,7 +262,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
+ # Compile Rust sources (.rs)
+ # ---------------------------------------------------------------------------
+ 
+-rust_allowed_features := const_maybe_uninit_zeroed,new_uninit,offset_of
++rust_allowed_features := const_maybe_uninit_zeroed,new_uninit,offset_of,allocator_api
+ 
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
 
-Wedson Almeida Filho (4):
-      rust_binder: define a Rust binder driver
-      rust_binder: add epoll support
-      rust_binder: add non-oneway transactions
-      rust_binder: add death notifications
-
- drivers/android/Kconfig                         |   19 +-
- drivers/android/Makefile                        |    2 +
- drivers/android/allocation.rs                   |  541 ++
- drivers/android/binder.c                        | 6630 -------------------=
-----
- drivers/android/binder_alloc.c                  | 1284 -----
- drivers/android/context.rs                      |  225 +
- drivers/android/defs.rs                         |  171 +
- drivers/android/error.rs                        |   94 +
- drivers/android/node.rs                         |  761 +++
- drivers/android/process.rs                      | 1412 +++++
- drivers/android/range_alloc.rs                  |  442 ++
- drivers/android/rust_binder.rs                  |  389 ++
- drivers/android/{binderfs.c =3D> rust_binderfs.c} |  135 +-
- drivers/android/thread.rs                       | 1552 ++++++
- drivers/android/transaction.rs                  |  428 ++
- include/linux/rust_binder.h                     |   16 +
- include/uapi/linux/android/binder.h             |   30 +-
- include/uapi/linux/magic.h                      |    1 +
- rust/bindings/bindings_helper.h                 |    6 +
- rust/helpers.c                                  |   48 +
- rust/kernel/file.rs                             |    2 +-
- rust/kernel/lib.rs                              |    9 +
- rust/kernel/page_range.rs                       |  715 +++
- rust/kernel/security.rs                         |   33 +
- rust/kernel/seq_file.rs                         |   47 +
- rust/kernel/sync/condvar.rs                     |   10 +
- rust/kernel/sync/lock.rs                        |   24 +
- rust/kernel/sync/lock/mutex.rs                  |   10 +
- rust/kernel/sync/lock/spinlock.rs               |   10 +
- rust/kernel/task.rs                             |    2 +-
- scripts/Makefile.build                          |    2 +-
- 31 files changed, 7061 insertions(+), 7989 deletions(-)
----
-base-commit: b4be1bd6c44225bf7276a4666fd30b8da9cba517
-change-id: 20231101-rust-binder-464b89651887
-
-Best regards,
---=20
-Alice Ryhl <aliceryhl@google.com>
+-- 
+2.42.0.820.g83a721a137-goog
 
