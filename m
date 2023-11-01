@@ -1,78 +1,76 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8875D101EC
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 10:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869F8134CD
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 15:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n4wuCNA3"
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407B3F3
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 03:20:34 -0700 (PDT)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-49d9ef118a5so2733616e0c.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 03:20:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vb/Orkog"
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3504137
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 08:05:04 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5b31c5143a0so24239617b3.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 08:05:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698834033; x=1699438833; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Oz6VSHMner62jDzigXvDmGikA8eTXSz2/q7goADHTxs=;
-        b=n4wuCNA3a+iOpCV0KjLF6K24a4NscTfTlnZ4iGuEV8HiVLWk7xMuZD1wrr+Uh4WpKz
-         JCEyaQ+7YxXQhOslBnf84hrYVTg7TsmEqNvCcFnAJpvNiAgwJ0jAjKaZwJwC18WruWvE
-         5prI6t+Yr2YnAsFUjk90NN4WLG7fb9jB1d/6Vps8/3SF/qv3XGThYmr2GXDzNpyIWD0q
-         lU83sZLYbbqnPwQl/r6vQQkceePSyJJ1Yyd8GeCb3R27AsAj0DkosyM7G1pCg3p3e0Og
-         Msdttte5m+ReBW/AzcoNG/B2oH/953S4i4DTTe7wpE3MJuU4K/WBjsat9s3rngaweJOJ
-         i3UA==
+        d=linaro.org; s=google; t=1698851104; x=1699455904; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=U5JMfft7VRMY1/SH83cz0n5I8SgamFYvIt7Euj5oTok=;
+        b=vb/OrkogrFazXb8du6WiG8E0f05StPpyjqDevqHkl+dhnC/v6aI9MM4ptn6M1VnKAb
+         ol0SrssmCWlsXvehDeI63AvfYVcf4QLzaRKlCO0IzJ7Zdh/dyOWrFsmWHUGoXOeEB/FV
+         bnN2T/nWDWzfF6JobVqOAdlWcEyzqYT08iZoKvMpSMrc6DmAn7V5EaD7Z1/h0bmDWQnF
+         IoP/1yPJ6rFtuG/HxvixktkQfGQAElU2G86HHBPKIi77nv2hzvsDV4IYfqvYRZcflFVa
+         AzgrfN/6lkPCG4y6JB36rBRVjLwP6i5fqoR4KhBESu5h2rJa7rFDdr04K3mVFG3hWXVT
+         AEeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698834033; x=1699438833;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Oz6VSHMner62jDzigXvDmGikA8eTXSz2/q7goADHTxs=;
-        b=ftoxoeWGOHclDcu9OWptpNZLo2pRM1DGhlBvrdFF7+NMgcq451bldvUHjyIFaCU8fI
-         mrhdEg+aBB1yF8oNoFcyGONF0xz1ZwhgrH7Cptirb0Ui5h3aJ6IN/la5dkkaUscrG3Hk
-         VWo+G28h/B6zBi0ltpMZF9owth3Hh7bMQe//wWZa26fcB1uXaIhCK9FxYmSKiPsHcvYU
-         +TW66dabO0SsuuYnyhiQ7bU1IIePcfmy6AGz/8NBqrclCASu2YY+XuubOhXaez/EFNm7
-         j2mSL87Nb2SogvQpRC+IqMkkpGnIwHghWd2FXkkOEpq/+Wl/5Iob7z5WWatb6fKRL4qq
-         VgBw==
-X-Gm-Message-State: AOJu0Yz6ofN5Sfd276wF9mMBPCY6mAAFFFFiF9fSeJR29i7J78fhIZyQ
-	Atjuk4BgIVRrXEdI99hG9rWxp1Exm4D8v+nyskY23g==
-X-Google-Smtp-Source: AGHT+IHdsVmFFMJ9OQqgYB/RwOFuXkwU/9iXlbSEOFRRZoUtRdN6idmJL2hW80l6eDsFQldYkXn4iC8CPPcau9py4/0=
-X-Received: by 2002:a67:c38f:0:b0:452:4e56:5e19 with SMTP id
- s15-20020a67c38f000000b004524e565e19mr9811075vsj.13.1698834033149; Wed, 01
- Nov 2023 03:20:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698851104; x=1699455904;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U5JMfft7VRMY1/SH83cz0n5I8SgamFYvIt7Euj5oTok=;
+        b=rOOXm2zht2dfExc9FBh7UaDx53EAZyL7BfEKlXM35t1TOQJyJkrJW2VcY5iho7RNZM
+         kCmZW7qSNSST/tfGhibYdoIMM7hFQa+AoWWqYoGTYGVs1q/JxV6v6FHMGpV32KIxqjeZ
+         YTOu17XU/ectQqLwbs8ePMNsXMrLZxREsEjPIEWfGacA3zOuoLYQQMO0g36zRBkmHAbl
+         StzAu5fdNB/liOn0ZmxSgSn36BJWRLWQAzCv7lleskxKset8NW1pKs4ANGVLBoPYkY+9
+         vpkjykqkTcAbuD8pkXv1BcAHu85R8X+M3/LFv8f/el6rFgcwU896/ICt9DUP/ny2t1nw
+         FBhg==
+X-Gm-Message-State: AOJu0YyrgVzd7CZbix6YxR/1WmmfgHFuGsc+GDqB36onDGhJTzye0Cqe
+	Y7eW/IAFir9HRTwwwZAeWglmQQvM7X4yuOQgI1cNNw==
+X-Google-Smtp-Source: AGHT+IHrEbVxBY+XzSn2ZBZ3zONd/D9hLkWbWEz2PmPQjq4oRq/WXW32g+UGBWQxPQJJGRz72RQQCoxr/sfuP3nW6FA=
+X-Received: by 2002:a81:a906:0:b0:5a8:e303:1db2 with SMTP id
+ g6-20020a81a906000000b005a8e3031db2mr15856440ywh.23.1698851103748; Wed, 01
+ Nov 2023 08:05:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231031201945.1412345-1-mmaurer@google.com>
-In-Reply-To: <20231031201945.1412345-1-mmaurer@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 1 Nov 2023 11:20:22 +0100
-Message-ID: <CAH5fLggk=YEtB798S+vWHV8J6GZ39rXYcvVnm1apt_BOZvAooA@mail.gmail.com>
-Subject: Re: [PATCH] rust: Ignore preserve-most functions
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
+ <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
+ <ZTLH5o0GlFBYsAHq@boqun-archlinux>
+In-Reply-To: <ZTLH5o0GlFBYsAHq@boqun-archlinux>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 1 Nov 2023 16:04:52 +0100
+Message-ID: <CACRpkdaAsC6Uj0nKwGFANWrf5j68xZgKbaVaEB02iJ=XQoJt8g@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 31, 2023 at 9:20=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> Neither bindgen nor Rust know about the preserve-most calling
-> convention, and Clang describes it as unstable. Since we aren't using
-> functions with this calling convention from Rust, blocklist them.
->
-> These functions are only added to the build when list hardening is
-> enabled, which is likely why others didn't notice this yet.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+[Andrew wrote]
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Network developers have expressed an interesting in testing Rust code
+> > on big endian systems, since the code should work on both endians. It
+> > might be easier to get an ARM board running big endian than get access
+> > to an S390x machine.
+
+If you mean ARM32 BE I have that on the IXP4xx systems up and running
+mainline kernels and mainline OpenWrt now, but I haven't
+seen rust enablement for ARM32 yet (but it can't be that hard).
+
+Yours,
+Linus Walleij
