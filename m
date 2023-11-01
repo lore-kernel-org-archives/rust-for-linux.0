@@ -1,45 +1,45 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A232F18E09
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 18:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7DD18E16
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 18:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nUASRUhm"
-Received: from mail-ej1-x649.google.com (mail-ej1-x649.google.com [IPv6:2a00:1450:4864:20::649])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E8610F
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 11:02:22 -0700 (PDT)
-Received: by mail-ej1-x649.google.com with SMTP id a640c23a62f3a-9d28dd67464so5586866b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 11:02:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A5HgAVwo"
+Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9BF11A
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 11:02:27 -0700 (PDT)
+Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-9ae0601d689so5311266b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 11:02:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698861741; x=1699466541; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1698861746; x=1699466546; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QWHuDeEW+muTS4+d83vSpQZhUT21LbllHHwugGQQp2M=;
-        b=nUASRUhmngM8h3y6mw/RT7KL+zBn6KCZhfcnq/2CUNPNMATUd6U/jM9mqprvBmjPzO
-         5ts5l/20GVyjG6zn6/V6koYlKSt+OGt5EvfmErzXGkkcU/+u4XaFUmHclVilcum2G76W
-         1ynkwy06rBtZ0UXDQxA2IHOS5hOJiPes9tsc2zd52XAeVSz+FbKk7LlVWar/Y/T5eUsu
-         QyrvNLIg9WSG9jPPvCSzDZcu1o5XsR9AUxd7GEj+pRPRpsIuIWUzv/1hjb72wxOuxIsP
-         tx1xyZ2yNobd3gd99E9H6x4JWbgsvf2Xqp0qHUfvhAxeWHCsWIxuHcYG0s+d2cO7AqIp
-         m7kA==
+        bh=jcR4e9c2oSdeBUrhisVRNJ8oBwDdg+8SErGLxmSxrCU=;
+        b=A5HgAVwolWkxDzqUBXti0Oql3sQEwyRgWjdhuCEzpT7tCW/NiikLFj6xtQF0F8Wgn1
+         qGr1w4ciVZnVpEzgz9L8p7s1Fzj8R1NgRQcmw6GBC9MgyLIaTeFPG8tTVer6SkGWuNbE
+         fNo3ANpSF263PIMBqdZlF9PBsWRAAhFxpkzLARfKpaq+SSYPBwvAEzBCzcwgJFA/mcIj
+         7nenqWTpZ1wwQ//iIvDwQUhbVffJ7RJpTKFXXvGCKv/H6s9eaw9PfKL7px2wCnehIy4H
+         45b9j0d9bUinr628zG6OML6YnvTGHJJZD4C0ajN+Xhe3vWYr7kRaWOUCU2rQXzrRB5eY
+         +Omw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698861741; x=1699466541;
+        d=1e100.net; s=20230601; t=1698861746; x=1699466546;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QWHuDeEW+muTS4+d83vSpQZhUT21LbllHHwugGQQp2M=;
-        b=w3I3j1C4XRdfBS+AK8czM9QDQSCDbPK/DCuuLqueX075LIbin3qzS3aXXzXr9q/sHp
-         tN74VijifPMv8qMFxPxLt3kC+b/dVffpKZswe7GHPyYNkA5HGgyMeKsKsc7j/5KuKDfh
-         ET+PTDnGYFo5Rn0pn1AoPnkIlmgmaoHi07hgJvn/3r00wfpf4dYYLO958C/PNv6KvR3o
-         nhDbKSdCjHAjQWUKB8srDrs5cQsw4SRj/p2p/xemniCtuixL2oXLGDdjDMydG1tp07FJ
-         JLAC+mhdJ96XltavsbutSW7E0EjtTLyly+yMpq3BqFLwrPS9En4tPy/gn5mDIC73G4CM
-         ErMw==
-X-Gm-Message-State: AOJu0Ywb/nGH5DVJU4fUQ2AhcbsFYFkZ+iXY8+sW6mDhXlKo+Kb9z+3P
-	j8BTpTTEAJMTqn2koJVarqltN66xdjE6rig=
-X-Google-Smtp-Source: AGHT+IGUKOpDwIhNxWCjjBEeM7FIsWBdETxrku/TNKqh/wIH66ZN+46B+/bIkX8FX5Na5XsxXsIlBxnrf9dG3pw=
+        bh=jcR4e9c2oSdeBUrhisVRNJ8oBwDdg+8SErGLxmSxrCU=;
+        b=pJb6vnggtGNMthn1qOomIcCu2XMz5Nlq2k6mhyUo0mcc4i2yUbhi99/0kBc2WFKiB9
+         WaqZ6JXuVygKbZgVqP0mEYjuFCbOrGsQNdyiCqpxGHFbZ2qRCksVCW2SBORjY7L6mQkU
+         jE7E8OiDn6Q3azfEC521tN/DsdVOB/mlZ9KMvpg3/Sf0pdr+2MMZlbN+h8P6J0X8pA/b
+         4ad5ptzMYXhT7qql5wZJnEZasizEleLqIHWnkHvEnXQ32piKwgUDtC7dbrbCyDtp4soS
+         JeImwnVUXXxcOEdCnf1E6IoSHr1kduoZ2i3UeIZibu+sJgrmIao7RxN8uNtxpswP3j8Z
+         8Crw==
+X-Gm-Message-State: AOJu0Yyq4YHlJ8Z1O8ibVmZVHpqAHC3QkNBTs5fHix+mlsjHe9sfLXVA
+	x1Be0YEK4/OvnMFfjAkJ7aNvkDxpremuyEU=
+X-Google-Smtp-Source: AGHT+IH7LEMOeO50NlAnRB5mcQmyX2EaY/SAdwrmMYp6miXQPKUVwtTEQLRT2gpiOCiI5OmvkriWjIQZqlR+8is=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:906:e216:b0:9ad:ad95:4b90 with SMTP
- id gf22-20020a170906e21600b009adad954b90mr24091ejb.9.1698861740722; Wed, 01
- Nov 2023 11:02:20 -0700 (PDT)
-Date: Wed, 01 Nov 2023 18:01:32 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a17:906:d93:b0:9be:46f7:7e28 with SMTP
+ id m19-20020a1709060d9300b009be46f77e28mr25262eji.13.1698861745966; Wed, 01
+ Nov 2023 11:02:25 -0700 (PDT)
+Date: Wed, 01 Nov 2023 18:01:34 +0000
 In-Reply-To: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -49,8 +49,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20231101-rust-binder-v1-2-08ba9197f637@google.com>
-Subject: [PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+Message-ID: <20231101-rust-binder-v1-4-08ba9197f637@google.com>
+Subject: [PATCH RFC 04/20] rust_binder: add work lists
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
@@ -64,1708 +64,775 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Jeffrey Vander Stoep <jeffv@google.com>, Matthew Maurer <mmaurer@google.com>, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Add support for accessing the Rust binder driver via binderfs. The
-actual binderfs implementation is done entirely in C, and the
-`rust_binderfs.c` file is a modified version of `binderfs.c` that is
-adjusted to call into the Rust binder driver rather than the C driver.
+The binder driver uses linked lists of work items to store events that
+need to be delivered to userspace. There are work lists on both the
+process and threads.
 
-We have left the binderfs filesystem component in C. Rewriting it in
-Rust would be a large amount of work and requires a lot of bindings to
-the file system interfaces. Binderfs has not historically had the same
-challenges with security and complexity, so rewriting Binderfs seems to
-have lower value than the rest of Binder.
+Work items are expected to implement the `DeliverToRead` trait, whose
+name signifies that this type is something that can be delivered to
+userspace via the read part of the `BINDER_WRITE_READ` ioctl. The trait
+defines what happens when a work item is executed, when it is cancelled,
+how the thread should be notified (`wake_up_interruptible_sync` or
+`wake_up_interruptible`?), and how it can be enqueued to a linked list.
+For each type that implements the trait, Rust will generate a vtable
+for the type. Pointers to the `dyn DeliverToRead` type will be fat
+pointers where the metadata of the pointer is a pointer to the vtable.
 
-We also add code on the Rust side for binderfs to call into. Most of
-this is left as stub implementation, with the exception of closing the
-file descriptor and the BINDER_VERSION ioctl.
+We introduce the concept of a "ready thread". This is a thread that is
+currently waiting for work items inside the `get_work` method. The
+process will keep track of them and deliver new work items to one of the
+ready threads directly. When there are no ready threads, work items are
+stored in the process work list.
+
+The work lists added in this patch are not used yet, so the `push_work`
+methods are marked with `#[allow(dead_code)]` to silence the warnings
+about unused methods. A user is added in the next patch of this patch
+set.
 
 Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/Kconfig         |  24 ++
- drivers/android/Makefile        |   1 +
- drivers/android/context.rs      | 144 +++++++
- drivers/android/defs.rs         |  39 ++
- drivers/android/process.rs      | 251 ++++++++++++
- drivers/android/rust_binder.rs  | 196 ++++++++-
- drivers/android/rust_binderfs.c | 866 ++++++++++++++++++++++++++++++++++++++++
- include/linux/rust_binder.h     |  16 +
- include/uapi/linux/magic.h      |   1 +
- rust/bindings/bindings_helper.h |   2 +
- rust/kernel/lib.rs              |   7 +
- scripts/Makefile.build          |   2 +-
- 12 files changed, 1547 insertions(+), 2 deletions(-)
+ drivers/android/error.rs       |   9 ++
+ drivers/android/process.rs     | 126 ++++++++++++++++--
+ drivers/android/rust_binder.rs |  87 ++++++++++++-
+ drivers/android/thread.rs      | 284 +++++++++++++++++++++++++++++++++++++++--
+ scripts/Makefile.build         |   2 +-
+ 5 files changed, 488 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
-index fcfd25c9a016..82ed6ddabe1a 100644
---- a/drivers/android/Kconfig
-+++ b/drivers/android/Kconfig
-@@ -36,6 +36,18 @@ config ANDROID_BINDERFS
- 	  It can be used to dynamically allocate new binder IPC devices via
- 	  ioctls.
+diff --git a/drivers/android/error.rs b/drivers/android/error.rs
+index 41fc4347ab55..a31b696efafc 100644
+--- a/drivers/android/error.rs
++++ b/drivers/android/error.rs
+@@ -11,6 +11,15 @@ pub(crate) struct BinderError {
+     source: Option<Error>,
+ }
  
-+config ANDROID_BINDERFS_RUST
-+	bool "Android Binderfs filesystem in Rust"
-+	depends on ANDROID_BINDER_IPC_RUST
-+	default n
-+	help
-+	  Binderfs is a pseudo-filesystem for the Android Binder IPC driver
-+	  which can be mounted per-ipc namespace allowing to run multiple
-+	  instances of Android.
-+	  Each binderfs mount initially only contains a binder-control device.
-+	  It can be used to dynamically allocate new binder IPC devices via
-+	  ioctls.
-+
- config ANDROID_BINDER_DEVICES
- 	string "Android Binder devices"
- 	depends on ANDROID_BINDER_IPC
-@@ -48,6 +60,18 @@ config ANDROID_BINDER_DEVICES
- 	  created. Each binder device has its own context manager, and is
- 	  therefore logically separated from the other devices.
- 
-+config ANDROID_BINDER_DEVICES_RUST
-+	string "Android Binder devices in Rust"
-+	depends on ANDROID_BINDER_IPC_RUST
-+	default "binder,hwbinder,vndbinder"
-+	help
-+	  Default value for the binder.devices parameter.
-+
-+	  The binder.devices parameter is a comma-separated list of strings
-+	  that specifies the names of the binder device nodes that will be
-+	  created. Each binder device has its own context manager, and is
-+	  therefore logically separated from the other devices.
-+
- config ANDROID_BINDER_IPC_SELFTEST
- 	bool "Android Binder IPC Driver Selftest"
- 	depends on ANDROID_BINDER_IPC
-diff --git a/drivers/android/Makefile b/drivers/android/Makefile
-index 6348f75832ca..5c819011aa77 100644
---- a/drivers/android/Makefile
-+++ b/drivers/android/Makefile
-@@ -5,3 +5,4 @@ obj-$(CONFIG_ANDROID_BINDERFS)		+= binderfs.o
- obj-$(CONFIG_ANDROID_BINDER_IPC)	+= binder.o binder_alloc.o
- obj-$(CONFIG_ANDROID_BINDER_IPC_SELFTEST) += binder_alloc_selftest.o
- obj-$(CONFIG_ANDROID_BINDER_IPC_RUST)	+= rust_binder.o
-+obj-$(CONFIG_ANDROID_BINDERFS_RUST)	+= rust_binderfs.o
-diff --git a/drivers/android/context.rs b/drivers/android/context.rs
-new file mode 100644
-index 000000000000..630cb575d3ac
---- /dev/null
-+++ b/drivers/android/context.rs
-@@ -0,0 +1,144 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use kernel::{
-+    list::{HasListLinks, List, ListArc, ListArcSafe, ListItem, ListLinks},
-+    prelude::*,
-+    str::{CStr, CString},
-+    sync::{Arc, Mutex},
-+};
-+
-+use crate::process::Process;
-+
-+// This module defines the global variable containing the list of contexts. Since the
-+// `kernel::sync` bindings currently don't support mutexes in globals, we use a temporary
-+// workaround.
-+//
-+// TODO: Once `kernel::sync` has support for mutexes in globals, remove this module.
-+mod context_global {
-+    use super::ContextList;
-+    use core::cell::UnsafeCell;
-+    use core::mem::MaybeUninit;
-+    use kernel::init::PinInit;
-+    use kernel::list::List;
-+    use kernel::sync::lock::mutex::{Mutex, MutexBackend};
-+    use kernel::sync::lock::Guard;
-+
-+    /// A temporary wrapper used to define a mutex in a global.
-+    pub(crate) struct Contexts {
-+        inner: UnsafeCell<MaybeUninit<Mutex<ContextList>>>,
-+    }
-+
-+    impl Contexts {
-+        /// Called when the module is initialized.
-+        pub(crate) fn init(&self) {
-+            // SAFETY: This is only called during initialization of the binder module, so we know
-+            // that the global is currently uninitialized and that nobody else is using it yet.
-+            unsafe {
-+                let ptr = self.inner.get() as *mut Mutex<ContextList>;
-+                let init = kernel::new_mutex!(ContextList { list: List::new() }, "ContextList");
-+                match init.__pinned_init(ptr) {
-+                    Ok(()) => {}
-+                    Err(e) => match e {},
-+                }
-+            }
-+        }
-+
-+        pub(crate) fn lock(&self) -> Guard<'_, ContextList, MutexBackend> {
-+            // SAFETY: The `init` method is called during initialization of the binder module, so the
-+            // mutex is always initialized when this method is called.
-+            unsafe {
-+                let ptr = self.inner.get() as *const Mutex<ContextList>;
-+                (*ptr).lock()
-+            }
-+        }
-+    }
-+
-+    unsafe impl Send for Contexts {}
-+    unsafe impl Sync for Contexts {}
-+
-+    pub(crate) static CONTEXTS: Contexts = Contexts {
-+        inner: UnsafeCell::new(MaybeUninit::uninit()),
-+    };
-+}
-+
-+pub(crate) use self::context_global::CONTEXTS;
-+
-+pub(crate) struct ContextList {
-+    list: List<Context>,
-+}
-+
-+/// This struct keeps track of the processes using this context, and which process is the context
-+/// manager.
-+struct Manager {
-+    all_procs: List<Process>,
-+}
-+
-+/// There is one context per binder file (/dev/binder, /dev/hwbinder, etc)
-+#[pin_data]
-+pub(crate) struct Context {
-+    #[pin]
-+    manager: Mutex<Manager>,
-+    pub(crate) name: CString,
-+    #[pin]
-+    links: ListLinks,
-+}
-+
-+kernel::list::impl_has_list_links! {
-+    impl HasListLinks<0> for Context { self.links }
-+}
-+kernel::list::impl_list_arc_safe! {
-+    impl ListArcSafe<0> for Context { untracked; }
-+}
-+kernel::list::impl_list_item! {
-+    impl ListItem<0> for Context {
-+        using ListLinks;
-+    }
-+}
-+
-+impl Context {
-+    pub(crate) fn new(name: &CStr) -> Result<Arc<Self>> {
-+        let name = CString::try_from(name)?;
-+        let list_ctx = ListArc::pin_init(pin_init!(Context {
-+            name,
-+            links <- ListLinks::new(),
-+            manager <- kernel::new_mutex!(Manager {
-+                all_procs: List::new(),
-+            }, "Context::manager"),
-+        }))?;
-+
-+        let ctx = list_ctx.clone_arc();
-+        CONTEXTS.lock().list.push_back(list_ctx);
-+
-+        Ok(ctx)
-+    }
-+
-+    /// Called when the file for this context is unlinked.
-+    ///
-+    /// No-op if called twice.
-+    pub(crate) fn deregister(&self) {
-+        // SAFETY: We never add the context to any other linked list than this one, so it is either
-+        // in this list, or not in any list.
-+        unsafe {
-+            CONTEXTS.lock().list.remove(self);
-+        }
-+    }
-+
-+    pub(crate) fn register_process(self: &Arc<Self>, proc: ListArc<Process>) {
-+        if !Arc::ptr_eq(self, &proc.ctx) {
-+            pr_err!("Context::register_process called on the wrong context.");
-+            return;
-+        }
-+        self.manager.lock().all_procs.push_back(proc);
-+    }
-+
-+    pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Process) {
-+        if !Arc::ptr_eq(self, &proc.ctx) {
-+            pr_err!("Context::deregister_process called on the wrong context.");
-+            return;
-+        }
-+        // SAFETY: We just checked that this is the right list.
-+        unsafe {
-+            self.manager.lock().all_procs.remove(proc);
-+        }
-+    }
-+}
-diff --git a/drivers/android/defs.rs b/drivers/android/defs.rs
-new file mode 100644
-index 000000000000..8fdcb856ccad
---- /dev/null
-+++ b/drivers/android/defs.rs
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use core::ops::{Deref, DerefMut};
-+use kernel::{
-+    bindings,
-+    io_buffer::{ReadableFromBytes, WritableToBytes},
-+};
-+
-+macro_rules! decl_wrapper {
-+    ($newname:ident, $wrapped:ty) => {
-+        #[derive(Copy, Clone, Default)]
-+        #[repr(transparent)]
-+        pub(crate) struct $newname($wrapped);
-+        // SAFETY: This macro is only used with types where this is ok.
-+        unsafe impl ReadableFromBytes for $newname {}
-+        unsafe impl WritableToBytes for $newname {}
-+        impl Deref for $newname {
-+            type Target = $wrapped;
-+            fn deref(&self) -> &Self::Target {
-+                &self.0
-+            }
-+        }
-+        impl DerefMut for $newname {
-+            fn deref_mut(&mut self) -> &mut Self::Target {
-+                &mut self.0
-+            }
-+        }
-+    };
-+}
-+
-+decl_wrapper!(BinderVersion, bindings::binder_version);
-+
-+impl BinderVersion {
-+    pub(crate) fn current() -> Self {
-+        Self(bindings::binder_version {
-+            protocol_version: bindings::BINDER_CURRENT_PROTOCOL_VERSION as _,
-+        })
-+    }
-+}
-diff --git a/drivers/android/process.rs b/drivers/android/process.rs
-new file mode 100644
-index 000000000000..2f16e4cedbf1
---- /dev/null
-+++ b/drivers/android/process.rs
-@@ -0,0 +1,251 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! This module defines the `Process` type, which represents a process using a particular binder
-+//! context.
-+//!
-+//! The `Process` object keeps track of all of the resources that this process owns in the binder
-+//! context.
-+//!
-+//! There is one `Process` object for each binder fd that a process has opened, so processes using
-+//! several binder contexts have several `Process` objects. This ensures that the contexts are
-+//! fully separated.
-+
-+use kernel::{
-+    bindings,
-+    cred::Credential,
-+    file::{File, PollTable},
-+    io_buffer::IoBufferWriter,
-+    list::{HasListLinks, ListArc, ListArcSafe, ListItem, ListLinks},
-+    mm,
-+    prelude::*,
-+    sync::{Arc, ArcBorrow, SpinLock},
-+    task::Task,
-+    types::ARef,
-+    user_ptr::{UserSlicePtr, UserSlicePtrReader},
-+    workqueue::{self, Work},
-+};
-+
-+use crate::{context::Context, defs::*};
-+
-+const PROC_DEFER_FLUSH: u8 = 1;
-+const PROC_DEFER_RELEASE: u8 = 2;
-+
-+/// The fields of `Process` protected by the spinlock.
-+pub(crate) struct ProcessInner {
-+    is_dead: bool,
-+
-+    /// Bitmap of deferred work to do.
-+    defer_work: u8,
-+}
-+
-+impl ProcessInner {
-+    fn new() -> Self {
++impl BinderError {
++    pub(crate) fn new_dead() -> Self {
 +        Self {
-+            is_dead: false,
-+            defer_work: 0,
++            reply: BR_DEAD_REPLY,
++            source: None,
 +        }
 +    }
 +}
 +
-+/// A process using binder.
+ /// Convert an errno into a `BinderError` and store the errno used to construct it. The errno
+ /// should be stored as the thread's extended error when given to userspace.
+ impl From<Error> for BinderError {
+diff --git a/drivers/android/process.rs b/drivers/android/process.rs
+index 47d074dd8465..22662c7d388a 100644
+--- a/drivers/android/process.rs
++++ b/drivers/android/process.rs
+@@ -15,18 +15,24 @@
+     cred::Credential,
+     file::{self, File, PollTable},
+     io_buffer::{IoBufferReader, IoBufferWriter},
+-    list::{HasListLinks, ListArc, ListArcSafe, ListItem, ListLinks},
++    list::{HasListLinks, List, ListArc, ListArcSafe, ListItem, ListLinks},
+     mm,
+     prelude::*,
+     rbtree::RBTree,
+-    sync::{Arc, ArcBorrow, SpinLock},
++    sync::{lock::Guard, Arc, ArcBorrow, SpinLock},
+     task::Task,
+-    types::ARef,
++    types::{ARef, Either},
+     user_ptr::{UserSlicePtr, UserSlicePtrReader},
+     workqueue::{self, Work},
+ };
+ 
+-use crate::{context::Context, defs::*, thread::Thread};
++use crate::{
++    context::Context,
++    defs::*,
++    error::BinderError,
++    thread::{PushWorkRes, Thread},
++    DLArc, DTRWrap, DeliverToRead,
++};
+ 
+ use core::mem::take;
+ 
+@@ -35,8 +41,10 @@
+ 
+ /// The fields of `Process` protected by the spinlock.
+ pub(crate) struct ProcessInner {
+-    is_dead: bool,
++    pub(crate) is_dead: bool,
+     threads: RBTree<i32, Arc<Thread>>,
++    ready_threads: List<Thread>,
++    work: List<DTRWrap<dyn DeliverToRead>>,
+ 
+     /// The number of requested threads that haven't registered yet.
+     requested_thread_count: u32,
+@@ -54,6 +62,8 @@ fn new() -> Self {
+         Self {
+             is_dead: false,
+             threads: RBTree::new(),
++            ready_threads: List::new(),
++            work: List::new(),
+             requested_thread_count: 0,
+             max_threads: 0,
+             started_thread_count: 0,
+@@ -61,6 +71,37 @@ fn new() -> Self {
+         }
+     }
+ 
++    /// Schedule the work item for execution on this process.
++    ///
++    /// If any threads are ready for work, then the work item is given directly to that thread and
++    /// it is woken up. Otherwise, it is pushed to the process work list.
++    ///
++    /// This call can fail only if the process is dead. In this case, the work item is returned to
++    /// the caller so that the caller can drop it after releasing the inner process lock. This is
++    /// necessary since the destructor of `Transaction` will take locks that can't necessarily be
++    /// taken while holding the inner process lock.
++    #[allow(dead_code)]
++    pub(crate) fn push_work(
++        &mut self,
++        work: DLArc<dyn DeliverToRead>,
++    ) -> Result<(), (BinderError, DLArc<dyn DeliverToRead>)> {
++        // Try to find a ready thread to which to push the work.
++        if let Some(thread) = self.ready_threads.pop_front() {
++            // Push to thread while holding state lock. This prevents the thread from giving up
++            // (for example, because of a signal) when we're about to deliver work.
++            match thread.push_work(work) {
++                PushWorkRes::Ok => Ok(()),
++                PushWorkRes::FailedDead(work) => Err((BinderError::new_dead(), work)),
++            }
++        } else if self.is_dead {
++            Err((BinderError::new_dead(), work))
++        } else {
++            // There are no ready threads. Push work to process queue.
++            self.work.push_back(work);
++            Ok(())
++        }
++    }
++
+     fn register_thread(&mut self) -> bool {
+         if self.requested_thread_count == 0 {
+             return false;
+@@ -152,6 +193,31 @@ fn new(ctx: Arc<Context>, cred: ARef<Credential>) -> Result<Arc<Self>> {
+         Ok(process)
+     }
+ 
++    /// Attempts to fetch a work item from the process queue.
++    pub(crate) fn get_work(&self) -> Option<DLArc<dyn DeliverToRead>> {
++        self.inner.lock().work.pop_front()
++    }
++
++    /// Attempts to fetch a work item from the process queue. If none is available, it registers the
++    /// given thread as ready to receive work directly.
++    ///
++    /// This must only be called when the thread is not participating in a transaction chain; when
++    /// it is, work will always be delivered directly to the thread (and not through the process
++    /// queue).
++    pub(crate) fn get_work_or_register<'a>(
++        &'a self,
++        thread: &'a Arc<Thread>,
++    ) -> Either<DLArc<dyn DeliverToRead>, Registration<'a>> {
++        let mut inner = self.inner.lock();
++        // Try to get work from the process queue.
++        if let Some(work) = inner.work.pop_front() {
++            return Either::Left(work);
++        }
++
++        // Register the thread as ready.
++        Either::Right(Registration::new(self, thread, &mut inner))
++    }
++
+     fn get_thread(self: ArcBorrow<'_, Self>, id: i32) -> Result<Arc<Thread>> {
+         {
+             let inner = self.inner.lock();
+@@ -194,8 +260,9 @@ fn set_max_threads(&self, max: u32) {
+ 
+     pub(crate) fn needs_thread(&self) -> bool {
+         let mut inner = self.inner.lock();
+-        let ret =
+-            inner.requested_thread_count == 0 && inner.started_thread_count < inner.max_threads;
++        let ret = inner.requested_thread_count == 0
++            && inner.ready_threads.is_empty()
++            && inner.started_thread_count < inner.max_threads;
+         if ret {
+             inner.requested_thread_count += 1
+         }
+@@ -203,7 +270,10 @@ pub(crate) fn needs_thread(&self) -> bool {
+     }
+ 
+     fn deferred_flush(&self) {
+-        // NOOP for now.
++        let inner = self.inner.lock();
++        for thread in inner.threads.values() {
++            thread.exit_looper();
++        }
+     }
+ 
+     fn deferred_release(self: Arc<Self>) {
+@@ -211,6 +281,11 @@ fn deferred_release(self: Arc<Self>) {
+ 
+         self.ctx.deregister_process(&self);
+ 
++        // Cancel all pending work items.
++        while let Some(work) = self.get_work() {
++            work.into_arc().cancel();
++        }
++
+         // Move the threads out of `inner` so that we can iterate over them without holding the
+         // lock.
+         let mut inner = self.inner.lock();
+@@ -341,3 +416,38 @@ pub(crate) fn poll(
+         Err(EINVAL)
+     }
+ }
++
++/// Represents that a thread has registered with the `ready_threads` list of its process.
 +///
-+/// Strictly speaking, there can be multiple of these per process. There is one for each binder fd
-+/// that a process has opened, so processes using several binder contexts have several `Process`
-+/// objects. This ensures that the contexts are fully separated.
-+#[pin_data]
-+pub(crate) struct Process {
-+    pub(crate) ctx: Arc<Context>,
-+
-+    // The task leader (process).
-+    pub(crate) task: ARef<Task>,
-+
-+    // Credential associated with file when `Process` is created.
-+    pub(crate) cred: ARef<Credential>,
-+
-+    #[pin]
-+    pub(crate) inner: SpinLock<ProcessInner>,
-+
-+    // Work node for deferred work item.
-+    #[pin]
-+    defer_work: Work<Process>,
-+
-+    // Links for process list in Context.
-+    #[pin]
-+    links: ListLinks,
++/// The destructor of this type will unregister the thread from the list of ready threads.
++pub(crate) struct Registration<'a> {
++    process: &'a Process,
++    thread: &'a Arc<Thread>,
 +}
 +
-+kernel::impl_has_work! {
-+    impl HasWork<Process> for Process { self.defer_work }
-+}
-+
-+kernel::list::impl_has_list_links! {
-+    impl HasListLinks<0> for Process { self.links }
-+}
-+kernel::list::impl_list_arc_safe! {
-+    impl ListArcSafe<0> for Process { untracked; }
-+}
-+kernel::list::impl_list_item! {
-+    impl ListItem<0> for Process {
-+        using ListLinks;
++impl<'a> Registration<'a> {
++    fn new(
++        process: &'a Process,
++        thread: &'a Arc<Thread>,
++        guard: &mut Guard<'_, ProcessInner, kernel::sync::lock::spinlock::SpinLockBackend>,
++    ) -> Self {
++        assert!(core::ptr::eq(process, &*thread.process));
++        // INVARIANT: We are pushing this thread to the right `ready_threads` list.
++        if let Ok(list_arc) = ListArc::try_from_arc(thread.clone()) {
++            guard.ready_threads.push_front(list_arc);
++        } else {
++            pr_warn!("Same thread registered with `ready_threads` twice.");
++        }
++        Self { process, thread }
 +    }
 +}
 +
-+impl workqueue::WorkItem for Process {
-+    type Pointer = Arc<Process>;
-+
-+    fn run(me: Arc<Self>) {
-+        let defer;
-+        {
-+            let mut inner = me.inner.lock();
-+            defer = inner.defer_work;
-+            inner.defer_work = 0;
-+        }
-+
-+        if defer & PROC_DEFER_FLUSH != 0 {
-+            me.deferred_flush();
-+        }
-+        if defer & PROC_DEFER_RELEASE != 0 {
-+            me.deferred_release();
-+        }
-+    }
-+}
-+
-+impl Process {
-+    fn new(ctx: Arc<Context>, cred: ARef<Credential>) -> Result<Arc<Self>> {
-+        let list_process = ListArc::pin_init(pin_init!(Process {
-+            ctx,
-+            cred,
-+            inner <- kernel::new_spinlock!(ProcessInner::new(), "Process::inner"),
-+            task: kernel::current!().group_leader().into(),
-+            defer_work <- kernel::new_work!("Process::defer_work"),
-+            links <- ListLinks::new(),
-+        }))?;
-+
-+        let process = list_process.clone_arc();
-+        process.ctx.register_process(list_process);
-+
-+        Ok(process)
-+    }
-+
-+    fn version(&self, data: UserSlicePtr) -> Result {
-+        data.writer().write(&BinderVersion::current())
-+    }
-+
-+    fn deferred_flush(&self) {
-+        // NOOP for now.
-+    }
-+
-+    fn deferred_release(self: Arc<Self>) {
-+        self.inner.lock().is_dead = true;
-+
-+        self.ctx.deregister_process(&self);
-+    }
-+
-+    pub(crate) fn flush(this: ArcBorrow<'_, Process>) -> Result {
-+        let should_schedule;
-+        {
-+            let mut inner = this.inner.lock();
-+            should_schedule = inner.defer_work == 0;
-+            inner.defer_work |= PROC_DEFER_FLUSH;
-+        }
-+
-+        if should_schedule {
-+            // Ignore failures to schedule to the workqueue. Those just mean that we're already
-+            // scheduled for execution.
-+            let _ = workqueue::system().enqueue(Arc::from(this));
-+        }
-+        Ok(())
-+    }
-+}
-+
-+/// The ioctl handler.
-+impl Process {
-+    fn write(
-+        _this: ArcBorrow<'_, Process>,
-+        _file: &File,
-+        _cmd: u32,
-+        _reader: &mut UserSlicePtrReader,
-+    ) -> Result<i32> {
-+        Err(EINVAL)
-+    }
-+
-+    fn read_write(
-+        this: ArcBorrow<'_, Process>,
-+        _file: &File,
-+        cmd: u32,
-+        data: UserSlicePtr,
-+    ) -> Result<i32> {
-+        match cmd {
-+            bindings::BINDER_VERSION => this.version(data)?,
-+            _ => return Err(EINVAL),
-+        }
-+        Ok(0)
-+    }
-+}
-+
-+/// The file operations supported by `Process`.
-+impl Process {
-+    pub(crate) fn open(ctx: ArcBorrow<'_, Context>, file: &File) -> Result<Arc<Process>> {
-+        Self::new(ctx.into(), ARef::from(file.cred()))
-+    }
-+
-+    pub(crate) fn release(this: Arc<Process>, _file: &File) {
-+        let should_schedule;
-+        {
-+            let mut inner = this.inner.lock();
-+            should_schedule = inner.defer_work == 0;
-+            inner.defer_work |= PROC_DEFER_RELEASE;
-+        }
-+
-+        if should_schedule {
-+            // Ignore failures to schedule to the workqueue. Those just mean that we're already
-+            // scheduled for execution.
-+            let _ = workqueue::system().enqueue(this);
-+        }
-+    }
-+
-+    pub(crate) fn ioctl(
-+        this: ArcBorrow<'_, Process>,
-+        file: &File,
-+        cmd: u32,
-+        arg: *mut core::ffi::c_void,
-+    ) -> Result<i32> {
-+        use kernel::ioctl::{_IOC_DIR, _IOC_SIZE};
-+        use kernel::uapi::{_IOC_READ, _IOC_WRITE};
-+
-+        let user_slice = UserSlicePtr::new(arg, _IOC_SIZE(cmd));
-+
-+        const _IOC_READ_WRITE: u32 = _IOC_READ | _IOC_WRITE;
-+
-+        match _IOC_DIR(cmd) {
-+            _IOC_WRITE => Self::write(this, file, cmd, &mut user_slice.reader()),
-+            _IOC_READ_WRITE => Self::read_write(this, file, cmd, user_slice),
-+            _ => Err(EINVAL),
-+        }
-+    }
-+
-+    pub(crate) fn compat_ioctl(
-+        this: ArcBorrow<'_, Process>,
-+        file: &File,
-+        cmd: u32,
-+        arg: *mut core::ffi::c_void,
-+    ) -> Result<i32> {
-+        Self::ioctl(this, file, cmd, arg)
-+    }
-+
-+    pub(crate) fn mmap(
-+        _this: ArcBorrow<'_, Process>,
-+        _file: &File,
-+        _vma: &mut mm::virt::Area,
-+    ) -> Result {
-+        Err(EINVAL)
-+    }
-+
-+    pub(crate) fn poll(
-+        _this: ArcBorrow<'_, Process>,
-+        _file: &File,
-+        _table: &mut PollTable,
-+    ) -> Result<u32> {
-+        Err(EINVAL)
++impl Drop for Registration<'_> {
++    fn drop(&mut self) {
++        let mut inner = self.process.inner.lock();
++        // SAFETY: The thread has the invariant that we never push it to any other linked list than
++        // the `ready_threads` list of its parent process. Therefore, the thread is either in that
++        // list, or in no list.
++        unsafe { inner.ready_threads.remove(self.thread) };
 +    }
 +}
 diff --git a/drivers/android/rust_binder.rs b/drivers/android/rust_binder.rs
-index 4b3d6676a9cf..6de2f40846fb 100644
+index 64fd24ea8be1..55d475737cef 100644
 --- a/drivers/android/rust_binder.rs
 +++ b/drivers/android/rust_binder.rs
-@@ -2,7 +2,19 @@
+@@ -5,12 +5,16 @@
+ use kernel::{
+     bindings::{self, seq_file},
+     file::{File, PollTable},
++    list::{
++        HasListLinks, ListArc, ListArcSafe, ListItem, ListLinks, ListLinksSelfPtr, TryNewListArc,
++    },
+     prelude::*,
+     sync::Arc,
+     types::ForeignOwnable,
++    user_ptr::UserSlicePtrWriter,
+ };
  
- //! Binder -- the Android IPC mechanism.
+-use crate::{context::Context, process::Process};
++use crate::{context::Context, process::Process, thread::Thread};
  
--use kernel::prelude::*;
-+use kernel::{
-+    bindings::{self, seq_file},
-+    file::{File, PollTable},
-+    prelude::*,
-+    sync::Arc,
-+    types::ForeignOwnable,
-+};
+ mod context;
+ mod defs;
+@@ -26,6 +30,87 @@
+     license: "GPL",
+ }
+ 
++/// Specifies how a type should be delivered to the read part of a BINDER_WRITE_READ ioctl.
++///
++/// When a value is pushed to the todo list for a process or thread, it is stored as a trait object
++/// with the type `Arc<dyn DeliverToRead>`. Trait objects are a Rust feature that lets you
++/// implement dynamic dispatch over many different types. This lets us store many different types
++/// in the todo list.
++trait DeliverToRead: ListArcSafe + Send + Sync {
++    /// Performs work. Returns true if remaining work items in the queue should be processed
++    /// immediately, or false if it should return to caller before processing additional work
++    /// items.
++    fn do_work(self: DArc<Self>, thread: &Thread, writer: &mut UserSlicePtrWriter) -> Result<bool>;
 +
-+use crate::{context::Context, process::Process};
++    /// Cancels the given work item. This is called instead of [`DeliverToRead::do_work`] when work
++    /// won't be delivered.
++    fn cancel(self: DArc<Self>) {}
 +
-+mod context;
-+mod defs;
-+mod process;
- 
- module! {
-     type: BinderModule,
-@@ -16,6 +28,188 @@ struct BinderModule {}
++    /// Should we use `wake_up_interruptible_sync` or `wake_up_interruptible` when scheduling this
++    /// work item?
++    ///
++    /// Generally only set to true for non-oneway transactions.
++    fn should_sync_wakeup(&self) -> bool;
++
++    /// Get the debug name of this type.
++    fn debug_name(&self) -> &'static str {
++        core::any::type_name::<Self>()
++    }
++}
++
++// Wrapper around a `DeliverToRead` with linked list links.
++#[pin_data]
++struct DTRWrap<T: ?Sized> {
++    #[pin]
++    links: ListLinksSelfPtr<DTRWrap<dyn DeliverToRead>>,
++    #[pin]
++    wrapped: T,
++}
++kernel::list::impl_has_list_links_self_ptr! {
++    impl HasSelfPtr<DTRWrap<dyn DeliverToRead>> for DTRWrap<dyn DeliverToRead> { self.links }
++}
++kernel::list::impl_list_arc_safe! {
++    impl{T: ListArcSafe + ?Sized} ListArcSafe<0> for DTRWrap<T> {
++        tracked_by wrapped: T;
++    }
++}
++kernel::list::impl_list_item! {
++    impl ListItem<0> for DTRWrap<dyn DeliverToRead> {
++        using ListLinksSelfPtr;
++    }
++}
++
++impl<T: ?Sized> core::ops::Deref for DTRWrap<T> {
++    type Target = T;
++    fn deref(&self) -> &T {
++        &self.wrapped
++    }
++}
++
++impl<T: ?Sized> core::ops::Receiver for DTRWrap<T> {}
++
++type DArc<T> = kernel::sync::Arc<DTRWrap<T>>;
++type DLArc<T> = kernel::list::ListArc<DTRWrap<T>>;
++
++impl<T: ListArcSafe> DTRWrap<T> {
++    #[allow(dead_code)]
++    fn arc_try_new(val: T) -> Result<DLArc<T>, alloc::alloc::AllocError> {
++        ListArc::pin_init(pin_init!(Self {
++            links <- ListLinksSelfPtr::new(),
++            wrapped: val,
++        }))
++        .map_err(|_| alloc::alloc::AllocError)
++    }
++
++    #[allow(dead_code)]
++    fn arc_pin_init(init: impl PinInit<T>) -> Result<DLArc<T>, kernel::error::Error> {
++        ListArc::pin_init(pin_init!(Self {
++            links <- ListLinksSelfPtr::new(),
++            wrapped <- init,
++        }))
++    }
++}
++
+ struct BinderModule {}
  
  impl kernel::Module for BinderModule {
-     fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
-+        crate::context::CONTEXTS.init();
+diff --git a/drivers/android/thread.rs b/drivers/android/thread.rs
+index 593c8e4f184e..a12c271a4e8f 100644
+--- a/drivers/android/thread.rs
++++ b/drivers/android/thread.rs
+@@ -8,24 +8,51 @@
+ use kernel::{
+     bindings,
+     io_buffer::{IoBufferReader, IoBufferWriter},
++    list::{
++        AtomicListArcTracker, HasListLinks, List, ListArcSafe, ListItem, ListLinks, TryNewListArc,
++    },
+     prelude::*,
+-    sync::{Arc, SpinLock},
++    sync::{Arc, CondVar, SpinLock},
++    types::Either,
+     user_ptr::UserSlicePtr,
+ };
+ 
+-use crate::{defs::*, process::Process};
++use crate::{defs::*, process::Process, DLArc, DTRWrap, DeliverToRead};
+ 
+ use core::mem::size_of;
+ 
++pub(crate) enum PushWorkRes {
++    Ok,
++    FailedDead(DLArc<dyn DeliverToRead>),
++}
 +
-+        // SAFETY: The module is being loaded, so we can initialize binderfs.
-+        #[cfg(CONFIG_ANDROID_BINDERFS_RUST)]
-+        unsafe {
-+            kernel::error::to_result(bindings::init_rust_binderfs())?;
++impl PushWorkRes {
++    fn is_ok(&self) -> bool {
++        match self {
++            PushWorkRes::Ok => true,
++            PushWorkRes::FailedDead(_) => false,
++        }
++    }
++}
++
+ /// The fields of `Thread` protected by the spinlock.
+ struct InnerThread {
+     /// Determines the looper state of the thread. It is a bit-wise combination of the constants
+     /// prefixed with `LOOPER_`.
+     looper_flags: u32,
+ 
++    /// Determines whether the looper should return.
++    looper_need_return: bool,
++
+     /// Determines if thread is dead.
+     is_dead: bool,
+ 
++    /// Determines whether the work list below should be processed. When set to false, `work_list`
++    /// is treated as if it were empty.
++    process_work_list: bool,
++    /// List of work items to deliver to userspace.
++    work_list: List<DTRWrap<dyn DeliverToRead>>,
++
+     /// Extended error information for this thread.
+     extended_error: ExtendedError,
+ }
+@@ -34,6 +61,8 @@ struct InnerThread {
+ const LOOPER_ENTERED: u32 = 0x02;
+ const LOOPER_EXITED: u32 = 0x04;
+ const LOOPER_INVALID: u32 = 0x08;
++const LOOPER_WAITING: u32 = 0x10;
++const LOOPER_WAITING_PROC: u32 = 0x20;
+ 
+ impl InnerThread {
+     fn new() -> Self {
+@@ -46,11 +75,42 @@ fn next_err_id() -> u32 {
+ 
+         Self {
+             looper_flags: 0,
++            looper_need_return: false,
+             is_dead: false,
++            process_work_list: false,
++            work_list: List::new(),
+             extended_error: ExtendedError::new(next_err_id(), BR_OK, 0),
+         }
+     }
+ 
++    fn pop_work(&mut self) -> Option<DLArc<dyn DeliverToRead>> {
++        if !self.process_work_list {
++            return None;
 +        }
 +
-         Ok(Self {})
++        let ret = self.work_list.pop_front();
++        self.process_work_list = !self.work_list.is_empty();
++        ret
++    }
++
++    #[allow(dead_code)]
++    fn push_work(&mut self, work: DLArc<dyn DeliverToRead>) -> PushWorkRes {
++        if self.is_dead {
++            PushWorkRes::FailedDead(work)
++        } else {
++            self.work_list.push_back(work);
++            self.process_work_list = true;
++            PushWorkRes::Ok
++        }
++    }
++
++    /// Used to push work items that do not need to be processed immediately and can wait until the
++    /// thread gets another work item.
++    #[allow(dead_code)]
++    fn push_work_deferred(&mut self, work: DLArc<dyn DeliverToRead>) {
++        self.work_list.push_back(work);
++    }
++
+     fn looper_enter(&mut self) {
+         self.looper_flags |= LOOPER_ENTERED;
+         if self.looper_flags & LOOPER_REGISTERED != 0 {
+@@ -73,6 +133,14 @@ fn looper_exit(&mut self) {
+     fn is_looper(&self) -> bool {
+         self.looper_flags & (LOOPER_ENTERED | LOOPER_REGISTERED) != 0
      }
++
++    /// Determines whether the thread should attempt to fetch work items from the process queue.
++    /// This is case when the thread is not part of a transaction stack and it is registered as a
++    /// looper. Also, if there is local work, we want to return to userspace before we deliver any
++    /// remote work.
++    fn should_use_process_work_queue(&self) -> bool {
++        !self.process_work_list && self.is_looper()
++    }
  }
-+
-+/// Makes the inner type Sync.
-+#[repr(transparent)]
-+pub struct AssertSync<T>(T);
-+// SAFETY: Used only to insert `file_operations` into a global, which is safe.
-+unsafe impl<T> Sync for AssertSync<T> {}
-+
-+/// File operations that rust_binderfs.c can use.
-+#[no_mangle]
-+#[used]
-+pub static rust_binder_fops: AssertSync<kernel::bindings::file_operations> = {
-+    // SAFETY: All zeroes is safe for the `file_operations` type.
-+    let zeroed_ops = unsafe { core::mem::MaybeUninit::zeroed().assume_init() };
-+
-+    let ops = kernel::bindings::file_operations {
-+        owner: THIS_MODULE.as_ptr(),
-+        poll: Some(rust_binder_poll),
-+        unlocked_ioctl: Some(rust_binder_unlocked_ioctl),
-+        compat_ioctl: Some(rust_binder_compat_ioctl),
-+        mmap: Some(rust_binder_mmap),
-+        open: Some(rust_binder_open),
-+        release: Some(rust_binder_release),
-+        mmap_supported_flags: 0,
-+        flush: Some(rust_binder_flush),
-+        ..zeroed_ops
-+    };
-+    AssertSync(ops)
-+};
-+
-+#[no_mangle]
-+unsafe extern "C" fn rust_binder_new_device(
-+    name: *const core::ffi::c_char,
-+) -> *mut core::ffi::c_void {
-+    // SAFETY: The caller will always provide a valid c string here.
-+    let name = unsafe { kernel::str::CStr::from_char_ptr(name) };
-+    match Context::new(name) {
-+        Ok(ctx) => Arc::into_foreign(ctx).cast_mut(),
-+        Err(_err) => core::ptr::null_mut(),
-+    }
-+}
-+
-+#[no_mangle]
-+unsafe extern "C" fn rust_binder_remove_device(device: *mut core::ffi::c_void) {
-+    if !device.is_null() {
-+        // SAFETY: The caller ensures that the `device` pointer came from a previous call to
-+        // `rust_binder_new_device`.
-+        let ctx = unsafe { Arc::<Context>::from_foreign(device) };
-+        ctx.deregister();
-+        drop(ctx);
-+    }
-+}
-+
-+unsafe extern "C" fn rust_binder_open(
-+    inode: *mut bindings::inode,
-+    file_ptr: *mut bindings::file,
-+) -> core::ffi::c_int {
-+    // SAFETY: The `rust_binderfs.c` file ensures that `i_private` is set to the return value of a
-+    // successful call to `rust_binder_new_device`.
-+    let ctx = unsafe { Arc::<Context>::borrow((*inode).i_private) };
-+
-+    // SAFETY: The caller provides a valid file pointer to a new `struct file`.
-+    let file = unsafe { File::from_ptr(file_ptr) };
-+    let process = match Process::open(ctx, file) {
-+        Ok(process) => process,
-+        Err(err) => return err.to_errno(),
-+    };
-+    // SAFETY: This file is associated with Rust binder, so we own the `private_data` field.
-+    unsafe {
-+        (*file_ptr).private_data = process.into_foreign().cast_mut();
-+    }
-+    0
-+}
-+
-+unsafe extern "C" fn rust_binder_release(
-+    _inode: *mut bindings::inode,
-+    file: *mut bindings::file,
-+) -> core::ffi::c_int {
-+    // SAFETY: We previously set `private_data` in `rust_binder_open`.
-+    let process = unsafe { Arc::<Process>::from_foreign((*file).private_data) };
-+    // SAFETY: The caller ensures that the file is valid.
-+    let file = unsafe { File::from_ptr(file) };
-+    Process::release(process, file);
-+    0
-+}
-+
-+unsafe extern "C" fn rust_binder_compat_ioctl(
-+    file: *mut bindings::file,
-+    cmd: core::ffi::c_uint,
-+    arg: core::ffi::c_ulong,
-+) -> core::ffi::c_long {
-+    // SAFETY: We previously set `private_data` in `rust_binder_open`.
-+    let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
-+    // SAFETY: The caller ensures that the file is valid.
-+    match Process::compat_ioctl(f, unsafe { File::from_ptr(file) }, cmd as _, arg as _) {
-+        Ok(ret) => ret.into(),
-+        Err(err) => err.to_errno().into(),
-+    }
-+}
-+
-+unsafe extern "C" fn rust_binder_unlocked_ioctl(
-+    file: *mut bindings::file,
-+    cmd: core::ffi::c_uint,
-+    arg: core::ffi::c_ulong,
-+) -> core::ffi::c_long {
-+    // SAFETY: We previously set `private_data` in `rust_binder_open`.
-+    let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
-+    // SAFETY: The caller ensures that the file is valid.
-+    match Process::ioctl(f, unsafe { File::from_ptr(file) }, cmd as _, arg as _) {
-+        Ok(ret) => ret.into(),
-+        Err(err) => err.to_errno().into(),
-+    }
-+}
-+
-+unsafe extern "C" fn rust_binder_mmap(
-+    file: *mut bindings::file,
-+    vma: *mut bindings::vm_area_struct,
-+) -> core::ffi::c_int {
-+    // SAFETY: We previously set `private_data` in `rust_binder_open`.
-+    let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
-+    // SAFETY: The caller ensures that the vma is valid.
-+    let area = unsafe { kernel::mm::virt::Area::from_ptr_mut(vma) };
-+    // SAFETY: The caller ensures that the file is valid.
-+    match Process::mmap(f, unsafe { File::from_ptr(file) }, area) {
-+        Ok(()) => 0,
-+        Err(err) => err.to_errno(),
-+    }
-+}
-+
-+unsafe extern "C" fn rust_binder_poll(
-+    file: *mut bindings::file,
-+    wait: *mut bindings::poll_table_struct,
-+) -> bindings::__poll_t {
-+    // SAFETY: We previously set `private_data` in `rust_binder_open`.
-+    let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
-+    // SAFETY: The caller ensures that the file is valid.
-+    let fileref = unsafe { File::from_ptr(file) };
-+    // SAFETY: The caller ensures that the `PollTable` is valid.
-+    match Process::poll(f, fileref, unsafe { PollTable::from_ptr(wait) }) {
-+        Ok(v) => v,
-+        Err(_) => bindings::POLLERR,
-+    }
-+}
-+
-+unsafe extern "C" fn rust_binder_flush(
-+    file: *mut bindings::file,
-+    _id: bindings::fl_owner_t,
-+) -> core::ffi::c_int {
-+    // SAFETY: We previously set `private_data` in `rust_binder_open`.
-+    let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
-+    match Process::flush(f) {
-+        Ok(()) => 0,
-+        Err(err) => err.to_errno(),
-+    }
-+}
-+
-+#[no_mangle]
-+unsafe extern "C" fn rust_binder_stats_show(_: *mut seq_file) -> core::ffi::c_int {
-+    0
-+}
-+
-+#[no_mangle]
-+unsafe extern "C" fn rust_binder_state_show(_: *mut seq_file) -> core::ffi::c_int {
-+    0
-+}
-+
-+#[no_mangle]
-+unsafe extern "C" fn rust_binder_transactions_show(_: *mut seq_file) -> core::ffi::c_int {
-+    0
-+}
-+
-+#[no_mangle]
-+unsafe extern "C" fn rust_binder_transaction_log_show(_: *mut seq_file) -> core::ffi::c_int {
-+    0
-+}
-diff --git a/drivers/android/rust_binderfs.c b/drivers/android/rust_binderfs.c
-new file mode 100644
-index 000000000000..2c011e26752c
---- /dev/null
-+++ b/drivers/android/rust_binderfs.c
-@@ -0,0 +1,866 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/compiler_types.h>
-+#include <linux/errno.h>
-+#include <linux/fs.h>
-+#include <linux/fsnotify.h>
-+#include <linux/gfp.h>
-+#include <linux/idr.h>
-+#include <linux/init.h>
-+#include <linux/ipc_namespace.h>
-+#include <linux/kdev_t.h>
-+#include <linux/kernel.h>
-+#include <linux/list.h>
-+#include <linux/namei.h>
-+#include <linux/magic.h>
-+#include <linux/major.h>
-+#include <linux/miscdevice.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/mount.h>
-+#include <linux/fs_parser.h>
-+#include <linux/rust_binder.h>
-+#include <linux/sched.h>
-+#include <linux/seq_file.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock_types.h>
-+#include <linux/stddef.h>
-+#include <linux/string.h>
-+#include <linux/types.h>
-+#include <linux/uaccess.h>
-+#include <linux/user_namespace.h>
-+#include <linux/xarray.h>
-+#include <uapi/asm-generic/errno-base.h>
-+#include <uapi/linux/android/binder.h>
-+#include <uapi/linux/android/binderfs.h>
-+
-+#include "binder_internal.h"
-+
-+#define FIRST_INODE 1
-+#define SECOND_INODE 2
-+#define INODE_OFFSET 3
-+#define BINDERFS_MAX_MINOR (1U << MINORBITS)
-+/* Ensure that the initial ipc namespace always has devices available. */
-+#define BINDERFS_MAX_MINOR_CAPPED (BINDERFS_MAX_MINOR - 4)
-+
-+/* === DEFINED IN RUST === */
-+extern int rust_binder_stats_show(struct seq_file *m, void *unused);
-+DEFINE_SHOW_ATTRIBUTE(rust_binder_stats);
-+
-+extern int rust_binder_state_show(struct seq_file *m, void *unused);
-+DEFINE_SHOW_ATTRIBUTE(rust_binder_state);
-+
-+extern int rust_binder_transactions_show(struct seq_file *m, void *unused);
-+DEFINE_SHOW_ATTRIBUTE(rust_binder_transactions);
-+
-+extern int rust_binder_transaction_log_show(struct seq_file *m, void *unused);
-+DEFINE_SHOW_ATTRIBUTE(rust_binder_transaction_log);
-+
-+extern const struct file_operations rust_binder_fops;
-+extern rust_binder_device rust_binder_new_device(char *name);
-+extern void rust_binder_remove_device(rust_binder_device device);
-+/* === END DEFINED IN RUST === */
-+
-+char *rust_binder_devices_param = CONFIG_ANDROID_BINDER_DEVICES_RUST;
-+module_param_named(rust_devices, rust_binder_devices_param, charp, 0444);
-+
-+static dev_t binderfs_dev;
-+static DEFINE_MUTEX(binderfs_minors_mutex);
-+static DEFINE_IDA(binderfs_minors);
-+
-+enum binderfs_param {
-+	Opt_max,
-+	Opt_stats_mode,
-+};
-+
-+enum binderfs_stats_mode {
-+	binderfs_stats_mode_unset,
-+	binderfs_stats_mode_global,
-+};
-+
-+struct binder_features {
-+	bool oneway_spam_detection;
-+	bool extended_error;
-+};
-+
-+static const struct constant_table binderfs_param_stats[] = {
-+	{ "global", binderfs_stats_mode_global },
-+	{}
-+};
-+
-+static const struct fs_parameter_spec binderfs_fs_parameters[] = {
-+	fsparam_u32("max",	Opt_max),
-+	fsparam_enum("stats",	Opt_stats_mode, binderfs_param_stats),
-+	{}
-+};
-+
-+static struct binder_features binder_features = {
-+	.oneway_spam_detection = true,
-+	.extended_error = true,
-+};
-+
-+static inline struct binderfs_info *BINDERFS_SB(const struct super_block *sb)
-+{
-+	return sb->s_fs_info;
-+}
-+
-+bool is_rust_binderfs_device(const struct inode *inode)
-+{
-+	if (inode->i_sb->s_magic == RUST_BINDERFS_SUPER_MAGIC)
-+		return true;
-+
-+	return false;
-+}
-+
-+/**
-+ * binderfs_binder_device_create - allocate inode from super block of a
-+ *                                 binderfs mount
-+ * @ref_inode: inode from wich the super block will be taken
-+ * @userp:     buffer to copy information about new device for userspace to
-+ * @req:       struct binderfs_device as copied from userspace
-+ *
-+ * This function allocates a new binder_device and reserves a new minor
-+ * number for it.
-+ * Minor numbers are limited and tracked globally in binderfs_minors. The
-+ * function will stash a struct binder_device for the specific binder
-+ * device in i_private of the inode.
-+ * It will go on to allocate a new inode from the super block of the
-+ * filesystem mount, stash a struct binder_device in its i_private field
-+ * and attach a dentry to that inode.
-+ *
-+ * Return: 0 on success, negative errno on failure
-+ */
-+static int binderfs_binder_device_create(struct inode *ref_inode,
-+					 struct binderfs_device __user *userp,
-+					 struct binderfs_device *req)
-+{
-+	int minor, ret;
-+	struct dentry *dentry, *root;
-+	rust_binder_device device = NULL;
-+	char *name = NULL;
-+	size_t name_len;
-+	struct inode *inode = NULL;
-+	struct super_block *sb = ref_inode->i_sb;
-+	struct binderfs_info *info = sb->s_fs_info;
-+#if defined(CONFIG_IPC_NS)
-+	bool use_reserve = (info->ipc_ns == &init_ipc_ns);
-+#else
-+	bool use_reserve = true;
-+#endif
-+
-+	/* Reserve new minor number for the new device. */
-+	mutex_lock(&binderfs_minors_mutex);
-+	if (++info->device_count <= info->mount_opts.max)
-+		minor = ida_alloc_max(&binderfs_minors,
-+				      use_reserve ? BINDERFS_MAX_MINOR :
-+						    BINDERFS_MAX_MINOR_CAPPED,
-+				      GFP_KERNEL);
-+	else
-+		minor = -ENOSPC;
-+	if (minor < 0) {
-+		--info->device_count;
-+		mutex_unlock(&binderfs_minors_mutex);
-+		return minor;
-+	}
-+	mutex_unlock(&binderfs_minors_mutex);
-+
-+	ret = -ENOMEM;
-+	req->name[BINDERFS_MAX_NAME] = '\0'; /* NUL-terminate */
-+	name_len = strlen(req->name);
-+	/* Make sure to include terminating NUL byte */
-+	name = kmemdup(req->name, name_len + 1, GFP_KERNEL);
-+	if (!name)
-+		goto err;
-+
-+	device = rust_binder_new_device(name);
-+	if (!device)
-+		goto err;
-+
-+	inode = new_inode(sb);
-+	if (!inode)
-+		goto err;
-+
-+	inode->i_ino = minor + INODE_OFFSET;
-+	simple_inode_init_ts(inode);
-+	init_special_inode(inode, S_IFCHR | 0600,
-+			   MKDEV(MAJOR(binderfs_dev), minor));
-+	inode->i_fop = &rust_binder_fops;
-+	inode->i_uid = info->root_uid;
-+	inode->i_gid = info->root_gid;
-+
-+	req->major = MAJOR(binderfs_dev);
-+	req->minor = minor;
-+
-+	if (userp && copy_to_user(userp, req, sizeof(*req))) {
-+		ret = -EFAULT;
-+		goto err;
-+	}
-+
-+	root = sb->s_root;
-+	inode_lock(d_inode(root));
-+
-+	/* look it up */
-+	dentry = lookup_one_len(name, root, name_len);
-+	if (IS_ERR(dentry)) {
-+		inode_unlock(d_inode(root));
-+		ret = PTR_ERR(dentry);
-+		goto err;
-+	}
-+
-+	if (d_really_is_positive(dentry)) {
-+		/* already exists */
-+		dput(dentry);
-+		inode_unlock(d_inode(root));
-+		ret = -EEXIST;
-+		goto err;
-+	}
-+
-+	inode->i_private = device;
-+	d_instantiate(dentry, inode);
-+	fsnotify_create(root->d_inode, dentry);
-+	inode_unlock(d_inode(root));
-+
-+	return 0;
-+
-+err:
-+	kfree(name);
-+	rust_binder_remove_device(device);
-+	mutex_lock(&binderfs_minors_mutex);
-+	--info->device_count;
-+	ida_free(&binderfs_minors, minor);
-+	mutex_unlock(&binderfs_minors_mutex);
-+	iput(inode);
-+
-+	return ret;
-+}
-+
-+/**
-+ * binder_ctl_ioctl - handle binder device node allocation requests
-+ *
-+ * The request handler for the binder-control device. All requests operate on
-+ * the binderfs mount the binder-control device resides in:
-+ * - BINDER_CTL_ADD
-+ *   Allocate a new binder device.
-+ *
-+ * Return: %0 on success, negative errno on failure.
-+ */
-+static long binder_ctl_ioctl(struct file *file, unsigned int cmd,
-+			     unsigned long arg)
-+{
-+	int ret = -EINVAL;
-+	struct inode *inode = file_inode(file);
-+	struct binderfs_device __user *device = (struct binderfs_device __user *)arg;
-+	struct binderfs_device device_req;
-+
-+	switch (cmd) {
-+	case BINDER_CTL_ADD:
-+		ret = copy_from_user(&device_req, device, sizeof(device_req));
-+		if (ret) {
-+			ret = -EFAULT;
-+			break;
-+		}
-+
-+		ret = binderfs_binder_device_create(inode, device, &device_req);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static void binderfs_evict_inode(struct inode *inode)
-+{
-+	rust_binder_device device = inode->i_private;
-+	struct binderfs_info *info = BINDERFS_SB(inode->i_sb);
-+	int minor = inode->i_ino - INODE_OFFSET;
-+
-+	clear_inode(inode);
-+
-+	if (!S_ISCHR(inode->i_mode) || !device)
-+		return;
-+
-+	mutex_lock(&binderfs_minors_mutex);
-+	--info->device_count;
-+	ida_free(&binderfs_minors, minor);
-+	mutex_unlock(&binderfs_minors_mutex);
-+
-+	rust_binder_remove_device(device);
-+}
-+
-+static int binderfs_fs_context_parse_param(struct fs_context *fc,
-+					   struct fs_parameter *param)
-+{
-+	int opt;
-+	struct binderfs_mount_opts *ctx = fc->fs_private;
-+	struct fs_parse_result result;
-+
-+	opt = fs_parse(fc, binderfs_fs_parameters, param, &result);
-+	if (opt < 0)
-+		return opt;
-+
-+	switch (opt) {
-+	case Opt_max:
-+		if (result.uint_32 > BINDERFS_MAX_MINOR)
-+			return invalfc(fc, "Bad value for '%s'", param->key);
-+
-+		ctx->max = result.uint_32;
-+		break;
-+	case Opt_stats_mode:
-+		if (!capable(CAP_SYS_ADMIN))
-+			return -EPERM;
-+
-+		ctx->stats_mode = result.uint_32;
-+		break;
-+	default:
-+		return invalfc(fc, "Unsupported parameter '%s'", param->key);
-+	}
-+
-+	return 0;
-+}
-+
-+static int binderfs_fs_context_reconfigure(struct fs_context *fc)
-+{
-+	struct binderfs_mount_opts *ctx = fc->fs_private;
-+	struct binderfs_info *info = BINDERFS_SB(fc->root->d_sb);
-+
-+	if (info->mount_opts.stats_mode != ctx->stats_mode)
-+		return invalfc(fc, "Binderfs stats mode cannot be changed during a remount");
-+
-+	info->mount_opts.stats_mode = ctx->stats_mode;
-+	info->mount_opts.max = ctx->max;
-+	return 0;
-+}
-+
-+static int binderfs_show_options(struct seq_file *seq, struct dentry *root)
-+{
-+	struct binderfs_info *info = BINDERFS_SB(root->d_sb);
-+
-+	if (info->mount_opts.max <= BINDERFS_MAX_MINOR)
-+		seq_printf(seq, ",max=%d", info->mount_opts.max);
-+
-+	switch (info->mount_opts.stats_mode) {
-+	case binderfs_stats_mode_unset:
-+		break;
-+	case binderfs_stats_mode_global:
-+		seq_printf(seq, ",stats=global");
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct super_operations binderfs_super_ops = {
-+	.evict_inode    = binderfs_evict_inode,
-+	.show_options	= binderfs_show_options,
-+	.statfs         = simple_statfs,
-+};
-+
-+static inline bool is_binderfs_control_device(const struct dentry *dentry)
-+{
-+	struct binderfs_info *info = dentry->d_sb->s_fs_info;
-+
-+	return info->control_dentry == dentry;
-+}
-+
-+static int binderfs_rename(struct mnt_idmap *idmap,
-+			   struct inode *old_dir, struct dentry *old_dentry,
-+			   struct inode *new_dir, struct dentry *new_dentry,
-+			   unsigned int flags)
-+{
-+	if (is_binderfs_control_device(old_dentry) ||
-+	    is_binderfs_control_device(new_dentry))
-+		return -EPERM;
-+
-+	return simple_rename(idmap, old_dir, old_dentry, new_dir,
-+			     new_dentry, flags);
-+}
-+
-+static int binderfs_unlink(struct inode *dir, struct dentry *dentry)
-+{
-+	if (is_binderfs_control_device(dentry))
-+		return -EPERM;
-+
-+	return simple_unlink(dir, dentry);
-+}
-+
-+static const struct file_operations binder_ctl_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= nonseekable_open,
-+	.unlocked_ioctl	= binder_ctl_ioctl,
-+	.compat_ioctl	= binder_ctl_ioctl,
-+	.llseek		= noop_llseek,
-+};
-+
-+/**
-+ * binderfs_binder_ctl_create - create a new binder-control device
-+ * @sb: super block of the binderfs mount
-+ *
-+ * This function creates a new binder-control device node in the binderfs mount
-+ * referred to by @sb.
-+ *
-+ * Return: 0 on success, negative errno on failure
-+ */
-+static int binderfs_binder_ctl_create(struct super_block *sb)
-+{
-+	int minor, ret;
-+	struct dentry *dentry;
-+	struct binder_device *device;
-+	struct inode *inode = NULL;
-+	struct dentry *root = sb->s_root;
-+	struct binderfs_info *info = sb->s_fs_info;
-+#if defined(CONFIG_IPC_NS)
-+	bool use_reserve = (info->ipc_ns == &init_ipc_ns);
-+#else
-+	bool use_reserve = true;
-+#endif
-+
-+	device = kzalloc(sizeof(*device), GFP_KERNEL);
-+	if (!device)
-+		return -ENOMEM;
-+
-+	/* If we have already created a binder-control node, return. */
-+	if (info->control_dentry) {
-+		ret = 0;
-+		goto out;
-+	}
-+
-+	ret = -ENOMEM;
-+	inode = new_inode(sb);
-+	if (!inode)
-+		goto out;
-+
-+	/* Reserve a new minor number for the new device. */
-+	mutex_lock(&binderfs_minors_mutex);
-+	minor = ida_alloc_max(&binderfs_minors,
-+			      use_reserve ? BINDERFS_MAX_MINOR :
-+					    BINDERFS_MAX_MINOR_CAPPED,
-+			      GFP_KERNEL);
-+	mutex_unlock(&binderfs_minors_mutex);
-+	if (minor < 0) {
-+		ret = minor;
-+		goto out;
-+	}
-+
-+	inode->i_ino = SECOND_INODE;
-+	simple_inode_init_ts(inode);
-+	init_special_inode(inode, S_IFCHR | 0600,
-+			   MKDEV(MAJOR(binderfs_dev), minor));
-+	inode->i_fop = &binder_ctl_fops;
-+	inode->i_uid = info->root_uid;
-+	inode->i_gid = info->root_gid;
-+
-+	refcount_set(&device->ref, 1);
-+	device->binderfs_inode = inode;
-+	device->miscdev.minor = minor;
-+
-+	dentry = d_alloc_name(root, "binder-control");
-+	if (!dentry)
-+		goto out;
-+
-+	inode->i_private = device;
-+	info->control_dentry = dentry;
-+	d_add(dentry, inode);
-+
-+	return 0;
-+
-+out:
-+	kfree(device);
-+	iput(inode);
-+
-+	return ret;
-+}
-+
-+static const struct inode_operations binderfs_dir_inode_operations = {
-+	.lookup = simple_lookup,
-+	.rename = binderfs_rename,
-+	.unlink = binderfs_unlink,
-+};
-+
-+static struct inode *binderfs_make_inode(struct super_block *sb, int mode)
-+{
-+	struct inode *ret;
-+
-+	ret = new_inode(sb);
-+	if (ret) {
-+		ret->i_ino = iunique(sb, BINDERFS_MAX_MINOR + INODE_OFFSET);
-+		ret->i_mode = mode;
-+		simple_inode_init_ts(ret);
-+	}
-+	return ret;
-+}
-+
-+static struct dentry *binderfs_create_dentry(struct dentry *parent,
-+					     const char *name)
-+{
-+	struct dentry *dentry;
-+
-+	dentry = lookup_one_len(name, parent, strlen(name));
-+	if (IS_ERR(dentry))
-+		return dentry;
-+
-+	/* Return error if the file/dir already exists. */
-+	if (d_really_is_positive(dentry)) {
-+		dput(dentry);
-+		return ERR_PTR(-EEXIST);
-+	}
-+
-+	return dentry;
-+}
-+
-+void rust_binderfs_remove_file(struct dentry *dentry)
-+{
-+	struct inode *parent_inode;
-+
-+	parent_inode = d_inode(dentry->d_parent);
-+	inode_lock(parent_inode);
-+	if (simple_positive(dentry)) {
-+		dget(dentry);
-+		simple_unlink(parent_inode, dentry);
-+		d_delete(dentry);
-+		dput(dentry);
-+	}
-+	inode_unlock(parent_inode);
-+}
-+
-+struct dentry *rust_binderfs_create_file(struct dentry *parent, const char *name,
-+					 const struct file_operations *fops,
-+					 void *data)
-+{
-+	struct dentry *dentry;
-+	struct inode *new_inode, *parent_inode;
-+	struct super_block *sb;
-+
-+	parent_inode = d_inode(parent);
-+	inode_lock(parent_inode);
-+
-+	dentry = binderfs_create_dentry(parent, name);
-+	if (IS_ERR(dentry))
-+		goto out;
-+
-+	sb = parent_inode->i_sb;
-+	new_inode = binderfs_make_inode(sb, S_IFREG | 0444);
-+	if (!new_inode) {
-+		dput(dentry);
-+		dentry = ERR_PTR(-ENOMEM);
-+		goto out;
-+	}
-+
-+	new_inode->i_fop = fops;
-+	new_inode->i_private = data;
-+	d_instantiate(dentry, new_inode);
-+	fsnotify_create(parent_inode, dentry);
-+
-+out:
-+	inode_unlock(parent_inode);
-+	return dentry;
-+}
-+
-+static struct dentry *binderfs_create_dir(struct dentry *parent,
-+					  const char *name)
-+{
-+	struct dentry *dentry;
-+	struct inode *new_inode, *parent_inode;
-+	struct super_block *sb;
-+
-+	parent_inode = d_inode(parent);
-+	inode_lock(parent_inode);
-+
-+	dentry = binderfs_create_dentry(parent, name);
-+	if (IS_ERR(dentry))
-+		goto out;
-+
-+	sb = parent_inode->i_sb;
-+	new_inode = binderfs_make_inode(sb, S_IFDIR | 0755);
-+	if (!new_inode) {
-+		dput(dentry);
-+		dentry = ERR_PTR(-ENOMEM);
-+		goto out;
-+	}
-+
-+	new_inode->i_fop = &simple_dir_operations;
-+	new_inode->i_op = &simple_dir_inode_operations;
-+
-+	set_nlink(new_inode, 2);
-+	d_instantiate(dentry, new_inode);
-+	inc_nlink(parent_inode);
-+	fsnotify_mkdir(parent_inode, dentry);
-+
-+out:
-+	inode_unlock(parent_inode);
-+	return dentry;
-+}
-+
-+static int binder_features_show(struct seq_file *m, void *unused)
-+{
-+	bool *feature = m->private;
-+
-+	seq_printf(m, "%d\n", *feature);
-+
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(binder_features);
-+
-+static int init_binder_features(struct super_block *sb)
-+{
-+	struct dentry *dentry, *dir;
-+
-+	dir = binderfs_create_dir(sb->s_root, "features");
-+	if (IS_ERR(dir))
-+		return PTR_ERR(dir);
-+
-+	dentry = rust_binderfs_create_file(dir, "oneway_spam_detection",
-+				      &binder_features_fops,
-+				      &binder_features.oneway_spam_detection);
-+	if (IS_ERR(dentry))
-+		return PTR_ERR(dentry);
-+
-+	dentry = rust_binderfs_create_file(dir, "extended_error",
-+				      &binder_features_fops,
-+				      &binder_features.extended_error);
-+	if (IS_ERR(dentry))
-+		return PTR_ERR(dentry);
-+
-+	return 0;
-+}
-+
-+static int init_binder_logs(struct super_block *sb)
-+{
-+	struct dentry *binder_logs_root_dir, *dentry, *proc_log_dir;
-+	struct binderfs_info *info;
-+	int ret = 0;
-+
-+	binder_logs_root_dir = binderfs_create_dir(sb->s_root,
-+						   "binder_logs");
-+	if (IS_ERR(binder_logs_root_dir)) {
-+		ret = PTR_ERR(binder_logs_root_dir);
-+		goto out;
-+	}
-+
-+	dentry = rust_binderfs_create_file(binder_logs_root_dir, "stats",
-+				      &rust_binder_stats_fops, NULL);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
-+		goto out;
-+	}
-+
-+	dentry = rust_binderfs_create_file(binder_logs_root_dir, "state",
-+				      &rust_binder_state_fops, NULL);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
-+		goto out;
-+	}
-+
-+	dentry = rust_binderfs_create_file(binder_logs_root_dir, "transactions",
-+				      &rust_binder_transactions_fops, NULL);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
-+		goto out;
-+	}
-+
-+	dentry = rust_binderfs_create_file(binder_logs_root_dir,
-+				      "transaction_log",
-+				      &rust_binder_transaction_log_fops,
-+				      NULL);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
-+		goto out;
-+	}
-+
-+	dentry = rust_binderfs_create_file(binder_logs_root_dir,
-+				      "failed_transaction_log",
-+				      &rust_binder_transaction_log_fops,
-+				      NULL);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
-+		goto out;
-+	}
-+
-+	proc_log_dir = binderfs_create_dir(binder_logs_root_dir, "proc");
-+	if (IS_ERR(proc_log_dir)) {
-+		ret = PTR_ERR(proc_log_dir);
-+		goto out;
-+	}
-+	info = sb->s_fs_info;
-+	info->proc_log_dir = proc_log_dir;
-+
-+out:
-+	return ret;
-+}
-+
-+static int binderfs_fill_super(struct super_block *sb, struct fs_context *fc)
-+{
-+	int ret;
-+	struct binderfs_info *info;
-+	struct binderfs_mount_opts *ctx = fc->fs_private;
-+	struct inode *inode = NULL;
-+	struct binderfs_device device_info = {};
-+	const char *name;
-+	size_t len;
-+
-+	sb->s_blocksize = PAGE_SIZE;
-+	sb->s_blocksize_bits = PAGE_SHIFT;
-+
-+	/*
-+	 * The binderfs filesystem can be mounted by userns root in a
-+	 * non-initial userns. By default such mounts have the SB_I_NODEV flag
-+	 * set in s_iflags to prevent security issues where userns root can
-+	 * just create random device nodes via mknod() since it owns the
-+	 * filesystem mount. But binderfs does not allow to create any files
-+	 * including devices nodes. The only way to create binder devices nodes
-+	 * is through the binder-control device which userns root is explicitly
-+	 * allowed to do. So removing the SB_I_NODEV flag from s_iflags is both
-+	 * necessary and safe.
-+	 */
-+	sb->s_iflags &= ~SB_I_NODEV;
-+	sb->s_iflags |= SB_I_NOEXEC;
-+	sb->s_magic = RUST_BINDERFS_SUPER_MAGIC;
-+	sb->s_op = &binderfs_super_ops;
-+	sb->s_time_gran = 1;
-+
-+	sb->s_fs_info = kzalloc(sizeof(struct binderfs_info), GFP_KERNEL);
-+	if (!sb->s_fs_info)
-+		return -ENOMEM;
-+	info = sb->s_fs_info;
-+
-+	info->ipc_ns = get_ipc_ns(current->nsproxy->ipc_ns);
-+
-+	info->root_gid = make_kgid(sb->s_user_ns, 0);
-+	if (!gid_valid(info->root_gid))
-+		info->root_gid = GLOBAL_ROOT_GID;
-+	info->root_uid = make_kuid(sb->s_user_ns, 0);
-+	if (!uid_valid(info->root_uid))
-+		info->root_uid = GLOBAL_ROOT_UID;
-+	info->mount_opts.max = ctx->max;
-+	info->mount_opts.stats_mode = ctx->stats_mode;
-+
-+	inode = new_inode(sb);
-+	if (!inode)
-+		return -ENOMEM;
-+
-+	inode->i_ino = FIRST_INODE;
-+	inode->i_fop = &simple_dir_operations;
-+	inode->i_mode = S_IFDIR | 0755;
-+	simple_inode_init_ts(inode);
-+	inode->i_op = &binderfs_dir_inode_operations;
-+	set_nlink(inode, 2);
-+
-+	sb->s_root = d_make_root(inode);
-+	if (!sb->s_root)
-+		return -ENOMEM;
-+
-+	ret = binderfs_binder_ctl_create(sb);
-+	if (ret)
-+		return ret;
-+
-+	name = rust_binder_devices_param;
-+	for (len = strcspn(name, ","); len > 0; len = strcspn(name, ",")) {
-+		strscpy(device_info.name, name, len + 1);
-+		ret = binderfs_binder_device_create(inode, NULL, &device_info);
-+		if (ret)
-+			return ret;
-+		name += len;
-+		if (*name == ',')
-+			name++;
-+	}
-+
-+	ret = init_binder_features(sb);
-+	if (ret)
-+		return ret;
-+
-+	if (info->mount_opts.stats_mode == binderfs_stats_mode_global)
-+		return init_binder_logs(sb);
-+
-+	return 0;
-+}
-+
-+static int binderfs_fs_context_get_tree(struct fs_context *fc)
-+{
-+	return get_tree_nodev(fc, binderfs_fill_super);
-+}
-+
-+static void binderfs_fs_context_free(struct fs_context *fc)
-+{
-+	struct binderfs_mount_opts *ctx = fc->fs_private;
-+
-+	kfree(ctx);
-+}
-+
-+static const struct fs_context_operations binderfs_fs_context_ops = {
-+	.free		= binderfs_fs_context_free,
-+	.get_tree	= binderfs_fs_context_get_tree,
-+	.parse_param	= binderfs_fs_context_parse_param,
-+	.reconfigure	= binderfs_fs_context_reconfigure,
-+};
-+
-+static int binderfs_init_fs_context(struct fs_context *fc)
-+{
-+	struct binderfs_mount_opts *ctx;
-+
-+	ctx = kzalloc(sizeof(struct binderfs_mount_opts), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	ctx->max = BINDERFS_MAX_MINOR;
-+	ctx->stats_mode = binderfs_stats_mode_unset;
-+
-+	fc->fs_private = ctx;
-+	fc->ops = &binderfs_fs_context_ops;
-+
-+	return 0;
-+}
-+
-+static void binderfs_kill_super(struct super_block *sb)
-+{
-+	struct binderfs_info *info = sb->s_fs_info;
-+
-+	/*
-+	 * During inode eviction struct binderfs_info is needed.
-+	 * So first wipe the super_block then free struct binderfs_info.
-+	 */
-+	kill_litter_super(sb);
-+
-+	if (info && info->ipc_ns)
-+		put_ipc_ns(info->ipc_ns);
-+
-+	kfree(info);
-+}
-+
-+static struct file_system_type binder_fs_type = {
-+	.name			= "binder",
-+	.init_fs_context	= binderfs_init_fs_context,
-+	.parameters		= binderfs_fs_parameters,
-+	.kill_sb		= binderfs_kill_super,
-+	.fs_flags		= FS_USERNS_MOUNT,
-+};
-+
-+int init_rust_binderfs(void)
-+{
-+	int ret;
-+	const char *name;
-+	size_t len;
-+
-+	/* Verify that the default binderfs device names are valid. */
-+	name = rust_binder_devices_param;
-+	for (len = strcspn(name, ","); len > 0; len = strcspn(name, ",")) {
-+		if (len > BINDERFS_MAX_NAME)
-+			return -E2BIG;
-+		name += len;
-+		if (*name == ',')
-+			name++;
-+	}
-+
-+	/* Allocate new major number for binderfs. */
-+	ret = alloc_chrdev_region(&binderfs_dev, 0, BINDERFS_MAX_MINOR,
-+				  "rust_binder");
-+	if (ret)
-+		return ret;
-+
-+	ret = register_filesystem(&binder_fs_type);
-+	if (ret) {
-+		unregister_chrdev_region(binderfs_dev, BINDERFS_MAX_MINOR);
-+		return ret;
-+	}
-+
-+	return ret;
-+}
-diff --git a/include/linux/rust_binder.h b/include/linux/rust_binder.h
-new file mode 100644
-index 000000000000..1e44a0a5f6a1
---- /dev/null
-+++ b/include/linux/rust_binder.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_RUST_BINDER_H
-+#define _LINUX_RUST_BINDER_H
-+
-+#include <uapi/linux/android/binderfs.h>
-+
-+/*
-+ * This typedef is used for Rust binder driver instances. The driver object is
-+ * completely opaque from C and can only be accessed via calls into Rust, so we
-+ * use a typedef.
-+ */
-+typedef void *rust_binder_device;
-+
-+int init_rust_binderfs(void);
-+
-+#endif
-diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
-index 6325d1d0e90f..e5a20c1498af 100644
---- a/include/uapi/linux/magic.h
-+++ b/include/uapi/linux/magic.h
-@@ -82,6 +82,7 @@
- #define BINFMTFS_MAGIC          0x42494e4d
- #define DEVPTS_SUPER_MAGIC	0x1cd1
- #define BINDERFS_SUPER_MAGIC	0x6c6f6f70
-+#define RUST_BINDERFS_SUPER_MAGIC	0x6c6f6f71
- #define FUTEXFS_SUPER_MAGIC	0xBAD1DEA
- #define PIPEFS_MAGIC            0x50495045
- #define PROC_SUPER_MAGIC	0x9fa0
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 00a66666f00a..ffeea312f2fd 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -17,11 +17,13 @@
- #include <linux/security.h>
- #include <linux/slab.h>
- #include <linux/refcount.h>
-+#include <linux/rust_binder.h>
- #include <linux/wait.h>
- #include <linux/sched.h>
- #include <linux/task_work.h>
- #include <linux/workqueue.h>
- #include <uapi/linux/android/binder.h>
-+#include <uapi/linux/android/binderfs.h>
  
- /* `bindgen` gets confused at certain things. */
- const size_t BINDINGS_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 435d4c2ac5fc..f4d58da9202e 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -99,6 +99,13 @@ impl ThisModule {
-     pub const unsafe fn from_ptr(ptr: *mut bindings::module) -> ThisModule {
-         ThisModule(ptr)
-     }
-+
-+    /// Access the raw pointer for this module.
+ /// This represents a thread that's used with binder.
+@@ -82,6 +150,29 @@ pub(crate) struct Thread {
+     pub(crate) process: Arc<Process>,
+     #[pin]
+     inner: SpinLock<InnerThread>,
++    #[pin]
++    work_condvar: CondVar,
++    /// Used to insert this thread into the process' `ready_threads` list.
 +    ///
-+    /// It is up to the user to use it correctly.
-+    pub const fn as_ptr(&self) -> *mut bindings::module {
-+        self.0
++    /// INVARIANT: May never be used for any other list than the `self.process.ready_threads`.
++    #[pin]
++    links: ListLinks,
++    #[pin]
++    links_track: AtomicListArcTracker,
++}
++
++kernel::list::impl_has_list_links! {
++    impl HasListLinks<0> for Thread { self.links }
++}
++kernel::list::impl_list_arc_safe! {
++    impl ListArcSafe<0> for Thread {
++        tracked_by links_track: AtomicListArcTracker;
++    }
++}
++kernel::list::impl_list_item! {
++    impl ListItem<0> for Thread {
++        using ListLinks;
 +    }
  }
  
- #[cfg(not(any(testlib, test)))]
+ impl Thread {
+@@ -90,6 +181,9 @@ pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
+             id,
+             process,
+             inner <- kernel::new_spinlock!(InnerThread::new(), "Thread::inner"),
++            work_condvar <- kernel::new_condvar!("Thread::work_condvar"),
++            links <- ListLinks::new(),
++            links_track <- AtomicListArcTracker::new(),
+         }))
+     }
+ 
+@@ -100,6 +194,123 @@ pub(crate) fn get_extended_error(&self, data: UserSlicePtr) -> Result {
+         Ok(())
+     }
+ 
++    /// Attempts to fetch a work item from the thread-local queue. The behaviour if the queue is
++    /// empty depends on `wait`: if it is true, the function waits for some work to be queued (or a
++    /// signal); otherwise it returns indicating that none is available.
++    fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
++        {
++            let mut inner = self.inner.lock();
++            if inner.looper_need_return {
++                return Ok(inner.pop_work());
++            }
++        }
++
++        // Try once if the caller does not want to wait.
++        if !wait {
++            return self.inner.lock().pop_work().ok_or(EAGAIN).map(Some);
++        }
++
++        // Loop waiting only on the local queue (i.e., not registering with the process queue).
++        let mut inner = self.inner.lock();
++        loop {
++            if let Some(work) = inner.pop_work() {
++                return Ok(Some(work));
++            }
++
++            inner.looper_flags |= LOOPER_WAITING;
++            let signal_pending = self.work_condvar.wait(&mut inner);
++            inner.looper_flags &= !LOOPER_WAITING;
++
++            if signal_pending {
++                return Err(EINTR);
++            }
++            if inner.looper_need_return {
++                return Ok(None);
++            }
++        }
++    }
++
++    /// Attempts to fetch a work item from the thread-local queue, falling back to the process-wide
++    /// queue if none is available locally.
++    ///
++    /// This must only be called when the thread is not participating in a transaction chain. If it
++    /// is, the local version (`get_work_local`) should be used instead.
++    fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
++        // Try to get work from the thread's work queue, using only a local lock.
++        {
++            let mut inner = self.inner.lock();
++            if let Some(work) = inner.pop_work() {
++                return Ok(Some(work));
++            }
++            if inner.looper_need_return {
++                drop(inner);
++                return Ok(self.process.get_work());
++            }
++        }
++
++        // If the caller doesn't want to wait, try to grab work from the process queue.
++        //
++        // We know nothing will have been queued directly to the thread queue because it is not in
++        // a transaction and it is not in the process' ready list.
++        if !wait {
++            return self.process.get_work().ok_or(EAGAIN).map(Some);
++        }
++
++        // Get work from the process queue. If none is available, atomically register as ready.
++        let reg = match self.process.get_work_or_register(self) {
++            Either::Left(work) => return Ok(Some(work)),
++            Either::Right(reg) => reg,
++        };
++
++        let mut inner = self.inner.lock();
++        loop {
++            if let Some(work) = inner.pop_work() {
++                return Ok(Some(work));
++            }
++
++            inner.looper_flags |= LOOPER_WAITING | LOOPER_WAITING_PROC;
++            let signal_pending = self.work_condvar.wait(&mut inner);
++            inner.looper_flags &= !(LOOPER_WAITING | LOOPER_WAITING_PROC);
++
++            if signal_pending || inner.looper_need_return {
++                // We need to return now. We need to pull the thread off the list of ready threads
++                // (by dropping `reg`), then check the state again after it's off the list to
++                // ensure that something was not queued in the meantime. If something has been
++                // queued, we just return it (instead of the error).
++                drop(inner);
++                drop(reg);
++
++                let res = match self.inner.lock().pop_work() {
++                    Some(work) => Ok(Some(work)),
++                    None if signal_pending => Err(EINTR),
++                    None => Ok(None),
++                };
++                return res;
++            }
++        }
++    }
++
++    /// Push the provided work item to be delivered to user space via this thread.
++    ///
++    /// Returns whether the item was successfully pushed. This can only fail if the work item is
++    /// already in a work list.
++    #[allow(dead_code)]
++    pub(crate) fn push_work(&self, work: DLArc<dyn DeliverToRead>) -> PushWorkRes {
++        let sync = work.should_sync_wakeup();
++
++        let res = self.inner.lock().push_work(work);
++
++        if res.is_ok() {
++            if sync {
++                self.work_condvar.notify_sync();
++            } else {
++                self.work_condvar.notify_one();
++            }
++        }
++
++        res
++    }
++
+     fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+         let write_start = req.write_buffer.wrapping_add(req.write_consumed);
+         let write_len = req.write_size - req.write_consumed;
+@@ -127,11 +338,19 @@ fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+         Ok(())
+     }
+ 
+-    fn read(self: &Arc<Self>, req: &mut BinderWriteRead, _wait: bool) -> Result {
++    fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+         let read_start = req.read_buffer.wrapping_add(req.read_consumed);
+         let read_len = req.read_size - req.read_consumed;
+         let mut writer = UserSlicePtr::new(read_start as _, read_len as _).writer();
+-        let in_pool = self.inner.lock().is_looper();
++        let (in_pool, use_proc_queue) = {
++            let inner = self.inner.lock();
++            (inner.is_looper(), inner.should_use_process_work_queue())
++        };
++        let getter = if use_proc_queue {
++            Self::get_work
++        } else {
++            Self::get_work_local
++        };
+ 
+         // Reserve some room at the beginning of the read buffer so that we can send a
+         // BR_SPAWN_LOOPER if we need to.
+@@ -145,13 +364,35 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, _wait: bool) -> Result {
+         }
+ 
+         // Loop doing work while there is room in the buffer.
+-        #[allow(clippy::never_loop)]
++        let initial_len = writer.len();
+         while writer.len() >= size_of::<bindings::binder_transaction_data_secctx>() + 4 {
+-            // There is enough space in the output buffer to process another work item.
+-            //
+-            // However, we have not yet added work items to the driver, so we immediately break
+-            // from the loop.
+-            break;
++            match getter(self, wait && initial_len == writer.len()) {
++                Ok(Some(work)) => {
++                    let work_ty = work.debug_name();
++                    match work.into_arc().do_work(self, &mut writer) {
++                        Ok(true) => {}
++                        Ok(false) => break,
++                        Err(err) => {
++                            pr_warn!("Failure inside do_work of type {}.", work_ty);
++                            return Err(err);
++                        }
++                    }
++                }
++                Ok(None) => {
++                    break;
++                }
++                Err(err) => {
++                    // Propagate the error if we haven't written anything else.
++                    if err != EINTR && err != EAGAIN {
++                        pr_warn!("Failure in work getter: {:?}", err);
++                    }
++                    if initial_len == writer.len() {
++                        return Err(err);
++                    } else {
++                        break;
++                    }
++                }
++            }
+         }
+ 
+         req.read_consumed += read_len - writer.len() as u64;
+@@ -178,6 +419,7 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlicePtr, wait: bool) -> Re
+                 );
+                 req.read_consumed = 0;
+                 writer.write(&req)?;
++                self.inner.lock().looper_need_return = false;
+                 return Err(err);
+             }
+         }
+@@ -197,10 +439,32 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlicePtr, wait: bool) -> Re
+ 
+         // Write the request back so that the consumed fields are visible to the caller.
+         writer.write(&req)?;
++
++        self.inner.lock().looper_need_return = false;
++
+         ret
+     }
+ 
++    /// Make the call to `get_work` or `get_work_local` return immediately, if any.
++    pub(crate) fn exit_looper(&self) {
++        let mut inner = self.inner.lock();
++        let should_notify = inner.looper_flags & LOOPER_WAITING != 0;
++        if should_notify {
++            inner.looper_need_return = true;
++        }
++        drop(inner);
++
++        if should_notify {
++            self.work_condvar.notify_one();
++        }
++    }
++
+     pub(crate) fn release(self: &Arc<Self>) {
+         self.inner.lock().is_dead = true;
++
++        // Cancel all pending work items.
++        while let Ok(Some(work)) = self.get_work_local(false) {
++            work.into_arc().cancel();
++        }
+     }
+ }
 diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index da37bfa97211..f78d2e75a795 100644
+index b388f3d75d49..29108cd3377c 100644
 --- a/scripts/Makefile.build
 +++ b/scripts/Makefile.build
 @@ -262,7 +262,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
  # Compile Rust sources (.rs)
  # ---------------------------------------------------------------------------
  
--rust_allowed_features := new_uninit,offset_of
-+rust_allowed_features := const_maybe_uninit_zeroed,new_uninit,offset_of
+-rust_allowed_features := const_maybe_uninit_zeroed,new_uninit,offset_of,allocator_api
++rust_allowed_features := const_maybe_uninit_zeroed,new_uninit,offset_of,allocator_api,receiver_trait
  
  # `--out-dir` is required to avoid temporaries being created by `rustc` in the
  # current working directory, which may be not accessible in the out-of-tree
