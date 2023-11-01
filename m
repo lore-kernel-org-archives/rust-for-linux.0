@@ -1,76 +1,197 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869F8134CD
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 15:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40A91862A
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 18:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vb/Orkog"
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3504137
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 08:05:04 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5b31c5143a0so24239617b3.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 08:05:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3I2kxRde"
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD4F10E
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Nov 2023 11:02:19 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-da040c021aeso11444276.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Nov 2023 11:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698851104; x=1699455904; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=U5JMfft7VRMY1/SH83cz0n5I8SgamFYvIt7Euj5oTok=;
-        b=vb/OrkogrFazXb8du6WiG8E0f05StPpyjqDevqHkl+dhnC/v6aI9MM4ptn6M1VnKAb
-         ol0SrssmCWlsXvehDeI63AvfYVcf4QLzaRKlCO0IzJ7Zdh/dyOWrFsmWHUGoXOeEB/FV
-         bnN2T/nWDWzfF6JobVqOAdlWcEyzqYT08iZoKvMpSMrc6DmAn7V5EaD7Z1/h0bmDWQnF
-         IoP/1yPJ6rFtuG/HxvixktkQfGQAElU2G86HHBPKIi77nv2hzvsDV4IYfqvYRZcflFVa
-         AzgrfN/6lkPCG4y6JB36rBRVjLwP6i5fqoR4KhBESu5h2rJa7rFDdr04K3mVFG3hWXVT
-         AEeg==
+        d=google.com; s=20230601; t=1698861738; x=1699466538; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yccWDwXNSEplPRKvHpKQnUcNVcHf6PL+CKwkhXIxnDA=;
+        b=3I2kxRdeBmgOaPOh6ks67zMG0Efb6AsWHbT2L+Hj5nP8Fwcoro0S7pMagc8TwwIUv3
+         KXKymBIjCi+U50P244JW3hE3n6B62Z843BWiD0JYrhjj862XfEGTyqCIwFr09jlWU8pA
+         QjwJj0kMNPx8SFWg3K5iZmDcqiGSNMSfqMqFbMstl+JIbY8IUL9k9+dwXEITuPY1gpz4
+         HG9HU2M6rbH/d3d48KYKMTis3R8eVbIb8nipPzcI9PQAnIf6+bxsifEx9ArtYhFmaGd3
+         1i/Ao0UPwZTWct8+fICPFsva/yNwLttU6yYJwYSRUhMnz7tL+jJ0mITCPOuRlbotINoj
+         hyig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698851104; x=1699455904;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U5JMfft7VRMY1/SH83cz0n5I8SgamFYvIt7Euj5oTok=;
-        b=rOOXm2zht2dfExc9FBh7UaDx53EAZyL7BfEKlXM35t1TOQJyJkrJW2VcY5iho7RNZM
-         kCmZW7qSNSST/tfGhibYdoIMM7hFQa+AoWWqYoGTYGVs1q/JxV6v6FHMGpV32KIxqjeZ
-         YTOu17XU/ectQqLwbs8ePMNsXMrLZxREsEjPIEWfGacA3zOuoLYQQMO0g36zRBkmHAbl
-         StzAu5fdNB/liOn0ZmxSgSn36BJWRLWQAzCv7lleskxKset8NW1pKs4ANGVLBoPYkY+9
-         vpkjykqkTcAbuD8pkXv1BcAHu85R8X+M3/LFv8f/el6rFgcwU896/ICt9DUP/ny2t1nw
-         FBhg==
-X-Gm-Message-State: AOJu0YyrgVzd7CZbix6YxR/1WmmfgHFuGsc+GDqB36onDGhJTzye0Cqe
-	Y7eW/IAFir9HRTwwwZAeWglmQQvM7X4yuOQgI1cNNw==
-X-Google-Smtp-Source: AGHT+IHrEbVxBY+XzSn2ZBZ3zONd/D9hLkWbWEz2PmPQjq4oRq/WXW32g+UGBWQxPQJJGRz72RQQCoxr/sfuP3nW6FA=
-X-Received: by 2002:a81:a906:0:b0:5a8:e303:1db2 with SMTP id
- g6-20020a81a906000000b005a8e3031db2mr15856440ywh.23.1698851103748; Wed, 01
- Nov 2023 08:05:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698861738; x=1699466538;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yccWDwXNSEplPRKvHpKQnUcNVcHf6PL+CKwkhXIxnDA=;
+        b=Yzp3TmO3B/wFlO/8IA3fBFQRXbCA7O9ZOhdcvo2mA2GhKQanwYZwTa54MI/AR8iIVu
+         lrqhnc/xHAkXiMuXLL+PTitsGtAihPMFQAJb73/zSr2hCscZmkbabjtt1USAUkdadX06
+         m9Uk2fAJgrm8/+IeYKmR14vGxvlA+0Vd2mk7mU5KnwwPUPTuPsNvsnCHvLryJPursnfe
+         FzzoUUMfEcvcWJLFOurW6ieh3KtHasffGlq6WREDnL3xyA2njWFwY4FQ5OWcaj8VvnOP
+         QrYFBJnk8GE5iY0MLD6n84f1OsaxUZRP+U8w3y4JDj8GzhjWoKhlDalzwkL9meLfL2Y3
+         XoNA==
+X-Gm-Message-State: AOJu0YyWvQx6N5od7sUrCd4ZiCjN583dMNcoUdmyfcHw44qfX/TRiV4k
+	7yoSK3FNREO57HTT+jiSn9et/+VBu2VWgYo=
+X-Google-Smtp-Source: AGHT+IGsOeLOtqnoWXxk0cyVQV5wjyVE1WqpR4bJ+iZ0KnC/C8wa60VefDXitdSpRcUJ6zkaT16LhYv19QlqVUY=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:1083:b0:da0:567d:f819 with SMTP
+ id v3-20020a056902108300b00da0567df819mr389299ybu.10.1698861738397; Wed, 01
+ Nov 2023 11:02:18 -0700 (PDT)
+Date: Wed, 01 Nov 2023 18:01:31 +0000
+In-Reply-To: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <3cc3b66d-7190-477c-af04-a5d06a0d50fe@lunn.ch>
- <ZTLH5o0GlFBYsAHq@boqun-archlinux>
-In-Reply-To: <ZTLH5o0GlFBYsAHq@boqun-archlinux>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 1 Nov 2023 16:04:52 +0100
-Message-ID: <CACRpkdaAsC6Uj0nKwGFANWrf5j68xZgKbaVaEB02iJ=XQoJt8g@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20231101-rust-binder-v1-1-08ba9197f637@google.com>
+Subject: [PATCH RFC 01/20] rust_binder: define a Rust binder driver
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Matt Gilbride <mattgilbride@google.com>, 
+	Jeffrey Vander Stoep <jeffv@google.com>, Matthew Maurer <mmaurer@google.com>, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-[Andrew wrote]
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
 
-> > Network developers have expressed an interesting in testing Rust code
-> > on big endian systems, since the code should work on both endians. It
-> > might be easier to get an ARM board running big endian than get access
-> > to an S390x machine.
+Define the Rust binder driver, and set up the helpers for making C types
+accessible from Rust.
 
-If you mean ARM32 BE I have that on the IXP4xx systems up and running
-mainline kernels and mainline OpenWrt now, but I haven't
-seen rust enablement for ARM32 yet (but it can't be that hard).
+Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ drivers/android/Kconfig             | 11 +++++++++++
+ drivers/android/Makefile            |  1 +
+ drivers/android/rust_binder.rs      | 21 +++++++++++++++++++++
+ include/uapi/linux/android/binder.h | 30 ++++++++++++++++--------------
+ rust/bindings/bindings_helper.h     |  1 +
+ 5 files changed, 50 insertions(+), 14 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
+index 07aa8ae0a058..fcfd25c9a016 100644
+--- a/drivers/android/Kconfig
++++ b/drivers/android/Kconfig
+@@ -13,6 +13,17 @@ config ANDROID_BINDER_IPC
+ 	  Android process, using Binder to identify, invoke and pass arguments
+ 	  between said processes.
+ 
++config ANDROID_BINDER_IPC_RUST
++	bool "Android Binder IPC Driver in Rust"
++	depends on MMU && RUST
++	help
++	  Binder is used in Android for both communication between processes,
++	  and remote method invocation.
++
++	  This means one Android process can call a method/routine in another
++	  Android process, using Binder to identify, invoke and pass arguments
++	  between said processes.
++
+ config ANDROID_BINDERFS
+ 	bool "Android Binderfs filesystem"
+ 	depends on ANDROID_BINDER_IPC
+diff --git a/drivers/android/Makefile b/drivers/android/Makefile
+index c9d3d0c99c25..6348f75832ca 100644
+--- a/drivers/android/Makefile
++++ b/drivers/android/Makefile
+@@ -4,3 +4,4 @@ ccflags-y += -I$(src)			# needed for trace events
+ obj-$(CONFIG_ANDROID_BINDERFS)		+= binderfs.o
+ obj-$(CONFIG_ANDROID_BINDER_IPC)	+= binder.o binder_alloc.o
+ obj-$(CONFIG_ANDROID_BINDER_IPC_SELFTEST) += binder_alloc_selftest.o
++obj-$(CONFIG_ANDROID_BINDER_IPC_RUST)	+= rust_binder.o
+diff --git a/drivers/android/rust_binder.rs b/drivers/android/rust_binder.rs
+new file mode 100644
+index 000000000000..4b3d6676a9cf
+--- /dev/null
++++ b/drivers/android/rust_binder.rs
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Binder -- the Android IPC mechanism.
++
++use kernel::prelude::*;
++
++module! {
++    type: BinderModule,
++    name: "rust_binder",
++    author: "Wedson Almeida Filho, Alice Ryhl",
++    description: "Android Binder",
++    license: "GPL",
++}
++
++struct BinderModule {}
++
++impl kernel::Module for BinderModule {
++    fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
++        Ok(Self {})
++    }
++}
+diff --git a/include/uapi/linux/android/binder.h b/include/uapi/linux/android/binder.h
+index 5f636b5afcd7..d44a8118b2ed 100644
+--- a/include/uapi/linux/android/binder.h
++++ b/include/uapi/linux/android/binder.h
+@@ -251,20 +251,22 @@ struct binder_extended_error {
+ 	__s32	param;
+ };
+ 
+-#define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)
+-#define BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
+-#define BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
+-#define BINDER_SET_IDLE_PRIORITY	_IOW('b', 6, __s32)
+-#define BINDER_SET_CONTEXT_MGR		_IOW('b', 7, __s32)
+-#define BINDER_THREAD_EXIT		_IOW('b', 8, __s32)
+-#define BINDER_VERSION			_IOWR('b', 9, struct binder_version)
+-#define BINDER_GET_NODE_DEBUG_INFO	_IOWR('b', 11, struct binder_node_debug_info)
+-#define BINDER_GET_NODE_INFO_FOR_REF	_IOWR('b', 12, struct binder_node_info_for_ref)
+-#define BINDER_SET_CONTEXT_MGR_EXT	_IOW('b', 13, struct flat_binder_object)
+-#define BINDER_FREEZE			_IOW('b', 14, struct binder_freeze_info)
+-#define BINDER_GET_FROZEN_INFO		_IOWR('b', 15, struct binder_frozen_status_info)
+-#define BINDER_ENABLE_ONEWAY_SPAM_DETECTION	_IOW('b', 16, __u32)
+-#define BINDER_GET_EXTENDED_ERROR	_IOWR('b', 17, struct binder_extended_error)
++enum {
++	BINDER_WRITE_READ		= _IOWR('b', 1, struct binder_write_read),
++	BINDER_SET_IDLE_TIMEOUT		= _IOW('b', 3, __s64),
++	BINDER_SET_MAX_THREADS		= _IOW('b', 5, __u32),
++	BINDER_SET_IDLE_PRIORITY	= _IOW('b', 6, __s32),
++	BINDER_SET_CONTEXT_MGR		= _IOW('b', 7, __s32),
++	BINDER_THREAD_EXIT		= _IOW('b', 8, __s32),
++	BINDER_VERSION			= _IOWR('b', 9, struct binder_version),
++	BINDER_GET_NODE_DEBUG_INFO	= _IOWR('b', 11, struct binder_node_debug_info),
++	BINDER_GET_NODE_INFO_FOR_REF	= _IOWR('b', 12, struct binder_node_info_for_ref),
++	BINDER_SET_CONTEXT_MGR_EXT	= _IOW('b', 13, struct flat_binder_object),
++	BINDER_FREEZE			= _IOW('b', 14, struct binder_freeze_info),
++	BINDER_GET_FROZEN_INFO		= _IOWR('b', 15, struct binder_frozen_status_info),
++	BINDER_ENABLE_ONEWAY_SPAM_DETECTION	= _IOW('b', 16, __u32),
++	BINDER_GET_EXTENDED_ERROR	= _IOWR('b', 17, struct binder_extended_error),
++};
+ 
+ /*
+  * NOTE: Two special error codes you should check for when calling
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 14f84aeef62d..00a66666f00a 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -21,6 +21,7 @@
+ #include <linux/sched.h>
+ #include <linux/task_work.h>
+ #include <linux/workqueue.h>
++#include <uapi/linux/android/binder.h>
+ 
+ /* `bindgen` gets confused at certain things. */
+ const size_t BINDINGS_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+
+-- 
+2.42.0.820.g83a721a137-goog
+
