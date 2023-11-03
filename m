@@ -1,92 +1,189 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD2717740
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Nov 2023 13:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEEA12B80
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Nov 2023 10:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R394e4f4"
-Received: from mail-lj1-x24a.google.com (mail-lj1-x24a.google.com [IPv6:2a00:1450:4864:20::24a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA2EA6
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Nov 2023 06:34:03 -0700 (PDT)
-Received: by mail-lj1-x24a.google.com with SMTP id 38308e7fff4ca-2c515541a25so10792201fa.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Nov 2023 06:34:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698932041; x=1699536841; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WqKGEH39PPHnNiVVPBYzmnT4CUHHmCMU/QKY1ys0JII=;
-        b=R394e4f4qq7ztI0MViJyMwbEY7UcS/wCR+LSNT9eudN1QTgPaMXQPIyYx+GeItKS8/
-         b5VspsLi7Hs22sGggSdIc15wRuBmpceEzAHp9DuxXmcoPzReV6q1c6qCuqJ1vzMk8uRC
-         I49gaz6yEX+8wOURPLNxB0Sg0l6F9BGkOb2amocklcXADY+FB8IpGiPMCr+/v9mrW/cJ
-         PeNPY6i2LP0aBov00RHveQ6Jt/I4iAB39Shb9Df8t16LugilBNhlBWw2nzf/5lwFwMRe
-         s29ncItOcblDgvPrI2i2p89HVcUZyFtAgV/2k5DOsbbBtE8mkgHUtPjZdwEc8oL0bZz8
-         Ywsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698932041; x=1699536841;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WqKGEH39PPHnNiVVPBYzmnT4CUHHmCMU/QKY1ys0JII=;
-        b=P82vV2Xwh7A0aGFG3kYZtvM7hRayCcB5fpxH0Ay0zwQUrzGCp6V4kAOPY4Y9S2npZw
-         GGVxE9LfcasS8DfcJqDeI89AC79RuDRuuwM4w69K1DVi26naxyHFBMA3ffinINKlwIyQ
-         Yc8KZavc1fGEj1FyosBprfmHmXWnrwcL80N3qaJ+hGODriHJ9YU6S1vnIQajAKDSU6oE
-         ZXu5ZkRTsMTJVopvJa+KUOX5nURXi450LvpuPDCh+XktWG0se49vVx127dUeh+dFkpm/
-         FCVNxcaEqV+EWPdB9VAA8fy0P5c03UOsG1VgbvmvKpr8ojppYZXKWgMDBfL8tZyzTITU
-         LOVQ==
-X-Gm-Message-State: AOJu0YwwbdaQSYqkti6/CcYkdtGSmb7JB07mjIgYeEilNQm0hL/rtyY4
-	w1v5TF+1CvgxBEYm2bK8tude1QbIZDg0my0=
-X-Google-Smtp-Source: AGHT+IHHcuJIbdIA/IEROtwhycH9Ns+UZKGzaakNQHc0nnR+AjCcTXXBYzk5dHbVlhFkDftcJwfdNZadK69Q11s=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:3216:0:b0:2c5:d52:a08d with SMTP id
- y22-20020a2e3216000000b002c50d52a08dmr214374ljy.1.1698932041545; Thu, 02 Nov
- 2023 06:34:01 -0700 (PDT)
-Date: Thu,  2 Nov 2023 13:33:58 +0000
-In-Reply-To: <ZUKaSD4sPtHzlqfT@google.com>
+	dkim=pass (1024-bit key) header.d=kloenk.de header.i=@kloenk.de header.b="cGvzu0hp"
+X-Greylist: delayed 499 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Nov 2023 03:19:47 PDT
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EBCA13E;
+	Fri,  3 Nov 2023 03:19:47 -0700 (PDT)
+From: Finn Behrens <me@kloenk.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.de; s=mail;
+	t=1699006284; bh=uFm9yTM2gNBR2nhs8DI+yEFaDN8T7d1KpWt/J5S5IsY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cGvzu0hphgDT6RAtZ8NA5i5tRw4xxFLqZ/TuW8L0zuhy0d+9jKPmzBYlenR6eHCwl
+	 Sv1bcfTkrVfZpXcFJyUlI6o7aQdJxhEC15cakjhCCfA/VXuuzFyK5RIEhpb+FkmxzE
+	 XiYUTLxZMb084mZkRPDAvn3ypBQefW2u90F/ZkfM=
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?utf-8?b?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+ Joel Fernandes <joel@joelfernandes.org>,
+ Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Matt Gilbride <mattgilbride@google.com>,
+ Jeffrey Vander Stoep <jeffv@google.com>, Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH RFC 02/20] rust_binder: add binderfs support to Rust
+ binder
+Date: Fri, 03 Nov 2023 11:11:22 +0100
+Message-ID: <B4D1A3E2-1AD9-434A-90AC-8D33532D4A1B@kloenk.de>
+In-Reply-To: <20231101-rust-binder-v1-2-08ba9197f637@google.com>
+References: <20231101-rust-binder-v1-0-08ba9197f637@google.com>
+ <20231101-rust-binder-v1-2-08ba9197f637@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ZUKaSD4sPtHzlqfT@google.com>
-X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-Message-ID: <20231102133358.324909-1-aliceryhl@google.com>
-Subject: Re: [PATCH RFC 00/20] Setting up Binder for the future
-From: Alice Ryhl <aliceryhl@google.com>
-To: cmllamas@google.com
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, brauner@kernel.org, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, jeffv@google.com, joel@joelfernandes.org, 
-	linux-kernel@vger.kernel.org, maco@android.com, mattgilbride@google.com, 
-	mmaurer@google.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	surenb@google.com, tkjos@android.com, wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Carlos Llamas <cmllamas@google.com> writes:
-> On Wed, Nov 01, 2023 at 06:01:30PM +0000, Alice Ryhl wrote:
->> Although this rewrite completely rethinks how the code is structured and
->> how assumptions are enforced, we do not fundamentally change *how* the
->> driver does the things it does. A lot of careful thought has gone into
->> the existing design. The rewrite is aimed rather at improving code
->> health, structure, readability, robustness, security, maintainability
->> and extensibility. We also include more inline documentation, and
-> 
-> Can you expand a bit more on what the plan is here? Is it a two step
-> process? e.g. replacing first and then revisiting the *how* binder does
-> things later?
 
-Yes, a big part of the motivation behind this rewrite is to make it
-easier to continue evolving Binder.
 
-For example, we would like to make Binder have more thorough epoll
-support and the ability for a single-threaded server to handle many
-incoming transactions at the same time, similar to how you can use many
-non-blocking tcp sockets on a single thread today. This would have a
-number of performance benefits, like fewer threads, less contact
-switching, etc.
+On 1 Nov 2023, at 19:01, Alice Ryhl wrote:
 
-We would prefer to not attempt this in the C driver because of how
-challenging it is to make significant changes.
+> Add support for accessing the Rust binder driver via binderfs. The
+> actual binderfs implementation is done entirely in C, and the
+> `rust_binderfs.c` file is a modified version of `binderfs.c` that is
+> adjusted to call into the Rust binder driver rather than the C driver.
+>
+> We have left the binderfs filesystem component in C. Rewriting it in
+> Rust would be a large amount of work and requires a lot of bindings to
+> the file system interfaces. Binderfs has not historically had the same
+> challenges with security and complexity, so rewriting Binderfs seems to=
 
-Alice
+> have lower value than the rest of Binder.
+>
+> We also add code on the Rust side for binderfs to call into. Most of
+> this is left as stub implementation, with the exception of closing the
+> file descriptor and the BINDER_VERSION ioctl.
+>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  drivers/android/Kconfig         |  24 ++
+>  drivers/android/Makefile        |   1 +
+>  drivers/android/context.rs      | 144 +++++++
+>  drivers/android/defs.rs         |  39 ++
+>  drivers/android/process.rs      | 251 ++++++++++++
+>  drivers/android/rust_binder.rs  | 196 ++++++++-
+>  drivers/android/rust_binderfs.c | 866 ++++++++++++++++++++++++++++++++=
+++++++++
+>  include/linux/rust_binder.h     |  16 +
+>  include/uapi/linux/magic.h      |   1 +
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/kernel/lib.rs              |   7 +
+>  scripts/Makefile.build          |   2 +-
+>  12 files changed, 1547 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
+> index fcfd25c9a016..82ed6ddabe1a 100644
+> --- a/drivers/android/Kconfig
+> +++ b/drivers/android/Kconfig
+> diff --git a/drivers/android/Makefile b/drivers/android/Makefile
+> index 6348f75832ca..5c819011aa77 100644
+> --- a/drivers/android/Makefile
+> +++ b/drivers/android/Makefile
+> diff --git a/drivers/android/context.rs b/drivers/android/context.rs
+> new file mode 100644
+> index 000000000000..630cb575d3ac
+> --- /dev/null
+> +++ b/drivers/android/context.rs
+> diff --git a/drivers/android/defs.rs b/drivers/android/defs.rs
+> new file mode 100644
+> index 000000000000..8fdcb856ccad
+> --- /dev/null
+> +++ b/drivers/android/defs.rs
+> @@ -0,0 +1,39 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +use core::ops::{Deref, DerefMut};
+> +use kernel::{
+> +    bindings,
+> +    io_buffer::{ReadableFromBytes, WritableToBytes},
+> +};
+> +
+> +macro_rules! decl_wrapper {
+> +    ($newname:ident, $wrapped:ty) =3D> {
+> +        #[derive(Copy, Clone, Default)]
+> +        #[repr(transparent)]
+> +        pub(crate) struct $newname($wrapped);
+> +        // SAFETY: This macro is only used with types where this is ok=
+=2E
+Would it make sense so also annotade this safety requirement on the macro=
+ itself?
+It is only file private, but could help not overlook it, when using for s=
+omething new in the same file.
+> +        unsafe impl ReadableFromBytes for $newname {}
+> +        unsafe impl WritableToBytes for $newname {}
+> +        impl Deref for $newname {
+> +            type Target =3D $wrapped;
+> +            fn deref(&self) -> &Self::Target {
+> +                &self.0
+> +            }
+> +        }
+> +        impl DerefMut for $newname {
+> +            fn deref_mut(&mut self) -> &mut Self::Target {
+> +                &mut self.0
+> +            }
+> +        }
+> +    };
+> +}
+> +
+> +decl_wrapper!(BinderVersion, bindings::binder_version);
+> +
+> +impl BinderVersion {
+> +    pub(crate) fn current() -> Self {
+> +        Self(bindings::binder_version {
+> +            protocol_version: bindings::BINDER_CURRENT_PROTOCOL_VERSIO=
+N as _,
+> +        })
+> +    }
+> +}
+> diff --git a/drivers/android/process.rs b/drivers/android/process.rs
+> new file mode 100644
+> index 000000000000..2f16e4cedbf1
+> --- /dev/null
+> +++ b/drivers/android/process.rs
+> diff --git a/drivers/android/rust_binder.rs b/drivers/android/rust_bind=
+er.rs
+> index 4b3d6676a9cf..6de2f40846fb 100644
+> --- a/drivers/android/rust_binder.rs
+> +++ b/drivers/android/rust_binder.rs
+> diff --git a/drivers/android/rust_binderfs.c b/drivers/android/rust_bin=
+derfs.c
+> new file mode 100644
+> index 000000000000..2c011e26752c
+> --- /dev/null
+> +++ b/drivers/android/rust_binderfs.c
+> diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
+> index 6325d1d0e90f..e5a20c1498af 100644
+> --- a/include/uapi/linux/magic.h
+> +++ b/include/uapi/linux/magic.h
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
+elper.h
+> index 00a66666f00a..ffeea312f2fd 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 435d4c2ac5fc..f4d58da9202e 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index da37bfa97211..f78d2e75a795 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> -- =
 
+> 2.42.0.820.g83a721a137-goog
