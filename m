@@ -1,116 +1,248 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEEB568F
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Nov 2023 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E61C2B
+	for <rust-for-linux@vger.kernel.org>; Sun,  5 Nov 2023 18:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="aBKgrL4L";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MQXAmDzw"
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED42D3;
-	Sun,  5 Nov 2023 03:03:41 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.nyi.internal (Postfix) with ESMTP id D00455C0111;
-	Sun,  5 Nov 2023 06:03:38 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Sun, 05 Nov 2023 06:03:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-	1699182218; x=1699268618; bh=oiIsiQNkqbL0G5Dnfmiu2q+vrjmWVl+fynh
-	krRGOC1Q=; b=aBKgrL4Lx4eQ2kWjgALMoH1L46EVVJO6JGtnuSz/dMbjWGTaUoS
-	bKocheeCX5mPHlI+w8C67nExz5CdpGl5BMudmiYyqTO3qzAbaYfuFtr4U64hmwMT
-	+38AUle/Es74eDB4DIC7lqDnnuLFv2zdRz3Hn+kIAZmXF9tTOqSvoHhlxTwFtfmr
-	xj/6V3B7hwDYql48cfpvx2mEBZM3ivorxFZCee2KTMmHSkhXmh6one3LJqfAvw/P
-	Hl1W0NhXfzrp+jZs9J4ikGRTZC1uTWcTKRZrfSfz9xVfaNePT1lNMltLin2W/lnq
-	nygUkNC4q8pmwJzfTXYm6MXBznyA4mInAhw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1699182218; x=1699268618; bh=oiIsiQNkqbL0G5Dnfmiu2q+vrjmWVl+fynh
-	krRGOC1Q=; b=MQXAmDzwof2YrrWh4pGz250ZHvZn5cRTw7zmR2V17zwaC1pIZYS
-	Xb6UFrgLWzGsP4961WM0CMTgKKLs2TPKtx+YpTdJNW+J4nGi7GYUuTGEMVSwB6Si
-	Ip9VdSWkxMzw9xInLTgYAwNjQxPFkhFi2Ke4XLjOYa2VFi0Y25vDZtJSZmsmZUE7
-	Ek+asl0cT/AQIXdWVTHu9EVj6YNsKBXn0wOE2uZwBPlvkYi/9oHu3h/DkYKceugn
-	jLhkLMs/H+aCTenYS0qFtaHqXMc5Pg/Fuq8jnNWyMeBI81z0Gijla6uJB8m2W0ls
-	xs1brbZu3H6MsdpTK4bCuoz4qQvs/CjaIpw==
-X-ME-Sender: <xms:inZHZePRPfalGpobu_lBNp810BrSfQPboMYUMKrEK34GKjxaBOb2Zg>
-    <xme:inZHZc9rHgJbzsfeYNC0qDoFt6c-ScLNp8dsZ0FUNgWLJINVemhbjGBPb_sK1U0u-
-    Cgz2xz7nCkw24iL7g>
-X-ME-Received: <xmr:inZHZVQ5BBgV4Bywfp-ydYYUiXP65M3zmyjtwo9H-oyLW1JSMbt4g86qJBlenK_eOuHQth0qT8bTW-BQc2HryOuh4JT2-WWko4rm>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudduvddgvdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    efgfeugfdtgefhueeiudffjefhveeuheeuheekvdetfefgheehtdffuddtgfdujeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
-    hrhihhlhdrihho
-X-ME-Proxy: <xmx:inZHZetMofswfkLiLaVuPff9sXhJJizEFU6Fg05L2crrXtqhzAXP1Q>
-    <xmx:inZHZWemsP2QBDAFUM1R9l3mFclMIxEyramhDLkHzbOxUJWKvPRcuw>
-    <xmx:inZHZS0AkvOH6wJ9IRiZRk8aS2yRcaDutpkemI6KuXgajSusch5W6g>
-    <xmx:inZHZd_sv4sWTX-7qYiL3eBd7m-CTb9zf4mRK7iri957Q13Z61lXoA>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 5 Nov 2023 06:03:35 -0500 (EST)
-Message-ID: <2f40b41d-600b-435f-804b-216990cf45cd@ryhl.io>
-Date: Sun, 5 Nov 2023 12:03:34 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pshrufhv"
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8D1BE;
+	Sun,  5 Nov 2023 10:40:23 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-50949b7d7ffso4899091e87.0;
+        Sun, 05 Nov 2023 10:40:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699209621; x=1699814421; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3UwTEt5f4Vx35jT4BsAaBgPoNgFA/QuMONKp4AL68yM=;
+        b=PshrufhvgNl07OhW03WcEG2cozhDUazBsjljXTUwsKDytgqJNUrYu8LMboY9X3HyyF
+         RZ4Nj86G+4szB6l81gCZEWMN0ElHtp6KwoG0lhbErQxYzKrkL9d1O8YYfjraKwl5VAqj
+         HbRPsVKenXn9ay8l3KEbPse9DQQskDQkuIKx76ioFF0zkI1gDPzGMPtNtdFiGiRdo8tO
+         6hXYGCGdbtulA+6W5rzK5HqiVvdw/+Y2z/itBjgJNzA7l85qSHq7psCZZQ2w5F1LCmlI
+         RXUijWDhV35NYqyHsheasQAhvAJTzgQIhGKUsOmxKAPJw/Ab4bSw+YAz5D6aMJw7CJpk
+         BaiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699209621; x=1699814421;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3UwTEt5f4Vx35jT4BsAaBgPoNgFA/QuMONKp4AL68yM=;
+        b=Gn6/o7VanuNmsvJSUkSVJB2GgAd624HZCY7DW8oMtQgnntxV+rCybFWHhvzIvHOdU1
+         qH1/Hm4DrGsA1puyr3Zs6V/HV+9kyLoVny7VjM5ZQMEdMKvLv12PRSBJl89Ru0rdejD1
+         OHhmrMh6Iex2eDHKy87guGWS/zIf2psA13nZGsrj3pgoJGBI0MkYUjKBnwxCQx72tiE5
+         APknnmpYV1twreoXXiH0F0GLTxaiOLZ8tpxpdm403Bn4zfwDJgbU4UmmF09xzGuun4Tk
+         XH3+PWkKT18X319VZmNzFS5CBrAgE6YsWZZj45eRVr0ZAtJUynS9l3AgVVxtKTeewYbC
+         lKwQ==
+X-Gm-Message-State: AOJu0Yx+uXjXkcbUIbtW47s1mez+BARc5Hsy0ErjA482+CNBG5sG6boR
+	ACr2gyBwaH4jxa8sgHjv6oaVeApDGiCRWQ==
+X-Google-Smtp-Source: AGHT+IE3BNGd2msUR0Jenlgee9R1q58C88JoI4xU/15LobSRNAmvpCFTFz9Su9e+LzEWVoluCSiGkw==
+X-Received: by 2002:a19:7605:0:b0:502:f2a8:d391 with SMTP id c5-20020a197605000000b00502f2a8d391mr19589422lff.45.1699209621227;
+        Sun, 05 Nov 2023 10:40:21 -0800 (PST)
+Received: from laptop.home (110.50.134.37.dynamic.jazztel.es. [37.134.50.110])
+        by smtp.gmail.com with ESMTPSA id e15-20020a5d594f000000b00327b5ca093dsm7363877wri.117.2023.11.05.10.40.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Nov 2023 10:40:21 -0800 (PST)
+From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	sergio.collado@gmail.com
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] Kunit to check the longest symbol length
+Date: Sun,  5 Nov 2023 19:40:10 +0100
+Message-Id: <20231105184010.49194-1-sergio.collado@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: bindings: rename const binding using sed
-Content-Language: en-US-large
-To: Gary Guo <gary@garyguo.net>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>,
- Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-References: <20231104145700.2495176-1-gary@garyguo.net>
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20231104145700.2495176-1-gary@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 11/4/23 15:56, Gary Guo wrote:
-> Current for consts that bindgen don't recognise, we define a helper
-> constant with
-> 
->      const <TYPE> BINDINGS_<NAME> = <NAME>;
-> 
-> in `bindings_helper.h` and then we put
-> 
->      pub const <NAME>: <TYPE> = BINDINGS_<NAME>;
-> 
-> in `bindings/lib.rs`. This is fine that we currently only have 3
-> constants that are defined this way, but is going to be more annoying
-> when more constants are added since every new constant needs to be
-> defined in two places.
-> 
-> This patch changes the way we define constant helpers to
-> 
->      const <TYPE> RUST_CONST_HELPER_<NAME> = <NAME>;
-> 
-> and then use `sed` to postprocess Rust code by generated by bindgen to
-> remove the distinct prefix, so user of the binding crate can refer to
-> the name directly.
-> 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
+in the reference [1]. This patch adds a kunit test to check the longest
+symbol length.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+[1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
+
+Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+---
+ lib/Kconfig.debug          |   9 +++
+ lib/Makefile               |   1 +
+ lib/longest_symbol_kunit.c | 120 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 130 insertions(+)
+ create mode 100644 lib/longest_symbol_kunit.c
+
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index fa307f93fa2e..7c0ae4373aa6 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2760,6 +2760,15 @@ config FORTIFY_KUNIT_TEST
+ 	  by the str*() and mem*() family of functions. For testing runtime
+ 	  traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
+ 
++config LONGEST_SYM_KUNIT_TEST
++	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
++	depends on KUNIT && KPROBES
++	default KUNIT_ALL_TESTS
++	help
++	  Tests the longest symbol possible
++
++	  If unsure, say N.
++
+ config HW_BREAKPOINT_KUNIT_TEST
+ 	bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TESTS
+ 	depends on HAVE_HW_BREAKPOINT
+diff --git a/lib/Makefile b/lib/Makefile
+index 740109b6e2c8..82ac084b6bc6 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -402,6 +402,7 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
+ obj-$(CONFIG_STRCAT_KUNIT_TEST) += strcat_kunit.o
+ obj-$(CONFIG_STRSCPY_KUNIT_TEST) += strscpy_kunit.o
+ obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
++obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
+ 
+ obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
+ 
+diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
+new file mode 100644
+index 000000000000..6282fbb7e991
+--- /dev/null
++++ b/lib/longest_symbol_kunit.c
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Test the longest symbol length. Execute with:
++ *  ./tools/testing/kunit/kunit.py run longest-symbol
++ *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
++ *  --kconfig_add CONFIG_RETPOLINE=n
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <kunit/test.h>
++#include <linux/stringify.h>
++#include <linux/kprobes.h>
++#include <linux/kallsyms.h>
++
++#define DI(name) s##name##name
++#define DDI(name) DI(n##name##name)
++#define DDDI(name) DDI(n##name##name)
++#define DDDDI(name) DDDI(n##name##name)
++#define DDDDDI(name) DDDDI(n##name##name)
++
++#define PLUS1(name) __PASTE(name, e)
++
++/*Generate a symbol whose name length is 511 */
++#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
++
++/*Generate a symbol whose name length is 512 */
++#define LONGEST_SYM_NAME_PLUS1 PLUS1(LONGEST_SYM_NAME)
++
++#define RETURN_LONGEST_SYM 0xAAAAA
++#define RETURN_LONGEST_SYM_PLUS1 0x55555
++
++noinline int LONGEST_SYM_NAME(void)
++{
++	return RETURN_LONGEST_SYM;
++}
++
++noinline int LONGEST_SYM_NAME_PLUS1(void)
++{
++	return RETURN_LONGEST_SYM_PLUS1;
++}
++
++_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) == KSYM_NAME_LEN,
++"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
++__stringify(KSYM_NAME) ", but found: "
++__stringify(sizeof(LONGEST_SYM_NAME)));
++
++static void test_longest_symbol(struct kunit *test)
++{
++	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
++};
++
++static void test_longest_symbol_kallsyms(struct kunit *test)
++{
++	unsigned long (*kallsyms_lookup_name)(const char *name);
++	static int (*longest_sym)(void);
++
++	struct kprobe kp = {
++		.symbol_name = "kallsyms_lookup_name",
++	};
++
++	if (register_kprobe(&kp) < 0) {
++		pr_info("%s: kprobe not registered\n", __func__);
++		KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe not registered\n");
++		return;
++	}
++
++	kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered\n");
++	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
++	unregister_kprobe(&kp);
++
++	longest_sym =
++	    (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME));
++	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
++};
++
++static void test_longest_symbol_plus1(struct kunit *test)
++{
++	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM_PLUS1, LONGEST_SYM_NAME_PLUS1());
++};
++
++static void test_longest_symbol_plus1_kallsyms(struct kunit *test)
++{
++	unsigned long (*kallsyms_lookup_name)(const char *name);
++	static int (*longest_sym_plus1)(void);
++
++	struct kprobe kp = {
++		.symbol_name = "kallsyms_lookup_name",
++	};
++
++	if (register_kprobe(&kp) < 0) {
++		pr_info("%s: kprobe not registered\n", __func__);
++		KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe not registered\n");
++		return;
++	}
++
++	kunit_warn(test, "test_longest_symbol_plus1 kallsyms: kprobe registered\n");
++	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
++	unregister_kprobe(&kp);
++
++	longest_sym_plus1 =
++	    (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME_PLUS1));
++	KUNIT_EXPECT_NULL(test, longest_sym_plus1);
++};
++
++static struct kunit_case longest_symbol_test_cases[] = {
++	KUNIT_CASE(test_longest_symbol),
++	KUNIT_CASE(test_longest_symbol_kallsyms),
++	KUNIT_CASE(test_longest_symbol_plus1),
++	KUNIT_CASE(test_longest_symbol_plus1_kallsyms),
++	{}
++};
++
++static struct kunit_suite longest_symbol_test_suite = {
++	.name = "longest-symbol",
++	.test_cases = longest_symbol_test_cases,
++};
++kunit_test_suite(longest_symbol_test_suite);
++
++MODULE_LICENSE("GPL");
+-- 
+2.39.2
+
