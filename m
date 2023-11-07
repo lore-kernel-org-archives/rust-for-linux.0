@@ -1,63 +1,97 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3989C2EAF1
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Nov 2023 22:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA5715AA
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Nov 2023 00:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AhnJxO6x"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24DE1183;
-	Mon,  6 Nov 2023 14:17:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1699309018; x=1699568218;
-	bh=BNxWJUeheK6gz+So6VEqeeEFNOpFymOedNOxNufT0d0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AhnJxO6x4c/fSu8ujTAjajj1x3Mu/Din++uRfo0kverW+MHLIWmWKx6WmTmU8yp9R
-	 7FPjgfq3tlf+8MnWO8JaZ8okYOBh+tm9RngiZFaEjYZ9oqCfoOZGzHvsUixNPT7bhg
-	 /lq0bX4cnwl1AJ31WUs623LDmb4n3yG/+kZLaBwmZTxLuEhT4+X+iDbvhlajZKeQUP
-	 H1VbBmfHizNix7nj9LQ1usxSoPPXIpGzO9d8eqWjzO3DRyzuq5PowRaqKkeA/F5kDk
-	 oAqZkk3KM0acDSjIfA/siNk4XHRWeV2SrznQn/25k6gS+WSgItnlvUG5ijFr2n5JsO
-	 OPwBsbG6zf+ZQ==
-Date: Mon, 06 Nov 2023 22:16:53 +0000
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>, Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: bindings: rename const binding using sed
-Message-ID: <b73f01b8-1253-40df-8e22-06b6e3b6755d@proton.me>
-In-Reply-To: <20231104145700.2495176-1-gary@garyguo.net>
-References: <20231104145700.2495176-1-gary@garyguo.net>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ei5GJVF2"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8E11BC;
+	Mon,  6 Nov 2023 16:31:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699317075; x=1730853075;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xrYiHM38iLQfDGM/2a1djaILuHvKZlmSend6LuJdjRk=;
+  b=Ei5GJVF2ifIgfr7Mo+9yidTkCfFZTsf+ETtVyC1oZQWn3ZFWQCDopPjm
+   gL4hqNbkSqGZ2358gqlkdB3vUuBM//+llWnEDeGM9rJoYeffnDFwyan7J
+   GrAAn31gB/GWY+BC7N0ODc7Vssot//xN1bOxkwZ/e4sCnITChKGIIH2qw
+   Kr8K/WRql9VjS0Nkt0LJZm5LmRYrM08+QuGan9KaJEWVaKq5qIW5dlfVG
+   Y69B0uz/nC9w91C6srj59cCnaqduyOl7L7GeWGAyGmxYuj3W0KuVQShO3
+   0lhYptBXHhV8FIzLEckwFhoctGLVxl0bazGYi2gwPzHAs4rmiO5ZpYUcT
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="389204528"
+X-IronPort-AV: E=Sophos;i="6.03,282,1694761200"; 
+   d="scan'208";a="389204528"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 16:31:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="766122984"
+X-IronPort-AV: E=Sophos;i="6.03,282,1694761200"; 
+   d="scan'208";a="766122984"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 06 Nov 2023 16:31:11 -0800
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r09zp-0006qY-2J;
+	Tue, 07 Nov 2023 00:31:09 +0000
+Date: Tue, 7 Nov 2023 08:30:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com
+Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] Kunit to check the longest symbol length
+Message-ID: <202311070705.7aFWz7q4-lkp@intel.com>
+References: <20231105184010.49194-1-sergio.collado@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231105184010.49194-1-sergio.collado@gmail.com>
 
-On 04.11.23 15:56, Gary Guo wrote:
-> diff --git a/rust/Makefile b/rust/Makefile
-> index a27f35f924ec..57f7f5e5a95d 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -337,6 +337,8 @@ quiet_cmd_bindgen =3D BINDGEN $@
->=20
->   $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags =3D=
- \
->       $(shell grep -Ev '^#|^$$' $(srctree)/$(src)/bindgen_parameters)
-> +$(obj)/bindings/bindings_generated.rs: private bindgen_target_extra =3D =
-; \
-> +    sed -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const \1/=
-g' $@
+Hi Sergio,
 
-I think I mentioned this before, but I think this should use `^`
-to ensure that this is only replaced at the beginning of lines.
+kernel test robot noticed the following build errors:
 
---=20
-Cheers,
-Benno
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.6 next-20231106]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Sergio-Gonz-lez-Collado/Kunit-to-check-the-longest-symbol-length/20231106-024653
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20231105184010.49194-1-sergio.collado%40gmail.com
+patch subject: [PATCH] Kunit to check the longest symbol length
+config: i386-randconfig-014-20231106 (https://download.01.org/0day-ci/archive/20231107/202311070705.7aFWz7q4-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231107/202311070705.7aFWz7q4-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311070705.7aFWz7q4-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/x86/tools/insn_decoder_test: error: malformed line 1810458:
+   7nnnnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nnnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
