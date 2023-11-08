@@ -1,108 +1,112 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA51ADF63
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Nov 2023 10:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32C612E4D
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Nov 2023 10:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="do9sAGK5"
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC8021BD4
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Nov 2023 02:25:24 -0800 (PST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5a7c97d5d5aso90555947b3.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Nov 2023 02:25:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TQAor+XE"
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D22791BE3
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Nov 2023 02:28:05 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d9b9aeb4962so8077474276.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Nov 2023 02:28:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699439124; x=1700043924; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fIAH7ULmpEPckNqECutwwAimtLz/dzVilEA+c10APxg=;
-        b=do9sAGK5lQJS/QE6LEK0Li7YydhFzWqzWF95+6xGnOh4yuGy0GHB0EDQQgmivUrShr
-         rPgUPAwjqGU/H4JQInCdEDvkaqC3TriKQG3iODiUBz0vMRxYh3PcFVjLRBwe/dwVVDgn
-         pVMZZPsS5HgVCSbX3HsebvXP8MFsR0K4MvhwnnRKNrAksQBTABAyeSppiJRKOZt5huxL
-         tcZuku9jt/5MxVIZAz8TDQEBDH8sRqLzu1t+q7I5Q7po4s/ISgotBzqTtLDN8RwgRk7/
-         aoddngW4kPPeywTX1NTbWT5zG24LDj9ONOajhmw6U22rr5EoN438T10f90nR3eZbpLfi
-         I4PA==
+        d=google.com; s=20230601; t=1699439285; x=1700044085; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4dmEF9KgvpntqTBvjCTWhDldYUYFHQAMggDdqztH2Wc=;
+        b=TQAor+XEv2LFsn339Lcs7LWSwQKyP7gnH2I/k09rWqFC5tNgCVgutBrxOj7scKiv9w
+         +57TWEJqNPbnLwhGiFyBpwFAhk2DVwMNQodPplPFafvfToyM/94AS6YsLsPrDw4/NXy2
+         GmNm8a+eHJkmhoFEKUbQJpXdCDVWiIsRA4yKWt4cMArG717yxVt7DixcI8RItr2Raltd
+         95xXJeMVNKWYDzNciuwhG7fUZC7xqMUEzX9OVd/WU8wmJa3rvA0aALqJYH5R8TKsFFO+
+         qZo4l0r7GjaL+ARHfdhLaVHB5Dn6fwDjOOK7HDsJJlzSuEypncYwtJRsvY9nFnD1qSGU
+         GLWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699439124; x=1700043924;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fIAH7ULmpEPckNqECutwwAimtLz/dzVilEA+c10APxg=;
-        b=GE4t3sQ7AxxU76HsQtFP5CrkVf6lk15r72TbrQNQ51UZDH5U+kFq/nw5L/EODmrOqo
-         I18gVaBFFsEYVMUWTjIGwQmp0Y+q8j4xELJx0JDPXevK0D5p9j9yvl/1wiW3DE2Kaq4j
-         uisNlKQ2IR2dIgpWyi+T6+eE0ArSJ6SP53v37BKZc5C0V+RmuFnh913fEnmMo7Oa4GsP
-         qCcL/AvOKaa4s9ZlgzcDbg68FbwOGuxYIdEPUHycsTuAm4lOjnIbLMhMF624TH92GFqw
-         zQGKejQo2WYRW/Id7uyfIPrwZJjH/vg6EAV40PRQFlj2Z6ulyON9G75FqC0lcDTsgg+A
-         Bguw==
-X-Gm-Message-State: AOJu0YxWGbyGLjmK5OCYicE7wc9prvsZ5H6QC4Q6flrvtazIA3/1zto/
-	bCFqKUymtvV4Z3fh7Ona+RzkpXcOQKMN7Jw=
-X-Google-Smtp-Source: AGHT+IGtZC0V8m4itDc/HxEmRCPbDkWdSXexw5klfcLaXoMbRICY+WuL310XErMoKd7j9oxQ3u+qc6g80fVGyeI=
+        d=1e100.net; s=20230601; t=1699439285; x=1700044085;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4dmEF9KgvpntqTBvjCTWhDldYUYFHQAMggDdqztH2Wc=;
+        b=SYR4nmDIQG0ooF6St33g6K5pdyaptNRqZORgn3TRjQLsBsgDpeh5VOfSF3OgBfXM86
+         IyImSoKIa8AsPLZrTTJtyv71rKtlOuX8OP1VreswrYyBTZgjNqbMn4rcucGChiNExiBm
+         IZnLByM02uV5N5LRRMLcipKV2sFw5nY4hfNZZf5CYCvjERJcYn8Zx9fuMcRAHFmviol4
+         B05s/egmVRFgudRI5V0SxO6T1ukluW4rfvqV4h+HYOiaL9FmjuWUj4u1tEb1TGY4w5jI
+         LBIXTF20MW4LB1sc+9XUI0heyk1340xkLaDo6kc9hPdMIL0/NMzp+L/BX6pQEQY1eQ0a
+         AQHg==
+X-Gm-Message-State: AOJu0YwTCpBzds5Ox0jDHilqqYFjOEjzcUB6ti58gVTi+8RXfk+PX+AJ
+	5xrKk4Fq8W17F9UB2N/D91JrxACNNM6Pe6I=
+X-Google-Smtp-Source: AGHT+IHt5WjeCeluDG1SOFpGWvs5KwA+RL4PbrKOZxBxBzTct7ckZ/yTqt7rDoR7F4KiNF+lnIGbFLM9+gIveO0=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:690c:4712:b0:5be:a336:4a6 with SMTP
- id gz18-20020a05690c471200b005bea33604a6mr12477ywb.3.1699439123981; Wed, 08
- Nov 2023 02:25:23 -0800 (PST)
-Date: Wed,  8 Nov 2023 10:25:21 +0000
-In-Reply-To: <sRVdoCqLbxM1-EH0iKVlb9eOEU-wt410-WT5rFTQNNYgmiW6EEpKvCCJyVppOmFYhXBcCN3SsXUXULzpmmweYBGDVHW619pjsIZvorv8Fc8=@proton.me>
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:292:b0:dae:292e:68de with SMTP
+ id v18-20020a056902029200b00dae292e68demr22560ybh.6.1699439284903; Wed, 08
+ Nov 2023 02:28:04 -0800 (PST)
+Date: Wed,  8 Nov 2023 10:27:59 +0000
+In-Reply-To: <62F430CC-9980-4779-9D43-7D561D322C9B@kloenk.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <sRVdoCqLbxM1-EH0iKVlb9eOEU-wt410-WT5rFTQNNYgmiW6EEpKvCCJyVppOmFYhXBcCN3SsXUXULzpmmweYBGDVHW619pjsIZvorv8Fc8=@proton.me>
+References: <62F430CC-9980-4779-9D43-7D561D322C9B@kloenk.de>
 X-Mailer: git-send-email 2.42.0.869.gea05f2083d-goog
-Message-ID: <20231108102521.523413-1-aliceryhl@google.com>
-Subject: Re: [PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+Message-ID: <20231108102802.524151-1-aliceryhl@google.com>
+Subject: Re: [PATCH RFC 03/20] rust_binder: add threading support
 From: Alice Ryhl <aliceryhl@google.com>
-To: benno.lossin@proton.me
+To: finn@kloenk.de
 Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, jeffv@google.com, joel@joelfernandes.org, 
-	linux-kernel@vger.kernel.org, maco@android.com, mattgilbride@google.com, 
-	mmaurer@google.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	surenb@google.com, tkjos@android.com, wedsonaf@gmail.com
+	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, 
+	gary@garyguo.net, gregkh@linuxfoundation.org, jeffv@google.com, 
+	joel@joelfernandes.org, linux-kernel@vger.kernel.org, maco@android.com, 
+	mattgilbride@google.com, mmaurer@google.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
+	wedsonaf@gmail.com
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Benno Lossin <benno.lossin@proton.me> writes:
-> On 01.11.23 19:01, Alice Ryhl wrote:
->> +/// There is one context per binder file (/dev/binder, /dev/hwbinder, etc)
->> +#[pin_data]
->> +pub(crate) struct Context {
->> +    #[pin]
->> +    manager: Mutex<Manager>,
->> +    pub(crate) name: CString,
->> +    #[pin]
->> +    links: ListLinks,
->> +}
+Finn Behrens <finn@kloenk.de> writes:
+> On 1 Nov 2023, at 19:01, Alice Ryhl wrote:
+>> diff --git a/drivers/android/error.rs b/drivers/android/error.rs
+>> new file mode 100644
+>> index 000000000000..41fc4347ab55
+>> --- /dev/null
+>> +++ b/drivers/android/error.rs
 >> +
->> +kernel::list::impl_has_list_links! {
->> +    impl HasListLinks<0> for Context { self.links }
->> +}
->> +kernel::list::impl_list_arc_safe! {
->> +    impl ListArcSafe<0> for Context { untracked; }
->> +}
->> +kernel::list::impl_list_item! {
->> +    impl ListItem<0> for Context {
->> +        using ListLinks;
+>> +impl core::fmt::Debug for BinderError {
+>> +    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Resul=
+t {
+>> +        match self.reply {
+>> +            BR_FAILED_REPLY =3D> match self.source.as_ref() {
+>> +                Some(source) =3D> f
+>> +                    .debug_struct("BR_FAILED_REPLY")
+>> +                    .field("source", source)
+>> +                    .finish(),
+>> +                None =3D> f.pad("BR_FAILED_REPLY"),
+>> +            },
+>> +            BR_DEAD_REPLY =3D> f.pad("BR_DEAD_REPLY"),
+>> +            BR_TRANSACTION_COMPLETE =3D> f.pad("BR_TRANSACTION_COMPLETE=
+"),
+>> +            _ =3D> f
+>> +                .debug_struct("BinderError")
+>> +                .field("reply", &self.reply)
+>> +                .finish(),
+>> +        }
 >> +    }
 >> +}
-> 
-> I think at some point it would be worth introducing a derive macro that
-> does this for us. So for example:
-> 
->     #[pin_data]
->     #[derive(HasListLinks)]
->     pub(crate) struct Context {
->         #[pin]
->         manager: Mutex<Manager>,
->         pub(crate) name: CString,
->         #[pin]
->         #[links]
->         links: ListLinks,
->     }
+>=20
+> Renaming the debug_struct itself feels like it will make it harder to
+> find later, as I would expect that a debug implementation names the
+> struct its from.
+>=20
+> Also this has the fallback in CamelCase and all defined cases as
+> SCREAMING_SNAKE_CASE. Maybe rather in the defined cases something like
+> f.debug_struct(=E2=80=98BinderError=E2=80=99).field(=E2=80=98reply=E2=80=
+=99, =E2=80=9Cname=E2=80=9D)?
 
-Sure, it would be nice to improve the ergonomics of this. However, I
-don't think it's that important either. The current solution is a bit
-verbose, but good enough for me.
+Yeah, you're right. I'll improve the debug formatting. Thanks for the
+suggestion.
 
 Alice
 
