@@ -1,225 +1,136 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85A33456C
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Nov 2023 04:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC56CA67;
+	Wed,  8 Nov 2023 06:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="iglw28FI"
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377DC198
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Nov 2023 20:54:13 -0800 (PST)
-Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6d31f3e8ca8so3896407a34.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Nov 2023 20:54:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sh3z8lvo"
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97ACA10FE;
+	Tue,  7 Nov 2023 22:15:22 -0800 (PST)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-da0cfcb9f40so6880289276.2;
+        Tue, 07 Nov 2023 22:15:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1699419252; x=1700024052; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VLKgp1YEMHFSrdbjD8ydOV01K5tKjOEnyS+RjT/+kyk=;
-        b=iglw28FI6vi3n3wn9VFADmAGEiyoOqDOeeNwJKYh5fXX7fGAYWQfxKe3fdOEwiDXTO
-         WTvmHWz6L7RzgjEEPe7DNDVLtLN7tPcEDM0AYh9Y414UTojccOPk2Hb/xoQTtJWms9Nl
-         2Qhql+DE8hdNCnd8dC+3xtPFrVbEDBBNIWkb/l2Z/DaM6z51n9n9mvWgJKnt4G7Fc7Jp
-         fz0WWuiL7GyY9nLinyn0yrikecngvTLKPAiqC1rokXEZiq2bMAd44LcQugLwFJCzjFXQ
-         /1+AfkJwCeLgRcS9FgPQFIXqzxIZXsgfJAcip+yk7Nnf5mtYvBJjLB1AmIHG2v//griV
-         sx/Q==
+        d=gmail.com; s=20230601; t=1699424122; x=1700028922; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NzB+EF22puVq+VRM0bcttHwDOL8IYQtCvuuzMeeaFA8=;
+        b=Sh3z8lvo1/deYpsNDC6Uqdt82nLPDKgjeL6UL3HlzIw8nYAQcj10oRCgSnk0sLrgqj
+         /xb74fwmD2Tb+WkZpTCDtMKPcsjyUGFLKs/q4T2jPFhzVb7BTXrT5XPVF0YrslmKhg7V
+         aK7jw1FBl7ZrTkeD9t2Dcin/LO6C9Cu+PzEMKUOB4kn4UAgd/sZTY281CzJ81mdBU0kT
+         jt+rOIiRuYawoeMxYJwPxOGmRpbzqIXrA+4hMEwzk8LBn6lgGf9Yfo14CxkwqHD0WSCf
+         GI2meFwJmC8uGDFnWoIRpIwBcMB2Ld6cNuuXeVjwiL95NXW+KsQjRyIO4Qk1zFPZuSQS
+         1gmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699419252; x=1700024052;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VLKgp1YEMHFSrdbjD8ydOV01K5tKjOEnyS+RjT/+kyk=;
-        b=F9kp2PUZwGrCgFx7/15SrN1ZLNgbZBW7Z5iOK17bhWXikSpHpqCu6uBWkUrWeD6LQp
-         sAd4BMFvcSsznkm9ac0hOD/nPqNE3I7O4ykDVSS0V78HdxtP0LUjTrmJ3sAULHx5CNf/
-         1afk0W6pfwfDqtxbIbEbp7+fmQvAcoVun5k5zNE+3DIMxVc1OtKunGpbxp2KurX291mA
-         sOKu4df8oGqM4FSoKxcXjedOg+kW4jXeXPuc4bcKLieBdayjE8tw+x1Ltq9YJvgI9AWA
-         bFXvnsEvdCaaOCf0S2T10XtHEItjIvxVz2pwEoBcc8yh3KtRRxg7rOLi29E//71TQ7k+
-         PV9w==
-X-Gm-Message-State: AOJu0YwRuDAJuefbnL39ghZnTTChh+x5C22m/aNmo5x3X5btIRieV9yo
-	2LKXQCdqi+1nsl8slN6ghcfLhw==
-X-Google-Smtp-Source: AGHT+IGqct68ua/6YVrv44dc6uBz8F6sLmKW/QYXzYOGzg15r41q1vR6MFsqIw/fiTriEQel0501wQ==
-X-Received: by 2002:a54:4110:0:b0:3b2:f500:7be3 with SMTP id l16-20020a544110000000b003b2f5007be3mr960065oic.39.1699419252338;
-        Tue, 07 Nov 2023 20:54:12 -0800 (PST)
-Received: from dread.disaster.area (pa49-180-125-5.pa.nsw.optusnet.com.au. [49.180.125.5])
-        by smtp.gmail.com with ESMTPSA id y11-20020a62f24b000000b0066a4e561beesm8202440pfl.173.2023.11.07.20.54.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Nov 2023 20:54:11 -0800 (PST)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1r0aZt-009jFq-1p;
-	Wed, 08 Nov 2023 15:54:09 +1100
-Date: Wed, 8 Nov 2023 15:54:09 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Matthew Wilcox <willy@infradead.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Marco Elver <elver@google.com>
-Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
-Message-ID: <ZUsUcU/s56zogyac@dread.disaster.area>
-References: <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me>
- <ZTHPOfy4dhj0x5ch@boqun-archlinux>
- <vT8j_VVzNv0Cx7iTO9OobT9H8zEc_I-dxmh2sF6GZWqRQ0nhjnaNZqtWPtYm37wOhwGek2vLUYwAM-jJ83AZEe8TXMDx9N6pZ3mZW1WdNNw=@proton.me>
- <ZTP06kdjBQzZ3KYD@Boquns-Mac-mini.home>
- <ZTQDztmY0ivPcGO/@casper.infradead.org>
- <ZTQnpeFcPwMoEcgO@Boquns-Mac-mini.home>
- <ZTYE0PSDwITrWMHv@dread.disaster.area>
- <CANeycqq49Ubj-3BKcUaMOKeEwFastZzC17z_uk_VE3RDDv2wfw@mail.gmail.com>
- <ZT8VG0MTKNNpGDOC@dread.disaster.area>
- <CANeycqpwFs3Sfz86ngG-ysQuP1-MzVdkMNZPFXWUgvBrphdiAQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1699424122; x=1700028922;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NzB+EF22puVq+VRM0bcttHwDOL8IYQtCvuuzMeeaFA8=;
+        b=tkuVYjVFojWyC2QR0ZxpuwcRF2SJAMC+5y/kfDNYVyUXi5plD6jwY8piFx+nxg3ewL
+         T6jZmAe51bidAk6OPbeosYcsJqaWv5Jsj4qxWhC5yijAUuuCRwkH174jSf42pKA3jHJm
+         +khKOIH7jIAiqt98xuFCZYDrsSaBjoZmxivN0N+dv5XQLNvZVR7LYg5aVnAKV/59twn5
+         mLK8f82bKYbkdmf4PsGCyMTuHZ5L4hiT3Y57zKX9V5e98kk3HSLt832H1BxmG72fZrYl
+         v9mwtj/hhjlEmxyZ0aDzAFmZinHY04KFwYkdF9GWVT7E1jdWJchYxt1dv1eC3vzyuN0j
+         dirw==
+X-Gm-Message-State: AOJu0YwBNCY0xYuaCYDEvZFQTZIt+34VaMK2dmis2jkZjDlZZ9Cc0G+W
+	pby+mSZ7dSAj13m7mqYjM4b67TCDxxyn1atXZwI=
+X-Google-Smtp-Source: AGHT+IG6zOLQE9YTxU3Y1EjQsWo3CJh+0NkXAYgY8LPbJpCUQj29+6DuD96fGKDEt6a526Khm0spk6/LmXcjYG13XPc=
+X-Received: by 2002:a25:cbcd:0:b0:d9a:4a5f:415d with SMTP id
+ b196-20020a25cbcd000000b00d9a4a5f415dmr1219985ybg.0.1699424121731; Tue, 07
+ Nov 2023 22:15:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANeycqpwFs3Sfz86ngG-ysQuP1-MzVdkMNZPFXWUgvBrphdiAQ@mail.gmail.com>
+References: <OjZkAoZLnJc9yA0MENJhQx_32ptXZ1cLAFjEnEFog05C4pEmaAUHaA6wBvCFXWtaXbrNN5upFFi3ohQ6neLklIXZBURaYLlQYf3-2gscw_s=@proton.me>
+ <ZTHPOfy4dhj0x5ch@boqun-archlinux> <vT8j_VVzNv0Cx7iTO9OobT9H8zEc_I-dxmh2sF6GZWqRQ0nhjnaNZqtWPtYm37wOhwGek2vLUYwAM-jJ83AZEe8TXMDx9N6pZ3mZW1WdNNw=@proton.me>
+ <ZTP06kdjBQzZ3KYD@Boquns-Mac-mini.home> <ZTQDztmY0ivPcGO/@casper.infradead.org>
+ <ZTQnpeFcPwMoEcgO@Boquns-Mac-mini.home> <ZTYE0PSDwITrWMHv@dread.disaster.area>
+ <CANeycqq49Ubj-3BKcUaMOKeEwFastZzC17z_uk_VE3RDDv2wfw@mail.gmail.com>
+ <ZT8VG0MTKNNpGDOC@dread.disaster.area> <CANeycqpwFs3Sfz86ngG-ysQuP1-MzVdkMNZPFXWUgvBrphdiAQ@mail.gmail.com>
+ <ZUsUcU/s56zogyac@dread.disaster.area>
+In-Reply-To: <ZUsUcU/s56zogyac@dread.disaster.area>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Wed, 8 Nov 2023 03:15:10 -0300
+Message-ID: <CANeycqquMa6POSafEqSdAXUbnMiEsqYxOXp9Opc+4e1X8Dru_A@mail.gmail.com>
+Subject: Re: [RFC PATCH 06/19] rust: fs: introduce `FileSystem::init_root`
+To: Dave Chinner <david@fromorbit.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
+	Benno Lossin <benno.lossin@proton.me>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Kent Overstreet <kent.overstreet@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Marco Elver <elver@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 31, 2023 at 05:49:19PM -0300, Wedson Almeida Filho wrote:
-> On Sun, 29 Oct 2023 at 23:29, Dave Chinner <david@fromorbit.com> wrote:
-> >
-> > On Mon, Oct 23, 2023 at 09:55:08AM -0300, Wedson Almeida Filho wrote:
-> > > On Mon, 23 Oct 2023 at 02:29, Dave Chinner <david@fromorbit.com> wrote:
-> > > > IOWs, if you follow the general rule that any inode->i_state access
-> > > > (read or write) needs to hold inode->i_lock, you probably won't
-> > > > screw up.
+On Wed, 8 Nov 2023 at 01:54, Dave Chinner <david@fromorbit.com> wrote:
+>
+> On Tue, Oct 31, 2023 at 05:49:19PM -0300, Wedson Almeida Filho wrote:
+> > On Sun, 29 Oct 2023 at 23:29, Dave Chinner <david@fromorbit.com> wrote:
 > > >
-> > > I don't see filesystems doing this though. In particular, see
-> > > iget_locked() -- if a new inode is returned, then it is locked, but if
-> > > a cached one is found, it's not locked.
-> >
-> > I did say "if you follow the general rule".
-> >
-> > And where there is a "general rule" there is the implication that
-> > there are special cases where the "general rule" doesn't get
-> > applied, yes? :)
-> 
-> Sure. But when you say "if _you_ do X", it gives me the impression
-> that I have a choice. But if want to use `iget_locked`, I don't have
-> the option to follow the "general rule" you state.
-> 
-> I guess I have the option to ignore `iget_locked`. :)
-> 
-> > I_NEW is the exception to the general rule, and very few people
-> > writing filesystems actually know about it let alone care about
-> > it...
-> <snip>
-> > All of them are perfectly fine.
-> 
-> I'm not sure I agree with this. They may be fine, but I wouldn't say
-> perfectly. :)
-> 
-> > I_NEW is the bit we use to synchronise inode initialisation - we
-> > have to ensure there is only a single initialisation running while
-> > there are concurrent lookups that can find the inode whilst it is
-> > being initialised. We cannot hold a spin lock over inode
-> > initialisation (it may have to do IO!), so we set the I_NEW flag
-> > under the i_lock and the inode_hash_lock during hash insertion so
-> > that they are set atomically from the hash lookup POV. If the inode
-> > is then found in cache, wait_on_inode() does the serialisation
-> > against the running initialisation indicated by the __I_NEW bit in
-> > the i_state word.
-> >
-> > Hence if the caller of iget_locked() ever sees I_NEW, it is
-> > guaranteed to have exclusive access to the inode and -must- first
-> > initialise the inode and then call unlock_new_inode() when it has
-> > completed. It doesn't need to hold inode->i_lock in this case
-> > because there's nothing it needs to serialise against as
-> > iget_locked() has already done all that work.
-> >
-> > If the inode is found in cache by iget_locked, then the
-> > wait_on_inode() call is guaranteed to ensure that I_NEW is not set
-> > when it returns. The atomic bit operations on __I_NEW and the memory
-> > barriers in unlock_new_inode() plays an important part in this
-> > dance, and they guarantee that I_NEW has been cleared before
-> > iget_locked() returns. No need for inode->i_lock to be held in this
-> > case, either, because iget_locked() did all the serialisation for
-> > us.
-> 
-> Thanks for explanation!
-> 
-> Let's consider the case when I call `inode_get`, and it finds an inode
-> that _has_ been fully initialised before, so I_NEW is not set in
-> inode->i_state and the inode is _not_ locked.
-> 
-> But the only means of checking that is by inspecting the i_state
-> field, so I do something like:
-> 
-> if (!(inode->i_state & I_NEW))
->     return inode;
-> 
-> But now suppose that while I'm doing a naked load on inode->i_state,
-> another cpu is running concurrently and happens to be holding the
-> inode->i_lock, so it is within its right to write to inode->i_state,
-> for example through a call to __inode_add_lru, which has the
-> following:
-> 
-> inode->i_state |= I_REFERENCED;
-> 
-> So we have a thread doing a naked read and another thread doing a
-> naked write, no ordering between them.
-> 
-> Would you agree that this is a data race? (Note that I'm not asking if
-> "it will be ok" or "the compilers today generate the right code", I'm
-> asking merely if you agree this is a data race.)
+> > > On Mon, Oct 23, 2023 at 09:55:08AM -0300, Wedson Almeida Filho wrote:
+> > > > On Mon, 23 Oct 2023 at 02:29, Dave Chinner <david@fromorbit.com> wrote:
+>
+> > If you do, then you'd have to agree that we are in undefined-behaviour
+> > territory. I can quote the spec if you'd like.
+>
+> /me shrugs
+>
+> I can point you at lots of code that it will break if bit operations
+> are allowed to randomly change other bits in the word transiently.
 
-I'll agree that technically it is a data race on the entire i_state
-word. Practically, however, it is not a data race on the I_NEW bit
-within that word. The I_NEW bit remains unchanged across the entire
-operation.
+Sure, in C you have chosen to rely on behaviour that the language spec
+says is undefined.
 
-i.e. it does not matter where the read of i_state intersects with
-the RMW of I_REFERENCED bit, the I_NEW bit remains unchanged in
-memory across the operation. If the above operation results in the
-I_NEW bit changing state in memory - even transiently - then the
-compiler implementation is simply broken...
+In Rust, we're trying avoid it. When it's unavoidable, we're trying to
+clearly mark it so that we can try to fix it later.
 
-> If you do, then you'd have to agree that we are in undefined-behaviour
-> territory. I can quote the spec if you'd like.
+> All the rust code that calls iget_locked() needs to do to "be safe"
+> is the rust equivalent of:
+>
+>         spin_lock(&inode->i_lock);
+>         if (!(inode->i_state & I_NEW)) {
+>                 spin_unlock(&inode->i_lock);
+>                 return inode;
+>         }
+>         spin_unlock(&inode->i_lock);
+>
+> IOWs, we solve the "safety" concern by ensuring that Rust filesystem
+> implementations follow the general rule of "always hold the i_lock
+> when accessing inode->i_state" I originally outlined, yes?
 
-/me shrugs
+Ah, the name of the functions iget_locked() and unlock_new_inode()
+threw me off, I thought I wouldn't be able to lock inode->i_lock.
 
-I can point you at lots of code that it will break if bit operations
-are allowed to randomly change other bits in the word transiently.
+Ok, I will do this for now, I think it's better than relying on
+undefined behaviour. Thanks!
 
-> Anyway, the discussion here is that this is also undefined behaviour
-> in Rust. And we're trying really hard to avoid that. Of course, in
-> cases like this there's not much we can do on the Rust side alone so
-> the conclusion now appears to be that we'll introduce helper functions
-> for this now and live with it. If one day we have a better solution,
-> we'll update just one place.
+Actually, looking at the implementation of iget_locked(), there's a
+single place where it returns a new inode. Wouldn't it be better to
+just return this piece of information (whether the inode is new or
+not) to the caller? Then we would eliminate the data races in C and
+the need to lock in Rust, and we would also eliminate a memory load
+from inode->i_state in all callers.
 
-All the rust code that calls iget_locked() needs to do to "be safe"
-is the rust equivalent of:
+> > But we want the be very deliberate about these. We don't want to
+> > accidentally introduce data races (and therefore potential undefined
+> > behaviour).
+>
+> The stop looking at the C code and all the exceptions we make for
+> special case optimisations and just code to the generic rules for
+> safe access to given fields. Yes, rust will then have to give up the
+> optimisations we make in the C code, but there's always a price for
+> safety...
 
-	spin_lock(&inode->i_lock);
-	if (!(inode->i_state & I_NEW)) {
-		spin_unlock(&inode->i_lock);
-		return inode;
-	}
-	spin_unlock(&inode->i_lock);
+I'm not trying to do clever optimisations at all. I'm trying to figure
+out how to do things by looking at imperfect documentation in
+filesystems/porting.rst (which, BTW, checks I_NEW without a lock) and
+the functions I call. So I look at what existing filesystems do to
+learn the hopefully most up to date way of doing things. If you have a
+recommendation on how to do this more efficiently, I'm all ears!
 
-IOWs, we solve the "safety" concern by ensuring that Rust filesystem
-implementations follow the general rule of "always hold the i_lock
-when accessing inode->i_state" I originally outlined, yes?
-
-> But we want the be very deliberate about these. We don't want to
-> accidentally introduce data races (and therefore potential undefined
-> behaviour).
-
-The stop looking at the C code and all the exceptions we make for
-special case optimisations and just code to the generic rules for
-safe access to given fields. Yes, rust will then have to give up the
-optimisations we make in the C code, but there's always a price for
-safety...
-
--Dave.
-
--- 
-Dave Chinner
-david@fromorbit.com
+Thanks,
+-Wedson
