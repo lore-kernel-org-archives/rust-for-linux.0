@@ -1,85 +1,83 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA38512E6B;
-	Wed,  8 Nov 2023 10:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E070101C3
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Nov 2023 07:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CId6UBeF"
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 513BD1BDC;
-	Wed,  8 Nov 2023 02:46:49 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1cc703d2633so9962725ad.0;
-        Wed, 08 Nov 2023 02:46:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699440409; x=1700045209; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+LaxoozJ7I+klHkNOhHP2mdn2JYn2UIbQ7Fww5757Zk=;
-        b=CId6UBeF1jP/cxmr/ipTgPU96GC3tTU2/lX+pkLqYk3mLRSLalzrgU9RaIqvmbB5Dw
-         nobh2OnhckNopeNKgI0ADdLvlndFaKDPctYuXDpHADRzBH/KHmq4t15faBPTkK+f+lKH
-         qJP6R3t2Sd5xuiooKs2UhviX+8w0qPLYZP51CgBRKORUCTWbJ0EP7sW4L9eII3VbSO2z
-         IN2UWnfRHW89JJ9LfKVwkoLJC+XAYdqqYFwtQYBaF3+miaXbJeqAITW+BtJdzfgnsS7Y
-         KlMXu3utX5CCeUO8RvGpok7pVjCstbwK+MKavOdm7U4nwl+G9edjoww8RL6oWMjszupu
-         dPXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699440409; x=1700045209;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+LaxoozJ7I+klHkNOhHP2mdn2JYn2UIbQ7Fww5757Zk=;
-        b=XsoYcaQ8LewSaKPEOGjpVZrgT57aBxajlQOdjFYtFdHfVgwVFDLPAKMHGWM72F2fpU
-         oWmDtgih86B/11BasKEXY2D2I5IsMJwdAjzQXDW/2Lr9fkcrBlCoGFzXsL1MMimfWnOE
-         dCsX/OLLN4CCUXS/nu/onu9OFr/mhEyBvFWDzmNZnVFZqifYFfE23flS/dPdP4dqV5oL
-         SXQTCfOw8Woo1fYXBTCPWJLS7FMyslQ/Z6cOGd9EerGlE6hUo7sNCkxQS8abvvcsE6MS
-         q/6BhMJyfy5Srjw/1ax/kmGHpHujptJ/DehLxgn5uTzNs7NnV1scDEUjmcedZ7GE4Jgi
-         ePNw==
-X-Gm-Message-State: AOJu0Yz9o2hGWUYwG7KP/SniIH7a9JsR61SRl1nNwypldEn4XlJ5iQ8w
-	ZeXhzw1ANkoNZDKSvVClDBGghlABfQZVFQ==
-X-Google-Smtp-Source: AGHT+IGA0ja5kBlvWSLqVBG7jECVCZZI6gbM0vboSuumksiSqZYeghTc/Uvo/P0GCQv219fCS3hixQ==
-X-Received: by 2002:a05:6a21:7892:b0:163:57ba:2ad4 with SMTP id bf18-20020a056a21789200b0016357ba2ad4mr1784012pzc.2.1699440408568;
-        Wed, 08 Nov 2023 02:46:48 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id z6-20020a170903018600b001b03a1a3151sm1451864plg.70.2023.11.08.02.46.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 02:46:48 -0800 (PST)
-Date: Wed, 08 Nov 2023 19:46:47 +0900 (JST)
-Message-Id: <20231108.194647.1383073631008060059.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, boqun.feng@gmail.com, andrew@lunn.ch,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <1e6bd47b-7252-48f8-a19b-c5a60455bf7b@proton.me>
-References: <41e9ec99-6993-4bb4-a5e5-ade7cf4927a4@proton.me>
-	<20231030.214906.1040067379741914267.fujita.tomonori@gmail.com>
-	<1e6bd47b-7252-48f8-a19b-c5a60455bf7b@proton.me>
+	dkim=pass (2048-bit key) header.d=codesynthesis.com header.i=@codesynthesis.com header.b="RmY00MK5"
+X-Greylist: delayed 550 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 08 Nov 2023 23:52:58 PST
+Received: from codesynthesis.com (codesynthesis.com [188.40.148.39])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E571716;
+	Wed,  8 Nov 2023 23:52:58 -0800 (PST)
+Received: from brak.codesynthesis.com (unknown [105.186.92.249])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by codesynthesis.com (Postfix) with ESMTPSA id 55E5160D9F;
+	Thu,  9 Nov 2023 07:43:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codesynthesis.com;
+	s=mail1; t=1699515826;
+	bh=fJ48MnwSMLL/XzmjxNLHtBoWhFyXgj04jwsCFx/3Hfs=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:From;
+	b=RmY00MK5Rg1p2bfkJRAejhbFOLJapXmR89HNVZ3EBm/VjgibjKGCFeSK65GEm8Qp7
+	 7f9j1Jtr+eZAWyildkdVI5FnoKpLEsSBiJNckuM1L++5FiDEp+8rt9YCYWbIgMRdMb
+	 Al9k9Cj8OS7NQDRJOB2rhzeJeoJzRGMuS+3W9CmV5AryyGeE5UKAAZzMU29UM7zbiY
+	 x3wl9ICeAVqEmQZ1e99N5pzif5p18N2hGqk3Jl0HgiK1XdfCetqii0PTPMRIOpqlwL
+	 utdtn5Fd16cdAlWb9XZbkyCF9VkdxC5FIx/HpCvzr3tTDJ7dpJDm1ijUjadcTb7BzS
+	 uboZ2QLZ4arkQ==
+Received: by brak.codesynthesis.com (Postfix, from userid 1000)
+	id 2AE8B145E0D; Thu,  9 Nov 2023 09:43:44 +0200 (SAST)
+Date: Thu, 9 Nov 2023 09:43:44 +0200
+From: Boris Kolpackov <boris@codesynthesis.com>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/3] kconfig: Add special rust_modules config option
+Message-ID: <boris.20231109093619@codesynthesis.com>
+References: <20231108022651.645950-2-mmaurer@google.com>
+ <20231108022651.645950-5-mmaurer@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231108022651.645950-5-mmaurer@google.com>
+Organization: Code Synthesis
 
-On Mon, 30 Oct 2023 16:45:38 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+Matthew Maurer <mmaurer@google.com> writes:
 
->>> But I would wait until we see a response from the bindgen devs on the issue.
->> 
->> You meant that they might have a different option on this?
-> 
-> No, before you implement the workaround that Boqun posted you
-> should wait until the bindgen devs say how long/if they will
-> implement it.
+> Adds support for the rust_modules kconfig type, which works similarly to
+> modules, but for restricting or allowing the use of modules which
+> directly depend on Rust.
+>
+> [...]
+>
+> +struct symbol *modules_rust_sym;
+> +static tristate modules_rust_val;
+> +
+> +bool sym_depends_rust(struct symbol *sym)
+> +{
+> +	static struct symbol *rust_sym;
+> +
+> +	if (!rust_sym)
+> +		rust_sym = sym_find("RUST");
+> +	return expr_depends_symbol(sym->dir_dep.expr, rust_sym, true);
+> +}
+> +
 
-It has been 10 days but no response from bindgen developpers. I guess
-that unlikely bindgen will support the feature until the next merge
-window.
+Hm, this feels like a quick and dirty hack to me: will we be hardcoding
+a symbol for each language?
 
-I prefer adding accessors in the C side rather than the workaround if
-it's fine by Andrew because we have no idea when bindgen will support
-the feature.
+I know there is little sympathy for other projects that use Kconfig,
+and whatever Linux needs, goes, but still, this feels like a step too
+far.
