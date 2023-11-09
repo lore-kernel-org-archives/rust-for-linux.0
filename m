@@ -1,83 +1,78 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E070101C3
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Nov 2023 07:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56491882D
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Nov 2023 12:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codesynthesis.com header.i=@codesynthesis.com header.b="RmY00MK5"
-X-Greylist: delayed 550 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 08 Nov 2023 23:52:58 PST
-Received: from codesynthesis.com (codesynthesis.com [188.40.148.39])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E571716;
-	Wed,  8 Nov 2023 23:52:58 -0800 (PST)
-Received: from brak.codesynthesis.com (unknown [105.186.92.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by codesynthesis.com (Postfix) with ESMTPSA id 55E5160D9F;
-	Thu,  9 Nov 2023 07:43:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codesynthesis.com;
-	s=mail1; t=1699515826;
-	bh=fJ48MnwSMLL/XzmjxNLHtBoWhFyXgj04jwsCFx/3Hfs=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:From;
-	b=RmY00MK5Rg1p2bfkJRAejhbFOLJapXmR89HNVZ3EBm/VjgibjKGCFeSK65GEm8Qp7
-	 7f9j1Jtr+eZAWyildkdVI5FnoKpLEsSBiJNckuM1L++5FiDEp+8rt9YCYWbIgMRdMb
-	 Al9k9Cj8OS7NQDRJOB2rhzeJeoJzRGMuS+3W9CmV5AryyGeE5UKAAZzMU29UM7zbiY
-	 x3wl9ICeAVqEmQZ1e99N5pzif5p18N2hGqk3Jl0HgiK1XdfCetqii0PTPMRIOpqlwL
-	 utdtn5Fd16cdAlWb9XZbkyCF9VkdxC5FIx/HpCvzr3tTDJ7dpJDm1ijUjadcTb7BzS
-	 uboZ2QLZ4arkQ==
-Received: by brak.codesynthesis.com (Postfix, from userid 1000)
-	id 2AE8B145E0D; Thu,  9 Nov 2023 09:43:44 +0200 (SAST)
-Date: Thu, 9 Nov 2023 09:43:44 +0200
-From: Boris Kolpackov <boris@codesynthesis.com>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/3] kconfig: Add special rust_modules config option
-Message-ID: <boris.20231109093619@codesynthesis.com>
-References: <20231108022651.645950-2-mmaurer@google.com>
- <20231108022651.645950-5-mmaurer@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqZIiZ0n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15DFC433CA;
+	Thu,  9 Nov 2023 12:45:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699533931;
+	bh=mSGpk9MJPLfIpRmZFxJdVy+rBhIh+RbFW65Cr3iJGu0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mqZIiZ0nmvTR5j28zWmzjy4XMwXTYlwElo0b/S4pMmUNQXoFnVv9XInoRrgjfVMuF
+	 xXu60LEZYQ2cbtNnxoh8Hkzbpx2Ho5bIfmZuAmjWwY5n7q3nXhnkqzl6PyIz6A8KqJ
+	 S06oknLIjFFzj7xFEG2hXUth4ow9qcer0+UH+DPDXskMExmROLuKN4Ys7GPSkKcyjN
+	 CD6ZJWY58HNJOeBq9o+Q0qkPEeFP4cTWary9RS2Xm4drM3Xwrb0ujAE3lstXkBoA1B
+	 m6mm0XBdUAZeENhUBeMr+dlhnbouYT7ob/33nsnyGa8J/u+sI+/X29cBDe5lGLoB66
+	 cAGGbJrEep2kw==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-1e9a757e04eso990552fac.0;
+        Thu, 09 Nov 2023 04:45:31 -0800 (PST)
+X-Gm-Message-State: AOJu0YzcGIaaDL/mIiG9PoASIe+lko0rtMcfd/eGDG7SzAbupCudaXvv
+	1Ft12ZGXyOrlwu6mqQ48oAew0UdzeuFpQoRh0e8=
+X-Google-Smtp-Source: AGHT+IFjKG6dNzY33CdOXNjl86WKEWnDkv2RB2Rx8LfbqJZIj403LcldYwOYvaCNYMcGuJfDTZ9dhH9LdBxmUkrCGKM=
+X-Received: by 2002:a05:6871:7287:b0:1e9:d5ac:dc9b with SMTP id
+ mm7-20020a056871728700b001e9d5acdc9bmr3318986oac.25.1699533931179; Thu, 09
+ Nov 2023 04:45:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231108022651.645950-5-mmaurer@google.com>
-Organization: Code Synthesis
+References: <20231108022651.645950-2-mmaurer@google.com>
+In-Reply-To: <20231108022651.645950-2-mmaurer@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 9 Nov 2023 14:44:53 +0200
+X-Gmail-Original-Message-ID: <CAK7LNATJK9nujKKb7rP87hMs65fN8p8v2fMhkNLPb+qU6MijEw@mail.gmail.com>
+Message-ID: <CAK7LNATJK9nujKKb7rP87hMs65fN8p8v2fMhkNLPb+qU6MijEw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Support MODVERSIONS by disabling Rust modules
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kbuild@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Matthew Maurer <mmaurer@google.com> writes:
-
-> Adds support for the rust_modules kconfig type, which works similarly to
-> modules, but for restricting or allowing the use of modules which
-> directly depend on Rust.
+On Wed, Nov 8, 2023 at 4:27=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
+wrote:
 >
-> [...]
+> The goal of this patch series is to allow MODVERSIONS to be turned on
+> alongside RUST. Gary Guo previously proposed to adjust the API to
+> support Rust symbols' greater length:
+> https://lore.kernel.org/lkml/CANiq72n4MbR+AE7eHfVQZOu26FeSttQnEEMT3Jpft+C=
+cGwk9jw@mail.gmail.com/T/
 >
-> +struct symbol *modules_rust_sym;
-> +static tristate modules_rust_val;
-> +
-> +bool sym_depends_rust(struct symbol *sym)
-> +{
-> +	static struct symbol *rust_sym;
-> +
-> +	if (!rust_sym)
-> +		rust_sym = sym_find("RUST");
-> +	return expr_depends_symbol(sym->dir_dep.expr, rust_sym, true);
-> +}
-> +
+> This did not land, so I'm proposing an alternate solution - users who
+> want to use Rust, but who do not need Rust modules, can disable Rust
+> module support in order to retain modversions support. This has the
+> added bonus of removing exported symbols from the kernel surface if we
+> know they won't be used due to lack of Rust module support in the
+> environment.
 
-Hm, this feels like a quick and dirty hack to me: will we be hardcoding
-a symbol for each language?
 
-I know there is little sympathy for other projects that use Kconfig,
-and whatever Linux needs, goes, but still, this feels like a step too
-far.
+No. This is not a solution.
+
+It does not change the fact that Rust modules and modversions
+cannot coexist, and it is even worse than the previous one.
+
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
