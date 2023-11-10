@@ -1,78 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56491882D
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Nov 2023 12:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48179199B4;
+	Fri, 10 Nov 2023 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqZIiZ0n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15DFC433CA;
-	Thu,  9 Nov 2023 12:45:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699533931;
-	bh=mSGpk9MJPLfIpRmZFxJdVy+rBhIh+RbFW65Cr3iJGu0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mqZIiZ0nmvTR5j28zWmzjy4XMwXTYlwElo0b/S4pMmUNQXoFnVv9XInoRrgjfVMuF
-	 xXu60LEZYQ2cbtNnxoh8Hkzbpx2Ho5bIfmZuAmjWwY5n7q3nXhnkqzl6PyIz6A8KqJ
-	 S06oknLIjFFzj7xFEG2hXUth4ow9qcer0+UH+DPDXskMExmROLuKN4Ys7GPSkKcyjN
-	 CD6ZJWY58HNJOeBq9o+Q0qkPEeFP4cTWary9RS2Xm4drM3Xwrb0ujAE3lstXkBoA1B
-	 m6mm0XBdUAZeENhUBeMr+dlhnbouYT7ob/33nsnyGa8J/u+sI+/X29cBDe5lGLoB66
-	 cAGGbJrEep2kw==
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-1e9a757e04eso990552fac.0;
-        Thu, 09 Nov 2023 04:45:31 -0800 (PST)
-X-Gm-Message-State: AOJu0YzcGIaaDL/mIiG9PoASIe+lko0rtMcfd/eGDG7SzAbupCudaXvv
-	1Ft12ZGXyOrlwu6mqQ48oAew0UdzeuFpQoRh0e8=
-X-Google-Smtp-Source: AGHT+IFjKG6dNzY33CdOXNjl86WKEWnDkv2RB2Rx8LfbqJZIj403LcldYwOYvaCNYMcGuJfDTZ9dhH9LdBxmUkrCGKM=
-X-Received: by 2002:a05:6871:7287:b0:1e9:d5ac:dc9b with SMTP id
- mm7-20020a056871728700b001e9d5acdc9bmr3318986oac.25.1699533931179; Thu, 09
- Nov 2023 04:45:31 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Rk53w0OZ"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF527A7529;
+	Fri, 10 Nov 2023 05:26:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=yK5CSSq+F3ZkSEYf7RCLrdlnCJXSx5tx8IAj5BjfQrc=; b=Rk53w0OZUEsoZAUvXWwLGDvIpN
+	GVGAnMQD8NYuD/j4I+UWF3yATdhezaD7iQpb5fBuEkXogyxQmGZDe2NCELFHxGkNCDmnZxoM41G+d
+	MfMMTKh/tjEhIQeyxBTn6okPObW4h0z6KqCAPcl6hvbtnPJaIE5acqt3aDQ9eZGCBMKU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1r1RWT-001ISR-Iv; Fri, 10 Nov 2023 14:26:09 +0100
+Date: Fri, 10 Nov 2023 14:26:09 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: benno.lossin@proton.me, boqun.feng@gmail.com, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <8f476b7c-4647-457b-ab45-d6a979da4e78@lunn.ch>
+References: <41e9ec99-6993-4bb4-a5e5-ade7cf4927a4@proton.me>
+ <20231030.214906.1040067379741914267.fujita.tomonori@gmail.com>
+ <1e6bd47b-7252-48f8-a19b-c5a60455bf7b@proton.me>
+ <20231108.194647.1383073631008060059.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231108022651.645950-2-mmaurer@google.com>
-In-Reply-To: <20231108022651.645950-2-mmaurer@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 9 Nov 2023 14:44:53 +0200
-X-Gmail-Original-Message-ID: <CAK7LNATJK9nujKKb7rP87hMs65fN8p8v2fMhkNLPb+qU6MijEw@mail.gmail.com>
-Message-ID: <CAK7LNATJK9nujKKb7rP87hMs65fN8p8v2fMhkNLPb+qU6MijEw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Support MODVERSIONS by disabling Rust modules
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231108.194647.1383073631008060059.fujita.tomonori@gmail.com>
 
-On Wed, Nov 8, 2023 at 4:27=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
-wrote:
->
-> The goal of this patch series is to allow MODVERSIONS to be turned on
-> alongside RUST. Gary Guo previously proposed to adjust the API to
-> support Rust symbols' greater length:
-> https://lore.kernel.org/lkml/CANiq72n4MbR+AE7eHfVQZOu26FeSttQnEEMT3Jpft+C=
-cGwk9jw@mail.gmail.com/T/
->
-> This did not land, so I'm proposing an alternate solution - users who
-> want to use Rust, but who do not need Rust modules, can disable Rust
-> module support in order to retain modversions support. This has the
-> added bonus of removing exported symbols from the kernel surface if we
-> know they won't be used due to lack of Rust module support in the
-> environment.
+On Wed, Nov 08, 2023 at 07:46:47PM +0900, FUJITA Tomonori wrote:
+> On Mon, 30 Oct 2023 16:45:38 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+> 
+> >>> But I would wait until we see a response from the bindgen devs on the issue.
+> >> 
+> >> You meant that they might have a different option on this?
+> > 
+> > No, before you implement the workaround that Boqun posted you
+> > should wait until the bindgen devs say how long/if they will
+> > implement it.
+> 
+> It has been 10 days but no response from bindgen developpers. I guess
+> that unlikely bindgen will support the feature until the next merge
+> window.
 
+I just took a look around the kernel includes. Here are a few examples
+i found, there are many many more.
 
-No. This is not a solution.
+include/target/iscsi/iscsi_target_core.h:       unsigned int            conn_tx_reset_cpumask:1;
+include/media/videobuf2-core.h: unsigned int            synced:1;
+include/media/v4l2-ctrls.h:     unsigned int done:1;
+include/drm/bridge/samsung-dsim.h:      unsigned int has_freqband:1;
+include/net/sock_reuseport.h:   unsigned int            bind_inany:1;
+include/net/sock.h:     unsigned char           skc_ipv6only:1;
+include/sound/simple_card_utils.h:      unsigned int force_dpcm:1;
+include/sound/soc.h:    unsigned int autodisable:1;
+include/linux/pci.h:    unsigned int    imm_ready:1;    /* Supports Immediate Readiness */
+include/linux/regmap.h: unsigned int use_ack:1;
+include/linux/cpuidle.h:        unsigned int            registered:1;
+include/linux/regulator/gpio-regulator.h:       unsigned enabled_at_boot:1;
+include/linux/phy.h:    unsigned link:1;
+include/linux/pm.h:     unsigned int            irq_safe:1;
+include/linux/nfs_xdr.h:        unsigned char                   renew:1;
+include/linux/iio/iio.h:        unsigned                output:1;
+include/linux/drbd.h:           unsigned user_isp:1 ;
+include/linux/sched.h:  unsigned                        sched_migrated:1;
+include/linux/writeback.h:      unsigned no_cgroup_owner:1;
+include/linux/tty_port.h:       unsigned char           console:1;
+include/linux/mpi.h:                    unsigned int two_inv_p:1;
+include/linux/mmc/host.h:       unsigned int            use_spi_crc:1;
+include/linux/netdevice.h:      unsigned                wol_enabled:1;
+include/linux/serial_8250.h:    unsigned int            tx_stopped:1;
+include/linux/usb.h:    unsigned can_submit:1;
+include/linux/firewire.h:       unsigned is_local:1;
+include/linux/phylink.h:        unsigned int link:1;
+include/linux/gpio_keys.h:      unsigned int rep:1;
+include/linux/spi/spi.h:        unsigned        cs_change:1;
+include/linux/i2c-mux.h:        unsigned int arbitrator:1;
+include/linux/kobject.h:        unsigned int state_in_sysfs:1;
+include/linux/kbd_kern.h:       unsigned char ledmode:1;
+include/linux/bpf_verifier.h:   unsigned int fit_for_inline:1;
+include/linux/rtc.h:    unsigned int uie_irq_active:1;
+include/linux/usb/usbnet.h:     unsigned                can_dma_sg:1;
+include/linux/usb/serial.h:     unsigned char                   attached:1;
+include/linux/usb/gadget.h:     unsigned dir_out:1;
+include/linux/comedi/comedidev.h:       unsigned int attached:1;
+include/scsi/sg.h:    unsigned int twelve_byte:1;
+include/scsi/scsi_host.h:       unsigned emulated:1;
+include/scsi/scsi_device.h:     unsigned removable:1;
+include/rdma/ib_verbs.h:        unsigned int            ip_gids:1;
 
-It does not change the fact that Rust modules and modversions
-cannot coexist, and it is even worse than the previous one.
+And thats just bitfields used as binary values. There are more with
+:2, :3, :4, :8, :16.
 
+The point i'm trying to make is that they are used in many
+subsystems. Not having bindgen support for them seems like its going
+to be a problem.
 
+Isn't this also an unsoundness problem? Is there existing Rust code
+which people think is sound but is actually not?
 
+> I prefer adding accessors in the C side rather than the workaround if
+> it's fine by Andrew because we have no idea when bindgen will support
+> the feature.
 
---=20
-Best Regards
-Masahiro Yamada
+Maybe we need a better understanding of the kernel wide implications
+of this. It could be this is actually a big issue, and rust-for-linux
+can then apply either pressure, or human resources, to get it
+implemented.
+
+    Andrew
