@@ -1,126 +1,126 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48179199B4;
-	Fri, 10 Nov 2023 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF931DA43
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Nov 2023 15:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Rk53w0OZ"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF527A7529;
-	Fri, 10 Nov 2023 05:26:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=yK5CSSq+F3ZkSEYf7RCLrdlnCJXSx5tx8IAj5BjfQrc=; b=Rk53w0OZUEsoZAUvXWwLGDvIpN
-	GVGAnMQD8NYuD/j4I+UWF3yATdhezaD7iQpb5fBuEkXogyxQmGZDe2NCELFHxGkNCDmnZxoM41G+d
-	MfMMTKh/tjEhIQeyxBTn6okPObW4h0z6KqCAPcl6hvbtnPJaIE5acqt3aDQ9eZGCBMKU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1r1RWT-001ISR-Iv; Fri, 10 Nov 2023 14:26:09 +0100
-Date: Fri, 10 Nov 2023 14:26:09 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: benno.lossin@proton.me, boqun.feng@gmail.com, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
- drivers
-Message-ID: <8f476b7c-4647-457b-ab45-d6a979da4e78@lunn.ch>
-References: <41e9ec99-6993-4bb4-a5e5-ade7cf4927a4@proton.me>
- <20231030.214906.1040067379741914267.fujita.tomonori@gmail.com>
- <1e6bd47b-7252-48f8-a19b-c5a60455bf7b@proton.me>
- <20231108.194647.1383073631008060059.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XHLE6t+M"
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA65C3B33B;
+	Fri, 10 Nov 2023 07:55:46 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6bd73395bceso1769256b3a.0;
+        Fri, 10 Nov 2023 07:55:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699631746; x=1700236546; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0hQpJxp9DF4eyRc/ch/UIeElSypMS9XnoOaUJNz1J1U=;
+        b=XHLE6t+M2+D8w3TOUi9SWY2NLDxyWsPHCYNSN+roDKFy4XEHWKUHWFv0pY9tiOz+Oq
+         bRAXcAfAEaOLCRp/3f4JEG/2MJn45U0BOA6nyiOJzKdaSKULbsge9oYghFwEwHOHZ9gT
+         tGsDkNTHvDe4+yC1YHaLFAngxr6x3T1Iq8j+a85jH4m3Mt85lwWt0870wOlhK4rTUlzR
+         /K3fEcOJCT9FbqjZMFK2Db0Jq4bu18I0DVcaamyG/P14hwCbqUH9j2vAl39/DrrKEIOh
+         hEPQLRPRe9HEvuQPrJPpSG8a0CBVxrySTjGjkVK0DlNZxeKcC8FKtrnppazpts1NBkmR
+         rg2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699631746; x=1700236546;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0hQpJxp9DF4eyRc/ch/UIeElSypMS9XnoOaUJNz1J1U=;
+        b=FzT+uUWwIMcjQNQbCy+ejrgtB0YjSFyWlGzb3rROUeabCRwv4X4p6USZs4Gt8a9Brd
+         6Q/WYnTKkvDObLbszCiCYw1KFwn1+U2m4vgqSY6D3cY1LrmVKD+2yp4ssHNhxll0SLPp
+         udCf0O1qMkmaX/DfAhWVmUbCvLUOSsKZgnLlvtTlWGGzknZwSOrhJ8p3HRqRuIbdYD7C
+         ZKJCsVTOnY7ERmEFjsUEzQePPoFJbFFx9SJrQLJUcXFd6iZCdRAzRY5eo7XCCdaQImAq
+         E/F0ATOD12mp8W4/Og8a0ZHvCiFl1ooJUw802S63PNJTzjSCfCxg5gt51dvgmik5CEIR
+         +Yfw==
+X-Gm-Message-State: AOJu0Yy5+X1qBPYUPa7DNYbWr7A1EbtOo60aBuLNnl458/Kms6DV95Op
+	kU6W/0dR4p6WTuP8VttWuHk=
+X-Google-Smtp-Source: AGHT+IGZ25+uHRtQ7w5WCbg2qbxUcLUTPGZHlb+SPw9P4RSTT5Nu2aOh773OzarpXIKuuUZa2COi8w==
+X-Received: by 2002:a05:6a00:1791:b0:68c:44ed:fb6 with SMTP id s17-20020a056a00179100b0068c44ed0fb6mr4571581pfg.16.1699631746246;
+        Fri, 10 Nov 2023 07:55:46 -0800 (PST)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id c11-20020a056a00248b00b006bda45671b1sm1483951pfv.101.2023.11.10.07.55.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Nov 2023 07:55:45 -0800 (PST)
+Message-ID: <275e1430-6e10-42a1-9afd-051f5584a17d@gmail.com>
+Date: Fri, 10 Nov 2023 12:55:41 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231108.194647.1383073631008060059.fujita.tomonori@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Kunit to check the longest symbol length
+Content-Language: en-US
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Brendan Higgins <brendan.higgins@linux.dev>, David Gow
+ <davidgow@google.com>, linux-kselftest@vger.kernel.org,
+ kunit-dev@googlegroups.com
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+References: <20231105184010.49194-1-sergio.collado@gmail.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20231105184010.49194-1-sergio.collado@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 08, 2023 at 07:46:47PM +0900, FUJITA Tomonori wrote:
-> On Mon, 30 Oct 2023 16:45:38 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
-> 
-> >>> But I would wait until we see a response from the bindgen devs on the issue.
-> >> 
-> >> You meant that they might have a different option on this?
-> > 
-> > No, before you implement the workaround that Boqun posted you
-> > should wait until the bindgen devs say how long/if they will
-> > implement it.
-> 
-> It has been 10 days but no response from bindgen developpers. I guess
-> that unlikely bindgen will support the feature until the next merge
-> window.
+On 11/5/23 15:40, Sergio González Collado wrote:
+> [...]
+> diff --git a/lib/Makefile b/lib/Makefile
+> index 740109b6e2c8..82ac084b6bc6 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -402,6 +402,7 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
+>   obj-$(CONFIG_STRCAT_KUNIT_TEST) += strcat_kunit.o
+>   obj-$(CONFIG_STRSCPY_KUNIT_TEST) += strscpy_kunit.o
+>   obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
+> +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
+>   
+>   obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
+>   
 
-I just took a look around the kernel includes. Here are a few examples
-i found, there are many many more.
+This test is triggering `-Wmissing-prototypes`, so you might have to
+either add the prototypes or change the hunk to this.
 
-include/target/iscsi/iscsi_target_core.h:       unsigned int            conn_tx_reset_cpumask:1;
-include/media/videobuf2-core.h: unsigned int            synced:1;
-include/media/v4l2-ctrls.h:     unsigned int done:1;
-include/drm/bridge/samsung-dsim.h:      unsigned int has_freqband:1;
-include/net/sock_reuseport.h:   unsigned int            bind_inany:1;
-include/net/sock.h:     unsigned char           skc_ipv6only:1;
-include/sound/simple_card_utils.h:      unsigned int force_dpcm:1;
-include/sound/soc.h:    unsigned int autodisable:1;
-include/linux/pci.h:    unsigned int    imm_ready:1;    /* Supports Immediate Readiness */
-include/linux/regmap.h: unsigned int use_ack:1;
-include/linux/cpuidle.h:        unsigned int            registered:1;
-include/linux/regulator/gpio-regulator.h:       unsigned enabled_at_boot:1;
-include/linux/phy.h:    unsigned link:1;
-include/linux/pm.h:     unsigned int            irq_safe:1;
-include/linux/nfs_xdr.h:        unsigned char                   renew:1;
-include/linux/iio/iio.h:        unsigned                output:1;
-include/linux/drbd.h:           unsigned user_isp:1 ;
-include/linux/sched.h:  unsigned                        sched_migrated:1;
-include/linux/writeback.h:      unsigned no_cgroup_owner:1;
-include/linux/tty_port.h:       unsigned char           console:1;
-include/linux/mpi.h:                    unsigned int two_inv_p:1;
-include/linux/mmc/host.h:       unsigned int            use_spi_crc:1;
-include/linux/netdevice.h:      unsigned                wol_enabled:1;
-include/linux/serial_8250.h:    unsigned int            tx_stopped:1;
-include/linux/usb.h:    unsigned can_submit:1;
-include/linux/firewire.h:       unsigned is_local:1;
-include/linux/phylink.h:        unsigned int link:1;
-include/linux/gpio_keys.h:      unsigned int rep:1;
-include/linux/spi/spi.h:        unsigned        cs_change:1;
-include/linux/i2c-mux.h:        unsigned int arbitrator:1;
-include/linux/kobject.h:        unsigned int state_in_sysfs:1;
-include/linux/kbd_kern.h:       unsigned char ledmode:1;
-include/linux/bpf_verifier.h:   unsigned int fit_for_inline:1;
-include/linux/rtc.h:    unsigned int uie_irq_active:1;
-include/linux/usb/usbnet.h:     unsigned                can_dma_sg:1;
-include/linux/usb/serial.h:     unsigned char                   attached:1;
-include/linux/usb/gadget.h:     unsigned dir_out:1;
-include/linux/comedi/comedidev.h:       unsigned int attached:1;
-include/scsi/sg.h:    unsigned int twelve_byte:1;
-include/scsi/scsi_host.h:       unsigned emulated:1;
-include/scsi/scsi_device.h:     unsigned removable:1;
-include/rdma/ib_verbs.h:        unsigned int            ip_gids:1;
+diff --git a/lib/Makefile b/lib/Makefile
+index 740109b6e2c8..b9d2577fbbe1 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -402,6 +402,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
+  obj-$(CONFIG_STRCAT_KUNIT_TEST) += strcat_kunit.o
+  obj-$(CONFIG_STRSCPY_KUNIT_TEST) += strscpy_kunit.o
+  obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
++obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
++CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
+  
+  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
+  
 
-And thats just bitfields used as binary values. There are more with
-:2, :3, :4, :8, :16.
+> diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
+> new file mode 100644
+> index 000000000000..6282fbb7e991
+> --- /dev/null
+> +++ b/lib/longest_symbol_kunit.c
+> [...]
+> +
+> +noinline int LONGEST_SYM_NAME(void)
+> +{
+> +	return RETURN_LONGEST_SYM;
+> +}
+> +
+> +noinline int LONGEST_SYM_NAME_PLUS1(void)
+> +{
+> +	return RETURN_LONGEST_SYM_PLUS1;
+> +}
 
-The point i'm trying to make is that they are used in many
-subsystems. Not having bindgen support for them seems like its going
-to be a problem.
+arch/x86/tools/insn_decoder_test.c has a buffer size of 256 that might be
+too short for these symbols, you might have to increase it for it to work.
 
-Isn't this also an unsoundness problem? Is there existing Rust code
-which people think is sound but is actually not?
-
-> I prefer adding accessors in the C side rather than the workaround if
-> it's fine by Andrew because we have no idea when bindgen will support
-> the feature.
-
-Maybe we need a better understanding of the kernel wide implications
-of this. It could be this is actually a big issue, and rust-for-linux
-can then apply either pressure, or human resources, to get it
-implemented.
-
-    Andrew
+> [...]
