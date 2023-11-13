@@ -1,139 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11D9208DC;
-	Mon, 13 Nov 2023 14:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE153B2B5
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Nov 2023 23:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQNxv/g1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D92C433C7;
-	Mon, 13 Nov 2023 14:13:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699884836;
-	bh=nEL9T7++gP1nGn/dMS7dDVUZEBwQg5LVDeNmJyp/zXQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bQNxv/g1FRP+dHdguSjl2OSOGwVROx2/T7yHTLUR3JJ9OHyidohNq90pId8h538RK
-	 li6vP8M2fhdyW3sW9Sk5llHIE50tIfvtAvySvICVt7+QvRlSZsDlS0EjllwlPGA3b4
-	 a6QlHy0sRYdg547fvtjfNCW0g1dU6Ujha9p7RkVfyHaVZhs3rnS9CTC5erzb/Jw2Y7
-	 QXnuYg9QysM3gBCR+N4c42Dj0ieYerxxr/hk5TaFz1JSFheG13oHXyW9i82cuJy0GJ
-	 Hia3SpelP9AASVnwt6qIIS1A3b1YCr3xHSFzl9cCVKu011lHVGYzDmaJYslv2T8q8H
-	 o3Yn7ZbqEcIlw==
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-1efad296d42so2706166fac.2;
-        Mon, 13 Nov 2023 06:13:56 -0800 (PST)
-X-Gm-Message-State: AOJu0YwZxXiuHvVxvrPZ0fIC/32GoSicBCdK7RQoMnOenFyWWi3Auc2D
-	dVYoqYSNdzzcMKJvz9vMZLeqwx2+FewPFt67Y7Y=
-X-Google-Smtp-Source: AGHT+IHMF885MO2Ld8V6xmNxEgpBURyKIrBhLW1IpJYEzjdx3MFYv0o2DhB7dVIZ9jMVIecYgWUnzkCpdjMxQFeKJnQ=
-X-Received: by 2002:a05:6870:bd46:b0:1e9:af65:e30b with SMTP id
- og6-20020a056870bd4600b001e9af65e30bmr10062404oab.38.1699884835520; Mon, 13
- Nov 2023 06:13:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Idhqwxt5"
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04CA3D48
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Nov 2023 15:10:44 -0800 (PST)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5b383b4184fso59361367b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Nov 2023 15:10:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1699917043; x=1700521843; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vm6McprD2H3oAtSmtgoDkn+BQRfFHc7Z3Tik0WqV7dY=;
+        b=Idhqwxt5gWyfcQW+oAW9WJ3AYP+2XFpjkzJLDcbxYG+0bSIHSAhR4JC/kJXI7hRF9/
+         uflCl90TfXs0HVQwfMmP2ScNaxrUMgY0o8qTqaGWCj6RMZcTuW9MPkT3DnxokEIOjYKZ
+         UlI9graOyJ5lruPKO63g6IIHZu3gWlyqUywuyghz/tJJgfhSD0kWdK2ttgstPc0rupt9
+         aBurp2Ht6KeC0MGf0KJ09nuXtugmuVeGKu0Ogo/dK36/rsWpddyvq5okjTOwWTRadxA/
+         dpDRMsfKf5QWXldjR24NX27ukyvmZBpXdsBqXmWtIALmdVUFAYcKO5/erT8mZhnxIqAB
+         FztA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699917043; x=1700521843;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vm6McprD2H3oAtSmtgoDkn+BQRfFHc7Z3Tik0WqV7dY=;
+        b=BTR6YfUoEDGeFUiJACAu9D7OIuXxCberriFX6IM5L+Zdz6xFPoZva3ZPVzBXCknpbi
+         Hf8Yg6YYU9CqSQe6/GDrcMg3unfQ7F4QhF+CKtz/tMP2CO0S04Ybval+K+R8Mv2w5TOk
+         SHD49R0KNrF2M1XoJgCNvsIrlGRI8fAFlBMSdx9NwLQ17sA8BbofzQzAMDaKD0wheg+V
+         QVbX0cn+4ljTbQL5CkY8HdM7fzwGKCKvoHl5s+7YtJYwCN52VROegBPilcFWaiCXtv0u
+         tZKWoU2FyT+rl96gHwjmGl7xaqS5DdSU+JTYODCa+oYMTK8ISkVPE3IQ3J1Lq6p81Xh4
+         r/dA==
+X-Gm-Message-State: AOJu0YwGC13GT5Rbedq7cQyNRTXzBGO/WQuZAplcXsVAlV1JKm3R2J/2
+	OODtEvbNh1jlsuSnNtLZv9TOPWDPCNyHOvCEZDXlwW6/GuUqhi4whTc=
+X-Google-Smtp-Source: AGHT+IGn5OjBYJDYA5citKvjx0OfX2tGUZpyEgqdy1Cnlm++nuW76bp3PhO4fIdWs8zQKzixP118tIDfAKM6euD8WXI=
+X-Received: by 2002:a81:8392:0:b0:5a7:baac:7b34 with SMTP id
+ t140-20020a818392000000b005a7baac7b34mr9218006ywf.28.1699917043220; Mon, 13
+ Nov 2023 15:10:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231104211213.225891-1-yakoyoku@gmail.com>
-In-Reply-To: <20231104211213.225891-1-yakoyoku@gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 13 Nov 2023 23:13:18 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAT4zKWn6+scn5wbaN2_x4wh4EYSuNxnaoQK1FfJK45MOw@mail.gmail.com>
-Message-ID: <CAK7LNAT4zKWn6+scn5wbaN2_x4wh4EYSuNxnaoQK1FfJK45MOw@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 0/2] rust: crates in other kernel directories
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <104f983a-57c1-ff94-607b-3a48d2e225f4@de.bosch.com>
+In-Reply-To: <104f983a-57c1-ff94-607b-3a48d2e225f4@de.bosch.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Mon, 13 Nov 2023 18:10:31 -0500
+Message-ID: <CALNs47uSVXk60BYHMd0kQ95p7RAuTe6ooQVTSD_eGu1i5caiPQ@mail.gmail.com>
+Subject: Re: Usage of experimental/sample bindings?
+To: "Behme Dirk (CM/ESO2)" <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 5, 2023 at 6:12=E2=80=AFAM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
+On Mon, Nov 13, 2023 at 8:08=E2=80=AFAM Behme Dirk (CM/ESO2)
+<dirk.behme@de.bosch.com> wrote:
+> [...]
+> Unfortunately, I found above Rust-for-Linux rust branch with all the
+> nice examples and extensive binding helper stuck at kernel 6.3 level.
 >
-> This RFC provides makes possible to have bindings for kernel subsystems
-> that are compiled as modules.
+> Taking instead the Rust-for-Linux rust-dev branch [1] which is on kernel
+> 6.6 level I found the bindings_helper.h and the examples being quite
+> limited. What for example results in my example module to fail building [=
+2].
 >
-> Previously, if you wanted to have Rust bindings for a subsystem, like
-> AMBA for example, you had to put it under `rust/kernel/` so it came
-> part of the `kernel` crate, but this came with many downsides. Namely
-> if you compiled said subsystem as a module you've a dependency on it
-> from `kernel`, which is linked directly on `vmlinux`.
+> Have I missed anything? Is there anywhere a "latest and greatest"
+> bindings collection which can be used for experimenting/learning on
+> recent kernel 6.6/6.7 level? Or what is the idea for such use cases with
+> mainline kernel having only a quite limited number of available bindings?
 >
-> So instead of overpopulating `kernel` with a gazillion modules that
-> throws you into dire straits you should rather have the bindings in the
-> same directory as the subsystem you want to bind with and link it to
-> it.
+> Many thanks :)
 >
-> With this patch Rust sources can be compiled into libraries for them to
-> be consumed. These libraries are ar archives that follow the `.rlib`
-> structure, namely a libfoo.rlib thin archive with a foo.foo.o object
-> and a libfoo.rmeta rustc metadata as members. Such Rust crates get
-> their symbols exposed and the `bindings` crate is made available for
-> them.
->
-> Also included there's a sample usage of this in another patch, but it
-> is not meant to be merged as it remains as an example.
->
-> If you want to use a crate with your Rust module just add a `rust-libs`
-> variable in your Makefile with a value of the relative directory of
-> said crate plus its name, e.g.
->
->     # Link with the foo crate
->     rust-libs +=3D ../path/to/foo
+> Dirk
 
+Hello Dirk,
 
+The branch named `rust` is indeed no longer relevant, it was mostly
+for a proof of concept before merge into the kernel. Since merge, most
+development happens against either mainline or `rust-next` [1].
 
+The branch `rust-dev` is also up to date with some more experimental
+features. The RFL site has a better overview [2].
 
-I will not provide a line-by-line review.
+Is there anything specific you are looking to develop for? There are a
+lot of abstractions that exist or are under development, but just have
+not been merged since there isn't yet an in-tree use case. Some are in
+`rust-dev` and a lot are PRs to the RFL repo - but it is quite dynamic
+at this point, we can point you in the right direction if you are
+looking for something specific. You may also like to drop by Zulip [3]
+for any quick questions.
 
+- Trevor
 
-Just one thing I'd like to point out.
-
-You assume the library (drivers/usb/core/*)
-is built before its consumers (samples/rust/*).
-
-If Kbuild ends up with building lib consumers first,
-it will be a build error.
-
-
-
-Kbuild descends into multiple directories in parallel building.
-
-You cannot predict which directory is built first.
-
-
-
-
-
-
-
-
-> Martin Rodriguez Reboredo (2):
->   kbuild: Build Rust crates as libraries
->   samples: rust: Add USB sample bindings
->
->  .gitignore                      |  2 ++
->  Makefile                        |  4 ++--
->  drivers/usb/core/Kconfig        |  7 ++++++
->  drivers/usb/core/Makefile       |  3 +++
->  drivers/usb/core/usb.rs         | 13 ++++++++++
->  rust/bindings/bindings_helper.h |  1 +
->  samples/rust/Kconfig            | 10 ++++++++
->  samples/rust/Makefile           |  3 +++
->  samples/rust/rust_usb_simple.rs | 22 +++++++++++++++++
->  scripts/Makefile.build          | 42 ++++++++++++++++++++++++++++++---
->  scripts/Makefile.lib            | 20 ++++++++++++----
->  scripts/Makefile.modfinal       |  9 +++++--
->  12 files changed, 125 insertions(+), 11 deletions(-)
->  create mode 100644 drivers/usb/core/usb.rs
->  create mode 100644 samples/rust/rust_usb_simple.rs
->
-> --
-> 2.42.1
->
-
-
---=20
-Best Regards
-Masahiro Yamada
+[1]: https://github.com/Rust-for-Linux/linux/tree/rust-next
+[2]: https://rust-for-linux.com/branches
+[3]: https://rust-for-linux.zulipchat.com/
