@@ -1,40 +1,40 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y9vxk31Q"
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED79B0
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Nov 2023 13:24:34 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-54366bb1c02so201a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Nov 2023 13:24:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="L0ZFwWAA"
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62CF1197
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Nov 2023 13:55:12 -0800 (PST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-5afbdbf3a19so983367b3.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Nov 2023 13:55:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700083472; x=1700688272; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1700085311; x=1700690111; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vsceDGuN2ajiTAgiuQyVgrST9Y5TBp5mlDRry6hTJDU=;
-        b=Y9vxk31Q+gpbjzYHmO/00LZ3Un5EgaX2WptLuzElEuJJ6tQsPGEnDiwVnMrCASJgrE
-         3S9C7IP71b4Sa1MTqQSHXTJpJYoBqZCzvmSjoopSSp6TX3QzHciB7+Aou4JOQOe/jNiR
-         BEP/OjC4U9ar5DE5eVPdoh1vvgz+IvGD3+2JoW198yV46HmNsr+laaBNHPrVN0aO5Xb2
-         m7EE5IFpRM9u4zLx5KgCaKvC/cDV5b3Cr7OXls8Tqrvft6npDPdOwC3XUivJUathxNae
-         78D7I2DYQ1EBEikCxtSIEH9WlUNh6rtHGmr6gISHtQiwlr62v5m1WgtNRbILvu+S+ANl
-         Ai0g==
+        bh=CUq545v7/AFWdO3s2cbQedSmJfD35I6jv2jV0AQhfh8=;
+        b=L0ZFwWAAXKvUPAaRv0LlnKH+wfIv+UvaFAtlNy65VwS4cXV0Q4eC8Ja3u60kW9+mcl
+         ZNyf+bywQCU5mGUxrLbIBgXDAr/uRzmh0oja7luLZqSZ0woFSyPJCeQvKhVAw0KmF07K
+         aE595f86xlpXqvdTzIVSNsO6AfBxEO1WOQff7a+6Zcd7va4+e2K2CC+hdJPbY5uJ1/2b
+         Bvufb3rd+n9k8KWMorN++KG90operFg8hV67Yd1Ba/AO2JTp3RoRYl8tUdyM2+i4w0Sz
+         ZQ0K36kIrBj1UDi82dbgFWaWhroCAwPPkxO1gzas9udGCJVW4P9Gd/9pERAKgdwlvS4S
+         5yww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700083473; x=1700688273;
+        d=1e100.net; s=20230601; t=1700085311; x=1700690111;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vsceDGuN2ajiTAgiuQyVgrST9Y5TBp5mlDRry6hTJDU=;
-        b=Ux4kA3tmgXh5GqsMPxwyUhwLAWuJupxiNMr0vzLtXFwEoe2cdsBdbOS7AB9OcTD9PP
-         lEOehvfQCKJvtB0UIPb0z5UDOpp5THqOei5igSAF9rYgPJverA5MHJXkEnbtmFBj2WBy
-         jKJPMXXwUhBkzzj0g4mj8O9NNAeR8B8l68dJbsWjssklSsJlYd/ZxT+xRSvhTT2ug6U1
-         6kfJI15ALrxu0IkSmzp48OUAuNzCJ9LSU2Cy1f8LJl1vwHE8mWzeT4ZST6DOqzAb+/Tz
-         NEB9/smJdcwUoXWhgJIK75f9CoWc2DGb2zUFU8wv2ah6K0lZgE7KMuC0b4f9WRRRrjRO
-         ekHQ==
-X-Gm-Message-State: AOJu0YwvDLylnAPJ+cE1yfitOM1p6ofpP8kHLJkk0muVeccAw9vcQJct
-	YWMP8Yra0srjoDKJi/cBRHml1DAM0mrBqSyrJROsvQ==
-X-Google-Smtp-Source: AGHT+IE7ZYcjN54B8pfXukaDEcedIKxoflQHt7QYFXwiwuXpwizS+NiUkvqcC3YcS2MhWVBzhH//erilzmWi7y4Dwg0=
-X-Received: by 2002:a05:6402:17cb:b0:546:d479:9c90 with SMTP id
- s11-20020a05640217cb00b00546d4799c90mr14840edy.5.1700083472647; Wed, 15 Nov
- 2023 13:24:32 -0800 (PST)
+        bh=CUq545v7/AFWdO3s2cbQedSmJfD35I6jv2jV0AQhfh8=;
+        b=ah/dvT7GiyPTDYNcpMpEdw5eC7fiCHYJUUvDr/Kzf+iMsqTggfeRBqdZHlPzLcaWS8
+         dZ780uKuUmWnbJaZ6U/AErKWp7psXe0itr+q1LKImZMOFVgPLiUOo6gYhOr21wOKUhWC
+         bMo7tAreo/8H/Y5lNhl/a+o4hW71xuoEnS43DonyUAJAZSmKhFiqYGI5ed7TFIn1C60O
+         cyx5GRu49gMxVbwhCKY2pA8AhhEtgBVlTI3ykO0k+BvqfeGsLkOKJLCylqL89HQE7S/W
+         RJciUq2xGl7hP4ZrnMdyGLkFUNTl4dV8GueX2mROhE2Qxkd//2ByI5U2CH3HI6eVv+qF
+         OTZg==
+X-Gm-Message-State: AOJu0Yw+QKXKXthcrj6ss0XDAJEbOmxixwGo+ykS4iaAJh5JlOKxQuyj
+	Eq7cU4uG6TcqFBeLfEdnM9eZQHZ7rZ1jZ6L+DMYD5g==
+X-Google-Smtp-Source: AGHT+IGkTlfVHtu57X2UgwUbJEe510KnlsYZpQcsqr40W+isOuklIW5nspCjer/9200mY+BlzNeYTyt3O8hmubJkKUM=
+X-Received: by 2002:a0d:f347:0:b0:5be:a458:1f37 with SMTP id
+ c68-20020a0df347000000b005bea4581f37mr16027566ywf.16.1700085311608; Wed, 15
+ Nov 2023 13:55:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,13 +42,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20231115185858.2110875-1-mmaurer@google.com> <CALNs47vtOJ8WcykEtXn==Fn77sqRt9nzPDek-c+625HPfWSx2A@mail.gmail.com>
- <CAGSQo01pE=V+NCdgp-1r_PAfn_48D4yXb91spHf8cZA0Z7GoLA@mail.gmail.com>
-In-Reply-To: <CAGSQo01pE=V+NCdgp-1r_PAfn_48D4yXb91spHf8cZA0Z7GoLA@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 15 Nov 2023 13:24:21 -0800
-Message-ID: <CAGSQo03pseM9ypkOZuX4UrHN=6kdBRq6a1sGH-T_T6WrOFgXzg@mail.gmail.com>
+ <CAGSQo01pE=V+NCdgp-1r_PAfn_48D4yXb91spHf8cZA0Z7GoLA@mail.gmail.com> <CAGSQo03pseM9ypkOZuX4UrHN=6kdBRq6a1sGH-T_T6WrOFgXzg@mail.gmail.com>
+In-Reply-To: <CAGSQo03pseM9ypkOZuX4UrHN=6kdBRq6a1sGH-T_T6WrOFgXzg@mail.gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Wed, 15 Nov 2023 16:54:59 -0500
+Message-ID: <CALNs47suPEkRUzPAmYOJ2t_CCeLBAdbehs=FexL-6--68=KgdA@mail.gmail.com>
 Subject: Re: [PATCH 0/3] MODVERSIONS + RUST Redux
-To: Trevor Gross <tmgross@umich.edu>
+To: Matthew Maurer <mmaurer@google.com>
 Cc: gary@garyguo.net, masahiroy@kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -57,97 +57,33 @@ Cc: gary@garyguo.net, masahiroy@kernel.org, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Should I be sending all these patches to all the lists? I was trying
-to follow the recommendations of get_maintainers.pl, which thought
-modules were the only relevant folks for the export_modules patches.
-(I also added Gary + Masahiro explicitly due to their involvement with
-the previous approach.)
-
-If I should be sending all the patches to all the lists, should I also
-be adding all the suggested To/Cc lines for all the patches, or? I
-didn't see any suggestions on how to approach this in
-https://docs.kernel.org/process/submitting-patches.html#select-the-recipien=
-ts-for-your-patch
-
-Sorry for messing up the line wrapping in the cover letter, and if I
-re-send I'll fix that, but it doesn't seem worth resending until I
-know how I should be setting the To/Cc lines for each patch.
-
-
-On Wed, Nov 15, 2023 at 1:23=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+On Wed, Nov 15, 2023 at 4:24=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
  wrote:
 >
-> Should I be sending all these patches to all the lists? I was trying to f=
-ollow the recommendations of get_maintainers.pl, which thought modules were=
- the only relevant folks for the export_modules patches. (I also added Gary=
- + Masahiro explicitly due to their involvement with the previous approach.=
-)
+> Should I be sending all these patches to all the lists? I was trying
+> to follow the recommendations of get_maintainers.pl, which thought
+> modules were the only relevant folks for the export_modules patches.
+> (I also added Gary + Masahiro explicitly due to their involvement with
+> the previous approach.)
 >
-> If I should be sending all the patches to all the lists, should I also be=
- adding all the suggested To/Cc lines for all the patches, or? I didn't see=
- any suggestions on how to approach this in https://docs.kernel.org/process=
-/submitting-patches.html#select-the-recipients-for-your-patch
->
-> Sorry for messing up the line wrapping in the cover letter, and if I re-s=
-end I'll fix that, but it doesn't seem worth resending until I know how I s=
-hould be setting the To/Cc lines for each patch.
->
-> On Wed, Nov 15, 2023 at 1:05=E2=80=AFPM Trevor Gross <tmgross@umich.edu> =
-wrote:
->>
->> On Wed, Nov 15, 2023 at 1:59=E2=80=AFPM Matthew Maurer <mmaurer@google.c=
-om> wrote:
->> >
->> > Support both MODVERSIONS and RUST by making symbol version information=
- extensible. This works by having a separate section per field, and allowin=
-g iteration to work differently per field. The old module information remai=
-ns available to allow existing kmod tools to continue to work on new module=
-s if they are only looking for C information.
->> >
->> > This also gives us the ability to attach additional information to sym=
-bol versioning (e.g. namespacing) should it become necessary in the future =
-without breaking backwards compatibility - new sections will be added, but =
-existing tools will still find all their information and keep the existing =
-format.
->> >
->> > PPC has a hack around removing leading dots in symvers. I have
->> > replicated this hack for the new format, but without context for why
->> > this was being done, I can't test that it works as expected.
->> >
->> > This was inspired by Masahiro Yamada's suggestion[1] when discussing t=
-he previous attempt.
->> > Link: https://lore.kernel.org/lkml/CAK7LNATsuszFR7JB5ZkqVS1W=3DhWr9=3D=
-E7bTf+MvgJ+NXT3aZNwg@mail.gmail.com/
->> >
->> > Matthew Maurer (3):
->> >   export_report.pl: Rehabilitate script
->> >   modpost: Extended modversion support
->> >   export_report: Use new version info format
->> >
->> >  arch/powerpc/kernel/module_64.c | 24 +++++++++-
->> >  init/Kconfig                    |  1 -
->> >  kernel/module/internal.h        | 16 ++++++-
->> >  kernel/module/main.c            |  9 +++-
->> >  kernel/module/version.c         | 77 ++++++++++++++++++++++++++++++++=
-+
->> >  scripts/export_report.pl        | 17 +++++---
->> >  scripts/mod/modpost.c           | 33 ++++++++++++--
->> >  7 files changed, 161 insertions(+), 16 deletions(-)
->> >
->> > --
->> > 2.43.0.rc0.421.g78406f8d94-goog
->>
->> Hi Matthew,
->>
->> You may want to resend this patch. For whatever reason, the RFL list
->> only received 0/3 and 2/3 [1], and it looks like the other relevant
->> lists only received 2/3 [2].
->>
->> Also seems like text wrapping is off for 0/3 :)
->>
->> - Trevor
->>
->> [1]: https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mma=
-urer@google.com/T/#t
->> [2]: https://lore.kernel.org/linux-modules/20231115185858.2110875-3-mmau=
-rer@google.com/T/#u
+> If I should be sending all the patches to all the lists, should I also
+> be adding all the suggested To/Cc lines for all the patches, or? I
+> didn't see any suggestions on how to approach this in
+> https://docs.kernel.org/process/submitting-patches.html#select-the-recipi=
+ents-for-your-patch
+
+I am not an expert here but I think you generally want all patches to
+go to the same group of people / lists. Maybe this isn't a hard and
+fast rule but you lose context if you don't see the cover letter or
+the change as a set. Also patchsets are picked up as a group, so the
+whole thing needs to hit at least one list.
+
+Probably somebody else could add some more context here.
+
+> Sorry for messing up the line wrapping in the cover letter
+> [...]
+
+That was just an FYI, we can still read it :)
+
+
+- Trevor
