@@ -1,277 +1,181 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Z/tOBzhB"
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428A5D52;
-	Thu, 16 Nov 2023 09:13:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rriOKmH8E9hkmOxPeS6KUmox+mrthGZOdjRWS2B5ZXY=; b=Z/tOBzhB1GcjJdQQrjjAvtFcxh
-	rH5gAWfhwbAulmEQCuJeXwASCnUMMkcQGn2clVN0jCHFPyFMgCteVKp6h/xdR4OKfRks6R0uTX8NB
-	pXSG4/NO9YbGtVWl96kio1ldRqxkvEalEi+SZ7NuQsmvxmpV4jsBZmHycEqUyk8OB8GgTBPEKpfCZ
-	Of47G6t9hYLxm9+Xh00HpkoA27ECUMTkyJPvbqYKKfNYzmUhikbSqOK/I0tOlVPSbCMHC8E7lcYaa
-	STgBqBHkmZD5PelziCmsq7/HymQvUcAJFXdMyR3yYfN6T2msb0pYvlGpPshZvSk8eFDLZksL/5rpU
-	BqirE7dA==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1r3fux-0045Gx-2T;
-	Thu, 16 Nov 2023 17:12:39 +0000
-Date: Thu, 16 Nov 2023 09:12:39 -0800
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: gary@garyguo.net, masahiroy@kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>, Song Liu <song@kernel.org>,
-	Petr Mladek <pmladek@suse.com>, Naveen N Rao <naveen@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Marc =?iso-8859-1?Q?Aur=E8le?= La France <tsi@tuyoix.net>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Ard Biesheuvel <ardb@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/3] modpost: Extended modversion support
-Message-ID: <ZVZNh/PA5HiVRkeb@bombadil.infradead.org>
-References: <20231115185858.2110875-1-mmaurer@google.com>
- <20231115185858.2110875-3-mmaurer@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1sTyn8Co"
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55081129
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:06 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7cf717bacso28574867b3.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1700213945; x=1700818745; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=C8uh/1N+tGpZdyYYLem5NQUA0RzoK2GeeFDzKLPiN8o=;
+        b=1sTyn8CoYXFBhab9awtossnzDuH8n6i5YokbNR2q1TRbwhFEQnXVUidMzTo4+Iz40U
+         WSieg9U9QrXWC59B9NlfGS22S3Drj/3jb8B4/JVGmUqjFkbCSs+8qkJ7i3Mca0qaVUiA
+         pMImzlC1UQbE1lJ1GB+RNCO4S2AY1FzBxKnkp/53n7Q678TU/wCsQTM4QpzY0t+VVemo
+         7R4LBW8fp7hX80WmwrCZxiPfQaUqK1rpGLNLMAKAUyArj/zLP8dF2adA7QXXVmlHVNMx
+         C1YSo9V64vIuMeduYE7FIh2jL8xHr1Bv9pUafppQhBlVuXnS8liO0uRY0uj1jpE59z2m
+         piCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700213945; x=1700818745;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C8uh/1N+tGpZdyYYLem5NQUA0RzoK2GeeFDzKLPiN8o=;
+        b=jpHfbhGFQmDVSm486omYI86LuYNrtRpwcH4n+6xqK4OtwzMaca3YNzzi1dez+woRSn
+         1vGIrR5iL26APjPE4auWSAeo2LvR4Y2rc3k1AfppmykKyjcyK73/IZtDmoqP6zZbB44Z
+         mUTiYuU/uTAj8aRF3XuHMKQcThn6RjoJ+DKukZy9mcfLjRRzkO9Bv7SMHWXK1VB+oy6S
+         h+nFLcGiAptTC3Y1HPhjwLTDGgbvhU575ectANcPDCHSLZxdzhQT+HhNtK6kUTPxRhV3
+         +t4P5koJWmNyFfRg60+48ecl3qHhmMvxBSjO8tOdthqnDJk3WPGI5Jps56vKS8ZVwCrP
+         zb8g==
+X-Gm-Message-State: AOJu0YwkmnW5HZvzZ9rQgx6AAO5tK/9okIrxGFFwpyYbgWQz+Ao1geQQ
+	EC/V8Rcns08/fDAqe6++l/8vf9Jfyq0G0Ck=
+X-Google-Smtp-Source: AGHT+IHkqIXq7+Zj+gED8zOASIYbuaF5VQEeDHm9lNOkZoLOGVYm0Gmi0uphUL15OmVFDmSbz7r0W+C1B3Fi61Q=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a81:6d02:0:b0:5be:a164:566d with SMTP id
+ i2-20020a816d02000000b005bea164566dmr484689ywc.1.1700213945524; Fri, 17 Nov
+ 2023 01:39:05 -0800 (PST)
+Date: Fri, 17 Nov 2023 09:39:03 +0000
+In-Reply-To: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231115185858.2110875-3-mmaurer@google.com>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
+Mime-Version: 1.0
+References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
+Message-ID: <20231117093903.2514513-1-aliceryhl@google.com>
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY drivers
+From: Alice Ryhl <aliceryhl@google.com>
+To: fujita.tomonori@gmail.com
+Cc: andrew@lunn.ch, benno.lossin@proton.me, miguel.ojeda.sandonis@gmail.com, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 15, 2023 at 06:50:10PM +0000, Matthew Maurer wrote:
-> Adds a new format for modversions which stores each field in a separate
-> elf section.
-
-The "why" is critical and not mentioned. And I'd like to also see
-documented this with foresight, if Rust needed could this be used
-in the future for other things?
-
-Also please include folks CC'd in *one* patch to *all* patches as
-otherwise we have no context.
-
-> This initially adds support for variable length names, but
-> could later be used to add additional fields to modversions in a
-> backwards compatible way if needed.
+FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
+> This patch adds abstractions to implement network PHY drivers; the
+> driver registration and bindings for some of callback functions in
+> struct phy_driver and many genphy_ functions.
 > 
-> Adding support for variable length names makes it possible to enable
-> MODVERSIONS and RUST at the same time.
+> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
 > 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->  arch/powerpc/kernel/module_64.c | 24 +++++++++-
+> This patch enables unstable const_maybe_uninit_zeroed feature for
+> kernel crate to enable unsafe code to handle a constant value with
+> uninitialized data. With the feature, the abstractions can initialize
+> a phy_driver structure with zero easily; instead of initializing all
+> the members by hand. It's supposed to be stable in the not so distant
+> future.
+> 
+> Link: https://github.com/rust-lang/rust/pull/116218
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Why was only powerpc modified? If the commit log explained this it would
-make it easier for review.
+I promised Andrew to take a look at these patches at Plumbers. This
+email contains the first part of my review.
 
-> diff --git a/kernel/module/internal.h b/kernel/module/internal.h
-> index c8b7b4dcf782..0c188c96a045 100644
-> --- a/kernel/module/internal.h
-> +++ b/kernel/module/internal.h
-> @@ -80,7 +80,7 @@ struct load_info {
->  	unsigned int used_pages;
->  #endif
->  	struct {
-> -		unsigned int sym, str, mod, vers, info, pcpu;
-> +		unsigned int sym, str, mod, vers, info, pcpu, vers_ext_crc, vers_ext_name;
+In this email, I will bring up the question of how the safety comments
+should be worded. I know that you've probably discussed this before, but
+my opinion was asked for, and this is the main area where I think
+there's room for improvement.
 
-We might as well modify this in a preliminary patch to add each new
-unsinged int in a new line, so that it is easier to blame when each new
-entry gets added. It should not grow the size of the struct at all but
-it would make futur extensions easier to review what is new and git
-blame easier to spot when something was added.
+> +    /// # Safety
+> +    ///
+> +    /// This function must only be called from the callbacks in `phy_driver`.
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
 
-Although we don't use this extensively today this can easily grow for
-convenience and making code easier to read.
+This kind of safety comment where you say "must only be used by internal
+code and nothing else" isn't great. It doesn't really help with checking
+the correctness. It's usually better to document what is actually
+required here, even if it shouldn't be called by non-internal code. I
+recommend something along the lines of:
 
-> diff --git a/kernel/module/version.c b/kernel/module/version.c
-> index 53f43ac5a73e..93d97dad8c77 100644
-> --- a/kernel/module/version.c
-> +++ b/kernel/module/version.c
-> @@ -19,11 +19,28 @@ int check_version(const struct load_info *info,
->  	unsigned int versindex = info->index.vers;
->  	unsigned int i, num_versions;
->  	struct modversion_info *versions;
-> +	struct modversion_info_ext version_ext;
->  
->  	/* Exporting module didn't supply crcs?  OK, we're already tainted. */
->  	if (!crc)
->  		return 1;
->  
-> +	/* If we have extended version info, rely on it */
-> +	if (modversion_ext_start(info, &version_ext) >= 0) {
+	# Safety
+	
+	For the duration of 'a, the pointer must point at a valid `phy_device`,
+	and the caller must hold the X mutex.
 
-There are two things we need to do to make processing modules easier:
+Then in methods like this: (which are missing justification for why
+there's no data race!)
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        unsafe { (*phydev).phy_id }
+you instead say:
 
-  1) ELF validation
-  2) Once checked then process the information
+	SAFETY: By the struct invariants, `phydev` points at a valid
+	`phy_device`, and we hold the X lock, which gives us access to
+	the `phy_id` field.
 
-We used to have this split up but also had a few places which did both
-1) and 2) together. This was wrong and so I want to keep things tidy
-and ensure we do things which validate the ELF separate. To that
-end please put the checks to validate the ELF first so that we report
-to users with a proper error/debug check in case the ELF is wrong,
-this enables futher debug checks for that to be done instead of
-confusing users who end up scratching their heads why something
-failed.
+And you would also update the struct invariant accordingly:
 
-So please split up the ELF validation check and put that into
-elf_validity_cache_copy() which runs *earlier* than this.
+/// # Invariants
+///
+/// Referencing a `phy_device` using this struct asserts that the X
+/// mutex is held.
+#[repr(transparent)]
+pub struct Device(Opaque<bindings::phy_device>);
 
-Then *if* if has this, you just process it. Please take care to be
-very pedantic in the elf_validity_cache_copy() and extend the checks
-you have for validation in modversion_ext_start() and bring them to
-elf_validity_cache_copy() with perhaps *more* stuff which does any
-insane checks to verify it is 100% correct.
 
-> +		do {
-> +			if (strncmp(version_ext.name.value, symname,
-> +				    version_ext.name.end - version_ext.name.value) != 0)
-> +				continue;
-> +
-> +			if (*version_ext.crc.value == *crc)
-> +				return 1;
-> +			pr_debug("Found checksum %X vs module %X\n",
-> +				 *crc, *version_ext.crc.value);
-> +			goto bad_version;
-> +		} while (modversion_ext_advance(&version_ext) == 0);
 
-Can you do a for_each_foo()) type loop here instead after validation?
-Because the validation would ensure your loop is bounded then. Look at
-for_each_mod_mem_type() for inspiration.
 
-> +		goto broken_toolchain;
 
-The broken toolchain thing would then be an issue reported in the
-ELF validation.
+> +// During the calls to most functions in [`Driver`], the C side (`PHYLIB`) holds a lock that is
+> +// unique for every instance of [`Device`]. `PHYLIB` uses a different serialization technique for
+> +// [`Driver::resume`] and [`Driver::suspend`]: `PHYLIB` updates `phy_device`'s state with
+> +// the lock held, thus guaranteeing that [`Driver::resume`] has exclusive access to the instance.
+> +// [`Driver::resume`] and [`Driver::suspend`] also are called where only one thread can access
+> +// to the instance.
 
-> @@ -87,6 +105,65 @@ int same_magic(const char *amagic, const char *bmagic,
->  	return strcmp(amagic, bmagic) == 0;
->  }
->  
-> +#define MODVERSION_FIELD_START(sec, field) \
-> +	field.value = (typeof(field.value))sec.sh_addr; \
-> +	field.end = field.value + sec.sh_size
-> +
-> +ssize_t modversion_ext_start(const struct load_info *info,
-> +			     struct modversion_info_ext *start)
-> +{
-> +	unsigned int crc_idx = info->index.vers_ext_crc;
-> +	unsigned int name_idx = info->index.vers_ext_name;
-> +	Elf_Shdr *sechdrs = info->sechdrs;
-> +
-> +	// Both of these fields are needed for this to be useful
-> +	// Any future fields should be initialized to NULL if absent.
+I used "X mutex" as an example for the synchronization mechanism in the
+above snippets, but it sounds like its more complicated than that? Here
+are some possible alternatives I could come up with:
 
-Curious, what gave you the impression // type style comments are
-welcomed, please replace that with either a one line 
+Maybe we don't need synchronization when some operations can't happen?
 
-/* foo comment */
+/// # Invariants
+///
+/// Referencing a `phy_device` using this struct asserts that the X
+/// mutex is held, or that there are no concurrent operations of type Y.
+#[repr(transparent)]
+pub struct Device(Opaque<bindings::phy_device>);
 
-Or a multi-line:
+Maybe we have a separate case for when the device is being initialized
+and nobody else has access yet?
 
-/*
- * stuff and go into great deatils
- * more elaaborate explanation
- */
+/// # Invariants
+///
+/// Referencing a `phy_device` using this struct asserts that the X
+/// mutex is held, or that the reference has exclusive access to the
+/// entire `phy_device`.
+#[repr(transparent)]
+pub struct Device(Opaque<bindings::phy_device>);
 
-Of even better, since you are moving this to ELF Validation please add
-undertand what elf_validity_cache_copy() does, and add kdoc style
-comments for it and then extend it with why Rust needs these magical things.
+Maybe it is easier to just list the fields we need access to?
 
-> +	if ((crc_idx == 0) || (name_idx == 0))
-> +		return -EINVAL;
-> +
-> +	MODVERSION_FIELD_START(sechdrs[crc_idx], start->crc);
-> +	MODVERSION_FIELD_START(sechdrs[name_idx], start->name);
-> +
-> +	return (start->crc.end - start->crc.value) / sizeof(*start->crc.value);
-> +}
-> +
-> +static int modversion_ext_s32_advance(struct modversion_info_ext_s32 *field)
-> +{
-> +	if (!field->value)
-> +		return 0;
-> +	if (field->value >= field->end)
-> +		return -EINVAL;
-> +	field->value++;
-> +	return 0;
-> +}
-> +
-> +static int modversion_ext_string_advance(struct modversion_info_ext_string *s)
-> +{
-> +	if (!s->value)
-> +		return 0;
-> +	if (s->value >= s->end)
-> +		return -EINVAL;
-> +	s->value += strnlen(s->value, s->end - s->value - 1) + 1;
-> +	if (s->value >= s->end)
-> +		return -EINVAL;
-> +	return 0;
-> +}
-> +
-> +int modversion_ext_advance(struct modversion_info_ext *start)
-> +{
-> +	int ret;
-> +
-> +	ret = modversion_ext_s32_advance(&start->crc);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = modversion_ext_string_advance(&start->name);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
+/// # Invariants
+///
+/// Referencing a `phy_device` using this struct asserts exclusive
+/// access to the following fields: phy_id, state, speed, duplex. And
+/// read access to the following fields: link, autoneg_complete,
+/// autoneg.
+#[repr(transparent)]
+pub struct Device(Opaque<bindings::phy_device>);
 
-Please add all the validation as part of the ELF validation sanity checks
-and make sure you rant so toolchains get easily debugged and fixed.
-That would make the processing of data a secodnary step and it is
-easier to read and simpler code. The validation then becomes the part
-which kicks issues out early.
+Perhaps we want to avoid duplication with some existing C documentation?
 
->  /*
->   * Generate the signature for all relevant module structures here.
->   * If these change, we don't want to try to parse the module.
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index 973b5e5ae2dd..884860c2e833 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -1910,15 +1910,42 @@ static void add_versions(struct buffer *b, struct module *mod)
->  			continue;
->  		}
->  		if (strlen(s->name) >= MODULE_NAME_LEN) {
-> -			error("too long symbol \"%s\" [%s.ko]\n",
-> -			      s->name, mod->name);
-> -			break;
-> +			/* this symbol will only be in the extended info */
-> +			continue;
+/// # Invariants
+///
+/// Referencing a `phy_device` using this struct asserts that the user
+/// is inside a Y scope as defined in Documentation/foo/bar.
+#[repr(transparent)]
+pub struct Device(Opaque<bindings::phy_device>);
 
-I cannot grok why this is being done, but hopefully in the next patch
-series this will be easier to understand.
+But I don't know how these things are actually synchronized. Maybe
+it is some sixth option. I would be happy to help draft these safety
+comments once the actual synchronization mechanism is clear to me.
 
- Luis
+Or maybe you prefer to not do it this way, or to punt it for a later
+patch series. I prefer to document these things in the above way, but
+ultimately it is not up to me.
+
+Alice
+
