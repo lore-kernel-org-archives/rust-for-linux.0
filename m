@@ -1,97 +1,125 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZGVbgzrN"
-Received: from mail-lf1-x14a.google.com (mail-lf1-x14a.google.com [IPv6:2a00:1450:4864:20::14a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03119D4E
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:20 -0800 (PST)
-Received: by mail-lf1-x14a.google.com with SMTP id 2adb3069b0e04-5079fd9754cso1875739e87.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700213958; x=1700818758; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yRP/aW0x+wuYfu3h+kWAPAGUjA7Hx5HhVmNICZELS2A=;
-        b=ZGVbgzrNoEiKIWT4SMGW56A1cWwFPjK5UZHn5v67/yy/xrAr31HINFavgMXN5i9gSM
-         SeLRYWUpVXI+5X6rCmirbDDLKkXQvjmR40CLN8bXwkWF0mE4PekWBE5zuF3Z+104o7fp
-         AQ5vBqpbc/OW7ziJhPzx+HNL1wWyf+0P9zMY4xUE3ueBtT3V8rT0aohnNldTki58ionL
-         gEnJSyM+PQjswfuhmZYAZ8S6CSiu49sSrvLnOZcHoh63iiZZxgvP4hoPXDWH+G9jluW8
-         xLjqZ16vyokJRKJMC2JEFVOdy1iEeURf6HgsM6/15OSLnIwHPLR0Pye7N6y4SAGNc5BQ
-         3rAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700213958; x=1700818758;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yRP/aW0x+wuYfu3h+kWAPAGUjA7Hx5HhVmNICZELS2A=;
-        b=fa5OUKTKCSp+asXI1i19g+XQYcCEJ0OyAG/NdIoXE6Tf0yQOty/2acMSjyBSVjqdjS
-         U7cc7zbRd8uCByM1RZSAOBXIMnrXrvzXwdWUAFNja/M0rJBLyQQ7555nmtCkplTK1hKN
-         POH5JdepxCz1yMrPiWxp5Rypvqev1jzFn1+L7Q4sh0zDzgtcDXRVmlFK+d+ygkhh1eRq
-         3SC2OlQW4vdYSuAIAhCqd9mcpVK8x9F6cMAaUy4qWyVD0wCCt3XwimJSkrzHAIAaypvR
-         lwtinLUQLTAc/I4mVvagP9vBpzlO9dNFRde8k+ow2MeHbgvByKLIG3V6eP/Wx4NAQ09j
-         XZ2w==
-X-Gm-Message-State: AOJu0YxmpAdLofWVQ1iqClPsQdl/XrXHJPa6a8KRARD8oJOrLhWZBLwL
-	v6li8NAvoFQ0yfZ5RPVTYgZCNq08VdOxGDs=
-X-Google-Smtp-Source: AGHT+IH9p4D1RRU0dNE59yvw/KRBe9QqKBsY8rPqsWRGB5cgYzJqnqwfMKyX0F287MZsfIH74dfXzAAmvvU2rWg=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:3006:0:b0:2c5:177d:60cd with SMTP id
- w6-20020a2e3006000000b002c5177d60cdmr171034ljw.9.1700213958182; Fri, 17 Nov
- 2023 01:39:18 -0800 (PST)
-Date: Fri, 17 Nov 2023 09:39:15 +0000
-In-Reply-To: <20231026001050.1720612-6-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="S/fzCsec"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356C7D52;
+	Fri, 17 Nov 2023 05:34:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Bfg5IxBs6VkVJhM+2t4BCQBz9c4aK7a7Z9rvuBVPhL4=; b=S/fzCseciwvTpIl0+DB8nel+IE
+	CvpwAhzRMWdrUfOw3e56+quuotEOdAXdCKNr3oyJw2wRj1ANHSE2tzD34/GbPF9XyODyByPjaKQJQ
+	aINX/+dzJfbR4JwAteeDRi8s9dB+DpIyyMPRhHft/+SqPQFjVtJ0s6O3UkayuR3ohGIg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1r3yz4-000RUm-9O; Fri, 17 Nov 2023 14:34:10 +0100
+Date: Fri, 17 Nov 2023 14:34:10 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: fujita.tomonori@gmail.com, benno.lossin@proton.me,
+	miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <61f93419-396d-4592-b28b-9c681952a873@lunn.ch>
+References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
+ <20231117093903.2514513-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20231026001050.1720612-6-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
-Message-ID: <20231117093915.2515418-1-aliceryhl@google.com>
-Subject: Re: [PATCH net-next v7 5/5] net: phy: add Rust Asix PHY driver
-From: Alice Ryhl <aliceryhl@google.com>
-To: fujita.tomonori@gmail.com
-Cc: andrew@lunn.ch, benno.lossin@proton.me, miguel.ojeda.sandonis@gmail.com, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231117093903.2514513-1-aliceryhl@google.com>
 
-FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
-> This is the Rust implementation of drivers/net/phy/ax88796b.c. The
-> features are equivalent. You can choose C or Rust versionon kernel
-> configuration.
+> And you would also update the struct invariant accordingly:
 > 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> /// # Invariants
+> ///
+> /// Referencing a `phy_device` using this struct asserts that the X
+> /// mutex is held.
+> #[repr(transparent)]
+> pub struct Device(Opaque<bindings::phy_device>);
+> 
+> 
+> 
+> 
+> 
+> > +// During the calls to most functions in [`Driver`], the C side (`PHYLIB`) holds a lock that is
+> > +// unique for every instance of [`Device`]. `PHYLIB` uses a different serialization technique for
+> > +// [`Driver::resume`] and [`Driver::suspend`]: `PHYLIB` updates `phy_device`'s state with
+> > +// the lock held, thus guaranteeing that [`Driver::resume`] has exclusive access to the instance.
+> > +// [`Driver::resume`] and [`Driver::suspend`] also are called where only one thread can access
+> > +// to the instance.
+> 
+> I used "X mutex" as an example for the synchronization mechanism in the
+> above snippets, but it sounds like its more complicated than that? Here
+> are some possible alternatives I could come up with:
 
-Overall looks reasonable. I found various nits below:
+So X would be phy_device->lock.
 
-There's a typo in your commit message: versionon.
+Suspend and resume don't have this lock held. I don't actually
+remember the details, but there is an email discussion with Russell
+King which does explain the problem we had, and why we think it is
+safe to not hold the lock.
 
-> +use kernel::c_str;
-> +use kernel::net::phy::{self, DeviceId, Driver};
-> +use kernel::prelude::*;
-> +use kernel::uapi;
+> /// # Invariants
+> ///
+> /// Referencing a `phy_device` using this struct asserts that the X
+> /// mutex is held, or that the reference has exclusive access to the
+> /// entire `phy_device`.
+> #[repr(transparent)]
+> pub struct Device(Opaque<bindings::phy_device>);
 
-You used the other import style in other patches.
+You can never have exclusive access to the entire phy_device, because
+it contains a mutex. Other threads can block on that mutex, which
+involves changing the linked list in the mutex.
 
-> +        // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
-> +        // linkmode so use MII_BMCR as default values.
-> +        let ret = dev.read(uapi::MII_BMCR as u16)?;
-> +
-> +        if ret as u32 & uapi::BMCR_SPEED100 != 0 {
+But that is also a pretty common pattern, put the mutex inside the
+structure it protects. So when you say 'exclusive access to the entire
+`phy_device`' you actually mean excluding mutex, spinlocks, atomic
+variables, etc?
 
-The `ret as u32` and `uapi::MII_BMCR as u16` casts make me think that
-these constants are defined as the wrong type?
+> /// Referencing a `phy_device` using this struct asserts exclusive
+> /// access to the following fields: phy_id, state, speed, duplex. And
+> /// read access to the following fields: link, autoneg_complete,
+> /// autoneg.
+> #[repr(transparent)]
+> pub struct Device(Opaque<bindings::phy_device>);
 
-It's probably difficult to get bindgen to change the type, but you could
-do this at the top of the function or file:
+For the Rust code, you can maybe do this. But the Rust code calls into
+C helpers to get the real work done, and they expect to have access to
+pretty much everything in phy_device.
 
-	const MII_BMCR: u16 = uapi::MII_BMCR as u16;
-	const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
+> /// # Invariants
+> ///
+> /// Referencing a `phy_device` using this struct asserts that the user
+> /// is inside a Y scope as defined in Documentation/foo/bar.
+> #[repr(transparent)]
+> pub struct Device(Opaque<bindings::phy_device>);
 
-> +            let _ = dev.init_hw();
-> +            let _ = dev.start_aneg();
+There is no such documentation that i know of, except it does get
+repeated again and again on the mailling lists. Its tribal knowledge.
 
-Just to confirm: You want to call `start_aneg` even if `init_hw` returns
-failure? And you want to ignore both errors?
+> But I don't know how these things are actually synchronized. Maybe
+> it is some sixth option. I would be happy to help draft these safety
+> comments once the actual synchronization mechanism is clear to me.
 
-Alice
+The model is: synchronisation is not the drivers problem.
+
+With a few years of experience reviewing drivers, you notice that
+there are a number of driver writers who have no idea about
+locking. They don't even think about it. So where possible, its best
+to hide all the locking from them in the core. The core is in theory
+developed by developers who do mostly understand locking and have a
+better chance of getting it right. Its also exercised a lot more,
+since its shared by all drivers.
+
+My experience with this one Rust driver so far is that Rust developers
+have problems accepting that its not the drivers problem.
+
+	Andrew
