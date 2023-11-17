@@ -1,98 +1,97 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hc5YGcJT"
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283DED4F
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:16 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d9cb79eb417so2446323276.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZGVbgzrN"
+Received: from mail-lf1-x14a.google.com (mail-lf1-x14a.google.com [IPv6:2a00:1450:4864:20::14a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03119D4E
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:20 -0800 (PST)
+Received: by mail-lf1-x14a.google.com with SMTP id 2adb3069b0e04-5079fd9754cso1875739e87.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 01:39:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700213955; x=1700818755; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1700213958; x=1700818758; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dSdTY5g6opfcl5LD544J1YVLs1Qqn6IPbTfdBkgZlAk=;
-        b=Hc5YGcJTYsH4peBG9glkf1JKTsdn5HZ4ZRcCvkKs1p2xgByDaNB2uQZEI8rhWBFy1L
-         BYu5u9qxAIW7KFoFyHgPyB7CDzvzlFS94JFC07KnawWPC9BEFWsBrEYubeJe6Bme0YDp
-         RCe/f4EAkNvG5yOP/fjihCOKItJQKD/ImoKliTphIz4c18GmXv/BNC2u2yxJJT/grQUX
-         4VYTiLU94lzO8YnT4HKAiPzWpUq425p+hn6YkLynTJYEm7+zRdWkxs4iBezpVAuCMTcl
-         NTmIv8s9Unmn8Pc1dob5sm9hAmb2ZHDq1E2cBXA/Q+68rIxazoZhVt8JBskbJeFWnzZ8
-         BMNg==
+        bh=yRP/aW0x+wuYfu3h+kWAPAGUjA7Hx5HhVmNICZELS2A=;
+        b=ZGVbgzrNoEiKIWT4SMGW56A1cWwFPjK5UZHn5v67/yy/xrAr31HINFavgMXN5i9gSM
+         SeLRYWUpVXI+5X6rCmirbDDLKkXQvjmR40CLN8bXwkWF0mE4PekWBE5zuF3Z+104o7fp
+         AQ5vBqpbc/OW7ziJhPzx+HNL1wWyf+0P9zMY4xUE3ueBtT3V8rT0aohnNldTki58ionL
+         gEnJSyM+PQjswfuhmZYAZ8S6CSiu49sSrvLnOZcHoh63iiZZxgvP4hoPXDWH+G9jluW8
+         xLjqZ16vyokJRKJMC2JEFVOdy1iEeURf6HgsM6/15OSLnIwHPLR0Pye7N6y4SAGNc5BQ
+         3rAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700213955; x=1700818755;
+        d=1e100.net; s=20230601; t=1700213958; x=1700818758;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dSdTY5g6opfcl5LD544J1YVLs1Qqn6IPbTfdBkgZlAk=;
-        b=ahsHmD+NxqVbUqj8SQ9iclLYp5V0H3eS6mUXLK09QhWNJVoVvTiO9peTLOhGwC5sj5
-         as9tWHWRPmQgh99+dm8DVfPUMhLV+oHFAKxMksyKNFL6eSd2hq2zh2f1qAvidl6L8AFv
-         dzrJnurBxwgf9vG2gWkIH6O85yBWR0oo2n4wfqg2EKZDIpc2DASGb41tQXZKzRlBLyvm
-         snl13Mt0rnTsEEhRwPbcFUWnCQRw3gePFDE8D3OIJOYMRTHXoe/BM7qewyOCleOyS0Pk
-         8YGsIpgBmBrXe6S/Byniak31SkQ5TXyVs+pI96zTgpvkjwxc1YwwZSzQcqCmvKkX1fwg
-         knNw==
-X-Gm-Message-State: AOJu0YxCYBBSwTCvyRWJEvt6ysVCdH1KzrEQpmDUs3imSXrY5SyYe0G5
-	1T7pNF4wp3CF81IeD9Y/zhJthIh5nukTeRU=
-X-Google-Smtp-Source: AGHT+IHMFlaClkAzqBILnoa40sm3JbIfoSrk+T6eYp3aJD4yOrSyWowj0oMmpqANkG1z5PhoONy1lZlVx8ha9rM=
+        bh=yRP/aW0x+wuYfu3h+kWAPAGUjA7Hx5HhVmNICZELS2A=;
+        b=fa5OUKTKCSp+asXI1i19g+XQYcCEJ0OyAG/NdIoXE6Tf0yQOty/2acMSjyBSVjqdjS
+         U7cc7zbRd8uCByM1RZSAOBXIMnrXrvzXwdWUAFNja/M0rJBLyQQ7555nmtCkplTK1hKN
+         POH5JdepxCz1yMrPiWxp5Rypvqev1jzFn1+L7Q4sh0zDzgtcDXRVmlFK+d+ygkhh1eRq
+         3SC2OlQW4vdYSuAIAhCqd9mcpVK8x9F6cMAaUy4qWyVD0wCCt3XwimJSkrzHAIAaypvR
+         lwtinLUQLTAc/I4mVvagP9vBpzlO9dNFRde8k+ow2MeHbgvByKLIG3V6eP/Wx4NAQ09j
+         XZ2w==
+X-Gm-Message-State: AOJu0YxmpAdLofWVQ1iqClPsQdl/XrXHJPa6a8KRARD8oJOrLhWZBLwL
+	v6li8NAvoFQ0yfZ5RPVTYgZCNq08VdOxGDs=
+X-Google-Smtp-Source: AGHT+IH9p4D1RRU0dNE59yvw/KRBe9QqKBsY8rPqsWRGB5cgYzJqnqwfMKyX0F287MZsfIH74dfXzAAmvvU2rWg=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a5b:203:0:b0:daf:7949:52f9 with SMTP id
- z3-20020a5b0203000000b00daf794952f9mr432793ybl.9.1700213955416; Fri, 17 Nov
- 2023 01:39:15 -0800 (PST)
-Date: Fri, 17 Nov 2023 09:39:08 +0000
-In-Reply-To: <20231026001050.1720612-3-fujita.tomonori@gmail.com>
+ (user=aliceryhl job=sendgmr) by 2002:a2e:3006:0:b0:2c5:177d:60cd with SMTP id
+ w6-20020a2e3006000000b002c5177d60cdmr171034ljw.9.1700213958182; Fri, 17 Nov
+ 2023 01:39:18 -0800 (PST)
+Date: Fri, 17 Nov 2023 09:39:15 +0000
+In-Reply-To: <20231026001050.1720612-6-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20231026001050.1720612-3-fujita.tomonori@gmail.com>
+References: <20231026001050.1720612-6-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
-Message-ID: <20231117093908.2515105-1-aliceryhl@google.com>
-Subject: Re: [PATCH net-next v7 2/5] rust: net::phy add module_phy_driver macro
+Message-ID: <20231117093915.2515418-1-aliceryhl@google.com>
+Subject: Re: [PATCH net-next v7 5/5] net: phy: add Rust Asix PHY driver
 From: Alice Ryhl <aliceryhl@google.com>
 To: fujita.tomonori@gmail.com
 Cc: andrew@lunn.ch, benno.lossin@proton.me, miguel.ojeda.sandonis@gmail.com, 
 	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	wedsonaf@gmail.com, Alice Ryhl <aliceryhl@google.com>
+	wedsonaf@gmail.com
 Content-Type: text/plain; charset="utf-8"
 
 FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
-> This macro creates an array of kernel's `struct phy_driver` and
-> registers it. This also corresponds to the kernel's
-> `MODULE_DEVICE_TABLE` macro, which embeds the information for module
-> loading into the module binary file.
-> 
-> A PHY driver should use this macro.
+> This is the Rust implementation of drivers/net/phy/ax88796b.c. The
+> features are equivalent. You can choose C or Rust versionon kernel
+> configuration.
 > 
 > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Overall looks reasonable. I found various nits below:
 
-A few minor nits:
+There's a typo in your commit message: versionon.
 
-> +    (drivers: [$($driver:ident),+], device_table: [$($dev:expr),+], $($f:tt)*) => {
+> +use kernel::c_str;
+> +use kernel::net::phy::{self, DeviceId, Driver};
+> +use kernel::prelude::*;
+> +use kernel::uapi;
 
-Here, you can add $(,)? to allow trailing commas when the macro is used.
-Like this:
+You used the other import style in other patches.
 
-(drivers: [$($driver:ident),+ $(,)?], device_table: [$($dev:expr),+ $(,)?], $($f:tt)*) => {
+> +        // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
+> +        // linkmode so use MII_BMCR as default values.
+> +        let ret = dev.read(uapi::MII_BMCR as u16)?;
+> +
+> +        if ret as u32 & uapi::BMCR_SPEED100 != 0 {
 
+The `ret as u32` and `uapi::MII_BMCR as u16` casts make me think that
+these constants are defined as the wrong type?
 
-> +            ::kernel::bindings::mdio_device_id {
+It's probably difficult to get bindgen to change the type, but you could
+do this at the top of the function or file:
 
-Here, I recommend `$crate` instead of `::kernel`.
+	const MII_BMCR: u16 = uapi::MII_BMCR as u16;
+	const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
 
+> +            let _ = dev.init_hw();
+> +            let _ = dev.start_aneg();
 
-> +/// #[no_mangle]
-> +/// static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; 2] = [
-> +///     ::kernel::bindings::mdio_device_id {
-> +///         phy_id: 0x003b1861,
-> +///         phy_id_mask: 0xffffffff,
-> +///     },
-> +///     ::kernel::bindings::mdio_device_id {
-> +///         phy_id: 0,
-> +///         phy_id_mask: 0,
-> +///     },
-> +/// ];
-
-I'd probably put a safety comment on the `#[no_mangle]` invocation to say that
-"C will not read off the end of this constant since the last element is zero".
+Just to confirm: You want to call `start_aneg` even if `init_hw` returns
+failure? And you want to ignore both errors?
 
 Alice
