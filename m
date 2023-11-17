@@ -1,71 +1,95 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bkFXJPiL"
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2A16189
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 15:02:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1700262136; x=1700521336;
-	bh=QpLVWMWs/2zmybTKrpIy5utNGzrfobxSGTUacwigwjU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=bkFXJPiLiOv/UgV6PC4rATOWwxNCna+cnPvLo6tW1e86o1SY/hewxpf7OiPRSG7Ud
-	 92mW5QZhonBYFQZatAtDMQ62sxx5MvGPypylzv4xThAOs2rir9gdEfOUOw9BYpdz34
-	 PxZKQT4ENOP1qyH5qiGdFRPpF46+nMRKc/s4BZDbH8ZSk3Rck+PGitIfaK/kIPVgon
-	 j2JeoXa1DXzuyYvmBe4tBwG/HhLHD5sRqJcGuvc12EEr2WxnYh6X8O1rzVQykoi7k1
-	 2Xjxjo6oqL3/TZzLcMnHfulQZUZ5LEGuGwUW1SOxcLuBvOXfUqrkZwTzT0qb+7efrf
-	 byCikftZ0amRw==
-Date: Fri, 17 Nov 2023 23:01:58 +0000
-To: Andrew Lunn <andrew@lunn.ch>, Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 2/5] rust: net::phy add module_phy_driver macro
-Message-ID: <7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
-In-Reply-To: <66455d50-9a3c-4b5c-ba2c-5188dae247a9@lunn.ch>
-References: <20231026001050.1720612-1-fujita.tomonori@gmail.com> <20231026001050.1720612-3-fujita.tomonori@gmail.com> <ZVfncj5R9-8aU7vB@boqun-archlinux> <66455d50-9a3c-4b5c-ba2c-5188dae247a9@lunn.ch>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="y1gNioMo"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A7DB0;
+	Fri, 17 Nov 2023 15:18:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=PxY6WNsEIdKhn3FQrSMGDWAbD0u7DyGrU8vLDLM/8LI=; b=y1gNioMob+uchQHwVrkhKftGrq
+	Xgis+s6T6hMuty6bkCmXRVfXQV3q9f1LHJcM3zp4ZthlBwdfcL7r5yrgJqns7Hvv/mClPCl3aLcrP
+	yd5hmdWEeVAQHHiRYKRE8iwJYF4Afwhg+2+R/2SAD4jEs5pJUOPH2YKqsDTAIsijirws=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1r486E-000Tow-7V; Sat, 18 Nov 2023 00:18:10 +0100
+Date: Sat, 18 Nov 2023 00:18:10 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 2/5] rust: net::phy add module_phy_driver
+ macro
+Message-ID: <73cb9332-3e5a-493a-8ae1-227a2ea58eb3@lunn.ch>
+References: <20231026001050.1720612-1-fujita.tomonori@gmail.com>
+ <20231026001050.1720612-3-fujita.tomonori@gmail.com>
+ <ZVfncj5R9-8aU7vB@boqun-archlinux>
+ <66455d50-9a3c-4b5c-ba2c-5188dae247a9@lunn.ch>
+ <7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
 
-On 11/17/23 23:54, Andrew Lunn wrote:
-> Each kernel module should be in its own symbol name space. The only
-> symbols which are visible outside of the module are those exported
-> using EXPORT_SYMBOL_GPL() or EXPORT_SYMBOL(). A PHY driver does not
-> export anything, in general.
->=20
-> Being built in also does not change this.
->=20
-> Neither drivers/net/phy/ax88796b_rust.o nor
-> rust/doctests_kernel_generated.o should have exported this symbol.
->=20
-> I've no idea how this actually works, i guess there are multiple
-> passes through the linker? Maybe once to resolve symbols across object
-> files within a module. Normal global symbols are then made local,
-> leaving only those exported with EXPORT_SYMBOL_GPL() or
-> EXPORT_SYMBOL()? A second pass through linker then links all the
-> exported symbols thorough the kernel?
+On Fri, Nov 17, 2023 at 11:01:58PM +0000, Benno Lossin wrote:
+> On 11/17/23 23:54, Andrew Lunn wrote:
+> > Each kernel module should be in its own symbol name space. The only
+> > symbols which are visible outside of the module are those exported
+> > using EXPORT_SYMBOL_GPL() or EXPORT_SYMBOL(). A PHY driver does not
+> > export anything, in general.
+> > 
+> > Being built in also does not change this.
+> > 
+> > Neither drivers/net/phy/ax88796b_rust.o nor
+> > rust/doctests_kernel_generated.o should have exported this symbol.
+> > 
+> > I've no idea how this actually works, i guess there are multiple
+> > passes through the linker? Maybe once to resolve symbols across object
+> > files within a module. Normal global symbols are then made local,
+> > leaving only those exported with EXPORT_SYMBOL_GPL() or
+> > EXPORT_SYMBOL()? A second pass through linker then links all the
+> > exported symbols thorough the kernel?
+> 
+> I brought this issue up in [1], but I was a bit confused by your last
+> reply there, as I have no idea how the `EXPORT_SYMBOL` macros work.
+> 
+> IIRC on the Rust side all public items are automatically GPL exported.
 
-I brought this issue up in [1], but I was a bit confused by your last
-reply there, as I have no idea how the `EXPORT_SYMBOL` macros work.
+So that sounds wrong to me. But as i said, i don't know how this
+actually works.
 
-IIRC on the Rust side all public items are automatically GPL exported.
-But `#[no_mangle]` is probably a special case, since in userspace it
-is usually used to do interop with C (and therefore the symbol is always
-exported with the name not mangled).
+In kernel C code, you effectively have three levels of symbol
+visibility.
 
-One fix would be to make the name unique by using the type name supplied
-in the macro.
+Anything static is not visible outside of the .o file.
 
-[1]: https://lore.kernel.org/rust-for-linux/1aea7ddb-73b7-8228-161e-e2e4ff5=
-bc98d@proton.me/
+Anything global within a module is visible across multiple compilation
+units within that module, but not visible outside of the module.
 
---=20
-Cheers,
-Benno
+Symbols marked with EXPORT_SYMBOL_GPL() or EXPORT_SYMBOL() are visible
+through the entire kernel.
 
+Device drivers generally don't have any EXPORT_SYMBOL* symbols. They
+do however need to import symbols which are EXPORT_SYMBOL*.  Core
+code, like phylib, has lots of EXPORT_SYMBOL*. You can also have
+modules which are just libraries, and they use EXPORT_SYMBOL*. Other
+modules will be linked to them.
+
+> But `#[no_mangle]` is probably a special case, since in userspace it
+> is usually used to do interop with C (and therefore the symbol is always
+> exported with the name not mangled).
+
+So you might need this for symbols which are EXPORT_SYMBOL*,
+especially if they are going to be used by C code. If only other Rust
+modules are going to use them, and the mangled name is predictable, i
+suppose you could use the mangled name.
+
+	Andrew
