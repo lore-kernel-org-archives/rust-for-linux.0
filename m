@@ -1,155 +1,105 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="ljbribNl"
-X-Greylist: delayed 239 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Nov 2023 17:45:02 PST
-Received: from lively-olwen.relay-egress.a.mail.umich.edu (relay-egress-host.us-east-2.a.mail.umich.edu [18.216.144.57])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BFDD79;
-	Fri, 17 Nov 2023 17:45:01 -0800 (PST)
-Received: from mammoth-yacaruna.authn-relay.a.mail.umich.edu (ip-10-0-73-60.us-east-2.compute.internal [10.0.73.60])
-	by lively-olwen.relay-egress.a.mail.umich.edu with ESMTPS
-	id 6558162C.23A596CC.5D730AC5.3305047;
-	Fri, 17 Nov 2023 20:41:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=umich.edu;
-	s=relay-2018-08-29; t=1700271660;
-	bh=Vh/HaZa7HJvFyuyNB0eCPpU6WqUM0OIvSvSE9/ugphQ=;
-	h=From:To:Cc:Subject:Date;
-	b=ljbribNlOeIV8shwVqGZXICcLSBQPNxKk4dzNUHAmgQVoZcblQZ1OJNT9Mq9FgoF2
-	 odq54YYb1D/lc2Q2Ww+6GYIx9UkCmxT5PRSj7oC+7BBkz2+pjiE6RHh+1C12SUg3FT
-	 dR+p67yKXBpUve03zv847pldxjYbcZTOn5yGm6uhsR9dtUKLi72C2AXD3tdn3Dh3o3
-	 8U/NtRlijVneAAXcRhfiITXyGVddmeaGc8t61OVFXNLD4mQpKeBdQk2jiSoMRIoOwZ
-	 UL8+mS99Sl1jvImA1v4Yqywo9+m3MoQ2mzcJvGJGyI3YMoTv0wIKxexEM7+eAJVRfx
-	 bJXZbkG7YgoPg==
-Authentication-Results: mammoth-yacaruna.authn-relay.a.mail.umich.edu; 
-	iprev=pass policy.iprev=76.141.129.158 (c-76-141-129-158.hsd1.il.comcast.net);
-	auth=pass smtp.auth=tmgross
-Received: from localhost.localdomain (c-76-141-129-158.hsd1.il.comcast.net [76.141.129.158])
-	by mammoth-yacaruna.authn-relay.a.mail.umich.edu with ESMTPSA
-	id 6558162B.22539A90.1E7385F2.2183879;
-	Fri, 17 Nov 2023 20:40:59 -0500
-From: Trevor Gross <tmgross@umich.edu>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH v2] rust: macros: update 'paste!' macro to accept string literals
-Date: Fri, 17 Nov 2023 20:39:59 -0500
-Message-Id: <20231118013959.37384-1-tmgross@umich.edu>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tuNl5Lb5"
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D04FD6A
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 18:58:07 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-da1aa98ec19so3186711276.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Nov 2023 18:58:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1700276286; x=1700881086; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QcqINJQ5diQHGOPsun01LVrGFl32Nw5/hV5eaRRLRg8=;
+        b=tuNl5Lb5paQT0f052qeluQ+0tAGSdmaA/l4/8oASX0hOCpYfkhl30eZ7b/IQL0wQQl
+         zXSOKlZy8pE3mjni/S0A1F5EC95HJ4exsuFi76fQR9wU8gCyEANaDN1uJCGtM+CVSacm
+         Z8q6Hbo9ARDcAp+A/s/EunkKfcR2wB4oySt8s1gG2LUiDe+FKWGoZdaDO5ZQOXug2G9q
+         AW5U9X6Kq5bYFCfDjkmoZuI2Eyj1kbJKSy2gL1Js6nep5EbeGxQRfDz4tA8gHABKUNhX
+         bQu3MYQ0gPMUWFcNMtBdWx5FJM4FfstCMUkGb2jOaGTqGJs25RCPBbK4R9z0+K6CP2EN
+         wAUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700276286; x=1700881086;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QcqINJQ5diQHGOPsun01LVrGFl32Nw5/hV5eaRRLRg8=;
+        b=wMi74N0MTMSWTdDq0xtG9EMGqP3h3dhHQORSb0oH+7ji3TOvNws3SQkZUlqufji9T3
+         Hh0LaqAcgwDfII0x4XBkZmdiznc9QtXfbWGScfngnEIIY3/WC2Yx4ud0aIihJOG1dgq7
+         6KS0OrWwF4zt2eS/VGd8VkiXFwfWSzKS2yaKzm0SqF9HnqUsEbzkj+X1PU26Y5K3NhfG
+         HLJRya96joUy+v1q1MnrR6Nn+uxVaj1WrCfGlLf7NCszJEyjitgjyKAcEhPWPNKSiSpf
+         8IwtjBv6RZM0exL3/7t0OV8QduD/zt0dQFZ6sHoluM2KszeI8rQsqJXmYVE2w29qiBSk
+         j6qg==
+X-Gm-Message-State: AOJu0Yxc85XqSiacIrt2JbNto7KIf9gVUFO2FC6F6v7h9vMwHrkgNffC
+	vPzai4jx8j00PLplEgtNW70ffb7hbZAb
+X-Google-Smtp-Source: AGHT+IEipLfYfNhkIRCz9BLTKi/Q07W5+qhbxpM56Qf4WuGm87G6Dh+mgTSQvuA9zn4iAz2ODTBXSWhTbmQj
+X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
+ (user=mmaurer job=sendgmr) by 2002:a25:abe3:0:b0:d9c:c9a8:8c27 with SMTP id
+ v90-20020a25abe3000000b00d9cc9a88c27mr27045ybi.13.1700276286411; Fri, 17 Nov
+ 2023 18:58:06 -0800 (PST)
+Date: Sat, 18 Nov 2023 02:54:41 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
+Message-ID: <20231118025748.2778044-1-mmaurer@google.com>
+Subject: [PATCH v2 0/5] MODVERSIONS + RUST Redux
+From: Matthew Maurer <mmaurer@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Luis Chamberlain <mcgrof@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Laura Abbott <laura@labbott.name>, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Enable combining identifiers with literals in the 'paste!' macro. This
-allows combining user-specified strings with affixes to create
-namespaced identifiers.
+The goal of this patch series is to allow MODVERSIONS and RUST to be
+enabled simultaneously. The primary issue with doing this at the moment
+is that Rust uses some extremely long symbol names - for those
+unfamiliar with Rust, it may be helpful to think of some of the mangled
+C++ names you may have seen in binaries in the past.
 
-This sample code:
+Previously, Gary Guo attempted to accomplish this by modifying the
+existing modversion format [1] to support variable-length symbol names.
+This was unfortunately considered to be a potential userspace break
+because kmod tools inspect this kernel module metadata. Masahiro Yamada
+suggested [2] that this could instead be done with a section per-field.
+This gives us the ability to be more flexible with this format in the
+future, as a new field or additional information will be in a new
+section which userspace tools will not yet attempt to read.
 
-    macro_rules! m {
-        ($name:lit) => {
-            paste!(struct [<_some_ $name _struct_>] {})
-        }
-    }
+In the previous version of this patchset, Luis Chamberlain suggested [3]
+I move validation out of the version checking and into the elf validity
+checker, and also add kernel-docs over there. I found
+elf_validity_cached_copy to be fairly dense and difficult to directly
+describe, so I refactored it into easier to explain pieces. In the
+process, I found a few missing checks and added those as well. See
+[PATCH 2/5] for more details. If this is too much, I'm more than happy
+to drop this patch from the series in favor of just adding the
+kernel-doc to the original code, but figured I'd offer it up in case the
+added clarity and checks were valuable.
 
-    m!("foo_bar");
+[1] https://lore.kernel.org/lkml/20230111161155.1349375-1-gary@garyguo.net/
+[2] https://lore.kernel.org/lkml/CAK7LNATsuszFR7JB5ZkqVS1W=hWr9=E7bTf+MvgJ+NXT3aZNwg@mail.gmail.com/
+[3] https://lore.kernel.org/lkml/ZVZNh%2FPA5HiVRkeb@bombadil.infradead.org/
 
-Would previously cause a compilation error. It will now generate:
+Matthew Maurer (5):
+  export_report: Rehabilitate script
+  modules: Refactor + kdoc elf_validity_cached_copy
+  modpost: Extended modversion support
+  rust: Allow MODVERSIONS
+  export_report: Use new version info format
 
-    struct _some_foo_bar_struct_ {}
+ arch/powerpc/kernel/module_64.c |  25 +-
+ init/Kconfig                    |   1 -
+ kernel/module/internal.h        |  18 +-
+ kernel/module/main.c            | 663 +++++++++++++++++++++++++-------
+ kernel/module/version.c         |  43 +++
+ scripts/export_report.pl        |  17 +-
+ scripts/mod/modpost.c           |  37 +-
+ 7 files changed, 642 insertions(+), 162 deletions(-)
 
-Signed-off-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
----
-
-Changes since v1: correct documentation and add an example. I added the
-reviewed-bys since the only change is in documentation, not
-functionality.
-
-v1: https://lore.kernel.org/rust-for-linux/20231008094816.320424-1-tmgross@umich.edu/
-
- rust/macros/lib.rs   | 22 ++++++++++++++++++++--
- rust/macros/paste.rs | 10 +++++++++-
- 2 files changed, 29 insertions(+), 3 deletions(-)
-
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index c42105c2ff96..51d1f8836667 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -254,8 +254,8 @@ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
- /// Within the `paste!` macro, identifiers inside `[<` and `>]` are concatenated together to form a
- /// single identifier.
- ///
--/// This is similar to the [`paste`] crate, but with pasting feature limited to identifiers
--/// (literals, lifetimes and documentation strings are not supported). There is a difference in
-+/// This is similar to the [`paste`] crate, but with pasting feature limited to identifiers and
-+/// literals (lifetimes and documentation strings are not supported). There is a difference in
- /// supported modifiers as well.
- ///
- /// # Example
-@@ -337,6 +337,24 @@ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
- /// assert_eq!(br_ok(), binder_driver_return_protocol_BR_OK);
- /// ```
- ///
-+/// # Literals
-+///
-+/// Literals can also be concatenated with other identifiers
-+///
-+/// ```ignore
-+/// macro_rules! create_numbered_fn {
-+///     ($name:literal, $val:literal) => {
-+///         kernel::macros::paste! {
-+///             fn [<some_ $name _fn $val>]() -> u32 { $val }
-+///         }
-+///     };
-+/// }
-+///
-+/// create_numbered_fn!("foo", 100);
-+///
-+/// assert_eq!(some_foo_fn100(), 100)
-+/// ```
-+///
- /// [`paste`]: https://docs.rs/paste/
- #[proc_macro]
- pub fn paste(input: TokenStream) -> TokenStream {
-diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-index 385a78434224..f40d42b35b58 100644
---- a/rust/macros/paste.rs
-+++ b/rust/macros/paste.rs
-@@ -9,7 +9,15 @@ fn concat(tokens: &[TokenTree], group_span: Span) -> TokenTree {
-     loop {
-         match tokens.next() {
-             None => break,
--            Some(TokenTree::Literal(lit)) => segments.push((lit.to_string(), lit.span())),
-+            Some(TokenTree::Literal(lit)) => {
-+                // Allow us to concat string literals by stripping quotes
-+                let mut value = lit.to_string();
-+                if value.starts_with('"') && value.ends_with('"') {
-+                    value.remove(0);
-+                    value.pop();
-+                }
-+                segments.push((value, lit.span()));
-+            }
-             Some(TokenTree::Ident(ident)) => {
-                 let mut value = ident.to_string();
-                 if value.starts_with("r#") {
 -- 
-2.34.1
+2.43.0.rc0.421.g78406f8d94-goog
 
