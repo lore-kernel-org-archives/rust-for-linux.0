@@ -1,137 +1,202 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Z21brXlv"
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C1AC4
-	for <rust-for-linux@vger.kernel.org>; Sun, 19 Nov 2023 03:06:36 -0800 (PST)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5c9d850a0dbso4063947b3.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 19 Nov 2023 03:06:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ucd1JQ0n"
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7C383;
+	Sun, 19 Nov 2023 05:51:16 -0800 (PST)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-280b06206f7so691568a91.1;
+        Sun, 19 Nov 2023 05:51:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1700391995; x=1700996795; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7lC35LlGRba1t1btXoCyTf6ZENkuDHIsafoyDM0W8s8=;
-        b=Z21brXlvAV3lh2J4HOustIYoXcslA/3MAnnJe8oNDynWXVZYK/f6HNTV7LBFMYFUb/
-         Vz0xFIiyVrgQMSsRUt7CwLfjc9syR5LTDfbgWn3Lg6W/MgoMzZCYizZU4/ZYyEVhxTQj
-         s3rp/EJCfK1R80kUaGTEUph1nZmsv7TefY/cb2WVT0BH/STBlxj00ejp+eOqlaY0/dKA
-         W2eL4zn9saDyqEuJjjnl3iDPkUr3l8PUt9DnZ18/8Ou2/EywgET9FVpS+86flfdCxTsd
-         jy6mu4BLa4cY7eYfeUNe+bt23RB4bnkgTb9FISf6yl4CV4/5/gAsHl1KP0iXc9zbgEbY
-         5rZw==
+        d=gmail.com; s=20230601; t=1700401875; x=1701006675; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JlD51jZUXgbOPpX3jVFk8qj5QsisvkG2E/NrU3UDTTM=;
+        b=Ucd1JQ0nemTTHans2rxP37bRLJn3tWmQ/3nMimLPncPUlzFgp/agbgEIQyZ5OOqWhh
+         j1wYJGwE4OeMS5uW69y5cf1sWfuOi7WO+6VdonwmnisCR6QH12wcwU91o13Vjyp1XKKF
+         aIT0rfMeLlmZv5DjxCT+kCoOIA5ryPTGPWL7c6rGe5UCREKO/BeD29+W2FBLitjLvg+k
+         /wGqMNpEPe+qK1IjFwucW8Aa7/H2ScigLHhc0HWEmX3PzDliBKnfjBJvTwojcEaEGAp5
+         PvVNAQYtNQsQ1wlM7NnPXBVAp5yPNKmMUHXGQyZxkVtALgE5q9qbXUiAZHxwxyGUmaVS
+         rgWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700391995; x=1700996795;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7lC35LlGRba1t1btXoCyTf6ZENkuDHIsafoyDM0W8s8=;
-        b=T76uA+YmRyGK78gflCjpqyyiqaBLzRpDDg4czNO68Jz2e4Dz0gTKTuxHXGMX/ujwUR
-         wkkNZEEjpJun55mqbKP+vMOriMcTVhg9BjxBXt2Lzl3lmh08XIqathagTIFNdSflpscA
-         YWFF/sgfdjCO2PQDbWHIHGwHwA8A8Nbu8fy1ZmiNkh8ySOIt+oFsbtaIeqSyrAr5y0A3
-         QHj+4bt5ClGtj4Q0HNke0frER7rxXUM2KVY5vecVxXXzCk72ZHKAjTjYqBOjuzMH79nO
-         lkvP8QdPxRcGCb1cj2mYVvufH9shRvGoygGssy8WUJaHOqUkE6t2L/0AIK6cNH2hitl8
-         e2LA==
-X-Gm-Message-State: AOJu0YyL337Gv7AlTxXYfUaL2ki4skJw95b+Mq0buvjfw6KOvPfQp8rg
-	kCTZ6kUhDC5YNEIsck2/Ypa/xcN/5f1iLsEfwagcSA==
-X-Google-Smtp-Source: AGHT+IH7Ex4dzK4QRBl1LU/4u0gminffm9iHvNZFZsoAKsez6q3T1ZkOcxtJ22VoqJz+4q6ceVpAPFuJv12Z2xYooa0=
-X-Received: by 2002:a0d:f284:0:b0:59b:de0f:c23b with SMTP id
- b126-20020a0df284000000b0059bde0fc23bmr4611830ywf.46.1700391995387; Sun, 19
- Nov 2023 03:06:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700401875; x=1701006675;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JlD51jZUXgbOPpX3jVFk8qj5QsisvkG2E/NrU3UDTTM=;
+        b=lO8l1puf/hC5185BrooMsOZzftqIMA/XYAPcbVKTQAGuWZFbRp+0d2eT+KLPfE3hAp
+         /Y98JOs2p78vEaNoRUSU7h0wjHnlAOr5LidLaCF8wZP9gj9O3n2HVA+SfeBUtHG3TLXh
+         aWw4b+te0cZMvCLtp8n1odUw9ikRFA52XG83GAErskQeQ1PEEM5cOWm1vmbW70cIbgZW
+         JNk/Gax3/Iov8OGr9mMrhrhOEfnT1bVb8JstphYa9Y/EmuAifcXPTVtHX13gyGxlCqsE
+         Do4hRCraw4wUPPUc82p+MLKukjuBWiSf1vgfecVe/RWQXVFTsVMfRpyZvhksoN3OlaxT
+         Olqw==
+X-Gm-Message-State: AOJu0YxNCz366JXdbgVDHL57Ukgkv4coej/4TYp5P5YEKFIEZrUZHFVU
+	e5XEsA5Cx4uR4qr/4RMoyyeky1+8ZIXYx6bT
+X-Google-Smtp-Source: AGHT+IHjPyyPeFiVzaymmpv5hj8unIxKNQEWaf2EPoY4T6z38ktGI0rZ1YeqEke/NotVUWyXuJpDxA==
+X-Received: by 2002:a17:902:ce8d:b0:1cc:2ba2:55f4 with SMTP id f13-20020a170902ce8d00b001cc2ba255f4mr6807499plg.0.1700401875389;
+        Sun, 19 Nov 2023 05:51:15 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id cz8-20020a17090ad44800b00280fcbbe774sm4130397pjb.10.2023.11.19.05.51.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Nov 2023 05:51:15 -0800 (PST)
+Date: Sun, 19 Nov 2023 22:51:14 +0900 (JST)
+Message-Id: <20231119.225114.390963370394344723.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, andrew@lunn.ch, benno.lossin@proton.me,
+ miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20231117093906.2514808-1-aliceryhl@google.com>
+References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
+	<20231117093906.2514808-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
- <20231117093906.2514808-1-aliceryhl@google.com> <b69b2ac0-752b-42ea-a729-9efdee503602@lunn.ch>
- <2023111709-amiable-everybody-befb@gregkh> <ZVf3LvoZ7npy3WxI@boqun-archlinux>
- <e7d0226a-9a38-4ce9-a9b5-7bb80a19bff6@lunn.ch> <ZVjePqyic7pvcb24@Boquns-Mac-mini.home>
-In-Reply-To: <ZVjePqyic7pvcb24@Boquns-Mac-mini.home>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 19 Nov 2023 05:06:23 -0600
-Message-ID: <CALNs47tt94DBPvz47rssBTZ86jbHwaa7XaNnT3UbdxwY6nLg1g@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY drivers
-To: Boqun Feng <boqun.feng@gmail.com>, fujita.tomonori@gmail.com
-Cc: Andrew Lunn <andrew@lunn.ch>, Greg KH <gregkh@linuxfoundation.org>, 
-	Alice Ryhl <aliceryhl@google.com>, benno.lossin@proton.me, 
-	miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Sat, Nov 18, 2023 at 9:54=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
-> In Rust doc [1], `Send` means:
->
->         Types that can be transferred across thread boundaries.
->
-> but of course, we have more "thread-like" things in kernel, so I think
-> "execution context" may be a better term?
+On Fri, 17 Nov 2023 09:39:05 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-The docs are pretty OS-focused here (I intend to update them at some point)=
-.
+> FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
+>> This patch adds abstractions to implement network PHY drivers; the
+>> driver registration and bindings for some of callback functions in
+>> struct phy_driver and many genphy_ functions.
+>> 
+>> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
+>> 
+>> This patch enables unstable const_maybe_uninit_zeroed feature for
+>> kernel crate to enable unsafe code to handle a constant value with
+>> uninitialized data. With the feature, the abstractions can initialize
+>> a phy_driver structure with zero easily; instead of initializing all
+>> the members by hand. It's supposed to be stable in the not so distant
+>> future.
+>> 
+>> Link: https://github.com/rust-lang/rust/pull/116218
+>> 
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> In this reply, I go through my minor nits:
+> 
+>> +use crate::{
+>> +    prelude::{vtable, Pin},
+>> +};
+> 
+> Normally, if you're importing specific prelude items by name instead of
+> using prelude::*, then you would import them using their non-prelude
+> path.
 
-`Sync` means that if you have a >1 pointer/reference to a struct you
-can access any of the fields, as allowed by the API, from any of the
-references at any time (i.e. switching between any two instructions)
-without causing data races. Atomic accesses or mutexes can add this
-property to things that do not have it. It really doesn't matter
-whether you're going between different user threads, kthreads,
-interrupt/preemption contexts, or nothing at all. It's a bit more
-intrinsic to the data type and it says how you _could_ use it rather
-than how you do use it.
+Understood. I have no reason to import specific prelude items so I use
+`prelude::*` instead.
 
-And then `Send` basically means that any pointers in your struct are
-either exclusive or point to `Sync` things. Mutexes cannot add this
-property to anything that does not have it.
 
-Note that this still never lets you have more than one `&mut`
-(`restrict`) reference to a piece of data at once, this mostly relates
-to interior mutability (when things are allowed to be changed behind
-shared `&` references - such as atomics).
+>> +#[derive(PartialEq)]
+>> +pub enum DeviceState {
+> 
+> If you add PartialEq and you can add Eq, then also add Eq.
 
-The consumers of these markers are (1) the compiler knowing what can
-live in statics, (2) APIs that make things potentially concurrent, and
-(3) the compiler automatically marking new structs `Send`/`Sync` if
-all member types follow these rules.
+Added Eq.
 
-When trying to figure this out for C types, the question is just
-whether usage of the type follows those rules. Or at least whether it
-follows them whenever Rust has access to it.
 
----
+>> +/// An adapter for the registration of a PHY driver.
+>> +struct Adapter<T: Driver> {
+>> +    _p: PhantomData<T>,
+>> +}
+> 
+> You don't need this struct. The methods can be top-level functions.
+> 
+> But I know that others have used the same style of defining a useless
+> struct, so it's fine with me.
 
-FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
-> +pub struct Registration {
-> +    drivers: Pin<&'static mut [DriverVTable]>,
-> +}
->
-> [...]
->
-> +// SAFETY: `Registration` does not expose any of its state across thread=
-s.
-> +unsafe impl Send for Registration {}
->
-> +// SAFETY: `Registration` does not expose any of its state across thread=
-s.
-> +unsafe impl Sync for Registration {}
+You meant like the following?
 
-I don't think the impl here actually makes sense. `Registration` is a
-buffer of references to `DriverVTable`. That type isn't marked Sync so
-by the above rules, its references should not be either.
+unsafe extern "C" fn soft_reset_callback<T: Driver>(
+    phydev: *mut bindings::phy_device,
+) -> core::ffi::c_int {
+    from_result(|| {
+        // SAFETY: Preconditions ensure `phydev` is valid.
+        let dev = unsafe { Device::from_raw(phydev) };
+        T::soft_reset(dev)?;
+        Ok(0)
+    })
+}
 
-Tomo, does this need to be Sync at all? Probably easiest to drop the
-impls if not, otherwise I think it is more correct to move them to
-`DriverVTable`.  You may have had this before, I'm not sure if
-discussion made you change it at some point...
+pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+    DriverVTable(Opaque::new(bindings::phy_driver {
+	soft_reset: if T::HAS_SOFT_RESET {
+            Some(soft_reset_callback::<T>)
+        } else {
+            None
+	}
+    }
+}
 
----
+I thought that a struct is used to group callbacks. Either is fine by
+me though.
 
-> [1]: https://doc.rust-lang.org/core/marker/trait.Send.html
->
-> Regards,
-> Boqun
 
-Sorry Boqun, the lengthy explanation is just for context and not aimed
-at you in particular :)
+>> +    /// Defines certain other features this PHY supports.
+>> +    /// It is a combination of the flags in the [`flags`] module.
+>> +    const FLAGS: u32 = 0;
+> 
+> You need an empty line between the two lines if you intend for them to
+> be separate lines in rendered documentation.
 
-- Trevor
+I don't intend to make them separate lines. If I make thme one line,
+it's too long (over 100) so I made them two lines.
+
+
+>> +#[vtable]
+>> +pub trait Driver {
+>> +    /// Issues a PHY software reset.
+>> +    fn soft_reset(_dev: &mut Device) -> Result {
+>> +        Err(code::ENOTSUPP)
+>> +    }
+>>      [...]
+>> +}
+> 
+> I believe that the guidance for what to put in optional vtable-trait
+> methods was changed in:
+> 
+> https://lore.kernel.org/all/20231026201855.1497680-1-benno.lossin@proton.me/
+
+But VTABLE_DEFAULT_ERROR is defined in that patch, which isn't
+merged. I'll update the code once that patch is merged.
+
+
+>> +// SAFETY: `Registration` does not expose any of its state across threads.
+>> +unsafe impl Send for Registration {}
+> 
+> I would change this to "it's okay to call phy_drivers_unregister from a
+> different thread than the one in which phy_drivers_register was called".
+> 
+>> +// SAFETY: `Registration` does not expose any of its state across threads.
+>> +unsafe impl Sync for Registration {}
+> 
+> Here, you can say "Registration has no &self methods, so immutable
+> references to it are useless".
+
+I'll reply to Trevor mail on this issue.
+
+
+>> +    // macro use only
+>> +    #[doc(hidden)]
+>> +    pub const fn mdio_device_id(&self) -> bindings::mdio_device_id {
+>> +        bindings::mdio_device_id {
+>> +            phy_id: self.id,
+>> +            phy_id_mask: self.mask.as_int(),
+>> +        }
+>> +    }
+> 
+> This is fine, but I probably would just expose it for everyone. It's not
+> like it hurts if non-macro code can call this method, even if it doesn't
+> have a reason to do so.
+
+IIRC, someone said that drivers should not use bindings directly so
+this function that returns bindings::mdio_device_id isn't exported.
+
+Thanks!
