@@ -1,31 +1,32 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wfpBmUyM"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wiv31T6A"
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC5C4115;
-	Sun, 19 Nov 2023 08:03:34 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCCC2115;
+	Sun, 19 Nov 2023 08:08:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=WSZo0HiqPJC+cW7wD2ToIIgPq5GAr1sCmwoi6BPZYyk=; b=wfpBmUyMp7Y8DNzc9PHhG1vpFY
-	ZWpNFp4z/+T/NJ24mYR6+FlMIKqDoC+syy4C90PcfreFMazL61hZMLYNZRqGpVzKNX3xYJNu76Ioz
-	sN+jtUrSmFyvs+jD7XKro52FlYS5BqFjNLzXyMpCQ+3UwL9cTpgHvv0lDobFELdYBoa4=;
+	bh=PqNhOHVUB0q9RpdnJQBOzBuTWvuux3ZuN7ljk9fyTT0=; b=wiv31T6A2ILuj9mkka+/EopnqN
+	DogKvvni8xh2OnKytcwm08LvRVlRPh1u/5oCtBDj4f6U4HlX4M1vnkPjfzo9b9aWw7QGh5pDiIhM6
+	kEKg32RbF4Pp845l/zcN2rjOWA5OzOnzTpKzt8gUwAi0WyoJWCcAC5jmOTa9W8n+Hcsw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1r4kGg-000ZRv-TQ; Sun, 19 Nov 2023 17:03:30 +0100
-Date: Sun, 19 Nov 2023 17:03:30 +0100
+	id 1r4kLN-000ZTH-Gn; Sun, 19 Nov 2023 17:08:21 +0100
+Date: Sun, 19 Nov 2023 17:08:21 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: aliceryhl@google.com, benno.lossin@proton.me,
 	miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
 	wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 5/5] net: phy: add Rust Asix PHY driver
-Message-ID: <363b810d-7d6c-48bd-879b-f97acffa70b6@lunn.ch>
-References: <20231026001050.1720612-6-fujita.tomonori@gmail.com>
- <20231117093915.2515418-1-aliceryhl@google.com>
- <20231119.185736.1872000177070369059.fujita.tomonori@gmail.com>
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <dc65b6f9-66ae-4a51-bbfc-bd7af90789ed@lunn.ch>
+References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
+ <20231117093906.2514808-1-aliceryhl@google.com>
+ <20231119.225114.390963370394344723.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,31 +35,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231119.185736.1872000177070369059.fujita.tomonori@gmail.com>
+In-Reply-To: <20231119.225114.390963370394344723.fujita.tomonori@gmail.com>
 
-> >> +            let _ = dev.init_hw();
-> >> +            let _ = dev.start_aneg();
-> > 
-> > Just to confirm: You want to call `start_aneg` even if `init_hw` returns
-> > failure? And you want to ignore both errors?
-> 
-> Yeah, I tried to implement the exact same behavior in the original C driver.
+> I don't intend to make them separate lines. If I make thme one line,
+> it's too long (over 100) so I made them two lines.
 
-You probably could check the return values, and it would not make a
-difference. Also, link_change_notify() is a void function, so you
-cannot return the error anyway.
-
-These low level functions basically only fail if the hardware is
-`dead`. You get an -EIO or maybe -TIMEDOUT back. And there is no real
-recovery. You tend to get such errors during probe and fail the
-probe. Or maybe if power management is wrong and it has turned a
-critical clock off. But that is unlikely in this case, we are calling
-link_change_notify because the PHY has told us something changed
-recently, so it probably is alive.
-
-I would say part of not checking the return code is also that C does
-not have the nice feature that Rust has of making very simple to check
-the return code. That combined with it being mostly pointless for PHY
-drivers.
+Any networking prefers 80 anyway, so shorter is better.
 
     Andrew
