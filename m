@@ -1,56 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0CV3fvz"
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70931AF;
-	Sun, 19 Nov 2023 01:25:46 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6cb79883b7fso124024b3a.1;
-        Sun, 19 Nov 2023 01:25:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zh8HqPd2"
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60ADB126;
+	Sun, 19 Nov 2023 01:41:23 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1cc2b8deb23so7555505ad.1;
+        Sun, 19 Nov 2023 01:41:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700385946; x=1700990746; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1700386883; x=1700991683; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Eo1Z79+3qRKmg4q8xtjyQbLZNRbKvXEDTJteX8t8dJ8=;
-        b=b0CV3fvz2mtHdGKI/bvNMvVnaaidXPpuHyEvtT2ZQB0Dlh/lUsORTo0R8YfTcgRa8v
-         J7w2EUtKFLZQXchCt4F62IjnpYD5oInamOyy+jj54vpuXX82d9gnfHKKmVqNurIBcfIq
-         xzeJbO0p3biDpkU5LNV3TMM6BT7+ZUUvVR2xlCuB75wQaSruEjUlVUPyS+28EKPG2Ojt
-         pESzGkQSo+JJ8pDYgPl5SsxtlKp35oulHJGDwschG32VD1Ti0Fcf4EqKoMUWT7KJmHGu
-         0o+sbjlpq6Oj74rCxbru8XFdu7kJ9y8ftXlPU2jz8URq+VWVo0AMP8s3Kas9UA7H19Tk
-         DXew==
+        bh=d0YOOzCeHOkHnjBxk/6+Zbt5VlA3U+GtXUO1n8YqClc=;
+        b=Zh8HqPd2de4ibzBX3uwm6qyi9peGlh02n3i2T2nTqU0mGpKiUGeLWU+MT3lKwDRPG1
+         3Yc1BhTFDie7n2dgD9jm3DVPtNQdZvHtpUwnLW1SPkti7a2UJ+vXbxeCZhPn4nFl+2B4
+         rl+hqervs3vRsEV48HAIN63t8BN3jOxbKU15MXBjemKnp/yVFTcC9KMY0r2SyJke8DHz
+         2WxNHNnxtGwi6fbUSHPbffqDkCtQVWxm7UW8ukBEiJIoJk+WptJGu2aCXdWN/OaoGbUa
+         n5vEOGHnAg1Ye58SrztmjQTMfmqg5tbf9ZBb4PsxCv3goGcigCT33r9Cojh/HizPprne
+         IfPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700385946; x=1700990746;
+        d=1e100.net; s=20230601; t=1700386883; x=1700991683;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Eo1Z79+3qRKmg4q8xtjyQbLZNRbKvXEDTJteX8t8dJ8=;
-        b=JoV86rH5oiNcOScUdEbYUFg8kv7Xg8aM1ofLupLxijgjS4AApvt+fvQH8KxC5eN+MX
-         Iap5Op1MspmrnV3UN+a03L0sn+hIA1ZDrnttKlNGeKl8XiWfNnSG5OZ2uVOZJpDDjV2Q
-         3cg4D7VJ9Jq/fwMmcatl9U4HiaLQxy5WrdMXL0PvifTxflxTEzaIY2YWVNLTdvegBHh0
-         R8N+tqzOuRNUl4ALEwZA2O97MCjdsPotrJEnqeuFI10EUPAqsbZOAJ3dHz0MNugZ22ak
-         94oyYrFQHVVlAEQnu9zIumQV2UETyYAU6W+r7wzi+ltM6mWsyDV4bKooBSYn4PGYgg2F
-         bs/Q==
-X-Gm-Message-State: AOJu0YwLvf4FYVC5ozuj8nALCLGhSypT8JixQ+PZZZK+qQkz5gLih50p
-	vrMUuIoSp//jvSOk2QgSKGvtIm/KIsRBgQ==
-X-Google-Smtp-Source: AGHT+IE4LPLwh+X2HZT7jOgOvkzT4bSLFtSZH6FcNrYV1ZWfa91q5VF1Q3XHFjM7ebAXDIfpxQ7YGw==
-X-Received: by 2002:a17:90a:ab87:b0:283:5405:9e90 with SMTP id n7-20020a17090aab8700b0028354059e90mr4258043pjq.3.1700385945719;
-        Sun, 19 Nov 2023 01:25:45 -0800 (PST)
+        bh=d0YOOzCeHOkHnjBxk/6+Zbt5VlA3U+GtXUO1n8YqClc=;
+        b=dglBnwGfFa5TkOYe0cRZbK8rr6AFv8JRbB45Sqjv4XywSCEjL9pTRTckhqBO6cMkxh
+         UPr06KcsZLE2rSr2JO/F1ZycJswK3HJRU/P4WDUel4L9I4Rc9rZTB+mZMf3OjJouDk1g
+         NCHBCXufPmBjG8u5n7k3Bf3BIRDXYPNyeHZ6U871/yCjHPWPQp+RYY0aoSkhbz8ZLBBz
+         J4M2eCjyccIHNTpEBWw18EyGU8AUcoHeQyPYx4+LrxEgXdWpgNLpiSnvD7Fn0j5OWK2c
+         VVIg+prtPd/dXnP1c8zZZuMHQr9v6ya1FUWq0ZQdMt2VBkqxRFfVKOfV79bPWGfqAlSs
+         O++g==
+X-Gm-Message-State: AOJu0YxmV32fr7Db8lpPE8tgor4etTpIaBnBjUS1uUy3Gmqp5YKWfi8X
+	GQq5D3Q9o8mB1qTF4ydIYes=
+X-Google-Smtp-Source: AGHT+IG9wM3aJoCK2JMOxR9ryAP7vo0piv5e0lp+ySFjIh5Wx5bq313/q8QCMkGxunzCxKbKrrQm2g==
+X-Received: by 2002:a05:6a20:8e26:b0:16c:b514:a4bc with SMTP id y38-20020a056a208e2600b0016cb514a4bcmr6350733pzj.4.1700386882703;
+        Sun, 19 Nov 2023 01:41:22 -0800 (PST)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id u5-20020a17090adb4500b0028524bf8e52sm54290pjx.37.2023.11.19.01.25.45
+        by smtp.gmail.com with ESMTPSA id c20-20020a056a000ad400b00690ca4356f1sm4111266pfl.198.2023.11.19.01.41.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Nov 2023 01:25:45 -0800 (PST)
-Date: Sun, 19 Nov 2023 18:25:44 +0900 (JST)
-Message-Id: <20231119.182544.2069714044528296795.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: andrew@lunn.ch, boqun.feng@gmail.com, fujita.tomonori@gmail.com,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+        Sun, 19 Nov 2023 01:41:22 -0800 (PST)
+Date: Sun, 19 Nov 2023 18:41:21 +0900 (JST)
+Message-Id: <20231119.184121.1885944108829358122.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: benno.lossin@proton.me, boqun.feng@gmail.com,
+ fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu,
  miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
 Subject: Re: [PATCH net-next v7 2/5] rust: net::phy add module_phy_driver
  macro
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
-References: <ZVfncj5R9-8aU7vB@boqun-archlinux>
-	<66455d50-9a3c-4b5c-ba2c-5188dae247a9@lunn.ch>
+In-Reply-To: <73cb9332-3e5a-493a-8ae1-227a2ea58eb3@lunn.ch>
+References: <66455d50-9a3c-4b5c-ba2c-5188dae247a9@lunn.ch>
 	<7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
+	<73cb9332-3e5a-493a-8ae1-227a2ea58eb3@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,58 +61,19 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Fri, 17 Nov 2023 23:01:58 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+On Sat, 18 Nov 2023 00:18:10 +0100
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-> On 11/17/23 23:54, Andrew Lunn wrote:
->> Each kernel module should be in its own symbol name space. The only
->> symbols which are visible outside of the module are those exported
->> using EXPORT_SYMBOL_GPL() or EXPORT_SYMBOL(). A PHY driver does not
->> export anything, in general.
->> 
->> Being built in also does not change this.
->> 
->> Neither drivers/net/phy/ax88796b_rust.o nor
->> rust/doctests_kernel_generated.o should have exported this symbol.
->> 
->> I've no idea how this actually works, i guess there are multiple
->> passes through the linker? Maybe once to resolve symbols across object
->> files within a module. Normal global symbols are then made local,
->> leaving only those exported with EXPORT_SYMBOL_GPL() or
->> EXPORT_SYMBOL()? A second pass through linker then links all the
->> exported symbols thorough the kernel?
+>> But `#[no_mangle]` is probably a special case, since in userspace it
+>> is usually used to do interop with C (and therefore the symbol is always
+>> exported with the name not mangled).
 > 
-> I brought this issue up in [1], but I was a bit confused by your last
-> reply there, as I have no idea how the `EXPORT_SYMBOL` macros work.
-> 
-> IIRC on the Rust side all public items are automatically GPL exported.
+> So you might need this for symbols which are EXPORT_SYMBOL*,
+> especially if they are going to be used by C code. If only other Rust
+> modules are going to use them, and the mangled name is predictable, i
+> suppose you could use the mangled name.
 
-Hmm, they are public but doesn't look like exported by EXPORT_SYMBOL()
-or EXPORT_SYMBOL_GPL().
+This isn't loaded into the kernel. This is used only by the tool to
+build a module. When built as a module, this information is converted
+into module alias information for dynamic loading.
 
-
-> But `#[no_mangle]` is probably a special case, since in userspace it
-> is usually used to do interop with C (and therefore the symbol is always
-> exported with the name not mangled).
-> 
-> One fix would be to make the name unique by using the type name supplied
-> in the macro.
-> 
-> [1]: https://lore.kernel.org/rust-for-linux/1aea7ddb-73b7-8228-161e-e2e4ff5bc98d@proton.me/
-
-I fixed this in a different way; declaring
-__mod_mdio__phydev_device_table only when built as a module.
-
-(@device_table [$($dev:expr),+]) => {
- +        #[cfg(MODULE)]
-          #[no_mangle]
-          static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id;
-              $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = [
-
-This is used for dynamic loading so when a phy driver is built-in, we
-don't need this.
-
-When a driver is built as a module, the user-space tool converts this
-into moduole alias information. This __mod_mdio__phydev_device_table
-isn't loaded into kernel so no conflict even when multiple phy drivers
-are loaded.
