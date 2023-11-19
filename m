@@ -1,142 +1,117 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NZhQ/XhE"
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BD44C20;
-	Sat, 18 Nov 2023 07:54:54 -0800 (PST)
-Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-41cc56255e3so18180011cf.3;
-        Sat, 18 Nov 2023 07:54:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0CV3fvz"
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70931AF;
+	Sun, 19 Nov 2023 01:25:46 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6cb79883b7fso124024b3a.1;
+        Sun, 19 Nov 2023 01:25:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700322881; x=1700927681; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SKCGSdgqZ2cORCdlQTI4dB2j/p1mvG1qhqOXmdoWxkU=;
-        b=NZhQ/XhExACQ5i/KMVTcc/t84lBpNCRAGn3nQeuINmevHd0rboHu/piODzHGqyMD/v
-         GB1I2PeNiHNL3tNytZN5LI5PykRYlCC8STKZ8fbeEFs/wVl2h6irc77eClPMLt/h35nH
-         t2skuSA9/odBRAdWhgJSsiSNjm6S2bKBuEXyB8+dKcmx9sgt4KSXcui3MEER0L52NDxm
-         Y2H2xHOGrVdX6lXrODgeZbqV3Xo2f5hhUYbbck7xll3XCQgcNjR0E+RliBp5LNwGP7+O
-         eiSFKPgMYRAVCxm3ohW6ca/NVhIVCAp64piwF5wS6NoyPW+9D5vxrblVIyZ+ws5Y82DI
-         s5BA==
+        d=gmail.com; s=20230601; t=1700385946; x=1700990746; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Eo1Z79+3qRKmg4q8xtjyQbLZNRbKvXEDTJteX8t8dJ8=;
+        b=b0CV3fvz2mtHdGKI/bvNMvVnaaidXPpuHyEvtT2ZQB0Dlh/lUsORTo0R8YfTcgRa8v
+         J7w2EUtKFLZQXchCt4F62IjnpYD5oInamOyy+jj54vpuXX82d9gnfHKKmVqNurIBcfIq
+         xzeJbO0p3biDpkU5LNV3TMM6BT7+ZUUvVR2xlCuB75wQaSruEjUlVUPyS+28EKPG2Ojt
+         pESzGkQSo+JJ8pDYgPl5SsxtlKp35oulHJGDwschG32VD1Ti0Fcf4EqKoMUWT7KJmHGu
+         0o+sbjlpq6Oj74rCxbru8XFdu7kJ9y8ftXlPU2jz8URq+VWVo0AMP8s3Kas9UA7H19Tk
+         DXew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700322881; x=1700927681;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SKCGSdgqZ2cORCdlQTI4dB2j/p1mvG1qhqOXmdoWxkU=;
-        b=qUjcNfUHdh9gpY91qhKDddcoMjqQf6IFpQRhi+gdTgJ2LRwxeQCXvfOw8jnNhoOTpA
-         MXOIz1Ov6pSixitvKb8FqTUgtsJgyjk1s0ZK1tY+y4+Pi3tZf2vXwTktYqinHg3ufTiG
-         X1OrMQ84NoV5VF9ojz4NE9eDYbkofD3d2cnn2YAcc4hkKrH5LdHIpmONDvKhPBYId46G
-         egRPZ3so0LvBj9/p4lXzy7vt7zZJ5GOQhuZ5q+gwQiqe2pDTFKxEq5U1iDY7nkQKqlHc
-         ssy626DySW/FnXoq0giwyuAn6GQxLm0XeND/e1N44OHtOCjYM1LqvJQKLMkPg1/zENpU
-         eDTA==
-X-Gm-Message-State: AOJu0YxD6/WDQKfZI5ulQ760ouw1NFHDxo8bRUPeHlWE1P8xK9DlgE1/
-	RLci67aL2Mg/Z/V3VSWlpHE=
-X-Google-Smtp-Source: AGHT+IGJueayGbpRPw3Sm+/6gn/77QadkDfZzN+vqSw7rwkXC2d/G6/jM5U2POxIJQilxx2HP8OCxg==
-X-Received: by 2002:a05:622a:307:b0:41c:d487:7d43 with SMTP id q7-20020a05622a030700b0041cd4877d43mr3120703qtw.54.1700322881714;
-        Sat, 18 Nov 2023 07:54:41 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id a24-20020ac87218000000b004180fb5c6adsm1358049qtp.25.2023.11.18.07.54.41
+        d=1e100.net; s=20230601; t=1700385946; x=1700990746;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Eo1Z79+3qRKmg4q8xtjyQbLZNRbKvXEDTJteX8t8dJ8=;
+        b=JoV86rH5oiNcOScUdEbYUFg8kv7Xg8aM1ofLupLxijgjS4AApvt+fvQH8KxC5eN+MX
+         Iap5Op1MspmrnV3UN+a03L0sn+hIA1ZDrnttKlNGeKl8XiWfNnSG5OZ2uVOZJpDDjV2Q
+         3cg4D7VJ9Jq/fwMmcatl9U4HiaLQxy5WrdMXL0PvifTxflxTEzaIY2YWVNLTdvegBHh0
+         R8N+tqzOuRNUl4ALEwZA2O97MCjdsPotrJEnqeuFI10EUPAqsbZOAJ3dHz0MNugZ22ak
+         94oyYrFQHVVlAEQnu9zIumQV2UETyYAU6W+r7wzi+ltM6mWsyDV4bKooBSYn4PGYgg2F
+         bs/Q==
+X-Gm-Message-State: AOJu0YwLvf4FYVC5ozuj8nALCLGhSypT8JixQ+PZZZK+qQkz5gLih50p
+	vrMUuIoSp//jvSOk2QgSKGvtIm/KIsRBgQ==
+X-Google-Smtp-Source: AGHT+IE4LPLwh+X2HZT7jOgOvkzT4bSLFtSZH6FcNrYV1ZWfa91q5VF1Q3XHFjM7ebAXDIfpxQ7YGw==
+X-Received: by 2002:a17:90a:ab87:b0:283:5405:9e90 with SMTP id n7-20020a17090aab8700b0028354059e90mr4258043pjq.3.1700385945719;
+        Sun, 19 Nov 2023 01:25:45 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id u5-20020a17090adb4500b0028524bf8e52sm54290pjx.37.2023.11.19.01.25.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Nov 2023 07:54:41 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id BE84A27C0054;
-	Sat, 18 Nov 2023 10:54:40 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Sat, 18 Nov 2023 10:54:40 -0500
-X-ME-Sender: <xms:QN5YZRL_Oh7whLykCx3-rD3LZHzHoV30SLbbz2F2RpeDiQZrUwroFA>
-    <xme:QN5YZdLi1uj5HQstjQiR95t1Wn5nCt17Xh-slP_KF5dzkhxXY6DhxEcp8XS9uuOj-
-    ON4IpYK15Opob51mw>
-X-ME-Received: <xmr:QN5YZZuXP2CtPHfpdnZqG2CY6-jj4BhztYvxwgdVv7JqEBRDuDGw6bQQdM4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudegvddgkeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedvveevleevhfekhefftdek
-    ieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
-    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
-    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:QN5YZSY7EI_FT15Oy0keWxPGwMvTiYxDUeHJ5X1H3eER9jH8S8rlgA>
-    <xmx:QN5YZYYXWTaahQpICZEIIMLab-OWc71MWV0wZi4zCTgzI4uJjerIjA>
-    <xmx:QN5YZWAEgJOj1cpyUdWddtj4hT-xEzX_l1p9JOV5MEUI9vgCJ8OT0w>
-    <xmx:QN5YZWlx4p3fiSTven8Jv4OvitR2_Aeqnv5ml2JzkNJuygJoK4E95NsBcuc>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 18 Nov 2023 10:54:40 -0500 (EST)
-Date: Sat, 18 Nov 2023 07:54:38 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Alice Ryhl <aliceryhl@google.com>,
-	fujita.tomonori@gmail.com, benno.lossin@proton.me,
-	miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
- drivers
-Message-ID: <ZVjePqyic7pvcb24@Boquns-Mac-mini.home>
-References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
- <20231117093906.2514808-1-aliceryhl@google.com>
- <b69b2ac0-752b-42ea-a729-9efdee503602@lunn.ch>
- <2023111709-amiable-everybody-befb@gregkh>
- <ZVf3LvoZ7npy3WxI@boqun-archlinux>
- <e7d0226a-9a38-4ce9-a9b5-7bb80a19bff6@lunn.ch>
+        Sun, 19 Nov 2023 01:25:45 -0800 (PST)
+Date: Sun, 19 Nov 2023 18:25:44 +0900 (JST)
+Message-Id: <20231119.182544.2069714044528296795.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: andrew@lunn.ch, boqun.feng@gmail.com, fujita.tomonori@gmail.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 2/5] rust: net::phy add module_phy_driver
+ macro
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
+References: <ZVfncj5R9-8aU7vB@boqun-archlinux>
+	<66455d50-9a3c-4b5c-ba2c-5188dae247a9@lunn.ch>
+	<7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e7d0226a-9a38-4ce9-a9b5-7bb80a19bff6@lunn.ch>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Sat, Nov 18, 2023 at 04:32:26PM +0100, Andrew Lunn wrote:
-> > One example of not `Send` type (or `!Send`) is spinlock guard:
-> > 
-> > 	let guard: Guard<..> = some_lock.lock();
-> > 
-> > creating a Guard means "spin_lock()" and dropping a Guard means
-> > "spin_unlock()", since we cannot acquire a spinlock in one context and
-> > release it in another context in kernel, so `Guard<..>` is `!Send`.
+On Fri, 17 Nov 2023 23:01:58 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
+
+> On 11/17/23 23:54, Andrew Lunn wrote:
+>> Each kernel module should be in its own symbol name space. The only
+>> symbols which are visible outside of the module are those exported
+>> using EXPORT_SYMBOL_GPL() or EXPORT_SYMBOL(). A PHY driver does not
+>> export anything, in general.
+>> 
+>> Being built in also does not change this.
+>> 
+>> Neither drivers/net/phy/ax88796b_rust.o nor
+>> rust/doctests_kernel_generated.o should have exported this symbol.
+>> 
+>> I've no idea how this actually works, i guess there are multiple
+>> passes through the linker? Maybe once to resolve symbols across object
+>> files within a module. Normal global symbols are then made local,
+>> leaving only those exported with EXPORT_SYMBOL_GPL() or
+>> EXPORT_SYMBOL()? A second pass through linker then links all the
+>> exported symbols thorough the kernel?
 > 
-> Thanks for the explanation. Kernel people might have a different
-
-Surely *we* do, and looks like I created more confusion ;-) Maybe I
-should say "execution context" as in include/linux/preempt.h: NMI, hard
-IRQ, softirq, task.
-
-> meaning for context, especially in this example. We have process
-> context and atomic context. Process context you are allowed to sleep,
-> atomic context you cannot sleep. If you are in process context and
-> take a spinlock, you change into atomic context. And when you release
-> the spinlock you go back to process context. So with this meaning of
-> context, you do acquire the spinlock in one context, and release it in
-> another.
+> I brought this issue up in [1], but I was a bit confused by your last
+> reply there, as I have no idea how the `EXPORT_SYMBOL` macros work.
 > 
+> IIRC on the Rust side all public items are automatically GPL exported.
 
-Also as I tried to explain previously, the type of contexts doesn't
-matter. Yes, once you hold a spinlock, you enter atomic context, but you
-are still in the same task execution context, so acquiring and releasing
-in the same task execution doesn't count as "Sending". But if after
-acquired one somehow passes the guard to another task, or an interrupt
-handler, that's "Sending".
+Hmm, they are public but doesn't look like exported by EXPORT_SYMBOL()
+or EXPORT_SYMBOL_GPL().
 
-> So we are going to have to think about the context the word context is
-> used in, and expect kernel and Rust people to maybe think of it
-> differently.
+
+> But `#[no_mangle]` is probably a special case, since in userspace it
+> is usually used to do interop with C (and therefore the symbol is always
+> exported with the name not mangled).
 > 
+> One fix would be to make the name unique by using the type name supplied
+> in the macro.
+> 
+> [1]: https://lore.kernel.org/rust-for-linux/1aea7ddb-73b7-8228-161e-e2e4ff5bc98d@proton.me/
 
-In Rust doc [1], `Send` means:
+I fixed this in a different way; declaring
+__mod_mdio__phydev_device_table only when built as a module.
 
-	Types that can be transferred across thread boundaries.
+(@device_table [$($dev:expr),+]) => {
+ +        #[cfg(MODULE)]
+          #[no_mangle]
+          static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id;
+              $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = [
 
-but of course, we have more "thread-like" things in kernel, so I think
-"execution context" may be a better term?
+This is used for dynamic loading so when a phy driver is built-in, we
+don't need this.
 
-[1]: https://doc.rust-lang.org/core/marker/trait.Send.html
-
-Regards,
-Boqun
-
-> 	Andrew
+When a driver is built as a module, the user-space tool converts this
+into moduole alias information. This __mod_mdio__phydev_device_table
+isn't loaded into kernel so no conflict even when multiple phy drivers
+are loaded.
