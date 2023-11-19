@@ -1,202 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ucd1JQ0n"
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7C383;
-	Sun, 19 Nov 2023 05:51:16 -0800 (PST)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-280b06206f7so691568a91.1;
-        Sun, 19 Nov 2023 05:51:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700401875; x=1701006675; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JlD51jZUXgbOPpX3jVFk8qj5QsisvkG2E/NrU3UDTTM=;
-        b=Ucd1JQ0nemTTHans2rxP37bRLJn3tWmQ/3nMimLPncPUlzFgp/agbgEIQyZ5OOqWhh
-         j1wYJGwE4OeMS5uW69y5cf1sWfuOi7WO+6VdonwmnisCR6QH12wcwU91o13Vjyp1XKKF
-         aIT0rfMeLlmZv5DjxCT+kCoOIA5ryPTGPWL7c6rGe5UCREKO/BeD29+W2FBLitjLvg+k
-         /wGqMNpEPe+qK1IjFwucW8Aa7/H2ScigLHhc0HWEmX3PzDliBKnfjBJvTwojcEaEGAp5
-         PvVNAQYtNQsQ1wlM7NnPXBVAp5yPNKmMUHXGQyZxkVtALgE5q9qbXUiAZHxwxyGUmaVS
-         rgWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700401875; x=1701006675;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JlD51jZUXgbOPpX3jVFk8qj5QsisvkG2E/NrU3UDTTM=;
-        b=lO8l1puf/hC5185BrooMsOZzftqIMA/XYAPcbVKTQAGuWZFbRp+0d2eT+KLPfE3hAp
-         /Y98JOs2p78vEaNoRUSU7h0wjHnlAOr5LidLaCF8wZP9gj9O3n2HVA+SfeBUtHG3TLXh
-         aWw4b+te0cZMvCLtp8n1odUw9ikRFA52XG83GAErskQeQ1PEEM5cOWm1vmbW70cIbgZW
-         JNk/Gax3/Iov8OGr9mMrhrhOEfnT1bVb8JstphYa9Y/EmuAifcXPTVtHX13gyGxlCqsE
-         Do4hRCraw4wUPPUc82p+MLKukjuBWiSf1vgfecVe/RWQXVFTsVMfRpyZvhksoN3OlaxT
-         Olqw==
-X-Gm-Message-State: AOJu0YxNCz366JXdbgVDHL57Ukgkv4coej/4TYp5P5YEKFIEZrUZHFVU
-	e5XEsA5Cx4uR4qr/4RMoyyeky1+8ZIXYx6bT
-X-Google-Smtp-Source: AGHT+IHjPyyPeFiVzaymmpv5hj8unIxKNQEWaf2EPoY4T6z38ktGI0rZ1YeqEke/NotVUWyXuJpDxA==
-X-Received: by 2002:a17:902:ce8d:b0:1cc:2ba2:55f4 with SMTP id f13-20020a170902ce8d00b001cc2ba255f4mr6807499plg.0.1700401875389;
-        Sun, 19 Nov 2023 05:51:15 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id cz8-20020a17090ad44800b00280fcbbe774sm4130397pjb.10.2023.11.19.05.51.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Nov 2023 05:51:15 -0800 (PST)
-Date: Sun, 19 Nov 2023 22:51:14 +0900 (JST)
-Message-Id: <20231119.225114.390963370394344723.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, andrew@lunn.ch, benno.lossin@proton.me,
- miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20231117093906.2514808-1-aliceryhl@google.com>
-References: <20231026001050.1720612-2-fujita.tomonori@gmail.com>
-	<20231117093906.2514808-1-aliceryhl@google.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="u0wKdjaE"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB597D8;
+	Sun, 19 Nov 2023 07:50:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=BrFjk1O06Djb+g7yO9ZoZAhKKoqCsxrQIL6sYYG8A34=; b=u0wKdjaE1JGEA1CTCqJzgl6eVs
+	uNVW2PhbQEqnNtan5xFB4564+eELR7spYOcog/fhMsnmbI1NMBPwQo8M6wNGp0HY3untrZITysOqx
+	tfwD7bG4y1G8IdCwRqa4u41l4/uNAcK+O13I5prR1qr4QHY5JZ+WfJFYsXTuDOlO1grU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1r4k4A-000ZPq-Sn; Sun, 19 Nov 2023 16:50:34 +0100
+Date: Sun, 19 Nov 2023 16:50:34 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: benno.lossin@proton.me, boqun.feng@gmail.com, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 2/5] rust: net::phy add module_phy_driver
+ macro
+Message-ID: <8f7a7fe0-bfd3-4062-9b55-c1e18de2818a@lunn.ch>
+References: <ZVfncj5R9-8aU7vB@boqun-archlinux>
+ <66455d50-9a3c-4b5c-ba2c-5188dae247a9@lunn.ch>
+ <7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
+ <20231119.182544.2069714044528296795.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231119.182544.2069714044528296795.fujita.tomonori@gmail.com>
 
-On Fri, 17 Nov 2023 09:39:05 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
->> This patch adds abstractions to implement network PHY drivers; the
->> driver registration and bindings for some of callback functions in
->> struct phy_driver and many genphy_ functions.
->> 
->> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
->> 
->> This patch enables unstable const_maybe_uninit_zeroed feature for
->> kernel crate to enable unsafe code to handle a constant value with
->> uninitialized data. With the feature, the abstractions can initialize
->> a phy_driver structure with zero easily; instead of initializing all
->> the members by hand. It's supposed to be stable in the not so distant
->> future.
->> 
->> Link: https://github.com/rust-lang/rust/pull/116218
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Sun, Nov 19, 2023 at 06:25:44PM +0900, FUJITA Tomonori wrote:
+> On Fri, 17 Nov 2023 23:01:58 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
 > 
-> In this reply, I go through my minor nits:
+> > On 11/17/23 23:54, Andrew Lunn wrote:
+> >> Each kernel module should be in its own symbol name space. The only
+> >> symbols which are visible outside of the module are those exported
+> >> using EXPORT_SYMBOL_GPL() or EXPORT_SYMBOL(). A PHY driver does not
+> >> export anything, in general.
+> >> 
+> >> Being built in also does not change this.
+> >> 
+> >> Neither drivers/net/phy/ax88796b_rust.o nor
+> >> rust/doctests_kernel_generated.o should have exported this symbol.
+> >> 
+> >> I've no idea how this actually works, i guess there are multiple
+> >> passes through the linker? Maybe once to resolve symbols across object
+> >> files within a module. Normal global symbols are then made local,
+> >> leaving only those exported with EXPORT_SYMBOL_GPL() or
+> >> EXPORT_SYMBOL()? A second pass through linker then links all the
+> >> exported symbols thorough the kernel?
+> > 
+> > I brought this issue up in [1], but I was a bit confused by your last
+> > reply there, as I have no idea how the `EXPORT_SYMBOL` macros work.
+> > 
+> > IIRC on the Rust side all public items are automatically GPL exported.
 > 
->> +use crate::{
->> +    prelude::{vtable, Pin},
->> +};
-> 
-> Normally, if you're importing specific prelude items by name instead of
-> using prelude::*, then you would import them using their non-prelude
-> path.
+> Hmm, they are public but doesn't look like exported by EXPORT_SYMBOL()
+> or EXPORT_SYMBOL_GPL().
 
-Understood. I have no reason to import specific prelude items so I use
-`prelude::*` instead.
+Do they need to be public? Generally, a PHY driver does not export
+anything. So you can probably make them private. We just however need
+to ensure the compiler/linker does not think they are unused, so
+throws them away.
 
+I would however like to get an understanding how EXPORT_SYMBOL* is
+supposed to work in rust. Can it really be hidden away? Or should
+methods be explicitly marked like C code? What is the Rust equivalent
+of the three levels of symbol scope we have in C?
 
->> +#[derive(PartialEq)]
->> +pub enum DeviceState {
-> 
-> If you add PartialEq and you can add Eq, then also add Eq.
-
-Added Eq.
-
-
->> +/// An adapter for the registration of a PHY driver.
->> +struct Adapter<T: Driver> {
->> +    _p: PhantomData<T>,
->> +}
-> 
-> You don't need this struct. The methods can be top-level functions.
-> 
-> But I know that others have used the same style of defining a useless
-> struct, so it's fine with me.
-
-You meant like the following?
-
-unsafe extern "C" fn soft_reset_callback<T: Driver>(
-    phydev: *mut bindings::phy_device,
-) -> core::ffi::c_int {
-    from_result(|| {
-        // SAFETY: Preconditions ensure `phydev` is valid.
-        let dev = unsafe { Device::from_raw(phydev) };
-        T::soft_reset(dev)?;
-        Ok(0)
-    })
-}
-
-pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
-    DriverVTable(Opaque::new(bindings::phy_driver {
-	soft_reset: if T::HAS_SOFT_RESET {
-            Some(soft_reset_callback::<T>)
-        } else {
-            None
-	}
-    }
-}
-
-I thought that a struct is used to group callbacks. Either is fine by
-me though.
-
-
->> +    /// Defines certain other features this PHY supports.
->> +    /// It is a combination of the flags in the [`flags`] module.
->> +    const FLAGS: u32 = 0;
-> 
-> You need an empty line between the two lines if you intend for them to
-> be separate lines in rendered documentation.
-
-I don't intend to make them separate lines. If I make thme one line,
-it's too long (over 100) so I made them two lines.
-
-
->> +#[vtable]
->> +pub trait Driver {
->> +    /// Issues a PHY software reset.
->> +    fn soft_reset(_dev: &mut Device) -> Result {
->> +        Err(code::ENOTSUPP)
->> +    }
->>      [...]
->> +}
-> 
-> I believe that the guidance for what to put in optional vtable-trait
-> methods was changed in:
-> 
-> https://lore.kernel.org/all/20231026201855.1497680-1-benno.lossin@proton.me/
-
-But VTABLE_DEFAULT_ERROR is defined in that patch, which isn't
-merged. I'll update the code once that patch is merged.
-
-
->> +// SAFETY: `Registration` does not expose any of its state across threads.
->> +unsafe impl Send for Registration {}
-> 
-> I would change this to "it's okay to call phy_drivers_unregister from a
-> different thread than the one in which phy_drivers_register was called".
-> 
->> +// SAFETY: `Registration` does not expose any of its state across threads.
->> +unsafe impl Sync for Registration {}
-> 
-> Here, you can say "Registration has no &self methods, so immutable
-> references to it are useless".
-
-I'll reply to Trevor mail on this issue.
-
-
->> +    // macro use only
->> +    #[doc(hidden)]
->> +    pub const fn mdio_device_id(&self) -> bindings::mdio_device_id {
->> +        bindings::mdio_device_id {
->> +            phy_id: self.id,
->> +            phy_id_mask: self.mask.as_int(),
->> +        }
->> +    }
-> 
-> This is fine, but I probably would just expose it for everyone. It's not
-> like it hurts if non-macro code can call this method, even if it doesn't
-> have a reason to do so.
-
-IIRC, someone said that drivers should not use bindings directly so
-this function that returns bindings::mdio_device_id isn't exported.
-
-Thanks!
+	Andrew
