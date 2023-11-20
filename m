@@ -1,277 +1,131 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImSXlByP"
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B35E11A;
-	Sun, 19 Nov 2023 10:01:52 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-32fdd0774d9so2613058f8f.2;
-        Sun, 19 Nov 2023 10:01:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CBz8k5T3"
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC14EE;
+	Mon, 20 Nov 2023 05:54:55 -0800 (PST)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1cc2b8deb23so9439305ad.1;
+        Mon, 20 Nov 2023 05:54:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700416910; x=1701021710; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gW/lObfs5yVuAZVZgm8zXDZOObBZ0xpT6zITDGCq/ZY=;
-        b=ImSXlByPgJv/NEKwypeS0vtJaC7WXLTdny4RlxRxD54xPWOx5KTK06fl8MOiTNUWKs
-         NRzKruwBVCaw9ifxkLoQ0gEkYkV7Qm0F2jtEesa1bN3z95VarNssj0fkfxrJvL5bvuA6
-         vx9T/lfNbOsKE399L5CCwjEnWU8IOz2ghoriWr9ggBEwtmGstrSQy5x3NtJ+D51Z7AUx
-         uMcOFFqYjaYJ7m5/QQrhd0N5QMQrao4gMKX/6vpr3CBjgyBBmr6bxPGSyRrsUMWusJ5t
-         rxSl9sFbsZJKMFzbUg9Ts7L0PJgO/E300uQD2kgKMHWs4yagS1pIwvfQWglaRG/YtmrL
-         486w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700416910; x=1701021710;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1700488495; x=1701093295; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gW/lObfs5yVuAZVZgm8zXDZOObBZ0xpT6zITDGCq/ZY=;
-        b=vWrxJIXAJZdNa5NohgGkAbp9pED8uuNja7OdAQO1e4+chBOu2u4OxWKhrhgMjnak6g
-         8fdWy5B0ui5DkEEigPNxGqjKBF/33TyZCyju5cW97iFdI36R2FNWhrEtmBZ9D28KHniq
-         8esbmOJ0T9PVKkGg6Bug/5vXTeW32pRn3d1dvwidNbglaN8hm64zcjXAc/hSw5xdBuR6
-         xjXp3kX7RDTsS52tRhBQt9NEi/Nlpb8OQjkKkMduvHjIdf38pXgh5AwaIfq6cTeUbt2/
-         zr2aY+t57RgQz0ngEPz/8KzA7VfO19xRHW9pbqFNT+WtR4w97PBOLgyHYHt+4hRLteoG
-         v/Ug==
-X-Gm-Message-State: AOJu0YwEY37004m7W+GixJsxJdci3DShsRukIjnoeQO29p39UjkOHiRV
-	UuJyLBSINdTR0oSjYhntnxs=
-X-Google-Smtp-Source: AGHT+IFSSJpLwHX8eD/ZFiIxnMkC9dOTvOB86eWG7wAFxWu8KYhq4r6HahXt1Xdn0MiTzoF+W8h8/w==
-X-Received: by 2002:a05:6000:4028:b0:32f:7fe4:45f2 with SMTP id cp40-20020a056000402800b0032f7fe445f2mr3713993wrb.4.1700416910486;
-        Sun, 19 Nov 2023 10:01:50 -0800 (PST)
-Received: from laptop.home (110.50.134.37.dynamic.jazztel.es. [37.134.50.110])
-        by smtp.gmail.com with ESMTPSA id l6-20020a5d5606000000b00331698cb263sm8415549wrv.103.2023.11.19.10.01.49
+        bh=Ahqi9jhkLeH3EV/3d2jU0ljmcsV+zQqtGCjIsAM9qMs=;
+        b=CBz8k5T3RFTgs5BmoDJIPM32DP4FWB6u+UQZez87Q+GFMix44I9JAQYeo5dqArmhMX
+         ciNz5PKGUQIt2MmQg/7QhyTUNPgIUvwcwD5EpHJBo1pUYZ7QH3GOyUKXhhOwKlVwZSP9
+         QaX+V1NiKJb3uRge+ys0+Jyv7twzCu6XBIY3rXVi1Hdrot1fPC6YXd3/iynaMSweiMqw
+         B6YrFP0gEswUKQfxHbZEccgKmsDzZMlxCA3N+b08nUnhB15jXK46+lRez+a8frNxtIeT
+         wv9ckHi9jQ2EYJVXvLJwzbIzZYc4QVKY9GxPNz0Rj9w0rQ7NGq/MI+42w/tstPuCJjbz
+         aPnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700488495; x=1701093295;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ahqi9jhkLeH3EV/3d2jU0ljmcsV+zQqtGCjIsAM9qMs=;
+        b=t3qCxuShECByB3p56t7vmds8YSvp4HaO6a5S7LwbDp9eX8Jl9lGy7tBwZO9BNhCgXU
+         133eFAX03Z9CAEmzLbq32qI5HBYSTq0ZFL9oRMFuhbRt1EACWaKyc9AqKpHfxGrWMOdc
+         ljYLlKExRwEK/IzuskNgC/tfFzG9Or22T55hghZukmhImLCAQknTAlJfjU4gMeyYQXiZ
+         X3YWtfbOsL7mZtYy2M9HOH//9RDme8EMfs4htw8ejOS4SeEdxq2tprf/6JlOze0iCi16
+         XfUcN5R3YClfs/I3LgxOU6h6VkQsBxQFbn/Xrc96Kyme/exZZZNYLCoXiYZpcuUV/jyY
+         WS8A==
+X-Gm-Message-State: AOJu0YyQXhfP7WTr6DlOtmhIQP2rrwHLDpPPjQJ2XNYBZ54UYsvKJ4G+
+	LkMM/ygQRtpu+fTtCTL3428=
+X-Google-Smtp-Source: AGHT+IEf9sZ1Ik9U8t6+ThzErfuZ8p/UJ47B0Rt/LQOrl4zcYCDpZ0SCPe27pvfuPo7zd8WP60pLNA==
+X-Received: by 2002:a17:903:41c6:b0:1ce:6273:ff6e with SMTP id u6-20020a17090341c600b001ce6273ff6emr9774253ple.2.1700488494852;
+        Mon, 20 Nov 2023 05:54:54 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id h6-20020a170902eec600b001bb1f0605b2sm6107175plb.214.2023.11.20.05.54.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Nov 2023 10:01:50 -0800 (PST)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	sergio.collado@gmail.com
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	David Rheinsberg <david@readahead.eu>,
-	rust-for-linux@vger.kernel.org,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: [PATCH v2] Kunit to check the longest symbol length
-Date: Sun, 19 Nov 2023 19:01:45 +0100
-Message-Id: <20231119180145.157455-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        Mon, 20 Nov 2023 05:54:54 -0800 (PST)
+Date: Mon, 20 Nov 2023 22:54:53 +0900 (JST)
+Message-Id: <20231120.225453.845045342929370231.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, benno.lossin@proton.me,
+ boqun.feng@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 2/5] rust: net::phy add module_phy_driver
+ macro
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <8f7a7fe0-bfd3-4062-9b55-c1e18de2818a@lunn.ch>
+References: <7f300ba1-44e1-4a98-9289-a53928204aa7@proton.me>
+	<20231119.182544.2069714044528296795.fujita.tomonori@gmail.com>
+	<8f7a7fe0-bfd3-4062-9b55-c1e18de2818a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
-in the reference [1]. This patch adds a kunit test to check the longest
-symbol length.
+On Sun, 19 Nov 2023 16:50:34 +0100
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-[1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
+> On Sun, Nov 19, 2023 at 06:25:44PM +0900, FUJITA Tomonori wrote:
+>> On Fri, 17 Nov 2023 23:01:58 +0000
+>> Benno Lossin <benno.lossin@proton.me> wrote:
+>> 
+>> > On 11/17/23 23:54, Andrew Lunn wrote:
+>> >> Each kernel module should be in its own symbol name space. The only
+>> >> symbols which are visible outside of the module are those exported
+>> >> using EXPORT_SYMBOL_GPL() or EXPORT_SYMBOL(). A PHY driver does not
+>> >> export anything, in general.
+>> >> 
+>> >> Being built in also does not change this.
+>> >> 
+>> >> Neither drivers/net/phy/ax88796b_rust.o nor
+>> >> rust/doctests_kernel_generated.o should have exported this symbol.
+>> >> 
+>> >> I've no idea how this actually works, i guess there are multiple
+>> >> passes through the linker? Maybe once to resolve symbols across object
+>> >> files within a module. Normal global symbols are then made local,
+>> >> leaving only those exported with EXPORT_SYMBOL_GPL() or
+>> >> EXPORT_SYMBOL()? A second pass through linker then links all the
+>> >> exported symbols thorough the kernel?
+>> > 
+>> > I brought this issue up in [1], but I was a bit confused by your last
+>> > reply there, as I have no idea how the `EXPORT_SYMBOL` macros work.
+>> > 
+>> > IIRC on the Rust side all public items are automatically GPL exported.
+>> 
+>> Hmm, they are public but doesn't look like exported by EXPORT_SYMBOL()
+>> or EXPORT_SYMBOL_GPL().
+> 
+> Do they need to be public? Generally, a PHY driver does not export
+> anything. So you can probably make them private. We just however need
+> to ensure the compiler/linker does not think they are unused, so
+> throws them away.
 
-Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-- - -
-V1 -> V2: corrected CI tests. Added fix proposed at [2]
+The Rust ax88796b driver doesn't export anything. The Rust and C
+drivers handle the device_table in the same way when they are built as
+a module.
 
-[2] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12bb834d01ed1ebdcae12ef5f2add342077
----
- arch/x86/tools/insn_decoder_test.c |   3 +-
- lib/Kconfig.debug                  |   9 +++
- lib/Makefile                       |   2 +
- lib/longest_symbol_kunit.c         | 122 +++++++++++++++++++++++++++++
- 4 files changed, 135 insertions(+), 1 deletion(-)
- create mode 100644 lib/longest_symbol_kunit.c
+$ grep __mod_mdio /proc/kallsyms
+ffffffffa0358058 r __mod_mdio__phydev_device_table [ax88796b_rust]
 
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-index 472540aeabc2..6c2986d2ad11 100644
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -10,6 +10,7 @@
- #include <assert.h>
- #include <unistd.h>
- #include <stdarg.h>
-+#include <linux/kallsyms.h>
- 
- #define unlikely(cond) (cond)
- 
-@@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
- 	}
- }
- 
--#define BUFSIZE 256
-+#define BUFSIZE (256 + KSYM_NAME_LEN)
- 
- int main(int argc, char **argv)
- {
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index cc7d53d9dc01..a531abece0a7 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2769,6 +2769,15 @@ config FORTIFY_KUNIT_TEST
- 	  by the str*() and mem*() family of functions. For testing runtime
- 	  traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
- 
-+config LONGEST_SYM_KUNIT_TEST
-+	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
-+	depends on KUNIT && KPROBES
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Tests the longest symbol possible
-+
-+	  If unsure, say N.
-+
- config HW_BREAKPOINT_KUNIT_TEST
- 	bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TESTS
- 	depends on HAVE_HW_BREAKPOINT
-diff --git a/lib/Makefile b/lib/Makefile
-index 6b09731d8e61..f72003d5869b 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -406,6 +406,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
- obj-$(CONFIG_STRCAT_KUNIT_TEST) += strcat_kunit.o
- obj-$(CONFIG_STRSCPY_KUNIT_TEST) += strscpy_kunit.o
- obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
-+obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
-+CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
- 
- obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
- 
-diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
-new file mode 100644
-index 000000000000..998563018f7a
---- /dev/null
-+++ b/lib/longest_symbol_kunit.c
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test the longest symbol length. Execute with:
-+ *  ./tools/testing/kunit/kunit.py run longest-symbol
-+ *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
-+ *  --kconfig_add CONFIG_RETPOLINE=n
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <kunit/test.h>
-+#include <linux/stringify.h>
-+#include <linux/kprobes.h>
-+#include <linux/kallsyms.h>
-+
-+#define DI(name) s##name##name
-+#define DDI(name) DI(n##name##name)
-+#define DDDI(name) DDI(n##name##name)
-+#define DDDDI(name) DDDI(n##name##name)
-+#define DDDDDI(name) DDDDI(n##name##name)
-+
-+#define PLUS1(name) __PASTE(name, e)
-+
-+/*Generate a symbol whose name length is 511 */
-+#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
-+
-+/*Generate a symbol whose name length is 512 */
-+#define LONGEST_SYM_NAME_PLUS1 PLUS1(LONGEST_SYM_NAME)
-+
-+#define RETURN_LONGEST_SYM 0xAAAAA
-+#define RETURN_LONGEST_SYM_PLUS1 0x55555
-+
-+noinline int LONGEST_SYM_NAME(void);
-+noinline int LONGEST_SYM_NAME(void)
-+{
-+	return RETURN_LONGEST_SYM;
-+}
-+
-+noinline int LONGEST_SYM_NAME_PLUS1(void);
-+noinline int LONGEST_SYM_NAME_PLUS1(void)
-+{
-+	return RETURN_LONGEST_SYM_PLUS1;
-+}
-+
-+_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) == KSYM_NAME_LEN,
-+"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
-+__stringify(KSYM_NAME) ", but found: "
-+__stringify(sizeof(LONGEST_SYM_NAME)));
-+
-+static void test_longest_symbol(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
-+};
-+
-+static void test_longest_symbol_kallsyms(struct kunit *test)
-+{
-+	unsigned long (*kallsyms_lookup_name)(const char *name);
-+	static int (*longest_sym)(void);
-+
-+	struct kprobe kp = {
-+		.symbol_name = "kallsyms_lookup_name",
-+	};
-+
-+	if (register_kprobe(&kp) < 0) {
-+		pr_info("%s: kprobe not registered\n", __func__);
-+		KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe not registered\n");
-+		return;
-+	}
-+
-+	kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered\n");
-+	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
-+	unregister_kprobe(&kp);
-+
-+	longest_sym =
-+	    (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME));
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
-+};
-+
-+static void test_longest_symbol_plus1(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM_PLUS1, LONGEST_SYM_NAME_PLUS1());
-+};
-+
-+static void test_longest_symbol_plus1_kallsyms(struct kunit *test)
-+{
-+	unsigned long (*kallsyms_lookup_name)(const char *name);
-+	static int (*longest_sym_plus1)(void);
-+
-+	struct kprobe kp = {
-+		.symbol_name = "kallsyms_lookup_name",
-+	};
-+
-+	if (register_kprobe(&kp) < 0) {
-+		pr_info("%s: kprobe not registered\n", __func__);
-+		KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe not registered\n");
-+		return;
-+	}
-+
-+	kunit_warn(test, "test_longest_symbol_plus1 kallsyms: kprobe registered\n");
-+	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
-+	unregister_kprobe(&kp);
-+
-+	longest_sym_plus1 =
-+	    (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME_PLUS1));
-+	KUNIT_EXPECT_NULL(test, longest_sym_plus1);
-+};
-+
-+static struct kunit_case longest_symbol_test_cases[] = {
-+	KUNIT_CASE(test_longest_symbol),
-+	KUNIT_CASE(test_longest_symbol_kallsyms),
-+	KUNIT_CASE(test_longest_symbol_plus1),
-+	KUNIT_CASE(test_longest_symbol_plus1_kallsyms),
-+	{}
-+};
-+
-+static struct kunit_suite longest_symbol_test_suite = {
-+	.name = "longest-symbol",
-+	.test_cases = longest_symbol_test_cases,
-+};
-+kunit_test_suite(longest_symbol_test_suite);
-+
-+MODULE_LICENSE("GPL");
+$ grep __mod_mdio /proc/kallsyms
+ffffffffa0288010 d __mod_mdio__asix_tbl_device_table	[ax88796b]
 
-base-commit: 037266a5f7239ead1530266f7d7af153d2a867fa
--- 
-2.39.2
+Note that when the Rust ax88796b driver is built-in,
+__mod_mdio__phydev_device_table is not defined.
 
+Sorry about my explanation, which leads to the confusion, I think.
+
+
+> I would however like to get an understanding how EXPORT_SYMBOL* is
+> supposed to work in rust. Can it really be hidden away? Or should
+> methods be explicitly marked like C code? What is the Rust equivalent
+> of the three levels of symbol scope we have in C?
+
+If I understand correctly, there is no official way to export symbols
+in Rust kernel modules; No equivalent to EXPORT_SYMBOL* for Rust code
+built as a module yet.
+
+Note that all core Rust functions are GPL exported so they are
+available to Rust kernel modules.
+
+`static` has a different meaning in Rust but I think that you can use
+file scope and kernel-module scope in Rust.
