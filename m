@@ -1,115 +1,125 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="l3y/Gfkx";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DieFae+I"
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AADE09D;
-	Mon, 20 Nov 2023 23:12:18 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.nyi.internal (Postfix) with ESMTP id EC98C5C0C58;
-	Tue, 21 Nov 2023 02:12:17 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Tue, 21 Nov 2023 02:12:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1700550737; x=1700637137; bh=04
-	AJGy4oa9MjsWPrnDD6xwdZTHm1YQvdW/pByyPc3e4=; b=l3y/GfkxohGfFNzHRn
-	q6FVzZTcaDrXmOpvsaQHmG88ZqMXyAvxlK5ST3wLqsTS4nuaPcboBQCDMU5F88N9
-	Rwo9MkPLprXRBCa0J9wNzSoH3Mz4r94RGGnIxY7fwdNHnA9V05TLW8YetDSc/8gF
-	zFxMZNBdkDBDrtA4Mcmy4llX4R3uI7Lc5btmrwlwhekq9uS/X225pw34oNF0MLS4
-	rvtgfVzfla49q6LF8nVYNgW+z/zc5DbNEBn+OAwooArtY1QKF0NcvHMcXF+btJTS
-	wFkyJ6nXIzyJzbX16MUFEFwpqaYa3a7EWVqCdJavQYhhLi7BTQHj2LlBwSzGqjEV
-	p6/g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1700550737; x=1700637137; bh=04AJGy4oa9Mjs
-	WPrnDD6xwdZTHm1YQvdW/pByyPc3e4=; b=DieFae+IkvBry6ckdYrqzlm5f2EvV
-	Gz4k1d/Nkf9QG+RK7385W/wqPjrEBmFDS7OvD1Y9kMtnlMThpZ8P7ETyUKi1fns/
-	eelqEuahniXG1+M/Huws2Du8YG1IIrD0g0JdwhC1J0Ku8CHbUZiKZSIzFbifEfbZ
-	KpXRRUJB7fhw+pknysF0mPVS5mgXGUXdQN/6DxkCvQlmfzlpswfX4NPz9I4c++Ij
-	T0y7M3LfXFMFcET/dZz/VTUCEl5b53VyoJPhzmo4LhWCMmomkpp+9JX0qhG2wNh6
-	D/3g9i7a4jucIVa6wYEAlMIAngRjInvFCjw8dxfOFSDeWU57EQkzvStug==
-X-ME-Sender: <xms:UVhcZdhzHLX1f7YO0lRDCQH5RNOBmk7etLt49IPt_ygACfZ7IV16nQ>
-    <xme:UVhcZSB_RxAVa3l8XFsGt-lPPlLq_hDnziSdTznTSN6c2DmipxIIBWvjKSQZPnJbF
-    VJtljbJ3h97AA>
-X-ME-Received: <xmr:UVhcZdE4iBOEOZAj25hW98bMC40B-aLu8PeDxwpMt4zwsN91G_v6Yw8-rcXQhk3Htb9TuBqnwWlrbjof1P35IlM-5j6bIlT5CSRdCg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudegkedguddtgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
-    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
-    grhhdrtghomh
-X-ME-Proxy: <xmx:UVhcZSRjm5e5ctBWRIev_eny3UvWzt27e4WdoSvuL1T6GxbVnwKM3w>
-    <xmx:UVhcZaxSrwFbFSuLkwTyrGQVusaayxZXMiEmf3mv5fRdF1dbQ68Dbw>
-    <xmx:UVhcZY5XYxslPmDaYixYkpwAd1kZ5kThJRYXzCZUDFJgFbSOmtL1zQ>
-    <xmx:UVhcZfhbVYtcK7abWjliZJgHkXP-wYmi-tD_RekiGcq44sQZE-7B9Q>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Nov 2023 02:12:16 -0500 (EST)
-Date: Tue, 21 Nov 2023 08:12:09 +0100
-From: Greg KH <greg@kroah.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: andrew@lunn.ch, aliceryhl@google.com, benno.lossin@proton.me,
-	miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 5/5] net: phy: add Rust Asix PHY driver
-Message-ID: <2023112136-paver-agreed-0bc1@gregkh>
-References: <20231117093915.2515418-1-aliceryhl@google.com>
- <20231119.185736.1872000177070369059.fujita.tomonori@gmail.com>
- <363b810d-7d6c-48bd-879b-f97acffa70b6@lunn.ch>
- <20231121.151939.1903605088782465261.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c2kfLOZY"
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A65D47;
+	Tue, 21 Nov 2023 04:47:34 -0800 (PST)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3b83442be42so110403b6e.0;
+        Tue, 21 Nov 2023 04:47:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700570854; x=1701175654; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G3P+PI2Q9AIKfxpMddliChMEhA8JFP8Cj6vfTCkDGUE=;
+        b=c2kfLOZYRX2Wc5x1iWkeaWMKF75RNxrloH/eRX2rJh8tT6j9WT7LyX5pZ3Qd0oTZ2J
+         DJEfpw76kgxzfMl9ToaMQb8QK3PIw+8QD8NFHzP+ZIg54LGn3BAej92LXLn1eSIYOiti
+         /KXvqkiPF972saNOh0BmJaAik4N5nkKj7ZfKBDrEDuFH5687kkkcSN81740i2ubYx7jx
+         NzwuPEjviRqQBL77Y1u/QVbT3nbutNnvFBTR612PnMatKd2QskRO25cOyDcV0ZmbPwC5
+         GSDvDgjBfsVSHNE8lIHxmmF72Q34H2lTZK14+lYiQkPpgfkqvbHo5wGdhUrOXJ0C8m5x
+         3I8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700570854; x=1701175654;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=G3P+PI2Q9AIKfxpMddliChMEhA8JFP8Cj6vfTCkDGUE=;
+        b=UO4UgQ3crTrp0KrdyE3hGE9OOzieAIl8j0vgAllbu8Na/aHis7ZaiIJ/gzTQbhZrjP
+         d9/Bgkyt2k1AQ5JVdVLMILI8X6AILPXv+hS20mzPYEzbxIXm9GFydDqQo+/4VeQtoyFa
+         CekzlkhfeuR+W979SAQ3GLtRS+wzjkF1Z6eTXWGfS7h00sqjeUmcB3yKlX/90ds39Y9Q
+         YOlGAfw/G+Nq6ULyS0PWFkYZEQFBVy16prWZyAmLHNhwD/4CyufCJxhzBIXwQeEpPsk9
+         zjXVt+aJhHrnqlCX4qg/rvi65pthyktasPzjmxtiSjQjicqBAVYmNYvyYTjJzIczVjjE
+         j45A==
+X-Gm-Message-State: AOJu0YwXrdbxcjaI6XJI7JhE5/qt50D1CK3+E+rUHF1MMk786v8XWG7n
+	T4a/+9aqkB+qumxrqKgVcd6SryggWo/uc3S7
+X-Google-Smtp-Source: AGHT+IGxPvubfTgvGo3yizljGD2tRxgw5B/6DaquBggRsEkqwXIV5L+9rRkHb3xM0s+K/37xqaOhEQ==
+X-Received: by 2002:a05:6808:17a2:b0:3b6:cc77:6944 with SMTP id bg34-20020a05680817a200b003b6cc776944mr13981070oib.0.1700570854190;
+        Tue, 21 Nov 2023 04:47:34 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id v64-20020a638943000000b005b9288d51f0sm7720203pgd.48.2023.11.21.04.47.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Nov 2023 04:47:33 -0800 (PST)
+Date: Tue, 21 Nov 2023 21:47:32 +0900 (JST)
+Message-Id: <20231121.214732.541476521256381764.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: andrew@lunn.ch, benno.lossin@proton.me, fujita.tomonori@gmail.com,
+ miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20231117154246.2571219-1-aliceryhl@google.com>
+References: <61f93419-396d-4592-b28b-9c681952a873@lunn.ch>
+	<20231117154246.2571219-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231121.151939.1903605088782465261.fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 21, 2023 at 03:19:39PM +0900, FUJITA Tomonori wrote:
-> On Sun, 19 Nov 2023 17:03:30 +0100
-> Andrew Lunn <andrew@lunn.ch> wrote:
+On Fri, 17 Nov 2023 15:42:46 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
+
+> Anyway. If you don't want to write down the tribal knowledge here, then
+> I suggest this simpler wording:
 > 
-> >> >> +            let _ = dev.init_hw();
-> >> >> +            let _ = dev.start_aneg();
-> >> > 
-> >> > Just to confirm: You want to call `start_aneg` even if `init_hw` returns
-> >> > failure? And you want to ignore both errors?
-> >> 
-> >> Yeah, I tried to implement the exact same behavior in the original C driver.
-> > 
-> > You probably could check the return values, and it would not make a
-> > difference. Also, link_change_notify() is a void function, so you
-> > cannot return the error anyway.
-> > 
-> > These low level functions basically only fail if the hardware is
-> > `dead`. You get an -EIO or maybe -TIMEDOUT back. And there is no real
-> > recovery. You tend to get such errors during probe and fail the
-> > probe. Or maybe if power management is wrong and it has turned a
-> > critical clock off. But that is unlikely in this case, we are calling
-> > link_change_notify because the PHY has told us something changed
-> > recently, so it probably is alive.
-> > 
-> > I would say part of not checking the return code is also that C does
-> > not have the nice feature that Rust has of making very simple to check
-> > the return code. That combined with it being mostly pointless for PHY
-> > drivers.
+> /// # Invariants
+> ///
+> /// Referencing a `phy_device` using this struct asserts that you are in
+> /// a context where all methods defined on this struct are safe to call.
+> #[repr(transparent)]
+> pub struct Device(Opaque<bindings::phy_device>);
 > 
-> Understood. I'll check the first return value if you prefer. I might
-> add WARN_ON_ONCE after Rust supports it.
+> This invariant is much less precise, but at least it is correct.
+> 
+> Other safety comments may then be:
+> 
+> 	/// Gets the id of the PHY.
+> 	pub fn phy_id(&self) -> u32 {
+> 	    let phydev = self.0.get();
+> 	    // SAFETY: The struct invariant ensures that we may access
+> 	    // this field without additional synchronization.
+> 	    unsafe { (*phydev).phy_id }
+> 	}
+> 
+> And:
+> 
+> 	unsafe extern "C" fn soft_reset_callback(
+> 	    phydev: *mut bindings::phy_device,
+> 	) -> core::ffi::c_int {
+> 	    from_result(|| {
+> 	        // SAFETY: This callback is called only in contexts
+> 		// where we hold `phy_device->lock`, so the accessors on
+> 		// `Device` are okay to call.
+> 	        let dev = unsafe { Device::from_raw(phydev) };
+> 	        T::soft_reset(dev)?;
+> 	        Ok(0)
+> 	    })
+> 	}
+> 
+> And:
+> 
+> 	unsafe extern "C" fn resume_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
+> 	    from_result(|| {
+> 	        // SAFETY: The C core code ensures that the accessors on
+> 		// `Device` are okay to call even though `phy_device->lock`
+> 		// might not be held.
+> 	        let dev = unsafe { Device::from_raw(phydev) };
+> 	        T::resume(dev)?;
+> 	        Ok(0)
+> 	    })
+> 	}
 
-Please don't, it shouldn't support it, handle errors properly and
-return, don't panic machines (remember, the majority of the Linux
-systems in the world run panic-on-warn).
+With these comments, What I should write on from_raw() function as a
+safety comment?
 
-thanks,
-g
-reg k-h
+/// # Safety
+///
+/// For the duration of 'a, the pointer must point at a valid
+/// `phy_device`, and the caller must ensure that an user of this struct
+/// in a context where all methods defined on this struct are safe to
+/// call.
+unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
+
