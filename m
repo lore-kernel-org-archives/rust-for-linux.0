@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RBqFzBDU"
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AB8E3;
-	Mon, 20 Nov 2023 18:13:07 -0800 (PST)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6bbfb8f7ac4so1418907b3a.0;
-        Mon, 20 Nov 2023 18:13:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ef3YhIGP"
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4964797;
+	Mon, 20 Nov 2023 22:19:41 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-280cd4e6f47so1149775a91.1;
+        Mon, 20 Nov 2023 22:19:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700532787; x=1701137587; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1700547581; x=1701152381; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IsJ+vBOvHozQQUHLnusyAMGlpXVOSmcYb5GpvxkMATU=;
-        b=RBqFzBDUd2YjHq2Y5gRTKoHAGsGvi6LX/TfmMTUlSXsACqGxQuBL03gnfi14LisAQF
-         XAJm7S7CJt3Oyl+WcVyM9ONELB3IJchHYCVhXCBeb1aG7RHIyr1ryofuhvPDb5H0lXf5
-         Fjyj6yHEeWu2324U1xwiH97JqtClKy1cttOd1RgAXl8vgZ/8M9pHxp623wVCMFzhpxti
-         OPWKjf38Q/Ju4RSoWMHfKJ9y90nlHOfEjONvlSE57b79fy5X5aJYnmSwWPmbcJEBHxtq
-         fQXn8o5CnIoNr5LoJic9cSOhLwhcfeBUgol7d+AScpjV67WtCh+ogkZp6khtHRVRABiO
-         Rwiw==
+        bh=WWOiLbKGqCq+xWn1zmNhxuIAfXKxVirff8sSyPojC7s=;
+        b=ef3YhIGP2LkU+G++nzL2RkaxU0Na1j+tdA7vtO9JOZ+oFRr3hpwlPa7cb9iahuzCfQ
+         XVjng46Ow5ZDOBqo6C+g5v/LG4bZ2ejX5513Fm4uZBM5HMirTfGGHO92HvKhn74yavvp
+         QF4V9XaGLhMK0fvBnI0RSV/xSE7pp8Xx5ZZ4yJaz1+0Pdnjv9OXh9VeF0SPPG2dqRruJ
+         2+0jMsMwklOnhvTa6hNrWBmDaHbF2AqVW4RQkomu8zI2rK6bqXF/DOco3Yoc6YB9SWyu
+         ORIh90fEEByhruAJxkVeQA6l319FrutHZY6eKAICyEvFlvcISsJpSRyfx7aZgczPD3Mu
+         X9dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700532787; x=1701137587;
+        d=1e100.net; s=20230601; t=1700547581; x=1701152381;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=IsJ+vBOvHozQQUHLnusyAMGlpXVOSmcYb5GpvxkMATU=;
-        b=jOzVZqqAWPKo+E1u/sPTbeY4qm6qmAYHY8DuwXvcxQAUkrCg4RoN+Q54duddkMSvfc
-         fGv6qjfjMZkm2fgQJ/BHc7xAMMRjEt3K4e9kaqqAehs0k5xrBbSvANkoBPcSVPyVCdRt
-         zienwCcBUKE4TN+/BxODQbKL5EZFRX2kH8R4T6FE4cUa3GoszHq+mFBNpZJ9M38qOVjo
-         C+BLrXhWq/9KXNsK+4G0tjE3ht6uHtwjOnNnvlV0j5bsfB3eelClvzh+F/0JPT8wH47J
-         yxUE9E/Nyh1pUbCtciSSqDiBncu+JinduyoSJyMDrZ56R7B6uPm4wRld5Yq6ppKAzP4c
-         Hp8g==
-X-Gm-Message-State: AOJu0Yza+DUuVfQgz8JzyOhODaLEpYe646VDhFRkLikfveLlgeQSQtSx
-	/EvcEBSL/cEKP0rwRbjePok=
-X-Google-Smtp-Source: AGHT+IFTLVJTUjc0cp3vhCIr4tOgxnJmbofRbzxMkHyltk1zlguaVTne21bl2wJhKS9uNVeh9Ynllg==
-X-Received: by 2002:a05:6a20:7f8c:b0:187:df59:5c3c with SMTP id d12-20020a056a207f8c00b00187df595c3cmr12841723pzj.3.1700532787031;
-        Mon, 20 Nov 2023 18:13:07 -0800 (PST)
+        bh=WWOiLbKGqCq+xWn1zmNhxuIAfXKxVirff8sSyPojC7s=;
+        b=TMpU7Aqwf6CP98IlXGKyYTrW7UWvRTbMiwXElcP+6LD1NtOCLuGE/3I/ZFRq7RcJOs
+         C2B5xFHT1GcQsLpJCEajpKxa8U3Gt7MJjz8tn8Uqt3vR8Nyu0rBotrCoZ2gXnd9rwfyx
+         FYoSleoR8L368ZKUaQDVFI9G3Wgrz11sHXiRNx8CHMU05gByjdnVD+NjqrgIfqzWzvZw
+         IB9yymnNlEnF3Kswa2Ds53M0nDK6NtOcujZo9hGwdlVUC0JGrZ9xDhU7yU8Z/HR375qu
+         eZqFXnZ5sC8fYLmbwsK/U3w1hWZRobh7lHgXM2iZfN9HrDh7uzczuN10gjmZ3i9eMLgf
+         ynjQ==
+X-Gm-Message-State: AOJu0YzaQQnnzU0G492lpTMvBDxhxNAhOEyQ765Vb3FRyEU5iFVYx+TI
+	GryervjbUMcVdxJMLCnv77w=
+X-Google-Smtp-Source: AGHT+IFg9gtOkc2jytx/JTvJ0EeKvG0NshozRolV4AvAm5fAE0dbUPNLyfmE5JyZeimrGckV5Km9IA==
+X-Received: by 2002:a17:902:d4ca:b0:1cf:56fa:898d with SMTP id o10-20020a170902d4ca00b001cf56fa898dmr9728856plg.3.1700547580597;
+        Mon, 20 Nov 2023 22:19:40 -0800 (PST)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id q24-20020a17090a2e1800b00274922d4b38sm6196677pjd.27.2023.11.20.18.13.06
+        by smtp.gmail.com with ESMTPSA id w4-20020a170902e88400b001cf64c60d20sm2260808plg.37.2023.11.20.22.19.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Nov 2023 18:13:06 -0800 (PST)
-Date: Tue, 21 Nov 2023 11:13:06 +0900 (JST)
-Message-Id: <20231121.111306.119472527722905184.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com, andrew@lunn.ch,
- gregkh@linuxfoundation.org, aliceryhl@google.com, benno.lossin@proton.me,
- miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network
- PHY drivers
+        Mon, 20 Nov 2023 22:19:40 -0800 (PST)
+Date: Tue, 21 Nov 2023 15:19:39 +0900 (JST)
+Message-Id: <20231121.151939.1903605088782465261.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com,
+ benno.lossin@proton.me, miguel.ojeda.sandonis@gmail.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 5/5] net: phy: add Rust Asix PHY driver
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47tt94DBPvz47rssBTZ86jbHwaa7XaNnT3UbdxwY6nLg1g@mail.gmail.com>
-References: <e7d0226a-9a38-4ce9-a9b5-7bb80a19bff6@lunn.ch>
-	<ZVjePqyic7pvcb24@Boquns-Mac-mini.home>
-	<CALNs47tt94DBPvz47rssBTZ86jbHwaa7XaNnT3UbdxwY6nLg1g@mail.gmail.com>
+In-Reply-To: <363b810d-7d6c-48bd-879b-f97acffa70b6@lunn.ch>
+References: <20231117093915.2515418-1-aliceryhl@google.com>
+	<20231119.185736.1872000177070369059.fujita.tomonori@gmail.com>
+	<363b810d-7d6c-48bd-879b-f97acffa70b6@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,60 +60,49 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Sun, 19 Nov 2023 05:06:23 -0600
-Trevor Gross <tmgross@umich.edu> wrote:
+On Sun, 19 Nov 2023 17:03:30 +0100
+Andrew Lunn <andrew@lunn.ch> wrote:
 
->> +pub struct Registration {
->> +    drivers: Pin<&'static mut [DriverVTable]>,
->> +}
->>
->> [...]
->>
->> +// SAFETY: `Registration` does not expose any of its state across threads.
->> +unsafe impl Send for Registration {}
->>
->> +// SAFETY: `Registration` does not expose any of its state across threads.
->> +unsafe impl Sync for Registration {}
+>> >> +            let _ = dev.init_hw();
+>> >> +            let _ = dev.start_aneg();
+>> > 
+>> > Just to confirm: You want to call `start_aneg` even if `init_hw` returns
+>> > failure? And you want to ignore both errors?
+>> 
+>> Yeah, I tried to implement the exact same behavior in the original C driver.
 > 
-> I don't think the impl here actually makes sense. `Registration` is a
-> buffer of references to `DriverVTable`. That type isn't marked Sync so
-> by the above rules, its references should not be either.
+> You probably could check the return values, and it would not make a
+> difference. Also, link_change_notify() is a void function, so you
+> cannot return the error anyway.
 > 
-> Tomo, does this need to be Sync at all? Probably easiest to drop the
-> impls if not, otherwise I think it is more correct to move them to
-> `DriverVTable`.  You may have had this before, I'm not sure if
-> discussion made you change it at some point...
+> These low level functions basically only fail if the hardware is
+> `dead`. You get an -EIO or maybe -TIMEDOUT back. And there is no real
+> recovery. You tend to get such errors during probe and fail the
+> probe. Or maybe if power management is wrong and it has turned a
+> critical clock off. But that is unlikely in this case, we are calling
+> link_change_notify because the PHY has told us something changed
+> recently, so it probably is alive.
+> 
+> I would say part of not checking the return code is also that C does
+> not have the nice feature that Rust has of making very simple to check
+> the return code. That combined with it being mostly pointless for PHY
+> drivers.
 
-This needs to be Sync:
+Understood. I'll check the first return value if you prefer. I might
+add WARN_ON_ONCE after Rust supports it.
 
-601 | pub struct Registration {
-    |            ^^^^^^^^^^^^
-note: required because it appears within the type `Module`
-   --> drivers/net/phy/foo_rust.rs:5:1
-    |
-5   | / kernel::module_phy_driver! {
-6   | |     drivers: [Foo],
-7   | |     device_table: [
-8   | |         DeviceId::new_with_driver::<Foo>()
-...   |
-13  | |     license: "GPL",
-14  | | }
-    | |_^
-note: required by a bound in `kernel::Module`
-   --> /home/ubuntu/git/linux/rust/kernel/lib.rs:69:27
-    |
-69  | pub trait Module: Sized + Sync {
-    |                           ^^^^ required by this bound in `Module`
-    = note: this error originates in the macro `kernel::module_phy_driver` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-
-I'm not sure we discussed but making DriverVTable Sync works.
-
-#[repr(transparent)]
-pub struct DriverVTable(Opaque<bindings::phy_driver>);
-
-// SAFETY: DriverVTable has no &self methods, so immutable references to it are useless.
-unsafe impl Sync for DriverVTable {}
-
-
-looks correct?
+diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
+index ce6640ff523f..7522070a6acd 100644
+--- a/drivers/net/phy/ax88796b_rust.rs
++++ b/drivers/net/phy/ax88796b_rust.rs
+@@ -95,7 +95,9 @@ fn link_change_notify(dev: &mut phy::Device) {
+         // Reset PHY, otherwise MII_LPA will provide outdated information.
+         // This issue is reproducible only with some link partner PHYs.
+         if dev.state() == phy::DeviceState::NoLink {
+-            let _ = dev.init_hw();
++            if let Err(_) = dev.init_hw() {
++                return;
++            }
+             let _ = dev.start_aneg();
+         }
+     }
