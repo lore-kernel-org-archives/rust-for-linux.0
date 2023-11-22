@@ -1,243 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F1456B8D;
-	Wed, 22 Nov 2023 15:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lf41l0og"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BADBC433D9;
-	Wed, 22 Nov 2023 15:49:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700668179;
-	bh=BYCJA3x5TTAbbQPMEAHdhxb9CpYziBSEh7qg5KYFc3Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Lf41l0og8Tssr/hb/ubSBpyXsbiBnPgG2tAw23ddfqRwz1CZu59t60YaMYFHd8bRo
-	 8iLpKtrocyaGbjEHRv4usmFfoRkieMPxaEUIlXxPhWmvy6QEByllSsydUjXkWK830b
-	 o3jHhP7F1ioMa2Q+Nxwy7Bpem4ZYprHsFuTIYVYWq+/yWnkJ81xXBKJz+MqMeNarcX
-	 2rVGUTJGdLOEngFCjMvoNtpm9shzVCPsFgNhFOZtMfwH1S0avG5tuSRA4ZdCACJ8s0
-	 I4ydnXS2p4dHVC7dnvadHyP/eaEqAg+Jy9xt2mgoScn8uKLm/G1MguQEqc9iUtVctN
-	 PXqAqIzofO9Fg==
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3b844357f7cso223197b6e.1;
-        Wed, 22 Nov 2023 07:49:39 -0800 (PST)
-X-Gm-Message-State: AOJu0YzZn/unQrMzkRqSwR+Ksnhd4Xrg0HYh06nFHVvaKpVDZWjwotcf
-	X6tXNuxkur9fnNNTdFN9r40VEroxKXix5hbGdQc=
-X-Google-Smtp-Source: AGHT+IGTa6C9d+mB8rUW3KBSbfG6/zDIsmWbZmbmj2c74lexp3YXviv1PGHzD95lJw6SS5pitC5dIey5qGrQgDzlQ+w=
-X-Received: by 2002:a05:6870:cb97:b0:1e9:919d:83ec with SMTP id
- ov23-20020a056870cb9700b001e9919d83ecmr3553401oab.28.1700668178329; Wed, 22
- Nov 2023 07:49:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQmEifow"
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DD2DB2;
+	Wed, 22 Nov 2023 10:17:10 -0800 (PST)
+Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6cd0963c61cso57871a34.0;
+        Wed, 22 Nov 2023 10:17:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700677029; x=1701281829; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SN/KMQ2vvLENAwtg5lCFJ/mKximo2fIUOtSV5k1GHOg=;
+        b=MQmEifowAVL8uqYrWrcgZ2Fi/Px9PmqK+aO8wnmAORa2AVQtexhmE2EO3WIkRWz8u+
+         yzlB7g4aI5+lzdhPc6oFFFq7o5vARLuu/4Y1bJpjphtNIHW1ENUPKI3UqHGXD0AhmRzV
+         oE3qE4S4/RzrNygajxNCvZbsj9O8OqCMa5odWzto04CWAFQBGxDH3L3jyoO8qFC7lr2E
+         FNxxa/Zv38u1Mi2vddEGOn6bxJH0aLonGPV1f1+semOHRHSgCp9Gvc1eiLw7yl0BtlWm
+         FFKAkLQTeMEPUIWNIYZXKC2DMzDJX84Zq3AZQAvnx0sYxzdn685leC2bUO/6oMkvq/HA
+         sMbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700677029; x=1701281829;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SN/KMQ2vvLENAwtg5lCFJ/mKximo2fIUOtSV5k1GHOg=;
+        b=U61e5cM5M8qllKQcRwewbbX+65sP7iBkuy0FgLUuk+hWxU5Ua30RBfljUOCVtjwUg7
+         J2fgmXKNZhXDbYfqI/S/41SVxoBtVjJ7dQ1Rr+abCCTCDR2ohUqgmhcBUExjloq1nHtM
+         0aoY1hSZh9w0LvIgm3CiGff5Yf9ompxGhNhaHsq8OxcnfphcijouIktwhwrkDZ5H0h8q
+         NTZErKTnSYK/hSHfUL2GdVwrJJxp3y9tvvUlFmk59wHvQYZEGLZSXD/TPjvoU0QW+2kQ
+         V9y5GWHQWV28rfyHM4eWEJAjC2+Z7MlnsD6O5h9nzMpXSwdvD1oAPh7YmZ5D6pdJ7oLs
+         V0JQ==
+X-Gm-Message-State: AOJu0Ywz6TINR1p+6FOwBvB72/3jdw87WAzGIve8KKk48Wi/QaWiiT0P
+	M6hIbrhfd27EMqltbeNg3i4=
+X-Google-Smtp-Source: AGHT+IF8zmQTzVazpP6jAoIXPI8DnQUqH6w+O5LIhEUZ4HGR/tZ7jrbHgzQ38SbON6pOINgCjFUFWg==
+X-Received: by 2002:a05:6830:1057:b0:6d7:f639:27e5 with SMTP id b23-20020a056830105700b006d7f63927e5mr580282otp.25.1700677029502;
+        Wed, 22 Nov 2023 10:17:09 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id ez18-20020ad45912000000b00678013cc898sm4141354qvb.36.2023.11.22.10.17.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Nov 2023 10:17:09 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailauth.nyi.internal (Postfix) with ESMTP id C299827C0054;
+	Wed, 22 Nov 2023 13:17:08 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Wed, 22 Nov 2023 13:17:08 -0500
+X-ME-Sender: <xms:pEVeZbfbxheYpgft4ojzpfgrT2X8-7aLDFqOma1zAza3UXutIgovpg>
+    <xme:pEVeZRMTvE8zqgZ5X0l5UQjY37gTzccZLoAIrFsNqIAR0ey2Uoc-aDDDUwM7QTPpq
+    R3M4zfvFjGBHOXnAg>
+X-ME-Received: <xmr:pEVeZUiJG_Pn1Oo7Iq2y295bOCrUrpYkFlTtvGGdaC8X8LeI191uWqPL2yA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudehuddguddtkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepueho
+    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeeiheefkefgvdefteejjedukefhieevleeffeevheehfeffhfekhfet
+    veffvefhgfenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhht
+    phgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqd
+    gsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:pEVeZc-PU4PlP_rBJnv0rO-Xf2qML1-loNeDnAt1X1oO81NblTvkRg>
+    <xmx:pEVeZXv5307KS04xkG763zctq_6HRfqy-34YJL-NovAsx9Nby_Xw-Q>
+    <xmx:pEVeZbFXzPc0TjdINSe2yzfLwEUVwzfzwgONXf2DE9wVbN_wrAYbWg>
+    <xmx:pEVeZVJCOOZj0p-NAUgD775DcwKfwg3TlcQkEHi0Q40C9KZZCFdC_wkxZ9I>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Nov 2023 13:17:08 -0500 (EST)
+Date: Wed, 22 Nov 2023 10:16:44 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: tmgross@umich.edu, andrew@lunn.ch, gregkh@linuxfoundation.org,
+	aliceryhl@google.com, benno.lossin@proton.me,
+	miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH net-next v7 1/5] rust: core abstractions for network PHY
+ drivers
+Message-ID: <ZV5FjEM1EWm6iTAm@boqun-archlinux>
+References: <e7d0226a-9a38-4ce9-a9b5-7bb80a19bff6@lunn.ch>
+ <ZVjePqyic7pvcb24@Boquns-Mac-mini.home>
+ <CALNs47tt94DBPvz47rssBTZ86jbHwaa7XaNnT3UbdxwY6nLg1g@mail.gmail.com>
+ <20231121.111306.119472527722905184.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231118025748.2778044-1-mmaurer@google.com>
-In-Reply-To: <20231118025748.2778044-1-mmaurer@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 23 Nov 2023 00:49:01 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQt8fy5+vSwpd1aXfzjzeZ5hiyW7EW9SW7pbG2eTJZAOA@mail.gmail.com>
-Message-ID: <CAK7LNAQt8fy5+vSwpd1aXfzjzeZ5hiyW7EW9SW7pbG2eTJZAOA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] MODVERSIONS + RUST Redux
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Laura Abbott <laura@labbott.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Nov 18, 2023 at 11:58=E2=80=AFAM Matthew Maurer <mmaurer@google.com=
-> wrote:
->
-> The goal of this patch series is to allow MODVERSIONS and RUST to be
-> enabled simultaneously. The primary issue with doing this at the moment
-> is that Rust uses some extremely long symbol names - for those
-> unfamiliar with Rust, it may be helpful to think of some of the mangled
-> C++ names you may have seen in binaries in the past.
->
-> Previously, Gary Guo attempted to accomplish this by modifying the
-> existing modversion format [1] to support variable-length symbol names.
-> This was unfortunately considered to be a potential userspace break
-> because kmod tools inspect this kernel module metadata. Masahiro Yamada
-> suggested [2] that this could instead be done with a section per-field.
-> This gives us the ability to be more flexible with this format in the
-> future, as a new field or additional information will be in a new
-> section which userspace tools will not yet attempt to read.
->
-> In the previous version of this patchset, Luis Chamberlain suggested [3]
-> I move validation out of the version checking and into the elf validity
-> checker, and also add kernel-docs over there. I found
-> elf_validity_cached_copy to be fairly dense and difficult to directly
-> describe, so I refactored it into easier to explain pieces. In the
-> process, I found a few missing checks and added those as well. See
-> [PATCH 2/5] for more details. If this is too much, I'm more than happy
-> to drop this patch from the series in favor of just adding the
-> kernel-doc to the original code, but figured I'd offer it up in case the
-> added clarity and checks were valuable.
->
-> [1] https://lore.kernel.org/lkml/20230111161155.1349375-1-gary@garyguo.ne=
-t/
-> [2] https://lore.kernel.org/lkml/CAK7LNATsuszFR7JB5ZkqVS1W=3DhWr9=3DE7bTf=
-+MvgJ+NXT3aZNwg@mail.gmail.com/
-> [3] https://lore.kernel.org/lkml/ZVZNh%2FPA5HiVRkeb@bombadil.infradead.or=
-g/
-
-
-
-
-
-I want to know why this is useful.
-
-
-To clarify my question, let me first explain
-what the modversion is.
-
-
-
-In C, a function callee and callers must agree
-with the interface of the function.
-
-
-This is usually done by having a function prototype
-in a header file.
-
-
-Say, we have a function declaration
-
-    int foo(int x, int y);
-
-in include/linux/foo.h
-
-
-Then, the C file that defines foo() and all C files
-that call it must include <linux/foo.h> so that
-argument mismatch can be detected.
-
-
-
-
-Same for EXPORT_SYMBOL; the symbol provider and consumers
-must agree with the interface of exported symbols.
-
-In the kernel, however, there is no promise for in-kernel ABI
-compatibility across different kernel versions.
-The kernel only promises the compatibility of the userspace interface.
-
-
-To load modules, by principle, vmlinux and modules must have
-the same version.
-
-To slightly loosen the limitation, CONFIG_MODVERSIONS was
-introduced; when it is enabled, you can load a module
-as long as all the prototypes of exported symbols match.
-
-To do this, we need to encode information about prototypes.
-
-
-This is done by a tool called genksyms (scripts/genksyms/genksyms).
-
-
-
-Say, we have this code:
-
-
-int foo(int x, int y)
-{
-     // genksyms does not care about
-     // the function body.
-}
-EXPORT_SYMBOL(foo);
-
-
-Genksyms parses the code and computes a CRC value for 'foo'.
-Genksyms is only interested in the function name and its prototype.
-
-It sees
-
-   int foo(int, int)
-
-and it transforms it into a CRC.
-
-
-Any change to the prototype results in a
-different CRC, so the module subsystem
-can check the interface compatibility
-before loading a module.
-
-
-It is obvious that this is impossible for Rust source
-because scripts/genksyms/genksyms is only able to
-parse C code.
-
-
-Then, what is happening here?
-
-See rust/exports.c
-
-
-  #define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym=
-)
-
-
-The global scope symbols in Rust (i.e. 'pub) are automatically
-exported, and all of them are visible as 'int' variables
-from C world.
-
-
-Genksyms will see this code:
-
-  extern int foo;
-  EXPORT_SYMBOL_GPL(foo);
-
-Of course, this is not a true prototype.
-The real signature on the Rust side might be:
-
-  fn foo(x: i32, y: i32) -> i32
-
-
-So, even if you enable CONFIG_MODVERSIONS,
-nothing is checked for Rust.
-Genksyms computes a CRC from "int foo", and
-the module subsystem confirms it is a "int"
-variable.
-
-We know this check always succeeds.
-
-Why is this useful?
-
-
-
-
-
-
-> Matthew Maurer (5):
->   export_report: Rehabilitate script
->   modules: Refactor + kdoc elf_validity_cached_copy
->   modpost: Extended modversion support
->   rust: Allow MODVERSIONS
->   export_report: Use new version info format
->
->  arch/powerpc/kernel/module_64.c |  25 +-
->  init/Kconfig                    |   1 -
->  kernel/module/internal.h        |  18 +-
->  kernel/module/main.c            | 663 +++++++++++++++++++++++++-------
->  kernel/module/version.c         |  43 +++
->  scripts/export_report.pl        |  17 +-
->  scripts/mod/modpost.c           |  37 +-
->  7 files changed, 642 insertions(+), 162 deletions(-)
->
-> --
-> 2.43.0.rc0.421.g78406f8d94-goog
->
-
-
---
-Best Regards
-
-
-
-
-
-Masahiro Yamada
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231121.111306.119472527722905184.fujita.tomonori@gmail.com>
+
+On Tue, Nov 21, 2023 at 11:13:06AM +0900, FUJITA Tomonori wrote:
+[...]
+> 
+> I'm not sure we discussed but making DriverVTable Sync works.
+> 
+> #[repr(transparent)]
+> pub struct DriverVTable(Opaque<bindings::phy_driver>);
+> 
+> // SAFETY: DriverVTable has no &self methods, so immutable references to it are useless.
+
+Minor nitpicking, I would add one more sentense in the safety comment:
+
+	therefore it's safe to share immutable references between
+	threads.
+
+or 
+	therefore it's safe to share immutable references between
+	execution contexts.
+
+once we decide the term here ;-)
+
+The reason is to match Sync definition [1]:
+
+"""
+Types for which it is safe to share references between threads.
+
+This trait is automatically implemented when the compiler determines
+it’s appropriate.
+
+The precise definition is: a type T is Sync if and only if &T is Send.
+In other words, if there is no possibility of undefined behavior
+(including data races) when passing &T references between threads.
+"""
+
+[1]: https://doc.rust-lang.org/std/marker/trait.Sync.html
+
+Regards,
+Boqun
+
+> unsafe impl Sync for DriverVTable {}
+> 
+> 
+> looks correct?
+> 
