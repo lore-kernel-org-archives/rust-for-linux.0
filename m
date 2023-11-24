@@ -1,71 +1,81 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XBTDbk3W"
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C5319A2;
-	Fri, 24 Nov 2023 06:36:35 -0800 (PST)
-Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6d64c1155a8so1227472a34.2;
-        Fri, 24 Nov 2023 06:36:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cOmqH9kn"
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92A5E1FE6;
+	Fri, 24 Nov 2023 06:54:06 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5c210e34088so1383694a12.2;
+        Fri, 24 Nov 2023 06:54:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700836594; x=1701441394; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Vv0rtHfWtcFebZ1VVJSJKFyqw883ui6a5aqGjhf3uo=;
-        b=XBTDbk3W92xAaznV+7HMHY/tsTgnKkLRg2qYMLhA1K0WDKuA/XR0OUqv2lrEHXSjG/
-         fMASWrnk9E4QSK5jyKt2QprPkcPAVGm4cr4dfwMIxAjMuESWIOD/rSCkqQ64CaIFb0UC
-         UhuYRFXkFc3d7SW5iMYscLc1s84Pd0rCFaRYNd1ZxEgIjLS6Nt2JAGDALJFegddQieym
-         U/vwv+/AtQNk9fyHDedQyzOp4FLslL0ixuLve8uq/Ep7a4yuBMBilmvNjVzPhz5n67n0
-         HifvRnRudLNoHX6WaU2eImlZB7IeHpXJtF/kb8+2a8w6i4r4JQse/qUNvW02zIyjzYp1
-         sBlA==
+        d=gmail.com; s=20230601; t=1700837646; x=1701442446; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cQniq8g4txVtcq94cNq02mIrdFtNUmCEDb9X0KzX3NI=;
+        b=cOmqH9knsNqWHE4yy2Zm9wzazK5A+/nZl4HBDIqNb9h7wm4FKI2SXg5+Xg8j9MoPs0
+         hzQqF4Gp2JGmTNN56iTa8LBHXg/QtIGMr1Rsc2zy8FcWo8JEtH1MXMJ4DxT9MY6fTSH2
+         E+f9XKlE6kkexT5ujcu+X+9zEpymlBjtxKgiGdAddEP2XEgSNiZzSTc08wT3rNUiRwIz
+         R4uUr1pnDCx0hRlgky8ev1BdE/HJ/3dj5D9GACIxwUXmPTV9o9BQKvr6JtKSo5rPQpp9
+         GA6F8N94pkD1KJfZyydlvzN1H5169tHmGNTL+6yuwnMJdyMLwx8f4TYyXompClZvYcao
+         MIuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700836594; x=1701441394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Vv0rtHfWtcFebZ1VVJSJKFyqw883ui6a5aqGjhf3uo=;
-        b=woAUJRNg1Yx5F3+XnZ2/RssGbvh9qpSp4UE7danC5yDLlXbv061ikBfYPMFQkGjYJY
-         U1ZynUWDhT2LzZKc0oe8oCdVmNrNbKBMzOSZx44A37zkaouUppwNxIU76xamaYbvZRjY
-         tQc3IOuH729NcBjf3+0f4KZaLOjYYYL2u++9XJOtO9p9hxlqGx+3WT2/J8l76bv9w0/d
-         9Rtsdov0aRyPoMUQNUY/iNAetU9BKnTyi8BqAZ07NGrJnKYUFazmZddNifzpk//O8cmF
-         ePjzCULDN+mbkl4APoPcQmD3l4/Kh3nRnh7JiEeOc20k92vxDAZO10wWTDHf8a39IHdR
-         aJHQ==
-X-Gm-Message-State: AOJu0Yw9GianI7VQ5YrLsMNclch5/feQ+Mm24vsZcQpLvKI7xsQjdvGk
-	EtSfpXwQt+fPpg6F0glGf5uoXnLu71MMdwSsiE8=
-X-Google-Smtp-Source: AGHT+IEY03pzmZ8WjFdDj6NERUvmAXkjntpYl8YDZb3VHn5YPJae3IFqKOIhxotTeHKd8zH0W1g0Q4xvV4raK6KJ0aQ=
-X-Received: by 2002:a9d:6b90:0:b0:6c6:5053:66dc with SMTP id
- b16-20020a9d6b90000000b006c6505366dcmr3824415otq.21.1700836594307; Fri, 24
- Nov 2023 06:36:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700837646; x=1701442446;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cQniq8g4txVtcq94cNq02mIrdFtNUmCEDb9X0KzX3NI=;
+        b=rR2iskMsnrm1FOZ2iQ6s6ko0vpe+y93dLd5ApIBTh0eXsoIGYxNbvWYQvx9BfiaNAJ
+         DMouDid9sLBBQgnmZ9O5TE1rHZUH3ATMQxs+++P33Hu0d60G7ivlESdT0qLX6qzwy4IL
+         xmqzr5HCK//v9y5FgGozLNEua4uiKSHaWXQRgK679IS3sOoy6yJ+TbPfC9p8+lhq9H9d
+         lwUvVZnkS++oGK69ztX0YV4NXfZmvz1OlYm7OXRD4pHY5n3B4HFR/mWjMeAl4R90bWL1
+         CR8XlIDIwz+rzoKjE02VxwQ+y4YpO0k+xAnQDzLgFcTjZ34g3KEXB49hY1EzHXRJNf5O
+         R65A==
+X-Gm-Message-State: AOJu0YxfdQX3kEQnm9iEO1/4VZOF2I1Uf0G5mWdpcoE5+zgWzVMzNfeb
+	ejmlbQ3TVUW27O044bBiH9FEtqBkY2g=
+X-Google-Smtp-Source: AGHT+IEL5aoWPX8uUFD9Qs0LEckYZzhRHb4VXjbKQQX9Ny4aAZ9Go0HDlyCttaFier/su7hu39R7Zw==
+X-Received: by 2002:a17:90b:1c0c:b0:280:c0:9d3f with SMTP id oc12-20020a17090b1c0c00b0028000c09d3fmr3504391pjb.34.1700837645983;
+        Fri, 24 Nov 2023 06:54:05 -0800 (PST)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id 102-20020a17090a09ef00b002800e0b4852sm3703646pjo.22.2023.11.24.06.54.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Nov 2023 06:54:05 -0800 (PST)
+Message-ID: <0b224ebc-fcb0-4825-9222-5f0efc61c62a@gmail.com>
+Date: Fri, 24 Nov 2023 11:54:01 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: replace <linux/module.h> with <linux/export.h> in
+ rust/exports.c
+To: Masahiro Yamada <masahiroy@kernel.org>, rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg
+ <a.hindborg@samsung.com>, Benno Lossin <benno.lossin@proton.me>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>
 References: <20231124142617.713096-1-masahiroy@kernel.org>
+Content-Language: en-US
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 In-Reply-To: <20231124142617.713096-1-masahiroy@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 24 Nov 2023 15:36:22 +0100
-Message-ID: <CANiq72mHXkT972Othqd0t_EzQHe+mKvpRSzRXvhQqxXRqdXDCQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: replace <linux/module.h> with <linux/export.h> in rust/exports.c
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Benno Lossin <benno.lossin@proton.me>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 24, 2023 at 3:26=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
+On 11/24/23 11:26, Masahiro Yamada wrote:
 > <linux/export.h> is the right header to include for using
 > EXPORT_SYMBOL_GPL. <linux/module.h> includes much more bloat.
->
+> 
 > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> [...]
+>   
+> -#include <linux/module.h>
+> +#include <linux/export.h>
+>   
+> [...]
 
-Good catch, thanks!
+I'll use this in my crates patch. Regardless, LGTM.
 
-Cheers,
-Miguel
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
