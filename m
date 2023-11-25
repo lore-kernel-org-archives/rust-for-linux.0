@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HJxukUSG"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B1C101
-	for <rust-for-linux@vger.kernel.org>; Sat, 25 Nov 2023 07:26:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BTBwkG5v"
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 615B1FD;
+	Sat, 25 Nov 2023 07:39:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=7bkobibq2ver7p3fnntwujk6hq.protonmail; t=1700925975; x=1701185175;
-	bh=CresfKqNPceVr7nx//OsH0O83BJu9CLfB3p0kHEWEpw=;
+	s=pf7ord5zsjfgpoi3hkrv27egte.protonmail; t=1700926768; x=1701185968;
+	bh=Kz2T8+59cYjJd++rzjqYUDUtJC+blHipACJHnv+d/Qk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=HJxukUSGz6pwgdGZAZshMCviglofAdNeRRGYwHBljRYO0JmiPM0SbgAmZshanU2UX
-	 tehxBjzjRiNC6jbCFUpbzFurOLoTWnyd+LrURy4s06lVzuiU1LqljlZxzJJRCyaxct
-	 7iaar9hVGLBJ102GeL255iJ0ysVzezbu773PBc3JM6Qw1Sh2KKAa0oeCqvbwxJZrbo
-	 EtW8n47KPxFmXww/9IBwwcvBviT21t7jFQV40wSqom2ys2shcoKiUyn0xvqJ1ayWB3
-	 jbicCUf3gJk8vx6jjo2Si2rQLaI+TIFzv5ZDCUgZdnSdsN8rda8pIXBDiW0m49RO1Q
-	 47n/MDDEVUGXQ==
-Date: Sat, 25 Nov 2023 15:26:02 +0000
-To: Greg KH <gregkh@linuxfoundation.org>
+	b=BTBwkG5vnt6MhOLd0vLxgWbJKacoreT0WcfZNBnO/0CszCR3s36clhfCLzhDGCBqD
+	 mKw6x4pctdXmkdWOf0CIHhZ5Os5fu5N9vYPgOyfMyyWr9I6N8OeO/66kyZNjYkhjtR
+	 jbObaAmBPRYIeLlncHbAELLhiiROpaHW+GJAvG1KzL7zsZYzqoT6+20KkGOQXkU7nw
+	 iTR7XGqFOum2H8aohVYeMHM1DOOBHjHXcRes8DajkP9bbKAtyvSKtSdWStkuxfdGjx
+	 Jl5RYpGKKmBxXyrQb70XtFfH7crcALCEs8KmDpo6ic/Xynintdy3GjorP1Lh4Lox7B
+	 3MdhXTeqelnIg==
+Date: Sat, 25 Nov 2023 15:39:09 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: macros: allow generic parameter default values in `#[pin_data]`
-Message-ID: <5hsq7OfTOZ9Wi70n6p9nfFPr4IDJ9YECqWHEgsnMnzN3lcLeojK5ZlwR7nzDGdK5Wjrb95Jk60CGKszSiUhMsZQA2vlwSltMMypfk4HzgJM=@proton.me>
-In-Reply-To: <2023112514-laziness-valium-7a25@gregkh>
-References: <20231125125024.1235933-1-benno.lossin@proton.me> <20231125125024.1235933-2-benno.lossin@proton.me> <2023112525-impatient-untwist-ee3d@gregkh> <t4HJjY0Oft2K2H1ssXTxZchdPTx25J6WqSJqAx75NiRUYg40BBLt1AHxm9ZF0UA70FkqIXb6Pp2sz3BErD-AyXmQCkU4xDvqyXHSinaWGb4=@proton.me> <2023112514-laziness-valium-7a25@gregkh>
+Cc: Sumera Priyadarsini <sylphrenadin@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] rust: macros: `parse_generics` add `decl_generics`
+Message-ID: <84da128f-17b3-4193-8389-176a8c961d64@proton.me>
+In-Reply-To: <ce55240f74d4630fef8c7c3e7f47fe1b09636da1.camel@kernel.org>
+References: <20231125125024.1235933-1-benno.lossin@proton.me> <ce55240f74d4630fef8c7c3e7f47fe1b09636da1.camel@kernel.org>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,73 +33,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 25.11.23 16:10, Greg KH wrote:
-> On Sat, Nov 25, 2023 at 03:02:00PM +0000, Benno Lossin wrote:
->> On 25.11.23 15:26, Greg KH wrote:
->>> On Sat, Nov 25, 2023 at 12:51:09PM +0000, Benno Lossin wrote:
->>>> This patch adds compatibilty for generic parameters defaults by using
->>>> the newly introduced `decl_generics` instead of the `impl_generics`.
->>>
->>> This says _what_ is happening here, but not _why_ this is needed at all=
-.
->>>
->>> Try taking a look a the kernel documentation for how to write a good
->>> changelog text to make this much better.  It's often times the most
->>> difficult portion of making a kernel patch, the code is easy, writing a
->>> summary of why everyone else should agree that this code is acceptable
->>> is hard.
->>
->> The reason is hidden in the third patch.
+On 25.11.23 14:39, Jarkko Sakkinen wrote:
+> Sorry, just went through my eyes, hope you don't mind I nitpick
+> a bit. And maybe learn a bit in the process.
 >=20
-> Please do not hide things, patches need to be stand-alone and
-> understandable that way, otherwise they will be rejected as no one can
-> understand why they would be needed.
-
-This was not my intention, I just realized this due to your question. I
-wanted to point you to the third patch (which for some reason sadly does
-not have the correct In-Reply-To header). Since that might help you
-understand some of the context.
-
->> Without this, the `#[pin_data]
->> macro would not allow specifying const generic parameter default values
->> and instead emit a compile error.
+> On Sat, 2023-11-25 at 12:50 +0000, Benno Lossin wrote:
+>> When parsing generics of a type definition, default values can be
+>> specified. This syntax is however only available on type definitions
+>> and
+>> not e.g. impl blocks.
 >=20
-> That's nice, but it still doesn't tell me _why_ this is needed.  Why
-> would I want any generic paramter default values at all?  Who needs any
-> of this?  What will it be used for?  What does it actually do?
+> Is "impl block" equivalent to a trait implementation? Maybe then just
+> write in better English "trait implementation? Would be IMHO better
+> to use commonly know terminology here.
 
-`#[pin_data]` is a proc-macro that one can put on any struct to make the
-pin-init API available for use with that struct. Since e.g. mutexes are
-initialized using the pin-init API, you have to do this for anything
-that contains a mutex.
-This macro should be compatible with any struct definition even with
-ones that have const generic parameter defaults. This was an oversight
-in the original design, as it does not support that, since the proc
-macro parsing cannot handle the `=3D` character.
+"impl block" refers to the syntactic item of Implementation [1]. It
+might be a trait implementation, or an inherent implementation. To me
+"impl block" is known terminology.
 
-The short answer for why one would want to have const generic parameter
-defaults is that the language supports it. And since there is nothing
-that prevents `#[pin_data]` to be implemented for such structs, we
-should it do it.
-Rust generally aims to make all features compatible
-with each other and we would like to do the same for our
-libraries/customized features.
+[1]: https://doc.rust-lang.org/stable/reference/items/implementations.html
 
-The longer answer is a concrete example of a usecase for const generic
-parameter defaults: the `Work<T, ID>` struct of the workqueue bindings.
-The `ID` parameter is used to identify multiple instances of `Work`
-within the same struct. But if you only intend to have a single `Work`
-struct embedded in your struct, then there is no need to distinguish it
-from something else (after all there is only one) and therefore we want
-people to just write `Work<T>`. This is where the author of
-`Work<T, ID>` can write:
+> Also for any commit, including any Rust commit. "When parsing" does
+> not map to anything concrete. There always should be a concrete
+> scenario where the parser its used. Especially since Rust is a new
+> thing in the kernel, these commits should really have more in-depth
+> information of the context.
 
-    struct Work<T, const ID: usize =3D 0> {
-        // ...
-    }
+This commit is tagged `rust: macros:`, which means that it affects the
+proc macros. So when I wrote "When parsing", I meant "When parsing Rust
+code in proc macros". I will change this for v2.
 
-But the `=3D 0` syntax is currently not supported by `#[pin_data]`.
+> I neither really grasped why trait implementations (if that is meant
+> by "impl block") not having this support connects to the code change.
+> Maybe just say that this patch adds the support and drop the whole
+> story about traits. It is sort of unnecessary context.
+
+Rust does not syntactically support writing
+
+     impl<const N: usize =3D 0> Foo<N> {
+     }
+
+This is because it does not make sense. The syntax `=3D 0` only makes
+sense on type definitions:
+
+     struct Foo<const N: usize =3D 0> {
+     }
+
+Because then you can just write `Foo` and it will be the same type as
+`Foo<0>`.
+
+> Finally, why this change is needed? Any commit should have existential
+> reason why it exists. So what will happen if "decl_generics" is not
+> taken to the upstream kernel? How does it make life more difficult?
+> You should be able to answer to this (in the commit message).
+
+Does this explain it?:
+
+In order to allow `#[pin_data]` on structs with default values for const
+generic parameters, the `#[pin_data]` macro needs to parse them and have
+access to the generics as they are written on the type definition.
+This commit adds support for parsing them to the already present generics
+parsing code in the macros crate.
+
+>> parameters. This patch also changes how `impl_generics` are made up,
+>> as
+>> these should be used with `impl<$impl_generics>`, they will omit the
+>> default values.
+>=20
+> What is decl_generics and what are the other _generics variables?
+> This lacks explanation what sort of change is implemented and why.
+
+The terms `impl_generics` and `ty_generics` are taken from [2]. This
+patch adds a third kind which also contains any default values of const
+generic parameters. I named them `decl_generics`, because they only
+appear on type declarations.
+
+[2]: https://docs.rs/syn/latest/syn/struct.Generics.html#method.split_for_i=
+mpl
 
 --=20
 Cheers,
 Benno
+
