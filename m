@@ -1,144 +1,165 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fFfnfveD"
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BA63111
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Nov 2023 09:48:25 -0800 (PST)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-db4050e68f3so4189335276.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Nov 2023 09:48:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v6opLKah"
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E02C1702
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Nov 2023 11:27:21 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-54b0c368d98so24687a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Nov 2023 11:27:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701107304; x=1701712104; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=IS9bu0Mw/sgGzCSI4Pk7EVpk7Se2HXdg2VZjpWBvWUQ=;
-        b=fFfnfveD/k4eqrKxaMsgz95uWkAYqiXsYE2Rf0MN3E6VRb0CIbai3joeWENK6Z5seK
-         9pwl9auxU3Sdb/7WtdvRpkaB+RAhf/PUgSPeSAOPDuqgzc55pUQL7g6tBjReZiskBP4V
-         jdiPCzVhsJPqZi8PfRjtaZf+xqJcoMVCIFKqD7ccSq9kyDTK9sIgSRhRCDuTCep400Vf
-         VrLDNQWYI22taEBcpoc0EGB3uK1k17+wqsqnQOmqMm92z4dQCAcfRFbTUrR5aSiA1qhr
-         3VLLskG80k7i1x7ShAPSRw3odj4EbGY4fy93AJyWz/Ze5dMLmTJi6MoP71OqZwrc0sUD
-         WQug==
+        d=google.com; s=20230601; t=1701113240; x=1701718040; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XzTuOpSVbJlV6jvvk+X3oPv5/iVM0u3vN6xCSt+v7i8=;
+        b=v6opLKahQ7iDBF7CxKntXtXLf959vAIZWxBoHwNQf7G25UfoviswTcMLSRndx1Yvw2
+         Dxw/al2f2LPzrPzEhbwehbU2yePTy4nQAWEZ5AePO0IJHgsOrw9aF6M1pJtC8x6YgIi0
+         /mo8s+ZwrswLJKwnIuROe9v1hmtpwYr9R/NXtpEPDwvcT5tgwSJ4Si8VI3JqhZ+X6JjD
+         2ojV2wwsA5/FoDaEGrCycH5SnqwEtSgv6CJzBT2Hg9tHXKZwCDEPR7fgNJKj7eJ9Wrom
+         F6frFJWsCO/JSBw24YsehFf2TIDN8W/K5eG+g/5lGb4qu3IZ/afg01r1hkm0gG1M8ala
+         9KYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701107304; x=1701712104;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1701113240; x=1701718040;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IS9bu0Mw/sgGzCSI4Pk7EVpk7Se2HXdg2VZjpWBvWUQ=;
-        b=cN1rij1lBzYTIU48KzytM+jkAuXcz4jmi5OrV2aXoRUCszclvX0Tz8Lffrz1QgcwD7
-         fE1e7st58eeUUgAxGq1ppZONpCasDbSPeB9vO634pOakmGj6ogh1yFPplJLtNlTC0VeU
-         SZSY58J1IRWeZmqg+RR5A26h27NL/1+Al1IPJbo02OsMCbDqb5AOHxT26/kfib6OdtA6
-         QTcGxt6aUsENWIiJLS17hzjkdXmCKDNXKmdwNLsHQI48Ljak2/OKDHlvoYHiOoB7N4ez
-         41vaB/QL5LWNPGaueAr2Tj/tFvK//2eOi2fDBMiHXKXoTMa6SyOshNNnSzyPKBAwF+Hw
-         bqOg==
-X-Gm-Message-State: AOJu0YybX1xAtmAmvjgH0o0Ue6JgOnx6WhLPGL1bG0In/lZdssH/rdxI
-	e9KykdT/PyLk2UJx5xfwRnU=
-X-Google-Smtp-Source: AGHT+IHQdkfIE5rdVmU6KFvR76yppI5TbLqcMCtb0yI/p8Fw+H+jxsYQqYZRURmERB5Ot9w+rR51iA==
-X-Received: by 2002:a25:cf53:0:b0:da0:4dfc:57d5 with SMTP id f80-20020a25cf53000000b00da04dfc57d5mr10847393ybg.9.1701107304433;
-        Mon, 27 Nov 2023 09:48:24 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id t15-20020a05621421af00b0067a4452d459sm1234140qvc.116.2023.11.27.09.48.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Nov 2023 09:48:24 -0800 (PST)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailauth.nyi.internal (Postfix) with ESMTP id D0B8E27C005B;
-	Mon, 27 Nov 2023 12:48:23 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Mon, 27 Nov 2023 12:48:23 -0500
-X-ME-Sender: <xms:ZtZkZfV20u_UvtSQxvA87ULE7v1WYyNJ1G65i4QZobaprWQCAv-J0g>
-    <xme:ZtZkZXngTpt03wnyITp7JGaJeiBVR4CfMJNMGXaF2ENtFljmTWRkSxJLwTNPPyNJU
-    0yLBXdvKQh95kZCQQ>
-X-ME-Received: <xmr:ZtZkZbahLtOK_2WR4R_nzdkcfo4Zcaf38A75gc9rXpl3feTU5ZLjL65SJfk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeiuddguddthecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepueho
-    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
-    frrghtthgvrhhnpedtgeehleevffdujeffgedvlefghffhleekieeifeegveetjedvgeev
-    ueffieehhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeeh
-    tdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmse
-    hfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:ZtZkZaXKz_yoC9cn5Z_RTFJcGmGGmgrrDAfJBsaSg355h8q0s4eD8A>
-    <xmx:ZtZkZZlK6XZmqL8bL4wopnjlctGY0emtB4lUst8F_TV9ZN34-C4LBQ>
-    <xmx:ZtZkZXfVTC5t_dY7ZbyGZDGbkbMUvjll8hSK7RV2qOZOY7FMhhvAGw>
-    <xmx:Z9ZkZc-NxywXMqh1NOfVGWdqqfbROtMqHIDyNTVe0ULtEt_SfKrDtw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Nov 2023 12:48:21 -0500 (EST)
-Date: Mon, 27 Nov 2023 09:47:42 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>
-Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	rust-for-linux@vger.kernel.org, kernel-dev@igalia.com
-Subject: Re: [PATCH v4] rust: xarray: Add an abstraction for XArray
-Message-ID: <ZWTWPgvPizjTH95C@boqun-archlinux>
-References: <20231126131210.1384490-1-mcanal@igalia.com>
+        bh=XzTuOpSVbJlV6jvvk+X3oPv5/iVM0u3vN6xCSt+v7i8=;
+        b=Q3CshAeYheDCWB5+rE/vfmlwGvww/WiDj1o8lYFeBmFr/d/dSMvreqFL7MY2Tl4/34
+         zsQR+TDh/PbhVIFDGAjoRvGjNgRxvSZSKorgpDKQcKebUHV1I76/Vg38zdsJU/wiUqFJ
+         3RvilbYsaiyHQpTfgy/6O8FMXOX4Xdbv/CI8md//xUO1tNjIoCdlUTej2ghhlG7vFyXe
+         mN9Rcln+iwVRMHmjeQpbG9KSoWR6twj9mX+Mcn1YJ/eCUn2h7fAinWCPSkMjkv7vs7At
+         alC1jqzjdtT52r1KKKyrpEdFd7M8PjDvcxm84xNBoDq6VSkrQX7Pgr8cSJsiXxOLXrhe
+         gofQ==
+X-Gm-Message-State: AOJu0YyWX5pRRZpRZm6aZxsl6TRI/kGugBci7dijyTnv1lx05PUcOi1a
+	BCM9BpVxhaZexFOCsIiVtsJnkZQ9j7nFxily+glbKA==
+X-Google-Smtp-Source: AGHT+IGKwdo1ZSkcsOIcurvO0mHUiByb1C1j8DM9pzIpG8I41SgplF7gVh3OmwIEABFLg5jVukQI20YeFDGoZpg1adk=
+X-Received: by 2002:a05:6402:5515:b0:543:fb17:1a8 with SMTP id
+ fi21-20020a056402551500b00543fb1701a8mr690841edb.3.1701113239428; Mon, 27 Nov
+ 2023 11:27:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231126131210.1384490-1-mcanal@igalia.com>
+References: <20231118025748.2778044-1-mmaurer@google.com> <CAK7LNAQt8fy5+vSwpd1aXfzjzeZ5hiyW7EW9SW7pbG2eTJZAOA@mail.gmail.com>
+ <CAGSQo00hyCTVsqHtrzKBBPvuH38z5yRm_4jzdi00C0RV+8APwQ@mail.gmail.com>
+ <2023112314-tubby-eligibly-007a@gregkh> <CAK7LNAT-OcaCi6tqPRgZxPXOV6u+YbaO_0RxtfmrVXPzdrio0Q@mail.gmail.com>
+ <2023112312-certified-substance-007c@gregkh>
+In-Reply-To: <2023112312-certified-substance-007c@gregkh>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Mon, 27 Nov 2023 11:27:07 -0800
+Message-ID: <CAGSQo005hRiUZdeppCifDqG9zFDJRwahpBLE4x7-MyfJscn7tQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] MODVERSIONS + RUST Redux
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Laura Abbott <laura@labbott.name>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Nov 26, 2023 at 10:01:40AM -0300, Maíra Canal wrote:
-> From: Asahi Lina <lina@asahilina.net>
-> 
-> The XArray is an abstract data type which behaves like a very large
-> array of pointers. Add a Rust abstraction for this data type.
-> 
-> The initial implementation uses explicit locking on get operations and
-> returns a guard which blocks mutation, ensuring that the referenced
-> object remains alive. To avoid excessive serialization, users are
-> expected to use an inner type that can be efficiently cloned (such as
-> Arc<T>), and eagerly clone and drop the guard to unblock other users
-> after a lookup.
-> 
-> Future variants may support using RCU instead to avoid mutex locking.
-> 
-> This abstraction also introduces a reservation mechanism, which can be
-> used by alloc-capable XArrays to reserve a free slot without immediately
-> filling it, and then do so at a later time. If the reservation is
-> dropped without being filled, the slot is freed again for other users,
-> which eliminates the need for explicit cleanup code.
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
-> 
-> This abstraction is part of the set of dependencies I need to upstream
-> rustgem, a virtual GEM provider driver in the DRM [1]. Also, this
-> abstraction will be useful for the upstreaming process of the drm/asahi
-> driver.
-> 
-> This patch was authored by Asahi Lina and I rebased on top of rust-next,
-> fixing small conflicts. I'll try to take care of possible iterations
-> that this patch might have and I'll try to address the feedback.
-> 
+> > >
+> > > > With regards to future directions that likely won't work for loosening it:
+> > > > Unfortunately, the .rmeta format itself is not stable, so I wouldn't want to
+> > > > teach genksyms to open it up and split out the pieces for specific functions.
+> > > > Extending genksyms to parse Rust would also not solve the situation -
+> > > > layouts are allowed to differ across compiler versions or even (in rare
+> > > > cases) seemingly unrelated code changes.
+> > >
+> > > What do you mean by "layout" here?  Yes, the crcs can be different
+> > > across compiler versions and seemingly unrelated code changes (genksyms
+> > > is VERY fragile) but that's ok, that's not what you are checking here.
+> > > You want to know if the rust function signature changes or not from the
+> > > last time you built the code, with the same compiler and options, that's
+> > > all you are verifying.
+What I mean by layout here is that if you write in Rust:
+struct Foo {
+  x: i32,
+  y: i32,
+}
+it is not guaranteed to have the same layout across different compilations, even
+within the same compiler. See
+https://doc.rust-lang.org/reference/type-layout.html#the-rust-representation
+Specifically, the compiler is allowed to arbitrarily insert padding,
+reorder fields, etc.
+on the same code as long as the overall alignment of the struct and individual
+alignment of the fields remains correct and non-overlapping.
 
-Thank you! Among anything else, since we now have the ability to convert
-a Rust code example in doc to actual tests, do you mind add a few
-```rust ``` blocks in the comments of the functions to 1) demonstrate
-the usage and 2) serve as unit tests. Below is the command I run for
-testing:
+This means the compiler is *explicitly* allowed to, for example, permute x and y
+as an optimization. In the above example this is unlikely, but if you
+instead consider
+struct Bar {
+  x: i8,
+  y: i64,
+  z: i8,
+}
+It's easy to see why the compiler might decide to structure this as
+y,x,z to reduce the
+size of the struct. Those optimization decisions may be affected by
+any other part of
+the code, PGO, etc.
+> > >
+> > > > Future directions that might work for loosening it:
+> > > > * Generating crcs from debuginfo + compiler + flags
+> > > > * Adding a feature to the rust compiler to dump this information. This
+> > > > is likely to
+> > > >   get pushback because Rust's current stance is that there is no ability to load
+> > > >   object code built against a different library.
+> > >
+> > > Why not parse the function signature like we do for C?
+Because the function signature is insufficient to check the ABI, see above.
+> > >
+> > > > Would setting up Rust symbols so that they have a crc built out of .rmeta be
+> > > > sufficient for you to consider this useful? If not, can you help me understand
+> > > > what level of precision would be required?
+> > >
+> > > What exactly does .rmeta have to do with the function signature?  That's
+> > > all you care about here.
+The .rmeta file contains the decisions the compiler made about layout
+in the crate
+you're interfacing with. For example, the choice to encode Bar
+with a yxz field order would be written into the .rmeta file.
+> >
+> >
+> >
+> >
+> > rmeta is generated per crate.
+> >
+> > CRC is computed per symbol.
+> >
+> > They have different granularity.
+> > It is weird to refuse a module for incompatibility
+> > of a symbol that it is not using at all.
+>
+> I agree, this should be on a per-symbol basis, so the Rust
+> infrastructure in the kernel needs to be fixed up to support this
+> properly, not just ignored like this patchset does.
+I agree there is a divergence here, I tried to point it out so that it
+wouldn't be
+a surprise later. The .rmeta file itself (which is the only way we
+could know that
+the ABI actually matches, because layout decisions are in there) is an unstable
+format, which is why I would be reluctant to try to parse it and find only the
+relevant portions to hash. This isn't just a "technically unstable"
+format, but one
+in which the compiler essentially just serializes out relevant internal data
+structures, so any parser for it will involve significant alterations
+on compiler
+updates, which doesn't seem like a good plan.
+>
+> thanks,
+>
+> greg k-h
+Given the above additional information, would you be interested in a patchset
+which either:
 
-	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y	
+A. Computes the CRC off the Rust type signature, knowing the compiler is
+allowed to change the ABI based on information not contained in the CRC.
+B. Uses the CRC of the .rmeta file, knowing, as was pointed out, that this
+effectively contains the ABI of every symbol in the compilation unit, as well
+as inline functions and polymorphic functions.
 
-Regards,
-Boqun
-
-> Best Regards,
-> - Maíra
-> 
-[...]
+If neither of these works, we likely can't turn on MODVERSIONS+RUST until
+further work is done upstream in the compiler to export some of this data in
+an at least semi-stable fashion.
