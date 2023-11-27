@@ -1,92 +1,413 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OJl3mNIL"
-Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2FFD19B4
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Nov 2023 06:01:16 -0800 (PST)
-Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-58d08497aa1so2570510eaf.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Nov 2023 06:01:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701093674; x=1701698474; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IOw7FonKD9MbC43k524zBSSsF7xxQpwUCU29NYnvaYc=;
-        b=OJl3mNILmZTiqrlV73fwESfHGqesPKULezY5YoR/hoWDnaKMpNhk3Tf34HBwaROh53
-         GcRQNkavgyhK9b3+098L8JGZ5gk1VGIVoceM2ya11oDvjHs8ML99oIHHvKZV6zt4ZE87
-         mHKGWuejAx+slrIJKQcrayqNUpy2NMQIt6kLohbEvCUTQuHf4YbKiVel/cKEHLM4N4YJ
-         y1g5zPBP+mzfFDGIVseumrYEZLUHl47waAS3tAlCtFGN57KnOnjfH5j8TjY4If4PBpKN
-         WbAqpr9D41bcpP+VC5rcojcdR4IGZIoMA4QaSqv3JY87R70OWeeb1cJPvOYXlnZXgp2F
-         DUSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701093674; x=1701698474;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IOw7FonKD9MbC43k524zBSSsF7xxQpwUCU29NYnvaYc=;
-        b=sy9QfT+VCe5UuxGJw3/Tqvqnk62hGyhvZK99GnGBVWCWxsvqRcAtihVXo0wFaWbrRP
-         mXuJ2awRhMMbOidF9beTXi1TY15ZgjzM/fQZSFzjwhOV+deYUeWXgjoXhPRJXB40hJTE
-         uOAU0HAK240QOfi4mN8d3sQaiUCw6DZ83R7A0HonjVtoPI+t9Gt+tPy+glKU0RBU/Jzc
-         3ad3kwEou6PgxaLlTBwVE2teXxdmDwTLbp/HQFXCdet4tEUeFQCj0v/QqWRApOTpSn6a
-         GzEcQF4Ndt0Z1U4kH05kbX8yC2JTnCOW2Ow8CJNs8CyxZmApsWQjdJvlThPOGyBdSOyA
-         9/TA==
-X-Gm-Message-State: AOJu0YzjbeNDt82jgalvs3UFwftTTr9n1wDpfiB/D98zU+CCARt/b8ET
-	95NPPlPYGoE9UsxF4x1mBgrWMEx9GZZNkODZ24uqRw==
-X-Google-Smtp-Source: AGHT+IHW3yEZWLUXwXW7lR4kIYc6dC4HAOI3WjIsnCEwT9kCuUBav8/wXNjJwUSjpBcw7tbU4EpOfyuvEFAszzuQaQ4=
-X-Received: by 2002:a05:6358:4407:b0:16d:abc7:bfab with SMTP id
- z7-20020a056358440700b0016dabc7bfabmr13836740rwc.15.1701093674044; Mon, 27
- Nov 2023 06:01:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZPTBXsl7"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F55B8
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Nov 2023 09:20:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=qwmb6ilfgre7rfrmbintnxywfy.protonmail; t=1701105596; x=1701364796;
+	bh=h7wt9r82eFZ8yCEvLZLMKzp/kkq6DzZrIMcBSsdx0aA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ZPTBXsl7hmM85bbUJODj8LX2Qdf2oVx3n7Bf3TQDRL0WAQaX3fAAiCq9hM1qoIUak
+	 FjNltk1eNFyYhdTKerrneijqef3XqsGBcFzIa/jpEmVHQqXb05dxACvZ2SiISGFEvl
+	 KmNjcWqRf2Wi2dcl2wbWqPr7kiieljzL7Sow0AQpkHIF1YNfeDavqWPF3SsA0yADVr
+	 hpmsLTjaCzp7sgDmBF5RakuWVE44ct8bNDOouI09ALTIWO2JCi/HbXWwRpM0R+rWVJ
+	 t2wgqE1JSYMQvX1/n2b9K68j8eg1JiOpLzIJGv0GxF9PmfRuS3hZB1zdUuDPkNz3iJ
+	 idogrhc3HRMgg==
+Date: Mon, 27 Nov 2023 17:19:44 +0000
+To: =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH v4] rust: xarray: Add an abstraction for XArray
+Message-ID: <df33bee1-f3a3-45f7-919a-6f016877d2c3@proton.me>
+In-Reply-To: <20231126131210.1384490-1-mcanal@igalia.com>
+References: <20231126131210.1384490-1-mcanal@igalia.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231118013959.37384-1-tmgross@umich.edu>
-In-Reply-To: <20231118013959.37384-1-tmgross@umich.edu>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 27 Nov 2023 15:01:03 +0100
-Message-ID: <CAH5fLghnpHCXg8c3wkpBrsxNLZjZvNZ6QDqu5rBJ8xPNkHSCAw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: macros: update 'paste!' macro to accept string literals
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 18, 2023 at 2:41=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> Enable combining identifiers with literals in the 'paste!' macro. This
-> allows combining user-specified strings with affixes to create
-> namespaced identifiers.
->
-> This sample code:
->
->     macro_rules! m {
->         ($name:lit) =3D> {
->             paste!(struct [<_some_ $name _struct_>] {})
->         }
->     }
->
->     m!("foo_bar");
->
-> Would previously cause a compilation error. It will now generate:
->
->     struct _some_foo_bar_struct_ {}
->
-> Signed-off-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+On 26.11.23 14:01, Ma=C3=ADra Canal wrote:
 
-Since there are no other replies to this version, I'll confirm that
-this still looks good to me.
+[...]
 
-Alice
+> +/// Wrapper for a value owned by the `XArray` which holds the `XArray` l=
+ock until dropped.
+> +///
+> +/// # Invariants
+> +///
+> +/// The `*mut T` is always non-NULL and owned by the referenced `XArray`
+
+This invariant is missing that the lock must be held.
+
+> +pub struct Guard<'a, T: ForeignOwnable>(*mut T, &'a Opaque<bindings::xar=
+ray>);
+
+If `self.0` is always non-null, why don't you use `NonNull<T>`?
+
+> +impl<'a, T: ForeignOwnable> Guard<'a, T> {
+> +    /// Borrow the underlying value wrapped by the `Guard`.
+> +    ///
+> +    /// Returns a `T::Borrowed` type for the owned `ForeignOwnable` type=
+.
+> +    pub fn borrow<'b>(&'b self) -> T::Borrowed<'b>
+> +    where
+> +        'a: 'b,
+
+Any reason for spelling out the lifetimes? IIRC you should just
+be able to write
+
+     pub fn borrow(&self) -> T::Borrowed<'_>
+
+> +    {
+> +        // SAFETY: The value is owned by the `XArray`, the lifetime it i=
+s borrowed for must not
+> +        // outlive the `XArray` itself, nor the Guard that holds the loc=
+k ensuring the value
+> +        // remains in the `XArray`.
+
+- What prevents the `XArray` from calling `T::from_foreign`?
+- Why is `self.0` a pointer that was returned by a call to
+   `into_foreign`?
+
+these things should be part of the guard safety invariant.
+
+> +        unsafe { T::borrow(self.0 as _) }
+> +    }
+> +}
+
+[...]
+
+> +/// Represents a reserved slot in an `XArray`, which does not yet have a=
+ value but has an assigned
+> +/// index and may not be allocated by any other user. If the Reservation=
+ is dropped without
+> +/// being filled, the entry is marked as available again.
+> +///
+> +/// Users must ensure that reserved slots are not filled by other mechan=
+isms, or otherwise their
+> +/// contents may be dropped and replaced (which will print a warning).
+> +pub struct Reservation<'a, T: ForeignOwnable>(&'a XArray<T>, usize, Phan=
+tomData<T>);
+> +
+> +impl<'a, T: ForeignOwnable> Reservation<'a, T> {
+> +    /// Store a value into the reserved slot.
+> +    pub fn store(self, value: T) -> Result<usize> {
+> +        if self.0.replace(self.1, value)?.is_some() {
+> +            crate::pr_err!("XArray: Reservation stored but the entry alr=
+eady had data!\n");
+> +            // Consider it a success anyway, not much we can do
+> +        }
+> +        let index =3D self.1;
+> +        core::mem::forget(self);
+> +        Ok(index)
+> +    }
+> +
+> +    /// Returns the index of this reservation.
+> +    pub fn index(&self) -> usize {
+> +        self.1
+> +    }
+> +}
+> +
+> +impl<'a, T: ForeignOwnable> Drop for Reservation<'a, T> {
+> +    fn drop(&mut self) {
+> +        if self.0.remove(self.1).is_some() {
+> +            crate::pr_err!("XArray: Reservation dropped but the entry wa=
+s not empty!\n");
+> +        }
+> +    }
+> +}
+> +
+> +/// An array which efficiently maps sparse integer indices to owned obje=
+cts.
+> +///
+> +/// This is similar to a `Vec<Option<T>>`, but more efficient when there=
+ are holes in the
+> +/// index space, and can be efficiently grown.
+> +///
+> +/// This structure is expected to often be used with an inner type that =
+can either be efficiently
+> +/// cloned, such as an `Arc<T>`.
+
+~> "This structure is expected to often be used with an inner type that
+can be efficiently cloned, such as an `Arc<T>`."
+
+> +pub struct XArray<T: ForeignOwnable> {
+> +    xa: Opaque<bindings::xarray>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: ForeignOwnable> XArray<T> {
+> +    /// Creates a new `XArray` with the given flags.
+> +    pub fn new(flags: Flags) -> Result<XArray<T>> {
+> +        let xa =3D Opaque::uninit();
+> +
+> +        // SAFETY: We have just created `xa`. This data structure does n=
+ot require
+> +        // pinning.
+> +        unsafe { bindings::xa_init_flags(xa.get(), flags) };
+> +
+> +        // INVARIANT: Initialize the `XArray` with a valid `xa`.
+
+There is no such invariant on `XArray`.
+
+> +        Ok(XArray {
+> +            xa,
+> +            _p: PhantomData,
+> +        })
+> +    }
+
+I have taken a very quick look at the C side and it seems
+that there is a spinlock inside of the `struct xarray`.
+Our current abstraction `Spinlock<T>` requires pinning,
+because there might be some architectures that require
+that for their spinlocks (AFAIK, maybe Boqun or someone else
+can confirm?). So I would expect `XArray` to also require pinning
+and thus use pin-init for initialization.
+
+
+> +
+> +    /// Replaces an entry with a new value, returning the old value (if =
+any).
+> +    pub fn replace(&self, index: usize, value: T) -> Result<Option<T>> {
+> +        let new =3D value.into_foreign();
+> +        let guard =3D ScopeGuard::new(|| unsafe {
+
+Missing SAFETY comment.
+
+> +            T::from_foreign(new);
+> +        });
+> +
+> +        let old =3D unsafe {
+
+Missing SAFETY comment.
+
+> +            bindings::xa_store(
+> +                self.xa.get(),
+> +                index.try_into()?,
+> +                new as *mut _,
+> +                bindings::GFP_KERNEL,
+> +            )
+> +        };
+> +
+> +        let err =3D unsafe { bindings::xa_err(old) };
+
+Missing SAFETY comment.
+
+> +        if err !=3D 0 {
+> +            Err(Error::from_errno(err))
+> +        } else if old.is_null() {
+> +            guard.dismiss();
+> +            Ok(None)
+> +        } else {
+> +            guard.dismiss();
+> +            Ok(Some(unsafe { T::from_foreign(old) }))
+
+Missing SAFETY comment.
+
+> +        }
+
+For the error handling here, I would use `kernel::error::to_result`:
+
+     to_result(unsafe { bindings::xa_err(old) })?;
+     guard.dismiss();
+     Ok(if old.is_null() {
+        None
+     } else {
+         Some(unsafe { T::from_foreign(old) })
+     })
+
+> +    }
+> +
+> +    /// Replaces an entry with a new value, dropping the old value (if a=
+ny).
+> +    pub fn set(&self, index: usize, value: T) -> Result {
+> +        self.replace(index, value)?;
+> +        Ok(())
+> +    }
+> +
+> +    /// Looks up and returns a reference to an entry in the array, retur=
+ning a `Guard` if it
+> +    /// exists.
+> +    ///
+> +    /// This guard blocks all other actions on the `XArray`. Callers are=
+ expected to drop the
+> +    /// `Guard` eagerly to avoid blocking other users, such as by taking=
+ a clone of the value.
+> +    pub fn get(&self, index: usize) -> Option<Guard<'_, T>> {
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        let p =3D unsafe {
+> +            bindings::xa_lock(self.xa.get());
+> +            bindings::xa_load(self.xa.get(), index.try_into().ok()?)
+> +        };
+> +
+> +        if p.is_null() {
+> +            unsafe { bindings::xa_unlock(self.xa.get()) };
+
+Again, missing SAFETY comment. I will omit this complain from now on.
+
+> +            None
+> +        } else {
+> +            Some(Guard(p as _, &self.xa))
+> +        }
+
+I think it is better to use a `ScopeGuard` to do the locking and
+unlocking and to just give ownership of that `ScopeGuard` to your
+`Guard` in the happy path.
+
+> +    }
+> +
+> +    /// Removes and returns an entry, returning it if it existed.
+> +    pub fn remove(&self, index: usize) -> Option<T> {
+> +        let p =3D unsafe { bindings::xa_erase(self.xa.get(), index.try_i=
+nto().ok()?) };
+> +        if p.is_null() {
+> +            None
+> +        } else {
+> +            Some(unsafe { T::from_foreign(p) })
+
+I think you should have the invariant on `XArray` that all pointers
+stored in the array are pointers obtained by calling `T::into_foreign`.
+
+> +        }
+> +    }
+> +
+> +    /// Allocate a new index in the array, optionally storing a new valu=
+e into it, with
+> +    /// configurable bounds for the index range to allocate from.
+> +    ///
+> +    /// If `value` is `None`, then the index is reserved from further al=
+location but remains
+> +    /// free for storing a value into it.
+> +    pub fn alloc_limits(&self, value: Option<T>, min: u32, max: u32) -> =
+Result<usize> {
+
+I find it a bit weird to have both the reservation mechanism *and* this
+function taking an `Option<T>`. Is this really needed?
+
+I think the name could be changed to `insert_between`, since that would
+better reflect the "datastructure"-nature of this type. But it would
+also be reasonable to keep the name `alloc`, since in C the function is
+called `xa_alloc`.
+
+> +        let new =3D value.map_or(core::ptr::null(), |a| a.into_foreign()=
+);
+> +        let mut id: u32 =3D 0;
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant. If t=
+his succeeds, it
+> +        // takes ownership of the passed `T` (if any). If it fails, we m=
+ust drop the
+> +        // `T` again.
+> +        let ret =3D unsafe {
+> +            bindings::xa_alloc(
+> +                self.xa.get(),
+> +                &mut id,
+> +                new as *mut _,
+> +                bindings::xa_limit { min, max },
+> +                bindings::GFP_KERNEL,
+> +            )
+> +        };
+> +
+> +        if ret < 0 {
+> +            // Make sure to drop the value we failed to store
+> +            if !new.is_null() {
+> +                // SAFETY: If `new` is not NULL, it came from the `Forei=
+gnOwnable` we got
+> +                // from the caller.
+> +                unsafe { T::from_foreign(new) };
+> +            }
+
+The error handling should be done with `ScopeGuard`.
+
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(id as usize)
+> +        }
+> +    }
+> +
+> +    /// Allocate a new index in the array, optionally storing a new valu=
+e into it.
+> +    ///
+> +    /// If `value` is `None`, then the index is reserved from further al=
+location but remains
+> +    /// free for storing a value into it.
+> +    pub fn alloc(&self, value: Option<T>) -> Result<usize> {
+> +        self.alloc_limits(value, 0, u32::MAX)
+> +    }
+> +
+> +    /// Reserve a new index in the array within configurable bounds for =
+the index.
+> +    ///
+> +    /// Returns a `Reservation` object, which can then be used to store =
+a value at this index or
+> +    /// otherwise free it for reuse.
+> +    pub fn reserve_limits(&self, min: u32, max: u32) -> Result<Reservati=
+on<'_, T>> {
+> +        Ok(Reservation(
+> +            self,
+> +            self.alloc_limits(None, min, max)?,
+> +            PhantomData,
+> +        ))
+> +    }
+> +
+> +    /// Reserve a new index in the array.
+> +    ///
+> +    /// Returns a `Reservation` object, which can then be used to store =
+a value at this index or
+> +    /// otherwise free it for reuse.
+> +    pub fn reserve(&self) -> Result<Reservation<'_, T>> {
+> +        Ok(Reservation(self, self.alloc(None)?, PhantomData))
+> +    }
+> +}
+> +
+> +impl<T: ForeignOwnable> Drop for XArray<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: `self.xa` is valid by the type invariant, and as we h=
+ave the only reference to
+> +        // the `XArray` we can safely iterate its contents and drop ever=
+ything.
+> +        unsafe {
+> +            let mut index: core::ffi::c_ulong =3D 0;
+> +            let mut entry =3D bindings::xa_find(
+> +                self.xa.get(),
+> +                &mut index,
+> +                core::ffi::c_ulong::MAX,
+> +                bindings::BINDINGS_XA_PRESENT,
+> +            );
+> +            while !entry.is_null() {
+> +                T::from_foreign(entry);
+> +                entry =3D bindings::xa_find_after(
+> +                    self.xa.get(),
+> +                    &mut index,
+> +                    core::ffi::c_ulong::MAX,
+> +                    bindings::BINDINGS_XA_PRESENT,
+> +                );
+> +            }
+> +
+> +            bindings::xa_destroy(self.xa.get());
+> +        }
+
+Please split this `unsafe` block.
+
+--=20
+Cheers,
+Benno
+
+> +    }
+> +}
+> +
+> +// SAFETY: XArray is thread-safe and all mutation operations are interna=
+lly locked.
+> +unsafe impl<T: Send + ForeignOwnable> Send for XArray<T> {}
+> +unsafe impl<T: Sync + ForeignOwnable> Sync for XArray<T> {}
+> --
+> 2.41.0
+>=20
+
