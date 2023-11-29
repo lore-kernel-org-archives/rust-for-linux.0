@@ -1,78 +1,131 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="o9BTJ3na"
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C80AB6;
-	Wed, 29 Nov 2023 08:48:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tiPBXf1kZm2l8+7WRSaX1GLajBl09o/Tkot6Kx1Gxo0=; b=o9BTJ3na+CayHjCSRZpl2hxliT
-	eZWFH3ECXx+oJ7DlR9ag0VtHn0Z2tXkZTZiOvVe7bHtsuQ2Zk9r/lDdgnScTBopq4dC6DPa2dPJLe
-	GESlCC6PcoctemBjNadjUc3b0BfqJynYCAP/nZ2+XcPvqv/AXjCMh8rDWbqRguQroRYlEihFRLapB
-	WN7LI1bGNDmTpb6vOAozO/72c90oKSQmni3CfkKhnCbzWDdaoenV2KOOJIPzsP5kG6gXPdkT7oHQk
-	N4a3SxtqtYwrH4xc8IqSk38EGJBCMQEF9RsKJuWJSCttRemeHKUGu9TW6jqf3w3QQiY15NlTOpSVL
-	TMUlR9wg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1r8NjU-000QPZ-1K;
-	Wed, 29 Nov 2023 16:48:20 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2EE9E30017D; Wed, 29 Nov 2023 17:48:15 +0100 (CET)
-Date: Wed, 29 Nov 2023 17:48:15 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
-Message-ID: <20231129164815.GI23596@noisy.programming.kicks-ass.net>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
- <20231129-alice-file-v1-5-f81afe8c7261@google.com>
- <20231129-etappen-knapp-08e2e3af539f@brauner>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZHu6Iwec"
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84748D6E
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 08:55:54 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5cddc35545dso79930297b3.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 08:55:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1701276953; x=1701881753; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=unbZFkiD0dHweTLgp1OYP68ojVuVgwsL9BVcNl+eCj0=;
+        b=ZHu6IwecdEJq762miAS3Om9MTNmVo8wTHYwvvBUO9TFlduLm2RhZPyjKON/lhUc40n
+         Y7z6t4Ws5yrtGwOpdxFnTtz+DCoNhslTrjCwyUtKvZ1nUyfpM/7aAM8OFr96JWKKpg0w
+         u/sj0wG66pfilbDxeIFiNg0E22XHst6ybyCS8ucnMtUCkhl31D6dB9U13Tm/zlXXUsGR
+         mMpI57qoQriXTWaYZJPRW50t4AKy3xAgZHQAyr7MMLJtLbwaprUihbGY2ZE2sCI0wMvD
+         uSHZpsbwfao/FQUH2IjMBeXye3i3DsZgEFSU/Sr4SQ/V/ZQxbel9Kx36WhQxkfHWgbuG
+         0jGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701276953; x=1701881753;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=unbZFkiD0dHweTLgp1OYP68ojVuVgwsL9BVcNl+eCj0=;
+        b=YlpYatT32uFjLqswcB6ypbuQTz9/Ve57Ux2UGPDqg0q1J7TupqCpxnFfIuanjDv1Pk
+         gU1zKDA1pKT7gV7VvpOViOgag8Xs0ApvqttIgvnkObnKR3z/Mgipwy21qdhrfXRTFfxI
+         Ei6cYCm/Q0pil2AaOju/lm8NtzG2sraYBiRiTg6bct6E86IZmvddVgStm6N2VHk3uVIW
+         +mDFPiWsaWR85AuOC88NXCWuFWinnxnhR9uKjaXvyPkOuL/uo8zE+L8x42/iX//MFU1V
+         FAxZs5rjnQSVrUfkVAPh/hkf5F6tR5qDCGS4ZydwuUINJ8cFY2S3FekzpPz9WTsy5X4Y
+         ziTw==
+X-Gm-Message-State: AOJu0Ywp5GxhZIxmBiV3wDI4+GDXgnvKWNnTZxKssjNPPHRE5jxHhPwh
+	Nj70WsqYRHKx0Lm7xo+gAwjNY4VnDqBN8kA=
+X-Google-Smtp-Source: AGHT+IEpWMlZIbVFMqFnLabAnmVr/lPqw+N8K9vWZ1Skq6PXRN+J94RDlgF3JQbaZlH+xbk7iE6skGya8a4JWqA=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:3183:b0:5ca:4a99:7008 with SMTP
+ id fd3-20020a05690c318300b005ca4a997008mr630558ywb.10.1701276953779; Wed, 29
+ Nov 2023 08:55:53 -0800 (PST)
+Date: Wed, 29 Nov 2023 16:55:51 +0000
+In-Reply-To: <20231129-zwiespalt-exakt-f1446d88a62a@brauner>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231129-etappen-knapp-08e2e3af539f@brauner>
+Mime-Version: 1.0
+References: <20231129-zwiespalt-exakt-f1446d88a62a@brauner>
+X-Mailer: git-send-email 2.43.0.rc1.413.gea7ed67945-goog
+Message-ID: <20231129165551.3476910-1-aliceryhl@google.com>
+Subject: Re: [PATCH 4/7] rust: file: add `FileDescriptorReservation`
+From: Alice Ryhl <aliceryhl@google.com>
+To: brauner@kernel.org
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, cmllamas@google.com, dan.j.williams@intel.com, 
+	dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
+	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
+	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
+	wedsonaf@gmail.com, willy@infradead.org
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 29, 2023 at 05:28:27PM +0100, Christian Brauner wrote:
+Christian Brauner <brauner@kernel.org> writes:
+> Can we follow the traditional file terminology, i.e.,
+> get_unused_fd_flags() and fd_install()? At least at the beginning this
+> might be quite helpful instead of having to mentally map new() and
+> commit() onto the C functions.
 
-> > +pid_t rust_helper_task_tgid_nr_ns(struct task_struct *tsk,
-> > +				  struct pid_namespace *ns)
-> > +{
-> > +	return task_tgid_nr_ns(tsk, ns);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_task_tgid_nr_ns);
+Sure, I'll do that in the next version.
+
+>> +    /// Prevent values of this type from being moved to a different task.
+>> +    ///
+>> +    /// This is necessary because the C FFI calls assume that `current` is set to the task that
+>> +    /// owns the fd in question.
+>> +    _not_send_sync: PhantomData<*mut ()>,
 > 
-> I'm a bit puzzled by all these rust_helper_*() calls. Can you explain
-> why they are needed? Because they are/can be static inlines and that
-> somehow doesn't work?
+> I don't fully understand this. Can you explain in a little more detail
+> what you mean by this and how this works?
 
-Correct, because Rust can only talk to C ABI, it cannot use C headers.
-Bindgen would need to translate the full C headers into valid Rust for
-that to work.
+Yeah, so, this has to do with the Rust trait `Send` that controls
+whether it's okay for a value to get moved from one thread to another.
+In this case, we don't want it to be `Send` so that it can't be moved to
+another thread, since current might be different there.
 
-I really think the Rust peoples should spend more effort on that,
-because you are quite right, all this wrappery is tedious at best.
+The `Send` trait is automatically applied to structs whenever *all*
+fields of the struct are `Send`. So to ensure that a struct is not
+`Send`, you add a field that is not `Send`.
+
+The `PhantomData` type used here is a special zero-sized type.
+Basically, it says "pretend this struct has a field of type `*mut ()`,
+but don't actually add the field". So for the purposes of `Send`, it has
+a non-Send field, but since its wrapped in `PhantomData`, the field is
+not there at runtime.
+
+>> +        Ok(Self {
+>> +            fd: fd as _,
+> 
+> This is a cast to a u32?
+
+Yes.
+
+> Can you please draft a quick example how that return value would be
+> expected to be used by a caller? It's really not clear
+
+The most basic usage would look like this:
+
+	// First, reserve the fd.
+	let reservation = FileDescriptorReservation::new(O_CLOEXEC)?;
+
+	// Then, somehow get a file to put in it.
+	let file = get_file_using_fallible_operation()?;
+
+	// Finally, commit it to the fd.
+	reservation.commit(file);
+
+In Rust Binder, reservations are used here:
+https://github.com/Darksonn/linux/blob/dca45e6c7848e024709b165a306cdbe88e5b086a/drivers/android/allocation.rs#L199-L210
+https://github.com/Darksonn/linux/blob/dca45e6c7848e024709b165a306cdbe88e5b086a/drivers/android/allocation.rs#L512-L541
+
+>> +    pub fn commit(self, file: ARef<File>) {
+>> +        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`, and `file.ptr` is
+>> +        // guaranteed to have an owned ref count by its type invariants.
+>> +        unsafe { bindings::fd_install(self.fd, file.0.get()) };
+> 
+> Why file.0.get()? Where did that come from?
+
+This gets a raw pointer to the C type.
+
+The `.0` part is a field access. `ARef` struct is a tuple struct, so its
+fields are unnamed. However, the fields can still be accessed by index.
+
+Alice
