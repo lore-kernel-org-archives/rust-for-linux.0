@@ -1,40 +1,40 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F2LYWsE3"
-Received: from mail-lj1-x24a.google.com (mail-lj1-x24a.google.com [IPv6:2a00:1450:4864:20::24a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B7110DA
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 04:51:34 -0800 (PST)
-Received: by mail-lj1-x24a.google.com with SMTP id 38308e7fff4ca-2c9afe75ddcso18874081fa.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 04:51:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jbrtbR+e"
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17424BE
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 05:11:31 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-db084a0a2e9so7799859276.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 05:11:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701262293; x=1701867093; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1701263490; x=1701868290; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=p6QB4S7RjpON9iiRgYxSOKOTgG1ip8XyxblOChu7yx8=;
-        b=F2LYWsE3riR6r3HRnnpGZd2moP8fkxLa0AlW7T8OLYVDPnc7jjYAxB8fF+P2P4+MTz
-         HNo6Y9Lnw72MEH1kuNjY0U5zNGgyb8ERKmoVbz8YwCmwT+NDM478XYo6A64ovgZ9Yo1X
-         CWejhgLwy45kR1pkQYUmluWoi5I4sRzEE/urp58hy1ajF+TOgVIapnxY4PMTTq0NJ2j3
-         zIz4KvuUXXVO8pu6zSNBqCPcxivZNVoJGUPNnOkec4I7HzbvP8m8S8h0VL8++MsmKSyA
-         taKQhb/3kxf8J2EWite6eVaD8KUVMe1ypvIkMlquvMeQCqplZEVbhdboFyO2eopK+KGV
-         lwOw==
+        bh=b+PIqA5OWa+CUhuOr08fI/v9F95ZV2PMUhXtjoxfvkw=;
+        b=jbrtbR+eeVkBLFt/BX0FL6SIkn4LGE/FDZkIJSwEH0SbY34WaGJ8BQK/MaWUqhJrFW
+         QpFN2AljKfuPtdTIb9yNFPK8war4fcZVV272UY6BMKh4fr8RLn9JznEyccThFow5lJgs
+         Z3l6aSu5iXFJOUPqCvT+uyplCOR4AWzIDkTSvbYpKVHLtPZi4advoPxPAp8MvgJ0hQvW
+         2bCfuI5csWgGqeZ/uaMBF+M7+ueO2ILP8TeDIgBlol+fySHsTXckNZ6s4wHKh3J3o6mf
+         +Y7IUZ8RgBSrGsFOiU6esYlqjX4x+YRTSVV74xihLmE13lrvBX5wg4z1WA5mWtbS+zBs
+         3Npg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701262293; x=1701867093;
+        d=1e100.net; s=20230601; t=1701263490; x=1701868290;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p6QB4S7RjpON9iiRgYxSOKOTgG1ip8XyxblOChu7yx8=;
-        b=vmwQdkOcmTmn/dIWarBnuYIDVLCZLU6pzkSqIdi6eTbu4J23rhh6eAKDtuL6cUX7DH
-         TQbg049yWXmW+1DjImiC0UcZuBWD7/whE5ptagXtPsGCOm7mOMjn2A9LYm8aBYDSfXsw
-         YK+U0dRuGABRTgK0Cpw1X8JK1lcaEiS4DlYWQXNVNjVKz+qZb2wzSO38vjAjtcw0Hpay
-         egBVZkfTGEaNOS7IZrnTFwYlgmBIgkG7JQP/yfVCj7QKQeSzWtYJfWmzP0LoLY6NrbJv
-         8SxtY5Do5hdjgCCbckp2zHdsteHnYW1biGMlWbN0X9kIvVYlKzHPlS6rg7Y02w8+jfmq
-         1IXA==
-X-Gm-Message-State: AOJu0YyodxiVKIOjXKTT402DhFiA0rpk99YfFqcrk+QuCmn+0+3bEvaN
-	JhqRjTMpXrigBumVo0dmT0mk2V4xwziD2ko=
-X-Google-Smtp-Source: AGHT+IHS9AV6c+T1U8ggne7cDTOmDoVR3alPQBGekJkcrIMZ8l41L7D2dIg8QXwHUu1XELVu+8Dthc+cektvUCk=
+        bh=b+PIqA5OWa+CUhuOr08fI/v9F95ZV2PMUhXtjoxfvkw=;
+        b=bSiDA2T6scSVG4E0zohZgOl8i6Dk4tkuJ3BQIJUMx/zvFT+WmKDANffCZOel+BnfNF
+         C0F9AS4iyCxZgow4ONPrfIsuIVRSJKoWLNvfXZiFSOeVcM8BwY95VyLrsEUsGjm5c+Ht
+         iWjJBmR8SjUKXbuAePF4wgoIa/GWm6WxhnhDpZgUlNUl6WMKHxN5rbXhKamnrh1dBaD7
+         AgTQbMW8TghjC0soYw7HlHH6v2BV6fPGg7VIA3ocVQWWqre6Z8gqC4baKC6WdkfS0wbu
+         Eu2hUMOtvXYIe5hn5R9LLR3Tf43J+F51/XvN52YEj8hvmrlCGL9Yr4lRZjzUJgNy9Xi4
+         zSVQ==
+X-Gm-Message-State: AOJu0YxPErahfLT+sYrr1EkobG3YLk7/VuVIFmGm/IoKmH5ahXT5ohAc
+	pR+BUC9nrXc72uAIdYG5Iwg66VwVgnIXu5M=
+X-Google-Smtp-Source: AGHT+IHmespvZy5s7Ip3mJ0mf6eFh6ZLQ6vzLqsvwESBu9GnbHUlPsKFocbK51mB9QzS1IwGPqksJwjBqcM/HnY=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:b5a7:0:b0:2c8:82f1:d5b1 with SMTP id
- f7-20020a2eb5a7000000b002c882f1d5b1mr289874ljn.10.1701262292697; Wed, 29 Nov
- 2023 04:51:32 -0800 (PST)
-Date: Wed, 29 Nov 2023 12:51:08 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a25:bac9:0:b0:daf:52c3:c373 with SMTP id
+ a9-20020a25bac9000000b00daf52c3c373mr273071ybk.8.1701263490273; Wed, 29 Nov
+ 2023 05:11:30 -0800 (PST)
+Date: Wed, 29 Nov 2023 13:11:25 +0000
 In-Reply-To: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -44,22 +44,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6667; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=t47S0WZDVMIoa027rtsW157b15A9bzwhfrZLuzcINm0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlZzMy43el8c2O94uLKsnTeu1ybBZWvATM7f0cf
- BISvhh54g2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZWczMgAKCRAEWL7uWMY5
- RufXD/9m/h8mCcP5EbfN4dPSygW7RpJ+QIus6e6EEUo4+to0xhSzDPAN6BNxGP3RpOkle5lLSQH
- ae5cbBUluG5xEuvmoxRsW7UoaAXDUWQubZBLiuUlKzC+90UHknLFMyYpPNCLEZ/KAFeuMZ9/hSO
- 71ZhTJHZnge+O6bruAtFShQSQ5izfcldRce9WT7BDHamq54gf5arqb+d3IG5mQE6j5Nb3IargqR
- G2HMrlczL9/f5SXwLIsi3gGGC8U6EoPjBeoL/IX2SJ6oe9glgqc/8oKvrGdWNGc7of//TNAWyJU
- kjDZLiD2qymDZMW16Y9/gDvzA8nUYJ8yFucfDSGfl5J8CEbeG/t8MacJCEb4w3M23WzH5KzM/MX
- SxrXPUwWuuluYfvs76zIQp7VH6yg/zYpRSkcNHceWpDQBt5MneCv5lb/LDJyyUJj47jkC2Ey4Ya
- xBQIWr7RX7f63nU5D4ajNFQHvCVCpVSk/JJlMMGXR3/jocIUrbhW0eHraEX04qckruzE7wAwxaN
- kbiPyhThuCiyo9JtnKNoduMG5jyU87sIOM+b9Y7OWVOEeVKpDakGoPjP/84GvXIntuB759JPTxM
- /1wENIDAxy/KWM+31H70oQ94X6z9bRw7FWnBdevCF/ARG9Jk+KkvIck+nrSwYC1tUtBk9TeG824 sXUo65AMCEvaYHg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6420; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=47u/r70ygVSpW6vTYUCJ4BVeloqGeXZGkJcYMBqQg5o=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlZzhqhiX8DHIjTD2wKQWwc5SHo00Hr117qRf8U
+ TxwjCk011eJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZWc4agAKCRAEWL7uWMY5
+ RlqSD/9V5u/KKAdd4dXT2nyIcvtct0CAtU1kWe8krQxKvkXaq8ZGPyvco0tDjo+c5HOtgJdzHzi
+ 9qi4W29Lt1TXWnku8QlgiagDyAnR5evvmSeU2/KS4kqWwJ6idD8HucS3wKMNrz8nwIo78z3rgYw
+ iKlmXEBG7iu2HLzV7ydPqa6kxTeBtp35JZmxK+1ALPqdaqPDQeGeKFv7w4UZ4lrwN0sEO9A7JlK
+ ugnfZy4Mq80QPK6EB33wbykZBTRZ+PVg6hu4FzF2QtcgO3UOgZ3vXG3dp3oVGoAeXEWqVfp+6g4
+ zbodTxkRiu3oG1RvhUq6kdMUi/xGV7auHqnPi+UdDEYkgZBCjZ3Y68PlpoH2Lxv6tQ1z/cvOLfH
+ +cEW17uRBvtCPOPas1jWn3zQYlTeirdGoZ7OI9fmdUu+/Ml6rSyfHRYxWUtGUH4oHk+xK1gioV2
+ E0cEehl7bhy2UsgiTXobXdP13h+V/FoXriA0yhAbC3TOi0+kPmVRGQ2WvUJmAuVUgWQXKhbEjRN
+ S6zpacIfQ+HZKP299C7x99V5gZytW/6SuwT0JQiYVM53oT50hj0bL9VbWQV7bX9rY0VuDzn/no/
+ qhJEBQ3JuvngATVmkctd1htWsNSZBdLOPPqKM7OIUNaBKWORXXEYnK5uqfC6jLyrYxFbA4I8XEb yEY0RLsm5tug3VA==
 X-Mailer: git-send-email 2.43.0.rc1.413.gea7ed67945-goog
-Message-ID: <20231129-alice-file-v1-2-f81afe8c7261@google.com>
-Subject: [PATCH 2/7] rust: cred: add Rust abstraction for `struct cred`
+Message-ID: <20231129-alice-file-v1-3-f81afe8c7261@google.com>
+Subject: [PATCH 3/7] rust: security: add abstraction for secctx
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -74,190 +74,193 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Dan Williams <dan.j.williams@intel.com>,
 	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
 	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Adds an abstraction for viewing the string representation of a security
+context.
 
-Add a wrapper around `struct cred` called `Credential`, and provide
-functionality to get the `Credential` associated with a `File`.
+This is needed by Rust Binder because it has feature where a process can
+view the string representation of the security context for incoming
+transactions. The process can use that to authenticate incoming
+transactions, and since the feature is provided by the kernel, the
+process can trust that the security context is legitimate.
 
-Rust Binder must check the credentials of processes when they attempt to
-perform various operations, and these checks usually take a
-`&Credential` as parameter. The security_binder_set_context_mgr function
-would be one example. This patch is necessary to access these security_*
-methods from Rust.
-
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
  rust/bindings/bindings_helper.h |  1 +
- rust/helpers.c                  | 13 +++++++++
- rust/kernel/cred.rs             | 64 +++++++++++++++++++++++++++++++++++++++++
- rust/kernel/file.rs             | 16 +++++++++++
+ rust/helpers.c                  | 21 +++++++++
+ rust/kernel/cred.rs             |  8 ++++
  rust/kernel/lib.rs              |  1 +
- 5 files changed, 95 insertions(+)
+ rust/kernel/security.rs         | 78 +++++++++++++++++++++++++++++++++
+ 5 files changed, 109 insertions(+)
+ create mode 100644 rust/kernel/security.rs
 
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index beed3ef1fbc3..6d1bd2229aab 100644
+index 6d1bd2229aab..81b13a953eae 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
-@@ -7,6 +7,7 @@
-  */
- 
- #include <kunit/test.h>
-+#include <linux/cred.h>
+@@ -11,6 +11,7 @@
  #include <linux/errname.h>
  #include <linux/file.h>
  #include <linux/fs.h>
++#include <linux/security.h>
+ #include <linux/slab.h>
+ #include <linux/refcount.h>
+ #include <linux/wait.h>
 diff --git a/rust/helpers.c b/rust/helpers.c
-index 03141a3608a4..10ed69f76424 100644
+index 10ed69f76424..fd633d9db79a 100644
 --- a/rust/helpers.c
 +++ b/rust/helpers.c
-@@ -23,6 +23,7 @@
- #include <kunit/test-bug.h>
- #include <linux/bug.h>
- #include <linux/build_bug.h>
-+#include <linux/cred.h>
- #include <linux/err.h>
- #include <linux/errname.h>
- #include <linux/fs.h>
-@@ -164,6 +165,18 @@ struct file *rust_helper_get_file(struct file *f)
+@@ -30,6 +30,7 @@
+ #include <linux/mutex.h>
+ #include <linux/refcount.h>
+ #include <linux/sched/signal.h>
++#include <linux/security.h>
+ #include <linux/spinlock.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+@@ -177,6 +178,26 @@ void rust_helper_put_cred(const struct cred *cred)
  }
- EXPORT_SYMBOL_GPL(rust_helper_get_file);
+ EXPORT_SYMBOL_GPL(rust_helper_put_cred);
  
-+const struct cred *rust_helper_get_cred(const struct cred *cred)
++#ifndef CONFIG_SECURITY
++void rust_helper_security_cred_getsecid(const struct cred *c, u32 *secid)
 +{
-+	return get_cred(cred);
++	security_cred_getsecid(c, secid);
 +}
-+EXPORT_SYMBOL_GPL(rust_helper_get_cred);
++EXPORT_SYMBOL_GPL(rust_helper_security_cred_getsecid);
 +
-+void rust_helper_put_cred(const struct cred *cred)
++int rust_helper_security_secid_to_secctx(u32 secid, char **secdata, u32 *seclen)
 +{
-+	put_cred(cred);
++	return security_secid_to_secctx(secid, secdata, seclen);
 +}
-+EXPORT_SYMBOL_GPL(rust_helper_put_cred);
++EXPORT_SYMBOL_GPL(rust_helper_security_secid_to_secctx);
++
++void rust_helper_security_release_secctx(char *secdata, u32 seclen)
++{
++	security_release_secctx(secdata, seclen);
++}
++EXPORT_SYMBOL_GPL(rust_helper_security_release_secctx);
++#endif
 +
  /*
   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
   * use it in contexts where Rust expects a `usize` like slice (array) indices.
 diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
-new file mode 100644
-index 000000000000..497058ec89bb
---- /dev/null
+index 497058ec89bb..3794937b5294 100644
+--- a/rust/kernel/cred.rs
 +++ b/rust/kernel/cred.rs
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Credentials management.
-+//!
-+//! C header: [`include/linux/cred.h`](../../../../include/linux/cred.h)
-+//!
-+//! Reference: <https://www.kernel.org/doc/html/latest/security/credentials.html>
-+
-+use crate::{
-+    bindings,
-+    types::{AlwaysRefCounted, Opaque},
-+};
-+
-+/// Wraps the kernel's `struct cred`.
-+///
-+/// # Invariants
-+///
-+/// Instances of this type are always ref-counted, that is, a call to `get_cred` ensures that the
-+/// allocation remains valid at least until the matching call to `put_cred`.
-+#[repr(transparent)]
-+pub struct Credential(pub(crate) Opaque<bindings::cred>);
-+
-+// SAFETY: By design, the only way to access a `Credential` is via an immutable reference or an
-+// `ARef`. This means that the only situation in which a `Credential` can be accessed mutably is
-+// when the refcount drops to zero and the destructor runs. It is safe for that to happen on any
-+// thread, so it is ok for this type to be `Send`.
-+unsafe impl Send for Credential {}
-+
-+// SAFETY: It's OK to access `Credential` through shared references from other threads because
-+// we're either accessing properties that don't change or that are properly synchronised by C code.
-+unsafe impl Sync for Credential {}
-+
-+impl Credential {
-+    /// Creates a reference to a [`Credential`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
-+    /// returned [`Credential`] reference.
-+    pub unsafe fn from_ptr<'a>(ptr: *const bindings::cred) -> &'a Credential {
-+        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
-+        // `Credential` type being transparent makes the cast ok.
-+        unsafe { &*ptr.cast() }
-+    }
-+
-+    /// Returns the effective UID of the given credential.
-+    pub fn euid(&self) -> bindings::kuid_t {
-+        // SAFETY: By the type invariant, we know that `self.0` is valid.
-+        unsafe { (*self.0.get()).euid }
-+    }
-+}
-+
-+// SAFETY: The type invariants guarantee that `Credential` is always ref-counted.
-+unsafe impl AlwaysRefCounted for Credential {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-+        unsafe { bindings::get_cred(self.0.get()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-+        unsafe { bindings::put_cred(obj.cast().as_ptr()) };
-+    }
-+}
-diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-index ee4ec8b919af..f1f71c3d97e2 100644
---- a/rust/kernel/file.rs
-+++ b/rust/kernel/file.rs
-@@ -7,6 +7,7 @@
- 
- use crate::{
-     bindings,
-+    cred::Credential,
-     error::{code::*, Error, Result},
-     types::{ARef, AlwaysRefCounted, Opaque},
- };
-@@ -138,6 +139,21 @@ pub unsafe fn from_ptr<'a>(ptr: *const bindings::file) -> &'a File {
+@@ -43,6 +43,14 @@ pub unsafe fn from_ptr<'a>(ptr: *const bindings::cred) -> &'a Credential {
          unsafe { &*ptr.cast() }
      }
  
-+    /// Returns the credentials of the task that originally opened the file.
-+    pub fn cred(&self) -> &Credential {
-+        // This `read_volatile` is intended to correspond to a READ_ONCE call.
-+        //
-+        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
-+        //
-+        // TODO: Replace with `read_once` when available on the Rust side.
-+        let ptr = unsafe { core::ptr::addr_of!((*self.0.get()).f_cred).read_volatile() };
-+
-+        // SAFETY: The signature of this function ensures that the caller will only access the
-+        // returned credential while the file is still valid, and the credential must stay valid
-+        // while the file is valid.
-+        unsafe { Credential::from_ptr(ptr) }
++    /// Get the id for this security context.
++    pub fn get_secid(&self) -> u32 {
++        let mut secid = 0;
++        // SAFETY: The invariants of this type ensures that the pointer is valid.
++        unsafe { bindings::security_cred_getsecid(self.0.get(), &mut secid) };
++        secid
 +    }
 +
-     /// Returns the flags associated with the file.
-     ///
-     /// The flags are a combination of the constants in [`flags`].
+     /// Returns the effective UID of the given credential.
+     pub fn euid(&self) -> bindings::kuid_t {
+         // SAFETY: By the type invariant, we know that `self.0` is valid.
 diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index ce9abceab784..097fe9bb93ed 100644
+index 097fe9bb93ed..342cb02c495a 100644
 --- a/rust/kernel/lib.rs
 +++ b/rust/kernel/lib.rs
-@@ -33,6 +33,7 @@
- #[cfg(not(testlib))]
- mod allocator;
- mod build_assert;
-+pub mod cred;
- pub mod error;
- pub mod file;
- pub mod init;
-
+@@ -42,6 +42,7 @@
+ pub mod kunit;
+ pub mod prelude;
+ pub mod print;
++pub mod security;
+ mod static_assert;
+ #[doc(hidden)]
+ pub mod std_vendor;
+diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
+new file mode 100644
+index 000000000000..69c10ed89a57
+--- /dev/null
++++ b/rust/kernel/security.rs
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Linux Security Modules (LSM).
++//!
++//! C header: [`include/linux/security.h`](../../../../include/linux/security.h).
++
++use crate::{
++    bindings,
++    error::{to_result, Result},
++};
++
++/// A security context string.
++///
++/// The struct has the invariant that it always contains a valid security context.
++pub struct SecurityCtx {
++    secdata: *mut core::ffi::c_char,
++    seclen: usize,
++}
++
++impl SecurityCtx {
++    /// Get the security context given its id.
++    pub fn from_secid(secid: u32) -> Result<Self> {
++        let mut secdata = core::ptr::null_mut();
++        let mut seclen = 0;
++        // SAFETY: Just a C FFI call. The pointers are valid for writes.
++        unsafe {
++            to_result(bindings::security_secid_to_secctx(
++                secid,
++                &mut secdata,
++                &mut seclen,
++            ))?;
++        }
++
++        // If the above call did not fail, then we have a valid security
++        // context, so the invariants are not violated.
++        Ok(Self {
++            secdata,
++            seclen: usize::try_from(seclen).unwrap(),
++        })
++    }
++
++    /// Returns whether the security context is empty.
++    pub fn is_empty(&self) -> bool {
++        self.seclen == 0
++    }
++
++    /// Returns the length of this security context.
++    pub fn len(&self) -> usize {
++        self.seclen
++    }
++
++    /// Returns the bytes for this security context.
++    pub fn as_bytes(&self) -> &[u8] {
++        let mut ptr = self.secdata;
++        if ptr.is_null() {
++            // Many C APIs will use null pointers for strings of length zero, but
++            // `slice::from_raw_parts` doesn't allow the pointer to be null even if the length is
++            // zero. Replace the pointer with a dangling but non-null pointer in this case.
++            debug_assert_eq!(self.seclen, 0);
++            ptr = core::ptr::NonNull::dangling().as_ptr();
++        }
++
++        // SAFETY: The call to `security_secid_to_secctx` guarantees that the pointer is valid for
++        // `seclen` bytes. Furthermore, if the length is zero, then we have ensured that the
++        // pointer is not null.
++        unsafe { core::slice::from_raw_parts(ptr.cast(), self.seclen) }
++    }
++}
++
++impl Drop for SecurityCtx {
++    fn drop(&mut self) {
++        // SAFETY: This frees a pointer that came from a successful call to
++        // `security_secid_to_secctx`.
++        unsafe {
++            bindings::security_release_secctx(self.secdata, self.seclen as u32);
++        }
++    }
++}
 -- 
 2.43.0.rc1.413.gea7ed67945-goog
 
