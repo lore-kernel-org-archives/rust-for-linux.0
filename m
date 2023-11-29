@@ -1,280 +1,90 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yyMkw3fs"
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955F710F2
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 05:12:56 -0800 (PST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5ccc8b7f578so106460437b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 05:12:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701263576; x=1701868376; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2TJvklCbtLuSIRISVkztiSuoID32+GR+rmccCeVWR2o=;
-        b=yyMkw3fs3nCpiUgL74Y5jRHnMmomVutRby/ghwGhq4Gkw58skLQ2rwODjfxuzvjtxh
-         /2+HUkKnPrkRmID8QX1DwCt8V/cY9JbQ0Ph1RwgZovVr7lP6nI0POj1QE+I5jT/g1G1a
-         NBHcsUxNDf4K3XTI2csPy9HAAM/AslnjR/oulmSMCgXSuGouEhH9kWrylmhTrAlZ6ruX
-         EH9XVi7fXiJdWeAnipKR2gab60D+JdT94gMB8odYLEh+rRU/qhMR/g8r888tRgyzS7VS
-         mDu46XfM4iE2cRImj/kH09pa5S3hBZU+fw0q+R9zqI3hPM9bXZdbH1UDJl7nIWOw1GDC
-         tkCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701263576; x=1701868376;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2TJvklCbtLuSIRISVkztiSuoID32+GR+rmccCeVWR2o=;
-        b=ls2VuLlqErUePdF74u5VGd/7zmU+2QeBaTAPkO5UQOrDf/a15cA3Iy1pXiZcVrY/pX
-         aGj5hYDLQZ+e2okMH8svtOSF2v6/sLbZbS4yBFGHLC+q3PR276mHquzw8S4+l+PSBrjc
-         HXEyhyKW3d4kwcgaHUKg/yt6vqegfhNqu1bT4rNlQbkqpXCgC/MJOQsB6CVnaJczgul8
-         r20J+Ybb6B0eiM2Ov58bLk2dY+7tp5iJpLbk2d08PWtCxO9eUiglwY4G+dO6qRCDu1dY
-         aEAUYTxYePObTtqg8w+RoPTyTmrVe6YrFzLpe0SPBAvwddc9UzK90o/gM/O3gLn3jFyr
-         QIOQ==
-X-Gm-Message-State: AOJu0YykDWMhWk308rLzsdwQ7gOl6r9zqFLcXecuNadwwWEmwFHU3wa2
-	Ud3tY7pV3gkXctrDx4fAjPqqMyXrAIHuI6w=
-X-Google-Smtp-Source: AGHT+IHUFKaHKKii09g7HUyZ+EjCiaihzyYW1lpvxVTE4olOwMBv+jZ8c8SCt3BB6Rr4low3G2iWwC8XUzaw9rs=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:690c:2e8a:b0:5ce:dff:f7a1 with SMTP
- id eu10-20020a05690c2e8a00b005ce0dfff7a1mr500330ywb.9.1701263575877; Wed, 29
- Nov 2023 05:12:55 -0800 (PST)
-Date: Wed, 29 Nov 2023 13:12:51 +0000
-In-Reply-To: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iWaMT3ZK"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DC8BA3;
+	Wed, 29 Nov 2023 07:13:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=hXMxOlO+RptZuf7tC18898oF9lCqJDluY9IAnxRZEqY=; b=iWaMT3ZK3Iq5szkDIHQIo4Q6zd
+	uVOQ9+a5l+Vl2Ij58r3TItf3naUI4KsjPqD/Yc9tIT1v9d8UXxCBejPzm/jUw/9gjgLmYbuoY9F1r
+	MUb4Sh5qWs+PJu9UPSTfudrSH8n6wHs+c2gW3IgzbfmHoQ7oLbjgN8yJFZNcAnDjred3oD7mwlFjl
+	XJZvuQY2lHbpIt2ppnWcz65kd3Vwpd3RkJsNAbkvd5yITdCnRdTt7oE/mYRynXKjMLo/uwbupqz/Y
+	gzCx/Vu6K0B93J1DlxrhXeexkpBhqJpa5sAu8NBXKFusS99SXc+mK6eejToEXlz7FOn0nIXhjZM+I
+	cnpBEd1g==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1r8MFe-00DVZy-3D; Wed, 29 Nov 2023 15:13:22 +0000
+Date: Wed, 29 Nov 2023 15:13:22 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
+Message-ID: <ZWdVEk4QjbpTfnbn@casper.infradead.org>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
+ <20231129-alice-file-v1-1-f81afe8c7261@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7830; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Gna2rPaAZxwA3tXNNtoQj3C864OEwyg6zxPLG5MwViQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlZzMyNVW1q4O9x1ivonWXMf7fKKfIjphoYoxIq
- mVR7gYG5H6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZWczMgAKCRAEWL7uWMY5
- RsYmEACB9dMvCwDxJCJalR1hGrue8xlQCBRcKrXTmHgBJhJdUEPuY8WwazY0nvqF41fdD1T0Feh
- fBnee05Jy/wyLTSgeHvIKz4HU6SEaP4f2yOQQVd4twNWC+VWA9GIHMZ52S1MbruEK8Q7HZeuCdD
- hbJX1NSY0BVN9gudouy7gUMq6m3zTyaEaZRoB1/AbeQlfljl0rUy9kpTjIsXnrvuTw4qVdQBR2H
- ExFbiPpchpnXUe+fJrEDMvUnDtsGeStmEZ3EcxLJlzEMWNsqyanO0J1z0ZabT4QMlYl9w47mvzD
- IaOLMoJyN3PtTvaQKVmuWwO04xL7zmGXfqBbWAmOOWIuk5fu589MQ9qHjkTMB3ADt7U1BDICsgc
- rVNhfCSct2b7x8NAJ2WAJoqPmtDqBhYGcGCBduAVMmMwvRuP9Fx3ak9Grxjh1kpweqX8zD+qLEo
- fZK3w/eO4d3bWoNMfM320BDi3SFnrseBsjhDLaHjcyVSW8VQrzRUVFSYCvagYx81Xxl6vBHVRhW
- G842WeGHLaauNvonNZDijcHR9UoTiIKGSXcNCzyKo5Fmwv6onzWjh56nAb03cyW7zJv6X9F8l+Z
- dXrsL+OkE25KjYX/wY2Ff/v9EmLtEJ1uwrL5PbRh+zAguNPIAQtlyiV9DMqhPEWpXnYwXCALXpn 8YEVL4srVGhjErQ==
-X-Mailer: git-send-email 2.43.0.rc1.413.gea7ed67945-goog
-Message-ID: <20231129-alice-file-v1-7-f81afe8c7261@google.com>
-Subject: [PATCH 7/7] rust: file: add abstraction for `poll_table`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231129-alice-file-v1-1-f81afe8c7261@google.com>
 
-The existing `CondVar` abstraction is a wrapper around `wait_list`, but
-it does not support all use-cases of the C `wait_list` type. To be
-specific, a `CondVar` cannot be registered with a `struct poll_table`.
-This limitation has the advantage that you do not need to call
-`synchronize_rcu` when destroying a `CondVar`.
+On Wed, Nov 29, 2023 at 12:51:07PM +0000, Alice Ryhl wrote:
+> This introduces a struct for the EBADF error type, rather than just
+> using the Error type directly. This has two advantages:
+> * `File::from_fd` returns a `Result<ARef<File>, BadFdError>`, which the
+>   compiler will represent as a single pointer, with null being an error.
+>   This is possible because the compiler understands that `BadFdError`
+>   has only one possible value, and it also understands that the
+>   `ARef<File>` smart pointer is guaranteed non-null.
+> * Additionally, we promise to users of the method that the method can
+>   only fail with EBADF, which means that they can rely on this promise
+>   without having to inspect its implementation.
+> That said, there are also two disadvantages:
+> * Defining additional error types involves boilerplate.
+> * The question mark operator will only utilize the `From` trait once,
+>   which prevents you from using the question mark operator on
+>   `BadFdError` in methods that return some third error type that the
+>   kernel `Error` is convertible into. (However, it works fine in methods
+>   that return `Error`.)
 
-However, we need the ability to register a `poll_table` with a
-`wait_list` in Rust Binder. To enable this, introduce a type called
-`PollCondVar`, which is like `CondVar` except that you can register a
-`poll_table`. We also introduce `PollTable`, which is a safe wrapper
-around `poll_table` that is intended to be used with `PollCondVar`.
+I haven't looked at how Rust-for-Linux handles errors yet, but it's
+disappointing to see that it doesn't do something like the PTR_ERR /
+ERR_PTR / IS_ERR C thing under the hood.
 
-The destructor of `PollCondVar` unconditionally calls `synchronize_rcu`
-to ensure that the removal of epoll waiters has fully completed before
-the `wait_list` is destroyed.
+> @@ -157,6 +158,12 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
+>  
+> +struct file *rust_helper_get_file(struct file *f)
+> +{
+> +	return get_file(f);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_get_file);
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-That said, `synchronize_rcu` is rather expensive and is not needed in
-all cases: If we have never registered a `poll_table` with the
-`wait_list`, then we don't need to call `synchronize_rcu`. (And this is
-a common case in Binder - not all processes use Binder with epoll.) The
-current implementation does not account for this, but we could change it
-to store a boolean next to the `wait_list` to keep track of whether a
-`poll_table` has ever been registered. It is up to discussion whether
-this is desireable.
-
-It is not clear to me whether we can implement the above without storing
-an extra boolean. We could check whether the `wait_list` is empty, but
-it is not clear that this is sufficient. Perhaps someone knows the
-answer? If a `poll_table` has previously been registered with a
-`wait_list`, is it the case that we can kfree the `wait_list` after
-observing that the `wait_list` is empty without waiting for an rcu grace
-period?
-
- rust/bindings/bindings_helper.h |  2 +
- rust/bindings/lib.rs            |  1 +
- rust/kernel/file.rs             |  3 ++
- rust/kernel/file/poll_table.rs  | 97 +++++++++++++++++++++++++++++++++++++++++
- rust/kernel/sync/condvar.rs     |  2 +-
- 5 files changed, 104 insertions(+), 1 deletion(-)
-
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index c8daee341df6..14f84aeef62d 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -13,6 +13,7 @@
- #include <linux/file.h>
- #include <linux/fs.h>
- #include <linux/pid_namespace.h>
-+#include <linux/poll.h>
- #include <linux/security.h>
- #include <linux/slab.h>
- #include <linux/refcount.h>
-@@ -25,3 +26,4 @@
- const size_t BINDINGS_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
- const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
- const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
-+const __poll_t BINDINGS_POLLFREE = POLLFREE;
-diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-index 9bcbea04dac3..eeb291cc60db 100644
---- a/rust/bindings/lib.rs
-+++ b/rust/bindings/lib.rs
-@@ -51,3 +51,4 @@ mod bindings_helper {
- 
- pub const GFP_KERNEL: gfp_t = BINDINGS_GFP_KERNEL;
- pub const __GFP_ZERO: gfp_t = BINDINGS___GFP_ZERO;
-+pub const POLLFREE: __poll_t = BINDINGS_POLLFREE;
-diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-index 578ee307093f..35576678c993 100644
---- a/rust/kernel/file.rs
-+++ b/rust/kernel/file.rs
-@@ -14,6 +14,9 @@
- use alloc::boxed::Box;
- use core::{alloc::AllocError, marker::PhantomData, mem, ptr};
- 
-+mod poll_table;
-+pub use self::poll_table::{PollCondVar, PollTable};
-+
- /// Flags associated with a [`File`].
- pub mod flags {
-     /// File is opened in append mode.
-diff --git a/rust/kernel/file/poll_table.rs b/rust/kernel/file/poll_table.rs
-new file mode 100644
-index 000000000000..a26b64df0106
---- /dev/null
-+++ b/rust/kernel/file/poll_table.rs
-@@ -0,0 +1,97 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Utilities for working with `struct poll_table`.
-+
-+use crate::{
-+    bindings,
-+    file::File,
-+    prelude::*,
-+    sync::{CondVar, LockClassKey},
-+    types::Opaque,
-+};
-+use core::ops::Deref;
-+
-+/// Creates a [`PollCondVar`] initialiser with the given name and a newly-created lock class.
-+#[macro_export]
-+macro_rules! new_poll_condvar {
-+    ($($name:literal)?) => {
-+        $crate::file::PollCondVar::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
-+    };
-+}
-+
-+/// Wraps the kernel's `struct poll_table`.
-+#[repr(transparent)]
-+pub struct PollTable(Opaque<bindings::poll_table>);
-+
-+impl PollTable {
-+    /// Creates a reference to a [`PollTable`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that for the duration of 'a, the pointer will point at a valid poll
-+    /// table, and that it is only accessed via the returned reference.
-+    pub unsafe fn from_ptr<'a>(ptr: *mut bindings::poll_table) -> &'a mut PollTable {
-+        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
-+        // `PollTable` type being transparent makes the cast ok.
-+        unsafe { &mut *ptr.cast() }
-+    }
-+
-+    fn get_qproc(&self) -> bindings::poll_queue_proc {
-+        let ptr = self.0.get();
-+        // SAFETY: The `ptr` is valid because it originates from a reference, and the `_qproc`
-+        // field is not modified concurrently with this call.
-+        unsafe { (*ptr)._qproc }
-+    }
-+
-+    /// Register this [`PollTable`] with the provided [`PollCondVar`], so that it can be notified
-+    /// using the condition variable.
-+    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
-+        if let Some(qproc) = self.get_qproc() {
-+            // SAFETY: The pointers to `self` and `file` are valid because they are references.
-+            //
-+            // Before the wait list is destroyed, the destructor of `PollCondVar` will clear
-+            // everything in the wait list, so the wait list is not used after it is freed.
-+            unsafe { qproc(file.0.get() as _, cv.wait_list.get(), self.0.get()) };
-+        }
-+    }
-+}
-+
-+/// A wrapper around [`CondVar`] that makes it usable with [`PollTable`].
-+///
-+/// [`CondVar`]: crate::sync::CondVar
-+#[pin_data(PinnedDrop)]
-+pub struct PollCondVar {
-+    #[pin]
-+    inner: CondVar,
-+}
-+
-+impl PollCondVar {
-+    /// Constructs a new condvar initialiser.
-+    #[allow(clippy::new_ret_no_self)]
-+    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+        pin_init!(Self {
-+            inner <- CondVar::new(name, key),
-+        })
-+    }
-+}
-+
-+// Make the `CondVar` methods callable on `PollCondVar`.
-+impl Deref for PollCondVar {
-+    type Target = CondVar;
-+
-+    fn deref(&self) -> &CondVar {
-+        &self.inner
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for PollCondVar {
-+    fn drop(self: Pin<&mut Self>) {
-+        // Clear anything registered using `register_wait`.
-+        self.inner.notify(1, bindings::POLLHUP | bindings::POLLFREE);
-+        // Wait for epoll items to be properly removed.
-+        //
-+        // SAFETY: Just an FFI call.
-+        unsafe { bindings::synchronize_rcu() };
-+    }
-+}
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index b679b6f6dbeb..2d276a013ec8 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -143,7 +143,7 @@ pub fn wait_uninterruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_,
-     }
- 
-     /// Calls the kernel function to notify the appropriate number of threads with the given flags.
--    fn notify(&self, count: i32, flags: u32) {
-+    pub(crate) fn notify(&self, count: i32, flags: u32) {
-         // SAFETY: `wait_list` points to valid memory.
-         unsafe {
-             bindings::__wake_up(
-
--- 
-2.43.0.rc1.413.gea7ed67945-goog
+This is ridiculous.  A function call instead of doing the
+atomic_long_inc() in Rust?
 
