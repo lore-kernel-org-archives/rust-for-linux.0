@@ -1,53 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="V3inMrDz"
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A0290;
-	Wed, 29 Nov 2023 08:45:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AUrTChoc66XeV0GsgVjdZSx4wAh33cl3WQaLI1/3Bjg=; b=V3inMrDzxw2OJuvwPapGdJEJrC
-	JrPe614IpXtpeM8ebzEKMhI59QCRqs8hwyRKeBSBrgCWdzd8q3yFl3mOUps8p61eHxn8UHfntgGL4
-	5h4VY0Cru0v0fPAdfkPpPE+0R6M3497GsVD0XICjo6pbV0XDOdG9mYnJgsDzl2QuWidqxGV8bOn3F
-	H0ArBjc4ZrYsXV6QnLOOVI4c9mMSMCrcm3sEVx0ppLABbpVYwE1hJBY5O385tYdGmwwEa3ZqN/dmT
-	NTkMeLeGF85LFZg4zceNlFwsyq4Jr1FXbOejhERdSiMvQxi0dk5c6Ude5glYxvAC3bbrH6VxIYFPw
-	8qlXurfw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1r8Ngq-00Dab0-83; Wed, 29 Nov 2023 16:45:32 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 6F72830017D; Wed, 29 Nov 2023 17:45:31 +0100 (CET)
-Date: Wed, 29 Nov 2023 17:45:31 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: willy@infradead.org, a.hindborg@samsung.com, alex.gaynor@gmail.com,
-	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com,
-	dan.j.williams@intel.com, dxu@dxuuu.xyz, gary@garyguo.net,
-	gregkh@linuxfoundation.org, joel@joelfernandes.org,
-	keescook@chromium.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org, surenb@google.com,
-	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
-Message-ID: <20231129164531.GH23596@noisy.programming.kicks-ass.net>
-References: <ZWdVEk4QjbpTfnbn@casper.infradead.org>
- <20231129164251.3475162-1-aliceryhl@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxGElo7+"
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8F04AF;
+	Wed, 29 Nov 2023 08:48:41 -0800 (PST)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d9fe0a598d8so6421236276.2;
+        Wed, 29 Nov 2023 08:48:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701276521; x=1701881321; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=59EDV5ZbuzePYVCkCOjXBnyedLCPg9XW8OpMw3xKT/o=;
+        b=kxGElo7+38ZHHyLGdAw0cjb+nyV9NW5KKT2sXJWKMjZkBWn2qSyJnObfiSRcd6mp47
+         gjrrHYFbFg0N8d/IEQ81wXG25I8iqpB84wSHtgZIPH9V8wvzQ4XuhGxkZ+1u7L+pl9Mf
+         ytygwPHnWEfBMpU07AWv/44FaPH6MlASmAwSuTQ1cuHhZKQLT1VVGlLXlmlkThsq2guL
+         ws0tKB2nMOUIysJdo02WLI3kSqTTK4yq4qHAQrguDfIi8vzXR9GNXWEN/pSHZ0+/36Cw
+         pHIKP8EDYGxKKyOBni6+ftA7xLQW6+XwIGpKkofiaKZ6BSWDuvjNxPcG3b+iYL6mRfKe
+         Co3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701276521; x=1701881321;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=59EDV5ZbuzePYVCkCOjXBnyedLCPg9XW8OpMw3xKT/o=;
+        b=rkZ2ghbHgHm0pOwV4eaubmICwsqzk7/3qQ5w3Tai//BqqiR9XayKlA//co7Cy2YY/I
+         eoZ+S+7BoWg44EwktgnDJtscQWrD7LCAl3+bX48HAFm3NmYxdr8ctjqVldyEZvbgGydz
+         Ws54scypygWUPoawbrFKxOcEpG1uvTCVvHZ9friYVdIFhPBfaYbOQ8M5A5FEp4SUV/OJ
+         1V12VpRoyquTPfzI0c36R2xqRWW4kHEjaKuJ7L41ATsi5Ek00KXHqza5qmQkTck5hN7q
+         ++kxr+C3TiJh2nvz3MmKgisjDom/g32LsBtKbAccoCMlhOwbixuWA+TZFAyee4sjGJaP
+         nxrw==
+X-Gm-Message-State: AOJu0YyVF5nA4Nipo7H1i0O6SGrCx9oJCuCItUkIjVOJX4VeXiUcU602
+	vFUqBdqgEGnQYAc+JUBnWj3UnXcCo65xRN8cjdQ=
+X-Google-Smtp-Source: AGHT+IFaMsug/ziZHCY6aqd5ojdPGfqA3gjUJOjRbTdNpNOb4CU6tQReflQg58AZ9b0xudu4WlmLjkFLS1Cz8uBHScY=
+X-Received: by 2002:a25:8407:0:b0:d84:e7a6:fc09 with SMTP id
+ u7-20020a258407000000b00d84e7a6fc09mr19474669ybk.17.1701276520936; Wed, 29
+ Nov 2023 08:48:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231129164251.3475162-1-aliceryhl@google.com>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-mitsingen-umweltschutz-c6f8d9569234@brauner>
+In-Reply-To: <20231129-mitsingen-umweltschutz-c6f8d9569234@brauner>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 29 Nov 2023 17:48:29 +0100
+Message-ID: <CANiq72mQrVr5x2A4jCMhYcdt3rs+D+Y0JyNf_cef1bJ+c8DohQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] File abstractions needed by Rust Binder
+To: Christian Brauner <brauner@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 29, 2023 at 04:42:51PM +0000, Alice Ryhl wrote:
-> Second, there's potentially an increased maintenance burden when C
-> methods are reimplemented in Rust. Any change to the implementation on
-> the C side would have to be reflected on the Rust side.
+On Wed, Nov 29, 2023 at 5:31=E2=80=AFPM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+>
+> That's pretty far away from the subsystem these wrappers belong to. I
+> would prefer if wrappers such as this would live directly in fs/rust/
+> and so live within the subsystem they belong to. I think I mentioned
+> that before. Maybe I missed some sort of agreement here?
 
-C to Rust compiler FTW :-)
+The plan is that the code will be moved to the right places when the
+new build system is in place (WIP). Currently the "abstractions" go
+inside the `kernel` crate.
+
+Cheers,
+Miguel
