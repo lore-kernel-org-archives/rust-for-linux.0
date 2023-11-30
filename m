@@ -1,39 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4804779B;
-	Thu, 30 Nov 2023 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBFD47780;
+	Thu, 30 Nov 2023 12:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2QmaEhh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1C4C433C8;
-	Thu, 30 Nov 2023 12:36:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqekIxo6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607AAC433C8;
+	Thu, 30 Nov 2023 12:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701347774;
-	bh=EtiRcH4voLF+iaE6Nt64ffXFd88eaIh4a9FFJs3FC8M=;
+	s=k20201202; t=1701348405;
+	bh=Turv8447m0iSBp/1OD7/8HA4BfAu143dTXX+sHwM0FQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o2QmaEhhoDDSdbFFx2qGmUEuyScr1iGmxSPJtl7f55G3T1z9lN0PdcTPrWuemXoUO
-	 IfwzJciOhNTLWL+S71VQnZ7ftEFRkip8GPgjsH0CfyfOjVGmpyg/odMwndGQbGwLZf
-	 YYuW1Qu5o2zrpedLP4lYrQQgKlPdFgUv1EeUjfk3Xb3/DFNmMAcmz97JWUNBRlz3qO
-	 RZNiwGA8YzLFqk4qRALooT6zm3UdGub8EqrCd73VmL7/HdEAlU2q3r9zTAuUU8vk4O
-	 //g4EdtXEG7l8auwNdWNfABGig40Q2jISdg/tYToSdaTbuyjxiY9eZRYWPpJfQUmBt
-	 GCmS/ytNEh53A==
-Date: Thu, 30 Nov 2023 13:36:06 +0100
+	b=QqekIxo6sLR+ZJAdumnjYlqU2xkYUbQi9E5yxc7xwxXoiHS8WTSoDX0k4CjTjTNrR
+	 mBpKj8soTxt0h5dT2M1MGA24pCTg3NAesXV4tzAC9rhTph2SKpsKTbwyGUr5AGKDt0
+	 BKmvPGyXA1E1rXsB0Z63r3ja5QnXla6gxH+w2XWJA/IZGsFVlUrcKe1XXdzwkbV39B
+	 JO9RtBINtp9hZHoTwT3yS/3fbPClifFhi6JVfwLdzwOFWnQJOaz7pFJhZQs5tGLxq1
+	 YQOCR3pEWHtg3zf9Nrm8ATXKwUppSWBHxpCnrNUtsCElu0jKG+SGXVteOhAYrDjsf5
+	 ZjTutNZycpi8w==
+Date: Thu, 30 Nov 2023 13:46:36 +0100
 From: Christian Brauner <brauner@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com,
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, cmllamas@google.com, dan.j.williams@intel.com,
-	dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org,
-	joel@joelfernandes.org, keescook@chromium.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	maco@android.com, ojeda@kernel.org, peterz@infradead.org,
-	rust-for-linux@vger.kernel.org, surenb@google.com,
-	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk,
-	wedsonaf@gmail.com, willy@infradead.org
-Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
-Message-ID: <20231130-zweig-mitleid-2ba3ef78145e@brauner>
-References: <20231130-sackgasse-abdichtung-62c23edd9a9f@brauner>
- <20231130121013.140671-1-aliceryhl@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
+Message-ID: <20231130-wohle-einfuhr-1708e9c3e596@brauner>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
+ <20231129-alice-file-v1-5-f81afe8c7261@google.com>
+ <20231129-etappen-knapp-08e2e3af539f@brauner>
+ <20231129164815.GI23596@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,111 +54,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231130121013.140671-1-aliceryhl@google.com>
+In-Reply-To: <20231129164815.GI23596@noisy.programming.kicks-ass.net>
 
-On Thu, Nov 30, 2023 at 12:10:12PM +0000, Alice Ryhl wrote:
-> Christian Brauner <brauner@kernel.org> writes:
-> >> This is the backdoor. You use it when *you* know that the file is okay
-> > 
-> > And a huge one.
-> > 
-> >> to access, but Rust doesn't. It's unsafe because it's not checked by
-> >> Rust.
-> >> 
-> >> For example you could do this:
-> >> 
-> >> 	let ptr = unsafe { bindings::fdget(fd) };
-> >> 
-> >> 	// SAFETY: We just called `fdget`.
-> >> 	let file = unsafe { File::from_ptr(ptr) };
-> >> 	use_file(file);
-> >> 
-> >> 	// SAFETY: We're not using `file` after this call.
-> >> 	unsafe { bindings::fdput(ptr) };
-> >> 
-> >> It's used in Binder here:
-> >> https://github.com/Darksonn/linux/blob/dca45e6c7848e024709b165a306cdbe88e5b086a/drivers/android/rust_binder.rs#L331-L332
-> >> 
-> >> Basically, I use it to say "C code has called fdget for us so it's okay
-> >> to access the file", whenever userspace uses a syscall to call into the
-> >> driver.
-> > 
-> > Yeah, ok, because the fd you're operating on may be coming from fdget(). Iirc,
-> > binder is almost by default used multi-threaded with a shared file descriptor
-> > table? But while that means fdget() will usually bump the reference count you
-> > can't be sure. Hmkay.
+On Wed, Nov 29, 2023 at 05:48:15PM +0100, Peter Zijlstra wrote:
+> On Wed, Nov 29, 2023 at 05:28:27PM +0100, Christian Brauner wrote:
 > 
-> Even if the syscall used `fget` instead of `fdget`, I would still be
-> using `from_ptr` here. The `ARef` type only really makes sense when *we*
-> have ownership of the ref-count, but in this case we don't own it. We're
-> just given a promise that the caller is keeping it alive for us using
-> some mechanism or another.
+> > > +pid_t rust_helper_task_tgid_nr_ns(struct task_struct *tsk,
+> > > +				  struct pid_namespace *ns)
+> > > +{
+> > > +	return task_tgid_nr_ns(tsk, ns);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(rust_helper_task_tgid_nr_ns);
+> > 
+> > I'm a bit puzzled by all these rust_helper_*() calls. Can you explain
+> > why they are needed? Because they are/can be static inlines and that
+> > somehow doesn't work?
 > 
-> >>>> +// SAFETY: It's OK to access `File` through shared references from other threads because we're
-> >>>> +// either accessing properties that don't change or that are properly synchronised by C code.
-> >>> 
-> >>> Uhm, what guarantees are you talking about specifically, please?
-> >>> Examples would help.
-> >>> 
-> >>>> +unsafe impl Sync for File {}
-> >> 
-> >> The Sync trait defines whether a value may be accessed from several
-> >> threads in parallel (using shared/immutable references). In our case,
-> > 
-> > So let me put this into my own words and you correct me, please:
-> > 
-> > So, this really just means that if I have two processes both with their own
-> > fdtable and they happen to hold fds that refer to the same @file:
-> > 
-> > P1				P2
-> > struct fd fd1 = fdget(1234);
-> >                                  struct fd fd2 = fdget(5678);
-> > if (!fd1.file)                   if (!fd2.file)
-> > 	return -EBADF;                 return -EBADF;
-> > 
-> > // fd1.file == fd2.file
-> > 
-> > the only if the Sync trait is implemented both P1 and P2 can in parallel call
-> > file->f_op->poll(@file)?
-> > 
-> > So if the Sync trait isn't implemented then the compiler will prohibit that P1
-> > and P2 at the same time call file->f_op->poll(@file)? And that's all that's
-> > meant by a shared reference? It's really about sharing the pointer.
+> Correct, because Rust can only talk to C ABI, it cannot use C headers.
+> Bindgen would need to translate the full C headers into valid Rust for
+> that to work.
 > 
-> Yeah, what you're saying sounds correct. For a type that is not Sync,
-> you would need a lock around the call to `poll` before the compiler
-> would accept the call.
-> 
-> (Or some other mechanism to convince the compiler that no other thread
-> is looking at the file at the same time. Of course, a lock is just one
-> way to do that.)
-> 
-> > The thing is that "shared reference" gets a bit in our way here:
-> > 
-> > (1) If you have SCM_RIGHTs in the mix then P1 can open fd1 to @file and then
-> >     send that @file to P2 which now has fd2 refering to @file as well. The
-> >     @file->f_count is bumped in that process. So @file->f_count is now 2.
-> > 
-> >     Now both P1 and P2 call fdget(). Since they don't have a shared fdtable
-> >     none of them take an additional reference to @file. IOW, @file->f_count
-> >     may remain 2 all throughout the @file->f_op->*() operation.
-> > 
-> >     So they share a reference to that file and elide both the
-> >     atomic_inc_not_zero() and the atomic_dec_not_zero().
-> > 
-> > (2) io_uring has fixed files whose reference count always stays at 1.
-> >     So all io_uring operations on such fixed files share a single reference.
-> > 
-> > So that's why this is a bit confusing at first to read "shared reference".
-> > 
-> > Please add a comment on top of unsafe impl Sync for File {}
-> > explaining/clarifying this a little that it's about calling methods on the same
-> > file.
-> 
-> Yeah, I agree, the terminology gets a bit mixed up here because we both
-> use the word "reference" for different things.
+> I really think the Rust peoples should spend more effort on that,
+> because you are quite right, all this wrappery is tedious at best.
 
-> 
-> How about this comment?
+The problem is that we end up with a long list of explicit exports that
+also are all really weirdly named like rust_helper_*(). I wouldn't even
+complain if it they were somehow auto-generated but as you say that
+might be out of scope.
 
-Sounds good.
+The thing is though that if I want to change the static inlines I know
+also have to very likely care about these explicit Rust wrappers which
+seems less than ideal.
+
+So if we could not do rust_helper_*() exports we'd probably be better
+off.
