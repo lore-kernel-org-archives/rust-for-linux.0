@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MP7805Ff"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9C74197;
-	Thu, 30 Nov 2023 08:17:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="c4vHt3HJ"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F5B1AD;
+	Thu, 30 Nov 2023 08:27:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1701361042; x=1701620242;
-	bh=mRFq5LKYHvE44IpjbLDOnURptajquKGU1HNJazPPf9o=;
+	s=protonmail; t=1701361625; x=1701620825;
+	bh=mOMEDalTJ2nNUHEjuiH1o7OWgTyvdhbuWe5AEnNE+rE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=MP7805FfoSY6qKMdB3HRW99VFJ5WcaPwsXR+VYTX5bibjTIn/r+D+DLMg469O5PMM
-	 JZO7Sv0a1oiqk0JEHJx7pZ1PMw9e61rM/HDujeJlKTNrr56n31fC4AdssIRKuMtL3M
-	 0CafqvFLKKZODXZ071RjfCz2QUGcvYHUEIwN+WCBhke3L+mPNLLoctQISw5Jn/dcJb
-	 SE5L8+LokHeV1z8EmulRJgjUBlDgml5mng2mAgAzzzU8vjdwTS6bxrvdl/urIziLI3
-	 LkwjlMXG6xpSXlJhXWO6lWkcYS7oA3ZsRfcxS8IBOhhZotPUmLY4jx4fooGXuxCX0+
-	 rQzJn+72hPvEA==
-Date: Thu, 30 Nov 2023 16:17:03 +0000
+	b=c4vHt3HJnr971aFPIjhH2bWoBzKLFTA107/xMOElWr2Ts62ZXLCjBr0Lb2VzbBDs7
+	 9UKaJv36630aCSacS1ZEgU/tQEj/4b3cVpBHjzWH+7OSFe4WriK0GoqdTfEYUwVXjC
+	 E05iZDseAd4T+Tc3Rfnqe9QwedU0hp52+g+m0vMKfJGDwN015ekgFMw77xnfRQqGv3
+	 dyJIwabpinaI7/gkzfQXZaQxnyafW0Q+X/uEEf9okalERYauEXm21rYce+4YZyXcC6
+	 JSeVVibmVBFv7+0FbpgBnGowPLXl5irsMbeBF+t//BbIRhtYeo5BK8YUZ2b7U7P9cB
+	 pG4BRgWSuydbw==
+Date: Thu, 30 Nov 2023 16:26:39 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 2/7] rust: cred: add Rust abstraction for `struct cred`
-Message-ID: <W6StBLpVsvvGchAT5ZEvH9JJyzu401dMqR3yN73NZPjPeZRoaKAuoYe40QWErmPwrnJVTH7BbLKtWXDOMYny5xjwd3CSLyz5IYYReB6-450=@proton.me>
-In-Reply-To: <20231129-alice-file-v1-2-f81afe8c7261@google.com>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-2-f81afe8c7261@google.com>
+Subject: Re: [PATCH 3/7] rust: security: add abstraction for secctx
+Message-ID: <qwxqEq_l1jj3cAKSEh7gBZCUyBGCDmThdz6JJIQiFVl94ASI4yyNB6956XLrsQXnE4ulo48QRMaKPjgt7JZoolisVEiGOUP7IyRdecdhXqw=@proton.me>
+In-Reply-To: <20231129-alice-file-v1-3-f81afe8c7261@google.com>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-3-f81afe8c7261@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,37 +33,109 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 11/29/23 13:51, Alice Ryhl wrote:
-> +    /// Returns the credentials of the task that originally opened the f=
-ile.
-> +    pub fn cred(&self) -> &Credential {
-> +        // This `read_volatile` is intended to correspond to a READ_ONCE=
- call.
-> +        //
-> +        // SAFETY: The file is valid because the shared reference guaran=
-tees a nonzero refcount.
-> +        //
-> +        // TODO: Replace with `read_once` when available on the Rust sid=
-e.
-> +        let ptr =3D unsafe { core::ptr::addr_of!((*self.0.get()).f_cred)=
-.read_volatile() };
+On 11/29/23 14:11, Alice Ryhl wrote:
+> +/// A security context string.
+> +///
+> +/// The struct has the invariant that it always contains a valid securit=
+y context.
+
+Refactor to use the `# Invariants` section:
+
+    # Invariants
+    `secdata` points to a valid security context.
+
+I also do not know what a "valid security context" is, so a link to the
+definition wouldn't hurt.
+
+> +pub struct SecurityCtx {
+> +    secdata: *mut core::ffi::c_char,
+> +    seclen: usize,
+> +}
 > +
-> +        // SAFETY: The signature of this function ensures that the calle=
-r will only access the
-> +        // returned credential while the file is still valid, and the cr=
-edential must stay valid
-> +        // while the file is valid.
+> +impl SecurityCtx {
+> +    /// Get the security context given its id.
+> +    pub fn from_secid(secid: u32) -> Result<Self> {
+> +        let mut secdata =3D core::ptr::null_mut();
+> +        let mut seclen =3D 0;
+> +        // SAFETY: Just a C FFI call. The pointers are valid for writes.
+> +        unsafe {
+> +            to_result(bindings::security_secid_to_secctx(
+> +                secid,
+> +                &mut secdata,
+> +                &mut seclen,
+> +            ))?;
+> +        }
+> +
+> +        // If the above call did not fail, then we have a valid security
+> +        // context, so the invariants are not violated.
 
-About the last part of this safety comment, is this a guarantee from the
-C side? If yes, then I would phrase it that way:
+Should be tagged `INVARIANT`.
 
-    ... while the file is still valid, and the C side ensures that the
-    credentials stay valid while the file is valid.
+> +        Ok(Self {
+> +            secdata,
+> +            seclen: usize::try_from(seclen).unwrap(),
+> +        })
+> +    }
+> +
+> +    /// Returns whether the security context is empty.
+> +    pub fn is_empty(&self) -> bool {
+> +        self.seclen =3D=3D 0
+> +    }
+> +
+> +    /// Returns the length of this security context.
+> +    pub fn len(&self) -> usize {
+> +        self.seclen
+> +    }
+> +
+> +    /// Returns the bytes for this security context.
+> +    pub fn as_bytes(&self) -> &[u8] {
+> +        let mut ptr =3D self.secdata;
+> +        if ptr.is_null() {
+> +            // Many C APIs will use null pointers for strings of length =
+zero, but
+
+I would just write that the secctx API uses null pointers to denote a
+string of length zero.
+
+> +            // `slice::from_raw_parts` doesn't allow the pointer to be n=
+ull even if the length is
+> +            // zero. Replace the pointer with a dangling but non-null po=
+inter in this case.
+> +            debug_assert_eq!(self.seclen, 0);
+
+I am feeling a bit uncomfortable with this, why can't we just return
+an empty slice in this case?
+
+> +            ptr =3D core::ptr::NonNull::dangling().as_ptr();
+> +        }
+> +
+> +        // SAFETY: The call to `security_secid_to_secctx` guarantees tha=
+t the pointer is valid for
+> +        // `seclen` bytes. Furthermore, if the length is zero, then we h=
+ave ensured that the
+> +        // pointer is not null.
+> +        unsafe { core::slice::from_raw_parts(ptr.cast(), self.seclen) }
+> +    }
+> +}
+> +
+> +impl Drop for SecurityCtx {
+> +    fn drop(&mut self) {
+> +        // SAFETY: This frees a pointer that came from a successful call=
+ to
+> +        // `security_secid_to_secctx`.
+
+This should be part of the type invariant.
 
 --=20
 Cheers,
 Benno
 
-> +        unsafe { Credential::from_ptr(ptr) }
+> +        unsafe {
+> +            bindings::security_release_secctx(self.secdata, self.seclen =
+as u32);
+> +        }
 > +    }
-> +
+> +}
+> --
+> 2.43.0.rc1.413.gea7ed67945-goog
+> 
