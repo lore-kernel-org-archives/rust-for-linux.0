@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ehwizPfW"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SmOdraL9"
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D87810DB
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Nov 2023 08:40:33 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 540D410F8;
+	Thu, 30 Nov 2023 08:48:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1701362431; x=1701621631;
-	bh=aUwMWJjNDKEwZmf6rHJqm0TKxpV/+zt7aI/cwBnNF/A=;
+	s=protonmail; t=1701362933; x=1701622133;
+	bh=ma6iKXmyJ476bBrogFjyVSkUY7XrgEHkL0/Xftslrt4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ehwizPfWAQhgd+7ta7CVxTTmFCLL9OZt2OTvHEdaMgrWXuHZyzNtxt32CUCB1M1PE
-	 6Q+MytXCCWjdVY4dbSvh6ZJKpIPHcoYlRCO+llV1Xp7icXNkd0rCP0iJqnsIUNchCq
-	 vhjmms7N2eQ7KF8DgyqKB/J40WXRCW17Ire313/raamQ4GRVNVJo1nW5l2u+gwoSrD
-	 dGF7BTHj/ahSWnAkJBD+hsBw5ttmcbKOTao+Z8d3w4BlBlRvcdgDQAGODrIGsqu71+
-	 rbRLbghNbiq+a+sjoiF4TvWS2W3VSuL2zQ0mH2WIU6Iv0P+QW5++cSqJPpi80t3Y51
-	 C2KroYXNBsJbw==
-Date: Thu, 30 Nov 2023 16:40:08 +0000
+	b=SmOdraL93gFqTu2k/5T2ohP1ZJp2b+CgRREaU2e5H1ZUq4x+EQvILLt2aSngvbMa6
+	 PuK9x5xisRVyi5GJs6FPfdfzAX85fwq8Xrl5f6AnTNOgFSBCQzSrvkP5g4+EGQDsHL
+	 EDBFtQ/XfIaDvnkhJpKS55tbPYn/LRm42eGm3PN6XQjcfWymtg7hYZG97eEo82RFCS
+	 DhIXHhEsObboS66pGMYvBvB+X7350grHi5wzpZmkhB6NTESy/2TtQQClKyerIxp0qL
+	 RQT4giTnYFEp7mYhmjHeCd9EKaUCvyy8q3Cqe1rdbp4PpCBmDq+9ZX4rAFkBo0Sd5R
+	 Gasrmyqv2pBdw==
+Date: Thu, 30 Nov 2023 16:48:29 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 4/7] rust: file: add `FileDescriptorReservation`
-Message-ID: <_xnOTacjwsOFSA4oog2DJs0VLa1w0EaSPM3rqDUjIZAmNgiq0V0-bJwfVZdDKaydes_rJb30Zz4TyacYImYZHK6i0-LR8AYbQa2T1l0h3K8=@proton.me>
-In-Reply-To: <20231129-alice-file-v1-4-f81afe8c7261@google.com>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-4-f81afe8c7261@google.com>
+Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
+Message-ID: <1fDBLge_kImhS4koYYda8t5pmIAeA9Zxo8haE_x1zKgxqGtrQd3wHhOgTbV8db3exz-Q6kXoDh3XWMyX4aox0oGTDSX2udA6ZDSV3r3D1_U=@proton.me>
+In-Reply-To: <20231129-alice-file-v1-5-f81afe8c7261@google.com>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-5-f81afe8c7261@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,52 +33,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 11/29/23 14:11, Alice Ryhl wrote:
-> +impl FileDescriptorReservation {
-> +    /// Creates a new file descriptor reservation.
-> +    pub fn new(flags: u32) -> Result<Self> {
-> +        // SAFETY: FFI call, there are no safety requirements on `flags`=
-.
-> +        let fd: i32 =3D unsafe { bindings::get_unused_fd_flags(flags) };
-> +        if fd < 0 {
-> +            return Err(Error::from_errno(fd));
+On 11/29/23 14:12, Alice Ryhl wrote:
+> +    /// Returns the given task's pid in the current pid namespace.
+> +    pub fn pid_in_current_ns(&self) -> Pid {
+> +        // SAFETY: We know that `self.0.get()` is valid by the type inva=
+riant. The rest is just FFI
+> +        // calls.
+> +        unsafe {
+> +            let namespace =3D bindings::task_active_pid_ns(bindings::get=
+_current());
+> +            bindings::task_tgid_nr_ns(self.0.get(), namespace)
 > +        }
 
-I think here we could also use the modified `to_result` function that
-returns a `u32` if the value is non-negative.
+I would split this into two `unsafe` blocks.
 
-> +        Ok(Self {
-> +            fd: fd as _,
-> +            _not_send_sync: PhantomData,
-> +        })
 > +    }
 > +
-> +    /// Returns the file descriptor number that was reserved.
-> +    pub fn reserved_fd(&self) -> u32 {
-> +        self.fd
+>      /// Wakes up the task.
+>      pub fn wake_up(&self) {
+>          // SAFETY: By the type invariant, we know that `self.0.get()` is=
+ non-null and valid.
+> @@ -147,6 +180,42 @@ pub fn wake_up(&self) {
+>      }
+>  }
+>=20
+> +impl Kuid {
+> +    /// Get the current euid.
+> +    pub fn current_euid() -> Kuid {
+> +        // SAFETY: Just an FFI call.
+> +        Self {
+> +            kuid: unsafe { bindings::current_euid() },
+> +        }
+
+Would expect a call to `from_raw` here instead of `Self {}`.
+
 > +    }
 > +
-> +    /// Commits the reservation.
-> +    ///
-> +    /// The previously reserved file descriptor is bound to `file`. This=
- method consumes the
-> +    /// [`FileDescriptorReservation`], so it will not be usable after th=
-is call.
-> +    pub fn commit(self, file: ARef<File>) {
-> +        // SAFETY: `self.fd` was previously returned by `get_unused_fd_f=
-lags`, and `file.ptr` is
-> +        // guaranteed to have an owned ref count by its type invariants.
-> +        unsafe { bindings::fd_install(self.fd, file.0.get()) };
-> +
-> +        // `fd_install` consumes both the file descriptor and the file r=
-eference, so we cannot run
-> +        // the destructors.
-> +        core::mem::forget(self);
-> +        core::mem::forget(file);
+> +    /// Create a `Kuid` given the raw C type.
+> +    pub fn from_raw(kuid: bindings::kuid_t) -> Self {
+> +        Self { kuid }
+> +    }
 
-Would be useful to have an `ARef::into_raw` function that would do
-the `forget` for us.
+Is there a reason that this is named `from_raw` and not just a normal
+`From` impl? AFAICT any `bindings::kuid_t` is a valid `Kuid`.
+
+> +
+> +    /// Turn this kuid into the raw C type.
+> +    pub fn into_raw(self) -> bindings::kuid_t {
+> +        self.kuid
+> +    }
+> +
+> +    /// Converts this kernel UID into a UID that userspace understands. =
+Uses the namespace of the
+> +    /// current task.
+
+Why not:
+
+    /// Converts this kernel UID into a userspace UID.
+    ///
+    /// Uses the namespace of the current task.
 
 --=20
 Cheers,
 Benno
+
+> +    pub fn into_uid_in_current_ns(self) -> bindings::uid_t {
+> +        // SAFETY: Just an FFI call.
+> +        unsafe { bindings::from_kuid(bindings::current_user_ns(), self.k=
+uid) }
+> +    }
+> +}
