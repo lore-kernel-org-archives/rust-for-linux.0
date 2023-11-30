@@ -1,141 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZRhiFQB"
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC83410E0;
-	Thu, 30 Nov 2023 07:25:06 -0800 (PST)
-Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-67a3f1374bdso5931186d6.2;
-        Thu, 30 Nov 2023 07:25:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701357906; x=1701962706; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iYxckIwC9xbehezW7h9apLIAUAGmTaUwXE2pwY1GWQE=;
-        b=lZRhiFQBXHvVsL353F44BE+L3vRTbhaV4okHoj6nsepw8bJMP80C099GqUqsQRa75I
-         af9suGQt+qR/bE5wWeq+Ls5aKt6dCPp6QXFTTNnXZ/sr2ZkQFVEg1dTcSxRrLUbUKUZn
-         aS+RMnw2kjp8PrE190hzh6bip9nBVwUr2tcXFTIYOfR/Q/PB4GcT5On/T9dLHwrah14u
-         hSk+1zB1/r0HTpeBEAV544QP3uFNsztplwDxHVsUFMJkNc0ZR2JjLDjHKi1G5SuA1wvN
-         oVGpowIhxkCskCWZVL3OTU05lstfQMXj6yYS4M1ASnl6gXOB0hQnNfQvXqVSRzRGRZax
-         1HKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701357906; x=1701962706;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iYxckIwC9xbehezW7h9apLIAUAGmTaUwXE2pwY1GWQE=;
-        b=iL5RSWfPLIOvug3PcR5BUHvGVCCOUXQvepk5z/fCNq/NDbg2W/HrU4uFORrArNj2ME
-         sRuoheIjJ69UfhTOMGxCkwLxCKCAIhFhTVhZTXhNQOHrK8MCxUH3aM8/y5kko3+iTCPw
-         YuxlOBncL3KsbLFJucKf921qqta85hTY9VfmcuwogRYWm9OB6XNj3c44btugCG/DY1xh
-         EYzwk4w26RrL9ubRkfCtyQ+mvKa8xwb0z8/6Drb3xR4RGebdjNgyaPOI7eNTVx/UtIYi
-         K5jsVzhRpjPOB4sjg6MICDD9LFGRACx1HnJrP7D9dq968iPemk9UPt1bc7CwhNhbrP76
-         3+Iw==
-X-Gm-Message-State: AOJu0YxM5ImDLTV5bTS7cm9ql1FonbXnApPkixH7uQSjkTyDczkq5ZFz
-	7cXLHSv74XiUNEJZZ6fyBH4=
-X-Google-Smtp-Source: AGHT+IGYKAB7Rm1Ig/GKPQgPdLfR9ZiX98pKpWHGlLUCA9EIQ7LZNda66HQcT7bQvwSH2nx4TDR1yQ==
-X-Received: by 2002:a05:6214:5581:b0:67a:65d9:6c53 with SMTP id mi1-20020a056214558100b0067a65d96c53mr7128461qvb.1.1701357906005;
-        Thu, 30 Nov 2023 07:25:06 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id a13-20020a0ce34d000000b0067a28752199sm584504qvm.10.2023.11.30.07.25.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 07:25:05 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id AC26927C0054;
-	Thu, 30 Nov 2023 10:25:04 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 30 Nov 2023 10:25:04 -0500
-X-ME-Sender: <xms:T6loZf8Cbq1-7yH_cPzJSa0NAoLqUxoeNCt7xpKFIYjqI41xT7j0ww>
-    <xme:T6loZbt8ktt839eSyjrnW7OJZ9tEshpHbtHlhvEwND-k_X8euXgjpTXKC7NC4JSuQ
-    Vr6NRjPVZMsLtTuWg>
-X-ME-Received: <xmr:T6loZdB1Mzc6h8Df0OQrv45wcrQj3aDYVdyJzUJSeHnrA55d7l4U2EX86A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeijedgjeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeelueeiffdugeeliedvjeethfettdeiffffueeiffelhfejgefghedtjedv
-    ffffhfenucffohhmrghinhepghhithhhuhgsrdgtohhmpddttddttddqihhnlhhinhgvqd
-    grshhmrdhmugenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
-    ohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvge
-    ehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhm
-    sehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:T6loZbd1Zf0tXvcvRUqz_qvwWrflkmrZx90cRrP1pIBzdKuhPCGA0A>
-    <xmx:T6loZUNN7X49LlG1y1Hmh6ACPa3grQ6ja5BPNvia0bhl1ZoOgLB-cA>
-    <xmx:T6loZdmzHhO-zUP0mrsFVFc_qMmBup_EAgyj070eofPLAH3gkVCROw>
-    <xmx:UKloZXiOE3anisBEA2h_yZkN0uamiSK1sjwWvq3VOqPkD_KZSyhy2g>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Nov 2023 10:25:03 -0500 (EST)
-Date: Thu, 30 Nov 2023 07:25:01 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kees Cook <keescook@chromium.org>,	Thomas Gleixner <tglx@linutronix.de>,
- Daniel Xu <dxu@dxuuu.xyz>,	linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,	linux-fsdevel@vger.kernel.org,
-	Josh Triplett <josh@joshtriplett.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Fq856kW6"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2874A10E5
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Nov 2023 07:47:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1701359229; x=1701618429;
+	bh=cEvdKECLsg9a2eLWYuxUSspqEsF3BY9+NgXdkgl9pLA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Fq856kW64t+MOtZ9Ri2JEdAgatjjoQSLmYDevIA3Kcr7RHttrKN4KbdCnbI9PusHJ
+	 rwtQHx187GizzkFthkPho86Be0FHErw0oRWfivHdt55oypqmOy3Vv/BhzEiUIyMqD+
+	 aUy7/X5YKAMNwD3j+31Gl4UZSSr3m1IU8J2JQaeGcAE0P7bWJ57bXlm/V/cofOl7F5
+	 O2nhxEx9Q38GQaDffOZbXGoeNZhnIpSkz31NsFCMhC4faMKuUAgKBQFGYfzMWK/wMb
+	 VUkmLOkkeW7ebZcomEoR8Ho6MNXhze1jkG+Z4tl6lssBaugVSYQTdAV/Z2ptY8jy7k
+	 IpPHjB3xADRAA==
+Date: Thu, 30 Nov 2023 15:46:55 +0000
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
-Message-ID: <ZWipTZysC2YL7qsq@Boquns-Mac-mini.home>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
- <20231129-alice-file-v1-1-f81afe8c7261@google.com>
- <ZWdVEk4QjbpTfnbn@casper.infradead.org>
- <20231129152305.GB23596@noisy.programming.kicks-ass.net>
- <ZWdv_jsaDFJxZk7G@Boquns-Mac-mini.home>
- <20231130104226.GB20191@noisy.programming.kicks-ass.net>
+Message-ID: <2gTL0hxPpSCcVa7uvDLOLcjqd_sgtacZ_6XWaEANBH9Gnz72M1JDmjcWNO9Z7UbIeWNoNqx8y-lb3MAq75pEXL6EQEIED0XLxuHvqaQ9K-g=@proton.me>
+In-Reply-To: <2023113041-bring-vagrancy-a417@gregkh>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-1-f81afe8c7261@google.com> <ksVe7fwt0AVWlCOtxIOb-g34okhYeBQUiXvpWLvqfxcyWXXuUuwWEIhUHigcAXJDFRCDr8drPYD1O1VTrDhaeZQ5mVxjCJqT32-2gHozHIo=@proton.me> <2023113041-bring-vagrancy-a417@gregkh>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231130104226.GB20191@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 30, 2023 at 11:42:26AM +0100, Peter Zijlstra wrote:
-> On Wed, Nov 29, 2023 at 09:08:14AM -0800, Boqun Feng wrote:
-> 
-> > But but but, I then realized we have asm goto in C but Rust doesn't
-> > support them, and I haven't thought through how hard tht would be..
-> 
-> You're kidding right?
-> 
+On 11/30/23 15:59, Greg Kroah-Hartman wrote:
+> On Thu, Nov 30, 2023 at 02:53:35PM +0000, Benno Lossin wrote:
+>> On 11/29/23 13:51, Alice Ryhl wrote:
+>>> +/// Flags associated with a [`File`].
+>>> +pub mod flags {
+>>> +    /// File is opened in append mode.
+>>> +    pub const O_APPEND: u32 =3D bindings::O_APPEND;
+>>
+>> Why do all of these constants begin with `O_`?
+>=20
+> Because that is how they are defined in the kernel in the C code.  Why
+> would they not be the same here?
 
-I'm not, but I've found this:
+Then why does the C side name them that way? Is it because `O_*` is
+supposed to mean something, or is it done due to namespacing?
 
-	https://github.com/Amanieu/rfcs/blob/inline-asm/text/0000-inline-asm.md#asm-goto
+In Rust we have namespacing, so we generally drop common prefixes.
 
-seems to me, the plan for this is something like below:
-
-	asm!(
-		"cmp {}, 42",
-		"jeq {}",
-		in(reg) val,
-		label { println!("a"); },
-		fallthrough { println!("b"); }
-    	);
-
-But it's not implemented yet. Cc Josh in case that he knows more about
-this.
-
-Regards,
-Boqun
-
-> I thought we *finally* deprecated all compilers that didn't support
-> asm-goto and x86 now mandates asm-goto to build, and then this toy
-> language comes around ?
-> 
-> What a load of crap ... 
+--=20
+Cheers,
+Benno
