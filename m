@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="F/rnyW1t"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACE210DB;
-	Thu, 30 Nov 2023 09:12:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="aoBbVk9A"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA40F10E6;
+	Thu, 30 Nov 2023 09:42:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1701364338; x=1701623538;
-	bh=5XDJY6qrdLzFeHm8Cj9m7uNxrkuBz8SBGfRnamorYn0=;
+	s=protonmail; t=1701366156; x=1701625356;
+	bh=jHvQDQIsGh7IZyuZ4Z71fkUJ7lN6fsPyLlI85ioCOd4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=F/rnyW1t+fVNykiiDP/o43MmFV6iXVkSn5siXpxdhZwP2zLlFfoQdeV3eiBt7wVz1
-	 K8f8K8aXaWHZ63asa/Zeqt5qcpLqF4o41niAbLYz3se4efNEvNHa9GRhkeEHoyHp0x
-	 RRmBKrVpsYBDDKZtRZCpWp0UvA6NQjZLLADR//Lc6/vtyWL/SgyoCPjgBogKbBqyey
-	 7J+GU42Gb9LyVRGiJvORDLGoo0W6z5nezm4/72/0O57X6+BnRGdKFXCo3jk0PRDKfO
-	 vvAxaqi7fq+xtIOA/V5lIdN/A5HFtMea3PG+0MLPevN3Z3d3h6Ky7dXvTQUWrOIGuG
-	 rUd6YTBcUjJgw==
-Date: Thu, 30 Nov 2023 17:12:01 +0000
+	b=aoBbVk9ACHHmxS9v/zNi4r1IrszVrrEk+96u5Vbtx6tteI/l/ac1n2/OtSshr4kLK
+	 EtjFckFu529Q2h8xsOmq48yhhbDu+Sr3EX4FQVVtgyhDiXj0PXlhm9K+GWiJdS7VCW
+	 ESJPd7VJ8D45YK2SLUCaIYtZryFEMHp+heEc/ds6S02yMmUwN+BM4Sz5rZ6AggisTi
+	 9Vurh4mtyuMBwd2Qp8bdoizuqGa5xEUuoX0bx68Q//tiWARi7paf3A+CDovtRku+Za
+	 uvcHJ7cGTuJdI7J7WbjXkbcg+dXM6rRi49cBqvwyNvF8/QilOGxuOScBWxA3hB/SF6
+	 9xqIzvRSaRGiw==
+Date: Thu, 30 Nov 2023 17:42:06 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 6/7] rust: file: add `DeferredFdCloser`
-Message-ID: <LNSA8EeuwLGDBzY1W8GaP1L6gucAPE_34myHWuyg3ziYuheiFLk3WfVBPppzwDZwoGVTCqL8EBjAaxsNshTY6AQq_sNtK9hmea7FeaNJuCo=@proton.me>
-In-Reply-To: <20231129-alice-file-v1-6-f81afe8c7261@google.com>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-6-f81afe8c7261@google.com>
+Subject: Re: [PATCH 7/7] rust: file: add abstraction for `poll_table`
+Message-ID: <bH_zaB8RmZZW2QrGBx1ud7-YfKmh6QvTU0jYKC0ns7jjoDkCWYnW3u1qX_YrN5P0VwsZGd7U5r8p-7DxH7pb4-6UUE0htwTkFNdDIYZb4os=@proton.me>
+In-Reply-To: <20231129-alice-file-v1-7-f81afe8c7261@google.com>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-7-f81afe8c7261@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -34,96 +34,75 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 11/29/23 14:12, Alice Ryhl wrote:
-> +    /// Schedule a task work that closes the file descriptor when this t=
-ask returns to userspace.
-> +    pub fn close_fd(mut self, fd: u32) {
-> +        use bindings::task_work_notify_mode_TWA_RESUME as TWA_RESUME;
-> +
-> +        let file =3D unsafe { bindings::close_fd_get_file(fd) };
-> +        if file.is_null() {
-> +            // Nothing further to do. The allocation is freed by the des=
-tructor of `self.inner`.
-> +            return;
-> +        }
-> +
-> +        self.inner.file =3D file;
-> +
-> +        // SAFETY: Since `DeferredFdCloserInner` is `#[repr(C)]`, castin=
-g the pointers gives a
-> +        // pointer to the `twork` field.
-> +        let inner =3D Box::into_raw(self.inner) as *mut bindings::callba=
-ck_head;
+> diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
+> index 578ee307093f..35576678c993 100644
+> --- a/rust/kernel/file.rs
+> +++ b/rust/kernel/file.rs
+> @@ -14,6 +14,9 @@
+>  use alloc::boxed::Box;
+>  use core::{alloc::AllocError, marker::PhantomData, mem, ptr};
+>=20
+> +mod poll_table;
+> +pub use self::poll_table::{PollCondVar, PollTable};
 
-Here you can just use `.cast::<...>()`.
+I think it makes more sense to put it under `rust/kernel/sync/`.
+> +    fn get_qproc(&self) -> bindings::poll_queue_proc {
+> +        let ptr =3D self.0.get();
+> +        // SAFETY: The `ptr` is valid because it originates from a refer=
+ence, and the `_qproc`
+> +        // field is not modified concurrently with this call.
 
-> +        // SAFETY: Getting a pointer to current is always safe.
-> +        let current =3D unsafe { bindings::get_current() };
-> +        // SAFETY: The `file` pointer points at a valid file.
-> +        unsafe { bindings::get_file(file) };
-> +        // SAFETY: Due to the above `get_file`, even if the current task=
- holds an `fdget` to
-> +        // this file right now, the refcount will not drop to zero until=
- after it is released
-> +        // with `fdput`. This is because when using `fdget`, you must al=
-ways use `fdput` before
-> +        // returning to userspace, and our task work runs after any `fdg=
-et` users have returned
-> +        // to userspace.
-> +        //
-> +        // Note: fl_owner_t is currently a void pointer.
-> +        unsafe { bindings::filp_close(file, (*current).files as bindings=
-::fl_owner_t) };
-> +        // SAFETY: The `inner` pointer is compatible with the `do_close_=
-fd` method.
-> +        unsafe { bindings::init_task_work(inner, Some(Self::do_close_fd)=
-) };
-> +        // SAFETY: The `inner` pointer points at a valid and fully initi=
-alized task work that is
-> +        // ready to be scheduled.
-> +        unsafe { bindings::task_work_add(current, inner, TWA_RESUME) };
+What ensures this? Maybe use a type invariant?
 
-I am a bit confused, when does `do_close_fd` actually run? Does
-`TWA_RESUME` mean that `inner` is scheduled to run after the current
-task has been completed?
-
+> +        unsafe { (*ptr)._qproc }
 > +    }
-> +
-> +    // SAFETY: This function is an implementation detail of `close_fd`, =
-so its safety comments
-> +    // should be read in extension of that method.
-> +    unsafe extern "C" fn do_close_fd(inner: *mut bindings::callback_head=
-) {
-> +        // SAFETY: In `close_fd` we use this method together with a poin=
-ter that originates from a
-> +        // `Box<DeferredFdCloserInner>`, and we have just been given own=
-ership of that allocation.
-> +        let inner =3D unsafe { Box::from_raw(inner as *mut DeferredFdClo=
-serInner) };
 
-In order for this call to be sound, `inner` must be an exclusive
-pointer (including any possible references into the `callback_head`).
-Is this the case?
+[...]
+
+> +impl PollCondVar {
+> +    /// Constructs a new condvar initialiser.
+> +    #[allow(clippy::new_ret_no_self)]
+
+This is no longer needed, as Gary fixed this, see [1].
+
+[1]: https://github.com/rust-lang/rust-clippy/issues/7344
+
+> +    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl =
+PinInit<Self> {
+> +        pin_init!(Self {
+> +            inner <- CondVar::new(name, key),
+> +        })
+> +    }
+> +}
+> +
+> +// Make the `CondVar` methods callable on `PollCondVar`.
+> +impl Deref for PollCondVar {
+> +    type Target =3D CondVar;
+> +
+> +    fn deref(&self) -> &CondVar {
+> +        &self.inner
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for PollCondVar {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // Clear anything registered using `register_wait`.
+> +        self.inner.notify(1, bindings::POLLHUP | bindings::POLLFREE);
+
+Isn't notifying only a single thread problematic, since a user could
+misuse the `PollCondVar` (since all functions of `CondVar` are also
+accessible) and also `.wait()` on the condvar? When dropping a
+`PollCondVar` it might notify only the user `.wait()`, but not the
+`PollTable`. Or am I missing something?
 
 --=20
 Cheers,
 Benno
 
-> +        // SAFETY: This drops a refcount we acquired in `close_fd`. Sinc=
-e this callback runs in a
-> +        // task work after we return to userspace, it is guaranteed that=
- the current thread doesn't
-> +        // hold this file with `fdget`, as `fdget` must be released befo=
-re returning to userspace.
-> +        unsafe { bindings::fput(inner.file) };
-> +        // Free the allocation.
-> +        drop(inner);
+> +        // Wait for epoll items to be properly removed.
+> +        //
+> +        // SAFETY: Just an FFI call.
+> +        unsafe { bindings::synchronize_rcu() };
 > +    }
 > +}
-> +
->  /// Represents the `EBADF` error code.
->  ///
->  /// Used for methods that can only fail with `EBADF`.
->=20
-> --
-> 2.43.0.rc1.413.gea7ed67945-goog
-> 
