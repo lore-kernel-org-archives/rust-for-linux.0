@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="c4vHt3HJ"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F5B1AD;
-	Thu, 30 Nov 2023 08:27:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ehwizPfW"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D87810DB
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Nov 2023 08:40:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1701361625; x=1701620825;
-	bh=mOMEDalTJ2nNUHEjuiH1o7OWgTyvdhbuWe5AEnNE+rE=;
+	s=protonmail; t=1701362431; x=1701621631;
+	bh=aUwMWJjNDKEwZmf6rHJqm0TKxpV/+zt7aI/cwBnNF/A=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=c4vHt3HJnr971aFPIjhH2bWoBzKLFTA107/xMOElWr2Ts62ZXLCjBr0Lb2VzbBDs7
-	 9UKaJv36630aCSacS1ZEgU/tQEj/4b3cVpBHjzWH+7OSFe4WriK0GoqdTfEYUwVXjC
-	 E05iZDseAd4T+Tc3Rfnqe9QwedU0hp52+g+m0vMKfJGDwN015ekgFMw77xnfRQqGv3
-	 dyJIwabpinaI7/gkzfQXZaQxnyafW0Q+X/uEEf9okalERYauEXm21rYce+4YZyXcC6
-	 JSeVVibmVBFv7+0FbpgBnGowPLXl5irsMbeBF+t//BbIRhtYeo5BK8YUZ2b7U7P9cB
-	 pG4BRgWSuydbw==
-Date: Thu, 30 Nov 2023 16:26:39 +0000
+	b=ehwizPfWAQhgd+7ta7CVxTTmFCLL9OZt2OTvHEdaMgrWXuHZyzNtxt32CUCB1M1PE
+	 6Q+MytXCCWjdVY4dbSvh6ZJKpIPHcoYlRCO+llV1Xp7icXNkd0rCP0iJqnsIUNchCq
+	 vhjmms7N2eQ7KF8DgyqKB/J40WXRCW17Ire313/raamQ4GRVNVJo1nW5l2u+gwoSrD
+	 dGF7BTHj/ahSWnAkJBD+hsBw5ttmcbKOTao+Z8d3w4BlBlRvcdgDQAGODrIGsqu71+
+	 rbRLbghNbiq+a+sjoiF4TvWS2W3VSuL2zQ0mH2WIU6Iv0P+QW5++cSqJPpi80t3Y51
+	 C2KroYXNBsJbw==
+Date: Thu, 30 Nov 2023 16:40:08 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/7] rust: security: add abstraction for secctx
-Message-ID: <qwxqEq_l1jj3cAKSEh7gBZCUyBGCDmThdz6JJIQiFVl94ASI4yyNB6956XLrsQXnE4ulo48QRMaKPjgt7JZoolisVEiGOUP7IyRdecdhXqw=@proton.me>
-In-Reply-To: <20231129-alice-file-v1-3-f81afe8c7261@google.com>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-3-f81afe8c7261@google.com>
+Subject: Re: [PATCH 4/7] rust: file: add `FileDescriptorReservation`
+Message-ID: <_xnOTacjwsOFSA4oog2DJs0VLa1w0EaSPM3rqDUjIZAmNgiq0V0-bJwfVZdDKaydes_rJb30Zz4TyacYImYZHK6i0-LR8AYbQa2T1l0h3K8=@proton.me>
+In-Reply-To: <20231129-alice-file-v1-4-f81afe8c7261@google.com>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com> <20231129-alice-file-v1-4-f81afe8c7261@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -34,108 +34,51 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 11/29/23 14:11, Alice Ryhl wrote:
-> +/// A security context string.
-> +///
-> +/// The struct has the invariant that it always contains a valid securit=
-y context.
-
-Refactor to use the `# Invariants` section:
-
-    # Invariants
-    `secdata` points to a valid security context.
-
-I also do not know what a "valid security context" is, so a link to the
-definition wouldn't hurt.
-
-> +pub struct SecurityCtx {
-> +    secdata: *mut core::ffi::c_char,
-> +    seclen: usize,
-> +}
-> +
-> +impl SecurityCtx {
-> +    /// Get the security context given its id.
-> +    pub fn from_secid(secid: u32) -> Result<Self> {
-> +        let mut secdata =3D core::ptr::null_mut();
-> +        let mut seclen =3D 0;
-> +        // SAFETY: Just a C FFI call. The pointers are valid for writes.
-> +        unsafe {
-> +            to_result(bindings::security_secid_to_secctx(
-> +                secid,
-> +                &mut secdata,
-> +                &mut seclen,
-> +            ))?;
+> +impl FileDescriptorReservation {
+> +    /// Creates a new file descriptor reservation.
+> +    pub fn new(flags: u32) -> Result<Self> {
+> +        // SAFETY: FFI call, there are no safety requirements on `flags`=
+.
+> +        let fd: i32 =3D unsafe { bindings::get_unused_fd_flags(flags) };
+> +        if fd < 0 {
+> +            return Err(Error::from_errno(fd));
 > +        }
-> +
-> +        // If the above call did not fail, then we have a valid security
-> +        // context, so the invariants are not violated.
 
-Should be tagged `INVARIANT`.
+I think here we could also use the modified `to_result` function that
+returns a `u32` if the value is non-negative.
 
 > +        Ok(Self {
-> +            secdata,
-> +            seclen: usize::try_from(seclen).unwrap(),
+> +            fd: fd as _,
+> +            _not_send_sync: PhantomData,
 > +        })
 > +    }
 > +
-> +    /// Returns whether the security context is empty.
-> +    pub fn is_empty(&self) -> bool {
-> +        self.seclen =3D=3D 0
+> +    /// Returns the file descriptor number that was reserved.
+> +    pub fn reserved_fd(&self) -> u32 {
+> +        self.fd
 > +    }
 > +
-> +    /// Returns the length of this security context.
-> +    pub fn len(&self) -> usize {
-> +        self.seclen
-> +    }
+> +    /// Commits the reservation.
+> +    ///
+> +    /// The previously reserved file descriptor is bound to `file`. This=
+ method consumes the
+> +    /// [`FileDescriptorReservation`], so it will not be usable after th=
+is call.
+> +    pub fn commit(self, file: ARef<File>) {
+> +        // SAFETY: `self.fd` was previously returned by `get_unused_fd_f=
+lags`, and `file.ptr` is
+> +        // guaranteed to have an owned ref count by its type invariants.
+> +        unsafe { bindings::fd_install(self.fd, file.0.get()) };
 > +
-> +    /// Returns the bytes for this security context.
-> +    pub fn as_bytes(&self) -> &[u8] {
-> +        let mut ptr =3D self.secdata;
-> +        if ptr.is_null() {
-> +            // Many C APIs will use null pointers for strings of length =
-zero, but
+> +        // `fd_install` consumes both the file descriptor and the file r=
+eference, so we cannot run
+> +        // the destructors.
+> +        core::mem::forget(self);
+> +        core::mem::forget(file);
 
-I would just write that the secctx API uses null pointers to denote a
-string of length zero.
-
-> +            // `slice::from_raw_parts` doesn't allow the pointer to be n=
-ull even if the length is
-> +            // zero. Replace the pointer with a dangling but non-null po=
-inter in this case.
-> +            debug_assert_eq!(self.seclen, 0);
-
-I am feeling a bit uncomfortable with this, why can't we just return
-an empty slice in this case?
-
-> +            ptr =3D core::ptr::NonNull::dangling().as_ptr();
-> +        }
-> +
-> +        // SAFETY: The call to `security_secid_to_secctx` guarantees tha=
-t the pointer is valid for
-> +        // `seclen` bytes. Furthermore, if the length is zero, then we h=
-ave ensured that the
-> +        // pointer is not null.
-> +        unsafe { core::slice::from_raw_parts(ptr.cast(), self.seclen) }
-> +    }
-> +}
-> +
-> +impl Drop for SecurityCtx {
-> +    fn drop(&mut self) {
-> +        // SAFETY: This frees a pointer that came from a successful call=
- to
-> +        // `security_secid_to_secctx`.
-
-This should be part of the type invariant.
+Would be useful to have an `ARef::into_raw` function that would do
+the `forget` for us.
 
 --=20
 Cheers,
 Benno
-
-> +        unsafe {
-> +            bindings::security_release_secctx(self.secdata, self.seclen =
-as u32);
-> +        }
-> +    }
-> +}
-> --
-> 2.43.0.rc1.413.gea7ed67945-goog
-> 
