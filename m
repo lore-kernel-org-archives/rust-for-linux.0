@@ -1,29 +1,39 @@
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2969D134C3;
+	Thu, 30 Nov 2023 09:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AwPlFmo/"
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67A41A2
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Nov 2023 15:18:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1701299880; x=1701559080;
-	bh=ioPvELIdRThD715hd8zdKjIZrjzPAQE7wm474WJAqF4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AwPlFmo/rkoaSEPLXDBUp5RYZFXhpXPmSN6/Sm6NfyJ+oigu8XxK4W/gqsAM1FEqU
-	 fhrkTv5wjXZgD7Aq+B5tak0rHosBg877xvVCiaGbHI4JOcVwGc6ECWq42tjDcBc936
-	 HcNJC2aaJQxe4qrvtg+gj+CWdXuJTMrbdcXS99DIiSf2sX9h1Njl+xvIrgrUlDpJgZ
-	 ECqqyFTfFyLl5pTQtR9LACRlHFZZQSHFfVzylMJeRMvi4V+9gekLxNnCy07U0exkYw
-	 X1hjuGlRj/Ebqqy68A6T0xpwvuprtuwAD4a462iDagk8Mi7gGhB0Dkkjur7lB1SmXb
-	 ts/cDgCkDR89w==
-Date: Wed, 29 Nov 2023 23:17:48 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YYOeoaJf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B788C433C7;
+	Thu, 30 Nov 2023 09:09:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701335358;
+	bh=xb51lgH3hhmGdIHdSPjYm+sLbGYQfwWqFrsqt0dVLWs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YYOeoaJfkiDkKn0akU65fRx50iLnBadwLtcjp4awkfUOdAXFhvd65HUyXPoA7965H
+	 2649TBwBK5gBj3p0xM7DQ04pZdL4bfYWQWP0rDZrUY05CRFfxpkUXX/OBpxCfKFP51
+	 RZ11qlMzruEcZC7e+wyJNFv7LmSO3ePrdwIVHZRjK+/qYJ1PphncIVkAwha6ZU57cF
+	 fjanawuEejTGuho1/h/lw5rnmV/Rv0Dq7EaTMIfHB99TCLD+medEHQvcRlKNI8PFeq
+	 A2GaALvjHsyxl8mjMgUYI2n7vYXGHlL2YhjQQKSbFbnRSsLe1pZSpNms/MzraXuoQa
+	 /A9EkP7Chvu1g==
+Date: Thu, 30 Nov 2023 10:09:09 +0100
+From: Christian Brauner <brauner@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: brauner@kernel.org, a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
-Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
-Message-ID: <1cT5uqAdTaJ2sJVCILPrVHczVq1z2BZfCXy3wOHJKhMx7RFSATPcdAFpYT9y6h6nZBvHcQsYbeJMXMqB6u3i85yDRIO6iGwUoerIaSWdEn4=@proton.me>
-In-Reply-To: <20231129212707.3520214-1-aliceryhl@google.com>
-References: <20231129-geleckt-verebben-04ea0c08a53c@brauner> <20231129212707.3520214-1-aliceryhl@google.com>
-Feedback-ID: 71780778:user:proton
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com,
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, cmllamas@google.com, dan.j.williams@intel.com,
+	dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org,
+	joel@joelfernandes.org, keescook@chromium.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	maco@android.com, ojeda@kernel.org, peterz@infradead.org,
+	rust-for-linux@vger.kernel.org, surenb@google.com,
+	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk,
+	wedsonaf@gmail.com, willy@infradead.org
+Subject: Re: [PATCH 4/7] rust: file: add `FileDescriptorReservation`
+Message-ID: <20231130-lernziel-rennen-0a5450188276@brauner>
+References: <20231129-zwiespalt-exakt-f1446d88a62a@brauner>
+ <20231129165551.3476910-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -31,106 +41,89 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20231129165551.3476910-1-aliceryhl@google.com>
 
-On 29.11.23 22:27, Alice Ryhl wrote:
-> Another example:
->=20
-> =09void set_nonblocking_and_fput(struct file *file) {
-> =09=09// Let's just ignore the lock for this example.
-> =09=09file->f_flags |=3D O_NONBLOCK;
->=20
-> =09=09fput(file);
-> =09}
->=20
-> This method takes a file, sets it to non-blocking, and then destroys the
-> ref-count. What are the ownership semantics? Well, the caller should own
-> an `fget` ref-count, and we consume that ref-count. The equivalent Rust
-> code would be to take an `ARef<File>`:
->=20
-> =09fn set_nonblocking_and_fput(file: ARef<File>) {
-> =09=09file.set_flag(O_NONBLOCK);
->=20
-> =09=09// When `file` goes out of scope here, the destructor
-> =09=09// runs and calls `fput`. (Since that's what we defined
-> =09=09// `ARef` to do on drop in `fn dec_ref`.)
-> =09}
->=20
-> You can also explicitly call the destructor with `drop(file)`:
->=20
-> =09fn set_nonblocking_and_fput(file: ARef<File>) {
-> =09=09file.set_flag(O_NONBLOCK);
-> =09=09drop(file);
->=20
-> =09=09// When `file` goes out of scope, the destructor does
-> =09=09// *not* run. This is because `drop(file)` is a move
-> =09=09// (due to the signature of drop), and if you perform a
-> =09=09// move, then the destructor no longer runs at the end
-> =09=09// of the scope.
+On Wed, Nov 29, 2023 at 04:55:51PM +0000, Alice Ryhl wrote:
+> Christian Brauner <brauner@kernel.org> writes:
+> > Can we follow the traditional file terminology, i.e.,
+> > get_unused_fd_flags() and fd_install()? At least at the beginning this
+> > might be quite helpful instead of having to mentally map new() and
+> > commit() onto the C functions.
+> 
+> Sure, I'll do that in the next version.
+> 
+> >> +    /// Prevent values of this type from being moved to a different task.
+> >> +    ///
+> >> +    /// This is necessary because the C FFI calls assume that `current` is set to the task that
+> >> +    /// owns the fd in question.
+> >> +    _not_send_sync: PhantomData<*mut ()>,
+> > 
+> > I don't fully understand this. Can you explain in a little more detail
+> > what you mean by this and how this works?
+> 
+> Yeah, so, this has to do with the Rust trait `Send` that controls
+> whether it's okay for a value to get moved from one thread to another.
+> In this case, we don't want it to be `Send` so that it can't be moved to
+> another thread, since current might be different there.
+> 
+> The `Send` trait is automatically applied to structs whenever *all*
+> fields of the struct are `Send`. So to ensure that a struct is not
+> `Send`, you add a field that is not `Send`.
+> 
+> The `PhantomData` type used here is a special zero-sized type.
+> Basically, it says "pretend this struct has a field of type `*mut ()`,
+> but don't actually add the field". So for the purposes of `Send`, it has
+> a non-Send field, but since its wrapped in `PhantomData`, the field is
+> not there at runtime.
 
-I want to note that while the destructor does not run at the end of the
-scope, it still *does* run: the `drop(file)` call runs the destructor.
+This probably a stupid suggestion, question. But while PhantomData gives
+the right hint of what is happening I wouldn't mind if that was very
+explicitly called NoSendTrait or just add the explanatory comment. Yes,
+that's a lot of verbiage but you'd help us a lot.
 
-> =09}
->=20
-> And note that this would not compile, because we give up ownership of
-> the `ARef` by passing it to `drop`:
->=20
-> =09fn set_nonblocking_and_fput(file: ARef<File>) {
-> =09=09drop(file);
-> =09=09file.set_flag(O_NONBLOCK);
-> =09}
->
+> 
+> >> +        Ok(Self {
+> >> +            fd: fd as _,
+> > 
+> > This is a cast to a u32?
+> 
+> Yes.
+> 
+> > Can you please draft a quick example how that return value would be
+> > expected to be used by a caller? It's really not clear
+> 
+> The most basic usage would look like this:
+> 
+> 	// First, reserve the fd.
+> 	let reservation = FileDescriptorReservation::new(O_CLOEXEC)?;
+> 
+> 	// Then, somehow get a file to put in it.
+> 	let file = get_file_using_fallible_operation()?;
+> 
+> 	// Finally, commit it to the fd.
+> 	reservation.commit(file);
 
-[...]
+Ok, the reason I asked was that I was confused about the PhantomData and
+how that would figure into using the return value as I hadn't seen that
+Ok(Self { }) syntax before. Thanks.
+  
+> 
+> In Rust Binder, reservations are used here:
+> https://github.com/Darksonn/linux/blob/dca45e6c7848e024709b165a306cdbe88e5b086a/drivers/android/allocation.rs#L199-L210
+> https://github.com/Darksonn/linux/blob/dca45e6c7848e024709b165a306cdbe88e5b086a/drivers/android/allocation.rs#L512-L541
+> 
+> >> +    pub fn commit(self, file: ARef<File>) {
+> >> +        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`, and `file.ptr` is
+> >> +        // guaranteed to have an owned ref count by its type invariants.
+> >> +        unsafe { bindings::fd_install(self.fd, file.0.get()) };
+> > 
+> > Why file.0.get()? Where did that come from?
+> 
+> This gets a raw pointer to the C type.
+> 
+> The `.0` part is a field access. `ARef` struct is a tuple struct, so its
 
->>> +// SAFETY: The type invariants guarantee that `File` is always ref-cou=
-nted.
->>> +unsafe impl AlwaysRefCounted for File {
->>> +    fn inc_ref(&self) {
->>> +        // SAFETY: The existence of a shared reference means that the =
-refcount is nonzero.
->>> +        unsafe { bindings::get_file(self.0.get()) };
->>> +    }
->>
->> Why inc_ref() and not just get_file()?
->=20
-> Whenever you see an impl block that uses the keyword "for", then the
-> code is implementing a trait. In this case, the trait being implemented
-> is AlwaysRefCounted, which allows File to work with ARef.
->=20
-> It has to be `inc_ref` because that's what AlwaysRefCounted calls this
-> method.
+Ah, there we go. It's a bit ugly tbh.
 
-I am not sure if the Rust term "trait" is well-known, so for a bit more
-context, I am quoting the Rust Book [1]:
-
-    A *trait* defines functionality a particular type has and can share
-    with other types. We can use traits to define shared behavior in an
-    abstract way. We can use *trait bounds* to specify that a generic type
-    can be any type that has certain behavior.
-
-[1]: https://doc.rust-lang.org/book/ch10-02-traits.html
-
-We have created an abstraction over reference counting:
-the trait `AlwaysRefCounted` and the struct `ARef<T>` where `T`
-implements `AlwaysRefCounted`.
-As Alice already explained, `ARef<T>` is a pointer that owns a refcount
-on the object. Because `ARef<T>` needs to know how to increment and
-decrement that counter. For example, when you want to create another
-`ARef<T>` you can `clone()` it and therefore `ARef<T>` needs to
-increment the refcount. And when you drop it, `ARef<T>` needs to
-decrement it.
-The "`ARef<T>` knows how to inc/dec the refcount" part is done by the
-`AlwaysRefCounted` trait. And there we chose to name the functions
-`inc_ref` and `dec_ref`, since these are the *general*/*abstract*
-operations and not any specific refcount adjustment.
-
-
-
-Hope that also helped and did not create confusion.
-
---
-Cheers,
-Benno
-
+> fields are unnamed. However, the fields can still be accessed by index.
