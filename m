@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MVcHwtKJ"
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E54510CE
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Nov 2023 03:54:55 -0800 (PST)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d9cb79eb417so1140295276.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Nov 2023 03:54:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DauTORjd"
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3022110F4
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Nov 2023 04:10:16 -0800 (PST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5caf86963ecso12996287b3.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Nov 2023 04:10:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701345294; x=1701950094; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1701346215; x=1701951015; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Ea0g+hjygDzgDj1GEwYp4lup/QhGtb9KeZIVW/xhfo=;
-        b=MVcHwtKJGkifbVfZNTWt7zcAl4ic2U4b7sU0jjyroRa+fxELpaFRl9lKmttwQo+83H
-         wpMIeoWBtCwVD12k2eIsbNnTVHv8cGt1FutYoeaFtvoMH5NrU6l/ajd0Y76A30G74aBE
-         r0EwwaEGlEjW0ZrgManBcbH12x3mTR8l5rHlQ8CNutHwqtpyCdkCbKNg0ddwSSqtm801
-         nJKjqVh5im95NuFp4nUk0UkL7AxND37n0MQ6kCSfDY7HKJIq4C82jEBE3NMgRsSB+KIT
-         1D9exUN62iZei44+0jnB8TttxiKrWaginfNq3Sb0GGSB3bs4uYsnhbLd6X1JWNYPDN1P
-         kDzA==
+        bh=MpC0qbPCJ3yCkzqZmHvjb+j6E99/8etcnMaQGxE98xo=;
+        b=DauTORjdSDyxQtj+qiiDb77b8RnHJnJIteI5c5uNh0A2d2yX3qioZQcqPjT/A9Slyg
+         xItc14+OiF8pZIHGxa9AJyxGnFBF1CJhFt5EIYucVBMfd9f/ybSoYSuRe4qtpxBXTB8n
+         YDg3HfBncegdPfJQcDvGdNTKT7avSitiK8qOjYtRtWDJrWsAW2JH7ZipVY4Mb7MfOdVr
+         kZO4M+bzTCaHQkqSkkmbM7fViY9g8ifo7fIEEaDCr73dfNqmiyZvfpStYumXinSeYRO6
+         dJ039K/GVq/whYpEtsc2ps81RMg10mSrWIIHNyCMTTTFFvPdOaQP/eIxy5B+RIZE/3RX
+         pb+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701345294; x=1701950094;
+        d=1e100.net; s=20230601; t=1701346215; x=1701951015;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Ea0g+hjygDzgDj1GEwYp4lup/QhGtb9KeZIVW/xhfo=;
-        b=os/iubpq+NYxpRHLd2cxNFkW4lAQgX1EtZn06Kwx+ybiS4g5uAjeR+Mb4scQG5894j
-         BiOsCpDKSQ/NmbOzvpOPNl5rnk3NxTIuv2FQBFCGGwX5/R0oJu+fXN1d7yd850pjGw3r
-         vHltHgDR2TSvfaXxdBbNOzuT0tWNO1J4Rsh26JfD61SWUSCaSTzsXEjDahEgOHN0FHhI
-         UrFdJFUNp18ixKUCf1vehu9nBJKOQ/VgZPrs/q32QfZCw8c+lFr76m7UkWMPhA9KpVSA
-         ipmLOCfW1X5rSTZI9ZCgy2VPFNcVSzVnX81dNDQjd5r0D+mj3Hwi5xgzrrv0WKoDTVS7
-         hIrw==
-X-Gm-Message-State: AOJu0YyjpIxDgC2m4NRU6nSL2WAzn7rhUEd2SBiIubAVVGwHhhIWyYXM
-	MfJ7kfY0yesfWfEF39YqC6rMh7JyuSwfYRY=
-X-Google-Smtp-Source: AGHT+IHPUC2oJigUCp4394fpGppUzbUGq5za43fjSJ3eZirrcKp2FsFh9awCLV6Z46O/m/gwIu+0t3KmwCZCHcs=
+        bh=MpC0qbPCJ3yCkzqZmHvjb+j6E99/8etcnMaQGxE98xo=;
+        b=pdch0j3yP4LNaiWCdi26aWbKu0oAyPdhDBfCh+AJczV60JTST8dOVbZPOEighwu5jJ
+         dXd6jY7YyH/ajlsQKyPGuqoFVJvXkAavmvxih/7JNKjR19Vxt0jLqdlDAu1ATaxfrRb1
+         Gx9hNkNJsGlYa0rnveS8gR5prKV3fh3Qf/euYY7C/nnQbhk6DOUbsECvqfao3wBbUZj0
+         p7jQRa+cn0ktIXoCj1meA+UyK/cNM5+HXsroer6xoVJy/UUzYiaey118+eJk0bQ4Vhvz
+         tylvAhQ2d2ucSZULiauYxBWGvuYOmTZDFJXqpyeS3APi2K2hPlBd5yU9YdL4marhjPwF
+         UYew==
+X-Gm-Message-State: AOJu0YzCo5cTANxlLS2fPy25BlikO6ZNQpstmGqcumRdMzDFGWhHmTVa
+	F3XDSq29yPTH4Din0xUySCo7J2fukcSWJPs=
+X-Google-Smtp-Source: AGHT+IHkruZpynxgNrnzwalbW6zRZDy4mTm8VClbDHLx2F8vWgb3ZReA4zvBoILLpWV35FvGD9AUBn92jc8MH9g=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a25:d74f:0:b0:da0:c49a:5feb with SMTP id
- o76-20020a25d74f000000b00da0c49a5febmr600980ybg.4.1701345294581; Thu, 30 Nov
- 2023 03:54:54 -0800 (PST)
-Date: Thu, 30 Nov 2023 11:54:51 +0000
-In-Reply-To: <20231130-windungen-flogen-7b92c4013b82@brauner>
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:844:b0:5ca:8462:670f with SMTP
+ id bz4-20020a05690c084400b005ca8462670fmr667597ywb.0.1701346215441; Thu, 30
+ Nov 2023 04:10:15 -0800 (PST)
+Date: Thu, 30 Nov 2023 12:10:12 +0000
+In-Reply-To: <20231130-sackgasse-abdichtung-62c23edd9a9f@brauner>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20231130-windungen-flogen-7b92c4013b82@brauner>
+References: <20231130-sackgasse-abdichtung-62c23edd9a9f@brauner>
 X-Mailer: git-send-email 2.43.0.rc1.413.gea7ed67945-goog
-Message-ID: <20231130115451.138496-1-aliceryhl@google.com>
-Subject: Re: [PATCH 4/7] rust: file: add `FileDescriptorReservation`
+Message-ID: <20231130121013.140671-1-aliceryhl@google.com>
+Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
 From: Alice Ryhl <aliceryhl@google.com>
 To: brauner@kernel.org
 Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
@@ -60,69 +60,116 @@ Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com,
 Content-Type: text/plain; charset="utf-8"
 
 Christian Brauner <brauner@kernel.org> writes:
-> On Thu, Nov 30, 2023 at 09:17:56AM +0000, Alice Ryhl wrote:
->> Christian Brauner <brauner@kernel.org> writes:
->>>>>> +    /// Prevent values of this type from being moved to a different task.
->>>>>> +    ///
->>>>>> +    /// This is necessary because the C FFI calls assume that `current` is set to the task that
->>>>>> +    /// owns the fd in question.
->>>>>> +    _not_send_sync: PhantomData<*mut ()>,
->>>>> 
->>>>> I don't fully understand this. Can you explain in a little more detail
->>>>> what you mean by this and how this works?
->>>> 
->>>> Yeah, so, this has to do with the Rust trait `Send` that controls
->>>> whether it's okay for a value to get moved from one thread to another.
->>>> In this case, we don't want it to be `Send` so that it can't be moved to
->>>> another thread, since current might be different there.
->>>> 
->>>> The `Send` trait is automatically applied to structs whenever *all*
->>>> fields of the struct are `Send`. So to ensure that a struct is not
->>>> `Send`, you add a field that is not `Send`.
->>>> 
->>>> The `PhantomData` type used here is a special zero-sized type.
->>>> Basically, it says "pretend this struct has a field of type `*mut ()`,
->>>> but don't actually add the field". So for the purposes of `Send`, it has
->>>> a non-Send field, but since its wrapped in `PhantomData`, the field is
->>>> not there at runtime.
+>> This is the backdoor. You use it when *you* know that the file is okay
+> 
+> And a huge one.
+> 
+>> to access, but Rust doesn't. It's unsafe because it's not checked by
+>> Rust.
+>> 
+>> For example you could do this:
+>> 
+>> 	let ptr = unsafe { bindings::fdget(fd) };
+>> 
+>> 	// SAFETY: We just called `fdget`.
+>> 	let file = unsafe { File::from_ptr(ptr) };
+>> 	use_file(file);
+>> 
+>> 	// SAFETY: We're not using `file` after this call.
+>> 	unsafe { bindings::fdput(ptr) };
+>> 
+>> It's used in Binder here:
+>> https://github.com/Darksonn/linux/blob/dca45e6c7848e024709b165a306cdbe88e5b086a/drivers/android/rust_binder.rs#L331-L332
+>> 
+>> Basically, I use it to say "C code has called fdget for us so it's okay
+>> to access the file", whenever userspace uses a syscall to call into the
+>> driver.
+> 
+> Yeah, ok, because the fd you're operating on may be coming from fdget(). Iirc,
+> binder is almost by default used multi-threaded with a shared file descriptor
+> table? But while that means fdget() will usually bump the reference count you
+> can't be sure. Hmkay.
+
+Even if the syscall used `fget` instead of `fdget`, I would still be
+using `from_ptr` here. The `ARef` type only really makes sense when *we*
+have ownership of the ref-count, but in this case we don't own it. We're
+just given a promise that the caller is keeping it alive for us using
+some mechanism or another.
+
+>>>> +// SAFETY: It's OK to access `File` through shared references from other threads because we're
+>>>> +// either accessing properties that don't change or that are properly synchronised by C code.
 >>> 
->>> This probably a stupid suggestion, question. But while PhantomData gives
->>> the right hint of what is happening I wouldn't mind if that was very
->>> explicitly called NoSendTrait or just add the explanatory comment. Yes,
->>> that's a lot of verbiage but you'd help us a lot.
+>>> Uhm, what guarantees are you talking about specifically, please?
+>>> Examples would help.
+>>> 
+>>>> +unsafe impl Sync for File {}
 >> 
->> I suppose we could add a typedef:
->> 
->> type NoSendTrait = PhantomData<*mut ()>;
->> 
->> and use that as the field type. The way I did it here is the "standard"
->> way of doing it, and if you look at code outside the kernel, you will
->> also find them using `PhantomData` like this. However, I don't mind
->> adding the typedef if you think it is helpful.
+>> The Sync trait defines whether a value may be accessed from several
+>> threads in parallel (using shared/immutable references). In our case,
 > 
-> I'm fine with just a comment as well. I just need to be able to read
-> this a bit faster. I'm basically losing half a day just dealing with
-> this patchset and that's not realistic if I want to keep up with other
-> patches that get sent.
+> So let me put this into my own words and you correct me, please:
 > 
-> And if you resend and someone else review you might have to answer the
-> same question again.
+> So, this really just means that if I have two processes both with their own
+> fdtable and they happen to hold fds that refer to the same @file:
+> 
+> P1				P2
+> struct fd fd1 = fdget(1234);
+>                                  struct fd fd2 = fdget(5678);
+> if (!fd1.file)                   if (!fd2.file)
+> 	return -EBADF;                 return -EBADF;
+> 
+> // fd1.file == fd2.file
+> 
+> the only if the Sync trait is implemented both P1 and P2 can in parallel call
+> file->f_op->poll(@file)?
+> 
+> So if the Sync trait isn't implemented then the compiler will prohibit that P1
+> and P2 at the same time call file->f_op->poll(@file)? And that's all that's
+> meant by a shared reference? It's really about sharing the pointer.
 
-What do you think about this wording?
+Yeah, what you're saying sounds correct. For a type that is not Sync,
+you would need a lock around the call to `poll` before the compiler
+would accept the call.
 
-/// Prevent values of this type from being moved to a different task.
-/// 
-/// This field has the type `PhantomData<*mut ()>`, which does not
-/// implement the Send trait. By adding a field with this property, we
-/// ensure that the `FileDescriptorReservation` struct will not
-/// implement the Send trait either. This has the consequence that the
-/// compiler will prevent you from moving values of type
-/// `FileDescriptorReservation` into a different task, which we want
-/// because other tasks might have a different value of `current`. We
-/// want to avoid that because `fd_install` assumes that the value of
-/// `current` is unchanged since the call to `get_unused_fd_flags`.
-/// 
-/// The `PhantomData` type has size zero, so the field does not exist at
-/// runtime.
+(Or some other mechanism to convince the compiler that no other thread
+is looking at the file at the same time. Of course, a lock is just one
+way to do that.)
+
+> The thing is that "shared reference" gets a bit in our way here:
+> 
+> (1) If you have SCM_RIGHTs in the mix then P1 can open fd1 to @file and then
+>     send that @file to P2 which now has fd2 refering to @file as well. The
+>     @file->f_count is bumped in that process. So @file->f_count is now 2.
+> 
+>     Now both P1 and P2 call fdget(). Since they don't have a shared fdtable
+>     none of them take an additional reference to @file. IOW, @file->f_count
+>     may remain 2 all throughout the @file->f_op->*() operation.
+> 
+>     So they share a reference to that file and elide both the
+>     atomic_inc_not_zero() and the atomic_dec_not_zero().
+> 
+> (2) io_uring has fixed files whose reference count always stays at 1.
+>     So all io_uring operations on such fixed files share a single reference.
+> 
+> So that's why this is a bit confusing at first to read "shared reference".
+> 
+> Please add a comment on top of unsafe impl Sync for File {}
+> explaining/clarifying this a little that it's about calling methods on the same
+> file.
+
+Yeah, I agree, the terminology gets a bit mixed up here because we both
+use the word "reference" for different things.
+
+How about this comment?
+
+/// All methods defined on `File` that take `&self` are safe to call even if
+/// other threads are concurrently accessing the same `struct file`, because
+/// those methods either access immutable properties or have proper
+/// synchronization to ensure that such accesses are safe.
+
+Note: Here, I say "take &self" to refer to methods with &self in the
+signature. This signature means that you pass a &File to the method when
+you call it.
 
 Alice
+
