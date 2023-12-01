@@ -1,161 +1,86 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAX2L9u9"
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E347DE;
-	Fri,  1 Dec 2023 02:36:45 -0800 (PST)
-Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-67a295e40baso10816686d6.1;
-        Fri, 01 Dec 2023 02:36:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sxA3i1Ch"
+Received: from mail-lf1-x14a.google.com (mail-lf1-x14a.google.com [IPv6:2a00:1450:4864:20::14a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9233D10FF
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Dec 2023 02:48:35 -0800 (PST)
+Received: by mail-lf1-x14a.google.com with SMTP id 2adb3069b0e04-50bc961b435so1927111e87.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Dec 2023 02:48:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701427004; x=1702031804; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+1CSvziGe/qbcOkKXo9IQPR3y1xjDPlILN2WHHl8yYE=;
-        b=EAX2L9u9pfQmtiQ7puEQ0bQB43z+FHTSKdwWQz6a39zOwe3gpcgzjfEF+5Y7TskRLd
-         FX1BpsQzVoIlOwCRdaGNgPpPTEuJX9QwxtTPhDGwrAMv6y9ukma2Gpe6jcOgHSjatRjG
-         UVC4NNVY1W0oXZTh7IDMTGyBqH8/3lrp97xDvVCwTVG19l9toEawUV4tozOqdtTuZ04m
-         vZNiXxWP9QbvUJ+o64gJHnczpgY4HDUG0apuwce8fvX9gyi5e/sW+C8SZ73Maw6pkGMJ
-         ycLz2+ZXk3ZVZ4v4WDpckFSBkmUh7mbyqBxfX4AvR7DtDludtfw2Cy00fkZS/e0xTpMR
-         +gyA==
+        d=google.com; s=20230601; t=1701427714; x=1702032514; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3BDjvfSfgdlHtcZ8hZz7EmYheIAAA3/9++NHU5PhyfI=;
+        b=sxA3i1Chktm3tCfmpZuR6EOYjQm3xstwFoUilO54Kl/cjp7pWByFTIijDNMQuF4Y+5
+         rGy778iYi8e5UnoZPTD6doM2FB9rEL07USlqL0S8iQ/gut0+soyY7ocQkbLxZow1YRDd
+         dCCUxnX1FMF2mch+eKJblwTjtSp54fF/eiX+fycLdzDpHf7JlLUgK25lkAqtQmJdQCMq
+         g0PA7ObPTdWlf6YeDAJ3Itys63Gi8Hy8lYRhPJUi/8ewQ+WLEkW36+0Na3jUe4AkJQ5w
+         c921+6+Fs9vLHZGnBKBXCdAz631n0M7OaCkDhhzarZcMatqSbcLMgOXdlH6KCmtXRf43
+         EVEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701427004; x=1702031804;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+1CSvziGe/qbcOkKXo9IQPR3y1xjDPlILN2WHHl8yYE=;
-        b=bxRvzz1mxRIyEifnWIIMZ6L3wgGw8zgYfmGKhFTNW9ilJweSXTv65BO/TvXYsHIF8O
-         WBhFweONX230EnCaRn7yoaLjTJVL0jkpzXn5d4FM8E4ERZeORAI/0oC1uNLvxo0usLT8
-         6jlOsee3V2LdwXMBnHw1MPKj5+qAOznwhnjpCQanndUYOzLBy6WeC9+Rp3xF8sx0UoWm
-         NE5yvmonjA77vmhbZ1DJamPzNvd1RGmo51RZ9be4B2GqHXSLZvrOwC0E/D9JQJNVxtD8
-         6DWVR5ucP1vBaYTXka7QWM9q/FfmTjx4PyTZIvrilcLZveL+rB5Yr0d+Qm+V2g8wKq0e
-         o77A==
-X-Gm-Message-State: AOJu0YxPMRS8BdEIR/aRBaftHe/RLr+QjBygJWrrkqfOIqT2ya4PsKY+
-	Wj36dzcXYRCq8vYtqtp0sJ8=
-X-Google-Smtp-Source: AGHT+IH/N7qs1+keta3j5dgaOQn5pnyM0432C78QHFxQAM7OJhtFbhoQVStmruTbCa77V8FDMz+82w==
-X-Received: by 2002:ad4:42c3:0:b0:67a:4709:34bb with SMTP id f3-20020ad442c3000000b0067a470934bbmr16104179qvr.41.1701427004422;
-        Fri, 01 Dec 2023 02:36:44 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id q20-20020a0cf5d4000000b0067a4452d459sm1380580qvm.116.2023.12.01.02.36.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Dec 2023 02:36:44 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 6D28E27C0054;
-	Fri,  1 Dec 2023 05:36:43 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 01 Dec 2023 05:36:43 -0500
-X-ME-Sender: <xms:OrdpZdyYzsRjmakWy7jQ_qAYWAeLmvh4KsJ1M1b5NuG-sFkPlbX6SA>
-    <xme:OrdpZdTZEmSsMsgbCgAinTm1OtRrIpuh_INBOFoZ7q4-AK-bc6rpFJopot4TVYHao
-    kf1ZI_v5UH-C9U0Jg>
-X-ME-Received: <xmr:OrdpZXWPiypSbJWQm4Xz9tNPPXU7pxL2UZ2HJULdThdE95MONgE-5kwyCg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeiledgudekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeelueeiffdugeeliedvjeethfettdeiffffueeiffelhfejgefghedtjedv
-    ffffhfenucffohhmrghinhepghhithhhuhgsrdgtohhmpddttddttddqihhnlhhinhgvqd
-    grshhmrdhmugenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
-    ohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvge
-    ehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhm
-    sehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:OrdpZfieDnseTYfSrzkeHadb8cRYXoZvuhCFgJKLiQHLxMuq0CjI6A>
-    <xmx:OrdpZfBD8GCumgXRpc5JVJNklzmOx_N-JzSLAzvI5neWV6Nb-1kSBA>
-    <xmx:OrdpZYIpfWUCXQi0h2zv3RYVRBoOhbYjG89sNO3GraUWlR4SivnS7Q>
-    <xmx:O7dpZaVfAHXypI2kUAIvwy0-WLqBe9Pff0zXgyFT1XwXm9zQNO6YtA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 Dec 2023 05:36:42 -0500 (EST)
-Date: Fri, 1 Dec 2023 02:36:40 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kees Cook <keescook@chromium.org>,	Thomas Gleixner <tglx@linutronix.de>,
- Daniel Xu <dxu@dxuuu.xyz>,	linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,	linux-fsdevel@vger.kernel.org,
-	Josh Triplett <josh@joshtriplett.org>
-Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
-Message-ID: <ZWm3OGWWhIWmB9gV@Boquns-Mac-mini.home>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
- <20231129-alice-file-v1-1-f81afe8c7261@google.com>
- <ZWdVEk4QjbpTfnbn@casper.infradead.org>
- <20231129152305.GB23596@noisy.programming.kicks-ass.net>
- <ZWdv_jsaDFJxZk7G@Boquns-Mac-mini.home>
- <20231130104226.GB20191@noisy.programming.kicks-ass.net>
- <ZWipTZysC2YL7qsq@Boquns-Mac-mini.home>
- <20231201085328.GE3818@noisy.programming.kicks-ass.net>
- <ZWmlEiiPXAIOYsM1@Boquns-Mac-mini.home>
- <20231201094037.GI3818@noisy.programming.kicks-ass.net>
+        d=1e100.net; s=20230601; t=1701427714; x=1702032514;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3BDjvfSfgdlHtcZ8hZz7EmYheIAAA3/9++NHU5PhyfI=;
+        b=xNTnyShoGPbzddJpQ1ayJaVqRRD2ALFY4YxawSgShMdHlC0vcjsQ86l/wR4r+C1Rsw
+         joWBdAFc1fzmcq4pb7y7meG2HXA4ZR1iVQ9l+PqaWJNwjmvFqkBlwPx+Ajy6BIXFDbWo
+         FP16okcNvub1HN5tmVEL8KPYuAwNP4Vxd8nY8ImeXUQvqKOdN8b607639a0pYmODDyzq
+         BEKpv+6P0QRowZhj4w2fmJiaF3CrSTtSdwC89EeMEZ8FvBXrc8nPkuOQ/OSQZqy69H9w
+         c4DlXeNF/oASq4uXaJbwc7RjMZdjFddssal9o3kQiek46IC9sa8fgurZvEvcon2PoKYU
+         DHOA==
+X-Gm-Message-State: AOJu0YyNBkp9rDiyLuNToxLtTUgWri25YW7TWjsDryf6VdFDJEOceFPz
+	+SoADpfUjxmAEA7OFjhNR3osQg6iMhuXQ6A=
+X-Google-Smtp-Source: AGHT+IEzi61X/M3D+na0c/GNtZpLFB3jhENpvRbleN1ckp3ofjr0vhqRpfSfnFgflMyTtYcH8dFy9dp2febKZio=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:15a6:b0:505:7ae3:182f with SMTP
+ id bp38-20020a05651215a600b005057ae3182fmr37944lfb.12.1701427713791; Fri, 01
+ Dec 2023 02:48:33 -0800 (PST)
+Date: Fri,  1 Dec 2023 10:48:31 +0000
+In-Reply-To: <qwxqEq_l1jj3cAKSEh7gBZCUyBGCDmThdz6JJIQiFVl94ASI4yyNB6956XLrsQXnE4ulo48QRMaKPjgt7JZoolisVEiGOUP7IyRdecdhXqw=@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231201094037.GI3818@noisy.programming.kicks-ass.net>
+Mime-Version: 1.0
+References: <qwxqEq_l1jj3cAKSEh7gBZCUyBGCDmThdz6JJIQiFVl94ASI4yyNB6956XLrsQXnE4ulo48QRMaKPjgt7JZoolisVEiGOUP7IyRdecdhXqw=@proton.me>
+X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
+Message-ID: <20231201104831.2195715-1-aliceryhl@google.com>
+Subject: Re: [PATCH 3/7] rust: security: add abstraction for secctx
+From: Alice Ryhl <aliceryhl@google.com>
+To: benno.lossin@proton.me
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	brauner@kernel.org, cmllamas@google.com, dan.j.williams@intel.com, 
+	dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
+	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
+	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
+	wedsonaf@gmail.com, willy@infradead.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Dec 01, 2023 at 10:40:37AM +0100, Peter Zijlstra wrote:
-> On Fri, Dec 01, 2023 at 01:19:14AM -0800, Boqun Feng wrote:
+Benno Lossin <benno.lossin@proton.me> writes:
+> On 11/29/23 14:11, Alice Ryhl wrote:
+>> +    /// Returns the bytes for this security context.
+>> +    pub fn as_bytes(&self) -> &[u8] {
+>> +        let mut ptr = self.secdata;
+>> +        if ptr.is_null() {
+>> +            // Many C APIs will use null pointers for strings of length zero, but
 > 
-> > > > 	https://github.com/Amanieu/rfcs/blob/inline-asm/text/0000-inline-asm.md#asm-goto
-> > > 
-> > > Reading that makes all this even worse, apparently rust can't even use
-> > > memops.
-> > 
-> > What do you mean by "memops"?
+> I would just write that the secctx API uses null pointers to denote a
+> string of length zero.
+
+I don't actually know whether it can ever be null, I just wanted to stay
+on the safe side.
+
+>> +            // `slice::from_raw_parts` doesn't allow the pointer to be null even if the length is
+>> +            // zero. Replace the pointer with a dangling but non-null pointer in this case.
+>> +            debug_assert_eq!(self.seclen, 0);
 > 
-> Above link has the below in "future possibilities":
-> 
-> "Memory operands
-> 
-> We could support mem as an alternative to specifying a register class
-> which would leave the operand in memory and instead produce a memory
-> address when inserted into the asm string. This would allow generating
-> more efficient code by taking advantage of addressing modes instead of
-> using an intermediate register to hold the computed address."
-> 
-> Just so happens that every x86 atomic block uses memops.. and per-cpu
-> and ...
-> 
+> I am feeling a bit uncomfortable with this, why can't we just return
+> an empty slice in this case?
 
-Oh yes, I found out Rust's asm! doesn't support specifying a memory
-location as input or output recently as well.
+I can do that, but to be clear, what I'm doing here is also definitely
+okay.
 
-
-I don't speak for the Rust langauge community, but I think this is
-something that they should improve. I understand it could be frustrating
-that we find out the new stuff doesn't support good old tools we use
-(trust me, I do!), but I believe you also understand that a higher level
-language can help in some places, for example, SBRM is naturally
-supported ;-) This answers half of the question: "Why are we even trying
-to use it again?".
-
-The other half is how languages are designed is different in these days:
-a language community may do a better job on listening to the users and
-the real use cases can affect the language design in return. While we
-are doing our own experiment, we might well give that a shot too.
-
-And at least the document admits these are "future possibilities", so
-they should be more motivated to implement these.
-
-It's never perfect, but we gotta start somewhere.
-
-Regards,
-Boqun
-
-> 
+Alice
