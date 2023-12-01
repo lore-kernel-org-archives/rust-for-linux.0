@@ -1,125 +1,85 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMI/eLgg"
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DAE8170C;
-	Thu, 30 Nov 2023 21:44:04 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-55b5a37acb6so347589a12.0;
-        Thu, 30 Nov 2023 21:44:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701409444; x=1702014244; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+8YZhGW1C4Tde9vAx9UFYsoDd9OchIqU9rvzpr81BHE=;
-        b=GMI/eLgg9Hvnd3pvCx6jDGAUDy8Uhty6x3huidhXDyKcgx9iXRw5Lk9fk0+5GdFdox
-         bVBhBCbeWxUGp+ZfUei7xh52AUu5lBgbdLJ7mX0JlPsC2jfs9ARdjK1nXlsRFB5lw3wq
-         aer8XzsMgURYNSwVT+QTnMEPK6+UhiGVJ2JQuGG7G0JpN+tYh+VyEvrRslnvn5QxeADK
-         r8weXbhka7fqKuZQJ7N5dBsgYDe2923I0orbjYkKgEq5JJV6YV3PkrDbBpN/i/ejeut2
-         DtOgRJo/nzyrniXdvWYvqEDDxSSxDarvimz8dvjvCW3K++q7uoznH7W7gLP4IzRLf4oe
-         gPeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701409444; x=1702014244;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+8YZhGW1C4Tde9vAx9UFYsoDd9OchIqU9rvzpr81BHE=;
-        b=Nbgn/m7rmcK6p6zfl6vJ6sD0qIuv0f9leMuTywExhh6YVk+7JHbkBjUvp935qf7OjF
-         WW3kCp5Tz0pmJDG7WNjvTTq7ATyFwR/+KZGS01ssTBAf/ac36fS8gqraFVHzZHVxIPfI
-         jdoOqstqzMZti3bRIsN0ep8oowEkzCmwNz1A+heQeerUGmp9JgzcGo6JmIz3lqykalkP
-         /NorZFdbaVig3oxPZsAFbBa0AqZc1EPDWEMPT3wgmCHKcNN34XQmJqYe9YmiTC0eqfOk
-         J1tDb17VvmBnyEmaPXGZ4BUYlJkQJJT7bSzpyOUY7WoO6PNsDP5wErEihjB0flGVCmnb
-         ZAXQ==
-X-Gm-Message-State: AOJu0YyKuE2FwHHPeBhSEXe4z5c2f1PKUQdV8c3iAj00nOP+uPBOj+SD
-	pEzejNjgn/PTVCMIufVuTnA=
-X-Google-Smtp-Source: AGHT+IFOAjiK941jj9f4Dczhqw/iz1tT9cYt2XdYBWqsUKXr7Hi3uJ0AlatwXN+XVavH/yuQGD1aVA==
-X-Received: by 2002:a05:6a20:8411:b0:187:ccb6:ddf1 with SMTP id c17-20020a056a20841100b00187ccb6ddf1mr4942708pzd.0.1701409443838;
-        Thu, 30 Nov 2023 21:44:03 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id az16-20020a17090b029000b002865781c51dsm539529pjb.18.2023.11.30.21.44.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 21:44:03 -0800 (PST)
-Date: Fri, 01 Dec 2023 14:44:02 +0900 (JST)
-Message-Id: <20231201.144402.323448332510672095.fujita.tomonori@gmail.com>
-To: gary@garyguo.net
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- wedsonaf@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
-Subject: Re: [PATCH net-next v8 1/4] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20231129195145.69ff5cf6.gary@garyguo.net>
-References: <20231123050412.1012252-1-fujita.tomonori@gmail.com>
-	<20231123050412.1012252-2-fujita.tomonori@gmail.com>
-	<20231129195145.69ff5cf6.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="O93ILxbm"
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62854171B;
+	Fri,  1 Dec 2023 00:54:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vKnBzxozdWGnbst5MfQIf7+dcwp9ORvwYNVmV8gAJa4=; b=O93ILxbmPEQqoZHpPZGIxT73YX
+	Ws5I1XRxugT5Keh77aOXi8td3S1Njs/BHg90kcQL/c6NvAJYe64sKiLvtQ/GWtJ6SDi49vgpyzP6F
+	2XCZYR8+lst5QCL8VQQtupxDV9YiltQ7cK+1ub8OKr6PFSSyO13DnLVj0GhfAjPtugE0njegR/8zM
+	uxqO2oJiKmecPxGFBgU+/P7arSmdeuj4hulfDyq5zqp2t72mPl8XgtWYFInQz8Oke/uEdd4KCJg8z
+	J7xSPs6UxEVZklWRo+luSJrjgrvbUMqqhNcFHY1bChjFr42ChlcO3bFtUiwbfw+hRKwtekgUd2oER
+	aJDNePNg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1r8zH7-0029rP-2X;
+	Fri, 01 Dec 2023 08:53:32 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id BB6A93004AB; Fri,  1 Dec 2023 09:53:28 +0100 (CET)
+Date: Fri, 1 Dec 2023 09:53:28 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Josh Triplett <josh@joshtriplett.org>
+Subject: Re: [PATCH 1/7] rust: file: add Rust abstraction for `struct file`
+Message-ID: <20231201085328.GE3818@noisy.programming.kicks-ass.net>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
+ <20231129-alice-file-v1-1-f81afe8c7261@google.com>
+ <ZWdVEk4QjbpTfnbn@casper.infradead.org>
+ <20231129152305.GB23596@noisy.programming.kicks-ass.net>
+ <ZWdv_jsaDFJxZk7G@Boquns-Mac-mini.home>
+ <20231130104226.GB20191@noisy.programming.kicks-ass.net>
+ <ZWipTZysC2YL7qsq@Boquns-Mac-mini.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZWipTZysC2YL7qsq@Boquns-Mac-mini.home>
 
-Hi,
-
-On Wed, 29 Nov 2023 19:51:45 +0000
-Gary Guo <gary@garyguo.net> wrote:
-
-> On Thu, 23 Nov 2023 14:04:09 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+On Thu, Nov 30, 2023 at 07:25:01AM -0800, Boqun Feng wrote:
+> On Thu, Nov 30, 2023 at 11:42:26AM +0100, Peter Zijlstra wrote:
+> > On Wed, Nov 29, 2023 at 09:08:14AM -0800, Boqun Feng wrote:
+> > 
+> > > But but but, I then realized we have asm goto in C but Rust doesn't
+> > > support them, and I haven't thought through how hard tht would be..
+> > 
+> > You're kidding right?
+> > 
 > 
->> +    /// Reads a given C22 PHY register.
->> +    // This function reads a hardware register and updates the stats so takes `&mut self`.
->> +    pub fn read(&mut self, regnum: u16) -> Result<u16> {
->> +        let phydev = self.0.get();
->> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->> +        // So an FFI call with a valid pointer.
->> +        let ret = unsafe {
->> +            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into())
->> +        };
->> +        if ret < 0 {
->> +            Err(Error::from_errno(ret))
->> +        } else {
->> +            Ok(ret as u16)
->> +        }
->> +    }
->> +
->> +    /// Writes a given C22 PHY register.
->> +    pub fn write(&mut self, regnum: u16, val: u16) -> Result {
->> +        let phydev = self.0.get();
->> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->> +        // So an FFI call with a valid pointer.
->> +        to_result(unsafe {
->> +            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into(), val)
->> +        })
->> +    }
+> I'm not, but I've found this:
 > 
-> `read` and `write` are not very distinctive names, especially when
-> `read_paged` exists.
+> 	https://github.com/Amanieu/rfcs/blob/inline-asm/text/0000-inline-asm.md#asm-goto
 
-IIRC, these names are based on the IEEE spec and clear for PHY developers.
+Reading that makes all this even worse, apparently rust can't even use
+memops.
 
-read/write: access a C22 register.
-read_paged/write_paged: access a paged register.
-
-
->> +impl<T: Driver> Adapter<T> {
->> +    /// # Safety
->> +    ///
->> +    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
->> +    unsafe extern "C" fn soft_reset_callback(
->> +        phydev: *mut bindings::phy_device,
->> +    ) -> core::ffi::c_int {
->> +        from_result(|| {
->> +            // SAFETY: This callback is called only in contexts
->> +            // where we hold `phy_device->lock`, so the accessors on
->> +            // `Device` are okay to call.
->> +            let dev = unsafe { Device::from_raw(phydev) };
->> +            T::soft_reset(dev)?;
-> 
-> Usually we want type safety by to the callback typed access to the
-> device's driver-private data, rather than just give it an arbitrary
-> `Device`. Any reason not to similar things here?
-
-Because two Rust PHY drivers that I implemented don't need such.
+So to summarise, Rust cannot properly interop with C, it cannot do
+inline asm from this side of the millenium. Why are we even trying to
+use it again?
