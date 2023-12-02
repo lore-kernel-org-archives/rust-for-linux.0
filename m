@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Pdo79YX+"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 052171A6;
-	Sat,  2 Dec 2023 02:03:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ICKWZrBO"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC1BF1;
+	Sat,  2 Dec 2023 02:16:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1701511417; x=1701770617;
-	bh=ozFyIxYG1eV92CI6lLkyQ7Lh/CozJJPAZNA/ZOBz2dA=;
+	s=protonmail; t=1701512213; x=1701771413;
+	bh=EUYoWzRb2VtFg0qFU9eJFRQEz1z2lKS3+4nXPhxD9cc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Pdo79YX+qRTRMR0IGvXzfSAgr71hSODe1JFF+1EI+szHo3hmkUFa3mkSLU1Az3+97
-	 vA9aSUvN3TdpV0MfSvV300pt3EM+0B53g40Y45ERotqARuuKA2KGbhqK/r04UyVr8h
-	 l4HufFJ3FkCQDaPBQM15sYfMNxs18S9dNVjqWHUDRHdUJ23uYb4oVxJdy/TaaIcdKr
-	 0VHlnhu+9MyMFeicUtZVsUDKw7Wt542zMXgOls56eeYMzBigU191GWwcgsb6DOxB/i
-	 C0eGxmOEQ3o9tjg6Z3XrqMSVIKJdi96PjfpsxrgU9evidyCcvfdWKNfF6XxMufiv2P
-	 CHeLBsr5lhFxg==
-Date: Sat, 02 Dec 2023 10:03:11 +0000
+	b=ICKWZrBOiGZPy9i9e5mo+Xc0KA0Pgfj8HHU9nqvqiwdvXZAxbLc4NwpLv8IDz86Od
+	 Sd+6gz0BfDUaC/V/rFYJ8WMmaqjLbg0dS7eus4ygZDQdugCkiK25SiMJcp8NXudLfs
+	 5XKpsTTuloyw+ryvqsNjLAHNZpSA6WDshKGfMefYMF0ExT7ichsjE+IwBNMYEqsTSY
+	 5YsX/soqXn6/LhJU1kbnWHArxDOmXKRTCt3G9yTeP1R0CcdhzsztDStDX+XUDPhoVm
+	 UzK5zs/bwI38TYvNYq8LvVwvcLE+5+h4PHD9a9pULzylc31agMoZUskJWrqjH+fGLI
+	 eIDK4+9uEiYsA==
+Date: Sat, 02 Dec 2023 10:16:36 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
-Subject: Re: [PATCH 3/7] rust: security: add abstraction for secctx
-Message-ID: <TdIzHaMBCR_0nM5Vvj7NWAG4feqbl2J7FcUgdCvXgHejuysujgtwXze0TEHNBpOWw26N4zgJzMvbfoFICQgPcmWfK4PyWl08MYIpxWuvPxE=@proton.me>
-In-Reply-To: <20231201104831.2195715-1-aliceryhl@google.com>
-References: <qwxqEq_l1jj3cAKSEh7gBZCUyBGCDmThdz6JJIQiFVl94ASI4yyNB6956XLrsQXnE4ulo48QRMaKPjgt7JZoolisVEiGOUP7IyRdecdhXqw=@proton.me> <20231201104831.2195715-1-aliceryhl@google.com>
+Subject: Re: [PATCH 6/7] rust: file: add `DeferredFdCloser`
+Message-ID: <bUU6jGtJ7KdkuVp8UPORb0cmDoU6sRjc1iVRMfgO34u5ySo44Z5MXrnYgE6pfQDFu4-V5CBAuhS8uZDoEA6CsIiLUiWJedNZ2CTf9cRATfQ=@proton.me>
+In-Reply-To: <20231201113538.2202170-1-aliceryhl@google.com>
+References: <LNSA8EeuwLGDBzY1W8GaP1L6gucAPE_34myHWuyg3ziYuheiFLk3WfVBPppzwDZwoGVTCqL8EBjAaxsNshTY6AQq_sNtK9hmea7FeaNJuCo=@proton.me> <20231201113538.2202170-1-aliceryhl@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,46 +33,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/1/23 11:48, Alice Ryhl wrote:
+On 12/1/23 12:35, Alice Ryhl wrote:
 > Benno Lossin <benno.lossin@proton.me> writes:
->> On 11/29/23 14:11, Alice Ryhl wrote:
->>> +    /// Returns the bytes for this security context.
->>> +    pub fn as_bytes(&self) -> &[u8] {
->>> +        let mut ptr =3D self.secdata;
->>> +        if ptr.is_null() {
->>> +            // Many C APIs will use null pointers for strings of lengt=
-h zero, but
+>>> +        // SAFETY: The `inner` pointer points at a valid and fully ini=
+tialized task work that is
+>>> +        // ready to be scheduled.
+>>> +        unsafe { bindings::task_work_add(current, inner, TWA_RESUME) }=
+;
 >>
->> I would just write that the secctx API uses null pointers to denote a
->> string of length zero.
+>> I am a bit confused, when does `do_close_fd` actually run? Does
+>> `TWA_RESUME` mean that `inner` is scheduled to run after the current
+>> task has been completed?
 >=20
-> I don't actually know whether it can ever be null, I just wanted to stay
-> on the safe side.
+> When the current syscall returns to userspace.
 
-I see, can someone from the C side confirm/refute this?
+What happens when I use `DeferredFdCloser` outside of a syscall? Will
+it never run? Maybe add some documentation about that?
 
-I found the comment a bit weird, since it is phrased in a general way.
-If it turns out that the pointer can never be null, maybe use `NonNull`
-instead (I would then also move the length check into the constructor)?
-You can probably also do this if the pointer is allowed to be null,
-assuming that you then do not need to call `security_release_secctx`.
-
->>> +            // `slice::from_raw_parts` doesn't allow the pointer to be=
- null even if the length is
->>> +            // zero. Replace the pointer with a dangling but non-null =
-pointer in this case.
->>> +            debug_assert_eq!(self.seclen, 0);
+>>> +    // SAFETY: This function is an implementation detail of `close_fd`=
+, so its safety comments
+>>> +    // should be read in extension of that method.
+>>> +    unsafe extern "C" fn do_close_fd(inner: *mut bindings::callback_he=
+ad) {
+>>> +        // SAFETY: In `close_fd` we use this method together with a po=
+inter that originates from a
+>>> +        // `Box<DeferredFdCloserInner>`, and we have just been given o=
+wnership of that allocation.
+>>> +        let inner =3D unsafe { Box::from_raw(inner as *mut DeferredFdC=
+loserInner) };
 >>
->> I am feeling a bit uncomfortable with this, why can't we just return
->> an empty slice in this case?
+>> In order for this call to be sound, `inner` must be an exclusive
+>> pointer (including any possible references into the `callback_head`).
+>> Is this the case?
 >=20
-> I can do that, but to be clear, what I'm doing here is also definitely
-> okay.
+> Yes, when this is called, it's been removed from the linked list of task
+> work. That's why we can kfree it.
 
-Yes it is okay, but I see this similar to avoiding `unsafe` code when it
-can be done safely. In this example we are not strictly avoiding any
-`unsafe` code, but we are avoiding a codepath with `unsafe` code. You
-should of course still keep the `debug_assert_eq`.
+Please add this to the SAFETY comment.
 
 --=20
 Cheers,
