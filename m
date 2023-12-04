@@ -1,102 +1,129 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HDrnl0ty"
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A814BD5;
-	Mon,  4 Dec 2023 03:15:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=wdytburcmjh6jg34thzange6ou.protonmail; t=1701688543; x=1701947743;
-	bh=vkp04PZwWHUkLIZ1OExVvH6dLTQjFbLCFc6Sin2elcA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=HDrnl0tyex7UpL+oWPgEhTI89lR54awUuNhLx3hfw3lUyx3NeYoOqTlQfaxbysOO1
-	 g3fgzPJv4geFCu9t2xAKsctEPDjGmXCAoyUZ/0zymh7iV08/GMZy1A2hIKDpe5Cpcx
-	 g5PrtK+cILUqz8RDhc+8bU0DszWHZAomVGxuXCgN9EZGtHBszLro7AYJdBrHSAc2nM
-	 OLw4/eWq01biCOHw9gB+7bS5dEm7zAfzugmE2ntL3JXTA5rAGGCeO5fhtLb/eFIQhp
-	 3qUgTkDaa9fnz3SxZqrcXW3VSu9f4sJzWxRpaY3CO6DAx4rwB5AGZA7iljZtWaYVYn
-	 D9Nkm+IWs+/ww==
-Date: Mon, 04 Dec 2023 11:15:26 +0000
-To: Jarkko Sakkinen <jarkko@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Sumera Priyadarsini <sylphrenadin@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: macros: `parse_generics` add `decl_generics`
-Message-ID: <lMMxxRYVTIl1RMW95hc58GoLGUdwLH-Uou4uZLtbstmEP2A19X-wX1tQ6VH8tvR8rVYzi-fOIBaWPV1Lzf-fcXo_27mf1cMk5m94wQYJGkA=@proton.me>
-In-Reply-To: <CXE115I7V0YC.2AZ9KSVZP4NVS@kernel.org>
-References: <20231125125024.1235933-1-benno.lossin@proton.me> <ce55240f74d4630fef8c7c3e7f47fe1b09636da1.camel@kernel.org> <84da128f-17b3-4193-8389-176a8c961d64@proton.me> <CXE115I7V0YC.2AZ9KSVZP4NVS@kernel.org>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3WicJ16p"
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A2EC1
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Dec 2023 07:43:02 -0800 (PST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-db084a0a2e9so3435894276.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Dec 2023 07:43:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1701704581; x=1702309381; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xfK9TlefHc7mRtPrpHFFYKDLxrgLCZkCjPMobBdjijM=;
+        b=3WicJ16pvToD3e9Z1135Br25xC7rAGtpGGS5Jgeriupv1FJXy+fN3Y7fuzQ7YIHK+S
+         oPV+mCFgwINgsuJ89E4MxHLyKmDiSyG9Y5dw1dnm+p5C8ZhVJyxo7OpKg9S8VzHje5MN
+         ugLZaW1tfkDm3Tjy0AnAASakxGSNAWUUyIAoGtG//cNQ8fVF95aRnPyAKvA814FzEowY
+         mSkXqpCx+UIlaM5u44DnRhuygQzncjyETnWbJs3LZccoitmoSalg3SkPHhRxPjsaQpA5
+         0LhpWgo3gAVRmP0auiHi3m63V1H4Hxgnk4p8wEay+yuOtIt3uuRCU7q1rviM9x2CydmQ
+         o3Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701704581; x=1702309381;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xfK9TlefHc7mRtPrpHFFYKDLxrgLCZkCjPMobBdjijM=;
+        b=UVbtLOxQS72M9VW1DzawHzyI9yLawjc51atHMZeO1lApfqzqw7w1nQi+gxTOJxmiKE
+         8ATkzz0O1HKg5dMkjE0I8uQVdyN8t2lGSt+OoKk/J6Lfb9LdDx42P27T4G3yHLPFhzx7
+         LFj67ZJQORlcYeWx2cPBn7HswgLAk3p9uIpD6W3oFpPYgFJvWFLvgivkz9/AOhHyYsY/
+         vA98z+PwJZAxKUDucL5w4SNEq094oq09ZoL4I3yDgpHntW5HlKPZFl/JClrE+UH+MMrO
+         Eiv0ZK0l+Y5uP8gnSGy/nNgpZyHFDJh1Y3ywU4xAr+tlNqsFW5umDN7nwfIeWu4SHLVZ
+         U7Yw==
+X-Gm-Message-State: AOJu0YwT0U+KwociWWmPnQxBsgUW4chxfkLLNxm8q+Lre9x5ONUXFD1W
+	04DI8GJcirR4uyQG+L42lFgC/TwjEmkuUHE=
+X-Google-Smtp-Source: AGHT+IF5vXT7L2NfCCScVUhEdNBMLFarwJWD1avitjpZToP9B/GeVxDMVqxOYsLK8Qpl8id4UHBwIV1CHtz3+60=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a25:3006:0:b0:daf:6333:17c3 with SMTP id
+ w6-20020a253006000000b00daf633317c3mr965267ybw.1.1701704581579; Mon, 04 Dec
+ 2023 07:43:01 -0800 (PST)
+Date: Mon,  4 Dec 2023 15:42:59 +0000
+In-Reply-To: <20231201-zacken-gewachsen-73fe323b067b@brauner>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20231201-zacken-gewachsen-73fe323b067b@brauner>
+X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
+Message-ID: <20231204154259.79529-1-aliceryhl@google.com>
+Subject: Re: [PATCH 2/7] rust: cred: add Rust abstraction for `struct cred`
+From: Alice Ryhl <aliceryhl@google.com>
+To: brauner@kernel.org
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, cmllamas@google.com, dan.j.williams@intel.com, 
+	dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
+	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
+	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
+	wedsonaf@gmail.com, willy@infradead.org
+Content-Type: text/plain; charset="utf-8"
 
-On 12/2/23 18:33, Jarkko Sakkinen wrote:
-> On Sat Nov 25, 2023 at 5:39 PM EET, Benno Lossin wrote:
->> On 25.11.23 14:39, Jarkko Sakkinen wrote:
->>> On Sat, 2023-11-25 at 12:50 +0000, Benno Lossin wrote:
->>>> parameters. This patch also changes how `impl_generics` are made up,
->>>> as
->>>> these should be used with `impl<$impl_generics>`, they will omit the
->>>> default values.
->>>
->>> What is decl_generics and what are the other _generics variables?
->>> This lacks explanation what sort of change is implemented and why.
->>
->> The terms `impl_generics` and `ty_generics` are taken from [2]. This
->> patch adds a third kind which also contains any default values of const
->> generic parameters. I named them `decl_generics`, because they only
->> appear on type declarations.
->>
->> [2]: https://docs.rs/syn/latest/syn/struct.Generics.html#method.split_fo=
-r_impl
->=20
-> Thanks a lot of taking time for explaining all these concepts in a such
-> a detail. Appreciate it! And I apologize for my a bit intrusive
-> response.
+Christian Brauner <brauner@kernel.org> writes:
+> On Fri, Dec 01, 2023 at 09:06:35AM +0000, Alice Ryhl wrote:
+> > Benno Lossin <benno.lossin@proton.me> writes:
+> > > On 11/29/23 13:51, Alice Ryhl wrote:
+> > >> +    /// Returns the credentials of the task that originally opened the file.
+> > >> +    pub fn cred(&self) -> &Credential {
+> > >> +        // This `read_volatile` is intended to correspond to a READ_ONCE call.
+> > >> +        //
+> > >> +        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
+> > >> +        //
+> > >> +        // TODO: Replace with `read_once` when available on the Rust side.
+> > >> +        let ptr = unsafe { core::ptr::addr_of!((*self.0.get()).f_cred).read_volatile() };
+> > >> +
+> > >> +        // SAFETY: The signature of this function ensures that the caller will only access the
+> > >> +        // returned credential while the file is still valid, and the credential must stay valid
+> > >> +        // while the file is valid.
+> > > 
+> > > About the last part of this safety comment, is this a guarantee from the
+> > > C side? If yes, then I would phrase it that way:
+> > > 
+> > >     ... while the file is still valid, and the C side ensures that the
+> > >     credentials stay valid while the file is valid.
+> > 
+> > Yes, that's my intention with this code.
+> > 
+> > But I guess this is a good question for Christian Brauner to confirm:
+> > 
+> > If I read the credential from the `f_cred` field, is it guaranteed that
+> > the pointer remains valid for at least as long as the file?
+> > 
+> > Or should I do some dance along the lines of "lock file, increment
+> > refcount on credential, unlock file"?
+> 
+> The lifetime of the f_cred reference is at least as long as the lifetime
+> of the file:
+> 
+> // file not yet visible anywhere
+> some_file = alloc_file*()
+> -> init_file()
+>    {
+>            file->f_cred = get_cred(cred /* usually current_cred() */)
+>    }
+> 
+> 
+> // install into fd_table -> irreversible, thing visible, possibly shared
+> fd_install(1234, some_file)
+> 
+> // last fput
+> fput()
+> // atomic_dec_and_test() dance:
+> -> file_free() // either "delayed" through task work, workqueue, or
+> 	       // sometimes freed right away if file hasn't been opened,
+> 	       // i.e., if fd_install() wasn't called
+>    -> put_cred(file->f_cred)
+> 
+> In order to access anything you must hold a reference to the file or
+> files->file_lock. IOW, no poking around in f->f_cred or any field for
+> that matter just under rcu_read_lock() for example. Because files are
+> SLAB_TYPESAFE_BY_RCU. You might be poking in someone else's creds then.
 
-No worries!
+Okay, we aren't dealing with the rcu case in this patchset, so we know
+that it wont be freed while we're accessing it.
 
-> I really think that "more vocal and verbose" than "legacy C" patches
-> would be a great policy for Rust specific patches. This would help
-> audience who understand kernel but are not as in Rust to give more
-> feedback on the patches. I mean tech is still the same whatever we
-> used to implement the code that enables it.
+I guess this means that the `f_cred` field is immutable, which means
+that I don't need READ_ONCE to read it? I'll use an ordinary load in the
+next version.
 
-I agree. One thing that we are already doing is encouraging
-documentation, see [1]. We also use `-Wmissing_docs` which makes the
-compiler emit a warning when you have a public item (a function,
-constant, type etc.) that has no documentation.
-Rust documentation is placed directly next to the source code. This
-helps keep it up to date and makes it easier to find documentation.
-
-[1]: https://docs.kernel.org/rust/coding-guidelines.html#code-documentation
-
-
-Additionally we can make commit messages more elaborate. Though we
-probably need help with choosing the topics and depth of the
-explanations. Since when you are already familiar with something, it
-is often difficult to know what is hard to understand. This also holds
-for documentation.
-
-That being said, I think that we should not document common Rust
-patterns and properties. I think you understand that we do not want
-to write code like this over-the-top example:
-
-    void init_foo(struct foo *foo)
-    {
-        // `foo->value` is short for `(*foo).value`
-        foo->value =3D 42;
-    }
-
-I am of course open to help anyone understand the Rust code that
-we upstream, by giving pointers to the relevant Rust resources (e.g.
-the Rust book or std library documentation) or explaining our custom
-code. We might even find something that should be documented better
-and then I will be happy to do so.
-
---=20
-Cheers,
-Benno
+Alice
