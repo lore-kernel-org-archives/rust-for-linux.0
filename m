@@ -1,74 +1,129 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bhyfWfxF"
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC9BC6;
-	Mon,  4 Dec 2023 19:45:32 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6ce40061e99so320484b3a.0;
-        Mon, 04 Dec 2023 19:45:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A4CqEikT"
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94026D68
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 Dec 2023 06:43:49 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5d0c4ba7081so93750997b3.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 Dec 2023 06:43:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701747932; x=1702352732; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=55zYcX2qsOiqJHVhozAurcXs6LQBWTTMFJJb7hHw3k8=;
-        b=bhyfWfxFo5pK5DZ6Muac2Ik8ZOyWqn1dbknGi6tMV3UxiXj0bSZG0xide/xAhF/w+K
-         kUECEcqOZZN75Eg2xadLkJbL95YdUotCctK7M8QC2tQnrr1z3o93BdKqlXYsLjV2/w2v
-         11hdfRqrrvxvIUpxeVFhazFgLO/yQwQonazz+K3aKQ26R+VfkF3y+JZvY37S9ZgosMDt
-         4yIjUd7KEYpNaA9IV9Ln4YE04FYv77L3KynHxjZerfzcF9YfaoMQSLmna5Q49DWp37bl
-         aPe8G8WRM+qEHbaXVBlVAQZyPipzLsYRiTu3h7HHUz9/Qv/Yc+wmA0Ca/L5d00KAUTOg
-         u2rg==
+        d=google.com; s=20230601; t=1701787428; x=1702392228; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WZD0EM5cGaPHhEVDs6IeTDsFoonDp5ja1VtjJCTjqYs=;
+        b=A4CqEikT/b+9up74hPMLiEHnErlVVcPtYgrGhXNPnMZ2iUId46d7tz8w6LQSCCReq5
+         Nu2fqUNmLkcomVmQ2KjHG9cLgB/0Wi+C/8vMuU1KAunQbCFeTLjiu7PPuRwbrXXyHkla
+         G3ZwCeUXnYvDazt1xUGPVmQNzsBH1QMwkB8/4FeIpYVVj18IYzsTKF4p45xTtqYzkZ66
+         i9d6qnsU8t7CqxE/1yr+dJqy3+zEeFW9aUZE1GQZRDHkbcqmWDDse9zQC1uGsNAZ6uRx
+         UyCPN3K6g4NChrw89SubSjviNqVhmXOB7BMZLZK4hnDeY+xuu/fobOKa8zL6vwFrOAE5
+         kqZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701747932; x=1702352732;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=55zYcX2qsOiqJHVhozAurcXs6LQBWTTMFJJb7hHw3k8=;
-        b=QjIibjFqM1AbXUuWfg5fooO8Yxy7Soz3ltLtwYhMTRcdOdq/9EHTnneoOQgq+gOz2C
-         wAXpneeYOMbUTKjgiwifFnKclvRItUECb4jd0PfXrHU6N1FP15AeGTyv9Jso0UPdwgFZ
-         vGlaTstSOnbm8NlPHVrgcugHT4tV5bJfIaWys4em0OPo4AE5Bl3PuAyGsHDPBEfQ6flY
-         CRXPvWaHUBhdxvXEzPcNNK1s+yn5BGw9yCJdf4AqZuabdv1NKfx0gUiEOUY+dsd1ROOo
-         ldr4w1Ux4y5m/GpsxnDb8ziCq8YsaIBlZD7ePXvb4imIo5nR9eCk8XL53ZdUeBpC8w01
-         oQWA==
-X-Gm-Message-State: AOJu0YxtIEumckoVk67KuQqNuj46RKLSidTcR0CS4JAbh91K3vjSX+A4
-	1MUzRdk759O8uw7Nw1O6RDM=
-X-Google-Smtp-Source: AGHT+IGAvGeYthNwfBpN0G33VtpB/P7IFgnuZ3IApShkErSjvA7jGKkfVAw/UzhEWFtPwPFnpmzavQ==
-X-Received: by 2002:a05:6a21:a598:b0:18b:d26a:375c with SMTP id gd24-20020a056a21a59800b0018bd26a375cmr47090335pzc.1.1701747932128;
-        Mon, 04 Dec 2023 19:45:32 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id d5-20020a170903230500b001ce6649d088sm9130500plh.195.2023.12.04.19.45.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 19:45:31 -0800 (PST)
-Date: Tue, 05 Dec 2023 12:45:31 +0900 (JST)
-Message-Id: <20231205.124531.842372711631366729.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- wedsonaf@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
-Subject: Re: [PATCH net-next v9 3/4] MAINTAINERS: add Rust PHY abstractions
- for ETHERNET PHY LIBRARY
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47v4zq3-W137iEzEwdd63iZNA_iWULKHWJrEA42mzRC8+w@mail.gmail.com>
-References: <20231205011420.1246000-1-fujita.tomonori@gmail.com>
-	<20231205011420.1246000-4-fujita.tomonori@gmail.com>
-	<CALNs47v4zq3-W137iEzEwdd63iZNA_iWULKHWJrEA42mzRC8+w@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1701787428; x=1702392228;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WZD0EM5cGaPHhEVDs6IeTDsFoonDp5ja1VtjJCTjqYs=;
+        b=Fe+o+vAhK9PtzaLjvbvaWfCeMe4eC86eDPq9D7aLwNR/irUbWn/jwpcBCrsjU0RvmG
+         lTIvDcyUwpvKwiEs2y/2YPwSPbe7gYKNkN3uJNjIK+fGi7U1t/mYWQHZ3Vtx8N0UYYEi
+         Rm9ChcXVF4yKDaK2mis8WEFDgukjwdgMkPQ/ZLjiv9Q+rOERVnj6Ab4Wy/Gt2E4nEgYe
+         QRfvo64Ihe0qBHMNxHx1yZgJ/ySIkely80prdmxgDeEhk3B5HSk7qSp2u7BoaX2cgk8k
+         yvaE/CyrOflesOxsbrNAFX2Njc6ENqNNY4KbeptzzYVSC+JTYo+66a48kw5NizXHc40L
+         JM3w==
+X-Gm-Message-State: AOJu0Yxd6wFUETxDO4BUbkMkRhoWtkD0Lr7G052jJur2klrFxz4sm1EF
+	pzMNtZI7nG1jgOkcTU64l4hyT+f3CprySd0=
+X-Google-Smtp-Source: AGHT+IFLoW8f1NTm+nyunXiLErD3gXbKIZlauqfO65/Y2nGSfW6R7tv3Sf+99fVBBvGIC3H+1wip5JAcV5jcBag=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:2d06:b0:5d4:1e95:1e8a with SMTP
+ id eq6-20020a05690c2d0600b005d41e951e8amr288127ywb.4.1701787428477; Tue, 05
+ Dec 2023 06:43:48 -0800 (PST)
+Date: Tue,  5 Dec 2023 14:43:45 +0000
+In-Reply-To: <bUU6jGtJ7KdkuVp8UPORb0cmDoU6sRjc1iVRMfgO34u5ySo44Z5MXrnYgE6pfQDFu4-V5CBAuhS8uZDoEA6CsIiLUiWJedNZ2CTf9cRATfQ=@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+References: <bUU6jGtJ7KdkuVp8UPORb0cmDoU6sRjc1iVRMfgO34u5ySo44Z5MXrnYgE6pfQDFu4-V5CBAuhS8uZDoEA6CsIiLUiWJedNZ2CTf9cRATfQ=@proton.me>
+X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
+Message-ID: <20231205144345.308820-1-aliceryhl@google.com>
+Subject: Re: [PATCH 6/7] rust: file: add `DeferredFdCloser`
+From: Alice Ryhl <aliceryhl@google.com>
+To: benno.lossin@proton.me, brauner@kernel.org
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, 
+	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
+	keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
+	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
+	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
+	wedsonaf@gmail.com, willy@infradead.org
+Content-Type: text/plain; charset="utf-8"
 
-T24gTW9uLCA0IERlYyAyMDIzIDIwOjUzOjIzIC0wNTAwDQpUcmV2b3IgR3Jvc3MgPHRtZ3Jvc3NA
-dW1pY2guZWR1PiB3cm90ZToNCg0KPiBPbiBNb24sIERlYyA0LCAyMDIzIGF0IDg6MTbigK9QTSBG
-VUpJVEEgVG9tb25vcmkNCj4gPGZ1aml0YS50b21vbm9yaUBnbWFpbC5jb20+IHdyb3RlOg0KPj4N
-Cj4+IEFkZHMgbWUgYXMgYSBtYWludGFpbmVyIGFuZCBUcmV2b3IgYXMgYSByZXZpZXdlci4NCj4+
-DQo+PiBUaGUgZmlsZXMgYXJlIHBsYWNlZCBhdCBydXN0L2tlcm5lbC8gZGlyZWN0b3J5IGZvciBu
-b3cgYnV0IHRoZSBmaWxlcw0KPj4gYXJlIGxpa2VseSB0byBiZSBtb3ZlZCB0byBuZXQvIGRpcmVj
-dG9yeSBvbmNlIGEgbmV3IFJ1c3QgYnVpbGQgc3lzdGVtDQo+PiBpcyBpbXBsZW1lbnRlZC4NCj4+
-DQo+PiBTaWduZWQtb2ZmLWJ5OiBGVUpJVEEgVG9tb25vcmkgPGZ1aml0YS50b21vbm9yaUBnbWFp
-bC5jb20+DQo+PiBSZXZpZXdlZC1ieTogQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPg0KPj4g
-LS0tDQo+IA0KPiBZb3UgbWF5IGFkZDoNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFRyZXZvciBHcm9z
-cyA8dG1ncm9zc0B1bWljaC5lZHU+DQoNClRoYW5rcywgSSB3aWxsLg0K
+Benno Lossin <benno.lossin@proton.me> writes:
+> On 12/1/23 12:35, Alice Ryhl wrote:
+>> Benno Lossin <benno.lossin@proton.me> writes:
+>>>> +        // SAFETY: The `inner` pointer points at a valid and fully initialized task work that is
+>>>> +        // ready to be scheduled.
+>>>> +        unsafe { bindings::task_work_add(current, inner, TWA_RESUME) };
+>>>
+>>> I am a bit confused, when does `do_close_fd` actually run? Does
+>>> `TWA_RESUME` mean that `inner` is scheduled to run after the current
+>>> task has been completed?
+>> 
+>> When the current syscall returns to userspace.
+> 
+> What happens when I use `DeferredFdCloser` outside of a syscall? Will
+> it never run? Maybe add some documentation about that?
+
+Christian Brauner, I think I need your help here.
+
+I spent a bunch of time today trying to understand the correct way of
+closing an fd held with fdget, and I'm unsure what the best way is.
+
+So, first, `task_work_add` only really works when we're called from a
+syscall. For one, it's fallible, and for another, you shouldn't even
+attempt to use it from a kthread. (See e.g., the implementation of
+`fput` in `fs/file_table.c`.)
+
+To handle the above, we could fall back to the workqueue and schedule
+the `fput` there when we are on a kthread or `task_work_add` fails. And
+since I don't really care about the performance of this utility, let's
+say we just unconditionally use the workqueue to simplify the
+implementation.
+
+However, it's not clear to me that this is okay. Consider this
+execution: (please compare to `binder_deferred_fd_close`)
+
+    Thread A                Thread B (workqueue)
+    fdget()
+    close_fd_get_file()
+    get_file()
+    filp_close()
+    schedule_work(do_close_fd)
+    // we are preempted
+                            fput()
+    fdput()
+
+And now, since the workqueue can run before thread A returns to
+userspace, we are in trouble again, right? Unless I missed an upgrade
+to shared file descriptor somewhere that somehow makes this okay? I
+looked around the C code and couldn't find one and I guess such an
+upgrade has to happen before the call to `fdget` anyway?
+
+In Binder, the above is perfectly fine since it closes the fd from a
+context where `task_work_add` will always work, and a task work
+definitely runs after the `fdput`. But I added this as a utility in the
+shared kernel crate, and I want to avoid the situation where someone
+comes along later and uses it from a kthread, gets the fallback to
+workqueue, and then has an UAF due to the previously mentioned
+execution...
+
+What do you advise that I do?
+
+Maybe the answer is just that, if you're in a context where it makes
+sense to talk about an fd of the current task, then task_work_add will
+also definitely work? So if `task_work_add` won't work, then
+`close_fd_get_file` will return a null pointer and we never reach the
+`task_work_add`. This seems fragile though.
+
+Alice
