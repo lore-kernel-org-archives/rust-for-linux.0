@@ -1,95 +1,128 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DSRmv69M"
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFC4ECE;
-	Mon,  4 Dec 2023 19:23:21 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1d0c7330ad9so140195ad.1;
-        Mon, 04 Dec 2023 19:23:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AnSfD7zH"
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DE6D5;
+	Mon,  4 Dec 2023 19:40:57 -0800 (PST)
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-67a8fb9d112so16852516d6.3;
+        Mon, 04 Dec 2023 19:40:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701746601; x=1702351401; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JvxaZrlN6riBflsS5wOrGFq6Ymsdyl6Sjh9pe9Rny5o=;
-        b=DSRmv69MmqtLKL/Xz89HgP8ykjHx13h5fyDl+QH2dPi2uE+sPZUbg4EniI+EZiuat5
-         xkzrbvKjTmdFpenVzjuVv50a9zWlXRvxOt7CnZj+qtsYHkaRrwo9YsQLm4NG7GxL18QC
-         rYDlPV2h3vInunMHLarstdVPmJXsrXa73gkJbNOG9DtDsEI2nNE3oDu29xX5iSOPeNo3
-         tbeoOZRjCZhQf1NnfFkywaLAA+pGymklNaqHr0sxOFxcsbyLUbg4HdEqVwyAaatrY+p9
-         Ede1zkMzXmCc7B2ujnOM8v/ObAwCIQgtC+ACy2uMSJ8nUd4fx4fL6qW/P6F0J5oq92+Z
-         Fe8A==
+        d=gmail.com; s=20230601; t=1701747656; x=1702352456; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q8D0kuebZPpR0JHy+0+65gGKqimRlrOIpzq4kI9dRzU=;
+        b=AnSfD7zHToXw91w45kW2/QMjaKsepE+ti8nNlmFnpat/j+etLJkidyeRfQin4SvWXn
+         zuq5sOZKC7410aS6vZRFO08ic/ILK6iQfobBtKi2HHdR2+z5gjEndXCKfcs4QKDLqwpt
+         95heKGpPUuE59Zl/KVS8BU0FvYA54CLib2Z/ug6DP6/XCCddwc8g/a5aPgS2G7OjNlhM
+         VD1ebvDsvBbw4u513B2fle9FhJbxP4+Vgq0ajoXJU1urqgG9pWFzdaVckOEHDInqvmUM
+         nSqU6iTN1AJ6CaTQSDBgcsRNKAp7vE0pSfDqjriklqvJ0Jk4elBZxOzp4BOO64Ul5Vaw
+         3fbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701746601; x=1702351401;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JvxaZrlN6riBflsS5wOrGFq6Ymsdyl6Sjh9pe9Rny5o=;
-        b=aMxqYTV/Sz1R5zED0aQE9DdMWpJeZrsIubHa0hzDQAoOPr3OOVOwlP/x6gC6CoGogM
-         A3+Mf50571P6Q8PtUPzh9D9B3Vf+hs1QTXwZwx8z8CTdBtaWlWoSwiz17Al63PHeVvHD
-         sysUSj6v4K+uFKV8wC/woKFjLhBXgrWQ5BLScr0biF/sq+k93MQrEbmRnpxBkaWsoMWf
-         4WpX/6xIAPtHP9Z14YbBDxnMiLL1YrYBl6l/OEzHA6Z1bmX5ZvHiMDuJPIEDGzpE3qnN
-         Np7DvuxdfqOFKrEDUE1ktIgYOlk4AP3prr7pbgEVtbgAiKadwPt94EXgIR1ZYVMxQ5GD
-         eWsQ==
-X-Gm-Message-State: AOJu0YzfZcNd9L/yIAxG3oZHJc7Pi8N3DA9UffkcNV6hMDavG3/tnMON
-	7z1vmmd+SuBmiPgSAZXdAhc=
-X-Google-Smtp-Source: AGHT+IGHJZ9DnXPGHbM3qszHQ8KKpstIZgpKnqcJoNdvH/c9q4IhbG2ciaK0nohhU77BVNw4Yv0Xbw==
-X-Received: by 2002:a17:903:1cf:b0:1d0:83bc:5648 with SMTP id e15-20020a17090301cf00b001d083bc5648mr7720344plh.2.1701746601019;
-        Mon, 04 Dec 2023 19:23:21 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id t3-20020a170902e84300b001cf838dadbesm9120695plg.56.2023.12.04.19.23.20
+        d=1e100.net; s=20230601; t=1701747656; x=1702352456;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q8D0kuebZPpR0JHy+0+65gGKqimRlrOIpzq4kI9dRzU=;
+        b=H3eFccQt4shB6E682Eqz+W7CZDUo0ltHjsBFvSZZ0WaRjrb9ZzYsT3ArpQFx5yHlAS
+         4/Ni3xLYq6VbRkF1t+FwXcVoe9Kpbxm3HS3nkwqFzhnblTrSuYySGNvm3hdvzb4/SI1V
+         OrQq8yVfMCmfSwiHJci7jUnbWe1Munk3HKS83YQ4Lhqn4Nx1TxFK2N7NRVpfEH3OycR1
+         HB3n+7A/2k0e2kSfZw/YmIM3O+c/anwhsUnw+IV68CtrX49Rlq5+PBT5Mypcr6Vefr2/
+         ijjQ7I3sUUtR8cgzV5n3P/rDneabyWIi17pIjIk/KMoz+37Wi5tH7N4deWvEr2WFKwdv
+         ko5w==
+X-Gm-Message-State: AOJu0YzLKT7C+d1wSuRsuIuyXjannIArJoQeD++/OFq86vNRhVsSxQOS
+	E3PuMJjN2+bVD3PsNC2byQ/vOZ9vIXQ=
+X-Google-Smtp-Source: AGHT+IEFGlaceuewN/xvta1Dh259QQG7R5/YHiB3ycKECA2jYedcjp0qwlJMLNOrpb2z62SpyaIN5Q==
+X-Received: by 2002:a05:6214:584a:b0:67a:a721:ec06 with SMTP id ml10-20020a056214584a00b0067aa721ec06mr538529qvb.74.1701747656424;
+        Mon, 04 Dec 2023 19:40:56 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id p8-20020a0cf548000000b0067abb99b73bsm2096523qvm.131.2023.12.04.19.40.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 19:23:20 -0800 (PST)
-Date: Tue, 05 Dec 2023 12:23:20 +0900 (JST)
-Message-Id: <20231205.122320.1887043941025150953.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- wedsonaf@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH net-next v9 1/4] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ZW6EL-4XaoY3n4J9@Boquns-Mac-mini.home>
+        Mon, 04 Dec 2023 19:40:56 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailauth.nyi.internal (Postfix) with ESMTP id AABB527C005B;
+	Mon,  4 Dec 2023 22:40:55 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Mon, 04 Dec 2023 22:40:55 -0500
+X-ME-Sender: <xms:x5tuZTq047IuWnTQPG5nRuzQdGWMlh0yFS9OsfJSlyj8-H-aJjbx0g>
+    <xme:x5tuZdr0TXghzlt3q01qTT8neEc30FNRsBLzB1x-i7RyoXelG_kqHiS_--oQZcN2q
+    KjVjiTJtDIRx2qGiA>
+X-ME-Received: <xmr:x5tuZQN1hf91mMz5l_CEQ4YAHj_3LOtRG8ZMa7TFabvi5B5mzGeoKKbvEw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudejjedgiedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:x5tuZW7wmnBvWKn1WloIDPLBNqni9yvNQpFjwfpDQslVHhOBPlmnZQ>
+    <xmx:x5tuZS73pmtSuf98-IMHkZbMCUl5mNXd19_kLzMwytNSPhU3JMyfag>
+    <xmx:x5tuZegueRsGGA2Z_son_-DYTE2bcQHdpyI4sJfwzEDtsiIZzr1Z0Q>
+    <xmx:x5tuZUuk10i6HfGPwK8xN2Tuw7YtSgFXeNtbZ0BcmT07XW-OtHJh4w>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 4 Dec 2023 22:40:55 -0500 (EST)
+Date: Mon, 4 Dec 2023 19:40:53 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v9 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <ZW6bxfB-iuD9cjm_@Boquns-Mac-mini.home>
 References: <20231205011420.1246000-1-fujita.tomonori@gmail.com>
-	<20231205011420.1246000-2-fujita.tomonori@gmail.com>
-	<ZW6EL-4XaoY3n4J9@Boquns-Mac-mini.home>
+ <20231205011420.1246000-2-fujita.tomonori@gmail.com>
+ <ZW6EL-4XaoY3n4J9@Boquns-Mac-mini.home>
+ <20231205.122320.1887043941025150953.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231205.122320.1887043941025150953.fujita.tomonori@gmail.com>
 
-On Mon, 4 Dec 2023 18:00:15 -0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
-
-> On Tue, Dec 05, 2023 at 10:14:17AM +0900, FUJITA Tomonori wrote:
-> [...]
->> +    /// Gets the current link state.
->> +    ///
->> +    /// It returns true if the link is up.
->> +    pub fn is_link_up(&self) -> bool {
->> +        const LINK_IS_UP: u64 = 1;
->> +        // TODO: the code to access to the bit field will be replaced with automatically
->> +        // generated code by bindgen when it becomes possible.
->> +        // SAFETY: The struct invariant ensures that we may access
->> +        // this field without additional synchronization.
->> +        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
->> +        bit_field.get(14, 1) == LINK_IS_UP
+On Tue, Dec 05, 2023 at 12:23:20PM +0900, FUJITA Tomonori wrote:
+> On Mon, 4 Dec 2023 18:00:15 -0800
+> Boqun Feng <boqun.feng@gmail.com> wrote:
 > 
-> I made a mistake here [1], this should be:
+> > On Tue, Dec 05, 2023 at 10:14:17AM +0900, FUJITA Tomonori wrote:
+> > [...]
+> >> +    /// Gets the current link state.
+> >> +    ///
+> >> +    /// It returns true if the link is up.
+> >> +    pub fn is_link_up(&self) -> bool {
+> >> +        const LINK_IS_UP: u64 = 1;
+> >> +        // TODO: the code to access to the bit field will be replaced with automatically
+> >> +        // generated code by bindgen when it becomes possible.
+> >> +        // SAFETY: The struct invariant ensures that we may access
+> >> +        // this field without additional synchronization.
+> >> +        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
+> >> +        bit_field.get(14, 1) == LINK_IS_UP
+> > 
+> > I made a mistake here [1], this should be:
+> > 
+> >     let bit_field = unsafe { &*(core::ptr::addr_of!((*self.0.get())._bitfield_1)) };
+> >     bit_field.get(14, 1) == LINK_IS_UP
+> > 
+> > without `core::ptr::add_of!`, `*(self.0.get())` would still create a
+> > temporary `&` to the underlying object I believe. `addr_of!` is the way
+> > to avoid create the temporary reference. Same for the other functions.
 > 
->     let bit_field = unsafe { &*(core::ptr::addr_of!((*self.0.get())._bitfield_1)) };
->     bit_field.get(14, 1) == LINK_IS_UP
+> If so, how about functions to access to non bit field like phy_id()?
 > 
-> without `core::ptr::add_of!`, `*(self.0.get())` would still create a
-> temporary `&` to the underlying object I believe. `addr_of!` is the way
-> to avoid create the temporary reference. Same for the other functions.
+> pub fn phy_id(&self) -> u32 {
+>     let phydev = self.0.get();
+>     unsafe { (*phydev).phy_id }
+> }
 
-If so, how about functions to access to non bit field like phy_id()?
+Good point, so cancel the above comment. I had a misunderstanding that a
+place expression would create temporary references, but I was wrong.
 
-pub fn phy_id(&self) -> u32 {
-    let phydev = self.0.get();
-    unsafe { (*phydev).phy_id }
-}
+Regards,
+Boqun
