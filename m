@@ -1,212 +1,333 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gvXVxW/F"
-Received: from mail-lf1-x149.google.com (mail-lf1-x149.google.com [IPv6:2a00:1450:4864:20::149])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C88B1BD
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Dec 2023 02:09:51 -0800 (PST)
-Received: by mail-lf1-x149.google.com with SMTP id 2adb3069b0e04-50be5899082so3950537e87.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 06 Dec 2023 02:09:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701857389; x=1702462189; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yyo/AOmj9zcd4Cgit94NCPm2Zi7Z6JIsUXb5F1cqXp4=;
-        b=gvXVxW/F6Y3HWq4D3dGFCWtlGUZIcrxiJz8iAPXDOXnzu8ttJTKFPpMvKC3HQXTtcH
-         YZ/I8LU14+aMVnMZ/D7VVdj9Uk03JDXhDtL9wiCeWdS9fkAcmBruOBho6vVgKOga7GZh
-         GNB8+NJES9nUZGfP0TmPPtbACLCx9LFZCGagGW1d7fuRndoWVNf3dlnDEzlHJKWUS9uI
-         NaBIjuRLtDYSQCCzdckOB18146TF20Hh6Sv4GobKr2mSwKSX/fFzmMB1LcxZHx2ecAyx
-         9GlCJIRKo5Tiq6M03Bw2nYvEjQexn4MvydA54h5JqC0EEHLZ7ujeauv8sq39s6DYO3/l
-         ySGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701857389; x=1702462189;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yyo/AOmj9zcd4Cgit94NCPm2Zi7Z6JIsUXb5F1cqXp4=;
-        b=sivVW0FP43noiRq2+pRnFrGEVewkYc563ZLn1nWX6iAMr/zJmMfViSf2h1uOSDIxYF
-         lrEtIBYt2SaFJ6RmH74cpk+vf96Gxp4MCd+vD5yYHKSntRXAzdR8mx3at+3F/xjOpaOo
-         fCzHq471mE+KKokOLYCijflqjkR+ZODslnxcGcWVLCSrwH4W52JGVAmoTyeFo6zkQLDX
-         deXFQE2tyXFhRqce7YmPiH1DcgglWPJyg+NUqNHCTgi8yDqv5c3ULXC9Hwk1nijoLhPM
-         FB7LG+ghY8j+P11MDUw1zRavSrXVszwKePa3nMU90f4X8vfAAYGFqFZ2AknCDP5E3nfl
-         cntQ==
-X-Gm-Message-State: AOJu0YyMNOLi3Cyo7y9Lk1RjqsDBowXFjkv/i+MwdjPhiomiTvUuIUy8
-	BDVzRwuGsdNJIbjdCsz17YHiZ0qsewXObWo=
-X-Google-Smtp-Source: AGHT+IH1Uagzh2FSTOxOXal+WK9kmP/Ye0opHqSolX3+vfEygg+gvZ9zNt/VWpUz/XQhWAKbn341Pxr4ciXG7Sw=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6512:39d6:b0:50b:f0f6:259d with SMTP
- id k22-20020a05651239d600b0050bf0f6259dmr6812lfu.11.1701857389217; Wed, 06
- Dec 2023 02:09:49 -0800 (PST)
-Date: Wed, 06 Dec 2023 10:09:24 +0000
-In-Reply-To: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AEh2POcM"
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C61DE
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Dec 2023 03:31:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1701862274; x=1702121474;
+	bh=MawjpEgvddTffXN7C9CoX/mzwjZrjbc6qLXMvPPc1UQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=AEh2POcMNd7hHJzKWc2xtt8SheF9gMMZVLFkT4cbir+j/X6cqydFam4/pIScy+edk
+	 kGspeG7NGGr87v27hlA4Thy5HOX+CU3pEoRvh2bIRH8kCm64k5rxxN56ZRh8jFABY3
+	 nCGT6Gvwf9espjqOIHjyrpzSAcX8Mf74n1lIvqTpSkEBOcDrHMZKnTnMmY/wOSod1H
+	 pubVfi7jNUxrPZnyqq2TlbokId5dNux+76T5dDVs4rJKTyo1YaObwyVazFIebpAGlF
+	 kWBMtsHwI4HHFKkEKJ6q0CIdttzfeS7WscbTbr2gLJv8iLG+CwADH6EWJ7hxBNI2OX
+	 9Pf5Cf1+SBI9w==
+Date: Wed, 06 Dec 2023 11:31:08 +0000
+To: =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH v5] rust: xarray: Add an abstraction for XArray
+Message-ID: <cbd727dd-3bb1-4a1b-8264-cf31f231a328@proton.me>
+In-Reply-To: <20231201195300.1329092-1-mcanal@igalia.com>
+References: <20231201195300.1329092-1-mcanal@igalia.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5270; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=/VMhS2n7v+OrDjmNW0iMiPb1VnK9+s+caIt3RRCeoD0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlcEhkME2PSBggPDlUK+JjUepphkl7X+XwFkwnM
- 3RoI5m0NtiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZXBIZAAKCRAEWL7uWMY5
- RspjD/9yieSBoVrrLuRCIT7d3bnc3302+K9bE/cgtJckVgMlEnSX4oOE229OHdMZ0gsCXRVXeHg
- GqNZ8htlUk7d8wgt/7dNx2SH4TWYHEznDsS26uePexTkNOYVJX+ce+uREA9pc/J/Rwqx6um8UqR
- j4hv/M81LKuyptxs6WR0EyBY7fATbrgTIzgP6ajdRJ9FSjQVEfxKy06utISRfa2MwroT0TCx78X
- oaPaz943kPiB72dUCqAo5hGkYHQtHB8dGdbR5qapdEyN/XQ0GbWV5lp44/oje3wpi87jA/CASGS
- YcL2qnLJmz+M5WfVwNNWA4IECjePWyJajCFKzUWgMn8HDNjEx/vmLN70AajfhXxrwlK6indrGMT
- Ly1HSzCqZ9v/Kwg8qvHm54CqkWGv56yz7NDMlQNzByCrUQZ3R/mDyksBwZo6tDOMixnTakzyyTF
- ZXgqZNfaK+zHEKtoTiXd/xkrPyIVNv4+144VmtGG+8sbVBst9B+HprWXJV4J83J+aYTJIa/Ayyc
- UkfPKorryorYhJ+Rnvj66IDRZZMt40SvkTxVoBANWCdQm//fqdPckCs9V5ZTSo8WRLt2o9gPPWA
- oqwuFFLv4RzbZpb/bAMQKi2O0btVjRG6osyoYXr4VFQuf+Fnpii6u6S2kCHuW4kcLwq+VwmFa6x I3f8/hOBATRSRwQ==
-X-Mailer: b4 0.13-dev-26615
-Message-ID: <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com>
-Subject: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Sleep on a condition variable with a timeout.
+On 12/1/23 20:50, Ma=C3=ADra Canal wrote:
+> +/// Wrapper for a value owned by the `XArray` which holds the `XArray` l=
+ock until dropped.
+> +pub struct Guard<'a, T: ForeignOwnable>(NonNull<T>, Pin<&'a XArray<T>>);
 
-This is used by Rust Binder for process freezing. There, we want to
-sleep until the freeze operation completes, but we want to be able to
-abort the process freezing if it doesn't complete within some timeout.
+No invariant for `self.0` being a pointer derived from
+`T::into_foreign`?
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/sync.rs         |  2 +-
- rust/kernel/sync/condvar.rs | 73 +++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/sync/lock.rs    |  4 +--
- 3 files changed, 76 insertions(+), 3 deletions(-)
+> +// INVARIANTS: The lock held by the Guard prevents concurrent access to =
+the XArray.
+> +// The Guard's Drop implementation releases the lock only when the Guard=
+ is
+> +// dropped, ensuring exclusive access during its existence. Therefore, w=
+ithin
+> +// the Guard's lifetime, no other operation (including the XArray
+> +// calling `T::from_foreign`) can access or modify the underlying value.
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index d219ee518eff..c1fb10fc64f4 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -13,7 +13,7 @@
- mod locked_by;
- 
- pub use arc::{Arc, ArcBorrow, UniqueArc};
--pub use condvar::CondVar;
-+pub use condvar::{CondVar, CondVarTimeoutResult};
- pub use lock::{mutex::Mutex, spinlock::SpinLock};
- pub use locked_by::LockedBy;
- 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index 9861c6749ad0..a6a6b6ab0c39 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -120,6 +120,63 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
-         unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
-     }
- 
-+    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-+    /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
-+    /// [`CondVar::notify_all`], or when the thread receives a signal.
-+    ///
-+    /// Returns whether there is a signal pending.
-+    fn wait_internal_timeout<T, B>(
-+        &self,
-+        wait_state: u32,
-+        guard: &mut Guard<'_, T, B>,
-+        timeout: u64,
-+    ) -> u64
-+    where
-+        T: ?Sized,
-+        B: Backend,
-+    {
-+        let wait = Opaque::<bindings::wait_queue_entry>::uninit();
-+
-+        // SAFETY: `wait` points to valid memory.
-+        unsafe { bindings::init_wait(wait.get()) };
-+
-+        // SAFETY: Both `wait` and `wait_list` point to valid memory.
-+        unsafe {
-+            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
-+        };
-+
-+        // SAFETY: Switches to another thread.
-+        let timeout =
-+            guard.do_unlocked(|| unsafe { bindings::schedule_timeout(timeout as _) as _ });
-+
-+        // SAFETY: Both `wait` and `wait_list` point to valid memory.
-+        unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
-+
-+        timeout
-+    }
-+
-+    /// Releases the lock and waits for a notification in interruptible mode.
-+    ///
-+    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-+    /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
-+    /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
-+    ///
-+    /// Returns whether there is a signal pending.
-+    #[must_use = "wait_timeout returns if a signal is pending, so the caller must check the return value"]
-+    pub fn wait_timeout<T: ?Sized, B: Backend>(
-+        &self,
-+        guard: &mut Guard<'_, T, B>,
-+        jiffies: u64,
-+    ) -> CondVarTimeoutResult {
-+        let res = self.wait_internal_timeout(bindings::TASK_INTERRUPTIBLE, guard, jiffies);
-+
-+        match (res as _, crate::current!().signal_pending()) {
-+            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
-+            (0, false) => CondVarTimeoutResult::Timeout,
-+            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
-+        }
-+    }
-+
-     /// Releases the lock and waits for a notification in interruptible mode.
-     ///
-     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-@@ -177,3 +234,19 @@ pub fn notify_all(&self) {
-         self.notify(0, 0);
-     }
- }
-+
-+/// The return type of `wait_timeout`.
-+pub enum CondVarTimeoutResult {
-+    /// The timeout was reached.
-+    Timeout,
-+    /// Somebody woke us up.
-+    Woken {
-+        /// Remaining sleep duration.
-+        jiffies: u64,
-+    },
-+    /// A signal occurred.
-+    Signal {
-+        /// Remaining sleep duration.
-+        jiffies: u64,
-+    },
-+}
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index f12a684bc957..149a5259d431 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -139,7 +139,7 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
- unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
- 
- impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
--    pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
-+    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
- 
-@@ -147,7 +147,7 @@ pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
-         let _relock =
-             ScopeGuard::new(|| unsafe { B::relock(self.lock.state.get(), &mut self.state) });
- 
--        cb();
-+        cb()
-     }
- }
- 
+Why is this invariants comment on the `impl`?
 
--- 
-2.43.0.rc2.451.g8631bc7472-goog
+> +// The Guard holds a reference (`self.0`) to the underlying value owned =
+by
+> +// XArray. You can use the `into_foreign` method to obtain a pointer to =
+the
+> +// foreign representation of the owned value, which is valid for the lif=
+etime
+> +// of the Guard.
+> +impl<'a, T: ForeignOwnable> Guard<'a, T> {
+> +    /// Borrow the underlying value wrapped by the `Guard`.
+> +    ///
+> +    /// Returns a `T::Borrowed` type for the owned `ForeignOwnable` type=
+.
+> +    pub fn borrow(&self) -> T::Borrowed<'_> {
+> +        // SAFETY: The value is owned by the `XArray`, the lifetime it i=
+s borrowed for must not
+> +        // outlive the `XArray` itself, nor the Guard that holds the loc=
+k ensuring the value
+> +        // remains in the `XArray`.
+
+Here would be the right place to mention the `Guard` invariant, but not
+using an `INVARIANT` comment, instead use "by the type invariant of
+`Guard`...".
+
+> +        unsafe { T::borrow(self.0.as_ptr() as _) }
+> +    }
+> +}
+> +
+> +// Convenience impl for `ForeignOwnable` types whose `Borrowed`
+> +// form implements Deref.
+> +impl<'a, T: ForeignOwnable> Deref for Guard<'a, T>
+> +where
+> +    T::Borrowed<'a>: Deref,
+> +    for<'b> T::Borrowed<'b>: Into<&'b <T::Borrowed<'a> as Deref>::Target=
+>,
+> +{
+> +    type Target =3D <T::Borrowed<'a> as Deref>::Target;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        self.borrow().into()
+> +    }
+> +}
+> +
+> +impl<'a, T: ForeignOwnable> Drop for Guard<'a, T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The XArray we have a reference to owns the C xarray o=
+bject.
+
+This must also be justified by the type invariant.
+
+> +        unsafe { bindings::xa_unlock(self.1.xa.get()) };
+> +    }
+> +}
+> +
+> +/// Represents a reserved slot in an `XArray`, which does not yet have a=
+ value but has an assigned
+> +/// index and may not be allocated by any other user. If the Reservation=
+ is dropped without
+> +/// being filled, the entry is marked as available again.
+> +///
+> +/// Users must ensure that reserved slots are not filled by other mechan=
+isms, or otherwise their
+> +/// contents may be dropped and replaced (which will print a warning).
+> +pub struct Reservation<'a, T: ForeignOwnable>(Pin<&'a XArray<T>>, usize,=
+ PhantomData<T>);
+
+When using pin-init (see below for what I mean by this), the
+`Pin<&'a ..>` is not needed (instead just use `&'a ..`).
+
+[...]
+
+> +/// An array which efficiently maps sparse integer indices to owned obje=
+cts.
+> +///
+> +/// This is similar to a `Vec<Option<T>>`, but more efficient when there=
+ are holes in the
+> +/// index space, and can be efficiently grown.
+> +///
+> +/// This structure is expected to often be used with an inner type that
+> +/// can be efficiently cloned, such as an `Arc<T>`.
+
+No invariants?
+
+> +pub struct XArray<T: ForeignOwnable> {
+> +    xa: Opaque<bindings::xarray>,
+> +    _p: PhantomData<T>,
+> +    _q: PhantomPinned,
+
+You do not need this, recently we changed `Opaque<T>` to have the same
+functionality.
+
+> +}
+> +
+> +impl<T: ForeignOwnable> XArray<T> {
+> +    /// Creates a new `XArray` with the given flags.
+> +    pub fn new(flags: Flags) -> XArray<T> {
+
+Sorry, it seems I forgot to tell you about the pin-init API. See the
+documentation at [1].
+You should change the return type of `new` to be `impl PinInit<Self>`.
+Then the pin-init API ensures that an `XArray` can only be created in a
+pinned state.
+
+The body of `new` should then just use `pin_init!` and
+`Opaque::ffi_init`.
+
+Doing this allows you to use `&self` as the receiver type.
+
+
+[1]: https://rust-for-linux.github.io/docs/v6.6-rc2/kernel/init/index.html
+
+> +        let xa =3D Opaque::uninit();
+> +
+> +        // SAFETY: We have just created `xa`. This data structure does n=
+ot require
+> +        // pinning.
+> +        unsafe { bindings::xa_init_flags(xa.get(), flags) };
+> +
+> +        // INVARIANT: All pointers stored in the array are pointers obta=
+ined by
+> +        // calling `T::into_foreign`.
+
+This invariant is not recorded on the type itself?
+
+> +        XArray {
+> +            xa,
+> +            _p: PhantomData,
+> +            _q: PhantomPinned,
+> +        }
+> +    }
+> +
+> +    /// Replaces an entry with a new value, returning the old value (if =
+any).
+> +    pub fn replace(self: Pin<&Self>, index: usize, value: T) -> Result<O=
+ption<T>> {
+
+As I said above, if you use the `pin-init` API, you can use `&self`
+here.
+
+[...]
+
+> +    /// Looks up and returns a reference to an entry in the array, retur=
+ning a `Guard` if it
+> +    /// exists.
+> +    ///
+> +    /// This guard blocks all other actions on the `XArray`. Callers are=
+ expected to drop the
+> +    /// `Guard` eagerly to avoid blocking other users, such as by taking=
+ a clone of the value.
+> +    pub fn get(self: Pin<&Self>, index: usize) -> Option<Guard<'_, T>> {
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        unsafe { bindings::xa_lock(self.xa.get()) };
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        let guard =3D ScopeGuard::new(|| unsafe { bindings::xa_unlock(se=
+lf.xa.get()) });
+
+Is that really the only requirement for calling `xa_unlock`?
+
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        let p =3D unsafe { bindings::xa_load(self.xa.get(), index.try_in=
+to().ok()?) };
+
+Are you required to hold the lock for this operation? Then you need to
+state so in the SAFETY comment.
+
+> +
+> +        NonNull::new(p as *mut T).map(|p| {
+> +            guard.dismiss();
+> +            Guard(p, self)
+> +        })
+> +    }
+> +
+> +    /// Removes and returns an entry, returning it if it existed.
+> +    pub fn remove(self: Pin<&Self>, index: usize) -> Option<T> {
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        let p =3D unsafe { bindings::xa_erase(self.xa.get(), index.try_i=
+nto().ok()?) };
+> +        if p.is_null() {
+> +            None
+> +        } else {
+> +            // SAFETY: All pointers stored in the array are pointers obt=
+ained by
+> +            // calling `T::into_foreign`.
+> +            Some(unsafe { T::from_foreign(p) })
+> +        }
+> +    }
+> +
+> +    /// Allocates a new index in the array, optionally storing a new val=
+ue into it, with
+> +    /// configurable bounds for the index range to allocate from.
+> +    ///
+> +    /// If `value` is `None`, then the index is reserved from further al=
+location but remains
+> +    /// free for storing a value into it.
+> +    fn alloc_limits_opt(self: Pin<&Self>, value: Option<T>, min: u32, ma=
+x: u32) -> Result<usize> {
+
+In my last mail I wrote:
+
+    I find it a bit weird to have both the reservation mechanism *and* this
+    function taking an `Option<T>`. Is this really needed?
+   =20
+    I think the name could be changed to `insert_between`, since that would
+    better reflect the "datastructure"-nature of this type. But it would
+    also be reasonable to keep the name `alloc`, since in C the function is
+    called `xa_alloc`.
+
+I have no idea what your rationale for the current choice is, could you
+please explain?
+
+[...]
+
+> +impl<T: ForeignOwnable> Drop for XArray<T> {
+> +    fn drop(&mut self) {
+> +        let mut index: core::ffi::c_ulong =3D 0;
+> +
+> +        // SAFETY: `self.xa` is valid by the type invariant, and as we h=
+ave
+> +        // the only reference to the `XArray` we can safely iterate its =
+contents
+> +        // and drop everything.
+> +        unsafe {
+> +            let mut entry =3D bindings::xa_find(
+> +                self.xa.get(),
+> +                &mut index,
+> +                core::ffi::c_ulong::MAX,
+> +                bindings::BINDINGS_XA_PRESENT,
+> +            );
+> +
+> +            while !entry.is_null() {
+> +                T::from_foreign(entry);
+> +                entry =3D bindings::xa_find_after(
+> +                    self.xa.get(),
+> +                    &mut index,
+> +                    core::ffi::c_ulong::MAX,
+> +                    bindings::BINDINGS_XA_PRESENT,
+> +                );
+> +            }
+> +        }
+
+This block needs to be split such that it is clear which operations are
+unsafe and which operations are safe. Additionally there is the
+`T::from_foreign` call inside for which the SAFETY comment has no
+justification.
+
+> +
+> +        // SAFETY: Locked locks are not safe to drop. Normally we would =
+want to
+> +        // try_lock()/unlock() here for safety or something similar, but=
+ in this
+> +        // case xa_destroy() is guaranteed to acquire the lock anyway. T=
+his will
+> +        // deadlock if a lock guard was improperly dropped, but that is =
+not UB,
+> +        // so it's sufficient for soundness purposes.
+
+This SAFETY comment is unclear, please try to reduce it to the satisfied
+requirements of `xa_destroy`. If you want to state something else, you
+can still have a comment above.
+
+--=20
+Cheers,
+Benno
+
+> +        unsafe {
+> +            bindings::xa_destroy(self.xa.get());
+> +        }
+> +    }
+> +}
+> +
+> +// SAFETY: XArray is thread-safe and all mutation operations are interna=
+lly locked.
+> +unsafe impl<T: Send + ForeignOwnable> Send for XArray<T> {}
+> +unsafe impl<T: Sync + ForeignOwnable> Sync for XArray<T> {}
+> --
+> 2.42.0
+>=20
 
