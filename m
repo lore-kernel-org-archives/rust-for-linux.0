@@ -1,40 +1,40 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YvSNrajp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gvXVxW/F"
 Received: from mail-lf1-x149.google.com (mail-lf1-x149.google.com [IPv6:2a00:1450:4864:20::149])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A8171BD
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Dec 2023 02:09:48 -0800 (PST)
-Received: by mail-lf1-x149.google.com with SMTP id 2adb3069b0e04-50bf1bbf67aso3230752e87.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 06 Dec 2023 02:09:48 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C88B1BD
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Dec 2023 02:09:51 -0800 (PST)
+Received: by mail-lf1-x149.google.com with SMTP id 2adb3069b0e04-50be5899082so3950537e87.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 06 Dec 2023 02:09:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701857386; x=1702462186; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1701857389; x=1702462189; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U1L9PtqvjoQFgO5q+VnM788vYaeOUUwutSgupIUHrpw=;
-        b=YvSNrajpI6D3Jtgrhf87UOkAQtV42jT6EuKVxcORvVfGmOBjxQwf/468Bfmb1Tad4w
-         1OG5QbY850Nsq5K/1qg3meLgwRzJoi7geNkugR5aiXqrKdt2Z3N9Zw2hD+W3/KHAr8rA
-         ++uwupYC8+5W/+613FbIvS3CeRMPtD9J23yyyfbSTVx1EL8uKgzx+2j1mcARMWGDTxrD
-         33B6iu+1Vc6/z1g50EMcZk0hVY9K/ZvfYhj9+3vwOgG3jiI8veHsyfCdC2qwa/oDFrdk
-         z2vZbDaybdLwA5BiXODRoKLYm8OBWq3mUfoy6BYogLIqhPt2qBxLK044cU2kyvWqDHxG
-         pjJA==
+        bh=Yyo/AOmj9zcd4Cgit94NCPm2Zi7Z6JIsUXb5F1cqXp4=;
+        b=gvXVxW/F6Y3HWq4D3dGFCWtlGUZIcrxiJz8iAPXDOXnzu8ttJTKFPpMvKC3HQXTtcH
+         YZ/I8LU14+aMVnMZ/D7VVdj9Uk03JDXhDtL9wiCeWdS9fkAcmBruOBho6vVgKOga7GZh
+         GNB8+NJES9nUZGfP0TmPPtbACLCx9LFZCGagGW1d7fuRndoWVNf3dlnDEzlHJKWUS9uI
+         NaBIjuRLtDYSQCCzdckOB18146TF20Hh6Sv4GobKr2mSwKSX/fFzmMB1LcxZHx2ecAyx
+         9GlCJIRKo5Tiq6M03Bw2nYvEjQexn4MvydA54h5JqC0EEHLZ7ujeauv8sq39s6DYO3/l
+         ySGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701857386; x=1702462186;
+        d=1e100.net; s=20230601; t=1701857389; x=1702462189;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U1L9PtqvjoQFgO5q+VnM788vYaeOUUwutSgupIUHrpw=;
-        b=EFYaCmT9URfCpwziQoRjE0NoO5SpupOoj8LmDsa5WGrLQUt5ZxLIvZ2y605HVT8j4k
-         EPsAp60kONZ6/Yi6F5pO+4cqGgHaLMGmSs1IYj4viuKKxytNQUFXYOQL8dTvIIGjc5a2
-         wvTxaPBePQQrIlAgVRPWI4M2VPZv3MKwUjUmwejXL+S41yyd4KhCdDVKvPW/Z0IpNZnP
-         jhDORG9Wzy1guAVFqnKHd27plLdguKGKwJ7D8u+JaO8+D9aoNS0at/Im4suNupQgfNtl
-         IYHstvfQHDRtw2gl6qYg6X5q3Kgn2yGyhHebjQB05OB0L2MQIGZUx7Ru2vDAPWxB7X/O
-         J3ZA==
-X-Gm-Message-State: AOJu0YwUTGtLaQGF/mLnAWHZoJD3bj6RoN5ndR8YlQ4Zd1qKWlCyPaw3
-	efo5+3G/9u2hMkc/F0e9Fex1qzkC3DhE2kw=
-X-Google-Smtp-Source: AGHT+IGcZaa0HIqhd1WvwmU9/aezaZATfqG4dYdD1uU8/+cxuckpLe6BI/oIuVMP4tyS6jJfsHxO67Crxq6ZihE=
+        bh=Yyo/AOmj9zcd4Cgit94NCPm2Zi7Z6JIsUXb5F1cqXp4=;
+        b=sivVW0FP43noiRq2+pRnFrGEVewkYc563ZLn1nWX6iAMr/zJmMfViSf2h1uOSDIxYF
+         lrEtIBYt2SaFJ6RmH74cpk+vf96Gxp4MCd+vD5yYHKSntRXAzdR8mx3at+3F/xjOpaOo
+         fCzHq471mE+KKokOLYCijflqjkR+ZODslnxcGcWVLCSrwH4W52JGVAmoTyeFo6zkQLDX
+         deXFQE2tyXFhRqce7YmPiH1DcgglWPJyg+NUqNHCTgi8yDqv5c3ULXC9Hwk1nijoLhPM
+         FB7LG+ghY8j+P11MDUw1zRavSrXVszwKePa3nMU90f4X8vfAAYGFqFZ2AknCDP5E3nfl
+         cntQ==
+X-Gm-Message-State: AOJu0YyMNOLi3Cyo7y9Lk1RjqsDBowXFjkv/i+MwdjPhiomiTvUuIUy8
+	BDVzRwuGsdNJIbjdCsz17YHiZ0qsewXObWo=
+X-Google-Smtp-Source: AGHT+IH1Uagzh2FSTOxOXal+WK9kmP/Ye0opHqSolX3+vfEygg+gvZ9zNt/VWpUz/XQhWAKbn341Pxr4ciXG7Sw=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:ac2:5f6f:0:b0:50b:f822:eacf with SMTP id
- c15-20020ac25f6f000000b0050bf822eacfmr7060lfc.9.1701857386498; Wed, 06 Dec
- 2023 02:09:46 -0800 (PST)
-Date: Wed, 06 Dec 2023 10:09:23 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:39d6:b0:50b:f0f6:259d with SMTP
+ id k22-20020a05651239d600b0050bf0f6259dmr6812lfu.11.1701857389217; Wed, 06
+ Dec 2023 02:09:49 -0800 (PST)
+Date: Wed, 06 Dec 2023 10:09:24 +0000
 In-Reply-To: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -44,22 +44,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1342; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=gjsFTUAv4pM5ZDJTd0sbTeFQ61hWz6BaOzuWVUqxq5w=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlcEhjgsTlj7q910nqwwTDSnkQsaj8PWPzf/p24
- xNoUDnQ9huJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZXBIYwAKCRAEWL7uWMY5
- Rhx4D/9VIZRDqteITL/cUGikpx6VfrHfTxuyPcTCIR+GBin1ORtXgW+Bt6OwxBi3hwmsdrhgAbD
- 3108bBJ5qfRCoI6Lt5pmvQwWE6X1rBF1CWvwWhJHseTDg5ddzP9IiMRforJXCt7kitqp1ORX2TK
- i+1/aJomLqn7Wgka2NGua5btH6ixeZetd7KZMe+0QeeYMM7326rbf16LSoOSOcHcZSzL5vAxD19
- F/H+hEfilOKYsoVGpFPbDYpXcO7zIuWfKVssGmFXhpROxJM4iFdDytnmXsv3d/Ak76N+hJBzcn9
- ZJi5twiTHlgWjEclmhEVG7vJA9mmnGfKPWv0ddRn1+d+gXksYgqDInQ/vS3XrkuC7VP5aegFabQ
- tPjSCyS4iJh75zIgbdPgDISDIwict5SjjC0MNli6WI5pNOugCjP5fekPne54LC7aSsAUGLsa6PI
- vWFX1AsnQViiHdsFFnPVbTRYc0V8o07TbPdlx4tMsdJduWvF8+wW5IGZ1IffvFess7dcrksF6np
- AikW4+oesXvSf/CMoXl+kJy9EcxcXRP91Oec08ayBv4KSdRit3ScvYmjsE6PdxARtylFOhIR87I
- 7OM/5aalMAmvl3lHw52Kn7b7nxBalpM73+jnBjzKnqz/FO2j2Cm4jTNm685HgT6o/+FkGG5PPRB /L7P5iNaWdSc9+g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5270; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=/VMhS2n7v+OrDjmNW0iMiPb1VnK9+s+caIt3RRCeoD0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlcEhkME2PSBggPDlUK+JjUepphkl7X+XwFkwnM
+ 3RoI5m0NtiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZXBIZAAKCRAEWL7uWMY5
+ RspjD/9yieSBoVrrLuRCIT7d3bnc3302+K9bE/cgtJckVgMlEnSX4oOE229OHdMZ0gsCXRVXeHg
+ GqNZ8htlUk7d8wgt/7dNx2SH4TWYHEznDsS26uePexTkNOYVJX+ce+uREA9pc/J/Rwqx6um8UqR
+ j4hv/M81LKuyptxs6WR0EyBY7fATbrgTIzgP6ajdRJ9FSjQVEfxKy06utISRfa2MwroT0TCx78X
+ oaPaz943kPiB72dUCqAo5hGkYHQtHB8dGdbR5qapdEyN/XQ0GbWV5lp44/oje3wpi87jA/CASGS
+ YcL2qnLJmz+M5WfVwNNWA4IECjePWyJajCFKzUWgMn8HDNjEx/vmLN70AajfhXxrwlK6indrGMT
+ Ly1HSzCqZ9v/Kwg8qvHm54CqkWGv56yz7NDMlQNzByCrUQZ3R/mDyksBwZo6tDOMixnTakzyyTF
+ ZXgqZNfaK+zHEKtoTiXd/xkrPyIVNv4+144VmtGG+8sbVBst9B+HprWXJV4J83J+aYTJIa/Ayyc
+ UkfPKorryorYhJ+Rnvj66IDRZZMt40SvkTxVoBANWCdQm//fqdPckCs9V5ZTSo8WRLt2o9gPPWA
+ oqwuFFLv4RzbZpb/bAMQKi2O0btVjRG6osyoYXr4VFQuf+Fnpii6u6S2kCHuW4kcLwq+VwmFa6x I3f8/hOBATRSRwQ==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20231206-rb-new-condvar-methods-v1-1-33a4cab7fdaa@google.com>
-Subject: [PATCH 1/2] rust: sync: add `CondVar::notify_sync`
+Message-ID: <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com>
+Subject: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -70,39 +70,142 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Wake up another thread synchronously.
+Sleep on a condition variable with a timeout.
 
-This method behaves like `notify_one`, except that it hints to the
-scheduler that the current thread is about to go to sleep, so it should
-schedule the target thread on the same CPU.
-
-This is used by Rust Binder as a performance optimization. When sending
-a transaction to a different process, we usually know which thread will
-handle it, so we can schedule that thread for execution next on this
-CPU for better cache locality.
+This is used by Rust Binder for process freezing. There, we want to
+sleep until the freeze operation completes, but we want to be able to
+abort the process freezing if it doesn't complete within some timeout.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/sync/condvar.rs | 6 ++++++
- 1 file changed, 6 insertions(+)
+ rust/kernel/sync.rs         |  2 +-
+ rust/kernel/sync/condvar.rs | 73 +++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/sync/lock.rs    |  4 +--
+ 3 files changed, 76 insertions(+), 3 deletions(-)
 
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index d219ee518eff..c1fb10fc64f4 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -13,7 +13,7 @@
+ mod locked_by;
+ 
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+-pub use condvar::CondVar;
++pub use condvar::{CondVar, CondVarTimeoutResult};
+ pub use lock::{mutex::Mutex, spinlock::SpinLock};
+ pub use locked_by::LockedBy;
+ 
 diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index b679b6f6dbeb..9861c6749ad0 100644
+index 9861c6749ad0..a6a6b6ab0c39 100644
 --- a/rust/kernel/sync/condvar.rs
 +++ b/rust/kernel/sync/condvar.rs
-@@ -155,6 +155,12 @@ fn notify(&self, count: i32, flags: u32) {
-         };
+@@ -120,6 +120,63 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
+         unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
      }
  
-+    /// Calls the kernel function to notify one thread synchronously.
-+    pub fn notify_sync(&self) {
-+        // SAFETY: `wait_list` points to valid memory.
-+        unsafe { bindings::__wake_up_sync(self.wait_list.get(), bindings::TASK_NORMAL) };
++    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
++    /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
++    /// [`CondVar::notify_all`], or when the thread receives a signal.
++    ///
++    /// Returns whether there is a signal pending.
++    fn wait_internal_timeout<T, B>(
++        &self,
++        wait_state: u32,
++        guard: &mut Guard<'_, T, B>,
++        timeout: u64,
++    ) -> u64
++    where
++        T: ?Sized,
++        B: Backend,
++    {
++        let wait = Opaque::<bindings::wait_queue_entry>::uninit();
++
++        // SAFETY: `wait` points to valid memory.
++        unsafe { bindings::init_wait(wait.get()) };
++
++        // SAFETY: Both `wait` and `wait_list` point to valid memory.
++        unsafe {
++            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
++        };
++
++        // SAFETY: Switches to another thread.
++        let timeout =
++            guard.do_unlocked(|| unsafe { bindings::schedule_timeout(timeout as _) as _ });
++
++        // SAFETY: Both `wait` and `wait_list` point to valid memory.
++        unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
++
++        timeout
 +    }
 +
-     /// Wakes a single waiter up, if any.
++    /// Releases the lock and waits for a notification in interruptible mode.
++    ///
++    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
++    /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
++    /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
++    ///
++    /// Returns whether there is a signal pending.
++    #[must_use = "wait_timeout returns if a signal is pending, so the caller must check the return value"]
++    pub fn wait_timeout<T: ?Sized, B: Backend>(
++        &self,
++        guard: &mut Guard<'_, T, B>,
++        jiffies: u64,
++    ) -> CondVarTimeoutResult {
++        let res = self.wait_internal_timeout(bindings::TASK_INTERRUPTIBLE, guard, jiffies);
++
++        match (res as _, crate::current!().signal_pending()) {
++            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
++            (0, false) => CondVarTimeoutResult::Timeout,
++            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
++        }
++    }
++
+     /// Releases the lock and waits for a notification in interruptible mode.
      ///
-     /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
+     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+@@ -177,3 +234,19 @@ pub fn notify_all(&self) {
+         self.notify(0, 0);
+     }
+ }
++
++/// The return type of `wait_timeout`.
++pub enum CondVarTimeoutResult {
++    /// The timeout was reached.
++    Timeout,
++    /// Somebody woke us up.
++    Woken {
++        /// Remaining sleep duration.
++        jiffies: u64,
++    },
++    /// A signal occurred.
++    Signal {
++        /// Remaining sleep duration.
++        jiffies: u64,
++    },
++}
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index f12a684bc957..149a5259d431 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -139,7 +139,7 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
+ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+ 
+ impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
+-    pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
++    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+         // SAFETY: The caller owns the lock, so it is safe to unlock it.
+         unsafe { B::unlock(self.lock.state.get(), &self.state) };
+ 
+@@ -147,7 +147,7 @@ pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
+         let _relock =
+             ScopeGuard::new(|| unsafe { B::relock(self.lock.state.get(), &mut self.state) });
+ 
+-        cb();
++        cb()
+     }
+ }
+ 
 
 -- 
 2.43.0.rc2.451.g8631bc7472-goog
