@@ -1,123 +1,89 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PdBWe4uG"
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFA010D9;
-	Wed,  6 Dec 2023 08:30:11 -0800 (PST)
-Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-423a9cb7e80so6388221cf.3;
-        Wed, 06 Dec 2023 08:30:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PmEKKJUI"
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9C7412F
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Dec 2023 08:38:59 -0800 (PST)
+Received: by mail-ua1-x932.google.com with SMTP id a1e0cc1a2514c-7c461a8cb0dso1473293241.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 06 Dec 2023 08:38:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701880211; x=1702485011; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1701880739; x=1702485539; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MfrENQZMpwmFIEWGgMUijz+SvZACHv6cKia/JgD/FyM=;
-        b=PdBWe4uGqYJDFPPWGzTsbex9z73JsarQvA0hWVayhIyXmyJYNUec6/bRsU2yL5uUsF
-         Z4tPClxgK3k3EV/8tXf3UWiUJggn0ByS3+0A6i5msgNKowkqHqiZyRTPCRrfxdnIiCJJ
-         o9ACwSlQ0ToOlwbn+Glg4lqvl7fGBgYV+LczDeTK2td8D+fhM9ggh5L3ZfwUwsRJjL2c
-         SJS+0QLcYBQYX+N9WpdGGLDyH9cT1E6nlgd/wIGxEvUIJ70Zyq3HZ8UgnMApDIRC2E7Z
-         Ey4zHtVbHPA9yYigwBDqaQwExNn5eLkBC7sgk00LutK8cvKr+igs1ZLL30LjH1bofGHq
-         Is8w==
+        bh=JbcOYch65HQgwW4bXeNQNStE/Bld2otdL+K6EjO7ssY=;
+        b=PmEKKJUIVcUp9Gxuf3aFfdxZyOViqVpHsUBLh/iW827KBOcUMfNFsu02LTOFjHOZWh
+         GhSiWdukxLCDFabebhw+pYRkab2cJTcg98+oHdmaIRmGxvsOH5CFUXDCvbOqBhsG0zPv
+         u2v6m3s4XX06toKFB1JeNiFtaN8IXDGTKVTOB3kPAqwOfw++t3kSECOWQdii6+VZwZEn
+         tYuv2P+lhTmBUeuyuv6zdlYa0Fk0xIB9hzEc2UGwuI4y0mhm3TKDWLdHhGtd5DpC+Hss
+         Jp+H8DdnblZ8IZdZ0Xkf9DUb7AdebwV5QLjNwNjclHa4BwLGIPsnl6DJAtEBl4HHGnqH
+         R0mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701880211; x=1702485011;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1701880739; x=1702485539;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MfrENQZMpwmFIEWGgMUijz+SvZACHv6cKia/JgD/FyM=;
-        b=Mf/cYDREhsivOv2xdZ6NweoW4P8k1nMwYhV+DQvBUZY0KAC5NOshy/d1vX4S8tF7Pn
-         R/l99Sf89X/KfWVcKUWSGTdzD3h8EHF+1+pIoJorSfG5W4djdP4lfqTIu33Wq0v5M8XO
-         0p1sIG2pOqnLE+p0RkTdXgXF2ZRLTY4sRU1sYFiLpPTZn/dJA/Sk8/Qx7HkJdSJKHjkU
-         g6tU9KitN1Wg720tnCdaJ8Obd6EzmgjHXMvVB9GHPMnzLs4gnweUmnPxkwB9h4YILuLX
-         1Kb4/qNgYWmd11CkhFCZ406zcuDf1l9UFyVUsGAO9OBwNoaB8rNfWUtR27DsdpYf1tzQ
-         mpxQ==
-X-Gm-Message-State: AOJu0YxGQDrGLtxSyNLTbLMK/SSpnu2Mxda+HAWvWgY+oD1MOcbfAQCl
-	0WhGFGwGzzOBvevhXs2lg9of/Gdy41o=
-X-Google-Smtp-Source: AGHT+IG9akcGZ+NRYuBK7tCRhwZnVAduTeen+wKUSfU3T1gqeaJ3NtdTsRjLVKBy6GLeBflGbEnHxw==
-X-Received: by 2002:ac8:7d41:0:b0:425:4043:41da with SMTP id h1-20020ac87d41000000b00425404341damr1511637qtb.134.1701880210955;
-        Wed, 06 Dec 2023 08:30:10 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id f23-20020ac84997000000b00423e8909bfesm73439qtq.6.2023.12.06.08.30.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Dec 2023 08:30:10 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 0422C27C005B;
-	Wed,  6 Dec 2023 11:30:10 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Wed, 06 Dec 2023 11:30:10 -0500
-X-ME-Sender: <xms:kKFwZUvuPe7UQE7z6sImT1H5mPofHiohr3t8AE3yfGHQH7xNguU8Yg>
-    <xme:kKFwZRf0jxOCbvj0W1HxA8APxJ7yhMSXRyNMwq8jvxbcHFLXnSEJuRswl_JlGCVuz
-    Ws2fUq_WD-kbN-FDw>
-X-ME-Received: <xmr:kKFwZfzvK5h1PW9L7m27J1yqweG-LJ7Qky5Y18l2DehjoqWjQONPmC6zcA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudektddgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:kKFwZXMChU3QZTD_aq9QMETqHeksojHy43k2Lxl6N9krG1OSX_ch7Q>
-    <xmx:kKFwZU8hHbohK0mc9icfw1PnycnAfi4wVAPafpaf86V9TlG3d6JFfg>
-    <xmx:kKFwZfXEDiIZkf4UYbTvQqdZ2vAKtn4fgC72LMGbUEwUcv2cV7Z0ag>
-    <xmx:kqFwZecEalNgpi0bH0Vm3G5KX2LDx1QIan1mtAH4T8FdKxvISc9reg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 6 Dec 2023 11:30:08 -0500 (EST)
-Date: Wed, 6 Dec 2023 08:30:06 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
-Message-ID: <ZXChjmoKPj3XnJgG@Boquns-Mac-mini.home>
-References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
- <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com>
+        bh=JbcOYch65HQgwW4bXeNQNStE/Bld2otdL+K6EjO7ssY=;
+        b=TJeqjc2W5h9F+ytXi/pOsNGVcp0CmEt0qKX7ultKj7fV9wB6LqExfd93Q3uF184pqK
+         5IfuitqtksrLs/Hb6LSm5wTT+jQRnQGZr5iRRlMbUvqs7oy7oEA8ofbhntPiuB1BwCL9
+         kVPMNluwcHIUXMxb0B6A/enU6GDjOf/uKesOFokxFOGYBL640kFpF2gtaZH/DBKDvilz
+         ZDWJPlkeVNHsbYxWVrXA9wqCqZBmV0LKB5A751cUNQ5sHDT6uk8bjGtC1gDf1Yco+YEV
+         BGcdNWc6zAts+jBibnRRhnJcDRCy/2TLBCvNPzFE1Dkz8m1BxtHJ6sBDsmkXTo8vFQ0r
+         IzeQ==
+X-Gm-Message-State: AOJu0YzoaScYu9qA1spf9BCeJw0RtTrNXzQ92H2Mt+ZoAhSbBIwDNiyx
+	CHcIR+wyK8rsTe3TWKdw79WYzDvZC9pVQodzkTC78g==
+X-Google-Smtp-Source: AGHT+IERg2HJ276lhfxN7rCRC03VoISQfXlpwt3/L6+Zjw+3y0AvD8tv/uQ/BP1oHi3y+u0vTOleQejpyX++CRsJv2s=
+X-Received: by 2002:a1f:c604:0:b0:4b2:b4a1:593f with SMTP id
+ w4-20020a1fc604000000b004b2b4a1593fmr599469vkf.12.1701880738877; Wed, 06 Dec
+ 2023 08:38:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com>
+References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
+ <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com> <096b7406-b57c-4daa-9a12-38338dbd91ef@gmail.com>
+In-Reply-To: <096b7406-b57c-4daa-9a12-38338dbd91ef@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 6 Dec 2023 17:38:45 +0100
+Message-ID: <CAH5fLgix=tV6=VvACx6mhSTe9_HiVjxdgGdt+5iTUJuGH6t_LA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 06, 2023 at 10:09:24AM +0000, Alice Ryhl wrote:
-[...]
-> +
-> +/// The return type of `wait_timeout`.
-> +pub enum CondVarTimeoutResult {
-> +    /// The timeout was reached.
-> +    Timeout,
-> +    /// Somebody woke us up.
-> +    Woken {
-> +        /// Remaining sleep duration.
-> +        jiffies: u64,
+On Wed, Dec 6, 2023 at 4:53=E2=80=AFPM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> On 12/6/23 07:09, Alice Ryhl wrote:
+> > Sleep on a condition variable with a timeout.
+> >
+> > This is used by Rust Binder for process freezing. There, we want to
+> > sleep until the freeze operation completes, but we want to be able to
+> > abort the process freezing if it doesn't complete within some timeout.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > [...]
+> >
+> > +    /// Atomically releases the given lock (whose ownership is proven =
+by the guard) and puts the
+> > +    /// thread to sleep. It wakes up when notified by [`CondVar::notif=
+y_one`] or
+> > +    /// [`CondVar::notify_all`], or when the thread receives a signal.
+> > +    ///
+> > +    /// Returns whether there is a signal pending.
+>
+> Remaining jiffies or zero on timeout?
 
-I have a Jiffies definition in the my upcoming timer patchset:
+Seems like I just copied this typo from the other `_internal` method.
+I'll fix it on both.
 
-/// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
-pub type Jiffies = core::ffi::c_ulong;
-
-Maybe you can add that (in a separate patch) in kernel::time?
-
-Regards,
-Boqun
-
-> +    },
-> +    /// A signal occurred.
-> +    Signal {
-> +        /// Remaining sleep duration.
-> +        jiffies: u64,
-> +    },
-> +}
-[...]
+Alice
