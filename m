@@ -1,30 +1,30 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nv65MBxA"
-X-Greylist: delayed 311 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Dec 2023 12:04:31 PST
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F78718D
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Dec 2023 12:04:31 -0800 (PST)
-Date: Wed, 6 Dec 2023 14:59:11 -0500
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DSiuBhxP"
+X-Greylist: delayed 558 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Dec 2023 12:14:31 PST
+Received: from out-187.mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E78D68
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Dec 2023 12:14:31 -0800 (PST)
+Date: Wed, 6 Dec 2023 15:05:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1701892756;
+	t=1701893109;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OKWTVUD6pNI5sfwR2s7nHIQDUaGAUMh3NMmi/eQhsxU=;
-	b=nv65MBxAAe0NCibcnLcAiwM+n4KDdBAaLeRDHm2ExyqPwZbt/zn4HI8VawRezcuijp/IeD
-	7xPLBTHfO+LQZeXqrFoC2uIRW/27aP7n9yXPcM6VnBg2zMwQ19bwaLXeqwaqTz7548VI9L
-	aFdp78NbXUkqAcN4j/oC9zlqf4F+37k=
+	bh=DVvoOu1nO86z3rBa8QuPbOMrMP9wXD66qlron+EA3cE=;
+	b=DSiuBhxPyccRtaejPvhXZlfY+WUmmoAG44XwRHcEdfGJBybAFDIVPzSo5beyiAod1NLpqs
+	weR1wnTb3NW0mykvRvaRUtxrAKom72MmdaTaRfkE7TpFUmBBxHibdx33wzqmmVwJ93iCbK
+	K+vNgW4NlzokdYfH2sJudsiA3i2BwfY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Kent Overstreet <kent.overstreet@linux.dev>
 To: Christian Brauner <brauner@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
@@ -38,13 +38,10 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
-Message-ID: <20231206195911.vcp3c6q57zvkm7bf@moria.home.lan>
+Subject: Re: [PATCH 0/7] File abstractions needed by Rust Binder
+Message-ID: <20231206200505.nsmauqpetkyisyjd@moria.home.lan>
 References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
- <20231129-alice-file-v1-5-f81afe8c7261@google.com>
- <20231129-etappen-knapp-08e2e3af539f@brauner>
- <20231129164815.GI23596@noisy.programming.kicks-ass.net>
- <20231130-wohle-einfuhr-1708e9c3e596@brauner>
+ <20231129-mitsingen-umweltschutz-c6f8d9569234@brauner>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,63 +50,80 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231130-wohle-einfuhr-1708e9c3e596@brauner>
+In-Reply-To: <20231129-mitsingen-umweltschutz-c6f8d9569234@brauner>
 X-Migadu-Flow: FLOW_OUT
 
-On Thu, Nov 30, 2023 at 01:46:36PM +0100, Christian Brauner wrote:
-> On Wed, Nov 29, 2023 at 05:48:15PM +0100, Peter Zijlstra wrote:
-> > On Wed, Nov 29, 2023 at 05:28:27PM +0100, Christian Brauner wrote:
+On Wed, Nov 29, 2023 at 05:31:44PM +0100, Christian Brauner wrote:
+> On Wed, Nov 29, 2023 at 12:51:06PM +0000, Alice Ryhl wrote:
+> > This patchset contains the file abstractions needed by the Rust
+> > implementation of the Binder driver.
 > > 
-> > > > +pid_t rust_helper_task_tgid_nr_ns(struct task_struct *tsk,
-> > > > +				  struct pid_namespace *ns)
-> > > > +{
-> > > > +	return task_tgid_nr_ns(tsk, ns);
-> > > > +}
-> > > > +EXPORT_SYMBOL_GPL(rust_helper_task_tgid_nr_ns);
-> > > 
-> > > I'm a bit puzzled by all these rust_helper_*() calls. Can you explain
-> > > why they are needed? Because they are/can be static inlines and that
-> > > somehow doesn't work?
+> > Please see the Rust Binder RFC for usage examples:
+> > https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
 > > 
-> > Correct, because Rust can only talk to C ABI, it cannot use C headers.
-> > Bindgen would need to translate the full C headers into valid Rust for
-> > that to work.
+> > Users of "rust: file: add Rust abstraction for `struct file`":
+> > 	[PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+> > 	[PATCH RFC 03/20] rust_binder: add threading support
 > > 
-> > I really think the Rust peoples should spend more effort on that,
-> > because you are quite right, all this wrappery is tedious at best.
+> > Users of "rust: cred: add Rust abstraction for `struct cred`":
+> > 	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+> > 	[PATCH RFC 06/20] rust_binder: add oneway transactions
+> > 	[PATCH RFC 11/20] rust_binder: send nodes in transaction
+> > 	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+> > 
+> > Users of "rust: security: add abstraction for security_secid_to_secctx":
+> > 	[PATCH RFC 06/20] rust_binder: add oneway transactions
+> > 
+> > Users of "rust: file: add `FileDescriptorReservation`":
+> > 	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+> > 	[PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+> > 
+> > Users of "rust: file: add kuid getters":
+> > 	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+> > 	[PATCH RFC 06/20] rust_binder: add oneway transactions
+> > 
+> > Users of "rust: file: add `DeferredFdCloser`":
+> > 	[PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+> > 
+> > Users of "rust: file: add abstraction for `poll_table`":
+> > 	[PATCH RFC 07/20] rust_binder: add epoll support
+> > 
+> > This patchset has some uses of read_volatile in place of READ_ONCE.
+> > Please see the following rfc for context on this:
+> > https://lore.kernel.org/all/20231025195339.1431894-1-boqun.feng@gmail.com/
+> > 
+> > This was previously sent as an rfc:
+> > https://lore.kernel.org/all/20230720152820.3566078-1-aliceryhl@google.com/
+> > 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > Alice Ryhl (4):
+> >       rust: security: add abstraction for security_secid_to_secctx
+> >       rust: file: add `Kuid` wrapper
+> >       rust: file: add `DeferredFdCloser`
+> >       rust: file: add abstraction for `poll_table`
+> > 
+> > Wedson Almeida Filho (3):
+> >       rust: file: add Rust abstraction for `struct file`
+> >       rust: cred: add Rust abstraction for `struct cred`
+> >       rust: file: add `FileDescriptorReservation`
+> > 
+> >  rust/bindings/bindings_helper.h |   9 ++
+> >  rust/bindings/lib.rs            |   1 +
+> >  rust/helpers.c                  |  94 +++++++++++
+> >  rust/kernel/cred.rs             |  73 +++++++++
+> >  rust/kernel/file.rs             | 345 ++++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/file/poll_table.rs  |  97 +++++++++++
+> 
+> That's pretty far away from the subsystem these wrappers belong to. I
+> would prefer if wrappers such as this would live directly in fs/rust/
+> and so live within the subsystem they belong to. I think I mentioned
+> that before. Maybe I missed some sort of agreement here?
 
-I suspect even if the manpower existed to go that route we'd end up
-regretting it, because then the Rust compiler would need to be able to
-handle _all_ the craziness a modern C compiler knows how to do -
-preprocessor magic/devilry isn't even the worst of it, it gets even
-worse when you start to consider things like bitfields and all the crazy
-__attributes__(()) people have invented.
+I spoke to Miguel about this and it was my understanding that everything
+was in place for moving Rust wrappers to the proper directory -
+previously there was build system stuff blocking, but he said that's all
+working now. Perhaps the memo just didn't get passed down?
 
-Swift went that route, but they have Apple funding them, and I doubt
-even they would want anything to do with Linux kernel C.
-
-IOW: yes, the extra friction from not being able to do full C -> Rust
-translation is annoying now, but probably a good thing in the long run.
-
-> The problem is that we end up with a long list of explicit exports that
-> also are all really weirdly named like rust_helper_*(). I wouldn't even
-> complain if it they were somehow auto-generated but as you say that
-> might be out of scope.
-
-I think we'd need help from the C side to auto generate them - what we
-really want is for them to be inline, not static inline, but of course
-that has never really worked for functions used across a single C file.
-But maybe C compiler people are smarter these days?
-
-Just a keyword to to tell the C compiler "take this static inline and
-generate a compiled version in this .c file" would be all we need.
-
-I could see it being handy for other things, too: as Linus has been
-saying, we tend to inline too much code these days, and part of the
-reason for that is we make a function inline because of the _one_
-fastpath that needs it, but there's 3 more slowpaths that don't. 
-
-And right now we don't have any sane way of having a function be
-available with both inlined and outlined versions, besides the same kind
-of manual wrappers the Rust people are doing here... so we should
-probably just fix that.
+(My vote would actually be for fs/ directly, not fs/rust, and a 1:1
+mapping between .c files and the .rs files that wrap them).
