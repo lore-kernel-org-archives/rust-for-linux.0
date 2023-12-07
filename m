@@ -1,85 +1,92 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="isan1Ywn"
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B8610E3
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Dec 2023 05:15:38 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-40c2308faedso9686285e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 Dec 2023 05:15:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZz2EqC9"
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF5310CF
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Dec 2023 05:15:58 -0800 (PST)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5cbcfdeaff3so7295317b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 Dec 2023 05:15:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1701954937; x=1702559737; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=vXBhwuCvvvVPxLSaqsTNZeHrwdJ2FqaI15RxVJK0Iac=;
-        b=isan1YwnGryF6AeddCVH7DAMBtBnfEV7sMLNGn5jyDg4VF8eJP7EhcUpKTekj0tZzL
-         ZQxyk2VZPcFBmlUuCrEwf1oqy35hZsUcJSf5hkZD+Kkxw7V7WUc+vRF2SF9OygAPev3S
-         gvSD/v9irg/oRyozGudOEZgNMSFvgaB3zRfXfJeg9RWKg5EE/pVzLGPdDkCQBsQCzW93
-         B+VH+OkFNhr/+hzDYS+7+PmpJtx2VZr/CJ4QyzHyQuv+O5s4sufx9F+dxFK22W9w7hqX
-         SeeI58Nf2+4QJ4NdMMxjXm6sUIJ6ZNYCXDcssoK+0fNVxaoOjHzXlCARXdbqdivgMUL1
-         kRIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701954937; x=1702559737;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1701954958; x=1702559758; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vXBhwuCvvvVPxLSaqsTNZeHrwdJ2FqaI15RxVJK0Iac=;
-        b=KbDoEbxM8EcqWuYkkwejOcpd1ZUBASykEnZW3EljwSeNlELNht15RfrMvY5LCIIV8D
-         7+mArzLXavXPI+p7lSR1gao3Ik4dSP3pYE4WAcmu9ZFDFXYSkPMzrAc2VEzRsTCYRHHo
-         XVoIMy4wLXNr0fX0y3S2CoGYYjKpCm9E2JeDJqjkcC1GtvCid7z4fCigxZNwDGb2cwFS
-         2PvnGAQGOt6MFy6nHMnAkvMzs5AxQsdQ6O2PUWUy0dOaPz8Wgc3zIuGCLDNYuIgKnL9P
-         qeqDPn2VpvtFA4b8WvTbYyHSmIaOzG+TSvuAGvZXlmFCaWQdgrPRAhYJf0+tjujrZ1pb
-         YCiA==
-X-Gm-Message-State: AOJu0YzxJXcVqFJjRYSGtZdLd6sldWZ9MrQi/ZdaMc127vwkqV63l8HF
-	lYZiw5TZAae09m2rYI+jQt37gg==
-X-Google-Smtp-Source: AGHT+IFmpMyQITmpHQreXlenBga4HLrNyP5TPSSppQHYQJx4WQcCzLI/RngWVEKmlRDzVwVPC5X7Gg==
-X-Received: by 2002:a05:600c:3d99:b0:40b:5e59:c592 with SMTP id bi25-20020a05600c3d9900b0040b5e59c592mr1631297wmb.188.1701954936752;
-        Thu, 07 Dec 2023 05:15:36 -0800 (PST)
-Received: from localhost ([147.161.155.112])
-        by smtp.gmail.com with ESMTPSA id dp12-20020a0560000c8c00b0033346fe9b9bsm1417664wrb.83.2023.12.07.05.15.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Dec 2023 05:15:36 -0800 (PST)
-References: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
-User-agent: mu4e 1.10.7; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Erik Schilling <erik.schilling@linaro.org>
-Subject: Re: [BUG] Rustup override doesn't work with O=<build dir>
-Date: Thu, 07 Dec 2023 14:10:55 +0100
-In-reply-to: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
-Message-ID: <878r66jgqx.fsf@metaspace.dk>
+        bh=KzSPTNn+FT06sDCJZpD9Hz6TBs2koZKCVJM2T1UACmo=;
+        b=iZz2EqC9EfatcwBqZBb8Z2qLkK6KA3gm1w6Nb7nZqJw2e03qXdDgyUY8UCQnXbKahF
+         HlyGnEjWlaHKZdcbIi3HovNszKARS0Ayy6hwyvVvEBXkUz9aI3C2xTu/9Tsj1w53CAeV
+         9HRAw3jmNZb0kvL4bK+O9twOCSYNCOdzT9zhs3Uvmu6NhhJIjNdrr40JENnqLraOdVaF
+         wqC9rrQpjT6AH9fYin+dfjtUZfRXiCeZZnmupvvzRzWgDLkKajk39BoUS5Te9FHcYbUC
+         WG1S7p92WgsYmRnbwJb63uIaECEKg+CN5H1cYv04K4nB/2bA4znEMj2m+A/knh5vJI/k
+         flrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701954958; x=1702559758;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KzSPTNn+FT06sDCJZpD9Hz6TBs2koZKCVJM2T1UACmo=;
+        b=w4HBHbtp1DMyWnePrFFxzSfdfrx2QfnCVH0KhQnEmYRUzZD8p7FWFtW7s1xZ6kI/R0
+         MIzr/dfPQTGjZ7H71lzYxRuma77NojNqbaRWDuZ7zo9BR2GJAfFlXKXmjhsSwb0/hum0
+         Ft2ZMwn1zC8XWxbLUimwHvATrWZ+OWScJ+DXA1tywm1q575vlHrc46dF5TfAypsDAD55
+         H5vtYL+uwEJOJfs7WTnZrDmvYN+FgtugnYQeCKAWbLAzonXjiSBjYCLejNvxpG+io/j8
+         FYP0HCe9dPF3qPFQY/mapxHX40wAkMfMAmvNy2ISWnSPeYTZyurWZDcqrzk3uTavtS2j
+         BJDg==
+X-Gm-Message-State: AOJu0YyA2An8t4dA3+hv7QrnAswd/s4yV8flb0PSyeXDq7zhdz7Wda+A
+	ncKfzdr0fbkl+d4HQ4d4XCcGCJvKRsbmgsr/VhzayceT9EByVJtI
+X-Google-Smtp-Source: AGHT+IFXRtHxUXYTmxNUR80kIdZplbkvwqaYA5F+2+BF+8+4LmqtUXWaAwNoR7DiZfWA4yZdFiwPXMHuAIumDd7DLEk=
+X-Received: by 2002:a05:690c:d94:b0:5d7:10ba:a2eb with SMTP id
+ da20-20020a05690c0d9400b005d710baa2ebmr2526447ywb.36.1701954958170; Thu, 07
+ Dec 2023 05:15:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
+In-Reply-To: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 7 Dec 2023 14:15:46 +0100
+Message-ID: <CANiq72=0m=h6v=SmgVnTs5sk3jm1oZ_TBhDXPq2Y41rCV4J5bw@mail.gmail.com>
+Subject: Re: [BUG] Rustup override doesn't work with O=<build dir>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Erik Schilling <erik.schilling@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-Viresh Kumar <viresh.kumar@linaro.org> writes:
-
-> But when I build the kernel with O=<build dir>, I get:
+On Thu, Dec 7, 2023 at 9:48=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.or=
+g> wrote:
+>
+> I have just started looking into the kernel's Rust side and found out a m=
+inor
+> issue with build.
+>
+> I use a newer version of 'rustc' for my non-kernel work and have set `rus=
+tup
+> override` for the kernel's directory to use '1.73.0'.
+>
+> But when I build the kernel with O=3D<build dir>, I get:
 > "Rust compiler 'rustc' is too new. This may or may not work."
 >
-> Setting the override for the build directory too fixes it. Not sure how to fix
+> Setting the override for the build directory too fixes it. Not sure how t=
+o fix
 > Makefile for this and so reporting here.
 
-I don't think this is a bug. You should set the override for the build
-directory. You do not need to set it for the kernel directory if you are
-not building in it.
+Good catch. Previously, we had `rustup default` in the documentation
+instead, which did not suffer from this problem. We should now
+probably mention in the docs that one needs to make sure the override
+applies to the build folder (i.e. when `O=3D` is not a subdir of the
+source tree, since that one works fine).
 
-I use the following justfile, perhaps that is helpful:
+Would you like to send the patch? Otherwise I will create a "good
+first issue" for this in our tracker.
 
-rustup path="linux":
-    #!/bin/bash
-    version="$({{path}}/scripts/min-tool-version.sh bindgen)"
-    mkdir -p {{path}}-build
-    rustup override set --path={{path}}-build $({{path}}/scripts/min-tool-version.sh rustc)
-    cargo install bindgen-cli --locked --version "$version" --root $(pwd)/bindgen-"$version"
-    rustup component add rust-src
+I don't think we should change the build system for this, because
+`rustup` replaces what `rustc` is meant to be, and the build system is
+simply using whatever `rustc` is by default, like for other tools. So
+if one uses `rustup` to control what `rustc` is, then one needs to
+make sure it is the right one when called.
 
-
-Best regards,
-Andreas
+Cheers,
+Miguel
