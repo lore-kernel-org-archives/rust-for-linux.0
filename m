@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TCx2WNTG"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9EF2198B;
-	Thu,  7 Dec 2023 09:25:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="d7NOwXYm"
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD57F122
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Dec 2023 11:05:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1701969929; x=1702229129;
-	bh=mC8MZw+VCgprIFcpxEjWguJFl3Rg2xJoj+JLq1EE5QU=;
+	s=protonmail; t=1701975943; x=1702235143;
+	bh=IkOayq4AmnCE0A70biSm+aLT0ynnAz2i7rr3yCvl0HI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=TCx2WNTG6tDi8ECB2difXmDAxrKHkCUWiWzOnNuNYyfz4MxIY/keq5UNomZG+jCw6
-	 dpbJLI718urziYr5S03USXNlozN1VC4JWWLNRhBjerJbRb5kgqpDnN1+eP8mvmgbps
-	 TBhSsz2X1CVKyBRtnQI9/uPtLyhrHORJXbIS5Fkja3cO/2FxCbx+RXxcq00QI3LOdp
-	 QfUCwiTqZ0PVzIi57sFW3FUb7PISI2vviDNrzuH+xUvmOcRn0gVcfzaxt0ewg+6a8a
-	 n1mQpItBaN45Ebn3XkdokkLlz9/QIiqfiAMe/gnFr0BokZgL8peeT/o5cxdt83Fq1X
-	 D5/WC65cTBP8Q==
-Date: Thu, 07 Dec 2023 17:25:22 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
+	b=d7NOwXYmnBv7EqFy7l4TTdAMcRwN2h3aghILXRMLRkOT43nExw+dmueqCRl685GO4
+	 oFkXoYqff8K7zmilPGL16Glyn466Ph7caWAWWbSPjyQadY9KRMk5AWI6yRDAek2KAh
+	 mka83IN0vtqj8v/1gyJDl7S8OMwBzz3YTrdVph/ljlMXgcZe5sWfWtBqK0yVWLS+oU
+	 r8rL9ICXZ013dxxV8RboX/8Apn9pTncx3EjQCImv0Vgzw5qggUeHvOWkco9KzVJ9wV
+	 uGxsuTY08ngUat0etlKPtEJNKLT1rbPb1V3XykQSGhux8+aTDFEpK8sbSuxgdo5eeX
+	 TRlBnGIgq/QPg==
+Date: Thu, 07 Dec 2023 19:05:31 +0000
+To: Andreas Hindborg <a.hindborg@samsung.com>, =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
-Subject: Re: [PATCH net-next v9 1/4] rust: core abstractions for network PHY drivers
-Message-ID: <9d38d6f9-3b54-4a6f-a19d-3710db171fed@proton.me>
-In-Reply-To: <20231205011420.1246000-2-fujita.tomonori@gmail.com>
-References: <20231205011420.1246000-1-fujita.tomonori@gmail.com> <20231205011420.1246000-2-fujita.tomonori@gmail.com>
+Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "kernel-dev@igalia.com" <kernel-dev@igalia.com>
+Subject: Re: [PATCH v5] rust: xarray: Add an abstraction for XArray
+Message-ID: <fbb39b45-25d2-4ed6-a826-ded2aac56010@proton.me>
+In-Reply-To: <87cyvjjuak.fsf@samsung.com>
+References: <20231201195300.1329092-1-mcanal@igalia.com> <CGME20231206141047eucas1p1b6c2b022717a6b3a2e24e37b6a6d5d23@eucas1p1.samsung.com> <87cyvjjuak.fsf@samsung.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,143 +33,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/5/23 02:14, FUJITA Tomonori wrote:
-> @@ -0,0 +1,754 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
-> +
-> +//! Network PHY device.
-> +//!
-> +//! C headers: [`include/linux/phy.h`](../../../../../../../include/linu=
-x/phy.h).
-> +
-> +use crate::{bindings, error::*, prelude::*, str::CStr, types::Opaque};
-> +
-> +use core::marker::PhantomData;
-> +
-> +/// PHY state machine states.
-> +///
-> +/// Corresponds to the kernel's [`enum phy_state`].
-> +///
-> +/// Some of PHY drivers access to the state of PHY's software state mach=
-ine.
+On 12/6/23 15:10, Andreas Hindborg wrote:
+> Ma=C3=ADra Canal <mcanal@igalia.com> writes:
+>> +    /// Borrow the underlying value wrapped by the `Guard`.
+>> +    ///
+>> +    /// Returns a `T::Borrowed` type for the owned `ForeignOwnable` typ=
+e.
+>> +    pub fn borrow(&self) -> T::Borrowed<'_> {
+>> +        // SAFETY: The value is owned by the `XArray`, the lifetime it =
+is borrowed for must not
+>> +        // outlive the `XArray` itself, nor the Guard that holds the lo=
+ck ensuring the value
+>> +        // remains in the `XArray`.
+>> +        unsafe { T::borrow(self.0.as_ptr() as _) }
+>=20
+> I think specifying the target type of the cast here is preferable. Then
+> the code will not break silently if something should change.
 
-This sentence reads a bit weird, what are you trying to say?
+I agree.
 
-> +///
-> +/// [`enum phy_state`]: ../../../../../../../include/linux/phy.h
-> +#[derive(PartialEq, Eq)]
-> +pub enum DeviceState {
-> +    /// PHY device and driver are not ready for anything.
-> +    Down,
-> +    /// PHY is ready to send and receive packets.
-> +    Ready,
-> +    /// PHY is up, but no polling or interrupts are done.
-> +    Halted,
-> +    /// PHY is up, but is in an error state.
-> +    Error,
-> +    /// PHY and attached device are ready to do work.
-> +    Up,
-> +    /// PHY is currently running.
-> +    Running,
-> +    /// PHY is up, but not currently plugged in.
-> +    NoLink,
-> +    /// PHY is performing a cable test.
-> +    CableTest,
+[...]
 
-I took a look at `enum phy_state` and found that you only copied the
-first sentence of each state description, why is that?
+>> +    /// Replaces an entry with a new value, returning the old value (if=
+ any).
+>> +    pub fn replace(self: Pin<&Self>, index: usize, value: T) -> Result<=
+Option<T>> {
+>> +        let new =3D value.into_foreign();
+>> +        // SAFETY: `new` just came from into_foreign(), and we dismiss =
+this guard if
+>> +        // the xa_store operation succeeds and takes ownership of the p=
+ointer.
+>> +        let guard =3D ScopeGuard::new(|| unsafe {
+>> +            T::from_foreign(new);
+>> +        });
+>> +
+>> +        // SAFETY: `self.xa` is always valid by the type invariant, and=
+ we are storing
+>> +        // a `T::into_foreign()` result which upholds the later invaria=
+nts.
+>=20
+> T has to be 4-byte aligned according to xarray docs. All types that we
+> implement `ForeignOwnable` for is aligned such, because
+> `KernelAllocator` is producing allocations of alignment
+> `ARCH_SLAB_MINALIGN`, which is `__alignof__(unsigned long long)`. But it
+> should probably be in a safety requirement somewhere. Perhaps on
+> `ForeignOwnable` and then make that an unsafe trait?
 
-> +}
-> +
-> +/// A mode of Ethernet communication.
-> +///
-> +/// PHY drivers get duplex information from hardware and update the curr=
-ent state.
+I am not sure if we want to enforce that for every `ForeignOwnable`
+type, could there be anything that wants to implement `ForeignOwnable`
+that does not have that alignment?
 
-Are you trying to say that the driver automatically queries the
-hardware? You could express this more clearly.
+If we do not want to tag it onto `ForeignOwnable`, we should put this
+not only in some safety requirement, but also just check it at compile
+time. You can do this using:
 
-> +pub enum DuplexMode {
-> +    /// PHY is in full-duplex mode.
-> +    Full,
-> +    /// PHY is in half-duplex mode.
-> +    Half,
-> +    /// PHY is in unknown duplex mode.
-> +    Unknown,
-> +}
-> +
-> +/// An instance of a PHY device.
-> +///
-> +/// Wraps the kernel's [`struct phy_device`].
-> +///
-> +/// A [`Device`] instance is created when a callback in [`Driver`] is ex=
-ecuted. A PHY driver
-> +/// executes [`Driver`]'s methods during the callback.
-> +///
-> +/// # Invariants
-> +///
-> +/// Referencing a `phy_device` using this struct asserts that you are in
-> +/// a context where all methods defined on this struct are safe to call.
+    build_assert!(mem::align_of::<T>() <=3D 4);
 
-I know that Alice suggested this, but I reading it now, it sounds a
-bit weird. When reading this it sounds like a requirement for everyone
-using a `Device`. It would be better to phrase it so that it sounds like
-something that users of `Device` can rely upon.
+At some point Rust might have an `Aligned` trait [1] and then we could
+use that.
 
-Also, I would prefer for this invariant to be a simple one, for example:
-"The mutex of `self.0` is held".
-The only problem with that are the `resume` and `suspend` methods.
-Andrew mentioned that there is some tribal knowledge on this topic, but
-I don't see this written down anywhere here. I can't really suggest an
-improvement to invariant without knowing the whole picture.
+[1]: https://github.com/rust-lang/rfcs/pull/3319
 
-> +/// [`struct phy_device`]: ../../../../../../../include/linux/phy.h
-> +// During the calls to most functions in [`Driver`], the C side (`PHYLIB=
-`) holds a lock that is
-> +// unique for every instance of [`Device`]. `PHYLIB` uses a different se=
-rialization technique for
-> +// [`Driver::resume`] and [`Driver::suspend`]: `PHYLIB` updates `phy_dev=
-ice`'s state with
-> +// the lock held, thus guaranteeing that [`Driver::resume`] has exclusiv=
-e access to the instance.
-> +// [`Driver::resume`] and [`Driver::suspend`] also are called where only=
- one thread can access
-> +// to the instance.
-> +#[repr(transparent)]
-> +pub struct Device(Opaque<bindings::phy_device>);
-> +
-> +impl Device {
-> +    /// Creates a new [`Device`] instance from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For the duration of 'a, the pointer must point at a valid `phy_d=
-evice`,
-> +    /// and the caller must be in a context where all methods defined on=
- this struct
-> +    /// are safe to call.
-> +    unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Se=
-lf {
-> +        // CAST: `Self` is a `repr(transparent)` wrapper around `binding=
-s::phy_device`.
-> +        let ptr =3D ptr.cast::<Self>();
-> +        // SAFETY: by the function requirements the pointer is valid and=
- we have unique access for
-> +        // the duration of `'a`.
-> +        unsafe { &mut *ptr }
-> +    }
-> +
-> +    /// Gets the id of the PHY.
-> +    pub fn phy_id(&self) -> u32 {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: The struct invariant ensures that we may access
-> +        // this field without additional synchronization.
+[...]
 
-At the moment the invariant only states that "all functions on
-`Device` are safe to call". It does not say anything about accessing
-fields. I hope this shows why I think the invariant is problematic.
+>> +// SAFETY: XArray is thread-safe and all mutation operations are intern=
+ally locked.
+>> +unsafe impl<T: Send + ForeignOwnable> Send for XArray<T> {}
+>> +unsafe impl<T: Sync + ForeignOwnable> Sync for XArray<T> {}
+>=20
+> Do we actually need to specify `ForeignOwnable` here?
+
+Yes, this is needed, since `XArray<T>` is declared with
+`T: ForeignOwnable`, since that is needed for dropping an `XArray<T>`.
 
 --=20
 Cheers,
