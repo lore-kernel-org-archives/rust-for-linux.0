@@ -1,50 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fCbIeUO4"
-X-Greylist: delayed 42441 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Dec 2023 23:46:39 PST
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [IPv6:2001:41d0:203:375::ac])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F7C137;
-	Wed,  6 Dec 2023 23:46:39 -0800 (PST)
-Date: Thu, 7 Dec 2023 02:46:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1701935197;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kbU/WpF0mWyAkPnbK/9TxKMOYVzl+goNFSGyzE87t/g=;
-	b=fCbIeUO4ItcAfnqfIF+XXPX1AnclYQ6+DKLE2NX9GJ3J09uGxc59qXr3qcpfgIYjj8Snkp
-	GyJj4LgVG+WnLfR5EHeMuX9ZUUfQcfq6kBRbVGFd6pTMNG0gyoulQOkHlDg6MPj9hiN7LC
-	eww02zMQXQct8BLVZ2FSwOWUnMkw9hI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mrwAKjrV"
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C2610B
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Dec 2023 00:48:50 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1d04c097e34so5394935ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 Dec 2023 00:48:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701938930; x=1702543730; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pCwp8NEpTkc0SIwpsSCFlzIYpeb6rI90EcFHpl3a4XE=;
+        b=mrwAKjrVObus0EsFay4ssKyAbiJYdV2fDKMoMVBvdOG+fkbNrTdZLR5azlbn2thaSE
+         64uo4+pIoTrpC5xAhwJOVBLnTnVMThgddZKTWaU/BF2In5wWSqQAUuhbWPBovkJZUep5
+         E0zYc38ejHVoeruZYY4rn8GjUfKVxdsdPKPQ6HsmZFIAhcNLPAwJvwZHqPZ3Emppw1fh
+         lG4Dk44y11jWQhC5TkEc6N9+S46GuWp09hWArAf3CsaSjDV7WVoHnqOno7MJa8pbXbQL
+         uXeDjj1V6bB+YgvH72G1LaJXxXYS0ZSmVX+afzDlSYUqnX052cFCL50nLo9dPalRwW4t
+         iQHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701938930; x=1702543730;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pCwp8NEpTkc0SIwpsSCFlzIYpeb6rI90EcFHpl3a4XE=;
+        b=X2cJn8iurU4mXtFHinlCBw+BZvKaelBeVc3cZepj/4qGnPaLm0oQuAU3NSSIEsCiWT
+         514t2tppEPD5UdbGWN7z3YfT+loSTnTyU4Bg/k4RevLtQy7XcVKQdc+WLmn4ieNbquah
+         cOJpO6n0FalX6MpzJCrBWkNB+A2aFys4FMAkV5v3gmLtfHgBe9XLAGeQPRXYyYHx2wwx
+         ENbvT0ODrI7WDg9TB1A3g2/AfcTErJzmyuYBXeShbmABMWDQWROs7hilI7LGEIS2toI7
+         L5yjR/Njq0nxW6l3sFPKh3/6VLKkpFVtiGZwd2V+8agTTzMYMJ/22GMdFIliRpeo+HKT
+         /pkA==
+X-Gm-Message-State: AOJu0Yyu3VqqgK4orLml9kao4Sl3u4GtGqUbkV284svWKwzTHzG1UxeY
+	maSzV3OWHpkE5KXbfdNf4q4JNXsWw/JX3+a8QAA=
+X-Google-Smtp-Source: AGHT+IEerQdHiCXaQcFcLyGna3p/VbQ5qevpA5wq293e3dgIBhRAQHbVQazhANQRP2Swy3fTHvuhvg==
+X-Received: by 2002:a17:902:f542:b0:1d0:b32e:c808 with SMTP id h2-20020a170902f54200b001d0b32ec808mr2731323plf.26.1701938929820;
+        Thu, 07 Dec 2023 00:48:49 -0800 (PST)
+Received: from localhost ([122.172.82.6])
+        by smtp.gmail.com with ESMTPSA id b12-20020a170902a9cc00b001cf5cb82358sm823178plr.14.2023.12.07.00.48.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Dec 2023 00:48:49 -0800 (PST)
+Date: Thu, 7 Dec 2023 14:18:46 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
-Message-ID: <20231207074631.7xjqkkn4oaw32xm6@moria.home.lan>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
- <20231129-alice-file-v1-5-f81afe8c7261@google.com>
- <20231130103635.GA20191@noisy.programming.kicks-ass.net>
- <20231206200224.rkdkuozztzg2wusj@moria.home.lan>
- <2023120716-ferocious-saffron-c595@gregkh>
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>
+Subject: [BUG] Rustup override doesn't work with O=<build dir>
+Message-ID: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,51 +54,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2023120716-ferocious-saffron-c595@gregkh>
-X-Migadu-Flow: FLOW_OUT
+X-Spam-Level: *
 
-On Thu, Dec 07, 2023 at 08:18:37AM +0100, Greg Kroah-Hartman wrote:
-> On Wed, Dec 06, 2023 at 03:02:24PM -0500, Kent Overstreet wrote:
-> > On Thu, Nov 30, 2023 at 11:36:35AM +0100, Peter Zijlstra wrote:
-> > > On Wed, Nov 29, 2023 at 01:12:17PM +0000, Alice Ryhl wrote:
-> > > 
-> > > > diff --git a/rust/helpers.c b/rust/helpers.c
-> > > > index fd633d9db79a..58e3a9dff349 100644
-> > > > --- a/rust/helpers.c
-> > > > +++ b/rust/helpers.c
-> > > > @@ -142,6 +142,51 @@ void rust_helper_put_task_struct(struct task_struct *t)
-> > > >  }
-> > > >  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
-> > > >  
-> > > > +kuid_t rust_helper_task_uid(struct task_struct *task)
-> > > > +{
-> > > > +	return task_uid(task);
-> > > > +}
-> > > > +EXPORT_SYMBOL_GPL(rust_helper_task_uid);
-> > > > +
-> > > > +kuid_t rust_helper_task_euid(struct task_struct *task)
-> > > > +{
-> > > > +	return task_euid(task);
-> > > > +}
-> > > > +EXPORT_SYMBOL_GPL(rust_helper_task_euid);
-> > > 
-> > > Aren't these like ideal speculation gadgets? And shouldn't we avoid
-> > > functions like this for exactly that reason?
-> > 
-> > I think asking the Rust people to care about that is probably putting
-> > too many constraints on them, unless you actually have an idea for
-> > something better to do...
-> 
-> It's not a constraint, it is a "we can not do this as it is buggy
-> because cpus are broken and we need to protect users from those bugs."
-> 
-> If we were to accept this type of code, then the people who are going
-> "it's safer to write kernel code in Rust" would be "pleasantly
-> surprised" when it turns out that their systems are actually more
-> insecure.
-> 
-> Hint, when "known broken" code is found in code review, it can not just
-> be ignored.
+Hi Guys,
 
-We're talking about a CPU bug, not a Rust bug, and maybe try a nm
---size-sort and see what you find before throwing stones at them...
+I have just started looking into the kernel's Rust side and found out a minor
+issue with build.
+
+I use a newer version of 'rustc' for my non-kernel work and have set `rustup
+override` for the kernel's directory to use '1.73.0'.
+
+But when I build the kernel with O=<build dir>, I get:
+"Rust compiler 'rustc' is too new. This may or may not work."
+
+Setting the override for the build directory too fixes it. Not sure how to fix
+Makefile for this and so reporting here.
+
+Thanks.
+
+-- 
+viresh
