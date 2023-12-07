@@ -1,76 +1,85 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mrwAKjrV"
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C2610B
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Dec 2023 00:48:50 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1d04c097e34so5394935ad.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 Dec 2023 00:48:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="isan1Ywn"
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B8610E3
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Dec 2023 05:15:38 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-40c2308faedso9686285e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 Dec 2023 05:15:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701938930; x=1702543730; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pCwp8NEpTkc0SIwpsSCFlzIYpeb6rI90EcFHpl3a4XE=;
-        b=mrwAKjrVObus0EsFay4ssKyAbiJYdV2fDKMoMVBvdOG+fkbNrTdZLR5azlbn2thaSE
-         64uo4+pIoTrpC5xAhwJOVBLnTnVMThgddZKTWaU/BF2In5wWSqQAUuhbWPBovkJZUep5
-         E0zYc38ejHVoeruZYY4rn8GjUfKVxdsdPKPQ6HsmZFIAhcNLPAwJvwZHqPZ3Emppw1fh
-         lG4Dk44y11jWQhC5TkEc6N9+S46GuWp09hWArAf3CsaSjDV7WVoHnqOno7MJa8pbXbQL
-         uXeDjj1V6bB+YgvH72G1LaJXxXYS0ZSmVX+afzDlSYUqnX052cFCL50nLo9dPalRwW4t
-         iQHQ==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1701954937; x=1702559737; darn=vger.kernel.org;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=vXBhwuCvvvVPxLSaqsTNZeHrwdJ2FqaI15RxVJK0Iac=;
+        b=isan1YwnGryF6AeddCVH7DAMBtBnfEV7sMLNGn5jyDg4VF8eJP7EhcUpKTekj0tZzL
+         ZQxyk2VZPcFBmlUuCrEwf1oqy35hZsUcJSf5hkZD+Kkxw7V7WUc+vRF2SF9OygAPev3S
+         gvSD/v9irg/oRyozGudOEZgNMSFvgaB3zRfXfJeg9RWKg5EE/pVzLGPdDkCQBsQCzW93
+         B+VH+OkFNhr/+hzDYS+7+PmpJtx2VZr/CJ4QyzHyQuv+O5s4sufx9F+dxFK22W9w7hqX
+         SeeI58Nf2+4QJ4NdMMxjXm6sUIJ6ZNYCXDcssoK+0fNVxaoOjHzXlCARXdbqdivgMUL1
+         kRIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701938930; x=1702543730;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pCwp8NEpTkc0SIwpsSCFlzIYpeb6rI90EcFHpl3a4XE=;
-        b=X2cJn8iurU4mXtFHinlCBw+BZvKaelBeVc3cZepj/4qGnPaLm0oQuAU3NSSIEsCiWT
-         514t2tppEPD5UdbGWN7z3YfT+loSTnTyU4Bg/k4RevLtQy7XcVKQdc+WLmn4ieNbquah
-         cOJpO6n0FalX6MpzJCrBWkNB+A2aFys4FMAkV5v3gmLtfHgBe9XLAGeQPRXYyYHx2wwx
-         ENbvT0ODrI7WDg9TB1A3g2/AfcTErJzmyuYBXeShbmABMWDQWROs7hilI7LGEIS2toI7
-         L5yjR/Njq0nxW6l3sFPKh3/6VLKkpFVtiGZwd2V+8agTTzMYMJ/22GMdFIliRpeo+HKT
-         /pkA==
-X-Gm-Message-State: AOJu0Yyu3VqqgK4orLml9kao4Sl3u4GtGqUbkV284svWKwzTHzG1UxeY
-	maSzV3OWHpkE5KXbfdNf4q4JNXsWw/JX3+a8QAA=
-X-Google-Smtp-Source: AGHT+IEerQdHiCXaQcFcLyGna3p/VbQ5qevpA5wq293e3dgIBhRAQHbVQazhANQRP2Swy3fTHvuhvg==
-X-Received: by 2002:a17:902:f542:b0:1d0:b32e:c808 with SMTP id h2-20020a170902f54200b001d0b32ec808mr2731323plf.26.1701938929820;
-        Thu, 07 Dec 2023 00:48:49 -0800 (PST)
-Received: from localhost ([122.172.82.6])
-        by smtp.gmail.com with ESMTPSA id b12-20020a170902a9cc00b001cf5cb82358sm823178plr.14.2023.12.07.00.48.48
+        d=1e100.net; s=20230601; t=1701954937; x=1702559737;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vXBhwuCvvvVPxLSaqsTNZeHrwdJ2FqaI15RxVJK0Iac=;
+        b=KbDoEbxM8EcqWuYkkwejOcpd1ZUBASykEnZW3EljwSeNlELNht15RfrMvY5LCIIV8D
+         7+mArzLXavXPI+p7lSR1gao3Ik4dSP3pYE4WAcmu9ZFDFXYSkPMzrAc2VEzRsTCYRHHo
+         XVoIMy4wLXNr0fX0y3S2CoGYYjKpCm9E2JeDJqjkcC1GtvCid7z4fCigxZNwDGb2cwFS
+         2PvnGAQGOt6MFy6nHMnAkvMzs5AxQsdQ6O2PUWUy0dOaPz8Wgc3zIuGCLDNYuIgKnL9P
+         qeqDPn2VpvtFA4b8WvTbYyHSmIaOzG+TSvuAGvZXlmFCaWQdgrPRAhYJf0+tjujrZ1pb
+         YCiA==
+X-Gm-Message-State: AOJu0YzxJXcVqFJjRYSGtZdLd6sldWZ9MrQi/ZdaMc127vwkqV63l8HF
+	lYZiw5TZAae09m2rYI+jQt37gg==
+X-Google-Smtp-Source: AGHT+IFmpMyQITmpHQreXlenBga4HLrNyP5TPSSppQHYQJx4WQcCzLI/RngWVEKmlRDzVwVPC5X7Gg==
+X-Received: by 2002:a05:600c:3d99:b0:40b:5e59:c592 with SMTP id bi25-20020a05600c3d9900b0040b5e59c592mr1631297wmb.188.1701954936752;
+        Thu, 07 Dec 2023 05:15:36 -0800 (PST)
+Received: from localhost ([147.161.155.112])
+        by smtp.gmail.com with ESMTPSA id dp12-20020a0560000c8c00b0033346fe9b9bsm1417664wrb.83.2023.12.07.05.15.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Dec 2023 00:48:49 -0800 (PST)
-Date: Thu, 7 Dec 2023 14:18:46 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>
-Subject: [BUG] Rustup override doesn't work with O=<build dir>
-Message-ID: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
+        Thu, 07 Dec 2023 05:15:36 -0800 (PST)
+References: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
+User-agent: mu4e 1.10.7; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Erik Schilling <erik.schilling@linaro.org>
+Subject: Re: [BUG] Rustup override doesn't work with O=<build dir>
+Date: Thu, 07 Dec 2023 14:10:55 +0100
+In-reply-to: <20231207084846.faset66xzuoyvdlg@vireshk-i7>
+Message-ID: <878r66jgqx.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Level: *
+Content-Type: text/plain
 
-Hi Guys,
 
-I have just started looking into the kernel's Rust side and found out a minor
-issue with build.
+Viresh Kumar <viresh.kumar@linaro.org> writes:
 
-I use a newer version of 'rustc' for my non-kernel work and have set `rustup
-override` for the kernel's directory to use '1.73.0'.
+> But when I build the kernel with O=<build dir>, I get:
+> "Rust compiler 'rustc' is too new. This may or may not work."
+>
+> Setting the override for the build directory too fixes it. Not sure how to fix
+> Makefile for this and so reporting here.
 
-But when I build the kernel with O=<build dir>, I get:
-"Rust compiler 'rustc' is too new. This may or may not work."
+I don't think this is a bug. You should set the override for the build
+directory. You do not need to set it for the kernel directory if you are
+not building in it.
 
-Setting the override for the build directory too fixes it. Not sure how to fix
-Makefile for this and so reporting here.
+I use the following justfile, perhaps that is helpful:
 
-Thanks.
+rustup path="linux":
+    #!/bin/bash
+    version="$({{path}}/scripts/min-tool-version.sh bindgen)"
+    mkdir -p {{path}}-build
+    rustup override set --path={{path}}-build $({{path}}/scripts/min-tool-version.sh rustc)
+    cargo install bindgen-cli --locked --version "$version" --root $(pwd)/bindgen-"$version"
+    rustup component add rust-src
 
--- 
-viresh
+
+Best regards,
+Andreas
