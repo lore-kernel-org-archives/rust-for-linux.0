@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ku3Fwe5I"
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746061738;
-	Fri,  8 Dec 2023 10:04:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QNvfORhD"
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D1BE9
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Dec 2023 10:11:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1702058660; x=1702317860;
-	bh=PTmEXgI7BxufT0npzlsJT5kiKHIgc9s02WiJV5XBNQU=;
+	s=uh47j3qctneedg2modfafjadhm.protonmail; t=1702059089; x=1702318289;
+	bh=eyYVy6h961wBZxlPCiDYNFZbn9WyVULjj/c64DRuiCY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Ku3Fwe5Ivvvv7/4sAslKhSLbNE2c16L8W9Vp2kURUwCdrCDOtvKhiKIMRbTdK+mLb
-	 Ti7kJUTNntqDHGEdE/Z0ZzRQtCNOd1Ub7YXRTUkkM6VYDHMchM9FzkXNzQT/blk/cd
-	 VxjB0iLT27kzVChTAGy0f6kaeZxfXQjbAyOG8tlH9uJunL93YkuR+lVz0cyeuMFjM6
-	 +cjKRCuJp7gCslhzCntRKnuKz4z9XlyqusEBM3xbN5iiNhb1niGGQIdNc/FDO37NjK
-	 BdutuscjCKkjvnVgI/ubh+oIPvQ+s8WYwvM1jJehNprfolLSsWuogbdxl87AYgN+o+
-	 CdGM0doVGmiOQ==
-Date: Fri, 08 Dec 2023 18:04:01 +0000
-To: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>
+	b=QNvfORhD19ahFqoh1z0V+HDnjKjtezCOlyGbHU8Kr/cXElJjc3M8eQBVMs/s9ZUmU
+	 QZIGA04TyiYebTzmXWgdN8mTWWkYKKcHL+JqbuaxgGNFgrFVSIpXSyJd1zpUngJy1w
+	 lmR6lKmFFtKdzV+b0gOeZvh2xjR2W2x3GISAODX0279aymzXaZUeBopf6uelZqnJim
+	 qrxv+e7ByLXaeRq/lTVuMr2x8pVdYihjwfbZETW3JZ/xaSD/PXkWcDiTosTleuCX9O
+	 fRws8zojrYtkubbADf+km4q5iuBubPp6vp2MQKdG3yzC77lkxVpIgn/pTKsFdZsb4H
+	 JFu4yG80zUfvg==
+Date: Fri, 08 Dec 2023 18:11:22 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: rust: Clarify that 'rustup override' applies to build directory
-Message-ID: <4738ad1c-eb54-4ad6-98c8-3852de3e8fc3@proton.me>
-In-Reply-To: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org>
-References: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org>
+Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
+Subject: Re: [PATCH net-next v9 2/4] rust: net::phy add module_phy_driver macro
+Message-ID: <e067e0dd-a8cf-413d-a6e0-8515e9b494bf@proton.me>
+In-Reply-To: <20231205011420.1246000-3-fujita.tomonori@gmail.com>
+References: <20231205011420.1246000-1-fujita.tomonori@gmail.com> <20231205011420.1246000-3-fujita.tomonori@gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,53 +33,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/8/23 11:18, Viresh Kumar wrote:
-> Rustup override is required to be set for the build directory and not
-> necessarily the kernel source tree (unless the build directory is its
-> subdir).
+On 12/5/23 02:14, FUJITA Tomonori wrote:
+> This macro creates an array of kernel's `struct phy_driver` and
+> registers it. This also corresponds to the kernel's
+> `MODULE_DEVICE_TABLE` macro, which embeds the information for module
+> loading into the module binary file.
 >=20
-> Clarify the same in quick-start guide.
+> A PHY driver should use this macro.
 >=20
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  Documentation/rust/quick-start.rst | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->=20
-> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quic=
-k-start.rst
-> index f382914f4191..a7a08955fe46 100644
-> --- a/Documentation/rust/quick-start.rst
-> +++ b/Documentation/rust/quick-start.rst
-> @@ -39,8 +39,13 @@ If ``rustup`` is being used, enter the checked out sou=
-rce code directory
->  =09rustup override set $(scripts/min-tool-version.sh rustc)
->=20
->  This will configure your working directory to use the correct version of
-> -``rustc`` without affecting your default toolchain. If you are not using
-> -``rustup``, fetch a standalone installer from:
-> +``rustc`` without affecting your default toolchain.
-> +
-> +Note that the override applies to the build directory (and its sub-direc=
-tories).
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Shouldn't this be "Note that the override only applies to the current
-working directory (and its sub-directories)."?
-I think it would also be useful to continue with this: "But in order
-to build the kernel, this override must affect the build directory.".
-
-And then you could also mention that in the default location for the
-build directory is in the repository.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 --=20
 Cheers,
 Benno
-
-> +If the kernel is built with `O=3D<build directory>`, the override must b=
-e set for
-> +the build directory instead.
-> +
-> +If you are not using ``rustup``, fetch a standalone installer from:
->=20
->  =09https://forge.rust-lang.org/infra/other-installation-methods.html#sta=
-ndalone
 
