@@ -1,52 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="r8wNqSd/"
-X-Greylist: delayed 172384 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 08 Dec 2023 11:58:16 PST
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [IPv6:2001:41d0:1004:224b::ac])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E1B1738
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Dec 2023 11:58:16 -0800 (PST)
-Date: Fri, 8 Dec 2023 14:58:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1702065495;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TsaD7mhW8SXQP1nbpaw4AQMft3LLxjzczN7R3X3tAxQ=;
-	b=r8wNqSd/u9g5IyjKN6ZrfGfi8UvmYzVZvDTBKpMA8L/A0HyY8PSd9pb9uqtoc8VJzsAm5h
-	NUJSsXmCtd0WZcMtOCo+G6RmAn7Deo0J4prFrniY3miadYKZ1B7nX9m6iODDWndhIpOXF5
-	MTwcc2S3heTAvuFucv4fGqpPHv3sGkw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Christian Brauner <brauner@kernel.org>,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Yhg3URpG"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD93A1724;
+	Fri,  8 Dec 2023 12:43:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8vLlP+pPcWW01QzZqjgtBbIIyAPwFK9O42/VsZGzF5E=; b=Yhg3URpGhmhc5v8U/fS6J/06Tc
+	NKkDkeLBjoflzM+RHIJ19vp4D2e2zYXjBM626AEQ7Pswgbyj9yD6vcItTar1poSe0tZ/OIGo+o+fv
+	URe4Em6k2Qzh11KOd4VF1+RB5ZVW8wWBC0XDkFBy0+6vyvD0+Qrt54n11/k6XDeXn8sCACK+/48GS
+	i7jF1YJ3Bgoku6oytM/hrRZPXNg7dBCVnSTBwfuHdyJShWWgCVyUVhapbY3wz4V0OtOetMdQYpA/Z
+	oIQeHxbq1kh7w+OfJt2KzYxUH5U0mU66GhZwxVS3JjLqGe1eFlcn1PeNt5j6MTFV8YQeVIJRDR5Jo
+	Suaz3aRg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rBhh1-006Xz9-Df; Fri, 08 Dec 2023 20:43:27 +0000
+Date: Fri, 8 Dec 2023 20:43:27 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	comex <comexk@gmail.com>, Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
 	Joel Fernandes <joel@joelfernandes.org>,
 	Carlos Llamas <cmllamas@google.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Kees Cook <keescook@chromium.org>,
-	Matthew Wilcox <willy@infradead.org>,
 	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
 Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
-Message-ID: <20231208195809.fzpezhcntqsm2ub3@moria.home.lan>
+Message-ID: <ZXN/72adT83PrfnL@casper.infradead.org>
 References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
  <20231129-alice-file-v1-5-f81afe8c7261@google.com>
  <20231129-etappen-knapp-08e2e3af539f@brauner>
  <20231129164815.GI23596@noisy.programming.kicks-ass.net>
  <20231130-wohle-einfuhr-1708e9c3e596@brauner>
- <20231206195911.vcp3c6q57zvkm7bf@moria.home.lan>
- <20231208162616.GH28727@noisy.programming.kicks-ass.net>
+ <A0BFF59C-311C-4C44-9474-65DB069387BD@gmail.com>
+ <CANiq72k4H2_NZuQcpeKANqyi_9W01fLC0WxXon5cx4z=WsgeXQ@mail.gmail.com>
+ <CAKwvOdkgDwnC_jaGjXjk9yKYo=zWDR_3x7Drw3i=KX0Wyij6ew@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,41 +58,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231208162616.GH28727@noisy.programming.kicks-ass.net>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <CAKwvOdkgDwnC_jaGjXjk9yKYo=zWDR_3x7Drw3i=KX0Wyij6ew@mail.gmail.com>
 
-On Fri, Dec 08, 2023 at 05:26:16PM +0100, Peter Zijlstra wrote:
-> On Wed, Dec 06, 2023 at 02:59:11PM -0500, Kent Overstreet wrote:
-> 
-> > I suspect even if the manpower existed to go that route we'd end up
-> > regretting it, because then the Rust compiler would need to be able to
-> > handle _all_ the craziness a modern C compiler knows how to do -
-> > preprocessor magic/devilry isn't even the worst of it, it gets even
-> > worse when you start to consider things like bitfields and all the crazy
-> > __attributes__(()) people have invented.
-> 
-> Dude, clang can already handle all of that. Both rust and clang are
-> build on top of llvm, they generate the same IR, you can simply feed a
-> string into libclang and get IR out of it, which you can splice into
-> your rust generated IR.
+On Fri, Dec 08, 2023 at 09:08:47AM -0800, Nick Desaulniers wrote:
+> From a build system perspective, I'd rather just point users towards
+> LTO if they have this concern.  We support full and thin lto.  This
+> proposal would add a third variant for just rust drivers.  Each
+> variation on LTO has a maintenance cost and each have had their own
+> distinct fun bugs in the past.  Not sure an additional variant is
+> worth the maintenance cost, even if it's technically feasible.
 
-If only it were that simple :)
+If we're allowed to talk about ideal solutions ... I hate putting
+code in header files.  I'd rather be able to put, eg:
 
-This is struct definitions we're talking about, not code, so what you
-want isn't even IR, what you're generating is a memory layout for a
-type, linked in with all your other type information.
+__force_inline int put_page_testzero(struct page *page)
+{
+	VM_BUG_ON_PAGE(page_ref_count(page) == 0, page);
+	return page_ref_dec_and_test(page);
+}
 
-And people critize Linux for being a giant monorepo that makes no
-considerations for making our code reusable in other contexts; clang and
-LLVM are no different. But that's not really the issue because you're
-going to need a huge chunk of clang to even parse this stuff, what you
-really want is a way to invoke clang and dump _type information_ in a
-standardized, easy to consume way. What you want is actually more akin
-to the debug info that's generated today.
+__force_inline int folio_put_testzero(struct folio *folio)
+{
+	return put_page_testzero(&folio->page);
+}
 
-So... yeah, sure, lovely if it existed, but not the world we live in :)
+__force_inline void folio_put(struct folio *folio)
+{
+	if (folio_put_testzero(folio))
+		__folio_put(folio);
+}
 
-(As an aside, I've actually got an outstanding bug filed with rustc
-because it needs to be able to handle types that are marked both packed
-and aligned... if anyone in this thread _does_ know some rust compiler
-folks, we need that for bcachefs on disk format types).
+into a .c file and have both C and Rust inline folio_put(),
+folio_put_testzero(), put_page_testzero(), VM_BUG_ON_PAGE() and
+page_ref_dec_and_test(), but not even attempt to inline __folio_put()
+(because We Know Better, and have determined that is the point at
+which to stop).
