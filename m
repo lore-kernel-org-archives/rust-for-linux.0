@@ -1,74 +1,85 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OgYJiTzl"
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1336C1732
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Dec 2023 04:27:55 -0800 (PST)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5d279bcce64so18032427b3.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Dec 2023 04:27:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="itpPefj9"
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EFDD10EB
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Dec 2023 04:43:18 -0800 (PST)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5d3efc071e2so18383007b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 Dec 2023 04:43:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702038474; x=1702643274; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702039397; x=1702644197; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dEU2gKpHsiKMt4DuVStpOaI7sLqKKLa4l7xNuSHZHHM=;
-        b=OgYJiTzl6St6M7l69ddNpJrKxKsw2OIGvFFbCDfZKmrPEJTpElxOwhlakD4i1y7WXX
-         BshbNl72aj9wYItUlDHAH4OaGOMCpcgV0FDVCiqnZTNXaL5AfsqtRpta3IPnLFrOHOM/
-         pdgBH731nq+E2xUO6WlHyDaAZLgyQ/7ilMixqZdwcPx/9XtrcA/FChy9BydA2bSSJrqv
-         DU4XPAP/7cnIAym5kLUFbBhbsX1x2g/hc0dr6kZmBDEsU631ckdLuCfJTC2iBvHYzJRr
-         carhNT0Ys3frYzD4BRbEya+OWgHuAlOKn/vOc/aWrkfInBO33hm1tS2gp7lau7X4GaZZ
-         Y7xQ==
+        bh=ICgEHjlPDRJymuRHU2Wg3L/DUWzbmmYjl8+63qcjjFE=;
+        b=itpPefj9DABUs7+IrNCA/q/RjRvMkqP3zGTJKnD1XPZ6Ort5VB116iv0Huc+QxprT2
+         a+jA9pue+XR6IIcjn6DrETyFSDSVefTQdsS/yEAZhJRFkdQxpzuPBKed0d2LZaTwrNDt
+         FO2vN1VxpisPNN4m+BSBYYAx0ocXHNFgUF0ckXMYCIqBi/v7lyGML+URiy93YsMB4E8w
+         FnXJew2k3sNigZTWf2mCSQu1VS2kuAWkIQf46lLihTC/juSwoynVGxyvDdg5PXbJgxcW
+         C4Z3sWxg3TOPRAnEr0vMbhlqsE0XWBcz8hKPdBC0sJoU/WnBwqSJPUKqaWUuzWgoaUux
+         8BsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702038474; x=1702643274;
+        d=1e100.net; s=20230601; t=1702039397; x=1702644197;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dEU2gKpHsiKMt4DuVStpOaI7sLqKKLa4l7xNuSHZHHM=;
-        b=hyhtsZ3fXEYVRCqTZsBALD9bY78t7zuNWo4E+f1kgYgNl9DOsCDedhE3b1QvyAovNg
-         05I8UQrvGcndiq6822QrT20dvzsPB2Qv75aZsvsW9kegH7UPUJ5AepJ2WRg91da/VX9B
-         VgsVw78Kyuse0PkfhIJ9O/C7AG9/Wu7FKBXqm31pAAnmXs9k0eJG8ZHXr6bFXwuq4ZYV
-         Fb1BG0Nrjwd7NBQALjhvg9T3ApyhP0tGarIbrUw3MYGNRTRAZoO2IboP5zmSV8h6fpxl
-         BH/MkUP5Ed6KvxNPlD6RJmzwsrfyhNsfS/bDpdbTIvEGzr8cBewcNg0l3SQJiY7Dzoov
-         9DcA==
-X-Gm-Message-State: AOJu0YxAWjEa7nwJy5qyJCk90GFn4lZOAT0oCe4nxq0JP0e2d0KW5eF3
-	0fVx3AMrbl0SyD1wdnCboxyWOetZsYDJTNfPhmjwFdVUMq1d1Q==
-X-Google-Smtp-Source: AGHT+IG81ER6FZeVkSLhOnirJ6tIaqmSk0a2vUjR13jgCmONoVT2379gBJMLuAKzozNe0+LVUOVRNraPAQK/iHZanvg=
-X-Received: by 2002:a81:99d7:0:b0:5cd:c7a3:6cb3 with SMTP id
- q206-20020a8199d7000000b005cdc7a36cb3mr3669267ywg.37.1702038474190; Fri, 08
- Dec 2023 04:27:54 -0800 (PST)
+        bh=ICgEHjlPDRJymuRHU2Wg3L/DUWzbmmYjl8+63qcjjFE=;
+        b=sFU8a2iC0CDDGMt1waItxfOQsDCSgscNs7LgoeduBAYOIU09CFnoGkL88KVHgyEwNn
+         U4xwkYP9hAyQD4dJGsz7Epvp4bRjjVFI/4/D+8f9YRE6z3C4yfotNbsO3nyLdSex26BS
+         4f1SYkk8r/ODIfJBRYpQQcHlv37cF0bSo87U4qd3tgNj2r50UPC4I7RrSOsCpGZH0nyS
+         hzsUp+SVdu7A1GZycY5+UGih1y4ac5r6xxoVCzD70T37wWQKApLlvFiDbqCELnrKB2Nb
+         3bYa8dzGFzCK0ZkULfog27cvc2NaXpj+UCZinwVgwRWR7eM2Cs8FlYyPrILAEtb/UHLl
+         4dlQ==
+X-Gm-Message-State: AOJu0YxZKvy9C5vjqcyo4//IT5BcSWCdhALeqWQYBwHK67UUyN8aUbP5
+	7WuEkcOFnIHOyJra3oyRhnQJp850AZh2mup+5GTWo6sg6sgDeA==
+X-Google-Smtp-Source: AGHT+IGvtHabjaVHE0uD06b65MUZbhAXZd+gj8JxyPFWSZ/e5uRaNpTn7UkbeEzQ8y+KSEji+l8upbvWVDPJEI61Tio=
+X-Received: by 2002:a0d:cc51:0:b0:5cc:dcf:47a4 with SMTP id
+ o78-20020a0dcc51000000b005cc0dcf47a4mr4231633ywd.40.1702039397527; Fri, 08
+ Dec 2023 04:43:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231206125736.2040066-1-dirk.behme@de.bosch.com> <CALNs47vKrFdg3k6sAYpX58n4BC4PHzbXk8fCBYbcnZuzPhancg@mail.gmail.com>
-In-Reply-To: <CALNs47vKrFdg3k6sAYpX58n4BC4PHzbXk8fCBYbcnZuzPhancg@mail.gmail.com>
+References: <20231208071455.2584037-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20231208071455.2584037-1-dirk.behme@de.bosch.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 8 Dec 2023 13:27:42 +0100
-Message-ID: <CANiq72=WZruHvMcdp1iWhez19wzZ8PkGAAg98kTVLm7soCeyFw@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: Add rusttest info
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>
+Date: Fri, 8 Dec 2023 13:43:06 +0100
+Message-ID: <CANiq72nNtWJq-bMLS0MoD-iMDDyOvFoAny6Z1e0hFppA+UQ4vw@mail.gmail.com>
+Subject: Re: [PATCH v2] docs: rust: Add rusttest info
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 8, 2023 at 6:31=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wro=
-te:
+On Fri, Dec 8, 2023 at 8:15=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
+ wrote:
 >
-> It may be worth pointing out that you can run via kunit too. Quoting
-> Boqun in [1]:
->
-> > FWIW, I usually run as unit tests by:
-> >
-> > ./tools/testing/kunit/kunit.py run --make_options LLVM=3D1 --arch x86_6=
-4 --kconfig_add CONFIG_RUST=3Dy
+> +To run the Rust tests, you can use the following make target::
+> +
+> +       make LLVM=3D1 rusttest
+> +
+> +This requires the kernel .config and downloads external repos.
+> +
+> +The tests can be run via kunit, too::
+> +
+> +       ./tools/testing/kunit/kunit.py run --make_options LLVM=3D1 --arch=
+ x86_64 --kconfig_add CONFIG_RUST=3Dy
 
-Yeah, in fact, those are the "main tests" we have now.
+The commands do something very different and run sets of tests: the
+former are `#[test]` tests that run on the host (currently) and thus
+fairly limited in what they can test; the latter are tests that come
+from the examples in our Rust documentation and get transformed into
+KUnit tests.
 
-However, I would point to the KUnit docs too, which explain how to run
-it and so on (e.g. it is not the only way -- one can also build the
-kernel normally and run it), even if we keep Boqun's example.
+I would recommend testing the commands and playing with them to see
+what each do and how they look like.
+
+It would also be nice to give some more context about the commands and
+what they do, rather than just writing the commands; and to link the
+KUnit docs on how to run them (please see my comment on v1).
+
+Thanks for the patch!
 
 Cheers,
 Miguel
