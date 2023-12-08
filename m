@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mE9EkolL"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72ED01996;
-	Fri,  8 Dec 2023 09:53:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ku3Fwe5I"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746061738;
+	Fri,  8 Dec 2023 10:04:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=qfmys4whkrbxhizugrkv3fumau.protonmail; t=1702058001; x=1702317201;
-	bh=hVJsuEvFyRzSwsIFDjR8bBfXvfqQalvBoy1pmXp64qw=;
+	s=protonmail; t=1702058660; x=1702317860;
+	bh=PTmEXgI7BxufT0npzlsJT5kiKHIgc9s02WiJV5XBNQU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=mE9EkolL56rnQaDX118ZC8Qv3X5TZeYrKUwaDSEIQn+WhbP1IxA31PBFYX1w4PEfm
-	 tbDUzGQDgCFongIl664Rpjt0Q6D4+Ta/SBJvda/xqssrHxUAN/jDW+M0rZ26/jZ7bF
-	 hndgRizrrT3D+EtySJ7XnPTGMg1V4oE9UN6NpZai6CunjP+grH/LbKkJTx9or3kn/u
-	 7Y7h499dZSav1SYvkjLVnEWc7pPhiT0gxp7UgDLVBq3paoIX/LqcVWwVN/TqHRmJOF
-	 h6esC13pxSSp19Splgu14PaV0+GojhlmckFGZ9EGMD53F1Wblwgy4oTz1b5PPNmmgL
-	 L+R1EmlgGTGvA==
-Date: Fri, 08 Dec 2023 17:53:08 +0000
-To: Alice Ryhl <aliceryhl@google.com>
+	b=Ku3Fwe5Ivvvv7/4sAslKhSLbNE2c16L8W9Vp2kURUwCdrCDOtvKhiKIMRbTdK+mLb
+	 Ti7kJUTNntqDHGEdE/Z0ZzRQtCNOd1Ub7YXRTUkkM6VYDHMchM9FzkXNzQT/blk/cd
+	 VxjB0iLT27kzVChTAGy0f6kaeZxfXQjbAyOG8tlH9uJunL93YkuR+lVz0cyeuMFjM6
+	 +cjKRCuJp7gCslhzCntRKnuKz4z9XlyqusEBM3xbN5iiNhb1niGGQIdNc/FDO37NjK
+	 BdutuscjCKkjvnVgI/ubh+oIPvQ+s8WYwvM1jJehNprfolLSsWuogbdxl87AYgN+o+
+	 CdGM0doVGmiOQ==
+Date: Fri, 08 Dec 2023 18:04:01 +0000
+To: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
-Message-ID: <k_vpgbqKAKoTFzJIBCjvgxGhX73kgkcv6w9kru78lBmTjHHvXPy05g8KxAKJ-ODARBxlZUp3a5e4F9TemGqQiskkwFCpTOhzxlvy378tjHM=@proton.me>
-In-Reply-To: <20231206-alice-file-v2-7-af617c0d9d94@google.com>
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com> <20231206-alice-file-v2-7-af617c0d9d94@google.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: rust: Clarify that 'rustup override' applies to build directory
+Message-ID: <4738ad1c-eb54-4ad6-98c8-3852de3e8fc3@proton.me>
+In-Reply-To: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org>
+References: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,95 +33,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/6/23 12:59, Alice Ryhl wrote:
-> diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-> index 9bcbea04dac3..eeb291cc60db 100644
-> --- a/rust/bindings/lib.rs
-> +++ b/rust/bindings/lib.rs
-> @@ -51,3 +51,4 @@ mod bindings_helper {
+On 12/8/23 11:18, Viresh Kumar wrote:
+> Rustup override is required to be set for the build directory and not
+> necessarily the kernel source tree (unless the build directory is its
+> subdir).
 >=20
->  pub const GFP_KERNEL: gfp_t =3D BINDINGS_GFP_KERNEL;
->  pub const __GFP_ZERO: gfp_t =3D BINDINGS___GFP_ZERO;
-> +pub const POLLFREE: __poll_t =3D BINDINGS_POLLFREE;
-
-You are no longer using this constant, should this still exist?
-
-[...]
-
-> +    fn get_qproc(&self) -> bindings::poll_queue_proc {
-> +        let ptr =3D self.0.get();
-> +        // SAFETY: The `ptr` is valid because it originates from a refer=
-ence, and the `_qproc`
-> +        // field is not modified concurrently with this call since we ha=
-ve an immutable reference.
-
-This needs an invariant on `PollTable` (i.e. `self.0` is valid).
-
-> +        unsafe { (*ptr)._qproc }
-> +    }
+> Clarify the same in quick-start guide.
+>=20
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+>  Documentation/rust/quick-start.rst | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quic=
+k-start.rst
+> index f382914f4191..a7a08955fe46 100644
+> --- a/Documentation/rust/quick-start.rst
+> +++ b/Documentation/rust/quick-start.rst
+> @@ -39,8 +39,13 @@ If ``rustup`` is being used, enter the checked out sou=
+rce code directory
+>  =09rustup override set $(scripts/min-tool-version.sh rustc)
+>=20
+>  This will configure your working directory to use the correct version of
+> -``rustc`` without affecting your default toolchain. If you are not using
+> -``rustup``, fetch a standalone installer from:
+> +``rustc`` without affecting your default toolchain.
 > +
-> +    /// Register this [`PollTable`] with the provided [`PollCondVar`], s=
-o that it can be notified
-> +    /// using the condition variable.
-> +    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
-> +        if let Some(qproc) =3D self.get_qproc() {
-> +            // SAFETY: The pointers to `self` and `file` are valid becau=
-se they are references.
+> +Note that the override applies to the build directory (and its sub-direc=
+tories).
 
-What about cv.wait_list...
+Shouldn't this be "Note that the override only applies to the current
+working directory (and its sub-directories)."?
+I think it would also be useful to continue with this: "But in order
+to build the kernel, this override must affect the build directory.".
 
-> +            //
-> +            // Before the wait list is destroyed, the destructor of `Pol=
-lCondVar` will clear
-> +            // everything in the wait list, so the wait list is not used=
- after it is freed.
-> +            unsafe { qproc(file.as_ptr() as _, cv.wait_list.get(), self.=
-0.get()) };
-> +        }
-> +    }
-> +}
-> +
-> +/// A wrapper around [`CondVar`] that makes it usable with [`PollTable`]=
-.
-> +///
-> +/// # Invariant
-> +///
-> +/// If `needs_synchronize_rcu` is false, then there is nothing registere=
-d with `register_wait`.
-
-Not able to find `needs_synchronize_rcu` anywhere else, should this be
-here?
-
-> +///
-> +/// [`CondVar`]: crate::sync::CondVar
-> +#[pin_data(PinnedDrop)]
-> +pub struct PollCondVar {
-> +    #[pin]
-> +    inner: CondVar,
-> +}
-
-[..]
-
-> +#[pinned_drop]
-> +impl PinnedDrop for PollCondVar {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        // Clear anything registered using `register_wait`.
-> +        //
-> +        // SAFETY: The pointer points at a valid wait list.
-
-I was a bit confused by "wait list", since the C type is named
-`wait_queue_head`, maybe just use the type name?
+And then you could also mention that in the default location for the
+build directory is in the repository.
 
 --=20
 Cheers,
 Benno
 
-> +        unsafe { bindings::__wake_up_pollfree(self.inner.wait_list.get()=
-) };
+> +If the kernel is built with `O=3D<build directory>`, the override must b=
+e set for
+> +the build directory instead.
 > +
-> +        // Wait for epoll items to be properly removed.
-> +        //
-> +        // SAFETY: Just an FFI call.
-> +        unsafe { bindings::synchronize_rcu() };
-> +    }
-> +}
+> +If you are not using ``rustup``, fetch a standalone installer from:
+>=20
+>  =09https://forge.rust-lang.org/infra/other-installation-methods.html#sta=
+ndalone
+
