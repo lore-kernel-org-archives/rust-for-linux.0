@@ -1,87 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4etOjFNb"
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56AE1173F
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Dec 2023 07:35:14 -0800 (PST)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6cedc988cf6so465137b3a.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Dec 2023 07:35:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702049714; x=1702654514; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WMnlzmKg9DyRCjTIo9NWw3OAfaXxDlGMMCmq8eYBwns=;
-        b=4etOjFNbpPoHS28boUs7sYRfWkdQ2tCUS9pvXwumN8uZlSsec3Um/o/V9VEM3fUad+
-         g8T1idhFVN/aeHE4Os97MT2/pQb9kJCL19UweaZRH2fPU2mfhtOKuAlsogwOSYCxA41W
-         dtpK/aedkwBbBCDUrOcJ0TS5/6PyjSDdSnTjv2Mv/q1WHKDtnsqcGa1ld3kVguDxzdPV
-         kUU5K6BWS0M1M+n1HPRuvR5+iFhSO366VDvIOvOEO8pLP8KUaE0uDpOF2JGHy3sZLQ/l
-         1lvVpYOX/wFJv7qa9t5wvAXsGjR+/vZekeb0AuKtGaFkijbv9hQBV5WUzhn9ig6S8N4m
-         zWQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702049714; x=1702654514;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WMnlzmKg9DyRCjTIo9NWw3OAfaXxDlGMMCmq8eYBwns=;
-        b=t7RHaUyNOSBWxizB51Y7bIdXMb/YpvJamqk7QcMiosPlXii08OX/rLL68n2iCagWeT
-         5dz35pjgeEIXTMljSXAZo0HN9f7ZskmwELoA2g8Sh9pUJjdc047txYTYd7zI+0sDE4TR
-         RRwQSUlxqFaaQb4w/jqDpg2V7kppmVXBgXtuQKRJYo5+uop4D1MFpVzu3JBVBUaZMUhA
-         WobptrDdU8PIhX9ufrsly2CCSye2l5hUegaCnAJ/LKMW5F7WFusev60CXUP4HGDJff8m
-         JT9UKIaJ6C3XmxfTh5RGxCgVfXneiRAmULrJgnMLctsO1VnO934zOy1A1mI/6zTrCzzj
-         2Npg==
-X-Gm-Message-State: AOJu0YzYKzacDNPsT4TZ4rmDChZTNopQ5BLuQygvd1nNjcGIDZK0lsr7
-	mu48wsC5AUqucdVBZ96EWfLI3w==
-X-Google-Smtp-Source: AGHT+IESf1k2n13MqKMWia14nJinAeLSzbt4CtMuDPySehvv8O/Fb5ljzWIN2rcZTIGwCXb+V2Y9mQ==
-X-Received: by 2002:a05:6a20:f388:b0:18b:251d:d6fb with SMTP id qr8-20020a056a20f38800b0018b251dd6fbmr206420pzb.1.1702049713574;
-        Fri, 08 Dec 2023 07:35:13 -0800 (PST)
-Received: from google.com (170.102.105.34.bc.googleusercontent.com. [34.105.102.170])
-        by smtp.gmail.com with ESMTPSA id r3-20020a655083000000b005aa800c149bsm1496119pgp.39.2023.12.08.07.35.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 07:35:12 -0800 (PST)
-Date: Fri, 8 Dec 2023 15:35:09 +0000
-From: Carlos Llamas <cmllamas@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YXm7Jqtm"
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D1D212A;
+	Fri,  8 Dec 2023 08:13:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1702052023; x=1702311223;
+	bh=ek4co/YpsGRGW/CGOUlf0EOIjWRaI4i0rP+RwDefBy4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=YXm7Jqtm2MRsihn4lo0W4ggKNDyx9zcUfb6gxx6B0Wt0+w5Tdh1sbAkvAOypJ9lnH
+	 1ILv9/Ns9LQCE+unShsUMCttnsFElCpxKdA/WnL6mJ4T7HkD155i+KrKfLdzuZW4NO
+	 9ezlowMCpgkhJb0YmHGMrw4645Ds6PyPNTAWcrFU22eAd13IwrzWOakiRs5cglpcEQ
+	 D9PjW7u7fbSCihRCYbl86+j2m1F0xivRLHi6MArRCvSM0YtwvzMs9xg/0oq14sJEob
+	 l/XqpZ2H0THWfSk0qUts3LgyPeVFJYwzfGFHe7p/j/qoyAJWOGxNvJ0BEzqT+EVNXh
+	 pHRipQHGInDKg==
+Date: Fri, 08 Dec 2023 16:13:26 +0000
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Christian Brauner <christian@brauner.io>,
-	Suren Baghdasaryan <surenb@google.com>, Li Li <dualli@google.com>,
-	linux-kernel@vger.kernel.org, kernel-team@android.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] binder: use enum for binder ioctls
-Message-ID: <ZXM3rXugrgWCqqgP@google.com>
-References: <20231208152801.3425772-1-aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 2/7] rust: cred: add Rust abstraction for `struct cred`
+Message-ID: <8VBM8spxE8lhkvhYGfxxUFwslCWxi-ZL6rGHHDYD6Gn5dZqsdUQfZYDqtykJzQNFJVsQje_B4hGVDRqy3zY3TZGLSL7_YXbhKcIYfvBS02I=@proton.me>
+In-Reply-To: <20231206-alice-file-v2-2-af617c0d9d94@google.com>
+References: <20231206-alice-file-v2-0-af617c0d9d94@google.com> <20231206-alice-file-v2-2-af617c0d9d94@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231208152801.3425772-1-aliceryhl@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 08, 2023 at 03:28:01PM +0000, Alice Ryhl wrote:
-> All of the other constants in this file are defined using enums, so make
-> the constants more consistent by defining the ioctls in an enum as well.
-> 
-> This is necessary for Rust Binder since the _IO macros are too
-> complicated for bindgen to see that they expand to integer constants.
-> Replacing the #defines with an enum forces bindgen to evaluate them
-> properly, which allows us to access them from Rust.
-> 
-> I originally intended to include this change in the first patch of the
-> Rust Binder patchset [1], but at plumbers Carlos Llamas told me that
-> this change has been discussed previously [2] and suggested that I send
-> it upstream separately.
-> 
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-1-08ba9197f637@google.com/ [1]
-> Link: https://lore.kernel.org/all/YoIK2l6xbQMPGZHy@kroah.com/ [2]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+On 12/6/23 12:59, Alice Ryhl wrote:
+> +/// Wraps the kernel's `struct cred`.
+> +///
+> +/// # Invariants
+> +///
+> +/// Instances of this type are always ref-counted, that is, a call to `g=
+et_cred` ensures that the
+> +/// allocation remains valid at least until the matching call to `put_cr=
+ed`.
+> +#[repr(transparent)]
+> +pub struct Credential(pub(crate) Opaque<bindings::cred>);
 
-Acked-by: Carlos Llamas <cmllamas@google.com>
+Why is the field `pub(crate)`?
 
-Thanks,
---
-Carlos Llamas
+[...]
+
+> +// SAFETY: The type invariants guarantee that `Credential` is always ref=
+-counted.
+> +unsafe impl AlwaysRefCounted for Credential {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference means that the re=
+fcount is nonzero.
+> +        unsafe { bindings::get_cred(self.0.get()) };
+> +    }
+> +
+> +    unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount i=
+s nonzero.
+
+Can you also justify the `cast()`?
+
+--=20
+Cheers,
+Benno
+
+> +        unsafe { bindings::put_cred(obj.cast().as_ptr()) };
+> +    }
+> +}
