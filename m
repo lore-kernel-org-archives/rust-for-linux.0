@@ -1,125 +1,81 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FStLKhW4"
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8CE1708;
-	Thu,  7 Dec 2023 21:28:21 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-5c66e7eafabso1434024a12.0;
-        Thu, 07 Dec 2023 21:28:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="PfQDyPrK"
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02532171C
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Dec 2023 21:31:38 -0800 (PST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-5d34f8f211fso16355287b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 Dec 2023 21:31:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702013301; x=1702618101; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1702013497; x=1702618297; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dUGmPEbpW20dc17tUbVamxt8gw7gwKEC4FwZ3bTqHfg=;
-        b=FStLKhW4VJO/dzygcS3r4iEzvjZPu+Glw17zY1SWmE5l4ww1ZYBXuPos67/TOjSLZJ
-         ub36WDDJBvMdLCVm1Pst2zY9Swh2LfCt6VmaiqIBqTzj0GdhkSK2YeRTQ3AufuygWNxZ
-         U0BZ5R5ex1ROxdhWh7lu56BV3xwofqbSZeSL6v9gb1SQxELsVhTfPEJFBeqLRrrG9rrQ
-         CPlNoS2/CyxJPr112Wb9jVafzkr8kOksMEgIAfxIIOLAEduEbijSbOhk9VWyWgGbp39q
-         HLscicbWJb0mszy0vPY6OrdsyRVDVQl8EdU8pp5XDNblwHSXAd184AsrylPtAQKs1YSd
-         /HQg==
+        bh=TWR3jCEqpewIoVzO0h9SiNH8U6LMKeoDQx7O6MfUUFE=;
+        b=PfQDyPrKo7vWfOYZRdcLMneUhINr8NsS3FwGFjaHeE8vFbqL4CNk9xOFoZtNMa0Agy
+         n/v8cMV5TkpAtfD8uyKhDE0C+MV4KG1xxSDoAhyzbCr/Ner1hJ/4pEreNoMBOsiwEKhL
+         ictXlLroUUAiuixE3R83k7UXdo3IiMhdip3WgKJ4hwXwPI/mJ0gsD5JTqQXs72watQda
+         AhliuSOIQ7uIsdX4YxA9VszNF7BNE6ZHoLN5yD7gBYxNgehCHWE/NPHKTlEODlydd8JZ
+         n5DToNijilwVdf1T7coZbBY1u3DucD9o2zVRltp0FCycbXwRXG6emJQ3cGbdyeLZc8d0
+         JLWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702013301; x=1702618101;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1702013497; x=1702618297;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dUGmPEbpW20dc17tUbVamxt8gw7gwKEC4FwZ3bTqHfg=;
-        b=LuIavFHaFHYKDNDImX7bauqRFB56DC4YnUSEA3nFEVFx/9OS7Imck3TQ23RmpwbsRx
-         Tjm1eeQESOZkM56eD8UURzeSQTET2lZLwoTUhQiQ3vRTaTVSwFLADnHBUtItfO2/D9Lo
-         sPE5yuTRG5u8ZN/Pe/dQk+bVMRrp2beXsO+OAx3oyQb4lYyLU2Zbbv4SoghTigkL4RDa
-         wqBGoZJ32egD5tD76Vwkg2AP4UE9wFFQgO/sNZZDq5ldis3qH827thhU06s6GeEHTf9q
-         /uzwZJHJq0w/mmKPcxCTbLM33PHJElnSNJI7CeUkqQEf1o8YIhjE85/FiVfjephNgbQY
-         yulA==
-X-Gm-Message-State: AOJu0YyZi6gxkmztdxunMzQSC+vxEytPZWk3bCz2RDmTlxQUadsvPiS8
-	VaBJeRkzr1r1AmticoEr6fI=
-X-Google-Smtp-Source: AGHT+IGj1T0uSHej29ptuixe+XoVelY+Ka5cBypKJ64qn3JuPT/jgsVKS/9TR+relrXm1kDUFvCxGg==
-X-Received: by 2002:a17:90b:3b50:b0:286:6cc0:caca with SMTP id ot16-20020a17090b3b5000b002866cc0cacamr3711007pjb.65.1702013301134;
-        Thu, 07 Dec 2023 21:28:21 -0800 (PST)
-Received: from smtpclient.apple ([2601:647:4b00:6db0:b844:97a8:fed6:b1f7])
-        by smtp.gmail.com with ESMTPSA id sc1-20020a17090b510100b002867adefbd4sm848049pjb.48.2023.12.07.21.28.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 07 Dec 2023 21:28:20 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+        bh=TWR3jCEqpewIoVzO0h9SiNH8U6LMKeoDQx7O6MfUUFE=;
+        b=gbA9V0fPpE3eRlxofWide5ZW30NQ+tyqndbBk1p2Q4fJff/HnYbzpBjws/rAF3ht6x
+         Hlv1m+OL+9FaVzdCVXeBk8YbE4vv1YLj+qWalhEHfnl8hjtLZiR3rSRtBcZgQbnVPCEE
+         MiQuhDZ3vKYD5Oir016BYU1NfOVKD4YT240hfTVXqXSgPV+uU7T6dV0JzK5o290l3Cfn
+         CCRsqdnRyvXqco6WYs8Cx1EwD202eBlD6nuQsakV6KPQrgHV/sySMhYQlGyC0/lMhsHB
+         ZU5i8LIQK1Pkw1MMDUmRYXP/5BGnEfmqgOqo9MNiYmm/aFcOOlVZKk6dXDXY9xpFnmB9
+         nL3g==
+X-Gm-Message-State: AOJu0Yz7G6fnwS4gVRDa04sn2ysDM0eiNkNQ+6zDLDui9UlFLPHe7IFv
+	Zj5zBi0fy8QHJ4iXou/yc9heUYqLo+isAtRU/ZWZWQ==
+X-Google-Smtp-Source: AGHT+IEbjH5A/1kcO+YJYPeTpzhVqCKtDsU2Iwz3JgSH/4v9p+1mEHT2YqNblpbIWFlid+a55lUBJ3zFCLzSjhHNTZc=
+X-Received: by 2002:a25:b90e:0:b0:db5:3dd6:2d4a with SMTP id
+ x14-20020a25b90e000000b00db53dd62d4amr3095911ybj.64.1702013497188; Thu, 07
+ Dec 2023 21:31:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.42\))
-Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
-From: comex <comexk@gmail.com>
-In-Reply-To: <20231130-wohle-einfuhr-1708e9c3e596@brauner>
-Date: Thu, 7 Dec 2023 21:28:06 -0800
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>,
- Martijn Coenen <maco@android.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- Carlos Llamas <cmllamas@google.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Kees Cook <keescook@chromium.org>,
- Matthew Wilcox <willy@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Daniel Xu <dxu@dxuuu.xyz>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
+MIME-Version: 1.0
+References: <20231206125736.2040066-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20231206125736.2040066-1-dirk.behme@de.bosch.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Fri, 8 Dec 2023 00:31:25 -0500
+Message-ID: <CALNs47vKrFdg3k6sAYpX58n4BC4PHzbXk8fCBYbcnZuzPhancg@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: Add rusttest info
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <A0BFF59C-311C-4C44-9474-65DB069387BD@gmail.com>
-References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
- <20231129-alice-file-v1-5-f81afe8c7261@google.com>
- <20231129-etappen-knapp-08e2e3af539f@brauner>
- <20231129164815.GI23596@noisy.programming.kicks-ass.net>
- <20231130-wohle-einfuhr-1708e9c3e596@brauner>
-To: Christian Brauner <brauner@kernel.org>
-X-Mailer: Apple Mail (2.3774.300.42)
 
+On Wed, Dec 6, 2023 at 7:58=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
+ wrote:
 
+> +-------
+> +
+> +Running the Rust tests the Make target is::
+> +
+> +       make LLVM=3D1 rusttest
+> +
+> +This requires the kernel .config and downloads external repos.
+> +
+> --
 
-> On Nov 30, 2023, at 4:46=E2=80=AFAM, Christian Brauner =
-<brauner@kernel.org> wrote:
->=20
-> I wouldn't even
-> complain if it they were somehow auto-generated but as you say that
-> might be out of scope.
+It may be worth pointing out that you can run via kunit too. Quoting
+Boqun in [1]:
 
-FYI, rust-bindgen got an experimental feature of this nature earlier =
-this year:
+> FWIW, I usually run as unit tests by:
+>
+> ./tools/testing/kunit/kunit.py run --make_options LLVM=3D1 --arch x86_64 =
+--kconfig_add CONFIG_RUST=3Dy
 
-https://github.com/rust-lang/rust-bindgen/pull/2335
+Thanks for posting this!
 
-Though apparently it has significant limitations meriting it the =
-=E2=80=9Cexperimental=E2=80=9D title.
+- Trevor
 
-Regarding the issue of wrappers not being inlined, it's possible to get =
-LLVM to optimize C and Rust code together into an object file, with the =
-help of a compatible Clang and LLD:
-
-@ rustc -O --emit llvm-bc a.rs                                        =20=
-
-@ clang --target=3Dx86_64-unknown-linux-gnu -O2 -c -emit-llvm -o b.bc =
-b.c
-@ ld.lld -r -o c.o a.bc b.bc
-
-Basically LTO but within the scope of a single object file.  This would =
-be redundant in cases where kernel-wide LTO is enabled.
-
-Using this approach might slow down compilation a bit due to needing to =
-pass the LLVM bitcode between multiple commands, but probably not very =
-much.
-
-Just chiming in as someone not involved in Rust for Linux but familiar =
-with these tools.  Perhaps this has been considered before and rejected =
-for some reason; I wouldn=E2=80=99t know.=
+[1]: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/=
+Running.20doctests
