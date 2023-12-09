@@ -1,119 +1,128 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PRTW3BZC"
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 812AD1AD
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Dec 2023 12:57:39 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1d05e4a94c3so22423985ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Dec 2023 12:57:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PQ+ZyJqy"
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C4CD5B;
+	Fri,  8 Dec 2023 23:24:50 -0800 (PST)
+Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3b9e7f4a0d7so1159464b6e.1;
+        Fri, 08 Dec 2023 23:24:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1702069059; x=1702673859; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tys/vW6TJrvqB1xe5pT6Lgn/PsDKvZ4BwsQlECLsYBs=;
-        b=PRTW3BZCfbXCMbIbbjF0R2L8LA7Rn1g9VuJIVK5dZwH/WiNsRPjf/4jsvdnNXVJdlw
-         eNquk2M244ZrHbTzsS4ZDV/0qCadMIZXIQb9drDLfvjfeJ9jDxh2MrcbC9awGCXYKjqY
-         RpjbVGc0c8Ssr9nw3Nf55/N4DPq1EuKooGaf4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702069059; x=1702673859;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1702106690; x=1702711490; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Tys/vW6TJrvqB1xe5pT6Lgn/PsDKvZ4BwsQlECLsYBs=;
-        b=IA9AUnEFpAFkb1jM4NLfYMrSTvDVIQ2djMavrW69qAJ2x8PiryxL8cMEJLefYJkWKa
-         M9z40w1HQi592D5eLdStavk5RTNeiYRez+o9J4yh/JQLdS4CzyYypgFwqIXfWHY4tS1w
-         xVIHRnIEJnuOmEV+TKIHQQTPT/lNHT9yzxqzGyoV/8fwvr1dFV9tdU2yj3W9wVIJNnLs
-         fBCVflkisr81Q+jL51EJ2In0WI3TxlW37cF5FC1ajOppwgeIWJ0S/Jt+AKlaGm9Adu2G
-         V1nBoqd30ElCt2/Ko1Macx+wTghPi18eM1sJG4eJymjCerV3nSgCcq+TkIIShSW+Bp5Q
-         8Fgg==
-X-Gm-Message-State: AOJu0YzltrR8FSJ4ySNN6PUd3H6OefGLFMULOtK2lzzf+KmeZfLrKh1P
-	FMKcyLywWvosJKAAqLXdpaYysw==
-X-Google-Smtp-Source: AGHT+IGBI3DTSz3M2P/N3EoKLc20ALho3WNNQ9FkBDmD8W5/Jq1bLWYaPm1D7IkQUUnQMxuOVi4Hng==
-X-Received: by 2002:a17:903:2585:b0:1d0:6ffe:9f1 with SMTP id jb5-20020a170903258500b001d06ffe09f1mr611230plb.79.1702069059024;
-        Fri, 08 Dec 2023 12:57:39 -0800 (PST)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id 21-20020a170902ee5500b001d0511c990csm2131874plo.237.2023.12.08.12.57.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 12:57:38 -0800 (PST)
-Date: Fri, 8 Dec 2023 12:57:38 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 5/7] rust: file: add `Kuid` wrapper
-Message-ID: <202312081251.A5D363C0@keescook>
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com>
- <20231206-alice-file-v2-5-af617c0d9d94@google.com>
- <20231206123402.GE30174@noisy.programming.kicks-ass.net>
- <CAH5fLgh+0G85Acf4-zqr_9COB5DUtt6ifVpZP-9V06hjJgd_jQ@mail.gmail.com>
- <20231206134041.GG30174@noisy.programming.kicks-ass.net>
- <CANiq72kK97fxTddrL+Uu2JSah4nND=q_VbJ76-Rdc-R-Kijszw@mail.gmail.com>
- <20231208165702.GI28727@noisy.programming.kicks-ass.net>
- <202312080947.674CD2DC7@keescook>
- <20231208204501.GJ28727@noisy.programming.kicks-ass.net>
+        bh=gA6npP4B/1h8Lv3vDYT50LP0HFiir56XGpjRhpKMK7Q=;
+        b=PQ+ZyJqyI3alLnQm4J1OcJ0vHwSxcnkBAjQeJqtr8LtTYWT8i06FAtkBo7t8zGWsb1
+         7VW6PvbiN4VKQfJtaUpXvcJrhk1NHb0IEAeT5VhpJANvzKU81p8pvoRK556SNRs37psG
+         HaU/WKxVXtepGBpZ9hVx96mTUxLDhglwx8hGNQB4GEdq9K23x0VP8d6HbWZ2/eQlDHtY
+         mVU/jD4c22mSKVhZqmXOX4TLBvJqP0k5toS+s7PD1HY/AJA7Zb5sG5O6TgSlWLwzTWi9
+         hGoVsbX6RkPHMUXBnfwtVV6Y36mibl2gY4e3zcqRTHKJey1ldw2SyrHCvnbYnNIafM+s
+         +0kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702106690; x=1702711490;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gA6npP4B/1h8Lv3vDYT50LP0HFiir56XGpjRhpKMK7Q=;
+        b=eD44ILXzitgfn1PCUg5BgSlT+B+nhDLW15d/pBdXAaEh9CwCsqC7nC6ciHFIfnhrpM
+         4BS7howJXDs5aFJ1gkl4g02T4Z7KiS7CthpmDAzKQj5U2in2SIZ3l1BFWNfi3Mj7CORa
+         0ObAlxmrHve3NZ/o8l7tNG8/0ChVCQQFrwlJF1e6lKh4ig/HgiPnf9+lesAWyyopCO5r
+         IN2rJTyZG/q7phAzUGVNEEsX9Z1MnBvd/jRrGeHkTWUzj3CumO11T4/8i7tm5t28ls1c
+         3q6q9mJa0rl4CB3uuspVFAhTegI33cFQR0rq36/wnCYH+6Fal4joW7XP+r9n/llSPwpm
+         XcMw==
+X-Gm-Message-State: AOJu0Yyomo21hq7zDwgiC/3z4NbMGBPvthubDmQZMh9Yuk+ltam5Ea48
+	3O6eBuFDz3MqGe0Og9k92es=
+X-Google-Smtp-Source: AGHT+IGYs36YJSRK1ZVmaBkJb+Iy1NEnIFrzQTgWan5NjNjvr9PNhQmEwveSqekX+ik6sq3a4cawzA==
+X-Received: by 2002:a05:6808:120c:b0:3b8:b063:505e with SMTP id a12-20020a056808120c00b003b8b063505emr1458196oil.95.1702106689952;
+        Fri, 08 Dec 2023 23:24:49 -0800 (PST)
+Received: from smtpclient.apple ([2601:647:4b00:6db0:219a:6f4c:ab6a:436d])
+        by smtp.gmail.com with ESMTPSA id q28-20020a056a0002bc00b006ce350d946csm2682652pfs.41.2023.12.08.23.24.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 08 Dec 2023 23:24:49 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231208204501.GJ28727@noisy.programming.kicks-ass.net>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [PATCH 5/7] rust: file: add `Kuid` wrapper
+From: comex <comexk@gmail.com>
+In-Reply-To: <CANiq72k4H2_NZuQcpeKANqyi_9W01fLC0WxXon5cx4z=WsgeXQ@mail.gmail.com>
+Date: Fri, 8 Dec 2023 23:24:35 -0800
+Cc: Christian Brauner <brauner@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>,
+ Martijn Coenen <maco@android.com>,
+ Joel Fernandes <joel@joelfernandes.org>,
+ Carlos Llamas <cmllamas@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Kees Cook <keescook@chromium.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Daniel Xu <dxu@dxuuu.xyz>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ Nick Desaulniers <ndesaulniers@google.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4364B468-E0DD-4419-B26E-13B9C3F53F7C@gmail.com>
+References: <20231129-alice-file-v1-0-f81afe8c7261@google.com>
+ <20231129-alice-file-v1-5-f81afe8c7261@google.com>
+ <20231129-etappen-knapp-08e2e3af539f@brauner>
+ <20231129164815.GI23596@noisy.programming.kicks-ass.net>
+ <20231130-wohle-einfuhr-1708e9c3e596@brauner>
+ <A0BFF59C-311C-4C44-9474-65DB069387BD@gmail.com>
+ <CANiq72k4H2_NZuQcpeKANqyi_9W01fLC0WxXon5cx4z=WsgeXQ@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
-On Fri, Dec 08, 2023 at 09:45:01PM +0100, Peter Zijlstra wrote:
-> On Fri, Dec 08, 2023 at 10:18:47AM -0800, Kees Cook wrote:
-> 
-> > Even if we look at the prerequisites for mounting an attack here, we've
-> > already got things in place to help mitigate arbitrary code execution
-> > (KCFI, BTI, etc). Nothing is perfect, but speculation gadgets are
-> > pretty far down on the list of concerns, IMO. We have no real x86 ROP
-> > defense right now in the kernel, so that's a much lower hanging fruit
-> > for attackers.
-> 
-> Supervisor shadow stacks, as they exist today, just can't work on Linux.
+On Dec 8, 2023, at 8:19=E2=80=AFAM, Miguel Ojeda =
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>=20
+> If LLVM folks think LLVM-wise nothing will break, then we are happy to
+> go ahead with that (since it also solves the performance side), but it
+> would be nice to know if it will always be OK to build like that, i.e.
+> I think Andreas actually tried it and it seemed to work and boot, but
+> the worry is whether there is something subtle that could have bad
+> codegen in the future.
 
-Yeah, totally agreed. I still wonder if we can extend KCFI to cover
-return paths (i.e. emitting cookies for return destinations and doing
-pre-return cookie checking for return destinations).
+One potential issue is incompatibility between the LLVM versions used by =
+rustc, Clang, and LLD.  At minimum, whichever tool is reading bitcode =
+(LLD in my example) should have an LLVM version >=3D that of the tools =
+producing bitcode, since newer LLVM versions can read older bitcode but =
+not vice versa.  But ideally the tools would all just be linked against =
+the same copy of LLVM.
 
-> Should get fixed with FRED, but yeah, this is all somewhat unfortunate.
+If you=E2=80=99re getting your tools from a distro, then that may =
+already be true for you.  But if you=E2=80=99re using upstream rustc =
+binaries, those are built against a custom branch of LLVM, which is =
+based on upstream release versions but adds a handful of patches [1]; by =
+policy, those patches can include cherry-picks of miscompilation fixes =
+that are upstream but haven=E2=80=99t made it into a release yet [2].  =
+Upstream rustc binaries are accompanied by a copy of LLD linked against =
+the same LLVM library, named rust-lld, but there=E2=80=99s no =
+corresponding copy of Clang [3].  I=E2=80=99d say that agreement between =
+rustc and LLD is the most important thing, but it would be nice if =
+they'd make a matching Clang available through rustup.
 
-Agreed.
-
-> > As another comparison, on x86 there are so many direct execution gadgets
-> > present in middle-of-instruction code patterns that worrying about a
-> > speculation gadget seems silly to me.
-> 
-> FineIBT (or even IBT) limits the middle of function gadgets
-> significantly.
-
-Right -- for indirect calls we are at least able to restrict to
-same-prototype (KCFI) or "actual function" (IBT).
-
-Regardless, for the case at hand, it seems like the Rust wrappers are
-still not "reachable" since we do BTB stuffing to defang these kinds of
-speculation gadgets.
-
--Kees
-
--- 
-Kees Cook
+[1] =
+https://github.com/llvm/llvm-project/compare/release/17.x...rust-lang:llvm=
+-project:rustc/17.0-2023-09-19
+[2] =
+https://rustc-dev-guide.rust-lang.org/backend/updating-llvm.html#bugfix-up=
+dates
+[3] https://github.com/rust-lang/rust/issues/56371=
