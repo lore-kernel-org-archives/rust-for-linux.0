@@ -1,76 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XiAabm3E"
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75DE4BD
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 00:37:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1702283843; x=1702888643; i=markus.elfring@web.de;
-	bh=9qziLOXKnORq9SgIPGClXLdoEhSw5zZodLChxGx4O/M=;
-	h=X-UI-Sender-Class:Date:To:From:Subject;
-	b=XiAabm3E2weq1yh+BtP628KP+pa+4QGczeEjvFhcc6ss8+H+JSjFdFFjbqf4T4yZ
-	 iGxvaGeWrX5RxMtO4VV1+EMAPtHUjBm+nTLEdDiC/0rHQIRWAsWukR1mGr6cYm9e4
-	 knMLss6U6hLYe/5giueK8PRp77NXW18v8TzAB2GzJtEYP0IQGYu1Nj0c8UCzB4rBc
-	 YtbFQWWbpYsmHgE5LtAqVvZXXn08sKYyYCzHX3HSeyHlfRoUTvlf6HtMOSWsbaPR4
-	 ol3IiD0meLZW/fR7KuMQdx+Ock5uB6VNcEJkbNmrFyJ6DzmhgxVQ0TEIEExMIvvdS
-	 DLqrmpuWr0boqmOQfQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MYtx4-1qhnF50G4u-00Uy41; Mon, 11
- Dec 2023 09:37:23 +0100
-Message-ID: <dbcff3ca-a7ac-4bd8-92cb-02a8821e2257@web.de>
-Date: Mon, 11 Dec 2023 09:36:45 +0100
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lkN/rZSP"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D857B8
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 02:12:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1702289564; x=1702548764;
+	bh=XMBWxQ9g09DUsP4VV2j3XbcbWqRWZl1DHB9M2r0XYWY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=lkN/rZSPUtkVJcfviAZRm79S8Bhu7IwZMj2eshxKKa52qAXZdiai24g8K4YB2e0i/
+	 loxzKVmh7JsqGKPwMo8Sdq96ZSJf835mOLOcdfTFerpM+qO2MG34Vg0QGJpoY3zssr
+	 ixKoX+J1XeM/YVYDNcqglPqR8PcrKcGAUTSedYiUsukTeHX2RH3omuFJ9/wELt0SMl
+	 9axaSgALdPuQ85YVtn9UnNAZc+OmIuWA9OxKPNyxbOFqwG1K650O39VgLjXjtlnRCj
+	 Y2/zJFqYXgizkTRzUKcdpE3IJP1BFj8Q+71uIxt9C7SHx45CrcQ7mjB8FG7IL+6FNt
+	 aD0Txs2w97/zw==
+Date: Mon, 11 Dec 2023 10:12:37 +0000
+To: Viresh Kumar <viresh.kumar@linaro.org>, "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: rust: Clarify that 'rustup override' applies to build directory
+Message-ID: <b8824b26-a17f-4194-b901-cd9306d6120d@proton.me>
+In-Reply-To: <20231211082342.dkcnlamsyaqxaylg@vireshk-i7>
+References: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org> <4738ad1c-eb54-4ad6-98c8-3852de3e8fc3@proton.me> <20231211064742.63l4cmvxe4uso5us@vireshk-i7> <87h6kpf9am.fsf@metaspace.dk> <20231211082342.dkcnlamsyaqxaylg@vireshk-i7>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: cocci@inria.fr, cfr@inria.fr, rust-for-linux@vger.kernel.org,
- Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: Extending support for mailing list archives?
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zmbrS5IKem/dNiYvhnV07FYz0LMczschdHYk+JIoA3adVRBmfPm
- mwMIWuXgH/j+AzedE3+w5D6cJ69tIL4dyxXgpiWZ3CO5AIWa9+BDuJF6ubEji9vDXpfxO5Q
- Qbb7S/j4xRUHEhtQGw0gIw9YcpAIZgjxqTSAf6jMFaEQWLuiHY+yeC4UN7cflyrTrLAjah7
- etqEIVAton/zFIJe5vbrg==
-UI-OutboundReport: notjunk:1;M01:P0:aji7ZJ0iR5A=;HeoE4s6diATuwHXtd2kcOIekMHj
- O8JhdX0Qr+MFmULsw2Oav4C1Bpe1P9Rt8d5bn9aG+zlGvFY9z1xmGcfDx8rxUDWV7J8UYDTRu
- LiqrvPMUEDBik7ojYg1ODYtNhFuRKafqktuXykH/rjP2/oOmduzF336eJB3zH8q/BAdR8k1q1
- K1yobOPhyBGi+sx0eD5D+9IkrUusJVo4FttL3uIy/jaqLUZeiyJ/n7fetAh8yPxRU+AvDltOZ
- R0I7YBDaqwucVLDsiBvcJrvbYMcHj7vP4vkwCdNDz8+iHaPM+nM0n9BKGjymY/1C984UPX19D
- ARkrQhXeBnihk8f56fC7OE2+o2fkmTnaavF4Y4OIK/mSoo7ye5FjbTxLseTjKZJ+c8w4GpE2j
- Q7ZpsA3YI8WweCZiwuvjhHdJiKnPEdO/FkB2pOIG4FKuHix1zxWZvDRl3DUCChrYa4Awe0uua
- G8NK4ValeMsdq/hrR5qvVoJZjObaEp38whszuUPWqnr5PeKbH37P15GlwnFjQvhRDabNA/5/p
- Decb17z5BLhmSEgW8svbFGfMCoEqV3zUNytfQnqAARx26E96ConYti9IftD6ziJyu4A9GOVr2
- D2WE5jUziFwb4va1seVqoQXcTnZMpy6CZQ8P6bAdNWE/B/HP3G6GvYN+8x764w0zVvjZot7a2
- r0SxXOWY1Dl+LZR8rUosZG63zxICgR3SONNN2BeLFoBenrMN+bJfSHWoPKuaZDgcs3r03ksr4
- w8R69sS0BYeVckix+0mlt8aL+Un7PKRbV7i50gaEi4bqFK4CmqCJU2EP+vHQ5fBmLXbzAqqL8
- Tc443+7KmUDrdY8G+9nE9pfqRltt+bB5fvAViCKdISz96jIJvsEuwI7LhMuT/IpLa5lezudRY
- YhvgG3xnj9WIEcg+RLVtHDJ0UxnsSp+BOBGHRctVrdWHVxRmvDYu5nwJ0jM5QyBmQU+2hoK18
- 9rEeqg==
 
-Hello,
+On 12/11/23 09:23, Viresh Kumar wrote:
+> On 11-12-23, 09:09, Andreas Hindborg (Samsung) wrote:
+>>
+>> Thanks for fixing this Viresh!
+>>
+>> Viresh Kumar <viresh.kumar@linaro.org> writes:
+>>
+>>> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/qu=
+ick-start.rst
+>>> index f382914f4191..dee787f92d26 100644
+>>> --- a/Documentation/rust/quick-start.rst
+>>> +++ b/Documentation/rust/quick-start.rst
+>>> @@ -33,14 +33,17 @@ A particular version of the Rust compiler is requir=
+ed. Newer versions may or
+>>>  may not work because, for the moment, the kernel depends on some unsta=
+ble
+>>>  Rust features.
+>>>
+>>> -If ``rustup`` is being used, enter the checked out source code directo=
+ry
+>>> -and run::
+>>> +If ``rustup`` is being used, enter the kernel build directory and run:=
+:
+>>>
+>>>         rustup override set $(scripts/min-tool-version.sh rustc)
+>>
+>> How about just specifying the path here:
+>>
+>>          rustup override set --path=3D<build-dir> $(scripts/min-tool-ver=
+sion.sh rustc)
+>=20
+> Hmm, this sounds good too. In that case the above line can be changed to:
+>=20
+> "If ``rustup`` is being used, run::"
+>=20
+> Looks okay ?
 
-Discussions will evolve also for the development and application of variou=
-s
-software components according to the programming language =E2=80=9CRust=E2=
-=80=9D.
-https://rust-for-linux.com/coccinelle-for-rust
-https://lore.kernel.org/rust-for-linux/
+I think it should also mention that you do not need the
+`--path=3D<build-dir>`. It might be confusing for new users who do not
+know where the build directory is.
+It might also work to put both commands there (i.e. with
+`--path=3D<build-dir>` and without) and explaining what each of them do.
 
-How do you think about to support another mailing list archive
-on the platform =E2=80=9Chttps://korg.docs.kernel.org/lore.html=E2=80=9D?
-Or:
-Would you like to forward any messages between existing mailing lists?
+--=20
+Cheers,
+Benno
 
-https://lore.kernel.org/cocci/
-https://sympa.inria.fr/sympa/info/cocci
-
-https://sympa.inria.fr/sympa/arc/cfr/2023-12/
-
-Regards,
-Markus
