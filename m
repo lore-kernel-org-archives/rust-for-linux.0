@@ -1,110 +1,99 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pm/v43+F"
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFFF95;
-	Mon, 11 Dec 2023 08:23:14 -0800 (PST)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1d06d4d685aso26653065ad.3;
-        Mon, 11 Dec 2023 08:23:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702311794; x=1702916594; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=scctREUrC/LkD2SWnWUIOcPYbtzwbgiGpESeU3AjQfU=;
-        b=Pm/v43+F671kPBh4klwWg9sAT2lgH0Z6w5UyMS/HRrABVe274ZWcDO8oMO4cxL+AAY
-         ppC3Ed2BiIMDb1CHglJqO/4ABmGIRiSLptWsM1ZIhaCTueVkmSHMetmohQR+K+w4d9Nh
-         Vy8kXy/MLrmSOvGdprssKyo38a9UoogasCyEjlVHuVBALNabz3dl0Z9mLPvYQnJtnGiK
-         p+yK6gJCK2dClNCdVA+ep+hiSIdyT2T34LVx2QZhCWMUWm7BI3rTVBJoUGsv43W9+LEV
-         UZndHWM0+JNwjpk7rNl93bD0rzOehWgzshOOawNmwpiQEpz7RpwxALSm1g/N63bmazGJ
-         qnxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702311794; x=1702916594;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=scctREUrC/LkD2SWnWUIOcPYbtzwbgiGpESeU3AjQfU=;
-        b=k9iI342dLfkJR8TTXxsw00iGDI7azZfgx7wmhkuneUUVxZk2Czi26RZ71JyQupGG+m
-         8EQFwFHaYLiwvKY6iU62RUSF+1vTni6HzZPScJAdjBF3rEMcuAUpjhaBlofdsRvEhDJW
-         qY/bqx+nr7eSjntr40qO77bm9pB4mjMBC2+9W/ZBREAYVHjv1DSIdBFlC0xZ+kbuTJWc
-         8T4rcEzvjTobv/ECvIgqEfNFRESm5Fkx5uxagzW2+Oi9+I+c9zIBm4dnRzIYlauo43Gz
-         FGGNnFR/Hvsr8QW/5Gp1tH2YSlPBxwNnSH3N6BmV+PjIob5bn2BtwK15KCg7f8V+uJjD
-         wiqw==
-X-Gm-Message-State: AOJu0Yz0Fc+HsXYBAeKMzliSp9l9z+JqxZRk3+AswXyl0jxuFiZOG7NS
-	8hLkaGF6ca6qpuvMxc3txjk=
-X-Google-Smtp-Source: AGHT+IHPotAv3uPPqVHvBtseAJHrTG39AWPJ/BxBFYBafRp/1i70x01N951mZeTdiDXCf+2en5KHBA==
-X-Received: by 2002:a17:902:d503:b0:1d0:6ffd:f1fb with SMTP id b3-20020a170902d50300b001d06ffdf1fbmr2519816plg.81.1702311793723;
-        Mon, 11 Dec 2023 08:23:13 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id j6-20020a170902c3c600b001d07ebef623sm6855028plj.69.2023.12.11.08.23.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Dec 2023 08:23:13 -0800 (PST)
-Message-ID: <991d92dc-9b08-497e-bef1-dde7de2642a0@gmail.com>
-Date: Mon, 11 Dec 2023 13:23:08 -0300
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kFBL2cI8"
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDBE7B4;
+	Mon, 11 Dec 2023 09:05:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1702314298; x=1702573498;
+	bh=hICd6xX0pWZMvUHgptvk6MN17tBFZ5wEr7xIBYhapgI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=kFBL2cI8A2VVbApnMZefxfQoAV7krDo06fwBB/INYVg5h9I3xWVIaJ5Y/CXW2iTOW
+	 zkmccE2guKKCcWtfH4NxOQBFph3bZqlEgoJFMJZ/NY/VfT8AKUNiQYG6R4/tqCh6L9
+	 jTzEde1/2L9p2f2TezIofPRLny+FZ6QvrMFEQpnwcMSqQZZcqWYDadPKNPlw4cpAlj
+	 DoeBj9SQ8YCFD0aF9ESEMCIIEKdXPHzRe/1gu26JX0+0rW7casmRDN6NyVxyIpPdxB
+	 xhMdkcSS6sPqOF/6IMIsZRzGVhpn8hylty3nWCt/GS7BGGoxlf8nAqxC6FHoqxj2GA
+	 6RYYKOgp1jh1A==
+Date: Mon, 11 Dec 2023 17:04:52 +0000
+To: Kent Overstreet <kent.overstreet@linux.dev>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 5/7] rust: file: add `Kuid` wrapper
+Message-ID: <rPOj4p2TGoIYUzMbmRCjmzHuCktN1rc0EVJ-skynzRblrqQLRU2GQaAPOb9RHhUBn_XhGfqcUii4EJBr_AWjoWHnTE8v_wQCMVmkgl2shg0=@proton.me>
+In-Reply-To: <20231211155836.4qb4pfcfaguhuzo7@moria.home.lan>
+References: <20231206-alice-file-v2-0-af617c0d9d94@google.com> <20231206-alice-file-v2-5-af617c0d9d94@google.com> <jtCKrRw-FNajNJOXOuI1sweeDxI8T_uYnJ7DxMuqnJc9sgWjS0zouT_XIS-KmPferL7lU51BwD6nu73jZtzzB0T17pDeQP0-sFGRQxdjnaA=@proton.me> <ZXNHp5BoR2LJuv7D@Boquns-Mac-mini.home> <20231211155836.4qb4pfcfaguhuzo7@moria.home.lan>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/Kconfig: rust: Patchable function Rust compat
-Content-Language: en-US
-To: Matthew Maurer <mmaurer@google.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20231211150753.293883-1-mmaurer@google.com>
- <CANiq72nrCThY3mtHRMncRFDsu8XUmdb=W4WBs5Ua6oNugkDZhA@mail.gmail.com>
- <CAGSQo03EPpPFy9ppE7wjv_NG8P_pRqLN21TvoMnYzA=+Z_gCnw@mail.gmail.com>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CAGSQo03EPpPFy9ppE7wjv_NG8P_pRqLN21TvoMnYzA=+Z_gCnw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 12/11/23 13:11, Matthew Maurer wrote:
-> [...]
-> Sorry, I just realized this was only in a local patch. I hadn't sent
-> it previously because,
-> as you pointed out, we currently only support one compiler revision.
-> 
-> I was taking this approach because Android's compilers can have patches
-> backported onto them when needed, so our 1.73.0 could have this flag
-> and make use
-> of it.
+On 12/11/23 16:58, Kent Overstreet wrote:
+> On Fri, Dec 08, 2023 at 08:43:19AM -0800, Boqun Feng wrote:
+>> On Fri, Dec 08, 2023 at 04:40:09PM +0000, Benno Lossin wrote:
+>>> On 12/6/23 12:59, Alice Ryhl wrote:
+>>>> +    /// Returns the given task's pid in the current pid namespace.
+>>>> +    pub fn pid_in_current_ns(&self) -> Pid {
+>>>> +        // SAFETY: Calling `task_active_pid_ns` with the current task=
+ is always safe.
+>>>> +        let namespace =3D unsafe { bindings::task_active_pid_ns(bindi=
+ngs::get_current()) };
+>>>
+>>> Why not create a safe wrapper for `bindings::get_current()`?
+>>> This patch series has three occurrences of `get_current`, so I think it
+>>> should be ok to add a wrapper.
+>>> I would also prefer to move the call to `bindings::get_current()` out o=
+f
+>>> the `unsafe` block.
 >>
->>
->> Speaking of which, I can't find the flag in upstream Rust (i.e.
->> outside the LLVM submodule), and I couldn't find a PR adding it. Could
->> you please add a `Link:` tag to the tracking issue / PR / ... if it is
->> submitted / when it is submitted? Or am I very confused?
-> I haven't uploaded it yet. I'm hoping to send it up later today. I can
-> wait until it's
-> uploaded for a v2 of the patch series so I can link to it directly.
+>> FWIW, we have a current!() macro, we should use it here.
+>=20
+> Why does it need to be a macro?
 
-If you can send the patch then it'll be wonderful, no hurries though.
+This is a very interesting question. A `Task` is `AlwaysRefCounted`, so
+if you have a `&'a Task`, someone above you owns a refcount on that
+task. But the `current` task will never go away as long as you stay in
+the same task. So you actually do not need to own a refcount as long as
+there are no context switches.
 
-> [...]
-> 
-> Re: Martin's comments (unfortunately they aren't on the same email so
-> I can't reply inline)
-> would you like me to file an issue against the R4L repository about
-> this before sending a v2?
-> I thought that repository was just for staging/discussion, and this
-> didn't seem likely to need it.
-> 
+We use this to our advantage and the `current!()` macro returns
+something that acts like `&'a Task` but additionally is `!Send` (so it
+cannot be sent over to a different task). This means that we do not need
+to take a refcount on the current task to get a reference to it.
 
-About issues, commits or PRs I was referring to issues in
-`rust-lang/rust`. When we use unstable compiler features in R4L they
-get tracked in [1].
+But just having a function that returns a `&'a Task` like thing that is
+`!Send` is not enough, since there are no constraints on 'a. This is
+because the function `Task::current` would take no arguments and there
+is nothing the lifetime could even bind to.
+Since there are no constraints, you could just choose 'a =3D 'static which
+is obviously wrong, since there are tasks that end. For this reason the
+`Task::current` function is `unsafe` and the macro `current!` ensures
+that the lifetime 'a ends early enough. It is implemented like this:
 
-Link: https://github.com/Rust-for-Linux/linux/issues/355 [1]
+    macro_rules! current {
+        () =3D> {
+            // SAFETY: Deref + addr-of below create a temporary `TaskRef` t=
+hat cannot outlive the
+            // caller.
+            unsafe { &*$crate::task::Task::current() }
+        };
+    }
+
+Note the `&*`. This ensures that the thing returned by `Task::current`
+is temporary and cannot outlive the current function thus preventing the
+creation of static references to it.
+
+If you want to read more, see here for Gary's original discovery of the
+issue:
+https://lore.kernel.org/rust-for-linux/20230331034701.0657d5f2.gary@garyguo=
+.net/
+
+--=20
+Cheers,
+Benno
