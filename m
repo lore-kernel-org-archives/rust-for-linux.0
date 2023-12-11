@@ -1,86 +1,115 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="jDz4rv+L";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="vqA43849"
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8193A9D;
-	Mon, 11 Dec 2023 13:52:19 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.west.internal (Postfix) with ESMTP id 2C34132025A3;
-	Mon, 11 Dec 2023 16:52:18 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Mon, 11 Dec 2023 16:52:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-	1702331537; x=1702417937; bh=gbiIgn1KFAe/YepTTKMaxq02R5X8K1U/X34
-	xm6H/x4o=; b=jDz4rv+Los8dNzijhtGsxdsyVIHA+jaKQErEDBuBEZTDaeispEt
-	d08/0HUucFtc0mUp4rcE3GXBOVzTcToIFnx9YmfCPWgG+AHTADkzriN6g20JSGhH
-	9zIyj8D0YNCtGWkI7CvKmWXH+MW1nZjBuQGVMQ8qFqESQFu/NosTZy/YY9WBBrz7
-	Dq2czSwwvy8ePUqUSakYyfkZ2CILgznDpZyIY/ufSNsiqD35605kpJAaIfk80sPD
-	Z4gstloiUrIy/WISXDszzBOjuBRaybyVYeLf3wfYSBJ9xJTmEqRFQ2WhnQzoZRzJ
-	IfpGf78go78SuLqGMI+vjyUHRjfMhpDyhRg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1702331537; x=1702417937; bh=gbiIgn1KFAe/YepTTKMaxq02R5X8K1U/X34
-	xm6H/x4o=; b=vqA43849e+LIDdGHwyRjpGvBtT/CygwXcme28LJVY+bhdpRzHKV
-	DLY23IXymz1BrIBpA3+6zMTx8NEhjvk+sBjaPS39mxO7lEYvEBQA6ueQVyPWyJas
-	rSNqPQanFy9hifauz6JFMWkdkowo9Tc56GqRpOFxf45PHZ/+qtUcjSrL2B+Ug6BA
-	NN5h5PvM5wRhkblo4ObD962U/IO7L0310LZdQhTBKjLocqjnGUF1NBLuCQk2ApuI
-	nQL+7ohMkXVZuG10mxPdfS3xm3WmXbqFIb+uDr2q8r63LA/U+jlvLkio2QlstdVL
-	WANdmV7UPmtK0TpLXaYAIFp0EaVCbE6ZSlw==
-X-ME-Sender: <xms:kYR3ZdDR_zU0hM7mMyZ0Wzbu-lkLefqtz7uRh7fLhPcbOWfHrl7wdw>
-    <xme:kYR3ZbhRI-hnyaA5NvR1qYJTmD1QZRDgctg5jfV4ALUsJUd5WTXaxjnBdHGktGHuZ
-    TOw4VmbY2sMQqDaAw>
-X-ME-Received: <xmr:kYR3ZYlzdW_dijKhf-_t6t8NCQp32sIj6e-x4tWT4e5kyI7KcCf8mltu11N3ASrUqKxyz3yiwyMtylG4bt5XbKXACV128ZNz3aHH>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelvddgudehiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehl
-    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
-    epfefguefgtdeghfeuieduffejhfevueehueehkedvteefgfehhedtffdutdfgudejnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
-    esrhihhhhlrdhioh
-X-ME-Proxy: <xmx:kYR3ZXyz_o9hO5erd6p1qiom84r5EtvRmGuMB01-NSH1xjW9cwcG1g>
-    <xmx:kYR3ZSSYR1-_N6X__Q05nHOOoP62bGNZGH0YXLHFv6QXgMmvYlhlRg>
-    <xmx:kYR3Zaa7Qt47Gbtq-zYny-zlLiBfCe2GqJOZUycx6cwiK4VOE9huyQ>
-    <xmx:kYR3ZVFQfCmX_kurQocuPgxQIJxMyapXAoORs7oqiHXAxIialbnGYw>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 Dec 2023 16:52:15 -0500 (EST)
-Message-ID: <8c85a579-c36e-459e-9dd7-b2fba36fc46f@ryhl.io>
-Date: Mon, 11 Dec 2023 22:52:15 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZjfavd7"
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F03EC3;
+	Mon, 11 Dec 2023 15:15:06 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1d072f50a44so11254305ad.0;
+        Mon, 11 Dec 2023 15:15:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702336506; x=1702941306; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w4YNPLcgnZ6UEdckfp2o2FcjwAYgk4SB8h01P4r0OTQ=;
+        b=eZjfavd72J/a7kZiK3SqC4awQB198/4wuBmZQeWyCH6bCtpm/RpNBKfeoZlhRWFwyG
+         DyeI4wsOLdNRYJC/14GpNZ/8Z/rOKVYbJd9ulwxzqDrhbixBfY+qpgwfaQeL78c9krHe
+         DsbPdbEmK7f1gljDMZpXSWKuHdvfjbiVeHftWa1kuIAB8Dtyh3aHsqRds7+T9ZLF6dE9
+         JWRDIxwLhr3o0lSdnKtT0/5TIcgzWxGPFwSgwPB4uY5hE9JdDhznjXa25t6fYjnvPQ/l
+         ZxCaYifs28rNmU+69Lrbb2URFuB7uikWjBHeFLM+BZitEw6pJckTavocsHoXjFY7QiAh
+         kcVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702336506; x=1702941306;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=w4YNPLcgnZ6UEdckfp2o2FcjwAYgk4SB8h01P4r0OTQ=;
+        b=aY75VUgREykxnh2GaD5/xbIuVzMQv7U+Kjar8SK+peqYo+QrHm9oUvpcUpxAwADQQY
+         ZNoUa6MuFJ1hehO8HS9GW0LMuNovnEVAvG7VhCuJ2OPhNlMjHsl7sJDn+bfXWCYkQ/jd
+         efBCZWpOzcbCH7whTAyi7glcQFEnk5HJTqmh8eR1kLX+ud/wFyUO1vCz/bVIj9ZnCRkA
+         qwLEx6Ca9J4eE7GK6nOt4sLpFxpc88LllsHyqpVZolNUkl2xhoNx2A+IXoKhA8XEoMeR
+         q6OJnGGr5KI5GIvmr3ampGD+8UwRCl5zbJtco146YlT9A1tS9fCjodofu33Q8mbmyk4w
+         1KjQ==
+X-Gm-Message-State: AOJu0YyTHULXsEChea29GgFRrP7sOkaidGICLb2VjtrV9/3HY8IWvEkD
+	y/Z83foB92BE+frLDXchQc4=
+X-Google-Smtp-Source: AGHT+IEMXsF39rlkCdwVJwK1oAPEOm5ph1MOGaMbVVRR6PGbEjTOgLbZBNaVIq5IWTDpTxaU6XHkCg==
+X-Received: by 2002:a17:903:2311:b0:1d0:7c59:2a4f with SMTP id d17-20020a170903231100b001d07c592a4fmr10131805plh.0.1702336505923;
+        Mon, 11 Dec 2023 15:15:05 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id ix3-20020a170902f80300b001cc29b5a2aesm7254389plb.254.2023.12.11.15.15.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Dec 2023 15:15:05 -0800 (PST)
+Date: Tue, 12 Dec 2023 08:15:05 +0900 (JST)
+Message-Id: <20231212.081505.1423250811446494582.fujita.tomonori@gmail.com>
+To: alice@ryhl.io
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
+ wedsonaf@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ccf2b9af-1c8c-44c4-bb93-51dd9ea1cccf@ryhl.io>
+References: <20231210234924.1453917-1-fujita.tomonori@gmail.com>
+	<20231210234924.1453917-2-fujita.tomonori@gmail.com>
+	<ccf2b9af-1c8c-44c4-bb93-51dd9ea1cccf@ryhl.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 4/4] net: phy: add Rust Asix PHY driver
-Content-Language: en-US-large
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, wedsonaf@gmail.com,
- aliceryhl@google.com, boqun.feng@gmail.com
-References: <20231210234924.1453917-1-fujita.tomonori@gmail.com>
- <20231210234924.1453917-5-fujita.tomonori@gmail.com>
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20231210234924.1453917-5-fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On 12/11/23 00:49, FUJITA Tomonori wrote:
-> This is the Rust implementation of drivers/net/phy/ax88796b.c. The
-> features are equivalent. You can choose C or Rust version kernel
-> configuration.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+On Mon, 11 Dec 2023 22:46:01 +0100
+Alice Ryhl <alice@ryhl.io> wrote:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> On 12/11/23 00:49, FUJITA Tomonori wrote:
+>> This patch adds abstractions to implement network PHY drivers; the
+>> driver registration and bindings for some of callback functions in
+>> struct phy_driver and many genphy_ functions.
+>> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
+>> This patch enables unstable const_maybe_uninit_zeroed feature for
+>> kernel crate to enable unsafe code to handle a constant value with
+>> uninitialized data. With the feature, the abstractions can initialize
+>> a phy_driver structure with zero easily; instead of initializing all
+>> the members by hand. It's supposed to be stable in the not so distant
+>> future.
+>> Link: https://github.com/rust-lang/rust/pull/116218
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> Overall looks fine to me. Just a few comments below that confuse me:
+
+Thanks.
+
+>> +    /// Gets the state of PHY state machine states.
+>> +    pub fn state(&self) -> DeviceState {
+>> +        let phydev = self.0.get();
+>> +        // SAFETY: The struct invariant ensures that we may access
+>> +        // this field without additional synchronization.
+>> +        let state = unsafe { (*phydev).state };
+>> + // TODO: this conversion code will be replaced with automatically
+>> generated code by bindgen
+>> +        // when it becomes possible.
+>> +        // better to call WARN_ONCE() when the state is out-of-range.
+> 
+> Did you mix up two comments here? This doesn't parse in my brain.
+
+I'll remove the second comment because all we have to do here is using
+bindgen.
+
+
+>> +    /// Reads a given C22 PHY register.
+>> + // This function reads a hardware register and updates the stats so
+>> takes `&mut self`.
+>> +    pub fn read(&mut self, regnum: u16) -> Result<u16> {
+>> +        let phydev = self.0.get();
+>> + // SAFETY: `phydev` is pointing to a valid object by the type
+>> invariant of `Self`.
+>> +        // So an FFI call with a valid pointer.
+> 
+> This sentence also doesn't parse in my brain. Perhaps "So it's just an
+> FFI call" or similar?
+
+"So it's just an FFI call" looks good. I'll fix all the places that
+use the same comment.
