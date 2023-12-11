@@ -1,49 +1,90 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0T7OMB/A"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705C5F3;
-	Mon, 11 Dec 2023 06:01:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3lSnL8uvBeA4AV6Ywgmq37nYOceo3gVzdnHuyj44eCg=; b=0T7OMB/AVoyPdiycJCqbDQqlGB
-	txr3s5nkFNyIeVzRUSTVCh07N2RyrD0B+6ayRw4cVXShUHIMsGdoF/4b9uVaS9/U6yNrN44FoN+5T
-	DTwowUB7MxS7U5W0C6A6P2HuIlNsNqTZPE8cYOuM96t0bHMrSDE4UByrcehSm8wFPdoY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rCgqp-002cmG-To; Mon, 11 Dec 2023 15:01:39 +0100
-Date: Mon, 11 Dec 2023 15:01:39 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com,
-	boqun.feng@gmail.com
-Subject: Re: [PATCH net-next v10 4/4] net: phy: add Rust Asix PHY driver
-Message-ID: <d7e3b4e9-fad2-4033-b79d-de812f88ff7d@lunn.ch>
-References: <20231210234924.1453917-1-fujita.tomonori@gmail.com>
- <20231210234924.1453917-5-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xup3eaF4"
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00006C5
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 06:54:41 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-db632fef2dcso4361397276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 06:54:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702306481; x=1702911281; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tiFN4XX5Waw/j1P6OajEITNOIuIfYQpCk7NZDNH4kSs=;
+        b=Xup3eaF4OIHEOFKSdtMAU26Vq2nKe0QKMahnXkTXthi5WZFDaDYCHnhllVJk97eQy0
+         dTbco7DtZMq3VlinCAydWwBBOSQIIPdIuEjGDALWn1eAnph1ztCGF6FxPH82rHqNr1l3
+         lD3tOUK3A9GIjc9Rd3WNV+47xdMtzTvZ66wMoT+MKixnFKcc05BB8+AsDuqtIy89NQrr
+         c4azqN80Hol0tYr6iApC508VARzUaUrhCluZBmO3Gz8iT+CkjTja+oxyOkbd3uKnnRGb
+         h+xX4rm54TqKlaI2MUUACcfUHz07yH7Ep99lQTgTdKgUEhzd/GrntFo83pWFISVDaJwR
+         TNEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702306481; x=1702911281;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tiFN4XX5Waw/j1P6OajEITNOIuIfYQpCk7NZDNH4kSs=;
+        b=c6N2OhpmvLLWxwmPFoZiqEDkhc00HT9CrOB8SgKSwV7oxFXLo2y7OhJ6+HM9Uj2In3
+         VXygiiBVBLhv5l6NJufkSZ4Y43qjVn54g5Uwlo0C2S3zEyHHT+rAon2xF6xVedp9VD6d
+         9u2pNIPoieXtoNrEQtY7qDMntlcDwJ1hsFl8jut9NoLU8t8Cn7NIoLBeZJ0+RAAlzYV1
+         Ohfgq4vxSh8Ac81OY4ofx25L5zihYyLtHotomQPAWBIJAU4HAo/5yBvQ+nJ9iv68zu4N
+         mDB7+eAzGHsQrUTglVLwf8tbFpe0/PojyugatAoiJQHNYMTzWME9CVbmaS6bnkfugtJs
+         b1aA==
+X-Gm-Message-State: AOJu0Yw5IaaeEBfP5ceg9LQmpM5/Y6u0SBUhbWg6fCkS/2IoYbuxWigQ
+	AQslWQ+EyJgQ1XaeKO8SpPuANrY7DBFw5mU/AQtRjJozgquW9h7b
+X-Google-Smtp-Source: AGHT+IGn09XH2yOSX2QY8S3aSEkDcbE3TvJcccn1zfqNbjvzayS5wc/aWOU8T8sMbvY2Zk4+v26TgCB/xj6a2gkfBXY=
+X-Received: by 2002:a25:2591:0:b0:db7:dacf:5a0a with SMTP id
+ l139-20020a252591000000b00db7dacf5a0amr2717868ybl.126.1702306481171; Mon, 11
+ Dec 2023 06:54:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231210234924.1453917-5-fujita.tomonori@gmail.com>
+References: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 11 Dec 2023 15:54:30 +0100
+Message-ID: <CANiq72=p7EzJG6ZGcpPv64fmVOiQaKSO2kj5=QN4cHWOsinh0w@mail.gmail.com>
+Subject: Re: [PATCH v3] docs: rust: Add rusttest info
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 11, 2023 at 08:49:24AM +0900, FUJITA Tomonori wrote:
-> This is the Rust implementation of drivers/net/phy/ax88796b.c. The
-> features are equivalent. You can choose C or Rust version kernel
-> configuration.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+On Mon, Dec 11, 2023 at 1:16=E2=80=AFPM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
+>
+> existing documentation, it's Make syntax is not explicitly
+> documented, yet. Add a test section to document this.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Nit: what syntax are you referring to? i.e. the Make targets do not
+really have syntax. I imagine you mean there is no example? In that
+case, I would say so.
 
-    Andrew
+> +Additonally, there are the tests that come from the examples in the
+
+On top of what Mika said: if you pass the `--codespell*` options to
+`checkpatch.pl` you can get your patches typo-checked. It is quite
+handy!
+
+> +Rust documentation and get transformed into KUnit tests. These can be
+> +run via KUnit. For example::
+
+The KUnit tests are the most important ones currently, so I would
+prefer to put those first if you don't mind. Also, if we are going to
+mention this line of how to run the tests, I would also mention that
+they can be run by booting the kernel for symmetry (please see the
+KUnit docs on the 2 ways of running the docs).
+
+> +See the :doc:`KUnit documentation</dev-tools/kunit/index>` for the detai=
+ls how to use it.
+
+We can simply write the path (e.g. see what we do for another case
+grepping for `Documentation/kbuild/llvm.rst`). It should automatically
+figure out that it is a link, create the link, use its title, etc.
+
+Thanks!
+
+Cheers,
+Miguel
