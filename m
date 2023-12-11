@@ -1,95 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TdBqw7yy"
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B15AFED;
-	Sun, 10 Dec 2023 17:20:50 -0800 (PST)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-77f552d4179so146145585a.1;
-        Sun, 10 Dec 2023 17:20:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CxVHFMRl"
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 022E5D7
+	for <rust-for-linux@vger.kernel.org>; Sun, 10 Dec 2023 22:47:46 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-53fa455cd94so2105585a12.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 10 Dec 2023 22:47:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702257650; x=1702862450; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1702277265; x=1702882065; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uuz0jwb3PNQkrLULfff6ouksNMtSPtItSVdeK1cdQGc=;
-        b=TdBqw7yyWm8e4PSZC8RkkJuQKv+WvgbrlMhMIGBhK2c5d/zji503YA6MMETsSmFQ18
-         KpzUu5SanjjU/Bpg20H9f+F/ghJjJPbLmrvyyVlPU40fFh3GYeXz0W5xVWiD485Sxgef
-         gaM4vqyNNJ0qqHM1RaKvGeyZQcQkk7F9SPpl1xsS04p2xW9AFabRwXcUO4W4GiibBVpq
-         3j4OwYqClQZKljckgRczi6aTCk31WQi7txKcUuwlf1UJZscDcEPZ14QGqz3YzHGRdyLo
-         MNQcIC+fiVRuWiQ4rAqNqDEljCkXinq9/Q0FzxgYeef44ObQPIVsRpOOZHe9iNbUDVr/
-         Y2CA==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=a48U/31wlYhKh2YcSR/tePNphggIU3CwJSH0jG+cw8E=;
+        b=CxVHFMRlgB3caYI7f54djRbSS7nlsRY6EH1bJoZAmmP8x+HFbdwt4X4taiBgdo4W+S
+         iDrPms4bPKIRQZbgu6KMNkbeu9iysadMyAkMKSKAwtWZjoCdAxuZMHKvJ02cDpexvipD
+         KLf0klhrHjNTZLoXKRMDFDR9iC2geVo9PxNw4+G+/XA4kLnhBnoMv79OaM6ms+yEesXU
+         1Q7hXLprADmXs4IrKGCwIqCPCMYP2lYya08Z/yIfv030QXKnM8bDQ8WxI2xZxBUM48nC
+         5TGJfuvZdLNifk5Yl8s41zm2Ef03E5ID+l6U9kY71+v/ihiUJ4aCPNu7/1IkF/MBCG0F
+         fx7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702257650; x=1702862450;
+        d=1e100.net; s=20230601; t=1702277265; x=1702882065;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Uuz0jwb3PNQkrLULfff6ouksNMtSPtItSVdeK1cdQGc=;
-        b=oX2XwKUar9zrVKlWm9UAEfRbdaY5SW89TZedSZKBUEwgBmhdsGhGkwMq/KbaMfukI2
-         szdodmxCj9qFwg9AtxuL2aBHKb2DKUaAhEVfeg4ONtI3TzikWDXLOBrYNRIIPzfpDvlR
-         p3TdACaexNQvNLBR10IUza/uF2n10f7/jeyE/854hWEItoo/zn2jq8jfoQZMeyqLvmqa
-         jAK5tOH6SAVi2mI+nk6DgB3dxs2pBH2OenOn83dRiGC5/UFIibOJRjpnaSJSPeKqHo3K
-         as6UsNsvdTydr3CFJbXLKiYtpOaqF2ric9RRa0Ab7c2r+S+9nHXoRS5rcUXsd07dAazX
-         vWAg==
-X-Gm-Message-State: AOJu0YyW2Go8HM6XYYb/yf3UdrdoWLy88PA0i3sjVv3rlCUQ1ZGWuVVy
-	zhCDyr/gaKcQCqIyuIVrrxc=
-X-Google-Smtp-Source: AGHT+IG2YneOH1fjVBLNsKVjeTO1Qmpnmz9N5QGIlgYQK4gwUQlL72tTSLGo67HZ3XBLoMoCCzXdPQ==
-X-Received: by 2002:a05:620a:a58:b0:77f:69ed:7f40 with SMTP id j24-20020a05620a0a5800b0077f69ed7f40mr2501765qka.7.1702257649715;
-        Sun, 10 Dec 2023 17:20:49 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id ov11-20020a05620a628b00b0077d7e9a134bsm2505634qkn.129.2023.12.10.17.20.49
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a48U/31wlYhKh2YcSR/tePNphggIU3CwJSH0jG+cw8E=;
+        b=YWUFH7/17revNq3vaF18x4PFQpcrNuPMuODvxJOZL8FPmF75ANAtScK4aTXYZDsPJp
+         LM05AdfdfChTG7+AxBKwnmQMUetRu51yKZPaHtFLgpmt8Aj5UftArJHvik543zp+5XBv
+         atGTRzmGg34CJZ72/BVsHE7B8TeWcjXqQ7QbIi8KdMG3MO6CicoB3MHMtwDawYSiHiLB
+         Nrzu9FE7ep0oCQV3whoYIIKSnPLy/8hUkPjrHmqcfpjd+Uka7YNmTHAY3RIZQdihg1+b
+         eRfHzZ01oBWr6Sw2akQueRfikxxIl2vDOXSTjlHEwMwiTHY4eoPsYOuXYtyisaB0Ojfh
+         alJw==
+X-Gm-Message-State: AOJu0Yxd8SSdttJmZemYl6FHItHwR6UCKEWeY9HP9/aQHQh5X5WoNcW7
+	TIlk6MtxWSZkCYgJBTW8g4NMKQ==
+X-Google-Smtp-Source: AGHT+IH1sraA/ewghKmWcDdZXIY/GSc4x1aDBpmQSc9Y28rj/4GaXYs1TwdtDbpoGr+jWN9S49K08w==
+X-Received: by 2002:a05:6a20:431c:b0:18f:97c:ba03 with SMTP id h28-20020a056a20431c00b0018f097cba03mr1769416pzk.93.1702277265442;
+        Sun, 10 Dec 2023 22:47:45 -0800 (PST)
+Received: from localhost ([122.172.82.6])
+        by smtp.gmail.com with ESMTPSA id pt8-20020a17090b3d0800b002839679c23dsm6161953pjb.13.2023.12.10.22.47.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Dec 2023 17:20:49 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailauth.nyi.internal (Postfix) with ESMTP id BDCE127C0054;
-	Sun, 10 Dec 2023 20:20:48 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Sun, 10 Dec 2023 20:20:48 -0500
-X-ME-Sender: <xms:72N2ZWH4OqLhoJjPIu-xBvNG1v1zh5JUCVUiIYRevqTwampQ8LPuDA>
-    <xme:72N2ZXUDpW0JpLk2NqST1PDbvVCRwbmvSfa1hIp4lnB0qSEc9z5TDM0WXqz0G2Zzc
-    g-S2vOjbDC70WmVGQ>
-X-ME-Received: <xmr:72N2ZQLvmY1VITeM4l9iKaEl6wLLzVzYcPZ2P5n5NiFb7uf5YFci8VfX7gs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeluddgfeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:72N2ZQH8Ae7bUawVz7AvMbaSHc_NeDP9SDt4qb4ksz8_kx3CErPCMg>
-    <xmx:72N2ZcX2cIrtHyoVYeBKE05njYXgchs20UDdwdau7PiJwb_WC9w2DQ>
-    <xmx:72N2ZTOsUETvW2YTjIs0-9juNf4RpCwIZGSqLr80gstqnrWDaiUyXA>
-    <xmx:8GN2ZW-W_Fvq1hey4YOUfIuyPEL3g1x2PM7lmJ5o2fUQC6IyleGmXA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 10 Dec 2023 20:20:46 -0500 (EST)
-Date: Sun, 10 Dec 2023 17:19:28 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
+        Sun, 10 Dec 2023 22:47:44 -0800 (PST)
+Date: Mon, 11 Dec 2023 12:17:42 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kees Cook <keescook@chromium.org>,	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] rust: cred: add Rust abstraction for `struct cred`
-Message-ID: <ZXZjoOrO5q7no4or@boqun-archlinux>
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com>
- <20231206-alice-file-v2-2-af617c0d9d94@google.com>
+	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: rust: Clarify that 'rustup override' applies to
+ build directory
+Message-ID: <20231211064742.63l4cmvxe4uso5us@vireshk-i7>
+References: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org>
+ <4738ad1c-eb54-4ad6-98c8-3852de3e8fc3@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -98,60 +62,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231206-alice-file-v2-2-af617c0d9d94@google.com>
+In-Reply-To: <4738ad1c-eb54-4ad6-98c8-3852de3e8fc3@proton.me>
+X-Spam-Level: *
 
-On Wed, Dec 06, 2023 at 11:59:47AM +0000, Alice Ryhl wrote:
-[...]
-> @@ -151,6 +152,21 @@ pub fn as_ptr(&self) -> *mut bindings::file {
->          self.0.get()
->      }
->  
-> +    /// Returns the credentials of the task that originally opened the file.
-> +    pub fn cred(&self) -> &Credential {
-
-I wonder whether it would be helpful if we use explicit lifetime here:
-
-    pub fn cred<'file>(&'file self) -> &'file Credential
-
-It might be easier for people to get. For example, the lifetime of the
-returned Credential reference is constrainted by 'file, the lifetime of
-the file reference.
-
-But yes, maybe need to hear others' feedback first.
-
-Regards,
-Boqun
-
-> +        // SAFETY: Since the caller holds a reference to the file, it is guaranteed that its
-> +        // refcount does not hit zero during this function call.
-> +        //
-> +        // It's okay to read the `f_cred` field without synchronization as `f_cred` is never
-> +        // changed after initialization of the file.
-> +        let ptr = unsafe { (*self.as_ptr()).f_cred };
-> +
-> +        // SAFETY: The signature of this function ensures that the caller will only access the
-> +        // returned credential while the file is still valid, and the C side ensures that the
-> +        // credential stays valid at least as long as the file.
-> +        unsafe { Credential::from_ptr(ptr) }
-> +    }
-> +
->      /// Returns the flags associated with the file.
->      ///
->      /// The flags are a combination of the constants in [`flags`].
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index ce9abceab784..097fe9bb93ed 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -33,6 +33,7 @@
->  #[cfg(not(testlib))]
->  mod allocator;
->  mod build_assert;
-> +pub mod cred;
->  pub mod error;
->  pub mod file;
->  pub mod init;
+On 08-12-23, 18:04, Benno Lossin wrote:
+> Shouldn't this be "Note that the override only applies to the current
+> working directory (and its sub-directories)."?
+> I think it would also be useful to continue with this: "But in order
+> to build the kernel, this override must affect the build directory.".
 > 
-> -- 
-> 2.43.0.rc2.451.g8631bc7472-goog
-> 
-> 
+> And then you could also mention that in the default location for the
+> build directory is in the repository.
+
+Based on feedback from Miguel and Benno, how about this instead ?
+
+diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+index f382914f4191..dee787f92d26 100644
+--- a/Documentation/rust/quick-start.rst
++++ b/Documentation/rust/quick-start.rst
+@@ -33,14 +33,17 @@ A particular version of the Rust compiler is required. Newer versions may or
+ may not work because, for the moment, the kernel depends on some unstable
+ Rust features.
+
+-If ``rustup`` is being used, enter the checked out source code directory
+-and run::
++If ``rustup`` is being used, enter the kernel build directory and run::
+
+        rustup override set $(scripts/min-tool-version.sh rustc)
+
+ This will configure your working directory to use the correct version of
+-``rustc`` without affecting your default toolchain. If you are not using
+-``rustup``, fetch a standalone installer from:
++``rustc`` without affecting your default toolchain.
++
++Note that the override applies to the current working directory (and its
++sub-directories).
++
++If you are not using ``rustup``, fetch a standalone installer from:
+
+        https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
+
+-- 
+viresh
