@@ -1,82 +1,132 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lkN/rZSP"
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D857B8
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 02:12:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1702289564; x=1702548764;
-	bh=XMBWxQ9g09DUsP4VV2j3XbcbWqRWZl1DHB9M2r0XYWY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=lkN/rZSPUtkVJcfviAZRm79S8Bhu7IwZMj2eshxKKa52qAXZdiai24g8K4YB2e0i/
-	 loxzKVmh7JsqGKPwMo8Sdq96ZSJf835mOLOcdfTFerpM+qO2MG34Vg0QGJpoY3zssr
-	 ixKoX+J1XeM/YVYDNcqglPqR8PcrKcGAUTSedYiUsukTeHX2RH3omuFJ9/wELt0SMl
-	 9axaSgALdPuQ85YVtn9UnNAZc+OmIuWA9OxKPNyxbOFqwG1K650O39VgLjXjtlnRCj
-	 Y2/zJFqYXgizkTRzUKcdpE3IJP1BFj8Q+71uIxt9C7SHx45CrcQ7mjB8FG7IL+6FNt
-	 aD0Txs2w97/zw==
-Date: Mon, 11 Dec 2023 10:12:37 +0000
-To: Viresh Kumar <viresh.kumar@linaro.org>, "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: rust: Clarify that 'rustup override' applies to build directory
-Message-ID: <b8824b26-a17f-4194-b901-cd9306d6120d@proton.me>
-In-Reply-To: <20231211082342.dkcnlamsyaqxaylg@vireshk-i7>
-References: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org> <4738ad1c-eb54-4ad6-98c8-3852de3e8fc3@proton.me> <20231211064742.63l4cmvxe4uso5us@vireshk-i7> <87h6kpf9am.fsf@metaspace.dk> <20231211082342.dkcnlamsyaqxaylg@vireshk-i7>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="g7AL4Gjz"
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2070.outbound.protection.outlook.com [40.107.22.70])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F4AA7
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 04:16:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MZhT4axPs2PcQ0Wh+EnuO+LCg0SydxezBGlJqCBTeejRZDrGrkVWOc+pCakJyDivDpYqpki8zAFHQa39M49cEbwR29V94XWixp/ouLheoc6SY0l+rh2XYJPaJU5WPN6BlzZN6sbOPDcF/pBYawd/woWkbs8gBy6zgmCWm+Qk6rTwcd35wzPXbs9KZfUq4wLiKMm0D9GC8pj2nu5C/B4ncGYLzRLTg9TyNEarO7AdXVYW53k0Nq4yt/hdGbNdrpYrKTwY1a6zvAem9mo5sM3OALvIHE4Irt6plUIOxMcTb53JNOrkec4tRMpRK5lHNNJB/LK1+6MRO+z2zpFeN7GFXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ijCWKC/WNxxbNNJ2oXTklVs2qlbamMt6r59BSqBfLNo=;
+ b=EzlNpgAqNgbHEmbqulNPXGc6MOirVBsSmVndbrcgQ40v8xjHRqHzCVfPivoVeXq3TkZ/PL6aoDHLK5+6y8j3OxpVmnD9TZZjArq23zbBaCBA2ka9/BUaTJYuudspmyB1oSDVeUnbuYbw770l9bmakZUl0dBiT2AipnpD+Ujl7B8XYB3hZDb7EuYrAF8/1cNTx986oW1ukVe5IuSb2pZ+ayaUsAx5tTpjJGQcpEwoFUpRcdqdU7udHrhW/zMeSXlCKCRauWp+o2W1D34Ct9mxfHJDiwlJ+kBvlmR2A+5Eg1T0nlzMcH8CEXJ8ItmT1iB1L1CYSX60NJ730VasMiP7hg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.201) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=bestguesspass action=none header.from=de.bosch.com; dkim=none (message
+ not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ijCWKC/WNxxbNNJ2oXTklVs2qlbamMt6r59BSqBfLNo=;
+ b=g7AL4GjzimCzANlcYiogeb4YS6i5fBVkXKcNZolEaD67BFNaiPmYGG1zr0Qqe9qZ/w55X1Cm4vnt0xBLn3Hm6+cr2+Wogc2YdEgZHRshrr+PbdVzp9Rpkkd/LFt7Qn8eYygtf1gYQRPgggb409WJxWrtVb1x2OrybYcIShoUhei7rMG1nJzQ+T3yAcpKhEiD3EqeuL8c5NKGRyRfB2s+ceoqewSsXZDQaTjzONwqhXlFtIGW2kMDJwwvND70Ony//AU396KOOpJuLjs2fsjtu0N/sE2uliOPZ7PN4w0Evqj19+5yQetIO3xDFRRACkUN+WIIZLP4TYoH7qMqDDNWTw==
+Received: from AS4PR09CA0005.eurprd09.prod.outlook.com (2603:10a6:20b:5e0::11)
+ by DB8PR10MB3691.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:13b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Mon, 11 Dec
+ 2023 12:16:27 +0000
+Received: from AM3PEPF0000A798.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5e0:cafe::2c) by AS4PR09CA0005.outlook.office365.com
+ (2603:10a6:20b:5e0::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.24 via Frontend
+ Transport; Mon, 11 Dec 2023 12:16:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.201)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=bestguesspass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.201 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.201; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.201) by
+ AM3PEPF0000A798.mail.protection.outlook.com (10.167.16.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7091.18 via Frontend Transport; Mon, 11 Dec 2023 12:16:26 +0000
+Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
+ (139.15.153.201) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 11 Dec
+ 2023 13:16:21 +0100
+Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
+ SI-EXCAS2000.de.bosch.com (10.139.217.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 11 Dec 2023 13:16:21 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>
+CC: <dirk.behme@de.bosch.com>
+Subject: [PATCH v3] docs: rust: Add rusttest info
+Date: Mon, 11 Dec 2023 13:16:13 +0100
+Message-ID: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.28.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF0000A798:EE_|DB8PR10MB3691:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7126800a-2450-4b57-180d-08dbfa42ffde
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	tAhhE8ksRxVJGIy+qNOYZ2jO5jSvMOtvVlV0+aesIz4tlp8BNIxii47uvcI/0pP/s7Q2E5xqLauwT4bjnkgC78S7e9Bn0bmkzHa0XhP5cq8F2aAFgQC1kUblaDrCFTmaIJxUEda/jKIOZLwvdkAlbZT6HbDnv4Xi5I9LkhuaAYH0B/EDVvgNgIWm632cKSbh1LKOW5rJ8WTKW7exKlPpkzFQKRXab7TEGUqJqnI1Vu40PjIM/hPF+qaSRVFBddZVboOQzPOQAD6yrI2z+anI2CvE/T2n2JC+P6V2qbfmteUxSJyXwS7nDN2ip5Mhxo9uvcM2Cn5em7m1xQ1XQtZ63jPBuVZ28KfyDpUdoqwadATRirL9CjN5tCju8kjz8EX/RqYmBsuYKSNXtoCMxPxobS0y+JLAD8n3oOF6GwPqKYBvbHpcpa3JlaoBBP9JxBVLkn06vUIwtTDeJa+d8p9gmMhn7w3XnJynb78lCbFjJUSbGzmIksDaxiX5tryHH0YC4/npVESmnsscoxA2WwAEn2Ix+Vmh3hqH5oc3275rSuDarzlLpDXMR81Fc4/Skn5WPzN6BoGJdZk/3sUM/ZuPVXXg7VJnNe7SfUCJbOEZQzyvoYsjPSKmxDrJx5W3XCD3sUCw5IqNTiDaT9GSUllGLHYmKz0VgjkO+R9eMy6uFnor2Sh9EnBgxhLEvNzGZnuNRD9oy1sD5uNnuIM92tiJnqYg24PptehRBtAJoGz4OOcLY7lLBJXb+rZ68jJKYnNqBsNwYcWyFsYOa+xeVN44l9gdYmeuzwnk7gVZjaONkM93z4BT3C2er4OJ4uYRuFHg
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.201;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(346002)(376002)(396003)(136003)(230173577357003)(230273577357003)(230922051799003)(1800799012)(451199024)(82310400011)(64100799003)(186009)(46966006)(40470700004)(36840700001)(40460700003)(36860700001)(1076003)(5660300002)(47076005)(26005)(336012)(16526019)(2616005)(107886003)(44832011)(426003)(70586007)(70206006)(6916009)(40480700001)(2906002)(83380400001)(82960400001)(82740400003)(81166007)(41300700001)(356005)(478600001)(7696005)(86362001)(8676002)(8936002)(4326008)(316002)(6666004)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2023 12:16:26.9806
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7126800a-2450-4b57-180d-08dbfa42ffde
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.201];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A798.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3691
 
-On 12/11/23 09:23, Viresh Kumar wrote:
-> On 11-12-23, 09:09, Andreas Hindborg (Samsung) wrote:
->>
->> Thanks for fixing this Viresh!
->>
->> Viresh Kumar <viresh.kumar@linaro.org> writes:
->>
->>> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/qu=
-ick-start.rst
->>> index f382914f4191..dee787f92d26 100644
->>> --- a/Documentation/rust/quick-start.rst
->>> +++ b/Documentation/rust/quick-start.rst
->>> @@ -33,14 +33,17 @@ A particular version of the Rust compiler is requir=
-ed. Newer versions may or
->>>  may not work because, for the moment, the kernel depends on some unsta=
-ble
->>>  Rust features.
->>>
->>> -If ``rustup`` is being used, enter the checked out source code directo=
-ry
->>> -and run::
->>> +If ``rustup`` is being used, enter the kernel build directory and run:=
-:
->>>
->>>         rustup override set $(scripts/min-tool-version.sh rustc)
->>
->> How about just specifying the path here:
->>
->>          rustup override set --path=3D<build-dir> $(scripts/min-tool-ver=
-sion.sh rustc)
->=20
-> Hmm, this sounds good too. In that case the above line can be changed to:
->=20
-> "If ``rustup`` is being used, run::"
->=20
-> Looks okay ?
+Searching the Rust kernel documentation all existing Rust Make
+targets (rustavailable, rustfmt, rustfmtcheck, rustdoc and
+rust-analyzer) are explicitly documented with their Make syntax.
+While the Make target rusttest is mentioned two times in the
+existing documentation, it's Make syntax is not explicitly
+documented, yet. Add a test section to document this.
 
-I think it should also mention that you do not need the
-`--path=3D<build-dir>`. It might be confusing for new users who do not
-know where the build directory is.
-It might also work to put both commands there (i.e. with
-`--path=3D<build-dir>` and without) and explaining what each of them do.
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+---
 
---=20
-Cheers,
-Benno
+v3: Add the comments from Benno and Miguel. Thanks!
+
+ Documentation/rust/general-information.rst | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+index 081397827a7ea..016c7feb433ce 100644
+--- a/Documentation/rust/general-information.rst
++++ b/Documentation/rust/general-information.rst
+@@ -77,3 +77,22 @@ configuration:
+ 	#[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
+ 	#[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
+ 	#[cfg(not(CONFIG_X))]  // Disabled
++
++Testing
++-------
++
++To run the Rust tests, you can use the following make target::
++
++	make LLVM=1 rusttest
++
++This requires the kernel .config and downloads external repos. It
++runs the ``#[test]`` tests on the host (currently) and thus is fairly
++limited in what these tests can test.
++
++Additonally, there are the tests that come from the examples in the
++Rust documentation and get transformed into KUnit tests. These can be
++run via KUnit. For example::
++
++	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
++
++See the :doc:`KUnit documentation</dev-tools/kunit/index>` for the details how to use it.
+-- 
+2.28.0
 
