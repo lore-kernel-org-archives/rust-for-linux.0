@@ -1,99 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GaIl8Cwb"
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC3CA101
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 04:30:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702297845; x=1733833845;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dtvlHNB4w7HlIkcynxYEFz9ZdbCs181fDKf8P3MZE9c=;
-  b=GaIl8CwbptwDRO3mBnSegFRO5pDHNedWTLEtTJ1Ko8omnqz28GqHgh9s
-   HCTR+uZ2N0NR84fOcoNMBkbUdjJ7kdBgE1LjdMY+sgivRKRVlEvZtJ9Wp
-   TAkwfopHA+7V5+i4x5oNZoeEkqNLaqVUQ0mdZnGOWeqwSda935kmwltM0
-   XVtKa2OS6aI0z4zp0KWWi9WZHteGx5k1cb6VQeuhYJUqn3jkiiHny8zCs
-   Z83H3uk04ly9qrx82iPhubAAS8IwTF2T4FPgRBZcShiLa9G8H8PuNMM6Y
-   aZapudYNHAjefxg61bE0MyT9WGPe6k1YCB7b8qgciH5awQ1Yec++AePnV
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="7993672"
-X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; 
-   d="scan'208";a="7993672"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 04:30:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="916829006"
-X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; 
-   d="scan'208";a="916829006"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Dec 2023 04:30:44 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id C4BF839B; Mon, 11 Dec 2023 14:30:42 +0200 (EET)
-Date: Mon, 11 Dec 2023 14:30:42 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] docs: rust: Add rusttest info
-Message-ID: <20231211123042.GD1074920@black.fi.intel.com>
-References: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xB9nP3O2"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A45559D;
+	Mon, 11 Dec 2023 06:01:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ZHTJ6ujafwoHRG1qGR5ouPeD8ExjzjHTfpVKq7MDRvo=; b=xB9nP3O2lWKRqhm/vYuJKA+QFb
+	e97fxOO7oEBB+5wxqsxud61IFceO7mbmR5xGmcFViAF1dMqKVbDJ7gUcAC02v9zE2Luo313e1ClMU
+	WGbHwS9RUiVfbBAb2fIGYJFQxQufosWfs/mcxXjg8ZgQ+hv4n/xn9QZUGQ6oLP8ddJS0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rCgqH-002ckc-A1; Mon, 11 Dec 2023 15:01:05 +0100
+Date: Mon, 11 Dec 2023 15:01:05 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com,
+	boqun.feng@gmail.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <2ba23c4b-b42d-49f0-8d3a-09432c4a6d97@lunn.ch>
+References: <20231210234924.1453917-1-fujita.tomonori@gmail.com>
+ <20231210234924.1453917-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20231210234924.1453917-2-fujita.tomonori@gmail.com>
 
-Hi,
+On Mon, Dec 11, 2023 at 08:49:21AM +0900, FUJITA Tomonori wrote:
+> This patch adds abstractions to implement network PHY drivers; the
+> driver registration and bindings for some of callback functions in
+> struct phy_driver and many genphy_ functions.
+> 
+> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
+> 
+> This patch enables unstable const_maybe_uninit_zeroed feature for
+> kernel crate to enable unsafe code to handle a constant value with
+> uninitialized data. With the feature, the abstractions can initialize
+> a phy_driver structure with zero easily; instead of initializing all
+> the members by hand. It's supposed to be stable in the not so distant
+> future.
+> 
+> Link: https://github.com/rust-lang/rust/pull/116218
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-On Mon, Dec 11, 2023 at 01:16:13PM +0100, Dirk Behme wrote:
-> Searching the Rust kernel documentation all existing Rust Make
-> targets (rustavailable, rustfmt, rustfmtcheck, rustdoc and
-> rust-analyzer) are explicitly documented with their Make syntax.
-> While the Make target rusttest is mentioned two times in the
-> existing documentation, it's Make syntax is not explicitly
-> documented, yet. Add a test section to document this.
-> 
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-> ---
-> 
-> v3: Add the comments from Benno and Miguel. Thanks!
-> 
->  Documentation/rust/general-information.rst | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
-> index 081397827a7ea..016c7feb433ce 100644
-> --- a/Documentation/rust/general-information.rst
-> +++ b/Documentation/rust/general-information.rst
-> @@ -77,3 +77,22 @@ configuration:
->  	#[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
->  	#[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
->  	#[cfg(not(CONFIG_X))]  // Disabled
-> +
-> +Testing
-> +-------
-> +
-> +To run the Rust tests, you can use the following make target::
-> +
-> +	make LLVM=1 rusttest
-> +
-> +This requires the kernel .config and downloads external repos. It
-> +runs the ``#[test]`` tests on the host (currently) and thus is fairly
-> +limited in what these tests can test.
-> +
-> +Additonally, there are the tests that come from the examples in the
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Typo: Additonally -> Additionally
-
-> +Rust documentation and get transformed into KUnit tests. These can be
-> +run via KUnit. For example::
-> +
-> +	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
-> +
-> +See the :doc:`KUnit documentation</dev-tools/kunit/index>` for the details how to use it.
-> -- 
-> 2.28.0
-> 
+    Andrew
