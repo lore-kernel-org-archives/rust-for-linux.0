@@ -1,115 +1,121 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZjfavd7"
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F03EC3;
-	Mon, 11 Dec 2023 15:15:06 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1d072f50a44so11254305ad.0;
-        Mon, 11 Dec 2023 15:15:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zgq3VvaK"
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02046D2;
+	Mon, 11 Dec 2023 15:23:00 -0800 (PST)
+Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6d9fa8f6535so1327432a34.0;
+        Mon, 11 Dec 2023 15:22:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702336506; x=1702941306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w4YNPLcgnZ6UEdckfp2o2FcjwAYgk4SB8h01P4r0OTQ=;
-        b=eZjfavd72J/a7kZiK3SqC4awQB198/4wuBmZQeWyCH6bCtpm/RpNBKfeoZlhRWFwyG
-         DyeI4wsOLdNRYJC/14GpNZ/8Z/rOKVYbJd9ulwxzqDrhbixBfY+qpgwfaQeL78c9krHe
-         DsbPdbEmK7f1gljDMZpXSWKuHdvfjbiVeHftWa1kuIAB8Dtyh3aHsqRds7+T9ZLF6dE9
-         JWRDIxwLhr3o0lSdnKtT0/5TIcgzWxGPFwSgwPB4uY5hE9JdDhznjXa25t6fYjnvPQ/l
-         ZxCaYifs28rNmU+69Lrbb2URFuB7uikWjBHeFLM+BZitEw6pJckTavocsHoXjFY7QiAh
-         kcVw==
+        d=gmail.com; s=20230601; t=1702336979; x=1702941779; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sBc3RVMEdIV+PcybiPyI6RRAR6wYLfXV8lTtKJEw3y4=;
+        b=Zgq3VvaKPcBE4oT6WtEQq1UCBvuGTxPBgPYOjscwcLD5LmhlRtSrJVDtYYVw9w3MWf
+         bD3pvVe9GerwdD8pV8BrkJJ+AI3MIV9HhITHeUzfzXDXu3rD7mi2LBKlPmUDlHcs4kKc
+         /z5OwzvCVM6mQxJ0551a//sey5tMrIJiFNcbYOxvCYAVt1FFQf57I9xQQaHcSXUArXY4
+         Y7KggPOH3Mj5qeHk77p9zvUQcs3/jLRCIumjfIBE+jdeK/KDV77KlEiNVBFehQJc+THN
+         xwFGYRl0rnKvFGF5iPAirCDpB763VSyErdliDW+uA61bql6w6ruKBxjQdPpHv62Zzh/3
+         9Qmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702336506; x=1702941306;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=w4YNPLcgnZ6UEdckfp2o2FcjwAYgk4SB8h01P4r0OTQ=;
-        b=aY75VUgREykxnh2GaD5/xbIuVzMQv7U+Kjar8SK+peqYo+QrHm9oUvpcUpxAwADQQY
-         ZNoUa6MuFJ1hehO8HS9GW0LMuNovnEVAvG7VhCuJ2OPhNlMjHsl7sJDn+bfXWCYkQ/jd
-         efBCZWpOzcbCH7whTAyi7glcQFEnk5HJTqmh8eR1kLX+ud/wFyUO1vCz/bVIj9ZnCRkA
-         qwLEx6Ca9J4eE7GK6nOt4sLpFxpc88LllsHyqpVZolNUkl2xhoNx2A+IXoKhA8XEoMeR
-         q6OJnGGr5KI5GIvmr3ampGD+8UwRCl5zbJtco146YlT9A1tS9fCjodofu33Q8mbmyk4w
-         1KjQ==
-X-Gm-Message-State: AOJu0YyTHULXsEChea29GgFRrP7sOkaidGICLb2VjtrV9/3HY8IWvEkD
-	y/Z83foB92BE+frLDXchQc4=
-X-Google-Smtp-Source: AGHT+IEMXsF39rlkCdwVJwK1oAPEOm5ph1MOGaMbVVRR6PGbEjTOgLbZBNaVIq5IWTDpTxaU6XHkCg==
-X-Received: by 2002:a17:903:2311:b0:1d0:7c59:2a4f with SMTP id d17-20020a170903231100b001d07c592a4fmr10131805plh.0.1702336505923;
-        Mon, 11 Dec 2023 15:15:05 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id ix3-20020a170902f80300b001cc29b5a2aesm7254389plb.254.2023.12.11.15.15.05
+        d=1e100.net; s=20230601; t=1702336979; x=1702941779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sBc3RVMEdIV+PcybiPyI6RRAR6wYLfXV8lTtKJEw3y4=;
+        b=MbZwjedusbYIjzpPaWm5ZInHbmFz1sPhAHkjj7/BvcFEFEct4VyHv6HFjwFE9XTYUb
+         MIJfd//A7A8qiw5UguEGdC3i9a1ILJ5QKR6NxVUsDSf6R+SrKSgRAeyxs2W+KbX4fXYc
+         JBGj52qMUlvOcH6HmJa4qp9SJ/CqOdHq2AdHWNPH5z7iYRsnDT76ad6wk+PCYNM+tzId
+         SiSjvNa5EgE+3Q01VmvZvsBo2s7JjGadoym+iYyO+iDNeEyQG0AwL3+S96Q/mSFop7Ng
+         DetJ3Kou/kZ3ulssA59/RGJAqTcZhpJrgD/CaKS31IUHVObC41vJJynYH/vkl8qVrJCq
+         JFaQ==
+X-Gm-Message-State: AOJu0Yxy2Gm9ekmWdkDia7FBoxb6C3zm5HRUfXXuA+1tawL4lT3fpbda
+	YTKBM+Gq8kI8cOBNNyHyFl0=
+X-Google-Smtp-Source: AGHT+IEQZlmCz43qg4ru6VmokJLzle7IU1Z6nd9cFUL/38Wa4PsIMrBGKY1l9OlBOeW2xr4jrMHbvg==
+X-Received: by 2002:a9d:6492:0:b0:6da:1b80:7e25 with SMTP id g18-20020a9d6492000000b006da1b807e25mr1532989otl.73.1702336979290;
+        Mon, 11 Dec 2023 15:22:59 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id bk40-20020a05620a1a2800b0077da8c0936asm3277617qkb.107.2023.12.11.15.22.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 15:15:05 -0800 (PST)
-Date: Tue, 12 Dec 2023 08:15:05 +0900 (JST)
-Message-Id: <20231212.081505.1423250811446494582.fujita.tomonori@gmail.com>
-To: alice@ryhl.io
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- wedsonaf@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
-Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ccf2b9af-1c8c-44c4-bb93-51dd9ea1cccf@ryhl.io>
-References: <20231210234924.1453917-1-fujita.tomonori@gmail.com>
-	<20231210234924.1453917-2-fujita.tomonori@gmail.com>
-	<ccf2b9af-1c8c-44c4-bb93-51dd9ea1cccf@ryhl.io>
+        Mon, 11 Dec 2023 15:22:59 -0800 (PST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 7D02327C005B;
+	Mon, 11 Dec 2023 18:22:58 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Mon, 11 Dec 2023 18:22:58 -0500
+X-ME-Sender: <xms:0pl3ZTUEJSlfeuB_zSL4cK-Qhck1r1HLQpWWPryCJJiiMjuz7nBPUA>
+    <xme:0pl3ZbmEXOXgXDLFjm2gB60hEAE4ZtJc-lVuDcdWP0qasvaz6AK0GTJtGJTLZgiNg
+    F8V6VZcHrx-mAKGTA>
+X-ME-Received: <xmr:0pl3ZfYQj4fFP5l40RE1GB971j22G1iuy3QnmcUYrVDgxFHLq7g_yluzC1k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelfedgtdelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedvveevleevhfekhefftdek
+    ieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
+    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
+    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:0pl3ZeWo0nzoAUN3DbMxCZfvfRmmVHdJ4KEn__31QUekvSa6n0GDng>
+    <xmx:0pl3Zdlrz-6raDZMgwDy0Jf2F1rboM7ROzpOw1ETnWlCT_N0T9pP1g>
+    <xmx:0pl3Zbd9KCRxY59y-csrmFnMrbw3Jg8cef4Ad_T0Atd7rvWa46GwYw>
+    <xmx:0pl3ZejMp9tNFggJkBN5tmbd6dH7FSo87DgU7kZisYG1rWed66d14g>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 11 Dec 2023 18:22:57 -0500 (EST)
+Date: Mon, 11 Dec 2023 15:22:54 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <alice@ryhl.io>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [net-next PATCH] rust: net: phy: Correct the safety comment for
+ impl Sync
+Message-ID: <ZXeZzvMszYo6ow-q@boqun-archlinux>
+References: <20231210234924.1453917-2-fujita.tomonori@gmail.com>
+ <20231211194909.588574-1-boqun.feng@gmail.com>
+ <c833e8c5-0787-45e6-a069-2874104fa8a7@ryhl.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c833e8c5-0787-45e6-a069-2874104fa8a7@ryhl.io>
 
-On Mon, 11 Dec 2023 22:46:01 +0100
-Alice Ryhl <alice@ryhl.io> wrote:
-
-> On 12/11/23 00:49, FUJITA Tomonori wrote:
->> This patch adds abstractions to implement network PHY drivers; the
->> driver registration and bindings for some of callback functions in
->> struct phy_driver and many genphy_ functions.
->> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
->> This patch enables unstable const_maybe_uninit_zeroed feature for
->> kernel crate to enable unsafe code to handle a constant value with
->> uninitialized data. With the feature, the abstractions can initialize
->> a phy_driver structure with zero easily; instead of initializing all
->> the members by hand. It's supposed to be stable in the not so distant
->> future.
->> Link: https://github.com/rust-lang/rust/pull/116218
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Mon, Dec 11, 2023 at 10:50:02PM +0100, Alice Ryhl wrote:
+> On 12/11/23 20:49, Boqun Feng wrote:
+> > The current safety comment for impl Sync for DriverVTable has two
+> > problem:
+> > 
+> > * the correctness is unclear, since all types impl Any[1], therefore all
+> >    types have a `&self` method (Any::type_id).
+> > 
+> > * it doesn't explain why useless of immutable references can ensure the
+> >    safety.
+> > 
+> > Fix this by rewritting the comment.
+> > 
+> > [1]: https://doc.rust-lang.org/std/any/trait.Any.html
+> > 
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > 
-> Overall looks fine to me. Just a few comments below that confuse me:
+> It's fine if you want to change it,
 
-Thanks.
+Does it mean you are OK with the new version in this patch? If so...
 
->> +    /// Gets the state of PHY state machine states.
->> +    pub fn state(&self) -> DeviceState {
->> +        let phydev = self.0.get();
->> +        // SAFETY: The struct invariant ensures that we may access
->> +        // this field without additional synchronization.
->> +        let state = unsafe { (*phydev).state };
->> + // TODO: this conversion code will be replaced with automatically
->> generated code by bindgen
->> +        // when it becomes possible.
->> +        // better to call WARN_ONCE() when the state is out-of-range.
+> but I think the current safety comment is good enough.
+
+... let's change it since the current version doesn't look good enough
+to me as I explained above (it's not wrong, but less straight-forward to
+me).
+
+Regards,
+Boqun
+
 > 
-> Did you mix up two comments here? This doesn't parse in my brain.
-
-I'll remove the second comment because all we have to do here is using
-bindgen.
-
-
->> +    /// Reads a given C22 PHY register.
->> + // This function reads a hardware register and updates the stats so
->> takes `&mut self`.
->> +    pub fn read(&mut self, regnum: u16) -> Result<u16> {
->> +        let phydev = self.0.get();
->> + // SAFETY: `phydev` is pointing to a valid object by the type
->> invariant of `Self`.
->> +        // So an FFI call with a valid pointer.
-> 
-> This sentence also doesn't parse in my brain. Perhaps "So it's just an
-> FFI call" or similar?
-
-"So it's just an FFI call" looks good. I'll fix all the places that
-use the same comment.
+> Alice
