@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FFV9FKn7"
-Received: from mail-lj1-x24a.google.com (mail-lj1-x24a.google.com [IPv6:2a00:1450:4864:20::24a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA66EE3
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 07:34:27 -0800 (PST)
-Received: by mail-lj1-x24a.google.com with SMTP id 38308e7fff4ca-2ca23b6f61eso25715261fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 07:34:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yVdacp+h"
+Received: from mail-lf1-x14a.google.com (mail-lf1-x14a.google.com [IPv6:2a00:1450:4864:20::14a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88231DF
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 07:34:30 -0800 (PST)
+Received: by mail-lf1-x14a.google.com with SMTP id 2adb3069b0e04-50be79e7f71so3363350e87.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 07:34:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702308866; x=1702913666; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1702308869; x=1702913669; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=quKkQtDAheMF2d2l383YfhdmdDBNq69Kqr0DxY+KMkw=;
-        b=FFV9FKn7kl/ny0nza0ThrFt5QMxSaOhfRjD1pgshwnb22WTfWk87cE8RiZrGFt0WeG
-         xTNyUJ3i6nVz36V9Etfigqu61F1NIDfUu/4vESCLvfw6sYHDPUvaKzQXoVinSi1fFRMn
-         8R47r3735qCgfVL0Y7Re+7UlLBp7sC/kUhqJx2XWOGVV822Rdn400qUpsj6WEGmfyM9c
-         EcMlTWEQCeaUo9oXgiu1URGLRhU12556gdlM0Ei5tShAni33xa19sn4V/FkaVqyCk3yl
-         4PwAPONcSRMnJaYroJ0PnK+QddaBtIivYHaF/ckkbDBspAtzRvV5SDUpi1iz4fIVv8KY
-         HS4g==
+        bh=rctRxd7Ih5xwyv5baEpKW/ad4RMHUzIW0rCHfR1fe9s=;
+        b=yVdacp+hh8/stabKGGBktm9cFwg8p+paAgf1tew4U47Z4813vxvzI4vsbAWVFC4gJb
+         q8IJkrAsFpC8fTjB53lN6cRQ8ndZ1fnvK4Zo+X06sRPL2zNdkKGDSf7FR9p85JyW5DcC
+         mv182GZQlpWMGWFggYpm6gOTM325YQg0rJwWzMYTq1T+ICit2xaQYtCSr85lKUBwz+y9
+         7qWcnhJGB7GCkSZ5bZ+iiCS2mp2bxhUmNu5q5Gwj30EUEqIbURCgwXs+/mBL13CuH9hr
+         Ph8uYW5al/M6QpPNt43yJUiiRreIXQqsSr1CKa3ooPLVHZ4IHrKKPz7yAcoNFCjVeIkV
+         sttg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702308866; x=1702913666;
+        d=1e100.net; s=20230601; t=1702308869; x=1702913669;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=quKkQtDAheMF2d2l383YfhdmdDBNq69Kqr0DxY+KMkw=;
-        b=S/i3lxgEK7rHA9rcd97Wz0kMSEDs/xJqqgvnRsseYKxiCFddmLiPghK4uuhlVY4nuz
-         2mxBonNBaJWjjiPYwJUdkDzDtd3vbpcy+/27M9A/6mKTzU4BP3+XsqP6T2MF/kqfDmV/
-         kSp1rBcZPAMAPbXB1XSuvVAD9TiRA7tnySi0TVnT8hVPL0O13fvVSWwN1++jr6mHOheQ
-         l6NYVA8Jl3CESMkBeTGYRyHRYBJ8NkVV+ASD704DJAudP9IxwlnvzNYGau+0IEgzDgl1
-         gubNRaj2Exflfej954jV452GVHWOuYrPiHy5MY2Cwa7Yu9OyQFTpJWqLC93SkY8/OtZ2
-         tvog==
-X-Gm-Message-State: AOJu0Yx9sl77gjtXZADbr4Simqj0uGibsm7+bnY/gpacqG++VLGzV6Rg
-	r+oMrTWa2NKUDaPJ1d8OliMtV8KKtVQd8rI=
-X-Google-Smtp-Source: AGHT+IG8Cg8DINjQAYQUvGbJJE7A8mvaWFGAWJ8W1agA8FjPYmtW/ujH6tQlBNwpTSqn4hac9NByvFt3FV6R7Uk=
+        bh=rctRxd7Ih5xwyv5baEpKW/ad4RMHUzIW0rCHfR1fe9s=;
+        b=HJ1U2cNsSqfF8WVTbXExxdbohO8gcz/vJXWpwE3q8zk9GsM5VnhUISHrPwSkZRUYUT
+         ms3WX2n2loGvlGGpmlOj/vJO8XVgHdeB2NN5AaQ0wobxptVo4HFS8cnKjfBmVR4v+Jon
+         9KyLPk4wsURGYw7tSgBpzozwaND2oFG/s9pEzsaLoYOmVBRJeTZTqQWkI4N/c5byVswm
+         OoxwE5GyfjLxgtWwNTy/ehdpM8u6JX66nQohNsJ1u4uxsG8OJeVsDq7bMHYSEPmPQVjo
+         P9wz1URkdrnZ+o3eM2TSGDStOioWNvzMq44PPpxfzfovaUlK49eCtkcG/M9M6hQTWQG6
+         8EQw==
+X-Gm-Message-State: AOJu0Yzyw0ffdsh2E9reo5jjxHf2QAYKPiFM7/V/KLL6b4OTooqAowU7
+	xjcDIOv0tapA3/Tpp85ifCfC1+/ocTDV6b0=
+X-Google-Smtp-Source: AGHT+IFUSkgsTrAXrdZfRjPh+Y4r8FjzWQuE2Vy5UzW7EdYa53me3IAAQr/8OF7qP//zkA4p7sR+JwmTncJyjW4=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:9c8e:0:b0:2c9:f93d:994b with SMTP id
- x14-20020a2e9c8e000000b002c9f93d994bmr92946lji.4.1702308865917; Mon, 11 Dec
- 2023 07:34:25 -0800 (PST)
-Date: Mon, 11 Dec 2023 15:34:23 +0000
-In-Reply-To: <9q-gcPBFqAZ1mAEZ333ax8Y16e8foTXUWsMijcJyvMhBVu91g4cBo3xRVXVFJeMUW3_67bCukA-bfAzpCwXdbHqwEdciNa8UJBJaCL2q2nw=@proton.me>
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:118a:b0:50b:ee6a:c41d with SMTP
+ id g10-20020a056512118a00b0050bee6ac41dmr33367lfr.10.1702308868720; Mon, 11
+ Dec 2023 07:34:28 -0800 (PST)
+Date: Mon, 11 Dec 2023 15:34:26 +0000
+In-Reply-To: <8VBM8spxE8lhkvhYGfxxUFwslCWxi-ZL6rGHHDYD6Gn5dZqsdUQfZYDqtykJzQNFJVsQje_B4hGVDRqy3zY3TZGLSL7_YXbhKcIYfvBS02I=@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <9q-gcPBFqAZ1mAEZ333ax8Y16e8foTXUWsMijcJyvMhBVu91g4cBo3xRVXVFJeMUW3_67bCukA-bfAzpCwXdbHqwEdciNa8UJBJaCL2q2nw=@proton.me>
+References: <8VBM8spxE8lhkvhYGfxxUFwslCWxi-ZL6rGHHDYD6Gn5dZqsdUQfZYDqtykJzQNFJVsQje_B4hGVDRqy3zY3TZGLSL7_YXbhKcIYfvBS02I=@proton.me>
 X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231211153423.4160836-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2 1/7] rust: file: add Rust abstraction for `struct file`
+Message-ID: <20231211153426.4161159-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 2/7] rust: cred: add Rust abstraction for `struct cred`
 From: Alice Ryhl <aliceryhl@google.com>
 To: benno.lossin@proton.me
 Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
@@ -59,19 +59,26 @@ Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com,
 	wedsonaf@gmail.com, willy@infradead.org
 Content-Type: text/plain; charset="utf-8"
 
-Benno Lossin <benno.lossin@proton.me> wrutes:
-> > +        // SAFETY: `fget` either returns null or a valid pointer to a file, and we checked for null
-> > +        // above.
+Benno Lossin <benno.lossin@proton.me> writes:
+> On 12/6/23 12:59, Alice Ryhl wrote:
+> > +/// Wraps the kernel's `struct cred`.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// Instances of this type are always ref-counted, that is, a call to `get_cred` ensures that the
+> > +/// allocation remains valid at least until the matching call to `put_cred`.
+> > +#[repr(transparent)]
+> > +pub struct Credential(pub(crate) Opaque<bindings::cred>);
 > 
-> Since now both the Rust and C functions are called `fget`, I think you
-> should refer to `bindings::fget`.
-> [...]
-> > +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> > +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-> > +        unsafe { bindings::fput(obj.cast().as_ptr()) }
-> 
-> The comment should also justify the cast.
+> Why is the field `pub(crate)`?
 
-I'll make both changes.
+Historical accident. It isn't needed anymore. I'll remove it.
+
+> > +    unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
+> > +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+> 
+> Can you also justify the `cast()`?
+
+Will do.
 
 Alice
