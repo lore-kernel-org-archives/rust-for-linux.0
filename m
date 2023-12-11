@@ -1,166 +1,119 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dLpjYLre"
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D605BE
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 13:13:29 -0800 (PST)
-Date: Mon, 11 Dec 2023 16:13:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1702329207;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ApXHTTHAG4MxZp4EC8hGfCJDFrAWlnz+x/MRiiLFanU=;
-	b=dLpjYLre+kgLX1M2v/SpnGgs5E9NX60qPa7b4zl+atqP/Yzz+Cfko6NCYpbDRpPEqqJiJS
-	3lh3aAkgfwfQLaUviEcmqgVJaL0CTOTxVyQkD9XRUpUU9pvau4iuImQfg+AfKW0o96BM8W
-	RHL3n+zZ3XFfUP8H5ZoGBkjheJnjuLs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Kees Cook <keescook@chromium.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 5/7] rust: file: add `Kuid` wrapper
-Message-ID: <20231211211322.bw2liijz63d3txya@moria.home.lan>
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com>
- <20231206-alice-file-v2-5-af617c0d9d94@google.com>
- <20231206123402.GE30174@noisy.programming.kicks-ass.net>
- <CAH5fLgh+0G85Acf4-zqr_9COB5DUtt6ifVpZP-9V06hjJgd_jQ@mail.gmail.com>
- <20231206134041.GG30174@noisy.programming.kicks-ass.net>
- <CANiq72kK97fxTddrL+Uu2JSah4nND=q_VbJ76-Rdc-R-Kijszw@mail.gmail.com>
- <20231208165702.GI28727@noisy.programming.kicks-ass.net>
- <202312080947.674CD2DC7@keescook>
+	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="u0nosR15";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Om9zE3Zk"
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14846BD;
+	Mon, 11 Dec 2023 13:46:10 -0800 (PST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id 16ECE320130E;
+	Mon, 11 Dec 2023 16:46:07 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Mon, 11 Dec 2023 16:46:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+	1702331166; x=1702417566; bh=I0H14MDzxRsRz541oOemj8AjuDZyVPjSv5i
+	mhF2Kghw=; b=u0nosR155FmJSBY4h0CseZz8I8sWbkKS7DR6C40TrFyQhRTbOnz
+	RDM5ILKy5N7DkDhxdO93ZJ0Eoj3qgl2sM4aWfacKMmJ+thZU+T7Uhvky4FuUtjha
+	6K4J0C1dproqzlrVAzQ44tWzdhlD8bdwMSRHxX8nrzlwJRcpK+cC6Ki2uxRjSgZo
+	TIVCpGrnDjSOE0hZC5/NDpzr7C1swa1mDDG3BkMRirLxyQCLH4w0zxWf9+uOh5Gz
+	v9QFhSmWUSPR5CJ7zfUrUVMCA2+j14ZbXw7G3kkwB54vmELS9i0LvMo7JqV5zB5W
+	OnIUc2v+rjGJcfQAdJYBONrrD7Q0zCheMAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1702331166; x=1702417566; bh=I0H14MDzxRsRz541oOemj8AjuDZyVPjSv5i
+	mhF2Kghw=; b=Om9zE3Zk8QrKBsE/+B0799FDzN4KnGsieU8DyKNQeMY0WRx50Ol
+	8fyk6CGMvSHlFLBD+UrMFjfYUzKLklTtJ881G6fIPf5tiloDxzHsby88AZXMiTNl
+	jL7MTeQbkoLXYZPFcnRBSvxvtmSxHnRatUVVgFwLmHhQ9tTqW+H3vnhFtiCh7p15
+	8AhJgykrkHFFZJxT+vhGBbLVB10idPPywyVFVyu9W/n6+GL+s8mVjOhgK0CfpQyo
+	efzbXwi3EJ7qxpyot/VnVeemGTxQb8JbTaNGzcC2t+IiQb1yYn+5+EOLbjCfquVf
+	/OXMYxYzvToBYCO8gtR2YtStN06mrTVyMxg==
+X-ME-Sender: <xms:HYN3ZRk6ujm3RmdrsqQAiDLZpNEG0eK-ayTu2udaecycp8_dHgtqaQ>
+    <xme:HYN3Zc1Of2mcBDChc7G59Pw_ivan8SN4b88t4rVFD10YWd16k5xizWTNRpl_L5ZCr
+    ohGtpoBy6r30lRQzA>
+X-ME-Received: <xmr:HYN3ZXoTXa6YD1MD2AYNAUAMNkFKSeR2D4me1Kj1YMHn8sRBSQcnRALE2wA7qC5B4q6QOXtAf0pBcBfKwaDHaZ8eRfa1KXOrRi4B>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelvddgudehhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehl
+    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
+    ephfeghfelgeffleegffffveegtdfhleetgeefveeihedufedtffffledufefhgeehnecu
+    ffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvsehrhihhlhdrihho
+X-ME-Proxy: <xmx:HYN3ZRlTfOIFTTsBbdSt_cIXA5RG9mNPSejzuJIxxjO6fcxtPbzsQA>
+    <xmx:HYN3Zf2b56a1vJ0OednWGGh7yyY4KehyNCNnLh4EkXLtuhnnu9-KzQ>
+    <xmx:HYN3ZQtV5dpTcCLuib2v74XmYb_lk-IAQFAzR8YjVkfq42X9jlmwSQ>
+    <xmx:HoN3ZYLOv8rg0MKPzEoYI1vIJmAAb9pBYgoN5Wcfta64REtPuWeWJQ>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 11 Dec 2023 16:46:03 -0500 (EST)
+Message-ID: <ccf2b9af-1c8c-44c4-bb93-51dd9ea1cccf@ryhl.io>
+Date: Mon, 11 Dec 2023 22:46:01 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <202312080947.674CD2DC7@keescook>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
+ drivers
+Content-Language: en-US-large
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, wedsonaf@gmail.com,
+ aliceryhl@google.com, boqun.feng@gmail.com
+References: <20231210234924.1453917-1-fujita.tomonori@gmail.com>
+ <20231210234924.1453917-2-fujita.tomonori@gmail.com>
+From: Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <20231210234924.1453917-2-fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 08, 2023 at 10:18:47AM -0800, Kees Cook wrote:
-> On Fri, Dec 08, 2023 at 05:57:02PM +0100, Peter Zijlstra wrote:
-> > On Fri, Dec 08, 2023 at 05:31:59PM +0100, Miguel Ojeda wrote:
-> > > On Wed, Dec 6, 2023 at 2:41 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > >
-> > > > Anywhoo, the longer a function is, the harder it becomes, since you need
-> > > > to deal with everything a function does and consider the specuation
-> > > > window length. So trivial functions like the above that do an immediate
-> > > > dereference and are (and must be) a valid indirect target (because
-> > > > EXPORT) are ideal.
-> > > 
-> > > We discussed this in our weekly meeting, and we would like to ask a
-> > > few questions:
-> > > 
-> > >   - Could you please describe an example attack that you are thinking
-> > > of? (i.e. a "full" attack, rather than just Spectre itself). For
-> > > instance, would it rely on other vulnerabilities?
-> > 
-> > There's a fairly large amount of that on github, google spectre poc and
-> > stuff like that.
+On 12/11/23 00:49, FUJITA Tomonori wrote:
+> This patch adds abstractions to implement network PHY drivers; the
+> driver registration and bindings for some of callback functions in
+> struct phy_driver and many genphy_ functions.
 > 
-> tl;dr: I don't think the introduction of speculation gadgets is a
-> sufficient reason to block Rust interfaces like this.
+> This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
 > 
-> Long version:
+> This patch enables unstable const_maybe_uninit_zeroed feature for
+> kernel crate to enable unsafe code to handle a constant value with
+> uninitialized data. With the feature, the abstractions can initialize
+> a phy_driver structure with zero easily; instead of initializing all
+> the members by hand. It's supposed to be stable in the not so distant
+> future.
 > 
-> I think the question here is "what is the threat model?" If I break down
-> the objection, I understand it as:
+> Link: https://github.com/rust-lang/rust/pull/116218
 > 
-> 1) The trivial wrappers-of-inlines are speculation gadgets.
-> 2) They're exported, so callable by anything.
-> 
-> If the threat model is "something can call these to trigger
-> speculation", I think this is pretty strongly mitigated already;
-> 
-> 1) These aren't syscall definitions, so their "reachability" is pretty
-> limited. In fact, they're already going to be used in places, logically,
-> where the inline would be used, so the speculation window is going to be
-> same (or longer, given the addition of the direct call and return).
-> 
-> 2) If an attacker is in a position to directly call these helpers,
-> they're not going to use them: if an attacker already has arbitrary
-> execution, they're not going to bother with speculation.
-> 
-> Fundamentally I don't see added risk here. From the security hardening
-> perspective we have two goals: kill bug classes and block exploitation
-> techniques, and the former is a much more powerful defensive strategy
-> since without the bugs, there's no chance to perform an exploit.
-> 
-> In general, I think we should prioritize bug class elimination over
-> exploit technique foiling. In this case, we're adding a potential weakness
-> to the image of the kernel of fairly limited scope in support of stronger
-> bug elimination goals.
-> 
-> Even if we look at the prerequisites for mounting an attack here, we've
-> already got things in place to help mitigate arbitrary code execution
-> (KCFI, BTI, etc). Nothing is perfect, but speculation gadgets are
-> pretty far down on the list of concerns, IMO. We have no real x86 ROP
-> defense right now in the kernel, so that's a much lower hanging fruit
-> for attackers.
-> 
-> As another comparison, on x86 there are so many direct execution gadgets
-> present in middle-of-instruction code patterns that worrying about a
-> speculation gadget seems silly to me.
-> 
-> > [...]
-> > The thing at hand was just me eyeballing it.
-> 
-> I can understand the point you and Greg have both expressed here: "this
-> is known to be an anti-pattern, we need to do something else". I generally
-> agree with this, but in this case, I don't think it's the right call. This
-> is an area we'll naturally see improvement from on the Rust side since
-> these calls are a _performance_ concern too, so it's not like this will be
-> "forgotten" about. But blocking it until there is a complete and perfect
-> solution feels like we're letting perfect be the enemy of good.
-> 
-> All of our development is evolutionary, so I think we'd be in a much
-> better position to take these (currently ugly) work-arounds (visible
-> only in Rust builds) so that we gain the ability to evolve towards more
-> memory safe code.
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Well said.
+Overall looks fine to me. Just a few comments below that confuse me:
 
-More than that, I think this is a situation where we really need to
-consider what our priorities are.
+> +    /// Gets the state of PHY state machine states.
+> +    pub fn state(&self) -> DeviceState {
+> +        let phydev = self.0.get();
+> +        // SAFETY: The struct invariant ensures that we may access
+> +        // this field without additional synchronization.
+> +        let state = unsafe { (*phydev).state };
+> +        // TODO: this conversion code will be replaced with automatically generated code by bindgen
+> +        // when it becomes possible.
+> +        // better to call WARN_ONCE() when the state is out-of-range.
 
-Where are most of our real world vulnerabilities coming from? Are they
-spectre issues, or are they memory safety issues, and the kinds of
-logic/resource issues we know Rust's type system is going to help with?
-I think we all know the answer to that question.
+Did you mix up two comments here? This doesn't parse in my brain.
+> +    /// Reads a given C22 PHY register.
+> +    // This function reads a hardware register and updates the stats so takes `&mut self`.
+> +    pub fn read(&mut self, regnum: u16) -> Result<u16> {
+> +        let phydev = self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        // So an FFI call with a valid pointer.
 
-More than that, as kernel programmers, we need to be focusing primarily
-on the issues that are our responsibility and under our control. At the
-point when the inability of the CPU manufacturers to get their shit
-together is causing us to have concerns over _generated code for little
-helper functions_, the world has gone crazy.
+This sentence also doesn't parse in my brain. Perhaps "So it's just an 
+FFI call" or similar?
 
-I remember when the spectre stuff first hit, and everyone was saying
-"this is just a temporary workaround; CPU manufacturers are going to
-sort this out in a couple releases".
-
-They haven't. That's batshit. And I doubt they ever will if we keep
-pretending we can just work around everything in software.
+Alice
