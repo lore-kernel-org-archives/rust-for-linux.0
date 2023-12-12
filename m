@@ -1,84 +1,108 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aHzAsDdN"
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F46F11F
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:40:44 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b9df0a6560so3616398b6e.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:40:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y5LVhpZP"
+Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A04FD9
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:45:53 -0800 (PST)
+Received: by mail-vs1-xe2a.google.com with SMTP id ada2fe7eead31-464a3734e49so1185533137.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:45:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702374044; x=1702978844; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1702374352; x=1702979152; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yBPastpn1RC87z2hLEiZW6KtB1XJZ0fz+MiJEWfk6hU=;
-        b=aHzAsDdNxgosCtPLlh4A7a7Pd9lK10j1bcD+5midrPZFIulAaKCBBM021VmiWWJf1i
-         DsXaPooqliJv2rn2gA4pNTYl0sJNEnr55neuH4Eeocp/bsL4EBhtSBHxXz0Dd4KUF0Zb
-         fCKDXSyN19/TSQv49O60rsk+wvvtWOJ8WO6ZM7QhxThLt4v8ArGuiNFD0U1fffaIhYXW
-         PmZNAtebFqfh54fio1652/DkUAHp8JF7iFRzxlP//DN2g6E7r8R/4PwB20dgjFRcAGSf
-         j1AS0Ha70elH1dxAxO+KwYRJ1P0nSQoZ3N92BPl0a9yDoIkHwNuk5RhCfs+8E3E1cWbj
-         /ZoQ==
+        bh=kDJfKvrg0IZT8RtTcsIPiv+6i6KEEJtTvRyYtSZWV3Y=;
+        b=Y5LVhpZPNqHDEoEg3Rc/HE3Ti4N2gEKxUuiXm1gIveu69J6pTcKD74TmybLBCaDFnH
+         jyWXuh/zKMDVINNzq05sh1uYlb3pCtMwJA6UeiwJg3IRukbP2yb/K/WLTDTmHlVwN8Yq
+         jVr4gq4cvJjI8EkEh964aQxlckZ6xZqdpuv4kDI1ZyI0NkP5wPY4Bq3qPFf2SOuywriX
+         j9QRdUlYihfSfJM0i3uVvIttrkLX69wsNwfk0BlzrjBp2QRuM7vp/Qf+s/yMWvMCyzQi
+         TsdhLYqTGAx0J3dUheXnjPtA3fnpzEi5MODY/8OcvialziFWl8jK0OzckuFE8f/YJxhZ
+         uYow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702374044; x=1702978844;
+        d=1e100.net; s=20230601; t=1702374352; x=1702979152;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yBPastpn1RC87z2hLEiZW6KtB1XJZ0fz+MiJEWfk6hU=;
-        b=jyUAQXbkSFt2yWt1WxWaIYVOAjsWjbcaDUt8Jp16vB5wAS4DJpsGb+MSBCxqWLsZlV
-         Y0Cc/ppLZOd/qENCumDDqilU4Q/Ye/5LVEIroIP2juBp3SaWQ+KN0DouRWECozRlgAy1
-         UvZhv2nXI1/Q6xeRQ9dRM0aX7bfrLe9Y0eLig32BRM6JTSVanJ6aCUcfmSHGcMWTpGAh
-         mgeN0isGvJamElhKTTz89qUESF6eZhsU9OdBkfoHY+3AttSqNJKl3S0u4IHgQ6zVqt8v
-         phH82bowWSYt/NoSVjgLxDuYXAdzGTK8a+IVZwOuHsHfx8d2uznZtayLC+c8A3HsK/aL
-         QBhQ==
-X-Gm-Message-State: AOJu0YxxAUIj9tcg43BuoBRwMaJSmG4ejqLpsCYRZjcaXpRNxgoikaDr
-	n3EaQ5YPDBsWN+daWF/OuIsQ7SXJyryKv+X/gftwdA==
-X-Google-Smtp-Source: AGHT+IHTSiZ6LzgVymhn5KubTf+HT5hUzMz3vldIiaU9GfA+4GJncv76WqjD73+5ZSklO9GCgIaWXZcxpODcXU0Y6u8=
-X-Received: by 2002:a05:6808:130a:b0:3b8:7a9d:af5b with SMTP id
- y10-20020a056808130a00b003b87a9daf5bmr6387114oiv.35.1702374043714; Tue, 12
- Dec 2023 01:40:43 -0800 (PST)
+        bh=kDJfKvrg0IZT8RtTcsIPiv+6i6KEEJtTvRyYtSZWV3Y=;
+        b=rFD8HrQlqQg3knoHFU9BX+SIOKiibiKzJ+LdT31zxu7a/dV281cZPvow9K9WCo9/rU
+         TaEUdNYu0BHrLkh/qWQAbAuzhotaE+gFc2fBmPx9QKLrK1z8xaz9U0AgTElppYb9Xnwv
+         gYYBXjysejYWELEmxhmhKziUXWJZ8CWeFsg5FY1k1g+e5fvY9qASiXFKqjLBgMzFw6XN
+         aXfTmBRKIHOlXaU6onTMpbB+sVAVG0VIS0uS3BlzCI+bh9UTnftYAZZ0PgWU8YDMzcdq
+         vkNnVJ/ssR6MOqYkuRY1hsKTx8qN7sB0Scu4KVj1PV3w3Bw5kes2Rf+CLvhcMqXs0vEf
+         0lkA==
+X-Gm-Message-State: AOJu0YyNQdi81du9o6iqiWsqJJGXeo0lyLO9zHzZeFfwrMK5cytU/do5
+	OoTxaGvdKMaDkCydLBWbQPDMGWs3b/xlzwvRnB8ifQ==
+X-Google-Smtp-Source: AGHT+IHiKuijr8iqBN16VsK9zHqoh6460srecd+j4cqTS+gkJWAR3e2/4Y0uK11x73YJv0iQFDsxK/FGEG9VkLJQiKg=
+X-Received: by 2002:a05:6102:32c9:b0:464:4eef:b9a9 with SMTP id
+ o9-20020a05610232c900b004644eefb9a9mr4066516vss.0.1702374352425; Tue, 12 Dec
+ 2023 01:45:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZXZjoOrO5q7no4or@boqun-archlinux> <20231211153429.4161511-1-aliceryhl@google.com>
- <ZXdIbEqSCTO62BHE@boqun-archlinux>
-In-Reply-To: <ZXdIbEqSCTO62BHE@boqun-archlinux>
+References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
+ <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com>
+ <1dd1a3e8-ef9a-4e89-891f-b49d82acc5f8@gmail.com> <CAH5fLgijsRK3funsGuG6nbK26C+s6m0nO0i83RYD2cO3z7L22Q@mail.gmail.com>
+ <F8K3EZWwaRdB3qwYwk7P9GGQUc83MNW4XLeqRHj6QsA6WtCtpweykXLuM5sj2RbpRu3y3OoFy6gmCtaV2tBA1sxGFeieUnTdaY2yGVSCXQ4=@proton.me>
+In-Reply-To: <F8K3EZWwaRdB3qwYwk7P9GGQUc83MNW4XLeqRHj6QsA6WtCtpweykXLuM5sj2RbpRu3y3OoFy6gmCtaV2tBA1sxGFeieUnTdaY2yGVSCXQ4=@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 12 Dec 2023 10:40:32 +0100
-Message-ID: <CAH5fLghbOA6s1d8GFz3JwcqDtzq+VbM3dc3M=enF0UHQN_Nt5g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] rust: cred: add Rust abstraction for `struct cred`
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, brauner@kernel.org, 
-	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, 
-	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
-	keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
-	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
-	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
-	wedsonaf@gmail.com, willy@infradead.org
+Date: Tue, 12 Dec 2023 10:45:41 +0100
+Message-ID: <CAH5fLghuRjZHg3BgowvDiAez3ukhm7PEegRB5G9ZbwSCXfAHVw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 11, 2023 at 6:35=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
-> On Mon, Dec 11, 2023 at 03:34:29PM +0000, Alice Ryhl wrote:
-> > The safety comment explains what the signature means. I think that
-> > should be enough.
-> >
+On Fri, Dec 8, 2023 at 10:27=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> For someone who has a good understanding of Rust lifetime (and the
-> elision), yes. But I'm wondering whether all the people feel the same
-> way.
+> On 12/8/23 08:37, Alice Ryhl wrote:
+> > On Wed, Dec 6, 2023 at 6:05=E2=80=AFPM Tiago Lam <tiagolam@gmail.com> w=
+rote:
+> >> On 06/12/2023 10:09, Alice Ryhl wrote:
+> >>> +/// The return type of `wait_timeout`.
+> >>> +pub enum CondVarTimeoutResult {
+> >>> +    /// The timeout was reached.
+> >>> +    Timeout,
+> >>> +    /// Somebody woke us up.
+> >>> +    Woken {
+> >>> +        /// Remaining sleep duration.
+> >>> +        jiffies: u64,
+> >>> +    },
+> >>> +    /// A signal occurred.
+> >>> +    Signal {
+> >>> +        /// Remaining sleep duration.
+> >>> +        jiffies: u64,
+> >>> +    },
+> >>> +}
+> >>
+> >> Is `Signal` and `Woken` only going to hold a single value? Would it be
+> >> best represented as a tuple struct instead, like so?
+> >>
+> >>      pub enum CondVarTimeoutResult {
+> >>          /// The timeout was reached.
+> >>          Timeout,
+> >>          /// Somebody woke us up.
+> >>          Woken (u64),
+> >>          /// A signal occurred.
+> >>          Signal (u64),
+> >>      }
+> >
+> > I could do that, but I like the explicitly named version as it makes
+> > it clear that the unit is jiffies.
+>
+> Why not use `type Jiffies =3D u64;` until we have proper bindings for
+> them? That way we can have both.
 
-The safety comment doesn't require understanding of lifetime elision
-to be understood: "The signature of this function ensures that the
-caller will only access the returned credential while the file is
-still valid."
-
-Yes, if you don't know the syntax for lifetimes, you'll have to trust
-me that this is what the signature means. But I think that's the case
-either way. I don't think it needs to be changed.
+I do not mind adding and using a type alias, but I still think the
+named fields are better.
 
 Alice
