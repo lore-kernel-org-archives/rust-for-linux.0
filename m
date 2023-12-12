@@ -1,95 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PfK3nEiZ"
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F070EAC;
-	Tue, 12 Dec 2023 02:56:05 -0800 (PST)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-5c6910e93e3so650524a12.1;
-        Tue, 12 Dec 2023 02:56:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1UaX9Vv"
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664B4106
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 04:43:28 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-dae7cc31151so5453813276.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 04:43:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702378565; x=1702983365; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=700xMZqlIGsZFZ403bkZhly1tz9NywHmtpL60RDOvh4=;
-        b=PfK3nEiZhIpYK7SHnuUzEFvDL+lpHbFUbc1yHnbzE4zLZ2OyJYTEkJqRFLy2euovjG
-         bN6OQmxEXbvr8JnuUNXlmIGxks27kjmZ2j8/EwIbDqWSd1oEoFS+Oe3BrQu+krvO4KA2
-         EukS35xkXmelmxrn7Xpk/6NQEB4S1iGLnsPaBTykP6KvW4eaAYG1AW1MoNOYZg4mLLKu
-         HbVTBwAC/3xZoXSasp1NEoeWybYodcvGBl/GcVP6NRdSivdTrJ6jnNSKtIC40Yhtx1JC
-         KtBM5GaYW1tsAqYj3zmdcWu9bOc2v63FdnWo/P60Y5I2mnhEhI3zGpHQCE2bazbI6sjT
-         atRA==
+        d=gmail.com; s=20230601; t=1702385007; x=1702989807; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gEMrj9esbToDvp8yzL8r+0YBG4xPa3d6CH7aOoS3Tjc=;
+        b=G1UaX9Vvhb8zFgKraWSBUbbCYsJ4LQkk+ZQrFLj18ESM5qPDeeCOHy6emmkh+6hbpa
+         O3faouaM6s+cZgdp6mFM/ZOCDIEsXWXIiVh6RG/LG5TDuaZrNX2Y6xnrXQI1iPPm5ahZ
+         f5NtOgD22FGFVdjCq7Q57PmZce7BmYt6dbVJ1cJhOudOmjy80pjdNWqUS6AQ9wRRex0I
+         Z/BETxSTroj3KmJ6QW2POP2u8L/X2aSPCfjkbwPtAKQMHXSGAyVgcvcM+MDKiUFywiIt
+         JuiwP6k+3Z50GSzGu9CpuVe2UQmSeo1Twg0uuPx98ahwx9kC5LkuE+a7Gv/9eSnOjYb2
+         MwQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702378565; x=1702983365;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=700xMZqlIGsZFZ403bkZhly1tz9NywHmtpL60RDOvh4=;
-        b=PAnubluVLYlOkpS85zn7rXFrMm5kJTTJnNf7RCAuoIPPQNXhebbMZKatXHqk1ozdsF
-         hdpdgxleIlA2jpDbCV+8yKWaMpwNQcUSDhKoeBWjoqtq0C6LV1JoM5pXozf9FGYCEGmV
-         q/oOcgmPJzqyM5HkeY3Do5D9v92xqcR3AINn+um3R69fjVOXjallJLWJqhEGU6/4G95u
-         0YXL2YXi9csEUHRa9yNZoYty0Qr4qzZr1zCrrOFdUR4j2PsXmkY/z8MopUMV5/n4OBFq
-         lbyqa6RXFJOlUz+mb1Cbbn7w438hTGH7KZ2aX2r+lDiLkewd8FCLxbpZZrZp9uTO9tXt
-         rQiQ==
-X-Gm-Message-State: AOJu0YzFspYiSE+3lpOIACgKS13ogjNX86Jp2DwjBfiepU+bNyYASYPJ
-	I/GJWiYWI8+Yxb6Q6MBpSAaz+/018Ym7Px1F
-X-Google-Smtp-Source: AGHT+IEWw02M1zoXyMS9LXFmu8thllBn7qrbe0aZarUs734JWXddbR+Imhj4zvErCsU3aTeXbGWVQA==
-X-Received: by 2002:a05:6a00:4601:b0:6ce:72d7:1e74 with SMTP id ko1-20020a056a00460100b006ce72d71e74mr12454764pfb.2.1702378565392;
-        Tue, 12 Dec 2023 02:56:05 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id fi29-20020a056a00399d00b006cbe1bb5e3asm7735072pfb.138.2023.12.12.02.56.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 02:56:05 -0800 (PST)
-Date: Tue, 12 Dec 2023 19:56:04 +0900 (JST)
-Message-Id: <20231212.195604.1948536398150230076.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, alice@ryhl.io, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- wedsonaf@gmail.com, boqun.feng@gmail.com
-Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLghyo3vdrQvQgRsMHp6Hh1=L5+PqHbfBXoF7t4E4URN_vw@mail.gmail.com>
-References: <ccf2b9af-1c8c-44c4-bb93-51dd9ea1cccf@ryhl.io>
-	<20231212.081505.1423250811446494582.fujita.tomonori@gmail.com>
-	<CAH5fLghyo3vdrQvQgRsMHp6Hh1=L5+PqHbfBXoF7t4E4URN_vw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1702385007; x=1702989807;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gEMrj9esbToDvp8yzL8r+0YBG4xPa3d6CH7aOoS3Tjc=;
+        b=OWY5yixGKfelCEpSk3zqfK6TwY4wON7E8JG2DNlOd/XqTW7LWP7Nzo/gJEmi8ajgqe
+         hW0hkUipX/G6iJANd+fsFio4KJU7ZrWBkV7hyCo2aCqcl4BFnLXNQE6qHq+t/8mrECqz
+         IzRktBVwmcpB91UDdt1PST0L0UJCyyIEXFMiXAaG0YCKN2cmTq2zJe6EYoSRRxr4c2Qi
+         bwh59cnNiELZCni1im2erv7JwjngBpTRUBhui4Dp/47Abxniu9XRcj42kQfiTBqaikyD
+         95MDt7Sb9BCdF8kXxA8LLso6R/m6B2uqQKecCmk0oW5lE2pTDo7925k/B8vZP44AefYt
+         cYng==
+X-Gm-Message-State: AOJu0Yyj8ELOXmHY+oX7M4wXXFkxGNcUfAxPLyIYkZ2Ek75YCpUol9Eb
+	mo3SfJVA695iatrnuq8PTN1Gh1EJ7vlr5GaOVng=
+X-Google-Smtp-Source: AGHT+IGUiVB33PvkcVELWdz4TJAxCP7oe7rKiolbAVjMD0G3pzuehN9hPcO364XjuaMAV7/o5qUrw/nsaYLyMYuF8eg=
+X-Received: by 2002:a25:7795:0:b0:db7:dacf:6fd0 with SMTP id
+ s143-20020a257795000000b00db7dacf6fd0mr4395098ybc.88.1702385007469; Tue, 12
+ Dec 2023 04:43:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+References: <20231211121613.3489513-1-dirk.behme@de.bosch.com> <df0d8a01-eac3-43b2-8498-e237a0fe6eb5@nvidia.com>
+In-Reply-To: <df0d8a01-eac3-43b2-8498-e237a0fe6eb5@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 12 Dec 2023 13:43:16 +0100
+Message-ID: <CANiq72n5OB0X9sHoNf-htRY9z93gzdg-BqdrOUDTqTEvUytoNA@mail.gmail.com>
+Subject: Re: [PATCH v3] docs: rust: Add rusttest info
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gVHVlLCAxMiBEZWMgMjAyMyAxMDoyMzozMCArMDEwMA0KQWxpY2UgUnlobCA8YWxpY2VyeWhs
-QGdvb2dsZS5jb20+IHdyb3RlOg0KDQo+IE9uIFR1ZSwgRGVjIDEyLCAyMDIzIGF0IDEyOjE14oCv
-QU0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwuY29tPiB3cm90ZToN
-Cj4+DQo+PiBPbiBNb24sIDExIERlYyAyMDIzIDIyOjQ2OjAxICswMTAwDQo+PiBBbGljZSBSeWhs
-IDxhbGljZUByeWhsLmlvPiB3cm90ZToNCj4+ID4+ICsgICAgLy8vIEdldHMgdGhlIHN0YXRlIG9m
-IFBIWSBzdGF0ZSBtYWNoaW5lIHN0YXRlcy4NCj4+ID4+ICsgICAgcHViIGZuIHN0YXRlKCZzZWxm
-KSAtPiBEZXZpY2VTdGF0ZSB7DQo+PiA+PiArICAgICAgICBsZXQgcGh5ZGV2ID0gc2VsZi4wLmdl
-dCgpOw0KPj4gPj4gKyAgICAgICAgLy8gU0FGRVRZOiBUaGUgc3RydWN0IGludmFyaWFudCBlbnN1
-cmVzIHRoYXQgd2UgbWF5IGFjY2Vzcw0KPj4gPj4gKyAgICAgICAgLy8gdGhpcyBmaWVsZCB3aXRo
-b3V0IGFkZGl0aW9uYWwgc3luY2hyb25pemF0aW9uLg0KPj4gPj4gKyAgICAgICAgbGV0IHN0YXRl
-ID0gdW5zYWZlIHsgKCpwaHlkZXYpLnN0YXRlIH07DQo+PiA+PiArIC8vIFRPRE86IHRoaXMgY29u
-dmVyc2lvbiBjb2RlIHdpbGwgYmUgcmVwbGFjZWQgd2l0aCBhdXRvbWF0aWNhbGx5DQo+PiA+PiBn
-ZW5lcmF0ZWQgY29kZSBieSBiaW5kZ2VuDQo+PiA+PiArICAgICAgICAvLyB3aGVuIGl0IGJlY29t
-ZXMgcG9zc2libGUuDQo+PiA+PiArICAgICAgICAvLyBiZXR0ZXIgdG8gY2FsbCBXQVJOX09OQ0Uo
-KSB3aGVuIHRoZSBzdGF0ZSBpcyBvdXQtb2YtcmFuZ2UuDQo+PiA+DQo+PiA+IERpZCB5b3UgbWl4
-IHVwIHR3byBjb21tZW50cyBoZXJlPyBUaGlzIGRvZXNuJ3QgcGFyc2UgaW4gbXkgYnJhaW4uDQo+
-Pg0KPj4gSSdsbCByZW1vdmUgdGhlIHNlY29uZCBjb21tZW50IGJlY2F1c2UgYWxsIHdlIGhhdmUg
-dG8gZG8gaGVyZSBpcyB1c2luZw0KPj4gYmluZGdlbi4NCj4+DQo+Pg0KPj4gPj4gKyAgICAvLy8g
-UmVhZHMgYSBnaXZlbiBDMjIgUEhZIHJlZ2lzdGVyLg0KPj4gPj4gKyAvLyBUaGlzIGZ1bmN0aW9u
-IHJlYWRzIGEgaGFyZHdhcmUgcmVnaXN0ZXIgYW5kIHVwZGF0ZXMgdGhlIHN0YXRzIHNvDQo+PiA+
-PiB0YWtlcyBgJm11dCBzZWxmYC4NCj4+ID4+ICsgICAgcHViIGZuIHJlYWQoJm11dCBzZWxmLCBy
-ZWdudW06IHUxNikgLT4gUmVzdWx0PHUxNj4gew0KPj4gPj4gKyAgICAgICAgbGV0IHBoeWRldiA9
-IHNlbGYuMC5nZXQoKTsNCj4+ID4+ICsgLy8gU0FGRVRZOiBgcGh5ZGV2YCBpcyBwb2ludGluZyB0
-byBhIHZhbGlkIG9iamVjdCBieSB0aGUgdHlwZQ0KPj4gPj4gaW52YXJpYW50IG9mIGBTZWxmYC4N
-Cj4+ID4+ICsgICAgICAgIC8vIFNvIGFuIEZGSSBjYWxsIHdpdGggYSB2YWxpZCBwb2ludGVyLg0K
-Pj4gPg0KPj4gPiBUaGlzIHNlbnRlbmNlIGFsc28gZG9lc24ndCBwYXJzZSBpbiBteSBicmFpbi4g
-UGVyaGFwcyAiU28gaXQncyBqdXN0IGFuDQo+PiA+IEZGSSBjYWxsIiBvciBzaW1pbGFyPw0KPj4N
-Cj4+ICJTbyBpdCdzIGp1c3QgYW4gRkZJIGNhbGwiIGxvb2tzIGdvb2QuIEknbGwgZml4IGFsbCB0
-aGUgcGxhY2VzIHRoYXQNCj4+IHVzZSB0aGUgc2FtZSBjb21tZW50Lg0KPiANCj4gSWYgeW91IG1h
-a2UgdGhvc2UgdHdvIGNvbW1lbnQgY2hhbmdlcywgdGhlbiB5b3UgY2FuIGFkZA0KPiANCj4gUmV2
-aWV3ZWQtYnk6IEFsaWNlIFJ5aGwgPGFsaWNlcnlobEBnb29nbGUuY29tPg0KDQpJIHdpbGwsIHRo
-YW5rcyENCg==
+On Tue, Dec 12, 2023 at 4:14=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
+wrote:
+>
+> "make LLVM=3D1 <anything>" doesn't work for me, and therefore I suspect i=
+t
+> doesn't work for at least a few other people, as well.
+>
+> Instead, I have to run "make CC=3Dclang <anything>", which works just
+> fine.
+>
+> The docs should consistently reflect this, yes?
+
+No, they should not. `LLVM=3D1` is the "right" one for all architectures
+(except s390) -- see Documentation/kbuild/llvm.rst.
+
+If `LLVM=3D1` does not work for you, then that should be fixed. Could
+you please give some details? For instance, is it related to Rust
+(does it work with a `defconfig` build without enabling Rust)? Do you
+have all the LLVM software installed with the right names (see what
+`LLVM=3D1` expands to)? etc.
+
+(Cc'ing Nathan)
+
+Cheers,
+Miguel
