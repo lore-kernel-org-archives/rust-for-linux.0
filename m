@@ -1,154 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HRBKQEsx"
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DD829C;
-	Tue, 12 Dec 2023 12:57:25 -0800 (PST)
-Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6d9ac148ca3so4277836a34.0;
-        Tue, 12 Dec 2023 12:57:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702414645; x=1703019445; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cxUS3TvB03LQRggRYNx3o//YXpkkNOZ5SD+QK8zWX3I=;
-        b=HRBKQEsxumkDhnQoQNYIXqn6Q1y9Ef9q0/yfg8Wj9T/OuQ5Bo/4qAu0NsuupC4Ju9P
-         wCQMm4FbNgorNQlIJdJik0t6MCN90el5arediuIK9GtQhdQnqJnIQZgllJkbSxk6nlpq
-         dNXsZ3xxM+n1zuZ1p8aP/N8YR2SW/pdDatfawEUCE0sSxAygEvb2pcoHr63gfeg2StMl
-         0IzjaWsk1oAXBY1w1VVFXcqPt8KIPRtrNJ+Kx/a/6uR0gT1m0B3IUoIsFie1Ft1eABVw
-         6UCdcBAg4vm7JDbKXDWdGDjVWBjY7HdyR/oFBbFSlDPh/8UpQhKgqZDP8EppKzyRM5z6
-         VeCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702414645; x=1703019445;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cxUS3TvB03LQRggRYNx3o//YXpkkNOZ5SD+QK8zWX3I=;
-        b=NGK8LY9/eMNSnZpUAJzcUlBR2HZbZpeuplMV0iKAudqHf+1Y1rApFWfqo6OI7Wy23A
-         z+qq/JRNchEbQ7ILzKi0w703TiPMj4RTlzpDBqhtkLNmQ5TVpx0sXV/aDBsqwZJtoGJ9
-         xyAinh/UjCzcgqebNFiREgB64Xj3uca8VSr6dcoYXBKbUXTpjzevFsn6FkNlWnA4Q+Wf
-         8d4apJJYGPd/xQvR0/2soRdkcWPtT7BtpLZ3DeD37ty3TQ8hX6RkFTAcaC67a0BIP8sh
-         VyEKrwaR9pZ6Ij8/IAIhkW4REJ5D0pGmqF3k5uvU5suSCwhNXE3vH/WRlTHgsSIF8iy2
-         RmxQ==
-X-Gm-Message-State: AOJu0YziBa00Eb95PiDohB5rREtvh6CKhzK7mh9TwNA9iESUIduP56GD
-	3TmVw56HZRzG9XahDdwU0tE=
-X-Google-Smtp-Source: AGHT+IEVzm5XTtaCzqg2+BKz+d+ww4qaD2Ty2ZL0BHf5n6W2aZ2p1Jo797BtLikgI7m1n2m3o+Yt5g==
-X-Received: by 2002:a05:6358:924:b0:170:d002:bc4b with SMTP id r36-20020a056358092400b00170d002bc4bmr3727807rwi.60.1702414644715;
-        Tue, 12 Dec 2023 12:57:24 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id qg1-20020a05620a664100b0077f01c11e3bsm4012250qkn.61.2023.12.12.12.57.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 12:57:24 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 9741727C005B;
-	Tue, 12 Dec 2023 15:57:23 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 12 Dec 2023 15:57:23 -0500
-X-ME-Sender: <xms:Msl4ZVVZI7oukuAUE9yddPyTIabWISbhBOnPpvIFFP4B1fB4geumiA>
-    <xme:Msl4ZVmDoVsPDXAM5SlBgN2oo7kAQ8gjkG0ZNMzrs_QsiwkIJh4MNP_3szB0uPePY
-    C4m9j5GOcgLad5iZw>
-X-ME-Received: <xmr:Msl4ZRY7M1t6IHbvwxF2c8Qn6g4YWXr-mjXMDMqQvSEgxrc5b4yFSlRa8xuz-g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelgedgudeflecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:Msl4ZYVYEa1uxYonKzRmrUloD3R1zdFUCsphZycW7OqnL6vdbWQgig>
-    <xmx:Msl4ZfnyyXI5_hZafTEqdFMEC8C5IfxRsjCW8l7CCGV_ue6bVGvWWw>
-    <xmx:Msl4ZVfGurwOgMgQaXsHcFemZ6iP672J07Ol0NTxm8d-DqMxao13Og>
-    <xmx:M8l4ZfOEKKQzdWtXLtomTBc67jbtFF3PZqikg51JLT6nVRb5tZcS5A>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Dec 2023 15:57:22 -0500 (EST)
-Date: Tue, 12 Dec 2023 12:57:16 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: benno.lossin@proton.me, a.hindborg@samsung.com, alex.gaynor@gmail.com,
-	arve@android.com, bjorn3_gh@protonmail.com, brauner@kernel.org,
-	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz,
-	gary@garyguo.net, gregkh@linuxfoundation.org,
-	joel@joelfernandes.org, keescook@chromium.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	maco@android.com, ojeda@kernel.org, peterz@infradead.org,
-	rust-for-linux@vger.kernel.org, surenb@google.com,
-	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk,
-	wedsonaf@gmail.com, willy@infradead.org
-Subject: Re: [PATCH v2 6/7] rust: file: add `DeferredFdCloser`
-Message-ID: <ZXjJLP5NdbxEzKpC@boqun-archlinux>
-References: <MjDmZBGV04fVI1qzhceEjQgcmoBuo3YoVuiQdANKj9F1Ux5JFKud8hQpfeyLXI0O5HG6qicKFaYYzM7JAgR_kVQfMCeVdN6t7PjbPaz0D0U=@proton.me>
- <20231211153440.4162899-1-aliceryhl@google.com>
- <ZXdJyGFeQEbZU3Eh@boqun-archlinux>
- <ZXe2fpN4zRlkLLJC@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fhjqgjQD"
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 165DEB3
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 14:40:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1702420818; x=1702680018;
+	bh=ykaoMZQh8JhRUub7yjof2pF9x4HUjbMvHg7m4xyvkF4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=fhjqgjQD5sBx6/a8k/qX4MOOi7Nbac6W7jdmT46JZAxUVg5p1f5XaliHGQxMEGZ+G
+	 sZEr69TiO9mnbTsRa68LpuV8suonJH//nm20uYee3hclRNOKtubCmvT0j1v6V/WUT9
+	 dnuC2B3ecsbm/KSAp5clqveJpj2lBN02QH6y5Z76rIa6C6DaWi+PqwhPJGyw0vuAQ5
+	 FnZzYPCPJCSJJI9G4x8727JwEsrBQy6+jId2Eex8YZEXsqwjcv6vJonxnMAs04V9Gn
+	 lRROhAFS4wbJLi69MAKLkZLFUU7qnHk6S5tMj2+mRnD6TRzqH68eVirOVtbuQRRJf1
+	 fdP0DOHcQqo4Q==
+Date: Tue, 12 Dec 2023 22:40:01 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alice@ryhl.io, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY drivers
+Message-ID: <e9997f99-7261-4e9e-b465-e3869b6f4a6f@proton.me>
+In-Reply-To: <ZXjBKEBUrisSJ7Gx@boqun-archlinux>
+References: <ZXfFzKYMxBt7OhrM@boqun-archlinux> <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com> <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home> <20231212.220216.1253919664184581703.fujita.tomonori@gmail.com> <544015ec-52a4-4253-a064-8a2b370c06dc@proton.me> <ZXjBKEBUrisSJ7Gx@boqun-archlinux>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXe2fpN4zRlkLLJC@boqun-archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 11, 2023 at 05:25:18PM -0800, Boqun Feng wrote:
-> On Mon, Dec 11, 2023 at 09:41:28AM -0800, Boqun Feng wrote:
-> > On Mon, Dec 11, 2023 at 03:34:40PM +0000, Alice Ryhl wrote:
-> > > Benno Lossin <benno.lossin@proton.me> writes:
-> > > > On 12/6/23 12:59, Alice Ryhl wrote:
-> > > > > +    /// Schedule a task work that closes the file descriptor when this task returns to userspace.
-> > > > > +    ///
-> > > > > +    /// Fails if this is called from a context where we cannot run work when returning to
-> > > > > +    /// userspace. (E.g., from a kthread.)
-> > > > > +    pub fn close_fd(self, fd: u32) -> Result<(), DeferredFdCloseError> {
-> > > > > +        use bindings::task_work_notify_mode_TWA_RESUME as TWA_RESUME;
-> > > > > +
-> > > > > +        // In this method, we schedule the task work before closing the file. This is because
-> > > > > +        // scheduling a task work is fallible, and we need to know whether it will fail before we
-> > > > > +        // attempt to close the file.
-> > > > > +
-> > > > > +        // SAFETY: Getting a pointer to current is always safe.
-> > > > > +        let current = unsafe { bindings::get_current() };
-> > > > > +
-> > > > > +        // SAFETY: Accessing the `flags` field of `current` is always safe.
-> > > > > +        let is_kthread = (unsafe { (*current).flags } & bindings::PF_KTHREAD) != 0;
-> > > > 
-> > > > Since Boqun brought to my attention that we already have a wrapper for
-> > > > `get_current()`, how about you use it here as well?
-> > > 
-> > > I can use the wrapper, but it seems simpler to not go through a
-> > > reference when we just need a raw pointer.
-> > > 
-> > > Perhaps we should have a safe `Task::current_raw` function that just
-> > > returns a raw pointer? It can still be safe.
-> > > 
-> > 
-> > I think we can have a `as_ptr` function for `Task`?
-> > 
-> > 	impl Task {
-> > 	    pub fn as_ptr(&self) -> *mut bindings::task_struct {
-> > 	        self.0.get()
-> > 	    }
-> > 	}
-> 
-> Forgot mention, yes a ptr->ref->ptr trip may not be ideal, but I think
-> eventually we will have a task work wrapper, in that case maybe
-> Task::as_ptr() is still needed somehow.
-> 
+On 12/12/23 21:23, Boqun Feng wrote:
+> On Tue, Dec 12, 2023 at 05:35:34PM +0000, Benno Lossin wrote:
+>> [1]: Technically it is a combination of the following invariants:
+>> - the `mdio` field of `struct phy_device` is a valid `struct mido_device=
+`
+>> - the `bus` field of `struct mdio_device` is a valid pointer to a valid
+>>   `struct mii_bus`.
+>>
+>>> If phy_read() is called here, I assume that you are happy about the
+>>> above comment. The way to call mdiobus_read() here is safe because it
+>>> just an open code of phy_read(). Simply adding it works for you?
+>>>
+>>> // SAFETY: `phydev` is pointing to a valid object by the type invariant=
+ of `Self`.
+>>> // So it's just an FFI call, open code of `phy_read()`.
+>>
+>> This would be fine if we decide to go with the exception I detailed
+>> above. Although instead of "open code" I would write "see implementation
+>> of `phy_read()`".
+>>
+>=20
+> So the rationale here is the callsite of mdiobus_read() is just a
+> open-code version of phy_read(), so if we meet the same requirement of
+> phy_read(), we should be safe here. Maybe:
+>=20
+> =09"... open code of `phy_read()` with a valid phy_device pointer
+> =09`phydev`"
+>=20
+> ?
 
-After some more thoughts, I agree `Task::current_raw` may be better for
-the current usage, since we can also use it to wrap a
-`current_is_kthread` method like:
+Hmm that might be OK if we add "TODO: replace this with `phy_read` once
+bindgen can handle static inline functions.".
 
-    impl Task {
-        pub fn current_is_kthread() -> bool {
-	    let current = Self::current_raw();
+Actually, why can't we just use the normal `rust_helper_*` approach? So
+just create a `rust_helper_phy_read` that calls `phy_read`. Then call
+that from the rust side. Doing this means that we can just keep the
+invariants of `struct phy_device` opaque to the Rust side.
+That would probably be preferable to adding the `TODO`, since when
+bindgen has this feature available, we will automatically handle this
+and not forget it. Also we have no issue with diverging code.
 
-	    unsafe { (*current).flags & bindings::PF_KTHREAD != 0 }
-	}
-    }
+--=20
+Cheers,
+Benno
 
-Regards,
-Boqun
