@@ -1,139 +1,90 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="POMy0qqK"
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 178A0CE;
-	Mon, 11 Dec 2023 17:25:25 -0800 (PST)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-77f380d8f6aso304722685a.2;
-        Mon, 11 Dec 2023 17:25:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LQgWiO3A"
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B214ACF;
+	Mon, 11 Dec 2023 17:46:52 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1d33819091fso188125ad.0;
+        Mon, 11 Dec 2023 17:46:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702344324; x=1702949124; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=acdHOCAiQMqkPWM1t1b37j8hmWv8asGLnF3nSjNDtxY=;
-        b=POMy0qqKXSsPfkEQ0KV0+WC8FdZirzY0ulauLmG+mcz7YUKEg4Mf+e7cIEZcb5IWAA
-         ZVrk3jusPz+arx697XjTxGBSd58UqDnGX1asSfVcu0aqL+NOkl7UV3a9mnMS+pGLxpKu
-         MYRTVda/CHdYjvWQ7BgnqvFngD8742QZx0uW8XAGwWEdlPwvmOcDOHviIy/V1+4p9Rbs
-         /Ms4T+LDdaqiIXYOWpp8+vV53VaZtudpDOxFoTsVHIiSomUWGW6EkbUMrDyD/y8YTSxm
-         8jpzcL5VpKj3gKKEDlXZyC6zVO5vzSFMo4d/OYHiJ4rpzGiUWIFPinXxz7DkUEo6F+5Q
-         Jp/g==
+        d=gmail.com; s=20230601; t=1702345612; x=1702950412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jju21SUwEHUZorrx0HLBuSA8/zFtpsFlwl1EG/olYPI=;
+        b=LQgWiO3ATA/g2KX5cOTSPlowhbvltNP5EyFw+jMEjkJIACf5YV1QmpYYZhFYh8L6qm
+         9AAA7/LiLYQczY/kpBGF9LvrbkJw61I2VuzuZW1FNIUPMOalAGDV9hTJMrlSUw/iC+mR
+         FfA9bUDyOvgB03MGw7nbBBCJS9jN3Fe7qk223N8maB2OJavNGXGODL7s/4j05cgMsoQY
+         tQl/5L1WSnxGbPFi7Bw9IriiUbib4SkBV6LIDryIlfZ7wURF9mtH/HBGWaEX23bQL+JB
+         kdRgZsTg3vRUIAuoRIgTjSG9PxGTkzvxN+LdSF5VWGD8CZpjlClM/VYV3bQOQcptUYgu
+         pZ+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702344324; x=1702949124;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=acdHOCAiQMqkPWM1t1b37j8hmWv8asGLnF3nSjNDtxY=;
-        b=a+DHjoNl7Rtv9YDaoKWwjthh4cRCO6xrSlrW3GReIueKB5Kq0vsQtxGbi/cF99f+dd
-         cZsEs7DBkZTwiSUOFqb+UrwJeE9JugX9H4GUXFalBixkMCz5aWd+XxPWQc6TrvSl4s0f
-         Y1B2NOuTX5ni4hEy/f8FxnBMopqQVabszOhedDs/i5qpBx6a+PmkAHa0q8S8K+yR2k2d
-         PQq8zZRfyEPhsBYvSEyjEgHwzGmi3CQczICgDduVSlopaYMNRply+l40A6nR0VnR8Ikq
-         Sll408hZTh/gzNB0oHkEdei1YSIIBjFnlP6987zNxCIpQnk9kjlip6nkGdz2v7NSrsp/
-         vpiQ==
-X-Gm-Message-State: AOJu0YyXGG3BOFAjVrcuAR0U/0welxqccecOw57nbT5QY7o0/g99krkV
-	OezfTEnCir6EZ1Y8nXwLGSAGj6OF1O4=
-X-Google-Smtp-Source: AGHT+IEb95/ZGm8O6gm2t4mE3gP9Rlo4ON4qD/l33nhdEi2IolELBMvqoa7D3DYD6H7wM0F3aP6BPQ==
-X-Received: by 2002:ae9:e905:0:b0:77d:4cb9:89ac with SMTP id x5-20020ae9e905000000b0077d4cb989acmr6056119qkf.32.1702344324191;
-        Mon, 11 Dec 2023 17:25:24 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id g3-20020a05620a278300b0077f435ed844sm3350413qkp.112.2023.12.11.17.25.23
+        d=1e100.net; s=20230601; t=1702345612; x=1702950412;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Jju21SUwEHUZorrx0HLBuSA8/zFtpsFlwl1EG/olYPI=;
+        b=lnhEg0Tm1mEM7ytg7Gxx/hSTA9N1cHaRUevXPmQNzAa4LATQM2piXUqV6YxaqmDPj2
+         yaWMwdrBEvPiAoISNQaRUYoAfI98+B2rUznA/gu/zXFxVNAoMCO6MPRSDalBYmiTTcmc
+         CqvTYfNiiaX3Xm0SwzsDSZooAjfmzdgSLTIttJeIOUcez4nq1i2kIhYAHW9nLtcA6p5G
+         g3Y+SSyhFt4+pFy6ZBqZvB3z/dEXVLGHOUwbmp0b4VBq81s4W04zmuWPZpIhP6N4RfZi
+         E1ZhJq+00XDXUzIUu86mYudtjWdcPIe/p41+VWoFBE3j6jLgW5Tw/UMqsjb0ZvPYtWLI
+         /PTQ==
+X-Gm-Message-State: AOJu0YzQ2dSiSHv9Is+LBhkKp4rkpxmIQppp2Vhuv3hjF5tbp8WSdsVf
+	MVRa9yzWcuSqYGjsgzkazt27s6Fa8xm/OUA2
+X-Google-Smtp-Source: AGHT+IFvC2g98zxwV9w9zNQM32C+ci5k0t/PhIy1P0MdsnKUh5hDUPcEFIrBMBFprMrVlNdiuWNUWw==
+X-Received: by 2002:a17:902:db09:b0:1d0:c93b:fb9 with SMTP id m9-20020a170902db0900b001d0c93b0fb9mr10701845plx.3.1702345612144;
+        Mon, 11 Dec 2023 17:46:52 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id bh2-20020a170902a98200b001cfc34965aesm3602774plb.50.2023.12.11.17.46.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 17:25:23 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 149FE27C0054;
-	Mon, 11 Dec 2023 20:25:23 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Mon, 11 Dec 2023 20:25:23 -0500
-X-ME-Sender: <xms:grZ3Za2GyBNybZZip9ZB5B1oMQqZZ-CX0EmiD_v7HSSL4fPjaMLgng>
-    <xme:grZ3ZdHh0gpTJBJfV81u-qJAjqYnh8HMupNkWs22uaaz1jcHP99ZDknZ5IXa7UiAp
-    CuUM24iNlyfWz_cwQ>
-X-ME-Received: <xmr:grZ3ZS5EuHSYT0-yBVZ3coFRG-9SyvXrkzJDHvh71iplhG2OZ--zJCxqf90>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelfedgfeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:grZ3Zb3HAUP5xLGHERiqsDk9z4cvm0JP69G-dg7cDyGovICXoF71kQ>
-    <xmx:grZ3ZdGdtWVeQF4bP-6wu4xf6f_3D1u1SXoACg8WlZvHfHYTgfPfuQ>
-    <xmx:grZ3ZU-UsLUKEMc58q7qiOKi_wtOZP9KThtYCCNrgvxDshz7fQaOjA>
-    <xmx:g7Z3ZSvw2CEO67Xk12lvV8pXRZuDsyaZMSfyQmtGbsXoNZ0tY6OgxA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 Dec 2023 20:25:21 -0500 (EST)
-Date: Mon, 11 Dec 2023 17:25:18 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: benno.lossin@proton.me, a.hindborg@samsung.com, alex.gaynor@gmail.com,
-	arve@android.com, bjorn3_gh@protonmail.com, brauner@kernel.org,
-	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz,
-	gary@garyguo.net, gregkh@linuxfoundation.org,
-	joel@joelfernandes.org, keescook@chromium.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	maco@android.com, ojeda@kernel.org, peterz@infradead.org,
-	rust-for-linux@vger.kernel.org, surenb@google.com,
-	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk,
-	wedsonaf@gmail.com, willy@infradead.org
-Subject: Re: [PATCH v2 6/7] rust: file: add `DeferredFdCloser`
-Message-ID: <ZXe2fpN4zRlkLLJC@boqun-archlinux>
-References: <MjDmZBGV04fVI1qzhceEjQgcmoBuo3YoVuiQdANKj9F1Ux5JFKud8hQpfeyLXI0O5HG6qicKFaYYzM7JAgR_kVQfMCeVdN6t7PjbPaz0D0U=@proton.me>
- <20231211153440.4162899-1-aliceryhl@google.com>
- <ZXdJyGFeQEbZU3Eh@boqun-archlinux>
+        Mon, 11 Dec 2023 17:46:51 -0800 (PST)
+Date: Tue, 12 Dec 2023 10:46:50 +0900 (JST)
+Message-Id: <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, alice@ryhl.io, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
+ wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ZXeuI3eulyIlrAvL@boqun-archlinux>
+References: <ZXed8cQLJhDSTuXG@boqun-archlinux>
+	<20231212.084753.1364639100103922268.fujita.tomonori@gmail.com>
+	<ZXeuI3eulyIlrAvL@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXdJyGFeQEbZU3Eh@boqun-archlinux>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 11, 2023 at 09:41:28AM -0800, Boqun Feng wrote:
-> On Mon, Dec 11, 2023 at 03:34:40PM +0000, Alice Ryhl wrote:
-> > Benno Lossin <benno.lossin@proton.me> writes:
-> > > On 12/6/23 12:59, Alice Ryhl wrote:
-> > > > +    /// Schedule a task work that closes the file descriptor when this task returns to userspace.
-> > > > +    ///
-> > > > +    /// Fails if this is called from a context where we cannot run work when returning to
-> > > > +    /// userspace. (E.g., from a kthread.)
-> > > > +    pub fn close_fd(self, fd: u32) -> Result<(), DeferredFdCloseError> {
-> > > > +        use bindings::task_work_notify_mode_TWA_RESUME as TWA_RESUME;
-> > > > +
-> > > > +        // In this method, we schedule the task work before closing the file. This is because
-> > > > +        // scheduling a task work is fallible, and we need to know whether it will fail before we
-> > > > +        // attempt to close the file.
-> > > > +
-> > > > +        // SAFETY: Getting a pointer to current is always safe.
-> > > > +        let current = unsafe { bindings::get_current() };
-> > > > +
-> > > > +        // SAFETY: Accessing the `flags` field of `current` is always safe.
-> > > > +        let is_kthread = (unsafe { (*current).flags } & bindings::PF_KTHREAD) != 0;
-> > > 
-> > > Since Boqun brought to my attention that we already have a wrapper for
-> > > `get_current()`, how about you use it here as well?
-> > 
-> > I can use the wrapper, but it seems simpler to not go through a
-> > reference when we just need a raw pointer.
-> > 
-> > Perhaps we should have a safe `Task::current_raw` function that just
-> > returns a raw pointer? It can still be safe.
-> > 
+On Mon, 11 Dec 2023 16:49:39 -0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
+
+>> touch it (doesn't need to know anything about it). What safety comment
+>> should be written here?
 > 
-> I think we can have a `as_ptr` function for `Task`?
+> Basically, here Rust just does the same as C does in phy_read(), right?
+> So why phy_read() is implemented correctly, because C side maintains the
+> `(*phydev).mdio.addr` in that way. We ususally don't call it out in C
+> code, since it's obvious(TM), and there is no safe/unsafe boundary in C
+> side. But in Rust code, that matters. Yes, Rust doesn't control the
+> value of `(*phydev).mdio.addr`, but Rust chooses to trust C, in other
+> words, as long as C side holds the invariants, calling mdiobus_read() is
+> safe here. How about 
 > 
-> 	impl Task {
-> 	    pub fn as_ptr(&self) -> *mut bindings::task_struct {
-> 	        self.0.get()
-> 	    }
-> 	}
+> // SAFETY: `phydev` points to valid object per the type invariant of
+> // `Self`, also `(*phydev).mdio` is totally maintained by C in a way
+> // that `(*phydev).mdio.bus` is a pointer to a valid `mii_bus` and
+> // `(*phydev).mdio.addr` is less than PHY_MAX_ADDR, so it's safe to call
+> // `mdiobus_read`.
 
-Forgot mention, yes a ptr->ref->ptr trip may not be ideal, but I think
-eventually we will have a task work wrapper, in that case maybe
-Task::as_ptr() is still needed somehow.
+I thought that "`phydev` is pointing to a valid object by the type
+invariant of `Self`." comment implies that "C side holds the invariants"
 
-Regards,
-Boqun
+Do we need a comment about the C implementation details like
+PHY_MAX_ADDR? It becomes harder to keep the comment sync with the C
+side because the C code is changed any time.
