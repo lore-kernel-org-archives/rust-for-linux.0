@@ -1,89 +1,106 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="XjEXDiNy"
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08EF0AD
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 14:52:46 -0800 (PST)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5e263e43ff2so6109527b3.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 14:52:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjgguGeH"
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0630C98;
+	Tue, 12 Dec 2023 15:01:34 -0800 (PST)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1d072f50a44so14098515ad.0;
+        Tue, 12 Dec 2023 15:01:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1702421565; x=1703026365; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k6L/MRN8cwEAtX7flqzbEmTnr/zJMHFok3539Ug/qj8=;
-        b=XjEXDiNyFjsBQENijw9B4H/luPF/HdjnBvw9j+Mu4j8dxBZdaLd9eBHkw4V206Wyoj
-         j3ksK8QQdCnKfsHNR+gzcKTebTN4V67rr6U8Z3f45a3ioBp5i+RQJINBNGvxPtKoy1NP
-         pOImxD59QjKMHhEB2AI5pxKoUQMBk4+E+S1MS/B7WsPLcSMDsg1bpUlhO65IUQNbC7KS
-         QcBWssNdwdn1CBBDALVx4OzW/LVK+EddwmIOno9lTRv/EPwjVy15cJPCHMJofGdqsciE
-         DILNnGk3Rl3v2Uv7m5O9QpWPBfk/h5trF4gd1/+eH2lAw7mve1GmnnOPVyhNQrQQfSWy
-         cccw==
+        d=gmail.com; s=20230601; t=1702422093; x=1703026893; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yqA4Na7Dl2KuJVAZQzvlzyq1LGTzs46iWg9Uwg7KP60=;
+        b=hjgguGeHAiOfDKNJUQ3mPKqwN8kjZdVVbmhHaPkqRbrWRft7BQiEdQPzR4EfYABczl
+         +420miG8H7X1uw5KkmtDake0OBVjRAdFCW6ELr9fKlo1oTjN9fwLCP/YjImXwX1KwlUT
+         rrYLLf1x6pY1kPT8lZYPQElHWS/ZTPwoLa8YIJPvPd8Dyih+PxbRGf3XyRaU4fMoKJqY
+         tw0WwJocb3LeB9z+RK0anr5FIIeVt7uanqKHrlk4FhaerKorDV07njJHhUa8wuoikVfk
+         ewgXvYw5L6t80lw4DjqeSzOsu1zeC1rfuWKq17zyhTxFufWBfIY2eKxnUpRuUkxFy2OG
+         V4TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702421565; x=1703026365;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k6L/MRN8cwEAtX7flqzbEmTnr/zJMHFok3539Ug/qj8=;
-        b=k8uZZ3WMAn3pvrt8KkKtsHLXlTitsX6B9kPl9D3OkWcWhB8A92PXiwDp2x6/l4MHNs
-         dDyKeUy/ErqzoxGpGksBC5Bb9g8OAuX0/OY4xcA50/qdJ7UhsRIrPUpfiYZp+6aZAXTU
-         eX/6Lp5S70ADcNUuFo3k7Y5FwJTGQlmVSP/clwpXuVTyZ9lNwLVAu755qfO27naOMR1Z
-         ynj5+P4fNOuXSUvI9AN5n9wWUoUjGt24FNQPrQSISzQlwSL1ukI3rtRmOa+3lqGp90uf
-         M4I0oFM9ybNHU16c/iKCVPqAcENbpZhD9S5lmwOa52o20bppjjmUQ9O8elYoQlvF4Gwh
-         jtdg==
-X-Gm-Message-State: AOJu0YyWu8wl65v/ZkuPeOa2TYiolXoxk1nUTfKC0/t6iw5ho17A5zIq
-	Cf5QZJLgrWWggXUFsz2TZFbEsH+i4xGHFgzqWg1P/Q==
-X-Google-Smtp-Source: AGHT+IHjooYbbdCK2iitz2iP9C7o88THB/ZnIKcbRwMRfQcc3hNE8EPM793Rv1C382I5BK/F8DICFoArNyoTg4LYFHQ=
-X-Received: by 2002:a0d:e2cc:0:b0:5d7:1940:53ed with SMTP id
- l195-20020a0de2cc000000b005d7194053edmr5381917ywe.101.1702421565254; Tue, 12
- Dec 2023 14:52:45 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702422093; x=1703026893;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yqA4Na7Dl2KuJVAZQzvlzyq1LGTzs46iWg9Uwg7KP60=;
+        b=DNwiC961GcEYKSCfIZf/OLr3IWedASijDbyXBRlIXPgUs06yVjmgOxW2fD8K60WZa9
+         8oP3QARzgYiBL8P4cXQnM1TsD6C/l43mW0cC9rSxFEcyu4uFoOWbhc/2FkjhWttSUNVZ
+         v+d8YnyKzqyZs+ujqr8NW9xGrowmhEdN+7c8j/Og6Y35kGrmuwtLTWXJ0ru4lBYejjYJ
+         41IlvwSvSrIJn10qbEcNmjUrpc5XYKhb1KMjwt5UZo9Bzy7NTboh6zGy7PdrIZuyWT/v
+         BmiKfsw52eotl1hTNFgqCo01eDnWC5HSNIylkm7CcGJ7NwLc51FT8T7OvAJf5VPyR4Mx
+         oqtQ==
+X-Gm-Message-State: AOJu0Yy4rzgNym3vo4HjXvjabePJzYWg+1yUTA+GmfEqaO8hhNI5Sdvy
+	AMH7nnjcjA6h0rGddKCX/sWuOo5n6INjk9vv
+X-Google-Smtp-Source: AGHT+IFsr0tdS38Ft6ci8Ofp30LU4ORdrGzRpHu5ObtTxUnA9CBFRqq51VticOhXORNh/FKpAYOC8g==
+X-Received: by 2002:a17:902:ea0d:b0:1d0:b693:ae30 with SMTP id s13-20020a170902ea0d00b001d0b693ae30mr13605463plg.6.1702422093359;
+        Tue, 12 Dec 2023 15:01:33 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id s13-20020a170902ea0d00b001d1d27259cesm9125273plg.180.2023.12.12.15.01.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Dec 2023 15:01:32 -0800 (PST)
+Date: Wed, 13 Dec 2023 08:01:32 +0900 (JST)
+Message-Id: <20231213.080132.1176561831114639778.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, boqun.feng@gmail.com, alice@ryhl.io,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
+ aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <544015ec-52a4-4253-a064-8a2b370c06dc@proton.me>
+References: <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
+	<20231212.220216.1253919664184581703.fujita.tomonori@gmail.com>
+	<544015ec-52a4-4253-a064-8a2b370c06dc@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231210234924.1453917-1-fujita.tomonori@gmail.com> <20231210234924.1453917-3-fujita.tomonori@gmail.com>
-In-Reply-To: <20231210234924.1453917-3-fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 12 Dec 2023 17:52:34 -0500
-Message-ID: <CALNs47s_WvDBTax-6Pu699SCP1u4MxQDYh2o=mb7990OQjktDA@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 2/4] rust: net::phy add module_phy_driver macro
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, wedsonaf@gmail.com, 
-	aliceryhl@google.com, boqun.feng@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Sun, Dec 10, 2023 at 6:50=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Tue, 12 Dec 2023 17:35:34 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-> +/// kernel::module_phy_driver! {
-> +///     drivers: [PhySample],
-> +///     device_table: [
-> +///         DeviceId::new_with_driver::<PhySample>()
-> +///     ],
-> +///     name: "rust_sample_phy",
-> +///     author: "Rust for Linux Contributors",
-> +///     description: "Rust sample PHYs driver",
-> +///     license: "GPL",
-> +/// }
+> On 12/12/23 14:02, FUJITA Tomonori wrote:
+>> On Mon, 11 Dec 2023 22:11:15 -0800
+>> Boqun Feng <boqun.feng@gmail.com> wrote:
+>> 
+>>>>> // SAFETY: `phydev` points to valid object per the type invariant of
+>>>>> // `Self`, also the following just minics what `phy_read()` does in C
+>>>>> // side, which should be safe as long as `phydev` is valid.
+>>>>>
+>>>>> ?
+>>>>
+>>>> Looks ok to me but after a quick look at in-tree Rust code, I can't
+>>>> find a comment like X is valid for the first argument in this C
+>>>> function. What I found are comments like X points to valid memory.
+>>>
+>>> Hmm.. maybe "is valid" could be a confusing term, so the point is: if
+>>> `phydev` is pointing to a properly maintained struct phy_device, then an
+>>> open code of phy_read() should be safe. Maybe "..., which should be safe
+>>> as long as `phydev` points to a valid struct phy_device" ?
+>> 
+>> As Alice suggested, I updated the comment. The current comment is:
+>> 
+>> // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>> // So it's just an FFI call.
+>> let ret = unsafe {
+>>     bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into())
+>> };
+> 
+> I still think you need to justify why `mdio.bus` is a pointer that you
+> can give to `midobus_read`. After looking at the C code, it seems like
+> that the pointer needs to point to a valid `struct mii_bus`.
+> This *could* just be an invariant of `struct phy_device` [1], but where
+> do we document that?
 
-I still feel that device_table should be an optional field since it is
-only rarely different from `drivers`.
+If phy_device points to a valid object, phy_device.mdio is valid.
 
-But this is not worth blocking on and I can send a follow up patch after me=
-rge.
+A mii_bus must exist before a phy device. A bus is scanned and then a
+phy device is found (so phy_device object is crated).
 
-> [...]
-> This macro creates an array of kernel's `struct phy_driver` and
-> registers it. This also corresponds to the kernel's
-> `MODULE_DEVICE_TABLE` macro, which embeds the information for module
-> loading into the module binary file.
->
-> A PHY driver should use this macro.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+https://elixir.bootlin.com/linux/v6.6.5/source/drivers/net/phy/phy_device.c#L634
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
