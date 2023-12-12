@@ -1,101 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uwHUvICA"
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3354CF
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:17:52 -0800 (PST)
-Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-4b313cda01cso1346846e0c.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:17:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VF6MStIi"
+Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8D8ED
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:19:27 -0800 (PST)
+Received: by mail-vs1-xe2b.google.com with SMTP id ada2fe7eead31-4649daf0dd4so1483824137.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:19:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702372672; x=1702977472; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1702372767; x=1702977567; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=svtfoczbUmkSk/FfAJ18Ey7YGUd6Rbf3Cb8WhCI62xw=;
-        b=uwHUvICAI8d2WPm+n84vK21GeB6SqVqzswVq4xdK2uBS3I9q0EzT3kGAK3eg4Noh0a
-         a/TsNab0+cajSBTAT1g1+cf+1aS1f+9OXu5Yu8Jem0RhzERTKp8p8xPL5hTKox4ZPV71
-         x30+DvmonEmhHD5zSkfpxdELIP/kKEDxMw64DoiPK4p3IIHk9E3lUZaWtvWhIo/0Ro/A
-         Ygu1iZHinv+btgHiK2ZShZJWa5K4ko76947OTyl7OfvBbGuP+FnBB2zCb8VjVp6yfINz
-         2MdKJp6DCgFJxQBpP/ykSDD4dO4VQKWO3PTy6QlFawlppOwMRqIWK5mXSV7+cOOv5heS
-         DORw==
+        bh=S1+sprVV2T7W4J6YbeGw0M4DLw9yLV+04VHxcEgbiHE=;
+        b=VF6MStIi4ne9C5OIscvkHbVrlu2pO8w22M+lO9Whw+alY9qC+AvpQb1GV5w0ETBfLO
+         zvBJlC+7uDFdiwv2QHZ6pDztMu+OEJhUIOP3+C5CcIVMhjPOXJByhtM+wFTYmIAVzXWe
+         AnqOfhNr0vxPUa4csT5LoUDIqZjbwWs4yBWWA+rRyN1wEgxVn6pcJFS7wt4GkT3ORaRO
+         bcV1cxlcQxCgF0Ywk83fIB0ZZ+zanmWesREVqrITIx9j8CWhGNdJjDoyVXzP0DOLR1j1
+         RhsOSb6RiP/TU7VUD8hYva/b4FC1Vy4YOxOlPl7TPgl9m0vU6WK397MuGFWkY1ANptn9
+         pG4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702372672; x=1702977472;
+        d=1e100.net; s=20230601; t=1702372767; x=1702977567;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=svtfoczbUmkSk/FfAJ18Ey7YGUd6Rbf3Cb8WhCI62xw=;
-        b=gYCMSVK7s6PpQPN0jMdwDWYwx7Pg3VdGq6DsNOmLPIItEiDUJ/BfUQWNRHhWyCB7tF
-         0PiLE0yimyxQXIuf9cpNfYaBpVUYMWq0OANFBK6U4Wmj/QYnv164Qg/Aj3VvghsoUbxU
-         6owpnYMcRpgn4m1oSD1C4n19sqO/nLl28hlpp/MRVU3HI8VaEx5sUOjgmAbk60OXy3+L
-         AajQ5NmFl/IQQmhr96SBA0y3sSbXMehlj68kXHYjCWgwgWBPlUYY6HlDKkhzxgE2uxDR
-         RaSENBBhZ2ZRpJWejsgNe/PHDvabxLpHcEnmgD1p5dICnABiZCd3uOPuufUheZuxopqN
-         JROA==
-X-Gm-Message-State: AOJu0YzZUnIikzaCoOu9v0gC3r723gjgIyOdWW+uIulOQK+sV5zvqRAS
-	I1fBCZmEpyywKL41S0ou0jRAnOhUOfF4tqiDbUhg+g==
-X-Google-Smtp-Source: AGHT+IFmfbeb/7rtBj6vmL4fZAAyPipB/puXyxQ1iODO38/eHVk92foyKv3DYmMfxuPRWrzRFQ6KNFcTQlnfRFHHlec=
-X-Received: by 2002:a05:6122:4485:b0:4b2:a0ce:e4a3 with SMTP id
- cz5-20020a056122448500b004b2a0cee4a3mr3622791vkb.10.1702372671793; Tue, 12
- Dec 2023 01:17:51 -0800 (PST)
+        bh=S1+sprVV2T7W4J6YbeGw0M4DLw9yLV+04VHxcEgbiHE=;
+        b=GDFwGClZB8RnAFMI/DWUY9tTHWkGnxZJ8kwU7viL1UCTHPYZSuf+3TxwsblGbf5hku
+         qtwDR1kGaQTbM95Ey1KJzQbquFZeiDkEd5vvDYPwnHvuG9MUJOc6P4E13TK89FUrixiC
+         kUE45QtQa+ecd3NyqpLgdJLxgYfxWTZXEzVaSZtnE5s5B0N3KiYAkyZoXhlFqj3x/LzC
+         ItM/6oAjIeMQJcnFdoQjtZMKOkk/KMo1cJE/zMQsEQn/0/sI1f7gsoHD2QdN+DQ+wTkq
+         ny/7xbpEVYNFIav6E1aYnPXtxEo8NANqXgvgeq95oESgbB2hENhSzqPis3wB9tz6BBGW
+         gzqw==
+X-Gm-Message-State: AOJu0YwgdO1iHrJONzyWN2RUH+aonbDFy+mobHQUjPmWh05yjOTJNTyD
+	7NRD9QeJVL4PQnhYkXtl9fA3/+sCL243Du9kViehrA==
+X-Google-Smtp-Source: AGHT+IFqJB+r/gsMDbV2/WNS19JFr7F48BtZl+nyDy6AprTKQgrh4j3tEOIOJLL8ULgjzuUOsYiiDE0CKLWUr5C+7vQ=
+X-Received: by 2002:a05:6102:4429:b0:462:e85b:b812 with SMTP id
+ df41-20020a056102442900b00462e85bb812mr3950134vsb.24.1702372765514; Tue, 12
+ Dec 2023 01:19:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231211194909.588574-1-boqun.feng@gmail.com> <c833e8c5-0787-45e6-a069-2874104fa8a7@ryhl.io>
- <ZXeZzvMszYo6ow-q@boqun-archlinux> <20231212.085505.1804120029445582408.fujita.tomonori@gmail.com>
-In-Reply-To: <20231212.085505.1804120029445582408.fujita.tomonori@gmail.com>
+References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+In-Reply-To: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 12 Dec 2023 10:17:40 +0100
-Message-ID: <CAH5fLgiQd=9k5OaEKUjLw9WFSXW-kujNveN3cXdvqW-xNp5PSg@mail.gmail.com>
-Subject: Re: [net-next PATCH] rust: net: phy: Correct the safety comment for
- impl Sync
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: boqun.feng@gmail.com, alice@ryhl.io, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, wedsonaf@gmail.com
+Date: Tue, 12 Dec 2023 10:19:14 +0100
+Message-ID: <CAH5fLggpyxJfPFvtYuShKnT0mjcHViv7NQcBS7M--EK4jJHHRQ@mail.gmail.com>
+Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
+ build directory
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 12, 2023 at 12:55=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Tue, Dec 12, 2023 at 8:43=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
 >
-> On Mon, 11 Dec 2023 15:22:54 -0800
-> Boqun Feng <boqun.feng@gmail.com> wrote:
+> Rustup override is required to be set for the build directory and not
+> necessarily the kernel source tree (unless the build directory is its
+> subdir).
 >
-> > On Mon, Dec 11, 2023 at 10:50:02PM +0100, Alice Ryhl wrote:
-> >> On 12/11/23 20:49, Boqun Feng wrote:
-> >> > The current safety comment for impl Sync for DriverVTable has two
-> >> > problem:
-> >> >
-> >> > * the correctness is unclear, since all types impl Any[1], therefore=
- all
-> >> >    types have a `&self` method (Any::type_id).
-> >> >
-> >> > * it doesn't explain why useless of immutable references can ensure =
-the
-> >> >    safety.
-> >> >
-> >> > Fix this by rewritting the comment.
-> >> >
-> >> > [1]: https://doc.rust-lang.org/std/any/trait.Any.html
-> >> >
-> >> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> >>
-> >> It's fine if you want to change it,
-> >
-> > Does it mean you are OK with the new version in this patch? If so...
-> >
-> >> but I think the current safety comment is good enough.
-> >
-> > ... let's change it since the current version doesn't look good enough
-> > to me as I explained above (it's not wrong, but less straight-forward t=
-o
-> > me).
+> Clarify the same in quick-start guide.
 >
-> I'll leave this alone and wait for opinions from other reviewers since
-> you guys have different options. It's improvement so I don't need to
-> hurry.
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-To clarify, the modified safety comment is also okay with me.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
