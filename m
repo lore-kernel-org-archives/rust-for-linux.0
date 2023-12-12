@@ -1,75 +1,131 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QNfdxRqx"
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30CF95;
-	Tue, 12 Dec 2023 04:55:12 -0800 (PST)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5d3c7ef7b31so54741537b3.3;
-        Tue, 12 Dec 2023 04:55:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702385712; x=1702990512; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QwH0v1dmFbIofoPEMzbKt7PH0sNIOX6i59AMfWzszAM=;
-        b=QNfdxRqxj944OPDoehcVw+j2A4C9XMg+P24i0UC0LLNK2d/YYIUyRh8InqXupmIS/Z
-         26culEQEER0s339aB5KiLsFYC8S2WEB2lDzymdeUEeH9OQE0M77T7/IH8JyjkrCK4Zzb
-         8pBEqdFRhxglO8OaDo2Zz/fC+oim/9u5dmiQTEDS2w5o1BFEVk1KSk/1YEHLYCbknkS0
-         lwU4JeSWrYmonpE3GHVOyvJgaMC4lZTZyO5e87F+9JIWTJHqs1RBex8T3WtnSLuPiwMw
-         Y/2Fcu+ZdZUQ6DJphsu6kud3haZ5r0XkdbdZrtz9NWVvkeXhQ6j3plp8Es+Yqzd2qVNQ
-         jfqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702385712; x=1702990512;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QwH0v1dmFbIofoPEMzbKt7PH0sNIOX6i59AMfWzszAM=;
-        b=hFQ7DfmF8EJ4Utp3gFUtW31Ct/zTh8QSL2PHNO8+H75aC2PiWCNhRybxIi+qnN+rqK
-         +1VMFpeZgyuJ+Lv/s8SmKFaHNn2siAFC4WBBMA5/xfPF1YyakG79jjC8NBzZwrKeuzXf
-         nUtlb27nxstO2Z/JuSOLRM6AMsxgUAanPElHC+aPRpd2qfd93LmohBOTNjBlQ3pznaIx
-         4g+3kKwmjD9kxJ6vwQSgutTvEpMwg1ZHWZqZ8IBGGiVusSGqXSj547jYMBBcOV9vIS5B
-         iEBuD35/H5noBdbshh1BCPQkXgvAOTQGX4XUi/YstTxNCMQJdctE4g5+FIKmcCMgbXoe
-         AgFQ==
-X-Gm-Message-State: AOJu0YxLU2eOjb6z9DyI33EVYzm0Bjz3U/rGp3yYpw/qGSIlzWi/fQVf
-	mV6iphGoDI1Tq8PD6IA/aGLrlv/98J3upVerXEM=
-X-Google-Smtp-Source: AGHT+IEZGi1XU5hesgfZcTt3MyndEAv7ghTWWCk4kEY/ZnuncxmsuCAk9kYi98T7zGo17WihKVSacGeYvbTeuy8CKqM=
-X-Received: by 2002:a81:4947:0:b0:5e2:2927:a09f with SMTP id
- w68-20020a814947000000b005e22927a09fmr344215ywa.12.1702385711925; Tue, 12 Dec
- 2023 04:55:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ol4/FqXx"
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CF9ED;
+	Tue, 12 Dec 2023 04:55:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702385727; x=1733921727;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=w+lkU+xutOwVwtDcyc729Y4oCnLefQk3xbQDr3f4OT8=;
+  b=Ol4/FqXx7vEDZpIccUO+qS4Prn86mPrnFXatmddCnnMJMNk7Ol9iVXYI
+   GeaSd/BAyKZ0gdt9xenr3Ep22zQQwY4CGQOoawQs6t+SGkZUm+a3Gl9fx
+   27USyw3SePo5Ysjt+wJdafG8x5StGLHP5FiRJY6POfx534j7LsTqoLGD1
+   iGU90fR75SQ2xhCZnCZ2na2YG4PLUAipVUuDhaNDBlA4BZhrqN37DBEvo
+   hhXYhrGWvWgKVfvB5C7Lwyd9llCq/3KXY8a9ce6bH37KmaDQnB41vgaa6
+   SNSuqqakWx4JtDqIiJzwlvifv39tI/77Je/QgU9O6WvDbSbYASSGl7cDN
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="459116276"
+X-IronPort-AV: E=Sophos;i="6.04,270,1695711600"; 
+   d="scan'208";a="459116276"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2023 04:55:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="802456171"
+X-IronPort-AV: E=Sophos;i="6.04,270,1695711600"; 
+   d="scan'208";a="802456171"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 12 Dec 2023 04:55:22 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rD2IB-000JAz-1W;
+	Tue, 12 Dec 2023 12:55:19 +0000
+Date: Tue, 12 Dec 2023 20:50:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Matthew Maurer <mmaurer@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Matthew Maurer <mmaurer@google.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] x86/Kconfig: rust: Patchable function Rust compat
+Message-ID: <202312122055.m7s1ccIE-lkp@intel.com>
+References: <20231211150753.293883-1-mmaurer@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZXeuI3eulyIlrAvL@boqun-archlinux> <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
- <ZXfFzKYMxBt7OhrM@boqun-archlinux> <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
-In-Reply-To: <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 12 Dec 2023 13:55:00 +0100
-Message-ID: <CANiq72kh5K2O8bPyhfTJsxXfbG-2f35tPqKxm9Kg2JT6+4DMFw@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY drivers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: boqun.feng@gmail.com, alice@ryhl.io, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, 
-	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231211150753.293883-1-mmaurer@google.com>
 
-On Tue, Dec 12, 2023 at 5:04=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> The C side people read the Rust code before changing the C code? Let's
-> see.
+Hi Matthew,
 
-In the beginning, it is true that developers may forget often. But it
-is still the case that they need to be mindful of the Rust side, just
-like when changing some C function you need to take care of changing
-its callers. That is also why we want to have maintainers of each
-subsystem onboard.
+kernel test robot noticed the following build errors:
 
-In some cases it may be useful to annotate/mark the C side with a
-comment warning about it (or similar) if you think it is likely that a
-change on the C side will go unnoticed.
+[auto build test ERROR on tip/x86/core]
+[also build test ERROR on peterz-queue/sched/core tip/master tip/auto-latest linus/master v6.7-rc5 next-20231212]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Cheers,
-Miguel
+url:    https://github.com/intel-lab-lkp/linux/commits/Matthew-Maurer/x86-Kconfig-rust-Patchable-function-Rust-compat/20231211-230934
+base:   tip/x86/core
+patch link:    https://lore.kernel.org/r/20231211150753.293883-1-mmaurer%40google.com
+patch subject: [PATCH] x86/Kconfig: rust: Patchable function Rust compat
+config: x86_64-rhel-8.3-bpf (attached as .config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231212/202312122055.m7s1ccIE-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312122055.m7s1ccIE-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/x86/Kconfig:2443: syntax error
+   arch/x86/Kconfig:2442: invalid statement
+   arch/x86/Kconfig:2443: invalid statement
+   make[3]: *** [scripts/kconfig/Makefile:77: oldconfig] Error 1
+   make[2]: *** [Makefile:685: oldconfig] Error 2
+   make[1]: *** [Makefile:234: __sub-make] Error 2
+   make[1]: Target 'oldconfig' not remade because of errors.
+   make: *** [Makefile:234: __sub-make] Error 2
+   make: Target 'oldconfig' not remade because of errors.
+--
+>> arch/x86/Kconfig:2443: syntax error
+   arch/x86/Kconfig:2442: invalid statement
+   arch/x86/Kconfig:2443: invalid statement
+   make[3]: *** [scripts/kconfig/Makefile:77: olddefconfig] Error 1
+   make[2]: *** [Makefile:685: olddefconfig] Error 2
+   make[1]: *** [Makefile:234: __sub-make] Error 2
+   make[1]: Target 'olddefconfig' not remade because of errors.
+   make: *** [Makefile:234: __sub-make] Error 2
+   make: Target 'olddefconfig' not remade because of errors.
+
+
+vim +2443 arch/x86/Kconfig
+
+  2431	
+  2432	config CC_HAS_SLS
+  2433		def_bool $(cc-option,-mharden-sls=all)
+  2434	
+  2435	config CC_HAS_RETURN_THUNK
+  2436		def_bool $(cc-option,-mfunction-return=thunk-extern)
+  2437	
+  2438	config CC_HAS_ENTRY_PADDING
+  2439		def_bool $(cc-option,-fpatchable-function-entry=16,16)
+  2440	
+  2441	config RUSTC_HAS_ENTRY_PADDING
+  2442		depends RUST
+> 2443		def_bool $(rs-option,-Zpatchable-function-entry=16,16)
+  2444	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
