@@ -1,142 +1,208 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6QwT5OL"
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB0A09A;
-	Mon, 11 Dec 2023 20:04:11 -0800 (PST)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1d072f50a44so11715635ad.0;
-        Mon, 11 Dec 2023 20:04:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W3ICMDf1"
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2719CBF
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 20:36:36 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-40c38e520e2so37205e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 20:36:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702353851; x=1702958651; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tvNUqn69REGXDd1jiBC5j3yaPlbQpogLnkhVvz1Ja4s=;
-        b=Y6QwT5OL5DySWDlKJX06LSl1dE1POVeFcqIhAhARM2+SZ1+5s/jcnbF7e0y6eaBB1g
-         Y4UXgmLa8DmLOs+pacTkTI3B8k+GIfw4IVUma3E5kb3RPOkDjINDiNSKxGJ8aJs03yUo
-         jPfjn8t/13oyD+apEPbKfOao14GdZ/ibAZSroD1X/b2C9+ftJ+QvF5Jf59lvA0H4Tvdz
-         OlhU4tu4J5nR1nGVljCUDzQEq0xs5b61IwXd8pSqstBfhAIRiDKwVCiiUMPgIxj9QXCm
-         VzoFrQsk67onQOcXklZgoGcLOdT8dU2jUb4WyDuqcXw78G2l8KLOt5orJNUcs8Wq3DVZ
-         aGJg==
+        d=google.com; s=20230601; t=1702355794; x=1702960594; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=OHBeYnZGz2cfrZnYhnFF+aAG+rqMR1TRx/9ItuN13Fc=;
+        b=W3ICMDf1gqPx4d5H41SuSiHJAjTZBbh+yScGfzwG62/xoKP8cx6/igqtrqifmZM18h
+         c/l3os0qmqgRlYExSOEEMF5/yrETMPrnj4OBJbABvf+K8o0nuNWnCbbQbQog+FijmOR9
+         hwxyZb5e92bn9uQEYQwO+K2WYoEv0YYGA3aK6SWECH0VOYmb1Daw5+M6Fhgd/ooqrXTJ
+         agPuWPkCLxC+k4yal9xi0CQeTsrhkR5N3B41A38HSK+9SGUMfXxCk4R8cxbupGEMDaJ/
+         FTjA/wytnuB9J9NAj5WOkZDKD/i+JtDvgl/fxGTrsKU0hXCKW0xzdFVgoMxA0f4JUuyb
+         8JOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702353851; x=1702958651;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tvNUqn69REGXDd1jiBC5j3yaPlbQpogLnkhVvz1Ja4s=;
-        b=Kpe7YCQ9P64RkkVry+6t0rsnEzyDo7dS8rj81fkC7BHZULo86lZallegPIEfGC1ePa
-         R9umIAhLXNEHNlj7R6inHKLGKRbppF+Dp7qJtiAi6ZEOxTfVr8Fp5kPsPc6ZrDLmYBrP
-         r1mYqGAf8s5o0L0n3HRkXkC2Dv6YxWhUZ9SLNH+BtLYVKXKFJr3TXpSd2nprsJla12pz
-         um3gmJi7N0OrHAMhEEb421YHuIGlAwQNfdBnG4oagcsAIzp+DqdNpUUdg89BDF8BcpDg
-         lRWdmGq3Zl4zX7m05zhqTXFCEpkHxfQ6kQfLNEioPzk4IYnEq7iYjvpPAv948PfxlTtE
-         +3Mw==
-X-Gm-Message-State: AOJu0Yw5M5AfB5IaD2bd1SmO17FK0T2r7aRV5cH1f3YmUWuIQ7rtNFRX
-	My3KYOj1zjHuYCkmkB3+i4Q=
-X-Google-Smtp-Source: AGHT+IFvDw5joADI5wmrDw/hIUAhB+TW7uMDfDiBzko7IaP51D5l1kL3i5L/BOMlWzp5Ny4AyXmTyQ==
-X-Received: by 2002:a05:6a20:3d29:b0:18b:c9cf:4521 with SMTP id y41-20020a056a203d2900b0018bc9cf4521mr12881246pzi.2.1702353851114;
-        Mon, 11 Dec 2023 20:04:11 -0800 (PST)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id du6-20020a056a002b4600b006ce97bd5d04sm7362985pfb.140.2023.12.11.20.04.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 20:04:10 -0800 (PST)
-Date: Tue, 12 Dec 2023 13:04:10 +0900 (JST)
-Message-Id: <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, alice@ryhl.io, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- wedsonaf@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network
- PHY drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ZXfFzKYMxBt7OhrM@boqun-archlinux>
-References: <ZXeuI3eulyIlrAvL@boqun-archlinux>
-	<20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
-	<ZXfFzKYMxBt7OhrM@boqun-archlinux>
+        d=1e100.net; s=20230601; t=1702355794; x=1702960594;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OHBeYnZGz2cfrZnYhnFF+aAG+rqMR1TRx/9ItuN13Fc=;
+        b=ZjZQYZhQ5AxIuEmvsw++MrwD8xcs4YMxHddNP7yuVK/oIXUkMV9erf1ajr2789BNzL
+         krwFHo4nlNHAK4gvZFqyDFBwQX4l/x+DoeGyhuX/A9U6vv8zIfpoLyKvXpj3sOKe2usI
+         pgbFmGbU0lcqva6ACh1JO1Gzln6NuxCmgDIaQCgCffyL3DJU0zQdU6367q8Ozdg6Uq6d
+         xmQnSOeFElxDhtTjBh5LwgrpzL6Q7GIcpSJz/EEo18CDo/Hma37CwbIUpzTOWZjie/Y5
+         mhf2HP0kIlcIjaZULWpY4WwteflROfUtfLu/bW60ElTLFXPxWepk6HzfnLFw5uYUqAYe
+         Z/lQ==
+X-Gm-Message-State: AOJu0YyNHNIhlEKIwpBR1BWTpgYT0aAYsImvXaRCnaW8xWv7cspO7+Xj
+	2b0Nm4uCMyNPJjBTpg35Oa0zwnQ08Q0xMj+Dy2swg95q0YXM5V0IOQR1Qw==
+X-Google-Smtp-Source: AGHT+IGhV/Jg4KUhT9ynbUMjLS8drd1nAR9PCPhOMu7bqJD+p+uGxuYYTMMAxYRRwNf7/sQQAE77OrMEUTGj3nNXEeo=
+X-Received: by 2002:a05:600c:4f4b:b0:40c:4ed3:8d1f with SMTP id
+ m11-20020a05600c4f4b00b0040c4ed38d1fmr47725wmq.7.1702355794454; Mon, 11 Dec
+ 2023 20:36:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+From: David Gow <davidgow@google.com>
+Date: Tue, 12 Dec 2023 12:36:20 +0800
+Message-ID: <CABVgOS=6Psq+BYET6o7KdQhKRP3A2wbTf+smAb54s-a4X--8kw@mail.gmail.com>
+Subject: Re: [PATCH v3] docs: rust: Add rusttest info
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000006ff826060c489870"
 
-On Mon, 11 Dec 2023 18:30:36 -0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
+--0000000000006ff826060c489870
+Content-Type: text/plain; charset="UTF-8"
 
-> On Tue, Dec 12, 2023 at 10:46:50AM +0900, FUJITA Tomonori wrote:
->> On Mon, 11 Dec 2023 16:49:39 -0800
->> Boqun Feng <boqun.feng@gmail.com> wrote:
->> 
->> >> touch it (doesn't need to know anything about it). What safety comment
->> >> should be written here?
->> > 
->> > Basically, here Rust just does the same as C does in phy_read(), right?
->> > So why phy_read() is implemented correctly, because C side maintains the
->> > `(*phydev).mdio.addr` in that way. We ususally don't call it out in C
->> > code, since it's obvious(TM), and there is no safe/unsafe boundary in C
->> > side. But in Rust code, that matters. Yes, Rust doesn't control the
->> > value of `(*phydev).mdio.addr`, but Rust chooses to trust C, in other
->> > words, as long as C side holds the invariants, calling mdiobus_read() is
->> > safe here. How about 
->> > 
->> > // SAFETY: `phydev` points to valid object per the type invariant of
->> > // `Self`, also `(*phydev).mdio` is totally maintained by C in a way
->> > // that `(*phydev).mdio.bus` is a pointer to a valid `mii_bus` and
->> > // `(*phydev).mdio.addr` is less than PHY_MAX_ADDR, so it's safe to call
->> > // `mdiobus_read`.
->> 
->> I thought that "`phydev` is pointing to a valid object by the type
->> invariant of `Self`." comment implies that "C side holds the invariants"
->> 
-> 
-> By the type invariant of `Self`, you mean:
-> 
-> /// # Invariants
-> ///
-> /// Referencing a `phy_device` using this struct asserts that you are in
-> /// a context where all methods defined on this struct are safe to call.
-> 
-> my read on that only tells me the context is guaranteed to be in a
-> driver callback, nothing has been said about all other invariants C side
-> should hold.
+On Mon, 11 Dec 2023 at 20:16, Dirk Behme <dirk.behme@de.bosch.com> wrote:
+>
+> Searching the Rust kernel documentation all existing Rust Make
+> targets (rustavailable, rustfmt, rustfmtcheck, rustdoc and
+> rust-analyzer) are explicitly documented with their Make syntax.
+> While the Make target rusttest is mentioned two times in the
+> existing documentation, it's Make syntax is not explicitly
+> documented, yet. Add a test section to document this.
+>
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> ---
 
-I meant that phydev points to a valid object, thus mdio and mdio.addr
-do too. But after reading you phy_read() comment, I suspect that you
-aren't talking about if mdio.addr points to valid memory or not. Your
-point is about the validity of calling mdiobus_read() with mdio.addr?
+The KUnit parts of this look fine to me, though it's not actually
+necessary to use --arch x86_64; the default UML should work (if your
+host is x86).
 
+There was a previous PR to add some documentation here:
+https://github.com/Rust-for-Linux/linux/pull/935
 
->> Do we need a comment about the C implementation details like
->> PHY_MAX_ADDR? It becomes harder to keep the comment sync with the C
->> side because the C code is changed any time.
-> 
-> Well, exactly, "the C code is changed any time", I thought having more
-> information in Rust helps people who is going to change the C side to
-> see whether they may break Rust side. Plus it's the safety comment, you
+Maybe it'd make sense to borrow some ideas from that and create a
+rust/.kunitconfig file so we can move the --kconfig_add CONFIG_RUST=y
+(and any other options we may want to enable rust-specific tests)
+somewhere.
 
-The C side people read the Rust code before changing the C code? Let's
-see. 
+(Though there's a distinction there between 'I want to test that Rust
+support is functional' and 'I want to test something else, but want
+Rust support enabled'. I think adding a .kunitconfig would be fine for
+both for the time being, though.)
 
+None of those are show-stoppers for me, though, so this is nevertheless
 
-> need to prove that it's safe to call the function, the function is
-> unsafe for a reason: there are inputs that may cause issues, and writing
-> the safety comment is a process to think and double check.
-> 
-> Maybe we can simplify this a little bit, since IIUC, you just want to
-> call phy_read() here, but due to that Rust cannot call inline C
-> functions directly, hence the open-code. How about:
+Reviewed-by: David Gow <davidgow@google.com>
 
-Yeah, I hope that the discussion about inline C functions would end
-with a solution.
+Cheers,
+-- David
 
+>
+> v3: Add the comments from Benno and Miguel. Thanks!
+>
+>  Documentation/rust/general-information.rst | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>
+> diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+> index 081397827a7ea..016c7feb433ce 100644
+> --- a/Documentation/rust/general-information.rst
+> +++ b/Documentation/rust/general-information.rst
+> @@ -77,3 +77,22 @@ configuration:
+>         #[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
+>         #[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
+>         #[cfg(not(CONFIG_X))]  // Disabled
+> +
+> +Testing
+> +-------
+> +
+> +To run the Rust tests, you can use the following make target::
+> +
+> +       make LLVM=1 rusttest
+> +
+> +This requires the kernel .config and downloads external repos. It
+> +runs the ``#[test]`` tests on the host (currently) and thus is fairly
+> +limited in what these tests can test.
+> +
+> +Additonally, there are the tests that come from the examples in the
+> +Rust documentation and get transformed into KUnit tests. These can be
+> +run via KUnit. For example::
+> +
+> +       ./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
+> +
+> +See the :doc:`KUnit documentation</dev-tools/kunit/index>` for the details how to use it.
+> --
+> 2.28.0
+>
+>
 
-> // SAFETY: `phydev` points to valid object per the type invariant of
-> // `Self`, also the following just minics what `phy_read()` does in C
-> // side, which should be safe as long as `phydev` is valid.
-> 
-> ?
+--0000000000006ff826060c489870
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Looks ok to me but after a quick look at in-tree Rust code, I can't
-find a comment like X is valid for the first argument in this C
-function. What I found are comments like X points to valid memory.
+MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+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
+ddIn9n5Jt6Z1o79zxraLMEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
+AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
+c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
+LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
+LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
+Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQBtHFwIgQZjer5K
+H+4Q+wns10k7qN+4wN2Uf+JsyOYjukaMEgdLErfA1wwtQ9uHkoYQZcWBuVVkQFa5hI+sqI2m1Weq
+riMCFSiU38s1tADdMX12IMfJRN60Nznhrw+nPyDRZqRhUTW24TwnHorkDnFPW8PHo7fAw4FrpI0n
+impZAng7ccvvK09K3ZuhwTIxJMsPXCZYsrXWORTw5sczRAP6XvKbPBJnsJoSTe5dFBPBHOQJOGhU
+qWfEfWnWMJPF3LxSGLpLFQXO3RwQqmxv08avwXfVPouh1xuB3FX7rpDabT8YDhu9JgIZkLEKko7L
+yQt6zWwng7k8YF/jGbiAta6VMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
+R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
+MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCQ
+ic93DRISnviAou9gq8+9/CHc0F9AVM2GZzdDKNmq2TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzEyMTIwNDM2MzRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAQ5zbonauy2gHN7EraF5D
+dzb/4eLflGvH+wPoBACn8/F0dLICI1+zvrd3MY1mJG+FAordXZCkfm0BZqJCMZVpQzzgctWu6btY
+Jd/XhDntlOniwMECpypy1jurTAjnrbHRivL309HT/UtAiWcMpVaS+bvV9ddKoKmkWtbjnoeLm1OS
+Dwr8KgWQQPxbv6WojxLRNcN3mzB9FkZeTMQsLAiGu64XSlL2jm+/DBwQ7IwDwuSunk1fDPuFp5W8
+3tlnaFum/AtRJp1H4cfC8kH8m29/gyEjjlKdrrIrXLukd+uRN1HtaXalB5CFMsIlafUr6n57hQE/
+TAMLQyu5s58Xr5wn9Q==
+--0000000000006ff826060c489870--
