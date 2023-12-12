@@ -1,45 +1,29 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575F87543A
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 16:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/K8p65H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96328C433C7;
-	Tue, 12 Dec 2023 16:47:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702399679;
-	bh=XF63h1kuxEzpbT+A2nxez/2sqsSVuEBj4HJY8oeJ804=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I/K8p65HG8NeHJBLKa0McHedFOXKkI5TEbfPf/eRvxIY/BOeqWYgdrGo8cV+eakxL
-	 z3HRDcj7GmshpVpfZU/9VPEAHCy3/ZujPN9JX0iFB2CzeQikP2Qaea+J/qvr/SEHMA
-	 n/vFNBtlQ+pGgV+fEaY1VXs3HTOiEstXdmA5tZ7xjxKkjlowA/R+rRqTVLQXDl0T4o
-	 +Fr8efQlEKmwk3sb0FwIIguX3fEPh5pklNHjkxNdDGIxLXCmNaoHtJWwbuipx+TRRe
-	 4US22/AMqEFx1T7cpUvnw7LGpH0wurNlMmpEzp5HslQMfVw34c4D1EmuBkJddizuKC
-	 6c2/JWMfeOlOQ==
-Date: Tue, 12 Dec 2023 16:47:52 +0000
-From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Cc: Trevor Gross <tmgross@umich.edu>, Ingo Molnar <mingo@kernel.org>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	steve.capper@arm.com, Asahi Lina <lina@asahilina.net>,
-	boqun.feng@gmail.com, andrew@lunn.ch,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
- of builtin targets
-Message-ID: <20231212164751.GA30181@willie-the-truck>
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
- <ZTT/h5wKL7STeOhC@arm.com>
- <ZTUCdS0Vrev1iQOv@gmail.com>
- <CALNs47vb+-_wD0uKQJYVMswHdivOr-1v6ajQ3hQw4wNs4Da0rg@mail.gmail.com>
- <ZUDry1L3w4sdGRN5@arm.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Jp8ET7bH"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2297A8
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 08:51:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1702399860; x=1702659060;
+	bh=w38LyRHLZtbV6MXFwYHgJYUkLwMl4DKzg/6P9akEIm8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Jp8ET7bH3aUWWYk2XtraWwxkt6VOsNoTE6yTzBkO/5qlf8Uz7N1EHWsm6NaW0dL34
+	 6oSR5bu1enkU96x+sMJJNGD1qmYW/04YQIGibnzU67r8PcDR8IHWGvfejHQ0o9w4ub
+	 jKwJFBS7GtZscegHd4KGpVr2YDCPFUpV0R6e2Xj2UKh+qX2iRlsaP/nxolfneYK5hR
+	 KrRnoGDXDS/3jpnhYWaqpKCS82I1UNUG5plAcmWZW3n2q/5aRUHYcoUd+9UYINGzM2
+	 3miwsR87An1DUJgbf8yedooNSmwy2Lcn+KxifYodaS21XxJbGCWOboZmPwDfD/iuGg
+	 l/Eg9bptUz9Zg==
+Date: Tue, 12 Dec 2023 16:50:53 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
+Subject: Re: [PATCH v2 6/7] rust: file: add `DeferredFdCloser`
+Message-ID: <8idgiXA3NzJ1zv5FQ4UVhObREsn81yb7T_M6Z44-Mc0-Rta_Q_jmOAkmDCwLKgE221TtMmFiebz0Q8WJPhy4WpngTiTc5dxwg6qIffueYmY=@proton.me>
+In-Reply-To: <CAH5fLggB_33jR1eyXSFhN=DN34wD7E6-ckSU8ABmQ50H-L3P-w@mail.gmail.com>
+References: <MjDmZBGV04fVI1qzhceEjQgcmoBuo3YoVuiQdANKj9F1Ux5JFKud8hQpfeyLXI0O5HG6qicKFaYYzM7JAgR_kVQfMCeVdN6t7PjbPaz0D0U=@proton.me> <20231211153440.4162899-1-aliceryhl@google.com> <DNn_nN0MKmn9OoY7Gjn4fCUcwKD6ijDZyDXVHvouEa2w0o2yiXeRox3EUfAcbfoWqx0I24-8HqqzONjuTQIVxu2cfAoNQpUFJygPtQNXPM4=@proton.me> <CAH5fLggB_33jR1eyXSFhN=DN34wD7E6-ckSU8ABmQ50H-L3P-w@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,36 +31,95 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZUDry1L3w4sdGRN5@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 31, 2023 at 11:58:03AM +0000, Catalin Marinas wrote:
-> On Mon, Oct 30, 2023 at 08:24:39PM -0400, Trevor Gross wrote:
-> > On Sun, Oct 22, 2023 at 7:14 AM Ingo Molnar <mingo@kernel.org> wrote:
-> > > * Catalin Marinas <catalin.marinas@arm.com> wrote:
-> > > > Adding the x86 maintainers - no functional change for x86, any objection
-> > > > to this patch going in via the arm64 tree (part of the two-patch series
-> > > > enabling Rust for arm64)?
-> > > >
-> > > > Thanks.
-> > > >
-> > > > (keeping the rest of the patch below for your reference)
-> > >
-> > > If Masahiro Yamada (kbuild maintainer, Cc:-ed) is fine with it,
-> > > then it will be OK to me too.
-> [...]
-> > I don't think this has been picked up yet. Is it only waiting on
-> > Masahiro 's ack or is a new version expected?
-> 
-> I'd say Masahiro's ack only. However, it's probably too late for 6.7
-> now, the merging window is already open and maintainers tend to pick
-> stuff up in the weeks before.
+On 12/12/23 10:35, Alice Ryhl wrote:
+> On Mon, Dec 11, 2023 at 6:23=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>>>>> +        // We update the file pointer that the task work is supposed=
+ to fput.
+>>>>> +        //
+>>>>> +        // SAFETY: Task works are executed on the current thread onc=
+e we return to userspace, so
+>>>>> +        // this write is guaranteed to happen before `do_close_fd` i=
+s called, which means that a
+>>>>> +        // race is not possible here.
+>>>>> +        //
+>>>>> +        // It's okay to pass this pointer to the task work, since we=
+ just acquired a refcount with
+>>>>> +        // the previous call to `get_file`. Furthermore, the refcoun=
+t will not drop to zero during
+>>>>> +        // an `fdget` call, since we defer the `fput` until after re=
+turning to userspace.
+>>>>> +        unsafe { *file_field =3D file };
+>>>>
+>>>> A synchronization question: who guarantees that this write is actually
+>>>> available to the cpu that executes `do_close_fd`? Is there some
+>>>> synchronization run when returning to userspace?
+>>>
+>>> It's on the same thread, so it's just a sequenced-before relation.
+>>>
+>>> It's not like an interrupt. It runs after the syscall invocation has
+>>> exited, but before it does the actual return-to-userspace stuff.
+>>
+>> Reasonable, can you also put this in a comment?
+>=20
+> What do you want me to add? I already say that it will be executed on
+> the same thread.
 
-Masahiro -- please can we have your Ack on this so that we can take it via
-the arm64 tree?
+Seems I missed that, then no need to add anything.
 
-Thanks,
+>>>>> +/// Represents a failure to close an fd in a deferred manner.
+>>>>> +#[derive(Copy, Clone, Eq, PartialEq)]
+>>>>> +pub enum DeferredFdCloseError {
+>>>>> +    /// Closing the fd failed because we were unable to schedule a t=
+ask work.
+>>>>> +    TaskWorkUnavailable,
+>>>>> +    /// Closing the fd failed because the fd does not exist.
+>>>>> +    BadFd,
+>>>>> +}
+>>>>> +
+>>>>> +impl From<DeferredFdCloseError> for Error {
+>>>>> +    fn from(err: DeferredFdCloseError) -> Error {
+>>>>> +        match err {
+>>>>> +            DeferredFdCloseError::TaskWorkUnavailable =3D> ESRCH,
+>>>>
+>>>> This error reads "No such process", I am not sure if that is the best
+>>>> way to express the problem in that situation. I took a quick look at t=
+he
+>>>> other error codes, but could not find a better fit. Do you have any
+>>>> better ideas? Or is this the error that C binder uses?
+>>>
+>>> This is the error code that task_work_add returns. (It can't happen in
+>>> Binder.)
+>>>
+>>> And I do think that it is a reasonable choice, because the error only
+>>> happens if you're calling the method from a context that has no
+>>> userspace process associated with it.
+>>
+>> I see.
+>>
+>> What do you think of making the Rust error more descriptive? So instead
+>> of implementing `Debug` like you currently do, you print
+>>
+>>     $error ($variant)
+>>
+>> where $error =3D Error::from(*self) and $variant is the name of the
+>> variant?
+>>
+>> This is more of a general suggestion, I don't think that this error type
+>> in particular warrants this. But in general with Rust we do have the
+>> option to have good error messages for every error while maintaining
+>> efficient error values.
+>=20
+> I can #[derive(Debug)] instead, I guess?
 
-Will
+Hmm I thought that might not be ideal, since then you would not have the
+error code, only `TaskWorkUnavailable` or `BadFd`.
+But if that is also acceptable, then I would go with the derived debug.
+
+--=20
+Cheers,
+Benno
+
