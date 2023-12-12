@@ -1,80 +1,75 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1UaX9Vv"
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664B4106
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 04:43:28 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-dae7cc31151so5453813276.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 04:43:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QNfdxRqx"
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30CF95;
+	Tue, 12 Dec 2023 04:55:12 -0800 (PST)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5d3c7ef7b31so54741537b3.3;
+        Tue, 12 Dec 2023 04:55:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702385007; x=1702989807; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702385712; x=1702990512; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gEMrj9esbToDvp8yzL8r+0YBG4xPa3d6CH7aOoS3Tjc=;
-        b=G1UaX9Vvhb8zFgKraWSBUbbCYsJ4LQkk+ZQrFLj18ESM5qPDeeCOHy6emmkh+6hbpa
-         O3faouaM6s+cZgdp6mFM/ZOCDIEsXWXIiVh6RG/LG5TDuaZrNX2Y6xnrXQI1iPPm5ahZ
-         f5NtOgD22FGFVdjCq7Q57PmZce7BmYt6dbVJ1cJhOudOmjy80pjdNWqUS6AQ9wRRex0I
-         Z/BETxSTroj3KmJ6QW2POP2u8L/X2aSPCfjkbwPtAKQMHXSGAyVgcvcM+MDKiUFywiIt
-         JuiwP6k+3Z50GSzGu9CpuVe2UQmSeo1Twg0uuPx98ahwx9kC5LkuE+a7Gv/9eSnOjYb2
-         MwQA==
+        bh=QwH0v1dmFbIofoPEMzbKt7PH0sNIOX6i59AMfWzszAM=;
+        b=QNfdxRqxj944OPDoehcVw+j2A4C9XMg+P24i0UC0LLNK2d/YYIUyRh8InqXupmIS/Z
+         26culEQEER0s339aB5KiLsFYC8S2WEB2lDzymdeUEeH9OQE0M77T7/IH8JyjkrCK4Zzb
+         8pBEqdFRhxglO8OaDo2Zz/fC+oim/9u5dmiQTEDS2w5o1BFEVk1KSk/1YEHLYCbknkS0
+         lwU4JeSWrYmonpE3GHVOyvJgaMC4lZTZyO5e87F+9JIWTJHqs1RBex8T3WtnSLuPiwMw
+         Y/2Fcu+ZdZUQ6DJphsu6kud3haZ5r0XkdbdZrtz9NWVvkeXhQ6j3plp8Es+Yqzd2qVNQ
+         jfqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702385007; x=1702989807;
+        d=1e100.net; s=20230601; t=1702385712; x=1702990512;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gEMrj9esbToDvp8yzL8r+0YBG4xPa3d6CH7aOoS3Tjc=;
-        b=OWY5yixGKfelCEpSk3zqfK6TwY4wON7E8JG2DNlOd/XqTW7LWP7Nzo/gJEmi8ajgqe
-         hW0hkUipX/G6iJANd+fsFio4KJU7ZrWBkV7hyCo2aCqcl4BFnLXNQE6qHq+t/8mrECqz
-         IzRktBVwmcpB91UDdt1PST0L0UJCyyIEXFMiXAaG0YCKN2cmTq2zJe6EYoSRRxr4c2Qi
-         bwh59cnNiELZCni1im2erv7JwjngBpTRUBhui4Dp/47Abxniu9XRcj42kQfiTBqaikyD
-         95MDt7Sb9BCdF8kXxA8LLso6R/m6B2uqQKecCmk0oW5lE2pTDo7925k/B8vZP44AefYt
-         cYng==
-X-Gm-Message-State: AOJu0Yyj8ELOXmHY+oX7M4wXXFkxGNcUfAxPLyIYkZ2Ek75YCpUol9Eb
-	mo3SfJVA695iatrnuq8PTN1Gh1EJ7vlr5GaOVng=
-X-Google-Smtp-Source: AGHT+IGUiVB33PvkcVELWdz4TJAxCP7oe7rKiolbAVjMD0G3pzuehN9hPcO364XjuaMAV7/o5qUrw/nsaYLyMYuF8eg=
-X-Received: by 2002:a25:7795:0:b0:db7:dacf:6fd0 with SMTP id
- s143-20020a257795000000b00db7dacf6fd0mr4395098ybc.88.1702385007469; Tue, 12
- Dec 2023 04:43:27 -0800 (PST)
+        bh=QwH0v1dmFbIofoPEMzbKt7PH0sNIOX6i59AMfWzszAM=;
+        b=hFQ7DfmF8EJ4Utp3gFUtW31Ct/zTh8QSL2PHNO8+H75aC2PiWCNhRybxIi+qnN+rqK
+         +1VMFpeZgyuJ+Lv/s8SmKFaHNn2siAFC4WBBMA5/xfPF1YyakG79jjC8NBzZwrKeuzXf
+         nUtlb27nxstO2Z/JuSOLRM6AMsxgUAanPElHC+aPRpd2qfd93LmohBOTNjBlQ3pznaIx
+         4g+3kKwmjD9kxJ6vwQSgutTvEpMwg1ZHWZqZ8IBGGiVusSGqXSj547jYMBBcOV9vIS5B
+         iEBuD35/H5noBdbshh1BCPQkXgvAOTQGX4XUi/YstTxNCMQJdctE4g5+FIKmcCMgbXoe
+         AgFQ==
+X-Gm-Message-State: AOJu0YxLU2eOjb6z9DyI33EVYzm0Bjz3U/rGp3yYpw/qGSIlzWi/fQVf
+	mV6iphGoDI1Tq8PD6IA/aGLrlv/98J3upVerXEM=
+X-Google-Smtp-Source: AGHT+IEZGi1XU5hesgfZcTt3MyndEAv7ghTWWCk4kEY/ZnuncxmsuCAk9kYi98T7zGo17WihKVSacGeYvbTeuy8CKqM=
+X-Received: by 2002:a81:4947:0:b0:5e2:2927:a09f with SMTP id
+ w68-20020a814947000000b005e22927a09fmr344215ywa.12.1702385711925; Tue, 12 Dec
+ 2023 04:55:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231211121613.3489513-1-dirk.behme@de.bosch.com> <df0d8a01-eac3-43b2-8498-e237a0fe6eb5@nvidia.com>
-In-Reply-To: <df0d8a01-eac3-43b2-8498-e237a0fe6eb5@nvidia.com>
+References: <ZXeuI3eulyIlrAvL@boqun-archlinux> <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
+ <ZXfFzKYMxBt7OhrM@boqun-archlinux> <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
+In-Reply-To: <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 12 Dec 2023 13:43:16 +0100
-Message-ID: <CANiq72n5OB0X9sHoNf-htRY9z93gzdg-BqdrOUDTqTEvUytoNA@mail.gmail.com>
-Subject: Re: [PATCH v3] docs: rust: Add rusttest info
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 12 Dec 2023 13:55:00 +0100
+Message-ID: <CANiq72kh5K2O8bPyhfTJsxXfbG-2f35tPqKxm9Kg2JT6+4DMFw@mail.gmail.com>
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY drivers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: boqun.feng@gmail.com, alice@ryhl.io, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, 
+	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 12, 2023 at 4:14=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
-wrote:
+On Tue, Dec 12, 2023 at 5:04=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> "make LLVM=3D1 <anything>" doesn't work for me, and therefore I suspect i=
-t
-> doesn't work for at least a few other people, as well.
->
-> Instead, I have to run "make CC=3Dclang <anything>", which works just
-> fine.
->
-> The docs should consistently reflect this, yes?
+> The C side people read the Rust code before changing the C code? Let's
+> see.
 
-No, they should not. `LLVM=3D1` is the "right" one for all architectures
-(except s390) -- see Documentation/kbuild/llvm.rst.
+In the beginning, it is true that developers may forget often. But it
+is still the case that they need to be mindful of the Rust side, just
+like when changing some C function you need to take care of changing
+its callers. That is also why we want to have maintainers of each
+subsystem onboard.
 
-If `LLVM=3D1` does not work for you, then that should be fixed. Could
-you please give some details? For instance, is it related to Rust
-(does it work with a `defconfig` build without enabling Rust)? Do you
-have all the LLVM software installed with the right names (see what
-`LLVM=3D1` expands to)? etc.
-
-(Cc'ing Nathan)
+In some cases it may be useful to annotate/mark the C side with a
+comment warning about it (or similar) if you think it is likely that a
+change on the C side will go unnoticed.
 
 Cheers,
 Miguel
