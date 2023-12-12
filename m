@@ -1,149 +1,86 @@
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B815953D
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 10:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="auvRWkHa"
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CE013E
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:59:46 -0800 (PST)
-Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3b9e1a3e3f0so3608331b6e.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:59:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702375185; x=1702979985; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JMGbv/XdWHrVqK7oSPhh0cmVjs8GCEDKwCdy5CLJlsU=;
-        b=auvRWkHaXuSi9lUfLE2Ju1mbC6HAW5cO9QurxiQZWdrnh+XjdrIN+tmCiLMvtytLjV
-         UQi5Ql4EirrFbH/PLI1RCZVWoKR3/z9AOafcKCbj/flM4HtFt9JI/IegDbRPHC0yJpCS
-         cD9Cv95OpG+EOhggCJNmnVWwPZGZKSnlmCO4moK9Th28Wg+lMjOEJ6uo9CGQ1J/GygLb
-         Yee1TuqOJHRwl9H/SZlYgP+3llwxsOJJo9NkMJlvRVIXaiI5fq1Pv03z7E4hjSjqoVGB
-         GLrwkOLfUrum0yGu5VVxn3NN1P+/cUZDVTkESsqiflzcu4/5MXFsi/ETD/smcUMDq8FJ
-         9aKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702375185; x=1702979985;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JMGbv/XdWHrVqK7oSPhh0cmVjs8GCEDKwCdy5CLJlsU=;
-        b=hIV9ls4cQI5L1fNvmSQaIYvyCG0Y6Ag7nto75lS0p2fXf0jiK0NFjwrDTnIzyMF89c
-         5r7UJa2v+TQbDLK+Dy2sAmjIQwOC4Ceyc/+2Bk0PzPeuilSq8CtSf1aGP65UU1/5CZ6T
-         3u8atGLP5baZqL5alg7cagnx5nshMACG2EVrHqyfnCt/4msXKJbw2hmFsUNX8RXEsz3O
-         XIUW+uK9qyuYJ4XHFgZdZsh4Uwa1B+lV4hs86DqEUw5BYpR7NZq3CSeG9PAGBvBbeWIB
-         VFyaUJDQjMO5tnUVA8yAtdSkXN7fbncVudm6rxXU7RiMkyRWEaFUcUks2LcBdkMYxLjV
-         poUA==
-X-Gm-Message-State: AOJu0YzHBQ2Yo6NXb1xhWVT56Hum2vIhRIA67iJj2LHaev1XW5u3moqH
-	M+hvwweqdrGwtWeEsPMilAE7SFnXjpwoTReiJq1Qng==
-X-Google-Smtp-Source: AGHT+IFiBYDSREKvLHh1CmS/eZckElNLSWD8xf/QdPXW2I00WhSzxNo9IpGvT/aBr5y749jMq6osV+xRHfZNA9T+zZE=
-X-Received: by 2002:a05:6808:1817:b0:3b9:f016:fb89 with SMTP id
- bh23-20020a056808181700b003b9f016fb89mr8589210oib.53.1702375183991; Tue, 12
- Dec 2023 01:59:43 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmkUCFPn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE5DC433C7;
+	Tue, 12 Dec 2023 10:21:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702376465;
+	bh=pK/WUsxgnh8RiI/U0Nn8KFkaiIgNxZAiMKUkKsKk7Pg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VmkUCFPn9F5TmajwKU7rHC5iGp/jpHNzwZbnqNcM3QxmkppQvuZ50J4iCU8KSUayd
+	 xXjpbmL3qHyUAT012ZGWMAdWYoUxnkNYzKXkrOY9vCGPgYOUeEJsfkwSYjhvvsaGg9
+	 6vdiT4JZ4Pv+roVWC2mQLAJszSV6tHKyiBsmBvwg=
+Date: Tue, 12 Dec 2023 11:21:02 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, cfr@inria.fr,
+	cocci@inria.fr, rust-for-linux@vger.kernel.org
+Subject: Re: Extending support for mailing list archives?
+Message-ID: <2023121227-shadiness-sagging-6589@gregkh>
+References: <dbcff3ca-a7ac-4bd8-92cb-02a8821e2257@web.de>
+ <20231211-economic-seahorse-of-reverence-ad90fb@meerkat>
+ <f3e032b9-ee6f-46fc-b686-ce50085bdf3f@web.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com>
- <20231206-alice-file-v2-7-af617c0d9d94@google.com> <k_vpgbqKAKoTFzJIBCjvgxGhX73kgkcv6w9kru78lBmTjHHvXPy05g8KxAKJ-ODARBxlZUp3a5e4F9TemGqQiskkwFCpTOhzxlvy378tjHM=@proton.me>
-In-Reply-To: <k_vpgbqKAKoTFzJIBCjvgxGhX73kgkcv6w9kru78lBmTjHHvXPy05g8KxAKJ-ODARBxlZUp3a5e4F9TemGqQiskkwFCpTOhzxlvy378tjHM=@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 12 Dec 2023 10:59:32 +0100
-Message-ID: <CAH5fLgiQ-7gbwP2RLoVDfDqoA+nXPboBW6eTKiv45Yam_Vjv_A@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f3e032b9-ee6f-46fc-b686-ce50085bdf3f@web.de>
 
-On Fri, Dec 8, 2023 at 6:53=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
-> wrote:
->
-> On 12/6/23 12:59, Alice Ryhl wrote:
-> > diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-> > index 9bcbea04dac3..eeb291cc60db 100644
-> > --- a/rust/bindings/lib.rs
-> > +++ b/rust/bindings/lib.rs
-> > @@ -51,3 +51,4 @@ mod bindings_helper {
+On Tue, Dec 12, 2023 at 10:25:28AM +0100, Markus Elfring wrote:
+> >> How do you think about to support another mailing list archive
+> >> on the platform “https://korg.docs.kernel.org/lore.html”?
+> >> Or:
+> >> Would you like to forward any messages between existing mailing lists?
 > >
-> >  pub const GFP_KERNEL: gfp_t =3D BINDINGS_GFP_KERNEL;
-> >  pub const __GFP_ZERO: gfp_t =3D BINDINGS___GFP_ZERO;
-> > +pub const POLLFREE: __poll_t =3D BINDINGS_POLLFREE;
->
-> You are no longer using this constant, should this still exist?
+> > Sorry, I'm not sure what you're asking me. Is this a new list request,
+> 
+> Probably, yes.
+> 
+> https://sympa.inria.fr/sympa/arc/cfr/2023-12/
+> 
+> 
+> > a request to archive an existing list,
+> 
+> No.
+> 
+> 
+> > or something else altogether?
+> 
+> I remember your response for the clarification approach “Checking time dimension
+> for the migrated message archive” (from 2021-08-25).
+> https://lore.kernel.org/cocci/20210825162917.jv6jxmgjbyror6vs@nitro.local/
+> 
+> Thus I imagine that Julia Lawall could trigger the addition of some data
+> for such information systems.
+> 
+> See also her constructive response from yesterday.
+> https://sympa.inria.fr/sympa/arc/cfr/2023-12/msg00018.html
 
-Nice catch, thanks!
+Hi,
 
-> > +    fn get_qproc(&self) -> bindings::poll_queue_proc {
-> > +        let ptr =3D self.0.get();
-> > +        // SAFETY: The `ptr` is valid because it originates from a ref=
-erence, and the `_qproc`
-> > +        // field is not modified concurrently with this call since we =
-have an immutable reference.
->
-> This needs an invariant on `PollTable` (i.e. `self.0` is valid).
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
 
-How would you phrase it?
+Markus, you seem to have sent a nonsensical or otherwise pointless
+comment on a Linux kernel developer mailing list.  I strongly suggest
+that you not do this anymore.  Please do not bother developers who are
+actively working to produce patches and features with comments that, in
+the end, are a waste of time.
 
-> > +        unsafe { (*ptr)._qproc }
-> > +    }
-> > +
-> > +    /// Register this [`PollTable`] with the provided [`PollCondVar`],=
- so that it can be notified
-> > +    /// using the condition variable.
-> > +    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
-> > +        if let Some(qproc) =3D self.get_qproc() {
-> > +            // SAFETY: The pointers to `self` and `file` are valid bec=
-ause they are references.
->
-> What about cv.wait_list...
+Everyone, please ignore Markus's suggestion; you do not need to follow
+them at all.  The person/bot/AI that sent it is being ignored by almost
+all Linux kernel maintainers for having a persistent pattern of behavior
+of producing distracting and pointless commentary, and inability to
+adapt to feedback.  Please feel free to also ignore emails from them.
 
-I can add it to the list of things that are valid due to references.
+thanks,
 
-> > +            //
-> > +            // Before the wait list is destroyed, the destructor of `P=
-ollCondVar` will clear
-> > +            // everything in the wait list, so the wait list is not us=
-ed after it is freed.
-> > +            unsafe { qproc(file.as_ptr() as _, cv.wait_list.get(), sel=
-f.0.get()) };
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +/// A wrapper around [`CondVar`] that makes it usable with [`PollTable=
-`].
-> > +///
-> > +/// # Invariant
-> > +///
-> > +/// If `needs_synchronize_rcu` is false, then there is nothing registe=
-red with `register_wait`.
->
-> Not able to find `needs_synchronize_rcu` anywhere else, should this be
-> here?
-
-Sorry, this shouldn't be there. It was something I experimented with,
-but gave up on.
-
-> > +#[pinned_drop]
-> > +impl PinnedDrop for PollCondVar {
-> > +    fn drop(self: Pin<&mut Self>) {
-> > +        // Clear anything registered using `register_wait`.
-> > +        //
-> > +        // SAFETY: The pointer points at a valid wait list.
->
-> I was a bit confused by "wait list", since the C type is named
-> `wait_queue_head`, maybe just use the type name?
-
-I will update all instances of "wait list" to "wait_queue_head". It's
-because I incorrectly remembered the C type name to be "wait_list".
-
-Alice
+greg k-h's patch email bot
