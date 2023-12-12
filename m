@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lGpe/89b"
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 759F110B
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:35:14 -0800 (PST)
-Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-466006f9fa5so1358818137.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:35:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aHzAsDdN"
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F46F11F
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:40:44 -0800 (PST)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b9df0a6560so3616398b6e.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 01:40:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702373713; x=1702978513; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1702374044; x=1702978844; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j5kVfTnLQevZugTrV3NDGK0H9bL6l1+gNDaTPF8RWEk=;
-        b=lGpe/89boaD9ZI+ncOndT2n8LSizTaIe9u89A78S/DqBKZHwSBlpomKUESVyiIAP6L
-         i2vMJrOM927kkb6WO5MlFVkkVeBis7MNi5Ry6Rk0L5noQUevZRwCwlxE5izYlJWGC+Y5
-         /KihhGQCFD5LoxGwLlakMkFCatGOMHVxfb+2w9xvtnrB1ZH+c06L3Uw3pT42/oQ11/N7
-         j55CNIezuoQYP6/pTRCNwznJYY0x1jKipHB6SPEnv3Qk0+ctbhcgbbA30Lk7xZ2oy2WE
-         K+Fp6Lt2PKNcuaanmfIZx3c7AUky7qoeDAVdhUo+Y1Vt+uf6z7vZtmw3wpYHxo6PIDGF
-         UN+g==
+        bh=yBPastpn1RC87z2hLEiZW6KtB1XJZ0fz+MiJEWfk6hU=;
+        b=aHzAsDdNxgosCtPLlh4A7a7Pd9lK10j1bcD+5midrPZFIulAaKCBBM021VmiWWJf1i
+         DsXaPooqliJv2rn2gA4pNTYl0sJNEnr55neuH4Eeocp/bsL4EBhtSBHxXz0Dd4KUF0Zb
+         fCKDXSyN19/TSQv49O60rsk+wvvtWOJ8WO6ZM7QhxThLt4v8ArGuiNFD0U1fffaIhYXW
+         PmZNAtebFqfh54fio1652/DkUAHp8JF7iFRzxlP//DN2g6E7r8R/4PwB20dgjFRcAGSf
+         j1AS0Ha70elH1dxAxO+KwYRJ1P0nSQoZ3N92BPl0a9yDoIkHwNuk5RhCfs+8E3E1cWbj
+         /ZoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702373713; x=1702978513;
+        d=1e100.net; s=20230601; t=1702374044; x=1702978844;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=j5kVfTnLQevZugTrV3NDGK0H9bL6l1+gNDaTPF8RWEk=;
-        b=t1wgmYcEGaeXoqtDFLcrAsezsdIbVPMxaYY7N2Md2IEtAYdbSJAGPxYruuEVeLVum0
-         W9CAfMp6erIJDI0Bh8f5eo1ZO+8w+rz/x/pEwZEvq24bf5yVCT4YW1eXtjHkdR9N6cYU
-         sT3ROSR5EZP3uF7t3dAKPKrKU1yJiKA0uV6VwkCeNdWfGIIU0YRMtVOLMlQr2knB690y
-         pzcTNifz9bYq6NLR5KJnRD6exoNdnJ2XlrBqxne5Llmkq5FGC/v+ASpWbOgrKq5Guqnq
-         g84SAcHi6oVqzNAef0X1gekYy90ZuJ8Pasd/CEOXXO9SJwsTh3WkyRBZ5rsaNXvPalS0
-         tXcw==
-X-Gm-Message-State: AOJu0YygMI30hjHczsu2v4UEl6XA81Zn3YmNISm/5sJkj4pA1t71FScj
-	D6yiqO8U9YP3tVwukRZHQJVMhDwAhkTQ9EbCx+BMfg==
-X-Google-Smtp-Source: AGHT+IE5sQlEw46z54SEjhhoFiMRPmZ9k7QZFiQP6/ZdtnfcYlyXGn0eEnZSJ1mWK95kKsG47pa75GO2fjTwFAtdrv4=
-X-Received: by 2002:a05:6102:32c5:b0:464:7b6d:2efc with SMTP id
- o5-20020a05610232c500b004647b6d2efcmr4630110vss.34.1702373713422; Tue, 12 Dec
- 2023 01:35:13 -0800 (PST)
+        bh=yBPastpn1RC87z2hLEiZW6KtB1XJZ0fz+MiJEWfk6hU=;
+        b=jyUAQXbkSFt2yWt1WxWaIYVOAjsWjbcaDUt8Jp16vB5wAS4DJpsGb+MSBCxqWLsZlV
+         Y0Cc/ppLZOd/qENCumDDqilU4Q/Ye/5LVEIroIP2juBp3SaWQ+KN0DouRWECozRlgAy1
+         UvZhv2nXI1/Q6xeRQ9dRM0aX7bfrLe9Y0eLig32BRM6JTSVanJ6aCUcfmSHGcMWTpGAh
+         mgeN0isGvJamElhKTTz89qUESF6eZhsU9OdBkfoHY+3AttSqNJKl3S0u4IHgQ6zVqt8v
+         phH82bowWSYt/NoSVjgLxDuYXAdzGTK8a+IVZwOuHsHfx8d2uznZtayLC+c8A3HsK/aL
+         QBhQ==
+X-Gm-Message-State: AOJu0YxxAUIj9tcg43BuoBRwMaJSmG4ejqLpsCYRZjcaXpRNxgoikaDr
+	n3EaQ5YPDBsWN+daWF/OuIsQ7SXJyryKv+X/gftwdA==
+X-Google-Smtp-Source: AGHT+IHTSiZ6LzgVymhn5KubTf+HT5hUzMz3vldIiaU9GfA+4GJncv76WqjD73+5ZSklO9GCgIaWXZcxpODcXU0Y6u8=
+X-Received: by 2002:a05:6808:130a:b0:3b8:7a9d:af5b with SMTP id
+ y10-20020a056808130a00b003b87a9daf5bmr6387114oiv.35.1702374043714; Tue, 12
+ Dec 2023 01:40:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <MjDmZBGV04fVI1qzhceEjQgcmoBuo3YoVuiQdANKj9F1Ux5JFKud8hQpfeyLXI0O5HG6qicKFaYYzM7JAgR_kVQfMCeVdN6t7PjbPaz0D0U=@proton.me>
- <20231211153440.4162899-1-aliceryhl@google.com> <DNn_nN0MKmn9OoY7Gjn4fCUcwKD6ijDZyDXVHvouEa2w0o2yiXeRox3EUfAcbfoWqx0I24-8HqqzONjuTQIVxu2cfAoNQpUFJygPtQNXPM4=@proton.me>
-In-Reply-To: <DNn_nN0MKmn9OoY7Gjn4fCUcwKD6ijDZyDXVHvouEa2w0o2yiXeRox3EUfAcbfoWqx0I24-8HqqzONjuTQIVxu2cfAoNQpUFJygPtQNXPM4=@proton.me>
+References: <ZXZjoOrO5q7no4or@boqun-archlinux> <20231211153429.4161511-1-aliceryhl@google.com>
+ <ZXdIbEqSCTO62BHE@boqun-archlinux>
+In-Reply-To: <ZXdIbEqSCTO62BHE@boqun-archlinux>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 12 Dec 2023 10:35:02 +0100
-Message-ID: <CAH5fLggB_33jR1eyXSFhN=DN34wD7E6-ckSU8ABmQ50H-L3P-w@mail.gmail.com>
-Subject: Re: [PATCH v2 6/7] rust: file: add `DeferredFdCloser`
-To: Benno Lossin <benno.lossin@proton.me>
+Date: Tue, 12 Dec 2023 10:40:32 +0100
+Message-ID: <CAH5fLghbOA6s1d8GFz3JwcqDtzq+VbM3dc3M=enF0UHQN_Nt5g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] rust: cred: add Rust abstraction for `struct cred`
+To: Boqun Feng <boqun.feng@gmail.com>
 Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, brauner@kernel.org, 
 	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, 
 	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
 	keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
@@ -61,175 +61,24 @@ Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 11, 2023 at 6:23=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> >>> +        unsafe { bindings::init_task_work(callback_head, Some(Self::=
-do_close_fd)) };
-> >>> +        // SAFETY: The `callback_head` pointer points at a valid and=
- fully initialized task work
-> >>> +        // that is ready to be scheduled.
-> >>> +        //
-> >>> +        // If the task work gets scheduled as-is, then it will be a =
-no-op. However, we will update
-> >>> +        // the file pointer below to tell it which file to fput.
-> >>> +        let res =3D unsafe { bindings::task_work_add(current, callba=
-ck_head, TWA_RESUME) };
-> >>> +
-> >>> +        if res !=3D 0 {
-> >>> +            // SAFETY: Scheduling the task work failed, so we still =
-have ownership of the box, so
-> >>> +            // we may destroy it.
-> >>> +            unsafe { drop(Box::from_raw(inner)) };
-> >>> +
-> >>> +            return Err(DeferredFdCloseError::TaskWorkUnavailable);
-> >>
-> >> Just curious, what could make the `task_work_add` call fail? I imagine
-> >> an OOM situation, but is that all?
+On Mon, Dec 11, 2023 at 6:35=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+> On Mon, Dec 11, 2023 at 03:34:29PM +0000, Alice Ryhl wrote:
+> > The safety comment explains what the signature means. I think that
+> > should be enough.
 > >
-> > Actually, no, this doesn't fail in OOM situations since we pass it an
-> > allocation for its linked list. It fails only when the current task is
-> > exiting and wont run task work again.
 >
-> Interesting, is there some way to check for this aside from calling
-> `task_work_add`?
+> For someone who has a good understanding of Rust lifetime (and the
+> elision), yes. But I'm wondering whether all the people feel the same
+> way.
 
-I don't think so. We would need to access the `work_exited` constant
-in `kernel/task_work.c` to do that, but it is not exported.
+The safety comment doesn't require understanding of lifetime elision
+to be understood: "The signature of this function ensures that the
+caller will only access the returned credential while the file is
+still valid."
 
-> >> Also, you do not call it when `file` is null, which I imagine to be
-> >> fine, but I do not know that since the C comment does not cover that
-> >> case.
-> >
-> > Null pointer means that the fd doesn't exist, and it's correct to do
-> > nothing in that case.
->
-> I would also mention that in a comment (or the SAFETY comment).
-
-Okay.
-
-> >>> +        let file =3D unsafe { bindings::close_fd_get_file(fd) };
-> >>> +        if file.is_null() {
-> >>> +            // We don't clean up the task work since that might be e=
-xpensive if the task work queue
-> >>> +            // is long. Just let it execute and let it clean up for =
-itself.
-> >>> +            return Err(DeferredFdCloseError::BadFd);
-> >>> +        }
-> >>> +
-> >>> +        // SAFETY: The `file` pointer points at a valid file.
-> >>> +        unsafe { bindings::get_file(file) };
-> >>> +
-> >>> +        // SAFETY: Due to the above `get_file`, even if the current =
-task holds an `fdget` to
-> >>> +        // this file right now, the refcount will not drop to zero u=
-ntil after it is released
-> >>> +        // with `fdput`. This is because when using `fdget`, you mus=
-t always use `fdput` before
-> >>
-> >> Shouldn't this be "the refcount will not drop to zero until after it i=
-s
-> >> released with `fput`."?
-> >>
-> >> Why is this the SAFETY comment for `filp_close`? I am not understandin=
-g
-> >> the requirement on that function that needs this. This seems more a
-> >> justification for accessing `file` inside `do_close_fd`. In which case=
- I
-> >> think it would be better to make it a type invariant of
-> >> `DeferredFdCloserInner`.
-> >
-> > It's because `filp_close` decreases the refcount for the file, and doin=
-g
-> > that is not always safe even if you have a refcount to the file. To dro=
-p
-> > the refcount, at least one of the two following must be the case:
-> >
-> > * If the refcount decreases to a non-zero value, then it is okay.
-> > * If there are no users of `fdget` on the file, then it is okay.
->
-> I see, that makes sense. Is this written down somewhere? Or how does one
-> know about this?
-
-I don't think there's a single place to read about this. The comments
-on __fget_light allude to something similar, but it makes the blanket
-statement that you can't call filp_close while an fdget reference
-exists, even though the reality is a bit more nuanced.
-
-> >>> +        // We update the file pointer that the task work is supposed=
- to fput.
-> >>> +        //
-> >>> +        // SAFETY: Task works are executed on the current thread onc=
-e we return to userspace, so
-> >>> +        // this write is guaranteed to happen before `do_close_fd` i=
-s called, which means that a
-> >>> +        // race is not possible here.
-> >>> +        //
-> >>> +        // It's okay to pass this pointer to the task work, since we=
- just acquired a refcount with
-> >>> +        // the previous call to `get_file`. Furthermore, the refcoun=
-t will not drop to zero during
-> >>> +        // an `fdget` call, since we defer the `fput` until after re=
-turning to userspace.
-> >>> +        unsafe { *file_field =3D file };
-> >>
-> >> A synchronization question: who guarantees that this write is actually
-> >> available to the cpu that executes `do_close_fd`? Is there some
-> >> synchronization run when returning to userspace?
-> >
-> > It's on the same thread, so it's just a sequenced-before relation.
-> >
-> > It's not like an interrupt. It runs after the syscall invocation has
-> > exited, but before it does the actual return-to-userspace stuff.
->
-> Reasonable, can you also put this in a comment?
-
-What do you want me to add? I already say that it will be executed on
-the same thread.
-
-> >>> +/// Represents a failure to close an fd in a deferred manner.
-> >>> +#[derive(Copy, Clone, Eq, PartialEq)]
-> >>> +pub enum DeferredFdCloseError {
-> >>> +    /// Closing the fd failed because we were unable to schedule a t=
-ask work.
-> >>> +    TaskWorkUnavailable,
-> >>> +    /// Closing the fd failed because the fd does not exist.
-> >>> +    BadFd,
-> >>> +}
-> >>> +
-> >>> +impl From<DeferredFdCloseError> for Error {
-> >>> +    fn from(err: DeferredFdCloseError) -> Error {
-> >>> +        match err {
-> >>> +            DeferredFdCloseError::TaskWorkUnavailable =3D> ESRCH,
-> >>
-> >> This error reads "No such process", I am not sure if that is the best
-> >> way to express the problem in that situation. I took a quick look at t=
-he
-> >> other error codes, but could not find a better fit. Do you have any
-> >> better ideas? Or is this the error that C binder uses?
-> >
-> > This is the error code that task_work_add returns. (It can't happen in
-> > Binder.)
-> >
-> > And I do think that it is a reasonable choice, because the error only
-> > happens if you're calling the method from a context that has no
-> > userspace process associated with it.
->
-> I see.
->
-> What do you think of making the Rust error more descriptive? So instead
-> of implementing `Debug` like you currently do, you print
->
->     $error ($variant)
->
-> where $error =3D Error::from(*self) and $variant is the name of the
-> variant?
->
-> This is more of a general suggestion, I don't think that this error type
-> in particular warrants this. But in general with Rust we do have the
-> option to have good error messages for every error while maintaining
-> efficient error values.
-
-I can #[derive(Debug)] instead, I guess?
+Yes, if you don't know the syntax for lifetimes, you'll have to trust
+me that this is what the signature means. But I think that's the case
+either way. I don't think it needs to be changed.
 
 Alice
