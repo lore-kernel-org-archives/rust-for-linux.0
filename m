@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EtZK1xOy"
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC88FD0;
-	Tue, 12 Dec 2023 09:01:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XkbzSdxg"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284D79F
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 09:05:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1702400497; x=1702659697;
-	bh=pW12o+ZtGJVXWSlbOsdjNFmo7Oz7+eWgJSUXDe0lDR4=;
+	s=xubov7wakjac3b3avdvdckasam.protonmail; t=1702400727; x=1702659927;
+	bh=Yb396aKFrmXDBySgBnliEUcRESnxNJ3dzgc1iddiAhI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=EtZK1xOybz/DnTE1jmDyCKyrg45e7E5ujPmJ/I6Gq8/sgkfF+YPGE2vRrFs8ZtoJ2
-	 vZIdmwNmDM6gGwaMLd6LRq6UkGPaq3Oqc0hX28EH19ciI8Udz7Hy4Gf+Y+TAjl8EbB
-	 VNb4IFHRmeG4MEqUiV8tLE0dMK44YGQdFpCBomz4K/PpU7wDXsk2eyv2teS/PQvzzq
-	 fMXViXI+vORmX+KlggGQWLgDa/jBQjGFulSMDx/cjiCPyzS10LSA3FJJGA6cJgTEZU
-	 XK5ZHtzLGLGXarhIdlcEJ0A6QvaUFwKlZ3nxRc5gK8S5LWbYjPZ2WVDaxg7X5mIAiA
-	 FIQNROXGUG1ew==
-Date: Tue, 12 Dec 2023 17:01:28 +0000
+	b=XkbzSdxglIApKSopXr7ytzrpSmgREOq67HNN236/cXP6F3eGCx6so5jKpsit4NG9w
+	 o5TNdBpQT1ZK3hqY699HaBE505agu8o9DLNdZ93BWm1rZD6oRiFTtaXtMAhLX7laYB
+	 zecgtqmjw4tJj8WfM6aixl/xgXMyfZWuvPO+K7+qgnlOVApCRRLUfxwTqv+Tym6C/q
+	 Z90WxAM10CmCN4X/c6RIcZWpQ7CmjgzQLj7Soxawi+grihE6m0G7ti1f0xoKbdv7rw
+	 eNKeVqySR+iDTlWrkNOvVJlVhfsIhF013GZ4aHe++jCoN0ucD0yHs+zp0KtiRqXE71
+	 jwk+X7J3MJKQQ==
+Date: Tue, 12 Dec 2023 17:05:09 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
-Message-ID: <E-jdYd0FVvs15f_pEC0Fo6k2DByCDEQoh_Ux9P9ldmC-otCvUfQghkJOUkiAi8gDI8J47wAaDe56XYC5NiJhuohyhIklGAWMvv9v1qi6yYM=@proton.me>
-In-Reply-To: <CAH5fLgiQ-7gbwP2RLoVDfDqoA+nXPboBW6eTKiv45Yam_Vjv_A@mail.gmail.com>
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com> <20231206-alice-file-v2-7-af617c0d9d94@google.com> <k_vpgbqKAKoTFzJIBCjvgxGhX73kgkcv6w9kru78lBmTjHHvXPy05g8KxAKJ-ODARBxlZUp3a5e4F9TemGqQiskkwFCpTOhzxlvy378tjHM=@proton.me> <CAH5fLgiQ-7gbwP2RLoVDfDqoA+nXPboBW6eTKiv45Yam_Vjv_A@mail.gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
+Message-ID: <5IXvyecf8pjdrhCW-71mwHOHFXRdLiCQCwgeVjljGhAJZEegyRxLC3hRr2NZGoNM0HCihiCjdcas1Ib_oWC7y5u8HBAQkN0-8IS5JlwikCU=@proton.me>
+In-Reply-To: <CAH5fLghkyk7yuLvt+pPfQnB2j=-ehQLb4rf4b50sOgm33t-YkA@mail.gmail.com>
+References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com> <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com> <nAEg-6vbtX72ZY3oirDhrSEf06TBWmMiTt73EklMzEAzN4FD4mF3TPEyAOxBZgZtjzoiaBYtYr3s8sa9wp1uYH9vEWRf2M-Lf4I0BY9rAgk=@proton.me> <CAH5fLghkyk7yuLvt+pPfQnB2j=-ehQLb4rf4b50sOgm33t-YkA@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,65 +33,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/12/23 10:59, Alice Ryhl wrote:
-> On Fri, Dec 8, 2023 at 6:53=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+On 12/12/23 10:51, Alice Ryhl wrote:
+> On Fri, Dec 8, 2023 at 8:04=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
 me> wrote:
->> On 12/6/23 12:59, Alice Ryhl wrote:
->>> +    fn get_qproc(&self) -> bindings::poll_queue_proc {
->>> +        let ptr =3D self.0.get();
->>> +        // SAFETY: The `ptr` is valid because it originates from a ref=
-erence, and the `_qproc`
->>> +        // field is not modified concurrently with this call since we =
-have an immutable reference.
 >>
->> This needs an invariant on `PollTable` (i.e. `self.0` is valid).
->=20
-> How would you phrase it?
-
-- `self.0` contains a valid `bindings::poll_table`.
-- `self.0` is only modified via references to `Self`.
-
->>> +        unsafe { (*ptr)._qproc }
->>> +    }
+>> On 12/6/23 11:09, Alice Ryhl wrote:
+>>> +    /// Atomically releases the given lock (whose ownership is proven =
+by the guard) and puts the
+>>> +    /// thread to sleep. It wakes up when notified by [`CondVar::notif=
+y_one`] or
+>>> +    /// [`CondVar::notify_all`], or when the thread receives a signal.
+>>> +    ///
+>>> +    /// Returns whether there is a signal pending.
+>>> +    fn wait_internal_timeout<T, B>(
+>>> +        &self,
+>>> +        wait_state: u32,
+>>> +        guard: &mut Guard<'_, T, B>,
+>>> +        timeout: u64,
+>>> +    ) -> u64
+>>> +    where
+>>> +        T: ?Sized,
+>>> +        B: Backend,
+>>> +    {
+>>> +        let wait =3D Opaque::<bindings::wait_queue_entry>::uninit();
 >>> +
->>> +    /// Register this [`PollTable`] with the provided [`PollCondVar`],=
- so that it can be notified
->>> +    /// using the condition variable.
->>> +    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
->>> +        if let Some(qproc) =3D self.get_qproc() {
->>> +            // SAFETY: The pointers to `self` and `file` are valid bec=
-ause they are references.
+>>> +        // SAFETY: `wait` points to valid memory.
+>>> +        unsafe { bindings::init_wait(wait.get()) };
+>>> +
+>>> +        // SAFETY: Both `wait` and `wait_list` point to valid memory.
+>>> +        unsafe {
+>>> +            bindings::prepare_to_wait_exclusive(self.wait_list.get(), =
+wait.get(), wait_state as _)
 >>
->> What about cv.wait_list...
+>> Does `.into()` work here? If for some reason the type here changes, we
+>> probably want to know about it.
 >=20
-> I can add it to the list of things that are valid due to references.
+> I think we may be able to eliminate this cast by using c_int for the
+> integer type.
 
-Yes this is getting a bit tedious.
+Sounds good.
 
-What if we create a newtype wrapping `Opaque<T>` with the invariant
-that it contains a valid value? Then we could have a specially named
-getter for which we would always assume that the returned pointer is
-valid. And thus permit you to not mention it in the SAFETY comment?
-
-[...]
-
->>> +#[pinned_drop]
->>> +impl PinnedDrop for PollCondVar {
->>> +    fn drop(self: Pin<&mut Self>) {
->>> +        // Clear anything registered using `register_wait`.
->>> +        //
->>> +        // SAFETY: The pointer points at a valid wait list.
+>>> +        };
+>>> +
+>>> +        // SAFETY: Switches to another thread.
+>>> +        let timeout =3D
+>>> +            guard.do_unlocked(|| unsafe { bindings::schedule_timeout(t=
+imeout as _) as _ });
 >>
->> I was a bit confused by "wait list", since the C type is named
->> `wait_queue_head`, maybe just use the type name?
+>> Ditto.
 >=20
-> I will update all instances of "wait list" to "wait_queue_head". It's
-> because I incorrectly remembered the C type name to be "wait_list".
+> Here, we're casting u64->long and then long->u64. How about this?
+>=20
+> u64->long - Use timeout.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT),
+> since MAX_SCHEDULE_TIMEOUT is LONG_MAX.
+>=20
+> long->u64 - This value is guaranteed to be less than the argument
+> passed to schedule_timeout. Use .into() for infallible cast.
 
-Maybe we should also change the name of the field on `CondVar`?
-
-If you guys agree, I can open a good-first-issue, since it is a very
-simple change.
+Also sounds good :)
 
 --=20
 Cheers,
