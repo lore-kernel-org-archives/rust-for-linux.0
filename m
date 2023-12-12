@@ -1,28 +1,28 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XkbzSdxg"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="O1wQ04m2"
 Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284D79F
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 09:05:29 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C206B9
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 09:35:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=xubov7wakjac3b3avdvdckasam.protonmail; t=1702400727; x=1702659927;
-	bh=Yb396aKFrmXDBySgBnliEUcRESnxNJ3dzgc1iddiAhI=;
+	s=protonmail; t=1702402543; x=1702661743;
+	bh=yYYyEVfceeIkJgL3YM5c5bx1Yypx0l6dB7B0gX5JUek=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=XkbzSdxglIApKSopXr7ytzrpSmgREOq67HNN236/cXP6F3eGCx6so5jKpsit4NG9w
-	 o5TNdBpQT1ZK3hqY699HaBE505agu8o9DLNdZ93BWm1rZD6oRiFTtaXtMAhLX7laYB
-	 zecgtqmjw4tJj8WfM6aixl/xgXMyfZWuvPO+K7+qgnlOVApCRRLUfxwTqv+Tym6C/q
-	 Z90WxAM10CmCN4X/c6RIcZWpQ7CmjgzQLj7Soxawi+grihE6m0G7ti1f0xoKbdv7rw
-	 eNKeVqySR+iDTlWrkNOvVJlVhfsIhF013GZ4aHe++jCoN0ucD0yHs+zp0KtiRqXE71
-	 jwk+X7J3MJKQQ==
-Date: Tue, 12 Dec 2023 17:05:09 +0000
-To: Alice Ryhl <aliceryhl@google.com>
+	b=O1wQ04m2B22DpwbZ0Ob+JnayGOIUoZzHZFoMYxPxACK2RnDY72Rsw1OnMRxB0rnNf
+	 dg48pgy7yhDOWS7T57JAbNm2t9KdMUEMVomuuW/SCqaJhn6OnBF0sIlQlWT9SaLvOe
+	 CcZFfu9TMt15/hSlZ+y2Xabw84mB34H4q7cycZ+xFqnTlj0hVDUjj8GZgvXTRX9Z5R
+	 GVStXsXxPPNV9oJIX1udLj/sNZraz+BUs25Xf4uxR8bDBW9pOIPr/fhpxb4IQI6WwU
+	 RIV1Rs9gJ5zRWF1hsedWyRyBauo1mch0Qmf4Fb1jkRnREJV3nH1nE8boz7+FpJo/Z9
+	 Y+UQhoasgdUAw==
+Date: Tue, 12 Dec 2023 17:35:34 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, boqun.feng@gmail.com
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
-Message-ID: <5IXvyecf8pjdrhCW-71mwHOHFXRdLiCQCwgeVjljGhAJZEegyRxLC3hRr2NZGoNM0HCihiCjdcas1Ib_oWC7y5u8HBAQkN0-8IS5JlwikCU=@proton.me>
-In-Reply-To: <CAH5fLghkyk7yuLvt+pPfQnB2j=-ehQLb4rf4b50sOgm33t-YkA@mail.gmail.com>
-References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com> <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com> <nAEg-6vbtX72ZY3oirDhrSEf06TBWmMiTt73EklMzEAzN4FD4mF3TPEyAOxBZgZtjzoiaBYtYr3s8sa9wp1uYH9vEWRf2M-Lf4I0BY9rAgk=@proton.me> <CAH5fLghkyk7yuLvt+pPfQnB2j=-ehQLb4rf4b50sOgm33t-YkA@mail.gmail.com>
+Cc: alice@ryhl.io, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY drivers
+Message-ID: <544015ec-52a4-4253-a064-8a2b370c06dc@proton.me>
+In-Reply-To: <20231212.220216.1253919664184581703.fujita.tomonori@gmail.com>
+References: <ZXfFzKYMxBt7OhrM@boqun-archlinux> <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com> <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home> <20231212.220216.1253919664184581703.fujita.tomonori@gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -33,65 +33,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/12/23 10:51, Alice Ryhl wrote:
-> On Fri, Dec 8, 2023 at 8:04=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+On 12/12/23 14:02, FUJITA Tomonori wrote:
+> On Mon, 11 Dec 2023 22:11:15 -0800
+> Boqun Feng <boqun.feng@gmail.com> wrote:
+>=20
+>>>> // SAFETY: `phydev` points to valid object per the type invariant of
+>>>> // `Self`, also the following just minics what `phy_read()` does in C
+>>>> // side, which should be safe as long as `phydev` is valid.
+>>>>
+>>>> ?
+>>>
+>>> Looks ok to me but after a quick look at in-tree Rust code, I can't
+>>> find a comment like X is valid for the first argument in this C
+>>> function. What I found are comments like X points to valid memory.
 >>
->> On 12/6/23 11:09, Alice Ryhl wrote:
->>> +    /// Atomically releases the given lock (whose ownership is proven =
-by the guard) and puts the
->>> +    /// thread to sleep. It wakes up when notified by [`CondVar::notif=
-y_one`] or
->>> +    /// [`CondVar::notify_all`], or when the thread receives a signal.
->>> +    ///
->>> +    /// Returns whether there is a signal pending.
->>> +    fn wait_internal_timeout<T, B>(
->>> +        &self,
->>> +        wait_state: u32,
->>> +        guard: &mut Guard<'_, T, B>,
->>> +        timeout: u64,
->>> +    ) -> u64
->>> +    where
->>> +        T: ?Sized,
->>> +        B: Backend,
->>> +    {
->>> +        let wait =3D Opaque::<bindings::wait_queue_entry>::uninit();
->>> +
->>> +        // SAFETY: `wait` points to valid memory.
->>> +        unsafe { bindings::init_wait(wait.get()) };
->>> +
->>> +        // SAFETY: Both `wait` and `wait_list` point to valid memory.
->>> +        unsafe {
->>> +            bindings::prepare_to_wait_exclusive(self.wait_list.get(), =
-wait.get(), wait_state as _)
->>
->> Does `.into()` work here? If for some reason the type here changes, we
->> probably want to know about it.
+>> Hmm.. maybe "is valid" could be a confusing term, so the point is: if
+>> `phydev` is pointing to a properly maintained struct phy_device, then an
+>> open code of phy_read() should be safe. Maybe "..., which should be safe
+>> as long as `phydev` points to a valid struct phy_device" ?
 >=20
-> I think we may be able to eliminate this cast by using c_int for the
-> integer type.
+> As Alice suggested, I updated the comment. The current comment is:
+>=20
+> // SAFETY: `phydev` is pointing to a valid object by the type invariant o=
+f `Self`.
+> // So it's just an FFI call.
+> let ret =3D unsafe {
+>     bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnu=
+m.into())
+> };
 
-Sounds good.
+I still think you need to justify why `mdio.bus` is a pointer that you
+can give to `midobus_read`. After looking at the C code, it seems like
+that the pointer needs to point to a valid `struct mii_bus`.
+This *could* just be an invariant of `struct phy_device` [1], but where
+do we document that?
 
->>> +        };
->>> +
->>> +        // SAFETY: Switches to another thread.
->>> +        let timeout =3D
->>> +            guard.do_unlocked(|| unsafe { bindings::schedule_timeout(t=
-imeout as _) as _ });
->>
->> Ditto.
->=20
-> Here, we're casting u64->long and then long->u64. How about this?
->=20
-> u64->long - Use timeout.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT),
-> since MAX_SCHEDULE_TIMEOUT is LONG_MAX.
->=20
-> long->u64 - This value is guaranteed to be less than the argument
-> passed to schedule_timeout. Use .into() for infallible cast.
+We could make an exception here and treat this differently until bindgen
+can handle the `static inline` functions, but I am not so sure if we
+want to have this as a general pattern. We need to discuss this more.
 
-Also sounds good :)
+
+[1]: Technically it is a combination of the following invariants:
+- the `mdio` field of `struct phy_device` is a valid `struct mido_device`
+- the `bus` field of `struct mdio_device` is a valid pointer to a valid
+  `struct mii_bus`.
+
+> If phy_read() is called here, I assume that you are happy about the
+> above comment. The way to call mdiobus_read() here is safe because it
+> just an open code of phy_read(). Simply adding it works for you?
+>=20
+> // SAFETY: `phydev` is pointing to a valid object by the type invariant o=
+f `Self`.
+> // So it's just an FFI call, open code of `phy_read()`.
+
+This would be fine if we decide to go with the exception I detailed
+above. Although instead of "open code" I would write "see implementation
+of `phy_read()`".
 
 --=20
 Cheers,
 Benno
+
