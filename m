@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BfyJwxeG"
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2042.outbound.protection.outlook.com [40.107.102.42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8639C;
-	Mon, 11 Dec 2023 19:05:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RWj9sagE"
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2087.outbound.protection.outlook.com [40.107.102.87])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C944A0
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 19:14:20 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X+cQnK3Le7yP70ui7Y9pPI6ALz0HnB1za/0t26Ip0CSmCdSBtHdHe/BpTJgWAxcHHlCC6CtgYqV7VI3k4L1WoddscP7Uh8RyFMxvLcRuwo3YF2nIZF4tsAsFiKT47h0JlOkwXJyEgTC3wlU9B0ZGd7bkb7pLJ9FFssuVHWctenrtttIeWkD3OsEdQRbRlSLdndSkcoxTsttForsmNqoWtHwKs9mlNeOvfEswWpDYnRMWLDpGMD+fQNrmFwtnBcm5RSMKBoi4NElpgTTX5ZsnYeCms+e8KXz2BpYN1dSpsLs+U5+Z5AVIYsE7f6cnUdc2ZDhxoY5yMTfysl50oPnKdw==
+ b=jPW8RUmtE68cirxu2xw2IEBlM4y5fdwdmbWvv7s7ATzKNu/maLRDLNo5ZNX5kPUCVXllRc+VyHw1ycgVwcvJtzY1F2qkIvw+OS9gD3InF6BF8qoGeOxUAQUiCJAtR+C7hVKb5zvT/nNds7CEanj8/3oLyXv/QMZbJvqI/YnOHqcdY6gaUhHZPlzXPvEpzJO5WaLrlgQHRhTBcmEG+INvYX5fSLavwKr0IkWo+93Fzu5JLXY+zj7iNmF2X5hMKF5XVjWIQMvqGBBCa2++tONbNJz7izEWSRiWaJ/YXifanwh7WL2ZEGvw7JlfXMsA0EX0BkuUPeZnJyoxrqcHZysZVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9+uOmGCxv5jQ3S56nDb+2034q75jWaVWeqO7sJV4S1o=;
- b=mrINM26TmXWDGHwjo7Orj8NzplepgwYhR2enNShd5F+rV7W6AcYUtngb84tHjLAZELhyW0YoJ0cTRDfd/unylbZ2lAzeiWNDUIapTyAgqmmdcBV4JtbcGj8i62ZxiMkLe9mg07M7zLzI7K8NlBHzL1YaW9ULfdl9yrVAoUSe4KntzbqMh35YPsr8378z/LJ3rMy3+kQVyxDQAJJ2UUXJFrsw8SLkoDPincBzZe3ItkQQrJIpxGUanQRENt3vg3C/Qnb6qLGLjnEfsY8EPwM5gksN+AhhopK+Y8z49akJ8pFp73PH5wmkPDoa8md7NiClw17ifnuOnjXQGlCLQVyOsg==
+ bh=SqkpxrrKoeu7U5DA1oelakJmf3TGlH7aBT6CGzxZJeg=;
+ b=PrVqXI0sFn06byjVs/2UX9ylp3zMDPPQSnx2RY+jCXRYOHtgZ/HWcMgRLbcKSuVk3FP3PcZfS7GCgzsfjDIATNyK1xXIJV8OkdkLrYLRXdJLRf3MMUO3jUzTb7t7y63txm9fqeURBkenhKPxzMHxSiY7GJQlnLC0lFFT4D3O6bFow1Ko//sZBFQTMfNm71B3AJIOb3fhhC/OLtw3iZl+zmO+phA8KQAQ6eVwL5LqeIXGENfuQAUe1PVjks4GlLpMTVYDGCl/4NNZ4i3iGQjzyBFX4McWpnp3d0ccJSxt+473y2Nq1kCKmIdLUQp7c9uIOkoyZSuey08re8sv35kVCA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linaro.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=de.bosch.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9+uOmGCxv5jQ3S56nDb+2034q75jWaVWeqO7sJV4S1o=;
- b=BfyJwxeGfF+qxRBVeHH7KCJMvfFYsW4ixajTsBoF/gW9fR2mD9SZqyD8Yt7y0/uBQxr9NFM9wKHnkWjYWKCDSWPbCll6z5Ql/A70lLP9ZT6Zb8Tb/lJjCtIefF+UB2C6e6XLoPS2r2TZh3tzevQFSCUVgOpGPsCgDPQGVk+n1pv//LZJRjnQiy6YNLCin9lZVD48BqRqRcMne0W1GgOJXABNn237UNOgzCbzsGj/oio7Lvc3zMgo3lffYb/S7e2NXWNTmi3qJYQMMQi430BAZzmu3KzqXgKbr1fqojL0WmgDt/pmMJRKZxS4cZBtfmVBmbmbmlUbGoP7p7YvJTIPwQ==
-Received: from MN2PR12CA0015.namprd12.prod.outlook.com (2603:10b6:208:a8::28)
- by CY5PR12MB6430.namprd12.prod.outlook.com (2603:10b6:930:3a::12) with
+ bh=SqkpxrrKoeu7U5DA1oelakJmf3TGlH7aBT6CGzxZJeg=;
+ b=RWj9sagEFbIPAy7kTzImFVUeGRW2SaJJkP1D8tSVndj5VvL3dOIFb3SoW/TtBIkp0kbE9TUZ2hqITijoYV9GZyBjGjbM9YGaS10J7evNp0gnVa4Bo9KObLRMwxEUQTvo3wIXEjVESzF8Shsa/gMRBIfdy2budnuDdyT9mkMFhSNE5UgzmKDcrN5HOLOlqj970h3KwYwJwxOeJUWZSRYnGCd8/wrtTkORcUzo6S1vz0vbgoUAELL47d0W7O+x5zDDJdL/Dp1fUkG6vifOwoBXLc0yoED4LovMRW4HWM5Xl6jnmoJ68jQVUo9fDMI46rUHR4K1IcsEZjtD1EZkhmcWew==
+Received: from SJ0PR13CA0099.namprd13.prod.outlook.com (2603:10b6:a03:2c5::14)
+ by DS0PR12MB9445.namprd12.prod.outlook.com (2603:10b6:8:1a1::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33; Tue, 12 Dec
- 2023 03:05:52 +0000
-Received: from BL02EPF0001A103.namprd05.prod.outlook.com
- (2603:10b6:208:a8:cafe::ed) by MN2PR12CA0015.outlook.office365.com
- (2603:10b6:208:a8::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32 via Frontend
- Transport; Tue, 12 Dec 2023 03:05:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Tue, 12 Dec
+ 2023 03:13:14 +0000
+Received: from CO1PEPF000044EF.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::72) by SJ0PR13CA0099.outlook.office365.com
+ (2603:10b6:a03:2c5::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.23 via Frontend
+ Transport; Tue, 12 Dec 2023 03:13:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL02EPF0001A103.mail.protection.outlook.com (10.167.241.133) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF000044EF.mail.protection.outlook.com (10.167.241.69) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7091.18 via Frontend Transport; Tue, 12 Dec 2023 03:05:51 +0000
+ 15.20.7091.18 via Frontend Transport; Tue, 12 Dec 2023 03:13:14 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 11 Dec
- 2023 19:05:34 -0800
+ 2023 19:12:56 -0800
 Received: from [10.110.48.28] (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 11 Dec
- 2023 19:05:33 -0800
-Message-ID: <1c535446-4e6d-44c1-8fc8-4fa248b7c4a9@nvidia.com>
-Date: Mon, 11 Dec 2023 19:05:32 -0800
+ 2023 19:12:55 -0800
+Message-ID: <df0d8a01-eac3-43b2-8498-e237a0fe6eb5@nvidia.com>
+Date: Mon, 11 Dec 2023 19:12:55 -0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,103 +56,104 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: rust: Clarify that 'rustup override' applies to
- build directory
+Subject: Re: [PATCH v3] docs: rust: Add rusttest info
 Content-Language: en-US
-To: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>
-CC: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho
-	<wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, "Alice
- Ryhl" <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, "Vincent
- Guittot" <vincent.guittot@linaro.org>, <rust-for-linux@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <bf0d4ff21bc25d1ba3a31e49a32bde06dcaf6e44.1702030679.git.viresh.kumar@linaro.org>
- <4738ad1c-eb54-4ad6-98c8-3852de3e8fc3@proton.me>
- <20231211064742.63l4cmvxe4uso5us@vireshk-i7>
+To: Dirk Behme <dirk.behme@de.bosch.com>, <rust-for-linux@vger.kernel.org>
+References: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
 From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20231211064742.63l4cmvxe4uso5us@vireshk-i7>
+In-Reply-To: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A103:EE_|CY5PR12MB6430:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4cb6b6ed-1cdc-4743-d7cd-08dbfabf3fbe
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044EF:EE_|DS0PR12MB9445:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f338f2c-61fe-41a2-148f-08dbfac0476d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	3qHzcwOjuNTZ4yE9NDzCwTnctR/JE6vZbFk4WP7QiA/LqBXVm1WuxR2ewqF0C0igbJ7x9b2+0REKUhVRob8DiuENIV4GxRBEiov+TJxeKR+f4Q/db1yELxtDXXhbNjBYHn2S0LLgK6+Bsdh9hHbrO6ZMIkeNpcFKWoSCc2KiewgXp7WLmw3JEn/CYoEcUQ/TCbBLEL1T+pgxN0p2UHMCSb+hdF+20zZqtvwJr8qvSfPx0GFSRyitUhbr9mmlsjAqJoG7Lb1AChFDPtvZGKGnZ1iSr9i8bFwSo2skWfj4oX76BdNqHOnWkV2zKhhYNuy4biG35Sweqoc/hO8oc94LuYGxcolxAEpRLWMKh3fxAy873nXNK+2DJf6JpYX87VvEMGyG5RkpLAZOjnxd1dyaSxhezlELKo4a1dv4AmlMEPCaR4cvQey9sjQ48hKOnI91Z4/GjdWmVL28Q3HsSBHV0867NJ3Dn1e7eJ/+2fM55+bedcZD+FCQBCAghQG3ybV1mIUT8uLhHNsRfI9PQhPhVK2GWkTylu6a1JTZirxcInUZCtOGfkA+9OPO7HeAr/nZI4+9sGYF+ZkRfh4PLJo0hAjHZLaaYfy3Ls8TTcZpCjHzxTYSCplQ71E7m7VlHiJ6TPOln/VOuZOt3tsBuqW+LGJnvx59eW8Kh9BVJIy2/DrtT9eiMuHZb5SJSIz1nEtezrn9K57zQrvzVrHtpcib7/fl49LrI+RQ7gm5EfVD6btCl6HSqFDRLNh09VCW9uUKxeWdW28o7+w+KUButMSGlE8HLc2936rEASdrbA1nkimPm1lG9mq49XnoBdjm6SvY
+	MNVrE+ISA6HTH8ABSwAyccNqVEc4r4IVRsp9QSV9vLvt5n5RvgGw1bCKYXAsNCy5F3t7na6EN46/gA5ZwOAA0KXKbj1n4w+wkR4BHnEXjMCtGJyGbJFZhkUphT0OdCwqjUZcI3CU65Y/jDtcDDJfpLaGA7zf8gbL6tATex9vppToFODvSrCakBOePLT+Tn4DPRDYjyRKeW1Q2qzBwPW1rTfdSYij4VhpXwNLrWWP4nJ9dayUpzpAHjZmyrxW0UYYSfTjq1wEpMTIjbwUP/lGbTodbpqbfWwwfuNvhRi7lmpwmzqAfGmPzl/RYtEOtOqKBMGJwVyzTrXIgdiXpRn4z/I39gMhaWLxFOF1PXZTqvm7HEdvVGcebl0pLU/YT1csrQMfgPVFF08COjfXZ54ZQQ3pOC7p0bdfyMCZ6FHjhSoQFDE9VojwnREMOPQXKKdDmy25CjGaL79/j2mYmIcTE8ivSvnSUgzzFNV70lmtwaUEUE69qBsCgKFIZe1FhHL303hWz0l9xEijPLGLNudquJZ5AtVG7J093GP4tG1gixmagrHdlvh6eG7ULv4qEk6xNTDz1VukRnt1f6BaEA7V5YMLrXYvnuJuOFiCKhvH70g5orjnTCCw8yJzkfB4jyOAV87uNIT+A+RIbYomL5WYeEqWdimnGMcTfiRKwmz2uh/ZgCQIdFFJOSk4kGCnJrn+20Q/Knnu/BsQWL9xPtL8Q4J6tN+nAfwAmqmpLlXGlclZd/rgLxoAbrE4QfeNKKYCElVFQivR6AYTZlPK+vxSZavK4XADRzBtM8ZEapfY/kTzqJf+a7CRicG/HLNNAmRk
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(39860400002)(396003)(136003)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(82310400011)(46966006)(36840700001)(40470700004)(7416002)(40460700003)(2906002)(41300700001)(36860700001)(7636003)(83380400001)(110136005)(36756003)(86362001)(356005)(82740400003)(2616005)(336012)(478600001)(31696002)(426003)(26005)(53546011)(16526019)(47076005)(966005)(4326008)(5660300002)(316002)(16576012)(70586007)(70206006)(54906003)(8936002)(8676002)(40480700001)(31686004)(43740500002);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(346002)(376002)(136003)(396003)(230173577357003)(230922051799003)(230273577357003)(1800799012)(186009)(64100799003)(451199024)(82310400011)(46966006)(36840700001)(40470700004)(40460700003)(2906002)(41300700001)(31696002)(36860700001)(110136005)(36756003)(86362001)(356005)(82740400003)(2616005)(83380400001)(336012)(426003)(16526019)(26005)(478600001)(53546011)(47076005)(5660300002)(316002)(16576012)(8936002)(70586007)(70206006)(7636003)(8676002)(40480700001)(31686004)(43740500002);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2023 03:05:51.6039
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2023 03:13:14.0646
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4cb6b6ed-1cdc-4743-d7cd-08dbfabf3fbe
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f338f2c-61fe-41a2-148f-08dbfac0476d
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A103.namprd05.prod.outlook.com
+	CO1PEPF000044EF.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6430
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9445
 
-On 12/10/23 22:47, Viresh Kumar wrote:
-> On 08-12-23, 18:04, Benno Lossin wrote:
->> Shouldn't this be "Note that the override only applies to the current
->> working directory (and its sub-directories)."?
->> I think it would also be useful to continue with this: "But in order
->> to build the kernel, this override must affect the build directory.".
->>
->> And then you could also mention that in the default location for the
->> build directory is in the repository.
+On 12/11/23 04:16, Dirk Behme wrote:
+> Searching the Rust kernel documentation all existing Rust Make
+> targets (rustavailable, rustfmt, rustfmtcheck, rustdoc and
+> rust-analyzer) are explicitly documented with their Make syntax.
+> While the Make target rusttest is mentioned two times in the
+> existing documentation, it's Make syntax is not explicitly
+> documented, yet. Add a test section to document this.
 > 
-> Based on feedback from Miguel and Benno, how about this instead ?
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> ---
 > 
-> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-> index f382914f4191..dee787f92d26 100644
-> --- a/Documentation/rust/quick-start.rst
-> +++ b/Documentation/rust/quick-start.rst
-> @@ -33,14 +33,17 @@ A particular version of the Rust compiler is required. Newer versions may or
->   may not work because, for the moment, the kernel depends on some unstable
->   Rust features.
+> v3: Add the comments from Benno and Miguel. Thanks!
 > 
-> -If ``rustup`` is being used, enter the checked out source code directory
-> -and run::
-> +If ``rustup`` is being used, enter the kernel build directory and run::
+>   Documentation/rust/general-information.rst | 19 +++++++++++++++++++
+>   1 file changed, 19 insertions(+)
+> 
+> diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+> index 081397827a7ea..016c7feb433ce 100644
+> --- a/Documentation/rust/general-information.rst
+> +++ b/Documentation/rust/general-information.rst
+> @@ -77,3 +77,22 @@ configuration:
+>   	#[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
+>   	#[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
+>   	#[cfg(not(CONFIG_X))]  // Disabled
+> +
+> +Testing
+> +-------
+> +
+> +To run the Rust tests, you can use the following make target::
+> +
+> +	make LLVM=1 rusttest
 
-That "enter the kernel build directory" phrase is much better than the
-"enter the checked out source code directory".
+"make LLVM=1 <anything>" doesn't work for me, and therefore I suspect it
+doesn't work for at least a few other people, as well.
 
-I feel confident saying this, because I just read this document over the
-weekend, while getting set up to build rust for Linux. And this phrase
-was a little jarring and weird to me.
+Instead, I have to run "make CC=clang <anything>", which works just
+fine.
 
-This is after all a minor point, but it's nice to polish up this getting
-started guide. It's already a concise and excellent guide, by the way.
+The docs should consistently reflect this, yes?
+
+> +
+> +This requires the kernel .config and downloads external repos. It
+> +runs the ``#[test]`` tests on the host (currently) and thus is fairly
+> +limited in what these tests can test.
+> +
+> +Additonally, there are the tests that come from the examples in the
+> +Rust documentation and get transformed into KUnit tests. These can be
+> +run via KUnit. For example::
+> +
+> +	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
+
+Very helpful! Coming mostly from linux-mm, if someone says "run KUnit", I
+have to pause and maybe go look it up, but having the command right in
+front of me makes it all easy again. :)
+
+Same comment about LLVM=1 vs. CC=clang, though.
+
+> +
+> +See the :doc:`KUnit documentation</dev-tools/kunit/index>` for the details how to use it.
+
+Also good.
 
 
 thanks,
 -- 
 John Hubbard
 NVIDIA
-
-> 
->          rustup override set $(scripts/min-tool-version.sh rustc)
-> 
->   This will configure your working directory to use the correct version of
-> -``rustc`` without affecting your default toolchain. If you are not using
-> -``rustup``, fetch a standalone installer from:
-> +``rustc`` without affecting your default toolchain.
-> +
-> +Note that the override applies to the current working directory (and its
-> +sub-directories).
-> +
-> +If you are not using ``rustup``, fetch a standalone installer from:
-> 
->          https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
-> 
 
