@@ -1,189 +1,112 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RUgi2kVS"
-Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8523BE;
-	Mon, 11 Dec 2023 22:11:18 -0800 (PST)
-Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-4b2ee35bff8so1703024e0c.2;
-        Mon, 11 Dec 2023 22:11:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LSo5XZFI"
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C06C3
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 23:43:57 -0800 (PST)
+Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6d9f9fbfd11so2250087a34.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Dec 2023 23:43:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702361478; x=1702966278; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T24Yb7b9RFLYqAjPC99dl6OEjq5ZcK2rXVrE7oCD7cA=;
-        b=RUgi2kVS37fXo+P8/Rcf8YouSRcPfZgsPYJaquOCHzz4SIDpHX9dbjXCSn3UbrhW02
-         Aaju9ZtBYpCZ56eTPiRDtye7xF8IvOjP4WHarvjNQBNGeuEPcBy4g4vANobPPjU+wBA6
-         98bAaNdG4cGaKGgx031qEMELp7UllL412BShV8pjH7WSFVx4dAC+Ozzd7T//AfyCyhhd
-         z8nryDaokW0Op2QK8EZinnMjAGSHTdW5Pdwh6ysy5iovrJbuB8ibv93BC6UpOJElDFza
-         ybpw+klkTCPHIhibxrxba4JaeT0AMYr8Cz5NxK3aQGJC9x2X21lwNpdGcFJfymCu6QSC
-         MClg==
+        d=linaro.org; s=google; t=1702367036; x=1702971836; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TOXKU7bsGbNdHwHYKjDdosOGqerCEfbXvQrWb4UvRVA=;
+        b=LSo5XZFIc/VUGHNlD/o56Rk2QJkMRRxPmj/6S+vhtduOpSWVmESkYQ4SxUJ442BijS
+         aSuqHfvmvWekqgxUN1RxOntxyQNV7MHgOUx5AVlyu8VmbtlvtxkGNscRUmymye7DG7lu
+         G86q3j5QMnwUbO9MV7I1EnHQS5IHFOn3Iv63bw5Q8NC03KpdUZEZrUKDJkyyZoD6F0K5
+         S5Q1q8D93f0tCHC9EJbcwqOuilkiDujcQFsrelaGsfG0QkaA7GvSRpUu1Fp6jjfhIehN
+         onRKLZ3gWOEJ2kDEIz+56bTUzkHnziQlx5EI7IXQA4zsdlhw9zjK3eAvexXyjTVme+Wm
+         w+eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702361478; x=1702966278;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T24Yb7b9RFLYqAjPC99dl6OEjq5ZcK2rXVrE7oCD7cA=;
-        b=odM6kM+sKXDYNoMffy6E5Tiitt2VbeiKjkfcQo6B/3nywIcE6XJZ0zkZ0H7VzsMkG2
-         CJ0waZ4NWwtUcDlAzG3Q46doz4GWu0B8owAELvQOgrzhZLOcJvyIU/1/jPBalPcrZ789
-         PMi6eapPdtixQIC96fwjzBXw59ualGsS4i25T0n3T9qLMzwAZMT+pnHRLO0emku/s0iC
-         +DzREA1e9Ftv3qZ+XA4nWJLMbHZjVFWFcMmPKmJaBzgA0Ws/NY4zAHXD/C1XYOMW93Be
-         PNBO8uDpxrTTj6Yy4D14qxumDgR5tAvnoOCrocIJueteEf/wx9GH+Pzu9zZgyQYSP5UQ
-         E6CQ==
-X-Gm-Message-State: AOJu0YxAnm3LxKzlnR/3k1lmDSP942Zgn6721C3D6cesDiVaERjXc3VG
-	R1RY6vW3mkRlEY5FbcRJuCE=
-X-Google-Smtp-Source: AGHT+IFOR7WVJrVOexLqvlVW1W9mk0AD9X2cVIfBT45PwiODyltCYVexORY2Yf8AVEq3fVPrrtjJqg==
-X-Received: by 2002:a05:6122:3b8c:b0:4b2:c554:dfc4 with SMTP id fs12-20020a0561223b8c00b004b2c554dfc4mr4636122vkb.19.1702361477917;
-        Mon, 11 Dec 2023 22:11:17 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id v2-20020a0cdd82000000b0067ac8bedcd4sm3714176qvk.88.2023.12.11.22.11.17
+        d=1e100.net; s=20230601; t=1702367036; x=1702971836;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TOXKU7bsGbNdHwHYKjDdosOGqerCEfbXvQrWb4UvRVA=;
+        b=RGJ9ngJ6ilRtxYIhVlxUc8ZrVkhdVePCVo8gVWURNl6vakGM0enwTCcHqgmA/9AAFv
+         5bVtlQJZsqxU8xeOU78AyDRZpPDHzXRNYE8pmiPxzI9QsQACN3Unxah1T7CoJGaXTgbF
+         U/Lcll9/99kIeY5G5nDzk9YGspApn3w6SJjnYSfTe7PtGv3BMbBeRlGxom/XLor/2Pdt
+         u/AS/XPPPmngpqHQQb+FnWfYQifFWK+0/iV+q0gJ/OsNGnWwG23j7SSX/CtJW5WSOZss
+         idgG3NvfVqKm6ox2KeGQ8ejQbR42KmN8MwbyLzch4mIkfA3Da19BgYDQhnDZVpP2Jm7f
+         1FKw==
+X-Gm-Message-State: AOJu0YxurpJofEvoi8sL+gcixgSGpRKsUnIp5B41lkZp20iV/EwmcT0n
+	eNpKdF8+6igkbPW38lXI1AWEMg==
+X-Google-Smtp-Source: AGHT+IGKLGKqgzeNRv7L+xn0zLYdEZOT4libZggr20dVVKc/KDhBqq0Pl8ckyK54H8v3G3sDD1FWkA==
+X-Received: by 2002:a05:6830:615:b0:6d9:f334:f886 with SMTP id w21-20020a056830061500b006d9f334f886mr5749871oti.18.1702367036432;
+        Mon, 11 Dec 2023 23:43:56 -0800 (PST)
+Received: from localhost ([122.172.82.6])
+        by smtp.gmail.com with ESMTPSA id d12-20020a056a0010cc00b006ce61c9495fsm7470500pfu.206.2023.12.11.23.43.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 22:11:17 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 01F2927C0054;
-	Tue, 12 Dec 2023 01:11:17 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Tue, 12 Dec 2023 01:11:17 -0500
-X-ME-Sender: <xms:hPl3ZQxOeFHCQ7l9RhyyQbThq0j0GId47X-0Yxf46HLIaM0VhAPh8w>
-    <xme:hPl3ZUQfXmk00-VrGunNuma2AEwabtt0MWgrZg20CxBIXL-lhIqACDZb45ImrCfyS
-    27BWL65ROgFRfQjVQ>
-X-ME-Received: <xmr:hPl3ZSXAOi9ha3V3LJAV3tqJ_p2xDhKofv44M9Wayh-2AQDs9L7wtZZzyQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelfedgleefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:hPl3Zeh5pGFKmdBL0A1sxtSyVO3yhV6GBb1kHOKKiqB1Qq8ci2DHSg>
-    <xmx:hPl3ZSAcsiYLM5FFzWbroJ_9DnWF1_93jdINnznMdLj8XbG91Uhm_w>
-    <xmx:hPl3ZfJVga1oaeoXi-sDJQJx180kRMX1q0JKXUuAU8-6hy9DszGYzg>
-    <xmx:hPl3Zavk623xXpC0AGncvZerennuydOcCJlE_kG4sQx4Hwq928_A5g>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Dec 2023 01:11:16 -0500 (EST)
-Date: Mon, 11 Dec 2023 22:11:15 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: alice@ryhl.io, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
- drivers
-Message-ID: <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
-References: <ZXeuI3eulyIlrAvL@boqun-archlinux>
- <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
- <ZXfFzKYMxBt7OhrM@boqun-archlinux>
- <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
+        Mon, 11 Dec 2023 23:43:55 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to build directory
+Date: Tue, 12 Dec 2023 13:13:48 +0530
+Message-Id: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: *
 
-On Tue, Dec 12, 2023 at 01:04:10PM +0900, FUJITA Tomonori wrote:
-> On Mon, 11 Dec 2023 18:30:36 -0800
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> > On Tue, Dec 12, 2023 at 10:46:50AM +0900, FUJITA Tomonori wrote:
-> >> On Mon, 11 Dec 2023 16:49:39 -0800
-> >> Boqun Feng <boqun.feng@gmail.com> wrote:
-> >> 
-> >> >> touch it (doesn't need to know anything about it). What safety comment
-> >> >> should be written here?
-> >> > 
-> >> > Basically, here Rust just does the same as C does in phy_read(), right?
-> >> > So why phy_read() is implemented correctly, because C side maintains the
-> >> > `(*phydev).mdio.addr` in that way. We ususally don't call it out in C
-> >> > code, since it's obvious(TM), and there is no safe/unsafe boundary in C
-> >> > side. But in Rust code, that matters. Yes, Rust doesn't control the
-> >> > value of `(*phydev).mdio.addr`, but Rust chooses to trust C, in other
-> >> > words, as long as C side holds the invariants, calling mdiobus_read() is
-> >> > safe here. How about 
-> >> > 
-> >> > // SAFETY: `phydev` points to valid object per the type invariant of
-> >> > // `Self`, also `(*phydev).mdio` is totally maintained by C in a way
-> >> > // that `(*phydev).mdio.bus` is a pointer to a valid `mii_bus` and
-> >> > // `(*phydev).mdio.addr` is less than PHY_MAX_ADDR, so it's safe to call
-> >> > // `mdiobus_read`.
-> >> 
-> >> I thought that "`phydev` is pointing to a valid object by the type
-> >> invariant of `Self`." comment implies that "C side holds the invariants"
-> >> 
-> > 
-> > By the type invariant of `Self`, you mean:
-> > 
-> > /// # Invariants
-> > ///
-> > /// Referencing a `phy_device` using this struct asserts that you are in
-> > /// a context where all methods defined on this struct are safe to call.
-> > 
-> > my read on that only tells me the context is guaranteed to be in a
-> > driver callback, nothing has been said about all other invariants C side
-> > should hold.
-> 
-> I meant that phydev points to a valid object, thus mdio and mdio.addr
-> do too. But after reading you phy_read() comment, I suspect that you
-> aren't talking about if mdio.addr points to valid memory or not. Your
-> point is about the validity of calling mdiobus_read() with mdio.addr?
-> 
+Rustup override is required to be set for the build directory and not
+necessarily the kernel source tree (unless the build directory is its
+subdir).
 
-Yes, I was talking about the safety comment for calling mdiobus_read().
+Clarify the same in quick-start guide.
 
-> 
-> >> Do we need a comment about the C implementation details like
-> >> PHY_MAX_ADDR? It becomes harder to keep the comment sync with the C
-> >> side because the C code is changed any time.
-> > 
-> > Well, exactly, "the C code is changed any time", I thought having more
-> > information in Rust helps people who is going to change the C side to
-> > see whether they may break Rust side. Plus it's the safety comment, you
-> 
-> The C side people read the Rust code before changing the C code? Let's
-> see. 
-> 
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+V2:
+- Made few changes based on review comments.
 
-Hmm... I usually won't call someone "C side people". I mean, the project
-has C part and Rust part, but the community is one.
+ Documentation/rust/quick-start.rst | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-In case of myself, I write both C and Rust, if I'm going to change some
-C side function, I may want to see the usage at Rust side, especially
-whether my changes could break the safety, and safety comments may be
-important.
+diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+index f382914f4191..7ea931f74e09 100644
+--- a/Documentation/rust/quick-start.rst
++++ b/Documentation/rust/quick-start.rst
+@@ -33,14 +33,18 @@ A particular version of the Rust compiler is required. Newer versions may or
+ may not work because, for the moment, the kernel depends on some unstable
+ Rust features.
+ 
+-If ``rustup`` is being used, enter the checked out source code directory
+-and run::
++If ``rustup`` is being used, enter the kernel build directory (or use
++`--path=<build-dir>` argument to the `set` sub-command) and run::
+ 
+ 	rustup override set $(scripts/min-tool-version.sh rustc)
+ 
+ This will configure your working directory to use the correct version of
+-``rustc`` without affecting your default toolchain. If you are not using
+-``rustup``, fetch a standalone installer from:
++``rustc`` without affecting your default toolchain.
++
++Note that the override applies to the current working directory (and its
++sub-directories).
++
++If you are not using ``rustup``, fetch a standalone installer from:
+ 
+ 	https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
+ 
+-- 
+2.31.1.272.g89b43f80a514
 
-> 
-> > need to prove that it's safe to call the function, the function is
-> > unsafe for a reason: there are inputs that may cause issues, and writing
-> > the safety comment is a process to think and double check.
-> > 
-> > Maybe we can simplify this a little bit, since IIUC, you just want to
-> > call phy_read() here, but due to that Rust cannot call inline C
-> > functions directly, hence the open-code. How about:
-> 
-> Yeah, I hope that the discussion about inline C functions would end
-> with a solution.
-> 
-> 
-> > // SAFETY: `phydev` points to valid object per the type invariant of
-> > // `Self`, also the following just minics what `phy_read()` does in C
-> > // side, which should be safe as long as `phydev` is valid.
-> > 
-> > ?
-> 
-> Looks ok to me but after a quick look at in-tree Rust code, I can't
-> find a comment like X is valid for the first argument in this C
-> function. What I found are comments like X points to valid memory.
-
-Hmm.. maybe "is valid" could be a confusing term, so the point is: if
-`phydev` is pointing to a properly maintained struct phy_device, then an
-open code of phy_read() should be safe. Maybe "..., which should be safe
-as long as `phydev` points to a valid struct phy_device" ?
-
-Regards,
-Boqun
