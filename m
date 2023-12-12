@@ -1,96 +1,111 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gHSZkiWQ"
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C668AB
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Dec 2023 15:15:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1702422942; x=1702682142;
-	bh=pLT5hzHn5ZzL4/fZP4CDa+l2XypCXo79rYBHGVix6oE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=gHSZkiWQHKT/y5gIyNVDweEPtXMR9PNpUb9peLPbI2uKycjHXfRJP/m0YAMs9suv1
-	 am98KShtvc8Opb/x/i7P0jvSYFGrOzd0bkHkhS+Sp+lpvrCo720VgoWExvyN24hXu7
-	 NSC6KXUCgtWMNuXG2GGI33wxhi51XTZG2AttBYgjxUmi4zoyQv0PnPyT9iUPoCKSRo
-	 Y3EfN6RKq/pdJZU3XDlzVQnBk6TrhL/6Z7qA1F1GHmaNx/KgA22Ck2MGK2PHnce/hZ
-	 RA8WO/FELjrkGN/D4+9CM0XnNKw192UivJ1iuCCdYr0FXaHN4cjgJKzPdBWVYlBT7b
-	 o+1yJCYTsxkkQ==
-Date: Tue, 12 Dec 2023 23:15:34 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: boqun.feng@gmail.com, alice@ryhl.io, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY drivers
-Message-ID: <b997194f-f9fa-4397-806d-65436ed83d07@proton.me>
-In-Reply-To: <20231213.080132.1176561831114639778.fujita.tomonori@gmail.com>
-References: <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home> <20231212.220216.1253919664184581703.fujita.tomonori@gmail.com> <544015ec-52a4-4253-a064-8a2b370c06dc@proton.me> <20231213.080132.1176561831114639778.fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hR5WV4Av"
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB040BE;
+	Tue, 12 Dec 2023 15:27:50 -0800 (PST)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1d349aa5cdcso1021545ad.1;
+        Tue, 12 Dec 2023 15:27:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702423670; x=1703028470; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZeyEONZJzSgNbd5fQANo0NB45nTPYSW9ivWPQRNwots=;
+        b=hR5WV4Av1fL54KXcQfnJ5a219fIa97uxNwBG0jDIQf7SMIgpLJN/U5h0fsMPws2+Cm
+         5ml8eGaYQ1OsJ0qhf7guJRaReJ+hVSMKSKi0/NOatou1vxrISzZm9A/txmrSO6RKzHu1
+         LX6I3+wx8rFGpyi34LzG5iZOfx/2h6/w9vy8jpulcD0ApmPy/mwrtvSDy0tXCslcVn9I
+         /g7+J8YcDH+PTAjvs8v44cUbigwZCjcIIZqluJhghArkxP62iHVRTLeAU2T/R3V6vd+U
+         EgEPLukahjs0NzT9fWMckNt5CLASn5cwYrBGc17cZvm4VALZObeGpA4IoEyz4gWjZfrw
+         i7Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702423670; x=1703028470;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZeyEONZJzSgNbd5fQANo0NB45nTPYSW9ivWPQRNwots=;
+        b=YcfjM8oImtSzexpNeTxjPw8EDgTp0nXfgq2lQzhlSnRreUV8YsjcGJ9bSH8NiPGgMl
+         YQnLPqUt5KJMsnWzrEVPkhIYzB6txVDIzQ4rQI0RewK3THbzcw98cfKpMAzMxqMf6PMB
+         pee2YkIGKk6jqIGdXsuaTbjKoB+rpH3sfPxD9GqWKV7ckhH5+aIKefxW/AbDgD/xxfRr
+         o+WaaSs3WJndZGs7Gd0GWlNu7Ia1u1Xlt7eQbT3bkOCAuRXxd24yBav637L2M6pu9s8D
+         YvGrMcU5NvB+m2YSCfYa0igMNvd+/CSdkI4b+zxxU6etub/gsw+dxk2vYb0gzJkgfC7t
+         jAGw==
+X-Gm-Message-State: AOJu0Yyv5se/BkdEj00YruTcxJKzVA+SmJGEtLc575X4zH2h3rxFuAGl
+	kbmWQBLHBMDEX0FttMrPk8Y=
+X-Google-Smtp-Source: AGHT+IF4APxZ6PSeaK27tjU1dnruwj6r17lr26QajlLa+AkcNV4cYPh20tevdQkeo5BtPV+Qv52vbQ==
+X-Received: by 2002:a17:902:e852:b0:1d3:4d39:2773 with SMTP id t18-20020a170902e85200b001d34d392773mr461259plg.5.1702423670328;
+        Tue, 12 Dec 2023 15:27:50 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id f15-20020a170902ff0f00b001a98f844e60sm96642plj.263.2023.12.12.15.27.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Dec 2023 15:27:50 -0800 (PST)
+Date: Wed, 13 Dec 2023 08:27:49 +0900 (JST)
+Message-Id: <20231213.082749.16210309490355798.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com, alice@ryhl.io,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
+ aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network
+ PHY drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <e9997f99-7261-4e9e-b465-e3869b6f4a6f@proton.me>
+References: <544015ec-52a4-4253-a064-8a2b370c06dc@proton.me>
+	<ZXjBKEBUrisSJ7Gx@boqun-archlinux>
+	<e9997f99-7261-4e9e-b465-e3869b6f4a6f@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On 12/13/23 00:01, FUJITA Tomonori wrote:
-> On Tue, 12 Dec 2023 17:35:34 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
->=20
->> On 12/12/23 14:02, FUJITA Tomonori wrote:
->>> On Mon, 11 Dec 2023 22:11:15 -0800
->>> Boqun Feng <boqun.feng@gmail.com> wrote:
+On Tue, 12 Dec 2023 22:40:01 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
+
+> On 12/12/23 21:23, Boqun Feng wrote:
+>> On Tue, Dec 12, 2023 at 05:35:34PM +0000, Benno Lossin wrote:
+>>> [1]: Technically it is a combination of the following invariants:
+>>> - the `mdio` field of `struct phy_device` is a valid `struct mido_device`
+>>> - the `bus` field of `struct mdio_device` is a valid pointer to a valid
+>>>   `struct mii_bus`.
 >>>
->>>>>> // SAFETY: `phydev` points to valid object per the type invariant of
->>>>>> // `Self`, also the following just minics what `phy_read()` does in =
-C
->>>>>> // side, which should be safe as long as `phydev` is valid.
->>>>>>
->>>>>> ?
->>>>>
->>>>> Looks ok to me but after a quick look at in-tree Rust code, I can't
->>>>> find a comment like X is valid for the first argument in this C
->>>>> function. What I found are comments like X points to valid memory.
+>>>> If phy_read() is called here, I assume that you are happy about the
+>>>> above comment. The way to call mdiobus_read() here is safe because it
+>>>> just an open code of phy_read(). Simply adding it works for you?
 >>>>
->>>> Hmm.. maybe "is valid" could be a confusing term, so the point is: if
->>>> `phydev` is pointing to a properly maintained struct phy_device, then =
-an
->>>> open code of phy_read() should be safe. Maybe "..., which should be sa=
-fe
->>>> as long as `phydev` points to a valid struct phy_device" ?
+>>>> // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>>>> // So it's just an FFI call, open code of `phy_read()`.
 >>>
->>> As Alice suggested, I updated the comment. The current comment is:
+>>> This would be fine if we decide to go with the exception I detailed
+>>> above. Although instead of "open code" I would write "see implementation
+>>> of `phy_read()`".
 >>>
->>> // SAFETY: `phydev` is pointing to a valid object by the type invariant=
- of `Self`.
->>> // So it's just an FFI call.
->>> let ret =3D unsafe {
->>>     bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, reg=
-num.into())
->>> };
->>
->> I still think you need to justify why `mdio.bus` is a pointer that you
->> can give to `midobus_read`. After looking at the C code, it seems like
->> that the pointer needs to point to a valid `struct mii_bus`.
->> This *could* just be an invariant of `struct phy_device` [1], but where
->> do we document that?
->=20
-> If phy_device points to a valid object, phy_device.mdio is valid.
+>> 
+>> So the rationale here is the callsite of mdiobus_read() is just a
+>> open-code version of phy_read(), so if we meet the same requirement of
+>> phy_read(), we should be safe here. Maybe:
+>> 
+>> 	"... open code of `phy_read()` with a valid phy_device pointer
+>> 	`phydev`"
+>> 
+>> ?
+> 
+> Hmm that might be OK if we add "TODO: replace this with `phy_read` once
+> bindgen can handle static inline functions.".
 
-Where is this documented?
+That's the conclusion? I suppose that a way to handle static inline
+functions is still under discussion.
 
-> A mii_bus must exist before a phy device. A bus is scanned and then a
-> phy device is found (so phy_device object is crated).
->=20
-> https://elixir.bootlin.com/linux/v6.6.5/source/drivers/net/phy/phy_device=
-.c#L634
 
-I know that this is the status. But for this to be useful as a
-justification it must be written down somewhere where you can expect to
-find it. Not some knowledge that "everyone just knows".
-I would prefer to use the solution that I detailed in the other thread.
+> Actually, why can't we just use the normal `rust_helper_*` approach? So
+> just create a `rust_helper_phy_read` that calls `phy_read`. Then call
+> that from the rust side. Doing this means that we can just keep the
+> invariants of `struct phy_device` opaque to the Rust side.
+> That would probably be preferable to adding the `TODO`, since when
+> bindgen has this feature available, we will automatically handle this
+> and not forget it. Also we have no issue with diverging code.
 
---=20
-Cheers,
-Benno
+I wasn't sure that `rust_helper_*` approach is the way to go.
 
