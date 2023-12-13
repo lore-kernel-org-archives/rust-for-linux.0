@@ -1,100 +1,86 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fAN56HnY"
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25477D0;
-	Wed, 13 Dec 2023 09:05:36 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-425952708afso50251451cf.0;
-        Wed, 13 Dec 2023 09:05:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LN8IWX0V"
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43052F4;
+	Wed, 13 Dec 2023 09:13:03 -0800 (PST)
+Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-77f2dc3a9bcso429062685a.3;
+        Wed, 13 Dec 2023 09:13:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702487135; x=1703091935; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702487582; x=1703092382; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zaZOg6uPTywifNeWY/lhqitjb+T4PmJ5HvOYe4JLoEc=;
-        b=fAN56HnYVTBYv89mKu8lHU6DwDhRB0utUi4cTovqijKV0NCXjiJoCaJSbAeV0iwCyy
-         dN7ccgDcXzOYJwpEmCii0HuHUqCc/ugge5ZihV9JVGnmy1w6SPYUuoPh5lzrrIhRCKaS
-         NOo+AthpA0VcfEz91ViHiTyP3G0jwBfVF6LNa/lhDDBDm+cD0ufX4PjX6C4ZNYU4QKYc
-         4wOSUwOwi+j2vb9MzbnQPV756KNoI2JqdvBfvkWBIJdPjXVjhr08ltVm6QBa/6VveiJ6
-         I2JLjdIhRQDVWURTtggZTXY7WQCCkEyR3bSk95Su4DbohnyLA2chyEKIrbHF6fPQMQZO
-         xcgA==
+        bh=RNE502AZCwpSJ0AiA/qxYF3eR+QalXC16ipTAt0SyoE=;
+        b=LN8IWX0VaWz8IcW9Y5Asy3YVIqjaiCNa2eZ19njTqZ2i/aHan/Luq7Kpf+MyJl+pKK
+         kxarrdzWx/huwSo2fpZITHvTmk/pEVWMqEUxx04YGlX0fflrMEk0sw/FlEuZddNUUVNr
+         69zKKD+Z8J7DkKE+8HgbcWA7zCGi0Eax+C8r1PGZ3lDR10SM8O9TpSAqtNVJKA4AEVh8
+         KdAoHNurp6TobDkrseweT7I4P4b0zGJVdbbwR8zknJM03yZ7ypWspjCnVoNh49T1bibo
+         BulY8Hd7JA9HsrmzeAf8wN4omB7Fc5N1ZZRrrXvVufTGxuq8s7oz2xIfG1eloYCyJE9A
+         zEFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702487135; x=1703091935;
+        d=1e100.net; s=20230601; t=1702487582; x=1703092382;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zaZOg6uPTywifNeWY/lhqitjb+T4PmJ5HvOYe4JLoEc=;
-        b=Ae+0TbIoyZMYjWVW3I8Or6P41RsrTs+vlkpzk9VK00RLaFach9GOE9rx8rq/eHfwga
-         v5/e9JFcbYWHeU5AR2BoA6uJgo8Fj81R3qhTJwUz8+lbhTUTAYhBWbCeC3Y9xOz6uozU
-         uv7KtcS+p2jTth/nM0E50nfYnBWx04dP1G+zmoXgggXlmI3Cw17L2bAUxx9SHks1DrfB
-         zafLRrjDRQUFSV1BT4CR/jWos0R4i5HBgSIxNOK/nQT1HFfNHQ4aUYhk6OxrN7lYnEUX
-         CAeXPbSfeF1mscoKM1ak+npYXhQ6wf6x86dt3A2ckSNNOLZcNSFOg9UBgSOBYc6xE8uc
-         pllQ==
-X-Gm-Message-State: AOJu0Ywzgou4diBG0rSnkfGpPerO9uabmlAf+g56ZCT7wyDPTeLEo8zo
-	XKGm7AiIuRiGSNuyTZ/AHmQ=
-X-Google-Smtp-Source: AGHT+IHtYdP9DEk855hTYxYHeMk1EY6txXkJrmfCGNPHjRbM0uyaFyTnbRsZP54z27JNtYS7Wxnkig==
-X-Received: by 2002:a05:622a:252:b0:425:88fc:8abb with SMTP id c18-20020a05622a025200b0042588fc8abbmr12875357qtx.12.1702487135165;
-        Wed, 13 Dec 2023 09:05:35 -0800 (PST)
+        bh=RNE502AZCwpSJ0AiA/qxYF3eR+QalXC16ipTAt0SyoE=;
+        b=OoYkIGxTsh6iUTHYLTNH6iiILUWhAxopmfEAkn4wMImejPdXyAuvJSCtL4dDhB9wHD
+         GEqFZPqMQS4otWEMrzb3OouHKHYoJuAnB+0szzyYcI0KEEwnu1q7BOjTgs+nMxoel8Wu
+         ncWUEeUHSNHPmCjdqoWFQ5OcNGFBQhEmwkjXSwbu2DwMPMqkiB4qU5VTSUHvuI67DDl5
+         KJWcFFB+E4KIeVyfbQh7CNIFtzsOgeFJX88migGv9Fy1e+5/O4gQDOQnDjzMKOLE3sNH
+         VtF28SgCnYBcjWdV337bTaNMYz2oVuqSh0oPIw96uapEatH2P1FxzegF+xhwSrE0f7gc
+         /qZA==
+X-Gm-Message-State: AOJu0YxMaSFTccpE3gBkAmHfPwQIxElE7tFgqaj+tv64CknzRbTofn9J
+	/LpzvJqOCJg5K+S8M8DN+2c=
+X-Google-Smtp-Source: AGHT+IESCAseOZI3u4s68CMAFI8S+DYH5BPBl5wFTwQ9qoF3J5IWs3TDqEM9dHuWvQcN9R+ELpjdzg==
+X-Received: by 2002:a05:620a:135a:b0:77d:99c3:a2da with SMTP id c26-20020a05620a135a00b0077d99c3a2damr9761186qkl.78.1702487581957;
+        Wed, 13 Dec 2023 09:13:01 -0800 (PST)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id e18-20020ac85992000000b004254b465059sm4890154qte.47.2023.12.13.09.05.34
+        by smtp.gmail.com with ESMTPSA id bj12-20020a05620a190c00b0077f04cce6e5sm4639422qkb.14.2023.12.13.09.13.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 09:05:34 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 1088027C0054;
-	Wed, 13 Dec 2023 12:05:34 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 13 Dec 2023 12:05:34 -0500
-X-ME-Sender: <xms:XOR5ZfCZIyAZECwkunnTvOl9-G3WYlajIle5fpkVvUlRn29n7pBttQ>
-    <xme:XOR5ZVhHrPzD53EwKugaa0Ukv8Xv-8yhizxlLvJPifeVyBat9XheQFVGc2eNJHH32
-    sN5ISTH7e_El1JZbg>
-X-ME-Received: <xmr:XOR5ZanI82lXWVbKsflG3_ToDljlbkrzGgQftEau0GrSadQ5t-PFulWuPw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeljedgfeehucetufdoteggodetrfdotf
+        Wed, 13 Dec 2023 09:13:01 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 4EEF727C005B;
+	Wed, 13 Dec 2023 12:13:01 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Wed, 13 Dec 2023 12:13:01 -0500
+X-ME-Sender: <xms:HeZ5ZXLw9zgsOnePuno3dlDsgaYl4H6jOr_T8uoDiLV3PIKT4oQgqA>
+    <xme:HeZ5ZbLopdD3h_-Z4EarWz19mi6XO-Z3zcSUJaQp2EQaSFarnr6xGCTMC9uLu6CB-
+    PZ-xCwI4zoAHi4X_A>
+X-ME-Received: <xmr:HeZ5ZftXLL3iPR31lm-Nye_CEHFDhDuK7OgY49IU-yE2HCRgJb2WCLOj3w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeljedgfeejucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhu
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
     nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeeitdefvefhteeklefgtefhgeelkeefffelvdevhfehueektdevhfettddv
-    teevvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
     gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
     gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
     igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:XOR5ZRyyw_H9ToCV6YMD2B6K8OVb-iMWFs9IzdGUhO37yFOG80EwzA>
-    <xmx:XOR5ZUTCa3jqzin7Nxho19RNwz4iyw7CbYNGzXUcPkX7qRFyFri8aQ>
-    <xmx:XOR5ZUZrAaZOmz0hCE2HgWTsmlh_5b-6ctOta8DTP8DPnCoDkzeWQQ>
-    <xmx:XuR5ZQp20kcE-tiT3ep6Q3jTPjX3Qd6tZbpZqz9JElX3dLcmynVGSQ>
+X-ME-Proxy: <xmx:HeZ5ZQZkNG1TDIm0VG2FYaWSwfUpBzUYd5M-kshOnsOM5IF89a92fg>
+    <xmx:HeZ5Zea-9zZBI43JoGJJOL_mfjxrqaaXhgMvdAwoMf8p96TBDQQnjw>
+    <xmx:HeZ5ZUCI7e3F9YvkjxY0W66AyThIgXs-8_0MWjY_-gbOCYqcUBXY7A>
+    <xmx:HeZ5ZUmS4tLl-VhmV63n4zgEMoL_0ZXGdpzzvSlnvywj1Q0srBXwLg>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 13 Dec 2023 12:05:31 -0500 (EST)
-Date: Wed, 13 Dec 2023 09:05:30 -0800
+ 13 Dec 2023 12:13:00 -0500 (EST)
+Date: Wed, 13 Dec 2023 09:12:59 -0800
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kees Cook <keescook@chromium.org>,	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
-Message-ID: <ZXnkWsSvxbFDoDGU@Boquns-Mac-mini.home>
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com>
- <20231206-alice-file-v2-7-af617c0d9d94@google.com>
- <k_vpgbqKAKoTFzJIBCjvgxGhX73kgkcv6w9kru78lBmTjHHvXPy05g8KxAKJ-ODARBxlZUp3a5e4F9TemGqQiskkwFCpTOhzxlvy378tjHM=@proton.me>
- <CAH5fLgiQ-7gbwP2RLoVDfDqoA+nXPboBW6eTKiv45Yam_Vjv_A@mail.gmail.com>
- <E-jdYd0FVvs15f_pEC0Fo6k2DByCDEQoh_Ux9P9ldmC-otCvUfQghkJOUkiAi8gDI8J47wAaDe56XYC5NiJhuohyhIklGAWMvv9v1qi6yYM=@proton.me>
- <ZXkKTSTCuQMt2ge6@boqun-archlinux>
- <pxtBsqlawLf52Escu7kGkCv1iEorWkE4-g8Ke_IshhejEYz5zZGGX5q98hYtU_YGubwk770ufUezNXFB_GJFMnZno5G7OGuF2oPAOoVAGgc=@proton.me>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alice@ryhl.io,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <ZXnmGzcdhDr0YQSa@Boquns-Mac-mini.home>
+References: <ZXeuI3eulyIlrAvL@boqun-archlinux>
+ <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
+ <ZXfFzKYMxBt7OhrM@boqun-archlinux>
+ <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
+ <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
+ <67da9a6a-b0eb-470c-ae43-65cf313051b3@lunn.ch>
+ <ZXnfHbKE3K_J4yul@Boquns-Mac-mini.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -103,54 +89,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <pxtBsqlawLf52Escu7kGkCv1iEorWkE4-g8Ke_IshhejEYz5zZGGX5q98hYtU_YGubwk770ufUezNXFB_GJFMnZno5G7OGuF2oPAOoVAGgc=@proton.me>
+In-Reply-To: <ZXnfHbKE3K_J4yul@Boquns-Mac-mini.home>
 
-On Wed, Dec 13, 2023 at 09:12:45AM +0000, Benno Lossin wrote:
-[...]
+On Wed, Dec 13, 2023 at 08:43:09AM -0800, Boqun Feng wrote:
+> On Wed, Dec 13, 2023 at 11:24:03AM +0100, Andrew Lunn wrote:
+> > > > The C side people read the Rust code before changing the C code? Let's
+> > > > see. 
+> > > > 
+> > > 
+> > > Hmm... I usually won't call someone "C side people". I mean, the project
+> > > has C part and Rust part, but the community is one.
+> > > 
+> > > In case of myself, I write both C and Rust, if I'm going to change some
+> > > C side function, I may want to see the usage at Rust side, especially
+> > > whether my changes could break the safety, and safety comments may be
+> > > important.
 > > 
-> > Actually, there is an implied safety requirement here, it's about how
-> > qproc is implemented. As we can see, PollCondVar::drop() will wait for a
-> > RCU grace period, that means the waiter (a file or something) has to use
-> > RCU to access the cv.wait_list, otherwise, the synchronize_rcu() in
-> > PollCondVar::drop() won't help.
+> > While i agree with your sentiment, ideally we want bilingual
+> > developers, in reality that is not going to happen for a long time. I
+> > could be wrong, but i expect developers to be either C developers, or
+> > Rust developers. They are existing kernel developers who know C, or
+> > Rust developers who are new to the kernel, and may not know much C. So
 > 
-> Good catch, this is rather important. I did not find the implementation
-> of `qproc`, since it is a function pointer. Since this pattern is
-> common, what is the way to find the implementation of those in general?
+> Sorry, I cannot agree with you. Why do we try to divide the community in
+> two parts? In fact, I keep telling people who want to contribute
+> Rust-for-Linux that one way to contribute is trying to do some C code
+> changes first to get familiar with the subsystem and kernel development.
 > 
-
-Actually I don't find any. Ping vfs ;-)
-
-Personally, it took me a while to get a rough understanding of the API:
-it's similar to `Future::poll` (or at least the registering waker part),
-it basically should registers a waiter, so that when an event happens
-later, the waiter gets notified. Also the waiter registration can have a
-(optional?) cancel mechanism (like an async drop of Future ;-)), and
-that's what gives us headache here: cancellation needs to remove the
-waiter from the wait_queue_head, which means wait_queue_head must be
-valid during the removal, and that means the kfree of wait_queue_head
-must be delayed to a state where no one can access it in waiter removal.
-
-> I imagine that the pattern is used to enable dynamic selection of the
-> concrete implementation, but there must be some general specification of
-> what the function does, is this documented somewhere?
+> The sentence from Tomo really read like: I don't want to put this
+> information here, since I don't think anyone would use it. Why do we
+> want to shutdown the door for more people to collaborate, really, why?
+> The only downside here is that Tomo needs to maintain a few more lines
+> of comments. Also the comment is not a random comment, it's the safety
+> comment, please see below..
 > 
-> > To phrase it, it's more like:
+> > we should try to keep that in mind.
 > > 
-> > (in the safety requirement of `PollTable::from_ptr` and the type
-> > invariant of `PollTable`):
+> > I personally don't think i have enough Rust knowledge to of even
+> > reached the dangerous stage. But at least the hard part with Rust
+> > seems to be the comments, not the actual code :-(
 > > 
-> > ", further, if the qproc function in poll_table publishs the pointer of
-> > the wait_queue_head, it must publish it in a way that reads on the
-> > published pointer have to be in an RCU read-side critical section."
 > 
-> What do you mean by `publish`?
+> Well, a safety comment is a basic part of Rust, which identifies the
+> safe/unsafe boundary (i.e. where the code could go wrong in memory
+> safety) and without that, the code will be just using Rust syntax and
+> grammar. Honestly, if one doesn't try hard to identify the safe/unsafe
+> boundaries, why do they try to use Rust? Unsafe Rust is harder to write
+> than C, and safe Rust is pointless without a clear safe/unsafe boundary.
+> Plus the syntax is not liked by anyone last time I heard ;-)
 > 
+> Having a correct safety comment is really the bottom line. Without that,
+> it's just bad Rust code, which I don't think netdev doesn't want either?
 
-Publishing a pointer is like `Send`ing a `&T` (or put pointer in a
-global variable), so that other threads can access it. Note that since
-the cancel mechanism is optional (best to my knowledge), so a qproc call
-may not pushlish the pointer.
+s/doesn't//
 
-Regards,
-Boqun
+> Am I missing something here?
+> 
+> Regards,
+> Boqun
+> 
+> > 	Andrew
+> > 
