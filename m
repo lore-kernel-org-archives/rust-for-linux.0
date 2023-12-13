@@ -1,93 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTVsUC0A"
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CEACF2;
-	Wed, 13 Dec 2023 10:44:35 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-dae7cc31151so6916327276.3;
-        Wed, 13 Dec 2023 10:44:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcBynjMh"
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F99BD;
+	Wed, 13 Dec 2023 10:44:55 -0800 (PST)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-dbcde128abeso336429276.0;
+        Wed, 13 Dec 2023 10:44:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702493074; x=1703097874; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702493094; x=1703097894; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o89+rTPkyZ2u4xqSnh8fhH0cKv+jKXfmZsjDkxKQnFo=;
-        b=LTVsUC0ADO27O2dqOjerWAWK3PuyUFgtZg8TJo1kCcEmJaa1nYDkyRG4GFMP/mLxwt
-         YxNfnRAjmmhGcL3W5vXxgfx4JnlFrNwgCYGOroBLBQawGB9S72jUKOPvf5GawFH8XTVF
-         SD9k+87O7doWFMZN/je9PpeWDF+UWt/MdHGB46De/HaRHHAmRvdviJOsqqx2AXKtqASI
-         EnKpCXOdQ7WaGTZ3jRKbC0EzGfg6QGJkR8FdHaiwxlHFh6gED7Mw6gzq4BUktNf79E7k
-         ovy1j68lr+P+sCbfCM0gWQbMYasWrxqG2gWag86L5DdIXCUQHPzvVpr2hY7tdvOBf0W/
-         IBsw==
+        bh=GdwPGSTIX5rNBaIrl1/3GcKjIpCybVlITHwJ+mspW+o=;
+        b=EcBynjMhbJlplDV8GVD3TVxBpBB2UmvDCNblL3rzFjo5krk9Z/BNeO0wLFVOikhE5w
+         bf88QxyV+fHbyRotcJsisE3iW3zJCKG6wVcdjfu/JFa6Td5s48e4CubLJy7qUFPb2S8z
+         btPo6HDMkLJm3frnp6c2NPayiYzTSciNvJAPFIKV3yNWPAJQH1m6/5XzJo2QQV4jmdGZ
+         2mQlyry4jnaj6+MJp8cxsfnWl+xLaClGycAaY/vv4TcSnAoD2SNKyVuk/AZ/jSQ5r3v5
+         TH9Tt6mmE12yvMLutJi0dQxV9yBO+06nMWFktqWKfgz3tacOdFQFJOq3OVE6RlsEmjyj
+         OvWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702493074; x=1703097874;
+        d=1e100.net; s=20230601; t=1702493094; x=1703097894;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=o89+rTPkyZ2u4xqSnh8fhH0cKv+jKXfmZsjDkxKQnFo=;
-        b=hK7pSSdZCLnRXh1agnXa0KfFEpmg2HpC7pHRpbzYzN/EPWpNmE87nW/0M4vSWxFYJG
-         2H6+Y12hKf7w9iVHqkROiote/hDLfBlc1GxDkdecLGRxXih3rLAxU+kaHPV6bvPhAn/V
-         oJ9khTNUiob1dSmXsP2n6I7ym7aHduwVwcfXhoq+7COUgg3SprjgRWL2H8gRHo5TtuBS
-         jtBDL/lvqotYm+wcdXCGtclutEDlpPdmhgVPuDzYN9T/l++Z9v57RNW8iwiRraC4L/5I
-         oj76iSv637ri7Nlc991Lcwk0zBSDPrGVAJ4wCDcid3pl3BpxSRmsAJnViptiSn3Wn0Jh
-         VibA==
-X-Gm-Message-State: AOJu0YyKDcGd7bQtjvYqiJooj5C1Y3vB6YVyFmfXt+LixteNbBnnF0Tf
-	/w5UcXxTceHYHSPJKSoPIfDFbXF+zv/7Akl3sXc=
-X-Google-Smtp-Source: AGHT+IGDDcv7QCiCuPSgHt8BFeRN1ktb30czOglJRpkstgMMmptWXTVb6nUszHCqmwSYC+o+Mumag18lqKuwy+cyayU=
-X-Received: by 2002:a05:6902:1b04:b0:dbc:bcc7:2580 with SMTP id
- eh4-20020a0569021b0400b00dbcbcc72580mr2460332ybb.56.1702493074534; Wed, 13
- Dec 2023 10:44:34 -0800 (PST)
+        bh=GdwPGSTIX5rNBaIrl1/3GcKjIpCybVlITHwJ+mspW+o=;
+        b=EKwdrDjOTHvyahcxRxL5NnH1kn9zMYc2ioeXzIBtH+u3UiRi3A8RWbawe+BKx4zDa3
+         u7SbuLfv2qhcCEqn5oDPx66vbhVe7d1Q7y4BLuC1+LqxmxDvx56KfGG6GxxkUzzgjC+e
+         NRdmTimS2JXduoZ8ZQWXWIZMGOl7HKlZgzGhHvP+ESeD0unkOs/G7wEjL5FJMhM09LLt
+         7WlB2xei457x/5XmyTPfVgmvsge7cUL2it8kXKPeFuRZ5JbDAeN4UVAmDsv2lvcnYOug
+         PWndR+i1NUVV4rO4t7k/DUuDNxYFjdRZZbAPgwSOufd/CoFy7ItT3YjOGFD00Xqt6qkV
+         EVIQ==
+X-Gm-Message-State: AOJu0YwdMXyv9wt2jlWBtoj/BGdOJxxjeK3rIf488JmKq08mAxKGux3P
+	fODRmHV2kSknErNMGevHxdlH7l21kbJs4VFXPrc=
+X-Google-Smtp-Source: AGHT+IGEWrG6AOQ1j/kuXEg1PgBXbItHE/v//whY15tM4pFXt/Y3bW73yg2wfa8ZYF5eN2vm6nK+Lm01bRQAgrkqZFg=
+X-Received: by 2002:a25:2905:0:b0:dbc:66c0:574c with SMTP id
+ p5-20020a252905000000b00dbc66c0574cmr5370192ybp.127.1702493094496; Wed, 13
+ Dec 2023 10:44:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231118013959.37384-1-tmgross@umich.edu>
-In-Reply-To: <20231118013959.37384-1-tmgross@umich.edu>
+References: <20231026201855.1497680-1-benno.lossin@proton.me>
+In-Reply-To: <20231026201855.1497680-1-benno.lossin@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 13 Dec 2023 19:44:23 +0100
-Message-ID: <CANiq72mv_9J5LAUNdMtYX1S=OPCr0-R_gS_V0c4ZX8Br3H86nw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: macros: update 'paste!' macro to accept string literals
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Date: Wed, 13 Dec 2023 19:44:43 +0100
+Message-ID: <CANiq72k41VmCHLFk9TAmW3VrJ=hv=e_vaVV4fjusgErVr_UmOQ@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: macros: improve `#[vtable]` documentation
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Sven Van Asbroeck <thesven73@gmail.com>, Viktor Garske <viktor@v-gar.de>, Finn Behrens <me@kloenk.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 18, 2023 at 2:43=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
-ote:
+On Thu, Oct 26, 2023 at 10:20=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
 >
-> Enable combining identifiers with literals in the 'paste!' macro. This
-> allows combining user-specified strings with affixes to create
-> namespaced identifiers.
+> Traits marked with `#[vtable]` need to provide default implementations
+> for optional functions. The C side represents these with `NULL` in the
+> vtable, so the default functions are never actually called. We do not
+> want to replicate the default behavior from C in Rust, because that is
+> not maintainable. Therefore we should use `build_error` in those default
+> implementations. The error message for that is provided at
+> `kernel::error::VTABLE_DEFAULT_ERROR`.
 >
-> This sample code:
->
->     macro_rules! m {
->         ($name:lit) =3D> {
->             paste!(struct [<_some_ $name _struct_>] {})
->         }
->     }
->
->     m!("foo_bar");
->
-> Would previously cause a compilation error. It will now generate:
->
->     struct _some_foo_bar_struct_ {}
->
-> Signed-off-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Applied to `rust-next` (with an added `:` before the example since
-that is our usual convention).
+Applied to `rust-next` (with the requested wrapping applied and
+capitalized sentence).
 
 Thanks everyone!
 
