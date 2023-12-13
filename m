@@ -1,78 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcBynjMh"
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F99BD;
-	Wed, 13 Dec 2023 10:44:55 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-dbcde128abeso336429276.0;
-        Wed, 13 Dec 2023 10:44:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SoAUaShD"
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50226DD;
+	Wed, 13 Dec 2023 10:45:37 -0800 (PST)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5e266e8d39eso17185567b3.1;
+        Wed, 13 Dec 2023 10:45:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702493094; x=1703097894; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702493136; x=1703097936; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GdwPGSTIX5rNBaIrl1/3GcKjIpCybVlITHwJ+mspW+o=;
-        b=EcBynjMhbJlplDV8GVD3TVxBpBB2UmvDCNblL3rzFjo5krk9Z/BNeO0wLFVOikhE5w
-         bf88QxyV+fHbyRotcJsisE3iW3zJCKG6wVcdjfu/JFa6Td5s48e4CubLJy7qUFPb2S8z
-         btPo6HDMkLJm3frnp6c2NPayiYzTSciNvJAPFIKV3yNWPAJQH1m6/5XzJo2QQV4jmdGZ
-         2mQlyry4jnaj6+MJp8cxsfnWl+xLaClGycAaY/vv4TcSnAoD2SNKyVuk/AZ/jSQ5r3v5
-         TH9Tt6mmE12yvMLutJi0dQxV9yBO+06nMWFktqWKfgz3tacOdFQFJOq3OVE6RlsEmjyj
-         OvWA==
+        bh=8kdpPGKT7W/htzVmzX+GVwFRmAQOFC9bkN2uytvBCpY=;
+        b=SoAUaShDUQms2iEQcsW5Z8V3Nl+h37bJJ/bFjMIA2AiD8cuZb3ooj3B3G6PJ97icmq
+         prLUdZqqRX8rgd4pU+cxBhHjiy1rsukyzVRbQKJQY1J4EB1GzyFcsalxpMjgZOuO3wLS
+         ZsEOBnlf8W4kUNS/NNJvKaRpslYl9Hy50zn2g0DZOP4Yb4gp18vRBtblgGg5AQI7Dp/J
+         jYfTzAelfCPPsnLcVr16PjrC2Uc+phzaiCxopCNNWKSRw25U7YtUS4YWADy1ygZBzumk
+         ERNrKJnbHAkciF/ItWnMA0W9/tJ/FHfzj41rgs9hEzuwR5lu7ac163JdhPp9fiP+wzak
+         KOPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702493094; x=1703097894;
+        d=1e100.net; s=20230601; t=1702493136; x=1703097936;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GdwPGSTIX5rNBaIrl1/3GcKjIpCybVlITHwJ+mspW+o=;
-        b=EKwdrDjOTHvyahcxRxL5NnH1kn9zMYc2ioeXzIBtH+u3UiRi3A8RWbawe+BKx4zDa3
-         u7SbuLfv2qhcCEqn5oDPx66vbhVe7d1Q7y4BLuC1+LqxmxDvx56KfGG6GxxkUzzgjC+e
-         NRdmTimS2JXduoZ8ZQWXWIZMGOl7HKlZgzGhHvP+ESeD0unkOs/G7wEjL5FJMhM09LLt
-         7WlB2xei457x/5XmyTPfVgmvsge7cUL2it8kXKPeFuRZ5JbDAeN4UVAmDsv2lvcnYOug
-         PWndR+i1NUVV4rO4t7k/DUuDNxYFjdRZZbAPgwSOufd/CoFy7ItT3YjOGFD00Xqt6qkV
-         EVIQ==
-X-Gm-Message-State: AOJu0YwdMXyv9wt2jlWBtoj/BGdOJxxjeK3rIf488JmKq08mAxKGux3P
-	fODRmHV2kSknErNMGevHxdlH7l21kbJs4VFXPrc=
-X-Google-Smtp-Source: AGHT+IGEWrG6AOQ1j/kuXEg1PgBXbItHE/v//whY15tM4pFXt/Y3bW73yg2wfa8ZYF5eN2vm6nK+Lm01bRQAgrkqZFg=
-X-Received: by 2002:a25:2905:0:b0:dbc:66c0:574c with SMTP id
- p5-20020a252905000000b00dbc66c0574cmr5370192ybp.127.1702493094496; Wed, 13
- Dec 2023 10:44:54 -0800 (PST)
+        bh=8kdpPGKT7W/htzVmzX+GVwFRmAQOFC9bkN2uytvBCpY=;
+        b=VQfa5JhGUl8chBe3z5P9g2sVvqeNHixFGbUZMleVY+ire5LdSo3JewFwrkdfzyzMe+
+         ta4vA74ePmV4sKceH6MkGWROnTyF6ozcXq5WprEeg7ZsF98rW2L2+yrA4LHYhniYLg0h
+         9G1LqGjNNKshIg8f3ZrJMPzbv+AhY5KBLIsWMvVyrcR9oSwHSPwDt+91XKSboCj9gLsw
+         33pYnKCb1nM8f+dhCbPpst6pRlYYxGicn6Sydq27KWGkMHHaXUr58n6Y0WdiKhVq2CG6
+         1Iow7OdmuJRGoMso0tKw2qDPCcT97o7g2Z+9GUrmXWMoV8ZrKUsxJUBqzwp+V/ynM7PE
+         LE1A==
+X-Gm-Message-State: AOJu0YzbNstYdgPC9VZJPTtotU8C5H+SEnzjab9uaBr49a8s2/KA4hTG
+	2+9XhoH8utjEE1dIFeX6lPbiDu9LMf8vr8Kked0=
+X-Google-Smtp-Source: AGHT+IEp/QnTz9hl1J5TCHI6eIHEOdWsqB2OwicWVGX1cpaFK3RhGSdQQDm4J0tE1TyFZ2hiCyg7aZ8Vz32dqbMaFJM=
+X-Received: by 2002:a0d:c344:0:b0:5d7:1941:2c19 with SMTP id
+ f65-20020a0dc344000000b005d719412c19mr6456637ywd.70.1702493136530; Wed, 13
+ Dec 2023 10:45:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231026201855.1497680-1-benno.lossin@proton.me>
-In-Reply-To: <20231026201855.1497680-1-benno.lossin@proton.me>
+References: <20231031201752.1189213-1-mmaurer@google.com>
+In-Reply-To: <20231031201752.1189213-1-mmaurer@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 13 Dec 2023 19:44:43 +0100
-Message-ID: <CANiq72k41VmCHLFk9TAmW3VrJ=hv=e_vaVV4fjusgErVr_UmOQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: macros: improve `#[vtable]` documentation
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+Date: Wed, 13 Dec 2023 19:45:25 +0100
+Message-ID: <CANiq72nDq-jr-sQT5aCo6VevqOPX+EUPk9ByUtwjixy5Ut7mag@mail.gmail.com>
+Subject: Re: [PATCH] rust: Suppress searching builtin sysroot
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Jamie.Cunliffe@arm.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, will@kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
-	Sven Van Asbroeck <thesven73@gmail.com>, Viktor Garske <viktor@v-gar.de>, Finn Behrens <me@kloenk.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 26, 2023 at 10:20=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+On Tue, Oct 31, 2023 at 9:18=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+ wrote:
 >
-> Traits marked with `#[vtable]` need to provide default implementations
-> for optional functions. The C side represents these with `NULL` in the
-> vtable, so the default functions are never actually called. We do not
-> want to replicate the default behavior from C in Rust, because that is
-> not maintainable. Therefore we should use `build_error` in those default
-> implementations. The error message for that is provided at
-> `kernel::error::VTABLE_DEFAULT_ERROR`.
+> By default, if Rust is passed `--target=3Dfoo` rather than a target.json
+> file, it will infer a default sysroot if that component is installed. As
+> the proposed aarch64 support uses `aarch64-unknown-none` rather than a
+> target.json file, this is needed to prevent rustc from being confused
+> between the custom kernel sysroot and the pre-installed one.
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Applied to `rust-next` (with the requested wrapping applied and
-capitalized sentence).
+Applied to `rust-next`. I added Boqun's fix for `rusttest` as well as
+a fix for `rustdoc` (which requires a conditional for host crates like
+`macros`); and added a couple `Links` to the arm64 discussions.
+
+I would appreciate extra testing for this one (please use `rust-next`
+commits in that case).
 
 Thanks everyone!
 
