@@ -1,138 +1,103 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0kvirctx"
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5515BB0
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 03:04:41 -0800 (PST)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6d9d84019c5so5153499a34.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 03:04:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702465480; x=1703070280; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7OfkgN2PJIbw2ezV94FT4cZwlilOoY4SLjkbyeO7luc=;
-        b=0kvirctxEF3tP+NgcVpfQIhGDmo6bskitzhpp8N1uL3X9AcI7Wbh7pzyPUs4EN5MjR
-         eCmxJQXY7nam1daeWfv+/DtTur0zyAeYhqIacVAQnxR0QqzdIG4GwAUbnrF7KvFDaUaB
-         epe+Ikn40RB9mBkUxFgWaE2wrGBew67Go3IL+/kDS80cAdKrFh+DmBEKnph8xrtLxNi9
-         13VDI8bpioKJvfZoyhygom5dtqFJFrYQ32n9Md/Ga0PdvF8l+GgvcYpVTfMkcn4yNhJ+
-         OwkUCyDCsXZ0ApFQ5br/xzcS3BDp/JGv/O1ZbhQdD5DKXTqiHw76kuDPcHtGsiGQ61kC
-         QZ3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702465480; x=1703070280;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7OfkgN2PJIbw2ezV94FT4cZwlilOoY4SLjkbyeO7luc=;
-        b=Yij6KV84T7ijuHXVLhHm9FlSpcVbhyb6VCfvWZM46UyeWyacXWCpq91NPT0i7zezsF
-         1fSmxlOLZbqel2Lqa8YMx7egGprOrSY28lZ1IxNsKtHTTjJ1JbXsiA7cKyDb4R2b8LJz
-         x/neJLDBuipjbw9NcuxZo0ZBQGeOFee7k5dsi/BJ5tc738d5fy5NgCrLCNpJpi4ziZud
-         u/A5nfrqgjaE1cm5hFGpvEscs16Rk8s51rGFemMov4OeeXP+dxIAsEFz3hFTs+IJtrIU
-         gC+2Yd41fzSr9MjPQuylGfKUFOvbpDn7FQe98Bg7Wt+WdLH/htYA7OSP/qNsZmZ5EMmv
-         7eiQ==
-X-Gm-Message-State: AOJu0YzTRpbtS+FZJqTVUbSkx5ix/2ZhjddReU/tbP1CYChiNft+VJJG
-	Y12fQFjgAobLhytBmfTwSHDcpNxaNbW6kvT+KUEYiQ==
-X-Google-Smtp-Source: AGHT+IEM6BN7v5f3zSptK13rp4Iti293Tj3jpfPMFy+2qx3uN3e2Hkdo1HScrQhzZSsl9fR6iHqgEWv1vuVRiinjMLE=
-X-Received: by 2002:a9d:6185:0:b0:6d9:e28c:28ef with SMTP id
- g5-20020a9d6185000000b006d9e28c28efmr7004936otk.55.1702465480518; Wed, 13 Dec
- 2023 03:04:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZuDFQn9F"
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 692C9CD
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 04:15:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1702469699; x=1702728899;
+	bh=Zqk2zoyfaGGXrvLxTBqarsBmK9ljpHypJub7CA1ot9E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ZuDFQn9FjAUjVQaQ90wlvl5ZYDvoOOI1qM9FJbCRqFULjn0/4QcfqJOV8k/7mFi+F
+	 3dvkxiObcUymDvHC1hKOFJamygdHe0WpwJlqNIN2ZM9AEhoVVBPP4lVUqWJeAq10i3
+	 aGYuTX8MotQlkP1Vt2bnjHQzObwqhbjljNnoMQq3oU/a2+VvhrnR1fHLh1rQUhOCLt
+	 WS2k64P5aJzofVgT2Oh/fzKApkv3joYyxepPNT6027Kc/a64y9tEXEgWLa3gzwmNri
+	 i0DwEa5ehcTK8AVBdvlFE9SdRTe+X9s3kBtn80sLw12sAqrwxTLSoC7NRxlH6dgpft
+	 xfPZoke45ajvQ==
+Date: Wed, 13 Dec 2023 12:14:55 +0000
+To: Andrew Lunn <andrew@lunn.ch>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, boqun.feng@gmail.com, alice@ryhl.io, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY drivers
+Message-ID: <3d6e1af3-9d86-4058-914f-ea3d7115e0db@proton.me>
+In-Reply-To: <79abc99b-a0f2-48c6-ba68-b72dcf5f7254@lunn.ch>
+References: <ZXfFzKYMxBt7OhrM@boqun-archlinux> <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com> <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home> <20231212.220216.1253919664184581703.fujita.tomonori@gmail.com> <544015ec-52a4-4253-a064-8a2b370c06dc@proton.me> <79abc99b-a0f2-48c6-ba68-b72dcf5f7254@lunn.ch>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <MjDmZBGV04fVI1qzhceEjQgcmoBuo3YoVuiQdANKj9F1Ux5JFKud8hQpfeyLXI0O5HG6qicKFaYYzM7JAgR_kVQfMCeVdN6t7PjbPaz0D0U=@proton.me>
- <20231211153440.4162899-1-aliceryhl@google.com> <ZXdJyGFeQEbZU3Eh@boqun-archlinux>
- <ZXe2fpN4zRlkLLJC@boqun-archlinux> <ZXjJLP5NdbxEzKpC@boqun-archlinux>
-In-Reply-To: <ZXjJLP5NdbxEzKpC@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 13 Dec 2023 12:04:29 +0100
-Message-ID: <CAH5fLgjT48X-zYtidv31mox3C4_Ogoo_2cBOCmX0Ang3tAgGHA@mail.gmail.com>
-Subject: Re: [PATCH v2 6/7] rust: file: add `DeferredFdCloser`
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: benno.lossin@proton.me, a.hindborg@samsung.com, alex.gaynor@gmail.com, 
-	arve@android.com, bjorn3_gh@protonmail.com, brauner@kernel.org, 
-	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, 
-	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
-	keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
-	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
-	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
-	wedsonaf@gmail.com, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 12, 2023 at 9:57=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Mon, Dec 11, 2023 at 05:25:18PM -0800, Boqun Feng wrote:
-> > On Mon, Dec 11, 2023 at 09:41:28AM -0800, Boqun Feng wrote:
-> > > On Mon, Dec 11, 2023 at 03:34:40PM +0000, Alice Ryhl wrote:
-> > > > Benno Lossin <benno.lossin@proton.me> writes:
-> > > > > On 12/6/23 12:59, Alice Ryhl wrote:
-> > > > > > +    /// Schedule a task work that closes the file descriptor w=
-hen this task returns to userspace.
-> > > > > > +    ///
-> > > > > > +    /// Fails if this is called from a context where we cannot=
- run work when returning to
-> > > > > > +    /// userspace. (E.g., from a kthread.)
-> > > > > > +    pub fn close_fd(self, fd: u32) -> Result<(), DeferredFdClo=
-seError> {
-> > > > > > +        use bindings::task_work_notify_mode_TWA_RESUME as TWA_=
-RESUME;
-> > > > > > +
-> > > > > > +        // In this method, we schedule the task work before cl=
-osing the file. This is because
-> > > > > > +        // scheduling a task work is fallible, and we need to =
-know whether it will fail before we
-> > > > > > +        // attempt to close the file.
-> > > > > > +
-> > > > > > +        // SAFETY: Getting a pointer to current is always safe=
-.
-> > > > > > +        let current =3D unsafe { bindings::get_current() };
-> > > > > > +
-> > > > > > +        // SAFETY: Accessing the `flags` field of `current` is=
- always safe.
-> > > > > > +        let is_kthread =3D (unsafe { (*current).flags } & bind=
-ings::PF_KTHREAD) !=3D 0;
-> > > > >
-> > > > > Since Boqun brought to my attention that we already have a wrappe=
-r for
-> > > > > `get_current()`, how about you use it here as well?
-> > > >
-> > > > I can use the wrapper, but it seems simpler to not go through a
-> > > > reference when we just need a raw pointer.
-> > > >
-> > > > Perhaps we should have a safe `Task::current_raw` function that jus=
-t
-> > > > returns a raw pointer? It can still be safe.
-> > > >
-> > >
-> > > I think we can have a `as_ptr` function for `Task`?
-> > >
-> > >     impl Task {
-> > >         pub fn as_ptr(&self) -> *mut bindings::task_struct {
-> > >             self.0.get()
-> > >         }
-> > >     }
-> >
-> > Forgot mention, yes a ptr->ref->ptr trip may not be ideal, but I think
-> > eventually we will have a task work wrapper, in that case maybe
-> > Task::as_ptr() is still needed somehow.
-> >
->
-> After some more thoughts, I agree `Task::current_raw` may be better for
-> the current usage, since we can also use it to wrap a
-> `current_is_kthread` method like:
->
->     impl Task {
->         pub fn current_is_kthread() -> bool {
->             let current =3D Self::current_raw();
->
->             unsafe { (*current).flags & bindings::PF_KTHREAD !=3D 0 }
->         }
->     }
+On 12/13/23 11:28, Andrew Lunn wrote:
+>> I still think you need to justify why `mdio.bus` is a pointer that you
+>> can give to `midobus_read`.
+>=20
+> Maybe a dumb question. Why are you limiting this to just a few members
+> of struct phy_device? It has ~50 members, any of which can be used by
+> the C side when Rust calls into C.
 
-I'll introduce a current_raw, then.
+I limited it to those few members, because the Rust side only uses
+those.
+Theoretically one could specify all invariants for all members, but that
+seems like a *lot* of work.
 
-Alice
+In Rust everything [1] has to be initialized with a valid value.
+Contrast this with C where everything is potentially uninitialized. As
+an example, let's look at the first few fields of `PhyDevice`:
+
+    struct PhyDevice {
+        mdio: MdioDevice,
+        drv: Box<PhyDriver>,
+        devlink: Box<DeviceLink>,
+        phy_id: u32,
+        c45_ids: PhyC45DeviceIds,
+        // ...
+    }
+
+Note that in Rust we now do not need to write down any invariants, since
+they are all implicitly encoded. For example the `drv` field is of type
+`Box<PhyDriver>`, it *always* is a pointer to an allocation that
+contains a valid `PhyDriver`. So while on the C side you would have to
+state this, on the Rust side we get it for free.
+
+Rust function also make use of the "everything is in a valid state"
+rule, they know that the fields are valid and thus the Rust equivalent
+of `phy_read` could be safe and without any comments:
+
+    impl PhyDevice {
+        fn phy_read(&self, regnum: u32) -> i32 {
+            self.mdio.bus.mdiobus_read(self.mdio.addr, regnum)
+        }
+    }
+
+All of this only applies to safe code, `unsafe` code is allowed to
+violate all of these things temporarily. However, when it gives a value
+back to safe code [2], that value needs to be valid.
+
+I think that specifying all of these implicit invariants in C will be
+extremely laborious. Especially since the usual way of doing things in C
+is not considering these invariants (at least not consciously), but
+rather "just do the thing".
+
+The way we do the interoperability is to just fully trust the C side to
+produce valid values that we can feed back to the C side. Of course
+there are caveats, so e.g. one needs to initialize a `struct mutex`
+before it can be used, but that is what we need to capture with the
+safety comments.
+
+[1]: There are exceptions for this, but for the purposes of this
+     discussion, they can be ignored. If you want to know more, you can
+     read this article in the nomicon:
+     https://doc.rust-lang.org/nomicon/unchecked-uninit.html
+
+[2]: There are also exceptions, but I will omit them here.
+
+--=20
+Cheers,
+Benno
+
