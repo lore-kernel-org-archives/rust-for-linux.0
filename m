@@ -1,96 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rUEdBuJW"
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4223EB
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 02:09:22 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-dbcda5ef8daso18518276.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 02:09:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702462162; x=1703066962; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LMjiZ1Mla0TJIvfZN07yuuMqisYwNLMlxhRR40WgnKE=;
-        b=rUEdBuJWwCar4cLrt6t73JyuSbctkJAChccfZ4x8p8fIffEyv+tcx1ffnERubMQCAL
-         w01J4bT8p7cldJfJH2WUF5CvL7O3AW7TZ1kVZqGuUf0aMzytoLgawo2IVWb6wPY/2fam
-         Ae0m0vM7tEVKSvU28bh1OKe5KIrVNXCitCJQKvseQAI00MuqWPEhgRC26sL+kBTxMO7o
-         V/PxVIxFiqWyFtLHdZP0Qjanl6e/rFuwsQTBoYpNHzCG2+Ne/6DAK+GpW9BQELv+5lND
-         1wjRKQ91IPdY++DDTXiocHiKDyKs7LXTtJv65EgzmDuGt4LUNEl7n9FEma7HJVJJ55Zy
-         uDUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702462162; x=1703066962;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LMjiZ1Mla0TJIvfZN07yuuMqisYwNLMlxhRR40WgnKE=;
-        b=toblXbqYkSgueqxDlMz34wILKskDjoy97biclcJpWvllmr5YR1EsqbPWvEhzeLl+xy
-         fgIu9amyBic5bfaxZAPbEPkHxrb8Kt+c/ElKIu7UmIUTietNMngJpvhb2rLSb6CMnK+M
-         38y1kX4lM5GByaR++tM14MZftwKdyf2uOHDarV/KQbMpA52L28KP3v6xcz2fPKgRRRe2
-         o64NGtih5cCbTJfrBb/YccuT299hJLM49eDq2AIi75AaLcq6X1HA7XbBp2J+RsKqOkfP
-         pfIA1hsxQ3KU/kTjCsUREEC3dwR8AGlrwOiG52pZk+bplGIZEoU08kR6FczB8GqGWtiS
-         sKPQ==
-X-Gm-Message-State: AOJu0Yy/5mz6SU0r6uSjr1kQ7tAS4xJ1cdPSBd0i32MYV2E2gOJCGdkW
-	Gv66qRgpzTu0vlmk/dWgX3COS/GD2zN6Y/g=
-X-Google-Smtp-Source: AGHT+IH1VF9gQH/zvDo8sZsOOMLcD8dWkfvwJA1iOSJh8Gow9jwJUdpnt5y5GZa/kNlrATJlzEmAqJR3Np4SOuA=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a25:c78d:0:b0:dbc:c98f:8075 with SMTP id
- w135-20020a25c78d000000b00dbcc98f8075mr10120ybe.12.1702462161656; Wed, 13 Dec
- 2023 02:09:21 -0800 (PST)
-Date: Wed, 13 Dec 2023 10:09:18 +0000
-In-Reply-To: <pxtBsqlawLf52Escu7kGkCv1iEorWkE4-g8Ke_IshhejEYz5zZGGX5q98hYtU_YGubwk770ufUezNXFB_GJFMnZno5G7OGuF2oPAOoVAGgc=@proton.me>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="X0XimqRa"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2A63AF;
+	Wed, 13 Dec 2023 02:24:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=X7jCbNeUpd9+tcMW9C1JI1zA+HwAYMrCV2BBkKOV7nY=; b=X0XimqRaCith9y80wZOMfHjApD
+	tjr/m67IQ3vxncQYOfn182JN0TydAg1uCWqFddK1BNcCs5eRyntjXDQb5yzfnZYjEOI323YCkPHPZ
+	p8vObUXlQIBLk1WQ0aoF9MjCY4II3riPqgL5iQXXAa00cy+tY43TDeLh61ze0KT2CK8E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rDMPL-002o4G-Lp; Wed, 13 Dec 2023 11:24:03 +0100
+Date: Wed, 13 Dec 2023 11:24:03 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alice@ryhl.io,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <67da9a6a-b0eb-470c-ae43-65cf313051b3@lunn.ch>
+References: <ZXeuI3eulyIlrAvL@boqun-archlinux>
+ <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
+ <ZXfFzKYMxBt7OhrM@boqun-archlinux>
+ <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
+ <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <pxtBsqlawLf52Escu7kGkCv1iEorWkE4-g8Ke_IshhejEYz5zZGGX5q98hYtU_YGubwk770ufUezNXFB_GJFMnZno5G7OGuF2oPAOoVAGgc=@proton.me>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231213100918.435104-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
-From: Alice Ryhl <aliceryhl@google.com>
-To: benno.lossin@proton.me
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	brauner@kernel.org, cmllamas@google.com, dan.j.williams@intel.com, 
-	dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
-	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
-	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
-	wedsonaf@gmail.com, willy@infradead.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
 
-Benno Lossin <benno.lossin@proton.me> writes:
->> and here we can said,
->> 
->> "per type invariant, `qproc` cannot publish `cv.wait_list` without
->> proper RCU protection, so it's safe to use `cv.wait_list` here, and with
->> the synchronize_rcu() in PollCondVar::drop(), free of the wait_list will
->> be delayed until all usages are done."
+> > The C side people read the Rust code before changing the C code? Let's
+> > see. 
+> > 
 > 
-> I think I am missing how the call to `__wake_up_pollfree` ensures that
-> nobody uses the `PollCondVar` any longer. How is it removed from the
-> table?
+> Hmm... I usually won't call someone "C side people". I mean, the project
+> has C part and Rust part, but the community is one.
+> 
+> In case of myself, I write both C and Rust, if I'm going to change some
+> C side function, I may want to see the usage at Rust side, especially
+> whether my changes could break the safety, and safety comments may be
+> important.
 
-The __wake_up_pollfree function clears the queue. Here is its
-documentation:
+While i agree with your sentiment, ideally we want bilingual
+developers, in reality that is not going to happen for a long time. I
+could be wrong, but i expect developers to be either C developers, or
+Rust developers. They are existing kernel developers who know C, or
+Rust developers who are new to the kernel, and may not know much C. So
+we should try to keep that in mind.
 
-/**
- * wake_up_pollfree - signal that a polled waitqueue is going away
- * @wq_head: the wait queue head
- *
- * In the very rare cases where a ->poll() implementation uses a waitqueue whose
- * lifetime is tied to a task rather than to the 'struct file' being polled,
- * this function must be called before the waitqueue is freed so that
- * non-blocking polls (e.g. epoll) are notified that the queue is going away.
- *
- * The caller must also RCU-delay the freeing of the wait_queue_head, e.g. via
- * an explicit synchronize_rcu() or call_rcu(), or via SLAB_TYPESAFE_BY_RCU.
- */
+I personally don't think i have enough Rust knowledge to of even
+reached the dangerous stage. But at least the hard part with Rust
+seems to be the comments, not the actual code :-(
 
-The only way for another thread to touch the queue after it has been
-cleared is if they are concurrently removing themselves from the queue
-under RCU. Because of that, we have to wait for an RCU grace period
-after the call to __wake_up_pollfree to ensure that any such concurrent
-users have gone away.
-
-Alice
+	Andrew
