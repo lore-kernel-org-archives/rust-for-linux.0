@@ -1,291 +1,178 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iNgzd6UT"
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E25E99;
-	Tue, 12 Dec 2023 16:45:38 -0800 (PST)
-Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-28ae1de660bso51642a91.1;
-        Tue, 12 Dec 2023 16:45:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kwQHDQFr"
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0402DB7;
+	Tue, 12 Dec 2023 17:35:20 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-77f3c4914e5so339471885a.3;
+        Tue, 12 Dec 2023 17:35:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702428337; x=1703033137; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nhuPJkKCpT/mx/ACBlpgaGAD4YyXeKLrX/gcd/CAqRM=;
-        b=iNgzd6UTbH0gWg1XOEBByT4E18oWR2MOTMd8otqBRNOLeRL6EvXJaLHWTR1H3Kc3u6
-         rYE9G5E1hnaiwXMZajRToCJuovQAMXPbO5XLkAiD7Wh7MgpmmKCF6LkoI7CUjK06pCju
-         RbQSv5pkcYu3dmZx8cbO+a2p0aLx6xYtz+Tdj6VuXae34Iq8baiBcI1QvYFXA5VE8asq
-         FfTtHxzvCRzIWsbcztlumynGMu7RwFEy/exQ0Ap3J4cLCSvGUBksskH91KMGeJ5cpmUu
-         2hr4iG6riSWMV/aR2A4FYDImVkMMpQS+e/AS4UhHxn7VfYPLOrePAFhC7Vt8JvCl7ECV
-         2wyA==
+        d=gmail.com; s=20230601; t=1702431319; x=1703036119; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lJwnAAHRmDie2pCrUCphBkEu6klu8JgvdhjOopanDfU=;
+        b=kwQHDQFrJDzG5yIdpzvzHkJ+CfsKxHX4ExmhczoFuHYuSZsSweICiCrdR4ViSqEHpB
+         Q2o3z/IAojOCPhuhYzb6PJmP4RtJzCYMiOGOUuGhRFnPClHJaCu/hjFHdEp4msOokpAw
+         D8TVtPF6bZH5uIauiMwj9/++fAkDBo4UgHVNWppPJwRDGbuU7io0O4H+yLx0HJlpi613
+         FZE5YvwBSa0H7Y+BwH4Iloko+oHH3LJHoX+6Jlwy780Xe2RD2vW5Nm6gbJLBTl2t5uyG
+         eSaHn0k9UFc68EZf9kK7a0YFraP2tHhb3vz5Qqr3yaVT+O8syXq+C/mX7FLlM6mK4qpf
+         Pz8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702428337; x=1703033137;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nhuPJkKCpT/mx/ACBlpgaGAD4YyXeKLrX/gcd/CAqRM=;
-        b=fEK3mys7dRMacrPu0QYtConPOD8DGsbIZ+CUK5mKQCVr0HEvRi9Vou5UYyCkrEvceM
-         tWUQ+H/JqH+B4HVyWzvn19gUJ79vTFL+yB5R4D/8JnIGRfdpAn04919P0A4hr/kD/MaO
-         v+1AwM7treEjeBfS0GeuDMVktfux9b4ALi30fiqumL6QRjxdyLofS5RPfC024GOs2OqB
-         7NmQBD7txw8hHRwHmXT/VSoWNL3lY+0PjSHSdNxOIFGh+zx2CzkJ+N3AuQU9qU88XUJU
-         mUwx1sUZ/7bNd7c3uUAvufhXnVfWE2GQjHyowoC6HzcqY7H15F/+wV/QydUyqVaD1Rga
-         VQ3g==
-X-Gm-Message-State: AOJu0YyHkYGRfkXHfaeos3T424R2oWrfGoPL4473WT6w2HuSITVR5wJP
-	jjkKhaLHSq7RipXG9gTKvdUAG8U2sxM2oHWT
-X-Google-Smtp-Source: AGHT+IHhIDhr2il3M0d+GCBp25KV4B+vxt42usd7ljRZsJ6PkpldQ5ZA0xjywbshktOLQVu7njjLVA==
-X-Received: by 2002:a17:90a:4e06:b0:28a:cdc0:7413 with SMTP id n6-20020a17090a4e0600b0028acdc07413mr2353356pjh.1.1702428337550;
-        Tue, 12 Dec 2023 16:45:37 -0800 (PST)
-Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id gn21-20020a17090ac79500b0028ac1112124sm2031130pjb.30.2023.12.12.16.45.36
+        d=1e100.net; s=20230601; t=1702431319; x=1703036119;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lJwnAAHRmDie2pCrUCphBkEu6klu8JgvdhjOopanDfU=;
+        b=Co0phw3DhJueEhzJxTyxa+SVgNIl6OMlCtH9Q+2Dq27DrK1ABuvIs8S2Q/7Jr4xvcA
+         J5356iLNkMr3vBYqduwX8rZdrf8BX7JYXWNwTfUSLu48CntUFoRR1Ds0Uil/iHp/foPW
+         CFNZLYFHLLOLUF6n9rsYmy4GvHMetsL0o8PZHnfU+Zx5CMqzZd3a4+yku5dgjRuxtiVo
+         xA91ul0ZkslfcjbwvTyGso+1jxZ66ZkLlvSXD9aaVcN4sE53QR/VFkLz5CPjJ9t7CeEA
+         366iLiaPhXODHlmT83vjgfZg+H2qq6LJOctFJ0obXCF0/FxwPGy+73S8Du3HMVd2mUBD
+         8z0A==
+X-Gm-Message-State: AOJu0YzInz/HAFn4a0jJZT9YB/Nujf9J2arogBGxyVrABxLp4PPOv0ez
+	VshfnRoYjZ5/Rw5ZnrXKJps=
+X-Google-Smtp-Source: AGHT+IH5uQAhf0dYg8G6GsbP6/h3lRg7sgiDpTWBp+yT+OWEF+BupOCK+goSAt7xUeDoSwMOu4Q2RQ==
+X-Received: by 2002:a05:620a:55bb:b0:77e:fba3:4f12 with SMTP id vr27-20020a05620a55bb00b0077efba34f12mr8219438qkn.104.1702431319080;
+        Tue, 12 Dec 2023 17:35:19 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id 26-20020a05620a04da00b0077d7557653bsm4156880qks.64.2023.12.12.17.35.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 16:45:37 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: netdev@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch,
-	tmgross@umich.edu,
-	miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me,
-	wedsonaf@gmail.com,
-	aliceryhl@google.com,
-	boqun.feng@gmail.com
-Subject: [PATCH net-next v11 4/4] net: phy: add Rust Asix PHY driver
-Date: Wed, 13 Dec 2023 09:42:11 +0900
-Message-Id: <20231213004211.1625780-5-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231213004211.1625780-1-fujita.tomonori@gmail.com>
-References: <20231213004211.1625780-1-fujita.tomonori@gmail.com>
+        Tue, 12 Dec 2023 17:35:18 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id D6AFC27C0054;
+	Tue, 12 Dec 2023 20:35:17 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 12 Dec 2023 20:35:17 -0500
+X-ME-Sender: <xms:VAp5ZasDZAqiwGMMW4FVA9DG0JUM-EUgCZDud7s-V7kx3bWxVLhWIQ>
+    <xme:VAp5ZfdNeztR4IS8ooDpE3-t9kMz4Ka0OBMqe8KzkcJ1svhWgKDFyd1yyY_m9gKHo
+    9XbV55N2f8sHC03_A>
+X-ME-Received: <xmr:VAp5ZVx0oCQe2ydAocHbXI7t3Z9j0rjD2uGgMPiWUCooBVhcHunl0sTVhQM6vQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelhedgfeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefh
+    gfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:VAp5ZVOfjxJQ39jZxDVGl67RMBKX52XLF2FLmMQHsl6WjUD3hVx-QA>
+    <xmx:VAp5Za8sEwdmHXM0Y7HLKlOmFYDsmeS-SQirFy9AflqRXHyQj13FQQ>
+    <xmx:VAp5ZdXcibFYGGDhIgOTjSaxngToBMwSun7yg_WgPRf5tR8Quss_cw>
+    <xmx:VQp5ZcFKCL_iJ0iIcursLMAHJTW4upGjV-ZW_XfDwE0EV7jwPDWN8w>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Dec 2023 20:35:16 -0500 (EST)
+Date: Tue, 12 Dec 2023 17:35:09 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kees Cook <keescook@chromium.org>,	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
+Message-ID: <ZXkKTSTCuQMt2ge6@boqun-archlinux>
+References: <20231206-alice-file-v2-0-af617c0d9d94@google.com>
+ <20231206-alice-file-v2-7-af617c0d9d94@google.com>
+ <k_vpgbqKAKoTFzJIBCjvgxGhX73kgkcv6w9kru78lBmTjHHvXPy05g8KxAKJ-ODARBxlZUp3a5e4F9TemGqQiskkwFCpTOhzxlvy378tjHM=@proton.me>
+ <CAH5fLgiQ-7gbwP2RLoVDfDqoA+nXPboBW6eTKiv45Yam_Vjv_A@mail.gmail.com>
+ <E-jdYd0FVvs15f_pEC0Fo6k2DByCDEQoh_Ux9P9ldmC-otCvUfQghkJOUkiAi8gDI8J47wAaDe56XYC5NiJhuohyhIklGAWMvv9v1qi6yYM=@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <E-jdYd0FVvs15f_pEC0Fo6k2DByCDEQoh_Ux9P9ldmC-otCvUfQghkJOUkiAi8gDI8J47wAaDe56XYC5NiJhuohyhIklGAWMvv9v1qi6yYM=@proton.me>
 
-This is the Rust implementation of drivers/net/phy/ax88796b.c. The
-features are equivalent. You can choose C or Rust version kernel
-configuration.
+On Tue, Dec 12, 2023 at 05:01:28PM +0000, Benno Lossin wrote:
+> On 12/12/23 10:59, Alice Ryhl wrote:
+> > On Fri, Dec 8, 2023 at 6:53 PM Benno Lossin <benno.lossin@proton.me> wrote:
+> >> On 12/6/23 12:59, Alice Ryhl wrote:
+> >>> +    fn get_qproc(&self) -> bindings::poll_queue_proc {
+> >>> +        let ptr = self.0.get();
+> >>> +        // SAFETY: The `ptr` is valid because it originates from a reference, and the `_qproc`
+> >>> +        // field is not modified concurrently with this call since we have an immutable reference.
+> >>
+> >> This needs an invariant on `PollTable` (i.e. `self.0` is valid).
+> > 
+> > How would you phrase it?
+> 
+> - `self.0` contains a valid `bindings::poll_table`.
+> - `self.0` is only modified via references to `Self`.
+> 
+> >>> +        unsafe { (*ptr)._qproc }
+> >>> +    }
+> >>> +
+> >>> +    /// Register this [`PollTable`] with the provided [`PollCondVar`], so that it can be notified
+> >>> +    /// using the condition variable.
+> >>> +    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
+> >>> +        if let Some(qproc) = self.get_qproc() {
+> >>> +            // SAFETY: The pointers to `self` and `file` are valid because they are references.
+> >>
+> >> What about cv.wait_list...
+> > 
+> > I can add it to the list of things that are valid due to references.
+> 
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
----
- MAINTAINERS                      |   8 ++
- drivers/net/phy/Kconfig          |   8 ++
- drivers/net/phy/Makefile         |   6 +-
- drivers/net/phy/ax88796b_rust.rs | 135 +++++++++++++++++++++++++++++++
- rust/uapi/uapi_helper.h          |   2 +
- 5 files changed, 158 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/phy/ax88796b_rust.rs
+Actually, there is an implied safety requirement here, it's about how
+qproc is implemented. As we can see, PollCondVar::drop() will wait for a
+RCU grace period, that means the waiter (a file or something) has to use
+RCU to access the cv.wait_list, otherwise, the synchronize_rcu() in
+PollCondVar::drop() won't help.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 089394a0af2e..bbc6db6bebf4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3083,6 +3083,14 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/net/asix,ax88796c.yaml
- F:	drivers/net/ethernet/asix/ax88796c_*
- 
-+ASIX PHY DRIVER [RUST]
-+M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-+R:	Trevor Gross <tmgross@umich.edu>
-+L:	netdev@vger.kernel.org
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	drivers/net/phy/ax88796b_rust.rs
-+
- ASPEED CRYPTO DRIVER
- M:	Neal Liu <neal_liu@aspeedtech.com>
- L:	linux-aspeed@lists.ozlabs.org (moderated for non-subscribers)
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 8d00cece5e23..0f483c3dfed9 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -112,6 +112,14 @@ config AX88796B_PHY
- 	  Currently supports the Asix Electronics PHY found in the X-Surf 100
- 	  AX88796B package.
- 
-+config AX88796B_RUST_PHY
-+	bool "Rust reference driver for Asix PHYs"
-+	depends on RUST_PHYLIB_ABSTRACTIONS && AX88796B_PHY
-+	help
-+	  Uses the Rust reference driver for Asix PHYs (ax88796b_rust.ko).
-+	  The features are equivalent. It supports the Asix Electronics PHY
-+	  found in the X-Surf 100 AX88796B package.
-+
- config BROADCOM_PHY
- 	tristate "Broadcom 54XX PHYs"
- 	select BCM_NET_PHYLIB
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index f65e85c91fc1..ab450a46b855 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -37,7 +37,11 @@ obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
- obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
- obj-$(CONFIG_AT803X_PHY)	+= at803x.o
--obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
-+ifdef CONFIG_AX88796B_RUST_PHY
-+  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
-+else
-+  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
-+endif
- obj-$(CONFIG_BCM54140_PHY)	+= bcm54140.o
- obj-$(CONFIG_BCM63XX_PHY)	+= bcm63xx.o
- obj-$(CONFIG_BCM7XXX_PHY)	+= bcm7xxx.o
-diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
-new file mode 100644
-index 000000000000..5c92572962dc
---- /dev/null
-+++ b/drivers/net/phy/ax88796b_rust.rs
-@@ -0,0 +1,135 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
-+
-+//! Rust Asix PHYs driver
-+//!
-+//! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796b.c)
-+use kernel::{
-+    c_str,
-+    net::phy::{self, DeviceId, Driver},
-+    prelude::*,
-+    uapi,
-+};
-+
-+kernel::module_phy_driver! {
-+    drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
-+    device_table: [
-+        DeviceId::new_with_driver::<PhyAX88772A>(),
-+        DeviceId::new_with_driver::<PhyAX88772C>(),
-+        DeviceId::new_with_driver::<PhyAX88796B>()
-+    ],
-+    name: "rust_asix_phy",
-+    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
-+    description: "Rust Asix PHYs driver",
-+    license: "GPL",
-+}
-+
-+const MII_BMCR: u16 = uapi::MII_BMCR as u16;
-+const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
-+const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
-+
-+// Performs a software PHY reset using the standard
-+// BMCR_RESET bit and poll for the reset bit to be cleared.
-+// Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implementation
-+// such as used on the Individual Computers' X-Surf 100 Zorro card.
-+fn asix_soft_reset(dev: &mut phy::Device) -> Result {
-+    dev.write(uapi::MII_BMCR as u16, 0)?;
-+    dev.genphy_soft_reset()
-+}
-+
-+struct PhyAX88772A;
-+
-+#[vtable]
-+impl Driver for PhyAX88772A {
-+    const FLAGS: u32 = phy::flags::IS_INTERNAL;
-+    const NAME: &'static CStr = c_str!("Asix Electronics AX88772A");
-+    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1861);
-+
-+    // AX88772A is not working properly with some old switches (NETGEAR EN 108TP):
-+    // after autoneg is done and the link status is reported as active, the MII_LPA
-+    // register is 0. This issue is not reproducible on AX88772C.
-+    fn read_status(dev: &mut phy::Device) -> Result<u16> {
-+        dev.genphy_update_link()?;
-+        if !dev.is_link_up() {
-+            return Ok(0);
-+        }
-+        // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
-+        // linkmode so use MII_BMCR as default values.
-+        let ret = dev.read(MII_BMCR)?;
-+
-+        if ret & BMCR_SPEED100 != 0 {
-+            dev.set_speed(uapi::SPEED_100);
-+        } else {
-+            dev.set_speed(uapi::SPEED_10);
-+        }
-+
-+        let duplex = if ret & BMCR_FULLDPLX != 0 {
-+            phy::DuplexMode::Full
-+        } else {
-+            phy::DuplexMode::Half
-+        };
-+        dev.set_duplex(duplex);
-+
-+        dev.genphy_read_lpa()?;
-+
-+        if dev.is_autoneg_enabled() && dev.is_autoneg_completed() {
-+            dev.resolve_aneg_linkmode();
-+        }
-+
-+        Ok(0)
-+    }
-+
-+    fn suspend(dev: &mut phy::Device) -> Result {
-+        dev.genphy_suspend()
-+    }
-+
-+    fn resume(dev: &mut phy::Device) -> Result {
-+        dev.genphy_resume()
-+    }
-+
-+    fn soft_reset(dev: &mut phy::Device) -> Result {
-+        asix_soft_reset(dev)
-+    }
-+
-+    fn link_change_notify(dev: &mut phy::Device) {
-+        // Reset PHY, otherwise MII_LPA will provide outdated information.
-+        // This issue is reproducible only with some link partner PHYs.
-+        if dev.state() == phy::DeviceState::NoLink {
-+            let _ = dev.init_hw();
-+            let _ = dev.start_aneg();
-+        }
-+    }
-+}
-+
-+struct PhyAX88772C;
-+
-+#[vtable]
-+impl Driver for PhyAX88772C {
-+    const FLAGS: u32 = phy::flags::IS_INTERNAL;
-+    const NAME: &'static CStr = c_str!("Asix Electronics AX88772C");
-+    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1881);
-+
-+    fn suspend(dev: &mut phy::Device) -> Result {
-+        dev.genphy_suspend()
-+    }
-+
-+    fn resume(dev: &mut phy::Device) -> Result {
-+        dev.genphy_resume()
-+    }
-+
-+    fn soft_reset(dev: &mut phy::Device) -> Result {
-+        asix_soft_reset(dev)
-+    }
-+}
-+
-+struct PhyAX88796B;
-+
-+#[vtable]
-+impl Driver for PhyAX88796B {
-+    const NAME: &'static CStr = c_str!("Asix Electronics AX88796B");
-+    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_model_mask(0x003b1841);
-+
-+    fn soft_reset(dev: &mut phy::Device) -> Result {
-+        asix_soft_reset(dev)
-+    }
-+}
-diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-index 301f5207f023..08f5e9334c9e 100644
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@ -7,3 +7,5 @@
-  */
- 
- #include <uapi/asm-generic/ioctl.h>
-+#include <uapi/linux/mii.h>
-+#include <uapi/linux/ethtool.h>
--- 
-2.34.1
+To phrase it, it's more like:
 
+(in the safety requirement of `PollTable::from_ptr` and the type
+invariant of `PollTable`):
+
+", further, if the qproc function in poll_table publishs the pointer of
+the wait_queue_head, it must publish it in a way that reads on the
+published pointer have to be in an RCU read-side critical section."
+
+and here we can said,
+
+"per type invariant, `qproc` cannot publish `cv.wait_list` without
+proper RCU protection, so it's safe to use `cv.wait_list` here, and with
+the synchronize_rcu() in PollCondVar::drop(), free of the wait_list will
+be delayed until all usages are done."
+
+I know, this is quite verbose, but just imagine some one removes the
+rcu_read_lock() and rcu_read_unlock() in ep_remove_wait_queue(), the
+poll table from epoll (using ep_ptable_queue_proc()) is still valid one
+according to the current safety requirement, but now there is a
+use-after-free in the following case:
+
+	CPU 0                        CPU1
+	                             ep_remove_wait_queue():
+				       struct wait_queue_head *whead;
+	                               whead = smp_load_acquire(...);
+	                               if (whead) { // not null
+	PollCondVar::drop():
+	  __wake_pollfree();
+	  synchronize_rcu(); // no current RCU readers, yay.
+	  <free the wait_queue_head>
+	                                 remove_wait_queue(whead, ...); // BOOM, use-after-free
+
+Regards,
+Boqun
