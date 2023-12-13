@@ -1,82 +1,93 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UV1JTqmq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTVsUC0A"
 Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83E6DC;
-	Wed, 13 Dec 2023 10:44:21 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-dbcd28d5004so894652276.1;
-        Wed, 13 Dec 2023 10:44:21 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CEACF2;
+	Wed, 13 Dec 2023 10:44:35 -0800 (PST)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-dae7cc31151so6916327276.3;
+        Wed, 13 Dec 2023 10:44:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702493061; x=1703097861; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702493074; x=1703097874; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2G6kj7N4hRgNEBr/3B4wFHKE0y6pfp8gXRui9/NHf1s=;
-        b=UV1JTqmqlOr4+4W3DCh4Z6LY3Pwi4x0o+J/Qp8dXGjmm8KZjsXUImlnkwl7S2+mnoB
-         A3mRvSvlNz0XUT9LZycAbt13bz0+9fj7pGbbUzhmm+wpZTG4N9HoWbt2N2/AI46V1Ema
-         d5lXnArSVNI4Tlz4S+RKOeZTnYN0nM/Pbl0NBHuXW+agnboGkUZHS/OQC2LMMlKf21ZS
-         7Gse6D4KsAsnCUQQgaVgT8TmjJVcLyyefSuNkGXlt5l0sQCUJo4qToSZQLQApWb2c3zn
-         O7gq23weCBWvh4hFYKdSt01630TmsWO2gIefiamClnUeDR6U/eIak4i6Cp0RGyV2juPR
-         y+6g==
+        bh=o89+rTPkyZ2u4xqSnh8fhH0cKv+jKXfmZsjDkxKQnFo=;
+        b=LTVsUC0ADO27O2dqOjerWAWK3PuyUFgtZg8TJo1kCcEmJaa1nYDkyRG4GFMP/mLxwt
+         YxNfnRAjmmhGcL3W5vXxgfx4JnlFrNwgCYGOroBLBQawGB9S72jUKOPvf5GawFH8XTVF
+         SD9k+87O7doWFMZN/je9PpeWDF+UWt/MdHGB46De/HaRHHAmRvdviJOsqqx2AXKtqASI
+         EnKpCXOdQ7WaGTZ3jRKbC0EzGfg6QGJkR8FdHaiwxlHFh6gED7Mw6gzq4BUktNf79E7k
+         ovy1j68lr+P+sCbfCM0gWQbMYasWrxqG2gWag86L5DdIXCUQHPzvVpr2hY7tdvOBf0W/
+         IBsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702493061; x=1703097861;
+        d=1e100.net; s=20230601; t=1702493074; x=1703097874;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2G6kj7N4hRgNEBr/3B4wFHKE0y6pfp8gXRui9/NHf1s=;
-        b=bf0h4H6xG3SQVR1F6Zdo3wCKmL0mozV4QZHpOAoMw8qdrCquE72mnYXx0XstpjKeU3
-         Rr/cjJZey5AVxfKc5yEG3nUf8FgHzYfV1FEbgRXV5yjPLbc+gFhdj8sAA+8kEXOtpuwd
-         hRYRinR6hoBa7onEdTjZXb/uGNPHM3ztQ/LAGTSLDiH7vPhk/HTnSCzBHxtpC6f2TnBH
-         vZ2FEA2T5hh0JLYxRgK+t9ZVPcDL7OpUQhfsAQf1mbxJfNOSMwqjJAvNhirKwPXeRjoQ
-         FnBPsJkd8vKkaSLWA0/O71SJobJz7K6VrJfdWtFkjEBXzlF/T74DrYBkNByvI87jx4bb
-         0Tgw==
-X-Gm-Message-State: AOJu0Yx8d9/dC/YDkXgiFqu+JmXBlRHCnNY0EL+cbOJzoSb3UvW7ON0d
-	ZWveiqD9v2Y/zT7SItnZbZLXZzxhJ4gMqqN3K94=
-X-Google-Smtp-Source: AGHT+IG003CwX1sQ2R1egd8LKs25wIsiZ/fBxYPmfOwQLvYxUacCLiVnULMyy5nYe8A/Cu0X6mMbg9VAmmQ1QS/HUgY=
-X-Received: by 2002:a25:2905:0:b0:dbc:66c0:574c with SMTP id
- p5-20020a252905000000b00dbc66c0574cmr5369399ybp.127.1702493061092; Wed, 13
- Dec 2023 10:44:21 -0800 (PST)
+        bh=o89+rTPkyZ2u4xqSnh8fhH0cKv+jKXfmZsjDkxKQnFo=;
+        b=hK7pSSdZCLnRXh1agnXa0KfFEpmg2HpC7pHRpbzYzN/EPWpNmE87nW/0M4vSWxFYJG
+         2H6+Y12hKf7w9iVHqkROiote/hDLfBlc1GxDkdecLGRxXih3rLAxU+kaHPV6bvPhAn/V
+         oJ9khTNUiob1dSmXsP2n6I7ym7aHduwVwcfXhoq+7COUgg3SprjgRWL2H8gRHo5TtuBS
+         jtBDL/lvqotYm+wcdXCGtclutEDlpPdmhgVPuDzYN9T/l++Z9v57RNW8iwiRraC4L/5I
+         oj76iSv637ri7Nlc991Lcwk0zBSDPrGVAJ4wCDcid3pl3BpxSRmsAJnViptiSn3Wn0Jh
+         VibA==
+X-Gm-Message-State: AOJu0YyKDcGd7bQtjvYqiJooj5C1Y3vB6YVyFmfXt+LixteNbBnnF0Tf
+	/w5UcXxTceHYHSPJKSoPIfDFbXF+zv/7Akl3sXc=
+X-Google-Smtp-Source: AGHT+IGDDcv7QCiCuPSgHt8BFeRN1ktb30czOglJRpkstgMMmptWXTVb6nUszHCqmwSYC+o+Mumag18lqKuwy+cyayU=
+X-Received: by 2002:a05:6902:1b04:b0:dbc:bcc7:2580 with SMTP id
+ eh4-20020a0569021b0400b00dbcbcc72580mr2460332ybb.56.1702493074534; Wed, 13
+ Dec 2023 10:44:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231104145700.2495176-1-gary@garyguo.net>
-In-Reply-To: <20231104145700.2495176-1-gary@garyguo.net>
+References: <20231118013959.37384-1-tmgross@umich.edu>
+In-Reply-To: <20231118013959.37384-1-tmgross@umich.edu>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 13 Dec 2023 19:44:10 +0100
-Message-ID: <CANiq72k46_1gnEMnB-38N45yOwnKFFLkwZbgB7taYppT2jPAnQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: bindings: rename const binding using sed
-To: Gary Guo <gary@garyguo.net>
+Date: Wed, 13 Dec 2023 19:44:23 +0100
+Message-ID: <CANiq72mv_9J5LAUNdMtYX1S=OPCr0-R_gS_V0c4ZX8Br3H86nw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: macros: update 'paste!' macro to accept string literals
+To: Trevor Gross <tmgross@umich.edu>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
 	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, 
-	Wedson Almeida Filho <walmeida@microsoft.com>, Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 4, 2023 at 3:58=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Sat, Nov 18, 2023 at 2:43=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+ote:
 >
-> This patch changes the way we define constant helpers to
+> Enable combining identifiers with literals in the 'paste!' macro. This
+> allows combining user-specified strings with affixes to create
+> namespaced identifiers.
 >
->     const <TYPE> RUST_CONST_HELPER_<NAME> =3D <NAME>;
+> This sample code:
 >
-> and then use `sed` to postprocess Rust code by generated by bindgen to
-> remove the distinct prefix, so user of the binding crate can refer to
-> the name directly.
+>     macro_rules! m {
+>         ($name:lit) =3D> {
+>             paste!(struct [<_some_ $name _struct_>] {})
+>         }
+>     }
 >
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+>     m!("foo_bar");
+>
+> Would previously cause a compilation error. It will now generate:
+>
+>     struct _some_foo_bar_struct_ {}
+>
+> Signed-off-by: Trevor Gross <tmgross@umich.edu>
 > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Applied to `rust-next` (reworded for typos and with Benno's `^`
-suggestion -- we can always relax it back later if needed, the output
-is currently the same).
+Applied to `rust-next` (with an added `:` before the example since
+that is our usual convention).
 
 Thanks everyone!
 
