@@ -1,71 +1,339 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SRMjANT1"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4916DE3;
-	Wed, 13 Dec 2023 13:48:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MnuwIncJ+1uHR/ZbVaq1see8GJHClbLY2HX2n4sRIY8=; b=SRMjANT1sRoeT1QavByhvAstHk
-	rugjG5ubjW//AU+dHdv/yxcOkVfJv2yqjjC8kgNYvXCRer9Y153LISjbsgLs+W0zBDHjHjGDGAI27
-	KkGJnKToSU3eKOpDb/avFoy54lF8EI1fI0mPvDqnVVi0zFYuJMHPeRydmBhhwZMbAl2I=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rDX5r-002rT1-Lx; Wed, 13 Dec 2023 22:48:39 +0100
-Date: Wed, 13 Dec 2023 22:48:39 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alice@ryhl.io,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
- drivers
-Message-ID: <83511ed4-1fbe-4cf6-ba63-5f7e638ea2a1@lunn.ch>
-References: <ZXeuI3eulyIlrAvL@boqun-archlinux>
- <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
- <ZXfFzKYMxBt7OhrM@boqun-archlinux>
- <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
- <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
- <67da9a6a-b0eb-470c-ae43-65cf313051b3@lunn.ch>
- <ZXnfHbKE3K_J4yul@Boquns-Mac-mini.home>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Qijbzkwg"
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76549A3
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 14:08:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1702505319; x=1702764519;
+	bh=Wynj0f8vy1dMFkSRpdFHLagtu+BF+QLWLK677HHPjYc=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Qijbzkwgws8v2BOJU/Y04JKzswsD8go/e5ulLXTKs2nq2THXRHERcDlAoHedQwjuG
+	 eOos7HR7iuVpc7t4XoU/0JZxEbIu1KOpv1TeoICu/fBXDr17nhlnElyvkuPVQ4pZHd
+	 VeBNtDDBWl4ZNZ1w1DICo2crNDFHrofSmqP+luDoHkjfgW8H8nI+3zUaLDuWaT55pP
+	 dOrsQFpi+pHcc3w5oRabMyZwNOBkYNG7eOV6+1x3mWthM9Mp3PqlceAVy1IKLd5CbN
+	 jYx/S41HAw91r/266P+EAd2n/sORBzKR51nyFOdvRxf7AwrEPcmySssaqewCzyrZRV
+	 kQT7Pi4NCpwDQ==
+Date: Wed, 13 Dec 2023 22:08:32 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, Asahi Lina <lina@asahilina.net>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/3] rust: macros: add `decl_generics` to `parse_generics()`
+Message-ID: <20231213220447.3613500-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXnfHbKE3K_J4yul@Boquns-Mac-mini.home>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> Well, a safety comment is a basic part of Rust, which identifies the
-> safe/unsafe boundary (i.e. where the code could go wrong in memory
-> safety) and without that, the code will be just using Rust syntax and
-> grammar. Honestly, if one doesn't try hard to identify the safe/unsafe
-> boundaries, why do they try to use Rust? Unsafe Rust is harder to write
-> than C, and safe Rust is pointless without a clear safe/unsafe boundary.
-> Plus the syntax is not liked by anyone last time I heard ;-)
+The generic parameters on a type definition can specify default values.
+Currently `parse_generics()` cannot handle this though. For example when
+parsing the following generics:
 
-Maybe comments are the wrong format for this? Maybe it should be a
-formal language? It could then be compiled into an executable form and
-tested? It won't show it is complete, but it would at least show it is
-correct/incorrect description of the assumptions. For normal builds it
-would not be included in the final binary, but maybe debug or formal
-verification builds it would be included?
+    <T: Clone, const N: usize =3D 0>
 
-> Having a correct safety comment is really the bottom line. Without that,
-> it's just bad Rust code, which I don't think netdev doesn't want either?
-> Am I missing something here?
+The `impl_generics` will be set to `T: Clone, const N: usize =3D 0` and
+`ty_generics` will be set to `T, N`. Now using the `impl_generics` on an
+impl block:
 
-It seems much easier to agree actual code is correct, maybe because it
-is a formal language, with a compiler, and a method to test it. Is
-that code really bad without the comments? It would be interesting to
-look back and see how much the actual code has changed because of
-these comments? I _think_ most of the review comments have resulted in
-changes to the comments, not the executable code itself. Does that
-mean it is much harder to write correct comments than correct code?
+    impl<$($impl_generics)*> Foo {}
 
-       Andrew
+will result in invalid Rust code, because default values are only
+available on type definitions.
+
+Therefore add parsing support for generic parameter default values using
+a new kind of generics called `decl_generics` and change the old
+behavior of `impl_generics` to not contain the generic parameter default
+values.
+
+Now `Generics` has three fields:
+- `impl_generics`: the generics with bounds
+  (e.g. `T: Clone, const N: usize`)
+- `decl_generics`: the generics with bounds and default values
+  (e.g. `T: Clone, const N: usize =3D 0`)
+- `ty_generics`:  contains the generics without bounds and without
+  default values (e.g. `T, N`)
+
+`impl_generics` is designed to be used on `impl<$impl_generics>`,
+`decl_generics` for the type definition, so `struct Foo<$decl_generics>`
+and `ty_generics` whenever you use the type, so `Foo<$ty_generics>`.
+
+Here is an example that uses all three different types of generics:
+
+    let (Generics { decl_generics, impl_generics, ty_generics }, rest) =3D =
+parse_generics(input);
+    quote! {
+        struct Foo<$($decl_generics)*> {
+            // ...
+        }
+
+        impl<$impl_generics> Foo<$ty_generics> {
+            fn foo() {
+                // ...
+            }
+        }
+    }
+
+The next commit contains a fix to the `#[pin_data]` macro making it
+compatible with generic parameter default values by relying on this new
+behavior.
+
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
+v1 -> v2:
+- improve documentation and commit message explanation
+- add motivation to commit message
+
+ rust/macros/helpers.rs  | 122 ++++++++++++++++++++++++++++++----------
+ rust/macros/pin_data.rs |   1 +
+ rust/macros/zeroable.rs |   1 +
+ 3 files changed, 94 insertions(+), 30 deletions(-)
+
+diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+index afb0f2e3a36a..3f50a5c847c8 100644
+--- a/rust/macros/helpers.rs
++++ b/rust/macros/helpers.rs
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+=20
+-use proc_macro::{token_stream, Group, Punct, Spacing, TokenStream, TokenTr=
+ee};
++use proc_macro::{token_stream, Group, TokenStream, TokenTree};
+=20
+ pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String>=
+ {
+     if let Some(TokenTree::Ident(ident)) =3D it.next() {
+@@ -70,8 +70,40 @@ pub(crate) fn expect_end(it: &mut token_stream::IntoIter=
+) {
+     }
+ }
+=20
++/// Parsed generics.
++///
++/// See the field documentation for an explanation what each of the fields=
+ represents.
++///
++/// # Examples
++///
++/// ```rust,ignore
++/// # let input =3D todo!();
++/// let (Generics { decl_generics, impl_generics, ty_generics }, rest) =3D=
+ parse_generics(input);
++/// quote! {
++///     struct Foo<$($decl_generics)*> {
++///         // ...
++///     }
++///
++///     impl<$impl_generics> Foo<$ty_generics> {
++///         fn foo() {
++///             // ...
++///         }
++///     }
++/// }
++/// ```
+ pub(crate) struct Generics {
++    /// The generics with bounds and default values (e.g. `T: Clone, const=
+ N: usize =3D 0`).
++    ///
++    /// Use this on type definitions e.g. `struct Foo<$decl_generics> ...`=
+ (or `union`/`enum`).
++    pub(crate) decl_generics: Vec<TokenTree>,
++    /// The generics with bounds (e.g. `T: Clone, const N: usize`).
++    ///
++    /// Use this on `impl` blocks e.g. `impl<$impl_generics> Trait for ...=
+`.
+     pub(crate) impl_generics: Vec<TokenTree>,
++    /// The generics without bounds and without default values (e.g. `T, N=
+`).
++    ///
++    /// Use this when you use the type that is declared with these generic=
+s e.g.
++    /// `Foo<$ty_generics>`.
+     pub(crate) ty_generics: Vec<TokenTree>,
+ }
+=20
+@@ -81,6 +113,8 @@ pub(crate) struct Generics {
+ pub(crate) fn parse_generics(input: TokenStream) -> (Generics, Vec<TokenTr=
+ee>) {
+     // `impl_generics`, the declared generics with their bounds.
+     let mut impl_generics =3D vec![];
++    // The generics with bounds and default values.
++    let mut decl_generics =3D vec![];
+     // Only the names of the generics, without any bounds.
+     let mut ty_generics =3D vec![];
+     // Tokens not related to the generics e.g. the `where` token and defin=
+ition.
+@@ -90,10 +124,17 @@ pub(crate) fn parse_generics(input: TokenStream) -> (G=
+enerics, Vec<TokenTree>) {
+     let mut toks =3D input.into_iter();
+     // If we are at the beginning of a generic parameter.
+     let mut at_start =3D true;
+-    for tt in &mut toks {
++    let mut skip_until_comma =3D false;
++    while let Some(tt) =3D toks.next() {
++        if nesting =3D=3D 1 && matches!(&tt, TokenTree::Punct(p) if p.as_c=
+har() =3D=3D '>') {
++            // Found the end of the generics.
++            break;
++        } else if nesting >=3D 1 {
++            decl_generics.push(tt.clone());
++        }
+         match tt.clone() {
+             TokenTree::Punct(p) if p.as_char() =3D=3D '<' =3D> {
+-                if nesting >=3D 1 {
++                if nesting >=3D 1 && !skip_until_comma {
+                     // This is inside of the generics and part of some bou=
+nd.
+                     impl_generics.push(tt);
+                 }
+@@ -105,49 +146,70 @@ pub(crate) fn parse_generics(input: TokenStream) -> (=
+Generics, Vec<TokenTree>) {
+                     break;
+                 } else {
+                     nesting -=3D 1;
+-                    if nesting >=3D 1 {
++                    if nesting >=3D 1 && !skip_until_comma {
+                         // We are still inside of the generics and part of=
+ some bound.
+                         impl_generics.push(tt);
+                     }
+-                    if nesting =3D=3D 0 {
+-                        break;
+-                    }
+                 }
+             }
+-            tt =3D> {
++            TokenTree::Punct(p) if skip_until_comma && p.as_char() =3D=3D =
+',' =3D> {
+                 if nesting =3D=3D 1 {
+-                    // Here depending on the token, it might be a generic =
+variable name.
+-                    match &tt {
+-                        // Ignore const.
+-                        TokenTree::Ident(i) if i.to_string() =3D=3D "const=
+" =3D> {}
+-                        TokenTree::Ident(_) if at_start =3D> {
+-                            ty_generics.push(tt.clone());
+-                            // We also already push the `,` token, this ma=
+kes it easier to append
+-                            // generics.
+-                            ty_generics.push(TokenTree::Punct(Punct::new('=
+,', Spacing::Alone)));
+-                            at_start =3D false;
+-                        }
+-                        TokenTree::Punct(p) if p.as_char() =3D=3D ',' =3D>=
+ at_start =3D true,
+-                        // Lifetimes begin with `'`.
+-                        TokenTree::Punct(p) if p.as_char() =3D=3D '\'' && =
+at_start =3D> {
+-                            ty_generics.push(tt.clone());
+-                        }
+-                        _ =3D> {}
+-                    }
++                    impl_generics.push(TokenTree::Punct(p.clone()));
++                    ty_generics.push(TokenTree::Punct(p));
++                    skip_until_comma =3D false;
+                 }
+-                if nesting >=3D 1 {
+-                    impl_generics.push(tt);
+-                } else if nesting =3D=3D 0 {
++            }
++            tt if !skip_until_comma =3D> {
++                match nesting {
+                     // If we haven't entered the generics yet, we still wa=
+nt to keep these tokens.
+-                    rest.push(tt);
++                    0 =3D> rest.push(tt),
++                    1 =3D> {
++                        // Here depending on the token, it might be a gene=
+ric variable name.
++                        match tt {
++                            TokenTree::Ident(i) if at_start && i.to_string=
+() =3D=3D "const" =3D> {
++                                let Some(name) =3D toks.next() else {
++                                    // Parsing error.
++                                    break;
++                                };
++                                impl_generics.push(TokenTree::Ident(i));
++                                impl_generics.push(name.clone());
++                                ty_generics.push(name.clone());
++                                decl_generics.push(name);
++                                at_start =3D false;
++                            }
++                            tt @ TokenTree::Ident(_) if at_start =3D> {
++                                impl_generics.push(tt.clone());
++                                ty_generics.push(tt);
++                                at_start =3D false;
++                            }
++                            TokenTree::Punct(p) if p.as_char() =3D=3D ',' =
+=3D> {
++                                impl_generics.push(TokenTree::Punct(p.clon=
+e()));
++                                ty_generics.push(TokenTree::Punct(p));
++                                at_start =3D true;
++                            }
++                            // Lifetimes begin with `'`.
++                            TokenTree::Punct(p) if p.as_char() =3D=3D '\''=
+ && at_start =3D> {
++                                ty_generics.push(TokenTree::Punct(p.clone(=
+)));
++                                impl_generics.push(TokenTree::Punct(p));
++                            }
++                            // Generics can have default values, we skip t=
+hese.
++                            TokenTree::Punct(p) if p.as_char() =3D=3D '=3D=
+' =3D> {
++                                skip_until_comma =3D true;
++                            }
++                            tt =3D> impl_generics.push(tt),
++                        }
++                    }
++                    _ =3D> impl_generics.push(tt),
+                 }
+             }
++            _ =3D> {}
+         }
+     }
+     rest.extend(toks);
+     (
+         Generics {
+             impl_generics,
++            decl_generics,
+             ty_generics,
+         },
+         rest,
+diff --git a/rust/macros/pin_data.rs b/rust/macros/pin_data.rs
+index 6d58cfda9872..022e68e9720d 100644
+--- a/rust/macros/pin_data.rs
++++ b/rust/macros/pin_data.rs
+@@ -10,6 +10,7 @@ pub(crate) fn pin_data(args: TokenStream, input: TokenStr=
+eam) -> TokenStream {
+     let (
+         Generics {
+             impl_generics,
++            decl_generics: _,
+             ty_generics,
+         },
+         rest,
+diff --git a/rust/macros/zeroable.rs b/rust/macros/zeroable.rs
+index 0d605c46ab3b..cfee2cec18d5 100644
+--- a/rust/macros/zeroable.rs
++++ b/rust/macros/zeroable.rs
+@@ -7,6 +7,7 @@ pub(crate) fn derive(input: TokenStream) -> TokenStream {
+     let (
+         Generics {
+             impl_generics,
++            decl_generics: _,
+             ty_generics,
+         },
+         mut rest,
+
+base-commit: d9857c16cfc6bce7764e1b79956c6a028f97f4d0
+--=20
+2.42.0
+
+
