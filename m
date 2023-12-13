@@ -1,77 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hskSGAh1"
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62AB0CF
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 11:00:56 -0800 (PST)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-dbcd28d5004so913633276.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 11:00:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702494055; x=1703098855; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P6dWvT6PF+6HLwc0QHH2Cen40zzIVktvgbFUaJnS1p0=;
-        b=hskSGAh1D2Mo3kKA+x5cDjlaF675LY6NmDlEmcEm3497VWd3J+SqMy6C9jf6XG2Ibo
-         l5EeAP++pcl+ObTQne5qBsK1wS21Xlb9SNLiS3WBnT309hS/13phVaYPQ6V5K+6EtZTS
-         aVEcLN3LxsAnqz+tjyOPl5bu9yhtkqSIhHs45L5Yso1G52AIfTl1zXS8tNqyXKs8zKSw
-         JeLIfOvTFAWMr7RsKzJvybly5mr+OaeCquE17EeWAqy3A76xMm6bTF1e7OEtLv/4UcFo
-         1pufIh7FUACBNHW3bO7VS13mmMJuKVN5G9y1DmR9OZ9Sb3lcPaKT7E33ZhtPseDfCjpm
-         lutw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702494055; x=1703098855;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P6dWvT6PF+6HLwc0QHH2Cen40zzIVktvgbFUaJnS1p0=;
-        b=gO1VV8C6zS3m7Jg+U7cl/NMwnEFx+vVb+M9KCdomqFNMUudV4v3Bdeo4yk1uydSD+K
-         8XdzOqtYlWUaD6Calvu5RN4E7NhLZtZPwq90Dt+lNvd9CiThf77LaEqFDCWKAi5qPZV0
-         t8YKh0bBfaDvWrfGYIDg/EaWIYEueTjOHY0/puSSgg0fyj2lrcKaqazOmuMgGZvGqnJ9
-         6RjTYsVrsfm+6cQXnr4EPQnsggiUzPKTiZjL3MEnAQAaUdOPzPXlrt9xp/SdB4ZRSKYp
-         zQo6ajguVTXHcYO1kG0rh4KszNupY1NjFTLW/jqIQUSQ3R5K3LR7cj8lafyJEP+R7nit
-         iOIQ==
-X-Gm-Message-State: AOJu0YwA51LOOvUkxxw/ZNOBLppSGOxPbVw+yK1YSrs6r+2R3zDAzfK3
-	eNunYrZPxHeuE6bdyOrEKxDTrnVHAvdXblPuoMg=
-X-Google-Smtp-Source: AGHT+IHjYPEp2A8wUIhR3eYryBwKXauN9dlErlC2VzVkgVPjYScv5yQfcmZM/X7nfUe32g94vaIbIdaboNCdZFlVVno=
-X-Received: by 2002:a5b:70b:0:b0:db7:c210:62ba with SMTP id
- g11-20020a5b070b000000b00db7c21062bamr5039373ybq.19.1702494055323; Wed, 13
- Dec 2023 11:00:55 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SRMjANT1"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4916DE3;
+	Wed, 13 Dec 2023 13:48:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MnuwIncJ+1uHR/ZbVaq1see8GJHClbLY2HX2n4sRIY8=; b=SRMjANT1sRoeT1QavByhvAstHk
+	rugjG5ubjW//AU+dHdv/yxcOkVfJv2yqjjC8kgNYvXCRer9Y153LISjbsgLs+W0zBDHjHjGDGAI27
+	KkGJnKToSU3eKOpDb/avFoy54lF8EI1fI0mPvDqnVVi0zFYuJMHPeRydmBhhwZMbAl2I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rDX5r-002rT1-Lx; Wed, 13 Dec 2023 22:48:39 +0100
+Date: Wed, 13 Dec 2023 22:48:39 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alice@ryhl.io,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <83511ed4-1fbe-4cf6-ba63-5f7e638ea2a1@lunn.ch>
+References: <ZXeuI3eulyIlrAvL@boqun-archlinux>
+ <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
+ <ZXfFzKYMxBt7OhrM@boqun-archlinux>
+ <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
+ <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
+ <67da9a6a-b0eb-470c-ae43-65cf313051b3@lunn.ch>
+ <ZXnfHbKE3K_J4yul@Boquns-Mac-mini.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com> <CAGSQo01pOixiPXkW867h4vPUaAjtKtHGKhkV-rpifJvKxAf4Ww@mail.gmail.com>
-In-Reply-To: <CAGSQo01pOixiPXkW867h4vPUaAjtKtHGKhkV-rpifJvKxAf4Ww@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 13 Dec 2023 20:00:44 +0100
-Message-ID: <CANiq72kNBm1woJAy+64rLqSWjhp16BD6=Uw5Ah0qNH=NAcnY2w@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Jamie Cunliffe <Jamie.Cunliffe@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, steve.capper@arm.com, 
-	Asahi Lina <lina@asahilina.net>, boqun.feng@gmail.com, andrew@lunn.ch
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXnfHbKE3K_J4yul@Boquns-Mac-mini.home>
 
-On Tue, Oct 31, 2023 at 7:31=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> If we really do want to go ahead with using targets directly form
-> rustc, this patch should add `--sysroot=3D/dev/null` or a similar
-> override to `rustc_library_cmd` and `rust_common_cmd` to prevent rustc
-> from picking up any already installed sysroot libraries.
+> Well, a safety comment is a basic part of Rust, which identifies the
+> safe/unsafe boundary (i.e. where the code could go wrong in memory
+> safety) and without that, the code will be just using Rust syntax and
+> grammar. Honestly, if one doesn't try hard to identify the safe/unsafe
+> boundaries, why do they try to use Rust? Unsafe Rust is harder to write
+> than C, and safe Rust is pointless without a clear safe/unsafe boundary.
+> Plus the syntax is not liked by anyone last time I heard ;-)
 
-For reference, Matthew sent the patch to do this at
-https://lore.kernel.org/rust-for-linux/20231031201752.1189213-1-mmaurer@goo=
-gle.com/
-and I have picked it up in `rust-next` (with a couple extra changes
-noted in that thread), so this should be OK.
+Maybe comments are the wrong format for this? Maybe it should be a
+formal language? It could then be compiled into an executable form and
+tested? It won't show it is complete, but it would at least show it is
+correct/incorrect description of the assumptions. For normal builds it
+would not be included in the final binary, but maybe debug or formal
+verification builds it would be included?
 
-When this series also arrives in `-next` I will be testing the
-combination further just in case.
+> Having a correct safety comment is really the bottom line. Without that,
+> it's just bad Rust code, which I don't think netdev doesn't want either?
+> Am I missing something here?
 
-Cheers,
-Miguel
+It seems much easier to agree actual code is correct, maybe because it
+is a formal language, with a compiler, and a method to test it. Is
+that code really bad without the comments? It would be interesting to
+look back and see how much the actual code has changed because of
+these comments? I _think_ most of the review comments have resulted in
+changes to the comments, not the executable code itself. Does that
+mean it is much harder to write correct comments than correct code?
+
+       Andrew
