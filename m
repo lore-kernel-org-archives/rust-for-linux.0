@@ -1,128 +1,96 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TNE8211i"
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F6FAB
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 01:12:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1702458773; x=1702717973;
-	bh=MEAwN2FYlBpSwYoH9a2PEuQpzLdTwET0cZNUdnLD5cQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=TNE8211i36nwjpY1JK6pg5ubksVz22Xteuzh7eG3Dx6D16cLt/98MFjBnFFh0TYDI
-	 u88OAAePGhRGa1h2qs7ZKQT72O/Psf9cAk/QNwVGPO1Kx/6qw4FYvta40OW/JXdijc
-	 IPFVOXjaJO1vn9+28PLVCW4oMrgQAh4kiNIjKNgIBkL9kQUPb0b7IMukn1nRU3zxE9
-	 NjMx1ToEuUf5AoW56NP9I8bh8QZ1CM2Ti7r4cKaFC1dYWPzF+/OTaQtGMAhDh8FPWZ
-	 0pkNK965rJf6+yPB2kv7avltEGgYoMJQzna+9Fc/i8GGszfqGnjoe969P9ZBNyPKJ9
-	 XatbtEdnyTAig==
-Date: Wed, 13 Dec 2023 09:12:45 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
-Message-ID: <pxtBsqlawLf52Escu7kGkCv1iEorWkE4-g8Ke_IshhejEYz5zZGGX5q98hYtU_YGubwk770ufUezNXFB_GJFMnZno5G7OGuF2oPAOoVAGgc=@proton.me>
-In-Reply-To: <ZXkKTSTCuQMt2ge6@boqun-archlinux>
-References: <20231206-alice-file-v2-0-af617c0d9d94@google.com> <20231206-alice-file-v2-7-af617c0d9d94@google.com> <k_vpgbqKAKoTFzJIBCjvgxGhX73kgkcv6w9kru78lBmTjHHvXPy05g8KxAKJ-ODARBxlZUp3a5e4F9TemGqQiskkwFCpTOhzxlvy378tjHM=@proton.me> <CAH5fLgiQ-7gbwP2RLoVDfDqoA+nXPboBW6eTKiv45Yam_Vjv_A@mail.gmail.com> <E-jdYd0FVvs15f_pEC0Fo6k2DByCDEQoh_Ux9P9ldmC-otCvUfQghkJOUkiAi8gDI8J47wAaDe56XYC5NiJhuohyhIklGAWMvv9v1qi6yYM=@proton.me> <ZXkKTSTCuQMt2ge6@boqun-archlinux>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rUEdBuJW"
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4223EB
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 02:09:22 -0800 (PST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-dbcda5ef8daso18518276.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Dec 2023 02:09:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702462162; x=1703066962; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LMjiZ1Mla0TJIvfZN07yuuMqisYwNLMlxhRR40WgnKE=;
+        b=rUEdBuJWwCar4cLrt6t73JyuSbctkJAChccfZ4x8p8fIffEyv+tcx1ffnERubMQCAL
+         w01J4bT8p7cldJfJH2WUF5CvL7O3AW7TZ1kVZqGuUf0aMzytoLgawo2IVWb6wPY/2fam
+         Ae0m0vM7tEVKSvU28bh1OKe5KIrVNXCitCJQKvseQAI00MuqWPEhgRC26sL+kBTxMO7o
+         V/PxVIxFiqWyFtLHdZP0Qjanl6e/rFuwsQTBoYpNHzCG2+Ne/6DAK+GpW9BQELv+5lND
+         1wjRKQ91IPdY++DDTXiocHiKDyKs7LXTtJv65EgzmDuGt4LUNEl7n9FEma7HJVJJ55Zy
+         uDUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702462162; x=1703066962;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LMjiZ1Mla0TJIvfZN07yuuMqisYwNLMlxhRR40WgnKE=;
+        b=toblXbqYkSgueqxDlMz34wILKskDjoy97biclcJpWvllmr5YR1EsqbPWvEhzeLl+xy
+         fgIu9amyBic5bfaxZAPbEPkHxrb8Kt+c/ElKIu7UmIUTietNMngJpvhb2rLSb6CMnK+M
+         38y1kX4lM5GByaR++tM14MZftwKdyf2uOHDarV/KQbMpA52L28KP3v6xcz2fPKgRRRe2
+         o64NGtih5cCbTJfrBb/YccuT299hJLM49eDq2AIi75AaLcq6X1HA7XbBp2J+RsKqOkfP
+         pfIA1hsxQ3KU/kTjCsUREEC3dwR8AGlrwOiG52pZk+bplGIZEoU08kR6FczB8GqGWtiS
+         sKPQ==
+X-Gm-Message-State: AOJu0Yy/5mz6SU0r6uSjr1kQ7tAS4xJ1cdPSBd0i32MYV2E2gOJCGdkW
+	Gv66qRgpzTu0vlmk/dWgX3COS/GD2zN6Y/g=
+X-Google-Smtp-Source: AGHT+IH1VF9gQH/zvDo8sZsOOMLcD8dWkfvwJA1iOSJh8Gow9jwJUdpnt5y5GZa/kNlrATJlzEmAqJR3Np4SOuA=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a25:c78d:0:b0:dbc:c98f:8075 with SMTP id
+ w135-20020a25c78d000000b00dbcc98f8075mr10120ybe.12.1702462161656; Wed, 13 Dec
+ 2023 02:09:21 -0800 (PST)
+Date: Wed, 13 Dec 2023 10:09:18 +0000
+In-Reply-To: <pxtBsqlawLf52Escu7kGkCv1iEorWkE4-g8Ke_IshhejEYz5zZGGX5q98hYtU_YGubwk770ufUezNXFB_GJFMnZno5G7OGuF2oPAOoVAGgc=@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <pxtBsqlawLf52Escu7kGkCv1iEorWkE4-g8Ke_IshhejEYz5zZGGX5q98hYtU_YGubwk770ufUezNXFB_GJFMnZno5G7OGuF2oPAOoVAGgc=@proton.me>
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20231213100918.435104-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 7/7] rust: file: add abstraction for `poll_table`
+From: Alice Ryhl <aliceryhl@google.com>
+To: benno.lossin@proton.me
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	brauner@kernel.org, cmllamas@google.com, dan.j.williams@intel.com, 
+	dxu@dxuuu.xyz, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
+	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
+	tglx@linutronix.de, tkjos@android.com, viro@zeniv.linux.org.uk, 
+	wedsonaf@gmail.com, willy@infradead.org
+Content-Type: text/plain; charset="utf-8"
 
-On 12/13/23 02:35, Boqun Feng wrote:
-> On Tue, Dec 12, 2023 at 05:01:28PM +0000, Benno Lossin wrote:
->> On 12/12/23 10:59, Alice Ryhl wrote:
->>> On Fri, Dec 8, 2023 at 6:53=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>>> On 12/6/23 12:59, Alice Ryhl wrote:
->>>>> +    fn get_qproc(&self) -> bindings::poll_queue_proc {
->>>>> +        let ptr =3D self.0.get();
->>>>> +        // SAFETY: The `ptr` is valid because it originates from a r=
-eference, and the `_qproc`
->>>>> +        // field is not modified concurrently with this call since w=
-e have an immutable reference.
->>>>
->>>> This needs an invariant on `PollTable` (i.e. `self.0` is valid).
->>>
->>> How would you phrase it?
->>
->> - `self.0` contains a valid `bindings::poll_table`.
->> - `self.0` is only modified via references to `Self`.
->>
->>>>> +        unsafe { (*ptr)._qproc }
->>>>> +    }
->>>>> +
->>>>> +    /// Register this [`PollTable`] with the provided [`PollCondVar`=
-], so that it can be notified
->>>>> +    /// using the condition variable.
->>>>> +    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
->>>>> +        if let Some(qproc) =3D self.get_qproc() {
->>>>> +            // SAFETY: The pointers to `self` and `file` are valid b=
-ecause they are references.
->>>>
->>>> What about cv.wait_list...
->>>
->>> I can add it to the list of things that are valid due to references.
->>
->=20
-> Actually, there is an implied safety requirement here, it's about how
-> qproc is implemented. As we can see, PollCondVar::drop() will wait for a
-> RCU grace period, that means the waiter (a file or something) has to use
-> RCU to access the cv.wait_list, otherwise, the synchronize_rcu() in
-> PollCondVar::drop() won't help.
+Benno Lossin <benno.lossin@proton.me> writes:
+>> and here we can said,
+>> 
+>> "per type invariant, `qproc` cannot publish `cv.wait_list` without
+>> proper RCU protection, so it's safe to use `cv.wait_list` here, and with
+>> the synchronize_rcu() in PollCondVar::drop(), free of the wait_list will
+>> be delayed until all usages are done."
+> 
+> I think I am missing how the call to `__wake_up_pollfree` ensures that
+> nobody uses the `PollCondVar` any longer. How is it removed from the
+> table?
 
-Good catch, this is rather important. I did not find the implementation
-of `qproc`, since it is a function pointer. Since this pattern is
-common, what is the way to find the implementation of those in general?
+The __wake_up_pollfree function clears the queue. Here is its
+documentation:
 
-I imagine that the pattern is used to enable dynamic selection of the
-concrete implementation, but there must be some general specification of
-what the function does, is this documented somewhere?
+/**
+ * wake_up_pollfree - signal that a polled waitqueue is going away
+ * @wq_head: the wait queue head
+ *
+ * In the very rare cases where a ->poll() implementation uses a waitqueue whose
+ * lifetime is tied to a task rather than to the 'struct file' being polled,
+ * this function must be called before the waitqueue is freed so that
+ * non-blocking polls (e.g. epoll) are notified that the queue is going away.
+ *
+ * The caller must also RCU-delay the freeing of the wait_queue_head, e.g. via
+ * an explicit synchronize_rcu() or call_rcu(), or via SLAB_TYPESAFE_BY_RCU.
+ */
 
-> To phrase it, it's more like:
->=20
-> (in the safety requirement of `PollTable::from_ptr` and the type
-> invariant of `PollTable`):
->=20
-> ", further, if the qproc function in poll_table publishs the pointer of
-> the wait_queue_head, it must publish it in a way that reads on the
-> published pointer have to be in an RCU read-side critical section."
+The only way for another thread to touch the queue after it has been
+cleared is if they are concurrently removing themselves from the queue
+under RCU. Because of that, we have to wait for an RCU grace period
+after the call to __wake_up_pollfree to ensure that any such concurrent
+users have gone away.
 
-What do you mean by `publish`?
-
-> and here we can said,
->=20
-> "per type invariant, `qproc` cannot publish `cv.wait_list` without
-> proper RCU protection, so it's safe to use `cv.wait_list` here, and with
-> the synchronize_rcu() in PollCondVar::drop(), free of the wait_list will
-> be delayed until all usages are done."
-
-I think I am missing how the call to `__wake_up_pollfree` ensures that
-nobody uses the `PollCondVar` any longer. How is it removed from the
-table?
-
---=20
-Cheers,
-Benno
-
-> I know, this is quite verbose, but just imagine some one removes the
-> rcu_read_lock() and rcu_read_unlock() in ep_remove_wait_queue(), the
-> poll table from epoll (using ep_ptable_queue_proc()) is still valid one
-> according to the current safety requirement, but now there is a
-> use-after-free in the following case:
->=20
-> =09CPU 0                        CPU1
-> =09                             ep_remove_wait_queue():
-> =09=09=09=09       struct wait_queue_head *whead;
-> =09                               whead =3D smp_load_acquire(...);
-> =09                               if (whead) { // not null
-> =09PollCondVar::drop():
-> =09  __wake_pollfree();
-> =09  synchronize_rcu(); // no current RCU readers, yay.
-> =09  <free the wait_queue_head>
-> =09                                 remove_wait_queue(whead, ...); // BOO=
-M, use-after-free
+Alice
