@@ -1,43 +1,43 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GjnM/4yA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iNgzd6UT"
 Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802B58E;
-	Tue, 12 Dec 2023 16:45:36 -0800 (PST)
-Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-27fe16e8e02so1153497a91.0;
-        Tue, 12 Dec 2023 16:45:36 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E25E99;
+	Tue, 12 Dec 2023 16:45:38 -0800 (PST)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-28ae1de660bso51642a91.1;
+        Tue, 12 Dec 2023 16:45:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702428335; x=1703033135; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702428337; x=1703033137; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sk5aSFClnHX23eDdJ+5Egkal6H6IheoOBJ70Tq9JO3o=;
-        b=GjnM/4yAiKlHB23p1YDmdnvvSNpTCn8o17ehsMFFJVmY4/f3h0ER4tUuhgu4z3bdzx
-         SlYc8aFRhJSDjxgr9EAPl3y5fh4b7FcwgngTMtRS6CIPlL75J9tS98wOZdop20DW0Hp3
-         gcg8cum3mNcN2jSKiBIhiXDhWosQVU3fJmuVLYz3cE30DzROAizP9qL/UqkCkET2pTyb
-         A/DK0a5LFgoS0k9PLqB97cR86GWL5lID00g2ZOLpXPaPncGI2+50bxjIdagB3dEBQCny
-         Gem+MPvLHcgi7O2dHpjN1EJUO5sMdHw5TyugBbJhtU9np08vxUXWkv01avdhraN8S4WQ
-         wQXg==
+        bh=nhuPJkKCpT/mx/ACBlpgaGAD4YyXeKLrX/gcd/CAqRM=;
+        b=iNgzd6UTbH0gWg1XOEBByT4E18oWR2MOTMd8otqBRNOLeRL6EvXJaLHWTR1H3Kc3u6
+         rYE9G5E1hnaiwXMZajRToCJuovQAMXPbO5XLkAiD7Wh7MgpmmKCF6LkoI7CUjK06pCju
+         RbQSv5pkcYu3dmZx8cbO+a2p0aLx6xYtz+Tdj6VuXae34Iq8baiBcI1QvYFXA5VE8asq
+         FfTtHxzvCRzIWsbcztlumynGMu7RwFEy/exQ0Ap3J4cLCSvGUBksskH91KMGeJ5cpmUu
+         2hr4iG6riSWMV/aR2A4FYDImVkMMpQS+e/AS4UhHxn7VfYPLOrePAFhC7Vt8JvCl7ECV
+         2wyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702428335; x=1703033135;
+        d=1e100.net; s=20230601; t=1702428337; x=1703033137;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sk5aSFClnHX23eDdJ+5Egkal6H6IheoOBJ70Tq9JO3o=;
-        b=DX9OVdJn7FsdSD2VnRaqvl870TYInsPTPmz/9fozqOvS7W4EvhQMj0LgNBwh0ATR6L
-         qHS0xEdSjGrUaEuk37tT71FSgSrIq7GeRkodNpGU/7bd9VYNrrhyLBi8jEPywlEcY6Xm
-         R/qg4I1DY3AfgkojmpzyfRodtbNHWA2PFl2Dq790Rtto5TkHb5UufMZhHRp/4nyPeTFm
-         YwrUhuqZAZfnJNnlVz5GeAm0MGTpP84LzKAGTjSyleK6/RRuGtqoV3A9iy3S/d4wkVxD
-         5/rdCltMlCP3OvuJRMydZodZWaWzfww6EwjmxW3SCmpMyCTyl86hlYjovr1nco9ycFbb
-         7tnw==
-X-Gm-Message-State: AOJu0Ywn0U3sN7H7bTeU5YYdEGOkLGMyHEs3OLirIkY1MZtSD4in2ztl
-	wENzd6Dfvw0qZSVDzeZA/9NByqLBG2yrj3ri
-X-Google-Smtp-Source: AGHT+IE+lrxBbRPYzqDf/+Poky6wIyzptn8art2q4+7nY28wYpFLF25F20BG+CWABEANb4MYzCm4Wg==
-X-Received: by 2002:a17:90a:7e95:b0:286:6fe0:8a69 with SMTP id j21-20020a17090a7e9500b002866fe08a69mr12174788pjl.2.1702428335113;
-        Tue, 12 Dec 2023 16:45:35 -0800 (PST)
+        bh=nhuPJkKCpT/mx/ACBlpgaGAD4YyXeKLrX/gcd/CAqRM=;
+        b=fEK3mys7dRMacrPu0QYtConPOD8DGsbIZ+CUK5mKQCVr0HEvRi9Vou5UYyCkrEvceM
+         tWUQ+H/JqH+B4HVyWzvn19gUJ79vTFL+yB5R4D/8JnIGRfdpAn04919P0A4hr/kD/MaO
+         v+1AwM7treEjeBfS0GeuDMVktfux9b4ALi30fiqumL6QRjxdyLofS5RPfC024GOs2OqB
+         7NmQBD7txw8hHRwHmXT/VSoWNL3lY+0PjSHSdNxOIFGh+zx2CzkJ+N3AuQU9qU88XUJU
+         mUwx1sUZ/7bNd7c3uUAvufhXnVfWE2GQjHyowoC6HzcqY7H15F/+wV/QydUyqVaD1Rga
+         VQ3g==
+X-Gm-Message-State: AOJu0YyHkYGRfkXHfaeos3T424R2oWrfGoPL4473WT6w2HuSITVR5wJP
+	jjkKhaLHSq7RipXG9gTKvdUAG8U2sxM2oHWT
+X-Google-Smtp-Source: AGHT+IHhIDhr2il3M0d+GCBp25KV4B+vxt42usd7ljRZsJ6PkpldQ5ZA0xjywbshktOLQVu7njjLVA==
+X-Received: by 2002:a17:90a:4e06:b0:28a:cdc0:7413 with SMTP id n6-20020a17090a4e0600b0028acdc07413mr2353356pjh.1.1702428337550;
+        Tue, 12 Dec 2023 16:45:37 -0800 (PST)
 Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id gn21-20020a17090ac79500b0028ac1112124sm2031130pjb.30.2023.12.12.16.45.34
+        by smtp.gmail.com with ESMTPSA id gn21-20020a17090ac79500b0028ac1112124sm2031130pjb.30.2023.12.12.16.45.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 16:45:34 -0800 (PST)
+        Tue, 12 Dec 2023 16:45:37 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: netdev@vger.kernel.org
 Cc: rust-for-linux@vger.kernel.org,
@@ -48,9 +48,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	wedsonaf@gmail.com,
 	aliceryhl@google.com,
 	boqun.feng@gmail.com
-Subject: [PATCH net-next v11 1/4] rust: core abstractions for network PHY drivers
-Date: Wed, 13 Dec 2023 09:42:08 +0900
-Message-Id: <20231213004211.1625780-2-fujita.tomonori@gmail.com>
+Subject: [PATCH net-next v11 4/4] net: phy: add Rust Asix PHY driver
+Date: Wed, 13 Dec 2023 09:42:11 +0900
+Message-Id: <20231213004211.1625780-5-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231213004211.1625780-1-fujita.tomonori@gmail.com>
 References: <20231213004211.1625780-1-fujita.tomonori@gmail.com>
@@ -62,861 +62,230 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch adds abstractions to implement network PHY drivers; the
-driver registration and bindings for some of callback functions in
-struct phy_driver and many genphy_ functions.
-
-This feature is enabled with CONFIG_RUST_PHYLIB_ABSTRACTIONS=y.
-
-This patch enables unstable const_maybe_uninit_zeroed feature for
-kernel crate to enable unsafe code to handle a constant value with
-uninitialized data. With the feature, the abstractions can initialize
-a phy_driver structure with zero easily; instead of initializing all
-the members by hand. It's supposed to be stable in the not so distant
-future.
-
-Link: https://github.com/rust-lang/rust/pull/116218
+This is the Rust implementation of drivers/net/phy/ax88796b.c. The
+features are equivalent. You can choose C or Rust version kernel
+configuration.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/net/phy/Kconfig         |   8 +
- rust/bindings/bindings_helper.h |   3 +
- rust/kernel/lib.rs              |   3 +
- rust/kernel/net.rs              |   6 +
- rust/kernel/net/phy.rs          | 755 ++++++++++++++++++++++++++++++++
- 5 files changed, 775 insertions(+)
- create mode 100644 rust/kernel/net.rs
- create mode 100644 rust/kernel/net/phy.rs
+ MAINTAINERS                      |   8 ++
+ drivers/net/phy/Kconfig          |   8 ++
+ drivers/net/phy/Makefile         |   6 +-
+ drivers/net/phy/ax88796b_rust.rs | 135 +++++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h          |   2 +
+ 5 files changed, 158 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/ax88796b_rust.rs
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 089394a0af2e..bbc6db6bebf4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3083,6 +3083,14 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/asix,ax88796c.yaml
+ F:	drivers/net/ethernet/asix/ax88796c_*
+ 
++ASIX PHY DRIVER [RUST]
++M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
++R:	Trevor Gross <tmgross@umich.edu>
++L:	netdev@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	drivers/net/phy/ax88796b_rust.rs
++
+ ASPEED CRYPTO DRIVER
+ M:	Neal Liu <neal_liu@aspeedtech.com>
+ L:	linux-aspeed@lists.ozlabs.org (moderated for non-subscribers)
 diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 25cfc5ded1da..8d00cece5e23 100644
+index 8d00cece5e23..0f483c3dfed9 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -60,6 +60,14 @@ config FIXED_PHY
+@@ -112,6 +112,14 @@ config AX88796B_PHY
+ 	  Currently supports the Asix Electronics PHY found in the X-Surf 100
+ 	  AX88796B package.
  
- 	  Currently tested with mpc866ads and mpc8349e-mitx.
- 
-+config RUST_PHYLIB_ABSTRACTIONS
-+        bool "Rust PHYLIB abstractions support"
-+        depends on RUST
-+        depends on PHYLIB=y
-+        help
-+          Adds support needed for PHY drivers written in Rust. It provides
-+          a wrapper around the C phylib core.
++config AX88796B_RUST_PHY
++	bool "Rust reference driver for Asix PHYs"
++	depends on RUST_PHYLIB_ABSTRACTIONS && AX88796B_PHY
++	help
++	  Uses the Rust reference driver for Asix PHYs (ax88796b_rust.ko).
++	  The features are equivalent. It supports the Asix Electronics PHY
++	  found in the X-Surf 100 AX88796B package.
 +
- config SFP
- 	tristate "SFP cage support"
- 	depends on I2C && PHYLINK
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 85f013ed4ca4..eaf01df7d97a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -8,6 +8,9 @@
- 
- #include <kunit/test.h>
- #include <linux/errname.h>
-+#include <linux/ethtool.h>
-+#include <linux/mdio.h>
-+#include <linux/phy.h>
- #include <linux/slab.h>
- #include <linux/refcount.h>
- #include <linux/wait.h>
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index e6aff80b521f..7ac39874aeac 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -14,6 +14,7 @@
- #![no_std]
- #![feature(allocator_api)]
- #![feature(coerce_unsized)]
-+#![feature(const_maybe_uninit_zeroed)]
- #![feature(dispatch_from_dyn)]
- #![feature(new_uninit)]
- #![feature(offset_of)]
-@@ -38,6 +39,8 @@
- pub mod ioctl;
- #[cfg(CONFIG_KUNIT)]
- pub mod kunit;
-+#[cfg(CONFIG_NET)]
-+pub mod net;
- pub mod prelude;
- pub mod print;
- mod static_assert;
-diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
+ config BROADCOM_PHY
+ 	tristate "Broadcom 54XX PHYs"
+ 	select BCM_NET_PHYLIB
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index f65e85c91fc1..ab450a46b855 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -37,7 +37,11 @@ obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
+ obj-$(CONFIG_AMD_PHY)		+= amd.o
+ obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
+ obj-$(CONFIG_AT803X_PHY)	+= at803x.o
+-obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
++ifdef CONFIG_AX88796B_RUST_PHY
++  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
++else
++  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
++endif
+ obj-$(CONFIG_BCM54140_PHY)	+= bcm54140.o
+ obj-$(CONFIG_BCM63XX_PHY)	+= bcm63xx.o
+ obj-$(CONFIG_BCM7XXX_PHY)	+= bcm7xxx.o
+diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
 new file mode 100644
-index 000000000000..fe415cb369d3
+index 000000000000..5c92572962dc
 --- /dev/null
-+++ b/rust/kernel/net.rs
-@@ -0,0 +1,6 @@
++++ b/drivers/net/phy/ax88796b_rust.rs
+@@ -0,0 +1,135 @@
 +// SPDX-License-Identifier: GPL-2.0
-+
-+//! Networking.
-+
-+#[cfg(CONFIG_RUST_PHYLIB_ABSTRACTIONS)]
-+pub mod phy;
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-new file mode 100644
-index 000000000000..b6142579e8fd
---- /dev/null
-+++ b/rust/kernel/net/phy.rs
-@@ -0,0 +1,755 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
 +// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
 +
-+//! Network PHY device.
++//! Rust Asix PHYs driver
 +//!
-+//! C headers: [`include/linux/phy.h`](../../../../../../../include/linux/phy.h).
++//! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796b.c)
++use kernel::{
++    c_str,
++    net::phy::{self, DeviceId, Driver},
++    prelude::*,
++    uapi,
++};
 +
-+use crate::{bindings, error::*, prelude::*, str::CStr, types::Opaque};
-+
-+use core::marker::PhantomData;
-+
-+/// PHY state machine states.
-+///
-+/// Corresponds to the kernel's [`enum phy_state`].
-+///
-+/// Some of PHY drivers access to the state of PHY's software state machine.
-+///
-+/// [`enum phy_state`]: ../../../../../../../include/linux/phy.h
-+#[derive(PartialEq, Eq)]
-+pub enum DeviceState {
-+    /// PHY device and driver are not ready for anything.
-+    Down,
-+    /// PHY is ready to send and receive packets.
-+    Ready,
-+    /// PHY is up, but no polling or interrupts are done.
-+    Halted,
-+    /// PHY is up, but is in an error state.
-+    Error,
-+    /// PHY and attached device are ready to do work.
-+    Up,
-+    /// PHY is currently running.
-+    Running,
-+    /// PHY is up, but not currently plugged in.
-+    NoLink,
-+    /// PHY is performing a cable test.
-+    CableTest,
++kernel::module_phy_driver! {
++    drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
++    device_table: [
++        DeviceId::new_with_driver::<PhyAX88772A>(),
++        DeviceId::new_with_driver::<PhyAX88772C>(),
++        DeviceId::new_with_driver::<PhyAX88796B>()
++    ],
++    name: "rust_asix_phy",
++    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
++    description: "Rust Asix PHYs driver",
++    license: "GPL",
 +}
 +
-+/// A mode of Ethernet communication.
-+///
-+/// PHY drivers get duplex information from hardware and update the current state.
-+pub enum DuplexMode {
-+    /// PHY is in full-duplex mode.
-+    Full,
-+    /// PHY is in half-duplex mode.
-+    Half,
-+    /// PHY is in unknown duplex mode.
-+    Unknown,
++const MII_BMCR: u16 = uapi::MII_BMCR as u16;
++const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
++const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
++
++// Performs a software PHY reset using the standard
++// BMCR_RESET bit and poll for the reset bit to be cleared.
++// Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implementation
++// such as used on the Individual Computers' X-Surf 100 Zorro card.
++fn asix_soft_reset(dev: &mut phy::Device) -> Result {
++    dev.write(uapi::MII_BMCR as u16, 0)?;
++    dev.genphy_soft_reset()
 +}
 +
-+/// An instance of a PHY device.
-+///
-+/// Wraps the kernel's [`struct phy_device`].
-+///
-+/// A [`Device`] instance is created when a callback in [`Driver`] is executed. A PHY driver
-+/// executes [`Driver`]'s methods during the callback.
-+///
-+/// # Invariants
-+///
-+/// Referencing a `phy_device` using this struct asserts that you are in
-+/// a context where all methods defined on this struct are safe to call.
-+///
-+/// [`struct phy_device`]: ../../../../../../../include/linux/phy.h
-+// During the calls to most functions in [`Driver`], the C side (`PHYLIB`) holds a lock that is
-+// unique for every instance of [`Device`]. `PHYLIB` uses a different serialization technique for
-+// [`Driver::resume`] and [`Driver::suspend`]: `PHYLIB` updates `phy_device`'s state with
-+// the lock held, thus guaranteeing that [`Driver::resume`] has exclusive access to the instance.
-+// [`Driver::resume`] and [`Driver::suspend`] also are called where only one thread can access
-+// to the instance.
-+#[repr(transparent)]
-+pub struct Device(Opaque<bindings::phy_device>);
++struct PhyAX88772A;
 +
-+impl Device {
-+    /// Creates a new [`Device`] instance from a raw pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// For the duration of 'a, the pointer must point at a valid `phy_device`,
-+    /// and the caller must be in a context where all methods defined on this struct
-+    /// are safe to call.
-+    unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
-+        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::phy_device`.
-+        let ptr = ptr.cast::<Self>();
-+        // SAFETY: by the function requirements the pointer is valid and we have unique access for
-+        // the duration of `'a`.
-+        unsafe { &mut *ptr }
-+    }
-+
-+    /// Gets the id of the PHY.
-+    pub fn phy_id(&self) -> u32 {
-+        let phydev = self.0.get();
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        unsafe { (*phydev).phy_id }
-+    }
-+
-+    /// Gets the state of PHY state machine states.
-+    pub fn state(&self) -> DeviceState {
-+        let phydev = self.0.get();
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        let state = unsafe { (*phydev).state };
-+        // TODO: this conversion code will be replaced with automatically generated code by bindgen
-+        // when it becomes possible.
-+        match state {
-+            bindings::phy_state_PHY_DOWN => DeviceState::Down,
-+            bindings::phy_state_PHY_READY => DeviceState::Ready,
-+            bindings::phy_state_PHY_HALTED => DeviceState::Halted,
-+            bindings::phy_state_PHY_ERROR => DeviceState::Error,
-+            bindings::phy_state_PHY_UP => DeviceState::Up,
-+            bindings::phy_state_PHY_RUNNING => DeviceState::Running,
-+            bindings::phy_state_PHY_NOLINK => DeviceState::NoLink,
-+            bindings::phy_state_PHY_CABLETEST => DeviceState::CableTest,
-+            _ => DeviceState::Error,
-+        }
-+    }
-+
-+    /// Gets the current link state.
-+    ///
-+    /// It returns true if the link is up.
-+    pub fn is_link_up(&self) -> bool {
-+        const LINK_IS_UP: u64 = 1;
-+        // TODO: the code to access to the bit field will be replaced with automatically
-+        // generated code by bindgen when it becomes possible.
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-+        bit_field.get(14, 1) == LINK_IS_UP
-+    }
-+
-+    /// Gets the current auto-negotiation configuration.
-+    ///
-+    /// It returns true if auto-negotiation is enabled.
-+    pub fn is_autoneg_enabled(&self) -> bool {
-+        // TODO: the code to access to the bit field will be replaced with automatically
-+        // generated code by bindgen when it becomes possible.
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-+        bit_field.get(13, 1) == bindings::AUTONEG_ENABLE as u64
-+    }
-+
-+    /// Gets the current auto-negotiation state.
-+    ///
-+    /// It returns true if auto-negotiation is completed.
-+    pub fn is_autoneg_completed(&self) -> bool {
-+        const AUTONEG_COMPLETED: u64 = 1;
-+        // TODO: the code to access to the bit field will be replaced with automatically
-+        // generated code by bindgen when it becomes possible.
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-+        bit_field.get(15, 1) == AUTONEG_COMPLETED
-+    }
-+
-+    /// Sets the speed of the PHY.
-+    pub fn set_speed(&mut self, speed: u32) {
-+        let phydev = self.0.get();
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        unsafe { (*phydev).speed = speed as i32 };
-+    }
-+
-+    /// Sets duplex mode.
-+    pub fn set_duplex(&mut self, mode: DuplexMode) {
-+        let phydev = self.0.get();
-+        let v = match mode {
-+            DuplexMode::Full => bindings::DUPLEX_FULL as i32,
-+            DuplexMode::Half => bindings::DUPLEX_HALF as i32,
-+            DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN as i32,
-+        };
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        unsafe { (*phydev).duplex = v };
-+    }
-+
-+    /// Reads a given C22 PHY register.
-+    // This function reads a hardware register and updates the stats so takes `&mut self`.
-+    pub fn read(&mut self, regnum: u16) -> Result<u16> {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call, open code of `phy_read()` with a valid `phy_device` pointer
-+        // `phydev`.
-+        let ret = unsafe {
-+            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into())
-+        };
-+        if ret < 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(ret as u16)
-+        }
-+    }
-+
-+    /// Writes a given C22 PHY register.
-+    pub fn write(&mut self, regnum: u16, val: u16) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
-+        // `phydev`.
-+        to_result(unsafe {
-+            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into(), val)
-+        })
-+    }
-+
-+    /// Reads a paged register.
-+    pub fn read_paged(&mut self, page: u16, regnum: u16) -> Result<u16> {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        let ret = unsafe { bindings::phy_read_paged(phydev, page.into(), regnum.into()) };
-+        if ret < 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(ret as u16)
-+        }
-+    }
-+
-+    /// Resolves the advertisements into PHY settings.
-+    pub fn resolve_aneg_linkmode(&mut self) {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        unsafe { bindings::phy_resolve_aneg_linkmode(phydev) };
-+    }
-+
-+    /// Executes software reset the PHY via `BMCR_RESET` bit.
-+    pub fn genphy_soft_reset(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::genphy_soft_reset(phydev) })
-+    }
-+
-+    /// Initializes the PHY.
-+    pub fn init_hw(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::phy_init_hw(phydev) })
-+    }
-+
-+    /// Starts auto-negotiation.
-+    pub fn start_aneg(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::_phy_start_aneg(phydev) })
-+    }
-+
-+    /// Resumes the PHY via `BMCR_PDOWN` bit.
-+    pub fn genphy_resume(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::genphy_resume(phydev) })
-+    }
-+
-+    /// Suspends the PHY via `BMCR_PDOWN` bit.
-+    pub fn genphy_suspend(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::genphy_suspend(phydev) })
-+    }
-+
-+    /// Checks the link status and updates current link state.
-+    pub fn genphy_read_status(&mut self) -> Result<u16> {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        let ret = unsafe { bindings::genphy_read_status(phydev) };
-+        if ret < 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(ret as u16)
-+        }
-+    }
-+
-+    /// Updates the link status.
-+    pub fn genphy_update_link(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::genphy_update_link(phydev) })
-+    }
-+
-+    /// Reads link partner ability.
-+    pub fn genphy_read_lpa(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::genphy_read_lpa(phydev) })
-+    }
-+
-+    /// Reads PHY abilities.
-+    pub fn genphy_read_abilities(&mut self) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::genphy_read_abilities(phydev) })
-+    }
-+}
-+
-+/// Defines certain other features this PHY supports (like interrupts).
-+///
-+/// These flag values are used in [`Driver::FLAGS`].
-+pub mod flags {
-+    /// PHY is internal.
-+    pub const IS_INTERNAL: u32 = bindings::PHY_IS_INTERNAL;
-+    /// PHY needs to be reset after the refclk is enabled.
-+    pub const RST_AFTER_CLK_EN: u32 = bindings::PHY_RST_AFTER_CLK_EN;
-+    /// Polling is used to detect PHY status changes.
-+    pub const POLL_CABLE_TEST: u32 = bindings::PHY_POLL_CABLE_TEST;
-+    /// Don't suspend.
-+    pub const ALWAYS_CALL_SUSPEND: u32 = bindings::PHY_ALWAYS_CALL_SUSPEND;
-+}
-+
-+/// An adapter for the registration of a PHY driver.
-+struct Adapter<T: Driver> {
-+    _p: PhantomData<T>,
-+}
-+
-+impl<T: Driver> Adapter<T> {
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn soft_reset_callback(
-+        phydev: *mut bindings::phy_device,
-+    ) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::soft_reset(dev)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn get_features_callback(
-+        phydev: *mut bindings::phy_device,
-+    ) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::get_features(dev)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn suspend_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: The C core code ensures that the accessors on
-+            // `Device` are okay to call even though `phy_device->lock`
-+            // might not be held.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::suspend(dev)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn resume_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: The C core code ensures that the accessors on
-+            // `Device` are okay to call even though `phy_device->lock`
-+            // might not be held.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::resume(dev)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn config_aneg_callback(
-+        phydev: *mut bindings::phy_device,
-+    ) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::config_aneg(dev)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn read_status_callback(
-+        phydev: *mut bindings::phy_device,
-+    ) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::read_status(dev)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn match_phy_device_callback(
-+        phydev: *mut bindings::phy_device,
-+    ) -> core::ffi::c_int {
-+        // SAFETY: This callback is called only in contexts
-+        // where we hold `phy_device->lock`, so the accessors on
-+        // `Device` are okay to call.
-+        let dev = unsafe { Device::from_raw(phydev) };
-+        T::match_phy_device(dev) as i32
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn read_mmd_callback(
-+        phydev: *mut bindings::phy_device,
-+        devnum: i32,
-+        regnum: u16,
-+    ) -> i32 {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            // CAST: the C side verifies devnum < 32.
-+            let ret = T::read_mmd(dev, devnum as u8, regnum)?;
-+            Ok(ret.into())
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn write_mmd_callback(
-+        phydev: *mut bindings::phy_device,
-+        devnum: i32,
-+        regnum: u16,
-+        val: u16,
-+    ) -> i32 {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::write_mmd(dev, devnum as u8, regnum, val)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn link_change_notify_callback(phydev: *mut bindings::phy_device) {
-+        // SAFETY: This callback is called only in contexts
-+        // where we hold `phy_device->lock`, so the accessors on
-+        // `Device` are okay to call.
-+        let dev = unsafe { Device::from_raw(phydev) };
-+        T::link_change_notify(dev);
-+    }
-+}
-+
-+/// Driver structure for a particular PHY type.
-+///
-+/// Wraps the kernel's [`struct phy_driver`].
-+/// This is used to register a driver for a particular PHY type with the kernel.
-+///
-+/// # Invariants
-+///
-+/// `self.0` is always in a valid state.
-+///
-+/// [`struct phy_driver`]: ../../../../../../../include/linux/phy.h
-+#[repr(transparent)]
-+pub struct DriverVTable(Opaque<bindings::phy_driver>);
-+
-+// SAFETY: `DriverVTable` doesn't expose any &self method to access internal data, so it's safe to
-+// share `&DriverVTable` across execution context boundries.
-+unsafe impl Sync for DriverVTable {}
-+
-+/// Creates a [`DriverVTable`] instance from [`Driver`].
-+///
-+/// This is used by [`module_phy_driver`] macro to create a static array of `phy_driver`.
-+///
-+/// [`module_phy_driver`]: crate::module_phy_driver
-+pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
-+    // INVARIANT: All the fields of `struct phy_driver` are initialized properly.
-+    DriverVTable(Opaque::new(bindings::phy_driver {
-+        name: T::NAME.as_char_ptr().cast_mut(),
-+        flags: T::FLAGS,
-+        phy_id: T::PHY_DEVICE_ID.id,
-+        phy_id_mask: T::PHY_DEVICE_ID.mask_as_int(),
-+        soft_reset: if T::HAS_SOFT_RESET {
-+            Some(Adapter::<T>::soft_reset_callback)
-+        } else {
-+            None
-+        },
-+        get_features: if T::HAS_GET_FEATURES {
-+            Some(Adapter::<T>::get_features_callback)
-+        } else {
-+            None
-+        },
-+        match_phy_device: if T::HAS_MATCH_PHY_DEVICE {
-+            Some(Adapter::<T>::match_phy_device_callback)
-+        } else {
-+            None
-+        },
-+        suspend: if T::HAS_SUSPEND {
-+            Some(Adapter::<T>::suspend_callback)
-+        } else {
-+            None
-+        },
-+        resume: if T::HAS_RESUME {
-+            Some(Adapter::<T>::resume_callback)
-+        } else {
-+            None
-+        },
-+        config_aneg: if T::HAS_CONFIG_ANEG {
-+            Some(Adapter::<T>::config_aneg_callback)
-+        } else {
-+            None
-+        },
-+        read_status: if T::HAS_READ_STATUS {
-+            Some(Adapter::<T>::read_status_callback)
-+        } else {
-+            None
-+        },
-+        read_mmd: if T::HAS_READ_MMD {
-+            Some(Adapter::<T>::read_mmd_callback)
-+        } else {
-+            None
-+        },
-+        write_mmd: if T::HAS_WRITE_MMD {
-+            Some(Adapter::<T>::write_mmd_callback)
-+        } else {
-+            None
-+        },
-+        link_change_notify: if T::HAS_LINK_CHANGE_NOTIFY {
-+            Some(Adapter::<T>::link_change_notify_callback)
-+        } else {
-+            None
-+        },
-+        // SAFETY: The rest is zeroed out to initialize `struct phy_driver`,
-+        // sets `Option<&F>` to be `None`.
-+        ..unsafe { core::mem::MaybeUninit::<bindings::phy_driver>::zeroed().assume_init() }
-+    }))
-+}
-+
-+/// Driver implementation for a particular PHY type.
-+///
-+/// This trait is used to create a [`DriverVTable`].
 +#[vtable]
-+pub trait Driver {
-+    /// Defines certain other features this PHY supports.
-+    /// It is a combination of the flags in the [`flags`] module.
-+    const FLAGS: u32 = 0;
++impl Driver for PhyAX88772A {
++    const FLAGS: u32 = phy::flags::IS_INTERNAL;
++    const NAME: &'static CStr = c_str!("Asix Electronics AX88772A");
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1861);
 +
-+    /// The friendly name of this PHY type.
-+    const NAME: &'static CStr;
-+
-+    /// This driver only works for PHYs with IDs which match this field.
-+    /// The default id and mask are zero.
-+    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_custom_mask(0, 0);
-+
-+    /// Issues a PHY software reset.
-+    fn soft_reset(_dev: &mut Device) -> Result {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Probes the hardware to determine what abilities it has.
-+    fn get_features(_dev: &mut Device) -> Result {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Returns true if this is a suitable driver for the given phydev.
-+    /// If not implemented, matching is based on [`Driver::PHY_DEVICE_ID`].
-+    fn match_phy_device(_dev: &Device) -> bool {
-+        false
-+    }
-+
-+    /// Configures the advertisement and resets auto-negotiation
-+    /// if auto-negotiation is enabled.
-+    fn config_aneg(_dev: &mut Device) -> Result {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Determines the negotiated speed and duplex.
-+    fn read_status(_dev: &mut Device) -> Result<u16> {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Suspends the hardware, saving state if needed.
-+    fn suspend(_dev: &mut Device) -> Result {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Resumes the hardware, restoring state if needed.
-+    fn resume(_dev: &mut Device) -> Result {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Overrides the default MMD read function for reading a MMD register.
-+    fn read_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16) -> Result<u16> {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Overrides the default MMD write function for writing a MMD register.
-+    fn write_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16, _val: u16) -> Result {
-+        Err(code::ENOTSUPP)
-+    }
-+
-+    /// Callback for notification of link change.
-+    fn link_change_notify(_dev: &mut Device) {}
-+}
-+
-+/// Registration structure for PHY drivers.
-+///
-+/// Registers [`DriverVTable`] instances with the kernel. They will be unregistered when dropped.
-+///
-+/// # Invariants
-+///
-+/// The `drivers` slice are currently registered to the kernel via `phy_drivers_register`.
-+pub struct Registration {
-+    drivers: Pin<&'static mut [DriverVTable]>,
-+}
-+
-+impl Registration {
-+    /// Registers a PHY driver.
-+    pub fn register(
-+        module: &'static crate::ThisModule,
-+        drivers: Pin<&'static mut [DriverVTable]>,
-+    ) -> Result<Self> {
-+        if drivers.is_empty() {
-+            return Err(code::EINVAL);
++    // AX88772A is not working properly with some old switches (NETGEAR EN 108TP):
++    // after autoneg is done and the link status is reported as active, the MII_LPA
++    // register is 0. This issue is not reproducible on AX88772C.
++    fn read_status(dev: &mut phy::Device) -> Result<u16> {
++        dev.genphy_update_link()?;
++        if !dev.is_link_up() {
++            return Ok(0);
 +        }
-+        // SAFETY: The type invariants of [`DriverVTable`] ensure that all elements of
-+        // the `drivers` slice are initialized properly. `drivers` will not be moved.
-+        // So it's just an FFI call.
-+        to_result(unsafe {
-+            bindings::phy_drivers_register(drivers[0].0.get(), drivers.len().try_into()?, module.0)
-+        })?;
-+        // INVARIANT: The `drivers` slice is successfully registered to the kernel via `phy_drivers_register`.
-+        Ok(Registration { drivers })
-+    }
-+}
++        // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
++        // linkmode so use MII_BMCR as default values.
++        let ret = dev.read(MII_BMCR)?;
 +
-+impl Drop for Registration {
-+    fn drop(&mut self) {
-+        // SAFETY: The type invariants guarantee that `self.drivers` is valid.
-+        // So it's just an FFI call.
-+        unsafe {
-+            bindings::phy_drivers_unregister(self.drivers[0].0.get(), self.drivers.len() as i32)
++        if ret & BMCR_SPEED100 != 0 {
++            dev.set_speed(uapi::SPEED_100);
++        } else {
++            dev.set_speed(uapi::SPEED_10);
++        }
++
++        let duplex = if ret & BMCR_FULLDPLX != 0 {
++            phy::DuplexMode::Full
++        } else {
++            phy::DuplexMode::Half
 +        };
-+    }
-+}
++        dev.set_duplex(duplex);
 +
-+/// An identifier for PHY devices on an MDIO/MII bus.
-+///
-+/// Represents the kernel's `struct mdio_device_id`. This is used to find an appropriate
-+/// PHY driver.
-+pub struct DeviceId {
-+    id: u32,
-+    mask: DeviceMask,
-+}
++        dev.genphy_read_lpa()?;
 +
-+impl DeviceId {
-+    /// Creates a new instance with the exact match mask.
-+    pub const fn new_with_exact_mask(id: u32) -> Self {
-+        DeviceId {
-+            id,
-+            mask: DeviceMask::Exact,
++        if dev.is_autoneg_enabled() && dev.is_autoneg_completed() {
++            dev.resolve_aneg_linkmode();
 +        }
++
++        Ok(0)
 +    }
 +
-+    /// Creates a new instance with the model match mask.
-+    pub const fn new_with_model_mask(id: u32) -> Self {
-+        DeviceId {
-+            id,
-+            mask: DeviceMask::Model,
-+        }
++    fn suspend(dev: &mut phy::Device) -> Result {
++        dev.genphy_suspend()
 +    }
 +
-+    /// Creates a new instance with the vendor match mask.
-+    pub const fn new_with_vendor_mask(id: u32) -> Self {
-+        DeviceId {
-+            id,
-+            mask: DeviceMask::Vendor,
-+        }
++    fn resume(dev: &mut phy::Device) -> Result {
++        dev.genphy_resume()
 +    }
 +
-+    /// Creates a new instance with a custom match mask.
-+    pub const fn new_with_custom_mask(id: u32, mask: u32) -> Self {
-+        DeviceId {
-+            id,
-+            mask: DeviceMask::Custom(mask),
-+        }
++    fn soft_reset(dev: &mut phy::Device) -> Result {
++        asix_soft_reset(dev)
 +    }
 +
-+    /// Creates a new instance from [`Driver`].
-+    pub const fn new_with_driver<T: Driver>() -> Self {
-+        T::PHY_DEVICE_ID
-+    }
-+
-+    /// Get a `mask` as u32.
-+    pub const fn mask_as_int(&self) -> u32 {
-+        self.mask.as_int()
-+    }
-+
-+    // macro use only
-+    #[doc(hidden)]
-+    pub const fn mdio_device_id(&self) -> bindings::mdio_device_id {
-+        bindings::mdio_device_id {
-+            phy_id: self.id,
-+            phy_id_mask: self.mask.as_int(),
++    fn link_change_notify(dev: &mut phy::Device) {
++        // Reset PHY, otherwise MII_LPA will provide outdated information.
++        // This issue is reproducible only with some link partner PHYs.
++        if dev.state() == phy::DeviceState::NoLink {
++            let _ = dev.init_hw();
++            let _ = dev.start_aneg();
 +        }
 +    }
 +}
 +
-+enum DeviceMask {
-+    Exact,
-+    Model,
-+    Vendor,
-+    Custom(u32),
-+}
++struct PhyAX88772C;
 +
-+impl DeviceMask {
-+    const MASK_EXACT: u32 = !0;
-+    const MASK_MODEL: u32 = !0 << 4;
-+    const MASK_VENDOR: u32 = !0 << 10;
++#[vtable]
++impl Driver for PhyAX88772C {
++    const FLAGS: u32 = phy::flags::IS_INTERNAL;
++    const NAME: &'static CStr = c_str!("Asix Electronics AX88772C");
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1881);
 +
-+    const fn as_int(&self) -> u32 {
-+        match self {
-+            DeviceMask::Exact => Self::MASK_EXACT,
-+            DeviceMask::Model => Self::MASK_MODEL,
-+            DeviceMask::Vendor => Self::MASK_VENDOR,
-+            DeviceMask::Custom(mask) => *mask,
-+        }
++    fn suspend(dev: &mut phy::Device) -> Result {
++        dev.genphy_suspend()
++    }
++
++    fn resume(dev: &mut phy::Device) -> Result {
++        dev.genphy_resume()
++    }
++
++    fn soft_reset(dev: &mut phy::Device) -> Result {
++        asix_soft_reset(dev)
 +    }
 +}
++
++struct PhyAX88796B;
++
++#[vtable]
++impl Driver for PhyAX88796B {
++    const NAME: &'static CStr = c_str!("Asix Electronics AX88796B");
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_model_mask(0x003b1841);
++
++    fn soft_reset(dev: &mut phy::Device) -> Result {
++        asix_soft_reset(dev)
++    }
++}
+diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
+index 301f5207f023..08f5e9334c9e 100644
+--- a/rust/uapi/uapi_helper.h
++++ b/rust/uapi/uapi_helper.h
+@@ -7,3 +7,5 @@
+  */
+ 
+ #include <uapi/asm-generic/ioctl.h>
++#include <uapi/linux/mii.h>
++#include <uapi/linux/ethtool.h>
 -- 
 2.34.1
 
