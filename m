@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l8Bf1plZ"
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC28ED0;
-	Wed, 13 Dec 2023 19:13:56 -0800 (PST)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6d0985c70ffso2687494b3a.2;
-        Wed, 13 Dec 2023 19:13:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7gLG+vG"
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29038109;
+	Wed, 13 Dec 2023 19:14:02 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1d098b87eeeso69113535ad.0;
+        Wed, 13 Dec 2023 19:14:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702523636; x=1703128436; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702523641; x=1703128441; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wDtuMqJuLynsqBn4B64C9rOZU/1pf1QFeAH14FfwW+A=;
-        b=l8Bf1plZ7tySeMqcJy8KwLiApDtiWJ7d5TLl1k0///lnLIUEZBTE3es7sDOfBJJIda
-         kTlBI95i5Pg5nrDfhqezJZyiVwaKD27klThpFJ+p+tNuets66lO0eXaHm8VecPRnrvto
-         oif7AbN8z/ANCQI4NjsgQK+8bD2koVQmkLQGu7Vy+/WAMvXc+Pe9qoe0d/7vkEElSMKX
-         9KZuOc7AajpTVyEW90sDflAxmlK8ll1Jjdo10fzIkXtjo/IBZeA8d8wy53oj9B5e2aqi
-         IhSYjPyJiDrGlHNPkY+mILFTQKA9qPsf17D1pxn99Yxo+2Di8yEQeXS1ekbRwJjMq79P
-         NMag==
+        bh=S6Gh9YX7DZUKT9k3pgoHzM/D5vHJqCG1MyJlh3Mml2I=;
+        b=I7gLG+vGl5KPxK1bCR4DQWKSfqZOEyRAdENw3sZpDj9WbUFjHCiJuecgI+FabIoFbp
+         QJrij+OJjo0cm8bviOtGgS5kY6TXIgCZr/mbQEZ/QM+CT8MlmK+uPBsZlDcYzByatjAX
+         wuIvj1zBhyx7ctDBgYg6L95xKuN+vdl8/wG+5DkYAUlRIBXemCxWXg7HAjDrg6fXrKFn
+         p8H+65BKC8OrjuaiPKG8yQ4dA2aM7/VS0ui7viXZ7ayIS8ZtyuDCHG8DvDMEU+Kfaxq6
+         /O5k81TVtuxLKCSUDYBMJd2TD5Rqixabn3wteEZlaFNQcARilZyGqYUlNzCzaWcNtqs3
+         s2qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702523636; x=1703128436;
+        d=1e100.net; s=20230601; t=1702523641; x=1703128441;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wDtuMqJuLynsqBn4B64C9rOZU/1pf1QFeAH14FfwW+A=;
-        b=NzWYmgebBN979ceHVQIFiotXNLW7ffLU2552xXih5TCrJo2kEKgOCHrrP+2sxFReda
-         JzoPHaTN8Lh0BrRBfbVO5nEG2H9CIW3t6dbhYOXV+qf1awGj/qCIYHNQUfjOCSuRd7HZ
-         lM90y5jZpiV6Wxmp7Ey/ke7gZ8Q3zr9mu+CmKN/ImEtx1ykhTAa/Jzl4hCRTws+k28rA
-         O8uG/ZUe9kAziy7lbmtMF2f3tSrNargK9pbOuzD2yA98tyEoLW6CI//DCIwLTxpnEX+B
-         Z++8vMSbvRTP08whjFUfYlYybtEX4ChgsPS1gB1STpHvdidfwDpblRbYuO6k/OjmOidI
-         CCrQ==
-X-Gm-Message-State: AOJu0YyB0px5XJGc5H5+4m2FOphNBD7uaWL5tMmQian3dQGWT4pTyIL6
-	WI6G/GH7w1gpjUEaT8V8fFU6mShCNSg=
-X-Google-Smtp-Source: AGHT+IEpKFGDuxTfO3Hjzi7f/Cm2KZm4EWJFx6WprxdgMa/6PjSDexd9DPpJUJfx1uXgsHlIfYXOaw==
-X-Received: by 2002:a17:902:e789:b0:1d0:a96d:3278 with SMTP id cp9-20020a170902e78900b001d0a96d3278mr5238863plb.90.1702523636228;
-        Wed, 13 Dec 2023 19:13:56 -0800 (PST)
+        bh=S6Gh9YX7DZUKT9k3pgoHzM/D5vHJqCG1MyJlh3Mml2I=;
+        b=lveOvWf/hMt9wUNzQ9lPx7odTl9+3OOhOaQRNXz1siEstfsomaRYPG9Qnm7A4L3NE+
+         EL0wCMY6ptzbGvPia1jm+cPeBHHSDpBlP3jCTodery/Lw2hMupzasKiIqMyq79m+HVEb
+         tlgmHHxLDz2CZtwV3As8FyWXv4FboauouriROsw4BMD+upq7YTIwUQwOgkavRiv4ZrvZ
+         qib0B/QFJz2lY5P/HxTkmgzZPHztz4HV48Iw/nHtPFUtPHv2EArL53l6hQISVbnNwMO4
+         +VkiXBcLk3/i7lc6j63XNFxgEvHHZ+oVkdhdP5LMx6wgWdvmvOjTsqlA4LEJU5zGbc7H
+         BbtQ==
+X-Gm-Message-State: AOJu0YzF9K99EOCqXgDWM6EjihDugiYdpR3R7g62YDoFQ3JFlYKX3tnZ
+	ikFHPrvmn79JyjRzlTQD8xc=
+X-Google-Smtp-Source: AGHT+IEjnq+E/UH8vGe5iggdqxhM2myFCKO3gTBcOYGYcdv3fG3i0HE1cWXaTj7JkwedKlbj3YTUOA==
+X-Received: by 2002:a17:902:f546:b0:1d3:6238:a528 with SMTP id h6-20020a170902f54600b001d36238a528mr1274410plf.23.1702523641586;
+        Wed, 13 Dec 2023 19:14:01 -0800 (PST)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id u14-20020a170902e80e00b001d0c37a9ccfsm11199832plg.303.2023.12.13.19.13.53
+        by smtp.gmail.com with ESMTPSA id u14-20020a170902e80e00b001d0c37a9ccfsm11199832plg.303.2023.12.13.19.13.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 19:13:55 -0800 (PST)
-Message-ID: <47af6a31-b0b4-42ff-9135-ba8f27ae5dd0@gmail.com>
-Date: Thu, 14 Dec 2023 00:11:19 -0300
+        Wed, 13 Dec 2023 19:14:01 -0800 (PST)
+Message-ID: <05fa58f3-f351-4119-9c07-1f5bb04503d2@gmail.com>
+Date: Thu, 14 Dec 2023 00:13:32 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,64 +47,31 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] rust: macros: allow generic parameter default
- values in `#[pin_data]`
+Subject: Re: [PATCH v2 3/3] rust: workqueue: add `#[pin_data]` to `Work`
 Content-Language: en-US
 To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
  <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>
+Cc: Wedson Almeida Filho <walmeida@microsoft.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20231213220447.3613500-1-benno.lossin@proton.me>
- <20231213220447.3613500-2-benno.lossin@proton.me>
+ <20231213220447.3613500-3-benno.lossin@proton.me>
 From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20231213220447.3613500-2-benno.lossin@proton.me>
+In-Reply-To: <20231213220447.3613500-3-benno.lossin@proton.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/13/23 19:08, Benno Lossin wrote:
-> Add support for generic parameters defaults in `#[pin_data]` by using
-> the newly introduced `decl_generics` instead of the `impl_generics`.
-> 
-> Before this would not compile:
-> 
->      #[pin_data]
->      struct Foo<const N: usize = 0> {
->          // ...
->      }
-> 
-> because it would be expanded to this:
-> 
->      struct Foo<const N: usize = 0> {
->          // ...
->      }
-> 
->      const _: () = {
->          struct __ThePinData<const N: usize = 0> {
->              __phantom: ::core::marker::PhantomData<fn(Foo<N>) -> Foo<N>>,
->          }
->          impl<const N: usize = 0> ::core::clone::Clone for __ThePinData<N> {
->              fn clone(&self) -> Self {
->                  *self
->              }
->          }
-> 
->          // [...] rest of expansion omitted
->      };
-> 
-> The problem is with the `impl<const N: usize = 0>`, since that is
-> invalid Rust syntax. It should not mention the default value at all,
-> since default values only make sense on type definitions.
-> 
-> The new `impl_generics` do not contain the default values, thus
-> generating correct Rust code.
-> 
-> This is used by the next commit that puts `#[pin_data]` on
-> `kernel::workqueue::Work`.
+On 12/13/23 19:09, Benno Lossin wrote:
+> The previous two patches made it possible to add `#[pin_data]` on
+> structs with default generic parameter values.
+> This patch makes `Work` use `#[pin_data]` and removes an invocation of
+> `pin_init_from_closure`. This function is intended as a low level manual
+> escape hatch, so it is better to rely on the safe `pin_init!` macro.
 > 
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > ---
 > [...]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
