@@ -1,97 +1,43 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07EE6A014;
-	Thu, 14 Dec 2023 20:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4746720A;
+	Thu, 14 Dec 2023 22:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GuExpyrx"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-77f50307a1fso430786785a.3;
-        Thu, 14 Dec 2023 12:04:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702584272; x=1703189072; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eS37CR7+TgFqv3CfKfPzO9kSVywAUrgFAe0aN8vgnU8=;
-        b=GuExpyrxeZEriSoJjrkbKxkiKi/OrYWSTMmfeoguXjRULLcKflbiGcyLhg+J5zN5XE
-         5HMrS3D1ucpzmuBAaAnmBFEdBI5HEnnWCwuRCFqU4qMRY2/OdYD7qDWaBNVkiuJ5Hpy4
-         ux1ckwuX8tuM3RhLeVCfQ7GBfj+cPZOR6XmnCr2xEyaaLYQit90mzzZ+9KjNU8IwaB/3
-         EUsn2JBUD4xqwizROElWNBk9dP6QrGzXh3E9OW7oS214jGDNSh8eFg2jx95rYRS9liPK
-         tXoIV13Je0FBFKBTCr1ANYMttbcEAjjlsloiu0/v3uF6GlqW+Wi/PhTQMOsKG5/a12tZ
-         0i0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702584272; x=1703189072;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eS37CR7+TgFqv3CfKfPzO9kSVywAUrgFAe0aN8vgnU8=;
-        b=XJJn0wIfIGuS/PPXvwhVEfEOAqyG28v9LAITjePiLQyOSDqnNsml941iL7v7GONrWW
-         XpK9c0JtgmLho5P0ocUvXSuqHYq+pLOE71jmyavC0Fnx7hJwUr0gs4wNmX1p7lzewhTk
-         5u7bVN/gX03TkJ7G6SlYYyuk+EiNvZvx5CL0k0kxhJRyWayQWgnbwtbv1klidoIXqzS5
-         r3FYPC/DoQMvteBAEZaprGpc1dR0ZGesYWXvy9XssQf5UqCmKbSbmpcKkxaUHF8YsCDs
-         GeAC69gsz+19ia4j5DctjGZmRRjV1rVz+DI/hn2iY2lA4eyTxw0xRccI+Kev9T5neS4W
-         al+Q==
-X-Gm-Message-State: AOJu0YzirAAAqGZAeoa7liy1gQra8vtopX4BKZQ4IPaWYATuF97hbRPy
-	7cL74rDXVwXddaQVDnu/CsY=
-X-Google-Smtp-Source: AGHT+IFztxz6kyHlFdsQ7JJ9iHn6YX4wlHV9Fm3nUlWYBdh/H4noSL8LLkfqR72Kx0US/1kQ8MpjsQ==
-X-Received: by 2002:a37:e10c:0:b0:77f:2cad:7122 with SMTP id c12-20020a37e10c000000b0077f2cad7122mr11895872qkm.77.1702584272305;
-        Thu, 14 Dec 2023 12:04:32 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id qg1-20020a05620a664100b0077f01c11e3bsm5567151qkn.61.2023.12.14.12.04.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Dec 2023 12:04:32 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 84F3727C0054;
-	Thu, 14 Dec 2023 15:04:31 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Thu, 14 Dec 2023 15:04:31 -0500
-X-ME-Sender: <xms:zl97ZVTPbCK476-n_6TA4twJNvmCfvsWzbDCFhpi2CdzVEzO2a7Zcw>
-    <xme:zl97Zeza_6vcAl_6OOAmZKBTFlPMaB5djVg7QzZ6gLzaJxLBDF-lnCRZPapGyJjTQ
-    uXHpMZwo6S8s2UuvQ>
-X-ME-Received: <xmr:zl97Za2WkIsyeKy8uq3xIDGi0NYKiQv0fdGniahGOaBoIYgW6cNP3o9LQKrkYQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelledgudefudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepgeeljeeitdehvdehgefgjeevfeejjeekgfevffeiueejhfeuiefggeeu
-    heeggefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:z197ZdABT4Yrlxg1ufTDgirCma2ZkYQbVZk_8mQxQqOPRn79fCMXbA>
-    <xmx:z197ZehpSHP3NYDpzJhBMCKPgO71purwu402O6oR6rck6Qz9kpAY2A>
-    <xmx:z197ZRokwnfTExOU4S7OhD8f-4CnitAh5xmkYa8rkTgVuANB8sHtiA>
-    <xmx:z197ZSzhi-QOWYpuiZPz4asVjA9WwfTT49vSW4I6r-_z1GsxBJ0Scg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 14 Dec 2023 15:04:30 -0500 (EST)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Tiago Lam <tiagolam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hy1KhZDQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34043C433C8;
+	Thu, 14 Dec 2023 22:23:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702592591;
+	bh=pgyu4wBiidMdBiu1uYG+TluTmLJL6JHzn+KTryLFeg4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hy1KhZDQeVmw/PKAZKMyHpyFpLjMJvZ9nzmSzg1q25LbazraEx0KJ3LDB8nRJJvpX
+	 3jXCtGicmnegnajOaGeUiliNcYAg0Kv2/pOJZIINAIncAfSGEUcFTdS6+Sw3FkUUIV
+	 O0nRnHfXWkFc0zAIDOsUyh8cCkqx1OCcYo+K5aMstdkf6vM6GKbcRbXYnQdMNrbxjS
+	 qHc1tXmWh4RrjAfJAr3gYMqXpOSQIpykKFOM4pyoP6GAAVRIW4qrdMLUlff6dQIqiv
+	 /4fO0fIg7F5Iy4RdxU4hqQedtn/JRLasYTUA9lvGmygWOzBJ/DJrzVqJiNz0QSh+q5
+	 z8xkqRXYjB/TQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible wait
-Date: Thu, 14 Dec 2023 12:04:21 -0800
-Message-ID: <20231214200421.690629-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ZXtebif2S1CyJRik@boqun-archlinux>
-References: <ZXtebif2S1CyJRik@boqun-archlinux>
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] kbuild: rust: add `rustupoverride` target
+Date: Thu, 14 Dec 2023 23:22:53 +0100
+Message-ID: <20231214222253.116734-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -100,74 +46,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, `CondVar::wait()` is an interruptible wait, and this is
-different than `wait_event()` in include/linux/wait.h (which is an
-uninterruptible wait). To avoid confusion between different APIs on the
-interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
-wait same as `wait_event()`, also rename the old `wait()` to
-`CondVar::wait_interruptible()`.
+When setting up the Rust support via `rustup`, one may use an override
+in order to select the right version of the Rust toolchain.
 
-Spotted-by: Tiago Lam <tiagolam@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+The current instructions at Documentation/rust/quick-start.rst assume
+one is using an in-tree kernel build (i.e. no `O=`) [1]. We would like
+to provide also the way to do so for `O=` builds, but ideally in a way
+that keeps the one-liner copy-pastable and without duplication [2].
+
+Thus provide a new Make target, `rustupoverride`, that sets it up for
+the user given their build options/variables.
+
+Link: https://lore.kernel.org/rust-for-linux/20231207084846.faset66xzuoyvdlg@vireshk-i7/ [1]
+Link: https://lore.kernel.org/rust-for-linux/CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com/ [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/kernel/sync/condvar.rs | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+Viresh may send a patch on top of this to refer to `rustupoverride`
+from the Quick Start guide in `Documentation/rust` -- that one should
+probably be applied right after this one.
 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index b679b6f6dbeb..8630faa29b78 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -50,7 +50,7 @@ macro_rules! new_condvar {
- /// fn wait_for_value(e: &Example, v: u32) {
- ///     let mut guard = e.value.lock();
- ///     while *guard != v {
--///         e.value_changed.wait_uninterruptible(&mut guard);
-+///         e.value_changed.wait(&mut guard);
- ///     }
- /// }
- ///
-@@ -120,28 +120,28 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
-         unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
-     }
- 
--    /// Releases the lock and waits for a notification in interruptible mode.
-+    /// Releases the lock and waits for a notification in uninterruptible mode.
-     ///
-     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-     /// thread to sleep, reacquiring the lock on wake up. It wakes up when notified by
--    /// [`CondVar::notify_one`] or [`CondVar::notify_all`], or when the thread receives a signal.
--    /// It may also wake up spuriously.
-+    /// [`CondVar::notify_one`] or [`CondVar::notify_all`]. Note that it may also wake up
-+    /// spuriously.
-+    pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
-+        self.wait_internal(bindings::TASK_UNINTERRUPTIBLE, guard);
-+    }
+ Makefile | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 70fc4c11dfc0..7fe82dd4dc6f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -276,7 +276,8 @@ no-dot-config-targets := $(clean-targets) \
+ 			 cscope gtags TAGS tags help% %docs check% coccicheck \
+ 			 $(version_h) headers headers_% archheaders archscripts \
+ 			 %asm-generic kernelversion %src-pkg dt_binding_check \
+-			 outputmakefile rustavailable rustfmt rustfmtcheck
++			 outputmakefile rustavailable rustfmt rustfmtcheck \
++			 rustupoverride
+ no-sync-config-targets := $(no-dot-config-targets) %install modules_sign kernelrelease \
+ 			  image_name
+ single-targets := %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rsi %.s %.symtypes %/
+@@ -1611,6 +1612,7 @@ help:
+ 	@echo  '                    (requires kernel .config; downloads external repos)'
+ 	@echo  '  rust-analyzer	  - Generate rust-project.json rust-analyzer support file'
+ 	@echo  '		    (requires kernel .config)'
++	@echo  '  rustupoverride  - Set up a rustup override for the build directory'
+ 	@echo  '  dir/file.[os]   - Build specified target only'
+ 	@echo  '  dir/file.rsi    - Build macro expanded source, similar to C preprocessing.'
+ 	@echo  '                    Run with RUSTFMT=n to skip reformatting if needed.'
+@@ -1735,6 +1737,11 @@ rustfmt:
+ rustfmtcheck: rustfmt_flags = --check
+ rustfmtcheck: rustfmt
+
++# `rustup override` setup target
++PHONY += rustupoverride
++rustupoverride:
++	$(Q)rustup override set $(shell $(srctree)/scripts/min-tool-version.sh rustc)
 +
-+    /// Releases the lock and waits for a notification in interruptible mode.
-+    ///
-+    /// Similar to [`CondVar::wait`], except that the wait is interruptible. That is, the thread may
-+    /// wake up due to signals. It may also wake up spuriously.
-     ///
-     /// Returns whether there is a signal pending.
--    #[must_use = "wait returns if a signal is pending, so the caller must check the return value"]
--    pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
-+    #[must_use = "wait_interruptible returns if a signal is pending, so the caller must check the return value"]
-+    pub fn wait_interruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
-         self.wait_internal(bindings::TASK_INTERRUPTIBLE, guard);
-         crate::current!().signal_pending()
-     }
- 
--    /// Releases the lock and waits for a notification in uninterruptible mode.
--    ///
--    /// Similar to [`CondVar::wait`], except that the wait is not interruptible. That is, the
--    /// thread won't wake up due to signals. It may, however, wake up supirously.
--    pub fn wait_uninterruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
--        self.wait_internal(bindings::TASK_UNINTERRUPTIBLE, guard)
--    }
--
-     /// Calls the kernel function to notify the appropriate number of threads with the given flags.
-     fn notify(&self, count: i32, flags: u32) {
-         // SAFETY: `wait_list` points to valid memory.
--- 
-2.43.0
+ # Misc
+ # ---------------------------------------------------------------------------
 
+
+base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+--
+2.43.0
