@@ -1,108 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4746720A;
-	Thu, 14 Dec 2023 22:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FF967210;
+	Thu, 14 Dec 2023 22:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hy1KhZDQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34043C433C8;
-	Thu, 14 Dec 2023 22:23:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702592591;
-	bh=pgyu4wBiidMdBiu1uYG+TluTmLJL6JHzn+KTryLFeg4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=hy1KhZDQeVmw/PKAZKMyHpyFpLjMJvZ9nzmSzg1q25LbazraEx0KJ3LDB8nRJJvpX
-	 3jXCtGicmnegnajOaGeUiliNcYAg0Kv2/pOJZIINAIncAfSGEUcFTdS6+Sw3FkUUIV
-	 O0nRnHfXWkFc0zAIDOsUyh8cCkqx1OCcYo+K5aMstdkf6vM6GKbcRbXYnQdMNrbxjS
-	 qHc1tXmWh4RrjAfJAr3gYMqXpOSQIpykKFOM4pyoP6GAAVRIW4qrdMLUlff6dQIqiv
-	 /4fO0fIg7F5Iy4RdxU4hqQedtn/JRLasYTUA9lvGmygWOzBJ/DJrzVqJiNz0QSh+q5
-	 z8xkqRXYjB/TQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] kbuild: rust: add `rustupoverride` target
-Date: Thu, 14 Dec 2023 23:22:53 +0100
-Message-ID: <20231214222253.116734-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kryIFjzJ"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbcd348f64cso26699276.2;
+        Thu, 14 Dec 2023 14:26:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702592765; x=1703197565; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8GewXYhMBPjvgfSqNiYm+0p22+IJCJUykF8TiN4qTyI=;
+        b=kryIFjzJooI5uzK0tVLs438eDoZBeS0/DvxjoJ+tfdfxGN7UXq+VpGGETOZ1CIx0W7
+         giiqEuAsHbB+1jG5nYKhwqpzGiIPFJC7E0o77De54qw3/xJ7EUYuRJh5i+Nvi8BwD+zM
+         BNAWCpaSXNoFk89s02ddBx3pKV43Lia7TphXFfj1gAuvqQm4dnvWO+LLwjtqkF9wnC+X
+         9yQZMvTa0DzJdt9ZRYBPt4maUMwmTUlzvvU+tQy+pvZ/uvkpEzg13xJ+FNzNarf8dDKY
+         3oOYcAvpVZ/NE7rrgGy4cOEgitQfhBbRJWQX8Urrwzp5wxbtdpIVlJLlRcyavfrxtLJC
+         XHAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702592765; x=1703197565;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8GewXYhMBPjvgfSqNiYm+0p22+IJCJUykF8TiN4qTyI=;
+        b=voCG4FZt4wJP40wKA39CVK78F7aoD1kR7oPmnEavWUY04mWV0JiWFGsCGwDHUjr5uc
+         s4TRpsrrbMeB4hT178k+fbfYE4paMf9ky4IND6sZk4DvswW4/aXRBHNG+V9BMHvoCvu7
+         eiftyGw88LsiTS9tptY4kmiAZwi+5LZUiT6OvlfV2RfK5NZtZGv67Aa702MQ/nYCVbIz
+         9ebmIYE7YTQgbMRvHbgQEcm5PWKQUowOvWQKt0lYPt8hOw/9oIpI7+ePx0Hxbh6W3WNc
+         g120/l8StdSO7v+sd9Kpv9B6UT6eZEeTRL5X0A0kbOfHYHyGpp7ujPkBIrmrazO93tB1
+         rBzQ==
+X-Gm-Message-State: AOJu0YwzV0aN0b9VIbjVUgX8yk6KrcBU0EgYr9MNS3NL87g8RWefGovw
+	EWoDacaCoztzp565baMNNMTdmviBkmkQ5VdGrAI=
+X-Google-Smtp-Source: AGHT+IHAzqYLRTQoFGOeJ/iE0CLqEvZfXbrPZse0sTjrBDFxkIJbZXBj/INGKyvyb0CsKUsOrJE6WpLw/Y6imaj2Myk=
+X-Received: by 2002:a25:a28c:0:b0:dbc:d7d6:92e8 with SMTP id
+ c12-20020a25a28c000000b00dbcd7d692e8mr2031677ybi.23.1702592765606; Thu, 14
+ Dec 2023 14:26:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+ <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com> <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
+In-Reply-To: <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 14 Dec 2023 23:25:54 +0100
+Message-ID: <CANiq72nSh16cBNOoErQ3nDx0gSqq0Co2kv2wKEyqr5YmYUzhbQ@mail.gmail.com>
+Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
+ build directory
+To: Tiago Lam <tiagolam@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When setting up the Rust support via `rustup`, one may use an override
-in order to select the right version of the Rust toolchain.
+On Thu, Dec 14, 2023 at 6:22=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Or we could just provide a `rustupoverride` Make target to do this for
+> us [1], since we have all the information needed and would be
+> copy-pasteable by everybody. I can send it as a non-mangled patch and
+> then Viresh can redo this one on top using it.
 
-The current instructions at Documentation/rust/quick-start.rst assume
-one is using an in-tree kernel build (i.e. no `O=`) [1]. We would like
-to provide also the way to do so for `O=` builds, but ideally in a way
-that keeps the one-liner copy-pastable and without duplication [2].
+Patch at: https://lore.kernel.org/rust-for-linux/20231214222253.116734-1-oj=
+eda@kernel.org/
 
-Thus provide a new Make target, `rustupoverride`, that sets it up for
-the user given their build options/variables.
-
-Link: https://lore.kernel.org/rust-for-linux/20231207084846.faset66xzuoyvdlg@vireshk-i7/ [1]
-Link: https://lore.kernel.org/rust-for-linux/CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com/ [2]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-Viresh may send a patch on top of this to refer to `rustupoverride`
-from the Quick Start guide in `Documentation/rust` -- that one should
-probably be applied right after this one.
-
- Makefile | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index 70fc4c11dfc0..7fe82dd4dc6f 100644
---- a/Makefile
-+++ b/Makefile
-@@ -276,7 +276,8 @@ no-dot-config-targets := $(clean-targets) \
- 			 cscope gtags TAGS tags help% %docs check% coccicheck \
- 			 $(version_h) headers headers_% archheaders archscripts \
- 			 %asm-generic kernelversion %src-pkg dt_binding_check \
--			 outputmakefile rustavailable rustfmt rustfmtcheck
-+			 outputmakefile rustavailable rustfmt rustfmtcheck \
-+			 rustupoverride
- no-sync-config-targets := $(no-dot-config-targets) %install modules_sign kernelrelease \
- 			  image_name
- single-targets := %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rsi %.s %.symtypes %/
-@@ -1611,6 +1612,7 @@ help:
- 	@echo  '                    (requires kernel .config; downloads external repos)'
- 	@echo  '  rust-analyzer	  - Generate rust-project.json rust-analyzer support file'
- 	@echo  '		    (requires kernel .config)'
-+	@echo  '  rustupoverride  - Set up a rustup override for the build directory'
- 	@echo  '  dir/file.[os]   - Build specified target only'
- 	@echo  '  dir/file.rsi    - Build macro expanded source, similar to C preprocessing.'
- 	@echo  '                    Run with RUSTFMT=n to skip reformatting if needed.'
-@@ -1735,6 +1737,11 @@ rustfmt:
- rustfmtcheck: rustfmt_flags = --check
- rustfmtcheck: rustfmt
-
-+# `rustup override` setup target
-+PHONY += rustupoverride
-+rustupoverride:
-+	$(Q)rustup override set $(shell $(srctree)/scripts/min-tool-version.sh rustc)
-+
- # Misc
- # ---------------------------------------------------------------------------
-
-
-base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
---
-2.43.0
+Cheers,
+Miguel
