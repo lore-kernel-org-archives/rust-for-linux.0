@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hmIuJlee"
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D922D0;
-	Wed, 13 Dec 2023 19:13:52 -0800 (PST)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1fb33059466so5402769fac.2;
-        Wed, 13 Dec 2023 19:13:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l8Bf1plZ"
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC28ED0;
+	Wed, 13 Dec 2023 19:13:56 -0800 (PST)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6d0985c70ffso2687494b3a.2;
+        Wed, 13 Dec 2023 19:13:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702523631; x=1703128431; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702523636; x=1703128436; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=xfe6G/+lWo1DQS2DwiB9RkFIHFnA2iv0Ouilk3h+svg=;
-        b=hmIuJleeVUahWXnc8gvSmufp4KEloOArYcVi3wYXspIlsGFMm5wm3aApVb6gXtWcP2
-         fzz8+Se9ExZSbTvrNk1CNWbQ2Hz1cToZDAyHyfUeF+NJCId3vheGv61THnATlgZcKa/h
-         t6XYW0gWjaP4t+2IUatnhkE/z3g56Tdo3wTTa8fjNc+2xE6eRTX39XLrDKxOhSf06Qem
-         BkDDxMDlDtYnPjHof7zAHw/QU+ipV7dyGOHFdiWD9zWO6VjnKxE1i3KL113RnISORRU7
-         kwMDF7WvZtd0/P+tYeqvlJRgiczugTZrwSHXreJnMzY+ZxIxf/Cq+peZ+pCGmHMDFWPz
-         qTrQ==
+        bh=wDtuMqJuLynsqBn4B64C9rOZU/1pf1QFeAH14FfwW+A=;
+        b=l8Bf1plZ7tySeMqcJy8KwLiApDtiWJ7d5TLl1k0///lnLIUEZBTE3es7sDOfBJJIda
+         kTlBI95i5Pg5nrDfhqezJZyiVwaKD27klThpFJ+p+tNuets66lO0eXaHm8VecPRnrvto
+         oif7AbN8z/ANCQI4NjsgQK+8bD2koVQmkLQGu7Vy+/WAMvXc+Pe9qoe0d/7vkEElSMKX
+         9KZuOc7AajpTVyEW90sDflAxmlK8ll1Jjdo10fzIkXtjo/IBZeA8d8wy53oj9B5e2aqi
+         IhSYjPyJiDrGlHNPkY+mILFTQKA9qPsf17D1pxn99Yxo+2Di8yEQeXS1ekbRwJjMq79P
+         NMag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702523631; x=1703128431;
+        d=1e100.net; s=20230601; t=1702523636; x=1703128436;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xfe6G/+lWo1DQS2DwiB9RkFIHFnA2iv0Ouilk3h+svg=;
-        b=eRltxhpBo4tNw8Ztqvmq7EHw5WDrvUul0MYCUKuzeO8b7o+yJKqaIIqvwi9egE+XjC
-         c336+LHSZDcmdLV0nHMqeiBmgJhK9Dn6dJ8Y6vpiHWQrBk3Iv5Nxi9cP6fwsYS+Flvr9
-         9P9x1bAY0PSKif0ZXU0DkSkNRMfaSdkSV2RQZceop2vuTO98j5Y/nqymotMsCmiGRzEk
-         OoXSvbjRN3g5BMpB83h5mu1ZIH9ZWBld+p1q4sMu+5QGYiFvLUTbhgH+2XDmypz82oXF
-         ubz1Q1xqlDtgPw1IDhcRViknhHmcRmlU28OEcLfnn21qprF/ITAVnCNpH8PpRVQPLxLJ
-         36xw==
-X-Gm-Message-State: AOJu0YzZz4UmqIYhgFida2Bnr+v7qD/0d3FH/yBmZLswjZS+efwRq0tD
-	UJkXNmm0VOFIKNZFI3henoA=
-X-Google-Smtp-Source: AGHT+IG2Bd3WCKM1ocHYVo7O4Rs6lI8Oe4qFoIPc+atyNbrf8SNuBraJey7A/rFFES0b+bpZX9ZRtQ==
-X-Received: by 2002:a05:6358:59:b0:170:17ea:f4f0 with SMTP id 25-20020a056358005900b0017017eaf4f0mr7109068rwx.61.1702523631447;
-        Wed, 13 Dec 2023 19:13:51 -0800 (PST)
+        bh=wDtuMqJuLynsqBn4B64C9rOZU/1pf1QFeAH14FfwW+A=;
+        b=NzWYmgebBN979ceHVQIFiotXNLW7ffLU2552xXih5TCrJo2kEKgOCHrrP+2sxFReda
+         JzoPHaTN8Lh0BrRBfbVO5nEG2H9CIW3t6dbhYOXV+qf1awGj/qCIYHNQUfjOCSuRd7HZ
+         lM90y5jZpiV6Wxmp7Ey/ke7gZ8Q3zr9mu+CmKN/ImEtx1ykhTAa/Jzl4hCRTws+k28rA
+         O8uG/ZUe9kAziy7lbmtMF2f3tSrNargK9pbOuzD2yA98tyEoLW6CI//DCIwLTxpnEX+B
+         Z++8vMSbvRTP08whjFUfYlYybtEX4ChgsPS1gB1STpHvdidfwDpblRbYuO6k/OjmOidI
+         CCrQ==
+X-Gm-Message-State: AOJu0YyB0px5XJGc5H5+4m2FOphNBD7uaWL5tMmQian3dQGWT4pTyIL6
+	WI6G/GH7w1gpjUEaT8V8fFU6mShCNSg=
+X-Google-Smtp-Source: AGHT+IEpKFGDuxTfO3Hjzi7f/Cm2KZm4EWJFx6WprxdgMa/6PjSDexd9DPpJUJfx1uXgsHlIfYXOaw==
+X-Received: by 2002:a17:902:e789:b0:1d0:a96d:3278 with SMTP id cp9-20020a170902e78900b001d0a96d3278mr5238863plb.90.1702523636228;
+        Wed, 13 Dec 2023 19:13:56 -0800 (PST)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id u14-20020a170902e80e00b001d0c37a9ccfsm11199832plg.303.2023.12.13.19.13.48
+        by smtp.gmail.com with ESMTPSA id u14-20020a170902e80e00b001d0c37a9ccfsm11199832plg.303.2023.12.13.19.13.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 19:13:51 -0800 (PST)
-Message-ID: <f9b8f95e-1e72-4907-9964-6a4ecfc435b1@gmail.com>
-Date: Wed, 13 Dec 2023 23:57:29 -0300
+        Wed, 13 Dec 2023 19:13:55 -0800 (PST)
+Message-ID: <47af6a31-b0b4-42ff-9135-ba8f27ae5dd0@gmail.com>
+Date: Thu, 14 Dec 2023 00:11:19 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,79 +47,64 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] rust: macros: add `decl_generics` to
- `parse_generics()`
+Subject: Re: [PATCH v2 2/3] rust: macros: allow generic parameter default
+ values in `#[pin_data]`
 Content-Language: en-US
 To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
  <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>,
- Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
- Asahi Lina <lina@asahilina.net>
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20231213220447.3613500-1-benno.lossin@proton.me>
+ <20231213220447.3613500-2-benno.lossin@proton.me>
 From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20231213220447.3613500-1-benno.lossin@proton.me>
+In-Reply-To: <20231213220447.3613500-2-benno.lossin@proton.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 12/13/23 19:08, Benno Lossin wrote:
-> The generic parameters on a type definition can specify default values.
-> Currently `parse_generics()` cannot handle this though. For example when
-> parsing the following generics:
+> Add support for generic parameters defaults in `#[pin_data]` by using
+> the newly introduced `decl_generics` instead of the `impl_generics`.
 > 
->      <T: Clone, const N: usize = 0>
+> Before this would not compile:
 > 
-> The `impl_generics` will be set to `T: Clone, const N: usize = 0` and
-> `ty_generics` will be set to `T, N`. Now using the `impl_generics` on an
-> impl block:
-> 
->      impl<$($impl_generics)*> Foo {}
-> 
-> will result in invalid Rust code, because default values are only
-> available on type definitions.
-> 
-> Therefore add parsing support for generic parameter default values using
-> a new kind of generics called `decl_generics` and change the old
-> behavior of `impl_generics` to not contain the generic parameter default
-> values.
-> 
-> Now `Generics` has three fields:
-> - `impl_generics`: the generics with bounds
->    (e.g. `T: Clone, const N: usize`)
-> - `decl_generics`: the generics with bounds and default values
->    (e.g. `T: Clone, const N: usize = 0`)
-> - `ty_generics`:  contains the generics without bounds and without
->    default values (e.g. `T, N`)
-> 
-> `impl_generics` is designed to be used on `impl<$impl_generics>`,
-> `decl_generics` for the type definition, so `struct Foo<$decl_generics>`
-> and `ty_generics` whenever you use the type, so `Foo<$ty_generics>`.
-> 
-> Here is an example that uses all three different types of generics:
-> 
->      let (Generics { decl_generics, impl_generics, ty_generics }, rest) = parse_generics(input);
->      quote! {
->          struct Foo<$($decl_generics)*> {
->              // ...
->          }
-> 
->          impl<$impl_generics> Foo<$ty_generics> {
->              fn foo() {
->                  // ...
->              }
->          }
+>      #[pin_data]
+>      struct Foo<const N: usize = 0> {
+>          // ...
 >      }
 > 
-> The next commit contains a fix to the `#[pin_data]` macro making it
-> compatible with generic parameter default values by relying on this new
-> behavior.
+> because it would be expanded to this:
+> 
+>      struct Foo<const N: usize = 0> {
+>          // ...
+>      }
+> 
+>      const _: () = {
+>          struct __ThePinData<const N: usize = 0> {
+>              __phantom: ::core::marker::PhantomData<fn(Foo<N>) -> Foo<N>>,
+>          }
+>          impl<const N: usize = 0> ::core::clone::Clone for __ThePinData<N> {
+>              fn clone(&self) -> Self {
+>                  *self
+>              }
+>          }
+> 
+>          // [...] rest of expansion omitted
+>      };
+> 
+> The problem is with the `impl<const N: usize = 0>`, since that is
+> invalid Rust syntax. It should not mention the default value at all,
+> since default values only make sense on type definitions.
+> 
+> The new `impl_generics` do not contain the default values, thus
+> generating correct Rust code.
+> 
+> This is used by the next commit that puts `#[pin_data]` on
+> `kernel::workqueue::Work`.
 > 
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > ---
 > [...]
-
 Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
