@@ -1,135 +1,173 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642CC6A008;
-	Thu, 14 Dec 2023 19:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07EE6A014;
+	Thu, 14 Dec 2023 20:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cVs72TxT"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-77f43042268so80927085a.1;
-        Thu, 14 Dec 2023 11:58:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GuExpyrx"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-77f50307a1fso430786785a.3;
+        Thu, 14 Dec 2023 12:04:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702583925; x=1703188725; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1t6WW6PWMVyvCR814CfeWvXobbx/+dvid0mhpQK6M3k=;
-        b=cVs72TxT0B/I3Evlyi2DnSId2EDSvCWk1rRxZmTW1oTEcJzgwpJgoyOWBuGgS5EoHS
-         M1VjfFaSDu4ordfWLGwjH+ZSJb1BlWVUck13Si7mWj3fQcgV/zuhnU9iehAd76pFQz6f
-         mjq6dVNucIw+Nz9X4yQdR2SGb0DAPhHzGExXu+5xgNH7J6nltbLwgqdog7lL1Gf4ufgk
-         bF0e+1xVkzuVUYPWlZi1nhSQlv7/cKS99sebhNJMBgLzU9ToT2L+QwbcdqzBM/DkQgMu
-         w5ZH2HDua+udLMsOSfMjRzkfSlN1Tujqy5N+hw3ZTFzGvyx2W0l6+MkkwzCZpNNmKmD+
-         CWOw==
+        d=gmail.com; s=20230601; t=1702584272; x=1703189072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eS37CR7+TgFqv3CfKfPzO9kSVywAUrgFAe0aN8vgnU8=;
+        b=GuExpyrxeZEriSoJjrkbKxkiKi/OrYWSTMmfeoguXjRULLcKflbiGcyLhg+J5zN5XE
+         5HMrS3D1ucpzmuBAaAnmBFEdBI5HEnnWCwuRCFqU4qMRY2/OdYD7qDWaBNVkiuJ5Hpy4
+         ux1ckwuX8tuM3RhLeVCfQ7GBfj+cPZOR6XmnCr2xEyaaLYQit90mzzZ+9KjNU8IwaB/3
+         EUsn2JBUD4xqwizROElWNBk9dP6QrGzXh3E9OW7oS214jGDNSh8eFg2jx95rYRS9liPK
+         tXoIV13Je0FBFKBTCr1ANYMttbcEAjjlsloiu0/v3uF6GlqW+Wi/PhTQMOsKG5/a12tZ
+         0i0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702583925; x=1703188725;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1t6WW6PWMVyvCR814CfeWvXobbx/+dvid0mhpQK6M3k=;
-        b=LiT1ID+mIwSJ0oYvMSzvycYerHCWwW2ze6mXDtvGuL1uaYDLFyiVZ1dUFQUm+ZLjhH
-         3RuIq6urpkw2uMz4CwnA94CvNgxWOk6fV60M67+WbAWPslT4aQkZXrkOR4g3UGYtdQyD
-         c79MZLwXTuQ19ZQ8PFmeN3fPNXpUZlNJq1xGrXRygjM3Z/2y/4IjODKvz2tbNMtubDyc
-         dD3QRBDQVoiIF1OQcabuSW5r0swp4pr7Ah2szPJZ7jCuYrc8hO5GhBqzLhfOdWQp2nXe
-         bwtKFXAqQ5x/fQR5Gb5/Z5ZK5RTZD3k2XW/+gbnTQ34jlwNONmBHyHkBJCwaqzDVz8N1
-         mi5g==
-X-Gm-Message-State: AOJu0YweLuXDtdo+dYGh6pwQ9oFr/Z9wlJWtI5pIBC2VddgKpYqBByfK
-	LwqWyCNvVzMo8UkmyrhTIOo=
-X-Google-Smtp-Source: AGHT+IHK5Hav9qDBYMj0E6PWx/Gbo9fzYppeB1SPymcXaiXRC8NBhEw1U2kuCBOWMdAAAVkett9s2w==
-X-Received: by 2002:a05:620a:2ed:b0:77f:8b0d:3b3f with SMTP id a13-20020a05620a02ed00b0077f8b0d3b3fmr6139187qko.42.1702583925179;
-        Thu, 14 Dec 2023 11:58:45 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702584272; x=1703189072;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eS37CR7+TgFqv3CfKfPzO9kSVywAUrgFAe0aN8vgnU8=;
+        b=XJJn0wIfIGuS/PPXvwhVEfEOAqyG28v9LAITjePiLQyOSDqnNsml941iL7v7GONrWW
+         XpK9c0JtgmLho5P0ocUvXSuqHYq+pLOE71jmyavC0Fnx7hJwUr0gs4wNmX1p7lzewhTk
+         5u7bVN/gX03TkJ7G6SlYYyuk+EiNvZvx5CL0k0kxhJRyWayQWgnbwtbv1klidoIXqzS5
+         r3FYPC/DoQMvteBAEZaprGpc1dR0ZGesYWXvy9XssQf5UqCmKbSbmpcKkxaUHF8YsCDs
+         GeAC69gsz+19ia4j5DctjGZmRRjV1rVz+DI/hn2iY2lA4eyTxw0xRccI+Kev9T5neS4W
+         al+Q==
+X-Gm-Message-State: AOJu0YzirAAAqGZAeoa7liy1gQra8vtopX4BKZQ4IPaWYATuF97hbRPy
+	7cL74rDXVwXddaQVDnu/CsY=
+X-Google-Smtp-Source: AGHT+IFztxz6kyHlFdsQ7JJ9iHn6YX4wlHV9Fm3nUlWYBdh/H4noSL8LLkfqR72Kx0US/1kQ8MpjsQ==
+X-Received: by 2002:a37:e10c:0:b0:77f:2cad:7122 with SMTP id c12-20020a37e10c000000b0077f2cad7122mr11895872qkm.77.1702584272305;
+        Thu, 14 Dec 2023 12:04:32 -0800 (PST)
 Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id p27-20020a05620a057b00b0077a029b7bf1sm5539453qkp.28.2023.12.14.11.58.44
+        by smtp.gmail.com with ESMTPSA id qg1-20020a05620a664100b0077f01c11e3bsm5567151qkn.61.2023.12.14.12.04.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Dec 2023 11:58:44 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 4BFDE27C0054;
-	Thu, 14 Dec 2023 14:58:44 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 14 Dec 2023 14:58:44 -0500
-X-ME-Sender: <xms:c157ZVuf0TwiLRO6GK_JgeyiAI3faQvbJ7GrUbdyBuomjjQIX1333w>
-    <xme:c157Zee3RlSP9uQErgB7tm7NzO93sOfLvt4b_OpCfevl93TBd4EID_q3YhvoIUsoZ
-    RDu23FWceEa_eklbA>
-X-ME-Received: <xmr:c157ZYwvqj0FpNGDAdUZmCYEcxJKs8rU7AoohTMmVxKgpHufsLC7Xvh4cpo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelledgudeftdcutefuodetggdotefrod
+        Thu, 14 Dec 2023 12:04:32 -0800 (PST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 84F3727C0054;
+	Thu, 14 Dec 2023 15:04:31 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Thu, 14 Dec 2023 15:04:31 -0500
+X-ME-Sender: <xms:zl97ZVTPbCK476-n_6TA4twJNvmCfvsWzbDCFhpi2CdzVEzO2a7Zcw>
+    <xme:zl97Zeza_6vcAl_6OOAmZKBTFlPMaB5djVg7QzZ6gLzaJxLBDF-lnCRZPapGyJjTQ
+    uXHpMZwo6S8s2UuvQ>
+X-ME-Received: <xmr:zl97Za2WkIsyeKy8uq3xIDGi0NYKiQv0fdGniahGOaBoIYgW6cNP3o9LQKrkYQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelledgudefudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    enucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhq
     uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    grthhtvghrnhepgeeljeeitdehvdehgefgjeevfeejjeekgfevffeiueejhfeuiefggeeu
+    heeggefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
     epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
     ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
     higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:c157ZcNyIapo7mftG72Pm8SUQbsOSH1aNs_hS86dYlB2tFTUPUXIig>
-    <xmx:c157ZV_TYJ-xM286AQ37pL_jehRH1Vtd2NRh_j_4k2BOg5tD0E7VVQ>
-    <xmx:c157ZcX1m5hsS6pte8rlmutHiv0hnLyM_33_GosVdclWq682OIdhtw>
-    <xmx:dF57ZZXI2ubr1HBoZKNgihy76LT_JM0gFbQ_5lcrYMfpRsmu_oV0Gg>
+X-ME-Proxy: <xmx:z197ZdABT4Yrlxg1ufTDgirCma2ZkYQbVZk_8mQxQqOPRn79fCMXbA>
+    <xmx:z197ZehpSHP3NYDpzJhBMCKPgO71purwu402O6oR6rck6Qz9kpAY2A>
+    <xmx:z197ZRokwnfTExOU4S7OhD8f-4CnitAh5xmkYa8rkTgVuANB8sHtiA>
+    <xmx:z197ZSzhi-QOWYpuiZPz4asVjA9WwfTT49vSW4I6r-_z1GsxBJ0Scg>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 14 Dec 2023 14:58:43 -0500 (EST)
-Date: Thu, 14 Dec 2023 11:58:38 -0800
+ 14 Dec 2023 15:04:30 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Tiago Lam <tiagolam@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: sync: add `CondVar::wait_timeout`
-Message-ID: <ZXtebif2S1CyJRik@boqun-archlinux>
-References: <20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com>
- <20231206-rb-new-condvar-methods-v1-2-33a4cab7fdaa@google.com>
- <1dd1a3e8-ef9a-4e89-891f-b49d82acc5f8@gmail.com>
- <CAH5fLgijsRK3funsGuG6nbK26C+s6m0nO0i83RYD2cO3z7L22Q@mail.gmail.com>
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible wait
+Date: Thu, 14 Dec 2023 12:04:21 -0800
+Message-ID: <20231214200421.690629-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <ZXtebif2S1CyJRik@boqun-archlinux>
+References: <ZXtebif2S1CyJRik@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgijsRK3funsGuG6nbK26C+s6m0nO0i83RYD2cO3z7L22Q@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 08, 2023 at 08:37:27AM +0100, Alice Ryhl wrote:
-[...]
-> > > +    /// Releases the lock and waits for a notification in interruptible mode.
-> > > +    ///
-> > > +    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-> > > +    /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
-> > > +    /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
-> > > +    ///
-> > > +    /// Returns whether there is a signal pending.
-> > > +    #[must_use = "wait_timeout returns if a signal is pending, so the caller must check the return value"]
-> > > +    pub fn wait_timeout<T: ?Sized, B: Backend>(
-> > > +        &self,
-> > > +        guard: &mut Guard<'_, T, B>,
-> > > +        jiffies: u64,
-> > > +    ) -> CondVarTimeoutResult {
-> >
-> > Should this be called `wait_timeout_interruptable` instead, so that if
-> > we need to add one using the `TASK_INTERRUPTIBLE` state later we don't
-> > need to modfy it again? It also matches the
-> > `schedule_timeout_interruptible` one in the kernel (although that's not
-> > a reason to change it just in itself).
-> 
-> I don't mind changing the names, but in this patch I was just
-> consistent with what was already there.
-> 
+Currently, `CondVar::wait()` is an interruptible wait, and this is
+different than `wait_event()` in include/linux/wait.h (which is an
+uninterruptible wait). To avoid confusion between different APIs on the
+interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
+wait same as `wait_event()`, also rename the old `wait()` to
+`CondVar::wait_interruptible()`.
 
-Hmm.. so Rust's wait() is actually interruptible wait and we have
-wait_uninterruptible(), while C API is wait_event() is uninterruptible,
-and we have a wait_event_interruptible(), I think it makes sense we
-follow what C API has. Will send a patch soon.
+Spotted-by: Tiago Lam <tiagolam@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+---
+ rust/kernel/sync/condvar.rs | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-Regards,
-Boqun
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index b679b6f6dbeb..8630faa29b78 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -50,7 +50,7 @@ macro_rules! new_condvar {
+ /// fn wait_for_value(e: &Example, v: u32) {
+ ///     let mut guard = e.value.lock();
+ ///     while *guard != v {
+-///         e.value_changed.wait_uninterruptible(&mut guard);
++///         e.value_changed.wait(&mut guard);
+ ///     }
+ /// }
+ ///
+@@ -120,28 +120,28 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
+         unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
+     }
+ 
+-    /// Releases the lock and waits for a notification in interruptible mode.
++    /// Releases the lock and waits for a notification in uninterruptible mode.
+     ///
+     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+     /// thread to sleep, reacquiring the lock on wake up. It wakes up when notified by
+-    /// [`CondVar::notify_one`] or [`CondVar::notify_all`], or when the thread receives a signal.
+-    /// It may also wake up spuriously.
++    /// [`CondVar::notify_one`] or [`CondVar::notify_all`]. Note that it may also wake up
++    /// spuriously.
++    pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
++        self.wait_internal(bindings::TASK_UNINTERRUPTIBLE, guard);
++    }
++
++    /// Releases the lock and waits for a notification in interruptible mode.
++    ///
++    /// Similar to [`CondVar::wait`], except that the wait is interruptible. That is, the thread may
++    /// wake up due to signals. It may also wake up spuriously.
+     ///
+     /// Returns whether there is a signal pending.
+-    #[must_use = "wait returns if a signal is pending, so the caller must check the return value"]
+-    pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
++    #[must_use = "wait_interruptible returns if a signal is pending, so the caller must check the return value"]
++    pub fn wait_interruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
+         self.wait_internal(bindings::TASK_INTERRUPTIBLE, guard);
+         crate::current!().signal_pending()
+     }
+ 
+-    /// Releases the lock and waits for a notification in uninterruptible mode.
+-    ///
+-    /// Similar to [`CondVar::wait`], except that the wait is not interruptible. That is, the
+-    /// thread won't wake up due to signals. It may, however, wake up supirously.
+-    pub fn wait_uninterruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
+-        self.wait_internal(bindings::TASK_UNINTERRUPTIBLE, guard)
+-    }
+-
+     /// Calls the kernel function to notify the appropriate number of threads with the given flags.
+     fn notify(&self, count: i32, flags: u32) {
+         // SAFETY: `wait_list` points to valid memory.
+-- 
+2.43.0
 
-[...]
