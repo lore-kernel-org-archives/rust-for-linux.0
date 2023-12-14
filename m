@@ -1,161 +1,139 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HpsGmDfr"
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F1911B;
-	Thu, 14 Dec 2023 05:49:11 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-28aeacb2dfdso1094707a91.0;
-        Thu, 14 Dec 2023 05:49:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W1qRQLnb"
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54883B2;
+	Thu, 14 Dec 2023 09:22:59 -0800 (PST)
+Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-7b783ee485eso83421039f.0;
+        Thu, 14 Dec 2023 09:22:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702561751; x=1703166551; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UTgQg5ey7t1gN8vRT5vRqf8veCr45WdokAmFaMYA3+E=;
-        b=HpsGmDfrQAXXmLmF9+MyM7P4KI+VmntHmtvpA30TrA9z0xVFctdQBL4guem5MSi3Sr
-         DXKuDBrozlZ4sqrbgh0qnjA607aWRymYy6cf9/g17D03IKoFDfX8O+AEejnXHToMtTI1
-         DZTUm/uJFy78YrFx+U1FJ+mICE7iDEICCtM/4NKnmlc93TRfbdEx5XrsgKgV20Nwjuw5
-         OznfTF7lFNZIgQjmPm2UhzS5Q+Xw5MKqGmka7X9N9l6OOXUndBJxasnINDvzZACbEjyO
-         NTneZz6ByIE0uQLTJXs5l9wiFN8KVTKNs1LgDUfWxAR0xduYtXye0W0/NzXeOJhUiXMt
-         cOMA==
+        d=gmail.com; s=20230601; t=1702574578; x=1703179378; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wn1zaC13xrpZ8HR3VlWdFsy2rSn+JRCW3L/spRmkW0E=;
+        b=W1qRQLnbZZqsXo+QL9/6qkIJxvbGuJ82kLl+ztb3tmcTEOHrjYV3M248nRdIe12Euo
+         kSSVRsIJwrEGSrO4nDqIBhduiC8zX7jdxlUMW98U/UAkh2FI7Tab7zQ3+uHEO5jklUT4
+         eZyD8qE2QtBtu0cxNPb1RQTx6zMLyonvLUh7l1ltuyGR8xsuW/3TnG5HUoMqiMGcps8/
+         bcu96oii50p78+A/4kAQ0CoT0kpT3m6s6po1DRFFnzGYO+3NtoiswTum8TRQ09ONzwYK
+         vivGmyiKZknt4m/y/5yZqMoxaqv8npwVa55gbDAR+8KK+bxWlNIIHpICD+t6lLubgwOw
+         BlYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702561751; x=1703166551;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UTgQg5ey7t1gN8vRT5vRqf8veCr45WdokAmFaMYA3+E=;
-        b=YhtBMC4MgFf45VwK46w5pA35H0GebnqJxGtnt9vfPOzPzZAd3RqJHp4iefqMt6PUJo
-         fiY9qMG/IOZUNkCSTUS+dtSNYAfD0nxNlW1l4U9ytZsrSy4x0OfSUTcOPmHD47i7JApb
-         KzHc+2LWm9OFE4HlBPe05Xf2WoBUfO7HaeT+HfbZIjibA7bYB+N2qFeS+NmIi1mi5xOh
-         jFRHOgcTYscB4vlqYNPg1jCQQYRyQVnXfxqMjsuisyMiwA9mRRMi76dsnQkZIYs+aa18
-         rkSOJ7IfUVZcAV5QmBnhKhtgrngar2ClrxkcFH8n9JQGPHPyMyLcLUenfPX967DJ4S/Z
-         Ur1Q==
-X-Gm-Message-State: AOJu0YzXE34HyXZBpRm8I0+Q9075xo71InZdyKkErjQFe10YXXpP3BlE
-	3cCwFaTXhXatJj6A0SII+FE=
-X-Google-Smtp-Source: AGHT+IEv3GGnQfkJxzqP9Db4Qf3Fpn/fdX4KnRYiGqn+0eH/2LWeqGdMECO7teg0UArVZGBkQXHQ3Q==
-X-Received: by 2002:a17:90a:a10f:b0:28b:201f:c2be with SMTP id s15-20020a17090aa10f00b0028b201fc2bemr63542pjp.62.1702561750754;
-        Thu, 14 Dec 2023 05:49:10 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id q2-20020a17090a430200b0028a4c85a55csm10995876pjg.27.2023.12.14.05.49.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Dec 2023 05:49:10 -0800 (PST)
-Message-ID: <29100969-106a-47c1-bfe3-6e2ca38c8c54@gmail.com>
-Date: Thu, 14 Dec 2023 10:49:05 -0300
+        d=1e100.net; s=20230601; t=1702574578; x=1703179378;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wn1zaC13xrpZ8HR3VlWdFsy2rSn+JRCW3L/spRmkW0E=;
+        b=B3NSQy4llMj7sScnPfYdauw1kydI1iq2Fp5wgFES+LvsdW0EqZ+8fyL9E7FurAzxNN
+         rbFyncSb1k3mJ/Rx/vDbP2BS1NcmkJdLFQTYOM2B4SVJLG15nSdMrQO9/5hhtSnc6fwd
+         KvXOMOJGbZ3WAHuMXJIz7bSe8KBXato23PqZS22QPyt7AzQDBuH9nc45TX5GQrChUI8v
+         MSr13JI9MvHWTesPlRGd5LLV+MmIpu9gJoVR1AZo2kdWsBaZAeLA5tgGwUHk2wLUmT7e
+         voi8cjGt4eCXAuzGbglgGRDH5WYtP79gZlJXIGarjm/LUWPhUK4ZBKtHwTivn1qWjt9g
+         p3jw==
+X-Gm-Message-State: AOJu0YzNPLGkb1SH0lLXvv5ENXk7bvr1woV6hN+jFHolQA0VqemPYNTP
+	9h/YSVlCEQhdzN9NgkS5rI1bXlMp/ynCtN+DYbM=
+X-Google-Smtp-Source: AGHT+IHe0dQgEg56O3SWkZjdq4Lbk1qqWohc1sV9GUplbadPeS3xUWvg7nOuatLXfVK570X0NwJ97ndHttKFRoH8U9k=
+X-Received: by 2002:a92:c261:0:b0:35f:7d16:c92d with SMTP id
+ h1-20020a92c261000000b0035f7d16c92dmr1572035ild.44.1702574578529; Thu, 14 Dec
+ 2023 09:22:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: upgrade to Rust 1.74.1
-To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20231214092958.377061-1-ojeda@kernel.org>
-Content-Language: en-US
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20231214092958.377061-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+ <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com>
+In-Reply-To: <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 14 Dec 2023 18:22:47 +0100
+Message-ID: <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
+Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
+ build directory
+To: Tiago Lam <tiagolam@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/14/23 06:29, Miguel Ojeda wrote:
-> This is the next upgrade to the Rust toolchain, from 1.73.0 to 1.74.1
-> (i.e. the latest) [1].
-> 
-> See the upgrade policy [2] and the comments on the first upgrade in
-> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
-> 
-> # Unstable features
-> 
-> No unstable features (that we use) were stabilized.
-> 
-> Therefore, the only unstable features allowed to be used outside the
-> `kernel` crate are still `new_uninit,offset_of`, though other code to
-> be upstreamed may increase the list (e.g. `offset_of` was added recently).
-> 
-> Please see [3] for details.
-> 
-> # Other improvements
-> 
-> Rust 1.74.0 allows to use `#[repr(Rust)]` explicitly [4], which can be
-> useful to be explicit about particular cases that would normally use
-> e.g. the C representation, such as silencing lints like the upcoming
-> additions we requested [5] to the `no_mangle_with_rust_abi` Clippy lint
-> (which in turn triggered the `#[repr(Rust)]` addition).
-> 
-> Rust 1.74.0 includes a fix for one of the false negative cases we reported
-> in Clippy's `disallowed_macros` lint [6] that we would like to use in
-> the future.
-> 
-> Rust 1.74.1 fixes an ICE that the Apple AGX GPU driver was hitting [7].
-> 
-> # Required changes
-> 
-> For this upgrade, no changes were required (i.e. on our side).
-> 
-> # `alloc` upgrade and reviewing
-> 
-> The vast majority of changes are due to our `alloc` fork being upgraded
-> at once.
-> 
-> There are two kinds of changes to be aware of: the ones coming from
-> upstream, which we should follow as closely as possible, and the updates
-> needed in our added fallible APIs to keep them matching the newer
-> infallible APIs coming from upstream.
-> 
-> Instead of taking a look at the diff of this patch, an alternative
-> approach is reviewing a diff of the changes between upstream `alloc` and
-> the kernel's. This allows to easily inspect the kernel additions only,
-> especially to check if the fallible methods we already have still match
-> the infallible ones in the new version coming from upstream.
-> 
-> Another approach is reviewing the changes introduced in the additions in
-> the kernel fork between the two versions. This is useful to spot
-> potentially unintended changes to our additions.
-> 
-> To apply these approaches, one may follow steps similar to the following
-> to generate a pair of patches that show the differences between upstream
-> Rust and the kernel (for the subset of `alloc` we use) before and after
-> applying this patch:
-> 
->      # Get the difference with respect to the old version.
->      git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->      git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->          cut -d/ -f3- |
->          grep -Fv README.md |
->          xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->      git -C linux diff --patch-with-stat --summary -R > old.patch
->      git -C linux restore rust/alloc
-> 
->      # Apply this patch.
->      git -C linux am rust-upgrade.patch
-> 
->      # Get the difference with respect to the new version.
->      git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->      git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->          cut -d/ -f3- |
->          grep -Fv README.md |
->          xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->      git -C linux diff --patch-with-stat --summary -R > new.patch
->      git -C linux restore rust/alloc
-> 
-> Now one may check the `new.patch` to take a look at the additions (first
-> approach) or at the difference between those two patches (second
-> approach). For the latter, a side-by-side tool is recommended.
-> 
-> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1741-2023-12-07 [1]
-> Link: https://rust-for-linux.com/rust-version-policy [2]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [3]
-> Link: https://github.com/rust-lang/rust/pull/114201 [4]
-> Link: https://github.com/rust-lang/rust-clippy/issues/11219 [5]
-> Link: https://github.com/rust-lang/rust-clippy/issues/11431 [6]
-> Link: https://github.com/rust-lang/rust/issues/117976#issuecomment-1822225691 [7]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> [...]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+On Thu, Dec 14, 2023 at 2:26=E2=80=AFPM Tiago Lam <tiagolam@gmail.com> wrot=
+e:
+>
+> `scripts/min-tool-version.sh` won't exist within the build dir if the
+> option the user takes is "enter the kernel build directory", right? It
+> only works if they use the `--path` argument in the `rustup override
+> set` option.
+
+Yeah, the script is in the source tree, and the path is the build
+tree. Giving a single one-liner with `--path <builddir>` and
+`<srctree>/scripts...` would be simplest in the sense that it would
+allow us to remove even the "enter ..." part too. But then the command
+cannot be copy-pasted and it is likely harder for newcomers that may
+not be using `O=3D`.
+
+Something like v1 but a bit simpler, e.g. keeping things as they are,
+but with just a sentence after the command like "If you are building
+the kernel with `O=3D`, i.e. specifying an output directory, then you
+should append `--path <builddir>`." could work.
+
+Or we could just provide a `rustupoverride` Make target to do this for
+us [1], since we have all the information needed and would be
+copy-pasteable by everybody. I can send it as a non-mangled patch and
+then Viresh can redo this one on top using it.
+
+Cheers,
+Miguel
+
+[1]
+
+diff --git a/Makefile b/Makefile
+index 70fc4c11dfc0..7fe82dd4dc6f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -276,7 +276,8 @@ no-dot-config-targets :=3D $(clean-targets) \
+                         cscope gtags TAGS tags help% %docs check% cocciche=
+ck \
+                         $(version_h) headers headers_% archheaders
+archscripts \
+                         %asm-generic kernelversion %src-pkg dt_binding_che=
+ck \
+-                        outputmakefile rustavailable rustfmt rustfmtcheck
++                        outputmakefile rustavailable rustfmt rustfmtcheck =
+\
++                        rustupoverride
+ no-sync-config-targets :=3D $(no-dot-config-targets) %install
+modules_sign kernelrelease \
+                          image_name
+ single-targets :=3D %.a %.i %.ko %.lds %.ll %.lst %.mod %.o %.rsi %.s
+%.symtypes %/
+@@ -1611,6 +1612,7 @@ help:
+        @echo  '                    (requires kernel .config;
+downloads external repos)'
+        @echo  '  rust-analyzer   - Generate rust-project.json
+rust-analyzer support file'
+        @echo  '                    (requires kernel .config)'
++       @echo  '  rustupoverride  - Set up a rustup override for the
+build directory'
+        @echo  '  dir/file.[os]   - Build specified target only'
+        @echo  '  dir/file.rsi    - Build macro expanded source,
+similar to C preprocessing.'
+        @echo  '                    Run with RUSTFMT=3Dn to skip
+reformatting if needed.'
+@@ -1735,6 +1737,11 @@ rustfmt:
+ rustfmtcheck: rustfmt_flags =3D --check
+ rustfmtcheck: rustfmt
+
++# `rustup override` setup target
++PHONY +=3D rustupoverride
++rustupoverride:
++       $(Q)rustup override set $(shell
+$(srctree)/scripts/min-tool-version.sh rustc)
++
+ # Misc
+ # ------------------------------------------------------------------------=
+---
