@@ -1,77 +1,87 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7gLG+vG"
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29038109;
-	Wed, 13 Dec 2023 19:14:02 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1d098b87eeeso69113535ad.0;
-        Wed, 13 Dec 2023 19:14:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702523641; x=1703128441; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=S6Gh9YX7DZUKT9k3pgoHzM/D5vHJqCG1MyJlh3Mml2I=;
-        b=I7gLG+vGl5KPxK1bCR4DQWKSfqZOEyRAdENw3sZpDj9WbUFjHCiJuecgI+FabIoFbp
-         QJrij+OJjo0cm8bviOtGgS5kY6TXIgCZr/mbQEZ/QM+CT8MlmK+uPBsZlDcYzByatjAX
-         wuIvj1zBhyx7ctDBgYg6L95xKuN+vdl8/wG+5DkYAUlRIBXemCxWXg7HAjDrg6fXrKFn
-         p8H+65BKC8OrjuaiPKG8yQ4dA2aM7/VS0ui7viXZ7ayIS8ZtyuDCHG8DvDMEU+Kfaxq6
-         /O5k81TVtuxLKCSUDYBMJd2TD5Rqixabn3wteEZlaFNQcARilZyGqYUlNzCzaWcNtqs3
-         s2qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702523641; x=1703128441;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S6Gh9YX7DZUKT9k3pgoHzM/D5vHJqCG1MyJlh3Mml2I=;
-        b=lveOvWf/hMt9wUNzQ9lPx7odTl9+3OOhOaQRNXz1siEstfsomaRYPG9Qnm7A4L3NE+
-         EL0wCMY6ptzbGvPia1jm+cPeBHHSDpBlP3jCTodery/Lw2hMupzasKiIqMyq79m+HVEb
-         tlgmHHxLDz2CZtwV3As8FyWXv4FboauouriROsw4BMD+upq7YTIwUQwOgkavRiv4ZrvZ
-         qib0B/QFJz2lY5P/HxTkmgzZPHztz4HV48Iw/nHtPFUtPHv2EArL53l6hQISVbnNwMO4
-         +VkiXBcLk3/i7lc6j63XNFxgEvHHZ+oVkdhdP5LMx6wgWdvmvOjTsqlA4LEJU5zGbc7H
-         BbtQ==
-X-Gm-Message-State: AOJu0YzF9K99EOCqXgDWM6EjihDugiYdpR3R7g62YDoFQ3JFlYKX3tnZ
-	ikFHPrvmn79JyjRzlTQD8xc=
-X-Google-Smtp-Source: AGHT+IEjnq+E/UH8vGe5iggdqxhM2myFCKO3gTBcOYGYcdv3fG3i0HE1cWXaTj7JkwedKlbj3YTUOA==
-X-Received: by 2002:a17:902:f546:b0:1d3:6238:a528 with SMTP id h6-20020a170902f54600b001d36238a528mr1274410plf.23.1702523641586;
-        Wed, 13 Dec 2023 19:14:01 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id u14-20020a170902e80e00b001d0c37a9ccfsm11199832plg.303.2023.12.13.19.13.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 19:14:01 -0800 (PST)
-Message-ID: <05fa58f3-f351-4119-9c07-1f5bb04503d2@gmail.com>
-Date: Thu, 14 Dec 2023 00:13:32 -0300
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="y2BSebg/"
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A114CA6;
+	Thu, 14 Dec 2023 01:26:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=g+AbAvvUAcxOgP2sxiYrFEiKXBjFY3Ekd98W6+K77c0=; b=y2BSebg/CLwuP5JHyWJrCzKot0
+	cZSyNtUeCI/PwUn62FpwvHMLHny8oA+ji8toNDHu2cWNS6ZtqQOv9BpkmXeuGDOF+N5UTRxthiTSE
+	JCc1cnVG797LYwed7r+wE9uV/+0kgo+HTbEP7l2Lci5RM6dIMIjHPdEzgtfekgmUOKrU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rDhzI-002u7t-L7; Thu, 14 Dec 2023 10:26:36 +0100
+Date: Thu, 14 Dec 2023 10:26:36 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, alice@ryhl.io,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	wedsonaf@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v10 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <b2cba04e-0201-48b7-a34f-81dbd7b799ff@lunn.ch>
+References: <ZXeuI3eulyIlrAvL@boqun-archlinux>
+ <20231212.104650.32537188558147645.fujita.tomonori@gmail.com>
+ <ZXfFzKYMxBt7OhrM@boqun-archlinux>
+ <20231212.130410.1213689699686195367.fujita.tomonori@gmail.com>
+ <ZXf5g5srNnCtgcL5@Boquns-Mac-mini.home>
+ <67da9a6a-b0eb-470c-ae43-65cf313051b3@lunn.ch>
+ <ZXnfHbKE3K_J4yul@Boquns-Mac-mini.home>
+ <83511ed4-1fbe-4cf6-ba63-5f7e638ea2a1@lunn.ch>
+ <66c532cf-e56f-4364-94dd-c740f9dfdf69@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] rust: workqueue: add `#[pin_data]` to `Work`
-Content-Language: en-US
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231213220447.3613500-1-benno.lossin@proton.me>
- <20231213220447.3613500-3-benno.lossin@proton.me>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20231213220447.3613500-3-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66c532cf-e56f-4364-94dd-c740f9dfdf69@proton.me>
 
-On 12/13/23 19:09, Benno Lossin wrote:
-> The previous two patches made it possible to add `#[pin_data]` on
-> structs with default generic parameter values.
-> This patch makes `Work` use `#[pin_data]` and removes an invocation of
-> `pin_init_from_closure`. This function is intended as a low level manual
-> escape hatch, so it is better to rely on the safe `pin_init!` macro.
+On Wed, Dec 13, 2023 at 11:40:26PM +0000, Benno Lossin wrote:
+> On 12/13/23 22:48, Andrew Lunn wrote:
+> >> Well, a safety comment is a basic part of Rust, which identifies the
+> >> safe/unsafe boundary (i.e. where the code could go wrong in memory
+> >> safety) and without that, the code will be just using Rust syntax and
+> >> grammar. Honestly, if one doesn't try hard to identify the safe/unsafe
+> >> boundaries, why do they try to use Rust? Unsafe Rust is harder to write
+> >> than C, and safe Rust is pointless without a clear safe/unsafe boundary.
+> >> Plus the syntax is not liked by anyone last time I heard ;-)
+> > 
+> > Maybe comments are the wrong format for this? Maybe it should be a
+> > formal language? It could then be compiled into an executable form and
+> > tested? It won't show it is complete, but it would at least show it is
+> > correct/incorrect description of the assumptions. For normal builds it
+> > would not be included in the final binary, but maybe debug or formal
+> > verification builds it would be included?
 > 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
-> [...]
+> That is an interesting suggestion, do you have any specific tools in
+> mind?
+
+Sorry, no. I've no experience in this field at all. But given the
+discussions this patch has caused, simply a list of C or Rust
+expressions which evaluate to True when an assumption is correct would
+be a good start.
+
+We have said that we assume the phydev->lock is held. That is easy to
+express in code. We have said that phydev->mdio must be set, which is
+again easy to express. phydev->mdio.addr must be in the range
+0..PHY_MAX_ADDR, etc.
+
+You probably cannot express all the safety requirements this way, but
+the set you can describe should be easy to understand and also
+unambiguous, since it is code. The rest still can be as comments.  It
+would be easy to compile this code and insert it before the function
+on a verification build. Its only runtime checking, but its more
+functional than comments which the compiler just throws away. And
+maybe subsystems like this which are pretty much always slow path
+might even leave them enabled all the time, to act as a set of
+assert()s, which you sometimes see in code bases.
+
+	Andrew
