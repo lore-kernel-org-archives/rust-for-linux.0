@@ -1,44 +1,44 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753DD250E2;
-	Fri, 15 Dec 2023 11:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCC52C86C;
+	Fri, 15 Dec 2023 11:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mVHfbYka"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-da7ea62e76cso443827276.3;
-        Fri, 15 Dec 2023 03:36:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HvFMHUVc"
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dbce6056e85so459994276.3;
+        Fri, 15 Dec 2023 03:53:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702640169; x=1703244969; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702641223; x=1703246023; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xlhIqyJiiodbXf2NuUmZM6lEWf4T2nhAdH/z6iYPn4A=;
-        b=mVHfbYka2hq0LP0dDRwYLAB3F41k4IYyrfI+nxX7U4pehpdZlC8hGwH6CmjCeYlrGT
-         mdX97kxbiE4IKI+C0WRIKVjsl53bdDcnwKqmlTwB6BsPMPbQZVTJ2U2dY1PR8C2+lq+2
-         4klpXs4K9ZaAh2IWsVGoSHUomSija563W5Feqib5XRf3COGF3BeJJbxkKlQB0UlYQElM
-         96I15mpB5+nnw/oxoM1Li+tCo6BmkgPw55m7egdmiO0FdPRFabLtgw1+jYWoNXVWaxRB
-         qqzG2nVgoyFbgogcMJEdnZV1fw0MHo5Sj1DlKDUzp9SrgYS27RdSK/wug7/cuUywguMY
-         54wQ==
+        bh=YM1v7r2f2GvXAiAcJRLKSdfcTUYdD255h3ff0PoBXFQ=;
+        b=HvFMHUVcrTt4r+s3Evj5z0qmwuJVHqgfEAi9Z/V+pMFQy6JL+HXM/tFis29+rwEWCc
+         JnLp26o5DMy7Tw0eq/3Cy8WiaA/XDiCVrOG83pAf6ILAjGMlArSak/cZUvj0rs+slL1j
+         Vpl9uCgXuXjgjytkv7TDolDX42Oc2JMN1f7/7ItbdcIrN29BKcgh9+pvda+87r0xDhRH
+         +3ntH6LkTUIfmld1EsQjomhV54yiNm77IQZb1a/n5Fxi+XVPFfVMgwthWAID2B7OYkTN
+         moSg8GSSVdV1ZkxAuR5LoZCV6y4BfuYe3bzE0+0klCMc28XM4eQqwG/NL4Ho8VTDyFXO
+         FFtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702640169; x=1703244969;
+        d=1e100.net; s=20230601; t=1702641223; x=1703246023;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xlhIqyJiiodbXf2NuUmZM6lEWf4T2nhAdH/z6iYPn4A=;
-        b=LBrHyfxhax0/Q5wO6O0epJ7vxpFVh0FlyJb3H4pdALCPBkAq/nYzQMCy65T1RAu5t6
-         mxjpe1IdmgkBvGvuTVEWmLocAaJqHX+KKuokn7j3OlKxJcRNHYZ2HNvIiRfHwHrzJSTH
-         UPFwqAAdmyaaZYjJnuCEM87qlD5auHt4Zgkq6LZvPee9i+3OTDtljnXnwPlWYWHQUwLG
-         CtmwbreXa4ClipmbMQRfKMlp1g2C6YkLRWpGuw2BGMRNobXxr/SroUTr2J2LPSwvL8Ol
-         3g7BxVoz5isMUQMZ+phGLXs5K3t+NtWOp56UaALg4mimXC7+OyidnCJGjp2mQNKljRTt
-         3lww==
-X-Gm-Message-State: AOJu0YyBNQJtjNekMc8hJMvKDlHA62l0LGFMHn2VXSst49uKXGldLY4E
-	Fpm0AN60w5nSgbhRRHS0/RzznPrImggeiQLN9Vw=
-X-Google-Smtp-Source: AGHT+IF0S+7AxR1L+WVoLZPOJ/H8TXi0q/3n/mvrxFUKfU6+twuyNMD5h7Q7QnK2nOg3hrsYwEH77N0iaKvaBRZsmfs=
-X-Received: by 2002:a25:4212:0:b0:dbc:c446:7632 with SMTP id
- p18-20020a254212000000b00dbcc4467632mr3763747yba.17.1702640169409; Fri, 15
- Dec 2023 03:36:09 -0800 (PST)
+        bh=YM1v7r2f2GvXAiAcJRLKSdfcTUYdD255h3ff0PoBXFQ=;
+        b=EY5PRFbNBcWf4AfrxXyDaO69Y5bVTh1TUX2AXvqHJ77UYcUC6L+oH3rLK9CC54lBa1
+         mLlI+gGwK+fPOyt8ivBrWR2OKVL/BoSZwHVzILISrkaShnZK48z+rT1LIzG3GZXjrjai
+         TK1e3Lp362vWK5IzVCvD7iCWmPZmwmQPd2+da2iCFWtraEViUMfYPrVi5Iry4ylZybnk
+         vZaZJWZ8ksaolaXwZkLgB4bZgDUma6fRV4MM7FKYjwMZvtvOPFMPcEU6wQUYxdWSEDvK
+         RQuMLMtUl4u8TYLEEAxAXHaSXdCIqLclqaDRg8LbGblSa4o+kRRurV4foaDUOpmJhjo3
+         QUDQ==
+X-Gm-Message-State: AOJu0Yw/dzi8d4y+hx507Cm3F33y8p7N9b068aEgh5WSwqn+0XBdzYJ1
+	Jn0ik51PLFpYDEcffq8CaJT9LES4QbP4H+jY3pI=
+X-Google-Smtp-Source: AGHT+IGQSbEncj7NvmMzDT4rmgXfmOvUHGB7F0y213p5yCIZPUs7H+vXAPPYmdDedy1AXsSXeExQDjSsrXa6BveO+vM=
+X-Received: by 2002:a25:bf85:0:b0:db7:dacf:59f2 with SMTP id
+ l5-20020a25bf85000000b00db7dacf59f2mr6970124ybk.102.1702641223437; Fri, 15
+ Dec 2023 03:53:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,14 +48,15 @@ MIME-Version: 1.0
 References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
  <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com> <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
  <20231215064823.ltm55fk4zclsuuwq@vireshk-i7> <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
-In-Reply-To: <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
+ <20231215112418.usky65sibhbiubyx@vireshk-i7>
+In-Reply-To: <20231215112418.usky65sibhbiubyx@vireshk-i7>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 15 Dec 2023 12:35:58 +0100
-Message-ID: <CANiq72mT_N0eSkUAR9KYYWvFaVNYYOpFiJLr_whab=FNFcMVhw@mail.gmail.com>
+Date: Fri, 15 Dec 2023 12:53:32 +0100
+Message-ID: <CANiq72nuUpBCHaeyozDXAZrV+YLW_OR-QOUiVHPfTbNGG3RFXA@mail.gmail.com>
 Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
  build directory
-To: Tiago Lam <tiagolam@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -66,22 +67,31 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 15, 2023 at 12:14=E2=80=AFPM Tiago Lam <tiagolam@gmail.com> wro=
-te:
+On Fri, Dec 15, 2023 at 12:24=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.=
+org> wrote:
 >
-> I think we can drop the reference to the `--path <buildir>` to avoid
-> giving too much information to the users following the guide. It doesn't
-> seem to bring anything given users should now always go through `make
-> rustupoverride`.
+> I thought people aren't required to enter the build directory now (but
+> just source code directory) and simply do:
+>
+>                 make LLVM=3D1 O=3D<builddir> rustupoverride
 
-Yeah, the idea with the new target was to simplify this, rather than
-have it as an additional way.
+Yeah, that is correct, but we don't need to write the `O=3D` in the
+commands themselves. The idea is that 1) the commands can be easily
+copy-pasted, 2) commands look simple (i.e. there are many other
+variations and options you may pass), 3) newcomers do not need to care
+about `O=3D` (so it is extra simple for them).
 
-> But if I understood this correctly, the point here is that with the new
-> target we can now abstract both cases behind the `make rustupoverride`
-> target - i.e. we don't need to provide alternatives.
+> Will this still work if we are in the build directory ?
 
-Exactly.
+Both should work (as long as the initial setup in the build folder is
+done, of course), so I think we can simply remove the mention about
+"enter ..." now and simply give the command.
+
+In fact, even if Kbuild did not support that, we could still remove
+the "enter ...", because then the `make` would need to be run like any
+other target from the source tree. In other words, regardless of the
+answer, we could remove it thanks to the new target, unless I am
+missing something.
 
 Cheers,
 Miguel
