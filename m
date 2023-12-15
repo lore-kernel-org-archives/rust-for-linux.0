@@ -1,88 +1,137 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3705B1A706
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 10:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFBE1C292;
+	Fri, 15 Dec 2023 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9wXNqXt"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-5d3758fdd2eso4354417b3.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 02:43:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k1t+f9oY"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3364a1451c6so273741f8f.3;
+        Fri, 15 Dec 2023 03:14:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702636994; x=1703241794; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1ubVH9S3UTGCIi6iqZ6MrB3WsFCa9rA74HRRYfWvgH8=;
-        b=W9wXNqXtu/Vex9uZe55/OSBLI6TUL4vv0mnBtyjVUGZb1AgZzm3V7ng2EP2mwIRKUg
-         Q0pCJTVWFF0rL1jZr4annNTLgwMvlgqSKnRXCVU9P6KSy/fVjNv+glSzHTyoUF0yAsoJ
-         VotTRuJW8xujPEudBiycO3ISFmJ6U2fvAH90iFUslVwCDhUukkKqPt1BkiqHkZ2JA+D6
-         J/5ex0H/l4tieM0vvm3y+/3I0H+rlmKbYnmkcDyKSHyjrYt8RJ7rJhgRBbUzvCBjbbtQ
-         9hMntPiZERNRCWL3NKhswPMyr2n8m+E7DOtM57VPuM8BH4Y2uPXzJEvKA2HFzcBI87ZR
-         81cA==
+        d=gmail.com; s=20230601; t=1702638845; x=1703243645; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k+yoIAvPDl135lIcXlo6qqmeUnqlKdg0n91rabpsyIE=;
+        b=k1t+f9oYRpNxF7LvgN/P8g33Etk+KRRCZKSD8uBIOqpibpLUFzDkYtHI8pitLV2JNL
+         kgg6HFBLZ2rPbi023CR9qMRbqgcptzRd0qa2A7N9ii0FheZQNQAAguQWV188XvTx9tci
+         DEWtAWMxfz/CYB9gMj/dYYaTc7pZqjowA8MK7fUWnTMc9qW/wrrIaY0f3sKsilJK2uGQ
+         RXITRNgw3rOrKyZLaoZQlbkKeB7uvkt0PUI/gS9xUPBYBSw4T9lBzXK4uF6EJj3bcMPl
+         D/BpEqhm2WT1Rijw483cqqcjeEd8MEDy3C8divtzJQth4I2yvu8wZ+os6jhVSNUgyxLW
+         ImFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702636994; x=1703241794;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1ubVH9S3UTGCIi6iqZ6MrB3WsFCa9rA74HRRYfWvgH8=;
-        b=uM78INZ2peBon0jyl5J1Rz7rrfrVV46ikUw9hVSXmKpRPg91WE7ryqJ5Qe2R0N9Sqm
-         JEKmXB+YgrUzVMxeSeU2Om9iIVSAKDYRQ/4mBc/AAI5dGiRm97miqst/xF5h2oHnGs9V
-         veg0E8rK6feAYtv9iS4hL1IGCHmTOTv9yHTC2Bj1CEv1A/5k0MJDzWZIgQSJaGZSSDt1
-         m2KsSLUYWmcXwNQoAI/BCDFv0mocxI+XF2FlKnI7y35fDr77N3Zf5Mrqk9Ac3lnukKw8
-         1z+/ARzB3qBuJivEfKGC+kdXR9QbzyhPR2FE1Q0sSnHEKZzSSRxLUd0DMxZnwvMc4/fT
-         fhHA==
-X-Gm-Message-State: AOJu0Yx1bW1OhiUulhx0yRJp46K20vhIbuD1jOO21g8QmMVUamIjAYlE
-	WtKkctJcVsKvrqvy6EMf2/9UvUaYdX4ZkezDXxA=
-X-Google-Smtp-Source: AGHT+IH/o6wvM/xXlAUCxEHzx0SXY10hpC/yC3g2NNJKGednMqGmknT55nDJ24pR3NBjC1oeVv3RUphzbJCou/0wPMc=
-X-Received: by 2002:a81:8307:0:b0:5e2:ea4a:660d with SMTP id
- t7-20020a818307000000b005e2ea4a660dmr3681158ywf.16.1702636994047; Fri, 15 Dec
- 2023 02:43:14 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702638845; x=1703243645;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k+yoIAvPDl135lIcXlo6qqmeUnqlKdg0n91rabpsyIE=;
+        b=l597KNjbRXCxEJRdZeGUG3W9AjCWNk6OWdD6MQ538E7Jw3IsEtCSaDd7ybUJ+MxLUB
+         03tWJkV66XH/18qW86TWQKxItlVQLdGbV6XYQ9/yOI0+PQkmWyYw6+8buy1iirv/Tfy8
+         KnId5cuw312BBpou+ciD7bSERYEDWQvgHbcmC/ckXIoT0vntTx0xCeM5IxabMtSnwpWb
+         C/MD1zFc4BGlHQ/brxXy6evDFrZpftUMW4daxZELK+Cqq8SLlGqguLUfYoJPMLaPdmv2
+         zV7v7QOYZFAW+JDy5NUTiuPp1vhNme4J8Ib4KO5DJpzaCqNtyA5kHZZWtTYl3kHn2eUc
+         AlFA==
+X-Gm-Message-State: AOJu0YzNhQPLeBKbN8tC6PolQ3nYCpxo3T3Jbn1HMD3RjZDTKCg4TNcI
+	xzsUejgQmT/Kjl49VTcrfA==
+X-Google-Smtp-Source: AGHT+IE/nxncmYRzZ5pQAF1zfOXt47/6t2/dxgcvEOpjZB2yKfMjTzIdLSaOyRKLLS9i9VSekPfbnQ==
+X-Received: by 2002:a5d:6daa:0:b0:336:4aae:811f with SMTP id u10-20020a5d6daa000000b003364aae811fmr1781196wrs.118.1702638844070;
+        Fri, 15 Dec 2023 03:14:04 -0800 (PST)
+Received: from [192.168.1.148] (224.69.114.89.rev.vodafone.pt. [89.114.69.224])
+        by smtp.googlemail.com with ESMTPSA id dd14-20020a0560001e8e00b003364277e714sm5909747wrb.89.2023.12.15.03.14.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Dec 2023 03:14:03 -0800 (PST)
+Message-ID: <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
+Date: Fri, 15 Dec 2023 11:14:01 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
- <df0d8a01-eac3-43b2-8498-e237a0fe6eb5@nvidia.com> <CANiq72n5OB0X9sHoNf-htRY9z93gzdg-BqdrOUDTqTEvUytoNA@mail.gmail.com>
- <6df6e8e5-8d5b-4d3d-91b5-bc0e90c424ea@nvidia.com>
-In-Reply-To: <6df6e8e5-8d5b-4d3d-91b5-bc0e90c424ea@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 15 Dec 2023 11:43:02 +0100
-Message-ID: <CANiq72kQYS2Z-tRwaH6SJHM5RY8D=TSsdSgufD9YmX2GfDgPeg@mail.gmail.com>
-Subject: Re: [PATCH v3] docs: rust: Add rusttest info
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
+ build directory
+Content-Language: en-GB
+To: Viresh Kumar <viresh.kumar@linaro.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+ <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com>
+ <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
+ <20231215064823.ltm55fk4zclsuuwq@vireshk-i7>
+From: Tiago Lam <tiagolam@gmail.com>
+In-Reply-To: <20231215064823.ltm55fk4zclsuuwq@vireshk-i7>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 13, 2023 at 2:44=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
-wrote:
->
-> ah OK. I appear to have been slightly misled by
-> Documentation/rust/quick-start.rst, which made it seem like CC=3Dclang
-> was...a thing. This excerpt made me do it:
+On 15/12/2023 06:48, Viresh Kumar wrote:
+> On 14-12-23, 18:22, Miguel Ojeda wrote:
+>> Something like v1 but a bit simpler, e.g. keeping things as they are,
+>> but with just a sentence after the command like "If you are building
+>> the kernel with `O=`, i.e. specifying an output directory, then you
+>> should append `--path <builddir>`." could work.
+>>
+>> Or we could just provide a `rustupoverride` Make target to do this for
+>> us [1], since we have all the information needed and would be
+>> copy-pasteable by everybody. I can send it as a non-mangled patch and
+>> then Viresh can redo this one on top using it.
+> 
+> How about this ?
+> 
+> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+> index f382914f4191..367b06f3edc2 100644
+> --- a/Documentation/rust/quick-start.rst
+> +++ b/Documentation/rust/quick-start.rst
+> @@ -39,8 +39,17 @@ If ``rustup`` is being used, enter the checked out source code directory
+>          rustup override set $(scripts/min-tool-version.sh rustc)
+> 
+>   This will configure your working directory to use the correct version of
+> -``rustc`` without affecting your default toolchain. If you are not using
+> -``rustup``, fetch a standalone installer from:
+> +``rustc`` without affecting your default toolchain.
+> +
+> +If you are building the kernel with `O=`, i.e. specifying an output
+> +directory, then you should append `--path <builddir>` to the above
+> +command.
+> +
 
-Yeah, it is the "old way" for many architectures, but nowadays
-`LLVM=3D1` is the recommended way for most (in the last couple years a
-few architectures got promoted from `CC=3Dclang` to `LLVM=3D1`).
+I think we can drop the reference to the `--path <buildir>` to avoid 
+giving too much information to the users following the guide. It doesn't 
+seem to bring anything given users should now always go through `make 
+rustupoverride`.
 
-Given that most arches are `LLVM=3D1` nowadays, including those that we
-currently support Rust for, and that perhaps by the time e.g. s390
-supports Rust it is also a `LLVM=3D1` architecture, we should probably
-just remove `CC=3Dclang` at this point and perhaps add an extra link to
-Documentation/kbuild/llvm.rst again just in case (the link is also
-elsewhere in that document, but I guess it does not hurt).
+> +Alternatively, you can use the ``rustupoverride`` Make target::
+> +
+> +       make LLVM=1 O=<builddir> rustupoverride
+> +
 
-I will send a patch.
+But if I understood this correctly, the point here is that with the new 
+target we can now abstract both cases behind the `make rustupoverride` 
+target - i.e. we don't need to provide alternatives. So, maybe something 
+like the following is clearer:
 
-> Anyway, I wanted to provide this "how does the documentation look
-> to a newcomer" feedback, in case it helps.
+	If ``rustup`` is being used, enter the checked out source code 
+directory, or your build directory (if you're using the `O=` option to 
+build the kernel), and run::
 
-It does -- thanks a lot!
+         	make LLVM=1 rustupoverride
 
-Cheers,
-Miguel
+	This will configure your current directory to use the correct version 
+of ``rustc`` without affecting your default toolchain.
+
+	If you are not using ``rustup``, fetch a standalone installer from:
+      	 
+https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
+
+Tiago.
