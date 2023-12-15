@@ -1,91 +1,112 @@
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565FBECD;
-	Fri, 15 Dec 2023 02:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6D3CA7D
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 06:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rfz8XoYI"
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3ba14203a34so223159b6e.1;
-        Thu, 14 Dec 2023 18:58:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jx5Cc55t"
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-1fb33059466so281707fac.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 14 Dec 2023 22:48:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702609096; x=1703213896; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dEuYNRBlgzXCt6dLMDXZjmgpWHVvzha3MPNxQgSpSX0=;
-        b=Rfz8XoYI16chjKa1IghAnlLe5l1x3YJ9KkvIsMbqv/VpQWfS6B2U9OQHiv3panTvIq
-         6W3SWW0cIBYaRn5NtcQVNPypx1I7AkULeCfkyhAJZeNgNEQDlgdObTRUEmYKKmnycScq
-         EUHcT6hrUrweIq3u67IZzhJo5JSkXdeMVjAdtIk9PnN9AxQX6m9tbOkf9juEgvsuyjLy
-         JfmXr/Y6LoH/nEZHVEn134qXvMjUdLex+7a7VVIwZP5N9JTH3A1HL1nVYPYGsA5hiEjB
-         r8XtllsuBOoe2gSwxd6h8zkId6ppfAm3fmbvj17QjDqLrkwvymqjNUK+I7s6DFESC+cA
-         VOOQ==
+        d=linaro.org; s=google; t=1702622906; x=1703227706; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PmEAkrgNM0PL5WdA7i6ZA6lF8xdUr9x9GVAMkOS4s1w=;
+        b=jx5Cc55tgey7C0NN36E0sZ/RDXcIMkmRyug9GiPrYLi7Z4UYiMT/DHvy1CVx7ZReDM
+         8HZY1Xw5nsHBPTcEmkpoMXEqPCjfjJkx/EhMsyUmx1yQKTsg6863//t4lf1W+T+77Rg2
+         JWI+yO3RXfVD01NN2wIDI5l028tYvt03DTRPxNaasyToxmCJmFVNrp6VaeBi3o7iAfSa
+         oEEl1BN9acYITlb/myjP8UinxkhJINn4oJfVb+4uV5MfbPL49aISWZ7chGrIXg3sh8tE
+         6LCSela14EHc3/YguvWB/dP0CvvGDcMQ+H8wTlUvtmvFUDiVZ5qTFkGozoG5r8SwN/9G
+         O5Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702609096; x=1703213896;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dEuYNRBlgzXCt6dLMDXZjmgpWHVvzha3MPNxQgSpSX0=;
-        b=HJMvmlf98XHhFFxkOg2vYKGOqQfhT6Co8Vdv9naFTAPmBP2RIdloQ7Si1N5brF0OLU
-         8JMcy535eqO7w3YaibvmvE+xDW9g3PfBIPtSbqdQdobgqudoUEvUnwBYuSvt/nq/E6fH
-         BcMXjZqhUB7qp7jWjiCbYNtVRxV+gUv/sIhTG4tsjMpTdW9T1UvTawWt6UrG430gK1f+
-         PNGM1/9L0YpZ77U/0hLScetp8BezdId6vbU95+7oOJcmP+YLXrypthkYQ9iJ8FgBf2ML
-         m0t6EmDUZbaC4dV2iBqhhIjAkbRNLFUBX6EpPypCS2tliYIFTWNzB0DeOyjn/VxnvsYG
-         ISGA==
-X-Gm-Message-State: AOJu0YzlFWbVlXGJHWjXmi5deZFlMgYRAOzRZets5EGTEpjnqcbhvzG9
-	I6WvtTdK+vHta8G8eQQuj0c=
-X-Google-Smtp-Source: AGHT+IGda2uOu7tUCWI6/kdPBjVtdx5P6FD+g5ouxNnOF4IFpNT0gSRZmMn/eMLi7lrKD9L6eqauNA==
-X-Received: by 2002:a05:6808:eca:b0:3b8:b6f6:4f8e with SMTP id q10-20020a0568080eca00b003b8b6f64f8emr11950143oiv.65.1702609096352;
-        Thu, 14 Dec 2023 18:58:16 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id i11-20020a170902c94b00b001d359db2370sm3143684pla.152.2023.12.14.18.58.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Dec 2023 18:58:15 -0800 (PST)
-Message-ID: <f09fa249-1425-429f-8f16-e95fb2d2cac3@gmail.com>
-Date: Thu, 14 Dec 2023 23:58:10 -0300
+        d=1e100.net; s=20230601; t=1702622906; x=1703227706;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PmEAkrgNM0PL5WdA7i6ZA6lF8xdUr9x9GVAMkOS4s1w=;
+        b=nx3NwGlL2t3EZq1txeX3p/z0uE+qUAPga08Hf9q/7eEl7qh23auKc3MSZo8f3v6PB8
+         jI9Rlt1xPKcpcCFQF2epEmgZs+B9lIThilCAw+5giM01ZB3nzWAqOAhqtdNvB4yXnyvA
+         T7MAkQBprW+WhVQf8gPq7jheS6XlfMms3t++UUa5HY3Uhiqz2jiZLpIZiRoSrsk+Srwi
+         qj9G1FEYq0PMh3Ll+zq82fpvztZkOFVMXqp5+pVrzRoWftkzP9ReBmOFrm4CgcnQzb0p
+         Joc8uBeU0bLxt5Bv+RPnEB8Alx/xcSXvUxe/8xjbdzkVi3Z4Z1ygRf2+S95FRmtTreVn
+         fS2A==
+X-Gm-Message-State: AOJu0YyvoC5CLrBj5UJee7q7cHflQAiI3muQFsQI8t4WsOLmwXzjAaOe
+	+p2RmBZuiuRIol8KAAAq4QcrHQ==
+X-Google-Smtp-Source: AGHT+IFF4pgJFftiq7yKmL80+d1+bU6Ppn8xJ+TEx/o2lA/bgMlgVvDWbdcT34R47MQjZdXWfyNI/A==
+X-Received: by 2002:a05:6870:514c:b0:203:62ca:abb4 with SMTP id z12-20020a056870514c00b0020362caabb4mr1162582oak.51.1702622906411;
+        Thu, 14 Dec 2023 22:48:26 -0800 (PST)
+Received: from localhost ([122.172.82.6])
+        by smtp.gmail.com with ESMTPSA id y65-20020a636444000000b005b18c53d73csm12449556pgb.16.2023.12.14.22.48.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Dec 2023 22:48:25 -0800 (PST)
+Date: Fri, 15 Dec 2023 12:18:23 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
+ build directory
+Message-ID: <20231215064823.ltm55fk4zclsuuwq@vireshk-i7>
+References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+ <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com>
+ <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kbuild: rust: add `rustupoverride` target
-Content-Language: en-US
-To: Miguel Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kbuild@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev
-References: <20231214222253.116734-1-ojeda@kernel.org>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20231214222253.116734-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
 
-On 12/14/23 19:22, Miguel Ojeda wrote:
-> When setting up the Rust support via `rustup`, one may use an override
-> in order to select the right version of the Rust toolchain.
+On 14-12-23, 18:22, Miguel Ojeda wrote:
+> Something like v1 but a bit simpler, e.g. keeping things as they are,
+> but with just a sentence after the command like "If you are building
+> the kernel with `O=`, i.e. specifying an output directory, then you
+> should append `--path <builddir>`." could work.
 > 
-> The current instructions at Documentation/rust/quick-start.rst assume
-> one is using an in-tree kernel build (i.e. no `O=`) [1]. We would like
-> to provide also the way to do so for `O=` builds, but ideally in a way
-> that keeps the one-liner copy-pastable and without duplication [2].
-> 
-> Thus provide a new Make target, `rustupoverride`, that sets it up for
-> the user given their build options/variables.
-> 
-> Link: https://lore.kernel.org/rust-for-linux/20231207084846.faset66xzuoyvdlg@vireshk-i7/ [1]
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com/ [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> [...]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Or we could just provide a `rustupoverride` Make target to do this for
+> us [1], since we have all the information needed and would be
+> copy-pasteable by everybody. I can send it as a non-mangled patch and
+> then Viresh can redo this one on top using it.
+
+How about this ?
+
+diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+index f382914f4191..367b06f3edc2 100644
+--- a/Documentation/rust/quick-start.rst
++++ b/Documentation/rust/quick-start.rst
+@@ -39,8 +39,17 @@ If ``rustup`` is being used, enter the checked out source code directory
+        rustup override set $(scripts/min-tool-version.sh rustc)
+
+ This will configure your working directory to use the correct version of
+-``rustc`` without affecting your default toolchain. If you are not using
+-``rustup``, fetch a standalone installer from:
++``rustc`` without affecting your default toolchain.
++
++If you are building the kernel with `O=`, i.e. specifying an output
++directory, then you should append `--path <builddir>` to the above
++command.
++
++Alternatively, you can use the ``rustupoverride`` Make target::
++
++       make LLVM=1 O=<builddir> rustupoverride
++
++If you are not using ``rustup``, fetch a standalone installer from:
+
+        https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
+
+-- 
+viresh
