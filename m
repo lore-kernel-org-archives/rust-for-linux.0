@@ -1,73 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0045D18AE8;
-	Fri, 15 Dec 2023 09:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64821944D
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 10:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7KH7koc"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 84DBDC433C9;
-	Fri, 15 Dec 2023 09:40:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702633224;
-	bh=DBz9wtE7RjeSYiKG1ce4EE+S157hUpSa+u6pWZ6ST9w=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=D7KH7kocevc6DNtXPXsqTrqaqIPQZG0XEAEJdLmRHeHPG8UrfNtCIp5biNlppKVhh
-	 D6LPndpdR3AS1jtcYRQaBFosA52s+I6Wqjt2SkTMA9xnfko6UVztfFmNBe9GW+feP/
-	 BwmSdm3NSIxelKGMsiF6/+EPggfu7q+ruTcBVsvQ33iXqWNlkLNcsJNv5Fo6W4aIq9
-	 vKGWVGzhWqrHoPH6T4Zv4cFzs1432HZktTlbNM0EUe+cW9RtehaxUYkvjEYJ94F7VZ
-	 ljpYZZXB3s3gLyA6OkWZ+guGhWPOe518rYSC8zAIlpK7NaHAR8UENKBe+A+MARfLhr
-	 zdNCufzR+PoFA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6E4A7DD4EFD;
-	Fri, 15 Dec 2023 09:40:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4A4ht8jm"
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4b2cdf382d9so156448e0c.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 02:28:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702636087; x=1703240887; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yFkrN1vK3BylaBocXztGHMiijGax/EL/4gaHlS2BTvM=;
+        b=4A4ht8jme8JDkdqLMhO+eAuWQPted3jVl0gh2bPWcADF3jlNsGJ+uEZEzuPXfVvnk1
+         OsKgQdwRr9Syv9yYInmliQDGz7ibeB3CIWBN7PiIZVeBs3kR0HrABwfF9SwMLzTVsZ6h
+         O5rKsHz4rEyin4B1Xbzq8P/Ik9+o4Reh2W5d1E0xPtB645KWAmfImiLFwMuWVEgW3hy/
+         YIZhrPkm3uFPG+8gFlqVmbH3mKv2+ILG1yaao3kQ3zWxKeqmuiYD6QrAnK4uHQMEe3L6
+         dqFWRHuPIeZ6tDgfcdMXGGfz/rg+e4cLjXBuWfNjHQhpeEwG1fTFzfJNVagaHrjmwKs6
+         MzOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702636087; x=1703240887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yFkrN1vK3BylaBocXztGHMiijGax/EL/4gaHlS2BTvM=;
+        b=Jd45pf7CsrG3MQJlzGxoudD+K5ItoMD60JUHP8R3iasilQg8jpsLj+i03mjOxaMipb
+         EmtQlp7cbodqW16BY2OEaWnR85pp1o5+aQaNhEiZ3SRuhEIFMOxn4iEI8XJcFrdpL+oR
+         dTyS50qaaywEpBZT95Jy7DAilxdHbyg/r3J4iqStNx+c2mukRUNbnPyt+J7QR4G41U+M
+         MZgOVbsoFf5kbcrMGUFWvxZXgnshUI+29vmrJnmgYwe9ko1BZtV2NoMooAiCRzcWRZri
+         E+V2CATuPsYknl4mmegTkhaEPgiZlmSVPpgeYUX9Yh7rL3Phzj+MDno9U32ZLbw34aRA
+         YiCQ==
+X-Gm-Message-State: AOJu0Yx/gMCQiEOtZryT0H2U+aqizRsbm4VVqVTbt3WT3hiD8vlP/iR5
+	P0lycIC9zkPv48fhGERoMz8omHdAQVBsw0Q0ZY6V4A==
+X-Google-Smtp-Source: AGHT+IHrgzg5Xy8glhNabG8mQDgwQ4Syagis5L66d9FePm9gDh1kQJ1PjnOm/F0wHWssEiQYB+/rqg/OdCr/s913HTI=
+X-Received: by 2002:a05:6122:448d:b0:4b2:df58:7de1 with SMTP id
+ cz13-20020a056122448d00b004b2df587de1mr9223620vkb.23.1702636087417; Fri, 15
+ Dec 2023 02:28:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v11 0/4] Rust abstractions for network PHY drivers
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170263322444.1975.17234929609368010648.git-patchwork-notify@kernel.org>
-Date: Fri, 15 Dec 2023 09:40:24 +0000
-References: <20231213004211.1625780-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20231213004211.1625780-1-fujita.tomonori@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- wedsonaf@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
+References: <ZXtebif2S1CyJRik@boqun-archlinux> <20231214200421.690629-1-boqun.feng@gmail.com>
+In-Reply-To: <20231214200421.690629-1-boqun.feng@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 15 Dec 2023 11:27:56 +0100
+Message-ID: <CAH5fLggriMBLWVx5i1efHdiNveVutvRfcA6mydNV9egzEFnnxw@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible wait
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Thu, Dec 14, 2023 at 9:04=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> Currently, `CondVar::wait()` is an interruptible wait, and this is
+> different than `wait_event()` in include/linux/wait.h (which is an
+> uninterruptible wait). To avoid confusion between different APIs on the
+> interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
+> wait same as `wait_event()`, also rename the old `wait()` to
+> `CondVar::wait_interruptible()`.
+>
+> Spotted-by: Tiago Lam <tiagolam@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-This series was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
+The diff is a bit hard to read because you swapped the order of the
+functions, but LGTM.
 
-On Wed, 13 Dec 2023 09:42:07 +0900 you wrote:
-> No functional change since v10; only comment and commit log updates.
-> 
-> This patchset adds Rust abstractions for phylib. It doesn't fully
-> cover the C APIs yet but I think that it's already useful. I implement
-> two PHY drivers (Asix AX88772A PHYs and Realtek Generic FE-GE). Seems
-> they work well with real hardware.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v11,1/4] rust: core abstractions for network PHY drivers
-    https://git.kernel.org/netdev/net-next/c/f20fd5449ada
-  - [net-next,v11,2/4] rust: net::phy add module_phy_driver macro
-    https://git.kernel.org/netdev/net-next/c/2fe11d5ab35d
-  - [net-next,v11,3/4] MAINTAINERS: add Rust PHY abstractions for ETHERNET PHY LIBRARY
-    https://git.kernel.org/netdev/net-next/c/cbaa28f970a1
-  - [net-next,v11,4/4] net: phy: add Rust Asix PHY driver
-    https://git.kernel.org/netdev/net-next/c/cbe0e4150896
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
