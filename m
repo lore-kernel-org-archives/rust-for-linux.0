@@ -1,145 +1,129 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E2547F6E
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 21:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF0448CF2;
+	Fri, 15 Dec 2023 23:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bTLc9lOv"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-54f4b31494fso1963118a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 13:28:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BuxCINZe"
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3ba084395d9so880462b6e.0;
+        Fri, 15 Dec 2023 15:45:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702675718; x=1703280518; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cC1bTSXVCMzouBImm4Lunm53BHd7q+29uIzARRshG/Q=;
-        b=bTLc9lOvky3hnqhxyB3qjrvvSj24oJ76O9Fo+kz4prIC3/67Zr4hbepSfTtZEIYb8D
-         CQKUltMB8EkpS6plbFJ+q2luSKHC398Yun0LQDsXDz5dTENqVvzLXfx2vz9mDMQtO5rf
-         KUzX/KmZQDoCM3blBuw8dz4kpHPKL+2+lhvf2lgUTqX8/uqBeAKZUhlLKdGvDOyfBEMx
-         cwfcd1KmOzTdWzVcUoVH15MorVl1u4ZfQfoipHMRBL0MzluTEdFhiGdIYu8Nm/5fN8dk
-         9lD4NxpADZHaU2sI7aQSVOrjHGzslfcma3kCM5keLM9VFEchS+ugTPURdgoTwWIa50wC
-         AtLw==
+        d=gmail.com; s=20230601; t=1702683939; x=1703288739; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=qc4z/39BVksBkr0WR/MXxrqt9kwDpSLSTQX7fRWhbuQ=;
+        b=BuxCINZexjfF7sKnRrBewr2kypMuMZflDWiNBSIR/ikJM7gwqli/DrWLfsW3saU5bU
+         ag5l6/v/8j/28HlVzaMxXXqQA66DNAUOqDCUY0b8QZiryTOGnBQZE6arIDWObyMejK3R
+         s0JjEmSoiQ4vwP9EIUCzGk01DeT0euL5Cd912D0ANlLrw1VNafrQ18qAp/9AsJt77MyW
+         v/kKtx2knZWuc/AlHEmgbbYU0G7hKcq/jByIj4yaD+lNfwERnDic0rq0b4VofDVBM4H/
+         jkJeZdJ4SUrfr1AbtinTqp+K5mOe7d22gYgpyo0/lAuqzQM4QGC61dmrG+5fx2MOWIQX
+         ip6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702675718; x=1703280518;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cC1bTSXVCMzouBImm4Lunm53BHd7q+29uIzARRshG/Q=;
-        b=ffXijIigra+vhZwGGq3f9SYeIqDCdWNCj0ujpNdp2tUcFc1XvUlN63WGuP+24xhvXr
-         teWgs0v1HUjY+JvwdmzZYfueoBA34QOrFCyWLy8YzCiJJSUNpAW0tiwbL3GXwdbH4jZ/
-         SZ6GNI+HVXHUcrz4CBMOLnD5OsksbireU5QPdDnYRGX4coZpfZijb6z0PhfhoBjI/Jen
-         4yruychuqyiMt8ra2iMHgFYBHt18UNmjxipjkreAG1TK50SMB72IOzkXX86tfdV7TDWm
-         6ilfDcqadsGPlblJMPKDiMRjRyd6r+ZX4gR4KcwvXyIs6gzb/trMrH5Cpz5sVdOnIDX/
-         KBPQ==
-X-Gm-Message-State: AOJu0YxvLdZTMrSGj5peJcKIkAIjchCum2aTzbvbQOUBw/UVDYxzGDq0
-	upT4Py4qNb2GKdbzxMATxYVMg8k1ziupayTlkIbrMQ==
-X-Google-Smtp-Source: AGHT+IE2mXg2+E2jLeKihSLfRCnuQkYt+4zI+WvSBMFz2WgpbdwhTo/O+qkSxIF4jSezpRGJphrMSKQXA2O0/0ant9E=
-X-Received: by 2002:a50:cd53:0:b0:551:cfab:5538 with SMTP id
- d19-20020a50cd53000000b00551cfab5538mr6411620edj.32.1702675718126; Fri, 15
- Dec 2023 13:28:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702683939; x=1703288739;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qc4z/39BVksBkr0WR/MXxrqt9kwDpSLSTQX7fRWhbuQ=;
+        b=TaILzolKcvpui0UJhk+H/ob412QzFme1i+EwJbXEINRBbjOYTirXT91W8Yp9SIVlwo
+         UA6DbROFWH4XQipBO3mf+K1qRqnqgjgSze2G5G1EfRBt2C/oAvat/XkP8h1tRVhK/3uS
+         3e60RRtAQllrN59+hOwTwdYcCNNr8IPD9nv4Onpi0bdXz7pLJpyD8VXBEs4u+F5T30iy
+         7FqDjV4AUE+9clSvuQkFRK1LTGl05RkVZzcYusgqTBx1IWfDZaDEz95AVgjZd08f7sI3
+         0lmTWt3/KNuGfaYggKJ9PV11m0tfKuMHxgMdrXzeDX9GtmRHG0pe72DdLjLABdiD+xJ+
+         Wgww==
+X-Gm-Message-State: AOJu0YzissWVmkp3UAmzo+9wJiHuOYBsm6GxUT1qJdWhdXW1DgQnGw9O
+	xPJ5G/Lja7UZmWmUOwalozc=
+X-Google-Smtp-Source: AGHT+IGxISurWf572M0Wzue4BvusNE7/OQCRxh1YbVkx9QD5kgfDGObmilDAZ7814m9RD76rCV+8wA==
+X-Received: by 2002:a05:6808:189b:b0:3b8:b6f6:4f7c with SMTP id bi27-20020a056808189b00b003b8b6f64f7cmr15846936oib.54.1702683939169;
+        Fri, 15 Dec 2023 15:45:39 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id w13-20020a0562140b2d00b0067f27d24cfbsm88758qvj.91.2023.12.15.15.45.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Dec 2023 15:45:38 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 2910C27C005B;
+	Fri, 15 Dec 2023 18:45:38 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Fri, 15 Dec 2023 18:45:38 -0500
+X-ME-Sender: <xms:IeV8ZcwMAk6HE-P42RBGDKt6eXT9JzdaFGb9T0cQuIwVrDitgL010g>
+    <xme:IeV8ZQTXZAqDQGlk88h8GM5UlrWA_56ItPBqsb9A4dPkMdXAoQMziFll5g3OYGyp3
+    hSzVOprdrjUEncQ1g>
+X-ME-Received: <xmr:IeV8ZeV8La0N4WeTfTdyhej3ONo2mz_LCiM5yXqyJDUNr-b7yEcaD5e6F3NC7Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtfedgudehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefh
+    gfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:IeV8ZahXk5g_Mh_TXMTwpMAJudOPuCDR1SCaLhLX_edv9jApJ8--6Q>
+    <xmx:IeV8ZeAGoRJTfXa8FQMU_49Z6R1hyPHM0WDfiL9E7qGcL9rm8k42aw>
+    <xmx:IeV8ZbLJI7IPJObY_bTUW0gFWTweY8327kDE5HFG3emvIeb8TsLGeQ>
+    <xmx:IuV8ZUQ-I7l2kNATohS5pzpvO-C9k3wpSjh0IkWfJhxs82y_ELTltg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 Dec 2023 18:45:36 -0500 (EST)
+Date: Fri, 15 Dec 2023 15:45:28 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible
+ wait
+Message-ID: <ZXzlGM1xV-VlUkeh@boqun-archlinux>
+References: <ZXtebif2S1CyJRik@boqun-archlinux>
+ <20231214200421.690629-1-boqun.feng@gmail.com>
+ <CAH5fLggriMBLWVx5i1efHdiNveVutvRfcA6mydNV9egzEFnnxw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215124751.175191-1-ojeda@kernel.org>
-In-Reply-To: <20231215124751.175191-1-ojeda@kernel.org>
-From: Justin Stitt <justinstitt@google.com>
-Date: Fri, 15 Dec 2023 13:28:26 -0800
-Message-ID: <CAFhGd8pHtfuMYfx=uEzssvesQDZ-BS0BzPwn06WbasXKUfPBJg@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: remove `CC=clang` mentions
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Jonathan Corbet <corbet@lwn.net>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, linux-doc@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLggriMBLWVx5i1efHdiNveVutvRfcA6mydNV9egzEFnnxw@mail.gmail.com>
 
-Hi,
+On Fri, Dec 15, 2023 at 11:27:56AM +0100, Alice Ryhl wrote:
+> On Thu, Dec 14, 2023 at 9:04 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > Currently, `CondVar::wait()` is an interruptible wait, and this is
+> > different than `wait_event()` in include/linux/wait.h (which is an
+> > uninterruptible wait). To avoid confusion between different APIs on the
+> > interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
+> > wait same as `wait_event()`, also rename the old `wait()` to
+> > `CondVar::wait_interruptible()`.
+> >
+> > Spotted-by: Tiago Lam <tiagolam@gmail.com>
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> 
+> The diff is a bit hard to read because you swapped the order of the
+> functions, but LGTM.
+> 
 
-On Fri, Dec 15, 2023 at 4:48=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Nowadays all architectures except s390 recommend using `LLVM=3D1` instead=
- of
-> `CC=3Dclang`, and since commit a3c6bfba4429 ("Documentation/llvm: refresh
-> docs") the Kbuild LLVM documentation makes `LLVM=3D1` the way to go:
->
->     We want to encourage the use of ``LLVM=3D1`` rather than just
->     ``CC=3Dclang``. Make that suggestion "above the fold" and "front and
->     center" in our docs.
->
-> In particular, that commit removes the examples with `CC=3Dclang`.
->
-> Thus do the same in the Rust Quick Start guide, i.e. remove the `CC=3Dcla=
-ng`
-> mentions, especially since the architectures that have had their Rust
-> support upstreamed (or soon to be upstreamed) are all `LLVM=3D1` ones
-> anyway. And perhaps by the time Rust is supported for s390 (or new
-> architectures), it may have moved to `LLVM=3D1` anyway. Otherwise,
-> this can be added back if needed (or perhaps an extra link to
-> Documentation/kbuild/llvm.rst).
->
-> This should also help avoiding potential confusion around `CC=3Dclang` [1=
-].
->
+Yeah, I did that because `wait_interruptible` metioned `wait`, so I had
+to make `wait` still before `wait_interruptible`.
 
-Yes!
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
+Thanks!
 
-> Link: https://lore.kernel.org/rust-for-linux/6df6e8e5-8d5b-4d3d-91b5-bc0e=
-90c424ea@nvidia.com/ [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-
-> ---
->  Documentation/rust/quick-start.rst | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
->
-> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quic=
-k-start.rst
-> index f382914f4191..75faa987079a 100644
-> --- a/Documentation/rust/quick-start.rst
-> +++ b/Documentation/rust/quick-start.rst
-> @@ -76,7 +76,7 @@ libclang
->
->  ``libclang`` (part of LLVM) is used by ``bindgen`` to understand the C c=
-ode
->  in the kernel, which means LLVM needs to be installed; like when the ker=
-nel
-> -is compiled with ``CC=3Dclang`` or ``LLVM=3D1``.
-> +is compiled with ``LLVM=3D1``.
->
->  Linux distributions are likely to have a suitable one available, so it i=
-s
->  best to check that first.
-> @@ -229,10 +229,6 @@ at the moment. That is::
->
->         make LLVM=3D1
->
-> -For architectures that do not support a full LLVM toolchain, use::
-> -
-> -       make CC=3Dclang
-> -
->  Using GCC also works for some configurations, but it is very experimenta=
-l at
->  the moment.
->
->
-> base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
-> --
-> 2.43.0
->
-
-Thanks
-Justin
+Regards,
+Boqun
