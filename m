@@ -1,165 +1,130 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from aer-iport-4.cisco.com (aer-iport-4.cisco.com [173.38.203.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271A12DF9F;
-	Fri, 15 Dec 2023 13:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8724F31735;
+	Fri, 15 Dec 2023 14:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="YnPDEDkr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1702646504;
-	bh=4G/ylAHrmIAiXwxQVYFSIowpnOIBt/Wfr3j3WfEtRUU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YnPDEDkrlJK7uYBS/6sBOX9Sq6M4kPspArbh3gJ1DCzE5snGquYyg8kL2N0wPJTIw
-	 fiTSc1auL6Mrn8O2QSBOPSrPMlWxBPf3jPNuJbUHnsdPH5LR5bJkAMKTJj98edmWX9
-	 EQqNJ96HR/xd+mS1metDTIAz8ApaO54MSSCWRBUMHLACpKU6Iw9zbEmgX/C2M2uUD6
-	 Ka2QLagjNJUVVWlZdvyNKeYZbdyvMuTDpoOCOe+h8LDAWuMSvS3ZfdInZv9Fra5DMT
-	 DWv23iNxo1LIz1bliPL+B02uMNNhgwFwrVGJGcpUs6RFo72wEdK1GJ2QEpL+Wta5w7
-	 KxPiiRV5qPhPg==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 1AC1D3781FB2;
-	Fri, 15 Dec 2023 13:21:43 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kernel@collabora.com,
-	Laura Nao <laura.nao@collabora.com>
-Subject: [PATCH] kselftest: Add basic test for probing the rust sample modules
-Date: Fri, 15 Dec 2023 14:21:32 +0100
-Message-Id: <20231215132132.169628-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="AfKlD1Lv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=1242; q=dns/txt; s=iport;
+  t=1702650517; x=1703860117;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rtGpcSBAa+bZIu1Cx5ZRUunKjM+Koy2IkGWED7zM6Sw=;
+  b=AfKlD1LvbRzFg0FtEl/tq5u/GcQVAyAup/9E326afrAAMWc5wNp0RYHG
+   H3JoWj5Sh1MVSzQ9XWTSkK/hjb0I+pJPaNpAeaPPGBS+pRBOK2vlEXllI
+   mCyOlzADe2u9hE2uTkhonatSGyhcBRBDjRYpZmwgiPjPA5rASqBtXerHi
+   E=;
+X-CSE-ConnectionGUID: Ea8JoieSQcKM1hK/F0wyog==
+X-CSE-MsgGUID: 2lIXEF/3RZmN8Lx+OVNwdA==
+X-IPAS-Result: =?us-ascii?q?A0AbAQADYnxllxbLJq1aHgEBCxIMQIFEC4IRgSNWLhJIB?=
+ =?us-ascii?q?I1KiGqSWoslgSUDVg8BAQENAQE7CQQBAYUGAocxJzQJDgECBAEBAQEDAgMBA?=
+ =?us-ascii?q?QEBAQEBAQYBAQUBAQECAQcEFAEBAQEBAQEBNwUQNYVoDYZGAQIDOj8QCxguV?=
+ =?us-ascii?q?wYTCIJ4AYJeAxGuO3iBNIEBg2sPrzKBYwaBSIgbAYogQoFJRIEVgyo+imQiB?=
+ =?us-ascii?q?IZ7gh4HMoEJDAmBA4MmKZFrWyJGcBsDBwN/DysHBDAbBwYJFBgVIwZQAgIoI?=
+ =?us-ascii?q?QkTEkCBXYFSCn4/Dw4Rgj4oNjYZSIJaFQw0SnUQKgQUF4ESBGobEh4SJREQF?=
+ =?us-ascii?q?w0DCHQdAjI8AwUDBDMKEg0LIQUUQgNCBkkLAwIaBQMDBIEwBQ0eAhAaBgwnA?=
+ =?us-ascii?q?wMSSQIQFAMeHQMDBgMKMQMwgRkMTwNsHzIJPA8MGwI5DScjAixWBRACFgMkG?=
+ =?us-ascii?q?jYRCQsHIQMsBjgCEwwGBgleJhYJBCcDCAQDVAMjdxEDBAwDFwcLB1cDRB1AA?=
+ =?us-ascii?q?3g9NRQbbaJSgTYBgxtZUIEaExcpliMBrwyEGYwFlSJJA5cZklmYRY1omkoCB?=
+ =?us-ascii?q?AYFAhaBYzqBWzMaCBsVgyISQBkPjjmBEwEIh1eKZ0IyAjkCBwsBAQMJimEBA?=
+ =?us-ascii?q?Q?=
+IronPort-Data: A9a23:JeBLWKts0qdEzzBx6FishubU9ufnVL9ZMUV32f8akzHdYApBsoF/q
+ tZmKWmBO/7eYGT9KNF/O4zgoxtX6JLXzINkQQs9qSk2RS9HgMeUXt7xwmUckM+xwmwvaGo9s
+ q3yv/GZdJhcokf0/0rrav656yAkiclkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1vlV
+ eja/YuHZDdJ5xYuajhPsvja9Us21BjPkGpwUmIWNKgjUGD2zxH5PLpHTYmtIn3xRJVjH+LSb
+ 44vG5ngows1Vz90Yj+Uuu6Tnn8iG9Y+DiDS4pZiYJVOtzAZzsAEPgnXA9JHAatfo23hc9mcU
+ 7yhv7ToIesiFvWkdOjwz3C0HgkmVZCq9oMrLlCSuJyxyEzLSELn4NA3DGJxE9UH6+F4VDQmG
+ fwwcFjhbziKivjzy7WhR6wwwM8iN8LseogYvxmMzxmAUq1gGsCFGf2Ro4UCtNszrpgm8fL2b
+ s8YYidrZQ/oaBxUMVBRA5U79AutriiuKWYC9wj9SawfuWzy/CFfl+PXAt/zKviaBuJruFmUj
+ zeTl4j+KkpHbIPEk2XtHmiXruvLgybTXIMJCKb+8v9snU3VymENYDUSVF2msby1jUWWRd1SM
+ QoX9zAooKx081akJvH/QgakoXifoh8AR/JfFOo17AzLwa3Riy6cAXIOSRZOb9spsMJwTjsvv
+ nePk97yDCFrtryYU2m1+bCToje/fyMSKAcqYyYYTQIDy9ruuoc+ilTIVNkLOKWylNf4BRn03
+ DbMqiUi750LhNIA16ig1VTGmC634JzISBMloAnaQAqN6gJ/eZ7gZIGy71XfxehPIZzfTVSbu
+ nUA3c+E44gmF4yWiGmDR/9IGLCv+uatLjLRmxhsEoMn+jDr/GSsFahZ5DB1KV14MsIsdjjub
+ 0ve/whW4fd7NT2qbKl7aYWrBOwxxK37CNLqEPvTa7JmaJV3cgjB+CZ1fk+W93j3l1Qrl+c6N
+ P+ze8SrF3BBPqtn5CKsQPsa17oixyR4zmTWLbj0xg62+bWXfm+aVLBDNlaSBsgz67qZpkPb/
+ tBQH8SPwhRbFub5Z0H/+IoePRYFJGk9AorepMled+rFKQ1jcEk+BvPKxrUodaRqmq1UkqHD+
+ XTVckhaxVb2rX7KMwOHbjZkcryHYHpkhXs2J2ktJVGyxz0laJrp56YEfJxxdr4inAB+8RJqZ
+ 9QMK+eHA/l0cz/k3m0dTt7T9JNzcxv+0GpiIBGZSDQ4epdhQSnA9dnlYhbj+UEy4syf65NWT
+ 1qIiFuzfHYTezmOGvo6f9qJ6zuMUZkhdABaAhCgzjp7IRmEHG1Wx8vZ1KNfHi30AU+frgZ2L
+ i7PafvimcHDopUu7P7Cjr2eooGiHoNWRxUCRTSEvejpbHWKrwJPJLOsts7WJFgxs0uqoc2fi
+ Rl9lqiU3AAvxQ8V7NQkS96HM4pktoWxz1Ol8uiUNC6WNwvwUOwIzoiu1shUvaoF3a5CpQazQ
+ QqO/NIcUYhly+u7eGP90DENN7zZvdlNw2G6xa1scC3HCNpfoePvvbN6ZELX1kSw7dJdbesY/
+ AvWkJVMsFzj10tyYozuY+I93z3kE0Hsmp4P7vkyaLIHQCJyor2eSfQw0hPL3aw=
+IronPort-HdrOrdr: A9a23:Jf+cha+mPhaclPTgDcJuk+D3I+orL9Y04lQ7vn2ZhyY7TiW9rb
+ HKoB17726XtN9/YhsdcLy7VZVoBEmskaKdgrNhXotKPjOGhILAFugLhrcKgQeBJ8SUzIBgPM
+ lbH5RWOZnZEUV6gcHm4AOxDtoshOWc/LvAv5a485+oJjsaEp2JKGxCe2CmLnE=
+X-Talos-CUID: =?us-ascii?q?9a23=3ABTKwDGkwtJoYBvThQlyoJrOhjnzXOVDUnFXXIkK?=
+ =?us-ascii?q?DMG1KbeSVahi+oLx1lMU7zg=3D=3D?=
+X-Talos-MUID: =?us-ascii?q?9a23=3ArQek7w0rU18T4A+NZln6zXWjLzUjuaCPOG0j1s4?=
+ =?us-ascii?q?8icyiZQhgeBCjqiu7a9py?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.04,278,1695686400"; 
+   d="scan'208";a="9923272"
+Received: from aer-iport-nat.cisco.com (HELO aer-core-4.cisco.com) ([173.38.203.22])
+  by aer-iport-4.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 14:27:05 +0000
+Received: from localhost (ams3-vpn-dhcp3724.cisco.com [10.61.78.140])
+	(authenticated bits=0)
+	by aer-core-4.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3BFER4AZ022079
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 15 Dec 2023 14:27:04 GMT
+Date: Fri, 15 Dec 2023 16:27:03 +0200
+From: Ariel Miculas <amiculas@cisco.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Jonathan Corbet <corbet@lwn.net>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>, linux-doc@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH] docs: rust: remove `CC=clang` mentions
+Message-ID: <am3aewoqtx2tzcdn55lzhqszhmtfqx5phwufo4bwinrslwe3ft@jahi4gp25sqf>
+References: <20231215124751.175191-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231215124751.175191-1-ojeda@kernel.org>
+X-Authenticated-User: amiculas@cisco.com
+X-Outbound-SMTP-Client: 10.61.78.140, ams3-vpn-dhcp3724.cisco.com
+X-Outbound-Node: aer-core-4.cisco.com
 
-Add new basic kselftest that checks if the available rust sample modules
-can be added and removed correctly.
-
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
- MAINTAINERS                                   |  1 +
- tools/testing/selftests/Makefile              |  1 +
- tools/testing/selftests/rust/.gitignore       |  1 +
- tools/testing/selftests/rust/Makefile         |  8 ++++
- .../selftests/rust/test_probe_samples.sh      | 42 +++++++++++++++++++
- 5 files changed, 53 insertions(+)
- create mode 100644 tools/testing/selftests/rust/.gitignore
- create mode 100644 tools/testing/selftests/rust/Makefile
- create mode 100755 tools/testing/selftests/rust/test_probe_samples.sh
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e2c6187a3ac8..acf283a5d2c0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18847,6 +18847,7 @@ F:	Documentation/rust/
- F:	rust/
- F:	samples/rust/
- F:	scripts/*rust*
-+F:	tools/testing/selftests/rust/
- K:	\b(?i:rust)\b
- 
- RXRPC SOCKETS (AF_RXRPC)
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 3b2061d1c1a5..26140426c849 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -74,6 +74,7 @@ TARGETS += riscv
- TARGETS += rlimits
- TARGETS += rseq
- TARGETS += rtc
-+TARGETS += rust
- TARGETS += seccomp
- TARGETS += sgx
- TARGETS += sigaltstack
-diff --git a/tools/testing/selftests/rust/.gitignore b/tools/testing/selftests/rust/.gitignore
-new file mode 100644
-index 000000000000..e3c5c04d1b19
---- /dev/null
-+++ b/tools/testing/selftests/rust/.gitignore
-@@ -0,0 +1 @@
-+ktap_helpers.sh
-diff --git a/tools/testing/selftests/rust/Makefile b/tools/testing/selftests/rust/Makefile
-new file mode 100644
-index 000000000000..ccaa50f35b5b
---- /dev/null
-+++ b/tools/testing/selftests/rust/Makefile
-@@ -0,0 +1,8 @@
-+
-+TEST_PROGS += test_probe_samples.sh
-+TEST_GEN_FILES := ktap_helpers.sh
-+
-+include ../lib.mk
-+
-+$(OUTPUT)/ktap_helpers.sh:
-+	cp $(top_srcdir)/tools/testing/selftests/dt/ktap_helpers.sh $@
-diff --git a/tools/testing/selftests/rust/test_probe_samples.sh b/tools/testing/selftests/rust/test_probe_samples.sh
-new file mode 100755
-index 000000000000..a46550543f73
---- /dev/null
-+++ b/tools/testing/selftests/rust/test_probe_samples.sh
-@@ -0,0 +1,42 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2023 Collabora Ltd
-+#
-+# This script tests whether the rust sample modules can
-+# be added and removed correctly.
-+#
-+
-+DIR="$(dirname "$(readlink -f "$0")")"
-+
-+source "${DIR}"/ktap_helpers.sh
-+
-+rust_sample_modules=("rust_minimal" "rust_print")
-+
-+KSFT_PASS=0
-+KSFT_FAIL=1
-+KSFT_SKIP=4
-+
-+ret="${KSFT_PASS}"
-+
-+ktap_print_header
-+
-+ktap_set_plan "${#rust_sample_modules[@]}"
-+
-+for sample in "${rust_sample_modules[@]}"; do
-+    if ! /sbin/modprobe -n -q "$sample"; then
-+        ktap_test_skip "module $sample is not found in /lib/modules/$(uname -r)"
-+        continue
-+    fi
-+
-+    if /sbin/modprobe -q "$sample"; then
-+        /sbin/modprobe -q -r "$sample"
-+        ktap_test_pass "$sample"
-+    else
-+        ret="${KSFT_FAIL}"
-+        ktap_test_fail "$sample"
-+    fi
-+done
-+
-+ktap_print_totals
-+exit "${ret}"
--- 
-2.30.2
-
+On 23/12/15 01:47PM, Miguel Ojeda wrote:
+> Nowadays all architectures except s390 recommend using `LLVM=1` instead of
+> `CC=clang`, and since commit a3c6bfba4429 ("Documentation/llvm: refresh
+> docs") the Kbuild LLVM documentation makes `LLVM=1` the way to go:
+> 
+>     We want to encourage the use of ``LLVM=1`` rather than just
+>     ``CC=clang``. Make that suggestion "above the fold" and "front and
+>     center" in our docs.
+> 
+> In particular, that commit removes the examples with `CC=clang`.
+> 
+> Thus do the same in the Rust Quick Start guide, i.e. remove the `CC=clang`
+> mentions, especially since the architectures that have had their Rust
+> support upstreamed (or soon to be upstreamed) are all `LLVM=1` ones
+> anyway. And perhaps by the time Rust is supported for s390 (or new
+> architectures), it may have moved to `LLVM=1` anyway. Otherwise,
+> this can be added back if needed (or perhaps an extra link to
+> Documentation/kbuild/llvm.rst).
+> 
+> This should also help avoiding potential confusion around `CC=clang` [1].
+> 
+> Link: https://lore.kernel.org/rust-for-linux/6df6e8e5-8d5b-4d3d-91b5-bc0e90c424ea@nvidia.com/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Ariel Miculas <amiculas@cisco.com>
