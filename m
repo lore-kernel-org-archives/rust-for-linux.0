@@ -1,100 +1,121 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBDB24B22
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 11:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EEE24B47;
+	Fri, 15 Dec 2023 11:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AcJG9psP"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d38bedd799so2422765ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 03:24:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ejYLrVyw"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-5cd81e76164so4594677b3.1;
+        Fri, 15 Dec 2023 03:27:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702639461; x=1703244261; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8GgkumGp/FPRWi8vrZgqlN3O931tkPc+89ybT2NhK6s=;
-        b=AcJG9psP4sMMUOU8cLZedY3WASC0EQr0JWA39nwMNY3LscqUwG55hwPPTf8vgSyyG8
-         wWCH1rKieUrjp15SpwxY9LfB5pkOaA0wWMaLS3ibW7jficCQPJ6eLjBYQn98Zq0rRxET
-         p0T/ZIqSjrOg9exOL6pPgjSOcFy36ZjWNdBP9ys6OXlmv2CQ2MraVSV2T1k79iEZqBGg
-         xwjcMaHSPO+eY53N2ge+bdon2jBE8JQLb27/fh1ypx4UfzwQWRnW6nYCIz+6Roz5U10h
-         C1arWNojkWYYOKGXQOKDDqjWNEhFF6fd0Qxv3Ejwcys+Qbmg5H7Y0lilu9qTZfhUSvTv
-         6pCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702639461; x=1703244261;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1702639651; x=1703244451; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8GgkumGp/FPRWi8vrZgqlN3O931tkPc+89ybT2NhK6s=;
-        b=H4Oju/bq2pZs7EBHbF86MAXIytMWC/+ok8h9qIfpL8tR5fSkcE3yaicSZnFayRDWul
-         3Rwky82BGp2N/PpVgPi3x6tgwLX6SwqlpVD8D75HlCMd1Fsy0Xc7m011JUtk7Rycle1s
-         xKSzAgJMWgX/sBpamzZ+BES2O3OiGsfwlQmqSnbIlDTtMPp8Ilnpa1UGGwygUgXYf4M5
-         FG6Pz08wMSsOIbgvRKbHufJSQNhTKvjpkzjFKjg0gIYkHQjZ7UTvYmHSncRRN3idqJVo
-         KV3NFiycEiwUJWe3zqyjXf2lHe2q7AlXloje1S61N012pZX11P+mLL2q7gprupkwvKkS
-         AKXw==
-X-Gm-Message-State: AOJu0YxkZi4DXmLkQfekHvpGGbG+mFdUnMKCFAYh5hgNjTvtpa9q6nMJ
-	WZ4wVGHt9dhu0BFahPArHG3+WQ==
-X-Google-Smtp-Source: AGHT+IFEG9bLz2JAciUhtK/pd6aXcCMzmYZ3wFbUvxt15TRzn9C+JcBv3Iuzl2Sww2LzvlF/sW1gxg==
-X-Received: by 2002:a17:903:32ce:b0:1d3:6110:32fa with SMTP id i14-20020a17090332ce00b001d3611032famr4422003plr.67.1702639460881;
-        Fri, 15 Dec 2023 03:24:20 -0800 (PST)
-Received: from localhost ([122.172.82.6])
-        by smtp.gmail.com with ESMTPSA id w23-20020a170902a71700b001d0c418174fsm8243159plq.117.2023.12.15.03.24.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 03:24:20 -0800 (PST)
-Date: Fri, 15 Dec 2023 16:54:18 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Tiago Lam <tiagolam@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
- build directory
-Message-ID: <20231215112418.usky65sibhbiubyx@vireshk-i7>
-References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
- <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com>
- <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
- <20231215064823.ltm55fk4zclsuuwq@vireshk-i7>
- <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
+        bh=smDGabhS7vctxpO+deRKUcMYfvvkEi0FhsbNu+lkOzE=;
+        b=ejYLrVyw97T5qygNZC7LN3aJ2mLL+0qxzWrJXvz1faNviNWdabvrI9qage5q9MAu4F
+         O0EUFDQdcgQNdGavEPnmmcgEPq8Mmf3LQUXpM4GZ6JiLR2/p3OnNhaNGo0ajYyXVNEE3
+         4BMnRLDufgMcbD4dXwFWZJEkkjMgwtk+h+nD2Oa90BoSfVWVfTMqhMXVJQNeon9WtdiH
+         cQ0OgJqXe5SvH0ntObi7cvc1jErvo7dZrCCZ6M0Abuc+ZKikBN/4hqxJoG5k3tjaiul4
+         hTGgGN6lgumxoIGjvEC/5j7HRpSX2GgNPBjX6FZtZ0URNrnAHxqmzfjYstvTD5tNuQzF
+         qfKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702639651; x=1703244451;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=smDGabhS7vctxpO+deRKUcMYfvvkEi0FhsbNu+lkOzE=;
+        b=qOBHXabCNfFR6UQdr72LEkcP1nahB6f9A+I2GGJip4+MO5PFtEqSx2Bi6vyPvXGlxo
+         ZJThSZjipAz2SXGWVOCfEhoudbcoxlPOz2eodANO+qi0IR5AEEZAiy+1bUHC0FSkhJti
+         8+dM8EwewX9DGJpXhBaF62sj8s1zygojD5/aBp7V2BXQdqmcOtRkuqQIYp8mJG7S3xJh
+         NQDTGX8SvhqecIQdgJm11c0Kb/HvU3/8Z4Nbut4Vr5OJsZjwAUoDcSDcwHY+AwSpJpP0
+         uKkjN48Hy4ytdSu5CIl4fu2O3RwvjNRoOpbw+53D2/FyC4pokvl8KNQDVp2zWH48EFz1
+         X14Q==
+X-Gm-Message-State: AOJu0YzlvA3OOg/BnlW8rBuk21HSTusEjtjPpOBGNb3P6tpzqnM0URls
+	phpPs1dUuJSkJ9koP87bZQpJFfTEfVXFZLTr8LM=
+X-Google-Smtp-Source: AGHT+IGuFMMv68nUKNuq0aC/6kTpHtWXckeCIHxhvxv90ZN2tNAgt3p9+Pw0AKRTRjXfsBMA1xCqGKaRoRHmreap3fg=
+X-Received: by 2002:a81:48c1:0:b0:5e2:62c0:f18b with SMTP id
+ v184-20020a8148c1000000b005e262c0f18bmr4604862ywa.37.1702639650776; Fri, 15
+ Dec 2023 03:27:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
+References: <20231214222253.116734-1-ojeda@kernel.org> <CABVgOS=LXUzRD-c63sxn0FMfGWvxCPP1t_8nY5Xgk30Y9qMAcw@mail.gmail.com>
+In-Reply-To: <CABVgOS=LXUzRD-c63sxn0FMfGWvxCPP1t_8nY5Xgk30Y9qMAcw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 15 Dec 2023 12:27:19 +0100
+Message-ID: <CANiq72kw326HyrDM0v0mFNu5jfb=eL1a+k-idr-5Vbc6_gmY2A@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: add `rustupoverride` target
+To: David Gow <davidgow@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 15-12-23, 11:14, Tiago Lam wrote:
-> 	If ``rustup`` is being used, enter the checked out source code directory,
-> or your build directory (if you're using the `O=` option to build the
-> kernel), and run::
+On Fri, Dec 15, 2023 at 8:38=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
+>
+> Would having similar targets for bindgen help? What about having this
+> install rust-src? Updating / installing those required a lot more
+> looking up of documentation (and then adding --force), so it'd be nice
+> if there were some way to do a similar override or make target.
 
-I thought people aren't required to enter the build directory now (but
-just source code directory) and simply do:
+Which docs did you need to check? i.e. we have the commands for those
+steps in the Quick Start guide. I think you may be referring to the
+case when switching between LTS and mainline, due to the `bindgen-cli`
+vs. `bindgen` name change that the tool did (since that is where
+`--force` is required, not for normal upgrading or downgrading). That
+is definitely a bit painful :-( At least `cargo` mentions the need for
+`--force` in that case. Or are you referring to something else?
 
-         	make LLVM=1 O=<builddir> rustupoverride
+I considered having a `rustupsetup` target (or script) instead that
+does everything (with a `BUILDONLY=3D1` option or similar, given some
+dependencies are not strictly needed for building), since having all
+this "switching logic" is useful, but then:
 
-> 
->         	make LLVM=1 rustupoverride
+  - I am not sure we should "hide" the details of the setup too much:
+I thought `rustupoverride` would be OK-ish because the output
+directory is needed (so it is justified) and the command is
+straightforward, but the others do not "need" that information.
 
-Will this still work if we are in the build directory ?
+  - If we include `bindgen` there, it wouldn't be `rustup`-only
+anymore, so perhaps we would need another name like `rustsetup`. But
+that may mislead others (e.g. those looking at the Make help), because
+it is just one way of setting things up and it is not required.
+Perhaps this can be alleviated by not including it in the `make help`,
+so that everybody comes from the Quick Start guide and thus hopefully
+they have read the document at least diagonally :)
 
-> 	This will configure your current directory to use the correct version of
-> ``rustc`` without affecting your default toolchain.
-> 
-> 	If you are not using ``rustup``, fetch a standalone installer from:
->      	
-> https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
+  - Given there are different ways to set different sub-steps, and the
+fact that we don't have such a script for C does not have (please
+correct me if I am wrong -- I am aware of Thorsten's recent guide,
+which covers `apt` etc., but that is a Quick Start-like approach
+rather than automated script), I am not sure it would be welcome as a
+Make target (but perhaps it would be fine as a script?). Masahiro may
+have some guidelines here.
 
--- 
-viresh
+  - In the future we may have to change how the setup works or add
+steps, i.e. it is not 100% settled. Thus I am concerned about adding
+complex Make targets that users may start to depend on (i.e. with
+particular/complex semantics), vs. just having docs that are manual.
+For `rustupoverride`, it thought it could be OK-ish because it is just
+a single command and unlikely that it will change (and if we stop
+using it, we can make it empty with a warning and then remove it
+eventually; while it gets harder for more complex ones).
+
+What do you think?
+
+Cheers,
+Miguel
