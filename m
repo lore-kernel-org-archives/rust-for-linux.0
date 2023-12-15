@@ -1,129 +1,145 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE0341846
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 19:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E2547F6E
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 21:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kcXDDDyV"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-5e1b9b10dc0so11407997b3.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 11:48:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bTLc9lOv"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-54f4b31494fso1963118a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 13:28:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702669711; x=1703274511; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jxvKbXwjbAGX6GdbkcWO53h3I4l2PzRLmBMsIoNBpj0=;
-        b=kcXDDDyVEmycAM/0KvjpEtkST2WOdUKg5csGN94SL7JukLSc5zlJmRvPzWxj671fYT
-         YjaygWkNXOixZ5qsQqAuUwAuDte3S8hWq+PM+aJUxNdQNqK8u4mVk26Av5g4hLiKj2xl
-         qouDeoGFUkGtoaJCjghsnxjqYfaipnTzR5repaeqn1DpxutrBUxQ13Bs4PZ7wABQeM6K
-         3p+aRyZ3hdphACyaxIIuaw1ypYdnNz4fYqbYr/6nhxmMblRj27Eop+CE+jNiNlWUJC33
-         zTPzxqTjDoTrKsuMmdWukOZwjWLxnDfBwf5Tbk3o7ATgD8IH7o4HU8/iBJhDzsJ9R4WB
-         KC/g==
+        d=google.com; s=20230601; t=1702675718; x=1703280518; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cC1bTSXVCMzouBImm4Lunm53BHd7q+29uIzARRshG/Q=;
+        b=bTLc9lOvky3hnqhxyB3qjrvvSj24oJ76O9Fo+kz4prIC3/67Zr4hbepSfTtZEIYb8D
+         CQKUltMB8EkpS6plbFJ+q2luSKHC398Yun0LQDsXDz5dTENqVvzLXfx2vz9mDMQtO5rf
+         KUzX/KmZQDoCM3blBuw8dz4kpHPKL+2+lhvf2lgUTqX8/uqBeAKZUhlLKdGvDOyfBEMx
+         cwfcd1KmOzTdWzVcUoVH15MorVl1u4ZfQfoipHMRBL0MzluTEdFhiGdIYu8Nm/5fN8dk
+         9lD4NxpADZHaU2sI7aQSVOrjHGzslfcma3kCM5keLM9VFEchS+ugTPURdgoTwWIa50wC
+         AtLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702669711; x=1703274511;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jxvKbXwjbAGX6GdbkcWO53h3I4l2PzRLmBMsIoNBpj0=;
-        b=XRQrdN+nnP8il/TmM8fP8p0ke+J3l/p5T6ei94UdRExKFebKPmAPICAWclMeMv6S1l
-         ewoxGIMcSrrxi5EcJNiqd3VbZ1KlJYIRr8R0s8lIMJn4eXnONYTNpUV2m1GbwHGlZdG8
-         st5ap6TnZgmUv8kRC1e5SVKuogLmCgqqyCPeKmeO2wybPiDZvEwtkRV4lTiDveBbHxGU
-         4488K9OZ/or9yZSgd7V+3wPPihfoefonL4f9/98aus7lQ6BtWJ/b+URn/+ti8omZYcj8
-         3S8X21KaUWcxZxdz914V2Iqv/Ig0FRkG1yWG2UR+pEIqKCuOGeaMV5cKmdKPC/CPf8hA
-         rEMg==
-X-Gm-Message-State: AOJu0YwBgCv/zXRU/Oljf5981VHugDdnyxdhKaGrxi65SY1DUeZSdgDX
-	x7yxfQM2xD/sBQ80qCzAMKHDK8PQ+0Qy
-X-Google-Smtp-Source: AGHT+IHC4TnKySuHLFy1qU6pY4sY2mdSNqJv+Lq+o7C1yfLFhEnIjpAoToLT14qb3uuo1AeTCXhR7qVVyJzo
-X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
- (user=mmaurer job=sendgmr) by 2002:a05:690c:3381:b0:5d5:5183:ebdb with SMTP
- id fl1-20020a05690c338100b005d55183ebdbmr143624ywb.10.1702669711738; Fri, 15
- Dec 2023 11:48:31 -0800 (PST)
-Date: Fri, 15 Dec 2023 19:39:57 +0000
+        d=1e100.net; s=20230601; t=1702675718; x=1703280518;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cC1bTSXVCMzouBImm4Lunm53BHd7q+29uIzARRshG/Q=;
+        b=ffXijIigra+vhZwGGq3f9SYeIqDCdWNCj0ujpNdp2tUcFc1XvUlN63WGuP+24xhvXr
+         teWgs0v1HUjY+JvwdmzZYfueoBA34QOrFCyWLy8YzCiJJSUNpAW0tiwbL3GXwdbH4jZ/
+         SZ6GNI+HVXHUcrz4CBMOLnD5OsksbireU5QPdDnYRGX4coZpfZijb6z0PhfhoBjI/Jen
+         4yruychuqyiMt8ra2iMHgFYBHt18UNmjxipjkreAG1TK50SMB72IOzkXX86tfdV7TDWm
+         6ilfDcqadsGPlblJMPKDiMRjRyd6r+ZX4gR4KcwvXyIs6gzb/trMrH5Cpz5sVdOnIDX/
+         KBPQ==
+X-Gm-Message-State: AOJu0YxvLdZTMrSGj5peJcKIkAIjchCum2aTzbvbQOUBw/UVDYxzGDq0
+	upT4Py4qNb2GKdbzxMATxYVMg8k1ziupayTlkIbrMQ==
+X-Google-Smtp-Source: AGHT+IE2mXg2+E2jLeKihSLfRCnuQkYt+4zI+WvSBMFz2WgpbdwhTo/O+qkSxIF4jSezpRGJphrMSKQXA2O0/0ant9E=
+X-Received: by 2002:a50:cd53:0:b0:551:cfab:5538 with SMTP id
+ d19-20020a50cd53000000b00551cfab5538mr6411620edj.32.1702675718126; Fri, 15
+ Dec 2023 13:28:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231215194828.2611213-1-mmaurer@google.com>
-Subject: [PATCH] x86: rust: Disable entry padding with Rust
-From: Matthew Maurer <mmaurer@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Matthew Maurer <mmaurer@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+MIME-Version: 1.0
+References: <20231215124751.175191-1-ojeda@kernel.org>
+In-Reply-To: <20231215124751.175191-1-ojeda@kernel.org>
+From: Justin Stitt <justinstitt@google.com>
+Date: Fri, 15 Dec 2023 13:28:26 -0800
+Message-ID: <CAFhGd8pHtfuMYfx=uEzssvesQDZ-BS0BzPwn06WbasXKUfPBJg@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: remove `CC=clang` mentions
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Jonathan Corbet <corbet@lwn.net>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, linux-doc@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-rustc-1.73.0 used by Linux does not support entry padding. Mark entry
-padding support as explicitly incompatible with Rust.
+Hi,
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
+On Fri, Dec 15, 2023 at 4:48=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Nowadays all architectures except s390 recommend using `LLVM=3D1` instead=
+ of
+> `CC=3Dclang`, and since commit a3c6bfba4429 ("Documentation/llvm: refresh
+> docs") the Kbuild LLVM documentation makes `LLVM=3D1` the way to go:
+>
+>     We want to encourage the use of ``LLVM=3D1`` rather than just
+>     ``CC=3Dclang``. Make that suggestion "above the fold" and "front and
+>     center" in our docs.
+>
+> In particular, that commit removes the examples with `CC=3Dclang`.
+>
+> Thus do the same in the Rust Quick Start guide, i.e. remove the `CC=3Dcla=
+ng`
+> mentions, especially since the architectures that have had their Rust
+> support upstreamed (or soon to be upstreamed) are all `LLVM=3D1` ones
+> anyway. And perhaps by the time Rust is supported for s390 (or new
+> architectures), it may have moved to `LLVM=3D1` anyway. Otherwise,
+> this can be added back if needed (or perhaps an extra link to
+> Documentation/kbuild/llvm.rst).
+>
+> This should also help avoiding potential confusion around `CC=3Dclang` [1=
+].
+>
 
-This is temporary - upstream in the Rust compiler, I have:
+Yes!
 
-* A MCP[1] to enable the feature as an unstable flag
-* A RFC[2] to stabilize it and add the attribute
-* An initial implementation[3] for the MCP and RFC once accepted
 
-Once at least unstable support is merged, we can detect this in a future
-patch.
+> Link: https://lore.kernel.org/rust-for-linux/6df6e8e5-8d5b-4d3d-91b5-bc0e=
+90c424ea@nvidia.com/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Even once those are merged and Linux is using a newer rustc, we will
-still want a separate HAVE_ENTRY_PADDING config, as Rust's gcc backend
-will not initially support it.
+Reviewed-by: Justin Stitt <justinstitt@google.com>
 
-While this is a temporary patch, I still think it's worth carrying
-because it prevents us from selecting build configurations that will
-fail at runtime.
+> ---
+>  Documentation/rust/quick-start.rst | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+>
+> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quic=
+k-start.rst
+> index f382914f4191..75faa987079a 100644
+> --- a/Documentation/rust/quick-start.rst
+> +++ b/Documentation/rust/quick-start.rst
+> @@ -76,7 +76,7 @@ libclang
+>
+>  ``libclang`` (part of LLVM) is used by ``bindgen`` to understand the C c=
+ode
+>  in the kernel, which means LLVM needs to be installed; like when the ker=
+nel
+> -is compiled with ``CC=3Dclang`` or ``LLVM=3D1``.
+> +is compiled with ``LLVM=3D1``.
+>
+>  Linux distributions are likely to have a suitable one available, so it i=
+s
+>  best to check that first.
+> @@ -229,10 +229,6 @@ at the moment. That is::
+>
+>         make LLVM=3D1
+>
+> -For architectures that do not support a full LLVM toolchain, use::
+> -
+> -       make CC=3Dclang
+> -
+>  Using GCC also works for some configurations, but it is very experimenta=
+l at
+>  the moment.
+>
+>
+> base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+> --
+> 2.43.0
+>
 
-[1]: https://github.com/rust-lang/compiler-team/issues/704
-[2]: https://github.com/rust-lang/rfcs/pull/3543
-[3]: https://github.com/maurer/rust/tree/patchable-function-entries
- arch/x86/Kconfig | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 18b9fb7df95b..a9d48709f7db 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2452,6 +2452,9 @@ config CC_HAS_RETURN_THUNK
- config CC_HAS_ENTRY_PADDING
- 	def_bool $(cc-option,-fpatchable-function-entry=16,16)
- 
-+config HAVE_ENTRY_PADDING
-+	def_bool CC_HAS_ENTRY_PADDING && !RUST
-+
- config FUNCTION_PADDING_CFI
- 	int
- 	default 59 if FUNCTION_ALIGNMENT_64B
-@@ -2469,17 +2472,17 @@ config FUNCTION_PADDING_BYTES
- 
- config CALL_PADDING
- 	def_bool n
--	depends on CC_HAS_ENTRY_PADDING && OBJTOOL
-+	depends on HAVE_ENTRY_PADDING && OBJTOOL
- 	select FUNCTION_ALIGNMENT_16B
- 
- config FINEIBT
- 	def_bool y
--	depends on X86_KERNEL_IBT && CFI_CLANG && RETPOLINE
-+	depends on X86_KERNEL_IBT && CFI_CLANG && RETPOLINE && HAVE_ENTRY_PADDING
- 	select CALL_PADDING
- 
- config HAVE_CALL_THUNKS
- 	def_bool y
--	depends on CC_HAS_ENTRY_PADDING && RETHUNK && OBJTOOL
-+	depends on HAVE_ENTRY_PADDING && RETHUNK && OBJTOOL
- 
- config CALL_THUNKS
- 	def_bool n
--- 
-2.43.0.472.g3155946c3a-goog
-
+Thanks
+Justin
