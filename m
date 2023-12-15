@@ -1,129 +1,285 @@
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF0448CF2;
-	Fri, 15 Dec 2023 23:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D24818ED4;
+	Fri, 15 Dec 2023 23:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BuxCINZe"
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3ba084395d9so880462b6e.0;
-        Fri, 15 Dec 2023 15:45:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702683939; x=1703288739; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qc4z/39BVksBkr0WR/MXxrqt9kwDpSLSTQX7fRWhbuQ=;
-        b=BuxCINZexjfF7sKnRrBewr2kypMuMZflDWiNBSIR/ikJM7gwqli/DrWLfsW3saU5bU
-         ag5l6/v/8j/28HlVzaMxXXqQA66DNAUOqDCUY0b8QZiryTOGnBQZE6arIDWObyMejK3R
-         s0JjEmSoiQ4vwP9EIUCzGk01DeT0euL5Cd912D0ANlLrw1VNafrQ18qAp/9AsJt77MyW
-         v/kKtx2knZWuc/AlHEmgbbYU0G7hKcq/jByIj4yaD+lNfwERnDic0rq0b4VofDVBM4H/
-         jkJeZdJ4SUrfr1AbtinTqp+K5mOe7d22gYgpyo0/lAuqzQM4QGC61dmrG+5fx2MOWIQX
-         ip6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702683939; x=1703288739;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qc4z/39BVksBkr0WR/MXxrqt9kwDpSLSTQX7fRWhbuQ=;
-        b=TaILzolKcvpui0UJhk+H/ob412QzFme1i+EwJbXEINRBbjOYTirXT91W8Yp9SIVlwo
-         UA6DbROFWH4XQipBO3mf+K1qRqnqgjgSze2G5G1EfRBt2C/oAvat/XkP8h1tRVhK/3uS
-         3e60RRtAQllrN59+hOwTwdYcCNNr8IPD9nv4Onpi0bdXz7pLJpyD8VXBEs4u+F5T30iy
-         7FqDjV4AUE+9clSvuQkFRK1LTGl05RkVZzcYusgqTBx1IWfDZaDEz95AVgjZd08f7sI3
-         0lmTWt3/KNuGfaYggKJ9PV11m0tfKuMHxgMdrXzeDX9GtmRHG0pe72DdLjLABdiD+xJ+
-         Wgww==
-X-Gm-Message-State: AOJu0YzissWVmkp3UAmzo+9wJiHuOYBsm6GxUT1qJdWhdXW1DgQnGw9O
-	xPJ5G/Lja7UZmWmUOwalozc=
-X-Google-Smtp-Source: AGHT+IGxISurWf572M0Wzue4BvusNE7/OQCRxh1YbVkx9QD5kgfDGObmilDAZ7814m9RD76rCV+8wA==
-X-Received: by 2002:a05:6808:189b:b0:3b8:b6f6:4f7c with SMTP id bi27-20020a056808189b00b003b8b6f64f7cmr15846936oib.54.1702683939169;
-        Fri, 15 Dec 2023 15:45:39 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id w13-20020a0562140b2d00b0067f27d24cfbsm88758qvj.91.2023.12.15.15.45.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 15:45:38 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 2910C27C005B;
-	Fri, 15 Dec 2023 18:45:38 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Fri, 15 Dec 2023 18:45:38 -0500
-X-ME-Sender: <xms:IeV8ZcwMAk6HE-P42RBGDKt6eXT9JzdaFGb9T0cQuIwVrDitgL010g>
-    <xme:IeV8ZQTXZAqDQGlk88h8GM5UlrWA_56ItPBqsb9A4dPkMdXAoQMziFll5g3OYGyp3
-    hSzVOprdrjUEncQ1g>
-X-ME-Received: <xmr:IeV8ZeV8La0N4WeTfTdyhej3ONo2mz_LCiM5yXqyJDUNr-b7yEcaD5e6F3NC7Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtfedgudehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefh
-    gfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:IeV8ZahXk5g_Mh_TXMTwpMAJudOPuCDR1SCaLhLX_edv9jApJ8--6Q>
-    <xmx:IeV8ZeAGoRJTfXa8FQMU_49Z6R1hyPHM0WDfiL9E7qGcL9rm8k42aw>
-    <xmx:IeV8ZbLJI7IPJObY_bTUW0gFWTweY8327kDE5HFG3emvIeb8TsLGeQ>
-    <xmx:IuV8ZUQ-I7l2kNATohS5pzpvO-C9k3wpSjh0IkWfJhxs82y_ELTltg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 15 Dec 2023 18:45:36 -0500 (EST)
-Date: Fri, 15 Dec 2023 15:45:28 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+H1+RoN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F32C433C7;
+	Fri, 15 Dec 2023 23:54:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702684483;
+	bh=5EwYYWA8F0fFdNa4JLidqy5d/b0oDQvF9+4yyxXbMQ0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=e+H1+RoNu20ySnrW/QcRqEgNPKscVc2hnDyrfmzdHfrt8dZDVf29ewaCQtP+NbkwG
+	 yHNqfHSo1/Wyzc+8pEsszU0a2AxkI705LozazQvf04+8wVF5fkHtUbc+bSUJDMa7/6
+	 +a/h5PauT625HrTbtxxu7ISmsmiJm7S78ElNPgqKh7dpJ7vVIXR4cLv8M6zxy4nWw7
+	 zCs/ZamfNfbn9g4zkvFVGVOGZ4QKvY2m85f2RhW9RcuW3M7piTHb0Qt2jm4erZCjyl
+	 ht1IIfpYJ2oOLsNmY21kAju+LATYcuQKnTRfqn2xj38eo3fPb3OfifqRnEgz62f05F
+	 YYLDy7qXWdlTQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible
- wait
-Message-ID: <ZXzlGM1xV-VlUkeh@boqun-archlinux>
-References: <ZXtebif2S1CyJRik@boqun-archlinux>
- <20231214200421.690629-1-boqun.feng@gmail.com>
- <CAH5fLggriMBLWVx5i1efHdiNveVutvRfcA6mydNV9egzEFnnxw@mail.gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH] rust: support `srctree`-relative links
+Date: Sat, 16 Dec 2023 00:54:28 +0100
+Message-ID: <20231215235428.243211-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLggriMBLWVx5i1efHdiNveVutvRfcA6mydNV9egzEFnnxw@mail.gmail.com>
 
-On Fri, Dec 15, 2023 at 11:27:56AM +0100, Alice Ryhl wrote:
-> On Thu, Dec 14, 2023 at 9:04 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > Currently, `CondVar::wait()` is an interruptible wait, and this is
-> > different than `wait_event()` in include/linux/wait.h (which is an
-> > uninterruptible wait). To avoid confusion between different APIs on the
-> > interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
-> > wait same as `wait_event()`, also rename the old `wait()` to
-> > `CondVar::wait_interruptible()`.
-> >
-> > Spotted-by: Tiago Lam <tiagolam@gmail.com>
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> 
-> The diff is a bit hard to read because you swapped the order of the
-> functions, but LGTM.
-> 
+Some of our links use relative paths in order to point to files in the
+source tree, e.g.:
 
-Yeah, I did that because `wait_interruptible` metioned `wait`, so I had
-to make `wait` still before `wait_interruptible`.
+    //! C header: [`include/linux/printk.h`](../../../../include/linux/printk.h)
+    /// [`struct mutex`]: ../../../../include/linux/mutex.h
 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+These are problematic because they are hard to maintain and do not support
+`O=` builds.
 
-Thanks!
+Instead, provide support for `srctree`-relative links, e.g.:
 
-Regards,
-Boqun
+    //! C header: [`include/linux/printk.h`](srctree/include/linux/printk.h)
+    /// [`struct mutex`]: srctree/include/linux/mutex.h
+
+The links are fixed after `rustdoc` generation to be based on the absolute
+path to the source tree.
+
+Essentially, this is the automatic version of Tomonori's fix [1],
+suggested by Gary [2].
+
+Suggested-by: Gary Guo <gary@garyguo.net>
+Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Closes: https://lore.kernel.org/r/20231026.204058.2167744626131849993.fujita.tomonori@gmail.com [1]
+Fixes: 48fadf440075 ("docs: Move rustdoc output, cross-reference it")
+Link: https://lore.kernel.org/rust-for-linux/20231026154525.6d14b495@eugeo/ [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ Documentation/rust/coding-guidelines.rst | 13 +++++++++++++
+ rust/Makefile                            |  3 ++-
+ rust/kernel/error.rs                     |  2 +-
+ rust/kernel/ioctl.rs                     |  2 +-
+ rust/kernel/kunit.rs                     |  2 +-
+ rust/kernel/print.rs                     |  8 ++++----
+ rust/kernel/sync/condvar.rs              |  2 +-
+ rust/kernel/sync/lock/mutex.rs           |  2 +-
+ rust/kernel/sync/lock/spinlock.rs        |  2 +-
+ rust/kernel/task.rs                      |  2 +-
+ rust/kernel/workqueue.rs                 |  2 +-
+ rust/macros/lib.rs                       |  2 +-
+ 12 files changed, 28 insertions(+), 14 deletions(-)
+
+diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rust/coding-guidelines.rst
+index aa8ed082613e..05542840b16c 100644
+--- a/Documentation/rust/coding-guidelines.rst
++++ b/Documentation/rust/coding-guidelines.rst
+@@ -177,6 +177,19 @@ please take a look at the ``rustdoc`` book at:
+ 
+ 	https://doc.rust-lang.org/rustdoc/how-to-write-documentation.html
+ 
++In addition, the kernel supports creating links relative to the source tree by
++prefixing the link destination with ``srctree/``. For instance:
++
++.. code-block:: rust
++
++	//! C header: [`include/linux/printk.h`](srctree/include/linux/printk.h)
++
++or:
++
++.. code-block:: rust
++
++	/// [`struct mutex`]: srctree/include/linux/mutex.h
++
+ 
+ Naming
+ ------
+diff --git a/rust/Makefile b/rust/Makefile
+index 543b37f6c77f..73ea24117f07 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -98,7 +98,8 @@ rustdoc: rustdoc-core rustdoc-macros rustdoc-compiler_builtins \
+ 	$(Q)find $(rustdoc_output) -name '*.html' -type f -print0 | xargs -0 sed -Ei \
+ 		-e 's:rust-logo-[0-9a-f]+\.svg:logo.svg:g' \
+ 		-e 's:favicon-[0-9a-f]+\.svg:logo.svg:g' \
+-		-e 's:<link rel="alternate icon" type="image/png" href="[/.]+/static\.files/favicon-(16x16|32x32)-[0-9a-f]+\.png">::g'
++		-e 's:<link rel="alternate icon" type="image/png" href="[/.]+/static\.files/favicon-(16x16|32x32)-[0-9a-f]+\.png">::g' \
++		-e 's:<a href="srctree/([^"]+)">:<a href="$(abs_srctree)/\1">:g'
+ 	$(Q)for f in $(rustdoc_output)/static.files/rustdoc-*.css; do \
+ 		echo ".logo-container > img { object-fit: contain; }" >> $$f; done
+ 
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 032b64543953..abd06afb2d76 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -2,7 +2,7 @@
+ 
+ //! Kernel errors.
+ //!
+-//! C header: [`include/uapi/asm-generic/errno-base.h`](../../../include/uapi/asm-generic/errno-base.h)
++//! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
+ 
+ use crate::str::CStr;
+ 
+diff --git a/rust/kernel/ioctl.rs b/rust/kernel/ioctl.rs
+index c49e1a8d3fd0..f1d42ab69972 100644
+--- a/rust/kernel/ioctl.rs
++++ b/rust/kernel/ioctl.rs
+@@ -2,7 +2,7 @@
+ 
+ //! ioctl() number definitions
+ //!
+-//! C header: [`include/asm-generic/ioctl.h`](../../../../include/asm-generic/ioctl.h)
++//! C header: [`include/asm-generic/ioctl.h`](srctree/include/asm-generic/ioctl.h)
+ 
+ #![allow(non_snake_case)]
+ 
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 722655b2d62d..0ba77276ae7e 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -2,7 +2,7 @@
+ 
+ //! KUnit-based macros for Rust unit tests.
+ //!
+-//! C header: [`include/kunit/test.h`](../../../../../include/kunit/test.h)
++//! C header: [`include/kunit/test.h`](srctree/include/kunit/test.h)
+ //!
+ //! Reference: <https://docs.kernel.org/dev-tools/kunit/index.html>
+ 
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index f48926e3e9fe..9b13aca832c2 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -2,7 +2,7 @@
+ 
+ //! Printing facilities.
+ //!
+-//! C header: [`include/linux/printk.h`](../../../../include/linux/printk.h)
++//! C header: [`include/linux/printk.h`](srctree/include/linux/printk.h)
+ //!
+ //! Reference: <https://www.kernel.org/doc/html/latest/core-api/printk-basics.html>
+ 
+@@ -48,7 +48,7 @@ pub mod format_strings {
+     /// The format string is always the same for a given level, i.e. for a
+     /// given `prefix`, which are the kernel's `KERN_*` constants.
+     ///
+-    /// [`_printk`]: ../../../../include/linux/printk.h
++    /// [`_printk`]: srctree/include/linux/printk.h
+     const fn generate(is_cont: bool, prefix: &[u8; 3]) -> [u8; LENGTH] {
+         // Ensure the `KERN_*` macros are what we expect.
+         assert!(prefix[0] == b'\x01');
+@@ -97,7 +97,7 @@ pub mod format_strings {
+ /// The format string must be one of the ones in [`format_strings`], and
+ /// the module name must be null-terminated.
+ ///
+-/// [`_printk`]: ../../../../include/linux/_printk.h
++/// [`_printk`]: srctree/include/linux/_printk.h
+ #[doc(hidden)]
+ #[cfg_attr(not(CONFIG_PRINTK), allow(unused_variables))]
+ pub unsafe fn call_printk(
+@@ -120,7 +120,7 @@ pub unsafe fn call_printk(
+ ///
+ /// Public but hidden since it should only be used from public macros.
+ ///
+-/// [`_printk`]: ../../../../include/linux/printk.h
++/// [`_printk`]: srctree/include/linux/printk.h
+ #[doc(hidden)]
+ #[cfg_attr(not(CONFIG_PRINTK), allow(unused_variables))]
+ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index b679b6f6dbeb..f568802d4f8a 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -69,7 +69,7 @@ macro_rules! new_condvar {
+ /// }
+ /// ```
+ ///
+-/// [`struct wait_queue_head`]: ../../../include/linux/wait.h
++/// [`struct wait_queue_head`]: srctree/include/linux/wait.h
+ #[pin_data]
+ pub struct CondVar {
+     #[pin]
+diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+index 09276fedc091..8c524a3ec45a 100644
+--- a/rust/kernel/sync/lock/mutex.rs
++++ b/rust/kernel/sync/lock/mutex.rs
+@@ -84,7 +84,7 @@ macro_rules! new_mutex {
+ /// }
+ /// ```
+ ///
+-/// [`struct mutex`]: ../../../../include/linux/mutex.h
++/// [`struct mutex`]: srctree/include/linux/mutex.h
+ pub type Mutex<T> = super::Lock<T, MutexBackend>;
+ 
+ /// A kernel `struct mutex` lock backend.
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index 91eb2c9e9123..068535ce1b29 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -82,7 +82,7 @@ macro_rules! new_spinlock {
+ /// }
+ /// ```
+ ///
+-/// [`spinlock_t`]: ../../../../include/linux/spinlock.h
++/// [`spinlock_t`]: srctree/include/linux/spinlock.h
+ pub type SpinLock<T> = super::Lock<T, SpinLockBackend>;
+ 
+ /// A kernel `spinlock_t` lock backend.
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index b2299bc7ac1f..9451932d5d86 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -2,7 +2,7 @@
+ 
+ //! Tasks (threads and processes).
+ //!
+-//! C header: [`include/linux/sched.h`](../../../../include/linux/sched.h).
++//! C header: [`include/linux/sched.h`](srctree/include/linux/sched.h).
+ 
+ use crate::{bindings, types::Opaque};
+ use core::{marker::PhantomData, ops::Deref, ptr};
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index b67fb1ba168e..498397877376 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -132,7 +132,7 @@
+ //! }
+ //! ```
+ //!
+-//! C header: [`include/linux/workqueue.h`](../../../../include/linux/workqueue.h)
++//! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
+ 
+ use crate::{bindings, prelude::*, sync::Arc, sync::LockClassKey, types::Opaque};
+ use alloc::alloc::AllocError;
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index c42105c2ff96..3e3cb7449e58 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -20,7 +20,7 @@
+ /// The `type` argument should be a type which implements the [`Module`]
+ /// trait. Also accepts various forms of kernel metadata.
+ ///
+-/// C header: [`include/linux/moduleparam.h`](../../../include/linux/moduleparam.h)
++/// C header: [`include/linux/moduleparam.h`](srctree/include/linux/moduleparam.h)
+ ///
+ /// [`Module`]: ../kernel/trait.Module.html
+ ///
+
+base-commit: a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+-- 
+2.43.0
+
