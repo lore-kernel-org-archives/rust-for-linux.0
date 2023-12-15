@@ -1,86 +1,88 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487A22555A
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 10:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3705B1A706
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 10:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1rq1koYk"
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4b2ee700323so182708e0c.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 02:34:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9wXNqXt"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-5d3758fdd2eso4354417b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 02:43:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702636439; x=1703241239; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702636994; x=1703241794; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QUVhEwhGG5R6yJfLzMvql4u7DQlTyWt51m5KiZQOx4k=;
-        b=1rq1koYk0LexYezdWSJHjWlecDo6CNjnXpsB/UgQIjxVHRpnULzBeHjsF1CqWMvXgc
-         YDttL533OYoCSVdhLQquH3B/zk1JMLwAolYo4+PujSLjGA5A5an1LjtmFwa0a2Qy0SvZ
-         U2wTgm9Wd3zRiFDsb0WuAEbz+yvCYEVuEKwHm2vJwb5au2k84S/ykNnTIWoWUeF8ZDgp
-         oBJe88Xo2iZLZwXcqL1vwMReP2KK204rPXgHLkfFwyfAOcOyewPF/DI3BWzk+KYPHkcB
-         /E43khiBVfUeJSMt6Clkjmw2NCbIxQYBO7TIGKMP3TM2eIUqGeANGbya/shUnYF59MB5
-         +LIQ==
+        bh=1ubVH9S3UTGCIi6iqZ6MrB3WsFCa9rA74HRRYfWvgH8=;
+        b=W9wXNqXtu/Vex9uZe55/OSBLI6TUL4vv0mnBtyjVUGZb1AgZzm3V7ng2EP2mwIRKUg
+         Q0pCJTVWFF0rL1jZr4annNTLgwMvlgqSKnRXCVU9P6KSy/fVjNv+glSzHTyoUF0yAsoJ
+         VotTRuJW8xujPEudBiycO3ISFmJ6U2fvAH90iFUslVwCDhUukkKqPt1BkiqHkZ2JA+D6
+         J/5ex0H/l4tieM0vvm3y+/3I0H+rlmKbYnmkcDyKSHyjrYt8RJ7rJhgRBbUzvCBjbbtQ
+         9hMntPiZERNRCWL3NKhswPMyr2n8m+E7DOtM57VPuM8BH4Y2uPXzJEvKA2HFzcBI87ZR
+         81cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702636439; x=1703241239;
+        d=1e100.net; s=20230601; t=1702636994; x=1703241794;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QUVhEwhGG5R6yJfLzMvql4u7DQlTyWt51m5KiZQOx4k=;
-        b=hCSSlTQEYsTXd2fpAtj385uyjgRAD5IaqEIjq/AYfrpE8Sj5wig8Kgx8lbH14/l+Sk
-         bXGtCZGYjrGM1ALjeF3mlHEy1xj007yb1plxaHYUaiFyQkFCpfnwVTWjT6bVu/vkLTtg
-         3e38tKkn/f2vcOv7AlwXiOz3C7uxJ0alOcPdZyvbkf5vaJKwUbiGwwN2PITixzM/d8yK
-         75qn31O+GLO3i9B9tP1FmU6p12Xk3G/aArT8ZpZxx6pyD05zBx4LIvt8FZ+n4CQMAXPe
-         vmkieMK1DMtnRbeKS/Q5IiGdMwdhn5gRnfrnqsExNaa5PSuHcDWjiAmCqU8T1QD8cBAC
-         /kIQ==
-X-Gm-Message-State: AOJu0YwfvHl+WQE8CL0YWpsn+zAWF8YzjgW6YASyGpOqPoJYFs4YBOk2
-	l+21CGToVNej1sCSEoEzKCJ6Q54kt+mY6W1lRuGUeA==
-X-Google-Smtp-Source: AGHT+IE5lEPjohScF8M2+o9L0ZurkGWcYGEHMF7ggwPClq4fWZTrD4KlogJkKTQ78bQH/IAIKHZqCt2tU/dbAqnvSDQ=
-X-Received: by 2002:ac5:c38f:0:b0:4b2:956e:f651 with SMTP id
- s15-20020ac5c38f000000b004b2956ef651mr6658491vkk.0.1702636439100; Fri, 15 Dec
- 2023 02:33:59 -0800 (PST)
+        bh=1ubVH9S3UTGCIi6iqZ6MrB3WsFCa9rA74HRRYfWvgH8=;
+        b=uM78INZ2peBon0jyl5J1Rz7rrfrVV46ikUw9hVSXmKpRPg91WE7ryqJ5Qe2R0N9Sqm
+         JEKmXB+YgrUzVMxeSeU2Om9iIVSAKDYRQ/4mBc/AAI5dGiRm97miqst/xF5h2oHnGs9V
+         veg0E8rK6feAYtv9iS4hL1IGCHmTOTv9yHTC2Bj1CEv1A/5k0MJDzWZIgQSJaGZSSDt1
+         m2KsSLUYWmcXwNQoAI/BCDFv0mocxI+XF2FlKnI7y35fDr77N3Zf5Mrqk9Ac3lnukKw8
+         1z+/ARzB3qBuJivEfKGC+kdXR9QbzyhPR2FE1Q0sSnHEKZzSSRxLUd0DMxZnwvMc4/fT
+         fhHA==
+X-Gm-Message-State: AOJu0Yx1bW1OhiUulhx0yRJp46K20vhIbuD1jOO21g8QmMVUamIjAYlE
+	WtKkctJcVsKvrqvy6EMf2/9UvUaYdX4ZkezDXxA=
+X-Google-Smtp-Source: AGHT+IH/o6wvM/xXlAUCxEHzx0SXY10hpC/yC3g2NNJKGednMqGmknT55nDJ24pR3NBjC1oeVv3RUphzbJCou/0wPMc=
+X-Received: by 2002:a81:8307:0:b0:5e2:ea4a:660d with SMTP id
+ t7-20020a818307000000b005e2ea4a660dmr3681158ywf.16.1702636994047; Fri, 15 Dec
+ 2023 02:43:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231214222253.116734-1-ojeda@kernel.org>
-In-Reply-To: <20231214222253.116734-1-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 15 Dec 2023 11:33:48 +0100
-Message-ID: <CAH5fLgjPznV1pjaxoXovnfwSBOv6sKZc3G_MwfELbmwH0-Xf8Q@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: add `rustupoverride` target
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20231211121613.3489513-1-dirk.behme@de.bosch.com>
+ <df0d8a01-eac3-43b2-8498-e237a0fe6eb5@nvidia.com> <CANiq72n5OB0X9sHoNf-htRY9z93gzdg-BqdrOUDTqTEvUytoNA@mail.gmail.com>
+ <6df6e8e5-8d5b-4d3d-91b5-bc0e90c424ea@nvidia.com>
+In-Reply-To: <6df6e8e5-8d5b-4d3d-91b5-bc0e90c424ea@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 15 Dec 2023 11:43:02 +0100
+Message-ID: <CANiq72kQYS2Z-tRwaH6SJHM5RY8D=TSsdSgufD9YmX2GfDgPeg@mail.gmail.com>
+Subject: Re: [PATCH v3] docs: rust: Add rusttest info
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 14, 2023 at 11:23=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Wed, Dec 13, 2023 at 2:44=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
+wrote:
 >
-> When setting up the Rust support via `rustup`, one may use an override
-> in order to select the right version of the Rust toolchain.
->
-> The current instructions at Documentation/rust/quick-start.rst assume
-> one is using an in-tree kernel build (i.e. no `O=3D`) [1]. We would like
-> to provide also the way to do so for `O=3D` builds, but ideally in a way
-> that keeps the one-liner copy-pastable and without duplication [2].
->
-> Thus provide a new Make target, `rustupoverride`, that sets it up for
-> the user given their build options/variables.
->
-> Link: https://lore.kernel.org/rust-for-linux/20231207084846.faset66xzuoyv=
-dlg@vireshk-i7/ [1]
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3Dmvca8PXoxwzSao+QFb=
-AHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com/ [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ah OK. I appear to have been slightly misled by
+> Documentation/rust/quick-start.rst, which made it seem like CC=3Dclang
+> was...a thing. This excerpt made me do it:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Yeah, it is the "old way" for many architectures, but nowadays
+`LLVM=3D1` is the recommended way for most (in the last couple years a
+few architectures got promoted from `CC=3Dclang` to `LLVM=3D1`).
+
+Given that most arches are `LLVM=3D1` nowadays, including those that we
+currently support Rust for, and that perhaps by the time e.g. s390
+supports Rust it is also a `LLVM=3D1` architecture, we should probably
+just remove `CC=3Dclang` at this point and perhaps add an extra link to
+Documentation/kbuild/llvm.rst again just in case (the link is also
+elsewhere in that document, but I guess it does not hurt).
+
+I will send a patch.
+
+> Anyway, I wanted to provide this "how does the documentation look
+> to a newcomer" feedback, in case it helps.
+
+It does -- thanks a lot!
+
+Cheers,
+Miguel
