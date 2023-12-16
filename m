@@ -1,71 +1,73 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB344B12C
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 23:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31A44A26;
+	Sat, 16 Dec 2023 00:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uddi5lCX"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-5e4f221d7abso4816417b3.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Dec 2023 15:59:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kO1eLu58"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-db538b07865so1112173276.2;
+        Fri, 15 Dec 2023 16:02:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702684780; x=1703289580; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702684956; x=1703289756; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nJC/Ncm4/slgAA94RagM4gMxCU+4fsKXlcSqRicbCwg=;
-        b=Uddi5lCX7vRW/KCNeMgO2elR36IjaqCBaLr2PtbooUKMmBUJgjGRQU9QItF1vY0eYC
-         GeybeW3rQSSpHQrll8rV2ce4aebXah6AVm9C7otqeFz/0aT0Z4N965TEJYBB6/3q1PKC
-         mbXcZjqoaq7ZPbIpHhmwisfnc3JmuGGA/dz7BGdm/ts8cmwQd8INlfBwA4a/fAd0z4Tt
-         7SZcev9WkLMfR5MC9A0OdIOAlvaD5oDoc9CmxLx3z15MExrenIELjc/TgLZaL7T3ipAf
-         NaGlvUvAuLLa66jd+Z0pk3EJILp6Eu1ZRYzTsKrzOEznepkFSNDfuSHsOMR1ds96DJXL
-         7cIg==
+        bh=HUP3bpCvVKirlUHMbPP+Vvn/KkPpGHwcdqXev2j/lBA=;
+        b=kO1eLu581j9gEmC3vmDTqmZ2HaoI5q1SYoFe2nDiIrQ6DimOv8/M/yzSCle9uf6bav
+         Jzlbx22bf3Ci9nsYnxIKaitXy/7CPwvUnbQJSv+tyKGTg3aMG+UenPmEm0yZbi9O6PuZ
+         nw+hv/NRyaGzeX+Anxr4KqDHHpOp+bmyf4LSlfbjDBYi3iKQTrOZnqJeVJyDnm1Tgvg9
+         wUc13O7vqmhLjKq1m0jVr3GHcyZbX/LaxjclpaDExeXuWkGc0fCpaUn00OdmJOAyul2n
+         bLui6WfZV9/UjDNub+BmW4b69Y9H5XH64pH7579foAFJ8uUGa5vM4cRzCBV3b8mVQ/yM
+         7d4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702684780; x=1703289580;
+        d=1e100.net; s=20230601; t=1702684956; x=1703289756;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nJC/Ncm4/slgAA94RagM4gMxCU+4fsKXlcSqRicbCwg=;
-        b=w/klUu4lMY3whOdJUbNw4vKZZ6iGXn6a4g5m06x/EhXKCfw/LYy3gNMC7h0Zk5Ledk
-         mNKlC58kvDq3qWmQuOr9o7l3Bm1X1hX8bsW9lv424Y7q04qmteu8kT6lCw7Jry1T0vpf
-         eqyOYLo4Tk/7N4TAAUwSu0lAMviATpJb+uD9lIFZfH+i96iFyotyiJAKRzGMxlaoCjz9
-         Ngk+D9v3HoN3e93RI1XJjXOy/fQ/VyG++QLXavfCsv0Q+LErmnQCk9oPzGcCQo7gf6Q1
-         8x58wuXo//cl1tWXW27z4HPBVd1/r73deZFSzULVuOSc+YkQ7SI6ZExnJcl5ZHQ0wCFa
-         Y3fw==
-X-Gm-Message-State: AOJu0YyO8gz/fQdp6PSTpeb9AmjFuts2TYorI6e7x5RlIv4QyqlNFOb/
-	JwMVp82gPlUFm0WVez1k8V4YVkFMOwOJ6joBoTE=
-X-Google-Smtp-Source: AGHT+IFT+4gR/G9TDXH1TDAwh3gcNKTSOxCcTAUThRn7ZeRB6ZLPxpVWQ0+zCgDr3ShfSyMfu90gvaav2aXqmKdNW+Y=
-X-Received: by 2002:a81:8405:0:b0:5e4:cbec:dbd0 with SMTP id
- u5-20020a818405000000b005e4cbecdbd0mr1160539ywf.81.1702684780346; Fri, 15 Dec
- 2023 15:59:40 -0800 (PST)
+        bh=HUP3bpCvVKirlUHMbPP+Vvn/KkPpGHwcdqXev2j/lBA=;
+        b=l2oYkhGIaY5fXNiZ649dHwsarKK/gRqvmK0o/Qi3fVpcH0qURHFST/NLKLybwrbhr/
+         rtpsPMgOA54Z7g2BdYuvSLa9iF75SK3UmHMCx9cCj5gsQhvuV5STZF8mSNJEQFeg//Ba
+         YlX3IBeiqJDWh8/xcZrCnwjkotzAdHFaZSpdap6gXpXYr8oX3PwXJxvHpKkkFAhqy15X
+         Pnrnf71m7DukYuVw8pQ6JlRql/jwy/zWi7iWaKEKBCJ42U9yrw4OS/Mx1KQYfZSv54Iv
+         YvwvJ8V4CCsABEWOR9ffaSfu17FTsiKJzsBALe0fWXjcRtkHZ+5sJTtcyqpQysTsiOYE
+         wdpQ==
+X-Gm-Message-State: AOJu0Yxd4EGXe3woJeohflsdiBA1JBZ374cvw/uHptU+qSZDxswBujl7
+	ZbfuWnb0QuA2KUy2eoxopXuK6ytrkqimpub3msk=
+X-Google-Smtp-Source: AGHT+IGvPfH0mpoBG1iug8UwmNxFRI3F59+AybxidcQnROd3JXcSiY/aigPxSIwnvGkPkOjXOxZBO+SEVyrpS16B2bw=
+X-Received: by 2002:a25:dcd1:0:b0:dbc:e53f:8705 with SMTP id
+ y200-20020a25dcd1000000b00dbce53f8705mr2535065ybe.81.1702684955826; Fri, 15
+ Dec 2023 16:02:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231026.110919.517001374342898485.fujita.tomonori@gmail.com>
- <CANiq72=dAYc=EQnJOuBvV5cKLo85O=A1AP03F9B6nJdDwdAT1w@mail.gmail.com> <20231026154525.6d14b495@eugeo>
-In-Reply-To: <20231026154525.6d14b495@eugeo>
+References: <20231215235428.243211-1-ojeda@kernel.org>
+In-Reply-To: <20231215235428.243211-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 16 Dec 2023 00:59:29 +0100
-Message-ID: <CANiq72mt8Xg4TwcgUHgxJ520aP7rS4urG+CPUGh=sV0jF8qViA@mail.gmail.com>
-Subject: Re: [PATCH] rust: fix relative links to kernel header files
-To: Gary Guo <gary@garyguo.net>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org
+Date: Sat, 16 Dec 2023 01:02:24 +0100
+Message-ID: <CANiq72mvspvQ_0Mr6TAw55sa_GUM6FRSYb_1JU67hwT+PzLZkg@mail.gmail.com>
+Subject: Re: [PATCH] rust: support `srctree`-relative links
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 26, 2023 at 4:45=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Sat, Dec 16, 2023 at 12:54=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
 >
-> Would it be possible to use source-relative paths and then have them
-> fixed-up later when generating the docs? It's quite ugly and not very
-> maintainable to count the number of dotdots.
+> Instead, provide support for `srctree`-relative links, e.g.:
 
-Yeah, I agree. One possibility would be:
-https://lore.kernel.org/rust-for-linux/20231215235428.243211-1-ojeda@kernel=
-.org/
+If we decide to go this way, then I plan to send this to stable later on.
 
 Cheers,
 Miguel
