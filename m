@@ -1,178 +1,106 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561BD49F8D;
-	Sun, 17 Dec 2023 23:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495AA63D7
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 05:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVE6QyMA"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-553338313a0so644129a12.2;
-        Sun, 17 Dec 2023 15:23:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ObZgNKz/"
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3b9e2a014e8so2258041b6e.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Dec 2023 21:52:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702855386; x=1703460186; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GFKLHnzI1MkQMFN4aygtqwkY70T4csRqR2mODluuL4g=;
-        b=gVE6QyMAhBi0KMKfBWeqoDDY3SclvTQ7IRulluPIVybfMUbjuFR1jphoG5cMzlFGaG
-         njUG29+KEATkt9JPNIFJelw1BVtsSIRogk4LvyNm2tlLIRI0t6o1rTt4/PAM4TP1bTKC
-         agmAMYovR/Ylkvo9sQICc7tUL3msuIQx/uYBoPDR7FHaxtXCdC7ASIaOw+hmV/2xrtF3
-         DHkU9+5KS6nYJBKo3+O2zblhse4uTrqKqy3AM5agPIeOsOff2bj17J1ncTuzMqRCi9p5
-         tTF3xvogHCc2AorvAd2EyQZ0Qns0l0l4ZdL4IR/FLNI9War1u6eRcPGQ0zahrV/v+5JG
-         Jqbg==
+        d=linaro.org; s=google; t=1702878742; x=1703483542; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yvwPqpJZdoxCPgLCCQ91PkXr1gejT72qQ4VC8gFnpTs=;
+        b=ObZgNKz/KunM5NI1SyLCI8fpB66IPjnAWaclin0co5L0JZD0OTsNoCq9ezPsHxHi/L
+         DYtnTtm1VDvRx7snOQPMMoI4ojK/HfBI9CUNhIfROMuYslozdVYxohXSZIyo7jrLYYjG
+         gnKeINiTqU9jj20nuGamiKApUij7SwiY26p8nGeaYHmlfiRcEje1mVGEX3fMxuyBuqQo
+         XqVdBOOjPEWvh4BXd0qDym8YMlo6fOatDdWd8N2naieYU5SLUQgIUiYE+fLnrw7A7e61
+         uLi8R311klXTZIDbxjq1hxsEW/2Uw/uCf8asTT5bAmOaG6a4OPo+q5JAwI1fcCai/9Q2
+         E9zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702855386; x=1703460186;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1702878742; x=1703483542;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GFKLHnzI1MkQMFN4aygtqwkY70T4csRqR2mODluuL4g=;
-        b=rbm0JU4CLGqM2ipVB6d8PONM1mAiFw9XYjfa161WFNQjohY1xSiKdYekCDYsx+3tY7
-         rcnpa3efkO4vXXhOT1IL2JRY6Wes/a9MBmDEud1f7cWZMsl43rdouj1IKW+ubYHJGM6c
-         PoJ6N3pcwj5yUDvLZwazkaJWY31OFPsMEYgW9r9VAOi93HEfZf5yPKkXnNMe0sk//Jna
-         BO/9lwDbcYI3ze9xbntb7e5S4KLDrHL+PQsTAn3+rdmPzCqOonJvWxCpRfaftsW5ecSW
-         xLLKg/1IeSoLxAOjNMm0UV3SQmhpK0kiq1SitbQfLUtoincLwL0o+SgyR1C38c1FIbRy
-         ey4w==
-X-Gm-Message-State: AOJu0YxZE5+NjEPgBBCh24OFprSBzpvcgzQJTIaVxlJa9C2kwI2OxCYf
-	eln1PIUQFkWFpJsRu0azHFCalk9Zg26dd2p7D5s=
-X-Google-Smtp-Source: AGHT+IFRPhyRTKuojMsil2yKkL04/71aHlgb7+G4YVmuDXz/+pcBvd2/+IfbASuI78uWL89BWkqU5LDRdph2b3LCdCY=
-X-Received: by 2002:a50:d78b:0:b0:54b:687f:446c with SMTP id
- w11-20020a50d78b000000b0054b687f446cmr8075776edi.31.1702855386340; Sun, 17
- Dec 2023 15:23:06 -0800 (PST)
+        bh=yvwPqpJZdoxCPgLCCQ91PkXr1gejT72qQ4VC8gFnpTs=;
+        b=klax/+IbqFXqCAq/e0GGQxuadHzULZS19SgKAP0YQRzl+MJnMRMmRoWpwZTFH4x4RS
+         L5N8D2lVnnrnFXWskvYt3I65Nr9pCNIkiIq53vPRe6Kd6DY0s//MGPobD/R2DIm1sxO2
+         eEuqmuqDCLNUWFP4aNR+/x0b8NRpBpLssRU0aDkYNr+7ar7fXYvpwF4S2AgHhZD7KWUQ
+         OVEopHzsgRRbQyNkcgOYW1mPhr75MoqMK7zZZDimSjSFBspM+cM5LVATCWS6Tq9eUzGt
+         iduc/nMhxJc92RRRH0xbQXDcc0CbX/uxLxy/GbC3nlcIiWFHBr1N4rUmtLkcKhs0IJkG
+         Fn1A==
+X-Gm-Message-State: AOJu0YyKbWcYXAQztOAwFIljKw7mdzgbJwaryyxCC/iiyip2d4eBpOhJ
+	AgFPdPH9PSyFWT1FTlWIM668WA==
+X-Google-Smtp-Source: AGHT+IHWHiyRld+78HNnonHpwfExXg/FXJeL90CmfG3Tsyqw7E5D1sTLDotXmziyEbh9oFThjWFZvA==
+X-Received: by 2002:a05:6808:17a0:b0:3b9:d53f:452a with SMTP id bg32-20020a05680817a000b003b9d53f452amr20483672oib.70.1702878742764;
+        Sun, 17 Dec 2023 21:52:22 -0800 (PST)
+Received: from localhost ([122.172.82.6])
+        by smtp.gmail.com with ESMTPSA id t19-20020a056a0021d300b006ce77ffcc75sm16344940pfj.165.2023.12.17.21.52.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Dec 2023 21:52:22 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH V3] docs: rust: Document the rustupoverride target
+Date: Mon, 18 Dec 2023 11:22:16 +0530
+Message-Id: <c22eca4c308b72cdf750087622b61d3839ca40cc.1702878682.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215132132.169628-1-laura.nao@collabora.com>
-In-Reply-To: <20231215132132.169628-1-laura.nao@collabora.com>
-From: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date: Mon, 18 Dec 2023 00:22:30 +0100
-Message-ID: <CAA76j90YdSaAQYBKNwge5jpsexn_KG-qD89+V0_e4vumjLqEDQ@mail.gmail.com>
-Subject: Re: [PATCH] kselftest: Add basic test for probing the rust sample modules
-To: Laura Nao <laura.nao@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Shuah Khan <shuah@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 15 Dec 2023 at 14:25, Laura Nao <laura.nao@collabora.com> wrote:
->
-> Add new basic kselftest that checks if the available rust sample modules
-> can be added and removed correctly.
->
-> Signed-off-by: Laura Nao <laura.nao@collabora.com>
-> ---
->  MAINTAINERS                                   |  1 +
->  tools/testing/selftests/Makefile              |  1 +
->  tools/testing/selftests/rust/.gitignore       |  1 +
->  tools/testing/selftests/rust/Makefile         |  8 ++++
->  .../selftests/rust/test_probe_samples.sh      | 42 +++++++++++++++++++
->  5 files changed, 53 insertions(+)
->  create mode 100644 tools/testing/selftests/rust/.gitignore
->  create mode 100644 tools/testing/selftests/rust/Makefile
->  create mode 100755 tools/testing/selftests/rust/test_probe_samples.sh
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e2c6187a3ac8..acf283a5d2c0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18847,6 +18847,7 @@ F:      Documentation/rust/
->  F:     rust/
->  F:     samples/rust/
->  F:     scripts/*rust*
-> +F:     tools/testing/selftests/rust/
->  K:     \b(?i:rust)\b
->
->  RXRPC SOCKETS (AF_RXRPC)
-> diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-> index 3b2061d1c1a5..26140426c849 100644
-> --- a/tools/testing/selftests/Makefile
-> +++ b/tools/testing/selftests/Makefile
-> @@ -74,6 +74,7 @@ TARGETS += riscv
->  TARGETS += rlimits
->  TARGETS += rseq
->  TARGETS += rtc
-> +TARGETS += rust
->  TARGETS += seccomp
->  TARGETS += sgx
->  TARGETS += sigaltstack
-> diff --git a/tools/testing/selftests/rust/.gitignore b/tools/testing/selftests/rust/.gitignore
-> new file mode 100644
-> index 000000000000..e3c5c04d1b19
-> --- /dev/null
-> +++ b/tools/testing/selftests/rust/.gitignore
-> @@ -0,0 +1 @@
-> +ktap_helpers.sh
-> diff --git a/tools/testing/selftests/rust/Makefile b/tools/testing/selftests/rust/Makefile
-> new file mode 100644
-> index 000000000000..ccaa50f35b5b
-> --- /dev/null
-> +++ b/tools/testing/selftests/rust/Makefile
-> @@ -0,0 +1,8 @@
-> +
-> +TEST_PROGS += test_probe_samples.sh
-> +TEST_GEN_FILES := ktap_helpers.sh
-> +
-> +include ../lib.mk
-> +
-> +$(OUTPUT)/ktap_helpers.sh:
-> +       cp $(top_srcdir)/tools/testing/selftests/dt/ktap_helpers.sh $@
-> diff --git a/tools/testing/selftests/rust/test_probe_samples.sh b/tools/testing/selftests/rust/test_probe_samples.sh
-> new file mode 100755
-> index 000000000000..a46550543f73
-> --- /dev/null
-> +++ b/tools/testing/selftests/rust/test_probe_samples.sh
-> @@ -0,0 +1,42 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Copyright (c) 2023 Collabora Ltd
-> +#
-> +# This script tests whether the rust sample modules can
-> +# be added and removed correctly.
-> +#
-> +
-> +DIR="$(dirname "$(readlink -f "$0")")"
-> +
-> +source "${DIR}"/ktap_helpers.sh
-> +
-> +rust_sample_modules=("rust_minimal" "rust_print")
-> +
-> +KSFT_PASS=0
-> +KSFT_FAIL=1
-> +KSFT_SKIP=4
-> +
-> +ret="${KSFT_PASS}"
-> +
-> +ktap_print_header
-> +
-> +ktap_set_plan "${#rust_sample_modules[@]}"
-> +
-> +for sample in "${rust_sample_modules[@]}"; do
-> +    if ! /sbin/modprobe -n -q "$sample"; then
-> +        ktap_test_skip "module $sample is not found in /lib/modules/$(uname -r)"
-> +        continue
-> +    fi
-> +
-> +    if /sbin/modprobe -q "$sample"; then
-> +        /sbin/modprobe -q -r "$sample"
-> +        ktap_test_pass "$sample"
-> +    else
-> +        ret="${KSFT_FAIL}"
-> +        ktap_test_fail "$sample"
-> +    fi
-> +done
-> +
-> +ktap_print_totals
-> +exit "${ret}"
-> --
-> 2.30.2
->
->
+Document the newly added Make target: rustupoverride.
 
-Reviewed-by: Sergio Gonzalez Collado <sergio.collado@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+V2->V3:
+- Remove the O= part and document rustupoverride target.
+
+ Documentation/rust/quick-start.rst | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+index f382914f4191..c13e2e479e29 100644
+--- a/Documentation/rust/quick-start.rst
++++ b/Documentation/rust/quick-start.rst
+@@ -33,10 +33,9 @@ A particular version of the Rust compiler is required. Newer versions may or
+ may not work because, for the moment, the kernel depends on some unstable
+ Rust features.
+ 
+-If ``rustup`` is being used, enter the checked out source code directory
+-and run::
++If ``rustup`` is being used, run the following Make target::
+ 
+-	rustup override set $(scripts/min-tool-version.sh rustc)
++	make LLVM=1 rustupoverride
+ 
+ This will configure your working directory to use the correct version of
+ ``rustc`` without affecting your default toolchain. If you are not using
+-- 
+2.31.1.272.g89b43f80a514
+
