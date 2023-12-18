@@ -1,75 +1,95 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9AB1D12C
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 13:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32C88464;
+	Mon, 18 Dec 2023 13:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1+WXwqL"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-5d33574f64eso22562117b3.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 05:06:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j7x23AtU"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5e4b6353482so19494337b3.1;
+        Mon, 18 Dec 2023 05:33:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702904801; x=1703509601; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702906414; x=1703511214; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dCuBCfBgMYToXXW74m7gHWaOMmARsp6IgVwn11KJVXo=;
-        b=G1+WXwqLiNIhWW31rFI4oyk514ccGsNU4l8FYmeePY5TJ8w35OKKvhMQUAF8Zflwyt
-         JW07jr4fqtrHU6AvKMioUTl8R5zKRoNu7NOcY6pEPC5qu10i3r7oPxxtzWbGA1mlCPP9
-         nhTFftHNU3SMBe78uRIBIBRjQjRMExGW2/kyRGUGp9uwA2QS7f6mBR3ny2nXHxPki38i
-         lWPYQ2Psif5JytIibjGqn/gTS/A/Ldhv7SL9mtGmDUdThnZ2yPvo5FEvEPZdVZp8boEc
-         iP1bBHZA87CmgmYUf02C3RXJmKKb7r/rWYmaFBHHUakcBvdFOGsDWglBsU3ULG3OkEyy
-         7jsg==
+        bh=/XTxombejJvrSz1c0NBYh3w/CnJqcWskHUIi/zqhoTE=;
+        b=j7x23AtUuTkUPYyfKxS0VVHjI26UBmcVa8DPCZGb79Q1MHE9H1ShYDitXQ6CQigfBy
+         JLt5Y8ZBbPGk1m5KMUkTrM5G1nxEo/Tq8eqnGY3Wge2UntDD1KcrpFO6yy/HFSomfqPB
+         EPNpXUVeSGmwUA6L33IVEwYiD5R7baPUU266JUsh0XRq0IlkT9umM6HuDgpNaDv1rU/f
+         C3H5n3VaSn/f9cwmM2kEX5IncEs00yI6OLYNXoIKsZftartPF87b43ByA7W7oF/1CNdp
+         ab+DvnuN4aFiP5/KptFDZPSStd71n+PCpmWx5X3oNFPmyc9MmsIsuHmfmC0tSw7Scz6J
+         jIbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702904801; x=1703509601;
+        d=1e100.net; s=20230601; t=1702906414; x=1703511214;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dCuBCfBgMYToXXW74m7gHWaOMmARsp6IgVwn11KJVXo=;
-        b=qbjFSzPGbJ12cgFjz/Yb5fI/po6QLzW65F+Ldk1j/hJg0DiIVAOQ1QG3vycJp4WgZv
-         Stiwpatz/WDB9vfW1O/cKYoaWuer9qK4eRHH7JFxekrYilJJXFu/zEg8j4ucFGkU2eCf
-         0X82pME/KE4ipWZMoHlv/27wACfY6RjV3vB8EKa6kUENmM+enNODhLZSMWWQsEuDvGND
-         ymx6rg5lWTxPOsjML7iG25HOkaoe/aOmbhY0h0VRmHTebMfVwhFwrLoCs653huTpElg/
-         g2ZRA4I9qiWL4NxSaL33twF75SVcujPyOgcbxqpbaDWajeNVeoxDPwXjfaoVafEBPK+U
-         t71w==
-X-Gm-Message-State: AOJu0Yx/NrNQoXs74+nB1rRHTR2NMcAxb6nQjgrd2VujY9K/W2AG7Dbm
-	RZtVMbazZHH9xttJz3SDL1JdfuWMU9qH1VVWli4=
-X-Google-Smtp-Source: AGHT+IEz7HQwati+minolMSf8diNPiChDA7O0FJTF+IQSYqVSokOi7H9bL/kfUB/WWE6h4KL8TINzio0n8FU9YuUV4Q=
-X-Received: by 2002:a0d:eb44:0:b0:5e4:d89a:d6dd with SMTP id
- u65-20020a0deb44000000b005e4d89ad6ddmr3368096ywe.69.1702904800718; Mon, 18
- Dec 2023 05:06:40 -0800 (PST)
+        bh=/XTxombejJvrSz1c0NBYh3w/CnJqcWskHUIi/zqhoTE=;
+        b=lnNAjr7SIRP8g51xkkAYvC/taE95GUyuw1XIifzR07KuXYMMizwXszWtqlv4CY2npt
+         uyYQypPNIvEb8TlMxBmeRcYoOE9sjhiZoeyXGl7Est4jRwySjXdfnYJPgD21bwH/zcZM
+         Vt7T1JR3CTZiIVjNVSOBDYljqlR4jZwrFqyHHwjmA1TDouJRja4LwydBPUSGaaY6fi8D
+         t+nyqn5S0dKo2TklxKavg4gFFSfZXYHYMHIzmPX/fj6mSacfZ/GME9wiXJvBhbfmIAV+
+         lXA/AXMaYOgJmDGXQpFc9ei6tDOHlhpvh+dRUPY17hLr1zKaDLwpEflmeizU0Hvov/7y
+         G6TQ==
+X-Gm-Message-State: AOJu0YzK3LTaL4cgTGm/IZPzs91DiPiKt0M8qLPyxXxrYAqY2qd9srb/
+	gUu95X3U+OoMF7Pe9bhwcMSnAYavvlrQ4GiUcZk=
+X-Google-Smtp-Source: AGHT+IEgynr5hzCh0Yha5bdcybxD+4XDoDnyLoi/Bwrt1GyqD5BuO0u/e2Nyf02WVuvJdzMUrAZd3A7000NFrBCts2s=
+X-Received: by 2002:a0d:d241:0:b0:5d7:1a33:5ad7 with SMTP id
+ u62-20020a0dd241000000b005d71a335ad7mr10904091ywd.36.1702906414703; Mon, 18
+ Dec 2023 05:33:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231207084846.faset66xzuoyvdlg@vireshk-i7> <CANiq72=0m=h6v=SmgVnTs5sk3jm1oZ_TBhDXPq2Y41rCV4J5bw@mail.gmail.com>
- <CAK7LNARdj1yJv9pZ67Z7=Yi1GU0=bc7B0BnDSf=2L7OfpQdGKA@mail.gmail.com>
-In-Reply-To: <CAK7LNARdj1yJv9pZ67Z7=Yi1GU0=bc7B0BnDSf=2L7OfpQdGKA@mail.gmail.com>
+References: <20231214222253.116734-1-ojeda@kernel.org> <CABVgOS=LXUzRD-c63sxn0FMfGWvxCPP1t_8nY5Xgk30Y9qMAcw@mail.gmail.com>
+ <CANiq72kw326HyrDM0v0mFNu5jfb=eL1a+k-idr-5Vbc6_gmY2A@mail.gmail.com> <CAK7LNAQ7A79fMg3Teh7H+NRwnztrNU73s5C_fybUVH+vEX0YeQ@mail.gmail.com>
+In-Reply-To: <CAK7LNAQ7A79fMg3Teh7H+NRwnztrNU73s5C_fybUVH+vEX0YeQ@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 Dec 2023 14:06:29 +0100
-Message-ID: <CANiq72m=N5c94xcJMxx=5N=QYxS1zwGhAyA5e6aGoNbOnLkBLA@mail.gmail.com>
-Subject: Re: [BUG] Rustup override doesn't work with O=<build dir>
+Date: Mon, 18 Dec 2023 14:33:23 +0100
+Message-ID: <CANiq72mjSVqLNrdhK6H+X2=9ydwzX3RM2jBf1AwRFngSJ2kQ9Q@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: add `rustupoverride` target
 To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Erik Schilling <erik.schilling@linaro.org>
+Cc: David Gow <davidgow@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 18, 2023 at 1:03=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+On Mon, Dec 18, 2023 at 1:10=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
 rg> wrote:
 >
-> Yup, this is also what I pointed out a long time ago [1].
->
-> [1] https://github.com/Rust-for-Linux/linux/commit/f2238e7
+> In principle, Kbuild does not require internet connection,
+> or proactively change the system setting.
 
-I forgot about that one, sorry! It happened a couple days after v10
-was sent (the one that got merged).
+Yeah, that was what I thought. I agree it can be surprising to have
+Make targets that modify environment/system-level bits (i.e. affecting
+things outside the build).
+
+> Rather, I will manually do this one time for the parent directory:
+
+That can work for many people, yeah. Though I imagine some people may
+want to keep builds (and sources) of different kernel versions in the
+same parent folder (or even other projects). But one can use nested
+overrides too.
+
+> If you want to provide a way for automated settings,
+> you can do it in a script you maintain.
+
+Sounds good. In that case, we can send to the list your patch from the
+`rust` branch if that is OK with you (i.e. I understand you would
+prefer to avoid not just `rustsetup` but also `rustupoverride`).
+
+Thanks Masahiro!
 
 Cheers,
 Miguel
