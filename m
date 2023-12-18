@@ -1,74 +1,74 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938AD73465;
-	Mon, 18 Dec 2023 21:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF957349F;
+	Mon, 18 Dec 2023 21:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITbsrZSL"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-77f8e4702a6so315703485a.1;
-        Mon, 18 Dec 2023 13:15:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asosZS70"
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-203d93b660aso495450fac.2;
+        Mon, 18 Dec 2023 13:18:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702934125; x=1703538925; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702934315; x=1703539115; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZAFj55iGA/fI8jzbFo5VrB8O4OpZy+ghswsZ8iOlJEs=;
-        b=ITbsrZSLt4d0YNokKzmYP1YIjwTiKjKHxHjB4V4pd4/p/7XaY5JjgF41h/3qrgW0O6
-         bcl4xIVG8fhXuUzt1WZHsTKGTshxi7pTbz5y2/7KB1aUrTrCGyFmGZXoR1o8PDRPzv2H
-         NrIzexStJMSxL6BvtAFazmzLZ6kDWUZZejSFwcf2nn4sBXgc7Kw0ZlDPxnHAmh8rCwBJ
-         Va98TnSKdllwM2A/Y9u9asmxLXDcFRf4fz+SvY1jpjPdsDT3rsf1dqis3dV5TIsFX2IO
-         bGwnETH266ev3/LNxMCSDvI8qDhJS0UT6ak3Z3oYVwcsGgdJVtBOo8uxPcm+6UTZrOpM
-         8OIA==
+        bh=ZOmrfIW5eJBghH2IGSILpqWH2xjKkYNm0aalCAYtY94=;
+        b=asosZS70hzXzFnS8xH4XSBocBchbz1ZMJoSQJHxh4xWYGcwBmzk1JCiZGr0MoivoMm
+         QK6t4N+ztuFyJPRgtqY04RPgl3qW9FQckl/62ytpD1Kq+xkUa3o70DoiEhLtVjGH7Yo2
+         At2k+gCpSGODJ9MBW4pm/4zja0htETK0C9vY2bhHaec2FofEfI9crOzQjed4yJsGdn0a
+         XB78qsY+l3rlUJJGp41cqNS5E4ZULUwKcQILBxTOUdE4xFIxQUzg7SR5KjWadJXlZFkG
+         Jp/gaTcQJS8257fNhpOnx2kcoSSmskZffeWyWmgJ2niUZr/epQAAo9hwS6Rsn3QHFRzm
+         PHOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702934125; x=1703538925;
+        d=1e100.net; s=20230601; t=1702934315; x=1703539115;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZAFj55iGA/fI8jzbFo5VrB8O4OpZy+ghswsZ8iOlJEs=;
-        b=Fosna+a+T3wW9ARC0RTY+UUOcZLH+4TpsCoWyomUF9+HTlGPCt3LL56+KSxUbYFKhL
-         pDbEFW2ZNGMDmW8ETtn2FxVY435sjNyYvJAmCqsw/asEHZCyFK8l+kw0oHeaqPwSjNoA
-         riVuny1yyMHQFBApaczxXCy8GDzZ72Aoutagc7ORT76j05zBlq+DnJCwXn8KDWP6uXaq
-         fqFW5WuvC3y6CKKTBa6J/O6rqfTy0lUY5akYf0L0t6Vzb/pfg7owpFt9xWRgo73415k4
-         /8FKiWmsYHZdkycHTNp7wgJBJlksUW6AsOtRWhtWL2h+8T2vK1HgVPnmn+g2RPe5o9Km
-         WsyQ==
-X-Gm-Message-State: AOJu0YwYBOhYznaksGJnmS3RmIVu73LNMpCPMvMGopv4Is8jin1hg6i7
-	ZqQX6tL83cDFE9/+cUcPrjg=
-X-Google-Smtp-Source: AGHT+IG5Dxu0kKKSLDzL8EB5ZqwauaD4ABzu47DHdDTIkeq7xKrJGpOR8xXkW6ZSfd8PhnNUQVpDwg==
-X-Received: by 2002:a05:620a:640c:b0:77f:2cae:c6aa with SMTP id pz12-20020a05620a640c00b0077f2caec6aamr21304147qkn.119.1702934125533;
-        Mon, 18 Dec 2023 13:15:25 -0800 (PST)
+        bh=ZOmrfIW5eJBghH2IGSILpqWH2xjKkYNm0aalCAYtY94=;
+        b=T6wkA7KIJIRVQXbDLP4CBQx/xboj0O9AGFzQiA4CFNcMNNYUSGQpqkSJ+hAHQdB13g
+         kauiGzaUd2YgLh+8LtS+4aA1r73XneEjNn0kW9A1musSTG1YLJ4joOQi6I9BF3sfKCH6
+         u9BD9mZYdN/ox6NWKkUrke39HqvP3f8hZK4ldNuL9JTaTn1/OkTaiRuiXh4YnLI9kf1X
+         g2A3+cJ+S6/cogLNI0KhVuC1RwbsNXmJTVcj1RPFtGLlbObQntMQlmE5b6TFlcx/nr+3
+         io2gqWQ00xjQNzl7HhmAnqupOvDklEUit/xWU8iogUJwdSTuur8Vrw3TBmBix5i8dDAI
+         C2hw==
+X-Gm-Message-State: AOJu0YwZwXLkWvzLOErA8ti23q9TZX2DGQQDi8Mau/8+KwhvP0W9T09M
+	2AsugBMTIkhGkDHGJUWj4FlId3Zd23w=
+X-Google-Smtp-Source: AGHT+IHvIUeVpUtGvTKPYHto8r0dPkeMKthPz7UIXmh2sdRvbbYarC3PtvYt714IF00thQh6Tq4+tg==
+X-Received: by 2002:a05:6870:1581:b0:203:eb9b:9929 with SMTP id j1-20020a056870158100b00203eb9b9929mr71891oab.56.1702934315176;
+        Mon, 18 Dec 2023 13:18:35 -0800 (PST)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id wa2-20020a05620a4d0200b007788dac6b24sm8599541qkn.41.2023.12.18.13.15.24
+        by smtp.gmail.com with ESMTPSA id rb3-20020a05620a8d0300b00774350813ccsm8608953qkn.118.2023.12.18.13.18.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 13:15:25 -0800 (PST)
+        Mon, 18 Dec 2023 13:18:34 -0800 (PST)
 Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id C682A27C005A;
-	Mon, 18 Dec 2023 16:15:24 -0500 (EST)
+	by mailauth.nyi.internal (Postfix) with ESMTP id 6577727C0061;
+	Mon, 18 Dec 2023 16:18:34 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Mon, 18 Dec 2023 16:15:24 -0500
-X-ME-Sender: <xms:bLaAZbLyZgsxHnAE-LQS72adUfi_i9yEd5gW_Esh9bbQ5crPNbx-gw>
-    <xme:bLaAZfJd77gTebquISg3UayRtClCgMTxXVeEnGHkaIP9ZJvc3z7gQ5p1SE_PWjNsw
-    sjgPu0-7gXzFiREcQ>
-X-ME-Received: <xmr:bLaAZTvEyjr_4kOz8oCSF-IwRIFl20EJWelJDOuSqrnLt0hneDyvbCH8WN8>
+  by compute2.internal (MEProxy); Mon, 18 Dec 2023 16:18:34 -0500
+X-ME-Sender: <xms:KreAZZ0c43n58S4xMPrbfwbHnaPZHKoqANJfc48XbFS8oI36bolTvA>
+    <xme:KreAZQFZGsA-Tc9aUZsx3No4_Zp4n3Xfk_6rS59NQAGOrrjJ0xCmj9wrCJ9OfQKtW
+    UbCqkgaxvqE-HswVQ>
+X-ME-Received: <xmr:KreAZZ4je1mEQjDA0RpFP6ircFKp0GkIxckch4WZ4NjpQRmg_ueuzVcQf3Q>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtkedgudeghecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
     uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
     grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    udffiedvnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomh
     epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
     ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
     higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:bLaAZUb76YkJsSzyj7v6KPPRUiccBBmbX0Aefvtr_i0pbK7ky-2scg>
-    <xmx:bLaAZSalLIWDZOllWbo953vCiGZoXTcJbqM0FyyL3l1yBcJvp50Auw>
-    <xmx:bLaAZYARUYQasC-N7uhFlvdsgajbHb1tBX_TSyymDgIwvFvKwbH2Gw>
-    <xmx:bLaAZXJ8Rb6TkmOrunQwiWDh4xtX5adRVKDQm5Elt1kbOQNFMCh0tg>
+X-ME-Proxy: <xmx:KreAZW2K-dlA2liv7XiiEDBgYSvljcb1gL0mCi_JqwIAcsNPe3VGOQ>
+    <xmx:KreAZcGiXWCD61IbbiqBIO_HUOBXvdWc5a-s637xL_I69Emo3FNnuA>
+    <xmx:KreAZX9O6hDXQaQ7xELRpRAEY2PTv51qdwzLaKUbUcI9A5f1tYlWUg>
+    <xmx:KreAZSGEfNe2AifqIm6twrzLX38RoMY6ErTgZaBvm-GZjPihqdBtLQ>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Dec 2023 16:15:23 -0500 (EST)
-Date: Mon, 18 Dec 2023 13:15:07 -0800
+ 18 Dec 2023 16:18:33 -0500 (EST)
+Date: Mon, 18 Dec 2023 13:18:17 -0800
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -82,10 +82,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] rust: sync: add `CondVar::wait_timeout`
-Message-ID: <ZYC2W5Rzdrsr2KKv@boqun-archlinux>
+Subject: Re: [PATCH v2 4/4] rust: sync: update integer types in CondVar
+Message-ID: <ZYC3GR6LMEmRUQy0@boqun-archlinux>
 References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com>
- <20231216-rb-new-condvar-methods-v2-3-b05ab61e6d5b@google.com>
+ <20231216-rb-new-condvar-methods-v2-4-b05ab61e6d5b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -94,79 +94,21 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231216-rb-new-condvar-methods-v2-3-b05ab61e6d5b@google.com>
+In-Reply-To: <20231216-rb-new-condvar-methods-v2-4-b05ab61e6d5b@google.com>
 
-On Sat, Dec 16, 2023 at 03:31:41PM +0000, Alice Ryhl wrote:
-> Sleep on a condition variable with a timeout.
-> 
-> This is used by Rust Binder for process freezing. There, we want to
-> sleep until the freeze operation completes, but we want to be able to
-> abort the process freezing if it doesn't complete within some timeout.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/sync/condvar.rs | 59 ++++++++++++++++++++++++++++++++++++++++-----
->  rust/kernel/sync/lock.rs    |  4 +--
->  2 files changed, 55 insertions(+), 8 deletions(-)
-> 
-> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-> index 9331eb606738..0176cdfced6c 100644
-> --- a/rust/kernel/sync/condvar.rs
-> +++ b/rust/kernel/sync/condvar.rs
-> @@ -6,7 +6,8 @@
->  //! variable.
+On Sat, Dec 16, 2023 at 03:31:42PM +0000, Alice Ryhl wrote:
+[...]
 >  
->  use super::{lock::Backend, lock::Guard, LockClassKey};
-> -use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque};
-> +use crate::{bindings, init::PinInit, pin_init, str::CStr, time::Jiffies, types::Opaque};
-> +use core::ffi::c_long;
->  use core::marker::PhantomPinned;
->  use macros::pin_data;
->  
-> @@ -18,6 +19,8 @@ macro_rules! new_condvar {
->      };
->  }
->  
-> +const MAX_SCHEDULE_TIMEOUT: c_long = c_long::MAX;
+> +const TASK_NORMAL: c_uint = bindings::TASK_NORMAL as c_uint;
+> +const TASK_INTERRUPTIBLE: c_int = bindings::TASK_INTERRUPTIBLE as c_int;
+> +const TASK_UNINTERRUPTIBLE: c_int = bindings::TASK_UNINTERRUPTIBLE as c_int;
 > +
 
-I'd like to put this in rust/kernel/time.rs or rust/kernel/task.rs, but
-it's not a blocker.
+Similarly, these definitions are better in rust/kernel/task.rs.
 
->  /// A conditional variable.
->  ///
->  /// Exposes the kernel's [`struct wait_queue_head`] as a condition variable. It allows the caller to
-> @@ -102,7 +105,12 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
->          })
->      }
->  
-> -    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
-> +    fn wait_internal<T: ?Sized, B: Backend>(
-> +        &self,
-> +        wait_state: u32,
-> +        guard: &mut Guard<'_, T, B>,
-> +        timeout: c_long,
+The rest looks fine to me.
 
-Nit: maybe `timeout_in_jiffies` instead of `timeout`? Or we have another
-data type:
-
-	pub type DeltaJiffies = c_long;
-
-or 
-
-	pub type JiffyDelta = c_long;
-
-because a "c_long timeout" really hurts the readability.
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
 Regards,
 Boqun
-
-> +    ) -> c_long {
->          let wait = Opaque::<bindings::wait_queue_entry>::uninit();
->  
->          // SAFETY: `wait` points to valid memory.
-> @@ -113,11 +121,13 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
->              bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
->          };
->  
-[...]
