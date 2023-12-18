@@ -1,105 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C0B1A72F
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 12:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B93F1B282;
+	Mon, 18 Dec 2023 12:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YvCQfgQz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17370C433C7
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 12:03:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKUJGxHT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C75C433CA;
+	Mon, 18 Dec 2023 12:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702901013;
-	bh=H6yH11fmFs6fKX2ciuRNdsIGiKAP+/Tnew37FEsXRbw=;
+	s=k20201202; t=1702901221;
+	bh=DrUER6FrPw2fjC9H9x1urksXUY0gGNG6zMiTe1yGdnU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YvCQfgQzOGSm0owxZLB0wgBOxmOflTkdcbvZ8V4epckiKkyrDGJSLE5BFWLY1Vy3T
-	 VM7nxWS42+Q465ppSdGUXSeR99pVVo2DBeNqyPSCU/QgCBmR+0Z5SpQc9zT/FnG442
-	 WZCjThZdyG6noba8g9ra3FAY6yFzI59QVw+lUTfJme5xPPi4qbvmBO9EIcTEXWx5yn
-	 DPFeOJs506rfcP1l5Gyl8kAeT2uUdQ3M/6mU+nAi2DlpYtNA72SXJLAAZhtU17BfYT
-	 GEiI/L/36GHX9KlkUMRur12fZnE9KCwRGo0sHXLL5QgjUaNsi8dgzsIEVW68n5uNFy
-	 vuo9V/LndE2uw==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6d9f4eed60eso2599978a34.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 04:03:33 -0800 (PST)
-X-Gm-Message-State: AOJu0YwD5H6zwJmUIvRk3wZHxxMFCYL8sVsUjJqIKeklZ1tD5GpNvrQC
-	Aa0qEgtUr0LkZXCytdFJUc52/u0R33u79zk0+34=
-X-Google-Smtp-Source: AGHT+IGeZRVIo0zS1Glm1levsy/GxaPY4SV3cQ7N5KLkXaR8fgyEKH/qSiLg9O5J7TvhFN0gOhxIWyFFQAeIzhOWl8w=
-X-Received: by 2002:a05:6870:648c:b0:203:a72c:9072 with SMTP id
- cz12-20020a056870648c00b00203a72c9072mr3364007oab.43.1702901012485; Mon, 18
- Dec 2023 04:03:32 -0800 (PST)
+	b=LKUJGxHTrZ1gQyvq878M4w4HTVQcb8bbMxwpc19jT0HKCWZyr7ueaR6K9Nmol7qf4
+	 oYBbD8AzPcLS+DHc2TbrwtzMr178ov8zgr2I7Jxfv58m6bGFAVjUojoZJ9MlcEH2Dj
+	 qi69pp+NDQ/8Kav3JL/aUwfcOOOz+27WnDiUwk9SFR/pN6VrS1qJQT6FeRATOupFX9
+	 8POziYZNVql6QVwrqMz0KFFD2lfeRP9FfvzHXTgMaeG5ZlwI17Ags7DaTZSvs9zYnI
+	 9k0lKnHMvyELpUrEMLhHVNbbFTOHJrH01NGe0EUJPgM5MPGsVQQOA8BIlY7WjLg55H
+	 NlcR6Bf/3H/bA==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-1fab887fab8so2526310fac.0;
+        Mon, 18 Dec 2023 04:07:01 -0800 (PST)
+X-Gm-Message-State: AOJu0YyFW6kC53iyOVWpp9ERjqzpi3NmNbENdme5lRRL3i35ULj+PzqF
+	xvFdGbpwCvG3BQ3bo0lmsObtaxFGlGUMs9o6Hjg=
+X-Google-Smtp-Source: AGHT+IHbXzdWjN3WLIrbJWsVdm5g8DLYEIA4IOfNJwqDUwnzQPJ+UKUh+M42CGcq0eJeYmSUPySQg3zPBGdpCR1G9Xc=
+X-Received: by 2002:a05:6870:6b90:b0:203:7e47:3efe with SMTP id
+ ms16-20020a0568706b9000b002037e473efemr7533561oab.64.1702901220899; Mon, 18
+ Dec 2023 04:07:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231207084846.faset66xzuoyvdlg@vireshk-i7> <CANiq72=0m=h6v=SmgVnTs5sk3jm1oZ_TBhDXPq2Y41rCV4J5bw@mail.gmail.com>
-In-Reply-To: <CANiq72=0m=h6v=SmgVnTs5sk3jm1oZ_TBhDXPq2Y41rCV4J5bw@mail.gmail.com>
+References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+ <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com> <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
+ <20231215064823.ltm55fk4zclsuuwq@vireshk-i7> <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
+ <20231215112418.usky65sibhbiubyx@vireshk-i7> <CANiq72nuUpBCHaeyozDXAZrV+YLW_OR-QOUiVHPfTbNGG3RFXA@mail.gmail.com>
+In-Reply-To: <CANiq72nuUpBCHaeyozDXAZrV+YLW_OR-QOUiVHPfTbNGG3RFXA@mail.gmail.com>
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 18 Dec 2023 21:02:53 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARdj1yJv9pZ67Z7=Yi1GU0=bc7B0BnDSf=2L7OfpQdGKA@mail.gmail.com>
-Message-ID: <CAK7LNARdj1yJv9pZ67Z7=Yi1GU0=bc7B0BnDSf=2L7OfpQdGKA@mail.gmail.com>
-Subject: Re: [BUG] Rustup override doesn't work with O=<build dir>
+Date: Mon, 18 Dec 2023 21:06:22 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAS8kaRsWf6Grob5Vuj3eNx2c2=s+JmmshcXXJT2B4ph_Q@mail.gmail.com>
+Message-ID: <CAK7LNAS8kaRsWf6Grob5Vuj3eNx2c2=s+JmmshcXXJT2B4ph_Q@mail.gmail.com>
+Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
+ build directory
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, rust-for-linux@vger.kernel.org, 
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, Tiago Lam <tiagolam@gmail.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Erik Schilling <erik.schilling@linaro.org>
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 7, 2023 at 10:16=E2=80=AFPM Miguel Ojeda
+On Fri, Dec 15, 2023 at 8:53=E2=80=AFPM Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Thu, Dec 7, 2023 at 9:48=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.=
-org> wrote:
+> On Fri, Dec 15, 2023 at 12:24=E2=80=AFPM Viresh Kumar <viresh.kumar@linar=
+o.org> wrote:
 > >
-> > I have just started looking into the kernel's Rust side and found out a=
- minor
-> > issue with build.
+> > I thought people aren't required to enter the build directory now (but
+> > just source code directory) and simply do:
 > >
-> > I use a newer version of 'rustc' for my non-kernel work and have set `r=
-ustup
-> > override` for the kernel's directory to use '1.73.0'.
-> >
-> > But when I build the kernel with O=3D<build dir>, I get:
-> > "Rust compiler 'rustc' is too new. This may or may not work."
-> >
-> > Setting the override for the build directory too fixes it. Not sure how=
- to fix
-> > Makefile for this and so reporting here.
+> >                 make LLVM=3D1 O=3D<builddir> rustupoverride
 >
-> Good catch. Previously, we had `rustup default` in the documentation
-> instead, which did not suffer from this problem. We should now
-> probably mention in the docs that one needs to make sure the override
-> applies to the build folder (i.e. when `O=3D` is not a subdir of the
-> source tree, since that one works fine).
-
-
-Yup, this is also what I pointed out a long time ago [1].
-
-
-[1] https://github.com/Rust-for-Linux/linux/commit/f2238e7
-
-
-
-
-
-
-
-
-
-
-
-
-
-> Would you like to send the patch? Otherwise I will create a "good
-> first issue" for this in our tracker.
+> Yeah, that is correct, but we don't need to write the `O=3D` in the
+> commands themselves. The idea is that 1) the commands can be easily
+> copy-pasted, 2) commands look simple (i.e. there are many other
+> variations and options you may pass), 3) newcomers do not need to care
+> about `O=3D` (so it is extra simple for them).
 >
-> I don't think we should change the build system for this, because
-> `rustup` replaces what `rustc` is meant to be, and the build system is
-> simply using whatever `rustc` is by default, like for other tools. So
-> if one uses `rustup` to control what `rustc` is, then one needs to
-> make sure it is the right one when called.
+> > Will this still work if we are in the build directory ?
+>
+> Both should work (as long as the initial setup in the build folder is
+> done, of course), so I think we can simply remove the mention about
+> "enter ..." now and simply give the command.
+>
+> In fact, even if Kbuild did not support that, we could still remove
+> the "enter ...", because then the `make` would need to be run like any
+> other target from the source tree.
+
+
+
+FWIW.
+
+Kbuild is designed to be able to initiate 'make' from anywhere,
+even if the build directory is not set up.
+
+In that case, you need to use -f option to point to the top Makefile.
+
+
+
+You can enter a build directory, then do this:
+
+  $ make -f <path/to/source/tree>/Makefile defconfig all
+
+
+
+
+Likewise, both of the following should work.
+
+
+1)  Enter the source directory, and
+
+  $ make O=3D<path-to-build-directory> rustupoverride
+
+
+2)  Enter the build directory, and
+
+
+  $ make -f <path-to-source-directory>/Makefile rustupoverride
+
+
+
+
+
+
+> In other words, regardless of the
+> answer, we could remove it thanks to the new target, unless I am
+> missing something.
 >
 > Cheers,
 > Miguel
