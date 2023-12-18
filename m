@@ -1,93 +1,150 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633377346D;
-	Mon, 18 Dec 2023 20:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67F1A2D;
+	Mon, 18 Dec 2023 20:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZWgmzcL+"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6d532e4f6d6so929895b3a.2;
-        Mon, 18 Dec 2023 12:49:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HO49Nx56"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4260ba19a57so36045071cf.3;
+        Mon, 18 Dec 2023 12:57:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702932591; x=1703537391; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iGdqyDSPuIrJYr5+tHr9TPege3arG1eE7qeP30XHv7c=;
-        b=ZWgmzcL+wFyeP//0EzN1bPBGEyoASI9LmS4i2W5exBTKY5twj0tcNlyglIbdmhcQq/
-         fPbIsyiZl/y8gDFjaD3haj8Jqb01YyOhjpyla3uZw1aWbhuSZZl9ArSmSxPruwqn28db
-         ZMmZj2ooej0jTrYbuT4aybEYS6gmMRFe3WIND7hIZHCt9B+jBitG7xCYaDyiF4wzIT9s
-         t2IkO+a/NxFzm4Lr+iOcmX9Mft3R3cX3Fhd+mgfAdnjYePIxuxaSrsVwrl+Ax0aPoU2Y
-         kq7eUTk2pm96Mx65nK8UrYCsFoEk1rBRI/6PaDUGQpt+KqNtUCxqp3BV76wri5VPmNHD
-         GPfA==
+        d=gmail.com; s=20230601; t=1702933069; x=1703537869; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=GcKJMFjfcbU8CE9s/X+zGwudMjtKyfz7guJTf6gd0KU=;
+        b=HO49Nx56HpXHqAtdQPepO05sEeWDsrgJ/AyLkqN1ZwoW6mQvfg0n+S+AfmaV8SMZu/
+         /gkIOx3GCaka1tv0blDwfyXL1Y5cR/JRAwy39kUKDpy0DCSCFN1iEgTy3mZKRsnGBEJq
+         e0529u52e8zX31ETqfOqp8Z5shIcitmVJb4SsTPKFd99KOxea/6ZK8yaVmfj054NDTS4
+         CbiNj9fJ/FtG0ICJwcpO6foQq9CGTmhCtAAxgvN9JSH83WxQGTTVY4O3NvZe4QU42S4e
+         mvi0EMFyX1bZSW2XcR1o07+6/ZvcUjTuyAbow9SO9Yi5EKFJWY+1QKo1bQ9zyVy6ZDyd
+         4L4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702932591; x=1703537391;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iGdqyDSPuIrJYr5+tHr9TPege3arG1eE7qeP30XHv7c=;
-        b=Q3LFLUGDaUjN74xP/+dn/M8+drsQbgzY1VuR0kiDgellN0VUJz5bUyFQ2Xtgc6KWLm
-         WfrWdPehOT1MnKtuDel+/rWWTWuGVmstxrG7qRmBWZuxDaLI3tiOHEUTpUg92JO3oVzQ
-         bkwhkyzpCNZNmsn5E+24u4jffiIwtMl8DmRQtokBDgb3i5FGvg6dBlJCfrwxEM0RFxoA
-         qT3M5EXWJu4JTL4enQyf4FuXFfD8tbNw36OkFOdi0Br+OAkvzsVKcXHfGkDvRHGGH+h8
-         ceRzRghtbVu5Za1IkM2ibpfDeoLxT/6Koiql9GRwi1ijRJuU5TPQfwZPHUJStgLUN7Tn
-         Ug8w==
-X-Gm-Message-State: AOJu0Yyutg9QzgZBuUg8i6gyv6Yo0FNPFKifs1gPv7Rn1o1gkLxSZh3Z
-	8fcdIHWLjRo1OLUvGbXNiCo=
-X-Google-Smtp-Source: AGHT+IEElwHc8LPvrAxrY/WpQcMhO6krulaVorXxQhWQT6H8+tC7M6ej7a391UGbTfTwEGYBIsYXng==
-X-Received: by 2002:a05:6a20:ce93:b0:18f:97c:4f64 with SMTP id if19-20020a056a20ce9300b0018f097c4f64mr7041929pzb.112.1702932590646;
-        Mon, 18 Dec 2023 12:49:50 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id si11-20020a17090b528b00b0028ae3b5dde9sm11077937pjb.12.2023.12.18.12.49.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Dec 2023 12:49:50 -0800 (PST)
-Message-ID: <e1bebeca-858c-4fd5-addd-be55421935ee@gmail.com>
-Date: Mon, 18 Dec 2023 17:49:45 -0300
+        d=1e100.net; s=20230601; t=1702933069; x=1703537869;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GcKJMFjfcbU8CE9s/X+zGwudMjtKyfz7guJTf6gd0KU=;
+        b=kw3Vcleyl8oAr2lj756BcHZI/cXgiayogkMJvQ/gxMasRR5k90Gw5rltbsewrN6Cnp
+         21KFbsX19wPaYbwH/pFoqk1dYr6vhBzryW9zbs2a92Jv6U5OzuWW5YHiGjUFKX5KTQIU
+         C2gcb8RN+07Rhcu5zXk5xUM9Fuo3/hiw72R4SvXj0vtMDhYxb4tLB94OFzwAeClQhbQ3
+         HAfb9tcK22hVRjWlGjp+5TKxy9IHdhLhnLRcIDt+1L7p/0okiVRSmg9xj7T8QvEfopxG
+         5ppSnmnhIXqdNeSqiSDHNDosXQw8CrVA8K21xwan4fuFneqfwIUlK5cNbocThivYcuLf
+         js5g==
+X-Gm-Message-State: AOJu0YzujmJbOPI0PxKyc3PYNkSH4U/X3EOJm0CPBi17xDXJxq+bTzbJ
+	ZYSAgY5bOW5ACpkLxUgUydQ=
+X-Google-Smtp-Source: AGHT+IGSAVojbk4OAnmD9VMdQbaMwOC5DCFv1TO7rbwVegXqFehkf0EbaCeJdyW4EtUGSO6JH8+zAw==
+X-Received: by 2002:a05:622a:1889:b0:425:4043:5f16 with SMTP id v9-20020a05622a188900b0042540435f16mr22434099qtc.84.1702933069601;
+        Mon, 18 Dec 2023 12:57:49 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id x3-20020ac87303000000b0042551dce749sm9644808qto.46.2023.12.18.12.57.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 12:57:49 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id B13B127C005A;
+	Mon, 18 Dec 2023 15:57:48 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Mon, 18 Dec 2023 15:57:48 -0500
+X-ME-Sender: <xms:S7KAZZSUZg3xuRyPO5B4CrV70gxJC_9f-UKYl-YwYFMAi47B5qew6A>
+    <xme:S7KAZSxXkHYVEBqfmhQrbv1L8bf1-St7BCCe5LCji_ywyNf_6Moz9dqun-JfHNms1
+    wW4BjhAJiRulDfCvw>
+X-ME-Received: <xmr:S7KAZe39tqUtjkQNz_D0YGYnICAnuYEvB011ALiimKGtDrqx6-7ZnuJMgyE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtkedgudegtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepueho
+    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledthffgheegkeekiefgudek
+    hffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeeh
+    tdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmse
+    hfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:S7KAZRB4bNiA0D1BGs2AoUxUtFLiRYCDIh4nQ_-IzajUzr264DoUyQ>
+    <xmx:S7KAZShDEWU6utv6-ydWGQ51w53NyX-uIt2f9ViZABw-TXQkhP_SqA>
+    <xmx:S7KAZVokdqQw-3oQ8gn-zw9yv1KDgrnm4anJoxgWJWYOO7nSzGFjhQ>
+    <xmx:TLKAZWw1ETvHQ9usJXclEf4hkDRVNq-sIxjfN2h4MynJiYUcE-riHw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 18 Dec 2023 15:57:47 -0500 (EST)
+Date: Mon, 18 Dec 2023 12:57:30 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Tiago Lam <tiagolam@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible
+ wait
+Message-ID: <ZYCyOuChFYf_J_o1@boqun-archlinux>
+References: <ZXtebif2S1CyJRik@boqun-archlinux>
+ <20231214200421.690629-1-boqun.feng@gmail.com>
+ <CAH5fLggriMBLWVx5i1efHdiNveVutvRfcA6mydNV9egzEFnnxw@mail.gmail.com>
+ <ZXzlGM1xV-VlUkeh@boqun-archlinux>
+ <b2d69a27-d791-4455-843b-d946512beb78@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] rust: workqueue: add `#[pin_data]` to `Work`
-Content-Language: en-US
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231213220447.3613500-1-benno.lossin@proton.me>
- <20231213220447.3613500-3-benno.lossin@proton.me>
- <05fa58f3-f351-4119-9c07-1f5bb04503d2@gmail.com>
- <cf36ec44-466a-4c00-afd6-8387dd1ed1f2@proton.me>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <cf36ec44-466a-4c00-afd6-8387dd1ed1f2@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b2d69a27-d791-4455-843b-d946512beb78@proton.me>
 
-On 12/18/23 14:47, Benno Lossin wrote:
-> On 12/14/23 04:13, Martin Rodriguez Reboredo wrote:
->> On 12/13/23 19:09, Benno Lossin wrote:
->>> The previous two patches made it possible to add `#[pin_data]` on
->>> structs with default generic parameter values.
->>> This patch makes `Work` use `#[pin_data]` and removes an invocation of
->>> `pin_init_from_closure`. This function is intended as a low level manual
->>> escape hatch, so it is better to rely on the safe `pin_init!` macro.
->>>
->>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>> ---
->>> [...]
+On Mon, Dec 18, 2023 at 05:39:14PM +0000, Benno Lossin wrote:
+> On 12/16/23 00:45, Boqun Feng wrote:
+> > On Fri, Dec 15, 2023 at 11:27:56AM +0100, Alice Ryhl wrote:
+> >> On Thu, Dec 14, 2023 at 9:04 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >>>
+> >>> Currently, `CondVar::wait()` is an interruptible wait, and this is
+> >>> different than `wait_event()` in include/linux/wait.h (which is an
+> >>> uninterruptible wait). To avoid confusion between different APIs on the
+> >>> interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
+> >>> wait same as `wait_event()`, also rename the old `wait()` to
+> >>> `CondVar::wait_interruptible()`.
+> >>>
+> >>> Spotted-by: Tiago Lam <tiagolam@gmail.com>
+> >>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> >>
+> >> The diff is a bit hard to read because you swapped the order of the
+> >> functions, but LGTM.
+> >>
+> > 
+> > Yeah, I did that because `wait_interruptible` metioned `wait`, so I had
+> > to make `wait` still before `wait_interruptible`.
 > 
-> Did you mean to add your reviewed by? Because I received only
-> the quote.
+> What do you mean? If you are talking about the doclink, then
+
+I meant I prefer to keeping `wait` text-order-before
+`wait_interruptible`, so that readers will first read it.
+
+> that should not matter.
+
+Yeah, I know the ordering doesn't matter for generating doc. However,
+the ordering still matters for readers, I'd like them to learn about
+`wait` first since according to the existing API in kernel, they are the
+major usage.
+
+Thanks for pointing it out anyway! ;-)
+
+Regards,
+Boqun
+
 > 
-
-Thunderbird is a disaster for plain-text emails.
-
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> -- 
+> Cheers,
+> Benno
+> 
+> 
