@@ -1,49 +1,49 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6ED1094C;
-	Mon, 18 Dec 2023 08:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D9D11C91;
+	Mon, 18 Dec 2023 08:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mxHyc5Ig"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-336437ae847so2604041f8f.2;
-        Mon, 18 Dec 2023 00:32:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYVM1k3d"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3365b5d6f0eso1354091f8f.3;
+        Mon, 18 Dec 2023 00:32:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702888322; x=1703493122; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702888348; x=1703493148; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2R3RysZeELSrwaA1Xpv5JYjM2T+a8nYeDy+wQcqvhZU=;
-        b=mxHyc5Ig1AvGKc9Q9flo692/YFPpXGdFRKYejnjHDROW2Q1YWjb06UzUhdxVy6B1/Q
-         U6MoYk6yTX65Jmj0vBbO4sYENtMReZkf7RXUr2aFWOplGpzjSwEj8E/yQ2BwJXske1Qc
-         HikiOajPgNEqEPaXYTmoptkK9TnFqe8NeIhoS/WbH8b8mD/GELuwWefIcrHjtnBf1YV/
-         e9bb0Ch+zzmvO2Oc40k4RL8GwPkCjEUTqzWN1J/Gf6z0pNZph9MsgqosIX2a84bX3pxj
-         3ntcr10/0IQF4igGPg72Hr4cA7FB/I6+VqFdCrCwm+XpEyAGG02WpZk7qDtPHuObgpzY
-         j4Cg==
+        bh=KuTpLAn0ifEofUaY2LsWGW2GH2ZKQjCbSzshhn3wDKU=;
+        b=FYVM1k3d2hJjkBfG5x7M5wn3YRQsFfGTNR1MsrpXZ564Kn3QSDJDOVtscs/EkTx+mO
+         H1QNmvTpKHWyCuDsCF80c/cVILwr8Uer6oFoiBofrB5qYDuXGZE3QCsfPXJKl4xHr8tT
+         19HObt8SJ9Y8SAvqOGNEiVD1qx1NE/RpwfKytrKmExGwN2+5Dz1FljQKNTdsQaQ2KaPJ
+         Swi0SrZvQe/tbn5I7fto1r29JWNUk6v8sVLPUGeTVJaTjWEeWqPiAII8dW1x+bwGkBhW
+         CMHSTknY5k8pCbUIoJZOD9HIhR0oPcokRqDfBUuDo/6kAuXP/eYRx2A/B41+WQ+JUrNh
+         uIhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702888322; x=1703493122;
+        d=1e100.net; s=20230601; t=1702888348; x=1703493148;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2R3RysZeELSrwaA1Xpv5JYjM2T+a8nYeDy+wQcqvhZU=;
-        b=kn62EOE5deXWzKSUfCNoKstp893zzSOxZn/rhEHeASk6YGFEhZvnYHr0+XKLRi/4aJ
-         b1jgCuKlJH/YYHszzioXtyVbJaP0MT2EbcwhPYCDUEnmZ9TYXGXyLqjabD1NIdk5o627
-         Q0GQoP+O3GHoo0Alh+LL9+95Dh4RFM6XU7QNIGuC+QxUAkB+VQnsDwTo8ywbnzg/nTg2
-         OfPkP1+9S+lOY5y96hiH3Rxm/elbarGHb94eoGSfMPSP3s031tgaFa7MGkpDXE1GOPhF
-         HEuaUcWEI8xNf8SAnB9eIv0fWY+anYxtJFzbFU1SmDZ/Q4NRDXIOjhjxHGZDc79o0gdz
-         lucQ==
-X-Gm-Message-State: AOJu0YzvzvFCe0czVi+/U2ieI6TiN/4OCysp3bThZCiHQ2/km8bNNDfp
-	9jDfcW2FjC+f7jEVQPFMqg==
-X-Google-Smtp-Source: AGHT+IHKKhPPJJY38USoCVCcxvwSs9c0dtzo8svH14z8NfzO+gwgXo+Wt3ImnY+5yB9OgVK/TF3F6g==
-X-Received: by 2002:adf:e10b:0:b0:333:4295:8f72 with SMTP id t11-20020adfe10b000000b0033342958f72mr9174867wrz.118.1702888322217;
-        Mon, 18 Dec 2023 00:32:02 -0800 (PST)
+        bh=KuTpLAn0ifEofUaY2LsWGW2GH2ZKQjCbSzshhn3wDKU=;
+        b=g//Iln6W3kxxNcG9cMXG0+20QNP4BcJxPQC7BfVJQ+v31gHhoeMhgSVTqhW81jwgz6
+         ctPYBzHnq+2fFzsj3Y4IPenZaa5nkFZRwnGMQkD0fLO+XF0Gvmi+6KQIlztac9eqCKJK
+         /PD/4gJpGO/kOsdHWkEMzYuYkKCP4IMfBD6oP+0JmlbIwrMFOE3iQhzD+7UGc+inauAi
+         07IpDeYtlyLIflRl4O4Y8dCjybAeyKBWyFS79UvQgpruHEEGfWv13YQbvWYnyEwqKyvJ
+         koUbrrX7xRQoTiZR4bPjXVB/GVXJC41C9HyvqP1p4XsfpyyuSybSJCtLYH88NryQGldD
+         /b2w==
+X-Gm-Message-State: AOJu0YwHiSpcQ52We8vaDZv3E6ldBEVP13Km6rZGKEUWfZzMBgIMbn7M
+	SIwQEYW0xd1qpJnawMDddw==
+X-Google-Smtp-Source: AGHT+IGJII3EAp5gkjrxzN2VVZR6QqK4xTyTaFGGa/kWTPKIkCzL3PU3OSeweRhi25UX4SYR+QFQiw==
+X-Received: by 2002:adf:e10f:0:b0:333:2e1c:9553 with SMTP id t15-20020adfe10f000000b003332e1c9553mr9291141wrz.32.1702888348338;
+        Mon, 18 Dec 2023 00:32:28 -0800 (PST)
 Received: from [192.168.1.148] (224.69.114.89.rev.vodafone.pt. [89.114.69.224])
-        by smtp.googlemail.com with ESMTPSA id w15-20020adfec4f000000b003366cc543casm537184wrn.102.2023.12.18.00.32.00
+        by smtp.googlemail.com with ESMTPSA id w15-20020adfec4f000000b003366cc543casm537184wrn.102.2023.12.18.00.32.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Dec 2023 00:32:01 -0800 (PST)
-Message-ID: <84f0fbc6-f50d-4eea-ac9e-4683c5d252ad@gmail.com>
-Date: Mon, 18 Dec 2023 08:31:59 +0000
+        Mon, 18 Dec 2023 00:32:28 -0800 (PST)
+Message-ID: <b9a3193d-e020-4691-b8d9-4dce09fe2cd4@gmail.com>
+Date: Mon, 18 Dec 2023 08:32:26 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,7 +51,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] rust: sync: add `CondVar::notify_sync`
+Subject: Re: [PATCH v2 2/4] rust: time: add msecs to jiffies conversion
 Content-Language: en-GB
 To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
@@ -63,29 +63,30 @@ To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
  Thomas Gleixner <tglx@linutronix.de>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com>
- <20231216-rb-new-condvar-methods-v2-1-b05ab61e6d5b@google.com>
+ <20231216-rb-new-condvar-methods-v2-2-b05ab61e6d5b@google.com>
 From: Tiago Lam <tiagolam@gmail.com>
-In-Reply-To: <20231216-rb-new-condvar-methods-v2-1-b05ab61e6d5b@google.com>
+In-Reply-To: <20231216-rb-new-condvar-methods-v2-2-b05ab61e6d5b@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 16/12/2023 15:31, Alice Ryhl wrote:
-> Wake up another thread synchronously.
+> Defines type aliases and conversions for msecs and jiffies.
 > 
-> This method behaves like `notify_one`, except that it hints to the
-> scheduler that the current thread is about to go to sleep, so it should
-> schedule the target thread on the same CPU.
+> This is used by Rust Binder for process freezing. There, we want to
+> sleep until the freeze operation completes, but we want to be able to
+> abort the process freezing if it doesn't complete within some timeout.
+> The freeze timeout is supplied in msecs.
 > 
-> This is used by Rust Binder as a performance optimization. When sending
-> a transaction to a different process, we usually know which thread will
-> handle it, so we can schedule that thread for execution next on this
-> CPU for better cache locality.
+> Note that we need to convert to jiffies in Binder. It is not enough to
+> introduce a variant of `CondVar::wait_timeout` that takes the timeout in
+> msecs because we need to be able to restart the sleep with the remaining
+> sleep duration if it is interrupted, and if the API takes msecs rather
+> than jiffies, then that would require a conversion roundtrip jiffies->
+> msecs->jiffies that is best avoided.
 > 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Reviewed-by: Tiago Lam <tiagolam@gmail.com>
