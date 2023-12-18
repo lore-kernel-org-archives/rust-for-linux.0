@@ -1,97 +1,111 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5F111193;
-	Mon, 18 Dec 2023 08:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C0B1A72F
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 12:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jJnyG9Ex"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-50e3c6f1c10so353332e87.1;
-        Mon, 18 Dec 2023 00:33:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702888425; x=1703493225; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w7msxpJgBBjQPtZZCsb1ltJW2M3TBsdRo5LCmhi6CvY=;
-        b=jJnyG9Exkp5mfMRYojnoHxE5FMvSvoqzF0VcD9oauACtTIrP3PS2Wsn+uPYGHCH0C2
-         /orB8AuQxoWZJojPbJmRyLPy4qGuuSSLJ0JByOiCZFtEy7Y3PGyEAAsf0VXMM82mFYpq
-         eJtAC5eP3qE9RD1izzGBajLzwZmayYAkkEC8T9CeQGT61deA83VNC7UA6Dmlu+HrhpM0
-         ikaxxavC2+VQGiTJDG7k0nyT/mNuWqapFHXARk9/KN1GOuCK9f37xbTUxAefTiWA6Yuq
-         d3pSBP1Ty3klkUuqin2bPEbku/wAwo8GWLAE4xrUXyuFjHUwNnRQVSfBhEZCzikG9LSe
-         +hxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702888425; x=1703493225;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w7msxpJgBBjQPtZZCsb1ltJW2M3TBsdRo5LCmhi6CvY=;
-        b=Xa7U0ins2kjIQHL8XMrHY0QTbQbrgoX0dh5n8DNsA/v/MFBvz/hSJy2afmkwp8UXuF
-         gmK6eVJCNBE40YEzO1okJgEeSJL5XUoL4RiH8F8nP7/3Fpu8KYkMlLQFk3p/GoLPx4Yy
-         TzZ2Bw8NtI3bU6W76ZpoUvnkfA90rcY+eGHJ1wGgdwYFi94n5XXVwKJNDLvSmxavDT5j
-         GsNSuuq/e7Ppo4Go9NK2N7+BAzLy+PW+G8ErNJbCuiGcFmtCyfs5LAfkXBkBWJRcvDD6
-         JtXWBIb9DbqUKAu6Z8/+/MMfMN4Sc1CYfPZ/RyNy1TweHIn9KYXpgMzvNQFtrrqzqfS2
-         zOzA==
-X-Gm-Message-State: AOJu0Yy3658zJS6/BftRsk+RsepnnulVCasts6T9y4Z8sy8XY+v43+OI
-	49lrTdDU2LqMVUDxkQtKPQ==
-X-Google-Smtp-Source: AGHT+IFm8yEQkImXxTPVut9GyAoJTRoIcCxxJ3EpWccrE5MErNed3DvHHjfBUo7yChrPWTtgHg1JDQ==
-X-Received: by 2002:ac2:4e82:0:b0:50e:2d04:fe42 with SMTP id o2-20020ac24e82000000b0050e2d04fe42mr408461lfr.241.1702888424842;
-        Mon, 18 Dec 2023 00:33:44 -0800 (PST)
-Received: from [192.168.1.148] (224.69.114.89.rev.vodafone.pt. [89.114.69.224])
-        by smtp.googlemail.com with ESMTPSA id w15-20020adfec4f000000b003366cc543casm537184wrn.102.2023.12.18.00.33.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Dec 2023 00:33:44 -0800 (PST)
-Message-ID: <80e69cc3-5ee2-48de-83a2-6e2b95f17121@gmail.com>
-Date: Mon, 18 Dec 2023 08:33:43 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YvCQfgQz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17370C433C7
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 12:03:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702901013;
+	bh=H6yH11fmFs6fKX2ciuRNdsIGiKAP+/Tnew37FEsXRbw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YvCQfgQzOGSm0owxZLB0wgBOxmOflTkdcbvZ8V4epckiKkyrDGJSLE5BFWLY1Vy3T
+	 VM7nxWS42+Q465ppSdGUXSeR99pVVo2DBeNqyPSCU/QgCBmR+0Z5SpQc9zT/FnG442
+	 WZCjThZdyG6noba8g9ra3FAY6yFzI59QVw+lUTfJme5xPPi4qbvmBO9EIcTEXWx5yn
+	 DPFeOJs506rfcP1l5Gyl8kAeT2uUdQ3M/6mU+nAi2DlpYtNA72SXJLAAZhtU17BfYT
+	 GEiI/L/36GHX9KlkUMRur12fZnE9KCwRGo0sHXLL5QgjUaNsi8dgzsIEVW68n5uNFy
+	 vuo9V/LndE2uw==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6d9f4eed60eso2599978a34.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Dec 2023 04:03:33 -0800 (PST)
+X-Gm-Message-State: AOJu0YwD5H6zwJmUIvRk3wZHxxMFCYL8sVsUjJqIKeklZ1tD5GpNvrQC
+	Aa0qEgtUr0LkZXCytdFJUc52/u0R33u79zk0+34=
+X-Google-Smtp-Source: AGHT+IGeZRVIo0zS1Glm1levsy/GxaPY4SV3cQ7N5KLkXaR8fgyEKH/qSiLg9O5J7TvhFN0gOhxIWyFFQAeIzhOWl8w=
+X-Received: by 2002:a05:6870:648c:b0:203:a72c:9072 with SMTP id
+ cz12-20020a056870648c00b00203a72c9072mr3364007oab.43.1702901012485; Mon, 18
+ Dec 2023 04:03:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] rust: sync: update integer types in CondVar
-Content-Language: en-GB
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com>
- <20231216-rb-new-condvar-methods-v2-4-b05ab61e6d5b@google.com>
-From: Tiago Lam <tiagolam@gmail.com>
-In-Reply-To: <20231216-rb-new-condvar-methods-v2-4-b05ab61e6d5b@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231207084846.faset66xzuoyvdlg@vireshk-i7> <CANiq72=0m=h6v=SmgVnTs5sk3jm1oZ_TBhDXPq2Y41rCV4J5bw@mail.gmail.com>
+In-Reply-To: <CANiq72=0m=h6v=SmgVnTs5sk3jm1oZ_TBhDXPq2Y41rCV4J5bw@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 18 Dec 2023 21:02:53 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARdj1yJv9pZ67Z7=Yi1GU0=bc7B0BnDSf=2L7OfpQdGKA@mail.gmail.com>
+Message-ID: <CAK7LNARdj1yJv9pZ67Z7=Yi1GU0=bc7B0BnDSf=2L7OfpQdGKA@mail.gmail.com>
+Subject: Re: [BUG] Rustup override doesn't work with O=<build dir>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Erik Schilling <erik.schilling@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 16/12/2023 15:31, Alice Ryhl wrote:
-> Reduce the chances of compilation failures due to integer type
-> mismatches in `CondVar`.
-> 
-> When an integer is defined using a #define in C, bindgen doesn't know
-> which integer type it is supposed to be, so it will just use `u32` by
-> default (if it fits in an u32). Whenever the right type is something
-> else, we insert a cast in Rust. However, this means that the code has a
-> lot of extra casts, and sometimes the code will be missing casts if u32
-> happens to be correct on the developer's machine, even though the type
-> might be something else on a different platform.
-> 
-> This patch updates all uses of such constants in
-> `rust/kernel/sync/condvar.rs` to use constants defined with the right
-> type. This allows us to remove various unnecessary casts, while also
-> future-proofing for the case where `unsigned int != u32`.
-> 
-> I wrote this patch at the suggestion of Benno in [1].
-> 
-> Link: https://lore.kernel.org/all/nAEg-6vbtX72ZY3oirDhrSEf06TBWmMiTt73EklMzEAzN4FD4mF3TPEyAOxBZgZtjzoiaBYtYr3s8sa9wp1uYH9vEWRf2M-Lf4I0BY9rAgk=@proton.me/ [1]
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Thu, Dec 7, 2023 at 10:16=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Thu, Dec 7, 2023 at 9:48=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.=
+org> wrote:
+> >
+> > I have just started looking into the kernel's Rust side and found out a=
+ minor
+> > issue with build.
+> >
+> > I use a newer version of 'rustc' for my non-kernel work and have set `r=
+ustup
+> > override` for the kernel's directory to use '1.73.0'.
+> >
+> > But when I build the kernel with O=3D<build dir>, I get:
+> > "Rust compiler 'rustc' is too new. This may or may not work."
+> >
+> > Setting the override for the build directory too fixes it. Not sure how=
+ to fix
+> > Makefile for this and so reporting here.
+>
+> Good catch. Previously, we had `rustup default` in the documentation
+> instead, which did not suffer from this problem. We should now
+> probably mention in the docs that one needs to make sure the override
+> applies to the build folder (i.e. when `O=3D` is not a subdir of the
+> source tree, since that one works fine).
 
-Reviewed-by: Tiago Lam <tiagolam@gmail.com>
+
+Yup, this is also what I pointed out a long time ago [1].
+
+
+[1] https://github.com/Rust-for-Linux/linux/commit/f2238e7
+
+
+
+
+
+
+
+
+
+
+
+
+
+> Would you like to send the patch? Otherwise I will create a "good
+> first issue" for this in our tracker.
+>
+> I don't think we should change the build system for this, because
+> `rustup` replaces what `rustc` is meant to be, and the build system is
+> simply using whatever `rustc` is by default, like for other tools. So
+> if one uses `rustup` to control what `rustc` is, then one needs to
+> make sure it is the right one when called.
+>
+> Cheers,
+> Miguel
+>
+
+
+--
+Best Regards
+Masahiro Yamada
