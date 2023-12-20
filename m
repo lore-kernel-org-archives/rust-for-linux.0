@@ -1,32 +1,32 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6124210F3
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Dec 2023 11:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E15210FD
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Dec 2023 11:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="c0ufHgqL"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fr3wvUuR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1703070724; x=1703329924;
-	bh=UKGOEKAEiJbfDf+g0US9elwS32PxzMQuvGZA26uCeZA=;
+	s=protonmail; t=1703071001; x=1703330201;
+	bh=AHEwZCmY/Zfr7myDOFIbTRHugY04FkfLKVuXC4pRExo=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=c0ufHgqLIygEzjmZuUxn8rhv8aX6otFq4Yr2fsqEOqvw4TimXi+2vo+ptC7D+T1Uk
-	 tJthwI4+H0X4rKy2qjJtUn4az5+TX4370sVdcfyG3LHr40ZjEPh1lKhyhimFt8JsFM
-	 Tqmy/HOceiXeyb/wnXVM0HrsJzoWHy/MC/M2nXf/uaBczBLP8TWcXv8LZWHx6H6KB9
-	 Xf3/x6FEJcwSE72MI4A6xS/jmSqaIQ0DfextKd4+Y5JTFi9L0XGA9Akg7VThSDYmuR
-	 a97kqI4U+8E/t6ekb5C5WKxSXb6lgDcXvO3GCsxvTnis/El6xNQWdnHy9C/qrEVQKI
-	 40KCqGu/Wf9Fw==
-Date: Wed, 20 Dec 2023 11:11:41 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	b=fr3wvUuRDUzm+7gUByQScgV9ATDIz8BUobKA0OBXmEE3dHb3In6D0CveSzvaRaq3y
+	 EwZzyxxqynkhwRIJNgNAtGyufPLgKqFWyKU7dsZiOknNh9CoEGPiSNyQGb1rCrXSGr
+	 c3HDDhkywV+QLSdB5Os20FnQdjBQIZTuASsM0WCe4h/ezRuIycAT+cJ4UZEJcIi2Dz
+	 9rx/D79vhVGaNPoMk+FumrCOwA5PQC4qkmZamfmFZzM9B/2yvORoSPKW+mEkUEqrtl
+	 aVGtZVrKYc4/YBw4R7hf4AN9WlvXiYNKOx/UqdxiVr/VBxsxy8ChTL6DHFwvGgLOy3
+	 DxykXhB4DhU0w==
+Date: Wed, 20 Dec 2023 11:16:22 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible wait
-Message-ID: <97de563e-3936-4a61-9d7f-2f504ef409c8@proton.me>
-In-Reply-To: <20231214200421.690629-1-boqun.feng@gmail.com>
-References: <ZXtebif2S1CyJRik@boqun-archlinux> <20231214200421.690629-1-boqun.feng@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: upgrade to Rust 1.74.1
+Message-ID: <98aedb6a-bdf5-482a-b063-8cb8bab49874@proton.me>
+In-Reply-To: <20231214092958.377061-1-ojeda@kernel.org>
+References: <20231214092958.377061-1-ojeda@kernel.org>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -37,16 +37,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/14/23 21:04, Boqun Feng wrote:
-> Currently, `CondVar::wait()` is an interruptible wait, and this is
-> different than `wait_event()` in include/linux/wait.h (which is an
-> uninterruptible wait). To avoid confusion between different APIs on the
-> interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
-> wait same as `wait_event()`, also rename the old `wait()` to
-> `CondVar::wait_interruptible()`.
+On 12/14/23 10:29, Miguel Ojeda wrote:
+> This is the next upgrade to the Rust toolchain, from 1.73.0 to 1.74.1
+> (i.e. the latest) [1].
 >=20
-> Spotted-by: Tiago Lam <tiagolam@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> See the upgrade policy [2] and the comments on the first upgrade in
+> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+[...]
+
+> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1=
+741-2023-12-07 [1]
+> Link: https://rust-for-linux.com/rust-version-policy [2]
+> Link: https://github.com/Rust-for-Linux/linux/issues/2 [3]
+> Link: https://github.com/rust-lang/rust/pull/114201 [4]
+> Link: https://github.com/rust-lang/rust-clippy/issues/11219 [5]
+> Link: https://github.com/rust-lang/rust-clippy/issues/11431 [6]
+> Link: https://github.com/rust-lang/rust/issues/117976#issuecomment-182222=
+5691 [7]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
