@@ -1,60 +1,80 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85082137B
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Dec 2023 11:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B280148788
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Dec 2023 17:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KKM5+DuK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1703072100; x=1703331300;
-	bh=Nz7P7UcTSEPjlL43YYCoPloogZe2p3ycXHEV/NWjloM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=KKM5+DuKGNA/c9JMmVMQqgMWR5gBS7ZU6vio4CyGkrWs8yuxb39WcExUu6rHgxfLo
-	 cKA2FFTnuAraDlqD6/ABYdYOzSIiiKY/pXmwA0KtYoWggyDke1SaGW8f6MBoKNtd7u
-	 ZVokA1ZiiQNWXMNEP3GBRG8hUE+mPOpha9lm8/Taq148qqzuuuXFz+R4T5nUbqVP8O
-	 toTp7TyT5DWFQ1nbcocLDndpIvUq9N0abrO/Pr4qc12Br9SpF+puVGlaq4GK6/hz2R
-	 hmoXA+Eh8KnGp5pnrx409YQk80Mus7uvCMShXheLhoKMibUNUii+I5efcVMRYIlrHO
-	 WDRlk5XlYVQDw==
-Date: Wed, 20 Dec 2023 11:34:14 +0000
-To: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: David Gow <davidgow@google.com>
-Subject: Re: [PATCH v4] docs: rust: Add rusttest info
-Message-ID: <f0175c6b-8b43-4327-98f4-81ebfdb9d2cd@proton.me>
-In-Reply-To: <20231212081313.226120-1-dirk.behme@de.bosch.com>
-References: <20231212081313.226120-1-dirk.behme@de.bosch.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nB3EBojo"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-28b09aeca73so782969a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 20 Dec 2023 09:38:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703093892; x=1703698692; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OJfnlzMmojRmso0XSoHdLn6mdYRY64PxKa+xh+iIUPw=;
+        b=nB3EBojoQBjBxOC1tB0e9QGrTSzJdxQf8n2m7AtNip+zHu486g3anHigrgTsYKUFy3
+         mcsJn1cos3zLfPUbohBdAiydc/NqJ6ahtCTExu6CzVdMzolg0xmll6xMVSIUkin84QGO
+         kObXx05eJwwpQX8oy26OCt0Y0XSqNA2Ijhs7V/ZurQt782ijdd+VFinhrFH0d1+Q6dNb
+         a62FNz/5JIFvujaqUAjJwjNj0mt2ZRRoabCNGn+1KLxZigpJ1QfWMi60MhXPG9Ihv1Hv
+         n5rBG+REj+1YqwVLJzeSqeVOBXAkmOV4e32fTtWNCG79n14a24Xh7WhSLB4ToyFdAy2n
+         fIKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703093892; x=1703698692;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OJfnlzMmojRmso0XSoHdLn6mdYRY64PxKa+xh+iIUPw=;
+        b=pmcovyWYGMV8gXimbbitDaMjLVpsuYwJVWrSe8npPHYcA9dcWR2QB7KOand1VNGaYy
+         Bf7B28BOE0BJq0YfgdHnBjR6tTm3nMLqloTnfDRFTbbJaqsH27lM1urkLIkUm+JDUNMz
+         8+L9WW0xraYWg3ujaR7c5/duwEycpbs5o39GzLYGV7DioBHTUIshbadQgEHDi9VyXyDg
+         D9PY943LgqM6DDGLMpwI3E6PUKNQdu/cRAj43pBV+aeLH3rt7LlmctzqeyM/rcMhcCIk
+         zffjUwQ2Ogop14ah3WJAB2bHl8qKGoDNgW3CASJOZ905szquv66XvTJdixzJZHfa863K
+         iarA==
+X-Gm-Message-State: AOJu0Yyj7RV1LqLWnDuA2y1TgOV1aGsnKC6d8CBMzxIZpuTBVkm6QB5/
+	S5HXbZrnsPzADCUupm4hhGI=
+X-Google-Smtp-Source: AGHT+IFYuqn7x0AslChvjVKO6x0qHFVmJQ9BNoqLDI/HyJZL8bkJXbyFjvhGxNfQBK87tbrDy93HAA==
+X-Received: by 2002:a17:90a:10d0:b0:28b:e961:c416 with SMTP id b16-20020a17090a10d000b0028be961c416mr153373pje.10.1703093891656;
+        Wed, 20 Dec 2023 09:38:11 -0800 (PST)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id k10-20020a63f00a000000b005cd8044c6fesm64002pgh.23.2023.12.20.09.38.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Dec 2023 09:38:11 -0800 (PST)
+Message-ID: <d23a3ff4-6d59-4565-a6a9-c6962107bd33@gmail.com>
+Date: Wed, 20 Dec 2023 14:38:07 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] docs: rust: Add rusttest info
+Content-Language: en-US
+To: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org
+Cc: David Gow <davidgow@google.com>
+References: <20231212081313.226120-1-dirk.behme@de.bosch.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20231212081313.226120-1-dirk.behme@de.bosch.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 12/12/23 09:13, Dirk Behme wrote:
+On 12/12/23 05:13, Dirk Behme wrote:
 > Searching the Rust kernel documentation all existing Rust Make
 > targets (rustavailable, rustfmt, rustfmtcheck, rustdoc and
 > rust-analyzer) are explicitly documented with their Make commands.
 > While the Make target rusttest is mentioned two times in the
 > existing documentation, it's Make command is not explicitly
 > documented, yet. Add a test section to document this.
->=20
+> 
 > While at it, add some info about the more important KUnit testing
 > too.
->=20
+> 
 > Reviewed-by: David Gow <davidgow@google.com>
 > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 > ---
+> [...]
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
---=20
-Cheers,
-Benno
-
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
