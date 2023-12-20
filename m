@@ -1,32 +1,32 @@
 Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E15210FD
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Dec 2023 11:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076DC21358;
+	Wed, 20 Dec 2023 11:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fr3wvUuR"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lecIb3gz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1703071001; x=1703330201;
-	bh=AHEwZCmY/Zfr7myDOFIbTRHugY04FkfLKVuXC4pRExo=;
+	s=protonmail; t=1703071972; x=1703331172;
+	bh=wY3jU3FbByIfLUACfIHBmNS2cVGtxbGw94BOjG8I3wE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=fr3wvUuRDUzm+7gUByQScgV9ATDIz8BUobKA0OBXmEE3dHb3In6D0CveSzvaRaq3y
-	 EwZzyxxqynkhwRIJNgNAtGyufPLgKqFWyKU7dsZiOknNh9CoEGPiSNyQGb1rCrXSGr
-	 c3HDDhkywV+QLSdB5Os20FnQdjBQIZTuASsM0WCe4h/ezRuIycAT+cJ4UZEJcIi2Dz
-	 9rx/D79vhVGaNPoMk+FumrCOwA5PQC4qkmZamfmFZzM9B/2yvORoSPKW+mEkUEqrtl
-	 aVGtZVrKYc4/YBw4R7hf4AN9WlvXiYNKOx/UqdxiVr/VBxsxy8ChTL6DHFwvGgLOy3
-	 DxykXhB4DhU0w==
-Date: Wed, 20 Dec 2023 11:16:22 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
+	b=lecIb3gzq3o0k9XNQ0qFEvRdz6/kwTysT8BMsZJYPJovJN3pxDoLl4eOsW9HmHJXx
+	 BqFUVBBmWvT7/onEM12C3Gfv8fEOM2hblhbVuucilMmFJIevTKLpNWugApQYEQjSJW
+	 jO1YHxqNLXtRlWS5bR/btcfPEus3GGTGrrvsMTNWIb6seO2gXWuqGXsll9z9w1YbdS
+	 gxLACIX7cTaGcVmgN6vAxD+hTv20yAyAA3bQRcwh9XYcYxu7Z0LsQ75lyzX5g+M4Zd
+	 RRBdAkPUu0MJ72Cmd6e9LRfl8ojuFa+EnTGLirAzW3+8k6Ga+8m0iO52BxVWph9vGg
+	 OviQTKorw5LTw==
+Date: Wed, 20 Dec 2023 11:31:05 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH] rust: upgrade to Rust 1.74.1
-Message-ID: <98aedb6a-bdf5-482a-b063-8cb8bab49874@proton.me>
-In-Reply-To: <20231214092958.377061-1-ojeda@kernel.org>
-References: <20231214092958.377061-1-ojeda@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] rust: sync: add `CondVar::wait_timeout`
+Message-ID: <3fba196a-8cb6-4ce9-9e67-bfb716a2d171@proton.me>
+In-Reply-To: <20231216-rb-new-condvar-methods-v2-3-b05ab61e6d5b@google.com>
+References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com> <20231216-rb-new-condvar-methods-v2-3-b05ab61e6d5b@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -37,29 +37,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12/14/23 10:29, Miguel Ojeda wrote:
-> This is the next upgrade to the Rust toolchain, from 1.73.0 to 1.74.1
-> (i.e. the latest) [1].
+On 12/16/23 16:31, Alice Ryhl wrote:
+> @@ -102,7 +105,12 @@ pub fn new(name: &'static CStr, key: &'static LockCl=
+assKey) -> impl PinInit<Self
+>          })
+>      }
 >=20
-> See the upgrade policy [2] and the comments on the first upgrade in
-> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
-[...]
+> -    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guar=
+d: &mut Guard<'_, T, B>) {
+> +    fn wait_internal<T: ?Sized, B: Backend>(
+> +        &self,
+> +        wait_state: u32,
+> +        guard: &mut Guard<'_, T, B>,
+> +        timeout: c_long,
+> +    ) -> c_long {
+>          let wait =3D Opaque::<bindings::wait_queue_entry>::uninit();
+>=20
+>          // SAFETY: `wait` points to valid memory.
+> @@ -113,11 +121,13 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait=
+_state: u32, guard: &mut Guar
+>              bindings::prepare_to_wait_exclusive(self.wait_list.get(), wa=
+it.get(), wait_state as _)
+>          };
+>=20
+> -        // SAFETY: No arguments, switches to another thread.
+> -        guard.do_unlocked(|| unsafe { bindings::schedule() });
+> +        // SAFETY: Switches to another thread. The timeout can be any nu=
+mber.
+> +        let ret =3D guard.do_unlocked(|| unsafe { bindings::schedule_tim=
+eout(timeout) });
 
-> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1=
-741-2023-12-07 [1]
-> Link: https://rust-for-linux.com/rust-version-policy [2]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [3]
-> Link: https://github.com/rust-lang/rust/pull/114201 [4]
-> Link: https://github.com/rust-lang/rust-clippy/issues/11219 [5]
-> Link: https://github.com/rust-lang/rust-clippy/issues/11431 [6]
-> Link: https://github.com/rust-lang/rust/issues/117976#issuecomment-182222=
-5691 [7]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+I am not sure what exactly the safety requirements of `schedule_timeout`
+are. I looked at the function and saw that the timout should not be
+negative. But aside from that only the the context switching should be
+relevant. What things are not allowed to do when calling `schedule`
+(aside from the stuff that klint catches)?
+Because if there are none, then I would put the "switches to another
+thread" part into a normal comment.
 
 --=20
 Cheers,
 Benno
+
+>=20
+>          // SAFETY: Both `wait` and `wait_list` point to valid memory.
+>          unsafe { bindings::finish_wait(self.wait_list.get(), wait.get())=
+ };
+> +
+> +        ret
+>      }
 
