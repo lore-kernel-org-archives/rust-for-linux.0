@@ -1,90 +1,91 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C88077631;
-	Thu, 21 Dec 2023 21:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90D3A5B
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Dec 2023 21:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y21p367r"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-5c85e8fdd2dso13247257b3.2;
-        Thu, 21 Dec 2023 13:40:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0Yz3J/f"
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dbdacafe012so1219349276.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Dec 2023 13:41:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703194813; x=1703799613; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703194915; x=1703799715; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aTI1OFjrcWP9wgBoTfoCNiKxKyxMm5mLbCOryqiWA0U=;
-        b=Y21p367rKxW+BNuYUgZ0OFuFUkqXHpP8WU9laH/juigbd5fvlD1XGgUdVpLTYQN9dS
-         Sx+rqRXak7buykyJInCwMrCvMiQ58T5/AmXzsQaK2wOBV2HBuKqYn+F2MXS7+Ap5GyOi
-         mRJ5mPb6Qt+Y+gj4ONPq2jWKSs19a2EUimfdodj2o2e8WuiKoxb5sAQp221TiQrQbFuX
-         6iybGtRNjn/BIk/YaV4NRR89MUFyjF1fZVOkf9FlHEZUU/gR9dds2bJJ6uBJt8gd00d7
-         Zxt3od+X+pgnZZTuIXf/w+m1UBqFIriEIC1Y6DK5LF+qJn1Q89R9NQu1fYvuK7QyH867
-         iULg==
+        bh=H7B2vI59AwHh93W0uC8vrfYG7PjY3/m7FdPCXMD9mbg=;
+        b=i0Yz3J/fMKULdAw+2bp77n245tM3KOcMBPY27/7RagDviVbgE/NNVT176xHXmqY9Pz
+         yziCo+OdZWqnicOLT4wxKM326NzIvk7LFjRJZGdDDzm4Hrlfrg0taFUZfAfGsLyjHnjZ
+         HQU3K8JJby+ImcaT33UYXatOunfnqqQntnoWDjwf3JHua7NscjWVdS71628nIrwfnhRW
+         47HBopxIVXeIzLnrS+PQNNr8JBcs840fRf6Y9e0FQ1/PxCyfSTV2au/LTWHKuhkxjiKo
+         e5k/Ly90YZXdFBKRUE5zMbJDUocZdROk86HwGcXDxrt2uADt3F/MjuN7O3GI/d+nXAmb
+         V1tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703194813; x=1703799613;
+        d=1e100.net; s=20230601; t=1703194915; x=1703799715;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aTI1OFjrcWP9wgBoTfoCNiKxKyxMm5mLbCOryqiWA0U=;
-        b=GzS7LarW47xk6m6IJh0HyBkSBznVEAAwS1O0JKu/wqXkEjBC6EG42LSGiV5NIaGVoN
-         SHVelXhXOcXB0IiyHuJwk6D8/jnSrdwDPhUY8rTntrd47+xBF/7tOqpGH+BVJlAtxheC
-         gKUWwoLJTVPIjq+dSrwIvQ0Il+DHFIZlI8+Fw+Kjnx6XSlrRRvPqAptuzUq0LhJPnV6g
-         hoW+cE8cQwYuA+nacvWOAtNu+4A0sBOcJorxG7JEU3/C7sxu/km4rEn12hZoI6eaIaPg
-         AQNgnlmShL42IqSpnGF+6Umcmb2ulTsL+3SUk2pxlBv7jsWhrxneIov1igfEZj1yEswZ
-         WdOg==
-X-Gm-Message-State: AOJu0YwVkxCzTPZIVJUguQdAC/pm/H+w+xjGfbcnczOC1BpW4oHCtcTQ
-	8MDje2I18vOQBaZv2qYmiFGY0uGTzHTwrJ7+Hv4=
-X-Google-Smtp-Source: AGHT+IFZQggkJXTtouCLXwdPMeMSiEljIujIGL/TQToBqai5Bv73z4gb+uuZ/oV29fvBWdlUPqLqoM2bsALFvLVk4+I=
-X-Received: by 2002:a25:dc8c:0:b0:db5:4b23:534 with SMTP id
- y134-20020a25dc8c000000b00db54b230534mr423500ybe.17.1703194813258; Thu, 21
- Dec 2023 13:40:13 -0800 (PST)
+        bh=H7B2vI59AwHh93W0uC8vrfYG7PjY3/m7FdPCXMD9mbg=;
+        b=s0zzSEf7MqqsrYQrBIcYSGmcYv4g4ekpsO6PMaxRUwOQJElrzrsbMY7rftJExb/WZE
+         yyL3h1DJro5RjoKGc3bC/NEXYEgSFZFMpm8nPQss58L6UN+xdBLSOEKwDK5fEyp+Yd0m
+         Nawddr0/9E3+QxlwyyuvTsJN2dpIaczL5zVesVJrlE9pYX4tC8gWDMhrPkEurnp7DgWh
+         SkLT+MCgE3Q+vkjuOy6AD5EsgfJWILMG+UlcVZKnHJN77Wiby00/+e7X5J2MgnFIVkbJ
+         J0I1obb88Vv8cQbt7DT1UyNviNBzT28dVHQF9QJoHEf0nB4caQEeM0vgh5ltW2LOw/gE
+         H8Bw==
+X-Gm-Message-State: AOJu0Yyr+VxwYuK7CGfycfHQ8dkiv029HahfRd+c0TgCHWiyvEH7AZLJ
+	S7dMSTCeHYyUzQRsRClxCDnp7jn9xWTKUfeKSdg=
+X-Google-Smtp-Source: AGHT+IHl2Ac1oxmhgmfWhbV97FRGgGvlHM10G0d57fQAoBLlZoHNObKw7UY3a1G8lyQITr7MQ/BEmXqXUJsuDZP57LU=
+X-Received: by 2002:a25:dbc4:0:b0:dbd:b5c2:6ec5 with SMTP id
+ g187-20020a25dbc4000000b00dbdb5c26ec5mr368490ybf.127.1703194915616; Thu, 21
+ Dec 2023 13:41:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
-In-Reply-To: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+References: <20231212081313.226120-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20231212081313.226120-1-dirk.behme@de.bosch.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Dec 2023 22:40:02 +0100
-Message-ID: <CANiq72mKL3_1Cfe3EQ8RN+_R3kjs96vgHtjO9CCXD-+p2CzQDg@mail.gmail.com>
-Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
- build directory
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 21 Dec 2023 22:41:44 +0100
+Message-ID: <CANiq72kEUyQ+Evjfv-c-t4UHi+SpAJ6dgrRAY_zdsBO=vHNm6w@mail.gmail.com>
+Subject: Re: [PATCH v4] docs: rust: Add rusttest info
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, David Gow <davidgow@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 12, 2023 at 8:44=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
+On Tue, Dec 12, 2023 at 9:14=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
 >
-> Rustup override is required to be set for the build directory and not
-> necessarily the kernel source tree (unless the build directory is its
-> subdir).
+> Searching the Rust kernel documentation all existing Rust Make
+> targets (rustavailable, rustfmt, rustfmtcheck, rustdoc and
+> rust-analyzer) are explicitly documented with their Make commands.
+> While the Make target rusttest is mentioned two times in the
+> existing documentation, it's Make command is not explicitly
+> documented, yet. Add a test section to document this.
 >
-> Clarify the same in quick-start guide.
+> While at it, add some info about the more important KUnit testing
+> too.
 >
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Reviewed-by: David Gow <davidgow@google.com>
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-Since we are not going to use v3 given we will not have the
-`rustupoverride` Make target, I have applied this one. It is also the
-one that got more `Reviewed-by`s, I think Andreas preferred too and
-Masahiro was kind enough to be OK applying this one instead of his
-(which would need to be rebased and submitted to the list), so I went
-with that one. Tiago's concern is still there though (i.e. the script
-is relative to the source tree), but we can improve things further
-later (perhaps if we add a script for this sort of thing).
+Applied to `rust-next` with a few nits tweaked (added "the", newline
+and quotes for `.config`; expanded "repos") -- thanks everyone!
 
-Applied to `rust-next` (reworded and fixed quotes for `--path` and
-`set`) -- thanks everyone!
+David: your `Reviewed-by` was here but the change substantially
+changed from v3 to v4 -- I have kept it, but if you want it out,
+please shout :) For instance, perhaps we could simplify the paragraph
+about KUnit to just:
+
+    Alternatively, KUnit can run built-in KUnit tests on boot. Please see
+    Documentation/dev-tools/kunit/index.rst for details.
+
+since the KUnit docs explain in several places the boot option vs.
+`kunit_tool`, and it is one less thing to maintain, but I have left it
+as-is.
 
 Cheers,
 Miguel
