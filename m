@@ -1,71 +1,80 @@
 Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1889B76DBB;
-	Thu, 21 Dec 2023 21:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8E4A5B;
+	Thu, 21 Dec 2023 21:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KKywA1WD"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dbdd013c68bso681181276.2;
-        Thu, 21 Dec 2023 13:42:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hDRCchHQ"
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dbd4a10735eso1259920276.1;
+        Thu, 21 Dec 2023 13:44:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703194962; x=1703799762; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703195048; x=1703799848; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qc6DvoHCBo6SR0ql109kb11eHuEG/z5z0j0o6Yh0aEs=;
-        b=KKywA1WDE/ACl6IjRDzJydVy6Lrnl30SacU/U6zNQEWOVqBsIjClyPKTFUfYt/MJ84
-         HRL0sMrxXvr4pqjbPDG9JAu5/ggrDIjGLaY5SKX9o+Ijao29j9QgzShp6Lf4mIm4wNZ0
-         LhV7jnKm80QlQH1kaytk1DtLNccJNojEXrkYdPmi0y4oo4PxvgECpFOVIPP9UMB7Lc1c
-         ARzjR8UeEjtffemL8szTyrAbCkUjM71Hhf2omv/HcqN+qihkA1YO7RcUnlVzksvtMzdO
-         QedwCiFlDjY4C7NNB0s4iTqdw1guqqF99r5fRn4K9gDyphvZrsgJK/wFkyxCaOJe8lJW
-         y4fQ==
+        bh=s2xa/S4NiPSIz3XLKoVY/N+TMiqQSaInpG+sBuNYEZw=;
+        b=hDRCchHQx6AGxSb4f+hn/jWe1uQtLbLUKZthZHnzeq54y5jRozr4mLysZqXxR3yCSz
+         s08sNc5yFkzl+nxh8aYd5mJJQ9bbYuZnp9HGbxy+imvdTCI08R4IyP7jqMI/aHlYHl4O
+         CNN/sy/KrykiEn7fWq80FHnHqZbuidDhH/T802oad97X7O9U4Jg+rLnIPJUmm8MMw3U+
+         4+jzRIgV6CwV6kIVjzt8XwQzgZSQo3D1VdSiW/sKuNmvIr/yPY99DgmdmVG2NmKC/6ac
+         Sp23IwcjZC10TXPnj9+EOS2WG01l8kOsw4E6QYK2mghZ7JwDXG9wpJcDcOKgOJ8tUN6k
+         B1ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703194962; x=1703799762;
+        d=1e100.net; s=20230601; t=1703195048; x=1703799848;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qc6DvoHCBo6SR0ql109kb11eHuEG/z5z0j0o6Yh0aEs=;
-        b=EPkfp2aIZD3ys6I0nk1GgPGzeuEN5Mk9PKv8i7MHXS0jVhi8OAqCAf0q41yId9CJOU
-         5eFBMi92g50bYsBclkX2r6GdSyuieJyxLW8+PEJevhnP90gEKpgsFenhhU/G9BXjWMZh
-         elh3s2dLx2dW3ccIurRJSnIs3ZMQoz3WJ8eqZeBiez/aNNGbw+4jnPq2Gc/5jZ8tbhb8
-         GbUQwj/G0diXAqgylSrt48X8T4f+EMkbTe1T8l3t0L865ibb7cb+7jvEy+E+dUt/TvcS
-         XuAJc63WbgGu6exCcTY0gyqsLLQyUr4fqj7874lx94cFf3cOPfLFtDZqhUegzDvUKUWg
-         tHZQ==
-X-Gm-Message-State: AOJu0YwXkXGuZyPhjwplVJ3N/atSf1+6vs4QzUoU91WOUPCEmWj+R/DB
-	nmhvV10xzIQb3izg07n8I387d+Cf21Brlcgn714=
-X-Google-Smtp-Source: AGHT+IEDxN5fCuZZQgeRAfx8XcLajEsgJW1NOnjf/1K4gD06U74Wnhm26W0sYXsjWx1oM6A96HMSn3m5EMWm/hq7iIU=
-X-Received: by 2002:a25:6914:0:b0:dbd:c9dc:8751 with SMTP id
- e20-20020a256914000000b00dbdc9dc8751mr380198ybc.102.1703194962157; Thu, 21
- Dec 2023 13:42:42 -0800 (PST)
+        bh=s2xa/S4NiPSIz3XLKoVY/N+TMiqQSaInpG+sBuNYEZw=;
+        b=IXx8ZGR4U6uhsafF9/ebXnJCx+3lOsARQcYSgUzyqgCggGKgtWEe5FrEQu/fpYiIAh
+         0sUsMBnB2w1VxOT0K2p7bqXgkhLdQIqr94boMa6ssZXNhPgC67hexbvD4QxRsEpbHDIi
+         RDte575v7lAjhESSgRbbG7ITBktCIfBWOcMifTuUEG13VufOIyX0zjybzg8EgwswwN4J
+         ryZzW8sXTSkinhn6kpCJWQFE+F+4a1bzmF3rj9dXQafSdNG2L/0e9fYW0CVpP79jjoDm
+         JJAZYp9Pouzo5uyjRTbcLzpW3Qqqos7p2bHZ2nK9qzAZ0PjApe33qgPzBqUyaHYzYHa7
+         SXuQ==
+X-Gm-Message-State: AOJu0Yz3lwg5rcjW7sp5qrstmwnpSVkih6oMv+AQhG2WAqIYsGIUZR/M
+	QgRbKW+8w+loDwYk0rfw0TmIwB56bi7hc70d/23lU6cI3qM=
+X-Google-Smtp-Source: AGHT+IF8iVy//uPGGEz+20u8wFRe3kEu0vMOlFewXlSt737Kn2o8uBT4ZTiyCSOXGm8ucwoADus9wHhwoB60wsU9PJM=
+X-Received: by 2002:a25:740b:0:b0:dbd:ae04:2eb9 with SMTP id
+ p11-20020a25740b000000b00dbdae042eb9mr374851ybc.11.1703195047993; Thu, 21 Dec
+ 2023 13:44:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231214092958.377061-1-ojeda@kernel.org>
-In-Reply-To: <20231214092958.377061-1-ojeda@kernel.org>
+References: <ZXtebif2S1CyJRik@boqun-archlinux> <20231214200421.690629-1-boqun.feng@gmail.com>
+In-Reply-To: <20231214200421.690629-1-boqun.feng@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Dec 2023 22:42:31 +0100
-Message-ID: <CANiq72mzBnHTZqsy+VN3dbHy1OF0DcSiknULpgMnxy_-FZRk4g@mail.gmail.com>
-Subject: Re: [PATCH] rust: upgrade to Rust 1.74.1
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Thu, 21 Dec 2023 22:43:56 +0100
+Message-ID: <CANiq72=G-PX_nJctNwsU98pGfwbFr6DtfzWrcSPu=rae-1G54w@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: Makes `CondVar::wait()` an uninterruptible wait
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tiago Lam <tiagolam@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Alice Ryhl <aliceryhl@google.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 14, 2023 at 10:30=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Thu, Dec 14, 2023 at 9:04=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
 >
-> This is the next upgrade to the Rust toolchain, from 1.73.0 to 1.74.1
-> (i.e. the latest) [1].
+> Currently, `CondVar::wait()` is an interruptible wait, and this is
+> different than `wait_event()` in include/linux/wait.h (which is an
+> uninterruptible wait). To avoid confusion between different APIs on the
+> interruptible/uninterruptible, make `CondVar::wait()` an uninterruptible
+> wait same as `wait_event()`, also rename the old `wait()` to
+> `CondVar::wait_interruptible()`.
+>
+> Spotted-by: Tiago Lam <tiagolam@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
 Applied to `rust-next` -- thanks everyone!
 
