@@ -1,96 +1,165 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0864B647;
-	Thu, 21 Dec 2023 06:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727D158224;
+	Thu, 21 Dec 2023 16:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="0QKCcYhe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=fEMnsN9fKsacrZv+PZoSB1BdLYTdkoVYZcEdsoJrm0c=; b=0QKCcYhei8MIe3PofdWJOU/whE
-	Sr+aBpUIB950oRXoDWH3KzwU6M6Xi/fTyaG6Jmuxk3+y97Bhae3xsHqbjn6zptXyUVGDI6GRbwdjQ
-	6irkAnBpJaQYJLrf1U8tOeUHVN6yUToiAF46w/Mvc5sHXax5Jm8Vqmu5i+TMmJaY5+nkewazeZnf+
-	eU8zOauAqwJLsQiq2EPNkczGlZAgF4ihlq68hogAzTFQNdPcQwYUKHmqRF2qaAA7fCdLBfudfjU9W
-	J35Zyf7JIMSki1DzGKodv27CMMIyHW4CU25QxWGn2QASc99gsP4rplySZFxwWKa8vNYGhD7idK/ZM
-	j42TQlqg==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rGCHp-001nrQ-0L;
-	Thu, 21 Dec 2023 06:12:02 +0000
-Message-ID: <aa2ddfcc-8f2e-42c7-a81d-651a281eb6a3@infradead.org>
-Date: Wed, 20 Dec 2023 22:11:58 -0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i+OARogT"
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3ba2e4ff6e1so665371b6e.3;
+        Thu, 21 Dec 2023 08:54:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703177685; x=1703782485; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oOnyS6RoUGj7q+YQFnfztHo1ETrd0QQj20PKPiFIAeQ=;
+        b=i+OARogTvG7Mp5xagjgzYMNMMzwCO6UyECNegkBgvrsFUFv+yBojejZe8Iwgbjx8yn
+         gAF3WVWTqc7Vwn0gBK2x7V0VGl4Q0IhRpKpF4lVBSUNJhhgwKX80RaKdJLGnuunxrG6q
+         /1UnMGcJY2zhcDOKkcEX9+S79v/jf5BUBeUjzDmaOEjkt7Rvce3OznnO9gtpaWqcI4Tm
+         YCqEzEWZEQ7V+7rgpftUOrg+gcBZM6iTmKbBffKzODCwsMfg5XzCMYqi221eGs5zxMcP
+         9j1VOW1b8xkrX/l21SyzTDi84rLcJT4WECCCT04se6r6qA5yXQLDcLSWno39pR+r3ehM
+         Rnvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703177685; x=1703782485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oOnyS6RoUGj7q+YQFnfztHo1ETrd0QQj20PKPiFIAeQ=;
+        b=oJzxJ2/6KxrX004N49VGwGqc94io7D9CVLSovWlqK68f3chZrIXsV4qnnzBf84KXOe
+         +egIk3mlp9h0KqgUhuhqH74zRVCLkvwLPfqf+ASHgy+EKECaMpix/1HORu4YCbLgjzlk
+         OeXIgCRC0qIcIA3Uwb/2W84tSyGT2sNs4g1wXYMaEQxJneMSe1DfC4+YCWsa3W7Wz67J
+         qY1YaFx9RwP6klmcNCek0tcwl3wKR7oD7CpBHyIITIDxSCybQyLnxpM8wTGF2BzcWxoT
+         Xeg8y+jQG6PjvF7jGWJ+MrHjlOJR0MnX5Mvmmw6GTuyVIbvej+JCqwQCUiFBC3mUciAL
+         3RFw==
+X-Gm-Message-State: AOJu0YzG9sVL5jnge5upCTgjIBxz6LLbuOULWJpEfiDw9A4N0wb1tLg2
+	xX+1o7185hcDCUz2TM75lX4=
+X-Google-Smtp-Source: AGHT+IGp9HlLb3GzSyhQ5t66Urd72n7BMXw7L1Vg/sLOayffEUFcIwUSJ7Xz1dQXLjJ5Uq0y03A4pQ==
+X-Received: by 2002:a05:6808:1409:b0:3bb:7448:676f with SMTP id w9-20020a056808140900b003bb7448676fmr3058794oiv.30.1703177685467;
+        Thu, 21 Dec 2023 08:54:45 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id cu7-20020a05621417c700b0067f81a1494esm580687qvb.55.2023.12.21.08.54.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Dec 2023 08:54:44 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 2FEC827C005A;
+	Thu, 21 Dec 2023 11:54:44 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Thu, 21 Dec 2023 11:54:44 -0500
+X-ME-Sender: <xms:022EZb1FJJ9xKlh8gOonVzgYYEORXf5Zc94tdiDAElp_6XvY7OiHeg>
+    <xme:022EZaGbS9Hv6NZS4qaEYosn_Zz6c4Xt5UYrFY1jIiwYVPEqzg3WT0Ztmu9t3Tpb9
+    Kg2JNawW4bFc2WT9A>
+X-ME-Received: <xmr:022EZb5B0BgGLtkBGU0YH-54A0AC5LSqsRri92C3XUG4eqstKg7WT_-k_fXYsA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdduhedgieekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:022EZQ0eyE-D2KxVwNG0ZFHQ6ryjJ14mdjkHE5xijKfsr6SDvvKOEg>
+    <xmx:022EZeE9dPm120a8WcCz5bPNFXplXyURpJLK_lVFxBilTv4D7D1OJw>
+    <xmx:022EZR8baVBMlDrWhY8Jah7LWtJeKXerGj0XXjnsdmXeHFRruOXslw>
+    <xmx:1G2EZcFiglWm-z2NTm1d8mjC9x72Enxfe6iZiTGikgNxg2yd1z-u9g>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 21 Dec 2023 11:54:42 -0500 (EST)
+Date: Thu, 21 Dec 2023 08:54:17 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] rust: sync: add `CondVar::wait_timeout`
+Message-ID: <ZYRtuRXPgQcN_3cr@boqun-archlinux>
+References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com>
+ <20231216-rb-new-condvar-methods-v2-3-b05ab61e6d5b@google.com>
+ <3fba196a-8cb6-4ce9-9e67-bfb716a2d171@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/1] docs: Include simplified link titles in main page's
- index
-Content-Language: en-US
-To: Vegard Nossum <vegard.nossum@oracle.com>, Jonathan Corbet
- <corbet@lwn.net>, Carlos Bilbao <bilbao@vt.edu>,
- Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20231211005442.95457-1-bilbao@vt.edu>
- <87o7erqxhm.fsf@meer.lwn.net>
- <b55dc12b-0cd3-4f56-803e-4b26f1117c91@oracle.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <b55dc12b-0cd3-4f56-803e-4b26f1117c91@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3fba196a-8cb6-4ce9-9e67-bfb716a2d171@proton.me>
 
+On Wed, Dec 20, 2023 at 11:31:05AM +0000, Benno Lossin wrote:
+> On 12/16/23 16:31, Alice Ryhl wrote:
+> > @@ -102,7 +105,12 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
+> >          })
+> >      }
+> > 
+> > -    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
+> > +    fn wait_internal<T: ?Sized, B: Backend>(
+> > +        &self,
+> > +        wait_state: u32,
+> > +        guard: &mut Guard<'_, T, B>,
+> > +        timeout: c_long,
+> > +    ) -> c_long {
+> >          let wait = Opaque::<bindings::wait_queue_entry>::uninit();
+> > 
+> >          // SAFETY: `wait` points to valid memory.
+> > @@ -113,11 +121,13 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
+> >              bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
+> >          };
+> > 
+> > -        // SAFETY: No arguments, switches to another thread.
+> > -        guard.do_unlocked(|| unsafe { bindings::schedule() });
+> > +        // SAFETY: Switches to another thread. The timeout can be any number.
+> > +        let ret = guard.do_unlocked(|| unsafe { bindings::schedule_timeout(timeout) });
+> 
+> I am not sure what exactly the safety requirements of `schedule_timeout`
+> are. I looked at the function and saw that the timout should not be
+> negative. But aside from that only the the context switching should be
+> relevant. What things are not allowed to do when calling `schedule`
+> (aside from the stuff that klint catches)?
 
+One thing is that you probably don't want to call `schedule` with task
+state being TASK_DEAD, if so the `schedule` would be counted as
+`ARef<Task>::drop()`, see __schedule() -> context_switch() ->
+finish_context_switch(), and the task may be freed after that, which
+free the stack of the task, and anything that references a object on the
+stack would be a UAF. On the other hand, if the task state is not
+TASK_DEAD, `schedule*()` should be a no-op regarding memory safety.
 
-On 12/20/23 21:59, Vegard Nossum wrote:
-> On 15/12/2023 16:47, Jonathan Corbet wrote:
->> Carlos Bilbao <bilbao@vt.edu> writes:
->>
->>> The general consensus is that the documentation's website main entry point
->>> and its sidebar leave room for improvement.
-> [...]
->> Meanwhile, I'm pondering on this patch, would like to know what others
->> think.  Carlos nicely put up some comparison images for us:
->>
->>    https://github.com/Zildj1an/linux-kernel-docs-compare/blob/main/comparison.png
+> Because if there are none, then I would put the "switches to another
+> thread" part into a normal comment.
 > 
-> FWIW, I like it, but I would suggest these changes:
-> 
-> Driver implementation API -> Driver APIs
-> Testing -> Testing guide
-> Hacking -> Hacking guides
-> User-space tools -> Userspace tools
-> User-space API -> Userspace APIs
-> CPU Architectures -> CPU architectures
-> 
-> I know "user space" is technically two words, but the one-word form is
-> MUCH more prevalent in the kernel, for example if you check the mainline
-> log you'll see something like:
-> 
-> $ git log --grep 'user.*space' | grep -o 'user.*space' | sort | uniq -c | sort -g | tail -n 3
->    3135 user-space
->    7835 user space
->   26917 userspace
-> 
-> I think it makes sense to pluralize API -> APIs in most places, so e.g.
-> "Core APIs", "Driver APIs", "Userspace APIs". Just to emphasize that
-> these are really collections of disparate APIs (e.g. workqueues is one
-> API, linked lists is another, etc.).
 
-+1 for all suggestions.
+I think it's possible to make schedule_timeout() a safe function: we can
+define setting task state TASK_DEAD as an unsafe operation, whose safety
+requirement is something like: "Must ensure that if some code can
+reference a memory object that belongs to the task (e.g. a stack
+variable) after the task calls a followed `schedule()`, the code must
+also hold an additional reference count to the task."
 
-Thanks.
--- 
-#Randy
+Yes, it might be out of the scope of this patchset though.
+
+Regards,
+Boqun
+
+> -- 
+> Cheers,
+> Benno
+> 
+> > 
+> >          // SAFETY: Both `wait` and `wait_list` point to valid memory.
+> >          unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
+> > +
+> > +        ret
+> >      }
+> 
