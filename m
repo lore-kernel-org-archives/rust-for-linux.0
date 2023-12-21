@@ -1,102 +1,112 @@
 Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA9B697B1;
-	Thu, 21 Dec 2023 19:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83B976DDD;
+	Thu, 21 Dec 2023 21:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWJUVxH+"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbd990ad852so1252506276.1;
-        Thu, 21 Dec 2023 11:46:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3q+iUQ4"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbdb124491cso1068694276.1;
+        Thu, 21 Dec 2023 13:39:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703187994; x=1703792794; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703194740; x=1703799540; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N6/yAn6lNSX2MGYTUbcrF0LVeIXWmfijpcUqz22yFI0=;
-        b=nWJUVxH+ONTZwvq3AgHS+xVh2JN2ZyV4CF1plmJ4op9Ire19x1MG4DfXdDHalgE3zL
-         8H+Vu6ef3DuBYXiwMLhc+dtTr33cAu1ceaj22JuK7+BPfbUXBRQPI/ZOl7wZU9ayM+Zh
-         czb8x6zHYeE33BQPgvIl2CEmcn749iGoSM+a+QTPbgKa7sh9oxrZoAlix/EhriCQYPH7
-         k/t3H3qtxN8YAegCIqrlV/lAdLez+VcWSzkrpD2A+0As0lR/4r/53RK8rgTLzi6P+ls1
-         ZedEcCcghQl4iWxe2VzRP1V5JMkMZkRRCpPpq2UZppIzcf6JIEk+A10fRCKm+2wiGHP5
-         qWzw==
+        bh=PXU/wSqHvT5f9DP/nkZcmoPPi2e4LA2mSngSGEQpvNg=;
+        b=K3q+iUQ4u+gHvM8f5spT0IYwGWoTLL0oy3G6BAVJAjuqMsOUFaMA7QGvGgTzLh24xS
+         rNMMFEwhorVJxvkYYqYgbioj31r7KKLE5N73o3FU/AeUL2neCAlp5sTVi//ChYav5fJT
+         6dgVOlWWToxULU369unxCnQGBz0ntMXwwLrAKY8zO/k1/nBwAo4E9wmLmlhXAlXhClbu
+         sKRbFb9eeFdqIRFN9cJO01iOPAkdOvGWVG/dumkDKYLOSHlQBGMfNQz9lmxPnSae2Ms5
+         ACsA1d1oDNGtxtloIbXpYpoQByMAqVAHFK2BKvewu+iK4+Gkhesu2bIqgc06XjRPnoxY
+         nyFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703187994; x=1703792794;
+        d=1e100.net; s=20230601; t=1703194740; x=1703799540;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N6/yAn6lNSX2MGYTUbcrF0LVeIXWmfijpcUqz22yFI0=;
-        b=T3nw5K5NEbBCpWT5DOMQ/22VNtHGVwLIsJlsYCFoNl6VQOiMWRK9XkrACJwWcPwLb2
-         hGu5CHc5k6AF23xCUJUNw6NKuQj5oQ3tEvjejJ7SFNXmz8OOFZQ6lb3hAzSPfpPvuJSg
-         YGbxuMR0HmRTNGBNBlS9kw/sx0oan2xb0eRsSulKLRw0AT3b48sFL63cTEXKhnQbNPDK
-         joZ+A1LoOMzagqpwSYWfLVIogJ3nTdoNwHvB3t9PHLNgk3uxlqnUmncdDLtdM0qH/2Gi
-         WJjkKdwaTsycnX92mQEjr8ULjdyuunEVZP0xciwoLQGSI3t1z1nf8JoWB+T8DkIJ08WQ
-         6QhA==
-X-Gm-Message-State: AOJu0Yza252RSQy8XA4sxjFs/mG7BMzKtKa82arsroEPXm08u1t/3e4H
-	9odbi4CSYmZQcuoP5MqUpQOCw9xIs4aqOpMHp+8=
-X-Google-Smtp-Source: AGHT+IGNtWN/NlhB9JTutxP0DQ7YOWRxNm+b5oJRXoY4j1WqomTGtZXvPrR2dVDq8UgdFw/9rw+7JItC3zAfAslucro=
-X-Received: by 2002:a25:6606:0:b0:dbd:1334:a8d with SMTP id
- a6-20020a256606000000b00dbd13340a8dmr285785ybc.118.1703187994263; Thu, 21 Dec
- 2023 11:46:34 -0800 (PST)
+        bh=PXU/wSqHvT5f9DP/nkZcmoPPi2e4LA2mSngSGEQpvNg=;
+        b=AxTYOX8e49csFJ39IUZ+op668RpCcanQXH3RIY2AE2M0fQ8aeTU7Xpnlt3nO7Lrvh2
+         lsvCHWGdlamHs9kXLLmjz8t6zbb11GrQ7P7mkZtWqFjBqaSxw731havKxC0cK6ELq8Xp
+         WOo1oqeG3AwXm9maNrOWITxy7bUuQXFezG7g4zsavbuhCzD4PCK/pvC9mHdC+mPw8uFM
+         OZ4ZXpkdtqiBSn7ZDniRsQo2g8BK18rYDR1BYQHCqd9DsOKX93OHmds+BKD8D0Fgrvnf
+         FM+VKa+sVrr7li3eZO24RAclglqv5tAL3d4B81gLqsctrTq3hywm9DfRFTwmJ6V6/E7Z
+         mQOQ==
+X-Gm-Message-State: AOJu0YzYj+fw/Rbvq2ml5MKZL5CQ+cHsZNpxaxx57CPmQB9N+ajZkh0c
+	fPDm1gzxWrBHkUyWwQxwLpHumRLpFP3Pv3iumHI=
+X-Google-Smtp-Source: AGHT+IEhMe74JI+7lQZDzUiCsOMUeUyAr8WAul676bT3WI7OIr6gqXdlQpGTwTIT/+hE3RCkjK+kJGE8F59mVr5xOFU=
+X-Received: by 2002:a05:6902:604:b0:dbd:c25f:972b with SMTP id
+ d4-20020a056902060400b00dbdc25f972bmr372437ybt.56.1703194740681; Thu, 21 Dec
+ 2023 13:39:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215132132.169628-1-laura.nao@collabora.com>
-In-Reply-To: <20231215132132.169628-1-laura.nao@collabora.com>
+References: <20231215235428.243211-1-ojeda@kernel.org>
+In-Reply-To: <20231215235428.243211-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Dec 2023 20:46:22 +0100
-Message-ID: <CANiq72nAZ53fjsaMk8iYTwtqbvGo3LrTCpBCrh4zx6xLOFBP9w@mail.gmail.com>
-Subject: Re: [PATCH] kselftest: Add basic test for probing the rust sample modules
-To: Laura Nao <laura.nao@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Shuah Khan <shuah@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Thu, 21 Dec 2023 22:38:49 +0100
+Message-ID: <CANiq72kfpdNdCXtxFM-YVLuOp34u_edieX0q_a94-5kAxdGRWg@mail.gmail.com>
+Subject: Re: [PATCH] rust: support `srctree`-relative links
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
 	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel@collabora.com, David Gow <davidgow@google.com>
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 15, 2023 at 2:21=E2=80=AFPM Laura Nao <laura.nao@collabora.com>=
- wrote:
+On Sat, Dec 16, 2023 at 12:54=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
 >
-> Add new basic kselftest that checks if the available rust sample modules
-> can be added and removed correctly.
+> Some of our links use relative paths in order to point to files in the
+> source tree, e.g.:
 >
-> Signed-off-by: Laura Nao <laura.nao@collabora.com>
+>     //! C header: [`include/linux/printk.h`](../../../../include/linux/pr=
+intk.h)
+>     /// [`struct mutex`]: ../../../../include/linux/mutex.h
+>
+> These are problematic because they are hard to maintain and do not suppor=
+t
+> `O=3D` builds.
+>
+> Instead, provide support for `srctree`-relative links, e.g.:
+>
+>     //! C header: [`include/linux/printk.h`](srctree/include/linux/printk=
+.h)
+>     /// [`struct mutex`]: srctree/include/linux/mutex.h
+>
+> The links are fixed after `rustdoc` generation to be based on the absolut=
+e
+> path to the source tree.
+>
+> Essentially, this is the automatic version of Tomonori's fix [1],
+> suggested by Gary [2].
+>
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Closes: https://lore.kernel.org/r/20231026.204058.2167744626131849993.fuj=
+ita.tomonori@gmail.com [1]
+> Fixes: 48fadf440075 ("docs: Move rustdoc output, cross-reference it")
+> Link: https://lore.kernel.org/rust-for-linux/20231026154525.6d14b495@euge=
+o/ [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Thanks Laura!
+Applied to `rust-next` -- thanks everyone!
 
-Shuah: do you want that we pick this one? If so, your `Acked-by` would
-be nice -- thanks! Otherwise, please feel free to pick it up.
-
-Cc'ing David too since it involves KTAP in case he has comments.
-
-> diff --git a/tools/testing/selftests/rust/Makefile b/tools/testing/selfte=
-sts/rust/Makefile
-
-Missing SPDX line? (it can be added when picking it up, though).
-
-> +$(OUTPUT)/ktap_helpers.sh:
-> +       cp $(top_srcdir)/tools/testing/selftests/dt/ktap_helpers.sh $@
-
-This may be something for another series, but should these helpers be
-factored out perhaps / provided by the framework? Does it work
-sourcing them from `dt` directly instead of copying meanwhile (to
-simplify)?
-
-> +KSFT_PASS=3D0
-> +KSFT_FAIL=3D1
-> +KSFT_SKIP=3D4
-
-Similarly, would it make sense for this kind of "common constants" be
-factored somehow? Or does that not make sense (I see other tests also
-define them "manually")?
+By the way, since I didn't mention it: this obviously requires the
+source tree to be available at its path, so we may want to improve on
+that later (e.g. exporting the needed files in the output folder), but
+it is a strict improvement since it fixes the immediate issue, it
+cleans the paths already reducing the maintenance burden (i.e. we can
+keep the syntax even if we change the rest) and is a smaller change if
+we decide to send it to stable later.
 
 Cheers,
 Miguel
