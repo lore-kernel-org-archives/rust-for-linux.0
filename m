@@ -1,44 +1,44 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8337F76DCD;
-	Thu, 21 Dec 2023 21:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C88077631;
+	Thu, 21 Dec 2023 21:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HF1a/lYv"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-5e74b4d5445so12188557b3.1;
-        Thu, 21 Dec 2023 13:40:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y21p367r"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-5c85e8fdd2dso13247257b3.2;
+        Thu, 21 Dec 2023 13:40:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703194804; x=1703799604; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703194813; x=1703799613; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MES1Czfl9t1Rk/xm2E4F/wm2jtD8BoNGjFyADEumMGA=;
-        b=HF1a/lYvdfxerZECwnVrH/vEu1/Fe7N4W4swpAXEBzy7gHjK20vyGIExdiD2QoP4Hc
-         KTiyXOBIHTH0fAdI9bu7Q0AJu6IzW9gAfCKGxiKpg9dZ+tVzkUntnjvymLNbVMNHjEei
-         xIslMZ7HvGtvXXZ0weYnb35fFXTNdTlTYRMvTxdhnqiHT65Vko/9m/akVm9acf+eYZmL
-         oQh1yN1zZPlIP5SrInN88PuY+UitgxI+wLbU8aQYym1jaDf8+vuXBfanh87XTpX6uWEz
-         63PU0Qd7rzEwR3rb1+lADxhJJJlWeZ1xFU7h1vqBR9tSpNhG2zpXDv1yzsn5FT/FhBzu
-         U7Bw==
+        bh=aTI1OFjrcWP9wgBoTfoCNiKxKyxMm5mLbCOryqiWA0U=;
+        b=Y21p367rKxW+BNuYUgZ0OFuFUkqXHpP8WU9laH/juigbd5fvlD1XGgUdVpLTYQN9dS
+         Sx+rqRXak7buykyJInCwMrCvMiQ58T5/AmXzsQaK2wOBV2HBuKqYn+F2MXS7+Ap5GyOi
+         mRJ5mPb6Qt+Y+gj4ONPq2jWKSs19a2EUimfdodj2o2e8WuiKoxb5sAQp221TiQrQbFuX
+         6iybGtRNjn/BIk/YaV4NRR89MUFyjF1fZVOkf9FlHEZUU/gR9dds2bJJ6uBJt8gd00d7
+         Zxt3od+X+pgnZZTuIXf/w+m1UBqFIriEIC1Y6DK5LF+qJn1Q89R9NQu1fYvuK7QyH867
+         iULg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703194804; x=1703799604;
+        d=1e100.net; s=20230601; t=1703194813; x=1703799613;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MES1Czfl9t1Rk/xm2E4F/wm2jtD8BoNGjFyADEumMGA=;
-        b=pErlbeR228sWUbuoDk6ouj993oZDZsaAHmYaPUufGZC8Fp+TDeWA5jrEQAQ7PPvpWj
-         Abu0C+sJWau1c/ewns6hxb/nn4ZiT/fLcXNXCipmUH5GGucdWQoF3dmqbbi/5vcEyosy
-         qU2S/e6xM+zMMqqLa5veYboF9rEZWuxlQWz4DxS2JQppA1mXAbuUVy/gdTB5KQk0sxQa
-         7dy1zcpO24vf3Sfvq7bOxrIRfrexASkCxpX9MPGGL1vX4ToR7f55ynMPb7Xd6r12BwMN
-         z/63VdFNclS08UMlYyXThLvYULR3PR9SbGF+gH70sG6R725SqVLCq3ftkecaRkxR9QhT
-         v2Bw==
-X-Gm-Message-State: AOJu0YzexrqYe+qibkZo4pCn0o7kzLXzullhkCFfI3HG/TXROSCbcHPf
-	+/5lQSbCuUQy6gSiA2ZCK8a55Ch0Z0kzESco1dM=
-X-Google-Smtp-Source: AGHT+IHP5GL2To77rsNOn5DUqpCqzRAeGnI3g+YFmdF+IBbgKb8SDhVCXZz3JwaPE2cun4u0CYzAWKVv6g+GfyFFMiA=
-X-Received: by 2002:a0d:d206:0:b0:5e7:402a:f8c0 with SMTP id
- u6-20020a0dd206000000b005e7402af8c0mr468095ywd.97.1703194804339; Thu, 21 Dec
- 2023 13:40:04 -0800 (PST)
+        bh=aTI1OFjrcWP9wgBoTfoCNiKxKyxMm5mLbCOryqiWA0U=;
+        b=GzS7LarW47xk6m6IJh0HyBkSBznVEAAwS1O0JKu/wqXkEjBC6EG42LSGiV5NIaGVoN
+         SHVelXhXOcXB0IiyHuJwk6D8/jnSrdwDPhUY8rTntrd47+xBF/7tOqpGH+BVJlAtxheC
+         gKUWwoLJTVPIjq+dSrwIvQ0Il+DHFIZlI8+Fw+Kjnx6XSlrRRvPqAptuzUq0LhJPnV6g
+         hoW+cE8cQwYuA+nacvWOAtNu+4A0sBOcJorxG7JEU3/C7sxu/km4rEn12hZoI6eaIaPg
+         AQNgnlmShL42IqSpnGF+6Umcmb2ulTsL+3SUk2pxlBv7jsWhrxneIov1igfEZj1yEswZ
+         WdOg==
+X-Gm-Message-State: AOJu0YwVkxCzTPZIVJUguQdAC/pm/H+w+xjGfbcnczOC1BpW4oHCtcTQ
+	8MDje2I18vOQBaZv2qYmiFGY0uGTzHTwrJ7+Hv4=
+X-Google-Smtp-Source: AGHT+IFZQggkJXTtouCLXwdPMeMSiEljIujIGL/TQToBqai5Bv73z4gb+uuZ/oV29fvBWdlUPqLqoM2bsALFvLVk4+I=
+X-Received: by 2002:a25:dc8c:0:b0:db5:4b23:534 with SMTP id
+ y134-20020a25dc8c000000b00db54b230534mr423500ybe.17.1703194813258; Thu, 21
+ Dec 2023 13:40:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,19 +46,14 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
- <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com> <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
- <20231215064823.ltm55fk4zclsuuwq@vireshk-i7> <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
- <20231215112418.usky65sibhbiubyx@vireshk-i7> <CANiq72nuUpBCHaeyozDXAZrV+YLW_OR-QOUiVHPfTbNGG3RFXA@mail.gmail.com>
- <CAK7LNAS8kaRsWf6Grob5Vuj3eNx2c2=s+JmmshcXXJT2B4ph_Q@mail.gmail.com>
-In-Reply-To: <CAK7LNAS8kaRsWf6Grob5Vuj3eNx2c2=s+JmmshcXXJT2B4ph_Q@mail.gmail.com>
+In-Reply-To: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Dec 2023 22:39:50 +0100
-Message-ID: <CANiq72k5C-pff+Kpvmb5hQcen2ZKmKT2hSENnyzDGxo0wfptjA@mail.gmail.com>
+Date: Thu, 21 Dec 2023 22:40:02 +0100
+Message-ID: <CANiq72mKL3_1Cfe3EQ8RN+_R3kjs96vgHtjO9CCXD-+p2CzQDg@mail.gmail.com>
 Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
  build directory
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, Tiago Lam <tiagolam@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
@@ -68,18 +63,28 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>, Tiago Lam <tiagolam@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 18, 2023 at 1:07=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+On Tue, Dec 12, 2023 at 8:44=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
 rg> wrote:
 >
-> FWIW.
+> Rustup override is required to be set for the build directory and not
+> necessarily the kernel source tree (unless the build directory is its
+> subdir).
 >
-> Kbuild is designed to be able to initiate 'make' from anywhere,
-> even if the build directory is not set up.
+> Clarify the same in quick-start guide.
 >
-> In that case, you need to use -f option to point to the top Makefile.
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-I meant for the command that Viresh mentioned (i.e. without `-f`), but
-that `-f` is meant to work is good to know, thanks!
+Since we are not going to use v3 given we will not have the
+`rustupoverride` Make target, I have applied this one. It is also the
+one that got more `Reviewed-by`s, I think Andreas preferred too and
+Masahiro was kind enough to be OK applying this one instead of his
+(which would need to be rebased and submitted to the list), so I went
+with that one. Tiago's concern is still there though (i.e. the script
+is relative to the source tree), but we can improve things further
+later (perhaps if we add a script for this sort of thing).
+
+Applied to `rust-next` (reworded and fixed quotes for `--path` and
+`set`) -- thanks everyone!
 
 Cheers,
 Miguel
