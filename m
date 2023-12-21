@@ -1,91 +1,100 @@
 Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90D3A5B
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Dec 2023 21:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4550FA5B;
+	Thu, 21 Dec 2023 21:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0Yz3J/f"
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dbdacafe012so1219349276.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Dec 2023 13:41:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jXDORxV+"
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dbdb5e37f93so1195324276.3;
+        Thu, 21 Dec 2023 13:42:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703194915; x=1703799715; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703194935; x=1703799735; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H7B2vI59AwHh93W0uC8vrfYG7PjY3/m7FdPCXMD9mbg=;
-        b=i0Yz3J/fMKULdAw+2bp77n245tM3KOcMBPY27/7RagDviVbgE/NNVT176xHXmqY9Pz
-         yziCo+OdZWqnicOLT4wxKM326NzIvk7LFjRJZGdDDzm4Hrlfrg0taFUZfAfGsLyjHnjZ
-         HQU3K8JJby+ImcaT33UYXatOunfnqqQntnoWDjwf3JHua7NscjWVdS71628nIrwfnhRW
-         47HBopxIVXeIzLnrS+PQNNr8JBcs840fRf6Y9e0FQ1/PxCyfSTV2au/LTWHKuhkxjiKo
-         e5k/Ly90YZXdFBKRUE5zMbJDUocZdROk86HwGcXDxrt2uADt3F/MjuN7O3GI/d+nXAmb
-         V1tA==
+        bh=Rid+g3xZdJDgqp/Yc2xW5mOJwNnrU6NKIQJkfAyL0OA=;
+        b=jXDORxV+wKg3EANpQVSXrPPrOMKvaYts+sOabSekqwKsu512y2dhDH1eoIlpUZEsQm
+         4JD4Ayez+eupx17KVta0ya16t99O1YNEjN8I204J4gBhLhtGJewQYNH4uZp3y1xVb1Yx
+         Hfw2D+U/9ZwxIfkGNK16HJGZ1CKLnuPcU/IZHNPG17PIRiE33svjQrAqZfq9Gp5+d4aA
+         8ZvEoqMAuFlfkTRNjd9ONfR6euCV2hh0VAiD6pxfsq627LsnJayJU1JUSbxxbMJHvvZB
+         +pOEVrYKV86ULifpPSBj5aL3zx/8QpCojqJM9XQ9v48J5Kbtfq0GTHrzys3jJ7UQAnQY
+         3oAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703194915; x=1703799715;
+        d=1e100.net; s=20230601; t=1703194935; x=1703799735;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H7B2vI59AwHh93W0uC8vrfYG7PjY3/m7FdPCXMD9mbg=;
-        b=s0zzSEf7MqqsrYQrBIcYSGmcYv4g4ekpsO6PMaxRUwOQJElrzrsbMY7rftJExb/WZE
-         yyL3h1DJro5RjoKGc3bC/NEXYEgSFZFMpm8nPQss58L6UN+xdBLSOEKwDK5fEyp+Yd0m
-         Nawddr0/9E3+QxlwyyuvTsJN2dpIaczL5zVesVJrlE9pYX4tC8gWDMhrPkEurnp7DgWh
-         SkLT+MCgE3Q+vkjuOy6AD5EsgfJWILMG+UlcVZKnHJN77Wiby00/+e7X5J2MgnFIVkbJ
-         J0I1obb88Vv8cQbt7DT1UyNviNBzT28dVHQF9QJoHEf0nB4caQEeM0vgh5ltW2LOw/gE
-         H8Bw==
-X-Gm-Message-State: AOJu0Yyr+VxwYuK7CGfycfHQ8dkiv029HahfRd+c0TgCHWiyvEH7AZLJ
-	S7dMSTCeHYyUzQRsRClxCDnp7jn9xWTKUfeKSdg=
-X-Google-Smtp-Source: AGHT+IHl2Ac1oxmhgmfWhbV97FRGgGvlHM10G0d57fQAoBLlZoHNObKw7UY3a1G8lyQITr7MQ/BEmXqXUJsuDZP57LU=
-X-Received: by 2002:a25:dbc4:0:b0:dbd:b5c2:6ec5 with SMTP id
- g187-20020a25dbc4000000b00dbdb5c26ec5mr368490ybf.127.1703194915616; Thu, 21
- Dec 2023 13:41:55 -0800 (PST)
+        bh=Rid+g3xZdJDgqp/Yc2xW5mOJwNnrU6NKIQJkfAyL0OA=;
+        b=Euq86DPWKPRfJgf1yha9YRfBOZulSTFJo/ZUvZFf3BktRU2H1k1wvLorwt/WzYWXko
+         e1KShOyFP6dvD03LJXn2j+krCT3a19BB3wO/nuBxF1TBTfbiiUg340UrYjDDPAs/OMwO
+         L38DstwvUiyD97d7/6FIYxkNz+2EXxUYS3NTZtPm0vo77j0qFxvdomlnPYTJbbtyeslM
+         wXsNdl95glT2pT1mnWw+e+axGM6x4s5XjdfPuv65xZjPefSdIeK1xWLbeYXy1WMb5P8t
+         qCcePlNe8X7CRJrKAUOr+0U9Y/B21IREiwaJmEn5d9hz7WDGkPJuNSOO5EFJnHbHQAW1
+         BC6A==
+X-Gm-Message-State: AOJu0Yzmoz5eNnzzwF+vJEOXeE7bWFrqPo7QA1O17vTCmZ/GJJISqeTj
+	ac/+vL8+evivi6nyo6aL91AmUXZbdyJR2t2N5pg=
+X-Google-Smtp-Source: AGHT+IFV/LMIZxkaJdLt4PJlTuBD8C3WJ6yeE+gO4Dg47v3tAtxOHZpyXy5abBbykfI3FbNxJ/O8C5pwwo8G880SUJs=
+X-Received: by 2002:a25:d782:0:b0:dbd:6506:d8df with SMTP id
+ o124-20020a25d782000000b00dbd6506d8dfmr388370ybg.74.1703194935306; Thu, 21
+ Dec 2023 13:42:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231212081313.226120-1-dirk.behme@de.bosch.com>
-In-Reply-To: <20231212081313.226120-1-dirk.behme@de.bosch.com>
+References: <20231215124751.175191-1-ojeda@kernel.org>
+In-Reply-To: <20231215124751.175191-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Dec 2023 22:41:44 +0100
-Message-ID: <CANiq72kEUyQ+Evjfv-c-t4UHi+SpAJ6dgrRAY_zdsBO=vHNm6w@mail.gmail.com>
-Subject: Re: [PATCH v4] docs: rust: Add rusttest info
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org, David Gow <davidgow@google.com>
+Date: Thu, 21 Dec 2023 22:42:04 +0100
+Message-ID: <CANiq72=vkdLQ=vu4tDZpWz8C+YJCeZfwToRAR3wKm1Vt2wxzcg@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: remove `CC=clang` mentions
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Jonathan Corbet <corbet@lwn.net>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-doc@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 12, 2023 at 9:14=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
-> wrote:
+On Fri, Dec 15, 2023 at 1:48=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Searching the Rust kernel documentation all existing Rust Make
-> targets (rustavailable, rustfmt, rustfmtcheck, rustdoc and
-> rust-analyzer) are explicitly documented with their Make commands.
-> While the Make target rusttest is mentioned two times in the
-> existing documentation, it's Make command is not explicitly
-> documented, yet. Add a test section to document this.
+> Nowadays all architectures except s390 recommend using `LLVM=3D1` instead=
+ of
+> `CC=3Dclang`, and since commit a3c6bfba4429 ("Documentation/llvm: refresh
+> docs") the Kbuild LLVM documentation makes `LLVM=3D1` the way to go:
 >
-> While at it, add some info about the more important KUnit testing
-> too.
+>     We want to encourage the use of ``LLVM=3D1`` rather than just
+>     ``CC=3Dclang``. Make that suggestion "above the fold" and "front and
+>     center" in our docs.
 >
-> Reviewed-by: David Gow <davidgow@google.com>
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> In particular, that commit removes the examples with `CC=3Dclang`.
+>
+> Thus do the same in the Rust Quick Start guide, i.e. remove the `CC=3Dcla=
+ng`
+> mentions, especially since the architectures that have had their Rust
+> support upstreamed (or soon to be upstreamed) are all `LLVM=3D1` ones
+> anyway. And perhaps by the time Rust is supported for s390 (or new
+> architectures), it may have moved to `LLVM=3D1` anyway. Otherwise,
+> this can be added back if needed (or perhaps an extra link to
+> Documentation/kbuild/llvm.rst).
+>
+> This should also help avoiding potential confusion around `CC=3Dclang` [1=
+].
+>
+> Link: https://lore.kernel.org/rust-for-linux/6df6e8e5-8d5b-4d3d-91b5-bc0e=
+90c424ea@nvidia.com/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` with a few nits tweaked (added "the", newline
-and quotes for `.config`; expanded "repos") -- thanks everyone!
-
-David: your `Reviewed-by` was here but the change substantially
-changed from v3 to v4 -- I have kept it, but if you want it out,
-please shout :) For instance, perhaps we could simplify the paragraph
-about KUnit to just:
-
-    Alternatively, KUnit can run built-in KUnit tests on boot. Please see
-    Documentation/dev-tools/kunit/index.rst for details.
-
-since the KUnit docs explain in several places the boot option vs.
-`kunit_tool`, and it is one less thing to maintain, but I have left it
-as-is.
+Applied to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
