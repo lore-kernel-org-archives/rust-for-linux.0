@@ -1,112 +1,85 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83B976DDD;
-	Thu, 21 Dec 2023 21:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8337F76DCD;
+	Thu, 21 Dec 2023 21:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3q+iUQ4"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbdb124491cso1068694276.1;
-        Thu, 21 Dec 2023 13:39:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HF1a/lYv"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-5e74b4d5445so12188557b3.1;
+        Thu, 21 Dec 2023 13:40:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703194740; x=1703799540; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703194804; x=1703799604; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PXU/wSqHvT5f9DP/nkZcmoPPi2e4LA2mSngSGEQpvNg=;
-        b=K3q+iUQ4u+gHvM8f5spT0IYwGWoTLL0oy3G6BAVJAjuqMsOUFaMA7QGvGgTzLh24xS
-         rNMMFEwhorVJxvkYYqYgbioj31r7KKLE5N73o3FU/AeUL2neCAlp5sTVi//ChYav5fJT
-         6dgVOlWWToxULU369unxCnQGBz0ntMXwwLrAKY8zO/k1/nBwAo4E9wmLmlhXAlXhClbu
-         sKRbFb9eeFdqIRFN9cJO01iOPAkdOvGWVG/dumkDKYLOSHlQBGMfNQz9lmxPnSae2Ms5
-         ACsA1d1oDNGtxtloIbXpYpoQByMAqVAHFK2BKvewu+iK4+Gkhesu2bIqgc06XjRPnoxY
-         nyFA==
+        bh=MES1Czfl9t1Rk/xm2E4F/wm2jtD8BoNGjFyADEumMGA=;
+        b=HF1a/lYvdfxerZECwnVrH/vEu1/Fe7N4W4swpAXEBzy7gHjK20vyGIExdiD2QoP4Hc
+         KTiyXOBIHTH0fAdI9bu7Q0AJu6IzW9gAfCKGxiKpg9dZ+tVzkUntnjvymLNbVMNHjEei
+         xIslMZ7HvGtvXXZ0weYnb35fFXTNdTlTYRMvTxdhnqiHT65Vko/9m/akVm9acf+eYZmL
+         oQh1yN1zZPlIP5SrInN88PuY+UitgxI+wLbU8aQYym1jaDf8+vuXBfanh87XTpX6uWEz
+         63PU0Qd7rzEwR3rb1+lADxhJJJlWeZ1xFU7h1vqBR9tSpNhG2zpXDv1yzsn5FT/FhBzu
+         U7Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703194740; x=1703799540;
+        d=1e100.net; s=20230601; t=1703194804; x=1703799604;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PXU/wSqHvT5f9DP/nkZcmoPPi2e4LA2mSngSGEQpvNg=;
-        b=AxTYOX8e49csFJ39IUZ+op668RpCcanQXH3RIY2AE2M0fQ8aeTU7Xpnlt3nO7Lrvh2
-         lsvCHWGdlamHs9kXLLmjz8t6zbb11GrQ7P7mkZtWqFjBqaSxw731havKxC0cK6ELq8Xp
-         WOo1oqeG3AwXm9maNrOWITxy7bUuQXFezG7g4zsavbuhCzD4PCK/pvC9mHdC+mPw8uFM
-         OZ4ZXpkdtqiBSn7ZDniRsQo2g8BK18rYDR1BYQHCqd9DsOKX93OHmds+BKD8D0Fgrvnf
-         FM+VKa+sVrr7li3eZO24RAclglqv5tAL3d4B81gLqsctrTq3hywm9DfRFTwmJ6V6/E7Z
-         mQOQ==
-X-Gm-Message-State: AOJu0YzYj+fw/Rbvq2ml5MKZL5CQ+cHsZNpxaxx57CPmQB9N+ajZkh0c
-	fPDm1gzxWrBHkUyWwQxwLpHumRLpFP3Pv3iumHI=
-X-Google-Smtp-Source: AGHT+IEhMe74JI+7lQZDzUiCsOMUeUyAr8WAul676bT3WI7OIr6gqXdlQpGTwTIT/+hE3RCkjK+kJGE8F59mVr5xOFU=
-X-Received: by 2002:a05:6902:604:b0:dbd:c25f:972b with SMTP id
- d4-20020a056902060400b00dbdc25f972bmr372437ybt.56.1703194740681; Thu, 21 Dec
- 2023 13:39:00 -0800 (PST)
+        bh=MES1Czfl9t1Rk/xm2E4F/wm2jtD8BoNGjFyADEumMGA=;
+        b=pErlbeR228sWUbuoDk6ouj993oZDZsaAHmYaPUufGZC8Fp+TDeWA5jrEQAQ7PPvpWj
+         Abu0C+sJWau1c/ewns6hxb/nn4ZiT/fLcXNXCipmUH5GGucdWQoF3dmqbbi/5vcEyosy
+         qU2S/e6xM+zMMqqLa5veYboF9rEZWuxlQWz4DxS2JQppA1mXAbuUVy/gdTB5KQk0sxQa
+         7dy1zcpO24vf3Sfvq7bOxrIRfrexASkCxpX9MPGGL1vX4ToR7f55ynMPb7Xd6r12BwMN
+         z/63VdFNclS08UMlYyXThLvYULR3PR9SbGF+gH70sG6R725SqVLCq3ftkecaRkxR9QhT
+         v2Bw==
+X-Gm-Message-State: AOJu0YzexrqYe+qibkZo4pCn0o7kzLXzullhkCFfI3HG/TXROSCbcHPf
+	+/5lQSbCuUQy6gSiA2ZCK8a55Ch0Z0kzESco1dM=
+X-Google-Smtp-Source: AGHT+IHP5GL2To77rsNOn5DUqpCqzRAeGnI3g+YFmdF+IBbgKb8SDhVCXZz3JwaPE2cun4u0CYzAWKVv6g+GfyFFMiA=
+X-Received: by 2002:a0d:d206:0:b0:5e7:402a:f8c0 with SMTP id
+ u6-20020a0dd206000000b005e7402af8c0mr468095ywd.97.1703194804339; Thu, 21 Dec
+ 2023 13:40:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215235428.243211-1-ojeda@kernel.org>
-In-Reply-To: <20231215235428.243211-1-ojeda@kernel.org>
+References: <e2b943eca92abebbf035447b3569f09a7176c770.1702366951.git.viresh.kumar@linaro.org>
+ <1c03eb18-a6ac-45c8-8fea-46097bb4e132@gmail.com> <CANiq72=mvca8PXoxwzSao+QFbAHDCecSKCDtV+ffd+YgZNFaww@mail.gmail.com>
+ <20231215064823.ltm55fk4zclsuuwq@vireshk-i7> <a2aca039-7360-476e-a1b1-e950698cd26b@gmail.com>
+ <20231215112418.usky65sibhbiubyx@vireshk-i7> <CANiq72nuUpBCHaeyozDXAZrV+YLW_OR-QOUiVHPfTbNGG3RFXA@mail.gmail.com>
+ <CAK7LNAS8kaRsWf6Grob5Vuj3eNx2c2=s+JmmshcXXJT2B4ph_Q@mail.gmail.com>
+In-Reply-To: <CAK7LNAS8kaRsWf6Grob5Vuj3eNx2c2=s+JmmshcXXJT2B4ph_Q@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Dec 2023 22:38:49 +0100
-Message-ID: <CANiq72kfpdNdCXtxFM-YVLuOp34u_edieX0q_a94-5kAxdGRWg@mail.gmail.com>
-Subject: Re: [PATCH] rust: support `srctree`-relative links
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Thu, 21 Dec 2023 22:39:50 +0100
+Message-ID: <CANiq72k5C-pff+Kpvmb5hQcen2ZKmKT2hSENnyzDGxo0wfptjA@mail.gmail.com>
+Subject: Re: [PATCH V2] docs: rust: Clarify that 'rustup override' applies to
+ build directory
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, Tiago Lam <tiagolam@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 16, 2023 at 12:54=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Mon, Dec 18, 2023 at 1:07=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
 >
-> Some of our links use relative paths in order to point to files in the
-> source tree, e.g.:
+> FWIW.
 >
->     //! C header: [`include/linux/printk.h`](../../../../include/linux/pr=
-intk.h)
->     /// [`struct mutex`]: ../../../../include/linux/mutex.h
+> Kbuild is designed to be able to initiate 'make' from anywhere,
+> even if the build directory is not set up.
 >
-> These are problematic because they are hard to maintain and do not suppor=
-t
-> `O=3D` builds.
->
-> Instead, provide support for `srctree`-relative links, e.g.:
->
->     //! C header: [`include/linux/printk.h`](srctree/include/linux/printk=
-.h)
->     /// [`struct mutex`]: srctree/include/linux/mutex.h
->
-> The links are fixed after `rustdoc` generation to be based on the absolut=
-e
-> path to the source tree.
->
-> Essentially, this is the automatic version of Tomonori's fix [1],
-> suggested by Gary [2].
->
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Closes: https://lore.kernel.org/r/20231026.204058.2167744626131849993.fuj=
-ita.tomonori@gmail.com [1]
-> Fixes: 48fadf440075 ("docs: Move rustdoc output, cross-reference it")
-> Link: https://lore.kernel.org/rust-for-linux/20231026154525.6d14b495@euge=
-o/ [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> In that case, you need to use -f option to point to the top Makefile.
 
-Applied to `rust-next` -- thanks everyone!
-
-By the way, since I didn't mention it: this obviously requires the
-source tree to be available at its path, so we may want to improve on
-that later (e.g. exporting the needed files in the output folder), but
-it is a strict improvement since it fixes the immediate issue, it
-cleans the paths already reducing the maintenance burden (i.e. we can
-keep the syntax even if we change the rest) and is a smaller change if
-we decide to send it to stable later.
+I meant for the command that Viresh mentioned (i.e. without `-f`), but
+that `-f` is meant to work is good to know, thanks!
 
 Cheers,
 Miguel
