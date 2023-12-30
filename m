@@ -1,119 +1,171 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE302101EF;
-	Thu, 28 Dec 2023 19:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0125C23A0;
+	Sat, 30 Dec 2023 08:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTVSYQiT"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-427fa9ecd60so4148721cf.2;
-        Thu, 28 Dec 2023 11:43:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703792583; x=1704397383; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8zTgUJfJIqNmJzukT+nSgAgZaf503JH2MNH3MI61x1Y=;
-        b=JTVSYQiTkf+8LV4cSzqFN66gZs2fcqS73BK18u4hYwnMuPDYEcVO/r33q7giam9wG9
-         6F4wP7JsITTWkby3sWcTTwq7iFdxQURX1BfaesHiIQsoB9FLI9m1LT1DnL5YpgagXK0V
-         rv9i5i8pqOzZQrfYlWuAqHIMkRqnCjh3M3VjSv1DcUxttxgJPeRF6zXs6QT5MG343Zla
-         tGI0KZM8sUj0c30PPmLsyVK3BXmLrkTJvYwYUAhUFHr6VPo4SX6iyNh0HeLJPzZUKCjk
-         QbfYrLhol18cc16j5xac0Y7LfTFPw/6LLORsvA4qCI5StQkAU5qyqlojDnmVjYBVlvfE
-         5QwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703792583; x=1704397383;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8zTgUJfJIqNmJzukT+nSgAgZaf503JH2MNH3MI61x1Y=;
-        b=ACrLjXYXkht+W5JrYURwe+ma4TLJDujxVCrDpMdbXENRWT5ZGBvDuBczr+8191drTb
-         DpKaWuyaGKeySfvGhb6QokR3Zy1gII51yoWVgfY9qHgztp8TUaimqsMM2/vqLcwTnWGC
-         ICju9Ts0YqHWqX+LsPMj7K3NB95q19yN4n4YoGqZrG/4fthMcqctxyU6CewcqX/GOIBe
-         K8sE2h/0bKQRww97vK3+UQPR+2e8ddi/gBMIuvfYNVO8sVNVuuvmoo+BsggefLm03pZx
-         eovKYJMigKPO/kvNgoYM4uoAJVtUGbQ9MAacPfTXarJ3lj/eLs9DT1pME9uNxqm/rucP
-         FX5g==
-X-Gm-Message-State: AOJu0YxLqCaeUGeR/aaddu6kX/J7OBPKGVAy5Bn8VZnW21MXD3WYuriF
-	4bB5oGSpzr5mVRMtRNGOLBM=
-X-Google-Smtp-Source: AGHT+IGxOTxwgAz40c0YA6Bu6/T7sUpBSnJBsiff2q1myvGIgQ/KzGmg6oDaDqLDi8HB5BCf/FuvvQ==
-X-Received: by 2002:ac8:5754:0:b0:427:892a:edfe with SMTP id 20-20020ac85754000000b00427892aedfemr17790770qtx.66.1703792583543;
-        Thu, 28 Dec 2023 11:43:03 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id ks22-20020ac86216000000b00423f2acc614sm8399072qtb.87.2023.12.28.11.43.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Dec 2023 11:43:03 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 90C7627C005A;
-	Thu, 28 Dec 2023 14:43:02 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Thu, 28 Dec 2023 14:43:02 -0500
-X-ME-Sender: <xms:xc-NZUXKy1ErXIJJTrfxCif2itc5hxSLUDkm8vbPYpaCoY0aeGBN5w>
-    <xme:xc-NZYk5EYGLTb0vPu3yeZnE8m8YgJDfm2qBjrjr90A4mB3teUsV6vEtkFP4emFfA
-    Se-UncdZuvdQKZw0Q>
-X-ME-Received: <xmr:xc-NZYbtsj3BltQkFBlYatYUXmUtM9L40rK63AIzpwiLN-z0UlndhrfNunY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdefuddguddvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepfedthfeuueeihfeihffhtdeluedtveffheeiuddtieehtdduiedvgfej
-    ffeuueefnecuffhomhgrihhnpehgihhthhhusgdrtghomhdprhgvlhgvrghsvghsrdhmug
-    dprhhushhtqdhfohhrqdhlihhnuhigrdgtohhmnecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrh
-    hsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgv
-    nhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:xc-NZTXyAHdHhfoZRtfSNS-u-32HkHAxWl8sAgMASKstQknwod8bCQ>
-    <xmx:xc-NZemCIgD_F8T3TmCU5f1nLgGl_F9WermBgWNf8iH-yM302H2u_Q>
-    <xmx:xc-NZYevAU7SmQa0YnoQh_Ta1nVxkcYYCxwBnT7mlqc69ylYsgv5pA>
-    <xmx:xs-NZXehw49VsnhL_4Mdid26m-v4L0zpffC8uy4rYU8TqQWMBSXr3A>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 28 Dec 2023 14:43:01 -0500 (EST)
-Date: Thu, 28 Dec 2023 11:42:14 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH] rust: upgrade to Rust 1.75.0
-Message-ID: <ZY3Plt92Jn5xSmXw@boqun-archlinux>
-References: <20231224172128.271447-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="eTwsyt0A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1703924394;
+	bh=D/rmWS9VU4cYt40QweSANvOejlIuAoUvy2Du5sUf6eg=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=eTwsyt0AV6pv+3zawmmedJxOW/I2uboiAgqm2UDj8H6xlD+ysBWsNNsnonqO0I8LT
+	 XL7T3N7bJif7bd1qezdZmz68CBcTyNnantyuyujzRYgKqhguagfdarlncg0uGcu+qu
+	 QMPz8ThVtDDC1CK1inh6AP10G/EpC8kpCGRvm+0puapKf8vLpuLSNaHvaLZR/HpEFU
+	 wdOe6FBzo3O400HFWHJI8O/ATTW/q/rX18HwwDNVdFpAejP6UusElTdd6RxPhnh5Rs
+	 hywXpQYJ09RRDoEE61eSKr10ZzqW8ChtfhAJMkI7pOUufaSqp6nasoq3iuL9Tc0YvE
+	 qGFJpLdF6sFbA==
+Received: from [100.96.234.34] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 243F837813CF;
+	Sat, 30 Dec 2023 08:19:48 +0000 (UTC)
+Message-ID: <ce75321b-da1f-457a-abc5-982c0e95fff6@collabora.com>
+Date: Sat, 30 Dec 2023 13:19:47 +0500
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231224172128.271447-1-ojeda@kernel.org>
+User-Agent: Mozilla Thunderbird
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kernel@collabora.com
+Subject: Re: [PATCH] kselftest: Add basic test for probing the rust sample
+ modules
+Content-Language: en-US
+To: Laura Nao <laura.nao@collabora.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Shuah Khan <shuah@kernel.org>
+References: <20231215132132.169628-1-laura.nao@collabora.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <20231215132132.169628-1-laura.nao@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Dec 24, 2023 at 06:21:28PM +0100, Miguel Ojeda wrote:
-> This is the next upgrade to the Rust toolchain, from 1.74.1 to 1.75.0
-> (i.e. the latest) [1].
+On 12/15/23 6:21 PM, Laura Nao wrote:
+> Add new basic kselftest that checks if the available rust sample modules
+> can be added and removed correctly.
 > 
-[...]
-> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1750-2023-12-28 [1]
-> Link: https://rust-for-linux.com/rust-version-policy [2]
-> Link: https://github.com/rust-lang/rust/issues/91850 [3]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [4]
-> Link: https://github.com/rust-lang/rust/issues/96283 [5]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Laura Nao <laura.nao@collabora.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+
 > ---
-> Please note that Rust 1.75.0 will actually be released next week -- this
-> is based on linux-next since we will need to remove the `feature` line
-> for the unstable feature used by the to-be-merged PHYLIB abstractions.
+>  MAINTAINERS                                   |  1 +
+>  tools/testing/selftests/Makefile              |  1 +
+>  tools/testing/selftests/rust/.gitignore       |  1 +
+>  tools/testing/selftests/rust/Makefile         |  8 ++++
+>  .../selftests/rust/test_probe_samples.sh      | 42 +++++++++++++++++++
+>  5 files changed, 53 insertions(+)
+>  create mode 100644 tools/testing/selftests/rust/.gitignore
+>  create mode 100644 tools/testing/selftests/rust/Makefile
+>  create mode 100755 tools/testing/selftests/rust/test_probe_samples.sh
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e2c6187a3ac8..acf283a5d2c0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18847,6 +18847,7 @@ F:	Documentation/rust/
+>  F:	rust/
+>  F:	samples/rust/
+>  F:	scripts/*rust*
+> +F:	tools/testing/selftests/rust/
+>  K:	\b(?i:rust)\b
+>  
+>  RXRPC SOCKETS (AF_RXRPC)
+> diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+> index 3b2061d1c1a5..26140426c849 100644
+> --- a/tools/testing/selftests/Makefile
+> +++ b/tools/testing/selftests/Makefile
+> @@ -74,6 +74,7 @@ TARGETS += riscv
+>  TARGETS += rlimits
+>  TARGETS += rseq
+>  TARGETS += rtc
+> +TARGETS += rust
+>  TARGETS += seccomp
+>  TARGETS += sgx
+>  TARGETS += sigaltstack
+> diff --git a/tools/testing/selftests/rust/.gitignore b/tools/testing/selftests/rust/.gitignore
+> new file mode 100644
+> index 000000000000..e3c5c04d1b19
+> --- /dev/null
+> +++ b/tools/testing/selftests/rust/.gitignore
+> @@ -0,0 +1 @@
+> +ktap_helpers.sh
+> diff --git a/tools/testing/selftests/rust/Makefile b/tools/testing/selftests/rust/Makefile
+> new file mode 100644
+> index 000000000000..ccaa50f35b5b
+> --- /dev/null
+> +++ b/tools/testing/selftests/rust/Makefile
+> @@ -0,0 +1,8 @@
+> +
+> +TEST_PROGS += test_probe_samples.sh
+> +TEST_GEN_FILES := ktap_helpers.sh
+> +
+> +include ../lib.mk
+> +
+> +$(OUTPUT)/ktap_helpers.sh:
+> +	cp $(top_srcdir)/tools/testing/selftests/dt/ktap_helpers.sh $@
+> diff --git a/tools/testing/selftests/rust/test_probe_samples.sh b/tools/testing/selftests/rust/test_probe_samples.sh
+> new file mode 100755
+> index 000000000000..a46550543f73
+> --- /dev/null
+> +++ b/tools/testing/selftests/rust/test_probe_samples.sh
+> @@ -0,0 +1,42 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Copyright (c) 2023 Collabora Ltd
+> +#
+> +# This script tests whether the rust sample modules can
+> +# be added and removed correctly.
+> +#
+> +
+> +DIR="$(dirname "$(readlink -f "$0")")"
+> +
+> +source "${DIR}"/ktap_helpers.sh
+> +
+> +rust_sample_modules=("rust_minimal" "rust_print")
+> +
+> +KSFT_PASS=0
+> +KSFT_FAIL=1
+> +KSFT_SKIP=4
+> +
+> +ret="${KSFT_PASS}"
+> +
+> +ktap_print_header
+> +
+> +ktap_set_plan "${#rust_sample_modules[@]}"
+> +
+> +for sample in "${rust_sample_modules[@]}"; do
+> +    if ! /sbin/modprobe -n -q "$sample"; then
+> +        ktap_test_skip "module $sample is not found in /lib/modules/$(uname -r)"
+> +        continue
+> +    fi
+> +
+> +    if /sbin/modprobe -q "$sample"; then
+> +        /sbin/modprobe -q -r "$sample"
+> +        ktap_test_pass "$sample"
+> +    else
+> +        ret="${KSFT_FAIL}"
+> +        ktap_test_fail "$sample"
+> +    fi
+> +done
+> +
+> +ktap_print_totals
+> +exit "${ret}"
 
-I have done some unit tests with this based on a merge point of today's
-net-next and rust-next (along with some LGTM patches), all tests passed.
-
-Tested-by: Boqun Feng <boqun.feng@gmail.com>
-
-Regards,
-Boqun
-
-[...]
+-- 
+BR,
+Muhammad Usama Anjum
