@@ -1,76 +1,83 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF3F1CF94
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jan 2024 19:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FCE1CF94;
+	Wed,  3 Jan 2024 19:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WmM9KE4p"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d4c767d3a8so11520905ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Jan 2024 11:48:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704311337; x=1704916137; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fYNlmcYDq/FKhPwEn2SwuZOt+/yZ/VgX2d6EWJs2bUI=;
-        b=WmM9KE4p08MClefotP7WBR/ZW8MQOW4WmWoAXSEGT+Og2LnQ6b0l21el6wiN8hUR+x
-         7pgz7W9DkYmwV0A8VKr69PAN+uGMpI84jAz5ddPszR2X7rBQXMxEhygNB3POqk5NNUnW
-         JmXpwiHYnCa+JjMuOGTcltA2cjQFVOaCwNtwjTALeDut4fWlcGSNoFh5C/rtQsE8TYld
-         KFkRet+3xO+VM7kFp7YhcgwH7EMvL/bpGHRJgWsdrpKqUpKrr+C0O6afGhNdFlj/iysS
-         tHlj0czNm6oDCYujrU8oFcxlxiMvW45eAY2HN7ETdZIxYOdZ3y94eKnm7j30GQSvZE3L
-         CF5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704311337; x=1704916137;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fYNlmcYDq/FKhPwEn2SwuZOt+/yZ/VgX2d6EWJs2bUI=;
-        b=kahNo1IBI7AtwZUnVSBU7slIOk0PjWeYIJ5LXv30RrC5PeqGzChsboR4unbXKeU5W5
-         deuJzVOxmYLmE/HkVVt9WpK1s/z3Ka5mouyEXUrsCivQ5cb+jTvTFliAqqLoisNGR2tB
-         o2wsnBV0r2J62l/HONTC+gjuNQaOReIzFdig1Qd8EBv4SDbLBthOeplv4UzDr4dcfe7U
-         WMY72BTOv4aLFsh7AF6k9VP6VV1ro4BJ5yGFFC5KWLiW+xq7vtm0aqIHAMAOXmy6OsBT
-         2HE+h+S6SX3DdJZYDPwDKjiA2LY4ujZe3jFfub52hpMoG8Zc7SII07f7SiLgVDd02rzK
-         cfCQ==
-X-Gm-Message-State: AOJu0YxzUsYcxNTJqwwf0cSvZA2Lc5MiHIbE4zEKYbE8xDIxfKpq9MHN
-	9VFK/WWzf3WM3UpSNp7m2lwq/5pSCg6T4g==
-X-Google-Smtp-Source: AGHT+IHxsuacKYe8ZIsqoK4a7KRw1Cw0SNMSRg+XQygQF07KrzN0dPc4EPcCwPxtFH+TDqWSQx9BmA==
-X-Received: by 2002:a17:902:c40d:b0:1d4:a8f2:40fc with SMTP id k13-20020a170902c40d00b001d4a8f240fcmr3896733plk.45.1704311337500;
-        Wed, 03 Jan 2024 11:48:57 -0800 (PST)
-Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id x5-20020a170902ec8500b001d04d730687sm24051045plg.103.2024.01.03.11.48.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jan 2024 11:48:56 -0800 (PST)
-Message-ID: <2504bd38-0e03-489d-8b2c-ce156487126b@gmail.com>
-Date: Wed, 3 Jan 2024 16:48:53 -0300
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="C41nZn4h"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SP0nbnT3AvmqkH3t2fYH0Mm3KoSoMBeL9IG/d+j/s5o=; b=C41nZn4h4ycXV0ug3wUFS8f1lp
+	eyGdP3MdWkUv+7im/gYX+nOas2NQCmCRcmMk57LyHtR9/6AkuDBmpTxmMEzBmPonKpm5e63bU9qup
+	a3JqPf8kcM9JfiEoAt8PeMM4/R0p77ZdwkVBEo07l5KcUlFLfNIbDuUJ3PaLV/TJxOJn3fQUt12vY
+	uSXEzKWS0SAeWfT/h0InIMfing5epQ6vwMj2MHGdabEr9kZB+HuvyMffRBhD6Qiei7K/aDbyxWQiI
+	/GFg9YAGwqpf0ubEA+kcoBKg9vAMyV3Kv61WoUq+bSYrqi/if0RM67kI3VqcOVktFbTsY8wuleCm1
+	gOtXNcAQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1rL7JO-000gHq-1E;
+	Wed, 03 Jan 2024 19:53:58 +0000
+Date: Wed, 3 Jan 2024 19:53:58 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
+Message-ID: <20240103195358.GK1674809@ZenIV>
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
+ <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
+ <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
+ <ZZWhQGkl0xPiBD5/@casper.infradead.org>
+ <CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: mixed C/Rust module?
-Content-Language: en-US
-To: Kent Overstreet <kent.overstreet@linux.dev>,
- rust-for-linux@vger.kernel.org
-References: <jz4dal5qawwz6i4hle7v5emgvyvc742fshnebnkufk5ywcg236@fcotiyv4bbdn>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <jz4dal5qawwz6i4hle7v5emgvyvc742fshnebnkufk5ywcg236@fcotiyv4bbdn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On 1/3/24 16:20, Kent Overstreet wrote:
-> Has the build support for this landed? I'm not seeing any examples in
-> the kernel source tree yet :)
+On Wed, Jan 03, 2024 at 04:04:26PM -0300, Wedson Almeida Filho wrote:
+
+> > Either stick to the object orientation we've already defined (ie
+> > separate aops, iops, fops, ... with substantially similar arguments)
+> > or propose changes to the ones we have in C.  Dealing only with toy
+> > filesystems is leading you to bad architecture.
 > 
+> I'm trying to understand the argument here. Are saying that Rust
+> cannot have different APIs with the same performance characteristics
+> as C's, unless we also fix the C apis?
 
-There's my patch series [1] that address this issue too and it contains
-an example of USB bindings that get compiled into the `usb` module, but
-I did not work on it and there might be some dependency issues pointed
-out by Masahiro-san. I'll probably change the USB bindings to PHY or
-something else though. Also there are a pair of Zulip threads that
-dabble on the topic, you can check them out too.
+Different expressive power, not performance characteristics.
 
-Link: https://lore.kernel.org/rust-for-linux/20231104211213.225891-1-yakoyoku@gmail.com/T/#u [1]
+It's *NOT* about C vs Rust; we have an existing system of objects and
+properties of such.  Independent from the language being used to work
+with them.
+
+If we have to keep a separate system for your language, feel free to fork
+the kernel and do whatever you want with it.  Just don't expect anybody
+else to play with your toy.
+
+In case it's not entirely obvious - your arguments about not needing
+something or other for the instances you have tried to work with so far
+do not hold water.  At all.
+
+The only acceptable way to use Rust in that space is to treat the existing
+set of objects and operations as externally given; we *can* change those,
+with good enough reasons, but "the instances in Rust-using filesystems 
+don't need this and that" doesn't cut it.
+
+Changes do happen in that area.  Often enough.  And the cost of figuring
+out whether they break things shouldn't be doubled because Rust folks
+want a universe of their own - the benefits of Rust are not worth that
+kind of bother.
