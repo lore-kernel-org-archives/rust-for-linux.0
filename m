@@ -1,41 +1,38 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FCE1CF94;
-	Wed,  3 Jan 2024 19:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3891DA21
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jan 2024 20:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="C41nZn4h"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SP0nbnT3AvmqkH3t2fYH0Mm3KoSoMBeL9IG/d+j/s5o=; b=C41nZn4h4ycXV0ug3wUFS8f1lp
-	eyGdP3MdWkUv+7im/gYX+nOas2NQCmCRcmMk57LyHtR9/6AkuDBmpTxmMEzBmPonKpm5e63bU9qup
-	a3JqPf8kcM9JfiEoAt8PeMM4/R0p77ZdwkVBEo07l5KcUlFLfNIbDuUJ3PaLV/TJxOJn3fQUt12vY
-	uSXEzKWS0SAeWfT/h0InIMfing5epQ6vwMj2MHGdabEr9kZB+HuvyMffRBhD6Qiei7K/aDbyxWQiI
-	/GFg9YAGwqpf0ubEA+kcoBKg9vAMyV3Kv61WoUq+bSYrqi/if0RM67kI3VqcOVktFbTsY8wuleCm1
-	gOtXNcAQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL7JO-000gHq-1E;
-	Wed, 03 Jan 2024 19:53:58 +0000
-Date: Wed, 3 Jan 2024 19:53:58 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VG0xO2tO"
+Date: Wed, 3 Jan 2024 15:38:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1704314292;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LFxyz9wssG6um4s3MhUM+MnW6V8Bjf+t4BOKKcwlx0A=;
+	b=VG0xO2tO+cS7WdgFJ6ioE19dU8Gw79wBE2v0qNr+1F0BHkoi7ZLU92Gj9lU8DHTDIf0lzQ
+	XNrYFmqqyuPX7em73otxDHNTndi+TS8PUhr+6A/1ikaxZFXLvEVZ/EGaxO+TZ+t1c9EoM3
+	zNqVUfuyhtgra/VmfDWm6bAEaB+S0UI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, Christian Brauner <brauner@kernel.org>, 
+	Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
 	Wedson Almeida Filho <walmeida@microsoft.com>
 Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
-Message-ID: <20240103195358.GK1674809@ZenIV>
+Message-ID: <nmpmqptnjgblqyhiz4ma7inevim7h4qh56jobbvmdyucfc754z@nx5nkrijuavp>
 References: <20231018122518.128049-1-wedsonaf@gmail.com>
  <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
  <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
  <ZZWhQGkl0xPiBD5/@casper.infradead.org>
  <CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com>
+ <20240103195358.GK1674809@ZenIV>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,40 +41,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+In-Reply-To: <20240103195358.GK1674809@ZenIV>
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Jan 03, 2024 at 04:04:26PM -0300, Wedson Almeida Filho wrote:
-
-> > Either stick to the object orientation we've already defined (ie
-> > separate aops, iops, fops, ... with substantially similar arguments)
-> > or propose changes to the ones we have in C.  Dealing only with toy
-> > filesystems is leading you to bad architecture.
+On Wed, Jan 03, 2024 at 07:53:58PM +0000, Al Viro wrote:
+> On Wed, Jan 03, 2024 at 04:04:26PM -0300, Wedson Almeida Filho wrote:
 > 
-> I'm trying to understand the argument here. Are saying that Rust
-> cannot have different APIs with the same performance characteristics
-> as C's, unless we also fix the C apis?
+> > > Either stick to the object orientation we've already defined (ie
+> > > separate aops, iops, fops, ... with substantially similar arguments)
+> > > or propose changes to the ones we have in C.  Dealing only with toy
+> > > filesystems is leading you to bad architecture.
+> > 
+> > I'm trying to understand the argument here. Are saying that Rust
+> > cannot have different APIs with the same performance characteristics
+> > as C's, unless we also fix the C apis?
+> 
+> Different expressive power, not performance characteristics.
+> 
+> It's *NOT* about C vs Rust; we have an existing system of objects and
+> properties of such.  Independent from the language being used to work
+> with them.
+> 
+> If we have to keep a separate system for your language, feel free to fork
+> the kernel and do whatever you want with it.  Just don't expect anybody
+> else to play with your toy.
 
-Different expressive power, not performance characteristics.
+The rust people have been getting conflicting advice, and your response
+is to tell them to fork the kernel and go away?
 
-It's *NOT* about C vs Rust; we have an existing system of objects and
-properties of such.  Independent from the language being used to work
-with them.
+> In case it's not entirely obvious - your arguments about not needing
+> something or other for the instances you have tried to work with so far
+> do not hold water.  At all.
+> 
+> The only acceptable way to use Rust in that space is to treat the existing
+> set of objects and operations as externally given; we *can* change those,
+> with good enough reasons, but "the instances in Rust-using filesystems 
+> don't need this and that" doesn't cut it.
 
-If we have to keep a separate system for your language, feel free to fork
-the kernel and do whatever you want with it.  Just don't expect anybody
-else to play with your toy.
+The question was just about whether to add something now that isn't used
+on the Rust side yet, or wait until later when it is.
 
-In case it's not entirely obvious - your arguments about not needing
-something or other for the instances you have tried to work with so far
-do not hold water.  At all.
-
-The only acceptable way to use Rust in that space is to treat the existing
-set of objects and operations as externally given; we *can* change those,
-with good enough reasons, but "the instances in Rust-using filesystems 
-don't need this and that" doesn't cut it.
-
-Changes do happen in that area.  Often enough.  And the cost of figuring
-out whether they break things shouldn't be doubled because Rust folks
-want a universe of their own - the benefits of Rust are not worth that
-kind of bother.
+I think this has gone a bit afield, and gotten a bit dramatic.
