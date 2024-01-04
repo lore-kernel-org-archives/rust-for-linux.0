@@ -1,74 +1,74 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ED728E1C;
-	Thu,  4 Jan 2024 18:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B1D2C85F;
+	Thu,  4 Jan 2024 22:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nERtoKPv"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-781bbb1f61fso50840485a.3;
-        Thu, 04 Jan 2024 10:57:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Li830Kao"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-42782601608so4527341cf.2;
+        Thu, 04 Jan 2024 14:19:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704394678; x=1704999478; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1704406792; x=1705011592; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Os0Q/0d6OHlr8j+k0IDP+XVC9EPOxnxh9xNoVL0KlNA=;
-        b=nERtoKPvOQ61y3PFH/xXlQoDdelJZLdG9/d+rCfidZBdInDIQyIJN9WHt5k4fPXKug
-         239z/TVCTHx6U1ngHXEB5+NUbQTjWn5LWEn9fCzdmZvJ+gRss9AGjdD0bBKET9043Qs8
-         GwCc7Hdwd3kQrCgSx8phBoBmpazXCwcX/iYbYSnWD3AYb2AszOairnBBu+CuFGcdyege
-         8VK367ohP8TE9Trxc5pFN5UAGqeFdKFGXJDflWvymW+5QSfe8IjmijeSYHVA7u8o+fYs
-         +8nGdzfXbTnLw1otEEkCdZPMojPa5hGmQlQs8DDHvoWNpfJshUHGdfnX7VnCvYcO5cl7
-         zssQ==
+        bh=H30Ea/7n+Kca5VxufaG3WS56g0npATZySdngobj9tDE=;
+        b=Li830KaoKGj49A8fY8ORhjh2iypmRgZ+2GXqLCaXbstveV+P1SwDaVK3Ga+2f4RrhQ
+         +2AsB3tlw1v0IUQNLbQb+Hk4YOiCi5bHpRnqfNtyvAAvw0BN6muPD0GNr0E+lMhvvTiR
+         d/YaGhJgC5CJfIv51G47kzIIvKzL08aDKeoQl7PR+olY3dt4QjxgFMAaMjEk3331ABF+
+         BchT6td1sl7aTCOh+mQbkakJwmUjSyNqz13M+XSsxc7ebXsBxZCyhvhg2A4AYqKwtlHe
+         AtH2ZwGlRxqxNDuVdoGf2dDiWH1Gj+pQOUsDa7SHAdcbK+xorbgYzULCdMPSGBZlpf6K
+         PYeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704394678; x=1704999478;
+        d=1e100.net; s=20230601; t=1704406792; x=1705011592;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Os0Q/0d6OHlr8j+k0IDP+XVC9EPOxnxh9xNoVL0KlNA=;
-        b=sWJh7L23uQtLGfxjwE2bmxI4PgwQaXzOZYmtGFHJ+Nw5tb5fmdmoD6QbjET2OY9oqj
-         5odA7acmuU3VMWwpMA12PnNMJ+VNL0FRyEVG1rNuxQodBe8FocOIrpiAytMMDdAx+TiE
-         T+/tRI6UC52/asrPJIfxzAy1oWwcbDdYz3fFpfW8EbMT76aS0C+37YbEQfuiL25KRsN6
-         rwkwiMCAUIdOKGbhfkSRutrVfoX0oFAycvxiFuSLmckOyeeGMsLx3UzhFcvD80nS2ETg
-         0DlXs7NGLWk+InM3HLRSseeYwyw/pKj3X5kzVuy5Mdua/Koyp039TT7TyW6Pa3hLUbA/
-         MPTQ==
-X-Gm-Message-State: AOJu0YxG9p+EBS+I3HHaXuGZo62xxtZjONBBfUKOyIPtimRT9YSXi7TU
-	OmfbnQ0yqToQ88NNtMMKh9E=
-X-Google-Smtp-Source: AGHT+IG3Jz7XP5tqSJlZd5J/1soCB5RuN3ECigH9ftKKw8A58MZkLBun3ccOrzg/W+xI1CQmHWW0WQ==
-X-Received: by 2002:a05:620a:f0f:b0:781:5e6a:355a with SMTP id v15-20020a05620a0f0f00b007815e6a355amr1082524qkl.155.1704394677738;
-        Thu, 04 Jan 2024 10:57:57 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id vq10-20020a05620a558a00b00781df19c062sm15990qkn.59.2024.01.04.10.57.57
+        bh=H30Ea/7n+Kca5VxufaG3WS56g0npATZySdngobj9tDE=;
+        b=oGE/G+LO2VG4d+2rpj+eTVZm1gLxh/UiaHHPgF3Pd84o7HLx5XMu8fNltwzbPqJye0
+         v9jnRrdyXj6aK9EPfE6B4cre/Xdhw3l3Q6iqG+Nalk5G1t7QsU0VL903iuy5cA9wuMRh
+         n8Z3J7ObOK+zvTHx3gV/GCYAJUt5aHYUfX9GhtuEcH3mApc4rqAEshEnNiplRVax88qI
+         MbWXNtXMhEPa4oe4J8GSaU61Tt+HyzQrWAYZy3disU91b5jNiFW7RSqBqmBydzHCfZqg
+         qzniyshPWohiCpo6KQLasSMOA3QaSeDjUlODSx1X3Cl/dL0xt76fPHwBYy16LIi1nPXo
+         dNVw==
+X-Gm-Message-State: AOJu0Ywv0jrEh7494ykjJnvBGhwKmlMCPS4e81hc/sLjm420BAVy1ElO
+	lB9uVCp/+2veq0wQ05D/ljA=
+X-Google-Smtp-Source: AGHT+IFZH+gjAasGQslVIi/QB9MHV41tLuwt2j2HwCzeOlQfV2ZmsVk97cJP6Ky2gReFWIWCg7Qwbg==
+X-Received: by 2002:ac8:59d6:0:b0:425:4043:8d38 with SMTP id f22-20020ac859d6000000b0042540438d38mr1441031qtf.83.1704406791981;
+        Thu, 04 Jan 2024 14:19:51 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id kr10-20020ac861ca000000b00428319369aasm177715qtb.12.2024.01.04.14.19.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jan 2024 10:57:57 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailauth.nyi.internal (Postfix) with ESMTP id BA7FB27C005A;
-	Thu,  4 Jan 2024 13:57:56 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Thu, 04 Jan 2024 13:57:56 -0500
-X-ME-Sender: <xms:s_-WZUQ3a99E-Jwuce37xzgVqXtjfBU-JGOZhjPyPZT4idfpFskjCA>
-    <xme:s_-WZRy886ax7TnoE34U09hMari-SGlBPMjCdM1bn8eRjJY2Dd7yo-7eXdACXycKo
-    9WMS5ir12fSbrn5Sw>
-X-ME-Received: <xmr:s_-WZR2Y-Llr6-Tu5NtCriuuvjsP6gia6eXXNbpsIo9sRUpyKik3c_P_A1k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegjedguddukecutefuodetggdotefrod
+        Thu, 04 Jan 2024 14:19:51 -0800 (PST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailauth.nyi.internal (Postfix) with ESMTP id D14D227C0064;
+	Thu,  4 Jan 2024 17:19:50 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Thu, 04 Jan 2024 17:19:50 -0500
+X-ME-Sender: <xms:Bi-XZRvv4u1ncqSb2Xc8JRA_JQG1moiD8BH2_VUX_C42hKXKkJV5OQ>
+    <xme:Bi-XZacsTEshqDlRGZwhiR85nHdOyPrR26XG_Ix2MvEI-U1Km3Lpedln48puhlYr2
+    -oyKPBfNQfYC4T3lA>
+X-ME-Received: <xmr:Bi-XZUxl4XI6WL6xF5oFkbqmO77AhtqrnqJEhyJ6MtD3LVhofOTHlFqJPu8TCw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegjedgudeitdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
     uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:s_-WZYA-Ii3QicgGVI546f6coyNo5vbL2VSK3iaF_Lp5EVj3g5aT1g>
-    <xmx:s_-WZdhg_9WsBTZvOkhG6_aYuqvv2GssNgw0g7EY4PwR03EXem39fQ>
-    <xmx:s_-WZUroxKZjMdChDzY9HjjkV0vCmHcz6LzyBktDmKptNtc1zONoEg>
-    <xmx:tP-WZcSjhowKUlxIbzAiRbvKAaSXSxpUeEi1vtQRf02jt0-IINgRGw>
+    grthhtvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdt
+    keeihedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrh
+    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhp
+    rghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsg
+    hoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:Bi-XZYPV7fnI2hRpwPtW9iZ8w7vDmsZRVb0b1lHW-DHQD-YJX-0MmA>
+    <xmx:Bi-XZR9fH8Pd_gfVmuzBC1WQS1UlrJyFmyMCjYcLn0pmeTYM-R8t3Q>
+    <xmx:Bi-XZYX2S1exSRi5Xi9yHC2agGVvLFD-1N6i60dIt-zjzu5VVd0O2w>
+    <xmx:Bi-XZZNpQdQhO8OclXc6Xz38fyrzToIHSPb7yqmyn_KBpJjf8UlYHA>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jan 2024 13:57:55 -0500 (EST)
-Date: Thu, 4 Jan 2024 10:56:47 -0800
+ 4 Jan 2024 17:19:50 -0500 (EST)
+Date: Thu, 4 Jan 2024 14:18:42 -0800
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -83,10 +83,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] rust: sync: add `CondVar::notify_sync`
-Message-ID: <ZZb_b-6f9Ib1NdOt@boqun-archlinux>
+Subject: Re: [PATCH v3 3/4] rust: sync: add `CondVar::wait_timeout`
+Message-ID: <ZZcuwkBsvSs6bzXF@boqun-archlinux>
 References: <20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com>
- <20240104-rb-new-condvar-methods-v3-1-70b514fcbe52@google.com>
+ <20240104-rb-new-condvar-methods-v3-3-70b514fcbe52@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -95,55 +95,148 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240104-rb-new-condvar-methods-v3-1-70b514fcbe52@google.com>
+In-Reply-To: <20240104-rb-new-condvar-methods-v3-3-70b514fcbe52@google.com>
 
-On Thu, Jan 04, 2024 at 02:02:41PM +0000, Alice Ryhl wrote:
-> Wake up another thread synchronously.
+On Thu, Jan 04, 2024 at 02:02:43PM +0000, Alice Ryhl wrote:
+> Sleep on a condition variable with a timeout.
 > 
-> This method behaves like `notify_one`, except that it hints to the
-> scheduler that the current thread is about to go to sleep, so it should
-> schedule the target thread on the same CPU.
+> This is used by Rust Binder for process freezing. There, we want to
+> sleep until the freeze operation completes, but we want to be able to
+> abort the process freezing if it doesn't complete within some timeout.
 > 
-> This is used by Rust Binder as a performance optimization. When sending
-> a transaction to a different process, we usually know which thread will
-> handle it, so we can schedule that thread for execution next on this
-> CPU for better cache locality.
-> 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 > Reviewed-by: Tiago Lam <tiagolam@gmail.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/sync/condvar.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-> index f65e19d5a37c..1a3f7b8e03dc 100644
-> --- a/rust/kernel/sync/condvar.rs
-> +++ b/rust/kernel/sync/condvar.rs
-> @@ -155,6 +155,12 @@ fn notify(&self, count: i32, flags: u32) {
->          };
->      }
->  
-> +    /// Calls the kernel function to notify one thread synchronously.
-
-I feel like "synchronously" needs some explanation here (e.g. using the
-same description in the commit log), but let's see if other future users
-really need this ;-)
 
 Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+That said, I want to hear from Thomas on the usage of jiffies, see
+below:
+
+> ---
+[...]
+> -    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
+> +    fn wait_internal<T: ?Sized, B: Backend>(
+> +        &self,
+> +        wait_state: u32,
+> +        guard: &mut Guard<'_, T, B>,
+> +        timeout_in_jiffies: c_long,
+
+This is an internal function, and it makes sense we use the same type
+for durations as the C function we rely on.
+
+> +    ) -> c_long {
+>          let wait = Opaque::<bindings::wait_queue_entry>::uninit();
+>  
+>          // SAFETY: `wait` points to valid memory.
+> @@ -113,11 +122,13 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
+>              bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
+>          };
+>  
+> -        // SAFETY: No arguments, switches to another thread.
+> -        guard.do_unlocked(|| unsafe { bindings::schedule() });
+> +        // SAFETY: Switches to another thread. The timeout can be any number.
+> +        let ret = guard.do_unlocked(|| unsafe { bindings::schedule_timeout(timeout_in_jiffies) });
+>  
+>          // SAFETY: Both `wait` and `wait_list` point to valid memory.
+>          unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
+> +
+> +        ret
+>      }
+>  
+
+[...]
+
+> +    /// Releases the lock and waits for a notification in interruptible mode.
+> +    ///
+> +    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+> +    /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
+> +    /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
+> +    #[must_use = "wait_interruptible_timeout returns if a signal is pending, so the caller must check the return value"]
+> +    pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
+> +        &self,
+> +        guard: &mut Guard<'_, T, B>,
+> +        jiffies: Jiffies,
+
+This is a public interface, so it may make sense use a HZ-independent
+type for durations, e.g. core::time::Duration:
+
+	https://doc.rust-lang.org/core/time/struct.Duration.html	
+
+but we don't have enough users to see whether there would be a need for
+HZ-dependent durations, so I think it's fine that we stick with a simple
+solution in Alice's patchset to get the ball rolling, we can always
+remove a public interface with HZ-dependent durations whenever we want.
+
+Thoughts?
 
 Regards,
 Boqun
 
-> +    pub fn notify_sync(&self) {
-> +        // SAFETY: `wait_list` points to valid memory.
-> +        unsafe { bindings::__wake_up_sync(self.wait_list.get(), bindings::TASK_NORMAL) };
+> +    ) -> CondVarTimeoutResult {
+> +        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
+> +        let res = self.wait_internal(bindings::TASK_INTERRUPTIBLE, guard, jiffies);
+> +
+> +        match (res as Jiffies, crate::current!().signal_pending()) {
+> +            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
+> +            (0, false) => CondVarTimeoutResult::Timeout,
+> +            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
+> +        }
 > +    }
 > +
->      /// Wakes a single waiter up, if any.
->      ///
->      /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
+[...]
+> +
+> +/// The return type of `wait_timeout`.
+> +pub enum CondVarTimeoutResult {
+> +    /// The timeout was reached.
+> +    Timeout,
+> +    /// Somebody woke us up.
+> +    Woken {
+> +        /// Remaining sleep duration.
+> +        jiffies: Jiffies,
+> +    },
+> +    /// A signal occurred.
+> +    Signal {
+> +        /// Remaining sleep duration.
+> +        jiffies: Jiffies,
+> +    },
+> +}
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index f12a684bc957..149a5259d431 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -139,7 +139,7 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
+>  unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+>  
+>  impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
+> -    pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
+> +    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+>          // SAFETY: The caller owns the lock, so it is safe to unlock it.
+>          unsafe { B::unlock(self.lock.state.get(), &self.state) };
+>  
+> @@ -147,7 +147,7 @@ pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
+>          let _relock =
+>              ScopeGuard::new(|| unsafe { B::relock(self.lock.state.get(), &mut self.state) });
+>  
+> -        cb();
+> +        cb()
+>      }
+>  }
+>  
+> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> index 9451932d5d86..ffb4a51eb898 100644
+> --- a/rust/kernel/task.rs
+> +++ b/rust/kernel/task.rs
+> @@ -7,6 +7,9 @@
+>  use crate::{bindings, types::Opaque};
+>  use core::{marker::PhantomData, ops::Deref, ptr};
+>  
+> +/// A sentinal value used for infinite timeouts.
+> +pub const MAX_SCHEDULE_TIMEOUT: c_long = c_long::MAX;
+> +
+>  /// Returns the currently running task.
+>  #[macro_export]
+>  macro_rules! current {
 > 
 > -- 
 > 2.43.0.472.g3155946c3a-goog
