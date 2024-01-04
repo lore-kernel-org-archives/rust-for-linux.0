@@ -1,102 +1,122 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AE2241F5;
-	Thu,  4 Jan 2024 14:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119832377F
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 15:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lSQ9j7ug"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-6dc02ab3cc9so334249a34.3;
-        Thu, 04 Jan 2024 06:19:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rCAJ3Bvk"
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-20503dc09adso320206fac.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 07:18:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704377980; x=1704982780; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YyXkGaIn4n8uR5zY2tnEwMlymDvJhftWg9/2ZNakfUM=;
-        b=lSQ9j7ugW2q4+YomZQK0Nm/vDby01tvZ6YeOQO869+C6fGdQP/Dm9QlN0iZAoRwvBO
-         KqXhdVMAYoELxMB3uuXQDj9xDZyU89jFbxO29DjR8op0dRvMQS0E+NUee+4fjx1ZPx2H
-         mhS6TXRvrWW9Z9K/Qh4DeWOTz4+Oouf8JEqhdG7puOG0FLsi59XBLL1yEyCyiJrmwvWT
-         SBTlRCFbybjiQmbDdZt8wL8WdXVo2hBuRkQIc/cweKEIByFEEMrI7//ImwRzhRWY7wuB
-         dezpuMqXwwvNUXFdiV/dJET+k0hePSkgRy3cSDvG/H+A3B70yPNbxuENLEpvGKD5sLVE
-         gZmg==
+        d=google.com; s=20230601; t=1704381491; x=1704986291; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nZwnS2Sp7vv2PRnAVDjhBATPiqXuD/DhpKZdALVjptM=;
+        b=rCAJ3BvkuCa7svBTTM856xsJPAk0VrRSewLOS76ssEEYFUMLkOQKxTAhEfU/q4F9nx
+         P1hlyurUeuklxdcXm1cr+3xtujrxNuKtkXt6qrqTeKFc9NBlPGEQOIhrXh0Oc3Xj7NOc
+         YqZEqqfqfVjgQnkwQERoXncM31CR/OPaiQThbiLF0VOx/n+YdoZ2UDpOOFVz2PwDWswD
+         g4JwxUNMwTxZXt0LiJeehubl4+x01WCUckMz97O+d3Ft02NeEzIAgZVNv6y4x4JnUGlS
+         /VcwPGI1LxQJZF3u2cZwTwyf/GKqX6rMz53BQBvD1diyBkrkUqElCd1mayDsfh6DgM4c
+         U51w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704377980; x=1704982780;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YyXkGaIn4n8uR5zY2tnEwMlymDvJhftWg9/2ZNakfUM=;
-        b=Hz2HNEoIfIGRKrNZXmAkRcT7K5HXCX9WJL/uZCAtohzIqtd3Cw+GQXN+fwMaL+hvqM
-         sauqO7pHZk7KL3DaPMEKuASRFoyhtYXRZlFM1/wQPYD5c8FRKcQxxeWqgz3ocO2hfrrX
-         uxdpsUSt23E8jmzFBhlOdsftLUS5N8p+b4WyGy8uiYoNrcAad3vW6MLOtdp7J9ZLvDFl
-         ZtXworSu7LH/38ResD7UQNl4l4yA9nXJa1a3ZiE5VxuFPhMV5RvMtb37IoH9trbGJYRo
-         aaN48x1i9xXcZceRfZPnJVuwNHQvncEccwu9UOFiV2vwdM4wdP0lIM1bS4+lVSjJmc9u
-         wUcQ==
-X-Gm-Message-State: AOJu0YwX4n3vfe1OGnhOF5YUzAtv3RiJI+l+MFE6Z4iegMFzdIb9q0Ki
-	T+qekMNmaXxLrIE/4PMNPFg=
-X-Google-Smtp-Source: AGHT+IEUMB6l0hlcqSyjPruBcShBmtmZRMFRfpq9EoSjrKDRreVRDYhnqFA0qsXRaXez6Dd9/jEhEA==
-X-Received: by 2002:a05:6358:2826:b0:175:4915:ebf5 with SMTP id k38-20020a056358282600b001754915ebf5mr667732rwb.43.1704377979784;
-        Thu, 04 Jan 2024 06:19:39 -0800 (PST)
-Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id d25-20020aa78e59000000b006d945660076sm24634123pfr.59.2024.01.04.06.19.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jan 2024 06:19:39 -0800 (PST)
-Message-ID: <3d6d8098-f303-4767-9ba2-e7a80433a4c2@gmail.com>
-Date: Thu, 4 Jan 2024 11:19:34 -0300
+        d=1e100.net; s=20230601; t=1704381491; x=1704986291;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nZwnS2Sp7vv2PRnAVDjhBATPiqXuD/DhpKZdALVjptM=;
+        b=ZRD4A9kTucNXSt0zbTJ0hlEpQXNo6at2iVgRwvXPTTtoVf1P9AH7J61LqqHfBM3Hm7
+         MTkJM6ZCH5vulQvNvOHMgxQSWUVKQzaLocoMy5YqE7vSHrrIpMSruHufK2WeDzSjhvsZ
+         uJIObKtuBkFEuxUCYqzHxDFIjORdXxV9TqQOMry0fSRDb9aCQjHGJsiG85Bv8tFLT0H4
+         yWzLtz9wjQxK13a+KmFb/kAESG56dS0xYZtbtuHURxQS9ZYVDQLKHYXIVcjP8oC+m3pn
+         mCumsrDDemeDtN+F1TG1NovtbfCvYyX/PPPlIcbd77aiEGNAmoUZ0lxxX8iR7T/Uig4I
+         0Ufw==
+X-Gm-Message-State: AOJu0YzX4npw37wpHUanVMlqc/4W52QmWPWzYpuHR5hk9b9VjCtgUAoh
+	lZ1Z8I4iSa3rJHeOtb5H+PB2CS+xO/M+Ut69S+pXoqVHSUfr
+X-Google-Smtp-Source: AGHT+IGfMPGT98T1eBmmQHiBufvEQT/Hgt8TdGqVsNK+ddk26PvAtema7RxLe/wukaMT3IVYTmHVvLe6wRZS15AVPsY=
+X-Received: by 2002:a05:6871:4e46:b0:1fa:f508:b5cc with SMTP id
+ uj6-20020a0568714e4600b001faf508b5ccmr722750oab.55.1704381490990; Thu, 04 Jan
+ 2024 07:18:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] rust: sync: update integer types in CondVar
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
- Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com>
- <20240104-rb-new-condvar-methods-v3-4-70b514fcbe52@google.com>
-Content-Language: en-US
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20240104-rb-new-condvar-methods-v3-4-70b514fcbe52@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231213220447.3613500-1-benno.lossin@proton.me>
+In-Reply-To: <20231213220447.3613500-1-benno.lossin@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 4 Jan 2024 16:17:59 +0100
+Message-ID: <CAH5fLghY3o5keT3UGUd0h1eb1WXT98BVYsrOpwpvAKq=7NVsXQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: macros: add `decl_generics` to `parse_generics()`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>, 
+	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/4/24 11:02, Alice Ryhl wrote:
-> Reduce the chances of compilation failures due to integer type
-> mismatches in `CondVar`.
-> 
-> When an integer is defined using a #define in C, bindgen doesn't know
-> which integer type it is supposed to be, so it will just use `u32` by
-> default (if it fits in an u32). Whenever the right type is something
-> else, we insert a cast in Rust. However, this means that the code has a
-> lot of extra casts, and sometimes the code will be missing casts if u32
-> happens to be correct on the developer's machine, even though the type
-> might be something else on a different platform.
-> 
-> This patch updates all uses of such constants in
-> `rust/kernel/sync/condvar.rs` to use constants defined with the right
-> type. This allows us to remove various unnecessary casts, while also
-> future-proofing for the case where `unsigned int != u32`.
-> 
-> I wrote this patch at the suggestion of Benno in [1].
-> 
-> Link: https://lore.kernel.org/all/nAEg-6vbtX72ZY3oirDhrSEf06TBWmMiTt73EklMzEAzN4FD4mF3TPEyAOxBZgZtjzoiaBYtYr3s8sa9wp1uYH9vEWRf2M-Lf4I0BY9rAgk=@proton.me/ [1]
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Tiago Lam <tiagolam@gmail.com>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> [...]
+On Wed, Dec 13, 2023 at 11:08=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>
+> The generic parameters on a type definition can specify default values.
+> Currently `parse_generics()` cannot handle this though. For example when
+> parsing the following generics:
+>
+>     <T: Clone, const N: usize =3D 0>
+>
+> The `impl_generics` will be set to `T: Clone, const N: usize =3D 0` and
+> `ty_generics` will be set to `T, N`. Now using the `impl_generics` on an
+> impl block:
+>
+>     impl<$($impl_generics)*> Foo {}
+>
+> will result in invalid Rust code, because default values are only
+> available on type definitions.
+>
+> Therefore add parsing support for generic parameter default values using
+> a new kind of generics called `decl_generics` and change the old
+> behavior of `impl_generics` to not contain the generic parameter default
+> values.
+>
+> Now `Generics` has three fields:
+> - `impl_generics`: the generics with bounds
+>   (e.g. `T: Clone, const N: usize`)
+> - `decl_generics`: the generics with bounds and default values
+>   (e.g. `T: Clone, const N: usize =3D 0`)
+> - `ty_generics`:  contains the generics without bounds and without
+>   default values (e.g. `T, N`)
+>
+> `impl_generics` is designed to be used on `impl<$impl_generics>`,
+> `decl_generics` for the type definition, so `struct Foo<$decl_generics>`
+> and `ty_generics` whenever you use the type, so `Foo<$ty_generics>`.
+>
+> Here is an example that uses all three different types of generics:
+>
+>     let (Generics { decl_generics, impl_generics, ty_generics }, rest) =
+=3D parse_generics(input);
+>     quote! {
+>         struct Foo<$($decl_generics)*> {
+>             // ...
+>         }
+>
+>         impl<$impl_generics> Foo<$ty_generics> {
+>             fn foo() {
+>                 // ...
+>             }
+>         }
+>     }
+>
+> The next commit contains a fix to the `#[pin_data]` macro making it
+> compatible with generic parameter default values by relying on this new
+> behavior.
+>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
