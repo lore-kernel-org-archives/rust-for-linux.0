@@ -1,73 +1,94 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95BB208AD
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 09:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E72520DDE
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 10:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wp+avoIG"
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4b72c944019so101778e0c.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 01:39:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="XYZz2KS+"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a28a6cef709so40889766b.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 02:53:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704361142; x=1704965942; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DZeiLk6oF+6RO9eHA9R6LEyIeFZ5frTJ0yAyDVtKePE=;
-        b=wp+avoIGIIsl6Hu+T9hUxKfrlFGt30bQ72x2L2b9mSc0r34oWBIYr7XGChgEGbTokn
-         2qwnge9dHx+YnF5CIFvL5Sz1b2mGv69h7vjdiAviVaexkvCoN43CPytO0qOaxLApApp8
-         qGVZOMZQsQ1yuE3FKJlch4IFQ5r1UHjKYXoYjbEm+wvXhjOpriKUxIAcbVSeHEKALhNC
-         USLlu20dpCLvpV6256zYc1XFN8qvQ9IjV91kWMj5BbOVWa89EotTOBpmg4p56i5oBWdh
-         tOXQa9hgDZlRtzCfMpjjn4LOA4jk/avPqZw93auzbuHtHf/bn6PoR6UaKFwbT65J9loG
-         okSQ==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1704365609; x=1704970409; darn=vger.kernel.org;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=13tc0pBPhD5uwpbLlXZDiNLNXAB5mfp9UzzPnCfrFY0=;
+        b=XYZz2KS+KB/Tbqaf2rnNIDs84WszQwKz/IJPz+YEulncpl06HxPhSmn5LQLZXhtRvQ
+         ytFqCMqlHQwst2KL0iE7Nn7UJ+5+pe3WWhKnfnmu5AG2efJ19XucA47QA5yA+AQkDWD6
+         kPfSnprFdKLgerD907MRJ5Bj1MO1eYVKNq0bDZKDB9RCQEvG2KOSGahMUeKRj3XmHk/N
+         Ae2v9OSy7QF2oBEBeivZka850Di+6i/+V0PBJFg2YeKfp/seY6xIfSYMQh94B2Dj0DQF
+         MxRwDu7KPp4YVZ2QO90jvVlhOsWjgxTBENkAopO6oW7WuHc3iB0XatHpDRaOGw1DOr+H
+         QPYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704361142; x=1704965942;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DZeiLk6oF+6RO9eHA9R6LEyIeFZ5frTJ0yAyDVtKePE=;
-        b=u/ne+9sIKr04Ve+AXxraNFtzT2X2klqTHBdumzgYWIH+JqrWs+yCyOiDwaFD970qtZ
-         KHCiJbUTjFfFDRK/fr4Yqmau71RHg3Os2mmmSBoT/1PDgMwGulFXOmtPkfhe3ufbQ34q
-         apVBBhTq0nGLU42BbkLG+gXtWgqHZMGByHj0VliT3Gvcdv9m9QmImRW60/xl+8jUSaKW
-         BDCzZa/6qAXnrXKaT7iU/eE0Iw099UkELKiFkG+mAldWtH0nH1/q3Ca/Enccaf32Z7zI
-         8MXcRZVs289T81o2EeNuuHaHsP8R2sOZeolf2iegQafTO+N/1CoJr4Wp1FCuRc2R/SR/
-         Dkhw==
-X-Gm-Message-State: AOJu0YxA7u+lGkN54PThGBUxjycaLq3gQoFl7ot19XjxtDdD3xcwwmJq
-	Ie9shSQyJpop7HN/0It3AhSSKUiZwyzSihYMQRC88gANvffX
-X-Google-Smtp-Source: AGHT+IEOMY1Vj/Y9twOHHIiLLD6NFGauZ088jDqR8Tph8uDLopusypVmW0x4+T4q1f/cue82fXMbtTJfocpFsHftdN8=
-X-Received: by 2002:a1f:7381:0:b0:4b6:c815:bedd with SMTP id
- o123-20020a1f7381000000b004b6c815beddmr244104vkc.18.1704361142581; Thu, 04
- Jan 2024 01:39:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704365609; x=1704970409;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=13tc0pBPhD5uwpbLlXZDiNLNXAB5mfp9UzzPnCfrFY0=;
+        b=TWF4aEG0wF3QXDCrFl5STl1SSJCS366jl9bEDBik0sGU8sNZuBdrFTNEZBE1ky2+TQ
+         uy+Qd0fdoByI6ocwPEmzgISSU90uMGl6Bwe/fZCg1feNbILwN2b6l+ZqvdOV76Ug8q52
+         7M2eFG50Mo2Syt60QCUZrEjWD0s+75tlIj6C/AKXXl6q9u0k+QU8GCh3QtW8y3zES5nl
+         1DRptT1Lr7PX94muak5lnTNCl3uKwvnlFTvQ9uL9IJyKNGuJl6jcV7lDmxEJsQFSiUVj
+         w5EiI/l0lOocs4d4kclMyU1uaXR/MiClqvyZKMAlMhqayM8CPeh+I+rx5br16fthUNi1
+         bQbA==
+X-Gm-Message-State: AOJu0YyXWgLNm6DH0rHoV2iRaJuvo1PV+qlziZhBpD8ArNHr1QF2ardc
+	Zv/fROusMUXidelxP+3ivPUZ+AFBEjR2Og==
+X-Google-Smtp-Source: AGHT+IE+IgC4wLkE6RYjtDFB0pWTDIUdON92Vz+dAWf4DHJtTe+XgSKKAQO0wl9qYVa0qqRnvxdpHg==
+X-Received: by 2002:a17:906:44:b0:a27:4f33:96ef with SMTP id 4-20020a170906004400b00a274f3396efmr205330ejg.7.1704365608612;
+        Thu, 04 Jan 2024 02:53:28 -0800 (PST)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id fp17-20020a1709069e1100b00a26b36311ecsm12644649ejc.146.2024.01.04.02.53.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 02:53:28 -0800 (PST)
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
+ <20231018122518.128049-6-wedsonaf@gmail.com> <87sf3e5v55.fsf@metaspace.dk>
+ <20240104052034.GD3964019@frogsfrogsfrogs>
+User-agent: mu4e 1.10.8; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew
+ Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson
+ Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 05/19] rust: fs: introduce `INode<T>`
+Date: Thu, 04 Jan 2024 10:57:45 +0100
+In-reply-to: <20240104052034.GD3964019@frogsfrogsfrogs>
+Message-ID: <87ttnt4bfv.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215194828.2611213-1-mmaurer@google.com>
-In-Reply-To: <20231215194828.2611213-1-mmaurer@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jan 2024 10:38:51 +0100
-Message-ID: <CAH5fLgjeCTTbBV500edTNqMqOp=_v_27eULab=e9WBeYjrVeig@mail.gmail.com>
-Subject: Re: [PATCH] x86: rust: Disable entry padding with Rust
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Dec 15, 2023 at 8:48=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> rustc-1.73.0 used by Linux does not support entry padding. Mark entry
-> padding support as explicitly incompatible with Rust.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+"Darrick J. Wong" <djwong@kernel.org> writes:
+
+[...]
+
+>> > +    /// Returns the super-block that owns the inode.
+>> > +    pub fn super_block(&self) -> &SuperBlock<T> {
+>> > +        // SAFETY: `i_sb` is immutable, and `self` is guaranteed to be valid by the existence of a
+>> > +        // shared reference (&self) to it.
+>> > +        unsafe { &*(*self.0.get()).i_sb.cast() }
+>> > +    }
+>> 
+>> I think the safety comment should talk about the pointee rather than the
+>> pointer? "The pointee of `i_sb` is immutable, and ..."
+>
+> inode::i_sb (the pointer) shouldn't be reassigned to a different
+> superblock during the lifetime of the inode; but the superblock object
+> itself (the pointee) is very much mutable.
+
+Ah, I thought the comment was about why it is sound to create
+`&SuperBlock`, but it is referring to why it is sound to read `i_sb`.
+Perhaps the comment should state this? Perhaps it is also worth
+mentioning why it is OK to construct a shared reference from this
+pointer?
+
+Best regards
+Andreas
