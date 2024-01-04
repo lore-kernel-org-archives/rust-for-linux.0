@@ -1,44 +1,44 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1F92232E
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 13:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A066224C1
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C/qvNdU7"
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4b7b28211beso168268e0c.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 05:53:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n3mPtseq"
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-4b6b8262038so124863e0c.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 05:54:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704376392; x=1704981192; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1704376478; x=1704981278; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/MfPQh4H35nlx+QASSAm2zP9UXUv9F49uxYi2GkZRd8=;
-        b=C/qvNdU7d/CWH9lPt5H1mQW1JRR+8r8Qw21HzKHMmyBbhXcS1pafSAv2oBQx8KRto2
-         qOVX4PSihNQb0LBZ/UBJwJOtvO8rf/ucWl/xa+CcO8Uix29i8tzFPmtgI7Wtr0mnckA5
-         ABG+8kgiqsFTivT680o25tGkE1vxnLZQxVptaWOr6fz9CVWKCvelQi1PJE6AZAK8Rzyj
-         IBUzbPdthTzGMH4UmkyksnbDNnB6dA3b16XmqBvqio+HKfgIa60crbnVNUO8YW0YR89Z
-         ktwjk6R59fxnoJTzEoYlPcb/5BMNgtXtUhydsvVNaiPwLVNtOt4D3XIwrAIgt0O0XQf2
-         BFnA==
+        bh=xC0j8nNl0IjVq5e5DkTu2zl2RjAuSNRZYGbUYvQn0hk=;
+        b=n3mPtseqEBHNdHwHjzDMddya67XPT+jx+YS3Mfj+B9svRdWb4i1DW+pxRAC+LlHLJE
+         qu6DpLxAQ+GipxzYf4ahGGXOuOD36v3W6y5podQfjatbRpzhdEk2Wd5zDvIBM2NJGOzE
+         DTSEsLbSG1P31uCtp4W0Qk1kr+FMnNgcY7NyWA6rvBtr1MvfdlT1QDCEzRaGzlsxyt6N
+         6o7OTVwBK9Vec/kGoPY8kHWs3W+MAZTIsV0MNu4qvHuSA/fiqgtWD5k10tsaen6eqHpG
+         OzFOib6HHSS1jWmbF0zjAz5mZrh68ZUD6QcG62K3/sdmVaAuxJM55fx/GQRquMwi7edA
+         67Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704376392; x=1704981192;
+        d=1e100.net; s=20230601; t=1704376478; x=1704981278;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/MfPQh4H35nlx+QASSAm2zP9UXUv9F49uxYi2GkZRd8=;
-        b=ZB2tCYsOXeHTRVbNomJIgyGfdhqMtXcAkVCqDkzoeyx2/WWm0O2PkINzhF7Bq440fH
-         jHkY0kMGS2RBkfFrP+zRuUa/GxcDo6BtVUJD87U0Z2WZYZWRVYMGND48rZVSl2Or8He2
-         E3tAbsbe1Nkp5R4J/+OajR2DOeN6kWr9Yl0iE2v21OMeiegvfGsg1gNZVg2ZaCsr1PrL
-         RwWP6h4Up2gno+7Iof6v/XMmJHDwcIb0+U1pDpLOWlyIRe7/IyO6wybYFrFWYpx2/tfh
-         zjSZZKHN1qt6FWGA2x9E6zIF11OOYLtel+GRGdsxwMNmUpYwvphNHOOFqpOOCn/+YLCn
-         oNmg==
-X-Gm-Message-State: AOJu0YzRPYhWTOIxmdweqPqMG/c56Nd3EeokQ8CgpZrQxegfvG/16JHN
-	5OsnvK9LnnVCEOJp5EhOQb6rD4S4BtI3T8NM9AldpxSoXpGJ
-X-Google-Smtp-Source: AGHT+IHEW8SkKUXbqV1XthfUkn/czEVyuhyc0c7T3AibMmU2Ekv3oCJE3085ZAMhEesImZ/BsxYPdvsMBjlPnUl1KPs=
-X-Received: by 2002:a1f:fc06:0:b0:4b6:bee9:3cbd with SMTP id
- a6-20020a1ffc06000000b004b6bee93cbdmr470548vki.5.1704376392392; Thu, 04 Jan
- 2024 05:53:12 -0800 (PST)
+        bh=xC0j8nNl0IjVq5e5DkTu2zl2RjAuSNRZYGbUYvQn0hk=;
+        b=YX/mKTEWqHBm8mq8p7Ur2z1kTZMS5KhAvaREuKw+SQFzjnUNrj1o158/oN36s3hFlS
+         SiHEGyD9buZYHYje5jghm7FsvTBrEHYJakdha6oa8aTEe8GIpxJ3T7BWiM7b93iSCqX0
+         p1Y6zQ2u/C+l8gpVq9nkahr23XlVNwVXb164ysSrbwDjWourq4xo3Y6qAG3tFkw93f93
+         WDj9G0kaB9oFLg2VvLNWKgCcgH9a2740nGUZdy977Inrby2zLtrO2lbz4Yf6WUTW+LRG
+         nJmy+Kp/R/DqC5JJvAjAp9S/m0A7r0oqRJc0Vydt4Ghxdp9m6CUFFdHosnFOBSbs3n5V
+         b9UQ==
+X-Gm-Message-State: AOJu0YwR2EATP6fVimDBpk4lIfANo3CX87BmTdrRzDcx+RmnW2/Jwkpq
+	0v7QvcW7Ra9E6QWneyicqOyrUpY5dfIk0kFG64TNqNie/uAi
+X-Google-Smtp-Source: AGHT+IFbu7LeqKUR6Vj0pxOYX3eR00qsFCGeHZK2LuF6q/cVXgVxP38lTA89mlG8d6Yq8wLMW+CseqDx1eAtmEzXRwU=
+X-Received: by 2002:a05:6122:7cc:b0:4b7:e96b:8b12 with SMTP id
+ l12-20020a05612207cc00b004b7e96b8b12mr367724vkr.19.1704376478197; Thu, 04 Jan
+ 2024 05:54:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,12 +46,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com>
- <20231216-rb-new-condvar-methods-v2-2-b05ab61e6d5b@google.com> <ZYC0i875pOw4yjnK@boqun-archlinux>
-In-Reply-To: <ZYC0i875pOw4yjnK@boqun-archlinux>
+ <20231216-rb-new-condvar-methods-v2-4-b05ab61e6d5b@google.com> <ZYC3GR6LMEmRUQy0@boqun-archlinux>
+In-Reply-To: <ZYC3GR6LMEmRUQy0@boqun-archlinux>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jan 2024 14:53:01 +0100
-Message-ID: <CAH5fLgj2vRpMwn2C_JEJZhYtfStsSr2AfAOLvh+pJruR-4nknA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] rust: time: add msecs to jiffies conversion
+Date: Thu, 4 Jan 2024 14:54:27 +0100
+Message-ID: <CAH5fLgikS57SoNz1WrqVYbr8-iYRDRD8RS2F_QN1YOuV3dk8MQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] rust: sync: update integer types in CondVar
 To: Boqun Feng <boqun.feng@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -64,34 +64,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 18, 2023 at 10:07=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> =
+On Mon, Dec 18, 2023 at 10:18=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> =
 wrote:
 >
-> On Sat, Dec 16, 2023 at 03:31:40PM +0000, Alice Ryhl wrote:
+> On Sat, Dec 16, 2023 at 03:31:42PM +0000, Alice Ryhl wrote:
 > [...]
-> > diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> > new file mode 100644
-> > index 000000000000..23c4d1a74f68
-> > --- /dev/null
-> > +++ b/rust/kernel/time.rs
-> > @@ -0,0 +1,17 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Timers.
+> >
+> > +const TASK_NORMAL: c_uint =3D bindings::TASK_NORMAL as c_uint;
+> > +const TASK_INTERRUPTIBLE: c_int =3D bindings::TASK_INTERRUPTIBLE as c_=
+int;
+> > +const TASK_UNINTERRUPTIBLE: c_int =3D bindings::TASK_UNINTERRUPTIBLE a=
+s c_int;
 > > +
 >
-> Please consider the following mod level description:
+> Similarly, these definitions are better in rust/kernel/task.rs.
 >
-> //! Time related primitives.
-> //!
-> //! This module contains the kernel APIs related to time and timers that
-> //! have been ported or wrapped for usage by Rust code in the kernel.
->
-> Otherwise it looks fine to me.
+> The rest looks fine to me.
 >
 > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-Sure, that sounds good to me. I'll update the module description and
-add your tag.
+Thanks! I'll move these and add your tag.
 
 Alice
