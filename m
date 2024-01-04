@@ -1,44 +1,44 @@
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22D9224C1
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A8622305
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 13:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l5ICfODo"
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-466fb179334so96614137.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 05:50:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pPNTgmuv"
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4b7b28211beso167410e0c.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 05:50:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704376205; x=1704981005; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1704376249; x=1704981049; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jmcHXU84jO7/aD/+uybBFnY8Y1yiePevOt8pOFnzJnU=;
-        b=l5ICfODoDrHL0Nuq6YZH8Nk3GxtBMj8BT3EflBHOtNMnp7fjsy9qbKJ5nDxMKh8j2K
-         HRoq1hLH7xfaqYPdxfQzWXmN5XdXUYeRR/I3DBcTc49bTTUQVCeHBzY94k06IAFpOHDX
-         v8FfYwcjZLeqJoyo2cTfL7CNG31Zch2uIkRiJD87cc6YXqiYVpzvHaD3mXVlO4I6rcB+
-         Ls++AQdF++hKRQgsoHzBqy8GadGcaHZbeAwZevhdMZl058lBM4X1jFz2oQNhvxYcW6SY
-         lX0Q1a5W6EIT1BubSXguECmSQ2k3MzucISwkkAX6Fsc0VklATyoWuUo0xugXZvcH5kg+
-         OJPw==
+        bh=0wUYo80fdR4FT/SVGApfPe7pPXOeeF8oJCKGkhPUBQ4=;
+        b=pPNTgmuvqRFHRfmrinDT6Kmu+XYHwzjLKYwlsZZptz7nSrUtv5ATlLI1RzdC6g3xYo
+         caZYZlx2ZSBg4ubL27Gj32ylh+6K+Glqn14M6IgzMEIDX4+BPJEbFRMs0neQTDkSnczk
+         qJ56GpohpM3zta5EY1x1q+w8dhaQFkNmiaOzyBR1BZNCpewmsB6uk3c3jqc6C+IS2CiK
+         l01HelmzLuh4EgjBBWnSf53rYAhSwGGSsIV4/3AcJnENMWcH+E/nwA/N9w7SDCQzPYfl
+         3TPJx4uo4aM1n38KWwUI/CElNQQzUy6x8Gay5Rm/usWxBVfFneY2TpJVqtaNHwFSJ/oA
+         xAOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704376205; x=1704981005;
+        d=1e100.net; s=20230601; t=1704376249; x=1704981049;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jmcHXU84jO7/aD/+uybBFnY8Y1yiePevOt8pOFnzJnU=;
-        b=H/P2Bj/otqGdZ+TRSenXVb0g7ypv5aWxZSjmLujO3SZZ5YfuR0zU0o3+NPn1MsRT+J
-         BEgpgBDlj+em51G1+01/wUpNOOtVWnN5CLFp9kd1zOFRZ1qSoRgMutGtWLhtgi8JmLqq
-         TY1hAY0e9ileKAOZoPfuWisO2sdp/phMfwykAWdrWc/SxhGoZ7HyqRpJCLZQ/ajVsMCr
-         8p+L700tV7MOKOPl4OIVw2nWV0+NrqHzUN3oNDNEhGGGT6fIF1kj2ajrFuO8pRnwItfv
-         sa2Rnzx3RXRtOUlQ9ycxDXEgYz6Vm2gKJGbmD+f76fiw9b90RaD598kjkx9MllNm3Qzq
-         Ts9w==
-X-Gm-Message-State: AOJu0Yyn5YlLTUVA2TwJ2KCX7H0RSCOvvSyolHaPUJi9geXGtlv7fgYy
-	jcFct2k3cmo+iC4wAVXCqp7BB9zVt+A2I54xhL532WG22sTr
-X-Google-Smtp-Source: AGHT+IEAG/I6C9BLRfLo85MzbCkaRVNqJu+9FkpCp4Ck+/c2Obav4H8mDC12zSpvDgDHq2jOZdWQCtux3iqfLUKsiTg=
-X-Received: by 2002:a05:6102:15a8:b0:467:a64f:aa27 with SMTP id
- g40-20020a05610215a800b00467a64faa27mr421440vsv.15.1704376205029; Thu, 04 Jan
- 2024 05:50:05 -0800 (PST)
+        bh=0wUYo80fdR4FT/SVGApfPe7pPXOeeF8oJCKGkhPUBQ4=;
+        b=ayKiMxou+R14g4uDAV0BtXW/oC6dr6BjYiPlbBrfJLTPXacqdF0o8fX6NzP5r9mJTw
+         XGHixllgda1HHBHXvy2q/c3tR3D2YrNjRiMpWOUU8a8p4XRkS6RXJSC+N99tfa0STMLn
+         x9kkMnSVB5ujYYQRyq2Vv3ZO6FdZDlO+MiFWKIEMjobFFHver1KmOoa//Qmtu1IetK/h
+         j8vjrWoOBR7daYsz5O51Xi8L+pVKjp0kTIVkfiHkjuyLz/HpKraRsiyfn17m6EFKzmra
+         9O3Be1BCoLUpumtT5LcHoQyOJ0vs7NMceCqDMn8Fh9PoQCLiKrwB9RUhXhEbCxT/cdWv
+         y4LA==
+X-Gm-Message-State: AOJu0YyOSGffUBHCjGk9gZCdYAF30j8WLr3Hi+qSXn0lVb4iV+Rspx6k
+	jS9ZjfRQECpUPLMfIoQsebyilW6nnyLNYs3NMSyekJCkjesg
+X-Google-Smtp-Source: AGHT+IHA/5q3b8vhSx+o+mjSaAttqwGmWpFeQFH52jhXWq3ovLs5SXl+BPsqqepe9tmMzqZ3U02Yht1it0woe5HbOCo=
+X-Received: by 2002:a05:6122:30a1:b0:4b7:a77c:d133 with SMTP id
+ cd33-20020a05612230a100b004b7a77cd133mr538092vkb.11.1704376248694; Thu, 04
+ Jan 2024 05:50:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,88 +46,32 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com>
- <20231216-rb-new-condvar-methods-v2-3-b05ab61e6d5b@google.com>
- <3fba196a-8cb6-4ce9-9e67-bfb716a2d171@proton.me> <ZYRtuRXPgQcN_3cr@boqun-archlinux>
-In-Reply-To: <ZYRtuRXPgQcN_3cr@boqun-archlinux>
+ <20231216-rb-new-condvar-methods-v2-4-b05ab61e6d5b@google.com> <76415f1d-174c-4cee-9b58-e956be6bda54@gmail.com>
+In-Reply-To: <76415f1d-174c-4cee-9b58-e956be6bda54@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jan 2024 14:49:54 +0100
-Message-ID: <CAH5fLghmG4e0RjVdPuyWYgCt2cQ9+_WRP81tGxS4qyL91vHiEg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] rust: sync: add `CondVar::wait_timeout`
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Thu, 4 Jan 2024 14:50:37 +0100
+Message-ID: <CAH5fLgjdk+e419Zir4q59pApeY1XpDWf7m+AC=wUXkNwSkXN-Q@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] rust: sync: update integer types in CondVar
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, rust-for-linux@vger.kernel.org, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 21, 2023 at 5:54=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Sat, Dec 16, 2023 at 5:42=E2=80=AFPM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+> On 12/16/23 12:31, Alice Ryhl wrote:
+> >       /// Calls the kernel function to notify the appropriate number of=
+ threads with the given flags.
 >
-> On Wed, Dec 20, 2023 at 11:31:05AM +0000, Benno Lossin wrote:
-> > On 12/16/23 16:31, Alice Ryhl wrote:
-> > > @@ -102,7 +105,12 @@ pub fn new(name: &'static CStr, key: &'static Lo=
-ckClassKey) -> impl PinInit<Self
-> > >          })
-> > >      }
-> > >
-> > > -    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, =
-guard: &mut Guard<'_, T, B>) {
-> > > +    fn wait_internal<T: ?Sized, B: Backend>(
-> > > +        &self,
-> > > +        wait_state: u32,
-> > > +        guard: &mut Guard<'_, T, B>,
-> > > +        timeout: c_long,
-> > > +    ) -> c_long {
-> > >          let wait =3D Opaque::<bindings::wait_queue_entry>::uninit();
-> > >
-> > >          // SAFETY: `wait` points to valid memory.
-> > > @@ -113,11 +121,13 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, =
-wait_state: u32, guard: &mut Guar
-> > >              bindings::prepare_to_wait_exclusive(self.wait_list.get()=
-, wait.get(), wait_state as _)
-> > >          };
-> > >
-> > > -        // SAFETY: No arguments, switches to another thread.
-> > > -        guard.do_unlocked(|| unsafe { bindings::schedule() });
-> > > +        // SAFETY: Switches to another thread. The timeout can be an=
-y number.
-> > > +        let ret =3D guard.do_unlocked(|| unsafe { bindings::schedule=
-_timeout(timeout) });
-> >
-> > I am not sure what exactly the safety requirements of `schedule_timeout=
-`
-> > are. I looked at the function and saw that the timout should not be
-> > negative. But aside from that only the the context switching should be
-> > relevant. What things are not allowed to do when calling `schedule`
-> > (aside from the stuff that klint catches)?
->
-> One thing is that you probably don't want to call `schedule` with task
-> state being TASK_DEAD, if so the `schedule` would be counted as
-> `ARef<Task>::drop()`, see __schedule() -> context_switch() ->
-> finish_context_switch(), and the task may be freed after that, which
-> free the stack of the task, and anything that references a object on the
-> stack would be a UAF. On the other hand, if the task state is not
-> TASK_DEAD, `schedule*()` should be a no-op regarding memory safety.
->
-> > Because if there are none, then I would put the "switches to another
-> > thread" part into a normal comment.
-> >
->
-> I think it's possible to make schedule_timeout() a safe function: we can
-> define setting task state TASK_DEAD as an unsafe operation, whose safety
-> requirement is something like: "Must ensure that if some code can
-> reference a memory object that belongs to the task (e.g. a stack
-> variable) after the task calls a followed `schedule()`, the code must
-> also hold an additional reference count to the task."
->
-> Yes, it might be out of the scope of this patchset though.
+> There are no more flags, please update the comment.
 
-These things sound like they are out of scope of this patchset.
-Changing it from schedule to schedule_timeout doesn't change whether
-this is ok or not.
+Nice catch! Fixed.
 
 Alice
