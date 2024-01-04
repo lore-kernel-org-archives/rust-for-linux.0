@@ -1,73 +1,102 @@
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED72224FE
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 14:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AE2241F5;
+	Thu,  4 Jan 2024 14:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DxOtbUNN"
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7cdb24b3ac3so120948241.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 06:17:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lSQ9j7ug"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-6dc02ab3cc9so334249a34.3;
+        Thu, 04 Jan 2024 06:19:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704377853; x=1704982653; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=giLoYiBuCJluqiJ7Duk1l5c9a+I6JQIaND7ild3LKSE=;
-        b=DxOtbUNN23LHRxMwsp+MWzHZ3AYFsf2oqqxoROjFri+6hjipMn3pmAcusDpfP2VKdz
-         RYNoiKhcm3BPP9LjY9fAPi/YocEf26THJG2amYRvUAtIEVBh2AC5s4K4MhQoHJfe5UHC
-         PsFZCsxy7DWX/s69wBUaNpyXDgB9zO1D6BkYDs9nD0/pJTbReuHk9Lvtf+uYXoOqcXQ0
-         nALgk6P+ZW8/Qk2F00eNDKDD4mRp8MBNr4ORcERWfMXbVA2CV4eR4A6DHZYJ6LBHVcce
-         H0k8BD/9kg1hHccR1/80UpBGnrEk5uQKzaZkrP6B0Tnt3dZ1S+SZPVprYmyMWrV7rq6W
-         z53A==
+        d=gmail.com; s=20230601; t=1704377980; x=1704982780; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YyXkGaIn4n8uR5zY2tnEwMlymDvJhftWg9/2ZNakfUM=;
+        b=lSQ9j7ugW2q4+YomZQK0Nm/vDby01tvZ6YeOQO869+C6fGdQP/Dm9QlN0iZAoRwvBO
+         KqXhdVMAYoELxMB3uuXQDj9xDZyU89jFbxO29DjR8op0dRvMQS0E+NUee+4fjx1ZPx2H
+         mhS6TXRvrWW9Z9K/Qh4DeWOTz4+Oouf8JEqhdG7puOG0FLsi59XBLL1yEyCyiJrmwvWT
+         SBTlRCFbybjiQmbDdZt8wL8WdXVo2hBuRkQIc/cweKEIByFEEMrI7//ImwRzhRWY7wuB
+         dezpuMqXwwvNUXFdiV/dJET+k0hePSkgRy3cSDvG/H+A3B70yPNbxuENLEpvGKD5sLVE
+         gZmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704377853; x=1704982653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=giLoYiBuCJluqiJ7Duk1l5c9a+I6JQIaND7ild3LKSE=;
-        b=WYEqDgNFQQPNAlX1ba2nBxuQA3VAW+JPs+e3Ijore7O8TTJIi89KHGhoHya55Zecjm
-         EkYayG6aZrAabeV6TKeTl15Sn6trSfA+kad8RtvZNoCS90ihdr9dm+PGZ+A4xjj1T8wQ
-         uaxSDWFK0X2KHP8lvy8jP7DU0ee9M76MlU7E8D7k0mX6aWbHrKTb1p+HimD2SyhJn26D
-         4bAj81kaRfcrpCm2GIWlB3KE4QL0QodBDNJb1YZgVsvodJ2BkbG1DfGC1s0Kh8WWXMJx
-         XXHTHaNA9jgepMoTStf7d8/eqokcG+oceM84nWkIULyP9xclfOcICuqmkqDzSAMLE18Y
-         1tqQ==
-X-Gm-Message-State: AOJu0YyDr1E7DgKzFeUjpMH2ufv7gUrK5trplixc7hmDo4a5fm3GSb9R
-	VwJgEQgEF7EQPZPUwR4CJbOR4Ntram/1TRzRPZzcolu1mcEa
-X-Google-Smtp-Source: AGHT+IGGmXT5NwaRXznAvd/khpPo+30lICXph7Zp7dFvuoRHIJ8Z66QH5RcDJIO3wncQMw04tfWxFlWfMufxu9XEDlI=
-X-Received: by 2002:a05:6122:a01:b0:4b7:3eee:3a4a with SMTP id
- 1-20020a0561220a0100b004b73eee3a4amr347951vkn.28.1704377853494; Thu, 04 Jan
- 2024 06:17:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704377980; x=1704982780;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YyXkGaIn4n8uR5zY2tnEwMlymDvJhftWg9/2ZNakfUM=;
+        b=Hz2HNEoIfIGRKrNZXmAkRcT7K5HXCX9WJL/uZCAtohzIqtd3Cw+GQXN+fwMaL+hvqM
+         sauqO7pHZk7KL3DaPMEKuASRFoyhtYXRZlFM1/wQPYD5c8FRKcQxxeWqgz3ocO2hfrrX
+         uxdpsUSt23E8jmzFBhlOdsftLUS5N8p+b4WyGy8uiYoNrcAad3vW6MLOtdp7J9ZLvDFl
+         ZtXworSu7LH/38ResD7UQNl4l4yA9nXJa1a3ZiE5VxuFPhMV5RvMtb37IoH9trbGJYRo
+         aaN48x1i9xXcZceRfZPnJVuwNHQvncEccwu9UOFiV2vwdM4wdP0lIM1bS4+lVSjJmc9u
+         wUcQ==
+X-Gm-Message-State: AOJu0YwX4n3vfe1OGnhOF5YUzAtv3RiJI+l+MFE6Z4iegMFzdIb9q0Ki
+	T+qekMNmaXxLrIE/4PMNPFg=
+X-Google-Smtp-Source: AGHT+IEUMB6l0hlcqSyjPruBcShBmtmZRMFRfpq9EoSjrKDRreVRDYhnqFA0qsXRaXez6Dd9/jEhEA==
+X-Received: by 2002:a05:6358:2826:b0:175:4915:ebf5 with SMTP id k38-20020a056358282600b001754915ebf5mr667732rwb.43.1704377979784;
+        Thu, 04 Jan 2024 06:19:39 -0800 (PST)
+Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id d25-20020aa78e59000000b006d945660076sm24634123pfr.59.2024.01.04.06.19.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jan 2024 06:19:39 -0800 (PST)
+Message-ID: <3d6d8098-f303-4767-9ba2-e7a80433a4c2@gmail.com>
+Date: Thu, 4 Jan 2024 11:19:34 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] rust: sync: update integer types in CondVar
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+ Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com>
-In-Reply-To: <20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jan 2024 15:17:22 +0100
-Message-ID: <CAH5fLggzw8K-MDaYPDULL1My4HooYwiZ+18aC6+RxYvL+XyPEA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Additional CondVar methods needed by Rust Binder
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20240104-rb-new-condvar-methods-v3-4-70b514fcbe52@google.com>
+Content-Language: en-US
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20240104-rb-new-condvar-methods-v3-4-70b514fcbe52@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 4, 2024 at 3:03=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
-> This patchset is based on top of Boqun's patch [3] that renames the
-> existing wait methods to follow the C convention of using the
-> _interruptable suffix.
+On 1/4/24 11:02, Alice Ryhl wrote:
+> Reduce the chances of compilation failures due to integer type
+> mismatches in `CondVar`.
+> 
+> When an integer is defined using a #define in C, bindgen doesn't know
+> which integer type it is supposed to be, so it will just use `u32` by
+> default (if it fits in an u32). Whenever the right type is something
+> else, we insert a cast in Rust. However, this means that the code has a
+> lot of extra casts, and sometimes the code will be missing casts if u32
+> happens to be correct on the developer's machine, even though the type
+> might be something else on a different platform.
+> 
+> This patch updates all uses of such constants in
+> `rust/kernel/sync/condvar.rs` to use constants defined with the right
+> type. This allows us to remove various unnecessary casts, while also
+> future-proofing for the case where `unsigned int != u32`.
+> 
+> I wrote this patch at the suggestion of Benno in [1].
+> 
+> Link: https://lore.kernel.org/all/nAEg-6vbtX72ZY3oirDhrSEf06TBWmMiTt73EklMzEAzN4FD4mF3TPEyAOxBZgZtjzoiaBYtYr3s8sa9wp1uYH9vEWRf2M-Lf4I0BY9rAgk=@proton.me/ [1]
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Tiago Lam <tiagolam@gmail.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> [...]
 
-I forgot to update this part. It's actually based on top of rust-next
-(which has patch [3]).
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
