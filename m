@@ -1,88 +1,144 @@
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A066224C1
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 13:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DD222338
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 14:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n3mPtseq"
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-4b6b8262038so124863e0c.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 05:54:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nxI2G6N9"
+Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-50e80706352so485581e87.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 06:03:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704376478; x=1704981278; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xC0j8nNl0IjVq5e5DkTu2zl2RjAuSNRZYGbUYvQn0hk=;
-        b=n3mPtseqEBHNdHwHjzDMddya67XPT+jx+YS3Mfj+B9svRdWb4i1DW+pxRAC+LlHLJE
-         qu6DpLxAQ+GipxzYf4ahGGXOuOD36v3W6y5podQfjatbRpzhdEk2Wd5zDvIBM2NJGOzE
-         DTSEsLbSG1P31uCtp4W0Qk1kr+FMnNgcY7NyWA6rvBtr1MvfdlT1QDCEzRaGzlsxyt6N
-         6o7OTVwBK9Vec/kGoPY8kHWs3W+MAZTIsV0MNu4qvHuSA/fiqgtWD5k10tsaen6eqHpG
-         OzFOib6HHSS1jWmbF0zjAz5mZrh68ZUD6QcG62K3/sdmVaAuxJM55fx/GQRquMwi7edA
-         67Lg==
+        d=google.com; s=20230601; t=1704376998; x=1704981798; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p861dZ7utlCXeaj84qH7PmRti7kEXa8Us6HgL7ej558=;
+        b=nxI2G6N9GMXaZqnE0CjiX6QrlEsNVqj/QLOyZXvco/LHzBS2KlYTzguNUIW24H9oP+
+         O9aQUdT1rBRe50d4kB1CUYmcunqVenY11lJ+5i8axqgnmu2mh5/yv3Ub4CctTqp5biu6
+         ZSWBukcdzV7bU13BIx0vnmwbt6qwplkBM+24Z54sp+Ta0ptke/DBXrhBg+gmvNDfwXKQ
+         VlUcRUd/qg6tc3qssIkavCx4i5hDaFZApFVYkRxAW0Qe3F/xa6+8C6XMgATDd3rVNVv3
+         /mOoaZ7FWpIbVP4G2BmNUszH8S8bulZK4JgSefCxSE8GktrssAJVIozOGDnGhbESnSkC
+         ir/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704376478; x=1704981278;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xC0j8nNl0IjVq5e5DkTu2zl2RjAuSNRZYGbUYvQn0hk=;
-        b=YX/mKTEWqHBm8mq8p7Ur2z1kTZMS5KhAvaREuKw+SQFzjnUNrj1o158/oN36s3hFlS
-         SiHEGyD9buZYHYje5jghm7FsvTBrEHYJakdha6oa8aTEe8GIpxJ3T7BWiM7b93iSCqX0
-         p1Y6zQ2u/C+l8gpVq9nkahr23XlVNwVXb164ysSrbwDjWourq4xo3Y6qAG3tFkw93f93
-         WDj9G0kaB9oFLg2VvLNWKgCcgH9a2740nGUZdy977Inrby2zLtrO2lbz4Yf6WUTW+LRG
-         nJmy+Kp/R/DqC5JJvAjAp9S/m0A7r0oqRJc0Vydt4Ghxdp9m6CUFFdHosnFOBSbs3n5V
-         b9UQ==
-X-Gm-Message-State: AOJu0YwR2EATP6fVimDBpk4lIfANo3CX87BmTdrRzDcx+RmnW2/Jwkpq
-	0v7QvcW7Ra9E6QWneyicqOyrUpY5dfIk0kFG64TNqNie/uAi
-X-Google-Smtp-Source: AGHT+IFbu7LeqKUR6Vj0pxOYX3eR00qsFCGeHZK2LuF6q/cVXgVxP38lTA89mlG8d6Yq8wLMW+CseqDx1eAtmEzXRwU=
-X-Received: by 2002:a05:6122:7cc:b0:4b7:e96b:8b12 with SMTP id
- l12-20020a05612207cc00b004b7e96b8b12mr367724vkr.19.1704376478197; Thu, 04 Jan
- 2024 05:54:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704376998; x=1704981798;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p861dZ7utlCXeaj84qH7PmRti7kEXa8Us6HgL7ej558=;
+        b=DaVheA6cd23vKdgKQ1SremZd6o8C3IAC1n1cdyyRO8N71iRnyST14usrDqXelMX2sR
+         1kj04/ytB9o/6jqaStdtG+vALogYBli7tz/xTNpe+FymwYl3djWyyAe4DhUkkMBtCCYe
+         1OjlyqhWKXlp2edZ8EHoOg2Pmgohl1AE1neAkXcDX2WuYybL5whUfFBZQtBHG8naW4g4
+         wJYpMmGeWdTDoO003UrWb0utw9PWsaHzD9kA1xEkAwpUSFROUXq917WrEgN3er1XSGJU
+         ashinfetN0kFCDYTFbZxolUXpVegq4lORPeN8iYP0aCYSEuOYIkkpyXISwPmTJCxSh5Q
+         0jzw==
+X-Gm-Message-State: AOJu0YzS/y9o6GjeoluLzcQMJxr9WOzIF5pB3aRYO7o6mcmq+BCpfbeo
+	ImXxBWkDLFniuPLTgp43B+Y8UtS44wpiwMKNZlRpiw==
+X-Google-Smtp-Source: AGHT+IGxlnvBOMxUPF+y9OEledCEbIFJEuaGbRydXD7phGxip0EcCSQ+qCeIByTE1T874+Ax2EkMsuBlQLjbJWM=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:e82:b0:50e:25d6:6da2 with SMTP
+ id bi2-20020a0565120e8200b0050e25d66da2mr1120lfb.9.1704376997745; Thu, 04 Jan
+ 2024 06:03:17 -0800 (PST)
+Date: Thu, 04 Jan 2024 14:02:40 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com>
- <20231216-rb-new-condvar-methods-v2-4-b05ab61e6d5b@google.com> <ZYC3GR6LMEmRUQy0@boqun-archlinux>
-In-Reply-To: <ZYC3GR6LMEmRUQy0@boqun-archlinux>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIC6lmUC/3XNywrCMBCF4VcpWTuSS9OiK99DXOQybQM2kaREp
+ fTdTQuCLrr8D8w3M0kYHSZyrmYSMbvkgi8hDhUxg/I9grOlCadcME4lRA0en2CCt1lFGHEagk3
+ AW61O0nbS1oyU40fEzr02+HorPbg0hfje/mS2rl+y2SMzAwpCqNoo3XZWqUsfQn/HowkjWc3Mf xy27/DiaCqVbhg2Vuo/Z1mWD71LCNsFAQAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2771; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=xK1tIDUbtTh2fQy+rQikL6Aqn9bpKhDlca60a/9ixak=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBllrqPqSGz8L6eVRGjauMzdCiCKS3QofPHhINll
+ 51yv4HFgfCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZZa6jwAKCRAEWL7uWMY5
+ RsASEACGYcRqyFLSfwSAwsQ/qGyqdLC2hFVEZIdLS1LmJCq+dm0D8GFrnGPkPpEiYUqf+PMshci
+ tG21lSjgN0VT0bGRC4gwH+7hUVdNUo6dy6BO728HkjfGKgHi3eVUP5DHhW06PjDCQnD4SFVuPUv
+ qIVH8bkxhFOmiq8deq9tP4cZ/BK4DPmvor5uZurgb+FhWlKPze4ERB3WNc3ZYgG8lQx88dTFJR1
+ z7qGBnXrFW1NHGT6APLqJsdj+bFiJg/8xOqIWJbF6z/0UmM0bIqmO9QAQl9HnVEkIcr8kOfeWAo
+ QHxmcoD1CzaItVmk9De6891JqBA/ftYTecMlmzPrrkT7d107w70FkfaEetFM3ULhrDuaLYLsSGp
+ LWN74WmGkRNItIG/YfZ0/HoeWCXeOUDIsaG/ZjQtZj7TD9VmV6d7yO0MHygCK4s+ThjTGI4ol/k
+ JicArEfZeo3SAQC5xG5FHUsELwdyqjp0ua+BnVg3krRRLfhMj91P2Tkmtw0WH84x8rGcYkX4KMb
+ aBmGWRydQQO+n1ld8ZrkKblRB9yogBtH/ZReQltQnm+ferz44V6uv8G+DnOilknF7N0pUK4svie
+ 2rv9wbgUFx0VL6UaXMKQWphKEUATMnTd5GWxDjdOED2mQF2PpmlEyj6MEioVniaEp+kn8IolO4g VyhupFWSZeYotGQ==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com>
+Subject: [PATCH v3 0/4] Additional CondVar methods needed by Rust Binder
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jan 2024 14:54:27 +0100
-Message-ID: <CAH5fLgikS57SoNz1WrqVYbr8-iYRDRD8RS2F_QN1YOuV3dk8MQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] rust: sync: update integer types in CondVar
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>
+Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Dec 18, 2023 at 10:18=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> =
-wrote:
->
-> On Sat, Dec 16, 2023 at 03:31:42PM +0000, Alice Ryhl wrote:
-> [...]
-> >
-> > +const TASK_NORMAL: c_uint =3D bindings::TASK_NORMAL as c_uint;
-> > +const TASK_INTERRUPTIBLE: c_int =3D bindings::TASK_INTERRUPTIBLE as c_=
-int;
-> > +const TASK_UNINTERRUPTIBLE: c_int =3D bindings::TASK_UNINTERRUPTIBLE a=
-s c_int;
-> > +
->
-> Similarly, these definitions are better in rust/kernel/task.rs.
->
-> The rest looks fine to me.
->
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+This patchset contains some CondVar methods that Rust Binder needs.
 
-Thanks! I'll move these and add your tag.
+The CondVar type implements a condition variable, and tries to mirror
+the API of the CondVar type provided by the Rust standard library [2].
+It is implemented using a `wait_queue_head`.
 
-Alice
+Please see the Rust Binder RFC for usage examples [1].
+
+Users of rust: sync: add `CondVar::notify_sync`:
+	[PATCH RFC 04/20] rust_binder: add work lists
+	[PATCH RFC 07/20] rust_binder: add epoll support
+	[PATCH RFC 08/20] rust_binder: add non-oneway transactions
+
+Users of rust: time: add msecs to jiffies conversion:
+	[PATCH v2 3/3] rust: sync: add `CondVar::wait_timeout`
+	[PATCH RFC 15/20] rust_binder: add process freezing
+
+Users of rust: sync: add `CondVar::wait_timeout`:
+	[PATCH RFC 15/20] rust_binder: add process freezing
+
+This patchset is based on top of Boqun's patch [3] that renames the
+existing wait methods to follow the C convention of using the
+_interruptable suffix.
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Link: https://doc.rust-lang.org/stable/std/sync/struct.Condvar.html [2]
+Link: https://lore.kernel.org/all/20231214200421.690629-1-boqun.feng@gmail.com/ [3]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Update module description for new `time` module.
+- Move constants to `rust/kernel/task.rs`.
+- Fix incorrect doc-comment on `CondVar::notify`.
+- Rename c_long argument to `timeout_in_jiffies`.
+- Link to v2: https://lore.kernel.org/r/20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com
+
+Changes in v2:
+- Introduce "rust: time: add msecs to jiffies conversion" patch.
+- Introduce "rust: sync: update integer types in CondVar" patch.
+- Merge wait_internal and wait_internal_timeout.
+- Use new Jiffies type alias instead of u64.
+- Update names to use _interruptable suffix (and base patchset on top of [3]).
+- Link to v1: https://lore.kernel.org/r/20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com
+
+---
+Alice Ryhl (4):
+      rust: sync: add `CondVar::notify_sync`
+      rust: time: add msecs to jiffies conversion
+      rust: sync: add `CondVar::wait_timeout`
+      rust: sync: update integer types in CondVar
+
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/lib.rs              |  1 +
+ rust/kernel/sync/condvar.rs     | 90 ++++++++++++++++++++++++++++++++---------
+ rust/kernel/sync/lock.rs        |  4 +-
+ rust/kernel/task.rs             | 11 +++++
+ rust/kernel/time.rs             | 20 +++++++++
+ 6 files changed, 106 insertions(+), 21 deletions(-)
+---
+base-commit: 711cbfc717650532624ca9f56fbaf191bed56e67
+change-id: 20231205-rb-new-condvar-methods-27ba95df5d41
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
