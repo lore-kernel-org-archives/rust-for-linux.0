@@ -1,177 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF1518EBD;
-	Thu,  4 Jan 2024 05:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95BB208AD
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 09:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbIVDnXi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C056FC433C7;
-	Thu,  4 Jan 2024 05:33:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704346395;
-	bh=qj93CEpeNL08A4W7d8MAiGs1eWqfnJrP6Q/gBrB32Z8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DbIVDnXiRevPks8hE+XsLaithb5dx2C6EPVFQiHZmgaL6piP211GEg0ydrMB47Uxm
-	 iH+xcUCM30ZDEeoLbIaEEPXIKXnA5xgT7ccfCSOdK8Rt5TKbzRgj/7TbRco4sT6VgM
-	 i08hXBsgnnO4kPA4lo7DoOldfQYVg9DzvvklD31L6Z1qm6kWti2CfSjq3pIZhq2VrU
-	 RVsE1QgAMdNxFRUkc+76dFha5Vk4o4eM93cor59DGCzyeR154NBoEd3SfIMRh0Yn80
-	 86bSHwR508ln3aRfP9Dj3b+sql5rpqYyeL/hxIhn8jo9iTTfDduSxllMxcdKkj8L8Q
-	 AvFkVYjxfCVVg==
-Date: Wed, 3 Jan 2024 21:33:15 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 12/19] rust: fs: introduce `FileSystem::statfs`
-Message-ID: <20240104053315.GE3964019@frogsfrogsfrogs>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-13-wedsonaf@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wp+avoIG"
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4b72c944019so101778e0c.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 01:39:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704361142; x=1704965942; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DZeiLk6oF+6RO9eHA9R6LEyIeFZ5frTJ0yAyDVtKePE=;
+        b=wp+avoIGIIsl6Hu+T9hUxKfrlFGt30bQ72x2L2b9mSc0r34oWBIYr7XGChgEGbTokn
+         2qwnge9dHx+YnF5CIFvL5Sz1b2mGv69h7vjdiAviVaexkvCoN43CPytO0qOaxLApApp8
+         qGVZOMZQsQ1yuE3FKJlch4IFQ5r1UHjKYXoYjbEm+wvXhjOpriKUxIAcbVSeHEKALhNC
+         USLlu20dpCLvpV6256zYc1XFN8qvQ9IjV91kWMj5BbOVWa89EotTOBpmg4p56i5oBWdh
+         tOXQa9hgDZlRtzCfMpjjn4LOA4jk/avPqZw93auzbuHtHf/bn6PoR6UaKFwbT65J9loG
+         okSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704361142; x=1704965942;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DZeiLk6oF+6RO9eHA9R6LEyIeFZ5frTJ0yAyDVtKePE=;
+        b=u/ne+9sIKr04Ve+AXxraNFtzT2X2klqTHBdumzgYWIH+JqrWs+yCyOiDwaFD970qtZ
+         KHCiJbUTjFfFDRK/fr4Yqmau71RHg3Os2mmmSBoT/1PDgMwGulFXOmtPkfhe3ufbQ34q
+         apVBBhTq0nGLU42BbkLG+gXtWgqHZMGByHj0VliT3Gvcdv9m9QmImRW60/xl+8jUSaKW
+         BDCzZa/6qAXnrXKaT7iU/eE0Iw099UkELKiFkG+mAldWtH0nH1/q3Ca/Enccaf32Z7zI
+         8MXcRZVs289T81o2EeNuuHaHsP8R2sOZeolf2iegQafTO+N/1CoJr4Wp1FCuRc2R/SR/
+         Dkhw==
+X-Gm-Message-State: AOJu0YxA7u+lGkN54PThGBUxjycaLq3gQoFl7ot19XjxtDdD3xcwwmJq
+	Ie9shSQyJpop7HN/0It3AhSSKUiZwyzSihYMQRC88gANvffX
+X-Google-Smtp-Source: AGHT+IEOMY1Vj/Y9twOHHIiLLD6NFGauZ088jDqR8Tph8uDLopusypVmW0x4+T4q1f/cue82fXMbtTJfocpFsHftdN8=
+X-Received: by 2002:a1f:7381:0:b0:4b6:c815:bedd with SMTP id
+ o123-20020a1f7381000000b004b6c815beddmr244104vkc.18.1704361142581; Thu, 04
+ Jan 2024 01:39:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231018122518.128049-13-wedsonaf@gmail.com>
+References: <20231215194828.2611213-1-mmaurer@google.com>
+In-Reply-To: <20231215194828.2611213-1-mmaurer@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 4 Jan 2024 10:38:51 +0100
+Message-ID: <CAH5fLgjeCTTbBV500edTNqMqOp=_v_27eULab=e9WBeYjrVeig@mail.gmail.com>
+Subject: Re: [PATCH] x86: rust: Disable entry padding with Rust
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 18, 2023 at 09:25:11AM -0300, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
-> 
-> Allow Rust file systems to expose their stats. `overlayfs` requires that
-> this be implemented by all file systems that are part of an overlay.
-> The planned file systems need to be overlayed with overlayfs, so they
-> must be able to implement this.
-> 
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->  rust/bindings/bindings_helper.h |  1 +
->  rust/kernel/error.rs            |  1 +
->  rust/kernel/fs.rs               | 52 ++++++++++++++++++++++++++++++++-
->  3 files changed, 53 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index fa754c5e85a2..e2b2ccc835e3 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -11,6 +11,7 @@
->  #include <linux/fs.h>
->  #include <linux/fs_context.h>
->  #include <linux/slab.h>
-> +#include <linux/statfs.h>
->  #include <linux/pagemap.h>
->  #include <linux/refcount.h>
->  #include <linux/wait.h>
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 6c167583b275..829756cf6c48 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -83,6 +83,7 @@ macro_rules! declare_err {
->      declare_err!(ENOGRACE, "NFS file lock reclaim refused.");
->      declare_err!(ENODATA, "No data available.");
->      declare_err!(EOPNOTSUPP, "Operation not supported on transport endpoint.");
-> +    declare_err!(ENOSYS, "Invalid system call number.");
->  }
->  
->  /// Generic integer kernel error.
-> diff --git a/rust/kernel/fs.rs b/rust/kernel/fs.rs
-> index adf9cbee16d2..8f34da50e694 100644
-> --- a/rust/kernel/fs.rs
-> +++ b/rust/kernel/fs.rs
-> @@ -50,6 +50,31 @@ pub trait FileSystem {
->      fn read_xattr(_inode: &INode<Self>, _name: &CStr, _outbuf: &mut [u8]) -> Result<usize> {
->          Err(EOPNOTSUPP)
->      }
-> +
-> +    /// Get filesystem statistics.
-> +    fn statfs(_sb: &SuperBlock<Self>) -> Result<Stat> {
-> +        Err(ENOSYS)
-> +    }
-> +}
-> +
-> +/// File system stats.
-> +///
-> +/// A subset of C's `kstatfs`.
-> +pub struct Stat {
-> +    /// Magic number of the file system.
-> +    pub magic: u32,
-> +
-> +    /// The maximum length of a file name.
-> +    pub namelen: i64,
+On Fri, Dec 15, 2023 at 8:48=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> rustc-1.73.0 used by Linux does not support entry padding. Mark entry
+> padding support as explicitly incompatible with Rust.
+>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Yikes, I hope I never see an 8EB filename.  The C side doesn't handle
-names longer than 255 bytes.
-
-> +
-> +    /// Block size.
-> +    pub bsize: i64,
-
-Or an 8EB block size.  SMR notwithstanding, I think this could be u32.
-
-Why are these values signed?  Nobody has a -1k block filesystem.
-
-> +    /// Number of files in the file system.
-> +    pub files: u64,
-> +
-> +    /// Number of blocks in the file system.
-> +    pub blocks: u64,
->  }
->  
->  /// The types of directory entries reported by [`FileSystem::read_dir`].
-> @@ -478,7 +503,7 @@ impl<T: FileSystem + ?Sized> Tables<T> {
->          freeze_fs: None,
->          thaw_super: None,
->          unfreeze_fs: None,
-> -        statfs: None,
-> +        statfs: Some(Self::statfs_callback),
->          remount_fs: None,
->          umount_begin: None,
->          show_options: None,
-> @@ -496,6 +521,31 @@ impl<T: FileSystem + ?Sized> Tables<T> {
->          shutdown: None,
->      };
->  
-> +    unsafe extern "C" fn statfs_callback(
-> +        dentry: *mut bindings::dentry,
-> +        buf: *mut bindings::kstatfs,
-> +    ) -> core::ffi::c_int {
-> +        from_result(|| {
-> +            // SAFETY: The C API guarantees that `dentry` is valid for read. `d_sb` is
-> +            // immutable, so it's safe to read it. The superblock is guaranteed to be valid dor
-> +            // the duration of the call.
-> +            let sb = unsafe { &*(*dentry).d_sb.cast::<SuperBlock<T>>() };
-> +            let s = T::statfs(sb)?;
-> +
-> +            // SAFETY: The C API guarantees that `buf` is valid for read and write.
-> +            let buf = unsafe { &mut *buf };
-> +            buf.f_type = s.magic.into();
-> +            buf.f_namelen = s.namelen;
-> +            buf.f_bsize = s.bsize;
-> +            buf.f_files = s.files;
-> +            buf.f_blocks = s.blocks;
-> +            buf.f_bfree = 0;
-> +            buf.f_bavail = 0;
-> +            buf.f_ffree = 0;
-
-Why is it necessary to fill out the C structure with zeroes?
-statfs_by_dentry zeroes the buffer contents before calling ->statfs.
-
---D
-
-> +            Ok(0)
-> +        })
-> +    }
-> +
->      const XATTR_HANDLERS: [*const bindings::xattr_handler; 2] = [&Self::XATTR_HANDLER, ptr::null()];
->  
->      const XATTR_HANDLER: bindings::xattr_handler = bindings::xattr_handler {
-> -- 
-> 2.34.1
-> 
-> 
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
