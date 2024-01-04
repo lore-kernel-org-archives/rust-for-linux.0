@@ -1,40 +1,36 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286554C65;
-	Thu,  4 Jan 2024 01:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB92118EBF;
+	Thu,  4 Jan 2024 05:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mgbMsV5S"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=VLcWWTAKpy632w/uyfnrcBEZtTlicseYYv0f54dfEQw=; b=mgbMsV5SX7AG8o7WEu6dvud4lF
-	KQ8mBx29eLPFhAmiXUCU5TPGTy0WBGWyyneay0RFnXaYMwy72s0K3tkPoeXeapvqHY14ziZuLMcTW
-	XSjJpBcO4n14tdhOnCMRhjb4cccWMlw4a9lU1nraFtQSOxyTWVWkYEGOK9jUuVGf33Cc1EIi6ESFG
-	b6CkLqborIRdLPsWUs+VAk4mlsGJwBxt+6Ep4RIPMOJYfPaH9zN1vSAZHvfnQqNhqrVvgtjPh59GZ
-	cv7xpG0MskJ4djMEyC8FAjEa2o/2jXOjQuQbqbrjPaGqplY0vSHTTxOj4jHWnFUmXBhyViUfDlOPO
-	oO1nnGwQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rLCr2-00DzGt-Hr; Thu, 04 Jan 2024 01:49:04 +0000
-Date: Thu, 4 Jan 2024 01:49:04 +0000
-From: Matthew Wilcox <willy@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WjbdbUL5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F059C433C8;
+	Thu,  4 Jan 2024 05:14:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704345295;
+	bh=vrs+0DPrO9fX6l9WjdFBkjwlcIPZPMUtpgan0Iq9AZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WjbdbUL5NB2LHVHs9bLoe823PIDehLD04lFAXKgNdk/ypMP7Vgy65FBqUG2ho1P7e
+	 9MKpGNYt3Suwgcstz3EWgQETReFSV4zuUYtL/kfhpeCBAyJ23AAQSIYeMh7rk0o0MG
+	 bPC53m48JlP1IJas4taIwbp9VwxvgvgdvPhVN1DiIvtXphQNDF2zjkkRaWFwMR9Wem
+	 MRNlo43cq9wHNUSnknUxkwskCUNE7On9FYQ0BgyZ/SPwMikUiHdBY/y5EOYkBL03SX
+	 lLktE4VNCAb05Ksl6+QMlWUGFfykALbUQDuFgJIcvfzFK3LgIeMBnNgwi4Hk2Wy7+7
+	 XLKeT1kpc2YJA==
+Date: Wed, 3 Jan 2024 21:14:54 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
 To: Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
 	Kent Overstreet <kent.overstreet@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
-Message-ID: <ZZYOkCyujEaR7TdX@casper.infradead.org>
+Subject: Re: [RFC PATCH 05/19] rust: fs: introduce `INode<T>`
+Message-ID: <20240104051454.GC3964019@frogsfrogsfrogs>
 References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
- <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
- <ZZWhQGkl0xPiBD5/@casper.infradead.org>
- <CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com>
+ <20231018122518.128049-6-wedsonaf@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,51 +39,154 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com>
+In-Reply-To: <20231018122518.128049-6-wedsonaf@gmail.com>
 
-On Wed, Jan 03, 2024 at 04:04:26PM -0300, Wedson Almeida Filho wrote:
-> On Wed, 3 Jan 2024 at 15:02, Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Tue, Oct 31, 2023 at 05:14:08PM -0300, Wedson Almeida Filho wrote:
-> > > > Also, I see you're passing an inode to read_dir.  Why did you decide to
-> > > > do that?  There's information in the struct file that's either necessary
-> > > > or useful to have in the filesystem.  Maybe not in toy filesystems, but eg
-> > > > network filesystems need user credentials to do readdir, which are stored
-> > > > in struct file.  Block filesystems store readahead data in struct file.
-> > >
-> > > Because the two file systems we have don't use anything from `struct
-> > > file` beyond the inode.
-> > >
-> > > Passing a `file` to `read_dir` would require us to introduce an
-> > > unnecessary abstraction that no one uses, which we've been told not to
-> > > do.
-> > >
-> > > There is no technical reason that makes it impractical though. We can
-> > > add it when the need arises.
-> >
-> > Then we shouldn't merge any of this, or even send it out for review
-> > again until there is at least one non-toy filesystems implemented.
+On Wed, Oct 18, 2023 at 09:25:04AM -0300, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
 > 
-> What makes you characterize these filesystems as toys? The fact that
-> they only use the file's inode in iterate_shared?
-
-They're not real filesystems.  You can't put, eg, root or your home
-directory on one of these filesystems.
-
-> > Either stick to the object orientation we've already defined (ie
-> > separate aops, iops, fops, ... with substantially similar arguments)
-> > or propose changes to the ones we have in C.  Dealing only with toy
-> > filesystems is leading you to bad architecture.
+> Allow Rust file systems to handle typed and ref-counted inodes.
 > 
-> I'm trying to understand the argument here. Are saying that Rust
-> cannot have different APIs with the same performance characteristics
-> as C's, unless we also fix the C apis?
+> This is in preparation for creating new inodes (for example, to create
+> the root inode of a new superblock), which comes in the next patch in
+> the series.
 > 
-> That isn't even a requirement when introducing new C apis, why would
-> it be a requirement for Rust apis?
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> ---
+>  rust/helpers.c    |  7 +++++++
+>  rust/kernel/fs.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 58 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 4c86fe4a7e05..fe45f8ddb31f 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/build_bug.h>
+>  #include <linux/err.h>
+>  #include <linux/errname.h>
+> +#include <linux/fs.h>
+>  #include <linux/mutex.h>
+>  #include <linux/refcount.h>
+>  #include <linux/sched/signal.h>
+> @@ -144,6 +145,12 @@ struct kunit *rust_helper_kunit_get_current_test(void)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_kunit_get_current_test);
+>  
+> +off_t rust_helper_i_size_read(const struct inode *inode)
 
-I'm saying that we have the current object orientation (eg each inode
-is an object with inode methods) for a reason.  Don't change it without
-understanding what that reason is.  And moving, eg iterate_shared() from
-file_operations to struct file_system_type (effectively what you've done)
-is something we obviously wouldn't want to do.
+i_size_read returns a loff_t (aka __kernel_loff_t (aka long long)),
+but this returns    an off_t (aka __kernel_off_t (aka long)).
+
+Won't that cause truncation issues for files larger than 4GB on some
+architectures?
+
+> +{
+> +	return i_size_read(inode);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_i_size_read);
+> +
+>  /*
+>   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+>   * use it in contexts where Rust expects a `usize` like slice (array) indices.
+> diff --git a/rust/kernel/fs.rs b/rust/kernel/fs.rs
+> index 31cf643aaded..30fa1f312f33 100644
+> --- a/rust/kernel/fs.rs
+> +++ b/rust/kernel/fs.rs
+> @@ -7,9 +7,9 @@
+>  //! C headers: [`include/linux/fs.h`](../../include/linux/fs.h)
+>  
+>  use crate::error::{code::*, from_result, to_result, Error, Result};
+> -use crate::types::Opaque;
+> +use crate::types::{AlwaysRefCounted, Opaque};
+>  use crate::{bindings, init::PinInit, str::CStr, try_pin_init, ThisModule};
+> -use core::{marker::PhantomData, marker::PhantomPinned, pin::Pin};
+> +use core::{marker::PhantomData, marker::PhantomPinned, pin::Pin, ptr};
+>  use macros::{pin_data, pinned_drop};
+>  
+>  /// Maximum size of an inode.
+> @@ -94,6 +94,55 @@ fn drop(self: Pin<&mut Self>) {
+>      }
+>  }
+>  
+> +/// The number of an inode.
+> +pub type Ino = u64;
+> +
+> +/// A node in the file system index (inode).
+> +///
+> +/// Wraps the kernel's `struct inode`.
+> +///
+> +/// # Invariants
+> +///
+> +/// Instances of this type are always ref-counted, that is, a call to `ihold` ensures that the
+> +/// allocation remains valid at least until the matching call to `iput`.
+> +#[repr(transparent)]
+> +pub struct INode<T: FileSystem + ?Sized>(Opaque<bindings::inode>, PhantomData<T>);
+> +
+> +impl<T: FileSystem + ?Sized> INode<T> {
+> +    /// Returns the number of the inode.
+> +    pub fn ino(&self) -> Ino {
+> +        // SAFETY: `i_ino` is immutable, and `self` is guaranteed to be valid by the existence of a
+> +        // shared reference (&self) to it.
+> +        unsafe { (*self.0.get()).i_ino }
+
+Is "*self.0.get()" the means by which the Rust bindings get at the
+actual C object?
+
+(Forgive me, I've barely finished drying the primer coat on my rust-fu.)
+
+> +    }
+> +
+> +    /// Returns the super-block that owns the inode.
+> +    pub fn super_block(&self) -> &SuperBlock<T> {
+> +        // SAFETY: `i_sb` is immutable, and `self` is guaranteed to be valid by the existence of a
+> +        // shared reference (&self) to it.
+> +        unsafe { &*(*self.0.get()).i_sb.cast() }
+> +    }
+> +
+> +    /// Returns the size of the inode contents.
+> +    pub fn size(&self) -> i64 {
+
+I'm a little surprised I didn't see a
+
+pub type loff_t = i64
+
+followed by this function returning a loff_t.  Or maybe it would be
+better to define it as:
+
+struct loff_t(i64);
+
+So that dopey fs developers like me cannot so easily assign a file
+position (bytes) to a pgoff_t (page index) without either supplying an
+actual conversion operator or seeing complaints from the compiler.
+
+> +        // SAFETY: `self` is guaranteed to be valid by the existence of a shared reference.
+> +        unsafe { bindings::i_size_read(self.0.get()) }
+
+It's confusing that rust_i_size_read returns a long but on the rust side,
+INode::size returns an i64.
+
+--D
+
+> +    }
+> +}
+> +
+> +// SAFETY: The type invariants guarantee that `INode` is always ref-counted.
+> +unsafe impl<T: FileSystem + ?Sized> AlwaysRefCounted for INode<T> {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+> +        unsafe { bindings::ihold(self.0.get()) };
+> +    }
+> +
+> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+> +        unsafe { bindings::iput(obj.cast().as_ptr()) }
+> +    }
+> +}
+> +
+>  /// A file system super block.
+>  ///
+>  /// Wraps the kernel's `struct super_block`.
+> -- 
+> 2.34.1
+> 
+> 
