@@ -1,76 +1,150 @@
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66575249E5
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jan 2024 15:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ED728E1C;
+	Thu,  4 Jan 2024 18:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BwQV3B/o"
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3bbd6f87959so439047b6e.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jan 2024 07:19:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nERtoKPv"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-781bbb1f61fso50840485a.3;
+        Thu, 04 Jan 2024 10:57:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704381560; x=1704986360; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1704394678; x=1704999478; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GC60muPixeBjriui0b/NBYmBxbA4VVNVHrp1WJSoqbQ=;
-        b=BwQV3B/oOFf6xjdPwEz7F8Z1MNHq9OcLbciKmWMA3mMwwvL9RYFA9efgX+hVo4MZHS
-         ORbMjonx+GtodKU0DpCbAJyKAjXggUH3R/LKIxolorXNc51/Oc8ayKM5sH1+dnKpBWEp
-         1XIKUmwK7zvyS4YWulkZCGA7wCYt3H/CsopqltDuacW5SkpBoHCyVOAM743ts4/f2XtU
-         XYShoP7K2svY73xRKLcUJfgveGBJ+p1jolw2IdT/j95D31SpuVmyEaK26MeTOPSnKU6b
-         cJaQre9aSIPTJ+mf4BYQ/ACk1LV00C/tmRjm7xKzDsPi5Xx4epFwO0ty5MzGVUynIqRF
-         u8Mw==
+        bh=Os0Q/0d6OHlr8j+k0IDP+XVC9EPOxnxh9xNoVL0KlNA=;
+        b=nERtoKPvOQ61y3PFH/xXlQoDdelJZLdG9/d+rCfidZBdInDIQyIJN9WHt5k4fPXKug
+         239z/TVCTHx6U1ngHXEB5+NUbQTjWn5LWEn9fCzdmZvJ+gRss9AGjdD0bBKET9043Qs8
+         GwCc7Hdwd3kQrCgSx8phBoBmpazXCwcX/iYbYSnWD3AYb2AszOairnBBu+CuFGcdyege
+         8VK367ohP8TE9Trxc5pFN5UAGqeFdKFGXJDflWvymW+5QSfe8IjmijeSYHVA7u8o+fYs
+         +8nGdzfXbTnLw1otEEkCdZPMojPa5hGmQlQs8DDHvoWNpfJshUHGdfnX7VnCvYcO5cl7
+         zssQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704381560; x=1704986360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1704394678; x=1704999478;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GC60muPixeBjriui0b/NBYmBxbA4VVNVHrp1WJSoqbQ=;
-        b=k1Y5bHK34tIhPO3G5wG0xKz+6AtNyJ0MLGvoS7E1d9mQWyzYXW0ESabNU5BTSNLCcI
-         CfDrFdUMJ4ZK8xGp05hJcVvgkQDTWTf71mJJbinzJgmB5cU0qQgzD2mQ+/WAHPBpi1+4
-         YEn5MdxQNteE7PTduwTvf1rzTg0voPo+E2gvesE59IHAWiDsi+y8V35tFlj8pEwuOEkW
-         vkEbIPnsAigsxyd/L2xeCjyKNejVAZErdUBvC4k+yeOWTPaUYIymo8PLrCHMEU9fQo/O
-         5BagBC2CugXPF+ILJ3/T/WptLFpksn01U0eZk5TcaPAGnb6XfpSv2Yl8KGkumMNteti4
-         Wbqg==
-X-Gm-Message-State: AOJu0YwrUWbl7UU1aQZVB2P6wOtYzwetSjmocPvsV3CDij7M3OAN/qhW
-	nsTL/UtRLID1iIaDwRVePTpjO02gsbtQadPiVO0isjm8maa5
-X-Google-Smtp-Source: AGHT+IErRlTx5zwMOpHP2trOdXcIEsUR8p0uVjo9gXaPVEMvgmPoql8aCAKZFcQvEJYkTsWgJPC+u4aQQ5a90WVxJbo=
-X-Received: by 2002:a05:6870:558d:b0:204:4437:57fc with SMTP id
- qj13-20020a056870558d00b00204443757fcmr657149oac.54.1704381560358; Thu, 04
- Jan 2024 07:19:20 -0800 (PST)
+        bh=Os0Q/0d6OHlr8j+k0IDP+XVC9EPOxnxh9xNoVL0KlNA=;
+        b=sWJh7L23uQtLGfxjwE2bmxI4PgwQaXzOZYmtGFHJ+Nw5tb5fmdmoD6QbjET2OY9oqj
+         5odA7acmuU3VMWwpMA12PnNMJ+VNL0FRyEVG1rNuxQodBe8FocOIrpiAytMMDdAx+TiE
+         T+/tRI6UC52/asrPJIfxzAy1oWwcbDdYz3fFpfW8EbMT76aS0C+37YbEQfuiL25KRsN6
+         rwkwiMCAUIdOKGbhfkSRutrVfoX0oFAycvxiFuSLmckOyeeGMsLx3UzhFcvD80nS2ETg
+         0DlXs7NGLWk+InM3HLRSseeYwyw/pKj3X5kzVuy5Mdua/Koyp039TT7TyW6Pa3hLUbA/
+         MPTQ==
+X-Gm-Message-State: AOJu0YxG9p+EBS+I3HHaXuGZo62xxtZjONBBfUKOyIPtimRT9YSXi7TU
+	OmfbnQ0yqToQ88NNtMMKh9E=
+X-Google-Smtp-Source: AGHT+IG3Jz7XP5tqSJlZd5J/1soCB5RuN3ECigH9ftKKw8A58MZkLBun3ccOrzg/W+xI1CQmHWW0WQ==
+X-Received: by 2002:a05:620a:f0f:b0:781:5e6a:355a with SMTP id v15-20020a05620a0f0f00b007815e6a355amr1082524qkl.155.1704394677738;
+        Thu, 04 Jan 2024 10:57:57 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id vq10-20020a05620a558a00b00781df19c062sm15990qkn.59.2024.01.04.10.57.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 10:57:57 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailauth.nyi.internal (Postfix) with ESMTP id BA7FB27C005A;
+	Thu,  4 Jan 2024 13:57:56 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 04 Jan 2024 13:57:56 -0500
+X-ME-Sender: <xms:s_-WZUQ3a99E-Jwuce37xzgVqXtjfBU-JGOZhjPyPZT4idfpFskjCA>
+    <xme:s_-WZRy886ax7TnoE34U09hMari-SGlBPMjCdM1bn8eRjJY2Dd7yo-7eXdACXycKo
+    9WMS5ir12fSbrn5Sw>
+X-ME-Received: <xmr:s_-WZR2Y-Llr6-Tu5NtCriuuvjsP6gia6eXXNbpsIo9sRUpyKik3c_P_A1k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegjedguddukecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:s_-WZYA-Ii3QicgGVI546f6coyNo5vbL2VSK3iaF_Lp5EVj3g5aT1g>
+    <xmx:s_-WZdhg_9WsBTZvOkhG6_aYuqvv2GssNgw0g7EY4PwR03EXem39fQ>
+    <xmx:s_-WZUroxKZjMdChDzY9HjjkV0vCmHcz6LzyBktDmKptNtc1zONoEg>
+    <xmx:tP-WZcSjhowKUlxIbzAiRbvKAaSXSxpUeEi1vtQRf02jt0-IINgRGw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 4 Jan 2024 13:57:55 -0500 (EST)
+Date: Thu, 4 Jan 2024 10:56:47 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] rust: sync: add `CondVar::notify_sync`
+Message-ID: <ZZb_b-6f9Ib1NdOt@boqun-archlinux>
+References: <20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com>
+ <20240104-rb-new-condvar-methods-v3-1-70b514fcbe52@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231213220447.3613500-1-benno.lossin@proton.me> <20231213220447.3613500-3-benno.lossin@proton.me>
-In-Reply-To: <20231213220447.3613500-3-benno.lossin@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jan 2024 16:19:09 +0100
-Message-ID: <CAH5fLgjpvGciMpS8WnU6XM0Q3+niy1=XOkOQ3Rq9mJ6VNo85pw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] rust: workqueue: add `#[pin_data]` to `Work`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Tejun Heo <tj@kernel.org>, 
-	Wedson Almeida Filho <walmeida@microsoft.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240104-rb-new-condvar-methods-v3-1-70b514fcbe52@google.com>
 
-On Wed, Dec 13, 2023 at 11:09=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> The previous two patches made it possible to add `#[pin_data]` on
-> structs with default generic parameter values.
-> This patch makes `Work` use `#[pin_data]` and removes an invocation of
-> `pin_init_from_closure`. This function is intended as a low level manual
-> escape hatch, so it is better to rely on the safe `pin_init!` macro.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+On Thu, Jan 04, 2024 at 02:02:41PM +0000, Alice Ryhl wrote:
+> Wake up another thread synchronously.
+> 
+> This method behaves like `notify_one`, except that it hints to the
+> scheduler that the current thread is about to go to sleep, so it should
+> schedule the target thread on the same CPU.
+> 
+> This is used by Rust Binder as a performance optimization. When sending
+> a transaction to a different process, we usually know which thread will
+> handle it, so we can schedule that thread for execution next on this
+> CPU for better cache locality.
+> 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Tiago Lam <tiagolam@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/sync/condvar.rs | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+> index f65e19d5a37c..1a3f7b8e03dc 100644
+> --- a/rust/kernel/sync/condvar.rs
+> +++ b/rust/kernel/sync/condvar.rs
+> @@ -155,6 +155,12 @@ fn notify(&self, count: i32, flags: u32) {
+>          };
+>      }
+>  
+> +    /// Calls the kernel function to notify one thread synchronously.
 
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I feel like "synchronously" needs some explanation here (e.g. using the
+same description in the commit log), but let's see if other future users
+really need this ;-)
+
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
+> +    pub fn notify_sync(&self) {
+> +        // SAFETY: `wait_list` points to valid memory.
+> +        unsafe { bindings::__wake_up_sync(self.wait_list.get(), bindings::TASK_NORMAL) };
+> +    }
+> +
+>      /// Wakes a single waiter up, if any.
+>      ///
+>      /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
+> 
+> -- 
+> 2.43.0.472.g3155946c3a-goog
+> 
