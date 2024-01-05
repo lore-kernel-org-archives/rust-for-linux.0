@@ -1,168 +1,73 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E432CCAD;
-	Thu,  4 Jan 2024 22:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865C51DFCE
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jan 2024 00:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fa+5SOze"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-594bea92494so513719eaf.2;
-        Thu, 04 Jan 2024 14:48:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704408491; x=1705013291; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ig4wvFvhtr+8Tfek404VfnLve6ynwSGmNBANXDk4iHk=;
-        b=fa+5SOzeXcqCBhjv8dgmTw/HIsrzZkDuBXZ+zgsfYPBe15CnBgIaA2AvZZyxEstqcK
-         P6Kqgbq+WoYzRMRMeTOfp8OKFg/txyIm+Au4bnEalnq33u6G9P0tq8U2r+IUAtcSh7dF
-         QchDgOeFGbMz8b1oOP2t578JZusrc5GKmp+1U3Q5ZcDP3+06cQ+8GIY7n+8xujmOfnjz
-         yRE0TeXO0UIPVL+rE1+E8qhLe23xhCmCdzo7Ged2X6GEwVNVjJaB3FRD6dgPyoxcx1io
-         UZEOZonCuxTsW1avqqw3FegaeLRITzpE7Pfx654nkkox7L46ubuNmxnC09s4RCMXv27r
-         L+Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704408491; x=1705013291;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ig4wvFvhtr+8Tfek404VfnLve6ynwSGmNBANXDk4iHk=;
-        b=E7lUwtYFxKFUTsSSrnkXKPHtLPBsvQLGwkk1zyK5d9193EKu6jz9ARc36//PE7ywG1
-         Zc0+Iduktq4XRlsoGQmuzSmJc+MFa2BrfvOQdxfJZ+Sa7N7GrMi07hUfvIDSLwsNlpgL
-         M1QORlEPsGC+TNveWYnpFUluW1eZ4wVJQ/CNiJv9xckynbgmpE1gmOBe9IFphBgSdYut
-         gun6sojPdsNAnOrLGNbQ1KAxyxqjHPan3ZjKSsb34lHFa8UvtZFeUoeeAV6+7ymQLCzM
-         qwABEBz1VmpOFeMRJchimA2lh325iG2JbVOfcOAlywxqlNrfzX917BoD605gd7dpP+rw
-         7Org==
-X-Gm-Message-State: AOJu0YxGSVFC/CNw6djSF3TcN6hfWLMIodsf/8aHq1SHkc/RULNYJLUB
-	skgP6pw9eJ4vzjk8tsdxK8w=
-X-Google-Smtp-Source: AGHT+IGfvR8XJZSQ113ZitUd9zmFRfxDm7xJXcURskPH74zVS3CNlFiUK0SJbdtVxWMZKsXhvNmPGg==
-X-Received: by 2002:a05:6820:2284:b0:594:35b8:5fc8 with SMTP id ck4-20020a056820228400b0059435b85fc8mr1380293oob.8.1704408491424;
-        Thu, 04 Jan 2024 14:48:11 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id fz27-20020a05622a5a9b00b0042545c7beccsm189536qtb.59.2024.01.04.14.48.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jan 2024 14:48:11 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 9256C27C005A;
-	Thu,  4 Jan 2024 17:48:10 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 04 Jan 2024 17:48:10 -0500
-X-ME-Sender: <xms:qTWXZaaLeprJbFdosXfbnBS-a9jPW6PW_g3juXTTRn4R6DPmkg8-5A>
-    <xme:qTWXZda1othseXpQ2eCV4I0eLZ_QL2XyP4ueBkbUBtVD_Npg6FTrTpF7OOjXjPSdM
-    hYRDRNg2OHL96dx2A>
-X-ME-Received: <xmr:qTWXZU8ITpl5zXQ28ueQo_nffOCyJ6Wb51zWgmGMixWnHIMGST3BD_yVHC8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegkedgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:qTWXZcrvZ9FAFmVfhceXvYE6FTMAs0Tlhh1E1uR6X1kxjUYhfgyxmw>
-    <xmx:qTWXZVpZLAHnlFff6jPlesCGC0GTofTMy1YiisUxa4bXKQCIG5dpYQ>
-    <xmx:qTWXZaSDB0QpYmhEe59A1te0s9c0vnKksAd2XsfZjx-tD59wMIiZtA>
-    <xmx:qjWXZbYoRUTD6xR8w5ng7C92aLRS_JdeO2N3idwgSb8AYO3ej_8PqA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jan 2024 17:48:09 -0500 (EST)
-Date: Thu, 4 Jan 2024 14:47:01 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] rust: sync: update integer types in CondVar
-Message-ID: <ZZc1ZcgzdRHtipr0@boqun-archlinux>
-References: <20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com>
- <20240104-rb-new-condvar-methods-v3-4-70b514fcbe52@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hVPjR62d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704413060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5WaHmrrzJBv7a+URkS6ztAOCLzOS5Gcgk0L1SHTlJFM=;
+	b=hVPjR62d9tTarf0dgMGB5wFba4auiNXTapmWqww2Wt3MJVhZ13VcnWEApvuYLpjgzylxD5
+	FRQo0T7zFSx11hVxj0KqCnBRAU5Xfd1R7OYdZUeQUFuIt1WTKi8+b9I/W4ax19SALZw+dx
+	Tx2FhldE73tPCHfsV58nz5BUHI2rMjY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-459-sCoRdcW_OJ2yXyiw9ax9QA-1; Thu, 04 Jan 2024 19:04:13 -0500
+X-MC-Unique: sCoRdcW_OJ2yXyiw9ax9QA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A956803916;
+	Fri,  5 Jan 2024 00:04:12 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0524E3C27;
+	Fri,  5 Jan 2024 00:04:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5>
+References: <ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5> <20231018122518.128049-1-wedsonaf@gmail.com> <ZT7BPUAxsHQ/H/Hm@casper.infradead.org> <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com> <ZZWhQGkl0xPiBD5/@casper.infradead.org>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: dhowells@redhat.com, Matthew Wilcox <willy@infradead.org>,
+    Wedson Almeida Filho <wedsonaf@gmail.com>,
+    Alexander Viro <viro@zeniv.linux.org.uk>,
+    Christian Brauner <brauner@kernel.org>,
+    Kent Overstreet <kent.overstreet@gmail.com>,
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+    linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+    Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240104-rb-new-condvar-methods-v3-4-70b514fcbe52@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1080085.1704413050.1@warthog.procyon.org.uk>
+Date: Fri, 05 Jan 2024 00:04:10 +0000
+Message-ID: <1080086.1704413050@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
-On Thu, Jan 04, 2024 at 02:02:44PM +0000, Alice Ryhl wrote:
-[...]
-> -use core::ffi::c_long;
-> +use core::ffi::{c_int, c_long, c_uint};
+Kent Overstreet <kent.overstreet@linux.dev> wrote:
 
-core::ffi::c_uint is not needed here. And 
+> So instead, it would seem easier to me to do the cleaner version on the
+> Rust side, and then once we know what that looks like, maybe we update
+> the C version to match - or maybe we light it all on fire and continue
+> with rewriting everything in Rust... *shrug*
 
-	use core::ptr;
+Please, no.  Please keep Rust separate and out of the core of the kernel and
+subsystems.
 
-is missing (for the `ptr::mut_null()` below)
+David
 
->  use core::marker::PhantomPinned;
->  use macros::pin_data;
->  
-[...]
-> @@ -174,23 +179,16 @@ pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
->          }
->      }
->  
-> -    /// Calls the kernel function to notify the appropriate number of threads with the given flags.
-> -    fn notify(&self, count: i32, flags: u32) {
-> +    /// Calls the kernel function to notify the appropriate number of threads.
-> +    fn notify(&self, count: c_int) {
->          // SAFETY: `wait_list` points to valid memory.
-> -        unsafe {
-> -            bindings::__wake_up(
-> -                self.wait_list.get(),
-> -                bindings::TASK_NORMAL,
-> -                count,
-> -                flags as _,
-> -            )
-> -        };
-> +        unsafe { bindings::__wake_up(self.wait_list.get(), TASK_NORMAL, count, ptr::null_mut()) };
->      }
->  
-[...]
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index ffb4a51eb898..37468613ac0d 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -10,6 +10,14 @@
-
-Missing:
-
-	use core::ffi::{c_long, c_int, c_uint};
-
-here.
-
-Regards,
-Boqun
-
->  /// A sentinal value used for infinite timeouts.
->  pub const MAX_SCHEDULE_TIMEOUT: c_long = c_long::MAX;
->  
-> +/// Bitmask for tasks that are sleeping in an interruptible state.
-> +pub const TASK_INTERRUPTIBLE: c_int = bindings::TASK_INTERRUPTIBLE as c_int;
-> +/// Bitmask for tasks that are sleeping in an uninterruptible state.
-> +pub const TASK_UNINTERRUPTIBLE: c_int = bindings::TASK_UNINTERRUPTIBLE as c_int;
-> +/// Convenience constant for waking up tasks regardless of whether they are in interruptible or
-> +/// uninterruptible sleep.
-> +pub const TASK_NORMAL: c_uint = bindings::TASK_NORMAL as c_uint;
-> +
->  /// Returns the currently running task.
->  #[macro_export]
->  macro_rules! current {
-> 
-> -- 
-> 2.43.0.472.g3155946c3a-goog
-> 
