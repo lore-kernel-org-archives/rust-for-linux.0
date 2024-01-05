@@ -1,122 +1,78 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C8E1FA3
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jan 2024 01:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DB44405;
+	Fri,  5 Jan 2024 03:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="F1fX5gGq"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id EEA0D240103
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jan 2024 02:29:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1704418175; bh=oAoNUgdOzVQyPdIoTkmvZg6pLTo+MPwqhbIwlJ+mDsQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:
-	 Content-Transfer-Encoding:From;
-	b=F1fX5gGqEnLPI4EyGo6URmlFCmx4ES+YybwJAOyVUE1Jl2mm7PQmaw4aFpujwznXO
-	 4sijbNg6seMuVuyFkb6jF1X8j/Nb7+z52J6PYqhXsv1TnvLdOZJTPHKKwutySZYpQ3
-	 30uu6PZZEKlY9D94p4TAGUepDJaFN2yPViYt5APVVzbwW845mpmpLswWEQuKw0XZ8J
-	 1JUj/9Qpbv7fLRpkVRtit9THxtlDRCGrj+BaYZW/70HlYzJEZZinbKp8FIx4gAg9lR
-	 +5v0Li8H65pwW9rhCQ7LKig0OFZCcrHYWyJimtTjJp6pufO+VRREA0m7kp7CXNen1G
-	 ZwliB0Ic91MLA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4T5m8X48yrz6tv5;
-	Fri,  5 Jan 2024 02:29:32 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	aliceryhl@google.com,
-	a.hindborg@samsung.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Charalampos Mitrodimas <charmitro@posteo.net>
-Subject: [PATCH] rust: sync: `CondVar` rename "wait_list" to "wait_queue_head"
-Date: Fri,  5 Jan 2024 01:29:30 +0000
-Message-Id: <20240105012930.1426214-1-charmitro@posteo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VStoL04s"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5ce10b5ee01so127608a12.1;
+        Thu, 04 Jan 2024 19:28:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704425284; x=1705030084; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KR8vLsD9bZDkCb0zj7kqJDNeQ83Zsylg5eIJGKfIYAQ=;
+        b=VStoL04s3tynXmUX8QmJFqxG3t0IXBvkBTcofLTwfCi7m0SgI54hXY4U+tr2nP1dSh
+         G0kdpdvpU/pjarZhpH170wuEWkrNiT7ljB//9oKpFBxg51khU+PvEs3mw14W5mnOB7Qc
+         YHTLACYDJffTYlLek2pJBQkvwCrvomb/7K7lMRRwoeOVYrZH/CDaM0mjKKyZGIgCubZO
+         fkP/M4dSkvHiQ2CyZ9wJJVUtppsiarT1wff40lrprvzbPbX1fH2whlJVm2jRqoauoXUi
+         0oqlLpkH8L4R9xlGcwpSN8WJcM+m5DiZgysUxaPPsYcwqIKjjpyMAFBJOL66ijNX/3iY
+         9t3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704425284; x=1705030084;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KR8vLsD9bZDkCb0zj7kqJDNeQ83Zsylg5eIJGKfIYAQ=;
+        b=BIpvZcrxbu/jOR8rXfGiVSbYEApaWJKhySe+6KsFGI/PB7dFKoHVsA2W8923Jq5DE2
+         9TfAfTGTGkIFD6Zj6fhuy+fB03fMUwGia2G/nViEVVBJVP1I1MG51bRPPSHvJgXkTMjN
+         tFes8nXqtYwFkWONpLq200lhidfXAcRrqgoxQIsG46QAQqjdTojuCD3VYHScSbmnYaqB
+         jDuL3TAnAVHXV43soGwmfNFQ18Pi6DDe0m8w0uTNOpCzXzmwUJ3Ttiatgubyx3Mw89Hn
+         iSHfiITJDGCuSzRM0gc6yYv1O4i6vDGhpsoZHipoAOKKawjIrIBiqF/7WlPFsqBTFrT/
+         XbtA==
+X-Gm-Message-State: AOJu0YxCajGwRYwmIu6oWmV2OrHwt0DwPq5/yQzIq0KIX6YZxTG+4+yS
+	PhxbxcW0rTeV+ipsWDp/ysQ=
+X-Google-Smtp-Source: AGHT+IFA9RA7WddOR/qKx+TbW7rnH2QuQEnEG5MpkTVlvZ/M2k30OhnOKHLVZVeyqpXUqEEr7eG7ew==
+X-Received: by 2002:a05:6a20:1605:b0:199:1ddb:b42 with SMTP id l5-20020a056a20160500b001991ddb0b42mr1771362pzj.11.1704425284559;
+        Thu, 04 Jan 2024 19:28:04 -0800 (PST)
+Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id q24-20020a63e218000000b005cdfb0a11e1sm384250pgh.88.2024.01.04.19.28.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jan 2024 19:28:04 -0800 (PST)
+Message-ID: <e57099de-f530-43a7-b9b2-bed295e13138@gmail.com>
+Date: Fri, 5 Jan 2024 00:27:59 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: sync: `CondVar` rename "wait_list" to
+ "wait_queue_head"
+Content-Language: en-US
+To: Charalampos Mitrodimas <charmitro@posteo.net>, ojeda@kernel.org,
+ alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ aliceryhl@google.com, a.hindborg@samsung.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240105012930.1426214-1-charmitro@posteo.net>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20240105012930.1426214-1-charmitro@posteo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Fields named "wait_list" usually are of type "struct list_head". To
-avoid confusion and because it is of type
-"Opaque<bindings::wait_queue_head>" we are renaming "wait_list" to
-"wait_queue_head".
+On 1/4/24 22:29, Charalampos Mitrodimas wrote:
+> Fields named "wait_list" usually are of type "struct list_head". To
+> avoid confusion and because it is of type
+> "Opaque<bindings::wait_queue_head>" we are renaming "wait_list" to
+> "wait_queue_head".
+> 
+> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+> ---
+> [...]
 
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
----
- rust/kernel/sync/condvar.rs | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
-
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index b679b6f6dbeb..ea0d559fbde5 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -73,7 +73,7 @@ macro_rules! new_condvar {
- #[pin_data]
- pub struct CondVar {
-     #[pin]
--    pub(crate) wait_list: Opaque<bindings::wait_queue_head>,
-+    pub(crate) wait_queue_head: Opaque<bindings::wait_queue_head>,
- 
-     /// A condvar needs to be pinned because it contains a [`struct list_head`] that is
-     /// self-referential, so it cannot be safely moved once it is initialised.
-@@ -96,7 +96,7 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
-             _pin: PhantomPinned,
-             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
-             // static lifetimes so they live indefinitely.
--            wait_list <- Opaque::ffi_init(|slot| unsafe {
-+            wait_queue_head <- Opaque::ffi_init(|slot| unsafe {
-                 bindings::__init_waitqueue_head(slot, name.as_char_ptr(), key.as_ptr())
-             }),
-         })
-@@ -108,16 +108,20 @@ fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guar
-         // SAFETY: `wait` points to valid memory.
-         unsafe { bindings::init_wait(wait.get()) };
- 
--        // SAFETY: Both `wait` and `wait_list` point to valid memory.
-+        // SAFETY: Both `wait` and `wait_queue_head` point to valid memory.
-         unsafe {
--            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
-+            bindings::prepare_to_wait_exclusive(
-+                self.wait_queue_head.get(),
-+                wait.get(),
-+                wait_state as _,
-+            )
-         };
- 
-         // SAFETY: No arguments, switches to another thread.
-         guard.do_unlocked(|| unsafe { bindings::schedule() });
- 
--        // SAFETY: Both `wait` and `wait_list` point to valid memory.
--        unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
-+        // SAFETY: Both `wait` and `wait_queue_head` point to valid memory.
-+        unsafe { bindings::finish_wait(self.wait_queue_head.get(), wait.get()) };
-     }
- 
-     /// Releases the lock and waits for a notification in interruptible mode.
-@@ -144,10 +148,10 @@ pub fn wait_uninterruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_,
- 
-     /// Calls the kernel function to notify the appropriate number of threads with the given flags.
-     fn notify(&self, count: i32, flags: u32) {
--        // SAFETY: `wait_list` points to valid memory.
-+        // SAFETY: `wait_queue_head` points to valid memory.
-         unsafe {
-             bindings::__wake_up(
--                self.wait_list.get(),
-+                self.wait_queue_head.get(),
-                 bindings::TASK_NORMAL,
-                 count,
-                 flags as _,
--- 
-2.39.2
-
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
