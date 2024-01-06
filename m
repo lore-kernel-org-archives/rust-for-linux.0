@@ -1,67 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D332E652;
-	Fri,  5 Jan 2024 15:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuQvtxDX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A840C433C8;
-	Fri,  5 Jan 2024 15:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704470070;
-	bh=9dtpNH9SkjfJPBOUmb+lWjvPc63pPm4rgfSeh1Udxck=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IuQvtxDX+wBAeq93lAoCdn44oX174LU78jsX4TiJUnIDJCxZe4MQxMxTBaCxVULZt
-	 4zeUAHrxdrTDx1l7BF97gkMDTzBxVu19pg6U/iY+qldQybwZ4/V7tdSPHFlFr4EOaA
-	 PCxv0TaMjXXPJd9HUNPFjs5RnhQL6FnKnYFZlPwszeK3d1FCnYooHTo3ZnotgkloBD
-	 QUlIWfCPbdCVwuS7ycWjZvExFkd7ZaswMAXg2p56jKRSFWTVeMT7XaFXaspEiLhgPr
-	 NQ/Ro6VwmJ0p8+UTwfRk60enc4Pp5V4l+FIv9cAXaPGBrpiK1v9sHFvyjKJugq7Mol
-	 +s+iUYrLsOirA==
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B3D523E;
+	Sat,  6 Jan 2024 07:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [112.22.232.245])
+	by gateway (Coremail) with SMTP id _____8Cxbbtj+5hl4pUCAA--.794S3;
+	Sat, 06 Jan 2024 15:04:03 +0800 (CST)
+Received: from localhost.localdomain (unknown [112.22.232.245])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8Bx34de+5hlmlQEAA--.11488S2;
+	Sat, 06 Jan 2024 15:04:00 +0800 (CST)
+From: WANG Rui <wangrui@loongson.cn>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	WANG Rui <wangrui@loongson.cn>
+Subject: [PATCH] LoongArch: Enable initial Rust support
+Date: Sat,  6 Jan 2024 14:59:41 +0800
+Message-ID: <20240106065941.180796-1-wangrui@loongson.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Jan 2024 17:54:26 +0200
-Message-Id: <CY6W7MLYLYEI.1DX1F6OL9IIDV@suppilovahvero>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Howells" <dhowells@redhat.com>, "Kent Overstreet"
- <kent.overstreet@linux.dev>
-Cc: "Matthew Wilcox" <willy@infradead.org>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>, "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Kent Overstreet"
- <kent.overstreet@gmail.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, <linux-fsdevel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Wedson Almeida Filho"
- <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
-X-Mailer: aerc 0.15.2
-References: <ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5> <20231018122518.128049-1-wedsonaf@gmail.com> <ZT7BPUAxsHQ/H/Hm@casper.infradead.org> <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com> <ZZWhQGkl0xPiBD5/@casper.infradead.org> <1080086.1704413050@warthog.procyon.org.uk>
-In-Reply-To: <1080086.1704413050@warthog.procyon.org.uk>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAf8Bx34de+5hlmlQEAA--.11488S2
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGr4UWryDJw43Xw45Cr4kAFc_yoW5Ary5pa
+	97ur97Jr4xXrykJrn8JFyUZr4UAFyDGr47XF18Cw18Jr4DZryUXr1xtFn3JF1rGw4kArW8
+	WF15GryUArWUJwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUk529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0L0ePUUUUU==
 
-On Fri Jan 5, 2024 at 2:04 AM EET, David Howells wrote:
-> Kent Overstreet <kent.overstreet@linux.dev> wrote:
->
-> > So instead, it would seem easier to me to do the cleaner version on the
-> > Rust side, and then once we know what that looks like, maybe we update
-> > the C version to match - or maybe we light it all on fire and continue
-> > with rewriting everything in Rust... *shrug*
->
-> Please, no.  Please keep Rust separate and out of the core of the kernel =
-and
-> subsystems.
->
-> David
+Add initial Rust support for LoongArch.
 
-Yeah, if we ignore that code is field-tested in some cases literally
-decades, is infrastructure critical in global scale and similar QA
-metrics, any major Rust update to the core code would be pretty hard
-to manage for stable kernels...
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+---
+ Documentation/rust/arch-support.rst |  1 +
+ arch/loongarch/Kconfig              |  1 +
+ arch/loongarch/Makefile             |  3 +++
+ scripts/generate_rust_target.rs     | 10 ++++++++++
+ 4 files changed, 15 insertions(+)
 
-Using Rust in core would probably require decisions at least that are
-not in the scope of a single patch set.
+diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+index b91e9ef4d0c2..e89c8b2efbff 100644
+--- a/Documentation/rust/arch-support.rst
++++ b/Documentation/rust/arch-support.rst
+@@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+ ============  ================  ==============================================
+ Architecture  Level of support  Constraints
+ ============  ================  ==============================================
++``loongarch`` Maintained
+ ``um``        Maintained        ``x86_64`` only.
+ ``x86``       Maintained        ``x86_64`` only.
+ ============  ================  ==============================================
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 15d05dd2b7f3..6d39ec3077da 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -142,6 +142,7 @@ config LOONGARCH
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RETHOOK
+ 	select HAVE_RSEQ
++	select HAVE_RUST
+ 	select HAVE_SAMPLE_FTRACE_DIRECT
+ 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
+ 	select HAVE_SETUP_PER_CPU_AREA if NUMA
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index 4ba8d67ddb09..ba45cb7b621c 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -81,8 +81,11 @@ KBUILD_AFLAGS_MODULE		+= -Wa,-mla-global-with-abs
+ KBUILD_CFLAGS_MODULE		+= -fplt -Wa,-mla-global-with-abs,-mla-local-with-abs
+ endif
+ 
++KBUILD_RUSTFLAGS_MODULE		+= -Crelocation-model=pic
++
+ ifeq ($(CONFIG_RELOCATABLE),y)
+ KBUILD_CFLAGS_KERNEL		+= -fPIE
++KBUILD_RUSTFLAGS_KERNEL		+= -Crelocation-model=pie
+ LDFLAGS_vmlinux			+= -static -pie --no-dynamic-linker -z notext $(call ld-option, --apply-dynamic-relocs)
+ endif
+ 
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 3c6cbe2b278d..3edda6a10dd0 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -161,6 +161,16 @@ fn main() {
+         ts.push("features", features);
+         ts.push("llvm-target", "x86_64-linux-gnu");
+         ts.push("target-pointer-width", "64");
++    } else if cfg.has("LOONGARCH") {
++        ts.push("arch", "loongarch64");
++        ts.push(
++            "data-layout",
++            "e-m:e-p:64:64-i64:64-i128:128-n64-S128",
++        );
++        ts.push("features", "-f,-d");
++        ts.push("llvm-target", "loongarch64-linux-gnusf");
++        ts.push("llvm-abiname", "lp64s");
++        ts.push("target-pointer-width", "64");
+     } else {
+         panic!("Unsupported architecture");
+     }
+-- 
+2.43.0
 
-BR, Jarkko
