@@ -1,135 +1,102 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B3D523E;
-	Sat,  6 Jan 2024 07:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [112.22.232.245])
-	by gateway (Coremail) with SMTP id _____8Cxbbtj+5hl4pUCAA--.794S3;
-	Sat, 06 Jan 2024 15:04:03 +0800 (CST)
-Received: from localhost.localdomain (unknown [112.22.232.245])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8Bx34de+5hlmlQEAA--.11488S2;
-	Sat, 06 Jan 2024 15:04:00 +0800 (CST)
-From: WANG Rui <wangrui@loongson.cn>
-To: Miguel Ojeda <ojeda@kernel.org>,
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A802136F;
+	Sun,  7 Jan 2024 01:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G1o1rEaA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704589608; x=1736125608;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BL/G2+DBgzyngkKxm1Okb/HyxO0E8Sb22Xv27tX30GE=;
+  b=G1o1rEaAoiTz68/7FW5P5J7DYZpaV0UgiJ+Rj9kfnj8HAYm1exHQRC95
+   R4LwBQ/XJV7W7nmUg0qIM5Hl9kwLzFc+HpugpNtvhXfDI94H/Q8YGla4Q
+   sCeMvJZDfxgFTPIiKwZz451pJq1J2/FQaLnBJcHrJHZtyynmx5OC5Xv9E
+   Q07sZ0h7fbI3ObEw8TsJjb2jN/dsQtk52OISKFr3Wo1U4Km+v7quytg6y
+   /1qaTH0RfqNnp9NQgQpMZ9V08zCAjetyLYL7+4J5T4XGXQ+TXupUqn8i4
+   BiJQLRd79IubFNY3/EXRRZQ/87/hmbHTIYs/YA9Gg2xoJiGt4WSiU5IgD
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="382661489"
+X-IronPort-AV: E=Sophos;i="6.04,338,1695711600"; 
+   d="scan'208";a="382661489"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2024 17:06:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10945"; a="899999269"
+X-IronPort-AV: E=Sophos;i="6.04,338,1695711600"; 
+   d="scan'208";a="899999269"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga002.fm.intel.com with ESMTP; 06 Jan 2024 17:06:42 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rMHce-0003EK-0f;
+	Sun, 07 Jan 2024 01:06:40 +0000
+Date: Sun, 7 Jan 2024 09:06:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: WANG Rui <wangrui@loongson.cn>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Huacai Chen <chenhuacai@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
+Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	WANG Xuerui <kernel@xen0n.name>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	WANG Rui <wangrui@loongson.cn>
-Subject: [PATCH] LoongArch: Enable initial Rust support
-Date: Sat,  6 Jan 2024 14:59:41 +0800
-Message-ID: <20240106065941.180796-1-wangrui@loongson.cn>
-X-Mailer: git-send-email 2.43.0
+	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-doc@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn, WANG Rui <wangrui@loongson.cn>
+Subject: Re: [PATCH] LoongArch: Enable initial Rust support
+Message-ID: <202401070815.6tdJWFme-lkp@intel.com>
+References: <20240106065941.180796-1-wangrui@loongson.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8Bx34de+5hlmlQEAA--.11488S2
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGr4UWryDJw43Xw45Cr4kAFc_yoW5Ary5pa
-	97ur97Jr4xXrykJrn8JFyUZr4UAFyDGr47XF18Cw18Jr4DZryUXr1xtFn3JF1rGw4kArW8
-	WF15GryUArWUJwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUk529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0L0ePUUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240106065941.180796-1-wangrui@loongson.cn>
 
-Add initial Rust support for LoongArch.
+Hi WANG,
 
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
----
- Documentation/rust/arch-support.rst |  1 +
- arch/loongarch/Kconfig              |  1 +
- arch/loongarch/Makefile             |  3 +++
- scripts/generate_rust_target.rs     | 10 ++++++++++
- 4 files changed, 15 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index b91e9ef4d0c2..e89c8b2efbff 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
- ============  ================  ==============================================
- Architecture  Level of support  Constraints
- ============  ================  ==============================================
-+``loongarch`` Maintained
- ``um``        Maintained        ``x86_64`` only.
- ``x86``       Maintained        ``x86_64`` only.
- ============  ================  ==============================================
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 15d05dd2b7f3..6d39ec3077da 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -142,6 +142,7 @@ config LOONGARCH
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RETHOOK
- 	select HAVE_RSEQ
-+	select HAVE_RUST
- 	select HAVE_SAMPLE_FTRACE_DIRECT
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
- 	select HAVE_SETUP_PER_CPU_AREA if NUMA
-diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-index 4ba8d67ddb09..ba45cb7b621c 100644
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -81,8 +81,11 @@ KBUILD_AFLAGS_MODULE		+= -Wa,-mla-global-with-abs
- KBUILD_CFLAGS_MODULE		+= -fplt -Wa,-mla-global-with-abs,-mla-local-with-abs
- endif
- 
-+KBUILD_RUSTFLAGS_MODULE		+= -Crelocation-model=pic
-+
- ifeq ($(CONFIG_RELOCATABLE),y)
- KBUILD_CFLAGS_KERNEL		+= -fPIE
-+KBUILD_RUSTFLAGS_KERNEL		+= -Crelocation-model=pie
- LDFLAGS_vmlinux			+= -static -pie --no-dynamic-linker -z notext $(call ld-option, --apply-dynamic-relocs)
- endif
- 
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 3c6cbe2b278d..3edda6a10dd0 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -161,6 +161,16 @@ fn main() {
-         ts.push("features", features);
-         ts.push("llvm-target", "x86_64-linux-gnu");
-         ts.push("target-pointer-width", "64");
-+    } else if cfg.has("LOONGARCH") {
-+        ts.push("arch", "loongarch64");
-+        ts.push(
-+            "data-layout",
-+            "e-m:e-p:64:64-i64:64-i128:128-n64-S128",
-+        );
-+        ts.push("features", "-f,-d");
-+        ts.push("llvm-target", "loongarch64-linux-gnusf");
-+        ts.push("llvm-abiname", "lp64s");
-+        ts.push("target-pointer-width", "64");
-     } else {
-         panic!("Unsupported architecture");
-     }
+[auto build test WARNING on rust/rust-next]
+[also build test WARNING on linus/master v6.7-rc8 next-20240105]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/WANG-Rui/LoongArch-Enable-initial-Rust-support/20240106-150902
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20240106065941.180796-1-wangrui%40loongson.cn
+patch subject: [PATCH] LoongArch: Enable initial Rust support
+reproduce: (https://download.01.org/0day-ci/archive/20240107/202401070815.6tdJWFme-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401070815.6tdJWFme-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Documentation/rust/arch-support.rst:18: WARNING: Malformed table.
+
+vim +18 Documentation/rust/arch-support.rst
+
+    14	
+    15	============  ================  ==============================================
+    16	Architecture  Level of support  Constraints
+    17	============  ================  ==============================================
+  > 18	``loongarch`` Maintained
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
