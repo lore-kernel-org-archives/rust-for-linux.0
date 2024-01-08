@@ -1,116 +1,148 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21AD611A
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jan 2024 06:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [209.85.222.173])
-	by gateway (Coremail) with SMTP id _____8CxqurpkZtluQoDAA--.9113S3;
-	Mon, 08 Jan 2024 14:10:50 +0800 (CST)
-Received: from mail-qk1-f173.google.com (unknown [209.85.222.173])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxXNzlkZtl_REHAA--.18144S3;
-	Mon, 08 Jan 2024 14:10:47 +0800 (CST)
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7831389c7daso166890985a.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 07 Jan 2024 22:10:47 -0800 (PST)
-X-Gm-Message-State: AOJu0YzRzIodWS9RHcZYqutv5Aa9jV9PJ6EUV0wnelMU8ey6l2HmjgIW
-	v7thPsx2z6PlrlSfIP6lmiDaOraA60OzAhs+KD/CFlBMnisyng==
-X-Google-Smtp-Source: AGHT+IGKnCG8TykNKu6ZAbyjwnzNC87gaoIpVZsuDDN+mlXo4QRoj8lgmpTyYllZ7a5FmM235WXdm/gN/LQ8AnX4xlE=
-X-Received: by 2002:a05:620a:272a:b0:783:251a:e5d9 with SMTP id
- b42-20020a05620a272a00b00783251ae5d9mr445312qkp.21.1704684114109; Sun, 07 Jan
- 2024 19:21:54 -0800 (PST)
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE86C47784
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jan 2024 14:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RoAfq4dO"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbeac1f5045so2322148276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jan 2024 06:50:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704725404; x=1705330204; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5BINcGECvEsWTT9DMOcD/NYX5FsAQjYJ3MPey7hy/CI=;
+        b=RoAfq4dOGv3yBeCPUGy1dipj4Big8eoYGbojMuPcmMWoPb+tkEJc5q0og/CvchkMKS
+         DchFjQBNW/HSLo4IheNxBMZbe33HU76nsvSc++g/b2aGRY+IaBP/hJ2ORmnRZ9cPtipW
+         wE/HskxX+ThMMMZerTXzOZ23aOgX5sJUTcGoMyFlboHhQJmPqwFRcYrDluKQ2ZNAhAbJ
+         RzYGmBK2zHQ1C+XNaxsJ8zIhnnJd98GsLh4cOFUEB0Ps2U79wOg1zGxR0N/ifouRkoxq
+         GIWlneU9HaGXlYDFUYeBC8fEfk6c49BNn5UUT5Tl62n7Nen6Tr7Kk+kKzWgahCsS6Wbi
+         vjIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704725404; x=1705330204;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5BINcGECvEsWTT9DMOcD/NYX5FsAQjYJ3MPey7hy/CI=;
+        b=hMawo/iTucKnGvLpaDM+p6AbJeI3jQA0OTNSLnEGW0f42ugPRS/h66j8Cx25WK9jv7
+         dDsHOqHZu+SFcsDRpKL8a/zVcVXXILLNHEFeYLURF8HCcinXyy4afHVdvJzZyY+BOAi3
+         Ls4+CUYNduYIIPhNpbQpmFT+SOAGOhjIPgEIWeNc/UaqWW0jsssUERDWRxELkYYMKFxs
+         mr4HqlZA3f4uvedIdvSlmITM6aK2A4aiGAexuli85LqlsqEshecJinB5VZUYqSXWfwhc
+         6kRX3jTL8Qp76N4x9BoKXnQIfyiw72V5hqYzL0dZS99SItLvzcaNyEu4AeUFiIQ+lpRr
+         UD+w==
+X-Gm-Message-State: AOJu0Yy1ZxOvmHF2pEFrhzwWqHM1sGaUt6OxEqLGFB44f6FVdvxFqKt4
+	cdbbhAd18nb2cU5TgOmftU105K1dAScGx0nDUSQCxA==
+X-Google-Smtp-Source: AGHT+IGOGzj9aEfvqssJXaiS+G17nnnYxCa62EX3NL6uTdjiNulnlUsR7q2pYMVsE+EpUC7eFqLAVDqiB2tELbo=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:27c1:b0:dbe:d5b3:89dc with SMTP
+ id ec1-20020a05690227c100b00dbed5b389dcmr1610521ybb.0.1704725403851; Mon, 08
+ Jan 2024 06:50:03 -0800 (PST)
+Date: Mon, 08 Jan 2024 14:49:56 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240106065941.180796-1-wangrui@loongson.cn> <CANiq72=M5TrUL+9Z0nqKKcD=KHwyDA79fNYHgU2EJ+7u6Ct8qw@mail.gmail.com>
-In-Reply-To: <CANiq72=M5TrUL+9Z0nqKKcD=KHwyDA79fNYHgU2EJ+7u6Ct8qw@mail.gmail.com>
-From: WANG Rui <wangrui@loongson.cn>
-Date: Mon, 8 Jan 2024 11:21:43 +0800
-X-Gmail-Original-Message-ID: <CAHirt9hd4W25p1kVNYXbEXrLj6NgT5r=EPWsoOmHZzS1qGR-yA@mail.gmail.com>
-Message-ID: <CAHirt9hd4W25p1kVNYXbEXrLj6NgT5r=EPWsoOmHZzS1qGR-yA@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: Enable initial Rust support
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:AQAAf8AxXNzlkZtl_REHAA--.18144S3
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CF1Utw17JryrZFykCF1DCFX_yoW8GF45p3
-	Z2yryxKr4UJr9rJF17Ar1xXw1qyrn5Gw15Jwn5G3yUAw1UJr13Jr1UKF45tFyDGr1xCr4j
-	yF1jvF1DAF4DJrgCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	JVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Cr0_Gr1UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jb6pPUUUUU=
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJULnGUC/3XNSwrCMBSF4a2UjI3k2aIj9yEO8rhpA7aRpESld
+ O+mhYIiHf4H7ncnlCB6SOhcTShC9smHoYQ4VMh0amgBe1saMcI4ZUTiqPEAT2zCYLOKuIexCzZ
+ h1mh1ktZJKygqx48Izr9W+Hor3fk0hvhe/2S6rBtZ75GZYoI5V8Io3Tir1KUNob3D0YQeLWZmX w7dd1hxNJFK1xRqK/WfwzdHEErErsOL0xAtqXBGg2Q/zjzPHyDd8ABNAQAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2913; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=XVBH1qF+OhuNqpjEXI7B/xwdvAfa7Seq4OzBOwOWR64=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlnAuW1Vhoq6TeJkpHejsmIMZb2vak2s481PpY1
+ W7Vd6hXk7OJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZZwLlgAKCRAEWL7uWMY5
+ RoPUD/0feWBz/CvDY5WnXDYuRumChdf+/N5FkNrkJvErOCB5U97equhbuyFNh0b4m2BDkKOCNUE
+ NuKht2KU6vstUyidH4M1ZcSiCvP8n5bc8brNVyKfYGELQSYeqWvFGyJZVgtIXNiCQk8Qy/VPemJ
+ BTXJvw/ecwRHE1Yoy6EOLvvDGVmeHLsyTz/XWVjY8Q/daEB0pcAhSUHPueXYhhK2qh9lG+K9lsV
+ YeE/O/sg+TaNt8pVSMx3s6Kqw/Ty0eCUz08tJJOQEm2x/y/z2IK6fIw1dXIqZie6B+Inf0SBFv5
+ Zx1yLz0XzIbqhEt+nwq4RekUOIgdeCSKa21H/82jmhqqCgztF3exdiCq7sCvKmb3ZVYv0KO94RJ
+ 9opZx7lsIKt4CeMP9rP6+/wt2uvigaLmd0ZhZOd6qA9vLGqAK9SdDgaOYLK3RC6dRPwBoUn9aSl
+ TWGpD04xqoegPH4AxFpq+w9c5H1CzNKP99MFp0jQFHrbNSPiinu3zlFT5fmBIuUaGLKmx3genSp
+ AOVGzJYCAyJKPA6JEExHYd9SdLSqFCtHGOzaEyvHWwlfGmA8J8QvBmUjFMD9KdckehUR1C2mFKg
+ ep78QyvgFjvhStDFAyAeu9HQULxfUCUoZFU7oq1YW0Cq3Sad9dEVuLBzfDkV7cEcowmol275yN8 nQIoZMfGQsIxejg==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240108-rb-new-condvar-methods-v4-0-88e0c871cc05@google.com>
+Subject: [PATCH v4 0/4] Additional CondVar methods needed by Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>
+Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Hello,
+This patchset contains some CondVar methods that Rust Binder needs.
 
-On Sun, Jan 7, 2024 at 10:29=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Sat, Jan 6, 2024 at 8:04=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wro=
-te:
-> >
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> >  Architecture  Level of support  Constraints
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> > +``loongarch`` Maintained
->
-> On top of what Huacai said, it would be nice to add another character
-> and realign the table so that `loongarch` it doesn't overflow (perhaps
-> best done in an additional, previous patch).
+The CondVar type implements a condition variable, and tries to mirror
+the API of the CondVar type provided by the Rust standard library [2].
+It is implemented using a `wait_queue_head`.
 
-Thanks Huacai, Miguel.
+Please see the Rust Binder RFC for usage examples [1].
 
->
-> > +    } else if cfg.has("LOONGARCH") {
->
-> Would it be possible to do it without a custom target in
-> `scripts/generate_rust_target.rs`? If it is not possible (e.g. there
-> is something that you cannot tweak otherwise on top of a built-in
-> target via the CLI flags), it is fine to use a custom target for the
-> moment.
->
-> For instance, this is how ARM is doing it:
-> https://lore.kernel.org/rust-for-linux/20231020155056.3495121-1-Jamie.Cun=
-liffe@arm.com/
->
+Users of rust: sync: add `CondVar::notify_sync`:
+	[PATCH RFC 04/20] rust_binder: add work lists
+	[PATCH RFC 07/20] rust_binder: add epoll support
+	[PATCH RFC 08/20] rust_binder: add non-oneway transactions
 
-Thanks for your comments. I noticed that the refactoring of the build
-system to support the use of Rust built-in targets is still ongoing.
-Could this take some time? In the meantime, let's proceed with the
-generation method.
+Users of rust: time: add msecs to jiffies conversion:
+	[PATCH v2 3/3] rust: sync: add `CondVar::wait_timeout`
+	[PATCH RFC 15/20] rust_binder: add process freezing
 
-> Thanks!
->
-> Cheers,
-> Miguel
->
+Users of rust: sync: add `CondVar::wait_timeout`:
+	[PATCH RFC 15/20] rust_binder: add process freezing
 
---=20
-Rui
+This patchset is based on top of the rust-6.8 tag.
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Link: https://doc.rust-lang.org/stable/std/sync/struct.Condvar.html [2]
+Link: https://lore.kernel.org/all/20231214200421.690629-1-boqun.feng@gmail.com/ [3]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v4:
+- Fix imports.
+- Improve documentation for `notify_sync`.
+- Add justification for using a jiffies-based `wait_timeout`.
+- Link to v3: https://lore.kernel.org/r/20240104-rb-new-condvar-methods-v3-0-70b514fcbe52@google.com
+
+Changes in v3:
+- Update module description for new `time` module.
+- Move constants to `rust/kernel/task.rs`.
+- Fix incorrect doc-comment on `CondVar::notify`.
+- Rename c_long argument to `timeout_in_jiffies`.
+- Link to v2: https://lore.kernel.org/r/20231216-rb-new-condvar-methods-v2-0-b05ab61e6d5b@google.com
+
+Changes in v2:
+- Introduce "rust: time: add msecs to jiffies conversion" patch.
+- Introduce "rust: sync: update integer types in CondVar" patch.
+- Merge wait_internal and wait_internal_timeout.
+- Use new Jiffies type alias instead of u64.
+- Update names to use _interruptable suffix (and base patchset on top of [3]).
+- Link to v1: https://lore.kernel.org/r/20231206-rb-new-condvar-methods-v1-0-33a4cab7fdaa@google.com
+
+---
+Alice Ryhl (4):
+      rust: sync: add `CondVar::notify_sync`
+      rust: time: add msecs to jiffies conversion
+      rust: sync: add `CondVar::wait_timeout`
+      rust: sync: update integer types in CondVar
+
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/lib.rs              |  1 +
+ rust/kernel/sync/condvar.rs     | 95 ++++++++++++++++++++++++++++++++---------
+ rust/kernel/sync/lock.rs        |  4 +-
+ rust/kernel/task.rs             | 18 +++++++-
+ rust/kernel/time.rs             | 20 +++++++++
+ 6 files changed, 117 insertions(+), 22 deletions(-)
+---
+base-commit: 711cbfc717650532624ca9f56fbaf191bed56e67
+change-id: 20231205-rb-new-condvar-methods-27ba95df5d41
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
