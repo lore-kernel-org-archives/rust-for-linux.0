@@ -1,38 +1,37 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D1B7E2;
-	Mon,  8 Jan 2024 01:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6sE1gu+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE133C433C9;
-	Mon,  8 Jan 2024 01:22:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704676971;
-	bh=U48ddkhZbLIGmAm3tOALZCKxURR7hnYXdKWlBy0GGfA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a6sE1gu+iyHrvqLEnF3gZ8hqAMt0d19Tqb51eyQ2y2jfyu1rqDD1r8efs0JJpQFxC
-	 zMj5zgm7a4R9GKgCKIZtyMr8AcFAoBmbZcjntIqii3a7oYckywD/hUf6w8xY9hxlDd
-	 RxkbQEn0NVYbwyLerVdgNCQm2UXJujPH88oANXwqfMfbdjhQF4mYxbHUoGZqrWH7Vq
-	 J5vRqS5fQLhjoPwwwE/lWxF7piM93sxB6FkYgXN7Kc40fUU6QxsrYG9ku3Gj0agCB3
-	 uvKIN3d5uOaN0wMVkybTQDY38e+AXOogFbXijQADywzuxNezlkMrOUG2/gtPhcEJE4
-	 ahvkb+qzKzzCw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE9379C2;
+	Mon,  8 Jan 2024 03:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [112.22.232.245])
+	by gateway (Coremail) with SMTP id _____8Bxnrs4aptljwQDAA--.1556S3;
+	Mon, 08 Jan 2024 11:21:28 +0800 (CST)
+Received: from localhost.localdomain (unknown [112.22.232.245])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8CxO9wxaptlNuUGAA--.17925S2;
+	Mon, 08 Jan 2024 11:21:25 +0800 (CST)
+From: WANG Rui <wangrui@loongson.cn>
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
+	WANG Xuerui <kernel@xen0n.name>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust for v6.8
-Date: Mon,  8 Jan 2024 02:20:55 +0100
-Message-ID: <20240108012055.519813-1-ojeda@kernel.org>
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	WANG Rui <wangrui@loongson.cn>
+Subject: [PATCH v1 0/2] Rust enablement for LoongArch
+Date: Mon,  8 Jan 2024 11:21:15 +0800
+Message-ID: <20240108032117.215171-1-wangrui@loongson.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,145 +39,42 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAf8CxO9wxaptlNuUGAA--.17925S2
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+	BjDU0xBIdaVrnRJUUUPjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
+	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxV
+	AFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E
+	14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44
+	I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2
+	jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20x
+	vY0x0EwIxGrwCF54CYxVAaw2AFwI0_Jw0_GFyl4c8EcI0Ec7CjxVAaw2AFwI0_Jw0_GFyl
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcCD7UUUUU
 
-Hi Linus,
+Enable Rust support for the LoongArch architecture.
 
-This is the next round of the Rust support.
+Previous versions:
+v0: https://lore.kernel.org/loongarch/20240106065941.180796-1-wangrui@loongson.cn/
 
-All the commits have been in linux-next for more than a couple weeks,
-but only for 3 -next tags given the holidays (first one next-20231222).
+Changes in v1:
+ - Address htmldocs warning.
 
-No conflicts expected. No changes to the C side.
+WANG Rui (2):
+  Documentation: rust: Add a character to the first column
+  LoongArch: Enable initial Rust support
 
-There are also some Rust abstractions for network PHY drivers (with a
-Rust reference driver included for Asix PHY) which you will likely get
-through the networking tree. No conflicts expected with those either,
-and tests pass with those merged too.
+ Documentation/rust/arch-support.rst | 13 +++++++------
+ arch/loongarch/Kconfig              |  1 +
+ arch/loongarch/Makefile             |  3 +++
+ scripts/generate_rust_target.rs     | 10 ++++++++++
+ 4 files changed, 21 insertions(+), 6 deletions(-)
 
-Please pull for v6.8 -- thanks!
+-- 
+2.43.0
 
-Cheers,
-Miguel
-
-The following changes since commit a39b6ac3781d46ba18193c9dbb2110f31e9bffe9:
-
-  Linux 6.7-rc5 (2023-12-10 14:33:40 -0800)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/rust-6.8
-
-for you to fetch changes up to 711cbfc717650532624ca9f56fbaf191bed56e67:
-
-  docs: rust: Clarify that 'rustup override' applies to build directory (2023-12-21 22:47:40 +0100)
-
-----------------------------------------------------------------
-Rust changes for v6.8
-
-Another routine one in terms of features. In terms of lines, this time
-the 'alloc' version upgrade is less prominent, given that it was fairly
-small (and we did not have two upgrades).
-
-Toolchain and infrastructure:
-
- - Upgrade to Rust 1.74.1.
-
-   The patch release includes a fix for an ICE that the Apple AGX GPU
-   driver was hitting.
-
- - Support 'srctree'-relative links in Rust code documentation.
-
- - Automate part of the manual constants handling (i.e. the ones not
-   recognised by 'bindgen').
-
- - Suppress searching builtin sysroot to avoid confusion with installed
-   sysroots, needed for the to-be-merged arm64 support which uses
-   a builtin target.
-
- - Ignore '__preserve_most' functions for 'bindgen'.
-
- - Reduce header inclusion bloat in exports.
-
-'kernel' crate:
-
- - Implement 'Debug' for 'CString'.
-
- - Make 'CondVar::wait()' an uninterruptible wait.
-
-'macros' crate:
-
- - Update 'paste!' to accept string literals.
-
- - Improve '#[vtable]' documentation.
-
-Documentation:
-
- - Add testing section (KUnit and 'rusttest' target).
-
- - Remove 'CC=clang' mentions.
-
- - Clarify that 'rustup override' applies to build directory.
-
-----------------------------------------------------------------
-Asahi Lina (1):
-      rust: kernel: str: Implement Debug for CString
-
-Benno Lossin (1):
-      rust: macros: improve `#[vtable]` documentation
-
-Boqun Feng (1):
-      rust: sync: Makes `CondVar::wait()` an uninterruptible wait
-
-Dirk Behme (1):
-      docs: rust: Add rusttest info
-
-Gary Guo (1):
-      rust: bindings: rename const binding using sed
-
-Masahiro Yamada (1):
-      rust: replace <linux/module.h> with <linux/export.h> in rust/exports.c
-
-Matthew Maurer (2):
-      rust: Ignore preserve-most functions
-      rust: Suppress searching builtin sysroot
-
-Miguel Ojeda (3):
-      rust: upgrade to Rust 1.74.1
-      rust: support `srctree`-relative links
-      docs: rust: remove `CC=clang` mentions
-
-Trevor Gross (1):
-      rust: macros: update 'paste!' macro to accept string literals
-
-Viresh Kumar (1):
-      docs: rust: Clarify that 'rustup override' applies to build directory
-
- Documentation/process/changes.rst          |  2 +-
- Documentation/rust/coding-guidelines.rst   | 13 +++++
- Documentation/rust/general-information.rst | 24 +++++++++
- Documentation/rust/quick-start.rst         | 18 +++----
- rust/Makefile                              |  8 ++-
- rust/alloc/alloc.rs                        | 32 +++++++----
- rust/alloc/lib.rs                          |  6 +--
- rust/alloc/slice.rs                        |  2 +-
- rust/alloc/vec/mod.rs                      | 87 +++++++++++++++++++++++++++++-
- rust/bindgen_parameters                    |  4 ++
- rust/bindings/bindings_helper.h            |  6 +--
- rust/bindings/lib.rs                       |  3 --
- rust/exports.c                             |  2 +-
- rust/kernel/allocator.rs                   |  2 +-
- rust/kernel/error.rs                       |  6 ++-
- rust/kernel/ioctl.rs                       |  2 +-
- rust/kernel/kunit.rs                       |  2 +-
- rust/kernel/print.rs                       |  8 +--
- rust/kernel/str.rs                         |  6 +++
- rust/kernel/sync/condvar.rs                | 32 +++++------
- rust/kernel/sync/lock/mutex.rs             |  2 +-
- rust/kernel/sync/lock/spinlock.rs          |  2 +-
- rust/kernel/task.rs                        |  2 +-
- rust/kernel/workqueue.rs                   |  2 +-
- rust/macros/lib.rs                         | 62 +++++++++++++++++----
- rust/macros/paste.rs                       | 10 +++-
- scripts/Makefile.build                     |  1 +
- scripts/min-tool-version.sh                |  2 +-
- 28 files changed, 275 insertions(+), 73 deletions(-)
