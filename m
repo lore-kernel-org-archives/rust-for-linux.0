@@ -1,43 +1,43 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C04F3C097;
-	Tue,  9 Jan 2024 18:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269E93A8D9;
+	Tue,  9 Jan 2024 19:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3soMEpJ"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso2049434276.2;
-        Tue, 09 Jan 2024 10:25:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F0wb5r9M"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dbeff3fefc7so2001022276.2;
+        Tue, 09 Jan 2024 11:13:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704824722; x=1705429522; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1704827606; x=1705432406; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lhhgTuWR0cqJm/rRcVpjpNyL7CU/HczMZ4SiqapHg60=;
-        b=f3soMEpJsiAEEsMdVb8GAridOWaV5pKhc4G6JERmXDcy74mjpP0D4N6cwRt9aKfFL4
-         iay6XntvEKlGYOo8KPSiSjU7ieTJCnYiXmIWhNcTRFowfvNGiqHVe/cqPG9WZCFPyChY
-         voMPLRhcCrp7sURZTI1aSyhcaDLmSz41zRv+KpezFi3zWm10H9c+zCju42PN5k5pK47i
-         qVl2AjYq9/9b/WC0Pla+Ub2lBRxljuZTG5pirv80g3VAnMNPnv4d3SPPXB/oxGkPX8Fk
-         mU+Bup8SdJgGSgNXyV70uGo/PwXsQlwstxbsxA1Nuaz/GVp/N4hzrd2K0OhedK6og54M
-         mwJQ==
+        bh=xxWrlYegF797Z4IP6KFPqGZXgNfKFyYe3/fBpA8p+S4=;
+        b=F0wb5r9Mj02NX5UIRpWPD90CWF1u+uCNmwFgd1HSIOPqltKVTDQrZMxlpoHVU9UOWS
+         IvvTyp7taismm78bggez1gzyvJsmHR4aBkHT97+BQhJWy0F0SUHP8l5d2EQr+NdsRUr4
+         oI/qnUGi5YR0mmUBk9eEvDb1zIGdrW90g43r+gKf+DKp3WYLCir16aL2K/0g41gK6WRY
+         yO4yfGhkUXpER9AAo3XJAoO4EH4sWL/xI8iv+6k76KxmTbAvQjOFOOyxAE2DnNBr+8bj
+         A1OZtKZjoTS9tGH8IsMFMZLvejYgauyMdXlygDAzqTK6G3Fh7zXoEPUicw5+eWXR/rk5
+         jaUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704824722; x=1705429522;
+        d=1e100.net; s=20230601; t=1704827606; x=1705432406;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lhhgTuWR0cqJm/rRcVpjpNyL7CU/HczMZ4SiqapHg60=;
-        b=BRFBwHk5WOMUGhhiIGQQNh9R5Z97fgDTFZVM7jgPcAdT37T5nXT/0KYQOsnsdcc4a2
-         /HtpWoaG+8Q9Rn0fSsAkoQ7e5m0vwlpB17UaMruplAxnAu+YE9+EovXhAqahgAtK+tQ7
-         6Enyv7W2uGGuNKkvtRSvGw9XXIHs/BmANgcTzB463+kZjS1tNldKsLBhtD9a+0+jGQ7s
-         v8OYiwqL8paqVlwwFBVAX5uemZEi6nxGfnz5f55YsqHgjjhXm0zcGlUZq1umlU1ZEwyl
-         Esg7GIN5eliGN9zrY5u7K6fO+pXEEQwJaqfOLlXZdH7/so3TXt94v8KHNoXugiIYlOSK
-         yerw==
-X-Gm-Message-State: AOJu0Yztnrv2IVnC3Oi1vBnXj+wldzabkSGjduSGTKzja9WzH2F2faJm
-	xNSsRHZEGOLCVz6djHriEwyslR9+3O9hYxaMtNA=
-X-Google-Smtp-Source: AGHT+IHef3JcK98RzDGilRrId8COyN0y9BJ4bTtDqeZcC0tpGd2CnWPwWL5QSHRyiR1sB3AuvhzM3EIQ9r2Al1GqamY=
-X-Received: by 2002:a25:2e41:0:b0:dbd:5bbd:8d37 with SMTP id
- b1-20020a252e41000000b00dbd5bbd8d37mr2582105ybn.103.1704824722302; Tue, 09
- Jan 2024 10:25:22 -0800 (PST)
+        bh=xxWrlYegF797Z4IP6KFPqGZXgNfKFyYe3/fBpA8p+S4=;
+        b=un797lC+L0VKF5QYxy5GXF8gCGkSOD3Rhs++GxBPzin7p5KLLX295C5bFdjWTJFNSD
+         3ZERm6kiRRv778++BDOcV5VqMETHTBsTCJKackyiXWUKXDRNlUdaURh1bbf/dMhaHEml
+         qW5ZBxP5CXTnK3FgtEczyBkhtD4Q+q+7968b5byM+TuoLGFxFlq1Emf66lXjLyukPsCd
+         tBJoAtnkcvvdmb3q3P5ynRSb0hGNZjk/UGFufii4+4f8Minh/vSippXDUwvGJCRSgjUy
+         X100rl3N05+6VkV3TNGBKA9XsD6g2fF5EhDX8TQiMBP0ytAp07VynbD5b/zzX6MqgY8D
+         yceg==
+X-Gm-Message-State: AOJu0Yy81vgA5g4pVbMtCqe6pndO6+GKNvzlbhzWn9JX5hIxKPQiZP/C
+	9ZO78/5SWuMXtQE4a+qS8TiEUPUU5djUbXnpznQ=
+X-Google-Smtp-Source: AGHT+IHo1UMFX0D4DBV1EkbVLtzyxMnAJyz9Ic1QmEu81ODPdKu7+w4d/2rDGxQAojik2w604SIwlbAGN5eKs+GklqQ=
+X-Received: by 2002:a25:a246:0:b0:db7:dad0:76d2 with SMTP id
+ b64-20020a25a246000000b00db7dad076d2mr3084640ybi.110.1704827605777; Tue, 09
+ Jan 2024 11:13:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,91 +46,59 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20231018122518.128049-1-wedsonaf@gmail.com> <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
  <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
- <ZZWhQGkl0xPiBD5/@casper.infradead.org> <CANeycqo1v8MYFdmyHfLfiuPAHFWEw80pL7WmEfgXweqKfofp4Q@mail.gmail.com>
- <ZZYOkCyujEaR7TdX@casper.infradead.org>
-In-Reply-To: <ZZYOkCyujEaR7TdX@casper.infradead.org>
+ <ZZWhQGkl0xPiBD5/@casper.infradead.org> <ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5>
+ <20240103204131.GL1674809@ZenIV>
+In-Reply-To: <20240103204131.GL1674809@ZenIV>
 From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Tue, 9 Jan 2024 15:25:11 -0300
-Message-ID: <CANeycqppvyhHhDSpRjxcNMGsKhm=-HCsR3fvpaH9FirNZCnSGw@mail.gmail.com>
+Date: Tue, 9 Jan 2024 16:13:15 -0300
+Message-ID: <CANeycqrazDc_KKffx3c4C1yKCuSHU14v+L+2wq-pJq+frRf2wg@mail.gmail.com>
 Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+To: Al Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Christian Brauner <brauner@kernel.org>, Kent Overstreet <kent.overstreet@gmail.com>, 
 	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
 	Wedson Almeida Filho <walmeida@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 3 Jan 2024 at 22:49, Matthew Wilcox <willy@infradead.org> wrote:
+On Wed, 3 Jan 2024 at 17:41, Al Viro <viro@zeniv.linux.org.uk> wrote:
 >
-> On Wed, Jan 03, 2024 at 04:04:26PM -0300, Wedson Almeida Filho wrote:
-> > On Wed, 3 Jan 2024 at 15:02, Matthew Wilcox <willy@infradead.org> wrote:
-> > >
-> > > On Tue, Oct 31, 2023 at 05:14:08PM -0300, Wedson Almeida Filho wrote:
-> > > > > Also, I see you're passing an inode to read_dir.  Why did you decide to
-> > > > > do that?  There's information in the struct file that's either necessary
-> > > > > or useful to have in the filesystem.  Maybe not in toy filesystems, but eg
-> > > > > network filesystems need user credentials to do readdir, which are stored
-> > > > > in struct file.  Block filesystems store readahead data in struct file.
-> > > >
-> > > > Because the two file systems we have don't use anything from `struct
-> > > > file` beyond the inode.
-> > > >
-> > > > Passing a `file` to `read_dir` would require us to introduce an
-> > > > unnecessary abstraction that no one uses, which we've been told not to
-> > > > do.
-> > > >
-> > > > There is no technical reason that makes it impractical though. We can
-> > > > add it when the need arises.
-> > >
-> > > Then we shouldn't merge any of this, or even send it out for review
-> > > again until there is at least one non-toy filesystems implemented.
-> >
-> > What makes you characterize these filesystems as toys? The fact that
-> > they only use the file's inode in iterate_shared?
+> On Wed, Jan 03, 2024 at 02:14:34PM -0500, Kent Overstreet wrote:
 >
-> They're not real filesystems.  You can't put, eg, root or your home
-> directory on one of these filesystems.
-
-tarfs is a real file system, we use it to mount read-only container
-layers on top of dm-verity for integrity.
-
-The root of a container is made of potentially several of these
-layers, overlaid with overlayfs. We use this in confidential kata
-containers where we need to enforce authenticity and integrity of
-data: with tarfs, the original tar file is exposed to confidential
-VMs, so we can use existing signatures to verify that an attacker
-hasn't modified the data before the container starts, and dm-verity
-ensures that we catch any attempts by the host to change data after
-the container is running.
-
-> > > Either stick to the object orientation we've already defined (ie
-> > > separate aops, iops, fops, ... with substantially similar arguments)
-> > > or propose changes to the ones we have in C.  Dealing only with toy
-> > > filesystems is leading you to bad architecture.
+> > We don't need to copy the C interface as is; we can use this as an
+> > opportunity to incrementally design a new API that will obviously take
+> > lessons from the C API (since it's wrapping it), but it doesn't have to
+> > do things the same and it doesn't have to do everything all at once.
 > >
-> > I'm trying to understand the argument here. Are saying that Rust
-> > cannot have different APIs with the same performance characteristics
-> > as C's, unless we also fix the C apis?
+> > Anyways, like you alluded to the C side is a bit of a mess w.r.t. what's
+> > in a_ops vs. i_ops, and cleaning that up on the C side is a giant hassle
+> > because then you have to fix _everything_ that implements or consumes
+> > those interfaces at the same time.
 > >
-> > That isn't even a requirement when introducing new C apis, why would
-> > it be a requirement for Rust apis?
+> > So instead, it would seem easier to me to do the cleaner version on the
+> > Rust side, and then once we know what that looks like, maybe we update
+> > the C version to match - or maybe we light it all on fire and continue
+> > with rewriting everything in Rust... *shrug*
 >
-> I'm saying that we have the current object orientation (eg each inode
-> is an object with inode methods) for a reason.  Don't change it without
-> understanding what that reason is.  And moving, eg iterate_shared() from
-> file_operations to struct file_system_type (effectively what you've done)
-> is something we obviously wouldn't want to do.
+> No.  This "cleaner version on the Rust side" is nothing of that sort;
+> this "readdir doesn't need any state that might be different for different
+> file instances beyond the current position, because none of our examples
+> have needed that so far" is a good example of the garbage we really do
+> not need to deal with.
 
-I don't think I'm changing anything. AFAICT, I'm adding a way to write
-file systems in Rust. It uses the C API faithfully -- if you find ways
-in which it doesn't, I'd be happy to fix them.
+What you're calling garbage is what Greg KH asked us to do, namely,
+not introduce anything for which there are no users. See a couple of
+quotes below.
 
-To show its usefulness, I'm providing a real file system that uses it,
-is simpler than the C version, and contains no unsafe code. So barring
-bugs in the abstractions, it contains no memory safety issues.
+https://lore.kernel.org/rust-for-linux/2023081411-apache-tubeless-7bb3@gregkh/
+The best feedback is "who will use these new interfaces?"  Without that,
+it's really hard to review a patchset as it's difficult to see how the
+bindings will be used, right?
 
-Why do you feel I need to mimic the unsafe (in the sense that the
-compiler doesn't help you prevent safety issues) way C does it _now_?
+https://lore.kernel.org/rust-for-linux/2023071049-gigabyte-timing-0673@gregkh/
+And I'd recommend that we not take any more bindings without real users,
+as there seems to be just a collection of these and it's hard to
+actually review them to see how they are used...
 
 Cheers,
 -Wedson
