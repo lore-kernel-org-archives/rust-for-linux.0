@@ -1,32 +1,32 @@
 Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1BD3A1B7;
-	Wed, 10 Jan 2024 09:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5563D967;
+	Wed, 10 Jan 2024 10:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YcpeB0b3"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DzFr2lcK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1704880594; x=1705139794;
-	bh=G5ZY+WDMakXQ+A9kkyY+1Zweqn5BA5eHIwkKZO9iYKQ=;
+	s=protonmail; t=1704880882; x=1705140082;
+	bh=ciT5Z7UQzFkWQl2p+TUA4UNBF3JN/rFYRvA4zsaEyS4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=YcpeB0b3VX7/GpBoMKn1mndlZCFdb59O1BSfSkQZ4H3Fsnbb7NuRIEHPcLdlDGj4R
-	 PMYfqA4uM58gDa1TE0wfLsBTv2W/YIboon/C3kKkNPvjDausG5B8XMEEvEwca/MZ2P
-	 z7NJhGsbjia725+UFHHieel28RE5bMBvYSt6GkJ4Hd1NsRlh3PMezy1BUSf0FelewO
-	 jB9WPKJojBT0EwLFJWQiNgtYPJULdYKY+vrwWYcNr8KVn/xehXHg1IDBuiEZgrKdrC
-	 gDQxkbP4QoLOUEEq4DwqU8hc5zbD7eNNB5/oyh/mZ+bm12FEiQXhQ4nmEI49m0E0W+
-	 a4ar3oMjmQ0AQ==
-Date: Wed, 10 Jan 2024 09:56:22 +0000
-To: Charalampos Mitrodimas <charmitro@posteo.net>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, aliceryhl@google.com, a.hindborg@samsung.com
+	b=DzFr2lcKc5ouNjnYYyApVW/hXgnVdtfGdsAfW6k5pZXQKoC20SDg9jVHkOfj67ha6
+	 /m2+3e+BtxvsfiO3YimIlxTiGCkaeQAZav924moFIdmIyVu/2glEb+dn+CjbdZdHUM
+	 tnFlVAJ6YYHri1pARt6dO4asRkk2D5E1q1Fi0qz1MAcHZFH5CjbllySwg2ePaq/dak
+	 Pl2Bf//d0dJGkOozrqiEemrPJlY241ouUtC8u5+iXV0qga73I0J5srmTqDvKd1rCAy
+	 PC6V58R+WfCDuisPR2pmZWRJpnV9m0N/lM5gxl8BA94/Qykw0ZUPD3hbJBSsJil+gD
+	 +VKz5md/JhTCg==
+Date: Wed, 10 Jan 2024 10:01:13 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: `CondVar` rename "wait_list" to "wait_queue_head"
-Message-ID: <b11521cc-b873-4734-bb51-83f313300509@proton.me>
-In-Reply-To: <20240105012930.1426214-1-charmitro@posteo.net>
-References: <20240105012930.1426214-1-charmitro@posteo.net>
+Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/4] rust: sync: add `CondVar::wait_timeout`
+Message-ID: <8c1b98e8-a1e4-4466-a9ca-72b9923bb2e2@proton.me>
+In-Reply-To: <20240108-rb-new-condvar-methods-v4-3-88e0c871cc05@google.com>
+References: <20240108-rb-new-condvar-methods-v4-0-88e0c871cc05@google.com> <20240108-rb-new-condvar-methods-v4-3-88e0c871cc05@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -37,23 +37,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 05.01.24 02:29, Charalampos Mitrodimas wrote:
-> Fields named "wait_list" usually are of type "struct list_head". To
-> avoid confusion and because it is of type
-> "Opaque<bindings::wait_queue_head>" we are renaming "wait_list" to
-> "wait_queue_head".
+On 08.01.24 15:49, Alice Ryhl wrote:
+> Sleep on a condition variable with a timeout.
 >=20
-> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+> This is used by Rust Binder for process freezing. There, we want to
+> sleep until the freeze operation completes, but we want to be able to
+> abort the process freezing if it doesn't complete within some timeout.
+>=20
+> Note that it is not enough to avoid jiffies by introducing a variant of
+> `CondVar::wait_timeout` that takes the timeout in msecs because we need
+> to be able to restart the sleep with the remaining sleep duration if it
+> is interrupted, and if the API takes msecs rather than jiffies, then
+> that would require a conversion roundtrip jiffies->msecs->jiffies that
+> is best avoided.
+>=20
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Tiago Lam <tiagolam@gmail.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->   rust/kernel/sync/condvar.rs | 20 ++++++++++++--------
->   1 file changed, 12 insertions(+), 8 deletions(-)
+>   rust/kernel/sync/condvar.rs | 60 ++++++++++++++++++++++++++++++++++++++=
+++-----
+>   rust/kernel/sync/lock.rs    |  4 +--
+>   rust/kernel/task.rs         |  5 +++-
+>   3 files changed, 60 insertions(+), 9 deletions(-)
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Thanks for the patch!
-
---=20
+--
 Cheers,
 Benno
-
 
