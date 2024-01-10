@@ -1,81 +1,81 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFDA3F8FA;
-	Wed, 10 Jan 2024 11:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C8A48CC7;
+	Wed, 10 Jan 2024 12:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EIRujL+s"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbed4b84667so3254560276.0;
-        Wed, 10 Jan 2024 03:20:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704885625; x=1705490425; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FW1K//afvn0Nho0TscAWU/eSRLYGsm+Sr/mW3eupyTw=;
-        b=EIRujL+sEX/mfgo4owObIZYzq0Rfpr21ttYFXqC+ljQECOPr6PCaqpCgXBgK97YMV+
-         Pq2gEjUtxoYPpYSgO2HobeymfYr4wpR5lJ1/SLtnUipi8u2blZfhelD5Vo6oE9ZLDTqa
-         2yssjYYV+xMFlf/Qrf0fh2JnquED9HVW6o98unj7zLttuXFOsDBVtdoDK1sTtoIQ9j/+
-         60FFRUMnEATLOY+E+xa4W0b+iMtQnUsCXFfFrOB3MC1CuOKmIiaXBDZeRpuTfbn6hHXB
-         BbEl8pctMDoElCKhHeaLyv1ZFSYbNz8s+UzBtpYMNSdxw1Rq+CmvEbWQn/9/rsuKOyTO
-         GiJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704885625; x=1705490425;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FW1K//afvn0Nho0TscAWU/eSRLYGsm+Sr/mW3eupyTw=;
-        b=hdd/c1QPxUmfvphE3VIcPRN56KrR+iT7fhVwNFwXW5W1ByYvpD19mbIJr5CqkKzaKr
-         Ob+wo6Y77VFS0C8Jy5ev44LkHZfJ7QsgzL8dThLAnBfALykMm951aT6xaqUN4GtdavP3
-         YNWg4oxjIYVRGSodw2TDFcEGLjWqzzqB4qJqAD5i45YdpU0kj1eqBstlMxp+tglnZaNP
-         AaGTZiWLTzmK0pqIG8hXUZmgh6adHe9cs2amb72zr8+KJoyXk/Io3WbFpVbxtHvnXHKt
-         NX7Ki5hN9jvwVRUmWgGZTzPTvZU90HEUY7cacTs+kvc7eWXJyujf0oBNobgq1i3ZbuGD
-         hdmA==
-X-Gm-Message-State: AOJu0YzFq7Vmvn5pga3UE6gFW7BTmOzUDcMKW/rsZYTuwwFYyDde+5bD
-	8O/JtK1HiMKalS8SnVeSyId4x9rJJV3GYS/g5VY=
-X-Google-Smtp-Source: AGHT+IHaa7xcgtCKMUHH4aDoyZhwFwZccl2P3DTlnAJLFyjFE/VpE1rrAyZzbqN6y/vAIhj6iEM0E8WaN6WqUlUJkC0=
-X-Received: by 2002:a5b:d47:0:b0:dbe:ab05:a610 with SMTP id
- f7-20020a5b0d47000000b00dbeab05a610mr615185ybr.36.1704885625150; Wed, 10 Jan
- 2024 03:20:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wR5c8Kj+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ws3LWjOi7S+S4CtjPbXLD+3eiq35Y86yQtBI0OP55yw=; b=wR5c8Kj+q9PbFk8dgK0hEnHWQI
+	E05ggc6aieDOv/EbX5j0MwQVqynQpDAjlDhHq+z/zEoPJf9ojcamcIsOSEACKEkjMntUvra1heP3I
+	yy0KZgQXJvi38ie+uqx8eqvBO7TInIu8NAaBlAVOG4L97CVevMTcZBpOTf2InaORdE2C02S/sbNe+
+	+Ni9mwgle5ck7dnoSD3ZiGRBN6fJqqho4sYHwm+dNvV6mmiEyPN70piaz0NRQUbfTkY04/spfF7ou
+	Ir4NSIEVtghdBR2QOZdqSVy5/rhaOV4SHMQ0a/W/LGB3u0btTvRSKgEHRsThL6WKs4Da7TGIr/7Zl
+	gPgqpSSg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rNY7t-00BRj6-3S; Wed, 10 Jan 2024 12:56:09 +0000
+Date: Wed, 10 Jan 2024 12:56:09 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
+Message-ID: <ZZ6T6aBjOf+vA9sB@casper.infradead.org>
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
+ <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
+ <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
+ <ZZWhQGkl0xPiBD5/@casper.infradead.org>
+ <ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5>
+ <20240103204131.GL1674809@ZenIV>
+ <CANeycqrazDc_KKffx3c4C1yKCuSHU14v+L+2wq-pJq+frRf2wg@mail.gmail.com>
+ <ZZ2dsiK77Se65wFY@casper.infradead.org>
+ <2024010935-tycoon-baggage-a85b@gregkh>
+ <CANeycqrubugocT0ZEhcUY4H+kytzhm-E4-PoWtvNobYr32auDA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240106065941.180796-1-wangrui@loongson.cn> <CANiq72=M5TrUL+9Z0nqKKcD=KHwyDA79fNYHgU2EJ+7u6Ct8qw@mail.gmail.com>
- <CAHirt9hd4W25p1kVNYXbEXrLj6NgT5r=EPWsoOmHZzS1qGR-yA@mail.gmail.com>
-In-Reply-To: <CAHirt9hd4W25p1kVNYXbEXrLj6NgT5r=EPWsoOmHZzS1qGR-yA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 10 Jan 2024 12:20:13 +0100
-Message-ID: <CANiq72nw2UHd3Kek-Fmvk_3zE=z56wYJVQJq_syYagru5+wo8g@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: Enable initial Rust support
-To: WANG Rui <wangrui@loongson.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANeycqrubugocT0ZEhcUY4H+kytzhm-E4-PoWtvNobYr32auDA@mail.gmail.com>
 
-On Mon, Jan 8, 2024 at 4:22=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wrote=
-:
->
-> Thanks for your comments. I noticed that the refactoring of the build
-> system to support the use of Rust built-in targets is still ongoing.
-> Could this take some time? In the meantime, let's proceed with the
-> generation method.
+On Wed, Jan 10, 2024 at 04:49:02AM -0300, Wedson Almeida Filho wrote:
+> On Tue, 9 Jan 2024 at 16:32, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > On Tue, Jan 09, 2024 at 07:25:38PM +0000, Matthew Wilcox wrote:
+> > > You've misunderstood Greg.  He's saying (effectively) "No fs bindings
+> > > without a filesystem to use them".  And Al, myself and others are saying
+> > > "Your filesystem interfaces are wrong because they're not usable for real
+> > > filesystems".  And you're saying "But I'm not allowed to change them".
+> > > And that's not true.  Change them to be laid out how a real filesystem
+> > > would need them to be.
+> 
+> Ok, then I'll update the code to have 3 additional traits:
+> 
+> FileOperations
+> INodeOperations
+> AddressSpaceOperations
+> 
+> When one initialises an inode, one gets to pick all three.
 
-My pleasure! If you mean the first patch of the arm64 series I linked,
-we have been waiting for a while for that to get merged (hopefully
-6.9?). So, yeah, as you say, it is probably best to continue with this
-and then you can change it later after the arm64 series lands. Thanks!
+That makes sense, yes.
 
-Cheers,
-Miguel
+> And FileOperations::read_dir will take a File<T> as its first argument
+> (instead of an INode<T>).
+> 
+> Does this sound reasonable?
+
+yep!
+
