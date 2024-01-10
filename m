@@ -1,156 +1,96 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDD923D0
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jan 2024 02:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [209.85.219.181])
-	by gateway (Coremail) with SMTP id _____8BxXesPAZ5lY7QDAA--.11376S3;
-	Wed, 10 Jan 2024 10:29:36 +0800 (CST)
-Received: from mail-yb1-f181.google.com (unknown [209.85.219.181])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8Dx_4cMAZ5lRAgKAA--.26515S3;
-	Wed, 10 Jan 2024 10:29:34 +0800 (CST)
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dbf2737bd48so89744276.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jan 2024 18:29:34 -0800 (PST)
-X-Gm-Message-State: AOJu0YwwzqskZwJcS5x6n87WUP7PRBaXbYHJoLI68g5G4OGjIhTH16jx
-	QqLuUHf1ckjMvFDM+mU6nz6qs28APC6/8PGcgjows+dAE9nBZQ==
-X-Google-Smtp-Source: AGHT+IGFu70ifP6sZpWVKvAz9jkvhFQs0aK9sfB9mzmNZLo6qnO/qlrCw7c+TfeqTmvh2JMP1DwvoCXJuMWwzU2xTgI=
-X-Received: by 2002:a05:6902:351:b0:dbd:5b5e:820b with SMTP id
- e17-20020a056902035100b00dbd5b5e820bmr195849ybs.98.1704853772254; Tue, 09 Jan
- 2024 18:29:32 -0800 (PST)
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082A733CD6;
+	Wed, 10 Jan 2024 07:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mA3yTtlW"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbd715ed145so2809580276.1;
+        Tue, 09 Jan 2024 23:49:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704872953; x=1705477753; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hr0AWWYQkUrkL6ap7O3qzijmzqj8/77OpC1z83PqREo=;
+        b=mA3yTtlW4K0s1vYki6fmJxMTRK+AsflWjAOtKzEhVQKMJK1OjYAO0t0N/VRe9airgo
+         KqoneQalGVRKJ48zpc4njb2HNql8WAjAEZJANkkaXxqsh//Q4FfufjwBqpve9a3RNraN
+         bkIbtWi4FyJpDs/0TL7/bUquu8isZnnkC31bgKSqOuzkuTlcKJ8kt3XGX3/EaGtRtXgo
+         thntP76Yxjwy9dLMrGAplif/YHWElxmWMHntetV1JhSzHdxv2+pqsWEq/oyWykB01Wfz
+         wHBWR1rA+lSjn+D6pGfooepoxqr6vhX160npfhchgPM7KmZmiFPEtJ9WwRuPdArro/fE
+         TQyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704872953; x=1705477753;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hr0AWWYQkUrkL6ap7O3qzijmzqj8/77OpC1z83PqREo=;
+        b=h2TYkK8a8/TutiH5vXIAAV//Cl373caRGFIhcQD/rm2a+Uy41Q/OjmNIefDo3hqD3b
+         guczIvr9Zcj+T5w0aDJK3E8L1A/57HrJL0IUxDuikqbozlY89plOo0u+c2M+57Yhfjrk
+         yIq2uSQTYC8/kUNPwu71zcrkmqlBX2Ceo5bYHiRPdTqkQyc2zQ29MSDEFjbPmybau0m6
+         6PMefLtWvaVUjjS39PjRiXU8Vjx1jv9ZiFY2xkEen++y6D8YTFGy/RnLMn70Y8MqDMak
+         aDs2XfM4wylAy88Ba2N0rlE3yVoiU1ML/samKQSyLoqciS3vEM6dOtbW2NH85ILs8D6t
+         OXpg==
+X-Gm-Message-State: AOJu0YyRacmOck4/OYGqBgoL/8dWK19VWrFIWhCJsPV0w8xOiPlDOI7m
+	GlzSNMOOE++Zn3Rcim9zhJBqYIS7KAuPT18LhKI=
+X-Google-Smtp-Source: AGHT+IGijgC4QR2qR0nbo6qn0JS6njHOhoW2/xKC7fKGq07U8a1iW+YKjIkG0NMVq0woAaYUK9kuX5bbiTpyoL0mi5M=
+X-Received: by 2002:a05:6902:1005:b0:dbc:b69d:904f with SMTP id
+ w5-20020a056902100500b00dbcb69d904fmr417405ybt.61.1704872952872; Tue, 09 Jan
+ 2024 23:49:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240108032117.215171-1-wangrui@loongson.cn> <ZZ2fn0scbDKBXWe5@boqun-archlinux>
- <CAHirt9iox8FGV2wrMyxwFRjab2avfOcyLKvBc9K=AqiHxqHXKg@mail.gmail.com> <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home>
-In-Reply-To: <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home>
-From: WANG Rui <wangrui@loongson.cn>
-Date: Wed, 10 Jan 2024 10:29:21 +0800
-X-Gmail-Original-Message-ID: <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
-Message-ID: <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] Rust enablement for LoongArch
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
+References: <20231018122518.128049-1-wedsonaf@gmail.com> <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
+ <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
+ <ZZWhQGkl0xPiBD5/@casper.infradead.org> <ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5>
+ <20240103204131.GL1674809@ZenIV> <CANeycqrazDc_KKffx3c4C1yKCuSHU14v+L+2wq-pJq+frRf2wg@mail.gmail.com>
+ <ZZ2dsiK77Se65wFY@casper.infradead.org> <2024010935-tycoon-baggage-a85b@gregkh>
+In-Reply-To: <2024010935-tycoon-baggage-a85b@gregkh>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Wed, 10 Jan 2024 04:49:02 -0300
+Message-ID: <CANeycqrubugocT0ZEhcUY4H+kytzhm-E4-PoWtvNobYr32auDA@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Christian Brauner <brauner@kernel.org>, 
+	Kent Overstreet <kent.overstreet@gmail.com>, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:AQAAf8Dx_4cMAZ5lRAgKAA--.26515S3
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZFW3tF4xtr43Jw1xZw1kWFX_yoW8urW3p3
-	y7ZFn0kr4kGr13Jrna9w15WF1Yyw1fKr97X3WDJryxKr90yr1qyrWxtrW3Wa4DZry8CFW0
-	vr1Uu3ZxJF1UAwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	JVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r4a6rW5MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8YiiDUUUUU==
-X-Gw-Check: 32f35a369e4b7937
 
-On Wed, Jan 10, 2024 at 10:09=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> =
-wrote:
->
-> On Wed, Jan 10, 2024 at 09:41:38AM +0800, WANG Rui wrote:
-> > Hi Boqun,
-> >
-> > On Wed, Jan 10, 2024 at 3:35=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > Hi,
-> > >
-> > > Thanks for the patch.
-> > >
-> > > On Mon, Jan 08, 2024 at 11:21:15AM +0800, WANG Rui wrote:
-> > > > Enable Rust support for the LoongArch architecture.
-> > > >
-> > >
-> > > Could you share how you build and test? For example, I wonder the cla=
-ng
-> > > or gcc version you used and bindgen version you used. Thanks.
-> >
-> > You are welcome! The versions I'm using are listed in
-> > scripts/min-tool-version.sh, and I have tested Rust samples and the
-> > rnull block driver.
-> >
-> > llvm: main branch (ea3c7b3397f8de8e885ea7cd1ed5138ec4a72d50)
->
-> This means the LLVM support is yet to release? Or does LLVM 17 also
-> work?
+On Tue, 9 Jan 2024 at 16:32, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> On Tue, Jan 09, 2024 at 07:25:38PM +0000, Matthew Wilcox wrote:
+> > You've misunderstood Greg.  He's saying (effectively) "No fs bindings
+> > without a filesystem to use them".  And Al, myself and others are saying
+> > "Your filesystem interfaces are wrong because they're not usable for real
+> > filesystems".  And you're saying "But I'm not allowed to change them".
+> > And that's not true.  Change them to be laid out how a real filesystem
+> > would need them to be.
 
-LLVM 17 doesn't work. The minimum LLVM version required for LoongArch
-is 18.0.0. This is the reason why we have updated the
-scripts/min-tool-version.sh. [1]
+Ok, then I'll update the code to have 3 additional traits:
 
-[1] https://lore.kernel.org/loongarch/20240108033138.217032-1-wangrui@loong=
-son.cn/
+FileOperations
+INodeOperations
+AddressSpaceOperations
 
-Regards,
-Rui
+When one initialises an inode, one gets to pick all three.
 
->
-> Regards,
-> Boqun
->
-> > rustc: 1.74.1
-> > bindgen: 0.65.1
-> >
-> > Here are the build steps:
-> >
-> > 1. Build llvm
-> > 2. Install rust, rust-src (using rustup) and bindgen
-> > 3. Build kernel
-> >
-> > For more details, refer to Documentation/rust/quick-start.rst; there
-> > is nothing special about it.
-> >
-> > Regards,
-> > Rui
-> >
-> > >
-> > > Regards,
-> > > Boqun
-> > >
-> > > > Previous versions:
-> > > > v0: https://lore.kernel.org/loongarch/20240106065941.180796-1-wangr=
-ui@loongson.cn/
-> > > >
-> > > > Changes in v1:
-> > > >  - Address htmldocs warning.
-> > > >
-> > > > WANG Rui (2):
-> > > >   Documentation: rust: Add a character to the first column
-> > > >   LoongArch: Enable initial Rust support
-> > > >
-> > > >  Documentation/rust/arch-support.rst | 13 +++++++------
-> > > >  arch/loongarch/Kconfig              |  1 +
-> > > >  arch/loongarch/Makefile             |  3 +++
-> > > >  scripts/generate_rust_target.rs     | 10 ++++++++++
-> > > >  4 files changed, 21 insertions(+), 6 deletions(-)
-> > > >
-> > > > --
-> > > > 2.43.0
-> > > >
-> > >
-> >
->
+And FileOperations::read_dir will take a File<T> as its first argument
+(instead of an INode<T>).
 
+Does this sound reasonable?
 
---=20
-WANG Rui
+> Note, I agree, change them to work our a "real" filesystem would need
+> them and then, automatically, all of the "fake" filesystems like
+> currently underway (i.e. tarfs) will work just fine too, right?  That
+> way we can drop the .c code for binderfs at the same time, also a nice
+> win.
 
+Are you volunteering to rewrite binderfs once rust bindings are available? :)
+
+Cheers,
+-Wedson
