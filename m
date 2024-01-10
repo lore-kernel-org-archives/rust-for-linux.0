@@ -1,70 +1,81 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5563D967;
-	Wed, 10 Jan 2024 10:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622E847A58;
+	Wed, 10 Jan 2024 10:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DzFr2lcK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1704880882; x=1705140082;
-	bh=ciT5Z7UQzFkWQl2p+TUA4UNBF3JN/rFYRvA4zsaEyS4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=DzFr2lcKc5ouNjnYYyApVW/hXgnVdtfGdsAfW6k5pZXQKoC20SDg9jVHkOfj67ha6
-	 /m2+3e+BtxvsfiO3YimIlxTiGCkaeQAZav924moFIdmIyVu/2glEb+dn+CjbdZdHUM
-	 tnFlVAJ6YYHri1pARt6dO4asRkk2D5E1q1Fi0qz1MAcHZFH5CjbllySwg2ePaq/dak
-	 Pl2Bf//d0dJGkOozrqiEemrPJlY241ouUtC8u5+iXV0qga73I0J5srmTqDvKd1rCAy
-	 PC6V58R+WfCDuisPR2pmZWRJpnV9m0N/lM5gxl8BA94/Qykw0ZUPD3hbJBSsJil+gD
-	 +VKz5md/JhTCg==
-Date: Wed, 10 Jan 2024 10:01:13 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] rust: sync: add `CondVar::wait_timeout`
-Message-ID: <8c1b98e8-a1e4-4466-a9ca-72b9923bb2e2@proton.me>
-In-Reply-To: <20240108-rb-new-condvar-methods-v4-3-88e0c871cc05@google.com>
-References: <20240108-rb-new-condvar-methods-v4-0-88e0c871cc05@google.com> <20240108-rb-new-condvar-methods-v4-3-88e0c871cc05@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iEVeTbYb"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-5f0c0ca5ef1so39824217b3.2;
+        Wed, 10 Jan 2024 02:49:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704883780; x=1705488580; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nkyAuv09jckrb1xtJ7Sn9m5uY5gMhi9Dyi8024qOado=;
+        b=iEVeTbYbUGnuNg/OARaHQc1dkH2wlTGkrw5/TIenxuFDpm8xkWFLHK/BPB5uNY/RFi
+         Z9k66nf4AXzcvNeUsYed49KcZdgftSgaop2Y7Pg5SLL+3+qpJ86iKDoTjYaLcMoAcdP5
+         WGJsHdVl5ejDnjsbB6gg5fyqC0MHsosXUvFhbAqHbZn/n1wQDAbfQtpNc5/AWyIw0mQu
+         zLZjBNjvTHHYX52bVrEiCSMhc0P3qSMxcwQD+7UESZ3zyIBRSB/q+7b3bZqJeMVXnt1y
+         ehkbAKSibKkyYnv4P0ij8tJtui5HsE8OnNWWx1tcuSN4biCAtqSAMbxJvSfWeP9IcmT6
+         wnng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704883780; x=1705488580;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nkyAuv09jckrb1xtJ7Sn9m5uY5gMhi9Dyi8024qOado=;
+        b=GOWA2P4Ipf8vewYKN2dvW415CHmEk+6ut7r9zas2RiUcrI2bJsld0UwSKCmzRyOW8q
+         CGYgMl+I2CGRcqGnB6YnSBA3YHhMw+bXkA9c//+PdAM2voed+iMXla+/6jB/DHoGdrJq
+         7bimL7+hVhcyCRbzNXSCNZrZzXAXxVL1UEU3Uc9RzhPjYePWp7vj+AeG39U8hBy5TEzE
+         ckGHjZDZCEUpVQKKrereGe/Mr4+AlwpFwol+PDr7p5ZgrPX3gFjdyvR9N47UKqBwTzA0
+         8WubDYcSMjKs6GylaBzjztScID7v7iEjLe6eWCIPgal+sD+u+z6gYhyOiEb8uArqj5sy
+         NxeQ==
+X-Gm-Message-State: AOJu0YxTfDZWW3Eve+vzV2HFvPN1oe0RBE8cAgyurnKC8uQ27b0adNtR
+	tvvC8/DNYSvnE8KDL/ecYziFXp9QaX2Exnide0M=
+X-Google-Smtp-Source: AGHT+IFeCydfST7aDCwuFPDsuw2cwzVOE8Fv3I4KKk4ctjbM0/io4Cl/D+NT6BNGEexZTsX+/kt1LFfmucwY15LWnKw=
+X-Received: by 2002:a81:6d0f:0:b0:5e8:8053:70d1 with SMTP id
+ i15-20020a816d0f000000b005e8805370d1mr793142ywc.50.1704883780409; Wed, 10 Jan
+ 2024 02:49:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240108032117.215171-1-wangrui@loongson.cn> <ZZ2fn0scbDKBXWe5@boqun-archlinux>
+ <CAHirt9iox8FGV2wrMyxwFRjab2avfOcyLKvBc9K=AqiHxqHXKg@mail.gmail.com>
+ <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home> <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
+In-Reply-To: <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 10 Jan 2024 11:49:29 +0100
+Message-ID: <CANiq72=X3cggAn0HLMi7jVFAfypBhog=ZkPB57yfaX4ZUzT-HA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] Rust enablement for LoongArch
+To: WANG Rui <wangrui@loongson.cn>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 08.01.24 15:49, Alice Ryhl wrote:
-> Sleep on a condition variable with a timeout.
->=20
-> This is used by Rust Binder for process freezing. There, we want to
-> sleep until the freeze operation completes, but we want to be able to
-> abort the process freezing if it doesn't complete within some timeout.
->=20
-> Note that it is not enough to avoid jiffies by introducing a variant of
-> `CondVar::wait_timeout` that takes the timeout in msecs because we need
-> to be able to restart the sleep with the remaining sleep duration if it
-> is interrupted, and if the API takes msecs rather than jiffies, then
-> that would require a conversion roundtrip jiffies->msecs->jiffies that
-> is best avoided.
->=20
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Reviewed-by: Tiago Lam <tiagolam@gmail.com>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->   rust/kernel/sync/condvar.rs | 60 ++++++++++++++++++++++++++++++++++++++=
-++-----
->   rust/kernel/sync/lock.rs    |  4 +--
->   rust/kernel/task.rs         |  5 +++-
->   3 files changed, 60 insertions(+), 9 deletions(-)
+On Wed, Jan 10, 2024 at 3:49=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wrot=
+e:
+>
+> LLVM 17 doesn't work. The minimum LLVM version required for LoongArch
+> is 18.0.0. This is the reason why we have updated the
+> scripts/min-tool-version.sh. [1]
+>
+> [1] https://lore.kernel.org/loongarch/20240108033138.217032-1-wangrui@loo=
+ngson.cn/
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Thanks! Is this targeted at 6.9?
 
---
 Cheers,
-Benno
-
+Miguel
