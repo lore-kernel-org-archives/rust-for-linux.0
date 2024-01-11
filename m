@@ -1,94 +1,89 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B084EB23
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jan 2024 19:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WX4uJm1K"
-Date: Wed, 10 Jan 2024 14:19:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1704914384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UZlg2gyd0y0ZDd2Z9FOmhI3dnR3plW0RbOtBJCEA2cM=;
-	b=WX4uJm1K//vBDlQI96RPNrOj/Cc/UTLDSRp31X7yLjiVUwL8UPQ3N9kzoUcz5yYt6ZA7Gh
-	M9mOzaxfp3BsVvyoiqbux+jGRiMRBVTDa3+KcZtH0PY5Lz44S0+7Vz2k8dv8BkpINZx863
-	V7mrf8a+4nS+SdTFkWeZJBb4cTAxBUo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Dave Chinner <david@fromorbit.com>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Kent Overstreet <kent.overstreet@gmail.com>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
-Message-ID: <zdc66q6svna4t5zwa5hkxc72evxqplqpra5j47wq33hidspnjb@r4k7dewzjm7e>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <ZT7BPUAxsHQ/H/Hm@casper.infradead.org>
- <CANeycqrm1KCH=hOf2WyCg8BVZkX3DnPpaA3srrajgRfz0x=PiQ@mail.gmail.com>
- <ZZWhQGkl0xPiBD5/@casper.infradead.org>
- <ulideurkqeiqztorsuvhynsrx2np7ohbmnx5nrddzl7zze7qpu@cg27bqalj7i5>
- <20240103204131.GL1674809@ZenIV>
- <CANeycqrazDc_KKffx3c4C1yKCuSHU14v+L+2wq-pJq+frRf2wg@mail.gmail.com>
- <ZZ2dsiK77Se65wFY@casper.infradead.org>
- <ZZ3GeehAw/78gZJk@dread.disaster.area>
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3620615CF
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jan 2024 03:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [209.85.128.178])
+	by gateway (Coremail) with SMTP id _____8BxHOufXZ9lISAEAA--.12404S3;
+	Thu, 11 Jan 2024 11:16:47 +0800 (CST)
+Received: from mail-yw1-f178.google.com (unknown [209.85.128.178])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8BxbNybXZ9lXj0OAA--.37536S3;
+	Thu, 11 Jan 2024 11:16:45 +0800 (CST)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-5f00bef973aso50443137b3.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jan 2024 19:16:45 -0800 (PST)
+X-Gm-Message-State: AOJu0YzNw6euGxUKFmVtVAunA6IHFDHgQijl3BSxWpCS42ibmY4Av/hn
+	f97qQ56QR/ZHquvCl8rQglshY9QVi3XVbUPRnnLdE4z2Knmcxw==
+X-Google-Smtp-Source: AGHT+IE0jL+bvqrnpNSoLgCBevWtqVOaR8GEN8q+0+2xHB17kVQZvWuMgDwBezaXS10AurEkDRQMW6cTOsUlvENQfZQ=
+X-Received: by 2002:a25:83c9:0:b0:dbd:b599:19a1 with SMTP id
+ v9-20020a2583c9000000b00dbdb59919a1mr582736ybm.73.1704943002704; Wed, 10 Jan
+ 2024 19:16:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZZ3GeehAw/78gZJk@dread.disaster.area>
-X-Migadu-Flow: FLOW_OUT
+References: <20240108032117.215171-1-wangrui@loongson.cn> <ZZ2fn0scbDKBXWe5@boqun-archlinux>
+ <CAHirt9iox8FGV2wrMyxwFRjab2avfOcyLKvBc9K=AqiHxqHXKg@mail.gmail.com>
+ <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home> <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
+ <CANiq72=X3cggAn0HLMi7jVFAfypBhog=ZkPB57yfaX4ZUzT-HA@mail.gmail.com>
+In-Reply-To: <CANiq72=X3cggAn0HLMi7jVFAfypBhog=ZkPB57yfaX4ZUzT-HA@mail.gmail.com>
+From: WANG Rui <wangrui@loongson.cn>
+Date: Thu, 11 Jan 2024 11:16:31 +0800
+X-Gmail-Original-Message-ID: <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com>
+Message-ID: <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] Rust enablement for LoongArch
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:AQAAf8BxbNybXZ9lXj0OAA--.37536S3
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+	BjDU0xBIdaVrnRJUUU9Ib4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
+	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxV
+	AFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x02
+	67AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6x
+	ACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E
+	87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41l42xK82IYc2
+	Ij64vIr41l4c8EcI0En4kS14v26r1Y6r17MxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI
+	1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_Jr
+	Wlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j
+	6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr
+	0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIY
+	CTnIWIevJa73UjIFyTuYvjxU25EfUUUUU
 
-On Wed, Jan 10, 2024 at 09:19:37AM +1100, Dave Chinner wrote:
-> On Tue, Jan 09, 2024 at 07:25:38PM +0000, Matthew Wilcox wrote:
-> > On Tue, Jan 09, 2024 at 04:13:15PM -0300, Wedson Almeida Filho wrote:
-> > > On Wed, 3 Jan 2024 at 17:41, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > > > No.  This "cleaner version on the Rust side" is nothing of that sort;
-> > > > this "readdir doesn't need any state that might be different for different
-> > > > file instances beyond the current position, because none of our examples
-> > > > have needed that so far" is a good example of the garbage we really do
-> > > > not need to deal with.
-> > > 
-> > > What you're calling garbage is what Greg KH asked us to do, namely,
-> > > not introduce anything for which there are no users. See a couple of
-> > > quotes below.
-> > > 
-> > > https://lore.kernel.org/rust-for-linux/2023081411-apache-tubeless-7bb3@gregkh/
-> > > The best feedback is "who will use these new interfaces?"  Without that,
-> > > it's really hard to review a patchset as it's difficult to see how the
-> > > bindings will be used, right?
-> > > 
-> > > https://lore.kernel.org/rust-for-linux/2023071049-gigabyte-timing-0673@gregkh/
-> > > And I'd recommend that we not take any more bindings without real users,
-> > > as there seems to be just a collection of these and it's hard to
-> > > actually review them to see how they are used...
-> > 
-> > You've misunderstood Greg.  He's saying (effectively) "No fs bindings
-> > without a filesystem to use them".  And Al, myself and others are saying
-> > "Your filesystem interfaces are wrong because they're not usable for real
-> > filesystems".
-> 
-> And that's why I've been saying that the first Rust filesystem that
-> should be implemented is an ext2 clone. That's our "reference
-> filesystem" for people who want to learn how filesystems should be
-> implemented in Linux - it's relatively simple but fully featured and
-> uses much of the generic abstractions and infrastructure.
-> 
-> At minimum, we need a filesystem implementation that is fully
-> read-write, supports truncate and rename, and has a fully functional
-> userspace and test infrastructure so that we can actually verify
-> that the Rust code does what it says on the label. ext2 ticks all of
-> these boxes....
+On Wed, Jan 10, 2024 at 6:50=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Wed, Jan 10, 2024 at 3:49=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wr=
+ote:
+> >
+> > LLVM 17 doesn't work. The minimum LLVM version required for LoongArch
+> > is 18.0.0. This is the reason why we have updated the
+> > scripts/min-tool-version.sh. [1]
+> >
+> > [1] https://lore.kernel.org/loongarch/20240108033138.217032-1-wangrui@l=
+oongson.cn/
+>
+> Thanks! Is this targeted at 6.9?
 
-I think someone was working on that? But I'd prefer that not to be a
-condition of merging the VFS interfaces; we've got multiple new Rust
-filesystems being implemented and I'm also planning on merging Rust
-bcachefs code next merge window.
+6.8
+
+Regards,
+Rui
+
+>
+> Cheers,
+> Miguel
+>
+
