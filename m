@@ -1,132 +1,102 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2086.outbound.protection.outlook.com [40.107.22.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E5C5D720
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Jan 2024 07:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7879A23D6;
+	Sun, 14 Jan 2024 15:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="etsFj0vC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kxmZTYbG1Qgby2hBGcwQwjDbdf6YriM61Rg9ylSNevlZkg0bRO44DDZeESKxBP+iBrcUCRVLksZxrmlRckDhDmpnqdTOmg3yEk8lNzxIFeh5ubtrY/PwmvHB7JrTTcpryhZRJLwn4OW9BjWKlYu1r9MnuD7tDj9RNexAWJupRhRCPBiLPdpT22McCVx4OWuUFaWsGeZLUcSgylm3wSkq1ic8c9CGQd+WOzEP7QGXoMy2UP6OiL6FMRrQsENEc9oxxlnYPUeYY8c4TKcqam6ZFhQjKHvdr/iun9y8NyKcn5Ko5BQ3L5klGYPx3byy4Lprh3aEzqmj+WbDdc40JmeJwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/BdWTdwkGw8+QKQi5Hwcp8jq059nf6Nz/2dNKlPtvGM=;
- b=DgIWwEdaOXIknbzMyEbatME4l2RtGN07IvKhaibgABHOhtIfu/P2nlLto+fG8hCkv5eNQ2NtotJblhEISwPmnvpJ5IUObQTgoCFat9XaLk6RMYfZJOGFMYCPYi80u2qyg4qFH3ZWEYGAVrGwAXNx5VL/EinneT46rn40W/fgqMgsDOp8KfGcTCpiR0PpvZYAOvbuRgRojwwLUtXeodoJgTn462hwDQBiGuU7E7gLoCQC2Rb++JQduMGi6+g/Sw71YVYtX5l9lcJjEpjyNhrNCZIATzLYjItg5vw2wq1epHZxxl4qdKmnHZBT7I3ZxFZUX4Knmr4Qj/Z9QvQtYn/x9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.203) smtp.rcpttodomain=google.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/BdWTdwkGw8+QKQi5Hwcp8jq059nf6Nz/2dNKlPtvGM=;
- b=etsFj0vCVmEcte8B6f835qTUMLDAIbLZCh9KqBoDr4JrI4XUpvh1cQ9/UIfHTZ5mce5dAENMfqgW/+L9Z27jIlohZGOsa60fSDGMWQBRtjmONoek7AC9zADR5TGJxOuAwVo18hkUAXlmxvgu/D4syFl3fIbQngr4kxiqdYWzNHebL4Hf0WRXY3UiHswedxIlhUJZ4F6PF/B3zLWoSsbtlk64W6JFyhuEEC6PoWT+ukhPKed6yUk2YsQ9Kwta0LfsbcYb/76hfVUtassLpv+c6VX6Fs/Y1kCQEOZc1GZRSwdvJ4adwt1Gk7d5VSbwQGbMb6cbxXBFDw+zRZ8t7bEDmQ==
-Received: from DUZP191CA0038.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:4f8::22)
- by PAWPR10MB7245.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:2e4::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.21; Fri, 12 Jan
- 2024 07:42:13 +0000
-Received: from DU6PEPF0000B61D.eurprd02.prod.outlook.com
- (2603:10a6:10:4f8:cafe::36) by DUZP191CA0038.outlook.office365.com
- (2603:10a6:10:4f8::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.21 via Frontend
- Transport; Fri, 12 Jan 2024 07:42:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.203)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.203 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.203; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.203) by
- DU6PEPF0000B61D.mail.protection.outlook.com (10.167.8.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7181.14 via Frontend Transport; Fri, 12 Jan 2024 07:42:13 +0000
-Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
- (139.15.153.203) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 12 Jan
- 2024 08:42:08 +0100
-Received: from [10.34.222.178] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
- (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 12 Jan
- 2024 08:42:08 +0100
-Message-ID: <a5a8449a-dcc6-447f-b31e-cb7f9a9ae706@de.bosch.com>
-Date: Fri, 12 Jan 2024 08:42:01 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a0hdRpNE"
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6e0a89b98e4so1161548a34.1;
+        Sun, 14 Jan 2024 07:43:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705247037; x=1705851837; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z6fsnynes0vO+z8SDnt6jjjUyKp+VvnkB7fpxe78CwY=;
+        b=a0hdRpNEOgp6tfMDBhnZbvIHUpAapuJbdJcEkcxvJWaIJUmF9yAsMxO2HcPi+gB0D2
+         /GciiVt/hPb8IackUUHKoRFAVSym90SKt/Lf0Fx9TVv4ZULWgHGmVtWc4LO5YXq88tI0
+         bEdO/GCkpzAdmhcjq/lqUiXpg3lZ4FgTUUET6p+5b1XzNvU9IBUG70t6q9Gy1OJyMmS+
+         wL582Hl3fLwjv7H60PCxZJKLocZOP6FAR/AtoHdkUeUuNX2TPDNjJnhHnn8QzKCpf+ZB
+         3YyRC2eOB6y12VyF+0xTrc+laXSrJt+XW7Vvh3jMY1gt/DC0b/pGAofWnq9gPWLHhbFm
+         2qoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705247037; x=1705851837;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z6fsnynes0vO+z8SDnt6jjjUyKp+VvnkB7fpxe78CwY=;
+        b=TpsI0zUSaWMjw/JhO6E52QrEB6q3DXUoLHJ9G0+oEMfvfa34/gYVZliDvA+QRoo/Ob
+         Q8eu5QMTDK66KdhgskGwbo28dEZ8PvLpvoLccdXLpdnsVS7TlIC/PPVCRuZzap8r0p64
+         E+zPaUafzHf9d2KiczaFHjSL9M8fdYLzvtPcg/nYENSS4VSfeq6pNLODpXeDXCTV2gcW
+         ZQhm70SIjLOCpI7uDV1UCkO1d+6eWPbuS7VKO1WA+9wNNu34pzkXhS0+14LGwyBQqkwd
+         07iKP9DI5LfrjGcfBz4d6O+Ye4F2k2lS1Lck9qU+2/1sNwaZn2/UYX5IBhi1b4B2EdFG
+         trHw==
+X-Gm-Message-State: AOJu0YylZxXOGhbL4ZbmSCesCiRKCuZY/eePSysBYAzuKnfOJ6w8C/J6
+	CBfSXWsjTL9YNsGf1hNdkVV8hOZEuDI5PnyxxXU=
+X-Google-Smtp-Source: AGHT+IEBUS1Lk9KquvNh+AEEgwGYDkKmF9ia0vinlcAsqnTVB/V+nqiprHElf2rORE5ktsStx+qC6yV6xTNuDc/rWoc=
+X-Received: by 2002:a05:6359:2ea2:b0:175:ca98:881b with SMTP id
+ rp34-20020a0563592ea200b00175ca98881bmr2063172rwb.34.1705247037364; Sun, 14
+ Jan 2024 07:43:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [RFC] rust: error: Convert 0 being an error to Result
-To: Alice Ryhl <aliceryhl@google.com>
-CC: <rust-for-linux@vger.kernel.org>
-References: <20240111064415.908487-1-dirk.behme@de.bosch.com>
- <20240111141439.637461-1-aliceryhl@google.com>
-Content-Language: en-US
-From: "Behme Dirk (CM/ESO2)" <dirk.behme@de.bosch.com>
-In-Reply-To: <20240111141439.637461-1-aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000B61D:EE_|PAWPR10MB7245:EE_
-X-MS-Office365-Filtering-Correlation-Id: 873a63c6-000c-4d43-de90-08dc1341fde8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	AWTUpl9iug0Vep9120r5iW7DxsmUExYWOrI63vzpqprq2Nv1R/kdJJIEHmMtAWC7qWDO0S052VZWnGyICDYt+QRluvw6GpNLc0Qz1yD3lgxy/vNHR2f9sWMpdYo02fkpiHQrdyTT8GWx+5j7AfCgV+qSM4aSynspaXMQZwhUgg8K5Mo0vNxneWA4yvxhhUQzddf3gxUoZrfn784pXrJ53wT+n5JcBxxE//qYlDyaMdcFbK6asfA7XHekeK50KPuoWenpoEiaTunD7fo/sNwUjnHzWbbTYdXKgr6+GkYhu+ENGLtrwcSYmkFD2Ra43q1QLPj7mEOjKw9BhhbYQ59LBZp+SjX2dMM4Y9qlg9VaPDOfGWfIBOp70Y0bSp41VvY/tAWB9xwEJijYu22UaDE5P8+dvWMLfgfsjYWl1gEe92EnLiVlaFsQ5zcW51B0vhyfZjFvINfcolzstBOGORsf/U+re1QfH8gh9FCYAFO360Oq+NPVqlRmda3sKNAe3xPjb4ktW+iuOoU5VEkuhC5H32SOiiQ426EXTG6HDaiqdhGTqXSGerFZr57NylQrhxrVjiQRMZuxP/CXNRM2a1SfSmAXUVlCF3A705WQ+HPNIMwPnzFCXwkpYMcqiDZHfLSJYfa2WbYSjDEwMOovWacWb7qur7tj6zf1xNhKOXKYuI6ktxI8hhdDWHuyHSzWRRmLswb84lqAICzQcCWhKSoZ+iByqL61hlTRhrk/AvSxkdpF/Il0JqDpdnz/S26+xyNtRVcBip7bpzArMJMPRVI1N6GMHrQOvSf000704nVizwg=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.203;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(136003)(39860400002)(396003)(230922051799003)(1800799012)(82310400011)(186009)(64100799003)(451199024)(36840700001)(46966006)(40470700004)(31686004)(40480700001)(40460700003)(53546011)(426003)(336012)(26005)(16526019)(86362001)(31696002)(356005)(81166007)(82960400001)(36860700001)(47076005)(6666004)(4326008)(5660300002)(2616005)(82740400003)(8936002)(6916009)(316002)(16576012)(478600001)(8676002)(70206006)(70586007)(966005)(2906002)(41300700001)(43740500002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2024 07:42:13.2373
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 873a63c6-000c-4d43-de90-08dc1341fde8
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.203];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF0000B61D.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR10MB7245
+References: <20240108032117.215171-1-wangrui@loongson.cn> <ZZ2fn0scbDKBXWe5@boqun-archlinux>
+ <CAHirt9iox8FGV2wrMyxwFRjab2avfOcyLKvBc9K=AqiHxqHXKg@mail.gmail.com>
+ <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home> <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
+ <CANiq72=X3cggAn0HLMi7jVFAfypBhog=ZkPB57yfaX4ZUzT-HA@mail.gmail.com> <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com>
+In-Reply-To: <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 14 Jan 2024 16:43:46 +0100
+Message-ID: <CANiq72n7K8LcKrs+beF2sbt1XLdr4zEhEw4xcy3yh4wgTrvYeg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] Rust enablement for LoongArch
+To: WANG Rui <wangrui@loongson.cn>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11.01.2024 15:14, Alice Ryhl wrote:
-> Dirk Behme <dirk.behme@de.bosch.com> writes:
->> The existing to_result() takes a (signed) integer from a kernel C function
->> and converts it to an error if it's negative. Additionally, there are
->> kernel C functions returning an unsigned integer where 0 is the error case.
->> For example gen_pool_alloc() and friends. Provide a mechanism to convert
->> this to Result too.
-> 
-> Hmm. One difference between `to_result` and the proposed
-> `to_result_zero` is that `to_result` has logic to determine what kind of
-> error to return based on the value of the integer, whereas
-> `to_result_zero` is just hard-coded to always return a specific error
-> code. Furthermore, I find that usually for these functions, the error
-> code you want is not necessarily EINVAL. For example, when `kmalloc`
-> returns a null pointer, the error is ENOMEM, or when `fget` returns a
-> null pointer, the error is EBADF.
-> 
-> I think for this kind of use-case, we don't need a new function and can
-> `NonNull::new(ptr).ok_or(ENOMEM)?` to return an ENOMEM if the pointer is
-> null. Similarly, if it's an integer, we can use e.g. `NonZeroU32` in the
-> same way.
-> 
-> For an example of this pattern, see `File::fget` in [1].
-> 
-> Alice
-> 
-> [1]: https://lore.kernel.org/all/20231206-alice-file-v2-1-af617c0d9d94@google.com/
+On Thu, Jan 11, 2024 at 4:16=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wrot=
+e:
+>
+> 6.8
 
-So it seems min 3 people vote for NonNull usage :) Will do so. Let's 
-drop this patch then.
+Thanks, that is quite expedited...
 
-Many thanks for all comments!
+Please `rustfmt` the code to avoid failing the `rustfmtcheck` target.
+I see you already created the 6.8 tag but I have not seen it in
+linux-next yet and you did not send the PR, so it would be ideal if
+you could fix this before it goes to Linus.
 
-Best regards
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target=
+.rs
+index 3edda6a10..0da52b548 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -163,10 +163,7 @@ fn main() {
+         ts.push("target-pointer-width", "64");
+     } else if cfg.has("LOONGARCH") {
+         ts.push("arch", "loongarch64");
+-        ts.push(
+-            "data-layout",
+-            "e-m:e-p:64:64-i64:64-i128:128-n64-S128",
+-        );
++        ts.push("data-layout", "e-m:e-p:64:64-i64:64-i128:128-n64-S128");
+         ts.push("features", "-f,-d");
+         ts.push("llvm-target", "loongarch64-linux-gnusf");
+         ts.push("llvm-abiname", "lp64s");
 
-Dirk
+Thanks!
 
+Cheers,
+Miguel
