@@ -1,30 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED061842;
-	Mon, 15 Jan 2024 03:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7609C17BA1;
+	Mon, 15 Jan 2024 16:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UwzluulG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AFAC433F1;
-	Mon, 15 Jan 2024 03:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705289032;
-	bh=zVQ4Atjg+ZZXRw35BNYzt6eRLBSNn7IT89ZOhNOYHh0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UwzluulGpswDZu/e/NAeK7k8IsGLqOyBFpxkP29pXfVmi3Gvn569ub7FRhMyIkvR5
-	 OSVn7a5b374DCez11xZDXpO1LP8TYoHr6lD++TEr+mff353sDc7PDMNeQQDJc290QM
-	 entoRdaDOiiXRFcvNtqIiUnTV+YWgbtgOn37a6EsumFPNbHt9iuwm+6R2LZ1uBQ2hi
-	 6REjtiyVNU9O3sLbDmEqpOWpb1NV0KoMD9zd6uRGInRnxkkTHZrscQUtNMpbUCmp+8
-	 yhr++pD2YQjWMheSxxlYWcGvCyzJeXYCvO3n9JQgQqMr3h6YKWbZdmf/pbgAbivxqz
-	 EscAFqJ2iF1eQ==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a26f73732c5so952027266b.3;
-        Sun, 14 Jan 2024 19:23:52 -0800 (PST)
-X-Gm-Message-State: AOJu0YxfZCiyuKrtvqQaAjiKXjGThe7SNMZMtf5kXcCxiCfdkpap/eZw
-	++R+897FXflm4fMWk7CNs4ATXX+mhqvwuxjP+k0=
-X-Google-Smtp-Source: AGHT+IGBw5yLuMBlpzqrb4QV0zgXvIN5QCGmmQPXNht56SQVwgPF/JD5WcbK+/kmXco6k37C8XFr71yW2zOsF3NW6bg=
-X-Received: by 2002:a17:907:9515:b0:a28:88d6:5d9c with SMTP id
- ew21-20020a170907951500b00a2888d65d9cmr2067170ejc.131.1705289030867; Sun, 14
- Jan 2024 19:23:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D9h72/n8"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dbed179f0faso6849497276.1;
+        Mon, 15 Jan 2024 08:08:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705334903; x=1705939703; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O3v5EekwNwbyCQhxBwrr1k0zzHga5tdMVcMO2ueic0Y=;
+        b=D9h72/n8JrI3hQ1zVRKLHfGf6yrkWCu/F0U3If/K9PIRGlxJXqBU4dMtX95awEm1a1
+         p/pw8tKRTmQ3gHsx5tOgyicRa3z6GPp6GbcnxoizaK0W853c/gPLCkOiXTORSf7qopW1
+         xXkGrGGKFii3pi1DJ631mnwZTn1m6G9+onZwBsyZpDG5JbQcMeWu1VjZtpCOkSN6dI3m
+         6+SqMN38suNyZCEoEvIIYFLsCwCQH+3TS9k6hgprTxxhpDjJE3U2lDib3AtuvpABgHmk
+         9FcybBv8MzHfrIY4IpFr8rPnyakVKcKnER8HRs3jxLVqCDDK5m5q/QE11kOyryUsFERt
+         1uvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705334903; x=1705939703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O3v5EekwNwbyCQhxBwrr1k0zzHga5tdMVcMO2ueic0Y=;
+        b=j3wV44dwxlVB/zByJYnBs7kcYJjJk0GsKuivZN2hmCt03wMucxij30+qxY3KhAMrOl
+         DPRTS67vmOoWOJpQ216RCLZW9h1aG06KJoSXPu0oHMt+XzOZc6pNd2lzr5Va+l9Q9s9B
+         TxYajByPmIgBt9W74ditNBM758l0rDIeKtguSBgDF9u1mx5E1GCWgcnC7RFMRYOMzJ9D
+         5XEwA1OE6fdpkOby5e/MORnYjRxY3MtcYQTwJFH/TaileSulF+qa9r2ypEM+j8+z3Lk5
+         snmVojSbN3Ha8VvFinvR0dkF8YhnFpTu60ZxmFZkMMGl/DaKMT3o+8yTIQx0a8W2yqjr
+         NVcQ==
+X-Gm-Message-State: AOJu0YwjjL5GWOSe4i7feKq7eFmjsYnaUrJcjhU4vF9bt50E/m+slhNr
+	8EAruTQSkQ3D5yZZmJV7EcYaElB0TYpaleVxdLY=
+X-Google-Smtp-Source: AGHT+IF5lVpaG5zhAB2+/ap5mK0eaqQRLUd+krj5DSXQ0aQKe1cRVSF2/UbAjhQs8dzHm5uDLMc+f90KsJb3hDLIbKg=
+X-Received: by 2002:a05:6902:2185:b0:dbe:3a98:5977 with SMTP id
+ dl5-20020a056902218500b00dbe3a985977mr3216881ybb.62.1705334903452; Mon, 15
+ Jan 2024 08:08:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,14 +49,14 @@ References: <20240108032117.215171-1-wangrui@loongson.cn> <ZZ2fn0scbDKBXWe5@boqu
  <CAHirt9iox8FGV2wrMyxwFRjab2avfOcyLKvBc9K=AqiHxqHXKg@mail.gmail.com>
  <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home> <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
  <CANiq72=X3cggAn0HLMi7jVFAfypBhog=ZkPB57yfaX4ZUzT-HA@mail.gmail.com>
- <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com> <CANiq72n7K8LcKrs+beF2sbt1XLdr4zEhEw4xcy3yh4wgTrvYeg@mail.gmail.com>
-In-Reply-To: <CANiq72n7K8LcKrs+beF2sbt1XLdr4zEhEw4xcy3yh4wgTrvYeg@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 15 Jan 2024 11:23:41 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H72Hbfy7n6+AFSFFOzizo0GtpzA074sgo48-W-Dt0VR+w@mail.gmail.com>
-Message-ID: <CAAhV-H72Hbfy7n6+AFSFFOzizo0GtpzA074sgo48-W-Dt0VR+w@mail.gmail.com>
+ <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com>
+ <CANiq72n7K8LcKrs+beF2sbt1XLdr4zEhEw4xcy3yh4wgTrvYeg@mail.gmail.com> <CAAhV-H72Hbfy7n6+AFSFFOzizo0GtpzA074sgo48-W-Dt0VR+w@mail.gmail.com>
+In-Reply-To: <CAAhV-H72Hbfy7n6+AFSFFOzizo0GtpzA074sgo48-W-Dt0VR+w@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 15 Jan 2024 17:08:11 +0100
+Message-ID: <CANiq72mEPnB7yEZvtUXAM5w0GgYmzdrM9OhioLGb_LzbAJKNOA@mail.gmail.com>
 Subject: Re: [PATCH v1 0/2] Rust enablement for LoongArch
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+To: Huacai Chen <chenhuacai@kernel.org>
 Cc: WANG Rui <wangrui@loongson.cn>, Boqun Feng <boqun.feng@gmail.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Gary Guo <gary@garyguo.net>, 
@@ -54,49 +68,25 @@ Cc: WANG Rui <wangrui@loongson.cn>, Boqun Feng <boqun.feng@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Miguel,
+On Mon, Jan 15, 2024 at 4:23=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org>=
+ wrote:
+>
+> Thank you for your suggestion, but since this will be replaced by the
+> built-in target soon, and I don't want to change the tag to make Linus
+> unhappy. Let's leave it as is.
 
-On Sun, Jan 14, 2024 at 11:44=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Jan 11, 2024 at 4:16=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wr=
-ote:
-> >
-> > 6.8
->
-> Thanks, that is quite expedited...
->
-> Please `rustfmt` the code to avoid failing the `rustfmtcheck` target.
-> I see you already created the 6.8 tag but I have not seen it in
-> linux-next yet and you did not send the PR, so it would be ideal if
-> you could fix this before it goes to Linus.
->
-> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_targ=
-et.rs
-> index 3edda6a10..0da52b548 100644
-> --- a/scripts/generate_rust_target.rs
-> +++ b/scripts/generate_rust_target.rs
-> @@ -163,10 +163,7 @@ fn main() {
->          ts.push("target-pointer-width", "64");
->      } else if cfg.has("LOONGARCH") {
->          ts.push("arch", "loongarch64");
-> -        ts.push(
-> -            "data-layout",
-> -            "e-m:e-p:64:64-i64:64-i128:128-n64-S128",
-> -        );
-> +        ts.push("data-layout", "e-m:e-p:64:64-i64:64-i128:128-n64-S128")=
-;
->          ts.push("features", "-f,-d");
->          ts.push("llvm-target", "loongarch64-linux-gnusf");
->          ts.push("llvm-abiname", "lp64s");
->
-> Thanks!
-Thank you for your suggestion, but since this will be replaced by the
-built-in target soon, and I don't want to change the tag to make Linus
-unhappy. Let's leave it as is.
+The issue is not a big deal and I appreciate that you made the effort
+to enable Rust for your architecture. However, please note that we do
+our best to maintain a clean formatting state for Rust code (i.e.
+`rustfmt` should be run) and that people may see this in tests/CIs
+that use the Make target.
 
-Huacai
+I don't think Linus would mind too much, and you could point him to
+this email if you want (or you could put the fix on top); but if you
+really want to keep the tag as-is, then we should consider it as a fix
+for this cycle, i.e. we should not wait for e.g. the next cycle for
+the built-in target. Could you please send it through your tree as
+soon as possible?
 
->
-> Cheers,
-> Miguel
+Cheers,
+Miguel
