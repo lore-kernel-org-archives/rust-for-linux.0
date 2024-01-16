@@ -1,23 +1,23 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED28520B06;
-	Tue, 16 Jan 2024 22:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6883C482C5;
+	Tue, 16 Jan 2024 22:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705442763; cv=none; b=k/ilOKYBDnjkICxlvBi2psIWE7JHxjtxOSg9UaIaMQK/2xOsiSZEmbqpYpWlD0w7ydJQQL1qbNDe5PVrQKXcF/Vp5p41TIxi/kA0wDIWlHVEbBZHNE/6OVkyKQ1wGykj22yODixTNwZRzHhqgpehiEaztefbHmV0K/qQo5efLzU=
+	t=1705442798; cv=none; b=ncLpNUDP6rVBA7je8M67ZQTVg8omVdLPoziGLSyX90r/VpwOWxt3s6mqvmgHzhp0h8/RkXKc/57DoI/OWjgTM/t0zLvvt0qDCRVuDXdF2s0xPt0p3BLH/tI8sd5OydaR7/oYC/0Kag4lytsj+VYUOEwh/8vZ8mbt3kJ/cBVFPlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705442763; c=relaxed/simple;
-	bh=MvyFTKEIKMUi/DveRQH714RaRZQ4hMyEjMvMk9I2Kc4=;
+	s=arc-20240116; t=1705442798; c=relaxed/simple;
+	bh=qk5bZBH+v41bJbF9eA7PUNh+z+ew2nxhcrsQeadaNNY=;
 	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
-	 X-Spam-Flag:UI-OutboundReport; b=nGyESQEZgCVCMydIQIu4G0Qy/EUmBbQYr0iu5IH+DdFfrfLv0FGJjIPFReRifPep4ECDxEQfsqLygmw42dk2cmkpzMjVKoRUWMzKKTD6z41vZz748EXmj9U1/2DeNzz1OXCeHpDPi7DPNLNqFu+OYCaY/hdCLsByMu/IHTK43KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.17.13
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Provags-ID:X-Spam-Flag:UI-OutboundReport; b=HxBuy0+K+r3q8eiBESNUBRDIZ60i7EYGZb4IIUpwsSyDiMDyxH+VUDFWwZU371urm5vaqqC+K2mrmuzZuMCWxNnjGE+plE6rQ8w7OP0PsnjDf0v2zQxaXk9NIdvQiwO8ciGgJXmqVwHBFA3WotFalX6FHkCQe+MEkssbwgrkROI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.126.135
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Received: from localhost.localdomain ([217.245.156.100]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MQ5jC-1rlmA60xtI-00M2Ho; Tue, 16 Jan 2024 23:05:46 +0100
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MTRAS-1rZe8B0H0e-00TkmV; Tue, 16 Jan 2024 23:06:23 +0100
 From: Valentin Obst <kernel@valentinobst.de>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -31,9 +31,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Valentin Obst <kernel@valentinobst.de>
-Subject: [PATCH 05/13] rust: str: use `NUL` instead of 0 in doc comments
-Date: Tue, 16 Jan 2024 23:05:37 +0100
-Message-ID: <20240116220537.168057-1-kernel@valentinobst.de>
+Subject: [PATCH 06/13] rust: str: move SAFETY comment in front of unsafe block
+Date: Tue, 16 Jan 2024 23:06:08 +0100
+Message-ID: <20240116220615.168083-1-kernel@valentinobst.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116160141.165951-1-kernel@valentinobst.de>
 References: <20240116160141.165951-1-kernel@valentinobst.de>
@@ -43,55 +43,51 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:fQ/n+K82znhGVU06WPCL16qfSsnfY7jriAWKz19BeTo/jchs9x2
- jj2Cevp5lAEpIIYImIjab/lXFlPzmiQQUHAJZHW1o9INn06euHr+OuxP+pXxtVRpunF3ZVm
- qHD//ro97BAS9SRU5YNCi7MDgDu9/0ydJehlB4Oahb44L0aHjT9FP330/I/9lu2MXHvtsaB
- 9K2Y50PZaFM57fB1MjCDw==
+X-Provags-ID: V03:K1:92bNKdsjs75qSuvDF2FfcB++cPal267HLhMmtY/xJxJoC3ADGN1
+ Q0SezTBfAlV6TObTXq/zXit0+qvLYh5/dYlHlk1bPM2kICVcDSNmVON061S5cgGZpoknMuR
+ a2yEumtbq/wshozvCHePnlTDJGeXEJGfhNEevVJRwW1ruSQWCtm32mt7xQq3WCo1NvzPaih
+ rL/R6VUX7Dn8WKCH7eupQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:v6zN5nHqZvI=;w2vTl94Fb9dj+FV+Lczts64wvK2
- 3P/qtnHf66kv75rVrJLkpnsDbDy4+rM+dwtc8S3+q9yn0Znzcd2uKsfT6DvTRU9nfDYRizYXR
- DhEdqYL/BeCiWDmnUpd+uE4Xmz2zkCw7Ky3lyOW+fBXcQDcz+sLNHJyq5c0LNXdvRyvuYkkmM
- f+18Tu52QFVD26ITkI/fN0pKlv38JmuPPiDvFZQaa3Si4wWYRcTV1IRJ7Sb4uox7bcQHZOb3J
- sJ0UqIEOqJDuSMZLDiTVnSIPa4GB7qiCx/Ouf/6dGmcK0gaaYqCCIZod48xx6rL0juJZLpAt9
- EtxDasdoE8rINUWmjJ8g7wHFCOw8qkEHWQxPeyL+HvGPZpiS/uRMBh4uneyauNb/pGjvntUmk
- ArIiv6m5ffd6gJaHrbcOmZhKUmlcPnt9MTmmj0IcD2Twk6XTeP8/81bmGnWUDqJk0tKj/8BgY
- 56gt18Uu02UI662vLN0d3lU5ZT0SEuBlSjmYY78Q75eFVJsTieWPWwGVwGJgTt3aBj0Uar77V
- m6orRB3WglfXaOVSKovYX/BuslJcU5Qg/LmVVn2IhyKYOocIAIuWi0gyCzKxVc3MYeHWrMJQt
- 7pmoLWNRddfDOCoNJhfFw5ZW7lZ22yE8NWxrSIUwRR2VA87paKre5wmw8h7Z38/uq9m9U/Hq0
- OXDdtnRmY2QPz9jz80yRUEzIxqKj/R1Ogo80K3zd8Db35psnxGjKZ/Do9O+qrxjfcrpnXTSx4
- jR2TZshVhcmNDO12InKP6bv6ac0devVSIFsMQGLbU7SaPkybsn2R/U1PsCZ7Q/5YsmRoe5+/E
- qwYk7w5Y48I2btBYKCrulCPYTU8FTH1gvEjCVaQ43/0/pUDcHKQtDMYTfZjR3sgLKh+ytsIt5
- 60FBjwlj+lgjjjQ==
+UI-OutboundReport: notjunk:1;M01:P0:IDkEWhURD7c=;ReOjbrZ1lRUgApOj8G512ld2rTl
+ aQs7HB5kgSZXS6lHwfPaeXaHxoZ2OpWlmXyb04o8nQo8QtRcdjzvERRCOyv6t2vpknYmWf/Rh
+ z9cjszLazIMHfX4PE5pQssyfLVD5v4XaTzMazV2Voo9juG8U/oOATNg2uwGnvlGjlxo6YUR9K
+ Hb9o53W2yCkumbzLM3gqrtGJZeJVO8cmcwwl28KDQBXh/YEWWWAtiWp41rHq2auHVAlVSyIZo
+ YrHjJpgOa1g7+Qr06o4UMyHj3/SNxEe77QCwCrHy0FTttlRPh3fS1DLmW4P5ai83VHK2IOnRP
+ YoB0iJ1eHGHwfgIvPfqrd/j6EJUm0aKjPlyXdY86kh+YUk6OZhYv7hLvUCoNxbAiDxu8zJeSM
+ SQzQw1wPlP6Ktlpl4eCCw2yAoCk8POJN0lWSlPRFDxldxkzDiCHLXQ/V8Vay6S/kQRWz9mt6e
+ ibwo6WzLSqYg4x4WxPAfZJhMUamd7ige1FWWYijTTUJazH0nJiSTVWfYipaul6+e1wPq/S6rv
+ NUuT+PUF+cAKZlvqx5/pF1uad1auLfgdtawVH+4sAyT6TljbD6aBEJ8Whcbn37FyjjRH0T4XI
+ Z0tjlVKjGzxAnFEClmooSG3Yrosh3gr26aA8nxichmw1Cbd3MppzpmSmZJc1P0mB5RZ4m7rmK
+ JURAwDyOG/0fz/jgwCz6LaU7Op+TqtRNIk9byzpOz2o8eeOGVpECgUaUOIz0ANaLiWWHzRq6S
+ 1pcMfC5HUmvEM/NY2UkCoN9rPpZwFAJ9Yr1E4O1RTClipec0ViW3v7qWABY1vbUSRcitcOx2n
+ wvIt3M4HoHMTJxrcOS+j/f6nbFt1Q5rtZGR9er3yrixeDnKbelUM+SUYtu1z+qPzHV3sMnpqF
+ r50BBcY5rmvXpBw==
 
-Throughout the module, bytes with the value zero are referred to as
-`NUL` bytes. Adapt the only two outliers.
+SAFETY comments should immediately precede the unsafe block they
+justify. Move assignment to `bar` past comment as it is safe.
 
 Signed-off-by: Valentin Obst <kernel@valentinobst.de>
 ---
- rust/kernel/str.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/kernel/str.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 0a8569594fc3..843ffeec9b3e 100644
+index 843ffeec9b3e..fec5c4314758 100644
 --- a/rust/kernel/str.rs
 +++ b/rust/kernel/str.rs
-@@ -149,13 +149,13 @@ pub const fn as_char_ptr(&self) -> *const core::ffi::c_char {
-         self.0.as_ptr() as _
-     }
- 
--    /// Convert the string to a byte slice without the trailing 0 byte.
-+    /// Convert the string to a byte slice without the trailing `NUL` byte.
+@@ -191,9 +191,9 @@ pub fn to_str(&self) -> Result<&str, core::str::Utf8Error> {
+     /// ```
+     /// # use kernel::c_str;
+     /// # use kernel::str::CStr;
++    /// let bar = c_str!("ツ");
+     /// // SAFETY: String literals are guaranteed to be valid UTF-8
+     /// // by the Rust compiler.
+-    /// let bar = c_str!("ツ");
+     /// assert_eq!(unsafe { bar.as_str_unchecked() }, "ツ");
+     /// ```
      #[inline]
-     pub fn as_bytes(&self) -> &[u8] {
-         &self.0[..self.len()]
-     }
- 
--    /// Convert the string to a byte slice containing the trailing 0 byte.
-+    /// Convert the string to a byte slice containing the trailing `NUL` byte.
-     #[inline]
-     pub const fn as_bytes_with_nul(&self) -> &[u8] {
-         &self.0
 -- 
 2.43.0
 
