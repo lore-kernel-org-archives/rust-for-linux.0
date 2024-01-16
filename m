@@ -1,89 +1,104 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23E91EB53
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jan 2024 19:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE7120B02;
+	Tue, 16 Jan 2024 22:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705431837; cv=none; b=U2aWqwdkZpLpHCfnJmYa7PQt2FyoeB7c/7J5nB3acVVuqgU5TcTZ1dSxH/O36MWWJATju4ansFdQjydlwOVmMRAD0L3tq5H0XTiNhexqPIWoXel44RShDRnVERQItM2on0lcZ6LpoVdUTj1Xu1IU6A6iuRfSYJO/c9l2MQTBCqc=
+	t=1705442735; cv=none; b=uEttqz2Mv17plhfb5+D+6IkuMQAg4U09vCyfRRxRMApR+rwfv9ZRUd6eTBJX3C8O6jGMLSbfuOJNMKsMvjfC7WdeLzZfH6ABihelpvqDOB61PQZqjAx5MFjNBd9rTD4E4ScTtGMR/+a3ItP9y590NaXxHiFVThksJyoIQoJHrBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705431837; c=relaxed/simple;
-	bh=KsutbF0tNhyBIyYmY5mniQ1+g9VFosByUoGtxgU9160=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=JHqcxAZfdEYLhUB+4HhAsr+yj4e0sM2QvT90Dlx/C0ASoO7p/GNS/4evzPCyyIwYMjzVkIqtRszu+/iqIW4BTFsEhfQsHVnKO6sw2mjyMmzmTvDnUyb2PL5GkCxey8pFkrKYxem16DZqny5oKPkmAeVkWvNY0NAHxAPup+2c6bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGb1+rA/; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGb1+rA/"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc22ae445d2so806702276.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jan 2024 11:03:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705431835; x=1706036635; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=idTZjvmX9/Apgy9ulz5inxg7528qAfGEAMjsOnPPysw=;
-        b=ZGb1+rA/yK4z1UVa6xmRN8Wm8Q1+2wT7JD78RNz+cM4ArrXv0ho926TO0xKLC9398N
-         m5PuynAK+f/e5TrvHHfxaDh+BAYTNPm1AOcBHhYMNJagrcwM2aIaYfoOfwynLx0YNvAM
-         U41vuKl7m0G2FcajKhkOO43C1g7t1G1zc8YAoIaq7AH/YG5+PS0yYYhQ00M3jwMxD5gZ
-         FqW84UNkEq0iPzo6NZLi95sjSvoXDrKOhCY8CXYdHIM76ujH2RYeDNjP6+N7VZ+qnwk5
-         1tUnkZKXsXwopoukW5oD59lv0Pop+33rLYT1yf9ZC1JbZdwqO69rrZ+dsHQdLAFUFm4z
-         jq4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705431835; x=1706036635;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=idTZjvmX9/Apgy9ulz5inxg7528qAfGEAMjsOnPPysw=;
-        b=IkNjwPYqCpMcPrqB5qAN/87KNAa5jLIncbfgUHvkGVbamBILO7sjs5BbcMdooDkn29
-         zDrCVwIRIF5t+EEfM5uARYSuTelB7GdCczVudUkIlEXfMxISpZL19LRkVocpWz7ffRMH
-         dz5ruTzk73vHUvBD1cuun+QweklqRxkEnynQYMctg7aAG+VlS6dejOOGP3xdJzvAs/Or
-         yHLenVMtVFCdV+K9q0p1TEl6AIbWtPAasY9Mo84qP5t8q4f6MMUfTTS+IFb4/k17Dzg6
-         qzjY23J1pkjxSPo9zu6+Bjrmb3DqhlX3gAPz7KU3v+fL2dp9f7MMgxMpQcS9PpWYLq+x
-         TwKA==
-X-Gm-Message-State: AOJu0YwWirvob7jG1n1wuOk3SN6lNxxWlI3pEt9NMBOZxfSocaIJQ5ww
-	3HNWlKcO2KkCqNlAsvLH5bWMe5xIyZxpBw6YgYDVy1es
-X-Google-Smtp-Source: AGHT+IHmI9hoB66gRXpzVB43q1SY+G+QHRXWpGup12iCt5VAUoiC0w9mnFynwkw/mDTbs9yTGguXRf0xZD5iiaZLzdU=
-X-Received: by 2002:a25:8d08:0:b0:dbd:7491:368f with SMTP id
- n8-20020a258d08000000b00dbd7491368fmr3598865ybl.7.1705431834838; Tue, 16 Jan
- 2024 11:03:54 -0800 (PST)
+	s=arc-20240116; t=1705442735; c=relaxed/simple;
+	bh=v3W324I3SJN5eST/f93Ey55QMVR0yTzOUMu2onl9OUo=;
+	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
+	 X-Spam-Flag:UI-OutboundReport; b=QYmLgj2niyxc646i/ZbLp4CdddHgj/Ait9nsV2p7dK75xXvbrmjMNGzvhVAXLiMpmhJ6wn8KD941lDMnJ7dWrBXd6m6mIp6mdbWTDPpimG/4VyPV2JK95OSKjCJLFCkNhS+EbY9v4ivjSDEQ2hJPPcrvcntDyeo4+5A2hpBiROM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=217.72.192.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+Received: from localhost.localdomain ([217.245.156.100]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MTREY-1rZe9L2Zf2-00TjKy; Tue, 16 Jan 2024 23:05:11 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: [PATCH 04/13] rust: kernel: add srctree-relative doclinks
+Date: Tue, 16 Jan 2024 23:04:10 +0100
+Message-ID: <20240116220411.168016-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240116160141.165951-1-kernel@valentinobst.de>
+References: <20240116160141.165951-1-kernel@valentinobst.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240116022823.64058-1-antoniohickey99@gmail.com> <ZabJ0lCKDahbCHGh@boqun-archlinux>
-In-Reply-To: <ZabJ0lCKDahbCHGh@boqun-archlinux>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 16 Jan 2024 20:03:43 +0100
-Message-ID: <CANiq72mGUXEz+T7aTfbNLkmoeeKAA+nR_PzeNjTKPbY51DYo9A@mail.gmail.com>
-Subject: Re: [PATCH] rust: task: add `as_raw()` to `Task`
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Antonio Hickey <antoniohickey99@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:0M/3h7s7GfvVM/sxSkwa13j4UXMw4UFVXCpvMlk36g4VyCdY5Av
+ OpuLrkYGR2CTa0uchs9tvp44C5cLONl9yZzzNKwRHjmSOVtWZWANmcrllTypzFRDeC9bYy5
+ njtvU/C/HW3BH0Qv97g5SubpLt62cTWKHLvOYrsj5G+USM8b5tZ0yZsfH0BPBMmGdTSLApM
+ uc2SC1Dq7y+yHtEsN4IGw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:karToRGKwJs=;uQ8K1v7C/+Wu1/QtFmFaiddcSo0
+ 7aM4nFV9VR1/HqQilEl5s21ew29uEuaIZfn72dP0+1Ql5lZ4O3pzFDwx55RG4hdMMqAMeNJlC
+ pHuad1+d5GhhOdD6OCNEELTmfJ2e8BFceTWDV9IIc0K4ZZ0nV8MpUD4FV9lPVEH1XQBDvJWEt
+ DE/UM2Gva7O2WiTuUkRE9BqHbC1K2PPgA63kCzOA0HX2JYLZglrGZTrF85lBBgKrKxqgHWpXE
+ H7DQymgZoVRNeHTT4L4b5Uu46fFnGF3qRuDLCmCc/sel3RvWXltCilfu/3KziGC+X1mhBS4xZ
+ 4SAMUd47/IWQRD/dJrMX5VvHUDMi6e0mubSrpLiBvvhZlyUmHVYZdqQfEsnxsvx76ydQgF+jc
+ lZ1Khpr7rkdxyJcX5Ovf4j+52OBmADhGHtBgTcBoofLU9R6YzGnkhxAyXZ87EaSB02bgEPMcw
+ /q/eTZv+FFGRqdh6zo517pW5ELsKzsVyLqmO7JqKD9FtpU/4sxDkd/r0hSV25iZYaptT5h/x+
+ SgBydIBhJ8fWxELgbDU94LtayPlJL3SkRkiiJ3mO4eZrK6CVCP69lXSZlojirpvrko2BrydUV
+ iEMxOLo5kULu3dG5l2umGK0LJQY5bCk0Na+nF/4bYSP4XMTQGotvC1fQEMKNACRH4jLpKCkNw
+ +jLPiuzsXC9Huq+bocJTiKQAFwpn9LMd3txpda2EgO1i/N20SbicY19TLE5M+FWHKnKxmTr3v
+ PKUephOrwVcWwW8v6gaO+N+oUZy1FoAE1OIDwNWTkAGlOIjV65mb8eC6CF3Cr1CfytNEyL0/P
+ Us/BhLxoyldPeH3Uto60ujLd7TBh45sfxLIGiwePrK2a0zkH8Y9QErSBahAEFDM7ZB+5CwKq+
+ NAewvcPu8JiJXiQ==
 
-On Tue, Jan 16, 2024 at 7:24=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> While we are at it, maybe we can clarify the terminology a bit,
-> according to:
->
->         https://doc.rust-lang.org/core/ptr/index.html#safety
->
-> "valid" implies "non-null", so here we can just say:
+Convert existing references to C header files to make use of
+Commit bc2e7d5c298a ("rust: support `srctree`-relative links").
 
-I think Wedson and I discussed this term a few times and whether to
-avoid saying non-null or not. If we go ahead with this, then it would
-be nice to clean all the instances across the board (we could create a
-"good first issue" for it).
+Signed-off-by: Valentin Obst <kernel@valentinobst.de>
+---
+ rust/kernel/lib.rs          | 2 +-
+ rust/kernel/sync/condvar.rs | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index e6aff80b521f..0d365c71cae2 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -75,7 +75,7 @@ pub trait Module: Sized + Sync {
+ 
+ /// Equivalent to `THIS_MODULE` in the C API.
+ ///
+-/// C header: `include/linux/export.h`
++/// C header: [`include/linux/export.h`](srctree/include/linux/export.h)
+ pub struct ThisModule(*mut bindings::module);
+ 
+ // SAFETY: `THIS_MODULE` may be used from all threads within a module.
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index f65e19d5a37c..0bb76400efd9 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -77,6 +77,8 @@ pub struct CondVar {
+ 
+     /// A condvar needs to be pinned because it contains a [`struct list_head`] that is
+     /// self-referential, so it cannot be safely moved once it is initialised.
++    ///
++    /// [`struct list_head`]: srctree/include/linux/types.h
+     #[pin]
+     _pin: PhantomPinned,
+ }
+-- 
+2.43.0
+
