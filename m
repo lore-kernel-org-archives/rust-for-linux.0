@@ -1,99 +1,118 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B784C13FE4;
-	Wed, 17 Jan 2024 09:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62805C8DE;
+	Wed, 17 Jan 2024 11:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705482664; cv=none; b=poy+qHyHwbUqpTT7ERM/LlfN/9iJETZbJtOT5VCzb9odhqT2kd67dL2yyOFtiNx5gvnvAd7GrzpOFPR08qOWLg9DasUeV1YPQmuebFq0IgmtPsbmjKdOMd0nldXuI8YM5+2MYb+23m37SKEr84IUD2D5bZouL/7tb0KLzzNbqk8=
+	t=1705491062; cv=none; b=Lh1MAbk6ZM7Eq/kfmMVc2b4lF/uX9KP/NvKlSQ850c95wcjE54czu/aFBseDD2c6PWzVmNlxq7s3Wl8T9TNLNtVK3QOJ5kZiwwwfGQCIDlfW5I1tnOs0mg3/njR+X5DwmX0IT1ohqfgVJLnOgrlYpBRukcNtVKit1BgYvG1D1to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705482664; c=relaxed/simple;
-	bh=Wufmwc5OiZ2ZBOE+SYQMYh5caOE9cr+BFk/qMaOMUpw=;
-	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
-	 X-Spam-Flag:UI-OutboundReport; b=VQ/RMg2saA7dwIEDF9D0oJeC8ffXQfwn3FShTv+exISu3ZbNFLcg3E6Gyfwwxay7OAGJVN2IyoGSfqw7gzf2IYK99yDHbJUYDnusDOvsmOVZ7Q4t24xmedYSppx3ZsySiGlfX8eBHLXvZFokuYfhAl1mo0BwJf6ihyE4OrubWDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.17.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
-Received: from localhost.localdomain ([217.245.156.100]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1Mlvr3-1qh6cX2za7-00izH3; Wed, 17 Jan 2024 10:10:46 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: Miguel Ojeda <ojeda@kernel.org>,
+	s=arc-20240116; t=1705491062; c=relaxed/simple;
+	bh=W+4VwuyRcYhhV7162/K5rb8MKqw/7UZiD1PRcLyA8Fk=;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To; b=CFz9E5y4ta0rMRMuO9nEyllEZ8m4Q+EDrKIUSwQTkhsqcYsRqMLAkc2dRz4DHlnkDzj8XcBnplrjt1+jjwuMWAa+7xTDjCpsXPCs1t50QOLC0N+ispSV68RL9Wipf09lwB+yd/QJaRkVx5xrrGFPT4W2kox6qxHTXJdjqe15Vwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3Pxe78I; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3Pxe78I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F35EC433C7;
+	Wed, 17 Jan 2024 11:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705491061;
+	bh=W+4VwuyRcYhhV7162/K5rb8MKqw/7UZiD1PRcLyA8Fk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X3Pxe78INo0ZCxa0lyRMprtUGrriYUvVYuWXJfV4Oc+VoL0I4bLN36FsDknC7YnGX
+	 +rIH5fU+7Xfk9MdPjHYyIyExjHbZGbrnE7eaGXQdwkKx77v0kRDw8Ghm02gyv/XBJr
+	 KLppLKaA8MUHaFryoz9AAu6hw7Neuu4lkx5NKwdfOhjkMcd24mMNPgAOau0UhFhzYk
+	 kola7qJeQyTTS8bNAsC1n+ODNhmHi0enOkVATQDzN4q92kd2X7VkA1pQ6wog4c0XO5
+	 uBWCf94jaO4uJO3B9VibzFxdnxGV0WbcOWze50rPEraEgYtshEDUerZWOy6Scfs1Zx
+	 8u15hC/eTFf9g==
+Date: Wed, 17 Jan 2024 11:30:56 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Conor Dooley <conor.dooley@microchip.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH 11/13] rust: kernel: add doclinks with html tags
-Date: Wed, 17 Jan 2024 10:10:29 +0100
-Message-ID: <20240117091029.182098-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <a3856ffc-ddb9-4066-8e1d-999c8f7790e8@gmail.com>
-References: <a3856ffc-ddb9-4066-8e1d-999c8f7790e8@gmail.com>
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+Message-ID: <20240117-swiftly-parasail-618d62972d6e@spud>
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
+ <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
+ <20230608-spiritism-gonad-5f5aff4c3a24@wendy>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:+8e1IUodYn8hytsPyKooqZPdIIj6vadUy9opB2OzBzSrvRBArSm
- mg10RiNwKGnJfNXP5VY+21f6Jnca4b2ZZfzuoyyQgfL9fDPC/KvTQt5OzrB40XftEbHNy5T
- CwibTonzyAjLCsMDfvytLPwudFWJ5OgNWJVcH6Du5FzRMJ3RsRWWLwYlGHp2TDNZyV7zpGZ
- W3QURz0710XAjUVztU2NA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:OnI26W7kGy8=;FhSUg2A5gIqu1sgMx0AuCkrtJRZ
- SS5RpGgq7biN4894fWEJq4MiJ/R5VJfvb6pHbzNDyM5sxLx3hAZECVL/9yXqeeXvBsz8fgwEz
- 3ibYIxaL1AD66COhg5BrAH3CGwgSk7Hui94k3tN6GL29B4Aiy/AKW5VH0QKoIbgWg8lsjdOOU
- nZyHa1/dHagEm856xR6wlh17PXIntxlUrzwZuQKvcFD6dvq/rAvQKZSjjre8Vu8fMQK168fJn
- vBOTsh5QrncKu6uqMAOLMiiMWONIbicaaw4yzlJkOLOOa9TNUB0mE9KncvAxoqjIQcrGRM0Du
- dMiNqZ9+TGlJ4HJRjPVgWAROTsSUnSWDxc7ntOH3fmB+Y+6r99yCfsKOhkrogd0heseevTMCa
- fS6dzPBLNJGr4m12JufEgOOooQ+M5NV36UL3Olg0gtOOM8Ry4fRrc/2AkYoFerHPdZNK75Ez9
- xfMO0iiF4RbMwnGsrGwWzkVVRVXhB4xKyLbxxg6ZkFltvg8WepUCNZvU2mHThoTzEul2Tx4iB
- UN9Dq9GuZV9lWnhW77MPvEM0FjGBrL5UfMhlqXbeKFznduLwpA5TDquvxaWZqjL8PBVv5ETAt
- /ftMnSnp+2otdbEkNs0DOZLXNm452vy0FxE/NUqDttOqxDQLPN5ZO4rU/ih3xDlgV/Gea5on6
- Ft0V0pa5rHJHLTAJRxAPdz+1axiUi4vDGaweHH5tZXKDuE5QYIXzjuqgOsAdRuKDmIrR+WPJu
- X0fqhAZHBMEwzxmpo8jLOpETGKq1TMmfmoMVK7SSmg25QBIrI/MB7mzPbHPjCV7T7RSgEEwMe
- linvlblyO/XfCjPNh6y+QvZlzB5iC6aVjdphIZ5bdop2gZA+aFPbwVu1EC0ef1rI3kSSnieAS
- xNMZjBI4W/Sf6jnOSnV7NyaInP2ZGHx1Y+lQ=
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="6PVvLnZRvsd/2E7w"
+Content-Disposition: inline
+In-Reply-To: <20230608-spiritism-gonad-5f5aff4c3a24@wendy>
 
-> > [...]
-> > @@ -14,7 +14,8 @@
-> >     /// Byte string without UTF-8 validity guarantee.
-> >   ///
-> > -/// `BStr` is simply an alias to `[u8]`, but has a more evident semantical meaning.
-> > +/// `BStr` is simply an alias to <code>[[u8]]</code>, but has a more evident
-> > +/// semantical meaning.
 
-> Isn't there a way to escape square brackets with backslashes with
-> mbBook? Like `\[qux\]` or something? I ask this because this affects the
-> readability of the doc comment so if that could be omitted it'll be
-> really good.
+--6PVvLnZRvsd/2E7w
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Here are the things that I tried that did not produce a link:
-[`[u8]`], `[[u8]]`, `[\[u8\]]`, `\[u8\]`, [`\[u8\]`], `[[u8](u8)]`,
-`[[u8][u8]]`,
+Palmer, Miguel, Nathan, etc
 
-This results in a link, but it includes the square brackets:
-[`[u8]`][u8], [`[u8]`](u8)
+On Thu, Jun 08, 2023 at 01:28:06PM +0100, Conor Dooley wrote:
+> On Thu, Jun 08, 2023 at 01:52:47PM +0200, Miguel Ojeda wrote:
+> > On Thu, Jun 8, 2023 at 9:01=E2=80=AFAM Conor Dooley <conor.dooley@micro=
+chip.com> wrote:
+> > >
+> > > I do intend revisting this, probably after the min. version for rust
+> > > gets bumped, I've just been really busy with other work the last week=
+s.
+> >=20
+> > Thanks Conor! That would be great. We are increasing the minimum
+> > version after the merge window to Rust 1.70.0 (assuming no unexpected
+> > issues).
+>=20
+> Right, so probably I won't resubmit anything until after v6.6 then,
+> as it won't be in the RISC-V tree until then, by the sounds of your
+> timeline.
+> Gives me plenty of time to try and unravel the mess of libclang versions
+> and what extensions are supported by each tool. Not like I am devoid of
+> other things that need to be done!
 
-This results in a link that only includes the `u8`, but it is not
-formatted as code:
-[[u8]]
+6.6 came and went, and I have been busy dealing with the other
+responsibilities I mentioned and have not had a chance to look here.
+I rebased this today and things still work as they did when I submitted
+this version, but things have gotten muddier on the LLVM side of things,
+as more recent versions have added yet more extension support.
 
-The only other examples of linked slices that I found are in the
-standard library [1].
+My inclination at this point is to engage in a bit of LARPing as an
+ostrich, and sorta ignore these concerns initially. Specifically, I'd
+like to drop the idea of having the gcc support, and restrict to LLVM=3D1.
+When it comes to asymmetrical extension support between the C and Rust
+toolchains, I'm think we deal with that as we do for the C toolchains,
+sort issues out as-and-when they arrive rather than punt this again.
 
-My assuption is that crate documentation is much more often consumed in
-its rendered form, which is why I think the reduced readability is ok.
-However, if that is not the case this change might be a bad idea.
+Thoughts?
 
-[1]: https://doc.rust-lang.org/src/alloc/ffi/c_str.rs.html#58
+--6PVvLnZRvsd/2E7w
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZae6bwAKCRB4tDGHoIJi
+0gSBAQDo38W6PTOrInEpd47uC6oQIYUvHH1KsraF+Ue8d+OddAD/RgFhSo1LMWe7
+a3i/SbsjnIVdYUqCgcwThIIhp9U8bwA=
+=271/
+-----END PGP SIGNATURE-----
+
+--6PVvLnZRvsd/2E7w--
