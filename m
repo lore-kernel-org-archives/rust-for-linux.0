@@ -1,23 +1,23 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C1210EB;
-	Wed, 17 Jan 2024 00:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B653B8468;
+	Wed, 17 Jan 2024 00:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705450579; cv=none; b=hPKlkagP6CspIGiOf819QTawQBc9kS7/XvmZJtShOnKKkgPAkExysm8w3hW+vdT17r4I9Xva62wJhyZPFDPhLOvFEblfobCSj8aLhruNnoyX0TGteaqZ56z3eBks3pkadEM/jp0znRxaUCmOojzJ7KS9Mksb2om37Cb+HCI7xSo=
+	t=1705450606; cv=none; b=c24HrX3yuz4SofgVTMt9E8GhRSSuayoJuicx2GnYfa3kuusn8u0jJNKyydHGxsvJf05cYtXGCS2UdDWpMQGvwA0abf4ldKBqt32uQJ+AoiWeAv3fVPWVY5ZjNn7ao/4h/ysIf85I2cjMky9SdAqtFFKRGYqKp6SNIk5j5AQUl6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705450579; c=relaxed/simple;
-	bh=29I8vQfcBLV9mwZoRiepEOKD8CS2T7TWmyPwGLAV5PM=;
+	s=arc-20240116; t=1705450606; c=relaxed/simple;
+	bh=hvWv/gsA+1XA5/ae14NG4bJ38X5ybqAzDv+NJAAUJFs=;
 	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
-	 X-Spam-Flag:UI-OutboundReport; b=rf+0Yc6A+iMBpywfkuvvFA0ZMAx0ZVj4N7nWvoovex3D7PNEYEV1fujNTk3tnS17U8jqaGa/pJ7pUmB+q+1ndYDbAJFy6DawodEQHXywTdyKomRRW+Ap4G/ZXuw4ullBl/yUG3TfgQOjfTbTAmUhk7+MxeulXy4+eLIfFlEHBiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.126.133
+	 X-Spam-Flag:UI-OutboundReport; b=cwvrSLSkY4nSdNvt7ugnaTLNycZ8DOd6k79Dr/oUEs8cJYzUeCmT0xEAYOfIPFiLn9j3KAPdhAo0GZ1+vHh+HlTWLWf2Qis+VAE9rX/K4qoz9yGz3o4JxPwAB2e+R9y7g73DDT/dtzkmBNaEA4c5hK61LRNWceBfmgPLhpCldRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=217.72.192.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Received: from localhost.localdomain ([217.245.156.100]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M8Syu-1rUHJq0QJE-004Wpr; Wed, 17 Jan 2024 01:16:02 +0100
+ mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MQdI8-1rkIGR0kJ4-00NlUi; Wed, 17 Jan 2024 01:16:21 +0100
 From: Valentin Obst <kernel@valentinobst.de>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -31,9 +31,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Valentin Obst <kernel@valentinobst.de>
-Subject: [PATCH 12/13] rust: kernel: remove unneeded doclink targets
-Date: Wed, 17 Jan 2024 01:15:49 +0100
-Message-ID: <20240117001549.169160-1-kernel@valentinobst.de>
+Subject: [PATCH 13/13] rust: locked_by: shorten doclink preview
+Date: Wed, 17 Jan 2024 01:16:13 +0100
+Message-ID: <20240117001613.169177-1-kernel@valentinobst.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116160141.165951-1-kernel@valentinobst.de>
 References: <20240116160141.165951-1-kernel@valentinobst.de>
@@ -44,88 +44,57 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:vKGsVDD4K4O8G0nQOnjmofp4+nIqOjtImagczD6YhwgfOa9ZS0K
- rV8quU1oxXtmNfI51VhLGnGngF55lx7+qIxTZLaYsSg3hjPOu4jdtXD3cCoqjNH+406CRDA
- Wgyvd6R06NJKSDsvdRJmyJReq3nixPvkDwGgwbJrSvOeYDwnM4ld3s1pEzILJH24wIHFAlB
- D1n2qF/b8uNVv4bKpxiZg==
+X-Provags-ID: V03:K1:P+Wtzs9yqXIZYrvFo9hsAvAB2lek5+pAfAMb7c47Q2gbxEq9JQw
+ tZqu5SlmeG69/pBfzK+Ywt2boBTUKjUq/8PDGTdyMbiXg7r7cNU6ZlQYUgSA14R7lUTSVu7
+ hvLtW6AuECZTB4xDT0D01Iln4xKsWVEeEQdehN6p2+XAupqh0LTaHEGs5tUYWCLq95yMFBh
+ Coc/vrsct7Ow/R0/4SM/A==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3OczPoTzmTE=;S9W2oLrRDxGvXikdidPbco6b49/
- iSusBm28Kp+2/S9krGAq/FWrQGGIs20nsXeQlDr+QvLPy1tZRtCQ5Yfg5adWgUi+BsVyM1+UH
- qotwLO6DsBzpuIlpHX7Ah0zYRgEk7H+qseieip9BYHgI7T2jg2T3OGrxXLok3IS+8qpSq6c1a
- t7oLfGyznK8sBC7we2kIcU9X/dKYmPJjTXstM+IZMvruddlJ2QuVe0IXHXIuKF9E03bMBw3Mv
- BRRA4TG9ZrbwIxJaZi2xE5zGytxJbw/Lcxvd/AZ+XHPqyoZN8KNnuQe2C/kgs86wUT1yBqBgu
- D3kDbVyzV38PhJiCvO/HE1+RxH6ONae2YXx1miUdl2UrSBi06jejPskoAhAr+CtlnYP8v9fAs
- PVdZyhCpdqHn681TZjqsRMAcwxYhD2nPpxGBtHitHa9KWUnwgUQYcWVcbaetJbeH6uDYabLmp
- 1otc6pYhxA+H6cGBRCGOVqw86hFssHkGUaI3cSpGz2L3qhDLkMZ0DxhLuW+f3MX4fYyfOGt0O
- eqAbIGmsgFo3/3J99SWk+6X8XU46Ir0F04QADjJgm0ADyrOviWzi/AALS4ObAiK20FxAEPFkV
- KubovKd639u8kp+sxkd4C3+oBb4XEc+ii5D8V4mIn9abVGdc//vzxaf2joOHtZieV1mH7yDEH
- lzNsQuRTFNu5DXn0HexkjqjBjy+p2Z57i5tlmi70hSk0O2Rq5HIFYbJU1rm6bCKxqwYFUvQSK
- V8Sn5s6bNkv8nFpwpgOWdBNTn2Qx7cfWbxMFVJ29MmPIGSZRuaVGg8+bpXDpBEpAiV+OBaaL8
- CBZ5Kpp4WVEZSsUJZD3Oz3f/Yj3IFTpNrtVhZjbmfVhBjhbRmQ0c0TQwiV0O1+Q9HE2z5Dj0M
- /yYE8HCuQPWuAcQ==
+UI-OutboundReport: notjunk:1;M01:P0:dsSEASkNAtk=;LD2yuxK41OjMV0sSEd4SU39P4y/
+ OxIG8uPb5vZNU/rpA/U6b+YJw2QI4njvG3acQ47b3Kl3hidgYYuftWvO8hJoBkLSvzQlSMq9k
+ 27EBcoOAShXtSGuMFynffFK8rNZRX5KYOlmraaO/1J8/YOteBQeHimF7mz9quakj9pD7nGkYN
+ KpQLL/gY5mOXnugxEVfRif3JGdPyZl/TcIfl2ogvURVcRGGBNDRFY9eqCARwoAIlKHtdMxHkb
+ dY/rBbo3o4U+wuMADJT2VS5VWXzXqDL70WMl37D1BBMAjEKuA22vB0rUUsnM85lqrISmQuOaq
+ ML9houAAZMW0il42Zw54SmVRMVtqP2o5qXLv+DbR6mx/GLdDnobhXtCaNzLKrIcUwtS7vZVRp
+ QoG41zntmEaKBgkgt19gukKYKQcM/vphyLpPCi9F9dmbK4ivUGIK5mIGYyTYc7D9QotRtUjEj
+ 49EGuYOVFj107ooTaGyiqmvaUYvUmja82EnryQua2nuIbqWC3gHdoIYeQ3IwCMGUm/y2biEMS
+ gl8jzHy+KSPyPPzb6pjS+BUGNncGzELzItuP7F1yJKcTJXpXIQLcJUzn1YhULqbdeRPn7ZvmF
+ oHtDu6hw5aSK2bB+Sjwm9dlHuCjguH2gEniBoyWC9uhOK6X2fyA1qV3NkjhkKO/vEecOrM/XQ
+ gZ3IReFIBCcnGNzorz8EfgQAcpkj1JUrh3z3sqNEI7mjBXr/i99ErjQoSOs9LA78YlH4tvd22
+ Lk1SAoFl7BrZZFOrCLgZxZckzNcD64Syma1EAmgRK5KyQKMuVM9xo6oX+4wSkfP1JO9IwJkcl
+ pwP5rt3eo4i1326GkspBxuCDsVFPNzyQ1fW6S4+kl6DIe6eW9FD2aFo6zkWagwlqqZIybHiog
+ 0HYV/lU0w7ra7jA==
 
-Remove explicit targets for doclinks in cases where rustdoc can
-determine the correct target by itself. The goal is to reduce verbosity
-in the source code.
+Increases readability by removing `super::` from the link preview
+text.
 
 Signed-off-by: Valentin Obst <kernel@valentinobst.de>
 ---
- rust/kernel/workqueue.rs | 10 ----------
- 1 file changed, 10 deletions(-)
+ rust/kernel/sync/locked_by.rs | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index aedf47f258bd..f63190b563d8 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -426,13 +426,10 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
- /// The [`OFFSET`] constant must be the offset of a field in `Self` of type [`Work<T, ID>`]. The
- /// methods on this trait must have exactly the behavior that the definitions given below have.
+diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
+index b17ee5cd98f3..22c38993bf63 100644
+--- a/rust/kernel/sync/locked_by.rs
++++ b/rust/kernel/sync/locked_by.rs
+@@ -9,7 +9,7 @@
+ /// Allows access to some data to be serialised by a lock that does not wrap it.
  ///
--/// [`Work<T, ID>`]: Work
- /// [`impl_has_work!`]: crate::impl_has_work
- /// [`OFFSET`]: HasWork::OFFSET
- pub unsafe trait HasWork<T, const ID: u64 = 0> {
-     /// The offset of the [`Work<T, ID>`] field.
--    ///
--    /// [`Work<T, ID>`]: Work
-     const OFFSET: usize;
- 
-     /// Returns the offset of the [`Work<T, ID>`] field.
-@@ -440,7 +437,6 @@ pub unsafe trait HasWork<T, const ID: u64 = 0> {
-     /// This method exists because the [`OFFSET`] constant cannot be accessed if the type is not
-     /// [`Sized`].
-     ///
--    /// [`Work<T, ID>`]: Work
-     /// [`OFFSET`]: HasWork::OFFSET
-     #[inline]
-     fn get_work_offset(&self) -> usize {
-@@ -452,8 +448,6 @@ fn get_work_offset(&self) -> usize {
-     /// # Safety
-     ///
-     /// The provided pointer must point at a valid struct of type `Self`.
--    ///
--    /// [`Work<T, ID>`]: Work
-     #[inline]
-     unsafe fn raw_get_work(ptr: *mut Self) -> *mut Work<T, ID> {
-         // SAFETY: The caller promises that the pointer is valid.
-@@ -465,8 +459,6 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut Work<T, ID> {
-     /// # Safety
-     ///
-     /// The pointer must point at a [`Work<T, ID>`] field in a struct of type `Self`.
--    ///
--    /// [`Work<T, ID>`]: Work
-     #[inline]
-     unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
-     where
-@@ -495,8 +487,6 @@ unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
- ///     impl HasWork<MyStruct, 17> for MyStruct { self.work_field }
- /// }
- /// ```
--///
--/// [`HasWork<T, ID>`]: HasWork
- #[macro_export]
- macro_rules! impl_has_work {
-     ($(impl$(<$($implarg:ident),*>)?
+ /// In most cases, data protected by a lock is wrapped by the appropriate lock type, e.g.,
+-/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for cases when this is not
++/// [`Mutex`] or [`SpinLock`]. [`LockedBy`] is meant for cases when this is not
+ /// possible. For example, if a container has a lock and some data in the contained elements needs
+ /// to be protected by the same lock.
+ ///
+@@ -17,6 +17,9 @@
+ /// when the caller shows evidence that the 'external' lock is locked. It panics if the evidence
+ /// refers to the wrong instance of the lock.
+ ///
++/// [`Mutex`]: super::Mutex
++/// [`SpinLock`]: super::SpinLock
++///
+ /// # Examples
+ ///
+ /// The following is an example for illustrative purposes: `InnerDirectory::bytes_used` is an
 -- 
 2.43.0
 
