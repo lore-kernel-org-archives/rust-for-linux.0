@@ -1,110 +1,106 @@
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB412B658;
-	Wed, 17 Jan 2024 01:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B602A67C72;
+	Wed, 17 Jan 2024 04:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705456762; cv=none; b=F9nuR1qxYp0BzrbXyKPSbfvYFB6b7YYhy9wPC+yOMkWAynMxrUK1MBlww7SQaVkD0D2a0VaqeisOMrTJURWhD5HI2qaBAPuEugyje2YayA7bGaNkFSlAO5RsE+8I5r/PxuUximlfA5cFh1jGg2U+wwgMccQltK4cEWX0T5T+F0Y=
+	t=1705466082; cv=none; b=SjIg62XmAes+/eqmHH6RER1rA7D13bRjtHkj9HMnriChMJya+7+aWu4izog9UCBiXXovJ2acmEaA1eaJv+fm9KsKWj+yt93NiiMZ7/6ZgjqgghuwMUaV6SSORFmroYZpheYV4St2y8a8l/3URT+eA8XEn3ixP85xTMk7Dhh2f4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705456762; c=relaxed/simple;
-	bh=Q7ZAXq45jDLN9Qa5cpxzsBvnQmAbmuhAz4R/pS1S7Tc=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:
-	 To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=Hk3k7ZREvjhb/EEggJcMlR160ryf0HY6+Aqu6gDQbEyXACrDeS8kJrAiQp6fTPBxd3foaBv5mL8PKt69fOMfiUyDMNyV5quPMdaVXdtULdLG5l+SJKZw2DIZEsZT2sZ+Fk3bGXaU0DM63RtIv4RTT4n7WqUJmLe3RG4eBqeOONM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DdaRLlq7; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1705466082; c=relaxed/simple;
+	bh=M0lHeEIbJSP8UEtQ7BzZHEeSSX3emAVPVhi6TmOdTmw=;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:
+	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding; b=l5t3G4u9sTzvtWMmZpKMB4r3CPU6CfjL6qvE5giOu9zwME+nomxtDSc4y4dmxOBxvPc/IQWaqbd975pcCCuQYKePxUToOJOwXcrcj4jIxLI8GNdSwEahIZ2+EAMdlYj4a81pmWkfyt71CawJGZI/Cau/FslhL9mkYhbp1XEj67k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXDf1qJb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DdaRLlq7"
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3bd6581bca0so2358572b6e.0;
-        Tue, 16 Jan 2024 17:59:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705456760; x=1706061560; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cRKV7zkrl5aMjYceZld1VkQyBEeoC8GABh+p6k8LCpc=;
-        b=DdaRLlq7TG7yG+euPIxlWh39Ju+MnI8BwcFGSLgWGkW/teMckJT09p6a1kCtGr0CXs
-         xthMrJv5+Imddhwu6vjEpxihwPMhCFvI8iWsrUhqcYR4gQmgvISnD0UNDA5A4f1nh3AK
-         ypxiUnR70Jwp4pFkXpmrjSmvh0e1kUhI6uZ//d2ZWogvrzSai0XGdT8mcOSEx8lBAcTI
-         zuQew772OP2N6M0gIDZK6RAwsVwM5jvSEd4TLwojPbWLadPPkRvrS6CFuB7KaN3Q3ocv
-         a8P36t+Tw5plUD0WHazCbyKoZyDODIxIW1TZL1aC9Lm7os7Kb/kTPCaWCCdaKjSIhGTZ
-         UVbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705456760; x=1706061560;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cRKV7zkrl5aMjYceZld1VkQyBEeoC8GABh+p6k8LCpc=;
-        b=F8fni12oKDFOWFOe+MoJGSax6Lu2XMew6X66fEz2i06KejnWrMS1CTUzVm0AnNXZpW
-         x/Yq+cFmlB9fJJeKhY/hBeptVinK+/1Eu/7SEOgk7jvmeFFLz/RgPIFTCQaU3jnkQXJP
-         W8+aeuFJL8JxjIn8uVg1ekjTf7KEihtgi9/J+Y46fWARQzwR4oFZfl1Yq6EdCBztk3VQ
-         5Am5WmhJj5MvqXsUiB4ACdb5Jt28+H4ehA4dyiFVDLbszPcZmpczLjFacivG9cfMaFZh
-         zB5zZn3zWp4Ny6D5lSa5SirL8X6ukoCfv3iarUOgNBCZ07XJ4Ad3qiFX3I/Qn2rtB0z+
-         p/lA==
-X-Gm-Message-State: AOJu0YyUYNPUUcmiFGeGM+qo43BKh0IQrhy7QMhAguXvF6Y22ECOqqrM
-	92pTvcAECVkWkepGqTYRQ14=
-X-Google-Smtp-Source: AGHT+IEN0a7WRH0HIYyrpMNf9WfGQ+M40O13rxZPDT20TboEI5ZEw6B74hIjaARDAcbE8tiV4Orkzw==
-X-Received: by 2002:a05:6808:2e9b:b0:3bd:7227:745 with SMTP id gt27-20020a0568082e9b00b003bd72270745mr7576546oib.82.1705456759832;
-        Tue, 16 Jan 2024 17:59:19 -0800 (PST)
-Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id e13-20020aa798cd000000b006da105deedesm237836pfm.197.2024.01.16.17.59.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jan 2024 17:59:19 -0800 (PST)
-Message-ID: <a3856ffc-ddb9-4066-8e1d-999c8f7790e8@gmail.com>
-Date: Tue, 16 Jan 2024 22:47:24 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXDf1qJb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F65C433B2;
+	Wed, 17 Jan 2024 04:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705466082;
+	bh=M0lHeEIbJSP8UEtQ7BzZHEeSSX3emAVPVhi6TmOdTmw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CXDf1qJbqvdXoXU8dg7DU5ubXNQ7WNA9aX1ilbJscd7JrxbkXjjJ/HkYslSojP7d1
+	 SZty9DEOw32ezbbNxF1uFPxjBzR/Wk3CVNwrHoczaPtWfKBvj0P1kMS5myspvnTFjf
+	 WvtyjclcPMdCfaiHDMBhhyvKGwUYf6S1WjXYQvdTiC6XQASQ3KPr06lNk6qZdOYGYm
+	 qEQIjWXFHn9Ra+7yDAzNkgQYljtNGaH9N7vuTmBRwFS0aJtgKsazR6yryDu0/AUPlB
+	 7xL51I82l02yVMBLdlqOYJIFbcFTVuS10ISG39hTPjNxGTEJwtwma608nNzZ901cT2
+	 Z16Gv4+XL9t8g==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-50ec948ad31so10564127e87.2;
+        Tue, 16 Jan 2024 20:34:42 -0800 (PST)
+X-Gm-Message-State: AOJu0YwEfLEHZK77U+xtLhg/iQc2HVX1EQ2HVY0/zSjLN0dGl7TvijM5
+	Mra1rJ7ayNQRt8vnlPM/Uj0vBbcTBxtC0i2gDtE=
+X-Google-Smtp-Source: AGHT+IFBqnMfUgM4CRX5wiiomwTy15C6kBIJjo72WKWNLc+dQEyC4hkYoiqfUivkJJafe+zfYxjuMnrYThXWHtq4MnY=
+X-Received: by 2002:a05:6512:3a86:b0:50e:7d6b:b5b2 with SMTP id
+ q6-20020a0565123a8600b0050e7d6bb5b2mr4765644lfu.6.1705466080318; Tue, 16 Jan
+ 2024 20:34:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/13] rust: kernel: add doclinks with html tags
-Content-Language: en-US
-To: Valentin Obst <kernel@valentinobst.de>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240116160141.165951-1-kernel@valentinobst.de>
- <20240116231118.168882-1-kernel@valentinobst.de>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20240116231118.168882-1-kernel@valentinobst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240108032117.215171-1-wangrui@loongson.cn> <ZZ2fn0scbDKBXWe5@boqun-archlinux>
+ <CAHirt9iox8FGV2wrMyxwFRjab2avfOcyLKvBc9K=AqiHxqHXKg@mail.gmail.com>
+ <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home> <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
+ <CANiq72=X3cggAn0HLMi7jVFAfypBhog=ZkPB57yfaX4ZUzT-HA@mail.gmail.com>
+ <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com>
+ <CANiq72n7K8LcKrs+beF2sbt1XLdr4zEhEw4xcy3yh4wgTrvYeg@mail.gmail.com>
+ <CAAhV-H72Hbfy7n6+AFSFFOzizo0GtpzA074sgo48-W-Dt0VR+w@mail.gmail.com>
+ <CANiq72mEPnB7yEZvtUXAM5w0GgYmzdrM9OhioLGb_LzbAJKNOA@mail.gmail.com>
+ <CAAhV-H6BFkgN-KzEexXk9zdnOGNCdBesCEEaczEvEp8x2K2YHw@mail.gmail.com> <CANiq72nv3Uw8GLNqbdGBC3b+viF+o8BeppS9KWhpzBFvjqZLUg@mail.gmail.com>
+In-Reply-To: <CANiq72nv3Uw8GLNqbdGBC3b+viF+o8BeppS9KWhpzBFvjqZLUg@mail.gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 17 Jan 2024 12:34:29 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4-dfBN3icg6kczRiZ67DOX66M-vXXCrz7Me0iunp8kRA@mail.gmail.com>
+Message-ID: <CAAhV-H4-dfBN3icg6kczRiZ67DOX66M-vXXCrz7Me0iunp8kRA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] Rust enablement for LoongArch
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: WANG Rui <wangrui@loongson.cn>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/16/24 20:11, Valentin Obst wrote:
-> Add doclinks to existing documentation. Use html 'code' tags to add
-> links to items that cannot be linked with the normal syntax.
-> 
-> The use of html tags is a tradeoff between the readability of the
-> documentation's source code and the ergonomics of the generated content.
-> 
-> Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-> ---
-> [...]
-> @@ -14,7 +14,8 @@
->   
->   /// Byte string without UTF-8 validity guarantee.
->   ///
-> -/// `BStr` is simply an alias to `[u8]`, but has a more evident semantical meaning.
-> +/// `BStr` is simply an alias to <code>[[u8]]</code>, but has a more evident
-> +/// semantical meaning.
+Hi, Miguel,
 
-Isn't there a way to escape square brackets with backslashes with
-mbBook? Like `\[qux\]` or something? I ask this because this affects the
-readability of the doc comment so if that could be omitted it'll be
-really good.
+On Tue, Jan 16, 2024 at 11:16=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Tue, Jan 16, 2024 at 10:31=E2=80=AFAM Huacai Chen <chenhuacai@kernel.o=
+rg> wrote:
+> >
+> > OK, since Linus said the merge window is paused now, I rebase and
+> > retag my tree and the Rust commit is like this, I think this is
+> > perfect now?
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongs=
+on.git/commit/?h=3Dloongarch-next&id=3D706f9e1ab7c7a58d80ef2c87d8720131253a=
+2256
+>
+> Thanks a lot! That works, yeah.
+>
+> I also took the chance to build LLVM and QEMU and I tested the tag --
+> it seems to work: I see the samples (built-in) printing in the kernel
+> log :)
+>
+> So in case you end up rebasing for another reason and want to add it,
+> even if it is a simple check I did:
+>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+OK, if Xuerui updates this patch, then I will rebase again.
+https://lore.kernel.org/loongarch/CAAhV-H7KteJvRVpj3Hz-Ui9VnmijcJq5D1Tb-KJv=
+qTO_+jjp2Q@mail.gmail.com/T/#t
 
->   pub type BStr = [u8];
->   
->   /// Creates a new [`BStr`] from a string literal.
-> [...]
+Huacai
+
+>
+> Cheers,
+> Miguel
