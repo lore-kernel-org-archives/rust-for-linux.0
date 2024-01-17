@@ -1,118 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62805C8DE;
-	Wed, 17 Jan 2024 11:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE5422F05;
+	Wed, 17 Jan 2024 18:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705491062; cv=none; b=Lh1MAbk6ZM7Eq/kfmMVc2b4lF/uX9KP/NvKlSQ850c95wcjE54czu/aFBseDD2c6PWzVmNlxq7s3Wl8T9TNLNtVK3QOJ5kZiwwwfGQCIDlfW5I1tnOs0mg3/njR+X5DwmX0IT1ohqfgVJLnOgrlYpBRukcNtVKit1BgYvG1D1to=
+	t=1705515811; cv=none; b=gIInqn5SzVOEL45CcRkP+ysIGf/udjZ6gDvHf+VDHj4xMCHi47jhks/uqZSahGT/UvK4g9RoZQhB3yYsUCus9HALaW2aaF99CwtrWsnfvBHIJDll4PmJywjdWIOBrUdgwBhdA8FmBN1dynV4GBaGMvheGSdgGoeU3x4XJ5avTGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705491062; c=relaxed/simple;
-	bh=W+4VwuyRcYhhV7162/K5rb8MKqw/7UZiD1PRcLyA8Fk=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=CFz9E5y4ta0rMRMuO9nEyllEZ8m4Q+EDrKIUSwQTkhsqcYsRqMLAkc2dRz4DHlnkDzj8XcBnplrjt1+jjwuMWAa+7xTDjCpsXPCs1t50QOLC0N+ispSV68RL9Wipf09lwB+yd/QJaRkVx5xrrGFPT4W2kox6qxHTXJdjqe15Vwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3Pxe78I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1705515811; c=relaxed/simple;
+	bh=eXio9NlaEYl1RqaWvINUW6RFO3slj0nXN/O8m9I0jP4=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding; b=Vy1uboybbtLAXjmQbr3ct9ZkhnjM8MFwLazFSB8sTfKpu5cQnJCBYIVT6qL/ErsCM3VDaQKlB1QVZ3Ck2BBPDgLDXcc2eDk4zhr+VEMhUghTgJULnAJen3ZJZ1x6gTkq6DCfHj2zWqVUDHEDBzrvn2bfgUsbSeUH2cqzjjpXKH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6K0j8f3; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3Pxe78I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F35EC433C7;
-	Wed, 17 Jan 2024 11:30:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705491061;
-	bh=W+4VwuyRcYhhV7162/K5rb8MKqw/7UZiD1PRcLyA8Fk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X3Pxe78INo0ZCxa0lyRMprtUGrriYUvVYuWXJfV4Oc+VoL0I4bLN36FsDknC7YnGX
-	 +rIH5fU+7Xfk9MdPjHYyIyExjHbZGbrnE7eaGXQdwkKx77v0kRDw8Ghm02gyv/XBJr
-	 KLppLKaA8MUHaFryoz9AAu6hw7Neuu4lkx5NKwdfOhjkMcd24mMNPgAOau0UhFhzYk
-	 kola7qJeQyTTS8bNAsC1n+ODNhmHi0enOkVATQDzN4q92kd2X7VkA1pQ6wog4c0XO5
-	 uBWCf94jaO4uJO3B9VibzFxdnxGV0WbcOWze50rPEraEgYtshEDUerZWOy6Scfs1Zx
-	 8u15hC/eTFf9g==
-Date: Wed, 17 Jan 2024 11:30:56 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Conor Dooley <conor.dooley@microchip.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
-Message-ID: <20240117-swiftly-parasail-618d62972d6e@spud>
-References: <20230307102441.94417-1-conor.dooley@microchip.com>
- <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
- <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
- <20230608-spiritism-gonad-5f5aff4c3a24@wendy>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6K0j8f3"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5efb0e180f0so114349927b3.1;
+        Wed, 17 Jan 2024 10:23:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705515809; x=1706120609; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eXio9NlaEYl1RqaWvINUW6RFO3slj0nXN/O8m9I0jP4=;
+        b=U6K0j8f35y/md+hdr8yAxS0unWHO/tMXfKGjuGAJhnSiIf3QZ+CGJw/ohMY/h+apYg
+         D1OgLnAuo8YMfeXHbF7XQ77kH4rfXgkaV/vZihjLmH22habeXCoAQd3nMQWZv7UAVygV
+         UDiUT7pY+VNZcCmaakU51aR8KyZanYwpqT57MlYlc40r8qqH1yT9dTCrj7ofA9aBemR/
+         ivGlQ0AOEcsLM8CxRKhUn/Jx6rUO1aH8NM6+cxKZ3RHrWeWWv/ygQ3mLynZnnJ1V1Tlm
+         6VTa53UHoFoi28IrtJGdHOlqnIUrhD3n2Kx0mA8B1yGyQ/yOe5crhvru0vlOQyMTVy3T
+         JoVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705515809; x=1706120609;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eXio9NlaEYl1RqaWvINUW6RFO3slj0nXN/O8m9I0jP4=;
+        b=DyxV9g7bgrcezi0TwyNwArNOVxPjyxVGD4ejK9ujJ2wzGsXWmylaqF1vSADR5d3o5H
+         qRkw6H7kDwf3BjDbPs5ImDwUNrj3LEMQlntok36yx8OAxQRwhu46if3wJ7eMHBY+yT3p
+         DYYbW+kyBGj9m6vNhbWveDK5ehQgN6O+9c7LcdgVuVuPBxeT0++6BCTAXJ+dPUhmjZdX
+         P45xt5ToDcjkoSxnGbYk7qpH7NXTmAHYmDcKnAgGQJk9g31YUvN/s5gIQSDgn8ePORhK
+         z2g3o0xcr4YZeehz9mGBNz36d4x8SDsHUbGlwG5GpxN3vstSweY5XNxa6SYtf5I1vbwY
+         XSMQ==
+X-Gm-Message-State: AOJu0YyG1kL/ikuMk0nHVzJDtJq1tekUYeakQkTZxBNK3ITlhdTBrAeh
+	Y6i7zTQwKeqDpGWbbLTfP8kptFgtrZ3oJSI4ISM=
+X-Google-Smtp-Source: AGHT+IGCcH/dqD6Al/2l0bQOPWAl/S0LnMuPzV2EbQmMsbLH6gHDj92gaTx/RM0zC3S16n6n9hZ5JDh5aDxL4N2u3xg=
+X-Received: by 2002:a81:ca46:0:b0:5e9:dca:1b14 with SMTP id
+ y6-20020a81ca46000000b005e90dca1b14mr7334369ywk.7.1705515808771; Wed, 17 Jan
+ 2024 10:23:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6PVvLnZRvsd/2E7w"
-Content-Disposition: inline
-In-Reply-To: <20230608-spiritism-gonad-5f5aff4c3a24@wendy>
-
-
---6PVvLnZRvsd/2E7w
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <20230608-dispatch-sneer-aa09bd7b2eb8@wendy> <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
+ <20230608-spiritism-gonad-5f5aff4c3a24@wendy> <20240117-swiftly-parasail-618d62972d6e@spud>
+In-Reply-To: <20240117-swiftly-parasail-618d62972d6e@spud>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 17 Jan 2024 19:23:17 +0100
+Message-ID: <CANiq72mVKCOAuK4Qe+8AHmpkFwyJsVfx8AqB7ccGi3DYpSSWcw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+To: Conor Dooley <conor@kernel.org>
+Cc: Conor Dooley <conor.dooley@microchip.com>, linux-riscv@lists.infradead.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Palmer, Miguel, Nathan, etc
+On Wed, Jan 17, 2024 at 12:31=E2=80=AFPM Conor Dooley <conor@kernel.org> wr=
+ote:
+>
+> 6.6 came and went, and I have been busy dealing with the other
+> responsibilities I mentioned and have not had a chance to look here.
+> I rebased this today and things still work as they did when I submitted
+> this version, but things have gotten muddier on the LLVM side of things,
+> as more recent versions have added yet more extension support.
 
-On Thu, Jun 08, 2023 at 01:28:06PM +0100, Conor Dooley wrote:
-> On Thu, Jun 08, 2023 at 01:52:47PM +0200, Miguel Ojeda wrote:
-> > On Thu, Jun 8, 2023 at 9:01=E2=80=AFAM Conor Dooley <conor.dooley@micro=
-chip.com> wrote:
-> > >
-> > > I do intend revisting this, probably after the min. version for rust
-> > > gets bumped, I've just been really busy with other work the last week=
-s.
-> >=20
-> > Thanks Conor! That would be great. We are increasing the minimum
-> > version after the merge window to Rust 1.70.0 (assuming no unexpected
-> > issues).
->=20
-> Right, so probably I won't resubmit anything until after v6.6 then,
-> as it won't be in the RISC-V tree until then, by the sounds of your
-> timeline.
-> Gives me plenty of time to try and unravel the mess of libclang versions
-> and what extensions are supported by each tool. Not like I am devoid of
-> other things that need to be done!
+Sounds fun :)
 
-6.6 came and went, and I have been busy dealing with the other
-responsibilities I mentioned and have not had a chance to look here.
-I rebased this today and things still work as they did when I submitted
-this version, but things have gotten muddier on the LLVM side of things,
-as more recent versions have added yet more extension support.
+> My inclination at this point is to engage in a bit of LARPing as an
+> ostrich, and sorta ignore these concerns initially. Specifically, I'd
+> like to drop the idea of having the gcc support, and restrict to LLVM=3D1=
+.
 
-My inclination at this point is to engage in a bit of LARPing as an
-ostrich, and sorta ignore these concerns initially. Specifically, I'd
-like to drop the idea of having the gcc support, and restrict to LLVM=3D1.
-When it comes to asymmetrical extension support between the C and Rust
-toolchains, I'm think we deal with that as we do for the C toolchains,
-sort issues out as-and-when they arrive rather than punt this again.
+Yeah, if `LLVM=3D1` works, then I would suggest going ahead with that.
 
-Thoughts?
+(Now that `rustc_codegen_gcc` is here, we will move to that and forget
+about mixed compiler builds, but we still have to handle `bindgen`
+flags until we have an alternative for that)
 
---6PVvLnZRvsd/2E7w
-Content-Type: application/pgp-signature; name="signature.asc"
+> When it comes to asymmetrical extension support between the C and Rust
+> toolchains, I'm think we deal with that as we do for the C toolchains,
+> sort issues out as-and-when they arrive rather than punt this again.
 
------BEGIN PGP SIGNATURE-----
+Sounds good, thanks a lot!
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZae6bwAKCRB4tDGHoIJi
-0gSBAQDo38W6PTOrInEpd47uC6oQIYUvHH1KsraF+Ue8d+OddAD/RgFhSo1LMWe7
-a3i/SbsjnIVdYUqCgcwThIIhp9U8bwA=
-=271/
------END PGP SIGNATURE-----
-
---6PVvLnZRvsd/2E7w--
+Cheers,
+Miguel
