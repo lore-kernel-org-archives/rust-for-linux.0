@@ -1,106 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B602A67C72;
-	Wed, 17 Jan 2024 04:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B784C13FE4;
+	Wed, 17 Jan 2024 09:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705466082; cv=none; b=SjIg62XmAes+/eqmHH6RER1rA7D13bRjtHkj9HMnriChMJya+7+aWu4izog9UCBiXXovJ2acmEaA1eaJv+fm9KsKWj+yt93NiiMZ7/6ZgjqgghuwMUaV6SSORFmroYZpheYV4St2y8a8l/3URT+eA8XEn3ixP85xTMk7Dhh2f4M=
+	t=1705482664; cv=none; b=poy+qHyHwbUqpTT7ERM/LlfN/9iJETZbJtOT5VCzb9odhqT2kd67dL2yyOFtiNx5gvnvAd7GrzpOFPR08qOWLg9DasUeV1YPQmuebFq0IgmtPsbmjKdOMd0nldXuI8YM5+2MYb+23m37SKEr84IUD2D5bZouL/7tb0KLzzNbqk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705466082; c=relaxed/simple;
-	bh=M0lHeEIbJSP8UEtQ7BzZHEeSSX3emAVPVhi6TmOdTmw=;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:
-	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding; b=l5t3G4u9sTzvtWMmZpKMB4r3CPU6CfjL6qvE5giOu9zwME+nomxtDSc4y4dmxOBxvPc/IQWaqbd975pcCCuQYKePxUToOJOwXcrcj4jIxLI8GNdSwEahIZ2+EAMdlYj4a81pmWkfyt71CawJGZI/Cau/FslhL9mkYhbp1XEj67k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXDf1qJb; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXDf1qJb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F65C433B2;
-	Wed, 17 Jan 2024 04:34:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705466082;
-	bh=M0lHeEIbJSP8UEtQ7BzZHEeSSX3emAVPVhi6TmOdTmw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CXDf1qJbqvdXoXU8dg7DU5ubXNQ7WNA9aX1ilbJscd7JrxbkXjjJ/HkYslSojP7d1
-	 SZty9DEOw32ezbbNxF1uFPxjBzR/Wk3CVNwrHoczaPtWfKBvj0P1kMS5myspvnTFjf
-	 WvtyjclcPMdCfaiHDMBhhyvKGwUYf6S1WjXYQvdTiC6XQASQ3KPr06lNk6qZdOYGYm
-	 qEQIjWXFHn9Ra+7yDAzNkgQYljtNGaH9N7vuTmBRwFS0aJtgKsazR6yryDu0/AUPlB
-	 7xL51I82l02yVMBLdlqOYJIFbcFTVuS10ISG39hTPjNxGTEJwtwma608nNzZ901cT2
-	 Z16Gv4+XL9t8g==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-50ec948ad31so10564127e87.2;
-        Tue, 16 Jan 2024 20:34:42 -0800 (PST)
-X-Gm-Message-State: AOJu0YwEfLEHZK77U+xtLhg/iQc2HVX1EQ2HVY0/zSjLN0dGl7TvijM5
-	Mra1rJ7ayNQRt8vnlPM/Uj0vBbcTBxtC0i2gDtE=
-X-Google-Smtp-Source: AGHT+IFBqnMfUgM4CRX5wiiomwTy15C6kBIJjo72WKWNLc+dQEyC4hkYoiqfUivkJJafe+zfYxjuMnrYThXWHtq4MnY=
-X-Received: by 2002:a05:6512:3a86:b0:50e:7d6b:b5b2 with SMTP id
- q6-20020a0565123a8600b0050e7d6bb5b2mr4765644lfu.6.1705466080318; Tue, 16 Jan
- 2024 20:34:40 -0800 (PST)
+	s=arc-20240116; t=1705482664; c=relaxed/simple;
+	bh=Wufmwc5OiZ2ZBOE+SYQMYh5caOE9cr+BFk/qMaOMUpw=;
+	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
+	 X-Spam-Flag:UI-OutboundReport; b=VQ/RMg2saA7dwIEDF9D0oJeC8ffXQfwn3FShTv+exISu3ZbNFLcg3E6Gyfwwxay7OAGJVN2IyoGSfqw7gzf2IYK99yDHbJUYDnusDOvsmOVZ7Q4t24xmedYSppx3ZsySiGlfX8eBHLXvZFokuYfhAl1mo0BwJf6ihyE4OrubWDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.17.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+Received: from localhost.localdomain ([217.245.156.100]) by
+ mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1Mlvr3-1qh6cX2za7-00izH3; Wed, 17 Jan 2024 10:10:46 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH 11/13] rust: kernel: add doclinks with html tags
+Date: Wed, 17 Jan 2024 10:10:29 +0100
+Message-ID: <20240117091029.182098-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <a3856ffc-ddb9-4066-8e1d-999c8f7790e8@gmail.com>
+References: <a3856ffc-ddb9-4066-8e1d-999c8f7790e8@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240108032117.215171-1-wangrui@loongson.cn> <ZZ2fn0scbDKBXWe5@boqun-archlinux>
- <CAHirt9iox8FGV2wrMyxwFRjab2avfOcyLKvBc9K=AqiHxqHXKg@mail.gmail.com>
- <ZZ38XMQw18mw2sTA@Boquns-Mac-mini.home> <CAHirt9jQSVvBF=1wc=sT9FxngeSP30P4FDpu8m0JH_0fOPSO-w@mail.gmail.com>
- <CANiq72=X3cggAn0HLMi7jVFAfypBhog=ZkPB57yfaX4ZUzT-HA@mail.gmail.com>
- <CAHirt9hdtGSsEofxDb0FCtcFeAw9n9LKJALz23Qdqh4n2=Ua5A@mail.gmail.com>
- <CANiq72n7K8LcKrs+beF2sbt1XLdr4zEhEw4xcy3yh4wgTrvYeg@mail.gmail.com>
- <CAAhV-H72Hbfy7n6+AFSFFOzizo0GtpzA074sgo48-W-Dt0VR+w@mail.gmail.com>
- <CANiq72mEPnB7yEZvtUXAM5w0GgYmzdrM9OhioLGb_LzbAJKNOA@mail.gmail.com>
- <CAAhV-H6BFkgN-KzEexXk9zdnOGNCdBesCEEaczEvEp8x2K2YHw@mail.gmail.com> <CANiq72nv3Uw8GLNqbdGBC3b+viF+o8BeppS9KWhpzBFvjqZLUg@mail.gmail.com>
-In-Reply-To: <CANiq72nv3Uw8GLNqbdGBC3b+viF+o8BeppS9KWhpzBFvjqZLUg@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 17 Jan 2024 12:34:29 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4-dfBN3icg6kczRiZ67DOX66M-vXXCrz7Me0iunp8kRA@mail.gmail.com>
-Message-ID: <CAAhV-H4-dfBN3icg6kczRiZ67DOX66M-vXXCrz7Me0iunp8kRA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] Rust enablement for LoongArch
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: WANG Rui <wangrui@loongson.cn>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, WANG Xuerui <kernel@xen0n.name>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-doc@vger.kernel.org, loongson-kernel@lists.loongnix.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:+8e1IUodYn8hytsPyKooqZPdIIj6vadUy9opB2OzBzSrvRBArSm
+ mg10RiNwKGnJfNXP5VY+21f6Jnca4b2ZZfzuoyyQgfL9fDPC/KvTQt5OzrB40XftEbHNy5T
+ CwibTonzyAjLCsMDfvytLPwudFWJ5OgNWJVcH6Du5FzRMJ3RsRWWLwYlGHp2TDNZyV7zpGZ
+ W3QURz0710XAjUVztU2NA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:OnI26W7kGy8=;FhSUg2A5gIqu1sgMx0AuCkrtJRZ
+ SS5RpGgq7biN4894fWEJq4MiJ/R5VJfvb6pHbzNDyM5sxLx3hAZECVL/9yXqeeXvBsz8fgwEz
+ 3ibYIxaL1AD66COhg5BrAH3CGwgSk7Hui94k3tN6GL29B4Aiy/AKW5VH0QKoIbgWg8lsjdOOU
+ nZyHa1/dHagEm856xR6wlh17PXIntxlUrzwZuQKvcFD6dvq/rAvQKZSjjre8Vu8fMQK168fJn
+ vBOTsh5QrncKu6uqMAOLMiiMWONIbicaaw4yzlJkOLOOa9TNUB0mE9KncvAxoqjIQcrGRM0Du
+ dMiNqZ9+TGlJ4HJRjPVgWAROTsSUnSWDxc7ntOH3fmB+Y+6r99yCfsKOhkrogd0heseevTMCa
+ fS6dzPBLNJGr4m12JufEgOOooQ+M5NV36UL3Olg0gtOOM8Ry4fRrc/2AkYoFerHPdZNK75Ez9
+ xfMO0iiF4RbMwnGsrGwWzkVVRVXhB4xKyLbxxg6ZkFltvg8WepUCNZvU2mHThoTzEul2Tx4iB
+ UN9Dq9GuZV9lWnhW77MPvEM0FjGBrL5UfMhlqXbeKFznduLwpA5TDquvxaWZqjL8PBVv5ETAt
+ /ftMnSnp+2otdbEkNs0DOZLXNm452vy0FxE/NUqDttOqxDQLPN5ZO4rU/ih3xDlgV/Gea5on6
+ Ft0V0pa5rHJHLTAJRxAPdz+1axiUi4vDGaweHH5tZXKDuE5QYIXzjuqgOsAdRuKDmIrR+WPJu
+ X0fqhAZHBMEwzxmpo8jLOpETGKq1TMmfmoMVK7SSmg25QBIrI/MB7mzPbHPjCV7T7RSgEEwMe
+ linvlblyO/XfCjPNh6y+QvZlzB5iC6aVjdphIZ5bdop2gZA+aFPbwVu1EC0ef1rI3kSSnieAS
+ xNMZjBI4W/Sf6jnOSnV7NyaInP2ZGHx1Y+lQ=
 
-Hi, Miguel,
+> > [...]
+> > @@ -14,7 +14,8 @@
+> >     /// Byte string without UTF-8 validity guarantee.
+> >   ///
+> > -/// `BStr` is simply an alias to `[u8]`, but has a more evident semantical meaning.
+> > +/// `BStr` is simply an alias to <code>[[u8]]</code>, but has a more evident
+> > +/// semantical meaning.
 
-On Tue, Jan 16, 2024 at 11:16=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Jan 16, 2024 at 10:31=E2=80=AFAM Huacai Chen <chenhuacai@kernel.o=
-rg> wrote:
-> >
-> > OK, since Linus said the merge window is paused now, I rebase and
-> > retag my tree and the Rust commit is like this, I think this is
-> > perfect now?
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongs=
-on.git/commit/?h=3Dloongarch-next&id=3D706f9e1ab7c7a58d80ef2c87d8720131253a=
-2256
->
-> Thanks a lot! That works, yeah.
->
-> I also took the chance to build LLVM and QEMU and I tested the tag --
-> it seems to work: I see the samples (built-in) printing in the kernel
-> log :)
->
-> So in case you end up rebasing for another reason and want to add it,
-> even if it is a simple check I did:
->
-> Tested-by: Miguel Ojeda <ojeda@kernel.org>
-OK, if Xuerui updates this patch, then I will rebase again.
-https://lore.kernel.org/loongarch/CAAhV-H7KteJvRVpj3Hz-Ui9VnmijcJq5D1Tb-KJv=
-qTO_+jjp2Q@mail.gmail.com/T/#t
+> Isn't there a way to escape square brackets with backslashes with
+> mbBook? Like `\[qux\]` or something? I ask this because this affects the
+> readability of the doc comment so if that could be omitted it'll be
+> really good.
 
-Huacai
+Here are the things that I tried that did not produce a link:
+[`[u8]`], `[[u8]]`, `[\[u8\]]`, `\[u8\]`, [`\[u8\]`], `[[u8](u8)]`,
+`[[u8][u8]]`,
 
->
-> Cheers,
-> Miguel
+This results in a link, but it includes the square brackets:
+[`[u8]`][u8], [`[u8]`](u8)
+
+This results in a link that only includes the `u8`, but it is not
+formatted as code:
+[[u8]]
+
+The only other examples of linked slices that I found are in the
+standard library [1].
+
+My assuption is that crate documentation is much more often consumed in
+its rendered form, which is why I think the reduced readability is ok.
+However, if that is not the case this change might be a bad idea.
+
+[1]: https://doc.rust-lang.org/src/alloc/ffi/c_str.rs.html#58
