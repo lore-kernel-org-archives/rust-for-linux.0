@@ -1,68 +1,68 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3C420F2
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A05017F4
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705540282; cv=none; b=S2HvBqnBEo94J6uwm1N3Ax7VtF0DMFBiOQ2IMsGP3fTgUD8rm8wlw9DJGm5TwxrBw1TUpbxKAgwssRZEYki7KFyckIbRHFWkc5SZ0/xtzznxPkNJJaLeVM1koiUw3IxSDJEX8qm5fmN3S7T2pWcSJJRwTSKovISbL/6iIDZshJM=
+	t=1705540493; cv=none; b=qex5VH0VZXW74vUbru6aQs06tynWToO8IIMOeAhdLMygYTwzvgn4IfzX9tnTYzgxxBiFn3C0smll7H6ulK2Ogte4qqfRAkDWIP3qxNbz+QSwyJSbOdp1QlDsBrXrCfGfTTQUFAtKQOHGYcF1RnF6yZHDgsrakwGH/Z/A+w3BM3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705540282; c=relaxed/simple;
-	bh=Mbiemn9bNiqAzsD5hmKIXqM++sizsaeERmPkQsqYaMI=;
+	s=arc-20240116; t=1705540493; c=relaxed/simple;
+	bh=fkGhIFTMptb9xhfAhyS4A/QpWk/RM2gHSsGnq5nv6Zw=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
 	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=anRlyjspOFeaQDKgB3wW4dIHYqk4WEh5Idio87HZW1fpfxmmySbrYOHRZhoqRrcg1oDNgmuMcDxy4pnAe+9gvhc3R61KA80sxgOaehTQkm4amWuF92Ue8pPsOgvg6oKegE/P0mC+FFlpKTgiIZj+eqlsa6YVBxVFG2GrstzmpfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=noiMZr5T; arc=none smtp.client-ip=209.85.128.171
+	 Content-Type:Content-Transfer-Encoding; b=TDQekOwU1wtmm1SRv5bdmjvaz1pc0sUpxwX9//yNQ0FL0vJZkk9ayhkr+lLG7EGxrHWKFTzC/F8XNTTLzSbrajJ1Ljp4uMrpFPt7QdU8eh8Vt1IyDA79OegOS/XuQAUe1m0XxXEDopdkDIybN9kMMguIFp8gEaErWOLXTUAWef0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=WmJiqwfq; arc=none smtp.client-ip=209.85.219.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="noiMZr5T"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-5e89ba9810aso97323267b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 17:11:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="WmJiqwfq"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso8145805276.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 17:14:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705540279; x=1706145079; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1705540490; x=1706145290; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Mbiemn9bNiqAzsD5hmKIXqM++sizsaeERmPkQsqYaMI=;
-        b=noiMZr5TDMMViTZQIlnAwRJxKmmSyrzM8OdXQeabufpNGn5GwKjN0CgwHRHiYgh60v
-         p09XX0QWeCbbo7M/SuprVPY50wj1TKTJm5730P83AnYL4vewsfKE+twW3E9CAxtTyPkg
-         zyeHseCCuLNrPT//+57gp/84SmuIaLb12UBBrve3le25sjKsGHErJ0SB6K4QR6b9VZbu
-         lqsBomxS/6Er6lkfVRGTwmahkiuAGvN7LwK1pF1u2Bgc//O8AHmyIymCM8C/UKXIXkJw
-         Ll75gE04W6ZNO7n19MnKZI4FT8bq0yUE6VR1NqfpH93Ts6GDASzvxEEa9xu8dVjbv+pb
-         Yzjg==
+        bh=rtVNathGW0JnXzul60vJtkgKIy5SlrExorwVsK7K+oY=;
+        b=WmJiqwfq7/pVOAlZEp6o7ofI0Du0xE0RwWi1V0RtZJpdFGrtODt+LA51yIAp4AZ+YH
+         LOUQbjIZ3JHDILCxIy6deGJMxdQTaTfGCHG8X6BcRTv/YiscSmo6Wj/ep8Kv78lScUk3
+         SSRd8vaaZ9HGZMa04OkizDtRoOOkCp8OKJp2mmMOFP+B3nuOWrbpOv5EFAeBjmzeRvXv
+         9Imq3EK17Iy3/ICLjw+HqfGNt8fAbx+WnoNzW4/MQTo1r39O8b4RNIOyYgIX2PnVjgZ/
+         eeZweCItldy/Inw3ODxSnG6jm7mdOqhZUQpuoGouqHPdgkVpNFoLXUr6X2EMZMZfWVgj
+         J5gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705540279; x=1706145079;
+        d=1e100.net; s=20230601; t=1705540490; x=1706145290;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Mbiemn9bNiqAzsD5hmKIXqM++sizsaeERmPkQsqYaMI=;
-        b=MBjnJfx1mtnsOfwwt1AA2CGBKZ4IeUeBLq7ABgtQ4GAqhXI9TvvqREf/jkaGkJJT5l
-         zqfLwY3qgR6MeGLmhJqov5z5H3H17xpEtIO9WE6d+0N7+epDjqw1MHBeIgetIRGJL09x
-         /y5ZOLMNLAfFWux9qWx5fq8RpoJFe4ffLABls9lKcx/xZfyeo/HcGYt5r8lEaMH4KOtM
-         3+GRj4Omo+kRFb+DLiv6YhYUPGsj4Lr8m+p2h1ixSXHgmoVEx8VXzjq+tox3+ZqWrHrJ
-         EUbChpXLT63Tsb/Z0Ef7g3j5KCC+45+Amjog+xlvNyREO3YCDo0021yd3tbkjlkpDPCK
-         pRGQ==
-X-Gm-Message-State: AOJu0Yy+ba6DxPtER50aitIvDy/c6oMY006NscVcO24XH+bV6v78/ppK
-	LLhgSu0rGBIQuGnm7ES+P8JwYcuUJnYbgJo83vY/ni0krdq/aGQEKEcAes0sI2ZgN4X3OXGDgHQ
-	+TSr3n/oPNnrDdOz9ogtmESkmX6/FJ2rgaRxW9Q==
-X-Google-Smtp-Source: AGHT+IHBCsfQctPq2b/mqGf5kAt0lT17/b/zhvefM8308FcYubd+ZlwIaNu1OG6pW9VXpJvA7GY9mU7Yg73C+w0NsRY=
-X-Received: by 2002:a81:df08:0:b0:5ff:7a74:412e with SMTP id
- c8-20020a81df08000000b005ff7a74412emr84621ywn.38.1705540278832; Wed, 17 Jan
- 2024 17:11:18 -0800 (PST)
+        bh=rtVNathGW0JnXzul60vJtkgKIy5SlrExorwVsK7K+oY=;
+        b=MBxnQmcbKRv8IDyD+IYoI2i/cYsaYy+0o3skDAFh5xiGoqKMN6LbNbp5SIFw5uFrHn
+         qq9iqmEXpYwWMLS78atDXhJyQT3a/rORD+Ak/k76Yf3vKcCXbna8cs4syrwo43bklApF
+         aypLKLpzSzp7jMPxVelI9FKM4aCgRTqVt3n9FY93oCVeo9jBLgFt2oq1vCi5Q+T+iIce
+         Q2od5l43Y16euxyBsZxq5LpLcaoSnREa+03Z+/yG3BzGZecanQPdepIvEpFuSaarRyOV
+         SUI0FvQSqR8aYrWU4ZHqWDyyM7bUhZhh4dRogo0iL+0qpwNrezNcIL9hO7ujzqKwL+TM
+         FBnw==
+X-Gm-Message-State: AOJu0YxLdOiJ3gFkicXMZKGyhHqIBsva8okS0skCaTOMtCLiGR0rprfP
+	fSgVuPF3B17RIfdWkgb9rWseiJaqWypZ6wIEknQ+NmfBFz5B3LZCqYi+wcRvrQDoko6i1bn9pIp
+	VUNtJxyyDsTV09JdenuwsMQ0DpCDgHuGE9x0OKQ==
+X-Google-Smtp-Source: AGHT+IG4BS+zDXJpf2yOlKid1p1vo5m1dHuTxpvBKzBUiTuRGsyofb9U7Mhtf1c/FacchHKgt/7wMXgl5ZwN9Tfpdkk=
+X-Received: by 2002:a05:6902:8e:b0:dbe:9dca:f1ee with SMTP id
+ h14-20020a056902008e00b00dbe9dcaf1eemr34208ybs.120.1705540490228; Wed, 17 Jan
+ 2024 17:14:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240116160141.165951-1-kernel@valentinobst.de> <20240116231035.168838-1-kernel@valentinobst.de>
-In-Reply-To: <20240116231035.168838-1-kernel@valentinobst.de>
+References: <20240116160141.165951-1-kernel@valentinobst.de> <20240117001549.169160-1-kernel@valentinobst.de>
+In-Reply-To: <20240117001549.169160-1-kernel@valentinobst.de>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 17 Jan 2024 20:11:07 -0500
-Message-ID: <CALNs47u5ZhDm8Wu_nuPJnSkk0E2dzPcGTtN_D5cPBfcLKYgyug@mail.gmail.com>
-Subject: Re: [PATCH 09/13] rust: kernel: add blank lines in front of code blocks
+Date: Wed, 17 Jan 2024 20:14:38 -0500
+Message-ID: <CALNs47voQwiJysBKF-cdOufu8SRjfs9eNTHSwEihZsDJLVNJ4Q@mail.gmail.com>
+Subject: Re: [PATCH 12/13] rust: kernel: remove unneeded doclink targets
 To: Valentin Obst <kernel@valentinobst.de>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -73,13 +73,19 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 16, 2024 at 6:11=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
+On Tue, Jan 16, 2024 at 7:16=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
 de> wrote:
 >
-> Throughout the code base, blank lines are used before starting a code
-> block. Adapt outliers to improve consistency within the kernel crate.
+> Remove explicit targets for doclinks in cases where rustdoc can
+> determine the correct target by itself. The goal is to reduce verbosity
+> in the source code.
 >
 > Signed-off-by: Valentin Obst <kernel@valentinobst.de>
 > ---
+>  rust/kernel/workqueue.rs | 10 ----------
+>  1 file changed, 10 deletions(-)
+
+Perhaps "reduce verbosity" -> "reduce unneeded verbosity" in the commit mes=
+sage?
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
