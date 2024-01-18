@@ -1,68 +1,68 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93435A49
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 00:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4524680
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 00:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705538315; cv=none; b=HEeLmLMGEZijb1566ZPiMFt/fRknCdG7vB+zxmGANVAFFPA4CrVnmHrZKBQsPYUu7T9F7I6CimQvNa3fvnTbSIhOLmg7jvfA8MjP8LPW9TasCDHL0NoOyn/Y3r26jJ9GN4QMPwfrROFmecehmwYfRbqDcujgvWwKJT46ujzuViA=
+	t=1705538354; cv=none; b=QUCv0XvmngBciOiTvlrT3lPCum7H36vrm5p35abet7m2NT1vsxITOznon0CEd0yaMfu/cSPOR175ouckFu4s35Jbq/5kKIaUy4ZmKDhZTmnBukHYIMbKLOyu08HwhMBiIgJBe/bJZbqEPq5ydJJLVVQHi+QqznsY/ieKTi1SyCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705538315; c=relaxed/simple;
-	bh=SBQBBQIwfX1zJwK3wxf4dU3QqzrPgQS1EHSC4mnFb6Q=;
+	s=arc-20240116; t=1705538354; c=relaxed/simple;
+	bh=5fXV9S1qwrCatcOcOXlqtb1FDKpbGPqat6Ll3hI4ZLw=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
 	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=cnZkcOJ1L23novGnRdpP2QOOI15SldCHzObxV71bk1tb3XaV9w+HcB3OyNyzGYr0I4WHbQBRH0SPQGAq3MPI1NRmCCJPD4/FujVLmsiuen6d92XZauO/L75GR7gcY0faMG/B1US+cKsbIlSg5nfoGnAnxlnN+Pas1t27Fggnqqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=BtXTn6ob; arc=none smtp.client-ip=209.85.128.182
+	 Content-Type:Content-Transfer-Encoding; b=Pgo4EJTnIxZnAmBULc+f1v7foKF7LUz4zFohgVvAxvJihC1ESHa8qH/GlQo3rc9JDgclHbdkxydtyqAtYFpUrbTxAosUxruHkA3mJYPrLAk9KBehe3ltXOi2520Ic8ZyZUzD79Epdi2HZB7SvZKVo+1qytwpEoASKgbrdQQUCb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=QyxP+96F; arc=none smtp.client-ip=209.85.219.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="BtXTn6ob"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-5f8cf76ef5bso106978737b3.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 16:38:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="QyxP+96F"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbedb1ee3e4so9839998276.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 16:39:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705538312; x=1706143112; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1705538352; x=1706143152; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lGG4atFEY41i3tyWaRPBdDpmdKCXRC2AZy9zs1ZOjKA=;
-        b=BtXTn6obQUKySoYG1z3JbzxnS8Q/+oUSGpPVU+2n57eTY2qb5i6tbz9NQgsX0Gwz6+
-         5rDx6lmZ/R8m/+TSNgEXeso3oogWId5zbpVND1JTU2Kg7W4qKX1cRubaxB2k+TZhVnp/
-         2V/YIQ2w0T5oabn0AxVe8L6Rov2OCgkmMVLsGlCTODGh4A+RlihVTZbyCNRmYspT+Gg/
-         eC1saFlO+rjf0Q5/3/5+nXZPn/ZsfhRJykhmZKf0Ogr9fTAO2anhDvdnvbGJBFuqc2Gi
-         q4XWM1VTAfrlFkMqxE4kedutHPBmXmn3lExi6r2QMWuLi9v4PYdBIXXzxK18Tm2Db8ir
-         QyIw==
+        bh=itoC00wDDFSYZ+IvU/UOh2nE1+jPP3Ry+100SfdsSDE=;
+        b=QyxP+96F//A7C4z89yIL3JfDiTa6cyj7ugiHrpJNUy8IckfoROMHpEWxfN6UAejejw
+         bdVMyb3f7wpfVjvoubU9iRbbckbjUfAZ3Sg439wZ5tZKGHwdeL0Uqm/H1mdIskMMW4iS
+         5lKEQWJZpE3rVMFyvFH2VeSM/lzGbOGiEcNmz2Bw8n7p0gIbYNltmb/qEiZLCoqIZmAx
+         c340tSHt/cK2/aCwLgubuVZSllrpN4jyCCVm0YTWl+PBQVWNfebh7BFPboSUlMkJJOZJ
+         GcdYIByL4TNDVB6ryVmzfGCPXK8ObIpaPMUCwHNthZiOI/NfzGRezOTogJexJ/A/Apym
+         ebLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705538312; x=1706143112;
+        d=1e100.net; s=20230601; t=1705538352; x=1706143152;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lGG4atFEY41i3tyWaRPBdDpmdKCXRC2AZy9zs1ZOjKA=;
-        b=kgKjUAQnFPPUTSr08n9o0iBp5d70uf5PAdzr2owQyg9L3plHEs9nVuvocUHksrGPQI
-         TZUdk0l59MVYeoTKjH8bEleEU64mzQdbckg7CbAETWeFmv1hieuPNTEBqsrq38BlEdSX
-         csBxCLpnq9dZabevxQ8ILkd69DpvrDew9+lGXjJxfC+rYKZ8uPxZISDNgn47xFshMgeM
-         ZTGNkGNaqp+NUDRohLAJdmbOn8/42JsjZUnIXJ8oW284T3QJ0sJQSY9qleowJaLWoCBT
-         W6QvqPpQbRBaLmmmN8u2v18XvwVzE/O5gZkhpRrw5jb/49ONwqc0qrBuuQEHcFyHLONX
-         UiIg==
-X-Gm-Message-State: AOJu0YwObfZcIqmwYja0cA1Eib2fxa+IUDNqDJgGktcxzzmuNm2DG0d1
-	/TTYqAUmDDq7ITDfvDr3zItJtXOwCSLI0MrMSCeXdW3KBcLXyvduv3rs3hCQmnUSYGW9hRtRM98
-	d7HdF6qIzzndeSUKz6pasWW1RvhvNvkYR0iKItw==
-X-Google-Smtp-Source: AGHT+IFleKtsKKpVS+cdH2BPVyA0F8ifuJWLDtVjBM/i02Ip6dWVxOzOsg8/NtUGwXWk/+HyDRd2x8GAs+lec1dyUVE=
-X-Received: by 2002:a81:4846:0:b0:5ff:7a72:3496 with SMTP id
- v67-20020a814846000000b005ff7a723496mr85488ywa.12.1705538312603; Wed, 17 Jan
- 2024 16:38:32 -0800 (PST)
+        bh=itoC00wDDFSYZ+IvU/UOh2nE1+jPP3Ry+100SfdsSDE=;
+        b=K5eaSYzHfIyqQaqOANeMhivPKwBLdhLTjGwUxAJ68MYJ0OOl/zeelgL4AFOrQh5a/2
+         B0mHFV73s8gp/akvqwxOX5hrq3VGt8kY7dFnakQQ4G4NFIuq+veamaBhBUl51KYAxBuT
+         Rx2Rm6XD2V9KxspbmItJXRI+Sf5ETepUOCkOcLlz7a1WP35NHscXIIzvb36+LziOPfPf
+         HcRb5hE6NfcuXIZayM68wLFbVdmhwF6ZK6WAZC8LVQprtoZ4uPQ66ENU9t3m+7+sW51E
+         V7cjd0beKADu5R45DQgXFg7Na5WopIyJjwKv7LaP7/aaXSLgcPG2dHKOHbwC78dEBffL
+         F33A==
+X-Gm-Message-State: AOJu0YwMtK59XNkM7ZheHbPhAUgKyjWUh1HxFX6CFZdBQrH+PMlxpb8R
+	9oCb5XGBcAxz328I9BmS4BuVCERcv6guct3Dpgc8XunblS3Ach0+PPGNpqEI+l7UaUK64bgu/B3
+	h7enMT9sxT5Tukq8+ZA8I8Gz3ikZVYeJAqfeaPw==
+X-Google-Smtp-Source: AGHT+IGe/Pdfl5chOnwpbeCDqa36Ba4aMYe964LFknfE0Ogax3r9al3t19//MxguiJ1gEQCjcpdvRYjgKV/D/y3YIC8=
+X-Received: by 2002:a25:aaf2:0:b0:dc2:3e59:4e32 with SMTP id
+ t105-20020a25aaf2000000b00dc23e594e32mr30935ybi.38.1705538351977; Wed, 17 Jan
+ 2024 16:39:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240116160141.165951-1-kernel@valentinobst.de> <20240116220411.168016-1-kernel@valentinobst.de>
-In-Reply-To: <20240116220411.168016-1-kernel@valentinobst.de>
+References: <20240116160141.165951-1-kernel@valentinobst.de> <20240116220537.168057-1-kernel@valentinobst.de>
+In-Reply-To: <20240116220537.168057-1-kernel@valentinobst.de>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 17 Jan 2024 19:38:20 -0500
-Message-ID: <CALNs47u037Bjk60E4x+c0+fk+2v5sc8iDzD0ztyqyJRdMDBgeg@mail.gmail.com>
-Subject: Re: [PATCH 04/13] rust: kernel: add srctree-relative doclinks
+Date: Wed, 17 Jan 2024 19:39:00 -0500
+Message-ID: <CALNs47vyZWExuCy3t9MM5Yxbw19XQB8iem5Ga6O8usGPuZumNg@mail.gmail.com>
+Subject: Re: [PATCH 05/13] rust: str: use `NUL` instead of 0 in doc comments
 To: Valentin Obst <kernel@valentinobst.de>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -73,51 +73,41 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 16, 2024 at 5:35=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
+On Tue, Jan 16, 2024 at 5:36=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
 de> wrote:
 >
-> Convert existing references to C header files to make use of
-> Commit bc2e7d5c298a ("rust: support `srctree`-relative links").
+> Throughout the module, bytes with the value zero are referred to as
+> `NUL` bytes. Adapt the only two outliers.
 >
 > Signed-off-by: Valentin Obst <kernel@valentinobst.de>
 > ---
->  rust/kernel/lib.rs          | 2 +-
->  rust/kernel/sync/condvar.rs | 2 ++
->  2 files changed, 3 insertions(+), 1 deletion(-)
+>  rust/kernel/str.rs | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index e6aff80b521f..0d365c71cae2 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -75,7 +75,7 @@ pub trait Module: Sized + Sync {
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index 0a8569594fc3..843ffeec9b3e 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -149,13 +149,13 @@ pub const fn as_char_ptr(&self) -> *const core::ffi=
+::c_char {
+>          self.0.as_ptr() as _
+>      }
 >
->  /// Equivalent to `THIS_MODULE` in the C API.
->  ///
-> -/// C header: `include/linux/export.h`
-> +/// C header: [`include/linux/export.h`](srctree/include/linux/export.h)
->  pub struct ThisModule(*mut bindings::module);
+> -    /// Convert the string to a byte slice without the trailing 0 byte.
+> +    /// Convert the string to a byte slice without the trailing `NUL` by=
+te.
+>      #[inline]
+>      pub fn as_bytes(&self) -> &[u8] {
+>          &self.0[..self.len()]
+>      }
 >
->  // SAFETY: `THIS_MODULE` may be used from all threads within a module.
-> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-> index f65e19d5a37c..0bb76400efd9 100644
-> --- a/rust/kernel/sync/condvar.rs
-> +++ b/rust/kernel/sync/condvar.rs
-> @@ -77,6 +77,8 @@ pub struct CondVar {
->
->      /// A condvar needs to be pinned because it contains a [`struct list=
-_head`] that is
->      /// self-referential, so it cannot be safely moved once it is initia=
-lised.
-> +    ///
-> +    /// [`struct list_head`]: srctree/include/linux/types.h
-
-Hm, I wonder if we could figure out a way to make links point to
-specific definitions in the C headers with # anchors. I'm not sure
-what the intended platform to view these links is.
-
->      #[pin]
->      _pin: PhantomPinned,
->  }
+> -    /// Convert the string to a byte slice containing the trailing 0 byt=
+e.
+> +    /// Convert the string to a byte slice containing the trailing `NUL`=
+ byte.
+>      #[inline]
+>      pub const fn as_bytes_with_nul(&self) -> &[u8] {
+>          &self.0
 > --
 > 2.43.0
 >
