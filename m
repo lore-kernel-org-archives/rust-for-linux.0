@@ -1,68 +1,68 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A86D17C3
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3C420F2
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705540243; cv=none; b=JRkuxVEBJio05rW53Ohklsrq9O19AcPBF5XwF7w5PRxmE+4XgKdQxIz+82cGx01iOm24+Q7N/uJM7DSUjkMmZmHquT4gedIT9WHHmF6Ght8XoV+TRWhlwA9AnLzAlbyi2CbbqSy3YtQSfaC/O0sOz2FtZOFtydT7kKAtC4/NLhQ=
+	t=1705540282; cv=none; b=S2HvBqnBEo94J6uwm1N3Ax7VtF0DMFBiOQ2IMsGP3fTgUD8rm8wlw9DJGm5TwxrBw1TUpbxKAgwssRZEYki7KFyckIbRHFWkc5SZ0/xtzznxPkNJJaLeVM1koiUw3IxSDJEX8qm5fmN3S7T2pWcSJJRwTSKovISbL/6iIDZshJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705540243; c=relaxed/simple;
-	bh=F0iHv+YiAEtc5/usoROQkGtoDZrBFE4pjqini4BdYMk=;
+	s=arc-20240116; t=1705540282; c=relaxed/simple;
+	bh=Mbiemn9bNiqAzsD5hmKIXqM++sizsaeERmPkQsqYaMI=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
 	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=JF9z7x+9dHLBxz5tvDFRRK7bAihx0fD8flnsOyIX7/Otp7wZjw7wYIFAm7Gfzwjdfm4Pw++nwbDgtZlwws1cWyBgYePXDzhTcWYxqQOKeKcUuK2ViV4c7cktAOGU30T7NupTFfaPOcPQWME4UMVNReU6LY1UQdxQGf6V5oR3V50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=OdafvZq4; arc=none smtp.client-ip=209.85.128.177
+	 Content-Type:Content-Transfer-Encoding; b=anRlyjspOFeaQDKgB3wW4dIHYqk4WEh5Idio87HZW1fpfxmmySbrYOHRZhoqRrcg1oDNgmuMcDxy4pnAe+9gvhc3R61KA80sxgOaehTQkm4amWuF92Ue8pPsOgvg6oKegE/P0mC+FFlpKTgiIZj+eqlsa6YVBxVFG2GrstzmpfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=noiMZr5T; arc=none smtp.client-ip=209.85.128.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="OdafvZq4"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5e784ce9bb8so2154387b3.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 17:10:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="noiMZr5T"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-5e89ba9810aso97323267b3.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 17:11:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705540241; x=1706145041; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1705540279; x=1706145079; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F0iHv+YiAEtc5/usoROQkGtoDZrBFE4pjqini4BdYMk=;
-        b=OdafvZq4IByq2Lqza9sffITdY0hKEWOPBqXTsWoR+fxmOXhfhD4liEeXc+6pF5d8RA
-         S67enbJ8ReVY+1t8n0iAZj9l6Zm5wa1w8het/wDHg9h+D6nLeyMNNEY2dvtNXPEVrrRc
-         zfg4ijRGuuvhPJGwAAA32HX0acudHeJWxsQJJPrPCxQieQumet9rmM42bkaHmyaNJUvv
-         eU1QP/JwPE6RviWS0UxFwWRS8Whxe3dmDnX3cP1i1zCk/w7Nkk3die/2w4trATnURYOb
-         cx9aMv85FoEnkK/1nGe2HGk6E3ZdVyKUGDnzuhKBBGXYaSaGsLLqtAPs9wCAAuIPCpXR
-         D65A==
+        bh=Mbiemn9bNiqAzsD5hmKIXqM++sizsaeERmPkQsqYaMI=;
+        b=noiMZr5TDMMViTZQIlnAwRJxKmmSyrzM8OdXQeabufpNGn5GwKjN0CgwHRHiYgh60v
+         p09XX0QWeCbbo7M/SuprVPY50wj1TKTJm5730P83AnYL4vewsfKE+twW3E9CAxtTyPkg
+         zyeHseCCuLNrPT//+57gp/84SmuIaLb12UBBrve3le25sjKsGHErJ0SB6K4QR6b9VZbu
+         lqsBomxS/6Er6lkfVRGTwmahkiuAGvN7LwK1pF1u2Bgc//O8AHmyIymCM8C/UKXIXkJw
+         Ll75gE04W6ZNO7n19MnKZI4FT8bq0yUE6VR1NqfpH93Ts6GDASzvxEEa9xu8dVjbv+pb
+         Yzjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705540241; x=1706145041;
+        d=1e100.net; s=20230601; t=1705540279; x=1706145079;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F0iHv+YiAEtc5/usoROQkGtoDZrBFE4pjqini4BdYMk=;
-        b=EXPexDcBdWYdnHKPc52TJCDcY45UURBo0cH28enjOInyoG2m26eAtThruMxHSonTs5
-         D1U/0yod+V/pNXRoUjku7EC4i660337nIeIKcYIt76pZgV+vomIYqbh0JSiWYMhZov5s
-         VLyU6aol7R22YDVboJrDRX9NoTLNvFhEGgGk1VXZnKD+qwG668niCLFx+krYXUde4cbz
-         oS8ByiKxJ4dizaR/NOxBgWr2qsGaC/ICA4rJymLFMpr+AgtHM4lXPxOoc1D5OUCBvOCh
-         U5DO9pjRl+f8LFu4kLzi5vNHdv3kQNkYdP8zaZvKxVLFO8Mt35WFpNZluTTQTXwzqg2q
-         QJzg==
-X-Gm-Message-State: AOJu0Yy+pDFMfUcT60XUZ2czBlY9GTa7ipkxqhViAi8I2MhcEzPyvaIC
-	Hs+MHdJEPgbpLss6snXtBEHaGMiA7dmOMiw0szTPEIHcHp7+j7lh76jtKR8xXnTQhTvOJaFx8vY
-	Loln/aGe10dtKwRaRJwiqszSpolHrJt+/qRgi4A==
-X-Google-Smtp-Source: AGHT+IHRW34NuVAmIMoJ9ZjcnCcEJmU6dQHelPA36vDFGW/Swb+NJiCS+hZXnZPiFfOGQ+RWOclRm1P9Q5gR04Q1NCc=
-X-Received: by 2002:a0d:e4c5:0:b0:5ea:1ea8:9ca1 with SMTP id
- n188-20020a0de4c5000000b005ea1ea89ca1mr118594ywe.43.1705540241466; Wed, 17
- Jan 2024 17:10:41 -0800 (PST)
+        bh=Mbiemn9bNiqAzsD5hmKIXqM++sizsaeERmPkQsqYaMI=;
+        b=MBjnJfx1mtnsOfwwt1AA2CGBKZ4IeUeBLq7ABgtQ4GAqhXI9TvvqREf/jkaGkJJT5l
+         zqfLwY3qgR6MeGLmhJqov5z5H3H17xpEtIO9WE6d+0N7+epDjqw1MHBeIgetIRGJL09x
+         /y5ZOLMNLAfFWux9qWx5fq8RpoJFe4ffLABls9lKcx/xZfyeo/HcGYt5r8lEaMH4KOtM
+         3+GRj4Omo+kRFb+DLiv6YhYUPGsj4Lr8m+p2h1ixSXHgmoVEx8VXzjq+tox3+ZqWrHrJ
+         EUbChpXLT63Tsb/Z0Ef7g3j5KCC+45+Amjog+xlvNyREO3YCDo0021yd3tbkjlkpDPCK
+         pRGQ==
+X-Gm-Message-State: AOJu0Yy+ba6DxPtER50aitIvDy/c6oMY006NscVcO24XH+bV6v78/ppK
+	LLhgSu0rGBIQuGnm7ES+P8JwYcuUJnYbgJo83vY/ni0krdq/aGQEKEcAes0sI2ZgN4X3OXGDgHQ
+	+TSr3n/oPNnrDdOz9ogtmESkmX6/FJ2rgaRxW9Q==
+X-Google-Smtp-Source: AGHT+IHBCsfQctPq2b/mqGf5kAt0lT17/b/zhvefM8308FcYubd+ZlwIaNu1OG6pW9VXpJvA7GY9mU7Yg73C+w0NsRY=
+X-Received: by 2002:a81:df08:0:b0:5ff:7a74:412e with SMTP id
+ c8-20020a81df08000000b005ff7a74412emr84621ywn.38.1705540278832; Wed, 17 Jan
+ 2024 17:11:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240116160141.165951-1-kernel@valentinobst.de> <20240116230951.168808-1-kernel@valentinobst.de>
-In-Reply-To: <20240116230951.168808-1-kernel@valentinobst.de>
+References: <20240116160141.165951-1-kernel@valentinobst.de> <20240116231035.168838-1-kernel@valentinobst.de>
+In-Reply-To: <20240116231035.168838-1-kernel@valentinobst.de>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 17 Jan 2024 20:10:30 -0500
-Message-ID: <CALNs47vXx+PSm_ym2Kytj5MM51jTkLnY0VGgUXcYb9a8kuQBXA@mail.gmail.com>
-Subject: Re: [PATCH 08/13] rust: kernel: mark code fragments in docs with backticks
+Date: Wed, 17 Jan 2024 20:11:07 -0500
+Message-ID: <CALNs47u5ZhDm8Wu_nuPJnSkk0E2dzPcGTtN_D5cPBfcLKYgyug@mail.gmail.com>
+Subject: Re: [PATCH 09/13] rust: kernel: add blank lines in front of code blocks
 To: Valentin Obst <kernel@valentinobst.de>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -73,11 +73,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 16, 2024 at 6:10=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
+On Tue, Jan 16, 2024 at 6:11=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
 de> wrote:
 >
-> Fix places where comments include code fragments that are not enclosed
-> in backticks.
+> Throughout the code base, blank lines are used before starting a code
+> block. Adapt outliers to improve consistency within the kernel crate.
 >
 > Signed-off-by: Valentin Obst <kernel@valentinobst.de>
 > ---
