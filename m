@@ -1,79 +1,91 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E746125A4;
-	Thu, 18 Jan 2024 08:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F4E1428A
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 09:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705568182; cv=none; b=hi820GGcF5qoIFGtCRg4I+LqFR4lY6rzT0zfhTNpqFMxdwhCT+4R/BNNb5Lxs864DT62vesqz+urvofn4Fmq5Cw/04F5mPjwCXRGmWoDCc9yVCtDQRE1L+xZ5h6ZzaRIvjvlr1FNdCeioUla2R4t7TeFqdv0fMxcrvFK3JnP4SQ=
+	t=1705569619; cv=none; b=Q3EqffQs7yd9UGqrIFVqsE7tgQowzVkQYQXbupkwoCdKX0U6TYd6XbNF1nRqnvNLsKNrw6/CEJp/ccUwgCulGQT7pC1j41YEOHXBJObIxxo96VT2EgAnpOd6ApOFC1klOpqgc41g+9sEWLJjK4wOBo0h/6brpXsmhbidekEemg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705568182; c=relaxed/simple;
-	bh=6UEbkC6Uz+XVAzitmU1FaoCrGwDvahmcFEg1+YlZeH0=;
-	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
-	 X-Spam-Flag:UI-OutboundReport; b=s9l7aBzIlcovGgblCVzyeGab5KpM+CPJbXjtnairBx2c92wSKd2XJJyFgX47nYxHzp1RKIRzg26nwTySNGCRy1ZGa91TyexHYTHtuFBVC6x8wzNaGhsXbHN5mOva/APynG0hFno+uzs1RLokrFgCVia7rbkvUM1eFr8Mwrg09dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.126.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
-Received: from localhost.localdomain ([95.223.130.98]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M1HuU-1rOin60jHu-002qo5; Thu, 18 Jan 2024 09:10:54 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH 02/13] rust: error: move unsafe block into function call
-Date: Thu, 18 Jan 2024 09:10:43 +0100
-Message-ID: <20240118081043.20703-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CALNs47vgfs+cFhYsTZU_RE5WxFZ4euMAhuKESJE6m7PFy0JTzQ@mail.gmail.com>
-References: <CALNs47vgfs+cFhYsTZU_RE5WxFZ4euMAhuKESJE6m7PFy0JTzQ@mail.gmail.com>
+	s=arc-20240116; t=1705569619; c=relaxed/simple;
+	bh=6uJK8Rk93v+R2loFUMPdZpnKiQpND8O9ppCP8WuF3DY=;
+	h=DKIM-Signature:Received:X-MC-Unique:Received:
+	 X-Google-DKIM-Signature:X-Gm-Message-State:X-Received:
+	 X-Google-Smtp-Source:X-Received:Received:Message-ID:Subject:From:
+	 To:Cc:Date:User-Agent:MIME-Version:X-Mimecast-Spam-Score:
+	 X-Mimecast-Originator:Content-Type:Content-Transfer-Encoding; b=iM3dpLWGasvq952w5WxWfiTQLBZCISiq06n9+MejHSaZo4CLwK+5ldNeD2R3BZPIACt6xeZpdBhBbItBR1JG2iiBTbwWTVMw9EBqCzCDwiJedPIIrl9MjrlQEwoAtlcrTkc1o5+NcAWrYA6faz0mLgq+i7D4PIo99Ey7hc1NjjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KZoVQapc; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KZoVQapc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705569616;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6uJK8Rk93v+R2loFUMPdZpnKiQpND8O9ppCP8WuF3DY=;
+	b=KZoVQapcOUcT+qkcOYRJqGn7wTI0ZxYSDGS1+SCo8oZXUKqyFIG5vavDoYnZCcYUG9gZ7B
+	Vsq5deNH9ZL6iKgzWjFeVaMmkD/J1bXwkVteLwq1M9bMlcwum53Tv462d12D8UtpMaXrfN
+	Y7+oP9LjCFiXr8o7t5N+q5su89R02L4=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-NpSQQQx6N6qYA5JgpWpOrQ-1; Thu, 18 Jan 2024 04:20:15 -0500
+X-MC-Unique: NpSQQQx6N6qYA5JgpWpOrQ-1
+Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-4670ca688easo1297897137.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:20:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705569614; x=1706174414;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6uJK8Rk93v+R2loFUMPdZpnKiQpND8O9ppCP8WuF3DY=;
+        b=gFo24oBxauqQga6NFjau51O33XOKvNLUA9azh1uEBcTxgfd0KbY+lvSxgEil0XfCHX
+         5hFwLrCEzDqhhZNTbyV+0+MGYDWrIXbpoNQYjfS5CXpQt6g570Fsb+1+1YYQsW9L/AZn
+         JUZzUigKUhMswPa5Yv3nbqxg+1BZSkkfz54wSRtVBv9ptbvA+aRtK8emKURx92qxchfQ
+         QxP/q/qYZo8chGGjG9rNGVnrITkwZWDmN9pEtefryfK3WHFbLMa/fqJCVCsp5TvQKMEc
+         g7PFc7BSsm4FDlfILUu2/uyvKhtMyPZfcXwdCCSu2hUpNpOO7FXKu0AGMk563K0eVMx9
+         ahbQ==
+X-Gm-Message-State: AOJu0YxAY59M0/AoAa0DjWLjo0wyQ4YOQBrPJoZf0i/pxlaTZ78Z21oH
+	hy3GGZocFp7Vcu6MhRTQ+bzwKZR97AHtY1k1InXcD3Fz4cDilMjK6ZDOTfDZ9/OEyCsjdbk+iSs
+	BWcPDoJQJgYz11b4sCyI4e0HJf/lOLzwM/zTotx0BhH1XfVVX/O3TdMk2IiHkAGiofPwIhLIJ25
+	Bh6qCZM9PFoE9JjZEZXD2xIfKEFcvtrs2uAl7GgJGEG3s/nLAZ
+X-Received: by 2002:a05:6102:3e22:b0:469:8a5e:2920 with SMTP id j34-20020a0561023e2200b004698a5e2920mr1032709vsv.2.1705569614466;
+        Thu, 18 Jan 2024 01:20:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGnjGzA2iCyIblWYWykCTYJ52gQzmmAHTResVOhnTJmUPTqNST0RcmNFjQwqJFHpaIX74JIYA==
+X-Received: by 2002:a05:6102:3e22:b0:469:8a5e:2920 with SMTP id j34-20020a0561023e2200b004698a5e2920mr1032699vsv.2.1705569614203;
+        Thu, 18 Jan 2024 01:20:14 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id g8-20020ac842c8000000b004283f2208e4sm6582943qtm.87.2024.01.18.01.20.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jan 2024 01:20:13 -0800 (PST)
+Message-ID: <241c57af61dc03c6f2f6bd90856908fcf84bb71a.camel@redhat.com>
+Subject: Intended folder structure for subsystem bindings
+From: Philipp Stanner <pstanner@redhat.com>
+To: rust-for-linux@vger.kernel.org
+Cc: dakr@redhat.com
+Date: Thu, 18 Jan 2024 10:20:12 +0100
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:kHADZcrp0dWzQt8WjQ0aquu0Y6gnR74KksxY2wXQXjIgNJmSV0t
- 4KxUeXf0jaNxoeE4NMBRta6BjOrfFs2hMeyBiohHyCflOGG9a1bsKYgtoidqtg/gEcKtNpf
- 5zFIJXDMlrSSo9KoRcIMpi45C5gJWUgP5bM15DNDNwc/PaeVbnd9xBROOgAZ5H5q/+fBwOJ
- OeW94ribThuLnPpU9GjpQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lEgSvVlN96Y=;RUafqrZMhLZfe+8g03BEftJNnv1
- clHtEqM8l9cNv9m0YvDYjdFEOLsPXgz4KVfQjesccCYiTpsjnrwclEKugfWGrP5oG/bZpCiws
- KztCUwhDBiNR72+z/w631WlJEAEBaFCw/H/4c/aEBNuwcKTXvKXTyGONWIIBJUOgxfYOqYSh8
- s72TBp4+qRTvqC0OTLLeMCVMBv3TyO8M5kAfQ6/4yAgnwgYLtuhcqRa+HmlSxHwsZZIcGodWW
- Bx5keU95jDsdLDx6eAIWlS0bwmKMxOI3g6qbMLiYikhC+SNfsOwAqKVdPQLcy/fQ05HNqoc+V
- fmZ5aaglFLutJGR7oJDKc5N8acJFSoy3N1RsYblUA4GoN/nlHGowSSWCb973kgO/d0rAJ9YRR
- J/NbDFgEblnO7qn1vw5bLufuuQxQvsN44KNJASnGaz3l5C4AOt6zDLu5VQfrdgpIumnW0JcGT
- 2ftYP7RCwpOXIowB9DG0GSmFTB+r6HTOEOw3vcujbzkJQuxfYKy0i1FR0AIVH4veYxetbVU0H
- OhBezKz6ZguWxcFwy5CUXJgZ9vynL7374Nmkzp+8vNKYmA+KsFnU7nJQOhGVSJQlTMrpngS8c
- js+fFIfzkAIW6FUlYkaAgyF6fWthbQZ0zVEs3eK+WthQQ1Tq8OEfeuF34UwZXsKM1ypNp89qb
- RytoFKVomqMS1OU5M3D/stFDiqMV4u0ZdbPCP7I5Ro34ponZQtVMtQ06BjgAudWE3P9UAIgYy
- ODtSBfNArXCsHH70y2rx+EuxfjwRM9tXFmfHrtryA+XfpIUWczAUMTzjJZIiWFDV9G7tpzI1R
- u7g5JO5ptZSQ8u4pVLAH0VMpO4KwhC5vKMe+3aFRv7I9kb4kENVQa0MtfFQ8qEeSBuU3h6xTW
- tmH70nsxPs/xj/g==
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> If you're up for it, that safety comment could also be improved.
-> Something like
->
->    // SAFETY: `pdev` points to a valid platform device
+Hi,
 
-Thanks, will include something like that in a v2.
+I'm having a look into potentially creating bindings for the PCI
+subsystem.
 
-Just to make sure I got it correctly: Index is bounds checked [1] and
-thus there is no need to include it in the comment. Please object if
-that is wrong.
+I was wondering what the Rust infrastructure people had in mind here.
+Should there be one folder per subsystem in rust/bindings?
 
-[1]: https://elixir.bootlin.com/linux/v6.7/source/drivers/base/platform.c#L63
+Thanks,
+P.
+
