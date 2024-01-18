@@ -1,57 +1,57 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A268D2C199
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 14:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E5A2C846
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 14:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705588629; cv=none; b=aLMwEppSuZojG9em+hG1TyZ6kiyuGrEpJ0qd7220ESDUqmG2t/aBWuIWdhMqIXX7wnqCp8LoD5VTZtzS02YNSM+rs68pgUIiHwa6T+5EiWXdihGaqFB0r2Z04Ng1uL/JE907V/IqhnYsXxGi0BleQKmHi/X5ua+NMO54xza2rzU=
+	t=1705588632; cv=none; b=oFTYP5A6GqHqqYOwqzGzW5LEJRqTTVwG96b0mNAmMKC0U243AUY8B5MOMuC9ziuVhEssy3LAjKIy2aSvy4e4UHFCaSgwYjDA/kAbpLKK4TwwVsOMuQ44Tm+O/Q4EygbQpPN84o5UlTAHl/bddHB5lVC6DVB/sUBGKeGXqycrsTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705588629; c=relaxed/simple;
-	bh=Rjntesxc4Gp7fQsAcEOP8Q1PetN0laArCpHrp7LWq10=;
+	s=arc-20240116; t=1705588632; c=relaxed/simple;
+	bh=VXii4VQu3CEARTA//TXCHQIIjHMrXvbh1ihXw7gxrpE=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Date:
 	 In-Reply-To:Mime-Version:References:X-Developer-Key:
 	 X-Developer-Signature:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=V3LrsKIdRq/T+5fwvSkz4sF0eaO6FIT1Ihcp3RL4zvin9iM2GXRH6OMIP7txohHsQHmDHt73Eluv1aJb3N1WlOs4u9k7Iou/qE1go+fiE/AMqA9DRXiKPQH1NqW0/jyuUZ/pCgp7KOvvLsmPChM7d5cLdBVAU1dIm56bsYDn7j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kbQWgdjU; arc=none smtp.client-ip=209.85.128.201
+	 Content-Type; b=fQ7qPwBXB1mv4ODrG0a14UK5dHjR39quCrTFG7F68yS3VuvsGN/NdNWZ8yk9nPZ5gPaAaTj3afLpPe2hFGw8eOm/+lrKi12ETB5Yq6iIpuVGV+faxMICDydXjNPX3KVZ7gxQ3rvf9ASeXl9dKCbYf8iRnVZy1EQgB0xoojPIZY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AthP+9F8; arc=none smtp.client-ip=209.85.167.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kbQWgdjU"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-5eb6dba1796so213913167b3.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 06:37:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AthP+9F8"
+Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-50e7b5c3582so13133665e87.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 06:37:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705588626; x=1706193426; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1705588629; x=1706193429; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/zksQHteOqmwiH8Woeh3fMsvz589jdcXJfGHk3odNxA=;
-        b=kbQWgdjUkSg22FTp0jLf3z/quZTL8PZSUbAGYIjsENXnLOwvImLvez31PPVdh3tCjF
-         +mnbWHy8SrJHgRsVXpCVh6wP/19JwVjxBY2ALNElpGe6N1t4nYYWEyaJt2GkArvPr+kj
-         yH0WN6hx9enihyirTL5DDvkcF9JKf/TdDQBGn6lVL0Nv6bJbCxzXwmpAbTJx0o2d+gKX
-         5buwOvQyC70227sfEqAwXMJXdpI0d2GkEBXpmM3QWsgU2aJEQK3NeL+wWRo3V/tHvGFl
-         BErQ2D5lF+GyNq0lTawJEb1pyP2fh2ionNoPm4CswWuaH5Lh4EoGnrgN3NvzE3KPevZw
-         sY1Q==
+        bh=uzVko5ey5XomiaTP/3j+Aylzt4fKZA9AvfFuwkATRlQ=;
+        b=AthP+9F8Cv7XJAh0jqkXGp+bUtR+oa68RlHq8DpxraDmMIkr7fhbfyZ+lfzJv5FIMk
+         nm05ItDqVYiHoUounpGaiCioHLWBNGuZOLaK0Y/29ocNMQkxe1qhwoKAN0q5HrQjbxZY
+         4EZi2j3x1si96F6nDOqEWEG5geaHHub0DeuxbRyVc1DJGYTU5IODRDJdIf5wQ7pHYLv1
+         kNpSseVG3FQE+l0Akds0r5+L2LagQLFlTjdtnPnplElruax06cqLl7rE/P9491gDksO9
+         rRJYW6Ki9YdUevBizHR89fxckEvpDyUOwZm/jjTKW8yPyjy5X2R7s12UHofEPmoQC53A
+         paPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705588626; x=1706193426;
+        d=1e100.net; s=20230601; t=1705588629; x=1706193429;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/zksQHteOqmwiH8Woeh3fMsvz589jdcXJfGHk3odNxA=;
-        b=V1yHXBzHD+bpyDLC+fWEgFOkulbuk41P6nr0LJvx7AEAwgjlLjD7EEwQV8+wDRhs1V
-         w2IdLBq9BC11ebuVGLzdGbqVGFYjVOkukjEcasaElmhDGX3uCoKw+fIptSMOY6UIL25q
-         Tcf6kWw67AaF3PSU41qxRHycf2K34sxE3pUXJfl6uwoj2rjzX/mg6r/CqDJUj4zZVBSa
-         q57E8lgaBK/hHmkKlgo52wOT5A5PJsQXQEFsGt8AFWkbHjpfdmuEX9koT453gjNOceO8
-         N+9Z47l0eS9UdQKRtkl854D1e9W+CH9d7oW4+k227iNsu2gYGuDNu9hGYOoTyjQnCPLj
-         HgOA==
-X-Gm-Message-State: AOJu0YxDAly1FcqSMeTBxi386HnEDkzD68bAGkDqhWwH2TB8q6aZM3Ne
-	OJB4oFHCDxYhVmSV6BvVcezX+jIkINCkRU8yqZmVaXnKN76/mPzGs60vt7+1O+ZvV0s9THQrTGZ
-	VPv4gwHUf8VLJ3A==
-X-Google-Smtp-Source: AGHT+IHiYqPMk1T2LRzBz+HcP4g/t376gt1K0Erodo59xIhSsLG8kAdYdN17gjS2uM71m4zh73QU4bVm1rDDabY=
+        bh=uzVko5ey5XomiaTP/3j+Aylzt4fKZA9AvfFuwkATRlQ=;
+        b=BW/7cT/HcLbDe/F4F2+J2skxlCXVjO3GmQiUROHqwxoN7QNSZB8tOKGjn1PvlyiJK+
+         ecDQCV8XwKvSVFVpRAyce/xbvZaI+PspT01hOCi0jYSBIs/N2J1KvRXRKZF/bAT2hPCR
+         ThzHAfFXgIKaT5faq/sDsUL1lM2Xlw2BO+XAtLkL+rMtHIE+5OP7S7yowy+G3MUNi8KS
+         gsVVEPP80fXsu4ii1eL2Ms/fh3boISf+c/f6dRPOuSzwI3FPL9I3WIaACDlE0GFXotyO
+         EXxQ56gnTDRYui/rP52hnMoDggj1oGGSW48gInoTIAQezAoVytM+wvB35sjuDzlrYoHf
+         0NOA==
+X-Gm-Message-State: AOJu0YyFXZsycc6ss+OuWrMVk3Iai8YJAKhpNGSYa7Tn4aUP48+xJCjM
+	HPRBIWL/aZrrLQ23NeGJw21rjofQ4brBfJRzFCyi8P8kx8+JvZwDtzxhkfjRYeTFBQULAn1rCrd
+	/biuABdMLcOHqvA==
+X-Google-Smtp-Source: AGHT+IGAqcdIb4FXVBRsBjhRKiL8btlEnJNMXXgbSRNVXzHIUfkC3AwJxajBSXJuYEwhxbkio8q/0Pht3OkPH/Q=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a81:9851:0:b0:5f8:bd56:176f with SMTP id
- p78-20020a819851000000b005f8bd56176fmr405938ywg.2.1705588626767; Thu, 18 Jan
- 2024 06:37:06 -0800 (PST)
-Date: Thu, 18 Jan 2024 14:36:46 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:1326:b0:50f:14fd:5a2 with SMTP
+ id x38-20020a056512132600b0050f14fd05a2mr1242lfu.9.1705588629212; Thu, 18 Jan
+ 2024 06:37:09 -0800 (PST)
+Date: Thu, 18 Jan 2024 14:36:47 +0000
 In-Reply-To: <20240118-alice-file-v3-0-9694b6f9580c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -61,22 +61,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240118-alice-file-v3-0-9694b6f9580c@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4931; i=aliceryhl@google.com;
- h=from:subject; bh=kNwOkaV5Ia31XQPZJQTI0yhdRPo15fqa5k6zJvfVgXg=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlqTHPDKdb7jNUOZgmUfWPgNvDVE6eaX4RWU5Zy
- bdHEBvHrc6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZakxzwAKCRAEWL7uWMY5
- RlRcD/9Pfdw5ZyeHjQMrfDqVlF2EJsl7k1szpDxWHbLCa2UP8RqF7+XIr3mGO+hk9dCCNajvQ4j
- NKBRxTd1A5qm49D1/dZnycpjcYdCyx/NqPn3fC5uvIRqCIcmI1bHWKnuF9wfzH9M4SGxVhrOqWy
- 4IkB5cGqIE+gG+4C5R0aJvLHaBT5V7r0CKk2nreku5w8H63DEYjWbDXVcwji4Kf7QRoDlOwyHcU
- 0/X1a8Hbh813vqxBztHwq0kCBcV8j24xTBvAzRg0C21c1psxidMjMs1vtw8HqVn0jiDrY30Wr7L
- cNaoUvPvzJXQ1QEEFARgPIeFJxacrryDa5hjbyv/fcNVEDMSXbqvDTy2oqy6mq3ZfbQ1OHDMh6q
- oHhUjhgW2L5VDLRt2G7mTpTmi1OAGDgH/BKLh7+92fjnzjWbvR3cX32ooZcaNdVG6j80Tt+/zaA
- pYDKg1qE9JlZ23w115zXe3hqqTIwsJuIyDVJ8zYwY4ldQgSu4TqGt9i3dM5plhsBntRzHoipATr
- QeVXIojpPaobUtETrJNkct+UgfDWRhPfWySavPL7u+XEJb6OJI1AdRH/zI6cPLP1GEiabOFOYmw
- D9/Y3JhLfb512OlgM1E+7g76kzyG13CTj6c4vHqDe02U3faI2z7a0DKXyQBh4TX0sRD2b3PD7EC XYmcB+yaIOAhZwA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2220; i=aliceryhl@google.com;
+ h=from:subject; bh=VXii4VQu3CEARTA//TXCHQIIjHMrXvbh1ihXw7gxrpE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlqTHPE2OQ5MxNmkDx/d0OyvyE9y0jK5TyOb1gz
+ zrC083CUEyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZakxzwAKCRAEWL7uWMY5
+ RjpdEACVtZzvrDY55UxSJ0r3VfIxbuH2lJ60e5lYPYESp/NSHZUevhadVVJ5vNaqGItTbasjvh1
+ tGN5hPIH0oOAfcQsOueBMQHjqksSSKFZDTtPMJWj020IPO38EU7p+4nmFMCIb+jaImA97N+1DDW
+ A/MR6DzqWFkHMa1/+Xe/Zc4VgvPz5+SWEiCR0jU2im3moJN1uX8ZqHU51N9EhAo0VBkT8nkYOyI
+ bCDJrRgssbd663cT0mZhWamzB8IiQYOTgGMmrOZ0XwBxVQsVFKK8apkEI8ApgNyat+Co9T6p1cF
+ wkzcoRcGLHp7298srMnW5NNnvwpnCCGaP7CzswE7C9UD6ghCiPEa/55CT0UoOWaZ4+JXZHnvq4j
+ Igre90ckd2KIf+IK1g6j8r1QelcY3EOI0xFQzO4inFl1luCvZ7/C5hez22JzuBzjgxU/rf3LfXA
+ eoWczckrhL9h5W9YYcCgJcdeclNGH9gs6bitekVktpOadWm9GTk1aq3O1yMOHuVDqq/AnUlyKiJ
+ QZvuEWyK51mlWtYlf7TCjiHYanRUrnRmF6e+iNWQkE/3/sIf/X0P+izYMzfgLlltS5tTC1Dn3ct
+ XctOVPFmJAjZf4gWlkQ6goBCTyyda6IjbMK0zeVA/+X162OA8vdYa3lL30+c0L/bfjUO6ZJOt9p SHBCBHHndkwyigg==
 X-Mailer: git-send-email 2.43.0.381.gb435a96ce8-goog
-Message-ID: <20240118-alice-file-v3-5-9694b6f9580c@google.com>
-Subject: [PATCH v3 5/9] rust: file: add `FileDescriptorReservation`
+Message-ID: <20240118-alice-file-v3-6-9694b6f9580c@google.com>
+Subject: [PATCH v3 6/9] rust: task: add `Task::current_raw`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -93,123 +93,59 @@ Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>,
 	linux-fsdevel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Introduces a safe function for getting a raw pointer to the current
+task.
 
-Allow for the creation of a file descriptor in two steps: first, we
-reserve a slot for it, then we commit or drop the reservation. The first
-step may fail (e.g., the current process ran out of available slots),
-but commit and drop never fail (and are mutually exclusive).
+When writing bindings that need to access the current task, it is often
+more convenient to call a method that directly returns a raw pointer
+than to use the existing `Task::current` method. However, the only way
+to do that is `bindings::get_current()` which is unsafe since it calls
+into C. By introducing `Task::current_raw()`, it becomes possible to
+obtain a pointer to the current task without using unsafe.
 
-This is needed by Rust Binder when fds are sent from one process to
-another. It has to be a two-step process to properly handle the case
-where multiple fds are sent: The operation must fail or succeed
-atomically, which we achieve by first reserving the fds we need, and
-only installing the files once we have reserved enough fds to send the
-files.
-
-Fd reservations assume that the value of `current` does not change
-between the call to get_unused_fd_flags and the call to fd_install (or
-put_unused_fd). By not implementing the Send trait, this abstraction
-ensures that the `FileDescriptorReservation` cannot be moved into a
-different process.
-
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/all/CAH5fLgjT48X-zYtidv31mox3C4_Ogoo_2cBOCmX0Ang3tAgGHA@mail.gmail.com/
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/file.rs | 72 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 71 insertions(+), 1 deletion(-)
+ rust/kernel/task.rs | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-index a2ee9d82fc8c..4213d1af2c25 100644
---- a/rust/kernel/file.rs
-+++ b/rust/kernel/file.rs
-@@ -9,7 +9,7 @@
-     bindings,
-     cred::Credential,
-     error::{code::*, Error, Result},
--    types::{ARef, AlwaysRefCounted, Opaque},
-+    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
- };
- use core::ptr;
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 4665ff86ec00..396fe8154832 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -82,6 +82,15 @@ unsafe impl Sync for Task {}
+ type Pid = bindings::pid_t;
  
-@@ -245,6 +245,76 @@ unsafe fn dec_ref(obj: ptr::NonNull<File>) {
+ impl Task {
++    /// Returns a raw pointer to the current task.
++    ///
++    /// It is up to the user to use the pointer correctly.
++    #[inline]
++    pub fn current_raw() -> *mut bindings::task_struct {
++        // SAFETY: Getting the current pointer is always safe.
++        unsafe { bindings::get_current() }
++    }
++
+     /// Returns a task reference for the currently executing task/thread.
+     ///
+     /// The recommended way to get the current task/thread is to use the
+@@ -104,14 +113,12 @@ fn deref(&self) -> &Self::Target {
+             }
+         }
+ 
+-        // SAFETY: Just an FFI call with no additional safety requirements.
+-        let ptr = unsafe { bindings::get_current() };
+-
++        let current = Task::current_raw();
+         TaskRef {
+             // SAFETY: If the current thread is still running, the current task is valid. Given
+             // that `TaskRef` is not `Send`, we know it cannot be transferred to another thread
+             // (where it could potentially outlive the caller).
+-            task: unsafe { &*ptr.cast() },
++            task: unsafe { &*current.cast() },
+             _not_send: NotThreadSafe,
+         }
      }
- }
- 
-+/// A file descriptor reservation.
-+///
-+/// This allows the creation of a file descriptor in two steps: first, we reserve a slot for it,
-+/// then we commit or drop the reservation. The first step may fail (e.g., the current process ran
-+/// out of available slots), but commit and drop never fail (and are mutually exclusive).
-+///
-+/// Dropping the reservation happens in the destructor of this type.
-+///
-+/// # Invariants
-+///
-+/// The fd stored in this struct must correspond to a reserved file descriptor of the current task.
-+pub struct FileDescriptorReservation {
-+    fd: u32,
-+    /// Prevent values of this type from being moved to a different task.
-+    ///
-+    /// The `fd_install` and `put_unused_fd` functions assume that the value of `current` is
-+    /// unchanged since the call to `get_unused_fd_flags`. By adding this marker to this type, we
-+    /// prevent it from being moved across task boundaries, which ensures that `current` does not
-+    /// change while this value exists.
-+    _not_send: NotThreadSafe,
-+}
-+
-+impl FileDescriptorReservation {
-+    /// Creates a new file descriptor reservation.
-+    pub fn get_unused_fd_flags(flags: u32) -> Result<Self> {
-+        // SAFETY: FFI call, there are no safety requirements on `flags`.
-+        let fd: i32 = unsafe { bindings::get_unused_fd_flags(flags) };
-+        if fd < 0 {
-+            return Err(Error::from_errno(fd));
-+        }
-+        Ok(Self {
-+            fd: fd as u32,
-+            _not_send: NotThreadSafe,
-+        })
-+    }
-+
-+    /// Returns the file descriptor number that was reserved.
-+    pub fn reserved_fd(&self) -> u32 {
-+        self.fd
-+    }
-+
-+    /// Commits the reservation.
-+    ///
-+    /// The previously reserved file descriptor is bound to `file`. This method consumes the
-+    /// [`FileDescriptorReservation`], so it will not be usable after this call.
-+    pub fn fd_install(self, file: ARef<File>) {
-+        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`. We have not yet used
-+        // the fd, so it is still valid, and `current` still refers to the same task, as this type
-+        // cannot be moved across task boundaries.
-+        //
-+        // Furthermore, the file pointer is guaranteed to own a refcount by its type invariants,
-+        // and we take ownership of that refcount by not running the destructor below.
-+        unsafe { bindings::fd_install(self.fd, file.as_ptr()) };
-+
-+        // `fd_install` consumes both the file descriptor and the file reference, so we cannot run
-+        // the destructors.
-+        core::mem::forget(self);
-+        core::mem::forget(file);
-+    }
-+}
-+
-+impl Drop for FileDescriptorReservation {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`. We have not yet used
-+        // the fd, so it is still valid, and `current` still refers to the same task, as this type
-+        // cannot be moved across task boundaries.
-+        unsafe { bindings::put_unused_fd(self.fd) };
-+    }
-+}
-+
- /// Represents the `EBADF` error code.
- ///
- /// Used for methods that can only fail with `EBADF`.
 -- 
 2.43.0.381.gb435a96ce8-goog
 
