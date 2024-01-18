@@ -1,118 +1,90 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E55BE7F;
-	Thu, 18 Jan 2024 09:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F581A279
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 09:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705569642; cv=none; b=KBbdTkKARUH2JdcXrFR53L8C95arH4DRZJybGWdia1iCOhGotizLTSCHIZJDPVDqhjyUfIG/URtNID0IlppHMuAiq40d1/2hWRXC+oTFPveTepXt5O2C7jXGC6awl1GJNdS8t8fi2jafHAK4pNYxHdkIsUvYKlg50g2uiZ7q3Js=
+	t=1705570379; cv=none; b=WxmsCogwYgO5xkuWDBH62eXuCD6iDKYbd6+Ps9/idfHOxLIj95fC3L58FnMoSOm8NQGHUSy33uDgc0Jplqd/gj5KkPjuWWZ7g0TFrd8h75XlkyTiZHuUHuY7yvJQL1+fdQVYvUH5Y2Gwvs9G4P5xYdSvujYQjO1ueVea08tOWkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705569642; c=relaxed/simple;
-	bh=icgK142jnhKCNQrfFxL3msTXe+wMu7KCrBK09QWJP30=;
-	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
-	 X-Spam-Flag:UI-OutboundReport; b=dNVXnvy6LvCjSgvSpWkTH2E/cEARwvPHrYQ41ddF1PSt6WAHwFA8fxZSn8niWeu19Pb+1yyShPpQWmWvzs3ZUnt3iXlvtiKTd9SS9Wm4ZDMKOkfvOMFnZUNqGEaQYCDHd5vZAHndxJPTO2ibeA2OxsM278U8PReSN9Pt5ePKoek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.126.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
-Received: from localhost.localdomain ([95.223.130.98]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MFJfN-1rK2q03Bbl-00FlBA; Thu, 18 Jan 2024 10:14:49 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH 11/13] rust: kernel: add doclinks with html tags
-Date: Thu, 18 Jan 2024 10:14:37 +0100
-Message-ID: <20240118091437.25001-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CALNs47v1y6aXBFka6Af1BNykycjNce6Rnjvf0sw4r1vMegFhBw@mail.gmail.com>
-References: <CALNs47v1y6aXBFka6Af1BNykycjNce6Rnjvf0sw4r1vMegFhBw@mail.gmail.com>
+	s=arc-20240116; t=1705570379; c=relaxed/simple;
+	bh=mfRLT1ZTYMh35t1IJwqIq/uG5hdyfPymCOmiW34GIFU=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding; b=lLge64OYwDLo45oybxUAXPRtcVPsNv/uaqGl9OtnJMy/qetawfoHC5SfGCJmoKe3DaBj9dhF2W7+OHuaTZ5FEvH+65oLP2lUe2U6YjZjgDCM/NM+nXKLIXi0XSxEeTrf93DaR7qZyiZyKy/CMWTbXE3ZOAy2ObNKJGktLj4Dibo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P9vVCDxE; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9vVCDxE"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-5edfcba97e3so126308457b3.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:32:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705570377; x=1706175177; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mfRLT1ZTYMh35t1IJwqIq/uG5hdyfPymCOmiW34GIFU=;
+        b=P9vVCDxEFtPtKf1N8jl0VVs6rkI6QrXEE1RtYR9SvWH7gFO5bz/upLyYZCux5jX1zE
+         ViOqOkPMe8oMKtAFqPSEbZoNxHyJjgp8GNz+wKkzr9o0b0Sd7WpjIgOgTn7Gw2RPJxjm
+         nCA2i2xMVrjduLI78IU4uGMQS3bF1KEEblVl6umufxYZ0c4ES9LqdwfhV8hz/3a3Zd05
+         dcxYYMMzrHagknLtl+RRmIuwns6pMkuE3BSnwkKgM+jqXcxmxkFjF1ZttZjYp+fp04D1
+         B36b/oIIUDmv/XHhQfzcUseW85NJUOct9G0dDLAO8Yay1o3h6eanH1/4YOSbXW+Am4uT
+         rkEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705570377; x=1706175177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mfRLT1ZTYMh35t1IJwqIq/uG5hdyfPymCOmiW34GIFU=;
+        b=I0Pi1qvRO5mFGnEaZm+AhtPsKWr25ZC8u4XLkg3D/bCYF81Q7NlfeSkZkTlFJIyzMa
+         tcamVcf39aNkGYWaD7Fx8b/M8ctU/JrlhWyoqRIWI7A9GQ4QfGbUufaWqjSMHLHanmxK
+         o44EhJHBA8qmG789ZLke9mrnbZfUG7FTkT4cXpvDKo4/321ont6D7zUpejwBjnu4CcM5
+         D5Is1NRf78kORB0s+xBauHr5y+HhKr9jJdbWQcb1zdHv6gxqmIa7SkY54eLV0wvDRk2y
+         Wz8bEAY4drrgrBwf64S44vHMNNZQs2gtINGYKfWU4ANS1+9yCQUb7oniAkD72amLSgxF
+         u8Fg==
+X-Gm-Message-State: AOJu0YyTs3dqifHOXuTzLeffjE+WhcBcAfumcy8EQ30Pi29UGpJzbt3o
+	ldL78yDU2NgBG3TYPatPekThTcT8cLTevhhkvSVpNLb4sqzwucfnir/qeaMgAgdXT7fY5YcmtBR
+	X4nFLWaCy2deR+hG02FvWXD0xNDY=
+X-Google-Smtp-Source: AGHT+IGxAmd6vENZJ3wan8GakGaCZi98RT3jq3GTAA6dd/ztZPwqX0JU1QSIVj+9XN0/AMwR0fLh5mr9trqk79HiSm8=
+X-Received: by 2002:a0d:c182:0:b0:5ff:67f5:f3 with SMTP id c124-20020a0dc182000000b005ff67f500f3mr470340ywd.38.1705570377022;
+ Thu, 18 Jan 2024 01:32:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:HvRMwuW92UrERzMMxxxPExZjYNfh58cwuz0pbbQTI6gocQRi/8L
- e2FqSqk+w9T2rAu/GwwyOE97vt7WoJyKpUpI4inBQ3E5HIfNGeJ06bj5TNFCwmlcwh9CxM7
- SafIUROvPyDhbklQPpjTaqo9D9nZ9ZiyHlUtv4W0ckPi577PjCIr40dXpZkQdjk+AC4d2oV
- DlFnEL7VgDVIB9ClBZuxg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Z3VQi8fndeQ=;rNfQTWLsJhh6/edYb5PLoOPvPoj
- PpTg2MU7cjWUzfh8LIeVa4jWTCRE6XgkiXkrXfVt/+EYaIahhKJLfUkYeX6tPLdbRYB/UL19B
- e8RspkweSeZB1Z5cQ2/vHKzl/bl/zLcn0ClxeWp7ZsZ1z2wduMDCYIRCA90DeWAWI388n6bWB
- L9+LQL4wTpwLRz3xO/WKUdxwHQcAYpDKHCFlarqaER1iCSjOqegXpyQX75G08hx705UOMw37r
- Rb0zBRmHhLSD8tw6v0qxh0ll+Bq9gfDgDMMgGhvw1uSe9Wh5YjAUd+LZAEoVI4ILDMgk9TST5
- KghkvrE7N1hjYdq/rwlq24FFmwwXKhILsrF567ZnVv5p4ZsMHZo2kuTVOSbNbZWjM/aBekVj8
- fx2YpFeGKAFxjOVkNLdPwO/onx7BcKFMoaKUMm1AJorAWbRtXYHcBIqGkYRFQSu2QZPW1yZ9y
- jbrOwJZYgl+lfTGBSyr1w+eM1sVNfxjebeWgj3Th0MRGwqL/AvJdmQjxYrRuoSHJBSToxCuPY
- LcNqL12yhg4hzFOysKyc7bWny1DIWwW1UzP4QmGbuCPWMI7BehGwF5JOIjtUwpz80FRV/An9f
- MdEayP7wRf8twfGWuQGYXiRgobvrSAgmMmLyozL/KqoKkIZF/3GLG0LXR2fEDFJ6Ndwt2eFff
- Wg3xJ1rd8YqKJznBy1wzoYd+PNZWo/+31it0oGEb39G9rBWfXfZIu7FWTqe7bu6/zJpnI4/nb
- YFpBuOAUFBbnL+c4ToRTbjTIPTwwcqWVQA47rtcKJ26DQeN64rlBZ49RqGtWZSRv1/QPMshhd
- Dhm27KS67oCHcch0z9Ao3z6jEsYHhRe9Y6Z+xoTNqACC49y9G9aikMRoPW+/CIgPJukfOV1LY
- wgbSYHMsMcfEThA==
+References: <241c57af61dc03c6f2f6bd90856908fcf84bb71a.camel@redhat.com>
+In-Reply-To: <241c57af61dc03c6f2f6bd90856908fcf84bb71a.camel@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 18 Jan 2024 10:32:45 +0100
+Message-ID: <CANiq72mF+NWL9kyU=zM=WaVaYVAuUYbDL3L5GF=zWVmiR0=ZpQ@mail.gmail.com>
+Subject: Re: Intended folder structure for subsystem bindings
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, dakr@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Std sometimes does something like this, which links to the slice primitive.
+On Thu, Jan 18, 2024 at 10:26=E2=80=AFAM Philipp Stanner <pstanner@redhat.c=
+om> wrote:
 >
->     [`&[u8]`](prim@slice)
+> I'm having a look into potentially creating bindings for the PCI
+> subsystem.
+>
+> I was wondering what the Rust infrastructure people had in mind here.
+> Should there be one folder per subsystem in rust/bindings?
 
-This would indeed link `&[u8]` to the slice type. But I agree, both,
-linking to slice and to `u8` is not necessary as it is common knowledge.
-However, if it is a slice over a more complicated/custom type it might
-be worth linking to it, and in that case the 'code' tag syntax would be
-the only option we have at the moment.
+Currently, abstractions go into the `kernel` crate at `rust/kernel`.
+You would typically create a Rust module in that crate (which may be a
+file or a folder).
 
-> What exactly is going on with Arc, is it not getting linked correctly
-> when it has generics? I don't quite follow what <code> does.
+In the future, we will have the ability to have Rust code in their
+usual folders among the C code.
 
-In this case it is about the `&`:
+`rust/bindings` only holds the header list, the generated bits plus a
+bit of glue.
 
-<code>&[`Arc<T>`]</code>
-
-Here, `&Arc<T>` is formatted as code, but only the `Arc<T>` is a
-clickable link. While
-
-[`&Arc<T>`]
-
-results in:
-
-```
-/// over [&`Arc<T>`] because the latter results in a double-indirection: a pointer
-    |           ^^^^^^^^ no item named `&Arc` in scope
-```
-
-using:
-
-&[`Arc<T>`]
-
-would result in a link, but `&` is not formatted as code. Finally,
-
-[`&Arc<T>`](Arc)
-
-would work but `&` is part of the clickable link now. Thus,
-using the html tag here is the only way I found to get the
-'cleanest' form in the rendered document.
-
-> If rustdoc just isn't making good choices in certain places or isn't
-> flexible enough, could you write issues in the Rust repo? Better to
-> get inconveniences fixed upstream if possible.
-
-I like the idea of finding a proper solution to that in rustdoc
-instead of cluttering the source code with html tags. If nobody
-strongly objects I'd drop the whole patch in v2 and open an issue
-in the rust repo.
-
-	- Valentin
+Cheers,
+Miguel
