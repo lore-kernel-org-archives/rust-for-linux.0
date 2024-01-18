@@ -1,68 +1,69 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86304185D
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B063217D3
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 01:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705539970; cv=none; b=HGIydNKOBuML8p9F/0ovSLoJyHuEm4dpwOc5HG0TF9Lgo71In2Pt2jBAOuKRLg14N4y1Lo0AakeX3yx1/L+PIniDpUcjNfJB2JS08kkvvVox2xRZL2JLGVY9KlPWWiCy0kRDSjEBHCcXp6VZ/HNdfeyYLkCl/Ab61Cvkmg/aYTk=
+	t=1705540099; cv=none; b=rzzp2tCXOvv1r4oxuimEK5cvJkrYfFg/3J3eL8lO6eKRDZLJwZFPghtcHoSkAQKGnsyAmWuPJX/b0e5ARVkerwiK/drzsFpBr6GzE/p00qebdxMH0VhAhEMFfWTKcSw9vGC1tyg59mfQWarTWZp1Hos5N5nQzEYbbhG2ofwPjfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705539970; c=relaxed/simple;
-	bh=Esad9FEWSOrIwHYIcn+c5ne4heeaiNe7xF33zHox1NE=;
+	s=arc-20240116; t=1705540099; c=relaxed/simple;
+	bh=8T7NC9Swub/nQZ9DVuaYsmYOVn2PSq1kpJSa5iPp6AQ=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
 	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=PNTtZdJmnW6uciY+QIV8Hc2KhlUf+WskU9I/JWT/50QREpte+GvI8RYadmPPRh5iImrPut3TKpdBquey7VsCOZ469vTEKFz+5G6up1XDzha7kLBdHVfHW2xoPY1EDf2Yzu2CR7M0BgHG/YHH1V4DEQrnOAlx7EITd1cEbhoM9As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=iXNFcAb1; arc=none smtp.client-ip=209.85.128.177
+	 Content-Type:Content-Transfer-Encoding; b=ALnx8Yg8pY2yJcHrkJ85u07DwtE83gRCRkKi8lYG+npoPTbE8fno5ynZNwoWl0Kqnacrh92klYmt971MPRMnVmUieBs3DUkpyLc1gQr2dSHPTjR1Z2DXjxjXzd7hJdpONVUt4yFK6IGdyE1GebsRaBmJ8f9qpOq9D9IdrWWlLs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=fLU1bQnF; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="iXNFcAb1"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5ff88cbbcceso610877b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 17:06:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="fLU1bQnF"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-5f2aab1c0c5so2310567b3.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jan 2024 17:08:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705539966; x=1706144766; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1705540096; x=1706144896; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xX+fGMnDm2Xckac8xPFbwtgUlcl2qN7KhbYjVoA1KTI=;
-        b=iXNFcAb1pZZsWX3+w9fdIEXOxgDE3SMuvX5Np1TlVWM2XAO8gy/XGBhRt9S7Aof4Sf
-         bt+JjnMnPbuDTM3oV8VlQio/Smgf8TgY3KokbBjYeFbVXwMt1eA8sFQwy3P453pBMZ6Y
-         uS2d3PfTRbveZwIRdoF5LRQLV2xAgvf9/UvRwn/v7rq0J2X9gL+BJO/YC4bKIBaAJadR
-         df2PPck8gHseSwCoichKGhdylXLDBnHuDN1/kbNOrb88KI+wzSzjcSH6X2SFaAbyJ43J
-         Z+tiyQZMgsjA/YDQvGYbpVDM/znORrUCm3hr8DLL3G21YHIPDi3h+1iSKDFFzeuN7srY
-         Pirg==
+        bh=lfrc0adm8w3bLRpMaJS6zecF+K47ffHuEOwCMesTrUI=;
+        b=fLU1bQnFpbsIvB/Dg8fbdwZafy/0/9v5nNrL1EevzHd34ECdflpgObjgB33XkGCl5P
+         ISpC/90zqkeBQk7KHEADG7d8y4g6OgoqPB37NaloYOEO9ZcPxp4O0bhOaUH731NbOzdt
+         HONMytFr+pcfyYrsh7qK8OlHHgnIjqraiP2Mpw0pi8GqXUwT7W7JamYytxHPe9Jp9yLD
+         95r/oS3pX/mozDcQLpMKnCH6UAzzhrN92T44eIpf71Jo6Z9VDTlIEwlji3S+TAk3j7px
+         4hddT7JAEc9JhlxeWJCml5r6YdK7zsmEubxobKPOqMpbXGLeVWSvVD9d0E7RXJhBzMfZ
+         CVcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705539966; x=1706144766;
+        d=1e100.net; s=20230601; t=1705540096; x=1706144896;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xX+fGMnDm2Xckac8xPFbwtgUlcl2qN7KhbYjVoA1KTI=;
-        b=Q7dm10YnBNlnsySETu+e2TOmM5787c0CiM2BH5Dd+cpQBAGmiPIWPouVTsUhoxS85r
-         pkXZsJMLt2Pg2kvWYdWPm7WHwLrrgkhIhMnegLGL9sHjD0x9i2CHvhhGaC0k5R30htqv
-         L8nt4AJMN+EcJJyiXePGcM5+y1HAfq9J1vyiAHevUfXb6N3ke5ZsE/xjmL5Gv/gUKxZF
-         JsYHua5N3dbzIUG4KGtr+RWwwpThmfVXC9DACZcIDZaMUZ+htRinweBLnmBbdjmJYbNv
-         4+h6fsjUCfR38etRh+WMLnK3/TQr08fhdjERmL1SdzK6aUJZFpypz8xjqNvG2MyZ5DZT
-         NIlg==
-X-Gm-Message-State: AOJu0YwXkpzy4VVKykOtCE5igGeHZc3X5nFWvgTFYSLFynGvKrhkuZS9
-	p3YbR63pu1P1e56F/ZyVzXscInFGZE8O4BPquhaZfo9OWT/0/dIsQsq3mgAN/lhxTfbSo96hpYw
-	t+RMRJ9RoPXXRGvvu1XWtyqOKU5VdjFi6S/z32iGeLrBdDoveNMes9Q==
-X-Google-Smtp-Source: AGHT+IH0C7gdhIIVi7xi75yyYBE/eMR53bYPk32XKllL8/0pTaR1nntBeMq1b6hWhIeBNuY2QvY2RiB6cwPrMYuw8AQ=
-X-Received: by 2002:a0d:e20a:0:b0:5f6:cfc3:f5a3 with SMTP id
- l10-20020a0de20a000000b005f6cfc3f5a3mr100002ywe.50.1705539966543; Wed, 17 Jan
- 2024 17:06:06 -0800 (PST)
+        bh=lfrc0adm8w3bLRpMaJS6zecF+K47ffHuEOwCMesTrUI=;
+        b=YeTJBJBbYhYz28Bo72GZRbVMl2ElkiUvk3uHmlJiA97W2w5k80U3tDoqpbQi9MBMGG
+         l/lli5YL+VwwKdoZO21uE4MhpqncqovkYZR/7d9+voTqBsK0m8RpcHuTJ0AR/pG4BBnm
+         V6VaWeL/v1oOmhxC0byHowRt3bbikgj06U+FxdnG+bEFnJzlqoSjsnyLtcS6ddjaOGk3
+         TIIWV/FZamkMQzL09eq21haLcRIPz0XOegv38Uo3NVauznuPDsVAm/ryvykGb7NiyWa3
+         rZQFxZAu5V7kOdUT9n5wsF2zbNtiGt5jr8TFv+MAQ1WE02H+wCeAzG279roJT0msR4wD
+         mRTA==
+X-Gm-Message-State: AOJu0YxzAIRkDLOlAdE9x+kqHQbNJY9Vm6pdPLhhyKWAourJ9JMI3A8U
+	Uz+vxrMukP95+Hvbyl/8mhWrxvUwEXNGy699qzyqeEeaMnYJ9pL43yKR9FBN70K0BJCJWNOPHpF
+	b4E69Rbqgbq0efKHMRLTBbWqD6vlbLebEXB5puQ==
+X-Google-Smtp-Source: AGHT+IEcS3VxlJsgml3wAtNi0i4aW2103tOvs3ohRe5uF7KGfdjATYiKhxmMoj6o0VOFrUJO48mwvQHH5Ryf3T27jKc=
+X-Received: by 2002:a05:690c:fd0:b0:5ff:6509:1e87 with SMTP id
+ dg16-20020a05690c0fd000b005ff65091e87mr1447967ywb.18.1705540096635; Wed, 17
+ Jan 2024 17:08:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240116160141.165951-1-kernel@valentinobst.de> <20240116220634.168103-1-kernel@valentinobst.de>
-In-Reply-To: <20240116220634.168103-1-kernel@valentinobst.de>
+References: <20240116160141.165951-1-kernel@valentinobst.de>
+ <20240116160141.165951-4-kernel@valentinobst.de> <CALNs47sgOaPZ6BiR3=WcG6bZuWVtF_vT4D+SLOdJ4jJoQwyAGg@mail.gmail.com>
+In-Reply-To: <CALNs47sgOaPZ6BiR3=WcG6bZuWVtF_vT4D+SLOdJ4jJoQwyAGg@mail.gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 17 Jan 2024 20:05:55 -0500
-Message-ID: <CALNs47sqzqWzE-5srCq7_ePVx3HGaJ9EkwGbbFnqH9xCJXDByw@mail.gmail.com>
-Subject: Re: [PATCH 07/13] rust: kernel: unify spelling of refcount in docs
+Date: Wed, 17 Jan 2024 20:08:05 -0500
+Message-ID: <CALNs47tKVZR8YQ4yLQ8J1CxqDS8bVeKikXHhKcXmn-ejNnUbDA@mail.gmail.com>
+Subject: Re: [PATCH 03/13] rust: ioctl: end top level module docs with full stop
 To: Valentin Obst <kernel@valentinobst.de>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -73,105 +74,42 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 16, 2024 at 5:37=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
-de> wrote:
+On Wed, Jan 17, 2024 at 7:32=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wr=
+ote:
 >
-> Replace instances of 'ref-count[ed]' with 'refcount[ed]' to increase
-> consistency within the Rust documentation. The latter form is used more
-> widely in the rest of the kernel:
+> On Tue, Jan 16, 2024 at 11:05=E2=80=AFAM Valentin Obst <kernel@valentinob=
+st.de> wrote:
+> >
+> > Every other module ends its first line of documentation with a full
+> > stop. Adapt the only outlier.
+> >
+> > Signed-off-by: Valentin Obst <kernel@valentinobst.de>
+> > ---
+> >  rust/kernel/ioctl.rs | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/rust/kernel/ioctl.rs b/rust/kernel/ioctl.rs
+> > index 59050e5f5a5a..5987ad6d38a7 100644
+> > --- a/rust/kernel/ioctl.rs
+> > +++ b/rust/kernel/ioctl.rs
+> > @@ -1,6 +1,6 @@
+> >  // SPDX-License-Identifier: GPL-2.0
+> >
+> > -//! ioctl() number definitions
+> > +//! ioctl() number definitions.
 >
-> ```console
-> $ rg '(\*|//).*?\srefcount(|ed)[\s,.]' | wc -l
-> 1605
-> $ rg '(\*|//).*?\sref-count(|ed)[\s,.]' | wc -l
-> 43
-> ```
+> Would you mind also adding backticks to `ioctl()` while you're here?
 >
-> (numbers are for Commit 052d534373b7)
+> - Trevor
 >
-> Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-> ---
->  rust/kernel/sync/arc.rs | 8 ++++----
->  rust/kernel/task.rs     | 4 ++--
->  2 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 77cdbcf7bd2e..6c46b1affca5 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -56,7 +56,7 @@
->  ///     b: u32,
->  /// }
->  ///
-> -/// // Create a ref-counted instance of `Example`.
-> +/// // Create a refcounted instance of `Example`.
->  /// let obj =3D Arc::try_new(Example { a: 10, b: 20 })?;
->  ///
->  /// // Get a new pointer to `obj` and increment the refcount.
-> @@ -510,7 +510,7 @@ fn deref(&self) -> &Self::Target {
->  /// # test().unwrap();
->  /// ```
->  ///
-> -/// In the following example we first allocate memory for a ref-counted =
-`Example` but we don't
-> +/// In the following example we first allocate memory for a refcounted `=
-Example` but we don't
->  /// initialise it on allocation. We do initialise it later with a call t=
-o [`UniqueArc::write`],
->  /// followed by a conversion to `Arc<Example>`. This is particularly use=
-ful when allocation happens
->  /// in one context (e.g., sleepable) and initialisation in another (e.g.=
-, atomic):
-> @@ -560,7 +560,7 @@ impl<T> UniqueArc<T> {
->      /// Tries to allocate a new [`UniqueArc`] instance.
->      pub fn try_new(value: T) -> Result<Self, AllocError> {
->          Ok(Self {
-> -            // INVARIANT: The newly-created object has a ref-count of 1.
-> +            // INVARIANT: The newly-created object has a refcount of 1.
->              inner: Arc::try_new(value)?,
->          })
->      }
-> @@ -574,7 +574,7 @@ pub fn try_new_uninit() -> Result<UniqueArc<MaybeUnin=
-it<T>>, AllocError> {
->              data <- init::uninit::<T, AllocError>(),
->          }? AllocError))?;
->          Ok(UniqueArc {
-> -            // INVARIANT: The newly-created object has a ref-count of 1.
-> +            // INVARIANT: The newly-created object has a refcount of 1.
->              // SAFETY: The pointer from the `Box` is valid.
->              inner: unsafe { Arc::from_inner(Box::leak(inner).into()) },
->          })
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index 9451932d5d86..818ac51b06b6 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -23,7 +23,7 @@ macro_rules! current {
->  ///
->  /// All instances are valid tasks created by the C portion of the kernel=
-.
->  ///
-> -/// Instances of this type are always ref-counted, that is, a call to `g=
-et_task_struct` ensures
-> +/// Instances of this type are always refcounted, that is, a call to `ge=
-t_task_struct` ensures
->  /// that the allocation remains valid at least until the matching call t=
-o `put_task_struct`.
->  ///
->  /// # Examples
-> @@ -147,7 +147,7 @@ pub fn wake_up(&self) {
->      }
->  }
->
-> -// SAFETY: The type invariants guarantee that `Task` is always ref-count=
-ed.
-> +// SAFETY: The type invariants guarantee that `Task` is always refcounte=
-d.
->  unsafe impl crate::types::AlwaysRefCounted for Task {
->      fn inc_ref(&self) {
->          // SAFETY: The existence of a shared reference means that the re=
-fcount is nonzero.
-> --
-> 2.43.0
->
+> >  //!
+> >  //! C header: [`include/asm-generic/ioctl.h`](srctree/include/asm-gene=
+ric/ioctl.h)
+> >
+> > --
+> > 2.43.0
+> >
+
+Nevermind, I see you got this in patch 8/13.
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
