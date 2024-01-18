@@ -1,57 +1,57 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EBB28DC7
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 14:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17C02C19A
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 14:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705588623; cv=none; b=mM0u1DmNnqgIFwOpKH50jNTmdTYHBuIZlcmCgkE0Wp6hphCg0Q3tAovpROYmd4V7WvOthf1ddi3rTEcslK70ZYHR8fwN0zXVYrWuQPgKW03D9jGZdtjF1Hz+7qvv2fiz0Yjy+ZatALKOckzUuLQufcFKksMPJYHAxjBDj7QQ+Pw=
+	t=1705588627; cv=none; b=di0B5KW6969n/eP4forGGrV5A24zCb7Ws6ppBMeSPp8XIO8RzO04lj3YKzL5nlrY2nRNqEanhz+g7M3kmn6AKb3eov9aLsFfGRFc6YMQ/RFiJZM/Uc9bvi+RZwcZJgxbyLD2V9qLQTchPaMf6jRVKJk96IW6u9OdioPuy8tOeKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705588623; c=relaxed/simple;
-	bh=CsfuAls1TL2YV7CMFadTLsxtXkXtmg2JI5t9uRUkTZc=;
+	s=arc-20240116; t=1705588627; c=relaxed/simple;
+	bh=Sn4iv+1Sqmbmlo1CanL38VvE8Hbx2qZrDf9IB96IkL0=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Date:
 	 In-Reply-To:Mime-Version:References:X-Developer-Key:
 	 X-Developer-Signature:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=GCXThJ8QbGeRorHol+ggP9YESEqxOTHPU0oNcvlUXvSMN73MXn6yT5/iZvXz7WbxZMFfe9+7X/z98ocnSJpj6DtWYKC8k11Aj9SqcaFh09e+Jn2x/p7jJICcOJBsGzMJzJ0S/djxMLDaqOELAOSjfEq+oWnvQ34U/TMYfz84TRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bYtXRFKX; arc=none smtp.client-ip=209.85.219.202
+	 Content-Type; b=js0IcRUWmF7kIo9HMkH2pLKylrIJu/5FxImYDMpudIWq+4/OVJwUFMy+3QgchK8P77NtSGEpmwUDQlniM3SaNfJ4PHDLG5qAdYDQUl2zq7/etIhd3pespZV/GxBazvsaPgqx7LTe0gfcd9akrukVskrOUy8d9B6jzp5leu7RNLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c28O7AC+; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bYtXRFKX"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc2358dce6bso3130880276.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 06:37:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c28O7AC+"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc21b7f41a1so5207342276.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jan 2024 06:37:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705588621; x=1706193421; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1705588624; x=1706193424; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jmgH0qa3XVbjpGQhdkp6BesDtjCOSEZUBkhyiBWTkXg=;
-        b=bYtXRFKX20WqqUNCOdLv5Q7Y/17bqb57fPhKDwLlTsgI34LY35PbHoUruVForWiowk
-         eofZOhLD4xhjsNG63qJJjCx4i2p3elFlhoqE4Yao/RInjoeo6LJjv+TTIGThGzTsNRaa
-         P96a7ew20nUND5yS2kcgv0ruHDzD/i4KO8kxS7ep1dNl+ww4c/FNQMabptsE3JAJxwxr
-         xkjqW7VfxO62MFisgLAflhUfTgu3Q5WCfwj6PNDl5pmr5X8+JT/tS3SJMYqCq5JA9k7j
-         OIETocJUxgEarAJbM4o67KJIS8k6XwB1mhH5qKHkpNXWyKaEBwGRsRnDGksd3yGn8JKm
-         6FMQ==
+        bh=U3ZIaTdIDVbGxgj61qLOgdlUIoPK1UIssk3iN71rz/s=;
+        b=c28O7AC+fkiCThWEpL9kIIeCsbMYrzJNSca5yK9TeWdfCgM7QxmaqBkBwMYfYWXMNg
+         eoWRQu7d2sWSygrdpBytlT5lYOc8vv7caZ2m1EujY27A8PHaBIaQsLuwcZVLs6/RZcuI
+         Vw6v2c60Np38jonfaE9lQ9YzuI9TVGu0idWgBFomOJnWu5zciUE76j6zA4ZZNfXooNGW
+         48nshGoIOOl+0ZYLoHIc8CSxrdQoSRQDsv22/hffQ91fL/ssEKuRtAxuy53ESleyJvYY
+         /tvlSkr9/xoDyrVMFED5fA71WZt9m2b8+GGkbdunrH7qOAqb82VBhG6BBPf22nFzpYvE
+         JXsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705588621; x=1706193421;
+        d=1e100.net; s=20230601; t=1705588624; x=1706193424;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jmgH0qa3XVbjpGQhdkp6BesDtjCOSEZUBkhyiBWTkXg=;
-        b=YTn2G1WYlxh5O4RGEKyKaGddpjZLf/Ax/5zIbfLeB+sMqpZPGPR9LMVU5SjIbpB5sR
-         Qkbk475MV7jM19K/81iQh0K5386SBWTXJ0jMfZ1eV1fLGfuDIO3zpTpHtOpvbXI9bnYR
-         7IBM2Zl+esbJOVRHmQeuknCViTz5D8ghtrZA5ojdqqLZPDJVOd52OHJExblvR4Lc5YOT
-         BI5nySBbhmrZbr2+C+SGOZ889pMt+C3QtKJpOjOw6MU7/im0RHMkN3kSlyUV1AAPpS43
-         a8zshrQUr8G1WvRTW2DPfnpKtj51FDJgUBKS8aUxvEuWRHeqSzbq7yWyXXJp7CSFk/wt
-         KD9g==
-X-Gm-Message-State: AOJu0Yzhnbm1GhuX+b+O4O4djh0961lls2sWKIlAvvG7XB6+gBowBTRI
-	5no0Nmokf40dWZCKob7aJ+cL6oEeiuJhxcaC8ws8kdTY4KMM01AjeWj0P8fGDSqynncvZLfnUl7
-	1D/XjeM/7MXBFhw==
-X-Google-Smtp-Source: AGHT+IFd5eF/+SwwUwTSFoJfRfKoNCQo/Wqsubanc6Pqgaxi4zooiLcuzZ1H4VgynAyCaBiNh7B5/8OxqsLC2/Y=
+        bh=U3ZIaTdIDVbGxgj61qLOgdlUIoPK1UIssk3iN71rz/s=;
+        b=ouKFYkguZjnBdiL++Rsgw9Gkmx99n+mw28DSruZiMAd35mK6pBDEzK9T2kqaob/aZS
+         XoBfBwSoyZ6PRCooHPgTEJDwXQB3Vf/+4kPjtLNS4p7sxoRI7xw6w+mFk6Re6Mkd55rZ
+         S2ERY023i+yl/PjcuuxxZXXmQzJjyuIyR3AM1FwMqlYRyE8Rhl4lm/j3LL6VsqFLq+xG
+         dDWGvyl6iKsi9cnqH3tTm8x8SxQUAYw6tY74w3vJdtC51UN1VmGMMovAFFAfU6197i4j
+         +m3ZyIKyUwX3t5TMsaZJ7mkstjSdDivVOxS1SzdttMTwwWW8soAN4Xnm5T3KEeJDAWGO
+         EJAg==
+X-Gm-Message-State: AOJu0Yz/q10eTLD1T70ZHApWOdd3d/56Np9COSKNtJOaJFhkHq0fMZPV
+	VY8A52O3N7yUXuKOrQR2DiyZ1fw+Lvr4mHnql7qBc4gCCww3HWJ8IV1z3T9KKfcS36EveFma0Sl
+	6FUrrOIjJeS/TPg==
+X-Google-Smtp-Source: AGHT+IHWhgLkWIetQ2mZmHcRN5jeIQYHk6tkiON2vFwLiBmso+/2KSBkdDhr+f3CK/amZhAS4w8IuwoEs3JrwQI=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a25:d7cb:0:b0:dc2:4cca:7577 with SMTP id
- o194-20020a25d7cb000000b00dc24cca7577mr42715ybg.8.1705588620910; Thu, 18 Jan
- 2024 06:37:00 -0800 (PST)
-Date: Thu, 18 Jan 2024 14:36:44 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:564:b0:dbd:f7e4:c7f5 with SMTP
+ id a4-20020a056902056400b00dbdf7e4c7f5mr42508ybt.10.1705588623987; Thu, 18
+ Jan 2024 06:37:03 -0800 (PST)
+Date: Thu, 18 Jan 2024 14:36:45 +0000
 In-Reply-To: <20240118-alice-file-v3-0-9694b6f9580c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -61,22 +61,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240118-alice-file-v3-0-9694b6f9580c@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6255; i=aliceryhl@google.com;
- h=from:subject; bh=CsfuAls1TL2YV7CMFadTLsxtXkXtmg2JI5t9uRUkTZc=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlqTHPjVUL1zehP8gc1SMJfGp9FtGF+NYrfZ3D8
- /AoIuEsBTyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZakxzwAKCRAEWL7uWMY5
- Ro02D/9kTb/8CRLZRUrxFSKqM82brI9ojK0ut4bbufbYBgISSYjp0boAOwrdi+OADA/EKJioacU
- B77Grno1bpyVpGB7WkixKv7QAwQcZGBLLrKvVWe1oBKpBaRuztogNZte3dFMT2yh+i8aZfEIKj7
- ixn0Km3PaEzkGYeMx925pyHL17H3LWgLDImSgTuorrnbxnDl0B9NlKHeMBihWFDwYBQQVmupw+Z
- 61+Q3pKi0aXK+w8AcVQjo06N/DLgCQSHlgc8K+8vq3ClFu9XaSmyTFXq8ktEo201F+x3pRUdtUe
- QQFii/m01ASttjeQWXfMG7WEw0t8CUVu8itN5TFqsjk/puZTEYZALPJshFJREtCeMnYYrsoFa3w
- asFMeQ7TywEAzRHbKaLF8IMwRJVEijCsr+pJdZABZDUgDyH90SIVsu86AwerEG7CdC+Ju0dJ5eZ
- DHT/V8Agt8PZ+Qyj/ScctUUEyogo8AhYOHe1d/T3Hu5wtt17mFhGrt5b23oJlduzqJrThcyz5oS
- XrMbFQyssebdKpmE8ajDgl5wLRyY+CZf4+LCOjOXd2pwCsDwaIxDl485d0Rpr9aRrXUWK6xgyLG
- Fp20oqVvA1cJ9WkfnqxN71VF3ULdKgQgAZXfuvF/4+ti/GcNzwxQkbSYXRdurIMb1Lp+f7836dG U7qBuzoDTrJAueA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5161; i=aliceryhl@google.com;
+ h=from:subject; bh=Sn4iv+1Sqmbmlo1CanL38VvE8Hbx2qZrDf9IB96IkL0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlqTHPhq+JGtgXIqkMw8yk1y7rymKao+Lrdw6jY
+ qn7dHXBANGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZakxzwAKCRAEWL7uWMY5
+ Ro+8D/9mUD4uzehFHVDXuHzTQOnbov3Ne0XfQfXYnDSAoTZsiYTjZlUzKwnExkpj62RL3ayUBG2
+ KDedWT2hGLntQ5mPzYxJRNr9FaOS4M3B/EhRq0aAbkVsPJzK8wPtaNY97KW38szSvs3bG6xmjea
+ Ks0GwboWSEFp09VXPY7cidfmIzO9I+iU+qt9AI1+55lEyzgzIwW+mdWK3vjKWHOHj8jADqhbXak
+ j0qeUSIirRa2kEkekzA7VNwVYvj5rtziMr5AGDWa7HurBoLwlDHQ2RSHPtSHivZAsSnSDzYINrp
+ DwYfPD3Lu20wrJ1QAUFc3W2BLPJ3gU8zET0hJsOtsLdJ7jKiZoaKqNXUNN+ue4JnTwLAnErbDVO
+ fN6pIW+RM57IyBwEnIOS93dg/2Oz94qq/9hP6JXiVwPhZ4D9lISXcWbk2FXRf3aOWGCHGPQurKP
+ K+n6KQFaNnNCkL7P0o/sFPYAC8/tREzLKS7oieGRe74Ia0DxhOA3CRI9mYyqksVoTyLvm4QsosP
+ pREeitT8Pt+hQGRa9nayjKJunYxdknvFdIV3J4sTtQpq7zZd9uaw1rrtxHWsMePrwiftQzyoGyg
+ BpY910R4bI0iFsXHBilBK/YpXdnytZj1sA4Ll4k3lYOtRIywAS+t47IzhWw/FVbrtLXfQ1TLpnL M3W2M+u9mOftN1w==
 X-Mailer: git-send-email 2.43.0.381.gb435a96ce8-goog
-Message-ID: <20240118-alice-file-v3-3-9694b6f9580c@google.com>
-Subject: [PATCH v3 3/9] rust: security: add abstraction for secctx
+Message-ID: <20240118-alice-file-v3-4-9694b6f9580c@google.com>
+Subject: [PATCH v3 4/9] rust: types: add `NotThreadSafe`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -93,184 +93,138 @@ Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>,
 	linux-fsdevel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Adds an abstraction for viewing the string representation of a security
-context.
+This introduces a new marker type for types that shouldn't be thread
+safe. By adding a field of this type to a struct, it becomes non-Send
+and non-Sync, which means that it cannot be accessed in any way from
+threads other than the one it was created on.
 
-This is needed by Rust Binder because it has feature where a process can
-view the string representation of the security context for incoming
-transactions. The process can use that to authenticate incoming
-transactions, and since the feature is provided by the kernel, the
-process can trust that the security context is legitimate.
+This is useful for APIs that require globals such as `current` to remain
+constant while the value exists.
 
+We update two existing users in the Kernel to use this helper:
+
+ * `Task::current()` - moving the return type of this value to a
+   different thread would not be safe as you can no longer be guaranteed
+   that the `current` pointer remains valid.
+ * Lock guards. Mutexes and spinlocks should be unlocked on the same
+   thread as where they were locked, so we enforce this using the Send
+   trait.
+
+There are also additional users in later patches of this patchset. See
+[1] and [2] for the discussion that led to the introducion of this
+patch.
+
+Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQfWIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=@proton.me/ [1]
+Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQfWIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=@proton.me/ [2]
+Suggested-by: Benno Lossin <benno.lossin@proton.me>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers.c                  | 21 ++++++++++
- rust/kernel/cred.rs             |  8 ++++
- rust/kernel/lib.rs              |  1 +
- rust/kernel/security.rs         | 71 +++++++++++++++++++++++++++++++++
- 5 files changed, 102 insertions(+)
- create mode 100644 rust/kernel/security.rs
+ rust/kernel/sync/lock.rs | 15 +++++++++++----
+ rust/kernel/task.rs      | 11 +++++++----
+ rust/kernel/types.rs     | 17 +++++++++++++++++
+ 3 files changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index fb7d4b0b0554..0e2a9b46459a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -11,6 +11,7 @@
- #include <linux/errname.h>
- #include <linux/file.h>
- #include <linux/fs.h>
-+#include <linux/security.h>
- #include <linux/slab.h>
- #include <linux/refcount.h>
- #include <linux/wait.h>
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 10ed69f76424..fd633d9db79a 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -30,6 +30,7 @@
- #include <linux/mutex.h>
- #include <linux/refcount.h>
- #include <linux/sched/signal.h>
-+#include <linux/security.h>
- #include <linux/spinlock.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
-@@ -177,6 +178,26 @@ void rust_helper_put_cred(const struct cred *cred)
- }
- EXPORT_SYMBOL_GPL(rust_helper_put_cred);
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index f12a684bc957..2a808aedc9ee 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -6,8 +6,15 @@
+ //! spinlocks, raw spinlocks) to be provided with minimal effort.
  
-+#ifndef CONFIG_SECURITY
-+void rust_helper_security_cred_getsecid(const struct cred *c, u32 *secid)
-+{
-+	security_cred_getsecid(c, secid);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_security_cred_getsecid);
-+
-+int rust_helper_security_secid_to_secctx(u32 secid, char **secdata, u32 *seclen)
-+{
-+	return security_secid_to_secctx(secid, secdata, seclen);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_security_secid_to_secctx);
-+
-+void rust_helper_security_release_secctx(char *secdata, u32 seclen)
-+{
-+	security_release_secctx(secdata, seclen);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_security_release_secctx);
-+#endif
-+
- /*
-  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
-  * use it in contexts where Rust expects a `usize` like slice (array) indices.
-diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
-index ccec77242dfd..8017525cf329 100644
---- a/rust/kernel/cred.rs
-+++ b/rust/kernel/cred.rs
-@@ -43,6 +43,14 @@ pub unsafe fn from_ptr<'a>(ptr: *const bindings::cred) -> &'a Credential {
-         unsafe { &*ptr.cast() }
-     }
- 
-+    /// Get the id for this security context.
-+    pub fn get_secid(&self) -> u32 {
-+        let mut secid = 0;
-+        // SAFETY: The invariants of this type ensures that the pointer is valid.
-+        unsafe { bindings::security_cred_getsecid(self.0.get(), &mut secid) };
-+        secid
-+    }
-+
-     /// Returns the effective UID of the given credential.
-     pub fn euid(&self) -> bindings::kuid_t {
-         // SAFETY: By the type invariant, we know that `self.0` is valid.
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 097fe9bb93ed..342cb02c495a 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -42,6 +42,7 @@
- pub mod kunit;
- pub mod prelude;
- pub mod print;
-+pub mod security;
- mod static_assert;
- #[doc(hidden)]
- pub mod std_vendor;
-diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
-new file mode 100644
-index 000000000000..e3cbbab6405a
---- /dev/null
-+++ b/rust/kernel/security.rs
-@@ -0,0 +1,71 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Linux Security Modules (LSM).
-+//!
-+//! C header: [`include/linux/security.h`](../../../../include/linux/security.h).
-+
+ use super::LockClassKey;
+-use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
+-use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
 +use crate::{
 +    bindings,
-+    error::{to_result, Result},
++    init::PinInit,
++    pin_init,
++    str::CStr,
++    types::ScopeGuard,
++    types::{NotThreadSafe, Opaque},
 +};
++use core::{cell::UnsafeCell, marker::PhantomPinned};
+ use macros::pin_data;
+ 
+ pub mod mutex;
+@@ -132,7 +139,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+ pub struct Guard<'a, T: ?Sized, B: Backend> {
+     pub(crate) lock: &'a Lock<T, B>,
+     pub(crate) state: B::GuardState,
+-    _not_send: PhantomData<*mut ()>,
++    _not_send: NotThreadSafe,
+ }
+ 
+ // SAFETY: `Guard` is sync when the data protected by the lock is also sync.
+@@ -184,7 +191,7 @@ pub(crate) unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
+         Self {
+             lock,
+             state,
+-            _not_send: PhantomData,
++            _not_send: NotThreadSafe,
+         }
+     }
+ }
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 9451932d5d86..4665ff86ec00 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -4,8 +4,11 @@
+ //!
+ //! C header: [`include/linux/sched.h`](srctree/include/linux/sched.h).
+ 
+-use crate::{bindings, types::Opaque};
+-use core::{marker::PhantomData, ops::Deref, ptr};
++use crate::{
++    bindings,
++    types::{NotThreadSafe, Opaque},
++};
++use core::{ops::Deref, ptr};
+ 
+ /// Returns the currently running task.
+ #[macro_export]
+@@ -90,7 +93,7 @@ impl Task {
+     pub unsafe fn current() -> impl Deref<Target = Task> {
+         struct TaskRef<'a> {
+             task: &'a Task,
+-            _not_send: PhantomData<*mut ()>,
++            _not_send: NotThreadSafe,
+         }
+ 
+         impl Deref for TaskRef<'_> {
+@@ -109,7 +112,7 @@ fn deref(&self) -> &Self::Target {
+             // that `TaskRef` is not `Send`, we know it cannot be transferred to another thread
+             // (where it could potentially outlive the caller).
+             task: unsafe { &*ptr.cast() },
+-            _not_send: PhantomData,
++            _not_send: NotThreadSafe,
+         }
+     }
+ 
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index fdb778e65d79..5841f7512971 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -387,3 +387,20 @@ pub enum Either<L, R> {
+     /// Constructs an instance of [`Either`] containing a value of type `R`.
+     Right(R),
+ }
 +
-+/// A security context string.
++/// Zero-sized type to mark types not [`Send`].
 +///
-+/// # Invariants
++/// Add this type as a field to your struct if your type should not be sent to a different task.
++/// Since [`Send`] is an auto trait, adding a single field that is `!Send` will ensure that the
++/// whole type is `!Send`.
 +///
-+/// The `secdata` and `seclen` fields correspond to a valid security context as returned by a
-+/// successful call to `security_secid_to_secctx`, that has not yet been destroyed by calling
-+/// `security_release_secctx`.
-+pub struct SecurityCtx {
-+    secdata: *mut core::ffi::c_char,
-+    seclen: usize,
-+}
++/// If a type is `!Send` it is impossible to give control over an instance of the type to another
++/// task. This is useful when a type stores task-local information for example file descriptors.
++pub type NotThreadSafe = PhantomData<*mut ()>;
 +
-+impl SecurityCtx {
-+    /// Get the security context given its id.
-+    pub fn from_secid(secid: u32) -> Result<Self> {
-+        let mut secdata = core::ptr::null_mut();
-+        let mut seclen = 0u32;
-+        // SAFETY: Just a C FFI call. The pointers are valid for writes.
-+        to_result(unsafe { bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen) })?;
-+
-+        // INVARIANT: If the above call did not fail, then we have a valid security context.
-+        Ok(Self {
-+            secdata,
-+            seclen: seclen as usize,
-+        })
-+    }
-+
-+    /// Returns whether the security context is empty.
-+    pub fn is_empty(&self) -> bool {
-+        self.seclen == 0
-+    }
-+
-+    /// Returns the length of this security context.
-+    pub fn len(&self) -> usize {
-+        self.seclen
-+    }
-+
-+    /// Returns the bytes for this security context.
-+    pub fn as_bytes(&self) -> &[u8] {
-+        let ptr = self.secdata;
-+        if ptr.is_null() {
-+            debug_assert_eq!(self.seclen, 0);
-+            // We can't pass a null pointer to `slice::from_raw_parts` even if the length is zero.
-+            return &[];
-+        }
-+
-+        // SAFETY: The call to `security_secid_to_secctx` guarantees that the pointer is valid for
-+        // `seclen` bytes. Furthermore, if the length is zero, then we have ensured that the
-+        // pointer is not null.
-+        unsafe { core::slice::from_raw_parts(ptr.cast(), self.seclen) }
-+    }
-+}
-+
-+impl Drop for SecurityCtx {
-+    fn drop(&mut self) {
-+        // SAFETY: This frees a pointer that came from a successful call to
-+        // `security_secid_to_secctx` and has not yet been destroyed by `security_release_secctx`.
-+        unsafe { bindings::security_release_secctx(self.secdata, self.seclen as u32) };
-+    }
-+}
++/// Used to construct instances of type [`NotThreadSafe`] similar to how we construct
++/// `PhantomData`.
++///
++/// [`NotThreadSafe`]: type@NotThreadSafe
++#[allow(non_upper_case_globals)]
++pub const NotThreadSafe: NotThreadSafe = PhantomData;
 -- 
 2.43.0.381.gb435a96ce8-goog
 
