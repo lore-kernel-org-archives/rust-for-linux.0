@@ -1,23 +1,23 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06741F18D;
-	Thu, 18 Jan 2024 08:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E512313FEF;
+	Thu, 18 Jan 2024 08:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705566706; cv=none; b=JbZdmAFFcThgwwYzhoehSlL/zyh8UPl9YwLyMphigNf0w1say/2CumWXOSZtYb0AdFHvOzt7B0Nuylzt/ErtBb4v7jAiQ+0Sf2vrYPZBEMcqtf9Q6+e02jaFh3Dn/0NKz8s2MskHO1MnrBR8+BlS4Vyb5BU1KAEkptfj48IHiBI=
+	t=1705567319; cv=none; b=trdmi4uqRwYfK5Xsi7sQgPCIw+bV70UUvCKE/5HiryQpTVo1vbo+4A8EBzDmMFsoUG2Jv3W+3/KNGnSUkV/X/45dxX4lDfPJE/AdnNNXMQBonrHPiSRpyepFsU/72lQoSZt3N511HOjYIz4Sj6knstzBgFmPuod1kteG/OBtpyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705566706; c=relaxed/simple;
-	bh=bLU+D3bJrWk/PnNMeH8xf4CmhMTRTOF+3NDKWxpYZeQ=;
+	s=arc-20240116; t=1705567319; c=relaxed/simple;
+	bh=l1PjlL5e4MQAE4/Y2FMckoWQVMDVNwecD1FWAP5XIpU=;
 	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
-	 X-Spam-Flag:UI-OutboundReport; b=tcNjE0uvqLPnQeaAd3borJArYlPBZd5TCFLLP2kYgSZUFPEvUsS8MrTCIyOBHiCLd6UI+bJ9oiM3t4vFI5C2T4qKElexafHZHtNbcCxT6CQ8vKxGlLgZyaSGBbBtM6SZEBtxECSI3uG08DHISZlmheCQfu4SbbBIigE/EwtPxAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=217.72.192.75
+	 X-Spam-Flag:UI-OutboundReport; b=rVWBulzEn0wVZlQgbG+teftF/jWX5agn7WypyCeiEog9uCIuE7KlJBS6RSMzUaA1TPdo9bkDnyTYENoIsdBK8dtVKKehAT0mpVUmSgqgPGB74nf7s7lYFPXZo/SLhJTcSGFFdpFF59SUxUerZ0zgNv8M2bByOXLrHG5WsTB3G+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=217.72.192.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Received: from localhost.localdomain ([95.223.130.98]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1N5FQJ-1r17an28zF-011CwZ; Thu, 18 Jan 2024 09:31:04 +0100
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MX0TX-1rbaFI2baz-00XMOM; Thu, 18 Jan 2024 09:41:25 +0100
 From: Valentin Obst <kernel@valentinobst.de>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -32,12 +32,12 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH 04/13] rust: kernel: add srctree-relative doclinks
-Date: Thu, 18 Jan 2024 09:30:42 +0100
-Message-ID: <20240118083042.21307-1-kernel@valentinobst.de>
+Subject: Re: [PATCH 10/13] rust: kernel: add doclinks
+Date: Thu, 18 Jan 2024 09:41:09 +0100
+Message-ID: <20240118084109.21400-1-kernel@valentinobst.de>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CALNs47u037Bjk60E4x+c0+fk+2v5sc8iDzD0ztyqyJRdMDBgeg@mail.gmail.com>
-References: <CALNs47u037Bjk60E4x+c0+fk+2v5sc8iDzD0ztyqyJRdMDBgeg@mail.gmail.com>
+In-Reply-To: <CALNs47tWivxJhqjC-L8rLQKP420y1zCgCiHSZc5JPNbCVpwxgw@mail.gmail.com>
+References: <CALNs47tWivxJhqjC-L8rLQKP420y1zCgCiHSZc5JPNbCVpwxgw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,49 +45,59 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:fhEYsMUIlQ2Opz612NeGjD7Nnk8MKhIWFopgIw6gfjQuOs2oeMa
- f5pmCOzsO1IDJqyeFeJL1s6cLHXqKGp6v/bctn/vMdYO8ypp4wJ3zDArIIjk8oVZn61IE5T
- sMSf5cra4rGDOzNe7L6XJxhscq1AaTXOrNe++8YRTtS9yP/9PnZ8Bi9cX37hq7Ymw4xvFPw
- TgwIuXiDX2Yta9CbegJLw==
+X-Provags-ID: V03:K1:QKWd6qtDxzAW4k18sUWFEXUEXuCo871OBeHjQxznK7aUdZnrHsi
+ +J7LI4Bm9oMgXtYYrcygyrdqHY2WbdLh0iZMy8ryx1hLMtJG8A9dAEo7R5ZRz/wLjLaYjNx
+ 0EM6FzrJJpNccUVGCp35eEWFMOymGgCBf2cF+q++cKIo28xUcCe3IecoEmawIJUiZmgFo7v
+ Rcwq19CMc5TnRpdSebLUg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:w7m6WylPAGc=;JiS/tigJDArelHCR9m7U5TgLK3j
- vNh869nWwiD+IXWiEQuoGxZK83IC91imBRaK0+s537zeEgdbY9KD2kM4fdJCxzxhxHbHM3ipg
- UWNKm+jl8ECECK23VpI5wgpC8M0jP28qVUjxoXvR1Q8duzA9SXvaclL1i2DAA1JYUQ4O5BekT
- l0RKDlHxvY4IetuMs93q1fbKbXdAvBA6A6AgsI3BLqqzow2dNNh0QF0yJi9hZpjBc8SAQlZLo
- YphZrlH3YLrUsY1npUxaJ6y8z0e3/DZ/KjiWfBAS28eQ+J0lUU9xw9H7xLhGop/seEQMx10nm
- 2aHmQQlVrWlK4aG/CCUsUXJcHNsb/f8NbsrIRBo9i8N1zbWTxN2ufuZ0iq6Coql21R4L13BcU
- Sfg0jQwxPKjdAuzaUqoUCDcYV/A9OEsIDVF/ao0vPDeslYhKJf2GZNmq/DwQX+Fls+G1xSrnS
- yYJnY4Q75lQNlO+yuDqnAlJqdvHb4WSOVovNsW1Lh0RgweHG+kAnevryMqzmC5ym5qWZOYUJk
- jDNNJAPmnjUwRfOea5xGiXSGffgCd3gEHT3zDu3WB/eJrf7sBKkYxmrVsZkj01QAoWuqEn5pC
- +vTj9NydRcuK//WP0rMVM5R6/pzr0MKEhelA40iEpEaD+gCyl83Gw/eCO8EI+yzkwlBT8qh6p
- ljMa9593lyQoTSb7Qwlnd90GjioW/2fP4i8DLFLzDk4IzsnjTf4wEzC5FchUQou6Z1k28XGLH
- qHDzOh87rYPQ4aLc7yoIOcZMM40piXQ7FP8x6CpDc5YqcW//i6EYnojAqjIQ5tXR4yaTvs04c
- jShraKFU0fjv3lgSDwtGDwOZUTTPkI+5WVb+/dkenBir8K/ssaT5HbkPbFdjkm5+vJytuxEdQ
- Pz7f0XQMlJICc3pzXpYJWKsrvjHf710Y64Ww=
+UI-OutboundReport: notjunk:1;M01:P0:zI/P7vMDheI=;V8EodjK8E1xpKZ4NeALmkkDV3Cj
+ HMbEqmAg5rWmV0xplS1ZzLbH9Bh5sL4MfA7QgoU/4zdzMUWBuy0xzVCyy2BihWyALvN7fQ87r
+ KTuLYLDkEMl+O8HvawbougSD/UeDVgW4HVC3lk4bjXuFFzUd6NPQwEgUuSJD0cYvmnjpMpfQg
+ URNtaHxbL/4ZejI6HkX4WbgHtgxrkey66VFGNvH2j+pH+vRbkwT3HDs0jFhziHRRApUI78PXe
+ Sx0SFMbrXp8iqeQzBWz6gMW/TkHREvgYkdFS4KaLA60O1D44gHOnzJuqrRFAkHPvX73uQ/r27
+ hXOHl4+6Asnvm03eXt3zUBsu2b+y3HPse790BqruhkzkblystWlicpr4Px6pHSQgm8c6wd9ti
+ fnh6MxKA/Mb/NFSqIE4ord5RuqM/ONTNUfKSFSD58wPzWqkGm65LPAzC/LcbQQeCtOATvNfiQ
+ my08RBahN7+cOwQq6lgTzHDCa7TWp18+rW7XBqP4fMj0pY0fs0RTf5Wn9P7KvaO7V8I+iTZ3x
+ aQixfAinckUalF9Kdr6cyT+p/Ef/jAaJWTpB8MmCSJx9nxMOaW/Kt7oB3ZnDlHwzHtB/5mk8S
+ F0FVSLlZ1/Wo/IzSV5a39C+nMW7uskj8tCmGOjNCLH1pJVP39yK4mgWtfqj8WvSUDbXqEXyk8
+ Xur1FcR9rDptvKsrGUgsor3ehxNOcMmI5OIZOdXx7dyKCUfhzeNd1sBynVn52cxfwQdq5kb/Q
+ FBBaj3YNW8pr8kvJTOVvrR7BlisBsuZst3IyssHaAqh0aoZZrtnGK7r+Cucx/V4lifLidomS1
+ S2Ld/eVzQogQCzUla8Vm9OCDSxTtrFItAmaD53WSf50a2xyl/f9tegENmyVnaIy/gRDkC0gxj
+ UgqrrvMszeg3AtA==
 
-> Hm, I wonder if we could figure out a way to make links point to
-> specific definitions in the C headers with # anchors. I'm not sure
-> what the intended platform to view these links is.
+> >  /// # Invariants
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index 467249b39f71..f14179d19d4e 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -21,14 +21,21 @@
+> >  /// # Safety
+> >  ///
+> >  /// - Implementers must ensure that only one thread/CPU may access the protected data once the lock
+> > -/// is owned, that is, between calls to `lock` and `unlock`.
+> > -/// - Implementers must also ensure that `relock` uses the same locking method as the original
+> > +/// is owned, that is, between calls to [`lock`] and [`unlock`].
+> > +/// - Implementers must also ensure that [`relock`] uses the same locking method as the original
+> >  /// lock operation.
 
-Currently the links simply open the plain .h file from your local tree in your
-browser, i.e.,
+> The second lines of these list items should probably be indented
+> (doesn't have to be in this patch).
+
+Indeed. Will include it in the first commit in v2.
+
+> > [...]
+> > @@ -290,10 +294,11 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
+> >
+> >  /// Defines the method that should be called directly when a work item is executed.
+> >  ///
+> > -/// This trait is implemented by `Pin<Box<T>>` and `Arc<T>`, and is mainly intended to be
+> > +/// This trait is implemented by `Pin<Box<T>>` and [`Arc<T>`], and is mainly intended to be
+
+> `Pin` could be linked too.
+
+This requires the 'code' tags in the next commit and is done by linking
+both `Pin` and `Box<T>`:
 
 ```rust
-/// [`struct wait_queue_head`]: srctree/include/linux/wait.h
+/// This trait is implemented by <code>[Pin]<[`Box<T>`]></code> and [`Arc<T>`], and is mainly
 ```
-
-becomes something like:
-
-file:///mnt/build/rust-for-linux/rust4lx/include/linux/wait.h
-
-and fragments won't work on that.
-
-I agree that it would be nice to link to type definitions, variables,
-functions, ect. in the file, maybe with something like:
-
-```
-#(type|var|func);<identifier>
-```
-
-However, I think this will require some parsing and embedding the C
-source file into some html.
