@@ -1,70 +1,125 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDAA3CF59;
-	Fri, 19 Jan 2024 09:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE91556744
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 19:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705657961; cv=none; b=UtCzfFIAtJJXBVE/u2aQpiRBKeuu/E+r8E9vJ0bFHg2VGX/4xb1ENNU5Al06OWDAp1YdpOA/7TxizLxNihkb6aM40AJkNQrXsLAOKaGcAgCIBykpG8dpmJ4IjF7Q19G6+Bysfq+qcMFZRGlv97CfSxxSTkXiVIX+N1tLpjvM1uY=
+	t=1705691131; cv=none; b=EllVYENw4o9/u0+pBP0q+H5uZOve/6R7XRNJg5lKv69KkGQMp4bt/c47xsfLA2ScnNGf/crpGpTWw3nvDhZ5mCkT5DjFNmplSAnzE9tEdKVTrX3eebbEdraUtzQfnbn3RJszzp18YlooMR+BxHAALNoWpx4l5BZJKvzWgHj7dIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705657961; c=relaxed/simple;
-	bh=1joX4KZ+kV0CTqHB1iy9vxHj/Ak6e8aHKe1GEqGcQFY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ACv8XLgLhaDH/Kz4LgiywMTt1CVgS32WfrCmW21G+TOeiWgk1MarjQpSrdlQGM8qvPiRpAFaNg/wnvXKg6rWUM5190a50wEIdgsROkbkdTEKlBq3eb6H9eMwgpUbFgeIi9jGUqS1v2uJHCji1ABI9j474i199i4Y/gzChJmk+WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fG7uDGKu; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1705691131; c=relaxed/simple;
+	bh=Dv3AKUp9mbZLCqHHcZN6aA7o9Ua0jZarcVy11aFogys=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nHyHpwI8/rr8Didgf5VGbb6at8GMxKkD8gdS1MQ6s9xDbC2Jm2O8DhIvxSd2KMJqCFhXH3aCNqNFDq1dzL3lFTYaJUfG/fwmQHGuU2gN5YY5UifL1xvusZjmB/rk0JqDlhih2B+pXulPtfiJRL+HoVJXqSQYsPT0gZSkyo6SNRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=U8oul7eb; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fG7uDGKu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1705657957; x=1705917157;
-	bh=1joX4KZ+kV0CTqHB1iy9vxHj/Ak6e8aHKe1GEqGcQFY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=fG7uDGKuHeCF1IEE/UvU5/zkcTXEZSK8gsb8/UJVDYk0o2AUDjB73+EzXHs8NbcVO
-	 MLm+j612RjN+2Mm0kpcFketVILRqQt+mUaoF/By41NYvqF0S6lwmWqlsdNaSa4K1Em
-	 NGn0GCyhNQ8P97+QmtygxVk6ixCnYBdwooHHuCddhHuh8zoSxZQJSFP3+9I6zOBxpX
-	 xWuJnoYkoDKRw6k8XfFb1DUmLpIEkeyVLzqqcdHTAa8toNNyuTshcrYPKVPbTuHadd
-	 A+UpZeV+VXI8q9iE0o9jr+srNC+S4kfY/q+ZIdM6JLQK85p9X+T/KN244UAs834Aef
-	 O1GKIBvKQRmJg==
-Date: Fri, 19 Jan 2024 09:52:03 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 6/9] rust: task: add `Task::current_raw`
-Message-ID: <cb69ffe9-c387-4477-92a9-8961c00de848@proton.me>
-In-Reply-To: <20240118-alice-file-v3-6-9694b6f9580c@google.com>
-References: <20240118-alice-file-v3-0-9694b6f9580c@google.com> <20240118-alice-file-v3-6-9694b6f9580c@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="U8oul7eb"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-5f0c0ca5ef1so11395037b3.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 11:05:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1705691128; x=1706295928; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Dv3AKUp9mbZLCqHHcZN6aA7o9Ua0jZarcVy11aFogys=;
+        b=U8oul7ebgW1gli+UqF4RtBK9JXpntiTkh0NET0aYdEN2SaNx8KDgk/QF7WluqdJ9UE
+         /cMIsQXN8ThsFuMS7pJPHuJEbNmfQOO5C1NuqpsdEYCViyz9uj1HHfOryQKfFn1EbY+p
+         qneNKnT8S1Wspxb4R0WgWkC+sGMXteMpqet5tzTyxP4pIrfkake0Y6bzrr6S6lB6HJ7T
+         vWCWr07zLktVzGGlq/kU2SHpYu3h63VDN3Ojmov2xJAcJZv06m7aJFii39hbdYF9eWnr
+         Uh18CNHmoq/xJ5TJchwQDUKWl5YxFQsv5t+6iPo+eISQbGPKBhGbg8MJppNawxs2biWc
+         dZSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705691128; x=1706295928;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Dv3AKUp9mbZLCqHHcZN6aA7o9Ua0jZarcVy11aFogys=;
+        b=iuU53YX8zyfCAXpubwI1lLxlAnMF4c3Whnp/08qAb24o+tZi/zvC+qpg2WW3MGeqWd
+         ohO8Qox5WP9LqS/yUYFQeyZZmKWJuS8fhZxhFodv7hKYXrZ44NCaG09lBx05aU6XEcvg
+         el5Mmy1GnlgxWppVELED0XL4mKCbzE//82wPPPsJckPzWnvKpaTKE1/WSo/NuCwQeo+6
+         nScnq4Po5y6r1P7XxySfzQ28+d3Q08MO1ZR41YIdUl0PwfHmnTqkDmLs7i0H5jVcbCnN
+         7garNScaOUNpmhW6f7WZOu9+t4EMZJLdlDYcstYVrDK626CLrhscqu/RJhvz1MXDAi2f
+         /feA==
+X-Gm-Message-State: AOJu0YyjBKaq5jxluK8xNwS/PXD04uzS5AEFE7USBRiDA/zGmrZeiFvi
+	Y7hjbP7SajfihCfp4e0Kg/gmrJMhBFgCBM2RlxrJR0rCToobpBW/L/Y6Z8hWCbPoRmk/bQRMw35
+	iJkIqHWrv1bjon80rAA5jGbJ34w8C8UZJWLorBg==
+X-Google-Smtp-Source: AGHT+IFEtiDHLie/I5GCf60H90tgsZGXreXdh8cYWtzorAUnHqVop0/IV4mf/+HjXVenA3nTnnZ+KYXfOHHsHSvx2RA=
+X-Received: by 2002:a0d:cb85:0:b0:5ff:5e94:277b with SMTP id
+ n127-20020a0dcb85000000b005ff5e94277bmr404871ywd.45.1705691128652; Fri, 19
+ Jan 2024 11:05:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240115052451.145611-1-tahbertschinger@gmail.com>
+ <pawxsqxbjncrwtxytattvgizwrtmkis6suokgkb6wfm5xvsnhd@njjz4ywheu2a>
+ <20240115175509.GA156208@fedora-laptop> <iiraqelv6wtwxcdf2yjtjt26ghejngfantjx7d4mztav27qu7y@gmiztxamveq3>
+ <20240115191022.GC156208@fedora-laptop> <z7ajmttuzbvtxn4onwoxph6mevqt2rje2nga6cpux73geffias@p5kk7pqnswf6>
+In-Reply-To: <z7ajmttuzbvtxn4onwoxph6mevqt2rje2nga6cpux73geffias@p5kk7pqnswf6>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Fri, 19 Jan 2024 13:05:17 -0600
+Message-ID: <CALNs47t6qjYZeQKC+ahAaG6iNDGGNe8o+Q8tKhpRynYLWL3R8Q@mail.gmail.com>
+Subject: Re: [PATCH TOOLS 0/2] convert main() from C to Rust
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Thomas Bertschinger <tahbertschinger@gmail.com>, linux-bcachefs@vger.kernel.org, 
+	bfoster@redhat.com, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Benno Lossin <benno.lossin@proton.me>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 1/18/24 15:36, Alice Ryhl wrote:
-> Introduces a safe function for getting a raw pointer to the current
-> task.
->=20
-> When writing bindings that need to access the current task, it is often
-> more convenient to call a method that directly returns a raw pointer
-> than to use the existing `Task::current` method. However, the only way
-> to do that is `bindings::get_current()` which is unsafe since it calls
-> into C. By introducing `Task::current_raw()`, it becomes possible to
-> obtain a pointer to the current task without using unsafe.
->=20
-> Link: https://lore.kernel.org/all/CAH5fLgjT48X-zYtidv31mox3C4_Ogoo_2cBOCm=
-X0Ang3tAgGHA@mail.gmail.com/
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+On Mon, Jan 15, 2024 at 1:22=E2=80=AFPM Kent Overstreet
+<kent.overstreet@linux.dev> wrote:
+>
+> On Mon, Jan 15, 2024 at 12:10:22PM -0700, Thomas Bertschinger wrote:
+> > On Mon, Jan 15, 2024 at 01:45:22PM -0500, Kent Overstreet wrote:
+> > > On Mon, Jan 15, 2024 at 10:55:09AM -0700, Thomas Bertschinger wrote:
+> > > > I'm leaning towards keeping Make as the primary build tool for now =
+and
+> > > > perhaps a future patch can move towards using Cargo. But other opin=
+ions
+> > > > are welcome.
+> > >
+> > > Let's hold off on that for now.
+> > >
+> > > I'm planning on pullling the Rust code in bch_bindgen into the kernel
+> > > soon, and I want to see how that interacts with the kernel build syst=
+em.
+> > > If there's potential for commonality with the kernel build system, we
+> > > might want to take advantage of that.
+> > >
+> > > (Also, if you're interested in that project, let me know! Getting tha=
+t
+> > > ready for the next merge window is a high priority item, but I have a
+> > > lot of high priority items at the moment... :)
+> >
+> > Sure, I would definitely be interested in helping out with that. I don'=
+t
+> > want to make any promises regarding timeline, since this combines two
+> > worlds--Rust, and Linux Kernel development--that are both still very
+> > new to me. But I can certainly give it an honest try :) as long as you,
+> > or someone else experienced, can help with any questions I might run
+> > into.
+>
+> Of course :)
+>
+> Join the IRC channel - irc.oftc.net#bcache, we've got quite a few people
+> acquainted with Rust there.
+>
+> The main thing that needs to be sorted out is that we require a patched
+> version of bindgen (since rustc can't yet handle types that are both
+> packed and aligned); we need to talk to the rust-for-linux people about
+> whether they'll be ok with switching the kernel to the patched bindgen
+> until we can get a proper fix into rustc.
+>
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Do you have a link to the patches needed? We are wondering if this is
+something that could be upstreamed.
 
---=20
-Cheers,
-Benno
+Miguel found [1] which seems to be the rustc fix but I am curious how
+you work around this.
 
+[1]: https://github.com/rust-lang/rust/issues/59154#issuecomment-1899563996
