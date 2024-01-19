@@ -1,125 +1,104 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE91556744
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 19:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812D61E4B8
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 21:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705691131; cv=none; b=EllVYENw4o9/u0+pBP0q+H5uZOve/6R7XRNJg5lKv69KkGQMp4bt/c47xsfLA2ScnNGf/crpGpTWw3nvDhZ5mCkT5DjFNmplSAnzE9tEdKVTrX3eebbEdraUtzQfnbn3RJszzp18YlooMR+BxHAALNoWpx4l5BZJKvzWgHj7dIw=
+	t=1705700278; cv=none; b=mMUNktqYiO2wquemkiv67OwcvZr04CS2rZnHu9DEx1bcM1ipapGC7GRLP0gjyWqKIgDfCFzxVwKypXMW22nLpRfJyIt8gX/1LJf2jPun1ZtixOkdCrMOink2vYHr8KWa9N/fSFrTt9ueCyGNWSXuAr4UErk/PYl8jdAEhXOuyAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705691131; c=relaxed/simple;
-	bh=Dv3AKUp9mbZLCqHHcZN6aA7o9Ua0jZarcVy11aFogys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nHyHpwI8/rr8Didgf5VGbb6at8GMxKkD8gdS1MQ6s9xDbC2Jm2O8DhIvxSd2KMJqCFhXH3aCNqNFDq1dzL3lFTYaJUfG/fwmQHGuU2gN5YY5UifL1xvusZjmB/rk0JqDlhih2B+pXulPtfiJRL+HoVJXqSQYsPT0gZSkyo6SNRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=U8oul7eb; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1705700278; c=relaxed/simple;
+	bh=LYR/8pO9B/EwsT7tLSbksV4tTD7gu6fr0vMf7s61+Cg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BpWYl4UVV+VdRnvZG3dQMpA+xY/pBUu5I6G7HHVUemjf8mHeJQ0eQpZKmnTSmQi5cWhUtjh+/asStl1sY4aQAuHN9l2G5IR3MBPAWb62xddn5CVUiLFZLs6aIj26GAPnfyNIuNGA7DAnKLY5mjEtpPvv7vwzFNZd6+Nw9ODxBwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gxJ5T4Bw; arc=none smtp.client-ip=95.215.58.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="U8oul7eb"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-5f0c0ca5ef1so11395037b3.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 11:05:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705691128; x=1706295928; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dv3AKUp9mbZLCqHHcZN6aA7o9Ua0jZarcVy11aFogys=;
-        b=U8oul7ebgW1gli+UqF4RtBK9JXpntiTkh0NET0aYdEN2SaNx8KDgk/QF7WluqdJ9UE
-         /cMIsQXN8ThsFuMS7pJPHuJEbNmfQOO5C1NuqpsdEYCViyz9uj1HHfOryQKfFn1EbY+p
-         qneNKnT8S1Wspxb4R0WgWkC+sGMXteMpqet5tzTyxP4pIrfkake0Y6bzrr6S6lB6HJ7T
-         vWCWr07zLktVzGGlq/kU2SHpYu3h63VDN3Ojmov2xJAcJZv06m7aJFii39hbdYF9eWnr
-         Uh18CNHmoq/xJ5TJchwQDUKWl5YxFQsv5t+6iPo+eISQbGPKBhGbg8MJppNawxs2biWc
-         dZSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705691128; x=1706295928;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dv3AKUp9mbZLCqHHcZN6aA7o9Ua0jZarcVy11aFogys=;
-        b=iuU53YX8zyfCAXpubwI1lLxlAnMF4c3Whnp/08qAb24o+tZi/zvC+qpg2WW3MGeqWd
-         ohO8Qox5WP9LqS/yUYFQeyZZmKWJuS8fhZxhFodv7hKYXrZ44NCaG09lBx05aU6XEcvg
-         el5Mmy1GnlgxWppVELED0XL4mKCbzE//82wPPPsJckPzWnvKpaTKE1/WSo/NuCwQeo+6
-         nScnq4Po5y6r1P7XxySfzQ28+d3Q08MO1ZR41YIdUl0PwfHmnTqkDmLs7i0H5jVcbCnN
-         7garNScaOUNpmhW6f7WZOu9+t4EMZJLdlDYcstYVrDK626CLrhscqu/RJhvz1MXDAi2f
-         /feA==
-X-Gm-Message-State: AOJu0YyjBKaq5jxluK8xNwS/PXD04uzS5AEFE7USBRiDA/zGmrZeiFvi
-	Y7hjbP7SajfihCfp4e0Kg/gmrJMhBFgCBM2RlxrJR0rCToobpBW/L/Y6Z8hWCbPoRmk/bQRMw35
-	iJkIqHWrv1bjon80rAA5jGbJ34w8C8UZJWLorBg==
-X-Google-Smtp-Source: AGHT+IFEtiDHLie/I5GCf60H90tgsZGXreXdh8cYWtzorAUnHqVop0/IV4mf/+HjXVenA3nTnnZ+KYXfOHHsHSvx2RA=
-X-Received: by 2002:a0d:cb85:0:b0:5ff:5e94:277b with SMTP id
- n127-20020a0dcb85000000b005ff5e94277bmr404871ywd.45.1705691128652; Fri, 19
- Jan 2024 11:05:28 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gxJ5T4Bw"
+Date: Fri, 19 Jan 2024 16:37:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1705700274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yZ8mmWCTWo70F+Vvl3dTbBTdGKB5+EfUM/Xu5KMB1C0=;
+	b=gxJ5T4BwB4UsBE9c8az8v99n3iDx57TZZdyu+iqOq72N4teSMbA/gxzRKY7nixjqaBKqSo
+	gng5L5tZ9GAX++HGa8ZFqsoKbXsPA190WNAfimBeZdq1Qr4ACD+kGALk3G4j2SXN+nEQ5K
+	9THSXtwK4zGI6jhtAxntql+j/zZhLM0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Thomas Bertschinger <tahbertschinger@gmail.com>, 
+	linux-bcachefs@vger.kernel.org, bfoster@redhat.com, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>
+Subject: Re: [PATCH TOOLS 0/2] convert main() from C to Rust
+Message-ID: <gpokpnqgj6c2pcmtpiu46jy3kb3tom4xkp3fykg26zx6e3c2qe@zrnl2653qwsk>
+References: <20240115052451.145611-1-tahbertschinger@gmail.com>
+ <pawxsqxbjncrwtxytattvgizwrtmkis6suokgkb6wfm5xvsnhd@njjz4ywheu2a>
+ <20240115175509.GA156208@fedora-laptop>
+ <iiraqelv6wtwxcdf2yjtjt26ghejngfantjx7d4mztav27qu7y@gmiztxamveq3>
+ <20240115191022.GC156208@fedora-laptop>
+ <z7ajmttuzbvtxn4onwoxph6mevqt2rje2nga6cpux73geffias@p5kk7pqnswf6>
+ <CALNs47t6qjYZeQKC+ahAaG6iNDGGNe8o+Q8tKhpRynYLWL3R8Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240115052451.145611-1-tahbertschinger@gmail.com>
- <pawxsqxbjncrwtxytattvgizwrtmkis6suokgkb6wfm5xvsnhd@njjz4ywheu2a>
- <20240115175509.GA156208@fedora-laptop> <iiraqelv6wtwxcdf2yjtjt26ghejngfantjx7d4mztav27qu7y@gmiztxamveq3>
- <20240115191022.GC156208@fedora-laptop> <z7ajmttuzbvtxn4onwoxph6mevqt2rje2nga6cpux73geffias@p5kk7pqnswf6>
-In-Reply-To: <z7ajmttuzbvtxn4onwoxph6mevqt2rje2nga6cpux73geffias@p5kk7pqnswf6>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Fri, 19 Jan 2024 13:05:17 -0600
-Message-ID: <CALNs47t6qjYZeQKC+ahAaG6iNDGGNe8o+Q8tKhpRynYLWL3R8Q@mail.gmail.com>
-Subject: Re: [PATCH TOOLS 0/2] convert main() from C to Rust
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Thomas Bertschinger <tahbertschinger@gmail.com>, linux-bcachefs@vger.kernel.org, 
-	bfoster@redhat.com, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Benno Lossin <benno.lossin@proton.me>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALNs47t6qjYZeQKC+ahAaG6iNDGGNe8o+Q8tKhpRynYLWL3R8Q@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Jan 15, 2024 at 1:22=E2=80=AFPM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> On Mon, Jan 15, 2024 at 12:10:22PM -0700, Thomas Bertschinger wrote:
-> > On Mon, Jan 15, 2024 at 01:45:22PM -0500, Kent Overstreet wrote:
-> > > On Mon, Jan 15, 2024 at 10:55:09AM -0700, Thomas Bertschinger wrote:
-> > > > I'm leaning towards keeping Make as the primary build tool for now =
-and
-> > > > perhaps a future patch can move towards using Cargo. But other opin=
-ions
-> > > > are welcome.
-> > >
-> > > Let's hold off on that for now.
-> > >
-> > > I'm planning on pullling the Rust code in bch_bindgen into the kernel
-> > > soon, and I want to see how that interacts with the kernel build syst=
-em.
-> > > If there's potential for commonality with the kernel build system, we
-> > > might want to take advantage of that.
-> > >
-> > > (Also, if you're interested in that project, let me know! Getting tha=
-t
-> > > ready for the next merge window is a high priority item, but I have a
-> > > lot of high priority items at the moment... :)
+On Fri, Jan 19, 2024 at 01:05:17PM -0600, Trevor Gross wrote:
+> On Mon, Jan 15, 2024 at 1:22 PM Kent Overstreet
+> <kent.overstreet@linux.dev> wrote:
 > >
-> > Sure, I would definitely be interested in helping out with that. I don'=
-t
-> > want to make any promises regarding timeline, since this combines two
-> > worlds--Rust, and Linux Kernel development--that are both still very
-> > new to me. But I can certainly give it an honest try :) as long as you,
-> > or someone else experienced, can help with any questions I might run
-> > into.
->
-> Of course :)
->
-> Join the IRC channel - irc.oftc.net#bcache, we've got quite a few people
-> acquainted with Rust there.
->
-> The main thing that needs to be sorted out is that we require a patched
-> version of bindgen (since rustc can't yet handle types that are both
-> packed and aligned); we need to talk to the rust-for-linux people about
-> whether they'll be ok with switching the kernel to the patched bindgen
-> until we can get a proper fix into rustc.
->
+> > On Mon, Jan 15, 2024 at 12:10:22PM -0700, Thomas Bertschinger wrote:
+> > > On Mon, Jan 15, 2024 at 01:45:22PM -0500, Kent Overstreet wrote:
+> > > > On Mon, Jan 15, 2024 at 10:55:09AM -0700, Thomas Bertschinger wrote:
+> > > > > I'm leaning towards keeping Make as the primary build tool for now and
+> > > > > perhaps a future patch can move towards using Cargo. But other opinions
+> > > > > are welcome.
+> > > >
+> > > > Let's hold off on that for now.
+> > > >
+> > > > I'm planning on pullling the Rust code in bch_bindgen into the kernel
+> > > > soon, and I want to see how that interacts with the kernel build system.
+> > > > If there's potential for commonality with the kernel build system, we
+> > > > might want to take advantage of that.
+> > > >
+> > > > (Also, if you're interested in that project, let me know! Getting that
+> > > > ready for the next merge window is a high priority item, but I have a
+> > > > lot of high priority items at the moment... :)
+> > >
+> > > Sure, I would definitely be interested in helping out with that. I don't
+> > > want to make any promises regarding timeline, since this combines two
+> > > worlds--Rust, and Linux Kernel development--that are both still very
+> > > new to me. But I can certainly give it an honest try :) as long as you,
+> > > or someone else experienced, can help with any questions I might run
+> > > into.
+> >
+> > Of course :)
+> >
+> > Join the IRC channel - irc.oftc.net#bcache, we've got quite a few people
+> > acquainted with Rust there.
+> >
+> > The main thing that needs to be sorted out is that we require a patched
+> > version of bindgen (since rustc can't yet handle types that are both
+> > packed and aligned); we need to talk to the rust-for-linux people about
+> > whether they'll be ok with switching the kernel to the patched bindgen
+> > until we can get a proper fix into rustc.
+> >
+> 
+> Do you have a link to the patches needed? We are wondering if this is
+> something that could be upstreamed.
 
-Do you have a link to the patches needed? We are wondering if this is
-something that could be upstreamed.
-
-Miguel found [1] which seems to be the rustc fix but I am curious how
-you work around this.
-
-[1]: https://github.com/rust-lang/rust/issues/59154#issuecomment-1899563996
+The current workaround is to just drop #[repr(align)] if the type is
+both packed and aligned - but that leads to rustc and gcc disagreeing on
+the memory layout of certain types; it only works as long as we're not
+mutating types where this matters from rust code.
