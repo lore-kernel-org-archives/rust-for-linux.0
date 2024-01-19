@@ -1,103 +1,95 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E78B3C063;
-	Fri, 19 Jan 2024 09:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A813C46E
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 09:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705657756; cv=none; b=GOYVw3bfDFRr8s82cCXDmJb1jZG6dhS+i9qQNjnHEFvHIerltAmBlagBC7AGtPMSMJPwoCMIA3pS4/dBlMKYXple89tS8dIn2nnPYQtEsn61FlBxREc0pt+RI0VEjDqXzRmfUXeUmlVDdIT7u6/L5BWOCmTuvoM+0QstTiko4N0=
+	t=1705657949; cv=none; b=GUZv3+XoQweLNBC7wQp0f/2r4VDvsxaZyFkH7jqKKbHZPI9irTm0ajFdPEgS9ntl3u8YhYhSrkrIx6kaQfOxvk96hjwvOI4+Rlyz9xvHAqk1XOi34noOsdw95VGez6lWntbjfnCNQ2TirfFGbllo4zD/fA6PkFYVZVsatRI2eMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705657756; c=relaxed/simple;
-	bh=sPvqaSxMPD3BnGdcH7OD60vhSLB2Rbvur4SVyjNqG5E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bfeIx6fjiogWoxgNAakvEW0Bzy3Pusdtx9/o8I+XMImeZ208211+G0Zn3gY4RGFBrl5iGHBtWakBQ994Zx0YTVjxkEF80Q7zflrn8STId9D+zdM0ecHMpyUUhl5b9Wog/qE3qHgWiHKS4Sh8bTk+jzyyBh40dmv2jAy1avcr5LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IPvtxXFj; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1705657949; c=relaxed/simple;
+	bh=4krpjVDy39+BaCdqjgBpFliEyfbWXCrM5v68+sqUCGM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cNYPnCAqrTDj4Sv5/QOZXc9BfRFpnHNJxN9ox933pZj72cSR1V1HGs7fq1zqawPlyWI4HAGvXEEQ9C98RSR6Z/VTmY23AvA52ljhCZR8ixAdv940kwZd7GPkE9Y6/w1s3EzSVLy0cfI6w5cNJogvDmu6/7jR+gSJcg/w3Urf9ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rlJihD6H; arc=none smtp.client-ip=209.85.217.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IPvtxXFj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1705657753; x=1705916953;
-	bh=Q88luiGZXueycQwStfuEcmkDlp6/zu/vG2FfYmoeFK4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=IPvtxXFjEEEEZd3djhqkZPnt5Ye00sfCZAvx+5jDFWAKtjlpzMscB2uw0WeFo0nF6
-	 pNR3Z6ErcoxDFPMmXVbW3pbtsQjzYu3oeVMORaM30lE3Tc518EqQpPNTHD1bL4mrM2
-	 iUjTJ4pFpoTrS5m0wYIkQESwb+ELePJ9JSv29HUZfE5IuOrPcXWI9ycYPzT9A4YWgC
-	 Sorqph4wQMY5O1Baymn2OGIvKqEgN9PH91b5Rqp651CECMOqH6yZWhNiMEkE7sjFmJ
-	 LMuTXuXEroVaHSLCFUYAk9q57lQ2/vT64+7b7yIr8N3t+gMiJW/dLEBqeJ+GB4MtlM
-	 yy+QOOV/M6vXQ==
-Date: Fri, 19 Jan 2024 09:48:57 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 5/9] rust: file: add `FileDescriptorReservation`
-Message-ID: <c8ffd601-e11c-46dc-82e6-9ac8ed471d7c@proton.me>
-In-Reply-To: <20240118-alice-file-v3-5-9694b6f9580c@google.com>
-References: <20240118-alice-file-v3-0-9694b6f9580c@google.com> <20240118-alice-file-v3-5-9694b6f9580c@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rlJihD6H"
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-4676a37e2c4so182274137.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 01:52:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1705657947; x=1706262747; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n5PLnpg3dx/RHO4L2qWMlMZTP59sZfzpZ1R+uj/KM4g=;
+        b=rlJihD6H906xT9cONoRvb8UOMFDpne8SpK4It12CG5vU45xPHn9umv8q3JDUb97Srb
+         hOCV5OCZJaCyHYE8pv8MDVMreErdPWf16LWI00dzkdxfwtTVCfwi6W45Ech4YuT2rp+j
+         eqhvL/J5OSIPRA6FrurteOKBqj/K3MVxHvZDLqT08ztQP173u5cL0pAx/bTfS3Ju89NX
+         a+xf6rQFdS7zkB0Q5RY7iTCzgqsMInOaTOH75rGUMrSL6x3BLt2J0TkeYwf0rxt18Iqb
+         k0rUz/pecljvZyr+hS5/mWn2UKn1t4SEUpyUQFCzw4mvmPxXQTpPd652tuyrrDlXoe61
+         TAdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705657947; x=1706262747;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n5PLnpg3dx/RHO4L2qWMlMZTP59sZfzpZ1R+uj/KM4g=;
+        b=DqXmE/yeTFFKyOzmboGDOHs1keqWCJa+DsyUasIzcsvf0MXFVRMuDnIdmBQwX3Iu4C
+         VUyw/CY/0HMPp4dUmOr1lU+cgjmTtKsqPDyjfxhmYqXU+B05SYb9wZXIXY3Tp0sw/SCW
+         EwR2dJDCgGkVlKKmOnDjCngJRqAg8eDEClnkeso0a6dlvgEncTiIBwfkEaefgyRlowDr
+         HIwBWTX/ygntw0oUN3IZeFcVpdFaAX9gjYHLvvi9eDIu57D3gyXmO2ATuwO7v4PwvToQ
+         h1u48GdcGRaDCmxluiVNKXQMl9g4BNp1mX1vHW4A3M3IK06+HcmdB9buHpiNjHL91Plg
+         lBQA==
+X-Gm-Message-State: AOJu0YyKluLFDqWyX+N6wn160t+8gIWiJaYtNVWdQoIfp43xh9FSQ3cl
+	1cu8lE3x0ZRb/fHY3G9OLlq/URh9/VdDuTaEW7kD6GOyx1CrntG4tCnrAAJyXlhEH+vHU03B2DR
+	tPfAyvVQK0qWbqLttElTzGR05IWXFOhsEkKBj
+X-Google-Smtp-Source: AGHT+IE47HirggHtWWcHrsL/T8Glqyi/a/BE6pVGUL2OnFgkGUJp3QbPuz8i8JvcaSocKz9x2uaTryLyTo6uJ/kBC2g=
+X-Received: by 2002:a67:fe17:0:b0:469:95cc:dab7 with SMTP id
+ l23-20020a67fe17000000b0046995ccdab7mr1267491vsr.8.1705657947288; Fri, 19 Jan
+ 2024 01:52:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240118-alice-file-v3-0-9694b6f9580c@google.com>
+ <20240118-alice-file-v3-2-9694b6f9580c@google.com> <67a9f08d-d551-4238-b02d-f1c7af3780ae@proton.me>
+In-Reply-To: <67a9f08d-d551-4238-b02d-f1c7af3780ae@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 19 Jan 2024 10:52:15 +0100
+Message-ID: <CAH5fLgjKVQoTNZAJienaJpDrAPHoC+bAJdCzHsjjzme36h6wBw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/9] rust: cred: add Rust abstraction for `struct cred`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 1/18/24 15:36, Alice Ryhl wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
->=20
-> Allow for the creation of a file descriptor in two steps: first, we
-> reserve a slot for it, then we commit or drop the reservation. The first
-> step may fail (e.g., the current process ran out of available slots),
-> but commit and drop never fail (and are mutually exclusive).
->=20
-> This is needed by Rust Binder when fds are sent from one process to
-> another. It has to be a two-step process to properly handle the case
-> where multiple fds are sent: The operation must fail or succeed
-> atomically, which we achieve by first reserving the fds we need, and
-> only installing the files once we have reserved enough fds to send the
-> files.
->=20
-> Fd reservations assume that the value of `current` does not change
-> between the call to get_unused_fd_flags and the call to fd_install (or
-> put_unused_fd). By not implementing the Send trait, this abstraction
-> ensures that the `FileDescriptorReservation` cannot be moved into a
-> different process.
->=20
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+On Fri, Jan 19, 2024 at 10:37=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+> On 1/18/24 15:36, Alice Ryhl wrote:
+> > +    /// Returns the effective UID of the given credential.
+> > +    pub fn euid(&self) -> bindings::kuid_t {
+> > +        // SAFETY: By the type invariant, we know that `self.0` is val=
+id.
+>
+> Is `euid` an immutable property, or why does this memory access not race
+> with something?
 
-I have one nit below, with that fixed:
+Yes. These properties are changed by replacing the credential, so the
+credentials themselves are immutable.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> +impl Drop for FileDescriptorReservation {
-> +    fn drop(&mut self) {
-> +        // SAFETY: `self.fd` was previously returned by `get_unused_fd_f=
-lags`. We have not yet used
-
-I would again suggest mentioning the type invariant of `Self`.
-
---=20
-Cheers,
-Benno
-
-> +        // the fd, so it is still valid, and `current` still refers to t=
-he same task, as this type
-> +        // cannot be moved across task boundaries.
-> +        unsafe { bindings::put_unused_fd(self.fd) };
-> +    }
-> +}
-> +
->  /// Represents the `EBADF` error code.
->  ///
->  /// Used for methods that can only fail with `EBADF`.
-> --
-> 2.43.0.381.gb435a96ce8-goog
->=20
-
+Alice
