@@ -1,96 +1,156 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8BF9461;
-	Thu, 18 Jan 2024 22:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECED73C693
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Jan 2024 09:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705617529; cv=none; b=bn6QtrKgsLFB3Cwvau3ZakkGHT4VffANCxChapVbzShxypti3N6Z9BRPDbF49asIzYKFbWch2k+RpBh6+IkvUN5Z6q6oX8NVthlWRz2IJ5P+GmB9tgzeWFukRoXXi4Pdn+nS28Hsp2UpQe+IIBI16nJeYNNN3cohnbocb3tC1Mo=
+	t=1705657076; cv=none; b=CFMgCpMlWweM9y7/GJR5f6b63oHN4SvZ5xZq+XEcVPeXtxw5zsslRafR96Zu0umC7/5ritqTCLCBDdP26yRPU2+p0fx1nlWVqOrpAai0+pULry4lUZQWeywjabAb3hWXZdl7Wtiv7/GTGjlki8RjLxTRo2PUXqdBu1g9pSvtzzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705617529; c=relaxed/simple;
-	bh=Uxm3ZCJ1AIpcuno353fMYV7ATucuO6QsXzXIQvNIKCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+1PCDWV8aUac3AoPkQkGVxKwAfuovjiXHEIE/NIdpi7XPRxeO8yXVGJxzOZZ1+m8FfZUjFR2EfGceiidlpiGMGs0zt1PUffbR+Ill6ck9BzT1Awe8ikvHlucYDbcIWrf/G3GXLmkyVUUEQP11kAc6h0PBbgM20biqI/ZE8L6Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.17.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
-Received: from archbook.fritz.box ([217.245.156.100]) by
- mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1M5PRT-1rRQUy2IBZ-001Pcc; Thu, 18 Jan 2024 23:37:57 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: aliceryhl@google.com
-Cc: a.hindborg@samsung.com,
-	alex.gaynor@gmail.com,
-	arve@android.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	dan.j.williams@intel.com,
-	dxu@dxuuu.xyz,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joel@joelfernandes.org,
-	keescook@chromium.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	maco@android.com,
-	ojeda@kernel.org,
-	peterz@infradead.org,
-	rust-for-linux@vger.kernel.org,
-	surenb@google.com,
-	tglx@linutronix.de,
-	tkjos@android.com,
-	viro@zeniv.linux.org.uk,
-	wedsonaf@gmail.com,
-	willy@infradead.org,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH v3 1/9] rust: file: add Rust abstraction for `struct file`
-Date: Thu, 18 Jan 2024 23:37:15 +0100
-Message-ID: <20240118223715.3995-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118-alice-file-v3-1-9694b6f9580c@google.com>
-References: <20240118-alice-file-v3-1-9694b6f9580c@google.com>
+	s=arc-20240116; t=1705657076; c=relaxed/simple;
+	bh=VQjoaasfjGj4Pt4jE9IK07lq2R6F63SB0ntq1hY/FL4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MfLdaNNC7JTr/jrLqh3kPrS1decHkbygwPZP3DCxJgenpM5LP8h6cgBOr7UW13/wCmym2TXiLcknpBLSBR48P3yxRZJAz8pLwPbRn9AiyTqNWnHBu7NUL1xXbcl2pJcuoh5xb0hraOscqQRkQ+AuTpyAiw0lqSCpAzSY2octbQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HoREC4/W; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HoREC4/W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1705657058; x=1705916258;
+	bh=8e/rU8mWyRsdYMtNFKOr1SDmHGWMG+cSiKUa3CJl5vE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=HoREC4/WD32aiGHQKEf6Vt8D/QhA2+yVfqPC26y7RcTkaqB76qxUQGajzuP/uqxu3
+	 LjsnRWMss/mjzog+QG4sGSF0w4VkIpuTt4GqDkLzqMEWJ1D2H9AGi1t/86SdJ7ShTr
+	 KkzkFa+PBukrlzQLg78oNaRHNRzZ+rRJLx8Cl7+2IUjiFrGyH9SdPOS04esJf6/1xr
+	 3zgULcYWxRQi+XKqin1dF99vjuTEDnw7jyPdTbl7YrpdDLvXH8PeERRSkDHdj52arq
+	 0w9Kw7yekiwbuQeRATcEkaJFNivDu0Y2BysYVYZquCpVylzVs6bJM+38lxNSFSSgni
+	 +1fbwBwxh59lQ==
+Date: Fri, 19 Jan 2024 09:37:12 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 2/9] rust: cred: add Rust abstraction for `struct cred`
+Message-ID: <67a9f08d-d551-4238-b02d-f1c7af3780ae@proton.me>
+In-Reply-To: <20240118-alice-file-v3-2-9694b6f9580c@google.com>
+References: <20240118-alice-file-v3-0-9694b6f9580c@google.com> <20240118-alice-file-v3-2-9694b6f9580c@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:3ZWllC8Ho3Z1onA8+rX5xJsG/l3qEtc5Ga7MCEDrVMq0Zk6MyfS
- qlntgSFZEb3Mpv3UOrHw1L6NsrfLvM4jOkdu+lm2XIgPb2KESk3Tzy4/vbbYXJdDltP0M8n
- wrq1tYEyFWC4CPGlLP7c2hcS9zlRYCIe6L9eyOUnXS2L4iAkBCz9m8C4vbwkQ8gXUkINKiv
- NX+VifNLl/6OurNPKwikg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:xesSxXeBpSU=;9lHmk8RuItJ7n6vAzMvDrbgX+Eb
- SpGqgTDwcB3AoAMxyPTeTzm1XlH5c3zBNMVv2GEF6LbgzQaN98cMIHU8iueSCV1MpeTj6HK2b
- nFuslhWGVU9tdGfpO9PpEu7Up2lvIQI6IQBB85PwhHrHm8dxtP1begBJA9DJR+X0+PbUXBRDC
- FUHG2mZMvpWTxTjj8S/beDV8bQe6N3O/A8UNlK+UBi7Vj8eoc3Y2hs3uzWPOME209rphPJc2y
- QYpYcLfIXS3XC7JfnKgYy0rIKQ+BmaxJOnET8+A1e06V8Zxkpejx6J/Re92FZqCr3V7NUI4r9
- RtjkSrPyaumc/RAG8+ZQJC8RqIRPeqqV/UPqPrCdZCYd3zRCjqtB3bf9TzflfCJTQbz1fMPbi
- irA10iZoO0YsvdwmTvtAx02kJoariLsIgAg59juICx7YDm9vGPLbqOf8iZJ3UP0HagRFGsAdR
- kXM61skWLV7WNkyHVTH9WENNgSJrrkOcc7qpe0CzvXwEJlC5X+UhX7td3w8Kp9ODf5d6asJI8
- kPjZ20Mxdxv6EkHzrv8zAyONZAtAZotrP2uSWBRs2KjWWlLdZmCCFXUq9MeVGDKv4pnNzlFj2
- D8cSGk3qpozSwUeYoEWk5xlfhyllRkeOWIjAK2DPOWt1Wm+6GX/jKvK37iKc4rj0JtqYQI8e2
- mhMx1VKyS5xpGm57FzltNjNy09ZP3DNWJqTqYFl6SbjLv14bqUB8ghH3t+rFcThfZ8wPUfCXR
- kv2AHhIsKoFfa6aqqMT9WssODkrNsBJ4+WIKLuKJtpgO9aQGVmxCL3ks95HhDYYpczHg61bkR
- qDqLM1QDeF3/Bzf+sp9dOL/iyNaJgHaR13Gw1T30FPuwbRe3rp0hMKZIJ8JY4mtL1e+xtj7u5
- z+mbt8mG6vNCKOGo6UiiL+vD20vJi7xkSOkM=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> +++ b/rust/kernel/file.rs
-> @@ -0,0 +1,251 @@
+On 1/18/24 15:36, Alice Ryhl wrote:
+> diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
+> new file mode 100644
+> index 000000000000..ccec77242dfd
+> --- /dev/null
+> +++ b/rust/kernel/cred.rs
+> @@ -0,0 +1,65 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +//! Files and file descriptors.
+> +//! Credentials management.
 > +//!
-> +//! C headers: [`include/linux/fs.h`](../../../../include/linux/fs.h) and
-> +//! [`include/linux/file.h`](../../../../include/linux/file.h)
+> +//! C header: [`include/linux/cred.h`](../../../../include/linux/cred.h)
+
+IIRC you can use `srctree/include/..` to avoid the `../..` madness.
+
+> +//!
+> +//! Reference: <https://www.kernel.org/doc/html/latest/security/credenti=
+als.html>
 > +
+> +use crate::{
+> +    bindings,
+> +    types::{AlwaysRefCounted, Opaque},
+> +};
+> +
+> +/// Wraps the kernel's `struct cred`.
+> +///
+> +/// # Invariants
+> +///
+> +/// Instances of this type are always ref-counted, that is, a call to `g=
+et_cred` ensures that the
+> +/// allocation remains valid at least until the matching call to `put_cr=
+ed`.
+> +#[repr(transparent)]
+> +pub struct Credential(Opaque<bindings::cred>);
+> +
+> +// SAFETY: By design, the only way to access a `Credential` is via an im=
+mutable reference or an
+> +// `ARef`. This means that the only situation in which a `Credential` ca=
+n be accessed mutably is
+> +// when the refcount drops to zero and the destructor runs. It is safe f=
+or that to happen on any
+> +// thread, so it is ok for this type to be `Send`.
 
-These could be converted to use Commit bc2e7d5c298a ("rust: support
-`srctree`-relative links"). Same applies to links in
-`rust/kernel/cred.rs`, and `rust/kernel/security.rs`.
+IMO the only important part is that calling `drop`/`dec_ref` is OK from
+any thread.
 
-	- Valentin
+In general I think it might be a good idea to make
+`AlwaysRefCounted: Send + Sync`. But that is outside the scope of this
+patch.
+
+> +unsafe impl Send for Credential {}
+> +
+> +// SAFETY: It's OK to access `Credential` through shared references from=
+ other threads because
+> +// we're either accessing properties that don't change or that are prope=
+rly synchronised by C code.
+> +unsafe impl Sync for Credential {}
+> +
+> +impl Credential {
+> +    /// Creates a reference to a [`Credential`] from a valid pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `ptr` is valid and remains valid for=
+ the lifetime of the
+> +    /// returned [`Credential`] reference.
+> +    pub unsafe fn from_ptr<'a>(ptr: *const bindings::cred) -> &'a Creden=
+tial {
+> +        // SAFETY: The safety requirements guarantee the validity of the=
+ dereference, while the
+> +        // `Credential` type being transparent makes the cast ok.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Returns the effective UID of the given credential.
+> +    pub fn euid(&self) -> bindings::kuid_t {
+> +        // SAFETY: By the type invariant, we know that `self.0` is valid=
+.
+
+Is `euid` an immutable property, or why does this memory access not race
+with something?
+
+--=20
+Cheers,
+Benno
+
+> +        unsafe { (*self.0.get()).euid }
+> +    }
+> +}
+> +
+> +// SAFETY: The type invariants guarantee that `Credential` is always ref=
+-counted.
+> +unsafe impl AlwaysRefCounted for Credential {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference means that the re=
+fcount is nonzero.
+> +        unsafe { bindings::get_cred(self.0.get()) };
+> +    }
+> +
+> +    unsafe fn dec_ref(obj: core::ptr::NonNull<Credential>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount i=
+s nonzero. The cast is okay
+> +        // because `Credential` has the same representation as `struct c=
+red`.
+> +        unsafe { bindings::put_cred(obj.cast().as_ptr()) };
+> +    }
+> +}
+
