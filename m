@@ -1,132 +1,76 @@
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F261E878;
-	Sun, 21 Jan 2024 19:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705865581; cv=none; b=njbItTaC0GzXsm7y9cPNyZzatQfArzGigJYYFHVbj8nY75vD3QJAXUaKVrZaweR3TIET0Zr4mJxUBhSZp02MECjchb9fpJjso8QxdJT5Np0I3+3iXUqS2PwUWakSfHFt82nOqTMcvCexGqe/rxQhlRrgJnCLHw6SOsov5NJ3oCw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705865581; c=relaxed/simple;
-	bh=x9ow7Nm3zrs1bOY5+dYLtmTWweiQZJBV5FNPbcz89JU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I48Y5Y4KnSMrUwxGBUYh1Lb1ZYDQvOKx11IDAHcSGddPPhSjvVY8keSMFiz9/0n7WoXzaCxccerSWntQ7icZFMj0EMeeHfrLBOWCWNGSpE0garq6jOjMhdtSj+2+Bizlzx8iRXasd2STMXtWhU9JkVU7OYjzWLkitmmMSgKAgXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=efopudNB; arc=none smtp.client-ip=209.85.166.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7320238DD1;
+	Sun, 21 Jan 2024 21:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705870884; cv=pass; b=Uok8Ry79SNBT3LLW5jCD8Y8r23XzLiKN7V/A14C2wqg2K0b8kp8OPgZTtIMjLiBw3o+PnH20MbG+nYYtaphUcNGe+fl6no/eYggBp3OwALmS9N6QAY15DJkVAiLcjtqXYdrtzKV6zJTyxT9/LfaOHP/2bsvm75AR+sLMdSYGCEY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705870884; c=relaxed/simple;
+	bh=U0WuxNzw4dvsaQsByPRR3tvCqk37QbOjbRV9ABa0kS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EQk8C/peN5kuOa1RBaNhvfpKW8wu1bXK/3cve9hAPr4uLX0IvA5Q88fPt9XxhPfMiGvojrzpPr3/3861uJVL98+3ZTY1zul7z4wqd7wN2zd/o24WzA8uFEXmk3kKTrOvb1aIAJw2GZUU97yXVtM9HL/gHWsJsCTJuNTIt69gngY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b=X7PxXLgh; arc=pass smtp.client-ip=136.143.188.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="efopudNB"
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-36197b6e875so15371365ab.0;
-        Sun, 21 Jan 2024 11:32:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705865579; x=1706470379; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5509CI+m0+wO8fx5JQr9DE5fjRPuPGwVl19qE770/Fc=;
-        b=efopudNBjgfBcilfxVNuNgPjS7K2nAB0gj2vwPEOmi5+V3OT26R/JiPSJ5/jUer8D8
-         MExHv1S0wobDW5IdO3n9ZY1i8WlaHI/vLKZxkT5zHnLt5Qzh7dm44fUdgkLEWzRHWlZm
-         ED6KcecRCkmmWtBKJjhGIVBTXJ1cMEpIigKPJmLuMvNsD9KlmHJdFb6c8uCh+QbdM+Qk
-         7dQPRsY0BeN8fj/edpyddEEl95q/OXiiyHXHuEYpVusp+7M+9TzoYNbfzyeB/MsGKBsJ
-         fGt8UAomnPliFa9AMYR2hDtr1Ch2D/PyiyPG2eStjCzpWA35wP4Xd+lQ+HQUCdjAWDNW
-         SXYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705865579; x=1706470379;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5509CI+m0+wO8fx5JQr9DE5fjRPuPGwVl19qE770/Fc=;
-        b=amTMhhCkq0KuoCppO0jtyuKLGDf6m56WVhDerHdW3wu3z5gemfwcFyXFY6cGJCw6dc
-         7VcmGT16MZzaUsrxy0rYCmSwlzoSd5AVI0En/i8KgxnCMIxNBrtog6IzEW/DD4Y54NtP
-         1k8FVkltc1lr3/lCKn4caO9OqNMio5xy4CuIHxefxPqIRidVMgdrktUvc3PqS6AqvfT9
-         wPFdTwM7jU/fgxWqtYPalkLkrrWyqTA/7QLnXvR2Ni/k6vHY85eT8UM2fCAnd6cV8ReT
-         9/rSMmgvy/5mCHgZtUcPtjegtWslPHrk8kdwIS5+CU5/c5suObkVwDqnkNkxxvThGdVy
-         lmvA==
-X-Gm-Message-State: AOJu0Yy5djh38wgs5bh94JscehyGAc6PUAf3+uXlct6GHgcRRTu2EJQL
-	fu6goeyJ5ghCCY1ohy2fSlAmEv+Mh+EkULWlB5VWiwJX6vLWyDru
-X-Google-Smtp-Source: AGHT+IHFU8zH+jPMhfNd5LmSkpYtsxHAec6bbMlyHxdT1cZRWOZHcJSS5btDeCkly0VrUq05VfWZ0w==
-X-Received: by 2002:a92:d0cc:0:b0:35f:f707:3ec1 with SMTP id y12-20020a92d0cc000000b0035ff7073ec1mr4628615ila.32.1705865578661;
-        Sun, 21 Jan 2024 11:32:58 -0800 (PST)
-Received: from fedora-laptop (c-73-127-246-43.hsd1.nm.comcast.net. [73.127.246.43])
-        by smtp.gmail.com with ESMTPSA id cv3-20020a056e023b8300b0035fb30380bcsm6981058ilb.58.2024.01.21.11.32.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jan 2024 11:32:58 -0800 (PST)
-Date: Sun, 21 Jan 2024 12:32:53 -0700
-From: Thomas Bertschinger <tahbertschinger@gmail.com>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Trevor Gross <tmgross@umich.edu>, linux-bcachefs@vger.kernel.org,
-	bfoster@redhat.com, Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b="X7PxXLgh"
+ARC-Seal: i=1; a=rsa-sha256; t=1705870858; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=OAou5tBGQaAkrIC2JLHJDAVN3pXnklTwFZk8A2OSdcxojcBClCAQkCVVrjU6BrtyINx9edZixdsHfQnKEKGCUppYhY6V4f60lujEXh4YcPDD3P97somiwSsyBJrsbzcLF7bu0uQAr9KT2i3bI1K25kidihann5ZybV23iWFHvzc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1705870858; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZWN1X9h1FXxgBF/iHi47Bj01SXmXy/ewxHqhUfVR0Fs=; 
+	b=XIS2zx76qotUTbHqx19DlNEy0BTDvTl+ruGQWwF8b6qBI+eozQnsVuKUH+jT+EHP9NkH56q64q5e9/qeuhsAn8dXPT/GZ/wupzw10l32e4qezBytImEs5hmcUi0LwpmuVPZN6rwokJe+REcu4SzB12f14j3E2dtzIMQWlzLI4AY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
+	dmarc=pass header.from=<safinaskar@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1705870858;
+	s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
+	bh=ZWN1X9h1FXxgBF/iHi47Bj01SXmXy/ewxHqhUfVR0Fs=;
+	b=X7PxXLghJZ9rJr87TL09IgA0e20tkzX9HMHkJz0j/f8aiYB/oDljPrvEfAFhS9Vf
+	+1iyKmMcTZH4FQoEftfRv//MRlht9DizYVCP9WHvQDmrGcuhhu5nxUkgst6vEu4WPYe
+	VlDGjFUylWVV9ASN0zBwLPdTT6ZjXIQs8dHHTwj0=
+Received: from localhost.localdomain (212.73.77.98 [212.73.77.98]) by mx.zohomail.com
+	with SMTPS id 170587085701579.9329690828846; Sun, 21 Jan 2024 13:00:57 -0800 (PST)
+From: Askar Safin <safinaskar@zohomail.com>
+To: wedsonaf@gmail.com
+Cc: brauner@kernel.org,
+	gregkh@linuxfoundation.org,
+	kent.overstreet@gmail.com,
+	linux-fsdevel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	Benno Lossin <benno.lossin@proton.me>
-Subject: Re: packed, aligned structs in bcachefs (was: Re: [PATCH TOOLS 0/2]
- convert main() from C to Rust)
-Message-ID: <20240121193253.GB151023@fedora-laptop>
-References: <20240115052451.145611-1-tahbertschinger@gmail.com>
- <pawxsqxbjncrwtxytattvgizwrtmkis6suokgkb6wfm5xvsnhd@njjz4ywheu2a>
- <20240115175509.GA156208@fedora-laptop>
- <iiraqelv6wtwxcdf2yjtjt26ghejngfantjx7d4mztav27qu7y@gmiztxamveq3>
- <20240115191022.GC156208@fedora-laptop>
- <z7ajmttuzbvtxn4onwoxph6mevqt2rje2nga6cpux73geffias@p5kk7pqnswf6>
- <CALNs47t6qjYZeQKC+ahAaG6iNDGGNe8o+Q8tKhpRynYLWL3R8Q@mail.gmail.com>
- <gpokpnqgj6c2pcmtpiu46jy3kb3tom4xkp3fykg26zx6e3c2qe@zrnl2653qwsk>
- <20240121161124.GA151023@fedora-laptop>
- <cxben4yqhrraso7fiw54hj7wr4minkvxm7ibsh2yl4zew62jpy@xrraic3ceqns>
+	viro@zeniv.linux.org.uk,
+	walmeida@microsoft.com,
+	willy@infradead.org
+Subject: Re: [RFC PATCH 07/19] rust: fs: introduce `FileSystem::read_dir`
+Date: Mon, 22 Jan 2024 00:00:49 +0300
+Message-ID: <20240121210049.3747-1-safinaskar@zohomail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231018122518.128049-8-wedsonaf@gmail.com>
+References: <20231018122518.128049-8-wedsonaf@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cxben4yqhrraso7fiw54hj7wr4minkvxm7ibsh2yl4zew62jpy@xrraic3ceqns>
+Content-Transfer-Encoding: 8bit
+Feedback-ID: rr08011227f660e6f6cf06fd251e7b68390000673d79edf5cb6ddea49eaad7f340efb310d7737fdee431f8ab:zu080112276cadbb7e55cfe6c4b29a873f000069b5e9b330a61bab5b1287e35533dea1d05ad35770c5f4eb2d:rf08011226111e05f3a46b612d04829a8400007cc907ac9e01a2005c5904f67b1b743930371cc432c60ef9:ZohoMail
+X-ZohoMailClient: External
 
-On Sun, Jan 21, 2024 at 01:19:24PM -0500, Kent Overstreet wrote:
-> On Sun, Jan 21, 2024 at 09:11:24AM -0700, Thomas Bertschinger wrote:
-> > I made a script to compare the size and alignment of bcachefs structs
-> > in C vs. in Rust generated by the patched, lossy bindgen. All sizes
-> > were the same, but the following types had different alignment:
-> > 
-> That right there is really good news. If we can add that script to the
-> tests in bcachefs-tools, we'll already be in better shape than we were.
-> 
-> I wonder if it would be possible to upstream that check into bindgen.
+Wedson Almeida Filho:
+> +    /// White-out type.
+> +    Wht = bindings::DT_WHT,
 
-I did this with an awk script that grabs the structs from the bcachefs
-C headers and outputs code in Rust and C to dump the sizes and
-alignments. I then manually added calls to the generated functions into
-the bcachefs utility and diffed the output. I'll try to get this into a
-form more suitable for an automated test, and hopefully submit a patch
-to bcachefs-tools soon...
+As well as I understand, filesystems supposed not to return
+DT_WHT from readdir to user space. But I'm not sure. Please,
+do expirement! Create whiteout on ext4 and see what readdir
+will return. As well as I understand, it will return DT_CHR.
 
-Enhancing bindgen to do something like this automatically also sounds
-like a good idea but it will take me longer to figure out how to do
-that. I think it could also be good to incorporate explicit member
-offset checks with this. Handling that with an awk script or similar
-seems challenging to me with how bindgen mangles bitfield names.
+So, I think DT_WHT should be deleted here.
 
-> Also - you tracked down the difference between microsoft and gcc
-> __attribute__((align)), let me try to recap (and tell me if I get it
-> wrong): with gcc, __align() works like any naturally aligned type, but
-> Microsoft's version overrides __packed on a containing structure.
-> 
-> I think there's a strong argument to be made that Microsoft is the weird
-> one here and Rustc should just provide the gcc behaviour when mixing
-> packed and align...
-
-I don't have access to a Microsoft environment to test anything, so
-everything that I think I know about Microsoft semantics is based on what
-I've read on various rust-lang threads, like [1][2]
-
-With that disclaimer, from what I can tell it seems like Microsoft's
-semantics are strictly less expressive than gcc's. I think gcc can
-represent any struct that Microsoft can (adding padding by hand
-may be necessary in some cases, but it's always possible), whereas
-there are structures representable in gcc that cannot be represented
-with the Microsoft semantics as presented in the cited rust-lang
-threads. (Given that I haven't tested the MS compiler, I could be
-totally wrong about this.)
-
-[1] https://github.com/rust-lang/rust/issues/59154#issuecomment-476408300
-[2] https://github.com/rust-lang/rust/issues/33158
-
-- Thomas Bertschinger
+Askar Safin
