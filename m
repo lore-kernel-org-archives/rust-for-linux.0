@@ -1,213 +1,220 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2051.outbound.protection.outlook.com [40.107.21.51])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2089.outbound.protection.outlook.com [40.107.104.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9DC4C6F
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 05:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771C65224
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 05:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705901287; cv=fail; b=oEHCj/DI9xZFea7qs977dP5L7HBs30F6MeChpg9Y4hEgzkkytO9LkQrC3v0AIqXniw/dKj9Qi7gHK7++AzURw9w1v2jrRTli0l++TtbVDzrus+aW+t++x/Wj7fsg2q+Rtbt75st7o1qPCCnBS5H+DKH9h3O28gsAvu/D805q0bc=
+	t=1705902158; cv=fail; b=kyoHTU64u9qkr78fCk2DUoxKtAZso/6bXa+wCaCsPUD3VqJjMTra4wthsYHezgJznN9jO71dmixgGZIaSWAhEuxCk1zmHoYj172PwiOayCMIfoPSE7LACpf7MZ5mBa2W/E0NXOSylMf4xaKEFmcBPQQQ/Yn4/YL9h7SNNwYC45E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705901287; c=relaxed/simple;
-	bh=Ja4J9E8AqzNCvl3O9+a2/Ccxq6y+5OBvHHoXuW8yq/A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=T5o8g7j4OldoszFmmB0RR2wOFwLSO7C/AQIxF/psqTdImiu+EoulxRwG0qiPBItuoO+i94wwbB+XE/O74x2jacB43yLdQlkRc3/3Ylq/dF1DAwCMVkCWVA/1EfZP3RM1XLM6bq0IijESS2ztgJYtbPsrAyMm3vTgd2SeZ54ijL0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=VmkH9whN; arc=fail smtp.client-ip=40.107.21.51
+	s=arc-20240116; t=1705902158; c=relaxed/simple;
+	bh=4nkg+1qOXtU2J/pEXVtJyTfX7wf252Cw1IcAQaM0T3s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PyTxD97XSPcxvyPUfgMY83DwB6xfayvhg48tlK76QnzcvZudeppvEdnzXxBko21KDoU5uR+9mjo9f/PNd3gUTdkAN2QadM6yeVC01n9ZTfzNE3M3QZUs/McnzAsF76C+opv6CRhAoIWLg9GaIn8DZjNKq3y5nk7PEH0DZMxA7+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=gMDB+UZ1; arc=fail smtp.client-ip=40.107.104.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="VmkH9whN"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="gMDB+UZ1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VyEd9kMOsC2JzE6r4KQ+c5FG9K3XPDVMFwhHxPgXsul3DTjDWLJ+8GF3eGwxDagoFJpbb3I5vh1yfLzGf4ObJ8Bw6gh0eFh4hF1HkTYXvV9YbHe2s4cNhcdOuv2t1w3LpLqw9prcrso0w42sW8r/OZy6AlKOKQRCDZJVTvDy7K0Ssj++tuc1kgUusSqJr3+aVj2ohwWyw0ICPgEMCsBa5hGQj46O0qHIr2tFHBMXQjurxVLVq9poZcah/+kRiBNojI0ZJfTJ4HZrE0xR2sJV9T2WTYf0FWszuqLSWoM+4exPXyi6q2Yh/LwUnIk6qtbNYaXoRAadhxeGOAw4xkXNOQ==
+ b=MgWA/VMWGHkcV3Kpeww1PVIwgi6njVEwbUorah+sAncUCj7nxjrSMfS3eOJXSPCtIuHjSLYoCVPJZctRTXdi6MKKEjBDRJ/1NCGSoOWCCkFkeC4XKCQiW9A2/66jZI1GLhFVzUCJKqwGHSzsBN+DV4Q+D+PogkbEb5zRdmMbS+9mgygj91rjSCRA0SwPfmQZeoFrNAu+Vj+Gmw1YZcAimhzg57f4uDVBuR1zDZhuLInw2wsDxxogR3xPWyz9kaexjVuvyJKbnVlZZ95j8tKV93ozT+7wsi6CgWvm0rfdw0vdQfpFgLmf/1T7caf0F6q7hT16wpzg01X7jNLQNDItdw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X0LfsVi6L2Q+mVFrQvSYRr++BvW+fY9cOi2yhFqeZ/g=;
- b=KAzRxqsN6nw6BeRYhbCH1qOUEvld3OpXbkdCWJvQ1zc5kcfJ7rvOhf54kKJWqTynCHSR8fjTqVWKwI6sMiFbRSCXiGxDAwfBpQ5sG0R46el7poK2+tuy/sw5Ly6ggL743fXYUt89417aFCOKZVzSvrAxOvxLX7MmBxHlHBakrF3JCjbDJeUg0JSERVoutHnUfZ2xBISpPmvO0zdgnTZ8D2JLPedp3fsT8hAytol2b3qJYYsvvBIiwOtWmwfSaZQ9FPbl3enXSSYjkU7YeB9AytBQJ304qWSUOHGHj+9qG3BXbURTplAbPWHnnZ0k8GsHa/2eWQAIc27Mf2y5Jtzk/A==
+ bh=zv0xh6hBLNhllntJahR/G6hmm5vKDV5dCuwQErzhDnc=;
+ b=k7axoOafuRJr3ojTb1zk9KZLJKSeu+g0H5nP8CVJpRxD2jHDQJsvyxov+BsErgxnnZWUWKEroUD44L9Fx83GMbfXYw9xEk/mHz7iNZNvgv9tHwuqnebc2WZeY2C0sHygmZMHh9r1tc7Rb6+62v4h93XwJLKju7ZNSFe75UzSeXQrVRBPsmNjyiMDrvLTjwzAAlbzVrNxOtinMLB8s3DxFS5JNThO49ZiMhYYtBg5sut9fF/58jXoqwDwlZDesjXb8HDERQOD0LSqfJzWlrTHwl8cDvtIduE1alHh8hd2y5vz+1OZPeuFaLuxrwPeFaEg9ZyjgdVxGcfOVNUuKlWhng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.203) smtp.rcpttodomain=arm.com smtp.mailfrom=de.bosch.com;
+ 139.15.153.201) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X0LfsVi6L2Q+mVFrQvSYRr++BvW+fY9cOi2yhFqeZ/g=;
- b=VmkH9whNs+JBZ4buJdjuSfRz1aGuE7VLr2tKt1IG3wjCgkBFUHQDwXbehpuKnHDXe/7vjU2thKCYCFDwVPRli8RvYr/Tx7mc807yjFj1ivK9X7lnl1FbHyMGkXxuLPHr0evO4P2/JRZ/vmQeCa9DlD60thqp6qU/mLLSjXvzQFtAYJX6aFjFNE9bbIkD54A0bSI9bhrYHAtrRC3RYCKYB4drpm/n6t4VI+ivbbZ3WDZYgGCafq7Tgq3zXhjOWbvORaGsVNgqtCDms11YHeBT8gkbwH/f0Eb24ekAhaxLb5HOUwJajAphb8MC1E35Le0RREROT05pxWWXolT8yS68Ow==
-Received: from DUZPR01CA0247.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b5::17) by AS8PR10MB6149.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:573::20) with Microsoft SMTP Server (version=TLS1_2,
+ bh=zv0xh6hBLNhllntJahR/G6hmm5vKDV5dCuwQErzhDnc=;
+ b=gMDB+UZ1dWvvaMHGJ5ipUyqsAy57kg0JEXz04hRAFMb+LqDTrWbgCN5mx00VlR5vN/++ovq/nq7IgyA5sdEdupWEdfYUJyk86J2JLO6xscV0MDfPD/7kyG5KoQVgqhSOOKI8/CBOia/BTgQrRHAhcW0miQI+1ya7GZx6Famc/s/BPYCogx5KxezNR2Kv31QIHAwa4bmYEvTC41UE7ib8TyiaYenB5QKqVG112auRDfedOK5sOGj1tLjQ5RTe68QQuD5wym5AO7p8l2KPZqejvCPGyd/xD4T12BgdJH/YKTN2qhYQJFnc2x6LLTmtJ8DG+x5krIZdGt20gUWQwZ9vHQ==
+Received: from AM6PR01CA0057.eurprd01.prod.exchangelabs.com
+ (2603:10a6:20b:e0::34) by DB9PR10MB7956.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:10:305::5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.32; Mon, 22 Jan
- 2024 05:28:00 +0000
-Received: from DB1PEPF00039230.eurprd03.prod.outlook.com
- (2603:10a6:10:4b5:cafe::94) by DUZPR01CA0247.outlook.office365.com
- (2603:10a6:10:4b5::17) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 05:42:33 +0000
+Received: from AM4PEPF00027A69.eurprd04.prod.outlook.com
+ (2603:10a6:20b:e0:cafe::7e) by AM6PR01CA0057.outlook.office365.com
+ (2603:10a6:20b:e0::34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.32 via Frontend
- Transport; Mon, 22 Jan 2024 05:28:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.203)
+ Transport; Mon, 22 Jan 2024 05:42:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.201)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
 Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.203 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.203; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.203) by
- DB1PEPF00039230.mail.protection.outlook.com (10.167.8.103) with Microsoft
+ 139.15.153.201 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.201; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.201) by
+ AM4PEPF00027A69.mail.protection.outlook.com (10.167.16.87) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7202.16 via Frontend Transport; Mon, 22 Jan 2024 05:28:00 +0000
+ 15.20.7202.16 via Frontend Transport; Mon, 22 Jan 2024 05:42:32 +0000
 Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
- (139.15.153.203) with Microsoft SMTP Server (version=TLS1_2,
+ (139.15.153.201) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 22 Jan
- 2024 06:27:59 +0100
-Received: from [10.34.222.178] (10.139.217.196) by FE-EXCAS2000.de.bosch.com
- (10.139.217.199) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 22 Jan
- 2024 06:27:59 +0100
-Message-ID: <e040821f-dc52-4317-8244-6b0b29250bdc@de.bosch.com>
-Date: Mon, 22 Jan 2024 06:27:50 +0100
+ 2024 06:42:32 +0100
+Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
+ FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 22 Jan 2024 06:42:31 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>
+CC: <dirk.behme@de.bosch.com>, Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH] docs: rust: Add description of Rust documentation test as KUnit ones
+Date: Mon, 22 Jan 2024 06:42:19 +0100
+Message-ID: <20240122054219.779928-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.28.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
-To: Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	<linux-arm-kernel@lists.infradead.org>, <rust-for-linux@vger.kernel.org>
-CC: Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-	<steve.capper@arm.com>, Asahi Lina <lina@asahilina.net>,
-	<boqun.feng@gmail.com>, <andrew@lunn.ch>
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
-Content-Language: en-US
-From: "Behme Dirk (CM/ESO2)" <dirk.behme@de.bosch.com>
-In-Reply-To: <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF00039230:EE_|AS8PR10MB6149:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb7feffe-5596-403e-4692-08dc1b0ae5f4
+X-MS-TrafficTypeDiagnostic: AM4PEPF00027A69:EE_|DB9PR10MB7956:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc42006d-0c35-4bb9-e39d-08dc1b0cee2e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	Z9tfHSK+wYeUnN7J5E5jXFpl6RZaIU3RHmr+Av7y6iboeGEOEYyeq5kFx0U4RIyDKgYcbM/RU3wiKLHOr0iCBYq6bidUsxlZB8Jmo5k1frzGM+wvVvmD7m3A4CgTu0R2lwlvQZtpQdrMitoRbAbpc0KoGX9575/1vZaBhcGA/L+aNqwKdmcaJN2g7PZJwkspfeB+vU4cMZpagvs+s0bKbfXpgCkt15nSCj3HMgOs51VZzNLPG3yRhvEbHTSwWYrH4erKd4YrIzLXf0Mf8ZfCyP1zuRZaRvjIpkW0CejfwMxhKMOhN2pKdarmlaRA7uAf06GSO+RYi3EyeFcEFri3AuuI4q9xASoPMx8BgqmuO9kOwOSVBshDrAjrSOWLjwWIIbz/UziTj9Lh6nPUu4Rx2lbGrEx7ywF7u3PxfEG4G+Pudm+JG2aT6kq/UeBZYgcOsPZMrO2+op166BSXF4zW3952PIBGwn7nJ+2pFK0546VK3KQAwIQsttCs3K5+O6XU4/IumFQY5nUSUoKjx1sexIMRytEui0WclnZtD+vZyLiUu9aUXGpiSYZz4DFHp61ImBrLLJdnpTubgglx6vvz0frPM5bZD1hEu5SoETKU12vuoDFQLLwlV6DJU9ulMflcaqgy1FbRxKaqtYvHZiNGjubro91UYLexUsMtUTzjh/gfAWiglL7PDKj3LiMAqwDOl1RypDpC3Z5xGwGv1i+Hbj0pzIsCxchKXnkboWfLaKL/r09eRJIdJJ4wT9cuq5MIoeKPWy4/Vby2k0G1tYtOBLhkWQN5HL8kFobkuLYmYdAK3xqymP+hhNDKye744lYSAJYF2n+xVUktAdWktQllysF/h2wN2RVx4TEcck3LKas=
+	uRPESN1lrbGdjs/9Syy/vkXc9p97Dnb9mi4dw6OmxiXt33j/9daOmWYovFqovJXPiCiJzKoIIph24ddvuoARWuxr0UeGRlwE/eCYcD2O19UW1rl/2KeiKdE2tfjRl+L6Y0d5wVu68zuSzsLoi3p4+nEpiUYXkjcG1kgDC4OhCMJbPa4YrR7BCHMtXJ91163ZQGug54k2A8MwJw+/wa4o/KIksTgqkUzUL/tYQZ0cE1ioji8mU+er5nzHFdUfkLg1Cjop2mSW2GxVpMIuc20+oEXqqSinneGE800D87/afKnkxcEom5aRs3/ISCjc67ZD1nh2JSQ9j9zWH53RFWn5mHy7+1Uo7TNwbZXfg0aJFv26+jS99G0/fweWSL9ESK5K/QYWAKv/XOvYMT2hW29TPl4DlGKyJnEcFKKkyjnNUoLa0oZigcXA7pRr/IyKyMZC3Mm3p4y6WGVMj7pBr7McpyN3cSi9F4jZ11zfS5DH4EH4djA1N/TH1bMN+8549t//L8qq3I+XNQoXw9VSrOghSh8C2xDwJnLpY63ut+zk3RXhaxFAeFRoSurm0nbjaiJEb4y/QB/dLGd4D9D1XsYC28yLpYD1MtQMub5VsYid4mX7rAfh1y6moR3xg8+D06ZWv/rm/AkYUpNvg8kgEx4iNEHbUnGNLyF1VrS0dZkfAlFuoig2so7QCBsjACEXiRMUxDXzX369G/lUz+MNvGapYMuMbCEE7S6SP6h691abWAeuzlNdPMlNJxL1wiNsNZwrfqPoLqrfxEH6wSqqUPI4LVa+ubfmsRC/O6Sxs78TseBQHt3NkBIrw5rP75YvLGgh
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.203;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(396003)(136003)(39860400002)(230273577357003)(230173577357003)(230922051799003)(1800799012)(64100799003)(451199024)(82310400011)(186009)(36840700001)(46966006)(40470700004)(83380400001)(47076005)(82740400003)(2616005)(26005)(16526019)(336012)(426003)(36860700001)(53546011)(4326008)(8676002)(8936002)(5660300002)(2906002)(41300700001)(7416002)(478600001)(6666004)(54906003)(16576012)(70206006)(70586007)(316002)(110136005)(356005)(81166007)(31696002)(82960400001)(86362001)(31686004)(40480700001)(40460700003)(43740500002)(36900700001);DIR:OUT;SFP:1101;
+	CIP:139.15.153.201;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(396003)(346002)(136003)(376002)(230922051799003)(230273577357003)(230173577357003)(451199024)(1800799012)(186009)(82310400011)(64100799003)(40470700004)(36840700001)(46966006)(40460700003)(40480700001)(82960400001)(86362001)(81166007)(356005)(82740400003)(36860700001)(47076005)(83380400001)(7696005)(2616005)(1076003)(336012)(426003)(16526019)(26005)(6666004)(316002)(478600001)(6916009)(70586007)(70206006)(54906003)(8676002)(8936002)(4326008)(44832011)(5660300002)(2906002)(41300700001)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2024 05:28:00.0288
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2024 05:42:32.8594
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb7feffe-5596-403e-4692-08dc1b0ae5f4
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc42006d-0c35-4bb9-e39d-08dc1b0cee2e
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.203];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.201];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF00039230.eurprd03.prod.outlook.com
+	AM4PEPF00027A69.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB6149
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB7956
 
-On 20.10.2023 17:50, Jamie Cunliffe wrote:
-> This commit provides the build flags for Rust for AArch64. The core Rust
-> support already in the kernel does the rest. This enables the PAC ret
-> and BTI options in the Rust build flags to match the options that are
-> used when building C.
-> 
-> The Rust samples have been tested with this commit.
-> 
-> Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-> Acked-by: Will Deacon <will@kernel.org>
+Rust documentation tests are automatically converted into KUnit
+tests. The mainline commit adding this feature
 
+commit a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
 
-I'm using it since some weeks cross compiling from x86. Boots executing 
-the sample code and the KUnit doctests. So:
+from Mingual has a very nice commit message with a lot details
+for this. To not 'hide' that just in a commit message pick main
+parts of it and add it to the documentation. And add a short info
+how to enable this.
 
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+---
+ Documentation/rust/general-information.rst | 94 ++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
 
-Would be nice if we could get this merged :)
-
-Dirk
-
-
-> ---
->   Documentation/rust/arch-support.rst | 1 +
->   arch/arm64/Kconfig                  | 1 +
->   arch/arm64/Makefile                 | 4 ++++
->   rust/Makefile                       | 1 +
->   scripts/generate_rust_target.rs     | 4 +++-
->   5 files changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-> index b91e9ef4d0c2..6bcb3b97c5b6 100644
-> --- a/Documentation/rust/arch-support.rst
-> +++ b/Documentation/rust/arch-support.rst
-> @@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
->   ============  ================  ==============================================
->   Architecture  Level of support  Constraints
->   ============  ================  ==============================================
-> +``arm64``     Maintained        Little Endian only.
->   ``um``        Maintained        ``x86_64`` only.
->   ``x86``       Maintained        ``x86_64`` only.
->   ============  ================  ==============================================
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 78f20e632712..d72618433521 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -227,6 +227,7 @@ config ARM64
->   	select HAVE_FUNCTION_ARG_ACCESS_API
->   	select MMU_GATHER_RCU_TABLE_FREE
->   	select HAVE_RSEQ
-> +	select HAVE_RUST if CPU_LITTLE_ENDIAN
->   	select HAVE_STACKPROTECTOR
->   	select HAVE_SYSCALL_TRACEPOINTS
->   	select HAVE_KPROBES
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index 2d49aea0ff67..52d75c9483a9 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -41,6 +41,8 @@ KBUILD_CFLAGS	+= -mgeneral-regs-only	\
->   KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
->   KBUILD_AFLAGS	+= $(compat_vdso)
->   
-> +KBUILD_RUSTFLAGS += --target=aarch64-unknown-none -Ctarget-feature="-neon"
-> +
->   KBUILD_CFLAGS	+= $(call cc-option,-mabi=lp64)
->   KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
->   
-> @@ -65,7 +67,9 @@ endif
->   
->   ifeq ($(CONFIG_ARM64_BTI_KERNEL),y)
->     KBUILD_CFLAGS += -mbranch-protection=pac-ret+bti
-> +  KBUILD_RUSTFLAGS += -Zbranch-protection=bti,pac-ret
->   else ifeq ($(CONFIG_ARM64_PTR_AUTH_KERNEL),y)
-> +  KBUILD_RUSTFLAGS += -Zbranch-protection=pac-ret
->     ifeq ($(CONFIG_CC_HAS_BRANCH_PROT_PAC_RET),y)
->       KBUILD_CFLAGS += -mbranch-protection=pac-ret
->     else
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 8d75a6ffe951..8ced65c9b905 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -294,6 +294,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
->   
->   # Derived from `scripts/Makefile.clang`.
->   BINDGEN_TARGET_x86	:= x86_64-linux-gnu
-> +BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
->   BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
->   
->   # All warnings are inhibited since GCC builds are very experimental,
-> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-> index 3c6cbe2b278d..ec5ef35dbe52 100644
-> --- a/scripts/generate_rust_target.rs
-> +++ b/scripts/generate_rust_target.rs
-> @@ -148,7 +148,9 @@ fn main() {
->       let mut ts = TargetSpec::new();
->   
->       // `llvm-target`s are taken from `scripts/Makefile.clang`.
-> -    if cfg.has("X86_64") {
-> +    if cfg.has("ARM64") {
-> +        panic!("arm64 uses the builtin rustc aarch64-unknown-none target");
-> +    } else if cfg.has("X86_64") {
->           ts.push("arch", "x86_64");
->           ts.push(
->               "data-layout",
+diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+index 58283f4894ea0..d68460a2fea13 100644
+--- a/Documentation/rust/general-information.rst
++++ b/Documentation/rust/general-information.rst
+@@ -100,3 +100,97 @@ Additionally, there are the ``#[test]`` tests. These can be run using
+ This requires the kernel .config and downloads external repos. It
+ runs the ``#[test]`` tests on the host (currently) and thus is fairly
+ limited in what these tests can test.
++
++KUnit tests == documentation tests
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Rust has documentation tests: these are typically examples of
++usage of any item (e.g. function, struct, module...).
++
++They are very convenient because they are just written
++alongside the documentation. For instance::
++
++	/// Sums two numbers.
++	///
++	/// ```
++	/// assert_eq!(mymod::f(10, 20), 30);
++	/// ```
++	pub fn f(a: i32, b: i32) -> i32 {
++	    a + b
++	}
++
++In userspace, the tests are collected and run via `rustdoc`.
++Using the tool as-is would be useful already, since it allows
++to compile-test most tests (thus enforcing they are kept
++in sync with the code they document) and run those that do not
++depend on in-kernel APIs.
++
++However, by transforming the tests into a KUnit test suite,
++they can also be run inside the kernel. Moreover, the tests
++get to be compiled as other Rust kernel objects instead of
++targeting userspace.
++
++On top of that, the integration with KUnit means the Rust
++support gets to reuse the existing testing facilities. For
++instance, the kernel log would look like::
++
++	KTAP version 1
++	1..1
++	    KTAP version 1
++	    # Subtest: rust_doctests_kernel
++	    1..59
++	    # rust_doctest_kernel_build_assert_rs_0.location: rust/kernel/build_assert.rs:13
++	    ok 1 rust_doctest_kernel_build_assert_rs_0
++	    # rust_doctest_kernel_build_assert_rs_1.location: rust/kernel/build_assert.rs:56
++	    ok 2 rust_doctest_kernel_build_assert_rs_1
++	    # rust_doctest_kernel_init_rs_0.location: rust/kernel/init.rs:122
++	    ok 3 rust_doctest_kernel_init_rs_0
++	    ...
++	    # rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
++	    ok 59 rust_doctest_kernel_types_rs_2
++	# rust_doctests_kernel: pass:59 fail:0 skip:0 total:59
++	# Totals: pass:59 fail:0 skip:0 total:59
++	ok 1 rust_doctests_kernel
++
++Tests using the ``?`` operator are also supported as usual, e.g.::
++
++	/// ```
++	/// # use kernel::{spawn_work_item, workqueue};
++	/// spawn_work_item!(workqueue::system(), || pr_info!("x"))?;
++	/// # Ok::<(), Error>(())
++	/// ```
++
++The tests are also compiled with Clippy under ``CLIPPY=1``, just
++like normal code, thus also benefitting from extra linting.
++
++In order for developers to easily see from which original line
++a failed doctests came from, a KTAP diagnostic line is printed
++to the log, containing the location (file and line) of the
++original test (i.e. instead of the location in the generated
++Rust file)::
++
++	# rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
++
++A notable difference from KUnit C tests is that the Rust tests
++appear to assert using the usual ``assert!`` and ``assert_eq!``
++macros from the Rust standard library (``core``). We provide
++a custom version that forwards the call to KUnit instead.
++Importantly, these macros do not require passing context,
++unlike the KUnit C ones (i.e. ``struct kunit *``). This makes
++them easier to use, and readers of the documentation do not need
++to care about which testing framework is used. In addition, it
++may allow us to test third-party code more easily in the future.
++
++However, a current limitation is that KUnit does not support
++assertions in other tasks. Thus we presently simply print an
++error to the kernel log if an assertion actually failed.
++
++To use this it is required to enable::
++
++	CONFIG_KUNIT
++	   Kernel hacking -> Kernel Testing and Coverage -> KUnit - Enable support for unit tests
++	CONFIG_RUST_KERNEL_DOCTESTS
++	   Kernel hacking -> Rust hacking -> Doctests for the `kernel` crate
++
++in the kernel config system. Note that these options should
++not be enabled in a production system.
+-- 
+2.28.0
 
