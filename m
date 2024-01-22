@@ -1,82 +1,128 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8566C495C9
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 18:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329A73DB93;
+	Mon, 22 Jan 2024 19:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705949887; cv=none; b=FG1Wdx6r4KvuFLJsUndCSuBaqkMvdWEIfDZTwH7FgNJ4s67kb29tSJm7HPH0quoK77KJKDsdusn838gP1h7NDLzc67/2LUANMVBxMBQQKsn8ylSuMr1PFbvBTMYAQXoHUiVu6XVyFf7W+prS6q95VrEN+uAN0/dcDGwX5GZ8wmk=
+	t=1705951376; cv=none; b=rQGRk0AGh1kkMrs2qONwtP1QU9C7x5UGfheJNudlzPanxH4pkEXteykqtPW7RBlH1/XOtVVSETL2330jqzdKg88enpOR2L8G7ExboEIxQlDrEBO8E2T45Pb9ECr+h+OuwzLTwjwVfs22lq0PfO/ylW0uA4qmVXkb77JUE/LBAhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705949887; c=relaxed/simple;
-	bh=VWOf8TrU3RfJgWEayn+bJz3W2oVeMtgyadg74e0TLO8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oBy3dbywbwONc4HdWPXiCjY4WZa2sudzLN82D6l8SfR86FjKqW/HZsc9wJZv8YI59sviPUZ7qqxkuGnDNnfsZwyHaq0MGF6kVQGq++pJ3bE4f7hj/Es/RwvpSjtLkY+anAIzzqDP1JnbV+4b4FyQ4kGFi7AWOO7DgLbYI/yWUCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W2Dvifm+; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1705951376; c=relaxed/simple;
+	bh=rfyuLscnG8/fAzmZFleV+5KIlsRIEXIQ7Z1xh+5aMcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i3NtJz7bRJn6fEXdI3mOd9RV19m9KlRnwPmK0CybE73uiVYGrAlx7fkPoPRDDacazcPAsK+zZcxZW/f5K8qmRQpoA5152KO1bMS/P1254pC53JlQ4IL4BFfed4M84PQTCs2paDDQ2VAxjyQgz4P/5zGJuIjPYJQ0aMxf/il/N+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tcmyCetl; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W2Dvifm+"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d2dfa80009so1083854241.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 10:58:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705949883; x=1706554683; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VWOf8TrU3RfJgWEayn+bJz3W2oVeMtgyadg74e0TLO8=;
-        b=W2Dvifm+4/mh8atPmMbzY06l4rlAGkxKS+K46U8rUpotqjLrvweTfgv4qMtlxOA1vp
-         p389uyFrAny1REMidvluyijHYFYYiGX0iaxWseaop9RUwCbujIrcADwX1aS+khrcDj9m
-         uQgiXWeeGnCiAAeeqo8Bsy6YI/cRmQxqNjWF3vUICcdyA06G39w9TgVyiXTaGLy4x5op
-         566MwrO9vyXgem/2N2KmiwsJpvpVi386mSUt+kVs8riFGuddf1qtPZddXLJJ6kTqcxMM
-         /JbGG+B6n2maWCbQP/bmaXI5eiAnG6f7cA6J9SBv4bZWA2GVyflitaCWbN9kizUWz5gy
-         Rqtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705949883; x=1706554683;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VWOf8TrU3RfJgWEayn+bJz3W2oVeMtgyadg74e0TLO8=;
-        b=CfzHHPvTXhCpQpg9fzDgjwdhqOh4JFprUN3omZJ2CHHBwOIMmdAHje5vlQLEeCs+wS
-         +kHRpGLmFse2ljvwUhjEHCM6yPwNpSIGWrUnV2wI9923EkEiTyOLrpY+kWj1H+tlYFHj
-         SXWJwXLiGBSvCczfwhPTxxsDz2JiFx+k59qQYZwbBvxYPHXNT1vr9+Ua9STi6keHkCiA
-         mpgmp/umyvguj1fwKM5MMSVAEqsFMqAblljZuqsotFQX4zsylj+kgksQno+KiPkQU8ZY
-         77MOpUWs0i3RRYHWILsbXxsDjX+BlzWci7ACMy4Ae2qP7a9aTUTgjrrXy2LpPWydJ9ZQ
-         JiAw==
-X-Gm-Message-State: AOJu0Yxe2t09BYOWdoTyGR+hQB9Fy5a6U4VNUv1u77On9m0uwH/COp63
-	SFt63jhQxnGp+7nkSHpz09oFmgRW5Lmx3yEy0bQ55UL335+NUdxDvqLiroBcjsb9WtnfKqGXFFq
-	5Mj1x8a32psEyjYE+b9WQtTxgAi2PB1syOIGS
-X-Google-Smtp-Source: AGHT+IFxOVGRaBVF6braH2NOqEnij3IhJvpLMlsmKgtebpat1xtlABWJoGhlUaqjDI7jeA6UJ2L7nOY5Wt1qvz6c1nc=
-X-Received: by 2002:a05:6102:3a13:b0:469:93d3:9fed with SMTP id
- b19-20020a0561023a1300b0046993d39fedmr3292716vsu.15.1705949883381; Mon, 22
- Jan 2024 10:58:03 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tcmyCetl"
+Date: Mon, 22 Jan 2024 14:22:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1705951371;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zn9iE/HsNthd6G31ktQcLRQGILsxJrxC798yyqIXrqw=;
+	b=tcmyCetluuF9BqFgl5gJDnHETcP5P2JX9ZiUa+tHMVF0MSt16/k0fTf6z37qTpRishVVIH
+	6M+cNqNPAiLzIv6SLM+DjzN99hADPKwEiO/sOc7zBmr5fV9LrsTk70hk6GlHydukchJBXh
+	TAtRpp02jmDz4GzmoL04R6suEuZ361A=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Thomas Bertschinger <tahbertschinger@gmail.com>
+Cc: linux-bcachefs@vger.kernel.org, bfoster@redhat.com, 
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH BCACHEFS-TOOLS] use upstream bindgen; fix packed and
+ aligned types
+Message-ID: <l2b36a5msxov3664f2vb67mud5dcsm3younju2sdzbgk645qw5@b64t35mlhlrb>
+References: <20240122143643.201936-1-tahbertschinger@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122184608.11863-1-dakr@redhat.com>
-In-Reply-To: <20240122184608.11863-1-dakr@redhat.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 22 Jan 2024 19:57:52 +0100
-Message-ID: <CAH5fLgjG5fJJQTsZF+ztT7E_mHAoct7p8BcERp2nkik1+LH+LQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: str: add to_ascii_{upper,lower}case() to CString
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240122143643.201936-1-tahbertschinger@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Jan 22, 2024 at 7:46=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
-wrote:
->
-> Add functions to convert a CString to upper- / lowercase assuming all
-> characters are ASCII encoded.
->
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+On Mon, Jan 22, 2024 at 07:36:43AM -0700, Thomas Bertschinger wrote:
+> bcachefs-tools has been using a patched bindgen to work around a
+> limitation of rustc that prevents compiling structs with
+> both #[repr(packed(N)] and #[repr(align(N)] attributes. The patch:
+> e8168ceda507 "codegen: Don't generate conflicting packed() and align()
+> representation hints." discards the "align" attribute in cases where
+> bindgen produces a type with both.
+> 
+> This may be correct for some types, but it turns out that for each
+> bcachefs type with this problem, keeping the "align" attribute and
+> discarding the "packed" attribute generates a type with the same ABI as
+> the original C type.
+> 
+> This can be tested automatically by running:
+> $ cargo test --manifest-path bch_bindgen/Cargo.toml
+> in the bcachefs-tools tree.
+> 
+> There has been pressure recently to start using upstream bindgen; both
+> externally, from distribution maintainers who want to build
+> bcachefs-tools with standard dependencies, and internally, in order to
+> enable using Rust for bcachefs in-kernel.
+> 
+> This patch updates bcachefs-tools to use upstream bindgen. It works
+> around the rustc limitation with a post-processing step in the bindgen
+> build that adjusts the attributes to include "#[repr(C, align(N))]" and
+> exclude #[repr(packed(N)] only for the 4 types that need it.
+> 
+> Some types that had been manually implemented in
+> bch_bindgen/src/bcachefs.rs are now automatically generated by bindgen,
+> so that they will be covered by the ABI compatibility testing mentioned
+> above.
+> 
+> I intentionally targeted the post-processing to the exact 4 types with
+> the issue currently, so that any changes to bcachefs that result in this
+> issue appearing for a new type will require manual intervention. I
+> figured any such changes should require careful consideration.
+> 
+> Ideally, bindgen can be updated to handle situations where "align(N)"
+> is needed and "packed(N)" can be safely discarded. If a patch for this
+> is accepted into bindgen, the post-processing hack can be removed.
+> 
+> Signed-off-by: Thomas Bertschinger <tahbertschinger@gmail.com>
 
-What is this for?
+Doesn't build here...?
 
-Alice
+   Compiling bch_bindgen v0.1.0 (/home/kent/bcachefs-tools/bch_bindgen)
+error[E0587]: type has conflicting packed and align representation hints
+ --> /home/kent/bcachefs-tools/target/release/build/bch_bindgen-6ee8b9c8755f1deb/out/bcachefs.rs:3:147196
+  |
+3 | ...r (align (8))] # [derive (Debug , Default , Copy , Clone)] pub struct bkey { pub u64s : __u8 , pub _bitfield_align_1 : [u8 ; 0] , pub ...
+  |                                                               ^^^^^^^^^^^^^^^
+
+error[E0587]: type has conflicting packed and align representation hints
+ --> /home/kent/bcachefs-tools/target/release/build/bch_bindgen-6ee8b9c8755f1deb/out/bcachefs.rs:3:162454
+  |
+3 | ...gn (8))] # [derive (Debug , Default , Copy , Clone)] pub struct bch_extent_crc32 { pub _bitfield_align_1 : [u8 ; 0] , pub _bitfield_1 ...
+  |                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0587]: type has conflicting packed and align representation hints
+ --> /home/kent/bcachefs-tools/target/release/build/bch_bindgen-6ee8b9c8755f1deb/out/bcachefs.rs:3:176663
+  |
+3 | ...ign (8))] # [derive (Debug , Default , Copy , Clone)] pub struct bch_extent_ptr { pub _bitfield_align_1 : [u8 ; 0] , pub _bitfield_1 :...
+  |                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0588]: packed type cannot transitively contain a `#[repr(align)]` type
+ --> /home/kent/bcachefs-tools/target/release/build/bch_bindgen-6ee8b9c8755f1deb/out/bcachefs.rs:3:326505
+  |
+3 | ...1) ; s . assume_init () } } } # [repr (C , packed (8))] pub struct btree_node { pub csum : bch_csum , pub magic : __le64 , pub flags :...
+  |                                                            ^^^^^^^^^^^^^^^^^^^^^
+  |
+note: `bch_extent_ptr` has a `#[repr(align)]` attribute
+ --> /home/kent/bcachefs-tools/target/release/build/bch_bindgen-6ee8b9c8755f1deb/out/bcachefs.rs:3:176663
+  |
+3 | ...ign (8))] # [derive (Debug , Default , Copy , Clone)] pub struct bch_extent_ptr { pub _bitfield_align_1 : [u8 ; 0] , pub _bitfield_1 :...
+  |                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some errors have detailed explanations: E0587, E0588.
+For more information about an error, try `rustc --explain E0587`.
+error: could not compile `bch_bindgen` (lib) due to 4 previous errors
+make: *** [Makefile:178: bcachefs] Error 101
