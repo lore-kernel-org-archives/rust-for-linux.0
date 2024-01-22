@@ -1,181 +1,83 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C4939AC3
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 09:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3A033CF4
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 09:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705915066; cv=none; b=ZwI13U/FzzNQrP+w6TIKz3ZGf89PxUubR9ZAr+bg2cCXP1pjYnAfeO+3nMpcNBzTNNYHNvPFOkc3PdqVappl0bz/MUc9Sh8lmZHe6LEfq/9H5G1ivILUuUdjqSDN/Tnx+pJpIh8FB2acGjov8TMP1ZpEzYlrs/UljHqTCtLKLn0=
+	t=1705915798; cv=none; b=AfRqxM4QpaXsocfqdfaUGIkDrW1yN+aXJ8pPubl7HzuPYQXY2rUAZZowiAPW39RKeNWEnaSb+I6VCLfEcDBv09LCAOSy71dZBWdvJ8WCUeULvCjJ/QiTlD8CLnzj9zcd8v0vrJuijZPKBx5Y5hR8INxkHKG7p+U4Om4Egiz1qv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705915066; c=relaxed/simple;
-	bh=GknMIjNfk3Q+3O5vnCYZusLGMvB08sdNWHOHlOIKyJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UmCfp+wbQ9dTGdz3rod6dI+9bdJABf4ZEso/vytBkf7/IwrgpCWOBgzelz0hNeXGuWgyXtVM6R0XiXiSF+rLODyuHYzzaCmco+3knnpfbHFxJVhp5ez8JCjhH15JQPuelW6a5sPClqyNC1l1UkiEyeUDFsxj2yovO4Ylbe1wMJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=RlKlheLp; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1705915798; c=relaxed/simple;
+	bh=ZqAsJSg0eqzkEbEetvnGbaJchXsIfT5NCNfzIH0yj4k=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=o8GAWU/e89dToR9oMbbcq7gRdC3nFFLl6tBUwbzjCDrD6IpWyEiyWDbn0w5gZPTV0ccmPX2wflym0vuFYkzrq7TNJGyOf6zI3qm1mlX4eM11EwSYvb1qn+8XJG+Qwhr1fHkze4q06aYhZ5zcvPPqbdJnCXza5Lpq86WBxptjC+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DvPiQB8z; arc=none smtp.client-ip=209.85.208.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="RlKlheLp"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6001448b031so2230417b3.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 01:17:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DvPiQB8z"
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2cdeb808937so18024151fa.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 01:29:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705915063; x=1706519863; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BroRkqnuO0Oy9O6+ZA0zuSl/25g6dyXPAFX1tfI4BB4=;
-        b=RlKlheLpb+CTEJlqF3hAxEn3SFqKlvywgZLLoViYdn/sBt8N/X29h4GP1BTn8Q6DoH
-         ZL1PV9wus0cDGVOdeoBQ9hMoSmGSzWM7BmA2TxhlhXmZ4/f7gZsPB+KT+gDVwfjoAmjQ
-         g3nrFRAHbqCnLNkZoUrIlnjnoT6WoP0Mth40MPfldarFt3c9g2qJNCI3eO7FT1Gylg6h
-         O1beLjFIKDdSJBnk5+2AN91LwwjvoA6p1IirTiYNkcF9bO1w+cgHIDWNNCl7xVtgHnGW
-         oS5NEdyQrsgkJXMW6CDqFOuw0YsP17zCa7CiVrFVMFyFSopbbwT5t5EdhfStDHKvODT8
-         zyBQ==
+        d=google.com; s=20230601; t=1705915795; x=1706520595; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QKRFYI4mzYUCWy9y4OiVImAthzXGQ+LzIhQ+1lzTvnk=;
+        b=DvPiQB8z4E3+QMPKQRHhaTWkT8dPj7znlmCm+ien7h/K+BI8NZFZiRqs+FY3/j6suB
+         0hTrvmF13zjVkITYXIVM/yAFABhsCmXpXScM0nF/YD+JCCcjtgZLRtBlwIN683HBjboI
+         CUKeNrX4ilyVYbyQW7sNo3nvPzUUEuvHjlHaLnT2t9OStuW00tIAxs0MY8PSVH3Kx/+l
+         BKR6zfdvu7PvktXaeOBZq2QkWhqSg/XAyIV/aWGN0J7+MVOVs8enNVekY0o3k/iVPx3r
+         vytoCCrIe4XLdpi16hX6sfbjkytjyy4UiHhjNEws4Ktqvs8CZvQ3dl/lPjP0eV+90E9I
+         aLhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705915063; x=1706519863;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BroRkqnuO0Oy9O6+ZA0zuSl/25g6dyXPAFX1tfI4BB4=;
-        b=G7ZVAiHUeTAqGBd0UkcI6YiE+ZwTFjC8B3XHhf3LTDaid2TAOLNTvb9f5vAKa7NA1w
-         4l3mxAElu9rMmLiS4w2lF+/hrenUIS+t8WWuI7FSXFsSctrufwHr/K5cihKREBlymVw/
-         tFJ5nt+4MdPF1Wn8qquQjGjGnn3FNvkkAyZlDIHmVFuRCiXcnCu5ZUSLU5TfNBjCcRmq
-         hRQBBgWLvalRYqhkXr5tGWMYGkBo/z8ntr/tjnbdMXkCj38JmHy5S6kiliHx7qg49bLM
-         KyRIktRX4xvNm3XMoLgmbjo6p/0Tgw8PG5Y2lkw3XRYTNPPr/tjuI3yjzJcNZi/AnQiD
-         iNOg==
-X-Gm-Message-State: AOJu0Yw4VkXYxuM3Cl2hE23e8hoC734h0VM3m8tD74T5zqCuAGp+LyuD
-	8Z48YH1nhwBMr0VULibABtTwkjUq2MQUd70clsyifdUtwVd1PWvUUc/ITOz1sH7F+HHv1DUZY8Q
-	/70Z+GkmTwF8dwbDk29irN3YRI+f4BPo0sx70Ew==
-X-Google-Smtp-Source: AGHT+IFg78aukicmcCb2fnJ5R9FQfLOdTdmjXGaSLvdppwU8sjOMbNpvwM8AI+ULHMD/rR0Ozx5UvcvwHM4zryjp3NA=
-X-Received: by 2002:a81:bf51:0:b0:5ff:7f45:3933 with SMTP id
- s17-20020a81bf51000000b005ff7f453933mr1605802ywk.80.1705915062981; Mon, 22
- Jan 2024 01:17:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705915795; x=1706520595;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QKRFYI4mzYUCWy9y4OiVImAthzXGQ+LzIhQ+1lzTvnk=;
+        b=Utl/ZcXjAnrXb4V0yaauD+KLBxRVj4whB+mhEKELMJYtZaCQL3G5nxexXD5eWh9/1I
+         oKhNG1AGK+ichTABvGU4xulmYm5OmCiLl8V5S+JCYD6wsftcEZGHvTyfvlJcRzUFxkLT
+         rlOfarY1UaXWAMIKwKp0a05dgc/MnQqyf+oPyKigOyLZ1mFukLeuqdEpbESzs3gzZKI9
+         2hddT5NgWPZnbT2UQol1sgStxyZjzbAoFGQjvx/5Ms53bGyyb/sEuYWdokZgs6GMSEPB
+         J8XfEtYjmKeEQ/L6Cf51Hj17EmYv1TkthCDOxTPtmeUkvzjPfg+VUwjjGYf81fFRNVAD
+         Um0g==
+X-Gm-Message-State: AOJu0YxtRl5dxy2rtxc9Pnto8CNPYu8Mc1UeDWfkgMt0flNjsMnBiRaC
+	r90ia37Bs5H4utJujLZZfiuO6XHzTT7z21CnxRMYEx9FVQVDsc2C4sxFJOOOLOf02BwiAkuloSx
+	FHC6+rOI9L7+NsQ==
+X-Google-Smtp-Source: AGHT+IEsMMKuFe5/jgf+U0BA0xo9fWib/S3e8TEmRSaTvO4jy91rJOeSI94h+d/EUCO79TGYM3SYWq9x7vpOxGc=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a2e:84d7:0:b0:2cd:c20:1dbc with SMTP id
+ q23-20020a2e84d7000000b002cd0c201dbcmr6024ljh.10.1705915795233; Mon, 22 Jan
+ 2024 01:29:55 -0800 (PST)
+Date: Mon, 22 Jan 2024 09:29:42 +0000
+In-Reply-To: <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com> <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
-In-Reply-To: <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 22 Jan 2024 03:17:31 -0600
-Message-ID: <CALNs47vzQm5MbfJtMQR3p+W1xub3KHiNqRgEQGWT3u28fpQ-oA@mail.gmail.com>
+Mime-Version: 1.0
+References: <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240122092942.1571272-1-aliceryhl@google.com>
 Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
  of builtin targets
-To: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	boqun.feng@gmail.com, andrew@lunn.ch, Huacai Chen <chenhuacai@kernel.org>, 
-	loongarch@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Alice Ryhl <aliceryhl@google.com>
+To: jamie.cunliffe@arm.com
+Cc: andrew@lunn.ch, boqun.feng@gmail.com, catalin.marinas@arm.com, 
+	lina@asahilina.net, linux-arm-kernel@lists.infradead.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, steve.capper@arm.com, will@kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Oct 20, 2023 at 10:59=E2=80=AFAM Jamie Cunliffe <Jamie.Cunliffe@arm=
-.com> wrote:
->
+Jamie Cunliffe <Jamie.Cunliffe@arm.com> writes:
 > Eventually we want all architectures to be using the target as defined
 > by rustc. However currently some architectures can't do that and are
 > using the target.json specification. This puts in place the foundation
 > to allow the use of the builtin target definition or a target.json
 > specification.
->
+> 
 > Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-> ---
->  Makefile          | 1 -
->  arch/x86/Makefile | 1 +
->  rust/Makefile     | 5 ++++-
->  scripts/Makefile  | 4 +++-
->  4 files changed, 8 insertions(+), 3 deletions(-)
 
-Adding LoongArch maintainers - this patch will need a small update to
-arch/loongarch/Makefile similar to the change in arch/x86/Makefile
-(included below), since that support is now in-tree and uses
-generate_rust_target [1]. Also a very minor conflict in docs at patch
-2/2.
+Tested with Rust Binder.
 
-I believe this patchset is still waiting on an ack from the kbuild
-team. Series at [2] for reference.
-
-Thanks,
-Trevor
-
-[1]: https://lore.kernel.org/rust-for-linux/20240108032117.215171-1-wangrui=
-@loongson.cn/
-[2]: https://lore.kernel.org/rust-for-linux/20231020155056.3495121-1-Jamie.=
-Cunliffe@arm.com/
-
-> diff --git a/Makefile b/Makefile
-> index 88ebf6547964..23100f193da3 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -566,7 +566,6 @@ KBUILD_CFLAGS +=3D -fno-strict-aliasing
->
->  KBUILD_CPPFLAGS :=3D -D__KERNEL__
->  KBUILD_RUSTFLAGS :=3D $(rust_common_flags) \
-> -                   --target=3D$(objtree)/scripts/target.json \
->                     -Cpanic=3Dabort -Cembed-bitcode=3Dn -Clto=3Dn \
->                     -Cforce-unwind-tables=3Dn -Ccodegen-units=3D1 \
->                     -Csymbol-mangling-version=3Dv0 \
-> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> index 5bfe5caaa444..0f339d4abd40 100644
-> --- a/arch/x86/Makefile
-> +++ b/arch/x86/Makefile
-> @@ -68,6 +68,7 @@ export BITS
->  #    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D53383
->  #
->  KBUILD_CFLAGS +=3D -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
-> +KBUILD_RUSTFLAGS +=3D --target=3D$(objtree)/scripts/target.json
->  KBUILD_RUSTFLAGS +=3D -Ctarget-feature=3D-sse,-sse2,-sse3,-ssse3,-sse4.1=
-,-sse4.2,-avx,-avx2
->
->  ifeq ($(CONFIG_X86_KERNEL_IBT),y)
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 87958e864be0..8d75a6ffe951 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -428,8 +428,11 @@ $(obj)/core.o: private skip_clippy =3D 1
->  $(obj)/core.o: private skip_flags =3D -Dunreachable_pub
->  $(obj)/core.o: private rustc_objcopy =3D $(foreach sym,$(redirect-intrin=
-sics),--redefine-sym $(sym)=3D__rust$(sym))
->  $(obj)/core.o: private rustc_target_flags =3D $(core-cfgs)
-> -$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs scripts/target.json FORCE
-> +$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
->         $(call if_changed_dep,rustc_library)
-> +ifdef CONFIG_X86_64
-> +$(obj)/core.o: scripts/target.json
-> +endif
->
->  $(obj)/compiler_builtins.o: private rustc_objcopy =3D -w -W '__*'
->  $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FO=
-RCE
-> diff --git a/scripts/Makefile b/scripts/Makefile
-> index 576cf64be667..c85d130a4125 100644
-> --- a/scripts/Makefile
-> +++ b/scripts/Makefile
-> @@ -11,12 +11,14 @@ hostprogs-always-$(CONFIG_MODULE_SIG_FORMAT)         =
-       +=3D sign-file
->  hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)    +=3D insert-sys-c=
-ert
->  hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)                +=3D rust=
-doc_test_builder
->  hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)                +=3D rust=
-doc_test_gen
-> -always-$(CONFIG_RUST)                                  +=3D target.json
->
-> +ifdef CONFIG_X86_64
-> +always-$(CONFIG_RUST)                                  +=3D target.json
->  filechk_rust_target =3D $< < include/config/auto.conf
->
->  $(obj)/target.json: scripts/generate_rust_target include/config/auto.con=
-f FORCE
->         $(call filechk,rust_target)
-> +endif
->
->  hostprogs +=3D generate_rust_target
->  generate_rust_target-rust :=3D y
-> --
-> 2.30.2
->
->
+Tested-by: Alice Ryhl <aliceryhl@google.com>
