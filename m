@@ -1,139 +1,213 @@
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2051.outbound.protection.outlook.com [40.107.21.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824D8394;
-	Mon, 22 Jan 2024 02:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705891638; cv=none; b=V5HIzhUeWNB62LUcN2NR/2tskio1qqWh4XvRC80L1n27H+BStquPGgX0jgMPMtkT3/QmcqTjzyKzPSHd5jqPIatcA9DNlriabU8IuE4Ma4JsFkzAzdqoj14kaVv98HamG8xWggjsiVQyK9O/WJp987+s+pXHrBOqk4qoCSXRFGY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705891638; c=relaxed/simple;
-	bh=PdSoGdptZWFjNDb4EbIj3ndlndsl8C+Al66iqz8MtQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tUenjJ0AOb9rrwbRDgVx04MRwzJw067AKjtVfAqT3uqKgN3J7zDLQNjhJOrhH9gzMvyOGBA+2ns3vljrfzZeBigRWuuPy4y40aGwTVS93obN4THAsCCMY+6clFV6l0hz4ogYwvRc2IpUpPMi/cFkky7aNCOk9t6WqhCpCMH2c6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IkdLYp77; arc=none smtp.client-ip=209.85.166.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9DC4C6F
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 05:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705901287; cv=fail; b=oEHCj/DI9xZFea7qs977dP5L7HBs30F6MeChpg9Y4hEgzkkytO9LkQrC3v0AIqXniw/dKj9Qi7gHK7++AzURw9w1v2jrRTli0l++TtbVDzrus+aW+t++x/Wj7fsg2q+Rtbt75st7o1qPCCnBS5H+DKH9h3O28gsAvu/D805q0bc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705901287; c=relaxed/simple;
+	bh=Ja4J9E8AqzNCvl3O9+a2/Ccxq6y+5OBvHHoXuW8yq/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=T5o8g7j4OldoszFmmB0RR2wOFwLSO7C/AQIxF/psqTdImiu+EoulxRwG0qiPBItuoO+i94wwbB+XE/O74x2jacB43yLdQlkRc3/3Ylq/dF1DAwCMVkCWVA/1EfZP3RM1XLM6bq0IijESS2ztgJYtbPsrAyMm3vTgd2SeZ54ijL0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=VmkH9whN; arc=fail smtp.client-ip=40.107.21.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IkdLYp77"
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3619e804f2aso6737825ab.2;
-        Sun, 21 Jan 2024 18:47:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705891636; x=1706496436; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GX3pSxrY3aBKNpG2FRE7Ndm5aKev69TazfrkDbhfzx8=;
-        b=IkdLYp77tDtPb1pooQRzB8ARYAdWePYXJ1nWCIGx7QTEVfUlgNwO/8efu1HXnlGkkG
-         i+4Jc12YQC2DTEfi4+1wCx+80zFdYPlx8pIFpBAN/6PlrNJiFNPdFfKhKXXJbrdatp20
-         JDBa691jKw3rVa3ddBJ4QffLEI11EvO+fdvKK5FQcO5snQ29tX7FI3ZLhBleQKxFtW6o
-         7ed57RHzFObwj6QauKGTZI+VuSJK4qRCPGeGcE6Rtm2BXJE6FVXwXWTYQtkEIwtP9mmP
-         VXHb8EMyvKHmc9r62iwfA/ak/uJmVYk3PTBs2kv020JQ+AQlOWOxhcsPzVDT7b8FDUCa
-         cHtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705891636; x=1706496436;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GX3pSxrY3aBKNpG2FRE7Ndm5aKev69TazfrkDbhfzx8=;
-        b=vIMTrBv6Pdb/a+PWqQotzioeRRZmDA4byqu1x0cR46DyOVRrt7GPm5SgapyRilpbNG
-         IiMMkbgUOHqQhCwJ1zqZug7u0NRU50cND9pleYJMsHaUzoa2uctPW42Q1WDqgBd7K88O
-         ZV/ynoimuwf+68fcdFV5XOj7+d93MqHNsAptz1Rfo9SgyYuw/lHGkh6X47QXnycuhNAI
-         F2G2teUP2wZB/o1ZJhuvmr0PHfXR9zc9ZWeNTr4Q5oEA+SE9S5nfshcR2UjQPAYThC/b
-         vlZcPl1UUZ3af3S1UltUFRaHBMvn/zfqdxCrv0ylWQ1Ycri85L0gcIBR5Fwh8oiPsMdy
-         o9GQ==
-X-Gm-Message-State: AOJu0YzGEkDdOhiGBf1FtFGTxMvyZ4dzZGe/E8lhFYIRlee/rHgnujVv
-	2zpx361SeF0VJy/G4pELb/OYvQYuAAztzlG21HLg9fwtiWLxkjHo
-X-Google-Smtp-Source: AGHT+IEQRY+VQJwcWbXcI9RruOd3Mk/ahfG2ijsnUjuj12vYIejPGvQdFB/INdprRs07A80Ym2y9dw==
-X-Received: by 2002:a92:d20b:0:b0:360:a1f0:8dc with SMTP id y11-20020a92d20b000000b00360a1f008dcmr3239349ily.43.1705891636510;
-        Sun, 21 Jan 2024 18:47:16 -0800 (PST)
-Received: from fedora-laptop (c-73-127-246-43.hsd1.nm.comcast.net. [73.127.246.43])
-        by smtp.gmail.com with ESMTPSA id k3-20020a02ccc3000000b0046eebcdda49sm166313jaq.102.2024.01.21.18.47.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jan 2024 18:47:16 -0800 (PST)
-Date: Sun, 21 Jan 2024 19:47:11 -0700
-From: Thomas Bertschinger <tahbertschinger@gmail.com>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Trevor Gross <tmgross@umich.edu>, linux-bcachefs@vger.kernel.org,
-	bfoster@redhat.com, Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Benno Lossin <benno.lossin@proton.me>
-Subject: Re: packed, aligned structs in bcachefs (was: Re: [PATCH TOOLS 0/2]
- convert main() from C to Rust)
-Message-ID: <20240122024711.GC151023@fedora-laptop>
-References: <pawxsqxbjncrwtxytattvgizwrtmkis6suokgkb6wfm5xvsnhd@njjz4ywheu2a>
- <20240115175509.GA156208@fedora-laptop>
- <iiraqelv6wtwxcdf2yjtjt26ghejngfantjx7d4mztav27qu7y@gmiztxamveq3>
- <20240115191022.GC156208@fedora-laptop>
- <z7ajmttuzbvtxn4onwoxph6mevqt2rje2nga6cpux73geffias@p5kk7pqnswf6>
- <CALNs47t6qjYZeQKC+ahAaG6iNDGGNe8o+Q8tKhpRynYLWL3R8Q@mail.gmail.com>
- <gpokpnqgj6c2pcmtpiu46jy3kb3tom4xkp3fykg26zx6e3c2qe@zrnl2653qwsk>
- <20240121161124.GA151023@fedora-laptop>
- <cxben4yqhrraso7fiw54hj7wr4minkvxm7ibsh2yl4zew62jpy@xrraic3ceqns>
- <20240121193253.GB151023@fedora-laptop>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="VmkH9whN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VyEd9kMOsC2JzE6r4KQ+c5FG9K3XPDVMFwhHxPgXsul3DTjDWLJ+8GF3eGwxDagoFJpbb3I5vh1yfLzGf4ObJ8Bw6gh0eFh4hF1HkTYXvV9YbHe2s4cNhcdOuv2t1w3LpLqw9prcrso0w42sW8r/OZy6AlKOKQRCDZJVTvDy7K0Ssj++tuc1kgUusSqJr3+aVj2ohwWyw0ICPgEMCsBa5hGQj46O0qHIr2tFHBMXQjurxVLVq9poZcah/+kRiBNojI0ZJfTJ4HZrE0xR2sJV9T2WTYf0FWszuqLSWoM+4exPXyi6q2Yh/LwUnIk6qtbNYaXoRAadhxeGOAw4xkXNOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X0LfsVi6L2Q+mVFrQvSYRr++BvW+fY9cOi2yhFqeZ/g=;
+ b=KAzRxqsN6nw6BeRYhbCH1qOUEvld3OpXbkdCWJvQ1zc5kcfJ7rvOhf54kKJWqTynCHSR8fjTqVWKwI6sMiFbRSCXiGxDAwfBpQ5sG0R46el7poK2+tuy/sw5Ly6ggL743fXYUt89417aFCOKZVzSvrAxOvxLX7MmBxHlHBakrF3JCjbDJeUg0JSERVoutHnUfZ2xBISpPmvO0zdgnTZ8D2JLPedp3fsT8hAytol2b3qJYYsvvBIiwOtWmwfSaZQ9FPbl3enXSSYjkU7YeB9AytBQJ304qWSUOHGHj+9qG3BXbURTplAbPWHnnZ0k8GsHa/2eWQAIc27Mf2y5Jtzk/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.203) smtp.rcpttodomain=arm.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X0LfsVi6L2Q+mVFrQvSYRr++BvW+fY9cOi2yhFqeZ/g=;
+ b=VmkH9whNs+JBZ4buJdjuSfRz1aGuE7VLr2tKt1IG3wjCgkBFUHQDwXbehpuKnHDXe/7vjU2thKCYCFDwVPRli8RvYr/Tx7mc807yjFj1ivK9X7lnl1FbHyMGkXxuLPHr0evO4P2/JRZ/vmQeCa9DlD60thqp6qU/mLLSjXvzQFtAYJX6aFjFNE9bbIkD54A0bSI9bhrYHAtrRC3RYCKYB4drpm/n6t4VI+ivbbZ3WDZYgGCafq7Tgq3zXhjOWbvORaGsVNgqtCDms11YHeBT8gkbwH/f0Eb24ekAhaxLb5HOUwJajAphb8MC1E35Le0RREROT05pxWWXolT8yS68Ow==
+Received: from DUZPR01CA0247.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b5::17) by AS8PR10MB6149.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:573::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.32; Mon, 22 Jan
+ 2024 05:28:00 +0000
+Received: from DB1PEPF00039230.eurprd03.prod.outlook.com
+ (2603:10a6:10:4b5:cafe::94) by DUZPR01CA0247.outlook.office365.com
+ (2603:10a6:10:4b5::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.32 via Frontend
+ Transport; Mon, 22 Jan 2024 05:28:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.203)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.203 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.203; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.203) by
+ DB1PEPF00039230.mail.protection.outlook.com (10.167.8.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7202.16 via Frontend Transport; Mon, 22 Jan 2024 05:28:00 +0000
+Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ (139.15.153.203) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 22 Jan
+ 2024 06:27:59 +0100
+Received: from [10.34.222.178] (10.139.217.196) by FE-EXCAS2000.de.bosch.com
+ (10.139.217.199) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 22 Jan
+ 2024 06:27:59 +0100
+Message-ID: <e040821f-dc52-4317-8244-6b0b29250bdc@de.bosch.com>
+Date: Mon, 22 Jan 2024 06:27:50 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240121193253.GB151023@fedora-laptop>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
+To: Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	<linux-arm-kernel@lists.infradead.org>, <rust-for-linux@vger.kernel.org>
+CC: Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	<steve.capper@arm.com>, Asahi Lina <lina@asahilina.net>,
+	<boqun.feng@gmail.com>, <andrew@lunn.ch>
+References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
+ <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
+Content-Language: en-US
+From: "Behme Dirk (CM/ESO2)" <dirk.behme@de.bosch.com>
+In-Reply-To: <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF00039230:EE_|AS8PR10MB6149:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb7feffe-5596-403e-4692-08dc1b0ae5f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Z9tfHSK+wYeUnN7J5E5jXFpl6RZaIU3RHmr+Av7y6iboeGEOEYyeq5kFx0U4RIyDKgYcbM/RU3wiKLHOr0iCBYq6bidUsxlZB8Jmo5k1frzGM+wvVvmD7m3A4CgTu0R2lwlvQZtpQdrMitoRbAbpc0KoGX9575/1vZaBhcGA/L+aNqwKdmcaJN2g7PZJwkspfeB+vU4cMZpagvs+s0bKbfXpgCkt15nSCj3HMgOs51VZzNLPG3yRhvEbHTSwWYrH4erKd4YrIzLXf0Mf8ZfCyP1zuRZaRvjIpkW0CejfwMxhKMOhN2pKdarmlaRA7uAf06GSO+RYi3EyeFcEFri3AuuI4q9xASoPMx8BgqmuO9kOwOSVBshDrAjrSOWLjwWIIbz/UziTj9Lh6nPUu4Rx2lbGrEx7ywF7u3PxfEG4G+Pudm+JG2aT6kq/UeBZYgcOsPZMrO2+op166BSXF4zW3952PIBGwn7nJ+2pFK0546VK3KQAwIQsttCs3K5+O6XU4/IumFQY5nUSUoKjx1sexIMRytEui0WclnZtD+vZyLiUu9aUXGpiSYZz4DFHp61ImBrLLJdnpTubgglx6vvz0frPM5bZD1hEu5SoETKU12vuoDFQLLwlV6DJU9ulMflcaqgy1FbRxKaqtYvHZiNGjubro91UYLexUsMtUTzjh/gfAWiglL7PDKj3LiMAqwDOl1RypDpC3Z5xGwGv1i+Hbj0pzIsCxchKXnkboWfLaKL/r09eRJIdJJ4wT9cuq5MIoeKPWy4/Vby2k0G1tYtOBLhkWQN5HL8kFobkuLYmYdAK3xqymP+hhNDKye744lYSAJYF2n+xVUktAdWktQllysF/h2wN2RVx4TEcck3LKas=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.203;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(396003)(136003)(39860400002)(230273577357003)(230173577357003)(230922051799003)(1800799012)(64100799003)(451199024)(82310400011)(186009)(36840700001)(46966006)(40470700004)(83380400001)(47076005)(82740400003)(2616005)(26005)(16526019)(336012)(426003)(36860700001)(53546011)(4326008)(8676002)(8936002)(5660300002)(2906002)(41300700001)(7416002)(478600001)(6666004)(54906003)(16576012)(70206006)(70586007)(316002)(110136005)(356005)(81166007)(31696002)(82960400001)(86362001)(31686004)(40480700001)(40460700003)(43740500002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2024 05:28:00.0288
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb7feffe-5596-403e-4692-08dc1b0ae5f4
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.203];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF00039230.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB6149
 
-On Sun, Jan 21, 2024 at 12:32:53PM -0700, Thomas Bertschinger wrote:
-> On Sun, Jan 21, 2024 at 01:19:24PM -0500, Kent Overstreet wrote:
-> > On Sun, Jan 21, 2024 at 09:11:24AM -0700, Thomas Bertschinger wrote:
-> > > I made a script to compare the size and alignment of bcachefs structs
-> > > in C vs. in Rust generated by the patched, lossy bindgen. All sizes
-> > > were the same, but the following types had different alignment:
-> > > 
-> > That right there is really good news. If we can add that script to the
-> > tests in bcachefs-tools, we'll already be in better shape than we were.
-> > 
-> > I wonder if it would be possible to upstream that check into bindgen.
+On 20.10.2023 17:50, Jamie Cunliffe wrote:
+> This commit provides the build flags for Rust for AArch64. The core Rust
+> support already in the kernel does the rest. This enables the PAC ret
+> and BTI options in the Rust build flags to match the options that are
+> used when building C.
 > 
-> I did this with an awk script that grabs the structs from the bcachefs
-> C headers and outputs code in Rust and C to dump the sizes and
-> alignments. I then manually added calls to the generated functions into
-> the bcachefs utility and diffed the output. I'll try to get this into a
-> form more suitable for an automated test, and hopefully submit a patch
-> to bcachefs-tools soon...
+> The Rust samples have been tested with this commit.
+> 
+> Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
+> Acked-by: Will Deacon <will@kernel.org>
 
-So after looking into bindgen more... it turns out that bindgen already
-does this! All you have to do is run "cargo test" from the
-bcachefs-tools/bch_bindgen/ directory.
 
-Reading the documentation helps :)
+I'm using it since some weeks cross compiling from x86. Boots executing 
+the sample code and the KUnit doctests. So:
 
-The bindgen tests basically agree with my findings, that struct bkey
-gets the wrong alignment (4 instead of 8). There's one other problem
-that follows from this, btree_iter.k (a struct bkey) gets the wrong
-offset.
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-Manually adjusting struct bkey to use #[repr(align(8))] as described
-previously fixes both of these problems.
+Would be nice if we could get this merged :)
 
-The other problem types mentioned earlier, bch_extent_crc32 and
-bch_extent_ptr, are handled manually outside of bindgen so they don't
-show up in the bindgen test. However, they can be moved under bindgen
-control and fixed with the same technique, using align(8) instead of
-packed(8).
+Dirk
 
-This works immediately for bch_extent_crc32 but bch_extent_ptr is a
-little trickier. It is a member of struct btree_node which has a
-"packed" attribute so we run into rustc disallowing embedding aligned
-types within packed types. Luckily, replacing the packed(8) attribute
-on struct btree_node with align(8) appears unproblematic.
 
-Given all that, I think it should be possible to move forward with an
-unpatched bindgen as long as we're OK with treating a few types 
-specially. We can move all of the above types under bindgen control (so
-that they are covered by the automatic tests) and post-process the
-bindgen output, as suggested in this comment [1], and use align(8)
-instead of packed(8) for these types. 
+> ---
+>   Documentation/rust/arch-support.rst | 1 +
+>   arch/arm64/Kconfig                  | 1 +
+>   arch/arm64/Makefile                 | 4 ++++
+>   rust/Makefile                       | 1 +
+>   scripts/generate_rust_target.rs     | 4 +++-
+>   5 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+> index b91e9ef4d0c2..6bcb3b97c5b6 100644
+> --- a/Documentation/rust/arch-support.rst
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+>   ============  ================  ==============================================
+>   Architecture  Level of support  Constraints
+>   ============  ================  ==============================================
+> +``arm64``     Maintained        Little Endian only.
+>   ``um``        Maintained        ``x86_64`` only.
+>   ``x86``       Maintained        ``x86_64`` only.
+>   ============  ================  ==============================================
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 78f20e632712..d72618433521 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -227,6 +227,7 @@ config ARM64
+>   	select HAVE_FUNCTION_ARG_ACCESS_API
+>   	select MMU_GATHER_RCU_TABLE_FREE
+>   	select HAVE_RSEQ
+> +	select HAVE_RUST if CPU_LITTLE_ENDIAN
+>   	select HAVE_STACKPROTECTOR
+>   	select HAVE_SYSCALL_TRACEPOINTS
+>   	select HAVE_KPROBES
+> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+> index 2d49aea0ff67..52d75c9483a9 100644
+> --- a/arch/arm64/Makefile
+> +++ b/arch/arm64/Makefile
+> @@ -41,6 +41,8 @@ KBUILD_CFLAGS	+= -mgeneral-regs-only	\
+>   KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
+>   KBUILD_AFLAGS	+= $(compat_vdso)
+>   
+> +KBUILD_RUSTFLAGS += --target=aarch64-unknown-none -Ctarget-feature="-neon"
+> +
+>   KBUILD_CFLAGS	+= $(call cc-option,-mabi=lp64)
+>   KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
+>   
+> @@ -65,7 +67,9 @@ endif
+>   
+>   ifeq ($(CONFIG_ARM64_BTI_KERNEL),y)
+>     KBUILD_CFLAGS += -mbranch-protection=pac-ret+bti
+> +  KBUILD_RUSTFLAGS += -Zbranch-protection=bti,pac-ret
+>   else ifeq ($(CONFIG_ARM64_PTR_AUTH_KERNEL),y)
+> +  KBUILD_RUSTFLAGS += -Zbranch-protection=pac-ret
+>     ifeq ($(CONFIG_CC_HAS_BRANCH_PROT_PAC_RET),y)
+>       KBUILD_CFLAGS += -mbranch-protection=pac-ret
+>     else
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 8d75a6ffe951..8ced65c9b905 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -294,6 +294,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+>   
+>   # Derived from `scripts/Makefile.clang`.
+>   BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+> +BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+>   BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+>   
+>   # All warnings are inhibited since GCC builds are very experimental,
+> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+> index 3c6cbe2b278d..ec5ef35dbe52 100644
+> --- a/scripts/generate_rust_target.rs
+> +++ b/scripts/generate_rust_target.rs
+> @@ -148,7 +148,9 @@ fn main() {
+>       let mut ts = TargetSpec::new();
+>   
+>       // `llvm-target`s are taken from `scripts/Makefile.clang`.
+> -    if cfg.has("X86_64") {
+> +    if cfg.has("ARM64") {
+> +        panic!("arm64 uses the builtin rustc aarch64-unknown-none target");
+> +    } else if cfg.has("X86_64") {
+>           ts.push("arch", "x86_64");
+>           ts.push(
+>               "data-layout",
 
-What do you think?
-
-[1] https://github.com/koverstreet/bcachefs-tools/issues/202#issuecomment-1886962791
-
-- Thomas Bertschinger
