@@ -1,66 +1,65 @@
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3A033CF4
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 09:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EBB39FC9
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 09:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705915798; cv=none; b=AfRqxM4QpaXsocfqdfaUGIkDrW1yN+aXJ8pPubl7HzuPYQXY2rUAZZowiAPW39RKeNWEnaSb+I6VCLfEcDBv09LCAOSy71dZBWdvJ8WCUeULvCjJ/QiTlD8CLnzj9zcd8v0vrJuijZPKBx5Y5hR8INxkHKG7p+U4Om4Egiz1qv8=
+	t=1705915854; cv=none; b=JK7zzlR1qiR+GdAA+f4ZAQ5n+SJgTvTPS51gykGH0ULnSCWmCt73A2fNOdWKVvRdKeQy1dnZOlwj33ZSpZv0FaXDUV2NV5Hfw83D30oDir7KDr8iKj7ZZZMlStublSqsHoMXPllbRld37NZQwr6qeeGPuRNURJXQZuA5F0HWKFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705915798; c=relaxed/simple;
-	bh=ZqAsJSg0eqzkEbEetvnGbaJchXsIfT5NCNfzIH0yj4k=;
+	s=arc-20240116; t=1705915854; c=relaxed/simple;
+	bh=0AN0JDjDVHMoC2zzsS7borJezHJPl6GsycxqB9ysPvQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=o8GAWU/e89dToR9oMbbcq7gRdC3nFFLl6tBUwbzjCDrD6IpWyEiyWDbn0w5gZPTV0ccmPX2wflym0vuFYkzrq7TNJGyOf6zI3qm1mlX4eM11EwSYvb1qn+8XJG+Qwhr1fHkze4q06aYhZ5zcvPPqbdJnCXza5Lpq86WBxptjC+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DvPiQB8z; arc=none smtp.client-ip=209.85.208.202
+	 To:Cc:Content-Type; b=tiWakN/mfOovYJRw/zShyEP0a5xL8rkbnf/wnuwqMSin/vRf9hU+nzjaougf1VU4/2Z5sLXJjs3zi2lbc5+JuqVrvS8fA7rr2/p+xd1cp5OoqNM5ZCLxC1z+tlbTPUf1sttPgvLVmhvRr5hnULX5Xr4cLHVn+BJ8I10gjCh/F8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j8cVmH3H; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DvPiQB8z"
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2cdeb808937so18024151fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 01:29:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j8cVmH3H"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5ecfd153ccfso42577787b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 01:30:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705915795; x=1706520595; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1705915852; x=1706520652; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QKRFYI4mzYUCWy9y4OiVImAthzXGQ+LzIhQ+1lzTvnk=;
-        b=DvPiQB8z4E3+QMPKQRHhaTWkT8dPj7znlmCm+ien7h/K+BI8NZFZiRqs+FY3/j6suB
-         0hTrvmF13zjVkITYXIVM/yAFABhsCmXpXScM0nF/YD+JCCcjtgZLRtBlwIN683HBjboI
-         CUKeNrX4ilyVYbyQW7sNo3nvPzUUEuvHjlHaLnT2t9OStuW00tIAxs0MY8PSVH3Kx/+l
-         BKR6zfdvu7PvktXaeOBZq2QkWhqSg/XAyIV/aWGN0J7+MVOVs8enNVekY0o3k/iVPx3r
-         vytoCCrIe4XLdpi16hX6sfbjkytjyy4UiHhjNEws4Ktqvs8CZvQ3dl/lPjP0eV+90E9I
-         aLhw==
+        bh=a89Jvo+Ur6qyxnNBf92ZOJQ2JdSYqdLiyDhsk93muCw=;
+        b=j8cVmH3H1ItqmCEOvzpLV+3/mW16CXMG11Iq7T7XeXn73tnWs2pq6HvaI4GYEyH9sb
+         Ud16PtntUulSeCXuvDNlOQAkif0BF/5VbO5Ls0ttR80p/b9gWlSfu1R01/Ba7oBljuNi
+         FJWQgDr1dRWM5nURn6C/DEPVvU9rJja8BPVTMdtrdK42Mt2WF+g16/uGB49RpmAdQ0hT
+         wdrr6YfZSgF2U6HEoU8Immw7MZydelDsbLNYbxucOZNdNgc+PeW1uouDdJMZBKqI33ED
+         JMCenjcWAtiHScA2PT36Qh3QYas57MaIg0Mr7L+axpxlHYG6NU1QuKTswF6KhcuJOCSd
+         cN3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705915795; x=1706520595;
+        d=1e100.net; s=20230601; t=1705915852; x=1706520652;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QKRFYI4mzYUCWy9y4OiVImAthzXGQ+LzIhQ+1lzTvnk=;
-        b=Utl/ZcXjAnrXb4V0yaauD+KLBxRVj4whB+mhEKELMJYtZaCQL3G5nxexXD5eWh9/1I
-         oKhNG1AGK+ichTABvGU4xulmYm5OmCiLl8V5S+JCYD6wsftcEZGHvTyfvlJcRzUFxkLT
-         rlOfarY1UaXWAMIKwKp0a05dgc/MnQqyf+oPyKigOyLZ1mFukLeuqdEpbESzs3gzZKI9
-         2hddT5NgWPZnbT2UQol1sgStxyZjzbAoFGQjvx/5Ms53bGyyb/sEuYWdokZgs6GMSEPB
-         J8XfEtYjmKeEQ/L6Cf51Hj17EmYv1TkthCDOxTPtmeUkvzjPfg+VUwjjGYf81fFRNVAD
-         Um0g==
-X-Gm-Message-State: AOJu0YxtRl5dxy2rtxc9Pnto8CNPYu8Mc1UeDWfkgMt0flNjsMnBiRaC
-	r90ia37Bs5H4utJujLZZfiuO6XHzTT7z21CnxRMYEx9FVQVDsc2C4sxFJOOOLOf02BwiAkuloSx
-	FHC6+rOI9L7+NsQ==
-X-Google-Smtp-Source: AGHT+IEsMMKuFe5/jgf+U0BA0xo9fWib/S3e8TEmRSaTvO4jy91rJOeSI94h+d/EUCO79TGYM3SYWq9x7vpOxGc=
+        bh=a89Jvo+Ur6qyxnNBf92ZOJQ2JdSYqdLiyDhsk93muCw=;
+        b=RPSvcWKqYiokSsixzfnVS+5cn4RekeXjsvLBAek62gN79lw4PBSxMWIC71rstr3zzf
+         mRLijjrWkoWuXW4qa6PSKDcszHcVHQkxuPyLBFxQXAkmU+eeyiQz+zeqGiPa/UDCSwYH
+         AC1jnYiLqLD42sY8PUzoMRsgyE9sdKcVV9ODWrj1bbbxEFfJfRyp2QvhULPsQQb9d9VU
+         LK6Hcwt1Ld+6c+IntWWVKh4pUqR0IkNODlWrMYUzNEVzu54teqKK6KnZ25esKOxzP8Pp
+         w3pa8rz7OYahrRFb3i17qmkoC13bRmSVoySsc7fX+PoVS+eEw3E89+RrjqP+g9QxHDZO
+         Lq2Q==
+X-Gm-Message-State: AOJu0Yxob7yq+fb1x8hOhP0Uomzexud1GgIhjEDAsKH29Ll2ILADNJt7
+	JMKkda3BHGS6Md7u5xhHzd6IYD+8E5/a2ka1Qhvh4mrpY3Gt5VC0Bub7D+dnCXGaItCjcNXia2z
+	UQUDjNW30r5a1lQ==
+X-Google-Smtp-Source: AGHT+IFQey2rcY+kVQveT0H1v/C5pAuYbvIgfXr9YKY0YUXpqYAimz7mtbVxKe6zo/TZ6XEKjf6xnDkmObhKo4g=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:84d7:0:b0:2cd:c20:1dbc with SMTP id
- q23-20020a2e84d7000000b002cd0c201dbcmr6024ljh.10.1705915795233; Mon, 22 Jan
- 2024 01:29:55 -0800 (PST)
-Date: Mon, 22 Jan 2024 09:29:42 +0000
-In-Reply-To: <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:218b:b0:dbe:9f60:c72f with SMTP
+ id dl11-20020a056902218b00b00dbe9f60c72fmr2061997ybb.4.1705915852340; Mon, 22
+ Jan 2024 01:30:52 -0800 (PST)
+Date: Mon, 22 Jan 2024 09:30:48 +0000
+In-Reply-To: <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20231020155056.3495121-2-Jamie.Cunliffe@arm.com>
+References: <20231020155056.3495121-3-Jamie.Cunliffe@arm.com>
 X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240122092942.1571272-1-aliceryhl@google.com>
-Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
- of builtin targets
+Message-ID: <20240122093048.1572191-1-aliceryhl@google.com>
+Subject: Re: [PATCH v4 2/2] arm64: rust: Enable Rust support for AArch64
 From: Alice Ryhl <aliceryhl@google.com>
 To: jamie.cunliffe@arm.com
 Cc: andrew@lunn.ch, boqun.feng@gmail.com, catalin.marinas@arm.com, 
@@ -70,13 +69,15 @@ Cc: andrew@lunn.ch, boqun.feng@gmail.com, catalin.marinas@arm.com,
 Content-Type: text/plain; charset="utf-8"
 
 Jamie Cunliffe <Jamie.Cunliffe@arm.com> writes:
-> Eventually we want all architectures to be using the target as defined
-> by rustc. However currently some architectures can't do that and are
-> using the target.json specification. This puts in place the foundation
-> to allow the use of the builtin target definition or a target.json
-> specification.
+> This commit provides the build flags for Rust for AArch64. The core Rust
+> support already in the kernel does the rest. This enables the PAC ret
+> and BTI options in the Rust build flags to match the options that are
+> used when building C.
+> 
+> The Rust samples have been tested with this commit.
 > 
 > Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
+> Acked-by: Will Deacon <will@kernel.org>
 
 Tested with Rust Binder.
 
