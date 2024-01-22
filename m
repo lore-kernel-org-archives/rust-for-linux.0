@@ -1,92 +1,140 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B86482FE
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 22:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80AC48CEA
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 22:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705960878; cv=none; b=OuDxsfTRLi1yUI4A23vuiWZPSlsLFwn2By1etjSwaiUYU28QnusUDh/3wz2MkNNwzbuuJ0uyzNqCMkijJNb4Dfg99AbmuDgALg1oO6L/Mw1vpoDJDkQ/i//O6vhW/bX0OuncyQ4zMPWIJTaMYGP3SAsg976RhQCfgyIHneeBx7g=
+	t=1705961805; cv=none; b=q+MAPkTmNO1p/Ih1QGqBKDtViaC5/Yy2YC8m0OXY5mc6uYzqje0w0jvjz823uPHZ143P+0aoX1qMx4G8vkCTkqWoNA6Qml06/zIhaHQtmG/oaUuTQwsOVbQsGTE3prLBBQlQ6mVC5ouZ0UWfKJZDyDz5dR2xCdBPTunTcUrrh/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705960878; c=relaxed/simple;
-	bh=HV6OiBsciC++Jo+8h0pXrpvakdOyF7V8kpBvkj3Ls4A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ovi3jSl+mtXjVmCOdeyF/OEppTWJf65Wwk+7Y7IxM+rUzlhYwvZPoXCgE6pdWujT7B4NHv6Oydmsx24nz1rUl2TUOp2X9gNsvIgI19yUYb3S600JGozjfltcxZPsFIIeaDxBNsr+cZ+ft2em48LN9M9DH7fdknDrelyOAOZbKY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=ADKj9UmR; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1705961805; c=relaxed/simple;
+	bh=zpHSxyxjqSYyi+Uuf35ROAtNAMm8L1pBJx6LkCld5PQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=j4xHgxNGoeRwFtFJVWIcM+LbfcU+wbYFMrkyX4nkfUhizRUG8BiJygLgkQH2iSMyiHTE7K72CM5gizG8AGmGHb92QNvV4rP9NVwCuZWkYopkklI/bi1cpBwIPApvRafecqZ3KCaYr7j54wtUN05tnZ2ZlttqcMQnckAkWDC3ZBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VSPk+y3p; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="ADKj9UmR"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-5f254d1a6daso36494567b3.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 14:01:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705960875; x=1706565675; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HV6OiBsciC++Jo+8h0pXrpvakdOyF7V8kpBvkj3Ls4A=;
-        b=ADKj9UmRoNHdtVF/wVHBaQI8ZK0eX6FqGjhTTwrPOHoEyJ3TLYksPnb5t0WJXEFUtG
-         PulzD+BIzaTLXnmfOv5YpB4CpPXDEbBf9qwx50A8r2GQjJFv0l1+MMtJkKwAIjdXaccS
-         W0OaQNG+PQoG3A2rDoTYawroZOmb4obTMjOM+ZusFbqOYo35oLU1RRB6ZXcmLhHR2ZRx
-         aONYpY60tCpbpRsEF0Ek8bmdXUPlnvUcyStTDNVLeVJ8m7FKBSeIDVC9vC3YDD3x71to
-         QFioLS4ygrULt8ELDUiV2lfXM653IJm4KQcaZTcjUzj9HcpffjZISK9/aFaFypTbWk0+
-         xhrQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VSPk+y3p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705961802;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BgrZaLUDZX0rpHph8wYR2fbFPEW3Vfi/WSc3wqW+lkA=;
+	b=VSPk+y3pMFg3qnD5RKFQKTTovm1b75i5ud4SGTVAEybDl7Umyd8Trp1dvpT3u9Po2G4fiJ
+	3FjIStXwLoGKjQe+upeOP6Dnb7oaPOwBSt94oNcUk4V0eRcgqrXfXyiR59++DSRk+2Rx2z
+	H8FO3g2Tr2+lYLD2rJDNSgkj+0cEei8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-4um0nFYSNlurWOBtrdV9ZQ-1; Mon, 22 Jan 2024 17:16:41 -0500
+X-MC-Unique: 4um0nFYSNlurWOBtrdV9ZQ-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-339222e46a0so2111164f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 14:16:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705960875; x=1706565675;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HV6OiBsciC++Jo+8h0pXrpvakdOyF7V8kpBvkj3Ls4A=;
-        b=hBOUYRrP07NDitYze+n9Y/xg5qyShMRaoFiXZ6nXd9XSuRV39pXUzhotJlvNLi0xVg
-         Ip6/nBIEc8aSA07Nr78zury2kgbzwjOMgjqMSVYNp/0Ed+LPAb4kzp+psOGzi6r9qVUT
-         bdDtJlYpaayaBjkqtH9K/gjG2FdZqkuLblgss3ahlzjT4zOUpCmrCsWibk6HbzcgZXA3
-         cEkynZ6pwO5FxkdSU3dutL53KG4f5m7RLAlX/iRHaDlE3E4PwmumD8elYxNa1cvTe7PF
-         eFM+6DAaBOuZshQYnLKPRlmnVlgXuyZvWq4xSZyhSKeN/R0vseNl6FvVVgCnuat0HOok
-         7JqA==
-X-Gm-Message-State: AOJu0YzhvxboG++iCUXuTTgDCX/aYSGw3s8/gTXF62Mrg2X3gXGTeukz
-	yfZrjrHP5chulkVGLrBh2B/Ybwlu9FD41+TqNabV1GzPfE099+DQlD0uGQ8F5vPEC0dTBlmSGp6
-	R4O1zZ2cwqwL4dzp6eWyLUcGPZOYJCCWEUaaTWA==
-X-Google-Smtp-Source: AGHT+IEErfDr9LG9li8VVZoLmYdWhmU0WlTMThVtzufqily2nzlldnoeSYme3HuHo3p0LnXa8gShXUF83UxcO7r56uo=
-X-Received: by 2002:a81:7cc4:0:b0:5d7:1941:2c18 with SMTP id
- x187-20020a817cc4000000b005d719412c18mr3674878ywc.69.1705960875371; Mon, 22
- Jan 2024 14:01:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705961800; x=1706566600;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgrZaLUDZX0rpHph8wYR2fbFPEW3Vfi/WSc3wqW+lkA=;
+        b=fygFPCKrZ84fygIgYYI/bYM6ra8MggCHD0hVisPgq+DqagHMGK6TRsgIiLc2aFVuHL
+         aPxy0lhhaLELqPgiIVxPfyT8CJ60dxo6/tBPyePSypjf4PLllyiDlu1gZ468fuLcabDT
+         ttFwoBdAvx3W2/n6fE5SPbsgoy1aahPJ+MqlhTwuaYQALiI4YDL5ZABZCdmdyys/xX41
+         0GaNXCVoNEWdUjIzTCp84CXFWglzZ793CBaQitFDsOV3YW/vtz57ytoWbPwQOvYrZum2
+         CKiwlcWWTTmktL7nBXFA/sHKkejLLfVjFPXaj/+5aiHI4Nx6veF7Erf/BPJy/3WVivsN
+         WsDw==
+X-Gm-Message-State: AOJu0YygQZGfWstpG5hNHh/6nro/6j4O6f8ujWUOwiUfeDtV7+ypGxnJ
+	JAr8BDy82e+xgL1gJdHoR5XpeftKm+T5BFhF6dG3gVx5KdY8V+X/2xax4jr9CdIf7CRCps2cyr+
+	QYBzrLe3Rid2l/zANeUac5uvqc2LB94aLtb0r0SnJ3Al9Id9W1CgMn57bAGsirzcR
+X-Received: by 2002:a5d:448b:0:b0:337:bf4c:3a81 with SMTP id j11-20020a5d448b000000b00337bf4c3a81mr2380771wrq.75.1705961800511;
+        Mon, 22 Jan 2024 14:16:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWdH0GMxWI068JJC+LHDgSL52h2kQAYV0P+HNqImIdsOA1ed+Uxg1v1MOWcAqydVLXIXeq+Q==
+X-Received: by 2002:a5d:448b:0:b0:337:bf4c:3a81 with SMTP id j11-20020a5d448b000000b00337bf4c3a81mr2380760wrq.75.1705961800201;
+        Mon, 22 Jan 2024 14:16:40 -0800 (PST)
+Received: from cassiopeiae ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
+        by smtp.gmail.com with ESMTPSA id j14-20020a5d604e000000b003392cdeb3a2sm5703597wrt.103.2024.01.22.14.16.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jan 2024 14:16:39 -0800 (PST)
+Date: Mon, 22 Jan 2024 23:16:37 +0100
+From: Danilo Krummrich <dakr@redhat.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: str: add to_ascii_{upper,lower}case() to CString
+Message-ID: <Za7pRc1wTtEhObTN@cassiopeiae>
+References: <20240122184608.11863-1-dakr@redhat.com>
+ <CANiq72kdX-LK=OurnR5ZGDXEf90DxshUX13up4c8kiz0jxHc+Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122162553.64610-1-linux@obei.io> <0100018d31fe5238-538d9c26-64a3-49cb-ac76-22362f73d80f-000000@email.amazonses.com>
- <CALNs47v_2LxKnpWRYnM0Jcj+wdzPFQcfuaHyh_GnbLgNDXHLZw@mail.gmail.com>
-In-Reply-To: <CALNs47v_2LxKnpWRYnM0Jcj+wdzPFQcfuaHyh_GnbLgNDXHLZw@mail.gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 22 Jan 2024 17:01:04 -0500
-Message-ID: <CALNs47vzsq40HnAn_1XiALVD-eooYB=UN_cf--=k8f9_KPaYEA@mail.gmail.com>
-Subject: Re: [PATCH] rust: types: Add `try_from_foreign()` method
-To: Obei Sideg <linux@obei.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Matt Gilbride <mattgilbride@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CANiq72kdX-LK=OurnR5ZGDXEf90DxshUX13up4c8kiz0jxHc+Q@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 22, 2024 at 3:33=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> On Mon, Jan 22, 2024 at 2:11=E2=80=AFPM Obei Sideg <linux@obei.io> wrote:
+On Mon, Jan 22, 2024 at 08:38:26PM +0100, Miguel Ojeda wrote:
+> On Mon, Jan 22, 2024 at 7:46 PM Danilo Krummrich <dakr@redhat.com> wrote:
 > >
-> > [...]
-> >
-> > Cc: Alice Ryhl <aliceryhl@google.com>
-> > Cc: Matt Gilbride <mattgilbride@google.com>
-> > Cc: Miguel Ojeda <ojeda@kernel.org>
-> > Signed-off-by: Obei Sideg <linux@obei.io>
->
-> Optional docs update below, in either case you may add:
->
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> > Add functions to convert a CString to upper- / lowercase assuming all
+> > characters are ASCII encoded.
+> 
+> Like Alice mentioned, please mention the use case, i.e. the "why?"
 
-The others have a good point, please resend with a default
-implementation on ForeignOwnable and I will re-review.
+Sure, I need this in the context of converting stringified enum values
+(representing different GPU chipsets) to strings in order to generate the
+corresponding firmware paths. The project context is Nova (GSP only Rust
+successor of Nouveau).
+
+If preferred, I can add this to the commit message.
+
+> (perhaps also linking the Zulip discussion if you like [1]).
+> 
+> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+
+Sure, gonna add it.
+
+> 
+> > +    /// Converts the whole CString to lowercase.
+> 
+> Please use Markdown and, if possible, an intra-doc link, i.e.
+> 
+>     /// Converts the whole [`CString`] to lowercase.
+> 
+> Also perhaps we should mimic the standard library docs?
+
+Mimic, as in copy them over (to the extent they actually apply)?
+
+> 
+> > +    pub fn to_ascii_lowercase(&mut self) {
+> > +        self.buf.make_ascii_lowercase();
+> > +    }
+> 
+> Why did you choose the `to_ascii_*()` name for these? In the standard
+> library, the in-place ones are `make_ascii_*()` (like the one you call
+> in the implementation).
+
+Should be make_ascii_*(), agreed.
+
+> 
+> Should the new-object-returned ones be added, by the way, if we are
+> adding these?
+
+Sure, I'm fine adding them as well. Not sure we'll need them for Nova though.
+
+- Danilo
+
+> 
+> Cheers,
+> Miguel
+> 
+
