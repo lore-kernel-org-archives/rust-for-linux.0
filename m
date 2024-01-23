@@ -1,118 +1,125 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37195FDA8;
-	Tue, 23 Jan 2024 18:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B028B481DC;
+	Tue, 23 Jan 2024 19:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706033952; cv=none; b=Fu1/RJVBh329XGOpZYVBYuLenxcIBg+C3DpKhRab1waOwc4cqDzaGqVr1W+gvCbof3D5ls52KKGD0x6QqbSajxJdRFh2OZA2/DieQRNhUdzxPsmM0FqEy1FlJyPB4Z3a8Smc6y4z9Lp1f0duhSbZGqvLAAO6N5nhUaxNBi3KjtI=
+	t=1706036984; cv=none; b=LgVGwk6Dn+BVwGnesvCJ/8VX0AJXQQh65qM0el0Q+f+Ne6uNa2Wc0OPE5KMdRk7W5SgYc0TcaISs97M1n/BQDDjZgsWdKXXF3UAHjLv/+cGnGs3PmCSezeNWbKmbRQGGtEPyn9rPJUyFva6RJEgHJxaAgOIoIWpXZVGSUovRs5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706033952; c=relaxed/simple;
-	bh=I7EaLHyv+zjRWE7JLMFlBZeY21iA0/68G15sTjitmic=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VlEZ8+E0CWPs/O/7QsO1NJ1IeASvmBW5LVxwlRWbgyZA0DySqtGpP6Mzn+mm/2uq3KuZylL7hHqZwtCcWfBlw2YjZvJ7dwlK9uU1yd3JYD6TC10dZcDZs12SPvkbY5fCSd1zGNCvDvF09w+MMQLN+19oMdjtks/l9aj+XMvx034=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OpKuEnyi; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1706036984; c=relaxed/simple;
+	bh=GfcqHqYn6zpa43HZfbBWu94lrhx0W3/9XvbrHFWuZe0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nKN14gnUHGZZcKqZgw4PHNgeNdHNerLoaH1uszEH7VqcyZ9WPVKKcKQye3PfcqVb1Je/IB/QIZqGnp2nCxt+QFlX6xPspweJIFvlzIdpDZormpKdGA/tzboaucDCrCmtrqpyxQfs4iZIlZ/t1UpveOwpVSsNMWxm+s781OXymjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kUhLAkwG; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OpKuEnyi"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-5ff828b93f0so40325947b3.3;
-        Tue, 23 Jan 2024 10:19:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706033949; x=1706638749; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I7EaLHyv+zjRWE7JLMFlBZeY21iA0/68G15sTjitmic=;
-        b=OpKuEnyir1x2y+q7QGDmN4HZJwzbE7+t38KTBW5nYmK6SaSZ6nzo1O2xTx94Lznt8h
-         M38E8Kksd7gbXMhrCXKnvE+80snY5ENgq8G0Vm6M8z7tW7g5MLDUV25i3F2TgeqRFYlU
-         T2S+QThcyY5miRic2uoRbDVFKymm4MpLJR6l/G313zZPb9F69LZCNujYBfa6/28+ARGP
-         BgoPvl10NT5D/I2GKhElcdt1yhSEYp3991HVW/2yH+quvMzrmu5WhsEy4QyPd8pe5hyz
-         bfcN4LI3ioEGs3aB8lsoLhH7+HODzKQDqcIiPwswamIAkK8uhGTIuzK/B0GtrlW+ieLL
-         qHTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706033949; x=1706638749;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I7EaLHyv+zjRWE7JLMFlBZeY21iA0/68G15sTjitmic=;
-        b=jfqiRQ3LqQ5M1p/TV2h9iw9dAXRINEvbDhCB5/8Etbjnpl+vXsF9PiGJAwNwyYPraB
-         Ds7VIX474/S9tuRz++nsm4t04eMQ8FSBDQQvhSEWw2D0uN/fVCN4ATxGztx1MVSMcfPx
-         Xo+X6G/865WVri67aVr4Z39ubWwlyzeZEvZYgSfdhzXWHJtat43J2uZWWLNgpip4aNPv
-         hQfmYiyLiz0Axs6tiIEBtzAlIgpuLU1TtK6XUXRyRZXW65fIS8typVsJrqyDkXC99l5I
-         K53k0Y7hRB5VW9uUziTlgGveR/bpnWXMvwD+cGqrxsdNPnAj7kT0+jl36toecZy/zAAK
-         fw6A==
-X-Gm-Message-State: AOJu0YzBNmEyS3Z6OCH/3B+qxj+k1jmodbN2/TfAeGhXmKH/fKCZDuw0
-	3zeLwfCoZtkS0/WK/pdN3hxt5r9MkHHCFA5DJxrleh2or6cXJG7j42yOUPdt3+ejmzx3mQJnDDn
-	6MTiYYiLLyb8dWGm3Jwv5ptbdzFs=
-X-Google-Smtp-Source: AGHT+IHyUT8MHOsF6IBmTbANIqwgs2PT5BNWkCdv0dyAFhLayi1VUmpCSrLIW3NTLwOzJOUEEgLOK72SK+ulDnc30KU=
-X-Received: by 2002:a81:69d4:0:b0:5ff:9555:79df with SMTP id
- e203-20020a8169d4000000b005ff955579dfmr4955779ywc.92.1706033948768; Tue, 23
- Jan 2024 10:19:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kUhLAkwG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=cL35+wxe3UCEiNgkbHUhPMWYJij5B6ryjcGpNo2q69w=; b=kUhLAkwGdgP3YXsklIW8PJ5ivG
+	p+UWPvXW9WYWFxmAjLaI1D3WjmNmm8Vx2p3ZqTmWYe8u5YZaD5L7Ar9sQJlHqGvVdz9lBSAaTIsTR
+	8boEQRU+1TS6S3o7d3QyJyMdidys5oCbLZaSw6YhX4dl746vKM/yCvivWZCD+KcpVDfVpPo2r1d9j
+	S0X7r/1BJvZS2S66uvhNWBV+JHEXLrbDJE8GATUtVlK53vnyicYVS8zhjDkX84uQKkbfVUwLFJGlg
+	xXp5WAOagbXsR+fqpABg8qu+7LueRmyWAXt7d3CxbHlNyosXZu7JTB1KiK3AoGYVuEQkkHTQNeSgO
+	u9vjiT8Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rSM9R-000000043nA-26FB;
+	Tue, 23 Jan 2024 19:09:37 +0000
+Date: Tue, 23 Jan 2024 19:09:37 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>,
+	Dave Chinner <dchinner@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Ariel Miculas <amiculas@cisco.com>,
+	Paul McKenney <paulmck@kernel.org>
+Subject: Re: [LSF/MM TOPIC] Rust
+Message-ID: <ZbAO8REoMbxWjozR@casper.infradead.org>
+References: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122184608.11863-1-dakr@redhat.com> <2024012252-attempt-tables-e3fc@gregkh>
- <Za7uampZiG2IP8dE@cassiopeiae> <2024012251-geriatric-morphine-a275@gregkh> <Za_2WuQh9vr2Na7S@pollux>
-In-Reply-To: <Za_2WuQh9vr2Na7S@pollux>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 23 Jan 2024 19:18:57 +0100
-Message-ID: <CANiq72=mrbRXcKGOC9M5=-_cP5ShnYGLF7t8Dt7WDCP+xffK-A@mail.gmail.com>
-Subject: Re: [PATCH] rust: str: add to_ascii_{upper,lower}case() to CString
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
 
-On Tue, Jan 23, 2024 at 6:24=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
-wrote:
->
-> We also need to consider that simply wrapping tolower() and toupper() wou=
-ld make
-> slice::make_ascii_{lower,upper]case(), str::make_ascii_{lower,upper]case(=
-),
-> char::make_ascii_{lower,upper]case() and CString::make_ascii_{lower,upper=
-]case()
-> inconsistent. The former ones already only consider 'a' to 'z' and 'A' to=
- 'Z'
-> respectively.
+On Mon, Jan 22, 2024 at 11:23:51PM -0500, Kent Overstreet wrote:
+> There's been ongoing work on safe Rust interfaces to the VFS, as well as
+> whole new filesystems in Rust (tarfs, puzzlefs), and talk of adding Rust
+> code for existing filesystems (bcachefs, any day now, I swear).
 
-Latter, right? i.e. the kernel ones are the ones that consider the
-extended ones.
+I really want this to happen.  It's taken 50 years, but we finally have
+a programming language that can replace C for writing kernels.
 
-> Just to clarify, personally I'm not worried about whether we consider the
-> extended range in this specific case or not. I think it's more interestin=
-g to
-> generlly figure out if, for such modules, we want the caller to expect C
-> bindings to be called or C logic to applied respectively, or if we want t=
-he
-> caller to expect that everything is aligned with the Rust std library.
+> Possible subtopics:
+>  - Braces, brackets and arrow signs: does Rust have enough of them, too
+>    many, or both?
 
-Yeah, it is normal to provide Rust abstractions that follow the naming
-and logic of the C side. Having said that, in this particular case, as
-you say, since some of these APIs are already in Rust's `core`, I
-think it is OK to have the Rust ones completed for `CString` etc. But
-if we are to provide the C logic, then we should use the C names.
+Um.  Maybe we should limit ourselves to productive discussions
+that will affect the MM/filesystems/storage/bpf subsystems?
+While it's entertaining to read about Rust-as-it-might-have-been
+https://graydon2.dreamwidth.org/307291.html I quickly get lost in trying
+to learn the last three decades of language design to understand all
+the points being made.
 
-In other words, in general, what we should definitely avoid is mixing
-them, i.e. using the C logic when Rust std names are used, or vice
-versa. And maybe we need both the C and the Rust ones in some cases
-(should be rare, since it is likely only to come up for things in
-`core` like this or perhaps for well-known things in, say, `std`, but
-at least for those we do not use them in the kernel so it is a bit
-less confusing).
+>  - Obeying the borrow checker: C programmers are widely renouned for
+>    creative idiosyncrasies in pointer based data structures; structure
+>    design; will we be able to fully express our creativity within Rust?
+>    Or are there VFS abstractions and lifetime rules that will be
+>    difficult to translate?
+> 
+>  - Perhaps there are annoying VFS rules that in the past required hand
+>    tattoos to remember, but we'll now be able to teach the compiler to
+>    remember for us?
+> 
+>    (idmapping comes to mind as one area where we've recently been able
+>    to increase safety through effective use of the type system - this is
+>    about way more than just use-after-free bugs)
+> 
+>  - Moving objects around in memory: Rust rather dislikes being told
+>    objects can't be moved around (a consequence of algebraic data
+>    types), and this has been a source of no small amount of frustration
+>    on the Rust side of things. Could we on the C side perhaps find ways
+>    to relax their constraints? (object pinning, versus e.g. perhaps
+>    making it possible to move a list head around)
 
-Similarly, it does not hurt to mention whether an API has any subtle
-difference (or not) with a similar C API. Sadly, we cannot (easily) do
-that also for the existing ones already in `core` too, but it is not a
-big deal.
+Death To List Heads!  They're the perfect data structure for a 1995
+era CPU.  They leave 90% of your CPUs performance on the table if you
+bought your CPU in the last five years.  If list heads make rust sad,
+then that's just one more reason to abolish them.
 
-Cheers,
-Miguel
+>  - The use of outside library code: Historically, C code was either
+>    written for userspace or the kernel, and not both. But that's not
+>    particularly true in Rust land (and getting to be less true even in C
+>    land); should we consider some sort of structure or (cough) package
+>    management? Is it time to move beyond ye olde cut-and-paste?
+
+Rust has a package manager.  I don't think we need kCargo.  I'm not
+deep enough in the weeds on this to make sensible suggestions, but if
+a package (eg a crypto suite or compression library) doesn't depend on
+anything ridiculous then what's the harm in just pulling it in?
+
+> The Rust-for-Linux people have been great - let's see if we can get them
+> to join us in Utah this year, I think they'll have things to teach us.
+
+It's definitely a two-way conversation.  There's too much for any one
+person to know, so teaching each other what "we" need "them" to know
+is a great thing.  I hear some people are considering pitching sessions
+like "What filesystem people get wrong about MM", "The pagecache doesn't
+work the way you think it does" and "Why directio and the pagecache are
+mortal enemies".  And I'm in favour of those kinds of sessions (as long
+as I don't end up leading five sessions again ...).
