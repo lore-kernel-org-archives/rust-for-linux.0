@@ -1,100 +1,81 @@
-Received: from a11-32.smtp-out.amazonses.com (a11-32.smtp-out.amazonses.com [54.240.11.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B484F56760
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 08:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.11.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCE255E62
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 08:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705998490; cv=none; b=QxuH45uOrh7EFFUdTSLGocr+cekSExRIepwYZ8Xwl2ra2GNPHK3XqmNXbmriLFnG3JMbHMAuWivoZtVHeTJg+gKlE6Aw7mYmwMK0iU0YeYyjlfMICdDmZGohOSxoq37N+T3goDZwwH+piVtGHus1gIXzFzg86cGuIZ9uUlv3FLw=
+	t=1705999695; cv=none; b=IG6mvsNsi3qBo/M1CnFoBtmtnjfQWojU57/0BRkdwSk3GqoXFBdFHzM72S5dTyIlZ5/NfWLl8WeOYkYHnB53ex5rtdH3O1lIgezQ7c5GNgdYBApc7gRr8CEWJ4tSRwePOU0Mdmms5HLyUircRr57bWE1ZrRvcppod1PDIjoVN98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705998490; c=relaxed/simple;
-	bh=rhyfPJbfJX6l25HGQ5Ol+i3LmzQwYch7XRSEev+mUwg=;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:References:
-	 Message-ID; b=uuoy9+qc09u+cguT9A2SM8S2uuTVovQPDeZxqdWBv0DXTCpmx2K+h+5HtHPOu9aGwcQs+vXn1R2yPs4RrbD+g+QuYRcBc+JaKXKW+pe7DhFuHh31/PCSxLpunVoVpdmfC/P5YVI69/Gwt55RbpH6ywuht/xKVd6WCqi9vg3KryU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b=WPlAeWF+; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=b8mgIEcG; arc=none smtp.client-ip=54.240.11.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
+	s=arc-20240116; t=1705999695; c=relaxed/simple;
+	bh=oIIk43+DJAe2iwTgwwTOunul9h3oUEPakmAZ0eeVHIE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qKOs6Pv+t7128h2oxHPjmBjEqzsRHm81y+oOhL+E2bb7AK2A2wHAFFdnbkBZDi0T7NhYfx1+Aeu/bxdBQL579iKEe66naaShbQEfHkmpPZy6RhYzdr8aFNteQ50NhrY8dGFfbP4fetheO15HGgWIhdktTx/11LMKdcYdv1bEsr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=ppJ6O6zL; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b="WPlAeWF+";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="b8mgIEcG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=ph73stw23v46e7miqo4f44bv344ybkbc; d=obei.io; t=1705998487;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:References:Message-Id;
-	bh=rhyfPJbfJX6l25HGQ5Ol+i3LmzQwYch7XRSEev+mUwg=;
-	b=WPlAeWF+ya0e57m/Az0xa3CifhDT//aHv8mg3DwWTksrouLaoEraD2zaJzTRW5Wn
-	c1SkWZ35KbLbwVqeTEi1zh5oMVunRdk/XJ3qjbCSSZQVBKN/2y4nCLVZiawUaL0anaz
-	M3xFAleteYUfOjsP/EN2WrWMbTvL0epLeRRbqfqoPbp/BQdgECNEHTXtx+26mGCmv+/
-	nGd0I+y/Zn1UWGp2M3jpilnKYGTlN56/+0co2DG10fuyhkSkccRj8gvNBS3rZujsrRf
-	0WE53S2eLnnzeDhyNSwul2/geHsEBh/LyFXczQ6Dgbt6jmy8OtR/qMGSOet26siEF1u
-	IkabI8zfhg==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1705998487;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:References:Message-Id:Feedback-ID;
-	bh=rhyfPJbfJX6l25HGQ5Ol+i3LmzQwYch7XRSEev+mUwg=;
-	b=b8mgIEcGA+mRO8Y6zRuf0708QU7oq6NrCWWMwNH81YQkoN7P+E3F4t/QxakGmRSR
-	/hIJ6hmMzbuVwptaigbndH+2OrvLo17pw2wkv08RrSqpv7UHw8aGQaUAWbimcF/x7qB
-	q5bsLBfYMHsmVdGB/I98f4zPLM4KHXW/rWteeoVU=
-Subject: [PATCH] rust: types: Add `try_from_foreign()` method
-From: =?UTF-8?Q?Obei_Sideg?= <linux@obei.io>
-To: =?UTF-8?Q?Miguel_Ojeda?= <ojeda@kernel.org>, 
-	=?UTF-8?Q?Alex_Gaynor?= <alex.gaynor@gmail.com>, 
-	=?UTF-8?Q?Wedson_Almeida_Filho?= <wedsonaf@gmail.com>
-Cc: =?UTF-8?Q?Boqun_Feng?= <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Gary_Guo?= <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	=?UTF-8?Q?Benno_Lossin?= <benno.lossin@proton.me>, 
-	=?UTF-8?Q?Andreas_Hindborg?= <a.hindborg@samsung.com>, 
-	=?UTF-8?Q?Alice_Ryhl?= <aliceryhl@google.com>, 
-	=?UTF-8?Q?rust-for-linux=40vger=2Ekernel=2Eorg?= <rust-for-linux@vger.kernel.org>, 
-	=?UTF-8?Q?Obei_Sideg?= <linux@obei.io>, 
-	=?UTF-8?Q?Matt_Gilbride?= <mattgilbride@google.com>, 
-	=?UTF-8?Q?Trevor_Gross?= <tmgross@umich.edu>
-Date: Tue, 23 Jan 2024 08:28:07 +0000
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="ppJ6O6zL"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-60036bfdbfeso3699087b3.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 00:48:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1705999691; x=1706604491; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oIIk43+DJAe2iwTgwwTOunul9h3oUEPakmAZ0eeVHIE=;
+        b=ppJ6O6zLfP+qWHXajKIbWjyyOLOBCGU3UyGInmlWOIc3JqzeXROLDLxmnei4Vmw9yC
+         f84ymNtMBS3yVUUcVeYVFYhzwh2p9AXsml/l95v9ZAbCHhjRlFxYXJBe3Ii8qTWTTV2Q
+         WBUWPomy3SYHhF+4FAKYpwVfSXx+g+4z5i6Dy1MaaPJW+irGZ1iZQZn7ySznIbQLzORM
+         6toJzpGa2OJ9mA7q9cB6h1nfBpKSwrHWD6i755xp4b89HUvNDw9QY8tR1FbskLh6Ehr2
+         SJZP16s7UmDsT8Dl+udanXwl1UKuAGVSqoTIJMuUSdoz4xvu+GxAIsT7q+9dSL0iL31R
+         WVFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705999691; x=1706604491;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oIIk43+DJAe2iwTgwwTOunul9h3oUEPakmAZ0eeVHIE=;
+        b=HVZ4fBfcdErRfuh3molctT7GIBpICvsLbrCcQGoyxdknAWyANpaGXBXd7Ok9bNJuYf
+         cGKG66cnbzh3tWaFDaImEhNoBjgio8hWfIOpCr/Nm/OK8a4JqmdPhTnpUbje0BZIgqsn
+         FgtHzJIAMoY2S+KkFUPnOZDzwiftDwgUfmbBMxn+WBDLxqo/QS++iz0oTTHXhSIymyhS
+         3hLzHcDzxlhjqvB7vpJuylQkiEpzS0f3tchi2uT16uE4aJ6i/jEXZwoF0OFIbRTVm6aP
+         dxYanJFqwRK399JUvdXSstiB0ijRU5rNQW5ZVhHFbSViWLePLy02Q5wM8tQ241xJFauj
+         PGvg==
+X-Gm-Message-State: AOJu0YyRD520SeJJrBS0Ejjku4MVUttM0ueT7YpDTbomBquEAPDXLzM6
+	w1c8yygvvjMpfAzTUu/k/HJPvZ26ARAm2KgobDCGr6acKh1YiQqlYWTLxC+f/RZKazCimJ+N0oi
+	pnqo1ipKzVhkOubDbTmR30PYx1G18fdA7L/6gtg==
+X-Google-Smtp-Source: AGHT+IEChzKDKw6UnhJFgYvb8ABrEvN6YDyugLATHKdVtonrDukDjRNQEFHBMEA81LrOz3oDq2eghsMspJJ5SeUk780=
+X-Received: by 2002:a81:8882:0:b0:5ff:f176:9fd3 with SMTP id
+ y124-20020a818882000000b005fff1769fd3mr2354485ywf.4.1705999690793; Tue, 23
+ Jan 2024 00:48:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
+References: <20240123075325.1270967-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20240123075325.1270967-1-dirk.behme@de.bosch.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Tue, 23 Jan 2024 02:47:59 -0600
+Message-ID: <CALNs47vAj4=SpbLmeoND1EThJiOoXGDUtjN9E7D9tKDScdR+Ng@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] docs: rust: Move testing to a separate page
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-References: <20240123082746.18284-1-linux@obei.io>
-X-Mailer: Amazon WorkMail
-Thread-Index: AQHaTdYWwLDDOt0mSvCKO8XVuM7/fA==
-Thread-Topic: [PATCH] rust: types: Add `try_from_foreign()` method
-X-Original-Mailer: git-send-email 2.39.2
-X-Wm-Sent-Timestamp: 1705998486
-Message-ID: <0100018d356f0fa5-1e771ce7-1787-4330-bc1e-0d7ce240288b-000000@email.amazonses.com>
-Feedback-ID: 1.us-east-1.LF00NED762KFuBsfzrtoqw+Brn/qlF9OYdxWukAhsl8=:AmazonSES
-X-SES-Outgoing: 2024.01.23-54.240.11.32
 
-Currently `ForeignOwnable::from_foreign()` only works for non-null=0D=0Ap=
-ointers for the existing impls (e.g. Box, Arc). It may create a few=0D=0A=
-duplicate code like:=0D=0A=0D=0A```rust=0D=0A// `p` is a maybe null point=
-er=0D=0Aif p.is_null() {=0D=0A  None=0D=0A} else {=0D=0A  Some(unsafe { T=
-::from_foreign(p) })=0D=0A}=0D=0A``=0D=0A=0D=0ALink: https://github.com/R=
-ust-for-Linux/linux/issues/1057=0D=0A=0D=0ACc: Alice Ryhl <aliceryhl@goog=
-le.com>=0D=0ACc: Matt Gilbride <mattgilbride@google.com>=0D=0ACc: Miguel =
-Ojeda <ojeda@kernel.org>=0D=0AReviewed-by: Trevor Gross <tmgross@umich.ed=
-u>=0D=0ASigned-off-by: Obei Sideg <linux@obei.io>=0D=0A---=0D=0A rust/ker=
-nel/types.rs | 19 +++++++++++++++++++=0D=0A 1 file changed, 19 insertions=
-(+)=0D=0A=0D=0Adiff --git a/rust/kernel/types.rs b/rust/kernel/types.rs=0D=
-=0Aindex fdb778e65d79..cfee102ab7b9 100644=0D=0A--- a/rust/kernel/types.r=
-s=0D=0A+++ b/rust/kernel/types.rs=0D=0A@@ -46,6 +46,25 @@ pub trait Forei=
-gnOwnable: Sized {=0D=0A     /// Additionally, all instances (if any) of =
-values returned by [`ForeignOwnable::borrow`] for=0D=0A     /// this obje=
-ct must have been dropped.=0D=0A     unsafe fn from_foreign(ptr: *const c=
-ore::ffi::c_void) -> Self;=0D=0A+=0D=0A+    /// Tries to convert a foreig=
-n-owned object back to a Rust-owned one.=0D=0A+    ///=0D=0A+    /// A co=
-nvenience wrapper over [`from_foreign`] that returns [`None`]=0D=0A+    /=
-// if `ptr` is null.=0D=0A+    ///=0D=0A+    /// # Safety=0D=0A+    ///=0D=
-=0A+    /// `ptr` must have been returned by a previous call to [`Foreign=
-Ownable::into_foreign`] for=0D=0A+    /// which a previous matching [`For=
-eignOwnable::from_foreign`] hasn't been called yet.=0D=0A+    /// Additio=
-nally, all instances (if any) of values returned by [`ForeignOwnable::bor=
-row`] for=0D=0A+    /// this object must have been dropped.=0D=0A+    uns=
-afe fn try_from_foreign(ptr: *const core::ffi::c_void) -> Option<Self> {=0D=
-=0A+        if ptr.is_null() {=0D=0A+            None=0D=0A+        } els=
-e {=0D=0A+            Some(Self::from_foreign(ptr))=0D=0A+        }=0D=0A=
-+    }=0D=0A }=0D=0A=20=0D=0A impl<T: 'static> ForeignOwnable for Box<T> =
-{=0D=0A--=20=0D=0A2.39.2=0D=0A=0D=0A
+On Tue, Jan 23, 2024 at 1:53=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
+>
+> To be able to add more testing documentation move the testing
+> section to it's own page.
+>
+> No change on the documentation itself.
+>
+> Suggested-by: Trevor Gross <tmgross@umich.edu>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
