@@ -1,125 +1,234 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B028B481DC;
-	Tue, 23 Jan 2024 19:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C290481AC1
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 19:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706036984; cv=none; b=LgVGwk6Dn+BVwGnesvCJ/8VX0AJXQQh65qM0el0Q+f+Ne6uNa2Wc0OPE5KMdRk7W5SgYc0TcaISs97M1n/BQDDjZgsWdKXXF3UAHjLv/+cGnGs3PmCSezeNWbKmbRQGGtEPyn9rPJUyFva6RJEgHJxaAgOIoIWpXZVGSUovRs5U=
+	t=1706038541; cv=none; b=NfNukLUS3yWDw0COj7S9QlZo/7GX1dorr6TP/LYnU8fn2z67TyfynLy2ru9kK6+XBoOHOsWeUVZhhzOZvQ8hb2ykzazSMeXK1M97IYHUaqhF4wN4NsEIDcoUR0PNNH20e7mqZWxl2JKf4NUKIj9+X0EfuOpb/QLNi0gt1lF65tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706036984; c=relaxed/simple;
-	bh=GfcqHqYn6zpa43HZfbBWu94lrhx0W3/9XvbrHFWuZe0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nKN14gnUHGZZcKqZgw4PHNgeNdHNerLoaH1uszEH7VqcyZ9WPVKKcKQye3PfcqVb1Je/IB/QIZqGnp2nCxt+QFlX6xPspweJIFvlzIdpDZormpKdGA/tzboaucDCrCmtrqpyxQfs4iZIlZ/t1UpveOwpVSsNMWxm+s781OXymjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kUhLAkwG; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1706038541; c=relaxed/simple;
+	bh=UlJXHzckCQJdamra/G6D9M8Y+u6D7yXFSqzOhtZP1dM=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=pCIlaEb1HJDsg7/wK7JYyh1/+m/wefGrvNI4NDd1vdiDtbKDud4GFuYHI/66S/y3wjSgkqdkS3oWf0sRC6/yIdkuXvDi53Lirev0J2qDhXv34AgSd4Pd7ecExmkVdRGsXNgnVWLozglVOA5W/2tI7wUfy8lUwU2R5R3uLBnoCac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=Jh6DFuwS; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kUhLAkwG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cL35+wxe3UCEiNgkbHUhPMWYJij5B6ryjcGpNo2q69w=; b=kUhLAkwGdgP3YXsklIW8PJ5ivG
-	p+UWPvXW9WYWFxmAjLaI1D3WjmNmm8Vx2p3ZqTmWYe8u5YZaD5L7Ar9sQJlHqGvVdz9lBSAaTIsTR
-	8boEQRU+1TS6S3o7d3QyJyMdidys5oCbLZaSw6YhX4dl746vKM/yCvivWZCD+KcpVDfVpPo2r1d9j
-	S0X7r/1BJvZS2S66uvhNWBV+JHEXLrbDJE8GATUtVlK53vnyicYVS8zhjDkX84uQKkbfVUwLFJGlg
-	xXp5WAOagbXsR+fqpABg8qu+7LueRmyWAXt7d3CxbHlNyosXZu7JTB1KiK3AoGYVuEQkkHTQNeSgO
-	u9vjiT8Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rSM9R-000000043nA-26FB;
-	Tue, 23 Jan 2024 19:09:37 +0000
-Date: Tue, 23 Jan 2024 19:09:37 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>,
-	Dave Chinner <dchinner@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Ariel Miculas <amiculas@cisco.com>,
-	Paul McKenney <paulmck@kernel.org>
-Subject: Re: [LSF/MM TOPIC] Rust
-Message-ID: <ZbAO8REoMbxWjozR@casper.infradead.org>
-References: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="Jh6DFuwS"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-55a8fd60af0so3833614a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 11:35:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1706038536; x=1706643336; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NajI3TyyQ9rVjJzigsgGZze0f+PlQKZyJBohU0PsaJA=;
+        b=Jh6DFuwSN+WUkKnMU3d4iIsjF3HOxY+RAhAvx4wswwS/kfuhwe7/1vFT7VgeGXhx+y
+         8STV8Ra3CFmg0xmKyWy8+2JUaL9jybGP0CH89Rfdvo2WaGMGpY0eopxrbmU/NxFLSz1Z
+         zbpzNp+VGBsnx/aQAiUT84qMDXqmeRU5Oa5s308nVFxl0vrrQDO3Rlnl29PKp0bBxFnC
+         d8fDSqQLwe+kf9ipBKyl/x87HzQ/ew9ruOkblgtdBKvmVOMB5AXoKJHHDqoFDs4Wf1Fu
+         J2VPPzu/5azY1E8TJxxdu17Y7VkpM6gqBb1DQ86bSEykYNWETif/Sv9Qj+oobdw23isb
+         XFvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706038536; x=1706643336;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NajI3TyyQ9rVjJzigsgGZze0f+PlQKZyJBohU0PsaJA=;
+        b=GLY4moYAeUE2a4m40V+fe5wimvE5YqmhDmZLQ0uVHDJxWTBOJSSFCfejFyxWzhcyWY
+         yhi6lLtJ4mc4ows5Qx736ChKvNu0o92lfVeoRtKRPFFdAPea+F2/OLHD3J9UlJMwRdar
+         AsnXOxuuIsHkX5/e7ridfm2ttasOGZLGUJ5TlOLhIfDJYp76VcP+RATr/NM4Dc5LAkFW
+         nLlRFYezCDIaHsSPfUCdFL3yIQQUeRpyANAhn71P1FuJ8LvgcMB1WcaxwogdKsMmKOgN
+         qiDx9JJETmWQeBAExm5QAmXru6H2JLdwXJBKO/6CI+gm++0OW+AmYES0Ivfq58Ro1Y77
+         9o0w==
+X-Gm-Message-State: AOJu0Ywp+zjzVCWpSOUlO0BAQAYOOCS6SnDNSiQ1s45JqPUkpRD1mC47
+	5+F7+fP55oQrvHrg/jnPo916CH438/94QcDFvO/feeUjHHLAyqcIy+dJPVAZmvE=
+X-Google-Smtp-Source: AGHT+IH+nEjpWVx0IVAFz3yVMdU+gU7oGcfJTGzNXfC0VN2oXyQ4l7UdqaC8c9fQ5/eV65g/ZF9OTg==
+X-Received: by 2002:a17:906:458:b0:a2f:c87a:385b with SMTP id e24-20020a170906045800b00a2fc87a385bmr113163eja.3.1706038535403;
+        Tue, 23 Jan 2024 11:35:35 -0800 (PST)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id e13-20020a170906c00d00b00a2a1bbda0a6sm14819283ejz.175.2024.01.23.11.35.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jan 2024 11:35:34 -0800 (PST)
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+ <20230503090708.2524310-4-nmi@metaspace.dk>
+ <iL2M45BoRlK6yS9y8uo0A5yUXcZWMkdk3vtH3LRFSWXfvPVagVZ-0YC7taIKOBFUcjJYA_2xNNFPoC4WL-_ulCHOLkbqvsZlIshE_LEeYtU=@proton.me>
+ <87il3kjgk0.fsf@metaspace.dk>
+ <104a22f7-a5bb-4fb6-9ce9-aa2d4e63417f@proton.me>
+User-agent: mu4e 1.10.8; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith
+ Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Hannes
+ Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org,
+ rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, Matthew
+ Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
+ Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, linux-kernel@vger.kernel.org,
+ gost.dev@samsung.com
+Subject: Re: [RFC PATCH 03/11] rust: block: introduce `kernel::block::mq`
+ module
+Date: Tue, 23 Jan 2024 19:39:15 +0100
+In-reply-to: <104a22f7-a5bb-4fb6-9ce9-aa2d4e63417f@proton.me>
+Message-ID: <874jf3kflx.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 22, 2024 at 11:23:51PM -0500, Kent Overstreet wrote:
-> There's been ongoing work on safe Rust interfaces to the VFS, as well as
-> whole new filesystems in Rust (tarfs, puzzlefs), and talk of adding Rust
-> code for existing filesystems (bcachefs, any day now, I swear).
 
-I really want this to happen.  It's taken 50 years, but we finally have
-a programming language that can replace C for writing kernels.
+Benno Lossin <benno.lossin@proton.me> writes:
 
-> Possible subtopics:
->  - Braces, brackets and arrow signs: does Rust have enough of them, too
->    many, or both?
+> Hi Andreas,
+>
+> just so you know, I received this email today, so it was very late,
+> since the send date is January 12.
 
-Um.  Maybe we should limit ourselves to productive discussions
-that will affect the MM/filesystems/storage/bpf subsystems?
-While it's entertaining to read about Rust-as-it-might-have-been
-https://graydon2.dreamwidth.org/307291.html I quickly get lost in trying
-to learn the last three decades of language design to understand all
-the points being made.
+My mistake. I started drafting Jan 12, but did not get time to finish
+the mail until today. I guess that is how mu4e does things, I should be
+aware and fix up the date. Thanks for letting me know =F0=9F=91=8D
 
->  - Obeying the borrow checker: C programmers are widely renouned for
->    creative idiosyncrasies in pointer based data structures; structure
->    design; will we be able to fully express our creativity within Rust?
->    Or are there VFS abstractions and lifetime rules that will be
->    difficult to translate?
-> 
->  - Perhaps there are annoying VFS rules that in the past required hand
->    tattoos to remember, but we'll now be able to teach the compiler to
->    remember for us?
-> 
->    (idmapping comes to mind as one area where we've recently been able
->    to increase safety through effective use of the type system - this is
->    about way more than just use-after-free bugs)
-> 
->  - Moving objects around in memory: Rust rather dislikes being told
->    objects can't be moved around (a consequence of algebraic data
->    types), and this has been a source of no small amount of frustration
->    on the Rust side of things. Could we on the C side perhaps find ways
->    to relax their constraints? (object pinning, versus e.g. perhaps
->    making it possible to move a list head around)
+>
+> On 12.01.24 10:18, Andreas Hindborg (Samsung) wrote:
+>>=20
+>> Hi Benno,
+>>=20
+>> Benno Lossin <benno.lossin@proton.me> writes:
+>>=20
+>> <...>
+>>=20
+>>>> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/g=
+en_disk.rs
+>>>> new file mode 100644
+>>>> index 000000000000..50496af15bbf
+>>>> --- /dev/null
+>>>> +++ b/rust/kernel/block/mq/gen_disk.rs
+>>>> @@ -0,0 +1,133 @@
+>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>> +
+>>>> +//! GenDisk abstraction
+>>>> +//!
+>>>> +//! C header: [`include/linux/blkdev.h`](../../include/linux/blkdev.h)
+>>>> +//! C header: [`include/linux/blk_mq.h`](../../include/linux/blk_mq.h)
+>>>> +
+>>>> +use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
+>>>> +use crate::{
+>>>> +    bindings, error::from_err_ptr, error::Result, sync::Arc, types::F=
+oreignOwnable,
+>>>> +    types::ScopeGuard,
+>>>> +};
+>>>> +use core::fmt::{self, Write};
+>>>> +
+>>>> +/// A generic block device
+>>>> +///
+>>>> +/// # Invariants
+>>>> +///
+>>>> +///  - `gendisk` must always point to an initialized and valid `struc=
+t gendisk`.
+>>>> +pub struct GenDisk<T: Operations> {
+>>>> +    _tagset: Arc<TagSet<T>>,
+>>>> +    gendisk: *mut bindings::gendisk,
+>>>
+>>> Why are these two fields not embedded? Shouldn't the user decide where
+>>> to allocate?
+>>=20
+>> The `TagSet` can be shared between multiple `GenDisk`. Using an `Arc`
+>> seems resonable?
+>>=20
+>> For the `gendisk` field, the allocation is done by C and the address
+>> must be stable. We are owning the pointee and must drop it when it goes =
+out
+>> of scope. I could do this:
+>>=20
+>> #[repr(transparent)]
+>> struct GenDisk(Opaque<bindings::gendisk>);
+>>=20
+>> struct UniqueGenDiskRef {
+>>      _tagset: Arc<TagSet<T>>,
+>>      gendisk: Pin<&'static mut GenDisk>,
+>>=20
+>> }
+>>=20
+>> but it seems pointless. `struct GenDisk` would not be pub in that case. =
+What do you think?
+>
+> Hmm, I am a bit confused as to how you usually use a `struct gendisk`.
+> You said that a `TagSet` might be shared between multiple `GenDisk`s,
+> but that is not facilitated by the C side?
+>
+> Is it the case that on the C side you create a struct containing a
+> tagset and a gendisk for every block device you want to represent?
 
-Death To List Heads!  They're the perfect data structure for a 1995
-era CPU.  They leave 90% of your CPUs performance on the table if you
-bought your CPU in the last five years.  If list heads make rust sad,
-then that's just one more reason to abolish them.
+Yes, but the `struct tag_set` can be shared between multiple `struct
+gendisk`.
 
->  - The use of outside library code: Historically, C code was either
->    written for userspace or the kernel, and not both. But that's not
->    particularly true in Rust land (and getting to be less true even in C
->    land); should we consider some sort of structure or (cough) package
->    management? Is it time to move beyond ye olde cut-and-paste?
+Let me try to elaborate:
 
-Rust has a package manager.  I don't think we need kCargo.  I'm not
-deep enough in the weeds on this to make sensible suggestions, but if
-a package (eg a crypto suite or compression library) doesn't depend on
-anything ridiculous then what's the harm in just pulling it in?
+In C you would first allocate a `struct tag_set` and partially
+initialize it. The allocation can be dynamic, static or part of existing
+allocation. You would then partially initialize the structure and finish
+the initialization by calling `blk_mq_alloc_tag_set()`. This populates
+the rest of the structure which includes more dynamic allocations.
 
-> The Rust-for-Linux people have been great - let's see if we can get them
-> to join us in Utah this year, I think they'll have things to teach us.
+You then allocate a `struct gendisk` by calling `blk_mq_alloc_disk()`,
+passing in a pointer to the `struct tag_set` you just created. This
+function will return a pointer to a `struct gendisk` on success.
 
-It's definitely a two-way conversation.  There's too much for any one
-person to know, so teaching each other what "we" need "them" to know
-is a great thing.  I hear some people are considering pitching sessions
-like "What filesystem people get wrong about MM", "The pagecache doesn't
-work the way you think it does" and "Why directio and the pagecache are
-mortal enemies".  And I'm in favour of those kinds of sessions (as long
-as I don't end up leading five sessions again ...).
+In the Rust abstractions, we allocate the `TagSet`:
+
+#[pin_data(PinnedDrop)]
+#[repr(transparent)]
+pub struct TagSet<T: Operations> {
+    #[pin]
+    inner: Opaque<bindings::blk_mq_tag_set>,
+    _p: PhantomData<T>,
+}
+
+with `PinInit` [^1]. The initializer will partially initialize the struct a=
+nd
+finish the initialization like C does by calling
+`blk_mq_alloc_tag_set()`. We now need a place to point the initializer.
+`Arc::pin_init()` is that place for now. It allows us to pass the
+`TagSet` reference to multiple `GenDisk` if required. Maybe we could be
+generic over `Deref<TagSet>` in the future. Bottom line is that we need
+to hold on to that `TagSet` reference until the `GenDisk` is dropped.
+
+`struct tag_set` is not reference counted on the C side. C
+implementations just take care to keep it alive, for instance by storing
+it next to a pointer to `struct gendisk` that it is servicing.
+
+> And you decided for the Rust abstractions that you want to have only a
+> single generic struct for any block device, distinguished by the generic
+> parameter?
+
+Yes, we have a single generic struct (`GenDisk`) representing the C
+`struct gendisk`, and a single generic struct (`TagSet`) representing
+the C `struct tag_set`. These are both generic over `T: Operations`.
+`Operations` represent a C vtable (`struct blk_mq_ops`) attached to the
+`struct tag_set`. This vtable is provided by the driver and holds
+function pointers that allow the kernel to perform actions such as queue
+IO requests with the driver. A C driver can instantiate multiple `struct
+gendisk` and service them with the same `struct tag_set` and thereby the
+same vtable. Or it can use separate tag sets and the same vtable. Or a
+separate tag_set and vtable for each gendisk.
+
+> I think these kinds of details would be nice to know. Not only for
+> reviewers, but also for veterans of the C APIs.
+
+I should write some module level documentation clarifying the use of
+these types. The null block driver is a simple example, but it is just
+code. I will include more docs in the next version.
+
+Best regards
+Andreas
+
+
+[^1]: This was not `PinInit` in the RFC, I changed this based on your
+feedback. The main points are still the same though.
