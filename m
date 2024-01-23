@@ -1,104 +1,95 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701823984D
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 21:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1E56AAB
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 22:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706044983; cv=none; b=Wrq+HAJXGLLZv4JOIYKmtpN1AUyPtm8t61kESbzXacDv8G7SQON+tn86t2qKvjKchuRnnW2QW0LLC1D9ye4AJZmO8+BCEqXvAClLTxBLfi02WJdtcFFJzd3BsBFBcfRJwtxyPsvxzsQuRhXd9xp30kLX3FpPtEXYfm7gjQVyF/I=
+	t=1706050696; cv=none; b=O6DocovS9EWhUfEJdf+sEfsflCm4WnDtI3Un7GB5KKPy6z0ByyG3msF9v6EYJ53uujpaQPeeH7OzrjkNJtTtCBcsSv7Oy55MQmRBFp5M8eASN6SIBAd7rhscEewfyv7HP8avoJSpjREv9q5n2k4gwyxv18VU9TM5W/zHEWSFxbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706044983; c=relaxed/simple;
-	bh=v/BS1G92ZM6qJJ7l3wYgSXjUs4iS7llskyFpoh808eE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J5QN6FDi+1k7I8uOfbNal3i4z8obZRaiStiJyqBHqqzvDtPQuiiohdwNdli7ez25zf8yb/KJLxaWBgXhmN8neN5IHaXWKyK0WtUE0LgabWn+FVisP+BhtyzRuHBCLu2xm3m6j5DzkBI85Ee+u2HeuL9yGNVYf0FsmcAj8o54T10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=Nt4Thvmg; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1706050696; c=relaxed/simple;
+	bh=aeu0CBrnI66FBjVIijl0UIIQ/FNbTLbEiEDD43Xo/DI=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=ARsNocOQPlPcIx0NPcB8/WxYI4S12vN3rjyP/D0dP5Ltal9/jz70deLZGPn8mmlSP+8yGHE9o/Qiqdi8VjdqyRmdgsaTIX8IZCkHszlO0Cm2e2RVG+tMbuJYMsdQMVusTtYmeA/O/3FErrAVB0baJS+/FuCh1WUo1BprQ/cgdzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WMIOYXeq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="Nt4Thvmg"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6002317a427so17608287b3.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 13:23:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1706044980; x=1706649780; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v/BS1G92ZM6qJJ7l3wYgSXjUs4iS7llskyFpoh808eE=;
-        b=Nt4ThvmgoLJLo5dx8/Y8i63mvkNJfhnWjtQJm0iqQCNTnPZP2WYtoaiVf2h7edV/OE
-         Fbfbm0vCFV4va4Ooblf6R6Mnqyq7nqeAeOWMZpJiPThIh2+joImJAWmFaj+lmhS7ccun
-         tqnVBM3PE1BBAAYJAwfgKWMiy45ilX6aSOiO1Po+nRfVQNmiVnuD4VDdmPeBH81nn5f/
-         qZ+BA9gJfmhQb5h8wNP724xekCKfH66tIA6eXlHvV8ODoOYMkkt2Ey3RfUhbaQ/z3hmK
-         lpHl2xVHMw+21a6yFkcEQE/ui7Ei0rtHNLo119M98yMPk4hBeplXER4fRw2u7SokjQls
-         6fyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706044980; x=1706649780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v/BS1G92ZM6qJJ7l3wYgSXjUs4iS7llskyFpoh808eE=;
-        b=TufkVIgZ6zP5ZZNZpaSZTzAirBtFPuXhlAVSxZlVpx6X8VeyMU+V6qz3wR9px6OTsi
-         CFD0CyF9Av6vsNQNCEqlhUGxKhgU2f8Ex/iywYaR+0qNZGnPkG1WHgudWiB6IYoVp397
-         XBPJuWKIOhJN3OxvRCcjQemQZ7a1m/0/dzJaIlbZL6UQsF1CnUnYv7VWHx/E9nSOsI0K
-         /Wdl040cWxX7mWP8O0qtbsvNfr+zwKO2xuQj8FPjPDTxpWOZoEv7r24VOw1gE7QfhG0c
-         gSKlWGBf8wE2M3IrJhJoVb5pDr0uyHsCHTL2QNQTrlDZqL2aoKYoFFQ+etpT+Xwti7Q7
-         qDSQ==
-X-Gm-Message-State: AOJu0Ywh3iTowpJIW9TDQnFyxQee4qbC5uu/HPLvsFWB02KhqdUZbhCA
-	6IN3bZIIMvx+yfem5DQtiFGmHkOgJ8ha169YhYF/6Ts+pmDwFHe8XiOKkbuh1gs5kla8UQM4I3W
-	960Vh6VBk6jLRLR2Sp97YP6p/zM9DCO60gSUS
-X-Google-Smtp-Source: AGHT+IGcxrQvRcwm56PfjcmaPE+SOdyP2+F/HAKLLHxZL+xbNqIMILex8o/At6qSroJX/lLyiy5cRHzve8Xqtt/F0zI=
-X-Received: by 2002:a25:7486:0:b0:dc2:43d0:6e07 with SMTP id
- p128-20020a257486000000b00dc243d06e07mr4235948ybc.118.1706044980385; Tue, 23
- Jan 2024 13:23:00 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WMIOYXeq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706050693;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jd2j+Hh/adVXKWtD56ozVK03qkc7HXVuVZfnpcpzJ70=;
+	b=WMIOYXeq+kwY8XuIKQ3+MB6ndTu6TzubNPmH2GYfu1pWU49Wzr1RlJ+UpEnaPhtbN0A3BT
+	tRTeeMC05n356fSlK0xq1CSlYHk6PHDbEedw0sWUwgCqEmK3NiSlTypK6cIADd8/FVHzx4
+	yXqjyDYsOl3/7f4Mikdpw1G/RC9C9/s=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-QTtnJHMXO_WT4W_8REmvaA-1; Tue,
+ 23 Jan 2024 17:58:12 -0500
+X-MC-Unique: QTtnJHMXO_WT4W_8REmvaA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AFDB03C0FC83;
+	Tue, 23 Jan 2024 22:58:11 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.245])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id BEB1D492BC6;
+	Tue, 23 Jan 2024 22:58:09 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ZbAO8REoMbxWjozR@casper.infradead.org>
+References: <ZbAO8REoMbxWjozR@casper.infradead.org> <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: dhowells@redhat.com, Kent Overstreet <kent.overstreet@linux.dev>,
+    lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
+    rust-for-linux@vger.kernel.org,
+    Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+    Alice Ryhl <aliceryhl@google.com>,
+    Wedson Almeida Filho <wedsonaf@gmail.com>,
+    Alexander Viro <viro@zeniv.linux.org.uk>,
+    Christian Brauner <brauner@kernel.org>,
+    Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>,
+    Dave Chinner <dchinner@redhat.com>,
+    Ariel Miculas <amiculas@cisco.com>,
+    Paul McKenney <paulmck@kernel.org>
+Subject: Re: [LSF/MM TOPIC] Rust
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALNs47v8x8RsV=EOKQnsL3RFycbY9asrq9bBV5z-sLjYYy+AVw@mail.gmail.com>
-In-Reply-To: <CALNs47v8x8RsV=EOKQnsL3RFycbY9asrq9bBV5z-sLjYYy+AVw@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 23 Jan 2024 16:22:49 -0500
-Message-ID: <CAM0EoM=1C2xWi1HHoD9ihHD_c6AfQLFKYt4_Y=rnu+YeGX7qMA@mail.gmail.com>
-Subject: Re: Suggestions for TC Rust Projects
-To: Trevor Gross <tmgross@umich.edu>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <201189.1706050689.1@warthog.procyon.org.uk>
+Date: Tue, 23 Jan 2024 22:58:09 +0000
+Message-ID: <201190.1706050689@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-Hi Trevor,
+Matthew Wilcox <willy@infradead.org> wrote:
 
-On Mon, Jan 22, 2024 at 6:59=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> Hi Jamal,
->
-> At a meeting you mentioned that TC might have some interest in a
-> Rust-written component, I assume probably a scheduler or BPF. Is there
-> anything specific you have in mind that would be useful?
->
+> I really want this to happen.  It's taken 50 years, but we finally have
+> a programming language that can replace C for writing kernels.
 
-I think a good starting point would be tc actions. You can write a
-simple hello world action.
-Actions will put to test your approach for implementing netlink and
-skbs which are widely used in the net stack for both control(by
-netlink) and the runtime datapath. If you can jump that hoop it will
-open a lot of doors for you into the network stack.
-Here's a simple action:
-https://elixir.bootlin.com/linux/v6.8-rc1/source/net/sched/act_simple.c
-Actually that one may be hiding a lot of abstractions - but if you
-look at it we can discuss what it is hiding.
+I really don't want this to happen.  Whilst I have sympathy with the idea that
+C can be replaced with something better - Rust isn't it.  The syntax is awful.
+It's like they looked at perl and thought they could beat it at inventing
+weird and obfuscated bits of operator syntax.  Can't they replace the syntax
+with something a lot more C-like[*]?
 
-Note: We have written user space netlink code using rust and it was
-fine but the kernel side is more complex.
+But quite apart from that, mass-converting the kernel to Rust is pretty much
+inevitably going introduce a whole bunch of new bugs.
 
-cheers,
-jamal
+David
 
-> We are getting more contributors interested in doing Rust work that
-> are looking for projects, so just collecting some ideas we can point
-> them at.
->
-> Thanks,
-> Trevor
+[*] That said, we do rather torture the C-preprocessor more than we should
+have to if the C language was more flexible.  Some of that could be alleviated
+by moving to C++ and using some of the extra features available there.  That
+would be an easier path than rusting the kernel.
+
