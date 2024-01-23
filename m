@@ -1,135 +1,104 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3443A1C9;
-	Tue, 23 Jan 2024 21:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701823984D
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 21:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706043905; cv=none; b=S+/Ibm67yMVR8IzghKtehpHZLf7uYb0YViK21eKBe87Ie23inWIjuGSKZ5ZpZ+TrU84VayxbLjkUAQoihWV2YjGEbTiCN4Z0s0IpRJcXE1MsPcNME7W4roy6TuFu2gQFHrTMZQMGR8FIzd1QSJYW3a+BiRjHETQVOHMETqoIbhU=
+	t=1706044983; cv=none; b=Wrq+HAJXGLLZv4JOIYKmtpN1AUyPtm8t61kESbzXacDv8G7SQON+tn86t2qKvjKchuRnnW2QW0LLC1D9ye4AJZmO8+BCEqXvAClLTxBLfi02WJdtcFFJzd3BsBFBcfRJwtxyPsvxzsQuRhXd9xp30kLX3FpPtEXYfm7gjQVyF/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706043905; c=relaxed/simple;
-	bh=+36HjVzztILbkALSK18P0mxKEELvU4cPVnMXhpLO5rs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ScTje/MJuhVTRd7Yexp/PRMjwP85uRFrasVr13+O71r7sAVnlYGo3vmBw1wB4u18zrYwsYY91KixCbhkrOIwedpFRMyEzuWRxR1FIgxbFqR7JNUKBsYEvwBvamuRXjXIYcqsx4kYaRFtUDrmogEZnwHSox52Glf1oT8xpk9KweI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a7vWgQTC; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1706044983; c=relaxed/simple;
+	bh=v/BS1G92ZM6qJJ7l3wYgSXjUs4iS7llskyFpoh808eE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J5QN6FDi+1k7I8uOfbNal3i4z8obZRaiStiJyqBHqqzvDtPQuiiohdwNdli7ez25zf8yb/KJLxaWBgXhmN8neN5IHaXWKyK0WtUE0LgabWn+FVisP+BhtyzRuHBCLu2xm3m6j5DzkBI85Ee+u2HeuL9yGNVYf0FsmcAj8o54T10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=Nt4Thvmg; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a7vWgQTC"
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3bbbc6b4ed1so3230524b6e.2;
-        Tue, 23 Jan 2024 13:05:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="Nt4Thvmg"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6002317a427so17608287b3.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 13:23:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706043903; x=1706648703; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1706044980; x=1706649780; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=reh+KxPB+eykScmmnAVnuBclX+torbn4AlTfkHFZ6+Y=;
-        b=a7vWgQTCEz5bOJI8hlRN9FPURKMNTK5nPxMh0Q+4TZNhpMeIIk8dIl73ocqMv3WWNi
-         jIQXSbYOB19GiV2F3VmZVwvYOjtN4hguge1AU/61rZcnd7J9BdpCAgevgjhumHvcbM9f
-         jEtcYOgrLVP5T2/uk7Sg/fLeOXoKzafvxKPeMQbXNfAceTJn0JXAyFtoyF8w+UK3YgNG
-         P4CFvjUn6ewmerefyMZHHi5J2xDCa1UtAXFrAmbIdmh47afccLvuQj+HzaNOC/us35ZR
-         qMigwWT9DGYeCsKuAtiwCTItf5H5VsUped2CDk/51gF+envklHCVsw7iE6ol/q74lo/r
-         vQ+w==
+        bh=v/BS1G92ZM6qJJ7l3wYgSXjUs4iS7llskyFpoh808eE=;
+        b=Nt4ThvmgoLJLo5dx8/Y8i63mvkNJfhnWjtQJm0iqQCNTnPZP2WYtoaiVf2h7edV/OE
+         Fbfbm0vCFV4va4Ooblf6R6Mnqyq7nqeAeOWMZpJiPThIh2+joImJAWmFaj+lmhS7ccun
+         tqnVBM3PE1BBAAYJAwfgKWMiy45ilX6aSOiO1Po+nRfVQNmiVnuD4VDdmPeBH81nn5f/
+         qZ+BA9gJfmhQb5h8wNP724xekCKfH66tIA6eXlHvV8ODoOYMkkt2Ey3RfUhbaQ/z3hmK
+         lpHl2xVHMw+21a6yFkcEQE/ui7Ei0rtHNLo119M98yMPk4hBeplXER4fRw2u7SokjQls
+         6fyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706043903; x=1706648703;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1706044980; x=1706649780;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=reh+KxPB+eykScmmnAVnuBclX+torbn4AlTfkHFZ6+Y=;
-        b=Tz11Qe8ax/6YRd8QJ/Hl48ZtNSvbHiHKqEIZtVcmAOV9yi69G47NxMTGqHN8BqPz8W
-         lAQcEIxoencYI8XNzRj3sEGhA5rwZnrL4FvvGGowsyZHEpNtl9hrZSE8lXqJ+aJVXy8E
-         4oTuTgSTjO5pQebW01uEpk9CEWlsfXVdVqhPt67UEU4K4dIsX2hikkwC8Y+0ESdDVI7q
-         Ix3Cz+REvPwUJarlZuGWOgx0z3UsjZ+DRaGQh4jiJEEmgaIFmbThEzZIb7zS5VvVBd+s
-         FYZoUMUpTpZzHkfj6fuWVHYEKF6/BYi4KrRocn9o9E+/h7fhAq/okILIiu8g4TKqlxOQ
-         EXzA==
-X-Gm-Message-State: AOJu0YyR08qdJxnjh37Ux1I0TWnWGK1iq3UH3Y1OwV8aGIBrHx2S9uog
-	hdipxNppoXPLa2/XPvwS30DmTNBA82HEzMTXYw6poIhAcVg8gIgd
-X-Google-Smtp-Source: AGHT+IGPJmB4uQ1T57OooaEVQTB+MhiGDRy4/8j7FggDA8w2xlzxyheHEMmGC/zEY7JMRlyABYtdMw==
-X-Received: by 2002:a05:6808:159f:b0:3bd:a65e:601f with SMTP id t31-20020a056808159f00b003bda65e601fmr589723oiw.7.1706043902852;
-        Tue, 23 Jan 2024 13:05:02 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id h7-20020ac846c7000000b00429f883c347sm3739795qto.96.2024.01.23.13.05.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jan 2024 13:05:02 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id CB79127C005B;
-	Tue, 23 Jan 2024 16:05:01 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 23 Jan 2024 16:05:01 -0500
-X-ME-Sender: <xms:_SmwZS6JyKWPbwoBa_chgOwEe0Mrtf62Tow5-sw8KHhjm4YJ3M05-Q>
-    <xme:_SmwZb7Y_2PETr57B1-lUu_25KiCBNxWshjsl5PIpeHZ7rWcrqesrEsV0Wvu92UXp
-    x0QmheGutiMlwsfdg>
-X-ME-Received: <xmr:_SmwZRdVMvuMUdP68l_yF2ouqfr6QoMMh1nj6t5vY8ElQ_RRrLRdRb8nzKk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdekkedgudegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepfedtheegueejjedvjefgffehheeuuefhgefhgeetffelkeefhedtfedu
-    ffeuleeinecuffhomhgrihhnpegtrhgrthgvshdrihhonecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
-    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
-    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:_SmwZfJQ-NSjCcebd7sTuy6Kpj27PE6fPgnuyuRwcx3ooiSnviYzFQ>
-    <xmx:_SmwZWKnz30vb4tSYMvNuOZqZmIvJ-dY14xLRKzZHzoM1QULHGg27g>
-    <xmx:_SmwZQztCu1SQOZiiSkfYGSDGLlF5eVUtKN4OXb-KBYfV9nRgceH6A>
-    <xmx:_SmwZb6vyLZb59tvzoo5Fs-pyNjj_U-3CFc50NOKUAYV6SkjdIwAmA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Jan 2024 16:05:00 -0500 (EST)
-Date: Tue, 23 Jan 2024 13:04:21 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
-	lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>,
-	Dave Chinner <dchinner@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Ariel Miculas <amiculas@cisco.com>,
-	Paul McKenney <paulmck@kernel.org>
-Subject: Re: [LSF/MM TOPIC] Rust
-Message-ID: <ZbAp1fjt5p4AX27Y@boqun-archlinux>
-References: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
- <ZbAO8REoMbxWjozR@casper.infradead.org>
+        bh=v/BS1G92ZM6qJJ7l3wYgSXjUs4iS7llskyFpoh808eE=;
+        b=TufkVIgZ6zP5ZZNZpaSZTzAirBtFPuXhlAVSxZlVpx6X8VeyMU+V6qz3wR9px6OTsi
+         CFD0CyF9Av6vsNQNCEqlhUGxKhgU2f8Ex/iywYaR+0qNZGnPkG1WHgudWiB6IYoVp397
+         XBPJuWKIOhJN3OxvRCcjQemQZ7a1m/0/dzJaIlbZL6UQsF1CnUnYv7VWHx/E9nSOsI0K
+         /Wdl040cWxX7mWP8O0qtbsvNfr+zwKO2xuQj8FPjPDTxpWOZoEv7r24VOw1gE7QfhG0c
+         gSKlWGBf8wE2M3IrJhJoVb5pDr0uyHsCHTL2QNQTrlDZqL2aoKYoFFQ+etpT+Xwti7Q7
+         qDSQ==
+X-Gm-Message-State: AOJu0Ywh3iTowpJIW9TDQnFyxQee4qbC5uu/HPLvsFWB02KhqdUZbhCA
+	6IN3bZIIMvx+yfem5DQtiFGmHkOgJ8ha169YhYF/6Ts+pmDwFHe8XiOKkbuh1gs5kla8UQM4I3W
+	960Vh6VBk6jLRLR2Sp97YP6p/zM9DCO60gSUS
+X-Google-Smtp-Source: AGHT+IGcxrQvRcwm56PfjcmaPE+SOdyP2+F/HAKLLHxZL+xbNqIMILex8o/At6qSroJX/lLyiy5cRHzve8Xqtt/F0zI=
+X-Received: by 2002:a25:7486:0:b0:dc2:43d0:6e07 with SMTP id
+ p128-20020a257486000000b00dc243d06e07mr4235948ybc.118.1706044980385; Tue, 23
+ Jan 2024 13:23:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZbAO8REoMbxWjozR@casper.infradead.org>
+References: <CALNs47v8x8RsV=EOKQnsL3RFycbY9asrq9bBV5z-sLjYYy+AVw@mail.gmail.com>
+In-Reply-To: <CALNs47v8x8RsV=EOKQnsL3RFycbY9asrq9bBV5z-sLjYYy+AVw@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 23 Jan 2024 16:22:49 -0500
+Message-ID: <CAM0EoM=1C2xWi1HHoD9ihHD_c6AfQLFKYt4_Y=rnu+YeGX7qMA@mail.gmail.com>
+Subject: Re: Suggestions for TC Rust Projects
+To: Trevor Gross <tmgross@umich.edu>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[...]
-> >  - The use of outside library code: Historically, C code was either
-> >    written for userspace or the kernel, and not both. But that's not
-> >    particularly true in Rust land (and getting to be less true even in C
-> >    land); should we consider some sort of structure or (cough) package
-> >    management? Is it time to move beyond ye olde cut-and-paste?
-> 
-> Rust has a package manager.  I don't think we need kCargo.  I'm not
-> deep enough in the weeds on this to make sensible suggestions, but if
-> a package (eg a crypto suite or compression library) doesn't depend on
-> anything ridiculous then what's the harm in just pulling it in?
-> 
+Hi Trevor,
 
-If we are talking about using a external library in kernel, then one of
-the concerns is aduitting/reviewing external dependencies I think.
+On Mon, Jan 22, 2024 at 6:59=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wr=
+ote:
+>
+> Hi Jamal,
+>
+> At a meeting you mentioned that TC might have some interest in a
+> Rust-written component, I assume probably a scheduler or BPF. Is there
+> anything specific you have in mind that would be useful?
+>
 
-However I just want to point another way that userspace and kernel can
-share the code: we can put the Rust code in kernel, and pulish it as
-a crate (https://crates.io/) so that userspace can use. This would be
-ideal for things like on-disk layout for filesystems for example, where
-we maintain the data structure in kernel source code, and userspace can
-use the same code directly. Probably this is not what Kent asked for
-though ;-)
+I think a good starting point would be tc actions. You can write a
+simple hello world action.
+Actions will put to test your approach for implementing netlink and
+skbs which are widely used in the net stack for both control(by
+netlink) and the runtime datapath. If you can jump that hoop it will
+open a lot of doors for you into the network stack.
+Here's a simple action:
+https://elixir.bootlin.com/linux/v6.8-rc1/source/net/sched/act_simple.c
+Actually that one may be hiding a lot of abstractions - but if you
+look at it we can discuss what it is hiding.
 
-Regards,
-Boqun
+Note: We have written user space netlink code using rust and it was
+fine but the kernel side is more complex.
+
+cheers,
+jamal
+
+> We are getting more contributors interested in doing Rust work that
+> are looking for projects, so just collecting some ideas we can point
+> them at.
+>
+> Thanks,
+> Trevor
