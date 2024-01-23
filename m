@@ -1,34 +1,32 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E605FF19;
-	Tue, 23 Jan 2024 15:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4181A12E5F;
+	Tue, 23 Jan 2024 15:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706022101; cv=none; b=eg/dGrIu7UyIX1uDIeSrcNXr5mRAByKNv544xITWypEI5ghAeuY3Oh15lod6/XWObizTxi/HwobqeUuwvwolhxo3p/axMOIHS8ZgfzU7B0QHAYJTho+9VhjQda7nPX2ILub5ZWlLL9Iz+9beilcOW9RhHD3qPh9ORgYUOh0DRdQ=
+	t=1706022409; cv=none; b=uTklm1Xt6HWjJLTX5oWZTaIT3FA/FgLmMYJSCFl0dkZpSLPof2SHg2OYEIo16hza+c4BZFheAnB1UI8EDFS+N4mwUjSBTWUExk1b97w7oW88w6uVvMUdYeLArIB5kHN5UCzBJ7e7aTDW/ry2KjEpQzXKJZUTuL9eE1o4mb+6+d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706022101; c=relaxed/simple;
-	bh=fhb/oh2DjO5i4p0NG4q+kRApXIkNKfH08q5C3C9RYOs=;
+	s=arc-20240116; t=1706022409; c=relaxed/simple;
+	bh=GJpHxUZgsNOhfmPXN34zV/Q98aBhZ3HJz6NyPTVit38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVZx+ooQaqhFxRH5B/ni0a5rc6aURYTMXO22LEHPxtqlAZk4yHyqt9qAjsMW/fNQKbhqkE47NiD5Qjg5Gstcp9mhWrJn75A++ui5cnJxVf5QI3o0XVSECTqqmR+Mnu+4O0+y0Vv6qrDhByt5MEoRCcgODAh/AJUB/BWRQG2pTWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.17.10
+	 MIME-Version; b=FkXuRXvImUebQZ6n42eebEJNsFYRTrM2GK0i9Ce/mf3GwIErZST4ZIA0ab16I/pltSVHrdvy1BxDaPljxcdC8VJrWFKt5RHx+3dXdpoDaU6mWMhAvETvWDQrXf29uaLq1oVfbvsjKeYpL6TlF3LSC1hYYzZPThwy0ngQlOKhk6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.17.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Received: from localhost.localdomain ([95.223.130.98]) by
  mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MI4cT-1rLz8X3v5r-00F9jd; Tue, 23 Jan 2024 16:01:15 +0100
+ id 1M58SY-1rRBoU0iHs-0019EA; Tue, 23 Jan 2024 16:01:14 +0100
 From: Valentin Obst <kernel@valentinobst.de>
 To: Valentin Obst <fraunhofer@valentinobst.de>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: [PATCH v2 04/12] rust: kernel: add srctree-relative doclinks
-Date: Tue, 23 Jan 2024 16:00:58 +0100
-Message-ID: <20240123150112.124084-5-kernel@valentinobst.de>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 02/12] rust: error: improve unsafe code in example
+Date: Tue, 23 Jan 2024 16:00:56 +0100
+Message-ID: <20240123150112.124084-3-kernel@valentinobst.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240123150112.124084-1-kernel@valentinobst.de>
 References: <20240123150112.124084-1-kernel@valentinobst.de>
@@ -39,63 +37,58 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:JNxLmFOZ11mhsC9TPd49E2fYhC9noTIOCRe0QaefZ6t7OyfdHYO
- k6RpdFWbgiybeZUzEbt98mN+SQa3F8eAchgM3etm5HkWQpBMPGosbBU3EuQDx91Xp5BE7YY
- vcsOavOyksbhiM6QDxPRd68CCG47H39jtjOPOI9MkdZaQ1b9LeZlM+bplCvu0OQgEfJCy1e
- yGuIfusl5sXPTiL/42Lrg==
+X-Provags-ID: V03:K1:Q+PbWlm7KEzwAudMeK/POSxJ0Gg1YImwqbrj7gPCT82nZXIj3fG
+ 7AfXr+IptD0Cih9eO5OzAntJyQIZgBwtDaJCuRzPjMpsXmTWNjeXf8Fs2+rYCTnHmWxZzD+
+ FTHZ1Yuqo/2KmNQxlVQ0X8T72noWnsC0uUR9D4xk2zB7Tda3wxwCg/svSWAPw1KseRtN+F6
+ X5bdASho0EGGX1Ixtvf+g==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:/peIACBikaQ=;YUH0Mo4Pgui0DLgpUsdRwjU+mFi
- GDpqTkT6icNR2B3R046uoI4cc3VO9Z1jNEgTYPzs0OtS7693C6kROn04grWKQYZmtMu9CrXDG
- wsYhsxoJ9wG4+fm+PeoKMeQfZs8sRj5XM7EOcawu3UUZAUYcw4hBEy6exew80vKIUUXa1RSas
- XxZJVyr9148jZD5Wqp1U9IodzAi190ZowAGkZ8vdEEvzGc0OUdqetPDOOGTXifbRbx/L2BuG2
- I0/R7CI1Ipoyk1GwmzOUrR09vEtMruoYHqlfJqMQn++GW41sVSSHX0WaDlhndcj07od0ieCDr
- PeTd+WuhCARItcuZpshU6i8bqyUgRCd4P3ef3n1w64B+CVtoCAccaJyQCvclAoseZkKw4jM8n
- mzHbat1AeczypXnUYYzoDR6/GH6TJpbewzSIII6VaMOPCxwwDVmrymJPiejSP8q1S+PU0P1g1
- cxhFPhw44g53XTDIw2S8x+oS7ZdRWvg158Jpwwwo8qOJfvD9iHZneBilR0hR4vzczc2Gkygpt
- mD4i3kWOFFMxmYpQDtTd8GITIzPXDuc7+HPDgs9UumQ6iN1ZERXGS95RFmaXDFK+rC4bE9KTD
- aj2eke+hnU8Vhm4h28CVi04h7q6Dc/muwLs50T843+wgWzzR96DiJxQzMw6aroPXPdCBSGOFY
- wtSZ/Se6HXqkanMP2X8wubBJ6zzMh0bpaJTf9es9zp2BMKV2U3yqzQyqjOSzXt/D8XBNNNP+G
- ixB9HQac7TcgKsGrjd8i1r/wi/8XA+lIyDJIV0k+jl532egVSH3FV1Fq6YAinP52cdL5BUIKh
- 0/jAvP9gLmNy1rr6GfntaeohE4ZGFI/84FMBwtaRtxKWFulDBqG3ydWsM0iEtY/AJFr7D0jUT
- CZ8UsqLmOyjUntG8RQvwbhc30YLOfKaVXdks=
+UI-OutboundReport: notjunk:1;M01:P0:nZMX7QKu8RM=;9wg1LjzrIzOfvtQl6NTqB5t+lrV
+ gnjeJjD4gZJCPDuJQeVBuJrQBtA9H41Tk4bE9JB0E/o1PwDUzyGuWZCzv0nnIR9ZN6Iq9yL1m
+ 31mZ3WuRKfSjBs/jtwUXPhMeg55BEfFAoaO1ehsRxI3v+nZ8aa9KEP9sMvuP8hwHl6NaXBIsI
+ ZYCHWmdyh8xX8bUNuKqeIcErqriGfaB3zByDrOxQOWkirbDw1KeP1KGApqq86LFgzVKxcmbqg
+ cJAvG2INIV9Y0BRGGnGGcM6PNUfSKumr49w2lMxNSyRLxGthcv5Zj8bfo2hpsHhgZ23lgeH2E
+ V38a2lEdv/DcqIz8xilIqWGqFrdyz8v7pI8d4+Ut4p7QNaCDhER8Lo/xomz+5kK1i5chDo6Vj
+ qDnp38VP4Hsa/w3ozeY2+gj1EDcs0qUiSxxq0FiMWkzyJSy/NHeKWHpNsy+e3A27KNFYt97Vl
+ dTu6sWqv1JmFbzBoJsXE3etHdtQOA9gD6qt3D3VK6o1ED4seIHAXLYNmheeannXgDuFLa/yCH
+ 3spWjbVo1qgglqi+2CvNf18f5t65o0wDMj5rR8FW0eRAGfqXaSCj2CqW7qeeJkYjXeVtVdS5t
+ TlYz55bnuajLjCM6Df2Gzj5Dt9gU9PQjU6Ar0TQSWwiDV83MSEDvd+a2rNzL1TNxoK3HD4LZe
+ w+KPhA9PZP2n/yNP3x93wGbAGsIqoIGP1A8ur0MoJTt7p2QpakEGidfEoqGYFlc9yaXqyysuC
+ 8ZEGHiU3PecJ2lZapfZi8i/bQqRa+3AOg/zHYi3UltuLGSTauHpfn7dlb5c0SB+duc9Fd+mEK
+ s2C/e0/H1ReFSISRe78mEIyrXbU1wZj0wVxSpcVSBsaloNN4XilijjeO2Bctzdtva2Z8p0wUS
+ ArN1lES3KKjg3rQE+EbPLyEGISKvQ+0mNFyo=
 
-Convert existing references to C header files to make use of
-Commit bc2e7d5c298a ("rust: support `srctree`-relative links").
+The `from_err_ptr` function is safe. There is no need for the call to it
+to be inside the unsafe block.
+
+Reword the SAFETY comment to provide a better justification of why the
+FFI call is safe.
 
 Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 ---
- rust/kernel/lib.rs          | 2 +-
- rust/kernel/sync/condvar.rs | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ rust/kernel/error.rs | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index e6aff80b521f..0d365c71cae2 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -75,7 +75,7 @@ pub trait Module: Sized + Sync {
- 
- /// Equivalent to `THIS_MODULE` in the C API.
- ///
--/// C header: `include/linux/export.h`
-+/// C header: [`include/linux/export.h`](srctree/include/linux/export.h)
- pub struct ThisModule(*mut bindings::module);
- 
- // SAFETY: `THIS_MODULE` may be used from all threads within a module.
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index f65e19d5a37c..0bb76400efd9 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -77,6 +77,8 @@ pub struct CondVar {
- 
-     /// A condvar needs to be pinned because it contains a [`struct list_head`] that is
-     /// self-referential, so it cannot be safely moved once it is initialised.
-+    ///
-+    /// [`struct list_head`]: srctree/include/linux/types.h
-     #[pin]
-     _pin: PhantomPinned,
- }
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 4f0c1edd63b7..4786d3ee1e92 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -264,13 +264,9 @@ pub fn to_result(err: core::ffi::c_int) -> Result {
+ ///     pdev: &mut PlatformDevice,
+ ///     index: u32,
+ /// ) -> Result<*mut core::ffi::c_void> {
+-///     // SAFETY: FFI call.
+-///     unsafe {
+-///         from_err_ptr(bindings::devm_platform_ioremap_resource(
+-///             pdev.to_ptr(),
+-///             index,
+-///         ))
+-///     }
++///     // SAFETY: `pdev` points to a valid platform device. There are no safety requirements
++///     // on `index`.
++///     from_err_ptr(unsafe { bindings::devm_platform_ioremap_resource(pdev.to_ptr(), index) })
+ /// }
+ /// ```
+ // TODO: Remove `dead_code` marker once an in-kernel client is available.
 -- 
 2.43.0
 
