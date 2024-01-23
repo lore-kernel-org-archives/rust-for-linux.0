@@ -1,96 +1,191 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2081.outbound.protection.outlook.com [40.107.7.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C67185A
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 04:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705983839; cv=none; b=h4WM+NBYEDQR9vlZUHnZaAvleFiNxzTJ68XxUYll7v8/hN5e/L3w6oKlWfl9QNIW/l62EW10RoavgYkynjwVSmc/PwN32OyHmZRfLktxq+757/wqmylrI3aI39yFf2dUxRmE8I8SHXXv8cEVHpsCyO+Gm8rMqTlh3IgYX8somtM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705983839; c=relaxed/simple;
-	bh=/VPfVazbwFpSBC+0ifZqsnv9bctAnhbQS8oMbmkcvYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=hory+LkEAu0UsLqvmCSBfnur3TLZRXhwCrzwACorf6zV1TsVE4EF8Cf1oPkwue/LAEjV6oPGSiK/mnJbxpNEFXR+QDPOwgZjT6qTM1r8oI8aqY3PjpVuua33fzklLuYG3Uag/VGekF/GDULoC4YMzoSN3B9cCtg8/m8bBq0ChRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RXzMqfzb; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F006856741
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 07:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705996421; cv=fail; b=S92r7+s3shJha2uXBbfjQgbmTMeVEcku+2kxFxSbd5ejXuJwCo6bXKW6XFzE2so/bGiLR3F0KPOid2k1i0IUV3o76IPoFiNflNLMh2cDUUSz/1FKFbEvqCdRhdWLA6a2KgkP/0Z8f2/+wTP2u3QBom/npkRW2JWd75IxPpLSEGI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705996421; c=relaxed/simple;
+	bh=SD0OfO0YCaTmtGkmT1QHe+RS+6pRETLr63OqPv/S/+8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bN7VVKXQ9Po2nyVqk+qL4rGQ867FNZTJ2J8coGHgO70zP+7F6prLgMx/qQ8dGetNt/ovrxEZi2IVHCHJMNcVLqg3+ulqaggISTfYCj7fq+AARyX9nQgt/zDtyrfGiZ1Lce39yTiUIk0XjJ69x9v4p8SlbfpBbEAy27XWZ/LwgYE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=g9opbyad; arc=fail smtp.client-ip=40.107.7.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RXzMqfzb"
-Date: Mon, 22 Jan 2024 23:23:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1705983835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=oj/czkBO9mo00jE3jNADQx+5itN+Q7VPjGprKWae67A=;
-	b=RXzMqfzbWo6xMoecnDNoQ+fENXV/YTMFfXjViMQOvbVqCGMbND7UpedA1KvMOaBHM33xch
-	WNmcZaEPPuf0MUotWIpw6oHjHi8CAEvSKl7lDNGf7MIT4q/52Zi/eJN/ZWtH4UM01aIjzS
-	/SJUdGtp1Y1zOEF6IepGIrVruosit34=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Gary Guo <gary@garyguo.net>, Dave Chinner <dchinner@redhat.com>, 
-	David Howells <dhowells@redhat.com>, Ariel Miculas <amiculas@cisco.com>, 
-	Paul McKenney <paulmck@kernel.org>
-Subject: [LSF/MM TOPIC] Rust
-Message-ID: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="g9opbyad"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lHhkRtH0jA0wBmflO8XWlI0HsGl+5XmtPOiFOS0YmWK+7KyJcg8lE11kQ+2Mx1hY+NCmuFX3cpxHapzOVQ7DIIjoUnyFE8Iqj1J4s+wh5vFJATKlrpov3MVASIb7V/imICFw0A2X5iv+lk0mOWQveGR9N+SxehkY/XHhVLGBOX59ZY2LP4XHR0C3CkWqmYKjq9yXdThMKXZjrpgtrYxvdgkNuwW/U0+sVMUjvVO8fBqGhm1sCjjJ6un7C+VfQJ9OQnt/ZUv0dUozuEb2+udAz9r8anGFTMHfkMpC2VLknhOvCUX0S0NWufqzHl8nlypc7r5BURT4MgnHLZxxcnn4WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/WunALsjYRjQGkQSM7sF5hGNpKWQwo75LK+2YkHIUtY=;
+ b=I7rMmpLd8t/Bfx1LRF+2tCd5ngEOXu/tmYJlERt+UD9pUOM9HCzJnvZ2W2Rerf8dB+GT0IX5Na5aq2JgMNacxiOKxgh1FErzDT2GoL7gVmGtXRRDaRR7dKWbDJkwRCbCtURYFN1hxOs7K92Tca0fxSM9ThlqET6VslPamAaLa+ALp4VAJr5sUdYH95Ox+IC7C47xpF4274G99owgq+AHBNxr58iUcN1QKpfVYY+kDBqqU2P3k0jrjqSb+tb+5MhCG5o6N9O/e6GBTluiydIapmOEBrNjMjXIblGCZipR8xCHorkx2xAFO+47ZrkMiIiOyv5eaQiGRkEQNVzSmc6foQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.203) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/WunALsjYRjQGkQSM7sF5hGNpKWQwo75LK+2YkHIUtY=;
+ b=g9opbyadmMDu5JVB3JvsCfGDv9Nt5yyhU+4SHe/aBktbI6mOVCi2rhAht88goj+KOYWE4slJ8UIbhkweLauiumN5FLxl6v/eW6DJnvZ7YNQa4Hxb6W86S3ERmAEDVomiGI6PrzMNADapaVhB+KFGLVtXkvb6UojgSa5WSig3cZ9itaQ0y1qsOnIhhZ9uW0ZAlvluKmlhoYvovF8M3VFPVm79MOSXgrAdg/tSZxmWCkOh4IeiAFiDhV611qKhu+MOyV32gUmwmGHQzn8peMdBngazcLRYHcZM/BOvq4sLR5qj+w/FZzrhKQTrHR7waPUd03kZS6C/YtCtKR7lnKus8w==
+Received: from AM6P195CA0015.EURP195.PROD.OUTLOOK.COM (2603:10a6:209:81::28)
+ by DB9PR10MB5738.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:2ed::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.37; Tue, 23 Jan
+ 2024 07:53:35 +0000
+Received: from AMS1EPF0000004E.eurprd04.prod.outlook.com
+ (2603:10a6:209:81:cafe::4) by AM6P195CA0015.outlook.office365.com
+ (2603:10a6:209:81::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.32 via Frontend
+ Transport; Tue, 23 Jan 2024 07:53:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.203)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.203 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.203; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.203) by
+ AMS1EPF0000004E.mail.protection.outlook.com (10.167.16.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7202.16 via Frontend Transport; Tue, 23 Jan 2024 07:53:34 +0000
+Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
+ (139.15.153.203) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 23 Jan
+ 2024 08:53:33 +0100
+Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
+ SI-EXCAS2000.de.bosch.com (10.139.217.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 23 Jan 2024 08:53:33 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>
+CC: <dirk.behme@de.bosch.com>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda
+	<ojeda@kernel.org>
+Subject: [PATCH v2 1/2] docs: rust: Move testing to a separate page
+Date: Tue, 23 Jan 2024 08:53:24 +0100
+Message-ID: <20240123075325.1270967-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.28.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF0000004E:EE_|DB9PR10MB5738:EE_
+X-MS-Office365-Filtering-Correlation-Id: d815b95c-8990-4f65-fa4a-08dc1be866c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	XoSbgVeI/eGWwxD4A+pQdV93iPrKweg9PHtHRMAz2zKniHMXn5ye4aWxVUe8Hne7STogoCICx+CLGwIUDakbZUstvJIGKqAQRgaUaKij01Hj50Ptfbdzl0DnPclpuhWa0IigabEEjUDpzDIkj+UsstTbpSD/X0ki9x2IwoPTpbiMWCrvQ1pzkgBTL9QEF0ze0inCMmrnqnBTk1C/ragxq3DektFi2xhNnYVDHz4xNhZGte19dvcui/vKocg3OTJF+p7StrqGhr3husAHcnIWO+eaUBSiIPRHF+yQZvocd+L3nEES7SG2tEyhc8v0uFEm0k8IOKfDcc/kBN5Wb85pjCBQCCWevLUwKP5oGIqGuzQWdkDwcnJbvfqwocDn2QEmXJeAzB1igMfjhD/0PDz775/n4i+26B4tkqUhckLwpnZWdPWEto71SVUOsFg6xwfZwFvd7RSO0VDouzpmQl9xVMIH7NYViD1gDeYiSTTsiv+dQYVq0uZK4NHMT/AWozMAqZgDwP6qt+bGBwXZhuzfEvYfMXZ8CmPw0Q0LKEsb1n16pRHRr7R3Ih2X1ZVDHyDWBJN/AZc6zq/wgi6uXorgcESfwpsdteNmHvrTTivFRPL36WzlMo90vA2NdkhuSuqvZduVe+i0j0MgpEG8eJ4NcEuz3+/Ah/e9yxiNjpze2ntIZddXt8GynMzdfSlSwKjIluqUoPuxEjIKZK+OELdqdaGF1LSNEvrKzqioP7lC9GB9Cf87FV6/oOnx6q+n33H2x11qczrdzbNn2+L7PX97MKTik9v6m4ebclt2S4V8FrlfnyUhUwn6K3Z19/Me1XMq
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.203;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(396003)(39860400002)(136003)(230273577357003)(230173577357003)(230922051799003)(64100799003)(186009)(82310400011)(451199024)(1800799012)(36840700001)(46966006)(40470700004)(40480700001)(86362001)(40460700003)(70586007)(16526019)(426003)(2616005)(83380400001)(336012)(478600001)(356005)(82960400001)(2906002)(47076005)(1076003)(26005)(81166007)(316002)(5660300002)(54906003)(6666004)(70206006)(7696005)(4326008)(44832011)(82740400003)(41300700001)(36860700001)(6916009)(8676002)(8936002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2024 07:53:34.9115
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d815b95c-8990-4f65-fa4a-08dc1be866c0
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.203];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF0000004E.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB5738
 
-There's been ongoing work on safe Rust interfaces to the VFS, as well as
-whole new filesystems in Rust (tarfs, puzzlefs), and talk of adding Rust
-code for existing filesystems (bcachefs, any day now, I swear).
+To be able to add more testing documentation move the testing
+section to it's own page.
 
-Maybe it's time to get together and see what sort of
-trolling^H^H^H^Hserious design discussions we can come up with?
+No change on the documentation itself.
 
-Possible subtopics:
- - Braces, brackets and arrow signs: does Rust have enough of them, too
-   many, or both?
+Suggested-by: Trevor Gross <tmgross@umich.edu>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+---
+ Documentation/rust/general-information.rst | 23 ---------------------
+ Documentation/rust/index.rst               |  1 +
+ Documentation/rust/testing.rst             | 24 ++++++++++++++++++++++
+ 3 files changed, 25 insertions(+), 23 deletions(-)
+ create mode 100644 Documentation/rust/testing.rst
 
- - Obeying the borrow checker: C programmers are widely renouned for
-   creative idiosyncrasies in pointer based data structures; structure
-   design; will we be able to fully express our creativity within Rust?
-   Or are there VFS abstractions and lifetime rules that will be
-   difficult to translate?
+diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+index 58283f4894ea0..081397827a7ea 100644
+--- a/Documentation/rust/general-information.rst
++++ b/Documentation/rust/general-information.rst
+@@ -77,26 +77,3 @@ configuration:
+ 	#[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
+ 	#[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
+ 	#[cfg(not(CONFIG_X))]  // Disabled
+-
+-Testing
+--------
+-
+-There are the tests that come from the examples in the Rust documentation
+-and get transformed into KUnit tests. These can be run via KUnit. For example
+-via ``kunit_tool`` (``kunit.py``) on the command line::
+-
+-	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
+-
+-Alternatively, KUnit can run them as kernel built-in at boot. Refer to
+-Documentation/dev-tools/kunit/index.rst for the general KUnit documentation
+-and Documentation/dev-tools/kunit/architecture.rst for the details of kernel
+-built-in vs. command line testing.
+-
+-Additionally, there are the ``#[test]`` tests. These can be run using
+-``rusttest`` Make target::
+-
+-	make LLVM=1 rusttest
+-
+-This requires the kernel .config and downloads external repos. It
+-runs the ``#[test]`` tests on the host (currently) and thus is fairly
+-limited in what these tests can test.
+diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
+index 965f2db529e0f..46d35bd395cf5 100644
+--- a/Documentation/rust/index.rst
++++ b/Documentation/rust/index.rst
+@@ -40,6 +40,7 @@ configurations.
+     general-information
+     coding-guidelines
+     arch-support
++    testing
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+new file mode 100644
+index 0000000000000..5440d56ff40dd
+--- /dev/null
++++ b/Documentation/rust/testing.rst
+@@ -0,0 +1,24 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Testing
++=======
++
++There are the tests that come from the examples in the Rust documentation
++and get transformed into KUnit tests. These can be run via KUnit. For example
++via ``kunit_tool`` (``kunit.py``) on the command line::
++
++	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
++
++Alternatively, KUnit can run them as kernel built-in at boot. Refer to
++Documentation/dev-tools/kunit/index.rst for the general KUnit documentation
++and Documentation/dev-tools/kunit/architecture.rst for the details of kernel
++built-in vs. command line testing.
++
++Additionally, there are the ``#[test]`` tests. These can be run using
++``rusttest`` Make target::
++
++	make LLVM=1 rusttest
++
++This requires the kernel .config and downloads external repos. It
++runs the ``#[test]`` tests on the host (currently) and thus is fairly
++limited in what these tests can test.
+-- 
+2.28.0
 
- - Perhaps there are annoying VFS rules that in the past required hand
-   tattoos to remember, but we'll now be able to teach the compiler to
-   remember for us?
-
-   (idmapping comes to mind as one area where we've recently been able
-   to increase safety through effective use of the type system - this is
-   about way more than just use-after-free bugs)
-
- - Moving objects around in memory: Rust rather dislikes being told
-   objects can't be moved around (a consequence of algebraic data
-   types), and this has been a source of no small amount of frustration
-   on the Rust side of things. Could we on the C side perhaps find ways
-   to relax their constraints? (object pinning, versus e.g. perhaps
-   making it possible to move a list head around)
-
- - The use of outside library code: Historically, C code was either
-   written for userspace or the kernel, and not both. But that's not
-   particularly true in Rust land (and getting to be less true even in C
-   land); should we consider some sort of structure or (cough) package
-   management? Is it time to move beyond ye olde cut-and-paste?
-
- - What's the development and debugging experience been like so far?
-   Who's got stories to share?
-
-The Rust-for-Linux people have been great - let's see if we can get them
-to join us in Utah this year, I think they'll have things to teach us.
-
-Cheers,
-Kent
