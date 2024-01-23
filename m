@@ -1,75 +1,96 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1D112CD84
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 23:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C67185A
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 04:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705967991; cv=none; b=ME/ywGGe/UTmKNr1K3MSgWEVfo5T9W9cVth5lUstNdA7gFgqtzpnOrmYe1W2gWUHmEd6xBDWvW1A9dRBmrs5SosajywQFqA8v2EC99+AI+9bnFu2dfAnQtovV2M9PV8aT228JlA7KI1un8TUV6S79Z9WDRT01z+zVBNrJB9ISDg=
+	t=1705983839; cv=none; b=h4WM+NBYEDQR9vlZUHnZaAvleFiNxzTJ68XxUYll7v8/hN5e/L3w6oKlWfl9QNIW/l62EW10RoavgYkynjwVSmc/PwN32OyHmZRfLktxq+757/wqmylrI3aI39yFf2dUxRmE8I8SHXXv8cEVHpsCyO+Gm8rMqTlh3IgYX8somtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705967991; c=relaxed/simple;
-	bh=1cpuXFapHllyU5JZGY5dSnZoVqrMowgjvxAj773vc1g=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=KxZzwcYQnxmE8UcJtENhy8f3Ib2Nky7Lxsa7stlDbzWDoVj+D8RWVQuzo8KEzEl69PUAm2ZFt4KqHoYWRjLxk0X1+Ps1FtByA3FEqq66OPgU1sAXrVKl6TDLG3whvE/oJCBzq3Y2AFaEKHQEc7VPfR4m11gwceSU4I2ETiqfHfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=m5j53zVB; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1705983839; c=relaxed/simple;
+	bh=/VPfVazbwFpSBC+0ifZqsnv9bctAnhbQS8oMbmkcvYU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hory+LkEAu0UsLqvmCSBfnur3TLZRXhwCrzwACorf6zV1TsVE4EF8Cf1oPkwue/LAEjV6oPGSiK/mnJbxpNEFXR+QDPOwgZjT6qTM1r8oI8aqY3PjpVuua33fzklLuYG3Uag/VGekF/GDULoC4YMzoSN3B9cCtg8/m8bBq0ChRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RXzMqfzb; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="m5j53zVB"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-5ff84214fc7so34606827b3.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jan 2024 15:59:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705967988; x=1706572788; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1cpuXFapHllyU5JZGY5dSnZoVqrMowgjvxAj773vc1g=;
-        b=m5j53zVBJ54WwgO8oRcaMUfffrnFU65XQKVBYajW8BVc9FSGK6ry5kCRW24RMSwP1A
-         sUFCk+3gvWkMiyVwfQgAIqRjmA5jy8GC7aDK/s7lwPPjHryoK132ccD+ckJdovj4FsOB
-         U+ioW4gurU3ILHcTG/R/2rGUDygxlx6+0i35x6gmKVbBcQqhjzT1HpgpMHYXicyVOjqe
-         EtT2bTgwCEWaZyImx/DcD72KM8mbYv6FqZe9AYXALkn2LToGDRI5lsA6KClUsv7Kx64S
-         756uZW+4L6bdPruaHbg1wDJVyUk6PLR30Ivhk1uLhwUw78hbbu7MIv9dFEVwhcMybFoF
-         5Tpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705967988; x=1706572788;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1cpuXFapHllyU5JZGY5dSnZoVqrMowgjvxAj773vc1g=;
-        b=cIstQJNERGKN46K1LBa8VOAhviPlD9GgWE9Ta9zTUys46CfdKIGNLJ16c5npSPOIbX
-         Q736AMynSvFcozgpZ9UZeJNwQGx67zMEkjwkeSPG7hBkN3+orb0mkw4agnQGeho+AO9r
-         gUdFaQklCQRztG9c6OPn08ppt8lWwqyqv0MT6N970ZdLyrHTVQ6h/IuZ4fYbfBFdFTKh
-         dDTUbAdsOdCKUKGIQPSJze+DHURSPvGai8cwZPLRRY59i03gPljsoxsa5KtYsdNINb5W
-         iHpkH1tDOLq5mjVUr7NLitH7/Zz146E5COy1ozIXh0Q9eLV7hKgusIJzKof85/nk4gtQ
-         pVGg==
-X-Gm-Message-State: AOJu0YxYK7nRt85mHh49m3XBZzN16XhMUxz+4lWKF32n56z/seGby2ys
-	vTno19ty87NoVBpJgxBQXfcilL6uCYZavQ3+6OBWmeoTfASTA8Q8TuYXbrh6v8yXjYWK1zAz8UC
-	jFXAMPKQfnqOH9jaiGvRc7ZiDwntMCacrWdaWpA==
-X-Google-Smtp-Source: AGHT+IEXnljb49I9p7A6olKst+2c/syrXFQTkvCTns3I7EOUunt4MEECpj7JTo0++c2hnOxBxZ0ZT8+Rd+PN5RqIgZI=
-X-Received: by 2002:a81:52c5:0:b0:5ff:55f6:7530 with SMTP id
- g188-20020a8152c5000000b005ff55f67530mr3744078ywb.12.1705967988107; Mon, 22
- Jan 2024 15:59:48 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RXzMqfzb"
+Date: Mon, 22 Jan 2024 23:23:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1705983835;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=oj/czkBO9mo00jE3jNADQx+5itN+Q7VPjGprKWae67A=;
+	b=RXzMqfzbWo6xMoecnDNoQ+fENXV/YTMFfXjViMQOvbVqCGMbND7UpedA1KvMOaBHM33xch
+	WNmcZaEPPuf0MUotWIpw6oHjHi8CAEvSKl7lDNGf7MIT4q/52Zi/eJN/ZWtH4UM01aIjzS
+	/SJUdGtp1Y1zOEF6IepGIrVruosit34=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
+	Gary Guo <gary@garyguo.net>, Dave Chinner <dchinner@redhat.com>, 
+	David Howells <dhowells@redhat.com>, Ariel Miculas <amiculas@cisco.com>, 
+	Paul McKenney <paulmck@kernel.org>
+Subject: [LSF/MM TOPIC] Rust
+Message-ID: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 22 Jan 2024 18:59:37 -0500
-Message-ID: <CALNs47v8x8RsV=EOKQnsL3RFycbY9asrq9bBV5z-sLjYYy+AVw@mail.gmail.com>
-Subject: Suggestions for TC Rust Projects
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Migadu-Flow: FLOW_OUT
 
-Hi Jamal,
+There's been ongoing work on safe Rust interfaces to the VFS, as well as
+whole new filesystems in Rust (tarfs, puzzlefs), and talk of adding Rust
+code for existing filesystems (bcachefs, any day now, I swear).
 
-At a meeting you mentioned that TC might have some interest in a
-Rust-written component, I assume probably a scheduler or BPF. Is there
-anything specific you have in mind that would be useful?
+Maybe it's time to get together and see what sort of
+trolling^H^H^H^Hserious design discussions we can come up with?
 
-We are getting more contributors interested in doing Rust work that
-are looking for projects, so just collecting some ideas we can point
-them at.
+Possible subtopics:
+ - Braces, brackets and arrow signs: does Rust have enough of them, too
+   many, or both?
 
-Thanks,
-Trevor
+ - Obeying the borrow checker: C programmers are widely renouned for
+   creative idiosyncrasies in pointer based data structures; structure
+   design; will we be able to fully express our creativity within Rust?
+   Or are there VFS abstractions and lifetime rules that will be
+   difficult to translate?
+
+ - Perhaps there are annoying VFS rules that in the past required hand
+   tattoos to remember, but we'll now be able to teach the compiler to
+   remember for us?
+
+   (idmapping comes to mind as one area where we've recently been able
+   to increase safety through effective use of the type system - this is
+   about way more than just use-after-free bugs)
+
+ - Moving objects around in memory: Rust rather dislikes being told
+   objects can't be moved around (a consequence of algebraic data
+   types), and this has been a source of no small amount of frustration
+   on the Rust side of things. Could we on the C side perhaps find ways
+   to relax their constraints? (object pinning, versus e.g. perhaps
+   making it possible to move a list head around)
+
+ - The use of outside library code: Historically, C code was either
+   written for userspace or the kernel, and not both. But that's not
+   particularly true in Rust land (and getting to be less true even in C
+   land); should we consider some sort of structure or (cough) package
+   management? Is it time to move beyond ye olde cut-and-paste?
+
+ - What's the development and debugging experience been like so far?
+   Who's got stories to share?
+
+The Rust-for-Linux people have been great - let's see if we can get them
+to join us in Utah this year, I think they'll have things to teach us.
+
+Cheers,
+Kent
