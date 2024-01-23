@@ -1,111 +1,118 @@
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C086166F
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 17:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37195FDA8;
+	Tue, 23 Jan 2024 18:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706032535; cv=none; b=K3ttZA7jo5YHW6ZP76nqmpgEUuoit9w4thRJ6qGGHpvGrmXC2DTeIAekD1AJLEg+GQyjRW9jKiYWB699JPNYL5JLnUWwtnX4m2kBTaTrwYiERFIHxT2qcgiTklM4GYRRyX7fEKscsbIE8T7qg9otZuOZVQt23MraJg7NC4yvT0g=
+	t=1706033952; cv=none; b=Fu1/RJVBh329XGOpZYVBYuLenxcIBg+C3DpKhRab1waOwc4cqDzaGqVr1W+gvCbof3D5ls52KKGD0x6QqbSajxJdRFh2OZA2/DieQRNhUdzxPsmM0FqEy1FlJyPB4Z3a8Smc6y4z9Lp1f0duhSbZGqvLAAO6N5nhUaxNBi3KjtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706032535; c=relaxed/simple;
-	bh=YhV3ATLKWTzWgmMgEl9O3zyM7oT/huQhqX+YcmIOIo8=;
-	h=Date:From:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NuaxR1AQDLsVq27y7+j4284teqdBdNnnGqUTp2p9CI4VdgmcjmatNr7VTgo88omZJrmC2g0MzEGSTT7SLyydFzSlZfvT2M/7bY6jpeyVehIrA+XnHK8kiFsDSNhj9jh3ULOMEEo7XtkJP8RPI/Qlw2wMVE3RrDYwulye7jnn2r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XSAYhrGg; arc=none smtp.client-ip=209.85.210.51
+	s=arc-20240116; t=1706033952; c=relaxed/simple;
+	bh=I7EaLHyv+zjRWE7JLMFlBZeY21iA0/68G15sTjitmic=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VlEZ8+E0CWPs/O/7QsO1NJ1IeASvmBW5LVxwlRWbgyZA0DySqtGpP6Mzn+mm/2uq3KuZylL7hHqZwtCcWfBlw2YjZvJ7dwlK9uU1yd3JYD6TC10dZcDZs12SPvkbY5fCSd1zGNCvDvF09w+MMQLN+19oMdjtks/l9aj+XMvx034=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OpKuEnyi; arc=none smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XSAYhrGg"
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6e0d86d4659so3180393a34.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 09:55:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OpKuEnyi"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-5ff828b93f0so40325947b3.3;
+        Tue, 23 Jan 2024 10:19:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706032533; x=1706637333; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:from:date:feedback-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fwb7i+ooPDTQo76vZIiNQkQii+dG7DgYI6aJhv485hQ=;
-        b=XSAYhrGgNtmOL5KqcsAImHMwhwKBlxnh5tGtP17aVOIhRqsqhjKQdt0VLLiNKuGsBW
-         ybDZ25KSj97Yz/fBVODjaGTxrlO/UrkOIi24rWCDdYLMkvbKoiXAIUOykWocbZQZz6dh
-         kGuVew2ZjEAGTmfCFU6TOsZRViVaskn7bwnpbMW3F4s0F6DQlTVtai6MQrzL1J8ibE6U
-         s2axfdkmlfhUhmDt23tBeRvNy6L2Nl/ZMFzuudDBZfK7vBRfN0Hrqm/k8w5pEmEDQncs
-         gBzzR7VP2xKFfm/h9GwAyfzUzZu7I6nPnwfSunkTvZJDYcIojPDx3xGcwGH/STB9kEYl
-         EXPg==
+        d=gmail.com; s=20230601; t=1706033949; x=1706638749; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I7EaLHyv+zjRWE7JLMFlBZeY21iA0/68G15sTjitmic=;
+        b=OpKuEnyir1x2y+q7QGDmN4HZJwzbE7+t38KTBW5nYmK6SaSZ6nzo1O2xTx94Lznt8h
+         M38E8Kksd7gbXMhrCXKnvE+80snY5ENgq8G0Vm6M8z7tW7g5MLDUV25i3F2TgeqRFYlU
+         T2S+QThcyY5miRic2uoRbDVFKymm4MpLJR6l/G313zZPb9F69LZCNujYBfa6/28+ARGP
+         BgoPvl10NT5D/I2GKhElcdt1yhSEYp3991HVW/2yH+quvMzrmu5WhsEy4QyPd8pe5hyz
+         bfcN4LI3ioEGs3aB8lsoLhH7+HODzKQDqcIiPwswamIAkK8uhGTIuzK/B0GtrlW+ieLL
+         qHTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706032533; x=1706637333;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1706033949; x=1706638749;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fwb7i+ooPDTQo76vZIiNQkQii+dG7DgYI6aJhv485hQ=;
-        b=nJobiAF6O51nx1bmCXkgS/rcd63RMAofT6XpKfHgPHQvD/LJjidlJWj2N4bXM7LIY8
-         WJiXtIcShT1U2/5tCmc9Zoq1+68mHXK44RQTWucCUk0IH8FyFMEUU8QtApdNmXdUC7G1
-         5Vn54gcO1Br1igKNWJBHxDAYZIOkCGKUmeoH5YiQu/cBmty3uki6kJ7rdmJt7VgSedjF
-         iCNfF5yRnM4ZL23vk8bhuK0RSbOojvCWM0t/fa10iaV3i6A4vONrd9Vh/v0SJBLvYiAQ
-         4fcJAlBT3FV7K4320TTJOySTsCdBRlPi/kQfg6wgLIsDSXnHwXnuEbNe4G7Cj+YhnOOA
-         89Hw==
-X-Gm-Message-State: AOJu0Yw/fq61bHIqhy9cKbSDKl5Lpg1GXkzAnMQPUjhcnNcqEYfB5c70
-	0XoN/asTKIDEH13a1tG1WrAkio4EyJ/xU84XXDefpvYbAWBiRpFh5ushSaeh
-X-Google-Smtp-Source: AGHT+IG1T3Oy3NTCQYGO5bSV8rT5rgho9gnpA1vZXgyBhHrzA9NQfeaodBZUI7i/sepLQ/e/nyqqeg==
-X-Received: by 2002:a9d:634e:0:b0:6dd:f011:2820 with SMTP id y14-20020a9d634e000000b006ddf0112820mr265395otk.54.1706032532725;
-        Tue, 23 Jan 2024 09:55:32 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id i4-20020a05622a08c400b0042a554aaa22sm312247qte.63.2024.01.23.09.55.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jan 2024 09:55:32 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id D5D3427C0061;
-	Tue, 23 Jan 2024 12:55:31 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 23 Jan 2024 12:55:31 -0500
-X-ME-Sender: <xms:k_2vZYQs-kOuYQnnn7BeejTeISm_jPQ-NylsgSjD4s8tVGBIUXS2sg>
-    <xme:k_2vZVyoKX-t9KDnwUl6joBKaRqB4Vk-yhJ_Few853hqV6SPv5NOUv5WplR_Mt_fd
-    VJqY0zuGAETHHHEwA>
-X-ME-Received: <xmr:k_2vZV2vL4bPDc1wpGwXF00XW5LVxCEIHW_qxxBpLUX_ynWslVh9qHnpauY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdekkedguddthecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecumhhishhsihhnghcuvffquchfihgvlhguucdlfe
-    dtmdenucfjughrpeffhfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepueho
-    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
-    frrghtthgvrhhnpedvgffgtedvleegledtheeltdeuffeuveegvdfguefhhffhtdelffeu
-    jeekleetffenucffohhmrghinhepghhoohhglhgvrdgtohhmnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
-    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:k_2vZcCkeo7iCyA_tPHq6hbhFQUzxrKcBSPIUHCtcRvO9PX98DgJ8Q>
-    <xmx:k_2vZRhqgHcQH-troLWeW5juzdKpA8uAFKgVP0XBVhjNYdVKkvdzmw>
-    <xmx:k_2vZYpYBWAXF_Uic9CPxD8t9peqd_pKu8v1-T85oT0ZzKHDmJZynA>
-    <xmx:k_2vZRJ7zi2RqDO41rN7maKnsApil7mJ08W6w5N10KlbrKwBzPpKaw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Jan 2024 12:55:31 -0500 (EST)
-Date: Tue, 23 Jan 2024 09:54:52 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Open Meeting at Jan 24
-Message-ID: <Za_9bJxeyW0pddKL@boqun-archlinux>
-References: <CANiq72mE=-LmMg=nrMdtF6i_JUscDU6GFZgNve9xtvUs76DnwA@mail.gmail.com>
- <ZPyqLJ62B2GZg6BA@boqun-archlinux>
- <ZUk14802ZWGpR2iM@boqun-archlinux>
+        bh=I7EaLHyv+zjRWE7JLMFlBZeY21iA0/68G15sTjitmic=;
+        b=jfqiRQ3LqQ5M1p/TV2h9iw9dAXRINEvbDhCB5/8Etbjnpl+vXsF9PiGJAwNwyYPraB
+         Ds7VIX474/S9tuRz++nsm4t04eMQ8FSBDQQvhSEWw2D0uN/fVCN4ATxGztx1MVSMcfPx
+         Xo+X6G/865WVri67aVr4Z39ubWwlyzeZEvZYgSfdhzXWHJtat43J2uZWWLNgpip4aNPv
+         hQfmYiyLiz0Axs6tiIEBtzAlIgpuLU1TtK6XUXRyRZXW65fIS8typVsJrqyDkXC99l5I
+         K53k0Y7hRB5VW9uUziTlgGveR/bpnWXMvwD+cGqrxsdNPnAj7kT0+jl36toecZy/zAAK
+         fw6A==
+X-Gm-Message-State: AOJu0YzBNmEyS3Z6OCH/3B+qxj+k1jmodbN2/TfAeGhXmKH/fKCZDuw0
+	3zeLwfCoZtkS0/WK/pdN3hxt5r9MkHHCFA5DJxrleh2or6cXJG7j42yOUPdt3+ejmzx3mQJnDDn
+	6MTiYYiLLyb8dWGm3Jwv5ptbdzFs=
+X-Google-Smtp-Source: AGHT+IHyUT8MHOsF6IBmTbANIqwgs2PT5BNWkCdv0dyAFhLayi1VUmpCSrLIW3NTLwOzJOUEEgLOK72SK+ulDnc30KU=
+X-Received: by 2002:a81:69d4:0:b0:5ff:9555:79df with SMTP id
+ e203-20020a8169d4000000b005ff955579dfmr4955779ywc.92.1706033948768; Tue, 23
+ Jan 2024 10:19:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZUk14802ZWGpR2iM@boqun-archlinux>
+References: <20240122184608.11863-1-dakr@redhat.com> <2024012252-attempt-tables-e3fc@gregkh>
+ <Za7uampZiG2IP8dE@cassiopeiae> <2024012251-geriatric-morphine-a275@gregkh> <Za_2WuQh9vr2Na7S@pollux>
+In-Reply-To: <Za_2WuQh9vr2Na7S@pollux>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 23 Jan 2024 19:18:57 +0100
+Message-ID: <CANiq72=mrbRXcKGOC9M5=-_cP5ShnYGLF7t8Dt7WDCP+xffK-A@mail.gmail.com>
+Subject: Re: [PATCH] rust: str: add to_ascii_{upper,lower}case() to CString
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On Tue, Jan 23, 2024 at 6:24=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
+wrote:
+>
+> We also need to consider that simply wrapping tolower() and toupper() wou=
+ld make
+> slice::make_ascii_{lower,upper]case(), str::make_ascii_{lower,upper]case(=
+),
+> char::make_ascii_{lower,upper]case() and CString::make_ascii_{lower,upper=
+]case()
+> inconsistent. The former ones already only consider 'a' to 'z' and 'A' to=
+ 'Z'
+> respectively.
 
-Sorry for the last minute notice, but I wasn't sure about when -rc1
-would be released ;-)
+Latter, right? i.e. the kernel ones are the ones that consider the
+extended ones.
 
-As planned, we will have the Open Meeting call on this Wednesday:
+> Just to clarify, personally I'm not worried about whether we consider the
+> extended range in this specific case or not. I think it's more interestin=
+g to
+> generlly figure out if, for such modules, we want the caller to expect C
+> bindings to be called or C logic to applied respectively, or if we want t=
+he
+> caller to expect that everything is aligned with the Rust std library.
 
-	https://meet.google.com/vii-meij-xpw
+Yeah, it is normal to provide Rust abstractions that follow the naming
+and logic of the C side. Having said that, in this particular case, as
+you say, since some of these APIs are already in Rust's `core`, I
+think it is OK to have the Rust ones completed for `CString` etc. But
+if we are to provide the C logic, then we should use the C names.
 
-Note that since US and EU are using daylight saving time right now, so
-the meeting time has switched to 19:00 UTC. Come and join us! ;-)
+In other words, in general, what we should definitely avoid is mixing
+them, i.e. using the C logic when Rust std names are used, or vice
+versa. And maybe we need both the C and the Rust ones in some cases
+(should be rare, since it is likely only to come up for things in
+`core` like this or perhaps for well-known things in, say, `std`, but
+at least for those we do not use them in the kernel so it is a bit
+less confusing).
 
-Regards,
-Boqun
+Similarly, it does not hurt to mention whether an API has any subtle
+difference (or not) with a similar C API. Sadly, we cannot (easily) do
+that also for the existing ones already in `core` too, but it is not a
+big deal.
+
+Cheers,
+Miguel
