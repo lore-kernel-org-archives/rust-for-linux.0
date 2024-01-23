@@ -1,81 +1,73 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCE255E62
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 08:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EBA57311
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 09:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705999695; cv=none; b=IG6mvsNsi3qBo/M1CnFoBtmtnjfQWojU57/0BRkdwSk3GqoXFBdFHzM72S5dTyIlZ5/NfWLl8WeOYkYHnB53ex5rtdH3O1lIgezQ7c5GNgdYBApc7gRr8CEWJ4tSRwePOU0Mdmms5HLyUircRr57bWE1ZrRvcppod1PDIjoVN98=
+	t=1706001019; cv=none; b=K1VioAZ4tw38Hl06mVLeJpYTCP92e+oqU0ll35RtMrBt+zHlqgUSai1KqkeIVv8Cnv5RyvmHUJ4WvW6S5Z+nEeu/eS6MSK1auo3oUr+5HQiftMP4eMxMUxHGFeNpz48z2XBjaJ4IdeuIM5CUY9Rohf1SHuFi0GR4sIK2oCCqJDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705999695; c=relaxed/simple;
-	bh=oIIk43+DJAe2iwTgwwTOunul9h3oUEPakmAZ0eeVHIE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qKOs6Pv+t7128h2oxHPjmBjEqzsRHm81y+oOhL+E2bb7AK2A2wHAFFdnbkBZDi0T7NhYfx1+Aeu/bxdBQL579iKEe66naaShbQEfHkmpPZy6RhYzdr8aFNteQ50NhrY8dGFfbP4fetheO15HGgWIhdktTx/11LMKdcYdv1bEsr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=ppJ6O6zL; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1706001019; c=relaxed/simple;
+	bh=21TpX9p/MunhH6oZZSVQAPfjw7j7JznR54Me4qZf8r8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=bCUMAiBibwC0DBEXjEDrsSNSJITEb4blTPnlrAIeaXsOrGY93MJ43GtgppbxzrNd80tIHC/E1O1D3Am42Z6fqg0AYC6WtVR2dTDyxRlo6puChvE5rdfh6N+SApVnhIS/DFbOT5zB99RxeT38ZIB+VUjkDTrIUoGSpqzpnfY5nTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/RlupZE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="ppJ6O6zL"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-60036bfdbfeso3699087b3.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 00:48:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1705999691; x=1706604491; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oIIk43+DJAe2iwTgwwTOunul9h3oUEPakmAZ0eeVHIE=;
-        b=ppJ6O6zLfP+qWHXajKIbWjyyOLOBCGU3UyGInmlWOIc3JqzeXROLDLxmnei4Vmw9yC
-         f84ymNtMBS3yVUUcVeYVFYhzwh2p9AXsml/l95v9ZAbCHhjRlFxYXJBe3Ii8qTWTTV2Q
-         WBUWPomy3SYHhF+4FAKYpwVfSXx+g+4z5i6Dy1MaaPJW+irGZ1iZQZn7ySznIbQLzORM
-         6toJzpGa2OJ9mA7q9cB6h1nfBpKSwrHWD6i755xp4b89HUvNDw9QY8tR1FbskLh6Ehr2
-         SJZP16s7UmDsT8Dl+udanXwl1UKuAGVSqoTIJMuUSdoz4xvu+GxAIsT7q+9dSL0iL31R
-         WVFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705999691; x=1706604491;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oIIk43+DJAe2iwTgwwTOunul9h3oUEPakmAZ0eeVHIE=;
-        b=HVZ4fBfcdErRfuh3molctT7GIBpICvsLbrCcQGoyxdknAWyANpaGXBXd7Ok9bNJuYf
-         cGKG66cnbzh3tWaFDaImEhNoBjgio8hWfIOpCr/Nm/OK8a4JqmdPhTnpUbje0BZIgqsn
-         FgtHzJIAMoY2S+KkFUPnOZDzwiftDwgUfmbBMxn+WBDLxqo/QS++iz0oTTHXhSIymyhS
-         3hLzHcDzxlhjqvB7vpJuylQkiEpzS0f3tchi2uT16uE4aJ6i/jEXZwoF0OFIbRTVm6aP
-         dxYanJFqwRK399JUvdXSstiB0ijRU5rNQW5ZVhHFbSViWLePLy02Q5wM8tQ241xJFauj
-         PGvg==
-X-Gm-Message-State: AOJu0YyRD520SeJJrBS0Ejjku4MVUttM0ueT7YpDTbomBquEAPDXLzM6
-	w1c8yygvvjMpfAzTUu/k/HJPvZ26ARAm2KgobDCGr6acKh1YiQqlYWTLxC+f/RZKazCimJ+N0oi
-	pnqo1ipKzVhkOubDbTmR30PYx1G18fdA7L/6gtg==
-X-Google-Smtp-Source: AGHT+IEChzKDKw6UnhJFgYvb8ABrEvN6YDyugLATHKdVtonrDukDjRNQEFHBMEA81LrOz3oDq2eghsMspJJ5SeUk780=
-X-Received: by 2002:a81:8882:0:b0:5ff:f176:9fd3 with SMTP id
- y124-20020a818882000000b005fff1769fd3mr2354485ywf.4.1705999690793; Tue, 23
- Jan 2024 00:48:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/RlupZE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E5DC433F1;
+	Tue, 23 Jan 2024 09:10:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706001018;
+	bh=21TpX9p/MunhH6oZZSVQAPfjw7j7JznR54Me4qZf8r8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=r/RlupZEOaf8Jea9MrXuKhOwE7EuQPz4CEcM4mSjf7g9+yF2TeMtAD5SJE4MuSQdA
+	 PMygP2mk6+IpKgGneZobjQBVhIiMFspvZOtWsg5hyBIaQxd9t9GXAqxK6eWMQzSpk5
+	 HkT9cp+Z5q4MkmBIXNHu5UGfKy7uA9T/VkaiN4L0+8eBOWOs4ucBzy2sTvnKthmtDl
+	 T8KoZsPN9VuBvh1ionSAE0r1f3Th3KslHOZQ96oxSNMoUYWiVpy6j23pyA+GVZwAq6
+	 i+P+5qD22oJdAM+jx/HtYD5M4IrkqbHfUiYimXGmhKydPIagNcqCROrvZ6vH3aLHtX
+	 E2pOCNlrUVo0w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240123075325.1270967-1-dirk.behme@de.bosch.com>
-In-Reply-To: <20240123075325.1270967-1-dirk.behme@de.bosch.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 23 Jan 2024 02:47:59 -0600
-Message-ID: <CALNs47vAj4=SpbLmeoND1EThJiOoXGDUtjN9E7D9tKDScdR+Ng@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] docs: rust: Move testing to a separate page
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 23 Jan 2024 09:10:13 +0000
+Message-Id: <CYLYVXYNETD2.11ZTBC8IY529S@seitikki>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@samsung.com>,
+ "Alice Ryhl" <aliceryhl@google.com>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>, "Matt Gilbride" <mattgilbride@google.com>
+Subject: Re: [PATCH] rust: types: Add `try_from_foreign()` method
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Trevor Gross" <tmgross@umich.edu>, "Obei Sideg" <linux@obei.io>
+X-Mailer: aerc 0.15.2
+References: <20240122162553.64610-1-linux@obei.io>
+ <0100018d31fe5238-538d9c26-64a3-49cb-ac76-22362f73d80f-000000@email.amazonses.com> <CALNs47v_2LxKnpWRYnM0Jcj+wdzPFQcfuaHyh_GnbLgNDXHLZw@mail.gmail.com>
+In-Reply-To: <CALNs47v_2LxKnpWRYnM0Jcj+wdzPFQcfuaHyh_GnbLgNDXHLZw@mail.gmail.com>
 
-On Tue, Jan 23, 2024 at 1:53=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
-> wrote:
+On Mon Jan 22, 2024 at 8:33 PM UTC, Trevor Gross wrote:
+> On Mon, Jan 22, 2024 at 2:11=E2=80=AFPM Obei Sideg <linux@obei.io> wrote:
+> >
+> > Currently `ForeignOwnable::from_foreign()` only
+> > works for non-null pointers for the existing
+> > impls (e.g. Box, Arc). It may create a few
+> > duplicate code like:
 >
-> To be able to add more testing documentation move the testing
-> section to it's own page.
->
-> No change on the documentation itself.
->
-> Suggested-by: Trevor Gross <tmgross@umich.edu>
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> Minor nit: commit messages are wrapped to 72 characters, looks like this =
+is 50.
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+It is actually 75 characters max:
+
+"The body of the explanation, line wrapped at 75 columns, which will be
+copied to the permanent changelog to describe this patch."
+
+See https://www.kernel.org/doc/html/latest/process/submitting-patches.html#=
+the-canonical-patch-format
+
+BR, Jarkko
