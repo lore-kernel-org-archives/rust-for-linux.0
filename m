@@ -1,169 +1,140 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from linderud.pw (linderud.dev [163.172.10.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7E07E778;
-	Wed, 24 Jan 2024 18:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30E130E5D;
+	Wed, 24 Jan 2024 19:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.10.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706122266; cv=none; b=by3vATXam1vMmnwEqc/i1ZawGbNL/BGvTo0qI5eqvV3czizpKmLLujjwqM2uH4y0WHpScyj+kMo+HIZgv/Xf9DCu3ASBLHmc/DDwKC8coX2NyjB5iJr9r6GmiG0Wb2UXN8DcZBox45eQE5irSHdKtUcPIaYYZkQAcxlDPQm08vs=
+	t=1706124562; cv=none; b=a0/9OoWUDo9fzCMGRtvWHRkSweh38qr1pLVa9vkVQmA0cnsKxxuKRWSAaP1TxaX69T9mculP49sz/OOmyRsj6RpYtKVYTUI7mM5ylGtva8NbhtVTggmPqd5ghPAZgcwxFgtk1YrQ1LMTU+zwjctJ2Eo7VBNLKGv/ta5wRqmsejs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706122266; c=relaxed/simple;
-	bh=XYCCL3twcWmLJdhjo4kYUTNmhDLnSFBOPOKk1NAsjK4=;
+	s=arc-20240116; t=1706124562; c=relaxed/simple;
+	bh=PLdpff5lHb3OurKoocknItk5GWLlhjyoy1iI7SoSF5g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pf8Yp4yqSodyzXZIaDF2TYYJ+Xt8Hacjruz1z7AHDsREqzn+XwN0u8AuRj3VJ+fW00Iag/hVEJJHNuZV4ch9dYfEGuMh9IxK02kIbq5Axe4CZIwD33N4VyanIVJxz1It51t6uFfcBeQYMegtdU+ECsJFb6OX/iiSzbKM/JKcA/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xRrF8vo5; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=IVqXPSonJB9zj7oXVew4NYuPKlphKIuHQi6hl783wICT867qZHvstCmkmQIthsRREvr8RycwxhvgHiO3q8C+CvoxPmUKp4rFtJXIa3uctP0ebuRWY4jERCtj62YDyFyC0lOVdZbXcRck/1MA2OaLSaJPCIzj4iq02gh8025PF8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linderud.pw; spf=pass smtp.mailfrom=linderud.pw; dkim=pass (4096-bit key) header.d=linderud.pw header.i=@linderud.pw header.b=PCUxxJ9M; arc=none smtp.client-ip=163.172.10.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linderud.pw
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linderud.pw
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xRrF8vo5"
-Date: Wed, 24 Jan 2024 13:50:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1706122260;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0pfnezVEREhW6dZgC9s3OfcWoKEKkqVNG1mZHT/2oQ4=;
-	b=xRrF8vo527eQ2Ez/yECby+L1we/jX9raOR52CVQ2Q3WiP5YJC8zgb6z5S+bMrqTAQ+jMl8
-	qhi5KcqnoPGaGACAPrPso1Kue74dJaXSF+fSHWZHF7INqzasf6Cta7mKGoR23lA33JPkaS
-	qzkOb6vWfLIvTlLOc+WFtxxW9ryAqAI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>, 
-	Dave Chinner <dchinner@redhat.com>, David Howells <dhowells@redhat.com>, 
-	Ariel Miculas <amiculas@cisco.com>, Paul McKenney <paulmck@kernel.org>
-Subject: Re: [LSF/MM TOPIC] Rust
-Message-ID: <bmgzm3wjtcyzsuawscxrdyhq56ckc7vqnfbcjbm42gj6eb4qph@wgkhxkk43wxm>
+	dkim=pass (4096-bit key) header.d=linderud.pw header.i=@linderud.pw header.b="PCUxxJ9M"
+Received: from linderud.pw (localhost [127.0.0.1])
+	by linderud.pw (Postfix) with ESMTP id 0BFB1C0179;
+	Wed, 24 Jan 2024 20:23:19 +0100 (CET)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linderud.pw;
+	s=linderud; t=1706124198;
+	bh=PLdpff5lHb3OurKoocknItk5GWLlhjyoy1iI7SoSF5g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PCUxxJ9M3sYJHZH8cdNLoOPOGf+edlwYJJkh8/PvQHKI8BH7/b6U4aP+YICNBvA2c
+	 KgnF4jCJkUWLKSplseTyxSmYntnW5nOJEuZ/AgB5zVXddHoRh8K4lKrN2h4nrVwe8h
+	 3OG+L1ePieo5blPRIDOXUnzCnh0VutOvZplxxVODnv36LzZlFPapelUwFd1U/0zgVp
+	 egBGZZQQszz+VDqtFKPl0RgUsAIYMAKS9sK6N/KnH0IPgAONFGoUCEDshda2MRZbsY
+	 kX/hkAJuEMHb3GZ7FvokNuKSKEZG64LC2hyy+/xFhWDM9P2op8PzCu+sGAFgQUvH0N
+	 dBcYV0cvoKL+wKIUwevaEAaJBQzYa8V1xE3PU64iqDJIBa/a5XwF/fCCfaTTeBe2oi
+	 4ZtrbICd+O6CRCn0z2WxVwqXO7ykTklGBe6DDwHixQpYKJIXyJswL4J1owR+itzHht
+	 XIRhy2uDGVwHue+Z80lIoQkRToDy9mVP4LRAiJzzSn3ooUiEYQ+WEpkDd02aTZ88ZW
+	 YCbw8deg6GUDaMYG1XMy+sO+wMpUj5UowWLelGxSaQuQCX4ak1fRppUztcYSvdYgoH
+	 LBN9alS6bQ/q8tpP7ZssP2AqwQqT4J6tlzAjPmQ5IHEO1gFJcXvucA2MXgv1Mkznhr
+	 RJovy9QMJJ6W7JId12lIAR9A=
+Received: from localhost (unknown [178.232.143.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: morten)
+	by linderud.pw (Postfix) with ESMTPSA id C37A0C0141;
+	Wed, 24 Jan 2024 20:23:18 +0100 (CET)
+Date: Wed, 24 Jan 2024 20:23:17 +0100
+From: Morten Linderud <morten@linderud.pw>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>, Dave Chinner <dchinner@redhat.com>, 
+	David Howells <dhowells@redhat.com>, Ariel Miculas <amiculas@cisco.com>, 
+	Paul McKenney <paulmck@kernel.org>
+Subject: Re: Re: [LSF/MM TOPIC] Rust
+Message-ID: <pwlz3kkc675kekykoeh3bljoc6sxjlrwrwegfuprv45xsjhcfw@hm2rgmgzczur>
 References: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
  <ZbAO8REoMbxWjozR@casper.infradead.org>
  <cf6a065636b5006235dbfcaf83ff9dbcc51b2d11.camel@HansenPartnership.com>
  <ZbEwKjWxdD4HhcA_@casper.infradead.org>
  <2e62289ad0fffd2fb8bc7fa179b9a43ab7fe2222.camel@HansenPartnership.com>
+ <bmgzm3wjtcyzsuawscxrdyhq56ckc7vqnfbcjbm42gj6eb4qph@wgkhxkk43wxm>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uew6wjptwuw6lx7e"
+Content-Disposition: inline
+In-Reply-To: <bmgzm3wjtcyzsuawscxrdyhq56ckc7vqnfbcjbm42gj6eb4qph@wgkhxkk43wxm>
+
+
+--uew6wjptwuw6lx7e
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2e62289ad0fffd2fb8bc7fa179b9a43ab7fe2222.camel@HansenPartnership.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 24, 2024 at 11:04:14AM -0500, James Bottomley wrote:
-> On Wed, 2024-01-24 at 15:43 +0000, Matthew Wilcox wrote:
-> > On Wed, Jan 24, 2024 at 09:26:34AM -0500, James Bottomley wrote:
-> > > On Tue, 2024-01-23 at 19:09 +0000, Matthew Wilcox wrote:
-> > > > >   - The use of outside library code: Historically, C code was
-> > > > > either written for userspace or the kernel, and not both. But
-> > > > > that's not particularly true in Rust land (and getting to be
-> > > > > less true even in C land); should we consider some sort of
-> > > > > structure or (cough) package management? Is it time to move
-> > > > > beyond ye olde cut- and-paste?
-> > > > 
-> > > > Rust has a package manager.  I don't think we need kCargo.  I'm
-> > > > not deep enough in the weeds on this to make sensible
-> > > > suggestions, but if a package (eg a crypto suite or compression
-> > > > library) doesn't depend on anything ridiculous then what's the
-> > > > harm in just pulling it in?
-> > > 
-> > > The problem with this is that it leads to combinatoric explosions
-> > > and multiple copies of everything[1].
-> > 
-> > OK, but why do we care?  We still have buffer_heads in the kernel
-> > (v1.0 of the block layer abstraction) while also have bios, iomap and
-> > numerous NIH in various filesystems.  I don't even know if it's going
-> > to be quantitatively worse.
-> 
-> Multiple copies lead to kernel bloat and problems for embedded systems
-> as well as security problems.
+On Wed, Jan 24, 2024 at 01:50:55PM -0500, Kent Overstreet wrote:
+>
+> We can and should have our own review process when pulling in new
+> dependencies, but we shouldn't otherwise be making it difficult to use
+> crates.io dependencies just for the sake of it.
 
-Yes, but it's a problem we already have, and sure introducing a package
-manager might lead to lead to more duplication and bloat if we don't
-bother to care about this issue.
+One aspect I find overlooked is that downstream distros largely devendor Ru=
+st
+dependencies from packages. Fedora and Debian comes to mind. Which means th=
+at
+when Rust in the kernel is something that is turned on by downstream they w=
+ould
+need to deal with these vendored dependencies.
 
-But introducing a package manager also means we'll have standard tooling
-for checking for duplicated dependencies, so if we make sure to use the
-tooling and make it part of the review process we should be fine.
+Is the intent here that `cargo` is pulling down dependencies from cargo.io =
+or is
+it vendored as part of the source-tree but managed by cargo?
 
-It wouldn't be hard to make checkpatch check for this on changes to
-Cargo.lock.
+Alternatively, is the dependencies included in the tarball?
 
-> > > For crypto in particular the last thing you want to do is pull some
-> > > random encryption routine off the internet, particularly if the
-> > > kernel already supplies it because it's usually not properly
-> > > optimized for your CPU and it makes it a nightmare to deduce the
-> > > security properties of the system.
-> > 
-> > That seems like a strawman.  Why is it _so_ much worse to have your
-> > kernel compromised than your web browser, your email client, or your
-> > corporate authentication provider?
-> 
-> If I follow that argument to the logical conclusion you're saying
-> security of our crypto functions doesn't matter that much because
-> others also get it wrong?  I'd say that might be slightly controversial
+The kernel being self-contained is also quite a nice property, and I'm not =
+sure
+if breaking this property because of cargo is a good enough reason? If you =
+don't
+vendor it as part of the source-tree then the kernel build will require an
+network connection to build.
 
-I think the argument is more just "why exactly is the kernel special
-here?". 
+There is also the security handling aspect of depending on cargo.io as any
+security issues in these dependencies would need to trigger kernel releases=
+ to
+ensure they are patched.
 
-> To illustrate the problem with cryptography in rust: just because it's
-> rust safe doesn't mean its correct or bug free.  Crypto functions are
-> the most difficult to get right (algorithmically, regardless of memory
-> safety).  Look at this Medium report on the top ten bugs in blockchain:
-> 
-> https://medium.com/rektoff/top-10-vulnerabilities-in-substrate-based-blockchains-using-rust-d454279521ff
-> 
-> Number 1 is a rust crypto vulnerability due to insecure randomness in a
-> random number generating function (note it was rust safe code just not
-> properly checked for algorithmic issues by a cryptographer).
-> 
-> The reason for using the kernel functions is that they are vetted by
-> cryptographers and crafted for our environment.
+I don't have any solutions, but I think there are a issues that needs to be
+dealt with when considering pulling down external dependencies.
 
-Are you arguing that typical kernel code is more secure than typical
-Rust code?
+--=20
+Morten Linderud
+PGP: 9C02FF419FECBE16
 
-> >   Why would we allow code in that pulls in random shit from the
-> > internet instead of the vetted stuff on crates.io?
-> 
-> The pallet problem in the blockchain bug came from crates.io.
-> 
-> > > However, there's nothing wrong with a vetted approach to this: keep
-> > > a list of stuff rust needs, make sure it's properly plumbed in to
-> > > the kernel routines (which likely necessitates package changes) and
-> > > keep it somewhere everyone can use.
-> > 
-> > ... like crates.io.  Why are we better at this than they are?
-> 
-> The volume is way smaller so scrutiny can be way greater and they have
-> to be crafted for our environment anyway.
+--uew6wjptwuw6lx7e
+Content-Type: application/pgp-signature; name="signature.asc"
 
-No, and being special snowflakes isn't helpful.
+-----BEGIN PGP SIGNATURE-----
 
-They don't in general have to be crafted for our environment, and we're
-slowly working to reduce the differences between the kernel environment
-and userspace (gfp flags).
+iQIzBAABCgAdFiEEwQA0ZnZjToDJQPuenAL/QZ/svhYFAmWxY6EACgkQnAL/QZ/s
+vhZjqg//XTabq0wo2kn8gv25d9o+8vsL0CZZ53rxxqx3t5xnMUlWcSXDPO2oZ2N+
+rcl1DQSFFgITEJF2kx7W2yH+yqk8+Qt0kyWwCEgwhX32kT7ELV8xm6NTATP4vt4w
+1tUJQLbPryFg7FS/aqFZlyoLSoQGzmpEKQ6LoCQWlXJSif3pxwqK59WIf5MUxj84
+QUol9Euhh8xOL4SbXz+2oTfH1g8gCkxA+s628bIYUFnxX4uRyf7eAPAiSuW3xpIZ
+VuICNhmE6JVLOk0oLwGbEae58axbP2BKQoEK5xIGiUdx+pzAU+HMkJXVJ7EcdMU+
+I3Ko6pqwnES1uZPewkwRMiuqoAO+OJwDQGrNDe3Mz619XBJKK+IE3iAr9b4FXe8O
+FPxJlGLKenn/VKc6YUOU9Gic4LirHhKtxHAqijwlngo15VPPQyk98kEWT8tsIJnt
+oLu9sov95NsbN04g22K6Mc+BGD+epL5sCQJlstIB3YhU1UH4JST+eT1igHvrhcHu
+80sB2tkPG273JxhCygjXwaWbs4znPP+g0yvST6RuWniNB4aMCFSld6lwbifuJBi7
+uwO/dLbMRH8v5xiixgsjxWb9JfWTw7GspQl293OJEcR3f5+AGOV7nStAWCoVXjse
+7xxHbsWzDCzm5rGVfZqS7fcYaxdMgrUnxQZp7Og6DYbskF32fIY=
+=j4Ec
+-----END PGP SIGNATURE-----
 
-We can and should have our own review process when pulling in new
-dependencies, but we shouldn't otherwise be making it difficult to use
-crates.io dependencies just for the sake of it.
-
-> Really?  crates.io currently has 135,010 packages which can all be
-> uploaded and changed instantly by their respective owners.  Security
-> vetting is mostly supposed to be done by the uploaders (it can't be
-> done by the repo since there are so many packages) ... is this starting
-> to sound familiar?  because it's the same security policy all the web
-> package repositories have.  Sure they've got safeties in place for
-> left-pad essential package removals problems, but they could still get
-> a log4j issue.
-
-Comitting the cargo lockfile pins your dependencies to an exact git
-revision, and then updating to new versions of dependencies requires a
-new commit in our repository. We have the means to do our own review
-here.
+--uew6wjptwuw6lx7e--
