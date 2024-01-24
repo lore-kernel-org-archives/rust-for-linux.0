@@ -1,84 +1,105 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0539877F3E
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 14:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516437E561;
+	Wed, 24 Jan 2024 14:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706105908; cv=none; b=Tjz827qYLXzrIjbREDxGGwMEiJfHI+cTvyijuPF9Aw4tgEtYoNZjEUNikQIm/R0hBT8bskTTNJIID/fJnuLyInPk8KKxoN2AZal5FHfmmHt2DVqTbVpFRhxwzGjTBV+m3qP6l9CsHE/xAziG8d6iQRUgwWbH15t7+PviPV0hDLw=
+	t=1706106401; cv=none; b=Q8+tPWzARa6BIAtvuAlzrlSxCaTUSVX21X7A8/jmY9067YhF3NEA3rlJgzVPBT1+58NJZ3XNpvmS6x3M+nnJMNMwUidWZbC/CCHMh5O8Mg5eat1jLZe5J/WX3cmOOPWc36DmQU4vbrE/5myogIXaCn7VYAy1ljOGzU0OKP8/fkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706105908; c=relaxed/simple;
-	bh=v3AfQj3kEUxjlvd8r03KFoGJX1jvJ+SJUzmC0MuR3BA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c5jsVZelBCg8VzyEA/GhyrHyYJdOlmf8bkm1++uqs3wX5ULU9NoDAIWwE5hnzn3UBwpFnCV3IgamZ//C/y0GxYQAczLb3L1Hd6dQ1uVGCqCagdDCABZGBs8gVaEdptzTNWr4L0iPtnsoD7Ls7WZka8wxeJXURGeijtp6tFNwPUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XljhzPVx; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706106401; c=relaxed/simple;
+	bh=z6HvlejC/nz1/FSz3DCYfhkWullgJqi0Xj8TI/+bano=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EBanYqsD8nAMfCqLSRSdY3uv/8man+fTUbgOsFV+Y+8s0/wBfdzN3JeBZ8ZIVb13CZACyJS12yVj4ys+A003pgPUiqtTPg3AU6VQraSwPxjo4UKMdaaK+QpB3ukBlBugp5Kl0Aeb/7SvTmimwDeOG3S0WaoKLhEC+a98qagNm/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=uSmbXpx2; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Mj7rfV5A; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XljhzPVx"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-5ffdf06e009so32360697b3.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 06:18:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706105906; x=1706710706; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v3AfQj3kEUxjlvd8r03KFoGJX1jvJ+SJUzmC0MuR3BA=;
-        b=XljhzPVxhgRHVNscsE9jG7tDPV/2uKVjeon8gB4XYqtr34bWyzNZw7oxgZ1ZDtuNxo
-         NfKRlhlPpJvbTJvygAOAFcA9ehMVStKRR/7/Z/VSIMgpJfRnVLsJY/rxC5wLk8AOfLPx
-         3potLcvdJrhsDMHseCIoWNFUHvnaSCXSgiW1CdYLmHOVcSRfu/qQS2jGX/p4ICmg9Kfe
-         71CTtZrYNoWQCBYu7jmrDpATvhWkY7taYSIC+lT02Lq3RUjqexdRXKtkRy3LhpWaWcBO
-         gPOi0ouKrPmrY3HpawSRVV+wPbkkyab8tH1sjRNjceoYSuko0CBvYLJrylqGMLa4r5Or
-         uW8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706105906; x=1706710706;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v3AfQj3kEUxjlvd8r03KFoGJX1jvJ+SJUzmC0MuR3BA=;
-        b=nvsVkeZESisKP3YgAfIOWEQiMtoQ+Z/RqSn16vLKVpbaS+F/bIirjKghbXRTDzLdUY
-         BaGAbYwqYtDLWQNsbS49hnRFS1toAcJDpQFDf4WIF59QIkFFKzJ0Lvut7kiDCYBpwytc
-         q4e98ZVIMhdbj22Vc9XoqPvIzD2PbTtsm2ZWbfnMKlM2PToL38Sj+ggmzd4CzwyrCSXc
-         cPSwdZKfelmhwm4vwayxtvwv6G2kPXKYJ0HeQyjaSpBfTCOyC1ev5JKoWjDOPsPawTN8
-         yJQ1AhUlgK55HUBl5IQBrRVoT4+gVdXyXDydcF/SuU0QQum9OBJ0GXs8B5ybuJJ/1CiV
-         +PLg==
-X-Gm-Message-State: AOJu0Yycu31qBtNwl50J0XZxt7YqsnW4I1KN+3Ly1yfmzbfYzEvK3Fai
-	GyosVBDcVfBJrOfVTrMQOk1D//C+iZKLV3PbBD0HA8t2vUUSYjaxlZL3NMidh3WKDh/7ZUVMek/
-	zs/hRau5SZIjG1LCgwa6tdcu5UeGjTpX59n96
-X-Google-Smtp-Source: AGHT+IFPMSuM4/kK0jUobdkC0kYBbbgtpN8iDkj1x49Y7Rkw8hwRXvL8AKqcbGOqiGmTDMAOD3z8SuF8gpmCRE2brNk=
-X-Received: by 2002:a0d:df05:0:b0:5f6:b6b7:8a06 with SMTP id
- i5-20020a0ddf05000000b005f6b6b78a06mr528539ywe.76.1706105905628; Wed, 24 Jan
- 2024 06:18:25 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="uSmbXpx2";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Mj7rfV5A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1706106398;
+	bh=z6HvlejC/nz1/FSz3DCYfhkWullgJqi0Xj8TI/+bano=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=uSmbXpx2o1CaErAMmOrT2372J9gawlIp9n8wxMVjobuJ+k2AgliPng72P/UndH/Hb
+	 9Sxumfn/P5P3Sk9AoImcf6/e0c/vyc/KJC7hzBgaQvKgx/lbB+rlBSupuVf+T5aV2B
+	 wxnVibqwz4cDQTkRKHWTATfHH8F+lWV5VJKQC3JY=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2DB801286815;
+	Wed, 24 Jan 2024 09:26:38 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id C7Hl9fLd2f7O; Wed, 24 Jan 2024 09:26:38 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1706106397;
+	bh=z6HvlejC/nz1/FSz3DCYfhkWullgJqi0Xj8TI/+bano=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Mj7rfV5Aw4pzn04rhqswoKDr0yviNTimO9hF/gUSa//L4HSF6PCU7dHhQDzlpv7rW
+	 K6JGZ+gn5RB2zZWfA4OzJ21T3HQbE9b0ujviRLeqDsi1uOQNZn57kFbOy3bspcMkjs
+	 SdtnSSpgi/p99/6MYWJszo0cy3nxQZiuwCA5zUMM=
+Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 9840E12867F0;
+	Wed, 24 Jan 2024 09:26:36 -0500 (EST)
+Message-ID: <cf6a065636b5006235dbfcaf83ff9dbcc51b2d11.camel@HansenPartnership.com>
+Subject: Re: [LSF/MM TOPIC] Rust
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Matthew Wilcox <willy@infradead.org>, Kent Overstreet
+	 <kent.overstreet@linux.dev>
+Cc: lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>,  Alice Ryhl <aliceryhl@google.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Kees
+ Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>, Dave Chinner
+ <dchinner@redhat.com>, David Howells <dhowells@redhat.com>, Ariel Miculas
+ <amiculas@cisco.com>, Paul McKenney <paulmck@kernel.org>
+Date: Wed, 24 Jan 2024 09:26:34 -0500
+In-Reply-To: <ZbAO8REoMbxWjozR@casper.infradead.org>
+References: 
+	<wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
+	 <ZbAO8REoMbxWjozR@casper.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124141632.546912-1-linux@obei.io> <CAH5fLghtZK94Co2+0agG91SZQrqke8H=oyHfmRxi2KbRTPJp2g@mail.gmail.com>
- <0100018d3bd4f712-766b98b6-4052-4e7d-b6b7-19c4a793a33b-000000@email.amazonses.com>
-In-Reply-To: <0100018d3bd4f712-766b98b6-4052-4e7d-b6b7-19c4a793a33b-000000@email.amazonses.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 24 Jan 2024 15:18:14 +0100
-Message-ID: <CAH5fLghKdkgNSTrd2Z+FUp5-jfHOEX=KOF72a_iHrBWRt9XqOg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: types: Add `try_from_foreign()` method
-To: Obei Sideg <linux@obei.io>
-Cc: "a.hindborg@samsung.com" <a.hindborg@samsung.com>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
-	"benno.lossin@proton.me" <benno.lossin@proton.me>, 
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
-	"gary@garyguo.net" <gary@garyguo.net>, "ojeda@kernel.org" <ojeda@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "wedsonaf@gmail.com" <wedsonaf@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 24, 2024 at 3:17=E2=80=AFPM Obei Sideg <linux@obei.io> wrote:
->
-> I will change it to: `ptr` must either be null or satisfy the safety requ=
-irements for [`from_foreign`].
->
+On Tue, 2024-01-23 at 19:09 +0000, Matthew Wilcox wrote:
+> >   - The use of outside library code: Historically, C code was
+> > either written for userspace or the kernel, and not both. But
+> > that's not particularly true in Rust land (and getting to be less
+> > true even in C land); should we consider some sort of structure or
+> > (cough) package management? Is it time to move beyond ye olde cut-
+> > and-paste?
+> 
+> Rust has a package manager.  I don't think we need kCargo.  I'm not
+> deep enough in the weeds on this to make sensible suggestions, but if
+> a package (eg a crypto suite or compression library) doesn't depend
+> on anything ridiculous then what's the harm in just pulling it in?
 
-Okay, thanks. With that change, you may add
+The problem with this is that it leads to combinatoric explosions and
+multiple copies of everything[1].  For crypto in particular the last
+thing you want to do is pull some random encryption routine off the
+internet, particularly if the kernel already supplies it because it's
+usually not properly optimized for your CPU and it makes it a nightmare
+to deduce the security properties of the system.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+However, there's nothing wrong with a vetted approach to this: keep a
+list of stuff rust needs, make sure it's properly plumbed in to the
+kernel routines (which likely necessitates package changes) and keep it
+somewhere everyone can use.
 
-Alice
+James
+
+[1] just to support this point, I maintain a build of element-desktop
+that relies on node (which uses the same versioned package management
+style rust does).  It pulls in 2115 packages of which 417 are version
+duplicates (same package but different version numbers).
+
