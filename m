@@ -1,73 +1,143 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DFC18C01;
-	Wed, 24 Jan 2024 10:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4295C1B7E8
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 11:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706091117; cv=none; b=qMl0e7aaBPn/p4PIOy6g38ZjPDwCaSC+W80rq6EeHHc1NWKE9ReCpTG5sVk2+twI7K076AwO6GOexfdwo/hZaAsh7CGy325wvt973dT54UqL/+beehEPJI89zF9RKS7pTWi9l0UYog0EIrjkX9EBk2eabmvRg5p7t9RlAqyFQMk=
+	t=1706095249; cv=none; b=YQwwtlMCo2P8/R6R0ZNYjG/4LxKO5RFDFaJ0XlGytUmzph8l6A6IRfbwyWd9VpDnZ8iz1T/YsKGTZ3ZjsRGSUBdb0vIFL3uFuQK6jzj4T5KaKftV3Q5OeBa9pkbuQMAtEkV3qgF+Vs6qnLQnIDyzvomuqjkVrxvsF5pSXbsgkR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706091117; c=relaxed/simple;
-	bh=CvGTPg1l+fKHEbuwtqyFw/sMsPaw+N2FH23De9NheCg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YUdBQHizBx4sccvXIzoX38koooprTstZ7PGfWOYlt6vdX2PjElCUj5Cw8x4vGhPS2eMcmyQhTM1OXCbdz77EBj1C0y9T/WAJBA+f6DAfmWRZ14SVnu7C3WkDlCLnmEe1TQ1dkxx3hv2m09meJCBohi3f6wYsS7S49VunFWUOCMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iry3Xgxf; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1706095249; c=relaxed/simple;
+	bh=kWQZyqAOGP/F6TE9A7tinFjaaoaS7LJ3wiTiWkD4Qns=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gm4KnnaQO9w6J4MHAIKdQ/yAVIo+Wg//XBH67HkGBdiqjFvcy4nJeC5kd28kUQ92CCAguAugoP3BNZaBxqIkWWomtXsrIYCaYB+QDvfoqvTxN31mp/f+L2MQOZRF9K26EU0JwxstWj27s1P+HjRzQegeORwq6ljchFVDrXJl7O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bzn9Q1K3; arc=none smtp.client-ip=209.85.167.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iry3Xgxf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1706091112; x=1706350312;
-	bh=CvGTPg1l+fKHEbuwtqyFw/sMsPaw+N2FH23De9NheCg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=iry3Xgxf5gYJLmOfXXe3OqnH84Sh3AYsH5iF6fpdwPQ9Xo6G4QAkK2/XKd2vQ3tJu
-	 iW7L3R5bCo4qUuPv1czvMozTv6dN+Vnqe9QWEfviFUm/6BBVHXx84dvmljtjdU8UJf
-	 xmQ7HYTGmO3JbIkry6K6LuvpqieYJrjSLJUVMcCRBoBukRkmNM7DM5ZzKMss7PdKvU
-	 zxMUDCsvN3lFZCrIOrWCvvjvyBQR/Sa6p4i3Up5LD7pwMu/5lUbrwYDRzpzhM3ad6F
-	 jvH5Zt2RLgeRZJbkkBv1TWXZdcHqbu+Q8JLVw+J0+0Q71t11kHRqPAkmKgDOdFaG3t
-	 EHiZZu1qYvVdw==
-Date: Wed, 24 Jan 2024 10:11:28 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] rust: file: add abstraction for `poll_table`
-Message-ID: <1ac11c65-7024-41c3-a788-cfcad8fb6c55@proton.me>
-In-Reply-To: <20240118-alice-file-v3-9-9694b6f9580c@google.com>
-References: <20240118-alice-file-v3-0-9694b6f9580c@google.com> <20240118-alice-file-v3-9-9694b6f9580c@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bzn9Q1K3"
+Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-510090251d4so918977e87.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 03:20:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706095245; x=1706700045; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Q06qj25A3W72nqjSyyLYpEWv6SpYxc3VbfOrmnq1lmU=;
+        b=Bzn9Q1K3f2EtWJMt/tOLFdvg3ouqm07N26C7RQ0a7XAJKeRg3yoSMFGO/dq+y6zDjZ
+         3pK1AOnzSCZlDlUZICm1qy/05qU3wN2g3pPTFHUcpvwLzSxK0uu2o8M0h+pR+ekPDyME
+         7EDMPGK+zgZL2Kdw/GGZ02pC2HWN34A4h/5gTTsdB7WPI9EnDGeGjowMvRutdnFt7DjF
+         hKyHr00K4S13zgiQ5dTUaAD8sIH4R1ubqLOz/f7S5CN8j07MD9T3S8FN0lmZDOeWsksz
+         XNJwHn8dp8Zv8I2IhPPlz7u0yjRRk5PDY1nTWzAcJ9tOrMiMmNQvYHv8fPC76C8QGbrY
+         1j4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706095245; x=1706700045;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q06qj25A3W72nqjSyyLYpEWv6SpYxc3VbfOrmnq1lmU=;
+        b=fduN1yJKfAXRIDnDuBCxA7tM4LS42u1ge2WdzAtd8UpxQ+TDwOO2R24Jva8pKDTl50
+         JiwHrYUzGTeAysqNknvHxes3xJHRlSrC1N82N4vikUJKk4Jpr12KEq0CNtUQNLUvdpxg
+         LUTWj0zjbHFjHzdbTtFixpsZSI08IRlERaEvXpt8BvFaKAf78NDO0/ogE5JR+6XhlGJo
+         EP8XeitkvPHvLs5aSu+gIbh/x5UMOSSlXeb3vStJrIa0Bsb3gXLzwpvGDqKAECvWR114
+         Dj4/6YNIge/giJY1fA+UOcSjB8Chx++uu/uLq3paA+NfJ2WtBBDo0xYmL8wluVSHblIi
+         O4vg==
+X-Gm-Message-State: AOJu0YyTYup8oOKx229moJDDnCfxsNoRSg8FZ6ABXcY63tQOejiMaWw4
+	zrCFb2pd2fe3CTQcMnZKW2YwCeJwhK3T3PjxpBH5XcISYtkziVBPQJXdUrycXIDXLKFmC+9AWKY
+	29tbBarguAR7kQg==
+X-Google-Smtp-Source: AGHT+IGtewFNOMp+E7UHcuxspPCn1NHbjZFhNiQV1tQT73RWZ+1gjCDwEDBYZ88PY8GCHXnhdbCRL3PN6v+5eqQ=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:348a:b0:50e:7045:686 with SMTP
+ id v10-20020a056512348a00b0050e70450686mr13196lfr.9.1706095245201; Wed, 24
+ Jan 2024 03:20:45 -0800 (PST)
+Date: Wed, 24 Jan 2024 11:20:20 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAHTysGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDQyML3cSczORU3dxc3aRkU2NjE1Oz5NRUCyWg8oKi1LTMCrBR0bG1tQB gnQXBWgAAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2107; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=kWQZyqAOGP/F6TE9A7tinFjaaoaS7LJ3wiTiWkD4Qns=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlsPJ0mZUB7ZjFDvGaQmhyq/UORIo20C2j9zcVt
+ YdntYpZ4uKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZbDydAAKCRAEWL7uWMY5
+ RgyDD/9O5nCInCi9N8fvfrgrF46WqPERLsFS23XOKO0HXmazeBbiBDasMKtTtRJTYjY835m8gGc
+ kGptRXU5jX6dSdSywW/bEhqu4AR2K3dXqtWYSVVxU8lhu8e1V4Q8SVfIbZ5NDHq3tdytEJuey4M
+ 25pgYgWsXraIyrYswv8YbroJqEdS/ENClVz6Urn/yoHfNErOkn8ygvXEkhxfSFs5LuIkTEjd6Yb
+ J70MVi02EhC4Ce9fU97PhL1QgEkxmlIY75li8xzxdO2MQWG9R0P0GhcTrO7zKMZOVsAhcuHUkLN
+ mnSUhv2XALVke10eT1bfNkVjS/FrngCJ02mIWRNHoOTCV6wvxla+24DVx8rQqkEyrOXKPRoUjj8
+ PG5pnmzcLASw2uwhoU6MHLqCkCMEwSEtkyHkAXGP6EZvDZ94Ru5UBk9gdziaVpCnloAqTfZZd2n
+ mmm8nADiG7suUwBJKFfyBw7XBjh1z52aeWYOSTkn1AN/oPAE1gGThS5SrQMe86IMrrBVbWc108i
+ g/iF+I/BLuQTsV2NQQIyFI5Ro4adCA6jMthxZx07tyCcy9qk5EOM2pgotgxrMP05c3o0q836Sy+
+ G7A3Rh+a+xgLJ4ZcfQ6ejlxWblcrIWQmdNTx0Kj4mNaCuzZuvNZ14nURwD60prjTbSejAbQL4j7 Fpgm1T2lrt1cxWQ==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
+Subject: [PATCH 0/3] Memory management patches needed by Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Kees Cook <keescook@chromium.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On 18.01.24 15:36, Alice Ryhl wrote:
-> +/// Wraps the kernel's `struct poll_table`.
-> +///
-> +/// # Invariants
-> +///
-> +/// This struct contains a valid `struct poll_table`.
-> +///
-> +/// For a `struct poll_table` to be valid, its `_qproc` function must fo=
-llow the safety
-> +/// requirements of `_qproc` functions. It must ensure that when the wai=
-ter is removed and a rcu
+This patchset contains some abstractions needed by the Rust
+implementation of the Binder driver for passing data between userspace,
+kernelspace, and directly into other processes.
 
-The first sentence sounds a bit weird, what is meant by `_qproc` functions?
-Do you have a link to where that is defined? Or is the whole definition the
-next sentence?
+These abstractions do not exactly match what was included in the Rust
+Binder RFC - I have made various improvements and simplifications since
+then. Nonetheless, please see the Rust Binder RFC [1] to get an
+understanding for how this will be used:
 
---=20
-Cheers,
-Benno
+Users of "rust: add userspace pointers"
+     and "rust: add typed accessors for userspace pointers":
+	rust_binder: add binderfs support to Rust binder
+	rust_binder: add threading support
+	rust_binder: add nodes and context managers
+	rust_binder: add oneway transactions
+	rust_binder: add death notifications
+	rust_binder: send nodes in transactions
+	rust_binder: add BINDER_TYPE_PTR support
+	rust_binder: add BINDER_TYPE_FDA support
+	rust_binder: add process freezing
 
-> +/// grace period has passed, it must no longer access the `wait_queue_he=
-ad`.
-> +#[repr(transparent)]
-> +pub struct PollTable(Opaque<bindings::poll_table>);
+Users of "rust: add abstraction for `struct page`":
+	rust_binder: add oneway transactions
+	rust_binder: add vma shrinker
+
+Especially the second patch with typed accessors needs review. It
+contains a Rust analogy for when the C-side skips `check_object_size`,
+and I would be very happy to receive feedback about whether I am going
+about this in a reasonable way.
+
+Links: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (2):
+      rust: add typed accessors for userspace pointers
+      rust: add abstraction for `struct page`
+
+Wedson Almeida Filho (1):
+      rust: add userspace pointers
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |  68 ++++++++
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/page.rs             | 176 ++++++++++++++++++++
+ rust/kernel/user_ptr.rs         | 347 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 594 insertions(+)
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20231128-alice-mm-bc533456cee8
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
