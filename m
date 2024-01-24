@@ -1,91 +1,132 @@
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7632BB0A
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 11:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D65577644;
+	Wed, 24 Jan 2024 13:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706097196; cv=none; b=tC+4ovvKWynUNY97PydfQCCPWCDc+8UK2am1r94Y+R+h1sYbAq8jNDE1M5/IJ2xbP2ukHCo5kQzkJR11to5/9YNxEYmhT0iPjMe4eHCLRywMw01eQBHW4ueXjhw1Ow60a0BWhEF6WChWMampoDxhFGT/WEFlMfUmr779PVMNCaI=
+	t=1706101718; cv=none; b=X7be+80Q5cMg9l7D2sGQnHGJlOtbHB2DzBRrxSlB3JyYc2DBzHThMHy9KQsbKorEY1LQtE3665/76ioPRBaqSFwaKZ72p+EGwiNl0g9pcErqy6phz+XxegAnSMqD60PTKLPR5trUazb5tJKUr0uO3ddE9lxiH1jPa4amT4/Nams=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706097196; c=relaxed/simple;
-	bh=/r0gvC9hPKKB4PzuyLUk44LoRdlm4uFfU0Rw6I3Vny4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IFxXEn938v9oq4369apzOgPagJp44rOFdxj16MD9myxmm0Jxdc8JyqK5lEQraIXMzgQ5VZjXoYCnKXe3m80zjCh34SIzJc/t7L6PiLW0EAhjKZ0p0p86KmYsVjxhrGOqHyIDXA2JB9JRD12jt/sY6ROmf6NIaH0obbh6gyy6/E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zS9oVjYP; arc=none smtp.client-ip=209.85.222.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706101718; c=relaxed/simple;
+	bh=aHkdkNoScrk1SN8G0CWq7jpLwpFto/N91v8whUSKvqQ=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=byIVT6GaxALexzwqSYPxhYefOCYlRsd958rsqwNty4ZFErpiA+xQ4RAHOPGFartEXOC747+HggwUgxlRdQ0Rghvjd3Lr2MxuIT5Jf+aeKZRAkQl8sR+0pEXp55yNScXrlpILMb73J5RPIus8e9TdXVaj61v+8QoEi5rdugzN76c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iKXm5GBv; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zS9oVjYP"
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-7ce55932330so1083327241.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 03:53:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iKXm5GBv"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d722740622so6727205ad.0;
+        Wed, 24 Jan 2024 05:08:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706097194; x=1706701994; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I0No3uiJe4nCYK5rzPxJQMUkZs8QGyMNVOjpXwdTbkI=;
-        b=zS9oVjYPNh6acGiHcl0qz+5uoSS4iXFiLDMuDO9U5/s6Wpm/WFsS/O0YDQ3gXRIQmA
-         8WpmnPK4nIAyWsH/j+9z//KAlqL49fDbs2dKUSKNtg3VlKtFmDl+RkbGwhzWajcNqhjw
-         RBxGRlCNUPFyMpBXMCPk6+cEnNCjAEyKumI3Sbeu3xSZJrch9FDEmYasDFjrRYWHqCfw
-         +sSeXyfj2CntERo3BA9UyzWolsA5FJxR5I8MI/WZbYtCcGufXQS37T7Oli73uNwlSu7p
-         e77rBOfFfSrWQa4iDrFhh304wZ0psjoozDvPWA0khDYjtA4xR3LDmfB5PPNKpa6ANa0m
-         ouRg==
+        d=gmail.com; s=20230601; t=1706101716; x=1706706516; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6KUI/eFvmS+XloVvjaOrWB9BVgbO8O7S1IW93a0Yo70=;
+        b=iKXm5GBv3FJ1C9edLLty84A+xgEEQNNtqHmWWKkmLGNllEbA74w+74595HkO3M9+a3
+         2vmoUTqh8X81W2d3s5aze+wZlC9U5wFJri2108JkwHhL3iQ34tPWLop12xtusITJmj2x
+         LtNOA/+OIaMFe8zkm60Sbru+qg5i343bh0wPD97nrV165/7c34/zjc2JehuwkQhunLEl
+         yxEkhqAEI8DPDuNG09HtOi3raIx3hmRR/OsvJxxWzXvN/NQvlgkhT1GJn32A+Wr6LmFk
+         EldPlja96UDYnW3Y8mi+JGSWcZ3H0jQSG0PdT/tk6SoT3JbG75/6ki1DfQnuwIvP83Az
+         RWNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706097194; x=1706701994;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I0No3uiJe4nCYK5rzPxJQMUkZs8QGyMNVOjpXwdTbkI=;
-        b=VRmG48U+2TZBQhoGvyK6hgZ16yq2OMq5ytBO4Hw3PvixgQehdAUVNgLc0AaM9MOywI
-         qD9x9zx4r99mzs+aolOsfH3w3Hr6gBdfpuef06UHA+Q1v7AbUwmPKeMGPhQB6psWsGXZ
-         QG2BpWO9Q3PrY8R2vYEAdNV5bKBQQhkOYbjBvTAiJ+H8Be3XuYPhd9bsJZCyPiEVrRBE
-         SS4M5krNKYPKROE9AkgvlCPFA5FXZD72aJcBRGH2wEa95b1/M1NYgRZAQZ3s08RHDQBf
-         z0WGFKSNx2u7FD2qRCVKmid34/A+xic+ayxrbzLBZqZFVBGr7Z6makY+z9qhiV7ljEX/
-         IdAA==
-X-Gm-Message-State: AOJu0Yzst0n8NKNbU8Y3jUUHmtL4DVDaM5ypbq41DfiNPVxqauGZ9oxV
-	7DT2KFS1mS9uCCUpqg4j0EzKz/zgFB8pJlqnAt8Ne1Y7niuuKhg4b7fVbkUkg0tqkFEg+2h58R0
-	ze4lAHT6hQu7c0RtTTldkHXtx1p6NulUO/exL
-X-Google-Smtp-Source: AGHT+IHXuryP/Kukheku8rD0vjwcd3AtNiYRyWthsy99APvedhkafc+4O1FtYK65wUKYRR2MWR1FQcvGy/DMTToNEq8=
-X-Received: by 2002:ac5:ca19:0:b0:4bd:6486:16fc with SMTP id
- c25-20020ac5ca19000000b004bd648616fcmr157904vkm.6.1706097193395; Wed, 24 Jan
- 2024 03:53:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706101716; x=1706706516;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6KUI/eFvmS+XloVvjaOrWB9BVgbO8O7S1IW93a0Yo70=;
+        b=JohYkQez1854wrI8aW1xWYHqCLFJtrgScvlX+Ett0vJ8VXbl+XsK1lpTSzPaCgnroV
+         vHZp64XX6MLG6Xn7GB2pYMXrh7lEisrOAVTzrsWke2dIxw70pGHBszBnla5CF7PIOrER
+         jIz5G0zP17bf3gW9+BOSDbBfKe5Mj+eMTsrQH/0dOH3eDKG6k+U4/GixmvnAw7XgfrI3
+         Wi7INNr1Bb68OrRubmC5oBytZCiMBgtkgLy8kZPAiyZrr+/vKMqnktwKoVUUnpiNvmmo
+         elyM8MXhYTUsqzgvqq8Jjs6LkgwlrOGmmXLBuIkcdYcyxZpu1dTHAnsNTI8sCp5YHQTP
+         NyuA==
+X-Gm-Message-State: AOJu0Yy24MaOhc1bRqn3QkJhsqFYgsPUlJVtnXlvCppHlrzxTVcAUkkF
+	tNs1yIfpJpu6MsCLe5wLWxjc4uUZaPq8HMvWG8Kc8kGGGa/uZQOX6qyDVOpmdMk=
+X-Google-Smtp-Source: AGHT+IGKs2U18paUHaNW9mzKIy+5JGwDXqWv/uc583nLBKMxL7U5283eG8t2WUCyX0hT/tU0JGMKwQ==
+X-Received: by 2002:a17:902:ed44:b0:1d5:76b5:49a9 with SMTP id y4-20020a170902ed4400b001d576b549a9mr2265799plb.4.1706101716395;
+        Wed, 24 Jan 2024 05:08:36 -0800 (PST)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id kl5-20020a170903074500b001d72d445778sm7127275plb.204.2024.01.24.05.08.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jan 2024 05:08:35 -0800 (PST)
+Date: Wed, 24 Jan 2024 22:08:35 +0900 (JST)
+Message-Id: <20240124.220835.478444598271791659.fujita.tomonori@gmail.com>
+To: kent.overstreet@linux.dev
+Cc: david@fromorbit.com, willy@infradead.org, wedsonaf@gmail.com,
+ viro@zeniv.linux.org.uk, gregkh@linuxfoundation.org, brauner@kernel.org,
+ kent.overstreet@gmail.com, linux-fsdevel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, walmeida@microsoft.com
+Subject: Re: [RFC PATCH 00/19] Rust abstractions for VFS
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <zdc66q6svna4t5zwa5hkxc72evxqplqpra5j47wq33hidspnjb@r4k7dewzjm7e>
+References: <ZZ2dsiK77Se65wFY@casper.infradead.org>
+	<ZZ3GeehAw/78gZJk@dread.disaster.area>
+	<zdc66q6svna4t5zwa5hkxc72evxqplqpra5j47wq33hidspnjb@r4k7dewzjm7e>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240124113241.380026-1-linux@obei.io> <0100018d3b3e9621-dd8655bf-d355-41fc-8a10-a6167b67d77b-000000@email.amazonses.com>
-In-Reply-To: <0100018d3b3e9621-dd8655bf-d355-41fc-8a10-a6167b67d77b-000000@email.amazonses.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 24 Jan 2024 12:53:02 +0100
-Message-ID: <CAH5fLghtZK94Co2+0agG91SZQrqke8H=oyHfmRxi2KbRTPJp2g@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: types: Add `try_from_foreign()` method
-To: Obei Sideg <linux@obei.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 24, 2024 at 12:32=E2=80=AFPM Obei Sideg <linux@obei.io> wrote:
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must have been returned by a previous call to [`ForeignOwn=
-able::into_foreign`] for
-> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn'=
-t been called yet.
-> +    /// Additionally, all instances (if any) of values returned by [`For=
-eignOwnable::borrow`] for
-> +    /// this object must have been dropped.
+On Wed, 10 Jan 2024 14:19:41 -0500
+Kent Overstreet <kent.overstreet@linux.dev> wrote:
 
-The safety comment should say something along the lines of "If `ptr`
-is not null, then ...".
+> On Wed, Jan 10, 2024 at 09:19:37AM +1100, Dave Chinner wrote:
+>> On Tue, Jan 09, 2024 at 07:25:38PM +0000, Matthew Wilcox wrote:
+>> > On Tue, Jan 09, 2024 at 04:13:15PM -0300, Wedson Almeida Filho wrote:
+>> > > On Wed, 3 Jan 2024 at 17:41, Al Viro <viro@zeniv.linux.org.uk> wrote:
+>> > > > No.  This "cleaner version on the Rust side" is nothing of that sort;
+>> > > > this "readdir doesn't need any state that might be different for different
+>> > > > file instances beyond the current position, because none of our examples
+>> > > > have needed that so far" is a good example of the garbage we really do
+>> > > > not need to deal with.
+>> > > 
+>> > > What you're calling garbage is what Greg KH asked us to do, namely,
+>> > > not introduce anything for which there are no users. See a couple of
+>> > > quotes below.
+>> > > 
+>> > > https://lore.kernel.org/rust-for-linux/2023081411-apache-tubeless-7bb3@gregkh/
+>> > > The best feedback is "who will use these new interfaces?"  Without that,
+>> > > it's really hard to review a patchset as it's difficult to see how the
+>> > > bindings will be used, right?
+>> > > 
+>> > > https://lore.kernel.org/rust-for-linux/2023071049-gigabyte-timing-0673@gregkh/
+>> > > And I'd recommend that we not take any more bindings without real users,
+>> > > as there seems to be just a collection of these and it's hard to
+>> > > actually review them to see how they are used...
+>> > 
+>> > You've misunderstood Greg.  He's saying (effectively) "No fs bindings
+>> > without a filesystem to use them".  And Al, myself and others are saying
+>> > "Your filesystem interfaces are wrong because they're not usable for real
+>> > filesystems".
+>> 
+>> And that's why I've been saying that the first Rust filesystem that
+>> should be implemented is an ext2 clone. That's our "reference
+>> filesystem" for people who want to learn how filesystems should be
+>> implemented in Linux - it's relatively simple but fully featured and
+>> uses much of the generic abstractions and infrastructure.
+>> 
+>> At minimum, we need a filesystem implementation that is fully
+>> read-write, supports truncate and rename, and has a fully functional
+>> userspace and test infrastructure so that we can actually verify
+>> that the Rust code does what it says on the label. ext2 ticks all of
+>> these boxes....
+> 
+> I think someone was working on that? But I'd prefer that not to be a
+> condition of merging the VFS interfaces; we've got multiple new Rust
+> filesystems being implemented and I'm also planning on merging Rust
+> bcachefs code next merge window.
 
-This was mentioned on v1 and v2 as well. Before you send another
-version, please either make this change or explain why you don't think
-it is appropriate.
+It's very far from a fully functional clone of ext2 but the following
+can do simple read-write to/from files and directories:
 
-Alice
+https://github.com/fujita/linux/tree/ext2-rust/fs/ext2rust
+
+For now, all of the code is unsafe Rust, using C structures directly
+but I could update the code to see how well Rust VFS abstractions for
+real file systems work.
