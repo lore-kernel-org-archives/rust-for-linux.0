@@ -1,96 +1,130 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B6D1353E8;
-	Wed, 24 Jan 2024 21:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0CA135A40;
+	Wed, 24 Jan 2024 23:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706131692; cv=none; b=qLfkKgWNPaO3n+wuxsFkfhdALqG74Yit1tHLecdvSnaArOAjIHeZZsmSjLVXWD1mPB/WHd4a7YCp84+N6roUCsSxeDBx0LNImQfp19cOQ/tzCrp+7qLOEa7IyU8OwGBSXo5fKPoG+mEZfVZx+Hp8W9YCsTPai14HZQbNTEQAuU0=
+	t=1706138021; cv=none; b=oKvs2Tdhs1IEFVUKPyLJurhO7pqfz6ZI22PTN7u+hJu/Qok+tDFVdbWfwC6ln8fNP6OytFWRlK95AeiLTWPXAxHWaNLhdqAEB1fo20musEm1KE2t+GQw8gL5DnzntAYljJJq04qN4KzC1aVsm3NFyzJgt/YAo9z34psfeFNLBBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706131692; c=relaxed/simple;
-	bh=UX1UXmZWt37nkOf4mR3wodCc43qU62lzxUpnPIZNuz0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MSfxhupbTBtIf1XigRMH/JcWlQ+iLDR7l0i1rPMVRBT02vM85wgMPU7rIS8e7faCd1mzECM8KUYBWqUymKMkvKGlbcO3qrP9e194ty62vjwxBH9bIPw2wyHcT7JEQ+5oYXB6Z7wixQdIM6XW9Q4s8/X3/5MffIqoWUGv26t+tUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=dIaQRd+e; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dIaQRd+e"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1SpAV+QcIr7SS1AHHKV0ativcTA0Jo6hkPow9b937bc=; b=dIaQRd+efHofPQiPt7r6wctxee
-	H/UWZ+5LkGM3iLpgmEigP03OfZFg+NEJpAcZAF+jcv1b2JQJ0+BnjrbZDmc5IUPGd0eWvjqYh3GKQ
-	QKSDGvvbJYV806PzenzEhGDonVYV11xUy9MTCDppt0eCn48FHkphf57tKGLMERfNQOYozzDi0+lYE
-	2046xQ8/pQ1ZB9B/l1xH7bHgQe2OTc/2AXEQOMqxlk+kSCOtlTeUdq17tYgr2vY1/8K8ZA6rI5hEb
-	vwHB7ofJJ9ZPau3pwvTzMY1//BBHWPFkQRU4rH3hY9huwbKKWbiWZXTNPmRrU77nwVU0rBshw/8cK
-	zPKwxH6g==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rSkmz-00000007qQ0-3vSG;
-	Wed, 24 Jan 2024 21:28:05 +0000
-Date: Wed, 24 Jan 2024 21:28:05 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Dave Chinner <david@fromorbit.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 19/19] tarfs: introduce tar fs
-Message-ID: <ZbGA5RPWGNsqRTuj@casper.infradead.org>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-20-wedsonaf@gmail.com>
- <ZbCap4F41vKC1PcE@casper.infradead.org>
- <ZbCetzTxkq8o7O52@casper.infradead.org>
- <CANeycqpk14H34NYiF5z-+Oi7G9JV00vVeqvyGYjaZunXAbqEWg@mail.gmail.com>
- <ZbF7lfiH4QAg3X8T@dread.disaster.area>
+	s=arc-20240116; t=1706138021; c=relaxed/simple;
+	bh=EnAoG8PAQVNwEJgEMwMzFzSmFR/EUEE2tzGftMfXfrY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZXQQY1MJabe7UlFxW2vR0CJXeeI/k58Bw5Uo/t7Rn6lr1Q7/Dyd8Et4ujuu3HjiHNcusJEI1ShmrfOCB2kqCrksK8BKkg+iyhi5BPUcXMf6WpPiNAUoDP7IeZ2xR7UCBOv0DiMU8DIXqrts5qTjIt9DoM1dV/X5S21ET1EZfnRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.126.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+Received: from localhost.localdomain ([217.249.70.154]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MLi4W-1rkRnr1ROC-00Hfn9; Thu, 25 Jan 2024 00:13:03 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+To: aliceryhl@google.com
+Cc: a.hindborg@samsung.com,
+	akpm@linux-foundation.org,
+	alex.gaynor@gmail.com,
+	arnd@arndb.de,
+	arve@android.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joel@joelfernandes.org,
+	keescook@chromium.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	maco@android.com,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	surenb@google.com,
+	tkjos@android.com,
+	viro@zeniv.linux.org.uk,
+	wedsonaf@gmail.com,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH 1/3] rust: add userspace pointers
+Date: Thu, 25 Jan 2024 00:12:35 +0100
+Message-ID: <20240124231235.6183-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240124-alice-mm-v1-1-d1abcec83c44@google.com>
+References: <20240124-alice-mm-v1-1-d1abcec83c44@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZbF7lfiH4QAg3X8T@dread.disaster.area>
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:/D0DIugkvM4W5K4pXdij6pnL4nCM/dMBAW6u0lFvqJIlZFWq8/Z
+ +VAka/LYfL7oQ0ah5ro1H7CWmHT2JIrPBlg27r70PI2Cslt5bLl+1fF86b0Emh9r8ixIpsR
+ 9uxZ+xZZjzMkvNdFX9lQ8/nj+MG+rKTZXQsTTQgBcPLqKTNUgVjVdq9tm3ETJ7H/VTWp0k/
+ wxck4tDToQnTmsH2xKm0Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:f29DWwXpfyE=;I1MCVoVH7iehyuAN6gh7kinA6E6
+ zjgAy4XiAQLA6OLLraBfnkxJnnybDI9hU5PYprLRiQEt5kCLLKKfmafd6vmx9o4cuSPrERkjI
+ IuB1J7gngdEebE+a9fQnbxCC/k3EeIs84qM9lfUCG52x4Vw1fRRrFH+Ys8QdopqxVz8wx0Kmx
+ IzfO4vWPyL2cVWdabWJ+CuGDQZWQewpBmXuzPhFQFODC9nZNRt06i538Yz7TperCIXt1BrVPb
+ QpCgpOMSBlZDwSAeDfIwRKuvDEt1P6cpu3EkGFvoIZaP71pYg0iB4mpJMDZ3f4qIrE84FdwLN
+ BQ+tx6XAomHSQ+zy91x0lxW40h7BpPnZ6E9VwcrYg3/igunWFeVT7LXvpfOgLG7LwZAksCcgQ
+ s7Mlx+TUdsUjuKqnIIh8CJ7ZM/p5zqDTF0YVG+dAPIYLwt+ovbLoleWUG55p8lSytJ4FYO1gp
+ /BfIIMfpWgSLhHyKXo0WxtM8dEYE8bFTROgfTT0dYjcYoFNkxQyoiMw7ADGyQm0h0qZZ6gPN9
+ sKBpHWTJjmSpibHSCUJVe5DpBFwBZEr92BnPjBEjjrse+ih+pXe4QGVYOB4yJ6h7MZNMj9I+p
+ TrIjVTUnowSIniRPpr1E1I8avxUFbz+Pvk9/ItrFLivsBhvKvOUf/6g0qd/wGw3xHkZa23OVN
+ fS97fzgJV9h9vYN9u+DP/jSm6uuhwkFZITe3lb6w0PVJFIZKKExDVDfBJSvjLbCUZbyh0o2CZ
+ itM44KLUls6x5F1x6g5mkRS1x8L+5rP5hNvupATjJQBIEotaHDbCuSUclxXkwSvbE+OMUEPqs
+ oNc+kYtCCqt8DwrStyDfKaoG/GjkC1gOXJbSD3P21LtRvDz1fys6Kk+KmShoGYjlE+RR4w6XF
+ KxOFDSgJ2E8C8NWOQRKmoctRsER+QV/HNZNg=
 
-On Thu, Jan 25, 2024 at 08:05:25AM +1100, Dave Chinner wrote:
-> On Wed, Jan 24, 2024 at 03:26:03PM -0300, Wedson Almeida Filho wrote:
-> > So what is the recommended way? Which file systems are using it (so I
-> > can do something similar)?
-> 
-> e.g. btrfs_read_dev_one_super(). Essentially, if your superblock is
-> at block zero in the block device:
-> 
-> 	struct address_space *mapping = bdev->bd_inode->i_mapping;
-> 
-> 	......
-> 
-> 	page = read_cache_page_gfp(mapping, 0, GFP_NOFS);
->         if (IS_ERR(page))
->                 return ERR_CAST(page);
-> 
->         super = page_address(page);
-> 
-> And now you have a pointer to your in memory buffer containing the
-> on-disk superblock. If the sueprblock is not at block zero, then
-> replace the '0' passed to read_cache_page_gfp() with whatever page
-> cache index the superblock can be found at....
+> +//! User pointers.
+> +//!
+> +//! C header: [`include/linux/uaccess.h`](../../../../include/linux/uaccess.h)
+> +
 
-Just to modify this slightly ...
+nit: could this be using srctree-relative links?
 
-	folio = read_mapping_folio(mapping, pos / PAGE_SIZE);
-	if (IS_ERR(folio))
-		return ERR_CAST(folio);
-	super = folio_address(folio) + offset_in_folio(folio, pos);
+> +/// The maximum length of a operation using `copy_[from|to]_user`.
 
-... and then in your shutdown path, you'll need to call folio_put().
-Maybe that's easiest done in Rust by "leaking" the folio into the
-in-memory super block so it doesn't get dropped at the end of the
-function?
+nit: 'a' -> 'an'
 
-I don't think you need the GFP_NOFS.  We don't have a superblock yet, so
-we can't call back into the filesystem.
+> +///
+> +/// If a usize is not greater than this constant, then casting it to `c_ulong`
+> +/// is guaranteed to be lossless.
+
+nit: could this be `usize` or [`usize`]. Maybe would also be clearer to
+say "... a value of type [`usize`] is smaller than ..."
+
+> +///
+> +/// These APIs are designed to make it difficult to accidentally write TOCTOU
+> +/// bugs. Every time you read from a memory location, the pointer is advanced by
+
+Maybe makes sense to also introduce the abbreviation TOCTOU in the type
+documentation when it is first used.
+
+> +    /// Reads the entirety of the user slice.
+> +    ///
+> +    /// Returns `EFAULT` if the address does not currently point to
+> +    /// mapped, readable memory.
+> +    pub fn read_all(self) -> Result<Vec<u8>> {
+> +        self.reader().read_all()
+> +    }
+
+If I understand it correctly, the function will return `EFAULT` if _any_
+address in the interval `[self.0, self.0 + self.1)` does not point to
+mapped, readable memory. Maybe the docs could be more explicit.
+
+> +        // Since this is not a pointer to a valid object in our program,
+> +        // we cannot use `add`, which has C-style rules for defined
+> +        // behavior.
+> +        self.0 = self.0.wrapping_add(len);
+
+If I understand it correctly, you are using 'valid object' to refer to
+an 'allocated object' [1] as this is what the `add` method's docs
+refer to [2]. In that case it might be better to use the latter term as
+it has a defined meaning. Also see [3] and [4] which are about making it
+more precise.
+
+[1]: https://doc.rust-lang.org/core/ptr/index.html#allocated-object
+[2]: https://doc.rust-lang.org/core/primitive.pointer.html#method.add
+[3]: https://github.com/rust-lang/rust/pull/116675
+[4]: https://github.com/rust-lang/unsafe-code-guidelines/issues/465
