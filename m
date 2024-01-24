@@ -1,74 +1,84 @@
-Received: from a11-123.smtp-out.amazonses.com (a11-123.smtp-out.amazonses.com [54.240.11.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9182C77629
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 14:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.11.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0539877F3E
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 14:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706105833; cv=none; b=qjgE7LFky+6H3D657+YyGLNEZnaIXfoskBlwmtaq/g36m8j4nz+nY6BmZNQgHPNgwDFfgaMh/5gH25k0Bf9dhWpE3gxBTMZM7K27x7TA+gpzsMl9WitIhCVpfpYxwQi4A5IUHOvicghLEIYnQgImh+QyPk7Y3W6IRB/a5dxOU+Q=
+	t=1706105908; cv=none; b=Tjz827qYLXzrIjbREDxGGwMEiJfHI+cTvyijuPF9Aw4tgEtYoNZjEUNikQIm/R0hBT8bskTTNJIID/fJnuLyInPk8KKxoN2AZal5FHfmmHt2DVqTbVpFRhxwzGjTBV+m3qP6l9CsHE/xAziG8d6iQRUgwWbH15t7+PviPV0hDLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706105833; c=relaxed/simple;
-	bh=XN1qx8y1mppKvJSwvV3Skp7X0ON0SH0De5ohqhIDTaU=;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:In-Reply-To:
-	 References:Message-ID; b=AVlDCMe1yHMFHJYMdwwuCyhLNAu+wUFtLpYVLlNPY31u87BhZduz4kSBpLg3Z0SiHJLR2NpL/IB3iTd7Z50HQ8SvIWc8/ckwAHdJfmAlupBFK07CCMEGfRsw18TcSEHqpD8i7hL2aCP6JhLFt7xL1e8OqSoN0NqBGtnZdLNgSnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b=L1bbWq8H; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=H8dT3/YT; arc=none smtp.client-ip=54.240.11.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
+	s=arc-20240116; t=1706105908; c=relaxed/simple;
+	bh=v3AfQj3kEUxjlvd8r03KFoGJX1jvJ+SJUzmC0MuR3BA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c5jsVZelBCg8VzyEA/GhyrHyYJdOlmf8bkm1++uqs3wX5ULU9NoDAIWwE5hnzn3UBwpFnCV3IgamZ//C/y0GxYQAczLb3L1Hd6dQ1uVGCqCagdDCABZGBs8gVaEdptzTNWr4L0iPtnsoD7Ls7WZka8wxeJXURGeijtp6tFNwPUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XljhzPVx; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b="L1bbWq8H";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="H8dT3/YT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=ph73stw23v46e7miqo4f44bv344ybkbc; d=obei.io; t=1706105829;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id;
-	bh=XN1qx8y1mppKvJSwvV3Skp7X0ON0SH0De5ohqhIDTaU=;
-	b=L1bbWq8H3iBMlaKyEjPaaDf0xS8IDtCjMA1puJ/e2qLr5isRtI6Pv1TqhgucCE8+
-	zHITtQO1m4WsLIX7fizOVZVFxDuEFqTfvxDMMH0wNZN7SYHJDdD8A14ckXZkAhlGJJ/
-	UqSItpp+jWuZddTDHudnl86k2r2FlpDmZttnS1Wa7uQFkLCsebGZMGigEgTtt1mHAsm
-	gvtbMps/snKPJq9VpZj/HHBqx281yo+eHRIw/3OIOPf01V/Yp3xXWqSCLVwLKcsZd6/
-	DtdNUiT9y76y3ZS7a4nvqM9K+p/5b4RqMWCwJ8W50feclDjHAf54CPrwaeD691PxUtg
-	3EauxPOz1w==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1706105829;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id:Feedback-ID;
-	bh=XN1qx8y1mppKvJSwvV3Skp7X0ON0SH0De5ohqhIDTaU=;
-	b=H8dT3/YTYWiMOFpvR5D0MxCJ27W01a8+eUDUTjWcs2ALtO1x7CcVwjTQ7QMCdLPi
-	+VZj0bFmEWSJkLeEQp74Jt4tubMr3to6KHS2nPlk3UCRNmgcJWAcUZQTWt5W6eselWy
-	3wQc/eS8knpVpV/g8AjEuizhvuQnhmkN+p61Fjgo=
-Subject: Re: [PATCH v3] rust: types: Add `try_from_foreign()` method
-From: =?UTF-8?Q?Obei_Sideg?= <linux@obei.io>
-To: =?UTF-8?Q?aliceryhl=40google=2Ecom?= <aliceryhl@google.com>
-Cc: =?UTF-8?Q?a=2Ehindborg=40samsung=2Ecom?= <a.hindborg@samsung.com>, 
-	=?UTF-8?Q?alex=2Egaynor=40gmail=2Ecom?= <alex.gaynor@gmail.com>, 
-	=?UTF-8?Q?benno=2Elossin=40proton=2Eme?= <benno.lossin@proton.me>, 
-	=?UTF-8?Q?bjorn3=5Fgh=40protonmail=2Ecom?= <bjorn3_gh@protonmail.com>, 
-	=?UTF-8?Q?boqun=2Efeng=40gmail=2Ecom?= <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?gary=40garyguo=2Enet?= <gary@garyguo.net>, 
-	=?UTF-8?Q?Obei_Sideg?= <linux@obei.io>, 
-	=?UTF-8?Q?ojeda=40kernel=2Eorg?= <ojeda@kernel.org>, 
-	=?UTF-8?Q?rust-for-linux=40vger=2Ekernel=2Eorg?= <rust-for-linux@vger.kernel.org>, 
-	=?UTF-8?Q?wedsonaf=40gmail=2Ecom?= <wedsonaf@gmail.com>
-Date: Wed, 24 Jan 2024 14:17:09 +0000
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XljhzPVx"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-5ffdf06e009so32360697b3.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 06:18:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706105906; x=1706710706; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v3AfQj3kEUxjlvd8r03KFoGJX1jvJ+SJUzmC0MuR3BA=;
+        b=XljhzPVxhgRHVNscsE9jG7tDPV/2uKVjeon8gB4XYqtr34bWyzNZw7oxgZ1ZDtuNxo
+         NfKRlhlPpJvbTJvygAOAFcA9ehMVStKRR/7/Z/VSIMgpJfRnVLsJY/rxC5wLk8AOfLPx
+         3potLcvdJrhsDMHseCIoWNFUHvnaSCXSgiW1CdYLmHOVcSRfu/qQS2jGX/p4ICmg9Kfe
+         71CTtZrYNoWQCBYu7jmrDpATvhWkY7taYSIC+lT02Lq3RUjqexdRXKtkRy3LhpWaWcBO
+         gPOi0ouKrPmrY3HpawSRVV+wPbkkyab8tH1sjRNjceoYSuko0CBvYLJrylqGMLa4r5Or
+         uW8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706105906; x=1706710706;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v3AfQj3kEUxjlvd8r03KFoGJX1jvJ+SJUzmC0MuR3BA=;
+        b=nvsVkeZESisKP3YgAfIOWEQiMtoQ+Z/RqSn16vLKVpbaS+F/bIirjKghbXRTDzLdUY
+         BaGAbYwqYtDLWQNsbS49hnRFS1toAcJDpQFDf4WIF59QIkFFKzJ0Lvut7kiDCYBpwytc
+         q4e98ZVIMhdbj22Vc9XoqPvIzD2PbTtsm2ZWbfnMKlM2PToL38Sj+ggmzd4CzwyrCSXc
+         cPSwdZKfelmhwm4vwayxtvwv6G2kPXKYJ0HeQyjaSpBfTCOyC1ev5JKoWjDOPsPawTN8
+         yJQ1AhUlgK55HUBl5IQBrRVoT4+gVdXyXDydcF/SuU0QQum9OBJ0GXs8B5ybuJJ/1CiV
+         +PLg==
+X-Gm-Message-State: AOJu0Yycu31qBtNwl50J0XZxt7YqsnW4I1KN+3Ly1yfmzbfYzEvK3Fai
+	GyosVBDcVfBJrOfVTrMQOk1D//C+iZKLV3PbBD0HA8t2vUUSYjaxlZL3NMidh3WKDh/7ZUVMek/
+	zs/hRau5SZIjG1LCgwa6tdcu5UeGjTpX59n96
+X-Google-Smtp-Source: AGHT+IFPMSuM4/kK0jUobdkC0kYBbbgtpN8iDkj1x49Y7Rkw8hwRXvL8AKqcbGOqiGmTDMAOD3z8SuF8gpmCRE2brNk=
+X-Received: by 2002:a0d:df05:0:b0:5f6:b6b7:8a06 with SMTP id
+ i5-20020a0ddf05000000b005f6b6b78a06mr528539ywe.76.1706105905628; Wed, 24 Jan
+ 2024 06:18:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
+References: <20240124141632.546912-1-linux@obei.io> <CAH5fLghtZK94Co2+0agG91SZQrqke8H=oyHfmRxi2KbRTPJp2g@mail.gmail.com>
+ <0100018d3bd4f712-766b98b6-4052-4e7d-b6b7-19c4a793a33b-000000@email.amazonses.com>
+In-Reply-To: <0100018d3bd4f712-766b98b6-4052-4e7d-b6b7-19c4a793a33b-000000@email.amazonses.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 24 Jan 2024 15:18:14 +0100
+Message-ID: <CAH5fLghKdkgNSTrd2Z+FUp5-jfHOEX=KOF72a_iHrBWRt9XqOg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: types: Add `try_from_foreign()` method
+To: Obei Sideg <linux@obei.io>
+Cc: "a.hindborg@samsung.com" <a.hindborg@samsung.com>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
+	"benno.lossin@proton.me" <benno.lossin@proton.me>, 
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
+	"gary@garyguo.net" <gary@garyguo.net>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "wedsonaf@gmail.com" <wedsonaf@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: 
- <CAH5fLghtZK94Co2+0agG91SZQrqke8H=oyHfmRxi2KbRTPJp2g@mail.gmail.com>
-References: 
- <CAH5fLghtZK94Co2+0agG91SZQrqke8H=oyHfmRxi2KbRTPJp2g@mail.gmail.com> 
- <20240124141632.546912-1-linux@obei.io>
-X-Mailer: Amazon WorkMail
-Thread-Index: AQHaTrkR834YhMf2RJGh30NlrNjP4wAAtndRAAW8gIw=
-Thread-Topic: [PATCH v3] rust: types: Add `try_from_foreign()` method
-X-Original-Mailer: git-send-email 2.39.2
-X-Wm-Sent-Timestamp: 1706105827
-Message-ID: <0100018d3bd4f712-766b98b6-4052-4e7d-b6b7-19c4a793a33b-000000@email.amazonses.com>
-Feedback-ID: 1.us-east-1.LF00NED762KFuBsfzrtoqw+Brn/qlF9OYdxWukAhsl8=:AmazonSES
-X-SES-Outgoing: 2024.01.24-54.240.11.123
 
-I will change it to: `ptr` must either be null or satisfy the safety requ=
-irements for [`from_foreign`].=0D=0A
+On Wed, Jan 24, 2024 at 3:17=E2=80=AFPM Obei Sideg <linux@obei.io> wrote:
+>
+> I will change it to: `ptr` must either be null or satisfy the safety requ=
+irements for [`from_foreign`].
+>
+
+Okay, thanks. With that change, you may add
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+Alice
