@@ -1,348 +1,131 @@
-Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2094.outbound.protection.outlook.com [40.107.121.94])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA95132C17
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 20:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.121.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706127525; cv=fail; b=iXSm9sUBAg4opO+kO5mqpTBzjNOVb7EdCC/l5AAg4MUmCUlYG0IPHt63c7jPYxDeZlKYCvTuKpFyv5Fwy8GL1R5phnRq6uhVmpratFPpXR6FGHiMrxn9lvb97hXRRt7TlWcSKvtkoMoawc+rz9FMefVi1+GpvsaRMKHmBh7f4Z0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706127525; c=relaxed/simple;
-	bh=X3Gv6IzGNoMYNSZK9zQYkbfnAEhwzULEcykH/TtzwNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LxNWo9Sw0zxHHQlxxxQPUV4/CxXUheOFfSPX6TbkVXrzIvKCjQISLpWwwn4h3ZhT8aMV+320RnxBQOiZLVSxjPTBUcDgU3Vc3wmjXB3KPXJ6zzMdzeGAkitRXbwXdhRWD6sSBcTr6QOoFZGMpqhJN2XOuDu1js8C3bXSCUbrVpQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZgnYf+zh; arc=fail smtp.client-ip=40.107.121.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87191350DE
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 21:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706130331; cv=none; b=HESNIWZH6nRZ1wv5+XglUlqY7p8ff0reBzbiyNVsj9C9DkwRgKdGTYXfzlY3AchIuA6QE8YwDH5UM9ZLGUZvRy+Xz9PwEHgffqgC1HZvKOCoCq9MZJYLH3pJQYXVI2wJxK3ymxlIHaO+qm55OUpORph3K8ZsqXTujM6OXBXocmQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706130331; c=relaxed/simple;
+	bh=CqHDkE6+XVoWSD911Ft2n1rMVst9VMZ5FQItmdMVtS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WLHZkTISr1Ldr9OYi72R5KR8rMOY/IWrCe7e844ufmqmuRYuu4bwH7xOzEwVUuclfasd4s1k5usdLtt1U9Ur41YytH9zPxZ5/jYO5uzsCHMVBNtAU307sFOr9xGZF/pCqqnnq7Fb9Td6pSyaCMZ7IeqKpDWCS6chuHjWnXZa73c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=VuZsngvs; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZgnYf+zh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=br8Pi+xvonil0PQRW2/znOC2rdm7qN7fy0aisjyKIN7x70LLz4iGL6AmUqOYFX1N0QYvkG+UnBU5y4TNhM0moBuIFe5nxD1010v2hG8pmRr5mMCCJV8md2YffjxyBGmcC99XCgEUzl2y4MARngFMNZHB3a5EhfB43kEWmch/geWRtf3c9DgwjzoL3c4+KE/G8m5s9ZBvjLUEEBlo1kp0S+PxM3NXzmP4hWyjnmxh7NAa4CsSrzWsUubn0dDDJCG/WngBb+AsC71nQXyZCIq0tqAZosHbDcsFNFJTJb/m/RqEfWKje0FYzwhdY30lpERqnj5HkyKI/z1seIE3xkEgVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fo74IcktEtqdUi/gR8+SUOmzNrpZcWq/dCB8BrK4Teg=;
- b=nypo4WtuR7HT/LbjKT8UxTFLoW2f1PLuOmRx4tB33pkvoEK859BWvSHoaZinpIHUHECd0MW+tRiSZbBKNbL+jhPqxhReYP62zivsgatYm6BhWe69flade5HrYajJefs8RnlTUv0XJdBd9YgDh4ioN6x1GmryJzaMUDqLMQXDwMB0Cu6GHqq5QLZJjZDFnYS8emB8QRuOM9pQE0zndzuynybAX0jOjiIafkzuj3upRSaAjhT2Q6t8QU9SFRiKunP5RTJ1Cnkmddjmj0eRjUrMX/CXqAlTLBPRPi+vRPtVgU8koemBu82bygijQQ2Sr0ShwUPzQ8QH7bCDiNpWCLt2AQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fo74IcktEtqdUi/gR8+SUOmzNrpZcWq/dCB8BrK4Teg=;
- b=ZgnYf+zhSj05pdh2wLeSi6OCgpz1gwHYAQgKPPzefa9wARR5MnSIXuZ0g4Y3CHz3ScqpqiTMbDq6LEoS6JIgIGXeKhe6dYi8vB8bgyQ6HhwfSqr4hM8JqB3eKjpH5Vd+g4dY2j9hDtfucUK7kY+tKZctyhKoRBDCLS9t6qV/KXA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO2P265MB5109.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:250::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.25; Wed, 24 Jan
- 2024 20:18:39 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::ec07:aa7e:ffbc:ba47]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::ec07:aa7e:ffbc:ba47%4]) with mapi id 15.20.7228.022; Wed, 24 Jan 2024
- 20:18:39 +0000
-Date: Wed, 24 Jan 2024 20:18:32 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Yutaro Ohno <yutaro.ono.418@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, Virgile Andreani <armavica@ulminfo.fr>
-Subject: Re: [PATCH] rust: str: implement `Display` and `Debug` for `BStr`
-Message-ID: <20240124201832.30a76eb8.gary@garyguo.net>
-In-Reply-To: <ZbFBnXy7YWV0MFC0@ohnotp>
-References: <ZbFBnXy7YWV0MFC0@ohnotp>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: LO4P123CA0401.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:189::10) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="VuZsngvs"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6ddc162d8d5so533188b3a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 13:05:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1706130329; x=1706735129; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ptJlTVl647MMtTLol47CvCItY0BIqU2yVeAWOYXYthk=;
+        b=VuZsngvsFuno2ppday51GI1scIYutLz+lWADbuk7UZL+cUBOMSQ+lfH80TTpGgZjhG
+         nifq3fHpDb+vlpqDtSD9ssFb2J7ixhInin3PskNQ5pV4CFK6YjmhoVYgYd2QlHEJXJFR
+         9jN7QA45SWbYERu0YpFKdzgJehP/iJzTACsXW9pRjpsahgTNfKx2yKG4mzXaCBYv9s96
+         puaQ1AVGo0fmf3XFo+WFDsHR5/2j2+DM9R/UeXTkO9cKLTh6YDRaIOekExct58EwUSOf
+         ieMS+0AiWozXmkizHsg3k2/bqTaJceJRKa0MZxtgCmCNIUdlXYjqfm6QBinr1KTAPIyC
+         mBJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706130329; x=1706735129;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ptJlTVl647MMtTLol47CvCItY0BIqU2yVeAWOYXYthk=;
+        b=qAoaxKjJGZz6FHTg+rgFuqFyoxvtac3RhErogIl2LrNp709sI1yCdXFTxI+7AyN8QL
+         wrOytefDPFEUnzk1zU+p4DT2lVC5K7L45nizltJ4dRYEoAzCtPPuxWcI8xtCy8jHi7Xn
+         VI6ik+/sGRjsWGW+YpTM6Ohv7spz2wrapjeBeD9tkCPTAVsGb7SlVg/s3KPS5A402yoM
+         dB6nDR1SZqJfBD9Xa+Hvt7RF6u4yAKLpX1Es/sYwZ3ncOk/C2QBo1z85zV94ArRdg0da
+         0Ch90MWG43eJzDIPvecFRR2KAXNhn0LaQZ7DuZSnqWgsTYpeX1cTwrgBfqthFRYnVB5W
+         fImw==
+X-Gm-Message-State: AOJu0Yxa6hOaMRmoPsmWOl+G4K3FlrhzT0bwjBWD/jgSj74YI7Yie2uU
+	Cq5uQkoSt+sXzO4gir0iqhIeLZNA8wtcmWwWYazqlmTVX2O8sQ6y8UKP2SS3qrw=
+X-Google-Smtp-Source: AGHT+IFL6Lcx2hfEUvb5yhEl8FR5RXwsrvV8h0iI+rebut3qAbCs5xPiJwUofv4hn/6gZhkDiXzqEA==
+X-Received: by 2002:a62:5e45:0:b0:6dd:c0a3:d6c8 with SMTP id s66-20020a625e45000000b006ddc0a3d6c8mr108176pfb.17.1706130329047;
+        Wed, 24 Jan 2024 13:05:29 -0800 (PST)
+Received: from dread.disaster.area (pa49-181-38-249.pa.nsw.optusnet.com.au. [49.181.38.249])
+        by smtp.gmail.com with ESMTPSA id n1-20020a056a000d4100b006ddc7af02c1sm57764pfv.9.2024.01.24.13.05.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jan 2024 13:05:28 -0800 (PST)
+Received: from dave by dread.disaster.area with local (Exim 4.96)
+	(envelope-from <david@fromorbit.com>)
+	id 1rSkR3-00Eoh6-15;
+	Thu, 25 Jan 2024 08:05:25 +1100
+Date: Thu, 25 Jan 2024 08:05:25 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 19/19] tarfs: introduce tar fs
+Message-ID: <ZbF7lfiH4QAg3X8T@dread.disaster.area>
+References: <20231018122518.128049-1-wedsonaf@gmail.com>
+ <20231018122518.128049-20-wedsonaf@gmail.com>
+ <ZbCap4F41vKC1PcE@casper.infradead.org>
+ <ZbCetzTxkq8o7O52@casper.infradead.org>
+ <CANeycqpk14H34NYiF5z-+Oi7G9JV00vVeqvyGYjaZunXAbqEWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB5109:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f07f6d3-2a47-42aa-a250-08dc1d19a71d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	FD8IXdLpb29jpuTyA5nsqUh2DFwR9En3+V18Dlrwsvc0n/wRaG3fX4s7wKnfEUbwJqL7zyLE9Lrwczs6tGh8GMkwG9KQ6u08CpC9Ngi+uyfMzo1eWEhTWLWnYhslJCfbqyWGWVnOVn1h8FkT1+wLoWccs8pdKkdYVb6h7ntceqBArRiAdrYUwl/A0hUsY7FpvtKPA7eSQ2bHXTdQ0bz6fQvep5nwXPCunP6WCNOPGL4iwCDN+zf3Iqgq+3GngAxf9ZCxMZCttzzAKdFibZPR4HV47lPlsrY9IwcQGPzJb7w+ZUYbqny80kfy1Vx+iPwhbR9AhQf+3lw6cWLXjo3k/Boi5dj3tkuQUjZshK1LKcdDHnZ43EVGBqUxuAGm1uWMDVkucsuDXa77Lo+OVZKduX5cCYKKZ0xqyL43CNVb/FNQ0YjvmlCxhayBFV+UQRQ2LnXdkRXa8rCeXlfGYNzuIIdmWnxBjDrjMdlkRU6yadmhoclEfR2kIPImdSodvzVj4QngSUViswn3/DSoSqyyvOSBBU5i4+WCF2hqu8bvuCNtWvOg9EQxbRkka0WSQomaCzUTrozb7wxgI36V8nDxy3Ha5sh5CWdpRhG8xaxxReU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(396003)(39830400003)(366004)(346002)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(66899024)(38100700002)(36756003)(2906002)(41300700001)(86362001)(54906003)(6916009)(316002)(66476007)(66556008)(66946007)(6512007)(478600001)(6486002)(6666004)(7416002)(83380400001)(5660300002)(8676002)(4326008)(2616005)(8936002)(6506007)(1076003)(81973001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YklXRmRxVU1KMUtpZXFFb3BiT1p2NEswWThpQnJuZFJnZExMdVZ3YnYveEpp?=
- =?utf-8?B?VU9xYmN4bDFxbythTW9hc3JLZHJuYzF6T3pyM09VeGhiQVMzZHJRM3pMUjNm?=
- =?utf-8?B?TWhCcDU1UzBGYmVoMkJsSFRSMEZmbzhldVVlUldueVI0ZUt1QmFWTXhiZDZQ?=
- =?utf-8?B?eUhiTjJQMTkra0Q3SzVNQjUwcjJHend6WnFNenlIQm9abXZrSjVJZ3UySE1n?=
- =?utf-8?B?WVhvTUNOakkwRVRXdDBLU0tlaUVUNStNSWx1cXhJRGFIcU5IVjNFUkRsMnhW?=
- =?utf-8?B?eGIvOFc5RGZkSTNSY3lyZWRFTUp6dyt3a0hBSGY1MGNZVHdhNW5LVnVrVGFT?=
- =?utf-8?B?aTF4N0dtL3hIZGFxbGYzQ3liMCtXN28yYzdDdllON1YxYjJoLzV0amZOUG5J?=
- =?utf-8?B?aUpwZGNuOGpKRFM1blcvZmpaYmlNV3o5YndoZGdCVjAvSUZ1TXNsQWVSZ3Zt?=
- =?utf-8?B?TlpmSzJlbEVTbC9lTllybjM5aWZiZko2akNRL1BQY1RWWG1XdDV3ejI3bVNa?=
- =?utf-8?B?QnhVOTlXQW10bS9nc215NGdBdVQzOERHUVVwSTlPWUp3a24xajlVcCtQVmxy?=
- =?utf-8?B?alR0RHZvazJlZ0JFRlNWSzBzYkE4L2JtckYwc00zK0EvWmJ0dUpQQ1RLdEVp?=
- =?utf-8?B?bzk1bE9Zb082WmVIZHpSNXdWZzQ2S0JLN093NHRGVGJmZThZeStXZzBnekdw?=
- =?utf-8?B?Z1Bla2p2RG1JbXNSWkcxOWlkWkhTT094RS9EYjVLazh4dndHSTM0MDB5Q0h6?=
- =?utf-8?B?b1NCRmlINjZNVWlTaVZUZTcwcno2WUQ5cVUwdks0ejdEb1p1azk5YTEzdzJ6?=
- =?utf-8?B?M1hYOTVWdHhkM09PS0VFSEJueHViYXl5N25VQ2huYUovRnZnSTJVODRoaW1I?=
- =?utf-8?B?ZW1Ha0toSkJlZ09DMVhIR3JuRGNXd2NGQUswTnM3TklXUzVqNEpUaVFaS25F?=
- =?utf-8?B?Qkw1K0xtbmU1NWJtTEk2SGFEbUIycEluaGlBL3FvUGRsTXplaUJ0TDF2MVdQ?=
- =?utf-8?B?L1E4cW5pWkg0MENDVTRQYkFkYktWWnp0Nk1sZVJxS3lIQU9vMFhhWTFiYXZB?=
- =?utf-8?B?VUgyME5USFBoNVZlRGVHVVBFSGdjemxpbHpvdVVxaTBKckROYnZsSnFkN2xL?=
- =?utf-8?B?UkxWaHNqNGpqZ0dQZmNaWHAzTHdYM0o5YnFzOUtKL2IxS3RCUnJRNWM1b0Na?=
- =?utf-8?B?bVE5UUtJUjRGbWNhc2dPRVVmV2hpNTFNalRWamxQMVZKVUU5NXFaRFhLY1Bq?=
- =?utf-8?B?Ky9YQjBUSjV0UFRsWGdXZVhHU1ByeVljQTl6anpabXplTVFtU1c5bER1RStv?=
- =?utf-8?B?UDUvblgzZFdTWlNPRkdwN2t5T09mVmhxd1ByUmxvS1ZNeUFaNjNQTFM1VEtX?=
- =?utf-8?B?eXc0bHMxR1B6elQ4WFhaK1Q5UFl3MVVqa1QwUFo4YnVmb2ROSE9WNm1wYnNJ?=
- =?utf-8?B?cHhROGYwSmpNRER6bDU5YzZYQVhZRVl5YXFmR2pDQm1WSHBLelZJeU02eWd5?=
- =?utf-8?B?M1VGNm5udmJyWVl3NkZXZWZxbUJHSi9idGRkVTF6Y3V0QXJxc0xadTBFZ1JD?=
- =?utf-8?B?aVc3RUV0VmJUaGwxQkZHNHBGd043RURMS2dsSjVid1l1RmRJY004cWE2aXJ3?=
- =?utf-8?B?aG9ySllKaDkySmFGWXBFVDR2OGVZaFdwSjQ4b2xFQm5ITDFlVXNLbmh3STRT?=
- =?utf-8?B?c2xjREprb3ZNTTZOWWF5VktLMHliclMzNmVNTWMwUWhkZVZNK25lYjdJWlpu?=
- =?utf-8?B?Q0hPbWpML3NhRER4ZU8xdTJMSG54aEVaR3IwaUpSeFdncG9SRUoySVcxLy93?=
- =?utf-8?B?NGJkOHg0cWorUzVCbzVNaytzeURmYjlSZmUxOXhVeEFpV0JPcm5SVDk0YWtJ?=
- =?utf-8?B?MThSemQrcDVtOUt1Qlg1MHk5b1lXQVFJQWlFamR0b2NhNnFnZGJOaThiOUNU?=
- =?utf-8?B?bFE4K0FzZlp3VFZNWTAyQmJoaWtRbHY4aXZCUm42Yk0wNDFmQ3hueEkram9q?=
- =?utf-8?B?R0QwZ1hZcitRY3VmcHd2Y1pwL1ZHMFl2RTc5akpwVk1rcWJGK1N0WTMvRXdQ?=
- =?utf-8?B?aGxsdlFTSUlnWTBPdUNzY2pjWVZyc1lrZGRqR3hub0UrSTd5alVnaXFmVkZp?=
- =?utf-8?B?UWdJZzQyZ054MTFmbXladTVVV0RERmdEWG8wQnFRNVlLTFo2VlJ5SFlycm9C?=
- =?utf-8?Q?IckSJgyTjEQojtfeIZ5aEP8WRIuWypyOMaE0So2AMosO?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f07f6d3-2a47-42aa-a250-08dc1d19a71d
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2024 20:18:39.6690
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sxs+/Yc77Ilw0qGPeedotngsLacDcs2IpE4h42uc4d9kAoSjn1XVGlNXtzZrh2nVm5Jz/54cNrt+M41gD8FAJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5109
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANeycqpk14H34NYiF5z-+Oi7G9JV00vVeqvyGYjaZunXAbqEWg@mail.gmail.com>
 
-On Thu, 25 Jan 2024 01:58:05 +0900
-Yutaro Ohno <yutaro.ono.418@gmail.com> wrote:
+On Wed, Jan 24, 2024 at 03:26:03PM -0300, Wedson Almeida Filho wrote:
+> On Wed, 24 Jan 2024 at 02:23, Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Wed, Jan 24, 2024 at 05:05:43AM +0000, Matthew Wilcox wrote:
+> > > On Wed, Oct 18, 2023 at 09:25:18AM -0300, Wedson Almeida Filho wrote:
+> > > > +config TARFS_FS
+> > > > +   tristate "TAR file system support"
+> > > > +   depends on RUST && BLOCK
+> > > > +   select BUFFER_HEAD
+> > >
+> > > I didn't spot anywhere in this that actually uses buffer_heads.  Why
+> > > did you add this select?
+> >
+> > Oh, never mind.  I found bread().
+> >
+> > I'm not thrilled that you're adding buffer_head wrappers.  We're trying
+> > to move away from buffer_heads.  Any chance you could use the page cache
+> > directly to read your superblock?
+> 
+> I used it because I saw it in ext4 and assumed that it was the
+> recommended way of doing it. I'm fine to remove it.
+> 
+> So what is the recommended way? Which file systems are using it (so I
+> can do something similar)?
 
-> Currently, `BStr` is just a type alias of `[u8]`, limiting its
-> representation to a byte list rather than a character list, which is not
-> ideal for printing and debugging.
->=20
-> Implement `Display` and `Debug` traits for `BStr` to facilitate easier
-> printing and debugging.
->=20
-> Also, for this purpose, change `BStr` from a type alias of `[u8]` to a
-> struct wrapper of `[u8]`.
->=20
-> Co-developed-by: Virgile Andreani <armavica@ulminfo.fr>
-> Signed-off-by: Virgile Andreani <armavica@ulminfo.fr>
-> Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
-> ---
->  rust/kernel/str.rs | 211 +++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 186 insertions(+), 25 deletions(-)
->=20
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 7d848b83add4..0f0261e063d2 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -14,8 +14,104 @@
-> =20
->  /// Byte string without UTF-8 validity guarantee.
->  ///
-> -/// `BStr` is simply an alias to `[u8]`, but has a more evident semantic=
-al meaning.
-> -pub type BStr =3D [u8];
-> +/// `BStr` is simply a wrapper over `[u8]`, but has a more evident seman=
-tical
-> +/// meaning.
+e.g. btrfs_read_dev_one_super(). Essentially, if your superblock is
+at block zero in the block device:
 
-I think this line can go?
+	struct address_space *mapping = bdev->bd_inode->i_mapping;
 
-> +#[repr(transparent)]
-> +pub struct BStr([u8]);
-> +
-> +impl BStr {
-> +    /// Returns the length of this string.
-> +    #[inline]
-> +    pub const fn len(&self) -> usize {
-> +        self.0.len()
-> +    }
-> +
-> +    /// Returns `true` if the string is empty.
-> +    #[inline]
-> +    pub const fn is_empty(&self) -> bool {
-> +        self.len() =3D=3D 0
-> +    }
-> +
-> +    /// Creates a [`BStr`] from a `[u8]`.
-> +    #[inline]
-> +    pub const fn from_bytes(bytes: &[u8]) -> &Self {
-> +        // SAFETY: BStr is transparent to [u8].
-> +        unsafe { &*(bytes as *const [u8] as *const BStr) }
-> +    }
-> +}
-> +
-> +impl fmt::Display for BStr {
-> +    /// Formats printable ASCII characters, escaping the rest.
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-> +    /// let ascii =3D b_str!("Hello, BStr!");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{}", ascii)).unwrap();
-> +    /// assert_eq!(s.as_bytes(), "Hello, BStr!".as_bytes());
-> +    ///
-> +    /// let non_ascii =3D b_str!("=F0=9F=A6=80");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{}", non_ascii)).unwrap();
-> +    /// assert_eq!(s.as_bytes(), "\\xf0\\x9f\\xa6\\x80".as_bytes());
-> +    /// ```
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        for &b in &self.0 {
-> +            match b {
-> +                // Common escape codes.
-> +                b'\t' =3D> f.write_str("\\t")?,
-> +                b'\n' =3D> f.write_str("\\n")?,
-> +                b'\r' =3D> f.write_str("\\r")?,
+	......
 
-The current CStr code will print these as is. Why escaping these for
-Display? Also, if you want to change the behaviour, please put it in a
-separate patch.
+	page = read_cache_page_gfp(mapping, 0, GFP_NOFS);
+        if (IS_ERR(page))
+                return ERR_CAST(page);
 
-> +                // Printable characters.
-> +                0x20..=3D0x7e =3D> f.write_char(b as char)?,
-> +                _ =3D> write!(f, "\\x{:02x}", b)?,
-> +            }
-> +        }
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl fmt::Debug for BStr {
-> +    /// Formats printable ASCII characters with a double quote on either=
- end,
-> +    /// escaping the rest.
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-> +    /// // Embedded double quotes are escaped.
-> +    /// let ascii =3D b_str!("Hello, \"BStr\"!");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{:?}", ascii)).unwrap();
-> +    /// assert_eq!(s.as_bytes(), "\"Hello, \\\"BStr\\\"!\"".as_bytes());
-> +    ///
-> +    /// let non_ascii =3D b_str!("=F0=9F=98=BA");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{:?}", non_ascii)).unwrap(=
-);
-> +    /// assert_eq!(s.as_bytes(), "\"\\xf0\\x9f\\x98\\xba\"".as_bytes());
-> +    /// ```
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        f.write_str("\"")?;
-> +        for &b in &self.0 {
-> +            match b {
-> +                // Common escape codes.
-> +                b'\t' =3D> f.write_str("\\t")?,
-> +                b'\n' =3D> f.write_str("\\n")?,
-> +                b'\r' =3D> f.write_str("\\r")?,
-> +                // String escape characters.
-> +                b'\\' =3D> f.write_str("\\\\")?,
-> +                b'\"' =3D> f.write_str("\\\"")?,
-> +                // Printable characters.
-> +                0x20..=3D0x7e =3D> f.write_char(b as char)?,
-> +                _ =3D> write!(f, "\\x{:02x}", b)?,
-> +            }
-> +        }
-> +        f.write_str("\"")
-> +    }
-> +}
-> +
-> +impl Deref for BStr {
-> +    type Target =3D [u8];
-> +
-> +    #[inline]
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.0
-> +    }
-> +}
-> =20
->  /// Creates a new [`BStr`] from a string literal.
->  ///
-> @@ -33,7 +129,7 @@
->  macro_rules! b_str {
->      ($str:literal) =3D> {{
->          const S: &'static str =3D $str;
-> -        const C: &'static $crate::str::BStr =3D S.as_bytes();
-> +        const C: &'static $crate::str::BStr =3D BStr::from_bytes(S.as_by=
-tes());
->          C
->      }};
->  }
-> @@ -225,15 +321,7 @@ impl fmt::Display for CStr {
->      /// assert_eq!(s.as_bytes_with_nul(), "so \"cool\"\0".as_bytes());
->      /// ```
->      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> -        for &c in self.as_bytes() {
-> -            if (0x20..0x7f).contains(&c) {
-> -                // Printable character.
-> -                f.write_char(c as char)?;
-> -            } else {
-> -                write!(f, "\\x{:02x}", c)?;
-> -            }
-> -        }
-> -        Ok(())
-> +        fmt::Display::fmt(self.as_ref(), f)
->      }
->  }
-> =20
-> @@ -255,23 +343,14 @@ impl fmt::Debug for CStr {
->      /// assert_eq!(s.as_bytes_with_nul(), "\"so \\\"cool\\\"\"\0".as_byt=
-es());
->      /// ```
->      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> -        f.write_str("\"")?;
-> -        for &c in self.as_bytes() {
-> -            match c {
-> -                // Printable characters.
-> -                b'\"' =3D> f.write_str("\\\"")?,
-> -                0x20..=3D0x7e =3D> f.write_char(c as char)?,
-> -                _ =3D> write!(f, "\\x{:02x}", c)?,
-> -            }
-> -        }
-> -        f.write_str("\"")
-> +        fmt::Debug::fmt(self.as_ref(), f)
->      }
->  }
-> =20
->  impl AsRef<BStr> for CStr {
->      #[inline]
->      fn as_ref(&self) -> &BStr {
-> -        self.as_bytes()
-> +        BStr::from_bytes(self.as_bytes())
->      }
->  }
-> =20
-> @@ -280,7 +359,7 @@ impl Deref for CStr {
-> =20
->      #[inline]
->      fn deref(&self) -> &Self::Target {
-> -        self.as_bytes()
-> +        BStr::from_bytes(self.as_bytes())
+        super = page_address(page);
 
-Either use `as_ref` here or use `deref()` in the `as_ref`.
+And now you have a pointer to your in memory buffer containing the
+on-disk superblock. If the sueprblock is not at block zero, then
+replace the '0' passed to read_cache_page_gfp() with whatever page
+cache index the superblock can be found at....
 
->      }
->  }
-> =20
-> @@ -327,7 +406,7 @@ impl<Idx> Index<Idx> for CStr
-> =20
->      #[inline]
->      fn index(&self, index: Idx) -> &Self::Output {
-> -        &self.as_bytes()[index]
-> +        &self.as_ref()[index]
->      }
->  }
+-Dave.
 
+-- 
+Dave Chinner
+david@fromorbit.com
