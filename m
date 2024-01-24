@@ -1,97 +1,106 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6444D308;
-	Wed, 24 Jan 2024 05:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BC9C8D2
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 06:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706074461; cv=none; b=daVx6UpXMdUzxUXlSsNkgayAsXiOtGpZIxWS0A3aiqVMNFJgvD5mRz09QQNoAxRyAKrf0ckQSjrDG0TuNVbDRKVRbGD8tWdbVqWyZj2e/57nLRDYJ855UzbXIbejsvMX2k0SMOBpL9GeuWqpI8xonF/KL8lcY7fIFShjr4cK+DU=
+	t=1706076649; cv=none; b=loTvkn3VzfpQiHGx0gmCMAi9GA9LfMToHXKarnqQnCWqH7BsUEGPxStlGaavirG5zRenFRt6RG1wPkAwoFTM0Td/F5n1qaTPs705yxLUTnFdIT7RMFJOlxKFysbByfjRBy07TdhR3CjTz3FaQY0uRKo9vYnAxgxDPLCzJH+fXcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706074461; c=relaxed/simple;
-	bh=bA8gU32GX2EdWE4MVJDofY5hHrI7nCvmdzsxVc9noWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=REE7TbN2AvE6swXbUvaIBsKqTGhblffXQa5fHC22WkG+3SILHw6ADDpdxrLB0537ZcW7qGI4HQwMcaafu4voDBOD7nf7KTRDPo15IB8C0FhEvRH3rq7Hg+tI1ahXSmJr+PN8ifhpy7WBGlQn1lh8E0fyZ0lEpRKfAjnZD+4rWTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W.Errgs_1706074452;
-Received: from 30.97.48.250(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W.Errgs_1706074452)
-          by smtp.aliyun-inc.com;
-          Wed, 24 Jan 2024 13:34:13 +0800
-Message-ID: <d59e2285-25bb-4aa4-a507-3ef420c5caf7@linux.alibaba.com>
-Date: Wed, 24 Jan 2024 13:34:12 +0800
+	s=arc-20240116; t=1706076649; c=relaxed/simple;
+	bh=vajM2OVTOya+vobW9bkj1vHe99vPM7B2G5ZahYReiiU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f35uJV+yVMuk0VH1n0xZIYXixZ5KxYWRg87++80Ztmr05AcSyp1t+oj4xhQCLvJ/QjJzjZNatVgf8NUdzm8G0UGv6kcyEkm7pRzpsZVSrOCOqJa6e3kfTwebPmRRCJ+dKw2mHelj9NUrhhJeLen7bUUVqiFXSuLuuXurAc2Oa7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=fvpB4voo; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="fvpB4voo"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dc238cb1b17so4685352276.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jan 2024 22:10:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1706076645; x=1706681445; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vajM2OVTOya+vobW9bkj1vHe99vPM7B2G5ZahYReiiU=;
+        b=fvpB4voovaKQT1c1QSwcrgpSzG1/uZeBgU7EQXCLbhIVXugEfdarNbFvcHUEFAumbO
+         fPpv8fvk2RrP1atY9k61zT5tISOgVqNnQlVKrGPISvNZy/y/7IB0uTg5qzurjlXGz7sE
+         3qFKHocTwuxXACfOGix8G0y0TxKndpeuE0M3zdSFe76WOM3SuLC+HAZZTMGuDkwn9fT2
+         IoZY0Kf0mefpdtRoTTk1piX/oAVFsHwk3uArm3xUj5ELN6q5OGe3tbG+UBMeLxr839J+
+         vj9ysX2vex/fvmr+msNRhtVsCctySx7FqrFG52jVYBPWHznKmy4m6DDiD/TvjX/ZpSZ3
+         zb5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706076645; x=1706681445;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vajM2OVTOya+vobW9bkj1vHe99vPM7B2G5ZahYReiiU=;
+        b=Y9kRpiAzaa6EDvKDiwSJsOwQa5J3FnEFL55XEtiYqszPtuen1VECM8zcxGP58j3JiT
+         IuINnLR9j1phYPXvkkdEEJ4QIvIC1Rx0V4AeKeZtdpZ5Td+c2B2ipdOzldpNOmKLf41L
+         bgWDf/4oWPQaDGiSpQTlmKChQFVSuZ1aNT3LMCwBQO7d8Ki2fJq0ZsK/DacVUyYFuX5s
+         ylPHMzO0U5kH6gUOAOM+yBMR7Jdmm/mqn7lsnbynalNU+YbObCPPw4e4gZTnjMhvcSH4
+         6Ckt4DYGaYfD119W4qbddsQI+d5Qyd9vKrfFLFU5yx8MVNgPNSln3OfaBoHMCz0hm+1f
+         Ec+A==
+X-Gm-Message-State: AOJu0Yx8dkf/Ecpo2q+8dx9jfNr7oBrFB3qvK3Z/fwKt/q3b/ZBP2MP1
+	RGSLiJ6PgGt3YiAz5/KBWVeQj/ZVdxOPohf/w+ncIYHIVxgk6UAQWJ+8j72s0NpW40Nwlw0C0Rr
+	oYa7DHRM2spHGBhXPLItHvlDHhJrsQ85h5zfv2Gy35otcmfHRfd8=
+X-Google-Smtp-Source: AGHT+IEifamxfhVU3pyFzkjl1xeGIFOosedSeQUaLnWSRC6ia7G27iTM+8JLA2R1j86zPrb5lPPCT4QzYV4gWmeRaIk=
+X-Received: by 2002:a25:df96:0:b0:dc3:6d8c:c1ed with SMTP id
+ w144-20020a25df96000000b00dc36d8cc1edmr222955ybg.106.1706076645136; Tue, 23
+ Jan 2024 22:10:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 19/19] tarfs: introduce tar fs
-To: Matthew Wilcox <willy@infradead.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Kent Overstreet <kent.overstreet@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Wedson Almeida Filho <walmeida@microsoft.com>
-References: <20231018122518.128049-1-wedsonaf@gmail.com>
- <20231018122518.128049-20-wedsonaf@gmail.com>
- <ZbCap4F41vKC1PcE@casper.infradead.org>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <ZbCap4F41vKC1PcE@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CALNs47v8x8RsV=EOKQnsL3RFycbY9asrq9bBV5z-sLjYYy+AVw@mail.gmail.com>
+ <CAM0EoM=1C2xWi1HHoD9ihHD_c6AfQLFKYt4_Y=rnu+YeGX7qMA@mail.gmail.com>
+In-Reply-To: <CAM0EoM=1C2xWi1HHoD9ihHD_c6AfQLFKYt4_Y=rnu+YeGX7qMA@mail.gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Wed, 24 Jan 2024 00:10:34 -0600
+Message-ID: <CALNs47sqEzW831Sjh7WzgaVrLQJmM9b0=8bhkWLrR3592GU4vg@mail.gmail.com>
+Subject: Re: Suggestions for TC Rust Projects
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Jan 23, 2024 at 3:23=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
+> [...]
+>
+> I think a good starting point would be tc actions. You can write a
+> simple hello world action.
+> Actions will put to test your approach for implementing netlink and
+> skbs which are widely used in the net stack for both control(by
+> netlink) and the runtime datapath. If you can jump that hoop it will
+> open a lot of doors for you into the network stack.
+> Here's a simple action:
+> https://elixir.bootlin.com/linux/v6.8-rc1/source/net/sched/act_simple.c
+> Actually that one may be hiding a lot of abstractions - but if you
+> look at it we can discuss what it is hiding.
 
-On 2024/1/24 13:05, Matthew Wilcox wrote:
-> On Wed, Oct 18, 2023 at 09:25:18AM -0300, Wedson Almeida Filho wrote:
->> +config TARFS_FS
->> +	tristate "TAR file system support"
->> +	depends on RUST && BLOCK
->> +	select BUFFER_HEAD
-> 
-> I didn't spot anywhere in this that actually uses buffer_heads.  Why
-> did you add this select?
+That sounds great, getting an OOT equivalent should be a feasible
+first step. I will pass the information along.
 
-Side node: I think sb.read() relies on
-"[RFC PATCH 15/19] rust: fs: add basic support for fs buffer heads"
+> Note: We have written user space netlink code using rust and it was
+> fine but the kernel side is more complex.
 
-More background:
+Would that be the code at https://github.com/rust-netlink? Seems like
+a good reference in any case.
 
-Although I'm unintended to join a new language interface
-discussion, which I'm pretty neutral. But I might need to add some
-backgrounds about the "tarfs" itself since I'm indirectly joined
-some discussion.
+Thanks for the information,
+Trevor
 
-The TarFS use cases has been discussed many times in
-"confidential containers" for almost a year in their community
-meeting to passthrough OCI images to guests but without an
-agreement.
-
-And this "TarFS" once had a C version which was archived at
-https://github.com/kata-containers/tardev-snapshotter/blob/main/tarfs/tarfs.c
-
-and the discussion was directly in a Kata container PR:
-https://github.com/kata-containers/kata-containers/pull/7106#issuecomment-1592192981
-
-IMHO, this "tarfs" implementation have no relationship with the
-real tar on-disk format since it defines a new customized index
-format rather than just parse tar in kernel.
-
-IOWs, "tarfs" mode can be directly supported by using EROFS since
-Linux v6.3 by using 512-byte block size addressing, see
-https://git.kernel.org/torvalds/c/61d325dcbc05
-
-And I think any local fs which supports 512-byte block size can
-have a "tarfs" mode without any compatibility issue.
-
-BTW, in addition to incompatiable with on-disk tar format, this
-tarfs does not seem to support tar xattrs too.
-
-Thanks,
-Gao Xiang
-
-> 
+> cheers,
+> jamal
+>
+> > We are getting more contributors interested in doing Rust work that
+> > are looking for projects, so just collecting some ideas we can point
+> > them at.
+> >
+> > Thanks,
+> > Trevor
