@@ -1,53 +1,42 @@
-Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0DB1BC3E
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 09:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2DB1B961;
+	Thu, 25 Jan 2024 09:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706174699; cv=none; b=SZA77RCD6ZfbgAhBusyOZ1ya2e+JbvPfuGZMYZ7VcN/6dOV/KTgbTpf/7JBkc+dregCPUQ7yB9nUshLJXtnChuevGeKuezs/6rFMhuBiP+TyfYWEXgwrPye8GnzZ3R2+qYYRzyvE8UwUHisNTO9x1PHpU4Gy4MH3XCN2QMeyc4o=
+	t=1706174825; cv=none; b=clqW8aPd3K/rZ32R2BLxhmBESD+f/4EFpVlb3vQFk35HjMjDgirislZK7+REgwNOpG4+yFwPKVDjtbVL/OBuBONi8Rj5q4VMBiZi4zUt/1ny3iWaBSukKxi2uKP3q9Y+s0rmjTRbM0dlKTq3hnuoR+YAQs049MttWEMX9Hp6E6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706174699; c=relaxed/simple;
-	bh=6UE0SRZjvyyFYa0SX3uCauVIXNPtguWCaX+ojo6xL+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lMw/oQx6DCx5Zxg1KpQ/RVCn+gIpWLnnv1Ha0BueRL5GMWDDWmJNlBpJmWWTd5X/b4r9PvduEUD7rTzka6k24sDT4tjYZa83sxVu1wC0eImUNsipHnoARWmDvkNgkjP1EKBRQf7QkoQVMO98tEphC1SALZ4lCI37MNzm26qlhzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j6X1S99c; arc=none smtp.client-ip=91.218.175.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1706174825; c=relaxed/simple;
+	bh=488//va03Lc+B/1ZyVuMhHZy+u75yY7UHFrjzmg8sAw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ALXJR5oIUS8PWMo8wYvk6Ja+yXFb/GiWZiFtLtTe49j7EXwg5NKkfqheIUDrhKIb3x7WP7ff8J6wjPdSb0IxxBduIVFfgRScNF6Wb7GxjnyhfyUpswH3+SxkNdj3Qxv9ly/548cteqVxlgImeo0UIfTmFc937xLqvV015KJB5V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=aamXmgNw; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j6X1S99c"
-Date: Thu, 25 Jan 2024 04:24:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1706174695;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1FEZJDPSztwlSq+bBHVyJk6lavPwpvO/fWxjbdKAveY=;
-	b=j6X1S99c9OqDmQhk+o5Od38phw8NAKGavG3oZo8uC4PTJoO3P6QEPqRtA01s2ujlCH9oXY
-	gkfSNnMIxE4uzurxHKHo11ZFaSnX/dyEffUWQgzVDU5JoksOsSFK1/EH/ABiSvESxg7mbi
-	71x6JxAny+kOXOHYj/PdbxfFqz8RuNk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>, 
-	Dave Chinner <dchinner@redhat.com>, David Howells <dhowells@redhat.com>, 
-	Ariel Miculas <amiculas@cisco.com>, Paul McKenney <paulmck@kernel.org>
-Subject: Re: [LSF/MM TOPIC] Rust
-Message-ID: <dd7w7t42m2mckgal7sl5azop6tlue4wog7yxz52g2val77fye7@hm5gvdkwzw23>
-References: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
- <ZbAO8REoMbxWjozR@casper.infradead.org>
- <cf6a065636b5006235dbfcaf83ff9dbcc51b2d11.camel@HansenPartnership.com>
- <ZbEwKjWxdD4HhcA_@casper.infradead.org>
- <2e62289ad0fffd2fb8bc7fa179b9a43ab7fe2222.camel@HansenPartnership.com>
- <bmgzm3wjtcyzsuawscxrdyhq56ckc7vqnfbcjbm42gj6eb4qph@wgkhxkk43wxm>
- <37f44c1409334f5dc15d7421e8b7cd3a4ff9ae33.camel@HansenPartnership.com>
- <4yzecrleclh4prjqw633r6m2jvs7cbtfznjm7azdaxpp2vvmn6@cjxk3ueacoe5>
- <c368f1a22e271f96a49a4eab438b040959782387.camel@HansenPartnership.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="aamXmgNw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1706174821; x=1706434021;
+	bh=VXueD5sixGPDTa6BhUDnnsLagnOCQf9tNkKiKlaVKTY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=aamXmgNwwKSW97xc2/lztAj/XZ+IpEf9YCkJzEPQSBQ/t+QV3TP1t/iDzLXjOM1jb
+	 nAD+PCQjoglFNEwp6zs+OXw5VvPw7KFfSrZuIbgr1prXnZ4kAs31BR+N5Z2GhLW+Bz
+	 XMLK2ifAfUy+ciRK7qzOHpl+x/tLH/8+1VaHh4gtzJt0b9+cNvqs2DLmSdUk4VRCHe
+	 35K9zn/vLG5P6Pl0D6tdwY+eQiz8sP+Ho8ZEZjCeMtD/h8jgczNV7/pKV9Y3DSwkGv
+	 ce8Z/telLXlvihEO18bufrzoFnncbx1CHRGrPYgv1aEQxzZKyrVN02ecQ2fAYwVfIL
+	 VLAEudG8EbFzw==
+Date: Thu, 25 Jan 2024 09:26:52 +0000
+To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Hannes Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, linux-kernel@vger.kernel.org, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 03/11] rust: block: introduce `kernel::block::mq` module
+Message-ID: <59f007a0-bb30-4291-ab49-0e69112e2566@proton.me>
+In-Reply-To: <874jf3kflx.fsf@metaspace.dk>
+References: <20230503090708.2524310-1-nmi@metaspace.dk> <20230503090708.2524310-4-nmi@metaspace.dk> <iL2M45BoRlK6yS9y8uo0A5yUXcZWMkdk3vtH3LRFSWXfvPVagVZ-0YC7taIKOBFUcjJYA_2xNNFPoC4WL-_ulCHOLkbqvsZlIshE_LEeYtU=@proton.me> <87il3kjgk0.fsf@metaspace.dk> <104a22f7-a5bb-4fb6-9ce9-aa2d4e63417f@proton.me> <874jf3kflx.fsf@metaspace.dk>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,65 +44,122 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c368f1a22e271f96a49a4eab438b040959782387.camel@HansenPartnership.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 24, 2024 at 10:47:22PM -0500, James Bottomley wrote:
-> On Wed, 2024-01-24 at 14:57 -0500, Kent Overstreet wrote:
-> > On Wed, Jan 24, 2024 at 02:43:21PM -0500, James Bottomley wrote:
-> > > On Wed, 2024-01-24 at 13:50 -0500, Kent Overstreet wrote:
-> > > > > To illustrate the problem with cryptography in rust: just
-> > > > > because it's rust safe doesn't mean its correct or bug free. 
-> > > > > Crypto functions are the most difficult to get right
-> > > > > (algorithmically, regardless of memory safety).  Look at this
-> > > > > Medium report on the top ten bugs in blockchain:
-> > > > > 
-> > > > > https://medium.com/rektoff/top-10-vulnerabilities-in-substrate-based-blockchains-using-rust-d454279521ff
-> > > > > 
-> > > > > Number 1 is a rust crypto vulnerability due to insecure
-> > > > > randomness in a random number generating function (note it was
-> > > > > rust safe code just not properly checked for algorithmic issues
-> > > > > by a cryptographer).
-> > > > > 
-> > > > > The reason for using the kernel functions is that they are
-> > > > > vetted by cryptographers and crafted for our environment.
-> > > > 
-> > > > Are you arguing that typical kernel code is more secure than
-> > > > typical Rust code?
-> > > 
-> > > For crypto code?  Absolutely, that's what the example above showed.
-> > > It's pretty much impossible to use an insecure rng in the kernel if
-> > > you plug into one of our existing APIs.  That's obviously not
-> > > necessarily true if you pull a random one from crates.io.
-> > > 
-> > > James
-> > 
-> > I can just as easily use prandom.h instead of random.h in the kernel;
-> 
-> Neither of which would be insecure ...
+On 23.01.24 19:39, Andreas Hindborg (Samsung) wrote:
+>>>>> +/// A generic block device
+>>>>> +///
+>>>>> +/// # Invariants
+>>>>> +///
+>>>>> +///  - `gendisk` must always point to an initialized and valid `stru=
+ct gendisk`.
+>>>>> +pub struct GenDisk<T: Operations> {
+>>>>> +    _tagset: Arc<TagSet<T>>,
+>>>>> +    gendisk: *mut bindings::gendisk,
+>>>>
+>>>> Why are these two fields not embedded? Shouldn't the user decide where
+>>>> to allocate?
+>>>
+>>> The `TagSet` can be shared between multiple `GenDisk`. Using an `Arc`
+>>> seems resonable?
+>>>
+>>> For the `gendisk` field, the allocation is done by C and the address
+>>> must be stable. We are owning the pointee and must drop it when it goes=
+ out
+>>> of scope. I could do this:
+>>>
+>>> #[repr(transparent)]
+>>> struct GenDisk(Opaque<bindings::gendisk>);
+>>>
+>>> struct UniqueGenDiskRef {
+>>>       _tagset: Arc<TagSet<T>>,
+>>>       gendisk: Pin<&'static mut GenDisk>,
+>>>
+>>> }
+>>>
+>>> but it seems pointless. `struct GenDisk` would not be pub in that case.=
+ What do you think?
+>>
+>> Hmm, I am a bit confused as to how you usually use a `struct gendisk`.
+>> You said that a `TagSet` might be shared between multiple `GenDisk`s,
+>> but that is not facilitated by the C side?
+>>
+>> Is it the case that on the C side you create a struct containing a
+>> tagset and a gendisk for every block device you want to represent?
+>=20
+> Yes, but the `struct tag_set` can be shared between multiple `struct
+> gendisk`.
+>=20
+> Let me try to elaborate:
+>=20
+> In C you would first allocate a `struct tag_set` and partially
+> initialize it. The allocation can be dynamic, static or part of existing
+> allocation. You would then partially initialize the structure and finish
+> the initialization by calling `blk_mq_alloc_tag_set()`. This populates
+> the rest of the structure which includes more dynamic allocations.
+>=20
+> You then allocate a `struct gendisk` by calling `blk_mq_alloc_disk()`,
+> passing in a pointer to the `struct tag_set` you just created. This
+> function will return a pointer to a `struct gendisk` on success.
+>=20
+> In the Rust abstractions, we allocate the `TagSet`:
+>=20
+> #[pin_data(PinnedDrop)]
+> #[repr(transparent)]
+> pub struct TagSet<T: Operations> {
+>      #[pin]
+>      inner: Opaque<bindings::blk_mq_tag_set>,
+>      _p: PhantomData<T>,
+> }
+>=20
+> with `PinInit` [^1]. The initializer will partially initialize the struct=
+ and
+> finish the initialization like C does by calling
+> `blk_mq_alloc_tag_set()`. We now need a place to point the initializer.
+> `Arc::pin_init()` is that place for now. It allows us to pass the
+> `TagSet` reference to multiple `GenDisk` if required. Maybe we could be
+> generic over `Deref<TagSet>` in the future. Bottom line is that we need
+> to hold on to that `TagSet` reference until the `GenDisk` is dropped.
 
-Are you claiming that
-        
-/* Pseudo random number generator from numerical recipes. */
-static inline u32 next_pseudo_random32(u32 seed)
-{
-        return seed * 1664525 + 1013904223;
-}
+I see, thanks for the elaborate explanation! I now think that using `Arc`
+makes sense.
 
-is a secure RNG?
+> `struct tag_set` is not reference counted on the C side. C
+> implementations just take care to keep it alive, for instance by storing
+> it next to a pointer to `struct gendisk` that it is servicing.
 
-> 
-> > this just comes down to Rust not being able to save you from
-> > arbitrary logic errors. But all the data we have so far from CVEs and
-> > bug reports shows that Rust code is _dramatically_ more secure than
-> > any C code, even kernel code.
-> 
-> I've said it thrice the bellman cried and what I tell you three times
-> is true.
-> 
-> Back in the real world, the literature seems to show that rust code has
-> about the same bug density as any other code (including C). 
+This is interesting, is this also done in the case where it is shared
+among multiple `struct gendisk`s?
+Does this have some deeper reason? Or am I right to assume that creating
+`Gendisk`/`TagSet` is done rarely (i.e. only at initialization of the
+driver)?
 
-You might want to re-read that literature...
+>> And you decided for the Rust abstractions that you want to have only a
+>> single generic struct for any block device, distinguished by the generic
+>> parameter?
+>=20
+> Yes, we have a single generic struct (`GenDisk`) representing the C
+> `struct gendisk`, and a single generic struct (`TagSet`) representing
+> the C `struct tag_set`. These are both generic over `T: Operations`.
+> `Operations` represent a C vtable (`struct blk_mq_ops`) attached to the
+> `struct tag_set`. This vtable is provided by the driver and holds
+> function pointers that allow the kernel to perform actions such as queue
+> IO requests with the driver. A C driver can instantiate multiple `struct
+> gendisk` and service them with the same `struct tag_set` and thereby the
+> same vtable. Or it can use separate tag sets and the same vtable. Or a
+> separate tag_set and vtable for each gendisk.
+>=20
+>> I think these kinds of details would be nice to know. Not only for
+>> reviewers, but also for veterans of the C APIs.
+>=20
+> I should write some module level documentation clarifying the use of
+> these types. The null block driver is a simple example, but it is just
+> code. I will include more docs in the next version.
+
+Thanks a lot for explaining!
+
+--=20
+Cheers,
+Benno
+
+
