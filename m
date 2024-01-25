@@ -1,274 +1,90 @@
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDF31292F1
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 16:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8471413174E;
+	Thu, 25 Jan 2024 17:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706199327; cv=none; b=X/HvEfQsCULc0ZJ5Ky1o2x+ExWRH6eCWoPjxz1DOmI/pwxU2TzfyxNt5xqP9mBqdfqYS7nDNTPYZBTVZjJMbadL4KfpbTyeYrVP+xHPN4UWaqHqbJqaHxrwHh4klDoUaiKfQkU0shhIPmzKZqYw8SsH2pul+W60YDMguzsn0kHg=
+	t=1706204530; cv=none; b=Ptt3uhT8D6R5sLoOAVEOABAReJvpx9CulPm3HO8hwL/yEjGqKEmk4CY6ZFmROSFw5NrXDp3MbsUnnOpOfSiXw1CncPohCRtA1CcjIrV/gNwdKXMZHsduYG7EeL6zCAW4j6zvYC3AX0DjkPgy95vEZK87Lz53JJ/IZFAgsFgaNJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706199327; c=relaxed/simple;
-	bh=PMOq6b74OsAKYyIq+lnlaB8rWPhr1y7hF5VaJVdA2BY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U3rAV9dIy1rYKWG8TzYj13LafWRLZmPNPXVDajYdouG/oidv66yVaITqMg4iKA7VFjFwEkqUbaukTXdYWiiLT4bhIZ+RFQNpa9C+v+KMYXcrbwgVU9D+/P3OB4PMylDJAk2lNcQRu5nQI+VAAnSytBn8+KhKIrwdv5YwGX1e4Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sjxtG7oB; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706204530; c=relaxed/simple;
+	bh=CF6+Hi4GeAzVx8LW4GbLCLydMins7gG/oRur2TOzDOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PpQDty+CEhuNdGpo/+Mu2vW/ZXpiZNilt3obB0OEHR92F7Q4z3TbLXukO+xdN6MP6wU/MvLEnUJIwGk+inbfJwmIrYXLAElNlwO+iEqXq32fBSa+jJklbsFiKgzP5HtAXNHNmZj/Z94GPd7d8xmgPXiDIzGXCWMQmD/WEPVqBBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VMhqxUbA; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sjxtG7oB"
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4bd3dcee54eso511871e0c.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 08:15:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706199325; x=1706804125; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7lk63POKR0f1uaiQp+rL8Q768TeeIp8icZEI1dRCPmo=;
-        b=sjxtG7oBriMA2BibP1+j7Tr3TQsGiu9IOM5dYxu3vF/6JRkqCIMZZhn6+aKRHbrucD
-         DQDc1H3sqSscKKXyzAUWAxKNeHvQxW2SUFqeqtEWCHhwx982sH5MJa/GEQUmqqnyKjnF
-         3PwV/qIQriJVMl8Ftvrog4ATbNaP3U+5Jrzybz/6GAQJee390ycRRQiSBJDWWfx6RozN
-         SGXW3N9QT+fnHUAjjt+3Ea8xg3uuDQ/zrS1loXiNvUziA+O1vlcr13OjUSzjDUN/6Jqx
-         QVP9mCVb0ljaPkF2/8naiahBmjoXpR3eTqpyFCvJUq25vb0trG/s3h0Vqjfl+sf0fXdn
-         2k9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706199325; x=1706804125;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7lk63POKR0f1uaiQp+rL8Q768TeeIp8icZEI1dRCPmo=;
-        b=eJyRzemQJHSEkDiQOSVtxNFENPIXPBmnonRB8mAbYkAZAvjkCaxK1G1JDw6/aQLnd1
-         LQgtKdWmBeqsmJu3gBp5bJUHCNKMDTKjrN1L+bUiPCPxq9Lgfm9CQY+poFubifZQfoFM
-         SufHq20SVXLIlJkF96+t/jzvGx9gcof6RR4i5fZFQsESB8k5WwC/hGcMdKamn2oTz9VM
-         HAI4fz+6rmaID/CWA6DrhJUY0/Q802WwFKztmLEV/LHlR4YfWA/P24Jhjeq+Yc7b96jg
-         /fV3JO+K1lV8Ekq+MO1veBvxmm4zcnPiaBZ05ECM15Yn6RcWHiJs58CaovAAFwhVGWGO
-         wxKA==
-X-Gm-Message-State: AOJu0YwUADb0vIfykufNn5TaiT9nWBLEKevv4pBbIqOWQj5W+0glaYqH
-	LO7LsL7zrdQF/Co+dZpEcGE9xkowI4kEBfQj8aXeg9eHHp6nxd1fnZIXy6sCdBNRWK+0F/C5FjL
-	UksYQlW4Ot1plkYkpgyQIkRMndlTKqTWs3xkP
-X-Google-Smtp-Source: AGHT+IGA0K3UOZ9HMIN8oAo3K16wYrzxN3UKybeNfpxPpUsyncL2OiiQaWS9A2aKFqJK++AqLpBtQOygJxuD+f+XbDo=
-X-Received: by 2002:a05:6122:1807:b0:4bd:2957:2620 with SMTP id
- ay7-20020a056122180700b004bd29572620mr46434vkb.13.1706199324648; Thu, 25 Jan
- 2024 08:15:24 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VMhqxUbA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MES6gX+8+nsyFlBsllvbTSH4KOA6qMyryRvdsV3V++0=; b=VMhqxUbASXJ0v04b3ZignKoixS
+	cOQIm2Edg+dGILNGx7+XCILEu2nd3Z91Reo/SiiMfOoBlzAW3sKGo+BuHIfjSN1u68GV4Lspnszdy
+	/gNOWmOpZwev7iXCWY04Y/090Q3Ej56a/5rs/RogJ3WrXLRyI4iIY9gfhdr3YpzXEsLM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rT3jp-0066ie-GY; Thu, 25 Jan 2024 18:42:05 +0100
+Date: Thu, 25 Jan 2024 18:42:05 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH net-next] rust: phy: use VTABLE_DEFAULT_ERROR
+Message-ID: <4573a237-dd18-4ea0-8de4-8b465eb856c7@lunn.ch>
+References: <20240125014502.3527275-1-fujita.tomonori@gmail.com>
+ <20240125014502.3527275-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-2-d1abcec83c44@google.com> <070574cb-8d7f-4fe7-9826-cec6110168ff@app.fastmail.com>
- <CAH5fLgi8D18ufma0X49nWhXpnz47t-C=OAtM+wwnYu78hEnwhA@mail.gmail.com> <e69f9b43-39cd-469d-94db-140504df0833@app.fastmail.com>
-In-Reply-To: <e69f9b43-39cd-469d-94db-140504df0833@app.fastmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 25 Jan 2024 17:15:13 +0100
-Message-ID: <CAH5fLghn2=Y-M-M7-17PhNvKN3qVTsa6wh=Df770kHj1Oxh8hQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: add typed accessors for userspace pointers
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240125014502.3527275-2-fujita.tomonori@gmail.com>
 
-On Thu, Jan 25, 2024 at 5:00=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> On Thu, Jan 25, 2024, at 13:37, Alice Ryhl wrote:
-> > On Thu, Jan 25, 2024 at 1:27=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> w=
-rote:
-> >> On Wed, Jan 24, 2024, at 12:20, Alice Ryhl wrote:
->
-> >> > +EXPORT_SYMBOL_GPL(rust_helper_copy_to_user_unsafe_skip_check_object=
-_size);
-> >>
-> >> These functions are almost identical to the ones in
-> >> lib/usercopy.c for !defined(INLINE_COPY_TO_USER).
-> >>
-> >> That version has an extra memset() after a partial
-> >> copy_from_user(), and you probably want to have the
-> >> same thing here for consistency.
-> >>
-> >> I think ideally we should only have one out-of-line copy
-> >> of these two functions and have that one shared between
-> >> rust and architectures that want the C version out of line
-> >> as well.
-> >
-> > I had a bit of trouble figuring out all of the copy_[to/from]_user
-> > methods that are available. I was hoping that a better solution would
-> > be available, and it sounds like one is. Is _copy_from_user always
-> > available as an exported symbol? If it's always available and skips
-> > the check, then I can just use that. I don't think the memset matters
-> > for my case.
->
-> At the moment, it appears that it's available on the few architectures
-> that don't #define INLINE_COPY_FROM_USER: alpha, csky, powerpc,
-> riscv and x86. On the other architectures it is always an inline
-> function.
->
-> > Otherwise, I can add a helper in rust/helpers.c that wraps
-> > _copy_from_user only when INLINE_COPY_FROM_USER is defined, and call
-> > the helper in those cases, and otherwise call the exported symbol
-> > directly. (I need an exported symbol to call into C from Rust.)
-> >
-> > Would that make sense?
->
-> I don't think we can have a perfect abstraction here, but rather
-> than putting knowledge of INLINE_COPY_FROM_USER into the rust
-> wrapper, I would suggest putting a bit of information about
-> rust into lib/usercopy.c.
->
-> I've tried to come up with an idea below, see if that works
-> for you.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-> index 3064314f4832..835aa175d0ee 100644
-> --- a/include/linux/uaccess.h
-> +++ b/include/linux/uaccess.h
-> @@ -138,13 +138,18 @@ __copy_to_user(void __user *to, const void *from, u=
-nsigned long n)
->         return raw_copy_to_user(to, from, n);
->  }
->
-> -#ifdef INLINE_COPY_FROM_USER
->  static inline __must_check unsigned long
-> -_copy_from_user(void *to, const void __user *from, unsigned long n)
-> +_inline_copy_from_user(void *to, const void __user *from, unsigned long =
-n)
->  {
->         unsigned long res =3D n;
->         might_fault();
->         if (!should_fail_usercopy() && likely(access_ok(from, n))) {
-> +               /*
-> +                * Ensure that bad access_ok() speculation will not
-> +                * lead to nasty side effects *after* the copy is
-> +                * finished:
-> +                */
-> +               barrier_nospec();
->                 instrument_copy_from_user_before(to, from, n);
->                 res =3D raw_copy_from_user(to, from, n);
->                 instrument_copy_from_user_after(to, from, n, res);
-> @@ -153,14 +158,11 @@ _copy_from_user(void *to, const void __user *from, =
-unsigned long n)
->                 memset(to + (n - res), 0, res);
->         return res;
->  }
-> -#else
->  extern __must_check unsigned long
->  _copy_from_user(void *, const void __user *, unsigned long);
-> -#endif
->
-> -#ifdef INLINE_COPY_TO_USER
->  static inline __must_check unsigned long
-> -_copy_to_user(void __user *to, const void *from, unsigned long n)
-> +_inline_copy_to_user(void __user *to, const void *from, unsigned long n)
->  {
->         might_fault();
->         if (should_fail_usercopy())
-> @@ -171,25 +173,32 @@ _copy_to_user(void __user *to, const void *from, un=
-signed long n)
->         }
->         return n;
->  }
-> -#else
->  extern __must_check unsigned long
->  _copy_to_user(void __user *, const void *, unsigned long);
-> -#endif
->
->  static __always_inline unsigned long __must_check
->  copy_from_user(void *to, const void __user *from, unsigned long n)
->  {
-> -       if (check_copy_size(to, n, false))
-> -               n =3D _copy_from_user(to, from, n);
-> -       return n;
-> +       if (!check_copy_size(to, n, false))
-> +               return n;
-> +#ifdef INLINE_COPY_FROM_USER
-> +       return _inline_copy_from_user(to, from, n);
-> +#else
-> +       return _copy_from_user(to, from, n);
-> +#endif
->  }
->
->  static __always_inline unsigned long __must_check
->  copy_to_user(void __user *to, const void *from, unsigned long n)
->  {
-> -       if (check_copy_size(from, n, true))
-> -               n =3D _copy_to_user(to, from, n);
-> -       return n;
-> +       if (!check_copy_size(from, n, true))
-> +               return n;
-> +
-> +#ifdef INLINE_COPY_TO_USER
-> +       return _inline_copy_to_user(to, from, n);
-> +#else
-> +       return _copy_to_user(to, from, n);
-> +#endif
->  }
->
->  #ifndef copy_mc_to_kernel
-> diff --git a/lib/usercopy.c b/lib/usercopy.c
-> index d29fe29c6849..503a064d79e2 100644
-> --- a/lib/usercopy.c
-> +++ b/lib/usercopy.c
-> @@ -7,40 +7,18 @@
->
->  /* out-of-line parts */
->
-> -#ifndef INLINE_COPY_FROM_USER
-> +#if !defined(INLINE_COPY_FROM_USER) || defined(CONFIG_RUST)
->  unsigned long _copy_from_user(void *to, const void __user *from, unsigne=
-d long n)
->  {
-> -       unsigned long res =3D n;
-> -       might_fault();
-> -       if (!should_fail_usercopy() && likely(access_ok(from, n))) {
-> -               /*
-> -                * Ensure that bad access_ok() speculation will not
-> -                * lead to nasty side effects *after* the copy is
-> -                * finished:
-> -                */
-> -               barrier_nospec();
-> -               instrument_copy_from_user_before(to, from, n);
-> -               res =3D raw_copy_from_user(to, from, n);
-> -               instrument_copy_from_user_after(to, from, n, res);
-> -       }
-> -       if (unlikely(res))
-> -               memset(to + (n - res), 0, res);
-> -       return res;
-> +       return _inline_copy_from_user(to, from, n);
->  }
->  EXPORT_SYMBOL(_copy_from_user);
->  #endif
->
-> -#ifndef INLINE_COPY_TO_USER
-> +#if !defined(INLINE_COPY_TO_USER) || defined(CONFIG_RUST)
->  unsigned long _copy_to_user(void __user *to, const void *from, unsigned =
-long n)
->  {
-> -       might_fault();
-> -       if (should_fail_usercopy())
-> -               return n;
-> -       if (likely(access_ok(to, n))) {
-> -               instrument_copy_to_user(to, from, n);
-> -               n =3D raw_copy_to_user(to, from, n);
-> -       }
-> -       return n;
-> +       return _inline_copy_to_user(to, from, n);
->  }
->  EXPORT_SYMBOL(_copy_to_user);
->  #endif
+On Thu, Jan 25, 2024 at 10:45:02AM +0900, FUJITA Tomonori wrote:
+> Since 6.8-rc1, using VTABLE_DEFAULT_ERROR for optional functions
+> (never called) in #[vtable] is the recommended way.
+> 
+> Note that no functional changes in this patch.
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/kernel/net/phy.rs | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> index 203918192a1f..96e09c6e8530 100644
+> --- a/rust/kernel/net/phy.rs
+> +++ b/rust/kernel/net/phy.rs
+> @@ -580,12 +580,12 @@ pub trait Driver {
+>  
+>      /// Issues a PHY software reset.
+>      fn soft_reset(_dev: &mut Device) -> Result {
+> -        Err(code::ENOTSUPP)
+> +        kernel::build_error(VTABLE_DEFAULT_ERROR)
+>      }
 
-Sure, if that's okay with you, then I'm happy to do it that way in v2.
+Dumb question, which i should probably duckduckgo myself.
 
-Thank you!
-Alice
+Why is it called VTABLE_DEFAULT_ERROR and not
+VTABLE_NOT_SUPPORTED_ERROR?
+
+Looking through the C code my guess would be -EINVAL would be the
+default, or maybe 0.
+
+The semantics of ENOTSUPP can also vary. Its often not an actual
+error, it just a means to indicate its not supported, and the caller
+might decide to do something different as a result. One typical use in
+the network stack is offloading functionality to hardware.
+e.g. blinking the LEDs on the RJ45 connected. The driver could be
+asked to blink to show activity of a received packet. Some hardware
+can only indicate activity for both receive and transmit, so the
+driver would return -EOPNOTSUPP. Software blinking would then be used
+instead of hardware blinking.
+
+	 Andrew
