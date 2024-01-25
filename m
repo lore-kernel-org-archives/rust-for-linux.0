@@ -1,89 +1,127 @@
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42BE3D392
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 12:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9E445C0E
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 12:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706186241; cv=none; b=Cxw2I6cmTSAh+fIBtuD8Nhyv8mBQPN4eFxBoppDaAuGowQ0xSaDbLuxGFSB2u4K09zNh2o9V+PWZerjkJoUfO3g+duoP6QD6U8ZhziJD+zoK8pIFKbnNhMrBvFWrRpBKsM3KIuhylSriGNBw6FZct55GikKxjnH414eKab7Pjdc=
+	t=1706186438; cv=none; b=KHlBqZ02zwcIVxs1aof7YIHto3LX/Ux+TcjMyS4lXUY9NvPHh+h3XoOUeshn9D5VfEjZmzTmteMasuBtBdGicAT5K22gw1/Uou2Pybbt+5b9r6GwNYa6zhtoiPc5J9Uej0UATpf2/flJF0+5+BOYTJl18Bd65GhOuWVP2uFPbYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706186241; c=relaxed/simple;
-	bh=FMcXpHB/zoqwhqTm+B0dEtaw8ZbOK6U7VxIx0G1qHDI=;
+	s=arc-20240116; t=1706186438; c=relaxed/simple;
+	bh=hM2iHfDe3tq4q5QhAuG5llL9QvEutMz9ZFyDgZKy5J0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q9Al6MV4InOZwHeW0eUGGUnmqTnv3Jg8a241O7x01f3OH4AE/eMUQmA89iH0wi8g7h0crqo849H4P5APAkHvhC/uh0hR6Td84CZjJaA62/4NXarVcBP+wjYwCEcLGL65lADuey5y7xFhBFgsco62k/hfARplhVMI9/ABdkglgPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bDxO8Vvq; arc=none smtp.client-ip=209.85.222.45
+	 To:Cc:Content-Type; b=DeDedp9HGbMxpTZb2xUIoRql4GRGEyd2c3V1Tm4gzBpZyQzB9fIFEicN2YJTrlLHrevjjFCYzSTpAEdXMrZvjZU5nvOiqN0b/b+yUQR79daMvGagAj7SzirNrwuZaeIjATPLds32MnOGXNDAmglljyFCqumsd4Ez6mNj/EZjjPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tSwDac9F; arc=none smtp.client-ip=209.85.222.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bDxO8Vvq"
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7ce528fc53fso2207323241.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 04:37:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tSwDac9F"
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-7ce55932330so1462229241.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 04:40:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706186239; x=1706791039; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1706186435; x=1706791235; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w/8P03y0gIOgiGCcOtW8CKbm2M0HUIblwn8rbFoZDFY=;
-        b=bDxO8VvqV7O9ZXMkg7JW6vmY+U/T8irJ1Hrx/0YHuBf2y9ufoOfEe5lhEkU81BXSAu
-         kiSW7AWjQhdt7aHIRdHBDX2L9I9Z04280x+5ECyxxKt7CkxKIAmr5Glryn2FE58+E7ga
-         X/DrQw58/0Myn4Lw75SzZkJosPR1mRA+Ljk0Oz7S/twThSXqU87X6SKMqOrtktiLWNAl
-         hBDqU5kc3qHKsfViJW49mS0JFX3snFrs0AHoouRwQQNiJ7Ul04U3Nnn/5CE3Q5XZGSv5
-         6ZeYYMnpt1zJ3TcKJr/p/rDfdgyTbLiC0HJ3n+7sy9oN7+46s5YphiLtk6EqCmTNYYDw
-         yBvQ==
+        bh=ZNi4MiQOUNCak4EWaCvvPwFzUIE3TXQJ5X1CGwYGEDU=;
+        b=tSwDac9F+Gq39agFJa7n4+dKGJ+3I5KVCjk23tNLJug/yMgk2yAfngenoG1KSddIjE
+         Q2k2ozYntrI0wxqrdpc2qHazuP/spOIrv14zBe9P9VTDfUCwuLjTrd36rigrqKzK8/Kk
+         kW3DfBU+oBb5VpCpM4go7nFE3eYhYLWC4Ug+H13I6eMsD5ql3Dzp3L7jJvZsFSlTK9hf
+         //anbCbNcdjKmQ03lmv1vne2w/5Ev4PsS2lPbgu79ayvZ2zDyw9JqV5OKEZE38cv6OBs
+         hYw2R95rtsaXLwGOJvoG11uBOWdBGfodK71LePGHQZUWZ+lYX41E+QpsiLqtyYkcrdWB
+         DjYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706186239; x=1706791039;
+        d=1e100.net; s=20230601; t=1706186435; x=1706791235;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=w/8P03y0gIOgiGCcOtW8CKbm2M0HUIblwn8rbFoZDFY=;
-        b=GgRRwKN4Sxq07aGtlOzVuzBvTF1fGSujPanXr4pQZacvqqPMe5FNAdw7h5+T1EJa4L
-         GyDMkJFVhHp4N5LEuSw55zORABpxw4xDfCdYXcTYauZyppOIHt9iIYeQ6bSEMGpxyExG
-         dB7rBz48+2xuk2j9ud3JB/jYacmc0QrxewQlbK3jAXt7MgJYSEHHgOSREnX6C17Qmv5B
-         //G36/F1iPMn6Th82PWYltaOQ9kayH+c5oK1CmACQIy7s9e4OeHGH5LmBUYVE0gAz6Bi
-         xGNoVrqboo1UFnDfQozEvRuo8Ra/JeqNLk7VROkl5PCpcUHYKJyFR5ZXTkYcK4P2qd9A
-         H/Ww==
-X-Gm-Message-State: AOJu0Yzka5lBUpvG1g2NiJI2dJrcp4tcHvuh1XczKUiPIiFfr6LN/TzO
-	oC2d1VGUpLDFpEAUgzuGLVDRT1dDbgtCot06vU8Acf5zzeZUnpwXnU+MkT9tnTyaoHG2ncLjEOF
-	+Ps2XNWu9aMt7jT0wiqBWpckgNA4BGyXuYx9D
-X-Google-Smtp-Source: AGHT+IFqI2jU/TuA2KsCbcNM1uIUyYNWtYEd44hxAhnlN41+z9ie0Kx+EGlwgTlHDfim/JfM538IlIEQM+1VVQT9H2Q=
-X-Received: by 2002:a67:b906:0:b0:46a:efb9:8d16 with SMTP id
- q6-20020a67b906000000b0046aefb98d16mr511164vsn.64.1706186238360; Thu, 25 Jan
- 2024 04:37:18 -0800 (PST)
+        bh=ZNi4MiQOUNCak4EWaCvvPwFzUIE3TXQJ5X1CGwYGEDU=;
+        b=ldFHdWIaLbTi0uP2+MAwFTVkP22VKGS1JlqkVdDghh50tRslaxtRrZWby0mDUbX9bH
+         HAIcs3A0m57dPfvd1KvRbb4Z75rFLT//VEIfpjZbmK8DfixBMy3fNdvwVW7WIa8OOHQs
+         hjD0ghn3QZuXQiZjVWTssZahDNfa6E12JxMqNztBQDpSoyHAlv/VIMszlsIQZSubkYN+
+         3mKHLiokejnzDfXhh+rd6u8E1/kL5c+yzx6f3IlepMDKEHTcgdKAdgOBatMM/mzjW5WY
+         kXm3hSHOGSPkHAaGDDUK1/aOrxzdpSUxl2TxIrrk1BLCf131QFaTMw1TxkrU++f6Z+q0
+         Zr8w==
+X-Gm-Message-State: AOJu0Yx63SaJaz3wUwpCkTUQjPwQb39z0LO+Jv/SV8ILbSLpuG71PH7E
+	jcblVQ3pbDeMuIALxPf0Id6wXbXHY5RYiixcAuat5whRymwH2pzgKxi33wewSnwPjvdRWbmuAs7
+	81RiDbS01jsOsf/bDjG3xjXxtErMmfiVwrBeT
+X-Google-Smtp-Source: AGHT+IH1C55pZ2RrYSAI4VVBDqlGGHUKM5ynO7yFHVq9bA/uLjts2Z1tsbUOhk0J8KAoOccE1G3W7HnpyeekB5BCP+Q=
+X-Received: by 2002:a1f:c344:0:b0:4bd:3433:aac with SMTP id
+ t65-20020a1fc344000000b004bd34330aacmr271077vkf.15.1706186435236; Thu, 25 Jan
+ 2024 04:40:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-2-d1abcec83c44@google.com> <070574cb-8d7f-4fe7-9826-cec6110168ff@app.fastmail.com>
-In-Reply-To: <070574cb-8d7f-4fe7-9826-cec6110168ff@app.fastmail.com>
+References: <20240124-alice-mm-v1-2-d1abcec83c44@google.com> <20240124234626.6435-1-kernel@valentinobst.de>
+In-Reply-To: <20240124234626.6435-1-kernel@valentinobst.de>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 25 Jan 2024 13:37:07 +0100
-Message-ID: <CAH5fLgi8D18ufma0X49nWhXpnz47t-C=OAtM+wwnYu78hEnwhA@mail.gmail.com>
+Date: Thu, 25 Jan 2024 13:40:24 +0100
+Message-ID: <CAH5fLggBH4POm501a_-Yivvnu0A-rFw8nw87iwUQw2361=pq4A@mail.gmail.com>
 Subject: Re: [PATCH 2/3] rust: add typed accessors for userspace pointers
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+To: Valentin Obst <kernel@valentinobst.de>
+Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
+	arnd@arndb.de, arve@android.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, 
+	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
+	viro@zeniv.linux.org.uk, wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 25, 2024 at 1:27=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
+On Thu, Jan 25, 2024 at 12:47=E2=80=AFAM Valentin Obst <kernel@valentinobst=
+.de> wrote:
 >
-> On Wed, Jan 24, 2024, at 12:20, Alice Ryhl wrote:
-> > +unsigned long
-> > rust_helper_copy_from_user_unsafe_skip_check_object_size(void *to,
-> > const void __user *from, unsigned long n)
+> > +/*
+>
+> nit: this would be the first comment in the kernel crate to use this
+> style, not sure if there is a rule about that though. Maybe still
+> preferable to keep it consistent.
+>
+> > + * These methods skip the `check_object_size` check that `copy_[to|fro=
+m]_user`
+> > + * normally performs.
+>
+> nit: They skip the (stronger, and also present without usercopy
+> hardening) `check_copy_size` wrapping that one.
+
+The only difference between check_object_size and check_copy_size is
+the extra check with __builtin_object_size, but that doesn't work
+across the C/Rust boundary, and Rust doesn't have a direct equivalent.
+
+> >                        In C, these checks are skipped whenever the leng=
+th is a
+> > + * compile-time constant, since when that is the case, the kernel poin=
+ter
+> > + * usually points at a local variable that is being initialized
+>
+> Question: I thought that this exemption is about dynamic size
+> calculations being more susceptible to bugs than hard-coded ones. Does
+> someone recall the original rationale for that?
+>
+> >                                                                  and th=
+e kernel
+> > + * pointer is trivially non-dangling.
+>
+> As far as I know the hardened usercopy checks are not meant to catch
+> UAFs but rather about OOB accesses (and some info leaks). For example,
+> if the object is on the heap they check if the copy size exceeds the
+> allocation size, or, if the object is on the stack, they verify the copy
+> size does not leave the stack frame.
+
+Right, I can reword to say OOB instead of UAF.
+
+> > + *
+> > + * These helpers serve the same purpose in Rust. Whenever the length i=
+s known at
+> > + * compile-time, we call this helper to skip the check.
+> > + */
+> > +unsigned long rust_helper_copy_from_user_unsafe_skip_check_object_size=
+(void *to, const void __user *from, unsigned long n)
 > > +{
 > > +     unsigned long res;
 > > +
@@ -98,9 +136,8 @@ On Thu, Jan 25, 2024 at 1:27=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
 > > +EXPORT_SYMBOL_GPL(rust_helper_copy_from_user_unsafe_skip_check_object_=
 size);
 > > +
-> > +unsigned long
-> > rust_helper_copy_to_user_unsafe_skip_check_object_size(void __user *to,
-> > const void *from, unsigned long n)
+> > +unsigned long rust_helper_copy_to_user_unsafe_skip_check_object_size(v=
+oid __user *to, const void *from, unsigned long n)
 > > +{
 > > +     might_fault();
 > > +     if (should_fail_usercopy())
@@ -111,30 +148,8 @@ size);
 > > +EXPORT_SYMBOL_GPL(rust_helper_copy_to_user_unsafe_skip_check_object_si=
 ze);
 >
-> These functions are almost identical to the ones in
-> lib/usercopy.c for !defined(INLINE_COPY_TO_USER).
->
-> That version has an extra memset() after a partial
-> copy_from_user(), and you probably want to have the
-> same thing here for consistency.
->
-> I think ideally we should only have one out-of-line copy
-> of these two functions and have that one shared between
-> rust and architectures that want the C version out of line
-> as well.
+> Could those be wrapping `_copy_[to|from]_user` instead?
 
-I had a bit of trouble figuring out all of the copy_[to/from]_user
-methods that are available. I was hoping that a better solution would
-be available, and it sounds like one is. Is _copy_from_user always
-available as an exported symbol? If it's always available and skips
-the check, then I can just use that. I don't think the memset matters
-for my case.
-
-Otherwise, I can add a helper in rust/helpers.c that wraps
-_copy_from_user only when INLINE_COPY_FROM_USER is defined, and call
-the helper in those cases, and otherwise call the exported symbol
-directly. (I need an exported symbol to call into C from Rust.)
-
-Would that make sense?
+Yeah maybe, see the other thread with Arnd Bergmann.
 
 Alice
