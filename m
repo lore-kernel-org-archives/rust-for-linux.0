@@ -1,301 +1,166 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893C14F88D
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 13:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935B05732D;
+	Thu, 25 Jan 2024 13:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706189006; cv=none; b=hif9E/bbSEUtTv9MdLl7EXD8T5NHDG9tIjv0SvoudEhtkkk/sEQNiC3v5qISP35U0o+fGKKGKHDWL3n8Owv7+4uKgGvQPtn6QraKgHCxRt6o5FM6RKXboHc+UTy26TkLoxUck3ZHHoLVQbyvDoSVKYiveubQkflTOwRbU8g4NiI=
+	t=1706190374; cv=none; b=QruronxoZwnKVfJBGxUqs7Ap5qDstYM4SU1PX9KivyyeBOy5DxIxW/jnL9HO68CuGI3wzTxgC/G6IqTtMbnWE2Ko4xz0a2MpTApp7OBGUZVqdJtY2CcoAperIgcj7SAqtaXVJupSGrSdNDZTlgvOwbrS8APhrRQ26nvH0DM68MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706189006; c=relaxed/simple;
-	bh=THUQN5ox52wMM50G0OacBTnixWD2SdVkKWnMbHGbGSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R+yyTH+ho/uwt8d9PbogqlrvzE3rlfvMY51manVNCG40AEt0x9/FVMIjhtyJJzt8P3RxwpuLxLYPyGNJ0358x4R+vCKrrGiXth8e5Cq3gfJCGdi52OA1t0UndkFR4ZyUTbRRgjuw0ekyKjqLMWfvF1DqSSdfoFGfWlpxIcLtsMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LKEtWnhb; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1706190374; c=relaxed/simple;
+	bh=QkGYH2ypWOTDiq5BbVC5hKUniLV64BDsYDuZSL4c+Ek=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rGLisyoPUfamuPJjbJTEwZFFCw5KJpb7jYOe0AA3xpDxstqPAr9PdVLaXvv/X1/tBZd5CkvYJEYLdHohl7jwiuf1i3gxkA/YQ4mmHbt61fgVURTORPhSZgHpJ5ZS7ElnUNY2GFeKfeKh541Dloeuk/6lqR+vQy1nkVeXvFVdx8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=orCz+Hii; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LKEtWnhb"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6db0fdd2b8fso3564846b3a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 05:23:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706189004; x=1706793804; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=XoxsXQkKNzLk/Oimvx8Ga0AuL6hzhZvVU6SQBiDln8A=;
-        b=LKEtWnhbIYxR3dJf5sGi3E4hB/cNXUk4SoD5HQsZBTZCIr+13g5IXUTspS5FAqv7I8
-         YCLs+rF5gX2NeLE6t7KJeBKo6WXvUf+85BA/QuvTd3r6V8RV8QllVdqq2GufqWdKbgK9
-         TeykPdS3oCj0rlWB8sfPLVU80G3Ky4KcRTZF0//4udzecd4Ycs+4YKkePjZ2DBm9Ul+h
-         G3uQp8J11qy1KdOUj5VaG5fGbYey7SiJHNhdp0LrxA5cia56krQd5MYpycBXtg6h/DG+
-         +S7+ubb4zBbeURDLcDui7+6BDrlcG+QaMBk/wWm/5tr9HYCvHMfVwhViPj4rI875G4nF
-         4tIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706189004; x=1706793804;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XoxsXQkKNzLk/Oimvx8Ga0AuL6hzhZvVU6SQBiDln8A=;
-        b=mNzXMWTg+g5mv+sQTceJuPS5RIvJu7Uk2NpYjiUhn2eGYD4F363o7r0MdXBy0Lxe/E
-         Q2mCAbJd39FH4bXkOtMKgv1env90E/0vDeuV37OKrDhFEwaj925X8wQCKIEho4T3ojgG
-         QyGoJlbYzrCycksmvXnXijayvZbZFb19DpcAsLOh5NaIwXZjtegbycM47m7Zc8jXbWvZ
-         RZr5/cLInTtTvogVTULjheg9YAaIquvFOmE8NplytvAES1XCvDOcf5fQimBQHcYympDX
-         BMkJrSZkFB4eDeUgqPwmkEHiWbZdZOPuCUbglHqQLSQ91VNtfBdWOwWnfku3iZYw7Tdi
-         3fKA==
-X-Gm-Message-State: AOJu0Yz931ecnyZw39O7CI/GeNYQ3CLj1DHpeHBE3mtbyV2furAZBhZj
-	aGB8YRkpA7DG/Crpe/fOcVAwWTuz8ASxu9RbtkfdhEEVeSll3M81
-X-Google-Smtp-Source: AGHT+IHNcr4wMMkpKpFTMwdINXI2Y/VFk8hPKFurchkojkFLbMF48hNLEGbz+xw0vz/7uc4ArxhFMA==
-X-Received: by 2002:a17:903:455:b0:1d4:79b7:b8ce with SMTP id iw21-20020a170903045500b001d479b7b8cemr786712plb.44.1706189003728;
-        Thu, 25 Jan 2024 05:23:23 -0800 (PST)
-Received: from ohnotp ([2001:f70:860:4100:d497:9118:219b:703d])
-        by smtp.gmail.com with ESMTPSA id jw21-20020a056a00929500b006dd887e37f0sm3815106pfb.210.2024.01.25.05.23.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jan 2024 05:23:23 -0800 (PST)
-Date: Thu, 25 Jan 2024 22:25:31 +0900
-From: Yutaro Ohno <yutaro.ono.418@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	Virgile Andreani <armavica@ulminfo.fr>
-Subject: Re: [PATCH] rust: str: implement `Display` and `Debug` for `BStr`
-Message-ID: <ZbJhS-nDB-6O77G3@ohnotp>
-References: <ZbFBnXy7YWV0MFC0@ohnotp>
- <20240124201832.30a76eb8.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="orCz+Hii"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1706190372; x=1737726372;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QkGYH2ypWOTDiq5BbVC5hKUniLV64BDsYDuZSL4c+Ek=;
+  b=orCz+HiiQp/tfRwDA4AgKVTsDixe37pm18Tgv+OkbKj4Qjx+P+qRnR6E
+   5IjfilFA1gC+KYrluSL1jfrl+/eGEmB5dUBxVPi8xGkzFMCTbsLSoYZxk
+   0uL4J2sfY5dk9YinvaKvNNSst4HKUcVPgVR4I0cYw3mPLTz77VonnQIIl
+   q/XTfd7UYmHSO//K1mrjW2QGjndEEgaLPsHucwOl10YM7XokQF5qtYEDb
+   kyCdnZZNfskbAWfgc1VrExY5n60fFNym0pmjb+2UfA++5KXHeCCU5p/hI
+   OEecHE8gON0ShOAbHzoYtQreFvSZOEyPZOQCwxTTjpMfNpNXYslPiE2fQ
+   A==;
+X-CSE-ConnectionGUID: m+PhERqEQH65VJ/qKW5gkQ==
+X-CSE-MsgGUID: fy6M6828T9yyNgsJcQ4UyQ==
+X-IronPort-AV: E=Sophos;i="6.05,216,1701154800"; 
+   d="asc'?scan'208";a="15287685"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Jan 2024 06:46:11 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 25 Jan 2024 06:45:46 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Thu, 25 Jan 2024 06:45:42 -0700
+Date: Thu, 25 Jan 2024 13:45:05 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: Conor Dooley <conor@kernel.org>, <linux-riscv@lists.infradead.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida
+ Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, =?iso-8859-1?Q?Bj=F6rn?= Roy Baron
+	<bjorn3_gh@protonmail.com>, Jonathan Corbet <corbet@lwn.net>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Nathan
+ Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
+	Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<llvm@lists.linux.dev>, Matthew Maurer <mmaurer@google.com>, Ramon de C Valle
+	<rcvalle@google.com>, Sami Tolvanen <samitolvanen@google.com>
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+Message-ID: <20240125-lazy-thrower-744aacc6632a@wendy>
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
+ <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
+ <20230608-spiritism-gonad-5f5aff4c3a24@wendy>
+ <20240117-swiftly-parasail-618d62972d6e@spud>
+ <CANiq72mVKCOAuK4Qe+8AHmpkFwyJsVfx8AqB7ccGi3DYpSSWcw@mail.gmail.com>
+ <20240118-implode-delirium-eefdd86e170e@spud>
+ <CANiq72nx1s_nyvPW86jL7eiOxROr18LfOJqNtw8L42CP+gkhRg@mail.gmail.com>
+ <20240125-bucked-payroll-47f82077b262@wendy>
+ <CANiq72k7n0aZrifRRU08N8qLkNe+2EZwijZy5sM7M56n2xYHgQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="GuHppkpX7NvgOUA9"
+Content-Disposition: inline
+In-Reply-To: <CANiq72k7n0aZrifRRU08N8qLkNe+2EZwijZy5sM7M56n2xYHgQ@mail.gmail.com>
+
+--GuHppkpX7NvgOUA9
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240124201832.30a76eb8.gary@garyguo.net>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 24, 2024 at 08:18:32PM +0000, Gary Guo wrote:
-> On Thu, 25 Jan 2024 01:58:05 +0900
-> Yutaro Ohno <yutaro.ono.418@gmail.com> wrote:
-> 
-> > Currently, `BStr` is just a type alias of `[u8]`, limiting its
-> > representation to a byte list rather than a character list, which is not
-> > ideal for printing and debugging.
-> > 
-> > Implement `Display` and `Debug` traits for `BStr` to facilitate easier
-> > printing and debugging.
-> > 
-> > Also, for this purpose, change `BStr` from a type alias of `[u8]` to a
-> > struct wrapper of `[u8]`.
-> > 
-> > Co-developed-by: Virgile Andreani <armavica@ulminfo.fr>
-> > Signed-off-by: Virgile Andreani <armavica@ulminfo.fr>
-> > Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
-> > ---
-> >  rust/kernel/str.rs | 211 +++++++++++++++++++++++++++++++++++++++------
-> >  1 file changed, 186 insertions(+), 25 deletions(-)
-> > 
-> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> > index 7d848b83add4..0f0261e063d2 100644
-> > --- a/rust/kernel/str.rs
-> > +++ b/rust/kernel/str.rs
-> > @@ -14,8 +14,104 @@
-> >  
-> >  /// Byte string without UTF-8 validity guarantee.
-> >  ///
-> > -/// `BStr` is simply an alias to `[u8]`, but has a more evident semantical meaning.
-> > -pub type BStr = [u8];
-> > +/// `BStr` is simply a wrapper over `[u8]`, but has a more evident semantical
-> > +/// meaning.
-> 
-> I think this line can go?
-> 
+On Thu, Jan 25, 2024 at 01:50:05PM +0100, Miguel Ojeda wrote:
+> On Thu, Jan 25, 2024 at 1:31=E2=80=AFPM Conor Dooley <conor.dooley@microc=
+hip.com> wrote:
 
-Indeed. Will remove in v2.
+> > > Recently, there has been a thread in our Zulip and a couple people are
+> > > experimenting: https://rust-for-linux.zulipchat.com/#narrow/stream/28=
+8089-General/topic/Bindgen.20--.20GCC.20backend.20port
+> >
+> > That link for me goes to a message on 22/01, so later than the email you
+> > sent.
+>=20
+> Zulip seems to scroll to the latest message in the topic -- you should
+> be able to scroll a bit up, but if that doesn't work, this link should
+> go to the first message:
+> https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/=
+Bindgen.20--.20GCC.20backend.20port/near/412609074
 
-> > +#[repr(transparent)]
-> > +pub struct BStr([u8]);
-> > +
-> > +impl BStr {
-> > +    /// Returns the length of this string.
-> > +    #[inline]
-> > +    pub const fn len(&self) -> usize {
-> > +        self.0.len()
-> > +    }
-> > +
-> > +    /// Returns `true` if the string is empty.
-> > +    #[inline]
-> > +    pub const fn is_empty(&self) -> bool {
-> > +        self.len() == 0
-> > +    }
-> > +
-> > +    /// Creates a [`BStr`] from a `[u8]`.
-> > +    #[inline]
-> > +    pub const fn from_bytes(bytes: &[u8]) -> &Self {
-> > +        // SAFETY: BStr is transparent to [u8].
-> > +        unsafe { &*(bytes as *const [u8] as *const BStr) }
-> > +    }
-> > +}
-> > +
-> > +impl fmt::Display for BStr {
-> > +    /// Formats printable ASCII characters, escaping the rest.
-> > +    ///
-> > +    /// ```
-> > +    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-> > +    /// let ascii = b_str!("Hello, BStr!");
-> > +    /// let s = CString::try_from_fmt(fmt!("{}", ascii)).unwrap();
-> > +    /// assert_eq!(s.as_bytes(), "Hello, BStr!".as_bytes());
-> > +    ///
-> > +    /// let non_ascii = b_str!("🦀");
-> > +    /// let s = CString::try_from_fmt(fmt!("{}", non_ascii)).unwrap();
-> > +    /// assert_eq!(s.as_bytes(), "\\xf0\\x9f\\xa6\\x80".as_bytes());
-> > +    /// ```
-> > +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> > +        for &b in &self.0 {
-> > +            match b {
-> > +                // Common escape codes.
-> > +                b'\t' => f.write_str("\\t")?,
-> > +                b'\n' => f.write_str("\\n")?,
-> > +                b'\r' => f.write_str("\\r")?,
-> 
-> The current CStr code will print these as is. Why escaping these for
-> Display? Also, if you want to change the behaviour, please put it in a
-> separate patch.
-> 
+Ah, thanks for the direct link :)
 
-That makes sense. I'll change.
+>=20
+> > That said, I gave things another spin today, in a different environment,
+> > as a final check before sending and found an issue causing kernel
+> > panics. RISC-V (and x86/arm64) supports kcfi (CFI_CLANG) but enabling
 
-> > +                // Printable characters.
-> > +                0x20..=0x7e => f.write_char(b as char)?,
-> > +                _ => write!(f, "\\x{:02x}", b)?,
-> > +            }
-> > +        }
-> > +        Ok(())
-> > +    }
-> > +}
-> > +
-> > +impl fmt::Debug for BStr {
-> > +    /// Formats printable ASCII characters with a double quote on either end,
-> > +    /// escaping the rest.
-> > +    ///
-> > +    /// ```
-> > +    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-> > +    /// // Embedded double quotes are escaped.
-> > +    /// let ascii = b_str!("Hello, \"BStr\"!");
-> > +    /// let s = CString::try_from_fmt(fmt!("{:?}", ascii)).unwrap();
-> > +    /// assert_eq!(s.as_bytes(), "\"Hello, \\\"BStr\\\"!\"".as_bytes());
-> > +    ///
-> > +    /// let non_ascii = b_str!("😺");
-> > +    /// let s = CString::try_from_fmt(fmt!("{:?}", non_ascii)).unwrap();
-> > +    /// assert_eq!(s.as_bytes(), "\"\\xf0\\x9f\\x98\\xba\"".as_bytes());
-> > +    /// ```
-> > +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> > +        f.write_str("\"")?;
-> > +        for &b in &self.0 {
-> > +            match b {
-> > +                // Common escape codes.
-> > +                b'\t' => f.write_str("\\t")?,
-> > +                b'\n' => f.write_str("\\n")?,
-> > +                b'\r' => f.write_str("\\r")?,
-> > +                // String escape characters.
-> > +                b'\\' => f.write_str("\\\\")?,
-> > +                b'\"' => f.write_str("\\\"")?,
-> > +                // Printable characters.
-> > +                0x20..=0x7e => f.write_char(b as char)?,
-> > +                _ => write!(f, "\\x{:02x}", b)?,
-> > +            }
-> > +        }
-> > +        f.write_str("\"")
-> > +    }
-> > +}
-> > +
-> > +impl Deref for BStr {
-> > +    type Target = [u8];
-> > +
-> > +    #[inline]
-> > +    fn deref(&self) -> &Self::Target {
-> > +        &self.0
-> > +    }
-> > +}
-> >  
-> >  /// Creates a new [`BStr`] from a string literal.
-> >  ///
-> > @@ -33,7 +129,7 @@
-> >  macro_rules! b_str {
-> >      ($str:literal) => {{
-> >          const S: &'static str = $str;
-> > -        const C: &'static $crate::str::BStr = S.as_bytes();
-> > +        const C: &'static $crate::str::BStr = BStr::from_bytes(S.as_bytes());
-> >          C
-> >      }};
-> >  }
-> > @@ -225,15 +321,7 @@ impl fmt::Display for CStr {
-> >      /// assert_eq!(s.as_bytes_with_nul(), "so \"cool\"\0".as_bytes());
-> >      /// ```
-> >      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> > -        for &c in self.as_bytes() {
-> > -            if (0x20..0x7f).contains(&c) {
-> > -                // Printable character.
-> > -                f.write_char(c as char)?;
-> > -            } else {
-> > -                write!(f, "\\x{:02x}", c)?;
-> > -            }
-> > -        }
-> > -        Ok(())
-> > +        fmt::Display::fmt(self.as_ref(), f)
-> >      }
-> >  }
-> >  
-> > @@ -255,23 +343,14 @@ impl fmt::Debug for CStr {
-> >      /// assert_eq!(s.as_bytes_with_nul(), "\"so \\\"cool\\\"\"\0".as_bytes());
-> >      /// ```
-> >      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> > -        f.write_str("\"")?;
-> > -        for &c in self.as_bytes() {
-> > -            match c {
-> > -                // Printable characters.
-> > -                b'\"' => f.write_str("\\\"")?,
-> > -                0x20..=0x7e => f.write_char(c as char)?,
-> > -                _ => write!(f, "\\x{:02x}", c)?,
-> > -            }
-> > -        }
-> > -        f.write_str("\"")
-> > +        fmt::Debug::fmt(self.as_ref(), f)
-> >      }
-> >  }
-> >  
-> >  impl AsRef<BStr> for CStr {
-> >      #[inline]
-> >      fn as_ref(&self) -> &BStr {
-> > -        self.as_bytes()
-> > +        BStr::from_bytes(self.as_bytes())
-> >      }
-> >  }
-> >  
-> > @@ -280,7 +359,7 @@ impl Deref for CStr {
-> >  
-> >      #[inline]
-> >      fn deref(&self) -> &Self::Target {
-> > -        self.as_bytes()
-> > +        BStr::from_bytes(self.as_bytes())
-> 
-> Either use `as_ref` here or use `deref()` in the `as_ref`.
-> 
+I mention x86 and arm64 here, because my grepping didn't see the flag
+being set for x86 (in tree) or arm64 (in that series) if CFI_CLANG was
+set or any mutual exclusion. Has noone tried CFI_CLANG + RUST there or
+just not run into any issues?
 
-I'll change in v2.
+> > sanitisers seems to be a nightly only option for rustc. The kernel I
+> > built today had CFI_CLANG enabled and that caused panics when the rust
+> > samples were loaded.
+> >
+> > The CFI_CLANG Kconfig entry has a cc-option test for whether the option
+> > is supported, but from a quick check I don't see a comparable test to
+> > use for rust. Even if a test was added, the current flag is an unstable
+> > one, so I am not sure if testing for it is the right call in the first
+> > place, given the stabilised flag would be entirely different?
+>=20
+> Yeah, KCFI and other mitigations is WIP -- Cc'ing Ramon and Matthew
+> who may be able to tell us the latest status.
 
-> >      }
-> >  }
-> >  
-> > @@ -327,7 +406,7 @@ impl<Idx> Index<Idx> for CStr
-> >  
-> >      #[inline]
-> >      fn index(&self, index: Idx) -> &Self::Output {
-> > -        &self.as_bytes()[index]
-> > +        &self.as_ref()[index]
-> >      }
-> >  }
-> 
+Also CC Sami I guess, since he is the one who added the CFI_CLANG bits
+to the kernel, and can probably comment on the suitability of adding a
+check etc.
+
+> Testing for unstable flags is fine, i.e. we only support a single
+> compiler, so we can change the name when we do the upgrade.
+
+Actually, thinking about it for a moment - if only a single compiler
+version is supported (the minimum, right?) then you could just add the
+-Zsanitizer=3Dkcfi flag whenever CFI_CLANG and RUST are both set.
+
+I'm not sure if that is a better option though. It's a choice between
+CFI_CLANG being disabled if the check is not updated when the toolchain
+is bumped versus being enabled for C and not for RUST. I think I prefer
+the former though, tracking down the cause of the latter I would rather
+not wish on a user.
+
+I vote for having the check, even if it can only ever be true at the
+moment.
+
+Cheers,
+Conor.
+
+--GuHppkpX7NvgOUA9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbJl4QAKCRB4tDGHoIJi
+0r2YAP9Kbj4u//RY0nIROcBBxVP3ucR5cgnfxPjsXpqrdOu6FgD/ef8EVCC207/s
+Jy65DzLCk1V5UGLDXdSuKcxvD/qEngw=
+=6p43
+-----END PGP SIGNATURE-----
+
+--GuHppkpX7NvgOUA9--
