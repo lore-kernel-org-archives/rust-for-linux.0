@@ -1,94 +1,80 @@
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D86E1CA85
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 09:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84CB1BC21;
+	Thu, 25 Jan 2024 09:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706173729; cv=none; b=aLo5FVodqrixynQsWumehqoFXg44V8w5B8yP7qol4171D+KDjjmYxDjZfzerfLIyBqo8GNkt0uEG2cVZO7RJ4IDtUF1so5rBs5rvjncuqfsCnaTvZAA2SZ6J8rUHIdYi3l11smM9OwsmJ4q1aNIb0/tjkW6YhSHwR49vr9nsU/o=
+	t=1706174183; cv=none; b=n/zyayI+UQ+rw9BDZ28l9NKEmKIiH/qPWS2l7wl+2RflH2JuobyQ4dPSKsGR/kpvw3jw1UyuStPhxLTciGwI9Iwe5UM02xnzr2JXL4EI0pHKGjBjGBraBLC83IxqIplrlnqCH5kA2ZkaZ1ynkW21erQRu5mjngXAiIp6jHjB2SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706173729; c=relaxed/simple;
-	bh=DaaeOBTj4cHWJG3k51yGq2TD3ACFmgQSxId2jEXJNmw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a2J+H4T+Sz54PXp+tRP+sjcVC9YDV5PUc72ggoehIaXH5cEzSH7AQ4dpic81pX1sR+3OnYrC9qXG54L8/JcCXxUksu1Wx5PJGpNhiqoF86l1pXkIcGLvFmxP90c1Q4ArlGv3kmzXYC68eR3lqztPhso+1wtXX4RmWyEoCo3rPQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VYEZMrn/; arc=none smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706174183; c=relaxed/simple;
+	bh=2MS9s1a8Dv9mlT2W2jXI33V9M5ds9L8zcdgaegbl64s=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ka9rY0/TVbAVLZ8Lz24R3N8k51des4ppHZcnE6EXSisTmjwLpnry76i9b/cPn6IXJXotXsRohc9ucdy+FFpigjQKnWwXm527ozeroCpOiBmzK7c53a/J1lyBa470d0FaqY9u1g3kel0sukVcDLKvzCuuEvHTKKPkDdxIFMpy91U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Q25VG4+r; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VYEZMrn/"
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-7d2e1a0337bso1964954241.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 01:08:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706173727; x=1706778527; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0tM1J8tB5KHoGKyoGMxs1iTWky7jMmTAuWrPlK6yjZI=;
-        b=VYEZMrn/w1Y+q+tII5Ztg+rUP6CgPvjD4KSAXL+fjScAa9oF1WPVmFBqncscFjW53o
-         68jPvmgdShEzV0g5M2BVRPyiBi3aITrNB/0UBOt7limLRThrk+mduI1NaGAREYIN86QO
-         YZQXjpwh/36pgvDH7GhQbf3rJV24sOPptHhXMXMUgnhQMFFsv8hpMFBBgtRXS8T/noDW
-         1GwTJUP6loW3Er52eB4kJpYd76oIuhzSMv7ta2tLFOYZXHSUB4cNKOKVAa//veXEKfUo
-         cc2KFzql0/dpdtatp9OaZtOdRi+T5P8AijeW3WVPkPwVwQ9b1Bo/lkdfDywR7tibK43z
-         0fUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706173727; x=1706778527;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0tM1J8tB5KHoGKyoGMxs1iTWky7jMmTAuWrPlK6yjZI=;
-        b=Kidc5+Ckngf3QFMElVup6eaf4c5sl7DI4WNc21pJVbh9IBYRKMDSk8HSa7f72kqFXv
-         Cs5Qhsvae8vDspHnSAGGETIEBLJrPj2sK8lnrBqA55lhqAy9YTKHJzrRQKQXvJiu7mRx
-         i8plrDj3JRDFrOhYWKxdGYTCVya92PhP5eP8EKhsEFexuquCRRr+mi88GjwdHrDz89yZ
-         QtkIB+O5YMo2ik1fu9tAzzgwjl8Yz3CBHkKjKw0hEyaoBpU0/0ZBnOk3xsz9HWkkKrvZ
-         2LZ5dResTwAtuY98MFEpYt71EOa0PtwsRydc6Zi/7REV7Sc9eTLZ/HD+8KY709AditNp
-         FPzA==
-X-Gm-Message-State: AOJu0YyVJ9S71/4JfLmUaEltgB6c2WDPhp1M7xtfFBQd/OPX3CqEyv+q
-	7VEeXQ1Tbl494VKnkmNmnVgg2fW4ueK7BblRZ/Oql5jl4g52Wp8GpNg40F7uvbFRYSrWX1a0M0l
-	A8HRjwcegkh37KshcJ2JGCmv7QDa4XRE5YqImLrkJMKoH0iK/KGKy
-X-Google-Smtp-Source: AGHT+IGoivSgrVAUX+nyt4dYy58T+ARTSwUUH4QXRl+s5E1AKpYQyYWAi8S3TfHsuXa8DFxFUmruioIfLZcGmtI4GWg=
-X-Received: by 2002:a05:6122:380f:b0:4b7:8e5f:7782 with SMTP id
- em15-20020a056122380f00b004b78e5f7782mr413172vkb.8.1706173727304; Thu, 25 Jan
- 2024 01:08:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Q25VG4+r"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=qi3k2n676fh37cer4gmqmbhyuq.protonmail; t=1706174171; x=1706433371;
+	bh=pfsotTo/Zydb7H/lWqTfkcVY7FiDx1DJOismrr1aiyM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Q25VG4+rhIbhEJ+0wpY8GWsKJDFm5o9RNMElt5ZMxqxZ/nr6q6Tv+uhycVfrT4eMB
+	 890ytm/Zo9553SULhGg9q6/k1M9QeAyFh73B2Dilwdk63JzNpZvL6HKAxY9zYEGOKv
+	 Whh2WgJoHt58Gp5zNLV3L1trrztS7qAlq2RLNAPE5BEeS9FX2aQweKD6mOSkkzzYRB
+	 tC+/0JCkrO3xENTpPu98kVRndU+h3Rwxw0enYzoisop63Cn68hqkQ81be9UnlbL3OC
+	 xr9Her5QGxSzWwZPnCGHUZ+hme0YMouWWAS1TCfMxvi07Q5rTjpU3h/d4+ScLoIi9o
+	 fdflKlt96chbA==
+Date: Thu, 25 Jan 2024 09:15:45 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [RFC PATCH 01/19] rust: fs: add registration/unregistration of file systems
+Message-ID: <e977d0ad-ca06-4b42-b2d7-09dc9a571848@proton.me>
+In-Reply-To: <CANeycqqJsy3rhBEVWspEqhUXgsQNj-Wcy=9axkDX9B3SLgupcA@mail.gmail.com>
+References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-2-wedsonaf@gmail.com> <ku6rR-zBwLrTfSf1JW07NywKOZFCPMS7nF-mrdBKGJthn7WGBn9lcAQOhoN5V6igk1iGBguGfV5G0PDWQciDQTopf3OYYGt049OJYhsiivk=@proton.me> <CANeycqqJsy3rhBEVWspEqhUXgsQNj-Wcy=9axkDX9B3SLgupcA@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122184608.11863-1-dakr@redhat.com>
-In-Reply-To: <20240122184608.11863-1-dakr@redhat.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 25 Jan 2024 10:08:35 +0100
-Message-ID: <CAH5fLgiwRDcyaxbcUNY8M1c_w11vkCWyRfqVVrN9Sgc7XYT0xw@mail.gmail.com>
-Subject: Re: [PATCH] rust: str: add to_ascii_{upper,lower}case() to CString
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 22, 2024 at 7:46=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
-wrote:
-> +    /// Converts the whole CString to lowercase.
-> +    pub fn to_ascii_lowercase(&mut self) {
-> +        self.buf.make_ascii_lowercase();
-> +    }
-> +
-> +    /// Converts the whole CString to uppercase.
-> +    pub fn to_ascii_uppercase(&mut self) {
-> +        self.buf.make_ascii_uppercase();
-> +    }
->  }
+On 10.01.24 19:32, Wedson Almeida Filho wrote:
+>>> +#[pinned_drop]
+>>> +impl PinnedDrop for Registration {
+>>> +    fn drop(self: Pin<&mut Self>) {
+>>> +        // SAFETY: If an instance of `Self` has been successfully crea=
+ted, a call to
+>>> +        // `register_filesystem` has necessarily succeeded. So it's ok=
+ to call
+>>> +        // `unregister_filesystem` on the previously registered fs.
+>>
+>> I would simply add an invariant on `Registration` that `self.fs` is
+>> registered, then you do not need such a lengthy explanation here.
+>=20
+> Since this is the only place I need this explanation, I prefer to
+> leave it here because it's exactly where I need it.
 
-It looks like these methods are defined on `CString`. However, there's
-no requirement that you need *ownership* of the c string to change its
-contents - you just need mutable access.
+I get why you want this, but consider this: someone adds a another
+`new` function, but forgets to call `register_filesystem`. They have
+no indication except for this comment in the `Drop` impl, that they
+are doing something wrong.
 
-I think it would make more sense to introduce an `impl DerefMut for
-CString` that returns a `&mut CStr`, and then define these methods on
-`CStr` as `&mut self`. That way, you can still call them on `CString`,
-but you can also call it on other mutable c strings.
+I took a look at the implement ion of `unregister_filesystem` and
+found that you can pass an unregistered filesystem, in that case
+the function just returns an error. I think the only safety
+requirement of `unregister_filesystem` is that if the supplied
+pointer is a registered filesystem, the pointee is valid.
 
-Alice
+--=20
+Cheers,
+Benno
+
+
