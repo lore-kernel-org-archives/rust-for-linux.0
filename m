@@ -1,166 +1,291 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935B05732D;
-	Thu, 25 Jan 2024 13:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21206E2DB;
+	Thu, 25 Jan 2024 16:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706190374; cv=none; b=QruronxoZwnKVfJBGxUqs7Ap5qDstYM4SU1PX9KivyyeBOy5DxIxW/jnL9HO68CuGI3wzTxgC/G6IqTtMbnWE2Ko4xz0a2MpTApp7OBGUZVqdJtY2CcoAperIgcj7SAqtaXVJupSGrSdNDZTlgvOwbrS8APhrRQ26nvH0DM68MI=
+	t=1706198409; cv=none; b=jK/usk1Cz8kAFZP8h1WhvyaONY1T3+UCf3Ci6ku5bU+QVdcbAfqxDqA9gMD4Rx5kpzlIqV+DTEr4LzIJtjg7ppKTNXF2YRsruL1yPNzByOByUM/pcJCSBTDqWmnhY9JxSDzK6t6mRTN6CXz1ZXGw2S++wmnvaG6WeQTrMeEwc9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706190374; c=relaxed/simple;
-	bh=QkGYH2ypWOTDiq5BbVC5hKUniLV64BDsYDuZSL4c+Ek=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rGLisyoPUfamuPJjbJTEwZFFCw5KJpb7jYOe0AA3xpDxstqPAr9PdVLaXvv/X1/tBZd5CkvYJEYLdHohl7jwiuf1i3gxkA/YQ4mmHbt61fgVURTORPhSZgHpJ5ZS7ElnUNY2GFeKfeKh541Dloeuk/6lqR+vQy1nkVeXvFVdx8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=orCz+Hii; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1706198409; c=relaxed/simple;
+	bh=JhL7YQiPLcm8PQ76uhgv/Ri86FrIlG5VN2oDXHuMbk4=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=VZSmKuPIqrRS2E5dulAaDc75dx30tEOj4k5yi7Ou5xeKMll9c0fZmwGB8vFUkPZbpke4tM/UPKj8bDmbvLfZHDQTplGz9AzDKNp34Ej87mPR+QtzL6vkM0rbyAUOhQjbHPyeQdnmrN3xsJa113V9As2y+fDwR02Cfm96WPQCK7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=hZUco6hT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kLFp17Yt; arc=none smtp.client-ip=66.111.4.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="orCz+Hii"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1706190372; x=1737726372;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QkGYH2ypWOTDiq5BbVC5hKUniLV64BDsYDuZSL4c+Ek=;
-  b=orCz+HiiQp/tfRwDA4AgKVTsDixe37pm18Tgv+OkbKj4Qjx+P+qRnR6E
-   5IjfilFA1gC+KYrluSL1jfrl+/eGEmB5dUBxVPi8xGkzFMCTbsLSoYZxk
-   0uL4J2sfY5dk9YinvaKvNNSst4HKUcVPgVR4I0cYw3mPLTz77VonnQIIl
-   q/XTfd7UYmHSO//K1mrjW2QGjndEEgaLPsHucwOl10YM7XokQF5qtYEDb
-   kyCdnZZNfskbAWfgc1VrExY5n60fFNym0pmjb+2UfA++5KXHeCCU5p/hI
-   OEecHE8gON0ShOAbHzoYtQreFvSZOEyPZOQCwxTTjpMfNpNXYslPiE2fQ
-   A==;
-X-CSE-ConnectionGUID: m+PhERqEQH65VJ/qKW5gkQ==
-X-CSE-MsgGUID: fy6M6828T9yyNgsJcQ4UyQ==
-X-IronPort-AV: E=Sophos;i="6.05,216,1701154800"; 
-   d="asc'?scan'208";a="15287685"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Jan 2024 06:46:11 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 25 Jan 2024 06:45:46 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Thu, 25 Jan 2024 06:45:42 -0700
-Date: Thu, 25 Jan 2024 13:45:05 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC: Conor Dooley <conor@kernel.org>, <linux-riscv@lists.infradead.org>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida
- Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?iso-8859-1?Q?Bj=F6rn?= Roy Baron
-	<bjorn3_gh@protonmail.com>, Jonathan Corbet <corbet@lwn.net>, Paul Walmsley
-	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<llvm@lists.linux.dev>, Matthew Maurer <mmaurer@google.com>, Ramon de C Valle
-	<rcvalle@google.com>, Sami Tolvanen <samitolvanen@google.com>
-Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
-Message-ID: <20240125-lazy-thrower-744aacc6632a@wendy>
-References: <20230307102441.94417-1-conor.dooley@microchip.com>
- <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
- <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
- <20230608-spiritism-gonad-5f5aff4c3a24@wendy>
- <20240117-swiftly-parasail-618d62972d6e@spud>
- <CANiq72mVKCOAuK4Qe+8AHmpkFwyJsVfx8AqB7ccGi3DYpSSWcw@mail.gmail.com>
- <20240118-implode-delirium-eefdd86e170e@spud>
- <CANiq72nx1s_nyvPW86jL7eiOxROr18LfOJqNtw8L42CP+gkhRg@mail.gmail.com>
- <20240125-bucked-payroll-47f82077b262@wendy>
- <CANiq72k7n0aZrifRRU08N8qLkNe+2EZwijZy5sM7M56n2xYHgQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hZUco6hT";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kLFp17Yt"
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.nyi.internal (Postfix) with ESMTP id 005105C00DB;
+	Thu, 25 Jan 2024 11:00:06 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 25 Jan 2024 11:00:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1706198405;
+	 x=1706284805; bh=SqRtybdjact+f0QeQR9azdnQV/iHBEyjbNT4deqFxZo=; b=
+	hZUco6hTk7rOkCqcYBakCuKg7hmrOp10Kl7rKZgdg3AtevpRTSE1FNx35WvDHTR3
+	1C7FoNO4AoNwonAd2Chx/+UWKiyhmFU2eCeCnBslCiMYNOh/xTT/6M8hCTDPxsfz
+	89i84ehFOG8mwCbtzrBv12r4eSH1QZg8tTBBkeJHz1RPqzkzk1xjsOxfOl3oRnTU
+	sPr6vb5q46615EIDB1gJQAN8YA0J5/aOiEJZdQQaOAce8GGilRlQZyztp0ZwZTsc
+	pFM6+FXy3riyiKtPd0DiquSWJ6oRpJyFvfcZeM5uaBpdXOMGhik9K+cRR86Lxl9j
+	yiK2yA9KyAwtsZpPiGf+Nw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1706198405; x=
+	1706284805; bh=SqRtybdjact+f0QeQR9azdnQV/iHBEyjbNT4deqFxZo=; b=k
+	LFp17YtrpRi6UPiYMjCy1sSkRCu+4ovdGWJglYg38qH4EC9qgTEkBYuLaLEYguEu
+	e1XEM9HH3ivgr7ZJK9gNu7vf6g4WOJwlqkMdyt+wf9Wm1zSfCn8WTSbbV537JAtg
+	Zd6WuoyJTAhl94CQKpuZNFTyNESGF0Y8bolk8bSWVO3604SjANDQMOdxikiPhGCt
+	GG4VfwNqhjNrQam6m5b+aW7zQsOT6MnsQlRnal4Y9WN0hHW0ZVvRNE6SrI13KGaD
+	8azmTSTIlo/kQew6erQirnv72LdKvsDMb841+XjVkiHjaAmwa9dQKfuzjCHi/6tV
+	nFAlkE9/wgYcr80jMtazw==
+X-ME-Sender: <xms:hYWyZdMCnNNDyxgx9e38kTFRO4tfEujPrKnR2VkCPUqn88cu2N07FQ>
+    <xme:hYWyZf_hcCBLVbUvHV3e_KHJbCI-TfcDPRjP6gTsyE_SttJMCyPtBq1gvRgdqbZNL
+    N1epLMlzAuNUCW3X6k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdelgedgheeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
+    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:hYWyZcSrj6tqxczRhaAAwS9PuouPD2R6FmvYUnShyGwwclXuM4DwAg>
+    <xmx:hYWyZZumEbZQfXLv_Ip1F35vHXrTUTB3_mZtrE2r-P9BV3bcAIASdg>
+    <xmx:hYWyZVf2Wp44LAJuU-i1pC_p-CdUKQrOUdepDtu0KOLGLRzPMQ6BPA>
+    <xmx:hYWyZb8_wzMTLbtbtdIu8WwuPiAC8-Q5bRy-LrLKrXjioeU23oqL7A>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 4DCDEB6008D; Thu, 25 Jan 2024 11:00:05 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-119-ga8b98d1bd8-fm-20240108.001-ga8b98d1b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GuHppkpX7NvgOUA9"
-Content-Disposition: inline
-In-Reply-To: <CANiq72k7n0aZrifRRU08N8qLkNe+2EZwijZy5sM7M56n2xYHgQ@mail.gmail.com>
-
---GuHppkpX7NvgOUA9
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Message-Id: <e69f9b43-39cd-469d-94db-140504df0833@app.fastmail.com>
+In-Reply-To: 
+ <CAH5fLgi8D18ufma0X49nWhXpnz47t-C=OAtM+wwnYu78hEnwhA@mail.gmail.com>
+References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
+ <20240124-alice-mm-v1-2-d1abcec83c44@google.com>
+ <070574cb-8d7f-4fe7-9826-cec6110168ff@app.fastmail.com>
+ <CAH5fLgi8D18ufma0X49nWhXpnz47t-C=OAtM+wwnYu78hEnwhA@mail.gmail.com>
+Date: Thu, 25 Jan 2024 16:59:42 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@samsung.com>,
+ "Kees Cook" <keescook@chromium.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ "Todd Kjos" <tkjos@android.com>, "Martijn Coenen" <maco@android.com>,
+ "Joel Fernandes" <joel@joelfernandes.org>,
+ "Carlos Llamas" <cmllamas@google.com>,
+ "Suren Baghdasaryan" <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ "Christian Brauner" <brauner@kernel.org>
+Subject: Re: [PATCH 2/3] rust: add typed accessors for userspace pointers
+Content-Type: text/plain;charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 25, 2024 at 01:50:05PM +0100, Miguel Ojeda wrote:
-> On Thu, Jan 25, 2024 at 1:31=E2=80=AFPM Conor Dooley <conor.dooley@microc=
-hip.com> wrote:
+On Thu, Jan 25, 2024, at 13:37, Alice Ryhl wrote:
+> On Thu, Jan 25, 2024 at 1:27=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
+wrote:
+>> On Wed, Jan 24, 2024, at 12:20, Alice Ryhl wrote:
 
-> > > Recently, there has been a thread in our Zulip and a couple people are
-> > > experimenting: https://rust-for-linux.zulipchat.com/#narrow/stream/28=
-8089-General/topic/Bindgen.20--.20GCC.20backend.20port
-> >
-> > That link for me goes to a message on 22/01, so later than the email you
-> > sent.
->=20
-> Zulip seems to scroll to the latest message in the topic -- you should
-> be able to scroll a bit up, but if that doesn't work, this link should
-> go to the first message:
-> https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/=
-Bindgen.20--.20GCC.20backend.20port/near/412609074
+>> > +EXPORT_SYMBOL_GPL(rust_helper_copy_to_user_unsafe_skip_check_objec=
+t_size);
+>>
+>> These functions are almost identical to the ones in
+>> lib/usercopy.c for !defined(INLINE_COPY_TO_USER).
+>>
+>> That version has an extra memset() after a partial
+>> copy_from_user(), and you probably want to have the
+>> same thing here for consistency.
+>>
+>> I think ideally we should only have one out-of-line copy
+>> of these two functions and have that one shared between
+>> rust and architectures that want the C version out of line
+>> as well.
+>
+> I had a bit of trouble figuring out all of the copy_[to/from]_user
+> methods that are available. I was hoping that a better solution would
+> be available, and it sounds like one is. Is _copy_from_user always
+> available as an exported symbol? If it's always available and skips
+> the check, then I can just use that. I don't think the memset matters
+> for my case.
 
-Ah, thanks for the direct link :)
+At the moment, it appears that it's available on the few architectures
+that don't #define INLINE_COPY_FROM_USER: alpha, csky, powerpc,
+riscv and x86. On the other architectures it is always an inline
+function.
 
->=20
-> > That said, I gave things another spin today, in a different environment,
-> > as a final check before sending and found an issue causing kernel
-> > panics. RISC-V (and x86/arm64) supports kcfi (CFI_CLANG) but enabling
+> Otherwise, I can add a helper in rust/helpers.c that wraps
+> _copy_from_user only when INLINE_COPY_FROM_USER is defined, and call
+> the helper in those cases, and otherwise call the exported symbol
+> directly. (I need an exported symbol to call into C from Rust.)
+>
+> Would that make sense?
 
-I mention x86 and arm64 here, because my grepping didn't see the flag
-being set for x86 (in tree) or arm64 (in that series) if CFI_CLANG was
-set or any mutual exclusion. Has noone tried CFI_CLANG + RUST there or
-just not run into any issues?
+I don't think we can have a perfect abstraction here, but rather
+than putting knowledge of INLINE_COPY_FROM_USER into the rust
+wrapper, I would suggest putting a bit of information about
+rust into lib/usercopy.c.
 
-> > sanitisers seems to be a nightly only option for rustc. The kernel I
-> > built today had CFI_CLANG enabled and that caused panics when the rust
-> > samples were loaded.
-> >
-> > The CFI_CLANG Kconfig entry has a cc-option test for whether the option
-> > is supported, but from a quick check I don't see a comparable test to
-> > use for rust. Even if a test was added, the current flag is an unstable
-> > one, so I am not sure if testing for it is the right call in the first
-> > place, given the stabilised flag would be entirely different?
->=20
-> Yeah, KCFI and other mitigations is WIP -- Cc'ing Ramon and Matthew
-> who may be able to tell us the latest status.
+I've tried to come up with an idea below, see if that works
+for you.
 
-Also CC Sami I guess, since he is the one who added the CFI_CLANG bits
-to the kernel, and can probably comment on the suitability of adding a
-check etc.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-> Testing for unstable flags is fine, i.e. we only support a single
-> compiler, so we can change the name when we do the upgrade.
-
-Actually, thinking about it for a moment - if only a single compiler
-version is supported (the minimum, right?) then you could just add the
--Zsanitizer=3Dkcfi flag whenever CFI_CLANG and RUST are both set.
-
-I'm not sure if that is a better option though. It's a choice between
-CFI_CLANG being disabled if the check is not updated when the toolchain
-is bumped versus being enabled for C and not for RUST. I think I prefer
-the former though, tracking down the cause of the latter I would rather
-not wish on a user.
-
-I vote for having the check, even if it can only ever be true at the
-moment.
-
-Cheers,
-Conor.
-
---GuHppkpX7NvgOUA9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbJl4QAKCRB4tDGHoIJi
-0r2YAP9Kbj4u//RY0nIROcBBxVP3ucR5cgnfxPjsXpqrdOu6FgD/ef8EVCC207/s
-Jy65DzLCk1V5UGLDXdSuKcxvD/qEngw=
-=6p43
------END PGP SIGNATURE-----
-
---GuHppkpX7NvgOUA9--
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 3064314f4832..835aa175d0ee 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -138,13 +138,18 @@ __copy_to_user(void __user *to, const void *from, =
+unsigned long n)
+ 	return raw_copy_to_user(to, from, n);
+ }
+=20
+-#ifdef INLINE_COPY_FROM_USER
+ static inline __must_check unsigned long
+-_copy_from_user(void *to, const void __user *from, unsigned long n)
++_inline_copy_from_user(void *to, const void __user *from, unsigned long=
+ n)
+ {
+ 	unsigned long res =3D n;
+ 	might_fault();
+ 	if (!should_fail_usercopy() && likely(access_ok(from, n))) {
++		/*
++		 * Ensure that bad access_ok() speculation will not
++		 * lead to nasty side effects *after* the copy is
++		 * finished:
++		 */
++		barrier_nospec();
+ 		instrument_copy_from_user_before(to, from, n);
+ 		res =3D raw_copy_from_user(to, from, n);
+ 		instrument_copy_from_user_after(to, from, n, res);
+@@ -153,14 +158,11 @@ _copy_from_user(void *to, const void __user *from,=
+ unsigned long n)
+ 		memset(to + (n - res), 0, res);
+ 	return res;
+ }
+-#else
+ extern __must_check unsigned long
+ _copy_from_user(void *, const void __user *, unsigned long);
+-#endif
+=20
+-#ifdef INLINE_COPY_TO_USER
+ static inline __must_check unsigned long
+-_copy_to_user(void __user *to, const void *from, unsigned long n)
++_inline_copy_to_user(void __user *to, const void *from, unsigned long n)
+ {
+ 	might_fault();
+ 	if (should_fail_usercopy())
+@@ -171,25 +173,32 @@ _copy_to_user(void __user *to, const void *from, u=
+nsigned long n)
+ 	}
+ 	return n;
+ }
+-#else
+ extern __must_check unsigned long
+ _copy_to_user(void __user *, const void *, unsigned long);
+-#endif
+=20
+ static __always_inline unsigned long __must_check
+ copy_from_user(void *to, const void __user *from, unsigned long n)
+ {
+-	if (check_copy_size(to, n, false))
+-		n =3D _copy_from_user(to, from, n);
+-	return n;
++	if (!check_copy_size(to, n, false))
++		return n;
++#ifdef INLINE_COPY_FROM_USER
++	return _inline_copy_from_user(to, from, n);
++#else
++	return _copy_from_user(to, from, n);
++#endif
+ }
+=20
+ static __always_inline unsigned long __must_check
+ copy_to_user(void __user *to, const void *from, unsigned long n)
+ {
+-	if (check_copy_size(from, n, true))
+-		n =3D _copy_to_user(to, from, n);
+-	return n;
++	if (!check_copy_size(from, n, true))
++		return n;
++
++#ifdef INLINE_COPY_TO_USER
++	return _inline_copy_to_user(to, from, n);
++#else
++	return _copy_to_user(to, from, n);
++#endif
+ }
+=20
+ #ifndef copy_mc_to_kernel
+diff --git a/lib/usercopy.c b/lib/usercopy.c
+index d29fe29c6849..503a064d79e2 100644
+--- a/lib/usercopy.c
++++ b/lib/usercopy.c
+@@ -7,40 +7,18 @@
+=20
+ /* out-of-line parts */
+=20
+-#ifndef INLINE_COPY_FROM_USER
++#if !defined(INLINE_COPY_FROM_USER) || defined(CONFIG_RUST)
+ unsigned long _copy_from_user(void *to, const void __user *from, unsign=
+ed long n)
+ {
+-	unsigned long res =3D n;
+-	might_fault();
+-	if (!should_fail_usercopy() && likely(access_ok(from, n))) {
+-		/*
+-		 * Ensure that bad access_ok() speculation will not
+-		 * lead to nasty side effects *after* the copy is
+-		 * finished:
+-		 */
+-		barrier_nospec();
+-		instrument_copy_from_user_before(to, from, n);
+-		res =3D raw_copy_from_user(to, from, n);
+-		instrument_copy_from_user_after(to, from, n, res);
+-	}
+-	if (unlikely(res))
+-		memset(to + (n - res), 0, res);
+-	return res;
++	return _inline_copy_from_user(to, from, n);
+ }
+ EXPORT_SYMBOL(_copy_from_user);
+ #endif
+=20
+-#ifndef INLINE_COPY_TO_USER
++#if !defined(INLINE_COPY_TO_USER) || defined(CONFIG_RUST)
+ unsigned long _copy_to_user(void __user *to, const void *from, unsigned=
+ long n)
+ {
+-	might_fault();
+-	if (should_fail_usercopy())
+-		return n;
+-	if (likely(access_ok(to, n))) {
+-		instrument_copy_to_user(to, from, n);
+-		n =3D raw_copy_to_user(to, from, n);
+-	}
+-	return n;
++	return _inline_copy_to_user(to, from, n);
+ }
+ EXPORT_SYMBOL(_copy_to_user);
+ #endif
