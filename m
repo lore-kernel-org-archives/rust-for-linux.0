@@ -1,165 +1,141 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2DB1B961;
-	Thu, 25 Jan 2024 09:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE6A1C69E;
+	Thu, 25 Jan 2024 12:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706174825; cv=none; b=clqW8aPd3K/rZ32R2BLxhmBESD+f/4EFpVlb3vQFk35HjMjDgirislZK7+REgwNOpG4+yFwPKVDjtbVL/OBuBONi8Rj5q4VMBiZi4zUt/1ny3iWaBSukKxi2uKP3q9Y+s0rmjTRbM0dlKTq3hnuoR+YAQs049MttWEMX9Hp6E6A=
+	t=1706185634; cv=none; b=bxheK0zoy6+/GQ+5oCCpVZ9zDdYY0/3Ca1IBS0/C3hvH7uptapeK2fSf9Xayi+zWeyRHc+CYsnIELYRiFncPN5bRbTHDsYPj4PXo2dXMHO3evsWHCjLu6zwp0LPrQdXGvupP9cUNpmEcAatpBbu8YDkttF1l2Fk0PWnVri8kDN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706174825; c=relaxed/simple;
-	bh=488//va03Lc+B/1ZyVuMhHZy+u75yY7UHFrjzmg8sAw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ALXJR5oIUS8PWMo8wYvk6Ja+yXFb/GiWZiFtLtTe49j7EXwg5NKkfqheIUDrhKIb3x7WP7ff8J6wjPdSb0IxxBduIVFfgRScNF6Wb7GxjnyhfyUpswH3+SxkNdj3Qxv9ly/548cteqVxlgImeo0UIfTmFc937xLqvV015KJB5V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=aamXmgNw; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1706185634; c=relaxed/simple;
+	bh=wW002LqBW9IbuYi/opDK+aD4T+xvFlR1R51XeVtO4cQ=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=cvN3NZcufPzyb72/re+/+UL/zOxbGgwlHxS8EOkPqhuaO20FEkJQPtVKKtjbZJltmG8V6TybyKrebey+66YTtnFyvOcGJtqX4Hrbn5seCJdO7W+WKNL8he3sa0epHFljkoN5p9MdCFiFufzHP5aU7vYtXtJaBB+39Q4C8jsaxi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Qhz3ZHCM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DI27VjsD; arc=none smtp.client-ip=66.111.4.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="aamXmgNw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1706174821; x=1706434021;
-	bh=VXueD5sixGPDTa6BhUDnnsLagnOCQf9tNkKiKlaVKTY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=aamXmgNwwKSW97xc2/lztAj/XZ+IpEf9YCkJzEPQSBQ/t+QV3TP1t/iDzLXjOM1jb
-	 nAD+PCQjoglFNEwp6zs+OXw5VvPw7KFfSrZuIbgr1prXnZ4kAs31BR+N5Z2GhLW+Bz
-	 XMLK2ifAfUy+ciRK7qzOHpl+x/tLH/8+1VaHh4gtzJt0b9+cNvqs2DLmSdUk4VRCHe
-	 35K9zn/vLG5P6Pl0D6tdwY+eQiz8sP+Ho8ZEZjCeMtD/h8jgczNV7/pKV9Y3DSwkGv
-	 ce8Z/telLXlvihEO18bufrzoFnncbx1CHRGrPYgv1aEQxzZKyrVN02ecQ2fAYwVfIL
-	 VLAEudG8EbFzw==
-Date: Thu, 25 Jan 2024 09:26:52 +0000
-To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Hannes Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, linux-kernel@vger.kernel.org, gost.dev@samsung.com
-Subject: Re: [RFC PATCH 03/11] rust: block: introduce `kernel::block::mq` module
-Message-ID: <59f007a0-bb30-4291-ab49-0e69112e2566@proton.me>
-In-Reply-To: <874jf3kflx.fsf@metaspace.dk>
-References: <20230503090708.2524310-1-nmi@metaspace.dk> <20230503090708.2524310-4-nmi@metaspace.dk> <iL2M45BoRlK6yS9y8uo0A5yUXcZWMkdk3vtH3LRFSWXfvPVagVZ-0YC7taIKOBFUcjJYA_2xNNFPoC4WL-_ulCHOLkbqvsZlIshE_LEeYtU=@proton.me> <87il3kjgk0.fsf@metaspace.dk> <104a22f7-a5bb-4fb6-9ce9-aa2d4e63417f@proton.me> <874jf3kflx.fsf@metaspace.dk>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Qhz3ZHCM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DI27VjsD"
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.nyi.internal (Postfix) with ESMTP id 789225C0079;
+	Thu, 25 Jan 2024 07:27:11 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 25 Jan 2024 07:27:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1706185631; x=1706272031; bh=by9e17p4Sb
+	OQuMUvw9yQVjRsSkMsUr3SrHfJ/laHRbg=; b=Qhz3ZHCM0A2MCUj+5XfxRhJVO3
+	O2Ivz5XGXCxJd/BGx2BD0S6Dz9zUhxAk001fHtcPfbdXoIgRGiffEUPv4WQf1uCE
+	1yS3fMhW4XheQxgr/ktuz8VKrtRrh/inpkDdLyEwXem5HNL6ioijwf92eW/nNK3G
+	TUEpCwQabLXMp/sbcOK4bZ4l29mjNItBZXJMms6Z/PHChXO5/luLzJDEkSXGsbbh
+	RQncUjAGZIaJ0aPPlfnUxutpL8YyfcqunSQp5tNO3EL6jY8U/NWvsOH5oBpPWaQ1
+	fX1yYVuZTaMK6rXYRmtuMGgSnlb8c98bVtW09lwZ+eXrqWYl47l/zCpMqz7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1706185631; x=1706272031; bh=by9e17p4SbOQuMUvw9yQVjRsSkMs
+	Ur3SrHfJ/laHRbg=; b=DI27VjsDLadMVpQUkzwg04V8tTBEb6Xfbjm/Bs1CD+Yc
+	fO6ul8hQgf7Xe86C5N8Wcr5/CMKgeMMxi/cb6I3bcQ6RHCRa6oIBRiRSvHA1xJgW
+	A4pf1yE3Ko2mwJ+kQQSHuVCej/q0dFuzCC44FEpbSM/k66Ik65bTrcak57RYn1Qx
+	bis+MfF9NlshGqjK84KSSHOMOcaU0THauJPhFuRWLOwPeYs7lm5BQ7rwUmctImGw
+	pduXxxky5tQwpwl4POfNTW6mQmbdMR5mYG5r3YZxRb+meHirymyWLf64s8lq84VQ
+	eYj7hLcH05B92V93iuYIyJjVn1WB2tTQm7ulMoSCtw==
+X-ME-Sender: <xms:nlOyZXGMI8N8ZWOBhtL7oeFXQJttfL9RkTK2GmWUprag-RhGdIAwtg>
+    <xme:nlOyZUVucsQbJ0mqhJK0Nb0Yv2N7HRTiqjbLVvUBlbcX4T-fLjqCZmUN3iIw0GIwE
+    oC2FvfXxNJmiy5KurI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdelgedgudefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:nlOyZZJJx-jVKypAgXlJUzS5aqwlJu1R77AXUxv9E6hSTZYgbjARdw>
+    <xmx:nlOyZVHrbtxP77ZPLtfF8M1LG_vwDoOZskjfykZUn_VwOdM1DXfKfA>
+    <xmx:nlOyZdW7lOtSICnQPZzoqAsLXdRISUCeQ7Jt--cd4AKVTXoe8rytHw>
+    <xmx:n1OyZa3L1Ub_XhwHh_uUzRbfbdHgUqEOam3L-mVS1QZi1isVuA-Afw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 7AA4CB6008D; Thu, 25 Jan 2024 07:27:10 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-119-ga8b98d1bd8-fm-20240108.001-ga8b98d1b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <070574cb-8d7f-4fe7-9826-cec6110168ff@app.fastmail.com>
+In-Reply-To: <20240124-alice-mm-v1-2-d1abcec83c44@google.com>
+References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
+ <20240124-alice-mm-v1-2-d1abcec83c44@google.com>
+Date: Thu, 25 Jan 2024 13:26:50 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@samsung.com>,
+ "Kees Cook" <keescook@chromium.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ "Todd Kjos" <tkjos@android.com>, "Martijn Coenen" <maco@android.com>,
+ "Joel Fernandes" <joel@joelfernandes.org>,
+ "Carlos Llamas" <cmllamas@google.com>,
+ "Suren Baghdasaryan" <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ "Christian Brauner" <brauner@kernel.org>
+Subject: Re: [PATCH 2/3] rust: add typed accessors for userspace pointers
+Content-Type: text/plain
 
-On 23.01.24 19:39, Andreas Hindborg (Samsung) wrote:
->>>>> +/// A generic block device
->>>>> +///
->>>>> +/// # Invariants
->>>>> +///
->>>>> +///  - `gendisk` must always point to an initialized and valid `stru=
-ct gendisk`.
->>>>> +pub struct GenDisk<T: Operations> {
->>>>> +    _tagset: Arc<TagSet<T>>,
->>>>> +    gendisk: *mut bindings::gendisk,
->>>>
->>>> Why are these two fields not embedded? Shouldn't the user decide where
->>>> to allocate?
->>>
->>> The `TagSet` can be shared between multiple `GenDisk`. Using an `Arc`
->>> seems resonable?
->>>
->>> For the `gendisk` field, the allocation is done by C and the address
->>> must be stable. We are owning the pointee and must drop it when it goes=
- out
->>> of scope. I could do this:
->>>
->>> #[repr(transparent)]
->>> struct GenDisk(Opaque<bindings::gendisk>);
->>>
->>> struct UniqueGenDiskRef {
->>>       _tagset: Arc<TagSet<T>>,
->>>       gendisk: Pin<&'static mut GenDisk>,
->>>
->>> }
->>>
->>> but it seems pointless. `struct GenDisk` would not be pub in that case.=
- What do you think?
->>
->> Hmm, I am a bit confused as to how you usually use a `struct gendisk`.
->> You said that a `TagSet` might be shared between multiple `GenDisk`s,
->> but that is not facilitated by the C side?
->>
->> Is it the case that on the C side you create a struct containing a
->> tagset and a gendisk for every block device you want to represent?
->=20
-> Yes, but the `struct tag_set` can be shared between multiple `struct
-> gendisk`.
->=20
-> Let me try to elaborate:
->=20
-> In C you would first allocate a `struct tag_set` and partially
-> initialize it. The allocation can be dynamic, static or part of existing
-> allocation. You would then partially initialize the structure and finish
-> the initialization by calling `blk_mq_alloc_tag_set()`. This populates
-> the rest of the structure which includes more dynamic allocations.
->=20
-> You then allocate a `struct gendisk` by calling `blk_mq_alloc_disk()`,
-> passing in a pointer to the `struct tag_set` you just created. This
-> function will return a pointer to a `struct gendisk` on success.
->=20
-> In the Rust abstractions, we allocate the `TagSet`:
->=20
-> #[pin_data(PinnedDrop)]
-> #[repr(transparent)]
-> pub struct TagSet<T: Operations> {
->      #[pin]
->      inner: Opaque<bindings::blk_mq_tag_set>,
->      _p: PhantomData<T>,
-> }
->=20
-> with `PinInit` [^1]. The initializer will partially initialize the struct=
- and
-> finish the initialization like C does by calling
-> `blk_mq_alloc_tag_set()`. We now need a place to point the initializer.
-> `Arc::pin_init()` is that place for now. It allows us to pass the
-> `TagSet` reference to multiple `GenDisk` if required. Maybe we could be
-> generic over `Deref<TagSet>` in the future. Bottom line is that we need
-> to hold on to that `TagSet` reference until the `GenDisk` is dropped.
+On Wed, Jan 24, 2024, at 12:20, Alice Ryhl wrote:
+> +unsigned long 
+> rust_helper_copy_from_user_unsafe_skip_check_object_size(void *to, 
+> const void __user *from, unsigned long n)
+> +{
+> +	unsigned long res;
+> +
+> +	might_fault();
+> +	instrument_copy_from_user_before(to, from, n);
+> +	if (should_fail_usercopy())
+> +		return n;
+> +	res = raw_copy_from_user(to, from, n);
+> +	instrument_copy_from_user_after(to, from, n, res);
+> +	return res;
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_copy_from_user_unsafe_skip_check_object_size);
+> +
+> +unsigned long 
+> rust_helper_copy_to_user_unsafe_skip_check_object_size(void __user *to, 
+> const void *from, unsigned long n)
+> +{
+> +	might_fault();
+> +	if (should_fail_usercopy())
+> +		return n;
+> +	instrument_copy_to_user(to, from, n);
+> +	return raw_copy_to_user(to, from, n);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_copy_to_user_unsafe_skip_check_object_size);
 
-I see, thanks for the elaborate explanation! I now think that using `Arc`
-makes sense.
+These functions are almost identical to the ones in
+lib/usercopy.c for !defined(INLINE_COPY_TO_USER).
 
-> `struct tag_set` is not reference counted on the C side. C
-> implementations just take care to keep it alive, for instance by storing
-> it next to a pointer to `struct gendisk` that it is servicing.
+That version has an extra memset() after a partial
+copy_from_user(), and you probably want to have the
+same thing here for consistency.
 
-This is interesting, is this also done in the case where it is shared
-among multiple `struct gendisk`s?
-Does this have some deeper reason? Or am I right to assume that creating
-`Gendisk`/`TagSet` is done rarely (i.e. only at initialization of the
-driver)?
+I think ideally we should only have one out-of-line copy
+of these two functions and have that one shared between
+rust and architectures that want the C version out of line
+as well.
 
->> And you decided for the Rust abstractions that you want to have only a
->> single generic struct for any block device, distinguished by the generic
->> parameter?
->=20
-> Yes, we have a single generic struct (`GenDisk`) representing the C
-> `struct gendisk`, and a single generic struct (`TagSet`) representing
-> the C `struct tag_set`. These are both generic over `T: Operations`.
-> `Operations` represent a C vtable (`struct blk_mq_ops`) attached to the
-> `struct tag_set`. This vtable is provided by the driver and holds
-> function pointers that allow the kernel to perform actions such as queue
-> IO requests with the driver. A C driver can instantiate multiple `struct
-> gendisk` and service them with the same `struct tag_set` and thereby the
-> same vtable. Or it can use separate tag sets and the same vtable. Or a
-> separate tag_set and vtable for each gendisk.
->=20
->> I think these kinds of details would be nice to know. Not only for
->> reviewers, but also for veterans of the C APIs.
->=20
-> I should write some module level documentation clarifying the use of
-> these types. The null block driver is a simple example, but it is just
-> code. I will include more docs in the next version.
-
-Thanks a lot for explaining!
-
---=20
-Cheers,
-Benno
-
-
+     Arnd
