@@ -1,186 +1,256 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B740111B6
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 07:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14948111B6
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 07:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706166573; cv=none; b=D7nU+3Q43OwK/16uui6A1WlyUWBmTVQRy2pkdpUIx60lfvYvmQeaxB5F6S9O7N08SeqeFps5AmJAXu3Cz1Pn4auE+CbH5wcxYDnAKPW5Qi8YIV+OrToNYd2SBhEFciQZimISv5bl3J9XJVEAA1z7h+eujZpJjbpW1zQ9V0tNcMg=
+	t=1706166579; cv=none; b=KX4qFq7dOiCn7PQsYOUNoUAfRqxpND5/5lx2os9GYabO0rp9jENtXWe1Z8TC2ykNg8pe1TWWLBOKF6zxWBsJ8Qk6Vn5goh16LaNRaWQ85djCxAsI7J7z/HrC34cb2xNA6cQsWOqp6wcdoQe7iQbDAJH5BQv7ca8QkHnG+NFywK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706166573; c=relaxed/simple;
-	bh=xfNBwWChwjqYtj33C3S85wesVGx8CMw7l9lgylGL2uc=;
+	s=arc-20240116; t=1706166579; c=relaxed/simple;
+	bh=81KcjNZurVx8iC2Otgtd7hU0/OuFykjRaAVqThRnuGI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ui5prXnPWmnadTIPL59toXrtrcxg9yU0VqbESLGlA3pSW7GQAAFKomW5kxuiDVV+DDZa1PzzpKGdA1bLn7WIyhiWtKzgzlayQKNLgPohsMEDWFGGPiQyKQEUJmTNyhPdTvX4h9/RxzGc36rjxCato5TbpaYB569yf52ajUDN89Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lxCUYPU9; arc=none smtp.client-ip=209.85.208.54
+	 To:Cc:Content-Type; b=GX7dSLrjZnpKSnwgyDGIahpltIPt8SoRzD1qBFg7MOXx39MAQDlAAp1qTURCpB88sX5GkvRcnFd3tL9xHTnoJBO+ldOua3fIP+iAJCA/1tJTR0I5mebYuDZN8EfZFcIXDdIq4rmzk2KhOL/xVa5Liz+fDNm+MI4TAtRTVVw1q/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yWJcViMc; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lxCUYPU9"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-55818b7053eso10428a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 23:09:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yWJcViMc"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-55c24a32bf4so9128a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jan 2024 23:09:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706166570; x=1706771370; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1706166576; x=1706771376; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1ubCYxVI6mkMDHc5v4Y2dqqZ534RHBXymgEe6V2ktwE=;
-        b=lxCUYPU90if4Y0BZ0RYVowVkVFG2CMJRqQXcThmqA/G5R7wf4FHnrWJk4odkSZlMpa
-         kArZLMDikrnNU2ePhBk5kv13ZZoMZIDxmjtfj/f8lWkE+pqBZYrLGYDO7UbbC8Bj5bUR
-         8NASJrcxMQ35elVBbXEa5oOV65XkAsbTOpnFWDHL2y20iESpBgnMnYbwNG0Iyej5yqPz
-         UdRplBFGF0+KufsikhZy7DWzCWkbN8482eCr5Fw03RYoNFChK7DGqKfFyf0uEiIlJPs4
-         OjPzJ0cwIp/aRBVTkc4Hy+7y4frYvzt14/SqkWU/haju5InBionDzqZL8fGLsO9TFqJk
-         yodA==
+        bh=vAJs6BAkgXjKs0hPj5tuEah/wia4x4V6qBL9Mcgmfzs=;
+        b=yWJcViMcG4PDNl7aPaH1yrSwS6kbq1gx1bFKvI5rRhR8reuN0FbMaVF6DS05RR+UGN
+         1kgl4+gVhVDmceJPXTFCnYa8g6Yf1LSUjEkdbDXx2Fv6ZFmdZfOpwm6c+Yxvoc346Gim
+         uxV4ZuF3rfWq3b4IfI3dXqLPamfgXGYlZz38QWMFMNhhEetdD+AQllL2lXK2nWSvdnZJ
+         043p70MBEQazeS8WTLkpDW594+K75UFmDQy9+n4GPxcbX6Do8mJ79lH7S1lP01QzddZF
+         71JDAek2KIn6ZWAaQz2HZ7RfmVYGpCeICdGA5g0FKf39FtYKLC25CfRQnAsRgfipfW5D
+         3EqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706166570; x=1706771370;
+        d=1e100.net; s=20230601; t=1706166576; x=1706771376;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1ubCYxVI6mkMDHc5v4Y2dqqZ534RHBXymgEe6V2ktwE=;
-        b=cR7SAUUQ92RxYVYipilcgy3rkrce3X3bn6ueD7b22dyKgaalQafJKaYfbtXzU5x2Pq
-         niXzH5WP1YivPsLlskJ1/Mz1LIkWtz+yWxfN1zJfQKMo/67lBUt+PDbLuVUntfLEoNJx
-         qts9GmHG0iqanogCewtDybDpYHwEcqnoJBhGvTHl6APrZEwFvwC/NmM+xvb7q4x+/Bi1
-         YelBza2RsMrFB+/nh42RpQ2/IcW6jhEtgQ8gp9KKIjG6D8LUMUyyu8jxwrlkVEdq0Oka
-         7EbTxIVr6Pk2Px/NPfGuH2yLPZrn1FG0Ri96wG57Vh6FbtRWUQAtmPBENH3WcVoyYfRo
-         PM9w==
-X-Gm-Message-State: AOJu0YwqTasm26o8RtLbqNUN1PNcBWfkYN8ZCEKuY9gogOnDPR08gdEI
-	c/LaA/QOcZuL8dAvBo9nI2uZEc1BY+CC7oyE75O6sgQGPwERaBEyhLhGZQeNsoFhVdJxlefMrBP
-	mfA0HVGzj6lariAiBV5VpxXs/sVQocRUw32C0
-X-Google-Smtp-Source: AGHT+IFwQdgmuUUSwURlg/zsYio73V7RyLrS9y3oKMTrXLw9qRhfxmiUvmF3Mg8bBECTqJgX1g9sIp+zWqTsr4/BjYw=
-X-Received: by 2002:a05:6402:160f:b0:55c:fe86:50f with SMTP id
- f15-20020a056402160f00b0055cfe86050fmr64240edv.5.1706166569536; Wed, 24 Jan
- 2024 23:09:29 -0800 (PST)
+        bh=vAJs6BAkgXjKs0hPj5tuEah/wia4x4V6qBL9Mcgmfzs=;
+        b=TO42Omw7bbJuwz1T6832tcJuhVNNkecrqTWVkI6jqdVXEnfqsyapxGBE6rataHzunb
+         5LNoEylhGX2RhNj4yqmGLj22cafu7UEOfgTnj9Du1d5WWpeCE08Mm0I5QEBmkOydcJcK
+         HGhfk0kTdd/LmM4XgUBhoT+zqmEx2BKt0L4159UO/N+qCVJi2iKBYFMrJHxrg5+j+gYb
+         1IyNodkjbdbmlssBpPB0hciaETioWNMl4dV++/5VNKtRnk+KG2/c7hnyxVueKxjsorom
+         xmD1rKOruBC3tL7SjjPTTV0lVAXiqegMBJBDa/Y9Wjimo7TtsWR7gKAXJIqBrZ+JiMZ9
+         3y4w==
+X-Gm-Message-State: AOJu0YwUbx0ymSrTYfqbAvYq4+6N8vkIUMCsyS6Wbvx190VcIAC+Yd/z
+	BUDUc3jEp1UmNTORTOjuiH0JpfcMiKWSIawsDFsnybbHQiVWb6AnSGT9jvyGYbGjww5SfCXCEov
+	pmm2WL4psJpfVMzo3zBIbSq5GVFi+IPvzav5cT3JBhSgvJF6VPZ+E
+X-Google-Smtp-Source: AGHT+IGEBQJEOrkS1tF4vNftYWfUK4nEZjDBee/LzePqcbxYFZ+85yCTT4eAi6/2BnwuqM2KFH/+4WwAbkDHSQdHZdY=
+X-Received: by 2002:a05:6402:c08:b0:55c:e50c:c66 with SMTP id
+ co8-20020a0564020c0800b0055ce50c0c66mr140982edb.0.1706166576207; Wed, 24 Jan
+ 2024 23:09:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240125065551.2436403-1-dirk.behme@de.bosch.com>
-In-Reply-To: <20240125065551.2436403-1-dirk.behme@de.bosch.com>
+References: <20240125065551.2436403-1-dirk.behme@de.bosch.com> <20240125065551.2436403-2-dirk.behme@de.bosch.com>
+In-Reply-To: <20240125065551.2436403-2-dirk.behme@de.bosch.com>
 From: David Gow <davidgow@google.com>
-Date: Thu, 25 Jan 2024 15:09:17 +0800
-Message-ID: <CABVgOSmNWPAqNO1-kWufrDAajZB2Ou7KcDQJWnamrsCB-ePCBw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] docs: rust: Move testing to a separate page
+Date: Thu, 25 Jan 2024 15:09:21 +0800
+Message-ID: <CABVgOSmH0Wy6q+8fx5+7iVLbj7f6vx7WY_10s4GWM3jt4khbHg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] docs: rust: Add description of Rust documentation
+ test as KUnit ones
 To: Dirk Behme <dirk.behme@de.bosch.com>
 Cc: rust-for-linux@vger.kernel.org, Trevor Gross <tmgross@umich.edu>, 
 	Miguel Ojeda <ojeda@kernel.org>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000554db0060fbfdc2f"
+	boundary="000000000000ba8443060fbfdc69"
 
---000000000000554db0060fbfdc2f
+--000000000000ba8443060fbfdc69
 Content-Type: text/plain; charset="UTF-8"
 
 On Thu, 25 Jan 2024 at 14:56, Dirk Behme <dirk.behme@de.bosch.com> wrote:
 >
-> To be able to add more testing documentation move the testing
-> section to it's own page.
+> Rust documentation tests are automatically converted into KUnit
+> tests. The commit adding this feature
 >
-> No change on the documentation itself.
+> commit a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
 >
-> Suggested-by: Trevor Gross <tmgross@umich.edu>
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> from Miguel has a very nice commit message with a lot details
+> for this. To not 'hide' that just in a commit message, pick the main
+> parts of it and add it to the documentation. And add a short info
+> how to enable this. While adding this, improve the structure of
+> the sections.
+>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
 > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 > ---
-> Changes in v3:
->  * Add Trevor's Reviewed-by
->  * Rebased against v6.8-rc1
->
 
-Makes sense to me. Thanks for rebasing it, too: made reviewing it much easier.
+Looks good to me. We'll want to update it once we have more general
+KUnit bindings (for something beyond just doctests), but this is
+excellent for the current state of things.
+
+This is (with Miguel's Signed-off-by, of course),
 
 Reviewed-by: David Gow <davidgow@google.com>
 
-Cheers,
+Thanks,
 -- David
 
 
-
->  Documentation/rust/general-information.rst | 24 ----------------------
->  Documentation/rust/index.rst               |  1 +
->  Documentation/rust/testing.rst             | 24 ++++++++++++++++++++++
->  3 files changed, 25 insertions(+), 24 deletions(-)
->  create mode 100644 Documentation/rust/testing.rst
+> Changes in v3:
+>  * Got the '?' operator link to work :)
+>  * Rebased against v6.8-rc1
 >
-> diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
-> index 236c6dd3c647f..081397827a7ea 100644
-> --- a/Documentation/rust/general-information.rst
-> +++ b/Documentation/rust/general-information.rst
-> @@ -77,27 +77,3 @@ configuration:
->         #[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
->         #[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
->         #[cfg(not(CONFIG_X))]  // Disabled
-> -
-> -
-> -Testing
-> --------
-> -
+>  Documentation/rust/testing.rst | 120 +++++++++++++++++++++++++++++++--
+>  1 file changed, 116 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+> index ba8a01015abad..4926db9d19592 100644
+> --- a/Documentation/rust/testing.rst
+> +++ b/Documentation/rust/testing.rst
+> @@ -1,11 +1,25 @@
+>  .. SPDX-License-Identifier: GPL-2.0
+>
+>  Testing
+> -=======
+> ++++++++
+>
 > -There are the tests that come from the examples in the Rust documentation
 > -and get transformed into KUnit tests. These can be run via KUnit. For example
 > -via ``kunit_tool`` (``kunit.py``) on the command line::
-> -
-> -       ./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
-> -
-> -Alternatively, KUnit can run them as kernel built-in at boot. Refer to
-> -Documentation/dev-tools/kunit/index.rst for the general KUnit documentation
-> -and Documentation/dev-tools/kunit/architecture.rst for the details of kernel
-> -built-in vs. command line testing.
-> -
-> -Additionally, there are the ``#[test]`` tests. These can be run using
-> -the ``rusttest`` Make target::
-> -
-> -       make LLVM=1 rusttest
-> -
-> -This requires the kernel ``.config`` and downloads external repositories.
-> -It runs the ``#[test]`` tests on the host (currently) and thus is fairly
-> -limited in what these tests can test.
-> diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-> index 965f2db529e0f..46d35bd395cf5 100644
-> --- a/Documentation/rust/index.rst
-> +++ b/Documentation/rust/index.rst
-> @@ -40,6 +40,7 @@ configurations.
->      general-information
->      coding-guidelines
->      arch-support
-> +    testing
+> +This document contains useful information how to test the Rust code in the kernel.
+> +
+> +There are two sorts of tests:
+> +
+> + * The KUnit tests
+> + * The ``#[test]`` tests
+> +
+> +The KUnit tests
+> +===============
+> +
+> +This are the tests that come from the examples in the Rust documentation
+> +and get transformed into KUnit tests.
+> +
+> +Usage
+> +~~~~~
+> +
+> +These tests can be run via KUnit. For example via ``kunit_tool`` (``kunit.py``) on the command line::
 >
->  .. only::  subproject and html
+>         ./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
 >
-> diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
-> new file mode 100644
-> index 0000000000000..ba8a01015abad
-> --- /dev/null
-> +++ b/Documentation/rust/testing.rst
-> @@ -0,0 +1,24 @@
-> +.. SPDX-License-Identifier: GPL-2.0
+> @@ -14,6 +28,104 @@ Documentation/dev-tools/kunit/index.rst for the general KUnit documentation
+>  and Documentation/dev-tools/kunit/architecture.rst for the details of kernel
+>  built-in vs. command line testing.
+>
+> +To use these KUnit doctests, the following must be enabled::
 > +
-> +Testing
-> +=======
+> +       CONFIG_KUNIT
+> +          Kernel hacking -> Kernel Testing and Coverage -> KUnit - Enable support for unit tests
+> +       CONFIG_RUST_KERNEL_DOCTESTS
+> +          Kernel hacking -> Rust hacking -> Doctests for the `kernel` crate
 > +
-> +There are the tests that come from the examples in the Rust documentation
-> +and get transformed into KUnit tests. These can be run via KUnit. For example
-> +via ``kunit_tool`` (``kunit.py``) on the command line::
+> +in the kernel config system.
 > +
-> +       ./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
+> +KUnit tests are documentation tests
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 > +
-> +Alternatively, KUnit can run them as kernel built-in at boot. Refer to
-> +Documentation/dev-tools/kunit/index.rst for the general KUnit documentation
-> +and Documentation/dev-tools/kunit/architecture.rst for the details of kernel
-> +built-in vs. command line testing.
+> +These documentation tests are typically examples of
+> +usage of any item (e.g. function, struct, module...).
 > +
-> +Additionally, there are the ``#[test]`` tests. These can be run using
-> +the ``rusttest`` Make target::
+> +They are very convenient because they are just written
+> +alongside the documentation. For instance:
 > +
-> +       make LLVM=1 rusttest
+> +.. code-block:: rust
 > +
-> +This requires the kernel ``.config`` and downloads external repositories.
-> +It runs the ``#[test]`` tests on the host (currently) and thus is fairly
-> +limited in what these tests can test.
+> +       /// Sums two numbers.
+> +       ///
+> +       /// ```
+> +       /// assert_eq!(mymod::f(10, 20), 30);
+> +       /// ```
+> +       pub fn f(a: i32, b: i32) -> i32 {
+> +           a + b
+> +       }
+> +
+> +In userspace, the tests are collected and run via ``rustdoc``.
+> +Using the tool as-is would be useful already, since it allows
+> +verifying that examples compile (thus enforcing they are kept
+> +in sync with the code they document) and as well as running
+> +those that do not depend on in-kernel APIs.
+> +
+> +For the kernel, however, these tests get transformed into KUnit
+> +test suites. This means that doctests get compiled as Rust
+> +kernel objects, allowing them to run against a built kernel.
+> +
+> +A benefit of this KUnit integration is that Rust doctests get
+> +to reuse existing testing facilities. For instance, the kernel
+> +log would look like::
+> +
+> +       KTAP version 1
+> +       1..1
+> +           KTAP version 1
+> +           # Subtest: rust_doctests_kernel
+> +           1..59
+> +           # rust_doctest_kernel_build_assert_rs_0.location: rust/kernel/build_assert.rs:13
+> +           ok 1 rust_doctest_kernel_build_assert_rs_0
+> +           # rust_doctest_kernel_build_assert_rs_1.location: rust/kernel/build_assert.rs:56
+> +           ok 2 rust_doctest_kernel_build_assert_rs_1
+> +           # rust_doctest_kernel_init_rs_0.location: rust/kernel/init.rs:122
+> +           ok 3 rust_doctest_kernel_init_rs_0
+> +           ...
+> +           # rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
+> +           ok 59 rust_doctest_kernel_types_rs_2
+> +       # rust_doctests_kernel: pass:59 fail:0 skip:0 total:59
+> +       # Totals: pass:59 fail:0 skip:0 total:59
+> +       ok 1 rust_doctests_kernel
+> +
+> +Tests using the `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ operator are also supported as usual, e.g.:
+> +
+> +.. code-block:: rust
+> +
+> +       /// ```
+> +       /// # use kernel::{spawn_work_item, workqueue};
+> +       /// spawn_work_item!(workqueue::system(), || pr_info!("x"))?;
+> +       /// # Ok::<(), Error>(())
+> +       /// ```
+> +
+> +The tests are also compiled with Clippy under ``CLIPPY=1``, just
+> +like normal code, thus also benefitting from extra linting.
+> +
+> +In order for developers to easily see which line of doctest code
+> +caused a failure, a KTAP diagnostic line is printed to the log.
+> +This contains the location (file and line) of the original test
+> +(i.e. instead of the location in the generated Rust file)::
+> +
+> +       # rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
+> +
+> +Rust tests appear to assert using the usual ``assert!`` and
+> +``assert_eq!`` macros from the Rust standard library (``core``).
+> +We provide a custom version that forwards the call to KUnit instead.
+> +Importantly, these macros do not require passing context,
+> +unlike those for KUnit testing (i.e. ``struct kunit *``). This makes
+> +them easier to use, and readers of the documentation do not need
+> +to care about which testing framework is used. In addition, it
+> +may allow us to test third-party code more easily in the future.
+> +
+> +A current limitation is that KUnit does not support assertions
+> +in other tasks. Thus, we presently simply print an error to the
+> +kernel log if an assertion actually failed. Additionally,
+> +doctests are not run for nonpublic functions.
+> +
+> +The ``#[test]`` tests
+> +=====================
+> +
+>  Additionally, there are the ``#[test]`` tests. These can be run using
+>  the ``rusttest`` Make target::
+>
 > --
 > 2.28.0
 >
 >
 
---000000000000554db0060fbfdc2f
+--000000000000ba8443060fbfdc69
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -248,13 +318,13 @@ wlDp+1p6RAqlDpHifQJW16h5jWIIwYisvm5QyfxQEVc+XH1lt+taSzCfiBT0ZLgjB9Sg+zAo8ys6
 ITv8ZEy6ByumbU23nkHTMOzzQSxczHkT+0q10/MxggJqMIICZgIBATBoMFQxCzAJBgNVBAYTAkJF
 MRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFzIFIz
 IFNNSU1FIENBIDIwMjACEAHS+TgZvH/tCq5FcDC0n9IwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZI
-hvcNAQkEMSIEIMlJCVXm3joHgYoZXLjeegvwaK6DxIL2Tm6iWEjdg2/+MBgGCSqGSIb3DQEJAzEL
-BgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MDEyNTA3MDkzMFowaQYJKoZIhvcNAQkPMVww
+hvcNAQkEMSIEINNxqMwMc7uS8h2e+dahwnLpZ6QSXGSjU2zn6Y3WmJwFMBgGCSqGSIb3DQEJAzEL
+BgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MDEyNTA3MDkzNlowaQYJKoZIhvcNAQkPMVww
 WjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkq
-hkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAbizmQ
-CbtQiiGn6RwfVDf1fWOVoO+RfCPl5V5REYnIlelFUyGjUsdAeUGWfmYrZmjQQXExRl8zqeCfw5Xx
-RTMLq7wx3uzq24ZUiBfpjekhdRkd0F950KvyrOtYG9rp3N19c8Pq3nAM0dTZkb3klbZMulYLOZb6
-yMI5nvOGJzDRGhACS5StMfMlSCJAr5bEq4huCoDSt8Hu3WkJ//DHvS6DLdSJkGi4oYWy8RERnznI
-6HGvrFLdt09T3pQa/J0DnCAHGuA0lnH+WVLhn9pbl6J6zYUD3dARSsUVwb7Cb5ViypJGxN0Vo4pZ
-ibmQqNn+gsDaGBFokuTdUAb5ijzsBso3
---000000000000554db0060fbfdc2f--
+hkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQArVoZ1
+h6HephttztVGedLpA0h2ixg4PPI4HV2Cu4IuDuRRpmmdYFKVPnSPgYa8xYZrniw7yP2Jvk3C0fjl
+ftm8ssmQV0IOgmMB8VjKeNLq3jJsqnkQXvFnVljkbnNxIMikjsbh8+DMCKwI9jnaqqJTSiI3ZyjZ
+zJsYtSUhgJ3mPhO5m5Im+HA4BuY8nWYcLcNtSFfEdRVVSaNWZQoUU36Hg8azk4z3ACTYmH+dg4iB
+EFBC02KGz0j9cFEFxVah9V5May3UBYlmX047XcK4I6ZpVF8/UJhClX+uju0PJwIK9FjOINunlp9D
+QC+vOZxzxMf2xbV9Woo7Z96HtZikp1iW
+--000000000000ba8443060fbfdc69--
