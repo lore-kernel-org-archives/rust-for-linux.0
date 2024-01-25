@@ -1,90 +1,141 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8471413174E;
-	Thu, 25 Jan 2024 17:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3041D137C4A;
+	Thu, 25 Jan 2024 21:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706204530; cv=none; b=Ptt3uhT8D6R5sLoOAVEOABAReJvpx9CulPm3HO8hwL/yEjGqKEmk4CY6ZFmROSFw5NrXDp3MbsUnnOpOfSiXw1CncPohCRtA1CcjIrV/gNwdKXMZHsduYG7EeL6zCAW4j6zvYC3AX0DjkPgy95vEZK87Lz53JJ/IZFAgsFgaNJg=
+	t=1706218208; cv=none; b=S4KSNuqsRPWDreIyfkdNHZFUeFohkpA1QG4Zp1xIwmOIIZ+7MXKKRdJnynQhGRC17QLw82NfkSwUDPcMZGEPNqUH9T1SL4r7yVi9S2jx8pIhqCxgrH9zZVH2uT5lq/JEXGb77IDQRPBXGK+Vnb7/be2VHyhWckYHcVVQTL9nOQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706204530; c=relaxed/simple;
-	bh=CF6+Hi4GeAzVx8LW4GbLCLydMins7gG/oRur2TOzDOg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PpQDty+CEhuNdGpo/+Mu2vW/ZXpiZNilt3obB0OEHR92F7Q4z3TbLXukO+xdN6MP6wU/MvLEnUJIwGk+inbfJwmIrYXLAElNlwO+iEqXq32fBSa+jJklbsFiKgzP5HtAXNHNmZj/Z94GPd7d8xmgPXiDIzGXCWMQmD/WEPVqBBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VMhqxUbA; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1706218208; c=relaxed/simple;
+	bh=ASPx7+zMtCatuRRLO5tMl/H/PNMnqVQ9t//4ppXH93o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=F/onr6Wvj5i7dV6xnAd/EQH8cuC5+sONkoLKKG8kbwrDv53vPLuKbNWnBGyUECi+VtRTIeZXIlIZksOx6ZeqI+DzLLfqrtK4t4dYpq2KfyCapp71GTYbX1jA2hp9zqFtIxWxW4+8j7cd3VeLdKEZGJDoE+bdhnYIxSfA4e3+/ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=L/uij/Lo; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=L/uij/Lo; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VMhqxUbA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MES6gX+8+nsyFlBsllvbTSH4KOA6qMyryRvdsV3V++0=; b=VMhqxUbASXJ0v04b3ZignKoixS
-	cOQIm2Edg+dGILNGx7+XCILEu2nd3Z91Reo/SiiMfOoBlzAW3sKGo+BuHIfjSN1u68GV4Lspnszdy
-	/gNOWmOpZwev7iXCWY04Y/090Q3Ej56a/5rs/RogJ3WrXLRyI4iIY9gfhdr3YpzXEsLM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rT3jp-0066ie-GY; Thu, 25 Jan 2024 18:42:05 +0100
-Date: Thu, 25 Jan 2024 18:42:05 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH net-next] rust: phy: use VTABLE_DEFAULT_ERROR
-Message-ID: <4573a237-dd18-4ea0-8de4-8b465eb856c7@lunn.ch>
-References: <20240125014502.3527275-1-fujita.tomonori@gmail.com>
- <20240125014502.3527275-2-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="L/uij/Lo";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="L/uij/Lo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1706218204;
+	bh=ASPx7+zMtCatuRRLO5tMl/H/PNMnqVQ9t//4ppXH93o=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=L/uij/LoHTJ8a0eF9WxaTaV7vCowOQOLKgWd/RKordZdZe5NAWgZIIftyBolNWeXx
+	 Ihf2p1EmcJQoyHZLFT3BQCSZZSvrshJOiBmuYKT21IiFmeXA9YCzV7eS2F8ndStB/a
+	 e5axczPm5u/dKpJGodAIkStqx0fXVTttE3uDWP4I=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id A5F1F128189E;
+	Thu, 25 Jan 2024 16:30:04 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id XhTnIQp3kvfA; Thu, 25 Jan 2024 16:30:04 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1706218204;
+	bh=ASPx7+zMtCatuRRLO5tMl/H/PNMnqVQ9t//4ppXH93o=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=L/uij/LoHTJ8a0eF9WxaTaV7vCowOQOLKgWd/RKordZdZe5NAWgZIIftyBolNWeXx
+	 Ihf2p1EmcJQoyHZLFT3BQCSZZSvrshJOiBmuYKT21IiFmeXA9YCzV7eS2F8ndStB/a
+	 e5axczPm5u/dKpJGodAIkStqx0fXVTttE3uDWP4I=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 002021281291;
+	Thu, 25 Jan 2024 16:30:02 -0500 (EST)
+Message-ID: <fafee46bae1a1fc378eb48f808376fd10564088c.camel@HansenPartnership.com>
+Subject: Re: [LSF/MM TOPIC] Rust
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org,
+  linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Miguel
+ Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Kees
+ Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>, Dave Chinner
+ <dchinner@redhat.com>, David Howells <dhowells@redhat.com>, Ariel Miculas
+ <amiculas@cisco.com>, Paul McKenney <paulmck@kernel.org>
+Date: Thu, 25 Jan 2024 16:30:01 -0500
+In-Reply-To: <dd7w7t42m2mckgal7sl5azop6tlue4wog7yxz52g2val77fye7@hm5gvdkwzw23>
+References: 
+	<wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
+	 <ZbAO8REoMbxWjozR@casper.infradead.org>
+	 <cf6a065636b5006235dbfcaf83ff9dbcc51b2d11.camel@HansenPartnership.com>
+	 <ZbEwKjWxdD4HhcA_@casper.infradead.org>
+	 <2e62289ad0fffd2fb8bc7fa179b9a43ab7fe2222.camel@HansenPartnership.com>
+	 <bmgzm3wjtcyzsuawscxrdyhq56ckc7vqnfbcjbm42gj6eb4qph@wgkhxkk43wxm>
+	 <37f44c1409334f5dc15d7421e8b7cd3a4ff9ae33.camel@HansenPartnership.com>
+	 <4yzecrleclh4prjqw633r6m2jvs7cbtfznjm7azdaxpp2vvmn6@cjxk3ueacoe5>
+	 <c368f1a22e271f96a49a4eab438b040959782387.camel@HansenPartnership.com>
+	 <dd7w7t42m2mckgal7sl5azop6tlue4wog7yxz52g2val77fye7@hm5gvdkwzw23>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240125014502.3527275-2-fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 25, 2024 at 10:45:02AM +0900, FUJITA Tomonori wrote:
-> Since 6.8-rc1, using VTABLE_DEFAULT_ERROR for optional functions
-> (never called) in #[vtable] is the recommended way.
+On Thu, 2024-01-25 at 04:24 -0500, Kent Overstreet wrote:
+> On Wed, Jan 24, 2024 at 10:47:22PM -0500, James Bottomley wrote:
+> > On Wed, 2024-01-24 at 14:57 -0500, Kent Overstreet wrote:
+> > > On Wed, Jan 24, 2024 at 02:43:21PM -0500, James Bottomley wrote:
+> > > > On Wed, 2024-01-24 at 13:50 -0500, Kent Overstreet wrote:
+> > > > > > To illustrate the problem with cryptography in rust: just
+> > > > > > because it's rust safe doesn't mean its correct or bug
+> > > > > > free.  Crypto functions are the most difficult to get right
+> > > > > > (algorithmically, regardless of memory safety).  Look at
+> > > > > > this Medium report on the top ten bugs in blockchain:
+> > > > > > 
+> > > > > > https://medium.com/rektoff/top-10-vulnerabilities-in-substrate-based-blockchains-using-rust-d454279521ff
+> > > > > > 
+> > > > > > Number 1 is a rust crypto vulnerability due to insecure
+> > > > > > randomness in a random number generating function (note it
+> > > > > > was rust safe code just not properly checked for
+> > > > > > algorithmic issues by a cryptographer).
+> > > > > > 
+> > > > > > The reason for using the kernel functions is that they are
+> > > > > > vetted by cryptographers and crafted for our environment.
+> > > > > 
+> > > > > Are you arguing that typical kernel code is more secure than
+> > > > > typical Rust code?
+> > > > 
+> > > > For crypto code?  Absolutely, that's what the example above
+> > > > showed. It's pretty much impossible to use an insecure rng in
+> > > > the kernel if you plug into one of our existing APIs.  That's
+> > > > obviously not necessarily true if you pull a random one from
+> > > > crates.io.
+> > > > 
+> > > > James
+> > > 
+> > > I can just as easily use prandom.h instead of random.h in the
+> > > kernel;
+> > 
+> > Neither of which would be insecure ...
 > 
-> Note that no functional changes in this patch.
+> Are you claiming that
+>         
+> /* Pseudo random number generator from numerical recipes. */
+> static inline u32 next_pseudo_random32(u32 seed)
+> {
+>         return seed * 1664525 + 1013904223;
+> }
 > 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/kernel/net/phy.rs | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 203918192a1f..96e09c6e8530 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -580,12 +580,12 @@ pub trait Driver {
->  
->      /// Issues a PHY software reset.
->      fn soft_reset(_dev: &mut Device) -> Result {
-> -        Err(code::ENOTSUPP)
-> +        kernel::build_error(VTABLE_DEFAULT_ERROR)
->      }
+> is a secure RNG?
 
-Dumb question, which i should probably duckduckgo myself.
+It's the best linear congruence generator for 32 bits, yes; it's
+straight out of Knuth.   However, I assume you picked that one becuase
+you know it's only used in testing to generate a repeatable series of
+numbers.  The actual prandom_ API is based on an internally seeded
+linear feedback shift register algorithm.
 
-Why is it called VTABLE_DEFAULT_ERROR and not
-VTABLE_NOT_SUPPORTED_ERROR?
+The trick to using PRNGs correctly is 1) knowing you can use them and
+don't need cryptographic randomness and 2) seeding them correctly,
+which is where the rust problem came from and which you can't get wrong
+in Linux because it's done directly from the entropy pool.
 
-Looking through the C code my guess would be -EINVAL would be the
-default, or maybe 0.
+James
 
-The semantics of ENOTSUPP can also vary. Its often not an actual
-error, it just a means to indicate its not supported, and the caller
-might decide to do something different as a result. One typical use in
-the network stack is offloading functionality to hardware.
-e.g. blinking the LEDs on the RJ45 connected. The driver could be
-asked to blink to show activity of a received packet. Some hardware
-can only indicate activity for both receive and transmit, so the
-driver would return -EOPNOTSUPP. Software blinking would then be used
-instead of hardware blinking.
 
-	 Andrew
