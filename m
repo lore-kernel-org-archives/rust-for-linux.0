@@ -1,42 +1,53 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84CB1BC21;
-	Thu, 25 Jan 2024 09:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0DB1BC3E
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 09:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706174183; cv=none; b=n/zyayI+UQ+rw9BDZ28l9NKEmKIiH/qPWS2l7wl+2RflH2JuobyQ4dPSKsGR/kpvw3jw1UyuStPhxLTciGwI9Iwe5UM02xnzr2JXL4EI0pHKGjBjGBraBLC83IxqIplrlnqCH5kA2ZkaZ1ynkW21erQRu5mjngXAiIp6jHjB2SU=
+	t=1706174699; cv=none; b=SZA77RCD6ZfbgAhBusyOZ1ya2e+JbvPfuGZMYZ7VcN/6dOV/KTgbTpf/7JBkc+dregCPUQ7yB9nUshLJXtnChuevGeKuezs/6rFMhuBiP+TyfYWEXgwrPye8GnzZ3R2+qYYRzyvE8UwUHisNTO9x1PHpU4Gy4MH3XCN2QMeyc4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706174183; c=relaxed/simple;
-	bh=2MS9s1a8Dv9mlT2W2jXI33V9M5ds9L8zcdgaegbl64s=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ka9rY0/TVbAVLZ8Lz24R3N8k51des4ppHZcnE6EXSisTmjwLpnry76i9b/cPn6IXJXotXsRohc9ucdy+FFpigjQKnWwXm527ozeroCpOiBmzK7c53a/J1lyBa470d0FaqY9u1g3kel0sukVcDLKvzCuuEvHTKKPkDdxIFMpy91U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Q25VG4+r; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1706174699; c=relaxed/simple;
+	bh=6UE0SRZjvyyFYa0SX3uCauVIXNPtguWCaX+ojo6xL+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lMw/oQx6DCx5Zxg1KpQ/RVCn+gIpWLnnv1Ha0BueRL5GMWDDWmJNlBpJmWWTd5X/b4r9PvduEUD7rTzka6k24sDT4tjYZa83sxVu1wC0eImUNsipHnoARWmDvkNgkjP1EKBRQf7QkoQVMO98tEphC1SALZ4lCI37MNzm26qlhzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j6X1S99c; arc=none smtp.client-ip=91.218.175.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Q25VG4+r"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=qi3k2n676fh37cer4gmqmbhyuq.protonmail; t=1706174171; x=1706433371;
-	bh=pfsotTo/Zydb7H/lWqTfkcVY7FiDx1DJOismrr1aiyM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Q25VG4+rhIbhEJ+0wpY8GWsKJDFm5o9RNMElt5ZMxqxZ/nr6q6Tv+uhycVfrT4eMB
-	 890ytm/Zo9553SULhGg9q6/k1M9QeAyFh73B2Dilwdk63JzNpZvL6HKAxY9zYEGOKv
-	 Whh2WgJoHt58Gp5zNLV3L1trrztS7qAlq2RLNAPE5BEeS9FX2aQweKD6mOSkkzzYRB
-	 tC+/0JCkrO3xENTpPu98kVRndU+h3Rwxw0enYzoisop63Cn68hqkQ81be9UnlbL3OC
-	 xr9Her5QGxSzWwZPnCGHUZ+hme0YMouWWAS1TCfMxvi07Q5rTjpU3h/d4+ScLoIi9o
-	 fdflKlt96chbA==
-Date: Thu, 25 Jan 2024 09:15:45 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Matthew Wilcox <willy@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [RFC PATCH 01/19] rust: fs: add registration/unregistration of file systems
-Message-ID: <e977d0ad-ca06-4b42-b2d7-09dc9a571848@proton.me>
-In-Reply-To: <CANeycqqJsy3rhBEVWspEqhUXgsQNj-Wcy=9axkDX9B3SLgupcA@mail.gmail.com>
-References: <20231018122518.128049-1-wedsonaf@gmail.com> <20231018122518.128049-2-wedsonaf@gmail.com> <ku6rR-zBwLrTfSf1JW07NywKOZFCPMS7nF-mrdBKGJthn7WGBn9lcAQOhoN5V6igk1iGBguGfV5G0PDWQciDQTopf3OYYGt049OJYhsiivk=@proton.me> <CANeycqqJsy3rhBEVWspEqhUXgsQNj-Wcy=9axkDX9B3SLgupcA@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j6X1S99c"
+Date: Thu, 25 Jan 2024 04:24:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1706174695;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1FEZJDPSztwlSq+bBHVyJk6lavPwpvO/fWxjbdKAveY=;
+	b=j6X1S99c9OqDmQhk+o5Od38phw8NAKGavG3oZo8uC4PTJoO3P6QEPqRtA01s2ujlCH9oXY
+	gkfSNnMIxE4uzurxHKHo11ZFaSnX/dyEffUWQgzVDU5JoksOsSFK1/EH/ABiSvESxg7mbi
+	71x6JxAny+kOXOHYj/PdbxfFqz8RuNk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Kees Cook <keescook@chromium.org>, Gary Guo <gary@garyguo.net>, 
+	Dave Chinner <dchinner@redhat.com>, David Howells <dhowells@redhat.com>, 
+	Ariel Miculas <amiculas@cisco.com>, Paul McKenney <paulmck@kernel.org>
+Subject: Re: [LSF/MM TOPIC] Rust
+Message-ID: <dd7w7t42m2mckgal7sl5azop6tlue4wog7yxz52g2val77fye7@hm5gvdkwzw23>
+References: <wjtuw2m3ojn7m6gx2ozyqtvlsetzwxv5hdhg2hocal3gyou3ue@34e37oox4d5m>
+ <ZbAO8REoMbxWjozR@casper.infradead.org>
+ <cf6a065636b5006235dbfcaf83ff9dbcc51b2d11.camel@HansenPartnership.com>
+ <ZbEwKjWxdD4HhcA_@casper.infradead.org>
+ <2e62289ad0fffd2fb8bc7fa179b9a43ab7fe2222.camel@HansenPartnership.com>
+ <bmgzm3wjtcyzsuawscxrdyhq56ckc7vqnfbcjbm42gj6eb4qph@wgkhxkk43wxm>
+ <37f44c1409334f5dc15d7421e8b7cd3a4ff9ae33.camel@HansenPartnership.com>
+ <4yzecrleclh4prjqw633r6m2jvs7cbtfznjm7azdaxpp2vvmn6@cjxk3ueacoe5>
+ <c368f1a22e271f96a49a4eab438b040959782387.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,37 +55,65 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c368f1a22e271f96a49a4eab438b040959782387.camel@HansenPartnership.com>
+X-Migadu-Flow: FLOW_OUT
 
-On 10.01.24 19:32, Wedson Almeida Filho wrote:
->>> +#[pinned_drop]
->>> +impl PinnedDrop for Registration {
->>> +    fn drop(self: Pin<&mut Self>) {
->>> +        // SAFETY: If an instance of `Self` has been successfully crea=
-ted, a call to
->>> +        // `register_filesystem` has necessarily succeeded. So it's ok=
- to call
->>> +        // `unregister_filesystem` on the previously registered fs.
->>
->> I would simply add an invariant on `Registration` that `self.fs` is
->> registered, then you do not need such a lengthy explanation here.
->=20
-> Since this is the only place I need this explanation, I prefer to
-> leave it here because it's exactly where I need it.
+On Wed, Jan 24, 2024 at 10:47:22PM -0500, James Bottomley wrote:
+> On Wed, 2024-01-24 at 14:57 -0500, Kent Overstreet wrote:
+> > On Wed, Jan 24, 2024 at 02:43:21PM -0500, James Bottomley wrote:
+> > > On Wed, 2024-01-24 at 13:50 -0500, Kent Overstreet wrote:
+> > > > > To illustrate the problem with cryptography in rust: just
+> > > > > because it's rust safe doesn't mean its correct or bug free. 
+> > > > > Crypto functions are the most difficult to get right
+> > > > > (algorithmically, regardless of memory safety).  Look at this
+> > > > > Medium report on the top ten bugs in blockchain:
+> > > > > 
+> > > > > https://medium.com/rektoff/top-10-vulnerabilities-in-substrate-based-blockchains-using-rust-d454279521ff
+> > > > > 
+> > > > > Number 1 is a rust crypto vulnerability due to insecure
+> > > > > randomness in a random number generating function (note it was
+> > > > > rust safe code just not properly checked for algorithmic issues
+> > > > > by a cryptographer).
+> > > > > 
+> > > > > The reason for using the kernel functions is that they are
+> > > > > vetted by cryptographers and crafted for our environment.
+> > > > 
+> > > > Are you arguing that typical kernel code is more secure than
+> > > > typical Rust code?
+> > > 
+> > > For crypto code?  Absolutely, that's what the example above showed.
+> > > It's pretty much impossible to use an insecure rng in the kernel if
+> > > you plug into one of our existing APIs.  That's obviously not
+> > > necessarily true if you pull a random one from crates.io.
+> > > 
+> > > James
+> > 
+> > I can just as easily use prandom.h instead of random.h in the kernel;
+> 
+> Neither of which would be insecure ...
 
-I get why you want this, but consider this: someone adds a another
-`new` function, but forgets to call `register_filesystem`. They have
-no indication except for this comment in the `Drop` impl, that they
-are doing something wrong.
+Are you claiming that
+        
+/* Pseudo random number generator from numerical recipes. */
+static inline u32 next_pseudo_random32(u32 seed)
+{
+        return seed * 1664525 + 1013904223;
+}
 
-I took a look at the implement ion of `unregister_filesystem` and
-found that you can pass an unregistered filesystem, in that case
-the function just returns an error. I think the only safety
-requirement of `unregister_filesystem` is that if the supplied
-pointer is a registered filesystem, the pointee is valid.
+is a secure RNG?
 
---=20
-Cheers,
-Benno
+> 
+> > this just comes down to Rust not being able to save you from
+> > arbitrary logic errors. But all the data we have so far from CVEs and
+> > bug reports shows that Rust code is _dramatically_ more secure than
+> > any C code, even kernel code.
+> 
+> I've said it thrice the bellman cried and what I tell you three times
+> is true.
+> 
+> Back in the real world, the literature seems to show that rust code has
+> about the same bug density as any other code (including C). 
 
-
+You might want to re-read that literature...
