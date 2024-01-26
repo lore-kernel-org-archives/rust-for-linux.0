@@ -1,125 +1,180 @@
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A15410971
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jan 2024 12:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBFD7F;
+	Fri, 26 Jan 2024 15:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706272439; cv=none; b=AEdRHv9fzV5xAJ6In/N/Gtf6AP70JHAeD3pIwu4KYabfA1hbyqUa5PBunCtTG+V4Uv61jZ6qJ/vWmWC+i2xxoTRr5WQ5iw8fdACVuq471KGD+ysM1fyl4PIzT/9xZk1k87tgEEiheA/zi6vsaRMIcpwbCtg50pMrDFwO25eV7vI=
+	t=1706281489; cv=none; b=UXwz+t47OWnwW+w0kZK5j8kbR8Y+aQMChvw08+AezTNoYktN0Uakg6Mewd2sn0/9jv/NbFTK52VqVsXFa4jrfzUcyP4rRHFVy4ehy4VCIT+KWKWVE4hW2vHju0bsJCmMLraVsD8fADUMrxnkNpm/z2fPXGY0J3uUXWepYV8EicU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706272439; c=relaxed/simple;
-	bh=4m99W9RcPeeWbt8DFEWQI2sp/PfyobyGjckKTyyGec4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rJWwpdieUi6awf7vBSixIHBcTcm2HMN7veC0b1IMSx24yvmGdfMwA+T5byuIiAEbW+uK4WcR6W104optuOBa7jhMGcQkAonlabg3lt4bVtQqTfkYMMfPa+WgSHvFaD3sKMhG2pCL+gtMPH9t+Fr6JWrOYtHxDTk+T0rQvfwnFCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ciNgwp8s; arc=none smtp.client-ip=209.85.222.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706281489; c=relaxed/simple;
+	bh=+2ei/gy8yAIjRdSlj5GyuSIfvHi5rH2RqaMpvTFPKWI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qo5TwcWQRI8/Q19JkuYKlm+QAyff7d4wv6FDg/JmOGW3F5T4VR808nGO22PMHimqitoDE/N37ccs/ODWRnq+jcYKiAV6L8YsWnReE7XasAdrXU8P/3/y5LpOzNjrwxpd7JRd4iRLl/RMtS4vzaE8mifCXVft4j6sbgRwBv4Sc7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AP0c6pbP; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ciNgwp8s"
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7d2e1a0337bso152957241.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jan 2024 04:33:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706272437; x=1706877237; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9UqArqULVidH7ROM7QOynYR0nvQSPMOUC/XDGfU+9xg=;
-        b=ciNgwp8sroWZ8vcx6ilBXJVZMMl1A7d/fA6LoOetvf4Hnxzof7UigiSb0HwHdZP5lP
-         /mo29IlxvGuFpYTdcSDEVoWfGnfTIPYQcr1aEsaHq26F7J1YOEk6JBxwGLzkGLELtOVh
-         OfSh+013KV0az6vxbyOlOHWaqnB7Ga9E9533BuQQJdw2Yr3a5vbgLf3e7VEImPTU5GET
-         nZw8M10Cx+cFWiM4Soi+F1uj0wfWlk5/i/0PoavMfheSbBuNdorZoW8xbxBbweX+qp9w
-         cBMOUTgwTZxsOHwAShRzKafRX9w5YpqP1r/F/8UY0gUdY5U6f/AfGT9GzIY9fLKHztdP
-         HX+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706272437; x=1706877237;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9UqArqULVidH7ROM7QOynYR0nvQSPMOUC/XDGfU+9xg=;
-        b=MO7PJQHSRPIn7qAF6XejT1o1rdn7yqB1EFBzacUkLdBDXw8PGD8AJGcwnVD0izsMTV
-         orYhrkDfXRfENMQ6ZpsSJrwTWNQ17aGrlpz2Ok+L6jo0ErE/8YnpkVGKi43MC1wAVBEw
-         cbsL7naIfy6ARrf1pHE/m7eGEbGyO9jYpJqGnqfkBbmZtuNdss6MGW+blu3ERbOO7fut
-         syx8QaD19pF6WlZlnt+lJXA46aKZtbUKdcOH0FDTgvhM37XrpdqMI4LxIhKvj2YURZDI
-         zPka3ZWw9w6DFWruQO7OMBOHY+p3P+gO0M/gGbc2Oyue/21AoMX1iveCnobMfala0skQ
-         7nqg==
-X-Gm-Message-State: AOJu0Yz8RN20axmCrRFLo1pyxZ+eYflXSw+8AOSGwQmZm8gqoZMqRbDt
-	7x8zeRfB8e/RATNxDRyu/wtHkYKwtoK+Wf4xIVJIelc0TATReuBo+Bn66Xj39cTrR1dBLtmrKsA
-	Hn07EbCsuhGKqn77lch+SdRDuI2o7mYueXBlL
-X-Google-Smtp-Source: AGHT+IGd62n+2RxpM3PIhY6cym3GnlSNkz7sZpZK5qZcCreUyKwry0eMpuKUCEZGpL8I0eVhgGC860sdXzu9+PQOL0A=
-X-Received: by 2002:a05:6122:2a07:b0:4b6:e71d:362d with SMTP id
- fw7-20020a0561222a0700b004b6e71d362dmr862145vkb.18.1706272437051; Fri, 26 Jan
- 2024 04:33:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AP0c6pbP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1706281483; x=1706540683;
+	bh=Wz2N1AcZwU0Mn94jWR065975cs5bO2b19pmlV+UYRdw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=AP0c6pbPVRMEfXf/3t1lpRi8IuxKSXky10bzvKc89aQUuXf81yWH/ZiIdqDEOTT+r
+	 WTfXuf8iGd0dXb+ZecCa3GwnDZzuT0Uggjuq2ak+5s4r8OjmGtccIqR+h+MduPrKlF
+	 TpUR6biatrUoYyPVEvWAZL/Be/uoaBc45fSHv/7s5zeVvaCiGmoTy04R7sZ8C0xNqE
+	 k+M4hH+Xu9vEyWEAL4sDg82BtDtxFdEWfXKUqcYrQQmzIxsYMarlcNyC4EYQ0xCH+w
+	 K27PSWXQnfDCSUQNULS9w46z007uYTVorJtgBR+te8ikZNmxCwTiQgVP2cJVkB1BnW
+	 tAhwtK2ZexP1g==
+Date: Fri, 26 Jan 2024 15:04:23 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] rust: file: add Rust abstraction for `struct file`
+Message-ID: <5dbbaba2-fd7f-4734-9f44-15d2a09b4216@proton.me>
+In-Reply-To: <20240118-alice-file-v3-1-9694b6f9580c@google.com>
+References: <20240118-alice-file-v3-0-9694b6f9580c@google.com> <20240118-alice-file-v3-1-9694b6f9580c@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-3-d1abcec83c44@google.com> <ZbMA1yiM6Bqv9Sqg@boqun-archlinux>
-In-Reply-To: <ZbMA1yiM6Bqv9Sqg@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 26 Jan 2024 13:33:46 +0100
-Message-ID: <CAH5fLgiNphSebaG82XkQHGFPFp1Mf1egyaiX6MFzsU2X3-Ni8w@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 26, 2024 at 1:47=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
-> > +    /// Maps the page and reads from it into the given buffer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that `dest` is valid for writing `len` byt=
-es.
-> > +    pub unsafe fn read(&self, dest: *mut u8, offset: usize, len: usize=
-) -> Result {
-> > +        self.with_pointer_into_page(offset, len, move |from_ptr| {
-> > +            // SAFETY: If `with_pointer_into_page` calls into this clo=
-sure, then
-> > +            // it has performed a bounds check and guarantees that `fr=
-om_ptr` is
-> > +            // valid for `len` bytes.
-> > +            unsafe { ptr::copy(from_ptr, dest, len) };
-> > +            Ok(())
-> > +        })
-> > +    }
-> > +
-> > +    /// Maps the page and writes into it from the given buffer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that `src` is valid for reading `len` byte=
-s.
-> > +    pub unsafe fn write(&self, src: *const u8, offset: usize, len: usi=
-ze) -> Result {
->
-> Use a slice like type as `src` maybe? Then the function can be safe:
->
->         pub fn write<S: AsRef<[u8]>>(&self, src: S, offset: usize) -> Res=
-ult
->
-> Besides, since `Page` impl `Sync`, shouldn't this `write` and the
-> `fill_zero` be a `&mut self` function? Or make them both `unsafe`
-> because of potential race and add some safety requirement?
+On 18.01.24 15:36, Alice Ryhl wrote:
+> +/// Wraps the kernel's `struct file`.
+> +///
+> +/// # Refcounting
+> +///
+> +/// Instances of this type are reference-counted. The reference count is=
+ incremented by the
+> +/// `fget`/`get_file` functions and decremented by `fput`. The Rust type=
+ `ARef<File>` represents a
+> +/// pointer that owns a reference count on the file.
+> +///
+> +/// Whenever a process opens a file descriptor (fd), it stores a pointer=
+ to the file in its `struct
+> +/// files_struct`. This pointer owns a reference count to the file, ensu=
+ring the file isn't
+> +/// prematurely deleted while the file descriptor is open. In Rust termi=
+nology, the pointers in
+> +/// `struct files_struct` are `ARef<File>` pointers.
+> +///
+> +/// ## Light refcounts
+> +///
+> +/// Whenever a process has an fd to a file, it may use something called =
+a "light refcount" as a
+> +/// performance optimization. Light refcounts are acquired by calling `f=
+dget` and released with
+> +/// `fdput`. The idea behind light refcounts is that if the fd is not cl=
+osed between the calls to
+> +/// `fdget` and `fdput`, then the refcount cannot hit zero during that t=
+ime, as the `struct
+> +/// files_struct` holds a reference until the fd is closed. This means t=
+hat it's safe to access the
+> +/// file even if `fdget` does not increment the refcount.
+> +///
+> +/// The requirement that the fd is not closed during a light refcount ap=
+plies globally across all
+> +/// threads - not just on the thread using the light refcount. For this =
+reason, light refcounts are
+> +/// only used when the `struct files_struct` is not shared with other th=
+reads, since this ensures
+> +/// that other unrelated threads cannot suddenly start using the fd and =
+close it. Therefore,
+> +/// calling `fdget` on a shared `struct files_struct` creates a normal r=
+efcount instead of a light
+> +/// refcount.
+> +///
+> +/// Light reference counts must be released with `fdput` before the syst=
+em call returns to
+> +/// userspace. This means that if you wait until the current system call=
+ returns to userspace, then
+> +/// all light refcounts that existed at the time have gone away.
+> +///
+> +/// ## Rust references
+> +///
+> +/// The reference type `&File` is similar to light refcounts:
+> +///
+> +/// * `&File` references don't own a reference count. They can only exis=
+t as long as the reference
+> +///   count stays positive, and can only be created when there is some m=
+echanism in place to ensure
+> +///   this.
+> +///
+> +/// * The Rust borrow-checker normally ensures this by enforcing that th=
+e `ARef<File>` from which
+> +///   a `&File` is created outlives the `&File`.
+> +///
+> +/// * Using the unsafe [`File::from_ptr`] means that it is up to the cal=
+ler to ensure that the
+> +///   `&File` only exists while the reference count is positive.
+> +///
+> +/// * You can think of `fdget` as using an fd to look up an `ARef<File>`=
+ in the `struct
+> +///   files_struct` and create an `&File` from it. The "fd cannot be clo=
+sed" rule is like the Rust
+> +///   rule "the `ARef<File>` must outlive the `&File`".
+> +///
+> +/// # Invariants
+> +///
+> +/// * Instances of this type are refcounted using the `f_count` field.
+> +/// * If an fd with active light refcounts is closed, then it must be th=
+e case that the file
+> +///   refcount is positive until there are no more light refcounts creat=
+ed from the fd that got
 
-Ideally, we don't want data races with these methods to be UB. They
-could be mapped into the address space of a userspace process.
+I think this wording can be easily misinterpreted: "until there
+are no more light refcounts created" could mean that you are allowed
+to drop the refcount to zero after the last light refcount has been
+created. But in reality you want all light refcounts to be released
+first.
+I would suggest "until all light refcounts of the fd have been dropped"
+or similar.
 
-Alice
+> +///   closed.
+> +/// * A light refcount must be dropped before returning to userspace.
+> +#[repr(transparent)]
+> +pub struct File(Opaque<bindings::file>);
+> +
+> +// SAFETY: By design, the only way to access a `File` is via an immutabl=
+e reference or an `ARef`.
+> +// This means that the only situation in which a `File` can be accessed =
+mutably is when the
+> +// refcount drops to zero and the destructor runs. It is safe for that t=
+o happen on any thread, so
+> +// it is ok for this type to be `Send`.
+
+Technically, `drop` is never called for `File`, since it is only used
+via `ARef<File>` which calls `dec_ref` instead. Also since it only contains
+an `Opaque`, dropping it is a noop.
+But what does `Send` mean for this type? Since it is used together with
+`ARef`, being `Send` means that `File::dec_ref` can be called from any
+thread. I think we are missing this as a safety requirement on
+`AlwaysRefCounted`, do you agree?
+I think the safety justification here could be (with the requirement added
+to `AlwaysRefCounted`):
+
+     SAFETY:
+     - `File::drop` can be called from any thread.
+     - `File::dec_ref` can be called from any thread.
+
+--
+Cheers,
+Benno
+
+> +unsafe impl Send for File {}
+> +
+> +// SAFETY: All methods defined on `File` that take `&self` are safe to c=
+all even if other threads
+> +// are concurrently accessing the same `struct file`, because those meth=
+ods either access immutable
+> +// properties or have proper synchronization to ensure that such accesse=
+s are safe.
+> +unsafe impl Sync for File {}
+
