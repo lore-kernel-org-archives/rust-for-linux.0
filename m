@@ -1,228 +1,132 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E877362;
-	Fri, 26 Jan 2024 00:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16046EBE
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jan 2024 01:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706230026; cv=none; b=F4vpM/t1XVvIcwJOI9N5PUCs+UVCvy54qBA3ed1iHbzrwJeC7B+Tus/mfM6qio2Q4XM4feM9/Hebt4imVXMdUWv+LQ6NaMqfbTBisbq1Rz5b8GdDrJdWxY5C8BD3sNOWGkj4039yrVe+5snynK41/hNbaXYLCHH+XTXFIbwkkvA=
+	t=1706231055; cv=none; b=ufKwjJQUKmeav3mnfwCRbJvwiJ0NwNdy25NMzeB/EBDf/B0UBnIJwSQlxEYCNoF53+bYKxqUFh4ob7mrWobYKpOfpcEOFbX1kZc2Z8rGXVgL7adj4faYALODmsA2V9zgahnNg0CUBJ1Z0hvmUMMqUTyXMt7R0azrJ4hr2Zn8S8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706230026; c=relaxed/simple;
-	bh=aZU67BcgtYdYWLFpivNFnPhz4A5DSRb9LWCNArdlDik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AifIpL+pKk83seIXxllOTP0dqHmf7RfZchYO213GV5A5h3Qp5p2Grw99fzKk4gn32Un7orkEManeERQ6sw3WEGzh23Yyb5x1GA9woCBNrrENOFgMFC1Q9wcM9E6vpX9RyXUyDbF81LsY8I+hyyLKUYBK8+XbPpLtlejVW9HRgA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nrDb0ydF; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1706231055; c=relaxed/simple;
+	bh=IMhLnx9xbW48kwVMOCYB/mfHRVdRLA2M1LkvQ2JdkU8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l+/BVZ9mKZ7nOF1Os5nZxly+iO0hVXCLksFJEkSY3oixB1B5uQbHSmnXh9Sn7wKMeG1QDKkU2V7malhNNTCWvgYfUep3dg2bK+mMC34aq98wB1+w8mHbVpJ3jQQOo58yTtSkCZk+7FEkH92q4ZSjNofPPFqy8BUfiuikhgqGwto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=nAO/x5w3; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nrDb0ydF"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-783cf58221fso1162385a.2;
-        Thu, 25 Jan 2024 16:47:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="nAO/x5w3"
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6dc8b280155so190684a34.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jan 2024 17:04:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706230024; x=1706834824; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1706231050; x=1706835850; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eb0k+mslh6p4v5lTPXQ4s3OPRdfCkOzWaYkI73LF69Y=;
-        b=nrDb0ydFV9gB9/NgQQwP4cIfEYCQ+KIqvIxo//WYKGUiBihfsjyzGLbvySUDRyHVdN
-         0sVt468TdvIadHHwAeEeRsP/43NO1fdUmG+ENvzWY29GfJDvbMYYUyIf4dnwm8hbhfd9
-         nIp5sS1ThBU8UJRMTQomXbQ1tJzbSau1u4dW1YLT3ai4+LtnriTNDW7kE7xJyijmYOuK
-         csOd7bNNiHBjX4PE68qVRaA3J8eSjs8Ch21VESboBV9IEdva/XOU7SdHCy/awONT0uNN
-         VJjxx3Si80REQU2+WIgu2/8o8r/x8V07yKt42Z1bPDcJrPknkYbMH83obx9/3FZDemS8
-         Y3lg==
+        bh=5PL64YswD7CFiTUaHpI0NdxPc3Rjg3ZkzZFm8JxzGTk=;
+        b=nAO/x5w39TLkT+3EBoNqTq8WN5rGvV/fuF0Y4n7Kx88IvuSzMl1b9SNaNr9XoFR/Yf
+         OCoXYLA/StHvl+vRzZMmoa7Wu9rqfoUJQfpa/Ap7vcaUXyA2g4OSnif6OEI30ocgWeAE
+         3a3j0YVNEIXHkin2kSZJXeWaZX322q6+CMTtcwKcmB/Vk3I5667tZMXwg4KtadlulEHV
+         E9AH/gmKlaS9IKLzQ5O3Sh6MRjh75ULPtnAYgYS7gZgEjpF7MQ9UXrtDCQXS+g55OJj0
+         D6hTnJtuB8xeCC8kRw9UgOrHcViHzfknmft60sMeqZGw7D9LuUrKz9hvmwRA6+qyZ2Jn
+         ohuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706230024; x=1706834824;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1706231050; x=1706835850;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eb0k+mslh6p4v5lTPXQ4s3OPRdfCkOzWaYkI73LF69Y=;
-        b=dw2JqNWbj8JBHx+cmtJRXN/x34kAVxHnazMFCmqH4ydiIqz3eiT3TAezZWWvGqm1B2
-         fdUz1+mbtSLBARtjE7ym5GtHb2TtCffg+Yj1rh1EdP68Y4t1LvTpxRzOXa8q9wczu9T6
-         XYTiO+8350w4bNdqHZXGYO83AbKCB8cpnQ3YFZP4qsXME9DAjD/s40uLV6BD1TGb7WUA
-         jwJjKQYe+vVfdty5lEXPCyI0b+dslXJ8ao4eoZs2t+DckIspQoTXyx/3aqnzOfnUsovZ
-         f/NM47d0KSqIzUfPzhH8uHcUSbhAZ6/uDZXI4KC7AmdszZh1MbctE226QKaVnZV6b3Aj
-         j1Lg==
-X-Gm-Message-State: AOJu0YxKfyTpAMpvoJYCHgLM7h/MSNmG/oXjF/3oBhHgvByPAyPRTwDw
-	nxoBvtEpBM8L7/OLDRT4sC/unmrbcXDQiHTEKuxX7Wht0fcIWGsN
-X-Google-Smtp-Source: AGHT+IG2J8w56HlcU6RBuC4uKuoBV3MrlGDHdSu4bpeB7MKWZ25NaYZaPmZQNqTKIsr82eJm6uHyQw==
-X-Received: by 2002:a37:ef15:0:b0:783:c869:8367 with SMTP id j21-20020a37ef15000000b00783c8698367mr562326qkk.139.1706230023816;
-        Thu, 25 Jan 2024 16:47:03 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id m3-20020ae9e003000000b00781bdb17d8asm70244qkk.118.2024.01.25.16.47.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jan 2024 16:47:03 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailauth.nyi.internal (Postfix) with ESMTP id ACDFC27C005B;
-	Thu, 25 Jan 2024 19:47:02 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Thu, 25 Jan 2024 19:47:02 -0500
-X-ME-Sender: <xms:BQGzZTpNLb-jIIK4H0LjfW4sX1bZQkxI474SgYxjCBAk3E-JP_3jcg>
-    <xme:BQGzZdoZGt9NsZcvE_06KmSO3M3XbttZoz4WRIZm4wBUD3W1aMGVdQ36i4tZXsQ54
-    QRVCOt9gSALG1ryBA>
-X-ME-Received: <xmr:BQGzZQM2r0klbLGdkqN3KUiC8DR8s4-cFQYehtyOaczC-Yvc2TPFwf2tL7sb0w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeliedgvdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:BQGzZW4dyHNYH64caFYAOtBkiCVOtmlIdpr-KTlGqa_K9-z6RcZ7FQ>
-    <xmx:BQGzZS4gUdgquBGt7HjiErutSJpi64dK0Obw2VEEFqdvsoDJlEA0_Q>
-    <xmx:BQGzZeijwgxTu45JPPSy4v3YNAw_AEeEmgaMQ7kU6aHXd455ZDETRg>
-    <xmx:BgGzZXqMg67gyNizQa_kuMmDORp5Cv1kTaX5LGlCPZ-wmQ6jQbL4TQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 25 Jan 2024 19:47:01 -0500 (EST)
-Date: Thu, 25 Jan 2024 16:46:15 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Kees Cook <keescook@chromium.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
-Message-ID: <ZbMA1yiM6Bqv9Sqg@boqun-archlinux>
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-3-d1abcec83c44@google.com>
+        bh=5PL64YswD7CFiTUaHpI0NdxPc3Rjg3ZkzZFm8JxzGTk=;
+        b=PRuAJpIL0Vt3VQnrGOdAjZdyIDJiFGkHXjgCCwdcs9qHxuegU9EP/48iIdqds5WhO5
+         0cAbPAVHaj/HuVvdWfO38nviJs5F+CF5Vuc02njcdW8H73udNJ7gyYM13eyX8ys0eyTs
+         8hvIs5FmrY9Wadc6DP1rOW6a2IbBUBl0Cf4Cfh9PuvwHZGJpVzqBar9J9MsSjjDQp1Vd
+         44fwyD9ZP9N/SupnJSVAbUK0DaON9pXrt6luhMMPxNATAgMFCmr7+TrvYh2bD6m/e1ln
+         znmMNybpvJq7C95RgSQqgNeqchcXgpRl3Nb1qVK0BCqjzkhvlHEUJQrg4PXuwAUZIiqC
+         0Ndw==
+X-Gm-Message-State: AOJu0YzdVLK35and5L9O6ZAB5CzkHXsqROBAITmdCkE+XTofcg1CQDf9
+	TUkEVQOhRvlnRqhb4yNWUIymScHOTqLvfuHhQCi/YtypYZX2r+9/ZzcvZunMLh96vNlzAabbzph
+	f1UgxUOtrA/k1DbPXBXF1Iu01a6ljKlQw2cWZ9g==
+X-Google-Smtp-Source: AGHT+IHDekCPRm2mSK6qL8gb1p+BYNr4/QRFxWvi7ZWDLrj473whl/qU/+4rlNuzJAVEmy4Lh1125xijVk9aix9Qr9k=
+X-Received: by 2002:a9d:799a:0:b0:6dd:dffa:ef68 with SMTP id
+ h26-20020a9d799a000000b006dddffaef68mr612112otm.71.1706231050156; Thu, 25 Jan
+ 2024 17:04:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240124-alice-mm-v1-3-d1abcec83c44@google.com>
+References: <20240125014502.3527275-1-fujita.tomonori@gmail.com>
+ <20240125014502.3527275-2-fujita.tomonori@gmail.com> <4573a237-dd18-4ea0-8de4-8b465eb856c7@lunn.ch>
+In-Reply-To: <4573a237-dd18-4ea0-8de4-8b465eb856c7@lunn.ch>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Thu, 25 Jan 2024 19:03:58 -0600
+Message-ID: <CALNs47svLHD3=LFrhi=zf4hdr--e6hGjTzT5X_U9yd8q5r7G7g@mail.gmail.com>
+Subject: Re: [PATCH net-next] rust: phy: use VTABLE_DEFAULT_ERROR
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
-[...]
-> +    /// Runs a piece of code with a raw pointer to a slice of this page, with
-> +    /// bounds checking.
-> +    ///
-> +    /// If `f` is called, then it will be called with a pointer that points at
-> +    /// `off` bytes into the page, and the pointer will be valid for at least
-> +    /// `len` bytes. The pointer is only valid on this task, as this method uses
-> +    /// a local mapping.
-> +    ///
-> +    /// If `off` and `len` refers to a region outside of this page, then this
-> +    /// method returns `EINVAL` and does not call `f`.
-> +    pub fn with_pointer_into_page<T>(
+On Thu, Jan 25, 2024 at 11:42=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
+:
+> > @@ -580,12 +580,12 @@ pub trait Driver {
+> >
+> >      /// Issues a PHY software reset.
+> >      fn soft_reset(_dev: &mut Device) -> Result {
+> > -        Err(code::ENOTSUPP)
+> > +        kernel::build_error(VTABLE_DEFAULT_ERROR)
+> >      }
+>
+> Dumb question, which i should probably duckduckgo myself.
+>
+> Why is it called VTABLE_DEFAULT_ERROR and not
+> VTABLE_NOT_SUPPORTED_ERROR?
+>
+> Looking through the C code my guess would be -EINVAL would be the
+> default, or maybe 0.
+>
+> The semantics of ENOTSUPP can also vary. Its often not an actual
+> error, it just a means to indicate its not supported, and the caller
+> might decide to do something different as a result. One typical use in
+> the network stack is offloading functionality to hardware.
+> e.g. blinking the LEDs on the RJ45 connected. The driver could be
+> asked to blink to show activity of a received packet. Some hardware
+> can only indicate activity for both receive and transmit, so the
+> driver would return -EOPNOTSUPP. Software blinking would then be used
+> instead of hardware blinking.
+>
+>          Andrew
 
-Name it as `with_slice_in_page` maybe?
+`build_error` is a bit special and is implemented as follows:
 
-> +        &self,
-> +        off: usize,
-> +        len: usize,
-> +        f: impl FnOnce(*mut u8) -> Result<T>,
-> +    ) -> Result<T> {
-> +        let bounds_ok = off <= PAGE_SIZE && len <= PAGE_SIZE && (off + len) <= PAGE_SIZE;
-> +
-> +        if bounds_ok {
-> +            self.with_page_mapped(move |page_addr| {
-> +                // SAFETY: The `off` integer is at most `PAGE_SIZE`, so this pointer offset will
-> +                // result in a pointer that is in bounds or one off the end of the page.
-> +                f(unsafe { page_addr.cast::<u8>().add(off) })
-> +            })
-> +        } else {
-> +            Err(EINVAL)
-> +        }
-> +    }
-> +
-> +    /// Maps the page and reads from it into the given buffer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `dest` is valid for writing `len` bytes.
-> +    pub unsafe fn read(&self, dest: *mut u8, offset: usize, len: usize) -> Result {
-> +        self.with_pointer_into_page(offset, len, move |from_ptr| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
-> +            // it has performed a bounds check and guarantees that `from_ptr` is
-> +            // valid for `len` bytes.
-> +            unsafe { ptr::copy(from_ptr, dest, len) };
-> +            Ok(())
-> +        })
-> +    }
-> +
-> +    /// Maps the page and writes into it from the given buffer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `src` is valid for reading `len` bytes.
-> +    pub unsafe fn write(&self, src: *const u8, offset: usize, len: usize) -> Result {
+1. If called in a `const fn`, it will fail the build
+2. If the build_error symbol is in a final binary, tooling should
+detect this and raise some kind of error (config
+RUST_BUILD_ASSERT_ALLOW, not exactly positive how this is implemented)
+3. If called at runtime, something is very unexpected so we panic
 
-Use a slice like type as `src` maybe? Then the function can be safe:
+To make a trait function optional in rust, you need to provide a
+default (since all functions in a trait must always be callable). But
+if the C side can handle a null function pointer, it's better to just
+set that instead of reimplementing the default from Rust.
 
-	pub fn write<S: AsRef<[u8]>>(&self, src: S, offset: usize) -> Result
+So it's up to the abstraction to set these fields to NULL/None if not
+implemented, e.g. from create_phy_driver in phy.rs:
 
-Besides, since `Page` impl `Sync`, shouldn't this `write` and the
-`fill_zero` be a `&mut self` function? Or make them both `unsafe`
-because of potential race and add some safety requirement?
+        soft_reset: if T::HAS_SOFT_RESET {
+            Some(Adapter::<T>::soft_reset_callback)
+        } else {
+            None
+        },
 
-Regards,
-Boqun
+If an abstraction does this wrong and tries to assign a default
+function when it would be better to get a null pointer, then we get
+the build error. So this is something that would pop up if the
+abstraction is done wrong, not just if somebody writes a bad phy
+driver.
 
-> +        self.with_pointer_into_page(offset, len, move |to_ptr| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
-> +            // it has performed a bounds check and guarantees that `to_ptr` is
-> +            // valid for `len` bytes.
-> +            unsafe { ptr::copy(src, to_ptr, len) };
-> +            Ok(())
-> +        })
-> +    }
-> +
-> +    /// Maps the page and zeroes the given slice.
-> +    pub fn fill_zero(&self, offset: usize, len: usize) -> Result {
-> +        self.with_pointer_into_page(offset, len, move |to_ptr| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
-> +            // it has performed a bounds check and guarantees that `to_ptr` is
-> +            // valid for `len` bytes.
-> +            unsafe { ptr::write_bytes(to_ptr, 0u8, len) };
-> +            Ok(())
-> +        })
-> +    }
-> +
-> +    /// Copies data from userspace into this page.
-> +    pub fn copy_into_page(
-> +        &self,
-> +        reader: &mut UserSlicePtrReader,
-> +        offset: usize,
-> +        len: usize,
-> +    ) -> Result {
-> +        self.with_pointer_into_page(offset, len, move |to_ptr| {
-> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
-> +            // it has performed a bounds check and guarantees that `to_ptr` is
-> +            // valid for `len` bytes.
-> +            unsafe { reader.read_raw(to_ptr, len) }
-> +        })
-> +    }
-> +}
-> +
-> +impl Drop for Page {
-> +    fn drop(&mut self) {
-> +        // SAFETY: By the type invariants, we have ownership of the page and can
-> +        // free it.
-> +        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
-> +    }
-> +}
-> 
-> -- 
-> 2.43.0.429.g432eaa2c6b-goog
-> 
+VTABLE_DEFAULT_ERROR isn't a kernel errno, it's a string printed to be
+printed by build_error or the tooling.
+
+- Trevor
