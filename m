@@ -1,88 +1,89 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18111E867;
-	Sat, 27 Jan 2024 15:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3344E2D022;
+	Sat, 27 Jan 2024 17:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706368252; cv=none; b=LIt9Lt++lYYqHpp7Lg3coceaCBAsdQaQXiM0P30NK7o4YZ80dy3pfTE8LAIHYJT2USX9tgYVyvIkQ/nRAs4bzVCEZEuwgfcEa+qMlv9ffeNP+g9qeNn3tKwlK5c4DDnKUSE9JD6PPjpQJ/nr27GgRLOnthQnUU2gvOj34FKuER8=
+	t=1706376688; cv=none; b=hE4UoenKl4kT/oByKyqSQ6jszi5ok++8sCrRmjScS9MUdyDHG/tbNbxrwKhvqvMTNWO07P3xq3YOGuapiu0nXVy7cMV6xauuAU7qfMhmz4Q+9fjC7fZcsri/lzFoGgEq2Fc9rgNV9ndgNRehdHmLbthetzRCZnE2WYugvbP3kgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706368252; c=relaxed/simple;
-	bh=xKSFQmVxtAOGPGJAPLF0MbzfXrKik1GUQcQRydHiA7A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W03bpjii2DC3sRbGHT3zzb2XzYDlDvrS0kdcC2pV7qMMkICdcbYMHLBj/mDdNpQnFMKpy5GumgHfoPIAuhre3qoe7/4j/Y+G7HZ5l4/RIykzV5MBEFnApgbjmGxsHb3subHSZS5RT3mX9Fu3Vfsh75avrKaLhWKELXxnHaXymm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mn34+7DM; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1706376688; c=relaxed/simple;
+	bh=v/eRmXnwcofzCLUu7NDTFXzeYjOhl/y7gybN3TxLwFI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GUAsnjFhYiZJWcSayj7RAynezHZGkrVKTdYg6vcL/QeaHrrL5ENGI9Ks+nfgVipOf9ULYZr05+fcBE7ZletOMrgHxh6iexJFA1FeeF0H48JOwBCzl5ECNLLNjmq8SvwLJ5+og3UpW58EiRqnUW8238eGX/X0SMZAEFu3/1GvFFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MHfE3qFo; arc=none smtp.client-ip=209.85.219.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mn34+7DM"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-290b219a60cso871296a91.0;
-        Sat, 27 Jan 2024 07:10:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MHfE3qFo"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so1215576276.1;
+        Sat, 27 Jan 2024 09:31:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706368250; x=1706973050; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=exa8lnhZ2cdqFsVJ6CIdmdXQHog1PRg+qoh5FEBSti4=;
-        b=Mn34+7DMvVBEV3KTjJ/CBE9yZnwdeoJeAmtJKuoP1SumB1BH3E5bgdvAflAzjTgbLr
-         GWse6yLwW+gQU4RJB22CABRvxnywr6KrnzDy+Q0aLbQg79NXYZN1JQDI+y4QGDrFU4Ya
-         WDE/iudrvsx8Ox9iJ4f+2l7UCsCgPb1hIThzA5YIB1V0Yr/N3Y+6WJV3RqcFXvWAkEql
-         ItQZoxh4VO4oj84OJYtAtFLQEWQvi5Wbw0D8WbW5JUnnBCETS3NQdClVl7DCoQkyV+db
-         qfVQCQ6aYh7VuT0zCEJN1fGKefEivo2EZ+iIQaYSVWSfzQ0M/G1cQRxMf7guxT6K+ezu
-         9FQA==
+        d=gmail.com; s=20230601; t=1706376686; x=1706981486; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v/eRmXnwcofzCLUu7NDTFXzeYjOhl/y7gybN3TxLwFI=;
+        b=MHfE3qFonuwSz2tUtku0Ze5d1ppntYQCLSqvhKrkmyhdQdxLCZFaXXjKSu7W4Hm4o+
+         gnn66WzpuSPfj/yuk+uYqtOz7qQuxWmF/AVlvc2gtkBBmtCHKryxagC91jdhDz6BGxyf
+         Zn7k0xtwf5aG6yUaNNu8LUKEL3mIMSTyl89jfWHI9Hc6GGuFQsrf2/N5QwsLhxjbX+mi
+         W7ncG5+57Hhd7cmK6bGalbDD6uyzpWKt4KWR3kizqGzl9QJTI1LW7pRYQk4srWqku/D+
+         3GJhxP+NSZi33GZfWiX4qiQy+j7v5GE6Yu5BJFwmfBJwliWnhBom5SVkURLWSzcGed4h
+         x+pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706368250; x=1706973050;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=exa8lnhZ2cdqFsVJ6CIdmdXQHog1PRg+qoh5FEBSti4=;
-        b=iurLjuQ4tpqXPU7LNyOZ79QL5lCX+/8a4vyYIWWdhJzoUl8uUSnobKXJ7XSagloCF4
-         fbVsunmqs7btIlAQWUcomEdr+FoHymOdX4J0gOqYcNocT0633iVBhIog3kBRrruYTypy
-         eKefAzof4SynAANIg+qZTuvfE4EsruS3zdNQpso/bZGIoqJspw0O9ICQ5LDA4v39S6qI
-         m/OLPjd5EzhyjCStNTY9SAQHYgyC6UwEyAE0QYCLo4sXuakFp1yGDxwcRw0pYm6o2cSg
-         FIBs+nY7Vz0eCncpGBcp3kq8/uqtgSfWyiZ+MFbiezo6/ZJ8Sg8VFoksgIReIzMvhxdx
-         4Zrw==
-X-Gm-Message-State: AOJu0YxUYx3M/FDEi5sMcjM4ASe/miMC3FEMSs+5G9bGzzYwokz343XB
-	KjGVKc3WcfqU9qO/FrtVg5HYmJ/SFQ6E9SQyMBy0MXuDsVsno6Xr
-X-Google-Smtp-Source: AGHT+IGqg56oo3QQenahTbidUTI/Ew8TOP/y1ircg+yxKqqi7ET5EOIIK/EtPLpDEtku1kR4/YpFWA==
-X-Received: by 2002:a17:90a:de85:b0:28e:7baf:6fb5 with SMTP id n5-20020a17090ade8500b0028e7baf6fb5mr768817pjv.64.1706368250117;
-        Sat, 27 Jan 2024 07:10:50 -0800 (PST)
-Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id x34-20020a17090a6c2500b0028c465b050asm3289818pjj.54.2024.01.27.07.10.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Jan 2024 07:10:49 -0800 (PST)
-Message-ID: <a899a90b-39f0-43ef-8cb3-bd706d749fe4@gmail.com>
-Date: Sat, 27 Jan 2024 12:10:44 -0300
+        d=1e100.net; s=20230601; t=1706376686; x=1706981486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v/eRmXnwcofzCLUu7NDTFXzeYjOhl/y7gybN3TxLwFI=;
+        b=T4ZdZUSOEZRaDOlECttGu3oWz05d1lp1baU0YlLBmQvc/yM84j21YQzvSDqrZrGc2Z
+         zGI6cA0I+BfDVEdqSTyrVJE1iSou532cZ3JYeT6GllM+negueEKIV7/m5cZI/mNxbmfB
+         FhBiJ7Vu30ZMPUUgXnOsM1UML/kjA1OEkfor3spvAVeHs6jDdGwZSILGfEuRU9m24fP+
+         X1m/wSo9ZLFtzBq9nyBIse6h7Ze0lgwZpjCu2lWodsjXmha4at7CoHfRr/Wse0SqVwAn
+         vBttDe53YrwbD9Hl7z2O86bYE+kZbHRMYR6TSlQE/PXRKU24GXZbrNQafh1K+eMMO1Me
+         JZmg==
+X-Gm-Message-State: AOJu0Yzyny15mlk2LSl3yHvnwttYPqeNv8pIe4Pl1ZwnWYcQXuSHH4DJ
+	CNR2MozUmpLsYxTkVfMyS9XRvLGZnh1mPjeUH8soe3IGlVHSinLaj8UFZkvQR3i2oxvOHfLOWtJ
+	9xYlcGZC5pbzPRQN5u2V78XZkd1o=
+X-Google-Smtp-Source: AGHT+IGT6QA+Fv5einVWUruH4wFZtEDFhs+QsdbfleXhdDOmi22jhHOwpbUDt75IdkG3ywsAidiVPQmqlmIUB3+EsHY=
+X-Received: by 2002:a25:8c88:0:b0:dc6:3d4d:c953 with SMTP id
+ m8-20020a258c88000000b00dc63d4dc953mr823284ybl.68.1706376686077; Sat, 27 Jan
+ 2024 09:31:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/12] rust: error: improve unsafe code in example
-To: Valentin Obst <kernel@valentinobst.de>,
- Valentin Obst <fraunhofer@valentinobst.de>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240123150112.124084-1-kernel@valentinobst.de>
- <20240123150112.124084-3-kernel@valentinobst.de>
-Content-Language: en-US
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20240123150112.124084-3-kernel@valentinobst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
+ <20231020155056.3495121-2-Jamie.Cunliffe@arm.com> <CALNs47vzQm5MbfJtMQR3p+W1xub3KHiNqRgEQGWT3u28fpQ-oA@mail.gmail.com>
+ <CAHirt9jhbnXz34D-pmHNecMfkefL4wTr9LYj_V28OsVd=fkdZA@mail.gmail.com>
+ <CAK7LNAQKxrV-oxouv9F6+_i9-oGvJNBzFNLo+5PdqwWVd9qWZQ@mail.gmail.com> <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
+In-Reply-To: <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 27 Jan 2024 18:31:14 +0100
+Message-ID: <CANiq72=aO-786owBb=0m5x09nMFenRendPZxd2fnsa6_nZHHCQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
+ of builtin targets
+To: WANG Rui <wangrui@loongson.cn>, Catalin Marinas <catalin.marinas@arm.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
+	boqun.feng@gmail.com, andrew@lunn.ch, Huacai Chen <chenhuacai@kernel.org>, 
+	loongarch@lists.linux.dev, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/23/24 12:00, Valentin Obst wrote:
-> The `from_err_ptr` function is safe. There is no need for the call to it
-> to be inside the unsafe block.
-> 
-> Reword the SAFETY comment to provide a better justification of why the
-> FFI call is safe.
-> 
-> Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-> ---
-> [...]
+On Sat, Jan 27, 2024 at 6:08=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wrot=
+e:
+>
+> I agree. It would be great if Jamie could squash them together.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Either that or perhaps Catalin could do it at apply time with your
+Co-developed-by and/or Huacai's Acked-by? I could also take if needed.
+
+Thanks Masahiro & Rui!
+
+Cheers,
+Miguel
