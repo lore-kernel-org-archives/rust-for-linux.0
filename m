@@ -1,236 +1,110 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E5D8BED
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Jan 2024 05:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C0F945A;
+	Sat, 27 Jan 2024 13:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706332118; cv=none; b=i4yQyZ93aW+lHp+mgIapWQ16sDi4fAXey4xh/iL5JT1Lj7uN4J9UpDZypDnnTKmqIrDqD5rmZOaNwl2v0OQ9g3w9qKEh8/7IEDD5EG+4BqVdC/2z7n5JX8YSodDL3MfcZMVc2RgieC/rWO4/KU/hXErgoe1dRlR0wwFQwZuMS4E=
+	t=1706363212; cv=none; b=K9U+a+LD3TrAPxeWsrB2+/cIeSd3jZJH2hKsfC37aaTuXUlJyK3UUfZxe/xDgPLfkn1gIdw2+Tq62oCYbIWsY/sigc9tz2uHZVNAo5kFYnZK8R9qwUjFpsPW+NJAZCnv8S8VnUSUfNewqM58osgsMA/Zi0QnKK3kplgIlpmXZpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706332118; c=relaxed/simple;
-	bh=du8JnSk1v2gC0WW2DoWM6Kkq19h+cimR9p2mzTXkIAc=;
+	s=arc-20240116; t=1706363212; c=relaxed/simple;
+	bh=j7l3zAsK78DoVXLg6iPo3Iy7at8rxO0NoQr3L4U6WXQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rzvjR7ZzhIgs/QplfU8v6Gg2ei8y3rUA2Re5p3OlIB+OdJcv4BphpN/cjvHGhlHSJg8r2BCh6baCTyt2dK2M5yKeB++3heZ629Jl1hSrrHIRPYvsEqfV1ijN20JoFnCJbE3Tpw0B7nyKAV4rM2uw7/93BQ+UrSLGsFX3c66VK7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [209.85.128.173])
-	by gateway (Coremail) with SMTP id _____8DxvuvJj7RlcswGAA--.22500S3;
-	Sat, 27 Jan 2024 13:08:26 +0800 (CST)
-Received: from mail-yw1-f173.google.com (unknown [209.85.128.173])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8Cxbs3Ej7RlhE8eAA--.59764S3;
-	Sat, 27 Jan 2024 13:08:22 +0800 (CST)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-602cf45bfe9so10419617b3.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jan 2024 21:08:22 -0800 (PST)
-X-Gm-Message-State: AOJu0YygvuxLHKgsjY4IahwPlZHMs/nDR2SrS9bYIWGJmuTylJEHfMBa
-	+C17+o0cNGUs7aOCpXV9qxYMGF0KEEy3+yifa6N+HbN6Yx+f2GEo7z+P7GgY9ZHLybqdfISz1qf
-	olDGb26x98iD4cb0mBUqS1XVYD0szauUXIJhQcw==
-X-Google-Smtp-Source: AGHT+IGYDcc7xr0fWVHNVsv8o4zNLB5BZHFXPlFRotx1GpDxIomAF+hhYdD6JAwkil/3JgOZjO0/+g6/bVFcZBK7FCY=
-X-Received: by 2002:a0d:e88b:0:b0:5ff:8113:4d9d with SMTP id
- r133-20020a0de88b000000b005ff81134d9dmr829991ywe.40.1706332099756; Fri, 26
- Jan 2024 21:08:19 -0800 (PST)
+	 To:Cc:Content-Type; b=QFd8YlBvFrdtbLPrAMmUrc35QngJsQcC4tNVbSpDz4dMEzxxz/i20XZg3fYX0mqGcgqCQKZZaQXWwRULIMJlhaXOf71co2N6Ca5j+AKSgTsJ/EG8cwx8Oz9pc9nL+sbMt65u/6AjQSjH3XruNeNd97sL++oKuJCBLgY2kkkUc+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4lLGmLt; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4lLGmLt"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-603c5d7997aso256467b3.1;
+        Sat, 27 Jan 2024 05:46:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706363210; x=1706968010; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j7l3zAsK78DoVXLg6iPo3Iy7at8rxO0NoQr3L4U6WXQ=;
+        b=G4lLGmLt+8tIUu3seRozH8eeI2hwU9AYmBHqs8YIPNuMx7oF47ee9XmlBPavPkVSMZ
+         tO3lR0i2IdMuUtLiMJwXVxOaBTr/9ro6DNB8FBafYpFc0oXyCqMC4GSijbDc20V/grx7
+         RZ7Nh+AZIcI9dlwDqqQUd9fIXjrL1fYlPEy1xfLd2QhgyVpO21s8vJjOKtKAmoV1S7rI
+         ntD52yxQd42e4eK1fyJQgf60Fw0F8TKBAOdqWbBprjOmeCUKmqTS8eD9VLBjFZSBryFg
+         6viE09cNQKeeXjklHAN6+8HSk77YatBOr1M0ORMsi2UpeoO7+Xr1G9nz8HwunYqJLH/b
+         1V/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706363210; x=1706968010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j7l3zAsK78DoVXLg6iPo3Iy7at8rxO0NoQr3L4U6WXQ=;
+        b=TpDBfZpBR4Cv7ohKo6Y8MqmW+iZ8V6A4f7NiVFxjI2BPQMhNJFgnzAixxe9p6sBAvn
+         RL6RbVq10lm87h2e0ibzMEUQd2j4tjRy2uk69cfaEElkzusHWYGadqIuRYNNsaaT278q
+         Qgz7jqaL4BdNLNCuAuM8A0gFw+4ZfjycMIX7jeMivKhPQEK7WSeAoIdFaD8J6jlmHcD1
+         VHuzzNVnLryVptG4AYnPyKENfSO0dLnykXIK1cOZUzR6mP0XDHktPcn7lXaYKE5qp7rO
+         VzApM4a3X+qRtyWyH09WPk+v+P3mHuX4qkcuovYwLh2Ufz3ISIZrzCknJPA2SWzz+Ffn
+         nJIg==
+X-Gm-Message-State: AOJu0YwkIXcbS2PSKuqdxhT73UPFQvAjZSBSrWdR8yQGH0Mu5QvsARnG
+	IlyE6ax23M2By3uyV7CYq5sqXOxonFJfJsCUGCKuemVecoRTlMKUD5hQIeaNxFY+AISbsOh/RlO
+	Sq8FNJl8mu+AB7SOq04INOZ7wfP8=
+X-Google-Smtp-Source: AGHT+IFJhLQKZrKheOpp5g5ZHWB5tU803FXCdkL1IkQzwwg5UM6oxYDf7ckc24PT/Pj4gwSFC+muNtf44ryFkoh0xeA=
+X-Received: by 2002:a81:8411:0:b0:602:d19d:7853 with SMTP id
+ u17-20020a818411000000b00602d19d7853mr1231429ywf.38.1706363210302; Sat, 27
+ Jan 2024 05:46:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-2-Jamie.Cunliffe@arm.com> <CALNs47vzQm5MbfJtMQR3p+W1xub3KHiNqRgEQGWT3u28fpQ-oA@mail.gmail.com>
- <CAHirt9jhbnXz34D-pmHNecMfkefL4wTr9LYj_V28OsVd=fkdZA@mail.gmail.com> <CAK7LNAQKxrV-oxouv9F6+_i9-oGvJNBzFNLo+5PdqwWVd9qWZQ@mail.gmail.com>
-In-Reply-To: <CAK7LNAQKxrV-oxouv9F6+_i9-oGvJNBzFNLo+5PdqwWVd9qWZQ@mail.gmail.com>
-From: WANG Rui <wangrui@loongson.cn>
-Date: Sat, 27 Jan 2024 13:08:08 +0800
-X-Gmail-Original-Message-ID: <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
-Message-ID: <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
- of builtin targets
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Trevor Gross <tmgross@umich.edu>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	boqun.feng@gmail.com, andrew@lunn.ch, Huacai Chen <chenhuacai@kernel.org>, 
-	loongarch@lists.linux.dev, linux-kbuild@vger.kernel.org
+References: <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
+ <20230608-spiritism-gonad-5f5aff4c3a24@wendy> <20240117-swiftly-parasail-618d62972d6e@spud>
+ <CANiq72mVKCOAuK4Qe+8AHmpkFwyJsVfx8AqB7ccGi3DYpSSWcw@mail.gmail.com>
+ <20240118-implode-delirium-eefdd86e170e@spud> <CANiq72nx1s_nyvPW86jL7eiOxROr18LfOJqNtw8L42CP+gkhRg@mail.gmail.com>
+ <20240125-bucked-payroll-47f82077b262@wendy> <CANiq72k7n0aZrifRRU08N8qLkNe+2EZwijZy5sM7M56n2xYHgQ@mail.gmail.com>
+ <20240125-lazy-thrower-744aacc6632a@wendy> <CANiq72kb+_utZrYHtoKZQtQazikmkjpVUHpTBcaANizduMF5QQ@mail.gmail.com>
+ <20240126-eccentric-jaywalker-3560e2151a92@spud>
+In-Reply-To: <20240126-eccentric-jaywalker-3560e2151a92@spud>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 27 Jan 2024 14:46:38 +0100
+Message-ID: <CANiq72nu2NXUWYanHZd5EXgX4P_v673EWn6SCRW60Es9naraQQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+To: Conor Dooley <conor@kernel.org>
+Cc: Conor Dooley <conor.dooley@microchip.com>, linux-riscv@lists.infradead.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	Matthew Maurer <mmaurer@google.com>, Ramon de C Valle <rcvalle@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:AQAAf8Cxbs3Ej7RlhE8eAA--.59764S3
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3XF1kXFyfZF45ur4xXF1kZwc_yoW7Aw1kpa
-	nYyF43AFWUJ3yUCws7tFy3Wr4Yyw1rKr10gF18Kw1jyr1qqFn2gr4Ikr43uF18Cw4UCrWr
-	XF1I9F97ur45AwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Kb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
-	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	kF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4U
-	MxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
-	0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
-	14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20x
-	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWU
-	JVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7BMNUUUUU
 
-On Sat, Jan 27, 2024 at 3:38=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
+On Fri, Jan 26, 2024 at 11:01=E2=80=AFPM Conor Dooley <conor@kernel.org> wr=
+ote:
 >
-> On Thu, Jan 25, 2024 at 12:20=E2=80=AFPM WANG Rui <wangrui@loongson.cn> w=
-rote:
-> >
-> > Hello,
-> >
-> > On Mon, Jan 22, 2024 at 5:17=E2=80=AFPM Trevor Gross <tmgross@umich.edu=
-> wrote:
-> > >
-> > > On Fri, Oct 20, 2023 at 10:59=E2=80=AFAM Jamie Cunliffe <Jamie.Cunlif=
-fe@arm.com> wrote:
-> > > >
-> > > > Eventually we want all architectures to be using the target as defi=
-ned
-> > > > by rustc. However currently some architectures can't do that and ar=
-e
-> > > > using the target.json specification. This puts in place the foundat=
-ion
-> > > > to allow the use of the builtin target definition or a target.json
-> > > > specification.
-> > > >
-> > > > Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-> > > > ---
-> > > >  Makefile          | 1 -
-> > > >  arch/x86/Makefile | 1 +
-> > > >  rust/Makefile     | 5 ++++-
-> > > >  scripts/Makefile  | 4 +++-
-> > > >  4 files changed, 8 insertions(+), 3 deletions(-)
-> > >
-> > > Adding LoongArch maintainers - this patch will need a small update to
-> > > arch/loongarch/Makefile similar to the change in arch/x86/Makefile
-> > > (included below), since that support is now in-tree and uses
-> > > generate_rust_target [1]. Also a very minor conflict in docs at patch
-> > > 2/2.
-> > >
-> > > I believe this patchset is still waiting on an ack from the kbuild
-> > > team. Series at [2] for reference.
-> > >
-> > > Thanks,
-> > > Trevor
-> > >
-> > > [1]: https://lore.kernel.org/rust-for-linux/20240108032117.215171-1-w=
-angrui@loongson.cn/
-> > > [2]: https://lore.kernel.org/rust-for-linux/20231020155056.3495121-1-=
-Jamie.Cunliffe@arm.com/
-> >
-> > I can confirm that the fix patch [2], based on patch [1], is suitable
-> > for LoongArch. LoongArch encounters no issues when using the built-in
-> > `loongarch64-unknown-none-softfloat` target. Once patch [1] is merged
-> > into the mainline, I'll send a patch to switch to using the built-in
-> > target.
->
-> But, [1] and [2] must be squashed together.
-> Otherwise, [1] is changing the behavior of loongach,
-> while the commit description does not mention it.
+> Is that even needed? We already have ARCH_SUPPORTS_CFI_CLANG and AFAIU
+> rust supports it if clang does, so a second option is superfluous?
 
-I agree. It would be great if Jamie could squash them together.
+From a quick look, I don't see it enabled in any RISC-V built-in
+target in `rustc` yet.
 
-Thanks,
-Rui
+It may also still be the case that KCFI needs some tweaks for, say,
+RISC-V, before the flag actually works, i.e. we couldn't just test the
+flag in that case -- Ramon: how likely is it that RISC-V would work if
+KCFI works for aarch64 and x86_64?
 
->
->
->
->
-> > Thanks,
-> > Rui
-> >
-> > [1]: https://lore.kernel.org/rust-for-linux/20231020155056.3495121-1-Ja=
-mie.Cunliffe@arm.com/
-> > [2]: https://github.com/heiher/linux/commit/c504d83a6edd963e2ba58ec538e=
-3f06da78b187e.patch
-> >
-> > >
-> > > > diff --git a/Makefile b/Makefile
-> > > > index 88ebf6547964..23100f193da3 100644
-> > > > --- a/Makefile
-> > > > +++ b/Makefile
-> > > > @@ -566,7 +566,6 @@ KBUILD_CFLAGS +=3D -fno-strict-aliasing
-> > > >
-> > > >  KBUILD_CPPFLAGS :=3D -D__KERNEL__
-> > > >  KBUILD_RUSTFLAGS :=3D $(rust_common_flags) \
-> > > > -                   --target=3D$(objtree)/scripts/target.json \
-> > > >                     -Cpanic=3Dabort -Cembed-bitcode=3Dn -Clto=3Dn \
-> > > >                     -Cforce-unwind-tables=3Dn -Ccodegen-units=3D1 \
-> > > >                     -Csymbol-mangling-version=3Dv0 \
-> > > > diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> > > > index 5bfe5caaa444..0f339d4abd40 100644
-> > > > --- a/arch/x86/Makefile
-> > > > +++ b/arch/x86/Makefile
-> > > > @@ -68,6 +68,7 @@ export BITS
-> > > >  #    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D53383
-> > > >  #
-> > > >  KBUILD_CFLAGS +=3D -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
-> > > > +KBUILD_RUSTFLAGS +=3D --target=3D$(objtree)/scripts/target.json
-> > > >  KBUILD_RUSTFLAGS +=3D -Ctarget-feature=3D-sse,-sse2,-sse3,-ssse3,-=
-sse4.1,-sse4.2,-avx,-avx2
-> > > >
-> > > >  ifeq ($(CONFIG_X86_KERNEL_IBT),y)
-> > > > diff --git a/rust/Makefile b/rust/Makefile
-> > > > index 87958e864be0..8d75a6ffe951 100644
-> > > > --- a/rust/Makefile
-> > > > +++ b/rust/Makefile
-> > > > @@ -428,8 +428,11 @@ $(obj)/core.o: private skip_clippy =3D 1
-> > > >  $(obj)/core.o: private skip_flags =3D -Dunreachable_pub
-> > > >  $(obj)/core.o: private rustc_objcopy =3D $(foreach sym,$(redirect-=
-intrinsics),--redefine-sym $(sym)=3D__rust$(sym))
-> > > >  $(obj)/core.o: private rustc_target_flags =3D $(core-cfgs)
-> > > > -$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs scripts/target.json=
- FORCE
-> > > > +$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
-> > > >         $(call if_changed_dep,rustc_library)
-> > > > +ifdef CONFIG_X86_64
-> > > > +$(obj)/core.o: scripts/target.json
-> > > > +endif
-> > > >
-> > > >  $(obj)/compiler_builtins.o: private rustc_objcopy =3D -w -W '__*'
-> > > >  $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/cor=
-e.o FORCE
-> > > > diff --git a/scripts/Makefile b/scripts/Makefile
-> > > > index 576cf64be667..c85d130a4125 100644
-> > > > --- a/scripts/Makefile
-> > > > +++ b/scripts/Makefile
-> > > > @@ -11,12 +11,14 @@ hostprogs-always-$(CONFIG_MODULE_SIG_FORMAT)   =
-             +=3D sign-file
-> > > >  hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)    +=3D insert=
--sys-cert
-> > > >  hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)                +=
-=3D rustdoc_test_builder
-> > > >  hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)                +=
-=3D rustdoc_test_gen
-> > > > -always-$(CONFIG_RUST)                                  +=3D target=
-.json
-> > > >
-> > > > +ifdef CONFIG_X86_64
-> > > > +always-$(CONFIG_RUST)                                  +=3D target=
-.json
-> > > >  filechk_rust_target =3D $< < include/config/auto.conf
-> > > >
-> > > >  $(obj)/target.json: scripts/generate_rust_target include/config/au=
-to.conf FORCE
-> > > >         $(call filechk,rust_target)
-> > > > +endif
-> > > >
-> > > >  hostprogs +=3D generate_rust_target
-> > > >  generate_rust_target-rust :=3D y
-> > > > --
-> > > > 2.30.2
-> > > >
-> > > >
-> > >
-> >
-> >
->
->
-> --
-> Best Regards
-> Masahiro Yamada
->
+> I'm reading back what I wrote, and I must have been trying to get out
+> the door or something because none of it really makes that much sense.
+> Of course an unknown option should be detectable at build time and not
+> be a silent breakage. Maybe I should have written the patch for this
+> before sending the mail rather than writing the mail based on what was
+> in my head.
 
+No worries, it happens. I probably added to the confusion when I
+replied with the "testing the unstable flag".
+
+Cheers,
+Miguel
