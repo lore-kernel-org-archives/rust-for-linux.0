@@ -1,359 +1,236 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5449512B68
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Jan 2024 04:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E5D8BED
+	for <rust-for-linux@vger.kernel.org>; Sat, 27 Jan 2024 05:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706328849; cv=none; b=c5kPSh36KeQtHsuytl11LLqIjLuTiVkvrm+0/m2UUG4iGa+CaVEgAYh4coCZwyVzn34J5jRsxS94fUPdeR6PwSQrPMNapK/+2qCSgAYeVMe2qoE09ear9ADwDpMHdqcExXyeXyY5GhFAPNtJXVu7Z4G880p7wJ+wXIXuGa2KZ7A=
+	t=1706332118; cv=none; b=i4yQyZ93aW+lHp+mgIapWQ16sDi4fAXey4xh/iL5JT1Lj7uN4J9UpDZypDnnTKmqIrDqD5rmZOaNwl2v0OQ9g3w9qKEh8/7IEDD5EG+4BqVdC/2z7n5JX8YSodDL3MfcZMVc2RgieC/rWO4/KU/hXErgoe1dRlR0wwFQwZuMS4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706328849; c=relaxed/simple;
-	bh=O01cpo+FtHzcEARwY53FOMmQjOUhONr/9M0PpctIp2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QVKLBayDTKahlWm/9j7ZoEm3yiSN7Y8wyqmtvJoSce9sjoN5/2UMVVVEvf5JGfHVJEVCuGxTC2v1b4Lr7PpswIudUrrrj94YFCp+2bbyzW3vhRcnplVnkDDd+dkQbG8NOVanqKcPn3Aw3n7l9v3AEFSToEZHEWBYG00YCMnH6NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X1Yz+maN; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X1Yz+maN"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-5ff7ec8772dso15190557b3.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jan 2024 20:14:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706328846; x=1706933646; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4+yyNj8AZxBSer4Q2WSXJC59OeqYnV5Xuy0II0y+BkI=;
-        b=X1Yz+maNCnPKU2bwh2wMhfnIJRvi7NU7eXI9auv2GeSqZS7vOGjN7XLoAoSkkIqZtb
-         pdaevZ/VOUthV/mlB0q7gVhNMqzaqvmt/A0nA+0avXgKZCP7Tb0YeE4CYFRWLL29/3y4
-         1XBDYV+fVZ1BJhvv2OqACHpk6v8yYPB1XjDhSA/cMRWB7RVBdd0XlwmRpZg7SH6Fojxg
-         VbKLLN6qdxXony1ts6hTH7Rsb7RTjJWmwwf7SGo5a/53i5u1zd0eO5IGm580GLnclG7M
-         O1ViCcHDqc0kcD1w0nkRRJ9NNujVieW6GW81/5kZgiCz8z9cCCIlD4+2BIKfRaidVXXx
-         GvcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706328846; x=1706933646;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4+yyNj8AZxBSer4Q2WSXJC59OeqYnV5Xuy0II0y+BkI=;
-        b=maxdOywS5ZF3YtVYBZrWeVex+uOETAuSMhsGsT7WyK3/FC7jf9badqXbztr5KVoScM
-         hY3spze0D9N2FHHyjR6FGjY8Imbi8PW7Lacf6g5nzNYFkvSdeDd/6tQxLWFggei3j0ey
-         Rer4CKOu93LzwW2VNDQLDr8++EcFpYXfGredM9NiZfeUkgIbHr5y1FqTQE88eLWN0n/x
-         29NElilyaKXWpKbZXjAmMwdNP/VFUk6+WFQ7ZpcEZk4VkIXrXHhh6tHE5FH/nUU/kkr9
-         ujtZMfFRJ91gSfxh+A0hYUnzZSRQssfAzl3vStzGbhKhEBGp3a13h0EKN8TipgStfQ6z
-         R28A==
-X-Gm-Message-State: AOJu0Yz/IN+tIJJFyOVPB6wyNkwNXy05t1OooPUs99/toq2AV/2LBAJn
-	0XlPa8DWEn5OanpJ9e8FE6q0jLa+/KdFWngGji7oNtOaokZ5YTRT
-X-Google-Smtp-Source: AGHT+IGQLBhPGQmWh37UpHLU0j7j8P3dIbtEARp8x0et3YDR0P9EO6sdXqTQgNGBHfJm7E4i8xgdDQ==
-X-Received: by 2002:a0d:d242:0:b0:5ff:7cb4:d200 with SMTP id u63-20020a0dd242000000b005ff7cb4d200mr985775ywd.17.1706328846025;
-        Fri, 26 Jan 2024 20:14:06 -0800 (PST)
-Received: from ohnotp ([2001:f70:860:4100:d497:9118:219b:703d])
-        by smtp.gmail.com with ESMTPSA id n2-20020a170902d2c200b001d72f71e83bsm1633206plc.73.2024.01.26.20.14.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 20:14:05 -0800 (PST)
-Date: Sat, 27 Jan 2024 13:16:18 +0900
-From: Yutaro Ohno <yutaro.ono.418@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, Yutaro Ohno <yutaro.ono.418@gmail.com>,
-	Virgile Andreani <armavica@ulminfo.fr>
-Subject: [PATCH V2] rust: str: implement `Display` and `Debug` for `BStr`
-Message-ID: <ZbSDkm65LML4OWKX@ohnotp>
+	s=arc-20240116; t=1706332118; c=relaxed/simple;
+	bh=du8JnSk1v2gC0WW2DoWM6Kkq19h+cimR9p2mzTXkIAc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rzvjR7ZzhIgs/QplfU8v6Gg2ei8y3rUA2Re5p3OlIB+OdJcv4BphpN/cjvHGhlHSJg8r2BCh6baCTyt2dK2M5yKeB++3heZ629Jl1hSrrHIRPYvsEqfV1ijN20JoFnCJbE3Tpw0B7nyKAV4rM2uw7/93BQ+UrSLGsFX3c66VK7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [209.85.128.173])
+	by gateway (Coremail) with SMTP id _____8DxvuvJj7RlcswGAA--.22500S3;
+	Sat, 27 Jan 2024 13:08:26 +0800 (CST)
+Received: from mail-yw1-f173.google.com (unknown [209.85.128.173])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8Cxbs3Ej7RlhE8eAA--.59764S3;
+	Sat, 27 Jan 2024 13:08:22 +0800 (CST)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-602cf45bfe9so10419617b3.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jan 2024 21:08:22 -0800 (PST)
+X-Gm-Message-State: AOJu0YygvuxLHKgsjY4IahwPlZHMs/nDR2SrS9bYIWGJmuTylJEHfMBa
+	+C17+o0cNGUs7aOCpXV9qxYMGF0KEEy3+yifa6N+HbN6Yx+f2GEo7z+P7GgY9ZHLybqdfISz1qf
+	olDGb26x98iD4cb0mBUqS1XVYD0szauUXIJhQcw==
+X-Google-Smtp-Source: AGHT+IGYDcc7xr0fWVHNVsv8o4zNLB5BZHFXPlFRotx1GpDxIomAF+hhYdD6JAwkil/3JgOZjO0/+g6/bVFcZBK7FCY=
+X-Received: by 2002:a0d:e88b:0:b0:5ff:8113:4d9d with SMTP id
+ r133-20020a0de88b000000b005ff81134d9dmr829991ywe.40.1706332099756; Fri, 26
+ Jan 2024 21:08:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
+ <20231020155056.3495121-2-Jamie.Cunliffe@arm.com> <CALNs47vzQm5MbfJtMQR3p+W1xub3KHiNqRgEQGWT3u28fpQ-oA@mail.gmail.com>
+ <CAHirt9jhbnXz34D-pmHNecMfkefL4wTr9LYj_V28OsVd=fkdZA@mail.gmail.com> <CAK7LNAQKxrV-oxouv9F6+_i9-oGvJNBzFNLo+5PdqwWVd9qWZQ@mail.gmail.com>
+In-Reply-To: <CAK7LNAQKxrV-oxouv9F6+_i9-oGvJNBzFNLo+5PdqwWVd9qWZQ@mail.gmail.com>
+From: WANG Rui <wangrui@loongson.cn>
+Date: Sat, 27 Jan 2024 13:08:08 +0800
+X-Gmail-Original-Message-ID: <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
+Message-ID: <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
+ of builtin targets
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Trevor Gross <tmgross@umich.edu>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
+	boqun.feng@gmail.com, andrew@lunn.ch, Huacai Chen <chenhuacai@kernel.org>, 
+	loongarch@lists.linux.dev, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:AQAAf8Cxbs3Ej7RlhE8eAA--.59764S3
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3XF1kXFyfZF45ur4xXF1kZwc_yoW7Aw1kpa
+	nYyF43AFWUJ3yUCws7tFy3Wr4Yyw1rKr10gF18Kw1jyr1qqFn2gr4Ikr43uF18Cw4UCrWr
+	XF1I9F97ur45AwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Kb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	kF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4U
+	MxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
+	0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
+	14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20x
+	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWU
+	JVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7BMNUUUUU
 
-Currently, `BStr` is just a type alias of `[u8]`, limiting its
-representation to a byte list rather than a character list, which is not
-ideal for printing and debugging.
+On Sat, Jan 27, 2024 at 3:38=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> On Thu, Jan 25, 2024 at 12:20=E2=80=AFPM WANG Rui <wangrui@loongson.cn> w=
+rote:
+> >
+> > Hello,
+> >
+> > On Mon, Jan 22, 2024 at 5:17=E2=80=AFPM Trevor Gross <tmgross@umich.edu=
+> wrote:
+> > >
+> > > On Fri, Oct 20, 2023 at 10:59=E2=80=AFAM Jamie Cunliffe <Jamie.Cunlif=
+fe@arm.com> wrote:
+> > > >
+> > > > Eventually we want all architectures to be using the target as defi=
+ned
+> > > > by rustc. However currently some architectures can't do that and ar=
+e
+> > > > using the target.json specification. This puts in place the foundat=
+ion
+> > > > to allow the use of the builtin target definition or a target.json
+> > > > specification.
+> > > >
+> > > > Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
+> > > > ---
+> > > >  Makefile          | 1 -
+> > > >  arch/x86/Makefile | 1 +
+> > > >  rust/Makefile     | 5 ++++-
+> > > >  scripts/Makefile  | 4 +++-
+> > > >  4 files changed, 8 insertions(+), 3 deletions(-)
+> > >
+> > > Adding LoongArch maintainers - this patch will need a small update to
+> > > arch/loongarch/Makefile similar to the change in arch/x86/Makefile
+> > > (included below), since that support is now in-tree and uses
+> > > generate_rust_target [1]. Also a very minor conflict in docs at patch
+> > > 2/2.
+> > >
+> > > I believe this patchset is still waiting on an ack from the kbuild
+> > > team. Series at [2] for reference.
+> > >
+> > > Thanks,
+> > > Trevor
+> > >
+> > > [1]: https://lore.kernel.org/rust-for-linux/20240108032117.215171-1-w=
+angrui@loongson.cn/
+> > > [2]: https://lore.kernel.org/rust-for-linux/20231020155056.3495121-1-=
+Jamie.Cunliffe@arm.com/
+> >
+> > I can confirm that the fix patch [2], based on patch [1], is suitable
+> > for LoongArch. LoongArch encounters no issues when using the built-in
+> > `loongarch64-unknown-none-softfloat` target. Once patch [1] is merged
+> > into the mainline, I'll send a patch to switch to using the built-in
+> > target.
+>
+> But, [1] and [2] must be squashed together.
+> Otherwise, [1] is changing the behavior of loongach,
+> while the commit description does not mention it.
 
-Implement `Display` and `Debug` traits for `BStr` to facilitate easier
-printing and debugging.
+I agree. It would be great if Jamie could squash them together.
 
-Also, for this purpose, change `BStr` from a type alias of `[u8]` to a
-struct wrapper of `[u8]`.
+Thanks,
+Rui
 
-Co-developed-by: Virgile Andreani <armavica@ulminfo.fr>
-Signed-off-by: Virgile Andreani <armavica@ulminfo.fr>
-Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
----
-V1 -> V2:
-- Ensured there are no changes to the behavior of `CStr`'s `Display` and
-  `Debug`.
-- Made other few changes based on review comments.
-
- rust/kernel/str.rs | 192 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 166 insertions(+), 26 deletions(-)
-
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 7d848b83add4..d5c311a91df1 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -13,9 +13,92 @@
- };
- 
- /// Byte string without UTF-8 validity guarantee.
--///
--/// `BStr` is simply an alias to `[u8]`, but has a more evident semantical meaning.
--pub type BStr = [u8];
-+#[repr(transparent)]
-+pub struct BStr([u8]);
-+
-+impl BStr {
-+    /// Returns the length of this string.
-+    #[inline]
-+    pub const fn len(&self) -> usize {
-+        self.0.len()
-+    }
-+
-+    /// Returns `true` if the string is empty.
-+    #[inline]
-+    pub const fn is_empty(&self) -> bool {
-+        self.len() == 0
-+    }
-+
-+    /// Creates a [`BStr`] from a `[u8]`.
-+    #[inline]
-+    pub const fn from_bytes(bytes: &[u8]) -> &Self {
-+        // SAFETY: BStr is transparent to [u8].
-+        unsafe { &*(bytes as *const [u8] as *const BStr) }
-+    }
-+}
-+
-+impl fmt::Display for BStr {
-+    /// Formats printable ASCII characters, escaping the rest.
-+    ///
-+    /// ```
-+    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-+    /// let ascii = b_str!("Hello, BStr!");
-+    /// let s = CString::try_from_fmt(fmt!("{}", ascii)).unwrap();
-+    /// assert_eq!(s.as_bytes(), "Hello, BStr!".as_bytes());
-+    ///
-+    /// let non_ascii = b_str!("🦀");
-+    /// let s = CString::try_from_fmt(fmt!("{}", non_ascii)).unwrap();
-+    /// assert_eq!(s.as_bytes(), "\\xf0\\x9f\\xa6\\x80".as_bytes());
-+    /// ```
-+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-+        for &b in &self.0 {
-+            match b {
-+                // Printable characters.
-+                0x20..=0x7e => f.write_char(b as char)?,
-+                _ => write!(f, "\\x{:02x}", b)?,
-+            }
-+        }
-+        Ok(())
-+    }
-+}
-+
-+impl fmt::Debug for BStr {
-+    /// Formats printable ASCII characters with a double quote on either end,
-+    /// escaping the rest.
-+    ///
-+    /// ```
-+    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-+    /// // Embedded double quotes are escaped.
-+    /// let ascii = b_str!("Hello, \"BStr\"!");
-+    /// let s = CString::try_from_fmt(fmt!("{:?}", ascii)).unwrap();
-+    /// assert_eq!(s.as_bytes(), "\"Hello, \\\"BStr\\\"!\"".as_bytes());
-+    ///
-+    /// let non_ascii = b_str!("😺");
-+    /// let s = CString::try_from_fmt(fmt!("{:?}", non_ascii)).unwrap();
-+    /// assert_eq!(s.as_bytes(), "\"\\xf0\\x9f\\x98\\xba\"".as_bytes());
-+    /// ```
-+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-+        f.write_str("\"")?;
-+        for &b in &self.0 {
-+            match b {
-+                // Printable characters.
-+                b'\"' => f.write_str("\\\"")?,
-+                0x20..=0x7e => f.write_char(b as char)?,
-+                _ => write!(f, "\\x{:02x}", b)?,
-+            }
-+        }
-+        f.write_str("\"")
-+    }
-+}
-+
-+impl Deref for BStr {
-+    type Target = [u8];
-+
-+    #[inline]
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
- 
- /// Creates a new [`BStr`] from a string literal.
- ///
-@@ -33,7 +116,7 @@
- macro_rules! b_str {
-     ($str:literal) => {{
-         const S: &'static str = $str;
--        const C: &'static $crate::str::BStr = S.as_bytes();
-+        const C: &'static $crate::str::BStr = BStr::from_bytes(S.as_bytes());
-         C
-     }};
- }
-@@ -225,15 +308,7 @@ impl fmt::Display for CStr {
-     /// assert_eq!(s.as_bytes_with_nul(), "so \"cool\"\0".as_bytes());
-     /// ```
-     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
--        for &c in self.as_bytes() {
--            if (0x20..0x7f).contains(&c) {
--                // Printable character.
--                f.write_char(c as char)?;
--            } else {
--                write!(f, "\\x{:02x}", c)?;
--            }
--        }
--        Ok(())
-+        fmt::Display::fmt(self.as_ref(), f)
-     }
- }
- 
-@@ -255,23 +330,14 @@ impl fmt::Debug for CStr {
-     /// assert_eq!(s.as_bytes_with_nul(), "\"so \\\"cool\\\"\"\0".as_bytes());
-     /// ```
-     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
--        f.write_str("\"")?;
--        for &c in self.as_bytes() {
--            match c {
--                // Printable characters.
--                b'\"' => f.write_str("\\\"")?,
--                0x20..=0x7e => f.write_char(c as char)?,
--                _ => write!(f, "\\x{:02x}", c)?,
--            }
--        }
--        f.write_str("\"")
-+        fmt::Debug::fmt(self.as_ref(), f)
-     }
- }
- 
- impl AsRef<BStr> for CStr {
-     #[inline]
-     fn as_ref(&self) -> &BStr {
--        self.as_bytes()
-+        BStr::from_bytes(self.as_bytes())
-     }
- }
- 
-@@ -280,7 +346,7 @@ impl Deref for CStr {
- 
-     #[inline]
-     fn deref(&self) -> &Self::Target {
--        self.as_bytes()
-+        self.as_ref()
-     }
- }
- 
-@@ -327,7 +393,7 @@ impl<Idx> Index<Idx> for CStr
- 
-     #[inline]
-     fn index(&self, index: Idx) -> &Self::Output {
--        &self.as_bytes()[index]
-+        &self.as_ref()[index]
-     }
- }
- 
-@@ -357,6 +423,21 @@ macro_rules! c_str {
- #[cfg(test)]
- mod tests {
-     use super::*;
-+    use alloc::format;
-+
-+    const ALL_ASCII_CHARS: &'static str =
-+        "\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\x09\\x0a\\x0b\\x0c\\x0d\\x0e\\x0f\
-+        \\x10\\x11\\x12\\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f \
-+        !\"#$%&'()*+,-./0123456789:;<=>?@\
-+        ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\\x7f\
-+        \\x80\\x81\\x82\\x83\\x84\\x85\\x86\\x87\\x88\\x89\\x8a\\x8b\\x8c\\x8d\\x8e\\x8f\
-+        \\x90\\x91\\x92\\x93\\x94\\x95\\x96\\x97\\x98\\x99\\x9a\\x9b\\x9c\\x9d\\x9e\\x9f\
-+        \\xa0\\xa1\\xa2\\xa3\\xa4\\xa5\\xa6\\xa7\\xa8\\xa9\\xaa\\xab\\xac\\xad\\xae\\xaf\
-+        \\xb0\\xb1\\xb2\\xb3\\xb4\\xb5\\xb6\\xb7\\xb8\\xb9\\xba\\xbb\\xbc\\xbd\\xbe\\xbf\
-+        \\xc0\\xc1\\xc2\\xc3\\xc4\\xc5\\xc6\\xc7\\xc8\\xc9\\xca\\xcb\\xcc\\xcd\\xce\\xcf\
-+        \\xd0\\xd1\\xd2\\xd3\\xd4\\xd5\\xd6\\xd7\\xd8\\xd9\\xda\\xdb\\xdc\\xdd\\xde\\xdf\
-+        \\xe0\\xe1\\xe2\\xe3\\xe4\\xe5\\xe6\\xe7\\xe8\\xe9\\xea\\xeb\\xec\\xed\\xee\\xef\
-+        \\xf0\\xf1\\xf2\\xf3\\xf4\\xf5\\xf6\\xf7\\xf8\\xf9\\xfa\\xfb\\xfc\\xfd\\xfe\\xff";
- 
-     #[test]
-     fn test_cstr_to_str() {
-@@ -381,6 +462,65 @@ fn test_cstr_as_str_unchecked() {
-         let unchecked_str = unsafe { checked_cstr.as_str_unchecked() };
-         assert_eq!(unchecked_str, "🐧");
-     }
-+
-+    #[test]
-+    fn test_cstr_display() {
-+        let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
-+        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
-+        assert_eq!(format!("{}", non_printables), "\\x01\\x09\\x0a");
-+        let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
-+        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
-+        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+    }
-+
-+    #[test]
-+    fn test_cstr_debug() {
-+        let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
-+        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
-+        assert_eq!(format!("{:?}", non_printables), "\"\\x01\\x09\\x0a\"");
-+        let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
-+        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
-+        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+    }
-+
-+    #[test]
-+    fn test_bstr_display() {
-+        let hello_world = BStr::from_bytes(b"hello, world!");
-+        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        let non_printables = BStr::from_bytes(b"\x01\x09\x0a");
-+        assert_eq!(format!("{}", non_printables), "\\x01\\x09\\x0a");
-+        let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
-+        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
-+        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+    }
-+
-+    #[test]
-+    fn test_bstr_debug() {
-+        let hello_world = BStr::from_bytes(b"hello, world!");
-+        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        let non_printables = BStr::from_bytes(b"\x01\x09\x0a");
-+        assert_eq!(format!("{:?}", non_printables), "\"\\x01\\x09\\x0a\"");
-+        let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
-+        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
-+        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+    }
-+
-+    #[test]
-+    fn test_cstr_display_all_bytes() {
-+        let mut bytes: [u8; 256] = [0; 256];
-+        // fill `bytes` with [1..=255] + [0]
-+        for i in u8::MIN..=u8::MAX {
-+            bytes[i as usize] = i.wrapping_add(1);
-+        }
-+        let cstr = CStr::from_bytes_with_nul(&bytes).unwrap();
-+        assert_eq!(format!("{}", cstr), ALL_ASCII_CHARS);
-+    }
- }
- 
- /// Allows formatting of [`fmt::Arguments`] into a raw buffer.
--- 
-2.43.0
+>
+>
+>
+>
+> > Thanks,
+> > Rui
+> >
+> > [1]: https://lore.kernel.org/rust-for-linux/20231020155056.3495121-1-Ja=
+mie.Cunliffe@arm.com/
+> > [2]: https://github.com/heiher/linux/commit/c504d83a6edd963e2ba58ec538e=
+3f06da78b187e.patch
+> >
+> > >
+> > > > diff --git a/Makefile b/Makefile
+> > > > index 88ebf6547964..23100f193da3 100644
+> > > > --- a/Makefile
+> > > > +++ b/Makefile
+> > > > @@ -566,7 +566,6 @@ KBUILD_CFLAGS +=3D -fno-strict-aliasing
+> > > >
+> > > >  KBUILD_CPPFLAGS :=3D -D__KERNEL__
+> > > >  KBUILD_RUSTFLAGS :=3D $(rust_common_flags) \
+> > > > -                   --target=3D$(objtree)/scripts/target.json \
+> > > >                     -Cpanic=3Dabort -Cembed-bitcode=3Dn -Clto=3Dn \
+> > > >                     -Cforce-unwind-tables=3Dn -Ccodegen-units=3D1 \
+> > > >                     -Csymbol-mangling-version=3Dv0 \
+> > > > diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> > > > index 5bfe5caaa444..0f339d4abd40 100644
+> > > > --- a/arch/x86/Makefile
+> > > > +++ b/arch/x86/Makefile
+> > > > @@ -68,6 +68,7 @@ export BITS
+> > > >  #    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D53383
+> > > >  #
+> > > >  KBUILD_CFLAGS +=3D -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+> > > > +KBUILD_RUSTFLAGS +=3D --target=3D$(objtree)/scripts/target.json
+> > > >  KBUILD_RUSTFLAGS +=3D -Ctarget-feature=3D-sse,-sse2,-sse3,-ssse3,-=
+sse4.1,-sse4.2,-avx,-avx2
+> > > >
+> > > >  ifeq ($(CONFIG_X86_KERNEL_IBT),y)
+> > > > diff --git a/rust/Makefile b/rust/Makefile
+> > > > index 87958e864be0..8d75a6ffe951 100644
+> > > > --- a/rust/Makefile
+> > > > +++ b/rust/Makefile
+> > > > @@ -428,8 +428,11 @@ $(obj)/core.o: private skip_clippy =3D 1
+> > > >  $(obj)/core.o: private skip_flags =3D -Dunreachable_pub
+> > > >  $(obj)/core.o: private rustc_objcopy =3D $(foreach sym,$(redirect-=
+intrinsics),--redefine-sym $(sym)=3D__rust$(sym))
+> > > >  $(obj)/core.o: private rustc_target_flags =3D $(core-cfgs)
+> > > > -$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs scripts/target.json=
+ FORCE
+> > > > +$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
+> > > >         $(call if_changed_dep,rustc_library)
+> > > > +ifdef CONFIG_X86_64
+> > > > +$(obj)/core.o: scripts/target.json
+> > > > +endif
+> > > >
+> > > >  $(obj)/compiler_builtins.o: private rustc_objcopy =3D -w -W '__*'
+> > > >  $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/cor=
+e.o FORCE
+> > > > diff --git a/scripts/Makefile b/scripts/Makefile
+> > > > index 576cf64be667..c85d130a4125 100644
+> > > > --- a/scripts/Makefile
+> > > > +++ b/scripts/Makefile
+> > > > @@ -11,12 +11,14 @@ hostprogs-always-$(CONFIG_MODULE_SIG_FORMAT)   =
+             +=3D sign-file
+> > > >  hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)    +=3D insert=
+-sys-cert
+> > > >  hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)                +=
+=3D rustdoc_test_builder
+> > > >  hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)                +=
+=3D rustdoc_test_gen
+> > > > -always-$(CONFIG_RUST)                                  +=3D target=
+.json
+> > > >
+> > > > +ifdef CONFIG_X86_64
+> > > > +always-$(CONFIG_RUST)                                  +=3D target=
+.json
+> > > >  filechk_rust_target =3D $< < include/config/auto.conf
+> > > >
+> > > >  $(obj)/target.json: scripts/generate_rust_target include/config/au=
+to.conf FORCE
+> > > >         $(call filechk,rust_target)
+> > > > +endif
+> > > >
+> > > >  hostprogs +=3D generate_rust_target
+> > > >  generate_rust_target-rust :=3D y
+> > > > --
+> > > > 2.30.2
+> > > >
+> > > >
+> > >
+> >
+> >
+>
+>
+> --
+> Best Regards
+> Masahiro Yamada
+>
 
