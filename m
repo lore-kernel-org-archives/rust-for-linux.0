@@ -1,89 +1,100 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a11-122.smtp-out.amazonses.com (a11-122.smtp-out.amazonses.com [54.240.11.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3344E2D022;
-	Sat, 27 Jan 2024 17:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A54FC142
+	for <rust-for-linux@vger.kernel.org>; Sun, 28 Jan 2024 06:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.11.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706376688; cv=none; b=hE4UoenKl4kT/oByKyqSQ6jszi5ok++8sCrRmjScS9MUdyDHG/tbNbxrwKhvqvMTNWO07P3xq3YOGuapiu0nXVy7cMV6xauuAU7qfMhmz4Q+9fjC7fZcsri/lzFoGgEq2Fc9rgNV9ndgNRehdHmLbthetzRCZnE2WYugvbP3kgU=
+	t=1706424432; cv=none; b=bA4PydTa9rGkYIxg8oZLDQx8Mb15ULXMm4cuBW7iXYTKagICU+UUXyrIoWXmxrYh8pO/bjklILT+kfROWBiCUZBlLwlaMjT1s5UZ0HSs3mTvH7n63MKFtEVptXvc07+J3TtEoO2jfpT8EqzQ+RNtO0rsTY9JnLVwKRb9UbJrAIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706376688; c=relaxed/simple;
-	bh=v/eRmXnwcofzCLUu7NDTFXzeYjOhl/y7gybN3TxLwFI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GUAsnjFhYiZJWcSayj7RAynezHZGkrVKTdYg6vcL/QeaHrrL5ENGI9Ks+nfgVipOf9ULYZr05+fcBE7ZletOMrgHxh6iexJFA1FeeF0H48JOwBCzl5ECNLLNjmq8SvwLJ5+og3UpW58EiRqnUW8238eGX/X0SMZAEFu3/1GvFFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MHfE3qFo; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1706424432; c=relaxed/simple;
+	bh=pfvU5czETa1orXWAI5PaOi/GpH0o/cGr/6qscYptKVI=;
+	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:In-Reply-To:
+	 References:Message-ID; b=j5n4qahu7eMuIU5s43x0TSDdeL+U/bSu7VdKDD8FjHzizTSVEadfxoSV2QBUk3xQOe50ouCK+EQB+q++5Xb1Dw0y8By6cJAgxjxexigPyeZTuOwTYyCdyvdBOUgw2Boa9ycYELzCWCLCevT0daBr8o+NGQ1TtvqPgo4drOjCWrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b=aP9UMXzN; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=IkSk6vqL; arc=none smtp.client-ip=54.240.11.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MHfE3qFo"
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so1215576276.1;
-        Sat, 27 Jan 2024 09:31:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706376686; x=1706981486; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v/eRmXnwcofzCLUu7NDTFXzeYjOhl/y7gybN3TxLwFI=;
-        b=MHfE3qFonuwSz2tUtku0Ze5d1ppntYQCLSqvhKrkmyhdQdxLCZFaXXjKSu7W4Hm4o+
-         gnn66WzpuSPfj/yuk+uYqtOz7qQuxWmF/AVlvc2gtkBBmtCHKryxagC91jdhDz6BGxyf
-         Zn7k0xtwf5aG6yUaNNu8LUKEL3mIMSTyl89jfWHI9Hc6GGuFQsrf2/N5QwsLhxjbX+mi
-         W7ncG5+57Hhd7cmK6bGalbDD6uyzpWKt4KWR3kizqGzl9QJTI1LW7pRYQk4srWqku/D+
-         3GJhxP+NSZi33GZfWiX4qiQy+j7v5GE6Yu5BJFwmfBJwliWnhBom5SVkURLWSzcGed4h
-         x+pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706376686; x=1706981486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v/eRmXnwcofzCLUu7NDTFXzeYjOhl/y7gybN3TxLwFI=;
-        b=T4ZdZUSOEZRaDOlECttGu3oWz05d1lp1baU0YlLBmQvc/yM84j21YQzvSDqrZrGc2Z
-         zGI6cA0I+BfDVEdqSTyrVJE1iSou532cZ3JYeT6GllM+negueEKIV7/m5cZI/mNxbmfB
-         FhBiJ7Vu30ZMPUUgXnOsM1UML/kjA1OEkfor3spvAVeHs6jDdGwZSILGfEuRU9m24fP+
-         X1m/wSo9ZLFtzBq9nyBIse6h7Ze0lgwZpjCu2lWodsjXmha4at7CoHfRr/Wse0SqVwAn
-         vBttDe53YrwbD9Hl7z2O86bYE+kZbHRMYR6TSlQE/PXRKU24GXZbrNQafh1K+eMMO1Me
-         JZmg==
-X-Gm-Message-State: AOJu0Yzyny15mlk2LSl3yHvnwttYPqeNv8pIe4Pl1ZwnWYcQXuSHH4DJ
-	CNR2MozUmpLsYxTkVfMyS9XRvLGZnh1mPjeUH8soe3IGlVHSinLaj8UFZkvQR3i2oxvOHfLOWtJ
-	9xYlcGZC5pbzPRQN5u2V78XZkd1o=
-X-Google-Smtp-Source: AGHT+IGT6QA+Fv5einVWUruH4wFZtEDFhs+QsdbfleXhdDOmi22jhHOwpbUDt75IdkG3ywsAidiVPQmqlmIUB3+EsHY=
-X-Received: by 2002:a25:8c88:0:b0:dc6:3d4d:c953 with SMTP id
- m8-20020a258c88000000b00dc63d4dc953mr823284ybl.68.1706376686077; Sat, 27 Jan
- 2024 09:31:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b="aP9UMXzN";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="IkSk6vqL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=ph73stw23v46e7miqo4f44bv344ybkbc; d=obei.io; t=1706424429;
+	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id;
+	bh=pfvU5czETa1orXWAI5PaOi/GpH0o/cGr/6qscYptKVI=;
+	b=aP9UMXzNaKon8NqFuIOUDl15EBnT8jBKYo4JfXrtSBUvil8fDyu537bE5WeNYJge
+	E+pl7MSr5dT4/NaLK9InUQKa2GFjM43E5uYNRdJEOHfm5zqrjN3sINDDSes8hUHGxyF
+	e7sKArDqnoaj5bCuo3DrY1f+JD/q7nfgjFUj8+bwsIPyrNlELWqbcjeDnrHk/y8u3k9
+	FBfvs5gLfMIzmG/jY3TXOX7honV/zF/oz3kplyzsne3XDTD3buoQ7dmZ2uhEQ3LbKZX
+	FattwseF3CQ3lcGxl4+e/g6ICP9BGMXrighbM3D7BnRTaXU+3rfj9THJGPqYUFGeiDq
+	8DDnp6mXCQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1706424429;
+	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id:Feedback-ID;
+	bh=pfvU5czETa1orXWAI5PaOi/GpH0o/cGr/6qscYptKVI=;
+	b=IkSk6vqLj604caOBzzJAa5LLS8lShVgUpxC9Bzw3cT5cfM0RHXLM7qLO1nJDmPUt
+	Vqp+kbLW3wqcvuzKGA95r/K2vAmFnLZN/pfGUOjPCfCrU9aJQ1WQJVW6SQ8pBNM3FbB
+	4gK1DCwEEWx7nnAVTGc+hm5rMOFgOrkn9I6n9bZI=
+Subject: [PATCH v4] rust: types: Add `try_from_foreign()` method
+From: =?UTF-8?Q?Obei_Sideg?= <linux@obei.io>
+To: =?UTF-8?Q?aliceryhl=40google=2Ecom?= <aliceryhl@google.com>
+Cc: =?UTF-8?Q?a=2Ehindborg=40samsung=2Ecom?= <a.hindborg@samsung.com>, 
+	=?UTF-8?Q?alex=2Egaynor=40gmail=2Ecom?= <alex.gaynor@gmail.com>, 
+	=?UTF-8?Q?benno=2Elossin=40proton=2Eme?= <benno.lossin@proton.me>, 
+	=?UTF-8?Q?bjorn3=5Fgh=40protonmail=2Ecom?= <bjorn3_gh@protonmail.com>, 
+	=?UTF-8?Q?boqun=2Efeng=40gmail=2Ecom?= <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?gary=40garyguo=2Enet?= <gary@garyguo.net>, 
+	=?UTF-8?Q?Obei_Sideg?= <linux@obei.io>, 
+	=?UTF-8?Q?ojeda=40kernel=2Eorg?= <ojeda@kernel.org>, 
+	=?UTF-8?Q?rust-for-linux=40vger=2Ekernel=2Eorg?= <rust-for-linux@vger.kernel.org>, 
+	=?UTF-8?Q?wedsonaf=40gmail=2Ecom?= <wedsonaf@gmail.com>
+Date: Sun, 28 Jan 2024 06:47:09 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com>
- <20231020155056.3495121-2-Jamie.Cunliffe@arm.com> <CALNs47vzQm5MbfJtMQR3p+W1xub3KHiNqRgEQGWT3u28fpQ-oA@mail.gmail.com>
- <CAHirt9jhbnXz34D-pmHNecMfkefL4wTr9LYj_V28OsVd=fkdZA@mail.gmail.com>
- <CAK7LNAQKxrV-oxouv9F6+_i9-oGvJNBzFNLo+5PdqwWVd9qWZQ@mail.gmail.com> <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
-In-Reply-To: <CAHirt9josVNzcwCM5Y3MsVJC9dz+iRg6r_64OK4NWPeOOo_X8g@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 27 Jan 2024 18:31:14 +0100
-Message-ID: <CANiq72=aO-786owBb=0m5x09nMFenRendPZxd2fnsa6_nZHHCQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: Refactor the build target to allow the use
- of builtin targets
-To: WANG Rui <wangrui@loongson.cn>, Catalin Marinas <catalin.marinas@arm.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Will Deacon <will@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	boqun.feng@gmail.com, andrew@lunn.ch, Huacai Chen <chenhuacai@kernel.org>, 
-	loongarch@lists.linux.dev, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: 
+ <CAH5fLghtZK94Co2+0agG91SZQrqke8H=oyHfmRxi2KbRTPJp2g@mail.gmail.com>
+References: 
+ <CAH5fLghtZK94Co2+0agG91SZQrqke8H=oyHfmRxi2KbRTPJp2g@mail.gmail.com> 
+ <20240128064656.6039-1-linux@obei.io>
+X-Mailer: Amazon WorkMail
+Thread-Index: AQHaTrkR834YhMf2RJGh30NlrNjP4wAAtndRAL8vtlg=
+Thread-Topic: [PATCH v4] rust: types: Add `try_from_foreign()` method
+X-Original-Mailer: git-send-email 2.39.2
+X-Wm-Sent-Timestamp: 1706424428
+Message-ID: <0100018d4ed26b78-7c0d5d0c-cf92-48ff-9f97-a656a9560e2b-000000@email.amazonses.com>
+Feedback-ID: 1.us-east-1.LF00NED762KFuBsfzrtoqw+Brn/qlF9OYdxWukAhsl8=:AmazonSES
+X-SES-Outgoing: 2024.01.28-54.240.11.122
 
-On Sat, Jan 27, 2024 at 6:08=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wrot=
-e:
->
-> I agree. It would be great if Jamie could squash them together.
-
-Either that or perhaps Catalin could do it at apply time with your
-Co-developed-by and/or Huacai's Acked-by? I could also take if needed.
-
-Thanks Masahiro & Rui!
-
-Cheers,
-Miguel
+Currently `ForeignOwnable::from_foreign()` only works for non-null=0D=0Ap=
+ointers for the existing impls (e.g. Box, Arc). It may create a few=0D=0A=
+duplicate code like:=0D=0A=0D=0A```rust=0D=0A// `p` is a maybe null point=
+er=0D=0Aif p.is_null() {=0D=0A  None=0D=0A} else {=0D=0A  unsafe { Some(S=
+elf::from_foreign(ptr)) }=0D=0A}=0D=0A```=0D=0A=0D=0AAdding a `try_from_f=
+oreign()` method that will return null if `ptr`=0D=0Ais null, otherwsie r=
+eturn `from_foreign(ptr)`.=0D=0A=0D=0ALink: https://github.com/Rust-for-L=
+inux/linux/issues/1057=0D=0ASigned-off-by: Obei Sideg <linux@obei.io>=0D=0A=
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>=0D=0A---=0D=0A rust/kernel=
+/types.rs | 17 +++++++++++++++++=0D=0A 1 file changed, 17 insertions(+)=0D=
+=0A=0D=0Adiff --git a/rust/kernel/types.rs b/rust/kernel/types.rs=0D=0Ain=
+dex fdb778e65d79..04a356ec3534 100644=0D=0A--- a/rust/kernel/types.rs=0D=0A=
++++ b/rust/kernel/types.rs=0D=0A@@ -46,6 +46,23 @@ pub trait ForeignOwnab=
+le: Sized {=0D=0A     /// Additionally, all instances (if any) of values =
+returned by [`ForeignOwnable::borrow`] for=0D=0A     /// this object must=
+ have been dropped.=0D=0A     unsafe fn from_foreign(ptr: *const core::ff=
+i::c_void) -> Self;=0D=0A+=0D=0A+    /// Tries to convert a foreign-owned=
+ object back to a Rust-owned one.=0D=0A+    ///=0D=0A+    /// A convenien=
+ce wrapper over [`from_foreign`] that returns [`None`] if `ptr` is null.=0D=
+=0A+    ///=0D=0A+    /// # Safety=0D=0A+    ///=0D=0A+    /// `ptr` must=
+ either be null or satisfy the safety requirements for [`from_foreign`].=0D=
+=0A+    unsafe fn try_from_foreign(ptr: *const core::ffi::c_void) -> Opti=
+on<Self> {=0D=0A+        if ptr.is_null() {=0D=0A+            None=0D=0A+=
+        } else {=0D=0A+            // SAFETY: The safety requirements of =
+this function ensure that `ptr` comes from a previous=0D=0A+            /=
+/ call to [`into_foreign`].=0D=0A+            unsafe { Some(Self::from_fo=
+reign(ptr)) }=0D=0A+        }=0D=0A+    }=0D=0A }=0D=0A=20=0D=0A impl<T: =
+'static> ForeignOwnable for Box<T> {=0D=0A--=20=0D=0A2.39.2=0D=0A=0D=0A
