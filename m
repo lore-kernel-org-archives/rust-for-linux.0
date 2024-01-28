@@ -1,88 +1,90 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414C72E62B;
-	Sun, 28 Jan 2024 18:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC64033CD6;
+	Sun, 28 Jan 2024 20:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706466418; cv=none; b=kCr3n9Pv6BbiuHu32Q1j8k5Mlosu7eyhxAwZQQsAAFz80+gcMBNX3vXvmb2loMewv9MdjGh7pZ1WYMabVg+zY0Nl11wN5t/IatQmo1FueEAGLcV8LFRPP/fD9TYlBRs60bwu+ksrTXfvnc05b+3I+qDE+6QMbRIdLCAqa9UPhp8=
+	t=1706472258; cv=none; b=EH4/ruTUmorDn31uhTE2F0LresCscmL34Pyb0FNGmNybjxCzQlvEmIpWSEha2+gvxn9IkAvTzsRTIkNuighLzXZcWlMPKgIKzIUfC3UBQuzU5+ItfkLxLE/FbNmefu3pSCWcqZDXNKhIBE7KzD9VFRpNP7F6EycwB3ddiHWkvCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706466418; c=relaxed/simple;
-	bh=UXTngv2IRaXa+2eC4u2kVj1o4DgKsM6J1Yyn4x6/qHw=;
+	s=arc-20240116; t=1706472258; c=relaxed/simple;
+	bh=9S3wfQZkihmike9xgBCv7o3FsGpq1FyElKHqMnPKnfA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rP4CaSKzKBI65DvKzM8UZewPQGhW1EZB4EKAfjJImUTINmnJSoycRfxzNl9TurKgJT+6K4uUNGK/h2laky2NeSlkLHAgwojHfBANVMPFA12gHVZmgw3pWtDJcxJpQMG/nBEW/6F4pg9f2Z61jHCppIFqGIUO11/RzHaw8FNYPKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hm6e5IUw; arc=none smtp.client-ip=209.85.128.170
+	 To:Cc:Content-Type; b=c2NX01/cUIKlQW22w9M+9iFli3oX7y68ExesK9bhbGXHIxJcMeFK8wQz4hytJ4MAdxs9oF5s7E7e81Lg7TftXiAB2lSldQe5KXRsG17QLmwxAu1S5MWYwZ3PQVyHV+sAWT8cfnvSr0bppWTMmWAZJKBlVouSHTww2CK938swZ9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PYryKuyl; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hm6e5IUw"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-602d0126e80so16950687b3.3;
-        Sun, 28 Jan 2024 10:26:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PYryKuyl"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6029e069e08so28483187b3.0;
+        Sun, 28 Jan 2024 12:04:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706466416; x=1707071216; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1706472256; x=1707077056; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UXTngv2IRaXa+2eC4u2kVj1o4DgKsM6J1Yyn4x6/qHw=;
-        b=hm6e5IUwAEylMWdb0I2crHU8S80NVqt/M26Hd4P2OAwrNytL5rzVptCWlzgaUTeVtF
-         bnhuLTmpLU57UwF47MAFdsE+gGIkVih0XnkS0lBALzODYlPv6ciIVeRBcQwB+2qHMvAs
-         /Ap+TnNkuNwm3VTaAtlzgYjt8YpyvkKItnNvGcmWSJzl0htRK2kRIxcSbVnqTHB13frv
-         /X+O61uE3GnlzzHdf2nvu3EV11r9eOrqxiWsXjJsTRdBPo1dLW0Yapv4Ipk7bDvKmtWs
-         +gxNl2kXJwAUkk/KzO/YhsooF4AsI0873jqac8Twos0ZL98MObYD9Quq3jOICFVXc63m
-         UcHg==
+        bh=9S3wfQZkihmike9xgBCv7o3FsGpq1FyElKHqMnPKnfA=;
+        b=PYryKuylj0e5Vwgo5z1RVjrHywzRSVOU5BxL6UUejB3Sw1YSr2xMwZY77zQke6dkAp
+         heNjysT8dRcZZV4GcM83n+83obmhok34buAwbnXFIIsECLjymgYxYpmSI+F//LNv/ulr
+         Fr92TATYawz3EES7XFAWYW3zltwfXZAAEga0zWhhycJwodte/L2alZPLK4s3oM5JeJnr
+         sKLJ0kbHI6tZ9SK9awMJJ6KT7UMCKWy+oMTvzQpJtwvo349XLd5GgxeMDjr99+X4JZHR
+         kTM/oI6P0arDESJhvlGF++msQZTsSynK7ofUU7k3EDN+EkQjr5CqS7hgY7U2PQ4ivva2
+         0Tuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706466416; x=1707071216;
+        d=1e100.net; s=20230601; t=1706472256; x=1707077056;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UXTngv2IRaXa+2eC4u2kVj1o4DgKsM6J1Yyn4x6/qHw=;
-        b=FUzb/XuDAFs8qqwkKVzobrKs+5yxj5lVrM252j5TenBDJJbv+wyc5tGrrbK2c1R4p1
-         yqrT4JW77NSHJfBOsmmbgvJnXJPpM5Z07xiQ9oSFHRhclhSZgXy2/QBp+ssJpLJGSSWN
-         yaDIzddUZeSXMuDN5Sl9EXNhNZJ37pR8vqg90tvRUzXGpKRb9P2/2eLxrgQZk4dwvv3S
-         wN95zMgzx4SKcf77q3p+diDivN7CprpCUoEtt4OsWj3Foag0yKrylpxeaNwG71cdOXaV
-         GpElWUwZXSvsE8iQnADLbGTXsE7eT1NCAPbPoQSRZyCH6h2quTi0RvUKQsGsCtFB8Dvq
-         jtWQ==
-X-Gm-Message-State: AOJu0YyfX0iV/doaodpzyXuK+DktoMISlJl3EtmJETL7Tv9v3wLzr2jz
-	JmNHo61l6RQg4fOrSbhCYFD/KVywQxgYKjCHuoozCW4uOPkHIuhFcFH1ZrsJF/oNlwd0pvH/jLo
-	RGepX4ywCF+K5T+KR+K/DAXOtr48=
-X-Google-Smtp-Source: AGHT+IH4qPrdNAcAUFXsMfaYWG5heoS9259jnH7OV1Wc3BHu64nL+mQKDxGhwtH2ZbLGQ3WmWJjvggFPbjyNKRDRnPc=
-X-Received: by 2002:a81:4006:0:b0:5ff:9810:e8d5 with SMTP id
- l6-20020a814006000000b005ff9810e8d5mr2500689ywn.87.1706466416118; Sun, 28 Jan
- 2024 10:26:56 -0800 (PST)
+        bh=9S3wfQZkihmike9xgBCv7o3FsGpq1FyElKHqMnPKnfA=;
+        b=sbo5zyKGVK6ZwQ3lsUdEKCdUuzUZ+vvpTSZ+72k28cgtWiYkXFkMyZlHQuepqPXkJt
+         zTC8UAHoeeb4W5fDkXSinqho+Qt0ulpUodQYvGdEfMHQarOuhQHmASxx9BSeHVFhowUO
+         e+hqROTT5bNSImqSW/Mhmx9yGcOXpd/IJxfTGG8hwUpouzkk3FawQvAVUCMMSxSzMBxy
+         fp+aQd75TXeSTPrXCv1s2H69fL950LQGR56XetXUFFXfytCIkMYx6BGSr1aJx71X3X36
+         hfR4JuTXLYAV8w++k6c6v1+8Oe/AdzPUiFaaumtxeQJEHOpu2TtFwXL8J1408/PXCuyz
+         I68Q==
+X-Gm-Message-State: AOJu0YxxnJ9vn64cHCxMrQX1MKRbpjIRW+IF2SahWmnxyFD3hFqyI5t3
+	jFDBHJFDiA+gj4EYbDVfdXM50JnhNIsjJQHS8+DuirN2MRdX+WyzakE9FAF/jfLl5H8glx6Tfle
+	ohc5tSGx9tt1Um4FB8nAUN7jwCSI=
+X-Google-Smtp-Source: AGHT+IEyKJdkMN/kf7/gqXc3y+MmKAwmeLzIw6JXklbGpM3d02BOESQBvIGtxP5qvDNS880qNhJVxNuMxY6sffQyHHI=
+X-Received: by 2002:a0d:d8d2:0:b0:5ff:9b2a:d0b9 with SMTP id
+ a201-20020a0dd8d2000000b005ff9b2ad0b9mr2486371ywe.97.1706472255731; Sun, 28
+ Jan 2024 12:04:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231023174449.251550-1-ojeda@kernel.org>
-In-Reply-To: <20231023174449.251550-1-ojeda@kernel.org>
+References: <20240108-rb-new-condvar-methods-v4-0-88e0c871cc05@google.com>
+In-Reply-To: <20240108-rb-new-condvar-methods-v4-0-88e0c871cc05@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 28 Jan 2024 19:26:45 +0100
-Message-ID: <CANiq72kGPTxC09GigzcLdD8qP6QPch0M7FB8iyqNHNnXN52L4w@mail.gmail.com>
-Subject: Re: [PATCH 1/4] x86/rust: support RETPOLINE
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Sun, 28 Jan 2024 21:04:04 +0100
+Message-ID: <CANiq72kx8oBO_oFZqfKdC2U9R+je1UiA+nVAAwZAEivqvfiZQA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/4] Additional CondVar methods needed by Rust Binder
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, x86@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Daniel Borkmann <daniel@iogearbox.net>, "H. Peter Anvin" <hpa@zytor.com>
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, Tiago Lam <tiagolam@gmail.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 23, 2023 at 7:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Mon, Jan 8, 2024 at 3:50=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> Support the `RETPOLINE` speculation mitigation by enabling the target
-> features that Clang does.
+> This patchset contains some CondVar methods that Rust Binder needs.
 
-x86: do you plan/want to pick this series up?
+Applied to `rust-next` with conflicts resolved after the `wait_list`
+rename, added `CondVarTimeoutResult` re-export, fixed typo and added
+note on the `sizeof(int)` being unlikely to change.
 
-Thanks!
+Alice: please double-check if I missed something.
+
+Thanks everyone!
 
 Cheers,
 Miguel
