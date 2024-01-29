@@ -1,38 +1,60 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D77A6F064;
-	Mon, 29 Jan 2024 18:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2945B1401B
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 18:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706551206; cv=none; b=fNYd2u90g+1ARtcNAjxSiEdtjV2FdWtrhJR8kI8H+NGipGxxbUu97afPNK93ZuH2e1szK2xg0MbWzCQtXRiexETirWWCHhBYn9K+C3hqvt0YXFdRoYQ68l4tuu6dA5gB4WEMF2hjoq3A2ktxh57BEoXyWnOFzm5NdXAMrV7//S8=
+	t=1706554625; cv=none; b=jtW6ABi9HFVwkLdIUMqKjDlj7bOCPRwRUNZeoW8Ehmv8bRwt2XtIXsGaDp3p0AMHghGA+eJ2XcZBFc3iyEVf0kTlw/zj+uEqXRSxNiwm+S4Ih3bmhW1nkdwSXhNk9WxH7ktx3dcr1xP/sQKGkdbNddxSXEs5RFQtq1rMcpIwG3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706551206; c=relaxed/simple;
-	bh=PQPKnWvo8y+dj5G/W0m18inRi0Qo3ZLYZqplpuP1bt8=;
+	s=arc-20240116; t=1706554625; c=relaxed/simple;
+	bh=eCIKHW25tT2p1LrDRn9zEEidOIc6tF2QdISFO0hrmVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rv8E09QQKWO8sRtIwJH/OCBufkGMjyfFAXaGxTW0EohBOmPNx1bF2E7sBfAWhoS9O3IwogTDWMQuv0hEDaDpbO911XgFHUOZzIs4Zc9roo4ENxkMplAnILovSNhDALhUdSTZXpOORm0/+angIVQQZLuoK0sVvVHmAGk4+IkEWTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Z6sg7Flo; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=W0NY2EvYMACX4HqrHFG8ktj26wxrfgBk8+kK/1Xkv1RXuxpKJF9mPu12RLI1glJ+5PVUTZCLC3C+CShI1yBTnG8NzDN6HG7HbxUlQulDJvaYQO5C7LSc03sb4XzntZgs8LZKJdgP7lP4tsK2BCvb5PIiojBJ3dUfbx9RqnDGKQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i88g7+CT; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Z6sg7Flo"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nUaCpWIQKZnRWHaoO9ygLf4yYLLy6m9z7KXvSuxXHYs=; b=Z6sg7FloIK7TT9Uz6gOs/cXEGW
-	MMhZ3DDDlapkaIxgXoEcD+P/f28ZbpQ7wILt7c9kRuRbNeVVrc/047UE5fRz11/o1Lj/gldY7Pghq
-	8rjcuvNZqxzRuvUgW2TuCb1haYVv2twq4AB0gntHlUhuI1KjLN6F9Stg7lotDcLOm/e5WSDFGI3N1
-	93wMVUNYt0f1334r0l3wgENnU21gMFliEVVVWGGyY+rW8HfY+qDHDthxTN4Iqp/naKq+LhkehNgS6
-	4MVS55mImQKFWR59qTlAR/ArUf2tk2cQb1u4XkJ8yTpWnh5QKjBBFFoNePYHxMUlG/YVHIJZKz6KD
-	KTCfELAA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rUVvF-00000007KGd-3pzC;
-	Mon, 29 Jan 2024 17:59:53 +0000
-Date: Mon, 29 Jan 2024 17:59:53 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i88g7+CT"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d8cea8bb3bso6472745ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 10:57:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706554623; x=1707159423; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xb1se6XYnX/io6AeNksDGE+479xc8/XFvlgChDKCPRM=;
+        b=i88g7+CTIgXwbCU7uf1TZyk47slqQsiLyoXfovCffjXY5Gz7Ypxlef+vTIY67M1qMH
+         wQvYktRoFg4xOhv9bhpqv1NUFh4rCpD9HPtEWUtCSOmg3DoeWmj4LZ23cwAKMNawBBmG
+         3rhQltjSH1u1JaXSGsxUFOGaKzVi/QGxbuzOeKpnR8GfNEr8qALHK0aWP6GGQhn6GZoF
+         PlIIs2uPDYzSUbqpE2s2DML2lfm8TPuxKsJ/5XUpU2F+vwadM/hNPJkv+NiFlffA7d0V
+         FzKO1v7Q40p11OPOonrm+5xi/NOf2xDPrFGoEBlFJM6GZbysXc6eGUzhm+roBXJUqnNB
+         OwUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706554623; x=1707159423;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xb1se6XYnX/io6AeNksDGE+479xc8/XFvlgChDKCPRM=;
+        b=QIKnvcetVBLME+oIOoHbDIaRmgwkfyivooz5ePMQ+wuBCZKT2sBWQVuHlS34Ve+mSj
+         8qRcnxjZPhRGwI9ebC8WbjPkpTla8nPr9g5HU0Cxp0sbtRXrNHapp88f0raPl+hZzPJX
+         AJTyhPE7RWLsJFlGuxTW5KlTYj+mjpf/lg2YQ2PNpyQEbA13ZgInYR8rqfkzsy05QvBd
+         kwPVhA0h8H34rQ4zuh7Y0pcZAZeHn4Hmkv4yrlcdzMGzl719cX9WGjGp0cYMtdA31zss
+         B/+TYpWzqKVq+IousWxlAaYQzm8i+EZwzRdcbpWvfzhaKOrvf81XLnAqa6zb5cxbWU8k
+         D03w==
+X-Gm-Message-State: AOJu0YyZSnkKPLvPoOCUsu483veEk1gW2ACfTeFeBct6lBpi7Nw6dLeF
+	4uxtSSC7ZoTj/9NLuJElOFgVjBsUG0Zq2XBunVqhnm8CwedWGukytR+js+bf/w==
+X-Google-Smtp-Source: AGHT+IHDPJf6Cs1/rFQndlGrqInaTjASmhMPFG6hMvQzgDeukzrXVXyHNQnpPCxBHxyveq9IHhfIWg==
+X-Received: by 2002:a17:902:d2ca:b0:1d8:faf7:7f77 with SMTP id n10-20020a170902d2ca00b001d8faf77f77mr1125402plc.24.1706554623320;
+        Mon, 29 Jan 2024 10:57:03 -0800 (PST)
+Received: from google.com (152.33.83.34.bc.googleusercontent.com. [34.83.33.152])
+        by smtp.gmail.com with ESMTPSA id c6-20020a170902724600b001d8aadaa7easm4827584pll.96.2024.01.29.10.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jan 2024 10:57:02 -0800 (PST)
+Date: Mon, 29 Jan 2024 18:56:58 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
@@ -45,15 +67,15 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
 	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>
 Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
-Message-ID: <ZbfnmX1J8iLV8UnO@casper.infradead.org>
+Message-ID: <Zbf0-o-8m_V9gSzZ@google.com>
 References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
  <20240124-alice-mm-v1-3-d1abcec83c44@google.com>
+ <ZbfnmX1J8iLV8UnO@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,104 +84,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240124-alice-mm-v1-3-d1abcec83c44@google.com>
+In-Reply-To: <ZbfnmX1J8iLV8UnO@casper.infradead.org>
 
-On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
-> Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> This struct is assumed to hold ownership over the page, so that Rust
-> code can allocate and manage pages directly.
+On Mon, Jan 29, 2024 at 05:59:53PM +0000, Matthew Wilcox wrote:
+> On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
+> > Adds a new struct called `Page` that wraps a pointer to `struct page`.
+> > This struct is assumed to hold ownership over the page, so that Rust
+> > code can allocate and manage pages directly.
+> 
+> OK ...
+> 
+> > This patch only adds support for pages of order zero, as that is all
+> > Rust Binder needs. However, it is written to make it easy to add support
+> > for higher-order pages in the future. To do that, you would add a const
+> > generic parameter to `Page` that specifies the order. Most of the
+> > methods do not need to be adjusted, as the logic for dealing with
+> > mapping multiple pages at once can be isolated to just the
+> > `with_pointer_into_page` method. Finally, the struct can be renamed to
+> > `Pages<ORDER>`, and the type alias `Page = Pages<0>` can be introduced.
+> 
+> This description concerns me because it reads like you're not keeping
+> up with the current thinking in MM about what pages are and how we're
+> improving the type hierarchy.  As in, we're creating one instead of
+> allowing the current mish-mash of absolutely everything to continue.
+> 
+> Are you the right person to ask about the operations that Binder does
+> with a page so we can figure out where it fits in the type hierarchy?
+ 
+I would guess you are suggesting a transition to folios here? I don't
+think there is anything in binder that would impede such a change. The
+core idea behind binder IPC is to skip kernel buffering and perform
+instead a "copy-once" of messages across users memory. In theory this
+seems efficient but I haven't seen any data proving so. So take that
+with a grain of salt.
 
-OK ...
+The size of these binder messages is not limited per se and can trigger
+the allocation of multiple pages. However, in reality the vast majority
+of transactions are under 1K payload. FWICT, it seems reasonable to
+switch over to folios.
 
-> This patch only adds support for pages of order zero, as that is all
-> Rust Binder needs. However, it is written to make it easy to add support
-> for higher-order pages in the future. To do that, you would add a const
-> generic parameter to `Page` that specifies the order. Most of the
-> methods do not need to be adjusted, as the logic for dealing with
-> mapping multiple pages at once can be isolated to just the
-> `with_pointer_into_page` method. Finally, the struct can be renamed to
-> `Pages<ORDER>`, and the type alias `Page = Pages<0>` can be introduced.
+The only concern I have is that we've implemented a binder LRU-shrinker
+mechanism. We add the unused pages to our freelist and give them back to
+the system on demand. However, if a new transaction requests the unused
+page before it gets reclaimed it is simply removed from this freelist.
+This is convenient as we avoid taking the mmap sem during this process.
+I don't know how this mechanism would look with folios though?
 
-This description concerns me because it reads like you're not keeping
-up with the current thinking in MM about what pages are and how we're
-improving the type hierarchy.  As in, we're creating one instead of
-allowing the current mish-mash of absolutely everything to continue.
-
-Are you the right person to ask about the operations that Binder does
-with a page so we can figure out where it fits in the type hierarchy?
-
-> Rust Binder needs to manage pages directly as that is how transactions
-> are delivered: Each process has an mmap'd region for incoming
-> transactions. When an incoming transaction arrives, the Binder driver
-> will choose a region in the mmap, allocate and map the relevant pages
-> manually, and copy the incoming transaction directly into the page. This
-> architecture allows the driver to copy transactions directly from the
-> address space of one process to another, without an intermediate copy
-> to a kernel buffer.
-
-Everything about this says "This is what a first year comp sci student
-thinks will be fast".  Oh well, the thinking here isn't your fault.
-
-> @@ -127,6 +129,24 @@ int rust_helper_signal_pending(struct task_struct *t)
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_signal_pending);
->  
-> +struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
-> +{
-> +       return alloc_pages(gfp_mask, order);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_alloc_pages);
-> +
-> +void *rust_helper_kmap_local_page(struct page *page)
-> +{
-> +       return kmap_local_page(page);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_kmap_local_page);
-> +
-> +void rust_helper_kunmap_local(const void *addr)
-> +{
-> +       kunmap_local(addr);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_kunmap_local);
-
-I remain opposed to all these fidgetty little helpers.  Particularly
-when they're noops on machines without HIGHMEM, which is ~all of them.
-
-> +/// A bitwise shift for the page size.
-> +pub const PAGE_SHIFT: usize = bindings::PAGE_SHIFT as usize;
-
-Does PAGE_SHIFT really need to be as large as 'usize'?  If it's more
-than 63 by the time I retire, I'll be shocked.  If it's more than 127
-by the time I die, I'll be even more shocked.  And it won't get to 255
-by the heat death of the universe.
-
-> +/// The number of bytes in a page.
-> +pub const PAGE_SIZE: usize = 1 << PAGE_SHIFT;
-
-This is appropriately usize.
-
-> +/// A bitwise mask for the page size.
-> +pub const PAGE_MASK: usize = PAGE_SIZE - 1;
-
-Are you trying to get somebody killed?
-
-include/asm-generic/page.h:#define PAGE_MASK    (~(PAGE_SIZE-1))
-
-Defining PAGE_MASK to be the opposite set of bits in C and Rust is
-going to bite us all day every day for a decade.
-
-> +impl Page {
-> +    /// Allocates a new set of contiguous pages.
-> +    pub fn new() -> Result<Self, AllocError> {
-> +        // SAFETY: These are the correct arguments to allocate a single page.
-> +        let page = unsafe {
-> +            bindings::alloc_pages(
-> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings::__GFP_HIGHMEM,
-> +                0,
-> +            )
-> +        };
-
-This feels too Binder-specific to be 'Page'.  Pages are not necessarily
-allocated with GFP_HIGHMEM, nor are they necessarily zeroed.  Maybe you
-want a BinderPage type?
-
+--
+Carlos Llamas
