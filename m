@@ -1,114 +1,87 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D06215B30E
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 17:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54283F9D8
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 17:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548121; cv=none; b=OLpQksGFWmDqPznJNcHbgAWINe3kNrYOdwwRcVgDhyMCbNO0xRcetWYoAHHBh4qRmUVEUdxoJdL1c8wd4ufZAIlNkxYIt8yhQ0VP1xZWR+lCqdfB/HG/BTOE3Krip51Gjw4ZftBJGJ8tqNnjAU0BFq77YVjuJcsxqZ5feveseD4=
+	t=1706549205; cv=none; b=o6g4hUSH59zvMwPERmxHuTZp2qnJbOtPDVl1TN+N9ssY+av3HfXdLy1UvaHWnl+PhEaSRtetcEhB27Yr2+HYFTW0JvlR/GGxc+/YJhYpD2tnQZjzIY/kgvwbeFZ3kvVKWZQ1SemSYboDaxjcrULKbygrcv5058QimxSWFRmvjQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548121; c=relaxed/simple;
-	bh=UFA2sbZ3Uszgy+yX9T1/72+bJwfqcVAD5CapdxRxgN0=;
+	s=arc-20240116; t=1706549205; c=relaxed/simple;
+	bh=3ZNwL4tCSvsPfQx8A1eO3VZzjwMmosOf3Od9NXM8fqQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U0boYOChQdIEGFXKdA4Y2ywBdBr9OAa4EsxC45x1hmQdMcnlok5BeuPY6wmRGdDctqr8OWUHpMFua+CUNVcbB6BPjAFiOu2xzGfjKRrCC8s6w0FqQmDGw/aYqs9Dd7fM9Eit/OqOcgzVYCQNWkfrEn+QSvYQYCBDLrnbQCEOe0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=On+uWy0v; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=Y848GJmj2OQprtRtnpCUyT92Pp4KFg4VhIzQb4WCEEMBJgHvAqVE/SRUymUkzyXxw23ylXvGZAyeFv4Lt3hINXUHM/G8xd9aaMxfuRa2/ugaQN8VkQiyev08+71TW+Xf7XMqgtYSG5GRiLPVKbfPafSrd5bUItAHHr1eciFcWCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJ5BV7tT; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="On+uWy0v"
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4bdc3d5512eso1800656e0c.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 09:08:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJ5BV7tT"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-602cf7dfeb1so28087697b3.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 09:26:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706548118; x=1707152918; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1706549202; x=1707154002; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EytCfCt7Mdn+cYY/W3p5gw2x+cwVqNDRPkfT5+zTUNI=;
-        b=On+uWy0vOWV6oVVgcSwFa0WMil8Hqocjk50nCrwJRtMSPGPvQ0Mm7NoGZ42WFprNDn
-         n6wT3QBFwFFvoGCVwqt0QTEQO33zIyvvYbAt9BmiZrCghYbF0CumaGv9Mbk/fI3/ZNCN
-         9IZK2+tavJf4L9tam7xxEWheZ/uvu5SjuqA0s+wCIWy8Vpb5B7GoAddBr2qD8cWPmGa+
-         yj/6yYmxfeDTSpuy3Mg0q2zx5kzQSPXS80VgHm4BkMCOM5Z646JAS4nHBmdt9BuwRKFX
-         ug5lliiZHy0WALv2FJFgiarlw3CF6i5FClmblQkcs+KvKOaSRZ16M3KHV+ucoxhE3KkF
-         RS8g==
+        bh=3ZNwL4tCSvsPfQx8A1eO3VZzjwMmosOf3Od9NXM8fqQ=;
+        b=KJ5BV7tTvUVw3e0CWILjDqfJI+znzAEz14qA5mUpn/LctAPKpbwIO1T37FFkYF+XpZ
+         xUauzTHBixBHUg3kgUZVgUsQxwHgS/qWEgKc8nvqbDcFNMcmQWShq7JuihNPhfYDTIeP
+         npMuE4s1NOIGQV+LTRyN67jedKkdpcw090wjXOpCva8FzTyw4kJqLqvNxdOZOSEpoX+R
+         fPjCUvxyE+owgm2SDOl5svm/NAT9diF1fGod8rFEwmWTHejeUdb8Ea6Hk0eIsXbq6L1m
+         DcH9cTH15uroT/wrk2IAgHksxC3g/nCVklWYZYGuOmhBOnwC5seHk3GreL5Kca7JzaJA
+         AlHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706548118; x=1707152918;
+        d=1e100.net; s=20230601; t=1706549202; x=1707154002;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EytCfCt7Mdn+cYY/W3p5gw2x+cwVqNDRPkfT5+zTUNI=;
-        b=qkrl6sSM8fg+vGZcD8b4XmtFWjtoC8A3KSv56/GXlb6mTQZeC5Yux5ttnWEU2jxhLB
-         89+0VvpraxCzK9YsI+X/YV5y2r4k4/kztkep1LqIZFcyNFpF64Ivy7btFKHzM+H+seSh
-         243CMk4NwJDLSGQUcty9zJyFz+bKD5FpH2r4xHeQ0O6Pv4KiizJTRO3EIh+0j3k8XM+/
-         JUNkHHCy5xTbw7dzqkbmlh3JfvgH/3/xqi4sXI01HbKx04R1BjzbMP+CsVzojAb4Wq+o
-         1doNiVEOLPXAnaiBfrwAbZrpija6lvV3pyX2mjJPscpYNixRN/FSvJfmuGlnm83NFLZH
-         Pm8g==
-X-Gm-Message-State: AOJu0YwFbwZsJJ+LszyUU0Smbzue0FBChzSsswIBRXU+62U6Fy7Hsten
-	NvvjFVMx9uiJ2Ij8lDhELf+egpS3BZBu/a/qswfATybtCCFTMdy4uamRQpHQKT57SlO5lL58LH7
-	4itC2FQtxRyfNC6PrjZrzGSTXPUvXVRU60HNl
-X-Google-Smtp-Source: AGHT+IF9Cu5QQ8w4oZJwiWiMcHW4RaXyLjrg31UTRbHFnVHAFPnrShgJD92nkJB3pF4cIqhqy+YlGQA7E/cQ25bGa4E=
-X-Received: by 2002:a05:6122:1799:b0:4b7:57a4:1238 with SMTP id
- o25-20020a056122179900b004b757a41238mr3247799vkf.14.1706548118338; Mon, 29
- Jan 2024 09:08:38 -0800 (PST)
+        bh=3ZNwL4tCSvsPfQx8A1eO3VZzjwMmosOf3Od9NXM8fqQ=;
+        b=bIt1gN1WhY7mdHmw3VxiKW3Le3V6GesXWhP/oQxtXz5PrRShTO8GlKySIg8uQlYuzk
+         hfM4ZuZViBd3dxVjdUtlKUguLps1p/P+RaSRH1L7OHXwsqUD5EiS+mfZGAH9XDzPYPgg
+         z7HX2paLsSkTWn50Bbj++5Dxngrk8UCFTs4FAkQeMYPoAVgJLdSmZuWYEhynIvlZaTtN
+         a1+ZISeCsmS/230bLgsGgSYJfOjvT7pIelIt+CMcI9WtHSU0PnlXHT8GBhFhJkOr5xVg
+         JY3RK2BtPU7ZFM/l54i9XWZbFB324FPxx6C1E8uxV/F2kyNMS3WNOL4saZj4eqxTmbk6
+         YdCA==
+X-Gm-Message-State: AOJu0YyN+pJUV3jjHy2NWik4VPjjOLQ6gRgXr453TDC4JsPMhyvKsPdI
+	8ebnPFLIiE0mpsFxkAM80PgGH19s/GaPB/nBgRAFrDCibqPz3F0vB+BncmN3kpGFXwhN0bQ3VQ1
+	Of+7rh4ryzPnTmYAW4Azlq01UsRM=
+X-Google-Smtp-Source: AGHT+IGqRvKEO4tLfovHnfvfigvIq+eoqzlL9x3M7CLkLFMMugM9UQUhLW8+ZgMAH5P+xe6HmVow/R4/k0rY5DHMVNk=
+X-Received: by 2002:a0d:e2d7:0:b0:5ff:910c:4448 with SMTP id
+ l206-20020a0de2d7000000b005ff910c4448mr4474102ywe.51.1706549202566; Mon, 29
+ Jan 2024 09:26:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118-alice-file-v3-0-9694b6f9580c@google.com>
- <20240118-alice-file-v3-9-9694b6f9580c@google.com> <1ac11c65-7024-41c3-a788-cfcad8fb6c55@proton.me>
-In-Reply-To: <1ac11c65-7024-41c3-a788-cfcad8fb6c55@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 29 Jan 2024 18:08:27 +0100
-Message-ID: <CAH5fLgjMvh65PXdxnkPAtxNH82UDAwtyXmPK+VJPFTtXfiN2JQ@mail.gmail.com>
-Subject: Re: [PATCH v3 9/9] rust: file: add abstraction for `poll_table`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <ZbSDkm65LML4OWKX@ohnotp> <20240129121859.1099000-1-aliceryhl@google.com>
+In-Reply-To: <20240129121859.1099000-1-aliceryhl@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 29 Jan 2024 18:26:31 +0100
+Message-ID: <CANiq72mTN=v5Qf7UCjaT_oNWra9sPbGYyr7+7xeUv4xdTouKBw@mail.gmail.com>
+Subject: Re: [PATCH V2] rust: str: implement `Display` and `Debug` for `BStr`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: yutaro.ono.418@gmail.com, a.hindborg@samsung.com, alex.gaynor@gmail.com, 
+	armavica@ulminfo.fr, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 24, 2024 at 11:11=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+On Mon, Jan 29, 2024 at 1:19=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> On 18.01.24 15:36, Alice Ryhl wrote:
-> > +/// Wraps the kernel's `struct poll_table`.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// This struct contains a valid `struct poll_table`.
-> > +///
-> > +/// For a `struct poll_table` to be valid, its `_qproc` function must =
-follow the safety
-> > +/// requirements of `_qproc` functions. It must ensure that when the w=
-aiter is removed and a rcu
+> What about newlines and tabs? Those are printable.
 >
-> The first sentence sounds a bit weird, what is meant by `_qproc` function=
-s?
-> Do you have a link to where that is defined? Or is the whole definition t=
-he
-> next sentence?
+> If you are intentionally excluding them, please add a comment saying that=
+.
 
-Yeah. Does this wording work better for you?
++1 and, either way, it would also nice a test for those too.
 
-/// For a `struct poll_table` to be valid, its `_qproc` function must
-follow the safety
-/// requirements of `_qproc` functions:
-///
-/// * The `_qproc` function is given permission to enqueue a waiter to
-the provided `poll_table`
-///   during the call. Once the waiter is removed and an rcu grace
-period has passed, it must no
-///   longer access the `wait_queue_head`.
+> This escapes quotes, but what about backslashes?
 
-Alice
+Ditto.
+
+Cheers,
+Miguel
