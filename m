@@ -1,170 +1,111 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6CA6026A
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 12:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C44604AA
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 12:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706530744; cv=none; b=OSJfs0E/0EiXh8S5VR4XMppEoZQntJU0yP1kk5wH62jr+cP1CSgtLg6A9ycBjtAQK1tNsZJrwamlNE8iQPP11jTD9+59mNR+HIbepeyTNEiDggwz+CVzLOr3EUhFNujGO9AzmmjLxoEaXkP+3xVJrVbiDUh1sxDT3PUPwhn7Oz0=
+	t=1706530937; cv=none; b=A5PnP/TdiI7R6l+nVXrSOPWM060OEPcKIRvE9iVzWgNGxUpWRK+qFfShU5gkDNgoXnQEwm3t5wJyNHhRRjF8lFXMPjptefC/85OX5omGqCo8inQCPVOJbF4Bc4A+x8Tb8J5MOYdZJhmejLxskYp5sruLWHr6jjPBTPI6OUNoDuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706530744; c=relaxed/simple;
-	bh=XcJOxxFwVzUk1Hmoy8T/Yzcsgyx8Q/hBv2Jk4zcdOxc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l5ZJzVWo2bAihW5oxJAbQ+kJ+y+5b44X6u/DHJcvYqdwYlJA5H6rXoCz+TbaCaPcWpPd96g6RArjh15D99PGMyR4H42wPLrl3BIEKea7qseW509X9A+xkWaWFUASBO+J4eYDERDpB3WDj5lrXoiFdBfzfvw386OVA6kPWrvKq3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w8qYptzD; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1706530937; c=relaxed/simple;
+	bh=7ncRDgtObW0Ks7PjrVnRjuF5KnP3PaDLgYdD1ioGKdY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ZFSlyV88t8D8WM6gHIyxJ58uQKnCz/2kLeSC7wxQBDyMvKbRipTq3F3TOxGDtIzBtnFX/7JwjqIwB6NJ7hTeBUXSi9K9hrZyFj8jA65eKawCWHWB2TtT+QPIydTF3gyJMexFJklgC1oRd6DF2GW2aughr0CDdc4jVSNbWOkVt74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jSFVvcnC; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w8qYptzD"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-5ffa2bb4810so28824897b3.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 04:19:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jSFVvcnC"
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dc22ae44595so2861110276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 04:22:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706530741; x=1707135541; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3OVPaWX+a40E+Wo1V3SFI4LMjdBosQXjWC6XDKZ57Zk=;
-        b=w8qYptzDVvbJDA5xe6baCeXQ7tDtdADGuA7YKc6V6Bakr19Zl7/Iy2ICSzbOAkrWe1
-         1jIVq5NSnVESiLimeYMvXsWqqFnoG7vSXLkV9yWpe04E+CzlPRI14q1cX9hXh/M9exDj
-         QCQ9m2/SJ+msVNvUjHum1/FxcWIBNdfNWbUjlBR+8tH80Ga6GcAEuP0GX0sJbUbXtUO2
-         1lRS4ttZR9JKEOfZcw3t97B7y46YTX0fAsW16nZGZprr/xSJSq9/qFQy4w6tPiwsEXXG
-         eEWB4sMmVWJaz8HaauSc6LzUQYATgEheTjzr3ERdCXfPHZvlGWXs2m+LntIsotzwAhN3
-         bjOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706530741; x=1707135541;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20230601; t=1706530935; x=1707135735; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=3OVPaWX+a40E+Wo1V3SFI4LMjdBosQXjWC6XDKZ57Zk=;
-        b=cs3UU29KlWcAqgrK0HclWLxebP0cZXQzrJSuoJVvYQqiPACXPCizS9lClkmLMb24NG
-         O3/A3AxZ1o7k+O6o1p+ppCg2nSgDF7BfzkpMwIfrB8TK9etuzWm1LFA8Z//ywJOQxVwZ
-         HcIHCJOVqlHy/uHDnkzmw3JwIwV7F5X1bw1AmEy7tAGeKBAO4Tq3/dMRRQh+GRSK/bLn
-         ZzRiCV/l2J8rnIiDwTruqjgPS2cdC7oshGkeOuSHoJ6m6at+ImFMxMoGkzPaX0NqgfuD
-         bKg59F8PWJswknr8PrSLoN4gs7+PgE56NfkoOETKjdPAxSlXpHkrP9gbWZ5jevHVReUv
-         DyLg==
-X-Gm-Message-State: AOJu0YyPo7wdwk877QF6UolXmvr4CV90g7hWYAOasHH0wHyBhjePCvuo
-	sExklNh1SAYXqmsbz+QI/s6DFPwrWmNeiPFhoO5Jom9WIEeQvnMI3Kj/3qUmzL+45kRS23W26cW
-	akzMetu09/WbkjA==
-X-Google-Smtp-Source: AGHT+IFcnkCTaIQD+LMdI/9aBTJOKMoPzPFD9rXC/CgrdqQeCDPvb2s4sVOMqrOo3Vb+YCdklY9OmYAXyDWTLbg=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a81:57c3:0:b0:5f9:4fa1:1a0b with SMTP id
- l186-20020a8157c3000000b005f94fa11a0bmr1316146ywb.0.1706530741581; Mon, 29
- Jan 2024 04:19:01 -0800 (PST)
-Date: Mon, 29 Jan 2024 12:18:59 +0000
-In-Reply-To: <ZbSDkm65LML4OWKX@ohnotp>
+        bh=YSPchUT39qPR0ZB5NZ3t/M/6y5E1BqmbAYyjCWa8SZw=;
+        b=jSFVvcnC1cwISlHQ0RImgMbmn98rYrebyC70va3p772p8dO/CLqHX1D/LZKfMILcMd
+         s+gZBjfLWCKPwZL/Y3ZnY62quOIs7FL2BglEYPz0Mu1Pg5VRcleYht/QkvM50fwQKSOX
+         VG3HJfz80jhCTS3DWMRlAInFURT5HtbFlv5jYw+GyJXLAVFQfv6XwFBv/ViHrLTcvdco
+         Z4MiUyHZsdL9odPUj48mzXl6pRbUFGlqTho3LSa8w+5HXlkxwS08HoZEjAQeRreDuSuV
+         UnaxtlyLHIBP+xsbNeXSS9+JPYQBfh6GIP7TL1cXf0MTPEGqa7VZwFkBSseKVcn8TTcC
+         Wteg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706530935; x=1707135735;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YSPchUT39qPR0ZB5NZ3t/M/6y5E1BqmbAYyjCWa8SZw=;
+        b=al0vjKcIAt7tTSNLzUR8P1Cv8R8PsBVe+B18B5lv008WILKhdEtwOpJvnSjzDYdKiZ
+         rdlxky0tGdZD9JxSPSzEM18yXkicx5qE0CsgazqGNJzXy5wPPhV6okqHiVpft8s1tp+m
+         RZXdGe+ZygbFh5luVB+BmsHmLXJkigivBtVIQ8uaBfzMld9LR/xPOGVbAq7Acviqr1bN
+         1N6Bt7JMa0Z+wyVhK32cDMPSLo/I5qAl7sSOsSDLKsrWyd2/F4px9Vdk3891Nfph98Ef
+         Sz9/0AXpwfsGIHLOMbPHctrcFuG5AKqlAZt3VwWZ4PxTzmu6YtrgmyjKBoLJ9xdsAlkc
+         NMlA==
+X-Gm-Message-State: AOJu0Ywvj4Xc9M1SKS1YcBbwjrY326+mXHVPGkZXfNF3iql2xS0a1Zfa
+	S6McuHJIBeJG0VtpvH4kvRC54tZYMl6jv7cnxvJTRWT5V7X0XaQ9cbjj133Av4E1ZDIxdKorRkF
+	IUn7R/B6zqf59KivwqT6TMTNEvtM=
+X-Google-Smtp-Source: AGHT+IHizdDvPn8vYCLjJBYBP/kPASHHXWfxtWjXirJn9gR+a3nLXBC/bhgyW8o0RDIJQqIdReJCzba5EecoSj+8xjE=
+X-Received: by 2002:a05:6902:2806:b0:dc2:37c5:72fb with SMTP id
+ ed6-20020a056902280600b00dc237c572fbmr2562213ybb.74.1706530935239; Mon, 29
+ Jan 2024 04:22:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ZbSDkm65LML4OWKX@ohnotp>
-X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240129121859.1099000-1-aliceryhl@google.com>
-Subject: Re: [PATCH V2] rust: str: implement `Display` and `Debug` for `BStr`
-From: Alice Ryhl <aliceryhl@google.com>
-To: yutaro.ono.418@gmail.com
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	armavica@ulminfo.fr, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 29 Jan 2024 13:22:04 +0100
+Message-ID: <CANiq72=9PZ89bCAVX0ZV4cqrYSLoZWyn-d_K4KpBMHjwUMdC3A@mail.gmail.com>
+Subject: linux-next: workqueue + rust build fix
+To: Tejun Heo <tj@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Yutaro Ohno <yutaro.ono.418@gmail.com> writes:
-> Currently, `BStr` is just a type alias of `[u8]`, limiting its
-> representation to a byte list rather than a character list, which is not
-> ideal for printing and debugging.
->=20
-> Implement `Display` and `Debug` traits for `BStr` to facilitate easier
-> printing and debugging.
->=20
-> Also, for this purpose, change `BStr` from a type alias of `[u8]` to a
-> struct wrapper of `[u8]`.
->=20
-> Co-developed-by: Virgile Andreani <armavica@ulminfo.fr>
-> Signed-off-by: Virgile Andreani <armavica@ulminfo.fr>
-> Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
->
-> [...]
->
-> +impl fmt::Display for BStr {
-> +    /// Formats printable ASCII characters, escaping the rest.
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-> +    /// let ascii =3D b_str!("Hello, BStr!");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{}", ascii)).unwrap();
-> +    /// assert_eq!(s.as_bytes(), "Hello, BStr!".as_bytes());
-> +    ///
-> +    /// let non_ascii =3D b_str!("=F0=9F=A6=80");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{}", non_ascii)).unwrap();
-> +    /// assert_eq!(s.as_bytes(), "\\xf0\\x9f\\xa6\\x80".as_bytes());
-> +    /// ```
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        for &b in &self.0 {
-> +            match b {
-> +                // Printable characters.
-> +                0x20..=3D0x7e =3D> f.write_char(b as char)?,
-> +                _ =3D> write!(f, "\\x{:02x}", b)?,
-> +            }
-> +        }
-> +        Ok(())
-> +    }
-> +}
+Hi Tejun, Alice,
 
-What about newlines and tabs? Those are printable.
+Today's next-20240129 includes commit e563d0a7cdc1 ("workqueue: Break
+up enum definitions and give names to the types") which gives a name
+to the `enum` where `WORK_CPU_UNBOUND` was defined, so `bindgen`
+changes its output from e.g.
 
-If you are intentionally excluding them, please add a comment saying that.
+    pub type _bindgen_ty_10 = core::ffi::c_uint;
+    pub const WORK_CPU_UNBOUND: _bindgen_ty_10 = 64;
 
-> +impl fmt::Debug for BStr {
-> +    /// Formats printable ASCII characters with a double quote on either=
- end,
-> +    /// escaping the rest.
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{fmt, b_str, str::{BStr, CString}};
-> +    /// // Embedded double quotes are escaped.
-> +    /// let ascii =3D b_str!("Hello, \"BStr\"!");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{:?}", ascii)).unwrap();
-> +    /// assert_eq!(s.as_bytes(), "\"Hello, \\\"BStr\\\"!\"".as_bytes());
-> +    ///
-> +    /// let non_ascii =3D b_str!("=F0=9F=98=BA");
-> +    /// let s =3D CString::try_from_fmt(fmt!("{:?}", non_ascii)).unwrap(=
-);
-> +    /// assert_eq!(s.as_bytes(), "\"\\xf0\\x9f\\x98\\xba\"".as_bytes());
-> +    /// ```
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        f.write_str("\"")?;
-> +        for &b in &self.0 {
-> +            match b {
-> +                // Printable characters.
-> +                b'\"' =3D> f.write_str("\\\"")?,
-> +                0x20..=3D0x7e =3D> f.write_char(b as char)?,
-> +                _ =3D> write!(f, "\\x{:02x}", b)?,
-> +            }
-> +        }
-> +        f.write_str("\"")
-> +    }
-> +}
+to:
 
-This escapes quotes, but what about backslashes?
+    pub type wq_misc_consts = core::ffi::c_uint;
+    pub const wq_misc_consts_WORK_CPU_UNBOUND: wq_misc_consts = 64;
 
-Also, perhaps `write_char('"')` makes more sense than `write_str("\"")`?
+Thus we need a small change in Rust's side [1] (which in turn triggers
+a slight reformat of the code due to the line length change).
 
->  macro_rules! b_str {
->      ($str:literal) =3D> {{
->          const S: &'static str =3D $str;
-> -        const C: &'static $crate::str::BStr =3D S.as_bytes();
-> +        const C: &'static $crate::str::BStr =3D BStr::from_bytes(S.as_by=
-tes());
->          C
->      }};
->  }
+Tejun: please feel free to fixup-it into your existing commit (diff
+likely mangled, sorry -- let me know if you prefer a formal patch
+instead).
 
-This should use the full path both times:
+Thanks!
 
-const C: &'static $crate::str::BStr =3D $crate::str::BStr::from_bytes(S.as_=
-bytes());
+Cheers,
+Miguel
 
-Alice
+[1]
+
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 498397877376..d00231e18007 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -199,7 +199,11 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) ->
+W::EnqueueOutput
+         // stay valid until we call the function pointer in the
+`work_struct`, so the access is ok.
+         unsafe {
+             w.__enqueue(move |work_ptr| {
+-                bindings::queue_work_on(bindings::WORK_CPU_UNBOUND as
+_, queue_ptr, work_ptr)
++                bindings::queue_work_on(
++                    bindings::wq_misc_consts_WORK_CPU_UNBOUND as _,
++                    queue_ptr,
++                    work_ptr,
++                )
+             })
+         }
+     }
