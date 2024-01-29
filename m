@@ -1,189 +1,292 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7240A66B25
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 14:27:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00996152E0E
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 14:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706538465; cv=none; b=AbLI8gJOOzjbKEcPUgrwjzUN2pxv/sVpdCpSSjtdWJt2PGfoVI0o1jiZKvWHptyNwTngebRKeYnWh1qKHPxnJpYquaaMSHPVs8mKso6RDNPQoMsxtRiInd/ZmzzduYsIugjM6J2GtO5fv/uNA9e2inHo+1nNga0M7rgirvajc4Y=
+	t=1706540324; cv=none; b=WYhiqu71sOWcg6j1XSZISktEjbX65RA5T0ytFZMm72RBixLSbqhQm2Wmnipc6NM6dqu63LKcYVWDLpEA+57sEH24+nWiXMR2Xb8q4jgzp1yA+8U9kJaZqeuv0Z2+2d0Cff4hIWhNTpN1K1T3Hq5bqzAeyJXWtDOXIL+watClXwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706538465; c=relaxed/simple;
-	bh=6bzM16UBxP08WHaFfcFo1ofPi4ev583qMl2qYHoKPgo=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=BUxXtnbUMFRkxpwX2WzKgg71G8CzhY2XQSB5mKDCeTLLTekDw8CHtm9zvIITFXDxB7a3WcTOY8nYe3bdyAk32W9r9sjKcacTMSxcaHGkTxuIrDRzIHxNfzMgPUtX+20aHENjDQ64+V/Xt/BVEv1tu9m78FEqeea13Oj5K282Id4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=Bnk4P57t; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1706540324; c=relaxed/simple;
+	bh=fGQMhAPfuC6Nz2GR1bvgST+yK0rGAgTz9JwInsVoAqM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eqZ9apT2dpuhlw5UAVhCx44NVdPr74pvzbW0hcmgKA1AFCtGu4MF/Gl3Dz7dlkU3AiZmXccCzUMAVhnyd8q1ftFImHabCq7NRZLzIqFkXo9b1t7vb+XNiWLt7xGyr+jSECiRgNtI8CwJdV1W7zoSEfbZ4GZ4t0AwaMn5iNVT/rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3D23dSuT; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="Bnk4P57t"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40ef6442d60so9073935e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 06:27:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3D23dSuT"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6477d2cbcso3420954276.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 06:58:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1706538461; x=1707143261; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SpRD2seb2hFO2F2eYuqqQkOpWG+jBIz46VQxNPe840=;
-        b=Bnk4P57t6cpXMr9bIHUjebrMow12H1ie7eOrIl+eYVcEK14V+XJm67zHWjQzAY9qPN
-         0/MLDsIWOmGgetC79xU08NO79JGNx3RS1FRPQeDLArzYBIoOL5gtzq9xRt/M3ERBm6Tu
-         T8shhjG6BpUS/vm9QYbdpcaUdnLIPbzCyfA2xUsIg2A4GWg6q2rIiHlZMCZfjg5xqm6q
-         SUT5D6DcQe6r2l00cs4tM2hnbtfIlGAUtsO3v+jFfm+dv3+TUBa9jvPtVO5UAgxsGY4I
-         kcqvzyuAUGcHAzQQ3OWyQq+OQUghA25FwbNF21uaieDNFzflnrA6Dmm8D38z80KirOoS
-         sX3Q==
+        d=google.com; s=20230601; t=1706540322; x=1707145122; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oON07CtAvIpgcQwBJ+SMYQgiJf/aIowxCWbKV6XFaVo=;
+        b=3D23dSuTfGxVkTy9c9esBSZ4IyDa6CzzNzbn7UgzH4UqnAYCH6Z5GJd9pv8LX3axKz
+         tcTeJPabb962Ny4Jju/BBa08excaeTC5yMWHPK/mAPdwPD7BD/AGG25yktnRwXhetjYQ
+         3Gz5Lk8QghIeUVl2aB14AQ3SXHt/pv0yFbXO9qlNPPyXCjskWJ0UMoGxUx4RNa6sY3Ld
+         3Q6boGHD1F3St/4ckloWG5xwUksQhERScrUQqShh1ODsmk8jnBPJQJ50gM3ay2dti5rN
+         K2V0LVQfuC7P10FqXzyefw2vGoYe+o28xECmnLrpqJ5AL8zMSwpnkTnx9oEim+NByus0
+         6eyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706538461; x=1707143261;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9SpRD2seb2hFO2F2eYuqqQkOpWG+jBIz46VQxNPe840=;
-        b=qm5Nf/+rYZxTiwH+MegdYx6a4M+PdrtYdL67ppMx2atQ4eGWRZ3YKcU5L8Lryo+xer
-         QXOTiriRXZ5GePeu/nBvHkChStgGZyjq3rNUCk17xaNxbMLsCUCs1NZGu/gFBTy5yw/o
-         MyzKnwic+3fP1mkoNXX0zcg0Yer6LHotNGc/jkUFS78eeyzSP/UlYdJFI+x/du5aNR9r
-         IhOiG5xlNXCaqQYlvI7ihb5EnzIDIvyMfqp1LIXm/t5ZyX9WwGaKisP/UTZg6virU2WB
-         c7huiqc5TcGfnt9nQNgLRxcimT4xQb73BovnR73Ro5bm6CHX0UgY+Rev1vQUMFYMu37O
-         acrA==
-X-Gm-Message-State: AOJu0YxvU6yu2ug5wxu7o1fyaMUaPTG9Q4gnS9zovJU6WWBulDF1eX2q
-	CmxJvwcF4y5mAGmvT8TeWgVn1ZaPgr8AmoHpp0mCJCXwu9q5vDoIcV7QV5Q4vmI=
-X-Google-Smtp-Source: AGHT+IF687yIs+FI2jGNHFF+JBGNUG60+S+Rqe4sHIAnRad9l9UQH5/3KSyty1FjpSpCXMtpmut+RQ==
-X-Received: by 2002:adf:8b56:0:b0:33a:e598:cabb with SMTP id v22-20020adf8b56000000b0033ae598cabbmr3910064wra.70.1706538460714;
-        Mon, 29 Jan 2024 06:27:40 -0800 (PST)
-Received: from localhost ([165.225.194.205])
-        by smtp.gmail.com with ESMTPSA id eo9-20020a056000428900b0033ae9e7f6b6sm4015743wrb.111.2024.01.29.06.27.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jan 2024 06:27:40 -0800 (PST)
-References: <20230503090708.2524310-1-nmi@metaspace.dk>
- <20230503090708.2524310-4-nmi@metaspace.dk>
- <iL2M45BoRlK6yS9y8uo0A5yUXcZWMkdk3vtH3LRFSWXfvPVagVZ-0YC7taIKOBFUcjJYA_2xNNFPoC4WL-_ulCHOLkbqvsZlIshE_LEeYtU=@proton.me>
- <87il3kjgk0.fsf@metaspace.dk>
- <104a22f7-a5bb-4fb6-9ce9-aa2d4e63417f@proton.me>
- <874jf3kflx.fsf@metaspace.dk>
- <59f007a0-bb30-4291-ab49-0e69112e2566@proton.me>
-User-agent: mu4e 1.10.8; emacs 29.2
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith
- Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Hannes
- Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org,
- rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, Matthew
- Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, linux-kernel@vger.kernel.org,
- gost.dev@samsung.com
-Subject: Re: [RFC PATCH 03/11] rust: block: introduce `kernel::block::mq`
- module
-Date: Mon, 29 Jan 2024 15:14:50 +0100
-In-reply-to: <59f007a0-bb30-4291-ab49-0e69112e2566@proton.me>
-Message-ID: <87r0i0gqp8.fsf@metaspace.dk>
+        d=1e100.net; s=20230601; t=1706540322; x=1707145122;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oON07CtAvIpgcQwBJ+SMYQgiJf/aIowxCWbKV6XFaVo=;
+        b=q45QSaU1Jq0SpQ/IRWuiUIDDjeOk1ryVWLlpaFe/kFeolsHw13iWmG/vyRAPXUfwtW
+         HIYpUIHPB1Fio5bX+tYBEiXDab0+sElkOYBGFcYbq5FmedHfFj8Sg8GnAYoO4CdiuSkd
+         sRpuI3V5UcMM3e7MQCJGaTGu0YQF6FqQjIYypDgpeKkpLadJRDd6m44DVLXSk6uKVJGE
+         fmdZ2A7sLqzr2i+tsJSYjZ7eTdhH6gIe2ju2mOITdNij5UClanlFaNztXfkJMzKLOLFr
+         V46a4GyTb7pwcMicSArtxvbiBY9D2ZHHc6VyXJ8L7TYNKplLLPYR7SXq9z1Z7diJ2M4a
+         dY8g==
+X-Gm-Message-State: AOJu0Yz75bg9QvxiZ9GfweJa6MXMLpo50LIn0KXIHfPtL0qEN7dwFyU1
+	Xt8c62Z9og5Kht9jlXeKKAcJvHfuu/vS6iA07ke4gdp65DGqr2vcDxc/SGg+2nW2sRhZCv6DZnG
+	NyoizpQPlyHQZxw==
+X-Google-Smtp-Source: AGHT+IEHRcKBmwEwA5S06HDsIpC/pSONqjIOn1yrZCXeuHc0FNflO0RYZ0eG3EkJaB0LuOHd1LG56835qb6RlTk=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:2503:b0:dc2:661d:11fc with SMTP
+ id dt3-20020a056902250300b00dc2661d11fcmr325792ybb.8.1706540321973; Mon, 29
+ Jan 2024 06:58:41 -0800 (PST)
+Date: Mon, 29 Jan 2024 14:58:37 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7158; i=aliceryhl@google.com;
+ h=from:subject; bh=fGQMhAPfuC6Nz2GR1bvgST+yK0rGAgTz9JwInsVoAqM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlt7zzldqivJRV/It/iKGglskR9DYue0XvSxmD8
+ /eHTL9nMjCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZbe88wAKCRAEWL7uWMY5
+ RlB2EACrI9RnjPVwrWvGGLKfcfFto9Y9OSYR0/NhKb7ZTmg+lOWVAaAK3SBwmygrOVyJShz3GT8
+ IKCSlXzGPHSP5zNA/DnzftQNKmKht6z70bF+FOWgpTjCup72KSE2MMu/gN/T3ihyZkzSrPRpNCR
+ GNXb0+H2QTVk8XTJOqh5KFy7toD/UVDgkefAq5Y2tZEbAQOueNph6L2u6XGLjpH4OTmLhuT7Tth
+ 303X1yQlo8nbBBQ8IjzafFoGnFAbPTL43LrNllkq9ibg+vcing84GoIo0HvLYvUym3lThNXK5qb
+ FMLiiaE5tgUgcfao3MNW4/lod7GbS5z6qDk/hI2pR/fDw3nWPTF/dQOzy75xH80PWOFDF1WbFmD
+ DXIRJpLZGDK3ng/HopdmClqW3rL/0F1d76Go4KWLzSj8TyTl9E7ZW9rf4sykLeQpO45xdmsSkpc
+ 2cP00GNcWu11l/GGLiwAyIA+3KidgEo71ORX3JabCR71bh8kXVZIjy0gGVB+rQp70SK23h0NHNc
+ KgFTxFjS53oGIqlasPiEfa5cNGwIes+tXJoCaCrOi9gDWI+vMEU8eFOoXBJRd7BIGCEf16MW0F7
+ ZrmGlVD8W2BgMV0JLtUcUGjf2UseNMzMx/z0Snwc5DXeTCnhErS7amSdxRa0Q245zxPoBqySRjH 0WHyXW2r0707l4w==
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240129145837.1419880-1-aliceryhl@google.com>
+Subject: [PATCH v1] rust: add reexports for macros
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Currently, all macros are reexported with #[macro_export] only, which
+means that to access `new_work!` from the workqueue, you need to import
+it from the path `kernel::new_work` instead of importing it from the
+workqueue module like all other items in the workqueue. By adding
+reexports of the macros, it becomes possible to import the macros from
+the correct modules.
 
-Benno Lossin <benno.lossin@proton.me> writes:
+It's still possible to import the macros from the root, but I don't
+think we can do anything about that.
 
-> On 23.01.24 19:39, Andreas Hindborg (Samsung) wrote:
->>>>>> +/// A generic block device
->>>>>> +///
->>>>>> +/// # Invariants
->>>>>> +///
->>>>>> +///  - `gendisk` must always point to an initialized and valid `struct gendisk`.
->>>>>> +pub struct GenDisk<T: Operations> {
->>>>>> +    _tagset: Arc<TagSet<T>>,
->>>>>> +    gendisk: *mut bindings::gendisk,
->>>>>
->>>>> Why are these two fields not embedded? Shouldn't the user decide where
->>>>> to allocate?
->>>>
->>>> The `TagSet` can be shared between multiple `GenDisk`. Using an `Arc`
->>>> seems resonable?
->>>>
->>>> For the `gendisk` field, the allocation is done by C and the address
->>>> must be stable. We are owning the pointee and must drop it when it goes out
->>>> of scope. I could do this:
->>>>
->>>> #[repr(transparent)]
->>>> struct GenDisk(Opaque<bindings::gendisk>);
->>>>
->>>> struct UniqueGenDiskRef {
->>>>       _tagset: Arc<TagSet<T>>,
->>>>       gendisk: Pin<&'static mut GenDisk>,
->>>>
->>>> }
->>>>
->>>> but it seems pointless. `struct GenDisk` would not be pub in that case. What do you think?
->>>
->>> Hmm, I am a bit confused as to how you usually use a `struct gendisk`.
->>> You said that a `TagSet` might be shared between multiple `GenDisk`s,
->>> but that is not facilitated by the C side?
->>>
->>> Is it the case that on the C side you create a struct containing a
->>> tagset and a gendisk for every block device you want to represent?
->> 
->> Yes, but the `struct tag_set` can be shared between multiple `struct
->> gendisk`.
->> 
->> Let me try to elaborate:
->> 
->> In C you would first allocate a `struct tag_set` and partially
->> initialize it. The allocation can be dynamic, static or part of existing
->> allocation. You would then partially initialize the structure and finish
->> the initialization by calling `blk_mq_alloc_tag_set()`. This populates
->> the rest of the structure which includes more dynamic allocations.
->> 
->> You then allocate a `struct gendisk` by calling `blk_mq_alloc_disk()`,
->> passing in a pointer to the `struct tag_set` you just created. This
->> function will return a pointer to a `struct gendisk` on success.
->> 
->> In the Rust abstractions, we allocate the `TagSet`:
->> 
->> #[pin_data(PinnedDrop)]
->> #[repr(transparent)]
->> pub struct TagSet<T: Operations> {
->>      #[pin]
->>      inner: Opaque<bindings::blk_mq_tag_set>,
->>      _p: PhantomData<T>,
->> }
->> 
->> with `PinInit` [^1]. The initializer will partially initialize the struct and
->> finish the initialization like C does by calling
->> `blk_mq_alloc_tag_set()`. We now need a place to point the initializer.
->> `Arc::pin_init()` is that place for now. It allows us to pass the
->> `TagSet` reference to multiple `GenDisk` if required. Maybe we could be
->> generic over `Deref<TagSet>` in the future. Bottom line is that we need
->> to hold on to that `TagSet` reference until the `GenDisk` is dropped.
->
-> I see, thanks for the elaborate explanation! I now think that using `Arc`
-> makes sense.
->
->> `struct tag_set` is not reference counted on the C side. C
->> implementations just take care to keep it alive, for instance by storing
->> it next to a pointer to `struct gendisk` that it is servicing.
->
-> This is interesting, is this also done in the case where it is shared
-> among multiple `struct gendisk`s?
+There is no functional change. This is merely a code cleanliness
+improvement.
 
-Yes. The architecture is really quite flexible. For instance C NVMe uses
-one tag set for the admin queue of a nvme controller, and one tag set
-shared for all IO queues of a controller. The admin queue tag set is not
-actually attached to a `struct gendisk` and does not appear as a block
-device to the user. The IO queue tag set serves a number `struct
-gendisk`, one for each name space of the controller.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+I hope that the KUnit examples still compile. I tried checking myself
+and it seemed to work, but I'm not completely sure whether I used the
+tool correctly. I would appreciate if someone is able to double-check
+and give a Tested-by for that.
 
-> Does this have some deeper reason? Or am I right to assume that creating
-> `Gendisk`/`TagSet` is done rarely (i.e. only at initialization of the
-> driver)?
+ rust/kernel/init.rs               |  8 +++++---
+ rust/kernel/sync.rs               |  5 +++--
+ rust/kernel/sync/condvar.rs       |  4 ++--
+ rust/kernel/sync/lock/mutex.rs    |  4 +++-
+ rust/kernel/sync/lock/spinlock.rs |  4 +++-
+ rust/kernel/workqueue.rs          | 14 ++++++--------
+ 6 files changed, 22 insertions(+), 17 deletions(-)
 
-I am not sure. It could probably be reference counted on C side. Perhaps
-nobody felt the need for it, since the lifetime of it is not that
-complex. And yes, it is relatively rare as it is only as part of
-initialization and tear down that you would create or destroy this
-structure.
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 65be9ae57b80..d7107db1d587 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -36,7 +36,8 @@
+ //!
+ //! ```rust
+ //! # #![allow(clippy::disallowed_names)]
+-//! use kernel::{prelude::*, sync::Mutex, new_mutex};
++//! use kernel::prelude::*;
++//! use kernel::sync::{new_mutex, Mutex};
+ //! # use core::pin::Pin;
+ //! #[pin_data]
+ //! struct Foo {
+@@ -56,7 +57,8 @@
+ //!
+ //! ```rust
+ //! # #![allow(clippy::disallowed_names)]
+-//! # use kernel::{prelude::*, sync::Mutex, new_mutex};
++//! # use kernel::prelude::*;
++//! # use kernel::sync::{new_mutex, Mutex};
+ //! # use core::pin::Pin;
+ //! # #[pin_data]
+ //! # struct Foo {
+@@ -79,7 +81,7 @@
+ //! above method only works for types where you can access the fields.
+ //!
+ //! ```rust
+-//! # use kernel::{new_mutex, sync::{Arc, Mutex}};
++//! # use kernel::sync::{new_mutex, Arc, Mutex};
+ //! let mtx: Result<Arc<Mutex<usize>>> = Arc::pin_init(new_mutex!(42, "example::mtx"));
+ //! ```
+ //!
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index c1fb10fc64f4..c983f63fd56e 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -13,8 +13,9 @@
+ mod locked_by;
+ 
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+-pub use condvar::{CondVar, CondVarTimeoutResult};
+-pub use lock::{mutex::Mutex, spinlock::SpinLock};
++pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
++pub use lock::mutex::{new_mutex, Mutex};
++pub use lock::spinlock::{new_spinlock, SpinLock};
+ pub use locked_by::LockedBy;
+ 
+ /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 9f1d83589beb..72680ff57e67 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -27,6 +27,7 @@ macro_rules! new_condvar {
+         $crate::sync::CondVar::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
+     };
+ }
++pub use new_condvar;
+ 
+ /// A conditional variable.
+ ///
+@@ -44,8 +45,7 @@ macro_rules! new_condvar {
+ /// The following is an example of using a condvar with a mutex:
+ ///
+ /// ```
+-/// use kernel::sync::{CondVar, Mutex};
+-/// use kernel::{new_condvar, new_mutex};
++/// use kernel::sync::{new_condvar, new_mutex, CondVar, Mutex};
+ ///
+ /// #[pin_data]
+ /// pub struct Example {
+diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+index 8c524a3ec45a..38207f9ce78a 100644
+--- a/rust/kernel/sync/lock/mutex.rs
++++ b/rust/kernel/sync/lock/mutex.rs
+@@ -17,6 +17,7 @@ macro_rules! new_mutex {
+             $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
+     };
+ }
++pub use new_mutex;
+ 
+ /// A mutual exclusion primitive.
+ ///
+@@ -35,7 +36,8 @@ macro_rules! new_mutex {
+ /// contains an inner struct (`Inner`) that is protected by a mutex.
+ ///
+ /// ```
+-/// use kernel::{init::InPlaceInit, init::PinInit, new_mutex, pin_init, sync::Mutex};
++/// use kernel::prelude::*;
++/// use kernel::sync::{new_mutex, Mutex};
+ ///
+ /// struct Inner {
+ ///     a: u32,
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index 068535ce1b29..cb2c6f71e80e 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -17,6 +17,7 @@ macro_rules! new_spinlock {
+             $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
+     };
+ }
++pub use new_spinlock;
+ 
+ /// A spinlock.
+ ///
+@@ -33,7 +34,8 @@ macro_rules! new_spinlock {
+ /// contains an inner struct (`Inner`) that is protected by a spinlock.
+ ///
+ /// ```
+-/// use kernel::{init::InPlaceInit, init::PinInit, new_spinlock, pin_init, sync::SpinLock};
++/// use kernel::prelude::*;
++/// use kernel::sync::{new_spinlock, SpinLock};
+ ///
+ /// struct Inner {
+ ///     a: u32,
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 498397877376..0ed17451b06e 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -35,8 +35,7 @@
+ //! ```
+ //! use kernel::prelude::*;
+ //! use kernel::sync::Arc;
+-//! use kernel::workqueue::{self, Work, WorkItem};
+-//! use kernel::{impl_has_work, new_work};
++//! use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkItem};
+ //!
+ //! #[pin_data]
+ //! struct MyStruct {
+@@ -78,8 +77,7 @@
+ //! ```
+ //! use kernel::prelude::*;
+ //! use kernel::sync::Arc;
+-//! use kernel::workqueue::{self, Work, WorkItem};
+-//! use kernel::{impl_has_work, new_work};
++//! use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkItem};
+ //!
+ //! #[pin_data]
+ //! struct MyStruct {
+@@ -147,6 +145,7 @@ macro_rules! new_work {
+         $crate::workqueue::Work::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
+     };
+ }
++pub use new_work;
+ 
+ /// A kernel work queue.
+ ///
+@@ -396,9 +395,8 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
+ /// like this:
+ ///
+ /// ```no_run
+-/// use kernel::impl_has_work;
+ /// use kernel::prelude::*;
+-/// use kernel::workqueue::Work;
++/// use kernel::workqueue::{impl_has_work, Work};
+ ///
+ /// struct MyWorkItem {
+ ///     work_field: Work<MyWorkItem, 1>,
+@@ -473,9 +471,8 @@ unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
+ /// # Examples
+ ///
+ /// ```
+-/// use kernel::impl_has_work;
+ /// use kernel::sync::Arc;
+-/// use kernel::workqueue::{self, Work};
++/// use kernel::workqueue::{self, impl_has_work, Work};
+ ///
+ /// struct MyStruct {
+ ///     work_field: Work<MyStruct, 17>,
+@@ -509,6 +506,7 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workqueue::Work<$work_typ
+         }
+     )*};
+ }
++pub use impl_has_work;
+ 
+ impl_has_work! {
+     impl<T> HasWork<Self> for ClosureWork<T> { self.work }
 
-Best regards,
-Andreas
+base-commit: f090f0d0eea9666a96702b29bc9a64cbabee85c5
+-- 
+2.43.0.429.g432eaa2c6b-goog
 
