@@ -1,185 +1,198 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2068.outbound.protection.outlook.com [40.107.22.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFD836137
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 02:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706582333; cv=none; b=u8dPYhM5rrG2wgFc4KjnzFY5Vnu8R0KiOISzcGynLG62GIoKuGXO/EW2K/XjUJrlXtmBh0qiqeUwWy3Yu9OF90N9Z6UJoCHuh/0Pi8+0d/iVt347TBG5oUbIZwzYWC1itASh67jHOWIXKW5+y0UZRK9mseUxcOlEJL16Nk8DZxI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706582333; c=relaxed/simple;
-	bh=8NFkxLjfDsMYKBVX/2CVn4EMmha53R183167AkLrZ2s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m3ssu0UVFbBPYk7yIyqj3wQs9xUQPX0E8fX0nyjriX9MQdohXTdD3bPOBCAmlMXV9SFL03voJCNe5J6dTM5VLJhkoBgSAN6qCBR2vK0n1kBCohpj6YmNe2oyBiiKQudzEbidn4h+YgDMGEZMYlVktMCU+SMMeoIP19FZLEQzkWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gfp40Lb0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A331A54667
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 07:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706601098; cv=fail; b=kPArhmUvSJgEyraYLUvq6wKHmcKAkslP5ytgmfn6wF8tVv59ImhZYJo3ZIqP3ZazLDAKyIuGktdM4haQTysU0/ikgI3x9e8bn4f6xlKn6cazB0LY49el/4qurjVRJqgpgFID9JCoyZpSe1C7sY8ik8ws1s4wEuMEZHXDAzmdl4Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706601098; c=relaxed/simple;
+	bh=latxd/1w3iGtTOIhV76k50aMNHg+OCAkFyZ7CmXHz1Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KVWKiuL6nuFnNnjnhS6CE1Ovq+Qo93H4cMnlafF2bOVriCjrqYC6j/Ubd7pdlC9i1sCvgYRtMzjpbGCeG/05thZhv1/ooCHcfOQwn2misuZRd2HPWJLsc0FAJL9V149HHN9iEMuZnwLj7u+e3VOZXBQAYvo9MDWvHPv0d/z/Z94=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=X1gcUbkt; arc=fail smtp.client-ip=40.107.22.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gfp40Lb0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706582329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Da1Kai79LDMmtf1ru1K3D52dA9E7Gwnh/kl6V6/IJ3k=;
-	b=gfp40Lb05EWoptY4+ueKl5aYlcnCMymohMK+ObMM9gHRXAUjkwggZ9sYIyxbkB1wfPy9DI
-	TZTqDOIncHCQR8Ja5xVhe2TFETuZK0lVBI3xxAGOATM8WW74peoIEiPqYwPwzAB3yP339E
-	IK55mYWIx/GejjfSSl/akZ7niujUJD8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-394-fXSSLTN_N5-sfwqN8vDOAQ-1; Mon, 29 Jan 2024 21:38:48 -0500
-X-MC-Unique: fXSSLTN_N5-sfwqN8vDOAQ-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a3158fbb375so175141866b.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 18:38:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706582327; x=1707187127;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Da1Kai79LDMmtf1ru1K3D52dA9E7Gwnh/kl6V6/IJ3k=;
-        b=v4uzL4yPDhAyCEAt3K3iS1KY5V7jz4J8FzHjCq6kKnelOntS0GU+O/T2nNe/mUiwsw
-         F0+5l2VQO0FO5VfoFBB0t7fopeBBvHMMFwhUJvJEOGQ4EA5mHLyzuUJssmi+ZDrU/lmo
-         e7Kq8Y/4kWFOgNDQJl09F9PrZ67FptqpX4WWAJ77rtJUg9cuHDkQqwelX+Stjc+4WDdw
-         9HkMtS6I3NpA13ZLKXE65ou6fXb9MPSYK8W6kEQ8PNq2UrALFhBHHZxdzRvUvKq7bOir
-         A5kQcuH7LSzPM83edhmDUZ8NdjPFnYf0H7/szcq0i1LmDxs5Lf7R2rqwqMIQGj5IX5P6
-         ix9Q==
-X-Gm-Message-State: AOJu0YxUJW0yUsRjy5HMZ7pugEAXnX/V3ELzhAaOOHJnK5bCThUgRjfJ
-	kQW+8uGX/Q8f+AcRP75G+6Y8pDUctBQOXGHmObCPLMjU6SRUBe6ko+iuSeOpj4DCcXg9FX+Phqy
-	kv58w+kpFr/k7szowb9WhZQTQkRzsPYUQJGGy3QIPxc0qOJcbqWXQswgljs2rsdkK
-X-Received: by 2002:a17:906:81d5:b0:a31:49a1:4d5e with SMTP id e21-20020a17090681d500b00a3149a14d5emr5643889ejx.24.1706582327379;
-        Mon, 29 Jan 2024 18:38:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHV3Puy+toKVntNBLPCBVKA8P9s0vfikb8UxH9LYr4Idft4CPH4iGMWXhgCD6yu6FxA1NsNvA==
-X-Received: by 2002:a17:906:81d5:b0:a31:49a1:4d5e with SMTP id e21-20020a17090681d500b00a3149a14d5emr5643876ejx.24.1706582327099;
-        Mon, 29 Jan 2024 18:38:47 -0800 (PST)
-Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id fj18-20020a1709069c9200b00a3496fa1f7fsm4591092ejc.91.2024.01.29.18.38.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jan 2024 18:38:46 -0800 (PST)
-From: Danilo Krummrich <dakr@redhat.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2] rust: str: add {make,to}_{upper,lower}case() to CString
-Date: Tue, 30 Jan 2024 03:35:39 +0100
-Message-ID: <20240130023843.11512-1-dakr@redhat.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="X1gcUbkt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JSQsrFlFpV+Vsa0FA9aBqU0L8o6irNMjRzjiN/5Og3+xO0pJTiGWzPXcF9T8WeidP+kfrT+IrNXj36DHj7XIQTIRlnmjwiQcU3cX4Rc+JxnMSk4lo3USrvjUY0NCuSYtWpdGaDhqp5q8W+66vJCdKEkba8EzpYaiGVDQQfuOkUYgvC7r4RklQ0Cey3WkuSUG1T2VsFOyjVvOL0nAOfk0GeCUN4fhjvr2gskAH7eijzYWRBy0O18w44w4lrGtTX8tvLleRpCGgVTKkiGMDCBGpCKs0jJ9mIiajjxt+edr6KV9DPI+e+wKoDFSOOPNt/jP13BSFbRZMmK891Nu2p7ZaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5eoBu0gdoCPWQIjpxyuNRsH577K8Ad3ntPw70ivNqMI=;
+ b=ldpnmK7PXvkeJMnx2XPdA7eVQ7+/NMAkwtxuNSwbfW5DVuwex/D7O7lRR36MnmHxshtqj1FinJjzr98lWrUWw97RaWcyTrWgQXjJvRuyeaLX3E+tZlXOSZ5LTJfF9n8JqzAkM4pIRKUL5Sb9wOv5twKiwjbkPKF8OxL+mddXIY9mCWK4jbskThzx5AEkoEgCQ0nOuVKvD4naRFUrqgKJ1vXPXPlcDYGobvLphvq/yR6b49+JERuJj8XXo45K80Z9fRyq+T66Uo2nylmGnX8yKNDie4RF9SAgRcLu3ywQCHiUk2RqdAcycZGPhVKTjdFFsMynkcnw6cUf/43sIn8khw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.203) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5eoBu0gdoCPWQIjpxyuNRsH577K8Ad3ntPw70ivNqMI=;
+ b=X1gcUbktd2QEJabJLfPNMrTFikLlTh6bKLQXG+BWBUnv/VwTtnFfQUpSdhNezLTpV/1gma54+axQ4ydg/qdVThwUpElRlLGzZ8oS/UOGebG3aEoHi/s09SoPzJ3TFiyzYoauwuPb/0/dYUTfVZ/noaJRLdch29nvSpRz3tMq8yvV570s2l1Qse5BobccjxznbP0TYkFzhvV3FW5GGRP8yJAgXzbMQLTAvVuQjA4yBt+nSQY3TILltzBt/mb9QHA8St2z1uqO52uq75mtu9k4P1w7adcYO6EQ/A/dTBzfXpuUlyDZkM+BM5zt8cnb1nXoR7l9BWGWTiyfQACy4hHl+w==
+Received: from AM6PR01CA0064.eurprd01.prod.exchangelabs.com
+ (2603:10a6:20b:e0::41) by AS2PR10MB6870.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5f6::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.34; Tue, 30 Jan
+ 2024 07:51:32 +0000
+Received: from AM1PEPF000252DE.eurprd07.prod.outlook.com
+ (2603:10a6:20b:e0:cafe::36) by AM6PR01CA0064.outlook.office365.com
+ (2603:10a6:20b:e0::41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.33 via Frontend
+ Transport; Tue, 30 Jan 2024 07:51:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.203)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.203 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.203; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.203) by
+ AM1PEPF000252DE.mail.protection.outlook.com (10.167.16.56) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7249.19 via Frontend Transport; Tue, 30 Jan 2024 07:51:31 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.203) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 30 Jan
+ 2024 08:51:30 +0100
+Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
+ SI-EXCAS2001.de.bosch.com (10.139.217.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 30 Jan 2024 08:51:30 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>
+CC: <dirk.behme@de.bosch.com>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda
+	<ojeda@kernel.org>, David Gow <davidgow@google.com>, Alice Ryhl
+	<aliceryhl@google.com>
+Subject: [PATCH v4 1/2] docs: rust: Move testing to a separate page
+Date: Tue, 30 Jan 2024 08:51:16 +0100
+Message-ID: <20240130075117.4137360-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.28.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252DE:EE_|AS2PR10MB6870:EE_
+X-MS-Office365-Filtering-Correlation-Id: f39ddaed-a4cd-4951-25ea-08dc2168461f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	gNRB+oe9nCbMTkfexcAlkRWq90pUvWStQnRvUAXqzKnWscnYUk74DnW6JFQjmHXDYdGj1aYApSe7QuaJFYZ9S7dSdO39/48moWtn838VJZk0VPxtvFNdIfFMHfLsz3QOEy4acu47xpehNgwHODvq+kzty6eiVC5AQvk/SYmYpq7Gd6m3eSFf+fY6A5s+LklOy5GUSQ3k52MiJB++SpkQCs9Cx8Rad/i38EATwrMuU4m2sw8a7aKw+iCaW6OQfjcANOJYgabatB78gnFCQH1546VTvLioGUtiYLsqezx8XOKx5clRcQpvwHTR8m1lNsolmZH57Ial1YxqguSws9eDkdZarZfrCQ49yDmpO+MIydJLDN0leOnzpXc+fpUYqcYMd/ZBJgEvor/yQ4bR09cEMBZwJKV/2Q1CasLpd488pxvwtQ0cMPkliHE2CB2TMhZsuOZ/5jxIb9ZrHgKwHhz3uppkCslDaQoozytKlxTzgtThfB27zU37Kfb/mN+xQ938ppd7gGPztXBOK46+2eSw43AmewcvbgXXDKMid7XBkDCNbtWhq90Gk/SGRdCe0DtFL9LMzMLXOgFmMWj+tdxWDfICnb4YUxaaXkP1Ai9TZcxLedUngF6yRKvETLIIQ9Oi3nnkM6heaqPRmQPEAsZY+Wqr+fym0H+NbZnmRPVtRr8GrNbJsC+bvjR//mr9UOHNywg0X+eHYGiC6mTA51VRX3RcRmu27qlVg1yCPQLOnnareg3n160A+g6XoCQe5j9t7If3k3kFOQdI6Fy85bZyMD2bPgJpHfIRdhhY1bt0Lnxlnlec6GOgHgqDGI0gUFIo
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.203;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(396003)(346002)(39860400002)(230273577357003)(230922051799003)(230173577357003)(451199024)(82310400011)(186009)(64100799003)(1800799012)(46966006)(36840700001)(40470700004)(70586007)(70206006)(6666004)(47076005)(40480700001)(336012)(40460700003)(1076003)(426003)(54906003)(6916009)(316002)(86362001)(81166007)(4326008)(82960400001)(8676002)(8936002)(356005)(36860700001)(44832011)(478600001)(7696005)(2616005)(26005)(16526019)(83380400001)(82740400003)(2906002)(5660300002)(41300700001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2024 07:51:31.5748
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f39ddaed-a4cd-4951-25ea-08dc2168461f
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.203];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252DE.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR10MB6870
 
-Add functions to convert a CString to upper- / lowercase, either
-in-place or by creating a copy of the original CString.
+To be able to add more testing documentation move the testing
+section to it's own page.
 
-Naming followes the one from the Rust stdlib, where functions starting
-with 'to' create a copy and functions starting with 'make' perform an
-in-place conversion.
+No change on the documentation itself.
 
-This is required by the Nova project (GSP only Rust successor of
-Nouveau) to convert stringified enum values (representing different GPU
-chipsets) to strings in order to generate the corresponding firmware
-paths. See also [1].
-
-[1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
-
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Suggested-by: Trevor Gross <tmgross@umich.edu>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 ---
-Changes in V2:
-  - expand commit message mentioning the use case
-  - expand function doc comments to match the ones from Rust's stdlib
-  - rename to_* to make_* and add the actual to_* implementations
----
- rust/kernel/str.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+Changes in v4: Add some Reviewed-by
 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 7d848b83add4..758bb70d98e9 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -581,6 +581,66 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) -> Result<Self, Error> {
-         // exist in the buffer.
-         Ok(Self { buf })
-     }
-+
-+    /// Converts this CString to its ASCII lower case equivalent in-place.
-+    ///
-+    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
-+    /// but non-ASCII letters are unchanged.
-+    ///
-+    /// To return a new lowercased value without modifying the existing one, use
-+    /// [`to_ascii_lowercase()`].
-+    ///
-+    /// [`to_ascii_lowercase()`]: #method.to_ascii_lowercase
-+    pub fn make_ascii_lowercase(&mut self) {
-+        self.buf.make_ascii_lowercase();
-+    }
-+
-+    /// Converts this CString to its ASCII upper case equivalent in-place.
-+    ///
-+    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
-+    /// but non-ASCII letters are unchanged.
-+    ///
-+    /// To return a new uppercased value without modifying the existing one, use
-+    /// [`to_ascii_uppercase()`].
-+    ///
-+    /// [`to_ascii_uppercase()`]: #method.to_ascii_uppercase
-+    pub fn make_ascii_uppercase(&mut self) {
-+        self.buf.make_ascii_uppercase();
-+    }
-+
-+    /// Returns a copy of this CString where each character is mapped to its
-+    /// ASCII lower case equivalent.
-+    ///
-+    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
-+    /// but non-ASCII letters are unchanged.
-+    ///
-+    /// To lowercase the value in-place, use [`make_ascii_lowercase`].
-+    ///
-+    /// [`make_ascii_lowercase`]: str::make_ascii_lowercase
-+    pub fn to_ascii_lowercase(&self) -> Result<CString, AllocError> {
-+        let mut s = (*self).to_cstring()?;
-+
-+        s.make_ascii_lowercase();
-+
-+        return Ok(s);
-+    }
-+
-+    /// Returns a copy of this CString where each character is mapped to its
-+    /// ASCII upper case equivalent.
-+    ///
-+    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
-+    /// but non-ASCII letters are unchanged.
-+    ///
-+    /// To uppercase the value in-place, use [`make_ascii_uppercase`].
-+    ///
-+    /// [`make_ascii_uppercase`]: str::make_ascii_uppercase
-+    pub fn to_ascii_uppercase(&self) -> Result<CString, AllocError> {
-+        let mut s = (*self).to_cstring()?;
-+
-+        s.make_ascii_uppercase();
-+
-+        return Ok(s);
-+    }
- }
+ Documentation/rust/general-information.rst | 24 ----------------------
+ Documentation/rust/index.rst               |  1 +
+ Documentation/rust/testing.rst             | 24 ++++++++++++++++++++++
+ 3 files changed, 25 insertions(+), 24 deletions(-)
+ create mode 100644 Documentation/rust/testing.rst
+
+diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+index 236c6dd3c647f..081397827a7ea 100644
+--- a/Documentation/rust/general-information.rst
++++ b/Documentation/rust/general-information.rst
+@@ -77,27 +77,3 @@ configuration:
+ 	#[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
+ 	#[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
+ 	#[cfg(not(CONFIG_X))]  // Disabled
+-
+-
+-Testing
+--------
+-
+-There are the tests that come from the examples in the Rust documentation
+-and get transformed into KUnit tests. These can be run via KUnit. For example
+-via ``kunit_tool`` (``kunit.py``) on the command line::
+-
+-	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
+-
+-Alternatively, KUnit can run them as kernel built-in at boot. Refer to
+-Documentation/dev-tools/kunit/index.rst for the general KUnit documentation
+-and Documentation/dev-tools/kunit/architecture.rst for the details of kernel
+-built-in vs. command line testing.
+-
+-Additionally, there are the ``#[test]`` tests. These can be run using
+-the ``rusttest`` Make target::
+-
+-	make LLVM=1 rusttest
+-
+-This requires the kernel ``.config`` and downloads external repositories.
+-It runs the ``#[test]`` tests on the host (currently) and thus is fairly
+-limited in what these tests can test.
+diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
+index 965f2db529e0f..46d35bd395cf5 100644
+--- a/Documentation/rust/index.rst
++++ b/Documentation/rust/index.rst
+@@ -40,6 +40,7 @@ configurations.
+     general-information
+     coding-guidelines
+     arch-support
++    testing
  
- impl Deref for CString {
-
-base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+new file mode 100644
+index 0000000000000..ba8a01015abad
+--- /dev/null
++++ b/Documentation/rust/testing.rst
+@@ -0,0 +1,24 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Testing
++=======
++
++There are the tests that come from the examples in the Rust documentation
++and get transformed into KUnit tests. These can be run via KUnit. For example
++via ``kunit_tool`` (``kunit.py``) on the command line::
++
++	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
++
++Alternatively, KUnit can run them as kernel built-in at boot. Refer to
++Documentation/dev-tools/kunit/index.rst for the general KUnit documentation
++and Documentation/dev-tools/kunit/architecture.rst for the details of kernel
++built-in vs. command line testing.
++
++Additionally, there are the ``#[test]`` tests. These can be run using
++the ``rusttest`` Make target::
++
++	make LLVM=1 rusttest
++
++This requires the kernel ``.config`` and downloads external repositories.
++It runs the ``#[test]`` tests on the host (currently) and thus is fairly
++limited in what these tests can test.
 -- 
-2.43.0
+2.28.0
 
