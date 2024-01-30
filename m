@@ -1,75 +1,98 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
+Received: from mail.someserver.de (mail.someserver.de [116.202.193.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9851562A07;
-	Tue, 30 Jan 2024 10:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB4869D36;
+	Tue, 30 Jan 2024 19:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.193.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706611489; cv=none; b=rqTx+9vLY5f2IVOp5g4kFw4TDAl/oUczds44ttorPQuEaIaef2QGjPICBtGlkMvan//lddudd+K+tLgCdzyixVjPQhvNUnx3VOGniHRXInYZ763hbeteJJWaDQw+jWerC76qdwBkvf0Iw0EZfLZG7qfJ9VLxoANPoTQRtwBFsqQ=
+	t=1706644489; cv=none; b=SZrcNhMEbtnW3wQkC+WCFuHDDo7PkyoC0e2eRu7q0AUyliwd49mTqz4JQy/3nlVTIUhWjbWPCH7nFpyCB+5Z7SGTUAmCTHUt9kuGcNvlN2PftyC3DPcbjS/rHAvIF67YtVBLLEYdpcF3z/eFzVWDde9D0OGIM7MToTYcMCYW8bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706611489; c=relaxed/simple;
-	bh=TWCilI70G0ZJ8AVfj5RY2XjZjY1InA1IMvi1KPgmJEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1edBP5cPMF+0oEmGHhSetzGY4LjUs6AQZbLgqk+YAUpFdtpjXKmpVY7KFXhTCc76pkiIIpC7gcByPQgtyA8UixN5iWOzIMJY+ytqd1Y7IMc1E2vyMHv1gB402K7aNzerqQpFrxJSIn1bVlz98xE0OjtdwmhQaQZzktksBvf1wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; arc=none smtp.client-ip=212.227.17.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
-Received: from archbook.speedport.ip ([91.37.179.254]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1McHM2-1quLS40FQ4-00cgZG; Tue, 30 Jan 2024 11:44:28 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: aliceryhl@google.com
-Cc: alex.gaynor@gmail.com,
-	fraunhofer@valentinobst.de,
-	kernel@valentinobst.de,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH v2 00/12] rust: kernel: documentation improvements
-Date: Tue, 30 Jan 2024 11:44:08 +0100
-Message-ID: <20240130104408.45153-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240130092252.1610582-1-aliceryhl@google.com>
-References: <20240130092252.1610582-1-aliceryhl@google.com>
+	s=arc-20240116; t=1706644489; c=relaxed/simple;
+	bh=xgl3MC3s1y+/xuGn3VPAMSHRrzUBbY9DHF1bmTq1orY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C94QUUE5DzNl4R2tzPv6/+R5lzdJelKEGFKFod5QIj4m1kABJ0hz0TBcG1vtcISMwcNPBzvNRJb+07/DOehgj1jFZOBU5GtDjVG9e0URGHHWVUhON95e8OBbBLZ2zGq7uLslOps/AAFV7wgWuF9mQ+s4o6zYzn2+FDlv7CsTIxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=christina-quast.de; spf=pass smtp.mailfrom=christina-quast.de; arc=none smtp.client-ip=116.202.193.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=christina-quast.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=christina-quast.de
+Received: from localhost (unknown [195.162.191.218])
+	by mail.someserver.de (Postfix) with ESMTPSA id AC348A2194;
+	Tue, 30 Jan 2024 20:48:00 +0100 (CET)
+From: Christina Quast <contact@christina-quast.de>
+Date: Tue, 30 Jan 2024 20:47:51 +0100
+Subject: [PATCH] rust: prelude: add bit function
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:TuQY0iUk4qyUTx2siwXQW5auU1X9DoZarLZqaWLEO6AlSvwmYJX
- N90nKkorXCAO8YQbmorubKEZESmT2ZnqJRntC7r4XCGub4BQDv8zCKJ+uJ3p+YU/GaSeZuG
- gQ9k1m5HQTqFyPQLI0uY4l/FAw2qY+K5pZMrPdB+x+A1SyfjwyrbqNqLZQahCtWA76kpI8L
- M2MDuNLoqfkSLZN9Ir/9A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:5e+z9YtyKQQ=;KrNyKu8E2Jmm9U0/TXG1ptOaqUu
- uIa+ruCKtmeADKl3FJfdZHSbG3rn3cGTptvekS5XfBxl6gxM4/K1KTfVnFDTphw6StTIc29ss
- bz5KlEP8hs0+Iul6vEYllpRd5dz7aM86SxtEGxkH5d87BrlTbc+eJpUUtfUHhXLNCFz2tbSBt
- PR3EJ2KDi2LIAkbxm/i8rvsnUQ8wXGgB15ASsOavc6m3WoS/27gmPHpxaq+Vo8zGl0eYTUmcn
- Fiey3b1htxoffp3Blb7yq6Di3bZr/pnDR7UHllDMnbSkLGsEBYrjBkgfH29tMDq5uqavW5Red
- WJ/wDH1U7A3tbk3+knEinyKeEhtNyq1A/O/yaNFbprRpq7Ee5NrGU9d8WodQpAl62vEpQAi9R
- tx3bn7FXt7+7n7hufae0xMOsfqQG14EW9mVrtCH/DrWFROr9orzubjaIN9vVEOx5LSp5mJdPK
- PVPEb55vwpr55gVy8GoECiwLKR41QETDIYTDeJs6vcj73+uFEv/uGt82V4qefvSfJK6XKRa2V
- iQFNH26K6MWzAsVVh+6bDzN5NEEcLS5MvyLxf0TTTnIKp0bFM6eNxe67i4tqj3oXG80q+ppGb
- rSSAUty1LO2c/S7BnOfG3GURz7zW/bZW2Vpe5X4kBO+otd7WUKIEbBFJRZ4GMUKRW+b7TMFbN
- tSv+BXkPC/P4KGqCIdGeijsn04qxYeaznXJy4xiv02f0NpNrwM9RBb26krJ/VMD682mfLNUXI
- 0Opk2U/8e4X6a8F+QmI3WiIm067jTwSh+WDx3yiDQQT2Zv82/W7+ALr3y/p48hNb5vXXGi5Bd
- 74ATawY3y7cC331KzDeuh7us74rV8M98vy5flR4CyQFHlbbSS7j3bBLWpZOlOA5bV1LCkXgAv
- UtTORifDW7oguWg==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240130-rust-bit-v1-1-ed2ed6389a58@christina-quast.de>
+X-B4-Tracking: v=1; b=H4sIAGZSuWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQ2MD3aLS4hLdpMwSXUvLlBSzFONEA1NjMyWg8oKi1LTMCrBR0bG1tQD
+ yELu2WgAAAA==
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@samsung.com>, 
+ Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Christina Quast <contact@christina-quast.de>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706644076; l=1210;
+ i=contact@christina-quast.de; s=20240130; h=from:subject:message-id;
+ bh=xgl3MC3s1y+/xuGn3VPAMSHRrzUBbY9DHF1bmTq1orY=;
+ b=IHKGeUwSlFiuDYNIGEj+pe7lXU8/JC4z+PlzeygWkPNGUN6EbHVPeknbOQfa0VAhLSpY85+Pq
+ jeN5dZXFEzADtKZ73EE41EokaLOnYmLWM/7L6Fez0t3E5YP0i9LR9MK
+X-Developer-Key: i=contact@christina-quast.de; a=ed25519;
+ pk=aoQfinjbnr265vCkIZdYteLDcmIqLBhY1m74WfFUU9E=
 
-> I left one comment [1] on the last patch. With that fixed, you may add:
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->
-> to all of the patches.
+In order to create masks easily, the define BIT() is used in C code.
+This commit adds the same functionality to the rust kernel.
 
-Thanks, I'll fix that, rebase with `rust-next` and send out a v3.
+To use it, include the following into your rust file:
+use kernel::prelude::bit
 
-	- Valentin
+Signed-off-by: Christina Quast <contact@christina-quast.de>
+---
+This patch is needed for further patches porting the rockchip phy
+driver to rust.
+---
+ rust/kernel/prelude.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
->
-> (I responded on v1 by accident, but it was v2 that I have reviewed.)
->
-> [1]: https://lore.kernel.org/rust-for-linux/CAH5fLghSaorRgDDuqNCN-BhQ86ysX96b=nKM_cZAN0_E6Ai04A@mail.gmail.com/
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index ae21600970b3..16e483de2f27 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -38,3 +38,19 @@
+ pub use super::init::{InPlaceInit, Init, PinInit};
+ 
+ pub use super::current;
++
++/// Returns a `u32` number that has only the `n`th bit set.
++///
++/// # Arguments
++///
++/// * `n` - A `u32` that specifies the bit position (zero-based index)
++///
++/// # Example
++///
++/// ```
++/// let b = bit(2);
++/// assert_eq!(b, 4);
++#[inline]
++pub const fn bit(n: u32) -> u32 {
++    1 << n
++}
+
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20240130-rust-bit-99dd6d3a0536
+
+Best regards,
+-- 
+Christina Quast <contact@christina-quast.de>
+
