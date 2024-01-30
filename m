@@ -1,268 +1,185 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2719E76020
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 21:27:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFD836137
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 02:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706563678; cv=none; b=Dk2xCeRz77skrcmWHapRIyXHMFxG/ApZU4olp9iv8xsrYbwuJ883txeyITEXS/gVj+7p+++FJ/yEQ8wCm/jL5Oxaghbvn5nJRDaL2OQ3A609e8NxVybKC3RcGevfXiK4QiUwjOxeMhz5AX42bIBt0TEKt76a1PysJHpwGkdy21Y=
+	t=1706582333; cv=none; b=u8dPYhM5rrG2wgFc4KjnzFY5Vnu8R0KiOISzcGynLG62GIoKuGXO/EW2K/XjUJrlXtmBh0qiqeUwWy3Yu9OF90N9Z6UJoCHuh/0Pi8+0d/iVt347TBG5oUbIZwzYWC1itASh67jHOWIXKW5+y0UZRK9mseUxcOlEJL16Nk8DZxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706563678; c=relaxed/simple;
-	bh=umDEiWFPLY+J0E0ZohRjUVyk/OqulVHRAScoRzh7bR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XCtvuaUMbcSxWHGMBCzA4IXoRywVrPBl9/m79hPISdYWmypixveFyWCKsH1bTcxeD8Mvx2G+/XWWlt+PfmhXQ1BrV1XJIdUBqZfczgTwC6pgy1UFL5dU2mZcxroBRaBRxD8T0vOCdZJd5/oVBhfF33w5HrUlMSTn3v2ads11HtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b+Lauid6; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706582333; c=relaxed/simple;
+	bh=8NFkxLjfDsMYKBVX/2CVn4EMmha53R183167AkLrZ2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m3ssu0UVFbBPYk7yIyqj3wQs9xUQPX0E8fX0nyjriX9MQdohXTdD3bPOBCAmlMXV9SFL03voJCNe5J6dTM5VLJhkoBgSAN6qCBR2vK0n1kBCohpj6YmNe2oyBiiKQudzEbidn4h+YgDMGEZMYlVktMCU+SMMeoIP19FZLEQzkWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gfp40Lb0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b+Lauid6"
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7d5bbbe57f7so479749241.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 13:27:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706563676; x=1707168476; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=brAWAuHMK3TSM8Xhcazu9ZlxC5Vo2cjLsypBIp5RI5M=;
-        b=b+Lauid6/sncQ8zdpURq6tuBnpJKxj/VteVas6YE9A/+3KT7xw/IuhLteGHRZLKR2Q
-         Z7UF+H0Kt1VZxKRrPOpO9gEpG9wN+mwzu665p/3S+twin3MONIMmSxa9YttBJlQ/JsxM
-         8J13qkgdjmekWQrnyFpsgWcv4aKHc2zq4v578ID3AbQPJP0ODnQdp1pZqOJ0dnUMzgSi
-         WE0SGKQWedajKs2aJIXNA6L8+16xAfQchIASkPIyqoZZXocL6cbjnOXybiUyME1GKcA0
-         Se7tIsGFFk7dQbd4qiQzPswzF3XHdxdVjeufyl7zPqn+MhIDXd1pw2+/yxT+JQXu3a6j
-         aWUA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gfp40Lb0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706582329;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Da1Kai79LDMmtf1ru1K3D52dA9E7Gwnh/kl6V6/IJ3k=;
+	b=gfp40Lb05EWoptY4+ueKl5aYlcnCMymohMK+ObMM9gHRXAUjkwggZ9sYIyxbkB1wfPy9DI
+	TZTqDOIncHCQR8Ja5xVhe2TFETuZK0lVBI3xxAGOATM8WW74peoIEiPqYwPwzAB3yP339E
+	IK55mYWIx/GejjfSSl/akZ7niujUJD8=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-394-fXSSLTN_N5-sfwqN8vDOAQ-1; Mon, 29 Jan 2024 21:38:48 -0500
+X-MC-Unique: fXSSLTN_N5-sfwqN8vDOAQ-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a3158fbb375so175141866b.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jan 2024 18:38:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706563676; x=1707168476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=brAWAuHMK3TSM8Xhcazu9ZlxC5Vo2cjLsypBIp5RI5M=;
-        b=RPCCA6DZMKDF3GIvmyPvhxluTY4PiAL3gJpj8Ov6izzCyzf0dAwUrGh2EnhNQvRVLO
-         c1suA60RtY18Fo2RXywYMxKe9YZ+g7HlYkMYbPMLlMoo8akzw0gZZfhvF4HMWnkw4UhJ
-         sBzdj36GJ4KMw93GSvHZXUOx7EoTGE9guU3wBssrpzT0qiBTrENDO9Wvzl5vDoPBJaaJ
-         TDGuTmQ1mhGInYnn2XZm6kHc9/2j5A7/YO0vOmjlwsRlsM2DUQH3EBfp9RMQIP3nmd5n
-         QVYSY3Ph4iKnojtcB0KqOdTFQeNTV8Vf2zE49Di5OabehcgkbUjFmxHOoYr7ur56j5Fc
-         nG8w==
-X-Gm-Message-State: AOJu0Yyxx2GmPlU/ZBU2sWBmZgvsYbwYS0JTete8lZt3UMYpWgjpXVm9
-	M2/57OabrthkFjxWvV4BOn0zmTm3DiPJytJ7+fAAwMbZL9yL6L4WrpGjQNO9UFXISoo2X3m9xvb
-	HTHDr8yxKlPi1jmlsXnV9oUtAjiOmF/i6m+GE
-X-Google-Smtp-Source: AGHT+IFj5xck2ZZMU+sBSPYdylP/U9nNDCaRvFkvDK5pc2OQBzprbb2S01cfLCABG6cBuYniOj+KiU6IznAyfqEqbhs=
-X-Received: by 2002:a05:6102:317a:b0:46b:3d9c:99cc with SMTP id
- l26-20020a056102317a00b0046b3d9c99ccmr2810766vsm.9.1706563675784; Mon, 29 Jan
- 2024 13:27:55 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706582327; x=1707187127;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Da1Kai79LDMmtf1ru1K3D52dA9E7Gwnh/kl6V6/IJ3k=;
+        b=v4uzL4yPDhAyCEAt3K3iS1KY5V7jz4J8FzHjCq6kKnelOntS0GU+O/T2nNe/mUiwsw
+         F0+5l2VQO0FO5VfoFBB0t7fopeBBvHMMFwhUJvJEOGQ4EA5mHLyzuUJssmi+ZDrU/lmo
+         e7Kq8Y/4kWFOgNDQJl09F9PrZ67FptqpX4WWAJ77rtJUg9cuHDkQqwelX+Stjc+4WDdw
+         9HkMtS6I3NpA13ZLKXE65ou6fXb9MPSYK8W6kEQ8PNq2UrALFhBHHZxdzRvUvKq7bOir
+         A5kQcuH7LSzPM83edhmDUZ8NdjPFnYf0H7/szcq0i1LmDxs5Lf7R2rqwqMIQGj5IX5P6
+         ix9Q==
+X-Gm-Message-State: AOJu0YxUJW0yUsRjy5HMZ7pugEAXnX/V3ELzhAaOOHJnK5bCThUgRjfJ
+	kQW+8uGX/Q8f+AcRP75G+6Y8pDUctBQOXGHmObCPLMjU6SRUBe6ko+iuSeOpj4DCcXg9FX+Phqy
+	kv58w+kpFr/k7szowb9WhZQTQkRzsPYUQJGGy3QIPxc0qOJcbqWXQswgljs2rsdkK
+X-Received: by 2002:a17:906:81d5:b0:a31:49a1:4d5e with SMTP id e21-20020a17090681d500b00a3149a14d5emr5643889ejx.24.1706582327379;
+        Mon, 29 Jan 2024 18:38:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHV3Puy+toKVntNBLPCBVKA8P9s0vfikb8UxH9LYr4Idft4CPH4iGMWXhgCD6yu6FxA1NsNvA==
+X-Received: by 2002:a17:906:81d5:b0:a31:49a1:4d5e with SMTP id e21-20020a17090681d500b00a3149a14d5emr5643876ejx.24.1706582327099;
+        Mon, 29 Jan 2024 18:38:47 -0800 (PST)
+Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
+        by smtp.gmail.com with ESMTPSA id fj18-20020a1709069c9200b00a3496fa1f7fsm4591092ejc.91.2024.01.29.18.38.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jan 2024 18:38:46 -0800 (PST)
+From: Danilo Krummrich <dakr@redhat.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>
+Subject: [PATCH v2] rust: str: add {make,to}_{upper,lower}case() to CString
+Date: Tue, 30 Jan 2024 03:35:39 +0100
+Message-ID: <20240130023843.11512-1-dakr@redhat.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-3-d1abcec83c44@google.com> <ZbfnmX1J8iLV8UnO@casper.infradead.org>
-In-Reply-To: <ZbfnmX1J8iLV8UnO@casper.infradead.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 29 Jan 2024 22:27:43 +0100
-Message-ID: <CAH5fLgjFRTTOa4Xjvxr1pmpFKv1o3Mm76iAQ6j-ST0jQ7DWyCQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>, liam.howlett@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Mon, Jan 29, 2024 at 6:59=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
-> > Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> > This struct is assumed to hold ownership over the page, so that Rust
-> > code can allocate and manage pages directly.
->
-> OK ...
+Add functions to convert a CString to upper- / lowercase, either
+in-place or by creating a copy of the original CString.
 
-Thank you for taking your time to review my wrappers!
+Naming followes the one from the Rust stdlib, where functions starting
+with 'to' create a copy and functions starting with 'make' perform an
+in-place conversion.
 
-> > This patch only adds support for pages of order zero, as that is all
-> > Rust Binder needs. However, it is written to make it easy to add suppor=
-t
-> > for higher-order pages in the future. To do that, you would add a const
-> > generic parameter to `Page` that specifies the order. Most of the
-> > methods do not need to be adjusted, as the logic for dealing with
-> > mapping multiple pages at once can be isolated to just the
-> > `with_pointer_into_page` method. Finally, the struct can be renamed to
-> > `Pages<ORDER>`, and the type alias `Page =3D Pages<0>` can be introduce=
-d.
->
-> This description concerns me because it reads like you're not keeping
-> up with the current thinking in MM about what pages are and how we're
-> improving the type hierarchy.  As in, we're creating one instead of
-> allowing the current mish-mash of absolutely everything to continue.
+This is required by the Nova project (GSP only Rust successor of
+Nouveau) to convert stringified enum values (representing different GPU
+chipsets) to strings in order to generate the corresponding firmware
+paths. See also [1].
 
-That's very possible. I have a good understanding about how C binder
-interacts with pages, but I don't know too much about the abstractions
-that Binder is not using.
+[1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
 
-> Are you the right person to ask about the operations that Binder does
-> with a page so we can figure out where it fits in the type hierarchy?
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+---
+Changes in V2:
+  - expand commit message mentioning the use case
+  - expand function doc comments to match the ones from Rust's stdlib
+  - rename to_* to make_* and add the actual to_* implementations
+---
+ rust/kernel/str.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-I can definitely answer questions about that. If we can find another
-abstraction that is not too far away from what we are doing today,
-then I am open to looking into whether we can do that instead of the
-current approach. However, I want to avoid large deviations from C
-Binder, at least before I get Rust binder into the kernel tree.
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 7d848b83add4..758bb70d98e9 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -581,6 +581,66 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) -> Result<Self, Error> {
+         // exist in the buffer.
+         Ok(Self { buf })
+     }
++
++    /// Converts this CString to its ASCII lower case equivalent in-place.
++    ///
++    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
++    /// but non-ASCII letters are unchanged.
++    ///
++    /// To return a new lowercased value without modifying the existing one, use
++    /// [`to_ascii_lowercase()`].
++    ///
++    /// [`to_ascii_lowercase()`]: #method.to_ascii_lowercase
++    pub fn make_ascii_lowercase(&mut self) {
++        self.buf.make_ascii_lowercase();
++    }
++
++    /// Converts this CString to its ASCII upper case equivalent in-place.
++    ///
++    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
++    /// but non-ASCII letters are unchanged.
++    ///
++    /// To return a new uppercased value without modifying the existing one, use
++    /// [`to_ascii_uppercase()`].
++    ///
++    /// [`to_ascii_uppercase()`]: #method.to_ascii_uppercase
++    pub fn make_ascii_uppercase(&mut self) {
++        self.buf.make_ascii_uppercase();
++    }
++
++    /// Returns a copy of this CString where each character is mapped to its
++    /// ASCII lower case equivalent.
++    ///
++    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
++    /// but non-ASCII letters are unchanged.
++    ///
++    /// To lowercase the value in-place, use [`make_ascii_lowercase`].
++    ///
++    /// [`make_ascii_lowercase`]: str::make_ascii_lowercase
++    pub fn to_ascii_lowercase(&self) -> Result<CString, AllocError> {
++        let mut s = (*self).to_cstring()?;
++
++        s.make_ascii_lowercase();
++
++        return Ok(s);
++    }
++
++    /// Returns a copy of this CString where each character is mapped to its
++    /// ASCII upper case equivalent.
++    ///
++    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
++    /// but non-ASCII letters are unchanged.
++    ///
++    /// To uppercase the value in-place, use [`make_ascii_uppercase`].
++    ///
++    /// [`make_ascii_uppercase`]: str::make_ascii_uppercase
++    pub fn to_ascii_uppercase(&self) -> Result<CString, AllocError> {
++        let mut s = (*self).to_cstring()?;
++
++        s.make_ascii_uppercase();
++
++        return Ok(s);
++    }
+ }
+ 
+ impl Deref for CString {
 
-A short overview of what Binder does:
-* Every process will mmap a region of memory. This memory region will
-contain the data for all incoming transactions sent to that process.
-Only the kernel can modify these pages.
-* Binder has a data structure that keeps track of where the
-allocations in this mmap'd region are. It has functionality to find an
-open interval of a given size (so it's essentially an allocator). This
-is called the "range allocator".
-* The pages in this region are allocated lazily whenever the range
-allocator starts using the page.
-* When the range allocator stops using a page, it is marked as unused
-and put on an LRU list.
-* There's a custom shrinker that can free pages not currently used by
-any allocation.
+base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
+-- 
+2.43.0
 
-So when process A sends a transaction to process B using the
-appropriate ioctl, process A will go into the range allocator for
-process B and reserve a range for the transaction that A is sending.
-If any pages in the resulting range are missing, then new pages are
-allocated, and process A will vm_insert_page them into process B's
-mmap. Then, process A will map the page with kmap_local_page, and use
-copy_from_user to copy data *directly* from A's userspace into a page
-in process B's address space.
-
-Note that transactions don't have uniform sizes. Think of them as
-arbitrary buffers provided by userspace. They will generally not be
-larger than a few hundred bytes each, but larger transactions are
-possible. The mmap for a process is usually 4 MB.
-
-The biggest user of Page is here in the RFC:
-https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-19-08ba9197f=
-637@google.com/
-
-The range allocator is defined here:
-https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-6-08ba9197f6=
-37@google.com/
-
-> > Rust Binder needs to manage pages directly as that is how transactions
-> > are delivered: Each process has an mmap'd region for incoming
-> > transactions. When an incoming transaction arrives, the Binder driver
-> > will choose a region in the mmap, allocate and map the relevant pages
-> > manually, and copy the incoming transaction directly into the page. Thi=
-s
-> > architecture allows the driver to copy transactions directly from the
-> > address space of one process to another, without an intermediate copy
-> > to a kernel buffer.
->
-> Everything about this says "This is what a first year comp sci student
-> thinks will be fast".  Oh well, the thinking here isn't your fault.
-
-Ultimately, I am just replicating what C Binder does.
-
-I had a long discussion with Liam Howlett at Plumbers where we
-discussed various alternatives to the hand-rolled stuff that Binder
-does. Liam thought that we may be able to replace the entire thing
-with maple trees. These are things that I definitely want to
-experiment with, but I am reluctant to try replacing the entire thing
-with a maple tree, at least until I get Rust Binder into the kernel
-tree.
-
-In general, there are many places in Binder where we are hand-rolling
-something that has an alternative elsewhere in the kernel, but
-replacing them is not always trivial. The hand-rolled versions often
-have Binder-specific optimizations that make it a regression to
-replace it with the general thing.
-
-> > @@ -127,6 +129,24 @@ int rust_helper_signal_pending(struct task_struct =
-*t)
-> >  }
-> >  EXPORT_SYMBOL_GPL(rust_helper_signal_pending);
-> >
-> > +struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int orde=
-r)
-> > +{
-> > +       return alloc_pages(gfp_mask, order);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_alloc_pages);
-> > +
-> > +void *rust_helper_kmap_local_page(struct page *page)
-> > +{
-> > +       return kmap_local_page(page);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_kmap_local_page);
-> > +
-> > +void rust_helper_kunmap_local(const void *addr)
-> > +{
-> > +       kunmap_local(addr);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_kunmap_local);
->
-> I remain opposed to all these fidgetty little helpers.  Particularly
-> when they're noops on machines without HIGHMEM, which is ~all of them.
-
-I don't disagree with you, but there's not much I can do about them. I
-can wrap them in #ifdef HIGHMEM if they are no-ops or exported without
-HIGHMEM?
-
-> > +/// A bitwise shift for the page size.
-> > +pub const PAGE_SHIFT: usize =3D bindings::PAGE_SHIFT as usize;
->
-> Does PAGE_SHIFT really need to be as large as 'usize'?  If it's more
-> than 63 by the time I retire, I'll be shocked.  If it's more than 127
-> by the time I die, I'll be even more shocked.  And it won't get to 255
-> by the heat death of the universe.
-
-Rust usually requires that both operands to an integer operation are
-of the same integer type, requiring explicit conversions if that is
-not the case. That is why I am using usize here.
-
-However, it seems like Rust doesn't actually require that for the <<
-operator, so I guess it doesn't matter much for this particular
-constant.
-
-> > +/// A bitwise mask for the page size.
-> > +pub const PAGE_MASK: usize =3D PAGE_SIZE - 1;
->
-> Are you trying to get somebody killed?
->
-> include/asm-generic/page.h:#define PAGE_MASK    (~(PAGE_SIZE-1))
->
-> Defining PAGE_MASK to be the opposite set of bits in C and Rust is
-> going to bite us all day every day for a decade.
-
-Oops, that's embarrassing. Thank you for catching that. I'll make sure
-to change it.
-
-> > +impl Page {
-> > +    /// Allocates a new set of contiguous pages.
-> > +    pub fn new() -> Result<Self, AllocError> {
-> > +        // SAFETY: These are the correct arguments to allocate a singl=
-e page.
-> > +        let page =3D unsafe {
-> > +            bindings::alloc_pages(
-> > +                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings=
-::__GFP_HIGHMEM,
-> > +                0,
-> > +            )
-> > +        };
->
-> This feels too Binder-specific to be 'Page'.  Pages are not necessarily
-> allocated with GFP_HIGHMEM, nor are they necessarily zeroed.  Maybe you
-> want a BinderPage type?
-
-We can add a constructor that takes a flag argument, so this type
-doesn't necessarily have to be tied to those specific arguments.
-
-Alice
