@@ -1,119 +1,86 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806A558208
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 09:06:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF9D5DF1E
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 09:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706605584; cv=none; b=azaHSHzSMy6PuV78WEVxtQzsiEerDUwWwM2jZ4Wyyqfp7pFIp7sg/Rre0p4F/5p8LIlFkvFQ2uv2blWBLnz8MfY3VIOVCxZAYfodbtDJo8xv4yUWEEevv5VMRHvQssXTRD1Th5PMZzFA7EMQ0FTWMYAjAL6FxLsK9rF4MOBZgh8=
+	t=1706606332; cv=none; b=enwZMh1Lxk0iJztVFIp0k/Hs6bNt0UNK42RGnwawhPxcR4Pkl47+HMF7jAAUtSpuL4hhfj+0bs0zNnGPPCPTnzfBbgAiT8NhIzKywukHkwqEq7CDjM6OcAydvwiet5gp4dSP47HgwRmXJC1P7OXt1BH2EzIPuhbvfF6Y5N2u4A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706605584; c=relaxed/simple;
-	bh=UiTaMIx2Jm1EUQDykoIgKkQLEt+vN6yTNf/ep5hPZjA=;
+	s=arc-20240116; t=1706606332; c=relaxed/simple;
+	bh=F/cTM4VSLKcMhFnMv4L77ZMGQE1ijg1rGP30sPQqzyU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T5rNxCH5opbnGND0MMXoOCYg2iCAQCb4ziifKRcXSTAJ3CmhQlR5os9bUWU0xVq3SPwT5PEB9ko2y3sVYd4MqmAGdse5HRNFHdBUmjHtQUQaKT7xPD9B2IcC26fe/MkvzYQKNUCFAgrNy507hVtvabcWOkKySO7HO2uxR2qQX/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wGT7lJqI; arc=none smtp.client-ip=209.85.221.170
+	 To:Cc:Content-Type; b=cNFpF4Fkm+q462zo7VpO9ijGZs+lIPQri1K0G7FvVpJAZDB1yNLP128C8krxmNDFW5u74QHb+55n005Go1FoPQbDEjbM6bU0rr00zWh7CDRgdJGkA/oiUfqvWtjTQG7D0Lops/dgIlVfkY64bj3nCrFi9/uqXah7cyfvWF4HPCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xVuD7ujF; arc=none smtp.client-ip=209.85.217.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wGT7lJqI"
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4affeacaff9so675740e0c.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 01:06:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xVuD7ujF"
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-46b215a0695so574725137.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 01:18:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706605581; x=1707210381; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1706606329; x=1707211129; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3ZhWHmKw4vi7AxSEO7CuV+xNiUe+yFZ2ZzlwsymAg/E=;
-        b=wGT7lJqIintsMjwm0ifRYemISbJCg+SGcnQRNhf8ghKDdd4HIxQE915m/RLitrWGAE
-         trTE2vcfkzaSIdNOIVbc0voS+c4nvBQnVRCEDLcgs3v/dvJuc9wMJa+jZsOPNoGI9TCu
-         ig4kSqgHVq8EgzwxObmZtcpbwaGq2rSoSG1Bd5Aomwlp4ffjWP6VM2Vy7opqIWRRQGGl
-         YDH1V+o7SCnK7k2sC74dTTVhrxCkgMBzuZDeUDoFSK0JHk3OdQlPe+DO7psalWBjhluh
-         6t3sLmVKEZK36SZbpV1UJjdq/05qWeRvqtmSLyY4+eU2aWvAYLPNZrbuECFVpsHKo5R3
-         kmAA==
+        bh=/pJoui15436YDNlZShmKGvqb7ZMmNypRm9KPXDZ5Kug=;
+        b=xVuD7ujFH5WIw2eAF+D/ACPQloKaFP6wXO4VlLT49mIttteMTKyjYmVXAAxO5Iu3I8
+         CFRUVs+bNWIoKbOSfgLBVHNfUGaB/790UAmXvnO/LwJC5mVISgHk96VgDAa3js/5YGhV
+         iXV3cT85pYZ58m/uDveEDP9J388FZ3r4cZoha6YhC5CnBHfAOH8zt18HoIPn3E+JBba6
+         +T4jRzVVqUBCG/uWZx32xoIk5t7ty5OCuO7ZE8QKeUd/RwPSmds+mqbCH+KsjjXj0khl
+         4gUp9hoerDm0mlRlUl25HL83tdG3kkw/DaUZKOTVSAPAPqTnTzfS0ac8GgZSCUGKlNcF
+         pzTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706605581; x=1707210381;
+        d=1e100.net; s=20230601; t=1706606329; x=1707211129;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3ZhWHmKw4vi7AxSEO7CuV+xNiUe+yFZ2ZzlwsymAg/E=;
-        b=RXNvotFo1YzAs1NUM8/1+rA7x36JjIagZVi63QDfUcLcRE8ehVjny13jTTEQF0GHOp
-         bNDclfLrr0LWgqQc40Gfv4Ne1WPSQvmGim52VmiJn8bqTRyUTJc28IV003xYBghQF1+u
-         sJutpw1mGVptArIonCQqnyK3EfmVJFwMMo2QE2Hs7dRGm5cJaAT6u9rV4WZWEwroL7vd
-         sd28uqnrgoRCmKlfYyGqdNhS/d7U2ONSPTpHZsH9AzTRtbrvGGysNIUzm9AN/uDFGXaL
-         oFD9eVa7iKXk4JJ3joVBjHIwx7og4SuU+PkpH7sIwiTXmHrmZTOOQ8dtVUMro5EpCoRd
-         1o0w==
-X-Gm-Message-State: AOJu0YxbNme+ESboDtfCRslYPaxUeib+60WDnxYVBUNMHvjSAzODZfdA
-	fv6Gwq0WrYT3PpYMcf/FX0ST0lHfgz3yp2ll5O+6DQxTiTUcQXGKqhzrVrnN5f4BhGrOXjiwnDG
-	kSTPhjoqw48xJoMP2sb+euGP/LWcNjE3j/NNY
-X-Google-Smtp-Source: AGHT+IFRKvthvPaK/eQQw262qb3uj3gwoqQFpPfljrQVEpXmKBSAG0JgZF/aeoOMlfcPoJI9wUzPo2V3cNjqBI6Lioc=
-X-Received: by 2002:a05:6122:45a5:b0:4b7:689d:9d9 with SMTP id
- de37-20020a05612245a500b004b7689d09d9mr3412354vkb.32.1706605581206; Tue, 30
- Jan 2024 01:06:21 -0800 (PST)
+        bh=/pJoui15436YDNlZShmKGvqb7ZMmNypRm9KPXDZ5Kug=;
+        b=vPmOGJx7abFkn1TjerGbe+3TP4U6p0hyDz9VQnwEh+u9HAuQc28OcAQBgT5z2fOACH
+         +LZOUxg2G6y+021HuzrKqGZUBU8objymREvf5/o5ky5q1nMjbXdGipSqXDqPeK8XB9W2
+         pA8YklHco4U3biNhndcWybF6gMrfNcISxcdAGz3qdF7Ixb3Q+dfvfLFVUhRg2O2ErEF+
+         2v9GZlnNDosGACbD0HQJLEVoO5MX2jLNpGufgsqe1HtvVYqdqRZPeudjzgeIShGDQn9f
+         hnYt3vXZAUVKXdY9xuZz2eh1Xk/w4bUKHjlFMuHft3XoIqODpaapincVw/PotG8J+WEE
+         xuWQ==
+X-Gm-Message-State: AOJu0YxEe1pUnthy4oZ9ld/llk5DT7TFFaZgeZZFsrt+F6gd39/RbYBC
+	SbYlilhvmWvyKqglZmpghJ3sfdsQnguKVROJCPMRMvwuws0cez8cnnwbit4IaszQtL2HfMGGy/h
+	lSNi2fzP2vwm8A2QR6Tno64fMnskTt2P54YFPVAep1rhdXuDLOUbi
+X-Google-Smtp-Source: AGHT+IGL9TpDEm0usJlZsZmrnrDFEOo/OkF5iOfjXZgDhZOEsbrsnK1HFGwr55WJnyuQ51NnWN6Kq8QwZ+tboOoBO9M=
+X-Received: by 2002:a05:6102:66f:b0:466:e5d2:4d7a with SMTP id
+ z15-20020a056102066f00b00466e5d24d7amr2462740vsf.28.1706606329521; Tue, 30
+ Jan 2024 01:18:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-3-d1abcec83c44@google.com> <CGME20240129180005eucas1p1c1962ece31e6b9619f9e22dc95f54087@eucas1p1.samsung.com>
- <ZbfnmX1J8iLV8UnO@casper.infradead.org> <87mssngpnc.fsf@samsung.com>
-In-Reply-To: <87mssngpnc.fsf@samsung.com>
+References: <20240116160141.165951-1-kernel@valentinobst.de> <20240117001613.169177-1-kernel@valentinobst.de>
+In-Reply-To: <20240117001613.169177-1-kernel@valentinobst.de>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 30 Jan 2024 10:06:09 +0100
-Message-ID: <CAH5fLghoxdAQaWRpDpn32A5YUM20oW=7Vck1fPUz1rk5ruH_AA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
-To: Andreas Hindborg <a.hindborg@samsung.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 30 Jan 2024 10:18:38 +0100
+Message-ID: <CAH5fLghSaorRgDDuqNCN-BhQ86ysX96b=nKM_cZAN0_E6Ai04A@mail.gmail.com>
+Subject: Re: [PATCH 13/13] rust: locked_by: shorten doclink preview
+To: Valentin Obst <kernel@valentinobst.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Kees Cook <keescook@chromium.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Christian Brauner <brauner@kernel.org>
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 10:02=E2=80=AFAM Andreas Hindborg
-<a.hindborg@samsung.com> wrote:
->
->
-> Matthew Wilcox <willy@infradead.org> writes:
->
-> > On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
-> >> +impl Page {
-> >> +    /// Allocates a new set of contiguous pages.
-> >> +    pub fn new() -> Result<Self, AllocError> {
-> >> +        // SAFETY: These are the correct arguments to allocate a sing=
-le page.
-> >> +        let page =3D unsafe {
-> >> +            bindings::alloc_pages(
-> >> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO | binding=
-s::__GFP_HIGHMEM,
-> >> +                0,
-> >> +            )
-> >> +        };
-> >
-> > This feels too Binder-specific to be 'Page'.  Pages are not necessarily
-> > allocated with GFP_HIGHMEM, nor are they necessarily zeroed.  Maybe you
-> > want a BinderPage type?
->
-> Rust null block uses the same definition of these flags [1], so there is
-> at least that synergy.
->
-> I feel like we had the discussion of the flags before, although I can't
-> find the thread now. I think the conclusion was that we fix them until
-> we have code that need to actually change them (as to not add dead
-> code).
+On Wed, Jan 17, 2024 at 1:16=E2=80=AFAM Valentin Obst <kernel@valentinobst.=
+de> wrote:
+>  /// In most cases, data protected by a lock is wrapped by the appropriat=
+e lock type, e.g.,
+> -/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for c=
+ases when this is not
+> +/// [`Mutex`] or [`SpinLock`]. [`LockedBy`] is meant for cases when this=
+ is not
+>  /// possible. For example, if a container has a lock and some data in th=
+e contained elements needs
+>  /// to be protected by the same lock.
 
-I don't think there's any problem with replacing the constructor with
-one that takes a flag argument dead-code-wise. I can definitely do
-that.
-
-Alice
+It looks like the text should be reflowed here. The "possible" word
+fits on the previous line.
