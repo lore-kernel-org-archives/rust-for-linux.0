@@ -1,127 +1,125 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E8771B2A;
-	Tue, 30 Jan 2024 20:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A9271B2C;
+	Tue, 30 Jan 2024 20:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706645212; cv=none; b=IehqBLDH2yx8dwQfkzOPGiJNqdo19Imt23QhOeIUNPL9isYPzN8zQLA4iAdRBLD9XnvxOGO7JWIzntRZySq4BrdHuJ5zRJlLp8ve+K1CFaEW7EHPi9iNAADa6JKsgtvrFbQgwBE0+D6T/qXCYcvg1m14eXEq1uQxh4mh99UfkNY=
+	t=1706645467; cv=none; b=VTx21HnHyZsgniTXx1dMqok72218/VD06UmG5nUyWplO5fNE87pnqgE0PQtG8RTjcW3xH/jIcuZm1fVyMAuw7MTw47IHVRTHyS4PkONXpSiGS7j43wznbbW4z6Ry4qjMBNbHFZ+U+TdII8HMTGsOb4EMDileyRuNtKVBHVWRoiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706645212; c=relaxed/simple;
-	bh=G9OaR0GMf+4lWq/t/oaDuxd4nKkWm1wjxX3StkF/eNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lCv7tKzAUEy46Rb6Wz303/t/GtPgAUKce5TSS7Qq7Ajv9rBb+bdFS7dDCUYfQizfnYrraCAc5o99TgSXN3hSN37Ws+4MkktCjXp85HQY6AdK9FCyC0YOrotDxbcr2KYce56MzypOYKme2VCU/nhs3Nm1aAGm5Q5DFrfZJGG4zjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nNPvgPga; arc=none smtp.client-ip=209.85.219.50
+	s=arc-20240116; t=1706645467; c=relaxed/simple;
+	bh=bAuClN+1Rr2oWKTsY3EaaihJEPGJgUZrb5ntixxjFJI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sDii5dbomRIPGcpm+WJK/T4Huae8gAb0pl2vaka9Ajh3G44X91yU6aShsSU0GjtDZizg0JfNMb2+ol5DCCneBg47PPJ3QntrwgcAkO81HiI4q98s+IdmQ6t32h/kwew0qY56CyafQeom/yvjOqCFhf2EpFZHvVwF2gb9+31U2Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G9VmPcW3; arc=none smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nNPvgPga"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-68c41c070efso1349576d6.0;
-        Tue, 30 Jan 2024 12:06:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G9VmPcW3"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-603dc95b8f3so27210057b3.2;
+        Tue, 30 Jan 2024 12:11:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706645209; x=1707250009; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1706645465; x=1707250265; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6J9W2L2Pq9xQtdL6IzEhGAdfnP5SCD+fFmXgNFPIUBY=;
-        b=nNPvgPgawFPGVaUezKKX8ywWYZDH41dr6kxxSIYsFqiGS0Kjo98Qu2hfmc9rFOsNAu
-         r8vbaBtef9Z0+3rB4QCc8JfcY9ZDnjrEFy/cql9sUviRMQqWMi09gBXp9+wKtPIO7tbO
-         xi0XzD27f+MlnjJEVCMPWMdzWpAkvsd3zWMxHZRYlMt8Z1jSnzELOlNxh5mKnQ567KLe
-         G6Oi0zZpt7RETV02V60O5TtFBUH9TJkQSaQmzWqGtH+plCU9jVVVpndlcMaWLKvGB8UX
-         jDkJ4MJQwlKtGN1y5AtEpw98WykWr/BXFWIg+MBRwdG7iHfZt3Fn3CvTY2yHN4LzejzA
-         rAuQ==
+        bh=9Er/RtS0EFQVwgVCx7mxPgkG12TgbHggtBqWfVJWN60=;
+        b=G9VmPcW3J/UpC+L+jcg7iM41c1okB0eDML8xXcmidLRRGfwPLe6Kz0h3AUPG/sucLb
+         YrVqLjzrgu/0sX4RghWMLtj3lt+iEI4NQN4z1jiNW/hvqAthAOZh8QO72TZsOPhBH3Fy
+         Jsyo2RJi1XrpzfeyLsIbW91yP9uB0LPp7gQAwaVD7aZHIdWHHIv8AlDmRo41ljXAjcBi
+         sBcDjC1and+HDhRXQNa8CXcjxE25TbSGt3EnF9r176ZJrFoU18iN+wKUzwDo0U5us1bt
+         gtkPBXPRsm43Ggwx48tqMl3xs/u0mbJY2TWcP6fPBmMUP3uIqC8dLAM2AEhj2GH92Tnc
+         cA9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706645209; x=1707250009;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1706645465; x=1707250265;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6J9W2L2Pq9xQtdL6IzEhGAdfnP5SCD+fFmXgNFPIUBY=;
-        b=ZNQ2Pcv+8ChQ5rHELBv/L03hfpuzvO7u/X4x/6ks9TXhdWfF6Itizqsk726ceQsHfR
-         B9cIZkpbhssbADCWjmFxXqXPWfMyGmIlMIMNEDDLXxxrGIp8/4MawRFo4/KKLU0wosfn
-         lWhkPeeNdAxdiX9g3u+qW+C+p0OA7hmErY2AQ8Eox7w7uP6UwJtf8zAN+JuQjEQUFdOD
-         7PCxRZ9tHMa1t4X6hZy6SbkFxR9B59LCgk1wuht6tyrEmVMy5/RYhxXEe+vtxNIU43mY
-         SXvkVDbhXDCfx/0dp48SKjpmk3H3GU1KKG0IMRW6PvIj5pOCI17FJXQA5G9j4VCMWAnD
-         R2Mg==
-X-Gm-Message-State: AOJu0Yxip8iYsUek8qBVNX1YvCIyt9rk7f+DEYTPnDPoJBnnDl2YHc9U
-	rl8sHJtqFS6aJI5DNS/zKhfyMklWl+1H1OgwGJ6dlqWESPWdg5ch
-X-Google-Smtp-Source: AGHT+IH2MTNpVka7bQiHrIl1PjqvTQ2P8nW1uyTMdxFcCm4DZaOo1hkx9sYCCPDCG0Hd6WH1TDrEVg==
-X-Received: by 2002:ad4:5ce8:0:b0:68c:5583:a817 with SMTP id iv8-20020ad45ce8000000b0068c5583a817mr2936453qvb.53.1706645209611;
-        Tue, 30 Jan 2024 12:06:49 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWyjqCoT6qtnIarANG5iAqVUHjkwYEDnpcShRSE9lPH74VPABpzNRl17IhMQXdYGFuogwfjf6U46/nwgQI25ahTfd84vAQ0VYPVvO4nBLYOMEWeOM4jgb2rMHgQ5rqj5e4cL4QkvDpZpRtN1mvkqqBE4nbpg8VM5L+d5VsemZ2CBhBzTf4lg+Z458UGax/SGXNiqvP6VRgkoM1ESEtZMG0+gGqeY5ZDtf2BkXwfjd5JEx1iKKC3jbC0F8C7fd3gsOHbo1obn9/szmZX+qPR600BG1K6v+McoTyFFAxy1mEgGyfEBfjJlDvPi1lkBEzCsZXB4szm1pw30i3p++brgOdlWFDwD0m58hnblbjg1lN/5YgFSjonH1pLhQ==
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id g28-20020a05620a13dc00b00784046b7862sm1386630qkl.113.2024.01.30.12.06.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 12:06:49 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailauth.nyi.internal (Postfix) with ESMTP id A57A727C005B;
-	Tue, 30 Jan 2024 15:06:48 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Tue, 30 Jan 2024 15:06:48 -0500
-X-ME-Sender: <xms:2Fa5ZRtdX57Ih5XdS3cj_jtpNea7VUIzD0z7kvRFCcLymElCTIIVqA>
-    <xme:2Fa5ZacCG6Ov3nTKFZVHMBuwOiQm8_eu08sqZyupys-Ft4eJqvz6hYLzjDyKzAwAJ
-    q-YIi5R4P4xORvs2w>
-X-ME-Received: <xmr:2Fa5ZUyDNvKrol8EJiidxpGUyTApCKb2qTqRI3pwi8y9os1APc5qjPO1ZAE7dg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedtjedgieeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpedtudffgeelfeehffekvdegtedugeduffefgfffhfdvkeeghfffhfehvdev
-    ffekueenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhthihpvghsrdhrshenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhm
-    vghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekhe
-    ehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghm
-    vg
-X-ME-Proxy: <xmx:2Fa5ZYObH1KdyHvaSZKKQ9X6mQqJZo8aoOjUFRl9otjhxOFYQcfCjQ>
-    <xmx:2Fa5ZR-tNJAJckhFNINsYV0JYre__ie6K7g_cPh3myptuKqXjbgWCg>
-    <xmx:2Fa5ZYUscrXxQ7-cxKDz1Hmq51PnQZaCFRapeNGsjN0KNRQbCLhgFA>
-    <xmx:2Fa5ZYVqMEEqnrfdMUKD1MLQZ0YgiLI17lvSJ2DEwfjhEC6HIa_AHA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Jan 2024 15:06:47 -0500 (EST)
-Date: Tue, 30 Jan 2024 12:05:47 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Christina Quast <contact@christina-quast.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: prelude: add bit function
-Message-ID: <ZblWm9hklyd71aaj@boqun-archlinux>
-References: <20240130-rust-bit-v1-1-ed2ed6389a58@christina-quast.de>
- <CANeycqror72LmGW2NVL3+Yk+GAx+i-9FdS3GxNmW8sXxSeHFig@mail.gmail.com>
+        bh=9Er/RtS0EFQVwgVCx7mxPgkG12TgbHggtBqWfVJWN60=;
+        b=Q+79ZopQydZNd4abMAAK4XXdxkuHg0P6XUof9xmz0voM/ExaG7sYxnqmhgXBiszoCq
+         2B9nj7HxuKpxBTonztea0bN0UDOR25fkOTPmxGUYpshNtchrgEi152dX2FE9BqKaVM6+
+         Bif1AobKkLahshF+xKzB9TixEmGjw1je01+Rwg3kbhImXJkNHtIYjlt6rHnBJTOiNDGS
+         49d981QFKqZ/xy7A/LuHKBpZXl/K/khfs5dxPIaMwe2+euEflBhz9uetb+0I8/N/61YW
+         kzImA+lA9B44BOhRW3reP/KpJLf5zzzm7raifnTf7E7R5wVmYpyyNdID1xKJqy8JPZuV
+         kruA==
+X-Gm-Message-State: AOJu0YzoI/43gjwa7GpFqApghm+96ZNqAM1r5dTX1D2UhIEoi38WM3mF
+	K9+EGQ4Op1/8knaX4dJIOBnTQS9v8uBz6XgOUcH46uNH4VQY6llKMlaUGuvT/VyXiDfpbwjfnqY
+	AScy+qVkg2T3pkn5uGPXAKq20378=
+X-Google-Smtp-Source: AGHT+IHvz19idkKT3x/BW7wPNHcskH7oltW0CbYAEFb8npkIv0SM19aNwDk1LcX04iKMzT9BNHP/9BlS1zVNUquUMLY=
+X-Received: by 2002:a05:690c:3603:b0:602:ce8b:6aec with SMTP id
+ ft3-20020a05690c360300b00602ce8b6aecmr9617607ywb.51.1706645465382; Tue, 30
+ Jan 2024 12:11:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANeycqror72LmGW2NVL3+Yk+GAx+i-9FdS3GxNmW8sXxSeHFig@mail.gmail.com>
+References: <20240130-rust-bit-v1-1-ed2ed6389a58@christina-quast.de>
+In-Reply-To: <20240130-rust-bit-v1-1-ed2ed6389a58@christina-quast.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 30 Jan 2024 21:10:54 +0100
+Message-ID: <CANiq72n5nuyA7nuX1NreS4JXPcyqN2iT=8-MnGBcT=a1Hufqbw@mail.gmail.com>
+Subject: Re: [PATCH] rust: prelude: add bit function
+To: Christina Quast <contact@christina-quast.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 05:04:15PM -0300, Wedson Almeida Filho wrote:
-> On Tue, 30 Jan 2024 at 16:48, Christina Quast
-> <contact@christina-quast.de> wrote:
-> >
-> > In order to create masks easily, the define BIT() is used in C code.
-> > This commit adds the same functionality to the rust kernel.
-> 
-> The `rust` branch has a generic `bit` function that allows the
-> returned bit to be used with or converted to several numeric types.
-> 
-> https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/types.rs#L344
+Hi Christina,
 
-Plus, I think it's better to put the implementation at somewhere like:
+Thanks for the patch! Please see below.
 
-	kernel::type::bitops
+On Tue, Jan 30, 2024 at 8:48=E2=80=AFPM Christina Quast
+<contact@christina-quast.de> wrote:
+>
+> In order to create masks easily, the define BIT() is used in C code.
+> This commit adds the same functionality to the rust kernel.
+>
+> To use it, include the following into your rust file:
+> use kernel::prelude::bit
 
-Of course, it's OK to prelude it, but we shouldn't put implementation in
-prelude.rs
+This is the prelude, i.e. the point is that it does not need to be `use`d.
 
-Regards,
-Boqun
+Did you check the `rust` branch? We had something like this there.
+
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index ae21600970b3..16e483de2f27 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+
+Please note that the prelude is meant to re-export existing
+functionality elsewhere in the `kernel` crate, not to define items
+there.
+
+> +/// # Arguments
+> +///
+> +/// * `n` - A `u32` that specifies the bit position (zero-based index)
+
+We don't use "Arguments"-like sections. Please see other functions'
+documentation to see how we usually do it.
+
+> +/// # Example
+
+Please use the plural.
+
+> +/// ```
+> +/// let b =3D bit(2);
+> +/// assert_eq!(b, 4);
+
+The example is not closed.
+
+> +#[inline]
+> +pub const fn bit(n: u32) -> u32 {
+> +    1 << n
+> +}
+
+Should it be a generic?
+
+Cheers,
+Miguel
