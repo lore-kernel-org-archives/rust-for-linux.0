@@ -1,86 +1,90 @@
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+Received: from mail-lj1-f201.google.com (mail-lj1-f201.google.com [209.85.208.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF9D5DF1E
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 09:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1D658ADD
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 09:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706606332; cv=none; b=enwZMh1Lxk0iJztVFIp0k/Hs6bNt0UNK42RGnwawhPxcR4Pkl47+HMF7jAAUtSpuL4hhfj+0bs0zNnGPPCPTnzfBbgAiT8NhIzKywukHkwqEq7CDjM6OcAydvwiet5gp4dSP47HgwRmXJC1P7OXt1BH2EzIPuhbvfF6Y5N2u4A0=
+	t=1706606580; cv=none; b=a6+9aLqjz7gzh/PJsUF4+2upw6Y6DkpqVYY89E2k3fQebXUmI3MssWJ3TlGgGvBC7M6V3kypoljNGnSUnvroGBX2fUpwpsXwcgArcSYjMKStOFPkfwzI6/QkFXTuWMDRLl1P9nZN+Ftwqw91NMsfFW/96PpPUuwze3GLEDxE9KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706606332; c=relaxed/simple;
-	bh=F/cTM4VSLKcMhFnMv4L77ZMGQE1ijg1rGP30sPQqzyU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cNFpF4Fkm+q462zo7VpO9ijGZs+lIPQri1K0G7FvVpJAZDB1yNLP128C8krxmNDFW5u74QHb+55n005Go1FoPQbDEjbM6bU0rr00zWh7CDRgdJGkA/oiUfqvWtjTQG7D0Lops/dgIlVfkY64bj3nCrFi9/uqXah7cyfvWF4HPCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xVuD7ujF; arc=none smtp.client-ip=209.85.217.44
+	s=arc-20240116; t=1706606580; c=relaxed/simple;
+	bh=u8E/DAzdM4BDv+M4rE/6UY3tXIFTWYYORwwsXK8NW1Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ii0S0uu0A6VF3b/9+tn+/YFDwDxAF8WH2qPYV9OeL6//8KJdNsLdwl+0wL6vFKPWASVEr7qzYf5wwSeh2/xduDcdazgKN/OSRUPAgIut9LVWgrlUokZ9UCt86Iqs7H427cZ4xEbrhsMZ3oMVit9T9gCOuwX6QvZHVlGO7uqIofk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XiSz3zCO; arc=none smtp.client-ip=209.85.208.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xVuD7ujF"
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-46b215a0695so574725137.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 01:18:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XiSz3zCO"
+Received: by mail-lj1-f201.google.com with SMTP id 38308e7fff4ca-2d0419288d2so19910621fa.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jan 2024 01:22:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706606329; x=1707211129; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/pJoui15436YDNlZShmKGvqb7ZMmNypRm9KPXDZ5Kug=;
-        b=xVuD7ujFH5WIw2eAF+D/ACPQloKaFP6wXO4VlLT49mIttteMTKyjYmVXAAxO5Iu3I8
-         CFRUVs+bNWIoKbOSfgLBVHNfUGaB/790UAmXvnO/LwJC5mVISgHk96VgDAa3js/5YGhV
-         iXV3cT85pYZ58m/uDveEDP9J388FZ3r4cZoha6YhC5CnBHfAOH8zt18HoIPn3E+JBba6
-         +T4jRzVVqUBCG/uWZx32xoIk5t7ty5OCuO7ZE8QKeUd/RwPSmds+mqbCH+KsjjXj0khl
-         4gUp9hoerDm0mlRlUl25HL83tdG3kkw/DaUZKOTVSAPAPqTnTzfS0ac8GgZSCUGKlNcF
-         pzTA==
+        d=google.com; s=20230601; t=1706606576; x=1707211376; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OqLMO+WcsA+qHzDqK7CtF5QEfkhWOqOfu9v7+ZVhskE=;
+        b=XiSz3zCOefqwkTmBq9+h/pKYiuDQ0oDreYkg4yBCyqFFPH75qp8Rj1i17gpjnW33uD
+         9Y9G6Mn+ClJsYXQMWxVlGhjjoarsQgiTKM+7O6uOBPTKXQ7i/Hh8ejd0h257J/THo0aE
+         nfhVRUHy+5Zyzhuu19vH+27txyM6fLmjqktikAYqiD3bHuVy+ZKUaMBkCbop34FeA8P3
+         HJFfeE28XAK0BUWXR+VUajgSwYogu2eANY3O7OM5QvDw9cO8JN3nnrkOd45k8ZpWN7dA
+         3TQlgsxUfShCe4ruqS/8KujqPmNkwqJIW/TbcdHW6rWwu2Tm9dZq1Qk8abMf8ay09UNk
+         lOSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706606329; x=1707211129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/pJoui15436YDNlZShmKGvqb7ZMmNypRm9KPXDZ5Kug=;
-        b=vPmOGJx7abFkn1TjerGbe+3TP4U6p0hyDz9VQnwEh+u9HAuQc28OcAQBgT5z2fOACH
-         +LZOUxg2G6y+021HuzrKqGZUBU8objymREvf5/o5ky5q1nMjbXdGipSqXDqPeK8XB9W2
-         pA8YklHco4U3biNhndcWybF6gMrfNcISxcdAGz3qdF7Ixb3Q+dfvfLFVUhRg2O2ErEF+
-         2v9GZlnNDosGACbD0HQJLEVoO5MX2jLNpGufgsqe1HtvVYqdqRZPeudjzgeIShGDQn9f
-         hnYt3vXZAUVKXdY9xuZz2eh1Xk/w4bUKHjlFMuHft3XoIqODpaapincVw/PotG8J+WEE
-         xuWQ==
-X-Gm-Message-State: AOJu0YxEe1pUnthy4oZ9ld/llk5DT7TFFaZgeZZFsrt+F6gd39/RbYBC
-	SbYlilhvmWvyKqglZmpghJ3sfdsQnguKVROJCPMRMvwuws0cez8cnnwbit4IaszQtL2HfMGGy/h
-	lSNi2fzP2vwm8A2QR6Tno64fMnskTt2P54YFPVAep1rhdXuDLOUbi
-X-Google-Smtp-Source: AGHT+IGL9TpDEm0usJlZsZmrnrDFEOo/OkF5iOfjXZgDhZOEsbrsnK1HFGwr55WJnyuQ51NnWN6Kq8QwZ+tboOoBO9M=
-X-Received: by 2002:a05:6102:66f:b0:466:e5d2:4d7a with SMTP id
- z15-20020a056102066f00b00466e5d24d7amr2462740vsf.28.1706606329521; Tue, 30
- Jan 2024 01:18:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706606576; x=1707211376;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OqLMO+WcsA+qHzDqK7CtF5QEfkhWOqOfu9v7+ZVhskE=;
+        b=jWt87yKuxYqK6sv5jbdv5c6fiydQIAxpF1L9bLBLcZqa4aLP43j7ykZKYA8CuOi7iC
+         359pA/3TJ6TqgOtNyJ0aGxDygQ8xjynMfGiFlD4mmgk1sQWdV1htI3+OZrokqFFQAqu8
+         TvnAdIGjSV3isE09YcTgJjXIB5sGmke9BIvce4N1u/tQDrh4GzYfnFLKw6mSalqIdKLz
+         rNjst//sW9TxNRyStIS8ZwwU2E5zJoS3gM2YZNI3s7ncfN0hhicrSxYdz/ZJ2zrJu/aL
+         S+nwR+6RJWsn9cZRcFa6U3bCu2tCVMNPHJqKGFD1WXqBXKsZUFiSlPxLETJoEZ0cpOOj
+         mkAQ==
+X-Gm-Message-State: AOJu0YzXnCG5BMzTrTgmJxTIRB+GYT+syTgth/t2zwfc55KVhoUxzgr0
+	ODboPmaB9qZzZqy4+4Urogdb13TgskDRpeDhoXVRTdmphxZoWj8m1Lec9lnxJ3iql0jIIBGJyWs
+	88VQTGvtvOMY7tQ==
+X-Google-Smtp-Source: AGHT+IF87NQ812vMFotO2i42XCkp9U2cUqOajgaKofrGlkuAmbQh0g7jvgwQO8Z70Yi76a7LPw7Yradv/DUgloU=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a2e:a370:0:b0:2cf:3298:3ddc with SMTP id
+ i16-20020a2ea370000000b002cf32983ddcmr10644ljn.7.1706606576260; Tue, 30 Jan
+ 2024 01:22:56 -0800 (PST)
+Date: Tue, 30 Jan 2024 09:22:52 +0000
+In-Reply-To: <20240123150112.124084-1-kernel@valentinobst.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240116160141.165951-1-kernel@valentinobst.de> <20240117001613.169177-1-kernel@valentinobst.de>
-In-Reply-To: <20240117001613.169177-1-kernel@valentinobst.de>
+Mime-Version: 1.0
+References: <20240123150112.124084-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240130092252.1610582-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 00/12] rust: kernel: documentation improvements
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 30 Jan 2024 10:18:38 +0100
-Message-ID: <CAH5fLghSaorRgDDuqNCN-BhQ86ysX96b=nKM_cZAN0_E6Ai04A@mail.gmail.com>
-Subject: Re: [PATCH 13/13] rust: locked_by: shorten doclink preview
-To: Valentin Obst <kernel@valentinobst.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: kernel@valentinobst.de
+Cc: alex.gaynor@gmail.com, fraunhofer@valentinobst.de, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jan 17, 2024 at 1:16=E2=80=AFAM Valentin Obst <kernel@valentinobst.=
-de> wrote:
->  /// In most cases, data protected by a lock is wrapped by the appropriat=
-e lock type, e.g.,
-> -/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for c=
-ases when this is not
-> +/// [`Mutex`] or [`SpinLock`]. [`LockedBy`] is meant for cases when this=
- is not
->  /// possible. For example, if a container has a lock and some data in th=
-e contained elements needs
->  /// to be protected by the same lock.
+Valentin Obst <kernel@valentinobst.de> writes:
+> This patch set aims to make small improvements to the documentation of
+> the kernel crate. It engages in a few different activities:
+> - fixing trivial typos (commit #1),
+> - updating code examples to better reflect an idiomatic coding style
+>   (commits #2,6),
+> - increasing the consistency within the crate's documentation as a whole
+>   (commits #3,5,7,8,9,11,12),
+> - adding more intra-doc links as well as srctree-relative links to C
+>   header files (commits #4,10).
 
-It looks like the text should be reflowed here. The "possible" word
-fits on the previous line.
+I left one comment [1] on the last patch. With that fixed, you may add:
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+to all of the patches.
+
+(I responded on v1 by accident, but it was v2 that I have reviewed.)
+
+[1]: https://lore.kernel.org/rust-for-linux/CAH5fLghSaorRgDDuqNCN-BhQ86ysX96b=nKM_cZAN0_E6Ai04A@mail.gmail.com/
