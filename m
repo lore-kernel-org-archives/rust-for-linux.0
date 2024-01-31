@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5837866F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C35A5C5E3;
 	Wed, 31 Jan 2024 20:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706732649; cv=none; b=YyPtGRxSSzq6mqO5Q8hWAwNfKB26+xhpmG1ud7SC+rupq14aGcp5A8glAGIYc9xcFLPThSnMZxZgloSjqCiUgvsnfrSD0s+JuFuhhuSkMOZS6AC9ncFSf+XUAmxDa6G6i4Igkp8LqzRYTQFC/HIP+pwd4ceFwjBaso6UF+AChQY=
+	t=1706732649; cv=none; b=U48ttUFU9lZbBY9I/daRU2rnS+1jcj6LY0GKaK9D6HJgfLAKQ9kj8bcg38D3iIty/rmIZ3xMk3enh7OkL8hvD1zaWVjl8RmsY7qvtxe0vGzcTt6CAnQ1uzy7efuU9OHpwuLACWSAAC68/Upg0iRh1WcqbTqOreM5JYKhBnKWzWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706732649; c=relaxed/simple;
-	bh=qtayRPJ/adeWhbKoR+73scBOhW61yyOyCVFDV1rrQQk=;
+	bh=ougBeYt6zdCfhQV27TBzSU+Hnds2zUx3wZiZDbZ9RF4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XaZ5MGfA6CHeMrTyjvioDQK+h4D5jghyc0RBsfOEyto9iKQsnSgiSEz/25JC9tw4+3Hw+tufuGqA+E6luZjsQuNB83vQwll94ZC9rWsEL6P2g+al45srQ1/BnAv+6e7/tj41YZlbAcib3kKzMlbwyhX30Z8G+8IcbSnMAULMN7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwJccGhP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=g2A+2P0X0J93Grpq3Vr87phitkxMkFMwpbClxAHOWsr5Abs1qDB7FEkMmecovKxkDo7SrxJtcpmFssoMZgxKD4UGXNsQtyvvBcrPqZdaazW3/Ug9lKXBRz4AISQpTVhB5zFDEmEpCl/sZDAc2SKwDVyODamnCGqIIRkrn+kIXzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpWpNyXg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwJccGhP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0950FC43141;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpWpNyXg"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 351E1C4167E;
 	Wed, 31 Jan 2024 20:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1706732649;
-	bh=qtayRPJ/adeWhbKoR+73scBOhW61yyOyCVFDV1rrQQk=;
+	bh=ougBeYt6zdCfhQV27TBzSU+Hnds2zUx3wZiZDbZ9RF4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZwJccGhP4NSavvRUDPStbCopCAnVg+T68orFpmFbENGnAAyKO9FNEYjSx7u7J4Npd
-	 Saxl2THmCBTsFqOciattHbr+d0q8AkQb8ZXOHzj6rntt+Xf94a7pEI60WSCqaYxqQs
-	 4p2GrkOi5MuCe5d/KMD0fRB7Ir278RgPq0sm3LnFpN7LZPd8hI0PiolupPwXM42bNb
-	 v5mBo97913g/+NmGa5uG5Tq/cgOoGkvKOMe9Vtg72rrZ1IaYjfTg5evWWyiWg0vVqR
-	 Go7zXPQM7s2sIYB35mvPp1KGGXAU7kUrTcHTdwR+Bb1sv0jEj1Cj031SoU3/ChDA2Z
-	 uXm+SIt635AGg==
+	b=LpWpNyXgrA5Y/VwmEXohXMT2FVnx0fpJArCLuYYrbL7iCwpCgJ+J9FYanQT2cZ29G
+	 1rGa8LqAhk1VxlJxH2gg1aGunSiD2vKuhMbxW6JsxTyW/4dz06GGENAYOVP/b/QXV1
+	 IBywaHsbpttMoT9tehxGz60d2r3NWIqsXauukTsP0UQmdlT4S8z1UF40ijeG484YuY
+	 F+5s4sckpoX+Yqd4lI2kFop/tQTelVHTGZqPf+keC7WeHdlgjJcRe0hgYm0huDXjml
+	 KUTbFowVRDIaZ8YpMoNSASOADVt+IDR9QRyXj33P/rRoSo+Nj0nrwvV3y6D8l+sFDC
+	 aOcfVIbHOtNfA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECF53C4828F;
-	Wed, 31 Jan 2024 20:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24F70C47258;
+	Wed, 31 Jan 2024 20:24:09 +0000 (UTC)
 From: Valentin Obst via B4 Relay <devnull+kernel.valentinobst.de@kernel.org>
-Date: Wed, 31 Jan 2024 21:23:29 +0100
-Subject: [PATCH v3 07/12] rust: kernel: unify spelling of refcount in docs
+Date: Wed, 31 Jan 2024 21:23:33 +0100
+Subject: [PATCH v3 11/12] rust: kernel: remove unneeded doclink targets
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240131-doc-fixes-v3-v3-7-0c8af94ed7de@valentinobst.de>
+Message-Id: <20240131-doc-fixes-v3-v3-11-0c8af94ed7de@valentinobst.de>
 References: <20240131-doc-fixes-v3-v3-0-0c8af94ed7de@valentinobst.de>
 In-Reply-To: <20240131-doc-fixes-v3-v3-0-0c8af94ed7de@valentinobst.de>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -54,11 +54,11 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  Valentin Obst <kernel@valentinobst.de>, Trevor Gross <tmgross@umich.edu>, 
  Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1706732646; l=3612;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706732646; l=2616;
  i=kernel@valentinobst.de; s=20240131; h=from:subject:message-id;
- bh=QKfC4Yx2YuMhbVoUU+HsBYOAmy4hrhjLwyi1rK9J+vA=;
- b=cJ0rU/cLrFYxQveHJSf8kBibCQ+wP0mbRY7IOhdp9xuHNGZCB9eWtfFYX5GKRhGxstervDr2Z
- 09J+P5+4MjYAYHLcf/aEy8xWjKU5IFP6K1Dt5JmFEeqja6W78i2fmGO
+ bh=BwWMsMRSeC1kKnnmhQv6fYuKaj3M32UFlVEb1WuNzkc=;
+ b=wGvATBsFaAo4TY5WjEUO/KspVCL0ZjLBOnY1oLObO9aK45Ya/Q4PX1qIKBNDOAs/Gdt0eTaX4
+ wkWoULzhHoiBhoqQzhNokpuv3kiGrC+SwHm+BrqDtAZihlX+0ppEWpR
 X-Developer-Key: i=kernel@valentinobst.de; a=ed25519;
  pk=3s7U8y0mqkaiurgHSQQTYWOo2tw5HgzCg5vnJVfw37Y=
 X-Endpoint-Received:
@@ -68,90 +68,71 @@ Reply-To: <kernel@valentinobst.de>
 
 From: Valentin Obst <kernel@valentinobst.de>
 
-Replace instances of 'ref-count[ed]' with 'refcount[ed]' to increase
-consistency within the Rust documentation. The latter form is used more
-widely in the rest of the kernel:
-
-```console
-$ rg '(\*|//).*?\srefcount(|ed)[\s,.]' | wc -l
-1605
-$ rg '(\*|//).*?\sref-count(|ed)[\s,.]' | wc -l
-43
-```
-
-(numbers are for Commit 052d534373b7)
+Remove explicit targets for doclinks in cases where rustdoc can
+determine the correct target by itself. The goal is to reduce unneeded
+verbosity in the source code.
 
 Signed-off-by: Valentin Obst <kernel@valentinobst.de>
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
 Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/sync/arc.rs | 8 ++++----
- rust/kernel/task.rs     | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ rust/kernel/workqueue.rs | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 77cdbcf7bd2e..6c46b1affca5 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -56,7 +56,7 @@
- ///     b: u32,
- /// }
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index ed3af3491b47..73d6fa544ca6 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -426,13 +426,10 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
+ /// The [`OFFSET`] constant must be the offset of a field in `Self` of type [`Work<T, ID>`]. The
+ /// methods on this trait must have exactly the behavior that the definitions given below have.
  ///
--/// // Create a ref-counted instance of `Example`.
-+/// // Create a refcounted instance of `Example`.
- /// let obj = Arc::try_new(Example { a: 10, b: 20 })?;
- ///
- /// // Get a new pointer to `obj` and increment the refcount.
-@@ -510,7 +510,7 @@ fn deref(&self) -> &Self::Target {
- /// # test().unwrap();
- /// ```
- ///
--/// In the following example we first allocate memory for a ref-counted `Example` but we don't
-+/// In the following example we first allocate memory for a refcounted `Example` but we don't
- /// initialise it on allocation. We do initialise it later with a call to [`UniqueArc::write`],
- /// followed by a conversion to `Arc<Example>`. This is particularly useful when allocation happens
- /// in one context (e.g., sleepable) and initialisation in another (e.g., atomic):
-@@ -560,7 +560,7 @@ impl<T> UniqueArc<T> {
-     /// Tries to allocate a new [`UniqueArc`] instance.
-     pub fn try_new(value: T) -> Result<Self, AllocError> {
-         Ok(Self {
--            // INVARIANT: The newly-created object has a ref-count of 1.
-+            // INVARIANT: The newly-created object has a refcount of 1.
-             inner: Arc::try_new(value)?,
-         })
-     }
-@@ -574,7 +574,7 @@ pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>, AllocError> {
-             data <- init::uninit::<T, AllocError>(),
-         }? AllocError))?;
-         Ok(UniqueArc {
--            // INVARIANT: The newly-created object has a ref-count of 1.
-+            // INVARIANT: The newly-created object has a refcount of 1.
-             // SAFETY: The pointer from the `Box` is valid.
-             inner: unsafe { Arc::from_inner(Box::leak(inner).into()) },
-         })
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index a3a4007db682..6726f1056066 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -39,7 +39,7 @@ macro_rules! current {
- ///
- /// All instances are valid tasks created by the C portion of the kernel.
- ///
--/// Instances of this type are always ref-counted, that is, a call to `get_task_struct` ensures
-+/// Instances of this type are always refcounted, that is, a call to `get_task_struct` ensures
- /// that the allocation remains valid at least until the matching call to `put_task_struct`.
- ///
- /// # Examples
-@@ -163,7 +163,7 @@ pub fn wake_up(&self) {
-     }
- }
+-/// [`Work<T, ID>`]: Work
+ /// [`impl_has_work!`]: crate::impl_has_work
+ /// [`OFFSET`]: HasWork::OFFSET
+ pub unsafe trait HasWork<T, const ID: u64 = 0> {
+     /// The offset of the [`Work<T, ID>`] field.
+-    ///
+-    /// [`Work<T, ID>`]: Work
+     const OFFSET: usize;
  
--// SAFETY: The type invariants guarantee that `Task` is always ref-counted.
-+// SAFETY: The type invariants guarantee that `Task` is always refcounted.
- unsafe impl crate::types::AlwaysRefCounted for Task {
-     fn inc_ref(&self) {
-         // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+     /// Returns the offset of the [`Work<T, ID>`] field.
+@@ -440,7 +437,6 @@ pub unsafe trait HasWork<T, const ID: u64 = 0> {
+     /// This method exists because the [`OFFSET`] constant cannot be accessed if the type is not
+     /// [`Sized`].
+     ///
+-    /// [`Work<T, ID>`]: Work
+     /// [`OFFSET`]: HasWork::OFFSET
+     #[inline]
+     fn get_work_offset(&self) -> usize {
+@@ -452,8 +448,6 @@ fn get_work_offset(&self) -> usize {
+     /// # Safety
+     ///
+     /// The provided pointer must point at a valid struct of type `Self`.
+-    ///
+-    /// [`Work<T, ID>`]: Work
+     #[inline]
+     unsafe fn raw_get_work(ptr: *mut Self) -> *mut Work<T, ID> {
+         // SAFETY: The caller promises that the pointer is valid.
+@@ -465,8 +459,6 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut Work<T, ID> {
+     /// # Safety
+     ///
+     /// The pointer must point at a [`Work<T, ID>`] field in a struct of type `Self`.
+-    ///
+-    /// [`Work<T, ID>`]: Work
+     #[inline]
+     unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
+     where
+@@ -495,8 +487,6 @@ unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
+ ///     impl HasWork<MyStruct, 17> for MyStruct { self.work_field }
+ /// }
+ /// ```
+-///
+-/// [`HasWork<T, ID>`]: HasWork
+ #[macro_export]
+ macro_rules! impl_has_work {
+     ($(impl$(<$($implarg:ident),*>)?
 
 -- 
 2.43.0
