@@ -1,144 +1,95 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40C938FAA;
-	Wed, 31 Jan 2024 20:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D011339AC4
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jan 2024 21:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706733119; cv=none; b=D+nAcmahELnq9IkAcpIAg9Ked2i1ddO57D3TP+fG6Sy4AFaIHTQL8YYoXw+0kiuhnhSETVU2rn79bP5o0CzQB78oA6qYWiwOUWOmNYPDDSHtkYKQLVtFzLabGJyC3AWAhLMHslCXcKFskR+AkZyyNycGEZwzlZDbsqDn5/MX1Gc=
+	t=1706736880; cv=none; b=gI8kHxyiN1eSEc1ERyldUojrloM6udjo4XQvua87tDbUOcHa8mk4nd0X5aopOn142EfWyc4jl0ncdUQcrA+hFw5eHy4PkjO6AhcPN76Fy47xApcLeDe9HBt0u4TT9OHnT1dXx8Pef9eWWN/MWpU76xcClHB8EGPYNb7aThsSSWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706733119; c=relaxed/simple;
-	bh=eJXZkWPbAUx+kD2mMYWA6mmXmbvNs/dUZLBtXnq18C8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZriZP1me5d1Iazpc0SHF10L4W2RzgoRPi0/RwVSwq6bHmCMagiCWSIs3jkKUmov2xsKL0EOj1WA9frVScPeOEeeeOX7Z6MERYeeCdujZ6wHam7cPvByGGYanBT7H34CoW39KqBBuY74vi3Wmp6TM26KCnl6Z7jOE/BYTRDtu+C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=es8y/4Zb; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1706736880; c=relaxed/simple;
+	bh=G6YieH+BboPSXhcnd7QjTO2YlYfZjLUCk3XUw51gh/o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H/W0zfxA0gNaK5prx9Ap7BVoFwtlioBBTTNKr6ZMwyMlcSzvwLgbp5RL9xyfVzrg43uPTTSOCrxLGxj8NHpaaN/Wb7ooDv+V0G3C35QqLZzeOQhHqd0Mx7+MvUAflvNxARtfXPaudZ5oJdfheVWaS7teplqwvNVMHMp6ckwler4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=aRfu0yQ2; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="es8y/4Zb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706733118; x=1738269118;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=eJXZkWPbAUx+kD2mMYWA6mmXmbvNs/dUZLBtXnq18C8=;
-  b=es8y/4Zbja4s0Av+qYVyy72e0iBjpbTpZrzXCezazUqONfuvhIDt2rwN
-   qzIJr3iGtCPapgNQKF0w9tHZy+c9V6cTEWTkbtFjriH5MSPzz7lSaQUKq
-   G9h/FDfBADO8UZli+RzmvHcmxHFBLP4B0UVM7MOA5AFUx7Oq1i67FwQ6F
-   EqNpC7cCcrN+2E1jhVXFyiEQkkQCGC5mm7+Ptdhx2B8eu/Bk3oiH+XNcu
-   8Z14Saf4lMofS4GL9cgRZ9FdZo7Z+Cu76j/KuxkhDdNIGJh+BZGbLNFJ3
-   knXrEkuSLrmTq8vrvPKsMRkdQfenFM71Bm59qMRVHRX+Pe0wbiNNrAHM9
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25182905"
-X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
-   d="scan'208";a="25182905"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 12:31:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
-   d="scan'208";a="30639813"
-Received: from dspeerx-mobl.amr.corp.intel.com (HELO [10.212.131.185]) ([10.212.131.185])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 12:31:57 -0800
-Message-ID: <ca0f2db8-e353-4f52-aaa1-35042e52ad91@intel.com>
-Date: Wed, 31 Jan 2024 12:31:55 -0800
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="aRfu0yQ2"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-5ff7a8b5e61so2485257b3.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jan 2024 13:34:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1706736876; x=1707341676; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G6YieH+BboPSXhcnd7QjTO2YlYfZjLUCk3XUw51gh/o=;
+        b=aRfu0yQ2rDk0WDSxtXks2A+IgRZpnhuFKtodQ/d3FzOnyWmbPO/Ptgzr1+ralNHLP5
+         NOfQdMurUXkKKahg+rPt+CKCeAIvTedLti2wzU6r9RnlKk0ZDd/aVLY96M+I12U1zDp5
+         osW1+lp5Ljale8l/CI7lpONsu4aDSMI+FqLFaBEt9r3xHXeCsu0DQRcORlOiAfYWQs1y
+         gFXqypmet4nW5gG6VV2EHySYSbGEJ0EUCJMPe2I+P8HKdd0pHrSZIfa9OILuW2az4Hxs
+         isXeAZE1m3lP5ewKpdcXfI13nqIRNey23JG5RldAeFaII+B6cEVyEXVb9t8klmkBEh8Z
+         M1XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706736876; x=1707341676;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G6YieH+BboPSXhcnd7QjTO2YlYfZjLUCk3XUw51gh/o=;
+        b=vn8vKzazK2Pw+PG8TN9RukIpT9NSuv+jxjOfikqS2Itp6dClsBW2cFZDhLaYc6AcW4
+         cvWO39y+8MhxwqV3KQZEoZlxM13AjR9wzfZrFO56qxYvVJpAh1icVGNjVc+joWj5NZQf
+         Qmaf0CFqHHkFSOPPDxct217Q4BMDiOYl8eAfYkUuRsZbPfX2ht53bDZ9g8ruXnlipzNM
+         RGP/choW4qL5M93Dn6BopolGe6ZeUZhuu7vpGjG0hx71tERcWPYrMPexnMs084A0UX4J
+         CDZv4Ivw/voo8UkrSM3tGx3NW0x/z1jwQRp/lXXG8sV6XhTEhAKag3XUxt2haaPg3Uf1
+         IyCw==
+X-Gm-Message-State: AOJu0YyWv8yKRa77awuPTCiQroMehWK3fe0xwMwGX1fkISklBRBx6JSc
+	p2FnsOSVwq0erqGfy0oi6CrP8kjMBfErWsNFMbns//7vm8FcIIG1mm8cYGeUKstZ0hrp4N1gCQN
+	0OVxdmqAwpDp5WfyZAyFFfcKlYnfrZMxZrfbOpA==
+X-Google-Smtp-Source: AGHT+IFkHZjOjI7WTEzLHEE+Q+CgIDqW/TH13e3Ku0jj4ZL6r1dnLZlaDys64PYkjoTCbE3y3p58qu0XFMFAIsPqHNU=
+X-Received: by 2002:a81:8350:0:b0:5ff:63ae:4f56 with SMTP id
+ t77-20020a818350000000b005ff63ae4f56mr378170ywf.17.1706736876735; Wed, 31 Jan
+ 2024 13:34:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86: rust: Disable entry padding with Rust
-Content-Language: en-US
-To: Matthew Maurer <mmaurer@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20231215194828.2611213-1-mmaurer@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20231215194828.2611213-1-mmaurer@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <241c57af61dc03c6f2f6bd90856908fcf84bb71a.camel@redhat.com>
+In-Reply-To: <241c57af61dc03c6f2f6bd90856908fcf84bb71a.camel@redhat.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Wed, 31 Jan 2024 16:34:26 -0500
+Message-ID: <CALNs47uUgLXPdBtqYP7nb1Ggg+K8Ug_kAvRn-5p845tAGCmEkw@mail.gmail.com>
+Subject: Re: Intended folder structure for subsystem bindings
+To: Philipp Stanner <pstanner@redhat.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>
+Cc: rust-for-linux@vger.kernel.org, dakr@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/15/23 11:39, Matthew Maurer wrote:
-> +config HAVE_ENTRY_PADDING
-> +	def_bool CC_HAS_ENTRY_PADDING && !RUST
+On Thu, Jan 18, 2024 at 4:20=E2=80=AFAM Philipp Stanner <pstanner@redhat.co=
+m> wrote:
+>
+> Hi,
+>
+> I'm having a look into potentially creating bindings for the PCI
+> subsystem.
 
-My only worry with this is that we need HAVE_ENTRY_PADDING for:
+Not sure what exactly you are looking for but as a starting point,
+Tomo has a basic abstraction at [1]. Based on the discussion at that
+thread, it sounds like Andreas might be using it for the NVMe driver.
 
-> config HAVE_CALL_THUNKS
->         def_bool y
->         depends on CC_HAS_ENTRY_PADDING && RETHUNK && OBJTOOL
-...
-> config CALL_DEPTH_TRACKING
->         bool "Mitigate RSB underflow with call depth tracking"
->         depends on CPU_SUP_INTEL && HAVE_CALL_THUNKS
+Do you have any specific project in mind? We can probably point you in
+the right direction if you need any other abstractions.
 
-so if they turn on RUST, they'll end up turning off CALL_DEPTH_TRACKING.
- I'm wondering if it might be better to do this instead (temporarily of
-course):
+- Trevor
 
-config RUST
-        bool "Rust support"
-        depends on HAVE_RUST
-        depends on RUST_IS_AVAILABLE
-        depends on !MODVERSIONS
-        depends on !GCC_PLUGINS
-        depends on !RANDSTRUCT
-        depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-+	depends on !CALL_THUNKS
+[1]: https://github.com/Rust-for-Linux/linux/pull/856
 
-That way, someone who is using CALL_DEPTH_TRACKING doesn't accidentally
-lose it by turning on RUST.  To turn on RUST, they'd first need to go
-turn off the things that are selecting CALL_THUNKS.
+> I was wondering what the Rust infrastructure people had in mind here.
+> Should there be one folder per subsystem in rust/bindings?
+>
+> Thanks,
+> P.
+>
+>
