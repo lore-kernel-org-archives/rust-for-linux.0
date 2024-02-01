@@ -1,151 +1,129 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740F94D9FC
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Feb 2024 09:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03B34DA0F;
+	Thu,  1 Feb 2024 09:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706780532; cv=none; b=nv+Dns1BWckRaScv9ww16vpIyI3rNjSDAaglgxL15Ohqo8nsUA32iPDotjx1bZgeHyJK/12XGJTZkGqK0/xvMNYMNDRUcmHiunOBsP4wtdh1vQsPuqzQZJxIOteV1UCyZhUnoepPQcvWuk256AAsq1gvPKEIkaCdS8UMAsDNYJI=
+	t=1706780903; cv=none; b=rJkc5rBy+/HlLd9IX7oXL9N815ngo+aMlFHYBook9PaKpm50i2zJdzXSN/lDiP5yWovXe2BurYpjRZVgu+AG8z2HHTFVrnkomRuvWb7TSA0tI3xUJrp5LMo7tDhmVfdoIm36mmYeo4x09RvB1yNoJhTd4ah4qctG5eWIKDU0LNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706780532; c=relaxed/simple;
-	bh=RI/xh3KG3rWCEcP4eS2L4B9Piqu6OhdAZcUZ2rjfAy8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MspgXRLdFGO43c2XEalwFLcd7eGBc5gzRjFeaLDeP6aTS5/i1jVfC6AC600rprotyRA1myE+K2RjWZ+Ur6G5GFFAlrgmRGCyUVQAcJYQ3eoPlLtLMQeyrFseoWBE+/dCRcAKMdIzDO2cd+oQCsiDwbVWxNX4M/BmSbhb26uxE5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c/oudCBY; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706780903; c=relaxed/simple;
+	bh=DFghu3f7HzjWGNU0gxtFRoAFiQOsk60yFRXN1PiuSDc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O1mfaf+P7csrtdDSH0+q2Iwwq+drFoxFcksSpcDYHSNmB62w+rfw3pGNGjk4khv3qQyU7IK/VpcWiA7hyVX4/GsOFFzkrC+wIJchbmwhuGyk5dYNYPYAWo7yow/lyyVHYphQ/JozOp8Rm74QMvAbB1pKEg4Gz3NusMvXr1vdmRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=hZBUumxT; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c/oudCBY"
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-4b739b49349so272784e0c.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Feb 2024 01:42:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706780529; x=1707385329; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AuPOrdCb6HbBTgaqgsjDT3E2Mco217B1+thjHRyFhms=;
-        b=c/oudCBYQbUpkiq2xbEoIFZdtO6CjG5l7EZOxx8GbJZPDYmDjqittyLjIzjtDCDKia
-         aKyX4ngVa72r7TZyqCpQ2JSmV7OYyFqAblW05k2+TtYFEPU+99UENoinKatd1ZrVOghn
-         +TVSCg9dEIshG7zYSAhiaxn56jnTa4Xi2cehRRYJAIwzSCN2BZIkqpK3jmPnsMlToIHX
-         fWQeedSw6+SapD4igDYIvEIvKI2wLrGsXz8dnQZJinWliV8x3uAOO3MWIFxvO14RZPMF
-         RX73ekI5dHT//VGI6D9+3S6vKdatSYQLNyYEgwlGsu2UuVBOohST9FV6vV+JQ0fz9XWS
-         Otyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706780529; x=1707385329;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AuPOrdCb6HbBTgaqgsjDT3E2Mco217B1+thjHRyFhms=;
-        b=kE/oLOkrqIkJBTVOW7lW7LFyxWDMnRpGyut46NdkMWevUbss2gOUEe1dwJ/YQD6Z6o
-         is1MnlvtFtwy9ValP9lUDOZgrBEagaa9IATnqivGSqEyzJLJJ3GwoiaEc5HJPjcpmC+Z
-         E+rphwu0NBwc1uweyDf5tQ6c/bSXCmFqV5miQ0Psiei1uEm9EOCkLApDSgls9j8RVVBx
-         al1aABFU4xHP90xKZQVM5184Lx9T4kRcZP0hWOED/6Bv1/VL2FKCxNH+fjRccrnoa3Tq
-         Ueho/hcsLnsjkfSjDbzWawAO4cKXkEVA21RdHxMJzTzE5ybFytCKZS3oXanWgGLTTeGg
-         CBFw==
-X-Gm-Message-State: AOJu0Yyx1kp1TwhKvxwMvFz/16KiVz4b+VKGh1rVCverUyLwuWqVuX8X
-	eqc+gGNbtLK6RvDiJy3K1dYNDdKuA1scqhIPiJsxRjzOH9CgJZLtJD/q2NKTsxpWz+E2RRmlSrB
-	MtopQN2degBJCF0BzM2Ya3eaXop0SGd+dLTyV
-X-Google-Smtp-Source: AGHT+IECDgqCaXC3D95Pns2tEui0S4X58vEeWJ4hsISY8qGpjuY6uBTkGlgBNB8UM/Un2o8+WkkkZboJRfYbLKHc2+8=
-X-Received: by 2002:a05:6122:4085:b0:4bd:9cbc:a5d7 with SMTP id
- cb5-20020a056122408500b004bd9cbca5d7mr4603391vkb.13.1706780529128; Thu, 01
- Feb 2024 01:42:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="hZBUumxT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1706780899; x=1707040099;
+	bh=u9SphSZbc1p3zFepTcmXSK/skYC+oxXB4G+fAJ9cZrc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=hZBUumxT1k1hPWHmwKu0MEgn4637WMREmAeVkuIACG2wyUGcYQ9lIz6YKVAZnbrAy
+	 zyy+V4ptGI5LVJLEBmyxgXmL717veco5j9gps8uyl1XA5zBj0Hui5ia9GgTSAr0ihV
+	 CZlO501Jq4m4HCDKAtWFGooBi74TcEamWTMWxCMhLRThPjBR3LgXfzM2cOlWRCJ7gU
+	 0WPnhosSSifYK6bgOcKZaI8GGDLJP1zWSy7dDbZq3niqquJLVB+rPHlMkGQr7mZGi9
+	 bftKAjif2hvoXE1k4/jYksQ5xfh46qdmUI6etEnBRgv6pQogza2FyylV2w3KbCwcPX
+	 zV/3t+cNbiK6g==
+Date: Thu, 01 Feb 2024 09:48:04 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] rust: file: add Rust abstraction for `struct file`
+Message-ID: <038748e0-22ce-4455-ba08-e8ae30e357df@proton.me>
+In-Reply-To: <CAH5fLghQAn5JYeeG0MDO-acwQHdX7CTkr_-5SzGOzrdFs2SfNw@mail.gmail.com>
+References: <20240118-alice-file-v3-0-9694b6f9580c@google.com> <20240118-alice-file-v3-1-9694b6f9580c@google.com> <5dbbaba2-fd7f-4734-9f44-15d2a09b4216@proton.me> <CAH5fLghgc_z23dOR2L5vnPhVmhiKqZxR6jin9KCA5e_ii4BL3w@mail.gmail.com> <84850d04-c1cb-460d-bc4e-d5032489da0d@proton.me> <CAH5fLgioyr7NsX+-VSwbpQZtm2u9gFmSF8URHGzdSWEruRRrSQ@mail.gmail.com> <38afc0bb-8874-4847-9b44-ea929880a9ba@proton.me> <CAH5fLghQAn5JYeeG0MDO-acwQHdX7CTkr_-5SzGOzrdFs2SfNw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118-alice-file-v3-0-9694b6f9580c@google.com>
- <20240118-alice-file-v3-1-9694b6f9580c@google.com> <5dbbaba2-fd7f-4734-9f44-15d2a09b4216@proton.me>
- <CAH5fLghgc_z23dOR2L5vnPhVmhiKqZxR6jin9KCA5e_ii4BL3w@mail.gmail.com>
- <84850d04-c1cb-460d-bc4e-d5032489da0d@proton.me> <CAH5fLgioyr7NsX+-VSwbpQZtm2u9gFmSF8URHGzdSWEruRRrSQ@mail.gmail.com>
- <38afc0bb-8874-4847-9b44-ea929880a9ba@proton.me>
-In-Reply-To: <38afc0bb-8874-4847-9b44-ea929880a9ba@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Feb 2024 10:41:58 +0100
-Message-ID: <CAH5fLghQAn5JYeeG0MDO-acwQHdX7CTkr_-5SzGOzrdFs2SfNw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/9] rust: file: add Rust abstraction for `struct file`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 1, 2024 at 10:38=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 01.02.24 10:33, Alice Ryhl wrote:
-> > On Thu, Feb 1, 2024 at 10:31=E2=80=AFAM Benno Lossin <benno.lossin@prot=
+On 01.02.24 10:41, Alice Ryhl wrote:
+> On Thu, Feb 1, 2024 at 10:38=E2=80=AFAM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 01.02.24 10:33, Alice Ryhl wrote:
+>>> On Thu, Feb 1, 2024 at 10:31=E2=80=AFAM Benno Lossin <benno.lossin@prot=
 on.me> wrote:
-> >>
-> >> On 29.01.24 17:34, Alice Ryhl wrote:
-> >>> On Fri, Jan 26, 2024 at 4:04=E2=80=AFPM Benno Lossin <benno.lossin@pr=
+>>>>
+>>>> On 29.01.24 17:34, Alice Ryhl wrote:
+>>>>> On Fri, Jan 26, 2024 at 4:04=E2=80=AFPM Benno Lossin <benno.lossin@pr=
 oton.me> wrote:
-> >>>>> +///   closed.
-> >>>>> +/// * A light refcount must be dropped before returning to userspa=
+>>>>>>> +///   closed.
+>>>>>>> +/// * A light refcount must be dropped before returning to userspa=
 ce.
-> >>>>> +#[repr(transparent)]
-> >>>>> +pub struct File(Opaque<bindings::file>);
-> >>>>> +
-> >>>>> +// SAFETY: By design, the only way to access a `File` is via an im=
+>>>>>>> +#[repr(transparent)]
+>>>>>>> +pub struct File(Opaque<bindings::file>);
+>>>>>>> +
+>>>>>>> +// SAFETY: By design, the only way to access a `File` is via an im=
 mutable reference or an `ARef`.
-> >>>>> +// This means that the only situation in which a `File` can be acc=
+>>>>>>> +// This means that the only situation in which a `File` can be acc=
 essed mutably is when the
-> >>>>> +// refcount drops to zero and the destructor runs. It is safe for =
+>>>>>>> +// refcount drops to zero and the destructor runs. It is safe for =
 that to happen on any thread, so
-> >>>>> +// it is ok for this type to be `Send`.
-> >>>>
-> >>>> Technically, `drop` is never called for `File`, since it is only use=
+>>>>>>> +// it is ok for this type to be `Send`.
+>>>>>>
+>>>>>> Technically, `drop` is never called for `File`, since it is only use=
 d
-> >>>> via `ARef<File>` which calls `dec_ref` instead. Also since it only c=
+>>>>>> via `ARef<File>` which calls `dec_ref` instead. Also since it only c=
 ontains
-> >>>> an `Opaque`, dropping it is a noop.
-> >>>> But what does `Send` mean for this type? Since it is used together w=
+>>>>>> an `Opaque`, dropping it is a noop.
+>>>>>> But what does `Send` mean for this type? Since it is used together w=
 ith
-> >>>> `ARef`, being `Send` means that `File::dec_ref` can be called from a=
+>>>>>> `ARef`, being `Send` means that `File::dec_ref` can be called from a=
 ny
-> >>>> thread. I think we are missing this as a safety requirement on
-> >>>> `AlwaysRefCounted`, do you agree?
-> >>>> I think the safety justification here could be (with the requirement=
+>>>>>> thread. I think we are missing this as a safety requirement on
+>>>>>> `AlwaysRefCounted`, do you agree?
+>>>>>> I think the safety justification here could be (with the requirement=
  added
-> >>>> to `AlwaysRefCounted`):
-> >>>>
-> >>>>        SAFETY:
-> >>>>        - `File::drop` can be called from any thread.
-> >>>>        - `File::dec_ref` can be called from any thread.
-> >>>
-> >>> This wording was taken from rust/kernel/task.rs. I think it's out of
-> >>> scope to reword it.
-> >>
-> >> Rewording the safety docs on `AlwaysRefCounted`, yes that is out of sc=
+>>>>>> to `AlwaysRefCounted`):
+>>>>>>
+>>>>>>         SAFETY:
+>>>>>>         - `File::drop` can be called from any thread.
+>>>>>>         - `File::dec_ref` can be called from any thread.
+>>>>>
+>>>>> This wording was taken from rust/kernel/task.rs. I think it's out of
+>>>>> scope to reword it.
+>>>>
+>>>> Rewording the safety docs on `AlwaysRefCounted`, yes that is out of sc=
 ope,
-> >> I was just checking if you agree that the current wording is incomplet=
+>>>> I was just checking if you agree that the current wording is incomplet=
 e.
-> >
-> > That's not what I meant. The wording of this safety comment is
-> > identical to the wording in other existing safety comments in the
-> > kernel, such as e.g. the one for `impl Send for Task`.
->
-> Ah I see. But I still think changing it is better, since it would only ge=
-t
-> shorter. The comment on `Task` can be fixed later.
-> Or do you want to keep consistency here? Because I would prefer to make
-> this right and then change `Task` later.
+>>>
+>>> That's not what I meant. The wording of this safety comment is
+>>> identical to the wording in other existing safety comments in the
+>>> kernel, such as e.g. the one for `impl Send for Task`.
+>>
+>> Ah I see. But I still think changing it is better, since it would only g=
+et
+>> shorter. The comment on `Task` can be fixed later.
+>> Or do you want to keep consistency here? Because I would prefer to make
+>> this right and then change `Task` later.
+>=20
+> What would you like me to change it to?
+>=20
+> For example:
+> // SAFETY: It is okay to send references to a File across thread boundari=
+es.
 
-What would you like me to change it to?
+That would fit better as the safety comment for `Sync`, since
+it refers to "references".
 
-For example:
-// SAFETY: It is okay to send references to a File across thread boundaries=
-.
+For `Send` I think this would be better:
+// SAFETY:
+// - `File::dec_ref` can be called from any thread.
+// - It is okay to send ownership of `File` across thread boundaries.
 
-Alice
+--=20
+Cheers,
+Benno
+
+
