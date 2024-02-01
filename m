@@ -1,38 +1,36 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB77F20DF1;
-	Thu,  1 Feb 2024 21:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD893CF65;
+	Thu,  1 Feb 2024 21:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706823018; cv=none; b=nhPZQP/hEtTz632fQV/n8GhR3YeBllGjfNmbIMCBZ7FhFm5yVI+a90GuBXXCQlBE6ZrqBGO8GxaJ5xtNBuFuhOIs0Cw12bvj7rFhb6H92PklvPh6WabSq3/eWcBVd7CebA1YGqROnH0GPS+23dh9YLdCt/r4jpLzcbWKmfg8CLk=
+	t=1706823212; cv=none; b=SfI6Hsf1UMoPe+NsuMSDsKrjccSOhADq5PSaz0uUp3E2xShHCD+Rn8KG/op64UDjXIXVlyib4WR0sJ/oiEyH+HmTkfqdEitaFxZ0oyWD8tzjli6gnDo3PCpjo4MNqT71GV4gijrKfHJNUDcIuHLmjnih4ut8wd3azoxeCxMJvsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706823018; c=relaxed/simple;
-	bh=WO1pSGffK2BlsotNwVmh8l81KNixmgAA6UL4gmhM/sc=;
+	s=arc-20240116; t=1706823212; c=relaxed/simple;
+	bh=siy6++GmNHscbaxkVi1s7i39+Nt2JRQuUSycj2LrjfA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iPQ8SqA9F4w3oHXx2JOrbUL8RkB5ElXJ1CwCvFgFrX1ErxX9LOibdsuKrqUFloL+j03RR/jVvCSVXUXcYGbxH3mWLg21qoUh3aJUFhTxE7gFTfgtlhGqeN6NS8Fp63P0+lF3va+iw5KyWmlQqDrs0KLutxqqTvKDgIY537Jt++Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zxmqXiyX; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=oT/vYBsEG75UeRiTpky+wkmwXSXhrjIaKzARZv92zHmilSM2OtxIBTYIlMhV24nO36F79jUG2OduL2U7zUYNPF8wK83SyeKAlFNUhi+3xnHId5Bo4c08WYCeQdfILOaIe8TImejHByIA1sKDLRP9QZtBBk3FeOzrOQKAriN8YDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XdYuMRNl; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zxmqXiyX"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XdYuMRNl"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=n9vCqnQ6kLBE0f/I+0hHoajVVyErt59ig2/HWfGH0AA=; b=zxmqXiyXFy7SLUTKfKDL3w89pd
-	oZb7jeslnq2ro4bmDEpZb9hGEa2BgVxzuEcILzPX7uMaWphgfNsfqBja0UV+QqPgO0z0esv1Zcg8A
-	ovckSI8Sp6N5+RWLIx52C5a28/YKrK5qgGV0N3S8MTLrih4qMkWmWvpGcPy/jWy3US9w=;
+	bh=B3OEY63cwbO4YybUSmVo7dQCRT2Z2Gq0tUVDWFfTub0=; b=XdYuMRNlzfxtCYfazJe+UjRaZ4
+	iM9J5rNL7JiJR/FbjgoKUEuOaf5SS1gvSWBr2oIWB8eegdyGcI98KWiv/DTzwKlGHu26X3X2fhTJY
+	/CzKpiALqEyBvwAoFu6bCEl0xf8N25/IMgPRHphWP8AGXHvEI8ec747SP318i9Vv15kY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1rVecz-006ixF-4T; Thu, 01 Feb 2024 22:29:45 +0100
-Date: Thu, 1 Feb 2024 22:29:45 +0100
+	id 1rVegH-006izN-TG; Thu, 01 Feb 2024 22:33:09 +0100
+Date: Thu, 1 Feb 2024 22:33:09 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Christina Quast <contact@christina-quast.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+To: Christina Quast <contact@christina-quast.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
@@ -50,11 +48,9 @@ Cc: Christina Quast <contact@christina-quast.de>,
 	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] net: phy: add Rust Rockchip PHY driver
-Message-ID: <6725eeac-45ee-4f3f-a612-0ef5725b9fd9@lunn.ch>
+Subject: Re: [PATCH v2 0/3] Add Rust Rockchip PHY driver
+Message-ID: <123204c4-9fe9-42d4-9555-bd421494c0e1@lunn.ch>
 References: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
- <20240201-rockchip-rust-phy_depend-v2-3-c5fa4faab924@christina-quast.de>
- <2024020105-bankroll-opium-a6e5@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,31 +59,25 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024020105-bankroll-opium-a6e5@gregkh>
+In-Reply-To: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
 
-On Thu, Feb 01, 2024 at 10:23:03AM -0800, Greg KH wrote:
-> On Thu, Feb 01, 2024 at 07:07:00PM +0100, Christina Quast wrote:
-> > This is the Rust implementation of drivers/net/phy/rockchip.c. The
-> > features are equivalent. You can choose C or Rust version kernel
-> > configuration.
-> > 
-> > Signed-off-by: Christina Quast <contact@christina-quast.de>
-> Cool, but why?  Is this going to happen for all phy drivers going
-> forward?  What's the end-game here, dropping all .c phy drivers that are
-> in rust?  Or having duplicates for all of them?
+On Thu, Feb 01, 2024 at 07:06:57PM +0100, Christina Quast wrote:
+> Based on the example shown in drivers/net/phy/ax88796b_rust.rs, I ported
+> the rockchip phy driver to Rust. The code in drivers/net/phy/rockchip.c
+> was basically rewritten in Rust.  The patchset includes changes to
+> phy.rs, adding more struct driver functions for the abstraction with
+> Rust.
+> 
+> The driver was not tested on real hardware, because I do not have a
+> board with this phy, and I would appreciate it if somebody could try
+> out the driver on their board.
 
-As one of the PHY Maintainers, i would say no.
+As a general point, please post such code RFT. Also adding RFC would
+be good, and explain what sort of comments you are requesting.
 
-Now we have an example, i think we should be a lot more strict about
-what we actually merge. It should be a driver for hardware which does
-not have a C driver.
+    Andrew
 
-We cannot drop C drivers since Rust at the moment does not support all
-architectures GCC/Clang does. PHY drivers are architecture
-independent, and in real life used on multiple architectures. When
-Rust eventually catches up, we could consider dropping C drivers when
-there is an equivalent Rust driver, but from what i hear, that is a
-few years away. I don't want to be supporting a C and Rust driver for
-the same hardware.
+---
+pw-bot: cr
 
-     Andrew
+
