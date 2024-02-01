@@ -1,178 +1,103 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB2F2B9D1
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Feb 2024 06:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34184DA12;
+	Thu,  1 Feb 2024 09:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706770267; cv=none; b=VxyY3nhkiXQ2kHTL4m2+i7xkduwuQYCj+xG/m9Kn0ea8NTfmKkjyS057BcLGyo7gCuMTePqJaKCRy81NDGln4YGPuqYlgAtxPx9hWFafpBF357bVbM5UVb2WXi5hwKzGsNhU2XNH+ZcwF9awMnDC3SeGF3yLVXJmkKH+ezvQozs=
+	t=1706779886; cv=none; b=oTXhHriP9+1OtEjc0XOzJ9phkrKfI93nAyJ3CM/kLUR3gPi7tSiV4UXTsxxvhDSmFwo3JhAnLkhzlyMM55HuBFy2W6lHfiLpDhLQz7mNFriE4yiXLf8O7Ia5hfxIfFx+zuRbXUNJ+Meu7SerVQstuE9Oii1r7B24ytgb1228Rbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706770267; c=relaxed/simple;
-	bh=P+pMvfm6p1iUGj9fFqEXcNfnHx7jGrN/9q82u2ktWFw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kVxwtVqH36lABSuOz19aW7SGjlwoFTzqhopOV5DlY+Ir0eOgM/SnVrLs9xm/yZfkllxkEOHZ5otPERd6wvTNLkGEaSqr0I5nqrD3c4rDeUpGMpETY/MrqEi9U+hKMgLh4ygBwD/zmdT6YWMh/QQq8buw+conXcMRuR4pJ6D0Ymc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=mwPg9gZk; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1706779886; c=relaxed/simple;
+	bh=Pxf0gkPUSV6ML8ezzNHzC2q4EU2zzV+BO6VfllDl0nE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iKa3jFJVdYw/7kQSB8w26CwBjXYXjJlQnl7BlyvJB6c4V2OU0lCuUXm2T8R3m3Hiwf7GDcV3c27YtUzda+zxyAvcl4MzWaXmnhqQvaVjiu53bO4YBknxdGuO/uue6QOBFnD5iDnkMVgFY3cFMRBTScbljZ50Nh3FbCekQKWVHXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=L1SpQ0ZK; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="mwPg9gZk"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-60413de7474so6375357b3.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jan 2024 22:51:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1706770264; x=1707375064; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r0VzwVbSa/n1qDmz4589AdSmL/ygOZFpk7QXNbXjzSU=;
-        b=mwPg9gZkvS8/Z5artXP/PAUBGR7TjrCGVEYguHpbBRAXF/KK5jVsJJguxev4u003pN
-         5yvCOMz9DiuKf0R/xoOhQKv7lHPgvrMHBPgwytT2PkJ5MTnFThDaNTskUsIQZcIzTp0+
-         6WW9LacKc5qTzQowx+VxpitGuVwt2TlGQZxeeNIJH9wlLWfJ6iFMdvj690+g/WeGc/uK
-         w2hvZfKtaMiXlO80HOcNEAlrJCplq4n3XzLjFxMjH2dDBJC8Pc+wGwqZBHA7yUf0gMgW
-         3+xYbNAy1K+Y1NFKAmDgJ0WtWKXd5OHdCBphPrbOi7Y0xPQvDiG5RrSAckF7C3cg6c+P
-         hu4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706770264; x=1707375064;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r0VzwVbSa/n1qDmz4589AdSmL/ygOZFpk7QXNbXjzSU=;
-        b=vMJsGwnHPEpVS38JXyLIqUQI0bMB1GFB9KqHcz9W36ZMhx4I5UFWbD9l408cjBIV2D
-         fXzBQ6qVKAHaVN5t2K6S8O2zXUvmG3MY+69/d7FiLaaxqcDrUFU2ogeubQztw3XbInqQ
-         TvDsrzHvvVeevecNxU5tM2/R82veoADxxvuKrGjDevF0FLl7b6zxIpobiwKn1O23VkkY
-         qqxzyrJzvmUfejg1MiR7PyDyi8YpanAHldZD43ycHBg1Jv8i8Jz7MFWUJN+vmiuH3JW7
-         DXlEQwDab6aLR9a6eokkXv+zMMPd2K3/ak5Ulr4S7q8EF+y+BbquJ+UtbewAmqZpq24O
-         JkYQ==
-X-Gm-Message-State: AOJu0YwO0Pi35rlV73dTzSpkFRmJ9cSBYrousJrmnjXbHEu/jBIX2cfG
-	eQImKkpoy6Ogjlzl1UlVEOSHDVSB8RiMVUBX0tMLRF4yYOPAtzjXeWFWNOIR/MScTXUNRKYGult
-	2ryamxOM8I5pNXJ089uMIZisqffMV3ZiB6buQgw==
-X-Google-Smtp-Source: AGHT+IEPGqm/Y0xYSHVANnXssBTUMPz3ZdBa3qhfP7xrY7cv7t5U8clp2+mPjqdB+Tw0QipEexd9/XI7bvCHxxl84/Q=
-X-Received: by 2002:a0d:e857:0:b0:5f6:4f5a:8bd2 with SMTP id
- r84-20020a0de857000000b005f64f5a8bd2mr3187081ywe.0.1706770264344; Wed, 31 Jan
- 2024 22:51:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="L1SpQ0ZK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1706779872; x=1707039072;
+	bh=/TpO0duNnWXfuRmnGBDmPg/iJAgdmf8+TRYZheB4zzo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=L1SpQ0ZKZj0vEZbuhSTKvRRrWW6xgW5wTGeQWEXnf0CAAopQ1uUuErf6ZJShY6zcS
+	 DRaGadbR1O069/g9s9vLme57qnXWHn72kNrcA+mO+vh8yOp9yqaFlXTb1PwRQgWd0+
+	 yMzbr7gTl8PCjvZnGQ92+rl6Ksv1VhFApC3vcrsIywUVB1RvQEjz2VuC/YV+PGkPj4
+	 k/p04fwZ8Qntri1r7/csU62ytmv2qaweNFBv58TA9fTur7Ledik1jgashxmaq1QdE+
+	 5FH7Pz+Zg34ZVOj9+l+Ra6iTKzPI46/NOfWQGZzlceuUHTmcnI2CvCI6wjt6ZDY/L/
+	 WUXng+BOezWig==
+Date: Thu, 01 Feb 2024 09:30:46 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] rust: file: add Rust abstraction for `struct file`
+Message-ID: <84850d04-c1cb-460d-bc4e-d5032489da0d@proton.me>
+In-Reply-To: <CAH5fLghgc_z23dOR2L5vnPhVmhiKqZxR6jin9KCA5e_ii4BL3w@mail.gmail.com>
+References: <20240118-alice-file-v3-0-9694b6f9580c@google.com> <20240118-alice-file-v3-1-9694b6f9580c@google.com> <5dbbaba2-fd7f-4734-9f44-15d2a09b4216@proton.me> <CAH5fLghgc_z23dOR2L5vnPhVmhiKqZxR6jin9KCA5e_ii4BL3w@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-3-d1abcec83c44@google.com> <ZbMA1yiM6Bqv9Sqg@boqun-archlinux>
- <CAH5fLgiNphSebaG82XkQHGFPFp1Mf1egyaiX6MFzsU2X3-Ni8w@mail.gmail.com> <ZbP50nEIMqULfVuj@Boquns-Mac-mini.home>
-In-Reply-To: <ZbP50nEIMqULfVuj@Boquns-Mac-mini.home>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Thu, 1 Feb 2024 01:50:53 -0500
-Message-ID: <CALNs47uy5rQ15wByzQA0_YzORM0nTFdi9-TvwyC4+ZTXVQBj4g@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
-To: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Kees Cook <keescook@chromium.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 26, 2024 at 1:28=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Fri, Jan 26, 2024 at 01:33:46PM +0100, Alice Ryhl wrote:
-> > On Fri, Jan 26, 2024 at 1:47=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
-> > > > [...]
-> > > > +    /// Maps the page and writes into it from the given buffer.
-> > > > +    ///
-> > > > +    /// # Safety
-> > > > +    ///
-> > > > +    /// Callers must ensure that `src` is valid for reading `len` =
-bytes.
-> > > > +    pub unsafe fn write(&self, src: *const u8, offset: usize, len:=
- usize) -> Result {
-> > >
-> > > Use a slice like type as `src` maybe? Then the function can be safe:
-> > >
-> > >         pub fn write<S: AsRef<[u8]>>(&self, src: S, offset: usize) ->=
- Result
-> > >
-> > > Besides, since `Page` impl `Sync`, shouldn't this `write` and the
-> > > `fill_zero` be a `&mut self` function? Or make them both `unsafe`
-> > > because of potential race and add some safety requirement?
-> >
-> > Ideally, we don't want data races with these methods to be UB. They
->
-> I understand that, but in the current code, you can write:
->
->         CPU 0                   CPU 1
->         =3D=3D=3D=3D=3D                   =3D=3D=3D=3D=3D
->
->         page.write(src1, 0, 8);
->                                 page.write(src2, 0, 8);
->
-> and it's a data race at kernel end. So my question is more how we can
-> prevent the UB ;-)
+On 29.01.24 17:34, Alice Ryhl wrote:
+> On Fri, Jan 26, 2024 at 4:04=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>> +///   closed.
+>>> +/// * A light refcount must be dropped before returning to userspace.
+>>> +#[repr(transparent)]
+>>> +pub struct File(Opaque<bindings::file>);
+>>> +
+>>> +// SAFETY: By design, the only way to access a `File` is via an immuta=
+ble reference or an `ARef`.
+>>> +// This means that the only situation in which a `File` can be accesse=
+d mutably is when the
+>>> +// refcount drops to zero and the destructor runs. It is safe for that=
+ to happen on any thread, so
+>>> +// it is ok for this type to be `Send`.
+>>
+>> Technically, `drop` is never called for `File`, since it is only used
+>> via `ARef<File>` which calls `dec_ref` instead. Also since it only conta=
+ins
+>> an `Opaque`, dropping it is a noop.
+>> But what does `Send` mean for this type? Since it is used together with
+>> `ARef`, being `Send` means that `File::dec_ref` can be called from any
+>> thread. I think we are missing this as a safety requirement on
+>> `AlwaysRefCounted`, do you agree?
+>> I think the safety justification here could be (with the requirement add=
+ed
+>> to `AlwaysRefCounted`):
+>>
+>>       SAFETY:
+>>       - `File::drop` can be called from any thread.
+>>       - `File::dec_ref` can be called from any thread.
+>=20
+> This wording was taken from rust/kernel/task.rs. I think it's out of
+> scope to reword it.
 
-Hm. Would the following work?
+Rewording the safety docs on `AlwaysRefCounted`, yes that is out of scope,
+I was just checking if you agree that the current wording is incomplete.
 
-    // Change existing functions to work with references, meaning they need=
- an
-    // exclusive &mut self
-    pub fn with_page_mapped<T>(
-        &mut self,
-        f: impl FnOnce(&mut [u8; PAGE_SIZE]) -> T
-    ) -> T
+> Besides, it says "destructor runs", not "drop runs". The destructor
+> can be interpreted to mean the right thing for ARef.
 
-    pub fn with_pointer_into_page<T>(
-        &mut self,
-        off: usize,
-        len: usize,
-        f: impl FnOnce(&mut [u8]) -> Result<T>,
-    ) -> Result<T>
+To me "destructor runs" and "drop runs" are synonyms.
 
-    // writing methods now take &mut self
-    pub fn write(&mut self ...)
-    pub fn fill_zero(&mut self ...)
-    pub fn copy_into_page(&mut self ...)
+> The right safety comment would probably be that dec_ref can be called
+> from any thread.
 
-    // Add two new functions that take &self, but return shared access
-    pub fn with_page_mapped_raw<T>(
-        &self,
-        f: impl FnOnce(&UnsafeCell<[u8; PAGE_SIZE]>) -> T
-    ) -> T
+Yes and no, I would prefer if you could remove the "By design, ..."
+part and only focus on `dec_ref` being callable from any thread and
+it being ok to send a `File` to a different thread.
 
-    pub fn with_pointer_into_page_raw<T>(
-        &self,
-        off: usize,
-        len: usize,
-        f: impl FnOnce(&[UnsafeCell<u8>]) -> Result<T>,
-    ) -> Result<T>
+--=20
+Cheers,
+Benno
 
-This would mean that anyone who can obey rust's mutability rules can
-use a page without any safety or race conditions to worry about, much
-better for usability.
 
-But if you do need to allow the data to be shared and racy, such as
-the userspace example, the `_raw` methods allow for that and you can
-`.get()` a `*mut u8` from the UnsafeCell. This moves the interior
-mutability only to the mapped data rather than the Page itself, which
-I think is more accurate anyway.
-
-Leveraging UnsafeCell would also make some things with UserSlicePtr
-more clear too.
-
-- Trevor
-
-> Regards,
-> Boqun
->
-> > could be mapped into the address space of a userspace process.
-> >
-> > Alice
->
