@@ -1,87 +1,92 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.someserver.de (mail.someserver.de [116.202.193.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4733363083
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Feb 2024 17:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D46912FB00;
+	Thu,  1 Feb 2024 18:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.193.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706808299; cv=none; b=fb4euo1GJ3GBhqxSTN99T9svBqUYYviqSW2bxlqjpoxuqPYOYC/CRKb7fOdgmB40OQWIJZrlLP3TO2tczgQtkbrLxzmFDAlH7n51Xgr8u5AOAsZDxIzIBh95aC6dE11j2mtwBA27AGI0bE1O208K9w6SHjxLkVpnKFd5EJXTU2k=
+	t=1706810836; cv=none; b=GfGJR0SVnMIRHOBHljEuY/0e/FH3cfcqsqHDgho4yK8ufc3vP/2gWEdsMz+Zg6OHpggLlfNCaEv4cTRzvnAOeix7E9Sb6OO/5s/BoMeI3i6ZD7/6XdFblSnbISD6u8xZvoyRqFfuVceg97nIQd0rnYhFmw6kKXL0FyyDcXGDfFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706808299; c=relaxed/simple;
-	bh=tUT5eUuE15s4mQW5Eqc2UL0FWajOfvBqXa17uCRXgdQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fOUDPvA7j7IVFo4lm3u8hXYmbqkKp8pficqf9pxMg1wEMvSHR8eI1IB5x6LnUqg2zedGalYJFstsw2mFRGbF1t56IeL7VmAu4wscDyGmGJTXKAiwYYLu6AjZh4jX7bjDwKYqrx4KOpmXgdy5cRHOvHA3S4xsPceh93sgd0h1Ssw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DdyYb6fL; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DdyYb6fL"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1d8ef977f1eso9191055ad.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Feb 2024 09:24:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706808297; x=1707413097; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eg89cElHPtXrTUhW320LKCTRF9xkkRqlWJR1HbBd4bo=;
-        b=DdyYb6fLd78QTW627U/GdrErPyEKpLlS3HyZ5dVqTWFwUJj4fM5voOP/OvtUlda3gW
-         mYG7B6ayvd9S/vnFn8f5Uf2McsCsRf0QKwKZuP+GZH572WEIJgL6KbomDZPPnoZIyrii
-         NtHhigEhzI35jOZp34z4yXK4hmUpfy13sQNilo/LyfoYUaJT2jNRnuI2ErwJ17EsYLsF
-         AnQucPeekYOC6znzYp8PV5h6tLWw823pRTCsZUJt6BhwYOhbj3h0I14Go5F14jIuQkbp
-         avttr/7Jt/W/gBjYRuSizGF5g0vFMVlDjshxq/ZW1YiuL+ldLJwPxRTJQm9KzX2lGt7/
-         d/bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706808297; x=1707413097;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eg89cElHPtXrTUhW320LKCTRF9xkkRqlWJR1HbBd4bo=;
-        b=EOuoNYqjpZfFTT7MAYRjq7u4gc2EDjkqNN/AsPIgeZr6juQIerEr7zpOeC7QLykLqT
-         ECWOCoq4cIlEKC4yovsrRTe+m9/9pm37/1A3EfPDj9NK9JNZtx6AyQOPMeIIAvufTvbl
-         bjHMVuAKzDFo83l3i2GLJXun6EcaNAh54fJ7bXr8HVFpxfDTtRHEGqco6SU5OjbNYjBP
-         LP9oBaefE+cLRBozoqu0jDMNnTz7Vd6pGXv/xblWb44x4J103I2eo5s2oCXLtkmb2WE7
-         buXxUScF5XOuSB82adFmbK+DkWoW6JxzeqgEJJH64GHXIQwOf0TkL9VrDFVpKopbaJKN
-         149A==
-X-Gm-Message-State: AOJu0YzzfKOqj3K2Py0EQi81U48GI3PwKENCOMxt/vmpCgcp2ZwNDse4
-	YvdzoulXrcBJuAOFGrtvI5+yX3jSC9Y0VCeG4GKr75+YBK4IY1Pl
-X-Google-Smtp-Source: AGHT+IGmgAPXBbCBiG/LkBeMkR/+a1xTD17Crewg5zDDod6+LDzHwKyRHmHtlagj2Us8pvNVerOYSA==
-X-Received: by 2002:a05:6a20:e104:b0:19c:8c44:83f7 with SMTP id kr4-20020a056a20e10400b0019c8c4483f7mr6392024pzb.44.1706808297492;
-        Thu, 01 Feb 2024 09:24:57 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCX6l2+jLF8rkT01kgTpPGgg8c5fQVj2T+C0k2zMyPlye7cZxPqkzxywQnO7FMFE8bns9+9K/FuzMW9w2HwU9/e55XzAid6ouSK0dWqcv0/Qkcfz/fyiIKhdoDD262lNvj0=
-Received: from localhost (dhcp-141-239-144-21.hawaiiantel.net. [141.239.144.21])
-        by smtp.gmail.com with ESMTPSA id h9-20020a656389000000b005ca0ae17983sm38191pgv.8.2024.02.01.09.24.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Feb 2024 09:24:57 -0800 (PST)
-Sender: Tejun Heo <htejun@gmail.com>
-Date: Thu, 1 Feb 2024 07:24:55 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: linux-next: workqueue + rust build fix
-Message-ID: <ZbvT58zFeGoxIiHM@slm.duckdns.org>
-References: <CANiq72=9PZ89bCAVX0ZV4cqrYSLoZWyn-d_K4KpBMHjwUMdC3A@mail.gmail.com>
+	s=arc-20240116; t=1706810836; c=relaxed/simple;
+	bh=jWA5iTRD69ucDNwkpZwR5jCH+P2otKImG+J2kWpMQs8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ckf0wEhSkc25Chs4CfzO8gMYwLo3J0H0Rtc59yMtST9u95saXZdYCCSzEFMirLk/m9dWD2ekBvNspWAg+WT+ZrnGmtuqbA+DV6WvC4+HGT2xlO+/DJm0cy6vXvrexD8jYvmmaCTgqkSqS0fPmJLuQAggdwhRxulk+AlenrDd50A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=christina-quast.de; spf=pass smtp.mailfrom=christina-quast.de; arc=none smtp.client-ip=116.202.193.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=christina-quast.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=christina-quast.de
+Received: from localhost (unknown [195.162.191.218])
+	by mail.someserver.de (Postfix) with ESMTPSA id 80FA2A211E;
+	Thu,  1 Feb 2024 19:07:10 +0100 (CET)
+From: Christina Quast <contact@christina-quast.de>
+Subject: [PATCH v2 0/3] Add Rust Rockchip PHY driver
+Date: Thu, 01 Feb 2024 19:06:57 +0100
+Message-Id: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72=9PZ89bCAVX0ZV4cqrYSLoZWyn-d_K4KpBMHjwUMdC3A@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMHdu2UC/0XMQQ7CIBCF4asY1o4BWtvqynsYYyhMZWKkONBG0
+ /TuEl34dt/i/YtIyIRJHDeLYJwp0RgK9HYjrDfhhkCuWGipa6mlAh7t3XqKwFPKEP376jBicNB
+ 0yvV1K9syUe6RcaDXN32+FA88PiB7RvMPqkr+Oj1lmBUoQKfRNVV3MPvuZD1TyhQMPCeT8s6hW
+ NcPdt7myrMAAAA=
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@samsung.com>, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Heiko Stuebner <heiko@sntech.de>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, 
+ Christina Quast <contact@christina-quast.de>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706810819; l=1206;
+ i=contact@christina-quast.de; s=20240130; h=from:subject:message-id;
+ bh=jWA5iTRD69ucDNwkpZwR5jCH+P2otKImG+J2kWpMQs8=;
+ b=x2+WW6v6zLMM6XjRuSZYbZ89dx3Cl5LmXdahaHthccc/4Gh8+ZzNrEDkpGaplAm9LUlUMptAJ
+ DRo0OfTS6bQB4JaHE1iLovyZ7EjwiZi42bBiADhExh0vY5oYleM7WbV
+X-Developer-Key: i=contact@christina-quast.de; a=ed25519;
+ pk=aoQfinjbnr265vCkIZdYteLDcmIqLBhY1m74WfFUU9E=
 
-Hello,
+Based on the example shown in drivers/net/phy/ax88796b_rust.rs, I ported
+the rockchip phy driver to Rust. The code in drivers/net/phy/rockchip.c
+was basically rewritten in Rust.  The patchset includes changes to
+phy.rs, adding more struct driver functions for the abstraction with
+Rust.
 
-On Mon, Jan 29, 2024 at 01:22:04PM +0100, Miguel Ojeda wrote:
-> Tejun: please feel free to fixup-it into your existing commit (diff
-> likely mangled, sorry -- let me know if you prefer a formal patch
-> instead).
+The driver was not tested on real hardware, because I do not have a
+board with this phy, and I would appreciate it if somebody could try
+out the driver on their board.
 
-I missed your email. My apologies. Can you please send a signed-off patch so
-that I can apply to wq/for-6.9?
+Signed-off-by: Christina Quast <contact@christina-quast.de>
+---
+Christina Quast (3):
+      DONOTMERGE: rust: prelude: add bit function
+      rust: phy: add some phy_driver and genphy_ functions
+      net: phy: add Rust Rockchip PHY driver
 
-Thank you.
+ drivers/net/phy/Kconfig          |   8 +++
+ drivers/net/phy/Makefile         |   4 ++
+ drivers/net/phy/rockchip_rust.rs | 131 +++++++++++++++++++++++++++++++++++++++
+ rust/kernel/net/phy.rs           |  31 +++++++++
+ rust/kernel/prelude.rs           |  16 +++++
+ 5 files changed, 190 insertions(+)
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20240201-rockchip-rust-phy_depend-681db4707777
 
+Best regards,
 -- 
-tejun
+Christina Quast <contact@christina-quast.de>
+
