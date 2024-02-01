@@ -1,73 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A7412FB38;
-	Thu,  1 Feb 2024 18:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC7B1E88F;
+	Thu,  1 Feb 2024 18:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706811785; cv=none; b=o4sX7H/74J3uRebePWeRCcxHQFaEAgfVa4b00GFzZL4TvONMvVxw7tkV5105Lt2J19DZ55eb7S9acJvWH+PGisarKoAny2nO6bD87Q+BIHavPgs/p6WbOZg8B6PIBS5eCsI4DCzfZw3efaYT7s6Wa9sIfimHs1goSvqHUuHGX5g=
+	t=1706812462; cv=none; b=BEBiVlw4guBdMRoNdB71HP5NxpTZuQMLSfmrQglYnEJS7VpPP2macQgJ8OIwktTIQw6tkNxzoB4kfglDFpMgpBzSeqQZO7IOBkiGACF5GUg+am4dR0FaYpx96yeFVZXkgJbP8BSZ5UtqgQZftld8U8JLs0lo1uU2fg24myjPUtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706811785; c=relaxed/simple;
-	bh=g30JJF6c2p9BNtqLzB7XLKvKHMAUsAjHRtAPmzxpNec=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PdIPPelvhcN8UPBNWmDzPbi6oQIZdwJHWHUB4bLv79s5nUc3WNqzpT0+rSUw8ETdcjXIjTKqMeXjI9AH8cDWPUN82tVElItwuzPxY60+DHPvYoX4kGS3+UqF0CIFsIIZfHS5zxGuiTUGEzs37R9IEmM0tj8KH6BwtzBuDNGQMoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5bm9aHJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706812462; c=relaxed/simple;
+	bh=2Fd7ZWV1LtdaA8VIvBJoCEjDaseHpe8ZGvyJPTjzAFU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BFCzyaG2pbWTRLyYGyBqwY95oqBunjA5tqbtzJvQpDMK1nPk8JYulA5JQXzU7oxhpf+6hm3elDdNKHQOUJwPI4IRYtDM5zN6rX90vnZkijpILytgEs8OKTVPBEmm/xm8YHiMowCQNxc5XMwaq23f4Ff5MLkLRTmJzWFrE545Fr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ELVB8cY5; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5bm9aHJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625A1C43394;
-	Thu,  1 Feb 2024 18:23:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706811784;
-	bh=g30JJF6c2p9BNtqLzB7XLKvKHMAUsAjHRtAPmzxpNec=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P5bm9aHJFe5C09SLrv5P8D7FyWqccaceRdwXWPzs31IigkUX5cR3+dS4usDCl7sMp
-	 BSu+SPA0C5NO1P0FRs+6K2+SF3/WBNxlMr9TKBy0ngmLOAmvNt4IlVj2pkwUw2r90J
-	 Y7nDNsYw4jfFEBIeImdlpHUOZyWbJcIHrJXZw/ek=
-Date: Thu, 1 Feb 2024 10:23:03 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Christina Quast <contact@christina-quast.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] net: phy: add Rust Rockchip PHY driver
-Message-ID: <2024020105-bankroll-opium-a6e5@gregkh>
-References: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
- <20240201-rockchip-rust-phy_depend-v2-3-c5fa4faab924@christina-quast.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELVB8cY5"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-603c5d7997aso12588407b3.1;
+        Thu, 01 Feb 2024 10:34:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706812459; x=1707417259; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Fd7ZWV1LtdaA8VIvBJoCEjDaseHpe8ZGvyJPTjzAFU=;
+        b=ELVB8cY5XfkLaja7Z7okOUs1TbOA+Ea2Td6p3UGdyc9TLUlh/zyK6kMpJ5tJgTvuVQ
+         1MDVXsUBnIJ6WgtUmebRNquh1qBOGH38AwKSAdzpCTBBgkdctv+RbAWU3SUJBVMfXh8S
+         XEUfaoZKmawGm0MSXgBnKlnTN6gvMWlRvN6M5liZI6iozUddSBlWK0yC3HA6wxV03KvV
+         XWtbq4OW666hUeCoBceJcz61JHofzJTxHBw8SsmyRF9vwh72o1MvFHjerJdwZf7s0Cm9
+         1WNoBInk0IMtQCB5SeBQ3XOYpZ3XGalIbgwHVkK2Wgk7YQBQFdJ52PcZssOkXC0SWSPz
+         JFDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706812459; x=1707417259;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2Fd7ZWV1LtdaA8VIvBJoCEjDaseHpe8ZGvyJPTjzAFU=;
+        b=pEnjffX9xy1y+RFcAC+k6DXIDD83Cfa2DhuPZY9qxGuMfnCcYQs4QWrYkeDRhGbkIA
+         nyRTSjGR6BqnySeh4g/NkGLLuwwjzvE1fWT95jyoRqcSi5troZUW6YxM0jzLHgxdnYtd
+         vcfeFMjjUkeyezJ+PWqj+UZne2W397k9B4bQFcIoa6Ac5bQQVZSdastki8BO4/buewMj
+         ICN+kpFzmYxnO77t6BWsu2hNX8HFei09spPXcGubRRuD46ceT93bzUgWb4UMTDBxqNDc
+         +tYKyeXKSX0UY93G4atanwhyGKC5l5gX0PS+m8hw+DMNj8Z/DUc4CvK0jQKGf166v0nh
+         82xQ==
+X-Gm-Message-State: AOJu0YzhYnajFPqLR2ovg7DAhhbsx7V8ImmEg3SH329TAn5aEZoRSXDV
+	wmdZW48bY/T3v/HbQ/jcO6JZPSSGp81kek7hLCg09LQ0diHZ5i5tnVR1w4WxivB7v1VVqXlfbV3
+	C6RtTnx9sy/txYYilzlkVPt1iND8=
+X-Google-Smtp-Source: AGHT+IE1UzMW3ajeW1lZaI3w44rZhcB3D2va3eYE5sqzhtCO0UvDe9iJkrBl3dzQEm5YGU+2doCeOCar7s2MtUlbPZk=
+X-Received: by 2002:a81:b64b:0:b0:602:cf62:6590 with SMTP id
+ h11-20020a81b64b000000b00602cf626590mr5631484ywk.34.1706812459677; Thu, 01
+ Feb 2024 10:34:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240201-rockchip-rust-phy_depend-v2-3-c5fa4faab924@christina-quast.de>
+References: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
+ <20240201-rockchip-rust-phy_depend-v2-1-c5fa4faab924@christina-quast.de>
+In-Reply-To: <20240201-rockchip-rust-phy_depend-v2-1-c5fa4faab924@christina-quast.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 1 Feb 2024 19:34:08 +0100
+Message-ID: <CANiq72nE6vy3dy3VTUkdKb3Vep72jxvHb=Jd2ykue8Nd1Vk-jg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] DONOTMERGE: rust: prelude: add bit function
+To: Christina Quast <contact@christina-quast.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Heiko Stuebner <heiko@sntech.de>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 01, 2024 at 07:07:00PM +0100, Christina Quast wrote:
-> This is the Rust implementation of drivers/net/phy/rockchip.c. The
-> features are equivalent. You can choose C or Rust version kernel
-> configuration.
-> 
-> Signed-off-by: Christina Quast <contact@christina-quast.de>
-Cool, but why?  Is this going to happen for all phy drivers going
-forward?  What's the end-game here, dropping all .c phy drivers that are
-in rust?  Or having duplicates for all of them?
+On Thu, Feb 1, 2024 at 7:07=E2=80=AFPM Christina Quast
+<contact@christina-quast.de> wrote:
+>
+> In order to create masks easily, the define BIT() is used in C code.
+> This commit adds the same functionality to the rust kernel.
 
-thanks,
+Note that it is the same kernel :) Typically we would say "to the Rust
+side" or similar.
 
-greg k-h
+> Do not merge this commit, because rust/kernel/types.rs in Rust-for-Linux
+> already contains this functionality and will be merged into next-net
+> soon.
+
+I think you mean the archived `rust` branch (it is useful to point
+this out -- Rust for Linux is not just that branch).
+
+However, has the `Bit` type (assuming you mean that) been submitted? I
+don't recall seeing it, and normally something like that would not go
+through `net-next`. If it has been, could you please send the Lore
+link?
+
+> But this driver does not compile without this commit, so I am adding it
+> to the patchset to get more feedback on the actual driver.
+
+Assuming the patch was not sent, I would suggest replacing this commit
+with the dependency you want to use, e.g. the `Bit` type, since it is
+a small enough one.
+
+In addition, this series has v2 in the title -- I think you did that
+because this patch was already submitted, but this is not really a v2
+of that series since this is mainly about the driver (and anyway this
+patch in particular is not meant to be merged; plus you didn't change
+it from what I can see).
+
+Thanks!
+
+Cheers,
+Miguel
