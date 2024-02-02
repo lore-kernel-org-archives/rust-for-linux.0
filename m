@@ -1,169 +1,213 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278F91426A
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Feb 2024 10:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C193CF68
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Feb 2024 10:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706870408; cv=none; b=I8uDB8aBsdGuLogmrivr+BkjtaDKBjRmOmbRlCfCZQXw9x1y1Q3KBTZ9LaOvdZMC1z8HzqfIO6VOGwTLIsWXxc1za5aYj1cyrPyo/HGXmDhXMx52IlO+P08iD6UTXAyb1OGW5m+IWSE28v7FTMtA3gxS9SCk49A8mse+mC+zpGE=
+	t=1706871350; cv=none; b=h6XMErUdwvLikPwiW27KkGFOQYNiBpnP1RIbTL6Bj3u6gy84PgeFYSiq14apW8FwdcVun3qUdTjmN4qvRusZ2yPKPJqip1dKHs0UV+NiSmFwcSCizlhT/OwH4mvmxSEJ5ncUbJmaRiOi9ptIk+TnntkWr2abDvbMX0lIJcb0M98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706870408; c=relaxed/simple;
-	bh=sUXWTxnCCv8b0lqL/ds0GP5eHjctX1GZTySPpp6YlvY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:Content-Type:
-	 MIME-Version:References; b=isMOlnRORmdujiWDcsXyiY3l3kh9cMmaQR1GKR/AOgHsnp71hkul8QBGCO7JW7z0ejBCxaxGkHTfSfzzXp6Qskbw1FeTHz/MKUWn7U1Dz9J8GMwm0dIkIDE1rwDVXuGWQ1e6iGH0vIQsKZ8TKLuB4R8fMKYQtmSaPwxvJjIzFS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=FB543eMl; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1706871350; c=relaxed/simple;
+	bh=mGdvPWrbrx4U8RhRaK04UOHddGQFO92nBOYIqfwKAKs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Nr+qSuBwScfnm4XkUnbpi6OWyy/wabzCy0eg7bIOXYZIYABgOjOjarBALv+gn1EDA8ozC7yvR35BhXEWJT2jKIwwpFP8+/kLm012SxwAJMf6sVPIzQ+499xJh3n/Mv5//ZyOGqoqbi3xsXv9s7CZwIthyHbIAmw4Az36DOovp8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4SvTzjPO; arc=none smtp.client-ip=209.85.167.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="FB543eMl"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240202104004euoutp029b03b26412043bc76e5771a6b62537ef~wBZbfVPdF3275832758euoutp024
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Feb 2024 10:40:04 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240202104004euoutp029b03b26412043bc76e5771a6b62537ef~wBZbfVPdF3275832758euoutp024
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1706870404;
-	bh=sUXWTxnCCv8b0lqL/ds0GP5eHjctX1GZTySPpp6YlvY=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=FB543eMlLqDwc8bAOJfbF4FJ9F9Uc1tblX1FhkQQovJkQmGRctbZ4ypYJMC3tVX2o
-	 6iGFeo88Y5sIQEkEaQq5XPy4tnvP13upmPSWO/ABCvWVEg1ro3+XvD/fSPSiehVZHd
-	 dBaEfvEVmRV4KB4o1/Z+lWIUFrmS4Fi8271h6/1A=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20240202104003eucas1p15045a667f1353c79e3b7de3227f3fae2~wBZbF5AWj3253032530eucas1p1D;
-	Fri,  2 Feb 2024 10:40:03 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id 41.1A.09552.386CCB56; Fri,  2
-	Feb 2024 10:40:03 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20240202104003eucas1p1db26d1c5625c745c14a2ee80e57618eb~wBZapZNpk2188721887eucas1p1p;
-	Fri,  2 Feb 2024 10:40:03 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240202104003eusmtrp2d21e0f29fafb8e338d83b33657fdd8f6~wBZamjTFe2000120001eusmtrp2E;
-	Fri,  2 Feb 2024 10:40:03 +0000 (GMT)
-X-AuditID: cbfec7f5-853ff70000002550-a2-65bcc68365c3
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id CF.F1.10702.386CCB56; Fri,  2
-	Feb 2024 10:40:03 +0000 (GMT)
-Received: from CAMSVWEXC01.scsc.local (unknown [106.1.227.71]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240202104003eusmtip1ffce8fce9f33d2c1bfaa1ff638121ec2~wBZaVeuXc1887518875eusmtip1w;
-	Fri,  2 Feb 2024 10:40:03 +0000 (GMT)
-Received: from CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) by
-	CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) with Microsoft SMTP
-	Server (TLS) id 15.0.1497.2; Fri, 2 Feb 2024 10:40:01 +0000
-Received: from CAMSVWEXC02.scsc.local ([::1]) by CAMSVWEXC02.scsc.local
-	([fe80::3c08:6c51:fa0a:6384%13]) with mapi id 15.00.1497.012; Fri, 2 Feb
-	2024 10:40:02 +0000
-From: Andreas Hindborg <a.hindborg@samsung.com>
-To: Danilo Krummrich <dakr@redhat.com>
-CC: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda
-	<ojeda@kernel.org>, Philipp Stanner <pstanner@redhat.com>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Greg KH
-	<greg@kroah.com>
-Subject: Re: RfL branch for PCI bindings
-Thread-Topic: RfL branch for PCI bindings
-Thread-Index: AQHaVR+/yvuZcZ/a3Ees+nNTqWeq3LD11gWAgAECsIA=
-Date: Fri, 2 Feb 2024 10:40:01 +0000
-Message-ID: <87o7cztais.fsf@samsung.com>
-In-Reply-To: <CANiq72=zcLXOzYbLjNz08s_xN=oC1ZaePnsRigMJLzQONUa5xA@mail.gmail.com>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B134F396D6CEC849910327F7973E3802@scsc.local>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4SvTzjPO"
+Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-51014938fb8so1708122e87.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Feb 2024 02:55:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706871346; x=1707476146; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=t1SYVq7IWrVJrOWe+eZ7mALVplGmC5gzqBZJtitkX2o=;
+        b=4SvTzjPOjDDGfytsfa573Xx9cwxtFjxUPiBqoIOMNBglS9ZCncd9GhKzQa4VdpbFX+
+         /XBze1+N+PESq3NzdgEDNtImJvmqLPxC+csVbz+r9NMzyinhJThLhW1MiuQLEQlyAmF3
+         q0AJ5HOgGM8ZuO+unDcvSv393cCySsbj+EugqqvDnFde0bxhCZL3eq6806qmt2UGI1ug
+         EchYz7TPgDghgq5B47hjsDxUiGUAbH9WDdMiBMVl9twXjiBYh3rJfKRnK/P++g5WOg/L
+         zykTYnKLQ6l0t6+CbLEoUL6xcIhMTCu9197swrj95K8s2L6ZTUdvVRcN1lH57/Cf3kSt
+         cImg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706871346; x=1707476146;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t1SYVq7IWrVJrOWe+eZ7mALVplGmC5gzqBZJtitkX2o=;
+        b=p8Sk1dAZMn4qpM486052WwLIe484FdOAk9CAMk2i/3Fs0HRicopbDrgTracisW5tOa
+         WNLqrfgpdW2oEZToUVzyDc6tkCKCO5GnVrU8nVEXQzNXghmDRbMBohtGiXh0oadksYVZ
+         k/J5hVOpoevtpKi+UH6Pkwx0tFKYvA1RPkFHAPVpzZWB8NrEsy2gE6yMwjfzpfEfa8oh
+         qE21inSpTr4VP73Yph4i0VZP3VmOKzlKC24PFvbd5/Du1+ZOExD7UNpFRxxR0nBR0Q6K
+         9+LIUFPeQk0t+4oS879Xgi5OzwAXruAbuHzZdbvcDNr3xcWx+hjpv21ODGBR2J06Qhfp
+         Kxxw==
+X-Gm-Message-State: AOJu0YzUluPJS6LGY6xwjI0Chs6ixYGBKkMZZLWJkaWVT3U/l4LXf6bq
+	Lv52K/DWCkoPEk+hWZYXthMXqDxPuUTTq5d3V/Jh9ogVZy20oILzfvKDpXmTks5yAiMhW8klKtn
+	olmT/MuxyoIM0Og==
+X-Google-Smtp-Source: AGHT+IGGObZWHfU6Slkxo1CoTAdGz+pUJ80DT96dUA/lIpV6yFSwgu8y5rONUnCiVdtJ64Ykr8tAblHpZyNAvQE=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:3904:b0:511:2c22:91d4 with SMTP
+ id a4-20020a056512390400b005112c2291d4mr5781lfu.3.1706871346299; Fri, 02 Feb
+ 2024 02:55:46 -0800 (PST)
+Date: Fri,  2 Feb 2024 10:55:34 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCKsWRmVeSWpSXmKPExsWy7djP87rNx/akGjw8Y2Dx+EScxbkFMxgt
-	bk5/w26xcv5yRovmJwuYLdY/O8zswOaxc9Zddo9NqzrZPN4+DPB4v+8qm8fnTXIBrFFcNimp
-	OZllqUX6dglcGW+/b2Yt+CRRseSdTgPjAokuRk4OCQETiZs3r7F3MXJxCAmsYJRY+uUKI4Tz
-	hVFiXsMdKOczo8ThX9cZYVp6lm6HSixnlLj1o40drmr2sidgVUICp4GGHWOGG7xmynRWkASb
-	gL7EtTXXmEFsEQE1iTufdrOBFDEL3GWU2Pu9jQ0kISygIdHz8Rk7RJGmxKnH56FsK4nvK56C
-	DWIRUJHoXbAWzOYFqm99/BWohoODUyBQ4luzB0iYUUBW4tHKX2CtzALiEreezGeCeEFQYtHs
-	PcwQtpjEv10P2SBsHYmz159AvWkgsXXpPhYIW1HiWs9NRpDxzEDnrN+lDzHSUmLujFVQ4xUl
-	pnQ/ZIe4RlDi5MwnLCBvSQic4pR4eXY91BwXibYJR9khbGGJV8e3sE9g1JmF5LxZCCtmIVkx
-	C8mKWUhWLGBkXcUonlpanJueWmycl1quV5yYW1yal66XnJ+7iRGYkE7/O/51B+OKVx/1DjEy
-	cTAeYpTgYFYS4V0ptzNViDclsbIqtSg/vqg0J7X4EKM0B4uSOK9qinyqkEB6YklqdmpqQWoR
-	TJaJg1Oqgclfb1H9JeNGjwKdEzkFfC5uf1x5F6nz3b7d8dlLM+XHD6+SomU/JWINF+8qvbpo
-	12arqPdFYSd/f/Lh/Mm6LjO2mWtS85Y+nQXbzuUq1/6efmf9FJkw4fmyS06+e3zipMOujweP
-	7L307txlo9YHuWE+Pz8rTptvYxdflW3TGSvQ5qzCdXBRyL/XaYlnQxPnyYtrll+dv+fFxoUF
-	UvYVhbnfDk8vFJmwY9a27auij34yTZebrLktu+Dl1TvVHKINfTGTYpepuZ++wLPuH9dqpqdP
-	lzTtbjT/ZL5t46QbM1MMDPPWTK62Yj4cYTbhK0vKcc2sHU1Pcz46zYy5vo4hznDLvaN81s+O
-	6/4tsFP+amClxFKckWioxVxUnAgAYSeChLcDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLKsWRmVeSWpSXmKPExsVy+t/xu7rNx/akGiz5IWTx+EScxbkFMxgt
-	bk5/w26xcv5yRovmJwuYLdY/O8zswOaxc9Zddo9NqzrZPN4+DPB4v+8qm8fnTXIBrFF6NkX5
-	pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GW+/b2Yt+CRR
-	seSdTgPjAokuRk4OCQETiZ6l2xm7GLk4hASWMkpse/WVESIhI7Hxy1VWCFtY4s+1LjaIoo+M
-	Ejcm/mGFcE4zSjza1cAC4axglLi99ipYO5uAvsS1NdeYQWwRATWJO592g7UzC9xllNj7vY0N
-	JCEsoCHR8/EZO0SRpsSpx+ehbCuJ7yuegu1mEVCR6F2wFszmBapvffyVHWLbDUaJDafXMXUx
-	cnBwCgRKfGv2AKlhFJCVeLTyF9gcZgFxiVtP5jNB/CAgsWTPeWYIW1Ti5eN/UL/pSJy9/gTq
-	ZwOJrUv3sUDYihLXem4ygoxnBrpt/S59iJGWEnNnrIIarygxpfshO8RpghInZz5hmcAoMwvJ
-	5lkI3bOQdM9C0j0LSfcCRtZVjCKppcW56bnFRnrFibnFpXnpesn5uZsYgelm27GfW3Ywrnz1
-	Ue8QIxMH4yFGCQ5mJRHelXI7U4V4UxIrq1KL8uOLSnNSiw8xmgJDbiKzlGhyPjDh5ZXEG5oZ
-	mBqamFkamFqaGSuJ83oWdCQKCaQnlqRmp6YWpBbB9DFxcEo1MM1wFN5prcV97vlj/Tns3r01
-	nCot6Sze/0Q+RSeUK224/Otx4Qzux9ExRYL37u+PDTTjvclcEyG3+FF/1j+lXtniv/+kkqYu
-	lHtj23HLlukY/4cXERrGFbdq2zXFoy5rLJV/u3nt4d6ilqid08xmWIgZ/77y5/CS5Fr92cGt
-	usYnhER+bJ8h2+MSFsYac1rh2jxflZcV/e5lpvxfOZlfiMzU+Rxvzc4ln/ffMbwvzGvF0ttz
-	/z49NM+u6K7Tqdf7on/LzD6rtNpiZeyszVxt7Ml9fdxli3vuHA6NMWNYZSvWIPB2ywX1ZIuG
-	S/YLF5/OKpokzLfMbaIZ+5bJJ2bqnNmUcrzxQ+PdBf9iRLPWK7EUZyQaajEXFScCABXRFsXA
-	AwAA
-X-CMS-MailID: 20240202104003eucas1p1db26d1c5625c745c14a2ee80e57618eb
-X-Msg-Generator: CA
-X-RootMTR: 20240201185509eucas1p253299bc51f92d6be1041765c804246ad
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240201185509eucas1p253299bc51f92d6be1041765c804246ad
-References: <929f47e0-8aca-471d-b54f-26908321999b@redhat.com>
-	<CGME20240201185509eucas1p253299bc51f92d6be1041765c804246ad@eucas1p2.samsung.com>
-	<CANiq72=zcLXOzYbLjNz08s_xN=oC1ZaePnsRigMJLzQONUa5xA@mail.gmail.com>
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5345; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=mGdvPWrbrx4U8RhRaK04UOHddGQFO92nBOYIqfwKAKs=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlvMjE6pCs+rI00fx1280XNJDyXvExjIQNzU+nr
+ 4V0h3LOxsaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZbzIxAAKCRAEWL7uWMY5
+ Rv3FD/9TOTqjOveDki2tSpD80/JyKVOjmRv1jn9DDlUbxoGmotj+mKova98vX82ceo5Y5Cq9ccl
+ QC8FYuSQRinH3IndTurAWmKwbvzGcFUXUXOJeL2H9+4kfKua4aB84OEbWuZIaAWYms7tSS3IFlg
+ yL6Q1rDzIjxnhSAtbgLR+tRp+1kBt9j6+oqD4Vrd44iMUOiiGe8StLOVH6+07pk0W2CVHmd2Gig
+ pUWDSrKRI8Q3ix1BdtJ8iv4/GNdaT9EEwQni9GNQGuoV/bxp0WDZ3keBeHVYVaoxhFh+UpTRnFY
+ TXhq6sLHQLtxzprIU8HziNPOwZaZZwMAHJbMboxr/yDBY0RsW8yc0qW4Vn5dlJPo3CAZnF4kqPy
+ jYQXA58Of3ZgfHKa3fH9SgrZ/RaQiH9AR9z3+xFsqZtKjfOTrdzJwqndoJf19SZBKaak13oXQoB
+ zs2AwoRa/0pS/6taFC9RWys9PC9+K0hgi7Y1PK6TGgUIiKkdJvFxpBUt5tjnfkSIBfWgvL+0vND
+ /gi2c0xpclugDJf81un4VHb3x6T5MTTzLKChyCXAqPXkmod8aXNyfvxhFwrrOUt180qmmCxoNNW
+ 2ROBqYZHrCMGU9OCoRPwWwbTCblkNmnkJ6wS4rkUgGaIfTKvDJ9zviTKBcDpIiJsDO6h1kR0SUh t0SwRm/tA3zcUmw==
+X-Mailer: git-send-email 2.43.0.594.gd9cf4e227d-goog
+Message-ID: <20240202-alice-file-v4-0-fc9c2080663b@google.com>
+Subject: [PATCH v4 0/9] File abstractions needed by Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: Daniel Xu <dxu@dxuuu.xyz>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-DQpNaWd1ZWwgT2plZGEgPG1pZ3VlbC5vamVkYS5zYW5kb25pc0BnbWFpbC5jb20+IHdyaXRlczoN
-Cg0KPiBPbiBUaHUsIEZlYiAxLCAyMDI0IGF0IDQ6MDLigK9QTSBEYW5pbG8gS3J1bW1yaWNoIDxk
-YWtyQHJlZGhhdC5jb20+IHdyb3RlOg0KPj4NCj4+IEknZCBsaWtlIHRvIGNvbWUgYmFjayB0byBv
-dXIgZGlzY3Vzc2lvbiBmcm9tIHRoZSBsYXN0ICJSdXN0IGZvciBEUk0iIG1lZXRpbmcgcmVnYXJk
-aW5nIGENCj4+IGNvbW1vbiAicnVzdC1wY2kiIGJyYW5jaC4NCj4+DQo+PiBBcyBkaXNjdXNzZWQs
-IGluIHRoZSBjb250ZXh0IG9mIHRoZSBOb3ZhIHByb2plY3Qgd2UgYXJlIGludGVyZXN0ZWQgaW4g
-dXNpbmcgdGhvc2UgYmluZGluZ3MsDQo+PiBjb250cmlidXRlIHNvbWUgbW9yZSAoYWxzbyBpbiB0
-aGUgY29udGV4dCBvZiBQaGlsaXBwJ3MgcmVjZW50IFBDSSB3b3JrKSBhbmQgaGVscCBtb3Zpbmcg
-dGhlDQo+PiBjb2RlIHVwc3RyZWFtLg0KPj4NCj4+IFdpdGggTm92YSB3ZSBzaG91bGQgaGF2ZSBh
-IGRyaXZlciBwcm9qZWN0IHdoaWNoIHNob3VsZCBqdXN0aWZ5IGZ1cnRoZXIgZWZmb3J0cyB0byB1
-cHN0cmVhbQ0KPj4gdGhlIGNvZGUuDQo+DQo+IFRoYW5rcyBEYW5pbG8hDQo+DQo+IE15IHVuZGVy
-c3RhbmRpbmcgZnJvbSB0aGUgbWVldGluZyB3YXMgdGhhdCBBbmRyZWFzIGtpbmRseSBhZ3JlZWQg
-dG8NCj4gbWFpbnRhaW4gYSBgcnVzdC1wY2lgIGJyYW5jaCBpbiBhIGNvbXBpbGFibGUgc3RhdGUg
-KGkuZS4gcmViYXNpbmcgaXQNCj4gb24gdG9wIG9mIGUuZy4gYHJ1c3QtbmV4dGApLiBJIGFtIGhh
-cHB5IHRvIGNyZWF0ZSB0aGUgYnJhbmNoIGFscmVhZHkNCj4gaWYgQW5kcmVhcyBpcyByZWFkeSwg
-YWRkIGl0IHRvIHRoZSB3ZWJzaXRlLCBldGMuDQo+DQo+IE9yIGlmIHlvdSAoRGFuaWxvKSBwcmVm
-ZXIgdG8gZHJpdmUgdGhlIGJyYW5jaCBpbnN0ZWFkIChlLmcuIGJlY2F1c2UNCj4geW91IG1heSBo
-YXZlIG1vcmUgYmFuZHdpZHRoKSwgdGhhdCBpcyBhbHNvIGZpbmUuDQoNCkV4YWN0bHkuIEkgYW0g
-Y3VycmVudGx5IGtlZXBpbmcgdGhlIHBhdGNoZXMgYWxpdmUgZm9yIHRoZSBSdXN0IE5WTWUNCmRy
-aXZlciB0aGF0IGxpdmVzIGhlcmUgWzFdLCBsYXRlc3QgcmViYXNlIGhlcmUgWzJdLg0KDQpJIGFt
-IG5vdCB0aGUgb3JpZ2luYWwgYXV0aG9yIG9mIHRoZSBSdXN0IFBDSSBwYXRjaGVzLiBBcyBmYXIg
-YXMgSSBrbm93LA0Kbm8gb25lIGVsc2UgaXMgbWFpbnRhaW5pbmcgYSBjb3B5IG9mIHRoZXNlIHBh
-dGNoZXMgb24gdG9wIG9mIG1haW5saW5lDQooaWYgdGhlcmUgd2FzLCBJIHdvdWxkIGp1c3QgdXNl
-IHRoZWlyIHdvcmspLg0KDQpJIHZvbHVudGVlciB0byBleHRyYWN0IHRoZXNlIHBhdGNoZXMgZnJv
-bSB0aGUgbnZtZSB0cmVlIGludG8gYSBzZXBhcmF0ZQ0KcGNpIHRyZWUgYW5kIGtlZXAgdGhhdCBy
-ZWJhc2VkIG9uIG1haW5saW5lICsgYWNjZXB0IGZpeGVzIGFuZCBmZWF0dXJlcw0KaW50byB0aGF0
-IHRyZWUuDQoNCldlIGNhbiBhbHNvIGRvIGl0IHRoZSBvdGhlciB3YXkgcm91bmQgYW5kIEkgd291
-bGQganVzdCByZWJhc2UgbnZtZSBvbg0KdG9wIG9mIHlvdXIgcGNpIHRyZWUsIHRoYXQgaXMgdXAg
-dG8geW91Lg0KDQpJIGRvbid0IGhhdmUgYW55IHBsYW5zIG9mIHNlbmRpbmcgdGhlc2UgcGF0Y2hl
-cyB1cHN0cmVhbSBmb3Igbm93LCBzaW5jZQ0KdGhlIE5WTWUgZHJpdmVyIGlzIG5vdCB3ZWxjb21l
-IHVwc3RyZWFtLiBJZi93aGVuIE5vdmEgb3IgYW5vdGhlciBSdXN0DQpwcm9qZWN0IGRlcGVuZGlu
-ZyBvbiBwY2kgaXMgcmVhZHkgdG8gbWVyZ2UsIEkgd291bGQgYmUgaGFwcHkgdG8gaGVscA0KdXBz
-dHJlYW0gdGhlIHBjaSBwYXRjaGVzLCBpZiB0aGF0IG1ha2VzIHNlbnNlLiBBZ2FpbiwgeW91IGNv
-dWxkIGFsc28gZG8NCml0IHlvdXJzZWxmLCB0aGF0IGlzIGNvbXBsZXRlbHkgdXAgdG8geW91LiBP
-ciBwZXJoYXBzIHRoZSBvcmlnaW5hbA0KYXV0aG9ycyBhcmUgaW50ZXJlc3RlZCBpbiBoZWxwaW5n
-IHdpdGggdGhpcyAtIEkgZG8gbm90IGtub3cgc2luY2UgaXQNCm5ldmVyIGNhbWUgdXAuDQoNCldl
-IGNvdWxkIHN0YXJ0IG91dCBpbiBvbmUgY29uZmlndXJhdGlvbiBhbmQgdGhlbiBjaGFuZ2UgbGF0
-ZXIgZG93biB0aGUNCnJvYWQgaWYgaXQgYmVjb21lcyBjbGVhciB0aGF0IGFub3RoZXIgY29uZmln
-IHdvdWxkIGJlIG1vcmUgYmVuZWZpY2lhbC4NCg0KQmVzdCByZWdhcmRzLA0KQW5kcmVhcw0KDQoN
-ClsxXSBodHRwczovL3J1c3QtZm9yLWxpbnV4LmNvbS9udm1lLWRyaXZlcg0KWzJdIGh0dHBzOi8v
-Z2l0aHViLmNvbS9tZXRhc3BhY2UvbGludXgvY29tbWl0cy9udm1lLTYuNy8NCg0K
+This patchset contains the file abstractions needed by the Rust
+implementation of the Binder driver.
+
+Please see the Rust Binder RFC for usage examples:
+https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
+
+Users of "rust: types: add `NotThreadSafe`":
+        [PATCH 5/9] rust: file: add `FileDescriptorReservation`
+
+Users of "rust: task: add `Task::current_raw`":
+        [PATCH 7/9] rust: file: add `Kuid` wrapper
+        [PATCH 8/9] rust: file: add `DeferredFdCloser`
+
+Users of "rust: file: add Rust abstraction for `struct file`":
+        [PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+        [PATCH RFC 03/20] rust_binder: add threading support
+
+Users of "rust: cred: add Rust abstraction for `struct cred`":
+        [PATCH RFC 05/20] rust_binder: add nodes and context managers
+        [PATCH RFC 06/20] rust_binder: add oneway transactions
+        [PATCH RFC 11/20] rust_binder: send nodes in transaction
+        [PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+
+Users of "rust: security: add abstraction for secctx":
+        [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add `FileDescriptorReservation`":
+        [PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+        [PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+
+Users of "rust: file: add `Kuid` wrapper":
+        [PATCH RFC 05/20] rust_binder: add nodes and context managers
+        [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add `DeferredFdCloser`":
+        [PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+
+Users of "rust: file: add abstraction for `poll_table`":
+        [PATCH RFC 07/20] rust_binder: add epoll support
+
+This patchset is based on rust-next, which means that it doesn't compile
+without the following patch, which has not yet made it further upstream
+than rust-next.
+https://lore.kernel.org/all/20240105012930.1426214-1-charmitro@posteo.net/
+
+This patchset has some uses of read_volatile in place of READ_ONCE.
+Please see the following rfc for context on this:
+https://lore.kernel.org/all/20231025195339.1431894-1-boqun.feng@gmail.com/
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v4:
+- Moved the two really simple patches to the beginning of the patchset.
+- Update Send safety comments.
+- Use srctree relative links.
+- Mention that `Credential::euid` is immutable.
+- Update some safety comments to mention the invariant on Self.
+- Use new name for close_fd_get_file.
+- Move safety comments on DeferredFdCloser around and be more explicit
+  about how many refcounts we own.
+- Reword safety comments related to _qproc.
+- Add Reviewed-by where appropriate.
+- Link to v3: https://lore.kernel.org/r/20240118-alice-file-v3-0-9694b6f9580c@google.com
+
+Changes in v3:
+- Completely rewrite comments about refcounting in the first patch.
+  - And add a note to the documentation in fs/file.c.
+- Discuss speculation gadgets in commit message for the Kuid wrapper.
+- Introduce NotThreadSafe and Task::current_raw patches and use them in
+  later patches.
+- Improve safety comments in DeferredFdCloser.
+- Some other minor changes.
+- Link to v2: https://lore.kernel.org/r/20231206-alice-file-v2-0-af617c0d9d94@google.com
+
+Changes in v2:
+- Update various docs and safety comments.
+- Rename method names to match the C name.
+- Use ordinary read instead of READ_ONCE in File::cred.
+- Changed null check in secctx.
+- Add type alias for PhantomData in FileDescriptorReservation.
+- Use Kuid::from_raw in Kuid::current_euid.
+- Make DeferredFdCloser fallible if it is unable to schedule a task
+  work. And also schedule the task work *before* closing the file.
+- Moved PollCondVar to rust/kernel/sync.
+- Updated PollCondVar to use wake_up_pollfree.
+- Link to v1: https://lore.kernel.org/all/20231129-alice-file-v1-0-f81afe8c7261@google.com/
+
+Link to RFC:
+https://lore.kernel.org/all/20230720152820.3566078-1-aliceryhl@google.com/
+
+---
+Alice Ryhl (6):
+      rust: types: add `NotThreadSafe`
+      rust: task: add `Task::current_raw`
+      rust: security: add abstraction for secctx
+      rust: file: add `Kuid` wrapper
+      rust: file: add `DeferredFdCloser`
+      rust: file: add abstraction for `poll_table`
+
+Wedson Almeida Filho (3):
+      rust: file: add Rust abstraction for `struct file`
+      rust: cred: add Rust abstraction for `struct cred`
+      rust: file: add `FileDescriptorReservation`
+
+ fs/file.c                       |   7 +
+ rust/bindings/bindings_helper.h |   8 +
+ rust/helpers.c                  |  94 ++++++++
+ rust/kernel/cred.rs             |  81 +++++++
+ rust/kernel/file.rs             | 514 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/security.rs         |  72 ++++++
+ rust/kernel/sync.rs             |   1 +
+ rust/kernel/sync/lock.rs        |  15 +-
+ rust/kernel/sync/poll.rs        | 117 +++++++++
+ rust/kernel/task.rs             | 108 ++++++++-
+ rust/kernel/types.rs            |  17 ++
+ 12 files changed, 1025 insertions(+), 12 deletions(-)
+---
+base-commit: f090f0d0eea9666a96702b29bc9a64cbabee85c5
+change-id: 20231123-alice-file-525b98e8a724
+
+Best regards,
+--
+Alice Ryhl <aliceryhl@google.com>
