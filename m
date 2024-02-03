@@ -1,89 +1,114 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3DE433D5;
-	Sat,  3 Feb 2024 13:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFC35FB99
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Feb 2024 18:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706967324; cv=none; b=VolwkFFA/w8w5UuEWBLCX2rG4PjgIHxq7Em8/E7RrMp4KrgZ05q/jQpa8o7EEbZUD+FaClEr1kMJL3gIveUsWMxq4rdeS+e2Oo7rjlccylqHGOsKTETGm/HzG/7x5UIoov/Y+Yb4rwA3JkqoUnFwq/APrH3QC2+yHXdRDlDT4uU=
+	t=1706984875; cv=none; b=lVdiuMxIUx7JVvlpKVIBq+WCq9ROM6v+8R8PTfYyIyPYcFbDC7WiRRD/mAQ9VxVrXeZiiXkuawsPrL2PdPjttlWrr/kpQlTsdteOI3a2rlblWKSajim1KtNsMeoOQgQuPwUOmeA/6IsqWHCK6jWAeiL6HsxLla468SUTDqQmMfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706967324; c=relaxed/simple;
-	bh=A+hGYOL0gt/GgmcQa7WP6qCGq9VmybxKV6Sy9oD3vaY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YTSrxKPJHwXSZpq9pKmXqC7cnBEXMFq8U2IqELElxUgwBI8ka6lwWq4cdQpvoip9MeNzUCvEn3zOdUHsGUoK7Jym2rGMrDaFaxUZZ0UicWD9OyVlvn7TG5IysZv7DMOcn/YseUTthKFm9Wyp6aLIxncdfkWwU3HR5JRj97eVZGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKXDPmCY; arc=none smtp.client-ip=209.85.128.173
+	s=arc-20240116; t=1706984875; c=relaxed/simple;
+	bh=GzicIahv4Tt2lzuqFuZnvS56kx5LJ9XD6ksc+iGyqug=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D730VDxXV84OmGrXs1um78/XodVf4tcaMIcXbl4EaOhOVbBUtX4XPdz1MijeSgMHBhlXEfVSgFvgQps2x8OLkO1N1W0RMS/SbRzordLcv4pd7y6cNHek3eeYzytkOPWbTy+aDnH1MfsQCDaeavin5htestsq/Zlf0YQd8cXJjaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ESUUvFHV; arc=none smtp.client-ip=209.85.166.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKXDPmCY"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6040a879e1eso31389347b3.3;
-        Sat, 03 Feb 2024 05:35:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ESUUvFHV"
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7beda2e6794so64771539f.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Feb 2024 10:27:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706967322; x=1707572122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J3yWyYi4bDAa4Pmz/SsjyeLYBc9Qo5resphR6lTSFh8=;
-        b=WKXDPmCYgcxbgsdVy590ZgAX/7bsyUb+Y5e/ZBZpqFOXJkzr0ky+77glaCcVHcOZkW
-         0+jCgJ0jsOGx3aNdu6v6+IIWneHZuoWbJkAD31eG7Mv/ypPdTv/AURwTInwFJ/RWclxz
-         iB8TB7tvi0u31lUL/puxV6313lLYKmJ58QFBkkbzbi/ZbMJfp4h7kWJYj1lFyOB+/7D9
-         8IPYOjMCTeLRi128aEy+978Bz/YHL+W7pNin64N8kZCfttLA1qhqkxL1FV87rzg7iCK8
-         KOSBi5+L0k8t8hBtGOaDlbP5AGdvid7Cat5OGbXEHs8506oyJOcJnyJjDyu3GvHZ/ohj
-         ofPw==
+        d=gmail.com; s=20230601; t=1706984873; x=1707589673; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vZrax1m5MfrMJHavxk7ro3yh3LU3ZNUmoF3AGBKcm54=;
+        b=ESUUvFHVPQ6xZRPtRSZTbBSPqjd5drMeDpiIQCVLIEpSX/p9el+dA6kCdN7xRooNRD
+         IJ88IdItZDK+iEIjSEfWrz9p+vF45JYlTh0zTclAv41CZHNU9s5B035M3M/dN6YBSJ5r
+         4cgLG7yKXXY6mu7nSR4XSX9v0GQmcYjjouMghSUCoTYhku9r+kbn0SZTErQQHHjlDHab
+         LpKu8uydPP2FEyvtvClYVdRJR8WYROJjgOoHOoc8wIt8qgSVZzMqdxq/2TQr8oau3QX+
+         dGSEV72dFADEtGcbRdIVpPknCN2udGXwat4ipc0xBOKnYCI9bUdVI4WZ1I6ijNTvftwp
+         HmmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706967322; x=1707572122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J3yWyYi4bDAa4Pmz/SsjyeLYBc9Qo5resphR6lTSFh8=;
-        b=jJ/M7E37iPPCsKXKcAbpl/fjW9+YKvsL1M4tnV5QJ0Y3XAmFNtwkY0IAy5tL88Zr2I
-         Mbj09OsRXdNOfYolia6Im9xR2Kk18LMftKWcPh4XnYJwT75CW8B0dBaT3VfdQXUSBgtF
-         HzB48UurRsaBI+8wl+apfV1f/DPGBBg57ZVq4lM3Ks1Gdec9nEzSjrCZZ4REc9pHtNne
-         zefX8bSLEeA181YmrO9Jx/Oi3UnHGoMXRP8b0CqE0E08rI3rmmP4CBMBgBrnYMQQHgtb
-         nWl7NA3jMfDPt2O5P4jKvkMb4iMZ70TZftVZ5nsRdhDbt/0fnVG9tTARqaHCa1RpR949
-         vV7Q==
-X-Gm-Message-State: AOJu0YwIJhDKJQua2HxWwkT76OSIUVWICXrHGnNmCppMWihYUTN/Fun8
-	wmUBqDxBXhKdNw5Wut/vTCq/tS+lqDCitqGyqUd4yy1rXFyC7VHoxvDfZMoFcwHTBiP1vkXPZxl
-	w7uNw3zxY4HZ2UksoziEaipyXIPY=
-X-Google-Smtp-Source: AGHT+IGy+mF9kwovaYnQ1qob9QLWfl7MTKcTdjCQ20jgFHHNz2gCRW/kwOpFSoixlIPD75u4OmDB5ajbR1avB8Wddts=
-X-Received: by 2002:a81:a0d0:0:b0:602:d12f:1b7a with SMTP id
- x199-20020a81a0d0000000b00602d12f1b7amr9960316ywg.7.1706967322547; Sat, 03
- Feb 2024 05:35:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706984873; x=1707589673;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vZrax1m5MfrMJHavxk7ro3yh3LU3ZNUmoF3AGBKcm54=;
+        b=fe5VKahpt5kkOiwdc++tepVvhXBeD141eu84EgBtDgv7CQ+FA1th6zXc8F1ORmz27m
+         KaAConxBEo1E17Pll04pXcEl8fxF2RCbrKzU9EdRAnba6+eEN0y62SaClMireCGR4nEs
+         QDK2MyLTxMAjCiOjiIQGmOmnRX2trx7BJxxVmDj2Ii9WKnpT5wkvXzdt6MqaZPJE1xkP
+         IvDzgKs892Qy90arNqPRgMClzctk7M8q8FzTeV/g17u1LoLQ4pXIp5gepX/oBk5HrBPv
+         gWGuBifYaILXxlwPS62tXrGd3pRXntTx8D5zg77DhxjhC9zR561aqYLDLpWmP5Xk9RrX
+         YTzg==
+X-Gm-Message-State: AOJu0YwQtN2jH+QVgRXZDnyZ4E9+lsl9nsOCVIx4tYoqG+HELo4EnA22
+	KFgEj7/4pjCkjh5uD1ck2aioyZmScwDA3SVIvqD+Qtp1m1eM2fvWZpsOF8av804=
+X-Google-Smtp-Source: AGHT+IEwnlbU4AEkjYQHevCEtfQpihiEU9BrMsjKOptW2xAZk4ACrqtPNDc4wDyUBPhk8t8OudqQqA==
+X-Received: by 2002:a05:6602:2d84:b0:7bf:e164:e4f1 with SMTP id k4-20020a0566022d8400b007bfe164e4f1mr1524367iow.2.1706984872780;
+        Sat, 03 Feb 2024 10:27:52 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVUHcZU7FGGOY+8KctRNUZksj8fUtbrUdSlw5G8HXXFmqAM7pRFZ4JujELqH7mLMwc96EITlS+lja4ai3mROPW8trCRlZpE2pMd4/1hcIJEWgO7xZIT5YU/JzNI/VI9HcGPOjR8HYqjIUU8VA==
+Received: from fedora-laptop.hsd1.nm.comcast.net (c-73-127-246-43.hsd1.nm.comcast.net. [73.127.246.43])
+        by smtp.gmail.com with ESMTPSA id t23-20020a6b0917000000b007bfea3c536esm1185773ioi.28.2024.02.03.10.27.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Feb 2024 10:27:52 -0800 (PST)
+From: Thomas Bertschinger <tahbertschinger@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com
+Cc: Thomas Bertschinger <tahbertschinger@gmail.com>
+Subject: [PATCH] rust: place generated init_module() function in .init.text
+Date: Sat,  3 Feb 2024 11:27:35 -0700
+Message-ID: <20240203182735.295946-1-tahbertschinger@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215194828.2611213-1-mmaurer@google.com> <ca0f2db8-e353-4f52-aaa1-35042e52ad91@intel.com>
-In-Reply-To: <ca0f2db8-e353-4f52-aaa1-35042e52ad91@intel.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 3 Feb 2024 14:35:11 +0100
-Message-ID: <CANiq72m3-j_ZmwfSCZG+-uMr9fzocMmUJhDkjgspzCKbYbbO_w@mail.gmail.com>
-Subject: Re: [PATCH] x86: rust: Disable entry padding with Rust
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Matthew Maurer <mmaurer@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 31, 2024 at 9:32=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> That way, someone who is using CALL_DEPTH_TRACKING doesn't accidentally
-> lose it by turning on RUST.  To turn on RUST, they'd first need to go
-> turn off the things that are selecting CALL_THUNKS.
+Currently Rust kernel modules have their init code placed in the `.text`
+section of the .ko file. I don't think this causes any real problems
+for Rust modules but it does present a challenge with implementing Rust
+functionality for existing C modules.
 
-+1, we should prefer to avoid disabling other things, especially since
-Rust is still a bit of an "expert" option, so please feel free to add
-it to the `RUST` list.
+If a Rust `init_module()` function (that lives in `.text`) calls a C
+function annotated with `__init`, then a warning is generated because
+the C function lives in `.init.text`.
 
-Cheers,
-Miguel
+I ran into this while experimenting with converting the bcachefs kernel
+module from C to Rust. The module's `init()`, written in Rust, calls C
+functions like `bch2_vfs_init()` which are placed in the `.init.text`
+section.
+
+This patch places the macro-generated `init_module()` Rust function in
+the `.init.text` section.
+
+Note that this is not enough on its own to actually get all the module
+initialization code in that section. The module author must still add
+the `#[link_section = ".init.text"]` attribute to the Rust `init()` in
+the `impl kernel::Module` block in order to then call C `__init`
+functions. However, this patch enables module authors do so, when
+previously it would not be possible (without warnings).
+
+Signed-off-by: Thomas Bertschinger <tahbertschinger@gmail.com>
+---
+ rust/macros/module.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index d62d8710d77a..d09be1bee397 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -225,6 +225,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+             #[cfg(MODULE)]
+             #[doc(hidden)]
+             #[no_mangle]
++            #[link_section = \".init.text\"]
+             pub extern \"C\" fn init_module() -> core::ffi::c_int {{
+                 __init()
+             }}
+-- 
+2.43.0
+
