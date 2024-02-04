@@ -1,73 +1,101 @@
-Received: from a11-77.smtp-out.amazonses.com (a11-77.smtp-out.amazonses.com [54.240.11.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C971B582
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Feb 2024 10:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.11.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B250422F02
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Feb 2024 16:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707041461; cv=none; b=Qv6Fv2hpvyj1suvnnKbQt65qQmbpP47xYE6RnK16ysG8mWyu6c+gxvUUWwdZ4LMNlT5ydSOueNwW/oGqySFEL6xBRBPrH2tiguH41ftOvPDzLn3M3arasMn9ldVwDxfs6LX0hddAAoS8RXTuC4dzmI+YB05FF2zlPOZh/aMPwqc=
+	t=1707064468; cv=none; b=kRWIivSaw8FTsnZFhaVoYqsyaiE6a41N2PuICGiC9ujHoSxPnGvIIATc2Tj7yhXHBmZZZ+7f6KiWxzeKhi6j/Nfl9q0j3xq9Z3sCAI12DZRufxAyha1OAUhqFjUpr/ptLgdvRkespv3JK6BKVehhv//uyqWnYOmlMU3WZJHyveM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707041461; c=relaxed/simple;
-	bh=MhfgsyGnvcRFTUdioh+eyYpDf7NZ+xxkVL20XX0Afq4=;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:In-Reply-To:
-	 References:Message-ID; b=NGCzblZB+hSYsXCXRVkKEgixw7feIvBjAMFX2yCz9CBVCpYopb3aIoSndBTDYdxFaWf62ABBTs5aCyz19Us7A7ifkhJmmGAta5AAH/Wzg/h19N/J60CP0VLtlExB805IHAjq9Dx2Am5DMgLLvu7PuNmN/A1NAvggp3fKBsf92NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b=bkHnnMdV; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=T5oGhOG8; arc=none smtp.client-ip=54.240.11.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=obei.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
+	s=arc-20240116; t=1707064468; c=relaxed/simple;
+	bh=dEyJpjvR5RKHrQH9CQ3IKeg+m4JOaprD5HtDRfIUhwA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TGtDIe/I+BRcqQjepguBxEClEE76ZiHhz6gJ0jOdgF3BgiMZ2myK+dX349OAgdyrsvQpRylyXvD6b0OkXWk79fitYipatH+GtjXOF2YpBedDdm14Jg3gNx6l9NyxEmhO5l+8fFZSRrXpmx8q5pgaWCMc8/vFq8ZG7ebrYOcFtS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7M30wwG; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=obei.io header.i=@obei.io header.b="bkHnnMdV";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="T5oGhOG8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=ph73stw23v46e7miqo4f44bv344ybkbc; d=obei.io; t=1707041458;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id;
-	bh=MhfgsyGnvcRFTUdioh+eyYpDf7NZ+xxkVL20XX0Afq4=;
-	b=bkHnnMdVl7j6r5RiOWlsqGdRyp/tCYRPp/k4eNlL8Q8cS3scuhK3MWmA4WKrlFNi
-	37nJ+4HP7cpO6N0BRedGp+dwAORpqLskP1zq7awCS74FBA9IuMJOgLkV9mjBWWPrnYm
-	LV6TNEzcf2q67Y1RH9rM4Jw2/8TGrPVvkmZ4obK3S7XWB6NK2S4vfswjer4htmomIAS
-	2uqNbMxVm1BI6yo9F3LjwVCJ5WvepOcNjRvWuPyRVPWHvfrprKJDDthqq8jUdBpzEM5
-	eYEXjbTTTsurVcejj4s3otViDlHhHmvT5GpuYxkPbJ52Bb7SGC0aXdKpggWQJMkX0QK
-	stH3mQFm6w==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1707041458;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id:Feedback-ID;
-	bh=MhfgsyGnvcRFTUdioh+eyYpDf7NZ+xxkVL20XX0Afq4=;
-	b=T5oGhOG87Jgp0WXMKm8aI03cTYdiQFFioRnv98wu8PRPUTIl7RY4Yu/Bj1/z4ePQ
-	KyLpKHzSxPl5I3zqtV7njsj3o5oeKq8waq5lfQdBYY1r4ljpsUK2t2uQ3+pgBuJ3YMP
-	IyBQ4BFFMCI6pQpLCLEKRz5stU5cjrgEiPZthyhM=
-Subject: Re: [PATCH v6] rust: types: Add `try_from_foreign()` method
-From: =?UTF-8?Q?Obei_Sideg?= <linux@obei.io>
-To: =?UTF-8?Q?Obei_Sideg?= <linux@obei.io>
-Cc: =?UTF-8?Q?a=2Ehindborg=40samsung=2Ecom?= <a.hindborg@samsung.com>, 
-	=?UTF-8?Q?alex=2Egaynor=40gmail=2Ecom?= <alex.gaynor@gmail.com>, 
-	=?UTF-8?Q?aliceryhl=40google=2Ecom?= <aliceryhl@google.com>, 
-	=?UTF-8?Q?benno=2Elossin=40proton=2Eme?= <benno.lossin@proton.me>, 
-	=?UTF-8?Q?bjorn3=5Fgh=40protonmail=2Ecom?= <bjorn3_gh@protonmail.com>, 
-	=?UTF-8?Q?boqun=2Efeng=40gmail=2Ecom?= <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?gary=40garyguo=2Enet?= <gary@garyguo.net>, 
-	=?UTF-8?Q?ojeda=40kernel=2Eorg?= <ojeda@kernel.org>, 
-	=?UTF-8?Q?rust-for-linux=40vger=2Ekernel=2Eorg?= <rust-for-linux@vger.kernel.org>, 
-	=?UTF-8?Q?wedsonaf=40gmail=2Ecom?= <wedsonaf@gmail.com>
-Date: Sun, 4 Feb 2024 10:10:58 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7M30wwG"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6040d0c9cf1so35251347b3.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Feb 2024 08:34:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707064465; x=1707669265; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i8XLxPsKBUVIBBZRXVx/XaQOvFb13ZjSRH6rSHORdbE=;
+        b=T7M30wwGH3p/JbMh5sdtlozunSVEF6uhTETcjfOY/2P7J8DZ8kXlgTfkHSBzqDokN6
+         AUn+Gt/2qH4X6LUi9RJ20n+LUrlhbNzWs3KUGxSpEnN/vL1zChGiMvxm/DoBDTjDuJEh
+         IHi7XponXrqT4POWsReZhbD+LjK/pgumtUxgwLmO1XWg2MWB2mmWt+OhmKK8EHZPirpO
+         q7i/TtyoEZIN4s40TVShxzav0FYF/wSrNuVv9szlpDrvUzs9XOU5sz5zCgP8uVZxNi5G
+         eWmbmJHzxOaR2TP/iFTYqKyd7z15E00B7Rzh8OhEul2xGDDypLRJSVtoLIiuGNXssA+h
+         Reuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707064465; x=1707669265;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i8XLxPsKBUVIBBZRXVx/XaQOvFb13ZjSRH6rSHORdbE=;
+        b=YZSLO06HCTUc7HmnxLU1nKNanplP95VSZrKVEXgKnNXYJDJ+GCeJKVfCE6Lg3eqDRK
+         zWs/TPFlWL1E+ksOkYIU8dRrU6IJgqBAQ4uRvugqdjoNSA+b4cxKVW5+teMfBYggf7p9
+         pUBEe0pCaVfZL+M01JnJlO22ot+hkVn0naNYm+sOlfF0t8dAQ3Md9E4fyHvMBTxisZc1
+         kkL/bfNgwO+PEBF5XGbyeOiJlN9PgDt/PH1KpkK7+foKB5UUJMMcD2HBgn7x/kYW/BrN
+         uYtUuA9FhO3Na9i5Y7PTLCPk2BDqv4Q1lUfF7HKRqSiJX0Zz8hEsJD0rwez9nj9XpOsz
+         oPzA==
+X-Gm-Message-State: AOJu0Yx0IweVRG7RIAchVsRfqx3+Z0fQdH8tp29svRATxYZ2OFvYyNZ1
+	IEeF130lfq5NV5vmknP3i2/lwWmURCv4bWP7a87B73WtqMZOzDxRwyByaSyUcUli1wGCkKb2ZmF
+	nMfZZ+TV68t85ahVTxfZaOU9Ae24=
+X-Google-Smtp-Source: AGHT+IHRgEBWHV9JSqj+CMDIMFQNiGDpQu+hS2gVRH8RDAFjpZkF5zNSvcROJmu9wm0aHSFBlopS9o+uO5+qrezwmJ4=
+X-Received: by 2002:a81:9c52:0:b0:5ff:4bf7:c481 with SMTP id
+ n18-20020a819c52000000b005ff4bf7c481mr14120931ywa.16.1707064465523; Sun, 04
+ Feb 2024 08:34:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-In-Reply-To: 
- <0100018d53f737f8-80c1fe97-0019-40d7-ab69-b1b192785cd7-000000@email.amazonses.com>
-References: 
- <0100018d53f737f8-80c1fe97-0019-40d7-ab69-b1b192785cd7-000000@email.amazonses.com> 
- <20240204101049.41101-1-linux@obei.io>
-X-Mailer: Amazon WorkMail
-Thread-Index: AQHaUn69oxRsr4DETbySDB5t5Fc8cgE07Sym
-Thread-Topic: [PATCH v6] rust: types: Add `try_from_foreign()` method
-X-Original-Mailer: git-send-email 2.39.2
-X-Wm-Sent-Timestamp: 1707041457
-Message-ID: <0100018d7399881d-9945af06-7e0c-4f80-be5d-e4e7a614de28-000000@email.amazonses.com>
-Feedback-ID: 1.us-east-1.LF00NED762KFuBsfzrtoqw+Brn/qlF9OYdxWukAhsl8=:AmazonSES
-X-SES-Outgoing: 2024.02.04-54.240.11.77
+MIME-Version: 1.0
+References: <20240204101049.41101-1-linux@obei.io> <0100018d53f737f8-80c1fe97-0019-40d7-ab69-b1b192785cd7-000000@email.amazonses.com>
+ <0100018d7399881d-9945af06-7e0c-4f80-be5d-e4e7a614de28-000000@email.amazonses.com>
+In-Reply-To: <0100018d7399881d-9945af06-7e0c-4f80-be5d-e4e7a614de28-000000@email.amazonses.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 4 Feb 2024 17:34:14 +0100
+Message-ID: <CANiq72nDnWDS16dxAUaqYc0LRGN5R5Pk2ZWefsoJ90j9p-CLag@mail.gmail.com>
+Subject: Re: [PATCH v6] rust: types: Add `try_from_foreign()` method
+To: Obei Sideg <linux@obei.io>
+Cc: "a.hindborg@samsung.com" <a.hindborg@samsung.com>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
+	"aliceryhl@google.com" <aliceryhl@google.com>, "benno.lossin@proton.me" <benno.lossin@proton.me>, 
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
+	"gary@garyguo.net" <gary@garyguo.net>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "wedsonaf@gmail.com" <wedsonaf@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-It's version 6.
+On Sun, Feb 4, 2024 at 11:11=E2=80=AFAM Obei Sideg <linux@obei.io> wrote:
+>
+> It's version 6.
+
+It cannot be, since you sent v6 already:
+
+    https://lore.kernel.org/rust-for-linux/0100018d53f737f8-80c1fe97-0019-4=
+0d7-ab69-b1b192785cd7-000000@email.amazonses.com/
+
+I guess you mean that the diff (i.e. the code changes) did not change,
+but please note that even if you only change the commit message/title,
+you should increase the version number, because it is still a change
+that will end up in the repository.
+
+Having said that, if the changes are trivial (e.g. a typo fix), it is
+probably not worth it to send another version -- it is all about a
+balance. You can also simply point the issue as a reply and the
+maintainer can fix them for you if it happens to be the version that
+gets picked up.
+
+In addition, some mistakes can be prevented before submitting the
+patch -- please use `scripts/checkpatch.pl --codespell` on your
+patches to e.g. prevent typos.
+
+Thanks!
+
+Cheers,
+Miguel
