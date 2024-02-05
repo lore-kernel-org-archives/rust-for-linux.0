@@ -1,41 +1,41 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902EC1BDDF;
-	Mon,  5 Feb 2024 12:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31861BC3D;
+	Mon,  5 Feb 2024 12:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707136094; cv=none; b=Y3oCV62PkMy9vEx2ixeNLs9vg97f6g6aZKuazXlN5WWVYg59nd/FmE4IaEgDNfw4MRMGY+TsOBgJnNATj4wCaYlQwtkejVUIOLegvQgmLY/orKBYiz1plMifBhL47iSV7BmZq382wPv3qkIPloA0sJSJTgrpE0D0i0kJU8AucoQ=
+	t=1707136430; cv=none; b=VnktjnX13JwxB98ZS73hZwhAEo4QfPrZ02pXjEyq1iZL5lTXwDvXM1WTC+Z4eubYvvD1BXkpBM1fHshSxs88pgKmf+9N4W2rP6cfENuQbKPBz1wfFLBB3bfs4U36IXGjn6RQPCQkzQcG0viHlA4mhd4fZWlSiCwpMJfohPYILWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707136094; c=relaxed/simple;
-	bh=/FmTOpD7EsdsRiWnp+n9V95+jzTNKJcM3d3V70ANPwo=;
+	s=arc-20240116; t=1707136430; c=relaxed/simple;
+	bh=ZCWpwwDP32QW23OHxqcS6dyIhG+EZnGUM+vdeUCbChQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tLQGwUdL4wM5t5wqBg3gWbw2b+N++8qXSyV1A5cKwPz5BKv18s50Y4CUkwwHMMnFmaKINlXoI/+hygaszCoEjQH7pn6cfg51WxRZ1bVdh0DpR46P+BjssFx7/5t1/VkM2eRwS3MsPsLjRvkW+SfvJdkJPZLR8V+Nph0WcYbTaZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MXwZl4Xc; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=V7SmIVp0gP4d+fbwFrY+mJJD1d/QwBXH8/IRc+9re6gOfTEB4KkAAcNJ82qysgJNpHwNP6Cj+WTpKRNXH2LPRihIjPzq6JYoCMZvX0NbAj6rA4MByQOzOvKhNOUVqDzC/EnXv79oUE6LikYkraWuE0GvIeTuzEvWFf9FUKOgWNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iBUOeyK3; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MXwZl4Xc"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iBUOeyK3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=nwtgodaxtrgdtpoqw2aktnr3gy.protonmail; t=1707136084; x=1707395284;
-	bh=daleUQrt9HsLvgJZG6U/EET+1E8JHEi5VCW3vb8WDEM=;
+	s=protonmail; t=1707136426; x=1707395626;
+	bh=Koptk02WV6BeYNID6QKo1BWynpaJzVcgM9vAm9rLNbY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=MXwZl4Xcq0NAM/InqXeNXPf9wRgAGPfjoSJbQTWGPg+AW9+mu6jo7lHfwz2uwHm6y
-	 SW/keWP+h1kYMGk24bKAqlJYG84jVzG89V2jpOysGWNhvVmRN8G25TIhJgP3HeYa+x
-	 ba8QeUFKlIDnEG26vJOylLSvn+CmS5kN+4RKFH74DQauATw2BuH/oQh+wiRqdL5krb
-	 fddRCExmt3IBc9CQU0nI5FRshVR5VpRWw48nMvCd/d1U9UmidRYA0g0+S1YnucCdn1
-	 AtW8fD5a+iW4VqXeo2xzbYlF2fplS2JrI+c1JJtW5tp+oS6c/5ThaXe4AmabVdTqRA
-	 3bxadL17F0S8w==
-Date: Mon, 05 Feb 2024 12:27:46 +0000
+	b=iBUOeyK3HhTdc8lgsE31Vu767CZcsaMMDP2tX5btt8UO6ecAU3r5SIFXNFT8CxKmW
+	 UDvqP7UFoBd5+PLkiet7e8Srvgz9iCnpUha32FSvKqm6wqIpetUlXLeHnVOK0cVti3
+	 Z8Kp9lbiwZ3rD/YKzyroZkhAgyclBEOIrzk7SmLjN/Q+B7GwocbhuiOR7ZgIQGViu6
+	 2vcp2bI1QtvMuR5R5O8Pp/9ZvyL2OiA18NuOn/739FzH8ZLBpdiQTCEIc67EBprkI9
+	 pFP8AsdiGUxdpNRtsxxBUP3m5aAAjYur3XL0aAcuukoNAN1PULQUfNwsOoUxxu2Xwp
+	 YLTQ3nFKlq+ng==
+Date: Mon, 05 Feb 2024 12:33:27 +0000
 To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v4 9/9] rust: file: add abstraction for `poll_table`
-Message-ID: <9a35d753-793e-4953-9095-742953c06154@proton.me>
-In-Reply-To: <20240202-alice-file-v4-9-fc9c2080663b@google.com>
-References: <20240202-alice-file-v4-0-fc9c2080663b@google.com> <20240202-alice-file-v4-9-fc9c2080663b@google.com>
+Subject: Re: [PATCH v4 3/9] rust: file: add Rust abstraction for `struct file`
+Message-ID: <5f261c6a-785b-4bc5-974f-ad43c3a312b9@proton.me>
+In-Reply-To: <20240202-alice-file-v4-3-fc9c2080663b@google.com>
+References: <20240202-alice-file-v4-0-fc9c2080663b@google.com> <20240202-alice-file-v4-3-fc9c2080663b@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -47,39 +47,56 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 2/2/24 11:55, Alice Ryhl wrote:
-> The existing `CondVar` abstraction is a wrapper around
-> `wait_queue_head`, but it does not support all use-cases of the C
-> `wait_queue_head` type. To be specific, a `CondVar` cannot be registered
-> with a `struct poll_table`. This limitation has the advantage that you
-> do not need to call `synchronize_rcu` when destroying a `CondVar`.
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 >=20
-> However, we need the ability to register a `poll_table` with a
-> `wait_queue_head` in Rust Binder. To enable this, introduce a type
-> called `PollCondVar`, which is like `CondVar` except that you can
-> register a `poll_table`. We also introduce `PollTable`, which is a safe
-> wrapper around `poll_table` that is intended to be used with
-> `PollCondVar`.
+> This abstraction makes it possible to manipulate the open files for a
+> process. The new `File` struct wraps the C `struct file`. When accessing
+> it using the smart pointer `ARef<File>`, the pointer will own a
+> reference count to the file. When accessing it as `&File`, then the
+> reference does not own a refcount, but the borrow checker will ensure
+> that the reference count does not hit zero while the `&File` is live.
 >=20
-> The destructor of `PollCondVar` unconditionally calls `synchronize_rcu`
-> to ensure that the removal of epoll waiters has fully completed before
-> the `wait_queue_head` is destroyed.
+> Since this is intended to manipulate the open files of a process, we
+> introduce an `fget` constructor that corresponds to the C `fget`
+> method. In future patches, it will become possible to create a new fd in
+> a process and bind it to a `File`. Rust Binder will use these to send
+> fds from one process to another.
 >=20
-> That said, `synchronize_rcu` is rather expensive and is not needed in
-> all cases: If we have never registered a `poll_table` with the
-> `wait_queue_head`, then we don't need to call `synchronize_rcu`. (And
-> this is a common case in Binder - not all processes use Binder with
-> epoll.) The current implementation does not account for this, but if we
-> find that it is necessary to improve this, a future patch could store a
-> boolean next to the `wait_queue_head` to keep track of whether a
-> `poll_table` has ever been registered.
+> We also provide a method for accessing the file's flags. Rust Binder
+> will use this to access the flags of the Binder fd to check whether the
+> non-blocking flag is set, which affects what the Binder ioctl does.
 >=20
+> This introduces a struct for the EBADF error type, rather than just
+> using the Error type directly. This has two advantages:
+> * `File::from_fd` returns a `Result<ARef<File>, BadFdError>`, which the
+>   compiler will represent as a single pointer, with null being an error.
+>   This is possible because the compiler understands that `BadFdError`
+>   has only one possible value, and it also understands that the
+>   `ARef<File>` smart pointer is guaranteed non-null.
+> * Additionally, we promise to users of the method that the method can
+>   only fail with EBADF, which means that they can rely on this promise
+>   without having to inspect its implementation.
+> That said, there are also two disadvantages:
+> * Defining additional error types involves boilerplate.
+> * The question mark operator will only utilize the `From` trait once,
+>   which prevents you from using the question mark operator on
+>   `BadFdError` in methods that return some third error type that the
+>   kernel `Error` is convertible into. (However, it works fine in methods
+>   that return `Error`.)
+>=20
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
+> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/sync.rs             |   1 +
->  rust/kernel/sync/poll.rs        | 117 ++++++++++++++++++++++++++++++++
->  3 files changed, 119 insertions(+)
->  create mode 100644 rust/kernel/sync/poll.rs
+>  fs/file.c                       |   7 +
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/helpers.c                  |   7 +
+>  rust/kernel/file.rs             | 249 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  5 files changed, 266 insertions(+)
+>  create mode 100644 rust/kernel/file.rs
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
