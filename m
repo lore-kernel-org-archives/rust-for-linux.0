@@ -1,106 +1,90 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31861BC3D;
-	Mon,  5 Feb 2024 12:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDDE20DF7;
+	Mon,  5 Feb 2024 13:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707136430; cv=none; b=VnktjnX13JwxB98ZS73hZwhAEo4QfPrZ02pXjEyq1iZL5lTXwDvXM1WTC+Z4eubYvvD1BXkpBM1fHshSxs88pgKmf+9N4W2rP6cfENuQbKPBz1wfFLBB3bfs4U36IXGjn6RQPCQkzQcG0viHlA4mhd4fZWlSiCwpMJfohPYILWU=
+	t=1707141293; cv=none; b=p6w8wDbrwiowMlLYUaB/7pWrP3vKjeMpafSThhcuevSBBpTaKe88Ej+7jngrzgb+Kq3L1fK01cEyk6nbw+PurryhvH8aTQMtW802t6G04xwh1ewqZlYic7rgBC54IZNn/bsPND7ZdFF4kg2BjE+kCFcYxTtZRWvp15JVxrfyoK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707136430; c=relaxed/simple;
-	bh=ZCWpwwDP32QW23OHxqcS6dyIhG+EZnGUM+vdeUCbChQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V7SmIVp0gP4d+fbwFrY+mJJD1d/QwBXH8/IRc+9re6gOfTEB4KkAAcNJ82qysgJNpHwNP6Cj+WTpKRNXH2LPRihIjPzq6JYoCMZvX0NbAj6rA4MByQOzOvKhNOUVqDzC/EnXv79oUE6LikYkraWuE0GvIeTuzEvWFf9FUKOgWNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iBUOeyK3; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1707141293; c=relaxed/simple;
+	bh=acweT+i277382WZB+wyUx+MhWf5O3le9YAhJ7llTVi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NyZFaKo6omkRcFCfE48SQ2cexSYAlaYrv8K4Ts17lKH/drUOfX19DosTs5Z9RfIRL02tB/hMj5r6y4ypN+QXdnnfzHVg0MO1LmtDECkH/kvXsNPHvhWQBBg2Qy3OGEntJFEA4EzdW6gyoAAzll+nJZCqMtbvjh3HwF9e/XxMCPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nd/eHhZV; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iBUOeyK3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1707136426; x=1707395626;
-	bh=Koptk02WV6BeYNID6QKo1BWynpaJzVcgM9vAm9rLNbY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=iBUOeyK3HhTdc8lgsE31Vu767CZcsaMMDP2tX5btt8UO6ecAU3r5SIFXNFT8CxKmW
-	 UDvqP7UFoBd5+PLkiet7e8Srvgz9iCnpUha32FSvKqm6wqIpetUlXLeHnVOK0cVti3
-	 Z8Kp9lbiwZ3rD/YKzyroZkhAgyclBEOIrzk7SmLjN/Q+B7GwocbhuiOR7ZgIQGViu6
-	 2vcp2bI1QtvMuR5R5O8Pp/9ZvyL2OiA18NuOn/739FzH8ZLBpdiQTCEIc67EBprkI9
-	 pFP8AsdiGUxdpNRtsxxBUP3m5aAAjYur3XL0aAcuukoNAN1PULQUfNwsOoUxxu2Xwp
-	 YLTQ3nFKlq+ng==
-Date: Mon, 05 Feb 2024 12:33:27 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v4 3/9] rust: file: add Rust abstraction for `struct file`
-Message-ID: <5f261c6a-785b-4bc5-974f-ad43c3a312b9@proton.me>
-In-Reply-To: <20240202-alice-file-v4-3-fc9c2080663b@google.com>
-References: <20240202-alice-file-v4-0-fc9c2080663b@google.com> <20240202-alice-file-v4-3-fc9c2080663b@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nd/eHhZV"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5dc20645871so296626a12.1;
+        Mon, 05 Feb 2024 05:54:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707141291; x=1707746091; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zqgzJpnAG+g5K7FixWrk7l6k12DPaioO4UV8OexrcUs=;
+        b=nd/eHhZV9jhJMg/83AB3KgsC1bNW80bYNnxTBxhZe1femcuxbx2l4uJgHs2IuY+jjG
+         7f4XZM0gEdJ/9qqhUD1o+sLr5bkoNwl/GSQA5XRJwcJgSfntOIKZ45ggqsPM2B7I576x
+         yvFaLf8zCV+4Lti+9QqoBos5vTwgbvQfuBtr/bH3ObZU5KYUHr53U0a1OnAeC5ZVBkcs
+         atFS60QHNShZlxlgdFVKcpMCT+pJZupqaXKmCwojJeHQ9rGc0IAUWWxdD1bCxSg5lKj9
+         tnc8PRi2o7z5BV+ntOcXMmNRQjY1o4HXNak1ov05NszX3sk7zlnx3soHYVaZHNVsQEtD
+         Hj1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707141291; x=1707746091;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zqgzJpnAG+g5K7FixWrk7l6k12DPaioO4UV8OexrcUs=;
+        b=GOdnA/Gp6XqvOrZProm7sDWKq7r4yQyPhVcXcFA5fbHVIJxRkbdmjk4lPLjDk820lT
+         ss9lItZaKaKIgbT1oww71jGvNzeu8+dsBxdK21mx1H+I96/4XjiUq/LaXl+8bVjDEewE
+         64Dd+XPFvndNMH01xs7RbiRsM11EGwtgswFRUNCOwJsG6e1/bUm0ObzSrFnvDYtHBgaH
+         cikg/FVNAszJxvZ8pWFqelHBcOdTOq2alqaLX76pfCG5XsDjdkl7UTVLxghG23eY68zd
+         FiOOklSR5kiu7FuHo8JMLauA3BsimFvVIQgFoDG2U8nswXX9TsEPoJLtBTF3MHrGJZy1
+         cXdg==
+X-Gm-Message-State: AOJu0Yxe9Zt/qrfhLX3PDpmX4Yi+omEaDQng7mVWfg93EE/c5Rlb9Rlz
+	s1uQQPRxu/wAdqCefrn/Gr72xJgZrjwzk/psgkyormaiseuJS3iX
+X-Google-Smtp-Source: AGHT+IGvpmKs9/mfmPUkr/W3IRXOB/PX4g3TCkNnfbnDeQ4REtbj408dyIcPpxU6UxsT304yDwEUSg==
+X-Received: by 2002:a05:6a20:e117:b0:19e:3373:d726 with SMTP id kr23-20020a056a20e11700b0019e3373d726mr7904207pzb.2.1707141291463;
+        Mon, 05 Feb 2024 05:54:51 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVxzqLBig94psI5YkJIkSai/nTpU/RgYd8pSaveuWqr8lRZhI0Zg2WPwJv69LLUC1Mj8dYFaLb8/fVwvK91Lxc+c9gFdFzoBHJSeRmSTnaU3JUFmLmdOKdOqQIxWs/skYizBhRJKhW9eGpO+C90+CXj3bD30Nnc1K52EdT2c0WL66aiDFTFaqWbWfIXjdDIBkFlAx8gpNwUHtD3Uq/Qwe3nTEfQYCtPkVx3CyLmPUt52hXoG3hoD7GMpz3veTyJc39e5CkPrlTIPB2U4cYNNvBuh3gKxWg2F5vJeNnHfIO7+a/jGsa0mcu0XSGu/uIlwQ==
+Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id x18-20020a634a12000000b005d64d09acffsm6929232pga.72.2024.02.05.05.54.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Feb 2024 05:54:51 -0800 (PST)
+Message-ID: <db41f2bc-05ac-40ca-b007-de607dc3886e@gmail.com>
+Date: Mon, 5 Feb 2024 10:54:46 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: stop using ptr_metadata feature
+Content-Language: en-US
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240205091842.2858516-1-aliceryhl@google.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20240205091842.2858516-1-aliceryhl@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2/2/24 11:55, Alice Ryhl wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
->=20
-> This abstraction makes it possible to manipulate the open files for a
-> process. The new `File` struct wraps the C `struct file`. When accessing
-> it using the smart pointer `ARef<File>`, the pointer will own a
-> reference count to the file. When accessing it as `&File`, then the
-> reference does not own a refcount, but the borrow checker will ensure
-> that the reference count does not hit zero while the `&File` is live.
->=20
-> Since this is intended to manipulate the open files of a process, we
-> introduce an `fget` constructor that corresponds to the C `fget`
-> method. In future patches, it will become possible to create a new fd in
-> a process and bind it to a `File`. Rust Binder will use these to send
-> fds from one process to another.
->=20
-> We also provide a method for accessing the file's flags. Rust Binder
-> will use this to access the flags of the Binder fd to check whether the
-> non-blocking flag is set, which affects what the Binder ioctl does.
->=20
-> This introduces a struct for the EBADF error type, rather than just
-> using the Error type directly. This has two advantages:
-> * `File::from_fd` returns a `Result<ARef<File>, BadFdError>`, which the
->   compiler will represent as a single pointer, with null being an error.
->   This is possible because the compiler understands that `BadFdError`
->   has only one possible value, and it also understands that the
->   `ARef<File>` smart pointer is guaranteed non-null.
-> * Additionally, we promise to users of the method that the method can
->   only fail with EBADF, which means that they can rely on this promise
->   without having to inspect its implementation.
-> That said, there are also two disadvantages:
-> * Defining additional error types involves boilerplate.
-> * The question mark operator will only utilize the `From` trait once,
->   which prevents you from using the question mark operator on
->   `BadFdError` in methods that return some third error type that the
->   kernel `Error` is convertible into. (However, it works fine in methods
->   that return `Error`.)
->=20
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
-> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+On 2/5/24 06:18, Alice Ryhl wrote:
+> The `byte_sub` method was stabilized in Rust 1.75.0. By using that
+> method, we no longer need the unstable `ptr_metadata` feature for
+> implementing `Arc::from_raw`.
+> 
+> This brings us one step closer towards not using unstable compiler
+> features.
+> 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  fs/file.c                       |   7 +
->  rust/bindings/bindings_helper.h |   2 +
->  rust/helpers.c                  |   7 +
->  rust/kernel/file.rs             | 249 ++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs              |   1 +
->  5 files changed, 266 insertions(+)
->  create mode 100644 rust/kernel/file.rs
+> [...]
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
---=20
-Cheers,
-Benno
-
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
