@@ -1,320 +1,147 @@
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267CD446BC;
-	Mon,  5 Feb 2024 17:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08C948CC4
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Feb 2024 21:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707154837; cv=none; b=COJlWafuqE1S6QQx9BYtBS39n9lpZ3FtRMcrd29o3Xct4O3e2IhOJ3xoRGv3+pROKzHy3gmt2bHydoBuoyZC3WlEuZ4b7z7x9FWciUtCNrlMQudvWLxRqKJAprSwuLDlEC6+7zguearUP5yxpA/GwpjEmfB8bWa0NwmY0ZBYmdA=
+	t=1707166981; cv=none; b=nZx6dM18DdNmUyD1scxfKtMoXyMrc39rsqqsOVQnwSXZ7ft3xsNDt2tDilu878cHC9lKxKbIDez41uIZBZxaLUw0I0l9oGsbnk5YJe5hl5AE0NcpqAiCSm0H+kh/RFr/kvDjqzwgs/ixyMeXIxUpV2v6/QrPpt3cYPYfyDsigd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707154837; c=relaxed/simple;
-	bh=M6pOvIo1Wd931byVMykKh7XsOivQ+mbW1mTLMmCGhME=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E31Wahs9ddaK5fapY/QVp2U8ImkGjecoMa/4XlJ727hpuKXqWUrDZp4tvc1rWdLjtz7PDjtaTgRXkVvaCXtZJKVviJB2a7KaU209zBowvJMyNXt//NgqlKh9eUCcd8WnCu0qT3Dj+m8vMMSK0M5u1vosVjR/bpvUOVuxrEqFUeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aYjxjMwu; arc=none smtp.client-ip=209.85.221.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1707166981; c=relaxed/simple;
+	bh=NWd67aeK8pIzgOiPR/gbAVXtUTBNAp22BDVP5Pv9XhU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PSJTYy0u3JH7szsiLSpJAb7ohsjp7a9+DJRrlibo5G/L0vTQgX/DubTINLKJbRG1VvbWsFglugNgy+bIY9O6s3Fc+9f52Dey6RDi3lfyiHMTVKtIZPa/GcMn9t/eLjl7spD8trY6vc4g0HbkRNl4/Rk/CXh0svyjdLj7oyEg0E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=hhiQw/YB; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aYjxjMwu"
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4c021a73febso488142e0c.2;
-        Mon, 05 Feb 2024 09:40:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="hhiQw/YB"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-603fd31f5c2so45634477b3.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 13:02:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707154835; x=1707759635; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1707166978; x=1707771778; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6sd3MqpkPfETb8+jxwao7rv6fptVZILhkVXNFoUWJdM=;
-        b=aYjxjMwuUtqrR9IgPK1Oh08Te42XOhywmqFRDt0vDpfsxaymqj+5fyyxPdCAtJc3yO
-         KaE4AW30N9QysSPPK4H0gec2aYM3Fm59lJRCAjPmXv9PGyWEnNCpYaxELDw2pK0Zjjif
-         A5w8Xg0XPFL2x5y1al+cFqm08ltiuuwTIcaYVpEK2T7J6rnUCJ/fpckdVIEJKdP8dDSJ
-         +XyMQ4+B/e6mROJz6UIOMsY9VwevyA/cyaZNrSWXVVkNe3Y26Koa8Kjas7iDuIlK738p
-         jmCtD7OuX4G+ltWVpOjK2yIRiLbzz+qvZ3eZ7IdUrb5SBBDut4h3E28Y8itHwTqAld3S
-         W67A==
+        bh=wS97w73P08k5rOomOJNiseIepah68q0tAYPUB/FIuvw=;
+        b=hhiQw/YBLGWAEhdwSBY9yiMI/lj/qB7rKj/i0MmmYiX8odPqXDJGwbYGFmv8uQsOqE
+         2hgX4r9ue3u+kCTARv69xlxhrOwbCpbaFsoppo3ZUAVPRMU9xnFjvWlmRyNAnM1VikC1
+         WzRS3sPiFgChoxMsi9dh8qflyikIFgnxEsO0V9OlJDUH2MjX+1aGKw+Qx8SjxDQAfV3Q
+         tGf8p55D5HR7YGBSAqGDirxfmAoJk0234AO2VROPOGZB9EFDjthSJumvv+RpJ8neE7Mc
+         fVyocuixD60kWlm2fb1Gw+YGzIRDF44GjdkgqKLKBBBPQif+fr112K/zwqIvkXibIzPH
+         TOcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707154835; x=1707759635;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1707166978; x=1707771778;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6sd3MqpkPfETb8+jxwao7rv6fptVZILhkVXNFoUWJdM=;
-        b=OKfN3Z0fJhXmD4nM/GShLqGZ+6BZnXW0wCrmYf5cNm8RZs8oa1+AlLd+rvBDlrq4YK
-         UrMvSnGYj7z93rocpfwpaBhYOEcZqT3wRlXADFW+/Ojj4U/znSXLu9++GA6LXtxDjF1Y
-         uZUi8f1WVQpHEix9WD+DBXUOEMcCl20PJ2SRsU+X8RD5bP3EC8gS3zmVWVmaMzYFdc3N
-         h+DOiECGID1XR183SFh39k+iTvn4WgfVFc7Ce+0ZkCNyXTlvMdASPRv67rQD+wVrqAC1
-         AsCSRvLV/XR/GJp4sIHt3aa3lGlhgqCtqAybX0tfuAYRooedy4zQtyxt/YP5a55ubV1Y
-         Hh+A==
-X-Gm-Message-State: AOJu0Yw7XezeKwC1UUpHSX39Kjzh89hrKip/XyknlDyYso8ktdSVgrfl
-	bIyJPBOZXAbuJOk5u5/kwDvwM8khi4p1HZzQEUwDmLpYmP2GC5xjECkDoYZ7
-X-Google-Smtp-Source: AGHT+IHL+6m1BR2MdkAfxDKMQdpABxHeCJXIS4poMvbR7s/FO3xbjTolgf7g7STS+94zPPdNilAufQ==
-X-Received: by 2002:a05:6122:169c:b0:4b6:d4c2:61d3 with SMTP id 28-20020a056122169c00b004b6d4c261d3mr287104vkl.0.1707154834711;
-        Mon, 05 Feb 2024 09:40:34 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCW8Vyg3JXRAAcT2/lJubpQ7KopWNlaRJc84HvMaUTAi3wz56qAGxbXnsGtJGgkZiu4hY+rCJbAgIO5MFIM5g2gwlf6XueVTgA8Sjh4xkigx92pSoSzB/TufD0NcMfsyD7Os1NZyl0lcv7cJrkOT6Kgz0gbXNUKniOqQvwZcKo9MDO2FsU176cfmwvCfSXZWW+dB4Mfjp55mvzcrtbQbCE2qntoNw1eKgK64UjS6w/rlnavxFfe8pMLpAxdTZ0tDWsuTtFu03C+Gr3Wh4Jw0PGh41+Q9OPEBtznLfPCBZjVehF1s5w875Msb2cz90oE=
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id c9-20020a05620a134900b007858ac144d7sm77652qkl.70.2024.02.05.09.40.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 09:40:34 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 93A1627C005B;
-	Mon,  5 Feb 2024 12:40:33 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Mon, 05 Feb 2024 12:40:33 -0500
-X-ME-Sender: <xms:kR3BZSvYZjKXpNFhEqzi6mcRXJ5yaifxRrpEAv0U8AN2dsVULkWd7Q>
-    <xme:kR3BZXfImrVyop3emBWXvHGAxo8_Vvoya9zY9Cj5ZaWHOewbs1S2nIRwLOUtHUUIO
-    CIcrtTE5-xkhWahig>
-X-ME-Received: <xmr:kR3BZdycFlpjG1T-piYGrzsxGYBWR9Dgt27AQt6cPgpuB22Cz3ZL_LI-PbPMTA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedvuddgudduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:kR3BZdPdQVRAsz-D0xQfDGL5pUY5QWyt3YFE24QuK1p6l6ltd9adjQ>
-    <xmx:kR3BZS_JHsKgr0C1EjdYlzMLAr7r3tjb47dS6u0jLj1jy_i3aYEekA>
-    <xmx:kR3BZVV_Fgq3oDnBJ1iPGbj6DiTQG3GfvkpuTn1qUzeqhjdvStBOJQ>
-    <xmx:kR3BZVYZJqlRsrP4ZsjbZkhgicALpmHcPIOlEAa2uKeyL8VZ_8AcHQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 5 Feb 2024 12:40:33 -0500 (EST)
-Date: Mon, 5 Feb 2024 09:39:15 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] rust: add reexports for macros
-Message-ID: <ZcEdQyaz0uLDOhrk@boqun-archlinux>
-References: <20240129145837.1419880-1-aliceryhl@google.com>
+        bh=wS97w73P08k5rOomOJNiseIepah68q0tAYPUB/FIuvw=;
+        b=SWtGxqNbw2vEoDMB0V24Y0mqK+HNCJ8ZcIO7bfSylEpMM8qaJeJeBUM7uJSX5lJhFQ
+         alccbU/NAOA6x5n+wg+Apva1PHytEnSz/5UnYRCEetc3Cv1fkcaw1Vff/X7vGkftrsfe
+         9jYhJag8jb5/g/8zVNqfXSrxzQt+TjOxky4r1hqnTCPDrwrSBOWhknDkGMGwoW9sT8JJ
+         95oPutS4BGZRub23hGbOoU6N3H32l41PXS/zYkKLrj+zT7Lq4g2zW1VbRNAT1hm7D+tm
+         BOdPBALw70VdR6cufA5GFS2NfKLPfGx7J5lszSVhBXl2aM1Zaotlf7+nYVtzFMD0EA7X
+         6m7g==
+X-Gm-Message-State: AOJu0YzzOl7pIZ6TnM2oR9jyPzYbwuImMydUH0hD3bTgXxXakwYmRfMt
+	LEQOfO9IeimjQopwTgGt6t0u66O4ERrGhWeZ6c+Z0619C2g3KIvvNcf05qnnP1iQ9mzJZPamv0K
+	VzcnaWFIcSzEuXBA0pMA+ZbfjxYCogIjJll82XbeZn5r3EwnWlyo=
+X-Google-Smtp-Source: AGHT+IGW9OpOa7ciycFOkv4eynfDnvD/dphW+DZHJBvn7echDosR8g9F5wKp1fL1kbbs+zaTUCNUsGTPmP3rqTI6j3A=
+X-Received: by 2002:a81:ae49:0:b0:604:1d65:b66b with SMTP id
+ g9-20020a81ae49000000b006041d65b66bmr5135715ywk.9.1707166977896; Mon, 05 Feb
+ 2024 13:02:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240129145837.1419880-1-aliceryhl@google.com>
+References: <20240205091842.2858516-1-aliceryhl@google.com>
+In-Reply-To: <20240205091842.2858516-1-aliceryhl@google.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Mon, 5 Feb 2024 15:02:46 -0600
+Message-ID: <CALNs47t63qAU2OpokvN6KykT0_NKpDLTBQGhLm-+zsvR1pcUAQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: stop using ptr_metadata feature
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 29, 2024 at 02:58:37PM +0000, Alice Ryhl wrote:
-> Currently, all macros are reexported with #[macro_export] only, which
-> means that to access `new_work!` from the workqueue, you need to import
-> it from the path `kernel::new_work` instead of importing it from the
-> workqueue module like all other items in the workqueue. By adding
-> reexports of the macros, it becomes possible to import the macros from
-> the correct modules.
-> 
-> It's still possible to import the macros from the root, but I don't
-> think we can do anything about that.
-> 
-> There is no functional change. This is merely a code cleanliness
-> improvement.
-> 
+On Mon, Feb 5, 2024 at 3:19=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> The `byte_sub` method was stabilized in Rust 1.75.0. By using that
+> method, we no longer need the unstable `ptr_metadata` feature for
+> implementing `Arc::from_raw`.
+>
+> This brings us one step closer towards not using unstable compiler
+> features.
+>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
-> I hope that the KUnit examples still compile. I tried checking myself
-> and it seemed to work, but I'm not completely sure whether I used the
-> tool correctly. I would appreciate if someone is able to double-check
-> and give a Tested-by for that.
+> This patch is based on rust-next because it depends on the patch [1]
+> that upgrades to Rust 1.75.0.
+>
+> [1]: https://lore.kernel.org/all/20231224172128.271447-1-ojeda@kernel.org=
+/
+>
+>  rust/kernel/lib.rs      |  1 -
+>  rust/kernel/sync/arc.rs | 10 ++++------
+>  2 files changed, 4 insertions(+), 7 deletions(-)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> [...]
+> @@ -239,18 +239,16 @@ pub unsafe fn from_raw(ptr: *const T) -> Self {
+>          // binary, so its layout is not so large that it can trigger ari=
+thmetic overflow.
+>          let val_offset =3D unsafe { refcount_layout.extend(val_layout).u=
+nwrap_unchecked().1 };
+>
+> -        let metadata: <T as Pointee>::Metadata =3D core::ptr::metadata(p=
+tr);
+>          // SAFETY: The metadata of `T` and `ArcInner<T>` is the same bec=
+ause `ArcInner` is a struct
+>          // with `T` as its last field.
+>          //
+>          // This is documented at:
+>          // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
 
-Tested-by: Boqun Feng <boqun.feng@gmail.com>
+The comment should be reworded, no more metadata and no unsafe block
+so it doesn't have to be SAFETY.
 
-Regards,
-Boqun
+> -        let metadata: <ArcInner<T> as Pointee>::Metadata =3D
+> -            unsafe { core::mem::transmute_copy(&metadata) };
+> +        let ptr =3D ptr as *mut ArcInner<T>;
 
-> 
->  rust/kernel/init.rs               |  8 +++++---
->  rust/kernel/sync.rs               |  5 +++--
->  rust/kernel/sync/condvar.rs       |  4 ++--
->  rust/kernel/sync/lock/mutex.rs    |  4 +++-
->  rust/kernel/sync/lock/spinlock.rs |  4 +++-
->  rust/kernel/workqueue.rs          | 14 ++++++--------
->  6 files changed, 22 insertions(+), 17 deletions(-)
-> 
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index 65be9ae57b80..d7107db1d587 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -36,7 +36,8 @@
->  //!
->  //! ```rust
->  //! # #![allow(clippy::disallowed_names)]
-> -//! use kernel::{prelude::*, sync::Mutex, new_mutex};
-> +//! use kernel::prelude::*;
-> +//! use kernel::sync::{new_mutex, Mutex};
->  //! # use core::pin::Pin;
->  //! #[pin_data]
->  //! struct Foo {
-> @@ -56,7 +57,8 @@
->  //!
->  //! ```rust
->  //! # #![allow(clippy::disallowed_names)]
-> -//! # use kernel::{prelude::*, sync::Mutex, new_mutex};
-> +//! # use kernel::prelude::*;
-> +//! # use kernel::sync::{new_mutex, Mutex};
->  //! # use core::pin::Pin;
->  //! # #[pin_data]
->  //! # struct Foo {
-> @@ -79,7 +81,7 @@
->  //! above method only works for types where you can access the fields.
->  //!
->  //! ```rust
-> -//! # use kernel::{new_mutex, sync::{Arc, Mutex}};
-> +//! # use kernel::sync::{new_mutex, Arc, Mutex};
->  //! let mtx: Result<Arc<Mutex<usize>>> = Arc::pin_init(new_mutex!(42, "example::mtx"));
->  //! ```
->  //!
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index c1fb10fc64f4..c983f63fd56e 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -13,8 +13,9 @@
->  mod locked_by;
->  
->  pub use arc::{Arc, ArcBorrow, UniqueArc};
-> -pub use condvar::{CondVar, CondVarTimeoutResult};
-> -pub use lock::{mutex::Mutex, spinlock::SpinLock};
-> +pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
-> +pub use lock::mutex::{new_mutex, Mutex};
-> +pub use lock::spinlock::{new_spinlock, SpinLock};
->  pub use locked_by::LockedBy;
->  
->  /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-> index 9f1d83589beb..72680ff57e67 100644
-> --- a/rust/kernel/sync/condvar.rs
-> +++ b/rust/kernel/sync/condvar.rs
-> @@ -27,6 +27,7 @@ macro_rules! new_condvar {
->          $crate::sync::CondVar::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
->      };
->  }
-> +pub use new_condvar;
->  
->  /// A conditional variable.
->  ///
-> @@ -44,8 +45,7 @@ macro_rules! new_condvar {
->  /// The following is an example of using a condvar with a mutex:
->  ///
->  /// ```
-> -/// use kernel::sync::{CondVar, Mutex};
-> -/// use kernel::{new_condvar, new_mutex};
-> +/// use kernel::sync::{new_condvar, new_mutex, CondVar, Mutex};
->  ///
->  /// #[pin_data]
->  /// pub struct Example {
-> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-> index 8c524a3ec45a..38207f9ce78a 100644
-> --- a/rust/kernel/sync/lock/mutex.rs
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -17,6 +17,7 @@ macro_rules! new_mutex {
->              $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
->      };
->  }
-> +pub use new_mutex;
->  
->  /// A mutual exclusion primitive.
->  ///
-> @@ -35,7 +36,8 @@ macro_rules! new_mutex {
->  /// contains an inner struct (`Inner`) that is protected by a mutex.
->  ///
->  /// ```
-> -/// use kernel::{init::InPlaceInit, init::PinInit, new_mutex, pin_init, sync::Mutex};
-> +/// use kernel::prelude::*;
-> +/// use kernel::sync::{new_mutex, Mutex};
->  ///
->  /// struct Inner {
->  ///     a: u32,
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index 068535ce1b29..cb2c6f71e80e 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -17,6 +17,7 @@ macro_rules! new_spinlock {
->              $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
->      };
->  }
-> +pub use new_spinlock;
->  
->  /// A spinlock.
->  ///
-> @@ -33,7 +34,8 @@ macro_rules! new_spinlock {
->  /// contains an inner struct (`Inner`) that is protected by a spinlock.
->  ///
->  /// ```
-> -/// use kernel::{init::InPlaceInit, init::PinInit, new_spinlock, pin_init, sync::SpinLock};
-> +/// use kernel::prelude::*;
-> +/// use kernel::sync::{new_spinlock, SpinLock};
->  ///
->  /// struct Inner {
->  ///     a: u32,
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 498397877376..0ed17451b06e 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -35,8 +35,7 @@
->  //! ```
->  //! use kernel::prelude::*;
->  //! use kernel::sync::Arc;
-> -//! use kernel::workqueue::{self, Work, WorkItem};
-> -//! use kernel::{impl_has_work, new_work};
-> +//! use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkItem};
->  //!
->  //! #[pin_data]
->  //! struct MyStruct {
-> @@ -78,8 +77,7 @@
->  //! ```
->  //! use kernel::prelude::*;
->  //! use kernel::sync::Arc;
-> -//! use kernel::workqueue::{self, Work, WorkItem};
-> -//! use kernel::{impl_has_work, new_work};
-> +//! use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkItem};
->  //!
->  //! #[pin_data]
->  //! struct MyStruct {
-> @@ -147,6 +145,7 @@ macro_rules! new_work {
->          $crate::workqueue::Work::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
->      };
->  }
-> +pub use new_work;
->  
->  /// A kernel work queue.
->  ///
-> @@ -396,9 +395,8 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
->  /// like this:
->  ///
->  /// ```no_run
-> -/// use kernel::impl_has_work;
->  /// use kernel::prelude::*;
-> -/// use kernel::workqueue::Work;
-> +/// use kernel::workqueue::{impl_has_work, Work};
->  ///
->  /// struct MyWorkItem {
->  ///     work_field: Work<MyWorkItem, 1>,
-> @@ -473,9 +471,8 @@ unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
->  /// # Examples
->  ///
->  /// ```
-> -/// use kernel::impl_has_work;
->  /// use kernel::sync::Arc;
-> -/// use kernel::workqueue::{self, Work};
-> +/// use kernel::workqueue::{self, impl_has_work, Work};
->  ///
->  /// struct MyStruct {
->  ///     work_field: Work<MyStruct, 17>,
-> @@ -509,6 +506,7 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workqueue::Work<$work_typ
->          }
->      )*};
->  }
-> +pub use impl_has_work;
->  
->  impl_has_work! {
->      impl<T> HasWork<Self> for ClosureWork<T> { self.work }
-> 
+Nit: this could be `.cast::<ArcInner<T>>().cast_mut()` to make the
+intentional mutability change clear.
+
+>          // SAFETY: The pointer is in-bounds of an allocation both before=
+ and after offsetting the
+>          // pointer, since it originates from a previous call to `Arc::in=
+to_raw` and is still valid.
+> -        let ptr =3D unsafe { (ptr as *mut u8).sub(val_offset) as *mut ()=
+ };
+> -        let ptr =3D core::ptr::from_raw_parts_mut(ptr, metadata);
+> +        let ptr =3D unsafe { ptr.byte_sub(val_offset) };
+>
+>          // SAFETY: By the safety requirements we know that `ptr` came fr=
+om `Arc::into_raw`, so the
+>          // reference count held then will be owned by the new `Arc` obje=
+ct.
+>
 > base-commit: f090f0d0eea9666a96702b29bc9a64cbabee85c5
-> -- 
-> 2.43.0.429.g432eaa2c6b-goog
-> 
-> 
+> --
+> 2.43.0.594.gd9cf4e227d-goog
+>
+>
+
+Worth noting that the same change has been in upstream for a while,
+since https://github.com/rust-lang/rust/pull/99113.
+
+With the above changed or otherwise clarified:
+
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
