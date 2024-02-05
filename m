@@ -1,101 +1,152 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B250422F02
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Feb 2024 16:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEA4125A4
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Feb 2024 09:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707064468; cv=none; b=kRWIivSaw8FTsnZFhaVoYqsyaiE6a41N2PuICGiC9ujHoSxPnGvIIATc2Tj7yhXHBmZZZ+7f6KiWxzeKhi6j/Nfl9q0j3xq9Z3sCAI12DZRufxAyha1OAUhqFjUpr/ptLgdvRkespv3JK6BKVehhv//uyqWnYOmlMU3WZJHyveM=
+	t=1707124730; cv=none; b=XwsGW1z1ul0ftin50iuYt0xI32HW8DxdsCmkfQGgrNiLg0dGioCT2Nr6r4sjleZTdVmEUlrOP23fQJEAKZBDhqiiuHdB9ILMUpt6h4yLTGUT88uHx/MnsQ5tJvU8EtofSa1r1TdCeCRDxNt0ZbKmGcpavKFjb4Cr2F/sXs+h3uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707064468; c=relaxed/simple;
-	bh=dEyJpjvR5RKHrQH9CQ3IKeg+m4JOaprD5HtDRfIUhwA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TGtDIe/I+BRcqQjepguBxEClEE76ZiHhz6gJ0jOdgF3BgiMZ2myK+dX349OAgdyrsvQpRylyXvD6b0OkXWk79fitYipatH+GtjXOF2YpBedDdm14Jg3gNx6l9NyxEmhO5l+8fFZSRrXpmx8q5pgaWCMc8/vFq8ZG7ebrYOcFtS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7M30wwG; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1707124730; c=relaxed/simple;
+	bh=8XZJ/IgL1JMzY5lgcFPKVTKdQYsXG/HJaPx+Ik6gB94=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=llO+92hYu/BYJjCJXpyQAafdquA3hfugjgpr9xcvz2CPtjxyCagYSyrWBO4lKtb4APUN4oTocJYWzxMx8m+ZVMUeGmtLrjrU9JL0Do8hkEcSNjHOnyik6VEmUJg60kGdqnsX8AOc2fxoqiMYttO4LjsQpowya/9mUhqh8tjFsbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ok6j71GH; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7M30wwG"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6040d0c9cf1so35251347b3.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Feb 2024 08:34:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ok6j71GH"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b26eef6cso5729301276.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 01:18:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707064465; x=1707669265; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i8XLxPsKBUVIBBZRXVx/XaQOvFb13ZjSRH6rSHORdbE=;
-        b=T7M30wwGH3p/JbMh5sdtlozunSVEF6uhTETcjfOY/2P7J8DZ8kXlgTfkHSBzqDokN6
-         AUn+Gt/2qH4X6LUi9RJ20n+LUrlhbNzWs3KUGxSpEnN/vL1zChGiMvxm/DoBDTjDuJEh
-         IHi7XponXrqT4POWsReZhbD+LjK/pgumtUxgwLmO1XWg2MWB2mmWt+OhmKK8EHZPirpO
-         q7i/TtyoEZIN4s40TVShxzav0FYF/wSrNuVv9szlpDrvUzs9XOU5sz5zCgP8uVZxNi5G
-         eWmbmJHzxOaR2TP/iFTYqKyd7z15E00B7Rzh8OhEul2xGDDypLRJSVtoLIiuGNXssA+h
-         Reuw==
+        d=google.com; s=20230601; t=1707124726; x=1707729526; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7Gxk2ajCeRlR024TKzSLzvly8WJN2T7k2cWPUi6bXG0=;
+        b=ok6j71GHOBJYAAjH1mmtEmSRXRP5Eqdbvk1SDKKjq+5+TDCHhCoVLfUqAe0+pvH/+3
+         MKOqQwJHgqrjM4ZW+gLKhlczv/Oa5LieCkBIraAPtLkn122YzL7p97Fh0jCjoLNeYlZB
+         rpMyt7wDiHYiBPaZhZ08F4YUoB0K+MuBRRdlQjD2xUckwCI1V2uoBPrcwsxhr5EDQkT5
+         AgBfzc6k8PVVij1fkWbIJVk6eaESAEwapZT77fwIwDDaxeBjZOzhn+6qZq4j6/SPqTBM
+         hjuWaFdMpAor0egUgqrkdzJFQ9LM9myHuUzXGm/fxC4scmUhpBCv4bI5dFXt3W8KasLV
+         XFFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707064465; x=1707669265;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i8XLxPsKBUVIBBZRXVx/XaQOvFb13ZjSRH6rSHORdbE=;
-        b=YZSLO06HCTUc7HmnxLU1nKNanplP95VSZrKVEXgKnNXYJDJ+GCeJKVfCE6Lg3eqDRK
-         zWs/TPFlWL1E+ksOkYIU8dRrU6IJgqBAQ4uRvugqdjoNSA+b4cxKVW5+teMfBYggf7p9
-         pUBEe0pCaVfZL+M01JnJlO22ot+hkVn0naNYm+sOlfF0t8dAQ3Md9E4fyHvMBTxisZc1
-         kkL/bfNgwO+PEBF5XGbyeOiJlN9PgDt/PH1KpkK7+foKB5UUJMMcD2HBgn7x/kYW/BrN
-         uYtUuA9FhO3Na9i5Y7PTLCPk2BDqv4Q1lUfF7HKRqSiJX0Zz8hEsJD0rwez9nj9XpOsz
-         oPzA==
-X-Gm-Message-State: AOJu0Yx0IweVRG7RIAchVsRfqx3+Z0fQdH8tp29svRATxYZ2OFvYyNZ1
-	IEeF130lfq5NV5vmknP3i2/lwWmURCv4bWP7a87B73WtqMZOzDxRwyByaSyUcUli1wGCkKb2ZmF
-	nMfZZ+TV68t85ahVTxfZaOU9Ae24=
-X-Google-Smtp-Source: AGHT+IHRgEBWHV9JSqj+CMDIMFQNiGDpQu+hS2gVRH8RDAFjpZkF5zNSvcROJmu9wm0aHSFBlopS9o+uO5+qrezwmJ4=
-X-Received: by 2002:a81:9c52:0:b0:5ff:4bf7:c481 with SMTP id
- n18-20020a819c52000000b005ff4bf7c481mr14120931ywa.16.1707064465523; Sun, 04
- Feb 2024 08:34:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707124726; x=1707729526;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7Gxk2ajCeRlR024TKzSLzvly8WJN2T7k2cWPUi6bXG0=;
+        b=nkm4MnLGdfeL7iSK9mTKSkIzFp9zFrhLRSO7vdDkEs78P9pjM2g1v1Xz7wDiKKmRXx
+         rPSgizc/90yOt4GkXYOqAcnVbBmhC1msKhHaz31EekvE4q6WqSQRFcTki7M96/4u2J1y
+         EDF3NbzjljHOzbgZKHAT1OVeaS8XIND01yttAA1F/QTMyFlIgkRg5sF+RUUcxfKhdw2f
+         FUuF5XtH4IVsrrB5aaLwBaQQB0zl3556YsHI2aGvsUtyygNVSGUnnTJighaaHH546TvJ
+         kugKRLHZ3CbupaWLuuu4eZeTVa+Kc4kTUsbQwbJh1LuYkf++UzAnY0Ilot9qry1w4Uh2
+         /+IQ==
+X-Gm-Message-State: AOJu0YwSAkdEO+QsBLCwEnFq2N6XO6UKnyZ6p9z+yA0/67yI/E7eNpWc
+	QC9OI8J571xqsoCtBKDxpOrd2AkYy45ZCpO5m3jxEhyyYr+mDsf1WldCVSANtv+Esg4WXt6iyoG
+	FtsUik2pRrmC7Rw==
+X-Google-Smtp-Source: AGHT+IG3BuUoJv4bjoNYEp0iMOpsszjB7c7QBaEDVUYixjVCksy3fmJ26gQCHRyt80iLODTHu7dmgWlIlut3BGQ=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:cc9:b0:dc2:57c9:b44d with SMTP
+ id cq9-20020a0569020cc900b00dc257c9b44dmr534896ybb.8.1707124726693; Mon, 05
+ Feb 2024 01:18:46 -0800 (PST)
+Date: Mon,  5 Feb 2024 09:18:42 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240204101049.41101-1-linux@obei.io> <0100018d53f737f8-80c1fe97-0019-40d7-ab69-b1b192785cd7-000000@email.amazonses.com>
- <0100018d7399881d-9945af06-7e0c-4f80-be5d-e4e7a614de28-000000@email.amazonses.com>
-In-Reply-To: <0100018d7399881d-9945af06-7e0c-4f80-be5d-e4e7a614de28-000000@email.amazonses.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 4 Feb 2024 17:34:14 +0100
-Message-ID: <CANiq72nDnWDS16dxAUaqYc0LRGN5R5Pk2ZWefsoJ90j9p-CLag@mail.gmail.com>
-Subject: Re: [PATCH v6] rust: types: Add `try_from_foreign()` method
-To: Obei Sideg <linux@obei.io>
-Cc: "a.hindborg@samsung.com" <a.hindborg@samsung.com>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
-	"aliceryhl@google.com" <aliceryhl@google.com>, "benno.lossin@proton.me" <benno.lossin@proton.me>, 
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
-	"gary@garyguo.net" <gary@garyguo.net>, "ojeda@kernel.org" <ojeda@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "wedsonaf@gmail.com" <wedsonaf@gmail.com>
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2746; i=aliceryhl@google.com;
+ h=from:subject; bh=8XZJ/IgL1JMzY5lgcFPKVTKdQYsXG/HJaPx+Ik6gB94=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlwKei/WJXwNa1kGveDERZkE/7Gq9ywL3f6UUFi
+ yDyixhV/tCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZcCnogAKCRAEWL7uWMY5
+ RqTMD/9zwprbrEKhYMbbQgpYaTRFzdeJBBljXrR0q+elDRZhdzFV1kRDfRBS+VMz5Bu7DYAaPUi
+ xn3o7LZMOwbzRwsbBCjZLYwcAIXQIFe/HDaioHdWcqeLgDPIYws1cpxydVGHh7bxU0tpSePWvwC
+ QXYEQtvH2jI4Qc2CRa1RnspuEAF+YJIMbJobmiKv7XzE2gWu2RAOFvmeu5aIlF3fvZE8M8t/GhM
+ 4yHziaSlbBLNVRIR51Cv04j32kOKtJcDYeiZ3eRTEY7NiSm6Edj4BPDUqMOBVMlomcFMM1+E8uQ
+ cLsQghCvtFkcf8nkENTifcr9jLP/X5dt5FlsuYA61LElfJGJ9pXWm9ARSgb1+0YMxggz9wlsCbH
+ JWCs3tr8P6fepJZ891HfxlYQDYtRcqV2EH5G4jY0qY+95Zgpk4bvHbnM0IMPHcjF+bm/5vj2RRQ
+ 78ZzUZaXUi9XHqXyOTznrmjCItWCIabNbUHItLYW194R/Gog4gwwuRVii+YUXdSnAkZskS0tG33
+ nK+1fwSqy2DvSGfFS/cel4+NZsBsLvLCw/X5I56FrPeC8+X+/TQWBUf9naMXzQYz+9OGSQmC4CN
+ gCP+FGu7KKvoZusZZA06xwn2V0K/xX97XT3Gdc9xyg6YaXxWR9TimpHhi4SgoPxkyFSRgN8I11B jPnV3IRbPAUNi6w==
+X-Mailer: git-send-email 2.43.0.594.gd9cf4e227d-goog
+Message-ID: <20240205091842.2858516-1-aliceryhl@google.com>
+Subject: [PATCH] rust: stop using ptr_metadata feature
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 4, 2024 at 11:11=E2=80=AFAM Obei Sideg <linux@obei.io> wrote:
->
-> It's version 6.
+The `byte_sub` method was stabilized in Rust 1.75.0. By using that
+method, we no longer need the unstable `ptr_metadata` feature for
+implementing `Arc::from_raw`.
 
-It cannot be, since you sent v6 already:
+This brings us one step closer towards not using unstable compiler
+features.
 
-    https://lore.kernel.org/rust-for-linux/0100018d53f737f8-80c1fe97-0019-4=
-0d7-ab69-b1b192785cd7-000000@email.amazonses.com/
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+This patch is based on rust-next because it depends on the patch [1]
+that upgrades to Rust 1.75.0.
 
-I guess you mean that the diff (i.e. the code changes) did not change,
-but please note that even if you only change the commit message/title,
-you should increase the version number, because it is still a change
-that will end up in the repository.
+[1]: https://lore.kernel.org/all/20231224172128.271447-1-ojeda@kernel.org/
 
-Having said that, if the changes are trivial (e.g. a typo fix), it is
-probably not worth it to send another version -- it is all about a
-balance. You can also simply point the issue as a reply and the
-maintainer can fix them for you if it happens to be the version that
-gets picked up.
+ rust/kernel/lib.rs      |  1 -
+ rust/kernel/sync/arc.rs | 10 ++++------
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-In addition, some mistakes can be prevented before submitting the
-patch -- please use `scripts/checkpatch.pl --codespell` on your
-patches to e.g. prevent typos.
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index b89ecf4e97a0..b8d4c8167a29 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -17,7 +17,6 @@
+ #![feature(dispatch_from_dyn)]
+ #![feature(new_uninit)]
+ #![feature(offset_of)]
+-#![feature(ptr_metadata)]
+ #![feature(receiver_trait)]
+ #![feature(unsize)]
+ 
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 77cdbcf7bd2e..16309c3a9a01 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -30,7 +30,7 @@
+     mem::{ManuallyDrop, MaybeUninit},
+     ops::{Deref, DerefMut},
+     pin::Pin,
+-    ptr::{NonNull, Pointee},
++    ptr::NonNull,
+ };
+ use macros::pin_data;
+ 
+@@ -239,18 +239,16 @@ pub unsafe fn from_raw(ptr: *const T) -> Self {
+         // binary, so its layout is not so large that it can trigger arithmetic overflow.
+         let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
+ 
+-        let metadata: <T as Pointee>::Metadata = core::ptr::metadata(ptr);
+         // SAFETY: The metadata of `T` and `ArcInner<T>` is the same because `ArcInner` is a struct
+         // with `T` as its last field.
+         //
+         // This is documented at:
+         // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+-        let metadata: <ArcInner<T> as Pointee>::Metadata =
+-            unsafe { core::mem::transmute_copy(&metadata) };
++        let ptr = ptr as *mut ArcInner<T>;
++
+         // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
+         // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
+-        let ptr = unsafe { (ptr as *mut u8).sub(val_offset) as *mut () };
+-        let ptr = core::ptr::from_raw_parts_mut(ptr, metadata);
++        let ptr = unsafe { ptr.byte_sub(val_offset) };
+ 
+         // SAFETY: By the safety requirements we know that `ptr` came from `Arc::into_raw`, so the
+         // reference count held then will be owned by the new `Arc` object.
 
-Thanks!
+base-commit: f090f0d0eea9666a96702b29bc9a64cbabee85c5
+-- 
+2.43.0.594.gd9cf4e227d-goog
 
-Cheers,
-Miguel
