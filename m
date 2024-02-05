@@ -1,103 +1,142 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FD62C190
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Feb 2024 14:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3393FB34
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Feb 2024 15:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707144544; cv=none; b=JO0e9vpknzukUFaDmmhc5KeYSDkLhXmlNJ75r8QI/a2hKaQu4ojESlQZ7Xg529FYIWeYBtWA3zWjpKVuf9XI80oZosJJKznuhechd8cgMCeLAi2/VutLGStS/y1I36kfu2wkQ8siWD/b46tc3H+w/NTqhLUSp1UTKxUgnqALD3I=
+	t=1707148206; cv=none; b=okiQ1qm0IefOXrkBKKATTvftvpnr228ZngD7+ABpOSBhMhEid2vbYB5CKaBxqHdpnIb//1P9IJZdMvN+wbmHTM6bCYKUVRvcy3JOogE7ZGkXDmX0EE2usLI0RZ9A4/sGlpky3dqdeStb1/25mgBATmqohHgyuGKnJw/tI1Wpssk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707144544; c=relaxed/simple;
-	bh=/6DJvGzD35AFyjPhLhl7t1+UJViPSj6sdjJTOyOO1hE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MZV81k9pH7NosqLy1b/tQVivKhBGOFkTeEw03YhHaG8axBWBOewfh15qV87dzoc37YEEkxwCnBmInOSkH0ToAfZh9cQXJ1/ZSrInsE+0adz7GmSxnd2+NsErVc9p6YPGN9zIeSkidtQFOwl7QrmDhU2AO4H0C9gDobO484C+Q0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yZEV13tb; arc=none smtp.client-ip=209.85.222.53
+	s=arc-20240116; t=1707148206; c=relaxed/simple;
+	bh=na6D3jFvDAGuKtOmimjbwOie5ZCOIzu8PmTwW3hy3cc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TgkZCjTBYZXMXyR64aEvbqM1qeJvr6kkdRSfGppwk2yFSuQ69DuXlYBMKpXTqlAJFUBnN6yqGYD2pDyVQV/eAIJi8u8ea1nMLaURRaZFqBrPZXxNRFxxYh17r8sB3OoHMtsME/rtLb1w91aOV1DDd3JPsnZcTRuMa0sgHEC/gh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SIEK+AfG; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yZEV13tb"
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7d6275d7d4dso1881701241.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 06:49:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SIEK+AfG"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6043c795ee9so23002367b3.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 07:50:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707144541; x=1707749341; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=si+3V1Q5dweK4VJCAZCFOJEa+8h/+ibTZSZYbpiMglo=;
-        b=yZEV13tb8KbXCayul5+92WhKE3k9jSdNaYNFvtW6vjA6DuOlOh0Qz2se13I/bfVhpx
-         HSFF+OvpOEEYETdk7SIDYY866pVMann4tqT0mhAfw9P/oGxg4OQEmpxRPS3gDhakQOIA
-         BEjuc65BhePrwoloHsbVIgZIecBI509+gI/A5T5lEqyLaa9+rUVs6zPz1jWmfpxf76PT
-         n3qRoiEGMR5bYovTYxubd4hWQikxHY4nZmbuJgoaPjhxjsDZuKm2rDyYSkzx3i21TCRH
-         +LREgnowtjmzigk68jAvHfoJ+S4dMpPaLGzY+SE0mAyUH4hT/zEBaGPWn3pCsMgn6TfN
-         NL0A==
+        d=google.com; s=20230601; t=1707148204; x=1707753004; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GAwMQVzV1pn9oaE0YS89RA+Q4EyWL5cwKaTUDQddqTs=;
+        b=SIEK+AfGwQpcP2lrG5tLLhwG+X0E1txStov2pO15qh6xssOa5ZjZcVfAvKQk74aNwA
+         NR75UyQppH88reHw3m0SrR8iQIwdghV/hmaUGIZUhr9DWxS4rtXZPR1ob+y1lKnLz+m3
+         o88dM+1jVIkiA80tcWUnF7wJmM/tGgGVVbxHUbxIWcHz5TYGJmYM87zb9SjHznNXBzGc
+         JpPl1PwuH2Oys8Wgpk56lvKyyNT49uNwxjOM5wxp4t53RgkqerzHDALOqtVpgPLR73LN
+         FqXjZK5qhr+0xX/AW1a5v4UgjWDKtuJ4mHPu1VggtasiHVweYw1bR9JFDQn1AmOYn7N2
+         zUcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707144541; x=1707749341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=si+3V1Q5dweK4VJCAZCFOJEa+8h/+ibTZSZYbpiMglo=;
-        b=lsWpC7IlN/Nz6osOkUjAQ7jz1nYeTzpCdabskO4ZPw3QM6WUzqE1bcvgN7W4zycuYL
-         VLZsKaEkge8bUan3aeRfdDF4TtohWwxLXtcpXQk5aC1qZTLX4QzTo8QcX/1yYXei7vzs
-         7YvabxW+BV9gQdcLuUuuKWoTouCATr84PJuRfyDG+yi0RBgeBt2Rs5NQpUj9zHd2bR52
-         gDDIyVgbyEiLIUX+Rd39OXRkuGqjuTo2WKawN3zkT7tE5KEm78OGjTG1c2r09uQ25ifB
-         MGCwR+hxyesO6B9usmDJJwjxy2Numu0QVPmydnykNZqn0Voml44fMWCKMKANHDBEWFY0
-         E7Kw==
-X-Gm-Message-State: AOJu0Yx9V3QIKPzm0kIcE6z22DyZaZvH1i31zkr/N7Xj/zSsYCsurGSZ
-	ymudBw7y5oPt6k2j1YskuPx4fFmGhVPFzo31+5y8W7pCsvIs6TD7BJyMc9kmhS+LAbmmWtQinzE
-	0sctrEZzFeDDbirlHa8qXVM2XSCifvG/BsOce
-X-Google-Smtp-Source: AGHT+IEOrFcrIwn+L1T9aDMR4eOnP6k6MWt4C6cG5ajciw/rAtnY5mpL0579+cWlyrTYqRjrT16iXfsJLtOrcSTFMwo=
-X-Received: by 2002:a67:e94b:0:b0:46d:2ba7:c531 with SMTP id
- p11-20020a67e94b000000b0046d2ba7c531mr14090vso.6.1707144541230; Mon, 05 Feb
- 2024 06:49:01 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707148204; x=1707753004;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GAwMQVzV1pn9oaE0YS89RA+Q4EyWL5cwKaTUDQddqTs=;
+        b=n5RGOhjTiZiE9N/LqpulfBpgqdnDw9V5wn3RrGaRPGUk8LaZv2pra4WpBMrYY5hF1o
+         fLRRDDyVo4IrREULPaR9EoDrZYvfdCbl+EbRBlRdKVWaO/NeRen6K77uGXsS+mxASmVN
+         JswzHNltXy78zbHqilXeobWhePt3OcSTlbBjwSw9mBuYjuZnMaoNS3Iofroa7NaKt6i+
+         qDFytTef5V94P4IVjp3gEuAb++CKNwbObSwS8z1yLxxlk9Fmj/85L+nXMmBvLVqiPPyq
+         qPtWo9zh8DgPXRD0s76yMah12T72MOuOWCFkV55EOheOtobF0t5/vyv345m1RcGHGrur
+         l6GQ==
+X-Gm-Message-State: AOJu0YwtRCm436CDaIEef4KquIo8FqGleyZdqgNtrCtcPrg0FZ4rpT18
+	5RQXkHyGIMzEGwbljKDHAz/ailqpOAaJFbOn6FUNVk7lesPuxr04vYUcgKSSRyWfhhbhiFFA94B
+	I9eonwwN+SFe7HBbRdApIaH4J2A==
+X-Google-Smtp-Source: AGHT+IGx1P4ttD/5wp3LelUa4rh+cpv2aSW92se7mShsiShtYhqY3V9ZV97c441GGjl/+GAnvRD4Vu/PatP9VYi+jAs=
+X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
+ (user=mattgilbride job=sendgmr) by 2002:a05:6902:1b88:b0:dc2:5456:d9ac with
+ SMTP id ei8-20020a0569021b8800b00dc25456d9acmr565129ybb.5.1707148203919; Mon,
+ 05 Feb 2024 07:50:03 -0800 (PST)
+Date: Mon, 05 Feb 2024 15:50:00 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240203182735.295946-1-tahbertschinger@gmail.com>
- <CAH5fLggUe-O8Zh+y-Lh7pquRNEWsEorkoT=xXjjOC-Cp7gcwyA@mail.gmail.com> <20240205144638.GB296718@fedora-laptop>
-In-Reply-To: <20240205144638.GB296718@fedora-laptop>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 5 Feb 2024 15:48:50 +0100
-Message-ID: <CAH5fLgjPNP1WHhJiWWtHnPd-DMOC_NnFUUTsfrZ5MNddUWq+qQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: place generated init_module() function in .init.text
-To: Thomas Bertschinger <tahbertschinger@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAKgDwWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDIwNT3SQT3aKkkqLUVN3EpCTDRANDszSDRAMloPqCotS0zAqwWdGxtbU A8SvFcFsAAAA=
+X-Mailer: b4 0.12.3
+Message-ID: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com>
+Subject: [PATCH 0/6] Red-black tree abstraction needed by Rust Binder
+From: mattgilbride@google.com
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Matt Gilbride <mattgilbride@google.com>, 
+	Matt Gilbride <mattgilbride@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 5, 2024 at 3:46=E2=80=AFPM Thomas Bertschinger
-<tahbertschinger@gmail.com> wrote:
->
-> On Mon, Feb 05, 2024 at 10:45:19AM +0100, Alice Ryhl wrote:
-> > On Sat, Feb 3, 2024 at 7:28=E2=80=AFPM Thomas Bertschinger
-> > <tahbertschinger@gmail.com> wrote:
-> > >
-> > > diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> > > index d62d8710d77a..d09be1bee397 100644
-> > > --- a/rust/macros/module.rs
-> > > +++ b/rust/macros/module.rs
-> > > @@ -225,6 +225,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStr=
-eam {
-> > >              #[cfg(MODULE)]
-> > >              #[doc(hidden)]
-> > >              #[no_mangle]
-> > > +            #[link_section =3D \".init.text\"]
-> > >              pub extern \"C\" fn init_module() -> core::ffi::c_int {{
-> > >                  __init()
-> > >              }}
-> >
-> > Perhaps this function should be made unsafe? I don't think there's
-> > currently anything preventing safe non-init Rust code from calling it
-> > directly as-is.
-> >
-> > Alice
->
-> That's a good point. That makes sense to me; I can work on a v2 that does
-> this.
+This patchset contains the red-black tree abstractions needed by the Rust
+implementation of the Binder driver.
 
-With that fixed, you may add
+Binder driver benefits from O(log n) search/insertion/deletion of
+key/value mappings in various places, including `process.rs` and
+`range_alloc.rs`.  In `range_alloc.rs`, the ability to store and
+search by a generic key type is also useful.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Please see the Rust Binder RFC for usage examples [1]. Note that
+the `container_of` macro is currently used only by `rbtree` itself.
+
+Users of "rust: rbtree: add red-black tree implementation backed by the C version"
+    [PATCH RFC 03/20] rust_binder: add threading support
+    [PATCH RFC 05/20] rust_binder: add nodes and context managers
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: rbtree: add `RBTreeIterator`"
+    [PATCH RFC 17/20] rust_binder: add oneway spam detection
+
+Users of "rust: rbtree: add `RBTreeIteratorMut`"
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: rbtree: add `RBTreeCursor`"
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: rbtree: add RBTree::entry"
+    Not used in the original RFC, but introduced after further
+    code review.  See: https://r.android.com/2849906
+
+The Rust Binder RFC addresses the upstream deprecation of red-black
+tree. Quoted here for convenience:
+
+"This RFC uses the kernel's red-black tree for key/value mappings, but we
+are aware that the red-black tree is deprecated. We did this to make the
+performance comparison more fair, since C binder also uses rbtree for
+this. We intend to replace these with XArrays instead. That said, we
+don't think that XArray is a good fit for the range allocator, and we
+propose to continue using the red-black tree for the range allocator."
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+---
+Alice Ryhl (1):
+      rust: rbtree: add `RBTree::entry`
+
+Matt Gilbride (1):
+      rust: rbtree: add `RBTreeCursor`
+
+Wedson Almeida Filho (4):
+      rust: add `container_of!` macro
+      rust: rbtree: add red-black tree implementation backed by the C version
+      rust: rbtree: add `RBTreeIterator`
+      rust: rbtree: add `RBTreeIteratorMut`
+
+ rust/helpers.c        |    7 +
+ rust/kernel/lib.rs    |   33 ++
+ rust/kernel/rbtree.rs | 1213 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 1253 insertions(+)
+---
+base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
+change-id: 20231205-b4-rbtree-abb1a016f0a0
+
+Best regards,
+-- 
+Matt Gilbride <mattgilbride@google.com>
+
