@@ -1,92 +1,186 @@
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1FC56B61
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 02:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0398156B64
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 02:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707185629; cv=none; b=jsWKMxmgkvGqxok8zmzcfCbjOKHrh1jodnTf5a73JYI5e+iln7v7uqCyMlQp7vDN9bcX5t5hovIMq8AZfMXM2Avq/SgaDsddmGqP3Nklta6xiqIwDrd3OWKTxREikh6ioM7HLgc4k23n0ZZnw2Lhf16gCDx4rdPhaTmB5Q4Tz7o=
+	t=1707185670; cv=none; b=usejvpqtv3i2T4EzeCMmh/Jh7WQFgGrkCv6LkCkbGuCacDQJGshtAd8NMwGuxoyYGkG7sqonA4uE0FeEDMELCamLfbSxnO+T/vOvSeBQCovfH5+aw2v1SEH3JYWN9/OPrX4HMb+CWBMBYS1QyhlQ9ipwgSph6rlzcdPK3ejNbpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707185629; c=relaxed/simple;
-	bh=Rpv1NA0MUdU0wdc0e1lGGYH1JH79JzgBDScuaB8lXow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UYXD+22j70n105dTdKKnZ5vRivuN/C6l7qU/sWK4eWCQ639+SEdwEyfa8U3l6lFZ53YViH0KanMM95MgVb0lgAq59M6AQJQ0FhkwIfx92sWFkgpRGlqGuSFwHHcH3QaUoL6bCyDANiKHQKQRJciMlTYMeJn156tLQb3AMLodAJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iBVJEG+V; arc=none smtp.client-ip=209.85.166.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1707185670; c=relaxed/simple;
+	bh=o25zqqGgJb+/DuJjbPME/jHUMuD6KdaPfV2xdG2bIQQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jd58BgePOtX5kutfrJXjERuM0R0oI6Z0S7hqXTj9gsJwmgH982ur3A0U9WUkpjf/4fhHK1QgE0+qlRXj72byNvvsntY1lAuAJxvOG+vEOF6Ln77Kjsh8xMQLqOEju+WS6DzfJmUkCX9q3Joaw8lP7jV5eKshd+e25uHBGYzkXnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=IlRvU4P0; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iBVJEG+V"
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-363b37b6799so283095ab.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 18:13:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="IlRvU4P0"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-60427d9c5dbso795527b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 18:14:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707185627; x=1707790427; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VEs9U8hss8NpwdQN7KcUkphtBtvJGi+IaV2fGowaiI0=;
-        b=iBVJEG+VqLTPiSldnJXZfZgDsn1gKwRxoOZQpRzFF5bRFt9Jwiu3vhwH3dGpd0Mxxm
-         SuVuTKu79H2H6fcn+DLZRLqkiuNWQ1iGYlTTRIgDhXjBXaTvSkA56D6w5FJohZZpMF3t
-         Bw2M6ZNe8UyTj3oRsYuMNrzSRcJP6aH48UHGZ25CzNlHEsnlc8rY/7YtWmpG8SIxo/p/
-         s1lMNqPCnkEXxdBJRf4nKeAsAT+hhNGx6prG6cXPdxLZNEqDe2Rp+4kZ9c4Uab2BjcU6
-         QzoucSDcmgQHv0tdOO/UGVaxAJAtQ3bWWAIFl0hOdPJaLAMqpKsUYZYWz4rRm+Phm6sQ
-         9Xxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707185627; x=1707790427;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1707185667; x=1707790467; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VEs9U8hss8NpwdQN7KcUkphtBtvJGi+IaV2fGowaiI0=;
-        b=BnKoLtoS77VpCNGaDF4n6EsC7P+knKerqXaSDN8LdjsyPGrfMXJtLUBOd891OcsZu5
-         ueTT24ZsDry5kif6FRrAG/hsH54yctns2KHlQ/Cy2umEixzJJjQm99pEnrApwhQLZLSF
-         VsrDW6C8Mgy4MPkxqCwF+SWDvsnQ4siU1x0D0cfYRKmCoEDnA8yH79nPMPTJ4CAnLVyB
-         7Rq2/5et72Wxsd8hE8omOqP3dNi+Tbr6KQO4MJmn3cIdB+LOCaTtdpkqbAlXD1dRnUF/
-         sgMNyVik9uxaHJN8t+5CjE5KjQTF9IWzxQ50sVegn6m5EXFsfldM5hJE/Ht6RUTFGaIM
-         SB2w==
-X-Gm-Message-State: AOJu0YyfFb0DFM3t4x5KmKeNuVxFWVnq8lFWdH+wxDWCRazs3mSGhnGb
-	wzfsks75Xlq8B1UKRhrBrma71HK5WVDtEqepCghi5Ezet3bXiBSZ
-X-Google-Smtp-Source: AGHT+IH2wIdugA533vWKoMR9Vf0QfleyUgf9mODgVEfPeZdIdQU59FYaOwGajdO9+m+V1LQK+Zm3lQ==
-X-Received: by 2002:a05:6e02:ed2:b0:363:9213:f8db with SMTP id i18-20020a056e020ed200b003639213f8dbmr1131665ilk.7.1707185627383;
-        Mon, 05 Feb 2024 18:13:47 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCVsGzY5koWPsCEKQDJWD/ZFjT8BKYYcRYqBTRcOLmYFN4HArVQxB7b8LNmH8quOYIeNT7WgFBKMSjV9kdYZX9tZ8Lq0+qdviQYKG4n8fD+inAXu3AWdIZHLrxXZPvnRjjxzq0aGDYic9j52Qbbb1t/FGPKUXNycCYbvNq2kWjY6E1GBu2vkrz83uv4p/RA36w==
-Received: from fedora-laptop (c-73-127-246-43.hsd1.nm.comcast.net. [73.127.246.43])
-        by smtp.gmail.com with ESMTPSA id y12-20020a056e021bec00b00363a91effdbsm261524ilv.76.2024.02.05.18.13.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 18:13:47 -0800 (PST)
-Date: Mon, 5 Feb 2024 19:13:42 -0700
-From: Thomas Bertschinger <tahbertschinger@gmail.com>
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust: place generated init_module() function in
- .init.text
-Message-ID: <20240206021342.GD296718@fedora-laptop>
-References: <20240206012535.480193-1-tahbertschinger@gmail.com>
- <c5a8d670-2574-4d64-8928-d606968f360e@gmail.com>
+        bh=TVFUfHzouElpgk6csojgEtg0jiRXTk/Brz1iEYU1QIQ=;
+        b=IlRvU4P0yFmjhF68oSMMR9AJj4Iuw/GrVjQCyWvoEcQqF4vygb8qaUF9NigxgWrkhn
+         IQTGMjKbwxOhrHXYq/pCXlnnm6H1oOJ212Lst9Ulfp5nZq4ycuEHT8kWr2xoPUiKwcZl
+         T8WVRrFW9QzooB/r8IXK6hpK3gl36UpYRSb0ylrQPWlNTC43QTAmCvACBKdYusyUOiKZ
+         udS7Nl9XYsrt8sirsSlcGEF7gAZUBg0k8FY06CGadcyG/HYoKkhD/NIXuqZZ5XCk6NSb
+         VCzyNbUJOsIUJhavRdjqRXmwbSJ3DIld2QPWRKljSPBxtlJMvVQxYa+IhZ1E1MElrMjk
+         1tMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707185667; x=1707790467;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TVFUfHzouElpgk6csojgEtg0jiRXTk/Brz1iEYU1QIQ=;
+        b=VwTYME1UDhYgFMQHIsdYvLrmwTgYZZ+r5Qli18K68tuEtQO1leBKonjVDorDFqglj2
+         xrKCmMIT9pnvGmmEYpjw8JxKI9JEGF2JTS1aS3BENdpich/RLWIrXz6LBLM/eUe7XGwT
+         5AzhpcE2Ww70SQwRb8c25zjEZse5lQNb7jl+61krqiIwHUh1ywJvh1+i/YDvNwHmRrSu
+         Et7ZtOdPzdAi8Gcrh/HJlclcdAgH8paHG+Mo4HB94ccWJPktQedndOr0prHpJDmPqKvf
+         KKsEIFSfPRp/Zxa8Ps5F+eoXUkByK5VQZQyIuupf3ifgGs10zICP9laOXjK9RutcbuwG
+         XhEg==
+X-Gm-Message-State: AOJu0YxdEfUD7UW0ethGILkhkODcZfR1ihkMe1wEykLmatkVf/mahKNt
+	nij0upGh5f6xZf0y2JnfVBLB7hYGeWoyoFCYshG5PobiVxl4E0H2ku7rE5f/uQO0yLwT+iCGVGc
+	/c6YV4w7gF9Qa1lEfPnMPzKw0KdEBjNPoQ3nOvw==
+X-Google-Smtp-Source: AGHT+IHalCWBoPrTOGrwUPX186ylELseC9bB/PUuUSj1Plms06LKwNv5q6YlTmjKBZkRPZ64RAiuwyU6eEhZflnqY4g=
+X-Received: by 2002:a81:844e:0:b0:604:1d65:b66b with SMTP id
+ u75-20020a81844e000000b006041d65b66bmr269588ywf.9.1707185666967; Mon, 05 Feb
+ 2024 18:14:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c5a8d670-2574-4d64-8928-d606968f360e@gmail.com>
+References: <20240202-alice-file-v4-0-fc9c2080663b@google.com> <20240202-alice-file-v4-1-fc9c2080663b@google.com>
+In-Reply-To: <20240202-alice-file-v4-1-fc9c2080663b@google.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Mon, 5 Feb 2024 21:14:15 -0500
+Message-ID: <CALNs47vWo1Ae2PJ+80xm1eB057DDsF+SbmVun-UHc9+vzpr7nQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/9] rust: types: add `NotThreadSafe`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 05, 2024 at 10:39:40PM -0300, Martin Rodriguez Reboredo wrote:
-> On 2/5/24 22:25, Thomas Bertschinger wrote:
-> > [...]
-> >               // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-> > +            /// # Safety
-> > +            /// This function must only be called once, during module initialization, because it
-> > +            /// may be freed after it returns.
-> 
-> The thing with this doc comment is that it's going to be hidden because
-> of the `#[doc(hidden)]` attribute. I think that it should either be a
-> common comment, placed elsewhere or removed.
+On Fri, Feb 2, 2024 at 5:56=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> This introduces a new marker type for types that shouldn't be thread
+> safe. By adding a field of this type to a struct, it becomes non-Send
+> and non-Sync, which means that it cannot be accessed in any way from
+> threads other than the one it was created on.
+>
+> This is useful for APIs that require globals such as `current` to remain
+> constant while the value exists.
+>
+> We update two existing users in the Kernel to use this helper:
+>
+>  * `Task::current()` - moving the return type of this value to a
+>    different thread would not be safe as you can no longer be guaranteed
+>    that the `current` pointer remains valid.
+>  * Lock guards. Mutexes and spinlocks should be unlocked on the same
+>    thread as where they were locked, so we enforce this using the Send
+>    trait.
+>
+> There are also additional users in later patches of this patchset. See
+> [1] and [2] for the discussion that led to the introducion of this
 
-I went back and forth on the best way to comment this (or not). I am
-fine with any of the proposals, with perhaps a slight preference for
-removing it so as to not clutter the already somewhat busy macro. If it
-is important to keep, then I think a common comment in this location
-makes more sense than moving it elsewhere. Anyone else have an opinion?
+s/introducion/introduction
 
-- Thomas Bertschinger
+> patch.
+>
+> Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQf=
+WIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=3D@pro=
+ton.me/ [1]
+> Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQf=
+WIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=3D@pro=
+ton.me/ [2]
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/sync/lock.rs | 15 +++++++++++----
+>  rust/kernel/task.rs      | 10 ++++++----
+>  rust/kernel/types.rs     | 17 +++++++++++++++++
+>  3 files changed, 34 insertions(+), 8 deletions(-)
+>
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 149a5259d431..d08d9d32915a 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -6,8 +6,15 @@
+>  //! spinlocks, raw spinlocks) to be provided with minimal effort.
+>
+>  use super::LockClassKey;
+> -use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque,=
+ types::ScopeGuard};
+> -use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned}=
+;
+> +use crate::{
+> +    bindings,
+> +    init::PinInit,
+> +    pin_init,
+> +    str::CStr,
+> +    types::ScopeGuard,
+> +    types::{NotThreadSafe, Opaque},
+
+Formatting nit: ScopeGuard could probably be placed in the same group
+as NotThreadSafe & Opaque
+
+> [...]
+> +
+> +/// Zero-sized type to mark types not [`Send`].
+> +///
+> +/// Add this type as a field to your struct if your type should not be s=
+ent to a different task.
+> +/// Since [`Send`] is an auto trait, adding a single field that is `!Sen=
+d` will ensure that the
+> +/// whole type is `!Send`.
+> +///
+> +/// If a type is `!Send` it is impossible to give control over an instan=
+ce of the type to another
+> +/// task. This is useful when a type stores task-local information for e=
+xample file descriptors.
+
+I initially read this thinking it meant to include this type if your
+struct also had a FD rather than being part of the FD. Maybe
+
+    This is useful to include in types that store or reference task-local
+    information. A file descriptor is an example of one such type.
+
+> +pub type NotThreadSafe =3D PhantomData<*mut ()>;
+> +
+> +/// Used to construct instances of type [`NotThreadSafe`] similar to how=
+ we construct
+> +/// `PhantomData`.
+
+I think it sounds slightly better reworded from personal to passive, i.e.
+
+    ... similar to how `PhantomData` is constructed.
+
+> +/// [`NotThreadSafe`]: type@NotThreadSafe
+> +#[allow(non_upper_case_globals)]
+> +pub const NotThreadSafe: NotThreadSafe =3D PhantomData;
+> --
+> 2.43.0.594.gd9cf4e227d-goog
+
+This looks good, sounds nice to make the intent more clear. Nothing
+that isn't optional, so
+
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
