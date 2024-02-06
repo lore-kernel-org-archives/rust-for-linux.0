@@ -1,145 +1,108 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Received: from fhigh4-smtp.messagingengine.com (fhigh4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B2A5B687
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 09:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D101292ED
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 10:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707210753; cv=none; b=astQQSIk+s0OBEh7wcHkJVJC9QcePDjXOI6v4ctWjkEBmY5bAtB7RjPCKlW4sYUsBxsB3EI1HC3lict00wxacrV+3g63PtBRPx1sC190oJzqNd1+T0Mj97I/DcsK6FJ1ApfySv3gH5gNoHzRf6F0Aznxw12xbn+sqjkZi5/LVmI=
+	t=1707213669; cv=none; b=h3ceyks0c8KlkIgKJskPQ3s0TpEosWoIkK2lHcHxQqH+/zJMyrkAAd3vK1Dd5VGHQ96dU6G9Vuea0cCN8xLfDu6ZuJf7Px3cnh+ytjQSzfS7eDtv1wWSuQO7b7WmDYaZ7Bvy1Lt0sidXdHJ3anfaY3Tr0l+EiFInd2WDSh4Ehhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707210753; c=relaxed/simple;
-	bh=xDaMwGlRW+j1QAvV7L8Oa3wAVOGh9sbGSBsBRhxGlus=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYVMw3w2n/jtADXPdpGZ7G7XMKzd+UC0Gyj8Jomw/XpNiojlJSxN9BRexpMAOkhM4DOuFT6ZIpkFXlnAGaH2mREeuqay6w7libiogbJMdFRDaXKjiYVKYU/A46dwvzIBZtKAxzy58BR8Mw6RwoEdcw2Q8MO0Hgh0JDH/K0GlvWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=tT/4lf/C; arc=none smtp.client-ip=212.227.126.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+	s=arc-20240116; t=1707213669; c=relaxed/simple;
+	bh=4yDUgELYvHhiuwBbP+4+hTtF30grvzq3WahAKOg8EpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t+CpX/ba+iDpNWlDCc7+mncQuPs3joqC5rNGwcltuaJXV+RhQyturDZJLZzJ0yzvIyilr9XsjgxhgD2J+zgkP1TZFsKJlHy+xYI6e8JJN5gYiodmluAOub51XW4/ba5a4DBM2+2n7DIr+QlbfKZcfS4sCh79svcjNSgiJZL+SRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=JXrv96xq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nR20Yq3I; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="tT/4lf/C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=valentinobst.de;
-	s=s1-ionos; t=1707210744; x=1707815544; i=kernel@valentinobst.de;
-	bh=xDaMwGlRW+j1QAvV7L8Oa3wAVOGh9sbGSBsBRhxGlus=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=tT/4lf/C9hYNX6BW3RE6X9GzUAKaaxapVJs3+82W/i8Yb5Ci0lIfaIQGbcX+yOPQ
-	 /wTuqXwXKFHbV0RjMiS+5cBaVnTdem8ZPRbcKklbp4BDlo7izAOYwLl2zX5QAWftX
-	 iqnL3/PEgg6yLIIhaO/u3kfnU8lqZgYlO9Y9cbog9rV4a1lR6SyZMrs7Vvw7clu+7
-	 Wqm+5jDfnc0E17IEOjOB3zS5fS28pK8xbUavfeF8RHkVpeWu7rVMCDuUUp90sCJwO
-	 eR2k2ppFggZddtV2FgcA+TSAnNSQ1Co0aaf8De/uTLORCNrDKpG4IiEIF/hpkOnWQ
-	 08e7L8sp49HW9hLCQA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from archbook.speedport.ip ([91.37.179.238]) by
- mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MZCvh-1rSVbS0kmP-00VAWU; Tue, 06 Feb 2024 09:28:31 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: dirk.behme@de.bosch.com
-Cc: ojeda@kernel.org,
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="JXrv96xq";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nR20Yq3I"
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 069BF11400AE;
+	Tue,  6 Feb 2024 05:01:02 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Tue, 06 Feb 2024 05:01:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1707213662; x=1707300062; bh=0txj/yQEaR
+	u3KPfodDCUDtdOF0yL/+n/APGS528fyw0=; b=JXrv96xqOvHjL9MbIV+aFGGLKM
+	IVZsYEYHSPhU+OTLjmqNyKXFgW/rd4FQ3XShBNyk8nd5MubcsuMTEKUGEUX14VYI
+	wPH1RO4IBFSdVoJJZVKG79AUD5NUnbjl4VzwDes/UvEmBoOlDNaTrPDRD1JxBvuU
+	IOtPcBWk+4V5ZnwWUCV02y1zdl4/stUPMNaiFI0NA8fdgFhlSXKnZTkWNs83f8N6
+	Y/TQuR8hDir5mNlhdp2KTR/qpMai3GugfbKz1hmufcmZ3YbJMuOE/sofaIPWPQOp
+	vINlLXeiNXXgikZ7VBOrlLAvpoVd6svMPTMxcpWnusvA6i9XXcH7JRcZ1csw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1707213662; x=1707300062; bh=0txj/yQEaRu3KPfodDCUDtdOF0yL
+	/+n/APGS528fyw0=; b=nR20Yq3IaeKJLShTOtvHgIGOqmEQmOIhyHxQF/tgbzS/
+	WnxF++83kLli/zQqJFA58OaWyxYkXbaoHPkB4f+GuMEauirZUGHC1g2ng/g9v9lO
+	uGOfwYCAwus0F2WQxnxHuXoTBydjqQUZBU2N9y/hfVXRev70J477L3zVxLyxWmbP
+	EC15YSMWWzqJarZUh/1Ze8MxUqCjLe0zrPqdF6IAl5zqzswmY6WzyMQCKewUJcvA
+	+e5s3JYeiRFFF67g1BVkB8u3RR9EOeo+psnbpkbYr0IAfJmj8ssCK4V1/OfxyPP6
+	ZJF9buhHVBhVLdpR5UlK4n5TIb3icG1eaK9yeOkf8g==
+X-ME-Sender: <xms:XQPCZemEAxCZDchuLJ0nf4V3jI3WWMVfLGlW8Balb41kvawpoqkQ4Q>
+    <xme:XQPCZV0Jq9chDP2auEZZhzgdG5dTlbe1Iw8GRM8ct6XmrdQ-vIOWthXq1pzqsV96P
+    7Oeb2POEEFspA>
+X-ME-Received: <xmr:XQPCZcriWL1iQmz5Vj_MWPhKRq-AfBmCO3OopaKq2KI5GfnYgQVjvLjO6ex3jA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedvfedgudduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:XQPCZSl4tf3jiuPUaRJMV2JO-Vl-aMl4Nbuc1prnTz6rEVVsvS6ZZw>
+    <xmx:XQPCZc3DSKDna0T9XDMsXEhgW0V_Ahj9YPkPJptQCTOQr97Vv4njSw>
+    <xmx:XQPCZZsoyGbPpYrC8QU5K0IVM4tPwTLte0kX5yQm1JmkkQtZwlalJw>
+    <xmx:XgPCZWOBP6beFI8xVVzREWkVFkK2WB2SyfCjEQvLvsac0S0HB628Ng>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Feb 2024 05:01:01 -0500 (EST)
+Date: Tue, 6 Feb 2024 10:01:00 +0000
+From: Greg KH <greg@kroah.com>
+To: Thomas Bertschinger <tahbertschinger@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	rust-for-linux@vger.kernel.org,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH] docs: rust: extend abstraction and binding documentation
-Date: Tue,  6 Feb 2024 09:28:10 +0100
-Message-ID: <20240206082810.17431-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240206065429.1933397-1-dirk.behme@de.bosch.com>
-References: <20240206065429.1933397-1-dirk.behme@de.bosch.com>
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2] rust: place generated init_module() function in
+ .init.text
+Message-ID: <2024020646-browbeat-cozily-0bf2@gregkh>
+References: <20240206012535.480193-1-tahbertschinger@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Provags-ID: V03:K1:rOHGX1pcaon275cvKuiHrU7kBdgef6LgIAieVpG+ev0Glj1dUa6
- Zz4Ci4e9NH4V2+0FHLqEGTk27SahfAeITAjlTYkp1cdgNyQVjb0WArdO5jOdXnxLBGM7zVe
- PutSReTl9geWQ9qHrY6wmFem1zkFO9KqwzFfoGlnbGzdN5XHDD+CVZQLdK3La6KW8on/iOq
- IyvgPOHB2nT2vRdXfbQ4Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ppXAdDh9cnc=;nzsdJC4sBWRBExmtiqkXiddLpf3
- ZpRPqBbijD9t2wszLcWdJuitzTgQrWCOzbgdgMzekaFy8hOTWFXVzeVE5ejzkzhR07SJ/qB4H
- Vqs32i3OOyJGvr+jTQRfJE3nWfj0/kbyLV5UgvxFJ/ts+PoM/Zv1vf3x7vb/hWTONIQ8I+jbc
- 58Zt00BD3XP96AITyQtXKmQWEQoD8nCQUspBzoBcJxH2gZZfUjWN9lqqcA2oMM9WHDdFJsFF4
- 1WXmRuv7OZuzU2IiI43gcBb2GNUquykBZbwcC7U9ZoIap4bid/10H9/s8yREv6O1jgAr4mE2f
- jVglIalk5RT7rLhxivgtypE227+w9c6v9rs1MeeK9Sa2Ng27CranEttoYcBNrHvvx2+ea0XNF
- qvjxQL5a+9rL4gN4mmseIkWXzp6zZSALnRyeWnSEZLC5R1B68IrCQw2T5irVVFzkO37fATmLu
- i5dh0EM+XXYEhAx8+nUEM6HujJnKsGPhhpdiCM5sROLK+lgyWU1z/FqE8Os8yJvbarPe+bpl4
- QA1o3OD8cMC88dg29MnXkHcpAEa4SvEYZnJfpolt6jJKnrEGIaos9+r6QoDEixbWH19AJT/uB
- QW3/qYHoNjYlWHbBwXD8N4inUH4IAA5bN9ZuuytBxaevL5u3GwtNHUPp7WsbnDk/vFbvXS4d+
- 5B4AfC/jBjsUT+QDa/HG+e39gk2rQ3IYUXZDx3vzIjeWdALqv0m4k96hKYYJpjJQEIY5wCVyg
- MFqyWe+lI9V2Pnh81I0Ls5tiCxWDXWtzp4TNHccpT4CPqPbruEK1a4=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240206012535.480193-1-tahbertschinger@gmail.com>
 
-+.. code-block::
-+
-+	                                                rust/bindings/
-+                                                       (rust/helpers.c)
-+
-+                                                          include/ -----+ <-+
-+                                                                        |   |
-+         drivers/              rust/kernel/              +----------+ <-+   |
-+           fs/                                           | bindgen  |       |
-+          .../            +-------------------+          +----------+ --+   |
-+                          |    Abstractions   |                         |   |
-+       +---------+        | +------+ +------+ |          +----------+   |   |
-+       | my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | <-+   |
-+       | driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          |       |
-+       +---------+        | |system| |system| |          | bindings | <-----+
-+            |             | +------+ +------+ |          |  crate   |       |
-+            |             |   kernel crate    |          +----------+       |
-+            |             +-------------------+                             |
-+            |                                                               |
-+            +------------------# FORBIDDEN #--------------------------------+
-+
-+The main idea is to encapsulate all ``unsafe()`` handling in the abstractions reviewed
-+and documented carefully. These are considered to be sound then.
+On Mon, Feb 05, 2024 at 06:25:35PM -0700, Thomas Bertschinger wrote:
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index d62d8710d77a..e54293faf523 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -222,10 +222,14 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+>              }};
+>  
+>              // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
+> +            /// # Safety
+> +            /// This function must only be called once, during module initialization, because it
+> +            /// may be freed after it returns.
 
-Maybe reword a bit to make it smoother:
+"once" is not right, it can be called zillions of times, it's just that
+it can't be called _AFTER_ module_init() is over for the file, as it
+will no longer be present in memory.
 
-The main idea is to encapsulate all ``unsafe()`` handling in carefully
-reviewed and documented abstractions. These are then considered to be
-sound.
+So technically, the wording you added here isn't correct, sorry.
 
-> 								  With this model
-> +it is assumed that users of the abstractions ("my_foo driver") can't do anything
-> +unsound if
+thanks,
 
-Not sure if 'assumed' is the best word here. Isn't the soundness
-of safe code implied by the soundness of the safe abstractions it is
-using? In that case one could use stronger words and say, e.g.,
-"... ensured that ...".
-
-> +
-> +#. the abstractions are sound
-> +#. they don't use ``unsafe()``
-> +
-> +Bindings
-> +~~~~~~~~
-> +
-> +By including a C header from ``include/`` into ``rust/bindings/bindings_helper.h``
-> +the ``bindgen`` tool will auto-generate the bindings for the included subsystem.
-> +See the ``*_generated.rs`` output files in the ``rust/bindings/`` directory.
-> +
-> +For parts of the C header ``bindgen`` doesn't auto generate, e.g. C ``inline``
-> +functions, there is the option to add a small wrapper function to ``rust/helpers.c``
-> +to make it available for the Rust side as well.
-> +
-> +Abstractions
-> +~~~~~~~~~~~~
-> +
-> +Abstractions are the glue layer between the bindings and the in-kernel users. E.g.
-> +the drivers or file systems written in Rust.
-
-Wouldn't start a sentence with 'e.g.'. I'd either write it out, i.e.,
-"For example,", or not start a new sentence: "... users, e.g. ...".
-
-> 						They are located in ``rust/kernel/``
-> +and are supposed to make the ``unsafe()`` access to the bindings as-safe-as-possible
-> +for their users.
-> +
-
-I think one could make it more clear that users are not expected to
-access the bindings directly, e.g.:
-
-... and their role is to encapsulate the ``unsafe()`` access to the
-bindings into a safe API that they expose to their users.
-
-Note: Looks like you only sent this to Miguel and RFL list (intentional?).
-
-	- Best Valentin
+greg k-h
