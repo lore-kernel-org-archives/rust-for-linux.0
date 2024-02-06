@@ -1,96 +1,116 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D8C1BC2D
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 21:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D61C1B957
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 21:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707254930; cv=none; b=Kfklm2kv3nO9JYFHmd+iSOuVgQr7vw3s6ow39pn1867jXhvCKw31HOmp1EX8RQMPXAACVA8zV2S7V5P0DLsOXOKYVPhILkI3zHtFadI7vTK+tqzbeDFHEcnnwCg+51F9Do5V2O2mF5+B/SJ44YmKTHu9HJQrwyGg+3DCiuNqsbQ=
+	t=1707255071; cv=none; b=j+9IiTeOGth3MODX/uwUj3atEKcSkL0Uy5jOWHXXxE4x2AZDUJM8Qb0WBCtzYIv9PlYH9lPDgYDdgdujBKVTkGehTFOihBfq2tFwKr4DC9aoZDb0dROaEym0ptSSOGd8llP4zAhzvO86Yallq7cGu1xEXB+kvUwcu8jms342Nd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707254930; c=relaxed/simple;
-	bh=W1e5XpgpoDYff5CEV30DQ7/zd1uv7h2My++l8yXCpDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SOaxcZPf/U/qNDrDSGP5SG3DiP/JPt36rIyOPglk3DWyjvzBF3znh93Y+znKtmGwJWKZrHCBxSl2rSoVkTyFqGiN7yhXjgAUBXc+reCI93D3WBRzpxDb4AVaEp18eEQJrvUG0Eh0+SG6ausoeP4tPxdnqtqPFYXgVGLx2ne0f8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VacH31y7; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1707255071; c=relaxed/simple;
+	bh=VhV9Y2ehoq2QR/dvYkGZ3565MBi13h4c1EWlFat09sM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E3gc1NOeu33QFok69Bm9sSJMnb6PIAANRdk9IojjoXl3CoGOnY9UPzN0JAvm6/pDg4NBLmCIncHgcXQUx9qYrInRqCoGEKDA7Uykd9NckfmHDOqEAxdd11Iyqbi4SwB11TpEikkaZ1XePGA9i38PK8IM3zx1uCvwVa1q8RjrUeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=lnMYX+xS; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VacH31y7"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d944e8f367so48878505ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Feb 2024 13:28:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="lnMYX+xS"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-603fd31f5c2so8858817b3.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Feb 2024 13:31:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707254928; x=1707859728; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4Pxk4ckTSL8kGpPY8enAl8Y/oJzt46ESbsZRXfKy/KY=;
-        b=VacH31y7cG57h2OWSSN8wfKbIG7TBX2CqXumZXELStBdshud8ulefJ1irOAMqP1pb5
-         LrOKjrt7TqGFbUjwTQHqSPFnOckm0KW6VNZgqtASndVRZkNWsSiJ9I7Eiu9cXD4jWqzm
-         Gkhv+dwn+a314aakLTQ7ZqOrm0vVYAfdjh+CUNHkNV0qW8wltum9gqd/TXkC9/Lzpobf
-         36Yw8PD38HKEqD0u24/bgUfEAxOhzrujhXGOeipVPF697+bQE6qo4ltNBA07L5Q30W2M
-         4vq1QrZPTsN5wbr/WxUuiep0Sdrth9hokhz+b4sWhQvA4QHI3gK65pyV4EjZZO5gNdMm
-         1gYg==
+        d=umich.edu; s=google-2016-06-03; t=1707255068; x=1707859868; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VhV9Y2ehoq2QR/dvYkGZ3565MBi13h4c1EWlFat09sM=;
+        b=lnMYX+xSSKdpMZr27IDA7Zu4pzAF+15Kege5EY3dGOt+5lSSekvOr8NqA1N6eoaHA8
+         b9Q+CjpSHeszCI0BaL/Qzpn2pt+L02fJGEnIE/y5ktMNP/fKAFAgBk6PGP3ye6RO0ItK
+         Ixx1cOtTLlM4gWb4+brUkw9dcPMh22QMX6wyWMv8MZJ7XAdE5NnlZ485RcWak+bxGswT
+         /EZk0fmS6wgeecGvFF8q77AVtk2xr3d60hMF9N+a8BBt0m2kKakSFPp3tG2LKF37YNNU
+         pMY3oyFiIc+ka0YyM5evLuHRQJ8RGJ8f14qCiWds4du5gE2Vjpiz4G2lmMwr1k6I5Nk4
+         TEnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707254928; x=1707859728;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4Pxk4ckTSL8kGpPY8enAl8Y/oJzt46ESbsZRXfKy/KY=;
-        b=KfTQGObRKIy5Jjd06ephJdTrVQPs2oaHcMLHu8Nd6hW5cAZrmBH5hEwiVpueKe3H4C
-         NbmRT/HklHITbv7Hh9VxSUZsI0Oxr+uvGhegqLx4ZFdkJzl8EyMaNY4WTPspPjKb//+e
-         P5rsIoRPCRgjDM4fzNhu3nU6dz/bJcu4dQLVrMcUTNtnBsHxnMQc9ym89xW3uRw3Nk+s
-         DzfQlNI1jZO4X9aaYCfs/lcKUkmEKsu428O9pgFTzKaTGOkd4LiPodetWwucK11KJqVx
-         9jdAmNxk3axiv0PSt0f/GVH8/bpDySZ8bx1m9o8rv4AVQCbNP5tj1i7rpVVhHAG5MwsZ
-         N+gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWFCrSMq/rkJT8ll1sbJjYrSfEEEf23FEl9Otissunn/a6A72MKHyBQfRj0X4DhUe7NzFqkElNn0mC9T7hoBdpsQq0ZpHiG92IVDHt/AQ0=
-X-Gm-Message-State: AOJu0Yzsn0M0oITp4YN4K0ewqnqW+ajHvhvovTAvOkQbCD2gi7dozOyt
-	//nQ94X2aZXeqv1+ngRlNic3lnYuoBUmxJEt80VhywiIhDC8kdRJffBmYPLK
-X-Google-Smtp-Source: AGHT+IFOiKTOqplHBBQbRVUHOQhvhWj+mTC726W+oXHGHRg2SA90fBvyLkOiyHyc17VnqLevengGUw==
-X-Received: by 2002:a17:903:244a:b0:1d9:1cb5:558b with SMTP id l10-20020a170903244a00b001d91cb5558bmr2908337pls.15.1707254927977;
-        Tue, 06 Feb 2024 13:28:47 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCW2j7GTDXBfyQsH501a45AipRbjdbm3QpVZtytxFYZ3DdvyOwbOgtSDIOOBZo9ztmBQYX+eORFSiKPWJHK1jFmFVTuv3dYUA3N4GBDv4yyJODGMRHHmjQYdD2SskEz7OniXVAYGoSZbFo3oIqRWxIUojv+L4jPjP1NnEYKKiWxboD2FBWcRLThSGGDFVPDshLIVdBEiKJZiPyIdr8JujnVR3nmsWs/aZkD1BPTfoekddCQ=
-Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id kk4-20020a170903070400b001d94871ba92sm2331196plb.239.2024.02.06.13.28.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Feb 2024 13:28:47 -0800 (PST)
-Message-ID: <0e8d2b80-d2e0-4089-b6af-731fd5048eff@gmail.com>
-Date: Tue, 6 Feb 2024 18:28:44 -0300
+        d=1e100.net; s=20230601; t=1707255068; x=1707859868;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VhV9Y2ehoq2QR/dvYkGZ3565MBi13h4c1EWlFat09sM=;
+        b=jXFKGfESYO9j821gCyfWof4NRdxSyc0eDsH6CO/qfEKe8dJBBzuWkdkTTlgqSXhr5f
+         3kop0zYVAQF10J4tRq8esTCD9ES1qziVhR3y6W6vDxHrH/egYX+wEAhZE/mMo4xriciI
+         4600fR7HvQaa1jccCfU8CV4n71mRuOlprjYrLexdM2jIe4+g/OolpdafQe5RN/uOSmMe
+         cV5s8CuIBgrE5Y/SX8mlTSYyHC1Quo1YZVu+IyslB+BFmQXPEizXXMudTEgi4aCfMc+T
+         WTscC9tAXb5hEey7r6huQbcuEU5MmOLXthcXQTnQPvS8DzrdTt0Yy4Z0xv8I13V4t2PQ
+         HH3w==
+X-Gm-Message-State: AOJu0Yw0Zfz2Nu6b5eHuYuYyy9+TuEgMmL+M/TOh+03UoC4+jEGQDZV3
+	/0EeQCY+kMBtAxc2WXteI2E+2qa9w1JyvtDHTYfBwk5WmZ31TfyFVVdQwgL7CNHYzWK9Im5Puy7
+	FD0wgYNtE3pkUzweHcuGto7M/rp6lePmfaiOcGw==
+X-Google-Smtp-Source: AGHT+IFD2ZtVNg+yyFr7gOe+lmhrUgZsDA+InS6rti8MMhXWEbu1XvWLZZAzBuooSjg26Rp0Iuv+ch+bOB9DNvbOdYw=
+X-Received: by 2002:a0d:db4f:0:b0:604:3ef:a729 with SMTP id
+ d76-20020a0ddb4f000000b0060403efa729mr2685245ywe.15.1707255068386; Tue, 06
+ Feb 2024 13:31:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: place generated init_module() function in
- .init.text
-Content-Language: en-US
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Thomas Bertschinger <tahbertschinger@gmail.com>, Greg KH
- <greg@kroah.com>, ojeda@kernel.org, alex.gaynor@gmail.com,
- wedsonaf@gmail.com, rust-for-linux@vger.kernel.org,
- Alice Ryhl <aliceryhl@google.com>
-References: <20240206012535.480193-1-tahbertschinger@gmail.com>
- <2024020646-browbeat-cozily-0bf2@gregkh>
- <CANiq72m8V2nycL=P8yT3M=e6Nek0w45zBK48Aqbt39Kpt+bwTA@mail.gmail.com>
- <20240206144959.GE296718@fedora-laptop>
- <92bd88e8-c585-4046-b787-0e041bb3534e@gmail.com>
- <CANiq72n039-rbejfxgsXz70Q+zA3dewfU=6b+umhMMEsYHeZnA@mail.gmail.com>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CANiq72n039-rbejfxgsXz70Q+zA3dewfU=6b+umhMMEsYHeZnA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
+ <20240201-rockchip-rust-phy_depend-v2-3-c5fa4faab924@christina-quast.de>
+ <CALNs47tnwCgyvM2jBo=bTt1=2AJFt3b6W+JsTHM3Np2tbNJYCA@mail.gmail.com> <eb229460-0efc-448a-863f-ac0634a72f2c@christina-quast.de>
+In-Reply-To: <eb229460-0efc-448a-863f-ac0634a72f2c@christina-quast.de>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Tue, 6 Feb 2024 16:30:56 -0500
+Message-ID: <CALNs47tfmcayLdbLbArPS=AHwETiaQKZ09h69_Q4HmfrMPk4-A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] net: phy: add Rust Rockchip PHY driver
+To: Christina Quast <chrysh@christina-quast.de>, Shashwat Kishore <kshashwat13@gmail.com>
+Cc: Christina Quast <contact@christina-quast.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Heiko Stuebner <heiko@sntech.de>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/6/24 14:19, Miguel Ojeda wrote:
-> On Tue, Feb 6, 2024 at 5:07 PM Martin Rodriguez Reboredo
-> <yakoyoku@gmail.com> wrote:
->>
->> Un/loading modules using `modprobe` to do troubleshooting per the
->> manpage on the `-r` flag, although that case is very rare by itself. I
->> don't know of any other case besides it.
-> 
-> I am not sure I follow -- if you reload the module, the functions will
-> be reloaded too.
+On Tue, Feb 6, 2024 at 2:20=E2=80=AFPM Christina Quast
+<chrysh@christina-quast.de> wrote:
+>
+> Hi Trevor!
+>
+> Thanks a lot for your review, I learned a lot! I felt, from the feedback
+> in the Zulip forum that rewriting more phy drivers might be interesting,
+> but I think I misunderstood something.
+>
+> There is no specific goal behind the rewrite, I just thought it would be
+> useful to bring more Rust into the Kernel.
+>
+> Cheers,
+>
+> Christina
 
-Ah, I've said the only case that I knew but I've overlooked that detail.
-@_@
+Happy to help :)
+
+There is definitely no harm in experimenting, but the general
+(reasonable) rule is that there shouldn't be duplicate drivers
+in-tree, even across languages.
+
+What you probably saw on Zulip is that we were trying to locate newer
+phys that don't already have a C driver. Shashwat reached out to a few
+companies and mentioned that Microchip was interested in drivers for
+some of their VSC84xx/82xx families. They are a bit more complicated
+(MACSec, XFI/SFP+) and apparently somewhat difficult to get hardware
+for, but that might be an option if you are interested in working on
+something like this.
+
+Andrew might have some ideas too. There are a lot of new phys coming
+out since MACsec is getting more popular, also some newer specs like
+10GBase-T1 and 10Base-T1S.
+
+- Trevor
