@@ -1,66 +1,66 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE9A56B61
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 02:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D056DCED
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 02:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707185912; cv=none; b=u2mkBlAK6NtrQNLFqjyi991tiMaRwyBGftYmt0J6Nr94opt+9bbsuni9n3S/OfRToRfYvDtI1ZMw8oe28UE3q66u7ON11yBU8QDG4w2hMDUchrBVKpQ+xjJb07lI1cZJzqsxAgM6jPr3t2tvL6hqs7dSktNQ1ABzkwS4QJ78IW0=
+	t=1707187709; cv=none; b=uO5Yv6FdRKFwTivv1ovOOA5T+9nmOMpC9ggPOVFpJu4ryOu2BtmgaVbSHUQ9/zdDnEVlN1VSHRN/is5KeI9N5JPfu3YbvAIclCLya7HuqBWsJti8t1LvsWiTbTt6rT4dO0htqt1qT+L4RItSZKMtPgGeo4KM3vKvlS2CpllFq9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707185912; c=relaxed/simple;
-	bh=gZkw2d6GEVsCKvdSDVLYHTC96kmhi9x5abFW4GTX54w=;
+	s=arc-20240116; t=1707187709; c=relaxed/simple;
+	bh=9OzVKt8dleAFVHUaJf2FWAI8P+7Rrlq9X1m8aubTuvE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p8JODsBpQdVikeMUfh1XlsP6mZXw46Wnxk62S2g/XVbHwgu4IFZdF2cezA2+ecWBCOmGl/rJYIH2zS9JU/z1WGS8lkyUrvPTZF4+qKLVA9MpvPD7C5STZcqiynE4hXSuKTmElCnOL40Gal1z7imwTQD+eE+JsonR1j9UOFLSHUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=DEYBXZwN; arc=none smtp.client-ip=209.85.128.170
+	 To:Cc:Content-Type; b=Pl1bi3ZUF7vZMRSzmr/UohO/hy8018sp5BX8Qpe4D2t35KyjniihU7NJhsIAOxGwins1rOi08JyGFwJ3GuKlrQgH62V8M7fAk3nhyW0cLL7Xip0TzGGCW30eNvcxhfHG53ABuzPKWAIEZ4GwjS2AzsvSuNr+ya1WejIJS5PCqcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=SybyMvBJ; arc=none smtp.client-ip=209.85.219.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="DEYBXZwN"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-604055e48a3so52811047b3.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 18:18:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="SybyMvBJ"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dbed179f0faso87083276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Feb 2024 18:48:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1707185910; x=1707790710; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1707187706; x=1707792506; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gZkw2d6GEVsCKvdSDVLYHTC96kmhi9x5abFW4GTX54w=;
-        b=DEYBXZwNmfJ7lMCZ7Uu1FQPNRue751FezuY1O97slzyj3kLCRwSOS7FAWwx4cluFIC
-         keL25Fchygu0p6oiT4YFQ6eAUsHJ4Cv6LHA+ADhbfaSf6Gl3YfIDOgv91bYTLE18lDXj
-         AnFHBi/EtzitM/BRfXHQH30PYlBiv89O0Lgh0nGeQKQzVAjIfdS8rQGZrKUYzYIxMBU/
-         W3xKCn1cvX/hbQ91ilPRgaeta+HCIrzfzQQWrS0N2gRGD6qFy03R3N1ZfiJ/0fsVmDRW
-         7xrIARYrREbZYd3arC0x99GtxCFTJ7EeRXzWE0QKIS6obVwQ0sGlPJnMG/CZRnxYrjch
-         hcwA==
+        bh=isYZDUvsWr/7v30nHxpavVqqhW2SR7yBo8lUWUfPuz4=;
+        b=SybyMvBJSknQOzDFyIVESBl2pUXnBCAj83bq27PJpMVlHYjMKqw0pJayuHxOXL7BsJ
+         HAV2NZV8WEugOIB2bUABJm1DoENeDD/II7Sa5DdTmHeqa8mo8m/Tk68JQYXsAdNj5hS3
+         Y7UuQHGUDwrpbhQhQixtsMJO2eWNS+9UhjMKf+MEURzg0PE+BPfL/wUi+rhh+RJma22i
+         nslV5tXb/gI1GVSRl38Ky87dQsoTJYu3oNQ/f5IyPo7wpN9paXeXhm9q9UF0YaAZlicV
+         I883D2inkbJOfQB6e79gSh5MPFUWJJwp+T/FZULXxr/+TuZbKG2qYJb6/0T03sgZtXtI
+         wEJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707185910; x=1707790710;
+        d=1e100.net; s=20230601; t=1707187706; x=1707792506;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gZkw2d6GEVsCKvdSDVLYHTC96kmhi9x5abFW4GTX54w=;
-        b=fF9m+eYA2s8QYR4JFue7PeCMETDtYmP9aWmk7slO0XiTyQ4W0jgk9fvZRCQ0RL8dEL
-         7XOpMeRqeT/NX5LeZ02376AlRGv3g40YBLha23ifdHUT0orAgd+0sE21DRNBo5+5GCiY
-         cIw+/5jYZrK6tby+8DSrA/sejAY/xi0rFIWC9GXfuX6FZ6fnigko8SKA59PWV38hCcu+
-         CCqvLuBIFVItBDT7d3PQfnkmykM6FZY4WhM52jmPWzQf/B21hyDLM+OWAf0NbbZfyMck
-         IqYIUGw1iYHEgVeqCtWsfpkoTfSbDybrnXAMmrWoxnWNOmVUBWloUa+IFP7IxsF05naR
-         QLGg==
-X-Gm-Message-State: AOJu0YzF7E6g462YaGBZxvaRy44GjweXFBScR4ZjRjCJp/RniaEQKI41
-	7NT9L8MjSf9aoxbSyucWDTFSV8F20svgbv82ZyxYXrteUb25uIp72GuZgYmsDx0wbUWSEuMO0dP
-	Xu/xcVOTXtZ3I0WlSeKn8jCukt/IxkFQgS2LGtg==
-X-Google-Smtp-Source: AGHT+IFZqDHvvmCo/0VYZMxcZsnzywrmE/o8Pirfqy6QTFEOvP66oRP6OMJ9bMGs8gYJXJdFmWKwyb76YELKJy3YiO0=
-X-Received: by 2002:a81:aa46:0:b0:5f4:a5ab:4105 with SMTP id
- z6-20020a81aa46000000b005f4a5ab4105mr373824ywk.8.1707185909958; Mon, 05 Feb
- 2024 18:18:29 -0800 (PST)
+        bh=isYZDUvsWr/7v30nHxpavVqqhW2SR7yBo8lUWUfPuz4=;
+        b=BeAMgFJ7XhTyO4xGgZdAX0UI2Njq7lz6wmVTvcn+MgGQ8Cz+GzG3Y9dqAy8WBtjFub
+         oPDQ9NO9p3f7K1Yqnk6amMPI6supf34SCWOWlv+eQhC+YxavAjYNbOllXDT5LoaTsvjd
+         wnHbdns6u7ChU3Ev1yJRw0++PD3eGfO1KRZBsgjIdxGphdB3N8uvX/51g4En2b9g0iN3
+         Auvtg79JfKq++1ZsVPt9o3GquWaZGYHAl5OcOjRdIYVqYlidYuFI2yhiv+ZYWP/2KPsd
+         VOxHJ65JabVbNV2swi2mOFRusVzW3PwBEoZCyR5lIonqXPlriWQFV45EadE6N2FqtDrL
+         2hAA==
+X-Gm-Message-State: AOJu0YwQpuQITFAOJzjEZpjCPoXWz2hSU0+0ygpmRy05ETTG36xwdJdH
+	gLYpbc7s1xBUqTPdgRW5oi7JVquxWD1aH6lnQB3BSF6D63mf0nzZ76R8dQCN1UsM8TDAl68/3sD
+	6w9hp6UbLpYTa074K4cK8qQO8RpZbx+QI8jn+zA==
+X-Google-Smtp-Source: AGHT+IEPbFtEPvYCN56yH9yNQS8NYqPda1fHbxAek5H/68ZxD3iz03Yu/GlEBnHjzndnqCkPskBUKo8w2e7mg2dSRzI=
+X-Received: by 2002:a25:d347:0:b0:dc6:b146:8567 with SMTP id
+ e68-20020a25d347000000b00dc6b1468567mr340585ybf.1.1707187705980; Mon, 05 Feb
+ 2024 18:48:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240202-alice-file-v4-0-fc9c2080663b@google.com> <20240202-alice-file-v4-2-fc9c2080663b@google.com>
-In-Reply-To: <20240202-alice-file-v4-2-fc9c2080663b@google.com>
+References: <20240202-alice-file-v4-0-fc9c2080663b@google.com> <20240202-alice-file-v4-3-fc9c2080663b@google.com>
+In-Reply-To: <20240202-alice-file-v4-3-fc9c2080663b@google.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 5 Feb 2024 21:18:18 -0500
-Message-ID: <CALNs47vEo1ghfrCZh0=XB2u2vkRAoTAqp=FLpJLb3BEw63FEMw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/9] rust: task: add `Task::current_raw`
+Date: Mon, 5 Feb 2024 21:48:14 -0500
+Message-ID: <CALNs47uxe6N7VLqC10k5PH=r-CKBLqGf7JBQMw46LXPUBi3X8w@mail.gmail.com>
+Subject: Re: [PATCH v4 3/9] rust: file: add Rust abstraction for `struct file`
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -81,20 +81,232 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Feb 2, 2024 at 5:56=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
 ote:
 >
-> Introduces a safe function for getting a raw pointer to the current
-> task.
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 >
-> When writing bindings that need to access the current task, it is often
-> more convenient to call a method that directly returns a raw pointer
-> than to use the existing `Task::current` method. However, the only way
-> to do that is `bindings::get_current()` which is unsafe since it calls
-> into C. By introducing `Task::current_raw()`, it becomes possible to
-> obtain a pointer to the current task without using unsafe.
+> This abstraction makes it possible to manipulate the open files for a
+> process. The new `File` struct wraps the C `struct file`. When accessing
+> it using the smart pointer `ARef<File>`, the pointer will own a
+> reference count to the file. When accessing it as `&File`, then the
+> reference does not own a refcount, but the borrow checker will ensure
+> that the reference count does not hit zero while the `&File` is live.
 >
-> Link: https://lore.kernel.org/all/CAH5fLgjT48X-zYtidv31mox3C4_Ogoo_2cBOCm=
-X0Ang3tAgGHA@mail.gmail.com/
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Since this is intended to manipulate the open files of a process, we
+> introduce an `fget` constructor that corresponds to the C `fget`
+> method. In future patches, it will become possible to create a new fd in
+> a process and bind it to a `File`. Rust Binder will use these to send
+> fds from one process to another.
+>
+> We also provide a method for accessing the file's flags. Rust Binder
+> will use this to access the flags of the Binder fd to check whether the
+> non-blocking flag is set, which affects what the Binder ioctl does.
+>
+> This introduces a struct for the EBADF error type, rather than just
+> using the Error type directly. This has two advantages:
+> * `File::from_fd` returns a `Result<ARef<File>, BadFdError>`, which the
+>   compiler will represent as a single pointer, with null being an error.
+>   This is possible because the compiler understands that `BadFdError`
+>   has only one possible value, and it also understands that the
+>   `ARef<File>` smart pointer is guaranteed non-null.
+> * Additionally, we promise to users of the method that the method can
+>   only fail with EBADF, which means that they can rely on this promise
+>   without having to inspect its implementation.
+> That said, there are also two disadvantages:
+> * Defining additional error types involves boilerplate.
+> * The question mark operator will only utilize the `From` trait once,
+>   which prevents you from using the question mark operator on
+>   `BadFdError` in methods that return some third error type that the
+>   kernel `Error` is convertible into. (However, it works fine in methods
+>   that return `Error`.)
+>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
+> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
+>  fs/file.c                       |   7 +
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/helpers.c                  |   7 +
+>  rust/kernel/file.rs             | 249 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  5 files changed, 266 insertions(+)
+>  create mode 100644 rust/kernel/file.rs
+>
+> diff --git a/fs/file.c b/fs/file.c
+> index 3b683b9101d8..f2eab5fcb87f 100644
+> --- a/fs/file.c
+> +++ b/fs/file.c
+> @@ -1115,18 +1115,25 @@ EXPORT_SYMBOL(task_lookup_next_fdget_rcu);
+>  /*
+>   * Lightweight file lookup - no refcnt increment if fd table isn't share=
+d.
+>   *
+>   * You can use this instead of fget if you satisfy all of the following
+>   * conditions:
+>   * 1) You must call fput_light before exiting the syscall and returning =
+control
+>   *    to userspace (i.e. you cannot remember the returned struct file * =
+after
+>   *    returning to userspace).
+>   * 2) You must not call filp_close on the returned struct file * in betw=
+een
+>   *    calls to fget_light and fput_light.
+>   * 3) You must not clone the current task in between the calls to fget_l=
+ight
+>   *    and fput_light.
+>   *
+>   * The fput_needed flag returned by fget_light should be passed to the
+>   * corresponding fput_light.
+> + *
+> + * (As an exception to rule 2, you can call filp_close between fget_ligh=
+t and
+> + * fput_light provided that you capture a real refcount with get_file be=
+fore
+> + * the call to filp_close, and ensure that this real refcount is fput *a=
+fter*
+> + * the fput_light call.)
+> + *
+> + * See also the documentation in rust/kernel/file.rs.
+>   */
+>  static unsigned long __fget_light(unsigned int fd, fmode_t mask)
+>  {
+
+Should this be split to its own patch so it can be applied separately if ne=
+eded?
+
+> [...]
+> +    /// Also known as `O_NDELAY`.
+> +    ///
+> +    /// This is effectively the same flag as [`O_NONBLOCK`] on all archi=
+tectures
+> +    /// except SPARC64.
+> +    pub const O_NDELAY: u32 =3D bindings::O_NDELAY;
+
+This is O_NDELAY, should the AKA say O_NONBLOCK?
+> [...]
+> +/// Wraps the kernel's `struct file`.
+
+It is probably better to say what it does for the summary, and mention
+what it wraps later.
+
+> +/// # Refcounting
+> +///
+> +/// Instances of this type are reference-counted. The reference count is=
+ incremented by the
+> +/// `fget`/`get_file` functions and decremented by `fput`. The Rust type=
+ `ARef<File>` represents a
+> +/// pointer that owns a reference count on the file.
+> +///
+> +/// Whenever a process opens a file descriptor (fd), it stores a pointer=
+ to the file in its `struct
+> +/// files_struct`. This pointer owns a reference count to the file, ensu=
+ring the file isn't
+> +/// prematurely deleted while the file descriptor is open. In Rust termi=
+nology, the pointers in
+> +/// `struct files_struct` are `ARef<File>` pointers.
+> +///
+> +/// ## Light refcounts
+> +///
+> +/// Whenever a process has an fd to a file, it may use something called =
+a "light refcount" as a
+> +/// performance optimization. Light refcounts are acquired by calling `f=
+dget` and released with
+> +/// `fdput`. The idea behind light refcounts is that if the fd is not cl=
+osed between the calls to
+> +/// `fdget` and `fdput`, then the refcount cannot hit zero during that t=
+ime, as the `struct
+> +/// files_struct` holds a reference until the fd is closed. This means t=
+hat it's safe to access the
+> +/// file even if `fdget` does not increment the refcount.
+> +///
+> +/// The requirement that the fd is not closed during a light refcount ap=
+plies globally across all
+> +/// threads - not just on the thread using the light refcount. For this =
+reason, light refcounts are
+> +/// only used when the `struct files_struct` is not shared with other th=
+reads, since this ensures
+> +/// that other unrelated threads cannot suddenly start using the fd and =
+close it. Therefore,
+> +/// calling `fdget` on a shared `struct files_struct` creates a normal r=
+efcount instead of a light
+> +/// refcount.
+> +///
+> +/// Light reference counts must be released with `fdput` before the syst=
+em call returns to
+> +/// userspace. This means that if you wait until the current system call=
+ returns to userspace, then
+> +/// all light refcounts that existed at the time have gone away.
+> +///
+> +/// ## Rust references
+> +///
+> +/// The reference type `&File` is similar to light refcounts:
+> +///
+> +/// * `&File` references don't own a reference count. They can only exis=
+t as long as the reference
+> +///   count stays positive, and can only be created when there is some m=
+echanism in place to ensure
+> +///   this.
+> +///
+> +/// * The Rust borrow-checker normally ensures this by enforcing that th=
+e `ARef<File>` from which
+> +///   a `&File` is created outlives the `&File`.
+> +///
+> +/// * Using the unsafe [`File::from_ptr`] means that it is up to the cal=
+ler to ensure that the
+> +///   `&File` only exists while the reference count is positive.
+> +///
+> +/// * You can think of `fdget` as using an fd to look up an `ARef<File>`=
+ in the `struct
+> +///   files_struct` and create an `&File` from it. The "fd cannot be clo=
+sed" rule is like the Rust
+> +///   rule "the `ARef<File>` must outlive the `&File`".
+> +///
+> +/// # Invariants
+> +///
+> +/// * Instances of this type are refcounted using the `f_count` field.
+> +/// * If an fd with active light refcounts is closed, then it must be th=
+e case that the file
+> +///   refcount is positive until all light refcounts of the fd have been=
+ dropped.
+> +/// * A light refcount must be dropped before returning to userspace.
+> +#[repr(transparent)]
+> +pub struct File(Opaque<bindings::file>);
+> +
+> +// SAFETY:
+> +// - `File::dec_ref` can be called from any thread.
+> +// - It is okay to send ownership of `File` across thread boundaries.
+
+Shouldn't this be lowecase `file` because it is referring to the
+underlying C object?
+
+> +unsafe impl Send for File {}
+> [...]
+> +    /// Returns the flags associated with the file.
+> +    ///
+> +    /// The flags are a combination of the constants in [`flags`].
+> +    pub fn flags(&self) -> u32 {
+
+A typedef used here and in the constants module could be useful
+
+    type FileFlags =3D u32;
+
+> +        // This `read_volatile` is intended to correspond to a READ_ONCE=
+ call.
+> +        //
+> +        // SAFETY: The file is valid because the shared reference guaran=
+tees a nonzero refcount.
+> +        //
+> +        // TODO: Replace with `read_once` when available on the Rust sid=
+e.
+
+Shouldn't the TODO become a `FIXME(read_once): ...` since it is going
+into the codebase?
+
+> +        unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_vola=
+tile() }
+> +    }
+> +}
+
+Some suggestions but nothing blocking
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
