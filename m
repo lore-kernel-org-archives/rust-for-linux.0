@@ -1,257 +1,182 @@
-Received: from mail.someserver.de (mail.someserver.de [116.202.193.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB591754B;
-	Tue,  6 Feb 2024 19:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.193.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D5417744
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 19:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707247210; cv=none; b=PXg+HdfPaad9kth18B1gLhHwv1nTg8vpro0sEew25i6w9D3khj9D785LmqWtzRqJpwhogkfi36SN70FqdpTXNiFXew4uymOa7Zl4+nWZIjhDqe3qP1+UW8W8RkojVl1D10/gD0ewOJuFRFVhlOluzYIPvaGr50HLH+B38U514q8=
+	t=1707248135; cv=none; b=EQKWDyGA0bHrU0A8cipg+xUsXkky6DO3eWcxXEyFbjlBh/SlcKcDjroTj7IB2Cb+/nREuP2CqVqFxND+ffsEpsycf/A0wVXoXacTYIL2Y0sCEnxySpfrKdP2IM//Z8G2X+rE3jGqePhxeNXrvrg6mNGlI00jWaPDfCO1rC3wU2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707247210; c=relaxed/simple;
-	bh=3iSqkYE7BU24TdTslIeyhkwASqnpAZB9syTd+oJD1KA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bQa7NanO4z/5F+1j6f/StSvJa4eroVgBGigU7L3ObdWpRahUIjTZVbEA3xMnznKZJofga+ehJLoa9BtKEHe36n0g3vePMjcUoJuI5PSRuv1Ain5I4AeYorbfA8BQVoGdMZlevaouZCxfqlvgNhdQOwCDsq33et55A9aQFQ+SXio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=christina-quast.de; spf=pass smtp.mailfrom=christina-quast.de; arc=none smtp.client-ip=116.202.193.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=christina-quast.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=christina-quast.de
-Received: from [192.168.244.146] (tmo-103-215.customers.d1-online.com [80.187.103.215])
-	by mail.someserver.de (Postfix) with ESMTPSA id 7BB29A21C5;
-	Tue,  6 Feb 2024 20:19:53 +0100 (CET)
-Message-ID: <eb229460-0efc-448a-863f-ac0634a72f2c@christina-quast.de>
-Date: Tue, 6 Feb 2024 20:19:50 +0100
+	s=arc-20240116; t=1707248135; c=relaxed/simple;
+	bh=8NpezXNrfkFlFHdfEHZRzWtYzbLL3RDV2uywd5SBqbc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AKpbZu/Fs+fC4HZ0263LHLm/VjupkjdzGDAeDDgBO60ckde/AfMScVePlUkgZntdhsuVVCtqTsXwR/UIUeAz+TqJxQ5ZegKM8IXc4tI3JcZbfg6kDpfmpwHxwO45endm9KyMK0OrVOY4B5SuAGsMkCDG2uv6jLPyacT3ImE1gwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DwR+AvlL; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DwR+AvlL"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5ffdf06e009so53723107b3.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Feb 2024 11:35:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707248132; x=1707852932; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N974SEtZMfqJOuSF8H0DzJbNXP3hTtsAR2YbBB9Z+YM=;
+        b=DwR+AvlL9omHIzaeTHmUMvc1iTo3UZz+qpI9DRUFe+tGsoapfA1sDmJJIruXgyC9UB
+         6HqYReENZwqZW7ecOMFOOE9fSrZ2/W97qIKavpdmx/ThJ6QcCYoX/rPFpU1mD09a6eO4
+         fw9TC43EE7lJml/rtcyR2R7pVdZcXyLTZMsJOcEKzWw/qaWBIKxRlEpDnMLv8ScRe4yf
+         9Vm8p6eiFosiNdEDmW13aTf0uEClkB7ZQDuerTC6r5CdC8jwEHm0PnJgdvl/6MnOPgBr
+         WK72eeTnhb3B6d7hyogmf2YDX+ieCUW+tyqeEyIiXw4NS6GMGqfZIlCaNCL5lzg6OUq1
+         hDjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707248132; x=1707852932;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N974SEtZMfqJOuSF8H0DzJbNXP3hTtsAR2YbBB9Z+YM=;
+        b=kPxnmewEDfyw1TPSJRr5T025AwVEOJFnw4Qf+ZQmwez8HC2b0Ro8KN0+zcwaXJn95m
+         a79zNjv7qy61Mberud/nFxtXwRxn4eRKUHhTyUizUZfmXd9zfwQSAeiQYw5ju7Gi6ZKe
+         HaUN9Nohnp2JStxlHzIVtBwwZDHzIRkleJucK8dUwrl4KtcwAPaUZ+60lxxTgpsvikyw
+         K8748MtzEPZyFnSzhL1mICdFXS6ojzI8R+IqZSA6zOowSPjQUzhdWNSihx4YgEwFg4kz
+         0adlfSPhDz8kuQNkfvMGBLc7heW28+2DRaGw1q1DvkfL9VQRkGj2X+kE8l4sDBLLdeOg
+         sqSA==
+X-Gm-Message-State: AOJu0Yy2FnDNS8igjE4f8u28Q/8AuIH76zn8BFWLfB4+IsNhiTI5pW91
+	zmaF4bWusWvZI9r1n9xtDBKwnz7DNvCaJ/a8pAWuOaGB+S5m0CHW71TbUzN4AaQ145KPqT3Gb3T
+	xkSIrD9rjZMUoT7aOFk5zvaOPMG0orETXwKuaZA==
+X-Google-Smtp-Source: AGHT+IHGpuCjy3G0xdOjebntuElNhHLc/Hgk/75ccv0+i6hQySZiYnnkwy7WoGpxr+KENGHL71kl2dtzNBqb7wK/VXQ=
+X-Received: by 2002:a81:d30b:0:b0:5ee:7299:e2cf with SMTP id
+ y11-20020a81d30b000000b005ee7299e2cfmr2300773ywi.52.1707248132346; Tue, 06
+ Feb 2024 11:35:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] net: phy: add Rust Rockchip PHY driver
-Content-Language: en-US
-To: Trevor Gross <tmgross@umich.edu>,
- Christina Quast <contact@christina-quast.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Heiko Stuebner <heiko@sntech.de>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org
-References: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
- <20240201-rockchip-rust-phy_depend-v2-3-c5fa4faab924@christina-quast.de>
- <CALNs47tnwCgyvM2jBo=bTt1=2AJFt3b6W+JsTHM3Np2tbNJYCA@mail.gmail.com>
-From: Christina Quast <chrysh@christina-quast.de>
-In-Reply-To: <CALNs47tnwCgyvM2jBo=bTt1=2AJFt3b6W+JsTHM3Np2tbNJYCA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240206065429.1933397-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20240206065429.1933397-1-dirk.behme@de.bosch.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 Feb 2024 20:35:20 +0100
+Message-ID: <CANiq72kqdsX34MOCz1qOyb0TCxsHAjn9N9S5OqdxfwwtJSGXUw@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: extend abstraction and binding documentation
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Trevor!
+On Tue, Feb 6, 2024 at 7:54=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
+ wrote:
+>
+> CC: Miguel Ojeda <ojeda@kernel.org>
 
-Thanks a lot for your review, I learned a lot! I felt, from the feedback 
-in the Zulip forum that rewriting more phy drivers might be interesting, 
-but I think I misunderstood something.
+Nit: it is typically spelled Cc (i.e. camel case).
 
-There is no specific goal behind the rewrite, I just thought it would be 
-useful to bring more Rust into the Kernel.
+> +.. code-block::
+> +
+> +                                                       rust/bindings/
+> +                                                       (rust/helpers.c)
+> +
+> +                                                          include/ -----=
++ <-+
+> +                                                                        =
+|   |
+> +         drivers/              rust/kernel/              +----------+ <-=
++   |
+> +           fs/                                           | bindgen  |   =
+    |
+> +          .../            +-------------------+          +----------+ --=
++   |
+> +                          |    Abstractions   |                         =
+|   |
+> +       +---------+        | +------+ +------+ |          +----------+   =
+|   |
+> +       | my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | <-=
++   |
+> +       | driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          |   =
+    |
+> +       +---------+        | |system| |system| |          | bindings | <-=
+----+
+> +            |             | +------+ +------+ |          |  crate   |   =
+    |
+> +            |             |   kernel crate    |          +----------+   =
+    |
+> +            |             +-------------------+                         =
+    |
+> +            |                                                           =
+    |
+> +            +------------------# FORBIDDEN #----------------------------=
+----+
+
+Thanks a lot for the effort of making that slide into ASCII :)
+
+I could try to see if I can export the diagram into SVG and include it.
+
+> +The main idea is to encapsulate all ``unsafe()`` handling in the abstrac=
+tions reviewed
+> +and documented carefully. These are considered to be sound then. With th=
+is model
+> +it is assumed that users of the abstractions ("my_foo driver") can't do =
+anything
+> +unsound if
+> +
+> +#. the abstractions are sound
+> +#. they don't use ``unsafe()``
+
+Like Valentin, I feel the wording needs some improvement here. Part of
+the confusion may be the `unsafe()` there -- it is unclear what it
+means (especially given the parentheses).
+
+It is true we want to encapsulate C APIs and we forbid calling
+directly `bindings` outside subsystems / exceptional cases; and
+ideally provide safe abstractions as much as possible. However, we are
+not the ones "considering" the abstractions sound (or at least that
+way of putting it may confuse readers). We do our best to have sound
+abstractions, but it is not something we "decide". So if e.g. someone
+passes a raw pointer and just dereferences it in a safe function, that
+is most likely unsound and it should be fixed.
+
+That is, in turn, what allows callers to avoid breaking things. In
+other words, we don't "assume that users cannot do anything unsound"
+(introduce UB?) -- quite the opposite: what we want (as much as
+possible) is that they cannot introduce UB even if they tried.
+
+And that applies even if users use `unsafe`, as long as they use it
+correctly, i.e. as long as they don't break the preconditions of what
+they use. It is just that the best case is that they do not even need
+to use `unsafe` calls (this is why we want that APIs are as safe as
+possible, because then we minimize the chances that users get it wrong
+and introduce UB).
+
+> +Abstractions
+> +~~~~~~~~~~~~
+> +
+> +Abstractions are the glue layer between the bindings and the in-kernel u=
+sers. E.g.
+
+Perhaps we should avoid "glue layer", since that sometimes implies
+that it is a "thin" layer / "uninteresting" layer. However, the
+abstractions are the actual interesting bits (and can be quite
+complex, precisely to achieve the relaxation of safety preconditions,
+i.e. making APIs "as safe as possible", that you mention below).
+
+But it is quite subjective.
+
+> +The webinar `Rust For Linux: Writing Safe Abstractions & Drivers`
+> +
+> +       https://www.linuxfoundation.org/webinars/rust-for-linux-writing-a=
+bstractions-and-drivers
+> +
+> +has an introduction to this topic.
+
+I appreciate this, though some of the things in there are outdated, so
+I am not sure about including this nowadays. Perhaps we should record
+new ones instead :) Or, even better, I could "write" the talk in
+written form here, which can be maintained and be kept up to date.
+Relatedly, Benno is working on some extra documentation about how to
+write safety preconditions that we will probably add around here when
+it is ready.
 
 Cheers,
-
-Christina
-
-On 2/1/24 22:06, Trevor Gross wrote:
-> On Thu, Feb 1, 2024 at 12:07 PM Christina Quast
-> <contact@christina-quast.de> wrote:
->> +++ b/drivers/net/phy/rockchip_rust.rs
->> @@ -0,0 +1,131 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +// Copyright (C) 2024 Christina Quast <contact@christina-quast.de>
->> +
->> +//! Rust Rockchip PHY driver
->> +//!
->> +//! C version of this driver: [`drivers/net/phy/rockchip.c`](./rockchip.c)
->> +use kernel::{
->> +    c_str,
->> +    net::phy::{self, DeviceId, Driver},
->> +    prelude::*,
->> +    uapi,
->> +};
->> +
->> +kernel::module_phy_driver! {
->> +    drivers: [PhyRockchip],
->> +    device_table: [
->> +        DeviceId::new_with_driver::<PhyRockchip>(),
->> +    ],
->> +    name: "rust_asix_phy",
->> +    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
-> Tomo wrote this? :)
->
->> +    description: "Rust Asix PHYs driver",
->> +    license: "GPL",
->> +}
->> +
->> +
->> +const MII_INTERNAL_CTRL_STATUS: u16 = 17;
->> +const SMI_ADDR_TSTCNTL: u16 = 20;
->> +const SMI_ADDR_TSTWRITE: u16 = 23;
->> +
->> +const MII_AUTO_MDIX_EN: u16 = bit(7);
->> +const MII_MDIX_EN: u16 = bit(6);
->> +
->> +const TSTCNTL_WR: u16 = bit(14) | bit(10);
->> +
->> +const TSTMODE_ENABLE: u16 = 0x400;
->> +const TSTMODE_DISABLE: u16 = 0x0;
->> +
->> +const WR_ADDR_A7CFG: u16 = 0x18;
-> Most of these are clear enough, but could you add comments about what
-> the more ambiguous constants are for? (e.g. A7CFG).
->
->> +struct PhyRockchip;
->> +
->> +impl PhyRockchip {
-> Remove the `helper_` prefix for these functions, and change the docs.
-> Their use as helpers is obvious enough based on where they are called,
-> better to say what they actually accomplish.
->
-> Since they don't take `self`, these could also just be standalone
-> functions rather than in an `impl PhyRockchip` block. This makes
-> calling them a bit cleaner since you don't need the `PhyRockchip::`
-> prefix.
->
->> +   /// Helper function for helper_integrated_phy_analog_init
->> +    fn helper_init_tstmode(dev: &mut phy::Device) -> Result {
->> +        // Enable access to Analog and DSP register banks
->> +        dev.write(SMI_ADDR_TSTCNTL, TSTMODE_ENABLE)?;
->> +        dev.write(SMI_ADDR_TSTCNTL, TSTMODE_DISABLE)?;
->> +        dev.write(SMI_ADDR_TSTCNTL, TSTMODE_ENABLE)
->> +    }
-> For consistency, just make the last write also end with `?;` and add a
-> `Ok(())` line.
->
->> +
->> +    /// Helper function for helper_integrated_phy_analog_init
->> +    fn helper_close_tstmode(dev: &mut phy::Device) -> Result {
->> +        dev.write(SMI_ADDR_TSTCNTL, TSTMODE_DISABLE)
->> +    }
->> +
->> +    /// Helper function for rockchip_config_init
->> +    fn helper_integrated_phy_analog_init(dev: &mut phy::Device) -> Result {
->> +        Self::helper_init_tstmode(dev)?;
->> +        dev.write(SMI_ADDR_TSTWRITE, 0xB)?;
->> +        dev.write(SMI_ADDR_TSTCNTL, TSTCNTL_WR | WR_ADDR_A7CFG)?;
->> +        Self::helper_close_tstmode(dev)
->> +    }
->> +
->> +    /// Helper function for config_init
->> +    fn helper_config_init(dev: &mut phy::Device) -> Result {
->> +        let val = !MII_AUTO_MDIX_EN & dev.read(MII_INTERNAL_CTRL_STATUS)?;
->> +        dev.write(MII_INTERNAL_CTRL_STATUS, val)?;
->> +        Self::helper_integrated_phy_analog_init(dev)
->> +    }
->> +
->> +    fn helper_set_polarity(dev: &mut phy::Device, polarity: u8) -> Result {
->> +        let reg = !MII_AUTO_MDIX_EN & dev.read(MII_INTERNAL_CTRL_STATUS)?;
->> +        let val = match polarity as u32 {
->> +            // status: MDI; control: force MDI
->> +            uapi::ETH_TP_MDI => Some(reg & !MII_MDIX_EN),
->> +            // status: MDI-X; control: force MDI-X
->> +            uapi::ETH_TP_MDI_X => Some(reg | MII_MDIX_EN),
->> +            // uapi::ETH_TP_MDI_AUTO => control: auto-select
->> +            // uapi::ETH_TP_MDI_INVALID => status: unknown; control: unsupported
->> +            _ => None,
-> Is receiving an invalid value not an error? I.e.
->
->      uapi::ETH_TP_MDI_AUTO | uapi::ETH_TP_MDI_INVALID => None,
->      _ => return Err(...)
->
-> I know the current implementation came from the C version, just
-> wondering about correctness here.
->
->> +        };
->> +        if let Some(v) = val {
->> +            if v != reg {
->> +                return dev.write(MII_INTERNAL_CTRL_STATUS, v);
->> +            }
->> +        }
-> In the match statement above - I think you can replace `=> None` with
-> `=> return Ok(())` and drop the `Some(...)` wrappers. Then you don't
-> need to destructure val here.
->
->> +        Ok(())
->> +
->> +    }
->> +}
->> +
->> +#[vtable]
->> +impl Driver for PhyRockchip {
->> +    const FLAGS: u32 = 0;
->> +    const NAME: &'static CStr = c_str!("Rockchip integrated EPHY");
->> +    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_custom_mask(0x1234d400, 0xfffffff0);
->> +
->> +    fn link_change_notify(dev: &mut phy::Device) {
->> +    // If mode switch happens from 10BT to 100BT, all DSP/AFE
->> +    // registers are set to default values. So any AFE/DSP
->> +    // registers have to be re-initialized in this case.
-> Comment indent
->
->> +        if dev.state() == phy::DeviceState::Running && dev.speed() == uapi::SPEED_100 {
->> +            if let Err(e) = Self::helper_integrated_phy_analog_init(dev) {
->> +                pr_err!("rockchip: integrated_phy_analog_init err: {:?}", e);
->> +            }
->> +        }
->> +    }
->> +
->> +    fn soft_reset(dev: &mut phy::Device) -> Result {
->> +        dev.genphy_soft_reset()
->> +    }
->> +
->> +    fn config_init(dev: &mut phy::Device) -> Result {
->> +        PhyRockchip::helper_config_init(dev)
->> +    }
->> +
->> +    fn config_aneg(dev: &mut phy::Device) -> Result {
->> +        PhyRockchip::helper_set_polarity(dev, dev.mdix())?;
->> +        dev.genphy_config_aneg()
->> +    }
->> +
->> +    fn suspend(dev: &mut phy::Device) -> Result {
->> +        dev.genphy_suspend()
->> +    }
->> +
->> +    fn resume(dev: &mut phy::Device) -> Result {
->> +        let _ = dev.genphy_resume();
-> Why not `?` the possible error?
->
->> +
->> +        PhyRockchip::helper_config_init(dev)
->> +    }
->> +}
->>
->> --
->> 2.43.0
->>
-> As Greg and Dragan mentioned, duplicate drivers are generally not
-> accepted in-tree to avoid double maintenance and confusing config. Is
-> there a specific goal?
->
-> It is quite alright to request feedback on Rust drivers (and I have
-> provided some) or even ask if anyone is willing to help test it out,
-> but please use RFC PATCH and make it clear that this is for
-> experimentation rather than upstreaming.
->
-> Netdev has seemed relatively open to adding Rust drivers for new phys
-> that don't have a C implementation, but these phys are of course
-> tougher to find.
->
-> Also for future reference, changes intended for the net tree should be
-> labeled [PATCH v? net-next].
->
-> Best regards,
-> Trevor
+Miguel
