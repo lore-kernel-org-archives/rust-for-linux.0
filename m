@@ -1,116 +1,83 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D61C1B957
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 21:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF51C2B3;
+	Tue,  6 Feb 2024 23:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707255071; cv=none; b=j+9IiTeOGth3MODX/uwUj3atEKcSkL0Uy5jOWHXXxE4x2AZDUJM8Qb0WBCtzYIv9PlYH9lPDgYDdgdujBKVTkGehTFOihBfq2tFwKr4DC9aoZDb0dROaEym0ptSSOGd8llP4zAhzvO86Yallq7cGu1xEXB+kvUwcu8jms342Nd8=
+	t=1707260473; cv=none; b=mIVT+rn8NkeNRSPiBEjgFrDYDUqsm4iL8OtUWBr8ZB2Q4XRVUAn8NtlFLuI5JUtRtdXgpXCEgNFhJCQEY14KqEHYwA9PA+Q6d/baA9/4Uk2mX4YacME5Z0upwVSsY7liFIQ/r9DL5GiAeXnb/cAz99847Cf7CATjTSqyf+sgXCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707255071; c=relaxed/simple;
-	bh=VhV9Y2ehoq2QR/dvYkGZ3565MBi13h4c1EWlFat09sM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E3gc1NOeu33QFok69Bm9sSJMnb6PIAANRdk9IojjoXl3CoGOnY9UPzN0JAvm6/pDg4NBLmCIncHgcXQUx9qYrInRqCoGEKDA7Uykd9NckfmHDOqEAxdd11Iyqbi4SwB11TpEikkaZ1XePGA9i38PK8IM3zx1uCvwVa1q8RjrUeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=lnMYX+xS; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1707260473; c=relaxed/simple;
+	bh=whJJHCSgv9wS0iFIrlNtciLwFTUFvmaPY7s1Vz49+DI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W19zphLING9ckFYP/6rK0pTEIBs/I2YmaAEl4s95dU2TPi3r0+pbVYrkuWIVonioCUDIg+KVfW7yrKUHq9Bvg8oAbRz2kIICFWUMGG3pHBl0RezRUh5yt8ehj6x60QRkUfWR5YsEfUyMtzz0cU1aqcBthj4dEJT/9sBdy62msSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fQrdi6qP; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="lnMYX+xS"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-603fd31f5c2so8858817b3.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Feb 2024 13:31:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1707255068; x=1707859868; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VhV9Y2ehoq2QR/dvYkGZ3565MBi13h4c1EWlFat09sM=;
-        b=lnMYX+xSSKdpMZr27IDA7Zu4pzAF+15Kege5EY3dGOt+5lSSekvOr8NqA1N6eoaHA8
-         b9Q+CjpSHeszCI0BaL/Qzpn2pt+L02fJGEnIE/y5ktMNP/fKAFAgBk6PGP3ye6RO0ItK
-         Ixx1cOtTLlM4gWb4+brUkw9dcPMh22QMX6wyWMv8MZJ7XAdE5NnlZ485RcWak+bxGswT
-         /EZk0fmS6wgeecGvFF8q77AVtk2xr3d60hMF9N+a8BBt0m2kKakSFPp3tG2LKF37YNNU
-         pMY3oyFiIc+ka0YyM5evLuHRQJ8RGJ8f14qCiWds4du5gE2Vjpiz4G2lmMwr1k6I5Nk4
-         TEnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707255068; x=1707859868;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VhV9Y2ehoq2QR/dvYkGZ3565MBi13h4c1EWlFat09sM=;
-        b=jXFKGfESYO9j821gCyfWof4NRdxSyc0eDsH6CO/qfEKe8dJBBzuWkdkTTlgqSXhr5f
-         3kop0zYVAQF10J4tRq8esTCD9ES1qziVhR3y6W6vDxHrH/egYX+wEAhZE/mMo4xriciI
-         4600fR7HvQaa1jccCfU8CV4n71mRuOlprjYrLexdM2jIe4+g/OolpdafQe5RN/uOSmMe
-         cV5s8CuIBgrE5Y/SX8mlTSYyHC1Quo1YZVu+IyslB+BFmQXPEizXXMudTEgi4aCfMc+T
-         WTscC9tAXb5hEey7r6huQbcuEU5MmOLXthcXQTnQPvS8DzrdTt0Yy4Z0xv8I13V4t2PQ
-         HH3w==
-X-Gm-Message-State: AOJu0Yw0Zfz2Nu6b5eHuYuYyy9+TuEgMmL+M/TOh+03UoC4+jEGQDZV3
-	/0EeQCY+kMBtAxc2WXteI2E+2qa9w1JyvtDHTYfBwk5WmZ31TfyFVVdQwgL7CNHYzWK9Im5Puy7
-	FD0wgYNtE3pkUzweHcuGto7M/rp6lePmfaiOcGw==
-X-Google-Smtp-Source: AGHT+IFD2ZtVNg+yyFr7gOe+lmhrUgZsDA+InS6rti8MMhXWEbu1XvWLZZAzBuooSjg26Rp0Iuv+ch+bOB9DNvbOdYw=
-X-Received: by 2002:a0d:db4f:0:b0:604:3ef:a729 with SMTP id
- d76-20020a0ddb4f000000b0060403efa729mr2685245ywe.15.1707255068386; Tue, 06
- Feb 2024 13:31:08 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fQrdi6qP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=SPTt7oR80AXopIqc8+4lr98M7p1eXFt9rIgm1PC5o50=; b=fQrdi6qPz/zge9lAr3PYPcDhWX
+	wgsdjTy6Y9dfZKxU31mz5TfYs83AxSbxnZsNk7jea/wFJC0w1dwy577REAke3LBptq8c4PGLkP/Yi
+	vQiUhZim6exUJ1Fb83XryCA1YOXZE3oEIOC+N942NdhvoXg5bkw3z6xFFXVbKUrrNPbc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rXUQj-007Axh-DB; Wed, 07 Feb 2024 00:00:41 +0100
+Date: Wed, 7 Feb 2024 00:00:41 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Christina Quast <chrysh@christina-quast.de>,
+	Shashwat Kishore <kshashwat13@gmail.com>,
+	Christina Quast <contact@christina-quast.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heiko Stuebner <heiko@sntech.de>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v2 3/3] net: phy: add Rust Rockchip PHY driver
+Message-ID: <8a95a80f-55da-4606-a55c-59b63a249178@lunn.ch>
+References: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
+ <20240201-rockchip-rust-phy_depend-v2-3-c5fa4faab924@christina-quast.de>
+ <CALNs47tnwCgyvM2jBo=bTt1=2AJFt3b6W+JsTHM3Np2tbNJYCA@mail.gmail.com>
+ <eb229460-0efc-448a-863f-ac0634a72f2c@christina-quast.de>
+ <CALNs47tfmcayLdbLbArPS=AHwETiaQKZ09h69_Q4HmfrMPk4-A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de>
- <20240201-rockchip-rust-phy_depend-v2-3-c5fa4faab924@christina-quast.de>
- <CALNs47tnwCgyvM2jBo=bTt1=2AJFt3b6W+JsTHM3Np2tbNJYCA@mail.gmail.com> <eb229460-0efc-448a-863f-ac0634a72f2c@christina-quast.de>
-In-Reply-To: <eb229460-0efc-448a-863f-ac0634a72f2c@christina-quast.de>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 6 Feb 2024 16:30:56 -0500
-Message-ID: <CALNs47tfmcayLdbLbArPS=AHwETiaQKZ09h69_Q4HmfrMPk4-A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] net: phy: add Rust Rockchip PHY driver
-To: Christina Quast <chrysh@christina-quast.de>, Shashwat Kishore <kshashwat13@gmail.com>
-Cc: Christina Quast <contact@christina-quast.de>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Heiko Stuebner <heiko@sntech.de>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALNs47tfmcayLdbLbArPS=AHwETiaQKZ09h69_Q4HmfrMPk4-A@mail.gmail.com>
 
-On Tue, Feb 6, 2024 at 2:20=E2=80=AFPM Christina Quast
-<chrysh@christina-quast.de> wrote:
->
-> Hi Trevor!
->
-> Thanks a lot for your review, I learned a lot! I felt, from the feedback
-> in the Zulip forum that rewriting more phy drivers might be interesting,
-> but I think I misunderstood something.
->
-> There is no specific goal behind the rewrite, I just thought it would be
-> useful to bring more Rust into the Kernel.
->
-> Cheers,
->
-> Christina
+> Andrew might have some ideas too. There are a lot of new phys coming
+> out since MACsec is getting more popular, also some newer specs like
+> 10GBase-T1 and 10Base-T1S.
 
-Happy to help :)
+Those can also be hard to get hold of, unless a vendor is interested.
 
-There is definitely no harm in experimenting, but the general
-(reasonable) rule is that there shouldn't be duplicate drivers
-in-tree, even across languages.
+Another source to look at might be OpenWRT and DD-WRT. These projects
+are not always good at upstreaming. They sometimes just use the vendor
+crap drivers. See if they have any PHY drivers for devices not in
+mainline. Any they do have should be for COTS hardware you probably
+can buy off the shelf.
 
-What you probably saw on Zulip is that we were trying to locate newer
-phys that don't already have a C driver. Shashwat reached out to a few
-companies and mentioned that Microchip was interested in drivers for
-some of their VSC84xx/82xx families. They are a bit more complicated
-(MACSec, XFI/SFP+) and apparently somewhat difficult to get hardware
-for, but that might be an option if you are interested in working on
-something like this.
-
-Andrew might have some ideas too. There are a lot of new phys coming
-out since MACsec is getting more popular, also some newer specs like
-10GBase-T1 and 10Base-T1S.
-
-- Trevor
+    Andrew
