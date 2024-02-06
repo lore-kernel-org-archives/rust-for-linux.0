@@ -1,94 +1,109 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBAF12FF96
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 11:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52911111BD
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 14:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707219123; cv=none; b=ZJJBi/QqljPa4OKVMC7m01ArnzQzQJf9VxD7QOXu4RPrRnD9+7u3Kwu9cwMSjQux3fk7X5pCDrdipS1afcCViWDb9L4x31WcefCBXBo2zwGaT8Waopy370HN7hu4j9aABCA4fhA5eljjd/xPAKTzS4y9oTfrq/QiODNr2k/vMS8=
+	t=1707231006; cv=none; b=ElnqpDziWrA7NccuRcKU1Sar6EQVwrVjqg/AwplQ2UB0mcUQgBcd1dlv6jY+2dCAOQNSw3BFPwK/AGIm7y24ARO5OYYS9iE7QrFOCujyHLUZcBQWsuLACr0Ek0N0Q5J+NfbJY3X0NXU9/d8E2lluVCvVXlWXV9shmkf40fCNOGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707219123; c=relaxed/simple;
-	bh=XbOKHFfG4p8qR8k8h1d+3s/edHf9JT2yRp85LKfCngY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TgL7eVy94ShlZXjPhgGRAiqTupoMMw/CZowcD5ER+eQOlxx3ts8F7yihyoCr52q529pgmqhfPFYurViNrreo9piBw9CSpwIVpriPV5OVNcfBtAAtibtP5rOcIuLjULJn5rriKVl6aBqV7eBbrAGSrnU/vUtdCZq07vr6pgHLy1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Porp6JTZ; arc=none smtp.client-ip=209.85.128.171
+	s=arc-20240116; t=1707231006; c=relaxed/simple;
+	bh=1Zg1QTrihNZVPwqSwW07+LD8l7IlKuSMQcItbBjJasU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FJj5IUFLtoI3DLrGz5iYqF5mgjx28LtFdB5XT5r+uL2BavruP25I0tGksVQ3ufV+OBY9chGEBYpQKHly0BX72asW/Ej4L17qrv4e8YHBOdKjqNvLQ67TSnSt08U5TridZjJPci7oTZmarW1QnrwTLmEyZiSj5EzANVcQDJ6oU8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Klh0ui+j; arc=none smtp.client-ip=209.85.166.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Porp6JTZ"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-60481f283d8so2029347b3.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Feb 2024 03:32:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Klh0ui+j"
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-363c1829cfaso9051845ab.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Feb 2024 06:50:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707219121; x=1707823921; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=883tFjRyJ82A2iB99WBLeD89ui1B1E+lTZccBRY57Bk=;
-        b=Porp6JTZBqdYUSWWqWlaRffMAPfo7z+ox2KPKp12WFv7j0966J6GUa4gCq11tWQLba
-         EhWznup3O9wOphJ7PAnmUJe3lE6lZwqrK2yupjeBlsba7rx2QKVv6m2QQgyig9o6TEFX
-         q9OnUSNCZkomSbtezpVeGE1gT+HpPCirL2BeGiG35LumIdJ+jycpjh4/WJCNtkvDDm8t
-         U3fZOntKpMi7z6GVHdPZ3wD9w2seotJ6rkWAOE3NUqeH5/XRkdPXhMBlMwlFVqZvqkTy
-         4NYeSKfOLEojKSnb8WRnbEGQAQTMULeznpiwTIiDtTeU1ErAagxQLuYYIvKUOn73hmUn
-         e/xA==
+        d=gmail.com; s=20230601; t=1707231004; x=1707835804; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JXF/tl0S8c5UWlObr56nrfZQQ/DtiwHU7UPIEQFbWnI=;
+        b=Klh0ui+jt7QaRFrvcMNO6r8BnQ9pKNk71D5QC+4sMkFMMhZkD1ZR92mXa4iLkrxYts
+         XvIajOVopBkmBkhz/WDmdDyJN/K/B9v/oe6lZHtEs3IrGnUtfEqgRh5aMij4Z8YORlMz
+         QKe2bCTy+X/3SycS3ahXKXDFlZjM8zTecXIOA2TYkpMOO2NpCwSkxJJ6qgN1PiTkBK86
+         eKVqhq/3c3VUOyn/bEZRSuVl+HtoumOO/PQFhNr6Yu6GTbQSSAFxwb12c8iVjWOm4jOW
+         /bzcQzPGCzeICyNkce6k4Q5QNuW6/zJJzEau5TKVmNKpBsO2bower54dp80k+ki+2CxZ
+         elTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707219121; x=1707823921;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=883tFjRyJ82A2iB99WBLeD89ui1B1E+lTZccBRY57Bk=;
-        b=h69rgvlvUcuh++C5yaIEasnlzX4+1rlg0vIAnE0u5K3670V6JwRbeJoQ/9ct20AKYQ
-         ztZxetfKdIRBfRuYLo0Fi7Uc91i4Mdr2UFupdYMcAxm9wT1chyfsOO8N/e9qzRDhSxp5
-         DWVFER+rJYRHjhmxnruFlD12TIMJDLSADMVLIZch/RNwzD+hn6/RcYP8hDI3So7VpyUH
-         doo/18WSEccTVGqfuhDl/cIirlwpVN7V+NO4FPUSQxqXGvAtHONUjG86SxWds473lW2F
-         KU0Zzy2t09J26RsRpFflVx3It9aSCSOnV2oXscV/k+HsnZ5LuEGWef/m4OL7TFqo0Mv0
-         fGPg==
-X-Gm-Message-State: AOJu0YxuL5P2e+8jYtuCK/boyiK+wOQImzwgZsCt0yCXQmzejGShD7eP
-	FISstGSYP7GRe57JEvsm2sGQ9+PUs8xs4KON1o4TW4/QFtzrMk6yFjtyu0C38gDxrL02HWNE2A5
-	oTKo+gwT9WTrp/DELCHmxqd8YTwk=
-X-Google-Smtp-Source: AGHT+IFIGSndVrvdt6cNmOdvpj6Uxfdz7d6AVMSDDJW/h9x9jm2DDozrAYsBF8JpkPE5xaom1lGS4s9ANWrMOeZARzk=
-X-Received: by 2002:a81:c745:0:b0:604:55e9:fb35 with SMTP id
- i5-20020a81c745000000b0060455e9fb35mr854602ywl.7.1707219120970; Tue, 06 Feb
- 2024 03:32:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707231004; x=1707835804;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JXF/tl0S8c5UWlObr56nrfZQQ/DtiwHU7UPIEQFbWnI=;
+        b=HZpVgzn/4HdAcHkeAPiPNnTXhYbwFl/1Fo16Av1Oh1JX4hRhSQOTEPHuv1kB6hbkDU
+         ooIZ1owTtr6IXeDcgGfHAhHsDLEiqTtlVFap6mFvncysByAsRb+7FZFILBk8UGTKqE9e
+         38FLqfmVGGSe87ntpLBO2wiaii0/zehWCDyVtBggWEoE677iEx6s9cDL1uPiX19TVAGS
+         eVs5EYN1g/hcFeH9Gj81hDABM1i2WregTb39yeK2BvZuVYo6F2NKdDl2YY0WYlxfC4/J
+         J9cLU8hqMO56IylDbiR3uEIwnYVRBXKLg7bHx4p2MksVa8OG08h85oZgyHXcBcpG6Rce
+         O16w==
+X-Gm-Message-State: AOJu0YydlWCN0gZYjNo613dkP4qFVlNzZtLBy5VRBDWVVbVdJPs3IaVl
+	ppe1UPYiJDnm7V6hd5Uc4QfEtpWCB/AvVVBk+YWR6WTkAigWBbf9
+X-Google-Smtp-Source: AGHT+IED10VgOAOPDhXeFLjejEQsJ7/LWeUf4722n5plrsTbbhsFoQlA4b89IE4as+4Z81BSuDNb6w==
+X-Received: by 2002:a92:c14c:0:b0:363:cac8:5c34 with SMTP id b12-20020a92c14c000000b00363cac85c34mr2883848ilh.11.1707231004275;
+        Tue, 06 Feb 2024 06:50:04 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCWNaEDteaEJDIDujHgDP4BGRf7sei6SckLxGOL9wsh2Iq9L9iJLfjmcKwMNc4UfbnprPUvigu8OZyBC89q210EnUfinHT71TPlHk1vYH5Gkcj33IxHclbQXczhHFdnIKjSbhnoo2IQWMqxv134Q50LqzHg855Bfqte8vlcLVLh5I5CsRGWbMJ7CFko9DIjrQGDtaF/31woc09DAwLBCkT+ovSQob2ddtFSTYy3kzOmWJJ31mfZT
+Received: from fedora-laptop (c-73-127-246-43.hsd1.nm.comcast.net. [73.127.246.43])
+        by smtp.gmail.com with ESMTPSA id b17-20020a92dcd1000000b00363c584361esm542788ilr.80.2024.02.06.06.50.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 06:50:03 -0800 (PST)
+Date: Tue, 6 Feb 2024 07:49:59 -0700
+From: Thomas Bertschinger <tahbertschinger@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Greg KH <greg@kroah.com>, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, rust-for-linux@vger.kernel.org,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2] rust: place generated init_module() function in
+ .init.text
+Message-ID: <20240206144959.GE296718@fedora-laptop>
+References: <20240206012535.480193-1-tahbertschinger@gmail.com>
+ <2024020646-browbeat-cozily-0bf2@gregkh>
+ <CANiq72m8V2nycL=P8yT3M=e6Nek0w45zBK48Aqbt39Kpt+bwTA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240206012535.480193-1-tahbertschinger@gmail.com>
- <2024020646-browbeat-cozily-0bf2@gregkh> <CANiq72m8V2nycL=P8yT3M=e6Nek0w45zBK48Aqbt39Kpt+bwTA@mail.gmail.com>
- <2024020617-robin-countdown-d572@gregkh>
-In-Reply-To: <2024020617-robin-countdown-d572@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 6 Feb 2024 12:31:49 +0100
-Message-ID: <CANiq72=mR4c9CAi1MNRP21ABvMOj6DRa5_ZOh5qkUkraAz+KXw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: place generated init_module() function in .init.text
-To: Greg KH <greg@kroah.com>
-Cc: Thomas Bertschinger <tahbertschinger@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, rust-for-linux@vger.kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72m8V2nycL=P8yT3M=e6Nek0w45zBK48Aqbt39Kpt+bwTA@mail.gmail.com>
 
-On Tue, Feb 6, 2024 at 11:58=E2=80=AFAM Greg KH <greg@kroah.com> wrote:
->
-> But why not?  Rust code can call these functions, and you should be
-> writing functions in rust code in the init section.  There's nothing
-> "special" about this other than it is a memory size savings, and if you
-> get it wrong, the linker will tell you at build time.
+On Tue, Feb 06, 2024 at 11:51:35AM +0100, Miguel Ojeda wrote:
+> On Tue, Feb 6, 2024 at 11:01 AM Greg KH <greg@kroah.com> wrote:
+> >
+> > "once" is not right, it can be called zillions of times, it's just that
+> > it can't be called _AFTER_ module_init() is over for the file, as it
+> > will no longer be present in memory.
+> >
+> > So technically, the wording you added here isn't correct, sorry.
+> 
+> The safety preconditions may be stronger than needed. For instance, if
+> we do not expect anybody to manually call this, then we can say so. In
+> fact, we could even say Rust code cannot call this function.
+> 
+> Cheers,
+> Miguel
 
-I think you are talking about init-section functions in general -- I
-agree we could have safe `__init` Rust functions if there is something
-else that guarantees no case escapes (and, of course, we can also have
-unsafe `__init` Rust functions if there is no such system that
-guarantees that).
+I can send a v3 that fixes the wording of the comment; it's worth being
+correct.
 
-But here I was talking about the particular case of these module
-initialization functions that are generated from a macro and are
-explicitly not documented publicly (not just the one in this patch,
-also e.g. `__init()`). These could be even more restricted than
-`unsafe` and completely hidden away (in a "private-in-private module"
-or an unnamed constant or similar hacks to accomplish that).
+That said, my intention was more aligned with what Miguel suggested, to
+say that user-written Rust code should not call this function, rather
+than to claim that it's impossible. If there is a need for the
+init_module() to run multiple times, it might make more sense to put
+that work in a user-defined function that gets called multiple times.
 
-Cheers,
-Miguel
+On that note, does anyone know any examples of modules that call their
+init function more than once? I might go searching myself later to see
+if I can find any, but in case anyone knows any off-hand. If there are
+real use cases for this, it could be good to consider those here.
+
+- Thomas Bertschinger
