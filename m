@@ -1,129 +1,84 @@
-Received: from fhigh4-smtp.messagingengine.com (fhigh4-smtp.messagingengine.com [103.168.172.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103C3249ED
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 10:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5F44437B
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Feb 2024 10:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707216631; cv=none; b=Fm7ZJoE4/+3fNR/74DBE3Bv0IVLUQatngzzag5uigxxbCsmeODk/yTOcFxizn52cNogcwAZfhgaY1OIjUUDLdqto3kUgX6IwRJ6EOK17Yb4VE/BGzuCk6PJHjWmQD8sXpmkJWG30P8k8cWVeZEXAg+YQpGF5aEzTYTwCHg2KNws=
+	t=1707216709; cv=none; b=Xp/kGSCjJmdfhoGPHG9m2RiOFo+nX80lENtlETDLStA4wllqDsLeBZC6BLByeXLmDnqbK2skcmcE7dC1eck/GmRvOJhc75MdenLi40sysO9ZdGuXZoH76sE79p+nISAgAME49OHZ4RToIArLt5mmycG0FMyUsLl5xryX+q/J7c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707216631; c=relaxed/simple;
-	bh=lKhCZDeoEDvk+g23UT8JpFI8GvIuQZBuAmdAx04RpFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O6+SNgd/CFQN4NCl7CDiCvfb1FTEbzDwSogBZJMxfzs5VBKqm53h0JhZOK1wUIyynbYFmFnha43OPlaY1Pm1lwW99PfTbqwV9XXkov4MOqC3IoF7JQMwJWgjh/C67PAIxtfxLexhEPR8k+H43kbswMCQ5gWAkqG/ZbpkJsJtux0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=pW4wqDqB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KoSDXGmQ; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	s=arc-20240116; t=1707216709; c=relaxed/simple;
+	bh=F6uLDa8ANszizOuvxNVc8d0UEjU9017F3rOX84JDXtw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f5BOaqbL01E7YExhCYRcJ5Ae8dKdElFe9m8SHM3jtHaSz+diyiDYkrYRpFoD06m0hIO4zsnWp0V+prRUBVBxynqOLR7e23dfFOFjvWItHC0sGAmoOEqpwekGuZWE40Pp0zmC2XmnLJgaTIc3p+lsQo/CPfNjmUQV3WybtcfKdEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZcWQ/Sw; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="pW4wqDqB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KoSDXGmQ"
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id DDA6A11400B8;
-	Tue,  6 Feb 2024 05:50:28 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Tue, 06 Feb 2024 05:50:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1707216628;
-	 x=1707303028; bh=J9ISk/FWQkIFznQoTpg1liywwjssL91OHNxQt0rWQtM=; b=
-	pW4wqDqBTWWwZrp/KttvfYG80iW4H2k3sz9KMeOP5C1AvjNtbXOqOugo59kGFRT6
-	/Nf6TmrCU7FW3aFUIweV/+LERx5JUv2nnK34pHwq8jwcLoZHiIoX+PCbayRt6CDJ
-	Do0oWC23UFkpX/9k/ouZhxtrFMQqI5JncRO8a76vqDl79Q5GUd7emw9M0LXqS5yu
-	KybhwkWTPWz5RtNMenfqMtqcEevt8L3SX6d681YtQLZAzkrGzwzml9gb0iZ2gHML
-	s0xqcDgMNbP1g8r3jeZ21vcKID1oNuTMaNvUS9fb5RS+H2VA+41Xc79w6gxKgeIr
-	2Ui6ryjabwh4Zoj2bFTaDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1707216628; x=
-	1707303028; bh=J9ISk/FWQkIFznQoTpg1liywwjssL91OHNxQt0rWQtM=; b=K
-	oSDXGmQGUHvJIXhPFDmTWNOI6SeVUs/cQTpFTRlKla2Sczu3HRlvjOq/L5K4QvNF
-	+eb5uP+wZoPhzi7FIY482a84D26CMaXopRgLSNYfrPL3E3wOFN15IpLG83yA5yhs
-	tCmUJhd+DzTJBwRI+OXyBLMGWOrZZmMYWZlqk4ESuLcZgrzx51Y3alesZWV1qEnU
-	MHIugFlJLvFO8s7bORYoY7gPp4CIfyxjs8C5Ik/gUbummD0cIf8CT4uQC/yDbuYy
-	AFim0MZ5K9K0tlzvQZWA6NBvOGqDauhHcU+tRY0hX72Xii6LmTc0bizBbujvW5PE
-	83HVoXyBDO08XC3V+Rq5A==
-X-ME-Sender: <xms:9A7CZcYSBOy2v172fDiaqOAjCsiVZL7-nRhNseWyrtUSOUlD3IeLgg>
-    <xme:9A7CZXb-F3HInjukQPX-bKJB05L1A0bmM0laN0HQAPAZByLyiH5EG8PlvgRmyKy93
-    1IvlJ0-rFK5sQ>
-X-ME-Received: <xmr:9A7CZW-0_ZVzXeuIUcr1RS4J9T_Vi-_R09fD4kKYEaHQ8yHkfNDxLm_hmKbLUQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedvfedgvddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeekvd
-    eludeufeejteejjefgffelfeefveetkeekteeufeeiheehvdfgjeeivdfgffenucffohhm
-    rghinhepthgvgihtrdgtohholhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:9A7CZWr5WKrDMK7eAq3SY0W2LiMZLK0qWIeH-HlbcG8cVN1DR8KsJQ>
-    <xmx:9A7CZXoy841PMyvynhO-uASagURI1CP3AGgMs4n2C4eaaMFtO13DsQ>
-    <xmx:9A7CZUS2RMUO5rmonj1xv4n9fC-TVdlJ2tzX1SgWgRzDtSkv6j-bmg>
-    <xmx:9A7CZSAn_-1n3gm0_9Gx9LhvU6RYVm4fCQR1xAIFBK1TdEClUXpogg>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 Feb 2024 05:50:28 -0500 (EST)
-Date: Tue, 6 Feb 2024 10:50:26 +0000
-From: Greg KH <greg@kroah.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Thomas Bertschinger <tahbertschinger@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v2] rust: place generated init_module() function in
- .init.text
-Message-ID: <2024020613-illusion-quirk-14d4@gregkh>
-References: <20240206012535.480193-1-tahbertschinger@gmail.com>
- <2024020617-edition-underpaid-4873@gregkh>
- <CAH5fLgjYCg+m7+Q63gFr425NiMkhTPWkDufB82pPHCZNhYAk9g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZcWQ/Sw"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc6d9a8815fso5187227276.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Feb 2024 02:51:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707216706; x=1707821506; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F6uLDa8ANszizOuvxNVc8d0UEjU9017F3rOX84JDXtw=;
+        b=IZcWQ/SwmVdkcrL6k3Yp3fedE8wZLawLu3S07svgPld+z4cwhiaOQvTrcZzhggJXXx
+         s9C43sjfzFC7QnzsGjjfFuC9fjn356EThTA4o7Ml3f+au+O4s5ne9vFxb9KudAeFY/Cc
+         tpNhD2OekhoTvS6gWKlhDr0L9q8RCp2eVWTVHbRD8fe0VWso3K/oXFLUhFoqtTZBHnAO
+         pTcp26CLy7jPbXNdZUXm6xbl18mBIZXP6QSu5R0FbN5Zy9KwTfT5XKEU5UUseQYO5P9h
+         hvGdyQYUZwvfJtSvMM6xitOvfhoaw6Uqu7NPidydanARWn2kTj02B2P4qodFbrA8OQT6
+         ZM2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707216706; x=1707821506;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F6uLDa8ANszizOuvxNVc8d0UEjU9017F3rOX84JDXtw=;
+        b=P1N1qhWqJjhmw9x4ZF/ADOBwaN4acrIEPoa7qBxMlfN8/tck9zWJ/5GFVJTPg2WcIw
+         tV+B3g6GWZ1XJcqYzauMD1T1tcz3koA4093eiosdtmgB7n5PQ9dEyU0uzpdLZ9zoP1ct
+         xif/B0/d7u1Si3M4z0s/lXkWe8GS+XmPhN4A4FaBBsjZIWCQsvLxZFzl73NrWSrcakVo
+         SD3ovfMLzwV68pmUWPbSfpto9OIBIhxiddBvKp4G1fynqJbFcrQqjI0Spay1r+ZvE5Ey
+         dAV8PLv7naHCBhpFfaiYFlVFeGeDvW96sjPJK2Q4THTZj0pWT3UPWACNLNv4zNliprkk
+         o26A==
+X-Gm-Message-State: AOJu0YyfprLRAm2kkO9n4pRx/6MdLT6PNN4cd+Z23z1erocvYGZaYdR2
+	sG0JsPP6p/t4KFtHtkjf2WwEDPCXm4y/k7Bb8AkMUtRmfCsXMJ1/3xVwWzkS3LfZ9D5YJDcXncy
+	QbkkgTQlZHI88b19S3z/24mEdoOg=
+X-Google-Smtp-Source: AGHT+IHfdX2FHcFFDrPWrHBKeEf01Cd6kFU2RNs2OITB6C0E/bBvvT4MxkNWHOjTdLl65pLeMMEK5ha5fpPG6XS2r84=
+X-Received: by 2002:a25:6984:0:b0:dc2:3c3b:fa3e with SMTP id
+ e126-20020a256984000000b00dc23c3bfa3emr1232824ybc.31.1707216706498; Tue, 06
+ Feb 2024 02:51:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjYCg+m7+Q63gFr425NiMkhTPWkDufB82pPHCZNhYAk9g@mail.gmail.com>
+References: <20240206012535.480193-1-tahbertschinger@gmail.com> <2024020646-browbeat-cozily-0bf2@gregkh>
+In-Reply-To: <2024020646-browbeat-cozily-0bf2@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 Feb 2024 11:51:35 +0100
+Message-ID: <CANiq72m8V2nycL=P8yT3M=e6Nek0w45zBK48Aqbt39Kpt+bwTA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: place generated init_module() function in .init.text
+To: Greg KH <greg@kroah.com>
+Cc: Thomas Bertschinger <tahbertschinger@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, rust-for-linux@vger.kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 06, 2024 at 11:29:05AM +0100, Alice Ryhl wrote:
-> On Tue, Feb 6, 2024 at 11:01 AM Greg KH <greg@kroah.com> wrote:
-> >
-> > On Mon, Feb 05, 2024 at 06:25:35PM -0700, Thomas Bertschinger wrote:
-> > >              // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-> > > +            /// # Safety
-> > > +            /// This function must only be called once, during module initialization, because it
-> > > +            /// may be freed after it returns.
-> >
-> > Oh, and the compiler will catch this if you get it wrong, correct?
-> >
-> > If not, you all should work on that, as it is caught in C code :)
-> 
-> Based on the commit message, it sounds like the warning that C uses to
-> catch this happens a link-time, which means that it is also triggered
-> on Rust code:
-> 
-> > If a Rust `init_module()` function (that lives in `.text`) calls a C
-> > function annotated with `__init`, then a warning is generated because
-> > the C function lives in `.init.text`.
+On Tue, Feb 6, 2024 at 11:01=E2=80=AFAM Greg KH <greg@kroah.com> wrote:
+>
+> "once" is not right, it can be called zillions of times, it's just that
+> it can't be called _AFTER_ module_init() is over for the file, as it
+> will no longer be present in memory.
+>
+> So technically, the wording you added here isn't correct, sorry.
 
-Cool, but has anyone tested it?
+The safety preconditions may be stronger than needed. For instance, if
+we do not expect anybody to manually call this, then we can say so. In
+fact, we could even say Rust code cannot call this function.
 
-> I suggested that we make this function unsafe too, to make it even
-> harder to call incorrectly.
-
-It's not "unsafe" at all!  It's totally normal, and "safe" and should be
-used for many types of modules.  If you get it "wrong" the linker will
-catch the issue, so what is unsafe?
-
-> But I think for the more general case of this problem, it makes sense
-> to rely on the existing warning for this.
-
-If the linker catches this, yes.
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
