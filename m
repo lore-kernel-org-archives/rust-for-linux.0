@@ -1,306 +1,159 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBE876404
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 13:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1CC78697
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 14:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707399987; cv=none; b=pOYzlbdd3lkBWEaA4LIx7BMyGUw1j+N/XGY/SYhIo0qYyWXEDG//4lTJcNJfgqq/ifSGtJVijlzCJUbH0az950D826NWy1a/W3DcDaqJB272PUyqCQE9lVY3apQe2e3NiET21PQJ2zq07vXtOn04vCjQ/QsI4rnUtC3c34HtAf8=
+	t=1707400976; cv=none; b=r72frv9NEfJdLfBM2wefFjm2gx1RYoerLcu7rPm7vcKiAE9QJjenvWA6jCTHd23zk7yYGqKEQMIHsf/S/hszCMs1akplTtlOdHrVNTPDzUsSuBWhzgDyOL5EZS+b/ODIQedfLw7CCQgwC2UvzQhOk8U9LTY1enSU8O8YiMenL/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707399987; c=relaxed/simple;
-	bh=AEbXhg3T6HNGjfKXM2h23pbz2O2nvCxM+3CfPHIHfJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a5c84tBBKc1fCZxgabESbi8EBbopPnUMnaNKkHb5Sxr7gIzfJ6hkQG0sLrIKwNDNKwX7KJWAxCSgieP3F/AlVKUhi7ttnZ4vXCurdqQ5YhuJuzemFN6tk9GYbg0ddlTQ6gzmvWfEk0kj3Lmx5KFzmu6ME3I6Kwa26NTiq4rSvGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L2X4+hb/; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1707400976; c=relaxed/simple;
+	bh=kEceGURTSCLX1LnHfzyT42pz7RXLd+AthgwrbZcGAGQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:Content-Type:
+	 MIME-Version:References; b=a953a4KK1wupbER1C8+agbypEqiNeQoNz6CcxH8jBfh45y9YZkrbJcnADMeDhQUO1Sq04kGUYhn+Tg4B4CxSZsfJvHhtnqAKl0+DdlJvQQgkAmwT56vvNrhJn/yvfmTpATd/Wk/WBJp9NxTjX8V5nk2Fsk7F/EILcsjSiVq/eGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=b4667edO; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L2X4+hb/"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d5bbbe57b9so827326241.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 05:46:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707399984; x=1708004784; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/L3VaVUJ969KRlxpqnrPaWtJ6K8FEE+/sV80j/XwhUA=;
-        b=L2X4+hb/qw/PkjJGmSX8kNijUEK3sYyAkROM39Xu/QVUdk6OcaxTkieMV8opXa3FKE
-         mb5YGLSGjNCMLQi/UQpa1V7iun77xTL2nzXgMQ3qqB+nKaohYc0/JCuf7zPn4NTJZGHN
-         wBrKkPi0dVeLTV189VHjXIWyZHCJEH9ZWwv3UMIAl8yq1NjYLiAHPUTx5R8pVRAltslc
-         vCmgXSuA/SBZWDBwdW066zzBoW3WqsiNtr8YM/xFInkJGeqpdpjnLqpLLkRTJSm7DXRx
-         s0qTXOfamAQ31j1OiiH0d/TwTn5wGCjX7J4g2iTl+8v3bhWo90SE7fye19mhza+LQnSI
-         vTfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707399984; x=1708004784;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/L3VaVUJ969KRlxpqnrPaWtJ6K8FEE+/sV80j/XwhUA=;
-        b=EnJGIIiVWjD15WH9Uz6kJB2NiDCoBZcW6EcglK0/fc/pwbEcoOV+MVUJ7ooiWJRdva
-         7o8ZgISR3u/P2bU+OxJq0TM/V/mfWVRD6TfFHTQoj3cbXLZ63P8Yt9rhgRL8l0I9he7V
-         ydxFJYbzj2U4Z0zzdI5bVv2xrGEFwxAjxY8qJMLYrerR5QHB9rzxW1kNneGApKGgl5Cd
-         i1fNGJFbA3B1ORDEVOEpJzmdpHgxlkegMybQn0528oKMPctmtlWJU7jvrEmloZY8rw+O
-         QMy+MkZP1AfYf1pHJq/lgkMCLT5VJFCyYAbsMB90bXV6njmgKv1XkCoqEUn9gol/AEPk
-         mGBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXjtwam1YMMBPX/3O1c7Ms+qUvl+RHDGUxHdGs5pPGzJoQTCcow+QIKFWS0hIU04DOHBSSGoYOaLxcaCQ5L+Foc1XJ+k2zwWXIzWsRg9HM=
-X-Gm-Message-State: AOJu0Yyr716YpZ6QJgCqIM4aJQnAwxW/piQbivlyeBvDcRQZ2WI0zGmC
-	63U1oomz80XUo7ewmw+nXiYrCbEmiSx/xCQoXa+38U0A+wyPmAZJchz1426OBXj57Vk0AwEWz5K
-	2l+cfxPX6ziPX04+ZgvHt2yU4aSX23KG8V+Uv
-X-Google-Smtp-Source: AGHT+IH6287k1PPBR4BUh12Zj7QCoeDvAPd2j0KqozKpvxtJQ61zdQBdx/BUaxVAT8L4YQHLbT9e6QxMKbfrbXZy9C4=
-X-Received: by 2002:a67:f508:0:b0:46d:6339:b9b0 with SMTP id
- u8-20020a67f508000000b0046d6339b9b0mr1204693vsn.1.1707399984309; Thu, 08 Feb
- 2024 05:46:24 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="b4667edO"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240208140245euoutp02cfaad6ae21e047afbe017a0ebb53c2d4~x6CHaDStv3162131621euoutp02F
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 14:02:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240208140245euoutp02cfaad6ae21e047afbe017a0ebb53c2d4~x6CHaDStv3162131621euoutp02F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1707400965;
+	bh=kEceGURTSCLX1LnHfzyT42pz7RXLd+AthgwrbZcGAGQ=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=b4667edOsAP6VVgelN+jEIx5AoXUUpyUMNGD89kol2ShCgaRqdm/4HQ2GoRWERwwe
+	 fSUih/K0WgZHVNCRkmOk7lx+c69NSZKECAf9+m6EuoFXXcgEWM9F0Z6/heGdoKJUbg
+	 yunDXY1oi0KXwCA4vqlPZfwalAvupd8q1UrNq/T0=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+	20240208140245eucas1p125409710592f469f6554eff90efb96aa~x6CG4gXAp0794807948eucas1p1k;
+	Thu,  8 Feb 2024 14:02:45 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id 5E.62.09539.50FD4C56; Thu,  8
+	Feb 2024 14:02:45 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240208140244eucas1p1308da6aac688043b2064e91a5e38b34e~x6CGZ4mGq0581005810eucas1p1n;
+	Thu,  8 Feb 2024 14:02:44 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240208140244eusmtrp1a05a67bc02bd29117a0f6de2f9c2d4ea~x6CGYIzDj3025730257eusmtrp1Q;
+	Thu,  8 Feb 2024 14:02:44 +0000 (GMT)
+X-AuditID: cbfec7f2-52bff70000002543-7a-65c4df053775
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+	eusmgms2.samsung.com (EUCPMTA) with SMTP id 04.DC.10702.40FD4C56; Thu,  8
+	Feb 2024 14:02:44 +0000 (GMT)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240208140244eusmtip129c48709c307eee724c0c1e6de2a9a6c~x6CGManwp3240532405eusmtip16;
+	Thu,  8 Feb 2024 14:02:44 +0000 (GMT)
+Received: from CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) by
+	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) with Microsoft SMTP
+	Server (TLS) id 15.0.1497.2; Thu, 8 Feb 2024 14:02:43 +0000
+Received: from CAMSVWEXC02.scsc.local ([::1]) by CAMSVWEXC02.scsc.local
+	([fe80::3c08:6c51:fa0a:6384%13]) with mapi id 15.00.1497.012; Thu, 8 Feb
+	2024 14:02:43 +0000
+From: Andreas Hindborg <a.hindborg@samsung.com>
+To: Alice Ryhl <aliceryhl@google.com>
+CC: Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, Benno
+	Lossin <benno.lossin@proton.me>, Kees Cook <keescook@chromium.org>, Al Viro
+	<viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>,
+	=?utf-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, Todd Kjos
+	<tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
+	<joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, "Suren
+ Baghdasaryan" <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
+Thread-Topic: [PATCH 3/3] rust: add abstraction for `struct page`
+Thread-Index: AQHaVNQ8VXQbcxmBfkinu8UJuZg2mrEAgLOAgAAEAwA=
+Date: Thu, 8 Feb 2024 14:02:43 +0000
+Message-ID: <87v86zrr45.fsf@samsung.com>
+In-Reply-To: <CAH5fLgi_iU3nDE-gJ56s8CPznWvC0T4P5M0dVx1zO61kmVGNgQ@mail.gmail.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <657A913530B0754F8DBFB2EBCA6CB2FE@scsc.local>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0xTZxje19NzoUpyWpR+somjG8t0jMsk89slTsmWnMRlQrIbu6hdOcEG
+	WlkPBWbcVjGjgqyr2G1SLkVEsVhSUmtxTFErs8WCDDCFmSG6NVMoBmxxc2WwjZ5d+Pe87/u8
+	z/O8Xz4Kk5wiEiilupjVqOWFMkIkdF3+feBpfLyHTW+8JkL1dhuB5us6SeQdKRei+ZrLJJqe
+	HyfQjL8cR6Pfn8eQzblXgIKXQgDNXhgi0WBfEKB9R+0EOq5LRn0HVGi4q55AN2x/4shl0+HI
+	amkFyP7LJQwdGmoiUJM/QqJ+1xUSDcx7cNRxvB1sgozrWxfOzEVqAFOnGxQyLZURAfONeYxk
+	mhxa5kjoPs442ioJxhGqIRnv4Tkhc77BRjK/6c8STHWFQ8Dc9RpwJuxIZByBu4Js+h3Ri3ls
+	obKE1aRt3CHaeVXvI4pMVNnsCT2mAw/IKhBDQToTNo79SlQBESWhTwDoH7lD8sUsgDM/WvBF
+	loQOA9j51RNVgIpu3Duyjue0AmiwLeB8scgx2ABf+AAcHPAI/9Md9C5gi1IEnQb9Nn8Ur6CT
+	Yd91XdQcowMkPGg9Fk0VR2+C/olrQp60GXYYhggePw+nQ5bospB+HDrN1dF8sfST0Nc2EuXE
+	0DmwI7wv2gf0aviTNRLVxGgpvB6wCPirxbC57izG43i40HWL4HEK7B8JAB6nw9PHuoU8ToL+
+	6h/A4v0YvRbau9J4yedg+GYE8DgJmg7cIvk4YthbG/hn9fAy2H3uBf7pXoaj/jS+HQcnPU7S
+	CFLMS8KZ/zcwLzEwLzEwLzFoAngbkLJaTpXPchlqtjSVk6s4rTo/VbFL5QB//2vfgid0BjRM
+	3kt1AwEF3ABSmGxF7OstPawkNk/+0W5Ws2u7RlvIcm7wMCWUSWOT89awEjpfXswWsGwRq/l3
+	KqBiEnSC5kruETerBPajiSdhOWmwrjVOKRRu7+fSSW5oQ837n752UoKxr4zs/fJm/JWpYUpp
+	mlKNBhOz1F/cOZe9Pv2qdL1zi+uz08uX7X+pseyP9zZsnfr5qbmulRK/O9v0IdDqWj54SLzj
+	/qr94kBKBW61JuVZ+08VnTH2ZvgCD4LOiUlT2Fir31rxxtsbLdxbjVlbmsty3kxvvZjgqZzZ
+	k5CfOTbdsW14YuHjbTmMs0fpre/vXLl9zWPdF0pur2oo2FNgMYzry3o/MU4abvt2l7KeZy52
+	H2rJLv1axr767rPe3Bura32KRrO8JDMlqzhzpq9Z0S5rt8eLlj+amxusi9v8XbdYJuR2yjPW
+	YRpO/hcnBtPERgQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Te0xTVxzHc+69vfeCwVwe4oE4nI0swFhLee2UMOJmMu+cIXNZzTZGoOIN
+	OGmLLZ3MzKXDKbM8ouAeVOQxQR4pFpva8RBUMIgrykvLwCETGBkjjAHdpsXqoJdl/Pf9nXw/
+	v9/5/nIOjft0kIH0QWU2p1bKM4WkJ2F7dmvsFWL8JhexVBuCykxGErnO/UChnuFcArmKuyk0
+	7xon0Z/2XAH6qf8ajoyWLzA027UIkOP6IIUGemcBOn7BRKKLumDUm69AQ61lJHpofC5AVqNO
+	gOoragEyTXfhqGSwkkSVdieF7lh/pFCf65YANV1sBDsga22zCthlZzFgz+kGCLb6lBNjWwxj
+	FFtp1rJVi38JWHPDKZI1LxZTbM93ywR77byRYv/Ju0qyBSfNGDvXUyRgl8xBrHlqDnuH+VAU
+	r1Zps7kXM1Sa7NeESRIUKZJIkSgyWiqSRL2aHBcZIxQnxB/gMg9+wqnFCamijLt5NjLrLJ3j
+	qMvDdeAxpQc0DZlouFAVpgeetA9TA+AVYwmuBx4r51vgZcd9Aa994VO7nuRNCwCWtBSuFTYA
+	nWMOwBd1ADaP1GCrCMmIod1od7fyY4Jh76jOTeDMFAV/njzh7uvL7ID2mXsEb3odNhUNkryO
+	g/OLFW6YYLZDi6HA7fdiQqCtYXht9AAGXY3z7mkezF7YtHTcbQLMC3Ci3kmtapzZDEenKjA+
+	BAOrr/athdsEZyafrYULh3eGpwCvI+CVmg6C19ugvWAErC4JZ0KhqVXMt5TCpV+cgNfb4Nn8
+	RxR/N294u3SKOA22GNZNNvxPG9bRhnW0YR1dCQQNwI/TahTpCk2kSCNXaLTKdFGaSmEGKw/Z
+	2v3E0gzqf18QdQKMBp0A0rjQz+u96pucj9cB+adHObUqRa3N5DSdIGZldWfwwE1pqpWfoMxO
+	kcRGxEiiY6URMdLYKOFmr7eyvpL7MOnybO4Qx2Vx6v84jPYI1GH7hmf3w7kv78X3bT/v6d/W
+	dokunNx5KbQq+sb0y/7f+B8L3U8YvEfD4fzDE40DTPCI96Oop06vN9JSqj5KNcap7tdOHMFm
+	Tu6BybL59ijL8sj3yiAmM6gj0QnD/v62JTfxa22DKWBC8KBbMfmrQx/QdCQ1zcdWpu+6sKtU
+	HjIp6RcnCRVoJudJ2eHdlowa2/WW5/ml5b6uEWpi63jkS0NDR2+8v0FWt4e9XNmsHJLmE2D3
+	RkK2NzDpcXDe9LsBHxdVFbarEj7X7NspCz8WmGA/tEHO9RfqcxIPB/fINqa/XSC7S1vG3rx9
+	urj2j3LVma2jrfWxCb+VJz8QN/q1f7Yr6AMhocmQS8JwtUb+L/fPdy5RBAAA
+X-CMS-MailID: 20240208140244eucas1p1308da6aac688043b2064e91a5e38b34e
+X-Msg-Generator: CA
+X-RootMTR: 20240208134629eucas1p2edf4cb1e50e3bb578297c33b79701574
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240208134629eucas1p2edf4cb1e50e3bb578297c33b79701574
 References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-3-d1abcec83c44@google.com> <CALNs47uPgvYXxEDmwb6GKa+cw597_rDD1zaSPDa9k9D-6_qZxQ@mail.gmail.com>
-In-Reply-To: <CALNs47uPgvYXxEDmwb6GKa+cw597_rDD1zaSPDa9k9D-6_qZxQ@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 8 Feb 2024 14:46:13 +0100
-Message-ID: <CAH5fLgi_iU3nDE-gJ56s8CPznWvC0T4P5M0dVx1zO61kmVGNgQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	<20240124-alice-mm-v1-3-d1abcec83c44@google.com>
+	<CALNs47uPgvYXxEDmwb6GKa+cw597_rDD1zaSPDa9k9D-6_qZxQ@mail.gmail.com>
+	<CGME20240208134629eucas1p2edf4cb1e50e3bb578297c33b79701574@eucas1p2.samsung.com>
+	<CAH5fLgi_iU3nDE-gJ56s8CPznWvC0T4P5M0dVx1zO61kmVGNgQ@mail.gmail.com>
 
-On Thu, Feb 1, 2024 at 7:02=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wro=
-te:
->
-> On Wed, Jan 24, 2024 at 6:22=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> > +/// A pointer to a page that owns the page allocation.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The pointer points at a page, and has ownership over the page.
-> > +pub struct Page {
-> > +    page: NonNull<bindings::page>,
-> > +}
->
-> Shouldn't this be UnsafeCell / Opaque? Since `struct page` contains locks=
-.
-
-That only matters when we use a reference. Here, it's behind a raw pointer.
-
-> > +// SAFETY: It is safe to transfer page allocations between threads.
-> > +unsafe impl Send for Page {}
-> > +
-> > +// SAFETY: Calling `&self` methods on this type in parallel is safe. I=
-t might
-> > +// allow you to perform a data race on bytes stored in the page, but w=
-e treat
-> > +// this like data races on user pointers.
-> > +unsafe impl Sync for Page {}
->
-> These races should probably be in the Page docs, rather than pointing
-> to user pointers.
-
-New safety comment:
-
-SAFETY: As long as the safety requirements for `&self` methods on this
-type are followed, there is no problem with calling them in parallel.
-
-> > +impl Page {
-> > +    /// Allocates a new set of contiguous pages.
->
-> "set of contiguous page" -> "page"?
-
-Thanks, done.
-
-> > +    pub fn new() -> Result<Self, AllocError> {
-> > +        // SAFETY: These are the correct arguments to allocate a singl=
-e page.
-> > +        let page =3D unsafe {
-> > +            bindings::alloc_pages(
-> > +                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings=
-::__GFP_HIGHMEM,
-> > +                0,
-> > +            )
-> > +        };
-> > +
-> > +        match NonNull::new(page) {
-> > +            // INVARIANT: We checked that the allocation above succeed=
-ed.
-> > +            Some(page) =3D> Ok(Self { page }),
-> > +            None =3D> Err(AllocError),
-> > +        }
->
-> Optionally:
->
->     let page =3D NonNull::new(page).ok_or(AllocError)?;
->     Ok(Self { page })
-
-Done.
-
-> > +    }
-> > +
-> > +    /// Returns a raw pointer to the page.
->
-> Maybe add ", valid for PAGE_SIZE" or similar to make this obvious.
-
-This is a pointer to the `struct page`, not the actual page data.
-
-> > +    pub fn as_ptr(&self) -> *mut bindings::page {
-> > +        self.page.as_ptr()
-> > +    }
-> > +
-> > +    /// Runs a piece of code with this page mapped to an address.
->
-> Maybe ", then immediately unmaps the page" to make the entire operation c=
-lear.
-
-Ok.
-
-> > +    /// It is up to the caller to use the provided raw pointer correct=
-ly.
-> > +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut c_void) -> T=
-) -> T {
->
-> If there is exclusive access into the page, this signature could be:
->
->     FnOnce(&mut [u8; PAGE_SIZE]) -> T
->
-> Otherwise possibly
->
->     FnOnce(*mut [u8; PAGE_SIZE]) -> T
->
-> But based on the thread with Boqun it seems there is no synchronized
-> access here. In this case, "use the provided raw pointer correctly" or
-> the type level docs should clarify what you can and can't rely on with
-> pointers into a page.
->
-> E.g. if I'm understanding correctly, you can never construct a &T or
-> &mut T anywhere in this page unless T is Sync.
-
-We discussed this in the meeting and concluded that we should use *mut u8 h=
-ere.
-
-> > +    /// Runs a piece of code with a raw pointer to a slice of this pag=
-e, with
-> > +    /// bounds checking.
-> > +    ///
-> > +    /// If `f` is called, then it will be called with a pointer that p=
-oints at
-> > +    /// `off` bytes into the page, and the pointer will be valid for a=
-t least
-> > +    /// `len` bytes. The pointer is only valid on this task, as this m=
-ethod uses
-> > +    /// a local mapping./
-> > +    ///
-> > +    /// If `off` and `len` refers to a region outside of this page, th=
-en this
-> > +    /// method returns `EINVAL` and does not call `f`.
-> > +    pub fn with_pointer_into_page<T>(
-> > +        &self,
-> > +        off: usize,
-> > +        len: usize,
-> > +        f: impl FnOnce(*mut u8) -> Result<T>,
-> > +    ) -> Result<T> {
->
-> Same question about exclusive access
->
->     impl FnOnce(&mut [u8]) -> Result<T>
-
-We discussed this in the meeting. Slices raise all sorts of cans of
-worms with uninit and exclusivity, so the raw methods won't use them.
-
-> > +        let bounds_ok =3D off <=3D PAGE_SIZE && len <=3D PAGE_SIZE && =
-(off + len) <=3D PAGE_SIZE;
-> > +
-> > +        if bounds_ok {
-> > +            self.with_page_mapped(move |page_addr| {
-> > +                // SAFETY: The `off` integer is at most `PAGE_SIZE`, s=
-o this pointer offset will
-> > +                // result in a pointer that is in bounds or one off th=
-e end of the page.
-> > +                f(unsafe { page_addr.cast::<u8>().add(off) })
-> > +            })
-> > +        } else {
-> > +            Err(EINVAL)
-> > +        }
-> > +    }
-> > +
-> > +    /// Maps the page and reads from it into the given buffer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that `dest` is valid for writing `len` byt=
-es.
-> > +    pub unsafe fn read(&self, dest: *mut u8, offset: usize, len: usize=
-) -> Result {
->
-> Is there a reason not to use a slice just for a destination to read into?
-
-Ditto.
-
-> > +        self.with_pointer_into_page(offset, len, move |from_ptr| {
->
-> Nit: do the names from_ptr/to_ptr come from existing binder? src/dst
-> seems more common (also dst vs. dest).
-
-Renamed everything to use src/dst
-
-> > +        self.with_pointer_into_page(offset, len, move |to_ptr| {
-> > +            // SAFETY: If `with_pointer_into_page` calls into this clo=
-sure, then
-> > +            // it has performed a bounds check and guarantees that `to=
-_ptr` is
-> > +            // valid for `len` bytes.
-> > +            unsafe { ptr::copy(src, to_ptr, len) };
-> > +            Ok(())
-> > +        })
-> > +    }
-> > +
-> > +    /// Maps the page and zeroes the given slice.
->
-> Mention that this will error with the same conditions as with_pointer_int=
-o_page.
-
-That method is private. I will add documentation for this that doesn't
-reference with_pointer_into_page.
-
-> > +    pub fn fill_zero(&self, offset: usize, len: usize) -> Result {
-> > +        self.with_pointer_into_page(offset, len, move |to_ptr| {
-> > +            // SAFETY: If `with_pointer_into_page` calls into this clo=
-sure, then
-> > +            // it has performed a bounds check and guarantees that `to=
-_ptr` is
-> > +            // valid for `len` bytes.
-> > +            unsafe { ptr::write_bytes(to_ptr, 0u8, len) };
-> > +            Ok(())
-> > +        })
-> > +    }
-> > +
-> > +    /// Copies data from userspace into this page.
-> > +    pub fn copy_into_page(
-> > +        &self,
-> > +        reader: &mut UserSlicePtrReader,
-> > +        offset: usize,
-> > +        len: usize,
-> > +    ) -> Result {
->
-> Maybe copy_from_user_slice or something that includes "user", since
-> as-is it sounds like copying a page into another page.
->
-> Also, docs should point out the error condition.
-
-Done.
-
-Thanks,
-Alice
+DQpBbGljZSBSeWhsIDxhbGljZXJ5aGxAZ29vZ2xlLmNvbT4gd3JpdGVzOg0KDQo+IE9uIFRodSwg
+RmViIDEsIDIwMjQgYXQgNzowMuKAr0FNIFRyZXZvciBHcm9zcyA8dG1ncm9zc0B1bWljaC5lZHU+
+IHdyb3RlOg0KPj4NCj4+IE9uIFdlZCwgSmFuIDI0LCAyMDI0IGF0IDY6MjLigK9BTSBBbGljZSBS
+eWhsIDxhbGljZXJ5aGxAZ29vZ2xlLmNvbT4gd3JvdGU6DQo+PiA+ICsvLy8gQSBwb2ludGVyIHRv
+IGEgcGFnZSB0aGF0IG93bnMgdGhlIHBhZ2UgYWxsb2NhdGlvbi4NCj4+ID4gKy8vLw0KPj4gPiAr
+Ly8vICMgSW52YXJpYW50cw0KPj4gPiArLy8vDQo+PiA+ICsvLy8gVGhlIHBvaW50ZXIgcG9pbnRz
+IGF0IGEgcGFnZSwgYW5kIGhhcyBvd25lcnNoaXAgb3ZlciB0aGUgcGFnZS4NCj4+ID4gK3B1YiBz
+dHJ1Y3QgUGFnZSB7DQo+PiA+ICsgICAgcGFnZTogTm9uTnVsbDxiaW5kaW5nczo6cGFnZT4sDQo+
+PiA+ICt9DQo+Pg0KPj4gU2hvdWxkbid0IHRoaXMgYmUgVW5zYWZlQ2VsbCAvIE9wYXF1ZT8gU2lu
+Y2UgYHN0cnVjdCBwYWdlYCBjb250YWlucyBsb2Nrcy4NCj4NCj4gVGhhdCBvbmx5IG1hdHRlcnMg
+d2hlbiB3ZSB1c2UgYSByZWZlcmVuY2UuIEhlcmUsIGl0J3MgYmVoaW5kIGEgcmF3IHBvaW50ZXIu
+DQoNCldoeSBpcyBpdCBiZWhpbmQgYSBwb2ludGVyIHJhdGhlciB0aGFuIGJlaW5nIHRyYW5zcGFy
+ZW50IG92ZXINCmBPcGFxdWU8YmluZGluZ3M6OnBhZ2U+YCBhbmQgdXNpbmcgYSBgJlBhZ2VgIGlu
+c3RlYWQ/DQoNCkJSIEFuZHJlYXM=
