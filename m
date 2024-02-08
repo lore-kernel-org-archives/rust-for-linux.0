@@ -1,118 +1,80 @@
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D107B3E1
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 15:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94C47B3E1;
+	Thu,  8 Feb 2024 15:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707404887; cv=none; b=Zs8orxA/FXfCvFBJpMejYN8aZxIz/HKrkFU66s6ttiUGQ0axg8BEQ8NDUEijoSlvZ5GDtxN3go9bCEhaSWuv6qnLf3CZRUMiwAAZ61KPmJbhno04Ylu2tH5lLdKMw6sIOOqWZ2RAiRmURmtbaA3K5Nin9SAVW8ToLO+1HV/RouE=
+	t=1707406549; cv=none; b=FV56CAGP45xSoqluT3/PQCKL2lRuLmTUo0KlV5lf/WNto+GXij6PS88NNB83LA3KW/NwYZyEU4qTi/AuYVrWh/o1J99CVThzz3HfRSOCPittg/+RyymIC9Kvu0YySZD9rnMIhGj6/B6f2Q6M9pkYKh/NXyLJrqe6KDxBqintrj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707404887; c=relaxed/simple;
-	bh=B2X73Y7KSDr68vQod+XguhQ6ZTVc/cqFBBByyo+cBs4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WBWRycuKf9xQdbzypvoHGhLWlsaveyOYHqx6XiKAs3SfneVEW7QiCyCb+smilKAZiTYjQpoIeW6Wu0AzGSUuxwh74GTDhZ9BT1//H551BxVMLM+WbYwWtX8TjxZrl/iKX3x8+ew/rm8/uJqyN3Gai4hW+Mcc/kiYqyCRtpRJZNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JKT4NrCV; arc=none smtp.client-ip=209.85.217.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1707406549; c=relaxed/simple;
+	bh=Oyd+0UxjHh1jKnK11zlznPLxJVZq1YhY3TWT2JBQK4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ES4wRzeksWQoN14x9VG5yafU0nrRUNSWBhf/WVulSSULDRJbJ6bzcgkRpagQe9xrEzlQEgdl1U9p8rrBrN2Qp2FoJI8yoIqJGoksQjRwKUmthhB0hMVKg6py87qSVCVCmbzK/CgCiI56e0+v+wYM1xGy+H2s7bS3g3aAeIT1i/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQl0RuAM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JKT4NrCV"
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-46d2635b15eso628501137.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 07:08:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707404884; x=1708009684; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GaZbU6qRlbhHeLigMFgS8QR4NIPfAZTvoIj/0tP4h70=;
-        b=JKT4NrCVNu3FaOn28qUwje2/2IwBjqUkvaEZiBPrX71a4Y0Gj+2xXIJJpo89D2bieO
-         PQlV4bJp+RcS47y/yq9LzZv0JB33YyWwIpcpBYZN9OH97aXkyi5a5NxU+XOufNkAQFTj
-         Ey93AgZcPvXmBGtTzBRiwbBBrUWjzqNeAhVmTdfa37/f8y3HGuH5QYJQKHF/7R3UYSyP
-         YqGeRNjK+5eATFheGBHfNylkCTRZH75I/BA9bEtoYhJ+7PAsXF+F2DhelhuTnsA7BnoT
-         gwbh5I3oKy+E9FAole3uRxuQacVyORavKp/5NP6tkMogI/k3r3UKQ6FjFYsef2INkRtL
-         hFow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707404884; x=1708009684;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GaZbU6qRlbhHeLigMFgS8QR4NIPfAZTvoIj/0tP4h70=;
-        b=Mt9xTMyKub8PJF2/mnpud3h0babUQ2b97SxfuPc0FFbzS52mlI66Ypfgie+B8jWc9J
-         h6RHVJHxqbVB4jq/BLycJhgzI23J6V03HNGr0FHRX1zER6cUmfTep/XLHv+CQaC9Nwnj
-         kWeU9L1Evp7A/JgczqbJbHCqoA3/jbLuTUk9hr73GEwzy7Kz8tX8KtRvb9GFdNgwVl8T
-         Dw5FoOtrxfHHZyrf6romw/puuYGDKjgXBoyIzwp2pPbyKeReeRrcYZLVOFKtJu5t/WqU
-         6KzKimc3RCePQ+chFcl4WRK9xQpGh9+XZr9c/I2ZzLSgr5sWaj5UTmtXMxrAR6sM21/V
-         pZlQ==
-X-Gm-Message-State: AOJu0Yz+6A04F2YQgFU8hArP3nQ+BYuFxuCq9waa23rhFA4YBGTxftIH
-	S6d+6WI9zZD7ipO+k+ue2lvatxcclcE/P4geSbdfyqjCTIy4hLr4ST3vXoo1eyPgHPvmaGTcsHz
-	hceIOg3X7PqLjQf1l0zTEQjfTA54GXWBCJpGS
-X-Google-Smtp-Source: AGHT+IHRBHGiMYdETZJWhiDfatCwp6EiPOCd1EdasWWmU96+qO4/SEihD/aYGvlNdCKSFurCtCK7GjYrAYvXLPvVOdw=
-X-Received: by 2002:a05:6122:208a:b0:4b7:49f9:c6f4 with SMTP id
- i10-20020a056122208a00b004b749f9c6f4mr2534429vkd.4.1707404884308; Thu, 08 Feb
- 2024 07:08:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQl0RuAM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68F7C433F1;
+	Thu,  8 Feb 2024 15:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707406548;
+	bh=Oyd+0UxjHh1jKnK11zlznPLxJVZq1YhY3TWT2JBQK4I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KQl0RuAMe+WdOE/LDDy3xatZEz8RXFLJ2liVNPHOOif2Ui/V0aymQ7CZRV2jT1OQ4
+	 beAM6RNDfy49jWgzm09Plsu7hram53aUgPfAOmrMdLTy4y5qPfb2PUkZuPWA05JgMP
+	 07+IOiEeobpR363RjzTmorEP9HVwp8jiipWIWjI0=
+Date: Thu, 8 Feb 2024 15:35:45 +0000
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Kees Cook <keescook@chromium.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH 1/3] rust: add userspace pointers
+Message-ID: <2024020859-lusty-ladylike-29d4@gregkh>
+References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
+ <20240124-alice-mm-v1-1-d1abcec83c44@google.com>
+ <CALNs47uDaD05oD8TtZoSqUBc4SaRig80u2_1P0qMCXtE3H9_Vw@mail.gmail.com>
+ <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240202-alice-file-v4-0-fc9c2080663b@google.com>
- <20240202-alice-file-v4-4-fc9c2080663b@google.com> <aa0f46bc-6bed-4a4e-9dcd-e34cc2563a37@gmail.com>
-In-Reply-To: <aa0f46bc-6bed-4a4e-9dcd-e34cc2563a37@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 8 Feb 2024 16:07:53 +0100
-Message-ID: <CAH5fLgjSr9bbGc02gDdfFAUTyGiR__6K8qZYQNZLRe_E=Cypjw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/9] rust: cred: add Rust abstraction for `struct cred`
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com>
 
-On Thu, Feb 8, 2024 at 1:35=E2=80=AFAM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
->
-> On 2/2/24 07:55, Alice Ryhl wrote:
-> > From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> >
-> > Add a wrapper around `struct cred` called `Credential`, and provide
-> > functionality to get the `Credential` associated with a `File`.
-> >
-> > Rust Binder must check the credentials of processes when they attempt t=
-o
-> > perform various operations, and these checks usually take a
-> > `&Credential` as parameter. The security_binder_set_context_mgr functio=
-n
-> > would be one example. This patch is necessary to access these security_=
-*
-> > methods from Rust.
-> >
-> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> > [...]
-> > +    /// Returns the credentials of the task that originally opened the=
- file.
-> > +    pub fn cred(&self) -> &Credential {
-> > +        // SAFETY: It's okay to read the `f_cred` field without synchr=
-onization because `f_cred` is
-> > +        // never changed after initialization of the file.
-> > +        let ptr =3D unsafe { (*self.as_ptr()).f_cred };
->
->  From what I can see `file.f_cred` is valid from the moment `file` was
-> initialized, worth to notice too IMO.
+On Thu, Feb 08, 2024 at 01:53:20PM +0100, Alice Ryhl wrote:
+> > Is some sort of `Debug` implementation useful?
+> 
+> Leaking pointer addresses in logs is frowned upon in the kernel, so I
+> don't think we should include that.
 
-That's what it says?
+s/frowned upon/forbidden/ :)
 
-Alice
+Along those lines, you all are tieing in the "I want to print a pointer,
+so hash it properly before I do so" logic from rust like we have in c,
+right?  Ideally you'd use the same logic if at all possible.
+
+If not, that probably needs to be done so that you don't accidentally
+start leaking things.
+
+thanks,
+
+greg k-h
