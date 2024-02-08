@@ -1,54 +1,55 @@
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751171CD25
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 12:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221E67AE48
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 13:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707396815; cv=none; b=P+rn7j+bdgHVKr5M3W4554wfcBXhThnAmsROTpjLIg73nVFWZBYCqjbdl1ErlUtb+9q8sT0KjjTMs0DGtnaHRB3nQOVs4Q0fT4EfH1Ug2X/ZDnQIxCNCqkTKOYfOgZ4uRf9B3tLdkEypAyVEjRLsFKJpIvvZvkZgHB7OooMzKAc=
+	t=1707398058; cv=none; b=YBfzymbFaEYTRE/+Z3+P2cl5/IA2frgE8mdXMxhTSqwhYkJyBW7KIKxVNttRHG0eqLXCqZJCU+TUcg4ALajilANool+N9boUw0qxTEN1fPv3hSy9y01GYqfepLbsZvg12HqPCDjgCxitI5kijctZE7BHKih9wSG7FDSFg8YwL7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707396815; c=relaxed/simple;
-	bh=2DDnMV9ejfrDF2CLJKjR+z1eZqbhQjAC0pdhJH4R5eY=;
+	s=arc-20240116; t=1707398058; c=relaxed/simple;
+	bh=aD+Cw2+HmYwuNjGEKwdtPj0qQ/W5mX3RahbDYj/KXk8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Brv3pwZ4sxhYQJWeMCmd2r6iW1NTACmJb9IQwoBrxkd5YNC8JIamD+kMjaQSYeH/xvaqSo1kIXom827RQSTh+PjF3N5lvPfGM/ornvjXx3wNthVSWM9KJQE0A8ovxh6ZAWDFqM9gE2Mcxqh9Kplt1ubv5Tv6IyiiNhQGacBzAxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hwCkaeWV; arc=none smtp.client-ip=209.85.222.44
+	 To:Cc:Content-Type; b=QPB+uLuhXk7mDZi+uiJCxxaFNl9eBTYyid1pr1IDkQZ/gzcmw65MjsiRiNjl1PyiOXryD8osx2yX7NWvQvXKqhCvJm89vRF9q9TYHvUZvKbcQVcYYg27i1BVDy/xkFul4Lrbd+7E17SguxMNJIyrr8ybrrA8irtwDrtHTfKTwqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x0a5CORa; arc=none smtp.client-ip=209.85.222.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hwCkaeWV"
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-7d5bbbe592dso815174241.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 04:53:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x0a5CORa"
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7d2e007751eso832025241.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 05:14:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707396812; x=1708001612; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1707398056; x=1708002856; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N1tCtLJ/RjQd559OCm1MWYW/kF4GUTJKVOlOzEx+/HI=;
-        b=hwCkaeWVH5ml9Dx5DAUenbSJuxNrgRfgHDLiZcLwZp6FR+EtQsBPDs87a7srH1fe6c
-         lspDZgEmC8In9Lo+ZNX7ClyaqIlfpFCsnerCpQvF20ToPF1orz9b7v0xLsCe2Tc1Qk3L
-         ojX5rMOxSqAZLNRJV0NUA8XB+2uoHA3JdxMIOfF+Zr/kVBTU679xpBKGsuLvp+USiofb
-         QQLFG9pIorEaFZSEFQB28olOu+Z4UAoofnF4lvgHq6hNfNfYitm9xhq/jMrCcfrAoqTN
-         jOeK7FQ9khpoKMuraA7bxugLGaZhP04eNF7gv57LVO+KRso7kZ+XLaHOXq8HibwIIIlX
-         vCvQ==
+        bh=u4Y28H6BgiSHtemuYz9Q6cvGUwcKGIFMyv2Vo+B56G0=;
+        b=x0a5CORaI3H8OMWo68NAhEJH+qX+9xRR2827jV/hH6NY4u8Y9OuNVFC3DNJdKcCy4L
+         jYJrnNdIisFdePfqJLWNCCRvbOYgukCi8hO/5nwK1I43jbauu7G7Az5c19A3e4Tz8OdK
+         chKMPAUQufXATu6NiVms3yvyuA13KwbWfjNhEmJ2nsJBO6npUCwn/mbCteQHWs2R8Mwv
+         1rYN+UqOgz2k0XMyQzjyZPnD5Cp2Fw0xH1mLsAiTQzM+dMR0f+hYc8XkDqO6S1nI+69B
+         Byu49EMmXiDG16aYrutvLghoyjw2pjMTSk6gTSlRx3Tk8rdrj/IEpnfcRPccsmjHv9in
+         7PNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707396812; x=1708001612;
+        d=1e100.net; s=20230601; t=1707398056; x=1708002856;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N1tCtLJ/RjQd559OCm1MWYW/kF4GUTJKVOlOzEx+/HI=;
-        b=ZpDbZl76XS88mR2DSuMpEmV79UX+RHmZY/wpqBW31wcFw2Th9SijKcVIJV8tqEUyEg
-         U/WZKOPPZS+sF1ECDLLOlCdDKlWWGJMKdyMM7KSZYpoc+1V38cKnDFbk/jCQRjFIRyGQ
-         wtm1keR5jSz6ooE2oFs/aDNgV7QzRrcGmapo6vw6cdrYMsbwkkFKPhEvW6rJbZSnskCV
-         jEwiPQ89hZTC2S5Bj/lC1FFWeL8p+PyC+Jeuc7l1ZNUzoJFGXZhIZb6UZY/OhkpvUZhS
-         x7Sc1dH17wLXmwo0XADuicf1GJ/nEZjzMIYahol7cCBnGmuIu0/xnizgKiTt/xx2cRJp
-         u62w==
-X-Gm-Message-State: AOJu0YyElfDU3aoBX8Wdde4RKfqUtL/B+sjERDn+WzW00e4lIzytvHeZ
-	UJhHZNDwvJwga0AIPcF1gyiDI3XzNN962XVDj7t1X13mzkjvYUo4QEVgw/cO54xxuULgs0gdxl3
-	b/0Tx2zPXg8UTONKsyovE/D22AEu11ZpRGgt0
-X-Google-Smtp-Source: AGHT+IEJqJTUEToVLsAz3TUs3hv4M1JTAA/j5bflNrbMaYu8pXjrLGnrKB2V/bcpV5X6FMXZ3OqejllkDm2rWH2sDhE=
-X-Received: by 2002:a05:6102:4193:b0:46d:2f8b:d7 with SMTP id
- cd19-20020a056102419300b0046d2f8b00d7mr6451934vsb.22.1707396812044; Thu, 08
- Feb 2024 04:53:32 -0800 (PST)
+        bh=u4Y28H6BgiSHtemuYz9Q6cvGUwcKGIFMyv2Vo+B56G0=;
+        b=SspCMcelQzDa4MK9RtgQdVV7TiDzb1ra2kjWul6CjsqHfF5/ZEl2JKvRvI31qCSMCT
+         TtVcBt9d+vUCIcByKKSdMOgBarU8ZlTO0ViVW/BP4rbDsmA4DEu9coXBBHhKAvZj21+q
+         71QIU7FsvyYORYycdoSvfIsIlK3abcS6fBSsTBmdOrh1IKJYkqBTnPAEa45k+sdboYLx
+         TAJn9sMQSQoAGNJErhuuf78VWsG8q38GtNnGL6sI9vMhcBQKMjygO4zV4bVUouaF4JsD
+         vOcpXN2bpVI/BzB7adTjzyC7AkJgi9hXsHE++akPToZkrN6bbFfrdzOs4ZuKZGgbXDwo
+         aL8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWxUXT9nUuL7EVQplVFvyXzCzdY+j4u6vzoWPExRFs0AFY8y7O9e9fgBLW374gNjx3DIvejY36ONMj0WZrmYDFbSLmDwiL68NrpCNOPsH8=
+X-Gm-Message-State: AOJu0Yzec+S2pVy8gbei95ezOadGi0kvnU0ytdQzp+OrI0JZIddldxFE
+	F1oONcPCzhAhHjWArRC/VeXmdMg5bRy5Xh/Gz6BQazrLwdZOHgbFboMf8CfF82N98e6HE5L1Uvr
+	Kiuy12Krx3bPgt5cuv2XPQuOxQT0BHEHjmaD0
+X-Google-Smtp-Source: AGHT+IFAH2AcakGpseEeHbdkDCpG2lxDefL5T1Ou+BT2/kUYqqhr3VPMB7tRMumatFtOHoQQ4hDQ0sn5XhVLJ3wPWPQ=
+X-Received: by 2002:a05:6102:2a7a:b0:46d:49a5:e9fd with SMTP id
+ hp26-20020a0561022a7a00b0046d49a5e9fdmr5975810vsb.24.1707398055828; Thu, 08
+ Feb 2024 05:14:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,12 +57,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-1-d1abcec83c44@google.com> <CALNs47uDaD05oD8TtZoSqUBc4SaRig80u2_1P0qMCXtE3H9_Vw@mail.gmail.com>
-In-Reply-To: <CALNs47uDaD05oD8TtZoSqUBc4SaRig80u2_1P0qMCXtE3H9_Vw@mail.gmail.com>
+ <20240124-alice-mm-v1-2-d1abcec83c44@google.com> <CALNs47ubBgWr25AEKtgYPyzPB1tfcyCAz8-TbYmmqMpY98Fu_A@mail.gmail.com>
+In-Reply-To: <CALNs47ubBgWr25AEKtgYPyzPB1tfcyCAz8-TbYmmqMpY98Fu_A@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 8 Feb 2024 13:53:20 +0100
-Message-ID: <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: add userspace pointers
+Date: Thu, 8 Feb 2024 14:14:04 +0100
+Message-ID: <CAH5fLggebX-dgYXtf9mbScv02c3gpq1qCJSesZ8qpXsceBXDOg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: add typed accessors for userspace pointers
 To: Trevor Gross <tmgross@umich.edu>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -78,356 +79,191 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 1, 2024 at 5:06=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wro=
+On Thu, Feb 1, 2024 at 6:04=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wro=
 te:
 >
 > On Wed, Jan 24, 2024 at 6:21=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
  wrote:
-> > +/// A pointer to an area in userspace memory, which can be either read=
--only or
-> > +/// read-write.
-> > +///
-> > +/// All methods on this struct are safe: invalid pointers return `EFAU=
-LT`.
->
-> Maybe
->
->     ... attempting to read or write invalid pointers will return `EFAULT`=
-.
-
-Sure, that works.
-
-> > +/// Concurrent access, *including data races to/from userspace memory*=
-, is
-> > +/// permitted, because fundamentally another userspace thread/process =
-could
-> > +/// always be modifying memory at the same time (in the same way that =
-userspace
-> > +/// Rust's [`std::io`] permits data races with the contents of files o=
-n disk).
-> > +/// In the presence of a race, the exact byte values read/written are
-> > +/// unspecified but the operation is well-defined. Kernelspace code sh=
-ould
-> > +/// validate its copy of data after completing a read, and not expect =
-that
-> > +/// multiple reads of the same address will return the same value.
-> > +///
-> > +/// These APIs are designed to make it difficult to accidentally write=
- TOCTOU
-> > +/// bugs. Every time you read from a memory location, the pointer is a=
-dvanced by
-> > +/// the length so that you cannot use that reader to read the same mem=
-ory
-> > +/// location twice. Preventing double-fetches avoids TOCTOU bugs. This=
- is
-> > +/// accomplished by taking `self` by value to prevent obtaining multip=
-le readers
-> > +/// on a given [`UserSlicePtr`], and the readers only permitting forwa=
-rd reads.
-> > +/// If double-fetching a memory location is necessary for some reason,=
- then that
-> > +/// is done by creating multiple readers to the same memory location, =
-e.g. using
-> > +/// [`clone_reader`].
->
-> Maybe something like
->
->     Every time a memory location is read, the reader's position is advanc=
-ed by
->     the read length and the next read will start from there. This helps p=
-revent
->     accidentally reading the same location twice and causing a TOCTOU bug=
-.
->
->     Creating a [`UserSlicePtrReader`] and/or [`UserSlicePtrWriter`]
->     consumes the `UserSlicePtr`, helping ensure that there aren't multipl=
-e
->     readers or writers to the same location.
->
->     If double fetching a memory location...
-
-That makes sense to me. I'll update that.
-
-> > +///
-> > +/// Constructing a [`UserSlicePtr`] performs no checks on the provided=
- address
-> > +/// and length, it can safely be constructed inside a kernel thread wi=
-th no
-> > +/// current userspace process. Reads and writes wrap the kernel APIs
->
-> Maybe some of this is better documented on `new` rather than the type?
-
-I agree. I will move it.
-
-> > +/// `copy_from_user` and `copy_to_user`, which check the memory map of=
- the
-> > +/// current process and enforce that the address range is within the u=
-ser range
-> > +/// (no additional calls to `access_ok` are needed).
-> > +///
-> > +/// [`std::io`]: https://doc.rust-lang.org/std/io/index.html
-> > +/// [`clone_reader`]: UserSlicePtrReader::clone_reader
-> > +pub struct UserSlicePtr(*mut c_void, usize);
->
-> I think just `UserSlice` could work for the name here, since
-> `SlicePtr` is a bit redundant (slices automatically containing a
-> pointer). Also makes the Reader/Writer types a bit less wordy. Though
-> I understand wanting to make it discoverable for C users.
-
-Sure, renamed.
-
-> Is some sort of `Debug` implementation useful?
-
-Leaking pointer addresses in logs is frowned upon in the kernel, so I
-don't think we should include that.
-
-> > +    /// Reads the entirety of the user slice.
+> > +    /// Reads a value of the specified type.
 > > +    ///
-> > +    /// Returns `EFAULT` if the address does not currently point to
-> > +    /// mapped, readable memory.
-> > +    pub fn read_all(self) -> Result<Vec<u8>> {
-> > +        self.reader().read_all()
-> > +    }
+> > +    /// Fails with `EFAULT` if the read encounters a page fault.
+> > +    pub fn read<T: ReadableFromBytes>(&mut self) -> Result<T> {
 >
-> std::io uses the signature
+> I think that `T: Copy` is required here, or for Copy to be a
+> supertrait of ReadableBytes, since the data in the buffer is being
+> duplicated from a reference.
 >
->     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> { ... }
->
-> Maybe this could be better here too, since it allows reusing the
-> vector without going through `read_raw`.
->
-> https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_end
+> Send is probably also a reasonable bound to have .
 
-I updated the signature so that it appends to an existing vector
-instead of creating a new one.
+We're not moving a value of type `T`. We're creating a new value of
+type `T` from a byte array. The trait says that we can do that, so I
+think that is enough here.
 
-> > +    /// Constructs a [`UserSlicePtrReader`].
-> > +    pub fn reader(self) -> UserSlicePtrReader {
-> > +        UserSlicePtrReader(self.0, self.1)
-> > +    }
+Besides, we'll often want to use this for wrappers around bindgen
+types. If we add a Copy bound, then we need to get bindgen to generate
+a #[derive(Copy)] for them, which I don't think it does right now.
+
+> > +        // SAFETY: The local variable `out` is valid for writing `size=
+_of::<T>()` bytes.
+> > +        let res =3D unsafe {
+> > +            bindings::copy_from_user_unsafe_skip_check_object_size(
+> > +                out.as_mut_ptr().cast::<c_void>(),
+> > +                self.0,
+> > +                size_of::<T>() as c_ulong,
 >
-> I wonder if this should be called `into_reader` to note that it is a
-> consuming method. Indifferent here, since there aren't any non-`self`
-> variants.
-
-Hmm. I think the current name is good enough, since there aren't any
-non-self methods, as you mention.
-
-> > +
-> > +    /// Constructs a [`UserSlicePtrWriter`].
-> > +    pub fn writer(self) -> UserSlicePtrWriter {
-> > +        UserSlicePtrWriter(self.0, self.1)
-> > +    }
-> > +
-> > +    /// Constructs both a [`UserSlicePtrReader`] and a [`UserSlicePtrW=
-riter`].
->
-> Could you add a brief about what is or isn't allowed when you have a
-> reader and a writer to the same location?
-
-Ultimately, you can do whatever you want. But I'll add this:
-
-/// Usually when this is used, you will first read the data, and then
-/// overwrite it afterwards.
-
-> > +    pub fn reader_writer(self) -> (UserSlicePtrReader, UserSlicePtrWri=
-ter) {
-> > +        (
-> > +            UserSlicePtrReader(self.0, self.1),
-> > +            UserSlicePtrWriter(self.0, self.1),
-> > +        )
-> > +    }
-> > +}
-> > +
-> > +/// A reader for [`UserSlicePtr`].
-> > +///
-> > +/// Used to incrementally read from the user slice.
-> > +pub struct UserSlicePtrReader(*mut c_void, usize);
-> > +
-> > +impl UserSlicePtrReader {
-> > +    /// Skip the provided number of bytes.
-> > +    ///
-> > +    /// Returns an error if skipping more than the length of the buffe=
-r.
-> > +    pub fn skip(&mut self, num_skip: usize) -> Result {
-> > +        // Update `self.1` first since that's the fallible one.
-> > +        self.1 =3D self.1.checked_sub(num_skip).ok_or(EFAULT)?;
-> > +        self.0 =3D self.0.wrapping_add(num_skip);
->
-> I think it would be better to change to named structs to make this more c=
-lear.
-
-Good idea. Changed to named fields.
-
-> > +        Ok(())
-> > +    }
-> > +
-> > +    /// Create a reader that can access the same range of data.
-> > +    ///
-> > +    /// Reading from the clone does not advance the current reader.
-> > +    ///
-> > +    /// The caller should take care to not introduce TOCTOU issues.
->
-> Could you add an example of what should be avoided?
->
-> > +    pub fn clone_reader(&self) -> UserSlicePtrReader {
-> > +        UserSlicePtrReader(self.0, self.1)
-> > +    }
-> > +
-> > +    /// Returns the number of bytes left to be read from this.
->
-> Remove "from this" or change to "from this reader".
+> As with the other patch, I think it would be more clear to use
+> `c_ulong::try_from(...)` rather than comparing against
+> `MAX_USER_OP_LEN ` and later casting. Possibly just in a helper
+> function.
 
 Done.
 
-> > +    ///
-> > +    /// Note that even reading less than this number of bytes may fail=
-.> +    pub fn len(&self) -> usize {
-> > +        self.1
-> > +    }
-> > +
-> > +    /// Returns `true` if no data is available in the io buffer.
-> > +    pub fn is_empty(&self) -> bool {
-> > +        self.1 =3D=3D 0
-> > +    }
-> > +
-> > +    /// Reads raw data from the user slice into a raw kernel buffer.
-> > +    ///
-> > +    /// Fails with `EFAULT` if the read encounters a page fault.
->
-> This is raised if the address is invalid right, not just page faults?
-> Or, are page faults just the only mode of indication that a pointer
-> isn't valid.
->
-> I know this is the same as copy_from_user, but I don't understand that
-> too well myself. I'm also a bit curious what happens if you pass a
-> kernel pointer to these methods.
-
-Basically, if the userspace process wouldn't be able to dereference
-the pointer, then you get this error.
-
-> > +    /// # Safety
-> > +    ///
-> > +    /// The `out` pointer must be valid for writing `len` bytes.
-> > +    pub unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Res=
-ult {
->
-> What is the motivation for taking raw pointers rather than a slice
-> here? In which case it could just be called `read`.
-
-The second patch will introduce a method called `read`, so we can't
-use that name.
-
-I don't think a slice gains that much compared to a raw pointer. It
-would have to be an `&mut [MaybeUninit<u8>]` due to uninit memory, but
-that doesn't actually allow the caller to use this method without
-unsafe, since the caller would have to unsafely assert that the slice
-has been initialized by this call themselves. Making this method
-usable safely would require that we start using something along the
-lines of the standard library's BorrowedBuf [1], which seems way
-overkill to me.
-
-[1]: https://doc.rust-lang.org/stable/std/io/struct.BorrowedBuf.html
-
-> > +        if len > self.1 || len > MAX_USER_OP_LEN {
-> > +            return Err(EFAULT);
-> > +        }
-> > +        // SAFETY: The caller promises that `out` is valid for writing=
- `len` bytes.
-> > +        let res =3D unsafe { bindings::copy_from_user(out.cast::<c_voi=
-d>(), self.0, len as c_ulong) };
->
-> To me, it would be more clear to `c_ulong::try_from(len).map_err(|_|
-> EFAULT)?` rather than using MAX_USER_OP_LEN with an `as` cast, since
-> it makes it immediately clear that the conversion is ok (and is doing
-> that same comparison)
-
-Thanks for the suggestion. I changed this.
-
-> > +        let len =3D self.len();
-> > +        let mut data =3D Vec::<u8>::try_with_capacity(len)?;
-> > +
-> > +        // SAFETY: The output buffer is valid for `len` bytes as we ju=
-st allocated that much space.
-> > +        unsafe { self.read_raw(data.as_mut_ptr(), len)? };
->
-> If making the change above (possibly even if not), going through
-> https://doc.rust-lang.org/std/vec/struct.Vec.html#method.spare_capacity_m=
-ut
-> can be more clear about uninitialized data.
->
-> > +
-> > +        // SAFETY: Since the call to `read_raw` was successful, the fi=
-rst `len` bytes of the vector
-> > +        // have been initialized.
-> > +        unsafe { data.set_len(len) };
-> > +        Ok(data)
-> > +    }
-> > +}
-> > +
-> > +/// A writer for [`UserSlicePtr`].
-> > +///
-> > +/// Used to incrementally write into the user slice.
-> > +pub struct UserSlicePtrWriter(*mut c_void, usize);
-> > +
-> > +impl UserSlicePtrWriter {
-> > +    /// Returns the amount of space remaining in this buffer.
-> > +    ///
-> > +    /// Note that even writing less than this number of bytes may fail=
-.
-> > +    pub fn len(&self) -> usize {
-> > +        self.1
-> > +    }
-> > +
-> > +    /// Returns `true` if no more data can be written to this buffer.
-> > +    pub fn is_empty(&self) -> bool {
-> > +        self.1 =3D=3D 0
-> > +    }
-> > +
-> > +    /// Writes raw data to this user pointer from a raw kernel buffer.
-> > +    ///
-> > +    /// Fails with `EFAULT` if the write encounters a page fault.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The `data` pointer must be valid for reading `len` bytes.
-> > +    pub unsafe fn write_raw(&mut self, data: *const u8, len: usize) ->=
- Result {
->
-> Same as for Reader regarding signature
-
-I suppose we could have only `write_slice`. But if we're going to have
-a read_raw, then having write_raw too makes sense to me.
-
-Besides, a memcpy of uninit memory isn't UB by itself, so the raw
-method would let you write uninit memory if you needed to.
-
-> > +        if res !=3D 0 {
-> > +            return Err(EFAULT);
-> > +        }
 > > +        // Since this is not a pointer to a valid object in our progra=
 m,
 > > +        // we cannot use `add`, which has C-style rules for defined
 > > +        // behavior.
-> > +        self.0 =3D self.0.wrapping_add(len);
-> > +        self.1 -=3D len;
-> > +        Ok(())
-> > +    }
-> > +
-> > +    /// Writes the provided slice to this user pointer.
+> > +        self.0 =3D self.0.wrapping_add(size_of::<T>());
+>
+> There are now methods `wrapping_byte_add` (since 1.75). Doesn't make
+> much of a difference since the pointer is c_void anyway, but it does
+> make the unit more clear.
+
+Sure, I can use those methods.
+
+> > +    /// Writes the provided Rust value to this userspace pointer.
 > > +    ///
 > > +    /// Fails with `EFAULT` if the write encounters a page fault.
-> > +    pub fn write_slice(&mut self, data: &[u8]) -> Result {
+> > +    pub fn write<T: WritableToBytes>(&mut self, value: &T) -> Result {
 >
-> This could probably just be called `write`, which would be consistent
-> with std::io::Write.
+> Send + Copy are also needed here, or supertraits of WritableToBytes.
 
-This would also name conflict with the second patch.
+I also disagree here. We're not moving a value of type T. We're
+creating a byte array from a value of type T, and the trait says that
+we can do that.
 
-> The docs could use usage examples, but I am sure you are planning on
-> that already :)
+> > +/// Specifies that a type is safely readable from bytes.
+> > +///
+> > +/// Not all types are valid for all values. For example, a `bool` must=
+ be either
+> > +/// zero or one, so reading arbitrary bytes into something that contai=
+ns a
+> > +/// `bool` is not okay.
+> > +///
+> > +/// It's okay for the type to have padding, as initializing those byte=
+s has no
+> > +/// effect.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// All bit-patterns must be valid for this type.
+> > +pub unsafe trait ReadableFromBytes {}
+> > +
+> > +// SAFETY: All bit patterns are acceptable values of the types below.
+> > +unsafe impl ReadableFromBytes for u8 {}
+> > +unsafe impl ReadableFromBytes for u16 {}
+> > +unsafe impl ReadableFromBytes for u32 {}
+> > +unsafe impl ReadableFromBytes for u64 {}
+> > +unsafe impl ReadableFromBytes for usize {}
+> > +unsafe impl ReadableFromBytes for i8 {}
+> > +unsafe impl ReadableFromBytes for i16 {}
+> > +unsafe impl ReadableFromBytes for i32 {}
+> > +unsafe impl ReadableFromBytes for i64 {}
+> > +unsafe impl ReadableFromBytes for isize {}
+> > +// SAFETY: If all bit patterns are acceptable for individual values in=
+ an array,
+> > +// then all bit patterns are also acceptable for arrays of that type.
+> > +unsafe impl<T: ReadableFromBytes> ReadableFromBytes for [T] {}
+> > +unsafe impl<T: ReadableFromBytes, const N: usize> ReadableFromBytes fo=
+r [T; N] {}
+> > +
+> > +/// Specifies that a type is safely writable to bytes.
+> > +///
+> > +/// If a struct implements this trait, then it is okay to copy it byte=
+-for-byte
+> > +/// to userspace. This means that it should not have any padding, as p=
+adding
+> > +/// bytes are uninitialized. Reading uninitialized memory is not just =
+undefined
+> > +/// behavior, it may even lead to leaking sensitive information on the=
+ stack to
+> > +/// userspace.
+> > +///
+> > +/// The struct should also not hold kernel pointers, as kernel pointer=
+ addresses
+> > +/// are also considered sensitive. However, leaking kernel pointers is=
+ not
+> > +/// considered undefined behavior by Rust, so this is a correctness re=
+quirement,
+> > +/// but not a safety requirement.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Values of this type may not contain any uninitialized bytes.
+> > +pub unsafe trait WritableToBytes {}
+> > +
+> > +// SAFETY: Instances of the following types have no uninitialized port=
+ions.
+> > +unsafe impl WritableToBytes for u8 {}
+> > +unsafe impl WritableToBytes for u16 {}
+> > +unsafe impl WritableToBytes for u32 {}
+> > +unsafe impl WritableToBytes for u64 {}
+> > +unsafe impl WritableToBytes for usize {}
+> > +unsafe impl WritableToBytes for i8 {}
+> > +unsafe impl WritableToBytes for i16 {}
+> > +unsafe impl WritableToBytes for i32 {}
+> > +unsafe impl WritableToBytes for i64 {}
+> > +unsafe impl WritableToBytes for isize {}
+> > +unsafe impl WritableToBytes for bool {}
+> > +unsafe impl WritableToBytes for char {}
+> > +unsafe impl WritableToBytes for str {}
+> > +// SAFETY: If individual values in an array have no uninitialized port=
+ions, then
+> > +// the the array itself does not have any uninitialized portions eithe=
+r.
+> > +unsafe impl<T: WritableToBytes> WritableToBytes for [T] {}
+> > +unsafe impl<T: WritableToBytes, const N: usize> WritableToBytes for [T=
+; N] {}
+>
+> These traits are probably usable in a lot of other places (e.g.
+> packets, GPU), so could you put them in a separate module?
 
-I'll add some.
+I can move them to the types module.
 
+> The patterns here are pretty similar to what the bytemuck crate does
+> [1]. Since that crate is well established and open licensed, I think
+> it makes sense to keep their naming or possibly even vendor a portion
+> in.
 
-Alice
+Vendoring bytemuck is out of scope for this patchset.
+
+If we *are* going to vendor one of them, I would suggest zerocopy over byte=
+muck.
+
+> In particular, this would likely include the traits:
+>
+> - AnyBitPattern, which is roughly ReadableFromBytes here
+> - NoUninit, which is roughly WritableToBytes here
+> - Optionally Pod (plain old data), a supertrait of both AnyBitPattern
+> and NoUninit just used to simplify trait implementation (impl Pod and
+> you get the other two).
+
+I can rename the two traits, but I'm not going to introduce Pod. It's
+over engineered for my purposes. Also, I prefer the trait names from
+zerocopy. They emphasize that it's really about conversions to/from
+byte arrays, and not about moving values around.
+
+Note that WritableToBytes has an extra comment about pointer addresses
+that bytemuck/zerocopy doesn't have.
+
+> And the functions:
+>
+> - from_bytes to turn &[u8] into &T for use in `read`. Needs `T: Copy`
+> to return an owned value, as noted above.
+> - bytes_of to turn &T into &[u8], for use in `write`
+>
+> The derive macros would also be nice to have down the line, though
+> bytemuck's unfortunately relies on syn.
+>
+> - Trevor
+>
+> [1]: https://docs.rs/bytemuck/latest/bytemuck/
