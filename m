@@ -1,182 +1,140 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14567433A9
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 10:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09899745E6
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 12:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707388637; cv=none; b=YHYl/3fqAlsztyihbsvNi1+I5UdZeEceTrC+q5gqnjajlI+Zzh0haUygQPcSE4GvQPZE7a4jskrfVZSsMwzHjZSo1M4L/myOrZXVxOnxXggsjFhGm7hQn45FWW4Jx3mH2noJFPmVx0cShe4W3PVPMN/+jEedoyNNbq6W2mHTZcI=
+	t=1707394841; cv=none; b=MiLcAk6ws3aJ7zSo1hr1bIsU999OBIvtdvdw1nkULQu5hD0z3PlnFI5tWSoyMppOOGMPHkuMRTPwxt8dls7OQBuCF0JMSfUVR7SFa3XAnzfm/DZV/Jhpg16tv7CTjzf1l2WF1DLCU2QKlqLnQ1qHa0aeWXQfmWO+VEPMCy5eXik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707388637; c=relaxed/simple;
-	bh=cNu5sA6fERZMA9W4q3lH5iPjBTfz73q1guO6FxEgLeU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A45cHrbckiokjfTOWGMb8h1JAYo7mjmP/b0X38EC3fhHUHUKg5NqTrHoEhb3NubdJbXVnFjAABpLtsuw8LRDbfnp7qPHGZWMlazsZfHWxLDxzVZ4SvUKVnwcBM+yl/3wjcx/ZbLzIvpIG0gjXNpirSUYnKpFNO1NraUHQGm0Yxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=d/Jq8vtB; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1707394841; c=relaxed/simple;
+	bh=3JyyPHDywY0DWXt/HZUqe0GH7KV9wdeM+NZ7Y9F6MdU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c4M39vpQQ3OEP/VnGsafYdaQFJ9BLpoUXQzm8r+vUvvgSCnhpkMJ/ez1LBQLw/8I2oo8/t48bWCE68Lsv2k6nCwh+IOJ3QTT9Nh/qUUaUfo41eoXOpPEn5ztsG7lKdL5qWFiTgt4tX4E7ouiNIDgeAAAQa2zo5BWNqYsBr9NHqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lK6jO+qp; arc=none smtp.client-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="d/Jq8vtB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1707388626; x=1707647826;
-	bh=rPykoucvkZsYaTMZrK8P8EUG/coz9HKX28tpbc64dNQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=d/Jq8vtB7QAeBljLoQcvoYh4Myfe0jb2EvYYplbEFWq2uE+P6OuB5gXJe80GFWF99
-	 2H0Xl5auIhTAYSxvT/BGsfK+J3uiusRnfJP13TJGNOhOFMufjQDblti+3Gg4EPreE0
-	 13u3tM1MHH+e4nqZ4ipVXeCU3Lh52eYM0IIb0LcHSF/6e8U9LxwMiSx1CdJIQfZ8TM
-	 ZCxBqF8M1AEITW9/xfkekWRX+RQteap03Wc/m+3vVj8OVXhBcJRNhcARMX38obTKp8
-	 bJvpcpeSf3JRmxxmxyoiZFMrxVTuDJ910jKgCXGdppmqKsn+P+bDVmdtiLHwleFZmH
-	 88dNOCXmCmWdA==
-Date: Thu, 08 Feb 2024 10:36:58 +0000
-To: "Behme Dirk (CM/ESO2)" <dirk.behme@de.bosch.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH] docs: rust: extend abstraction and binding documentation
-Message-ID: <223ce440-4643-4a7f-b97d-c023e64beb16@proton.me>
-In-Reply-To: <a3567a18-6b8e-47d9-ae44-418de9dacfd3@de.bosch.com>
-References: <20240206065429.1933397-1-dirk.behme@de.bosch.com> <CANiq72kqdsX34MOCz1qOyb0TCxsHAjn9N9S5OqdxfwwtJSGXUw@mail.gmail.com> <a3567a18-6b8e-47d9-ae44-418de9dacfd3@de.bosch.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lK6jO+qp"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7ce4512d308so466707241.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 04:20:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707394839; x=1707999639; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bf7m/USDjz7kE2FE9CQHR/aM8ZK7eKAJ6zNf2AmjvPo=;
+        b=lK6jO+qpiz7Dz9zsibMBe0G6Xhgti5BjVZZEhrSbWOPjFXVq1LNCV2ezC4LE7TA7Zh
+         qHoGNfvRUT/MH9/1yxRmjdjfz+GQAwSeyGdJU4PMLnZqGrDcFfTrs/Tdf0948IKDt3xt
+         CX8TzjI8NrWh5WmugssPxPBW9iq27e1Jy73KV+smHBEKYrsueaMtKc6dOjc5jnnMKfgU
+         QQH5zYJJ5o5N1G+c4Q+cWKhq3xuwwjXshKu9LvfSP3Gky5nCyed8BGQCmJQ+t2QwMSTR
+         yskXrOLu5ZBPwsv1xes2TL2ghZ0v43veKoT5J5LZTuqRaOX/IQhDVN7kj9TZghm67w3D
+         v7xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707394839; x=1707999639;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bf7m/USDjz7kE2FE9CQHR/aM8ZK7eKAJ6zNf2AmjvPo=;
+        b=Kdql8Gr8VQmjI/LwBoBVCkNlqogaCuKpSa63QtsgYJEF+Ls52UHamfzkcPsQHK3diD
+         MT1ff5Xggl3iiUqnzM0v4HtqriYem8LhV7qTOBnjSaVV2Ol+zrMvJDZe028FXtw+FSuz
+         nYhpy+hHNv72io6dIxc6UWLKSEYtPGzgk/bLx6gnxcFoC2o3B0Mi8DIHovRmCmymFiyZ
+         fQvoWN+8yrM73qjHGRAZeRAmXE1NVgoslx0mol97LAuTm+9gBmqZiGvu/9ix/Pbm/i5E
+         p+cKfE958rh8zGkAreEwABx6kHoRJylKzWHwY3rneydXAdfYy4f0HdLwgQTJ08etJlpp
+         TdIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeoynBMV6MyatkZMLM2snMYUsDSGbUOSj+19YMd78252KEENsZS3CLQkk/2k09oeBYRZjil8yBfVw+LkcuGreD35cujh0tbtluSjfB1Xo=
+X-Gm-Message-State: AOJu0YzWHum+TFx3hJ3hQlvjB2pc6PQVOBnoIGyaswnwhTIXhu4W9sRV
+	BnnsRWa4PazLHxDJhi4o8hxk2VK5vKTKt4U6vmEHib9ZcAZvryNr3HEYFdI+ql4KjfwmmwQemL6
+	XxUvC0/3Ee3SuMkR5YAlXYfHUS3my7ZeA7hr/
+X-Google-Smtp-Source: AGHT+IGlL86D1Ci5269kTzm8XhRyortv2UdzEszE/4vmPzP7uLriXUhvD14B2r1rBQ/5VXy4f5o9FdDQRR6VTHNU/Uo=
+X-Received: by 2002:a05:6122:1c86:b0:4c0:3929:2748 with SMTP id
+ eu6-20020a0561221c8600b004c039292748mr1987582vkb.7.1707394838719; Thu, 08 Feb
+ 2024 04:20:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240124-alice-mm-v1-1-d1abcec83c44@google.com> <20240124231235.6183-1-kernel@valentinobst.de>
+In-Reply-To: <20240124231235.6183-1-kernel@valentinobst.de>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 8 Feb 2024 13:20:28 +0100
+Message-ID: <CAH5fLghRiVGWr--9hqwr4Cg4anaKWVqZA0D65DgJzLPPOAvNgg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: add userspace pointers
+To: Valentin Obst <kernel@valentinobst.de>
+Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
+	arnd@arndb.de, arve@android.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, 
+	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
+	viro@zeniv.linux.org.uk, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 2/7/24 06:32, Behme Dirk (CM/ESO2) wrote:
-> On 06.02.2024 20:35, Miguel Ojeda wrote:
->> On Tue, Feb 6, 2024 at 7:54=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.c=
-om> wrote:
->>>
->>> CC: Miguel Ojeda <ojeda@kernel.org>
->>
->> Nit: it is typically spelled Cc (i.e. camel case).
->>
->>> +.. code-block::
->>> +
->>> +                                                       rust/bindings/
->>> +                                                       (rust/helpers.c=
-)
->>> +
->>> +                                                          include/ ---=
---+ <-+
->>> +                                                                      =
-  |   |
->>> +         drivers/              rust/kernel/              +----------+ =
-<-+   |
->>> +           fs/                                           | bindgen  | =
-      |
->>> +          .../            +-------------------+          +----------+ =
---+   |
->>> +                          |    Abstractions   |                       =
-  |   |
->>> +       +---------+        | +------+ +------+ |          +----------+ =
-  |   |
->>> +       | my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | =
-<-+   |
->>> +       | driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          | =
-      |
->>> +       +---------+        | |system| |system| |          | bindings | =
-<-----+
->>> +            |             | +------+ +------+ |          |  crate   | =
-      |
->>> +            |             |   kernel crate    |          +----------+ =
-      |
->>> +            |             +-------------------+                       =
-      |
->>> +            |                                                         =
-      |
->>> +            +------------------# FORBIDDEN #--------------------------=
-------+
->>
->> Thanks a lot for the effort of making that slide into ASCII :)
->>
->> I could try to see if I can export the diagram into SVG and include it.
->>
->>> +The main idea is to encapsulate all ``unsafe()`` handling in the abstr=
-actions reviewed
->>> +and documented carefully. These are considered to be sound then. With =
-this model
->>> +it is assumed that users of the abstractions ("my_foo driver") can't d=
-o anything
->>> +unsound if
->>> +
->>> +#. the abstractions are sound
->>> +#. they don't use ``unsafe()``
->>
->> Like Valentin, I feel the wording needs some improvement here. Part of
->> the confusion may be the `unsafe()` there -- it is unclear what it
->> means (especially given the parentheses).
->>
->> It is true we want to encapsulate C APIs and we forbid calling
->> directly `bindings` outside subsystems / exceptional cases; and
->> ideally provide safe abstractions as much as possible. However, we are
->> not the ones "considering" the abstractions sound (or at least that
->> way of putting it may confuse readers). We do our best to have sound
->> abstractions, but it is not something we "decide". So if e.g. someone
->> passes a raw pointer and just dereferences it in a safe function, that
->> is most likely unsound and it should be fixed.
->>
->> That is, in turn, what allows callers to avoid breaking things. In
->> other words, we don't "assume that users cannot do anything unsound"
->> (introduce UB?) -- quite the opposite: what we want (as much as
->> possible) is that they cannot introduce UB even if they tried.
->>
->> And that applies even if users use `unsafe`, as long as they use it
->> correctly, i.e. as long as they don't break the preconditions of what
->> they use. It is just that the best case is that they do not even need
->> to use `unsafe` calls (this is why we want that APIs are as safe as
->> possible, because then we minimize the chances that users get it wrong
->> and introduce UB).
->>
->>> +Abstractions
->>> +~~~~~~~~~~~~
->>> +
->>> +Abstractions are the glue layer between the bindings and the in-kernel=
- users. E.g.
->>
->> Perhaps we should avoid "glue layer", since that sometimes implies
->> that it is a "thin" layer / "uninteresting" layer. However, the
->> abstractions are the actual interesting bits (and can be quite
->> complex, precisely to achieve the relaxation of safety preconditions,
->> i.e. making APIs "as safe as possible", that you mention below).
->>
->> But it is quite subjective.
->>
->>> +The webinar `Rust For Linux: Writing Safe Abstractions & Drivers`
->>> +
->>> +       https://www.linuxfoundation.org/webinars/rust-for-linux-writing=
--abstractions-and-drivers
->>> +
->>> +has an introduction to this topic.
->>
->> I appreciate this, though some of the things in there are outdated, so
->> I am not sure about including this nowadays. Perhaps we should record
->> new ones instead :) Or, even better, I could "write" the talk in
->> written form here, which can be maintained and be kept up to date.
->=20
->=20
-> Yes, that sounds really great! :)
->=20
->=20
->> Relatedly, Benno is working on some extra documentation about how to
->> write safety preconditions that we will probably add around here when
->> it is ready.
->=20
-> Benno, is it worth to wait for that? I.e. drop this patch and wait for
-> your version?
+On Thu, Jan 25, 2024 at 12:13=E2=80=AFAM Valentin Obst <kernel@valentinobst=
+.de> wrote:
+>
+> > +//! User pointers.
+> > +//!
+> > +//! C header: [`include/linux/uaccess.h`](../../../../include/linux/ua=
+ccess.h)
+> > +
+>
+> nit: could this be using srctree-relative links?
+>
+> > +/// The maximum length of a operation using `copy_[from|to]_user`.
+>
+> nit: 'a' -> 'an'
+>
+> > +///
+> > +/// If a usize is not greater than this constant, then casting it to `=
+c_ulong`
+> > +/// is guaranteed to be lossless.
+>
+> nit: could this be `usize` or [`usize`]. Maybe would also be clearer to
+> say "... a value of type [`usize`] is smaller than ..."
+>
+> > +///
+> > +/// These APIs are designed to make it difficult to accidentally write=
+ TOCTOU
+> > +/// bugs. Every time you read from a memory location, the pointer is a=
+dvanced by
+>
+> Maybe makes sense to also introduce the abbreviation TOCTOU in the type
+> documentation when it is first used.
+>
+> > +    /// Reads the entirety of the user slice.
+> > +    ///
+> > +    /// Returns `EFAULT` if the address does not currently point to
+> > +    /// mapped, readable memory.
+> > +    pub fn read_all(self) -> Result<Vec<u8>> {
+> > +        self.reader().read_all()
+> > +    }
+>
+> If I understand it correctly, the function will return `EFAULT` if _any_
+> address in the interval `[self.0, self.0 + self.1)` does not point to
+> mapped, readable memory. Maybe the docs could be more explicit.
+>
+> > +        // Since this is not a pointer to a valid object in our progra=
+m,
+> > +        // we cannot use `add`, which has C-style rules for defined
+> > +        // behavior.
+> > +        self.0 =3D self.0.wrapping_add(len);
+>
+> If I understand it correctly, you are using 'valid object' to refer to
+> an 'allocated object' [1] as this is what the `add` method's docs
+> refer to [2]. In that case it might be better to use the latter term as
+> it has a defined meaning. Also see [3] and [4] which are about making it
+> more precise.
+>
+> [1]: https://doc.rust-lang.org/core/ptr/index.html#allocated-object
+> [2]: https://doc.rust-lang.org/core/primitive.pointer.html#method.add
+> [3]: https://github.com/rust-lang/rust/pull/116675
+> [4]: https://github.com/rust-lang/unsafe-code-guidelines/issues/465
 
-My stuff focuses more on how to to write safety documentation and what
-our motivations for certain conventions are. This gives a higher level
-overview and useful on its own, so you can keep it.
-I agree with Miguel that some of the wording should be improved. Maybe
-he can help you with that.
+Thanks. I'll include all of your suggestions in my next version.
 
---=20
-Cheers,
-Benno
-
-
+Alice
