@@ -1,55 +1,54 @@
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221E67AE48
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 13:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F846E2CB
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 13:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707398058; cv=none; b=YBfzymbFaEYTRE/+Z3+P2cl5/IA2frgE8mdXMxhTSqwhYkJyBW7KIKxVNttRHG0eqLXCqZJCU+TUcg4ALajilANool+N9boUw0qxTEN1fPv3hSy9y01GYqfepLbsZvg12HqPCDjgCxitI5kijctZE7BHKih9wSG7FDSFg8YwL7M=
+	t=1707399412; cv=none; b=t2aVBBrOzpIRYfuVVN3ojgHUTUrEPdom/Q/mm91Eb2t417T0W7VrYY3Lksg8EopBo1RepW8yDJsP3sslBPOi1iJp5p6sbRkabHjufBZ1eaVrss7pAMG9RRa9C5p3mY4WL56H+cOCbE+bQIM6eVZ5OSPRJnefewef0RNqh8OLhKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707398058; c=relaxed/simple;
-	bh=aD+Cw2+HmYwuNjGEKwdtPj0qQ/W5mX3RahbDYj/KXk8=;
+	s=arc-20240116; t=1707399412; c=relaxed/simple;
+	bh=J2YJPekikVaCmqI0KXV0F0E6DUM9ftaGqx+AFjmHblA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QPB+uLuhXk7mDZi+uiJCxxaFNl9eBTYyid1pr1IDkQZ/gzcmw65MjsiRiNjl1PyiOXryD8osx2yX7NWvQvXKqhCvJm89vRF9q9TYHvUZvKbcQVcYYg27i1BVDy/xkFul4Lrbd+7E17SguxMNJIyrr8ybrrA8irtwDrtHTfKTwqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x0a5CORa; arc=none smtp.client-ip=209.85.222.41
+	 To:Cc:Content-Type; b=OXbpZRJI6QYv+V7z2XssInmPDZNgYGU8ErxKim3zkAZNK0jYkHjiR/14THq3pXmQxt4XT1PixpV4Dh+vdDZgUuLKOjou+/vSHx89W8BleEcbgO2R2ZgUFJjTX0nLAKT4HiXSfu1BzwPXC0sinKUjKK65k+kIKNZbD6zkhcGNg3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tKwmC7YX; arc=none smtp.client-ip=209.85.222.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x0a5CORa"
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7d2e007751eso832025241.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 05:14:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tKwmC7YX"
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-7d5c2502ea2so650867241.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 05:36:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707398056; x=1708002856; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1707399410; x=1708004210; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u4Y28H6BgiSHtemuYz9Q6cvGUwcKGIFMyv2Vo+B56G0=;
-        b=x0a5CORaI3H8OMWo68NAhEJH+qX+9xRR2827jV/hH6NY4u8Y9OuNVFC3DNJdKcCy4L
-         jYJrnNdIisFdePfqJLWNCCRvbOYgukCi8hO/5nwK1I43jbauu7G7Az5c19A3e4Tz8OdK
-         chKMPAUQufXATu6NiVms3yvyuA13KwbWfjNhEmJ2nsJBO6npUCwn/mbCteQHWs2R8Mwv
-         1rYN+UqOgz2k0XMyQzjyZPnD5Cp2Fw0xH1mLsAiTQzM+dMR0f+hYc8XkDqO6S1nI+69B
-         Byu49EMmXiDG16aYrutvLghoyjw2pjMTSk6gTSlRx3Tk8rdrj/IEpnfcRPccsmjHv9in
-         7PNg==
+        bh=Kn/V3vxoIjIUSC8M3Y2S4b8UAF5QxV/6wcQ3800sVJE=;
+        b=tKwmC7YXP1Y8YTo7bUND3f1dhw02PJxnwaeftM9a++O4D6Tk5NnrbJvun+9lDNeEC5
+         /P6ELx1a3U/W/pRsDUWp9MaXkPn3We1tCouNJaCfTTu3FepntxvbBaGhI0lkd4VYLme0
+         czkcM1YA3MN2aPIOrn4AlWSkC3M6Coa7D+dxsaixZdkBk1YpLcvkf16l9Ao1SDd0WoZu
+         hKz8Lm6ukv54027RdtaqRn7+NKL1Y8/SVGDgMtvYgMz7ZoVyW/VrnrD5vkwjbcusExEY
+         z6fmttZGwY4P0UsEyqhEJeQo4wFQ4QffPjmd400NNAHxLtShEWnt3PqMu+u1KPK41cVi
+         DGvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707398056; x=1708002856;
+        d=1e100.net; s=20230601; t=1707399410; x=1708004210;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u4Y28H6BgiSHtemuYz9Q6cvGUwcKGIFMyv2Vo+B56G0=;
-        b=SspCMcelQzDa4MK9RtgQdVV7TiDzb1ra2kjWul6CjsqHfF5/ZEl2JKvRvI31qCSMCT
-         TtVcBt9d+vUCIcByKKSdMOgBarU8ZlTO0ViVW/BP4rbDsmA4DEu9coXBBHhKAvZj21+q
-         71QIU7FsvyYORYycdoSvfIsIlK3abcS6fBSsTBmdOrh1IKJYkqBTnPAEa45k+sdboYLx
-         TAJn9sMQSQoAGNJErhuuf78VWsG8q38GtNnGL6sI9vMhcBQKMjygO4zV4bVUouaF4JsD
-         vOcpXN2bpVI/BzB7adTjzyC7AkJgi9hXsHE++akPToZkrN6bbFfrdzOs4ZuKZGgbXDwo
-         aL8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWxUXT9nUuL7EVQplVFvyXzCzdY+j4u6vzoWPExRFs0AFY8y7O9e9fgBLW374gNjx3DIvejY36ONMj0WZrmYDFbSLmDwiL68NrpCNOPsH8=
-X-Gm-Message-State: AOJu0Yzec+S2pVy8gbei95ezOadGi0kvnU0ytdQzp+OrI0JZIddldxFE
-	F1oONcPCzhAhHjWArRC/VeXmdMg5bRy5Xh/Gz6BQazrLwdZOHgbFboMf8CfF82N98e6HE5L1Uvr
-	Kiuy12Krx3bPgt5cuv2XPQuOxQT0BHEHjmaD0
-X-Google-Smtp-Source: AGHT+IFAH2AcakGpseEeHbdkDCpG2lxDefL5T1Ou+BT2/kUYqqhr3VPMB7tRMumatFtOHoQQ4hDQ0sn5XhVLJ3wPWPQ=
-X-Received: by 2002:a05:6102:2a7a:b0:46d:49a5:e9fd with SMTP id
- hp26-20020a0561022a7a00b0046d49a5e9fdmr5975810vsb.24.1707398055828; Thu, 08
- Feb 2024 05:14:15 -0800 (PST)
+        bh=Kn/V3vxoIjIUSC8M3Y2S4b8UAF5QxV/6wcQ3800sVJE=;
+        b=jenOXCMPDxz4ZX21IvG0XFy/X2k9ftp7AhWaQItG7EVx8wJomQdqoqe5d5WHSfqkTn
+         J5DnhtbhIQ+zn+6bywmU1CmU0mEETwzpR3XOqRvyqLggwi6liP/C1Zw0p8XxUxk+1W5B
+         ObjlAvmldQDDqIwKzFF5Zeqw67AZMgjpTOeDbSdQauvICoG8DUwtFvEb69xK+0faR5ve
+         Fd2krYFlSV23v12gkabeIN3J0Rum1HwWSrdu36Bo42TsPPLgmR2flJugrwN4zcMk8yKR
+         8rDLnig2EoLaenQ4fkjA8xYy37TW2Cnwu6wSGjTc0P7opRd0co7R3QglHCbeTqA3ttZt
+         qbwQ==
+X-Gm-Message-State: AOJu0YwKWRlRffj6gAWbARI8cEYo1vUlKy4zV8qf+Qt9zqm+5Mhb/txH
+	KrLHM8niwov0gaGZMWHt7I+kiTN4WT2TPt5PME+zkD2EltN2rQ7uxfehDy6XCvKtRy5Hz9VjQkW
+	Y9cxP7/GmcXq61B55tOpb3jzIUXWMkKC7TLnp
+X-Google-Smtp-Source: AGHT+IF9Fvq5IrgEGgEG+1r7dMwVzweHbYqlYapUQEoUpjqP9B/NinoiHrV94HMpa24eTruhWvgZvbZdVK8ImcRm0vM=
+X-Received: by 2002:a05:6102:a05:b0:46d:2a90:f8ce with SMTP id
+ t5-20020a0561020a0500b0046d2a90f8cemr5223903vsa.28.1707399409792; Thu, 08 Feb
+ 2024 05:36:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,20 +56,22 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-2-d1abcec83c44@google.com> <CALNs47ubBgWr25AEKtgYPyzPB1tfcyCAz8-TbYmmqMpY98Fu_A@mail.gmail.com>
-In-Reply-To: <CALNs47ubBgWr25AEKtgYPyzPB1tfcyCAz8-TbYmmqMpY98Fu_A@mail.gmail.com>
+ <20240124-alice-mm-v1-3-d1abcec83c44@google.com> <ZbMA1yiM6Bqv9Sqg@boqun-archlinux>
+ <CAH5fLgiNphSebaG82XkQHGFPFp1Mf1egyaiX6MFzsU2X3-Ni8w@mail.gmail.com>
+ <ZbP50nEIMqULfVuj@Boquns-Mac-mini.home> <CALNs47uy5rQ15wByzQA0_YzORM0nTFdi9-TvwyC4+ZTXVQBj4g@mail.gmail.com>
+In-Reply-To: <CALNs47uy5rQ15wByzQA0_YzORM0nTFdi9-TvwyC4+ZTXVQBj4g@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 8 Feb 2024 14:14:04 +0100
-Message-ID: <CAH5fLggebX-dgYXtf9mbScv02c3gpq1qCJSesZ8qpXsceBXDOg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: add typed accessors for userspace pointers
+Date: Thu, 8 Feb 2024 14:36:38 +0100
+Message-ID: <CAH5fLggA1MxtR-H5454X_mkQW-E=ZHnE6iYbbLyXGzp6wg5kDQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] rust: add abstraction for `struct page`
 To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Cc: Boqun Feng <boqun.feng@gmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Kees Cook <keescook@chromium.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
 	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
 	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
@@ -79,191 +80,88 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 1, 2024 at 6:04=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wro=
+On Thu, Feb 1, 2024 at 7:51=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wro=
 te:
 >
-> On Wed, Jan 24, 2024 at 6:21=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+> On Fri, Jan 26, 2024 at 1:28=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com>=
  wrote:
-> > +    /// Reads a value of the specified type.
-> > +    ///
-> > +    /// Fails with `EFAULT` if the read encounters a page fault.
-> > +    pub fn read<T: ReadableFromBytes>(&mut self) -> Result<T> {
+> >
+> > On Fri, Jan 26, 2024 at 01:33:46PM +0100, Alice Ryhl wrote:
+> > > On Fri, Jan 26, 2024 at 1:47=E2=80=AFAM Boqun Feng <boqun.feng@gmail.=
+com> wrote:
+> > > >
+> > > > On Wed, Jan 24, 2024 at 11:20:23AM +0000, Alice Ryhl wrote:
+> > > > > [...]
+> > > > > +    /// Maps the page and writes into it from the given buffer.
+> > > > > +    ///
+> > > > > +    /// # Safety
+> > > > > +    ///
+> > > > > +    /// Callers must ensure that `src` is valid for reading `len=
+` bytes.
+> > > > > +    pub unsafe fn write(&self, src: *const u8, offset: usize, le=
+n: usize) -> Result {
+> > > >
+> > > > Use a slice like type as `src` maybe? Then the function can be safe=
+:
+> > > >
+> > > >         pub fn write<S: AsRef<[u8]>>(&self, src: S, offset: usize) =
+-> Result
+> > > >
+> > > > Besides, since `Page` impl `Sync`, shouldn't this `write` and the
+> > > > `fill_zero` be a `&mut self` function? Or make them both `unsafe`
+> > > > because of potential race and add some safety requirement?
+> > >
+> > > Ideally, we don't want data races with these methods to be UB. They
+> >
+> > I understand that, but in the current code, you can write:
+> >
+> >         CPU 0                   CPU 1
+> >         =3D=3D=3D=3D=3D                   =3D=3D=3D=3D=3D
+> >
+> >         page.write(src1, 0, 8);
+> >                                 page.write(src2, 0, 8);
+> >
+> > and it's a data race at kernel end. So my question is more how we can
+> > prevent the UB ;-)
 >
-> I think that `T: Copy` is required here, or for Copy to be a
-> supertrait of ReadableBytes, since the data in the buffer is being
-> duplicated from a reference.
+> Hm. Would the following work?
 >
-> Send is probably also a reasonable bound to have .
-
-We're not moving a value of type `T`. We're creating a new value of
-type `T` from a byte array. The trait says that we can do that, so I
-think that is enough here.
-
-Besides, we'll often want to use this for wrappers around bindgen
-types. If we add a Copy bound, then we need to get bindgen to generate
-a #[derive(Copy)] for them, which I don't think it does right now.
-
-> > +        // SAFETY: The local variable `out` is valid for writing `size=
-_of::<T>()` bytes.
-> > +        let res =3D unsafe {
-> > +            bindings::copy_from_user_unsafe_skip_check_object_size(
-> > +                out.as_mut_ptr().cast::<c_void>(),
-> > +                self.0,
-> > +                size_of::<T>() as c_ulong,
+>     // Change existing functions to work with references, meaning they ne=
+ed an
+>     // exclusive &mut self
+>     pub fn with_page_mapped<T>(
+>         &mut self,
+>         f: impl FnOnce(&mut [u8; PAGE_SIZE]) -> T
+>     ) -> T
 >
-> As with the other patch, I think it would be more clear to use
-> `c_ulong::try_from(...)` rather than comparing against
-> `MAX_USER_OP_LEN ` and later casting. Possibly just in a helper
-> function.
-
-Done.
-
-> > +        // Since this is not a pointer to a valid object in our progra=
-m,
-> > +        // we cannot use `add`, which has C-style rules for defined
-> > +        // behavior.
-> > +        self.0 =3D self.0.wrapping_add(size_of::<T>());
+>     pub fn with_pointer_into_page<T>(
+>         &mut self,
+>         off: usize,
+>         len: usize,
+>         f: impl FnOnce(&mut [u8]) -> Result<T>,
+>     ) -> Result<T>
 >
-> There are now methods `wrapping_byte_add` (since 1.75). Doesn't make
-> much of a difference since the pointer is c_void anyway, but it does
-> make the unit more clear.
-
-Sure, I can use those methods.
-
-> > +    /// Writes the provided Rust value to this userspace pointer.
-> > +    ///
-> > +    /// Fails with `EFAULT` if the write encounters a page fault.
-> > +    pub fn write<T: WritableToBytes>(&mut self, value: &T) -> Result {
+>     // writing methods now take &mut self
+>     pub fn write(&mut self ...)
+>     pub fn fill_zero(&mut self ...)
+>     pub fn copy_into_page(&mut self ...)
 >
-> Send + Copy are also needed here, or supertraits of WritableToBytes.
-
-I also disagree here. We're not moving a value of type T. We're
-creating a byte array from a value of type T, and the trait says that
-we can do that.
-
-> > +/// Specifies that a type is safely readable from bytes.
-> > +///
-> > +/// Not all types are valid for all values. For example, a `bool` must=
- be either
-> > +/// zero or one, so reading arbitrary bytes into something that contai=
-ns a
-> > +/// `bool` is not okay.
-> > +///
-> > +/// It's okay for the type to have padding, as initializing those byte=
-s has no
-> > +/// effect.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// All bit-patterns must be valid for this type.
-> > +pub unsafe trait ReadableFromBytes {}
-> > +
-> > +// SAFETY: All bit patterns are acceptable values of the types below.
-> > +unsafe impl ReadableFromBytes for u8 {}
-> > +unsafe impl ReadableFromBytes for u16 {}
-> > +unsafe impl ReadableFromBytes for u32 {}
-> > +unsafe impl ReadableFromBytes for u64 {}
-> > +unsafe impl ReadableFromBytes for usize {}
-> > +unsafe impl ReadableFromBytes for i8 {}
-> > +unsafe impl ReadableFromBytes for i16 {}
-> > +unsafe impl ReadableFromBytes for i32 {}
-> > +unsafe impl ReadableFromBytes for i64 {}
-> > +unsafe impl ReadableFromBytes for isize {}
-> > +// SAFETY: If all bit patterns are acceptable for individual values in=
- an array,
-> > +// then all bit patterns are also acceptable for arrays of that type.
-> > +unsafe impl<T: ReadableFromBytes> ReadableFromBytes for [T] {}
-> > +unsafe impl<T: ReadableFromBytes, const N: usize> ReadableFromBytes fo=
-r [T; N] {}
-> > +
-> > +/// Specifies that a type is safely writable to bytes.
-> > +///
-> > +/// If a struct implements this trait, then it is okay to copy it byte=
--for-byte
-> > +/// to userspace. This means that it should not have any padding, as p=
-adding
-> > +/// bytes are uninitialized. Reading uninitialized memory is not just =
-undefined
-> > +/// behavior, it may even lead to leaking sensitive information on the=
- stack to
-> > +/// userspace.
-> > +///
-> > +/// The struct should also not hold kernel pointers, as kernel pointer=
- addresses
-> > +/// are also considered sensitive. However, leaking kernel pointers is=
- not
-> > +/// considered undefined behavior by Rust, so this is a correctness re=
-quirement,
-> > +/// but not a safety requirement.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Values of this type may not contain any uninitialized bytes.
-> > +pub unsafe trait WritableToBytes {}
-> > +
-> > +// SAFETY: Instances of the following types have no uninitialized port=
-ions.
-> > +unsafe impl WritableToBytes for u8 {}
-> > +unsafe impl WritableToBytes for u16 {}
-> > +unsafe impl WritableToBytes for u32 {}
-> > +unsafe impl WritableToBytes for u64 {}
-> > +unsafe impl WritableToBytes for usize {}
-> > +unsafe impl WritableToBytes for i8 {}
-> > +unsafe impl WritableToBytes for i16 {}
-> > +unsafe impl WritableToBytes for i32 {}
-> > +unsafe impl WritableToBytes for i64 {}
-> > +unsafe impl WritableToBytes for isize {}
-> > +unsafe impl WritableToBytes for bool {}
-> > +unsafe impl WritableToBytes for char {}
-> > +unsafe impl WritableToBytes for str {}
-> > +// SAFETY: If individual values in an array have no uninitialized port=
-ions, then
-> > +// the the array itself does not have any uninitialized portions eithe=
-r.
-> > +unsafe impl<T: WritableToBytes> WritableToBytes for [T] {}
-> > +unsafe impl<T: WritableToBytes, const N: usize> WritableToBytes for [T=
-; N] {}
+>     // Add two new functions that take &self, but return shared access
+>     pub fn with_page_mapped_raw<T>(
+>         &self,
+>         f: impl FnOnce(&UnsafeCell<[u8; PAGE_SIZE]>) -> T
+>     ) -> T
 >
-> These traits are probably usable in a lot of other places (e.g.
-> packets, GPU), so could you put them in a separate module?
-
-I can move them to the types module.
-
-> The patterns here are pretty similar to what the bytemuck crate does
-> [1]. Since that crate is well established and open licensed, I think
-> it makes sense to keep their naming or possibly even vendor a portion
-> in.
-
-Vendoring bytemuck is out of scope for this patchset.
-
-If we *are* going to vendor one of them, I would suggest zerocopy over byte=
-muck.
-
-> In particular, this would likely include the traits:
+>     pub fn with_pointer_into_page_raw<T>(
+>         &self,
+>         off: usize,
+>         len: usize,
+>         f: impl FnOnce(&[UnsafeCell<u8>]) -> Result<T>,
+>     ) -> Result<T>
 >
-> - AnyBitPattern, which is roughly ReadableFromBytes here
-> - NoUninit, which is roughly WritableToBytes here
-> - Optionally Pod (plain old data), a supertrait of both AnyBitPattern
-> and NoUninit just used to simplify trait implementation (impl Pod and
-> you get the other two).
+> This would mean that anyone who can obey rust's mutability rules can
+> use a page without any safety or race conditions to worry about, much
+> better for usability.
 
-I can rename the two traits, but I'm not going to introduce Pod. It's
-over engineered for my purposes. Also, I prefer the trait names from
-zerocopy. They emphasize that it's really about conversions to/from
-byte arrays, and not about moving values around.
-
-Note that WritableToBytes has an extra comment about pointer addresses
-that bytemuck/zerocopy doesn't have.
-
-> And the functions:
->
-> - from_bytes to turn &[u8] into &T for use in `read`. Needs `T: Copy`
-> to return an owned value, as noted above.
-> - bytes_of to turn &T into &[u8], for use in `write`
->
-> The derive macros would also be nice to have down the line, though
-> bytemuck's unfortunately relies on syn.
->
-> - Trevor
->
-> [1]: https://docs.rs/bytemuck/latest/bytemuck/
+The methods can't be `&mut self` because I need the ability to perform
+concurrent writes to disjoint subsets of the page.
