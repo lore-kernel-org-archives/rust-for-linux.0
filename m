@@ -1,54 +1,54 @@
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793DD7AE4B
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 15:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D107B3E1
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Feb 2024 15:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707404774; cv=none; b=pwp9C6fOLRvPWxrKVH2K6MQmp+hbG+WPmnRtnTsB9GFrEkfSloUSSSfbuFdKJNRC+qvV4W03BkanXJgHFN0dF5El/74WGOrXGQivzroINDsYYuuSLO6b9QmwprU9WgpLVMqx0BTQNPXzybwbMSUKGvSt728CMXF5fTgrM8aoAzk=
+	t=1707404887; cv=none; b=Zs8orxA/FXfCvFBJpMejYN8aZxIz/HKrkFU66s6ttiUGQ0axg8BEQ8NDUEijoSlvZ5GDtxN3go9bCEhaSWuv6qnLf3CZRUMiwAAZ61KPmJbhno04Ylu2tH5lLdKMw6sIOOqWZ2RAiRmURmtbaA3K5Nin9SAVW8ToLO+1HV/RouE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707404774; c=relaxed/simple;
-	bh=p7O5ChPBChshUWpDCRZGifl5wJ5DNvQULZn1nSKXFKE=;
+	s=arc-20240116; t=1707404887; c=relaxed/simple;
+	bh=B2X73Y7KSDr68vQod+XguhQ6ZTVc/cqFBBByyo+cBs4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KOqnDJFT0+XCd1eDLUb2IGwalFPCNx1mlI1pX5a0mAy0ZZvwRo3HjBL/dXzENm1fBAdi5QO/tPpa4hy9XiGH6lfN0u9wZkadYSUhfYzVWZSbIWLNAfVEsPVV8V8c+J6QdE3pl0TYFSS4WHgbidzEEmZEVGR2X9k7wi65TbXQJ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jpsqcyo/; arc=none smtp.client-ip=209.85.161.52
+	 To:Cc:Content-Type; b=WBWRycuKf9xQdbzypvoHGhLWlsaveyOYHqx6XiKAs3SfneVEW7QiCyCb+smilKAZiTYjQpoIeW6Wu0AzGSUuxwh74GTDhZ9BT1//H551BxVMLM+WbYwWtX8TjxZrl/iKX3x8+ew/rm8/uJqyN3Gai4hW+Mcc/kiYqyCRtpRJZNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JKT4NrCV; arc=none smtp.client-ip=209.85.217.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jpsqcyo/"
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5957ede4deaso1047939eaf.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 07:06:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JKT4NrCV"
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-46d2635b15eso628501137.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Feb 2024 07:08:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707404771; x=1708009571; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1707404884; x=1708009684; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5qzJG2kbNcKXxgGCq8nsdXz25PJyvZWTgNzBaOYeMow=;
-        b=jpsqcyo/Q4t0hmUdXu6q8T8VtRaZxnjDpLh12T00rAgxfsqmy++RM1LWHGTy9SRRyG
-         GeaYtGH54FNk5EuWHL9SVyq+tQa6ssH+psjYqWQjVeVDkqoRixdqQjs7henReqHwP/iD
-         2qYxm/s7Q7HiBMAQQbe4ZevuZ3BOWv61MxGMFT7i2f0Etn6Tiy2S9M9uiqKdD5TlteEP
-         Wgktaa0q/zbnKMzJ5+fgRUG2+Fde2L8894XR8ERyOiGM5+mP/p5opAzqFm96TRdvNLhw
-         T2jL9KfJwcZj5BijBwugDLwPT1sskB4twUtJHclz+F2PDwfc4qBE2AIDLzSrYXkuFTzT
-         rIxA==
+        bh=GaZbU6qRlbhHeLigMFgS8QR4NIPfAZTvoIj/0tP4h70=;
+        b=JKT4NrCVNu3FaOn28qUwje2/2IwBjqUkvaEZiBPrX71a4Y0Gj+2xXIJJpo89D2bieO
+         PQlV4bJp+RcS47y/yq9LzZv0JB33YyWwIpcpBYZN9OH97aXkyi5a5NxU+XOufNkAQFTj
+         Ey93AgZcPvXmBGtTzBRiwbBBrUWjzqNeAhVmTdfa37/f8y3HGuH5QYJQKHF/7R3UYSyP
+         YqGeRNjK+5eATFheGBHfNylkCTRZH75I/BA9bEtoYhJ+7PAsXF+F2DhelhuTnsA7BnoT
+         gwbh5I3oKy+E9FAole3uRxuQacVyORavKp/5NP6tkMogI/k3r3UKQ6FjFYsef2INkRtL
+         hFow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707404771; x=1708009571;
+        d=1e100.net; s=20230601; t=1707404884; x=1708009684;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5qzJG2kbNcKXxgGCq8nsdXz25PJyvZWTgNzBaOYeMow=;
-        b=fMe9OfReVZm4BU4I/wpxd4tH3+uz3ZMJP523WhCUZYIuhLXADyTCKrvZgmnNEa4LAV
-         QR+ogF4yvC7dsck6+/dArMMNP19H6c1bJEq7BmfsNbaW/5ytcdaMdZPv2wZykhy7UCwy
-         ElvLW02LfZuOA1pgs3S9oE143WzpJDjFC5BZKFzgk8asGG1nKeDmGM8MQysq/WlS/Gkn
-         WI6LhL9Bf6r+LBRQcBUnAEVyoj3p92xoqTUkyxb4XCjywz+wQibvn9SUDiLHTb5lIgsB
-         qHzcu817s2y2VQx7CQkUeoHIxJ8t4FfjBE5R/RtQnvip8Vy7lJUOE4NnbTyVx5UrvUe9
-         FgHw==
-X-Gm-Message-State: AOJu0YzwV/DezZZDr0/3qZzltFavyOrYhI8nUzGQyZhDTgsR8OoS/JxU
-	eMJhjzW73dQg9Of6nnbLtiwYRd/WQ3MwVVWdsXqtQALIl7kpCGEzKWXR9bPQFkrfbYeCOpfxSJ/
-	mC42iL7WuCdtM+LdNRqE0GleIaYYLVeLeS8Ir
-X-Google-Smtp-Source: AGHT+IGVTzN/oqMzo15INfA0ZHSAdSqplYV9Qa5dIb3U+KTOVVvNBXWUHlmLYvp3URuP+CjIaS1IbWWt5XJjO0Qgc/s=
-X-Received: by 2002:a05:6358:2c82:b0:176:2852:3ac1 with SMTP id
- l2-20020a0563582c8200b0017628523ac1mr6819717rwm.28.1707404771171; Thu, 08 Feb
- 2024 07:06:11 -0800 (PST)
+        bh=GaZbU6qRlbhHeLigMFgS8QR4NIPfAZTvoIj/0tP4h70=;
+        b=Mt9xTMyKub8PJF2/mnpud3h0babUQ2b97SxfuPc0FFbzS52mlI66Ypfgie+B8jWc9J
+         h6RHVJHxqbVB4jq/BLycJhgzI23J6V03HNGr0FHRX1zER6cUmfTep/XLHv+CQaC9Nwnj
+         kWeU9L1Evp7A/JgczqbJbHCqoA3/jbLuTUk9hr73GEwzy7Kz8tX8KtRvb9GFdNgwVl8T
+         Dw5FoOtrxfHHZyrf6romw/puuYGDKjgXBoyIzwp2pPbyKeReeRrcYZLVOFKtJu5t/WqU
+         6KzKimc3RCePQ+chFcl4WRK9xQpGh9+XZr9c/I2ZzLSgr5sWaj5UTmtXMxrAR6sM21/V
+         pZlQ==
+X-Gm-Message-State: AOJu0Yz+6A04F2YQgFU8hArP3nQ+BYuFxuCq9waa23rhFA4YBGTxftIH
+	S6d+6WI9zZD7ipO+k+ue2lvatxcclcE/P4geSbdfyqjCTIy4hLr4ST3vXoo1eyPgHPvmaGTcsHz
+	hceIOg3X7PqLjQf1l0zTEQjfTA54GXWBCJpGS
+X-Google-Smtp-Source: AGHT+IHRBHGiMYdETZJWhiDfatCwp6EiPOCd1EdasWWmU96+qO4/SEihD/aYGvlNdCKSFurCtCK7GjYrAYvXLPvVOdw=
+X-Received: by 2002:a05:6122:208a:b0:4b7:49f9:c6f4 with SMTP id
+ i10-20020a056122208a00b004b749f9c6f4mr2534429vkd.4.1707404884308; Thu, 08 Feb
+ 2024 07:08:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,12 +56,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240202-alice-file-v4-0-fc9c2080663b@google.com>
- <20240202-alice-file-v4-3-fc9c2080663b@google.com> <09db8a4c-f471-4ff6-aa14-864697772bd0@gmail.com>
-In-Reply-To: <09db8a4c-f471-4ff6-aa14-864697772bd0@gmail.com>
+ <20240202-alice-file-v4-4-fc9c2080663b@google.com> <aa0f46bc-6bed-4a4e-9dcd-e34cc2563a37@gmail.com>
+In-Reply-To: <aa0f46bc-6bed-4a4e-9dcd-e34cc2563a37@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 8 Feb 2024 16:06:00 +0100
-Message-ID: <CAH5fLgh3vrm6sH4dWejqRGEq6DCPHy-qViBybX4BwUWRbid55g@mail.gmail.com>
-Subject: Re: [PATCH v4 3/9] rust: file: add Rust abstraction for `struct file`
+Date: Thu, 8 Feb 2024 16:07:53 +0100
+Message-ID: <CAH5fLgjSr9bbGc02gDdfFAUTyGiR__6K8qZYQNZLRe_E=Cypjw@mail.gmail.com>
+Subject: Re: [PATCH v4 4/9] rust: cred: add Rust abstraction for `struct cred`
 To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -85,91 +85,34 @@ On Thu, Feb 8, 2024 at 1:35=E2=80=AFAM Martin Rodriguez Reboredo
 > On 2/2/24 07:55, Alice Ryhl wrote:
 > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > >
-> > This abstraction makes it possible to manipulate the open files for a
-> > process. The new `File` struct wraps the C `struct file`. When accessin=
-g
-> > it using the smart pointer `ARef<File>`, the pointer will own a
-> > reference count to the file. When accessing it as `&File`, then the
-> > reference does not own a refcount, but the borrow checker will ensure
-> > that the reference count does not hit zero while the `&File` is live.
+> > Add a wrapper around `struct cred` called `Credential`, and provide
+> > functionality to get the `Credential` associated with a `File`.
 > >
-> > Since this is intended to manipulate the open files of a process, we
-> > introduce an `fget` constructor that corresponds to the C `fget`
-> > method. In future patches, it will become possible to create a new fd i=
+> > Rust Binder must check the credentials of processes when they attempt t=
+o
+> > perform various operations, and these checks usually take a
+> > `&Credential` as parameter. The security_binder_set_context_mgr functio=
 n
-> > a process and bind it to a `File`. Rust Binder will use these to send
-> > fds from one process to another.
-> >
-> > We also provide a method for accessing the file's flags. Rust Binder
-> > will use this to access the flags of the Binder fd to check whether the
-> > non-blocking flag is set, which affects what the Binder ioctl does.
-> >
-> > This introduces a struct for the EBADF error type, rather than just
-> > using the Error type directly. This has two advantages:
-> > * `File::from_fd` returns a `Result<ARef<File>, BadFdError>`, which the
-> >    compiler will represent as a single pointer, with null being an erro=
-r.
-> >    This is possible because the compiler understands that `BadFdError`
-> >    has only one possible value, and it also understands that the
-> >    `ARef<File>` smart pointer is guaranteed non-null.
-> > * Additionally, we promise to users of the method that the method can
-> >    only fail with EBADF, which means that they can rely on this promise
-> >    without having to inspect its implementation.
-> > That said, there are also two disadvantages:
-> > * Defining additional error types involves boilerplate.
-> > * The question mark operator will only utilize the `From` trait once,
-> >    which prevents you from using the question mark operator on
-> >    `BadFdError` in methods that return some third error type that the
-> >    kernel `Error` is convertible into. (However, it works fine in metho=
-ds
-> >    that return `Error`.)
+> > would be one example. This patch is necessary to access these security_=
+*
+> > methods from Rust.
 > >
 > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
-> > Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
 > > Co-developed-by: Alice Ryhl <aliceryhl@google.com>
 > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > > ---
 > > [...]
-> > +/// ## Rust references
-> > +///
-> > +/// The reference type `&File` is similar to light refcounts:
-> > +///
-> > +/// * `&File` references don't own a reference count. They can only ex=
-ist as long as the reference
-> > +///   count stays positive, and can only be created when there is some=
- mechanism in place to ensure
-> > +///   this.
-> > +///
-> > +/// * The Rust borrow-checker normally ensures this by enforcing that =
-the `ARef<File>` from which
-> > +///   a `&File` is created outlives the `&File`.
-> > +///
-> > +/// * Using the unsafe [`File::from_ptr`] means that it is up to the c=
-aller to ensure that the
-> > +///   `&File` only exists while the reference count is positive.
-> > +///
-> > +/// * You can think of `fdget` as using an fd to look up an `ARef<File=
->` in the `struct
-> > +///   files_struct` and create an `&File` from it. The "fd cannot be c=
-losed" rule is like the Rust
-> > +///   rule "the `ARef<File>` must outlive the `&File`".
+> > +    /// Returns the credentials of the task that originally opened the=
+ file.
+> > +    pub fn cred(&self) -> &Credential {
+> > +        // SAFETY: It's okay to read the `f_cred` field without synchr=
+onization because `f_cred` is
+> > +        // never changed after initialization of the file.
+> > +        let ptr =3D unsafe { (*self.as_ptr()).f_cred };
 >
-> I find it kinda odd that this unordered list interspaces elements with
-> blank lines as opposed to the following one, though, I don't see it as
-> rather a big deal.
+>  From what I can see `file.f_cred` is valid from the moment `file` was
+> initialized, worth to notice too IMO.
 
-Shrug. I did it here because I found it more readable.
+That's what it says?
 
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// * Instances of this type are refcounted using the `f_count` field.
-> > +/// * If an fd with active light refcounts is closed, then it must be =
-the case that the file
-> > +///   refcount is positive until all light refcounts of the fd have be=
-en dropped.
-> > +/// * A light refcount must be dropped before returning to userspace.
-> > [...]
->
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Alice
