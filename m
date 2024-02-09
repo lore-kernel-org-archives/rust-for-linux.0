@@ -1,66 +1,66 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51660381A0
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 13:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E0F3C460
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 13:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707484020; cv=none; b=tUe4W9wR6mwJTKDbxpJrMS/uEFHZUX69qDVB39VZc5gRcfS3UNQNvg3wqjNFgzRD/Ri3MtKFaDy+A/gPYYxdYJ1I/vq6iW3wv+bqf6KqGWqaXcgSv9drGZNGOEYtdCn6EAVoHqkLT+zGRYZ8OXe/93h/8v+BVafLcqnX1zFnm94=
+	t=1707484065; cv=none; b=l8utb9V4df3Xer4EQMQMnZCTd/fnMWgiP/w5kzNADgel2b4I7avxNsC/3w0Zm6uiU2Oj5l4L3ModXuM/PcaGmDd+Z0wPT4Dci02tb6qZ4g2Ee3Z7ExF2vECSEfLeaUeiLd6dD2fz8PiOMIO1S4TBZVY6JVaXucRw1fL7BeyLIhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707484020; c=relaxed/simple;
-	bh=Osx1MwrfwvLxJy9upXGkHqimngBod33AzJBkO19MTUo=;
+	s=arc-20240116; t=1707484065; c=relaxed/simple;
+	bh=2Rw/g85sJGphAZrvH5ci9NlrmUd7mEl1/NsrSKYc4qU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JvinHyvFR03nQHiccKg3MdSXDuSUe0X+slOkjl5+dx6whZ37VvMQbA9neBJi6SI6YnJ3lAWnxTJh9b3hJQ5f2WY4x6suhGe2ZTxiAJnN1hf4pw3+HNyoO7Xb9Dnj66mfBA6T8geK5cEOauTfaWkVtJEAwHZUKHgsV4JlEwIiIc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pH8/63oQ; arc=none smtp.client-ip=209.85.222.179
+	 To:Cc:Content-Type; b=DXTS44ypyq5zWqukxa7FRP0TGjjl8tkC+0xGr/oRPuie6ZQmjsRzGMuzQTJi11rYInuNAUzqRmUTOpdJfs+t7GBCSJknn0qoC97vIfeyOnNoBKpTaBVaIIkKg+AguR1HX6OJPR4nvs1IOwRFgFT422MRTfANqgvQ255MKGog3bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Spi1Q4Jn; arc=none smtp.client-ip=209.85.219.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pH8/63oQ"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-783f49812aeso35224285a.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 05:06:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Spi1Q4Jn"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-68cc2a389a9so6804706d6.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 05:07:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707484018; x=1708088818; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1707484062; x=1708088862; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5Cdz5dVZvDPVC+BewWJMsgYajolCToKYQ11a6wmFWQw=;
-        b=pH8/63oQAOuf0bQOVF4TiePSzwkCQxlIoZ6SJKbtkOMV6VDt4x13pbcmoMTo1qugir
-         hiXUn36rs5RlD+LPAMfshLqKXA4MC4wuAgQdM334eAakdnY0wdiCIo80c8UAQqQeAg+q
-         keApu+PvPYHRVoJzrxrSiPpqqsd4OqGWSEzKnfgDe5YNZ8Pj8E9bzApwFYD68xEhn6es
-         JqmmfULTyMIRrdFIrU5Gde6yiyuXamhx71wkhIcH57dg5xHOFM/r/yGk48aO1qwuzuOM
-         oPixXwWjYadQDfOhc1NQooVRbRjrN1KN5853jadffNbjUXBn6Yzw+9EdKp6BeG2x0t8X
-         mV/w==
+        bh=2Rw/g85sJGphAZrvH5ci9NlrmUd7mEl1/NsrSKYc4qU=;
+        b=Spi1Q4JnB3TMfs8OlpWnbKVGkG5Qb26lsBwFQQqJKc+jlmzZ6kdetGTb9+vPuPk/ut
+         Nx0bsfaC6+qMn/ynA9S137Thizl+cYyJ3pEl0xb59q5SZp4CzoqxJH15X16DygqWBfGI
+         rn0w7JqofcZyhi05bA5P6UlaYfb49EJUw8nIDE7TLJQYcpbviQobD0dNar0RwB78laLp
+         72HiKY5eOhrzicF6DAiuUTnVWvCfvP61YQQuY4Ju3u8fogZf4H+iOam1QeVyWDmpbX5b
+         QfaeNHaJd8xkvkNBcjCbIaWNA8X/8NyPOFSule7ym/Gs91+mjzej0b16mH4lzVr8QgiK
+         KZnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707484018; x=1708088818;
+        d=1e100.net; s=20230601; t=1707484062; x=1708088862;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5Cdz5dVZvDPVC+BewWJMsgYajolCToKYQ11a6wmFWQw=;
-        b=vwjypRcrqyt2Ug6Th30g7DnWzWUUcoGTOY8I48y0+p/XThgHN0RIp3XzzHzmAnn0av
-         JF0pGv55khSf8D5iO13MRGOsaSyIW3qzSePLpG54o3EVfTLDYWVgMMCd98YEhS8DDGw3
-         a0J0/nzZ3RNLHD/2Ds6iak3mh+Re9/XxI9/mG4EjCu6IcYNAhi0y0HOG9mlQMfcOTUYR
-         iYubyCtqyjToZsyu3TiulKi2XfTOTLhWy7Xz7oqTp++bs7p2vbujHHbSE/mshVsNNzrH
-         woLzE1tQeB3mQcy4E7ThfT0JfN77FAYpGUJi+PABfcBHrYDKzh723Vikz+6ygnXaf9Re
-         Zl5A==
-X-Gm-Message-State: AOJu0Yz72uJCxNoxyelf8+6jOzrrRJJ0g0SKi7RvU6P9/tgqCd59PuHd
-	lcYW6bWIZxL1QVMPZeJTgTqhm3JDIHsP1wTUznqDDhDUKL1mPq+0VCxtz261nEOyksZL/rIh8pM
-	asHs5rAYtFNvAw0dvkGwuMwLGJ08DhCjLRM+i
-X-Google-Smtp-Source: AGHT+IEQu9dTK0CI14m6+DU5OUbcWbY4tpyQL+7mbuO6ImeovHURd2mrTNbrTKdI9lXOvlKtapUMxXVQ21CWT1is9z0=
-X-Received: by 2002:a0c:cc06:0:b0:68c:ab0e:718f with SMTP id
- r6-20020a0ccc06000000b0068cab0e718fmr1475668qvk.48.1707484018052; Fri, 09 Feb
- 2024 05:06:58 -0800 (PST)
+        bh=2Rw/g85sJGphAZrvH5ci9NlrmUd7mEl1/NsrSKYc4qU=;
+        b=oZgkPHclR6QRSKIl/IkF8SOqu1vo9XT5SoxfJt8Abte5IgTeZJs+rfN0cAG+W4FjSn
+         ayjQZ9NXXu5w5Lbs/FJlD63G0qHfLJSHNSJPDyJhrt4tj0MjM6JwiBDTOoU35fxgD60Z
+         BptQfocsE1gMn+nssjw8Ibe+4UrbWDAEiSKbfNiKelblNPuxjpWWYQmnvvrKt5yuAQlX
+         APzdd4oTYqj51H8p3ujCUaYeuPWxUfuBHkeadQG/gOUlGOrZgLVNOd9F2uoVpXCLU2Xh
+         SNQCWzub9cEUYs5Yc/b2SucbQ4v0f7g7QqJSLivw7IgCLIHU/WpN5O2bOcUofOMDWGnJ
+         aP3A==
+X-Gm-Message-State: AOJu0YzuSYpKmO64kf3yCzt67EoX9V24rQmwa0QO5zveO5g2hD113Pk8
+	qb5a2DHtaIMOh8Cq1NoPqvjcQrs1UHpEV1Img136mqCJj4U7CW8tIi6SKRx5eAck4LRm0nyJdHm
+	PnY7Jfpcw+OeLxi2TI1DAc8V5Db8oS87Nkwbn
+X-Google-Smtp-Source: AGHT+IGQKINrMd7voH8M4WrH1YHEgveky+mPQz8IVaL/+16Aec7hAUy8tYleTebsXC9uGt2KmEm7Kyf4/F9j1uSvWhM=
+X-Received: by 2002:a0c:cd03:0:b0:68c:7302:8974 with SMTP id
+ b3-20020a0ccd03000000b0068c73028974mr1030374qvm.30.1707484062427; Fri, 09 Feb
+ 2024 05:07:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com> <20240205-b4-rbtree-v1-5-995e3eee38c0@google.com>
-In-Reply-To: <20240205-b4-rbtree-v1-5-995e3eee38c0@google.com>
+References: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com> <20240205-b4-rbtree-v1-6-995e3eee38c0@google.com>
+In-Reply-To: <20240205-b4-rbtree-v1-6-995e3eee38c0@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 9 Feb 2024 14:06:47 +0100
-Message-ID: <CAH5fLgiRTYmVaGRVU97C+ZHqBxRxp7kmkdRyHT97w4HtWgiZ=g@mail.gmail.com>
-Subject: Re: [PATCH 5/6] rust: rbtree: add `RBTreeCursor`
+Date: Fri, 9 Feb 2024 14:07:31 +0100
+Message-ID: <CAH5fLgh9D5vVOCp+OQFqkCzeBBXJSbBn33_aJB6NR3=Yads_0g@mail.gmail.com>
+Subject: Re: [PATCH 6/6] rust: rbtree: add `RBTree::entry`
 To: mattgilbride@google.com
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -77,33 +77,25 @@ Content-Transfer-Encoding: quoted-printable
 
 On Mon, Feb 5, 2024 at 4:50=E2=80=AFPM <mattgilbride@google.com> wrote:
 >
-> Add a cursor interface to `RBTree`, supporting the following use cases:
-> - Inspect the current node pointed to by the cursor, inspect/move to
->   it's neighbors in sort order (bidirectionally).
-> - Mutate the tree itself by removing the current node pointed to by the
->   cursor, or one of its neighbors.
+> From: Alice Ryhl <aliceryhl@google.com>
 >
-> Add functions to obtain a cursor to the tree by key:
-> - The node with the smallest key
-> - The node with the largest key
-> - The node matching the given key, or the one with the next larger key
+> This mirrors the entry API [1] from the Rust standard library on
+> `RBTree`. This API can be used to access the entry at a specific key and
+> make modifications depending on whether the key is vacant or occupied.
+> This API is useful because it can often be used to avoid traversing the
+> tree multiple times.
 >
-> The cursor abstraction is needed by the binder driver to efficiently
-> search for nodes and (conditionally) modify them, as well as their
-> neighbors [1].
+> This is used by binder to look up and conditionally access or insert a
+> value, depending on whether it is there or not [2].
 >
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-6-08=
-ba9197f637@google.com/ [1]
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://doc.rust-lang.org/stable/std/collections/btree_map/enum.Ent=
+ry.html [1]
+> Link: https://android-review.googlesource.com/c/kernel/common/+/2849906 [=
+2]
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Matt Gilbride <mattgilbride@google.com>
 
-I have looked at these bindings many times over the past year. They
-look good to me.
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-These abstractions have been very heavily exercised by the Rust Binder
-driver.
+I wrote this patch, so I will not review it, but I have used it in
+Rust Binder, so:
 
 Tested-by: Alice Ryhl <aliceryhl@google.com>
