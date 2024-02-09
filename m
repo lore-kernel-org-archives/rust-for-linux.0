@@ -1,106 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8DB38DFC;
-	Fri,  9 Feb 2024 16:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D8A1E486;
+	Fri,  9 Feb 2024 16:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707495746; cv=none; b=FSJKp0xqiJEttqrCFPYbKrr8ydR3U7532GYCuww5UeFjuReYBhf5Nu6Hf93BS4L1MxBLzV6aJxpwusSGIFjcFJeBy26dV4qgnLaLC84bBd7E5QmpOwpxnUO/bBWF/VkSOlZeT8e4N5xciS2LuRcleOVR4d4qrGQNEFag47GEjBc=
+	t=1707497147; cv=none; b=aJZCdv4paQdRN+BZ2lQU52OZgn0aWwPZilu9mER2dTxLs1MpKUhoG3ErHpX88ORt3yiPu/rc36zknTqYgqMS4UobB1OcOQN1OHR+1fm7NmBn/2YZstng5I12Gjs4VDkEpS25Iog/3/PSm/4t2oF6lc8J2In2uCDTxfziadZi3Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707495746; c=relaxed/simple;
-	bh=7dF/b+JRFiZgEhiWKo3f6FslMMwH634DNYt0JFfFAHI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=evjAA/kWo+g/J1YjqEKVPkTj6dOVBRbBXy/WRnzctGGOqo2u3Eu4mChnGK0x0L8qjivaldN59NDWB1FEJYFdeXeU2jZyL7LPc1f7xbskU/Aac6/syF/hI9X4MRwwDYLrWJ5TLGKzqwx3h/A2OqPan4ZRLZbdOcJlFWIKQ7Pg8XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZ+bo8+d; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1707497147; c=relaxed/simple;
+	bh=y4JWJqxU4/uY3ZOZ2BIggNbVpYDjyAAMh6kaHZrpIBc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QisMAAmDVUz6JcDnCH3i3bvVfGJo13QocRjFWFUMGyZt+y+ULybJBWUbpS4N4HkVwz+k9aL43SFGO4dRJgMrch8aUbjJ1RwAs6I5vqcUQGnpqQxJy5xalWETCUcLpC4GwZA7zBLVPdER2mR8xgXS+V0xVFn6t2rFmhsh4suAkwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=xNyIik63; arc=none smtp.client-ip=212.227.126.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZ+bo8+d"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D197C433F1;
-	Fri,  9 Feb 2024 16:22:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707495746;
-	bh=7dF/b+JRFiZgEhiWKo3f6FslMMwH634DNYt0JFfFAHI=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=BZ+bo8+dkvZ4tlM2n4uPdxkaMv3EDKqovpEmYIjOOkdhhcXdrZEQU8y0d0hX+hb9Q
-	 iHGZgY2yq8ANKwijpNIgBZnXNeXkRdbKev/wg0xv/c/xHCULnE3w5Kr40nrRpJb1p3
-	 CxN/d1241Z9VlWkwHEZWAUyP6D/++IfOdoG/hmjqayijZir+I7vm7k/1onLDSaNuhz
-	 hcIYWVlVZGtrtU5JZgOs8VM6tSsx+p4Aa1ZCDClCa5uizjNbyHWwg0K5Ri3bzfnUVO
-	 3HBuA2sizQVirnMUvmeFwpwE2SghWDeESTkgD5AJFO013qVN2o8WYR3vGDBUDnm1p6
-	 qAVwZNA8/iFmg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 384DCC48297;
-	Fri,  9 Feb 2024 16:22:26 +0000 (UTC)
-From:
- Mathys-Gasnier via B4 Relay <devnull+mathys35.gasnier.gmail.com@kernel.org>
-Date: Fri, 09 Feb 2024 17:22:24 +0100
-Subject: [PATCH] rust: locks: Add `get_mut` method to `Lock`
+	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="xNyIik63"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=valentinobst.de;
+	s=s1-ionos; t=1707497119; x=1708101919; i=kernel@valentinobst.de;
+	bh=y4JWJqxU4/uY3ZOZ2BIggNbVpYDjyAAMh6kaHZrpIBc=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
+	 References;
+	b=xNyIik63HOtQy+fRA3kGk/SRhg9CKN0fMQjKrZKHKOFRM7PPNVUm9DnQ+QCb6XtQ
+	 7kHSW4wCu52uQeYmMXZvxM+UOqCZBRA5HbLYSAmizVyGguNYWOkeSM0BDuD7H8+fj
+	 xJmV4kBRH8nvKNWxz7WHQdTBf7OcU2EGSlhlWxxXmN0zAHNiPd1GPYet9XQEj/Igd
+	 PEk78zXVKmi4XvVH4sXpPTUTj1YmoNDdRT6eVq7NAbqw7kO3ylm+vFBgJZe6za7fU
+	 +pWwjI4DCdGsqQCTAPs41MUosEe4PAG6nMd5bdw5tvyhRifw7aoVuFKJ6+r0QG9Jl
+	 b7TAnFmaX1Qiu33z0A==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost.localdomain ([217.149.163.107]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MY5wD-1rVPcI2SGz-00YSSQ; Fri, 09 Feb 2024 17:45:19 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+To: arnd@arndb.de
+Cc: a.hindborg@samsung.com,
+	akpm@linux-foundation.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	arve@android.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joel@joelfernandes.org,
+	keescook@chromium.org,
+	kernel@valentinobst.de,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	maco@android.com,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	surenb@google.com,
+	tkjos@android.com,
+	viro@zeniv.linux.org.uk,
+	wedsonaf@gmail.com
+Subject: Re: [PATCH v2 2/4] uaccess: always export _copy_[from|to]_user with CONFIG_RUST
+Date: Fri,  9 Feb 2024 17:45:05 +0100
+Message-ID: <20240209164505.2108-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <6eeba3ce-d66c-45e2-8c34-ad0109ec2ef0@app.fastmail.com>
+References: <6eeba3ce-d66c-45e2-8c34-ad0109ec2ef0@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240209-rust-locks-get-mut-v1-1-ce351fc3de47@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAD9RxmUC/x3MSwqAMAwA0atI1gaaUlC8iriQGmvwS1NFEO9uc
- fkWMw8oR2GFpngg8iUq+5ZBZQF+6rfAKEM2WGOdIaoxnppw2f2sGDjheib0zprKkqGh6iGHR+R
- R7n/adu/7AZBaGoxkAAAA
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@samsung.com>, 
- Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Mathys-Gasnier <mathys35.gasnier@gmail.com>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1707495746; l=1162;
- i=mathys35.gasnier@gmail.com; s=20240118; h=from:subject:message-id;
- bh=BG0YFKP39LR9WWLZKQnZyk4pbHn9EQrD/0InazZ8oWY=;
- b=kYEX+M8gpUsUd4Tgnh+4FKAf2LwOpTAjIowMb+niPGNSrVk5nRPtPSng1HrJ1ib+p0Jdh5Gal
- q372/7CHy8aCPVbGpulcJ8Ud4Bdt2SJwWcgQKheYUB03W0kj/oaG8Mo
-X-Developer-Key: i=mathys35.gasnier@gmail.com; a=ed25519;
- pk=C5tqKAA3Ua7li5s3a+q2aDelT2j98/yjGg2nEVGArXE=
-X-Endpoint-Received:
- by B4 Relay for mathys35.gasnier@gmail.com/20240118 with auth_id=129
-X-Original-From: Mathys-Gasnier <mathys35.gasnier@gmail.com>
-Reply-To: <mathys35.gasnier@gmail.com>
+X-Provags-ID: V03:K1:0RIt5+EdzMuvmXdS6iemj0tqNfZuXKA0Tm/b3KsjI2/ioEH2V8L
+ g+ahhbuhx1UKDgXO7j0yUxrOr+L1Hm2C/Y/h2Q/irzh5s24NJZw8eCk2Hmuf+K+LbsR1ILZ
+ H93KVHeGX5NmRR0Zml/LTVT/JmU2S1qZQd2Ygzn4/gcGaNQByFHaQPlWAcO7S8innBYNYtz
+ cF0vUMIgOFFdzkK6/fVBA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:WYS6P+aomTw=;XbzcNBCwdRbiLAarLUO+W6j+zRv
+ YmUPnF8KuqGLTbCtueKO5+Eo46bePsEZ03rFMT638bJCtRHA9A4Krkn1OTjp3kwSr2jECqCFF
+ w+ISolpyNiZdEk271ZbqKHPHDZUts02OBAshvuCzKAiX8+Tz1dxVWFfleqbLAV2WbGgiX0oY9
+ niJ+03TbpNIe8y3CZ9r9RtIERZU+uoBiclYpMidzWMALBwCHIvPd6GFvFaO+x/TtJ/d1kyj5b
+ h9OlliECsCYXadWNfvp+58EBRbELyL1I7xu/kZK1L70kJFbCksJ2HCRaTvcK/KmE+YpLErwce
+ ZP9Erp2Dx1RYwm2TUJvQ5PjZMss4Ut7Ow9jXz4j10cPq/tLBok3nQdfHDEmT7gHI6viqsjcdd
+ HEYZJxRisDW/F9CuBRFZdGhxNdyZHJO98UySZSlTJaovLr8FowyZ2s7hD1QE3FljjAZqs+dD5
+ FbT9cmERg5UBVZBUhv6GgFhM29l2MNNWPEZwFD1fMROthjQhX6mYKWH374og19eci12ZIA9md
+ mKh19gJmToG64bOYCToNhDp38mQuzEjBjd9qaXsn/GvY53O1Adam2zucdHg0uElljPXysj5Pf
+ cGIuBkFw2MM3QLkG61eFT/vfB2OQoK0my1R6Dkkb2mqmzfwsnkpCpcO5vXEfuD+Xt9/S6+FjD
+ c0tW3gRSltQtP6QBDImfHtql5ZJljlP8ImeLF/gnWj5wiRRdaJ0kaiiP9knYJSMolYsz8i9if
+ NiMd+Aq4/na/Wi9+iuya/GspSunD4X9qjhlQUVhnLNYU4kkJ0v+mbQ=
 
-From: Mathys-Gasnier <mathys35.gasnier@gmail.com>
+>>> -#else
+>>>  extern __must_check unsigned long
+>>>  _copy_from_user(void *, const void __user *, unsigned long);
+>>> -#endif
+>>
+>> This function is now unconditionally declared, but only defined if
+>> `!defined(INLINE_COPY_FROM_USER) || defined(CONFIG_RUST)`, i.e., in the
+>> common case where it is inlined and Rust is disabled this can lead to
+>> link-time problems if someone decides to use it.
+>
+> Yes, that is intentional.
+>
+> If someone tries to use it when the declaration is not there,
+> they just get a compile-time error, which is not all that
+> different from a link-time error in practice.
+>
+> It's unlikely to make a difference here, but enclosing
+> declarations in an #ifdef is annoying when you want to
+> reference it from somewhere that is parsed by the compiler
+> but not called without the respective options.
+>
+> The if(IS_ENABLED()) and PTR_IF() constructs in particular
+> only work when the unused functions are still declared.
 
-Having a mutable reference guarantees that no other threads have
-access to the lock, so we can take advantage of that to grant callers
-access to the protected data without the the cost of acquiring and
-releasing the locks. Since the lifetime of the data is tied to the
-mutable reference, the borrow checker guarantees that the usage is safe.
+I see, thanks for the explanation.
 
-Signed-off-by: Mathys-Gasnier <mathys35.gasnier@gmail.com>
----
- rust/kernel/sync/lock.rs | 5 +++++
- 1 file changed, 5 insertions(+)
+    - Best Valentin
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index f12a684bc957..7711c6313e14 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -121,6 +121,11 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-         // SAFETY: The lock was just acquired.
-         unsafe { Guard::new(self, state) }
-     }
-+
-+    /// Gets the data contained in the lock
-+    pub fn get_mut(&mut self) -> &mut T {
-+        self.data.get_mut()
-+    }
- }
- 
- /// A lock guard.
-
----
-base-commit: 711cbfc717650532624ca9f56fbaf191bed56e67
-change-id: 20240118-rust-locks-get-mut-c42072101d7a
-
-Best regards,
--- 
-Mathys-Gasnier <mathys35.gasnier@gmail.com>
-
+>
+>        Arnd
