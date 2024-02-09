@@ -1,90 +1,127 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfout5-smtp.messagingengine.com (wfout5-smtp.messagingengine.com [64.147.123.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94D33612A
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 13:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D56E44C83;
+	Fri,  9 Feb 2024 14:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707484216; cv=none; b=kWENWIP6KLXVxK2WoAZRwm5NUtUYccELibhh/pYD/YEIKAiEbjqWIiflHxdGj1VD4nPTStEoHmc2H67rYJWQAOXzAWFF9/X6V/arVqODrzZ+Jh2IMu+N89WjJa49BcmmTWt0CxO/ZOHNRST9s77vukP88es59vqFlw933bHcCq8=
+	t=1707489704; cv=none; b=s4tsOZxZIKR+ddrXroVeYgnox46VeCMnSR5yUqrIRCbHdg3oSXOZIdpRcm9PqfinCvKnlPm4ubi3N8jkfSB4RKDZNoIkvKLrd3Hyx8irkjPrlIXBfpMl1neuIDhzrBRVG4EDv76sOePsWbiuQ8DNtAYqLHeizhsneD15LlkXg+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707484216; c=relaxed/simple;
-	bh=RxLgmJtRrWkGZg+HZMG1tfMX6Q9WWD8CMQ/AGzP0BpU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V+mXuwNVqs2p3iEHi5OiJAeLCZpDO1DbAOTWpWZDYhyYSTGBx5udFDEBhmpWZCQBKbr3pbMjMbR50QXtj/mmHXLzOeyFxcIxUaGzSvUvht7O1jH+UjupGphnD0V6/v+LQ4SYJnc0a1LHjT4aa7RQINP6OKg6WW1byy2S6APZUdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TdYFzyx1; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1707489704; c=relaxed/simple;
+	bh=MdgKh1QKbxz534VY+pTpXg0oSXnXmtnExQPKXVZLegg=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=Y1sOVDPlnfHLNN3nh0pBwGEhBQkQZ7DJB/CEXm6RAQuTAtyImmfo8PA/bKDp+inl9v8Sbnzq5mmeVXhPsQ8Ebm78qIjyUObvlzj2SKps1BkrFK+htjGmJh1WgGKLEMvxHRoymjAl5ygca1VzekTeu6hIVTS47BJcjfrvYYmH1ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=S3/XM1R9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=v6EPGKHY; arc=none smtp.client-ip=64.147.123.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TdYFzyx1"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-42ab4f89bdbso4891771cf.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 05:10:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707484213; x=1708089013; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RxLgmJtRrWkGZg+HZMG1tfMX6Q9WWD8CMQ/AGzP0BpU=;
-        b=TdYFzyx1zEzzE+4Gi/DLu6IWeSD2n1OwiyhzX+aGP57zQPZu2fg1tlRmEK0oVwSKZU
-         f8ITh2wGap67kmVbjqm8xTc/G+zhseyNiUH8BXGonV0Vg2HGLt+tuokMa5sodsVlhS/Y
-         G/vZDt1NFSNM6eIuS1vgOFlh9s2DseN0Y8f3vrFraiUluFemf8vdb8tGW1nYU7S/VEdK
-         vrPr0lSMwgQeaJ9Y9fnRIgUeVrNi7CJ9rXvTJhUuMWxD6Ko2RQgCsWZS/rbXnI7E1n9L
-         pagwsHqGxFFf0XKdzSvWH7I284TVwtPSxhrPAiPdy2xRLCswAZEzJL4IuWPh/z8eV9He
-         ysew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707484213; x=1708089013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RxLgmJtRrWkGZg+HZMG1tfMX6Q9WWD8CMQ/AGzP0BpU=;
-        b=omMoDSgBoqrDwm1AqerLY5yo/Ta3E2G+NGtXQiq9wZ249KDNqnsiXfrAs5WU+sJLba
-         g3xW7qbnqnpYnutqvSCS28OQSIh5o9nsPGXSRejADZwGoOTMsxqKDGYd0VxboVCye97o
-         scmHg1JGd9e3+/21VM7cZ5QcDUy93jQ/gEVOAY9JtR5GlZ1/4GZUxi+m6mNaRGkLf6pr
-         /eN3pFK1kMIfK+pkIYiMhCB3QcKA9/Y6Ep70yl1sW9MR2fNaSVxNEph7jT62B1JZZnXd
-         2DuvEZEkslWiU7W52HcV9oyqtM1/kgpkMY5/xT4qyUEMcnHUCakqcUDEzcHR/hLRbC4B
-         5wPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWf24XOZyT+xA1KtPcJ/ZrNxOnsbtpJKOxI4YyBrCc8a5zZsxVirtc8UQ+Z7XDNtQ3QdU+hJ2AEJ9oVhesyAvfkTDzG+OOaujkpv0795A8=
-X-Gm-Message-State: AOJu0YyRRM2NVuRXML+oyySn5c8eAFoSmTc29Qr9HhyckPIwe+NlUonu
-	0lcChsjr3KWuldY7svVW+fSbHMhRFoyRnM9ALfqlkeHFS5gxrNutj+nWmFCVPle/bcravVRC04R
-	1iG3g4HLujfQX6bO1uMz7UT6OgMrTkwFtWK9a
-X-Google-Smtp-Source: AGHT+IEyvqfyudXBQ2ZuDE+QHXEKaJ6wdDJ2v1ESP26Wuu+FSPcNAhIzZeCvrbqS9qCYxLosg8I33Ibesz6f1BnMJI8=
-X-Received: by 2002:a0c:e247:0:b0:68c:cc45:7980 with SMTP id
- x7-20020a0ce247000000b0068ccc457980mr1485127qvl.26.1707484213563; Fri, 09 Feb
- 2024 05:10:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="S3/XM1R9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="v6EPGKHY"
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id D10021C00085;
+	Fri,  9 Feb 2024 09:41:29 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Fri, 09 Feb 2024 09:41:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1707489689; x=1707576089; bh=RfpXrOgPMB
+	uIAQYXOAV94jbrpi1e3bUYrcbdSK52a14=; b=S3/XM1R937Zow+EapKrmWrZWju
+	diAdGAnkld0Pkg5Y3H5ta2KRc32i3bs6UHmWXjJ6NtqaG15M4eO8F4QEPDxa1/8j
+	Fg27pEJJzRJrhNVYwlb+ieC8wA82ig5CA1unleV78rWuBtffnAikF3WENDrb3Atc
+	yn2eqXaKNOMugVWSp6mfMKMgo4gm/ACus56pQocWfQRro/Y+Rhi1q6HiIGeW4AZ+
+	81jJr1mUz4oAT7010oseOisWz03m2xn60LRs/V2xsPFsqq9eyO8BAQdJYA+TiDz4
+	+42zSDXqWF5sRpegf4i5/Yz5gZ2UHbX/sgxgn5vSHTRN+oI8RzfMnXzKAHHQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1707489689; x=1707576089; bh=RfpXrOgPMBuIAQYXOAV94jbrpi1e
+	3bUYrcbdSK52a14=; b=v6EPGKHY+rqQ4ZeZt2i1OZF5oPBc/x3vybijI4oM5RGT
+	eTIzOUUchqL6HX1MilRT/Z1ZRvlucEMX9ZiRND8XMsbyXrFC4mEgz+QlrE2fjVj2
+	MTS/Se9MuD73i4derA5n9T+lXGZraTa8/5j6fZkqNZd4BBJGyapd/M/bwJ42N4IN
+	8e84WiKF95alnZae1PsL+Qs+O1HM36k2J1pHpa/Ta4qyNYpPP5ch1yBpCavfC1Vp
+	FlpSKlPWoHcIqmdG3tL263GTmEV1D7qejeHkNRO3xsjQt2G2ZM5zr31ea4BeAa7R
+	XOS3lhVxVZAx5+1IUOgq6oeEtIs28FI9qZjiStrxww==
+X-ME-Sender: <xms:mDnGZZycIJ_u9fGEWzfYdWfbUtAAEqg9I6YPD7f6NWY8n2yAMU70wA>
+    <xme:mDnGZZTyXP19Jbxt2Z_1QNldMFudbWss85x1h9WWxUVK-YXYnssnchPSQJlCM6zGp
+    woykBg3N1AiBPpu2pY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrtdeigdeiiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:mDnGZTWZVFKny5MPZ0tPuhRY-XkAfEByWCI4ovjcT4eZPIQRpXkq1A>
+    <xmx:mDnGZbhFaocVMS__xRXFvrUpK8cqxuzWFj3TF0rVaLF2oHt4SzZ-tg>
+    <xmx:mDnGZbDDxjRwr39Be1fcb32WjXAtB8gX4F0lgBvh-rT9L2Xl-qh5NQ>
+    <xmx:mTnGZYy8kk7UouiAYf1aEHgnl6GVc1Z4BxsUFlmPxxG_3UJOZWy9oU9gxwA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 88BFEB6008D; Fri,  9 Feb 2024 09:41:28 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com> <20240205-b4-rbtree-v1-1-995e3eee38c0@google.com>
-In-Reply-To: <20240205-b4-rbtree-v1-1-995e3eee38c0@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 9 Feb 2024 14:10:02 +0100
-Message-ID: <CAH5fLgj1cat5m-_MACOjBi=eGqWcXCydThNtvOTFM38v9XmhVQ@mail.gmail.com>
-Subject: Re: [PATCH 1/6] rust: add `container_of!` macro
-To: mattgilbride@google.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <6eeba3ce-d66c-45e2-8c34-ad0109ec2ef0@app.fastmail.com>
+In-Reply-To: <20240208225608.11987-1-kernel@valentinobst.de>
+References: <20240208-alice-mm-v2-2-d821250204a6@google.com>
+ <20240208225608.11987-1-kernel@valentinobst.de>
+Date: Fri, 09 Feb 2024 15:41:08 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Valentin Obst" <kernel@valentinobst.de>,
+ "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Andreas Hindborg" <a.hindborg@samsung.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ "Benno Lossin" <benno.lossin@proton.me>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Carlos Llamas" <cmllamas@google.com>, "Gary Guo" <gary@garyguo.net>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Joel Fernandes" <joel@joelfernandes.org>,
+ "Kees Cook" <keescook@chromium.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, "Martijn Coenen" <maco@android.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+ "Suren Baghdasaryan" <surenb@google.com>, "Todd Kjos" <tkjos@android.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Wedson Almeida Filho" <wedsonaf@gmail.com>
+Subject: Re: [PATCH v2 2/4] uaccess: always export _copy_[from|to]_user with
+ CONFIG_RUST
+Content-Type: text/plain
 
-On Mon, Feb 5, 2024 at 4:50=E2=80=AFPM <mattgilbride@google.com> wrote:
+On Thu, Feb 8, 2024, at 23:56, Valentin Obst wrote:
+>> -#else
+>>  extern __must_check unsigned long
+>>  _copy_from_user(void *, const void __user *, unsigned long);
+>> -#endif
 >
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
->
-> This macro is used to obtain a pointer to an entire struct
-> when given a pointer to a field in that struct.
->
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+> This function is now unconditionally declared, but only defined if
+> `!defined(INLINE_COPY_FROM_USER) || defined(CONFIG_RUST)`, i.e., in the
+> common case where it is inlined and Rust is disabled this can lead to
+> link-time problems if someone decides to use it.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
+Yes, that is intentional.
+
+If someone tries to use it when the declaration is not there,
+they just get a compile-time error, which is not all that
+different from a link-time error in practice.
+
+It's unlikely to make a difference here, but enclosing
+declarations in an #ifdef is annoying when you want to
+reference it from somewhere that is parsed by the compiler
+but not called without the respective options.
+
+The if(IS_ENABLED()) and PTR_IF() constructs in particular
+only work when the unused functions are still declared.
+
+       Arnd
