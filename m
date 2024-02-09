@@ -1,91 +1,160 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0B314AAA
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 21:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A123F374D4;
+	Fri,  9 Feb 2024 22:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707514913; cv=none; b=SENRxa8xW1OJPtWz6wctRIEEGeWGvthj5vd53RbgxO4pxJDDaIhFCPPijdQBm7Njf1q6lBz1HyWgGb1oIKaIj+2wqN5M/mgh+x02wNCfLkHoTRkgOYAYBlpCpzosQP0NBUTs9W+r3Gmnl1tnjDhk326p9INAzohkovhlqIMHeso=
+	t=1707517975; cv=none; b=R3bqkVkqHF8Xt5d5g4Y08/wydqBBwbbZCVohU620ygH4Nvv0n7l6tllF2/ABuQi9jUXnj3069bP9i9b4sqATlBe429dP5H3oStCSpFNlwwVeGWRExDj7dWSMVSmclNO0NNzCWV7O5+VWuVagiUItB45nn0MoLBewVmqcLM74Rc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707514913; c=relaxed/simple;
-	bh=V78Eh6NxvyEmMKBeKR5uZWsKtd+HhCO6qX5q2BSIHMA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nyXqAxyvqifDUWq5AdqY4EXavqs3wrmQrMbTI59z9cwd9IOR22/8sUK6mi8iNjd9ntiaqxXS3TP1L8YLNPqGdj6KtKdWJ2GJvQIJcbUdpA+0wN6dzPUmpAszspglm1sMt80NfRxg1lOkRv3yqcdzJ85gDFx2MWhrps04mcd9Uhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCKSrI6m; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1707517975; c=relaxed/simple;
+	bh=mxSQgiHlybAgyETmfC8M0E9iRnzlwV0Vzk4GIBsvgE4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M+8QGgqDGdNnHFemXxmr0UPwgJRQurvYuf7rfGWWg3sL0Y8Xy4LdoktXJcky+vRzMTVpoNLseNlxm2cCG/TgQVNDkeM2yIX/MV3+rJfakdsM2wLmsjJ5j+6vW0eLpA+2QKYoJthGWZN/gIMU/IQhR5naaN+7B6b6396imP/dUyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=SB+99+Bj; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCKSrI6m"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc25e12cc63so2174709276.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 13:41:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707514910; x=1708119710; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V78Eh6NxvyEmMKBeKR5uZWsKtd+HhCO6qX5q2BSIHMA=;
-        b=CCKSrI6mOcJ7csShbRgmA3AAwp/ujXEtD9h3s6Ha3Xn1i3YpGy5raWoLQ4xdmaYnYu
-         yT0fMLHR5z5kjT+pc4HwsEYcCmcOhPaaR9SNMUgjk8qm8NWBdJdz6vE4P4Lu5Ou0y1Cn
-         h2LdMKPBXPY0j47cBQsaGmLf6ZWu2cHoNfPbp/6+OHK44bSfoIexRBngZmP2+QEniIby
-         6HbqKLeUHtFfawmTO437A4KdXp7Vx10q32/mM7ISvMg4w25K9R16gPn+Toz1bBRAehhC
-         3PvHkuS38zlb60kdx968HgMz2py/NPpK88RcdPM8E85M5OpvKk4HnDtJFtZNB4UDxnj0
-         vqXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707514910; x=1708119710;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V78Eh6NxvyEmMKBeKR5uZWsKtd+HhCO6qX5q2BSIHMA=;
-        b=AUIZPMtTuDsRw5m186IxC5cfRajRQgvwLQ15DQYAV/FhHLwiMinfXP0fn+wcmOnHgT
-         xrJtdMEUJQ3XeMEEqpu5EZ0iW6LbgVdnxY9E7cP49sTFEf5JpTUmsMk6/yfJctJ2HPqu
-         wEh+ccA6dhZnCaOl84Yt5BYRXZGwujC30EIhHC9wCPcjjSNoaSXHjUCaoHu1Ar/L2CIE
-         NTYuLgdjCS6V1tlXqxIrs0lSHiinZTnKcq4o7BPrzanhFN0nGEE/KJVeCLQZmhodMNxV
-         kcUA4oKmyFEZt5EknjhDp6Ecj6mDZVo5BnYlNdrWqzvHDBjC4GG6VVBIrS+m2dYOH/XV
-         HTcg==
-X-Forwarded-Encrypted: i=1; AJvYcCVXb/9TjnPgUy9BpdUrZhAzcHoDvY0BA0aCvzkw6b+JalmZx9cCs7J83pD/n9SaBT0yVvaVqJ+vz53ffLrPTmBsl/tUqH0p/TQKxiafBnI=
-X-Gm-Message-State: AOJu0Yxp9hc4zlGmM4J+44W7QuAf6u5viDxJai0lm0jMppVN40jkFnqI
-	Xn7LFKew7OZUaXzJUSZ0/geVn741RyrbcbmAGYA1Zc8i2Tqsi8Q9dnxdXXvUr0wPtNcJdMC1ym6
-	glB/agGcxIS4eQ64C7bhp/GueKfkikg5/Q1qM4Q==
-X-Google-Smtp-Source: AGHT+IGSwq9GdG/BVRhzC7Iupyni8U9NO3hjB/nhrbFG5D7k/GpcOVOAZLYNQkFAwh0WjfTWRRMpwSq7JltCTlbwda4=
-X-Received: by 2002:a25:938d:0:b0:dc7:56d6:81dd with SMTP id
- a13-20020a25938d000000b00dc756d681ddmr2031156ybm.1.1707514910590; Fri, 09 Feb
- 2024 13:41:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="SB+99+Bj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ih75kBvK/GaZxC3xY7qa2xlO0zPuURVDit2B4aob+Sc=; b=SB+99+BjB6SVTMennKxfT0fztH
+	qnQHHc/0LvkRuITPICY+ULSUjunc8RzJItWGx4rT0R8b9y4FC2nrpBdEhBGKfuTsqIOGLOLsa1zaw
+	iZsYzElXPPdq/OYxcC1apUrENn6Bc/nonMZhqrQgNzgq+Z3+aF9xN5FRjVfFMJFLrjiXIr9pvN7QX
+	cRSLX45xdC068DZ0LsnKnmKPZEDhc5cxvIWtkryWNNiIqRcnBYkz3P+D/OQvmJO/5NsyUE+xKA+yz
+	aIm+9nRq0dwhZoidTH2hKzfZi5ETI8UWUjhjfLjnvTQmU84HwCF7kvbrhNSU+vPXzxTEjB5lvz6ab
+	yKvcpohA==;
+Received: from [179.234.233.159] (helo=morissey..)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1rYZQ9-00FjSP-9d; Fri, 09 Feb 2024 23:32:33 +0100
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Asahi Lina <lina@asahilina.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	kernel-dev@igalia.com,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH v7 0/2] rust: xarray: Add an abstraction for XArray
+Date: Fri,  9 Feb 2024 19:31:06 -0300
+Message-ID: <20240209223201.2145570-2-mcanal@igalia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com> <170750002897.1210949.14507303616035197246.b4-ty@arm.com>
-In-Reply-To: <170750002897.1210949.14507303616035197246.b4-ty@arm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 9 Feb 2024 22:41:39 +0100
-Message-ID: <CANiq72=VOHDUkJTaDgwM_2rk4UrNa3MCnvn2OLPu9SSs7CPJmg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] Rust enablement for AArch64
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
-	boqun.feng@gmail.com, andrew@lunn.ch, Masahiro Yamada <masahiroy@kernel.org>, 
-	WANG Rui <wangrui@loongson.cn>, Ingo Molnar <mingo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 9, 2024 at 6:38=E2=80=AFPM Catalin Marinas <catalin.marinas@arm=
-.com> wrote:
->
-> Applied to arm64 (for-next/rust-for-arm64), thanks!
->
-> I also folded Rui's loongarch fix into the first patch to avoid breaking
-> this arch:
->
-> https://github.com/heiher/linux/commit/c504d83a6edd963e2ba58ec538e3f06da7=
-8b187e.patch
+This abstraction is part of the set of dependencies I need to upstream
+rustgem, a virtual GEM provider driver in the DRM [1]. Also, this
+abstraction will be useful for the upstreaming process of the drm/asahi
+driver.
 
-Thanks Catalin!
+Best Regards,
+- Maíra
 
-I tested your branch `for-next/core` at f735966ee23c with arm64 and
-x86_64 (and built-test loongarch64).
+Changelog
+=========
 
-Cheers,
-Miguel
+v1 -> v2: https://lore.kernel.org/r/20230224-rust-xarray-v1-1-80f0904ce5d3@asahilina.net
+
+- Added Pin requirement for all XArray operations, to close a
+  soundness hole due to the lock in the XArray (locks are not safe to
+  move while locked). Creation does not require pinning in place, since
+  the lock cannot be acquired at that point.
+- Added safety note to Drop impl about why we don't need to do the lock
+  unlock dance to ensure soundness in case of a dropped lock guard.
+- Downstream drm/asahi driver was also rebased on this version to prove
+  it works (previously it was still on a pre-v1 version).
+- This still depends on the Error series (v1). v2 of that will need a
+  trivial rename of Error::from_kernel_errno -> Error::from_errno. If
+  this version of XArray ends up looking good, I'll send a trivial v4 of
+  XArray with the rename, after sending the v2 of the Error series.
+
+v2 -> v3: https://lore.kernel.org/r/20230224-rust-xarray-v2-1-4eeb0134944c@asahilina.net
+
+- Updated to the error v2/v3 series API.
+- Renamed `err` to `ret` for consistency with the other instance.
+
+v3 -> v4: https://lore.kernel.org/rust-for-linux/20230224-rust-xarray-v3-1-04305b1173a5@asahilina.net/
+
+- Rebase on top of rust-next.
+
+v4 -> v5: https://lore.kernel.org/rust-for-linux/20231126131210.1384490-1-mcanal@igalia.com/T/
+
+- Use Gary's suggestion for the Deref trait - no unsafe code! (Benno Lossin)
+- Use NonNull (Benno Lossin)
+- Not spelling out the lifetimes (Benno Lossin)
+- Change XArray invariants (Benno Lossin)
+- Add all SAFETY comments (Benno Lossin)
+- Use `kernel::error::to_result` (Benno Lossin)
+- s/alloc_limits/alloc_limits_opt (Benno Lossin)
+- Split unsafe block (Benno Lossin)
+- Make error handling of the function `alloc_limits_opt` through `ScopeGuard` (Benno Lossin)
+- Use `ScopeGuard` in the function `get` (Benno Lossin)
+
+v5 -> v6: https://lore.kernel.org/rust-for-linux/20231201195300.1329092-1-mcanal@igalia.com/T/
+
+- Update constants to the new format (RUST_CONST_HELPER)
+- Add invariant for `self.0` being a pointer derived from `T::from_foreign` (Benno Lossin)
+- Fix the place of the INVARIANT comments (Benno Lossin)
+- Use the Pin-Init API (Benno Lossin)
+- Remove PhantomPinned from XArray (Benno Lossin)
+- Add new requirements for calling `xa_unlock()` (Benno Lossin)
+- Improve SAFETY comments (Benno Lossin)
+- Split unsafe block (Benno Lossin)
+- s/alloc_limits_opt/insert_between (Benno Lossin)
+- Specify the target type of the cast (Andreas Hindborg/Trevor Gross)
+- Guarantee that T is 4-byte aligned (Andreas Hindborg)
+- Add code examples in the code (Boqun Feng)
+
+v6 -> v7: https://lore.kernel.org/rust-for-linux/20240116151728.370238-1-mcanal@igalia.com/T/
+
+- Change the INVARIANT from `Guard` (Boqun Feng)
+- Change the INVARIANT from `XArray` (Boqun Feng)
+- Change INVARIANT to # Invariant (Benno Lossin)
+- Move XArray definition to the top of the file (Benno Lossin)
+- Show structs from examples (Benno Lossin)
+- Import XArray directly (Benno Lossin)
+- Adjust some SAFETY comments (Benno Lossin & Alice Ryhl)
+- Reestructure the NonNull block (Alice Ryhl)
+- Create method `to_index()` (Alice Ryhl)
+- Use `drop(T::from_foreign(new))` (Alice Ryhl)
+- Both Sync and Send requires Send (Alice Ryhl)
+- Add FOREIGN_ALIGN to trait ForeignOwnable (Alice Ryhl)
+
+[1] https://github.com/mairacanal/linux/pull/11
+
+Asahi Lina (1):
+  rust: xarray: Add an abstraction for XArray
+
+Maíra Canal (1):
+  rust: types: add FOREIGN_ALIGN to ForeignOwnable
+
+ rust/bindings/bindings_helper.h |  17 ++
+ rust/helpers.c                  |  37 +++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/sync/arc.rs         |   2 +
+ rust/kernel/types.rs            |   7 +
+ rust/kernel/xarray.rs           | 396 ++++++++++++++++++++++++++++++++
+ 6 files changed, 460 insertions(+)
+ create mode 100644 rust/kernel/xarray.rs
+
+--
+2.43.0
+
