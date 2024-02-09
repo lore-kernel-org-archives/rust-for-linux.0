@@ -1,94 +1,226 @@
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE4625626
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 11:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7736A2C1B1
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 11:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707477362; cv=none; b=YB35V3b43GAH0OK5Mjd0XI3+oeg0enhX/pdi/lKP1Nh4givEDdjcCxEQfbkJ3JAZ1yY72S8uBJXl4z26z0t9ju56H9REPjgWIPV+tTjPnpH1k7MoJhS3rDX0A4b7Zo2FSV87rYSC+ezx01m4sAFYQ5P591ez8viSbFqVDTy0954=
+	t=1707477532; cv=none; b=gEXGln6pGzXSM+i1Y5Yt1J9whiqKrrd2DiJur3yOD8IR8Tv9MrI6yQiom0r+NyI76muexiWzP8agCAY0OJg/EWYffK4hSKEQSyTc1dW2oaZj9phWhK3+zWkPDMv+w9y76gpgYidhlRvP+FD7VFXvbYVBZTZDWkcZJ/+m5VSABQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707477362; c=relaxed/simple;
-	bh=RgFHHs7raVYUXy7WupCB2WW9Niv6eFSl7EsJTR5+7V0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vhkb1ItYXCMUf9tqZQIuX1LadD4HTT9loqpgaJZGxd5cNX1PG9D9jV3LDPbBzRpddL41+ZnNqpnP+DCo1CVKLq2MBeRWks86CEAEvrN2/UYpBnWwdhN/0Z4CURla8cSjVP37LwkhqT41GX7OlowCqQwFwLA68x1wAchRqepkbUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2XQae5ap; arc=none smtp.client-ip=209.85.222.43
+	s=arc-20240116; t=1707477532; c=relaxed/simple;
+	bh=Gpy7ziB0JDQ1OJWFxJmiq8bG2HMIwkNv0HIf1uBOKHg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VtG1PPGRn1JgnL64NoCz4CfHTeCLl/1afgBI4BNBd2wFL6qQ+fza/uPPvxLt6pwTbn/uqT2MolWyvW2ULFoJipNDaS16xas0Aakvrv1TUUXLntjdfzz7cm7B+fXCpJLvhhQpqFw5isSP/ZZOBZ1xHAcsaEj+Tu9M9RAmSG1lDRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bfjXB9Nw; arc=none smtp.client-ip=209.85.167.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2XQae5ap"
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-7d130979108so357926241.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 03:16:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bfjXB9Nw"
+Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-5114b8bac8fso797908e87.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 03:18:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707477359; x=1708082159; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ed++djY+4BK8SmyO+juBd+LCPHe4DjXsTTMrzEs49OU=;
-        b=2XQae5aprUmX57r0mX1D61jjfJC4QRuGFBjm55EMBhOk9cpeUrBclyGRoafg0uwyLj
-         XNw2YDQY/JYj7YjCvru0ucM7oV8LQeuJX8mL+AIticoaz25ELU1DUrX/2Kv1vUIdVLgm
-         iNA8dXFrZZMfbwKBPXAbI0o8rHsIeu73LnHRVYTKTBV0V9uGGuxwhaLr6piVZLMSWaqR
-         1wb8DgqKfXHcTQUU7dCzFk2/70lrd8MG7G3KypbC32/jn/fPZBmz9bmF4kVMV8/vxjKs
-         uBJ5GdRI6ssfygG4q/qkegjOCPylKNU5eiE7Tgn+xvX59fJT8VfhNMvXlduHdQwgRPcX
-         zfYw==
+        d=google.com; s=20230601; t=1707477528; x=1708082328; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SHWFr0o7nVaJfX6SDsUG6CZHBy53eoMvg9Pc8jxLeGw=;
+        b=bfjXB9NwbIf+8KV0FPMgtRSW8AIGRs++jGiv1gRGjIykgUlnLhXk7uP7pXz3ph0X2c
+         SHdg+KXu1Jkrq0g7bF43LmjLI4CLeUlf7xX9amNFpxgAt2DlFXY9iCT3ATXpJm/be158
+         jEpaFfCxzLH1bYPDcPtwyBBD/s/L0rhuasgEoohfHIOBm1KEUVF+OH+qZSRRBohgfqpS
+         IybIYP4z5c3jg7G6y3Gho9Z98GLYeexo6nVudXBjAA+p8aBKfgfoCQDPkmdPTmHGLoFQ
+         pOezRwfrylptagnOW6MAFICGmBubPvvn+9qRpCWQhr852Lzf+5lkSRF16vd5tdyAEbar
+         iHIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707477359; x=1708082159;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ed++djY+4BK8SmyO+juBd+LCPHe4DjXsTTMrzEs49OU=;
-        b=F1wca57LDcE4sb8DAs9FzWns69VqZY2yx9f5cr4q61Rc0eF2BS651ThbEKkUNMHgdd
-         r05SxPaPqIVEFpq704TpvPJbHCpP1S9U/3Uajg1EB7rWeA8PiXpaAkQ6OFEAs3nAofxR
-         j7Wt3SxWb7b2jlwgJzE9om/DtVBosnRpELBx1OXOpa/MLN2Ik42s3aUb8PBuEW6bEyKh
-         GgKdoZWEwfd/FdwSo2JI4OnrxHbFrCGJ9DeojLm2KuDrkydNG3xBTcHj3wFSDi3XVSH1
-         5ZPBux5Y8AKli9WhzbbcSvKG8FAD/nI20/MYgjqhTT0pbD45bwjheH6k3rfy+OoN8g4V
-         3G5g==
-X-Gm-Message-State: AOJu0YxPL7zQPSrVeHiO3OMq2701RfvvwscEocPkHHn7yGecNCBxCil2
-	f5uhflOAJ6FqiE2WdfKitKqFHplG/CqwDzqRuS1hBvaU23LAguDk+9gZKTM6utR0YiXnY71FBlK
-	7hFvW3lefJzJq+fhmUqMpjt11KPPLIK4dwulm
-X-Google-Smtp-Source: AGHT+IH0++n+IHTTWPdJfvdvuEsjvhUJCSq1bKiKaAnFQLdwkCp91mU/3dxy8RDqz88HJr1OypbDDQyyy0IfIB2ShjE=
-X-Received: by 2002:a05:6102:1607:b0:46c:b7a8:4b59 with SMTP id
- cu7-20020a056102160700b0046cb7a84b59mr1154577vsb.23.1707477359448; Fri, 09
- Feb 2024 03:15:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707477528; x=1708082328;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SHWFr0o7nVaJfX6SDsUG6CZHBy53eoMvg9Pc8jxLeGw=;
+        b=IOuyJntoDU2rO710mLf2uZK/P6tSGNijw9UU+jfta2E/OixpKrLVxM82qHVedx2moZ
+         k4ZqoYoJE2ARmmYkb1o60nz77dc36HGhv+4MfbVbsIxsYvz16NWRwYI0Pxujt5nrbqTK
+         tTT/KjWTlTQQrIrWcv6fjGbxaO5/7Df8hQ9n+s9XO8nWTXHOk8MWYbWTwuWOBr2pxnng
+         zejaxhpWVgTKusFDR8f5oL9HQvFOr3pFO9aKJQQHTNDwVHw0d+i8CsA3yzW3oDMrYMGO
+         hzUV9ZrXlBi8UfD/lvf75f5RrGa7t+x72Mum5lIPTXLM6JVVitR9DFwAiDmMGOMfBEtK
+         hrSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbzjmVFJ93pUuqQtq6aq/7ydIIwxPFQ3ngAFYWFBXLvOlpZxJKedC65x5ttuDXsRxHBEAdgFnPXalCZe4F8UcIyK8DGwPGAuHTF5cwHqw=
+X-Gm-Message-State: AOJu0YwjYksJjwMiH/uuJxgpUqThQpK3F6TxpFVpsBd7J9sv4+DLF8uu
+	1asPoSPmBeN1eU3eYGQPngEarU2d2rbYMx1cWZBZF6Bjw/iKUAB1y2PRdH81MWOQXd6Pei1PeeW
+	ol4570jnr/s+9zw==
+X-Google-Smtp-Source: AGHT+IFOsK4WWUyfr4sQfwmC5PcxbB0lo89QwRCCNg20BNjM8Xnn16lkNmrgmYEpF+qvM5aDH38zikK9Ki2bqh8=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:208d:b0:511:51ec:90ea with SMTP
+ id t13-20020a056512208d00b0051151ec90eamr1016lfr.1.1707477528191; Fri, 09 Feb
+ 2024 03:18:48 -0800 (PST)
+Date: Fri, 09 Feb 2024 11:18:13 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240208-alice-mm-v2-1-d821250204a6@google.com> <20240208225407.11951-1-kernel@valentinobst.de>
-In-Reply-To: <20240208225407.11951-1-kernel@valentinobst.de>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPUJxmUC/2XO0QrCIBTG8VcJrzM8R+e0q94junDuuISVscUox
+ t49F8QauxG+A78/jqynLlLPjruRdTTEPqZ7HsV+x/zV3Rvisc6boUAJgJK7NnriIbbECywqa8i
+ 4EhXL4NFRiK9v7HzJ+xr7Z+re3/YA8/WXsf+ZAbjgwYALZHyJGk5NSk1LB59ubO4MuFgUemUxW
+ xc0lF7UtrZqY+XPKgFgVlZma7VVlQ62MMJvrFpsflZWzX/21qMwQmtZrew0TR85x0YrWQEAAA= =
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5469; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Gpy7ziB0JDQ1OJWFxJmiq8bG2HMIwkNv0HIf1uBOKHg=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlxgoAJlBOkBuZqb7aqud7lwYRLxizcQYR49fn4
+ 8a7uC7m5RmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZcYKAAAKCRAEWL7uWMY5
+ RpQVD/9Y7HeTuylq2VajFWEMWp1pZMeNy7tMqRxFhBi/ItZP9SNWSvEBxyHomM5yLvEmsYK4IkJ
+ SAmasr2xDfFZGcdmcFJkCQlmZahHJaMThaZz9bMIMeGW6aU0jZkp/uudjVTpfBPqrgkSJhwURpa
+ wEyt69dAfaNOSzf9mF8X8CXIKXa4uUYmNYj9a542ycsDiCfLQ6ik01BDCUVpXZo07aoorkXo415
+ UVpBecMm3kkO/XsrELGqmzPFu9vV7C7hGklX07TorX/jBME0XduUP9LKPa1En4GXbw1HPWQEtF9
+ y2Ly1qhbioxn6yVMnn93bitPWEFmRP6uwCuVLvVdYVfQFypMUqmqgDVVB65CfC3916cJkwl00i6
+ 53YcPwAwJk1yd/N8f+e4+6+uHdyyESsY2eNyuQk38Q+p6dESoVi6PrZD3m5mPH0n4Mu0YTRDMtt
+ Avge4XVeZRlEpVL9e7zRPAOrBVBFaHY75+1HcEUV/Ch6V5Kd5aR1FT7Ej5MJwJIWF8tKBkVNRpF
+ snDecJpH2egt9GjGYkcOelQmNwHZ36c887a6MkGFkZmnw/IbhNZMUnFKS3qP+inMvViZe0FNQZp
+ LiJgoH9kp/WHqUrWJhzM1HNEYfc4GRc3JW5XMuO+nYjk/WmnJp28pyd3yATJi61z+mXV3nS2GoJ uXQR/XuMlEkmxSQ==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240209-alice-file-v5-0-a37886783025@google.com>
+Subject: [PATCH v5 0/9] File abstractions needed by Rust Binder
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 9 Feb 2024 12:15:48 +0100
-Message-ID: <CAH5fLghObExCR55dEozb2MSsPZWd7432z5FyOYmNKHFKJHt8Lg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] rust: uaccess: add userspace pointers
-To: Valentin Obst <kernel@valentinobst.de>
-Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
-	arnd@arndb.de, arve@android.com, benno.lossin@proton.me, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, 
-	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
-	viro@zeniv.linux.org.uk, wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Feb 8, 2024 at 11:54=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
-de> wrote:
->
-> > +    /// Reads the entirety of the user slice, appending it to the end =
-of the
-> > +    /// provided buffer.
-> > +    ///
-> > +    /// Fails with `EFAULT` if the read encounters a page fault.
-> > +    pub fn read_all(self, buf: &mut Vec<u8>) -> Result<()> {
-> > +        self.reader().read_all(buf)
-> > +    }
->
-> I think there is also no need to give an explicit `()` for the
-> generic type parameter here as it is the default (applies to some
-> other methods in this patch as well).
+This patchset contains the file abstractions needed by the Rust
+implementation of the Binder driver.
 
-I'll change this if I send a v3, but I don't think it's that important.
+Please see the Rust Binder RFC for usage examples:
+https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
 
-Alice
+Users of "rust: types: add `NotThreadSafe`":
+	[PATCH 5/9] rust: file: add `FileDescriptorReservation`
+
+Users of "rust: task: add `Task::current_raw`":
+	[PATCH 7/9] rust: file: add `Kuid` wrapper
+	[PATCH 8/9] rust: file: add `DeferredFdCloser`
+
+Users of "rust: file: add Rust abstraction for `struct file`":
+	[PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+	[PATCH RFC 03/20] rust_binder: add threading support
+
+Users of "rust: cred: add Rust abstraction for `struct cred`":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+	[PATCH RFC 11/20] rust_binder: send nodes in transaction
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+
+Users of "rust: security: add abstraction for secctx":
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add `FileDescriptorReservation`":
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+	[PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+
+Users of "rust: file: add `Kuid` wrapper":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add `DeferredFdCloser`":
+	[PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+
+Users of "rust: file: add abstraction for `poll_table`":
+	[PATCH RFC 07/20] rust_binder: add epoll support
+
+This patchset is based on rust-next, which means that it doesn't compile
+without the following patch, which has not yet made it further upstream
+than rust-next.
+https://lore.kernel.org/all/20240105012930.1426214-1-charmitro@posteo.net/
+
+This patchset has some uses of read_volatile in place of READ_ONCE.
+Please see the following rfc for context on this:
+https://lore.kernel.org/all/20231025195339.1431894-1-boqun.feng@gmail.com/
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v5:
+- Pass a null pointer to task_tgid_nr_ns.
+- Fix some typos and other formatting issues.
+- Add Reviewed-by where appropriate.
+- Link to v4: https://lore.kernel.org/r/20240202-alice-file-v4-0-fc9c2080663b@google.com
+
+Changes in v4:
+- Moved the two really simple patches to the beginning of the patchset.
+- Update Send safety comments.
+- Use srctree relative links.
+- Mention that `Credential::euid` is immutable.
+- Update some safety comments to mention the invariant on Self.
+- Use new name for close_fd_get_file.
+- Move safety comments on DeferredFdCloser around and be more explicit
+  about how many refcounts we own.
+- Reword safety comments related to _qproc.
+- Add Reviewed-by where appropriate.
+- Link to v3: https://lore.kernel.org/r/20240118-alice-file-v3-0-9694b6f9580c@google.com
+
+Changes in v3:
+- Completely rewrite comments about refcounting in the first patch.
+  - And add a note to the documentation in fs/file.c.
+- Discuss speculation gadgets in commit message for the Kuid wrapper.
+- Introduce NotThreadSafe and Task::current_raw patches and use them in
+  later patches.
+- Improve safety comments in DeferredFdCloser.
+- Some other minor changes.
+- Link to v2: https://lore.kernel.org/r/20231206-alice-file-v2-0-af617c0d9d94@google.com
+
+Changes in v2:
+- Update various docs and safety comments.
+- Rename method names to match the C name.
+- Use ordinary read instead of READ_ONCE in File::cred.
+- Changed null check in secctx.
+- Add type alias for PhantomData in FileDescriptorReservation.
+- Use Kuid::from_raw in Kuid::current_euid.
+- Make DeferredFdCloser fallible if it is unable to schedule a task
+  work. And also schedule the task work *before* closing the file.
+- Moved PollCondVar to rust/kernel/sync.
+- Updated PollCondVar to use wake_up_pollfree.
+- Link to v1: https://lore.kernel.org/all/20231129-alice-file-v1-0-f81afe8c7261@google.com/
+
+Link to RFC:
+https://lore.kernel.org/all/20230720152820.3566078-1-aliceryhl@google.com/
+
+---
+Alice Ryhl (6):
+      rust: types: add `NotThreadSafe`
+      rust: task: add `Task::current_raw`
+      rust: security: add abstraction for secctx
+      rust: file: add `Kuid` wrapper
+      rust: file: add `DeferredFdCloser`
+      rust: file: add abstraction for `poll_table`
+
+Wedson Almeida Filho (3):
+      rust: file: add Rust abstraction for `struct file`
+      rust: cred: add Rust abstraction for `struct cred`
+      rust: file: add `FileDescriptorReservation`
+
+ fs/file.c                       |   7 +
+ rust/bindings/bindings_helper.h |   8 +
+ rust/helpers.c                  |  94 ++++++++
+ rust/kernel/cred.rs             |  83 +++++++
+ rust/kernel/file.rs             | 519 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/security.rs         |  72 ++++++
+ rust/kernel/sync.rs             |   1 +
+ rust/kernel/sync/lock.rs        |  14 +-
+ rust/kernel/sync/poll.rs        | 117 +++++++++
+ rust/kernel/task.rs             | 105 +++++++-
+ rust/kernel/types.rs            |  18 ++
+ 12 files changed, 1029 insertions(+), 12 deletions(-)
+---
+base-commit: f090f0d0eea9666a96702b29bc9a64cbabee85c5
+change-id: 20231123-alice-file-525b98e8a724
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
