@@ -1,274 +1,91 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE7021353
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 21:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0B314AAA
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 21:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707513295; cv=none; b=KK8H/jayIRAP5MKL5FvaSvV/0/yDyQ4HelOfotF/jNrWonHKavQEeXJrbj5wmfSIxU7BupBPBdSuowVmsmMrhwJXNRTblKgM8xicEn54yszGdC1goPYACgTM0AYfTu/EoVNQPdYg+peXZMDl6R7HC1L7CO+jfjWiNlch0PaYjc4=
+	t=1707514913; cv=none; b=SENRxa8xW1OJPtWz6wctRIEEGeWGvthj5vd53RbgxO4pxJDDaIhFCPPijdQBm7Njf1q6lBz1HyWgGb1oIKaIj+2wqN5M/mgh+x02wNCfLkHoTRkgOYAYBlpCpzosQP0NBUTs9W+r3Gmnl1tnjDhk326p9INAzohkovhlqIMHeso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707513295; c=relaxed/simple;
-	bh=RODrRa0S1LPOpbKTfj4S4vNZF1ROFG+Y+PyzzfMjwPo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JKrar1qvDR3M7xqu4OkOGMw9B3FSS2rJdcBrQBtXqTxZjzJ+0IjJW6iYVA7vg7Wj0t9N4eNwvzU08YtwtovNlsuN57Eywy8DIeUQCSSAZMfIpY4sXgfFWipDgV4h/d0YJOEZqYFHg9ODB8Faj6RaimDeHE2hy1IltWMDn0ufVYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=orPM0hM9; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1707514913; c=relaxed/simple;
+	bh=V78Eh6NxvyEmMKBeKR5uZWsKtd+HhCO6qX5q2BSIHMA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nyXqAxyvqifDUWq5AdqY4EXavqs3wrmQrMbTI59z9cwd9IOR22/8sUK6mi8iNjd9ntiaqxXS3TP1L8YLNPqGdj6KtKdWJ2GJvQIJcbUdpA+0wN6dzPUmpAszspglm1sMt80NfRxg1lOkRv3yqcdzJ85gDFx2MWhrps04mcd9Uhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCKSrI6m; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="orPM0hM9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hxgSiTpMn6r3oOEdlof/EFcJyMAFJ67QkywsTtCaZFA=; b=orPM0hM98hMn/8Sa71F+A9jMA5
-	PaTRa0ZJymSvRr+6z64TdmMTTyhPZObgS5cP5Sd0BYwpK2UUhrSVb7Z/ItnlbzZceT86xxw/CCwDK
-	EwMWWz/sTmMBszWMBSPBTOCfbNZ8FgKTVr0hxtT5/AVhI9oDN8o1VZcqQbWEOLk1oNJiRG7XCreLB
-	Yh36SI8jJAfksBXPcIrkqmis9wCDrMhpH6wjeCoBzew4Kk7CV7lcgO3tMNEsUEhXYxLog5kLHUPaH
-	jGaT7lKDbmw6/JKhFts1xbt1tVIlkH5Q2q02C9gvAU4eTl2wrMyRYnaWXzmfOr/kTbdRrewdj2cs6
-	t/rjo5sA==;
-Received: from [179.234.233.159] (helo=[192.168.1.212])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1rYYCS-00FiP0-LL; Fri, 09 Feb 2024 22:14:20 +0100
-Message-ID: <240096f5-127e-46b3-a500-31fea786907c@igalia.com>
-Date: Fri, 9 Feb 2024 18:14:13 -0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCKSrI6m"
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc25e12cc63so2174709276.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 13:41:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707514910; x=1708119710; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V78Eh6NxvyEmMKBeKR5uZWsKtd+HhCO6qX5q2BSIHMA=;
+        b=CCKSrI6mOcJ7csShbRgmA3AAwp/ujXEtD9h3s6Ha3Xn1i3YpGy5raWoLQ4xdmaYnYu
+         yT0fMLHR5z5kjT+pc4HwsEYcCmcOhPaaR9SNMUgjk8qm8NWBdJdz6vE4P4Lu5Ou0y1Cn
+         h2LdMKPBXPY0j47cBQsaGmLf6ZWu2cHoNfPbp/6+OHK44bSfoIexRBngZmP2+QEniIby
+         6HbqKLeUHtFfawmTO437A4KdXp7Vx10q32/mM7ISvMg4w25K9R16gPn+Toz1bBRAehhC
+         3PvHkuS38zlb60kdx968HgMz2py/NPpK88RcdPM8E85M5OpvKk4HnDtJFtZNB4UDxnj0
+         vqXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707514910; x=1708119710;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V78Eh6NxvyEmMKBeKR5uZWsKtd+HhCO6qX5q2BSIHMA=;
+        b=AUIZPMtTuDsRw5m186IxC5cfRajRQgvwLQ15DQYAV/FhHLwiMinfXP0fn+wcmOnHgT
+         xrJtdMEUJQ3XeMEEqpu5EZ0iW6LbgVdnxY9E7cP49sTFEf5JpTUmsMk6/yfJctJ2HPqu
+         wEh+ccA6dhZnCaOl84Yt5BYRXZGwujC30EIhHC9wCPcjjSNoaSXHjUCaoHu1Ar/L2CIE
+         NTYuLgdjCS6V1tlXqxIrs0lSHiinZTnKcq4o7BPrzanhFN0nGEE/KJVeCLQZmhodMNxV
+         kcUA4oKmyFEZt5EknjhDp6Ecj6mDZVo5BnYlNdrWqzvHDBjC4GG6VVBIrS+m2dYOH/XV
+         HTcg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXb/9TjnPgUy9BpdUrZhAzcHoDvY0BA0aCvzkw6b+JalmZx9cCs7J83pD/n9SaBT0yVvaVqJ+vz53ffLrPTmBsl/tUqH0p/TQKxiafBnI=
+X-Gm-Message-State: AOJu0Yxp9hc4zlGmM4J+44W7QuAf6u5viDxJai0lm0jMppVN40jkFnqI
+	Xn7LFKew7OZUaXzJUSZ0/geVn741RyrbcbmAGYA1Zc8i2Tqsi8Q9dnxdXXvUr0wPtNcJdMC1ym6
+	glB/agGcxIS4eQ64C7bhp/GueKfkikg5/Q1qM4Q==
+X-Google-Smtp-Source: AGHT+IGSwq9GdG/BVRhzC7Iupyni8U9NO3hjB/nhrbFG5D7k/GpcOVOAZLYNQkFAwh0WjfTWRRMpwSq7JltCTlbwda4=
+X-Received: by 2002:a25:938d:0:b0:dc7:56d6:81dd with SMTP id
+ a13-20020a25938d000000b00dc756d681ddmr2031156ybm.1.1707514910590; Fri, 09 Feb
+ 2024 13:41:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] rust: xarray: Add an abstraction for XArray
-Content-Language: en-US
-To: Benno Lossin <benno.lossin@proton.me>, Asahi Lina <lina@asahilina.net>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>
-Cc: rust-for-linux@vger.kernel.org, kernel-dev@igalia.com
-References: <20240116151728.370238-1-mcanal@igalia.com>
- <beb27c71-e138-435a-93ca-3fc702bf6459@proton.me>
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xjMEZIsaeRYJKwYBBAHaRw8BAQdAGU6aY8oojw61KS5rGGMrlcilFqR6p6ID45IZ6ovX0h3N
- H01haXJhIENhbmFsIDxtY2FuYWxAaWdhbGlhLmNvbT7CjwQTFggANxYhBDMCqFtIvFKVRJZQ
- hDSPnHLaGFVuBQJkixp5BQkFo5qAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQNI+cctoYVW5u
- GAEAwpaC5rI3wD8zqETKwGVoXd6+AbmGfZuVD40xepy7z/8BAM5w95/oyPsHUqOsg/xUTlNp
- rlbhA+WWoaOXA3XgR+wCzjgEZIsaeRIKKwYBBAGXVQEFAQEHQGoOK0jgh0IorMAacx6WUUWb
- s3RLiJYWUU6iNrk5wWUbAwEIB8J+BBgWCAAmFiEEMwKoW0i8UpVEllCENI+cctoYVW4FAmSL
- GnkFCQWjmoACGwwACgkQNI+cctoYVW6cqwD/Q9R98msvkhgRvi18fzUPFDwwogn+F+gQJJ6o
- pwpgFkAA/R2zOfla3IT6G3SBoV5ucdpdCpnIXFpQLbmfHK7dXsAC
-In-Reply-To: <beb27c71-e138-435a-93ca-3fc702bf6459@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20231020155056.3495121-1-Jamie.Cunliffe@arm.com> <170750002897.1210949.14507303616035197246.b4-ty@arm.com>
+In-Reply-To: <170750002897.1210949.14507303616035197246.b4-ty@arm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 9 Feb 2024 22:41:39 +0100
+Message-ID: <CANiq72=VOHDUkJTaDgwM_2rk4UrNa3MCnvn2OLPu9SSs7CPJmg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] Rust enablement for AArch64
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, steve.capper@arm.com, Asahi Lina <lina@asahilina.net>, 
+	boqun.feng@gmail.com, andrew@lunn.ch, Masahiro Yamada <masahiroy@kernel.org>, 
+	WANG Rui <wangrui@loongson.cn>, Ingo Molnar <mingo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/1/24 07:48, Benno Lossin wrote:
-> On 1/16/24 16:06, Maíra Canal wrote:
->> From: Asahi Lina <lina@asahilina.net>
->>
+On Fri, Feb 9, 2024 at 6:38=E2=80=AFPM Catalin Marinas <catalin.marinas@arm=
+.com> wrote:
+>
+> Applied to arm64 (for-next/rust-for-arm64), thanks!
+>
+> I also folded Rui's loongarch fix into the first patch to avoid breaking
+> this arch:
+>
+> https://github.com/heiher/linux/commit/c504d83a6edd963e2ba58ec538e3f06da7=
+8b187e.patch
 
-[...]
+Thanks Catalin!
 
->> +        let old = unsafe {
->> +            bindings::xa_store(
->> +                self.xa.get(),
->> +                index.try_into()?,
->> +                new.cast_mut(),
->> +                bindings::GFP_KERNEL,
->> +            )
->> +        };
->> +
->> +        // SAFETY: `xa_store` returns the old entry at this index on success or
->> +        // a XArray result, which can be turn into an errno through `xa_err`.
->> +        to_result(unsafe { bindings::xa_err(old) })?;
->> +        guard.dismiss();
->> +
->> +        Ok(if old.is_null() {
->> +            None
->> +        } else {
->> +            // SAFETY: The old value must have been stored by either this function or
->> +            // `insert_between`, both of which ensure non-NULL entries are valid
->> +            // ForeignOwnable pointers.
->> +            Some(unsafe { T::from_foreign(old) })
->> +        })
->> +    }
->> +
->> +    /// Replaces an entry with a new value, dropping the old value (if any).
->> +    pub fn set(&self, index: usize, value: T) -> Result {
->> +        self.replace(index, value)?;
->> +        Ok(())
->> +    }
->> +
->> +    /// Looks up and returns a reference to an entry in the array, returning a `Guard` if it
->> +    /// exists.
->> +    ///
->> +    /// This guard blocks all other actions on the `XArray`. Callers are expected to drop the
->> +    /// `Guard` eagerly to avoid blocking other users, such as by taking a clone of the value.
->> +    pub fn get(&self, index: usize) -> Option<Guard<'_, T>> {
-> 
-> I would not expect `get` to lock the object, perhaps this should be
-> renamed? Any suggestions?
+I tested your branch `for-next/core` at f735966ee23c with arm64 and
+x86_64 (and built-test loongarch64).
 
-I believe that `get` is pretty convenient and ergonomic. I thought about 
-`locked_get` or `get_locked`, but it sounds weird.
-
-> 
->> +        // SAFETY: `self.xa` is always valid by the type invariant.
->> +        unsafe { bindings::xa_lock(self.xa.get()) };
->> +
->> +        // SAFETY: `self.xa` is always valid by the type invariant.
->> +        let guard = ScopeGuard::new(|| unsafe { bindings::xa_unlock(self.xa.get()) });
->> +
->> +        // SAFETY: `self.xa` is always valid by the type invariant.
->> +        //
->> +        // As we are taking advantage of the lock to protect the data structures
->> +        // that we are storing in the XArray, we need to call xa_lock() before
->> +        // calling xa_load(), which we did.
-> 
-> I looked at the C code and `xa_load` states:
-> 
-> /**
->   * xa_load() - Load an entry from an XArray.
->   * @xa: XArray.
->   * @index: index into array.
->   *
->   * Context: Any context.  Takes and releases the RCU lock.
->   * Return: The entry at @index in @xa.
->   */
-> 
-> So do you really need the lock before calling load?
-
-"If you want to take advantage of the lock to protect the data 
-structures that you are storing in the XArray, you can call xa_lock() 
-before calling xa_load(), then take a reference count on the object you 
-have found before calling xa_unlock(). This will prevent stores from 
-removing the object from the array between looking up the object and 
-incrementing the refcount. You can also use RCU to avoid dereferencing 
-freed memory, but an explanation of that is beyond the scope of this 
-document."
-
- From https://docs.kernel.org/core-api/xarray.html
-
-Best Regards,
-- Maíra
-
-> 
->> +        let p = unsafe { bindings::xa_load(self.xa.get(), index.try_into().ok()?) };
->> +
->> +        NonNull::new(p as *mut T).map(|p| {
->> +            guard.dismiss();
->> +            Guard(p, self)
->> +        })
->> +    }
->> +
->> +    /// Removes and returns an entry, returning it if it existed.
->> +    pub fn remove(&self, index: usize) -> Option<T> {
->> +        // SAFETY: `self.xa` is always valid by the type invariant.
->> +        let p = unsafe { bindings::xa_erase(self.xa.get(), index.try_into().ok()?) };
->> +        if p.is_null() {
->> +            None
->> +        } else {
->> +            // SAFETY: All pointers stored in the array are pointers obtained by
-> 
-> By the type invariant of `Self`, all pointers...
-> 
->> +            // calling `T::into_foreign`.
->> +            Some(unsafe { T::from_foreign(p) })
->> +        }
->> +    }
->> +
->> +    /// Allocates a new index in the array, optionally storing a new value into it, with
->> +    /// configurable bounds for the index range to allocate from.
->> +    ///
->> +    /// If `value` is `None`, then the index is reserved from further allocation but remains
->> +    /// free for storing a value into it.
->> +    fn insert_between(&self, value: Option<T>, min: u32, max: u32) -> Result<usize> {
->> +        let new = value.map_or(core::ptr::null(), |a| a.into_foreign());
->> +        let mut id: u32 = 0;
->> +
->> +        let guard = ScopeGuard::new(|| {
->> +            if !new.is_null() {
->> +                // SAFETY: If `new` is not NULL, it came from the `ForeignOwnable` we got
->> +                // from the caller.
->> +                unsafe { T::from_foreign(new) };
->> +            }
->> +        });
->> +
->> +        // SAFETY: `self.xa` is always valid by the type invariant. If this succeeds, it
->> +        // takes ownership of the passed `T` (if any). If it fails, we must drop the
->> +        // `T` again.
-> 
-> The second sentence should not be part of the safety comment (but it
-> can be a normal comment).
-> 
->> +        let ret = unsafe {
->> +            bindings::xa_alloc(
->> +                self.xa.get(),
->> +                &mut id,
->> +                new.cast_mut(),
->> +                bindings::xa_limit { min, max },
->> +                bindings::GFP_KERNEL,
->> +            )
->> +        };
->> +
->> +        if ret < 0 {
->> +            Err(Error::from_errno(ret))
->> +        } else {
->> +            guard.dismiss();
->> +            Ok(id as usize)
->> +        }
->> +    }
->> +
->> +    /// Allocates a new index in the array, storing a new value into it, with configurable
->> +    /// bounds for the index range to allocate from.
->> +    pub fn alloc_limits(&self, value: T, min: u32, max: u32) -> Result<usize> {
->> +        self.insert_between(Some(value), min, max)
->> +    }
->> +
->> +    /// Allocates a new index in the array, storing a new value into it.
->> +    pub fn alloc(&self, value: T) -> Result<usize> {
->> +        self.alloc_limits(value, 0, u32::MAX)
->> +    }
->> +
->> +    /// Reserves a new index in the array within configurable bounds for the index.
->> +    ///
->> +    /// Returns a `Reservation` object, which can then be used to store a value at this index or
->> +    /// otherwise free it for reuse.
->> +    pub fn reserve_limits(&self, min: u32, max: u32) -> Result<Reservation<'_, T>> {
->> +        Ok(Reservation(
->> +            self,
->> +            self.insert_between(None, min, max)?,
->> +            PhantomData,
->> +        ))
->> +    }
->> +
->> +    /// Reserves a new index in the array.
->> +    ///
->> +    /// Returns a `Reservation` object, which can then be used to store a value at this index or
->> +    /// otherwise free it for reuse.
->> +    pub fn reserve(&self) -> Result<Reservation<'_, T>> {
->> +        Ok(Reservation(
->> +            self,
->> +            self.insert_between(None, 0, u32::MAX)?,
->> +            PhantomData,
->> +        ))
->> +    }
->> +}
->> +
->> +#[pinned_drop]
->> +impl<T: ForeignOwnable> PinnedDrop for XArray<T> {
->> +    fn drop(self: Pin<&mut Self>) {
->> +        let mut index: core::ffi::c_ulong = 0;
->> +        let mut entry;
->> +
->> +        // SAFETY: `self.xa` is valid by the type invariant, and as we have
->> +        // the only reference to the `XArray` we can safely iterate its contents
->> +        // and drop everything.
-> 
-> The second part is not needed? Since `xa_find` will take the lock.
-> 
+Cheers,
+Miguel
