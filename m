@@ -1,96 +1,100 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15A2374D2
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 13:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362F2381B9
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Feb 2024 13:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707483872; cv=none; b=g52HH/8Gxr6GrFSQXSqGu3Uft31qcsHeqGCkdXydVATgm63V8M/+oESYxn5MHQKIMpBez/Fyz5tsan/VhzTYMAz+8621Esg0PbH3dCsMXPwy0fk5BacdCjctvWBeQnlEioPlPYHI6+yPtPJM00FE9zYjns4QJUdhSWhByaRZ1YI=
+	t=1707483979; cv=none; b=qQ2JtKHqhvCc7JxOQGf2G5NzQPfQPs5ypdG1FvUJZzr+5mS+NZG/ndp0+EhavqajlRDMUbEMzoe27bqfQgD6ADVZQicxClxGwNuKSYAg8e3gRQUQ4Vd0O/WBidmZR97Cdhg4vef7lQ2hj7ZiSCzaeOy8vGl9ZmXIdkA/Y9JQxc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707483872; c=relaxed/simple;
-	bh=0Rdy9TOamec05pHu6p+gQ/++fRDx1JB9FW/7My45fbg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ART7hUHcwA5QGC+ImpXHxz3K70Y+gI3kQHHAKFpsN4h4tpKt0zFjqz8lvGqJEShdx1dQyBwSI79iVecOk7fsgYAN0giMJHJ6G44Sh0C7aHVpAwG57+10VAgBLdL5uw4NvW0H8XAKOQDjcb1mlH69O0mxKVFgViEj8aiXw+6Lf3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yifm7DTn; arc=none smtp.client-ip=209.85.128.202
+	s=arc-20240116; t=1707483979; c=relaxed/simple;
+	bh=AEDphcx1FQNsF9qiJV4SSq7U2Kx5za3ZeN44KAWA2FE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oipHgVfRkmjXFaXXILmLhLnCQdKRaPHxhGM5/1lZJNEmbuwVNaOZ+E/WZS2qdFaqLgIiH9sXzBv6v1Q5ZX9+Z+VfVqmPhcGf2zCY/EY+wpMmKaAwxUF5Pa0/AfTnzjBCP6cx6bD65Xzu2e9T2/d4DxbN4UDM5SiwWWW2JDy3BL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WwTeX2LR; arc=none smtp.client-ip=209.85.167.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yifm7DTn"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-604a4923adaso17425907b3.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 05:04:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WwTeX2LR"
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3be9e11ee59so377202b6e.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 05:06:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707483870; x=1708088670; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=insYPbe2LWIxwJ7By9R9UOr7vJ7uLjEBVu84zB6ipQ8=;
-        b=Yifm7DTnagXdwgLqfrsGAj78OVsC7ItsUWKq68n9MjWaX+NG6NNnLBBElL7dkbsnRk
-         aisXwN3gOJ589jtkW8bSCqyoQZTNaBYs0G0iUPGT8MMHI6A82i73hVIYbDsHQ6swG2e5
-         iBg5R5WAEtlfgJd22Zx471ibNrb2T10B4MqMcz9GGDKMxYZfnsYxxiv1zTb0eckfgKnM
-         W/7lj+qfmDuVGMOIOry4bIrY0SusoZ+xMV6I6q9C1sXkQiJ8O1XHXRVBebMrXdY/WlGF
-         oqx+vPuu+505bxQMrwJ28FtSulfaZmsIFpvYEz2OuYKx0yWmtU/pmBdb22k4HePybc2t
-         XAhg==
+        d=google.com; s=20230601; t=1707483977; x=1708088777; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xXQlm8wYk42FKH3UwHT+zuLEtFefXsoBAX29Ffp/+rM=;
+        b=WwTeX2LRlGkAll4d92KQdo6om0ZG1QnnW35qmWGLT5l8SkaRCjReuEmQD0Yir0csNh
+         9O2u1XWyGCQbLwHKSIVJjkfVLvz+TCJiq48t2E/yuL8EPifFItx7qTGiiOiLb3WCOACe
+         m/cpk236SOUUY962yS6bx+jRf/hXjNEBqPxFTfjU9sdG4Av2i/E60wXDnpsz9KzkRgkr
+         eRoKKmUDoyTpMAG1gKNIzB24rtoiQzM3H0RX0X9RZGPVS6UzY/a5JOMkLsIe5S0Quf/R
+         uLYtAwiftINrihMpICQ0Mcu+LrDHq9ZXedsaW08oFMuJ7lkBc+UGuvfvtewBHxty0jX5
+         OqaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707483870; x=1708088670;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=insYPbe2LWIxwJ7By9R9UOr7vJ7uLjEBVu84zB6ipQ8=;
-        b=Pie+L5DOI/0mKoEawxGZ4aozVllKfvILb5UOBsgfxdSOXfme6SJw6htDbPJjeC7wHV
-         bBHhx5dC2dXOI8ec1JuwYZ6WexAs54kyDbMLoC+CtWf/Lq4x8+p7ZHkGRMrzBhQwXTfz
-         m6r2xC//y3OHPpaqPaVe1DTT9PpGT0Q9w4PKon5qDCihm6yL218ZJsnKaRduXo6bLPa5
-         HP7I7PIEuoW8hlh6SUpoW2/aK3GMtXmx70o1VEhjgGk+spdoBt17BQUdwfwMhEOkvtpS
-         3ADkBVh3ELwcS+K/ZbwftkapDMtjaoZW4cBihMlut8z/UJAEFASBALLscWmLgFEtGLj4
-         QpCw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2AQwyntgBwqF2mWfgCSnBbRnEgwtMPKdqgCswmz2UwqfHNNSQF7WaF0N/M6EUkigHPd3HsWnZL5P4RJD3vEQOkP6DvltUgRCpjTaWUCQ=
-X-Gm-Message-State: AOJu0Yzdf0hcpN1o/y9Mdg0G48cc1ne+Dh54VYhONnLUx6eM3pyDo0ZW
-	yEG7j4me4qWbmY2/UtJzutxm2PF9RlGipt7INxVzbjpc+qjxo1CyVvIBcjxbkzy7i3EXmvzusfC
-	AjlmIKH2OTWdyRA==
-X-Google-Smtp-Source: AGHT+IEppdw1Za5zeZOND5rjDh9jVmoIbkOr1Ng4ciXyJrTBAjx/lSHwBXtrOJheycOWEzUqBlgzI09j1f3i2kw=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a81:8491:0:b0:604:9b73:ee86 with SMTP id
- u139-20020a818491000000b006049b73ee86mr180790ywf.4.1707483870075; Fri, 09 Feb
- 2024 05:04:30 -0800 (PST)
-Date: Fri,  9 Feb 2024 13:04:26 +0000
-In-Reply-To: <20240205-b4-rbtree-v1-2-995e3eee38c0@google.com>
+        d=1e100.net; s=20230601; t=1707483977; x=1708088777;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xXQlm8wYk42FKH3UwHT+zuLEtFefXsoBAX29Ffp/+rM=;
+        b=cczLQxCEqbls8FFaud60Hpk1u5JYjLh6EQKtEBE4tR/Sv8SSl42bVOd8dfzHAGEAZx
+         MFOOLWNPB61I4a4225vQuHAmVXfEij3M10GPExNwZL56gx+Q+nKHCiqYjhQNbIphVFTf
+         3Rt1hk/itVdDpS+jr+isLaSIzi9gB+31LV3Y1RPUBNlKdVU9RABMvM5gSC/tEtdN2j2m
+         uQjpu3FKn1wU6nmpBYQGr0BDyRWpnFSjkrfF07j8bq677JmG7EkeAeBJMTHrEaHbeSh8
+         ZlV8acyyYS4RhtVuNSND5LL6rkkc6Qy/qeukgif4g15w1FBNP4/CfzAhCWnseXK3r9o2
+         IJ/Q==
+X-Gm-Message-State: AOJu0YxedMySfzCJRjZT6+7Y8u3x2i6yinB0pMXGhGSpqV7zdK1bqrWb
+	tBFlHLDK5D0FeLTeqQd53QbCbqS7vEfiflqrck4ZxGBoXuY5wkSYeWsFxEDAERTr71LpNs4zlam
+	IlvCNPYRyLbY1sCZF1P2RVqkopcG0wBePM9jn
+X-Google-Smtp-Source: AGHT+IHBGxtcRS1vlCmy/DgZiXUssK0zz/bFjoE872mOIvHoPK85pPVC+hWEMgfrO4ToUrj9QAK2sQhOuAm86hlvwP4=
+X-Received: by 2002:a05:6808:1b06:b0:3bf:c8cd:460d with SMTP id
+ bx6-20020a0568081b0600b003bfc8cd460dmr1728600oib.1.1707483977082; Fri, 09 Feb
+ 2024 05:06:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240205-b4-rbtree-v1-2-995e3eee38c0@google.com>
-X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
-Message-ID: <20240209130426.1791631-1-aliceryhl@google.com>
-Subject: Re: [PATCH 2/6] rust: rbtree: add red-black tree implementation
- backed by the C version
+MIME-Version: 1.0
+References: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com> <20240205-b4-rbtree-v1-3-995e3eee38c0@google.com>
+In-Reply-To: <20240205-b4-rbtree-v1-3-995e3eee38c0@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 9 Feb 2024 14:06:05 +0100
+Message-ID: <CAH5fLgj8eZRbiuG7MgRaDbZHkUVUfSXuUdEqUB4foysds2vk1Q@mail.gmail.com>
+Subject: Re: [PATCH 3/6] rust: rbtree: add `RBTreeIterator`
 To: mattgilbride@google.com
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, 
-	dave@stgolabs.net, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	joel@joelfernandes.org, linux-kernel@vger.kernel.org, maco@android.com, 
-	michel@lespinasse.org, ojeda@kernel.org, rob@landley.net, 
-	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Feb 5, 2024 at 4:50=E2=80=AFPM <mattgilbride@google.com> wrote:
+>
 > From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> 
-> The rust rbtree exposes a map-like interface over keys and values,
-> backed by the kernel red-black tree implementation. Values can be
-> inserted, deleted, and retrieved from a `RBTree` by key.
-> 
-> This base abstraction is used by binder to store key/value
-> pairs and perform lookups, for example the patch
-> "[PATCH RFC 03/20] rust_binder: add threading support"
-> in the binder RFC [1].
-> 
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-3-08ba9197f637@google.com/ [1]
+>
+> - Add Iterator implementation (`RBTreeIterator`) for `RBTree`, allowing
+>   iteration over (key, value) pairs in key order.
+> - Add individual `keys()` and `values()` functions to iterate over keys
+>   or values alone.
+> - Update doctests to use iteration instead of explicitly getting items.
+>
+> Iteration is needed by the binder driver to enumerate all values in a
+> tree for oneway spam detection [1].
+>
+> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-17-0=
+8ba9197f637@google.com/ [1]
 > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > Signed-off-by: Matt Gilbride <mattgilbride@google.com>
 
 I have looked at these bindings many times over the past year. They
-look good to me, modulo a few nits included in this email.
+look good to me.
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
@@ -98,35 +102,3 @@ These abstractions have been very heavily exercised by the Rust Binder
 driver.
 
 Tested-by: Alice Ryhl <aliceryhl@google.com>
-
-> +//! Red-black trees.
-> +//!
-> +//! C header: [`include/linux/rbtree.h`](../../../../include/linux/rbtree.h)
-> +//!
-> +//! Reference: <https://www.kernel.org/doc/html/latest/core-api/rbtree.html>
-
-We changed these links, so it should say this instead:
-
-[`include/linux/rbtree.h`](srctree/include/linux/rbtree.h)
-
-> +    /// Allocates memory for a node to be eventually initialised and inserted into the tree via a
-> +    /// call to [`RBTree::insert`].
-> +    pub fn try_reserve_node() -> Result<RBTreeNodeReservation<K, V>> {
-> +        Ok(RBTreeNodeReservation {
-> +            node: Box::try_new(MaybeUninit::uninit())?,
-> +        })
-> +    }
-
-This can be:
-
-	use crate::prelude::*;
-	use core::convert::Infallible;
-	
-	Ok(RBTreeNodeReservation {
-	    node: Box::init::<Infallible>(crate::init::uninit())?,
-	})
-
-It might be slightly more verbose, but guarantees that we don't allocate
-space for the value on the stack.
-
-Alice
