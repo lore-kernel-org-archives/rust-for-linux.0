@@ -1,154 +1,118 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC918182D2
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Feb 2024 08:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D100210A16
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Feb 2024 08:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707552345; cv=none; b=kmbO0ksTQGUrE50bJYMSInGlnqK/K8aS7APzgEZq4bHQkwRJ70BiXJlDTTEXisjfgdz11IMIGjLCkWdc+ts85VVbWwm6czvpav/XOCfZkdtl+sruFAeZOzSoQyTa1uusKAo+E2WtlzH1WkAjkWaY7369AfOmV24Z5GrsB5hYm8c=
+	t=1707552799; cv=none; b=eQQ6NWlJTI8bSnf2y2euNhEf1S3fccOtNZYIYMbGpw8Hq037dZAXIjVUTPWbGNp/26tlW4ROX/Gwa0+ddEhPxLOIR8dadZUwoijfBNVBGYCzykxrXKQDjVyE5xArdEXEs/YbGfQ1IyaoLeCU1BM2V+4tIXq3doP21LbKQCAsLX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707552345; c=relaxed/simple;
-	bh=2kk8zl7wmBntT6bZOZ9oR09/coMM4tEFb/OHSEp1i7Q=;
+	s=arc-20240116; t=1707552799; c=relaxed/simple;
+	bh=Glo99Q4rZ224bZIULXqWRKYAJ1UBUwAAGaeNDMYK3aY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uFFYRNAimu1UZoFg/3mzPied/q12cJCIeDgaInI76loSyr1EBpzjlKIp0soliQs16WzeZT5+bkxvwEGzsme3WZ0VFTwgbog2qKMWrQJCV6EVwrMDvxIedp3vUbISSTB/ax28SHy7bI+e23692OyLnBt08ObdcFSYTuPTXbLeSl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=A7SRCENf; arc=none smtp.client-ip=209.85.219.170
+	 To:Cc:Content-Type; b=RvwBcdhspgMhSuTMzDeKwwd4Ylbdoite+39IOkU3VUb8PexSBQfR6DPVzj+R+kSIrUQzbg8IN1l5NxVH2SVcH4GxynpGpouY3oifOLOjetSvjn5pk6o3swfkZ5bMpVVGfyHgeKqef0L7y9fmtNltSD1lQ07x9DpS1lTggnPevoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=fcmXXufi; arc=none smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="A7SRCENf"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc6d8f31930so1335006276.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Feb 2024 00:05:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="fcmXXufi"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6049b115630so19228407b3.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Feb 2024 00:13:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1707552341; x=1708157141; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1707552797; x=1708157597; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZaycG/k+YujivUfeaD+PrPikDMJQEOMrsakJhGd6CLE=;
-        b=A7SRCENfhkGrc2TRwgkBiKuVohyNrM5wRC+Z0RcEduqDUwl841BMJ9dFsOp8qvF76S
-         +WQP/FyjTf3yvuGmnRKjnN9VW1BaPghA5UP5pjBCXG+jeubFdm4z0Vj1g5oT9nM7H7Lm
-         +nvQefJh7uPrMNjSz9WUeb/SaQkLZN7ZLjfPoW0SzHI/dGDGn+ga+0h+jeaWDcyZasDy
-         rx0NJ3/3VQ6eoEg8ZYCvb6tMqXEUc+JZCyJKjtz8ez0ihCbL9yzgnocbfV1QkWMRaN/K
-         YcNvrSjsfWqppXn0nxwYUfpYuv4crfkIgBziiMooPDUEaaEtBotcHQV3bvQR7Eetocmf
-         wuiQ==
+        bh=Glo99Q4rZ224bZIULXqWRKYAJ1UBUwAAGaeNDMYK3aY=;
+        b=fcmXXufiGwJTBnjMxw87JvxkGnPhQdK+m7Ywu2uCCCwlUKInTHch4pKP1abDg54s+q
+         sowiXrsCogHCiRjiNwp5MktcZXaWhCl342/Smihu5ZguRpCOWNsq8zz7dyCPse+qVgqY
+         rgy82FTEdnK79lpCCCAlJ2C4HisoADhp8oJ9Qe2x6SkQW0SlK2yrAAS7hNAbwz8sEKyH
+         qpz4bYXMlkFdXha5+r1LiXMZsXWNrSCkEft8VoDsC9fWYZ0OBs80hCsMKc6pTLxek4mO
+         yHEubhJJU2mZAQrhg98b88j8GH+ajhCOOiIX+7qZ97DUTi9wGt7tZo0gA8UfYD4O90ej
+         LCZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707552341; x=1708157141;
+        d=1e100.net; s=20230601; t=1707552797; x=1708157597;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZaycG/k+YujivUfeaD+PrPikDMJQEOMrsakJhGd6CLE=;
-        b=oKHGh5IUYPRwCj8DrO90YEY+xqkcvYgH/F2l5TDDEroMlhbdQoFNYrh0Z0sqvAo+Wo
-         POk7/OirjYvttDcwgxdT7AnN3bs+OdYzDo+YkDoZ0DfCnbF/zWB3zegxy//LKPrQUL5Y
-         hChuCzalkqciTQAbtEjb7qajD8LQUQxa5+Zv3vWzB3klmn2cFHxzvXBjzHimk8cqWjc4
-         wepK1aNLNCZ5IOrbfnZrpDAiseBzpkVQ3F31xhEHnVFAIBR8b3WOvd6DiPkwOkv1LPEZ
-         PrXS41zzT/opVj8sBAV9nHvrrRGISul0aMsnZTtoZyJiv+0Fpfcp8mDP+pu9kBW++1YY
-         cCBA==
-X-Gm-Message-State: AOJu0Ywm4KvYPF2jipLp+lO0eAwHyzCc3UZtFD6v3HbL/SEfsmR0Tsh7
-	pPDmJS7nKgwob4QhGEcHaiSyEP9ITnFocxFehFDMlgvJaCpPoV69U5il02In48itaKVueId38SD
-	72dKE5FV0ppHqPo/AtbnYa/FV/m5Vz/2N0KtqXQ==
-X-Google-Smtp-Source: AGHT+IExADOTTgAs4pdlehx41o/HZWoMewbTcSoa8gDHsAPV2p0RvyXSubcT5QBZTFxP6p9x2sVexv1O8S7eEvFJAKw=
-X-Received: by 2002:a25:e0d3:0:b0:dc7:51eb:36dc with SMTP id
- x202-20020a25e0d3000000b00dc751eb36dcmr2566819ybg.5.1707552340707; Sat, 10
- Feb 2024 00:05:40 -0800 (PST)
+        bh=Glo99Q4rZ224bZIULXqWRKYAJ1UBUwAAGaeNDMYK3aY=;
+        b=AJcY62KZfZyOzNidY+zThu7As6hBi1qnFxRRssLRrQz89mF+F3E4ixFo6b2wlj1uto
+         5GfcufOW7z2O3zmAlaVJCYn7p3lQu4FLkoo9kBrC0dPcjyeCxKtvix9O0BqV7vN7nR7d
+         E5A77iVi5G+mibJQDpj5GzHNfYkgFqySmweS0MImgV3UZiwoy2/OnxDCy+zB13+pZgwW
+         JT3wgK3ve8qS2qcIkSzgDt7uAUWdu2fLTGd7dNevJhLELpKL3uEZ6NlqCX0nHWlLOfkQ
+         V0QSjl9BnDLuJ3YyuRoxxIbcyBZw2RfHDSKkwJipUyqjRhBG8/qigWUi5+AwH/R5hIGX
+         S9vA==
+X-Gm-Message-State: AOJu0Yw/zPAf8DfFgsDG2gKr5y8di0yNE/kxPOfjAzBBgdLiKEbGDU4v
+	H0/E2qXSjQkfUyElvyxfoq8yBQgJjnAt7LFSnFpDZmwSBumPwNwMEKYUQB7VMAkE80gykc7vUmH
+	i8025DoVHjqQYkUMSWrZj7SLVgEQ8sQ1StQZjnXPFvxsqgihZAE5bIg==
+X-Google-Smtp-Source: AGHT+IF4tUvf6ttwQdM3xfeC1VlLijJBFO5NkKyzXeExzVFNvP7Fl5D8PP7Tfno5g/OaAlhCpe9aPfGgUUtsjZouSLw=
+X-Received: by 2002:a25:7c02:0:b0:dc2:201a:7f1a with SMTP id
+ x2-20020a257c02000000b00dc2201a7f1amr2506701ybc.30.1707552796867; Sat, 10 Feb
+ 2024 00:13:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com> <20240205-b4-rbtree-v1-1-995e3eee38c0@google.com>
-In-Reply-To: <20240205-b4-rbtree-v1-1-995e3eee38c0@google.com>
+References: <20240117-swiftly-parasail-618d62972d6e@spud> <CANiq72mVKCOAuK4Qe+8AHmpkFwyJsVfx8AqB7ccGi3DYpSSWcw@mail.gmail.com>
+ <20240118-implode-delirium-eefdd86e170e@spud> <CANiq72nx1s_nyvPW86jL7eiOxROr18LfOJqNtw8L42CP+gkhRg@mail.gmail.com>
+ <20240125-bucked-payroll-47f82077b262@wendy> <CANiq72k7n0aZrifRRU08N8qLkNe+2EZwijZy5sM7M56n2xYHgQ@mail.gmail.com>
+ <20240125-lazy-thrower-744aacc6632a@wendy> <CANiq72kb+_utZrYHtoKZQtQazikmkjpVUHpTBcaANizduMF5QQ@mail.gmail.com>
+ <20240126-eccentric-jaywalker-3560e2151a92@spud> <CANiq72nu2NXUWYanHZd5EXgX4P_v673EWn6SCRW60Es9naraQQ@mail.gmail.com>
+ <20240209-rage-keg-1b2982cd17d9@spud>
+In-Reply-To: <20240209-rage-keg-1b2982cd17d9@spud>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sat, 10 Feb 2024 02:05:29 -0600
-Message-ID: <CALNs47vgryKctpsP9EV_SsVF8TX8kfwzQ4KCLy9vr5FS_vBq6A@mail.gmail.com>
-Subject: Re: [PATCH 1/6] rust: add `container_of!` macro
-To: mattgilbride@google.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Sat, 10 Feb 2024 02:13:06 -0600
+Message-ID: <CALNs47sRqAbE=u3=_ciO2oge7Afz-6GBBhW+BwcLRET-TsuxTg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+To: Conor Dooley <conor@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, linux-riscv@lists.infradead.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	Matthew Maurer <mmaurer@google.com>, Ramon de C Valle <rcvalle@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 5, 2024 at 9:50=E2=80=AFAM <mattgilbride@google.com> wrote:
+On Fri, Feb 9, 2024 at 9:18=E2=80=AFAM Conor Dooley <conor@kernel.org> wrot=
+e:
 >
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> On Sat, Jan 27, 2024 at 02:46:38PM +0100, Miguel Ojeda wrote:
+> > On Fri, Jan 26, 2024 at 11:01=E2=80=AFPM Conor Dooley <conor@kernel.org=
+> wrote:
+> > >
+> > > Is that even needed? We already have ARCH_SUPPORTS_CFI_CLANG and AFAI=
+U
+> > > rust supports it if clang does, so a second option is superfluous?
+> >
+> > From a quick look, I don't see it enabled in any RISC-V built-in
+> > target in `rustc` yet.
+> >
+> > It may also still be the case that KCFI needs some tweaks for, say,
+> > RISC-V, before the flag actually works, i.e. we couldn't just test the
+> > flag in that case -- Ramon: how likely is it that RISC-V would work if
+> > KCFI works for aarch64 and x86_64?
 >
-> This macro is used to obtain a pointer to an entire struct
-> when given a pointer to a field in that struct.
+> Well, there's been no reply here. I'll do sa you suggested and add a
+> depends on !CFI_CLANG to RUST.
 >
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
-> ---
->  rust/kernel/lib.rs | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
+> Cheers,
+> Conor.
 >
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 7ac39874aeac..c7963efd1318 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -102,3 +102,35 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
->      // SAFETY: FFI call.
->      unsafe { bindings::BUG() };
->  }
-> +
-> +/// Produces a pointer to an object from a pointer to one of its fields.
 
-It is in the examples but a note would be good to make it obvious:
-
-    ///
-    /// This macro must be called from within an `unsafe { }` block.
-
-> +/// # Safety
-> +///
-> +/// The pointer passed to this macro, and the pointer returned by this m=
-acro, must both be in
-> +/// bounds of the same allocation.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// # use kernel::container_of;
-> +/// struct Test {
-> +///     a: u64,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// let test =3D Test { a: 10, b: 20 };
-> +/// let b_ptr =3D &test.b;
-> +/// // SAFETY: The pointer points at the `b` field of a `Test`, so the r=
-esulting pointer will be
-> +/// // in-bounds of the same allocation as `b_ptr`.
-> +/// let test_alias =3D unsafe { container_of!(b_ptr, Test, b) };
-> +/// assert!(core::ptr::eq(&test, test_alias));
-> +/// ```
-> +#[macro_export]
-> +macro_rules! container_of {
-> +    ($ptr:expr, $type:ty, $($f:tt)*) =3D> {{
-> +        let ptr =3D $ptr as *const _ as *const u8;
-> +        let offset: usize =3D ::core::mem::offset_of!($type, $($f)*);
-
-`offset_of` will be stable in 1.77 BUT only for a single field [1]. I
-don't know if there are other blockers in the kernel already, but if
-this could be changed to call `offset_of!` recursively then  it will
-work with the stable version.
-
-We might want an `offset_of_many!(a, b, c)` macro somewhere if there
-are other places that need this nesting.
-
-[1]: https://github.com/rust-lang/rust/pull/118799
-
-> +        ptr.sub(offset) as *const $type
-
-Instead of casting to and from `u8`, you should be able to use `byte_sub`
-
-> +    }}
-> +}
+I asked on Zulip and it sounds like Ramon may be out [1]. It
+_probably_ works, but going with a dependency to not be blocked on
+KCFI is probably reasonable for now.
 
 - Trevor
+
+[1]: https://rust-lang.zulipchat.com/#narrow/stream/343119-project-exploit-=
+mitigations/topic/KCFI.20on.20RISC-V.20questions
