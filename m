@@ -1,129 +1,100 @@
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8C024214;
-	Sat, 10 Feb 2024 11:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDD653E16
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Feb 2024 14:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707563261; cv=none; b=uQTToMduUaFTG/urmxZwjTSnYZG/dGHmx2fMwtkB5mYla8ON1ucnhAxgYQQEBrfQ2zvU17VMDPcNhEarlGXKfz+435ORbqhwH6ow7ETCuWfovcvf6g45qEVVYi5XSKCK/upc1DovXg/C+pn2YCt03SnTQBgYrgkuxpt/uUw3/gQ=
+	t=1707574511; cv=none; b=mWy0ePs3Zuuwi6Ebj296+yJGOKT7ate8983CNZ/l+nNvS6vDnW3cOp06ztqirzTM8OJ7YZNxinxY9K77IDvg6ClUI88j3kxX5wLA1CbRnspzAZ+aVruxQEux0/DboOTu72u09mibqIGH7Ja7n2Qb9eGq3qm1kvd2k+yBfSkfAbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707563261; c=relaxed/simple;
-	bh=V257+PDqi5+VBHKReknHO8ELYhcIYSMx2YycvhWf8dU=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=t6MmIOB1F759VWNY4tTD4K9ClMLMxaPPklomWFj9PIPKm739hEgXUYHLicf+VzCDIW99kVfqhXoKMQ/4epCb5yMhB7NKwcyLvgp6CuZNb4k5nHoLui3qeVO6LAFZAobNvl+fBncJXijRhLZvvVKrS2CVWcWZ1JQ/B3Y4Cj8ukqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Fqn+q85q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cGJX3AQm; arc=none smtp.client-ip=64.147.123.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Fqn+q85q";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cGJX3AQm"
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 0C7483200A5F;
-	Sat, 10 Feb 2024 06:07:36 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Sat, 10 Feb 2024 06:07:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1707563256; x=1707649656; bh=9uilVm3D/M
-	Mbser1uZtQKDyGLwAzTQ8TW6+338pZ8yw=; b=Fqn+q85qMMTQgeeFDEsmpSIl2D
-	X3wNRSmv45afnLiC/uz8FvyWsAnpz00Cz6lkz6/Qo+1U4GtPScr2zsY4S5Y/nyW8
-	3kBnJO9nN5adabBnZPZYuHAkoVkeeW70nTYu6inc3Y8ocmZO3p3aFJ0gvP+JLAk4
-	By+xNlMVc7JIAzzWClOinLWJqp/a+uxVbWPTMDHHv9cpf4fg8Hv47ZGQ4JtWInir
-	mXsx3boylvQ8R75ePufpt3Em0Z2QnKzNG/JjNQc4V77/xNSrc1xkB9AFEnSgmRhe
-	eGSY6f9/Q7uMi9iqv33H+k/oOnGy+lqSePzIXROCpjnTZj2v1gW/5JqYlrtg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1707563256; x=1707649656; bh=9uilVm3D/MMbser1uZtQKDyGLwAz
-	TQ8TW6+338pZ8yw=; b=cGJX3AQm22MSYxwVTGgvL+mgcY4JAQMN0KbgVweiVAbs
-	TVpoRaiY4GVG/HHa1pHNi3eQcdI5Zy1Hq3o8ko/AewZttye6TQSmzVoPDVMKz2os
-	55W+wOUdwZwpjgiiS8Q6zmVGMU8S4CK1cGOh2RwN4bfAmvdcL9J30DTDg+LI+GPa
-	++vToLjf6IOS6fLd6oGS9rft/KqjMveBHGcfsh1U+uY3e+VOFrCReP5b26OUrw0L
-	PQVM/0zeulSDYmyxthLgv3sqn4HrENEuA8h9a9GhjIAixOHa/Bpi4kgpAbsyAEjG
-	V0O4v0DyyUbB0iPyqTOpQbU2c/T8JrD4n3Gk8O2wQg==
-X-ME-Sender: <xms:91jHZZyHoCprPvf4x45yC4a6Yjtx14hY3whrUarkrclAriDtYHFywA>
-    <xme:91jHZZQB9vO3o2F9iB_N7qUlh9pXH9o-N4A-bySiNgzUf3Mdk1IeAvJM9h6TJ4RrL
-    lLp1lO_ZZEsDgoYcF0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrtdekgddvfecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:91jHZTX8-ag8N1lBgGiGUHJ8h95C2odBrVs-GDUgvdgngwVz7Xwoqg>
-    <xmx:91jHZbhsx0Yx6UfJEo6P27knUhwPnVoHb-fC5cQuZ629_7wqnxHaPw>
-    <xmx:91jHZbBeelQa3F2V7VZUfRDxTE_znH00nxalAS9KxgdKlpHd64gu4Q>
-    <xmx:-FjHZZ5K-wwnea69aZ0UT8lCYw4q95jy73IL340a9VETyzE5kXJ8mg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id BE585B6008D; Sat, 10 Feb 2024 06:07:35 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1707574511; c=relaxed/simple;
+	bh=f/gxJ5qjHSfh2Kv7N083IbPNPjUw9W0IJCyoJ29ppZM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=DMioIjXB6A/VYWdpO1VAY11MAE7siQM9ZpoZoQIdq96Wj6eXdqJF9kN0/h9QIqTTwBkLbF4DWnLnOY/HBkuNBMbecjpZW7ePdJAmzftKsMg9zVYNeVDvAaQcQeTCoPFhCLYV29JIDwMq02HZ85uxGO5lK5lQxdp4QOQg7Wt+mHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-206-OvN_bg1gPyq5vv5cS1WPOQ-1; Sat, 10 Feb 2024 14:15:06 +0000
+X-MC-Unique: OvN_bg1gPyq5vv5cS1WPOQ-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sat, 10 Feb
+ 2024 14:14:44 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Sat, 10 Feb 2024 14:14:44 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Alice Ryhl' <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+CC: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, "Andreas
+ Hindborg" <a.hindborg@samsung.com>, Kees Cook <keescook@chromium.org>, Al
+ Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>,
+	"Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+	=?utf-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, Todd Kjos
+	<tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
+	<joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, "Suren
+ Baghdasaryan" <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>, Christian Brauner <brauner@kernel.org>
+Subject: RE: [PATCH 1/3] rust: add userspace pointers
+Thread-Topic: [PATCH 1/3] rust: add userspace pointers
+Thread-Index: AQHaWo3R3kxP8CVpE0illE6QcKzkeLEDnmOg
+Date: Sat, 10 Feb 2024 14:14:44 +0000
+Message-ID: <405e8b56cd0c48d0ba640e8d9c60179e@AcuMS.aculab.com>
+References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
+ <20240124-alice-mm-v1-1-d1abcec83c44@google.com>
+ <CALNs47uDaD05oD8TtZoSqUBc4SaRig80u2_1P0qMCXtE3H9_Vw@mail.gmail.com>
+ <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com>
+In-Reply-To: <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <4f0eb08d-bb5d-4544-aeba-ac9d8a663005@app.fastmail.com>
-In-Reply-To: <202402091606.A181673F0A@keescook>
-References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
- <20240208-alice-mm-v2-2-d821250204a6@google.com>
- <202402091606.A181673F0A@keescook>
-Date: Sat, 10 Feb 2024 12:07:14 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Kees Cook" <keescook@chromium.org>, "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- "Todd Kjos" <tkjos@android.com>, "Martijn Coenen" <maco@android.com>,
- "Joel Fernandes" <joel@joelfernandes.org>,
- "Carlos Llamas" <cmllamas@google.com>,
- "Suren Baghdasaryan" <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- "Christian Brauner" <brauner@kernel.org>
-Subject: Re: [PATCH v2 2/4] uaccess: always export _copy_[from|to]_user with
- CONFIG_RUST
-Content-Type: text/plain
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Sat, Feb 10, 2024, at 01:15, Kees Cook wrote:
-> On Thu, Feb 08, 2024 at 03:47:52PM +0000, Alice Ryhl wrote:
->>  	unsigned long res = n;
->>  	might_fault();
->>  	if (!should_fail_usercopy() && likely(access_ok(from, n))) {
->> +		/*
->> +		 * Ensure that bad access_ok() speculation will not
->> +		 * lead to nasty side effects *after* the copy is
->> +		 * finished:
->> +		 */
->> +		barrier_nospec();
->
-> This means all callers just gained this barrier. That's a behavioral
-> change -- is it intentional here? I don't see it mentioned in the commit
-> log.
+Li4uDQo+ID4gTWF5YmUgc29tZXRoaW5nIGxpa2UNCj4gPg0KPiA+ICAgICBFdmVyeSB0aW1lIGEg
+bWVtb3J5IGxvY2F0aW9uIGlzIHJlYWQsIHRoZSByZWFkZXIncyBwb3NpdGlvbiBpcyBhZHZhbmNl
+ZCBieQ0KPiA+ICAgICB0aGUgcmVhZCBsZW5ndGggYW5kIHRoZSBuZXh0IHJlYWQgd2lsbCBzdGFy
+dCBmcm9tIHRoZXJlLiBUaGlzIGhlbHBzIHByZXZlbnQNCj4gPiAgICAgYWNjaWRlbnRhbGx5IHJl
+YWRpbmcgdGhlIHNhbWUgbG9jYXRpb24gdHdpY2UgYW5kIGNhdXNpbmcgYSBUT0NUT1UgYnVnLg0K
+DQpXVEYgVE9DVE9VPyBJJ20gZ3Vlc3NpbmcgaXQgaXMgcmVhZGluZyB0aGluZ3MgdHdpY2UgYW5k
+IGdldHRpbmcNCmRpZmZlcmVudCBhbnN3ZXJzLg0KDQpUaGF0IHJlYWxseSBkb2Vzbid0IG1hdGNo
+IGhvdyBjb3B5aW5nIGZyb20gdXNlcnNwYWNlIGlzIHVzZWQgaXMgbWFueSBwbGFjZXMuDQpTb21l
+dGltZXMgeW91IHJlYWxseSBkbyB3YW50IHRvIGJlIHVzaW5nIG9mZnNldHMgYW5kIGxlbmd0aHMu
+DQpGb3IgaW5zdGFuY2UgdGhlIHVzZXIgYnVmZmVyIG1pZ2h0IGNvbnRhaW4gb2Zmc2V0cyBvZiBp
+dGVtcyBmdXJ0aGVyDQpkb3duIHRoZSBidWZmZXIuDQpUaGVyZSBpcyBhbHNvIHRoZSBjb2RlIChl
+ZyBpb2N0bCkgdGhhdCBkb2VzIGEgcmVhZC1tb2RpZnktd3JpdGUNCm9uIGEgYnVmZmVyLg0KDQoN
+ClRoZXJlIGlzIGFsc28gdGhpcyBiaXQ6DQoNCj4gPiArICAgIC8vLyBSZWFkcyB0aGUgZW50aXJl
+dHkgb2YgdGhlIHVzZXIgc2xpY2UuDQo+ID4gKyAgICAvLy8NCj4gPiArICAgIC8vLyBSZXR1cm5z
+IGBFRkFVTFRgIGlmIHRoZSBhZGRyZXNzIGRvZXMgbm90IGN1cnJlbnRseSBwb2ludCB0bw0KPiA+
+ICsgICAgLy8vIG1hcHBlZCwgcmVhZGFibGUgbWVtb3J5Lg0KPiA+ICsgICAgcHViIGZuIHJlYWRf
+YWxsKHNlbGYpIC0+IFJlc3VsdDxWZWM8dTg+PiB7DQo+ID4gKyAgICAgICAgc2VsZi5yZWFkZXIo
+KS5yZWFkX2FsbCgpDQo+ID4gKyAgICB9DQo+DQo+IElmIEkgdW5kZXJzdGFuZCBpdCBjb3JyZWN0
+bHksIHRoZSBmdW5jdGlvbiB3aWxsIHJldHVybiBgRUZBVUxUYCBpZiBfYW55Xw0KPiBhZGRyZXNz
+IGluIHRoZSBpbnRlcnZhbCBgW3NlbGYuMCwgc2VsZi4wICsgc2VsZi4xKWAgZG9lcyBub3QgcG9p
+bnQgdG8NCj4gbWFwcGVkLCByZWFkYWJsZSBtZW1vcnkuIE1heWJlIHRoZSBkb2NzIGNvdWxkIGJl
+IG1vcmUgZXhwbGljaXQuDQoNClRoYXQgaXNuJ3QgKGFuZCBjYW4ndCBiZSkgaG93IGl0IHdvcmtz
+Lg0KYWNjZXNzX29rKCkgY2hlY2tzIHRoYXQgdGhlIGJ1ZmZlciBpc24ndCBpbiBrZXJuZWwgc3Bh
+Y2UuDQpUaGUgY29weSBpcyB0aGVuIGRvbmUgdW50aWwgaXQgYWN0dWFsbHkgZmF1bHRzIG9uIGFu
+IGludmFsaWQgYWRkcmVzcy4NCkluIHRoYXQgY2FzZSB0aGUgZGVzdGluYXRpb24gYnVmZmVyIGhh
+cyBiZWVuIHVwZGF0ZWQgdG8gdGhlIHBvaW50DQpvZiBmYWlsdXJlLg0KDQpZb3UgY2FuJ3QgZG8g
+YSBjaGVjayBiZWZvcmUgdGhlIGNvcHkgYmVjYXVzZSBhbm90aGVyIHRocmVhZCBjYW4NCmNoYW5n
+ZSB0aGUgbWFwcGluZyAoaXQgd291bGQgYWxzbyBiZSBob3JyaWJseSBleHBlbnNpdmUpLg0KDQoJ
+RGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1v
+dW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEz
+OTczODYgKFdhbGVzKQ0K
 
-My bad, I probably should have explained it when I did the
-patch as this is very subtle:
-
-The barrier_nospec() definition is a nop on everything other
-than x86 and powerpc, but those two were using the out-of-line
-version that did in fact use it.
-
-After this patch, the out-of-line function calls the inline
-function, so it needs to be added here to keep the behavior
-unchanged on the architectures that need it. For the rest,
-this change has no effect.
-
-     Arnd
