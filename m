@@ -1,98 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC4B63B3;
-	Sat, 10 Feb 2024 06:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40ABB2E64E
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Feb 2024 07:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707546025; cv=none; b=YI4kEDaeNWZkc1LrVB/p1zknib4It8ThckoCQY3L1NXyvDABrSYIFiwDcADlO/h87StQ5S4XOJTO9QBVD0LQ0v6t5nrq6FFxIrKXYBnh8X7IXIW42st8IRqPda/saeVqMzbrMnBappVAc1OGxTo5aqhqxALi1uVgPzbUnqUgStk=
+	t=1707548782; cv=none; b=Fc1u/vxTCQjCdiv/rdLA7RaozJCxguTvdnaodmEHBYpmmsxp2B6TJZ7eBFw+bth3El7tVLAOhjZt4FwlKJUuwr0GFdiGX+xRJGIgYF+IoiHSDm2Dzru1zQOXbwyUjaWVQezPSq510LO2c0Gp6Ay7xRq7VuxWNS8mveAiZiKKdm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707546025; c=relaxed/simple;
-	bh=1Ze5VEPfD5vhZYQmXIpz7v4I8v5CLbO0cbP1JVjlVA0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=UraO47bpwTOS6Kc7qAvdLyXkIDF+4N3Aei5485mlcmuv8Zi5QkDHqSl1uOVLCzL2vEMxbckqfpK/FIA4D69fGlGV2bJ18mrlGfcMPs00BN77pPdWTCAOpLeyYAgRDb34rLxCcj92WRstT6eSi5Zbfqt/XHdUYZ8X7d8+VGq/Jn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYuse41w; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1707548782; c=relaxed/simple;
+	bh=IVNAIhFgu3wzuB+0TCn1gIA0o9jgzX3mBnlxu6KTrrg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GMMtrmmM03fw9lDK5BFXYAburPHTMuqR7yf6HDHzhxZitQdXqxEMP7vUWDU9U0UknvWEW6S16s8s+U6YZagoFxlgXzW5rHJtGhbBeFPryY3/B+g9MtKlDsHW7aI8S8PXtPokCObxJhGMGLDTOUxCRqlpwoNBveP8XPnp5JI29M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=QBKiFI1m; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYuse41w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D013AC433F1;
-	Sat, 10 Feb 2024 06:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707546023;
-	bh=1Ze5VEPfD5vhZYQmXIpz7v4I8v5CLbO0cbP1JVjlVA0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=HYuse41w6uCewE/PnPkzXazcAz/wThGf7m58t9dGnuRqD5IQSZFVa/6/5P4IC5WKP
-	 uJu84TY6zqt/spjV+HwipurymdhpvxxEQyvDyCwnSy1QrdCPijt16SVUYT94wOrHJ+
-	 1YsFpEj6FnCul09I37BeSLq/oShjwS2XONlU+1oBLrRzwPnCdd5FiA9wHrkr6j1+xf
-	 TbWaSFvDH5GhO9zbuuYo6yrlosdF4jwT2JJEzekHsIiLm3fSJ4SGl7CLZbwZJhtven
-	 jvHNQJxurXTP90WREQ9DQbJ4+dSnZWDQizOZNtmQY0suTWReVo3IzJMSTEdMakfQNj
-	 +j4aBPXwORtXA==
-Date: Fri, 09 Feb 2024 22:20:22 -0800
-From: Kees Cook <kees@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Kees Cook <keescook@chromium.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>,
- =?ISO-8859-1?Q?Arve_Hj=F8nnev=E5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
- Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH 1/3] rust: add userspace pointers
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAH5fLgikdGGdjEUxyMWjkfHbRmvtMavwHFDwRC+4GVt46qmHWw@mail.gmail.com>
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com> <20240124-alice-mm-v1-1-d1abcec83c44@google.com> <CALNs47uDaD05oD8TtZoSqUBc4SaRig80u2_1P0qMCXtE3H9_Vw@mail.gmail.com> <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com> <2024020859-lusty-ladylike-29d4@gregkh> <CAH5fLgikdGGdjEUxyMWjkfHbRmvtMavwHFDwRC+4GVt46qmHWw@mail.gmail.com>
-Message-ID: <9FD5FF49-6C8D-4073-9CE5-EA19C607FAD2@kernel.org>
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="QBKiFI1m"
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-dc6e08fde11so1815423276.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Feb 2024 23:06:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1707548779; x=1708153579; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IVNAIhFgu3wzuB+0TCn1gIA0o9jgzX3mBnlxu6KTrrg=;
+        b=QBKiFI1mwYX/d0ak+yZl1aai8zX/OH7fScM1LMV5ixBOHdHfKdg6L/aBNSVy5iQzCY
+         QZjZf+GY8BrdJgV3jlz+YOrtZxWkxl5CKIsVZ55lPMeQJR+mlV43Z8wnYxWrlvrXP7S6
+         pCa5idKKSOCAyNxc3VG8ZP1rySXgAY2Tv5hNJkYrJ4gr/lA4CDRU1N/xJvZ5TxUgZND/
+         qjE6Wy4YukdgWWH5Ny+viaFcRkTjfVwKptOTLWzbkaZEcMMQqTxY33lHzCH2CHU4dNGW
+         N0evLFQuhpyUX2SD8Kh0TlFm5g9urNLvtUEaAV8Se81KPChtNcEJPDGMG4lF7t4zvOuM
+         4LyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707548779; x=1708153579;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IVNAIhFgu3wzuB+0TCn1gIA0o9jgzX3mBnlxu6KTrrg=;
+        b=htLFFn1EhxqBX6O68A8JuPlIZXR6Bx6DSygHSdxuw0jPsRrFmeXLV2TwMCJDC8Exsv
+         dbY2j4cAakeCuzvprLrXjbnXdda20s/r0RXvzG/hkyKcSSisNBcQZ8SCGS9Gt7/aLBh6
+         YqJ8nb57VSkxfQVZ+/CUQwljcWrsz/Un6UyZEWmlpD3at4b1zJwFlFvOpxWZi6RWZXjI
+         VxwV/1peYbToINYl5y/JLP3xrNbdf5lUF635It92sqDszO+cjs0HdSXu/XoAp8f6Vxuy
+         9m+bTwpWFBQZFAZf2vPJXI36poZ2fYLxz4GPnNCobQoy/mpFjavpZsZXVa3rKyy67nUH
+         FohA==
+X-Forwarded-Encrypted: i=1; AJvYcCWy7MlqxI0IzzfQ0VBnG5oq0HmdrkLCoFmhG8sUr9EJhBQ1PRts2g1Hbm5+1ci4MFGbLwlXoTU5yDFfS1VzPssQI5ysX+0FGyeWEw7BXro=
+X-Gm-Message-State: AOJu0Yx/6qw3T2f3cmFGXJsEQUenbB0CEPCBhMQjEOh2OChaisbmYXpz
+	XI26lI8doMyhvIi630sUNoWgiVSA5gWiiL0qGiBYy1BPG8wlmKrv21kPDpS1QHs325uW8iXXXTS
+	blvBAwqsj3o00/Z1FdDYhcY1ythdgl/1tTbnVEQ==
+X-Google-Smtp-Source: AGHT+IG6aq7ApN6uXPaXdmvOo/2SytSpE9H3XIU0AGh0g/v0Eo5l0YahD/aLAQHmUK/A4sGozgfxiPqCLqsf4fk2r2g=
+X-Received: by 2002:a5b:b4e:0:b0:dc6:d313:c621 with SMTP id
+ b14-20020a5b0b4e000000b00dc6d313c621mr1122754ybr.47.1707548779165; Fri, 09
+ Feb 2024 23:06:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
+ <20240124-alice-mm-v1-1-d1abcec83c44@google.com> <CALNs47uDaD05oD8TtZoSqUBc4SaRig80u2_1P0qMCXtE3H9_Vw@mail.gmail.com>
+ <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com>
+In-Reply-To: <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Sat, 10 Feb 2024 01:06:07 -0600
+Message-ID: <CALNs47u-wVfgkK8cB_qe2JRfrxP9wM8J8e0RJwDcGbNVh_uBNg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: add userspace pointers
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-
-On February 8, 2024 7:41:52 AM PST, Alice Ryhl <aliceryhl@google=2Ecom> wr=
+On Thu, Feb 8, 2024 at 6:53=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
 ote:
->On Thu, Feb 8, 2024 at 4:35=E2=80=AFPM Greg Kroah-Hartman
-><gregkh@linuxfoundation=2Eorg> wrote:
->>
->> On Thu, Feb 08, 2024 at 01:53:20PM +0100, Alice Ryhl wrote:
->> > > Is some sort of `Debug` implementation useful?
->> >
->> > Leaking pointer addresses in logs is frowned upon in the kernel, so I
->> > don't think we should include that=2E
->>
->> s/frowned upon/forbidden/ :)
->
->:)
->
->> Along those lines, you all are tieing in the "I want to print a pointer=
-,
->> so hash it properly before I do so" logic from rust like we have in c,
->> right?  Ideally you'd use the same logic if at all possible=2E
->>
->> If not, that probably needs to be done so that you don't accidentally
->> start leaking things=2E
->
->I don't know what the status of this is=2E For anything I've added, I've
->just made it entirely impossible to print addresses, hashed or not=2E
+> Leaking pointer addresses in logs is frowned upon in the kernel, so I
+> don't think we should include that.
 
-Thank you! That is certainly the preferred[1] approach=2E :)
-
--Kees
-
-[1] https://www=2Ekernel=2Eorg/doc/html/next/process/deprecated=2Ehtml#p-f=
-ormat-specifier
-
---=20
-Kees Cook
+Sounds like the very correct decision from what Greg and Kees said. If
+we add an impl in the future (to be able to `#[derive(Debug)]` on
+anything containing this type) it could just print
+`0x****************`.
