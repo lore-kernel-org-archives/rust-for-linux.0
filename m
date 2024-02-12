@@ -1,73 +1,70 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA7279FD
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 09:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF68E12B81
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 09:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707730238; cv=none; b=FqDGxCNU9frD1NY+5rbNqqnth3Ug8N2fOJg43cO10ALmtz6JEFXEpf20JIt0yHFG3DCad3q6cJyhqQ8bzNljyC4WwS9mzyQOyujCs9RDkSuLv+feEeKK6kKHfqrePn5dSG4Ot+jR0GY24EWfIFI4mWO6KIGrENu3K+aHEqLrjZs=
+	t=1707730622; cv=none; b=ll2NVAt1MI1V8w9XLrCrTAiFgL0HChIGm6Yqqt8csDGtlRfZqwI2VN+lEejUw4ovlihZHZXna6FymfO08H4kfgBlTTi2nXw/2sxPtBpq+M63nvkkAHRYuX2le3CIWWoQp8pV38z5yUVOmKsrMxJAsD9Qz+8JjHtawAXQJwupmmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707730238; c=relaxed/simple;
-	bh=fJCVsH6s+Zxu49DLLCaFI4lLD0w0UXKMyNeLa/ZMEC4=;
+	s=arc-20240116; t=1707730622; c=relaxed/simple;
+	bh=hNoYuhS9gQug/OX6MY7ORS8ZrUYMnh2ZQxIi4q+85ds=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pIqt+/75FdB7gOT1vu4bsK551jJSdcoyi2+SA3/v/DtsVNQyX+PS+tglE0PZ0gTZEi4u+jp0T2FEUY8eD2z7QKon+xlh9zknsSTLLu6FIUs/RdAqnSIczmfcfEs2hF2ExvVfVFGoCGZDmF9A4d9RQ8/6rYVzUqvuppaDtvidWIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o8Y11mry; arc=none smtp.client-ip=209.85.221.179
+	 To:Cc:Content-Type; b=MHr7Yo9FQBSN5tqG3grcIPhQJFUKGXwAprErCTN2v3og/lWtR1fPfDnSkGEKvySA1sIyHJMAOHyM8MD7Lp31L9uf3x3+O38kLk98ZESQgNOS/yVCNlvesZA6LxUoXhVvEaRjJFrodj4JyGHlvr2CVK7JrT4//P4gHNu7QrTXQsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u1XttLTI; arc=none smtp.client-ip=209.85.217.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o8Y11mry"
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4c0245cba99so505365e0c.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 01:30:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u1XttLTI"
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-46d5f87548fso1779262137.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 01:37:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707730235; x=1708335035; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1707730620; x=1708335420; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aVJXg04dDq3HdGdQbSODm4X+NrUwFF5O5k1QDLQ/4FQ=;
-        b=o8Y11mryL+1tO7qvJhQ7fZJX4WaBM581uvW7l1spOOQ0EuC7IDP2pPEI+8ZkRxVYa+
-         Mp2F0UZE6XjEkgwhTJgeBeo+K1fyo3QXd3829M3DDWRas3ydR+zINRpOkwJwWcZRqSKn
-         Rvp9pBhZUuk9GlD2ZPH8bg/WtRdluyrlKHnVfaJPmYxeFctNxYA9B8Pitno5xHdZCwJD
-         fzWPl4gGMu/hNYbwvIoEWTgDkExs++xsihc3joXAOWL3iYWf5ZATvItUBe2v2anHJWQP
-         0EqBdPKjICQgb6wIiFpoQo/6Jf88hS0XINgKnU4ALcICC6loObx1fOSAGq1cANPeoCc7
-         PXdQ==
+        bh=H/E+m/HmOf8NYGXW5jPmBKlZJMmDwZLc9BuYGu83i6s=;
+        b=u1XttLTIEHxldQlNaA6c7dcUkf2Fg9YWwYMqQJoG9jOFvYyt7DsbwgzAWdGBIhRY6M
+         LgPdaIg69WxumnBcSYJgaYHhMftnrJr6YlNq0MARyoT/7JohlOBnBk+p5niWYBhOJcrq
+         9W2e3FoQqqWGOHfdvpf4ASZssQb8z4XmS8lztVv6FRUNNWQT4uTvOWOfC/JPBMtVnba0
+         XKTNUWGtWACUBPQITgd/VhOUK2YMwuisXNK6QAmjmkZPEHtqMW3zKsXCYst1BAqXa5VB
+         cpQiFmr3tiCNReIYGBNBc5o7mHjv+8FTyPgGvXNlbD0YGiO5AwvtwDsD+iOFiY4oMwKC
+         Ik/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707730235; x=1708335035;
+        d=1e100.net; s=20230601; t=1707730620; x=1708335420;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aVJXg04dDq3HdGdQbSODm4X+NrUwFF5O5k1QDLQ/4FQ=;
-        b=lh+IZiHVuIpM4+VOt7NCLpZzWoZ508c7uiHejs3FnFF762L2f/xsbt4bfMS5qc+T4L
-         KZiS8YqeiQACP6Ly2k2VA+xFURSQy/dCthbiGWlp4GCHA08rotbDivifZUZJE2+njBeb
-         mQ6dwWzD8B+GKg9RgOZ4fnK80dglYcphTqaK+2SF1DMFgYSWHVmnxccrEVmhTRRqwYLD
-         VTVbSDCrd79rw5aNf4tGgzzuv/WxvRnCszmkF/15RYH2sknddqxqct1x6jtmYHPDpjuL
-         jXmYqT/lO/8o2RIAXgd+r5Fs5adyWhhh0OKqETWitAndSpl+xuo4H/uNDN0EpFMdaKGb
-         GPUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHl/SJRkM2AVGV1av9RdTg8N8LbcGjrSYauIeNpW3QSSNsclT1zrVntE1H44M+z2PlEkhQa+0ICg8ZT8hWM1i8bXSaHw+t/O0rbkuSiBk=
-X-Gm-Message-State: AOJu0YzyG2l+EeyppgTEv2+7yBCMHDoYojxQFGm6FnSguBZe77i3IaZM
-	xPElmZtNnmUagms9jaxNz8nC4fGKim8u2cAotuZoNv9xIwYspqkIRK+SgV1UOqzNGDd1Wmv18jK
-	9OS+MAfOUyCHlAXLvV4uUVQ6e2tN3WI8UZ0rF
-X-Google-Smtp-Source: AGHT+IHjV73mgJjltlbGotOak1PzxKLwy9aSO2nJ7D7f32xXmGKQCv9rUvPaFsRmWhNsUhe7k0oa8HywUsDXuUQEtS8=
-X-Received: by 2002:a1f:e403:0:b0:4c0:3552:bd07 with SMTP id
- b3-20020a1fe403000000b004c03552bd07mr2504043vkh.9.1707730235423; Mon, 12 Feb
- 2024 01:30:35 -0800 (PST)
+        bh=H/E+m/HmOf8NYGXW5jPmBKlZJMmDwZLc9BuYGu83i6s=;
+        b=vtmekq6vLvLiApYCIkkbSen4FBqNWn8VfrquRIrOzOdBJQ6O9DW10BPdhZXnvZwSny
+         xnsiXMzVPq+gZweqUZvtJh0IVdge49O0HXTqcrGxP7hBNUxUMkov01qEh3oDVBafSOA+
+         vYrXYp+W3OGid5pXp/CgBz3EM5xB1v5MRDxSnZL9E49MbrslqsD4DaDu1+NSVjn5dwf8
+         zwphNc4bdZC+AGo7Px25vHQCi2b8S5nagMozToQgDXYU9pwn6qjK2p6IPYCtsLaI+TS+
+         xpUBBAe5DyU1MmNUtQ35hhg5YsVjYxxGdVDbiY+puWDBtgDjHeAtjHcTGBB5cwdi8bDo
+         F1UA==
+X-Gm-Message-State: AOJu0Yznq1lxCe6aXB+GD22cz1NIf0mc6/Ez/R/joGHOcm0R/jPmku7p
+	M1wW9HHRLDSMZhBrzt7bs62pO5hyfKj5qcVGS3o/XR1Kn+sGlRY2z7GjAue8lUuyIX2EhQYSjky
+	fWH2RrnTDIs2y0OKWDwYbMUeChyJH+aEpvr3j
+X-Google-Smtp-Source: AGHT+IF1JLiuSnoWvFlNH0ZFTmSJCw5Jh8SHStPr6vvDaY5nSqylus66nyMrF0w34j2u/nWXwzWcgMEwLYwAKIEhUw4=
+X-Received: by 2002:a05:6102:3709:b0:46d:2b14:db7 with SMTP id
+ s9-20020a056102370900b0046d2b140db7mr4717432vst.4.1707730619799; Mon, 12 Feb
+ 2024 01:36:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240124-alice-mm-v1-0-d1abcec83c44@google.com>
- <20240124-alice-mm-v1-1-d1abcec83c44@google.com> <CALNs47uDaD05oD8TtZoSqUBc4SaRig80u2_1P0qMCXtE3H9_Vw@mail.gmail.com>
- <CAH5fLggdwWoq4wKv7VxZ-_VbWMV_Ui03rGOCMPbWn8=ewznmvA@mail.gmail.com> <405e8b56cd0c48d0ba640e8d9c60179e@AcuMS.aculab.com>
-In-Reply-To: <405e8b56cd0c48d0ba640e8d9c60179e@AcuMS.aculab.com>
+References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
+ <20240208-alice-mm-v2-4-d821250204a6@google.com> <d35a656b-b802-4f1e-90d6-7320d61ed818@gmail.com>
+In-Reply-To: <d35a656b-b802-4f1e-90d6-7320d61ed818@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 12 Feb 2024 10:30:24 +0100
-Message-ID: <CAH5fLgiRgg2zD3tJ9Xrvk+bvH3srDGw9ud_gjRa97cd7a+jROA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: add userspace pointers
-To: David Laight <David.Laight@aculab.com>
-Cc: Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Mon, 12 Feb 2024 10:36:48 +0100
+Message-ID: <CAH5fLghM2thHeQifehUDT1b64okVn3sh6Eg_oPxqoK2zU-EJGw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] rust: add abstraction for `struct page`
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
 	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
@@ -75,81 +72,55 @@ Cc: Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>,
 	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
 	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Christian Brauner <brauner@kernel.org>
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 10, 2024 at 3:15=E2=80=AFPM David Laight <David.Laight@aculab.c=
-om> wrote:
+On Sat, Feb 10, 2024 at 5:23=E2=80=AFAM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
 >
-> ...
-> > > Maybe something like
-> > >
-> > >     Every time a memory location is read, the reader's position is ad=
-vanced by
-> > >     the read length and the next read will start from there. This hel=
-ps prevent
-> > >     accidentally reading the same location twice and causing a TOCTOU=
- bug.
+> On 2/8/24 12:47, Alice Ryhl wrote:
+> > [...]
+> > +    /// Maps the page and reads from it into the given buffer.
+> > +    ///
+> > +    /// This method will perform bounds checks on the page offset. If =
+`offset ..
+> > +    /// offset+len` goes outside ot the page, then this call returns `=
+EINVAL`.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// * Callers must ensure that `dst` is valid for writing `len` by=
+tes.
+> > +    /// * Callers must ensure that this call does not race with a writ=
+e to the
+> > +    ///   same page that overlaps with this read.
 >
-> WTF TOCTOU? I'm guessing it is reading things twice and getting
-> different answers.
+> This safety section says that a call mustn't race with a page that
+> overlaps this read, hmmmmm.
 
-Yes. In v2 of this patchset [1], I expanded TOCTOU to "time-of-check
-to time-of-use" at the first use to reduce this confusion.
+Is there a question here?
 
-> That really doesn't match how copying from userspace is used is many plac=
-es.
-> Sometimes you really do want to be using offsets and lengths.
-> For instance the user buffer might contain offsets of items further
-> down the buffer.
-
-For this use-case, you can call UserSlice::new multiple times, or use
-clone_reader. This use-case does appear sometimes in Rust Binder and
-is supported, but I didn't find it to be the most common use-case.
-
-> There is also the code (eg ioctl) that does a read-modify-write
-> on a buffer.
-
-The read-modify-write use-case is quite common in Rust Binder and is
-supported by the API provided by this patchset. When you call
-reader_writer, you get a separate reader and writer. Then, you first
-use the reader to read the data. Then you modify it. Then you use the
-writer to write it back.
-
-> > > +    /// Reads the entirety of the user slice.
-> > > +    ///
-> > > +    /// Returns `EFAULT` if the address does not currently point to
-> > > +    /// mapped, readable memory.
-> > > +    pub fn read_all(self) -> Result<Vec<u8>> {
-> > > +        self.reader().read_all()
-> > > +    }
-> >
-> > If I understand it correctly, the function will return `EFAULT` if _any=
-_
-> > address in the interval `[self.0, self.0 + self.1)` does not point to
-> > mapped, readable memory. Maybe the docs could be more explicit.
+> > +    pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: us=
+ize) -> Result {
+> > +        self.with_pointer_into_page(offset, len, move |src| {
+> > +            // SAFETY: If `with_pointer_into_page` calls into this clo=
+sure, then
+> > +            // it has performed a bounds check and guarantees that `sr=
+c` is
+> > +            // valid for `len` bytes.
+> > +            //
+> > +            // There caller guarantees that there is no data race.
+> > +            unsafe { ptr::copy(src, dst, len) };
 >
-> That isn't (and can't be) how it works.
-> access_ok() checks that the buffer isn't in kernel space.
-> The copy is then done until it actually faults on an invalid address.
-> In that case the destination buffer has been updated to the point
-> of failure.
->
-> You can't do a check before the copy because another thread can
-> change the mapping (it would also be horribly expensive).
+> If `src` and `dst` overlap then wouldn't that be a bad idea? If so then
+> how about mentioning that callers have to ensure that `dst` does not
+> overlap with the page that's being read and use
+> `core::ptr::copy_nonoverlapping` instead, otherwise the doc comment
+> could mention that `dst` can overlap.
 
-This was reworded in v2 [1]:
-
-/// Fails with `EFAULT` if the read encounters a page fault.
-
-But ultimately, the real condition here is just that it returns EFAULT
-if copy_from_user fails. I'm happy to reword further.
+I'll use copy_nonoverlapping. Thanks for the suggestion.
 
 Alice
-
-[1]: https://lore.kernel.org/all/20240208-alice-mm-v2-1-d821250204a6@google=
-.com/
