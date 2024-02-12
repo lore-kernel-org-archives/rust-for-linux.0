@@ -1,126 +1,112 @@
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF68E12B81
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 09:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3786D17BB7
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 09:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707730622; cv=none; b=ll2NVAt1MI1V8w9XLrCrTAiFgL0HChIGm6Yqqt8csDGtlRfZqwI2VN+lEejUw4ovlihZHZXna6FymfO08H4kfgBlTTi2nXw/2sxPtBpq+M63nvkkAHRYuX2le3CIWWoQp8pV38z5yUVOmKsrMxJAsD9Qz+8JjHtawAXQJwupmmU=
+	t=1707731816; cv=none; b=eNbxihk6McM2osNmIkA+4D91x2Sg7bpZfBq0cGs+usRNCp5HNljdK6l0L7zNV/Z/BdyrUfoSfvkcMxOJAx6alIJn6+jiY3TTJwAcpTBKbjspoPdUR5FOjO8P0nDTQ89dWDy9cAeqM05brqMJNC5JXX3n1Uqkye7y95ufhSLX1xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707730622; c=relaxed/simple;
-	bh=hNoYuhS9gQug/OX6MY7ORS8ZrUYMnh2ZQxIi4q+85ds=;
+	s=arc-20240116; t=1707731816; c=relaxed/simple;
+	bh=SC/Bvc3Wfc7h52TGzU5tpw8Q+pcsuz6wa67xmHV3x0c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MHr7Yo9FQBSN5tqG3grcIPhQJFUKGXwAprErCTN2v3og/lWtR1fPfDnSkGEKvySA1sIyHJMAOHyM8MD7Lp31L9uf3x3+O38kLk98ZESQgNOS/yVCNlvesZA6LxUoXhVvEaRjJFrodj4JyGHlvr2CVK7JrT4//P4gHNu7QrTXQsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u1XttLTI; arc=none smtp.client-ip=209.85.217.52
+	 To:Cc:Content-Type; b=OUyAsXIiKKKC4QeaGDBT3SvnA4us4XN7XmOGZIMSkt4ku39DuAQkxXXVmgjPGhWMbIDBq4rIarIe7sgLI3daMbTRMCsL+l9/bQQquanMuXyztUjPUVdrxZCHonIOOTCfHysZ9ZQ41C1FLCcF6etg8lm4336L7tgtQAJ1rIMQHLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2rbKER83; arc=none smtp.client-ip=209.85.217.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u1XttLTI"
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-46d5f87548fso1779262137.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 01:37:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2rbKER83"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4676a37e2c4so559695137.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 01:56:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707730620; x=1708335420; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1707731814; x=1708336614; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H/E+m/HmOf8NYGXW5jPmBKlZJMmDwZLc9BuYGu83i6s=;
-        b=u1XttLTIEHxldQlNaA6c7dcUkf2Fg9YWwYMqQJoG9jOFvYyt7DsbwgzAWdGBIhRY6M
-         LgPdaIg69WxumnBcSYJgaYHhMftnrJr6YlNq0MARyoT/7JohlOBnBk+p5niWYBhOJcrq
-         9W2e3FoQqqWGOHfdvpf4ASZssQb8z4XmS8lztVv6FRUNNWQT4uTvOWOfC/JPBMtVnba0
-         XKTNUWGtWACUBPQITgd/VhOUK2YMwuisXNK6QAmjmkZPEHtqMW3zKsXCYst1BAqXa5VB
-         cpQiFmr3tiCNReIYGBNBc5o7mHjv+8FTyPgGvXNlbD0YGiO5AwvtwDsD+iOFiY4oMwKC
-         Ik/g==
+        bh=hj/cyHB0z1e1XClr1rbLHnWGhhAbJzVqElu75k2EOnM=;
+        b=2rbKER8385ymguatyLRtYsLk5LxiBVCijck8iduZK70Yy8QYobkPTrzJa1+MDp43cG
+         f3WsbGrMeutFtzFZxlPW33ohLCNStzrwVa1N6CCYzIzWGL04ktycPMaToARiOUywP7ov
+         e97xmP+rTi36/XFyDgooWicteKfxfaOQECUY0MlFUePesqxGuysOKwQr24GtdLNz1XcR
+         nkl8kVgO54nmTqR93NroHE8vEC2KgF9B0VZ3AOI9wvL+ruVSVY6q9oSOakKxM25jn40O
+         fi73XKShS8NgskzG0aBg1bTVxj5GohR0m5tbaAzNHCNUCjvesb5+Cnp3+OQHZupT3u8G
+         5S4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707730620; x=1708335420;
+        d=1e100.net; s=20230601; t=1707731814; x=1708336614;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H/E+m/HmOf8NYGXW5jPmBKlZJMmDwZLc9BuYGu83i6s=;
-        b=vtmekq6vLvLiApYCIkkbSen4FBqNWn8VfrquRIrOzOdBJQ6O9DW10BPdhZXnvZwSny
-         xnsiXMzVPq+gZweqUZvtJh0IVdge49O0HXTqcrGxP7hBNUxUMkov01qEh3oDVBafSOA+
-         vYrXYp+W3OGid5pXp/CgBz3EM5xB1v5MRDxSnZL9E49MbrslqsD4DaDu1+NSVjn5dwf8
-         zwphNc4bdZC+AGo7Px25vHQCi2b8S5nagMozToQgDXYU9pwn6qjK2p6IPYCtsLaI+TS+
-         xpUBBAe5DyU1MmNUtQ35hhg5YsVjYxxGdVDbiY+puWDBtgDjHeAtjHcTGBB5cwdi8bDo
-         F1UA==
-X-Gm-Message-State: AOJu0Yznq1lxCe6aXB+GD22cz1NIf0mc6/Ez/R/joGHOcm0R/jPmku7p
-	M1wW9HHRLDSMZhBrzt7bs62pO5hyfKj5qcVGS3o/XR1Kn+sGlRY2z7GjAue8lUuyIX2EhQYSjky
-	fWH2RrnTDIs2y0OKWDwYbMUeChyJH+aEpvr3j
-X-Google-Smtp-Source: AGHT+IF1JLiuSnoWvFlNH0ZFTmSJCw5Jh8SHStPr6vvDaY5nSqylus66nyMrF0w34j2u/nWXwzWcgMEwLYwAKIEhUw4=
-X-Received: by 2002:a05:6102:3709:b0:46d:2b14:db7 with SMTP id
- s9-20020a056102370900b0046d2b140db7mr4717432vst.4.1707730619799; Mon, 12 Feb
- 2024 01:36:59 -0800 (PST)
+        bh=hj/cyHB0z1e1XClr1rbLHnWGhhAbJzVqElu75k2EOnM=;
+        b=CPQdJZcM0n7WvqyR+3+BGJ4nDoUy40JOABdw7GVJphenZJX2LxiRBWBDfn7as7qXC9
+         LJfmMT/WL6ritiXhEFpHHl/D6jJPPqZlT0+lC5ZiM49W6IIPTU8y/HkTobSFsUPI9jh+
+         SfuZDUM/PusTPLP43HDjY0h8yvVRa+nsF181JLhkuf0g0Y4e5Oyd49ggDCvenv79PtpK
+         NtiYdT2XPRsI2YVmMemwoHsBvecZVymXI0AbDFkqgwLlag29X0GvEx9GbP15bZ4O+gEM
+         wvbF6Rag0HJob2uaglzgIXvOpHcbNb1jV0nZ8PYz0x1mRGO9bdFwfBgBUAQKOiNiAZ4H
+         5vvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWxDvMyIhD1WxxSmeBAzPPIM1DimU1wUfBFSLSvHHj6/O2eGZpUN3EXP1BRQVDR9ytN5P1rA3yWNVDdWUIjdyKiCoDSIZ+9OuGiEOgvayg=
+X-Gm-Message-State: AOJu0YzB2b4n22IKIZZ5m3axOs44pnfKFRM2pSO0ISgK49ocWQwyWcuk
+	gBfAQZte/1ipiiiOHI2n3SBYpM9tQcztEc7mfvLe6ZPg+fWjL9o6yCZaxrR8l+tEJs41xJtq8fg
+	ND/g31BpqOMKcZbHkTc4TvPjhbkTZbP/HhbEG
+X-Google-Smtp-Source: AGHT+IHJQ0Fvz7BW4S5y9aj9tYnAjzKiDvJgsFF+HNC4++k9uj8mZsR9yI7DhIqz8n4KChbYUMFYm5PltcVxLbEdcF8=
+X-Received: by 2002:a05:6102:394a:b0:46d:370f:9813 with SMTP id
+ f10-20020a056102394a00b0046d370f9813mr3841120vsu.18.1707731813990; Mon, 12
+ Feb 2024 01:56:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
- <20240208-alice-mm-v2-4-d821250204a6@google.com> <d35a656b-b802-4f1e-90d6-7320d61ed818@gmail.com>
-In-Reply-To: <d35a656b-b802-4f1e-90d6-7320d61ed818@gmail.com>
+References: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com>
+ <20240205-b4-rbtree-v1-1-995e3eee38c0@google.com> <CALNs47vgryKctpsP9EV_SsVF8TX8kfwzQ4KCLy9vr5FS_vBq6A@mail.gmail.com>
+In-Reply-To: <CALNs47vgryKctpsP9EV_SsVF8TX8kfwzQ4KCLy9vr5FS_vBq6A@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 12 Feb 2024 10:36:48 +0100
-Message-ID: <CAH5fLghM2thHeQifehUDT1b64okVn3sh6Eg_oPxqoK2zU-EJGw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] rust: add abstraction for `struct page`
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Mon, 12 Feb 2024 10:56:43 +0100
+Message-ID: <CAH5fLgjP98pS1wsP=YXP5Yr79Y62VF7XPKjbj+G75B3SOFt80g@mail.gmail.com>
+Subject: Re: [PATCH 1/6] rust: add `container_of!` macro
+To: Trevor Gross <tmgross@umich.edu>
+Cc: mattgilbride@google.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
 	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
+	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 10, 2024 at 5:23=E2=80=AFAM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
+On Sat, Feb 10, 2024 at 9:05=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+ote:
 >
-> On 2/8/24 12:47, Alice Ryhl wrote:
-> > [...]
-> > +    /// Maps the page and reads from it into the given buffer.
-> > +    ///
-> > +    /// This method will perform bounds checks on the page offset. If =
-`offset ..
-> > +    /// offset+len` goes outside ot the page, then this call returns `=
-EINVAL`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// * Callers must ensure that `dst` is valid for writing `len` by=
-tes.
-> > +    /// * Callers must ensure that this call does not race with a writ=
-e to the
-> > +    ///   same page that overlaps with this read.
+> On Mon, Feb 5, 2024 at 9:50=E2=80=AFAM <mattgilbride@google.com> wrote:
+> > +macro_rules! container_of {
+> > +    ($ptr:expr, $type:ty, $($f:tt)*) =3D> {{
+> > +        let ptr =3D $ptr as *const _ as *const u8;
+> > +        let offset: usize =3D ::core::mem::offset_of!($type, $($f)*);
 >
-> This safety section says that a call mustn't race with a page that
-> overlaps this read, hmmmmm.
-
-Is there a question here?
-
-> > +    pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: us=
-ize) -> Result {
-> > +        self.with_pointer_into_page(offset, len, move |src| {
-> > +            // SAFETY: If `with_pointer_into_page` calls into this clo=
-sure, then
-> > +            // it has performed a bounds check and guarantees that `sr=
-c` is
-> > +            // valid for `len` bytes.
-> > +            //
-> > +            // There caller guarantees that there is no data race.
-> > +            unsafe { ptr::copy(src, dst, len) };
+> `offset_of` will be stable in 1.77 BUT only for a single field [1]. I
+> don't know if there are other blockers in the kernel already, but if
+> this could be changed to call `offset_of!` recursively then  it will
+> work with the stable version.
 >
-> If `src` and `dst` overlap then wouldn't that be a bad idea? If so then
-> how about mentioning that callers have to ensure that `dst` does not
-> overlap with the page that's being read and use
-> `core::ptr::copy_nonoverlapping` instead, otherwise the doc comment
-> could mention that `dst` can overlap.
+> We might want an `offset_of_many!(a, b, c)` macro somewhere if there
+> are other places that need this nesting.
+>
+> [1]: https://github.com/rust-lang/rust/pull/118799
 
-I'll use copy_nonoverlapping. Thanks for the suggestion.
+Rust Binder *does* need that in one place. Creating a nested
+offset_of! is kind of tricky, because you have to fail to compile when
+you're following a pointer with the Deref trait. I haven't figured out
+how to do that yet.
+
+> > +        ptr.sub(offset) as *const $type
+>
+> Instead of casting to and from `u8`, you should be able to use `byte_sub`
+
+Casting to and from u8 also has the side-effect of making it not work
+when the target type is !Sized. Not allowing this might be desirable.
 
 Alice
