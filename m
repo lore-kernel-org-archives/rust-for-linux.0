@@ -1,112 +1,98 @@
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3786D17BB7
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 09:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A8517BC2
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 10:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707731816; cv=none; b=eNbxihk6McM2osNmIkA+4D91x2Sg7bpZfBq0cGs+usRNCp5HNljdK6l0L7zNV/Z/BdyrUfoSfvkcMxOJAx6alIJn6+jiY3TTJwAcpTBKbjspoPdUR5FOjO8P0nDTQ89dWDy9cAeqM05brqMJNC5JXX3n1Uqkye7y95ufhSLX1xA=
+	t=1707732300; cv=none; b=QnR6fEECJsD/N2zh2c6fTHofOrOBpMPeGgy4C57SX8ilbrRSDad+Vip7FmTZa01ICGBvIE2lcWKwokMIIrwebrPMN8kwmup890ds43gZWi4KPlRZRllnlkd05xjaDqZcyzdHA+nLMZhdI2yHlM7lYUjUVTYBByUAVlzZJFTMgts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707731816; c=relaxed/simple;
-	bh=SC/Bvc3Wfc7h52TGzU5tpw8Q+pcsuz6wa67xmHV3x0c=;
+	s=arc-20240116; t=1707732300; c=relaxed/simple;
+	bh=ggduzU9L1RUTLLiPLM4EOtwsbNI4tWctUrmL552s1jo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OUyAsXIiKKKC4QeaGDBT3SvnA4us4XN7XmOGZIMSkt4ku39DuAQkxXXVmgjPGhWMbIDBq4rIarIe7sgLI3daMbTRMCsL+l9/bQQquanMuXyztUjPUVdrxZCHonIOOTCfHysZ9ZQ41C1FLCcF6etg8lm4336L7tgtQAJ1rIMQHLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2rbKER83; arc=none smtp.client-ip=209.85.217.42
+	 To:Cc:Content-Type; b=q4IFhUAgYO0ORUkWzQYRJsHTvXbjCinoFgMGFd3WiqRVLIBLak9hIXk17Ggx1R7jaRz3+8M+JY9ea/utN9nVdkByafMzYrUZqvqMHQ12d12h+onnYim8WPoKY1jmgdnyNoGpSSHqiKyP+kqh481WJATdkC2nmtbW93cbtc1wPVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iC1o0ssq; arc=none smtp.client-ip=209.85.222.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2rbKER83"
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4676a37e2c4so559695137.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 01:56:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iC1o0ssq"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7d2940ad0e1so1735963241.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Feb 2024 02:04:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707731814; x=1708336614; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1707732298; x=1708337098; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hj/cyHB0z1e1XClr1rbLHnWGhhAbJzVqElu75k2EOnM=;
-        b=2rbKER8385ymguatyLRtYsLk5LxiBVCijck8iduZK70Yy8QYobkPTrzJa1+MDp43cG
-         f3WsbGrMeutFtzFZxlPW33ohLCNStzrwVa1N6CCYzIzWGL04ktycPMaToARiOUywP7ov
-         e97xmP+rTi36/XFyDgooWicteKfxfaOQECUY0MlFUePesqxGuysOKwQr24GtdLNz1XcR
-         nkl8kVgO54nmTqR93NroHE8vEC2KgF9B0VZ3AOI9wvL+ruVSVY6q9oSOakKxM25jn40O
-         fi73XKShS8NgskzG0aBg1bTVxj5GohR0m5tbaAzNHCNUCjvesb5+Cnp3+OQHZupT3u8G
-         5S4w==
+        bh=ggduzU9L1RUTLLiPLM4EOtwsbNI4tWctUrmL552s1jo=;
+        b=iC1o0ssqIXRXXD8GfJHqXimLiw/iVWyakgdgApwtkSjSLJSZuDxmYqDVFaROpR6znS
+         c9I+mwoUjARm+lO5dGG9ROKrZveRQXbxhPByIlnitJSC+nhrWs2lrhpwkpY7lqi2fqfb
+         XDsODwFuZH+2GbaSbSmHiad95ciCHNekTm7rWhduAhcTxhPlK+zHLcDqGeCYgDFYgQjZ
+         b321VahMNBNj65aiJxr5Hr6K/pi2SIV9bnFgqDjI9DoDe6faOrXczdkgeTo/3LxgwRNq
+         NaFH5ASoeVqVYicvLcpB6zKfzJutUwT1Zd0UWXaWYGY3kky9ap6WNwUhWo705sBrzJQ1
+         QmeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707731814; x=1708336614;
+        d=1e100.net; s=20230601; t=1707732298; x=1708337098;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hj/cyHB0z1e1XClr1rbLHnWGhhAbJzVqElu75k2EOnM=;
-        b=CPQdJZcM0n7WvqyR+3+BGJ4nDoUy40JOABdw7GVJphenZJX2LxiRBWBDfn7as7qXC9
-         LJfmMT/WL6ritiXhEFpHHl/D6jJPPqZlT0+lC5ZiM49W6IIPTU8y/HkTobSFsUPI9jh+
-         SfuZDUM/PusTPLP43HDjY0h8yvVRa+nsF181JLhkuf0g0Y4e5Oyd49ggDCvenv79PtpK
-         NtiYdT2XPRsI2YVmMemwoHsBvecZVymXI0AbDFkqgwLlag29X0GvEx9GbP15bZ4O+gEM
-         wvbF6Rag0HJob2uaglzgIXvOpHcbNb1jV0nZ8PYz0x1mRGO9bdFwfBgBUAQKOiNiAZ4H
-         5vvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWxDvMyIhD1WxxSmeBAzPPIM1DimU1wUfBFSLSvHHj6/O2eGZpUN3EXP1BRQVDR9ytN5P1rA3yWNVDdWUIjdyKiCoDSIZ+9OuGiEOgvayg=
-X-Gm-Message-State: AOJu0YzB2b4n22IKIZZ5m3axOs44pnfKFRM2pSO0ISgK49ocWQwyWcuk
-	gBfAQZte/1ipiiiOHI2n3SBYpM9tQcztEc7mfvLe6ZPg+fWjL9o6yCZaxrR8l+tEJs41xJtq8fg
-	ND/g31BpqOMKcZbHkTc4TvPjhbkTZbP/HhbEG
-X-Google-Smtp-Source: AGHT+IHJQ0Fvz7BW4S5y9aj9tYnAjzKiDvJgsFF+HNC4++k9uj8mZsR9yI7DhIqz8n4KChbYUMFYm5PltcVxLbEdcF8=
-X-Received: by 2002:a05:6102:394a:b0:46d:370f:9813 with SMTP id
- f10-20020a056102394a00b0046d370f9813mr3841120vsu.18.1707731813990; Mon, 12
- Feb 2024 01:56:53 -0800 (PST)
+        bh=ggduzU9L1RUTLLiPLM4EOtwsbNI4tWctUrmL552s1jo=;
+        b=qtYKftDHMPbYBrzmeb/dAEOmQ6Pwnzm/f4pYpbsR205jYC+B/dO72HNW9hJ0+vsmvu
+         v6SDtm+uvXnEhhdmjbeeHtvHZsE0ptUJNyI44slKNYNDVKSG9K01gOpePlRZuTCp9CA/
+         ZSJGIuDz+TnFOw2TcsDmZqpkYWFSwh1NuP3xUu9e/gntwadAEWXje8d0GsBynnJBEFiB
+         zD6AnryTVNtlBULRZAboVdsYxVLnJlgY3hBE58hnOsuBDG1ZD2T6lasdvyu3h7IpMDyf
+         vIkKGIWIkTMshYKtv4DpnZCdXejjEoggOgqmDUY9XQCzo7cs7Raqs4jY/HWr4K0FYnVw
+         XMyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX4YKU1qomOMNSM7iuQY42yWY/4rfYBmRQ9iwBbZM2APJLPz2Ji9lMV/clq5Rsbxk734AKMAfqY5YzLwAVa3SpFpq4DNmHyEyt7iwYUt58=
+X-Gm-Message-State: AOJu0YyZnR1Gyh621GwMYW11Q0t1YYuJtMDX3YkwVCICIFuvSMuedwKB
+	9O+m3PN110eL9mGgvGFn7KL7WvfZCh5SFwSC1qBcQu6uAAgRqzKFf/QG3ZJFWCfnrGM/67YQldb
+	Nx+pM++k8od8lBFzVKC+HkcIs4U+eX2N7FmQF
+X-Google-Smtp-Source: AGHT+IEd49py4OLNX4mf5CeRvn2sftXgoKqJgVKe0kGtx19XgPRbHY6OUXT+lpg/lNJ+Ows2+YxSA63IQJz7omMeAsc=
+X-Received: by 2002:a05:6102:2a59:b0:46d:61e8:46a with SMTP id
+ gt25-20020a0561022a5900b0046d61e8046amr3708124vsb.28.1707732297773; Mon, 12
+ Feb 2024 02:04:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205-b4-rbtree-v1-0-995e3eee38c0@google.com>
- <20240205-b4-rbtree-v1-1-995e3eee38c0@google.com> <CALNs47vgryKctpsP9EV_SsVF8TX8kfwzQ4KCLy9vr5FS_vBq6A@mail.gmail.com>
-In-Reply-To: <CALNs47vgryKctpsP9EV_SsVF8TX8kfwzQ4KCLy9vr5FS_vBq6A@mail.gmail.com>
+References: <20240209-alice-file-v5-0-a37886783025@google.com>
+ <20240209-alice-file-v5-7-a37886783025@google.com> <CALNs47tTTbWL3T9rk_ismPT0Bwi8Kcm5aT9k8jfPsh=1wKvrPA@mail.gmail.com>
+In-Reply-To: <CALNs47tTTbWL3T9rk_ismPT0Bwi8Kcm5aT9k8jfPsh=1wKvrPA@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 12 Feb 2024 10:56:43 +0100
-Message-ID: <CAH5fLgjP98pS1wsP=YXP5Yr79Y62VF7XPKjbj+G75B3SOFt80g@mail.gmail.com>
-Subject: Re: [PATCH 1/6] rust: add `container_of!` macro
+Date: Mon, 12 Feb 2024 11:04:47 +0100
+Message-ID: <CAH5fLgj8u925_5qW3n7OBd3tPxxdy4=BR=yWvzhyLN6TT6M+dQ@mail.gmail.com>
+Subject: Re: [PATCH v5 7/9] rust: file: add `Kuid` wrapper
 To: Trevor Gross <tmgross@umich.edu>
-Cc: mattgilbride@google.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
 	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 10, 2024 at 9:05=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+On Sat, Feb 10, 2024 at 8:43=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
 ote:
 >
-> On Mon, Feb 5, 2024 at 9:50=E2=80=AFAM <mattgilbride@google.com> wrote:
-> > +macro_rules! container_of {
-> > +    ($ptr:expr, $type:ty, $($f:tt)*) =3D> {{
-> > +        let ptr =3D $ptr as *const _ as *const u8;
-> > +        let offset: usize =3D ::core::mem::offset_of!($type, $($f)*);
+> On Fri, Feb 9, 2024 at 5:22=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> >
+> > Of course, once a wrapper for rcu_read_lock is available, it is
+> > preferable to use that over either of the two above approaches.
 >
-> `offset_of` will be stable in 1.77 BUT only for a single field [1]. I
-> don't know if there are other blockers in the kernel already, but if
-> this could be changed to call `offset_of!` recursively then  it will
-> work with the stable version.
->
-> We might want an `offset_of_many!(a, b, c)` macro somewhere if there
-> are other places that need this nesting.
->
-> [1]: https://github.com/rust-lang/rust/pull/118799
+> Is this worth a FIXME?
 
-Rust Binder *does* need that in one place. Creating a nested
-offset_of! is kind of tricky, because you have to fail to compile when
-you're following a pointer with the Deref trait. I haven't figured out
-how to do that yet.
-
-> > +        ptr.sub(offset) as *const $type
->
-> Instead of casting to and from `u8`, you should be able to use `byte_sub`
-
-Casting to and from u8 also has the side-effect of making it not work
-when the target type is !Sized. Not allowing this might be desirable.
+Shrug. I think a patch to introduce rcu_read_lock would go through the
+helpers as a matter of course either way. But it also doesn't hurt.
 
 Alice
