@@ -1,186 +1,188 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2084.outbound.protection.outlook.com [40.107.21.84])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E5418021
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Feb 2024 08:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707813520; cv=fail; b=oGrzSvtCdp178HvGteXmd4t/YzsYGHZsa3o8f9+BNgaCmX82yd/Gnvk+fQ1w8ceU4JqkY4N2RxrAVZ0ZLkdXFL6LP2YHRthwH93KhvRRj/xFhW6JPfCycrZIeMpGrMrR0UcdbAsHO1a7AhnvGKqWj33RPn4bsRFW059WhjkNwkQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707813520; c=relaxed/simple;
-	bh=wYe42U5ndwRSfI073IXTIY6rjmscsoUaRIA6AFyXKPs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sT0pLznxeJc6kMQnCrttsSEFexUSp4a34d1Y6KSKfJzIYxyYSnzjdj1pWY04fQteK0DePCDYw9J8JqwJRqaItWyWT97Lo+JNrpm8dUE5Y6wQHFzMXvhAE+Z3HosZzMplYygY/jOUUMg/IRO7gjDaxJSMvDdBoHhsffQ8/3j0qis=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Ze6KD30i; arc=fail smtp.client-ip=40.107.21.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BCF5730A
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Feb 2024 14:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707833552; cv=none; b=UpQWHAw7lYhLwB0NI9hmbzO4Wy3eCjvg5VmZNa9C0s1x5l1g36nBhRmfUDE5U1l4Mr8eb6YveBkiTKp/3TqMqEEAM9x9uZzRshqOBnCQ/x1F+ztPkxfogO+rYbHdSw1khog47B+j+sl/Jhg3w10ES1wrG1nYGESNpdH2D4ziW90=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707833552; c=relaxed/simple;
+	bh=AHP1+Eu4wYYx8Y5l74zyknWJRCFX6KetbcbD/GO0amU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sISTO4pKhfr9FQVdZs5tFgHKa0Hb0qqTe45UNmgS0ipdJ6u7dP5nDWHxZTX45F2R19HZsjF4N1Cr4uAbPn2gNtE+mvEUxgUSWJwyxGt++AqFQjoYRTgHoJJxDa7pnl/ADvGvxXzSrwbem5Pans9e+h6xDKCZ+BFY72gNWu8dFFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WOdGpNyo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Ze6KD30i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a0xVs5zm3+PYVCtcqudpHAbE/bzOUvZwjxGnFbzke9tVJDzfXb2yrZMrdDisnb6+qxCwEjRViaWOGXxvMN3J237+jllXgi4ji9A7X+42wxmL1+Oo75CdFGKJ5UrUIlLunnQrqL0zzyBoGvFYc8ZtwIDn/S4ystbC9SHlRcCpzgrhwFkKBBCSBO1QKgFUDAfZQHi4ljN8CZF5W4T82ARh/RjWamPnv5jzZP+epmAeuP5dxOo+GbqqNg3BWzJXVF2kD82bb0sANzaxM4yWJ5201Y8J2+zlz02VTbUduaeI3Jra7J35G58NPNWoojK+5Y1AJIU/H2+0dIdAqTbuB//2rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jF4ZLsYRyf3VT4y3s2oxOJkgdK/gXXKDNNP8SDqgqHE=;
- b=SWCcNIPQTkHNhHGaDXJBmTUGHU14CN2Ub/d9UNKlIp7XV8cF/+C6hABmrOqnn2qzKkU9m/896TnbmWmsOoKgCDDM+TxvegP3Ac5on3VtfOSCMQ5s6L0R3KtQPXIqoWpC1v/hRJWuRnDR2RtCHIxhSWQCJ25sWK+k8lzUW0C2QP2FDOXUthRhbUdiD64vUmRt+ul6iXnPD3RykBSvk+Daaf/EfXgB5FeNh6txogRqAVqJwPAFmAtj1dhonvLyZsQTGCMNArmSOJF3qv2w2yiDFMxUzo+7B9UkyW6cjfeDYuIaG1+JU/ZdFVrUngSraU/MTpGWjcbo57VpUCc1PRm5bQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.201) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jF4ZLsYRyf3VT4y3s2oxOJkgdK/gXXKDNNP8SDqgqHE=;
- b=Ze6KD30iHesiUduGo0O6Jqm+MOQRmc4/IKven4kSyWJqIsmP1wYzKGbCbwuA0+W3hRCnvKFwmjrEYDoLYwZtPdhyyz/NY5FUKzsz8TQ/LusiSydtk8KTZl/cYFvC2bLTuw97UKS4Yz2lEJDXcLvvN3rvK+KwmXBr5hnAqqsnBZg82RkQ6cLFcUejH2PlGLMd/Sxjhhc2xMSe4LllTvMF9mI5Pdvjp6JzbJc3gkEtucLjZftNcJ+G5mj8p6SjDshvmWtMPfoq+VCVtloEAfxsi6TiUFwnolZk1mJquP/+peivPQfm7HuvfTiRxYc0xGpSCkKQhs7wRd4VP8X3YrXvLQ==
-Received: from AM5PR1001CA0004.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:206:2::17)
- by DB4PR10MB7447.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:3f0::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.28; Tue, 13 Feb
- 2024 08:38:33 +0000
-Received: from AM2PEPF0001C714.eurprd05.prod.outlook.com
- (2603:10a6:206:2:cafe::24) by AM5PR1001CA0004.outlook.office365.com
- (2603:10a6:206:2::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39 via Frontend
- Transport; Tue, 13 Feb 2024 08:38:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.201)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.201 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.201; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.201) by
- AM2PEPF0001C714.mail.protection.outlook.com (10.167.16.184) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Tue, 13 Feb 2024 08:38:33 +0000
-Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
- (139.15.153.201) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 13 Feb
- 2024 09:38:31 +0100
-Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
- FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 13 Feb 2024 09:38:31 +0100
-From: Dirk Behme <dirk.behme@de.bosch.com>
-To: <rust-for-linux@vger.kernel.org>
-CC: Dirk Behme <dirk.behme@de.bosch.com>, Valentin Obst
-	<kernel@valentinobst.de>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda
-	<ojeda@kernel.org>
-Subject: [PATCH v3] docs: rust: extend abstraction and binding documentation
-Date: Tue, 13 Feb 2024 09:38:19 +0100
-Message-ID: <20240213083819.1292958-1-dirk.behme@de.bosch.com>
-X-Mailer: git-send-email 2.28.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WOdGpNyo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707833549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q6rbkIwSAyIfqWRBUJKQNzVzIuH/yXueV7/fJUfX8mg=;
+	b=WOdGpNyo97kz+KYg3WKGYu5ZzsUuQn3DMkOwwBr22ikGmX2ZFFQkzCtSc9/vT+6x/M55hC
+	ujVxNAEGdYPkwjRoUggJUzwy8rQjn+jqNqxf5419EbAZw2YFFm5cWNB8Vj7NcKPleNTe36
+	c2Rs7UmBqOJEaawLV1YLx/ev0rALTeo=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-380-EP15e2xfO_qACuI1soNMwg-1; Tue, 13 Feb 2024 09:12:28 -0500
+X-MC-Unique: EP15e2xfO_qACuI1soNMwg-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a2cb0d70d6cso278833566b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 13 Feb 2024 06:12:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707833547; x=1708438347;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q6rbkIwSAyIfqWRBUJKQNzVzIuH/yXueV7/fJUfX8mg=;
+        b=L0k6XaSPzQQlx3XWP0ul0Aznlvd6ZxDeI8FTWNjPtKHnZCbHgwMP2Bm/PVpjwiFJxc
+         Xd6ZaIQxWIlOIABmUCRfCiW5oy/nYkLPmbXP+4j7zSoQnan/b25K1gYhi3qZQfqA+bwl
+         2lwULKfiQD2v7r+1bRgwzBx9jdLXQ/dt45XxeYH6zRndrM/c9lNaR9XySX83QgaCos58
+         6KNAle72ozNMgdrQA4oXKq+Qk1y6jgq8JL+ULlZLdn1K5ZLqwgQWw3Q9nXfzxYjMqIOj
+         ZC+1BaLca3NJtFKo58VgJxsZtFrdqvBFAJP3jyiDXTqjqyZkLqb0OPrgqjc9gpk0Tdxr
+         vnQw==
+X-Gm-Message-State: AOJu0YzFzLax30UDzJD9Dr351CbQg171zpzurpt+OhY8W1/nEm7tUbwh
+	OveF2+ELn05EiKZSG2nDllE0MjLt6v+PVnpB8pL1yn6BAEpoluMnIhp6eOUQ3CA0jylVvISrn4t
+	siNos9A7Yc+/UaPwHTmjS/1w2KNFszU2Jql4unTy3W4SqC59RrNzjdiUh0CcJINFh
+X-Received: by 2002:a17:906:fc03:b0:a3c:f575:a0f6 with SMTP id ov3-20020a170906fc0300b00a3cf575a0f6mr1354697ejb.72.1707833547061;
+        Tue, 13 Feb 2024 06:12:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEOU4GWx7MzZH5LrucmXe0l3gXVTQ/u1dam/m7zPrH+EliMJ0ZbAiCzOIwnGXMrkxraRNRbew==
+X-Received: by 2002:a17:906:fc03:b0:a3c:f575:a0f6 with SMTP id ov3-20020a170906fc0300b00a3cf575a0f6mr1354684ejb.72.1707833546716;
+        Tue, 13 Feb 2024 06:12:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWMtjiFxFCsW8UEezOFIYW6WmsQzFHynb/J2ec1SjCJwZpVmAH9HXsfRJ4LGnz+yUxrPCHxLIehDivTNYW4gQZKl2ktVohyAFuGYy4FGezPnv374dQw+ncm8TuCyCdJWMy1wcV4BVTyo+UBxwuBgn1MQ6XFZrxpWMP4+eoZ310HbcXORzyee4eLIq9sdrMt3tpVcihWBpDPn0kzFEfWyW+S0+Y6qbGCVqf3vndxyYDmuDKIiBuwstyT8CwggQRlgHYnRdQRseGnjUD7EZGGr92cPRO3rNDPIf1tbI4UNn5cp2hflV8XjXzRtTdM3Dlm/rCn5DRcT9NID4EXL6wmU5I=
+Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id w22-20020a170906481600b00a3c5661c646sm1324520ejq.148.2024.02.13.06.12.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Feb 2024 06:12:26 -0800 (PST)
+Message-ID: <04049a83-c757-4103-9d63-f303686d8dbf@redhat.com>
+Date: Tue, 13 Feb 2024 15:12:24 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM2PEPF0001C714:EE_|DB4PR10MB7447:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e5ca7f3-fcb5-417d-e611-08dc2c6f29f3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	xEmoTuO/oY3I7V9Fhyw1Yr/EIgZmW4qjE9jJRB/wT+fFdx62jzZs/HmxSpOQCZQBv2BrnB4tGcuXKQ26fQvXbuvtHsQtK8OcXW1dApMfxDXtb9qPtwstRnbDD0EenMmM88raOry4eX87xlB551Kqj1w0tF+q4GAoA5iuwsYXeFcr8jh3l516p3uD1lLlmgIsdESPUGHrXksBGrPTOg4EZZei51ufzf3tgu5BtxHGWZg3Zopp2YNRGutaIubFZueFnH/7+YROcP6BeSIVMxKXGpOY8ool19/JI4uqrkxwDeBQvtp5aKhPWklcL2s0Aw6tElPNnUZv6/0I+d2bCipqiUvRFizC5qgSe1spHisPyu9qsEwCE/tSZDa+PX3QXZTOYSBjzrOCBC/QXsb3SzUQoNljp16WzXE92RLIIesnuyEHtUti1PMCFmKIpiyCJmx0cYTkKm+gYz1vZOsLuS3s3PSYtgFmFZ++w3c+LyRYEKXkElfp/XOx1ChadfKswH1T1O/Urr1E3KOm9B08RGzpALXz1xor9SHzLnWiid1R+DFhyjrZxVjG8JCRNx7GCQPtu4QNCTT5RgVg3kTL/3tAixZioAfYAm2+nXgRxIRWahjCpi1JIJ1KMFgX4IA7HRSr
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.201;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(376002)(396003)(39860400002)(346002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(82310400011)(40470700004)(36840700001)(46966006)(316002)(478600001)(7696005)(966005)(54906003)(6666004)(8936002)(44832011)(5660300002)(2906002)(4326008)(6916009)(70206006)(70586007)(8676002)(86362001)(83380400001)(1076003)(82960400001)(81166007)(426003)(26005)(336012)(41300700001)(2616005)(82740400003)(356005)(16526019);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 08:38:33.5672
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e5ca7f3-fcb5-417d-e611-08dc2c6f29f3
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.201];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM2PEPF0001C714.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR10MB7447
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: str: add {make,to}_{upper,lower}case() to
+ CString
+To: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240130023843.11512-1-dakr@redhat.com>
+From: Danilo Krummrich <dakr@redhat.com>
+Organization: RedHat
+In-Reply-To: <20240130023843.11512-1-dakr@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add some basics explained by Miguel in [1] to the documentation.
-And connect it with some hints where this is implemented in the
-kernel.
+On 1/30/24 03:35, Danilo Krummrich wrote:
+> Add functions to convert a CString to upper- / lowercase, either
+> in-place or by creating a copy of the original CString.
+> 
+> Naming followes the one from the Rust stdlib, where functions starting
+> with 'to' create a copy and functions starting with 'make' perform an
+> in-place conversion.
+> 
+> This is required by the Nova project (GSP only Rust successor of
+> Nouveau) to convert stringified enum values (representing different GPU
+> chipsets) to strings in order to generate the corresponding firmware
+> paths. See also [1].
+> 
+> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+> 
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 
-[1] https://www.linuxfoundation.org/webinars/rust-for-linux-writing-abstractions-and-drivers
+Ping.
 
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
----
- Documentation/rust/general-information.rst | 56 ++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
-
-Changes in v3: Try to incorporate the v2 review comments from Trevor
-               and Valentin.
-
-diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
-index 081397827a7e..6c6fb3a5e318 100644
---- a/Documentation/rust/general-information.rst
-+++ b/Documentation/rust/general-information.rst
-@@ -64,6 +64,62 @@ but it is intended that coverage is expanded as time goes on. "Leaf" modules
- (e.g. drivers) should not use the C bindings directly. Instead, subsystems
- should provide as-safe-as-possible abstractions as needed.
- 
-+.. code-block::
-+
-+	                                                rust/bindings/
-+                                                       (rust/helpers.c)
-+
-+                                                          include/ -----+ <-+
-+                                                                        |   |
-+         drivers/              rust/kernel/              +----------+ <-+   |
-+           fs/                                           | bindgen  |       |
-+          .../            +-------------------+          +----------+ --+   |
-+                          |    Abstractions   |                         |   |
-+       +---------+        | +------+ +------+ |          +----------+   |   |
-+       | my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | <-+   |
-+       | driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          |       |
-+       +---------+        | |system| |system| |          | bindings | <-----+
-+            |             | +------+ +------+ |          |  crate   |       |
-+            |             |   kernel crate    |          +----------+       |
-+            |             +-------------------+                             |
-+            |                                                               |
-+            +------------------# FORBIDDEN #--------------------------------+
-+
-+The main idea is to encapsulate all direct interaction with the kernel's C APIs
-+into carefully reviewed and documented abstractions. These are then considered to
-+be sound. The goal is that users of these abstractions ("my_foo driver") cannot
-+introduce undefined behavior (UB) as long as:
-+
-+#. the abstractions are correct.
-+#. they don't use ``unsafe{..}``. Or they uphold the preconditions of all unsafe
-+   operations that they perform if they use ``unsafe{..}`` for performance optimizations
-+   or to call unsafe abstractions.
-+
-+Bindings
-+~~~~~~~~
-+
-+By including a C header from ``include/`` into ``rust/bindings/bindings_helper.h``
-+the ``bindgen`` tool will auto-generate the bindings for the included subsystem.
-+After building, see the ``*_generated.rs`` output files in the ``rust/bindings/``
-+directory.
-+
-+For parts of the C header that ``bindgen`` doesn't auto generate, e.g. C ``inline``
-+functions or macros, it is acceptable to add a small wrapper function
-+to ``rust/helpers.c`` to make it available for the Rust side as well.
-+
-+Abstractions
-+~~~~~~~~~~~~
-+
-+Abstractions are the layer between the bindings and the in-kernel users. They are
-+located in ``rust/kernel/`` and their role is to encapsulate the unsafe access
-+to the bindings into an as-safe-as-possible API that they expose to their users.
-+Users of the abstractions include things like drivers or file systems written in Rust.
-+
-+Besides the safety aspect, the abstractions are supposed to be "ergonomic", in the
-+sense that they turn the C interfaces into "idiomatic" Rust code. Basic examples are
-+to turn the C resource acquisition and release into Rust constructors and destructors
-+or C integer error codes into Rust's ``Result``.
-+
- 
- Conditional compilation
- -----------------------
--- 
-2.28.0
+> ---
+> Changes in V2:
+>    - expand commit message mentioning the use case
+>    - expand function doc comments to match the ones from Rust's stdlib
+>    - rename to_* to make_* and add the actual to_* implementations
+> ---
+>   rust/kernel/str.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 60 insertions(+)
+> 
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index 7d848b83add4..758bb70d98e9 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -581,6 +581,66 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) -> Result<Self, Error> {
+>           // exist in the buffer.
+>           Ok(Self { buf })
+>       }
+> +
+> +    /// Converts this CString to its ASCII lower case equivalent in-place.
+> +    ///
+> +    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
+> +    /// but non-ASCII letters are unchanged.
+> +    ///
+> +    /// To return a new lowercased value without modifying the existing one, use
+> +    /// [`to_ascii_lowercase()`].
+> +    ///
+> +    /// [`to_ascii_lowercase()`]: #method.to_ascii_lowercase
+> +    pub fn make_ascii_lowercase(&mut self) {
+> +        self.buf.make_ascii_lowercase();
+> +    }
+> +
+> +    /// Converts this CString to its ASCII upper case equivalent in-place.
+> +    ///
+> +    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
+> +    /// but non-ASCII letters are unchanged.
+> +    ///
+> +    /// To return a new uppercased value without modifying the existing one, use
+> +    /// [`to_ascii_uppercase()`].
+> +    ///
+> +    /// [`to_ascii_uppercase()`]: #method.to_ascii_uppercase
+> +    pub fn make_ascii_uppercase(&mut self) {
+> +        self.buf.make_ascii_uppercase();
+> +    }
+> +
+> +    /// Returns a copy of this CString where each character is mapped to its
+> +    /// ASCII lower case equivalent.
+> +    ///
+> +    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
+> +    /// but non-ASCII letters are unchanged.
+> +    ///
+> +    /// To lowercase the value in-place, use [`make_ascii_lowercase`].
+> +    ///
+> +    /// [`make_ascii_lowercase`]: str::make_ascii_lowercase
+> +    pub fn to_ascii_lowercase(&self) -> Result<CString, AllocError> {
+> +        let mut s = (*self).to_cstring()?;
+> +
+> +        s.make_ascii_lowercase();
+> +
+> +        return Ok(s);
+> +    }
+> +
+> +    /// Returns a copy of this CString where each character is mapped to its
+> +    /// ASCII upper case equivalent.
+> +    ///
+> +    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
+> +    /// but non-ASCII letters are unchanged.
+> +    ///
+> +    /// To uppercase the value in-place, use [`make_ascii_uppercase`].
+> +    ///
+> +    /// [`make_ascii_uppercase`]: str::make_ascii_uppercase
+> +    pub fn to_ascii_uppercase(&self) -> Result<CString, AllocError> {
+> +        let mut s = (*self).to_cstring()?;
+> +
+> +        s.make_ascii_uppercase();
+> +
+> +        return Ok(s);
+> +    }
+>   }
+>   
+>   impl Deref for CString {
+> 
+> base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
 
