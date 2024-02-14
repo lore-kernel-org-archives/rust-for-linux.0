@@ -1,112 +1,120 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC1B171CC
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Feb 2024 10:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C119760DF1
+	for <rust-for-linux@vger.kernel.org>; Wed, 14 Feb 2024 17:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707907910; cv=none; b=h2d+ladv4XUyYE/QOP1fjRzif89HtLk069KpzK1F7SNg22XX2BmEXhuYWsVWRvmH+Y9WT3COIz742tQQps+YtJ37Ivm2QtjutGyHJsRFXslocLjCdhqCavtleSXnmcv4esWk7JZRp00QqwNK/xwI+7+Bs7r7BFP/+iRvXIqOSnY=
+	t=1707931237; cv=none; b=GMBeAAcoV7lRCgP53rNjBKvneN7qTx4p/oN4r1TWB3dZL1qQLPCopEoB75yQaTGxWh8kg6y71fOic7IPNWQTqKwD64X6TDyYQzvlTUJUg+kylWoPSb0WenJ2twkRJnIgFwiXDXLPm2ypQF9wkCzYsN2vKNRVRCK5FDT9QZrRUuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707907910; c=relaxed/simple;
-	bh=FngIp4KBxf0vqziz3+ArzSp7oe/urJZKigfldVYi13c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GWHHkdY/wTnvG10hoP79EQC62bU4d0Agu/nNQX8jNC5Mks2nBBGNwgo5No4ceV6hmNYSG6Ei3BO0eB49ky8TM4ZkotbnsTbgf3lyGYgdQUujRMs6OCOg+rfXZyhpYLMNaXPpzBdf9oxQcMhYUYeubYi/glO4P/IAIM5LEwMG1qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zrXgyHlF; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1707931237; c=relaxed/simple;
+	bh=rZQpvm2949OmV6YOny6ngBjCzUMUCrxTtcAoU6BH6Pg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QUdV6XOqmRGBDHV/2N6slTgfHUit+jtNkJfeNw2LM1onGif7d4sTbyede7akv2f9E7s3KuDT+Xsl8G5z4Wr64IemBU+kwMO79lm6SQPsX5XrWwxPoBVXZre0MNlSCqXFuPb2rmv/vlzDGUrhosUbMcm9M9gzDhRRHkYuzrCPib8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S2jWWk9q; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zrXgyHlF"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4c01076b9faso2235612e0c.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Feb 2024 02:51:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707907908; x=1708512708; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2g1mQizjkEn3VxHNfnwCGd5SJVNpMNtdqZQAgI51wCU=;
-        b=zrXgyHlFKZAdxlGFAEhVc9G81FYr3RYeNYuShQ4yP8E8rC3aopZPA22zrXy5aZs3en
-         nUYJUIBjDB0Tcr9doCutUstpxGclzvX4hZItLoP4gP4oCl3pQcHC8oGr/2xsVpeelTN/
-         U3HFwWh3k2v7Dd4bcbmGubl9Dtq84ZF7ipGEj1ZJ+gIgB1/gsNVcg+IlbV0n/gWVZRKh
-         wV3FqGfEELI4OtgBCKAbk1D8b//XX4v4xK7h0nUnYJtvUyvdmHdWZSZH4CyOJB0D7DCl
-         rcEGCecR94nZCDr6lzS8WkdIT0Auh4eO8VNEBo760wtu/P1Y4HM0UEe4qqGfqOWIw0JR
-         F9Ww==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S2jWWk9q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707931234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ovk2oX2orbIAKyGqMXy7ixB6AoBlYOpjfpWbhXahpTQ=;
+	b=S2jWWk9qryvzfyELBVleHUqvRP/C6sPAm9ljBNN5TaI63w97oiymTT0PKjHx/kHcGxCzy2
+	uQ2y4b0N0KFlKqxy0yX0pQ1DqceIkCL1egGatlJety/jlptAXsLQvToORxDYY4e3HQyTUS
+	McTLu602S94kBrjpp1MdQadgcGuoIb8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-221-FobudaTROTugio8l85bA1g-1; Wed, 14 Feb 2024 12:20:33 -0500
+X-MC-Unique: FobudaTROTugio8l85bA1g-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a2f71c9f5d2so413416066b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Feb 2024 09:20:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707907908; x=1708512708;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2g1mQizjkEn3VxHNfnwCGd5SJVNpMNtdqZQAgI51wCU=;
-        b=LmdIiwh9SSclvQW0JKw36SM6b4EEDjj9POxDgYpEXdDYOuKxmpyr9YPKsypA3lYqv2
-         ij+6rxLEoLhUkAlOLWxgV7ZmW3hkuhNavyt7LjQXnQg6OzmqUzzjSeBKf12zR2AtYNYl
-         e8Reyl5PDpK8tRrDiPL5GC/2B3pTuL9cdeI53Un5RWaqCWrB7xoTJ7aNz6adyJsZzJy5
-         YJg1lZP8oI8LYvboHfypn5sVnvthbN+P3UzppYz4ZEcb8jWhIdDWs52VC/fxwSglanuc
-         r7MJRlovXWa7h7mr3ZDVHbWOG3SIVnEtT0LDEK+A1orOt7GS5D7TNfvXuf9fHpk20vWq
-         W3TA==
-X-Forwarded-Encrypted: i=1; AJvYcCWVC/NoFvq43D6M+yIDHdCW9MLp+1yCy6EhZfdN0mBamiOkQ02qkdxmO2pxUtviLAh5JjXnwtwUnMVBeUxCsvjd18nyY0FTRGKyhSdLXtw=
-X-Gm-Message-State: AOJu0YzNQMbZEKSpLzu2jziBZht3JuAzd3TIqyzomQL49sv08L+Pr6sU
-	51dhEdIomvOZwbD1hIQMVjtgeTEABtygWygUF6M4V3NdDMELRBxlSm+ICdiK1RWcHOKTTxDPQ6q
-	ALo5budEBTR5EBfHgtphZW4uZ6SosFcBSf+Ep
-X-Google-Smtp-Source: AGHT+IExci4zElcZtqMQOuT6NK38iGJAdkqnfcCqnUfNn0vIoBFYe9CwwBiX3ybhUh7K3qqNBm1b+K7r0Iz04LypLPw=
-X-Received: by 2002:a1f:e084:0:b0:4c0:2a9f:d3ec with SMTP id
- x126-20020a1fe084000000b004c02a9fd3ecmr2466287vkg.6.1707907908067; Wed, 14
- Feb 2024 02:51:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707931232; x=1708536032;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ovk2oX2orbIAKyGqMXy7ixB6AoBlYOpjfpWbhXahpTQ=;
+        b=UFyTDm/KGuiOV63APS2vIsaTVfhMq9/vfDXZ2UcyA6xR/MrMvQL3glBqzdCAgK/PNW
+         ecG2WPg/bb6jywON3xPeRT0IKRNcxJKFMqLKDaw7BvLzp/g9UcylDb0MMPNcgv2BgCMZ
+         E0KS7LxTvrLI0KHEaGgTBkoh53eeXCA+AkfXlUiLkk5Y7dU9VDOhehr1HNcc6PF6nGry
+         xLQm0aYJ7NUvnk2k00eXWAbEPw8ES53zEBVg/FlWoyBfWTVoSf2TqpPaVJaAacnPejZP
+         Q3By1vKaYfOUOGBZ5NKnB2+p3UiIT7v88ofIhrVisJ8yiXvAIH9ML6UoDDeqy5WV6/G1
+         VBEA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaYTP7ql6SrCvoz3ZJyrAnYe14lT591j9UiPjucoqIHHplUVI1SRWUeXtXjr9Q14OvFCKzgXqsuDq9GbQpDb1xlSVhVH7E0pPzNhv5gAc=
+X-Gm-Message-State: AOJu0YxiTTFTqQE4+eM997PcXb+K07spkB7o90vFWxwC6pDr8PkMySJt
+	Q2Y4q8h2ZsRdGe1lQCCSRGNvhbJnx60JLVB0v4xS0cLzTtksjoj57DWaPrR3ahZftUcxzvQHZkl
+	NfU8tcNbr1tSNzBxp+anl10OZGHdHacVFLX4y680Yr/3WaUgqLuXQxmMK6rQ8+4Ld
+X-Received: by 2002:a17:906:459:b0:a3d:26db:b05b with SMTP id e25-20020a170906045900b00a3d26dbb05bmr2576298eja.14.1707931232236;
+        Wed, 14 Feb 2024 09:20:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGNWEcylqQIB7DYfeUi0TPm6NJ7N5bNqDGnpBM2Ojzlxvf0336clxkKnR79u0IJ8isMXnTF8Q==
+X-Received: by 2002:a17:906:459:b0:a3d:26db:b05b with SMTP id e25-20020a170906045900b00a3d26dbb05bmr2576280eja.14.1707931231965;
+        Wed, 14 Feb 2024 09:20:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWM4KZtzQ9AqpaFNV6aoe/BJvP08r0+Z0bHteT8pJrhy1AWxBLB5EiJ6/ZZ5HwEkfeCSnujDILPqKmsiy9EKhpIplM6baudpNgdBN5OUfhv26vZm1ao8yY4iTc0CuN26u+3t9utOGc8WhiV1pvLE9oT7MaHQL+w1h5q9ga9ugFiH7tFJElYHk2qGrxv6jpxrVujaHFyhSfwEBQkWdabiHgKqCFemSnfq/L0BqfmRSZovUr3aVjVUKfWKYlNvF9N96jSM/fdB2MRGhVQQ2gI0H/CeNNs+VcjgktXumYTgu4rNVfAmpo4mEeRtK83iDUIMp1pezVvUHgh3YTnMY1KovPztLJskGDkiAzP
+Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id st1-20020a170907c08100b00a3d581658bbsm576484ejc.86.2024.02.14.09.20.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Feb 2024 09:20:31 -0800 (PST)
+Message-ID: <ce189a14-78da-4897-b505-792330620de5@redhat.com>
+Date: Wed, 14 Feb 2024 18:20:30 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
- <20240208-alice-mm-v2-2-d821250204a6@google.com> <202402091606.A181673F0A@keescook>
-In-Reply-To: <202402091606.A181673F0A@keescook>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 14 Feb 2024 11:51:36 +0100
-Message-ID: <CAH5fLggZc_Fxi1gjx9jxGDgyYOj1NLz5MYxzRxEja6vV0WffGg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] uaccess: always export _copy_[from|to]_user with CONFIG_RUST
-To: Kees Cook <keescook@chromium.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: str: add {make,to}_{upper,lower}case() to
+ CString
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240130023843.11512-1-dakr@redhat.com>
+ <CAH5fLgj-0Li7E4KGKV0e1-dF9x6TQXS6E_KyagY2ndQV8MSVnQ@mail.gmail.com>
+From: Danilo Krummrich <dakr@redhat.com>
+Organization: RedHat
+In-Reply-To: <CAH5fLgj-0Li7E4KGKV0e1-dF9x6TQXS6E_KyagY2ndQV8MSVnQ@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Feb 10, 2024 at 1:15=E2=80=AFAM Kees Cook <keescook@chromium.org> w=
-rote:
->
-> On Thu, Feb 08, 2024 at 03:47:52PM +0000, Alice Ryhl wrote:
-> >       unsigned long res =3D n;
-> >       might_fault();
-> >       if (!should_fail_usercopy() && likely(access_ok(from, n))) {
-> > +             /*
-> > +              * Ensure that bad access_ok() speculation will not
-> > +              * lead to nasty side effects *after* the copy is
-> > +              * finished:
-> > +              */
-> > +             barrier_nospec();
->
-> This means all callers just gained this barrier. That's a behavioral
-> change -- is it intentional here? I don't see it mentioned in the commit
-> log.
->
-> Also did this get tested with the CONFIG_TEST_USER_COPY tests? I would
-> expect it to be fine, but better to check and mention it in the commit
-> log.
+On 2/13/24 15:19, Alice Ryhl wrote:
+> On Tue, Jan 30, 2024 at 3:38 AM Danilo Krummrich <dakr@redhat.com> wrote:
+>>
+>> Add functions to convert a CString to upper- / lowercase, either
+>> in-place or by creating a copy of the original CString.
+>>
+>> Naming followes the one from the Rust stdlib, where functions starting
+>> with 'to' create a copy and functions starting with 'make' perform an
+>> in-place conversion.
+>>
+>> This is required by the Nova project (GSP only Rust successor of
+>> Nouveau) to convert stringified enum values (representing different GPU
+>> chipsets) to strings in order to generate the corresponding firmware
+>> paths. See also [1].
+>>
+>> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+>>
+>> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> 
+> Not a deal-breaker, but this comment of mine still applies:
+> 
+> https://lore.kernel.org/rust-for-linux/CAH5fLgiwRDcyaxbcUNY8M1c_w11vkCWyRfqVVrN9Sgc7XYT0xw@mail.gmail.com/
 
-I just ran this with CONFIG_TEST_USER_COPY on x86 using the Android
-cuttlefish emulator and it passed there. I also verified that it fails
-if I remove the access_ok check. However, the tests succeed even if
-the barrier_nospec() call is removed.
+I missed your mail, gonna send a v3.
 
-That said, it seems like it fails to compile on some other platforms.
-It seems like we need to add #include <linux/nospec.h> to uaccess.h to
-fix it.
+- Danilo
 
-Alice
+> 
+> Alice
+> 
+
