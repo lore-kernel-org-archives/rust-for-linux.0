@@ -1,154 +1,97 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C168132C1E
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 15:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CB5134CC4
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 16:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708010521; cv=none; b=oiWH33G7mGmGAnSMJUY1FpQy0zkdDymj/SObLbvbTWM0nFB2/OKvA6I5k9hxj+jHS4yaSKxk/krg5v4xfl2i+0G2VD5PMOgODHn4Qb+4KS0sK2hukwD5cf35R/Xra1UrDgAIq3iTPZm8t45BZMaxrSeCeGE79t9oSKlu/k3VWjc=
+	t=1708014163; cv=none; b=jFaO6ro0VkcTxs56pTaf0uWYUyRmAK0on5U5wnoLcf86nMB8keBYHlIAH2Xm6y8wbiHJGVZl/NHyC63O8/8ObVcVIiJjdv3+/eGwTInns/B5bcyJ9pEqI0QLSnW9jUUl/7rLrJGU9eIS0cYk2rDzi11F1p5Vt/N5xudGPZz40mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708010521; c=relaxed/simple;
-	bh=FZBNw/6dZCUfUuzPdZq/UstJ5+/KjMw/ChjIoNIcFYM=;
-	h=Message-ID:Subject:From:To:Date:MIME-Version:Content-Type; b=TIMEui2SZcgHseNmaivvzWD5kZh/K4RWZen/CXmADRYckex8DVwxIbuIokyV9RmhZXVW+mhOBKkJ5OqSwRw0j7OeD8fMQY4ITEhBTjhz6XixBeiNsJHHu68FfomwY1fqNmUoONfIbdGXOa6YKAS9fgmvGJHO5Ttpm0HZHjJCxNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MdcFgDaA; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1708014163; c=relaxed/simple;
+	bh=7AyjKh84fOCvKiTmuhjSM71fcPvLExae8y+tbYKHq0A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JmsxrRZaa+aiDl8kF7GaAGl4BH594p2JFzuHwRWo+B4MX7Z4UI6UMgsoG6E/3AqDTqqDHC1y0mxdHwz8xtqf1BlnbUr+Ny8I9Cx/sXZECjfMgsbrET9oKhdt5n6H7NrD1JKede9knNilneHCs7LBwA8GeZUbFCMeXQZ+bIXlb2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SC8xVZkc; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MdcFgDaA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708010518;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YdERYsJ7FcoOAPL7TgoDeZUCxrZCjuy/s/PJKxDmWCo=;
-	b=MdcFgDaAK6Fp/VfNMOmeUPQNfM4fXYvmfFwJ90U0eFIKnotITTCIGIFF2KPDvYu7zGoT1K
-	ChNjcctmNKSjBomkhmsg97VHf52h4GnvyNdPBRPC27IeDs/3BvP5m65qi95dZl8E3fki4A
-	XF3Drq/JCA1A9raKybvpMIGuflk33wc=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-yFyBd1PfN3KAaecGXY0D3g-1; Thu, 15 Feb 2024 10:21:56 -0500
-X-MC-Unique: yFyBd1PfN3KAaecGXY0D3g-1
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-78356ddf3cfso45693885a.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 07:21:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708010516; x=1708615316;
-        h=mime-version:user-agent:content-transfer-encoding:date:to:from
-         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SC8xVZkc"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dcbc00f6c04so973745276.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 08:22:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708014160; x=1708618960; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YdERYsJ7FcoOAPL7TgoDeZUCxrZCjuy/s/PJKxDmWCo=;
-        b=vBKX3I53gYVTPylmYojKHrd3K7amOcBrUuSH1GezJ1z287rTU48w8cWz8i+bONgAJK
-         imZ+t1h3GnGWsXoAH0sDnkw+FKz1cQQESfvy8XfFrMnUat94ONc+kg1qxbvkKestcUKB
-         EhDqmprIZlM3D7HA7ivqtnWC7HCWNqic3bkCQWhRUhSesIrkoEZNmx3lrrWdpsSdeXYr
-         VzvTApDgiPCVcztLsue96bTLDngW4tXeVNrWgrOrfeWayHYIDK22psEYE31wIaxpQd7z
-         y98Qs7IcjwSCW1VTHX7K9jRApyzNMnqoYvFN1pHfRXL9a9qLWhQOdjjPqVlbL8rMf5r4
-         TSVQ==
-X-Gm-Message-State: AOJu0YziWaIh0cpH57aR8Zr+OTAu8MnhTGRkAxU/2Zmxb7PXtUkcCJ4x
-	Ty6xk84SQDVqkTeyXRm7UIjT+PxIrNRuqc01r6PiQuoU0NwH430zNombE9u0WpEsQmdG36sOfdm
-	1pTG3r8OXbFq4Oa9XvL6prI0Gc5NqScyydtXobZishoaoA/rNbmkdIw3lxQ8BrS4CRKsVheW+ap
-	Umj93KW9Nxu4Zc4Bage20N3n6OfiLzS+5GdGjB8ZsuydKt7d17
-X-Received: by 2002:a05:620a:800d:b0:787:339a:af5c with SMTP id ee13-20020a05620a800d00b00787339aaf5cmr2610150qkb.1.1708010516067;
-        Thu, 15 Feb 2024 07:21:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEOKVirwNxxZJ54NVmkWV6g7UNpK6SIFOKDhdT5AGCd9Dk64hz9LvbLmnuviIsKVrXoPE5UQg==
-X-Received: by 2002:a05:620a:800d:b0:787:339a:af5c with SMTP id ee13-20020a05620a800d00b00787339aaf5cmr2610125qkb.1.1708010515579;
-        Thu, 15 Feb 2024 07:21:55 -0800 (PST)
-Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id bq42-20020a05620a46aa00b007871f998401sm668500qkb.91.2024.02.15.07.21.54
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Feb 2024 07:21:55 -0800 (PST)
-Message-ID: <803d666dcd5b1f927590719c10bdd90ce2ba6dd0.camel@redhat.com>
-Subject: RfL currently does not integrate very well with some Kconfigs
-From: Philipp Stanner <pstanner@redhat.com>
-To: rust-for-linux@vger.kernel.org
-Date: Thu, 15 Feb 2024 16:21:53 +0100
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
+        bh=BGvGfrrYLjrlEnkQvO8Soq6v7mfeS0qmtn6sNjFSZ+A=;
+        b=SC8xVZkcfjYrGI+cd3kLEONBYOW7Gv6CKemTRrsLU3P5PX2G6k4XKgHZlirmGEeS9m
+         fRUeSGRjwAUttC+aU0kLXFZrnA45AKEVieHI1QVQRQfH4LaRmFwHucXJWgP8aYQPjldn
+         4ZHM5wqvjImFtmTz2zzig55zrWl+N5zxPoi0hVo04PGD4qHXA4+AZdQ+mfJr/1Rj59ld
+         0RX1I8+Xz+3fImHRrZ0ymDGVtg+2D89b/WCkF7ScjbK0uh7aJfS/sRe9kz5uKiMe3w0A
+         BX19XSQifLwBztVbZMt9oDnH1POLR1Uc6imurQV7JRACHqRcJDgVyechNR9fkZ1+HkI5
+         d74w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708014160; x=1708618960;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BGvGfrrYLjrlEnkQvO8Soq6v7mfeS0qmtn6sNjFSZ+A=;
+        b=w7ap/s0Bsq+SXGZqwyTVAacB0mWm9QgM6mTcbIGHiiLVtHkJ5iAxwfTkmyQdyhVBft
+         TmeXHp3X5Ur5miUbPew7Ijs/eqcbdz0649KuLMjSxsrCZlpIu7C9pvXJNkltcE5iP0Ml
+         R64hOYOfViwpgNWtPn1KDlH6pHijGUAhWyMuQjpzgWPf2mUog4YGNjUfBJNWk6tnb5tm
+         VRoLz5wnld0N/Lhg0rUK8h2xLt9emQcOxzObfGp/PxQ+TisAFlEUgBDAYk9pklmqByv7
+         jV1E6ZI5r0v4QNWMxOvRDYJv9nCR95ObiDbdBHm3CBku8CcjkSZNl4YKhfYH0C/E95iH
+         8fzA==
+X-Gm-Message-State: AOJu0YxJtkmLDQtLHw4zc3tR4mEty6zHJx1fWY8RV37EEd7GH69GR1SD
+	wAI87lxDt+rSCoN4oj/ClaUjsAw4/LQswggD/FBLFQ4BWB0WYsezNurmq96hut8tw2HrmjAguKO
+	JV/IFUnl2JaOZuFwy+nub5r3gB/U=
+X-Google-Smtp-Source: AGHT+IHzjXTzVI1xOq0yK4LeInNN0KVE8pVxLMx/TIrutZJmVvox22Z1nXoorder1s4BOp3/W/t7M1Flbhj0HQVuueU=
+X-Received: by 2002:a25:b20f:0:b0:dc6:9b89:3f75 with SMTP id
+ i15-20020a25b20f000000b00dc69b893f75mr2213125ybj.40.1708014160690; Thu, 15
+ Feb 2024 08:22:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <803d666dcd5b1f927590719c10bdd90ce2ba6dd0.camel@redhat.com>
+In-Reply-To: <803d666dcd5b1f927590719c10bdd90ce2ba6dd0.camel@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 15 Feb 2024 17:22:29 +0100
+Message-ID: <CANiq72kQ52nMEhe_-_vxRjV0-BOBU6DbfYUni_SCEaAyrZjc5Q@mail.gmail.com>
+Subject: Re: RfL currently does not integrate very well with some Kconfigs
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Andreas Hindborg <nmi@metaspace.dk>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Recently, I've been trying to accomplish some work on the rust-pci
-branch in RfL.
+On Thu, Feb 15, 2024 at 4:24=E2=80=AFPM Philipp Stanner <pstanner@redhat.co=
+m> wrote:
+>
+> Recently, I've been trying to accomplish some work on the rust-pci
+> branch in RfL.
 
-I like to base my configs on an allnoconfig to get only the stuff I
-really need.
+For the `rust-pci` branch, please create issues in GitHub, ask in
+Zulip and/or contact Andreas through Zulip like the website mentions.
+It is not code ready for upstreaming. Please see:
 
-Doing
-make LLVM=3D1 allnoconfig && make LLVM=3D1 menuconfig
-activating only 64-Bit and Rust already generates build-errors, for
-example:
+    https://rust-for-linux.com/branches#rust-pci
+    https://github.com/Rust-for-Linux/linux/blob/rust-pci/README
 
-error[E0412]: cannot find type `dma_pool` in crate `bindings`
-  --> rust/kernel/dma.rs:74:25
-   |
-74 |     ptr: *mut bindings::dma_pool,
-   |                         ^^^^^^^^ not found in `bindings`
+> So, it would seem there are some "deponds on" entries missing
+> somewhere.
 
-error[E0425]: cannot find function `dma_pool_create` in crate
-`bindings`
-  --> rust/kernel/dma.rs:92:23
-   |
-92 |             bindings::dma_pool_create(name.as_char_ptr(),
-dev.raw_device(), size, align, boundary)
-   |                       ^^^^^^^^^^^^^^^ not found in `bindings`
+It sounds to me like there are missing `#[cfg(...)]`s in the code
+(i.e. conditional compilation), rather than missing `depends on`.
 
-error[E0425]: cannot find function `dma_pool_alloc` in crate `bindings`
-   --> rust/kernel/dma.rs:116:38
-    |
-116 |         let ptr =3D unsafe { bindings::dma_pool_alloc(self.ptr,
-flags, &mut dma_handle) };
-    |                                      ^^^^^^^^^^^^^^ not found in
-`bindings`
+> Is this problem known? Any plans or suggestions how to deal with it?
 
-error[E0412]: cannot find type `dma_pool` in crate `bindings`
-   --> rust/kernel/dma.rs:136:42
-    |
-136 |     type AllocationData =3D *mut bindings::dma_pool;
-    |                                          ^^^^^^^^ not found in
-`bindings`
+If you mean the specific issue, Andreas may or may not know already
+about that one, but the suggestion would be to simply add the missing
+`cfg`s -- I think Andreas would welcome a PR.
 
+Thanks for the report!
 
-
-Switching on PCI, but not PCI's MSI, causes other errors, such as:
-
-  RUSTC L rust/uapi.o
-  EXPORTS rust/exports_alloc_generated.h
-  EXPORTS rust/exports_bindings_generated.h
-  RUSTC L rust/kernel.o
-error[E0425]: cannot find function `pci_alloc_irq_vectors_affinity` in
-crate `bindings`
-   --> rust/kernel/pci.rs:289:23
-    |
-289 |             bindings::pci_alloc_irq_vectors_affinity(
-    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in
-`bindings`
-
-Strong suspect for the cause is that this function is defined as part
-of MSI, so just activating PCI doesn't suffice.
-
-I verified that this is indeed a config problem. The entire toolchain
-is installed according to the official documentation, selecting that
-one compiler version that currently works etc.
-
-Setting PCI + MSI (and, in Hacking, Rust Hacking -> Allow unoptimized
-build-time assertations) results in a valid build.
-
-
-So, it would seem there are some "deponds on" entries missing
-somewhere.
-Is this problem known? Any plans or suggestions how to deal with it?
-
-My instinct tells me that there could be many potentially broken
-configs out there.
-
-
-Regards,
-P.
-
+Cheers,
+Miguel
