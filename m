@@ -1,166 +1,154 @@
-Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FD912DD9F
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 10:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C168132C1E
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 15:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707993986; cv=none; b=Ty35SkfH+IJo7u5va7xYRhAVBlJN8n441Sv0vQvxyfb0YRc+BOKxgDZDmMaxsPV7kLASmoCiU0wYOdShS1xx84bn8IF2wBYZ3qxj9KHioNfih4ej4lxFn55oqULKvie6nRYJZHRtRxVdrZCbbP1tcwn4T2zfrI2bPfK2PBIzBu0=
+	t=1708010521; cv=none; b=oiWH33G7mGmGAnSMJUY1FpQy0zkdDymj/SObLbvbTWM0nFB2/OKvA6I5k9hxj+jHS4yaSKxk/krg5v4xfl2i+0G2VD5PMOgODHn4Qb+4KS0sK2hukwD5cf35R/Xra1UrDgAIq3iTPZm8t45BZMaxrSeCeGE79t9oSKlu/k3VWjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707993986; c=relaxed/simple;
-	bh=Wjpow9OdLAB7Tv+gTtRq4fdEi+a2MFCDQbMPfSnlgs4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Dq3OJkGTMhY4iK69fekA9McSGKStDOX/m005dHZ87+MIFF5Fd4XPa1CKxyC7pFymc3JEXS7Q+wN+RNzVz2nydB0LDpEKRUXBm8wlbbeo6t/Jen6HOeEyQ/Lyqf+wANieCHjkaJXq0QxmDYtXiX5ORD48kYo/tvgMWBteQon341A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wFlTZbAu; arc=none smtp.client-ip=209.85.167.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1708010521; c=relaxed/simple;
+	bh=FZBNw/6dZCUfUuzPdZq/UstJ5+/KjMw/ChjIoNIcFYM=;
+	h=Message-ID:Subject:From:To:Date:MIME-Version:Content-Type; b=TIMEui2SZcgHseNmaivvzWD5kZh/K4RWZen/CXmADRYckex8DVwxIbuIokyV9RmhZXVW+mhOBKkJ5OqSwRw0j7OeD8fMQY4ITEhBTjhz6XixBeiNsJHHu68FfomwY1fqNmUoONfIbdGXOa6YKAS9fgmvGJHO5Ttpm0HZHjJCxNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MdcFgDaA; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wFlTZbAu"
-Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-5117210e716so567226e87.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 02:46:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707993983; x=1708598783; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Uuf0w26zOY/ZYw+214pJM99jPH6tZMQ5JsKDNPkdddo=;
-        b=wFlTZbAuj4mGxRER7NIF/dkONC45s0c2Bs+i1YP7dKhS7Lwv6M2Mqq46E/Y6AObTn3
-         PUCLvdhlnmDt5RZjblaV4xpPmmU4QBILfSPIsjSK1RfcJfQRIPXAVQ7Ptp01WvK8MFzU
-         zr6ismTStKvtssdxn68fwki5FlvSaaZEzYiOjZFjCZB7ylgp7z7IoCQtToH8YxsnG0w+
-         lklLoUHKpFG7Dz0WZc1dNNCsH9r5Qz+X6o/p/lMMcP2Sx8JtSLXoqTR4AkV1es/jRGic
-         8JCAf9MRJQ6zWEe2OzYTdH1OrbYZHlVvjVSiScAupO4HZgbw3gwCYdU0RX/voiIq8G7K
-         Sxyw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MdcFgDaA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708010518;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YdERYsJ7FcoOAPL7TgoDeZUCxrZCjuy/s/PJKxDmWCo=;
+	b=MdcFgDaAK6Fp/VfNMOmeUPQNfM4fXYvmfFwJ90U0eFIKnotITTCIGIFF2KPDvYu7zGoT1K
+	ChNjcctmNKSjBomkhmsg97VHf52h4GnvyNdPBRPC27IeDs/3BvP5m65qi95dZl8E3fki4A
+	XF3Drq/JCA1A9raKybvpMIGuflk33wc=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-477-yFyBd1PfN3KAaecGXY0D3g-1; Thu, 15 Feb 2024 10:21:56 -0500
+X-MC-Unique: yFyBd1PfN3KAaecGXY0D3g-1
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-78356ddf3cfso45693885a.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 07:21:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707993983; x=1708598783;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Uuf0w26zOY/ZYw+214pJM99jPH6tZMQ5JsKDNPkdddo=;
-        b=R3JjG+6zHHI23HejB0iFCSLf6fiGKCHLa9Pz137UDgD0hRXsxbaPRHaK3CrBvS/uUH
-         xob5qU7CQilqzTQ7REv2BK6x/sXzgvaYDB4bc4nWh46cFx6zD8wLdZ5rKrQz+aRKjBgq
-         px5AZ424pnE63eOyGDgHgv9i1I1Ulr6bCVisRJp6RU5Xh6VyqEBOObE1cC+1k//rijKC
-         lUe/mwWCvNHZSNneujbxrJPzRwVcC9b81b2dv57zD6sAbvrMnuQhFS6VeQ+jrE/+pNin
-         S7U3Zqm4z8/kfrA99Wise7Oqm7tn7M0N6jXzaRAC8VGmqnZZz/FxlECwavrq1kCwfz2r
-         ygdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXYQ1wFvGEzTMdk5B9c21cKyqW5s2ypS7rz2YiVFLtyh/ySmNLXTfyS25kUY5B5AuMBxBTb93CEaJLfV1Q7YBSj2gHVbmZY7ryvRj04Nyk=
-X-Gm-Message-State: AOJu0YwWxoXGbVzJI5Ha6QdX/A1IEuwfL+HudeMX8aZji52TnsIO0WNy
-	XqhcOOgjhRUB4VU+pWU8otV38oKhPE3D6oLhbAGpPeXILvYARx1o6xSn5SPPDGX44yPkRFGY/io
-	1M97h8L0wTz2wUQ==
-X-Google-Smtp-Source: AGHT+IE9zG2u4vdtMqWFUcANs2kx7N8Qf7EJTWQ7H2i+KfsdbYhdQFfsxBZOUZ33yQE5Mqn8w3PW+3+N6KhH9bk=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:ac2:5f45:0:b0:511:7b36:b293 with SMTP id
- 5-20020ac25f45000000b005117b36b293mr1491lfz.10.1707993982857; Thu, 15 Feb
- 2024 02:46:22 -0800 (PST)
-Date: Thu, 15 Feb 2024 10:46:01 +0000
+        d=1e100.net; s=20230601; t=1708010516; x=1708615316;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YdERYsJ7FcoOAPL7TgoDeZUCxrZCjuy/s/PJKxDmWCo=;
+        b=vBKX3I53gYVTPylmYojKHrd3K7amOcBrUuSH1GezJ1z287rTU48w8cWz8i+bONgAJK
+         imZ+t1h3GnGWsXoAH0sDnkw+FKz1cQQESfvy8XfFrMnUat94ONc+kg1qxbvkKestcUKB
+         EhDqmprIZlM3D7HA7ivqtnWC7HCWNqic3bkCQWhRUhSesIrkoEZNmx3lrrWdpsSdeXYr
+         VzvTApDgiPCVcztLsue96bTLDngW4tXeVNrWgrOrfeWayHYIDK22psEYE31wIaxpQd7z
+         y98Qs7IcjwSCW1VTHX7K9jRApyzNMnqoYvFN1pHfRXL9a9qLWhQOdjjPqVlbL8rMf5r4
+         TSVQ==
+X-Gm-Message-State: AOJu0YziWaIh0cpH57aR8Zr+OTAu8MnhTGRkAxU/2Zmxb7PXtUkcCJ4x
+	Ty6xk84SQDVqkTeyXRm7UIjT+PxIrNRuqc01r6PiQuoU0NwH430zNombE9u0WpEsQmdG36sOfdm
+	1pTG3r8OXbFq4Oa9XvL6prI0Gc5NqScyydtXobZishoaoA/rNbmkdIw3lxQ8BrS4CRKsVheW+ap
+	Umj93KW9Nxu4Zc4Bage20N3n6OfiLzS+5GdGjB8ZsuydKt7d17
+X-Received: by 2002:a05:620a:800d:b0:787:339a:af5c with SMTP id ee13-20020a05620a800d00b00787339aaf5cmr2610150qkb.1.1708010516067;
+        Thu, 15 Feb 2024 07:21:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEOKVirwNxxZJ54NVmkWV6g7UNpK6SIFOKDhdT5AGCd9Dk64hz9LvbLmnuviIsKVrXoPE5UQg==
+X-Received: by 2002:a05:620a:800d:b0:787:339a:af5c with SMTP id ee13-20020a05620a800d00b00787339aaf5cmr2610125qkb.1.1708010515579;
+        Thu, 15 Feb 2024 07:21:55 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id bq42-20020a05620a46aa00b007871f998401sm668500qkb.91.2024.02.15.07.21.54
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Feb 2024 07:21:55 -0800 (PST)
+Message-ID: <803d666dcd5b1f927590719c10bdd90ce2ba6dd0.camel@redhat.com>
+Subject: RfL currently does not integrate very well with some Kconfigs
+From: Philipp Stanner <pstanner@redhat.com>
+To: rust-for-linux@vger.kernel.org
+Date: Thu, 15 Feb 2024 16:21:53 +0100
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3433; i=aliceryhl@google.com;
- h=from:subject; bh=Wjpow9OdLAB7Tv+gTtRq4fdEi+a2MFCDQbMPfSnlgs4=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlzeqIUKpX/8JczXxuWtJZWfGOc5q5/Yw8LXTt8
- H+AO0fSVXKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZc3qiAAKCRAEWL7uWMY5
- RgeiD/0fIaUn7Rk7askqJtujymGJW1OjLrC+ofrwiSTKw6Ug6sKA/N4UNLrhTazCtGC8mZzRzxZ
- qO2it4Posj+hFgba2Khi6wXiLXq3PTtS/oK2jx445JBzBYT/qUSdSP4NlgX8NcUZrynlnOg4bek
- 2cYrUvE379rQ0Xa7ZTWDp8b3jrnD/esGFgkcbg8bn1nyl4fbJ1djLD/m7jFSV/5yBsysSq70dJy
- fGvXIiPXEm1hWv/BTCiknyTCt/koiFbodfR6svLIhBO4WMS7g6NH7IoA3L7EqXN3ko3WmghCUYp
- S3//21tc7oagChhHosUQsD2IjxAheQ4slYbULjdgGdrBiuAt162ONfuxvW4kj2Xoxos95KYjTng
- l3/fcnyFu96tYqQS3PPyTrBXrCePudJyUcFZabeulNOhSthJIONERJV28xL6p/lxUlvWqYdrxB+
- Y6+8sORRJMOxDP8pPo7kN9aQBhQvv92VhkMnY/LbLi6cQcdwUhDLT/TEtwtpzbb3zPhNiqto4tG
- eeMgHsmjKhpuXjhY1I+7IFp9zXFk1c/IFNzpyZaul9RGVTuRZSNdx82zaHtazPdSOeeZ99Yo1zq
- UPJopjCZZN/fHMzmvMQbw37m9B7R6NEZVnmxsjmqom6qhUCMW0ZN1lFYW03Dv/8CJPen01daNbz XwEVrlBhaPXZG4g==
-X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
-Message-ID: <20240215104601.1267763-1-aliceryhl@google.com>
-Subject: [PATCH v2] rust: stop using ptr_metadata feature
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>
-Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The `byte_sub` method was stabilized in Rust 1.75.0. By using that
-method, we no longer need the unstable `ptr_metadata` feature for
-implementing `Arc::from_raw`.
+Recently, I've been trying to accomplish some work on the rust-pci
+branch in RfL.
 
-This brings us one step closer towards not using unstable compiler
-features.
+I like to base my configs on an allnoconfig to get only the stuff I
+really need.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-Changes since v1:
-- Reword safety comments on metadata.
-- Instead of casting directly to `*mut`, use `cast_mut` for changing the
-  mutability of `ptr`.
-- Added Reviewed-by tags.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20240205091842.2858516-1-aliceryhl@google.com/
+Doing
+make LLVM=3D1 allnoconfig && make LLVM=3D1 menuconfig
+activating only 64-Bit and Rust already generates build-errors, for
+example:
 
- rust/kernel/lib.rs      |  1 -
- rust/kernel/sync/arc.rs | 16 +++++++---------
- 2 files changed, 7 insertions(+), 10 deletions(-)
+error[E0412]: cannot find type `dma_pool` in crate `bindings`
+  --> rust/kernel/dma.rs:74:25
+   |
+74 |     ptr: *mut bindings::dma_pool,
+   |                         ^^^^^^^^ not found in `bindings`
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b89ecf4e97a0..b8d4c8167a29 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -17,7 +17,6 @@
- #![feature(dispatch_from_dyn)]
- #![feature(new_uninit)]
- #![feature(offset_of)]
--#![feature(ptr_metadata)]
- #![feature(receiver_trait)]
- #![feature(unsize)]
- 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 77cdbcf7bd2e..a74e1963d89d 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -30,7 +30,7 @@
-     mem::{ManuallyDrop, MaybeUninit},
-     ops::{Deref, DerefMut},
-     pin::Pin,
--    ptr::{NonNull, Pointee},
-+    ptr::NonNull,
- };
- use macros::pin_data;
- 
-@@ -239,22 +239,20 @@ pub unsafe fn from_raw(ptr: *const T) -> Self {
-         // binary, so its layout is not so large that it can trigger arithmetic overflow.
-         let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
- 
--        let metadata: <T as Pointee>::Metadata = core::ptr::metadata(ptr);
--        // SAFETY: The metadata of `T` and `ArcInner<T>` is the same because `ArcInner` is a struct
--        // with `T` as its last field.
-+        // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
-+        // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
-         //
-         // This is documented at:
-         // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
--        let metadata: <ArcInner<T> as Pointee>::Metadata =
--            unsafe { core::mem::transmute_copy(&metadata) };
-+        let ptr = ptr as *const ArcInner<T>;
-+
-         // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
-         // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
--        let ptr = unsafe { (ptr as *mut u8).sub(val_offset) as *mut () };
--        let ptr = core::ptr::from_raw_parts_mut(ptr, metadata);
-+        let ptr = unsafe { ptr.byte_sub(val_offset) };
- 
-         // SAFETY: By the safety requirements we know that `ptr` came from `Arc::into_raw`, so the
-         // reference count held then will be owned by the new `Arc` object.
--        unsafe { Self::from_inner(NonNull::new_unchecked(ptr)) }
-+        unsafe { Self::from_inner(NonNull::new_unchecked(ptr.cast_mut())) }
-     }
- 
-     /// Returns an [`ArcBorrow`] from the given [`Arc`].
+error[E0425]: cannot find function `dma_pool_create` in crate
+`bindings`
+  --> rust/kernel/dma.rs:92:23
+   |
+92 |             bindings::dma_pool_create(name.as_char_ptr(),
+dev.raw_device(), size, align, boundary)
+   |                       ^^^^^^^^^^^^^^^ not found in `bindings`
 
-base-commit: f090f0d0eea9666a96702b29bc9a64cbabee85c5
--- 
-2.43.0.687.g38aa6559b0-goog
+error[E0425]: cannot find function `dma_pool_alloc` in crate `bindings`
+   --> rust/kernel/dma.rs:116:38
+    |
+116 |         let ptr =3D unsafe { bindings::dma_pool_alloc(self.ptr,
+flags, &mut dma_handle) };
+    |                                      ^^^^^^^^^^^^^^ not found in
+`bindings`
+
+error[E0412]: cannot find type `dma_pool` in crate `bindings`
+   --> rust/kernel/dma.rs:136:42
+    |
+136 |     type AllocationData =3D *mut bindings::dma_pool;
+    |                                          ^^^^^^^^ not found in
+`bindings`
+
+
+
+Switching on PCI, but not PCI's MSI, causes other errors, such as:
+
+  RUSTC L rust/uapi.o
+  EXPORTS rust/exports_alloc_generated.h
+  EXPORTS rust/exports_bindings_generated.h
+  RUSTC L rust/kernel.o
+error[E0425]: cannot find function `pci_alloc_irq_vectors_affinity` in
+crate `bindings`
+   --> rust/kernel/pci.rs:289:23
+    |
+289 |             bindings::pci_alloc_irq_vectors_affinity(
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in
+`bindings`
+
+Strong suspect for the cause is that this function is defined as part
+of MSI, so just activating PCI doesn't suffice.
+
+I verified that this is indeed a config problem. The entire toolchain
+is installed according to the official documentation, selecting that
+one compiler version that currently works etc.
+
+Setting PCI + MSI (and, in Hacking, Rust Hacking -> Allow unoptimized
+build-time assertations) results in a valid build.
+
+
+So, it would seem there are some "deponds on" entries missing
+somewhere.
+Is this problem known? Any plans or suggestions how to deal with it?
+
+My instinct tells me that there could be many potentially broken
+configs out there.
+
+
+Regards,
+P.
 
