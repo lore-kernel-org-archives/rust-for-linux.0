@@ -1,97 +1,98 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CB5134CC4
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 16:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D8E132C10;
+	Thu, 15 Feb 2024 16:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708014163; cv=none; b=jFaO6ro0VkcTxs56pTaf0uWYUyRmAK0on5U5wnoLcf86nMB8keBYHlIAH2Xm6y8wbiHJGVZl/NHyC63O8/8ObVcVIiJjdv3+/eGwTInns/B5bcyJ9pEqI0QLSnW9jUUl/7rLrJGU9eIS0cYk2rDzi11F1p5Vt/N5xudGPZz40mg=
+	t=1708015869; cv=none; b=k/gjCKjy0xzWu1PMdm0cBkKpnn37kOyjVrhiHmnuXJvRzTRGl3O6wp2NGvYxnve1NFMM2kZlcth1K8zxcp5/B0svAJOaHKB7EthK85lQzXXWv3WXQ5m9rzZ7jX3HddiOp9XT9IvVudox7HsdnRGKckHKvEzWShtPKZJewJrryE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708014163; c=relaxed/simple;
-	bh=7AyjKh84fOCvKiTmuhjSM71fcPvLExae8y+tbYKHq0A=;
+	s=arc-20240116; t=1708015869; c=relaxed/simple;
+	bh=ZTNKs342W8J0RINeS6cyL6H9EKrFTjDnEdCGDzi2b7U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JmsxrRZaa+aiDl8kF7GaAGl4BH594p2JFzuHwRWo+B4MX7Z4UI6UMgsoG6E/3AqDTqqDHC1y0mxdHwz8xtqf1BlnbUr+Ny8I9Cx/sXZECjfMgsbrET9oKhdt5n6H7NrD1JKede9knNilneHCs7LBwA8GeZUbFCMeXQZ+bIXlb2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SC8xVZkc; arc=none smtp.client-ip=209.85.219.169
+	 To:Cc:Content-Type; b=fRcIqNPMPVuN+7uJWzPAEIm5sQZypEIDT7eFxplU38T9TUqUyS1JaP2bqlWdBA90bJdOCINapg8WKi8KdCzHE3lspHWOa4F44/D7n8kg1qeDXIxgLRAvqTGSCoNfqmhTA1MJWcapHDDRvRItWvcLsdShs2yBcWYNReJePPOBg2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nsCArCfC; arc=none smtp.client-ip=209.85.219.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SC8xVZkc"
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dcbc00f6c04so973745276.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 08:22:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nsCArCfC"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dcd94fb9e4dso992953276.2;
+        Thu, 15 Feb 2024 08:51:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708014160; x=1708618960; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708015867; x=1708620667; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BGvGfrrYLjrlEnkQvO8Soq6v7mfeS0qmtn6sNjFSZ+A=;
-        b=SC8xVZkcfjYrGI+cd3kLEONBYOW7Gv6CKemTRrsLU3P5PX2G6k4XKgHZlirmGEeS9m
-         fRUeSGRjwAUttC+aU0kLXFZrnA45AKEVieHI1QVQRQfH4LaRmFwHucXJWgP8aYQPjldn
-         4ZHM5wqvjImFtmTz2zzig55zrWl+N5zxPoi0hVo04PGD4qHXA4+AZdQ+mfJr/1Rj59ld
-         0RX1I8+Xz+3fImHRrZ0ymDGVtg+2D89b/WCkF7ScjbK0uh7aJfS/sRe9kz5uKiMe3w0A
-         BX19XSQifLwBztVbZMt9oDnH1POLR1Uc6imurQV7JRACHqRcJDgVyechNR9fkZ1+HkI5
-         d74w==
+        bh=PWbTPSA/om6zR+aNxMvSfqC1qzBEfL0EEjQgcRv0csU=;
+        b=nsCArCfCRBz+o4+rn4OPXKLm7jcGqg+/826nZArCIJ6iUELpUUbf1y4spBn77qK9FO
+         /UMVqedawu9yz0IEafsuVR5jeOdlTcQOgWbqGfL2R7013F+szjFIOtgxS9kXY2462mjb
+         ro1RtJhU9TA63g09HrPm1UN/nlMYsWVHcs0S/kEUTeXUzaXBF3mFiR7Rb7Jco2vY0DIi
+         yDQ/Oi140Wx0hAHu+W9erY4gveEH9HNGoReRX49VlEgze7bdReByDr6resbv0Jwewhrd
+         +dHkQyGvHg5SgjCIvIEZHPYwNfrhtt7VZ2GBTQL3B+o6EDl84HdS6I/v/7e4B8UQ6eie
+         7TzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708014160; x=1708618960;
+        d=1e100.net; s=20230601; t=1708015867; x=1708620667;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BGvGfrrYLjrlEnkQvO8Soq6v7mfeS0qmtn6sNjFSZ+A=;
-        b=w7ap/s0Bsq+SXGZqwyTVAacB0mWm9QgM6mTcbIGHiiLVtHkJ5iAxwfTkmyQdyhVBft
-         TmeXHp3X5Ur5miUbPew7Ijs/eqcbdz0649KuLMjSxsrCZlpIu7C9pvXJNkltcE5iP0Ml
-         R64hOYOfViwpgNWtPn1KDlH6pHijGUAhWyMuQjpzgWPf2mUog4YGNjUfBJNWk6tnb5tm
-         VRoLz5wnld0N/Lhg0rUK8h2xLt9emQcOxzObfGp/PxQ+TisAFlEUgBDAYk9pklmqByv7
-         jV1E6ZI5r0v4QNWMxOvRDYJv9nCR95ObiDbdBHm3CBku8CcjkSZNl4YKhfYH0C/E95iH
-         8fzA==
-X-Gm-Message-State: AOJu0YxJtkmLDQtLHw4zc3tR4mEty6zHJx1fWY8RV37EEd7GH69GR1SD
-	wAI87lxDt+rSCoN4oj/ClaUjsAw4/LQswggD/FBLFQ4BWB0WYsezNurmq96hut8tw2HrmjAguKO
-	JV/IFUnl2JaOZuFwy+nub5r3gB/U=
-X-Google-Smtp-Source: AGHT+IHzjXTzVI1xOq0yK4LeInNN0KVE8pVxLMx/TIrutZJmVvox22Z1nXoorder1s4BOp3/W/t7M1Flbhj0HQVuueU=
-X-Received: by 2002:a25:b20f:0:b0:dc6:9b89:3f75 with SMTP id
- i15-20020a25b20f000000b00dc69b893f75mr2213125ybj.40.1708014160690; Thu, 15
- Feb 2024 08:22:40 -0800 (PST)
+        bh=PWbTPSA/om6zR+aNxMvSfqC1qzBEfL0EEjQgcRv0csU=;
+        b=GQPCK9XM6tZYq/6GAYEcYmvexaR+H+M5FXzJikyx6b3sUSuCXU7+X8crH1Qq4Xuof/
+         p1YUqhy3odBpkvoN59077F5OjWk2pTo+a+irWdTuKywPRthhmJA9RJikXf7G8bRW8ROm
+         MZde+cAgDqsNAjh2t4/bA3u8ZXzpvPw5lqorRkzcNTppocyLSKEWoK70qGZVZlzdKTAA
+         UBJm7ogjRRLkqJ5BoTvH6mDNHIes1EQEPmLOoy7JGpzZ0pIhto+wYzuby9mMRLb9FVaN
+         t3KkYgm54laJaBrGGh0aS7bPBYJroIxyTge6lBeIyg9lOn0RYcrZcysKnlNOR/6faeNA
+         vCfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXg2uQq4XOjppCtN8DCaG1Xhx6YAdzjd+eLY/VWEkUkazNt4VhHfdAgwI5wDYS9DOo23e1dayxxjgrWXUrUEk3Al6IFrKTIKq67MzBI6Z4yCZYRds4cAbPIBOuqORNJ5GeMbx7OqT5Qcq75gI0=
+X-Gm-Message-State: AOJu0Yy5xcJhSPIQoCYOsb6Tleq9H77J7NqzaIaDmSCogT1QS3oHn7rT
+	Zuf5d0Po9FnwDRNRccsMCIWdViT6XkC55VoriJLv7vDsI2R6HpBeQgBlMhaGPmOtxr5oBGgk3Vp
+	AV5Ixj9LVpDhe815als6HsjaxyW4=
+X-Google-Smtp-Source: AGHT+IGsSb79cMuHoz6HBxDYQX0a/FVmzQpTFve9OQZ+ugc/+Zp15WIR5mxYXbWMRZbjv4096l74Fp6GATXyNPowGlo=
+X-Received: by 2002:a0d:cc48:0:b0:607:855f:599d with SMTP id
+ o69-20020a0dcc48000000b00607855f599dmr2296378ywd.14.1708015866785; Thu, 15
+ Feb 2024 08:51:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <803d666dcd5b1f927590719c10bdd90ce2ba6dd0.camel@redhat.com>
-In-Reply-To: <803d666dcd5b1f927590719c10bdd90ce2ba6dd0.camel@redhat.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 15 Feb 2024 17:22:29 +0100
-Message-ID: <CANiq72kQ52nMEhe_-_vxRjV0-BOBU6DbfYUni_SCEaAyrZjc5Q@mail.gmail.com>
-Subject: Re: RfL currently does not integrate very well with some Kconfigs
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, Andreas Hindborg <nmi@metaspace.dk>
+References: <20240212-rust-locks-get-mut-v2-1-5ccd34c2b70b@gmail.com> <CAH5fLghTKpLs=Wb03cjx0LRQbZgmXRoMNy1cyheb7cQRL0mjsw@mail.gmail.com>
+In-Reply-To: <CAH5fLghTKpLs=Wb03cjx0LRQbZgmXRoMNy1cyheb7cQRL0mjsw@mail.gmail.com>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Thu, 15 Feb 2024 13:50:58 -0300
+Message-ID: <CANeycqqwGE_eyFSDWkmHCBOMZ6+Ty-XK_hKixMtOYqc9_46j2A@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: locks: Add `get_mut` method to `Lock`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: mathys35.gasnier@gmail.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 15, 2024 at 4:24=E2=80=AFPM Philipp Stanner <pstanner@redhat.co=
-m> wrote:
+On Mon, 12 Feb 2024 at 11:22, Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> Recently, I've been trying to accomplish some work on the rust-pci
-> branch in RfL.
+> On Mon, Feb 12, 2024 at 3:13=E2=80=AFPM Mathys-Gasnier via B4 Relay
+> <devnull+mathys35.gasnier.gmail.com@kernel.org> wrote:
+> > +    /// Gets the data contained in the lock
+> > +    /// Having a mutable reference to the lock guarantees that no othe=
+r threads have access to the lock.
+> > +    /// Making it safe to get a mutable reference to the lock content.
+> > +    pub fn get_mut(&mut self) -> &mut T {
+> > +        self.data.get_mut()
+> > +    }
+>
+> It's impossible to call this method. You can never have a mutable
+> reference to a Linux mutex because we pin our locks. At most, you can
+> have a Pin<&mut Self>.
 
-For the `rust-pci` branch, please create issues in GitHub, ask in
-Zulip and/or contact Andreas through Zulip like the website mentions.
-It is not code ready for upstreaming. Please see:
+Perhaps you meant to say that it's impossible to call this method
+without unsafe blocks? From a `Pin<&mut T>`, we can call
+`get_unchecked_mut` to get an `&mut T`.
 
-    https://rust-for-linux.com/branches#rust-pci
-    https://github.com/Rust-for-Linux/linux/blob/rust-pci/README
-
-> So, it would seem there are some "deponds on" entries missing
-> somewhere.
-
-It sounds to me like there are missing `#[cfg(...)]`s in the code
-(i.e. conditional compilation), rather than missing `depends on`.
-
-> Is this problem known? Any plans or suggestions how to deal with it?
-
-If you mean the specific issue, Andreas may or may not know already
-about that one, but the suggestion would be to simply add the missing
-`cfg`s -- I think Andreas would welcome a PR.
-
-Thanks for the report!
-
-Cheers,
-Miguel
+This is addressing issue 924 opened by Bj=C3=B6rn some time back. The idea
+here is that if there's a path where avoiding the lock/unlock calls
+(which are expensive because of the memory barriers) is performance
+critical, we can do it as long as we use an unsafe block.
