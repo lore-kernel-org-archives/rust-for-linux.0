@@ -1,146 +1,166 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED48B1BC23
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 09:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FD912DD9F
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 10:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707989921; cv=none; b=HklG+viQqN0XQOxCpnr7smENyTTsU1sQzYIIW3fFgXQ8M2PLmGFh2MLyLbdQof1PjB81u/f+tci+/tdRYjTPM97gppi+1aOlnN66lRNkGb7dN38d97YNtdP6921fyI2E1f0BDKqTiTFb1RhqJbuVsPMIdaZ7+7Rmz6JQBHBhF20=
+	t=1707993986; cv=none; b=Ty35SkfH+IJo7u5va7xYRhAVBlJN8n441Sv0vQvxyfb0YRc+BOKxgDZDmMaxsPV7kLASmoCiU0wYOdShS1xx84bn8IF2wBYZ3qxj9KHioNfih4ej4lxFn55oqULKvie6nRYJZHRtRxVdrZCbbP1tcwn4T2zfrI2bPfK2PBIzBu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707989921; c=relaxed/simple;
-	bh=it7BnFxWql5egUKdtDDvY8KPg5cflOWt+JLgjcC3KC0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MFyfh3YHkH+2/0RCEPM6fVsasvztHSPsntpOVoC/E3qtNlnPowbKkMzhJL4pqSx79quin+kyEmjq5+PKtGd15lGKdjosuiaETvKXnTKuXcwPb0jAYcAnza8QcDZgoHRGUJtrV7zxyxlXbeZam7zYiSD/Mv+exVETHqLtmKCyiGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=saeM4Gzy; arc=none smtp.client-ip=209.85.160.178
+	s=arc-20240116; t=1707993986; c=relaxed/simple;
+	bh=Wjpow9OdLAB7Tv+gTtRq4fdEi+a2MFCDQbMPfSnlgs4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Dq3OJkGTMhY4iK69fekA9McSGKStDOX/m005dHZ87+MIFF5Fd4XPa1CKxyC7pFymc3JEXS7Q+wN+RNzVz2nydB0LDpEKRUXBm8wlbbeo6t/Jen6HOeEyQ/Lyqf+wANieCHjkaJXq0QxmDYtXiX5ORD48kYo/tvgMWBteQon341A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wFlTZbAu; arc=none smtp.client-ip=209.85.167.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="saeM4Gzy"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-42c7f8588c5so5496571cf.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 01:38:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wFlTZbAu"
+Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-5117210e716so567226e87.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 02:46:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707989919; x=1708594719; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oICQappuJZC++sBJTw39WmThX8/WjV4FBmngtKS4IZ4=;
-        b=saeM4GzyNAIQgeCI5H63DVYLsJwYpddVQGbUOK5IO736AMeVOorqJtIDK45CYCSU8T
-         olFs0FH+cBtvaD/cKtrHVt7j7AnH4Q5akD87ka1SVX1Hxx6lhvA5wtoQ8xU8YbNuSwOQ
-         VrxxCpzPQ+PvRCqGT4B+r10A0zw1Zip1yOdde7jUa0gnrEnkenvrluOp1HiiVYWe3GXF
-         H1sR5MRfZKKYsAHKRJ3gREs6kN66wytSd7dJ3jP8XIcwKvkBIcf0em7UJ5xec3HsjnK/
-         ++3CjAiG84VtK91MrzBjmXwmJdtZCzwI8TTd19Vfa2Cdm84nAswY+TPisNX5nTjlTO7+
-         yMBQ==
+        d=google.com; s=20230601; t=1707993983; x=1708598783; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Uuf0w26zOY/ZYw+214pJM99jPH6tZMQ5JsKDNPkdddo=;
+        b=wFlTZbAuj4mGxRER7NIF/dkONC45s0c2Bs+i1YP7dKhS7Lwv6M2Mqq46E/Y6AObTn3
+         PUCLvdhlnmDt5RZjblaV4xpPmmU4QBILfSPIsjSK1RfcJfQRIPXAVQ7Ptp01WvK8MFzU
+         zr6ismTStKvtssdxn68fwki5FlvSaaZEzYiOjZFjCZB7ylgp7z7IoCQtToH8YxsnG0w+
+         lklLoUHKpFG7Dz0WZc1dNNCsH9r5Qz+X6o/p/lMMcP2Sx8JtSLXoqTR4AkV1es/jRGic
+         8JCAf9MRJQ6zWEe2OzYTdH1OrbYZHlVvjVSiScAupO4HZgbw3gwCYdU0RX/voiIq8G7K
+         Sxyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707989919; x=1708594719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oICQappuJZC++sBJTw39WmThX8/WjV4FBmngtKS4IZ4=;
-        b=JTL5blOIKEKBvZho6HXnibccl4/Sr3n2BY/79KPOI718fmPzfXUamm46Xkl0+DLR36
-         0taOFQ4A+m5F/T9EKjBGvpX/DR1ujG5KRz7H+veU0JJx/3QLqzKHL/s7KCa1qX/jCklB
-         sPytSLsuC/BBuwxQZ44HTkZuMADP+7FL89VSLL53Fg8DQRwWQSWXYMxtpGBHpMDfjiQM
-         fSx5KVeLHc+OrWruXlz1kuqU4rgqKpQQ2wyBM5bMj1nfmcYNvozN82Ya283vye3p/jEX
-         09VhG0VAMdi7r6g+uFIWqWW9Az/uvzEKJCnHHLMhDsHlOE+/KC6j+9SnW7fXQFCoyPOE
-         frdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWeHV5DHgvwXDyxASTW8yu7IExZKhgi93wn4gqbJMXh8FFGwXT1n4cRJQ3HUAlp5V71XPpSW3yda6FLUZd6+awiJ9oCIHygzPQFnXY8tTM=
-X-Gm-Message-State: AOJu0YzoZdHwi2ADQ4KQQyL3Pj2Dv8tHHzzUO/B2BrcWZ9soO1ZMt59l
-	mOzjlH612AOAF0twTOn2T0+2m68aev4PWZo9e89YhDIHbdmMjOuFo1E/1LNQVj5pFZueiVbx172
-	7pPBMQeJSGZG3ZT5Mdi5tO0WPCuq8pBlgYuZiMaFjVGfN7Hy8/w==
-X-Google-Smtp-Source: AGHT+IG+kztqZmwXQlQkPjW+/X5+zR7GlUXyVh4bp528TkXP1gDbyhtsWgu623VHoOlMPLeqtZsNrscST/aO+QnFytg=
-X-Received: by 2002:a1f:e444:0:b0:4c0:3c82:5105 with SMTP id
- b65-20020a1fe444000000b004c03c825105mr996849vkh.10.1707989898259; Thu, 15 Feb
- 2024 01:38:18 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707993983; x=1708598783;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Uuf0w26zOY/ZYw+214pJM99jPH6tZMQ5JsKDNPkdddo=;
+        b=R3JjG+6zHHI23HejB0iFCSLf6fiGKCHLa9Pz137UDgD0hRXsxbaPRHaK3CrBvS/uUH
+         xob5qU7CQilqzTQ7REv2BK6x/sXzgvaYDB4bc4nWh46cFx6zD8wLdZ5rKrQz+aRKjBgq
+         px5AZ424pnE63eOyGDgHgv9i1I1Ulr6bCVisRJp6RU5Xh6VyqEBOObE1cC+1k//rijKC
+         lUe/mwWCvNHZSNneujbxrJPzRwVcC9b81b2dv57zD6sAbvrMnuQhFS6VeQ+jrE/+pNin
+         S7U3Zqm4z8/kfrA99Wise7Oqm7tn7M0N6jXzaRAC8VGmqnZZz/FxlECwavrq1kCwfz2r
+         ygdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXYQ1wFvGEzTMdk5B9c21cKyqW5s2ypS7rz2YiVFLtyh/ySmNLXTfyS25kUY5B5AuMBxBTb93CEaJLfV1Q7YBSj2gHVbmZY7ryvRj04Nyk=
+X-Gm-Message-State: AOJu0YwWxoXGbVzJI5Ha6QdX/A1IEuwfL+HudeMX8aZji52TnsIO0WNy
+	XqhcOOgjhRUB4VU+pWU8otV38oKhPE3D6oLhbAGpPeXILvYARx1o6xSn5SPPDGX44yPkRFGY/io
+	1M97h8L0wTz2wUQ==
+X-Google-Smtp-Source: AGHT+IE9zG2u4vdtMqWFUcANs2kx7N8Qf7EJTWQ7H2i+KfsdbYhdQFfsxBZOUZ33yQE5Mqn8w3PW+3+N6KhH9bk=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:ac2:5f45:0:b0:511:7b36:b293 with SMTP id
+ 5-20020ac25f45000000b005117b36b293mr1491lfz.10.1707993982857; Thu, 15 Feb
+ 2024 02:46:22 -0800 (PST)
+Date: Thu, 15 Feb 2024 10:46:01 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240214172505.5044-1-dakr@redhat.com> <Zc0UNUGbmmBlzBAv@boqun-archlinux>
- <2d94d420-fca2-47c1-aee7-bbce7a1505cf@ryhl.io> <Zc1mWCBKNuLrS-tI@boqun-archlinux>
-In-Reply-To: <Zc1mWCBKNuLrS-tI@boqun-archlinux>
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3433; i=aliceryhl@google.com;
+ h=from:subject; bh=Wjpow9OdLAB7Tv+gTtRq4fdEi+a2MFCDQbMPfSnlgs4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBlzeqIUKpX/8JczXxuWtJZWfGOc5q5/Yw8LXTt8
+ H+AO0fSVXKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZc3qiAAKCRAEWL7uWMY5
+ RgeiD/0fIaUn7Rk7askqJtujymGJW1OjLrC+ofrwiSTKw6Ug6sKA/N4UNLrhTazCtGC8mZzRzxZ
+ qO2it4Posj+hFgba2Khi6wXiLXq3PTtS/oK2jx445JBzBYT/qUSdSP4NlgX8NcUZrynlnOg4bek
+ 2cYrUvE379rQ0Xa7ZTWDp8b3jrnD/esGFgkcbg8bn1nyl4fbJ1djLD/m7jFSV/5yBsysSq70dJy
+ fGvXIiPXEm1hWv/BTCiknyTCt/koiFbodfR6svLIhBO4WMS7g6NH7IoA3L7EqXN3ko3WmghCUYp
+ S3//21tc7oagChhHosUQsD2IjxAheQ4slYbULjdgGdrBiuAt162ONfuxvW4kj2Xoxos95KYjTng
+ l3/fcnyFu96tYqQS3PPyTrBXrCePudJyUcFZabeulNOhSthJIONERJV28xL6p/lxUlvWqYdrxB+
+ Y6+8sORRJMOxDP8pPo7kN9aQBhQvv92VhkMnY/LbLi6cQcdwUhDLT/TEtwtpzbb3zPhNiqto4tG
+ eeMgHsmjKhpuXjhY1I+7IFp9zXFk1c/IFNzpyZaul9RGVTuRZSNdx82zaHtazPdSOeeZ99Yo1zq
+ UPJopjCZZN/fHMzmvMQbw37m9B7R6NEZVnmxsjmqom6qhUCMW0ZN1lFYW03Dv/8CJPen01daNbz XwEVrlBhaPXZG4g==
+X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+Message-ID: <20240215104601.1267763-1-aliceryhl@google.com>
+Subject: [PATCH v2] rust: stop using ptr_metadata feature
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 15 Feb 2024 10:38:07 +0100
-Message-ID: <CAH5fLghO6Jy_hJXhRU_+eBSDHHveAvEOJA6fNkmMS9mqHvS6iQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: str: add {make,to}_{upper,lower}case() to CString
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <alice@ryhl.io>, Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>
+Cc: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 15, 2024 at 2:18=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Wed, Feb 14, 2024 at 08:59:06PM +0100, Alice Ryhl wrote:
-> > On 2/14/24 20:27, Boqun Feng wrote:
-> > > On Wed, Feb 14, 2024 at 06:24:10PM +0100, Danilo Krummrich wrote:
-> > > > --- a/rust/kernel/str.rs
-> > > > +++ b/rust/kernel/str.rs
-> > > > @@ -5,7 +5,7 @@
-> > > >   use alloc::alloc::AllocError;
-> > > >   use alloc::vec::Vec;
-> > > >   use core::fmt::{self, Write};
-> > > > -use core::ops::{self, Deref, Index};
-> > > > +use core::ops::{self, Deref, DerefMut, Index};
-> > > >   use crate::{
-> > > >       bindings,
-> > > > @@ -143,6 +143,19 @@ pub const fn from_bytes_with_nul(bytes: &[u8])=
- -> Result<&Self, CStrConvertError
-> > > >           unsafe { core::mem::transmute(bytes) }
-> > > >       }
-> > > > +    /// Creates a mutable [`CStr`] from a `[u8]` without performin=
-g any
-> > > > +    /// additional checks.
-> > > > +    ///
-> > > > +    /// # Safety
-> > > > +    ///
-> > > > +    /// `bytes` *must* end with a `NUL` byte, and should only have=
- a single
-> > > > +    /// `NUL` byte (or the string will be truncated).
-> > > > +    #[inline]
-> > > > +    pub const unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &=
-mut [u8]) -> &mut CStr {
-> > > > +        // SAFETY: Properties of `bytes` guaranteed by the safety =
-precondition.
-> > > > +        unsafe { &mut *(bytes as *mut [u8] as *mut CStr) }
-> > >
-> > > First `.cast::<[u8]>().cast::<CStr>()` is preferred than `as`. Beside=
-s,
-> > > I think the dereference (or reborrow) is only safe if `CStr` is
-> > > `#[repr(transparent)]. I.e.
-> > >
-> > >     #[repr(transparent)]
-> > >     pub struct CStr([u8]);
-> > >
-> > > with that you can implement the function as (you can still use `cast(=
-)`
-> > > implementation, but I sometimes find `transmute` is more simple).
-> > >
-> > >      pub const unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mu=
-t [u8]) -> &mut CStr {
-> > >     // SAFETY: `CStr` is transparent to `[u8]`, so the transmute is
-> > >     // safe to do, and per the function safety requirement, `bytes`
-> > >     // is a valid `CStr`.
-> > >     unsafe { core::mem::transmute(bytes) }
-> > >      }
-> > >
-> > > but this is just my thought, better wait for others' feedback as well=
-.
-> >
-> > Transmuting references is generally frowned upon. It's better to use a
-> > pointer cast.
-> >
->
-> Ok, but honestly, I don't think the pointer casting is better ;-) What
-> wants to be done here is simply converting a `&mut [u8]` to `&mut CStr`,
-> adding two levels of pointer casting is kinda noise. (Also
-> `from_bytes_with_nul` uses `transmute` as well).
+The `byte_sub` method was stabilized in Rust 1.75.0. By using that
+method, we no longer need the unstable `ptr_metadata` feature for
+implementing `Arc::from_raw`.
 
-Here's my logic for preferring pointer casts: Transmute raises
-questions about the layout of fat pointers, whereas pointer casts are
-obviously okay.
+This brings us one step closer towards not using unstable compiler
+features.
 
-Alice
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes since v1:
+- Reword safety comments on metadata.
+- Instead of casting directly to `*mut`, use `cast_mut` for changing the
+  mutability of `ptr`.
+- Added Reviewed-by tags.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240205091842.2858516-1-aliceryhl@google.com/
+
+ rust/kernel/lib.rs      |  1 -
+ rust/kernel/sync/arc.rs | 16 +++++++---------
+ 2 files changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index b89ecf4e97a0..b8d4c8167a29 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -17,7 +17,6 @@
+ #![feature(dispatch_from_dyn)]
+ #![feature(new_uninit)]
+ #![feature(offset_of)]
+-#![feature(ptr_metadata)]
+ #![feature(receiver_trait)]
+ #![feature(unsize)]
+ 
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 77cdbcf7bd2e..a74e1963d89d 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -30,7 +30,7 @@
+     mem::{ManuallyDrop, MaybeUninit},
+     ops::{Deref, DerefMut},
+     pin::Pin,
+-    ptr::{NonNull, Pointee},
++    ptr::NonNull,
+ };
+ use macros::pin_data;
+ 
+@@ -239,22 +239,20 @@ pub unsafe fn from_raw(ptr: *const T) -> Self {
+         // binary, so its layout is not so large that it can trigger arithmetic overflow.
+         let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
+ 
+-        let metadata: <T as Pointee>::Metadata = core::ptr::metadata(ptr);
+-        // SAFETY: The metadata of `T` and `ArcInner<T>` is the same because `ArcInner` is a struct
+-        // with `T` as its last field.
++        // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
++        // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
+         //
+         // This is documented at:
+         // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+-        let metadata: <ArcInner<T> as Pointee>::Metadata =
+-            unsafe { core::mem::transmute_copy(&metadata) };
++        let ptr = ptr as *const ArcInner<T>;
++
+         // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
+         // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
+-        let ptr = unsafe { (ptr as *mut u8).sub(val_offset) as *mut () };
+-        let ptr = core::ptr::from_raw_parts_mut(ptr, metadata);
++        let ptr = unsafe { ptr.byte_sub(val_offset) };
+ 
+         // SAFETY: By the safety requirements we know that `ptr` came from `Arc::into_raw`, so the
+         // reference count held then will be owned by the new `Arc` object.
+-        unsafe { Self::from_inner(NonNull::new_unchecked(ptr)) }
++        unsafe { Self::from_inner(NonNull::new_unchecked(ptr.cast_mut())) }
+     }
+ 
+     /// Returns an [`ArcBorrow`] from the given [`Arc`].
+
+base-commit: f090f0d0eea9666a96702b29bc9a64cbabee85c5
+-- 
+2.43.0.687.g38aa6559b0-goog
+
