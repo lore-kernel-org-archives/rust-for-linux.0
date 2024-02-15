@@ -1,98 +1,182 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D8E132C10;
-	Thu, 15 Feb 2024 16:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD19639FFA;
+	Thu, 15 Feb 2024 16:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708015869; cv=none; b=k/gjCKjy0xzWu1PMdm0cBkKpnn37kOyjVrhiHmnuXJvRzTRGl3O6wp2NGvYxnve1NFMM2kZlcth1K8zxcp5/B0svAJOaHKB7EthK85lQzXXWv3WXQ5m9rzZ7jX3HddiOp9XT9IvVudox7HsdnRGKckHKvEzWShtPKZJewJrryE0=
+	t=1708015918; cv=none; b=rbj8jlnjnp5cvUHO+GKmQYI7Yfn+f1OoI63sP/0d7ebGX/UaQdnpBrVBVE19N7yAhIxH8xhY0j3GWsEQ976LzGYuhF2O9z0UxwGfWFcue5wMrYkk8pM44Rdr7vl7sCL+WaO1gz4lPG+y4atw+snGKZI6N7aA4Uv16necFfiHHkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708015869; c=relaxed/simple;
-	bh=ZTNKs342W8J0RINeS6cyL6H9EKrFTjDnEdCGDzi2b7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fRcIqNPMPVuN+7uJWzPAEIm5sQZypEIDT7eFxplU38T9TUqUyS1JaP2bqlWdBA90bJdOCINapg8WKi8KdCzHE3lspHWOa4F44/D7n8kg1qeDXIxgLRAvqTGSCoNfqmhTA1MJWcapHDDRvRItWvcLsdShs2yBcWYNReJePPOBg2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nsCArCfC; arc=none smtp.client-ip=209.85.219.173
+	s=arc-20240116; t=1708015918; c=relaxed/simple;
+	bh=bIb87f0ha+k0rSp3f5fOXxGzlX1ygs8vIwmMGPt3xRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UbSME0XQaoyXvF7HK+aiySvxO173omWxXJCCy/y7piNxlt0+mS+7yuurbHXXxqY/m3T5NGX+hLZn7LpkOqcJtpwrFrPgt4i9ficCTR9mlBH0eV4qLhBC3tRpRtNMvE1trwt9czRCmdPH4BmHyGvB/vxbZs+DpnegXX8i+sferKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=edPh7iGQ; arc=none smtp.client-ip=209.85.161.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nsCArCfC"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dcd94fb9e4dso992953276.2;
-        Thu, 15 Feb 2024 08:51:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="edPh7iGQ"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5961a2726aaso589096eaf.0;
+        Thu, 15 Feb 2024 08:51:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708015867; x=1708620667; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PWbTPSA/om6zR+aNxMvSfqC1qzBEfL0EEjQgcRv0csU=;
-        b=nsCArCfCRBz+o4+rn4OPXKLm7jcGqg+/826nZArCIJ6iUELpUUbf1y4spBn77qK9FO
-         /UMVqedawu9yz0IEafsuVR5jeOdlTcQOgWbqGfL2R7013F+szjFIOtgxS9kXY2462mjb
-         ro1RtJhU9TA63g09HrPm1UN/nlMYsWVHcs0S/kEUTeXUzaXBF3mFiR7Rb7Jco2vY0DIi
-         yDQ/Oi140Wx0hAHu+W9erY4gveEH9HNGoReRX49VlEgze7bdReByDr6resbv0Jwewhrd
-         +dHkQyGvHg5SgjCIvIEZHPYwNfrhtt7VZ2GBTQL3B+o6EDl84HdS6I/v/7e4B8UQ6eie
-         7TzQ==
+        d=gmail.com; s=20230601; t=1708015916; x=1708620716; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=durVeKI5gvuv8IHAPsa9p6xinXAW6bhXjTGZ7TLW0Uc=;
+        b=edPh7iGQPnSZmIOk5TWP4WT6pH3ygZrPVf0Ikr8uEUOWhFDo3Vq2WCD1BPLDRqAQDb
+         y3BubifrdJZJNQytky8Yrsn4L3W8MoNIrKHRCbKvBjV1MWtfHFvt3OLtgUccfOLmJkBD
+         XsLHL2AXQAG9soX6nFLS4O19jLyfzEPmN7JwrVHzAIq6H1qhrhoHWvT/HGqtw3SwzOSJ
+         o8II1qWimBdni5snwyF8GJtD6/oYS3Ivf2MBFm1hdFf+1CiICYmz8bHaRhHaQDKon5Ug
+         i2QSDSli/vdJ51276PpIPIukHBZEYa+i68dDdxGex8OebZVnVcmV1ajNO3kWKdg7Wjyk
+         WSvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708015867; x=1708620667;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PWbTPSA/om6zR+aNxMvSfqC1qzBEfL0EEjQgcRv0csU=;
-        b=GQPCK9XM6tZYq/6GAYEcYmvexaR+H+M5FXzJikyx6b3sUSuCXU7+X8crH1Qq4Xuof/
-         p1YUqhy3odBpkvoN59077F5OjWk2pTo+a+irWdTuKywPRthhmJA9RJikXf7G8bRW8ROm
-         MZde+cAgDqsNAjh2t4/bA3u8ZXzpvPw5lqorRkzcNTppocyLSKEWoK70qGZVZlzdKTAA
-         UBJm7ogjRRLkqJ5BoTvH6mDNHIes1EQEPmLOoy7JGpzZ0pIhto+wYzuby9mMRLb9FVaN
-         t3KkYgm54laJaBrGGh0aS7bPBYJroIxyTge6lBeIyg9lOn0RYcrZcysKnlNOR/6faeNA
-         vCfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXg2uQq4XOjppCtN8DCaG1Xhx6YAdzjd+eLY/VWEkUkazNt4VhHfdAgwI5wDYS9DOo23e1dayxxjgrWXUrUEk3Al6IFrKTIKq67MzBI6Z4yCZYRds4cAbPIBOuqORNJ5GeMbx7OqT5Qcq75gI0=
-X-Gm-Message-State: AOJu0Yy5xcJhSPIQoCYOsb6Tleq9H77J7NqzaIaDmSCogT1QS3oHn7rT
-	Zuf5d0Po9FnwDRNRccsMCIWdViT6XkC55VoriJLv7vDsI2R6HpBeQgBlMhaGPmOtxr5oBGgk3Vp
-	AV5Ixj9LVpDhe815als6HsjaxyW4=
-X-Google-Smtp-Source: AGHT+IGsSb79cMuHoz6HBxDYQX0a/FVmzQpTFve9OQZ+ugc/+Zp15WIR5mxYXbWMRZbjv4096l74Fp6GATXyNPowGlo=
-X-Received: by 2002:a0d:cc48:0:b0:607:855f:599d with SMTP id
- o69-20020a0dcc48000000b00607855f599dmr2296378ywd.14.1708015866785; Thu, 15
- Feb 2024 08:51:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708015916; x=1708620716;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=durVeKI5gvuv8IHAPsa9p6xinXAW6bhXjTGZ7TLW0Uc=;
+        b=qHJ2GsUYw/ivq6zWUSDCTccEBTKvYPi8L90qKeafLGcxBidFOOVKy4ncb0+MlFxs9n
+         c0iFJ1VqYnzN/wCwH1vCE7qRzkAcEMd58yHMK8CJxa6ySz1L1rbyIGD5Dlx5nWNqDP8a
+         06c13y9PNjIx8/jb124csOoI1sbiVtgC7jGSQXN+EGjpUUMRkPX7ZAABDkvgLAPo4ntE
+         bKJZBgOI13hyDPmCzDyy5rLefg814K9fRLJULshdRlmF2bYnESGvdn28ynGdpSc0Zd7t
+         w6pWxk0bL+hGN4qdpEJlNAwjQ3uOPQ5ZulbblNbhbAd57svJZzruzPSU9DlzJwKcHGXL
+         ikNA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxVYhJoCgBmR7lsj31iOnGwwpLbscVa8ylB5L6Hrl1bR/yB0REFN788jpiPKwG0igogY3L6GJDfz4MLqgnJ84664MMjjj+EZlxBCRslsz7o/BGzmU4GKQB9M4cMRlgbZmpN6R0ZC/IFMosj4Q=
+X-Gm-Message-State: AOJu0Yx9tGG44eKeNqVyd4yigjso9VQ8rvM6W/5YgSfMnwQv8UeB10mR
+	QLICH2ruxiqGBDoRJn7xGm1NI3EFjmHLF0tO8rGG54mEs/wj7U98MPylbisa
+X-Google-Smtp-Source: AGHT+IHZesbuT3/Li6hgbi52LevzFXLA7HIbT4zp86JZJYkBMC0NgAGBi0PowxYYCctrC6zEiDVr5A==
+X-Received: by 2002:a05:6358:578e:b0:176:8263:9a71 with SMTP id m14-20020a056358578e00b0017682639a71mr2463765rwf.13.1708015915729;
+        Thu, 15 Feb 2024 08:51:55 -0800 (PST)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id k16-20020ac84790000000b0042c774f882asm714987qtq.73.2024.02.15.08.51.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Feb 2024 08:51:55 -0800 (PST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id C8EF71200043;
+	Thu, 15 Feb 2024 11:51:54 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 15 Feb 2024 11:51:54 -0500
+X-ME-Sender: <xms:KkHOZSslqJ1eJNIX9C3efVtKu--lGadGvi_lEww3LO-0QuR2kTnNwg>
+    <xme:KkHOZXeRlgdm7sj8mzTc2ub5HcypOkzqmcsEUktK5zyRNHYcJG4GkanPTqLGjjBko
+    YeToYlnS87vd7cRVg>
+X-ME-Received: <xmr:KkHOZdwx4cSBWdPGW6LT6vw0zTTQS6iHs5wRjjelddj5AtFyVc4CzfZPLbk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddtgdelgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeevgffhueevkedutefgveduuedujeefledthffgheegkeekiefgudekhffg
+    geelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:KkHOZdNOYSoj1ylfPqGKxjYGIQZuO2T89UR2wd2QAoZbw8qq-jtc3A>
+    <xmx:KkHOZS_mB1nNS8VT5WhUD7nJONcquSlmVNEIKKr5NxV6JUvdUx7WLA>
+    <xmx:KkHOZVXYZXfjBIU7w6js4uvqhLRG4keXZebCAhTsNxdmc-wfgfgQRg>
+    <xmx:KkHOZdVnJVbErNlepq9lUrLBfW73zT6P0M4lryzVdHLMRXzn1LiwRN2hefg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Feb 2024 11:51:53 -0500 (EST)
+Date: Thu, 15 Feb 2024 08:51:50 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Alice Ryhl <alice@ryhl.io>, Danilo Krummrich <dakr@redhat.com>,
+	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: str: add {make,to}_{upper,lower}case() to
+ CString
+Message-ID: <Zc5BJvyGIXgDQ21j@boqun-archlinux>
+References: <20240214172505.5044-1-dakr@redhat.com>
+ <Zc0UNUGbmmBlzBAv@boqun-archlinux>
+ <2d94d420-fca2-47c1-aee7-bbce7a1505cf@ryhl.io>
+ <Zc1mWCBKNuLrS-tI@boqun-archlinux>
+ <CAH5fLghO6Jy_hJXhRU_+eBSDHHveAvEOJA6fNkmMS9mqHvS6iQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240212-rust-locks-get-mut-v2-1-5ccd34c2b70b@gmail.com> <CAH5fLghTKpLs=Wb03cjx0LRQbZgmXRoMNy1cyheb7cQRL0mjsw@mail.gmail.com>
-In-Reply-To: <CAH5fLghTKpLs=Wb03cjx0LRQbZgmXRoMNy1cyheb7cQRL0mjsw@mail.gmail.com>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Thu, 15 Feb 2024 13:50:58 -0300
-Message-ID: <CANeycqqwGE_eyFSDWkmHCBOMZ6+Ty-XK_hKixMtOYqc9_46j2A@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: locks: Add `get_mut` method to `Lock`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: mathys35.gasnier@gmail.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLghO6Jy_hJXhRU_+eBSDHHveAvEOJA6fNkmMS9mqHvS6iQ@mail.gmail.com>
 
-On Mon, 12 Feb 2024 at 11:22, Alice Ryhl <aliceryhl@google.com> wrote:
->
-> On Mon, Feb 12, 2024 at 3:13=E2=80=AFPM Mathys-Gasnier via B4 Relay
-> <devnull+mathys35.gasnier.gmail.com@kernel.org> wrote:
-> > +    /// Gets the data contained in the lock
-> > +    /// Having a mutable reference to the lock guarantees that no othe=
-r threads have access to the lock.
-> > +    /// Making it safe to get a mutable reference to the lock content.
-> > +    pub fn get_mut(&mut self) -> &mut T {
-> > +        self.data.get_mut()
-> > +    }
->
-> It's impossible to call this method. You can never have a mutable
-> reference to a Linux mutex because we pin our locks. At most, you can
-> have a Pin<&mut Self>.
+On Thu, Feb 15, 2024 at 10:38:07AM +0100, Alice Ryhl wrote:
+> On Thu, Feb 15, 2024 at 2:18 AM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > On Wed, Feb 14, 2024 at 08:59:06PM +0100, Alice Ryhl wrote:
+> > > On 2/14/24 20:27, Boqun Feng wrote:
+> > > > On Wed, Feb 14, 2024 at 06:24:10PM +0100, Danilo Krummrich wrote:
+> > > > > --- a/rust/kernel/str.rs
+> > > > > +++ b/rust/kernel/str.rs
+> > > > > @@ -5,7 +5,7 @@
+> > > > >   use alloc::alloc::AllocError;
+> > > > >   use alloc::vec::Vec;
+> > > > >   use core::fmt::{self, Write};
+> > > > > -use core::ops::{self, Deref, Index};
+> > > > > +use core::ops::{self, Deref, DerefMut, Index};
+> > > > >   use crate::{
+> > > > >       bindings,
+> > > > > @@ -143,6 +143,19 @@ pub const fn from_bytes_with_nul(bytes: &[u8]) -> Result<&Self, CStrConvertError
+> > > > >           unsafe { core::mem::transmute(bytes) }
+> > > > >       }
+> > > > > +    /// Creates a mutable [`CStr`] from a `[u8]` without performing any
+> > > > > +    /// additional checks.
+> > > > > +    ///
+> > > > > +    /// # Safety
+> > > > > +    ///
+> > > > > +    /// `bytes` *must* end with a `NUL` byte, and should only have a single
+> > > > > +    /// `NUL` byte (or the string will be truncated).
+> > > > > +    #[inline]
+> > > > > +    pub const unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mut [u8]) -> &mut CStr {
+> > > > > +        // SAFETY: Properties of `bytes` guaranteed by the safety precondition.
+> > > > > +        unsafe { &mut *(bytes as *mut [u8] as *mut CStr) }
+> > > >
+> > > > First `.cast::<[u8]>().cast::<CStr>()` is preferred than `as`. Besides,
+> > > > I think the dereference (or reborrow) is only safe if `CStr` is
+> > > > `#[repr(transparent)]. I.e.
+> > > >
+> > > >     #[repr(transparent)]
+> > > >     pub struct CStr([u8]);
+> > > >
+> > > > with that you can implement the function as (you can still use `cast()`
+> > > > implementation, but I sometimes find `transmute` is more simple).
+> > > >
+> > > >      pub const unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mut [u8]) -> &mut CStr {
+> > > >     // SAFETY: `CStr` is transparent to `[u8]`, so the transmute is
+> > > >     // safe to do, and per the function safety requirement, `bytes`
+> > > >     // is a valid `CStr`.
+> > > >     unsafe { core::mem::transmute(bytes) }
+> > > >      }
+> > > >
+> > > > but this is just my thought, better wait for others' feedback as well.
+> > >
+> > > Transmuting references is generally frowned upon. It's better to use a
+> > > pointer cast.
+> > >
+> >
+> > Ok, but honestly, I don't think the pointer casting is better ;-) What
+> > wants to be done here is simply converting a `&mut [u8]` to `&mut CStr`,
+> > adding two levels of pointer casting is kinda noise. (Also
+> > `from_bytes_with_nul` uses `transmute` as well).
+> 
+> Here's my logic for preferring pointer casts: Transmute raises
+> questions about the layout of fat pointers, whereas pointer casts are
+> obviously okay.
+> 
 
-Perhaps you meant to say that it's impossible to call this method
-without unsafe blocks? From a `Pin<&mut T>`, we can call
-`get_unchecked_mut` to get an `&mut T`.
+But in this case, eventually you need to worry about fat pointer layout
+when you dereference the `*mut CStr`, right? In other words, the
+dereference is only safe if `*mut [u8]` has the same fat pointer layout
+as `*mut CStr`. I prefer to transmute here because it's a newtype
+paradigm, and transmute kinda makes that clear.
 
-This is addressing issue 924 opened by Bj=C3=B6rn some time back. The idea
-here is that if there's a path where avoiding the lock/unlock calls
-(which are expensive because of the memory barriers) is performance
-critical, we can do it as long as we use an unsafe block.
+Regards,
+Boqun
+
+> Alice
