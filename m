@@ -1,77 +1,170 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B9C23D0
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Feb 2024 20:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3C51B810
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 09:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708030541; cv=none; b=FxJ7XrN5wAtiTGXD81PNyxSSpxD3pJoMOX6WfP4b+n4ERP3gYN2GEj+SGfc9HTSFfX+jC2AV6htjW8a3Vr72tzFEKiHUOBL1uy0Lh797wgVkd8DmyGf6lbwTZQhLvDuvMdFsqIf5ECH6O7w/gq80OKcciTjonNpO6kocb4TyKXU=
+	t=1708074603; cv=none; b=JnMtyOljVXv3FuxFiKLQ4PW9V0bD7h8xxcXkdSwAqDRbwvTNn5vNlQHCB9/3C/SyKob99t6a6ebrs4Ts2m6Qhbzfy+toSvKWU8E9vDsh2864vVFhuqa2oy0OKHar0BDE8lQs6oDzkvjxkTPFsyC5uY2aIXovIHlii0Lpa3w4D8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708030541; c=relaxed/simple;
-	bh=KIzclAEwIBOpeiVA2+aczTSaIGRAkzsbbq/mkVVWP3w=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=maZP4A62IfTOfRIfKW76yRoJoPNE/Br88ooBQXI21pJUkrTscvbNCaUePEK99HoH48DTH5VgYT44pE4UNjgk/3BcfuXdA7YmM26ixS5A1L/kBPqXH1eY/agY8TD28aeDrVycmEY13ock4Uv22tqgiVfscUmBfRk71dqIQHW2L4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=L09ZpbTP; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1708074603; c=relaxed/simple;
+	bh=RKdmNzovEWVqmjvCpvHCRoTK7UqOk6nOdR+X9CIp0mM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TNdyW7ZTq2mj3AtPhiT8+maUfF47J1Iv2cDB1bcun7DNOaF4LYpo0OmFGzJJVWRyBRlriRSgau395+1SWmwoR8WLdtZCKfz+dM8uWtyW9WgAsTIHzccJKmApotNOitCZyl4zyHVqSUpNoEPqBoKrHEdr0bk7k0iCTdZ2GAVw8kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MKKyLvzm; arc=none smtp.client-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="L09ZpbTP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1708030531; x=1708289731;
-	bh=I2h/y93EAF/twExyQBodY/TNxbTPVRXIQA2iO81nDHM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=L09ZpbTPW4NhqOgttk85t9GN/cPdz5IspaAs/NTTA8hHGGxf+7MN+acZ08CWhbenJ
-	 VJNAirwqu98ppKBKAkGI0ghy0YyX3vCck9y+4cAwi1BwqWXv4oZzwGpfvZMgEDtFoZ
-	 6OpU9wUKVkCmszaJwIVYwi+cVkKhs+HijEWBp6+x834wBbpOOJ1c3qusCCRZpLqyum
-	 DahMNNA6LNsRSF5bauuEI3jdvA9240zKdpQItQS3smvegNHXyCsHh0pJ//oNs+dZEO
-	 iV5pQvJ/c7eRueI9lHwJkbBRughouLgPpjD1s4tPlSI6bQ9gJ1/BQ7FbZgG+D6dy8T
-	 kKswLbYzOgqiA==
-Date: Thu, 15 Feb 2024 20:55:11 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>, Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: mathys35.gasnier@gmail.com, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v2] rust: locks: Add `get_mut` method to `Lock`
-Message-ID: <ff06ddd4-808a-44fd-9230-f60aa43ec1de@proton.me>
-In-Reply-To: <CANeycqqwGE_eyFSDWkmHCBOMZ6+Ty-XK_hKixMtOYqc9_46j2A@mail.gmail.com>
-References: <20240212-rust-locks-get-mut-v2-1-5ccd34c2b70b@gmail.com> <CAH5fLghTKpLs=Wb03cjx0LRQbZgmXRoMNy1cyheb7cQRL0mjsw@mail.gmail.com> <CANeycqqwGE_eyFSDWkmHCBOMZ6+Ty-XK_hKixMtOYqc9_46j2A@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MKKyLvzm"
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7d2a78c49d1so913752241.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 01:10:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708074601; x=1708679401; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BFXkHkaZjLIExOljo2tyqPMEuvx89YjO8mstMPgUNwM=;
+        b=MKKyLvzmpGO5DRroKxzFrjhFIeDtFTiZb2MVMm/WRYFrr84tTx/PHjPZacChq00eyX
+         13nhXr/xn7428ctE/XDd9atSqYRc235ZDBQ1Lf3/rLsBPoTTuRbRXXwFxAs/GCnMmb2t
+         l2ioT/ci/CaF4lUj3+A8bAveUYK0697GNYuYh+o+eT+jhgBweOlug1Y5Adwxs+ZfaYif
+         UoCabZ2+jsMs+7DuT+kx2CAlKVUzON1B/6Ck3w8DJVzbm8Rwfu9DpVkIfAYOMysuH6Da
+         /NDFJLO27UFvOdG+HhYembLvPNyuU2hiMf4J8GZMdNlRnK/EcQnfwCDcxWWnJ22wyxl0
+         IWZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708074601; x=1708679401;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BFXkHkaZjLIExOljo2tyqPMEuvx89YjO8mstMPgUNwM=;
+        b=nvtvUiPBXnx4KU4XWOSkeh0lcVdSsda3VY4AwcY8a0i3eDPCq/tQpgu3yylMDDzWzH
+         tS/s/zJ/pbAL/azNHGbQMY3aXZKkd3vryUmS2vE/utR05zaPZpTXescrxMinLzZi5Ek/
+         cL/Hl9acsnxtKh1IgwKnRt5Fap71nk0qF9UAWL7vo4BaAfCwrKkj47ckC/KKp49z6hWk
+         kukY7kEgGhWeC5PeD8uFhNVRf2A3QJ6iwSJnabCCD4u0an9/DSM6YEWWq7hRXLEEfT14
+         Jt+lEJ2YWijDBC9fPZBG7asdqlIpRuLyHzEpvUsun8O+OAb1hFzUTuaeHMrOW+intOxD
+         q60A==
+X-Forwarded-Encrypted: i=1; AJvYcCU4FVhNyPbwokKpcotV4d+Rhyww6UIcpeAec70jCwDeD9Zi1hgwE9tJOUXz+g9+cWjh8uBKd8OixJ4t92ui05y70TCTi1hN9F55hV/90Ig=
+X-Gm-Message-State: AOJu0YxX5bq03LcHdxKzx7BBt6uXudTfA8ng0ylq3XLAhuhAktsNrZNm
+	nW5FBxTkwDWbdho8iHA2yPzX5VcaycWaAmkQtC53DghvZGTjRAjM43krhzExtABIcO55Uvj1jcs
+	hZRdrJoipkxF5BfUV6IhuqoVBq6/lkjy13ao5
+X-Google-Smtp-Source: AGHT+IE+YRbJk7VDMzz3D3amekUL1+l3+CmSNZ5i1D/cQ5UH+VxvljUAhLV8lOJpACZwspK/ZLU2oy1303I7RbZw0xE=
+X-Received: by 2002:a05:6102:35c:b0:46d:1ffd:d87d with SMTP id
+ e28-20020a056102035c00b0046d1ffdd87dmr3366416vsa.17.1708074600649; Fri, 16
+ Feb 2024 01:10:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240214172505.5044-1-dakr@redhat.com> <Zc0UNUGbmmBlzBAv@boqun-archlinux>
+ <2d94d420-fca2-47c1-aee7-bbce7a1505cf@ryhl.io> <Zc1mWCBKNuLrS-tI@boqun-archlinux>
+ <CAH5fLghO6Jy_hJXhRU_+eBSDHHveAvEOJA6fNkmMS9mqHvS6iQ@mail.gmail.com> <Zc5BJvyGIXgDQ21j@boqun-archlinux>
+In-Reply-To: <Zc5BJvyGIXgDQ21j@boqun-archlinux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 16 Feb 2024 10:09:49 +0100
+Message-ID: <CAH5fLggP+vBN=X8TDVkV4Le=Np=5hiCGn5fo+N9=H70zRKXAYw@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: str: add {make,to}_{upper,lower}case() to CString
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Alice Ryhl <alice@ryhl.io>, Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 15.02.24 17:50, Wedson Almeida Filho wrote:
-> On Mon, 12 Feb 2024 at 11:22, Alice Ryhl <aliceryhl@google.com> wrote:
->>
->> On Mon, Feb 12, 2024 at 3:13=E2=80=AFPM Mathys-Gasnier via B4 Relay
->> <devnull+mathys35.gasnier.gmail.com@kernel.org> wrote:
->>> +    /// Gets the data contained in the lock
->>> +    /// Having a mutable reference to the lock guarantees that no othe=
-r threads have access to the lock.
->>> +    /// Making it safe to get a mutable reference to the lock content.
->>> +    pub fn get_mut(&mut self) -> &mut T {
->>> +        self.data.get_mut()
->>> +    }
->>
->> It's impossible to call this method. You can never have a mutable
->> reference to a Linux mutex because we pin our locks. At most, you can
->> have a Pin<&mut Self>.
->=20
-> Perhaps you meant to say that it's impossible to call this method
-> without unsafe blocks? From a `Pin<&mut T>`, we can call
-> `get_unchecked_mut` to get an `&mut T`.
+On Thu, Feb 15, 2024 at 5:51=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Thu, Feb 15, 2024 at 10:38:07AM +0100, Alice Ryhl wrote:
+> > On Thu, Feb 15, 2024 at 2:18=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
+> > >
+> > > On Wed, Feb 14, 2024 at 08:59:06PM +0100, Alice Ryhl wrote:
+> > > > On 2/14/24 20:27, Boqun Feng wrote:
+> > > > > On Wed, Feb 14, 2024 at 06:24:10PM +0100, Danilo Krummrich wrote:
+> > > > > > --- a/rust/kernel/str.rs
+> > > > > > +++ b/rust/kernel/str.rs
+> > > > > > @@ -5,7 +5,7 @@
+> > > > > >   use alloc::alloc::AllocError;
+> > > > > >   use alloc::vec::Vec;
+> > > > > >   use core::fmt::{self, Write};
+> > > > > > -use core::ops::{self, Deref, Index};
+> > > > > > +use core::ops::{self, Deref, DerefMut, Index};
+> > > > > >   use crate::{
+> > > > > >       bindings,
+> > > > > > @@ -143,6 +143,19 @@ pub const fn from_bytes_with_nul(bytes: &[=
+u8]) -> Result<&Self, CStrConvertError
+> > > > > >           unsafe { core::mem::transmute(bytes) }
+> > > > > >       }
+> > > > > > +    /// Creates a mutable [`CStr`] from a `[u8]` without perfo=
+rming any
+> > > > > > +    /// additional checks.
+> > > > > > +    ///
+> > > > > > +    /// # Safety
+> > > > > > +    ///
+> > > > > > +    /// `bytes` *must* end with a `NUL` byte, and should only =
+have a single
+> > > > > > +    /// `NUL` byte (or the string will be truncated).
+> > > > > > +    #[inline]
+> > > > > > +    pub const unsafe fn from_bytes_with_nul_unchecked_mut(byte=
+s: &mut [u8]) -> &mut CStr {
+> > > > > > +        // SAFETY: Properties of `bytes` guaranteed by the saf=
+ety precondition.
+> > > > > > +        unsafe { &mut *(bytes as *mut [u8] as *mut CStr) }
+> > > > >
+> > > > > First `.cast::<[u8]>().cast::<CStr>()` is preferred than `as`. Be=
+sides,
+> > > > > I think the dereference (or reborrow) is only safe if `CStr` is
+> > > > > `#[repr(transparent)]. I.e.
+> > > > >
+> > > > >     #[repr(transparent)]
+> > > > >     pub struct CStr([u8]);
+> > > > >
+> > > > > with that you can implement the function as (you can still use `c=
+ast()`
+> > > > > implementation, but I sometimes find `transmute` is more simple).
+> > > > >
+> > > > >      pub const unsafe fn from_bytes_with_nul_unchecked_mut(bytes:=
+ &mut [u8]) -> &mut CStr {
+> > > > >     // SAFETY: `CStr` is transparent to `[u8]`, so the transmute =
+is
+> > > > >     // safe to do, and per the function safety requirement, `byte=
+s`
+> > > > >     // is a valid `CStr`.
+> > > > >     unsafe { core::mem::transmute(bytes) }
+> > > > >      }
+> > > > >
+> > > > > but this is just my thought, better wait for others' feedback as =
+well.
+> > > >
+> > > > Transmuting references is generally frowned upon. It's better to us=
+e a
+> > > > pointer cast.
+> > > >
+> > >
+> > > Ok, but honestly, I don't think the pointer casting is better ;-) Wha=
+t
+> > > wants to be done here is simply converting a `&mut [u8]` to `&mut CSt=
+r`,
+> > > adding two levels of pointer casting is kinda noise. (Also
+> > > `from_bytes_with_nul` uses `transmute` as well).
+> >
+> > Here's my logic for preferring pointer casts: Transmute raises
+> > questions about the layout of fat pointers, whereas pointer casts are
+> > obviously okay.
+> >
+>
+> But in this case, eventually you need to worry about fat pointer layout
+> when you dereference the `*mut CStr`, right? In other words, the
+> dereference is only safe if `*mut [u8]` has the same fat pointer layout
+> as `*mut CStr`. I prefer to transmute here because it's a newtype
+> paradigm, and transmute kinda makes that clear.
 
-That is the wrong way to design this, since it forces an extra
-`unsafe` call. Instead this function's receiver type should be
-`self: Pin<&mut Self>`.
+No, if the `*mut CStr` and `*mut [u8]` types disagree on whether the
+data or vtable pointer is first in the layout, then an as cast should
+swap them.
 
---=20
-Cheers,
-Benno
+The question of whether their vtables (well I guess it's just a length
+in this case) are compatible is separate.
 
+Alice
