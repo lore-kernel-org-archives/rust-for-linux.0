@@ -1,97 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C18F137C34
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 15:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FD12F5A9
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 15:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708097249; cv=none; b=MqiFZVm0rYGsCR0YMHYauSbdNLxIHANxladjf3Jclmt58VayHg0h8odN/yCMkvdnpt6nQj+tk9BR7EdG6tckHynAkLre1zD4u9OoO1XFJIGmmg1A0yBpu0NXwQsDNeN+G+ETZJ2U1P6jyj1mOjGzogrNEZZ/7ODWffslTgy/JdY=
+	t=1708098594; cv=none; b=WsnCHo9LVlBJaHKzd5ZXPSRfPg4tnPVLsVH2B9km1+G0SBiQA8acgbII7/WvcBb6zL1bGqgK9ZNHXCCwQR+GTG2z7Xq/nxgxE/q3SrmiB/4ZI+YlheEjMD13EnF/HFkFl4nAHiiMyEqgwct0fag4wLYPvDwSTZORnWmNAJzX/m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708097249; c=relaxed/simple;
-	bh=RNK2sG5wfKabRr6Yw0QR0l1RTAQkSx4Vv5t39pJ+j8U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M6KwsQq995qE+exvMkybY6np/hrOHwL5OKLNt5R+3NNtK78ph4qsSmdyp3VU2RJYj1mQOETc7ZY+Zy1m6NOqe2f7DewGpTsVd/w1BlgtpDyb0xGZETAa+hWqeR1K2/nuKkYuqptkcME+yb6G0jtIDDUqyTGA9XxH6WCS/331mCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DTpg+5xh; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1708098594; c=relaxed/simple;
+	bh=6p7cJfgCAEYYTU2u1OdYN0EtrCgTQ1erqggD+neD8eI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OhjPG8kDEYL4j6hTOsfLIAasNagCagZ99Vj/4uJiFQyrvp1YJBUtXiReEyCfSwB3qKaAlSJy09cBdF+SX3ChmEa1d1Jp18GMPjeTXfrQcjxWQ7I3l4OUPKCf7GHufsHHzA4JckziWWU4QJE/zlCNfPydNqU3KYkoesqMb7mxuWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WWRM/ymY; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DTpg+5xh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708097248; x=1739633248;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RNK2sG5wfKabRr6Yw0QR0l1RTAQkSx4Vv5t39pJ+j8U=;
-  b=DTpg+5xhxv2lbdsVEnIxvcjauVFZsD1oNBzCQePx0A8HIQvl59OjNNy6
-   HEH7rGJWgP7yMGIHKJMPGSYoGEjfQyoYGKZsgDTnKX67BM8Ml93SpAXWP
-   aELUjU636QKDYIu61od3DNr7L0miQazXcsJXXU29B2Fg2x2Izo6e6vl7n
-   oUE1sy+IgzCCw0r1J+FQEu2xNLI68y8xhIzfsUQSzWKUO1BOADTGAB3fy
-   nofgwBUsxOrlnwDwwhYAqFJflGv7zayfEXp6BKSv19YG9eQaphsOIybbS
-   f9v1UR++MkmBIxxKcQ7h999xxtcsDteD/+Klkt7DyDcIWHIYsxzEoaBqE
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="13621503"
-X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
-   d="scan'208";a="13621503"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 07:27:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="935860021"
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="935860021"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 16 Feb 2024 07:27:24 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 87C8C2DC; Fri, 16 Feb 2024 17:27:23 +0200 (EET)
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH] rust: bindings: Order headers alphabetically
-Date: Fri, 16 Feb 2024 17:27:23 +0200
-Message-ID: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WWRM/ymY"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-607a84acf6aso7845347b3.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 07:49:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708098590; x=1708703390; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6p7cJfgCAEYYTU2u1OdYN0EtrCgTQ1erqggD+neD8eI=;
+        b=WWRM/ymYVpOGleSIsBnOi/luhyODD/yWHXnbK4ezwlait8jso7/Dw9e0V1MB2P4yhg
+         Jk+O6wgysVioX2XagIdRIMz2Ye+jr1gTSvrx7ucGzqaQgr19KTSqScBVzQNQFkrlLb7p
+         k0Pkaxk/PAiyuFXY7KDb5ibkwJVNhIARO8LE47Cn5g58HcEjshJHaECc98q2qMDXw4tZ
+         SeoGKdqXsw9dgmUGSlTRjZNzmbkfyF470qa4YjS+J7jTkZ9iNn9+sdGeoka4vkYUFW16
+         wDQGVzAgelq6mWBx6MaQvfIngQJNwVisCnK/nLN7pHMItHGhZZIq67cvqzB9GMYgwOPw
+         WWMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708098590; x=1708703390;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6p7cJfgCAEYYTU2u1OdYN0EtrCgTQ1erqggD+neD8eI=;
+        b=CeR878DtiRgXoOOjiZ617+I3snBWct13XSsE1Yck/wnCEXsWNgtPQlo1mzUR7zO6fz
+         CiUv6IqT+2wdW88wkc77Xf6XwCQ4uLELuv7pDBmDcM6LXkQnnbZ+fkksD5ey/S2W8V07
+         IV9tEOc8zuu9Hi1ShUA+EjYDhwrrk+rXFIWKfYNJLcnus6/wAsprdrLs52RD4Np+uNyp
+         X4pwc4u5OtxfoLb25Wim22633Hc8X9fWT0fksjSl4zcfUfAbp4lTMQ6tQDQLRUXWst4D
+         NZPrOvYiwr7AM/CVMyTFd6Ue3tMxMap+9RPKGep3pUtr83x5OwkBr856oGyz/Mldl0Ed
+         poYg==
+X-Gm-Message-State: AOJu0Yy4y0bswFp87KbfEjiq0P2n1VRzOy4VPPOx2Ym0Hk/XUDXaM0Lc
+	UNCu0eLhaZO5gUK+4MUR5CifeknMju13frCItOwAozjdllgl8hqR9QncQygTJhzks5zJv0TFQi1
+	3B0o2vbmgdpeNXFg5hISXUnh/dow5nYxVNnHdEw==
+X-Google-Smtp-Source: AGHT+IG4f8/C0whQ5JA87B9NP59E/2ZLlChizaxxf7Z5Uh8Jf3Jnh/TjQNEYVsHdvRZGf1jsVxZGOtl3V60hUykk7ZQ=
+X-Received: by 2002:a25:7457:0:b0:dc6:bcd5:9503 with SMTP id
+ p84-20020a257457000000b00dc6bcd59503mr4763012ybc.48.1708098590546; Fri, 16
+ Feb 2024 07:49:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
+In-Reply-To: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 16 Feb 2024 16:49:39 +0100
+Message-ID: <CANiq72=6oea6zNvC3LUGN98tSdPwGFEeO78N_-p2hkUEuuvKqA@mail.gmail.com>
+Subject: Re: [PATCH] rust: bindings: Order headers alphabetically
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Roy Matero <materoy@proton.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-As the comment on top of the file suggests, sort the headers
-alphabetically.
+On Fri, Feb 16, 2024 at 4:27=E2=80=AFPM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+>
+> As the comment on top of the file suggests, sort the headers
+> alphabetically.
 
-No functional changes.
+This is https://github.com/Rust-for-Linux/linux/issues/1002 and there
+was https://lore.kernel.org/rust-for-linux/20230426224748.34056-1-materoy@p=
+roton.me/
+(Cc'ing Roy).
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- rust/bindings/bindings_helper.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+But since the v2 never arrived, I guess we will just go with this one.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 936651110c39..65b98831b975 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -12,10 +12,10 @@
- #include <linux/jiffies.h>
- #include <linux/mdio.h>
- #include <linux/phy.h>
--#include <linux/slab.h>
- #include <linux/refcount.h>
--#include <linux/wait.h>
- #include <linux/sched.h>
-+#include <linux/slab.h>
-+#include <linux/wait.h>
- #include <linux/workqueue.h>
- 
- /* `bindgen` gets confused at certain things. */
--- 
-2.40.1
+Thanks!
 
+Cheers,
+Miguel
