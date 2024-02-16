@@ -1,83 +1,139 @@
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C8C43687
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 16:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF20D12EBF4
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 16:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708101825; cv=none; b=sMe0RU3cZCwf7C4lIYMjBz5H2xNaUUt4uetRN9HIf4Vbk8ZBfomiSVf3hKPKlvDJVVM3CEARJz/qCOtc4wVyNgsCsTCnWpgUBX7Q7uINSzyCJn1uE5xiYpLvvqTG6X1nAku0/OtF8iyuGcDoYPzx8UzSP858APo1Bet8wPHTymg=
+	t=1708102405; cv=none; b=gJYk6RiOfMaZyBFMYElbru215VnXFUMx3e8geDIaR5S9X2KjLoYjHox1dE5oX0teIVa8bWJYwxoZ1pJqtnYvOQB7YGGcfv76MgTq/2xzlUnMAlgfEyd2iT9215H23dvHSOL/IswPnxC2EgUL/0sPvo0+TQV2iCuBcK8qHENgzo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708101825; c=relaxed/simple;
-	bh=KTrwh8Rjypze4XrAz5GzpqtMQB5UT715a9wiNdq6DwQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V6AQcgRy0KZ8dtwyYl7jzS3LilUoButKoqX7Gtm2CF0Sxfy8K+GGg/KfpsWREZkQnwh500DbztvswVbDu7uMOtb0f//XeEYOrRkahGg4xaBMVctL2kXkcvroHDGUf0RskNLU1O43YuOAsGWWoHoTgC9cWp+G2otJJz1ZBH7+YKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DCxjOk2P; arc=none smtp.client-ip=209.85.217.46
+	s=arc-20240116; t=1708102405; c=relaxed/simple;
+	bh=+sI6/arw4pHUlSy2P7FUAboUipEszX2peP0Agji1zh0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Ine5Vedk9hFHqXHXNeWW493XzcD2lBtCumJ7AiH13Vnvri+6dza/MkYQPyTkpW3aMBfVIpVqB9ZYh8CrB8kGVyZ3+EQJhDL/5E03QpvSuaAkfhySOvq/iIsP5LcEeUPKsY7spYmU4m1pen5GtHyhb7H3SRabzhjgXOYgVwIbvh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FBYTll7I; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DCxjOk2P"
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-467e4a04086so170742137.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 08:43:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FBYTll7I"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5f38d676cecso39659807b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 08:53:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708101822; x=1708706622; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KTrwh8Rjypze4XrAz5GzpqtMQB5UT715a9wiNdq6DwQ=;
-        b=DCxjOk2PXcZ6yVCzLTszT7ET8aBVYMAd1vAfqNWyDR7/jRk5L+famI5I6qo0+0dNcD
-         OjeqcRcz1Rhcg6L31vrJYKK5WommzTxzXCV8Afn6miz/zxtDtHweWpoCmpEZH4Bm1GUH
-         opu5xpDkfsGIWDiLN1oagXgeUjHbXjpeADMGQl36VXk2c8Mybh4Bu+yTTsz2eUA68o95
-         ZcDQj4JWUg3q77EIC9kNuyTP75QuPsQRNyCpAexVCEbsCcZPn4+UsCPJNuXN6QxbPq5e
-         ugeP566+Xev+2JrUgtBIOY0DD4+f6Gy2RWQgFdP4JGHtHqwc6ApKNTTUbhGTmyG5KPY0
-         7kQA==
+        d=google.com; s=20230601; t=1708102403; x=1708707203; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UXS1gX5/Xy6PLxYM9RfnwBDoH8Pa3vSwtFNHUTxgmps=;
+        b=FBYTll7IG/IXJaa9GAs4tCoembR4ylNRKm5NYRz7l8dmZYtFwwCliJdxQ6qbNI8ffb
+         Q1GA1JFrCmQpZZQJ/ljtBDyosbcIN+H5O0uj9fJMkqhacVkh/YUxV4pk0yAFNC8UKdWg
+         ec4OHnUst4yE8YDbOCWcjSXbfdfTT+gMIDYt4MG9Ba6ZwwPzThl3bNmXecYTLhB2GhC/
+         sqCbmV9MJzOpd1cEHOy+uKDLJ3eB6XhJV+WxCdhFsOlr0IGkR5Wbxye/ds/DA/U14PUZ
+         xUfaEzGOZMAKuBBFBTt8mtqE3sRx9/L66bhy4L/Rng7NIIZSCJnTt4EmJKByr8XdeWlx
+         9h7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708101822; x=1708706622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KTrwh8Rjypze4XrAz5GzpqtMQB5UT715a9wiNdq6DwQ=;
-        b=Wafb5RqDtKy5ZQfMH2Yo10wBGhZ81inP5ByKV8V679NM4Js8WcyRVWCt+LpYsknqVd
-         KJeJL1FFpwHuFWBe1h7BPmFBCIbJpixo6RDYUSu/limVeRMcypqwyoCcI86PSw1/YW92
-         7+hVWKGXiAVIMFP+JhvEbgdekYMZxPFBY6HLit1Qn3/EsD2xe82Sn/qFhz0KMMyvTdzS
-         RCMfSm59ur9SMm8xyQetuO7BbGGCXwaBQJfR354V2lBoIkZE7vDy8S6Z0gLVNhd49rtn
-         ZjVPK79j/FaZy5EaBSOdOaZ3DLkeY/+CL8uBnBte80pnSwAkvQgfdRO2oSTteanhOBH/
-         W/FQ==
-X-Gm-Message-State: AOJu0YwfXG5uzVTWygj56qOViipOzUHOikVSlIUmRy1BOkKfoVvFoTwU
-	yqz2uu6rQh8ejrMyVb1EWvKQ/suA1E614PVIBJPJqXi27cUZiTmBu+b4vDaF/J8cYNB+a9a3R/q
-	mQFev72osQWjAaZAAF3w4trjIh8FSJjJ4Fd3/
-X-Google-Smtp-Source: AGHT+IEXwKSOr6kzJvlf8bY4T0WPzQZawUfd487rew3KKDgstDGtcWkztKtKcllQBjSvKypA357C0uq0a789+KiMLyI=
-X-Received: by 2002:a05:6102:1488:b0:46e:ccf3:28a0 with SMTP id
- d8-20020a056102148800b0046eccf328a0mr5268613vsv.20.1708101822170; Fri, 16 Feb
- 2024 08:43:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708102403; x=1708707203;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UXS1gX5/Xy6PLxYM9RfnwBDoH8Pa3vSwtFNHUTxgmps=;
+        b=sThzwTYCP7SwUmPZlpwzpUzxiweoGy44LFHYG1luJCFzM4J1gswPbXkopUJm7R1k5q
+         DTZlBfF8GQG/PE+VUC6brCYAqHe8my6lc5IMsiGV7Mtd9TflgewHZDuB+CrCP9kDo2F7
+         wIfrK7SkH/6Iov0+hA+MHZknrLcHnu2R7E0DMZDgzFd6paC2cugEK6qhe0chUkurDhuV
+         g31OuAM1FYn3Wk2oGIczqmwjQVDuydKvrTmvnbgMPUYLR0te2LCVtT/mECbYMRnIvsHr
+         sD9IZm8qNhBzE/6zf4ZSzaRE2tg/TFytZv+7JLCtDhXaEpXSmyvu5PuO/oZOCxv2TCZK
+         G2VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJrXS+anCawbnuOOx1NHSdcMR7ZwT3W6JlMRssJKvdlWrcF8hqjw3bf7FH5bjwwKOZzHsNxnRjFekfsE86h0PFkKC+3yn90QiASZNns4w=
+X-Gm-Message-State: AOJu0YwlgCU/bnnFg9XQpJTLvBs9RLHpndy2In5DilXyv8w08opCcses
+	OD1sMCsaORoSHnECzRELBB0PKfuAelLUgKTPE7dt0sNMzLCN6/C6WeVrgx++jDpIMIVjmtwbvdc
+	O19ZLN8tFIDaA6w==
+X-Google-Smtp-Source: AGHT+IGBxcUNdP7+M7iOUi+IxF7eNsX6SiwX1KHA/WlIg1zz7hHGs/AOt9gSw9o3mqWt/AEFxu+OVjXUjMjRt0U=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a81:6c14:0:b0:5ff:6e82:ea31 with SMTP id
+ h20-20020a816c14000000b005ff6e82ea31mr1184941ywc.3.1708102402988; Fri, 16 Feb
+ 2024 08:53:22 -0800 (PST)
+Date: Fri, 16 Feb 2024 16:53:20 +0000
+In-Reply-To: <20240214172505.5044-1-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
-In-Reply-To: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
+Mime-Version: 1.0
+References: <20240214172505.5044-1-dakr@redhat.com>
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Message-ID: <20240216165320.1820346-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3] rust: str: add {make,to}_{upper,lower}case() to CString
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 16 Feb 2024 17:43:31 +0100
-Message-ID: <CAH5fLgidiAJYTuONztfkgJvK4HVg4=JGVXD6nkK7eSCPRS-arg@mail.gmail.com>
-Subject: Re: [PATCH] rust: bindings: Order headers alphabetically
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: dakr@redhat.com
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Feb 16, 2024 at 4:27=E2=80=AFPM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> As the comment on top of the file suggests, sort the headers
-> alphabetically.
->
-> No functional changes.
->
-> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> +    pub fn make_ascii_lowercase(&mut self) {
+> +        self.0.make_ascii_lowercase();
+> +    }
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+It's important to note here that this doesn't remove or introduce NUL
+bytes.
+
+pub fn make_ascii_lowercase(&mut self) {
+    // INVARIANT: This doesn't introduce or remove NUL bytes in the c
+    // string.
+    self.0.make_ascii_lowercase();
+}
+
+Ditto for make_ascii_uppercase. (But not the to_* methods.)
+
+> +    /// Returns a copy of this [`CString`] where each character is mapped to its
+> +    /// ASCII lower case equivalent.
+> +    ///
+> +    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
+> +    /// but non-ASCII letters are unchanged.
+> +    ///
+> +    /// To lowercase the value in-place, use [`make_ascii_lowercase`].
+> +    ///
+> +    /// [`make_ascii_lowercase`]: str::make_ascii_lowercase
+> +    pub fn to_ascii_lowercase(&self) -> Result<CString, AllocError> {
+> +        let mut s = (*self).to_cstring()?;
+> +
+> +        s.make_ascii_lowercase();
+> +
+> +        return Ok(s);
+> +    }
+> +
+> +    /// Returns a copy of this [`CString`] where each character is mapped to its
+> +    /// ASCII upper case equivalent.
+> +    ///
+> +    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
+> +    /// but non-ASCII letters are unchanged.
+> +    ///
+> +    /// To uppercase the value in-place, use [`make_ascii_uppercase`].
+> +    ///
+> +    /// [`make_ascii_uppercase`]: str::make_ascii_uppercase
+> +    pub fn to_ascii_uppercase(&self) -> Result<CString, AllocError> {
+> +        let mut s = (*self).to_cstring()?;
+> +
+> +        s.make_ascii_uppercase();
+> +
+> +        return Ok(s);
+> +    }
+
+Please move these to `CStr` as well.
+
+> +impl DerefMut for CString {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        unsafe { CStr::from_bytes_with_nul_unchecked_mut(&mut *self.buf) }
+> +    }
+> +}
+
+Needs a safety comment.
+
+impl DerefMut for CString {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        // SAFETY: A `CString` is always NUL-terminated and contains no
+	// other NUL bytes.
+        unsafe { CStr::from_bytes_with_nul_unchecked_mut(&mut *self.buf) }
+    }
+}
+
+Alice
