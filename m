@@ -1,170 +1,97 @@
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3C51B810
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 09:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C18F137C34
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 15:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708074603; cv=none; b=JnMtyOljVXv3FuxFiKLQ4PW9V0bD7h8xxcXkdSwAqDRbwvTNn5vNlQHCB9/3C/SyKob99t6a6ebrs4Ts2m6Qhbzfy+toSvKWU8E9vDsh2864vVFhuqa2oy0OKHar0BDE8lQs6oDzkvjxkTPFsyC5uY2aIXovIHlii0Lpa3w4D8o=
+	t=1708097249; cv=none; b=MqiFZVm0rYGsCR0YMHYauSbdNLxIHANxladjf3Jclmt58VayHg0h8odN/yCMkvdnpt6nQj+tk9BR7EdG6tckHynAkLre1zD4u9OoO1XFJIGmmg1A0yBpu0NXwQsDNeN+G+ETZJ2U1P6jyj1mOjGzogrNEZZ/7ODWffslTgy/JdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708074603; c=relaxed/simple;
-	bh=RKdmNzovEWVqmjvCpvHCRoTK7UqOk6nOdR+X9CIp0mM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TNdyW7ZTq2mj3AtPhiT8+maUfF47J1Iv2cDB1bcun7DNOaF4LYpo0OmFGzJJVWRyBRlriRSgau395+1SWmwoR8WLdtZCKfz+dM8uWtyW9WgAsTIHzccJKmApotNOitCZyl4zyHVqSUpNoEPqBoKrHEdr0bk7k0iCTdZ2GAVw8kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MKKyLvzm; arc=none smtp.client-ip=209.85.222.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1708097249; c=relaxed/simple;
+	bh=RNK2sG5wfKabRr6Yw0QR0l1RTAQkSx4Vv5t39pJ+j8U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M6KwsQq995qE+exvMkybY6np/hrOHwL5OKLNt5R+3NNtK78ph4qsSmdyp3VU2RJYj1mQOETc7ZY+Zy1m6NOqe2f7DewGpTsVd/w1BlgtpDyb0xGZETAa+hWqeR1K2/nuKkYuqptkcME+yb6G0jtIDDUqyTGA9XxH6WCS/331mCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DTpg+5xh; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MKKyLvzm"
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7d2a78c49d1so913752241.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Feb 2024 01:10:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708074601; x=1708679401; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BFXkHkaZjLIExOljo2tyqPMEuvx89YjO8mstMPgUNwM=;
-        b=MKKyLvzmpGO5DRroKxzFrjhFIeDtFTiZb2MVMm/WRYFrr84tTx/PHjPZacChq00eyX
-         13nhXr/xn7428ctE/XDd9atSqYRc235ZDBQ1Lf3/rLsBPoTTuRbRXXwFxAs/GCnMmb2t
-         l2ioT/ci/CaF4lUj3+A8bAveUYK0697GNYuYh+o+eT+jhgBweOlug1Y5Adwxs+ZfaYif
-         UoCabZ2+jsMs+7DuT+kx2CAlKVUzON1B/6Ck3w8DJVzbm8Rwfu9DpVkIfAYOMysuH6Da
-         /NDFJLO27UFvOdG+HhYembLvPNyuU2hiMf4J8GZMdNlRnK/EcQnfwCDcxWWnJ22wyxl0
-         IWZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708074601; x=1708679401;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BFXkHkaZjLIExOljo2tyqPMEuvx89YjO8mstMPgUNwM=;
-        b=nvtvUiPBXnx4KU4XWOSkeh0lcVdSsda3VY4AwcY8a0i3eDPCq/tQpgu3yylMDDzWzH
-         tS/s/zJ/pbAL/azNHGbQMY3aXZKkd3vryUmS2vE/utR05zaPZpTXescrxMinLzZi5Ek/
-         cL/Hl9acsnxtKh1IgwKnRt5Fap71nk0qF9UAWL7vo4BaAfCwrKkj47ckC/KKp49z6hWk
-         kukY7kEgGhWeC5PeD8uFhNVRf2A3QJ6iwSJnabCCD4u0an9/DSM6YEWWq7hRXLEEfT14
-         Jt+lEJ2YWijDBC9fPZBG7asdqlIpRuLyHzEpvUsun8O+OAb1hFzUTuaeHMrOW+intOxD
-         q60A==
-X-Forwarded-Encrypted: i=1; AJvYcCU4FVhNyPbwokKpcotV4d+Rhyww6UIcpeAec70jCwDeD9Zi1hgwE9tJOUXz+g9+cWjh8uBKd8OixJ4t92ui05y70TCTi1hN9F55hV/90Ig=
-X-Gm-Message-State: AOJu0YxX5bq03LcHdxKzx7BBt6uXudTfA8ng0ylq3XLAhuhAktsNrZNm
-	nW5FBxTkwDWbdho8iHA2yPzX5VcaycWaAmkQtC53DghvZGTjRAjM43krhzExtABIcO55Uvj1jcs
-	hZRdrJoipkxF5BfUV6IhuqoVBq6/lkjy13ao5
-X-Google-Smtp-Source: AGHT+IE+YRbJk7VDMzz3D3amekUL1+l3+CmSNZ5i1D/cQ5UH+VxvljUAhLV8lOJpACZwspK/ZLU2oy1303I7RbZw0xE=
-X-Received: by 2002:a05:6102:35c:b0:46d:1ffd:d87d with SMTP id
- e28-20020a056102035c00b0046d1ffdd87dmr3366416vsa.17.1708074600649; Fri, 16
- Feb 2024 01:10:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DTpg+5xh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708097248; x=1739633248;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RNK2sG5wfKabRr6Yw0QR0l1RTAQkSx4Vv5t39pJ+j8U=;
+  b=DTpg+5xhxv2lbdsVEnIxvcjauVFZsD1oNBzCQePx0A8HIQvl59OjNNy6
+   HEH7rGJWgP7yMGIHKJMPGSYoGEjfQyoYGKZsgDTnKX67BM8Ml93SpAXWP
+   aELUjU636QKDYIu61od3DNr7L0miQazXcsJXXU29B2Fg2x2Izo6e6vl7n
+   oUE1sy+IgzCCw0r1J+FQEu2xNLI68y8xhIzfsUQSzWKUO1BOADTGAB3fy
+   nofgwBUsxOrlnwDwwhYAqFJflGv7zayfEXp6BKSv19YG9eQaphsOIybbS
+   f9v1UR++MkmBIxxKcQ7h999xxtcsDteD/+Klkt7DyDcIWHIYsxzEoaBqE
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="13621503"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="13621503"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 07:27:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="935860021"
+X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
+   d="scan'208";a="935860021"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 16 Feb 2024 07:27:24 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 87C8C2DC; Fri, 16 Feb 2024 17:27:23 +0200 (EET)
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH] rust: bindings: Order headers alphabetically
+Date: Fri, 16 Feb 2024 17:27:23 +0200
+Message-ID: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240214172505.5044-1-dakr@redhat.com> <Zc0UNUGbmmBlzBAv@boqun-archlinux>
- <2d94d420-fca2-47c1-aee7-bbce7a1505cf@ryhl.io> <Zc1mWCBKNuLrS-tI@boqun-archlinux>
- <CAH5fLghO6Jy_hJXhRU_+eBSDHHveAvEOJA6fNkmMS9mqHvS6iQ@mail.gmail.com> <Zc5BJvyGIXgDQ21j@boqun-archlinux>
-In-Reply-To: <Zc5BJvyGIXgDQ21j@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 16 Feb 2024 10:09:49 +0100
-Message-ID: <CAH5fLggP+vBN=X8TDVkV4Le=Np=5hiCGn5fo+N9=H70zRKXAYw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: str: add {make,to}_{upper,lower}case() to CString
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <alice@ryhl.io>, Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 15, 2024 at 5:51=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Thu, Feb 15, 2024 at 10:38:07AM +0100, Alice Ryhl wrote:
-> > On Thu, Feb 15, 2024 at 2:18=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > On Wed, Feb 14, 2024 at 08:59:06PM +0100, Alice Ryhl wrote:
-> > > > On 2/14/24 20:27, Boqun Feng wrote:
-> > > > > On Wed, Feb 14, 2024 at 06:24:10PM +0100, Danilo Krummrich wrote:
-> > > > > > --- a/rust/kernel/str.rs
-> > > > > > +++ b/rust/kernel/str.rs
-> > > > > > @@ -5,7 +5,7 @@
-> > > > > >   use alloc::alloc::AllocError;
-> > > > > >   use alloc::vec::Vec;
-> > > > > >   use core::fmt::{self, Write};
-> > > > > > -use core::ops::{self, Deref, Index};
-> > > > > > +use core::ops::{self, Deref, DerefMut, Index};
-> > > > > >   use crate::{
-> > > > > >       bindings,
-> > > > > > @@ -143,6 +143,19 @@ pub const fn from_bytes_with_nul(bytes: &[=
-u8]) -> Result<&Self, CStrConvertError
-> > > > > >           unsafe { core::mem::transmute(bytes) }
-> > > > > >       }
-> > > > > > +    /// Creates a mutable [`CStr`] from a `[u8]` without perfo=
-rming any
-> > > > > > +    /// additional checks.
-> > > > > > +    ///
-> > > > > > +    /// # Safety
-> > > > > > +    ///
-> > > > > > +    /// `bytes` *must* end with a `NUL` byte, and should only =
-have a single
-> > > > > > +    /// `NUL` byte (or the string will be truncated).
-> > > > > > +    #[inline]
-> > > > > > +    pub const unsafe fn from_bytes_with_nul_unchecked_mut(byte=
-s: &mut [u8]) -> &mut CStr {
-> > > > > > +        // SAFETY: Properties of `bytes` guaranteed by the saf=
-ety precondition.
-> > > > > > +        unsafe { &mut *(bytes as *mut [u8] as *mut CStr) }
-> > > > >
-> > > > > First `.cast::<[u8]>().cast::<CStr>()` is preferred than `as`. Be=
-sides,
-> > > > > I think the dereference (or reborrow) is only safe if `CStr` is
-> > > > > `#[repr(transparent)]. I.e.
-> > > > >
-> > > > >     #[repr(transparent)]
-> > > > >     pub struct CStr([u8]);
-> > > > >
-> > > > > with that you can implement the function as (you can still use `c=
-ast()`
-> > > > > implementation, but I sometimes find `transmute` is more simple).
-> > > > >
-> > > > >      pub const unsafe fn from_bytes_with_nul_unchecked_mut(bytes:=
- &mut [u8]) -> &mut CStr {
-> > > > >     // SAFETY: `CStr` is transparent to `[u8]`, so the transmute =
-is
-> > > > >     // safe to do, and per the function safety requirement, `byte=
-s`
-> > > > >     // is a valid `CStr`.
-> > > > >     unsafe { core::mem::transmute(bytes) }
-> > > > >      }
-> > > > >
-> > > > > but this is just my thought, better wait for others' feedback as =
-well.
-> > > >
-> > > > Transmuting references is generally frowned upon. It's better to us=
-e a
-> > > > pointer cast.
-> > > >
-> > >
-> > > Ok, but honestly, I don't think the pointer casting is better ;-) Wha=
-t
-> > > wants to be done here is simply converting a `&mut [u8]` to `&mut CSt=
-r`,
-> > > adding two levels of pointer casting is kinda noise. (Also
-> > > `from_bytes_with_nul` uses `transmute` as well).
-> >
-> > Here's my logic for preferring pointer casts: Transmute raises
-> > questions about the layout of fat pointers, whereas pointer casts are
-> > obviously okay.
-> >
->
-> But in this case, eventually you need to worry about fat pointer layout
-> when you dereference the `*mut CStr`, right? In other words, the
-> dereference is only safe if `*mut [u8]` has the same fat pointer layout
-> as `*mut CStr`. I prefer to transmute here because it's a newtype
-> paradigm, and transmute kinda makes that clear.
+As the comment on top of the file suggests, sort the headers
+alphabetically.
 
-No, if the `*mut CStr` and `*mut [u8]` types disagree on whether the
-data or vtable pointer is first in the layout, then an as cast should
-swap them.
+No functional changes.
 
-The question of whether their vtables (well I guess it's just a length
-in this case) are compatible is separate.
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ rust/bindings/bindings_helper.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Alice
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 936651110c39..65b98831b975 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -12,10 +12,10 @@
+ #include <linux/jiffies.h>
+ #include <linux/mdio.h>
+ #include <linux/phy.h>
+-#include <linux/slab.h>
+ #include <linux/refcount.h>
+-#include <linux/wait.h>
+ #include <linux/sched.h>
++#include <linux/slab.h>
++#include <linux/wait.h>
+ #include <linux/workqueue.h>
+ 
+ /* `bindgen` gets confused at certain things. */
+-- 
+2.40.1
+
