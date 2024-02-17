@@ -1,847 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D50A3839D;
-	Sat, 17 Feb 2024 00:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7981CA87;
+	Sat, 17 Feb 2024 05:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708129649; cv=none; b=rAs8dwWAa5z6ZorJD+KOshbCfUSwnaxxLuQWJ6nYDXcVsoZdgoYgOcQISFTvbleejOfko4yPW/IEB0JpzTkoTI8oQb1r/4MV6IF7LijvjwOdz/3i3RJf3LMHlNDBimxjcFJ8SG4TTmwPfl4ffcoF75NHtumudswBKRsas4UCnck=
+	t=1708149461; cv=none; b=V9gepoyHM/7RDIQTIMZdZ39PLRAFpU066CqArp2B3WvmHoRWZIDQtI1tgzisK517hNBJzVGMA6GzM/7HvF1uQRSILa90OYXKKW/50eK6eXoUDSc0vJvT3DPW97BhHBHXoCYfUiKAPoqB8WNdIVvVtvv0ke6IfOC0C1xgy0h6Kuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708129649; c=relaxed/simple;
-	bh=g/RU53sMRHoLs8BuGKPCQwDiAoboP3ufEKh49Q7smAk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ka71pbJQzbcNtn1crIH1UjQUrp58XWTW8/+D1Ot/VLqcmySHxii79TvJ+A2UcIFrcr77R2yz5WhMCEiYUA6KaZ6zGzasmC3Zzl/1Zv5NnHqboj9hNY+Ws6H/WCy+9th3MLxKxg8UPp28uXMiuKUQ4kJUUyrS0NyDYCHX8c97R9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqtjfuQe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708149461; c=relaxed/simple;
+	bh=te3NvISa2cg+5326YYQR9qU1/sfQi28dFBgXgq7HymI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hAOuGhaDTOsYEJgiILsS5v1S9qLKubiCcl6Obae84FVGEpVgdNUg73vteEdqyP1xow2oWzwX+u/6jyxeHTbvRTCwFewQ0BmwrpvDY5TfcOcE+lahoIOANAb67wRTXiAbXcsY5zP02p5LE/BTYXFzygORbT+DXoFtsWTsfrvZDRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H3+QHFWA; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqtjfuQe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF1EC433F1;
-	Sat, 17 Feb 2024 00:27:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708129649;
-	bh=g/RU53sMRHoLs8BuGKPCQwDiAoboP3ufEKh49Q7smAk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XqtjfuQeNqhhEg8dojd+H4hz+KRQl6+nn//rZTqKlOsz9b7tyLzigFYCcyhxoDZIA
-	 FWb6/hOFQTqcKQAHWfOxNySDciUXS9E6E51F6/yJfpgQfdCoJ+iJxuCkDbN3zJA2Lf
-	 MlNAU3d10PARL3DqxNym8vrjjkar6qhMz3QMcrsKoV4nY59viB2E/pjXxRQJp3nlYf
-	 kWus1yGqsvp+PUHr/CWQPW0v/kjJt0tGV2sy/AK1H3auclWDGWHdWgT4OGJbugWzwW
-	 Yey8l0keDPsNEFul7nZtSYYrbeeOT4y1CcpiYVBYIs9KI8mzld7YQZYiYKHCsdgMYN
-	 7PN+0C/RPuOzw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H3+QHFWA"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7872614af89so279798985a.0;
+        Fri, 16 Feb 2024 21:57:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708149459; x=1708754259; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+uCjdazgHe9L1xw/mXjLr8atA9J7oVAnfB8tvbVqeMc=;
+        b=H3+QHFWADbTAqHfPwGQxW00WmkAviWd490l3E+tAdvlb4XZslilBk9TS1EGiwWGfC1
+         xGHGLs+c8T8MHaqahBORWA3ISysHAYd6sIFIwYHrMN1G3Arr9DeKyUhaVeEqVmE4f9LM
+         lG9MhQqUEg0vUjHsx39cXsT4GORYufJRymc+eSMI/wd2cjCfbmn+ejf3FPACYukCQfvw
+         XogAxnR8v/NRHHZEVD0LqnBJq7PtD7LA6Uq05Rh1UY3LkPLjPnIlEulYH3d53VpUmha/
+         fNQZjmmqBZfR3gaKvTjoWLYNbcPpbPUoHn0CqP8DrsMDEM9X2E3TCjJNvXe4mTDNlsMg
+         i+tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708149459; x=1708754259;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+uCjdazgHe9L1xw/mXjLr8atA9J7oVAnfB8tvbVqeMc=;
+        b=vrtGeNqGzNsIIJwin4p0XziK25FWNqLdpDeLWIVi5sZOPKAyPIduaf5Ezn9hxrNCCY
+         x1ujtT6NkfdaC+Fy5UerWMzo2noqQygI+pZeYjU2oEK6FpKWGsDvPvpQASzJ/Xn8NmIM
+         edOWd8odsi1+ZGhCUFrCk86bLrucjTFI8gNnsNCRFY2LXzgRXLy6eJbdY6PYfCB/+w8T
+         iJ1Yy8lhScSNaeb+JkXcUTo0qoU+I/gOAwjtbgmFPspGhZ8vJ6UAODrJCAVsGMgkPS6b
+         xElLhRu6Px3tITeuJs8FXMuuakNSEdl9fBj85zlgHAyDWdHP+kJHbM+SYqbgFBZQQfyZ
+         IxNA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIlG2dYHeYy4yTIK9jCE1A2uYPTxYgKpMHD92G3qaAbvCCkKRnTmIQS3TBDYzfp7Tqp+8rfwl4JOFH5Q0tJ1n8KEmqUlE9LUoQQqBsGXDW3K+sDDiF1J8ehgmeHZxzJxLw6FPXGtVVwYkcaIhVs/rlUbRReaRGEhVIQjJQxooCgbQZ+gpqKdExYCY=
+X-Gm-Message-State: AOJu0YxjjnxHxJNeScbU2qoRSXMYGnxdz9Im/wySxp7qP8OunAY3gFAN
+	SILPbquI/TOC2eLRmBqHwNVMv3bv4JA7dSuWcbcdsB5ikSywu0jY
+X-Google-Smtp-Source: AGHT+IHwSaPs/0sTuYyvoGkTZ9yU/0PeCt6IS+EHLIK/2TZ+2uktYLYLIeclv/Cjb75EaezoyQI1FA==
+X-Received: by 2002:a0c:e408:0:b0:68f:35f5:8e96 with SMTP id o8-20020a0ce408000000b0068f35f58e96mr5046198qvl.25.1708149459024;
+        Fri, 16 Feb 2024 21:57:39 -0800 (PST)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id ks6-20020a056214310600b0068f2b9a6ec7sm702735qvb.18.2024.02.16.21.57.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Feb 2024 21:57:38 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id B55151200043;
+	Sat, 17 Feb 2024 00:57:37 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Sat, 17 Feb 2024 00:57:37 -0500
+X-ME-Sender: <xms:0UrQZdnfl4NbTm4uWwvRVrT6KieJBsb00dcr25ZfdE3qfs15uacr3A>
+    <xme:0UrQZY1hyUy8DmVym6YNHGUBsFsc5lNvw0_d32anhjOlz2QQ5urOLEcsw6yrQP9tq
+    lBIFoxJg79MTnh4_Q>
+X-ME-Received: <xmr:0UrQZTqPv8oUezjWvoIIodh5eP7ENC5bWY2foa9JZUls14MjyMBHrfMvSKvkbw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdefgdeklecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
+    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:0UrQZdmDmQj-P7KHbcNASwtq7JAZ1BrQPiK-E-lqlF65y2xhdvLgzw>
+    <xmx:0UrQZb3dIYw7qCeZEQJj9YmN5RTW4f8e5oDhDqTAt-JPDWrZ17tZMw>
+    <xmx:0UrQZcvTxegSNMCIva8DBaFco6dAUbvTZaFvuRtT8NQMQyMtGrRFOA>
+    <xmx:0UrQZS10S57g9lkxQrt_FC_ZufMGm7kpcGl1dfJOf10mLNIdT9NZ5nGSoH8>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 17 Feb 2024 00:57:37 -0500 (EST)
+Date: Fri, 16 Feb 2024 21:57:29 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: upgrade to Rust 1.77.0
-Date: Sat, 17 Feb 2024 01:27:17 +0100
-Message-ID: <20240217002717.57507-1-ojeda@kernel.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 2/2] rust: upgrade to Rust 1.76.0
+Message-ID: <ZdBKycd6mPI5cpkA@boqun-archlinux>
+References: <20240217002638.57373-1-ojeda@kernel.org>
+ <20240217002638.57373-2-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240217002638.57373-2-ojeda@kernel.org>
 
-This is the next upgrade to the Rust toolchain, from 1.76.0 to 1.77.0
-(i.e. the latest) [1].
+On Sat, Feb 17, 2024 at 01:26:38AM +0100, Miguel Ojeda wrote:
+> This is the next upgrade to the Rust toolchain, from 1.75.0 to 1.76.0
+> (i.e. the latest) [1].
+> 
 
-See the upgrade policy [2] and the comments on the first upgrade in
-commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+I've applied this on the merge point of for-next/rust-for-arm64 in arm64
+tree and today's rust-next (patch #1 has a small conflict with the
+target.json changes in arm64 tree), tested with kunit for both x86 and
+arm64.
 
-# Unstable features
+Tested-by: Boqun Feng <boqun.feng@gmail.com>
 
-The `offset_of` feature (single-field `offset_of!`) that we were using
-got stabilized in Rust 1.77.0 [3].
+Regards,
+Boqun
 
-Therefore, now the only unstable features allowed to be used outside the
-`kernel` crate is `new_uninit`, though other code to be upstreamed may
-increase the list.
+> See the upgrade policy [2] and the comments on the first upgrade in
+> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+> 
 
-Please see [4] for details.
-
-# Required changes
-
-Rust 1.77.0 merged the `unused_tuple_struct_fields` lint into `dead_code`,
-thus upgrading it from `allow` to `warn` [5]. In turn, this makes `rustc`
-complain about the `ThisModule`'s pointer field being never read. Thus
-locally `allow` it for the moment, since we will have users later on
-(e.g. Binder needs a `as_ptr` method [6]).
-
-# Other changes
-
-Rust 1.77.0 introduces the `--check-cfg` feature [7], for which there
-is a Call for Testing going on [8]. We were requested to test it and
-we found it useful [9] -- we will likely enable it in the future.
-
-# `alloc` upgrade and reviewing
-
-The vast majority of changes are due to our `alloc` fork being upgraded
-at once.
-
-There are two kinds of changes to be aware of: the ones coming from
-upstream, which we should follow as closely as possible, and the updates
-needed in our added fallible APIs to keep them matching the newer
-infallible APIs coming from upstream.
-
-Instead of taking a look at the diff of this patch, an alternative
-approach is reviewing a diff of the changes between upstream `alloc` and
-the kernel's. This allows to easily inspect the kernel additions only,
-especially to check if the fallible methods we already have still match
-the infallible ones in the new version coming from upstream.
-
-Another approach is reviewing the changes introduced in the additions in
-the kernel fork between the two versions. This is useful to spot
-potentially unintended changes to our additions.
-
-To apply these approaches, one may follow steps similar to the following
-to generate a pair of patches that show the differences between upstream
-Rust and the kernel (for the subset of `alloc` we use) before and after
-applying this patch:
-
-    # Get the difference with respect to the old version.
-    git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
-    git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
-        cut -d/ -f3- |
-        grep -Fv README.md |
-        xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
-    git -C linux diff --patch-with-stat --summary -R > old.patch
-    git -C linux restore rust/alloc
-
-    # Apply this patch.
-    git -C linux am rust-upgrade.patch
-
-    # Get the difference with respect to the new version.
-    git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
-    git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
-        cut -d/ -f3- |
-        grep -Fv README.md |
-        xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
-    git -C linux diff --patch-with-stat --summary -R > new.patch
-    git -C linux restore rust/alloc
-
-Now one may check the `new.patch` to take a look at the additions (first
-approach) or at the difference between those two patches (second
-approach). For the latter, a side-by-side tool is recommended.
-
-Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1770-2024-03-21 [1]
-Link: https://rust-for-linux.com/rust-version-policy [2]
-Link: https://github.com/rust-lang/rust/pull/118799 [3]
-Link: https://github.com/Rust-for-Linux/linux/issues/2 [4]
-Link: https://github.com/rust-lang/rust/pull/118297 [5]
-Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-08ba9197f637@google.com/#Z31rust:kernel:lib.rs [6]
-Link: https://doc.rust-lang.org/nightly/unstable-book/compiler-flags/check-cfg.html [7]
-Link: https://github.com/rust-lang/rfcs/pull/3013#issuecomment-1936648479 [8]
-Link: https://github.com/rust-lang/rust/issues/82450#issuecomment-1947462977 [9]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-Please note that Rust 1.77.0 will be released in a month (2024-03-21).
-
- Documentation/process/changes.rst |   2 +-
- rust/alloc/alloc.rs               |   6 +-
- rust/alloc/boxed.rs               |   4 +-
- rust/alloc/lib.rs                 |   7 +-
- rust/alloc/raw_vec.rs             |  13 ++--
- rust/alloc/slice.rs               |   4 +-
- rust/alloc/vec/into_iter.rs       | 104 +++++++++++++++++++-----------
- rust/alloc/vec/mod.rs             | 101 ++++++++++++++++++++---------
- rust/kernel/lib.rs                |   3 +-
- scripts/Makefile.build            |   2 +-
- scripts/min-tool-version.sh       |   2 +-
- 11 files changed, 159 insertions(+), 89 deletions(-)
-
-diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-index c78ecc1e176f..0229ba993cff 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -31,7 +31,7 @@ you probably needn't concern yourself with pcmciautils.
- ====================== ===============  ========================================
- GNU C                  5.1              gcc --version
- Clang/LLVM (optional)  11.0.0           clang --version
--Rust (optional)        1.76.0           rustc --version
-+Rust (optional)        1.77.0           rustc --version
- bindgen (optional)     0.65.1           bindgen --version
- GNU make               3.82             make --version
- bash                   4.2              bash --version
-diff --git a/rust/alloc/alloc.rs b/rust/alloc/alloc.rs
-index abb791cc2371..b1204f87227b 100644
---- a/rust/alloc/alloc.rs
-+++ b/rust/alloc/alloc.rs
-@@ -5,7 +5,7 @@
- #![stable(feature = "alloc_module", since = "1.28.0")]
-
- #[cfg(not(test))]
--use core::intrinsics;
-+use core::hint;
-
- #[cfg(not(test))]
- use core::ptr::{self, NonNull};
-@@ -210,7 +210,7 @@ unsafe fn grow_impl(
-                 let new_size = new_layout.size();
-
-                 // `realloc` probably checks for `new_size >= old_layout.size()` or something similar.
--                intrinsics::assume(new_size >= old_layout.size());
-+                hint::assert_unchecked(new_size >= old_layout.size());
-
-                 let raw_ptr = realloc(ptr.as_ptr(), old_layout, new_size);
-                 let ptr = NonNull::new(raw_ptr).ok_or(AllocError)?;
-@@ -301,7 +301,7 @@ unsafe fn shrink(
-             // SAFETY: `new_size` is non-zero. Other conditions must be upheld by the caller
-             new_size if old_layout.align() == new_layout.align() => unsafe {
-                 // `realloc` probably checks for `new_size <= old_layout.size()` or something similar.
--                intrinsics::assume(new_size <= old_layout.size());
-+                hint::assert_unchecked(new_size <= old_layout.size());
-
-                 let raw_ptr = realloc(ptr.as_ptr(), old_layout, new_size);
-                 let ptr = NonNull::new(raw_ptr).ok_or(AllocError)?;
-diff --git a/rust/alloc/boxed.rs b/rust/alloc/boxed.rs
-index c93a22a5c97f..5fc39dfeb8e7 100644
---- a/rust/alloc/boxed.rs
-+++ b/rust/alloc/boxed.rs
-@@ -26,6 +26,7 @@
- //! Creating a recursive data structure:
- //!
- //! ```
-+//! ##[allow(dead_code)]
- //! #[derive(Debug)]
- //! enum List<T> {
- //!     Cons(T, Box<List<T>>),
-@@ -194,8 +195,7 @@
- #[fundamental]
- #[stable(feature = "rust1", since = "1.0.0")]
- // The declaration of the `Box` struct must be kept in sync with the
--// `alloc::alloc::box_free` function or ICEs will happen. See the comment
--// on `box_free` for more details.
-+// compiler or ICEs will happen.
- pub struct Box<
-     T: ?Sized,
-     #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global,
-diff --git a/rust/alloc/lib.rs b/rust/alloc/lib.rs
-index 36f79c075593..39afd55ec074 100644
---- a/rust/alloc/lib.rs
-+++ b/rust/alloc/lib.rs
-@@ -105,7 +105,6 @@
- #![feature(allocator_api)]
- #![feature(array_chunks)]
- #![feature(array_into_iter_constructors)]
--#![feature(array_methods)]
- #![feature(array_windows)]
- #![feature(ascii_char)]
- #![feature(assert_matches)]
-@@ -122,7 +121,6 @@
- #![feature(const_size_of_val)]
- #![feature(const_waker)]
- #![feature(core_intrinsics)]
--#![feature(core_panic)]
- #![feature(deprecated_suggestion)]
- #![feature(dispatch_from_dyn)]
- #![feature(error_generic_member_access)]
-@@ -132,6 +130,7 @@
- #![feature(fmt_internals)]
- #![feature(fn_traits)]
- #![feature(hasher_prefixfree_extras)]
-+#![feature(hint_assert_unchecked)]
- #![feature(inline_const)]
- #![feature(inplace_iteration)]
- #![feature(iter_advance_by)]
-@@ -141,6 +140,8 @@
- #![feature(maybe_uninit_slice)]
- #![feature(maybe_uninit_uninit_array)]
- #![feature(maybe_uninit_uninit_array_transpose)]
-+#![feature(non_null_convenience)]
-+#![feature(panic_internals)]
- #![feature(pattern)]
- #![feature(ptr_internals)]
- #![feature(ptr_metadata)]
-@@ -149,7 +150,6 @@
- #![feature(set_ptr_value)]
- #![feature(sized_type_properties)]
- #![feature(slice_from_ptr_range)]
--#![feature(slice_group_by)]
- #![feature(slice_ptr_get)]
- #![feature(slice_ptr_len)]
- #![feature(slice_range)]
-@@ -182,6 +182,7 @@
- #![feature(const_ptr_write)]
- #![feature(const_trait_impl)]
- #![feature(const_try)]
-+#![feature(decl_macro)]
- #![feature(dropck_eyepatch)]
- #![feature(exclusive_range_pattern)]
- #![feature(fundamental)]
-diff --git a/rust/alloc/raw_vec.rs b/rust/alloc/raw_vec.rs
-index 98b6abf30af6..1839d1c8ee7a 100644
---- a/rust/alloc/raw_vec.rs
-+++ b/rust/alloc/raw_vec.rs
-@@ -4,7 +4,7 @@
-
- use core::alloc::LayoutError;
- use core::cmp;
--use core::intrinsics;
-+use core::hint;
- use core::mem::{self, ManuallyDrop, MaybeUninit, SizedTypeProperties};
- use core::ptr::{self, NonNull, Unique};
- use core::slice;
-@@ -317,7 +317,7 @@ fn current_memory(&self) -> Option<(NonNull<u8>, Layout)> {
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Aborts
-     ///
-@@ -358,7 +358,7 @@ pub fn try_reserve(&mut self, len: usize, additional: usize) -> Result<(), TryRe
-         }
-         unsafe {
-             // Inform the optimizer that the reservation has succeeded or wasn't needed
--            core::intrinsics::assume(!self.needs_to_grow(len, additional));
-+            hint::assert_unchecked(!self.needs_to_grow(len, additional));
-         }
-         Ok(())
-     }
-@@ -381,7 +381,7 @@ pub fn try_reserve_for_push(&mut self, len: usize) -> Result<(), TryReserveError
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Aborts
-     ///
-@@ -402,7 +402,7 @@ pub fn try_reserve_exact(
-         }
-         unsafe {
-             // Inform the optimizer that the reservation has succeeded or wasn't needed
--            core::intrinsics::assume(!self.needs_to_grow(len, additional));
-+            hint::assert_unchecked(!self.needs_to_grow(len, additional));
-         }
-         Ok(())
-     }
-@@ -553,7 +553,7 @@ fn finish_grow<A>(
-         debug_assert_eq!(old_layout.align(), new_layout.align());
-         unsafe {
-             // The allocator checks for alignment equality
--            intrinsics::assume(old_layout.align() == new_layout.align());
-+            hint::assert_unchecked(old_layout.align() == new_layout.align());
-             alloc.grow(ptr, old_layout, new_layout)
-         }
-     } else {
-@@ -591,7 +591,6 @@ fn handle_reserve(result: Result<(), TryReserveError>) {
- // `> isize::MAX` bytes will surely fail. On 32-bit and 16-bit we need to add
- // an extra guard for this in case we're running on a platform which can use
- // all 4GB in user-space, e.g., PAE or x32.
--
- #[inline]
- fn alloc_guard(alloc_size: usize) -> Result<(), TryReserveError> {
-     if usize::BITS < 64 && alloc_size > isize::MAX as usize {
-diff --git a/rust/alloc/slice.rs b/rust/alloc/slice.rs
-index 1181836da5f4..a36b072c9519 100644
---- a/rust/alloc/slice.rs
-+++ b/rust/alloc/slice.rs
-@@ -53,14 +53,14 @@
- pub use core::slice::{from_mut_ptr_range, from_ptr_range};
- #[stable(feature = "rust1", since = "1.0.0")]
- pub use core::slice::{from_raw_parts, from_raw_parts_mut};
-+#[stable(feature = "slice_group_by", since = "1.77.0")]
-+pub use core::slice::{ChunkBy, ChunkByMut};
- #[stable(feature = "rust1", since = "1.0.0")]
- pub use core::slice::{Chunks, Windows};
- #[stable(feature = "chunks_exact", since = "1.31.0")]
- pub use core::slice::{ChunksExact, ChunksExactMut};
- #[stable(feature = "rust1", since = "1.0.0")]
- pub use core::slice::{ChunksMut, Split, SplitMut};
--#[unstable(feature = "slice_group_by", issue = "80552")]
--pub use core::slice::{GroupBy, GroupByMut};
- #[stable(feature = "rust1", since = "1.0.0")]
- pub use core::slice::{Iter, IterMut};
- #[stable(feature = "rchunks", since = "1.31.0")]
-diff --git a/rust/alloc/vec/into_iter.rs b/rust/alloc/vec/into_iter.rs
-index 136bfe94af6c..0f11744c44b3 100644
---- a/rust/alloc/vec/into_iter.rs
-+++ b/rust/alloc/vec/into_iter.rs
-@@ -20,6 +20,17 @@
- use core::ptr::{self, NonNull};
- use core::slice::{self};
-
-+macro non_null {
-+    (mut $place:expr, $t:ident) => {{
-+        #![allow(unused_unsafe)] // we're sometimes used within an unsafe block
-+        unsafe { &mut *(ptr::addr_of_mut!($place) as *mut NonNull<$t>) }
-+    }},
-+    ($place:expr, $t:ident) => {{
-+        #![allow(unused_unsafe)] // we're sometimes used within an unsafe block
-+        unsafe { *(ptr::addr_of!($place) as *const NonNull<$t>) }
-+    }},
-+}
-+
- /// An iterator that moves out of a vector.
- ///
- /// This `struct` is created by the `into_iter` method on [`Vec`](super::Vec)
-@@ -43,10 +54,12 @@ pub struct IntoIter<
-     // the drop impl reconstructs a RawVec from buf, cap and alloc
-     // to avoid dropping the allocator twice we need to wrap it into ManuallyDrop
-     pub(super) alloc: ManuallyDrop<A>,
--    pub(super) ptr: *const T,
--    pub(super) end: *const T, // If T is a ZST, this is actually ptr+len. This encoding is picked so that
--                              // ptr == end is a quick test for the Iterator being empty, that works
--                              // for both ZST and non-ZST.
-+    pub(super) ptr: NonNull<T>,
-+    /// If T is a ZST, this is actually ptr+len. This encoding is picked so that
-+    /// ptr == end is a quick test for the Iterator being empty, that works
-+    /// for both ZST and non-ZST.
-+    /// For non-ZSTs the pointer is treated as `NonNull<T>`
-+    pub(super) end: *const T,
- }
-
- #[stable(feature = "vec_intoiter_debug", since = "1.13.0")]
-@@ -70,7 +83,7 @@ impl<T, A: Allocator> IntoIter<T, A> {
-     /// ```
-     #[stable(feature = "vec_into_iter_as_slice", since = "1.15.0")]
-     pub fn as_slice(&self) -> &[T] {
--        unsafe { slice::from_raw_parts(self.ptr, self.len()) }
-+        unsafe { slice::from_raw_parts(self.ptr.as_ptr(), self.len()) }
-     }
-
-     /// Returns the remaining items of this iterator as a mutable slice.
-@@ -99,7 +112,7 @@ pub fn allocator(&self) -> &A {
-     }
-
-     fn as_raw_mut_slice(&mut self) -> *mut [T] {
--        ptr::slice_from_raw_parts_mut(self.ptr as *mut T, self.len())
-+        ptr::slice_from_raw_parts_mut(self.ptr.as_ptr(), self.len())
-     }
-
-     /// Drops remaining elements and relinquishes the backing allocation.
-@@ -126,7 +139,7 @@ pub(super) fn forget_allocation_drop_remaining(&mut self) {
-         // this creates less assembly
-         self.cap = 0;
-         self.buf = unsafe { NonNull::new_unchecked(RawVec::NEW.ptr()) };
--        self.ptr = self.buf.as_ptr();
-+        self.ptr = self.buf;
-         self.end = self.buf.as_ptr();
-
-         // Dropping the remaining elements can panic, so this needs to be
-@@ -138,9 +151,9 @@ pub(super) fn forget_allocation_drop_remaining(&mut self) {
-
-     /// Forgets to Drop the remaining elements while still allowing the backing allocation to be freed.
-     pub(crate) fn forget_remaining_elements(&mut self) {
--        // For th ZST case, it is crucial that we mutate `end` here, not `ptr`.
-+        // For the ZST case, it is crucial that we mutate `end` here, not `ptr`.
-         // `ptr` must stay aligned, while `end` may be unaligned.
--        self.end = self.ptr;
-+        self.end = self.ptr.as_ptr();
-     }
-
-     #[cfg(not(no_global_oom_handling))]
-@@ -162,7 +175,7 @@ pub(crate) fn into_vecdeque(self) -> VecDeque<T, A> {
-                 // say that they're all at the beginning of the "allocation".
-                 0..this.len()
-             } else {
--                this.ptr.sub_ptr(buf)..this.end.sub_ptr(buf)
-+                this.ptr.sub_ptr(this.buf)..this.end.sub_ptr(buf)
-             };
-             let cap = this.cap;
-             let alloc = ManuallyDrop::take(&mut this.alloc);
-@@ -189,29 +202,35 @@ impl<T, A: Allocator> Iterator for IntoIter<T, A> {
-
-     #[inline]
-     fn next(&mut self) -> Option<T> {
--        if self.ptr == self.end {
--            None
--        } else if T::IS_ZST {
--            // `ptr` has to stay where it is to remain aligned, so we reduce the length by 1 by
--            // reducing the `end`.
--            self.end = self.end.wrapping_byte_sub(1);
-+        if T::IS_ZST {
-+            if self.ptr.as_ptr() == self.end as *mut _ {
-+                None
-+            } else {
-+                // `ptr` has to stay where it is to remain aligned, so we reduce the length by 1 by
-+                // reducing the `end`.
-+                self.end = self.end.wrapping_byte_sub(1);
-
--            // Make up a value of this ZST.
--            Some(unsafe { mem::zeroed() })
-+                // Make up a value of this ZST.
-+                Some(unsafe { mem::zeroed() })
-+            }
-         } else {
--            let old = self.ptr;
--            self.ptr = unsafe { self.ptr.add(1) };
-+            if self.ptr == non_null!(self.end, T) {
-+                None
-+            } else {
-+                let old = self.ptr;
-+                self.ptr = unsafe { old.add(1) };
-
--            Some(unsafe { ptr::read(old) })
-+                Some(unsafe { ptr::read(old.as_ptr()) })
-+            }
-         }
-     }
-
-     #[inline]
-     fn size_hint(&self) -> (usize, Option<usize>) {
-         let exact = if T::IS_ZST {
--            self.end.addr().wrapping_sub(self.ptr.addr())
-+            self.end.addr().wrapping_sub(self.ptr.as_ptr().addr())
-         } else {
--            unsafe { self.end.sub_ptr(self.ptr) }
-+            unsafe { non_null!(self.end, T).sub_ptr(self.ptr) }
-         };
-         (exact, Some(exact))
-     }
-@@ -219,7 +238,7 @@ fn size_hint(&self) -> (usize, Option<usize>) {
-     #[inline]
-     fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
-         let step_size = self.len().min(n);
--        let to_drop = ptr::slice_from_raw_parts_mut(self.ptr as *mut T, step_size);
-+        let to_drop = ptr::slice_from_raw_parts_mut(self.ptr.as_ptr(), step_size);
-         if T::IS_ZST {
-             // See `next` for why we sub `end` here.
-             self.end = self.end.wrapping_byte_sub(step_size);
-@@ -261,7 +280,7 @@ fn count(self) -> usize {
-             // Safety: `len` indicates that this many elements are available and we just checked that
-             // it fits into the array.
-             unsafe {
--                ptr::copy_nonoverlapping(self.ptr, raw_ary.as_mut_ptr() as *mut T, len);
-+                ptr::copy_nonoverlapping(self.ptr.as_ptr(), raw_ary.as_mut_ptr() as *mut T, len);
-                 self.forget_remaining_elements();
-                 return Err(array::IntoIter::new_unchecked(raw_ary, 0..len));
-             }
-@@ -270,7 +289,7 @@ fn count(self) -> usize {
-         // Safety: `len` is larger than the array size. Copy a fixed amount here to fully initialize
-         // the array.
-         return unsafe {
--            ptr::copy_nonoverlapping(self.ptr, raw_ary.as_mut_ptr() as *mut T, N);
-+            ptr::copy_nonoverlapping(self.ptr.as_ptr(), raw_ary.as_mut_ptr() as *mut T, N);
-             self.ptr = self.ptr.add(N);
-             Ok(raw_ary.transpose().assume_init())
-         };
-@@ -288,7 +307,7 @@ unsafe fn __iterator_get_unchecked(&mut self, i: usize) -> Self::Item
-         // Also note the implementation of `Self: TrustedRandomAccess` requires
-         // that `T: Copy` so reading elements from the buffer doesn't invalidate
-         // them for `Drop`.
--        unsafe { if T::IS_ZST { mem::zeroed() } else { ptr::read(self.ptr.add(i)) } }
-+        unsafe { if T::IS_ZST { mem::zeroed() } else { self.ptr.add(i).read() } }
-     }
- }
-
-@@ -296,18 +315,25 @@ unsafe fn __iterator_get_unchecked(&mut self, i: usize) -> Self::Item
- impl<T, A: Allocator> DoubleEndedIterator for IntoIter<T, A> {
-     #[inline]
-     fn next_back(&mut self) -> Option<T> {
--        if self.end == self.ptr {
--            None
--        } else if T::IS_ZST {
--            // See above for why 'ptr.offset' isn't used
--            self.end = self.end.wrapping_byte_sub(1);
-+        if T::IS_ZST {
-+            if self.end as *mut _ == self.ptr.as_ptr() {
-+                None
-+            } else {
-+                // See above for why 'ptr.offset' isn't used
-+                self.end = self.end.wrapping_byte_sub(1);
-
--            // Make up a value of this ZST.
--            Some(unsafe { mem::zeroed() })
-+                // Make up a value of this ZST.
-+                Some(unsafe { mem::zeroed() })
-+            }
-         } else {
--            self.end = unsafe { self.end.sub(1) };
-+            if non_null!(self.end, T) == self.ptr {
-+                None
-+            } else {
-+                let new_end = unsafe { non_null!(self.end, T).sub(1) };
-+                *non_null!(mut self.end, T) = new_end;
-
--            Some(unsafe { ptr::read(self.end) })
-+                Some(unsafe { ptr::read(new_end.as_ptr()) })
-+            }
-         }
-     }
-
-@@ -333,7 +359,11 @@ fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
- #[stable(feature = "rust1", since = "1.0.0")]
- impl<T, A: Allocator> ExactSizeIterator for IntoIter<T, A> {
-     fn is_empty(&self) -> bool {
--        self.ptr == self.end
-+        if T::IS_ZST {
-+            self.ptr.as_ptr() == self.end as *mut _
-+        } else {
-+            self.ptr == non_null!(self.end, T)
-+        }
-     }
- }
-
-diff --git a/rust/alloc/vec/mod.rs b/rust/alloc/vec/mod.rs
-index 220fb9d6f45b..0be27fff4554 100644
---- a/rust/alloc/vec/mod.rs
-+++ b/rust/alloc/vec/mod.rs
-@@ -360,7 +360,7 @@
- ///
- /// `vec![x; n]`, `vec![a, b, c, d]`, and
- /// [`Vec::with_capacity(n)`][`Vec::with_capacity`], will all produce a `Vec`
--/// with exactly the requested capacity. If <code>[len] == [capacity]</code>,
-+/// with at least the requested capacity. If <code>[len] == [capacity]</code>,
- /// (as is the case for the [`vec!`] macro), then a `Vec<T>` can be converted to
- /// and from a [`Box<[T]>`][owned slice] without reallocating or moving the elements.
- ///
-@@ -447,7 +447,7 @@ pub const fn new() -> Self {
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Examples
-     ///
-@@ -690,7 +690,7 @@ pub const fn new_in(alloc: A) -> Self {
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Examples
-     ///
-@@ -1013,7 +1013,7 @@ pub fn capacity(&self) -> usize {
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Examples
-     ///
-@@ -1043,7 +1043,7 @@ pub fn reserve(&mut self, additional: usize) {
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Examples
-     ///
-@@ -1140,8 +1140,11 @@ pub fn try_reserve_exact(&mut self, additional: usize) -> Result<(), TryReserveE
-
-     /// Shrinks the capacity of the vector as much as possible.
-     ///
--    /// It will drop down as close as possible to the length but the allocator
--    /// may still inform the vector that there is space for a few more elements.
-+    /// The behavior of this method depends on the allocator, which may either shrink the vector
-+    /// in-place or reallocate. The resulting vector might still have some excess capacity, just as
-+    /// is the case for [`with_capacity`]. See [`Allocator::shrink`] for more details.
-+    ///
-+    /// [`with_capacity`]: Vec::with_capacity
-     ///
-     /// # Examples
-     ///
-@@ -1191,10 +1194,10 @@ pub fn shrink_to(&mut self, min_capacity: usize) {
-
-     /// Converts the vector into [`Box<[T]>`][owned slice].
-     ///
--    /// If the vector has excess capacity, its items will be moved into a
--    /// newly-allocated buffer with exactly the right capacity.
-+    /// Before doing the conversion, this method discards excess capacity like [`shrink_to_fit`].
-     ///
-     /// [owned slice]: Box
-+    /// [`shrink_to_fit`]: Vec::shrink_to_fit
-     ///
-     /// # Examples
-     ///
-@@ -2017,7 +2020,7 @@ fn drop(&mut self) {
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Examples
-     ///
-@@ -2133,7 +2136,7 @@ pub fn pop(&mut self) -> Option<T> {
-         } else {
-             unsafe {
-                 self.len -= 1;
--                core::intrinsics::assume(self.len < self.capacity());
-+                core::hint::assert_unchecked(self.len < self.capacity());
-                 Some(ptr::read(self.as_ptr().add(self.len())))
-             }
-         }
-@@ -2143,7 +2146,7 @@ pub fn pop(&mut self) -> Option<T> {
-     ///
-     /// # Panics
-     ///
--    /// Panics if the new capacity exceeds `isize::MAX` bytes.
-+    /// Panics if the new capacity exceeds `isize::MAX` _bytes_.
-     ///
-     /// # Examples
-     ///
-@@ -2315,6 +2318,12 @@ pub fn is_empty(&self) -> bool {
-     /// `[at, len)`. After the call, the original vector will be left containing
-     /// the elements `[0, at)` with its previous capacity unchanged.
-     ///
-+    /// - If you want to take ownership of the entire contents and capacity of
-+    ///   the vector, see [`mem::take`] or [`mem::replace`].
-+    /// - If you don't need the returned vector at all, see [`Vec::truncate`].
-+    /// - If you want to take ownership of an arbitrary subslice, or you don't
-+    ///   necessarily want to store the removed items in a vector, see [`Vec::drain`].
-+    ///
-     /// # Panics
-     ///
-     /// Panics if `at > len`.
-@@ -2346,14 +2355,6 @@ fn assert_failed(at: usize, len: usize) -> ! {
-             assert_failed(at, self.len());
-         }
-
--        if at == 0 {
--            // the new vector can take over the original buffer and avoid the copy
--            return mem::replace(
--                self,
--                Vec::with_capacity_in(self.capacity(), self.allocator().clone()),
--            );
--        }
--
-         let other_len = self.len - at;
-         let mut other = Vec::with_capacity_in(other_len, self.allocator().clone());
-
-@@ -3027,6 +3028,50 @@ fn index_mut(&mut self, index: I) -> &mut Self::Output {
-     }
- }
-
-+/// Collects an iterator into a Vec, commonly called via [`Iterator::collect()`]
-+///
-+/// # Allocation behavior
-+///
-+/// In general `Vec` does not guarantee any particular growth or allocation strategy.
-+/// That also applies to this trait impl.
-+///
-+/// **Note:** This section covers implementation details and is therefore exempt from
-+/// stability guarantees.
-+///
-+/// Vec may use any or none of the following strategies,
-+/// depending on the supplied iterator:
-+///
-+/// * preallocate based on [`Iterator::size_hint()`]
-+///   * and panic if the number of items is outside the provided lower/upper bounds
-+/// * use an amortized growth strategy similar to `pushing` one item at a time
-+/// * perform the iteration in-place on the original allocation backing the iterator
-+///
-+/// The last case warrants some attention. It is an optimization that in many cases reduces peak memory
-+/// consumption and improves cache locality. But when big, short-lived allocations are created,
-+/// only a small fraction of their items get collected, no further use is made of the spare capacity
-+/// and the resulting `Vec` is moved into a longer-lived structure, then this can lead to the large
-+/// allocations having their lifetimes unnecessarily extended which can result in increased memory
-+/// footprint.
-+///
-+/// In cases where this is an issue, the excess capacity can be discarded with [`Vec::shrink_to()`],
-+/// [`Vec::shrink_to_fit()`] or by collecting into [`Box<[T]>`][owned slice] instead, which additionally reduces
-+/// the size of the long-lived struct.
-+///
-+/// [owned slice]: Box
-+///
-+/// ```rust
-+/// # use std::sync::Mutex;
-+/// static LONG_LIVED: Mutex<Vec<Vec<u16>>> = Mutex::new(Vec::new());
-+///
-+/// for i in 0..10 {
-+///     let big_temporary: Vec<u16> = (0..1024).collect();
-+///     // discard most items
-+///     let mut result: Vec<_> = big_temporary.into_iter().filter(|i| i % 100 == 0).collect();
-+///     // without this a lot of unused capacity might be moved into the global
-+///     result.shrink_to_fit();
-+///     LONG_LIVED.lock().unwrap().push(result);
-+/// }
-+/// ```
- #[cfg(not(no_global_oom_handling))]
- #[stable(feature = "rust1", since = "1.0.0")]
- impl<T> FromIterator<T> for Vec<T> {
-@@ -3069,14 +3114,8 @@ fn into_iter(self) -> Self::IntoIter {
-                 begin.add(me.len()) as *const T
-             };
-             let cap = me.buf.capacity();
--            IntoIter {
--                buf: NonNull::new_unchecked(begin),
--                phantom: PhantomData,
--                cap,
--                alloc,
--                ptr: begin,
--                end,
--            }
-+            let buf = NonNull::new_unchecked(begin);
-+            IntoIter { buf, phantom: PhantomData, cap, alloc, ptr: buf, end }
-         }
-     }
- }
-@@ -3598,8 +3637,10 @@ fn from(s: Box<[T], A>) -> Self {
- impl<T, A: Allocator> From<Vec<T, A>> for Box<[T], A> {
-     /// Convert a vector into a boxed slice.
-     ///
--    /// If `v` has excess capacity, its items will be moved into a
--    /// newly-allocated buffer with exactly the right capacity.
-+    /// Before doing the conversion, this method discards excess capacity like [`Vec::shrink_to_fit`].
-+    ///
-+    /// [owned slice]: Box
-+    /// [`Vec::shrink_to_fit`]: Vec::shrink_to_fit
-     ///
-     /// # Examples
-     ///
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b89ecf4e97a0..80d921f670e3 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -16,7 +16,6 @@
- #![feature(coerce_unsized)]
- #![feature(dispatch_from_dyn)]
- #![feature(new_uninit)]
--#![feature(offset_of)]
- #![feature(ptr_metadata)]
- #![feature(receiver_trait)]
- #![feature(unsize)]
-@@ -79,7 +78,7 @@ pub trait Module: Sized + Sync {
- /// Equivalent to `THIS_MODULE` in the C API.
- ///
- /// C header: `include/linux/export.h`
--pub struct ThisModule(*mut bindings::module);
-+pub struct ThisModule(#[allow(dead_code)] *mut bindings::module);
-
- // SAFETY: `THIS_MODULE` may be used from all threads within a module.
- unsafe impl Sync for ThisModule {}
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 0fb7a785594c..a5e7aa3ca887 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -262,7 +262,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
-
--rust_allowed_features := new_uninit,offset_of
-+rust_allowed_features := new_uninit
-
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
-diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
-index e217683b10d6..5898e7f5a7f6 100755
---- a/scripts/min-tool-version.sh
-+++ b/scripts/min-tool-version.sh
-@@ -33,7 +33,7 @@ llvm)
- 	fi
- 	;;
- rustc)
--	echo 1.76.0
-+	echo 1.77.0
- 	;;
- bindgen)
- 	echo 0.65.1
-
-base-commit: 84a0205e9fe88901a68fd5fa24d81846cd880271
---
-2.43.0
+[...]
