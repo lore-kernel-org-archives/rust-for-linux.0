@@ -1,48 +1,38 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4DC134A4;
-	Sat, 17 Feb 2024 19:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18AE7E579;
+	Sat, 17 Feb 2024 22:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708199665; cv=none; b=l//TPdJa7soAm+Ww3oCCfYpq/S0XnCPMN6dK41xqk7I9HQdfNahMtgqxvQaeP5aFPAyvCDsOURuHcupNO5EhHCijVKMMYIqgf7wxMlCx5QrMflbWPHMeauuse4t3Tyc3WqAuJ590jzAG+h4GatTYbFWSOuv/D4a0bkzHaJhfSfc=
+	t=1708208530; cv=none; b=EkXle9+ZUY/sbFw1DzSQugopmY5a6urkKKMpFvrrv2AuJVrtuMDHROGkwTme78lVWgJd1UqsZZKQCQEJvGVLeuWphD22PSaso+q58Q4/Ica4NXfUxzjcIbIvAAuFF3zChpfM7AWRZRXBDImfCi2BAxX0zlqiqZ8eaY0hJpKwbWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708199665; c=relaxed/simple;
-	bh=t09QwnGKwNdWNtIAyIzaHqi1xlUXki01YfuTCunZSJk=;
+	s=arc-20240116; t=1708208530; c=relaxed/simple;
+	bh=50i9ll5m3n7Dob7+vPwV679xDA+8IF0BSI+30JunILA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KT9aTUw8wKdPk7B/5YBMiTizjj2R8FHTm84dUUcK1taZ0xzrWqJ11UTALEkWTES6+bTL5DBgXazKlgcssjnn+TLySHyJnpUzdclR5cE3RuUDcz1je35kWwdfyAqP/9IlSp6Igwr3Hu72wwT8w6XidM5EDxfF9T9qywj1hsuCIPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=MRU7aZcE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=dmxFNNcwiyPK3ljHdglv9PlrUlH2Qt1p7kjF45iyEInAglSqExp2uHcn1gEIXkp+hMHMEeUzVZZHPflCi6wzUs0HuE+UJimzTGtgOa8o+ELuSUD76LjX1UPPvASfyXziOIX4f33imJUPSwI67buYo6v9Jpqzn1aqcoq4Mr7zIOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IGuZAJv4; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="MRU7aZcE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=wrLeVjW0ciuJszz4zjPY8G3BJ5RGtt3yEGrW/DSBE6s=; b=MRU7aZcE2NM7dNQziM3PQNJsnH
-	Ky1yXYghGe0xrGkHqqC34Lq74gMVRokiF+u13tk9DIaBxx+dL5y1u/9B1bMTOCxUnlzhMA/3Eb2XN
-	PyubFSsl5G++haDa/a6L8VQBQBTO7LKBnr0z5y0fRYPzSXO4o90EciWf3dnqGo2AL3EvTn6/kPpex
-	gyYjvZ+OrGkD3a3pxQUD8byvavOYL2OTaFZwD/1ATO+N01uyn60PuOMyulb6Q/F61I65NMYr0CmPp
-	N1r5JxCcahrParQlxVKDsIzLQcbnM+bls8Tm4Hn62mHdnpTfQyj0+ep6OX4MzIFaUi7LTljqyfvPk
-	rABGBg8w==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38274)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rbQkT-0008E1-2M;
-	Sat, 17 Feb 2024 19:53:21 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rbQkG-0006lB-8R; Sat, 17 Feb 2024 19:53:08 +0000
-Date: Sat, 17 Feb 2024 19:53:08 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IGuZAJv4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=d/y5qpq3uF2po3jkaK8CtNhWm1biK0mglGlG7nCOk+Q=; b=IGuZAJv46IilCO1EOeTEdr/OKc
+	Ekt8q/pK20nszsr5XQFOS0VjbUq9e84AIARYog7v8zSxVav9pnVXl/Qsc1FGCRLAka6kjqQx1zysx
+	oN5p07q8ZALxEMPQ0kZHo4sazDApO7BcIzOcHiw/nJ7IQVZqcErgi7xkp7DsrgSE7eR0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rbT44-0085gT-3i; Sat, 17 Feb 2024 23:21:44 +0100
+Date: Sat, 17 Feb 2024 23:21:44 +0100
+From: Andrew Lunn <andrew@lunn.ch>
 To: Christian Marangi <ansuelsmth@gmail.com>
 Cc: Michael Hennerich <michael.hennerich@analog.com>,
-	Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -78,6 +68,7 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Robert Marko <robimarko@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	David Epping <david.epping@missinglinkelectronics.com>,
 	Harini Katakam <harini.katakam@amd.com>,
@@ -88,7 +79,7 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	linux-mediatek@lists.infradead.org
 Subject: Re: [net-next RFC PATCH 0/3] net: phy: detach PHY driver OPs from
  phy_driver struct
-Message-ID: <ZdEOpB1oVDE8+Qhq@shell.armlinux.org.uk>
+Message-ID: <a804e21d-fe1d-41e8-90fd-64b260c9bcc7@lunn.ch>
 References: <20240217194116.8565-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -99,7 +90,6 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20240217194116.8565-1-ansuelsmth@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
 On Sat, Feb 17, 2024 at 08:41:11PM +0100, Christian Marangi wrote:
 > Posting as RFC due to the massive change to a fundamental struct.
@@ -120,31 +110,16 @@ On Sat, Feb 17, 2024 at 08:41:11PM +0100, Christian Marangi wrote:
 > adding tabs as this would have resulted in a massive patch.
 > Also to have patch bisectable, this change has to be in one go
 > hence I had to use this trick to reduce patch delta.
-> 
-> Other solution to this problem were to introduce additional
-> variables to phy_driver struct but that would have resulted
-> in having 2 different way to do the same thing and that is not O.K.
-> 
-> I took care to compile-test all the PHY, only exception is the unique
-> RUST driver, where I still have to learn that funny language and
-> I didn't had time to update it, so that is the only driver that
-> I think require some fixup.
-> 
-> I posted 2 example that would benefits from this change, but I can
-> find much more in other PHY driver.
 
-Would it make more sense instead of this big churn, to instead
-introduce into struct phy_driver:
+To me, this makes the code look ugly. I also expect many text editors
+which understand indentation will be unhappy, saying the indentation is
+wrong.
 
-	struct mdio_device_id	*ids;
+>  64 files changed, 737 insertions(+), 291 deletions(-)
 
-which would then allow a phy_driver structure to be matched by
-several device IDs?
+These statistics are not good. If you had deleted more lines than you
+added, then maybe it might be an O.K. idea.
 
-We then would not need to touch any of the existing drivers initially,
-and a later cleanup could be to identify those where all the ops are
-the same for several phy_driver structures, and convert them over.
+Sometimes KISS is best.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+	Andrew
