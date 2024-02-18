@@ -1,99 +1,95 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E1D9442;
-	Sun, 18 Feb 2024 20:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD4D9442
+	for <rust-for-linux@vger.kernel.org>; Sun, 18 Feb 2024 20:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708287842; cv=none; b=IE430Lysdqa6cC8XOCyCxHlJXgx+ZllJ/zq+9YRWxF0unhuHYm+Mh1H41eef+kSZruiez91+up7JT4V5bvweHX0RQsQuiIU6HLNao88WGiT+KQv5jK2h+dZ8rC3aA8JbRyKpLsk8f/BgOOTflUhbUI4VwEI3/rKop6b7NReCcB4=
+	t=1708287849; cv=none; b=ngcI4VNN1zzBElbChl99IB1RNwASSINSgNjojqaW5KrcoiPx1bdJf7NN+Ztg18l5/WHKI/TjXiqtCFRxe/pd3pMpaaim032D8r5sGUy5CxQBcJNENIOJthrhwauqRD6QA9SFTVaVU2k8Uu/7kKp26gg7pDVzVKLNCNhB9Z8ys5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708287842; c=relaxed/simple;
-	bh=9UBfPdAWitarenQUufc1/5ESRfkihBXS17Px9w7uiQA=;
+	s=arc-20240116; t=1708287849; c=relaxed/simple;
+	bh=8b6Lb5DGGJuevVyRrRUna5PztwOyDL06ptG2So0d96A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UlHLKcJXnDm2QO9s/rpcdgAlOWEsjiEMvkCz/KK6Xr78VSuZI7rG+F7ZFPWgNK6kXHmdnJMiHgtsPYIAYA0RQPh8ko096xTBw4Ypt2ErAuYF5ug5iRr+pNEqEiPr2uAWO5Gi+f9Ea/DEVTQiGwRKswABlQDbVJyiRtOnLN/gHhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ji4hFOo1; arc=none smtp.client-ip=209.85.219.171
+	 To:Cc:Content-Type; b=eWnwFekLZDQ1DbMJDDxD/9ETIHXmLkNvx9pivCnuUwAj/6+daLzgNkn+Nf9xbV/4eTxoZrPTwo/Rv6ZV2RAh4popTD/s5tbt8hlqiqy/q/6xq6ayWGjib+izrLdPQuQYJREvvsgHtBwlaCKifg9prGOfYbAyhKbLC4LAg12TTR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AkelJ0lq; arc=none smtp.client-ip=209.85.219.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ji4hFOo1"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dbed179f0faso3275374276.1;
-        Sun, 18 Feb 2024 12:24:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AkelJ0lq"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dc25e12cc63so4002901276.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Feb 2024 12:24:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708287840; x=1708892640; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708287846; x=1708892646; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9UBfPdAWitarenQUufc1/5ESRfkihBXS17Px9w7uiQA=;
-        b=Ji4hFOo1Adn3ZTcPy+zOmAH9g6qYzLvvKWWjvblGdN9nUibLZ3BUzGbYFCtxFMkB60
-         8eCFmoINRJMYmgXqBbxt8unD/0eHvE9UkNsT+1Doj3ETl2efW+mkUrHb8WIFtsLxSPpr
-         nhmKGEnMZ/N5g5sOj0rXTB4+L1kSqvNnc7AzaYubIes2DMjL0waETTq/Qn2d3aPOnVWU
-         nxjDf09KtMhSigz8GruBoHmoLkXmbQIz1yxL28nBunv7AQXMNJewNJpK6p1CqguG8JzX
-         yOZaX9JKjoaYlS0SZImlpNvxUMikkJmNXuw/AM7VZBWSZfc4IJL7q1a3KmwtjL7MqfFx
-         bw1g==
+        bh=8b6Lb5DGGJuevVyRrRUna5PztwOyDL06ptG2So0d96A=;
+        b=AkelJ0lquRpu/iHVF9Zpkj8ETJT6AOKJrweDuxe7ifjJ0Jiy5ILDYnP0wJSsV9LF94
+         iIa5oIq3BuLsdPFh7WpyW20oOmkHtT52djRa/yvgSVO+K3m3VZ/XkDnl0hTVd7bp6oH+
+         CArnbn1UBuLbiXvhEirucSUZjYnRQ57+GwkvyWTrtDQQ2ULZzzZFxoMVb//LA4DNVowi
+         2tvz6iVpqy5ee5HLP2mjFyAttqz4K4BihDzPNsxy5g3c48daUls/S/ZcDYMDs0K16uV3
+         8uigJyKQFMd/PQ7WxS0sWXVm9NJXQL8vxLXtQOy+0s3ipupRwn7kGcM/j7C44vEiZzLu
+         KdiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708287840; x=1708892640;
+        d=1e100.net; s=20230601; t=1708287846; x=1708892646;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9UBfPdAWitarenQUufc1/5ESRfkihBXS17Px9w7uiQA=;
-        b=FNqOgEYYLYoo88mHOXKpIE7v3Kw9B7oZ2FX4Wou6EJCqbkGi13RCmllASIB4+g5tD7
-         /uA6vrsdsORTQk787GzTNtmOrSJoVUyF0y8wSSkhZwvYyIBmG0mEraHg1tsgf1Fvs2NO
-         N9tLlW+Q6aDtyTfbTywFXoGRs4ulpsBYuk/HZPSt7/CSSfWbOIikGkdv/AHCE8CIJNUH
-         s/6hhBfW4K6DFz08lDNba3tB8EVVKRLEwuvydLMcGhpqXOPCCnrfnHtxzQ16Wz/pRzgj
-         Cg5q9Y8f85FphYa9cYN/uMpNnEHviVHdz4wDi/fegfii8JAZ73bdqJtxkHVv6mGXH5ZE
-         upig==
-X-Forwarded-Encrypted: i=1; AJvYcCWSoIHXUzQzTxBL1xNzBSKCAbDtn3H9QR4N5lUrIi6IQXYlCGlsT9V5Z6kXoDbMxV6OwwShghjTTjA3P6fQmyQpxCi3Yp//RXyA3D2aT13JzwRAcsSVVUildI5fMoyLMIh4+ScIN3yIVLTVaYU=
-X-Gm-Message-State: AOJu0YyQDy7N7hyrd2Ipx6uOV3GZuYb/mXpaWacxZBSBncwdnufmlbIm
-	QlV+J+NX5kEKcnugkCorxLl3vr+C/c0pT1BEjo5XGxCMnlzRwnUyCjETlKPZO8kzKGXCj/7+cLu
-	iKmG9zqye7aEFHbSQigdkcPdz0rg=
-X-Google-Smtp-Source: AGHT+IFPA86Sg6poJ5InepEXndgx08qX43Wiq9FWZXRqzBqj+a48BuOT7vgAy0rQJPMOn29WzFUwRgKOydPYoqiSYiw=
-X-Received: by 2002:a25:c1c7:0:b0:dc7:3362:4b2f with SMTP id
- r190-20020a25c1c7000000b00dc733624b2fmr9400368ybf.13.1708287839987; Sun, 18
- Feb 2024 12:23:59 -0800 (PST)
+        bh=8b6Lb5DGGJuevVyRrRUna5PztwOyDL06ptG2So0d96A=;
+        b=ULlI7r6hcomXWDN18uojQMnNW/AGTmuHt5sthFjckBv2kL6eH7CQTMjtHUQzn/rJMz
+         AHFVzfVqdKggdw/FTX0GDsz51QyS78DiHRzcNXfdGcSOA+RceSHhn3Zke0GmiuJSqeo3
+         R3KBTHjTZlABcFt3A7OewwFmmrzycscryGOGMb1xg9dwzkNz5M0VNcRxw9UzUkxDYFGi
+         eSUpaoeGYHEQIgodj9NtNuyHX2IZoFnbEyKmG3WCjujdoR/rLQ32QB4AybPSxxuIanCS
+         rs/xA2878Q+ZmSsgHfnXSWeq8RL5n7icLOHtDAJXsJqVJHf6S20XbjVt1qXZMzb+9LrO
+         eXTQ==
+X-Gm-Message-State: AOJu0YyDIDsyrOSWjBMW8EePxc1Lr3ZGZPYi/EPO8i/17CR0O0zoXoUU
+	W/YmvKG1+pDrElQW/s9TDYpvJ531TZNQPJqPTzRQ4GSEtYKLeYpQ1LVpsW5AFAyZK8eJA3SD8Rq
+	TvxLehcb0KfhVkGOHXiUVXHePRJ4=
+X-Google-Smtp-Source: AGHT+IHBti/bM1nE7dA/rKUhT7CSjGy0kAQFbxltj99l6EoiGZ+WQ9NNP5BpXi+g3mKDxkI4l3o32XwzCMd/o7qB4yM=
+X-Received: by 2002:a25:e0cc:0:b0:dcc:72f5:4d98 with SMTP id
+ x195-20020a25e0cc000000b00dcc72f54d98mr10501607ybg.1.1708287846676; Sun, 18
+ Feb 2024 12:24:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240129145837.1419880-1-aliceryhl@google.com>
-In-Reply-To: <20240129145837.1419880-1-aliceryhl@google.com>
+References: <20240130075117.4137360-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20240130075117.4137360-1-dirk.behme@de.bosch.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 18 Feb 2024 21:23:49 +0100
-Message-ID: <CANiq72niWTCTF=X=MYEe5xbF_N9-En=Uq5Jt_b2LvLRC7yKjLg@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: add reexports for macros
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Sun, 18 Feb 2024 21:23:55 +0100
+Message-ID: <CANiq72=GRUPX6wRtk6ndkxPEG8cXo_u9YB_bmg97UeHfTK=8dw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] docs: rust: Move testing to a separate page
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, Trevor Gross <tmgross@umich.edu>, 
+	Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 29, 2024 at 3:58=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Tue, Jan 30, 2024 at 8:51=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
 >
-> Currently, all macros are reexported with #[macro_export] only, which
-> means that to access `new_work!` from the workqueue, you need to import
-> it from the path `kernel::new_work` instead of importing it from the
-> workqueue module like all other items in the workqueue. By adding
-> reexports of the macros, it becomes possible to import the macros from
-> the correct modules.
+> To be able to add more testing documentation move the testing
+> section to it's own page.
 >
-> It's still possible to import the macros from the root, but I don't
-> think we can do anything about that.
+> No change on the documentation itself.
 >
-> There is no functional change. This is merely a code cleanliness
-> improvement.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Suggested-by: Trevor Gross <tmgross@umich.edu>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Reviewed-by: David Gow <davidgow@google.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-Applied to `rust-next` with the new `prelude`s removed and a slightly
-reworded title -- thanks everyone!
+Applied to `rust-next` with fixed unordered list rendering, rewrapped
+text and headers made consistent with the other documents in `rust/`
+-- thanks everyone!
 
-(I also created a "good first issue" about other `prelude`s that can
-be removed: https://github.com/Rust-for-Linux/linux/issues/1064)
+(I also created a "good first issue" about another bad rendering case
+of an unordered list:
+https://github.com/Rust-for-Linux/linux/issues/1063)
 
 Cheers,
 Miguel
