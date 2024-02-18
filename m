@@ -1,38 +1,48 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EDB14A86;
-	Sat, 17 Feb 2024 23:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB541E898;
+	Sun, 18 Feb 2024 12:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708213734; cv=none; b=uTSNVvhH67K+uli1ofBBtQC3BLBQXFp1Y6C/nXXz3irFXqpU2gs48s2hS3V1ugZ1tlipvFeQ5NnC3X0g9dPtkywsMJisl/lXRD+gAyuLpGhrd8838LPeMZia7NWrlsJFg7kLUFAR7U8sLQPjYpg3r7qivO1ocyHWkBVatB/Fmjg=
+	t=1708260031; cv=none; b=V/NICi/9tptWhDGzDMCJrv3a+IjnYSGtB/tzby/D/l0uj4a/JqDnZs0vrsqOcZ2XU5rdoRuES03moP7Gy+Ib3exceKMqbdAtPA0qiETzCJMxR6KL/ds6g7zNiNLiiOAHu9qpZg2vPpk0GnybSMmrPx8HUWDOY9LuSTsenoySY2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708213734; c=relaxed/simple;
-	bh=1g5oK+yNBXpoPw5N07d7muSFkpE6uSYQn/NJNDkMbAg=;
+	s=arc-20240116; t=1708260031; c=relaxed/simple;
+	bh=7hbdV91MrBto8JKPz8p1poHgpVrkh1a7ubJfJ9hhfHQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JVfeuBnyn9KRrD98uRK9whytyn1oHL99zffE/3LEBnrYFy0Y1/ow71p0SCbpFZ32ANJFBD3YJxC17v6Ma1HK0J+dDCv1cuMOvAo/m06ZHqbw02LtfRBEmKhePPSQ1MEosgnXXZ7wOj1QRrabC7oojC8qQW0A9nsWVj39xY9WpB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CPzKeDAm; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=rCGAqT9/Es+Dd76Nsuh4VTCZFKtQcNYY9M6PFOzVXOyYd1QqcSfj9+yeKy1u+E2t44P+V9URCblvJWTwQOroCcH4d2yaQWjZ0PoTIqwNy72xUZuo9ef0hVo4b55DKZxa4u5kiicKTgSePm/szjRSRyHvFQ9swlbSIcqrqFjtt9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mBR2OF66; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CPzKeDAm"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FMxvckYePbS1jnoZ5oG6Cm4EypY4Dw/pbZjxC0ZP4yU=; b=CPzKeDAmryQgULRVfeg9ZXkTij
-	sV5K4ExtKLQtMWkXBHzzTZujVOaGPUXXKbK1euewjW9lDjsFSr2E4PYT7u1SBA71pkRVI3/BqoQ8P
-	Yt5mKJuEZUeqa8K0hBbIQZ8PE6rcAY9Yy7FYlnkXwYiyuiFMNbNKcJjI+wuUfEVpT7gA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rbUPw-0085vH-Pp; Sun, 18 Feb 2024 00:48:24 +0100
-Date: Sun, 18 Feb 2024 00:48:24 +0100
-From: Andrew Lunn <andrew@lunn.ch>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mBR2OF66"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gZmqfmB6fTBR74XgJI+NN8XTEyIaAFoIbaH6cB+nt6s=; b=mBR2OF66UJDI6eSNbTgQXD+wCc
+	NesRa+Hql7Df5cVcsDdkuEl5mwXoNrHSgNDgkML6JoR6Mnob4IED2QMayj6A0YoBnGwnw4DaztJFj
+	wihuyCiFiT19ddMcFLX9JYFYZxHSsZofJusrW5UKvtXQ8rJ9exHa/tT14EwJchA+iCgu2pha6aLYD
+	XeIYSz+WpDwgJyxnSGUoXW7cKOuJN7UobFSwWr6AGiUBzvcR5YoLHQciZF6co0COeZICs/QFSfAMJ
+	n9QWMvr8lUZ95gMIJStvpyNQH3m8Slpj1DZQbVil+WiupdVF5jH28K29h13ghcHZGuzRkfvoLnwGs
+	TV57ATRA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53158)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rbgS7-0002It-3D;
+	Sun, 18 Feb 2024 12:39:28 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rbgRu-0007Qi-70; Sun, 18 Feb 2024 12:39:14 +0000
+Date: Sun, 18 Feb 2024 12:39:14 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Christian Marangi <ansuelsmth@gmail.com>
 Cc: Michael Hennerich <michael.hennerich@analog.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -68,7 +78,6 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Robert Marko <robimarko@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	David Epping <david.epping@missinglinkelectronics.com>,
 	Harini Katakam <harini.katakam@amd.com>,
@@ -79,10 +88,10 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	linux-mediatek@lists.infradead.org
 Subject: Re: [net-next RFC PATCH 0/3] net: phy: detach PHY driver OPs from
  phy_driver struct
-Message-ID: <a8106d02-e3b0-4f23-8c76-52840493dff2@lunn.ch>
+Message-ID: <ZdH6csVX1ZOPYP84@shell.armlinux.org.uk>
 References: <20240217194116.8565-1-ansuelsmth@gmail.com>
- <a804e21d-fe1d-41e8-90fd-64b260c9bcc7@lunn.ch>
- <65d140fb.5d0a0220.81be3.7138@mx.google.com>
+ <ZdEOpB1oVDE8+Qhq@shell.armlinux.org.uk>
+ <65d13fcd.050a0220.88fe3.665f@mx.google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -91,33 +100,190 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <65d140fb.5d0a0220.81be3.7138@mx.google.com>
+In-Reply-To: <65d13fcd.050a0220.88fe3.665f@mx.google.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-> Yes, it was done to limit the patch delta, if I had to account for the
-> tab for each new section we would be in the order of 2000+ changes I
-> think.
-> 
-> > >  64 files changed, 737 insertions(+), 291 deletions(-)
+On Sun, Feb 18, 2024 at 12:22:45AM +0100, Christian Marangi wrote:
+> On Sat, Feb 17, 2024 at 07:53:08PM +0000, Russell King (Oracle) wrote:
+> > Would it make more sense instead of this big churn, to instead
+> > introduce into struct phy_driver:
 > > 
-> > These statistics are not good. If you had deleted more lines than you
-> > added, then maybe it might be an O.K. idea.
+> > 	struct mdio_device_id	*ids;
 > > 
-> > Sometimes KISS is best.
-> >
+> > which would then allow a phy_driver structure to be matched by
+> > several device IDs?
 > 
-> Well IMHO these stats are a bit flawed, the additional code is really
-> just extra check if ops is defined and the new .ops variable in each
-> phy_driver.
+> Yes that was an alternative idea, but is it good to then have 2 way to
+> declare PHY ID?
 > 
-> If you check patch 2 and 3 you can already see some code is removed.
+> Also the name should be changed... Maybe an array of a struct PHY_ID,
+> name that ends with a sentinel?
 
-Yes, the problem is, it probably needs another 50 patches to remove
-all the duplication. I have to question, is that really going to
-happen? Are you going to keep working on this until every driver has
-its duplicates removed?
+We already have arrays of mdio_device_id in every driver, whether they
+can be re-used or not is a separate issue. In any case, merely adding
+support for this (only build tested patch below) is a much smaller
+change.
 
-It probably needs some tooling to help. Something which can decode the
-object file, and tell you which ops structures are identical. That can
-then guide you when editing all the PHY drivers.
+ drivers/net/phy/phy_device.c | 64 +++++++++++++++++++++++++++++++++-----------
+ include/linux/phy.h          | 16 ++++++++++-
+ 2 files changed, 63 insertions(+), 17 deletions(-)
 
-     Andrew
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 2e7d5bfb338e..7e02bf51a2a5 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -522,12 +522,51 @@ static int phy_scan_fixups(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static const struct mdio_device_id *
++phy_driver_match_id(struct phy_driver *phydrv, u32 id)
++{
++	const struct mdio_device_id *ids = phydrv->ids;
++
++	if (ids) {
++		while (ids->phy_id) {
++			if (phy_id_compare(id, ids->phy_id, ids->phy_id_mask))
++				return ids;
++			ids++;
++		}
++	}
++
++	if (phy_id_compare(id, phydrv->id.phy_id, phydrv->id.phy_id_mask))
++		return &phydrv->id;
++
++	return NULL;
++}
++
++static const struct mdio_device_id *
++phy_driver_match(struct phy_driver *phydrv, struct phy_device *phydev)
++{
++	const int num_ids = ARRAY_SIZE(phydev->c45_ids.device_ids);
++	const struct mdio_device_id *id;
++	int i;
++
++	if (!phydev->is_c45)
++		return phy_driver_match_id(phydrv, phydev->phy_id);
++
++	for (i = 1; i < num_ids; i++) {
++		if (phydev->c45_ids.device_ids[i] == 0xffffffff)
++			continue;
++
++		id = phy_driver_match_id(phydrv, phydev->c45_ids.device_ids[i]);
++		if (id)
++			return id;
++	}
++
++	return NULL;
++}
++
+ static int phy_bus_match(struct device *dev, struct device_driver *drv)
+ {
+ 	struct phy_device *phydev = to_phy_device(dev);
+ 	struct phy_driver *phydrv = to_phy_driver(drv);
+-	const int num_ids = ARRAY_SIZE(phydev->c45_ids.device_ids);
+-	int i;
+ 
+ 	if (!(phydrv->mdiodrv.flags & MDIO_DEVICE_IS_PHY))
+ 		return 0;
+@@ -535,20 +574,7 @@ static int phy_bus_match(struct device *dev, struct device_driver *drv)
+ 	if (phydrv->match_phy_device)
+ 		return phydrv->match_phy_device(phydev);
+ 
+-	if (phydev->is_c45) {
+-		for (i = 1; i < num_ids; i++) {
+-			if (phydev->c45_ids.device_ids[i] == 0xffffffff)
+-				continue;
+-
+-			if (phy_id_compare(phydev->c45_ids.device_ids[i],
+-					   phydrv->phy_id, phydrv->phy_id_mask))
+-				return 1;
+-		}
+-		return 0;
+-	} else {
+-		return phy_id_compare(phydev->phy_id, phydrv->phy_id,
+-				      phydrv->phy_id_mask);
+-	}
++	return !!phy_driver_match(phydrv, phydev);
+ }
+ 
+ static ssize_t
+@@ -3311,6 +3337,7 @@ static int phy_probe(struct device *dev)
+ 	int err = 0;
+ 
+ 	phydev->drv = phydrv;
++	phydev->drv_id = phy_driver_match(phydrv, phydev);
+ 
+ 	/* Disable the interrupt if the PHY doesn't support it
+ 	 * but the interrupt is still a valid one
+@@ -3485,6 +3512,11 @@ int phy_driver_register(struct phy_driver *new_driver, struct module *owner)
+ 	new_driver->mdiodrv.driver.owner = owner;
+ 	new_driver->mdiodrv.driver.probe_type = PROBE_FORCE_SYNCHRONOUS;
+ 
++	if (!new_driver->id.phy_id) {
++		new_driver->id.phy_id = new_driver->phy_id;
++		new_driver->id.phy_id_mask = new_driver->phy_id_mask;
++	}
++
+ 	retval = driver_register(&new_driver->mdiodrv.driver);
+ 	if (retval) {
+ 		pr_err("%s: Error %d in registering driver\n",
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index fd8dbea9b4d9..2f2ebbd41535 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -542,6 +542,7 @@ struct macsec_ops;
+  *
+  * @mdio: MDIO bus this PHY is on
+  * @drv: Pointer to the driver for this PHY instance
++ * @drv_id: The matched driver ID for this PHY instance
+  * @devlink: Create a link between phy dev and mac dev, if the external phy
+  *           used by current mac interface is managed by another mac interface.
+  * @phy_id: UID for this device found during discovery
+@@ -639,6 +640,7 @@ struct phy_device {
+ 	/* Information about the PHY type */
+ 	/* And management functions */
+ 	const struct phy_driver *drv;
++	const struct mdio_device_id *drv_id;
+ 
+ 	struct device_link *devlink;
+ 
+@@ -882,6 +884,9 @@ struct phy_led {
+  * struct phy_driver - Driver structure for a particular PHY type
+  *
+  * @mdiodrv: Data common to all MDIO devices
++ * @ids: array of mdio device IDs to match this driver (terminated with
++ *   zero phy_id)
++ * @id: mdio device ID to match
+  * @phy_id: The result of reading the UID registers of this PHY
+  *   type, and ANDing them with the phy_id_mask.  This driver
+  *   only works for PHYs with IDs which match this field
+@@ -903,6 +908,8 @@ struct phy_led {
+  */
+ struct phy_driver {
+ 	struct mdio_driver_common mdiodrv;
++	const struct mdio_device_id *ids;
++	struct mdio_device_id id;
+ 	u32 phy_id;
+ 	char *name;
+ 	u32 phy_id_mask;
+@@ -1203,7 +1210,14 @@ static inline bool phy_id_compare(u32 id1, u32 id2, u32 mask)
+  */
+ static inline bool phydev_id_compare(struct phy_device *phydev, u32 id)
+ {
+-	return phy_id_compare(id, phydev->phy_id, phydev->drv->phy_id_mask);
++	u32 mask;
++
++	if (phydev->drv_id)
++		mask = phydev->drv_id->phy_id_mask;
++	else
++		mask = phydev->drv->phy_id_mask;
++
++	return phy_id_compare(id, phydev->phy_id, mask);
+ }
+ 
+ /* A Structure for boards to register fixups with the PHY Lib */
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
