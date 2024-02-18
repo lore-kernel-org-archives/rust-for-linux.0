@@ -1,289 +1,107 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB541E898;
-	Sun, 18 Feb 2024 12:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432FEFBEA;
+	Sun, 18 Feb 2024 16:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708260031; cv=none; b=V/NICi/9tptWhDGzDMCJrv3a+IjnYSGtB/tzby/D/l0uj4a/JqDnZs0vrsqOcZ2XU5rdoRuES03moP7Gy+Ib3exceKMqbdAtPA0qiETzCJMxR6KL/ds6g7zNiNLiiOAHu9qpZg2vPpk0GnybSMmrPx8HUWDOY9LuSTsenoySY2k=
+	t=1708272713; cv=none; b=cHCwUvJIce/9YQ02GV+frJyxnnoHHWs2W3qSKj/yw5SGtwPtsLYjY7LJj0hTzhrbc+FFvJQyiw29nLc4MzqEQjCZPQxNsqnBVLSCBMQ6e1LUDZD3spw6N5lLLarZXJBvR3dLNgg/WTNpMivJkFh8oVnhxt+uOtZ5xdkOajGrd/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708260031; c=relaxed/simple;
-	bh=7hbdV91MrBto8JKPz8p1poHgpVrkh1a7ubJfJ9hhfHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rCGAqT9/Es+Dd76Nsuh4VTCZFKtQcNYY9M6PFOzVXOyYd1QqcSfj9+yeKy1u+E2t44P+V9URCblvJWTwQOroCcH4d2yaQWjZ0PoTIqwNy72xUZuo9ef0hVo4b55DKZxa4u5kiicKTgSePm/szjRSRyHvFQ9swlbSIcqrqFjtt9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mBR2OF66; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1708272713; c=relaxed/simple;
+	bh=O7gBdNUrHWtEdQ7Sb7xM0HZk+kbpmFEH/bA31/rebr4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WKiZvKclk4XHZa8MDZQJryIzuVgy0pdFZWy5HStPJhefxh/oBpQYN65mSjZi/Sg9Kw67jfgexRJtYABucHqRf5hnlCULtfqYNOCmzqt6+gZnw9VVEo2dvXtFEbowX4uyVnJcZxNH9DIWAI5NhsG3ieH4b80c3thHtfhWa5iBl+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dulISQCg; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mBR2OF66"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gZmqfmB6fTBR74XgJI+NN8XTEyIaAFoIbaH6cB+nt6s=; b=mBR2OF66UJDI6eSNbTgQXD+wCc
-	NesRa+Hql7Df5cVcsDdkuEl5mwXoNrHSgNDgkML6JoR6Mnob4IED2QMayj6A0YoBnGwnw4DaztJFj
-	wihuyCiFiT19ddMcFLX9JYFYZxHSsZofJusrW5UKvtXQ8rJ9exHa/tT14EwJchA+iCgu2pha6aLYD
-	XeIYSz+WpDwgJyxnSGUoXW7cKOuJN7UobFSwWr6AGiUBzvcR5YoLHQciZF6co0COeZICs/QFSfAMJ
-	n9QWMvr8lUZ95gMIJStvpyNQH3m8Slpj1DZQbVil+WiupdVF5jH28K29h13ghcHZGuzRkfvoLnwGs
-	TV57ATRA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53158)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rbgS7-0002It-3D;
-	Sun, 18 Feb 2024 12:39:28 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rbgRu-0007Qi-70; Sun, 18 Feb 2024 12:39:14 +0000
-Date: Sun, 18 Feb 2024 12:39:14 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Arun Ramadoss <arun.ramadoss@microchip.com>,
-	UNGLinuxDriver@microchip.com, Peter Geis <pgwipeout@gmail.com>,
-	Frank <Frank.Sae@motor-comm.com>, Xu Liang <lxu@maxlinear.com>,
-	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>,
-	Andrei Botila <andrei.botila@oss.nxp.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Robert Marko <robimarko@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	David Epping <david.epping@missinglinkelectronics.com>,
-	Harini Katakam <harini.katakam@amd.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, rust-for-linux@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [net-next RFC PATCH 0/3] net: phy: detach PHY driver OPs from
- phy_driver struct
-Message-ID: <ZdH6csVX1ZOPYP84@shell.armlinux.org.uk>
-References: <20240217194116.8565-1-ansuelsmth@gmail.com>
- <ZdEOpB1oVDE8+Qhq@shell.armlinux.org.uk>
- <65d13fcd.050a0220.88fe3.665f@mx.google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dulISQCg"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1dba6b9b060so13988995ad.1;
+        Sun, 18 Feb 2024 08:11:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708272711; x=1708877511; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tW7EMHm+pV1IgZiBPcrF8p6ggsHIaTJdyvaAlRROm4M=;
+        b=dulISQCgLoSdL6sa73gh1QlIRYFGkFSSWA7p+5aVYahFLYOly4DIp+dvHXxo/6zcsA
+         Xy6a5qmw+KCPOsqNxcza/ngVw7KfRuB6qzMBO7Ky+Gf86nNaFc4lrLzpdBwKuyopeuhe
+         vFN/+Jq4xhXRPPex42r/Z8u0n+4jpy83XGJTD5GX1psBm+6ibc4lnhRH/8WRp6R2Zvjt
+         WMpUW9O6Ei2LZHu60p1L5ZuaQ6Cjn7h2ZW2C+KNlysm1JMMm3dOBuXmgtpy3ICjnsaba
+         6fYbX/cBW1tUmbALrPfpgbA/LtBdWOpXH1CKVdXkR2WGdjK9LbXZYOjpc+4tE7PRoF6F
+         7ebg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708272711; x=1708877511;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tW7EMHm+pV1IgZiBPcrF8p6ggsHIaTJdyvaAlRROm4M=;
+        b=CszjxikYro7V0+5Fse90lQqsHSfMmFJsB7LSQcqS0T2ZpwdcvHXNSG4TUKeYMhpUEH
+         mgXPb+U+2NsjAexlR/Du53Vnbx1RaFVoFWJtOOPYbzVPRPqAZfUxQr7KtJhuhPVJ0XUo
+         MLT9QGyA14PEVsw+ILZCT9v2OyQdcrdoiFCtONMao6z+lf1mgky+cCmGKpDgT6HhZLWZ
+         sDypJbi9NUa2QCjmt98Spuczdje7k5bNkK0N5zkIqU4fyQnE2HsDtuJ5XDK4r6qdojvv
+         MnjAGYC9ug4HwUDLS2ATPMjH0ukCxADx774OHgXfUjXD9tRCfh2F25mvSLkvOtrBr2ew
+         Ertg==
+X-Forwarded-Encrypted: i=1; AJvYcCWMQ+lUEXmVIDnFVrgrOKfuhIN8FTAMCnULneCb4t44v8+70M+gIKSqLmIUzX8ifhjm7IuVemcJCFExAyVb2zgzMKNdyIIrECEwje6MsGSvLsvqUUXbfKlguWjr5key77dPnaJaaqs/wTIOE/dJkrqnoe1rZwbvMOgeUZih58HISmJRxtBU54z5Ess=
+X-Gm-Message-State: AOJu0YyMpafNOJGM0uzs7YksTKtBKlSqrj5LIgE1+5aQfisH6tVgMcEh
+	uNPN25q2d5aLXisfuG88MbC2QKK7UrOLONCzKFA5+0vULBttIyzaUgSI7zrd
+X-Google-Smtp-Source: AGHT+IGvUh5Wg21hYx2cRJD+JeqLvS78+7d49olJmucsFPibZTyi/QhEO2MJ6RB3UaIBIpLdjHH/zw==
+X-Received: by 2002:a17:903:11c5:b0:1db:8d0a:cfa9 with SMTP id q5-20020a17090311c500b001db8d0acfa9mr13621769plh.6.1708272711402;
+        Sun, 18 Feb 2024 08:11:51 -0800 (PST)
+Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id b15-20020a170902d50f00b001db4b3769f6sm2813762plg.280.2024.02.18.08.11.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Feb 2024 08:11:50 -0800 (PST)
+Message-ID: <e3562896-2d4f-42cd-be7f-6c7fb7fd08a1@gmail.com>
+Date: Sun, 18 Feb 2024 13:11:47 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <65d13fcd.050a0220.88fe3.665f@mx.google.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 0/2] rust: crates in other kernel directories
+Content-Language: en-US
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20231104211213.225891-1-yakoyoku@gmail.com>
+ <CAK7LNAT4zKWn6+scn5wbaN2_x4wh4EYSuNxnaoQK1FfJK45MOw@mail.gmail.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <CAK7LNAT4zKWn6+scn5wbaN2_x4wh4EYSuNxnaoQK1FfJK45MOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Feb 18, 2024 at 12:22:45AM +0100, Christian Marangi wrote:
-> On Sat, Feb 17, 2024 at 07:53:08PM +0000, Russell King (Oracle) wrote:
-> > Would it make more sense instead of this big churn, to instead
-> > introduce into struct phy_driver:
-> > 
-> > 	struct mdio_device_id	*ids;
-> > 
-> > which would then allow a phy_driver structure to be matched by
-> > several device IDs?
+On 11/13/23 11:13, Masahiro Yamada wrote:
+> [...]
 > 
-> Yes that was an alternative idea, but is it good to then have 2 way to
-> declare PHY ID?
+> I will not provide a line-by-line review.
 > 
-> Also the name should be changed... Maybe an array of a struct PHY_ID,
-> name that ends with a sentinel?
+> 
+> Just one thing I'd like to point out.
+> 
+> You assume the library (drivers/usb/core/*)
+> is built before its consumers (samples/rust/*).
+> 
+> If Kbuild ends up with building lib consumers first,
+> it will be a build error.
+> 
+> 
+> 
+> Kbuild descends into multiple directories in parallel building.
+> 
+> You cannot predict which directory is built first.
+> 
+> [...]
 
-We already have arrays of mdio_device_id in every driver, whether they
-can be re-used or not is a separate issue. In any case, merely adding
-support for this (only build tested patch below) is a much smaller
-change.
-
- drivers/net/phy/phy_device.c | 64 +++++++++++++++++++++++++++++++++-----------
- include/linux/phy.h          | 16 ++++++++++-
- 2 files changed, 63 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 2e7d5bfb338e..7e02bf51a2a5 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -522,12 +522,51 @@ static int phy_scan_fixups(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static const struct mdio_device_id *
-+phy_driver_match_id(struct phy_driver *phydrv, u32 id)
-+{
-+	const struct mdio_device_id *ids = phydrv->ids;
-+
-+	if (ids) {
-+		while (ids->phy_id) {
-+			if (phy_id_compare(id, ids->phy_id, ids->phy_id_mask))
-+				return ids;
-+			ids++;
-+		}
-+	}
-+
-+	if (phy_id_compare(id, phydrv->id.phy_id, phydrv->id.phy_id_mask))
-+		return &phydrv->id;
-+
-+	return NULL;
-+}
-+
-+static const struct mdio_device_id *
-+phy_driver_match(struct phy_driver *phydrv, struct phy_device *phydev)
-+{
-+	const int num_ids = ARRAY_SIZE(phydev->c45_ids.device_ids);
-+	const struct mdio_device_id *id;
-+	int i;
-+
-+	if (!phydev->is_c45)
-+		return phy_driver_match_id(phydrv, phydev->phy_id);
-+
-+	for (i = 1; i < num_ids; i++) {
-+		if (phydev->c45_ids.device_ids[i] == 0xffffffff)
-+			continue;
-+
-+		id = phy_driver_match_id(phydrv, phydev->c45_ids.device_ids[i]);
-+		if (id)
-+			return id;
-+	}
-+
-+	return NULL;
-+}
-+
- static int phy_bus_match(struct device *dev, struct device_driver *drv)
- {
- 	struct phy_device *phydev = to_phy_device(dev);
- 	struct phy_driver *phydrv = to_phy_driver(drv);
--	const int num_ids = ARRAY_SIZE(phydev->c45_ids.device_ids);
--	int i;
- 
- 	if (!(phydrv->mdiodrv.flags & MDIO_DEVICE_IS_PHY))
- 		return 0;
-@@ -535,20 +574,7 @@ static int phy_bus_match(struct device *dev, struct device_driver *drv)
- 	if (phydrv->match_phy_device)
- 		return phydrv->match_phy_device(phydev);
- 
--	if (phydev->is_c45) {
--		for (i = 1; i < num_ids; i++) {
--			if (phydev->c45_ids.device_ids[i] == 0xffffffff)
--				continue;
--
--			if (phy_id_compare(phydev->c45_ids.device_ids[i],
--					   phydrv->phy_id, phydrv->phy_id_mask))
--				return 1;
--		}
--		return 0;
--	} else {
--		return phy_id_compare(phydev->phy_id, phydrv->phy_id,
--				      phydrv->phy_id_mask);
--	}
-+	return !!phy_driver_match(phydrv, phydev);
- }
- 
- static ssize_t
-@@ -3311,6 +3337,7 @@ static int phy_probe(struct device *dev)
- 	int err = 0;
- 
- 	phydev->drv = phydrv;
-+	phydev->drv_id = phy_driver_match(phydrv, phydev);
- 
- 	/* Disable the interrupt if the PHY doesn't support it
- 	 * but the interrupt is still a valid one
-@@ -3485,6 +3512,11 @@ int phy_driver_register(struct phy_driver *new_driver, struct module *owner)
- 	new_driver->mdiodrv.driver.owner = owner;
- 	new_driver->mdiodrv.driver.probe_type = PROBE_FORCE_SYNCHRONOUS;
- 
-+	if (!new_driver->id.phy_id) {
-+		new_driver->id.phy_id = new_driver->phy_id;
-+		new_driver->id.phy_id_mask = new_driver->phy_id_mask;
-+	}
-+
- 	retval = driver_register(&new_driver->mdiodrv.driver);
- 	if (retval) {
- 		pr_err("%s: Error %d in registering driver\n",
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index fd8dbea9b4d9..2f2ebbd41535 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -542,6 +542,7 @@ struct macsec_ops;
-  *
-  * @mdio: MDIO bus this PHY is on
-  * @drv: Pointer to the driver for this PHY instance
-+ * @drv_id: The matched driver ID for this PHY instance
-  * @devlink: Create a link between phy dev and mac dev, if the external phy
-  *           used by current mac interface is managed by another mac interface.
-  * @phy_id: UID for this device found during discovery
-@@ -639,6 +640,7 @@ struct phy_device {
- 	/* Information about the PHY type */
- 	/* And management functions */
- 	const struct phy_driver *drv;
-+	const struct mdio_device_id *drv_id;
- 
- 	struct device_link *devlink;
- 
-@@ -882,6 +884,9 @@ struct phy_led {
-  * struct phy_driver - Driver structure for a particular PHY type
-  *
-  * @mdiodrv: Data common to all MDIO devices
-+ * @ids: array of mdio device IDs to match this driver (terminated with
-+ *   zero phy_id)
-+ * @id: mdio device ID to match
-  * @phy_id: The result of reading the UID registers of this PHY
-  *   type, and ANDing them with the phy_id_mask.  This driver
-  *   only works for PHYs with IDs which match this field
-@@ -903,6 +908,8 @@ struct phy_led {
-  */
- struct phy_driver {
- 	struct mdio_driver_common mdiodrv;
-+	const struct mdio_device_id *ids;
-+	struct mdio_device_id id;
- 	u32 phy_id;
- 	char *name;
- 	u32 phy_id_mask;
-@@ -1203,7 +1210,14 @@ static inline bool phy_id_compare(u32 id1, u32 id2, u32 mask)
-  */
- static inline bool phydev_id_compare(struct phy_device *phydev, u32 id)
- {
--	return phy_id_compare(id, phydev->phy_id, phydev->drv->phy_id_mask);
-+	u32 mask;
-+
-+	if (phydev->drv_id)
-+		mask = phydev->drv_id->phy_id_mask;
-+	else
-+		mask = phydev->drv->phy_id_mask;
-+
-+	return phy_id_compare(id, phydev->phy_id, mask);
- }
- 
- /* A Structure for boards to register fixups with the PHY Lib */
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Thinking with what you've said the same thing might apply to any Rust
+written code that depends on crates under the `rust` dir. Adding
+Make dependencies to object code made from `.rs` will be required if so,
+assuming that Kbuild is intelligent enough to build the crates first.
