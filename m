@@ -1,142 +1,87 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEB16E2CE
-	for <rust-for-linux@vger.kernel.org>; Sun, 18 Feb 2024 17:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D859442
+	for <rust-for-linux@vger.kernel.org>; Sun, 18 Feb 2024 20:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708276253; cv=none; b=Vm4S6ZqOlta0QdAmdSbIuL2LwXrFily5vEGPVnTJERMICeAa0Pc2BcUujbU/Hn6mk5dxteKxJa3bgSnZuKRhM/j/DrIXtiBoUzL9b2eJLQck5SBpszG/hHR2B3CMrn2vOmT6TqZu25L3DNc5yEUSWxcJnn6vroUat9/Rt+0I0vE=
+	t=1708287826; cv=none; b=HozmUn1GQLfHqfAlyrwGKJx0srxC7nlN2w5Uaj9nCjjwJ9Gp1MoUI+3+iGSSsSeMZk9p10Xf+WrazVaGHB1LfArjrOJ5bhZVVrumLqM0bcFVWW2XXj3E3FB6Yq5eIgBUqFdcKEesmga/Gs7/rLVxvrkcX1Ju70kddx73zCVZUZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708276253; c=relaxed/simple;
-	bh=PdDqZK69xcTr0Abar35SSrHpDAPi6invlf8gMlxo3r4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RpNIYnkr3gXPMjjd95kPjOYxZvp61EaSHz6ysrUFLVTfBNA3/HKuWsHP19MElaEvxir4ZhVYLshk4oDTFDlM/2Ssl1LshQYRD3Mt5TE9tOX8dAzdzOu8eZEiSlLUS9W4DGy0FBTHM4Iyj2J6VrSqfcbDirL+2UnP3Z0OA/rvBlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAS6DGxE; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1708287826; c=relaxed/simple;
+	bh=stkjmuffPT3hYqNnngWonLM2weEe/fkhz6v+IPWxnxY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BWDDaV/8QmQsq4YyhcDEyWC5KGfvDsUubJ55IeI9xM/f897KK+Qr6NspH23+6oPJe6Ig3oGKnoaU+8bm6j0O/s9uUKIDsTTWNMyOi4kV8lh4wB6z8hTWvF5UyvNtQg/+Ax0+FGpcqWHAkYmvEbsnBNwoMpK4ybqM0UNhdKiOHhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRvX/7Xe; arc=none smtp.client-ip=209.85.128.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAS6DGxE"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6d9f94b9186so2978249b3a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Feb 2024 09:10:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kRvX/7Xe"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-607cb7c44a7so34261787b3.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Feb 2024 12:23:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708276251; x=1708881051; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CfiN6D3FgMXQ0nlnHsPc8ka2AlsHk8v/F3YX8meJkHE=;
-        b=SAS6DGxEtGHqY9Loclh97ERrt9yKyt0EAFHxrYmB3syptlYaMNqo1wynzmy782wAJr
-         JV2C2vUloIDJgR2YjHawtHsFbA6AQgLBbWWIO6hB84wfQjtzUgBVrTK1tNq6pNz/byUh
-         Rqcsf37G8w+Kqm0nf7aVPPv7XEIGGuMpZOKofB3OYlkwfjPHxOJJB9L/nqZr9xHYiM5I
-         trQC3PDJ4AnYiOaNoUPMv5o19wQLqkCePbH7Iup0TfRZgnX14ms0gRmYVihC3eH5nrqV
-         lrzABn8J39RowvdXMaBhR3c90137Y4CtvB4/pqVx2mKL0ZxkDURFFvpcNFdqtPZ+iIQC
-         cXsg==
+        d=gmail.com; s=20230601; t=1708287824; x=1708892624; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=stkjmuffPT3hYqNnngWonLM2weEe/fkhz6v+IPWxnxY=;
+        b=kRvX/7XeZgeg0DP9XfLj46T3+CKzyircnb52plxdNHy9sajA5jjg/+KLx5J67LWyk7
+         VjKZhMdAuM52yJPk4DeTn85Vjssyt4COivOe6MrqBaJhXMtuyTwpxcxzOUlCaEF9sPgK
+         lqe/p1alw5UVwvLRTd1mPoPMjjYhK5XNXAudz2hLAl/fxnr7jFMpeJbgsAyAkZBvGfOx
+         d2DL0/TWhRSXcSLRLKuWXJKPBN9FMTLPAhISJv/IPhyYTMZgDW7ps/anoi2r5wrn6koF
+         m6UrsILkVZDTvjyyWSMgECOcPdUkNj9H/PyElqzPAHgK/0i+E9ZaFxedDzyGGOgEJgB3
+         vSPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708276251; x=1708881051;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CfiN6D3FgMXQ0nlnHsPc8ka2AlsHk8v/F3YX8meJkHE=;
-        b=lZvePl8LdfxvmDgpdabhW2ebHD2wcZCh+sNjo/WgGq131FVaCwCDUcph7v6Ijmgllq
-         zwcNkRWLBh2DVjgv9+1vjMDi70dvYdQDNYH52TEFKGon85nCuGi+PU/frFQnA2SR1IQ4
-         BjgShY8JV4CZQSc7VwMgVYWC/BpEjXrbkRnI0faORXtEUsoQ3iiKHxPGB1b+vlfzfHof
-         3G0LJ31vwMsLfLjus8zu4uUwBDgaX8hLhvR2s5rr9tAfOpkvzpwNQaoimjbkFveGEfjQ
-         GRsJDR2JnJs+NH0BTV5uKSeQAbXWRVV5Qwkn19SIJWCOnXBYBvQ7p00ymKOpaqSze9MM
-         fNVA==
-X-Gm-Message-State: AOJu0YzsPg01diNfHeCWozOjrghqrnloDFd0/K287wO7xzLwil2V3iHW
-	UW7Tofa+o2DY9cvnbuGy21hotaHJeJIM2O9UO7d5dTSFJumAnrWtO8nOoYHt
-X-Google-Smtp-Source: AGHT+IG0A4ms8o3Ei+s8TG3qXIX+QqnvLu8RS2ghxJw+wtyk96S98k3pVeur4EOapxAgDC72iRCfbA==
-X-Received: by 2002:a05:6a20:9c8b:b0:1a0:6496:84c1 with SMTP id mj11-20020a056a209c8b00b001a0649684c1mr13629939pzb.37.1708276250827;
-        Sun, 18 Feb 2024 09:10:50 -0800 (PST)
-Received: from [192.168.54.105] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id l15-20020a62be0f000000b006e13ce6f4dcsm3212500pff.87.2024.02.18.09.10.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Feb 2024 09:10:50 -0800 (PST)
-Message-ID: <1b804b77-d942-4d92-941d-59e72a0b8038@gmail.com>
-Date: Sun, 18 Feb 2024 14:10:42 -0300
+        d=1e100.net; s=20230601; t=1708287824; x=1708892624;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=stkjmuffPT3hYqNnngWonLM2weEe/fkhz6v+IPWxnxY=;
+        b=iG+ipK/D6u+vx1c/n/AiflfCKeQzJYoLv651TsCxC9wMxjGoFp/6LFRdGvkIUMiB0V
+         8rGWEj2WQBZgD0xnpJSm2LTF+h8oB/3hGQrrPeLa37MHHxHEU9QbbINNrROUC68nqVgh
+         tkYKxPwxeu+Ic7zHf9urC8hlfEQojfE3gY+i5c2oizn0d1SpGxm1cJ/dAO6t56rrYrd2
+         uE+dqemdt5V5/riZcGeQAG+Y2+o+h/DOtLh1Uiq0I+vtq8B/kf7/6s+M3Rdw+7wTkARp
+         4jjyD2/hCSjFr8gQEkFz52wBUmiCliiy+fEYGmzVse5k5vdOIL8ZMZdFodZPd6akh0UV
+         lO9Q==
+X-Gm-Message-State: AOJu0Yw+TKwFtkYTGPSgdaUoGFZKxqDS4a1rGY/aWH5rrynXaGQcZAMc
+	2IDX/WWu0aVqOg4zt7LWCOEyRq6NWwJJpvNEHSPtqwvuIKsbWL3faeXrqVyQoFk4MMe2As/H+TH
+	CENjEB/LQW5HzUwyhrQuOGTnRM6A=
+X-Google-Smtp-Source: AGHT+IG79+fso5zRiUlUBPBOwGxEEFD8gubKfY7SLsqc3M76hEaNtqhbafYMezBMabrvYIYh6XDHdVcqtKaxmE5FnYw=
+X-Received: by 2002:a05:690c:d07:b0:608:2f27:5c0e with SMTP id
+ cn7-20020a05690c0d0700b006082f275c0emr1536022ywb.8.1708287824232; Sun, 18 Feb
+ 2024 12:23:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: Add `container_of` and `offset_of` macros
-Content-Language: en-US
-To: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matt Gilbride <mattgilbride@google.com>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, kernel-dev@igalia.com,
- =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>,
- Wedson Almeida Filho <wedsonaf@google.com>
-References: <20240217153315.56128-1-mcanal@igalia.com>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20240217153315.56128-1-mcanal@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
+In-Reply-To: <20240216152723.993445-1-mika.westerberg@linux.intel.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 18 Feb 2024 21:23:33 +0100
+Message-ID: <CANiq72=edQFxnb7o3qPwmRKh+JA9ngS8Fvv-BpmFYso8jyQzpw@mail.gmail.com>
+Subject: Re: [PATCH] rust: bindings: Order headers alphabetically
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/17/24 12:32, Maíra Canal wrote:
-> From: Asahi Lina <lina@asahilina.net>
-> 
-> Add Rust counterparts to these C macros. `container_of` is useful for C
-> struct subtyping, to recover the original pointer to the container
-> structure. `offset_of` is useful for struct-relative addressing.
-> 
-> Co-authored-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Co-authored:by: Léo Lanteri Thauvin <leseulartichaut@gmail.com>
-> Signed-off-by: Léo Lanteri Thauvin <leseulartichaut@gmail.com>
-> Co-authored-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+On Fri, Feb 16, 2024 at 4:27=E2=80=AFPM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+>
+> As the comment on top of the file suggests, sort the headers
+> alphabetically.
+>
+> No functional changes.
+>
+> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-A handful of authors? So then, it would be sensible to list their
-contributions to the patch, though, it could be done when merged.
+Applied to `rust-next` with `Link:` added -- thanks everyone!
 
-> [...]
-> +/// Calculates the offset of a field from the beginning of the struct it belongs to.
-> +///
-> +/// # Examples
-> +///
-> +/// ```rust
-> +/// use kernel::prelude::*;
-> +/// use kernel::offset_of;
-> +/// struct Test {
-> +///     a: u64,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// assert_eq!(offset_of!(Test, b), 8);
-
-Would've added a check for field `a`, but that's my personal preference.
-
-> +/// ```
-> +#[macro_export]
-> +macro_rules! offset_of {
-> +    ($type:ty, $($f:tt)*) => {{
-> +        let tmp = core::mem::MaybeUninit::<$type>::uninit();
-> +        let outer = tmp.as_ptr();
-> +        // To avoid warnings when nesting `unsafe` blocks.
-> +        #[allow(unused_unsafe)]
-> +        // SAFETY: The pointer is valid and aligned, just not initialised; `addr_of` ensures that
-> +        // we don't actually read from `outer` (which would be UB) nor create an intermediate
-> +        // reference.
-> +        let inner = unsafe { core::ptr::addr_of!((*outer).$($f)*) } as *const u8;
-
-Curiously enough, you can get the offset of a member of a field struct
-per what `addr_of!` does, i.e. if we have a type `Foo` that contains a
-struct field `Bar` which has member `qux`, then
-`offset_of!(Foo, bar.qux)` will give out an offset too. I don't know if
-this applies for `container_of!`. Just saying.
-
-> [...]
-
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cheers,
+Miguel
