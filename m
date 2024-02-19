@@ -1,78 +1,79 @@
 Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BCD383A1
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 14:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5999F39AEF
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708354490; cv=none; b=q5IQmlg2PpHA5R/j/ZEcCOlkiTuWTG69gf8/CZIOUUa85MRMOo8IpSKNQ39N/xTRkS7YE727UHqqCHg3glJE/HolATK6Fb7pu10ZiAP51uc4/W99Uhpr9jqmyuiWgaLe20lAF3zsRdK2dW/ijPrGpuaMNPgHC5L+6EtbnbJ8KSc=
+	t=1708354495; cv=none; b=EfKH6+zfKopznsdrItx9IM2OAspY1yplhxgZ4rHJaS2sKtXh0ElaYna0F1sK+4dJJv1diTxagUdUsRU4iyEWBFd4/AsPPRj+lWXroFqawEpw8OayIqb3recfWoFMhcEfFDvjwHAd20UVEt9JjtVUZVUBuJfa9l9ZAgO7Dr+9+Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708354490; c=relaxed/simple;
-	bh=15JPHIrorMlgdQXuhKDILATvg4uizYLJqa6kmHDr6Tg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=q/p6XOPtTSdcbJfnthI5mJ1gyp4+LOZ6zzmjntaQ5EE1AVk9qjc4SUNXl1FF9XnDPMdUPNZccxqYSK6pkHvpE7ryZ1pDvJJpi0PLNFvrGu8w3A7b/VgDrAqjtbUvAA8WxI23VBZjS6oY2q/1N9c234Cvegxt31KN5NpLPYSaXAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YuzLJ8lF; arc=none smtp.client-ip=209.85.167.73
+	s=arc-20240116; t=1708354495; c=relaxed/simple;
+	bh=S72ioJgbkaD4L7vl4yVZ4OMPfS3ZG7tXAtCALVLTxFE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cw0syZk1RPH/VZ2laPvWEgwlD+JWlGOeidRVXapHAJNs++i7KSgMyyi0g9dYV1cRupany4z8Axt0G+0vN1oK84QzLCNIESWXqpZsAB/0z9bHjv1C8UI0VZeyRzQkN9AMY4q2DUBWgvjEhrrEUKxDA5BQul6ePaDPWufaPG1jGvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hJBg+wEb; arc=none smtp.client-ip=209.85.167.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YuzLJ8lF"
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-512be43fc31so341910e87.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 06:54:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hJBg+wEb"
+Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-512a9c0c05cso1487755e87.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 06:54:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708354487; x=1708959287; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=76f34A8OXIicg1B0/YeiOgJWMiNyXgOoZwGxC6DKwRY=;
-        b=YuzLJ8lFgs4bmvni2IuB1S29XbMj7NpEOLy5YWgXv5CyFYNXhcPdqsfMAVw29tbl/o
-         LdrBAKyL6PGJrRinOmaaT8Jdxlf/V621kCZIHTe0FTuILjifp1mZ7IU6VUYoCccDliit
-         SENu/EWlHLcIHepWD14pB22YR/MH6ni2sjwI0Vfju8gW1Yi1cQ1O1nmjM9gjyK68/dKi
-         iYUCF9SZZE8bDj/oq9vWvprCmUOWBxBdZtiwsrYE8S8XJDXjAx9I93dQGUlJqHZ+8s8H
-         M6oMgEub6ulB3M3tZ6k5L8mv4h0pKsV6SZVOxt9WsRmNO9X57YiAO4bxXax4AIb+1qUs
-         S7mQ==
+        d=google.com; s=20230601; t=1708354490; x=1708959290; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TPILgL4hDn+wMGXHUt+tcrB6xFWeOAwWFkXrv8nrJio=;
+        b=hJBg+wEbakQvAACfweFVJ2ux1CywJBfuNPQBVsT2Q6gcp88s3qnpJRtTNzgys13XxE
+         ErhwfmBC95nR5mQTx4V3CkRWa40V2XpVMVQfTwFPIJc10yg1LMKrFTXphnhZ7dvsUb/a
+         vf6Z6XHIUjrBFZXDbBCsEdkWcCgF6LeFadFikqOsTSIGFA4phmr8oGtu4hJg/oL7Drba
+         cLPU5syjKlL7g30MCmYSiOLKlBJIieEJORXk2XUHzVOtYP4Wa1Yql5zFVhxp8KEY8uNk
+         K1rZ45e9MWDzbO5sf6hGPnpB68GqU6D4Lv8yirdDY6IyKU/6l76zQRC+qkrne9LVrGl8
+         vXEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708354487; x=1708959287;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=76f34A8OXIicg1B0/YeiOgJWMiNyXgOoZwGxC6DKwRY=;
-        b=ROnrSetOU58Iv9wR4XfCUvU1TTkGNmUMn3+ln0IozxFNJU3a/drbCwpxbDnU7Qwd6Y
-         AroSDel6Z8e8UCRTYV9C+fsgZiDX0zN6/Zo1/mQsu56zeaWZVR3EkuUivXKD/XhFS59i
-         f0LNSPDVAxGzEala4s1AmIzdmbCSPgPhPkoJbuK3WoX0JEqTj0K224ZeLfrp4HPiLn3v
-         BzS9WUNjUG0yOiY3VB++5zJB5V8HWN5+isiSdDjTP8vIWz1fmv8fGKTog1SgkJNLtIbt
-         qxKwGX2OQ+fV/aLNPpRrTfMXJszfG/qhGXnO+8grT5FX4cktCSQ2mvOTMwcE0tnXdfLu
-         tJLw==
-X-Gm-Message-State: AOJu0Yzz+Wedq2aqNcFEnT3C23yVsd1sYvdKJtRz8UlWuHv/5URUecXR
-	KaKCXoCl5ngD3aZU9b/TW1XYtvCTFCc0klpi5ADmKkx2sTmEjzMk3JYJitQqYMM8N2TXrhUmE6j
-	f4nmkLkYxoJpaaQ==
-X-Google-Smtp-Source: AGHT+IGG1wBXBuBWg0mMxt9cSy1SbbYxDT/b5NogCGjgfi1j0aJHczhxq+AF4FKCEPa9y3ziei+Ku1koclmVre8=
+        d=1e100.net; s=20230601; t=1708354490; x=1708959290;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TPILgL4hDn+wMGXHUt+tcrB6xFWeOAwWFkXrv8nrJio=;
+        b=kYcNsg/y4gVN84SQCyS39JZwXv1mDbR9gaZQOM6IfOR5j1GwLH9wG4aF3G+Je8dzgR
+         +K9tnbXq/TqqZ4AbE/TYvX9Nd+YFAealGlkUrSDHvRhcRh6HNj2OR6Zdhcyp/KICEwee
+         sb8Fl1n8AlEzpAD9Sxy5XwPUsyBhg1HOh6owKmUOzJJV7kt+UOFmci3U68R5A5w8pft/
+         fOFHlQWyHHoUjqIXS7XCFDq3yrlIYnYpY6yB98BXc+q2B02HZQdPwmbV/eRdq9wqAZ+5
+         //38mPKXTpSagHusIQv7ACX5inpOyW4DipWvqWc41tHcAmi0P5ku8vJVvUnWcyNL03Df
+         PvrA==
+X-Gm-Message-State: AOJu0YxfOc/3rG7bv4f/xYWbRcI+OUPgiWIh5K1j/XlCe7JmYCPTdwjR
+	US6Vr2kYTWbqIbdYl5LzwRI0h0jBi2ouh2v2P5/gwAHX00zZqH13ckjjb+Ym3FA3RYFif+YBp6L
+	CwGjcm4n2uRilZQ==
+X-Google-Smtp-Source: AGHT+IH6RV+2ssTNcboY9cNH7m51Xspkl9h1/AYQAf897emHGrfaYh18wSooGo5Y6iYAtFdkldBk9186MrnDKTU=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a19:6458:0:b0:512:b774:465 with SMTP id
- b24-20020a196458000000b00512b7740465mr2131lfj.6.1708354487063; Mon, 19 Feb
- 2024 06:54:47 -0800 (PST)
-Date: Mon, 19 Feb 2024 14:54:10 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a05:651c:2129:b0:2d2:3808:cd7c with SMTP
+ id a41-20020a05651c212900b002d23808cd7cmr3822ljq.0.1708354490284; Mon, 19 Feb
+ 2024 06:54:50 -0800 (PST)
+Date: Mon, 19 Feb 2024 14:54:11 +0000
+In-Reply-To: <20240219-arc-for-list-v1-0-d98cd92c760b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAJJr02UC/x3MMQqAMAxA0atIZgM1qKBXEYcSowaklVREkN7d4
- viG/19IYioJxuoFk1uTxlDQ1BXw7sMmqEsxkKPWkRvQG+MaDQ9NF3rihnomv3QMJTlNVn3+3TT n/AGWkBmHXgAAAA==
+References: <20240219-arc-for-list-v1-0-d98cd92c760b@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1070; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=15JPHIrorMlgdQXuhKDILATvg4uizYLJqa6kmHDr6Tg=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBl02ucROTYJaRl2cIJHtjqC1TduuiTCk5U6Ir39
- QgbSr3gCSiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZdNrnAAKCRAEWL7uWMY5
- Rq9rEACCODPLh/2VRIOF5ckCtn27MlMzMb557UgzZmhS9WaqCnz1wBXOfCRw4p4QSx9AOMkFfoS
- WqiYDFWYXSYahBwoNyrpFHAH7RYOaW7NOnp4ThDcPWv06lJNnmmtQwxQNFRal8dU7/HG4wLWQGA
- JX89lUMAdfGuLrRhcAtmGs9cJyryQIG+Gk+sV+YiAHahin0cwZKObJLeyTQMHvLa/3NanPnTH0b
- EQKzPNfkfPwqD2hliZyd94l1iq0d+jKHSDG2I+E0jw40SOmOoOKpk7z4JhTuYsCXjKq5cDSOISv
- oDRYfCG1g5rPPjGMMxLiHLOD1SJG920t5p5MEaKC7Ui22K9ViZbOQgDlGSn5djqFhtwjC4Gj8sf
- CNWX6M/7F9pSdlrk0MAa0DM3V8FYwzT3DjvSljjXzxMsy2001V7GGTmP1kvJhQfzm5e9cLGYApD
- s3B9jjK1HbrkQpwlGNTe1NbU+cc99NlyG6Ra+P36KvE2rR41xCallRHc/YT0R7WzN0Xki3682kx
- fqL6WRzclnLji26xdzNY3bVn0i9Qkl6YBG4kYb/rU0+HjuzWtI9MFebdF9fv5YRrn3UbvMihq7e
- rJn+Sopokjw8csww31m+QSxlHy0vbmOBZzOZoJVC4B5HVmNgrnyFfcyFhlxlpINV2qMOHpfyenu ZPyyq1OVIJEbqWw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5601; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=S72ioJgbkaD4L7vl4yVZ4OMPfS3ZG7tXAtCALVLTxFE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBl02uzNwi5MDO+9qNLtPnK8z+XUZBFg6e01c3TV
+ jYm+bsVS32JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZdNrswAKCRAEWL7uWMY5
+ RvjdD/9bPQMu+uvJl1tr6pW4UGP5XyFJ4OJFYBeiXsBOQVxO7UKGgNFsSoxg+2oDARMZmKvjoem
+ D5LTdT+f31lc8vQBKOXHAPUuXZ9BaY+p1mIeEN2hGjQZkQeZiSndkkynYmOnhZ0kSn06LT6eL/O
+ +p1PHhkj95RHD/Ig73ihPKwgJh+k6sn4gKNkODOdAhKJMQG32kklyPZSwvEWiLb7/oCGHo+K62E
+ kj8xArD243qyZeuqBHPycCcwcDyNgfv0jtk5iA4toyQE80KyEMdsFDIbyuhBZq/f9ZIM6UsYxIE
+ T/juJMRirrS6pkuvDar2WD/SeTRuSHYU57mgmz6qylmC+rnYGcAhubwZu5sSYHFs0UolrqERSYQ
+ WpmiJ/fl3w/xibRKZqer8ontXTvNbXadlgaocKTtgRUM8f1P6RtiuTDnoR5ds/fu4iZadMcU5sM
+ 0IhNEUc9hhUePX820cQ1Nv+BDgGUJryMWC4pYkbMgQgpaXT7rMoV5osyxCNZKtv1/b8Pn7kpIkx
+ 8wjWHza4QeqjBA7Ke6Wkd+COHH6/OrbySxIOBfsVo1mcn50XdTAUjGLqk6z4jyagb63spBv/wdK
+ /qIW1PYO25NQ11ZEvYgVu33ola6xfadS67agB6Y5KfINaiQiMgrLFbcfdS/0djSOWrxgtGlUZoJ PiBBlZZp5b7Fbdw==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240219-arc-for-list-v1-0-d98cd92c760b@google.com>
-Subject: [PATCH 0/2] Arc methods for linked list
+Message-ID: <20240219-arc-for-list-v1-1-d98cd92c760b@google.com>
+Subject: [PATCH 1/2] rust: sync: add `ArcBorrow::from_raw`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -82,31 +83,119 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This patchset contains two useful methods for the Arc type. They will be
-used in my Rust linked list implementation, which Rust Binder uses. See
-the Rust Binder RFC [1] for more information. Both these commits and
-the linked list that uses them are present in the branch referenced by
-the RFC.
+Allows access to a value in an `Arc` that is currently held as a raw
+pointer due to use of `Arc::into_raw`, without destroying or otherwise
+consuming that raw pointer.
 
-I will send the linked list to the mailing list soon.
+This is a dependency of the linked list that Rust Binder uses. The
+linked list uses this method when iterating over the linked list.
 
-This patchset is based on rust-next and depends on [2].
-
-Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
-Link: https://lore.kernel.org/all/20240215104601.1267763-1-aliceryhl@google.com/ [2]
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (2):
-      rust: sync: add `ArcBorrow::from_raw`
-      rust: sync: add `Arc::into_unique_or_drop`
+ rust/kernel/sync/arc.rs | 72 ++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 54 insertions(+), 18 deletions(-)
 
- rust/kernel/sync/arc.rs | 103 +++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 85 insertions(+), 18 deletions(-)
----
-base-commit: e3c3d34507c7a146de1c5ce01bd0b2c0018b2609
-change-id: 20240209-arc-for-list-a2c126c2ad5c
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 7d4c4bf58388..a5314df409e7 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -232,27 +232,13 @@ pub fn into_raw(self) -> *const T {
+     /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
+     /// must not be called more than once for each previous call to [`Arc::into_raw`].
+     pub unsafe fn from_raw(ptr: *const T) -> Self {
+-        let refcount_layout = Layout::new::<bindings::refcount_t>();
+-        // SAFETY: The caller guarantees that the pointer is valid.
+-        let val_layout = Layout::for_value(unsafe { &*ptr });
+-        // SAFETY: We're computing the layout of a real struct that existed when compiling this
+-        // binary, so its layout is not so large that it can trigger arithmetic overflow.
+-        let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
+-
+-        // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
+-        // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
+-        //
+-        // This is documented at:
+-        // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+-        let ptr = ptr as *const ArcInner<T>;
+-
+-        // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
+-        // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
+-        let ptr = unsafe { ptr.byte_sub(val_offset) };
++        // SAFETY: The pointer returned by `into_raw` points at the `data` field of an
++        // `ArcInner<T>`, as promised by the caller.
++        let ptr = unsafe { raw_to_inner_ptr(ptr) };
+ 
+         // SAFETY: By the safety requirements we know that `ptr` came from `Arc::into_raw`, so the
+         // reference count held then will be owned by the new `Arc` object.
+-        unsafe { Self::from_inner(NonNull::new_unchecked(ptr.cast_mut())) }
++        unsafe { Self::from_inner(ptr) }
+     }
+ 
+     /// Returns an [`ArcBorrow`] from the given [`Arc`].
+@@ -273,6 +259,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+     }
+ }
+ 
++/// Converts a pointer to the contents of an [`Arc`] into a pointer to the [`ArcInner`].
++///
++/// # Safety
++///
++/// The provided pointer must point the `data` field of an `ArcInner<T>` value.
++unsafe fn raw_to_inner_ptr<T: ?Sized>(ptr: *const T) -> NonNull<ArcInner<T>> {
++    let refcount_layout = Layout::new::<bindings::refcount_t>();
++    // SAFETY: The caller guarantees that the pointer is valid.
++    let val_layout = Layout::for_value(unsafe { &*ptr });
++    // SAFETY: We're computing the layout of a real struct that existed when compiling this
++    // binary, so its layout is not so large that it can trigger arithmetic overflow.
++    let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
++
++    // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
++    // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
++    //
++    // This is documented at:
++    // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
++    let ptr = ptr as *const ArcInner<T>;
++
++    // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
++    // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
++    let ptr = unsafe { ptr.byte_sub(val_offset) };
++
++    // SAFETY: The pointer can't be null since you can't have an `ArcInner<T>` value at the null
++    // address.
++    unsafe { NonNull::new_unchecked(ptr.cast_mut()) }
++}
++
+ impl<T: 'static> ForeignOwnable for Arc<T> {
+     type Borrowed<'a> = ArcBorrow<'a, T>;
+ 
+@@ -453,6 +468,27 @@ unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
+             _p: PhantomData,
+         }
+     }
++
++    /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously been deconstructed with
++    /// [`Arc::into_raw`].
++    ///
++    /// # Safety
++    ///
++    /// * The provided pointer must originate from a call to [`Arc::into_raw`].
++    /// * For the duration of the lifetime annotated on this `ArcBorrow`, the reference count must
++    ///   not hit zero.
++    /// * For the duration of the lifetime annotated on this `ArcBorrow`, there must not be a
++    ///   [`UniqueArc`] reference to this value.
++    pub unsafe fn from_raw(ptr: *const T) -> Self {
++        // SAFETY: The pointer returned by `into_raw` points at the `data` field of an
++        // `ArcInner<T>`.
++        let ptr = unsafe { raw_to_inner_ptr(ptr) };
++
++        // SAFETY: The caller promises that the value remains valid since the reference count must
++        // not hit zero, and no mutable reference will be created since that would involve a
++        // `UniqueArc`.
++        unsafe { Self::new(ptr) }
++    }
+ }
+ 
+ impl<T: ?Sized> From<ArcBorrow<'_, T>> for Arc<T> {
 
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.44.0.rc0.258.g7320e95886-goog
 
