@@ -1,217 +1,101 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A58328DA5
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 09:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD628DA7;
+	Mon, 19 Feb 2024 09:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708336164; cv=none; b=PB/us8apgHUaHiFWN4cIiBE5e0V1ge9uh/w6Agd4uC2irZv3GVjeIY/TmEOBYecSHVCUFj+ctdN2HJHfIc6djhIzROXgSvOYbB5qKxeDxF0AZ5EHnigO/QQNDov/Ro6ac3KZ+/7C7wFI5lEVuvJaPClBlPzptYCRAJffTsn6DWs=
+	t=1708336390; cv=none; b=q8jchfVcAfAEYZ7Y+xWNmgjSrYzyqokHH7lQBpnOuDQ9YQIaQVn8h3oz2V24qwNDZ69qh/C2GsZUduMvrR0sOTIhvPucjAIfo+Qacd1cKfZXF6AU0BGW5HOGgh158mYKzCyuSq9sA2ECdZ07M2jYG+Ssbo5sS5aRpnz89wKkvZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708336164; c=relaxed/simple;
-	bh=gtpYXxYGtM3e4fPuwEbZjCqaPmvLn/0mX4/8vL7z5Rw=;
+	s=arc-20240116; t=1708336390; c=relaxed/simple;
+	bh=r/h2jpPDYgXtfXZa856PSgA0VAjbWBELGgpavRLRjZA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sp8Vo3yzyQmDqqU5mQXGHjxAQqSpCXUkgk6YBCw2gu6h/DJbMpJ+JizE+QqQxYp+9DTkVBoLWRgUEuDUsO8iozLLE1CPdfYBFuXKP4gmYdpaGQ6Xw+BtmrcLwAxeTrKsl09q3FKJR6hrEAf1+HM6Ze87hooDGAJcp4wrIHe+YXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r9uSwYIw; arc=none smtp.client-ip=209.85.222.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=SiwlmM0TfKWDj8QBpfeiFsvhdIlzolJsGzK08GB1sFV6GVWRHNe7EuvL0Zkl+/QtUMs9M5Yx+PdmP5GCW19d61Z6G8BsWerjsmOH1K6C+gVYIdnNN2sxChrz8yYEz7BF9d3DxItAGJaixqp9eKXFVtPOpNcqMYtv7CsPl8M9K6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kO9kJ/t3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r9uSwYIw"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-7d2e1a0337bso1825489241.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 01:49:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708336161; x=1708940961; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G+FOFFBAWMEtOMQ6LqezGtzdtmDgRLcs4ZYc/A6Yaig=;
-        b=r9uSwYIw9u5CoxZQ9do78Muwm301yC4BMZmJB2vg1z79zXll+XiARgcbfUIaySrNty
-         JRTlwWCXXHoe5OOWdRHm8Y+ZS6kU+62LPNujKEJo9pg0R/k7B+K1KMX3l/Xjz+1lsNTr
-         1YYZWau0ocKQBTiUOQB3m2EhqGSI9DAjw3yaLeYzvVHAwaXy+ZuXVyUc680qAlGFQNlo
-         rBLqSZ7qlMW6covLbeTXTdXv4hxFrtlRkokE4GWhSogZw8jv/9Xb9AkNtKS6nwmPd0V7
-         iFDvOiy7VZmlUjZkE3x4LfB4rFMq9GtGBOYZDQqG1ZbIZVLajggiZdSmRV+khUe6hP1S
-         oEpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708336161; x=1708940961;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G+FOFFBAWMEtOMQ6LqezGtzdtmDgRLcs4ZYc/A6Yaig=;
-        b=VDRieQpDI3rK4xyqf3+XilF251P148Pg1hSrwRw33gvztPrTDNjAmGaKMdsJvjRcso
-         q460DMttPGViEdDDv1r7Dpc/jUJuBXskyInM+lwtcoNUg4uYMXs3iZOwyj+M7FX1XNKE
-         9DHAfx2kYjYzvT4tOY/ompCcCgMeakuR/V3umQA71VJSntPDpBChdXBFLBbBMijxEl54
-         PJXKUE9ktpYIOLPZOz0J3L7iOCmcX+cxii44J6gJ76Jftva7yECmG9I17jRUAuZb4MHZ
-         9nK7q2b+zsn5O6MdHBuHLfa74hVkO40mbty1N5zb1nH4CKhM9fOk4aO/hpXcmKeEdtou
-         6djg==
-X-Forwarded-Encrypted: i=1; AJvYcCVebbuGX1fWf6Ey3/JmNvbAOCgI2EWYc4MQXWHPlLBXTvv1mUuoDSKxIyWCFrHh6NUtw9MSkw2pP8IeH0CCTJcHtSnXk+AIXiNbLfE4tXA=
-X-Gm-Message-State: AOJu0YwKElMJhEpZFGCjOsk+YAUrYi/f1SlWabiAwI7eRIZKgaYxbu9D
-	5mPpL3TSfm6z5vPfJJPEGjOYH+UBnMc5vTwJBEWam4AWwy+vfiHDTGxQ1yd8G/4LVz3hCb4WdGw
-	f3qPoIXp/6eFToN6F7CIuQ7fcX3XyMNyWuZYq
-X-Google-Smtp-Source: AGHT+IFrGjSg+GmBWhmAdppzRgzRK24Pn9sh/5Zatx01tjvIOPBFfAIj1k5LmOZJ+QFObQ143B5uQ0GDBHsO39WyBd0=
-X-Received: by 2002:a67:ce06:0:b0:470:50ff:d9a5 with SMTP id
- s6-20020a67ce06000000b0047050ffd9a5mr1635765vsl.22.1708336161189; Mon, 19 Feb
- 2024 01:49:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kO9kJ/t3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8270AC433C7;
+	Mon, 19 Feb 2024 09:53:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708336390;
+	bh=r/h2jpPDYgXtfXZa856PSgA0VAjbWBELGgpavRLRjZA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kO9kJ/t3G0jAOCDIhSLY1AQAFvgfCoFc3tRKvHMfg1znoRsYmju7r2LReykQn8B//
+	 pgkPSdQy+5n8DlDZvKImpCBcswChM9a1RdkLRc9YS+LIkEnJZggUyptYOkYwaYVQuC
+	 yoRONjM+Ah6NNUwQpyVGU84lJBVlEM4fN5O1E4BYks1jDNCdsyg2M9wpbsqWGdK6Ln
+	 wtxHVvvl54Kb0Z0H4zUdg5nkuHKFvaSf4OZ9VeedASEoggOUvuBCr+3Y9zRIqDg6N4
+	 amlnhDkReqZ2GGazLxkfdonQ30wI32/7S9KmFgGJIWtyjByBYp+6MsFh23CLJr8t6h
+	 10AiIyEikrlMQ==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-512bd533be0so272478e87.0;
+        Mon, 19 Feb 2024 01:53:10 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXJPxjB0tenNGJen/axyCoS9U4NBiDED3i/t3c3kFCtb2RVZMV7D4ZMoYnw1eWBguJexhtEa3BO+RF1poHdeLiUNBvvFzoypTZHZRGgzI2kt1J5gA+Z2l30zwPrIw0EzXnnqDW9rMmI88YXk4eJzRdBm+0EKmiB4l+1E0g5Wgd5+8n1IpznknmCrRc=
+X-Gm-Message-State: AOJu0YwVYh89MJGIE33cPG78RS2vjfC40OeZx4XGA0rdTUvrH8e0QJ2b
+	2PSeKffDAYaOSVxdPx/SXYbY1UvSusE9nQTQ+lbk6+I2+LiclnBAxrovwrPUUzJnnVrFM2XEMoX
+	Ikg4cBO81I27UR5r6YXI6RyO02hY=
+X-Google-Smtp-Source: AGHT+IGINCyBsmxLQmWZSlm6RrqZqYWU8t65jYsoUD72iAo1Kj7M3o/u7uw7WhAGTF9nwsX7NU/Qk5xIEXvGukyZD78=
+X-Received: by 2002:a05:6512:52f:b0:512:afcc:3fe8 with SMTP id
+ o15-20020a056512052f00b00512afcc3fe8mr1989946lfc.23.1708336389049; Mon, 19
+ Feb 2024 01:53:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240217153315.56128-1-mcanal@igalia.com>
-In-Reply-To: <20240217153315.56128-1-mcanal@igalia.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 19 Feb 2024 10:49:10 +0100
-Message-ID: <CAH5fLggPRcPc-5C8JY5FR7jQMbdNoc89EU0_QAqhG=6HiySZ=w@mail.gmail.com>
-Subject: Re: [PATCH] rust: Add `container_of` and `offset_of` macros
-To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
-Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+References: <20240217002638.57373-1-ojeda@kernel.org>
+In-Reply-To: <20240217002638.57373-1-ojeda@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 19 Feb 2024 18:52:32 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARAiPCO3GrrihrgOzeBNT+8SvLo0t-4hHsTfQQFFjkuKA@mail.gmail.com>
+Message-ID: <CAK7LNARAiPCO3GrrihrgOzeBNT+8SvLo0t-4hHsTfQQFFjkuKA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kbuild: mark `rustc` (and others) invocations as recursive
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matt Gilbride <mattgilbride@google.com>, 
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
-	kernel-dev@igalia.com, =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@google.com>
+	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 17, 2024 at 4:33=E2=80=AFPM Ma=C3=ADra Canal <mcanal@igalia.com=
-> wrote:
+On Sat, Feb 17, 2024 at 9:27=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> From: Asahi Lina <lina@asahilina.net>
+> `rustc` (like Cargo) may take advantage of the jobserver at any time
+> (e.g. for backend parallelism, or eventually frontend too). In the kernel=
+,
+> we call `rustc` with `-Ccodegen-units=3D1` (and `-Zthreads` is 1 so far),
+> so we do not expect parallelism. However, in the upcoming Rust 1.76.0, a
+> warning is emitted by `rustc` when it cannot connect to the jobserver it
+> was passed (in many cases, but not all: compiling and `--print sysroot`
+> do, but `--version` does not). And given GNU Make always passes
+> the jobserver in the environment variable (even when a line is deemed
+> non-recursive), `rustc` will end up complaining about it (in particular
+> in Make 4.3 where there is only the simple pipe jobserver style).
 >
-> Add Rust counterparts to these C macros. `container_of` is useful for C
-> struct subtyping, to recover the original pointer to the container
-> structure. `offset_of` is useful for struct-relative addressing.
+> One solution is to remove the jobserver from `MAKEFLAGS`. However, we
+> can mark the lines with calls to `rustc` (and Cargo) as recursive, which
+> looks simpler. This is what is now documented and recommended by `rustc`
+> and allows us to be ready for the time we may use parallelism inside
+> `rustc` (potentially now, if a user passes `-Zthreads`). Thus do so.
 >
-> Co-authored-by: Miguel Ojeda <ojeda@kernel.org>
+> Similarly, do the same for `rustdoc` and `cargo` calls.
+>
+> Finally, there is one case that the solution does not cover, which is the
+> `$(shell ...)` call we have. Thus, for that one, set an empty `MAKEFLAGS`
+> environment variable.
+>
+> Link: https://github.com/rust-lang/rust/issues/120515
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Co-authored:by: L=C3=A9o Lanteri Thauvin <leseulartichaut@gmail.com>
-> Signed-off-by: L=C3=A9o Lanteri Thauvin <leseulartichaut@gmail.com>
-> Co-authored-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> ---
->
-> Hi,
->
-> `container_of` is a essential macro to build any sort of driver in the
-> Linux Kernel. Therefore, we need a good and reliable implementation of
-> this macro for the Rust abstractions.
->
-> Although I checked the version sent by Matt [1], I don't really like the
-> fact that such an essential part of the foundation of any driver would
-> be an unsafe macro. Therefore, I propose this alternative to Matt's
-> implementation, which is Lina's implementation that it is actually safe.
 
-Well, the addr_of macro in the standard library, which performs the
-opposite operation is also unsafe. So I don't think that having it be
-unsafe is that unreasonable.
 
-> `container_of` is a dependency for the rustgem driver and this is part
-> of my current efforts to upstream the driver.
->
-> [1] https://lore.kernel.org/rust-for-linux/20240205-b4-rbtree-v1-1-995e3e=
-ee38c0@google.com/
->
-> Best Regards,
-> - Ma=C3=ADra
->
->  rust/kernel/lib.rs | 69 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 69 insertions(+)
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 5a8594d2f5db..7ae89c676800 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -103,3 +103,72 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
->      // SAFETY: FFI call.
->      unsafe { bindings::BUG() };
->  }
-> +
-> +/// Calculates the offset of a field from the beginning of the struct it=
- belongs to.
-> +///
-> +/// # Examples
-> +///
-> +/// ```rust
-> +/// use kernel::prelude::*;
-> +/// use kernel::offset_of;
-> +/// struct Test {
-> +///     a: u64,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// assert_eq!(offset_of!(Test, b), 8);
-> +/// ```
-> +#[macro_export]
-> +macro_rules! offset_of {
-> +    ($type:ty, $($f:tt)*) =3D> {{
-> +        let tmp =3D core::mem::MaybeUninit::<$type>::uninit();
-> +        let outer =3D tmp.as_ptr();
-> +        // To avoid warnings when nesting `unsafe` blocks.
-> +        #[allow(unused_unsafe)]
-> +        // SAFETY: The pointer is valid and aligned, just not initialise=
-d; `addr_of` ensures that
-> +        // we don't actually read from `outer` (which would be UB) nor c=
-reate an intermediate
-> +        // reference.
-> +        let inner =3D unsafe { core::ptr::addr_of!((*outer).$($f)*) } as=
- *const u8;
-> +        // To avoid warnings when nesting `unsafe` blocks.
-> +        #[allow(unused_unsafe)]
-> +        // SAFETY: The two pointers are within the same allocation block=
-.
-> +        unsafe { inner.offset_from(outer as *const u8) }
-> +    }}
-> +}
 
-The offset_of macro is already available through the standard library.
-You do not need to add it here.
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
 
-> +/// Produces a pointer to an object from a pointer to one of its fields.
-> +///
-> +/// # Safety
-> +///
-> +/// Callers must ensure that the pointer to the field is in fact a point=
-er to the specified field,
-> +/// as opposed to a pointer to another object of the same type. If this =
-condition is not met,
-> +/// any dereference of the resulting pointer is UB.
-> +///
-> +/// # Examples
-> +///
-> +/// ```rust
-> +/// use kernel::container_of;
-> +/// struct Test {
-> +///     a: u64,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// let test =3D Test { a: 10, b: 20 };
-> +/// let b_ptr =3D &test.b;
-> +/// let test_alias =3D container_of!(b_ptr, Test, b);
-> +/// assert!(core::ptr::eq(&test, test_alias));
-> +/// ```
-> +#[macro_export]
-> +macro_rules! container_of {
-> +    ($ptr:expr, $type:ty, $($f:tt)*) =3D> {{
-> +        let ptr =3D $ptr as *const _ as *const u8;
-> +        let offset =3D $crate::offset_of!($type, $($f)*);
-> +        let outer =3D ptr.wrapping_offset(-offset) as *const $type;
-> +        // SAFETY: The pointer is valid and aligned, just not initialise=
-d; `addr_of` ensures that
-> +        // we don't actually read from `outer` (which would be UB) nor c=
-reate an intermediate
-> +        // reference. The two pointers are within the same allocation bl=
-ock.
-> +        let inner =3D unsafe { core::ptr::addr_of!((*outer).$($f)*) };
 
-If your macro is not unsafe, then this line is incorrect. I could call
-`container_of!` with some random dangling pointer, and then it would
-use addr_of! on that pointer, which is not okay because addr_of
-assumes that the pointer is in-bounds of an allocation both before and
-after the offset operation.
 
-Alice
+--=20
+Best Regards
+Masahiro Yamada
