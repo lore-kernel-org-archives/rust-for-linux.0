@@ -1,90 +1,97 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EAD3A29A;
-	Mon, 19 Feb 2024 16:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6655C3399C;
+	Mon, 19 Feb 2024 16:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708358484; cv=none; b=Vl6oXuRhtUUbK87kVrJVaI8UA+WSMDxbSAPg7x2o8og75eMRsyHhXRd3vzKwOgxtz0LyvrsUClXkS45zH8HoIFjEL7c/LgQjSXQyjWf9MG4HsU1GcF+DX40DxWp1U2m4SYyxAdM3dgzFOfMbER3HY45xew29lTOr0+FHD4SxRRA=
+	t=1708358634; cv=none; b=mIl+Kj8iMIWFPNYzGvRMjP5WxAdZuNnZ7GWShZohPlb9uLxuzZTLEMFwnwORey6mdvg4z3/u7uhuCD+qn3mkCh4k8xQ+drGjjQ9peMmROAQB5IIhMLsTaDQ8vtGNIUQb1qAKpAV49+wEixQSZAxw9tqBSIrEkyb1HFzS/tuHIM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708358484; c=relaxed/simple;
-	bh=RjJaUO3UTTrFsrhoX11/20RQ9F41KV1HxKWjbf2SUaA=;
+	s=arc-20240116; t=1708358634; c=relaxed/simple;
+	bh=WmRlSNkA/KdX9XPb6GEYSoKbr9CXuMXKqExqINGkwbc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k6nE4FUp2lrDxEVRm1EKfRQvzWEgYB3Hd646ejckDbRM4OjbsHWgVlOxuY2poWs4StiIl8j1KYL0D4/rumVW9hTVLBHOX1qpKvqVgYTIE5Q/q6I9OzpT4kXM/gAGbHH7RrhcbwoZghrAEnjTWBL80WBZC0ESVwTIu4ThqYe+FGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KeJlezPb; arc=none smtp.client-ip=209.85.128.172
+	 To:Cc:Content-Type; b=XIp3XZ/PjMOE69MJkuVk9SPqNk11Iy78e5v9Q1gH+Ykcaa3KgcvXLAgZj1+dxlM8hlGSt/Ecw7DS9lStxzbcoyi9PAem6GhCPSsWj146LCL/iLV1aN6YUuapiwy/QIXMj8a3obrizDUdFy6IqHi1IJL7AzziT2TsbRR8Sim9iik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NaJoKZ2a; arc=none smtp.client-ip=209.85.219.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KeJlezPb"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-607f8482b88so29075147b3.0;
-        Mon, 19 Feb 2024 08:01:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NaJoKZ2a"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dccb1421bdeso4161014276.1;
+        Mon, 19 Feb 2024 08:03:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708358481; x=1708963281; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708358632; x=1708963432; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RjJaUO3UTTrFsrhoX11/20RQ9F41KV1HxKWjbf2SUaA=;
-        b=KeJlezPbN3clz3N8ckKag+gGWgOjR5ddzRX6aj8ni4sAbaoN6/318/CRSmFVt6sITe
-         nY5+nrvE79E4dnTvv6PXTmZVPagZDE9oqMSakn/GX6ZVPmXuQie7XQGpsbIpP0MR7uYd
-         ZixkVC7RKcQs/Pjyr8qaAWGpF/EPLX7VXC5v4MzfLUGRC0TGYrhhEo9xC81ALnACbm4w
-         UQoaPaF7kdkqsbFd7YfApBrbOfezl1dZ0ZVAeYca5dI32xxrURaJgS10FvpGqBUJtk2L
-         vL0ifCmbWOe2ZCjMSGxOzxKvvAjfX5Pt+xWqx2meF8wqlLL25YbLImL65ZPbv9J3DuGL
-         hUUw==
+        bh=WmRlSNkA/KdX9XPb6GEYSoKbr9CXuMXKqExqINGkwbc=;
+        b=NaJoKZ2aIZ6BypJdqLRAfH8GBZ9hJOEb9bry/ZfGTfzwSp8+zsaBWTSp6ZTwASOdQX
+         pB74qz1ShPeux8n2i71gtYNg8LiAkp3J/EWsQyldRW2pEM+bytVyi+pBnXZHMab4kCyc
+         n7R0uzVgmRQZv8u7RDC10mavX/v3rcD6dv6Ld7rGbPqTrW9QRviHEV6R/zL1hoq1IZba
+         s0dkkQQOybOZRjFImWooWT0bmXtgqNf16VOkeRu2CSlCsqzM+c1dwTtGby22l33cr/Jb
+         TDRloC4R71vHlwwkXvAqejcISXHBiMGp6HjyiLm4olpnJ+Udv2LEjhghKj/CAd5sKdi2
+         vbSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708358481; x=1708963281;
+        d=1e100.net; s=20230601; t=1708358632; x=1708963432;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RjJaUO3UTTrFsrhoX11/20RQ9F41KV1HxKWjbf2SUaA=;
-        b=ozLVeeH75njGCVauI4SzP/c33jyAFVghDc116gya6VFqAokfufbWUNukz/ZJb3dyI2
-         +ycCvExRbGvMVkZGKhxSIU45ED7MRe0qiefkZeKj1vUAXwYqx3ujeZP1fmnTX9Whz5Bb
-         3ECCznQZx09BqV33C0qT6B/5Gfx396KEv/lLtcwEUu2i0UJenZYtb+Bx3JSA+uinSZl3
-         mewQItM7HHc6XDLt/sEIg7HVqDguI3arBfMIXKQng0n1mdDfgb9F/GVrPFA2n/meXT25
-         1JaK8LzeGeUM1/H2iPuFWM4oYCArCKqHFA0EsoeafVPFmzSh9kOW6JNOnJyeS0iFcjM7
-         mBkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWR4RZmK0hSjLpVOKGa3RpnvqUw5HNW9MMXiB85K8SpJ93pokZC1FpWtYUCo9PyHDU9C5P4lCR7z+kOpqRPqAJMQ1cF7KXjvD3JB/kx1ea9gm9Rotmg4EmN9GBb0TY0050INbQ9SUoXhLu7IlQ=
-X-Gm-Message-State: AOJu0YxH1yrucPgYy5wsv5xCEZUK8wKcbwANdOltcbq+IXT8VVsTHk+L
-	OvGdvEqaUAr/ta7AMOnA9jX8L9n7zsb/0HAj8DQa8L1dtko7wm4hM8HkEmz1B/OsJpIVJxjZJhw
-	mWLgJl7ez8eGMN/vfT4F5TTmq+lM=
-X-Google-Smtp-Source: AGHT+IFV7cnfqHWd3LWv+ZHLoC4tmJGJ/Lk4xaw+zFGGTkElEoABI2C5HfHRAkYwwL44+IqGRK7P3TWcTOqJsPV5ric=
-X-Received: by 2002:a81:b614:0:b0:607:f4b9:11aa with SMTP id
- u20-20020a81b614000000b00607f4b911aamr10367352ywh.21.1708358460925; Mon, 19
- Feb 2024 08:01:00 -0800 (PST)
+        bh=WmRlSNkA/KdX9XPb6GEYSoKbr9CXuMXKqExqINGkwbc=;
+        b=N+D4CUP5DXnb2/jA9+ucrrlGUIdAw35Cw42yiopcBoTW5D6T3MpKd7pjZk1Ejmofdi
+         dLOgGVqln7/PxKgCtELGVX60wiE/rvS4NvJlTQKxAcT1BEqPYuj+93az9YJu7r3+IMta
+         YeR8s8lUvnMgVxs0bP7QSWMp9btlej4b1ZWwh8uo2NAu0jaTdACkoKdsa7ByYHYOd5si
+         Otw58q4cGvYPcnS1993NUPPM47ekb74XNYyK6h+qT6kMWr0nUxgUhmnJd7xtPeAXQt23
+         duRalhXPX7NHEfPDs/s6aiC3J+uHaYcX9BzsxzT+nM0I7TsNk+1RQCA21Cy01iaB3CjQ
+         NO0g==
+X-Forwarded-Encrypted: i=1; AJvYcCW4wJXypXIHrawpJz+0jFaqe9KrzON/yxyIq3cFYVht6U8qHHOIOyoWsvzo2pEvNmrfskM/XueImRZOaoCokm/9t7BoHlGGpEltLmym9mFE1yt6KdWeNRwfHlrRfDdjCkosMO5Kw1Bzxb8yZ+g=
+X-Gm-Message-State: AOJu0YzFVrfaeLer4kgSq6P/ZtJ4dqhfi5Y7G5bp38MXIeu6vgSRyqD2
+	URkgJFe8dUcU9AnXVgZhsY1OWaMBNSxTsZyB30P6+4wTMc93kmLfP0JwfWHD6Wt19ESX6RiiwwH
+	phoS0zLAQAqMeEjE8wyD/iqNLYs4=
+X-Google-Smtp-Source: AGHT+IF1m6Ip0CcBIu/E+D6EL8tZaYd0E7pl/0FJrjViHllCekK5lu/AmUM3Gf4H0Avnm+Z8AE/nVZLC6R42mHnhSWU=
+X-Received: by 2002:a25:ac9b:0:b0:dc7:5018:4022 with SMTP id
+ x27-20020a25ac9b000000b00dc750184022mr13383631ybi.44.1708358632536; Mon, 19
+ Feb 2024 08:03:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240217002717.57507-1-ojeda@kernel.org> <CAH5fLgirUqw2hkEgFKOV4a2N2sW-GAGVY=KkkyzptMN+H2txfQ@mail.gmail.com>
-In-Reply-To: <CAH5fLgirUqw2hkEgFKOV4a2N2sW-GAGVY=KkkyzptMN+H2txfQ@mail.gmail.com>
+References: <20240217002717.57507-1-ojeda@kernel.org> <87ttm4g462.fsf@metaspace.dk>
+In-Reply-To: <87ttm4g462.fsf@metaspace.dk>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 19 Feb 2024 17:00:49 +0100
-Message-ID: <CANiq72=r9cE5ZT7EWe77g2dfprBx+DBrujo=mcA7r1hoO+=P0w@mail.gmail.com>
+Date: Mon, 19 Feb 2024 17:03:41 +0100
+Message-ID: <CANiq72nbr6qy1otJpdh3FVUN5cUfrkUPYEHJFm_QqfKvYEj-Xw@mail.gmail.com>
 Subject: Re: [PATCH] rust: upgrade to Rust 1.77.0
-To: Alice Ryhl <aliceryhl@google.com>
+To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 19, 2024 at 10:06=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Mon, Feb 19, 2024 at 11:06=E2=80=AFAM Andreas Hindborg (Samsung)
+<nmi@metaspace.dk> wrote:
 >
-> Maybe you should just add the as_ptr method to ThisModule now? It will
-> silence the warning, and doesn't trigger a warning of its own since it
-> is pub.
+> I am a little confused about this patch, since 1.77.0 is not released
+> yet and the link [1] (currently) points to the release notes for 1.76.
 
-Yeah, either way is fine -- I meant the patch to be independent and to
-avoid adding an API without a user, but it is not a big deal.
+Yeah, the patch is written as it would have been written by the time
+it is applied, i.e. see the note after `---`.
 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+So, for instance, the link actually points to the 1.77.0 notes, it is
+just that they do not exist yet :)
 
-Thanks!
+> Will there be a new version of this patch when 1.77 is released, or do
+> we just expect no changes to alloc when the compiler goes from beta to
+> release?
+
+There can changes (or not), so it depends on that, i.e. if not, I will
+apply this one. If there are non-trivial ones, then I will send a v2.
+
+(There are no changes so far)
 
 Cheers,
 Miguel
