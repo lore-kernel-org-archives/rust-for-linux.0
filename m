@@ -1,127 +1,148 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194E42562E
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 10:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5172375A
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 11:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708337396; cv=none; b=Tv+JQI2Dx9+DoKsBm4+StYZkgJFh0DB3PrZsQP++FTWJXU/INf6ISju9kiAOPayMN71LLZI1asW3hEpGsdeukKFEW7zV3RifvvQuSM6uA+Ocr/UFZdcuH1Ot4GTLBoZGQCpI1IFpKYnvbkIl1YxlFKP/AlO3nIL1YGVQRz9M3nw=
+	t=1708343316; cv=none; b=AnuiemWU4FrZufXcH/wneTP+ZXQbz3kZ3S9J4QiUUIun5F8fqgtKdPeC64xAADfj8c7zPaiPZCV9NGWJi4VeGaxqxbYYlfXj7kEiOo+TItxS+f7Sx2TaPB4CCpeQDHPlANqpYmG+81IuzOloospsPjf7PAkMTc0hZdhWyrEMtAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708337396; c=relaxed/simple;
-	bh=dyygKB6Z3appPfvQEup6+78yc6C4vhddmHvmABbWBhY=;
-	h=From:References:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=YhL/qwhoX6iVcKgPO91JRan3UvzYogAM8kNn45+xUoKgAqo8eRcSkf7ps+doJj7HnFiLmYDCkxV98uh62wxMleVcCdbT9mPn3ipyYS0kDwa0e5zhlKRb6+m55SSp3aZ/MjmellSgNRSrv77DqOrJgzK/NbL7ThpUHTyn2kRUZlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=jib1fdZ2; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1708343316; c=relaxed/simple;
+	bh=0BgyreMqzz0PMtI4QUlHgDPJch1SnZJpj6ZUNM2eegA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=q7Ta6azk+LRZy1kRb0gLN9+89aTc7BowKPgfUXIohja06lZwBtK3xxLrTOztu8xHL6cM5jg/lihc7fi7prwM8B52f+QpPKtxqHdkxqHbWS1NEU/sRIsQbrsSJ/7LWcv99hxJhmytOA3QF5ZgiX7KQkpgjDbDbVHCgJRxmjJq4gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oqk6Y6EN; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="jib1fdZ2"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3394b892691so2293162f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 02:09:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oqk6Y6EN"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6b269686aso6419986276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 03:48:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1708337392; x=1708942192; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:user-agent:references:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dyygKB6Z3appPfvQEup6+78yc6C4vhddmHvmABbWBhY=;
-        b=jib1fdZ2gwbcNTeqU8oCD4Z7ihMMf4frdYAzrLJ8k6VqGzIynnvxqM+K4t5ft2Irtb
-         d++ht8cNFBrqQU5eoAWAP1ep9p5pN/p7uU9zCmcys2pGd2C/36JIhDWnq1sCGk91SYWj
-         f/Yalag7SBnaCKdYh/MhMHe38p3ZQwax/D8rfIBcKpIyx/lBX7OaTC6RLhrA4Qh3lbFY
-         pZ+xz/7QH/uADneoGy0wdAZQnWvPvfDp+fYS+tJfNDejEeQXmpIckiSZRpnjwdNXG54T
-         +fs8jIICOKQY/kCSZ4sVfzFRSUAgizodR0TxnSRf5O/isFoudWbwFIYeg+sLkf1TmEAV
-         qVUA==
+        d=google.com; s=20230601; t=1708343313; x=1708948113; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Zq3hIb/a7G7RDHkyPhkOMlDdykFo1mSw4GBQxXEi8tU=;
+        b=oqk6Y6ENgoe+QN87VFoeCynR06gMK0PE9szXy93wj+qpKdCv/Ut+jWHL38P+q4KSCJ
+         +isL9ifP+vUnGrjI7URyHTo0P/2R5wFkCgxUTyOJT1G3HMT4ZempChegdeW5REDR3IQc
+         2y8oZetCWnFiaFe9QvzzLdjpfZnbvGZBpC/ijeOJwKKuTIdKiZZhe2U9JAf+1Jxj0Dur
+         GPIM9ceiLB9zfZOHGfq/vD0vnfQffbMFWEq3DJVkrquS2YvyVWFw/zqD654De1YqziG4
+         BuzH+TD7sHyhjuOAJEAWeuu6pRHNWehubdtbG1FEj2z0Qsy0uDz84AHn+uLis/NPkfWD
+         OlDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708337392; x=1708942192;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:user-agent:references:from:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dyygKB6Z3appPfvQEup6+78yc6C4vhddmHvmABbWBhY=;
-        b=DJSNLlhIa6bX8dhKT95TUdhdDUBxVGkklFlxksODroOQrhbV2ij62OaRJw6AEsdw/4
-         IhspKXivKVGF2L2q8xadhb34jVuzi0EYDybvh2IVVOE/fzk+k9hbzLjEuSYcnIckRMzu
-         zeDRp6QEShSddFdgRUx0Cxi6BzPJFLgkEx3qG9A3awJJdNDuL0LFYuuU2QkJmIqR82JG
-         t0xb8Zq1iYgeNcaMY9r11Y3fWdzum4I2SywELITKMu7pDQfa+0P0tiX50u8MRkbw5cAd
-         pGpuK7UN2okkzqJ2H9hu2prsRczWpWhhQrzt95msE80K5puov4GT2kpYlY7LrPYk4j//
-         lOsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQl2ZaP9NNEa1adg2iEZXZG6ks0h1SU6ysDBSS8UjVru6hVSx6W4I8b6My/WTsSua5EE7DYPuxbI//eG3I05dJwOZ8US9vvzrNJujIiAw=
-X-Gm-Message-State: AOJu0YzyyBxBGZaTOHTx0KyD39kTUv35cnE5JMX+ohi2DWc3ou2rbaf4
-	Kgslory3ZqBz8z8Ip0MGvI1CIBOJQGgMFbmErXpOGey7iKYKlHFVuHp617KSLWw=
-X-Google-Smtp-Source: AGHT+IHSR74q+ow3wbJYcwyzu+7KXp1yjUPdgtj6o6bOX/CBbt9waaxp+Df39iyw5elJPygIbKI44A==
-X-Received: by 2002:a05:6000:1563:b0:33d:608c:da8d with SMTP id 3-20020a056000156300b0033d608cda8dmr618681wrz.9.1708337392470;
-        Mon, 19 Feb 2024 02:09:52 -0800 (PST)
-Received: from localhost ([165.225.194.222])
-        by smtp.gmail.com with ESMTPSA id i5-20020a05600011c500b0033cf095b9a2sm9876647wrx.78.2024.02.19.02.09.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Feb 2024 02:09:52 -0800 (PST)
-From: Andreas Hindborg <nmi@metaspace.dk>
-X-Google-Original-From: Andreas Hindborg <a.hindborg@samsung.com>
-References: <CGME20240217153356eucas1p17c926b49da33a438d286ebb5c1a918c9@eucas1p1.samsung.com>
- <20240217153315.56128-1-mcanal@igalia.com>
-User-agent: mu4e 1.10.8; emacs 29.2
-To: =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>
-Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex
-  Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
-  Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Matt Gilbride
- <mattgilbride@google.com>, Lyude  Paul <lyude@redhat.com>, Danilo
- Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org,
- kernel-dev@igalia.com, =?utf-8?Q?L=C3=A9o?= Lanteri Thauvin
- <leseulartichaut@gmail.com>,
- Wedson  Almeida Filho <wedsonaf@google.com>
-Subject: Re: [PATCH] rust: Add `container_of` and `offset_of` macros
-Date: Mon, 19 Feb 2024 10:51:47 +0100
-In-reply-to: <20240217153315.56128-1-mcanal@igalia.com>
-Message-ID: <87plwsg3yx.fsf@metaspace.dk>
+        d=1e100.net; s=20230601; t=1708343313; x=1708948113;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Zq3hIb/a7G7RDHkyPhkOMlDdykFo1mSw4GBQxXEi8tU=;
+        b=Ih5KcfuQGYoAM7IO/HNfm0fFVPaEfaVCWkA5mki7aXIi+wrobRj3dSh+Hq3jPtfCws
+         2aAuSIWXC3Jrf/zcV1nIP77/BUdFSMFX2O9gtPi626XgSbHVqYRq+TMh8CeD6l0ayVFr
+         lwSbVrnPf/TvtnywXnvne4ktIDFMT14HMDrp6vNMhBHIPAu8fl2W6wq22i5mvtuM7qwh
+         Xn+/JO9bz9XGWL8PMeLquUw5XmXZANv9pP1NX06u4CI8anP+Df1ZiBUkAKvTCIFYG4an
+         tNUdEFVjBq70/tnzRarQnvpoPxt41/UPbDixIDTOZra55MPe4HiroG571BNn7i3qwkzD
+         rBkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzXYOS/ZGXwAvZPy0uQaMgEx6Kz0V9jm4bCvfZ1OThtLFlkDRoyfq7jd9uORXkAB/oOSkZ1WStv94GPuXUO99yBceiKD1VuT3l9iFdT8w=
+X-Gm-Message-State: AOJu0Yz8vHVfYhv8JNS39qmIGDq0w4MPhzDIKhfyoqt5lhkAtifpyzuv
+	LM56X1iiRPs4+aBOPNzxIQGlYPDykUuYEAXPR6wNykv0/2wd7CZgkcSlh5Rcdww3Vcy7UrX89AP
+	yfeI6WrN7SKtNssSYk59N/z7Tzg==
+X-Google-Smtp-Source: AGHT+IGUtuNzHb8DfAI1iCN8ixzq7V3b1Aq8vTZEZtpY7YPkl5b+Jjek01Sl+n0GHaRJyXNs96yLgaeGWpKAz7u4sbo=
+X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
+ (user=mattgilbride job=sendgmr) by 2002:a05:6902:1b85:b0:dc2:26f6:fbc8 with
+ SMTP id ei5-20020a0569021b8500b00dc226f6fbc8mr479732ybb.7.1708343313437; Mon,
+ 19 Feb 2024 03:48:33 -0800 (PST)
+Date: Mon, 19 Feb 2024 11:48:07 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPc/02UC/1XMQQ7CIBCF4as0s3bMAK2xrryH6QJwSkm0NNAQT
+ cPdpd25/F9evg0SR88Jbs0GkbNPPsw15KkBO+nZMfpnbZAklZDUoWkxmjUyozZGaBKXkTRB/S+ RR/85rMdQe/JpDfF70Fns66609K9kgYR937FiZnW1dHchuBefbXjDUEr5AbpTt/SjAAAA
+X-Mailer: b4 0.12.4
+Message-ID: <20240219-b4-rbtree-v2-0-0b113aab330d@google.com>
+Subject: [PATCH v2 0/6] Red-black tree abstraction needed by Rust Binder
+From: Matt Gilbride <mattgilbride@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Matt Gilbride <mattgilbride@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+This patchset contains the red-black tree abstractions needed by the Rust
+implementation of the Binder driver.
 
-Hi Maira,
+Binder driver benefits from O(log n) search/insertion/deletion of
+key/value mappings in various places, including `process.rs` and
+`range_alloc.rs`.  In `range_alloc.rs`, the ability to store and
+search by a generic key type is also useful.
 
-Ma=C3=ADra Canal <mcanal@igalia.com> writes:
+Please see the Rust Binder RFC for usage examples [1]. Note that
+the `container_of` macro is currently used only by `rbtree` itself.
 
-> From: Asahi Lina <lina@asahilina.net>
->
-> Add Rust counterparts to these C macros. `container_of` is useful for C
-> struct subtyping, to recover the original pointer to the container
-> structure. `offset_of` is useful for struct-relative addressing.
->
-> Co-authored-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Co-authored:by: L=C3=A9o Lanteri Thauvin <leseulartichaut@gmail.com>
-> Signed-off-by: L=C3=A9o Lanteri Thauvin <leseulartichaut@gmail.com>
-> Co-authored-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> ---
->
-> Hi,
->
-> `container_of` is a essential macro to build any sort of driver in the
-> Linux Kernel. Therefore, we need a good and reliable implementation of
-> this macro for the Rust abstractions.
->
-> Although I checked the version sent by Matt [1], I don't really like the
-> fact that such an essential part of the foundation of any driver would
-> be an unsafe macro. Therefore, I propose this alternative to Matt's
-> implementation, which is Lina's implementation that it is actually safe.
->
-> `container_of` is a dependency for the rustgem driver and this is part
-> of my current efforts to upstream the driver.
->
+Users of "rust: rbtree: add red-black tree implementation backed by the C version"
+    [PATCH RFC 03/20] rust_binder: add threading support
+    [PATCH RFC 05/20] rust_binder: add nodes and context managers
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
 
-`offset_of!()` is available as `core::mem::offset_of!()` under unstable
-feature gate, which is currently enabled and used in the workqueue
-abstractions. So at least that macro is not required.
+Users of "rust: rbtree: add `RBTreeIterator`"
+    [PATCH RFC 17/20] rust_binder: add oneway spam detection
+
+Users of "rust: rbtree: add `RBTreeIteratorMut`"
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: rbtree: add `RBTreeCursor`"
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: rbtree: add RBTree::entry"
+    Not used in the original RFC, but introduced after further
+    code review.  See: https://r.android.com/2849906
+
+The Rust Binder RFC addresses the upstream deprecation of red-black
+tree. Quoted here for convenience:
+
+"This RFC uses the kernel's red-black tree for key/value mappings, but we
+are aware that the red-black tree is deprecated. We did this to make the
+performance comparison more fair, since C binder also uses rbtree for
+this. We intend to replace these with XArrays instead. That said, we
+don't think that XArray is a good fit for the range allocator, and we
+propose to continue using the red-black tree for the range allocator."
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+---
+Changes in v2:
+- Update documentation link to the C header file
+- Use `core::convert::Infallible` in try_reserve_node
+- Link to v1: https://lore.kernel.org/r/20240205-b4-rbtree-v1-0-995e3eee38c0@google.com
+
+---
+Alice Ryhl (1):
+      rust: rbtree: add `RBTree::entry`
+
+Matt Gilbride (1):
+      rust: rbtree: add `RBTreeCursor`
+
+Wedson Almeida Filho (4):
+      rust: add `container_of!` macro
+      rust: rbtree: add red-black tree implementation backed by the C version
+      rust: rbtree: add `RBTreeIterator`
+      rust: rbtree: add `RBTreeIteratorMut`
+
+ rust/helpers.c        |    7 +
+ rust/kernel/lib.rs    |   33 ++
+ rust/kernel/rbtree.rs | 1214 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 1254 insertions(+)
+---
+base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
+change-id: 20231205-b4-rbtree-abb1a016f0a0
 
 Best regards,
-Andreas
+-- 
+Matt Gilbride <mattgilbride@google.com>
+
