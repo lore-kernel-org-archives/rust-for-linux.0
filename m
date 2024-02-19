@@ -1,101 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD628DA7;
-	Mon, 19 Feb 2024 09:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1572556D
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 10:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708336390; cv=none; b=q8jchfVcAfAEYZ7Y+xWNmgjSrYzyqokHH7lQBpnOuDQ9YQIaQVn8h3oz2V24qwNDZ69qh/C2GsZUduMvrR0sOTIhvPucjAIfo+Qacd1cKfZXF6AU0BGW5HOGgh158mYKzCyuSq9sA2ECdZ07M2jYG+Ssbo5sS5aRpnz89wKkvZ8=
+	t=1708337180; cv=none; b=g4QbmS9Uw6b61TDLdLtGkLnSAiO9cnRdeaeL5f4EfMbjlYgpZ3kHo7L6fjX5f/CHoi86LFYXQizvj5kyEv4bKMb/0pcHoYwPOpKm+5meFJS3b0l2d1cvmG4Z9LH5nL1FRxgk2w92aXrxEH0Z4elfAJHV0As2+Nilsl367zNQIp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708336390; c=relaxed/simple;
-	bh=r/h2jpPDYgXtfXZa856PSgA0VAjbWBELGgpavRLRjZA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SiwlmM0TfKWDj8QBpfeiFsvhdIlzolJsGzK08GB1sFV6GVWRHNe7EuvL0Zkl+/QtUMs9M5Yx+PdmP5GCW19d61Z6G8BsWerjsmOH1K6C+gVYIdnNN2sxChrz8yYEz7BF9d3DxItAGJaixqp9eKXFVtPOpNcqMYtv7CsPl8M9K6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kO9kJ/t3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708337180; c=relaxed/simple;
+	bh=vYBRCWQn5pi6BftlC353rMYRDQYvAkyKACgB5eVnF3g=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=QwNdeVS0hKXUkI9RW/UORIKgXIxSPm6M3+vwgMzO3pg8OynZbBb+KOuMvDkqH2gO37MwygcdizfHVL6wExFUyw871ggyJtbsZA1kZeSugZ1IyED6sY1NnvrBfplq0YSiCN5kvNrutPcYkUJrew8Ng2XNhfFZ8lx5Y4QC9kIIjxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=yMP09Cym; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kO9kJ/t3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8270AC433C7;
-	Mon, 19 Feb 2024 09:53:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708336390;
-	bh=r/h2jpPDYgXtfXZa856PSgA0VAjbWBELGgpavRLRjZA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kO9kJ/t3G0jAOCDIhSLY1AQAFvgfCoFc3tRKvHMfg1znoRsYmju7r2LReykQn8B//
-	 pgkPSdQy+5n8DlDZvKImpCBcswChM9a1RdkLRc9YS+LIkEnJZggUyptYOkYwaYVQuC
-	 yoRONjM+Ah6NNUwQpyVGU84lJBVlEM4fN5O1E4BYks1jDNCdsyg2M9wpbsqWGdK6Ln
-	 wtxHVvvl54Kb0Z0H4zUdg5nkuHKFvaSf4OZ9VeedASEoggOUvuBCr+3Y9zRIqDg6N4
-	 amlnhDkReqZ2GGazLxkfdonQ30wI32/7S9KmFgGJIWtyjByBYp+6MsFh23CLJr8t6h
-	 10AiIyEikrlMQ==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-512bd533be0so272478e87.0;
-        Mon, 19 Feb 2024 01:53:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXJPxjB0tenNGJen/axyCoS9U4NBiDED3i/t3c3kFCtb2RVZMV7D4ZMoYnw1eWBguJexhtEa3BO+RF1poHdeLiUNBvvFzoypTZHZRGgzI2kt1J5gA+Z2l30zwPrIw0EzXnnqDW9rMmI88YXk4eJzRdBm+0EKmiB4l+1E0g5Wgd5+8n1IpznknmCrRc=
-X-Gm-Message-State: AOJu0YwVYh89MJGIE33cPG78RS2vjfC40OeZx4XGA0rdTUvrH8e0QJ2b
-	2PSeKffDAYaOSVxdPx/SXYbY1UvSusE9nQTQ+lbk6+I2+LiclnBAxrovwrPUUzJnnVrFM2XEMoX
-	Ikg4cBO81I27UR5r6YXI6RyO02hY=
-X-Google-Smtp-Source: AGHT+IGINCyBsmxLQmWZSlm6RrqZqYWU8t65jYsoUD72iAo1Kj7M3o/u7uw7WhAGTF9nwsX7NU/Qk5xIEXvGukyZD78=
-X-Received: by 2002:a05:6512:52f:b0:512:afcc:3fe8 with SMTP id
- o15-20020a056512052f00b00512afcc3fe8mr1989946lfc.23.1708336389049; Mon, 19
- Feb 2024 01:53:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="yMP09Cym"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-33d118a181fso1937048f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 02:06:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1708337176; x=1708941976; darn=vger.kernel.org;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=vYBRCWQn5pi6BftlC353rMYRDQYvAkyKACgB5eVnF3g=;
+        b=yMP09CymWl0tHkfF0ym2yJeh9fsDdUyUJzoAnfF5TApzCG3DoHuSHk/m8FbUm/RyiO
+         q2NIHCLbBNhbPXi5GeR9xXOh0BtSgW5xkmCxhgDUS/pQCMLeWsx4tpa6zz3INN4h7tjz
+         gkmpjOj07oMblg/WVzwvNzAPlk5mmE8ND6T24+u5sBViJZjGm/m1zi6ToYqJxF6h3/9c
+         +7st40P2ZxKzxVkt2YSk3U9ROoGuJCkMsGBqMRLiLhdr5pxH47bxjmtAX2oyjTBz5bS8
+         o0AAnooSgsj61et+IdQbScepfmO0Iu22b4xruFLKKpm2joVdOTHa858BUEvKEmKEIYML
+         ms2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708337176; x=1708941976;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vYBRCWQn5pi6BftlC353rMYRDQYvAkyKACgB5eVnF3g=;
+        b=JPg/KvXouxmpGma1a5sXEg2/x0kNeSUbeebjB5f5PbYEVq8dBvyrse0ccQLwroyxR1
+         XcyhS1tMMobetB/TbAMfyvJ9qjVtso5qmpVEDdSD41BjGVqLANRbFup7yN8yBM78karA
+         dPxMwueFkYB1IpXLz7bNE6DhT18/i9V+nkyzmtGKmboNuMt71FgmRu3eOENA9RPxN66n
+         PIam3ze4FefXOSi5/xY6TajxCBn+SstCLCFxb4vXqTRvtusN/1OnPrEa8hGF5Xt50Hma
+         pVZk72k0ZmVyE0sDYdHSAbQU4Lxgb0hSAiP+anzs7lrTO3KBzrc4VhvAFfQTaTlA27Zs
+         Jtog==
+X-Forwarded-Encrypted: i=1; AJvYcCVvfXHP57LttKbFJ9xJMnCZG47nLbHMOS4TFpqjasZ9oPwlKO672Hm1dAwlpiy+YiFDHLIXpF29etmvpUuohqdrC7XFTXleQbQxaYcdGog=
+X-Gm-Message-State: AOJu0YwJ4teFySqBrPvNWS1avnhIoHSMaJb13HWBAxE3gfZbqy7oSYxN
+	ynK5gdqikDeQxREXCcHjs3Zgum1X9rw2MnshlFe+83gLjfd5Edb0wG1wpHF0MX8=
+X-Google-Smtp-Source: AGHT+IHvaWFWKJICK4F7j0G/eSgGRsIOQzy0vgHZmI/yLOGmIzrOYxDsz1f7pKjzXKmoo5Qyz8h8rw==
+X-Received: by 2002:a5d:648e:0:b0:33d:3bc2:7acc with SMTP id o14-20020a5d648e000000b0033d3bc27accmr3045129wri.11.1708337176264;
+        Mon, 19 Feb 2024 02:06:16 -0800 (PST)
+Received: from localhost ([147.161.155.108])
+        by smtp.gmail.com with ESMTPSA id n15-20020a5d660f000000b0033b1b1da2adsm9842143wru.99.2024.02.19.02.06.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Feb 2024 02:06:15 -0800 (PST)
+References: <20240217002717.57507-1-ojeda@kernel.org>
+User-agent: mu4e 1.10.8; emacs 29.2
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev
+Subject: Re: [PATCH] rust: upgrade to Rust 1.77.0
+Date: Mon, 19 Feb 2024 11:02:33 +0100
+In-reply-to: <20240217002717.57507-1-ojeda@kernel.org>
+Message-ID: <87ttm4g462.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240217002638.57373-1-ojeda@kernel.org>
-In-Reply-To: <20240217002638.57373-1-ojeda@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 19 Feb 2024 18:52:32 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARAiPCO3GrrihrgOzeBNT+8SvLo0t-4hHsTfQQFFjkuKA@mail.gmail.com>
-Message-ID: <CAK7LNARAiPCO3GrrihrgOzeBNT+8SvLo0t-4hHsTfQQFFjkuKA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: mark `rustc` (and others) invocations as recursive
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Feb 17, 2024 at 9:27=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> `rustc` (like Cargo) may take advantage of the jobserver at any time
-> (e.g. for backend parallelism, or eventually frontend too). In the kernel=
-,
-> we call `rustc` with `-Ccodegen-units=3D1` (and `-Zthreads` is 1 so far),
-> so we do not expect parallelism. However, in the upcoming Rust 1.76.0, a
-> warning is emitted by `rustc` when it cannot connect to the jobserver it
-> was passed (in many cases, but not all: compiling and `--print sysroot`
-> do, but `--version` does not). And given GNU Make always passes
-> the jobserver in the environment variable (even when a line is deemed
-> non-recursive), `rustc` will end up complaining about it (in particular
-> in Make 4.3 where there is only the simple pipe jobserver style).
->
-> One solution is to remove the jobserver from `MAKEFLAGS`. However, we
-> can mark the lines with calls to `rustc` (and Cargo) as recursive, which
-> looks simpler. This is what is now documented and recommended by `rustc`
-> and allows us to be ready for the time we may use parallelism inside
-> `rustc` (potentially now, if a user passes `-Zthreads`). Thus do so.
->
-> Similarly, do the same for `rustdoc` and `cargo` calls.
->
-> Finally, there is one case that the solution does not cover, which is the
-> `$(shell ...)` call we have. Thus, for that one, set an empty `MAKEFLAGS`
-> environment variable.
->
-> Link: https://github.com/rust-lang/rust/issues/120515
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain
 
 
+Miguel Ojeda <ojeda@kernel.org> writes:
 
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+> This is the next upgrade to the Rust toolchain, from 1.76.0 to 1.77.0
+> (i.e. the latest) [1].
 
+I am a little confused about this patch, since 1.77.0 is not released
+yet and the link [1] (currently) points to the release notes for 1.76.
 
+Will there be a new version of this patch when 1.77 is released, or do
+we just expect no changes to alloc when the compiler goes from beta to
+release?
 
---=20
-Best Regards
-Masahiro Yamada
+BR Andreas
