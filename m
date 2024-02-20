@@ -1,55 +1,55 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394CD6F53C;
-	Tue, 20 Feb 2024 15:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49F36A8AB;
+	Tue, 20 Feb 2024 15:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708441475; cv=none; b=kTZg1Z4yu2PJU4x21N88QEhCEGoUg3wRa0jVX8TOmThnreK624ffSVbLG/QP8ivL9mSFLPcOhdWwypkfftkd4dfdoDlGwj4L54DDkvbIZRTwUdthOD8KWyff+4WXsGKqRS2jTBOn8ArH1pz+TSyn3YvXsikqBnuZtIVlGmXsh0Y=
+	t=1708443959; cv=none; b=uMQNpQfyvKQrmhsCMlBbSuC93jnTru00o+/yDSqlYhiFScrws3NbGc3UbUX6lN1ubwxZmEf3PmrXjUu6klaLgCrgpxUxGqjKwlJLk0PXsqcq5fVkzp9soyYp/5/2XtLSk4U0HR+WpXAWdE3fwaYrT8p/seXiCYwp+cvdRk+cwrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708441475; c=relaxed/simple;
-	bh=KumKsn8sehZfu7Vu0oDRvilmtG+UWuW2duPuRG3CRg0=;
+	s=arc-20240116; t=1708443959; c=relaxed/simple;
+	bh=T9V5XtIpSuhz+qbEYmW8Gv+3u3YMnmX//PpS72rrwGM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OFwj7uzmCixv3Ey4txuA3rEEVgxSsXQNJNtwXf6jM+C+NCdBhBqzKa41poTI5xUnR15bUP8pTQRGTJC517wjMGgXJ7A/vA01SmeQfkMErb2Ig2jrjz1lGv7X2qt1UhTKAw46now/gB0aHGJyfxI0EWyxKwcTMfRpqk2C8ZFi8/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDngkQcj; arc=none smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=lksoEEotD+vMzjjD4tqaKsibzwb3P/cKbdJv3nBZT5Eayk/PTncA3F3n88yYmO1uM3e7JsejvR/xDnfKRrRPy09+claj7ZmhA/ACu8xJU51yHhTG56EWB8xpuRu8RzD/abexb6F09179SNuUnr6LWxD8/HFGEWeFDxvCjXCpZY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpQKpKNg; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDngkQcj"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-290ec261a61so3340862a91.0;
-        Tue, 20 Feb 2024 07:04:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpQKpKNg"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-299e0271294so527747a91.3;
+        Tue, 20 Feb 2024 07:45:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708441473; x=1709046273; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708443957; x=1709048757; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1C7PqnJ3IjMaFo87Yysu/rmUmxBBQU3uMR0rjaQTEpA=;
-        b=FDngkQcjBokRqF+DGGwy+VhHKuIqUGUvBK2PRnkuqmsAp0I2Ur2Vl7i8jRoV8Ic32u
-         dNAyO5HPZRb8aiBlkNBsHdMKUdJ9g6G4JaCOlRa1V0yE5KItkubLaPJH4lrO4pSLOBQi
-         99DnifUKZqyrJCKNCx7RakHAfqVdbjjgLDDsFjtw7VmS4WKrSLSDhUgqDSy9KrddHR+/
-         259wMWa7dz1sSBTIbf4pJfuT8Vmhxrw1s9mcSkguuQgqvJnve44K6saRNHcxcGofdeHu
-         bvE9vKnUVSGIprkmlkA0iYAjXTrX89Vz3TiUdIi71UZcLr7u0uDXqFQPieAgFaZ+B99k
-         JwHg==
+        bh=T9V5XtIpSuhz+qbEYmW8Gv+3u3YMnmX//PpS72rrwGM=;
+        b=GpQKpKNg0GcULlY/QxM3dAho2Os0HlD4GVx9X2+Yv86hL/ztdPR/pcMaRKyKMOL/5H
+         GSn+hI6JQaj80uIv6LYch3f+uw59DeYOrc8O1qD04MQHAk3G0OkQl2VJ1o8JbKg5gIaS
+         prBBRJ1tJk3Dh8Rbuxz+rBA0qpOJmnX4D1pkbA2rPLr1X4d7lDjquMArXiQnWNPFfqB5
+         QPEhG8k8YEkgPumfNvj0uHxD2NdVF0RcjOmhmWUs2K4q3oZKaEQctDiXXqi/s8offVpF
+         9J+dlJclav2OKXfzgEEWyUTWJiRv5BwaCQj2IIyMb+0nF1CAb27a2PiidnZyKYt3Tc/w
+         EGIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708441473; x=1709046273;
+        d=1e100.net; s=20230601; t=1708443957; x=1709048757;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1C7PqnJ3IjMaFo87Yysu/rmUmxBBQU3uMR0rjaQTEpA=;
-        b=LwyNDDPgZu11P+1dhn2GExzuScGKsw0ijQnlj6erJDNbw/zkJVOGry77+4Ue+9pGo/
-         QeG9gFhVORRsLEFKNXEP7CXzLYFeTZUeEgn/SrzzICSqigA0dgWhIA5x8R2Y/mOI08xb
-         8M09p2KfqKv7IBI8v50YhgchqtxQGapAjpSxoXhQuK7xh6RD/fz2f+QX+vgQi1lVBkCk
-         G58j0GrksTpnqjujIbJXJnntxMglZI8ut6rgF36ppBPppdSfUnHAvU66LAvSDeCxEVUw
-         +993j3hBj70yGvd9iN+ochXpKlhDK6FSaRU2snZVfwUjW2DhQyNNxBCfJYaLaiUDYMKn
-         ry0g==
-X-Forwarded-Encrypted: i=1; AJvYcCXfJnERkfx1Da7Fzpy1HXMAwpaK9w2w7+l1+sRyhm15vp5j8ysVlvNQIG9KQARkBRy5ffwVlX9WMp8QeHDyINP8uhOMHhC3lGBlji07yZznLoClfdxF51kROScyp77MbxvoiCyuTiOZgMCXbSw=
-X-Gm-Message-State: AOJu0YzRkRFo4BMSkbQGKHSbtqxSG8YDkJglkl1CmdCVKb5FG30U9GtN
-	3i7rfrfBcTHeNuRUu/tHYSsJHm969sdOAZJiPHBmNot7Q1nZ+tZ1wEl603ygRyGVJkDjvdlqaB3
-	Wts5uSwSoitvC2QSMYmKfByKJ9ppv2fcumL4=
-X-Google-Smtp-Source: AGHT+IFmmR7zC5AVfoTKhpWj9/FTpbwi1sLa5aQCxn+YcY6uu5abjjySLYRSJ9wmhmn9orU0xP0GxYztyxSBmGgkmdk=
-X-Received: by 2002:a17:90a:4414:b0:298:eacc:682f with SMTP id
- s20-20020a17090a441400b00298eacc682fmr15106856pjg.34.1708441473290; Tue, 20
- Feb 2024 07:04:33 -0800 (PST)
+        bh=T9V5XtIpSuhz+qbEYmW8Gv+3u3YMnmX//PpS72rrwGM=;
+        b=B2BnwNKxNtkLL1ykiz+8rzcj2SWKB+VFuNEvGhKra7bjuLGYlEBdYsPn22nFK/JY75
+         hxj5AzYpyjZ1BBhQIaVzGlXSOw1Ym6irnF9h9l6MIGKa6KWzhlIrTqNqJEOwGPz+rdTH
+         i13g99G5+nhRSI0mztRqCTqBwcqpM7NGIe8nTcjV0/NawR9g56Txqp+Xsb0xatLii/PK
+         zvJkMAj7S6vdN9PkkPVFlSbSdQ/fuTQmmA7IaWfhwm2KHixHLGQr9ynObMVmPs69oBVi
+         1D9o0KhqOxq/IBnALx6HZmms4W2D9MbEOmkzO2GvrOWxXMM54mYcEzh8ub3+3y1vTUxK
+         Crew==
+X-Forwarded-Encrypted: i=1; AJvYcCXEk4i/Y9AJWfwb9B4jm+vP/ol3g1EzTrejr0Sj2ybgq4PmzgXddB+LqthhYEcoxFvUeqU/wq3dQ+pLcuvDjZW8/he/p5wK5LOQVPbZGyhTyk7z0xixlYIQisCEq/cv27/iJYyilppcO6IERwU=
+X-Gm-Message-State: AOJu0Yz1krqS7MmDevwqpfvy4ImdmrKVDxH6cAe1M/A/qffzkSlw/sXY
+	L8qZcinVCXYx4zRQIBrmJm2PzUHyL0/f23tatp3l7ZnmDqAp8VINknihilEdHCceeVS+mykQZtH
+	jFC//lSlP9DoFg2sf3ectgSXJCIE=
+X-Google-Smtp-Source: AGHT+IFQa8FwP5cuGMDzgfnt+NEbybiGyxs+UCGniB6Oz0QLmXsDYDI+phJjCypKWWKR0z0wh6HOhRNXXdIb2bPp6CQ=
+X-Received: by 2002:a17:90a:3486:b0:299:398e:5cee with SMTP id
+ p6-20020a17090a348600b00299398e5ceemr8445413pjb.13.1708443957074; Tue, 20 Feb
+ 2024 07:45:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,11 +57,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240219163915.2705-1-dakr@redhat.com> <20240220093541.280140-1-aliceryhl@google.com>
- <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com>
-In-Reply-To: <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com>
+ <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com> <CAH5fLggXiXGA_UWCxqqLhMpXe1kepDv2vMG+1jLGaDSzdRHvSw@mail.gmail.com>
+ <19d0a4a9-85bb-4b9e-96b0-338adebc90e5@redhat.com>
+In-Reply-To: <19d0a4a9-85bb-4b9e-96b0-338adebc90e5@redhat.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 Feb 2024 16:04:20 +0100
-Message-ID: <CANiq72nVkV3+1rt4Mi+Own6KGAzmvR2jf8fFsp9NBu_gy_ob5g@mail.gmail.com>
+Date: Tue, 20 Feb 2024 16:45:44 +0100
+Message-ID: <CANiq72n06BCWuHoWbQBrODqgfH8ZGEc6rLhMu86UiYpKdjO3PA@mail.gmail.com>
 Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to CString
 To: Danilo Krummrich <dakr@redhat.com>
 Cc: Alice Ryhl <aliceryhl@google.com>, a.hindborg@samsung.com, alex.gaynor@gmail.com, 
@@ -71,69 +72,48 @@ Cc: Alice Ryhl <aliceryhl@google.com>, a.hindborg@samsung.com, alex.gaynor@gmail
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2024 at 1:03=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
+On Tue, Feb 20, 2024 at 3:53=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
 wrote:
 >
-> That's the worst rationale I could think of. Without further rationale wh=
-at that
-> should mean and why this would be good, it's entirely meaningless.
+> Just to clarify, I did not say anything else. As mentioned, I think those
+> should not even be warnings.
 
-Probably whoever wrote that did not feel the need to explain further
-because it is the convention, but please feel free to open an issue/PR
-to Clippy about improving the wording of that text.
+Well, for things like the `return` one, I find it unlikely it will change.
 
-The convention itself, however, you will find way harder to change
-everywhere else.
+And for other things that there are 2 ways of doing it, what we
+typically want is to have one way of doing it, rather than allowing
+both ways.
 
-> Instead, I'd argue that keeping it gives kernel people, who necessarily n=
-eed to
-> deal with both, Rust *and* C, more consistency in kernel code.
+> I'm happy to do that. We should define the scope for that though. I think=
+ this
+> should be set globally, or at least not per crate. However, I don't reall=
+y know
+> what's the best way to do that. We could pass '-Aclippy::' to the compile=
+r...
 
-That sounds to me like trying to keep consistency in style/formatting
-between two languages, which is something we have discussed quite a
-few times in the past.
+The scope is already defined -- it is global, precisely because we
+want to keep all kernel code as consistent as possible.
 
-We are keeping Rust code as idiomatic as possible, except where it may
-actually make sense to diverge for kernel reasons.
+> Is there any objective reason not to be allowed to be explicit here?
 
-But this one does not seem to be the case:
+What is not objective about wanting to be consistent? How is your
+argument objective if ours isn't?
 
-  - It is inconsistent with most Rust code out there.
-  - It is inconsistent with all Rust kernel code.
-  - It is inconsistent with learning material, which kernel developers use =
-too.
-  - It introduces 2 ways for writing the same trivial thing.
-  - Rust is a more expression-oriented language than C.
+> Well, I generally agree. However, I'm clearly against *blindly* following
+> formatters and linters.
+>
+> Forcing guidelines we don't have objective reasons for will otherwise jus=
+t annoy
+> people and lead to less ideal code for the project. And I intentionally s=
+ay "for
+> the project", since this context is important.
 
-And, by the way, your patch does use both ways. Why aren't you
-explicit when it is a single expression too?
+Who is *blindly* following formatters and linters? We don't have
+objective reasons?
 
-> At least, this shouldn't be fatal IMHO.
+I don't appreciate the way you are wording things here.
 
-For some of the compiler-based (i.e. not Clippy) and that may make
-prototyping a bad experience, I could agree (e.g. like missing
-documentation is already a warning).
-
-But please note that patches must be warning free anyway, so it is not
-like this patch would have been OK.
-
-> Similar story here. Why is it bad, and even *fatal*, to be explicit?
-
-This one is more arguable, and could be discussed. In fact, we planned
-going through some of the lints in a meeting to see, mostly, what
-extra lints could be enabled etc. You are welcome to join if that
-happens (I think Trevor wanted to drive that discussion).
-
-> Again, not a great rationale, this is entirely subjective and might even =
-depend
-> on the context of the project. Again, for kernel people who need to deal =
-with Rust
-> *and* C continuously it might be better to be explicit.
-
-That is fine, but to decide on this like this, we need better examples
-and rationale than just "it might be better" (and please note that
-whatever Clippy says is not important, so complaining about their docs
-being lacking is not really an argument to change kernel code).
+Does it actually lead to "less ideal code", or the opposite?
 
 Cheers,
 Miguel
