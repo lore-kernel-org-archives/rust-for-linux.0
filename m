@@ -1,194 +1,96 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38A7762C5
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 15:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F026A8A9
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 15:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708444404; cv=none; b=mT9I9+NY87XSpy7ONZuJojHkxqweR937a8n+ZbZwmfqsuTUklXkIAT+efKpZZD9iPs+Foo6NWe1Z35aZjEms4sPzZHdFr0OqONANiZfE0iTu/Xb52Ya8+cFNwTJLsVFvdZp19eIbQJjpZqqUHZlF7gqDfCIb7PSOfqcsVfJS0I4=
+	t=1708444482; cv=none; b=u4NAbcLq0CW9aVOF1EBb44aKCySsWhRSQne+sF+0uAdW2/PnU0rtdPNqZeeDlLNLd2m5FFVTu/VEWyi4wAMAM/WHKy51VvuFfbj5LdkOnMYoFJJM47uV12SypSRx6+XSeJ26GP9qMWhR7GNRtwbCGem+7ci3wKtsLxCD7uD2Bsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708444404; c=relaxed/simple;
-	bh=7pUGGbHmanfArsTQq4oLF7E9Dny2qvkMg9eaNQq7TSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G89QyMUnLKXoQjCm12yK9N7N9TAdK2VqRbPeleIUzclQwPupEB4dG2IWHySJ1r68ka3vaRJrW1HJ8snVk7iByEtgRGKQq+OAPdFRHdnKEvOKeywMInmR4ou30lfmMygxcXK+WiUXACrMJZJk+fuOsJpNsLNHh97GiYk5ffzJW0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JaEojnFo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1708444482; c=relaxed/simple;
+	bh=wY2G8SyrLcP3dvZVVRkXsb9b9s1PCn7dcSy3Mcdr9f4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PWR2GeJw/fFveH8FdUcp1uU5/BkVj5feSb9FPaSO5M/qY/hXFyi5CUrF16hu5J1UAaLV/wuL0LJvort6OMw0Kauly10XnBXM/J/f7l6ReL+r1Xt4XNOWDKoWXbYv3WjMuWQkYVqaUuY34smF5kViyEcGLDkksjQJCKnzqn8/2Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZl2mfUX; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JaEojnFo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708444401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5UZE9uS05gdlK0V/0rg9HQXJ0ePcQG+CjltSSXcX1Fg=;
-	b=JaEojnFoAVtoGtW3ZM2pm9oT6B8CQ5+H/XlRr+ebBoZE2rQVqJMu90d7FHwKl9eACq4mX8
-	0Hqcm0KLI4Ln6k+va2kA2NL0xmI4NQvo+ufFMYn6kAMRYBqoOs2hAhPZ8dmNONnfcV3Kj6
-	pjA0mbXMAwumSQ1Sy2vzRowXZleosF4=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-HRiyL9RnO8-NBzU2WTyPuQ-1; Tue, 20 Feb 2024 10:53:19 -0500
-X-MC-Unique: HRiyL9RnO8-NBzU2WTyPuQ-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5116e86c080so2874828e87.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 07:53:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZl2mfUX"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6e45bd5014dso905195b3a.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 07:54:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708444480; x=1709049280; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wY2G8SyrLcP3dvZVVRkXsb9b9s1PCn7dcSy3Mcdr9f4=;
+        b=kZl2mfUXyoXquNIXG6M2fJs3nS+RVSE1mCAdZ0o5mJZf7Zrb0DvNz5T2zzbewxFSRc
+         CO+RDfPyPrvQA2u27/p1u9V+sRdFrRze47s4QFGZXO6kB/kzBNIGy+Re7GW46YfO4WeZ
+         Veii8EnNoK3o2qj+A7tRaIuY+Ew9lfrCxyQK3LuXgCkknPdaJv10fzRSpgJMrRfT6+Mp
+         mI0Wwh0Y0uhZU4O+u06zTi+YSbj91aC4Hq4XZVPbKWSqTtCZCRsm6ciJMgiQwhZhnj08
+         5PriC4ZYSNv4R1GV/gA7oV+n5pibcYk+Hg5DzGn0bDffzsuCpDzQ+Kk7hBn1C9ht+JqI
+         ZRxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708444398; x=1709049198;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5UZE9uS05gdlK0V/0rg9HQXJ0ePcQG+CjltSSXcX1Fg=;
-        b=cY5bCiVykL4AZKHVyPhVYV6xs/XTslFBpfttYUsGVOI8K68vvHI8cZdaGCKwwt1J/t
-         SdHsCxQqt68/UrmRGLobKD6AjALruvlgheupbh5Hpiz9GpigulsehMHnirNoBonHVt2i
-         AOhOe6pKJk0P5IYvTlJp8DQZlBiaaDMBX8SK92mnkZLr5i6ZT3KSSoSr0ySYoEcoJ5Iu
-         mBUeIPu+Q/29Ka1HXPmnKiW6Zh3agtoK/y7AKwXZ3kvHt/nvmm6IIa8Wc8W1maefK5JO
-         SlnNKkKuceHAnTzYkXUAZYXaFpIyfZXQCYMgpyMLFKporo5IW6Kh/yGOtW0vRG8s24zS
-         9nuA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBtyFZvcF1tzA2kbLRftnPmBHrUl5U2XU+mGNfM4VzGOnZ1a3J6kGBOaq8N3/tFmTSFPozcnSiRLqkSfTU2CHEkxMgxxeR4NWSI+Fhy6g=
-X-Gm-Message-State: AOJu0YzFx7RmENyNA42tezsTPVUw2d7ZYhRAqBi9jzBaH+cWyMQWlSrs
-	rLQi1dupyLnYdPMhGnaNNTT2rVywIOoVz+FeAv1BzddM0Rmm0qXv8AYT2FTIUTeWfKUQcq3jsbu
-	t8ha/O1Z+/S9H/4LLzvX2oiTnFYuuoGCyVS0oDoqpExOOnageAO243DNCPL83FZgJ
-X-Received: by 2002:ac2:46f7:0:b0:512:a540:3c93 with SMTP id q23-20020ac246f7000000b00512a5403c93mr5701838lfo.66.1708444398324;
-        Tue, 20 Feb 2024 07:53:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF54J7mdwb84LleWQUokDcQoJRwCWa6WeVbqxLcbYBXLZZYW0jQ3BQDD/WcJDPtAVFE85Y7oA==
-X-Received: by 2002:ac2:46f7:0:b0:512:a540:3c93 with SMTP id q23-20020ac246f7000000b00512a5403c93mr5701823lfo.66.1708444397932;
-        Tue, 20 Feb 2024 07:53:17 -0800 (PST)
-Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id ot18-20020a170906ccd200b00a3ecdd0ba23sm1485564ejb.52.2024.02.20.07.53.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Feb 2024 07:53:17 -0800 (PST)
-Message-ID: <462aad75-4f03-4f8b-ad58-eef429ed2b34@redhat.com>
-Date: Tue, 20 Feb 2024 16:53:16 +0100
+        d=1e100.net; s=20230601; t=1708444480; x=1709049280;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wY2G8SyrLcP3dvZVVRkXsb9b9s1PCn7dcSy3Mcdr9f4=;
+        b=EowamjgkQFEp5zUoSyjfcqRx+iaL6RbohF3gtRRIf7fRY/AMEV1py8mU1AtbSlkLqJ
+         cB5B0HuVaGAph86cwP9vR/gOTDnkAd3RwKYdN3ubIf+FoMJLr0ucB73SmIZZ+ON+9WO7
+         ztejdlkmzeF3YuudGZ2jvUXV/unKjYTKME3Uc6B/CGHCob2QKUyvq2jBrIiGZhepiDQ2
+         JS1SQhEtHt509p1BMykBnKRAyUnYxPQWVmJ6TX9P2VAHKpSAZXMdT92gTot5XiwPAW7h
+         5FPt6YOQzBN2Zutc90g08T0zz8uWobelGc0IlOzv46V8lB7c3Jq4TTNTLlfHqD/sL9ae
+         XMBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmoVswgX+Tyj01ymLVD5HtcK1jKxq5+Ol5vHhxO3EIoTk05t2fZUFfRaqHyUi76Qa+ScJnQvBMhgBk1Xo8H9ho/J/cHqgCu8GoyOQPeQs=
+X-Gm-Message-State: AOJu0YznaSbq2d68rm6jbR8xW0mOa6WEWNCyqwc6Yu/HGifU8UzpqJuj
+	dwdstJ/Z3vvh6iKB7fdS8Hl0FHWqXxsJn1pgvOaeWxSdhDvaJMzTo2rUqUc39vzEHm6w3ajbuU9
+	v/c1baRF0khp/xNp1iE+o3f9P/v8=
+X-Google-Smtp-Source: AGHT+IEkcYiS1esQsYns7CFH/q9yeqQzWKbqyIS8KekJwjeja+rfPOoXs7iaR5GeuRhPms9cu4tgTO/pMZX3VidZZak=
+X-Received: by 2002:a05:6a00:3241:b0:6e0:4556:4a1a with SMTP id
+ bn1-20020a056a00324100b006e045564a1amr12018747pfb.33.1708444480284; Tue, 20
+ Feb 2024 07:54:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to
- CString
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, a.hindborg@samsung.com,
- alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org,
- ojeda@kernel.org, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-References: <20240219163915.2705-1-dakr@redhat.com>
- <20240220093541.280140-1-aliceryhl@google.com>
- <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com>
- <CANiq72nVkV3+1rt4Mi+Own6KGAzmvR2jf8fFsp9NBu_gy_ob5g@mail.gmail.com>
-From: Danilo Krummrich <dakr@redhat.com>
-Organization: RedHat
-In-Reply-To: <CANiq72nVkV3+1rt4Mi+Own6KGAzmvR2jf8fFsp9NBu_gy_ob5g@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240217153315.56128-1-mcanal@igalia.com> <CAH5fLggPRcPc-5C8JY5FR7jQMbdNoc89EU0_QAqhG=6HiySZ=w@mail.gmail.com>
+ <83571d1e-5710-47d6-9a6c-2a0bb5ab5e5a@igalia.com>
+In-Reply-To: <83571d1e-5710-47d6-9a6c-2a0bb5ab5e5a@igalia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 20 Feb 2024 16:54:28 +0100
+Message-ID: <CANiq72mvqfu2akoMGOj-N0tUOAnvTMOBN1dYA7CZxcJqpd6Fog@mail.gmail.com>
+Subject: Re: [PATCH] rust: Add `container_of` and `offset_of` macros
+To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Asahi Lina <lina@asahilina.net>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matt Gilbride <mattgilbride@google.com>, 
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
+	kernel-dev@igalia.com, =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/20/24 16:04, Miguel Ojeda wrote:
-> On Tue, Feb 20, 2024 at 1:03 PM Danilo Krummrich <dakr@redhat.com> wrote:
->>
->> That's the worst rationale I could think of. Without further rationale what that
->> should mean and why this would be good, it's entirely meaningless.
-> 
-> Probably whoever wrote that did not feel the need to explain further
-> because it is the convention, but please feel free to open an issue/PR
-> to Clippy about improving the wording of that text.
+On Mon, Feb 19, 2024 at 10:57=E2=80=AFPM Ma=C3=ADra Canal <mcanal@igalia.co=
+m> wrote:
+>
+> Thanks for your explanation, I haven't thought through this point of
+> view. Anyway, any chance we could land the `container_of!` patch as soon
+> as possible? It would be nice to have a common understanding of this
+> fundamental macro. I would like to send some patches with the DMA fences
+> abstraction, but I would need `container_of!`.
 
-The rational for a convention can't be that it is a convention. Instead
-it should be a convention for an objective reason.
+Would you be OK with their version? If so, I could take that one; and
+if not, we can discuss what to do.
 
-> 
-> The convention itself, however, you will find way harder to change
-> everywhere else.
+But, in any case, as Alice mentioned, please feel free to send your
+series even before that. It is anyway a very small dependency that
+will soon go in.
 
-I'm not saying that we should enforce it otherwise, I just think that we
-should have objective reasons for restrictions.
-
-> 
->> Instead, I'd argue that keeping it gives kernel people, who necessarily need to
->> deal with both, Rust *and* C, more consistency in kernel code.
-> 
-> That sounds to me like trying to keep consistency in style/formatting
-> between two languages, which is something we have discussed quite a
-> few times in the past.
-
-No, I didn't say, nor did I mean, that we should align with C in general,
-nor should it be enforced.
-
-However, I also don't see why we should disallow it as long as there is
-no objective reason to do so.
-
-> 
-> We are keeping Rust code as idiomatic as possible, except where it may
-> actually make sense to diverge for kernel reasons.
-> 
-> But this one does not seem to be the case:
-> 
->    - It is inconsistent with most Rust code out there.
->    - It is inconsistent with all Rust kernel code.
->    - It is inconsistent with learning material, which kernel developers use too.>    - It introduces 2 ways for writing the same trivial thing.
-
-That's actually what the language did already with early-return vs return at
-the end of the function.
-
-I admit that consistent inconsistency is also kinda consistent though. :-)
-
->    - Rust is a more expression-oriented language than C.
-
-The language has various characteristics, maybe that's why it allows both?
-
-> 
-> And, by the way, your patch does use both ways. Why aren't you
-> explicit when it is a single expression too?
-
-See above.
-
-> 
->> At least, this shouldn't be fatal IMHO.
-> 
-> For some of the compiler-based (i.e. not Clippy) and that may make
-> prototyping a bad experience, I could agree (e.g. like missing
-> documentation is already a warning).
-> 
-> But please note that patches must be warning free anyway, so it is not
-> like this patch would have been OK.
-
-Then it shouldn't be a warning either IMHO.
-
-> 
->> Similar story here. Why is it bad, and even *fatal*, to be explicit?
-> 
-> This one is more arguable, and could be discussed.
-
-That's great, although I really don't understand why you think this one is, but
-the other one isn't. What's the difference?
-
-> In fact, we planned
-> going through some of the lints in a meeting to see, mostly, what
-> extra lints could be enabled etc. You are welcome to join if that
-> happens (I think Trevor wanted to drive that discussion).
-
-Thanks for the invitation, I'm happy to join!
-
-> 
->> Again, not a great rationale, this is entirely subjective and might even depend
->> on the context of the project. Again, for kernel people who need to deal with Rust
->> *and* C continuously it might be better to be explicit.
-> 
-> That is fine, but to decide on this like this, we need better examples
-> and rationale than just "it might be better" (and please note that
-> whatever Clippy says is not important, so complaining about their docs
-> being lacking is not really an argument to change kernel code).
-
-I agree, but I also think it should be the other way around. We should have good
-examples and an objective rationale for things we restrict.
-
-> 
-> Cheers,
-> Miguel
-> 
-
+Cheers,
+Miguel
