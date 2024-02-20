@@ -1,255 +1,217 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C4A54FA0;
-	Tue, 20 Feb 2024 05:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A63E5F576
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 09:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708407387; cv=none; b=s3Df+FRtsKiOPhH/T2AzNhB6WEA2iTx2bFDxVFKpHZpzXppkxgFkXwhmemTnlaPOugZ74ZiZs1cmCMXFVlwjVrxyF6Pt8uFi0G3/6+endnj3lUOnKqHk8dIAPHOxQRcVeubck1AoCa3wbONrMTCuhe83qkLJBtyOrRkCghcnRXw=
+	t=1708421115; cv=none; b=Gs4PYs7plfExLuZJ9OPDtY0cpFBIjrITPnYYgchfu9G5gaElA0NpC7Obwdte24BL7dYi+SOWJIAl8Ch3AzeDNNuRoaSCZ1MRbx6Vmr7DK79D8YeWq5uH4T1/ZSjNEAIiYC6tt0Ar1dvbIddz0uHRH1hUNGPsJBR9fPOQ3ToWpKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708407387; c=relaxed/simple;
-	bh=xyIQusYKt9ehEP8fBy/oK7NAGJShA0lLMZOP159AO68=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d1X94PLp0KsjgTiPYyJFkh2JINN54NQjYqHUSikX1U7GoGhSLMgy14n+oIjCqReLAlBY/QpkuadpuH21un17D6D9uKG43wa3lt4WBZ+E7+FqkgAshpyA0ORBL27wOQqd//zbz7K1Fr2iVmPqTYH37vdQRc4n2/asSS1L99uRyOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f7bx/V/K; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1708421115; c=relaxed/simple;
+	bh=iXJSQdjCNbAzNTAvMY4ePsKzKY6yOP+dZp93tuToy2w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kg26RoMBtuOcPKXgC9YipFprIM7Zf1B71SjSaRR6DHU/umgG95eYmecgESn5JrId+4M21NUOcJGQL6zc14miqld/XILr3UYbgXIpFHK0h+a4UzpDvHM2zOWA4EF0zB/QnF5WFZGs2mvnv9zxbG8SeBrpXdebTdpuOrQ0SpQG+gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2rHicCFt; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f7bx/V/K"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-42a4516ec46so54596381cf.0;
-        Mon, 19 Feb 2024 21:36:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2rHicCFt"
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d698a8d93cso3573979241.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 01:25:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708407384; x=1709012184; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1708421112; x=1709025912; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cPoj/GBmRVxE2Hbxo4fV51+00H1ou0rrTPdWMJ87ap8=;
-        b=f7bx/V/KzDNsXJ2/7lXZfsOBCwFzUCEoNn8EP9BSl9goSoqcSaKJ46hSlPwJ4brh3L
-         3F6oxOFOu0JEFTXnhx+MulE+00FvdVkz4YCjw9PWmV4AMl32imu0hhB/Sp4+Dl5I/LAr
-         9iPKq6ptQmZ+X58vM6qOB5Sfub328Cs57O4w7Lb/j9SfNR7YWpliS9sXoi4RLQa9f6Sh
-         WIXaPjWddGMwlNtOrzMwIaxF/1vxDyjn17gyfZRJH2yYZjHLFcJBpNJl/Wdk759mcobn
-         g00l2ZWZl16VGWI0nqt1RNjlgu8cWaI5+41/HZVI+qatB6gO7fMnG1PFyeRiG36TGAJ5
-         6rRg==
+        bh=hxinpuFSBaFvXX5xQuAmA+vkm04C27dYdOWo8WKCrM4=;
+        b=2rHicCFtfJPV6o6/7MUHRQa2JqzuufE5QgCenp2bIBo+38q85K1/Z3kwCFl39Txz1Y
+         b0BkWyTHMaDx5S+Rz7UGRbzui5fzS17RceYMyKAjprNjsCaGv/lIUUmiIz+KiIx1VAK9
+         YetvpBqLcEWLsoZ1YM/b+DNWtsSpQucQg3SWKtwAvrt37rF/JtjXkoiWvFUjLoGSvA0J
+         jESrwICkAjzl/l2yLj5ikHjzVilt0SUcoernd3xh2smR9IaoZzSwb3RfHiTPM19HiFYf
+         OyAZ0geXJt+P76L+35/RhSi8ZhwPLntusq0zpiLZtK3ACZTTH5sZ7kbQtZ3l2DdipLHp
+         CsDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708407384; x=1709012184;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1708421112; x=1709025912;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cPoj/GBmRVxE2Hbxo4fV51+00H1ou0rrTPdWMJ87ap8=;
-        b=QknYKg6InZf6gGLdg92qHRplmn/JEUK9PtjMxdVqClIdCxjuOGcPV1YepZdIrK5Y08
-         IHviHEkV/V3fw4LgS74em5ZoL2UoA9V/YQab8b7NlGYHeFJp3cZPEJArweRzLasoPZwb
-         D6pluRwb5a77RKnaHrpOWUATYLXFnlHqzcnHQUiRAw5VIneYo6jhruMDF9IDmJRfkKsJ
-         b/hlCg/NXNxYJ1KgNyqsx9/lsgJ3hBxqapS+J8AWvFqVlkVbI3h4wT2Cha3YZPcr5hqo
-         6vjKfwGQRA57vgfKw7PIvQ7z9QhQKod//wEG782gGW2y70vBa1EUnuWoh/cBiDALWofb
-         SiLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUFCiyodBHhJ6OTVusD4K4DW/V+Q0Tv31V1d1y5iVmIR/XbbmNfzHUhD5mWIPT16eLjzJJzV8B5Pug60691c4jDnI4WNDcdq+0W/RfwM2zAMD4fOYln+d6+wr9q0eTGU+H9j5OcvThGTpet3Qs=
-X-Gm-Message-State: AOJu0Yx5ervUgo6uTfuLnWCbYNblcEX/l/iafBqvn7AVOqtpyXhcNJyt
-	DVZiTNnFTg46scpCzSSaCDUW2UKWGn+mREjOPt52o8VfDjKcUfH1
-X-Google-Smtp-Source: AGHT+IGYwu+r2kN4BSroO24XFTd4yIVr7Xb4qJa1UZw5N2n7nds55MiO1Ob/oid1u4PYU139bxzBqg==
-X-Received: by 2002:ac8:5e4a:0:b0:42d:bf56:89b5 with SMTP id i10-20020ac85e4a000000b0042dbf5689b5mr21531696qtx.2.1708407384155;
-        Mon, 19 Feb 2024 21:36:24 -0800 (PST)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id c19-20020ac85193000000b0042c524de19asm3169864qtn.58.2024.02.19.21.36.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Feb 2024 21:36:23 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 017D01200043;
-	Tue, 20 Feb 2024 00:36:23 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Tue, 20 Feb 2024 00:36:23 -0500
-X-ME-Sender: <xms:VjrUZaepqXSBEma02pr-hq7nxQWuY4H6RaeaPLm3hiPogqoHL0VUDA>
-    <xme:VjrUZUNik5pobLJrRgwgh0bvWT6TYuzR3RG_0LaHn6HAht0Xf6wkjKSCtDG1lUClr
-    eho58dpVu7nwQX3hA>
-X-ME-Received: <xmr:VjrUZbhgLeLgO0HVLEpf8IvIedm-LOsxcpZ93g1WvaUjL4Ph3axcmhVN-B8l1A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelgdekhecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdtkeei
-    hedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
-    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:VjrUZX_quhCIXnYC8qn32oZHDykDM93PGFEiL0IKsT__XOnpZMAuRg>
-    <xmx:VjrUZWu2m5kRwwIz1Zog6xG48HxcLRGE1FAJbktROnJxUwkYg00GTw>
-    <xmx:VjrUZeFpu8JR9CIkPNM6oAyNERvP1qb2A_w1H7E9_HxDy6YfrCkwtA>
-    <xmx:VjrUZXm52JDcK9RmlxqmWd7tPdJZpS88ouv7qm9mAmVZcHvQ5NXjARp79M0>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Feb 2024 00:36:22 -0500 (EST)
-Date: Mon, 19 Feb 2024 21:36:05 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: sync: add `ArcBorrow::from_raw`
-Message-ID: <ZdQ6RRYtvazV7WPR@boqun-archlinux>
-References: <20240219-arc-for-list-v1-0-d98cd92c760b@google.com>
- <20240219-arc-for-list-v1-1-d98cd92c760b@google.com>
+        bh=hxinpuFSBaFvXX5xQuAmA+vkm04C27dYdOWo8WKCrM4=;
+        b=DB7SqatfPV81H6zRTAr9HzAw1GglAC4TlJ8fX7WOB0Rx4ODDP/t9fn1qzaz5mVGwpJ
+         e9bQHJ0PBkaqGG2MmWHLp5HXOKfqNK0XICrvQxSwwaDbXtIxGrd5nC6I1/0brqCQdc6l
+         BAJOwQaXz+SuTWtZiNeogAraqLAUKSBEGJkhINcmZPukjSckiF0QPxZ5nFY77ig6vscm
+         UKXwSxPOsQMqnO/hReqMfa5vRW4bPEb62r44IL4mtI9/4T9XdGrZRaoSrvpu6jZte8sN
+         ua9YJLEIglhPv9+v+kXhff2QXStrQVz1ASel6BNo81vSkwFmuo3nSAGUJx1Aod9z/rln
+         nuhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXDGYG1xNPbsaNGVNfz0/25bGzKTOh1KqChrUMWFjknsk8VfXmA1Y3cG+jPRgqFMn2hsi381RjX40Vo7KMkbW3jHDsldDGNO2smyRxRdyE=
+X-Gm-Message-State: AOJu0Yw6YePaPQc3TfdfbBFWBNl2mugcLa46TFA5d2JJujPiBiJB2+20
+	XaMK9ZUbk/9c5NfmJKgF9dbC1hCK3HmliB4dCceXxLsgVrqm/mcMnqXOsmcDFWjXLs2qDGnlsC7
+	UFDoZOI0xUV7pCkoKfFO0DR+JnSjWAkdzq0i2
+X-Google-Smtp-Source: AGHT+IG0tVK9XPTSpubD6g26R2W1vq1GU6qjIvbNaR5mf3rPT7kTHE11B9Du7+MXw4vja7rDKJIOpizKNl5iYY0UEz4=
+X-Received: by 2002:a67:f9c9:0:b0:470:492d:672e with SMTP id
+ c9-20020a67f9c9000000b00470492d672emr5455750vsq.9.1708421112024; Tue, 20 Feb
+ 2024 01:25:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240219-arc-for-list-v1-1-d98cd92c760b@google.com>
+References: <20240219-arc-for-list-v1-0-d98cd92c760b@google.com>
+ <20240219-arc-for-list-v1-1-d98cd92c760b@google.com> <ZdQ6RRYtvazV7WPR@boqun-archlinux>
+In-Reply-To: <ZdQ6RRYtvazV7WPR@boqun-archlinux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 20 Feb 2024 10:25:00 +0100
+Message-ID: <CAH5fLghxArdT-Ah=0JWvo7NfSELLDJ7+FmMOr=TQ+4gKewPGfg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: sync: add `ArcBorrow::from_raw`
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 19, 2024 at 02:54:11PM +0000, Alice Ryhl wrote:
-> Allows access to a value in an `Arc` that is currently held as a raw
-> pointer due to use of `Arc::into_raw`, without destroying or otherwise
-> consuming that raw pointer.
-> 
-> This is a dependency of the linked list that Rust Binder uses. The
-> linked list uses this method when iterating over the linked list.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/sync/arc.rs | 72 ++++++++++++++++++++++++++++++++++++-------------
->  1 file changed, 54 insertions(+), 18 deletions(-)
-> 
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 7d4c4bf58388..a5314df409e7 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -232,27 +232,13 @@ pub fn into_raw(self) -> *const T {
->      /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
->      /// must not be called more than once for each previous call to [`Arc::into_raw`].
->      pub unsafe fn from_raw(ptr: *const T) -> Self {
-> -        let refcount_layout = Layout::new::<bindings::refcount_t>();
-> -        // SAFETY: The caller guarantees that the pointer is valid.
-> -        let val_layout = Layout::for_value(unsafe { &*ptr });
-> -        // SAFETY: We're computing the layout of a real struct that existed when compiling this
-> -        // binary, so its layout is not so large that it can trigger arithmetic overflow.
-> -        let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
-> -
-> -        // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
-> -        // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
-> -        //
-> -        // This is documented at:
-> -        // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
-> -        let ptr = ptr as *const ArcInner<T>;
-> -
-> -        // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
-> -        // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
-> -        let ptr = unsafe { ptr.byte_sub(val_offset) };
-> +        // SAFETY: The pointer returned by `into_raw` points at the `data` field of an
-> +        // `ArcInner<T>`, as promised by the caller.
-> +        let ptr = unsafe { raw_to_inner_ptr(ptr) };
->  
->          // SAFETY: By the safety requirements we know that `ptr` came from `Arc::into_raw`, so the
->          // reference count held then will be owned by the new `Arc` object.
-> -        unsafe { Self::from_inner(NonNull::new_unchecked(ptr.cast_mut())) }
-> +        unsafe { Self::from_inner(ptr) }
->      }
->  
->      /// Returns an [`ArcBorrow`] from the given [`Arc`].
-> @@ -273,6 +259,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
->      }
->  }
->  
-> +/// Converts a pointer to the contents of an [`Arc`] into a pointer to the [`ArcInner`].
-> +///
-> +/// # Safety
-> +///
-> +/// The provided pointer must point the `data` field of an `ArcInner<T>` value.
-> +unsafe fn raw_to_inner_ptr<T: ?Sized>(ptr: *const T) -> NonNull<ArcInner<T>> {
+On Tue, Feb 20, 2024 at 6:36=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Mon, Feb 19, 2024 at 02:54:11PM +0000, Alice Ryhl wrote:
+> > Allows access to a value in an `Arc` that is currently held as a raw
+> > pointer due to use of `Arc::into_raw`, without destroying or otherwise
+> > consuming that raw pointer.
+> >
+> > This is a dependency of the linked list that Rust Binder uses. The
+> > linked list uses this method when iterating over the linked list.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/sync/arc.rs | 72 ++++++++++++++++++++++++++++++++++++-----=
+--------
+> >  1 file changed, 54 insertions(+), 18 deletions(-)
+> >
+> > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> > index 7d4c4bf58388..a5314df409e7 100644
+> > --- a/rust/kernel/sync/arc.rs
+> > +++ b/rust/kernel/sync/arc.rs
+> > @@ -232,27 +232,13 @@ pub fn into_raw(self) -> *const T {
+> >      /// `ptr` must have been returned by a previous call to [`Arc::int=
+o_raw`]. Additionally, it
+> >      /// must not be called more than once for each previous call to [`=
+Arc::into_raw`].
+> >      pub unsafe fn from_raw(ptr: *const T) -> Self {
+> > -        let refcount_layout =3D Layout::new::<bindings::refcount_t>();
+> > -        // SAFETY: The caller guarantees that the pointer is valid.
+> > -        let val_layout =3D Layout::for_value(unsafe { &*ptr });
+> > -        // SAFETY: We're computing the layout of a real struct that ex=
+isted when compiling this
+> > -        // binary, so its layout is not so large that it can trigger a=
+rithmetic overflow.
+> > -        let val_offset =3D unsafe { refcount_layout.extend(val_layout)=
+.unwrap_unchecked().1 };
+> > -
+> > -        // Pointer casts leave the metadata unchanged. This is okay be=
+cause the metadata of `T` and
+> > -        // `ArcInner<T>` is the same since `ArcInner` is a struct with=
+ `T` as its last field.
+> > -        //
+> > -        // This is documented at:
+> > -        // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+> > -        let ptr =3D ptr as *const ArcInner<T>;
+> > -
+> > -        // SAFETY: The pointer is in-bounds of an allocation both befo=
+re and after offsetting the
+> > -        // pointer, since it originates from a previous call to `Arc::=
+into_raw` and is still valid.
+> > -        let ptr =3D unsafe { ptr.byte_sub(val_offset) };
+> > +        // SAFETY: The pointer returned by `into_raw` points at the `d=
+ata` field of an
+> > +        // `ArcInner<T>`, as promised by the caller.
+> > +        let ptr =3D unsafe { raw_to_inner_ptr(ptr) };
+> >
+> >          // SAFETY: By the safety requirements we know that `ptr` came =
+from `Arc::into_raw`, so the
+> >          // reference count held then will be owned by the new `Arc` ob=
+ject.
+> > -        unsafe { Self::from_inner(NonNull::new_unchecked(ptr.cast_mut(=
+))) }
+> > +        unsafe { Self::from_inner(ptr) }
+> >      }
+> >
+> >      /// Returns an [`ArcBorrow`] from the given [`Arc`].
+> > @@ -273,6 +259,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+> >      }
+> >  }
+> >
+> > +/// Converts a pointer to the contents of an [`Arc`] into a pointer to=
+ the [`ArcInner`].
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// The provided pointer must point the `data` field of an `ArcInner<T=
+>` value.
+> > +unsafe fn raw_to_inner_ptr<T: ?Sized>(ptr: *const T) -> NonNull<ArcInn=
+er<T>> {
+>
+> Nit: put this into an `impl<T:?Sized> ArcInner<T>` block maybe?
+>
+> > +    let refcount_layout =3D Layout::new::<bindings::refcount_t>();
+> > +    // SAFETY: The caller guarantees that the pointer is valid.
+> > +    let val_layout =3D Layout::for_value(unsafe { &*ptr });
+> > +    // SAFETY: We're computing the layout of a real struct that existe=
+d when compiling this
+> > +    // binary, so its layout is not so large that it can trigger arith=
+metic overflow.
+> > +    let val_offset =3D unsafe { refcount_layout.extend(val_layout).unw=
+rap_unchecked().1 };
+> > +
+> > +    // Pointer casts leave the metadata unchanged. This is okay becaus=
+e the metadata of `T` and
+> > +    // `ArcInner<T>` is the same since `ArcInner` is a struct with `T`=
+ as its last field.
+> > +    //
+> > +    // This is documented at:
+> > +    // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+> > +    let ptr =3D ptr as *const ArcInner<T>;
+> > +
+> > +    // SAFETY: The pointer is in-bounds of an allocation both before a=
+nd after offsetting the
+> > +    // pointer, since it originates from a previous call to `Arc::into=
+_raw` and is still valid.
+>
+> "since it originate from a previous call to `Arc::into_raw`" is the
+> safety requirement of `Arc::from_raw`, since the safety requirement of
+> `raw_to_inner_ptr` is different, so I think we should say "since the
+> function safety requirement guarantees `ptr` points to `data` field,
+> which is exactly `val_offset` away from the beginning of `ArcInner<T>`".
+> Thoughts?
+>
+> BTW, in fat pointer cases, by "must point the `data` field of an
+> `ArcInner<T>` value", it means both the address and the metadata should
+> be the same as the original object in `ArcInner<T>`, right? In other
+> words, the following code should not be safe, i.e. the
+> raw_to_inner_ptr() safety requirement is not satisfied.
+>
+>         let x: Arc<[u8]> // assume x.len() =3D=3D 4
+>
+>         let y =3D &(x[0..1]) as *const [u8] // y has the same address of
+>                                           // the `data` field of `x`.
+>
+>         let inner =3D unsafe { raw_to_inner_ptr(y) };
+>         // ^^^ the safety requirement is not satisfied???
+>
+> This may not be important since the users of `raw_to_inner_ptr` all have
+> stronger safey guarantees ("`ptr` must come from `Arc::into_raw()`"),
+> and `raw_to_inner_ptr` is not a pub function, but I just wonder whether
+> we need to improve the current safety requirements, or "point" means
+> both address and metadata for fat pointers?
 
-Nit: put this into an `impl<T:?Sized> ArcInner<T>` block maybe?
+I mean, really, the same problem arises for Sized pointers where the
+pointer points at the first field of a struct.
 
-> +    let refcount_layout = Layout::new::<bindings::refcount_t>();
-> +    // SAFETY: The caller guarantees that the pointer is valid.
-> +    let val_layout = Layout::for_value(unsafe { &*ptr });
-> +    // SAFETY: We're computing the layout of a real struct that existed when compiling this
-> +    // binary, so its layout is not so large that it can trigger arithmetic overflow.
-> +    let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
-> +
-> +    // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
-> +    // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
-> +    //
-> +    // This is documented at:
-> +    // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
-> +    let ptr = ptr as *const ArcInner<T>;
-> +
-> +    // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
-> +    // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
+We may have to take inspiration from the std Arc::from_raw. It says
+that the pointee must have the same size and alignment as what was
+used when you called Arc::into_raw, and then it further says that if
+the pointer type is not exactly the same, then you are effectively
+performing a transmute.
 
-"since it originate from a previous call to `Arc::into_raw`" is the
-safety requirement of `Arc::from_raw`, since the safety requirement of
-`raw_to_inner_ptr` is different, so I think we should say "since the
-function safety requirement guarantees `ptr` points to `data` field,
-which is exactly `val_offset` away from the beginning of `ArcInner<T>`".
-Thoughts?
-
-BTW, in fat pointer cases, by "must point the `data` field of an
-`ArcInner<T>` value", it means both the address and the metadata should
-be the same as the original object in `ArcInner<T>`, right? In other
-words, the following code should not be safe, i.e. the
-raw_to_inner_ptr() safety requirement is not satisfied.
-
-	let x: Arc<[u8]> // assume x.len() == 4
-
-	let y = &(x[0..1]) as *const [u8] // y has the same address of
-					  // the `data` field of `x`.
-	
-	let inner = unsafe { raw_to_inner_ptr(y) };
-	// ^^^ the safety requirement is not satisfied???
-
-This may not be important since the users of `raw_to_inner_ptr` all have
-stronger safey guarantees ("`ptr` must come from `Arc::into_raw()`"),
-and `raw_to_inner_ptr` is not a pub function, but I just wonder whether
-we need to improve the current safety requirements, or "point" means
-both address and metadata for fat pointers?
-
-Regards,
-Boqun
-
-> +    let ptr = unsafe { ptr.byte_sub(val_offset) };
-> +
-> +    // SAFETY: The pointer can't be null since you can't have an `ArcInner<T>` value at the null
-> +    // address.
-> +    unsafe { NonNull::new_unchecked(ptr.cast_mut()) }
-> +}
-> +
->  impl<T: 'static> ForeignOwnable for Arc<T> {
->      type Borrowed<'a> = ArcBorrow<'a, T>;
->  
-> @@ -453,6 +468,27 @@ unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
->              _p: PhantomData,
->          }
->      }
-> +
-> +    /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously been deconstructed with
-> +    /// [`Arc::into_raw`].
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * The provided pointer must originate from a call to [`Arc::into_raw`].
-> +    /// * For the duration of the lifetime annotated on this `ArcBorrow`, the reference count must
-> +    ///   not hit zero.
-> +    /// * For the duration of the lifetime annotated on this `ArcBorrow`, there must not be a
-> +    ///   [`UniqueArc`] reference to this value.
-> +    pub unsafe fn from_raw(ptr: *const T) -> Self {
-> +        // SAFETY: The pointer returned by `into_raw` points at the `data` field of an
-> +        // `ArcInner<T>`.
-> +        let ptr = unsafe { raw_to_inner_ptr(ptr) };
-> +
-> +        // SAFETY: The caller promises that the value remains valid since the reference count must
-> +        // not hit zero, and no mutable reference will be created since that would involve a
-> +        // `UniqueArc`.
-> +        unsafe { Self::new(ptr) }
-> +    }
->  }
->  
->  impl<T: ?Sized> From<ArcBorrow<'_, T>> for Arc<T> {
-> 
-> -- 
-> 2.44.0.rc0.258.g7320e95886-goog
-> 
+Alice
