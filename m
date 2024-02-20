@@ -1,217 +1,136 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A63E5F576
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 09:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F325BAFA
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 09:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708421115; cv=none; b=Gs4PYs7plfExLuZJ9OPDtY0cpFBIjrITPnYYgchfu9G5gaElA0NpC7Obwdte24BL7dYi+SOWJIAl8Ch3AzeDNNuRoaSCZ1MRbx6Vmr7DK79D8YeWq5uH4T1/ZSjNEAIiYC6tt0Ar1dvbIddz0uHRH1hUNGPsJBR9fPOQ3ToWpKg=
+	t=1708421749; cv=none; b=jUbdCWFtbU6NdU0MFaQXb2mXfsN4ZZkDZgWdiPZPTDAAyi7hscH9TBVPA35Es0YiPeTB3WdiOh4IbHBc6CX9fQKNQACiBmmely7pZU3S931pi4nwtYSx52SIyRPSyqpeNwE3vSrTyqaxLtJuv7jnobALYhFV58pLV1xaAeGs+DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708421115; c=relaxed/simple;
-	bh=iXJSQdjCNbAzNTAvMY4ePsKzKY6yOP+dZp93tuToy2w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kg26RoMBtuOcPKXgC9YipFprIM7Zf1B71SjSaRR6DHU/umgG95eYmecgESn5JrId+4M21NUOcJGQL6zc14miqld/XILr3UYbgXIpFHK0h+a4UzpDvHM2zOWA4EF0zB/QnF5WFZGs2mvnv9zxbG8SeBrpXdebTdpuOrQ0SpQG+gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2rHicCFt; arc=none smtp.client-ip=209.85.222.54
+	s=arc-20240116; t=1708421749; c=relaxed/simple;
+	bh=Hq0Cmy5FJkYWn0RlKLg2mQTAvevk9epBCAsv3Id1SNs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZDhKz+QqltQ0YF1O8c51vjc/5ue2p3ZpfLaus6L6KDPc2SbSJcKYb9fp8U7JM1sAC/DHTsaPvZXVbiAfsi92Ayqxe/NiaU+I9gKhJqskp/YPU/Pa+2RpbFlbZU6UMC8NXJshFw8bmTXcyEJq8rVjOwqdCRwWRXMSxdfpPu7H56s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mJ7JAnEG; arc=none smtp.client-ip=209.85.208.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2rHicCFt"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d698a8d93cso3573979241.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 01:25:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mJ7JAnEG"
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2d10d7dd7ddso47875181fa.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 01:35:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708421112; x=1709025912; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hxinpuFSBaFvXX5xQuAmA+vkm04C27dYdOWo8WKCrM4=;
-        b=2rHicCFtfJPV6o6/7MUHRQa2JqzuufE5QgCenp2bIBo+38q85K1/Z3kwCFl39Txz1Y
-         b0BkWyTHMaDx5S+Rz7UGRbzui5fzS17RceYMyKAjprNjsCaGv/lIUUmiIz+KiIx1VAK9
-         YetvpBqLcEWLsoZ1YM/b+DNWtsSpQucQg3SWKtwAvrt37rF/JtjXkoiWvFUjLoGSvA0J
-         jESrwICkAjzl/l2yLj5ikHjzVilt0SUcoernd3xh2smR9IaoZzSwb3RfHiTPM19HiFYf
-         OyAZ0geXJt+P76L+35/RhSi8ZhwPLntusq0zpiLZtK3ACZTTH5sZ7kbQtZ3l2DdipLHp
-         CsDw==
+        d=google.com; s=20230601; t=1708421746; x=1709026546; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eGvW91C4grW9jhiVdhrUhasqpBxGbw0RjsBpYtBt9c0=;
+        b=mJ7JAnEGg8quhRSBGZ0cFaVNo1ORtCAEQZWEMIGqwIjqTLBupG1hH1fbzd4RCNCIH9
+         3shfCSFinYbnuVbmsA2ECa+cvBNE405ALB00uVo8yICpYHibHgcfdoEaTlXGBrdLpHNL
+         kwvvagJ+nvbu04131o1fgB+Lan7DkatzkPhy5oM0i7i7kjBMrDjXqw8opTiKhQo3M+i0
+         H0WFhVrjMOSniRIcB+DcYgzXHysNgp0f/yQ3CMbZdE31n3BnP0PzMUjvxnqbzW5zQF80
+         F1JiKn2I8y4HHFGZQPMyjl5tRwWVOfFko5PcwwKRMV6Z7Ib97hf3r4Qhr/KRh479WXl1
+         Ieuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708421112; x=1709025912;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hxinpuFSBaFvXX5xQuAmA+vkm04C27dYdOWo8WKCrM4=;
-        b=DB7SqatfPV81H6zRTAr9HzAw1GglAC4TlJ8fX7WOB0Rx4ODDP/t9fn1qzaz5mVGwpJ
-         e9bQHJ0PBkaqGG2MmWHLp5HXOKfqNK0XICrvQxSwwaDbXtIxGrd5nC6I1/0brqCQdc6l
-         BAJOwQaXz+SuTWtZiNeogAraqLAUKSBEGJkhINcmZPukjSckiF0QPxZ5nFY77ig6vscm
-         UKXwSxPOsQMqnO/hReqMfa5vRW4bPEb62r44IL4mtI9/4T9XdGrZRaoSrvpu6jZte8sN
-         ua9YJLEIglhPv9+v+kXhff2QXStrQVz1ASel6BNo81vSkwFmuo3nSAGUJx1Aod9z/rln
-         nuhA==
-X-Forwarded-Encrypted: i=1; AJvYcCXDGYG1xNPbsaNGVNfz0/25bGzKTOh1KqChrUMWFjknsk8VfXmA1Y3cG+jPRgqFMn2hsi381RjX40Vo7KMkbW3jHDsldDGNO2smyRxRdyE=
-X-Gm-Message-State: AOJu0Yw6YePaPQc3TfdfbBFWBNl2mugcLa46TFA5d2JJujPiBiJB2+20
-	XaMK9ZUbk/9c5NfmJKgF9dbC1hCK3HmliB4dCceXxLsgVrqm/mcMnqXOsmcDFWjXLs2qDGnlsC7
-	UFDoZOI0xUV7pCkoKfFO0DR+JnSjWAkdzq0i2
-X-Google-Smtp-Source: AGHT+IG0tVK9XPTSpubD6g26R2W1vq1GU6qjIvbNaR5mf3rPT7kTHE11B9Du7+MXw4vja7rDKJIOpizKNl5iYY0UEz4=
-X-Received: by 2002:a67:f9c9:0:b0:470:492d:672e with SMTP id
- c9-20020a67f9c9000000b00470492d672emr5455750vsq.9.1708421112024; Tue, 20 Feb
- 2024 01:25:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708421746; x=1709026546;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eGvW91C4grW9jhiVdhrUhasqpBxGbw0RjsBpYtBt9c0=;
+        b=TL5kWmaIBrNVN0tXdaC4bgrfAKAdxycpx1O9C96eYe7W1G7fBVbm/Bv6UD6tr3SHzi
+         LcXsrq6vv7TvJ6sfioGD+TbAC+flp6kv1ylfTkjBL0IFf3ywZPlZdVUaxBnTT4MfqfaX
+         Cm07/Yt+ZKXy5UwnSPDnAIhhtvPAJRrm9yZNuHG7/fpJBOSyxPw9CiFq8BUBgIdyl2y9
+         22lXAkWwZItVYLhw4BvH0ZD9tnVufIM59ywHJaQ1drz7+1+9B3h4vAfOwYEi5jYPjZnr
+         RB8caInnMYyw8MLEqqHecNqF3qDmRo18ltCAKZJft89A0JxD5R+9ZBJ6yUCdBo5EGOb8
+         LY5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVlFR6qQwMDS8WXRV5bB3J4Mn2b6W/G76ouCh9bdqaTSMtQVkpiYBwm6olqVor3PKgcvMxREmVGE5qeUnHGt7JBrUxOGXNXHnIDEKU/Eew=
+X-Gm-Message-State: AOJu0YwHRMtdDfSn0Sc5xHNJPkyZHJyRDY2D+svb9X4v6eXjk/1KRehw
+	k9d15smZKNlBCoKI7wAxUVIRoYFKsHHfSRzkU97rk0nCzxl0y2h7lkucn1J/E0+k/7zir/eKPBA
+	op97luFQySXRJmw==
+X-Google-Smtp-Source: AGHT+IFMRTrmb0//fhvPOtv3qog+JWK2GyME95bme+y5LFmL0oHTci1rMmg42oFwzH8JNMisvGMZxgj0+++A55s=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:651c:104e:b0:2d2:c6a:5731 with SMTP
+ id x14-20020a05651c104e00b002d20c6a5731mr15606ljm.9.1708421746047; Tue, 20
+ Feb 2024 01:35:46 -0800 (PST)
+Date: Tue, 20 Feb 2024 09:35:40 +0000
+In-Reply-To: <20240219163915.2705-1-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240219-arc-for-list-v1-0-d98cd92c760b@google.com>
- <20240219-arc-for-list-v1-1-d98cd92c760b@google.com> <ZdQ6RRYtvazV7WPR@boqun-archlinux>
-In-Reply-To: <ZdQ6RRYtvazV7WPR@boqun-archlinux>
+Mime-Version: 1.0
+References: <20240219163915.2705-1-dakr@redhat.com>
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Message-ID: <20240220093541.280140-1-aliceryhl@google.com>
+Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to CString
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 20 Feb 2024 10:25:00 +0100
-Message-ID: <CAH5fLghxArdT-Ah=0JWvo7NfSELLDJ7+FmMOr=TQ+4gKewPGfg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: sync: add `ArcBorrow::from_raw`
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: dakr@redhat.com
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Feb 20, 2024 at 6:36=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Mon, Feb 19, 2024 at 02:54:11PM +0000, Alice Ryhl wrote:
-> > Allows access to a value in an `Arc` that is currently held as a raw
-> > pointer due to use of `Arc::into_raw`, without destroying or otherwise
-> > consuming that raw pointer.
-> >
-> > This is a dependency of the linked list that Rust Binder uses. The
-> > linked list uses this method when iterating over the linked list.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/sync/arc.rs | 72 ++++++++++++++++++++++++++++++++++++-----=
---------
-> >  1 file changed, 54 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> > index 7d4c4bf58388..a5314df409e7 100644
-> > --- a/rust/kernel/sync/arc.rs
-> > +++ b/rust/kernel/sync/arc.rs
-> > @@ -232,27 +232,13 @@ pub fn into_raw(self) -> *const T {
-> >      /// `ptr` must have been returned by a previous call to [`Arc::int=
-o_raw`]. Additionally, it
-> >      /// must not be called more than once for each previous call to [`=
-Arc::into_raw`].
-> >      pub unsafe fn from_raw(ptr: *const T) -> Self {
-> > -        let refcount_layout =3D Layout::new::<bindings::refcount_t>();
-> > -        // SAFETY: The caller guarantees that the pointer is valid.
-> > -        let val_layout =3D Layout::for_value(unsafe { &*ptr });
-> > -        // SAFETY: We're computing the layout of a real struct that ex=
-isted when compiling this
-> > -        // binary, so its layout is not so large that it can trigger a=
-rithmetic overflow.
-> > -        let val_offset =3D unsafe { refcount_layout.extend(val_layout)=
-.unwrap_unchecked().1 };
-> > -
-> > -        // Pointer casts leave the metadata unchanged. This is okay be=
-cause the metadata of `T` and
-> > -        // `ArcInner<T>` is the same since `ArcInner` is a struct with=
- `T` as its last field.
-> > -        //
-> > -        // This is documented at:
-> > -        // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
-> > -        let ptr =3D ptr as *const ArcInner<T>;
-> > -
-> > -        // SAFETY: The pointer is in-bounds of an allocation both befo=
-re and after offsetting the
-> > -        // pointer, since it originates from a previous call to `Arc::=
-into_raw` and is still valid.
-> > -        let ptr =3D unsafe { ptr.byte_sub(val_offset) };
-> > +        // SAFETY: The pointer returned by `into_raw` points at the `d=
-ata` field of an
-> > +        // `ArcInner<T>`, as promised by the caller.
-> > +        let ptr =3D unsafe { raw_to_inner_ptr(ptr) };
-> >
-> >          // SAFETY: By the safety requirements we know that `ptr` came =
-from `Arc::into_raw`, so the
-> >          // reference count held then will be owned by the new `Arc` ob=
-ject.
-> > -        unsafe { Self::from_inner(NonNull::new_unchecked(ptr.cast_mut(=
-))) }
-> > +        unsafe { Self::from_inner(ptr) }
-> >      }
-> >
-> >      /// Returns an [`ArcBorrow`] from the given [`Arc`].
-> > @@ -273,6 +259,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
-> >      }
-> >  }
-> >
-> > +/// Converts a pointer to the contents of an [`Arc`] into a pointer to=
- the [`ArcInner`].
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// The provided pointer must point the `data` field of an `ArcInner<T=
->` value.
-> > +unsafe fn raw_to_inner_ptr<T: ?Sized>(ptr: *const T) -> NonNull<ArcInn=
-er<T>> {
->
-> Nit: put this into an `impl<T:?Sized> ArcInner<T>` block maybe?
->
-> > +    let refcount_layout =3D Layout::new::<bindings::refcount_t>();
-> > +    // SAFETY: The caller guarantees that the pointer is valid.
-> > +    let val_layout =3D Layout::for_value(unsafe { &*ptr });
-> > +    // SAFETY: We're computing the layout of a real struct that existe=
-d when compiling this
-> > +    // binary, so its layout is not so large that it can trigger arith=
-metic overflow.
-> > +    let val_offset =3D unsafe { refcount_layout.extend(val_layout).unw=
-rap_unchecked().1 };
-> > +
-> > +    // Pointer casts leave the metadata unchanged. This is okay becaus=
-e the metadata of `T` and
-> > +    // `ArcInner<T>` is the same since `ArcInner` is a struct with `T`=
- as its last field.
-> > +    //
-> > +    // This is documented at:
-> > +    // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
-> > +    let ptr =3D ptr as *const ArcInner<T>;
-> > +
-> > +    // SAFETY: The pointer is in-bounds of an allocation both before a=
-nd after offsetting the
-> > +    // pointer, since it originates from a previous call to `Arc::into=
-_raw` and is still valid.
->
-> "since it originate from a previous call to `Arc::into_raw`" is the
-> safety requirement of `Arc::from_raw`, since the safety requirement of
-> `raw_to_inner_ptr` is different, so I think we should say "since the
-> function safety requirement guarantees `ptr` points to `data` field,
-> which is exactly `val_offset` away from the beginning of `ArcInner<T>`".
-> Thoughts?
->
-> BTW, in fat pointer cases, by "must point the `data` field of an
-> `ArcInner<T>` value", it means both the address and the metadata should
-> be the same as the original object in `ArcInner<T>`, right? In other
-> words, the following code should not be safe, i.e. the
-> raw_to_inner_ptr() safety requirement is not satisfied.
->
->         let x: Arc<[u8]> // assume x.len() =3D=3D 4
->
->         let y =3D &(x[0..1]) as *const [u8] // y has the same address of
->                                           // the `data` field of `x`.
->
->         let inner =3D unsafe { raw_to_inner_ptr(y) };
->         // ^^^ the safety requirement is not satisfied???
->
-> This may not be important since the users of `raw_to_inner_ptr` all have
-> stronger safey guarantees ("`ptr` must come from `Arc::into_raw()`"),
-> and `raw_to_inner_ptr` is not a pub function, but I just wonder whether
-> we need to improve the current safety requirements, or "point" means
-> both address and metadata for fat pointers?
+> Add functions to convert a CString to upper- / lowercase, either
+> in-place or by creating a copy of the original CString.
+> 
+> Naming followes the one from the Rust stdlib, where functions starting
+> with 'to' create a copy and functions starting with 'make' perform an
+> in-place conversion.
+> 
+> This is required by the Nova project (GSP only Rust successor of
+> Nouveau) to convert stringified enum values (representing different GPU
+> chipsets) to strings in order to generate the corresponding firmware
+> paths. See also [1].
+> 
+> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+> 
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 
-I mean, really, the same problem arises for Sized pointers where the
-pointer points at the first field of a struct.
+This looks good to me, so you may add my
 
-We may have to take inspiration from the std Arc::from_raw. It says
-that the pointee must have the same size and alignment as what was
-used when you called Arc::into_raw, and then it further says that if
-the pointer type is not exactly the same, then you are effectively
-performing a transmute.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+However, it looks like this patch has some clippy warnings that need to
+be fixed before it can be merged.
+
+$ make LLVM=1 CLIPPY=1
+error: unneeded `return` statement
+   --> rust/kernel/str.rs:267:9
+    |
+267 |         return Ok(s);
+    |         ^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+    = note: `-D clippy::needless-return` implied by `-D clippy::style`
+    = help: to override `-D clippy::style` add `#[allow(clippy::needless_return)]`
+help: remove `return`
+    |
+267 -         return Ok(s);
+267 +         Ok(s)
+    |
+
+error: unneeded `return` statement
+   --> rust/kernel/str.rs:284:9
+    |
+284 |         return Ok(s);
+    |         ^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+help: remove `return`
+    |
+284 -         return Ok(s);
+284 +         Ok(s)
+    |
+
+error: deref which would be done by auto-deref
+   --> rust/kernel/str.rs:677:58
+    |
+677 |         unsafe { CStr::from_bytes_with_nul_unchecked_mut(&mut *self.buf) }
+    |                                                          ^^^^^^^^^^^^^^ help: try: `&mut self.buf`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#explicit_auto_deref
+    = note: `-D clippy::explicit-auto-deref` implied by `-D clippy::complexity`
+    = help: to override `-D clippy::complexity` add `#[allow(clippy::explicit_auto_deref)]`
+
+error: aborting due to 3 previous errors
 
 Alice
