@@ -1,257 +1,255 @@
-Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4203D55E46
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Feb 2024 22:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C4A54FA0;
+	Tue, 20 Feb 2024 05:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708380272; cv=none; b=NcNso65qIz+cOjYYuUnDX28QAdy6E8KsvSNrbGPDAopZJjIdFqzhA0irqqbmta8RxWPgTtdoX92iRVaMKV9qmUSe9MXIxt3PGeX4xPFaw78VOCNfsSO6UzwsgkZgz9PeZlOIJV5jMSp/pJhhlR17OaxZd7WhtB0wNy882y3mQoQ=
+	t=1708407387; cv=none; b=s3Df+FRtsKiOPhH/T2AzNhB6WEA2iTx2bFDxVFKpHZpzXppkxgFkXwhmemTnlaPOugZ74ZiZs1cmCMXFVlwjVrxyF6Pt8uFi0G3/6+endnj3lUOnKqHk8dIAPHOxQRcVeubck1AoCa3wbONrMTCuhe83qkLJBtyOrRkCghcnRXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708380272; c=relaxed/simple;
-	bh=jmCY50iP8PuJQGYoY+RYZpIU9z44xcl/Emg2DmjmU7g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b9ywAP8BR6XJqdGmROWYvdEJ84P5WqeL4kBov9xM16TOsZXKzVXhMdaWdyQGOCmey7E1pMKj3eUh6+iroRZXD69QWIEjakhmdsFyNdruFHTwyGPJc9hm/KhCNDVfWc+Xd4Y57IBHfnWepYOA48hSXRFDDQAB+d1M64akNHyJulE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=MKXTZm9U; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Hd3QwMVS; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryhl.io
+	s=arc-20240116; t=1708407387; c=relaxed/simple;
+	bh=xyIQusYKt9ehEP8fBy/oK7NAGJShA0lLMZOP159AO68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d1X94PLp0KsjgTiPYyJFkh2JINN54NQjYqHUSikX1U7GoGhSLMgy14n+oIjCqReLAlBY/QpkuadpuH21un17D6D9uKG43wa3lt4WBZ+E7+FqkgAshpyA0ORBL27wOQqd//zbz7K1Fr2iVmPqTYH37vdQRc4n2/asSS1L99uRyOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f7bx/V/K; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="MKXTZm9U";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Hd3QwMVS"
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 36B5413800DD;
-	Mon, 19 Feb 2024 17:04:29 -0500 (EST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f7bx/V/K"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-42a4516ec46so54596381cf.0;
+        Mon, 19 Feb 2024 21:36:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708407384; x=1709012184; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cPoj/GBmRVxE2Hbxo4fV51+00H1ou0rrTPdWMJ87ap8=;
+        b=f7bx/V/KzDNsXJ2/7lXZfsOBCwFzUCEoNn8EP9BSl9goSoqcSaKJ46hSlPwJ4brh3L
+         3F6oxOFOu0JEFTXnhx+MulE+00FvdVkz4YCjw9PWmV4AMl32imu0hhB/Sp4+Dl5I/LAr
+         9iPKq6ptQmZ+X58vM6qOB5Sfub328Cs57O4w7Lb/j9SfNR7YWpliS9sXoi4RLQa9f6Sh
+         WIXaPjWddGMwlNtOrzMwIaxF/1vxDyjn17gyfZRJH2yYZjHLFcJBpNJl/Wdk759mcobn
+         g00l2ZWZl16VGWI0nqt1RNjlgu8cWaI5+41/HZVI+qatB6gO7fMnG1PFyeRiG36TGAJ5
+         6rRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708407384; x=1709012184;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cPoj/GBmRVxE2Hbxo4fV51+00H1ou0rrTPdWMJ87ap8=;
+        b=QknYKg6InZf6gGLdg92qHRplmn/JEUK9PtjMxdVqClIdCxjuOGcPV1YepZdIrK5Y08
+         IHviHEkV/V3fw4LgS74em5ZoL2UoA9V/YQab8b7NlGYHeFJp3cZPEJArweRzLasoPZwb
+         D6pluRwb5a77RKnaHrpOWUATYLXFnlHqzcnHQUiRAw5VIneYo6jhruMDF9IDmJRfkKsJ
+         b/hlCg/NXNxYJ1KgNyqsx9/lsgJ3hBxqapS+J8AWvFqVlkVbI3h4wT2Cha3YZPcr5hqo
+         6vjKfwGQRA57vgfKw7PIvQ7z9QhQKod//wEG782gGW2y70vBa1EUnuWoh/cBiDALWofb
+         SiLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFCiyodBHhJ6OTVusD4K4DW/V+Q0Tv31V1d1y5iVmIR/XbbmNfzHUhD5mWIPT16eLjzJJzV8B5Pug60691c4jDnI4WNDcdq+0W/RfwM2zAMD4fOYln+d6+wr9q0eTGU+H9j5OcvThGTpet3Qs=
+X-Gm-Message-State: AOJu0Yx5ervUgo6uTfuLnWCbYNblcEX/l/iafBqvn7AVOqtpyXhcNJyt
+	DVZiTNnFTg46scpCzSSaCDUW2UKWGn+mREjOPt52o8VfDjKcUfH1
+X-Google-Smtp-Source: AGHT+IGYwu+r2kN4BSroO24XFTd4yIVr7Xb4qJa1UZw5N2n7nds55MiO1Ob/oid1u4PYU139bxzBqg==
+X-Received: by 2002:ac8:5e4a:0:b0:42d:bf56:89b5 with SMTP id i10-20020ac85e4a000000b0042dbf5689b5mr21531696qtx.2.1708407384155;
+        Mon, 19 Feb 2024 21:36:24 -0800 (PST)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id c19-20020ac85193000000b0042c524de19asm3169864qtn.58.2024.02.19.21.36.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Feb 2024 21:36:23 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 017D01200043;
+	Tue, 20 Feb 2024 00:36:23 -0500 (EST)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 19 Feb 2024 17:04:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1708380269;
-	 x=1708466669; bh=RJ8Zv6VESt3ADRV69oHzYv5ZDxZVYD59vvukhxytKNk=; b=
-	MKXTZm9UIaqTlynBbPV7jQiRze60H/ePrr3ygFERJVzogkN7HrLLT3m9MBac4pjJ
-	G03BA4uCCegKq6rc/xCnsMc748HVsnvM9vq+/sNoOQfut/AJKiAzzhFG+a979Br3
-	6ngX+9CA1EiwA+sHNtY3HBkf4ZAh+v+f56aH1uI+juhuNRHfpWOk/bAs2k6lkJNw
-	4yrE7cmPO0pABIOS7uQc+UProamRScsO40IxtJDG45pHLDFeS7us5cW/V7BYY4+c
-	161veKsXteZvlpWBemOOb/sRkwoiUZHntLDqKlZWT16kHA/XnbyuUosfF9sUsN/a
-	mo+mC1ps0NHPQO3ZftN2uA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1708380269; x=
-	1708466669; bh=RJ8Zv6VESt3ADRV69oHzYv5ZDxZVYD59vvukhxytKNk=; b=H
-	d3QwMVS8FaPYale1GnvF3U6lHO4R0BgxciaE6kdCBTH9NLy8jTtViwspA4Xhfz60
-	BTchyPi85hBa12gxKp5ZaMilZnHD9MLVvs0JZKIYBzMkMLWFuOueNmFmu4qJpD/r
-	yh1fV3xL4L9D3ZWmLEbeOInJLUF8fVke/5TVtsFk9viEgSAJX9KYJH1rwUjkyIb1
-	hl11tUUQ/I7Xl0kcvvFMnis/sbmIjiQuQMeoKp2hxo8WO2hhcNjf9ZAASNUX7bwM
-	8Qfxg81UhAHlKUdfrBmOp4bp6eYFK+u6X8UJKwfbggHrJClznYM0VytDdDozAMV7
-	EkjEW8Kf+3oLfXkZ5PJVg==
-X-ME-Sender: <xms:a9DTZYDu-ejDYmBF7-B0O6hZaRmX0dPBsVWv3Mebo43w0cK4vkYX2A>
-    <xme:a9DTZaiop-RIwjeTTjnUlU8pk_5phfHaZv_ju6b5F3PUlQGI-xhJd8yij9rj6zPDO
-    m1-XuKTHYaLc_YtWg>
-X-ME-Received: <xmr:a9DTZbkXKh85_PmI8V61pPRbOx7YIEDUQowtHbjZ3aWsYx5jxfNy7iPPTn6XFXriJVpHZzVdrsd_xIM24VF7mR1nqEjajqYOCByv>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdekgdduheehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    fgudelgeelheeileehgfejgeelfeefleeigfdtgfetfeelgfefvdeggfdvteejteenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomheprghlihgtvgesrhihhhhlrdhioh
-X-ME-Proxy: <xmx:a9DTZey7q6cUNOnojogHEUjYRWuv6QcjI6V7nroMQ82Zh02vTE5mkQ>
-    <xmx:a9DTZdTPyNDklmTwTt-Qks3rc01V8QHYU_ExMtLXNP6nD-WsvWsLyw>
-    <xmx:a9DTZZaRj0AqWAa4qrXXEAJsQnZsHRl_7O2wM6nJCuHEbcdMkqeijg>
-    <xmx:bdDTZfmrghzp1QrcrJfKzFhl0Teufvp9KQaMCtS_rHIvf1OAMEp0Ag>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Feb 2024 17:04:24 -0500 (EST)
-Message-ID: <f34fd48b-1670-4a44-928a-7103b83cbc8a@ryhl.io>
-Date: Mon, 19 Feb 2024 23:04:22 +0100
+  by compute2.internal (MEProxy); Tue, 20 Feb 2024 00:36:23 -0500
+X-ME-Sender: <xms:VjrUZaepqXSBEma02pr-hq7nxQWuY4H6RaeaPLm3hiPogqoHL0VUDA>
+    <xme:VjrUZUNik5pobLJrRgwgh0bvWT6TYuzR3RG_0LaHn6HAht0Xf6wkjKSCtDG1lUClr
+    eho58dpVu7nwQX3hA>
+X-ME-Received: <xmr:VjrUZbhgLeLgO0HVLEpf8IvIedm-LOsxcpZ93g1WvaUjL4Ph3axcmhVN-B8l1A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelgdekhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdtkeei
+    hedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
+    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
+    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:VjrUZX_quhCIXnYC8qn32oZHDykDM93PGFEiL0IKsT__XOnpZMAuRg>
+    <xmx:VjrUZWu2m5kRwwIz1Zog6xG48HxcLRGE1FAJbktROnJxUwkYg00GTw>
+    <xmx:VjrUZeFpu8JR9CIkPNM6oAyNERvP1qb2A_w1H7E9_HxDy6YfrCkwtA>
+    <xmx:VjrUZXm52JDcK9RmlxqmWd7tPdJZpS88ouv7qm9mAmVZcHvQ5NXjARp79M0>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Feb 2024 00:36:22 -0500 (EST)
+Date: Mon, 19 Feb 2024 21:36:05 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: sync: add `ArcBorrow::from_raw`
+Message-ID: <ZdQ6RRYtvazV7WPR@boqun-archlinux>
+References: <20240219-arc-for-list-v1-0-d98cd92c760b@google.com>
+ <20240219-arc-for-list-v1-1-d98cd92c760b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: Add `container_of` and `offset_of` macros
-Content-Language: en-US-large
-To: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matt Gilbride <mattgilbride@google.com>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org,
- kernel-dev@igalia.com, =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?=
- <leseulartichaut@gmail.com>, Wedson Almeida Filho <wedsonaf@google.com>
-References: <20240217153315.56128-1-mcanal@igalia.com>
- <CAH5fLggPRcPc-5C8JY5FR7jQMbdNoc89EU0_QAqhG=6HiySZ=w@mail.gmail.com>
- <83571d1e-5710-47d6-9a6c-2a0bb5ab5e5a@igalia.com>
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <83571d1e-5710-47d6-9a6c-2a0bb5ab5e5a@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240219-arc-for-list-v1-1-d98cd92c760b@google.com>
 
-On 2/19/24 22:57, Maíra Canal wrote:
-> Hi Alice,
+On Mon, Feb 19, 2024 at 02:54:11PM +0000, Alice Ryhl wrote:
+> Allows access to a value in an `Arc` that is currently held as a raw
+> pointer due to use of `Arc::into_raw`, without destroying or otherwise
+> consuming that raw pointer.
 > 
-> On 2/19/24 06:49, Alice Ryhl wrote:
->> On Sat, Feb 17, 2024 at 4:33 PM Maíra Canal <mcanal@igalia.com> wrote:
->>>
->>> From: Asahi Lina <lina@asahilina.net>
->>>
->>> Add Rust counterparts to these C macros. `container_of` is useful for C
->>> struct subtyping, to recover the original pointer to the container
->>> structure. `offset_of` is useful for struct-relative addressing.
->>>
->>> Co-authored-by: Miguel Ojeda <ojeda@kernel.org>
->>> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
->>> Co-authored:by: Léo Lanteri Thauvin <leseulartichaut@gmail.com>
->>> Signed-off-by: Léo Lanteri Thauvin <leseulartichaut@gmail.com>
->>> Co-authored-by: Wedson Almeida Filho <wedsonaf@google.com>
->>> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
->>> Signed-off-by: Asahi Lina <lina@asahilina.net>
->>> Signed-off-by: Maíra Canal <mcanal@igalia.com>
->>> ---
->>>
->>> Hi,
->>>
->>> `container_of` is a essential macro to build any sort of driver in the
->>> Linux Kernel. Therefore, we need a good and reliable implementation of
->>> this macro for the Rust abstractions.
->>>
->>> Although I checked the version sent by Matt [1], I don't really like the
->>> fact that such an essential part of the foundation of any driver would
->>> be an unsafe macro. Therefore, I propose this alternative to Matt's
->>> implementation, which is Lina's implementation that it is actually safe.
->>
->> Well, the addr_of macro in the standard library, which performs the
->> opposite operation is also unsafe. So I don't think that having it be
->> unsafe is that unreasonable.
->>
->>> `container_of` is a dependency for the rustgem driver and this is part
->>> of my current efforts to upstream the driver.
->>>
->>> [1] 
->>> https://lore.kernel.org/rust-for-linux/20240205-b4-rbtree-v1-1-995e3eee38c0@google.com/
->>>
->>> Best Regards,
->>> - Maíra
->>>
->>>   rust/kernel/lib.rs | 69 ++++++++++++++++++++++++++++++++++++++++++++++
->>>   1 file changed, 69 insertions(+)
->>>
->>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
->>> index 5a8594d2f5db..7ae89c676800 100644
->>> --- a/rust/kernel/lib.rs
->>> +++ b/rust/kernel/lib.rs
->>> @@ -103,3 +103,72 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
->>>       // SAFETY: FFI call.
->>>       unsafe { bindings::BUG() };
->>>   }
->>> +
->>> +/// Calculates the offset of a field from the beginning of the 
->>> struct it belongs to.
->>> +///
->>> +/// # Examples
->>> +///
->>> +/// ```rust
->>> +/// use kernel::prelude::*;
->>> +/// use kernel::offset_of;
->>> +/// struct Test {
->>> +///     a: u64,
->>> +///     b: u32,
->>> +/// }
->>> +///
->>> +/// assert_eq!(offset_of!(Test, b), 8);
->>> +/// ```
->>> +#[macro_export]
->>> +macro_rules! offset_of {
->>> +    ($type:ty, $($f:tt)*) => {{
->>> +        let tmp = core::mem::MaybeUninit::<$type>::uninit();
->>> +        let outer = tmp.as_ptr();
->>> +        // To avoid warnings when nesting `unsafe` blocks.
->>> +        #[allow(unused_unsafe)]
->>> +        // SAFETY: The pointer is valid and aligned, just not 
->>> initialised; `addr_of` ensures that
->>> +        // we don't actually read from `outer` (which would be UB) 
->>> nor create an intermediate
->>> +        // reference.
->>> +        let inner = unsafe { core::ptr::addr_of!((*outer).$($f)*) } 
->>> as *const u8;
->>> +        // To avoid warnings when nesting `unsafe` blocks.
->>> +        #[allow(unused_unsafe)]
->>> +        // SAFETY: The two pointers are within the same allocation 
->>> block.
->>> +        unsafe { inner.offset_from(outer as *const u8) }
->>> +    }}
->>> +}
->>
->> The offset_of macro is already available through the standard library.
->> You do not need to add it here.
->>
->>> +/// Produces a pointer to an object from a pointer to one of its 
->>> fields.
->>> +///
->>> +/// # Safety
->>> +///
->>> +/// Callers must ensure that the pointer to the field is in fact a 
->>> pointer to the specified field,
->>> +/// as opposed to a pointer to another object of the same type. If 
->>> this condition is not met,
->>> +/// any dereference of the resulting pointer is UB.
->>> +///
->>> +/// # Examples
->>> +///
->>> +/// ```rust
->>> +/// use kernel::container_of;
->>> +/// struct Test {
->>> +///     a: u64,
->>> +///     b: u32,
->>> +/// }
->>> +///
->>> +/// let test = Test { a: 10, b: 20 };
->>> +/// let b_ptr = &test.b;
->>> +/// let test_alias = container_of!(b_ptr, Test, b);
->>> +/// assert!(core::ptr::eq(&test, test_alias));
->>> +/// ```
->>> +#[macro_export]
->>> +macro_rules! container_of {
->>> +    ($ptr:expr, $type:ty, $($f:tt)*) => {{
->>> +        let ptr = $ptr as *const _ as *const u8;
->>> +        let offset = $crate::offset_of!($type, $($f)*);
->>> +        let outer = ptr.wrapping_offset(-offset) as *const $type;
->>> +        // SAFETY: The pointer is valid and aligned, just not 
->>> initialised; `addr_of` ensures that
->>> +        // we don't actually read from `outer` (which would be UB) 
->>> nor create an intermediate
->>> +        // reference. The two pointers are within the same 
->>> allocation block.
->>> +        let inner = unsafe { core::ptr::addr_of!((*outer).$($f)*) };
->>
->> If your macro is not unsafe, then this line is incorrect. I could call
->> `container_of!` with some random dangling pointer, and then it would
->> use addr_of! on that pointer, which is not okay because addr_of
->> assumes that the pointer is in-bounds of an allocation both before and
->> after the offset operation.
->>
+> This is a dependency of the linked list that Rust Binder uses. The
+> linked list uses this method when iterating over the linked list.
 > 
-> Thanks for your explanation, I haven't thought through this point of
-> view. Anyway, any chance we could land the `container_of!` patch as soon
-> as possible? It would be nice to have a common understanding of this 
-> fundamental macro. I would like to send some patches with the DMA fences
-> abstraction, but I would need `container_of!`.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/sync/arc.rs | 72 ++++++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 54 insertions(+), 18 deletions(-)
+> 
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 7d4c4bf58388..a5314df409e7 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -232,27 +232,13 @@ pub fn into_raw(self) -> *const T {
+>      /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
+>      /// must not be called more than once for each previous call to [`Arc::into_raw`].
+>      pub unsafe fn from_raw(ptr: *const T) -> Self {
+> -        let refcount_layout = Layout::new::<bindings::refcount_t>();
+> -        // SAFETY: The caller guarantees that the pointer is valid.
+> -        let val_layout = Layout::for_value(unsafe { &*ptr });
+> -        // SAFETY: We're computing the layout of a real struct that existed when compiling this
+> -        // binary, so its layout is not so large that it can trigger arithmetic overflow.
+> -        let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
+> -
+> -        // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
+> -        // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
+> -        //
+> -        // This is documented at:
+> -        // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+> -        let ptr = ptr as *const ArcInner<T>;
+> -
+> -        // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
+> -        // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
+> -        let ptr = unsafe { ptr.byte_sub(val_offset) };
+> +        // SAFETY: The pointer returned by `into_raw` points at the `data` field of an
+> +        // `ArcInner<T>`, as promised by the caller.
+> +        let ptr = unsafe { raw_to_inner_ptr(ptr) };
+>  
+>          // SAFETY: By the safety requirements we know that `ptr` came from `Arc::into_raw`, so the
+>          // reference count held then will be owned by the new `Arc` object.
+> -        unsafe { Self::from_inner(NonNull::new_unchecked(ptr.cast_mut())) }
+> +        unsafe { Self::from_inner(ptr) }
+>      }
+>  
+>      /// Returns an [`ArcBorrow`] from the given [`Arc`].
+> @@ -273,6 +259,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+>      }
+>  }
+>  
+> +/// Converts a pointer to the contents of an [`Arc`] into a pointer to the [`ArcInner`].
+> +///
+> +/// # Safety
+> +///
+> +/// The provided pointer must point the `data` field of an `ArcInner<T>` value.
+> +unsafe fn raw_to_inner_ptr<T: ?Sized>(ptr: *const T) -> NonNull<ArcInner<T>> {
 
-When you send a patchset, you can just state in the coverletter that it 
-depends on the container_of patch in the rbtree patchset. Then Miguel 
-will know that he needs to take that before he can take your patchset.
+Nit: put this into an `impl<T:?Sized> ArcInner<T>` block maybe?
 
-Of course, if Miguel can take it soon, that's even better.
+> +    let refcount_layout = Layout::new::<bindings::refcount_t>();
+> +    // SAFETY: The caller guarantees that the pointer is valid.
+> +    let val_layout = Layout::for_value(unsafe { &*ptr });
+> +    // SAFETY: We're computing the layout of a real struct that existed when compiling this
+> +    // binary, so its layout is not so large that it can trigger arithmetic overflow.
+> +    let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
+> +
+> +    // Pointer casts leave the metadata unchanged. This is okay because the metadata of `T` and
+> +    // `ArcInner<T>` is the same since `ArcInner` is a struct with `T` as its last field.
+> +    //
+> +    // This is documented at:
+> +    // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+> +    let ptr = ptr as *const ArcInner<T>;
+> +
+> +    // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
+> +    // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
 
-Alice
+"since it originate from a previous call to `Arc::into_raw`" is the
+safety requirement of `Arc::from_raw`, since the safety requirement of
+`raw_to_inner_ptr` is different, so I think we should say "since the
+function safety requirement guarantees `ptr` points to `data` field,
+which is exactly `val_offset` away from the beginning of `ArcInner<T>`".
+Thoughts?
+
+BTW, in fat pointer cases, by "must point the `data` field of an
+`ArcInner<T>` value", it means both the address and the metadata should
+be the same as the original object in `ArcInner<T>`, right? In other
+words, the following code should not be safe, i.e. the
+raw_to_inner_ptr() safety requirement is not satisfied.
+
+	let x: Arc<[u8]> // assume x.len() == 4
+
+	let y = &(x[0..1]) as *const [u8] // y has the same address of
+					  // the `data` field of `x`.
+	
+	let inner = unsafe { raw_to_inner_ptr(y) };
+	// ^^^ the safety requirement is not satisfied???
+
+This may not be important since the users of `raw_to_inner_ptr` all have
+stronger safey guarantees ("`ptr` must come from `Arc::into_raw()`"),
+and `raw_to_inner_ptr` is not a pub function, but I just wonder whether
+we need to improve the current safety requirements, or "point" means
+both address and metadata for fat pointers?
+
+Regards,
+Boqun
+
+> +    let ptr = unsafe { ptr.byte_sub(val_offset) };
+> +
+> +    // SAFETY: The pointer can't be null since you can't have an `ArcInner<T>` value at the null
+> +    // address.
+> +    unsafe { NonNull::new_unchecked(ptr.cast_mut()) }
+> +}
+> +
+>  impl<T: 'static> ForeignOwnable for Arc<T> {
+>      type Borrowed<'a> = ArcBorrow<'a, T>;
+>  
+> @@ -453,6 +468,27 @@ unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
+>              _p: PhantomData,
+>          }
+>      }
+> +
+> +    /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously been deconstructed with
+> +    /// [`Arc::into_raw`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// * The provided pointer must originate from a call to [`Arc::into_raw`].
+> +    /// * For the duration of the lifetime annotated on this `ArcBorrow`, the reference count must
+> +    ///   not hit zero.
+> +    /// * For the duration of the lifetime annotated on this `ArcBorrow`, there must not be a
+> +    ///   [`UniqueArc`] reference to this value.
+> +    pub unsafe fn from_raw(ptr: *const T) -> Self {
+> +        // SAFETY: The pointer returned by `into_raw` points at the `data` field of an
+> +        // `ArcInner<T>`.
+> +        let ptr = unsafe { raw_to_inner_ptr(ptr) };
+> +
+> +        // SAFETY: The caller promises that the value remains valid since the reference count must
+> +        // not hit zero, and no mutable reference will be created since that would involve a
+> +        // `UniqueArc`.
+> +        unsafe { Self::new(ptr) }
+> +    }
+>  }
+>  
+>  impl<T: ?Sized> From<ArcBorrow<'_, T>> for Arc<T> {
+> 
+> -- 
+> 2.44.0.rc0.258.g7320e95886-goog
+> 
