@@ -1,136 +1,190 @@
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F325BAFA
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 09:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C58467C4A
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 12:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708421749; cv=none; b=jUbdCWFtbU6NdU0MFaQXb2mXfsN4ZZkDZgWdiPZPTDAAyi7hscH9TBVPA35Es0YiPeTB3WdiOh4IbHBc6CX9fQKNQACiBmmely7pZU3S931pi4nwtYSx52SIyRPSyqpeNwE3vSrTyqaxLtJuv7jnobALYhFV58pLV1xaAeGs+DQ=
+	t=1708430578; cv=none; b=dsDFM1YmHAA71/3MXYMZ59/OG3QiC7L7GZQFtn9xndZOv5zJjFUq+fRXo6mOmGJQCKKfCWijPOG4htDomqdrof43sARFJdvOn4B1zH8cpxDA9dy0X6AAmS80OlYWiMzsu4RiBMpwwJ9XdxXb6rGxoz5vRj9/ntWUC2QSlhGY/0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708421749; c=relaxed/simple;
-	bh=Hq0Cmy5FJkYWn0RlKLg2mQTAvevk9epBCAsv3Id1SNs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZDhKz+QqltQ0YF1O8c51vjc/5ue2p3ZpfLaus6L6KDPc2SbSJcKYb9fp8U7JM1sAC/DHTsaPvZXVbiAfsi92Ayqxe/NiaU+I9gKhJqskp/YPU/Pa+2RpbFlbZU6UMC8NXJshFw8bmTXcyEJq8rVjOwqdCRwWRXMSxdfpPu7H56s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mJ7JAnEG; arc=none smtp.client-ip=209.85.208.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1708430578; c=relaxed/simple;
+	bh=Qwei00/D5+DhbgFyfiZlK9K80IEw6DOD6oSgL5igAM0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lw6lnaz+ojG82xVxipic96jBT3gbF8b60bZaM+xt7a2NXFlboxGbiCynKAq+9kvXGMhk9zOVmTQ+E/Wup7Bsf4O5RdhT4muZhpt1O6RrlmiPeTO/6pF/H7Rcg48gr6AZdQ5LHfYMacJZBtLQ7RCpsDrM1e7h8dEKikJ5bEYknOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NfYlWj0j; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mJ7JAnEG"
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2d10d7dd7ddso47875181fa.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 01:35:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708421746; x=1709026546; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eGvW91C4grW9jhiVdhrUhasqpBxGbw0RjsBpYtBt9c0=;
-        b=mJ7JAnEGg8quhRSBGZ0cFaVNo1ORtCAEQZWEMIGqwIjqTLBupG1hH1fbzd4RCNCIH9
-         3shfCSFinYbnuVbmsA2ECa+cvBNE405ALB00uVo8yICpYHibHgcfdoEaTlXGBrdLpHNL
-         kwvvagJ+nvbu04131o1fgB+Lan7DkatzkPhy5oM0i7i7kjBMrDjXqw8opTiKhQo3M+i0
-         H0WFhVrjMOSniRIcB+DcYgzXHysNgp0f/yQ3CMbZdE31n3BnP0PzMUjvxnqbzW5zQF80
-         F1JiKn2I8y4HHFGZQPMyjl5tRwWVOfFko5PcwwKRMV6Z7Ib97hf3r4Qhr/KRh479WXl1
-         Ieuw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NfYlWj0j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708430575;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3ymRHd/JZiWlQ7BK0HpkEMNKkAfVIgEXtX8VQjIGxto=;
+	b=NfYlWj0j7mzeoHCVrmwRs73F63JwbsoU+4YOrPAms669R3LJKPTw3PlfjVqVQiLgIyE+O7
+	ZkPqHQbOL4vOYMakGSTpSRvXApK8I1ylWV1OhXtzz2XIKdNFE/r3682qcXow3+vB16tq3x
+	18DGFbmyQY/JnvlPvr/ZX8ErLQX+YHo=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-691-iE5xPGvPNaaisH-0vqMoYw-1; Tue, 20 Feb 2024 07:02:54 -0500
+X-MC-Unique: iE5xPGvPNaaisH-0vqMoYw-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-51288102312so5508417e87.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 04:02:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708421746; x=1709026546;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eGvW91C4grW9jhiVdhrUhasqpBxGbw0RjsBpYtBt9c0=;
-        b=TL5kWmaIBrNVN0tXdaC4bgrfAKAdxycpx1O9C96eYe7W1G7fBVbm/Bv6UD6tr3SHzi
-         LcXsrq6vv7TvJ6sfioGD+TbAC+flp6kv1ylfTkjBL0IFf3ywZPlZdVUaxBnTT4MfqfaX
-         Cm07/Yt+ZKXy5UwnSPDnAIhhtvPAJRrm9yZNuHG7/fpJBOSyxPw9CiFq8BUBgIdyl2y9
-         22lXAkWwZItVYLhw4BvH0ZD9tnVufIM59ywHJaQ1drz7+1+9B3h4vAfOwYEi5jYPjZnr
-         RB8caInnMYyw8MLEqqHecNqF3qDmRo18ltCAKZJft89A0JxD5R+9ZBJ6yUCdBo5EGOb8
-         LY5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVlFR6qQwMDS8WXRV5bB3J4Mn2b6W/G76ouCh9bdqaTSMtQVkpiYBwm6olqVor3PKgcvMxREmVGE5qeUnHGt7JBrUxOGXNXHnIDEKU/Eew=
-X-Gm-Message-State: AOJu0YwHRMtdDfSn0Sc5xHNJPkyZHJyRDY2D+svb9X4v6eXjk/1KRehw
-	k9d15smZKNlBCoKI7wAxUVIRoYFKsHHfSRzkU97rk0nCzxl0y2h7lkucn1J/E0+k/7zir/eKPBA
-	op97luFQySXRJmw==
-X-Google-Smtp-Source: AGHT+IFMRTrmb0//fhvPOtv3qog+JWK2GyME95bme+y5LFmL0oHTci1rMmg42oFwzH8JNMisvGMZxgj0+++A55s=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:651c:104e:b0:2d2:c6a:5731 with SMTP
- id x14-20020a05651c104e00b002d20c6a5731mr15606ljm.9.1708421746047; Tue, 20
- Feb 2024 01:35:46 -0800 (PST)
-Date: Tue, 20 Feb 2024 09:35:40 +0000
-In-Reply-To: <20240219163915.2705-1-dakr@redhat.com>
+        d=1e100.net; s=20230601; t=1708430572; x=1709035372;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3ymRHd/JZiWlQ7BK0HpkEMNKkAfVIgEXtX8VQjIGxto=;
+        b=bduWJsFFkwQzW3SC4JhOU/sC8TymKnxpWi8iIB9IExcrIDZtkapgfi515rzNboONHs
+         DnE+nrnEMUVxerKFloYUzlGLQuKTJTBHDgPNkP6MGzUbyZT19Ja6hzgIIuMvrykiEkRv
+         SR/eOoa7WUHnRmfaNJXyGeXr/0tPSQ3ASCdO+ByiQKjPejDxTGM5WT1J8V+z/Bew+aQa
+         IEt55my+r009qV8wpdaYkGJ2kdNxsYbtkdZhvTrq8bmFgvspFdFu7Rx2jhaTAtSrg3Pe
+         D0OaefUA9PtECxA5oixFXhdmemUW+3735EEvttJR3v40+pL4Xove1BaGliwoNI3U7eBk
+         P0Qg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCMyNdOLU5uygK5jntCujbdLATo+TbefGWNTYnttrxemIoA0vWLeAOMzW2pd89X9+3lq/Myh2Gg88WF4ZnyNxTowxb7zMD4VO5eSIgrhI=
+X-Gm-Message-State: AOJu0Yxy27ONIxXAU7NeVOWW8jY0efSNRTlZOA5ZI83+8x7cuaSwBufb
+	cued4mG6kx423yLcXkh43zfC8Fz1z5oCOmx9eEk74gYreQwgUDi3V6ewtqK4gr6dbq8AnW6S/zc
+	xYDXYTrXqF15mcPgDmxXqE4ikz2wULLWTAN9cDh28X4ejNPOf6c9rvStZQ5LV+fV/
+X-Received: by 2002:ac2:5e33:0:b0:512:bdcd:f22b with SMTP id o19-20020ac25e33000000b00512bdcdf22bmr1981483lfg.64.1708430572605;
+        Tue, 20 Feb 2024 04:02:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF6w/fhcXDPnyA798UBa/GUqFRWQbgOG8VGTCfHDbaR2CAZ7+y/U97oxneA3LSvOcgBNEXS6w==
+X-Received: by 2002:ac2:5e33:0:b0:512:bdcd:f22b with SMTP id o19-20020ac25e33000000b00512bdcdf22bmr1981470lfg.64.1708430572227;
+        Tue, 20 Feb 2024 04:02:52 -0800 (PST)
+Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id et5-20020a056402378500b00561c666991csm3546875edb.73.2024.02.20.04.02.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Feb 2024 04:02:51 -0800 (PST)
+Message-ID: <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com>
+Date: Tue, 20 Feb 2024 13:02:50 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to
+ CString
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ linux-kernel@vger.kernel.org, ojeda@kernel.org,
+ rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
 References: <20240219163915.2705-1-dakr@redhat.com>
-X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-Message-ID: <20240220093541.280140-1-aliceryhl@google.com>
-Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to CString
-From: Alice Ryhl <aliceryhl@google.com>
-To: dakr@redhat.com
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
+ <20240220093541.280140-1-aliceryhl@google.com>
+From: Danilo Krummrich <dakr@redhat.com>
+Organization: RedHat
+In-Reply-To: <20240220093541.280140-1-aliceryhl@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Add functions to convert a CString to upper- / lowercase, either
-> in-place or by creating a copy of the original CString.
+On 2/20/24 10:35, Alice Ryhl wrote:
+>> Add functions to convert a CString to upper- / lowercase, either
+>> in-place or by creating a copy of the original CString.
+>>
+>> Naming followes the one from the Rust stdlib, where functions starting
+>> with 'to' create a copy and functions starting with 'make' perform an
+>> in-place conversion.
+>>
+>> This is required by the Nova project (GSP only Rust successor of
+>> Nouveau) to convert stringified enum values (representing different GPU
+>> chipsets) to strings in order to generate the corresponding firmware
+>> paths. See also [1].
+>>
+>> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+>>
+>> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 > 
-> Naming followes the one from the Rust stdlib, where functions starting
-> with 'to' create a copy and functions starting with 'make' perform an
-> in-place conversion.
+> This looks good to me, so you may add my
 > 
-> This is required by the Nova project (GSP only Rust successor of
-> Nouveau) to convert stringified enum values (representing different GPU
-> chipsets) to strings in order to generate the corresponding firmware
-> paths. See also [1].
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+Thanks for reviewing this patch.
+
 > 
-> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+> However, it looks like this patch has some clippy warnings that need to
+> be fixed before it can be merged.
+
+It seems that those warnings are treated as fatal even, although, given the
+rationale for these warnings, I'm not even sure those should be warnings at
+all.
+
 > 
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> $ make LLVM=1 CLIPPY=1
+> error: unneeded `return` statement
 
-This looks good to me, so you may add my
+I fail to see why being explicit is a bad thing in this context, and even more
+why this is treated as error.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>     --> rust/kernel/str.rs:267:9
+>      |
+> 267 |         return Ok(s);
+>      |         ^^^^^^^^^^^^
+>      |
+>      = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
 
-However, it looks like this patch has some clippy warnings that need to
-be fixed before it can be merged.
+Following this link the given rationale is:
 
-$ make LLVM=1 CLIPPY=1
-error: unneeded `return` statement
-   --> rust/kernel/str.rs:267:9
-    |
-267 |         return Ok(s);
-    |         ^^^^^^^^^^^^
-    |
-    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
-    = note: `-D clippy::needless-return` implied by `-D clippy::style`
-    = help: to override `-D clippy::style` add `#[allow(clippy::needless_return)]`
-help: remove `return`
-    |
-267 -         return Ok(s);
-267 +         Ok(s)
-    |
+"Removing the return and semicolon will make the code more rusty."
 
-error: unneeded `return` statement
-   --> rust/kernel/str.rs:284:9
-    |
-284 |         return Ok(s);
-    |         ^^^^^^^^^^^^
-    |
-    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
-help: remove `return`
-    |
-284 -         return Ok(s);
-284 +         Ok(s)
-    |
+That's the worst rationale I could think of. Without further rationale what that
+should mean and why this would be good, it's entirely meaningless.
 
-error: deref which would be done by auto-deref
-   --> rust/kernel/str.rs:677:58
-    |
-677 |         unsafe { CStr::from_bytes_with_nul_unchecked_mut(&mut *self.buf) }
-    |                                                          ^^^^^^^^^^^^^^ help: try: `&mut self.buf`
-    |
-    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#explicit_auto_deref
-    = note: `-D clippy::explicit-auto-deref` implied by `-D clippy::complexity`
-    = help: to override `-D clippy::complexity` add `#[allow(clippy::explicit_auto_deref)]`
+Instead, I'd argue that keeping it gives kernel people, who necessarily need to
+deal with both, Rust *and* C, more consistency in kernel code.
 
-error: aborting due to 3 previous errors
+At least, this shouldn't be fatal IMHO.
 
-Alice
+>      = note: `-D clippy::needless-return` implied by `-D clippy::style`
+>      = help: to override `-D clippy::style` add `#[allow(clippy::needless_return)]`
+> help: remove `return`
+>      |
+> 267 -         return Ok(s);
+> 267 +         Ok(s)
+>      |
+> 
+> error: unneeded `return` statement
+>     --> rust/kernel/str.rs:284:9
+>      |
+> 284 |         return Ok(s);
+>      |         ^^^^^^^^^^^^
+>      |
+>      = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+> help: remove `return`
+>      |
+> 284 -         return Ok(s);
+> 284 +         Ok(s)
+>      |
+> 
+> error: deref which would be done by auto-deref
+
+Similar story here. Why is it bad, and even *fatal*, to be explicit?
+
+The answer from the link below: "This unnecessarily complicates the code."
+
+Again, not a great rationale, this is entirely subjective and might even depend
+on the context of the project. Again, for kernel people who need to deal with Rust
+*and* C continuously it might be better to be explicit.
+
+>     --> rust/kernel/str.rs:677:58
+>      |
+> 677 |         unsafe { CStr::from_bytes_with_nul_unchecked_mut(&mut *self.buf) }
+>      |                                                          ^^^^^^^^^^^^^^ help: try: `&mut self.buf`
+>      |
+>      = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#explicit_auto_deref
+>      = note: `-D clippy::explicit-auto-deref` implied by `-D clippy::complexity`
+>      = help: to override `-D clippy::complexity` add `#[allow(clippy::explicit_auto_deref)]`
+> 
+> error: aborting due to 3 previous errors
+> 
+> Alice
+> 
+
