@@ -1,128 +1,172 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301366A02D
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 13:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05DB6BFB8
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 14:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708435056; cv=none; b=PHuUIh573RgwURfuZV7kzeXg7BEX776k+yaXK2MlyErcKa+lW4m4aFTbeJhE44r63yEnb3xzNjQOYY23bvhtoSG2cooqbkNmkzd6dbziX6++M871QWOaVwiOWb5cN6a2zRVY8Vv7/OgzW0JqcpGP28ZzO+MzyjtIQbY5aKv0d3I=
+	t=1708440815; cv=none; b=MryvjX/TNwcWTQp76nJApB+YO1QTzV5rE5MkLBwJwSLQfFECIyEAHVqke7Gj0quKr+pYO8xRNRFR+KM8t4hScOxY021KpHr5zj6Q/qq2Jnartat2Yj6vmm2fDYb7XTNr0RkDqi+BA7Km2aqxd4rMWQ55aSevpWNTxK/sYgNafhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708435056; c=relaxed/simple;
-	bh=qL9esCSTsbD1GdZPqIOF52zqtukaAoOtfw37L/iCfIE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LmqueYlR9NzH5w1lmFw72q8BJxIUgy5TslhytS4YT7wh189+EBiPT/M0OAr9BXGVvXbMOJsazJUqbx/GANwe7LRYyr2aIDb6RM21HlKEJvLAS90P2vLIZXqhqDD8P+JT+9Dawja2/RSyxL3XN5khBJEhhUsZOA2ELjFJIdCjxW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1nBzoJkl; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1708440815; c=relaxed/simple;
+	bh=8nTMlKnTgb82Orr2ipMOW+HsrZwnONSw5TCFBH21dpI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nZ5eU9VsJjczRpHFlVlMurUcQFX4FZtGry8eckB7D8ECJt3IFbSCzzaULj4jSvflukgW6Cxm+kJp0rvN7i8pGUdtzlGiawm1+t5O8r/S2wIAqoKKoPdVDTvHo9X0mAkmIX8WmK0HQzYLdudjLkm+SfVjnEmVwxJGjAtACk94q1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gxMOEn5E; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1nBzoJkl"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3c1593b82acso1078890b6e.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 05:17:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708435054; x=1709039854; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qL9esCSTsbD1GdZPqIOF52zqtukaAoOtfw37L/iCfIE=;
-        b=1nBzoJklVG6MRZ57Q47qkUkFL5A4A6xZjHblZrbhHHANcgwrWVUvkB3ahdzzJUFTTj
-         +wAZXnsFU50xZu+MfJAnZzgL6dNZCiXbjXJY3f6vyc6Yyxd2dGKwgXIm5UnhzT6KnJlV
-         5V/Wlkz5E0r+6OQbUGqnuSOZEk2Q5xchVNsYQhBxEbIbZD9iQ1NHXQGr38yiCeWhEM1Y
-         36KQffCLZgJK7W6WwsReGF/CNDx9tj2PnW7aSziuCDpplv6IykxcSR6gf7OsB0CW1C64
-         rmcFxSBAXy9tj2VxMPRnxyoG8rS3ztZ5LzxdJnmo30jgXnwq1ZuesWZ4JVC/vFZjH6Lv
-         CuDw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gxMOEn5E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708440812;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OIoZ4CrpCT0yQRhe9YS3Ujue6aQteM4IkhqX2Ucv/KE=;
+	b=gxMOEn5EATbIPRZj0mmEiNG1cq2EIMVDDPAOi6zNmHD9zwKUU7wtlyIJVActQJ3yVhKVRA
+	d9zSTi0wlK5w+TRS+hqz0SeMgVWl3K8CHCUCrXolwqj6rK9JFcNhZlE4fVGUA7IPNJYx6D
+	Nd+HdensmTJtfxnNrLrOVzkVHFI7PYo=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-118-JuHHkdsjM7KD3BKwoSi8Vw-1; Tue, 20 Feb 2024 09:53:30 -0500
+X-MC-Unique: JuHHkdsjM7KD3BKwoSi8Vw-1
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-558aafe9bf2so3832031a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 06:53:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708435054; x=1709039854;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qL9esCSTsbD1GdZPqIOF52zqtukaAoOtfw37L/iCfIE=;
-        b=dusJKCzvrtgHLY/voPppopq4cQGYsxhcr3rWbtBqj3O9oeEUEcSwqt3SyhbEPgE2NX
-         HSwuTIbHLt+j15zym/YKXNGDjCUySMfcGjxlEnGNHxBw4mS+FEXI9+W4A4Y+KvnaZEp9
-         m3QBZxv0iFPx4gsR2CLfQ/xbNS/cmxP2C51rTN+PaU17CN1f/8i+w4pUDn8zWvJ0yJUQ
-         cQ+764UiDqW9vlIkjksj+aP31J3ValjGv8s1ftrGdv/TWyJqxguQFhdDktlEUzLzl6j+
-         EG+vjtEgWWfm2F5zPWDRAn8UV0gI7IWTtk1VGNcPSZ374lZvz3o9uaL1/G5tof4ahdF+
-         VG1g==
-X-Forwarded-Encrypted: i=1; AJvYcCVo6llo/q/x+IXMb6hgbsWzGGloDjZO8rIFzdWnbQBgw1wnpHE7W+5hTQKY3IzBLGka97089veRLpDnKo6DxQcZWQZmkE8R92v0HrEdUFM=
-X-Gm-Message-State: AOJu0Yxfx5s4QcGKHddXZFJq/QEWkYeBb5Td2ZOrhrKdvVxPdEG8E2K8
-	/9zr+M1hM9/NtjaOEKAuHz1/cb55HSq6FsdBhVfks//igbtjyZ4mlfzkwFtnnTtCt8bpb9ilcFn
-	gGMl7PSp1Dc/rpQTTvqrhNCSfPpsV4b6bq3Vn
-X-Google-Smtp-Source: AGHT+IE0KzursJtPq+abIWMqtK5O1+xQJm+xa2/64BP3Y6r6RrQUFND+hye5sxQmu0NqoMrH5fj/TKGMGYpHWYzYVPM=
-X-Received: by 2002:a05:6870:4195:b0:21f:662:7f4 with SMTP id
- y21-20020a056870419500b0021f066207f4mr3540551oac.32.1708435053990; Tue, 20
- Feb 2024 05:17:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708440809; x=1709045609;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OIoZ4CrpCT0yQRhe9YS3Ujue6aQteM4IkhqX2Ucv/KE=;
+        b=p1ttauq/J57voSVdLh8ahbvIr0u2AYm+upDv6fTpiRUdzCTySylcKoCWOHLDAaGyk2
+         fyWJdHajTNoQGoc/JgGBqORoO7Uzd4bx/QV+F+pqie3n7zWDxBXNAVM//g0MNDhqsC9A
+         JnZfsvSHVvky9ls4KegTb870Ip47Axbtp9IyRQ/1ZWoWp4DSGW4Ji5Quo4o+NwlZivOa
+         fHkIRBUCQahkPiI/kB7g4fh8RQBcv3optWXYGSVvcuX1XvuF9eZEsSUDPZ3WlVU/Nia1
+         xy7vb9ZeCQkSd45w2EQSELXfxp7q4UbJYsDcA1ikzGsn1YlLz2gZMmsuV8ItzAScvD0i
+         Bsiw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrsxSYYBqT1vV2YQ00kXRMKxIta1Y0GUSbEfNgDXcGy0F9f/9ekNeQCQzyOLMPSBifFDNv1LScUn54b1Zs9c171nB9r97sBU75iLgGmeI=
+X-Gm-Message-State: AOJu0YwxQFHLcEHsmNbQ922kcwHDsPlgtXRdcW5C95zd5c4xj8S84toj
+	ENRqAZ0ci2IAhLGoy9ZyDcZBzKZ8Nxc3W2A5kzA0qkAbJ1dJEpCiZ6dsEAvrsyXDyQJuR2hEPpH
+	k2vvknedEs2e5t/SkCBRrGdLkKsevIASMuOhcvXJpkN4rBZvfyPkML85nMgQfv1oU
+X-Received: by 2002:a05:6402:3593:b0:563:fc1d:4568 with SMTP id y19-20020a056402359300b00563fc1d4568mr10218773edc.10.1708440809690;
+        Tue, 20 Feb 2024 06:53:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGgncS/XDGlrnCRYFDb4cyJLLdkJYTnjGk8oU+I3xRmlGS5TbjJClcmYfutXRXPKx1rPOuBAg==
+X-Received: by 2002:a05:6402:3593:b0:563:fc1d:4568 with SMTP id y19-20020a056402359300b00563fc1d4568mr10218757edc.10.1708440809403;
+        Tue, 20 Feb 2024 06:53:29 -0800 (PST)
+Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id r21-20020a50d695000000b00563f3ee5003sm3910730edi.91.2024.02.20.06.53.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Feb 2024 06:53:28 -0800 (PST)
+Message-ID: <19d0a4a9-85bb-4b9e-96b0-338adebc90e5@redhat.com>
+Date: Tue, 20 Feb 2024 15:53:27 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240219163915.2705-1-dakr@redhat.com> <20240220093541.280140-1-aliceryhl@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to
+ CString
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ linux-kernel@vger.kernel.org, ojeda@kernel.org,
+ rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+References: <20240219163915.2705-1-dakr@redhat.com>
+ <20240220093541.280140-1-aliceryhl@google.com>
  <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com>
-In-Reply-To: <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 20 Feb 2024 14:17:22 +0100
-Message-ID: <CAH5fLggXiXGA_UWCxqqLhMpXe1kepDv2vMG+1jLGaDSzdRHvSw@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to CString
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAH5fLggXiXGA_UWCxqqLhMpXe1kepDv2vMG+1jLGaDSzdRHvSw@mail.gmail.com>
+From: Danilo Krummrich <dakr@redhat.com>
+Organization: RedHat
+In-Reply-To: <CAH5fLggXiXGA_UWCxqqLhMpXe1kepDv2vMG+1jLGaDSzdRHvSw@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 20, 2024 at 1:02=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
-wrote:
->
-> On 2/20/24 10:35, Alice Ryhl wrote:
-> >> Add functions to convert a CString to upper- / lowercase, either
-> >> in-place or by creating a copy of the original CString.
-> >>
-> >> Naming followes the one from the Rust stdlib, where functions starting
-> >> with 'to' create a copy and functions starting with 'make' perform an
-> >> in-place conversion.
-> >>
-> >> This is required by the Nova project (GSP only Rust successor of
-> >> Nouveau) to convert stringified enum values (representing different GP=
-U
-> >> chipsets) to strings in order to generate the corresponding firmware
-> >> paths. See also [1].
-> >>
-> >> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General=
-/topic/String.20manipulation.20in.20kernel.20Rust
-> >>
-> >> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> >
-> > This looks good to me, so you may add my
-> >
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->
-> Thanks for reviewing this patch.
->
-> >
-> > However, it looks like this patch has some clippy warnings that need to
-> > be fixed before it can be merged.
->
-> It seems that those warnings are treated as fatal even, although, given t=
-he
-> rationale for these warnings, I'm not even sure those should be warnings =
-at
-> all.
+On 2/20/24 14:17, Alice Ryhl wrote:
+> On Tue, Feb 20, 2024 at 1:02 PM Danilo Krummrich <dakr@redhat.com> wrote:
+>>
+>> On 2/20/24 10:35, Alice Ryhl wrote:
+>>>> Add functions to convert a CString to upper- / lowercase, either
+>>>> in-place or by creating a copy of the original CString.
+>>>>
+>>>> Naming followes the one from the Rust stdlib, where functions starting
+>>>> with 'to' create a copy and functions starting with 'make' perform an
+>>>> in-place conversion.
+>>>>
+>>>> This is required by the Nova project (GSP only Rust successor of
+>>>> Nouveau) to convert stringified enum values (representing different GPU
+>>>> chipsets) to strings in order to generate the corresponding firmware
+>>>> paths. See also [1].
+>>>>
+>>>> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+>>>>
+>>>> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+>>>
+>>> This looks good to me, so you may add my
+>>>
+>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>>
+>> Thanks for reviewing this patch.
+>>
+>>>
+>>> However, it looks like this patch has some clippy warnings that need to
+>>> be fixed before it can be merged.
+>>
+>> It seems that those warnings are treated as fatal even, although, given the
+>> rationale for these warnings, I'm not even sure those should be warnings at
+>> all.
+> 
+> The build currently succeeds with zero warnings. That's a very useful
+> property, and I would not like to give it up.
 
-The build currently succeeds with zero warnings. That's a very useful
-property, and I would not like to give it up.
+Just to clarify, I did not say anything else. As mentioned, I think those
+should not even be warnings.
 
-You could submit a patch to silence these specific warnings. The
-clippy::explicit_auto_deref warning is not one I care for, but I would
-object to silencing clippy::needless_return. Using return statements
-when you are not doing an early-return really is extremely unidiomatic
-Rust.
+> 
+> You could submit a patch to silence these specific warnings. The
 
-Ultimately, I think there is a lot of value of just applying the code
-formatters and linters and following them to zero warnings. It ensures
-that the Rust code is relatively idiomatic, helps avoid long
-unproductive discussions, and makes it easy for me to fix formatting
-issues in my own patches (just run clippy and rustfmt on everything,
-and it lists only things that are my own fault).
+I'm happy to do that. We should define the scope for that though. I think this
+should be set globally, or at least not per crate. However, I don't really know
+what's the best way to do that. We could pass '-Aclippy::' to the compiler...
 
-Alice
+> clippy::explicit_auto_deref warning is not one I care for, but I would
+> object to silencing clippy::needless_return. Using return statements
+> when you are not doing an early-return really is extremely unidiomatic
+> Rust.
+
+Unfortunately, that's just a different version of:
+
+"Removing the return and semicolon will make the code more rusty." [1]
+
+Hence, I still fail to see why being explicit is a bad thing in this context.
+Is there any objective reason not to be allowed to be explicit here?
+
+> 
+> Ultimately, I think there is a lot of value of just applying the code
+> formatters and linters and following them to zero warnings. It ensures
+> that the Rust code is relatively idiomatic, helps avoid long
+> unproductive discussions, and makes it easy for me to fix formatting
+> issues in my own patches (just run clippy and rustfmt on everything,
+> and it lists only things that are my own fault).
+
+Well, I generally agree. However, I'm clearly against *blindly* following
+formatters and linters.
+
+We should carefully pick the rules we follow, and we should do that for objective
+reasons.
+
+Forcing guidelines we don't have objective reasons for will otherwise just annoy
+people and lead to less ideal code for the project. And I intentionally say "for
+the project", since this context is important.
+
+[1] https://rust-lang.github.io/rust-clippy/master/index.html#/needless_return
+> 
+> Alice
+> 
+
