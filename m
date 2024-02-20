@@ -1,105 +1,167 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD0676419;
-	Tue, 20 Feb 2024 17:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A585236135
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 19:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708448841; cv=none; b=oJSBfUazqKz85t9AX6G6WfyXcHaYQ3jXmUBBzHw7WHfcTlsTqSGKb+1Dy3rrEJPieGt8pPYFszfSO9ixWyTk2Vyd3sYlFYJM3NxOcB/3dlS7ezL6Bc6hOLpu09PmSg956xr/KhMRYiWuf3LjQjkgGtvskSgztQPcdZJ9nWBgj78=
+	t=1708458949; cv=none; b=Xo5BS58//gsIs+x/JGsKXN8hUkICCstX0hI+kHshBfO8dm/bB4a2lpReMrElHF2zgPOb91L4HgIiBXENwm8a1qpHRF9/gAcwmPaUm6pZHBM+IDOn1zanEbTJx0nnLn9LDENR/fVPPMaD9nHYeEaC2DjSzC29ru3Ba3CF8+6Ocuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708448841; c=relaxed/simple;
-	bh=X1f6yVZGvSqGIjaMOSQQn5bXgJzLy/DlO5pJJScO/L8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qmjjWhm0OFCTLl3UwhE9Tj5HSKw9dHX7jIYFzpwCTYSenHJU5cn5RkHVXfHYEn7hQonrB/5WKp7j+rKsLo6ZM18zkvgpfb0CwIE8CoeG38CqXRGHJvJBDx3Ek1fFZbvPHcM7zgWb5k/YkC70XiF2pQGnCQjkmZIaIN91l2trJlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gS/+V8Sb; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1708458949; c=relaxed/simple;
+	bh=jNhccb+0ZR17ZrC6MAi8IIrh6pLgRr5dVBLtuJ71LwA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R3XdGJ4z8XU28rUJEMEmLZLclMzh7FAfs3Ph56M+UE9b5b+2nHKgC8XMHDXPKahlbgWNdiLD8TdS1g8pMEaWKDJm345y8bA35cSOz0LusPxP0rfDhXvp3VLClyPPncIf50QwCoyHoZGPlpE62WgPpPlDyxluB0AVYG4YslRmEH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VGPzNIMK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gS/+V8Sb"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-290ec261a61so3447753a91.0;
-        Tue, 20 Feb 2024 09:07:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708448839; x=1709053639; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X1f6yVZGvSqGIjaMOSQQn5bXgJzLy/DlO5pJJScO/L8=;
-        b=gS/+V8SblJJWqLY/JqPTiPkpY70kC6fAkRgr7G9boPB7/wovKrAUXBS3r7dCTjJbfY
-         I904xGzcZyoGE9USEmDDHUqYoizRB7kAQoJSsBYmsx1qHgAa/AFRG620TKQVw2TQnBZT
-         WaWeooSuZ28YPw2kLu94Iae1zSDuK+DgfyT/3aUdUC7ndNwPtlrcXZ12nplMTcCfHZet
-         GWJnEwkQfzSp1OXtRuZ51VtG6yQM873P/sRaQhyr4i4+7KtEgUqVxeHMUCi58OTC20an
-         7y7u97V7o0JUaEuQXLNVDXDfGdbZGVhn2ji9WcgCHCfXDCtPsyXec2LRADMtaWNeYgvR
-         bE/A==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VGPzNIMK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708458946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5uf3VCsI0LJvkwUzUw1IFtw2xE/8bIN/j3JeX0X/tj0=;
+	b=VGPzNIMKPtXEdJkl2lbOhOb1Fb3izKlHRsI41o/DzxC+u19iUHPV9ZwfMkeCuf+MfeR6G1
+	AFKXvGhZyl00dsdWNFz/xUahaZ/R1AlXlNE8uqV5PFIjefPgMu/0vgfDSQgMOHkkpm9Lf8
+	r56MsY/1Iu40aqggcRG2udWIqFiklTc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-55-MXXtSVoJN42cbhUnPn825g-1; Tue, 20 Feb 2024 14:55:45 -0500
+X-MC-Unique: MXXtSVoJN42cbhUnPn825g-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a3ed1fb115eso125782866b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Feb 2024 11:55:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708448839; x=1709053639;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X1f6yVZGvSqGIjaMOSQQn5bXgJzLy/DlO5pJJScO/L8=;
-        b=WcATCyTyRE0JFRgLCkwfGzafdK90WsYUSCzFmZpNa2ngIY5swclyZW2CoWR5LuQ9rR
-         jY/J+FRijlrPHTwyny8w+d7vWFmv+MaAYV8RzAsqT7OyiaRAS2sDVQGaP0CU9CH+5JdM
-         l0xCu4BlTz/msHzYiDEjmDkOfuVxpKuoM0inL94aAmr3xSMMhxTFHvZOghxv++bdpyIC
-         OCxOk2ego6kjPTiRjs7rC5+mffUmBWrS2ZEJ8hbn3P4mZwzReuHaJFgWHB/mqf71/VBR
-         K5EZIiTnDBxlKrDG1cyJ0P/jMMS4psxxGqYJ0Pkr4vMdmr1htCQhSJFYifvtPtpgpTin
-         TJ3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVANFMexxGRVG5mHPQiyVZTbz58LfvnO1OHMzKMCt2D9tnO4g6VLHqRhp5JVFvHbFfNsbkOaWc/yV27kK/FK5dsATcoMMKdpZIsX+U8kFtrq7r8jmbtozbwyvXaE07Ay5R5rGBHQRm1u5EOuIg=
-X-Gm-Message-State: AOJu0YxjqeKvM6He6J0hgC9uQ1T57eiXRZJR3cstHo+q8qx4zcx8ng8K
-	eUIZRC3/E4jcJ9TxwQBDBHr+daaUj5pik7O5jvO0GkCMifJvTvyGYGLPFgyTDYIe+wvRv60JD/p
-	2wbgVMc7I4OqxIAjy2ZuYt/gsUlpQxC+N
-X-Google-Smtp-Source: AGHT+IEKbzTmxxOipF1JjBIyr6jX91Z7VIXgg+4jlXs41dWyjRETYbjgAHo18r/2l0/L1N9leaHcak/6vvU/zZUfI40=
-X-Received: by 2002:a17:90a:1c17:b0:299:544c:4933 with SMTP id
- s23-20020a17090a1c1700b00299544c4933mr7056810pjs.14.1708448838958; Tue, 20
- Feb 2024 09:07:18 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708458944; x=1709063744;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5uf3VCsI0LJvkwUzUw1IFtw2xE/8bIN/j3JeX0X/tj0=;
+        b=BPqp5ajTydkhfkwtnP9meraiOFGzU/Qz40v+kwQdQrAuGWlFsBX7BvsHhSNQYSmbjn
+         +lrw+AR9Y3zHSFQMdEk0E1J138Y2UbunJ1ozlIcZPtr9QylonL83uxBdFbWRQKyorC5+
+         GpnE7xDnpufQkZGEEpDCwHanMzNFvTNCUIu0ifv18D+00E4b/IHoZ8ifs/kgk+IfYA7E
+         LUWZ74aLeNqVcSPnz6c22oee9v9KUfPciEIQgMuBjkTB7Y1VTQBHEH8GogNoijGb//em
+         nEryAO5CEcwf52eK/HK8NZsvizURnRZz0+/i4xe1xBfP41vdRf6s+4Q2Pv+lc9+7QlGv
+         7eww==
+X-Forwarded-Encrypted: i=1; AJvYcCVmKqEZcznXUJwcC5KBs2sVH9VQzsyMxqTZafLZn7iMow9EwUEjrbADgK5S2RhO0T+K7o3wK/RADdJmpqU+eRBBYEaR4b0lxgUlWgmlJ7A=
+X-Gm-Message-State: AOJu0YxDXnQSRa4Pmip9WvpF4V2QWcJs+3hWSZ52zES9pW/qzA00gEd7
+	SvGC0V2fM7ZuXM4Qbih54uMQhGEoMqVBU3znWNx+VlwuD48VdAxvwDhVvyeOUu1tSmO4vaasamO
+	iL8tiDIexvnkznInvFG3AtQe4XSOpWo45b0CcSemiwoTEimnvdpZJP1jNH2Yszcw5
+X-Received: by 2002:a17:907:37a:b0:a3e:3633:cf91 with SMTP id rs26-20020a170907037a00b00a3e3633cf91mr6310430ejb.48.1708458943919;
+        Tue, 20 Feb 2024 11:55:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHIDwn8hJWvA6Ffqzhz8nZ/kVsYYySVwZv2l/GGSLSF0QD1OOD1TDTDmy29j5s6yuvTkP//Gg==
+X-Received: by 2002:a17:907:37a:b0:a3e:3633:cf91 with SMTP id rs26-20020a170907037a00b00a3e3633cf91mr6310410ejb.48.1708458943545;
+        Tue, 20 Feb 2024 11:55:43 -0800 (PST)
+Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id lu16-20020a170906fad000b00a3d5efc65e0sm2941765ejb.91.2024.02.20.11.55.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Feb 2024 11:55:43 -0800 (PST)
+Message-ID: <d88bfe23-6fbd-4bb9-8878-3ccc63b97ddd@redhat.com>
+Date: Tue, 20 Feb 2024 20:55:41 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com>
- <Y9ES4UKl/+DtvAVS@gmail.com> <16641a56-9139-4396-a5a8-89606bedd1f1@app.fastmail.com>
-In-Reply-To: <16641a56-9139-4396-a5a8-89606bedd1f1@app.fastmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 Feb 2024 18:07:06 +0100
-Message-ID: <CANiq72meap5C9bkj5rNDE=0U5gb5OKwDrrTSrVRwJbkAPWgUsg@mail.gmail.com>
-Subject: Re: [PATCH] x86/insn_decoder_test: allow longer symbol-names
-To: David Rheinsberg <david@readahead.eu>
-Cc: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, John Baublitz <john.m.baublitz@gmail.com>, 
-	=?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
-	David Gow <davidgow@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] rust: str: add {make,to}_{upper,lower}case() to
+ CString
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, a.hindborg@samsung.com,
+ alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org,
+ ojeda@kernel.org, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+References: <20240219163915.2705-1-dakr@redhat.com>
+ <20240220093541.280140-1-aliceryhl@google.com>
+ <e543b270-dea7-477a-b83d-62129d4ac708@redhat.com>
+ <CAH5fLggXiXGA_UWCxqqLhMpXe1kepDv2vMG+1jLGaDSzdRHvSw@mail.gmail.com>
+ <19d0a4a9-85bb-4b9e-96b0-338adebc90e5@redhat.com>
+ <CANiq72n06BCWuHoWbQBrODqgfH8ZGEc6rLhMu86UiYpKdjO3PA@mail.gmail.com>
+From: Danilo Krummrich <dakr@redhat.com>
+Organization: RedHat
+In-Reply-To: <CANiq72n06BCWuHoWbQBrODqgfH8ZGEc6rLhMu86UiYpKdjO3PA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 27, 2023 at 11:39=E2=80=AFAM David Rheinsberg <david@readahead.=
-eu> wrote:
->
-> The current workaround is to just disable CONFIG_X86_DECODER_SELFTEST, wh=
-ich I thought is a sad state. I can gladly use `256 + KSYM_NAME_LEN` and ad=
-d a comment ala "room for insn-encoding and a symbol name". Would that be a=
-cceptable? The alternative would be to try to dyn-alloc a buffer and increa=
-se it to the actual line-length?
+On 2/20/24 16:45, Miguel Ojeda wrote:
+> On Tue, Feb 20, 2024 at 3:53 PM Danilo Krummrich <dakr@redhat.com> wrote:
+>>
+>> Just to clarify, I did not say anything else. As mentioned, I think those
+>> should not even be warnings.
+> 
+> Well, for things like the `return` one, I find it unlikely it will change.
+> 
+> And for other things that there are 2 ways of doing it, what we
+> typically want is to have one way of doing it, rather than allowing
+> both ways.
+> 
+>> I'm happy to do that. We should define the scope for that though. I think this
+>> should be set globally, or at least not per crate. However, I don't really know
+>> what's the best way to do that. We could pass '-Aclippy::' to the compiler...
+> 
+> The scope is already defined -- it is global, precisely because we
+> want to keep all kernel code as consistent as possible.> 
+>> Is there any objective reason not to be allowed to be explicit here?
+> 
+> What is not objective about wanting to be consistent? How is your
+> argument objective if ours isn't?
 
-John independently hit this issue again. Could we fix this? Going for
-the `256 + KSYM_NAME_LEN` sounds good enough for the moment since it
-would be a clear improvement, though I agree this could be cleaned up
-further.
+Nothing, but I also never wrote that wanting to be consistent is not objective.
 
-Sergio took the approach David suggested in a related patch [1], but
-perhaps it is best to submit the fix on its own so that it is easier
-to put it in. David, would you be so kind as to submit a v2 with that?
-Hopefully x86 can pick it up, otherwise with an Acked-by I am happy to
-take it too; and then Sergio can submit his patch on top again.
+I wrote that omitting the return statement is more "rusty" isn't an objective
+argument in my opinion.
 
-Thanks!
+Maybe the misunderstanding is that consistent doesn't necessarily mean to do what
+everyone else does. Consistency has a scope. For instance, we can also be consistent
+with something that everyone else does differently, like linked lists throughout the
+kernel.
 
-(Cc'ing also Masami who wrote this originally)
+> 
+>> Well, I generally agree. However, I'm clearly against *blindly* following
+>> formatters and linters.
+>>
+>> Forcing guidelines we don't have objective reasons for will otherwise just annoy
+>> people and lead to less ideal code for the project. And I intentionally say "for
+>> the project", since this context is important.
+> 
+> Who is *blindly* following formatters and linters? We don't have
+> objective reasons?
 
-[1] https://lore.kernel.org/rust-for-linux/20231119180145.157455-1-sergio.c=
-ollado@gmail.com/
+This doesn't seem to be a "straight up" question. Hence, for the following I will
+assume that you feel like I said those things about you.
 
-Cheers,
-Miguel
+First of all, I said that *we* (as a community) should not blindly follow formatters
+and linters and should have objective reasons for language restrictions in general.
+I never said anyone specific is doing that. Claiming that I did so, *would* be a straw
+man.
+
+Furthermore I was questioning two of the restrictions we already have and was asking
+for an objective rationale for those, since the clipply documentation does not provide
+an objective rationale in my opinion.
+
+Generally speaking, I don't think there is anything wrong in saying that I think some
+argument isn't objective (even if I'd be proven wrong). This is by far not the
+same as saying someone has no objective reasons (in general). This would be a straw man
+as well.
+
+> 
+> I don't appreciate the way you are wording things here.
+
+I already had the feeling from your answer in the other thread. But, unfortunately,
+I don't understand why. If the above did not convince you otherwise, can you please
+explain?
+
+> 
+> Does it actually lead to "less ideal code", or the opposite?
+> 
+> Cheers,
+> Miguel
+> 
+
