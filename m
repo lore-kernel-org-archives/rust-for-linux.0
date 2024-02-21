@@ -1,102 +1,106 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E273FB14
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Feb 2024 11:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174D84642A
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Feb 2024 11:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708514873; cv=none; b=G6WKNnuxIwL5svr4qzew0qkaKAM5+wbsuYJbMBm5yTHl45D1viiauoH8ZUE0XvNCSqWV+UIkzbDZZrQXetHcTW6UxtrnI6HciPA8ytDtCDYgwvyCgXROTSWkbWVj0XZfWcarYiv2kJ+t9qcrTfweI6mPhXGatuXcfgeWOoiQjCI=
+	t=1708516059; cv=none; b=pdiTS4MoXmCteiGzL69jMYM0BTO+u2ADgTBePeh9SBiy3iqR6ua88OC6IMa5Fql1SQf3jjUfu6j4ngmOMt4FU97t6sa/Pd9DM3Jy1FKvKpkKz2p0XW/7Dy73GGYov7MSGnKdB875FD8hXMV1Jx4nLxbRkNzEFmyXX8dy7m8ePjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708514873; c=relaxed/simple;
-	bh=lLkaJjhjgtCxb3/e9SmG1RbcPZm7bCnDCxeewfvPKJ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XKLsDH5AlJFXVMLlMOxG29+ep97OMs1KOz3kNGHd6jZhyGxh41d/er8qnBt4qd97qqEEqOUJIw0Yu0bOOzaTY008PjCnvAuFNML0gIlCrN2f4oCWUebjFxn1ylbvfJnk/axBmFWegyRiEozVVTpthKLdS/OjQ13c92bkMhsmeEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=bEcuAq3E; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1708516059; c=relaxed/simple;
+	bh=vRt/FdxzDOQ4l3rxiit+Wes79HUFmm1mgOJQtV+4Bcs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ccaKOQZLCMURvUaexZ9es0OSn6lDhR2B+80bbrF0FuUpqR49rMMckTKXTyaJ/qXmWqmZ5uRtlU7MqHVXgJuy4pBFqcohy8V10T81WrRoe6nUG3oOTgNIJCX0FBYOdu04OmqD1r6Xvft+sqvTsuAX7o51aObfGzfu7C5TKzGtLaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T/tiHVVf; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="bEcuAq3E"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=m29BcooUf7/G0cVVIuw6MKvrhHkkAogHCDoETXWEDpU=; b=bEcuAq3EJqCL0tu5EOUdCoW2a4
-	WzktW/jwXkD+pFGVn8UL1vxhVEvaA8WHJI6cgINt0hOllygw31SnurOFgM2jYnCI5+a9ZuGI2aam+
-	kA+bideqB9Sc08VzAragMzoQ7MRF8uDfoboojxqIm3s7hAP1qaJ/cSBsbbiQNy8ckoLvRDRtLF7rb
-	r5IZn22PdZCYdu8FsyeEkwSGskdunnlgLhF5T8lgNsfGcCq7trcx70KoPppdXJVDau97KNC/pcBQn
-	p8ZYUponGtKQiZAvzxW1yeBnVK82QdRNjdiLp4i80DcfTjCKdMncijunBKVDCuApS2rnQDbjhGgk9
-	YLnVNdwA==;
-Received: from [191.57.26.211] (helo=[192.168.151.5])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1rckkn-001wkJ-VR; Wed, 21 Feb 2024 12:27:10 +0100
-Message-ID: <0477f3cb-84e0-4ce7-8196-cddb7dbd1448@igalia.com>
-Date: Wed, 21 Feb 2024 08:27:02 -0300
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T/tiHVVf"
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d5bfdd2366so247298241.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Feb 2024 03:47:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708516049; x=1709120849; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JyovQl5iGkP+14IRCuKTQAaTQ48NTlw9CloKE2arYCM=;
+        b=T/tiHVVfCLOxXrj6ZM5mdpGBEX4GAZrjjqLFx7iK0UI6fGTJ/ppU7LQFvKvDV+wE5s
+         QiFhPiKEgYya/tJRt48lGp4H1xr6gYQt7CxoZVAX+Tv5g22/bPGk8TuILoPMSFFX/tgv
+         s1fBeV8MbnM3NN+AHADQPS9hY3bznH0hEjl9DSFMoYAjnW2f2DjdpMRX16Th4Ue7V3Ad
+         5tE1r/rhIBv8VVMXTBcSkXJUrSC+51hcIZFL+0ZfecK3B9SYT2AspBjiY0cTLB8Rr2i2
+         FYd8r9A0rl8WikK8JipBA5aBfimNVLLNF1pqiKO1SkxeB+W9BCN/bzCu4cej0XOkqrqi
+         CWiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708516049; x=1709120849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JyovQl5iGkP+14IRCuKTQAaTQ48NTlw9CloKE2arYCM=;
+        b=XryP0kGm/wTDgGR6ugnEFVKb1yMuyZWzAEdGK3XTF+Ehi/mdpKOZcnmomoG/hSAxIU
+         LN2JbMFZ6xRxmT6zJ2mlflLNPDNPg/n3VHB0QXkf1X6YMSmh6rmU1lSLCBFcGGTLFKFL
+         296pwilj6j+7hDDib0kgF9Y9YBpqy+Lbb5Wt8Vvu0NkUOw1raXmKm+v1I1yooR7C5Gi5
+         UuXXEfZjjXsgh+wtocix6Pqweis7RialF9Oldoz+0MDKGhIl8QZVdBcnNTR3P+VVOaCZ
+         /phofpKx820KiOko8HNWzxgSzbFhuuDkgtxr+ImPpD9e0dyoa5rRiXrr8N/Oo8YrUqti
+         K/Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxq6+jlkwq+TzVUhxDaCgWzKeqyxObxvQYp4Ph3Zp/vh04LJ2nfbusnCcwKA3ab2v8ESD9ojsSEJRiepAH5In9ET5uAsC+1HwizRG7OeE=
+X-Gm-Message-State: AOJu0YyjcBzLKeIxmLbW4YxoJJg64SDC7KnQEo2+twgep+C0BCh+xLNK
+	CrVzrjVbCnH/toRiKn701sbQYypvwsyBZ3Bue0ay4r+w/362WpnM8xE67l3guDZyHQaoatVGmvk
+	7U9HRl3D32dcWpDjWd6KAeVWMjlamHb4/fO/m
+X-Google-Smtp-Source: AGHT+IFREF8kvbTfb7FArPLNxdynrye+E4NyVJO79v3NLR63gQtBpIS8c78KubOOLkY7m7sLG2Vnzy1bZof20xJryj8=
+X-Received: by 2002:a67:ee08:0:b0:470:a138:78f2 with SMTP id
+ f8-20020a67ee08000000b00470a13878f2mr1527074vsp.4.1708516048942; Wed, 21 Feb
+ 2024 03:47:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: Add `container_of` and `offset_of` macros
-Content-Language: en-US
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Asahi Lina <lina@asahilina.net>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matt Gilbride <mattgilbride@google.com>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org,
- kernel-dev@igalia.com, =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?=
- <leseulartichaut@gmail.com>, Wedson Almeida Filho <wedsonaf@google.com>
-References: <20240217153315.56128-1-mcanal@igalia.com>
- <CAH5fLggPRcPc-5C8JY5FR7jQMbdNoc89EU0_QAqhG=6HiySZ=w@mail.gmail.com>
- <83571d1e-5710-47d6-9a6c-2a0bb5ab5e5a@igalia.com>
- <CANiq72mvqfu2akoMGOj-N0tUOAnvTMOBN1dYA7CZxcJqpd6Fog@mail.gmail.com>
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xjMEZIsaeRYJKwYBBAHaRw8BAQdAGU6aY8oojw61KS5rGGMrlcilFqR6p6ID45IZ6ovX0h3N
- H01haXJhIENhbmFsIDxtY2FuYWxAaWdhbGlhLmNvbT7CjwQTFggANxYhBDMCqFtIvFKVRJZQ
- hDSPnHLaGFVuBQJkixp5BQkFo5qAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQNI+cctoYVW5u
- GAEAwpaC5rI3wD8zqETKwGVoXd6+AbmGfZuVD40xepy7z/8BAM5w95/oyPsHUqOsg/xUTlNp
- rlbhA+WWoaOXA3XgR+wCzjgEZIsaeRIKKwYBBAGXVQEFAQEHQGoOK0jgh0IorMAacx6WUUWb
- s3RLiJYWUU6iNrk5wWUbAwEIB8J+BBgWCAAmFiEEMwKoW0i8UpVEllCENI+cctoYVW4FAmSL
- GnkFCQWjmoACGwwACgkQNI+cctoYVW6cqwD/Q9R98msvkhgRvi18fzUPFDwwogn+F+gQJJ6o
- pwpgFkAA/R2zOfla3IT6G3SBoV5ucdpdCpnIXFpQLbmfHK7dXsAC
-In-Reply-To: <CANiq72mvqfu2akoMGOj-N0tUOAnvTMOBN1dYA7CZxcJqpd6Fog@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240208-alice-mm-v2-0-d821250204a6@google.com> <20240208-alice-mm-v2-1-d821250204a6@google.com>
+In-Reply-To: <20240208-alice-mm-v2-1-d821250204a6@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 21 Feb 2024 12:47:18 +0100
+Message-ID: <CAH5fLgj--WrkLJLG69P59mxBjZvMqTMHjVCcbk3Q4z7ZFTeTRQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] rust: uaccess: add userspace pointers
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On Thu, Feb 8, 2024 at 4:48=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+> +    /// Reads the entirety of the user slice, appending it to the end of=
+ the
+> +    /// provided buffer.
+> +    ///
+> +    /// Fails with `EFAULT` if the read encounters a page fault.
+> +    pub fn read_all(mut self, buf: &mut Vec<u8>) -> Result<()> {
+> +        buf.try_reserve(self.length)?;
+> +
+> +        // SAFETY: The call to `try_reserve` was successful, so the spar=
+e
+> +        // capacity is at least `self.length` bytes long.
+> +        unsafe { self.read_raw(buf.spare_capacity_mut().as_mut_ptr().cas=
+t(), self.length)? };
+> +
+> +        // SAFETY: Since the call to `read_raw` was successful, so the n=
+ext
+> +        // `len` bytes of the vector have been initialized.
+> +        unsafe { buf.set_len(buf.len() + self.length) };
+> +        Ok(())
+> +    }
 
-On 2/20/24 12:54, Miguel Ojeda wrote:
-> On Mon, Feb 19, 2024 at 10:57 PM Maíra Canal <mcanal@igalia.com> wrote:
->>
->> Thanks for your explanation, I haven't thought through this point of
->> view. Anyway, any chance we could land the `container_of!` patch as soon
->> as possible? It would be nice to have a common understanding of this
->> fundamental macro. I would like to send some patches with the DMA fences
->> abstraction, but I would need `container_of!`.
-> 
-> Would you be OK with their version? If so, I could take that one; and
-> if not, we can discuss what to do.
+There's a bug here, since read_raw changes self.length. It will be
+fixed in the next version.
 
-Considering Alice's points, I'm OK with their version.
-
-Best Regards,
-- Maíra
-
-> 
-> But, in any case, as Alice mentioned, please feel free to send your
-> series even before that. It is anyway a very small dependency that
-> will soon go in.
-> 
-> Cheers,
-> Miguel
+Alice
