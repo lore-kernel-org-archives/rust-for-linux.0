@@ -1,106 +1,157 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174D84642A
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Feb 2024 11:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9833686AC6
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Feb 2024 19:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708516059; cv=none; b=pdiTS4MoXmCteiGzL69jMYM0BTO+u2ADgTBePeh9SBiy3iqR6ua88OC6IMa5Fql1SQf3jjUfu6j4ngmOMt4FU97t6sa/Pd9DM3Jy1FKvKpkKz2p0XW/7Dy73GGYov7MSGnKdB875FD8hXMV1Jx4nLxbRkNzEFmyXX8dy7m8ePjQ=
+	t=1708544514; cv=none; b=LXpj7Wlbsre0EkzscAeSDw15IBM9AuGJNYT+kmROxK0ryGVfnN2aqdc16uuN/bpy8DvVAx30Jeix89wEfv3jxvI5r9gVvJXAEwT6tYvrA2e5TmZCg0OnGhSP/5g5ZbpmHCgcA6ydMuXJ8/rbAo67MCqiho5tXJyQaVYYR9hnE7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708516059; c=relaxed/simple;
-	bh=vRt/FdxzDOQ4l3rxiit+Wes79HUFmm1mgOJQtV+4Bcs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ccaKOQZLCMURvUaexZ9es0OSn6lDhR2B+80bbrF0FuUpqR49rMMckTKXTyaJ/qXmWqmZ5uRtlU7MqHVXgJuy4pBFqcohy8V10T81WrRoe6nUG3oOTgNIJCX0FBYOdu04OmqD1r6Xvft+sqvTsuAX7o51aObfGzfu7C5TKzGtLaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T/tiHVVf; arc=none smtp.client-ip=209.85.222.54
+	s=arc-20240116; t=1708544514; c=relaxed/simple;
+	bh=qkZhp+ePz3dtXVk7UutjwpWx2QtP2MvgIxyFZrcOXXs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SE7/UpdHZOojtFer5fZ2j0nca/r9b5JBCUbkYZmV3rxwSEaq2F9Ae9Iyi8Sb8tyN5fICp9Drw3ZIjnSN+CwZAHmpkg30KEXoEuX2mjEjX/b0qgiiseX4dSlp8GF56LxUhasbOZbN+BBxuuEPL8mAlu9rGdnXik1tgl6C03CAdXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b0LNcUEU; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T/tiHVVf"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d5bfdd2366so247298241.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Feb 2024 03:47:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b0LNcUEU"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6085e433063so44747667b3.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Feb 2024 11:41:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708516049; x=1709120849; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JyovQl5iGkP+14IRCuKTQAaTQ48NTlw9CloKE2arYCM=;
-        b=T/tiHVVfCLOxXrj6ZM5mdpGBEX4GAZrjjqLFx7iK0UI6fGTJ/ppU7LQFvKvDV+wE5s
-         QiFhPiKEgYya/tJRt48lGp4H1xr6gYQt7CxoZVAX+Tv5g22/bPGk8TuILoPMSFFX/tgv
-         s1fBeV8MbnM3NN+AHADQPS9hY3bznH0hEjl9DSFMoYAjnW2f2DjdpMRX16Th4Ue7V3Ad
-         5tE1r/rhIBv8VVMXTBcSkXJUrSC+51hcIZFL+0ZfecK3B9SYT2AspBjiY0cTLB8Rr2i2
-         FYd8r9A0rl8WikK8JipBA5aBfimNVLLNF1pqiKO1SkxeB+W9BCN/bzCu4cej0XOkqrqi
-         CWiQ==
+        d=google.com; s=20230601; t=1708544510; x=1709149310; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X6Mc1467Tr+n3B+nCTUL6nWniTp2NFe2UCsWnkAH0JA=;
+        b=b0LNcUEUh2ruduEaLgcg3nQ9U5rhyUIb+7Qrs0mgzU4z+my3zwxazrgoseHW7b8yFO
+         VNFgNMA3Oqu/AogWa+GjJrkcHUBWQBX/uyRM68yZ41UtQyrqaDmq1dJuN3J9PZtsy8Hk
+         xVaJodmxmmTJLiJKd6x3wqHB5Jy+FOKCza02PStCK1uGD4dLE2dgIRbPlG7tI0zPI4qe
+         Os5+nTV8bHblWubOdyD3EofzxQmX3EftO+oh/tZpBNMwc4P0E43oCyHd39v6njiUxdkB
+         4hRqTjjxNmTQzeLnmpmkuY7rY5PCdHAZA3xqP06e3KASsOwvHHTO5KdhnhyYrApo7fLX
+         2mlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708516049; x=1709120849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JyovQl5iGkP+14IRCuKTQAaTQ48NTlw9CloKE2arYCM=;
-        b=XryP0kGm/wTDgGR6ugnEFVKb1yMuyZWzAEdGK3XTF+Ehi/mdpKOZcnmomoG/hSAxIU
-         LN2JbMFZ6xRxmT6zJ2mlflLNPDNPg/n3VHB0QXkf1X6YMSmh6rmU1lSLCBFcGGTLFKFL
-         296pwilj6j+7hDDib0kgF9Y9YBpqy+Lbb5Wt8Vvu0NkUOw1raXmKm+v1I1yooR7C5Gi5
-         UuXXEfZjjXsgh+wtocix6Pqweis7RialF9Oldoz+0MDKGhIl8QZVdBcnNTR3P+VVOaCZ
-         /phofpKx820KiOko8HNWzxgSzbFhuuDkgtxr+ImPpD9e0dyoa5rRiXrr8N/Oo8YrUqti
-         K/Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxq6+jlkwq+TzVUhxDaCgWzKeqyxObxvQYp4Ph3Zp/vh04LJ2nfbusnCcwKA3ab2v8ESD9ojsSEJRiepAH5In9ET5uAsC+1HwizRG7OeE=
-X-Gm-Message-State: AOJu0YyjcBzLKeIxmLbW4YxoJJg64SDC7KnQEo2+twgep+C0BCh+xLNK
-	CrVzrjVbCnH/toRiKn701sbQYypvwsyBZ3Bue0ay4r+w/362WpnM8xE67l3guDZyHQaoatVGmvk
-	7U9HRl3D32dcWpDjWd6KAeVWMjlamHb4/fO/m
-X-Google-Smtp-Source: AGHT+IFREF8kvbTfb7FArPLNxdynrye+E4NyVJO79v3NLR63gQtBpIS8c78KubOOLkY7m7sLG2Vnzy1bZof20xJryj8=
-X-Received: by 2002:a67:ee08:0:b0:470:a138:78f2 with SMTP id
- f8-20020a67ee08000000b00470a13878f2mr1527074vsp.4.1708516048942; Wed, 21 Feb
- 2024 03:47:28 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708544510; x=1709149310;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=X6Mc1467Tr+n3B+nCTUL6nWniTp2NFe2UCsWnkAH0JA=;
+        b=Zet8wOsTfSDY99cNmVakTH4+GBzjfa2tmXPR6VP5GW6F9hIWDrTFzOX1EcuJJ4OM4c
+         UTIoLZB9SD0hApnStOMRWWQ1ryw5lcSJwVpFsSaIVmiMKJ2xMStZMN39qZkHJi2iCi7r
+         IzvgXFgx/Ajfj/5ijmxwjusZYKH85EevXKyV/AbK5UMCvaWcleJSyG246voNiKr0prun
+         TF+WRQHdcYY/EUrcxP80LcKsoeswA1Vyijzr9s5v1UxR+esKUe4FAtW+HNd/C5ADlwOA
+         6uaeTjIfgGa61S9Dns8Fz4oT9WdD45gsaesEMFgxhfAjd7G+yBK/fKx7stHfIlxkJS1Y
+         D62A==
+X-Forwarded-Encrypted: i=1; AJvYcCU5MuKvoEg09Ulk8/J+dj7hF0zhnCYSR80mVFJW8X7SbCsVL6LxTZg6eLagv+CjIJ4FMrthqmZ7h8sDcFUH84xPxdYuLirusMh9FClzVN8=
+X-Gm-Message-State: AOJu0YyIvlTg3TgnYt6H7d8dT0vMlFFs3rDCgrWSgHJuHdOII4ctntcj
+	Se8ZhbsmKtyjzaszqOKIrL08H1xl1Jz1ddbaADsF+eMrvUMWBZrj/L6X8dKuEVSDzFULcQlWx+J
+	qrw==
+X-Google-Smtp-Source: AGHT+IFo4X8oIPfRZXy8Mvx3jkM76a/Fo26RcQOQzbZJGg3aZKwzpwtV53XrK+fKFAFr0Qz0jo83p6b+B/Y=
+X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:953b:9a4e:1e10:3f07])
+ (user=surenb job=sendgmr) by 2002:a05:690c:368a:b0:608:55be:5e3d with SMTP id
+ fu10-20020a05690c368a00b0060855be5e3dmr1661247ywb.0.1708544509616; Wed, 21
+ Feb 2024 11:41:49 -0800 (PST)
+Date: Wed, 21 Feb 2024 11:40:37 -0800
+In-Reply-To: <20240221194052.927623-1-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240208-alice-mm-v2-0-d821250204a6@google.com> <20240208-alice-mm-v2-1-d821250204a6@google.com>
-In-Reply-To: <20240208-alice-mm-v2-1-d821250204a6@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 21 Feb 2024 12:47:18 +0100
-Message-ID: <CAH5fLgj--WrkLJLG69P59mxBjZvMqTMHjVCcbk3Q4z7ZFTeTRQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] rust: uaccess: add userspace pointers
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
+Mime-Version: 1.0
+References: <20240221194052.927623-1-surenb@google.com>
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Message-ID: <20240221194052.927623-25-surenb@google.com>
+Subject: [PATCH v4 24/36] rust: Add a rust helper for krealloc()
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, mhocko@suse.com, vbabka@suse.cz, 
+	hannes@cmpxchg.org, roman.gushchin@linux.dev, mgorman@suse.de, 
+	dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com, 
+	penguin-kernel@i-love.sakura.ne.jp, corbet@lwn.net, void@manifault.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, catalin.marinas@arm.com, 
+	will@kernel.org, arnd@arndb.de, tglx@linutronix.de, mingo@redhat.com, 
+	dave.hansen@linux.intel.com, x86@kernel.org, peterx@redhat.com, 
+	david@redhat.com, axboe@kernel.dk, mcgrof@kernel.org, masahiroy@kernel.org, 
+	nathan@kernel.org, dennis@kernel.org, tj@kernel.org, muchun.song@linux.dev, 
+	rppt@kernel.org, paulmck@kernel.org, pasha.tatashin@soleen.com, 
+	yosryahmed@google.com, yuzhao@google.com, dhowells@redhat.com, 
+	hughd@google.com, andreyknvl@gmail.com, keescook@chromium.org, 
+	ndesaulniers@google.com, vvvvvv@google.com, gregkh@linuxfoundation.org, 
+	ebiggers@google.com, ytcoode@gmail.com, vincent.guittot@linaro.org, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	bristot@redhat.com, vschneid@redhat.com, cl@linux.com, penberg@kernel.org, 
+	iamjoonsoo.kim@lge.com, 42.hyeyoo@gmail.com, glider@google.com, 
+	elver@google.com, dvyukov@google.com, shakeelb@google.com, 
+	songmuchun@bytedance.com, jbaron@akamai.com, rientjes@google.com, 
+	minchan@google.com, kaleshsingh@google.com, surenb@google.com, 
+	kernel-team@android.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com, 
+	cgroups@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 8, 2024 at 4:48=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
-> +    /// Reads the entirety of the user slice, appending it to the end of=
- the
-> +    /// provided buffer.
-> +    ///
-> +    /// Fails with `EFAULT` if the read encounters a page fault.
-> +    pub fn read_all(mut self, buf: &mut Vec<u8>) -> Result<()> {
-> +        buf.try_reserve(self.length)?;
-> +
-> +        // SAFETY: The call to `try_reserve` was successful, so the spar=
-e
-> +        // capacity is at least `self.length` bytes long.
-> +        unsafe { self.read_raw(buf.spare_capacity_mut().as_mut_ptr().cas=
-t(), self.length)? };
-> +
-> +        // SAFETY: Since the call to `read_raw` was successful, so the n=
-ext
-> +        // `len` bytes of the vector have been initialized.
-> +        unsafe { buf.set_len(buf.len() + self.length) };
-> +        Ok(())
-> +    }
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-There's a bug here, since read_raw changes self.length. It will be
-fixed in the next version.
+Memory allocation profiling is turning krealloc() into a nontrivial
+macro - so for now, we need a helper for it.
 
-Alice
+Until we have proper support on the rust side for memory allocation
+profiling this does mean that all Rust allocations will be accounted to
+the helper.
+
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: "Bj=C3=B6rn Roy Baron" <bjorn3_gh@protonmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+---
+ rust/helpers.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 70e59efd92bc..ad62eaf604b3 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -28,6 +28,7 @@
+ #include <linux/mutex.h>
+ #include <linux/refcount.h>
+ #include <linux/sched/signal.h>
++#include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+@@ -157,6 +158,13 @@ void rust_helper_init_work_with_key(struct work_struct=
+ *work, work_func_t func,
+ }
+ EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
+=20
++void * __must_check rust_helper_krealloc(const void *objp, size_t new_size=
+,
++					 gfp_t flags) __realloc_size(2)
++{
++	return krealloc(objp, new_size, flags);
++}
++EXPORT_SYMBOL_GPL(rust_helper_krealloc);
++
+ /*
+  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+  * use it in contexts where Rust expects a `usize` like slice (array) indi=
+ces.
+--=20
+2.44.0.rc0.258.g7320e95886-goog
+
