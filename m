@@ -1,39 +1,37 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293C614E2EE;
-	Thu, 22 Feb 2024 15:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245E314E2E8;
+	Thu, 22 Feb 2024 15:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708615223; cv=none; b=oOnWFCZ4tVTfoaO9JslGigjo8zYhdaZOCvhAAYOwSxgtY0MVY7MY6MLXcI0Yq522olm6E6ObRx9T5nbH7WDWp8cA18t2JOvlL+6NjhjRK4ZIExcBm0QTrR8C0xaBxiMeEbiYwy64QK3nU6xNjL2w7Cniz2z4s7TJkr3/hQRHCAM=
+	t=1708617264; cv=none; b=fWOa5lbiIwe1WlkPK20PdcKum/JqJAhy6JEWWIjLMlgVd9DE3UMFcRS4QdILFlcfTeGzGOVoN/o8zV3/2uxPG6EMf/BaYmW4ofDD8OX/DoCciyhK/Quq8M44SH+6RJ5wUcrXc+/EdiY7uzEozTjtxzDyQ6RTty8Iy4T4ycvqzN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708615223; c=relaxed/simple;
-	bh=X4Kj1vv286TquLVBULUsax02QjwWsQNi30yxsqIhQPI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BwCT8dC/y9Q73RCkviiJoO/7gKAqw5AgDSRV9rblVnvxboo96gqtKogmLilOXpEs7k9813eQV9odGZCgdF94h78HiA6JyMgkv72aTNicB8Ze9gBnWX+64yBtJXiUuOIeuCuaUiSISRvhn7ctaqkZTaasYPAfq0ZPbwB+g5Y31ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=H5McJwIj; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1708617264; c=relaxed/simple;
+	bh=7QeTSQb/9tcAKQ4h97LCyJHM0kVqV+IqwGX4UOeNj/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oLEG8plK7mATVGWXtJlmyq8wJ60NtHE208b1f6C69KmuSLyu/lQgPDaR7C9hJCuCCnL4Q8ZJYKDiuiWDN/k2Aeuso88mNEnp+lNUMEx2tup/e6yqopqL0kaM1zl5F3V7W5mN2vu99i0RuXEDYc8vraon4cKKIPwi3gR9oMMsZNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=ZutQ0VjE; arc=none smtp.client-ip=212.227.126.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="H5McJwIj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1708615220;
-	bh=X4Kj1vv286TquLVBULUsax02QjwWsQNi30yxsqIhQPI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5McJwIjQnw3RcESyyMoyn9fr/QM1vfu9zakr568hU0QNItYGi2vYzB4N8+kvXNuo
-	 R4AJUJiAdXxVjzxQNqKzKxYG6bYvCvfSaZCdqtDx8hmvZh2ODpjXQU2De9XT7w8FiT
-	 +NTG4YVw/trTw1jnCzIWzsBd+xtd4ZszSWratz7fD/059GM16LCPO0sDzLHbLd0sMl
-	 FlcFFnPIPssY/1cfGZNT2LBSvqQCZMzJLtKNR4tw0tXB71DFo65qoiO0FhyKB5N3YE
-	 Ne208DI6SBfB1uwP8gK2bersm9+KrntwoZU0NRJCH54XX0ICVPBi3xmZA6HrJ9CCXT
-	 +BG0cs3h7DxiA==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id BEE3637820D5;
-	Thu, 22 Feb 2024 15:20:18 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
+	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="ZutQ0VjE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=valentinobst.de;
+	s=s1-ionos; t=1708617237; x=1709222037; i=kernel@valentinobst.de;
+	bh=7QeTSQb/9tcAKQ4h97LCyJHM0kVqV+IqwGX4UOeNj/w=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
+	 References;
+	b=ZutQ0VjE5tQotyW+XHFlbEPqulDcwN9zME0rJyO7HRMzQJjKQ27aDRKUcCKt8Xgf
+	 Dn0vOcYh45UKzqbJ/IdTsOru+xRr+bwtHS3emSwaOxTxHYeNy1/MV+7QgVL7ybt0x
+	 9QTHe+ICsbg3SZKlPZ2buO1W50eIq/0buMdJnbu3fHuvzCDx8giHZHVe6jFxjaEWc
+	 9pa7w5ZMuEhd7eoTjSWMbjg6Pgx+0KFBGPtgJoZshgh4CfpwRipvYr7X4bOR0PCmh
+	 I1XUNJe32yZWliE5uANSeLUNTzmMtg5FjCQsI/Gd+uVdJDwcLLK9rkZpUB2TWS1n6
+	 3Ak1LRWqOVytP0uzZg==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost.localdomain ([95.223.130.98]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MhWx1-1qyul53K9j-00eakj; Thu, 22 Feb 2024 16:53:56 +0100
+From: Valentin Obst <kernel@valentinobst.de>
 To: laura.nao@collabora.com
 Cc: a.hindborg@samsung.com,
 	alex.gaynor@gmail.com,
@@ -41,44 +39,98 @@ Cc: a.hindborg@samsung.com,
 	benno.lossin@proton.me,
 	bjorn3_gh@protonmail.com,
 	boqun.feng@gmail.com,
-	davidgow@google.com,
 	gary@garyguo.net,
 	kernel@collabora.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
 	ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org,
+	sergio.collado@gmail.com,
 	shuah@kernel.org,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH] kselftest: Add basic test for probing the rust sample modules
-Date: Thu, 22 Feb 2024 16:20:34 +0100
-Message-Id: <20240222152034.462805-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240102142514.174562-1-laura.nao@collabora.com>
-References: <20240102142514.174562-1-laura.nao@collabora.com>
+	usama.anjum@collabora.com,
+	wedsonaf@gmail.com,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH v2] kselftest: Add basic test for probing the rust sample modules
+Date: Thu, 22 Feb 2024 16:53:38 +0100
+Message-ID: <20240222155338.26836-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240222151009.461264-1-laura.nao@collabora.com>
+References: <20240222151009.461264-1-laura.nao@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:UzBpTg1mY+EZdjgUCI/z3dtqZmx+AkuLKocPOsQ17saRdDlkNLg
+ LDs6ESpF9jsP1w8DSqP96zEBT51JtlkhFmMczvMN3dtlvWrobuvkOkFEQz9InzjXqCvW47W
+ eUG8ZqzrhlpvjaeqdRLJg54v6taJuD0cIFWBSaFLwaLMw8PF7vWFWAUUQqKxIkUICc3AEWe
+ r25NBtGKt+Qsdl4KIkWVw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:JtIm3exvgr0=;ee67eIFxmwa1VbCY08m7Bz0MlmD
+ TqUTm9+L1rnBDCYsbkRYOQ0f+qm+qap0pvbNgChMo8Wa3oqTt1o0a24VIZgx9GIeIsVb8AM0C
+ RsqWPhMWRvsUBBdjxphxTGtoOPSg+hcLaKvct0+3RZuV71ddvZ2KF77tVXKaWJnqi7ovPmLRO
+ iWV/jfu+gw07pUgjP+jxH2Uid7woetKvspfCYKFPzKD5gja1uwDP74IimJ+uCPkbcGUcwNXvT
+ FXEjK0KsL76NkXxQk5smXoK/vvO7ge6NPKNMOUdOL4mGwEaxpSMfwJg+wuQ/TXR7AXRK4XMjn
+ fPxq6cfXZGxzm+1P6CIZ57ZWFY8nmsaAWF1lEh/fN6d5AJiRGMjSzqptDOldn41nXdWN3Agor
+ yGo4fS8KtW38Axpqcfmf/7XxGqCixp3glbr7TDDS91HZ8UzHTC6Lb/3EEJwzRPoZqcfM/HvGU
+ 8Pa3eQZTH6xyMqJvjA7J/hkqSOfT2uKnZzBeGld9SCCi2JCgaj47IsXyctJfUEZxWuQmV1/DD
+ r4fT9dgcC8IiB7a2SECcqaLaQK5dVvlFHeHiGI+TK0DadZT3+v0pU6Ig9CySgm8KajPwHT7Zj
+ HFWy+Fc5T1Kzs/kIknczgq2q+B+m/RGQT0eNIFC36yZ/o/Qp382HvCddvwLuXFUbDd9u82fiI
+ AJAY8+Nx3NkPbMxQUXZWpZR6FzBqcqXyZFz6Ga/lAdCpaC/E72SfgOWIeAw2g3zg0QXEMRDKY
+ hon87jXTTYARdBJ0SduqRoQQ66dNSrC/nF1McPJe3fCMz9b/8zOF9c=
 
-On 1/2/24 15:25, Laura Nao wrote:
-> I agree factoring out the helpers might be a better solution. I sent a
-> patch to move the ktap_helpers.sh file to the kselftest common
-> directory, so that kselftests written in bash can make use of the helper
-> functions more easily:
-> 
-> https://lore.kernel.org/linux-kselftest/20240102141528.169947-1-laura.nao@collabora.com/T/#u
-> 
-> If that patch is merged first, I'll rework this one and send a v2 with
-> the proper adjustments.
-> 
+> diff --git a/tools/testing/selftests/rust/test_probe_samples.sh b/tools/testing/selftests/rust/test_probe_samples.sh
+> new file mode 100755
+> index 000000000000..6fcc2cd83d89
+> --- /dev/null
+> +++ b/tools/testing/selftests/rust/test_probe_samples.sh
+> @@ -0,0 +1,42 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Copyright (c) 2023 Collabora Ltd
+> +#
+> +# This script tests whether the rust sample modules can
+> +# be added and removed correctly.
+> +#
+> +
+> +DIR="$(dirname "$(readlink -f "$0")")"
+> +
+> +source "${DIR}"/../kselftest/ktap_helpers.sh
+> +
+> +rust_sample_modules=("rust_minimal" "rust_print")
+> +
+> +KSFT_PASS=0
+> +KSFT_FAIL=1
+> +KSFT_SKIP=4
 
-v2 sent: https://lore.kernel.org/linux-kselftest/20240222151009.461264-1-laura.nao@collabora.com/T/#u
+Aren't those constants now defined in `ktap_helpers.sh` as well, i.e.,
+could those be removed here?
 
-Best,
+    - Best Valentin
 
-Laura
+> +
+> +ret="${KSFT_PASS}"
+> +
+> +ktap_print_header
+> +
+> +ktap_set_plan "${#rust_sample_modules[@]}"
+> +
+> +for sample in "${rust_sample_modules[@]}"; do
+> +    if ! /sbin/modprobe -n -q "$sample"; then
+> +        ktap_test_skip "module $sample is not found in /lib/modules/$(uname -r)"
+> +        continue
+> +    fi
+> +
+> +    if /sbin/modprobe -q "$sample"; then
+> +        /sbin/modprobe -q -r "$sample"
+> +        ktap_test_pass "$sample"
+> +    else
+> +        ret="${KSFT_FAIL}"
+> +        ktap_test_fail "$sample"
+> +    fi
+> +done
+> +
+> +ktap_print_totals
+> +exit "${ret}"
