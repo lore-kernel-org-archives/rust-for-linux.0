@@ -1,135 +1,168 @@
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99A938FA0
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Feb 2024 10:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC991474C2;
+	Thu, 22 Feb 2024 15:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708596012; cv=none; b=f5K8JVWoZxaZYv12iOwDA0eBamo8QNsvpnwgUzUFEX/MsZ2wSbl2UFILxjH20eh+RSgBEKt63ztzdjZd3OOupN3mV0VYpmVelwHlcM8ZURU5KZcndWJOKg7tSLmXlx6jdI3KS0lMI96z8kMxlmbArbOdEonRFMAIePEeOBp9hDs=
+	t=1708614645; cv=none; b=S9lyq2AsUCx3a5ri+CJ2zmTJ7oLH0VSHTMvPdQoYb18HQHOtApfXNDpcIL0aUCTFQqtO1i2aURNopt39mrQZxxuJIJRBoLsLjiSAp10mzyBjdErQxM9nSAl0yrHewHOR/N8M//TbL6PU14yd8gtTWidz3tmD6/PRLxSdsY/gWrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708596012; c=relaxed/simple;
-	bh=xY3a5A8TczyzS4EQy7YnxSv2e9KYZLcka7tIrv2ih1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bEKXNSlcIGPyDQZ1i5p0/+qkRPPJqG/0thC7FJbvMYJMsSTJrYbTSUp70MYncKfzF25NNbH556pozimgbgrH1E4XW7CEKQnbc0DVtp1nbAZ882iXbDcgTpeac4RqP0DzdkD+bkFC1Gfqo258IXKyOU7pQoa9R5/ypz2l2SdZrnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fl7s6ciS; arc=none smtp.client-ip=209.85.217.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1708614645; c=relaxed/simple;
+	bh=7Wt2UToczihewYYVHGzb+LT1rEJylSZasxhmqlYMo1I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aOh6awgEUoYbK1NFLerBRgKHheLiV6tmZXjjWj7s902MP16up6lplhlFzteENJDtOpS+UAjnhSPSAuguUt+KPJGmx7zWDe502lgXvZTq8nl/A88u5Uq/SoGIzyul9opIr5VqQliijwyUC3G+POhxONiltYxq4vKlSHDs7v0CN7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=iwxjdq+w; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fl7s6ciS"
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4706de5227aso713107137.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 Feb 2024 02:00:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708596009; x=1709200809; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xY3a5A8TczyzS4EQy7YnxSv2e9KYZLcka7tIrv2ih1k=;
-        b=Fl7s6ciS+4en1deeuOU1AB9WFgIiGeW1f4XEAekJTZ75iq/9K0zrmPX8NhW9X9AUuT
-         rIQ1bhTNP1/ArqGkQo6HiNaG0lvbiRuCiwjxV8zRR931e/kxKipH+1tXcxSwhCciQD9F
-         swg16CJUpxbze9NfoejW0g7KuioJZM3daXgKi0E2vxseSMc6+r2+y6uYd8LipL/9aPf2
-         yuz7aJTTtJDtHnmyioZxhaQphffvs3V0hrDSGHVrhPHJRUziBd/e2Rkt1xZwqbP9HYzY
-         u1ipZpJD+g7DjFIyZZEWx98Hu+sWJfypdUg9c0mxSGGmqpL7L2EcLXkzklunvFDnY198
-         jCXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708596009; x=1709200809;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xY3a5A8TczyzS4EQy7YnxSv2e9KYZLcka7tIrv2ih1k=;
-        b=OOd6HydXP3xG25Z/PQEenIHdrgBo5r+Zpy8NJoOkgvoPhdKd4dAL2fb4kY02Nn6bID
-         wcOJK8gBQ0OUIovGnPO+98UKyL5wisvShoMIolGMmyccqE53ypXak09kHuVlcnOTeO5s
-         Ls08DESaKUvkzUKFjT4vTVzL2Wji+/AbrosrG6UsfVzYUWT048fTBH3WfkkMrJeRSnwJ
-         aP6YonvDCKvOwlPKfuhHZ705IhtM36vig9Kb+5BQ0r2qGdJ1icKx+egYHIZr3nShKLPe
-         xtnu5E8J9xJqw2lDHwtm6lGco3lGVa8VhMtjYIMu/RxgTKONPkxjG96180kbO7JGPDuL
-         HUVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjOrGdfQTTEfma4bX7SkyfL0nYXiisg9WCuV//BZLoCuqt0m9S6aU6/ygWPrUg7vR8UMMs2PfEi9Nx8RyF8LIQcSPPlsjuFbDyS7kpxaU=
-X-Gm-Message-State: AOJu0YxQlToyF1SUyqshX0PjtnpTGr/2WJtlmzdvWS7c4OeargyOM+YW
-	g+ijHHZRhyUcQmiq1bzZ+OmrqrKQfN8jqCPl0PNE4XC2dqniI1i1UA/vIG4NcSWK15AUBz5Xvw8
-	iFjM1OqQT4NUQkn8MRtAdo/XEPaebLZEVecVn
-X-Google-Smtp-Source: AGHT+IHtNH9SG5kviHG0Zp4ObgcElY0QaPwq/WKIrJZZn0CRZo740etRowxrv/bo9NQSJHSXY5Ib9q+PDO3ajLn3tTQ=
-X-Received: by 2002:a05:6102:1626:b0:470:4a6e:4a4e with SMTP id
- cu38-20020a056102162600b004704a6e4a4emr14352031vsb.29.1708596009136; Thu, 22
- Feb 2024 02:00:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="iwxjdq+w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1708614641;
+	bh=7Wt2UToczihewYYVHGzb+LT1rEJylSZasxhmqlYMo1I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iwxjdq+wHLTj6JK+b7v8AhdO4O5LyEMvW0za0cYyocNPBC5fRic+lY0wYF4z4DS2o
+	 2PJoXhVMb4E0PQv7278fFRoZTT/c7328+mibPhzuD8lNyWtn8LoBOHbPPtCHcIqzJ5
+	 rvpmq9ik7KqasSlvVgt9pkvvk+YNBF4T/d4D9YHdEKNTxGnzG1jCdbEGlJQe01mxdx
+	 gGtil0Pnyeq1ZoxFHZOgOcJF7rx0i+34320X4AWKpNic2WC+os9FYsFPOuYY5m1zYI
+	 va5t9ygDE+wU/oQ14wiXohGVxDc54jmTgAeyzD+xmKuroaviNl8QTK4p1AzSwlb+zg
+	 vKsVqS1hB/OCw==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C5CF637820D4;
+	Thu, 22 Feb 2024 15:10:40 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	shuah@kernel.org
+Cc: usama.anjum@collabora.com,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	kernel@collabora.com,
+	laura.nao@collabora.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Sergio Gonzalez Collado <sergio.collado@gmail.com>
+Subject: [PATCH v2] kselftest: Add basic test for probing the rust sample modules
+Date: Thu, 22 Feb 2024 16:10:09 +0100
+Message-Id: <20240222151009.461264-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240221194052.927623-1-surenb@google.com> <20240221194052.927623-25-surenb@google.com>
-In-Reply-To: <20240221194052.927623-25-surenb@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 22 Feb 2024 10:59:57 +0100
-Message-ID: <CAH5fLgiyouEuDGkbm3fB6WTOxAnTiDx=z6ADx7HN3BTMAO851g@mail.gmail.com>
-Subject: Re: [PATCH v4 24/36] rust: Add a rust helper for krealloc()
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, mhocko@suse.com, 
-	vbabka@suse.cz, hannes@cmpxchg.org, roman.gushchin@linux.dev, mgorman@suse.de, 
-	dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com, 
-	penguin-kernel@i-love.sakura.ne.jp, corbet@lwn.net, void@manifault.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, catalin.marinas@arm.com, 
-	will@kernel.org, arnd@arndb.de, tglx@linutronix.de, mingo@redhat.com, 
-	dave.hansen@linux.intel.com, x86@kernel.org, peterx@redhat.com, 
-	david@redhat.com, axboe@kernel.dk, mcgrof@kernel.org, masahiroy@kernel.org, 
-	nathan@kernel.org, dennis@kernel.org, tj@kernel.org, muchun.song@linux.dev, 
-	rppt@kernel.org, paulmck@kernel.org, pasha.tatashin@soleen.com, 
-	yosryahmed@google.com, yuzhao@google.com, dhowells@redhat.com, 
-	hughd@google.com, andreyknvl@gmail.com, keescook@chromium.org, 
-	ndesaulniers@google.com, vvvvvv@google.com, gregkh@linuxfoundation.org, 
-	ebiggers@google.com, ytcoode@gmail.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	bristot@redhat.com, vschneid@redhat.com, cl@linux.com, penberg@kernel.org, 
-	iamjoonsoo.kim@lge.com, 42.hyeyoo@gmail.com, glider@google.com, 
-	elver@google.com, dvyukov@google.com, shakeelb@google.com, 
-	songmuchun@bytedance.com, jbaron@akamai.com, rientjes@google.com, 
-	minchan@google.com, kaleshsingh@google.com, kernel-team@android.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arch@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com, 
-	cgroups@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 21, 2024 at 8:41=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> From: Kent Overstreet <kent.overstreet@linux.dev>
->
-> Memory allocation profiling is turning krealloc() into a nontrivial
-> macro - so for now, we need a helper for it.
->
-> Until we have proper support on the rust side for memory allocation
-> profiling this does mean that all Rust allocations will be accounted to
-> the helper.
->
-> Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Cc: Alex Gaynor <alex.gaynor@gmail.com>
-> Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: "Bj=C3=B6rn Roy Baron" <bjorn3_gh@protonmail.com>
-> Cc: Benno Lossin <benno.lossin@proton.me>
-> Cc: Andreas Hindborg <a.hindborg@samsung.com>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: rust-for-linux@vger.kernel.org
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Add new basic kselftest that checks if the available rust sample modules
+can be added and removed correctly.
 
-Currently, the Rust build doesn't work throughout the entire series
-since there are some commits where krealloc is missing before you
-introduce the helper. If you introduce the helper first before
-krealloc stops being an exported function, then the Rust build should
-work throughout the entire series. (Having both the helper and the
-exported function at the same time is not a problem.)
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
+Reviewed-by: Sergio Gonzalez Collado <sergio.collado@gmail.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+Changes in v2:
+- Added missing SPDX line
+- Edited test_probe_samples.sh script to use the common KTAP helpers file
+---
+ MAINTAINERS                                   |  1 +
+ tools/testing/selftests/Makefile              |  1 +
+ tools/testing/selftests/rust/Makefile         |  4 ++
+ .../selftests/rust/test_probe_samples.sh      | 42 +++++++++++++++++++
+ 4 files changed, 48 insertions(+)
+ create mode 100644 tools/testing/selftests/rust/Makefile
+ create mode 100755 tools/testing/selftests/rust/test_probe_samples.sh
 
-With the patch reordered:
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c1a18af3593a..5f62904c80bd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19207,6 +19207,7 @@ F:	Documentation/rust/
+ F:	rust/
+ F:	samples/rust/
+ F:	scripts/*rust*
++F:	tools/testing/selftests/rust/
+ K:	\b(?i:rust)\b
+ 
+ RXRPC SOCKETS (AF_RXRPC)
+diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+index f7255969b695..e1504833654d 100644
+--- a/tools/testing/selftests/Makefile
++++ b/tools/testing/selftests/Makefile
+@@ -80,6 +80,7 @@ TARGETS += riscv
+ TARGETS += rlimits
+ TARGETS += rseq
+ TARGETS += rtc
++TARGETS += rust
+ TARGETS += seccomp
+ TARGETS += sgx
+ TARGETS += sigaltstack
+diff --git a/tools/testing/selftests/rust/Makefile b/tools/testing/selftests/rust/Makefile
+new file mode 100644
+index 000000000000..fce1584d3bc0
+--- /dev/null
++++ b/tools/testing/selftests/rust/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0
++TEST_PROGS += test_probe_samples.sh
++
++include ../lib.mk
+diff --git a/tools/testing/selftests/rust/test_probe_samples.sh b/tools/testing/selftests/rust/test_probe_samples.sh
+new file mode 100755
+index 000000000000..6fcc2cd83d89
+--- /dev/null
++++ b/tools/testing/selftests/rust/test_probe_samples.sh
+@@ -0,0 +1,42 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Copyright (c) 2023 Collabora Ltd
++#
++# This script tests whether the rust sample modules can
++# be added and removed correctly.
++#
++
++DIR="$(dirname "$(readlink -f "$0")")"
++
++source "${DIR}"/../kselftest/ktap_helpers.sh
++
++rust_sample_modules=("rust_minimal" "rust_print")
++
++KSFT_PASS=0
++KSFT_FAIL=1
++KSFT_SKIP=4
++
++ret="${KSFT_PASS}"
++
++ktap_print_header
++
++ktap_set_plan "${#rust_sample_modules[@]}"
++
++for sample in "${rust_sample_modules[@]}"; do
++    if ! /sbin/modprobe -n -q "$sample"; then
++        ktap_test_skip "module $sample is not found in /lib/modules/$(uname -r)"
++        continue
++    fi
++
++    if /sbin/modprobe -q "$sample"; then
++        /sbin/modprobe -q -r "$sample"
++        ktap_test_pass "$sample"
++    else
++        ret="${KSFT_FAIL}"
++        ktap_test_fail "$sample"
++    fi
++done
++
++ktap_print_totals
++exit "${ret}"
+-- 
+2.30.2
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-Alice
