@@ -1,130 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2F6823AE;
-	Fri, 23 Feb 2024 13:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5E45DF00;
+	Fri, 23 Feb 2024 14:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708695525; cv=none; b=pTPsrx8VIZaSJ6AN9tjcp1IMu/4aTbA8iiNmxM11zBaEqfInDMgItrZdqHIzivmC90uwt2m9VspZRF+vT308pb92S2q0SOKSJIDyhZv9Mi/54Vh8wCGW/xMNHBpVnusBPifrLu6s3qCbHkV4DwYjj6E0VairnTCkBtw4bkAR7b8=
+	t=1708699202; cv=none; b=V1wUf5MBVGbo+G1l6bN4ov6V9xDgMiS6wdS/HJbrc5IF5xnwYNs8jGLipv2uudybUOrU2sBqm4d4kn93fSR4qC/ZZSE/m7KZ11opO66BhInFfkape4AcmODrH/mqzhHekJWTFiWny7JPsQK2vhhvVSNGkrzhOQY+Byso+Ozjjfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708695525; c=relaxed/simple;
-	bh=n7EJGb6r/9uWhXBTxysKjx17Y2iaQNTqlPUbVd030hI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxERmYSxqCzqbm5LOvrItHeLk1lMJRWMeL7z+m6e0VGNECKG9urm4i+GtostmpWZ/0Me4sOku11MwW/oRowz2DUAGtGDzNdqm7Bpy6+mX3C297Eo7eXx9XIvjZfFogTVRwPF4Et6LpKBdLNu871aFJ6/leM250Acds/saPY7ITw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnagCjM0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708699202; c=relaxed/simple;
+	bh=F8ArNbtydFiL0D6k2+Q831xONNh/JINNubofnCWr6EU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j59otzoiD3MoXlyaAT9Z4BqJHQoSuhlh4i+wO5VrClLIfDy8gDHexr+CSEta71KEQVpAY4Vhyd+HNfePaZC27SJwJYJ6tikK+GMlJVGfkHwlF6EXFiy8GpGazoSndBh6wd4CO7qRpWrnjA0Z8qg5WR7p/dRV+6eoUkGtIifizWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqhINM5k; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnagCjM0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0BAC43399;
-	Fri, 23 Feb 2024 13:38:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708695525;
-	bh=n7EJGb6r/9uWhXBTxysKjx17Y2iaQNTqlPUbVd030hI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YnagCjM0KBRU4knIa5ukmyCLbIBQ79mVq8ZFaUsG4bPoq3W2BaAfbzZvmZXqEfMtQ
-	 YYmdDI6hwLjWm88p8iugiOesjBI7iZxep5trLFczsqllK4hpZ/qXJGzNeDR4h2fg+J
-	 XfR4Xs48Ge1PZ8kmw6IVM1ETX8+ykApcfKU7+kbEl0YfhUTmIh/6bCoD6J+79yZO55
-	 2jPbKdE3fhQQWwIKWFQ8ZJSH78wyHoY0ZMjuiBRZb+ZZ9dEoc78qmnj6RZKr3Vlpot
-	 L6eYVy1EjkbMwlLCm3iCTXf2YQDgGfCqRjRbPBj0PCbYI0ErS8EEwSqwMYIiQ5hXi8
-	 6QYi5pY8GEQnA==
-From: Conor Dooley <conor@kernel.org>
-To: linux-riscv@lists.infradead.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v2 3/3] RISC-V: enable building 64-bit kernels with rust support
-Date: Fri, 23 Feb 2024 13:38:05 +0000
-Message-ID: <20240223-palatable-quintuple-ed221a517407@spud>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240223-leverage-walmart-5424542cd8bd@spud>
-References: <20240223-leverage-walmart-5424542cd8bd@spud>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqhINM5k"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6e4ca46ab04so251045b3a.3;
+        Fri, 23 Feb 2024 06:40:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708699200; x=1709304000; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KymCeXAdOwhnbLLu7sHJyesb6UapRJI/5wmiDLXWjq8=;
+        b=CqhINM5kO2385xqPlWcnx5GAVjd9DTVvfeFA+oy1PHmG8Gan5yQJnNLdpK1CONCgtO
+         P2ln1LjAFGEOmm6TFAH1aWzo+ssjRcQwfCiZRN8u+8fKFYGjJwkKSctlulptxqdalwG5
+         1xQ54aLX4s187D7DlkHjBvdeBwTwP/z/EWOoLtc3pzrznK5RTEERz/FsrrQ+qKjQpsTS
+         DYesOz9Xx/fH2zR+493mQOHigNQHUSCqwsFWrwFInE1/wG1k4sQJPQ3JTfPZ1akMAEi4
+         osQ/PCFDcmNYwIgW0Wv0HPYZaGzcU2et62TpBum7DT5ff/j2N97fLWfKQYms1lzX3lHH
+         d2bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708699200; x=1709304000;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KymCeXAdOwhnbLLu7sHJyesb6UapRJI/5wmiDLXWjq8=;
+        b=CqKUt7jTVW8rbhuf+rOO/UatjWjDfYFNDYI0iEm9vWOXbE2kdQHIJpe9XPMfOobl/a
+         nhhRI4rihIkvH4XZ2OBEEHM/fREptlTbiafzFJnT6S5fZrZy8K0D/OFJ/bOuzo/5GZfB
+         1UOCggXTccsq15f9jjXYI9VkB29nQR4w4XXBbQe1qNMjrsqgGpOZz3vlbhoBjCliL3EN
+         NlMtlSBM+AG2Xv+ot2g51dVhy46gnlDS3GotUZ80P89BinmZk9s+71ghch98hqFMbPif
+         gFQiKGM9xQoOT6z8nk6s4EQ6QK5WzARPRx6xN7QBk6P2ZnIPvX2YeELDhBHoRzNwmM7h
+         KRtA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPlC2mzZLyMPB2FNaDnKAgjKpETp52FU35JlwqjR4VXb5vAbDHzulUvsiYUfMUx6HgGqKxhPcZTrIP/q+fAjBNb+o8Ic3jQapYtnP2xV0z05o2YKStq36McjGaN51BRCl6ZD2XKBQocagoDCuqihHmfpMk42BwXtVo50jw7kgT0T9hLb53CTw=
+X-Gm-Message-State: AOJu0Yy38Va8C+steOMDc0zR34jK/5h1Elh3kt2H31BbJGed9P40XBRB
+	mT42pOZrqyOCI0PlIrXCp7hyamwIFbAMZ4tHQoFTVgAgz7Of+orSA9DiOElg8tub0aQ+QfY2A/l
+	8Iy0gjDC68AvlLV4sj8rsKfbXWpM=
+X-Google-Smtp-Source: AGHT+IHwDwRlHf/VCvl3JY5KZpo2YjDUVeb5So1ID2OBba3Z4WVPb5UzKpoEEDoA/9Zp+8R5HJYMwh7wafY2OKOm9SM=
+X-Received: by 2002:a05:6a21:3943:b0:1a0:5841:6756 with SMTP id
+ ac3-20020a056a21394300b001a058416756mr81570pzc.4.1708699200297; Fri, 23 Feb
+ 2024 06:40:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2571; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=dXiTCnXsPq6szb52W4FfTLrkIWRphwTLGk/WpEPIpxA=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDKk35u+R+n7i+OwT39IUWaQPMGd9WVleuj/N9dhv5lkZX 950bXrd0VHKwiDGwSArpsiSeLuvRWr9H5cdzj1vYeawMoEMYeDiFICJeL1nZNg/wWKXZM7OpDYn 8zeiOy94+N68+CslNMT1aGxkUqdO6GWGP1wisa+2BoUt0/q+ds2FPTL/DtavLuPzr4z/Oe/D15q /ZWwA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+References: <20240223-leverage-walmart-5424542cd8bd@spud> <20240223-employee-pessimism-03ba0b58db6b@spud>
+In-Reply-To: <20240223-employee-pessimism-03ba0b58db6b@spud>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 23 Feb 2024 15:39:47 +0100
+Message-ID: <CANiq72ngEZskjH0f=8+cJuQsFTK227bGCxe5G0STMHuPbZYnXg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] scripts: generate_rust_target: enable building on RISC-V
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-riscv@lists.infradead.org, Conor Dooley <conor.dooley@microchip.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Miguel Ojeda <ojeda@kernel.org>
+On Fri, Feb 23, 2024 at 2:38=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> Add the required bits from rust-for-linux to enable generating a RISC-V
+> target for rust. The script, written by Miguel, was originally a
+> config file contributed by Gary.
 
-The rust modules work on 64-bit RISC-V, with no twiddling required.
-Select HAVE_RUST and provide the required flags to kbuild so that the
-modules can be used. The Makefile and Kconfig changes are lifted from
-work done by Miguel in the Rust-for-Linux tree, hence his authorship.
-Following the rabbit hole, the Makefile changes originated in a script,
-created based on config files originally added by Gary, hence his
-co-authorship.
+Thanks for this Connor!
 
-32-bit is broken in core rust code, so support is limited to 64-bit:
-ld.lld: error: undefined symbol: __udivdi3
+arm64 is sending these for 6.9:
 
-As 64-bit RISC-V is now supported, add it to the arch support table,
-taking the opportunity to sort the table in alphabetical order.
+    https://git.kernel.org/arm64/c/f82811e22b48
+    https://git.kernel.org/arm64/c/724a75ac9542
 
-Co-developed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
- Documentation/rust/arch-support.rst | 1 +
- arch/riscv/Kconfig                  | 1 +
- arch/riscv/Makefile                 | 2 ++
- 3 files changed, 4 insertions(+)
+So it would be nice to see if it may be already possible to enable it
+via a builtin target + flags instead of the custom target, e.g. arm64
+does:
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 73203ba1e901..9e18a81fc2ef 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -16,6 +16,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
- Architecture   Level of support  Constraints
- =============  ================  ==============================================
- ``loongarch``  Maintained        -
-+``riscv``      Maintained        ``riscv64`` only.
- ``um``         Maintained        ``x86_64`` only.
- ``x86``        Maintained        ``x86_64`` only.
- =============  ================  ==============================================
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 5c59e00405e3..3eaae08e1d5c 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -142,6 +142,7 @@ config RISCV
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RETHOOK if !XIP_KERNEL
- 	select HAVE_RSEQ
-+	select HAVE_RUST if 64BIT
- 	select HAVE_STACKPROTECTOR
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index ebbe02628a27..22fdb1e83744 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -34,6 +34,8 @@ ifeq ($(CONFIG_ARCH_RV64I),y)
- 	KBUILD_AFLAGS += -mabi=lp64
- 
- 	KBUILD_LDFLAGS += -melf64lriscv
-+
-+	KBUILD_RUSTFLAGS += -Ctarget-cpu=generic-rv64
- else
- 	BITS := 32
- 	UTS_MACHINE := riscv32
--- 
-2.43.0
+    KBUILD_RUSTFLAGS +=3D --target=3Daarch64-unknown-none -Ctarget-feature=
+=3D"-neon"
 
+and so on.
+
+If it does not work, it would be good to know what would be needed for
+RISC-V and put it into the unstable features / wanted features list
+for Rust.
+
+Either way, it is not a blocker (although you will need a rebase after
+arm64 lands to use the `target.json` in the right places).
+
+Cheers,
+Miguel
