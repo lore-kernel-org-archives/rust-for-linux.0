@@ -1,88 +1,200 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567F420EB
-	for <rust-for-linux@vger.kernel.org>; Sun, 25 Feb 2024 20:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D00C20B38
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Feb 2024 09:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708893024; cv=none; b=mSXpygh+vaE/NjNgQedpOQ+d+AYyBtxhziJrXzVBRKxT/6D49Id3IEYAEmCk4f/iTmOu4RjCbb3vgiablZv7sCUsFNmnKvkpu0/U77c/tbwbDvc2XPUXZSHCMTRepvXu5SBp4/ztRkB26sG3lCTC4B1Z86FeaYNrqrfNJ7ztcCg=
+	t=1708938168; cv=none; b=lqweERZXF8jhgM8O4L3R5zVIs+8+veebSoNiCbSTVNMoUhlB1bAZYTsA8ETKFYrmsKbavu0WSDutHBz96SbJTB29wI7GZBJF3o8vKuvLY0XeIxcTH4V6gtpfFxiQCEBu+VLw0Mknl0ENSRQD8LcvTMqz9U0TQzXbsfV/nSATjwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708893024; c=relaxed/simple;
-	bh=RTZdSbEGxrd89GnAAY+1wLsjBmzUld82GoW5/u0e6FI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S+D/WepSTgL5dhjo3ab1/5gGSnuszD2gTVDbExokOa2koSMWiJxiOz4jzeb5ZaMtJQ3Ro2RIe4zgBguooPRJptKQxfQOfh12RKQqwVLlibvYyUbqkQn8MSuY69K1uZnNfmm5QAngQ+9DLL95MA4U33CvIxTvk3QulScSrKrhV8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cLjFLyHF; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1708938168; c=relaxed/simple;
+	bh=XbXVfHeOwDhV+PDLw6Hx0gES/Ce6Uc4JONajMf23QXo=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=FDgTCXD4LcFht9+NPKWW53z5Gc3MNY8kcaK4xMyDwHOn6QFNvA/d/R+40/VeImWO1QC3rM+FfiV+UQo1xvtm6a0dzJT9EObn6OZZ8i7gG23/7XUbwH45jQFRTFTDdiVNQHu1+pqI/B1m4f2Rx2urp/VygpsXlvhHPAnamjB2j1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=ks0FbFhi; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cLjFLyHF"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6e4f5e84abeso170138b3a.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 25 Feb 2024 12:30:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="ks0FbFhi"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a3e891b5e4eso314138666b.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Feb 2024 01:02:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708893023; x=1709497823; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1708938163; x=1709542963; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RTZdSbEGxrd89GnAAY+1wLsjBmzUld82GoW5/u0e6FI=;
-        b=cLjFLyHFcgoiWL6kmdCCd9qlUgbo11UdHL8VVeKEfkas3XY7YHbDN+XACNa5/ZaL4X
-         KS3ENB0LX3GixFRiwsaybY7FsOTAd+wTmpV2YFn2vAKRP19a0rsygvLJXgSsnOYhqaFM
-         nuOmvRKkKt3enBI8zz0kUhzC1fV78EjDDs7YZ8nxLinIcYHQKdXNCwnHj/Hg9fosP2v3
-         iC6y1KdTmb/YQ6uBkFId5YEtxmhoxdEl0/RxsXoS/cTssEMxl57DwvWNlL5nhHF6Js95
-         yxx5NSOZiU7m/1JihZJG2pojlHOoFpY3BPMVm0EtYn3Tv1DCgum+jTUHeukFIXlKcwKo
-         vhVw==
+        bh=DXJKtDALC3AllytrckFvRAF/ZRCMob4eWSKm4Ha7cls=;
+        b=ks0FbFhiJIhNZP+mFC4+YnxvuB1LLZ5tmUnlPi2j6nJGNwYBfwgbP+JRA33kMINLYn
+         0OXEkPIEv6k19TVZbhMKxTq9ng5lCX9CD8mjDkEWykdPMwxi/X5yTLeGzR6/dRpFhCHs
+         GFD8+9q2uBb4f2nK9HtWajwonLfY6kwDhvJCeIpkmC0yDdD4gDFj3MfOtvZdy+FAl5Cc
+         s315j8pSdXCbfxLKWJCrgXjNL+DNsHsk3dTaYyO+NtKO/RIsfW56iOg6YgSYJNetjaGc
+         x7FuwQZPIjsz2FCPL/q+V2lp56sFOLUJdhYNtp3NRPtX23C5DB7KCkTmGRwUIwgZt6G7
+         bbyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708893023; x=1709497823;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RTZdSbEGxrd89GnAAY+1wLsjBmzUld82GoW5/u0e6FI=;
-        b=iuP+Neo978O/sjxoQj9rlRO+0HUMCQ3RqVspW1lzTaHXg1QxLZCcGgWSfKY0021edN
-         yEuaJtOTaKfU/Ke38B15T2B7ctt6PuuFgGVv5THxjHJbr19piHk1nKoJ1fWoGL3RFUUj
-         P20deH59Aa8S/mtiUIIRM0W3ERJtCLlw9mHEsAL5p+BtNCcanm6EQlrGNIp1bHyaRD1V
-         FbpSuuUgRkG0kNWPx4MZzlnSm1F0sBdaSnQlDryPrD0fA0EGDkyItweApM/W2k557DaF
-         J6eetYnUT/brl+z1Zw84J5/HSkzrdU4MqhuOywft4SxDCEqms2mDpE0GhRDbcdbkLKzf
-         EkGA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8V71l4pQJYNa78cgy0TDmPa9Bml3uwpbo1D7uO0SQAaTaus8wRTfaszb7704hERluVxPp6TpSCtAIDCJ+rSoIpGgZqqAj1L+2J4svPqg=
-X-Gm-Message-State: AOJu0YwVy87LHa1UmTSsECCUquCZTjkTjv7svj6Z7/SHsN638zRKtmI/
-	yZ8nun/xgpEGSaltGEr0Xvwo2+Kw3/1HznHyfhY5av3lihmMMUsZ2kR3nfaSGPw4uPE/DMsX6Cj
-	vhZkURgU96vxx5qmmzlyR/H4FRKQ=
-X-Google-Smtp-Source: AGHT+IHRXaxrTezSRmeS6RHxUMpMtgcwV7P580CsFPn4DgyYF0nTxCIh8Xzq1C0Xc5LKaOFzHIZ+LedX6G51cuwAOuA=
-X-Received: by 2002:a05:6a00:2f96:b0:6e4:7a99:1af2 with SMTP id
- fm22-20020a056a002f9600b006e47a991af2mr4280043pfb.29.1708893022746; Sun, 25
- Feb 2024 12:30:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708938163; x=1709542963;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DXJKtDALC3AllytrckFvRAF/ZRCMob4eWSKm4Ha7cls=;
+        b=sqakJvwll6XdEKplFbeTNiyMFCPr4jCyVioGtmvwoRDzc5pnJ+MC8Yov1FjSN/LXXO
+         AZPyavEoAmr4wemGd3q1vyvg09OjBQF1L56erXbG6fT84GDEv7gBCCb223BVdbwbJ2UQ
+         qrcqv0x5VwFSYp/oFXc9IR2SEAm2rMIHaJqv7PvJ+gETtT6M1SWqqaqIG0OUFqnigppo
+         ZEw/8sku0P7BaWbxJB1KyNL09KyUUw2ymEhssAfXkxvOb8QuoCkXSnEyHQWnuv9SDKby
+         zA4ywiOof/htdLJOXRST4zwiMiMEDrgqxFekFqxrMHZfwSLtYU0K7Lh4VUHTV/6uZ9ii
+         hdSg==
+X-Forwarded-Encrypted: i=1; AJvYcCX89jDUzyTJJJV4l7pvY7ojn9MUI0c9ZZv52/UnNwd6Trb86kEqtrjeKHuYLWvHPDj6YzLyPIxzSrFfI4eK8K4NYVcaUJ7a/J3dQVC5J/I=
+X-Gm-Message-State: AOJu0Yy9JLpOqmpQnU5zJPhUGbGCLGOgvPihMQLfrpy5E1eG5BEOWSOR
+	x6+RxOIjoPgbV9Ru2wPqArl64RgIfO8IRC3apE3ebD8D0M0ENh7LkMbQjGJ/Anc=
+X-Google-Smtp-Source: AGHT+IEABUyZM4Qr+FrrCNgluJIL+UvNGxn0b+EdUy4hbr938x99f18HccbJrZ69FJrZcZZVDCIEmg==
+X-Received: by 2002:a17:906:b7ca:b0:a3e:6038:42b8 with SMTP id fy10-20020a170906b7ca00b00a3e603842b8mr3801391ejb.39.1708938163246;
+        Mon, 26 Feb 2024 01:02:43 -0800 (PST)
+Received: from localhost ([194.62.217.1])
+        by smtp.gmail.com with ESMTPSA id un6-20020a170907cb8600b00a4386852da5sm1198ejc.83.2024.02.26.01.02.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Feb 2024 01:02:42 -0800 (PST)
+References: <20230503090708.2524310-7-nmi@metaspace.dk>
+ <20230503120354.534136-1-aliceryhl@google.com>
+User-agent: mu4e 1.10.8; emacs 29.2
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Damien.LeMoal@wdc.com, alex.gaynor@gmail.com, axboe@kernel.dk,
+ benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, gost.dev@samsung.com, hare@suse.de, hch@lst.de,
+ kbusch@kernel.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lsf-pc@lists.linux-foundation.org,
+ ojeda@kernel.org, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+ willy@infradead.org
+Subject: Re: [RFC PATCH 06/11] rust: apply cache line padding for `SpinLock`
+Date: Fri, 23 Feb 2024 12:29:40 +0100
+In-reply-to: <20230503120354.534136-1-aliceryhl@google.com>
+Message-ID: <87y1b7a994.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240217153315.56128-1-mcanal@igalia.com> <CAH5fLggPRcPc-5C8JY5FR7jQMbdNoc89EU0_QAqhG=6HiySZ=w@mail.gmail.com>
- <83571d1e-5710-47d6-9a6c-2a0bb5ab5e5a@igalia.com> <CANiq72mvqfu2akoMGOj-N0tUOAnvTMOBN1dYA7CZxcJqpd6Fog@mail.gmail.com>
- <0477f3cb-84e0-4ce7-8196-cddb7dbd1448@igalia.com>
-In-Reply-To: <0477f3cb-84e0-4ce7-8196-cddb7dbd1448@igalia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 25 Feb 2024 21:30:10 +0100
-Message-ID: <CANiq72mkkVNw-nT4OuRp4amoqtLp8wsppEXzBSRYzOOX2k8bHA@mail.gmail.com>
-Subject: Re: [PATCH] rust: Add `container_of` and `offset_of` macros
-To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Asahi Lina <lina@asahilina.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matt Gilbride <mattgilbride@google.com>, 
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
-	kernel-dev@igalia.com, =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 12:27=E2=80=AFPM Ma=C3=ADra Canal <mcanal@igalia.co=
-m> wrote:
+
+Hi Alice,
+
+Alice Ryhl <aliceryhl@google.com> writes:
+
+> On Wed, 3 May 2023 11:07:03 +0200, Andreas Hindborg <a.hindborg@samsung.c=
+om> wrote:
+>> The kernel `struct spinlock` is 4 bytes on x86 when lockdep is not enabl=
+ed. The
+>> structure is not padded to fit a cache line. The effect of this for `Spi=
+nLock`
+>> is that the lock variable and the value protected by the lock will share=
+ a cache
+>> line, depending on the alignment requirements of the protected value. Al=
+igning
+>> the lock variable and the protected value to a cache line yields a 20%
+>> performance increase for the Rust null block driver for sequential reads=
+ to
+>> memory backed devices at 6 concurrent readers.
+>>=20
+>> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 >
-> Considering Alice's points, I'm OK with their version.
+> This applies the cacheline padding to all spinlocks unconditionally.
+> It's not clear to me that we want to do that. Instead, I suggest using
+> `SpinLock<CachePadded<T>>` in the null block driver to opt-in to the
+> cache padding there, and let other drivers choose whether or not they
+> want to cache pad their locks.
 
-Thanks! Their version is in `rust-next` now.
+I was going to write that this is not going to work because the compiler
+is going to reorder the fields of `Lock` and put the `data` field first,
+followed by the `state` field. But I checked the layout, and it seems
+that I actually get the `state` field first (with an alignment of 4), 60
+bytes of padding, and then the `data` field (with alignment 64).
 
-Cheers,
-Miguel
+I am wondering why the compiler is not reordering these fields? Am I
+guaranteed that the fields will not be reordered? Looking at the
+definition of `Lock` there does not seem to be anything that prevents
+rustc from swapping `state` and `data`.
+
+>
+> On Wed, 3 May 2023 11:07:03 +0200, Andreas Hindborg <a.hindborg@samsung.c=
+om> wrote:
+>> diff --git a/rust/kernel/cache_padded.rs b/rust/kernel/cache_padded.rs
+>> new file mode 100644
+>> index 000000000000..758678e71f50
+>> --- /dev/null
+>> +++ b/rust/kernel/cache_padded.rs
+>>=20
+>> +impl<T> CachePadded<T> {
+>> +    /// Pads and aligns a value to 64 bytes.
+>> +    #[inline(always)]
+>> +    pub(crate) const fn new(t: T) -> CachePadded<T> {
+>> +        CachePadded::<T> { value: t }
+>> +    }
+>> +}
+>
+> Please make this `pub` instead of just `pub(crate)`. Other drivers might
+> want to use this directly.
+
+Alright.
+
+>
+> On Wed, 3 May 2023 11:07:03 +0200, Andreas Hindborg <a.hindborg@samsung.c=
+om> wrote:
+>> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/s=
+pinlock.rs
+>> index 979b56464a4e..e39142a8148c 100644
+>> --- a/rust/kernel/sync/lock/spinlock.rs
+>> +++ b/rust/kernel/sync/lock/spinlock.rs
+>> @@ -100,18 +103,20 @@ unsafe impl super::Backend for SpinLockBackend {
+>>      ) {
+>>          // SAFETY: The safety requirements ensure that `ptr` is valid f=
+or writes, and `name` and
+>>          // `key` are valid for read indefinitely.
+>> -        unsafe { bindings::__spin_lock_init(ptr, name, key) }
+>> +        unsafe { bindings::__spin_lock_init((&mut *ptr).deref_mut(), na=
+me, key) }
+>>      }
+>>=20=20
+>> +    #[inline(always)]
+>>      unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+>>          // SAFETY: The safety requirements of this function ensure that=
+ `ptr` points to valid
+>>          // memory, and that it has been initialised before.
+>> -        unsafe { bindings::spin_lock(ptr) }
+>> +        unsafe { bindings::spin_lock((&mut *ptr).deref_mut()) }
+>>      }
+>>=20=20
+>> +    #[inline(always)]
+>>      unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardS=
+tate) {
+>>          // SAFETY: The safety requirements of this function ensure that=
+ `ptr` is valid and that the
+>>          // caller is the owner of the mutex.
+>> -        unsafe { bindings::spin_unlock(ptr) }
+>> +        unsafe { bindings::spin_unlock((&mut *ptr).deref_mut()) }
+>>      }
+>>  }
+>
+> I would prefer to remain in pointer-land for the above operations. I
+> think that this leads to core that is more obviously correct.
+>
+> For example:
+>
+> ```
+> impl<T> CachePadded<T> {
+>     pub const fn raw_get(ptr: *mut Self) -> *mut T {
+>         core::ptr::addr_of_mut!((*ptr).value)
+>     }
+> }
+>
+> #[inline(always)]
+> unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+>     unsafe { bindings::spin_unlock(CachePadded::raw_get(ptr)) }
+> }
+> ```
+
+Got it =F0=9F=91=8D
+
+
+BR Andreas
