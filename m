@@ -1,59 +1,59 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D89654F94
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 07:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF3855E57
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 07:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709020512; cv=none; b=hI+nvt2gNOeedsu6JiY5ZQkRUPU5fkp4u4Lox7WTOFlfCvsWba1D8EWOOSsfo96qyGoenZqlxFZXpYh/7W1FMe5/EQlZA9YqaJfSFcOEhW+WFly0enF2AavdozAQXYYVpOMe1uDRO0JdQDShp3R2le05082SqCPtzH1qu0CcW/M=
+	t=1709020512; cv=none; b=ONGv4UA//u/pRTZI+BzcuAupJb0VS4JiGqURgtUlLpXvHFiNCEhGIOmNrms04+Khgo9TXXa+b1XxOVOkyWR4tiPyWd96O7l3QLdFjxLcb14B71BW9iduHxOBi/ZnGqMxC2GIG89kWPqcq/+Y9B/21z9vwZ16UW3+wfjwkjc6XsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1709020512; c=relaxed/simple;
-	bh=xbWkD4wvguVY9u5Ayn0gXU+FmdtJqxG5pcjSnxUJL8E=;
+	bh=3YwsmNBwEGfFj80aTMlJdL8VkTAwnCvoWa6TqLDGUZo=;
 	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=QRUWT9jMUu5s21IQs1OrQqK1KXxncMT37d49GaGv9d15YeaFapH09jilnrhXQozRlib0F5ZDa+dC8oGxiUn7tiL54SF4piqJnESagaV/vT90VWXOiATOBC2VH3//Zl8Mj7TAQ7M05Go3XquFbi+nfNmk+QmY6EwfaR+i8uk0rkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=Jp4HxUI5; arc=none smtp.client-ip=209.85.218.43
+	 MIME-Version:Content-Type; b=Ca8EnbGGqYKtSFaR2qI/SE0CDYaAz+c/q3Yo59S3RnFGDOFBwgvGXQEO00/BJfVJx68gMK6vgBzYe0BH8Tr3GEjSk0Td/Wvftv8PbHhP3Gb846qeTS7G5yJpc0gt7jG2c4wSjsi8NscdDaOHN7Obd4vbv6Xblo4Hvzv266spjmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=UgaYbcSP; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="Jp4HxUI5"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a431324e84cso243010166b.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Feb 2024 23:55:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="UgaYbcSP"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56533e30887so4361221a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Feb 2024 23:55:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709020507; x=1709625307; darn=vger.kernel.org;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709020509; x=1709625309; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
          :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xbWkD4wvguVY9u5Ayn0gXU+FmdtJqxG5pcjSnxUJL8E=;
-        b=Jp4HxUI58TZJiAGwYMXWDhNNGQXZWMauGsLNnfwRqY8jb1QTFqiJl7AvbCYZOJhVty
-         BS7o54yUkZwnpiCWTJFgXEDwASbVbPWMRETKpqGRtehI2shx3aABtF5G1JGD7tt3JTJx
-         eKglGJb4x1PLFRdsNukbriIxHIxiHlQFqD8e+5i4iL8Gd+XtMMtBco/WRm28pGCyeZ9C
-         LNbdjy/J9QQmkl9FwnpbHedNp5i1WOVBspLHXOjeGTkw4Y69sHD22WR1CW5R9Swa/uIb
-         h1IWwN0FW+yQQC+H0MknXocw7MCfJj6nHBByVBdm265jxX5BLu7UsOpRNsW0OFhFf0Lx
-         6naw==
+        bh=3YwsmNBwEGfFj80aTMlJdL8VkTAwnCvoWa6TqLDGUZo=;
+        b=UgaYbcSPPuR0qfAeY3WHmzTx4KWfdJontpBGC9yst8NpamoC5+7xSGoJrweepUm31J
+         Zk0FXqIA+MILtoIdXwkqtC5ybZrV/hwIvCvmltVrpftLj0I8gOtgYwNWbrY2mwBBuS2f
+         kxu2XObfEy3/UrZXQCyWh6F0LCqkup95vVHDzABu4cqFJGSqxOKj3QaPFms9OEo7rGQp
+         whCVXEeK9F4VtMAcN6IWwdp3aVjQg4j+iJk3XTLI/BidVl3JelGWfxE7MIj2Hcz2vJHD
+         grGRDLhXyvwkJZqRHvrjheZg1Wgq7dPtQREmT9uH0K3aQwYztT4VO3vbnNMkbEZpoXeN
+         T+8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709020507; x=1709625307;
+        d=1e100.net; s=20230601; t=1709020509; x=1709625309;
         h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
          :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=xbWkD4wvguVY9u5Ayn0gXU+FmdtJqxG5pcjSnxUJL8E=;
-        b=ShcNaw3pBVEvJ0JBLvRNCmg5ZxLAEceAsVjnh8nCBRw/QVW/pmnLkZ6aNO7CwM2var
-         r9K2N0fskaXgBRzfHyHbCQxiyCrZ0agV9muspAW5LI0K9G2oOdhcdsSyVI4F0PsPss7z
-         t7fyqYSWWyLJvCrg7Xg22sC3Q6q8VFdFv5PVj61BtRajvC0tdGoO0CokCiXQSk5C9txS
-         iskAE+LBaEreaOlkapwNT9pCqznudX1AfAkLB77mmAcrDQG/a8qW0l/uOPI/vkOZWusr
-         pEhyKpNA0EAV3whmlz5i8ZvF6S7uD9rB7LXwQIuUphkJWlFTOTR/U/gO+CiBkOjRRo7Z
-         9LLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWkv2tBbTjLM7pziNmafl/I1hb6PWqYzTgUgsK/5lOPl1gy4JaFFofhb/iBYjK53QwMkgm60lakLF8aiWVhX1v14sxiACsuMSEiiBDcrE8=
-X-Gm-Message-State: AOJu0Ywb+Vi7WYG7ZLdPljDMO9AqifWw3xcih5f+Ja/LgfkBUO8WYAMY
-	4rWZ/OtCnyQZnEwm7z+Txc3zeMZMqmHaKwNhxcGaG4S/Prz0q3+nLGZ6FosrjSk=
-X-Google-Smtp-Source: AGHT+IHKg0r6A1VdrZrNe9qtQFQ82Ul+9F7i7Pp7nuPZzWOtYrIU+3C5V8PmiOf6x3tZT3xbnnCCyA==
-X-Received: by 2002:a17:906:3683:b0:a3e:c738:afa2 with SMTP id a3-20020a170906368300b00a3ec738afa2mr6226824ejc.76.1709020507423;
-        Mon, 26 Feb 2024 23:55:07 -0800 (PST)
+        bh=3YwsmNBwEGfFj80aTMlJdL8VkTAwnCvoWa6TqLDGUZo=;
+        b=VRlVlZLGT3rwAeA/LCtFE5mAejKzpnj7b/6zqws9Q8tMfLXqoloqByG7Je6mPW2n6p
+         DEpsi4FQPhMMIw6u3ecYOudmue3pJl3/t+ciQjxEq8HnC3Wc7DIRkgYSnoz8/wLST/I+
+         hfyZeomKiY2mPa2kS2I0c7ViLF6ziDl10WrlXLhUelLvJLk5Bs2iMEdgDI/VCS3hRNus
+         rKp2E0UFzAH6KXqvjXQArG0KzOEhyA4TTPRAXdrhM8GKPaWHfXIT7V5SkImEab0yuMPy
+         sJVWzXCX633oCvd/3l1/ld1+PdMdl1o33tB5Ty6dsBLcrI/3QhD5ifyIAS2Avygo+a9N
+         4NjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXKnIS7i837Kg+Hdwb+LyUwSlu9gvxsFPcZwV6D4LVnPKJvF5x6DPxpwvcEahRepKzhDKys6UrmyzoAsYhqRLMsbzXTOhCvGoRzb64n9C0=
+X-Gm-Message-State: AOJu0YzbgZmQLTnUgJRb0Gy73UWN+GtbTKq8RIehSXXCmiZrCXTbpSKp
+	DVIQWVr7IRbW4Uzqn8r2P67cMdOmwuBS4wpmURfnsEJ5b8ySmbhg6Fp8hgGt5ns=
+X-Google-Smtp-Source: AGHT+IHZCKU4F4DqNwk9h+g7iJIh22fZJJ9J3NRhYCTuQGFEiinICXGF2Bdlgkihac4kau8kRK6vAQ==
+X-Received: by 2002:aa7:d898:0:b0:566:44b4:ea58 with SMTP id u24-20020aa7d898000000b0056644b4ea58mr285530edq.38.1709020508661;
+        Mon, 26 Feb 2024 23:55:08 -0800 (PST)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id lu4-20020a170906fac400b00a3ecdd0ba23sm503372ejb.52.2024.02.26.23.55.06
+        by smtp.gmail.com with ESMTPSA id j8-20020aa7c408000000b0056200715130sm502183edq.54.2024.02.26.23.55.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 23:55:07 -0800 (PST)
+        Mon, 26 Feb 2024 23:55:08 -0800 (PST)
 References: <20240209223201.2145570-2-mcanal@igalia.com>
- <20240209223201.2145570-3-mcanal@igalia.com>
+ <20240209223201.2145570-4-mcanal@igalia.com>
 User-agent: mu4e 1.10.8; emacs 29.2
 From: Andreas Hindborg <nmi@metaspace.dk>
 To: =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>
@@ -65,10 +65,10 @@ Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex
  Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>,
  rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  kernel-dev@igalia.com
-Subject: Re: [PATCH v7 1/2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
-Date: Tue, 27 Feb 2024 08:53:55 +0100
-In-reply-to: <20240209223201.2145570-3-mcanal@igalia.com>
-Message-ID: <87ttlu9wb9.fsf@metaspace.dk>
+Subject: Re: [PATCH v7 2/2] rust: xarray: Add an abstraction for XArray
+Date: Tue, 27 Feb 2024 08:54:25 +0100
+In-reply-to: <20240209223201.2145570-4-mcanal@igalia.com>
+Message-ID: <87plwi9waq.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,13 +81,28 @@ Content-Transfer-Encoding: quoted-printable
 
 Ma=C3=ADra Canal <mcanal@igalia.com> writes:
 
-> There are cases where we need to check the alignment of the pointers
-> returned by `into_foreign`. Currently, this is not possible to be done
-> at build time. Therefore, add a property to the trait ForeignOwnable,
-> which specifies the alignment of the pointers returned by
-> `into_foreign`.
+> From: Asahi Lina <lina@asahilina.net>
 >
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> The XArray is an abstract data type which behaves like a very large
+> array of pointers. Add a Rust abstraction for this data type.
+>
+> The initial implementation uses explicit locking on get operations and
+> returns a guard which blocks mutation, ensuring that the referenced
+> object remains alive. To avoid excessive serialization, users are
+> expected to use an inner type that can be efficiently cloned (such as
+> Arc<T>), and eagerly clone and drop the guard to unblock other users
+> after a lookup.
+>
+> Future variants may support using RCU instead to avoid mutex locking.
+>
+> This abstraction also introduces a reservation mechanism, which can be
+> used by alloc-capable XArrays to reserve a free slot without immediately
+> filling it, and then do so at a later time. If the reservation is
+> dropped without being filled, the slot is freed again for other users,
+> which eliminates the need for explicit cleanup code.
+>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> Co-developed-by: Ma=C3=ADra Canal <mcanal@igalia.com>
 > Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
 > ---
 
