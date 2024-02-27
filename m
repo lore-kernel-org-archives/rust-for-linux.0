@@ -1,133 +1,94 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D81A137C54;
-	Tue, 27 Feb 2024 10:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7873D137C36;
+	Tue, 27 Feb 2024 10:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709029064; cv=none; b=DXqlJ1JwWWakbWlgb4pqs52N3kTJ3G/yn4Hy1/JemcJwbMvsTau/2wntnRnk+1dWNOTAXGqqtcXPMUzVLAjrKhJLYvvQH2pAFfyGKlwjDmYqA1HJAYovelNPAK4mfDW9lNKaPp9oOKLsBmqHmTvdlsYsEH+ymxEzF32jYVF2qmA=
+	t=1709030816; cv=none; b=LuUXgZzW77uvOb/1VJM+WpX/64VWuCx4a3pQ2SnNOUejMl1FJMZapBRUEpbGx4WAK0ylFd92tTClDKg1q7bQUihoTt2iM7GMS+4iNnGCkpHRVISPvj34RKZf97QfSjtyRBMJfGIDO0xPN2fU77Igja3lTTWEoq77cgg5S93xozg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709029064; c=relaxed/simple;
-	bh=BCYUXwloy7tx6CRy691yjbouMr/IoorgoY29ZokBmYE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b6WsKkeSvcRFCgtfhDokrSUB7Z07Y7/GHZFiv/F5vHTogD9w4emsMKpMYx5Hij7x+N1DZSXBb/B+LHoHg1vQeJ3bpavm6hC2ZdGgF5+e5F6bBlSRTMdl62T4lb+vw+wdyDylefSfjNb2YICupIgbEb2hnVCmWnm2aVYW1q+LgIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ybC+BVUJ; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1709030816; c=relaxed/simple;
+	bh=XHyReOttpij5I54r5x4WgZ+cIyUHaBfTMin6OfRWlGU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B/bRKfKIRC7H3Tv8z7J7dXq7GXmFw1282UuNk2O7suUbFEwpRrL1B6KkqDj0fCmbbO/YXp9DRm6P9FpZouKhnm7BygNbEtUIgW8QEsmuLqOh5n7CHOzo2oodEW032+PY7Ga5qDsZN1KKBhevVvFXBjdF3DMcLNR7SnGt4n6XovE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y0VpuCvd; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ybC+BVUJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1709029062; x=1740565062;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BCYUXwloy7tx6CRy691yjbouMr/IoorgoY29ZokBmYE=;
-  b=ybC+BVUJgzou+CI5al+qwjYyEMIKqTbwgt+seo2rGNUAwpjO3uC/iho8
-   03o0R2Ipnvf63xRs/sx18Q019EYSzwAO+dB4mqeHnNnSUudr/h5F+FMCd
-   5/b/E1ZijgX+O/3T7awSPngNo1KYzhRZNP9OeZvUiFtBvhImoW0jJS408
-   JG+DY5Gb9MizrIY8UJ0wWEF2r32mFqF70MwBlArpMkivHWIP5MlpB/wyQ
-   w5D1uHcm+2hdmSL6toKJxCq6gwRbZWyBraunNlIUW4z6RyGEG8DA42x+j
-   crEeFtB/4mSHadsJuKp2gh9pTqy/51zZCzVSkNjnTzoao3ueJGjzEL3G7
-   g==;
-X-CSE-ConnectionGUID: LY36k2aJTB+eb3sMK+kGPw==
-X-CSE-MsgGUID: hIqM4eg7QzWgtrOMupVYnQ==
-X-IronPort-AV: E=Sophos;i="6.06,187,1705388400"; 
-   d="asc'?scan'208";a="16878492"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Feb 2024 03:17:41 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 27 Feb 2024 03:17:12 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex04.mchp-main.com (10.10.85.152)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Tue, 27 Feb 2024 03:17:09 -0700
-Date: Tue, 27 Feb 2024 10:16:26 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC: Conor Dooley <conor@kernel.org>, <linux-riscv@lists.infradead.org>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida
- Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?iso-8859-1?Q?Bj=F6rn?= Roy Baron
-	<bjorn3_gh@protonmail.com>, Jonathan Corbet <corbet@lwn.net>, Paul Walmsley
-	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<llvm@lists.linux.dev>
-Subject: Re: [PATCH v2 2/3] scripts: generate_rust_target: enable building on
- RISC-V
-Message-ID: <20240227-resolved-deceit-4a59a6af5b71@wendy>
-References: <20240223-leverage-walmart-5424542cd8bd@spud>
- <20240223-employee-pessimism-03ba0b58db6b@spud>
- <CANiq72ngEZskjH0f=8+cJuQsFTK227bGCxe5G0STMHuPbZYnXg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y0VpuCvd"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-29996cc6382so2780508a91.3;
+        Tue, 27 Feb 2024 02:46:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709030815; x=1709635615; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XHyReOttpij5I54r5x4WgZ+cIyUHaBfTMin6OfRWlGU=;
+        b=Y0VpuCvdBt7C1P4kfCsaRV6cDqPio2fHc6Zm+TSwT0nPq5r5Y3nJGqMzGPzZkKpuFH
+         //QPWPoLf4ZCtxJvqj/7MAvZma1FfqPGozfoK7v6Ts0pUK4IPFJpAYnN68/6KEbMNm92
+         IX6ZsnOuGtHioByp/x5EnDazkB2/bGkx9ZHTxA7uztHCP08GT+PGMxyZRykbSpDX/jY8
+         Ar3D7/EgId+u/ce84Xk3FerDVWlMayvqPCP9X7rbil61XGhVV2i5KtqrUSkei3R2DYZT
+         2LWX/rG6318GlSPAWercAIH+Ytj/r3N0KExrWjI5CW5sTIIJIxnCjmKuadv1Vq4327/d
+         pEoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709030815; x=1709635615;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XHyReOttpij5I54r5x4WgZ+cIyUHaBfTMin6OfRWlGU=;
+        b=tKi8IJT0Jz5ze/GtUF+2YVifKUpqoF8xmng+xraIGsHCM83yXoRl5JTNeIED9mCU5k
+         cp/ths5hRJtWOcsZFJ+vT78KOzHAxie+gMMVt1nl5iz2Hzj3LsGGbUeXc6CD02aIuQ8+
+         wo5WCc5xb0h/Ap5mWxieVm1MKQUnuPTK3rYpk92y3NRvGt9/q4CrCScykbkg6O7sbBha
+         HWjQS4R4bory2Oc8ynTfdl4rSwC73j5OTHRxGNWtVIZpB1dTsDqpJVcn95IZ3qMWTlzR
+         xac43oxmWNOWe/b07xAqusN2nCDHjUjFx8BwPXBDIRk6uGdGqTBx+48e8nhRZw8V7+ac
+         ikVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4QJ5rf6vbtDLgcZ7MVihOA8Z6Ax5p06uTnLs7WAaTzAKqUARrtWnnn9tP9CfzqXbxoiPDXQj1nI2SR+QBoIQ8JKPZJBAbH7TIPRURzXE8fpshl1J0pB/M69ASGrLFqy2P3wyfdn2MB6eVL8xPz/EXjfjR0EDXaib8/GiV9/Zdz641cS0qv+M=
+X-Gm-Message-State: AOJu0Yz105ynEUacs47HD2UM3aLG6Acbknfqa3yPZ6XX/sMOQQ6uuxWP
+	wGz1X7nhL88++q3pHnZAl/OXYWeXwS0+dxTnyke7qeKv5ou6EIXpRJ1KlpLM9ER1mNSctd+5xPL
+	95dpBN7ZOVWZwYPvCRGDSGgdU/1Y=
+X-Google-Smtp-Source: AGHT+IHM+6rRS1JfIDKhTWqLKrWosGlB3CKAX90C0/Xd3mVu0FyLDdjQsn5XBbm5H/3r+xFgrsAmb7KF3ofv00QMlG8=
+X-Received: by 2002:a17:90a:e018:b0:29a:ce5f:4da1 with SMTP id
+ u24-20020a17090ae01800b0029ace5f4da1mr3644307pjy.8.1709030814815; Tue, 27 Feb
+ 2024 02:46:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Q7uzvEFdRZs2AO5O"
-Content-Disposition: inline
-In-Reply-To: <CANiq72ngEZskjH0f=8+cJuQsFTK227bGCxe5G0STMHuPbZYnXg@mail.gmail.com>
-
---Q7uzvEFdRZs2AO5O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240223-leverage-walmart-5424542cd8bd@spud> <20240223-employee-pessimism-03ba0b58db6b@spud>
+ <CANiq72ngEZskjH0f=8+cJuQsFTK227bGCxe5G0STMHuPbZYnXg@mail.gmail.com> <20240227-resolved-deceit-4a59a6af5b71@wendy>
+In-Reply-To: <20240227-resolved-deceit-4a59a6af5b71@wendy>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 27 Feb 2024 11:46:42 +0100
+Message-ID: <CANiq72mwM+4Oh-H5WmRoqQ_nE1w-eJ1wn-nEwS=BR9JRwzxMMQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] scripts: generate_rust_target: enable building on RISC-V
+To: Conor Dooley <conor.dooley@microchip.com>
+Cc: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 23, 2024 at 03:39:47PM +0100, Miguel Ojeda wrote:
+On Tue, Feb 27, 2024 at 11:17=E2=80=AFAM Conor Dooley
+<conor.dooley@microchip.com> wrote:
+>
+> Sure, I'll take a look.
 
-> Conor Dooley <conor@kernel.org> wrote:
+Thanks!
 
-> Thanks for this Connor!
+> Nah, I think that is silly. Either this goes in as-is, and there's
+> fixup done by Linus, or the thing should be converted to match arm64,
+> assuming that that is possible.
 
-
-
-
-> arm64 is sending these for 6.9:
->=20
->     https://git.kernel.org/arm64/c/f82811e22b48
->     https://git.kernel.org/arm64/c/724a75ac9542
->=20
-> So it would be nice to see if it may be already possible to enable it
-> via a builtin target + flags instead of the custom target, e.g. arm64
-> does:
->=20
->     KBUILD_RUSTFLAGS +=3D --target=3Daarch64-unknown-none -Ctarget-featur=
-e=3D"-neon"
->=20
-> and so on.
->=20
-> If it does not work, it would be good to know what would be needed for
-> RISC-V and put it into the unstable features / wanted features list
-> for Rust.
-
-Sure, I'll take a look.
-
-> Either way, it is not a blocker (although you will need a rebase after
-> arm64 lands to use the `target.json` in the right places).
-
-Nah, I think that is silly. Either this goes in as-is, and there's
-fixup done by Linus, or the thing should be converted to match arm64,
-assuming that that is possible.
+Ah, so you are going for 6.9 too? I can give the series a try on my
+side in that case. When do you plan to apply them?
 
 Cheers,
-Conor.
-
---Q7uzvEFdRZs2AO5O
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZd22egAKCRB4tDGHoIJi
-0i2xAQCRgFXg1ZapmwoJszFsyzygxNYjswLT1sD8OtIU1BPdWgEAwEJBWvVFMPMo
-eBGiUJpqcMZ92Gg1yEfHXhd17awAWww=
-=SKPI
------END PGP SIGNATURE-----
-
---Q7uzvEFdRZs2AO5O--
+Miguel
