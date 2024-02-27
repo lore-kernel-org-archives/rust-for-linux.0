@@ -1,103 +1,94 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B6113A877;
-	Tue, 27 Feb 2024 12:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944B01CFA9;
+	Tue, 27 Feb 2024 12:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709035986; cv=none; b=BEWCLxQWV1bwA18tKItZc0C2q2omtN6GUGOBVw66QBjqmaS6Bdu95UnwbpU4LpRgE4NcGC5BLE614gGrdZ6nkr56OetKqE2RIhnO1qhsdkp/+bfEFFgLsPaiM6A++aJtUDrJ9K/MUdGimO+FVdkr4ANp6ET+tYX59FKjINxX2Bk=
+	t=1709037269; cv=none; b=hdfQAyK9NqqbFNqbNrcq0JOG7vdmX9PjEQH75qLSrOyatCpOez2wFt741gy9NiVgH22FR3akC1bXihxDUO3DquXw5U4N85yxTORFgduNjCKG2QQAXkDb4JtA986ll+93e/o+CPN3e9yGSET//qXueUfqCta2yrnQjuvV2q9MEvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709035986; c=relaxed/simple;
-	bh=PNfuFy5Ba+D5qLkPXV/F9tZVKt/ke8CC3TLHGloyd2k=;
+	s=arc-20240116; t=1709037269; c=relaxed/simple;
+	bh=N9j9qlONozduTz+bniTZX4spLz7Dtuw1zBMBtIuIeC0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mgM1DsJkUa9/Tdtri+bw0ikMfdU0rrAF1xxfxPAxvkCv66W9KfSgQc+nxnfYATv2gkExG5p6WkIWZG2MhN0oUHQAMwjjPQMIsAYp6qnLquicrOtkoULgkAHjY7ZRv+97aJmt80Hw5Eml8kqJxh2smgnjz+QQvjuQTiiHf91qpDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7RzuOTH; arc=none smtp.client-ip=209.85.215.169
+	 To:Cc:Content-Type; b=MAvtQ/rpmKIwFMeDnzZ0QkosGlyx7O+Vd2rOjDzTdOst3WxmIS+Jt1qiABT76JG/YSAaELO2oJXVfYUlX++PhTj6onoO3gcAJNgdgyP60XqZ33PaWo/otdvHUXtc9AeZo4f4NPXmKxiaeNiaNQ1c6q8S9P5su4GKeeMWzavUAvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SBZelrBl; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7RzuOTH"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5ce07cf1e5dso3310671a12.2;
-        Tue, 27 Feb 2024 04:13:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SBZelrBl"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2997a92e23bso2887446a91.3;
+        Tue, 27 Feb 2024 04:34:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709035984; x=1709640784; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1709037267; x=1709642067; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PNfuFy5Ba+D5qLkPXV/F9tZVKt/ke8CC3TLHGloyd2k=;
-        b=A7RzuOTHT5lz7H92/ApnlKWkrpzABYAqTtBJob3puaeqDP3j8uvkkM9vaZcbzzr4hP
-         cve7C/GSu3+ilq18saUNgNNoPyo3fSND4ON7zrzCnc77KlD1aNtaaFlxBe/YvKrJbco7
-         56zQGnTMnTS9FITUmEqIhGQrbrnAkqXk4I1h7AbLgAe3cJMHuQzUUfvsPp9JUICBaehF
-         epGbY+0dzpdC45ddGFmVVt87yy3LJZx0B9GHy7Ncr1ssIexs51tiL0Qi4aWzhp+Bv7wS
-         mnV16H+SW6GonNihM0Lx3jRvgCUhrX3l1s/2ciKaOGi3iWfjSx8l9b8fQYps+b0cshkd
-         gSUA==
+        bh=N9j9qlONozduTz+bniTZX4spLz7Dtuw1zBMBtIuIeC0=;
+        b=SBZelrBlMCrAok/Ji5IEEIJ0HuE10ktW936bNSRp7GdMIR5e+y4QvpsYvEucM5xjeu
+         mKdxLMsjdQIalqDWPrC4t2jI6azU5RQJjnWHjz9N4uTEswRgLHcDs7uHx6A2vWPRLu2x
+         vYLZQb3dpdY4C8cdspbbw79YWR0oPeMC5x8PD7iQaOGd+f6WdxH16hGFJUwYUI/M/nVp
+         FaagOgWF8MIchQBZlC92uGDpHeowb555aiKuff+BubVIEfdqOExTTdV83W5qsZAiVSeg
+         TTttIMqUmApTIYcKSQhqSpziL6By7gLclakfPzID3zOEjzxf6FkGgYXFe3TSaC679HBe
+         IIqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709035984; x=1709640784;
+        d=1e100.net; s=20230601; t=1709037267; x=1709642067;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PNfuFy5Ba+D5qLkPXV/F9tZVKt/ke8CC3TLHGloyd2k=;
-        b=vn+5+BZ52UbCI2vApJKwl06WFhO14jP+mpeKw5CD4NQ6B0F7Fuv/gsj2H82N/hAMpI
-         DyXKoRBxRqfKEcVLy3f+I5chlujJHQz1NEeOesNLz6DpAfpUf1d00HLEQ5feKi8gtvAI
-         gg+t8dV9yY4LtdMCxZqVYw9PxgOMTqy0rfzka2F1Fata0+UnLqhTcrrU8EhVa04EOj8c
-         XEx5dv/QYnwMs2Ev63MeeumVUw1xmu0mQ5tApEoFiNVYKx22ElZAWC+xsgsubBg4Rcwg
-         0t3Y37aGy9ob+HK66SKWfDY1XoaEJcUKrpiDhyVT3/llgaUzRBCMFjVs6U5dMpmZQGsC
-         wVug==
-X-Forwarded-Encrypted: i=1; AJvYcCVWi65WapItJITmttdmeB1zFHEUfmoBDk9a9wLxlScZ9L7BS9v8si3N4yn9llAGxIw6xMaYJdaaXkLbWgU3yZnrT0UWYcbveGY5uHELGC3YB9fQT8mVsxgE1HLaAWSMyUX+jKM+Ha0+ez+r5lyyVV+Gn+C31eCgNCChtxZKiH6ylplaccNxzzU=
-X-Gm-Message-State: AOJu0YwiBLOXS/XAMfAdjMPcFdTgyi2eVrTGGumAW09QTQ2vubzkw3mb
-	bX4dHtDYNX4f75/nBGhHhobzspqLKciQ80zqG2m7SVE7AP5hvynq68DHjGomewkrTWZ3mW/CQjk
-	TQkfQFin9zpvbC7EDDpjxu5R1ZOk=
-X-Google-Smtp-Source: AGHT+IEZrxxC5KTd1mUmyNpa02ckU0dvc0XT6naKz7W71hSie5HLJAV5L6JVbDjYli/t99gdzmOA0c0J+BbxKw9TRZg=
-X-Received: by 2002:a17:90a:1b85:b0:299:6a7f:3f55 with SMTP id
- w5-20020a17090a1b8500b002996a7f3f55mr6019384pjc.45.1709035984277; Tue, 27 Feb
- 2024 04:13:04 -0800 (PST)
+        bh=N9j9qlONozduTz+bniTZX4spLz7Dtuw1zBMBtIuIeC0=;
+        b=uO+F8ZftviYg1B1Av0GTIAzZmaTq4QfL0Qa+xteX7YJq3dWo6IvUlWEOO0uc9Wde0P
+         kQ2YEvixO+XoiMcinQlOcSC8iALGaH4rh+U9g3Iq1TYyXgyVc+xIOOug0Zlt/a+Q9c8C
+         FZVdG6sEfdcl3JRFkIT44aOp6R1Ut9oJFH20hGfawK8BjKqxXMu4LsnwhzNINkROJ/Mi
+         VGALXQmJPJB3pHpUI0PmXNMsSlIXrt54+zd1rLu762am5RaxSkfjHU+6llatOoEY2bqf
+         EbuS4zaGvvqAU2hAFywr88BMURBhKRLdsTrIDecNf8rDuTonm1sG3gwXk7CdQ2rpIU9Y
+         z91Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV13V7aDEi27eSWyemQ7TcL7ZpvgZK0/hzmplO14Q+UMAMg5IDpgndtRMFus1AUPFoIUxCEyFnr/OFQR41jq3XonhvNloib1UIxxFT9eUrgPzKswE2GVEmueZ27MBCVtzK8oJckBDtvAgTz1CcVkNy4NFmCwabpK7+dGGXVcs/RuxKKkgWOL4OP+Fx40I8FeQ+ErQEJGLhjnfaIM4459EM=
+X-Gm-Message-State: AOJu0Yy+8ZO4uMbZebHD84QGA9riTQmoSxOKrWYoTPNcdnGsogBq2HyI
+	sgRRFnt/trEac0P/cWDNK0wlSONYiyRChVEJu5whlsYpLmChf2gKsoIyF3lik3yXkE07K0aJvxo
+	0rw8qnJ6smy3Z0B9mdD70W5R3ccY=
+X-Google-Smtp-Source: AGHT+IEuXAPX9FOqOhNJb3Owku+lxeLjmPjbeDLcLvCF79H6OR73WYykC8gycjj0GEybh553JRImPRMosUkl+JhzaAA=
+X-Received: by 2002:a17:90a:5804:b0:299:389e:b611 with SMTP id
+ h4-20020a17090a580400b00299389eb611mr5540528pji.47.1709037266902; Tue, 27 Feb
+ 2024 04:34:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240223-leverage-walmart-5424542cd8bd@spud> <20240223-employee-pessimism-03ba0b58db6b@spud>
- <CANiq72ngEZskjH0f=8+cJuQsFTK227bGCxe5G0STMHuPbZYnXg@mail.gmail.com>
- <20240227-resolved-deceit-4a59a6af5b71@wendy> <CANiq72mwM+4Oh-H5WmRoqQ_nE1w-eJ1wn-nEwS=BR9JRwzxMMQ@mail.gmail.com>
- <20240227-glove-underwire-f562a56cf2c7@wendy>
-In-Reply-To: <20240227-glove-underwire-f562a56cf2c7@wendy>
+References: <20240223-leverage-walmart-5424542cd8bd@spud> <20240223-perjury-preshow-fc2cf73d552e@spud>
+ <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com> <20240227-uncertain-amaze-6197e627ad95@wendy>
+In-Reply-To: <20240227-uncertain-amaze-6197e627ad95@wendy>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 27 Feb 2024 13:12:51 +0100
-Message-ID: <CANiq72=f03_bw9B8ww8UxHkVyP2F7ZPyvC+KWCyhO3Nk1yqdaw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] scripts: generate_rust_target: enable building on RISC-V
-To: Conor Dooley <conor.dooley@microchip.com>
-Cc: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 27 Feb 2024 13:34:14 +0100
+Message-ID: <CANiq72=geBobqM0Dc2yv=NjAc3MWXhOrDHfuJ84TgQ+XVxBo0w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
+To: Conor Dooley <conor.dooley@microchip.com>, Nathan Chancellor <nathan@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
 	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org, 
+	Sami Tolvanen <samitolvanen@google.com>, Ramon de C Valle <rcvalle@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 27, 2024 at 12:05=E2=80=AFPM Conor Dooley
+On Tue, Feb 27, 2024 at 11:54=E2=80=AFAM Conor Dooley
 <conor.dooley@microchip.com> wrote:
 >
-> My point though was more
-> that either this was acceptable for v6.9 or would be v6.10 material
-> with the same mechanism as arm64. Rebasing after v6.9-rc1 but not
-> adapting to that way of doing things is what seemed silly to me, since
-> if a resend is required then the other improvements should be carried
-> out at the same time.
+> I did try to test it but I ran into too many toolchain issues - my
+> older copies of LLVM (pre 17) are not multiarch as I built them by hand
+> with PGO for x86 and RISC-V. My LLVM 17 is from kernel.org and has no
+> libclang. And then the copy of LLVM 18 on kernel.org apparently does not
+> support kcfi at all. I gave up there, but I don't see how this would not
 
-If avoiding the `target.json` is possible, definitely.
-
-I didn't want to assume it is, though -- e.g. the native integer
-widths you have is 64 but the built-in targets use 32:64 (perhaps
-there is a way to tweak it with an LLVM param via `-Cllvm-args`, but I
-don't see any obvious way from a quick look; `opt` does have it,
-though).
-
-(That is why we supported `target.json`, since it gives the most
-freedom in the beginning.)
+I asked Nathan to add libclang a few days ago, and he very quickly did
+it for LLVM 18 -- though I don't know the plan for the others. I just
+pinged in that thread.
 
 Cheers,
 Miguel
