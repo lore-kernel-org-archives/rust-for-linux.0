@@ -1,107 +1,159 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4987655E71
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 08:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D22137C2D;
+	Tue, 27 Feb 2024 10:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709022988; cv=none; b=bNaXqh7rJ96yPvbkV+bR8I62yywp8PYRHb7/i5+4bBT4M7jVFpTf6T9r/Z6j98BG+eCOXRaBIq3Il0/lwZP1WbdVwM21e6fMLzhA/UC2LF58yJuSrdfRTjY/Y+VbmtRZX6o9nFGP7/Pu4TTdLvTRnd6gCP7Xt6YNk8/OF3M3swk=
+	t=1709028332; cv=none; b=ScFa1hF1s7DwMmUxlPkR238mPep3x6nCsZ58mmqan5Wczj2ypYlb4wQWUpyXG+ckzy5DQFWiuPEAusrvu0YT82S/Bv7g1Dqu4woK+Db0T256QmixAXL/WY+OCr1JJfycXrVvv/tvywIyeLEBYx05aKcVhVmhOrRrq9FRqIJY2Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709022988; c=relaxed/simple;
-	bh=tBm5IIGFhkgiqabszftedxFLBNT4N4zs7aN7ZnS5cF0=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=pfiBgV69CzBUO2NAfy6m9NPhLt3CzynwyQNi6p6CUXPm1wYHqzyA8rGC5ueyclPnrd6XTAtEUAKzG0jA9nce18kpWjLxHlYUZdf745JW4EPYLoXunVXHyfsJW5W5blgos0iTvPskIxeu0ZCt89nTeNH+arSPbpqx5KBoAsVg5ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=p3MkRpx5; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1709028332; c=relaxed/simple;
+	bh=qTKCh/UYun8MIHt+3k9VcP0gbTE3xP+PfI30BTgmONg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KzPKw0nKLDvS/hkVIoTW0KQoYzOBXSybv3oxrSzeuOZXYF9pbH9oKoyyBOw0AFest8oA8OMf1tOR+1BXOzSi5gmg6ysaqDxIQvZVmqXuH3JoIRcZSvdDmmLlU+iW8lyVx/7eCLdhVH5mHXZxD+ltKUVUE/hPj0lnvcOFpbGOyvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=soi8/goX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oqhTd1iM; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=soi8/goX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oqhTd1iM; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="p3MkRpx5"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5648d92919dso5213742a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 00:36:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709022984; x=1709627784; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=tBm5IIGFhkgiqabszftedxFLBNT4N4zs7aN7ZnS5cF0=;
-        b=p3MkRpx5VREXJOooask2Br8TOUkyDZYl/l0UMQyjnwqe4Ky7hzSk7soSnuZaNmnGFP
-         TOGRx1rW8rZwuXgnvAUF16AifvepYlW5SiFjiz9gUWXZkbw4O+5OrRrs8yRwYLdGD1Ax
-         oDseHewatyh8+ZG0iwtA6vdcC28bCXguxcsTHWXMv1+WgQP0NFgd6UMInRNBLODDNCJi
-         yazVQHrbPIWFm6YUyn0ypsmjwZrLGUUnNquVAYHg6vVABS3ddMFP/T1W1GTe/NIjyFA/
-         juU7cnmPfdTDXEH700c+XXWIOefma1P0YwG3sFiKCUDqEllPSXwG5Ed0ZiX7L96WPvUT
-         6G9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709022984; x=1709627784;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tBm5IIGFhkgiqabszftedxFLBNT4N4zs7aN7ZnS5cF0=;
-        b=mpxRF0XSsIl1L5ceQUK/TOZjlpjCfUKEPZc6jwOaspO9OXYWrReZXCPUH81ILKqG/J
-         6wsXTtGhzUfk5NE15LUwUrnUQtXzMu1z0wu/oBKXxK/ElFmyDKnYIpnNq8XjReFvwc9E
-         x6raouopS5e6SQbptnk7ARigxayPNAWF2Kgd1Al3GJkyhhrun3qaReMUuPwjnb4vANar
-         EvjcZJZ/xD4Y4Lb3x8iki/8FsH74/hRV541CgWmhQDV47NxTLw6rR4RHYuTglxEv2NU2
-         v+7hwORUGKIw+u0dgynYiFiRF80OLEgv35Eq+kKA+1X5F81ElOqemvPc1jsx+lYZwjGS
-         wAuw==
-X-Forwarded-Encrypted: i=1; AJvYcCX6KgEfgBz++ez5zjC0Uo4P5LF/0u/NdRfvmy4OzXys+m3pwXDe6QJ5pxIheGVi/p4rDks9K+1VWmez0ZBUcDs72LoioSQdKKQZsDcEnFU=
-X-Gm-Message-State: AOJu0Yzf7ZPIXVJbrIAxi/jY99SR+bV9o09dsrmsPbfiSen+5DqmfO/D
-	5bOEB3qBzQJcMdwnSXAcsVdwPrXtZ5eJOjleNlWd7gF1uFRiNBeDBTcRVKZLIto=
-X-Google-Smtp-Source: AGHT+IEmSlqSqeopobEyVgC92+uCi8Y34RHVrtsYAkNKK7bVxD/WCyfc9qMKmBQUExQLWATnFTHthg==
-X-Received: by 2002:a17:906:c7d4:b0:a43:20c0:6f7a with SMTP id dc20-20020a170906c7d400b00a4320c06f7amr4112372ejb.48.1709022984519;
-        Tue, 27 Feb 2024 00:36:24 -0800 (PST)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id hu11-20020a170907a08b00b00a3fcbd4eb2esm532864ejc.1.2024.02.27.00.36.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 00:36:24 -0800 (PST)
-References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
- <20240208-alice-mm-v2-4-d821250204a6@google.com>
-User-agent: mu4e 1.10.8; emacs 29.2
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Kees
- Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew
- Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=
- <arve@android.com>, Todd Kjos
- <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
- <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren
- Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v2 4/4] rust: add abstraction for `struct page`
-Date: Tue, 27 Feb 2024 09:32:27 +0100
-In-reply-to: <20240208-alice-mm-v2-4-d821250204a6@google.com>
-Message-ID: <87h6hu9udb.fsf@metaspace.dk>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="soi8/goX";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oqhTd1iM";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="soi8/goX";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oqhTd1iM"
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2853E226E8;
+	Tue, 27 Feb 2024 10:05:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709028329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3XXrMIze6Y72f4u2ysv6nK5J2tUBv4eD6P0fxLLqnrU=;
+	b=soi8/goXCUpmlv19LLto6jAlcz8JoEvm1nZpGgqTSTtPbqneegXav+HzwbxK++hleQ9qCj
+	3k6rRD9ScpgXGEc76aF2PnpvxqqgNu3BOaYXNc7mqXUOKGqmHaQMHFCC9KBlog2uVCvWC3
+	/QfGbsbvbpNxNVi4ztfU9W6hGk0OshM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709028329;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3XXrMIze6Y72f4u2ysv6nK5J2tUBv4eD6P0fxLLqnrU=;
+	b=oqhTd1iMyjfXSwqjHSZv10e9xCjuScPkIxVR+BErjIYgTHsvgvdHni1yXcYrAS6McMvw+h
+	JC4OhYkBuLdaFZAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709028329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3XXrMIze6Y72f4u2ysv6nK5J2tUBv4eD6P0fxLLqnrU=;
+	b=soi8/goXCUpmlv19LLto6jAlcz8JoEvm1nZpGgqTSTtPbqneegXav+HzwbxK++hleQ9qCj
+	3k6rRD9ScpgXGEc76aF2PnpvxqqgNu3BOaYXNc7mqXUOKGqmHaQMHFCC9KBlog2uVCvWC3
+	/QfGbsbvbpNxNVi4ztfU9W6hGk0OshM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709028329;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3XXrMIze6Y72f4u2ysv6nK5J2tUBv4eD6P0fxLLqnrU=;
+	b=oqhTd1iMyjfXSwqjHSZv10e9xCjuScPkIxVR+BErjIYgTHsvgvdHni1yXcYrAS6McMvw+h
+	JC4OhYkBuLdaFZAA==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 9943913216;
+	Tue, 27 Feb 2024 10:05:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id OsmhHeez3WWzOgAAn2gu4w
+	(envelope-from <clopez@suse.de>); Tue, 27 Feb 2024 10:05:27 +0000
+Message-ID: <a7f91ee5-ecd4-4446-9de7-3902763c0058@suse.de>
+Date: Tue, 27 Feb 2024 11:05:22 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] rust: uaccess: add userspace pointers
+Content-Language: en-US
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+ Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas
+ <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>,
+ Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Kees Cook
+ <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
+ <20240208-alice-mm-v2-1-d821250204a6@google.com>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+In-Reply-To: <20240208-alice-mm-v2-1-d821250204a6@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -1.29
+X-Spamd-Result: default: False [-1.29 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 R_RATELIMIT(0.00)[to_ip_from(RLx931z8whuiu5x894fnbjwz7n)];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 BAYES_HAM(-1.50)[91.72%];
+	 RCPT_COUNT_TWELVE(0.00)[24];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 FREEMAIL_CC(0.00)[linuxfoundation.org,android.com,joelfernandes.org,google.com,arndb.de,kvack.org,vger.kernel.org,kernel.org,gmail.com,garyguo.net,protonmail.com,proton.me,samsung.com,chromium.org,zeniv.linux.org.uk,linux-foundation.org];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Flag: NO
 
 
-Hi Alice,
+On 8/2/24 16:47, Alice Ryhl wrote:
+> +    /// Create a reader that can access the same range of data.
+> +    ///
+> +    /// Reading from the clone does not advance the current reader.
+> +    ///
+> +    /// The caller should take care to not introduce TOCTOU issues, as described
+> +    /// in the documentation for [`UserSlice`].
+> +    pub fn clone_reader(&self) -> UserSliceReader {
+> +        UserSliceReader {
+> +            ptr: self.ptr,
+> +            length: self.length,
+> +        }
+> +    }
 
-Alice Ryhl <aliceryhl@google.com> writes:
+Just out of curiosity, is there any reason why this is not implemented
+in terms of the Clone trait?
 
-> Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> This struct is assumed to hold ownership over the page, so that Rust
-> code can allocate and manage pages directly.
-
-<cut>
-
-> +/// A bitwise shift for the page size.
-> +pub const PAGE_SHIFT: usize = bindings::PAGE_SHIFT as usize;
-> +/// The number of bytes in a page.
-> +pub const PAGE_SIZE: usize = 1 << PAGE_SHIFT;
-
-For consistency, could we get page size from bindings as well? The folio
-patches already do this [1].
-
-BR Andreas
-
-
-[1] https://lore.kernel.org/rust-for-linux/20231018122518.128049-10-wedsonaf@gmail.com/
+-- 
+Carlos López
+Security Engineer
+SUSE Software Solutions
