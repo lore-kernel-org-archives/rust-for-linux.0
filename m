@@ -1,89 +1,81 @@
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67EB13AA29
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 14:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2F3145337;
+	Tue, 27 Feb 2024 15:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709045482; cv=none; b=CyVx9uvXC0ksp11d3HWkaNlVHI+7oDq2q2gEa/QTp2cczs9WqJUAf+3NZN5HiFy5Knm+jduHdyEusMhMY7u4Yq/GPXM0lfgxgxBogLbTMzsn30/nmvGP3ZhMWWoghZQGbcYsLVVcuowNyEOr0Sypq5GXhtlji7sCOLwDMB/fDDE=
+	t=1709048248; cv=none; b=OYjvTX04eLCdFDAuvXGP8xxt0WGIWu5TrrD6G/ZkJE/qhonF9MgAR3W82aeCOW/cQV7o4Yy8GKYW2I2WUWSBhcXqF4JLDC6gUwYO08rSKju60IjeIwW7wGyx9q01GR0cUW1Mb7oUkI7sPZE+9/rKEFqO44tKxziiUzmRkw62+VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709045482; c=relaxed/simple;
-	bh=i5VYPShLQ7DBuALAeVASEPVNFC0Vv1VA6Jm1u/KqDTQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k3babUsCnlnTavq/PLNxRhHuzpEiqtLWFAouH51IzMYvK0VrzAdov+JqR5yiwkv7dhJCsKf1WHSenPU8pIs/LqbkJ94PhbZtzQ678TW7wm4H6alMw8g8BGD9O+DwLDuFdkY4HyGtWH8rjCeMJ+31vQLUc+pr2tk2/3SbckCf8H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y2k7kKs4; arc=none smtp.client-ip=209.85.217.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1709048248; c=relaxed/simple;
+	bh=X81n8MnRy+roWIGU70795zeVAGENQmKZ8zQ4q9p1YG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CguvW4fiM0ZGs2uyKqDawRbni12PAJN91QfOiSWQMvawqC232RUB13J/Wy38lNVuLJIS8e8QkUkEqRENVo5sVTzzOjDURsu2vv61Gl0UILtMYPbSVS9UNfrsrAhzPMrpgK4O5lv38U3sDazX2pinqbKYg2oo+esmXWeOt6LXE8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=CE81Ecs2; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y2k7kKs4"
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4706feb17ccso524561137.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 06:51:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709045480; x=1709650280; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i5VYPShLQ7DBuALAeVASEPVNFC0Vv1VA6Jm1u/KqDTQ=;
-        b=y2k7kKs4CAC1bWyDOTpQJWRaqLpKenKzG3ksauTO5G8NZTPyJo8mW1smdwJpVAlrVt
-         lA6bwVYGcT3eafKR5ZMVepClWHy4BhaxD0fxEg2BZ9vQ+ll60T8XcbOAJviAag4htDCl
-         p38U9j/dat60pTt86znjokUZZQU8A39yY/adXdB6gQkcrytMDPTEy9sme35gjCcUz2kE
-         lWoPcotXDZjnjIcPR0/yzYy7FF5KOCqR8xIIfDFwk6Wg/f7eMHq7D4gHiXGEdQQ1vXrr
-         go3EUIfuex3JnzsMtHqlfiLJCmWHR9P750wMwAZ2K0ZqDY0HBx4WePwLvKtatYjolmbL
-         ty4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709045480; x=1709650280;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i5VYPShLQ7DBuALAeVASEPVNFC0Vv1VA6Jm1u/KqDTQ=;
-        b=kGj2UZb3f9p8AuUxBdOHi272uWlxo6uYHNTevElLj+DKhQq1me+mU6SKEbBTt9d++v
-         5u+Uz9R1UB7s8uOHVc00YfLiE53GjBaUul51Ys5eCaoQ/sJcIq6bFO3S1cm96b6127sX
-         36ns21xNHS4m3iBUfGCy+C03nCaCNjDl+1URnzTkzo/KlvT3q+50sRG6Va0CaEcG60Cw
-         2OQSmln7CpivxfQFLN4D4BrXZaYei5X7MQE6cKyoR1ciqBtBvZPJEqbuy+IxJ0TNkQb0
-         LB2Hv5W1EFKEQ1qYaga6LKgF1d1Rn8clCm2dRDLGU8KHC8yf+Pp/YUqYuXb5KnNt00ly
-         jwKg==
-X-Forwarded-Encrypted: i=1; AJvYcCV2mF5RHKDdvcQFe0usFRGq8En79sLYD8hBP4HLI5TtGwh4QwPeh5Ka3baIfuW//OREBeGHNxXlU1EpXugcAiCdawgNZXy0mKtrSSELRvg=
-X-Gm-Message-State: AOJu0Yz8vBL2EZf73TEk0ZCX1aXtnxFbgjMaCMJzyF5JqE9D/xOMG5RQ
-	nK0pO0ocZQbwMowGhgS9D6B8oYbbUythxUkFEmtKAmYM/BehxuqD6K5rQJElSBmMe0pZf0AfbjB
-	Ep2Jlev36zG5FI/bW8R4/Q2TPKI0W8qrTde9b
-X-Google-Smtp-Source: AGHT+IFvGbDtFFtQoiJDa82ZB6Ep2q+oir3b0d7n9XuaQnvAWBrEWqFnAV3+O1JKEJsWZzQFG6T93La1ffVlTZUbJNs=
-X-Received: by 2002:a05:6102:55a4:b0:470:3ade:af52 with SMTP id
- dc36-20020a05610255a400b004703adeaf52mr8740310vsb.6.1709045479638; Tue, 27
- Feb 2024 06:51:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CE81Ecs2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=048Rd0Tnfw7wUdrVUDBOkaiJ20Lu58pUzR90H15XFkE=; b=CE81Ecs2WMvq5uJ4+l/IRss8nC
+	cPO8AUcaqJV/X10HslcSeuRVYnBOqXQC7AeQYm6nPeryy/k+r7WspXf23n2wHzDQ1j9kX5GrSbwyP
+	liiVgkvDPg/CTZL7M9vvERLT52Smk7Vpjeyx0ieaj4WtsukEUykYWpTCkxzHYmVEj/pTE2sLNLPv5
+	z+7+tf2QUpUy3QdICA+EgCoN6pNma9oXxOjyostxHd8gmAB3HKiiM//a3K+Ombv4i/PND2Q9Xe3rj
+	FgWfrqlgYPkOKTBpZMtGSOQsbRldl66R/rSQ5AvpHG7IOiPMe6serX2FTErKR8jo0INoJz4wZm8SY
+	dFbvABwQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rezW3-00000002jiD-46dS;
+	Tue, 27 Feb 2024 15:37:12 +0000
+Date: Tue, 27 Feb 2024 15:37:11 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Kees Cook <keescook@chromium.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v2 4/4] rust: add abstraction for `struct page`
+Message-ID: <Zd4Bp6ohjb7H9poA@casper.infradead.org>
+References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
+ <20240208-alice-mm-v2-4-d821250204a6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240226-rust-locks-get-mut-v4-1-24abf57707a8@gmail.com>
-In-Reply-To: <20240226-rust-locks-get-mut-v4-1-24abf57707a8@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 27 Feb 2024 15:51:08 +0100
-Message-ID: <CAH5fLggS6H+y6dBUkyecUyKHU5e_ueEmGEXh=DA00doqiVDEvA@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: locks: Add `get_mut` method to `Lock`
-To: mathys35.gasnier@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240208-alice-mm-v2-4-d821250204a6@google.com>
 
-On Mon, Feb 26, 2024 at 2:55=E2=80=AFPM Mathys-Gasnier via B4 Relay
-<devnull+mathys35.gasnier.gmail.com@kernel.org> wrote:
->
-> From: Mathys-Gasnier <mathys35.gasnier@gmail.com>
->
-> Having a mutable reference guarantees that no other threads have
-> access to the lock, so we can take advantage of that to grant callers
-> access to the protected data without the the cost of acquiring and
-> releasing the locks. Since the lifetime of the data is tied to the
-> mutable reference, the borrow checker guarantees that the usage is safe.
->
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Mathys-Gasnier <mathys35.gasnier@gmail.com>
+On Thu, Feb 08, 2024 at 03:47:54PM +0000, Alice Ryhl wrote:
+> +impl Page {
+> +    /// Allocates a new page.
+> +    pub fn new() -> Result<Self, AllocError> {
+> +        // SAFETY: These are the correct arguments to allocate a single page.
+> +        let page = unsafe {
+> +            bindings::alloc_pages(
+> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings::__GFP_HIGHMEM,
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I thought I raised this last time, but this is over-specialised for
+Binder's purposes.  Many places that want to allocate a page want
+different GFP flags from this; they shouldn't even be the default flags.
+So either what you're defining here is a BinderPage, or new() needs
+to take GFP flags.
+
