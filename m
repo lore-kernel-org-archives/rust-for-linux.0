@@ -1,111 +1,147 @@
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3B213AA35
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 13:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943E01420D2;
+	Tue, 27 Feb 2024 13:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709039566; cv=none; b=VdviOYE4lQejcYGFBjCN/C6TVGZmW0AgCX6kM7/eJdHhU3nF2IoBya5soEkWJRZujT02mwpqe+gQfJ1ECa46Vw1Ngpec+YqaL3Va3m6/Q1b5GLzHI59VTsm9KzvXx8abRyyWMkBtKDsVnV/8sWaCBIeN+mlKayH7tcv73zlhXSk=
+	t=1709040705; cv=none; b=oF5Lfv6eJOgSnBE8EHzRGm+UI0WAw/YWdXvXxXRCKetajiiySq3UA+waSnN2gfRy9PBErnHW8nD3zpegrxuHO4XnDSVhA++I9ZYjvj6rZVlLEbnvcCnOF6TXss/6WP7tVhQkRT4R+1v8mPqxFIkbFH9mcwwTD0IBPObDHnLa4Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709039566; c=relaxed/simple;
-	bh=y6dpxMerbedpocP5qX8Fk424TWfiwib+4y7gPQ6TzzM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D4vmh3z8j09QVPtdv+sAz3e5jreJoHMRvshS77IZ7lcjS43U3ABtZ79MbWXV6h+M8/n9vGtEr6Gpf6YkyghMPCaPb+a8Wxd8eVBQYQ3Ze/70+IzZFsa/H2U/65/Ns/T/dOa6EzFMx+4SVDD4HYwgQSTM+feg76vqCDXgk54Gw1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f7yw8rlX; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1709040705; c=relaxed/simple;
+	bh=Ki82SoGWmWX3Ugj8uBKuzuI2IE1hzceZHBRrq0QZbE4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=to98xe72+kuYcLgIGdh+s45m9Ts08Izihjh38wHB0miCCuoUZJ1T2NmBjOTzo144/Rh82+96EkUfTVj2qfRu7X+G2+WomTsAUpRxP8xvm12usCrEXhlw98zbHHQV8cZFp51gHK9mgWxRJNntRIvzQ4qcHRHpxdzcE7NlrItJ61k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=iLSOAyvK; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f7yw8rlX"
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7da728b0597so1204310241.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 05:12:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709039563; x=1709644363; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d3oWv3i2/XO5b533cdNomwEvxjqpP18WAK9tbqODocY=;
-        b=f7yw8rlXRFO8RCB5v/Wh9ZIpMBjLKECCg/hhQ9SYuAh4yC+sGfh43eLbKYdaJTaMK7
-         lSZeqTOBl9YKInmXxtqAauIL3q7CIqtX7HN8UN21fUJyQOUSoRRoGDz0HPXdrhNYzh2Y
-         ijdAVYjjfzqVsDCqB8lP9uNWhn0AHI48GB94aFPKRmx6kuIn0jhI10t/CXBNHD4zR1UW
-         I5+ylCrYZk8qP9UgAysQOTorU3T5bgGPtZ0zmrueJtPB5f+x+WQMjyTozatTIOKW5qo/
-         1DYpML4uLlpHy5GTbj3bxUkaxdfBvSpUElHiq/ig2cgI8k+Gz7yfce7nFIoeK0aanOvr
-         o3Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709039563; x=1709644363;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d3oWv3i2/XO5b533cdNomwEvxjqpP18WAK9tbqODocY=;
-        b=PPPj+GPI4tT+qHNaKLEGN4TAvxbjSwfRJkUNvktF5rHSgEQn6r8dTvHiHrPi29tbhd
-         vK1R0E6aZnddIXKcbzxPkUGR8b8z8jixGvq2RNdAC28IYI5fbIXlkSiBkZbDYbTVLMvl
-         55u0wV0AyiYw3hX2NmcUoYwbksxcvIGWN4qCL8WUFfYNtwtLwf0CTpIABB7moRp9uac8
-         nM6EHdtfG0qxrZFm7fWSC5aozCZIFN4HrDrE3ZyCzeHHY2NA5CG+u6U1kj3vMtklJXhk
-         6rhY3pE1qixzoLw6a29XSpgnsbiQjPEfZWDbnqcGTnSoacAbqRjiWO/ImJz2w5d9NLC5
-         j5nA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7eHsQFYUFT3RM5cjnBEUMjC47h6e5DBHNIFsEYsJtATLt/UFNCcmhhRIL9+Uh2C4X0GwLhSerddDrjS7KKLcOK1lkVi4io/+q1YdFUcQ=
-X-Gm-Message-State: AOJu0YxHJB2DPf1IXmyUfwQ7uD+Ec5wgAVp5mXc4gxwWBm3yNn59qfwf
-	8tiKK9KKCp5cUH//Yh7KV5PhKJjE7EMr1zmZAx/Th5jrrYQdQpHg07fu7NwVZ3gQ9DTeblIgaoD
-	Nt0HMs5m934sVGNTvcPCQvs+Zq9d/2UDifnNI
-X-Google-Smtp-Source: AGHT+IGb8+w7aoyXh4uQz6QeOsCbek+YflIJRyj5WX4xYPWLOz1pYVSvGdKR7Ib1S98g5iKsdAqah8qeTHVRcJgTseA=
-X-Received: by 2002:a1f:da81:0:b0:4c0:3116:e909 with SMTP id
- r123-20020a1fda81000000b004c03116e909mr6754352vkg.7.1709039563535; Tue, 27
- Feb 2024 05:12:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="iLSOAyvK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1709040703; x=1740576703;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ki82SoGWmWX3Ugj8uBKuzuI2IE1hzceZHBRrq0QZbE4=;
+  b=iLSOAyvKamz3G/D6WUlmaq1RobHx9/KxZ9NGnp0gN8/8mQB/VjdKzzTG
+   wRes47z+RIfL93Buc+LhxZDqji7OKbzKqiownBYLF7JZcugMTNmt/frpv
+   Zw3fZSdcQ3jWZgqR7RipIP221EXSl9wjScc4QRrjH1KTP9BmY93C9z55m
+   hef0iP2RTdH6Hbu/yyleKHCzWhXQoQSGW/GkbF7r5NK/GsgaASxirUAOk
+   LEIFHtbShKrVAZYaYEibq3gP6HQHLE95f8s6HtTTlM8TTMl2uDF0+AYJQ
+   fMt66rFmMfMotAGlJZjpxcaXGh+I3LqzijWO5DMUL/GjTVcVdVKPMiGEC
+   w==;
+X-CSE-ConnectionGUID: yz8g29ITRhSf6O9VOhbtEQ==
+X-CSE-MsgGUID: OaQoEJFJSXqnfheKzxcBOA==
+X-IronPort-AV: E=Sophos;i="6.06,187,1705388400"; 
+   d="asc'?scan'208";a="18458098"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Feb 2024 06:31:42 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 27 Feb 2024 06:31:16 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Tue, 27 Feb 2024 06:31:11 -0700
+Date: Tue, 27 Feb 2024 13:30:28 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>, <linux-riscv@lists.infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?iso-8859-1?Q?Bj=F6rn?= Roy Baron
+	<bjorn3_gh@protonmail.com>, Jonathan Corbet <corbet@lwn.net>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Nick
+ Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
+	<rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>,
+	<stable@vger.kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Ramon de C
+ Valle <rcvalle@google.com>
+Subject: Re: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
+Message-ID: <20240227-nutrient-uncorrupt-202767671f78@wendy>
+References: <20240223-leverage-walmart-5424542cd8bd@spud>
+ <20240223-perjury-preshow-fc2cf73d552e@spud>
+ <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com>
+ <20240227-uncertain-amaze-6197e627ad95@wendy>
+ <CANiq72=geBobqM0Dc2yv=NjAc3MWXhOrDHfuJ84TgQ+XVxBo0w@mail.gmail.com>
+ <20240227-unwind-canteen-3da9b07af10c@wendy>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
- <20240208-alice-mm-v2-1-d821250204a6@google.com> <a7f91ee5-ecd4-4446-9de7-3902763c0058@suse.de>
-In-Reply-To: <a7f91ee5-ecd4-4446-9de7-3902763c0058@suse.de>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 27 Feb 2024 14:12:32 +0100
-Message-ID: <CAH5fLgh9xuYs97SDn61yEm08Tx9PDPMWw40BsFeMPuHASq_s2A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] rust: uaccess: add userspace pointers
-To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Kees Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="r5yJmoa5fGQ0bLaA"
+Content-Disposition: inline
+In-Reply-To: <20240227-unwind-canteen-3da9b07af10c@wendy>
+
+--r5yJmoa5fGQ0bLaA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 27, 2024 at 11:05=E2=80=AFAM Carlos L=C3=B3pez <clopez@suse.de>=
- wrote:
->
->
-> On 8/2/24 16:47, Alice Ryhl wrote:
-> > +    /// Create a reader that can access the same range of data.
-> > +    ///
-> > +    /// Reading from the clone does not advance the current reader.
-> > +    ///
-> > +    /// The caller should take care to not introduce TOCTOU issues, as=
- described
-> > +    /// in the documentation for [`UserSlice`].
-> > +    pub fn clone_reader(&self) -> UserSliceReader {
-> > +        UserSliceReader {
-> > +            ptr: self.ptr,
-> > +            length: self.length,
-> > +        }
-> > +    }
->
-> Just out of curiosity, is there any reason why this is not implemented
-> in terms of the Clone trait?
+On Tue, Feb 27, 2024 at 01:02:17PM +0000, Conor Dooley wrote:
 
-I think people find a non-Clone-trait method higher friction than just
-calling .clone(), so this nudges people towards not using it if they
-don't really need it.
+> I'll give testing another try.
 
-But really, it could go either way. It would be okay to use the Clone trait=
-.
+Yah, it is (as expected) broken on arm64 too:
 
-Alice
+ CFI failure at do_one_initcall+0xec/0x26c (target: __rust_minimal_init+0x0=
+/0x64; expected type: 0x36b1c5a6)
+ Internal error: Oops - CFI: 00000000f2008233 [#1] PREEMPT SMP
+ Modules linked in:
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.8.0-rc3-00002-g724a75ac9542 #10
+ Hardware name: linux,dummy-virt (DT)
+ pstate: a0000005 (NzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
+ pc : do_one_initcall+0xec/0x26c
+ lr : do_initcall_level+0x8c/0xb0
+ sp : ffff80008000bab0
+ x29: ffff80008000bda0 x28: 0000000000000000 x27: 0000000000000000
+ x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+ x23: 0000000000000000 x22: 0000000000000000 x21: ffff18d941cb0000
+ x20: ffffb8f6d6d9f000 x19: ffffb8f6d63e8b18 x18: 0000000000000002
+ x17: 0000000036b1c5a6 x16: 00000000d65f03c0 x15: 0000000000000000
+ x14: ffff18d9420280b1 x13: 0000000065dde380 x12: 0000000000000017
+ x11: 0000000000000000 x10: 0000000000000000 x9 : d4db8c0058e7e300
+ x8 : 0000000000000000 x7 : 0000000001f4c18b x6 : 0000000001f4c18b
+ x5 : ffffb8f6d6d300a0 x4 : ffff80008000ba78 x3 : ffff18d942019860
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffffb8f6d63e8b18
+ Call trace:
+  do_one_initcall+0xec/0x26c
+  do_initcall_level+0x8c/0xb0
+  do_initcalls+0x54/0x94
+  do_basic_setup+0x68/0x78
+  kernel_init_freeable+0x100/0x16c
+  kernel_init+0x20/0x1a0
+  ret_from_fork+0x10/0x20
+ Code: 7298b4d1 72a6d631 6b11021f 54000040 (d4304660)=20
+ ---[ end trace 0000000000000000 ]---
+ note: swapper/0[1] exited with irqs disabled
+ note: swapper/0[1] exited with preempt_count 1
+ Kernel panic - not syncing: Attempted to kill init! exitcode=3D0x0000000b
+ Kernel Offset: 0x38f655800000 from 0xffff800080000000
+ PHYS_OFFSET: 0xffffe72700000000
+ CPU features: 0x0,88000203,3c020000,0100421b
+ Memory Limit: none
+ ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=3D0x=
+0000000b ]---
+
+Cheers,
+Conor.
+
+--r5yJmoa5fGQ0bLaA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZd3j9AAKCRB4tDGHoIJi
+0u2PAQC5/4jfWMdylFg+y63pffgtxRDgGSmDgaHdyDygKV9j9QD+PNFWt0vl/a+D
+X2nh2w6BJGQiRtf9I1HY/qbOMamdlQE=
+=4HMF
+-----END PGP SIGNATURE-----
+
+--r5yJmoa5fGQ0bLaA--
