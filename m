@@ -1,111 +1,107 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF3855E57
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 07:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4987655E71
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 08:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709020512; cv=none; b=ONGv4UA//u/pRTZI+BzcuAupJb0VS4JiGqURgtUlLpXvHFiNCEhGIOmNrms04+Khgo9TXXa+b1XxOVOkyWR4tiPyWd96O7l3QLdFjxLcb14B71BW9iduHxOBi/ZnGqMxC2GIG89kWPqcq/+Y9B/21z9vwZ16UW3+wfjwkjc6XsE=
+	t=1709022988; cv=none; b=bNaXqh7rJ96yPvbkV+bR8I62yywp8PYRHb7/i5+4bBT4M7jVFpTf6T9r/Z6j98BG+eCOXRaBIq3Il0/lwZP1WbdVwM21e6fMLzhA/UC2LF58yJuSrdfRTjY/Y+VbmtRZX6o9nFGP7/Pu4TTdLvTRnd6gCP7Xt6YNk8/OF3M3swk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709020512; c=relaxed/simple;
-	bh=3YwsmNBwEGfFj80aTMlJdL8VkTAwnCvoWa6TqLDGUZo=;
+	s=arc-20240116; t=1709022988; c=relaxed/simple;
+	bh=tBm5IIGFhkgiqabszftedxFLBNT4N4zs7aN7ZnS5cF0=;
 	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=Ca8EnbGGqYKtSFaR2qI/SE0CDYaAz+c/q3Yo59S3RnFGDOFBwgvGXQEO00/BJfVJx68gMK6vgBzYe0BH8Tr3GEjSk0Td/Wvftv8PbHhP3Gb846qeTS7G5yJpc0gt7jG2c4wSjsi8NscdDaOHN7Obd4vbv6Xblo4Hvzv266spjmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=UgaYbcSP; arc=none smtp.client-ip=209.85.208.52
+	 MIME-Version:Content-Type; b=pfiBgV69CzBUO2NAfy6m9NPhLt3CzynwyQNi6p6CUXPm1wYHqzyA8rGC5ueyclPnrd6XTAtEUAKzG0jA9nce18kpWjLxHlYUZdf745JW4EPYLoXunVXHyfsJW5W5blgos0iTvPskIxeu0ZCt89nTeNH+arSPbpqx5KBoAsVg5ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=p3MkRpx5; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="UgaYbcSP"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56533e30887so4361221a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Feb 2024 23:55:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="p3MkRpx5"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5648d92919dso5213742a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 00:36:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709020509; x=1709625309; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3YwsmNBwEGfFj80aTMlJdL8VkTAwnCvoWa6TqLDGUZo=;
-        b=UgaYbcSPPuR0qfAeY3WHmzTx4KWfdJontpBGC9yst8NpamoC5+7xSGoJrweepUm31J
-         Zk0FXqIA+MILtoIdXwkqtC5ybZrV/hwIvCvmltVrpftLj0I8gOtgYwNWbrY2mwBBuS2f
-         kxu2XObfEy3/UrZXQCyWh6F0LCqkup95vVHDzABu4cqFJGSqxOKj3QaPFms9OEo7rGQp
-         whCVXEeK9F4VtMAcN6IWwdp3aVjQg4j+iJk3XTLI/BidVl3JelGWfxE7MIj2Hcz2vJHD
-         grGRDLhXyvwkJZqRHvrjheZg1Wgq7dPtQREmT9uH0K3aQwYztT4VO3vbnNMkbEZpoXeN
-         T+8g==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709022984; x=1709627784; darn=vger.kernel.org;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=tBm5IIGFhkgiqabszftedxFLBNT4N4zs7aN7ZnS5cF0=;
+        b=p3MkRpx5VREXJOooask2Br8TOUkyDZYl/l0UMQyjnwqe4Ky7hzSk7soSnuZaNmnGFP
+         TOGRx1rW8rZwuXgnvAUF16AifvepYlW5SiFjiz9gUWXZkbw4O+5OrRrs8yRwYLdGD1Ax
+         oDseHewatyh8+ZG0iwtA6vdcC28bCXguxcsTHWXMv1+WgQP0NFgd6UMInRNBLODDNCJi
+         yazVQHrbPIWFm6YUyn0ypsmjwZrLGUUnNquVAYHg6vVABS3ddMFP/T1W1GTe/NIjyFA/
+         juU7cnmPfdTDXEH700c+XXWIOefma1P0YwG3sFiKCUDqEllPSXwG5Ed0ZiX7L96WPvUT
+         6G9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709020509; x=1709625309;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3YwsmNBwEGfFj80aTMlJdL8VkTAwnCvoWa6TqLDGUZo=;
-        b=VRlVlZLGT3rwAeA/LCtFE5mAejKzpnj7b/6zqws9Q8tMfLXqoloqByG7Je6mPW2n6p
-         DEpsi4FQPhMMIw6u3ecYOudmue3pJl3/t+ciQjxEq8HnC3Wc7DIRkgYSnoz8/wLST/I+
-         hfyZeomKiY2mPa2kS2I0c7ViLF6ziDl10WrlXLhUelLvJLk5Bs2iMEdgDI/VCS3hRNus
-         rKp2E0UFzAH6KXqvjXQArG0KzOEhyA4TTPRAXdrhM8GKPaWHfXIT7V5SkImEab0yuMPy
-         sJVWzXCX633oCvd/3l1/ld1+PdMdl1o33tB5Ty6dsBLcrI/3QhD5ifyIAS2Avygo+a9N
-         4NjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKnIS7i837Kg+Hdwb+LyUwSlu9gvxsFPcZwV6D4LVnPKJvF5x6DPxpwvcEahRepKzhDKys6UrmyzoAsYhqRLMsbzXTOhCvGoRzb64n9C0=
-X-Gm-Message-State: AOJu0YzbgZmQLTnUgJRb0Gy73UWN+GtbTKq8RIehSXXCmiZrCXTbpSKp
-	DVIQWVr7IRbW4Uzqn8r2P67cMdOmwuBS4wpmURfnsEJ5b8ySmbhg6Fp8hgGt5ns=
-X-Google-Smtp-Source: AGHT+IHZCKU4F4DqNwk9h+g7iJIh22fZJJ9J3NRhYCTuQGFEiinICXGF2Bdlgkihac4kau8kRK6vAQ==
-X-Received: by 2002:aa7:d898:0:b0:566:44b4:ea58 with SMTP id u24-20020aa7d898000000b0056644b4ea58mr285530edq.38.1709020508661;
-        Mon, 26 Feb 2024 23:55:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709022984; x=1709627784;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tBm5IIGFhkgiqabszftedxFLBNT4N4zs7aN7ZnS5cF0=;
+        b=mpxRF0XSsIl1L5ceQUK/TOZjlpjCfUKEPZc6jwOaspO9OXYWrReZXCPUH81ILKqG/J
+         6wsXTtGhzUfk5NE15LUwUrnUQtXzMu1z0wu/oBKXxK/ElFmyDKnYIpnNq8XjReFvwc9E
+         x6raouopS5e6SQbptnk7ARigxayPNAWF2Kgd1Al3GJkyhhrun3qaReMUuPwjnb4vANar
+         EvjcZJZ/xD4Y4Lb3x8iki/8FsH74/hRV541CgWmhQDV47NxTLw6rR4RHYuTglxEv2NU2
+         v+7hwORUGKIw+u0dgynYiFiRF80OLEgv35Eq+kKA+1X5F81ElOqemvPc1jsx+lYZwjGS
+         wAuw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6KgEfgBz++ez5zjC0Uo4P5LF/0u/NdRfvmy4OzXys+m3pwXDe6QJ5pxIheGVi/p4rDks9K+1VWmez0ZBUcDs72LoioSQdKKQZsDcEnFU=
+X-Gm-Message-State: AOJu0Yzf7ZPIXVJbrIAxi/jY99SR+bV9o09dsrmsPbfiSen+5DqmfO/D
+	5bOEB3qBzQJcMdwnSXAcsVdwPrXtZ5eJOjleNlWd7gF1uFRiNBeDBTcRVKZLIto=
+X-Google-Smtp-Source: AGHT+IEmSlqSqeopobEyVgC92+uCi8Y34RHVrtsYAkNKK7bVxD/WCyfc9qMKmBQUExQLWATnFTHthg==
+X-Received: by 2002:a17:906:c7d4:b0:a43:20c0:6f7a with SMTP id dc20-20020a170906c7d400b00a4320c06f7amr4112372ejb.48.1709022984519;
+        Tue, 27 Feb 2024 00:36:24 -0800 (PST)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id j8-20020aa7c408000000b0056200715130sm502183edq.54.2024.02.26.23.55.08
+        by smtp.gmail.com with ESMTPSA id hu11-20020a170907a08b00b00a3fcbd4eb2esm532864ejc.1.2024.02.27.00.36.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 23:55:08 -0800 (PST)
-References: <20240209223201.2145570-2-mcanal@igalia.com>
- <20240209223201.2145570-4-mcanal@igalia.com>
+        Tue, 27 Feb 2024 00:36:24 -0800 (PST)
+References: <20240208-alice-mm-v2-0-d821250204a6@google.com>
+ <20240208-alice-mm-v2-4-d821250204a6@google.com>
 User-agent: mu4e 1.10.8; emacs 29.2
 From: Andreas Hindborg <nmi@metaspace.dk>
-To: =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>
-Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>,
- rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- kernel-dev@igalia.com
-Subject: Re: [PATCH v7 2/2] rust: xarray: Add an abstraction for XArray
-Date: Tue, 27 Feb 2024 08:54:25 +0100
-In-reply-to: <20240209223201.2145570-4-mcanal@igalia.com>
-Message-ID: <87plwi9waq.fsf@metaspace.dk>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Kees
+ Cook <keescook@chromium.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew
+ Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=
+ <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
+ <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren
+ Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v2 4/4] rust: add abstraction for `struct page`
+Date: Tue, 27 Feb 2024 09:32:27 +0100
+In-reply-to: <20240208-alice-mm-v2-4-d821250204a6@google.com>
+Message-ID: <87h6hu9udb.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
 
-Ma=C3=ADra Canal <mcanal@igalia.com> writes:
+Hi Alice,
 
-> From: Asahi Lina <lina@asahilina.net>
->
-> The XArray is an abstract data type which behaves like a very large
-> array of pointers. Add a Rust abstraction for this data type.
->
-> The initial implementation uses explicit locking on get operations and
-> returns a guard which blocks mutation, ensuring that the referenced
-> object remains alive. To avoid excessive serialization, users are
-> expected to use an inner type that can be efficiently cloned (such as
-> Arc<T>), and eagerly clone and drop the guard to unblock other users
-> after a lookup.
->
-> Future variants may support using RCU instead to avoid mutex locking.
->
-> This abstraction also introduces a reservation mechanism, which can be
-> used by alloc-capable XArrays to reserve a free slot without immediately
-> filling it, and then do so at a later time. If the reservation is
-> dropped without being filled, the slot is freed again for other users,
-> which eliminates the need for explicit cleanup code.
->
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Co-developed-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> ---
+Alice Ryhl <aliceryhl@google.com> writes:
+
+> Adds a new struct called `Page` that wraps a pointer to `struct page`.
+> This struct is assumed to hold ownership over the page, so that Rust
+> code can allocate and manage pages directly.
+
+<cut>
+
+> +/// A bitwise shift for the page size.
+> +pub const PAGE_SHIFT: usize = bindings::PAGE_SHIFT as usize;
+> +/// The number of bytes in a page.
+> +pub const PAGE_SIZE: usize = 1 << PAGE_SHIFT;
+
+For consistency, could we get page size from bindings as well? The folio
+patches already do this [1].
+
+BR Andreas
 
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-
+[1] https://lore.kernel.org/rust-for-linux/20231018122518.128049-10-wedsonaf@gmail.com/
