@@ -1,94 +1,121 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC1714F995
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 14:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557CF149E0B
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 14:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709129622; cv=none; b=Cf9fIYLoHoeNcaYKavRTm1wDRmAduN4BNHiUYqoqL+IMNgMO14s4WSewUd4vof11z8W6zZGuZcZ++5ph3ETFQG9CO/zly89Mc5fYZIIsN14bbbKJckwSyT4E9lVGiSd1V/EclXFkoJamE1PxqNagpUrgmHR/M9mn0YSbXX6ihqc=
+	t=1709131619; cv=none; b=mpy2C5WftVxrikSxwrzz8RvDCGeJUfSuTUVh1SW1xLxAtQ6fNKXdZLSMbM477oHST9kmrtg0O0krXZj7leW5rJuUx8dkKL4YmG1PFznvG8ISHYg4zmakBekht/KtxqZFX/jvnx4yJTZh4UESjzTC6mo4R2xdUXrsEIK9tBfbSB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709129622; c=relaxed/simple;
-	bh=GZSa7w9u4wZYm52OzgA4Rz5PAaON/iHPoxrHsry7+Es=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cyihmwj5pLOrlydIPaV655dUC9tnPrRkV5VvB/Lr0EyGPyknjV+TsTPVap7RyZg+y+PJ25GEhLkVoo5T4QV6x8qw5KqKejzQBySJ4ZEypmjVwziowRIToWW4TeaIRcArItRbnEU8k+kl6B8+Gm9w3gwHqP+iScqr6WlP/kzNuhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G9ktYVfR; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1709131619; c=relaxed/simple;
+	bh=HIHzjpOrKXqxWUafULLKuoxHLdhUSesh8dKt3u79tcI=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=FzCGDfYS5oFNM4tfAUBEx1Cdz2EyP/gM0B/tvmgj8AbhfRaW53MVbo1iepWfOZPIhw7wv1EGo7Ycn8FZJfLirxTCnxSTMw5XNMbA8CEQXFGmTH4gO2FZclsM9fM1zl7ZX9kHIHIZTWApKHGpPKFcib82ZHBcIB48YvJH7tQNGZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=u5dIV5Qw; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G9ktYVfR"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-787d021f08bso283169785a.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 06:13:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="u5dIV5Qw"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a43dba50bb7so172852366b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 06:46:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709129620; x=1709734420; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zWdt7JSqxm5A0d9YCvZY0giCug1uc5yEmh3KxJvdV0g=;
-        b=G9ktYVfRBg705jupUhFB0ximZlQSyXf8BFbnFkVbwCQAR2drbM6ZeRYkfuxHdm0CYD
-         Vo/lO09/PdhE/TbYN5CCDuKYYdpewJ5f/mNeX7L/jwX2zLEYPJbNK/grOmnLUvT/nHae
-         n2PtfR4Ju5EG906wEKQYgWVUnimBUchc8CNl149hPmfDNU+eyDGNlbseCPmBeTRTtble
-         bZJ3V+JaeoZYJcLtA0XIlSj0Oeq51edFxt5/s9QZNMna+zQ3hvGivMkplwRqIPLvanLH
-         JH4IxYbniVvI6epRCbaO252IfEUjK9aMP9uQmvYrFJRxDRa625jgR1GpzsS/bU0zuQ8b
-         HcTA==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709131616; x=1709736416; darn=vger.kernel.org;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=8qxXismbJGcxxSTGQfo0P8Mi+M/PX5Dw7LvQPC3lxVI=;
+        b=u5dIV5QwBYHZ3+rbhMuG78masI3SP+jfnoz2ntUIM3QT2VUKX2MPuLxd0jrIQ0srPG
+         y94QpMB6EFeYkncliZnquGLLfkFe+XUR7cHfzIZmpStm+3GE07JFv00195r/K0v4l8wW
+         3MXrdpMg06FdxDNhSQCmpW8fJOzKFjOhduRqCfjNSn4h/14DkTrY0xY6YpkJO9I7B+Of
+         aQnRhHfeIbbZDQBwy/lrGFwf7iIFqkQo6PXR5N1s6pDS1RsZmdqmBTxwEEAcFPqyHiIr
+         Cff9Q8HfJfAGVJvW3DfMCOgHDvLvePD5gIkK4befWH6GSJJoZ4p+TrMbcngXMVuT+2jw
+         xrqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709129620; x=1709734420;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zWdt7JSqxm5A0d9YCvZY0giCug1uc5yEmh3KxJvdV0g=;
-        b=XN7oBhviz74lCXqRshXhS4OoDGY8viBhWyFqFWUeuOBoj5ToQyaGe0nOOGdFGlTe8C
-         JcCMt8uNwxQAoue0vdo4/iHdrRMobe1RAEfItYY96c4yJsiEItIUNh3gOy0ccjpBFV/g
-         AjQyoOT/mHENW6mG+aVwbZT6Vurv+nhAagamjdZQ9X49wyvG8NDl09nEIqWD4Is3kDXk
-         UroYYVnH5lM7a/9MG4iD+QuSsIFP9J2sepYd0GNItlyRHdMpZ0qASY93Ac79z0kZjZED
-         X+DpacUA6w7QjxrCk34mXgvVT4NtiuxDAsautpgP8OpMts4EYo4aQ1/RfTtQLkNaQ8JH
-         6xCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxKnor6HP7jcSqNHHQxtphvI9wWLCyDNf/FTV05NJ5k+YOgFTLr3t1MFBs/dBGfMD5o0Sv4jSIPlF7eJqlqmt5+ZZ1hT8fMNmKyugV4as=
-X-Gm-Message-State: AOJu0YxGUoLmlF2F0+xxl/00rYeyMqVrdJ/eBXYEdKgZOdTZOaczM0e2
-	oYR2MAzi2NP8MPGCsBTPndWWDKKKgjC9MhS/N75o3ytkjk5weEfgw7KfjnCMjCoZEkid30vj8qb
-	V44+yBx7IiX3vV6MxXx77sV1xOBP3ToFmFa5k
-X-Google-Smtp-Source: AGHT+IHhKPlutmi6jJVN+nL3TabbPZEuB5EQJ3Aa8MscJlcMNwjnLMk1ATmsWR2BYwS7KdkjnKd9gSsiJe+EUGQ14CI=
-X-Received: by 2002:a0c:e450:0:b0:68f:edeb:91d5 with SMTP id
- d16-20020a0ce450000000b0068fedeb91d5mr4864685qvm.16.1709129619598; Wed, 28
- Feb 2024 06:13:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709131616; x=1709736416;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8qxXismbJGcxxSTGQfo0P8Mi+M/PX5Dw7LvQPC3lxVI=;
+        b=RgHeYy5jRDfZ9DZljVj1B1RnXCRiNX5o94RwT2fbpAc/d/Yy1RkVhCfVplPhttXq7e
+         VY8FQIEdPHl6LC+oKeOrAzz3G/zTQ/A9q8g3ta7yH096SFLpfBqIbWDOMr02dgtg32n+
+         smDOZ/WhHKO3MoqZpEpw+2ygh2gE0CILCiiMPjTeF0ZE4/hX1/ouFZkoJo5vYufZxLUn
+         szo1ZuRSyb/jBQGzdhRxYA2u8SK91hSR2zZ0MX//o6GsAUinXa1/rcO2NIFTIhNynN4E
+         qC/aWqyfA4/2wpUPCbMm6VYGxGW9VC3ELgLUidgpM3K6k0uYkmCUKcBWLjSYQTA/W+Ss
+         +r2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUNGp1puF1o0Q9anhrpjNeeksdkMXPUQOp9KwgGkDDWNK068wniWWfO5k2kQSi4I69BYRAV8jNbkhS+yT+zJ1arV9UxCu8fGv4fSboNUQU=
+X-Gm-Message-State: AOJu0Yz4amOwPqy2h545zOOnrO09X73jD+xfSyVHyclYyzN4Zc1AAYoz
+	NE7M5iMv2bGIk0Nds5AaAdQZACJIlhxkbGAKyP1ydIInjqE+j/139fKgf+1B4pA=
+X-Google-Smtp-Source: AGHT+IEaCtfzpxkkLGZrLyaEquAtLxbLxoHoHkahKKccPYaAGg7T1KVamkQdgIwfHk8QmWSe6axdgA==
+X-Received: by 2002:a17:906:c196:b0:a3e:8300:1af3 with SMTP id g22-20020a170906c19600b00a3e83001af3mr8976821ejz.30.1709131615583;
+        Wed, 28 Feb 2024 06:46:55 -0800 (PST)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id dc6-20020a170906c7c600b00a441674cae4sm357911ejb.222.2024.02.28.06.46.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Feb 2024 06:46:55 -0800 (PST)
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+ <20230503090708.2524310-5-nmi@metaspace.dk>
+ <-SiJ5paRDIUkH1WEWhGhEjhIgFbSo5PJAvac53bTnBZ5o41DR-kNWZEQBsnKeW1FRJh35siVFRrx54L0M6ebSzl0rzecgcDjqZFGRa9uypE=@proton.me>
+ <87a5pcyqf8.fsf@metaspace.dk>
+User-agent: mu4e 1.10.8; emacs 29.2
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: "Andreas Hindborg" <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@lst.de>, Keith  Busch <kbusch@kernel.org>, Damien
+ Le Moal <Damien.LeMoal@wdc.com>, Hannes  Reinecke <hare@suse.de>,
+ lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+ linux-block@vger.kernel.org, Matthew  Wilcox <willy@infradead.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, Boqun  Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ linux-kernel@vger.kernel.org, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 04/11] rust: block: introduce `kernel::block::bio`
+ module
+Date: Wed, 28 Feb 2024 15:31:04 +0100
+In-reply-to: <87a5pcyqf8.fsf@metaspace.dk>
+Message-ID: <878r34aboo.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240227215146.46487-1-daniel.almeida@collabora.com> <20240227215146.46487-2-daniel.almeida@collabora.com>
-In-Reply-To: <20240227215146.46487-2-daniel.almeida@collabora.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 28 Feb 2024 15:13:28 +0100
-Message-ID: <CAH5fLgi_Y0a=XPtgdiA9KcsmMGxn=DjvLMmSq-UF8VQtZVTccg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] v4l2-core: rewrite the VP9 library in Rust
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org, 
-	hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, Feb 27, 2024 at 10:56=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+
+Hi Benno,
+
+"Andreas Hindborg (Samsung)" <nmi@metaspace.dk> writes:
+
+<cut>
+
+>>> +);
+>>> +
+>>> +impl<'a> Bio<'a> {
+>>> +    /// Returns an iterator over segments in this `Bio`. Does not consider
+>>> +    /// segments of other bios in this bio chain.
+>>> +    #[inline(always)]
+>>
+>> Why are these `inline(always)`? The compiler should inline them
+>> automatically?
 >
-> +#[no_mangle]
-> +pub extern "C" fn v4l2_vp9_seg_feat_enabled_rs(
-> +    feature_enabled: &mut u8,
-> +    feature: u32,
-> +    segid: u32,
-> +) -> bool {
-> +    let feature_enabled =3D unsafe { core::slice::from_raw_parts_mut(fea=
-ture_enabled, 8) };
-> +    let mask =3D 1 << feature;
-> +    feature_enabled[segid as usize] & mask !=3D 0
-> +}
+> No, the compiler would not inline into modules without them. I'll check
+> again if that is still the case.
 
-This seems to be the only unsafe block. Impressive!
+I just tested this again. If I remove the attribute, the compiler will
+inline some of the functions but not others. I guess it depends on the
+inlining heuristics of rustc. The majority of the attributes I have put
+is not necessary, since the compiler will inline by default. But for
+instance `<BioIterator as Iterator>::next` is not inlined by default and
+it really should be inlined.
 
-I recommend taking an `*mut u8` here instead of `&mut u8` if you're
-going to use `slice::from_raw_parts_mut`. Or, if cbindgen allows it,
-take an `&mut [u8; 8]` instead and eliminate the unsafe block.
+Since most of the attributes do not change compiler default behavior, I
+would rather tag all functions that I want inlined than have to
+disassemble build outputs to check which functions actually need the
+attribute. With this approach, we are not affected by changes to
+compiler heuristics either.
 
-Alice
+What do you think?
+
+Best regards,
+Andreas
+
