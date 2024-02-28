@@ -1,162 +1,180 @@
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC847AE77
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 10:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025D558109;
+	Wed, 28 Feb 2024 10:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709116347; cv=none; b=Bd0uuBhUlq0vCQ20RmGCbfbeFabm7GraoCroLx7lkdEZKmXKCJienKP13nMVyGJtiioALujwBAiMURkiSqGyM6aMXLk/6W3Z8nCjlDt2b5ZpPyufVDJZB9b7n88duZjref768//+S6hucOj07ibX6o5P4vHvFe2JrsiAUM//cPQ=
+	t=1709117074; cv=none; b=Jeycb2t6gbRf1PX/CO1MONbtRls8LtMbDgiM+rlXQEAVqYDSYwrlUkaFfQ8I5dfS8gtg5DpYkZk43Mlfoj212opFBZ2gVrer0qeIAgVL/WdIsi3//+AA0kKFoUM377ufFu+bdfJS1y8C/xacm9xF0Z8krllDbALcYWGcTH1Uhzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709116347; c=relaxed/simple;
-	bh=eCOxep2JCT2PqTXZsYJ/8apV2ocu8sSoosYXQ6yO0WM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=caaY6dNmaqq/v693kiRRr+n/qZ9LZePyUtnDEdAh5UEuRiX0wz1DdK+ZRjgxQaIPKe5OAo6ewdp0vhu875t9KaD8sgdmPpskyMYIrLhIqgpSF+jPghQaC1eEyXmrgPkFEM3WAd/o6/o6vvSnp5TQSehjbB2QDJ4ubZZEQ4DxJnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D3p3Lgxj; arc=none smtp.client-ip=209.85.208.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1709117074; c=relaxed/simple;
+	bh=eAEAf+3/cTqSfefPuAIn0EFwcvK6fQ9vrTIgIRspf0M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YNkl58sd+4iVwvQRAOnOYpsQcIpYulnESRmpZ7AJ7aDf03254p9LihezG9waC5BjMxqyTQMkC1RtgdjzwBQFNaEY0Gv2IuyvClE15w0yDlqdlymMHkEYZyW2mjWrexgLXji/zK53Ch56SvasbowcJBtk3tgKTocveY5bWAjT9gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=elvRkRKm; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D3p3Lgxj"
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2d2399a08c0so42632191fa.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 02:32:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="elvRkRKm"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1d7881b1843so40411975ad.3;
+        Wed, 28 Feb 2024 02:44:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709116344; x=1709721144; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CjKtoRx+UwcsrjRBtC9M6m/N9NX0zBaZF32zrstWcEc=;
-        b=D3p3LgxjFbs3WhdtkcaogoT+eLYyFtyyUiX60lE6ckL6KIgJT4219YbXeW+EaM03r1
-         4/LMgVmG6G6C9TkH8fK7QlHNvPppjBwUeK4vwwVC81/x3jp+XvtxYpn33maJIZxms3/h
-         nVu+YvJfLI1zHMovWB8Lh44m9pcOFLgMtB8sJHRvG9Ct0G6pWS/S5os5tVaZ2efOC28j
-         lK0BHVijjREk4WQllyLNqDWLfC36sLquRBzI7jLfKmdz1FTPeufyuOwTCxs0CgAFq/6J
-         bVpquZJr3EPErelqj6IWEi/HowqYTzG7+QKj4WMUinkkU0SvEDxG/vH3oQuQMGsVgF/D
-         Nctw==
+        d=gmail.com; s=20230601; t=1709117072; x=1709721872; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E9vfSgvkXQz+Zjx8h8IZTfVZY7/XwdE9jptIo84wCVM=;
+        b=elvRkRKmnQd1DrgsqZRRBMxfms6cXDMMExwSJ+lWkWaouOO9yZ/UM89wetgaaPp5LX
+         ZIO3Tzz+D+U2gTvHNFo9NOM2yUV79zxZ1bKiQGJxfu3MTViVdMNL+vsLmJLRxnY/4bH0
+         fB327TS7QxZ7v8CpUgnZtpI7XH+a1/Kgckeyb42Yhl8Vx2SvbqukAKRxJjuCcXO35PCj
+         ttoQQxwqzMhVBLExQ8Itq3rXaPVGntxkYm2C5GfbiA4ZZS6zuKKlGnCw/KURrN3tU9vn
+         s+FdD8xEk7O2HVe6N9gUQaLBYp/pSqrp0GiytMQyGS6d2lY0u2Hxf2ZIklNEdoHCawYX
+         wpLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709116344; x=1709721144;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CjKtoRx+UwcsrjRBtC9M6m/N9NX0zBaZF32zrstWcEc=;
-        b=oAQV7qtEIuviVGMcAExA0laN9mIcNobsh/PdvX+Wi6TEiEiGTEqRYdZW9K2J4bS3QZ
-         zjpBCNRDLJdx0P3HnOYWtK1L5q5lq6wPAcCxLoso/LKtiaW9EvgKGoH7DRd+hY7Pf/pN
-         d/mt+CxekMMwsEU8uBvqXc3WWyIlzFBitd66E/DUwG9R7DMUudUCOMoCwN++vTNAHBR+
-         gAonOv9ZhIOrvC//K+WsrvGiNeLzWKSBLRUjnyzCunAFdVfx8OGbYA7BuALG4TVHDV0/
-         aAVx5GX5MUm3HVJBqJC77mG3iNOV6SMy6hFvVRfo/6+vCqhe4VutILalKK0Jy8xdVSqR
-         5KbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfmVm7ntRenKgtlUh4QM3c4eZM8kfbKcyGOlN7R2idYTayIVfX6scGtPwtba9DKYIPvRh5YWmf2lP6xNoWPIbleouiHv70Yoh5lAvUHhI=
-X-Gm-Message-State: AOJu0YzQw/q/unPpMnbwWq4xwJw309pzAhZY9/rr0RyKw92Io3zi1UxC
-	1zi/DU8XfysIxmROyqg1Bnehfn7g9IeRPXj0QDckleuXGg/04QIrvCLWHeAds8bfTt60NWhPe5d
-	7bEcsVlB83gdiRg==
-X-Google-Smtp-Source: AGHT+IES6rAcCkmc4wG6UsFZKuwU47RDINdYd53eIctneIw/XlcbBtlnpOrLBuenHe1mzmxTBd64HBNpF8CmfKs=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:aa14:0:b0:2d2:5a1c:700c with SMTP id
- bf20-20020a2eaa14000000b002d25a1c700cmr13274ljb.10.1709116343735; Wed, 28 Feb
- 2024 02:32:23 -0800 (PST)
-Date: Wed, 28 Feb 2024 10:32:20 +0000
-In-Reply-To: <20240209223201.2145570-4-mcanal@igalia.com>
+        d=1e100.net; s=20230601; t=1709117072; x=1709721872;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E9vfSgvkXQz+Zjx8h8IZTfVZY7/XwdE9jptIo84wCVM=;
+        b=SgJ/n6NxZkOujEca3sMEdHMXuPiDxjnl1DpN+jbMnxkjGBIMw2Rhw9uKZM3tWAlldF
+         pKSkcvbyBQbqsYdT4Yp0u/9Qkq+S8SCZTSn5XvczEOlzdMjokz8bMQcR3tQkB8V+8BFM
+         OM11f2+tFRNQ1FPVKgcz6uGwa7ncJXYCpEzta4B/W65ugdhyf+Q91wBQJxbcbQLG1XrF
+         IiCUvUtMYMHbov/jpkkfbYRftdrJFdxicXOfdpVptuBAyBJv1SxDQ4+cYxKpySfVmdGn
+         yzURe+2obIeFUGEB/uhDuP1d13ofvJhQj7KMiR1TbRMT0ApaGDUjf7MAohYusIjxgaLx
+         Gxbw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDDMApY1LrsIPQU3bjXd3IGd7Axkff/nwu7URke5YET5wC63Z3dTPHBWltryXB68Dl13/JHeXBo5KpPtEJ73tYAzHVSTjBOEVMrogzk0ZGQSA5QD91eR9gVmT9dn5Q12A3DAAMGwFCEV+WAmUY
+X-Gm-Message-State: AOJu0Yw76xPB876o4lBvEvUT44Di1TnpQBxzsiEAke9tOMJqfUqih/QW
+	no1PlAf5Lm9mjGSDuqTEE7fsnRYPKFDrS+ImctaxenZxdtgP3W8I1ALYuX8kiXqKMZxJPl7koI8
+	uTrdTqsaMmZo86XV7aBc6XN9e92KSVIriwLU=
+X-Google-Smtp-Source: AGHT+IE5u46q2ovqlyhPbtk/dk/hRqSZeU8jqAMVNQO0XqbMQ+axszRmaUtUOaxYLJnXNLO/QWACCPdcwwPlmMvToVs=
+X-Received: by 2002:a17:90a:a417:b0:29a:6f66:db with SMTP id
+ y23-20020a17090aa41700b0029a6f6600dbmr11356458pjp.5.1709117072199; Wed, 28
+ Feb 2024 02:44:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240209223201.2145570-4-mcanal@igalia.com>
-X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
-Message-ID: <20240228103220.3941367-1-aliceryhl@google.com>
+MIME-Version: 1.0
+References: <20240209223201.2145570-2-mcanal@igalia.com> <20240209223201.2145570-4-mcanal@igalia.com>
+In-Reply-To: <20240209223201.2145570-4-mcanal@igalia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 28 Feb 2024 11:44:19 +0100
+Message-ID: <CANiq72nNAYERpeOx5Q4bMGizQfx=RCpR8NukiYCbRHx3-93Vpg@mail.gmail.com>
 Subject: Re: [PATCH v7 2/2] rust: xarray: Add an abstraction for XArray
-From: Alice Ryhl <aliceryhl@google.com>
-To: mcanal@igalia.com
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, kernel-dev@igalia.com, lina@asahilina.net, 
-	linux-fsdevel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com, willy@infradead.org
-Content-Type: text/plain; charset="utf-8"
+To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
+Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	kernel-dev@igalia.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-> From: Asahi Lina <lina@asahilina.net>
->=20
-> The XArray is an abstract data type which behaves like a very large
-> array of pointers. Add a Rust abstraction for this data type.
->=20
-> The initial implementation uses explicit locking on get operations and
-> returns a guard which blocks mutation, ensuring that the referenced
-> object remains alive. To avoid excessive serialization, users are
-> expected to use an inner type that can be efficiently cloned (such as
-> Arc<T>), and eagerly clone and drop the guard to unblock other users
-> after a lookup.
->=20
-> Future variants may support using RCU instead to avoid mutex locking.
->=20
-> This abstraction also introduces a reservation mechanism, which can be
-> used by alloc-capable XArrays to reserve a free slot without immediately
-> filling it, and then do so at a later time. If the reservation is
-> dropped without being filled, the slot is freed again for other users,
-> which eliminates the need for explicit cleanup code.
->=20
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Co-developed-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+Hi Ma=C3=ADra,
 
-Sorry for the delay in reviewing this.
+Thanks for keeping up the work on this! A quick "nit review" on docs/commen=
+ts.
 
-I have one important comment (the first one), and the rest are nits that
-are not so important.
+On Fri, Feb 9, 2024 at 11:32=E2=80=AFPM Ma=C3=ADra Canal <mcanal@igalia.com=
+> wrote:
+>
+> +//! C header: [`include/linux/xarray.h`](../../include/linux/xarray.h)
 
+This can be migrated to the new `srctree/` notation:
 
-> +pub struct Guard<'a, T: ForeignOwnable>(NonNull<T>, &'a XArray<T>);
+    +//! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.=
+h)
 
-This stores a pointer to a `T`, but really it's the pointer returned by
-`into_foreign`, correct? So e.g. in the case of `T =3D Box<U>`, you have
-an `NonNull<Box<U>>`, even though the pointer actually points at an
-`U`, not a `Box<U>`.
+> +/// Flags passed to `XArray::new` to configure the `XArray`.
 
-I think it's better to keep this as `NonNull<c_void>`, since that's the
-type used by `into_foreign`. That also lets you remove a bunch of calls
-to `.cast()`.
+Please use intra-doc links where possible, e.g. this could be:
+
+    /// Flags passed to [`XArray::new`] to configure the [`XArray`].
+
+Sometimes you may need to help `rustdoc` a bit -- you can check how it
+is done in other places for those that may not work. Of course, if a
+particular instance gets too involved/hard to read for plain text
+reading, then you can ignore it.
+
+(Same for other instances, e.g. I see `None`, `Vec<Option<T>>`,
+`Arc<T>`, `ForeignOwnable`, `Deref`..., also methods like
+`into_foreign` etc.).
+
+> +/// This is similar to a `Vec<Option<T>>`, but more efficient when there=
+ are holes in the
+> +/// index space, and can be efficiently grown.
+
+This line seems wrapped differently than the others nearby -- in
+general, please try to keep comments at 100 columns if possible (or at
+least try to be consistent within the same file).
 
 > +/// INVARIANT: All pointers stored in the array are pointers obtained by
 > +/// calling `T::into_foreign` or are NULL pointers. By using the pin-ini=
 t
 > +/// initialization, `self.xa` is always an initialized and valid XArray.
 
-Nit: usually invariants listed on structs use this heading:
+Shouldn't this be in an `# Invariants` section instead?
 
-/// # Invariants
-///=20
-/// All pointers stored ...
+> +/// `Guard` holds a reference (`self.0`) to the underlying value owned b=
+y the
+> +/// `XArray` (`self.1`) with its lock held.
 
-Nit: You also do not need to mention that you use pin-init to make
-`self.xa` be initialized and valid. It's enough to explain that it is
-always initialized and valid - the *how* is not necessary in this type
-of comment.
+Should we use "pointer" here?
 
-> +/// Represents a reserved slot in an `XArray`, which does not yet have a=
- value but has an assigned
-> +/// index and may not be allocated by any other user. If the Reservation=
- is dropped without
-> +/// being filled, the entry is marked as available again.
+> +        // SAFETY: By the type invariant, we own the XArray lock, so we =
+must
+> +        // unlock it here.
+
+Please also use Markdown in normal comments too (like you do elsewhere).
+
+(Same for other instances).
+
+> +            // Consider it a success anyway, not much we can do
+
+Period at the end.
+
 > +///
-> +/// Users must ensure that reserved slots are not filled by other mechan=
-isms, or otherwise their
-> +/// contents may be dropped and replaced (which will print a warning).
-> +pub struct Reservation<'a, T: ForeignOwnable>(&'a XArray<T>, usize, Phan=
-tomData<T>);
+> +/// # Examples
+> +///
 
-Nit: I don't think the PhantomData is necessary here.
+Is something missing here at the top of these docs? Or what is the intentio=
+n?
 
-> +            if !new.is_null() {
-> +                // SAFETY: If `new` is not NULL, it came from the `Forei=
-gnOwnable` we got
-> +                // from the caller.
-> +                unsafe { T::from_foreign(new) };
-> +            }
+> +/// use kernel::prelude::*;
 
-Nit: Adding a call to `drop` here makes the code more clear to me.
+This line can be removed -- it is implicitly added in examples.
 
-> +        unsafe {
-> +            bindings::xa_destroy(self.xa.get());
-> +        }
+> +/// let foo =3D Arc::try_new(Foo { a : 1, b: 2 }).expect("Unable to allo=
+cate Foo");
 
-Nit: Moving the semicolon outside of the unsafe block formats better.
+Please consider using `?` instead to simplify the example, you will
+need to add a line at the end for that (see e.g. `arc.rs`):
 
-Alice
+    /// # Ok::<(), Error>(())
+
+> +    /// The type is `unsigned long`, which is always the same as `usize`=
+ in
+> +    /// the kernel. Therefore, we can use this method to convert between=
+ those.
+
+This comment sounds like an implementation detail, rather than the
+documentation of the function.
+
+> +        let mut index: core::ffi::c_ulong =3D 0;
+
+This is `use`d above, but here the full path is given.
+
+(Same for other instances).
+
+> +// SAFETY: XArray is thread-safe and all mutation operations are interna=
+lly locked.
+
+Ideally we use different comments for each `unsafe impl` and we
+explain the rationale for the bounds on each case (e.g. see `arc.rs`).
+
+Cheers,
+Miguel
