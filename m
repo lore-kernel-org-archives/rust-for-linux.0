@@ -1,121 +1,56 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557CF149E0B
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 14:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FFD79B6B;
+	Wed, 28 Feb 2024 17:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709131619; cv=none; b=mpy2C5WftVxrikSxwrzz8RvDCGeJUfSuTUVh1SW1xLxAtQ6fNKXdZLSMbM477oHST9kmrtg0O0krXZj7leW5rJuUx8dkKL4YmG1PFznvG8ISHYg4zmakBekht/KtxqZFX/jvnx4yJTZh4UESjzTC6mo4R2xdUXrsEIK9tBfbSB0=
+	t=1709143179; cv=none; b=ukG50MLY/+BEO27b6VaM7vu07ose5EeFR6b47pzKCUMwHEO09ftKIUXEEMKwfeHtFGF/fI6ZhGF0TVYkJ1xRhQAY2MM+CfO341XsNvWhD2cwC4+WgTUrKHc7CESMjRBwbdcqFRlF2+f+ucjTJ5TSEid0Mel7gvuU9xkd1vdM5Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709131619; c=relaxed/simple;
-	bh=HIHzjpOrKXqxWUafULLKuoxHLdhUSesh8dKt3u79tcI=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=FzCGDfYS5oFNM4tfAUBEx1Cdz2EyP/gM0B/tvmgj8AbhfRaW53MVbo1iepWfOZPIhw7wv1EGo7Ycn8FZJfLirxTCnxSTMw5XNMbA8CEQXFGmTH4gO2FZclsM9fM1zl7ZX9kHIHIZTWApKHGpPKFcib82ZHBcIB48YvJH7tQNGZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=u5dIV5Qw; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="u5dIV5Qw"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a43dba50bb7so172852366b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 06:46:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709131616; x=1709736416; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=8qxXismbJGcxxSTGQfo0P8Mi+M/PX5Dw7LvQPC3lxVI=;
-        b=u5dIV5QwBYHZ3+rbhMuG78masI3SP+jfnoz2ntUIM3QT2VUKX2MPuLxd0jrIQ0srPG
-         y94QpMB6EFeYkncliZnquGLLfkFe+XUR7cHfzIZmpStm+3GE07JFv00195r/K0v4l8wW
-         3MXrdpMg06FdxDNhSQCmpW8fJOzKFjOhduRqCfjNSn4h/14DkTrY0xY6YpkJO9I7B+Of
-         aQnRhHfeIbbZDQBwy/lrGFwf7iIFqkQo6PXR5N1s6pDS1RsZmdqmBTxwEEAcFPqyHiIr
-         Cff9Q8HfJfAGVJvW3DfMCOgHDvLvePD5gIkK4befWH6GSJJoZ4p+TrMbcngXMVuT+2jw
-         xrqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709131616; x=1709736416;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8qxXismbJGcxxSTGQfo0P8Mi+M/PX5Dw7LvQPC3lxVI=;
-        b=RgHeYy5jRDfZ9DZljVj1B1RnXCRiNX5o94RwT2fbpAc/d/Yy1RkVhCfVplPhttXq7e
-         VY8FQIEdPHl6LC+oKeOrAzz3G/zTQ/A9q8g3ta7yH096SFLpfBqIbWDOMr02dgtg32n+
-         smDOZ/WhHKO3MoqZpEpw+2ygh2gE0CILCiiMPjTeF0ZE4/hX1/ouFZkoJo5vYufZxLUn
-         szo1ZuRSyb/jBQGzdhRxYA2u8SK91hSR2zZ0MX//o6GsAUinXa1/rcO2NIFTIhNynN4E
-         qC/aWqyfA4/2wpUPCbMm6VYGxGW9VC3ELgLUidgpM3K6k0uYkmCUKcBWLjSYQTA/W+Ss
-         +r2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUNGp1puF1o0Q9anhrpjNeeksdkMXPUQOp9KwgGkDDWNK068wniWWfO5k2kQSi4I69BYRAV8jNbkhS+yT+zJ1arV9UxCu8fGv4fSboNUQU=
-X-Gm-Message-State: AOJu0Yz4amOwPqy2h545zOOnrO09X73jD+xfSyVHyclYyzN4Zc1AAYoz
-	NE7M5iMv2bGIk0Nds5AaAdQZACJIlhxkbGAKyP1ydIInjqE+j/139fKgf+1B4pA=
-X-Google-Smtp-Source: AGHT+IEaCtfzpxkkLGZrLyaEquAtLxbLxoHoHkahKKccPYaAGg7T1KVamkQdgIwfHk8QmWSe6axdgA==
-X-Received: by 2002:a17:906:c196:b0:a3e:8300:1af3 with SMTP id g22-20020a170906c19600b00a3e83001af3mr8976821ejz.30.1709131615583;
-        Wed, 28 Feb 2024 06:46:55 -0800 (PST)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id dc6-20020a170906c7c600b00a441674cae4sm357911ejb.222.2024.02.28.06.46.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 06:46:55 -0800 (PST)
-References: <20230503090708.2524310-1-nmi@metaspace.dk>
- <20230503090708.2524310-5-nmi@metaspace.dk>
- <-SiJ5paRDIUkH1WEWhGhEjhIgFbSo5PJAvac53bTnBZ5o41DR-kNWZEQBsnKeW1FRJh35siVFRrx54L0M6ebSzl0rzecgcDjqZFGRa9uypE=@proton.me>
- <87a5pcyqf8.fsf@metaspace.dk>
-User-agent: mu4e 1.10.8; emacs 29.2
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: "Andreas Hindborg" <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, Keith  Busch <kbusch@kernel.org>, Damien
- Le Moal <Damien.LeMoal@wdc.com>, Hannes  Reinecke <hare@suse.de>,
- lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
- linux-block@vger.kernel.org, Matthew  Wilcox <willy@infradead.org>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
- Almeida Filho <wedsonaf@gmail.com>, Boqun  Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
- linux-kernel@vger.kernel.org, gost.dev@samsung.com
-Subject: Re: [RFC PATCH 04/11] rust: block: introduce `kernel::block::bio`
- module
-Date: Wed, 28 Feb 2024 15:31:04 +0100
-In-reply-to: <87a5pcyqf8.fsf@metaspace.dk>
-Message-ID: <878r34aboo.fsf@metaspace.dk>
+	s=arc-20240116; t=1709143179; c=relaxed/simple;
+	bh=BtdiY7GCH4yy8PvIrl7nW0rMOW2H+SjTJyaN3RxoRoo=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=SEuRaAFBglBZSdfBePP7uvC7h+TkzE/v4zAYwHIMVZ/Brro9NdDfzZBvhpgkvWpyhMBPiQOGaTnaLsZUeoH8RimlaayZzHXXeJqFp89Yf+LxXYPtutPOM5syJXN+3kmMW13dZUCCtEWm1Cxw2OE0i6c+shKvIWVUaUVfx8lwuBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id B488237820DA;
+	Wed, 28 Feb 2024 17:59:35 +0000 (UTC)
+From: "Daniel Almeida" <daniel.almeida@collabora.com>
+In-Reply-To: <CAH5fLgi_Y0a=XPtgdiA9KcsmMGxn=DjvLMmSq-UF8VQtZVTccg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
+References: <20240227215146.46487-1-daniel.almeida@collabora.com> <20240227215146.46487-2-daniel.almeida@collabora.com> <CAH5fLgi_Y0a=XPtgdiA9KcsmMGxn=DjvLMmSq-UF8VQtZVTccg@mail.gmail.com>
+Date: Wed, 28 Feb 2024 17:59:35 +0000
+Cc: wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, kernel@collabora.com
+To: "Alice Ryhl" <aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <28f4-65df7480-b-5f6f8180@243208659>
+Subject: =?utf-8?q?Re=3A?= [RFC PATCH 1/1] =?utf-8?q?v4l2-core=3A?= rewrite the VP9 
+ library in Rust
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
 
+Hi Alice!
 
-Hi Benno,
+On Wednesday, February 28, 2024 11:13 -03, Alice Ryhl <aliceryhl@google=
+.com> wrote:
 
-"Andreas Hindborg (Samsung)" <nmi@metaspace.dk> writes:
+> I recommend taking an `*mut u8` here instead of `&mut u8` if you're
+> going to use `slice::from=5Fraw=5Fparts=5Fmut`. Or, if cbindgen allow=
+s it,
+> take an `&mut [u8; 8]` instead and eliminate the unsafe block.
 
-<cut>
+You're right, the signature here can change to `&mut [u8; 8]` instead. =
+This means no unsafe blocks at all.
 
->>> +);
->>> +
->>> +impl<'a> Bio<'a> {
->>> +    /// Returns an iterator over segments in this `Bio`. Does not consider
->>> +    /// segments of other bios in this bio chain.
->>> +    #[inline(always)]
->>
->> Why are these `inline(always)`? The compiler should inline them
->> automatically?
->
-> No, the compiler would not inline into modules without them. I'll check
-> again if that is still the case.
+Thanks for the tip,
 
-I just tested this again. If I remove the attribute, the compiler will
-inline some of the functions but not others. I guess it depends on the
-inlining heuristics of rustc. The majority of the attributes I have put
-is not necessary, since the compiler will inline by default. But for
-instance `<BioIterator as Iterator>::next` is not inlined by default and
-it really should be inlined.
-
-Since most of the attributes do not change compiler default behavior, I
-would rather tag all functions that I want inlined than have to
-disassemble build outputs to check which functions actually need the
-attribute. With this approach, we are not affected by changes to
-compiler heuristics either.
-
-What do you think?
-
-Best regards,
-Andreas
+-- Daniel
 
