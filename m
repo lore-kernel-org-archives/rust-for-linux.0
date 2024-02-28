@@ -1,168 +1,150 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469DC23CB
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 00:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD73339A8
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 09:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709078515; cv=none; b=qa69R7nWYq7wQWN7hEvAMLr+Th+DHb76pFfmsDMoNn5oayGERI+pTHvboHwON23XItDTETgeRvOoW5VkZC6XKDsQvgeUmSxlFTjdNzIZltC2JjygzzDkPWSrLDqQ1WHsd1e6LJc6dALd+YwvLKxQVm5YCTOkc9vcFbZXqF1Aw58=
+	t=1709114336; cv=none; b=o5pGkFtT82aI9dCLtOR4TDBWCzY9OhtSgny6PiBTD2zu7uQd83Nqgw4qJ5Hvzjs5I0di/Riz20OwItxHCoJrnN5TQoMistLEQwdcvWwibG8W281qxOZNfT5feekklEQF+kOK0s+YxTgWXDcL1QvZRkeAnVr52u8gaCvBUI926go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709078515; c=relaxed/simple;
-	bh=rJMJ2JMyWN+ZP1wfxJ61M7N5IzMgg95FlXOlFyiqAPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C4Jxp6w2kKDHwkR5YIJ8yYjg7l0NTHZ0/jJbjr623EmzzWfY3vFZClKgUjqbJU4FBXE1vISYJ/pBMeymsjHSJheGsnxivXdOApFUFxDKjkZmsKCs4kMzLw7Qltdq7vleq2EGnrKapUXBPoARjkaADWg9GV/6fMK2Va9WfNQxIfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faslrYAr; arc=none smtp.client-ip=209.85.166.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1709114336; c=relaxed/simple;
+	bh=sleA26mV/tde50MP5rnI4lqz6QKoKHWgsEtYcy8hAeQ=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=lkdlU/we/7A4ffjDWmFcuiBXSE9mO05eZRBSqAhKnHKNcysVLIGwlDAGo3JS3IkKHkdMShbI4SLEkdRLoAHO8fMtBtJ1/HrUlG7NMywN7YuxwmclzXkJ09juIr7Z8N4cHYbT+BfzapFVuEKhPWb87CKKKZkcx2/wOOx3haxBtic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=icAGfAtG; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faslrYAr"
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-3651ee59db4so1115045ab.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Feb 2024 16:01:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="icAGfAtG"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a293f2280c7so802937466b.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 01:58:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1709078512; x=1709683312; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vrK0eALq3CiAPH0N0ru8YW+DX4foq/ClBC0Geu6EPXo=;
-        b=faslrYArGMUqphsHkdlrHW/26xGTlMIR+96BZYXQhsldVZryx8KimdmxYD1Uoqs3eu
-         Ny1xe1jgzny6QGwgH6ppwp1DGdyYGaZsb8iRKJh5KerpZUFCIsdCMrVq/n73IjpOEmB8
-         7M+V/fDIthXhle7+Bwyuxnqh+Z7XI5zJ7NMIo=
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709114332; x=1709719132; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9tZSFA9TNC8Nuqr5EXNMkcxxuNUWYaw6b2s8R1XXBEs=;
+        b=icAGfAtGBoyiuE+sXv/sfMoq5UqBO7EDQuP9lHWh3F4JAGfOaRcLrSeoOJqqKCpS9W
+         mA/JiyD66pDLWyA0SQ53xr7TZChPtdp2HZFXQK0Oid37TgW/6bIufypipa/4T0u5Syb8
+         4jbEUuwbtluIVPhDzICyNtUXbJRZ80KzmFPWY2upLHiKLt9ox7pawZQ2FZqXWOB/iH4g
+         hoPKtfFPX8lt9RZhhf6eA9cpzQz5ZkzfDLs82QoymcmF7aOaT4UCHeWUBqC0L/Hwc9Wq
+         sgPwsYt4VyWfHxaBK9tmIgfoC4Q2ay1FgRtf7IrhFyJBM0QjaKkhwo/YuCIWrQxOX+y1
+         YYSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709078512; x=1709683312;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vrK0eALq3CiAPH0N0ru8YW+DX4foq/ClBC0Geu6EPXo=;
-        b=UwnzewJH2oO4a2/7wv7Uy5GaOB86D2ZRG0LLdVr1COsUrtGnXd23hbXktRq0GAvGyC
-         TfGGXg5lhdmt+Nb5oq9CbyeoJ+0zZVOrKxFemZy4nus22qGnNXWVo8KaCG98YwSV4CPp
-         Equ0T9QPR4TO8JSjexCbuBIUu+V9sKQpWT6/JM9roUrX/Mp2vLPShWPGIMLv3H0XrXMK
-         XFUxi1PI+HCN3uLiKiMQq7hoUblN3xD9wE59WISyH7dVzECacsKwvq2q02W7fHGUsc2C
-         BIxsDNGk8tWqntm/ZqOfEDCXILSevuegHziDA+RvVrTRbf0xn0EXl6Qmg6nRlPfrXQIw
-         Eb7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUNb6v4zUm5UJmSjQdkxZ9C5zvTMepOJuhPtDLMtyenTbb0+90rGwKngaPybkCWcPM/PXqiiruZ86x+VxGMcHH6nTIHmZQenNxXpLZeW+s=
-X-Gm-Message-State: AOJu0Yx2s/h2nTssCOODXyNkf4e7rpIFyLc9zV9Lq5B7BMlmMc6BO6ZA
-	czU8y2kfrz3W3tTWy7yDcv/ANlxOiD+oC8kuqcWXrPqnbCccE4pH7ANGDXsqP+E=
-X-Google-Smtp-Source: AGHT+IEyFi+EbG1qEGArV61BbwDxrrUz63Oh268SNQYaoJn57jboMklRNZBRwVEQ0zclSCq1pIQTXg==
-X-Received: by 2002:a6b:7e08:0:b0:7c7:f5ce:5d9b with SMTP id i8-20020a6b7e08000000b007c7f5ce5d9bmr797781iom.1.1709078512072;
-        Tue, 27 Feb 2024 16:01:52 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id s9-20020a6bdc09000000b007c76a2d6a98sm1947667ioc.53.2024.02.27.16.01.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 16:01:51 -0800 (PST)
-Message-ID: <5df7d5b1-1387-41f5-a9e9-29c9aefa448e@linuxfoundation.org>
-Date: Tue, 27 Feb 2024 17:01:50 -0700
+        d=1e100.net; s=20230601; t=1709114332; x=1709719132;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9tZSFA9TNC8Nuqr5EXNMkcxxuNUWYaw6b2s8R1XXBEs=;
+        b=Zs9FbtfROZ5dtvz1v/i1cx98GxhTwHTuo+W1ZyF1fRXclWJlxLX/HBWZLWAl3UfRW8
+         BqQuPv2j/qSVCFFHzULOU0umUo1txDXG8L//SbX4ChpuFIw14hKRAjHgGh+ShZZKR7SS
+         AQPvotIIWMaJMDkv9EIR4T2STskFbDwa8UJV70nRNQJDjcJZhnkQBu6bCpRPFhSzswNm
+         XFxu3dAx6JaUN7LEz1JvPqG7h8e+fxYPEndTZ/IbNoZxrTUbeMHvBazAowIMVayOmTEc
+         /XvCZ1WpzEFsBcaN8Av9mrpPj1GXqM2VBAVkmjqoLB9W71xFFlzibOSHaINUL1m0KAEg
+         BY9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVa4L+bumQ8RmLgy2hVDsFhdxI5R0kJ5FGMwSHoD85A2OQ3qlNfBPt4R9FsCVkf9I8+XMPLHYodxRGr/fNxUDUkbenfrBzXZmfT94KUJdc=
+X-Gm-Message-State: AOJu0YzmiwoNsU3qo+ddXpj24h7yIzaJR/FYkQIsQIgd3kkXSVx5iRSv
+	7kjIWVrYs1GiZDjuGbvtNB5REm7Xb/Kj1jZIM8lvp0E8VpgQvKnEaAVFknp0CKw=
+X-Google-Smtp-Source: AGHT+IFXvcS3SdW+x9XVkAFE4CV7oMvqgtzV0IZUMaJ7OLxvJfmzwEJF8ZwFxnNeHHgrppTXGMcNyQ==
+X-Received: by 2002:a17:906:882:b0:a43:5dbc:4c04 with SMTP id n2-20020a170906088200b00a435dbc4c04mr4818890eje.48.1709114331601;
+        Wed, 28 Feb 2024 01:58:51 -0800 (PST)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id f8-20020a170906c08800b00a434b5fcab6sm1671082ejz.221.2024.02.28.01.58.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Feb 2024 01:58:51 -0800 (PST)
+References: <20240209223201.2145570-2-mcanal@igalia.com>
+ <20240209223201.2145570-4-mcanal@igalia.com> <87plwi9waq.fsf@metaspace.dk>
+User-agent: mu4e 1.10.8; emacs 29.2
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Andreas Hindborg <nmi@metaspace.dk>
+Cc: =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>, Asahi Lina
+ <lina@asahilina.net>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex  Gaynor <alex.gaynor@gmail.com>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy  Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Matthew Wilcox <willy@infradead.org>, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH v7 2/2] rust: xarray: Add an abstraction for XArray
+Date: Wed, 28 Feb 2024 10:56:41 +0100
+In-reply-to: <87plwi9waq.fsf@metaspace.dk>
+Message-ID: <87cysgap0u.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] kselftest: Add basic test for probing the rust sample
- modules
-Content-Language: en-US
-To: Laura Nao <laura.nao@collabora.com>, ojeda@kernel.org,
- alex.gaynor@gmail.com, wedsonaf@gmail.com, shuah@kernel.org
-Cc: usama.anjum@collabora.com, a.hindborg@samsung.com, aliceryhl@google.com,
- benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, kernel@collabora.com, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
- kernel@valentinobst.de, Sergio Gonzalez Collado <sergio.collado@gmail.com>,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20240226101646.291337-1-laura.nao@collabora.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240226101646.291337-1-laura.nao@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Laura,
 
-On 2/26/24 03:16, Laura Nao wrote:
-> Add new basic kselftest that checks if the available rust sample modules
-> can be added and removed correctly.
-> 
-> Signed-off-by: Laura Nao <laura.nao@collabora.com>
-> Reviewed-by: Sergio Gonzalez Collado <sergio.collado@gmail.com>
-> Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
-> Depends on:
-> - https://lore.kernel.org/all/20240102141528.169947-1-laura.nao@collabora.com/T/#u
-> - https://lore.kernel.org/all/20240131-ktap-sh-helpers-extend-v1-0-98ffb468712c@collabora.com/
-> Changes in v4:
-> - Added config file
-> Changes in v3:
-> - Removed useless KSFT_PASS, KSFT_FAIL, KSFT_SKIP constants
-> - Used ktap_finished to print the results summary and handle the return code
-> Changes in v2:
-> - Added missing SPDX line
-> - Edited test_probe_samples.sh script to use the common KTAP helpers file
-> ---
->   MAINTAINERS                                   |  1 +
->   tools/testing/selftests/Makefile              |  1 +
->   tools/testing/selftests/rust/Makefile         |  4 +++
->   tools/testing/selftests/rust/config           |  5 +++
->   .../selftests/rust/test_probe_samples.sh      | 34 +++++++++++++++++++
->   5 files changed, 45 insertions(+)
->   create mode 100644 tools/testing/selftests/rust/Makefile
->   create mode 100644 tools/testing/selftests/rust/config
->   create mode 100755 tools/testing/selftests/rust/test_probe_samples.sh
-> 
+Andreas Hindborg <nmi@metaspace.dk> writes:
 
-I ran test again and I still see the same. I would like to
-see the script to handle error conditions.
-
-> diff --git a/MAINTAINERS b/MAINTAINERS
+> Ma=C3=ADra Canal <mcanal@igalia.com> writes:
 >
-> +
-> +DIR="$(dirname "$(readlink -f "$0")")"
-> +
-> +source "${DIR}"/../kselftest/ktap_helpers.sh
+>> From: Asahi Lina <lina@asahilina.net>
+>>
+>> The XArray is an abstract data type which behaves like a very large
+>> array of pointers. Add a Rust abstraction for this data type.
+>>
+>> The initial implementation uses explicit locking on get operations and
+>> returns a guard which blocks mutation, ensuring that the referenced
+>> object remains alive. To avoid excessive serialization, users are
+>> expected to use an inner type that can be efficiently cloned (such as
+>> Arc<T>), and eagerly clone and drop the guard to unblock other users
+>> after a lookup.
+>>
+>> Future variants may support using RCU instead to avoid mutex locking.
+>>
+>> This abstraction also introduces a reservation mechanism, which can be
+>> used by alloc-capable XArrays to reserve a free slot without immediately
+>> filling it, and then do so at a later time. If the reservation is
+>> dropped without being filled, the slot is freed again for other users,
+>> which eliminates the need for explicit cleanup code.
+>>
+>> Signed-off-by: Asahi Lina <lina@asahilina.net>
+>> Co-developed-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+>> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+>> ---
+>
+>
+> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-It tries to source and keeps going. Why can't we test for
-the file to exist and skip gracefully without printing
-the following messages.
+Actually clippy complains about use of the name `foo` for a variable in
+the example. Fix:
 
-  ./test_probe_samples.sh: line 12: /linux/linux_6.8/tools/testing/selftests/rust/../kselftest/ktap_helpers.sh: No such file or director
-# ./test_probe_samples.sh: line 16: ktap_print_header: command not found
-# ./test_probe_samples.sh: line 18: ktap_set_plan: command not found
-# ./test_probe_samples.sh: line 22: ktap_test_skip: command not found
-# ./test_probe_samples.sh: line 22: ktap_test_skip: command not found
-# ./test_probe_samples.sh: line 34: ktap_finished: command not found
-
-
-
-not ok 1 selftests: rust: test_probe_samples.sh # exit=127
-
-
-> +
-> +rust_sample_modules=("rust_minimal" "rust_print")
-> +
-> +ktap_print_header
-> +
-> +ktap_set_plan "${#rust_sample_modules[@]}"
-> +
-> +for sample in "${rust_sample_modules[@]}"; do
-> +    if ! /sbin/modprobe -n -q "$sample"; then
-> +        ktap_test_skip "module $sample is not found in /lib/modules/$(uname -r)"
-> +        continue
-
-Why are we continuing here? Isn't this skip condition?
-
-> +    fi
-> +
-> +    if /sbin/modprobe -q "$sample"; then
-> +        /sbin/modprobe -q -r "$sample"
-> +        ktap_test_pass "$sample"
-> +    else
-> +        ktap_test_fail "$sample"
-> +    fi
-> +done
-> +
-> +ktap_finished
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index 849915ea633c..aba09cf28c4b 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -185,8 +185,8 @@ fn drop(&mut self) {
+ /// let arr =3D Box::pin_init(XArray::<Arc<Foo>>::new(flags::ALLOC1))
+ ///                        .expect("Unable to allocate XArray");
+ ///
+-/// let foo =3D Arc::try_new(Foo { a : 1, b: 2 }).expect("Unable to alloca=
+te Foo");
+-/// let index =3D arr.alloc(foo).expect("Error allocating Index");
++/// let item =3D Arc::try_new(Foo { a : 1, b: 2 }).expect("Unable to alloc=
+ate Foo");
++/// let index =3D arr.alloc(item).expect("Error allocating Index");
+ ///
+ /// if let Some(guard) =3D arr.get_locked(index) {
+ ///     assert_eq!(guard.borrow().a, 1);
+@@ -195,8 +195,8 @@ fn drop(&mut self) {
+ ///     pr_info!("No value found in index {}", index);
+ /// }
+ ///
+-/// let foo =3D Arc::try_new(Foo { a : 3, b: 4 }).expect("Unable to alloca=
+te Foo");
+-/// let index =3D arr.alloc(foo).expect("Error allocating Index");
++/// let item =3D Arc::try_new(Foo { a : 3, b: 4 }).expect("Unable to alloc=
+ate Foo");
++/// let index =3D arr.alloc(item).expect("Error allocating Index");
+ ///
+ /// if let Some(removed_data) =3D arr.remove(index) {
+ ///     assert_eq!(removed_data.a, 3);
 
 
-I would like to see the test exit with skip code when RUST isn't
-enabled. Please refer to existing tests that do this properly.
-
-thanks,
--- Shuah
+BR Andreas
