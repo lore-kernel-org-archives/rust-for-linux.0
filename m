@@ -1,150 +1,88 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD73339A8
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 09:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D9432C6C
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 10:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709114336; cv=none; b=o5pGkFtT82aI9dCLtOR4TDBWCzY9OhtSgny6PiBTD2zu7uQd83Nqgw4qJ5Hvzjs5I0di/Riz20OwItxHCoJrnN5TQoMistLEQwdcvWwibG8W281qxOZNfT5feekklEQF+kOK0s+YxTgWXDcL1QvZRkeAnVr52u8gaCvBUI926go=
+	t=1709115003; cv=none; b=k/o+o06BHbvDUc0GlPiFnODcFH2SdioiF9ZqMuVnJ8N7oPBWJI0HrBkrWosb+YoKXsa9s/L8/0udVYBHzxg8qptYSZZRbaJFndZdItb+BDswVnkj014PvZ8ta1n3cqg97Xz/OnerG9T7EP575ipgbz9m4YR/q1R2i4hTlnhAoB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709114336; c=relaxed/simple;
-	bh=sleA26mV/tde50MP5rnI4lqz6QKoKHWgsEtYcy8hAeQ=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=lkdlU/we/7A4ffjDWmFcuiBXSE9mO05eZRBSqAhKnHKNcysVLIGwlDAGo3JS3IkKHkdMShbI4SLEkdRLoAHO8fMtBtJ1/HrUlG7NMywN7YuxwmclzXkJ09juIr7Z8N4cHYbT+BfzapFVuEKhPWb87CKKKZkcx2/wOOx3haxBtic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=icAGfAtG; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1709115003; c=relaxed/simple;
+	bh=PTIhoZ7cZRDnibpTWA41AYPiGAUR7wb+Y1RYUNJTp5M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PmqeJ8lYlZIXTCmEV+QMkOeL4pWNM5d4FtSmAkoH43SNSfmwd5dj945pcI3tnbVLDLQiQg0rv15R9PsrBsel7vQt2iN9yR02fzoxGdn/SmTc/kahj9P/cz8ePFTCzJMzpYTicWmVVLQi3YbyRTCiTCaqlKxSv2IEAUHK32XG9uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FA99N09D; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="icAGfAtG"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a293f2280c7so802937466b.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 01:58:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FA99N09D"
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-4ccce61a0e8so836859e0c.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Feb 2024 02:10:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1709114332; x=1709719132; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1709115000; x=1709719800; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9tZSFA9TNC8Nuqr5EXNMkcxxuNUWYaw6b2s8R1XXBEs=;
-        b=icAGfAtGBoyiuE+sXv/sfMoq5UqBO7EDQuP9lHWh3F4JAGfOaRcLrSeoOJqqKCpS9W
-         mA/JiyD66pDLWyA0SQ53xr7TZChPtdp2HZFXQK0Oid37TgW/6bIufypipa/4T0u5Syb8
-         4jbEUuwbtluIVPhDzICyNtUXbJRZ80KzmFPWY2upLHiKLt9ox7pawZQ2FZqXWOB/iH4g
-         hoPKtfFPX8lt9RZhhf6eA9cpzQz5ZkzfDLs82QoymcmF7aOaT4UCHeWUBqC0L/Hwc9Wq
-         sgPwsYt4VyWfHxaBK9tmIgfoC4Q2ay1FgRtf7IrhFyJBM0QjaKkhwo/YuCIWrQxOX+y1
-         YYSA==
+        bh=PTIhoZ7cZRDnibpTWA41AYPiGAUR7wb+Y1RYUNJTp5M=;
+        b=FA99N09DN4PYhxIhYiSRFy6hcOet697tvIiFFRwOJAdqbxj26iOVXe82tYJ4zRs6j2
+         UbTmuiMZSlpHTnmukXw2BEK0EVgJtcTshE1SNmSFre9VciHpR3uIy/VTdKEXfP6owaFN
+         fSAm3ZlGJ28PH2al1GMaEkQv5WIJUkquph1w/kRQbYxHR0ZIJvWj3eV3NWIYomGUgOPu
+         YqFuiskOT7Yrh9O2VNOOFeIhBv23cKVAZ/GsRpXRl6RJdjylHtPr3KpHHCvrhuXr0vda
+         3gcuX3OiYNEEDYmStEDwxygnhe+ZzWuW0WLBk+uvZILSCAPxDz446Fi3Zker2j9oI63E
+         CzWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709114332; x=1709719132;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9tZSFA9TNC8Nuqr5EXNMkcxxuNUWYaw6b2s8R1XXBEs=;
-        b=Zs9FbtfROZ5dtvz1v/i1cx98GxhTwHTuo+W1ZyF1fRXclWJlxLX/HBWZLWAl3UfRW8
-         BqQuPv2j/qSVCFFHzULOU0umUo1txDXG8L//SbX4ChpuFIw14hKRAjHgGh+ShZZKR7SS
-         AQPvotIIWMaJMDkv9EIR4T2STskFbDwa8UJV70nRNQJDjcJZhnkQBu6bCpRPFhSzswNm
-         XFxu3dAx6JaUN7LEz1JvPqG7h8e+fxYPEndTZ/IbNoZxrTUbeMHvBazAowIMVayOmTEc
-         /XvCZ1WpzEFsBcaN8Av9mrpPj1GXqM2VBAVkmjqoLB9W71xFFlzibOSHaINUL1m0KAEg
-         BY9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVa4L+bumQ8RmLgy2hVDsFhdxI5R0kJ5FGMwSHoD85A2OQ3qlNfBPt4R9FsCVkf9I8+XMPLHYodxRGr/fNxUDUkbenfrBzXZmfT94KUJdc=
-X-Gm-Message-State: AOJu0YzmiwoNsU3qo+ddXpj24h7yIzaJR/FYkQIsQIgd3kkXSVx5iRSv
-	7kjIWVrYs1GiZDjuGbvtNB5REm7Xb/Kj1jZIM8lvp0E8VpgQvKnEaAVFknp0CKw=
-X-Google-Smtp-Source: AGHT+IFXvcS3SdW+x9XVkAFE4CV7oMvqgtzV0IZUMaJ7OLxvJfmzwEJF8ZwFxnNeHHgrppTXGMcNyQ==
-X-Received: by 2002:a17:906:882:b0:a43:5dbc:4c04 with SMTP id n2-20020a170906088200b00a435dbc4c04mr4818890eje.48.1709114331601;
-        Wed, 28 Feb 2024 01:58:51 -0800 (PST)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id f8-20020a170906c08800b00a434b5fcab6sm1671082ejz.221.2024.02.28.01.58.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 01:58:51 -0800 (PST)
-References: <20240209223201.2145570-2-mcanal@igalia.com>
- <20240209223201.2145570-4-mcanal@igalia.com> <87plwi9waq.fsf@metaspace.dk>
-User-agent: mu4e 1.10.8; emacs 29.2
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>, Asahi Lina
- <lina@asahilina.net>, Miguel
- Ojeda <ojeda@kernel.org>, Alex  Gaynor <alex.gaynor@gmail.com>, Wedson
- Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy  Baron
- <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- Matthew Wilcox <willy@infradead.org>, rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
-Subject: Re: [PATCH v7 2/2] rust: xarray: Add an abstraction for XArray
-Date: Wed, 28 Feb 2024 10:56:41 +0100
-In-reply-to: <87plwi9waq.fsf@metaspace.dk>
-Message-ID: <87cysgap0u.fsf@metaspace.dk>
+        d=1e100.net; s=20230601; t=1709115000; x=1709719800;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PTIhoZ7cZRDnibpTWA41AYPiGAUR7wb+Y1RYUNJTp5M=;
+        b=Kr96UlPkQdFJ5pwfGuOp5N00kfdIfUSSgweU9uewQCouXe27BeWnyGqZdeyKDEeLmg
+         /gvjK6tTWMfqG79p7HVCzkN6+EPpHGQhuWFD3R/m8WemVQVLQFJoIMigG3SwoguVDRmT
+         5J19qlwpfdzmd/uFKQw9zQXPxCjhMHtUZJPTUSRWjCWsDK2Ff5CAI+gflUTSF0vMSc2x
+         T2p+1l1HfUekjl0n5REJIGbI1Ed04rItcjH2GL4HcICIGS/0POIntc3WhekddIpUenWA
+         yrxC4eKpimwfOxaF2/T7wN9M2sjyIlP7oSeI60jWQtkzV0VA3BpJgU4JUcvCgAo4rpec
+         nGpg==
+X-Forwarded-Encrypted: i=1; AJvYcCX2ZUB4OsQY+6GVNiDNugknCWa+Q8gcxew8QA5Cc/gnBRN4cJ5DKbwoOnKk85DPYdtN7vmlQ2rzb/uHK5EU1E+g1lWChOrHu0szvKqPa6U=
+X-Gm-Message-State: AOJu0YyQuaBgJezBv5i8EFhsLCwAiNK9svGG8QKe405yAnyeR//oTvcD
+	fzdBeE4qX6pp2MQuKbExu5lfOA04Vu06s2syDPRTIszK9821+RlNWSY7A7+Xdc1dxMB3nsygw3g
+	Z9+9ThzuVwlS1xeW6k+Zjhp8NyFrvEg4eHRbp
+X-Google-Smtp-Source: AGHT+IE2lL9iJ1Cs1YkXmPLJIM3HLDT0RD+3kSslhg3igF3N8clsEXikxaZM9E/LYc1zd8wIlHEYxuBRKkPOZ01Pmac=
+X-Received: by 2002:a1f:4b42:0:b0:4d3:345c:6a6b with SMTP id
+ y63-20020a1f4b42000000b004d3345c6a6bmr2775383vka.16.1709115000333; Wed, 28
+ Feb 2024 02:10:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240209223201.2145570-2-mcanal@igalia.com> <20240209223201.2145570-3-mcanal@igalia.com>
+In-Reply-To: <20240209223201.2145570-3-mcanal@igalia.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 28 Feb 2024 11:09:49 +0100
+Message-ID: <CAH5fLggCtnge7oEpzsd86Hdn15gck1U7Upq3Kf21B5WOmsr2-A@mail.gmail.com>
+Subject: Re: [PATCH v7 1/2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
+Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Matthew Wilcox <willy@infradead.org>, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-Andreas Hindborg <nmi@metaspace.dk> writes:
-
-> Ma=C3=ADra Canal <mcanal@igalia.com> writes:
+On Fri, Feb 9, 2024 at 11:32=E2=80=AFPM Ma=C3=ADra Canal <mcanal@igalia.com=
+> wrote:
 >
->> From: Asahi Lina <lina@asahilina.net>
->>
->> The XArray is an abstract data type which behaves like a very large
->> array of pointers. Add a Rust abstraction for this data type.
->>
->> The initial implementation uses explicit locking on get operations and
->> returns a guard which blocks mutation, ensuring that the referenced
->> object remains alive. To avoid excessive serialization, users are
->> expected to use an inner type that can be efficiently cloned (such as
->> Arc<T>), and eagerly clone and drop the guard to unblock other users
->> after a lookup.
->>
->> Future variants may support using RCU instead to avoid mutex locking.
->>
->> This abstraction also introduces a reservation mechanism, which can be
->> used by alloc-capable XArrays to reserve a free slot without immediately
->> filling it, and then do so at a later time. If the reservation is
->> dropped without being filled, the slot is freed again for other users,
->> which eliminates the need for explicit cleanup code.
->>
->> Signed-off-by: Asahi Lina <lina@asahilina.net>
->> Co-developed-by: Ma=C3=ADra Canal <mcanal@igalia.com>
->> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
->> ---
+> There are cases where we need to check the alignment of the pointers
+> returned by `into_foreign`. Currently, this is not possible to be done
+> at build time. Therefore, add a property to the trait ForeignOwnable,
+> which specifies the alignment of the pointers returned by
+> `into_foreign`.
 >
->
-> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
 
-Actually clippy complains about use of the name `foo` for a variable in
-the example. Fix:
-
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 849915ea633c..aba09cf28c4b 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -185,8 +185,8 @@ fn drop(&mut self) {
- /// let arr =3D Box::pin_init(XArray::<Arc<Foo>>::new(flags::ALLOC1))
- ///                        .expect("Unable to allocate XArray");
- ///
--/// let foo =3D Arc::try_new(Foo { a : 1, b: 2 }).expect("Unable to alloca=
-te Foo");
--/// let index =3D arr.alloc(foo).expect("Error allocating Index");
-+/// let item =3D Arc::try_new(Foo { a : 1, b: 2 }).expect("Unable to alloc=
-ate Foo");
-+/// let index =3D arr.alloc(item).expect("Error allocating Index");
- ///
- /// if let Some(guard) =3D arr.get_locked(index) {
- ///     assert_eq!(guard.borrow().a, 1);
-@@ -195,8 +195,8 @@ fn drop(&mut self) {
- ///     pr_info!("No value found in index {}", index);
- /// }
- ///
--/// let foo =3D Arc::try_new(Foo { a : 3, b: 4 }).expect("Unable to alloca=
-te Foo");
--/// let index =3D arr.alloc(foo).expect("Error allocating Index");
-+/// let item =3D Arc::try_new(Foo { a : 3, b: 4 }).expect("Unable to alloc=
-ate Foo");
-+/// let index =3D arr.alloc(item).expect("Error allocating Index");
- ///
- /// if let Some(removed_data) =3D arr.remove(index) {
- ///     assert_eq!(removed_data.a, 3);
-
-
-BR Andreas
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
