@@ -1,170 +1,253 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C9E46B3;
-	Fri,  1 Mar 2024 17:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C185EE64;
+	Fri,  1 Mar 2024 22:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709314409; cv=none; b=GW9ZuZj8ktvG0s6/LUkeKHADvn8/Y7/mPwLAVEC5XJZdVMeZQMmrtlNshmrRm5wpeElNNVSRKdHDZVkZmwbpFY7pFQi9QknhQEX467htk0p0gzG9IlraZurUHxBqRh3ABgLBzV/cvKN6d0XPxkaWZy1HOASMYsW2qfuG7a0cTyA=
+	t=1709333636; cv=none; b=fLRIe6f64ouck171ElVQh6+xr5nTeGxDmVQ1LiY78C+KTsk2AHIMgHo8mdDhGmPtJZM6Eazzhkol7wwWEsWBYfArJ3Tmti3yvdLApW/5zl3zpWwTigACILaXGGu69fKQRgE2ATdKJxOrWvFFEC38lQmLoIs8JYRisQYvmKg+CBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709314409; c=relaxed/simple;
-	bh=IYsBs/BhF0iz0VJZYgI9tkngj+zz1RnNDtdkOfgCrfU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lsgUVe844TUH0cxP9Z0EuIEeWsCW9uHL1K3F/nfM0jBXbS3rqXH9gvpwvLiRTLPQgzub94LzzTP6EqmgAhWSy1vi5L+nBm8qPzyOXq0zkRxvMLQMW9bVMAUnyknxCh8tBGGb4Aua/wqNsH+peHSZovvhp/ZSM/TnoEdQ2GDGSUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohI/dcuw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1709333636; c=relaxed/simple;
+	bh=VsZMdjYHywpaXWli5LwKAYdq01wqqIHubkBZDVKzvis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L4sZIIGjJHAH+aCbJnU2Fy0YYFG6kxmT+tExm3yMnBZc3Eujlp9ucnjgr2PdcLelzBVZJD39TO+7X9JoMPT34P1uvjV5iUumU6+f4i0LQp7eGXYCxeC80+m/5QhMEdCrAfHrXCb2kVoBmUbo5VX9wdMd/9I9jfynxJhBQSMjMYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLyuAiXb; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohI/dcuw"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 29683C433F1;
-	Fri,  1 Mar 2024 17:33:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709314409;
-	bh=IYsBs/BhF0iz0VJZYgI9tkngj+zz1RnNDtdkOfgCrfU=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=ohI/dcuwZZ8j8UU5LDwFfoF/l4sfTNfbRCxGn7UllwL66Rc8ZJtrL6bo8W/19jDfH
-	 jBRh2AufqQjOAqYdkOzXQfxvERgNTD/xn4/V9jJOSl/RS+rBIKmf71lq2WhBC13UBK
-	 r9UmnijYyGhfZ1V+2kK7ZOkYLumV0oUZYcTxhQWR1VpVNBtTMJ36ZX0QwJyttkbJHk
-	 rPjczjYzmX9h9XC07rEyqzaHjEjMosZ1IYhh8N7mMDy6WyHm6SVIJ2pe4pLvKhQgLH
-	 pnXqN3oLIsMUk/8blYwAbAfUZ/eaVYjNkVS75oLjmwe9i/OO/s166VVLK7j1ys76L6
-	 3UvFDUYeqatyQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1460AC5475B;
-	Fri,  1 Mar 2024 17:33:29 +0000 (UTC)
-From:
- Mathys-Gasnier via B4 Relay <devnull+mathys35.gasnier.gmail.com@kernel.org>
-Date: Fri, 01 Mar 2024 18:33:23 +0100
-Subject: [PATCH v5] rust: locks: Add `get_mut` method to `Lock`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLyuAiXb"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6901114742bso9115406d6.2;
+        Fri, 01 Mar 2024 14:53:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709333634; x=1709938434; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dpIP2vZ3D1DN449Uvv4oePTKmqkMaAo4lO0G7OfiEqk=;
+        b=VLyuAiXbRVFqUxFCstT26D6ZpWFV5JV1vUl2IP8BbfYwtnOXtDVWG3/t6PPTWAzyFH
+         aDbh98d/lgWSB7PV943TyWOwaeLPoA6C3lufPnaAV6TPuF4ba40O5k44wxJORIki8g0D
+         ztCH+GT4U3YUIEOQkQxRN0MbiWGCTfx1mqHCftSn623tqS7UfYbPtHUVqizzlyKUEylM
+         pQEjqHJGMhV3cH1lRnl7CYhTYW0OUftRABU0qyHQNP96UTyBeH72FBKAV9SnZFIFPmaZ
+         JzAmWYZI2juykBzp0DxktXIBrC0AEm+ed/U4kPnc2FVid5QZle1N67XG+OA7WWbxw3Oh
+         Kddg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709333634; x=1709938434;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dpIP2vZ3D1DN449Uvv4oePTKmqkMaAo4lO0G7OfiEqk=;
+        b=APHNFSjIbx16U60a0wvJnyrW0yJsVOYhLRbPvRLjErcOrLyIDHpxwBiHa0tmoY18aR
+         /oOaIGhAaO/T/KHiRMkb/Rp0oiwF5gm65okh0kQOEc4ep+Z2a5qBJYQWoh+fQIkS9YNY
+         zu53tueF4HdGlqJJeGWXyBSWrnD2blLHFhWv9FxWnMXlqKBIqQc5wzwkCHMMLucsOMe4
+         JDop7l0QNSuAheD9nmPd73JXHUmR7d1OurZGd61mhNc5vtC0OAkUra/J5p/0H6PTjNHN
+         k17NYDmIv4W0YLfUnxNYnBqPOmYcYhSOqqqpb9zLAJHiv4iZj+CYT/dUmgaqTgOWP87M
+         Vi4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXZeyNxrxxKFu10xL8DijSuKaCj2Xjgc5SOs/EeDEaSf66OipO7i8LIsI1K4m8FZirL5GCe58qS33g+Y6UAm2C+SgL20QNYyaIdbxyqOHmYPw6/E8EKkca6W1DPhhWjRY/gnX9nlJq4bRbF1qY=
+X-Gm-Message-State: AOJu0YwPZW/iKrSqzKFTTX0iHisWipqZk50U5oHhL+6n5/+vopflZUJA
+	+OxlVWI0T2cBx0FlPDbu5qHZ6TZOFJ3PGXn7tZ5Zsl2koaq4qJcc
+X-Google-Smtp-Source: AGHT+IGj6jPG6jcQnZG1k9X2UX7L2kmlRX6WTEmz0wmFKnsdm9oLiCDD0IL3XuFh267mc0MhPAipfQ==
+X-Received: by 2002:a0c:ef50:0:b0:690:49a9:15d4 with SMTP id t16-20020a0cef50000000b0069049a915d4mr3001314qvs.7.1709333633736;
+        Fri, 01 Mar 2024 14:53:53 -0800 (PST)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id ma6-20020a0562145b0600b0068ff983299fsm2343200qvb.45.2024.03.01.14.53.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Mar 2024 14:53:53 -0800 (PST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 8635C1200043;
+	Fri,  1 Mar 2024 17:53:52 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Fri, 01 Mar 2024 17:53:52 -0500
+X-ME-Sender: <xms:f1ziZTGXN9Nide4bqcmEUbLxT7zRHyZDEHtSIzBhH4Eodfxi9YY-QA>
+    <xme:f1ziZQWCowdi2Xggyps9f_Z134Coz2OunOf9qRqigkvH4aCpTq_IFyuORHn3-JyOF
+    6miuWDy29kL-gmhJQ>
+X-ME-Received: <xmr:f1ziZVIya1Eppz1hq5rcLuDQcu-sMamWkMPGroQK5Gn60FjD0pkapMW9yCI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrhedvgddtfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhepkeehfeeltdfgkeelleeukeduiedukeffveelhfekleeuieethfegiefgfeej
+    kefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdprhhushhtqdhlrghnghdrohhrgh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
+    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
+    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
+    rdhnrghmvg
+X-ME-Proxy: <xmx:f1ziZRGFVb6LYWoQFaiX5rK9Y5gbMFgUl4wM1aOTDv6GeMJ8pDyCEg>
+    <xmx:f1ziZZWy5oUMXmDue2emH8gZyYUMb27FLnlHeKUv81XFBuI6txoLsw>
+    <xmx:f1ziZcOD7p9PHnxz3v1XJF9FDyK8zZI547E8ut0kt2CFBDFBSWW1Ng>
+    <xmx:gFziZStb08ey6y0-0671QAoj6NRbSvr-AR2icF8nZ_-x3hMlT0ENx-o7ErM>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 1 Mar 2024 17:53:51 -0500 (EST)
+Date: Fri, 1 Mar 2024 14:53:02 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: mathys35.gasnier@gmail.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH v5] rust: locks: Add `get_mut` method to `Lock`
+Message-ID: <ZeJcTl0WuegYHe2h@boqun-archlinux>
+References: <20240301-rust-locks-get-mut-v5-1-c5131dbbd3c4@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240301-rust-locks-get-mut-v5-1-c5131dbbd3c4@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAGIR4mUC/23NQQ6CMBCF4auYrq3pTItFV97DuCjTARsFTItEY
- 7i7VTfEsPxfMt+8ROIYOIn96iUijyGFvstRrFeCzq5rWAafW6BCowBKGe9pkNeeLkk2PMj2Pkg
- yqCyCAm+dyIe3yHV4fNHjKfc5pKGPz++PET7rj0O1W+JGkCCJdQE1ac/GHprWheuG+lZ8uBFnB
- OAigZkoiLw2hJVV1T+hZwQuEzoTXpduW5vKs/b/hJkT20XCZAKNq+rCWmVdOSemaXoDEqxKv30
- BAAA=
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@samsung.com>, 
- Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
- Mathys-Gasnier <mathys35.gasnier@gmail.com>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1709314408; l=3361;
- i=mathys35.gasnier@gmail.com; s=20240118; h=from:subject:message-id;
- bh=YgqZEuEg7qPEU8LNGXge52fKNIIVVzwOHPlT4tjNiao=;
- b=L+sGaDcR7Vjd5mjM+tfqElKX2By5PtqYuLSS2MnvAbyQwx6h3pfgD5m/D0VbWzmKEhmdgVaU8
- gTFLD+1PsWVCUM/0nezEu0MMtJPvv60XtMhOs7USiOCY7eJd7RPfLpx
-X-Developer-Key: i=mathys35.gasnier@gmail.com; a=ed25519;
- pk=C5tqKAA3Ua7li5s3a+q2aDelT2j98/yjGg2nEVGArXE=
-X-Endpoint-Received:
- by B4 Relay for mathys35.gasnier@gmail.com/20240118 with auth_id=129
-X-Original-From: Mathys-Gasnier <mathys35.gasnier@gmail.com>
-Reply-To: <mathys35.gasnier@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240301-rust-locks-get-mut-v5-1-c5131dbbd3c4@gmail.com>
 
-From: Mathys-Gasnier <mathys35.gasnier@gmail.com>
+On Fri, Mar 01, 2024 at 06:33:23PM +0100, Mathys-Gasnier via B4 Relay wrote:
+> From: Mathys-Gasnier <mathys35.gasnier@gmail.com>
+> 
+> Having a mutable reference guarantees that no other threads have
+> access to the lock, so we can take advantage of that to grant callers
+> access to the protected data without the cost of acquiring and
+> releasing the locks. Since the lifetime of the data is tied to the
+> mutable reference, the borrow checker guarantees that the usage is safe.
+> 
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Mathys-Gasnier <mathys35.gasnier@gmail.com>
+> ---
+> Changes in v5:
+> - Adding example
+> - Link to v4: https://lore.kernel.org/r/20240226-rust-locks-get-mut-v4-1-24abf57707a8@gmail.com
+> 
+> Changes in v4:
+> - Improved documentation
+> - Link to v3: https://lore.kernel.org/r/20240222-rust-locks-get-mut-v3-1-d38a6f4bde3d@gmail.com
+> 
+> Changes in v3:
+> - Changing the function to take a `Pin<&mut self>` instead of a `&mut self`
+> - Removed reviewed-by's since big changes were made. Please take another
+>   look.
+> - Link to v2: https://lore.kernel.org/r/20240212-rust-locks-get-mut-v2-1-5ccd34c2b70b@gmail.com
+> 
+> Changes in v2:
+> - Improved doc comment. 
+> - Link to v1: https://lore.kernel.org/r/20240209-rust-locks-get-mut-v1-1-ce351fc3de47@gmail.com
+> ---
+>  rust/kernel/sync/lock.rs | 38 +++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 37 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index f12a684bc957..345ca7be9d9f 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -7,7 +7,11 @@
+>  
+>  use super::LockClassKey;
+>  use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
+> -use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
+> +use core::{
+> +    cell::UnsafeCell,
+> +    marker::{PhantomData, PhantomPinned},
+> +    pin::Pin,
+> +};
+>  use macros::pin_data;
+>  
+>  pub mod mutex;
+> @@ -121,6 +125,38 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+>          // SAFETY: The lock was just acquired.
+>          unsafe { Guard::new(self, state) }
+>      }
+> +
+> +    /// Gets the data contained in the lock.
+> +    ///
+> +    /// Having a mutable reference to the lock guarantees that no other threads have access to the
+> +    /// lock. And because `data` is not structurally pinned, it is safe to get a mutable reference
+> +    /// to the lock content.
+> +    ///
+> +    /// # Example
+> +    ///
 
-Having a mutable reference guarantees that no other threads have
-access to the lock, so we can take advantage of that to grant callers
-access to the protected data without the cost of acquiring and
-releasing the locks. Since the lifetime of the data is tied to the
-mutable reference, the borrow checker guarantees that the usage is safe.
+Thanks! But please see below:
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Mathys-Gasnier <mathys35.gasnier@gmail.com>
----
-Changes in v5:
-- Adding example
-- Link to v4: https://lore.kernel.org/r/20240226-rust-locks-get-mut-v4-1-24abf57707a8@gmail.com
+> +    /// Using `get_mut` with a mutex.
+> +    ///
+> +    /// ```
 
-Changes in v4:
-- Improved documentation
-- Link to v3: https://lore.kernel.org/r/20240222-rust-locks-get-mut-v3-1-d38a6f4bde3d@gmail.com
+The example looks good, however, I was thinking about something like:
 
-Changes in v3:
-- Changing the function to take a `Pin<&mut self>` instead of a `&mut self`
-- Removed reviewed-by's since big changes were made. Please take another
-  look.
-- Link to v2: https://lore.kernel.org/r/20240212-rust-locks-get-mut-v2-1-5ccd34c2b70b@gmail.com
+    /// ```
+    /// use kernel::sync::{new_mutex, Mutex};
+    ///
+    /// let mut m = Box::pin_init(new_mutex!(None))?;
+    ///
+    /// assert_eq!(*(m.lock()), None);
+    ///
+    /// Mutex::get_mut(m.as_mut()).replace(42i32);
+    ///
+    /// assert_eq!(*(m.lock()), Some(42));
+    ///
+    /// # Ok::<(), Error>(())
+    /// ```
 
-Changes in v2:
-- Improved doc comment. 
-- Link to v1: https://lore.kernel.org/r/20240209-rust-locks-get-mut-v1-1-ce351fc3de47@gmail.com
----
- rust/kernel/sync/lock.rs | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+because, this will also run something instead of just compiling a
+function.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index f12a684bc957..345ca7be9d9f 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -7,7 +7,11 @@
- 
- use super::LockClassKey;
- use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
--use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
-+use core::{
-+    cell::UnsafeCell,
-+    marker::{PhantomData, PhantomPinned},
-+    pin::Pin,
-+};
- use macros::pin_data;
- 
- pub mod mutex;
-@@ -121,6 +125,38 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-         // SAFETY: The lock was just acquired.
-         unsafe { Guard::new(self, state) }
-     }
-+
-+    /// Gets the data contained in the lock.
-+    ///
-+    /// Having a mutable reference to the lock guarantees that no other threads have access to the
-+    /// lock. And because `data` is not structurally pinned, it is safe to get a mutable reference
-+    /// to the lock content.
-+    ///
-+    /// # Example
-+    ///
-+    /// Using `get_mut` with a mutex.
-+    ///
-+    /// ```
-+    /// use kernel::sync::Mutex;
-+    ///
-+    /// struct Example {
-+    ///     a: u32,
-+    ///     b: u32,
-+    /// }
-+    ///
-+    /// fn example(m: Pin<&mut Mutex<Example>>) {
-+    ///     // Calling from Mutex to avoid conflict with Pin::get_mut().
-+    ///     let mut data = Mutex::get_mut(m);
-+    ///     data.a += 10;
-+    ///     data.b += 20;
-+    /// }
-+    /// ```
-+    pub fn get_mut(self: Pin<&mut Self>) -> &mut T {
-+        // SAFETY: The lock will only be used to get a reference to the data, therefore self won't
-+        // get moved.
-+        let lock = unsafe { self.get_unchecked_mut() };
-+        lock.data.get_mut()
-+    }
- }
- 
- /// A lock guard.
+> +    /// use kernel::sync::Mutex;
+> +    ///
+> +    /// struct Example {
+> +    ///     a: u32,
+> +    ///     b: u32,
+> +    /// }
+> +    ///
+> +    /// fn example(m: Pin<&mut Mutex<Example>>) {
+> +    ///     // Calling from Mutex to avoid conflict with Pin::get_mut().
+> +    ///     let mut data = Mutex::get_mut(m);
 
----
-base-commit: 711cbfc717650532624ca9f56fbaf191bed56e67
-change-id: 20240118-rust-locks-get-mut-c42072101d7a
+The other thing I notice when I try to make the above example work is:
+`Pin` also has a `get_mut`[1] function, so seems we have to use
+`Mutex::get_mut` to invoke the correct function, I personally want the
+following just works:
 
-Best regards,
--- 
-Mathys-Gasnier <mathys35.gasnier@gmail.com>
+	m.as_mut().get_mut().replace(42i32);
 
+and looks to me the simplest way is to change the function's name (for
+example `get_data_mut`), and we can do:
+
+	m.as_mut().get_data_mut().replace(42i32);
+
+Thoughts?
+
+Regards,
+Boqun
+
+
+[1]: https://doc.rust-lang.org/core/pin/struct.Pin.html#method.get_mut
+
+
+
+> +    ///     data.a += 10;
+> +    ///     data.b += 20;
+> +    /// }
+> +    /// ```
+> +    pub fn get_mut(self: Pin<&mut Self>) -> &mut T {
+> +        // SAFETY: The lock will only be used to get a reference to the data, therefore self won't
+> +        // get moved.
+> +        let lock = unsafe { self.get_unchecked_mut() };
+> +        lock.data.get_mut()
+> +    }
+>  }
+>  
+>  /// A lock guard.
+> 
+> ---
+> base-commit: 711cbfc717650532624ca9f56fbaf191bed56e67
+> change-id: 20240118-rust-locks-get-mut-c42072101d7a
+> 
+> Best regards,
+> -- 
+> Mathys-Gasnier <mathys35.gasnier@gmail.com>
+> 
+> 
