@@ -1,217 +1,180 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395571E502;
-	Fri,  1 Mar 2024 15:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B9C70CD2;
+	Fri,  1 Mar 2024 16:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709306550; cv=none; b=R2vGUF47I16tb8cv5Pm0NK3X7Lad7vXzE+d+RuzqMTjvfYY83M7ET8b4hCa1F+ohUzaByBoOJZpETq8VrF0bTSmBxtzM9n4n8gwyRHMQuQzADhxXdf3S7aEz6RFsIl+X4MpTW+eITSQdZmDu9xRw+m1ARU+wyFKHbtp5HQ/oNZw=
+	t=1709310506; cv=none; b=CfpVw2JTwS4iAOD/SidQN7y0FY8yzgdYCeh0099hoW7nmwkhQWunqkhEDtfLH9/6n03xAsiBo3cVvAiMLpSPc9sH5q8yOsk74MQ+jgQ+I9ytrpcPF30TupQUXid+F6TPha/1qTPnj067Jh3WFsdF8quS4UeRuPECTQLLMFeS96Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709306550; c=relaxed/simple;
-	bh=wnwKt9wPgK3JATv1lV5i2+Gg9oBAg15ZKKFjS7rbUWA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=daobuPpRbxfJfkxbXPkYAefGYk9rkuqRCaV6oEjfwyMoBtmGh8xVSoY6MkTEhBn8G6uXkPzrZYstZfBKb7OMJOBJDKlWFFF4EYVi/1js3AxF7PBgNUroTywhq80fk7HoTFHyzCVEePhCq+/ELvW1usc/+fK+bQ2yrFcCMp7apnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=y1btmd2a; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1709310506; c=relaxed/simple;
+	bh=Ws3CE83RDoWOapBnTAsK/7Ch82AUX+ZG1fRM9iEK0M4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c/lxzJApbN4uK7MSLRYFMG86YaILBTtP/EWSB0+1oJhe4bVrYVbfyFu+7foIdDQufFaW/8XP/ppe0NeurmnMhHAZoHJqxAhrhsrT7jky/eblLWthMK0bMJV7pJ/vG4hrQA0xQ+zKMZZrnCeCNA9gSif3FUwg2Z/DomAq+aF4eGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GGCDY5j4; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="y1btmd2a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709306547;
-	bh=wnwKt9wPgK3JATv1lV5i2+Gg9oBAg15ZKKFjS7rbUWA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1btmd2aUaCfzPAJG098Knd7qcOr7hfpEK765wIAhATaKq2LFTVdXH0QAsEZNHGHM
-	 60XTExsX/aEzU98s/ZlAqEBSUm1Lz1Bx70QjxOAitLxIO5pXiu3Ym255ByGhZenqWk
-	 FmGMBhpH0nQTCPtfYN08TRJjnb11wYAHCn3Q+G7GEnNnStWsz2ftzMxaOBkxMA2BFC
-	 K27aN2jVvxD5lxYIv0BFC+f7okK0WJtMQK3NJQ68PNoHKjwSn+Pqi3WutK2xiryhXP
-	 d8CN7kRSv6DLzHzgG+hn6K0ENxLI6C/BBDfefKIO2DP5/T+7lxn631zNZrmtMDGeaE
-	 GdGYrpZ6mR75g==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 46CE5378105A;
-	Fri,  1 Mar 2024 15:22:26 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: laura.nao@collabora.com
-Cc: a.hindborg@samsung.com,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	kernel@collabora.com,
-	kernel@valentinobst.de,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sergio.collado@gmail.com,
-	shuah@kernel.org,
-	usama.anjum@collabora.com,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH v5] kselftest: Add basic test for probing the rust sample modules
-Date: Fri,  1 Mar 2024 16:22:32 +0100
-Message-Id: <20240301152232.122399-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240229155235.263157-1-laura.nao@collabora.com>
-References: <20240229155235.263157-1-laura.nao@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GGCDY5j4"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5d3912c9a83so1600307a12.3;
+        Fri, 01 Mar 2024 08:28:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709310504; x=1709915304; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e9Rq23WfnWNafR3maqVRcpT7cvkxku4IIx2p9eSQTXE=;
+        b=GGCDY5j4QNTfrz/ii5mbCmc2s26GIH0qSRtxEAuSwK4bEe/9uwzC4yJSoe7hXXkTw1
+         sdsoZHt+8vf47pXabWXyE5KlOI4H3kcvrmYrLsMOFmKR5VEQBB8xEKK9ajlvepKOJMj+
+         Q1nf45SsDnraHgDhmnC+wbL9pzqWX5sGvzR148UdCQXOI2Z3qh4vT4qilhRvvwMNr64l
+         YMP4JR+L1SnfTY0XfE8YixB91HECRFFWwTyAESo6XEaBOB0uaZoErQbr1C78mZ2ez4nZ
+         FtvPyLpeCAXPtbjsKWc7KWrneN8LLEPD+zo3ZunyCYt7q3c3p5Czo0AdlvQUcPj0wbSv
+         fMSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709310504; x=1709915304;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e9Rq23WfnWNafR3maqVRcpT7cvkxku4IIx2p9eSQTXE=;
+        b=RC+Gog9XQydsNAftja8qkz8AX6jtFNxK2vZVC+WnoznVUHxdqW9ovJpT92XsaO71qc
+         9ZAk0y4p1u968m3XbD/cEbaNzdariUCKPRKhA/+EwGqqp64KDbB+n+nrglFXb06TE06Q
+         l72e8Gt4bqoAS8cu+5oHIBRoCRVAnsOXAGYyjg7+wrpl0MXHSQuo8kA9jbgrT+ljR69c
+         UR9tw4gzXnU5lN9o/GTg7PfslkUrT9azdjzwPFyWvcGu5GE+lM4oilscJx2FPE6jLVNy
+         CMkjLpqls6PvGhWlgv6VZAMVPzJOCbNzix2MZnyT3QlZ53mNAJs7UAxGUXQJd0XLYYZl
+         JooA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ2CZyy6NWNWSkcqmc4OmJ7Ie8/kSDpZo2VkbK9ldxLZlM1AuMSEJYck/+Owspz2pgdBJDaGHKcTpwRo8vBYW0ScctyK519UW9TvzQ9MBH/WQvGsq5gFUi7yaHDR5aYhp7IWaJdmPu3NWOvnrUObj635uMNiaCOgrbETM77Qv5ynGB35ywNUErBnjzlCA=
+X-Gm-Message-State: AOJu0YwNjVIbF+xLB102jnV2lct/zXtjP4qH1CxapCEApYe0wpU2SwCZ
+	0mtKFfFiXMyTjRqLsAXqAj3t3nTRm5E1WrA47u6bKb0ScCn7eN+RyYAESKUKgGRN8Wy/3R1/WtN
+	736TABCcrXSucAE949NXSsJaxzDE=
+X-Google-Smtp-Source: AGHT+IHIcdEZl85tvHDMm7YALVdDjiFF8iaCV0i5AkH8LJ0SxNBqztZtK507hXg8qn7fo9phR04XHEIKKnPGbXWIOis=
+X-Received: by 2002:a05:6a20:438f:b0:1a1:139d:bdec with SMTP id
+ i15-20020a056a20438f00b001a1139dbdecmr2422537pzl.55.1709310504356; Fri, 01
+ Mar 2024 08:28:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240229155235.263157-1-laura.nao@collabora.com> <20240301152232.122399-1-laura.nao@collabora.com>
+In-Reply-To: <20240301152232.122399-1-laura.nao@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 1 Mar 2024 17:28:11 +0100
+Message-ID: <CANiq72nMo72ObJaQ=Eki4E6t5dMOnF+xmHE1Z2Tn3=33ooSYGA@mail.gmail.com>
+Subject: Re: [PATCH v5] kselftest: Add basic test for probing the rust sample modules
+To: Laura Nao <laura.nao@collabora.com>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, kernel@collabora.com, kernel@valentinobst.de, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	ojeda@kernel.org, rust-for-linux@vger.kernel.org, sergio.collado@gmail.com, 
+	shuah@kernel.org, usama.anjum@collabora.com, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
-
-On 2/29/24 17:44, Miguel Ojeda wrote:
-> On Thu, Feb 29, 2024 at 4:53 PM Laura Nao <laura.nao@collabora.com> wrote:
->>
->> Add new basic kselftest that checks if the available rust sample modules
->> can be added and removed correctly.
->>
->> Signed-off-by: Laura Nao <laura.nao@collabora.com>
->> Reviewed-by: Sergio Gonzalez Collado <sergio.collado@gmail.com>
->> Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> 
-> Thanks for this Laura!
-> 
-> Replying here to what you wrote in v4:
-> 
->> At first, I hadn't planned for the kselftest to skip entirely if only
->> one of the two sample modules was missing. However, considering that
->> this kselftest is designed to test all available sample modules, and
->> given that both are enabled with the provided configuration file, I
->> believe it's more logical to verify the presence of both modules before
->> running the test. If either of them is missing, then we exit the test
->> with a skip code. This also covers the case where rust is not available.
-> 
-> I guess it depends on what is the expected behavior in kselftests in
-> general and whether the user is expected to have merged the provided
-> `config` or not.
-> 
-
-It's my understanding (and please correct if I'm wrong) that when a 
-kselftest is shipped with a config file, that config file should be 
-treated as a requirement for the test and the user is expected to use it
-(running make kselftest-merge). I agree the script shouldn't blow up if
-the user doesn't though, so it still makes sense to gracefully skip the
-test when the requirements are not met.
-
-> Also, what about modules being built-in / `--first-run` in `modprobe`?
-> `modprobe` by default may return successfully even if no module was
-> loaded (or even present, if it was builtin). In that case, is a
-> kselftest script supposed to succeed, skip or fail? I would say at the
-> least it should be "skip" (like it is done in the case where the
-> module is not found), and I wouldn't mind "fail" either (i.e. running
-> `modprobe` with `--first-run`).
+On Fri, Mar 1, 2024 at 4:22=E2=80=AFPM Laura Nao <laura.nao@collabora.com> =
+wrote:
 >
+> Adding --first-time (you meant --first-time, right?) definitely makes
+> sense, thanks for the pointer. I think having the modules being built-in
+> should be treated as a skip, same as when they are not there at all.
 
-This makes me realize that I should probably put these in the config
-too:
+Yeah, I meant `--first-time`, sorry.
 
-CONFIG_MODULES=y
-CONFIG_MODULE_UNLOAD=y
+I didn't see other tests using it, so I am not sure if there is a
+reason not to do that (ditto for adding `MODULES` etc. to `config` and
+whether we should fail/skip in certain cases) -- I guess Shuah will
+let us know.
 
-Adding --first-time (you meant --first-time, right?) definitely makes
-sense, thanks for the pointer. I think having the modules being built-in
-should be treated as a skip, same as when they are not there at all.
-
-So something like this:
-
- for sample in "${rust_sample_modules[@]}"; do
--    if ! /sbin/modprobe -n -q "$sample"; then
-+    if ! /sbin/modprobe -n -q --first-time "$sample"; then
-         ktap_skip_all "module $sample is not found in /lib/modules/$(uname -r)"
-         exit "$KSFT_SKIP"
-     fi
-
-will cover both cases.
- 
-> In addition, what about module removal failures? Are they ignored on
-> purpose, e.g. because the kernel might not be configured with module
-> unloading? If it is possible to check whether `MODULE_UNLOAD` is
-> supported in the current config, it would be nice to check the removal
-> also worked. And if it is not supported, skipping the removal entirely.
-> 
-
-I think it's safe to assume no other module will depend on the sample
-rust modules, so is there any other reason unloading the modules 
-might fail apart from MODULE_UNLOAD not being enabled? If not, then I
-think we should just check if the removal worked and continue/skip the
-test accordingly.
-
-I can't just simply skip all tests like this though:
-
- for sample in "${rust_sample_modules[@]}"; do
-     if /sbin/modprobe -q "$sample"; then
--        /sbin/modprobe -q -r "$sample"
-+        if ! /sbin/modprobe -q -r "$sample"; then
-+            ktap_skip_all "Failed to unload module $sample, please enable CONFIG_MODULE_UNLOAD"
-+            exit "$KSFT_SKIP"
-+        fi
-         ktap_test_pass "$sample"
-     else
-         ktap_test_fail "$sample"
-
-as the test plan has already been printed by then.
-I'll need to rework the script a bit to skip the test upon errors on 
-module removal.
-
-> Finally, what about the case where `RUST` isn't enabled? I think Shuah
-> mentioned it in a previous version.
-> 
-
-When rust is not enabled, no sample module is enabled either so the test
-would still catch this in the first `if ! /sbin/modprobe -n -q --first-time
-"$sample"` block and exit with the skip code.
-
-If we need more granularity on the feedback provided to the user (i.e.
-indication on what particular options are missing), then I guess we 
-could check the current kernel config (/proc/config.gz) and skip the
-entire test if any required config is missing. However, this adds an 
-extra dependency on CONFIG_IKCONFIG=y and CONFIG_IKCONFIG_PROC=y.
-
-Any advice on the best approach here?
-
->> +KTAP_HELPERS="${DIR}/../kselftest/ktap_helpers.sh"
->> +if [ -e "$KTAP_HELPERS" ]; then
->> +    source "$KTAP_HELPERS"
->> +else
->> +    echo "$KTAP_HELPERS file not found [SKIP]"
->> +    exit 4
->> +fi
-> 
-> I am not sure I understand this. In which situation could this happen?
-> The helpers should always be there, no? I tested this with `make
-> -C...../selftests install TARGETS=rust INSTALL_PATH=...` and it seems
-> to work in that case too.
-> 
-> To be clear, I agree with Shuah that we should test that everything is
-> working as expected. In fact, I would prefer to run with `-e` or, much
-> better, use something else than bash :) But if something should never
-> happen, should it be a skip? Shouldn't we just fail because the test
-> infrastructure is somehow missing?
+> So something like this:
 >
+>  for sample in "${rust_sample_modules[@]}"; do
+> -    if ! /sbin/modprobe -n -q "$sample"; then
+> +    if ! /sbin/modprobe -n -q --first-time "$sample"; then
+>          ktap_skip_all "module $sample is not found in /lib/modules/$(una=
+me -r)"
+>          exit "$KSFT_SKIP"
+>      fi
+>
+> will cover both cases.
 
-Kselftest exit codes are predefined
-(https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/kselftest.h?h=v6.8-rc6#n74),
-so if we use `set -e` and source a missing file we end up returning "1"
-as if the test was run and failed. With this check we're sure to return
-a value that makes sense in the event the helpers file ever gets moved.
- 
-> Orthogonally, if we want the test, shouldn't this just test the
-> `source` command directly rather than a proxy (file existing)?
-> 
+What about the other calls to `modprobe`?
 
-Sure, checking the return value for source also makes sense.
+> I think it's safe to assume no other module will depend on the sample
+> rust modules, so is there any other reason unloading the modules
+> might fail apart from MODULE_UNLOAD not being enabled? If not, then I
 
-Thanks!
+I was thinking more in general terms: that we would like to catch if
+unloading does not work as expected.
 
-Best,
-Laura
+Especially since these "simple samples" are, in part, testing that the
+basic infrastructure for Rust modules works. So I would say it is
+important to check whether module unloading failed.
+
+For instance, if something is very broken, a Rust module could in
+principle fail unloading even if `MODULE_UNLOAD=3Dy` and even if C
+modules unload without issue.
+
+> I can't just simply skip all tests like this though:
+>
+>  for sample in "${rust_sample_modules[@]}"; do
+>      if /sbin/modprobe -q "$sample"; then
+> -        /sbin/modprobe -q -r "$sample"
+> +        if ! /sbin/modprobe -q -r "$sample"; then
+> +            ktap_skip_all "Failed to unload module $sample, please enabl=
+e CONFIG_MODULE_UNLOAD"
+> +            exit "$KSFT_SKIP"
+> +        fi
+>          ktap_test_pass "$sample"
+>      else
+>          ktap_test_fail "$sample"
+>
+> as the test plan has already been printed by then.
+> I'll need to rework the script a bit to skip the test upon errors on
+> module removal.
+
+Perhaps Shuah prefers to merge this before and then improve it instead
+-- I don't know. I didn't mean to trigger a rework :)
+
+Especially since it is unclear what is the "pattern" to follow here --
+perhaps this is another case of a wider cleanup for more tests, like
+the ktap helpers I suggested (thanks for implementing those by the
+way!).
+
+> If we need more granularity on the feedback provided to the user (i.e.
+> indication on what particular options are missing), then I guess we
+> could check the current kernel config (/proc/config.gz) and skip the
+> entire test if any required config is missing. However, this adds an
+> extra dependency on CONFIG_IKCONFIG=3Dy and CONFIG_IKCONFIG_PROC=3Dy.
+>
+> Any advice on the best approach here?
+
+I guess this also depends on what tests are supposed to do etc., so
+let's see what Shuah says.
+
+> Kselftest exit codes are predefined
+> (https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+tools/testing/selftests/kselftest.h?h=3Dv6.8-rc6#n74),
+> so if we use `set -e` and source a missing file we end up returning "1"
+> as if the test was run and failed. With this check we're sure to return
+> a value that makes sense in the event the helpers file ever gets moved.
+
+Yeah, definitely. I was thinking here about just failing if something
+does not work as expected, i.e. speaking more generally (that is why I
+also mentioned even other languages).
+
+By "failing" here I didn't mean reporting the test as failing; I see
+it as something in the layer above. That is, if the helpers file is
+ever moved or is not installed for whatever reason, then it is the
+test infrastructure that failed. So I would have expected that "skip"
+is due to a reason related to the test itself rather than something
+unexpected related to the infrastructure, but I guess it may be part
+of the "skip" meaning in kselftests. So it depends on what is supposed
+to mean in kselftests, which I don't know.
+
+> Thanks!
+
+My pleasure!
+
+Cheers,
+Miguel
