@@ -1,190 +1,166 @@
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0082C840
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Mar 2024 20:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59671E4A2;
+	Mon,  4 Mar 2024 23:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709583475; cv=none; b=IyABZAOPnEAxw7a5/xibfzLksKYqJ9KZDU1e7rG+ij0ov3ZBT0U6VvMhzZGyJIJebxnpnrl3zsd93YABn9nVhMFobe5q92IGB+VMddm6rgusB97fPHHq+bhJkuSynRwe8k1HxCcKpMJHvujrPugTPZGUfFHypu00qMW8R4Zp43I=
+	t=1709595552; cv=none; b=L1UeDemOg3KiwZndJluHIcbedUvd3rwj/34auNInOqS3VAFhz/Pi57WfM/lpd+1Ik1dpF0oiw1jJJPEO9j4cq/zZ7P/qsAZqWOhh/irCAhaZFUFpsxCrIFIys/4hmyTzsfE5jVfVyjFR/Bj+SwNq94n+BgliwZdRfwX8El/eZlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709583475; c=relaxed/simple;
-	bh=InLePziy+w7EsIrWLjImxPDq+19gpyA1+VGaRFRzyDQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b1RiamIrDfSLAnmqP31zuhbAYENSn44RMbG+MeSsXsFeT1Z3gj4cbtYRvnMSHXTBHihtRhHItU3GrNe1Krw5TNRU9Vv0K3juygSXKfgQDXW1USEObDeHFkLd0ItRbYd8rEpcUiKeH3QFeBAcqi6UlvncUVlQTDePrEX0UEL1loE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fx6SWR4z; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1709595552; c=relaxed/simple;
+	bh=3o8JX74qCDA51a+Kvn176uBKDeXH9cfTcdIi9xS8xcI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eSL7Gdyg+IGleQ7nklXQcYoruOJyYA1ukHChUBUscpeOOuqSV5SmolDpFohK3QHRnXvn/n9MXxet4COh8CagV+HulceD7tskb2aGXoRQuL55llswIL/z+6ClvloeKzrzHrkhF8feSZ9leZoJ8wcY2DtEFrkRYCICB/yUiYxBPyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=mScccQtL; arc=none smtp.client-ip=217.72.192.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fx6SWR4z"
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7c84125f416so26154639f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 Mar 2024 12:17:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1709583473; x=1710188273; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6OGnlqSS1kDH9oWockEB3mGHxHlxI0+QQdTZLw4GbL0=;
-        b=fx6SWR4zh9OkLbqFFysAja9qFCZQyEm/khCDXNW/WOscVfxsIaQCeV9ODLNi2xpSB5
-         dBVpxrKF8j+RBPNP7tgsp2qc0k0fdYddCEu+96y5Xt2biusZ+tVOCy+XGdtuxCVCl+IH
-         /UFjwSxcim1cp+QoSWEU7zcRRbO8m3mMTNzQw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709583473; x=1710188273;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6OGnlqSS1kDH9oWockEB3mGHxHlxI0+QQdTZLw4GbL0=;
-        b=DznA8VTMiAtbLi/joQeFVL3isgSNAzV2ywBVceWuIniOzt7cYBnnD0QYqYIdmgHjJj
-         EBOsI2qNFpCMJdGKwLkCwIlo8llSSR/LWYie8ImpJVeMTSErtZxSo4lYRNkuC/EQQT00
-         xQejgSPovNbDWmnpvTtZj3sIQClDR9GvcHLDF1H9rTzffx7swD2LO+SxLWuFP0oFo0kZ
-         v6CSILCzLfW+onfz+dBnW6Oa6k8QQ+49jZeUD47rxOErOsBy0TQmaOC+yITysLSRXiYx
-         k8z9dqfg8+tPafep+OKqPNuyrioOcVvejsHFGZj40rR122KF20tYc7BOPR+LnFG85L7v
-         3pFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVYQmOMzXP6vK68RZweBseWyBhfme6hsWEnvFf01gsvwIrINPqtUNDmELsVIpYiqHZ+Oqc9Ktv+WccQZ5svHq38VgXCI7Y/b9AJshuJqXg=
-X-Gm-Message-State: AOJu0YyGQdjNTZNwFnghiopwylHCvd2bYkd/zWluq1FLQHI6PzpKKh05
-	HzuXqLeH/ceztyr6sFjtcd+CVXaGjI9XpkLdBNF/X6PWXm/IcOUGUS9AZbu28oM=
-X-Google-Smtp-Source: AGHT+IFCOzr4devM1c9VYw7YymWcLmFzcFEeqrjLWZV1a0vIUexdAt/0/HkFEs+J5NsbnASpH/KsfA==
-X-Received: by 2002:a5e:8806:0:b0:7c8:4963:5bb4 with SMTP id l6-20020a5e8806000000b007c849635bb4mr4324564ioj.2.1709583472793;
-        Mon, 04 Mar 2024 12:17:52 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id q9-20020a02a309000000b00474f8b4ac47sm389631jai.143.2024.03.04.12.17.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 12:17:52 -0800 (PST)
-Message-ID: <b8f6ba98-5683-4985-a8c4-53b36bc1090e@linuxfoundation.org>
-Date: Mon, 4 Mar 2024 13:17:50 -0700
+	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="mScccQtL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=valentinobst.de;
+	s=s1-ionos; t=1709595532; x=1710200332; i=kernel@valentinobst.de;
+	bh=3o8JX74qCDA51a+Kvn176uBKDeXH9cfTcdIi9xS8xcI=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
+	 References;
+	b=mScccQtLTZ9FCbxylw1z3xNApffFNwC9ll2WraVeAVa6ORHSVJSBuYfszM4WqvtV
+	 7fa6zrIzfnrHjKGW1ktuO+aLbzpBPOS+nRb+1Pwdd01L/h1XK+icpMTubctvBkVkZ
+	 KjsNSTGGt2e/lWoDRrb8oKWD91YPp6YCmPppbQasHdgtSx1k3bPLfmhpyVwpz4rAJ
+	 g1LQc3MtHS0t9o37xuMvjriVINGLpQB71xnVvkvW2r9R8vRMIfx64OdQ9fvP25PYt
+	 vdyaz+ark3TOM4lDNQVRakK/WBCWky4mNDkU7//EzK7ulzEqIx8TgjoqZcbYDGE4l
+	 K6E3BBvDA4H7yLLWPQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from archbook.fritz.box ([217.249.70.154]) by
+ mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1M1qbm-1rjTeb3vTs-002H3B; Tue, 05 Mar 2024 00:32:42 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+To: samitolvanen@google.com,
+	aliceryhl@google.com
+Cc: Jamie.Cunliffe@arm.com,
+	a.hindborg@samsung.com,
+	alex.gaynor@gmail.com,
+	ardb@kernel.org,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	gary@garyguo.net,
+	keescook@chromium.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mark.rutland@arm.com,
+	masahiroy@kernel.org,
+	maz@kernel.org,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	nicolas@fjasle.eu,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	wedsonaf@gmail.com,
+	will@kernel.org,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH] rust: add flags for shadow call stack sanitizer
+Date: Tue,  5 Mar 2024 00:31:51 +0100
+Message-ID: <20240304233151.248925-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <CABCJKuem3GbLO-G7+wi8LPA8rFgNzFVjNof7zcAO1UGJR4u44Q@mail.gmail.com>
+References: <CABCJKuem3GbLO-G7+wi8LPA8rFgNzFVjNof7zcAO1UGJR4u44Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] kselftest: Add basic test for probing the rust sample
- modules
-Content-Language: en-US
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Laura Nao <laura.nao@collabora.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com,
- benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, kernel@collabora.com, kernel@valentinobst.de,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- ojeda@kernel.org, rust-for-linux@vger.kernel.org, sergio.collado@gmail.com,
- shuah@kernel.org, usama.anjum@collabora.com, wedsonaf@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20240229155235.263157-1-laura.nao@collabora.com>
- <20240301152232.122399-1-laura.nao@collabora.com>
- <CANiq72nMo72ObJaQ=Eki4E6t5dMOnF+xmHE1Z2Tn3=33ooSYGA@mail.gmail.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <CANiq72nMo72ObJaQ=Eki4E6t5dMOnF+xmHE1Z2Tn3=33ooSYGA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:lMesWN2+nwzOhaR31bjDdybINENheJaYKFD+YnF4H8qbr/dYcfe
+ 4E5r+D1MYjQIOG0M1tU6jnlVWDDSKLBC+LmzTyesRy/eCaXXasg2FX26NrNerjZ/9qwlYgx
+ 1LNS1pDly8BPzVNfcznBzg1OzrPSEJgaa4LUCYmO7dS4MIU2oskeBFbGCpLDN3pyc/SJK6D
+ ynFGCBVQgbOf+cybyHFgw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ru6A4YDERCw=;+bZWKXS1YRbH7TB3hkKFx2wddro
+ Yp7mUqdCPFrvVq360nLeRonyxaMf/ejvKrPM8HAfGJOGqu+Hbp/whpdY2qVYRx9lBqJhZnE1E
+ 6w0fSZOBM2RogHQChGIB71pB8yczl+BvZIrruW4Zzww7FUK5JKuk5GHwnCNWb+eq8KJEQ8JEE
+ xFkuS3d04MhlorRAYlqANMX8ooWytWe3nOoVywEv5apGNyZHTCWaUgnsW4pDJoS6x6EO1CwhH
+ jlpbSIR9al35VmO7hmU/NdT2EJQkqSpqQqXkRtTcNqpNl5HX/ux07bRvsgfLLD9ej6io+jzth
+ EGBCL+bFYryPrZjql/I6y22bZR14tDzEVESGyKOFBWip3nr+MRjygEQeOuoouGa6Wzo8lFsDs
+ CH8++7MSr8mITtBfrWdI8JzPTztIdikxX7caBu1rqAAzRQ70slZ/Xps/MZhv8kgr3fR8P9wHe
+ V3heKZh6KFBPFmg4uMAWLcKmc7y6jEoup9IifXpPYaaQ2PK6l6/mUjWUSoSsziP6Vhcs+4cph
+ HW3gWwUxUXL31CjgJxfftk8Lr7XYnmghHGbbDtkHUj392N5OssVNZ7tXNAyiwQs7GgIY1KcWw
+ VF7YeeBtwLmB+Uy4mXGBaW0e8eOoe9dtwsnX2+snl2xP1S7jG1/yZbDZ5IqRVjWtMFtm1+elO
+ 3DnzZEZqDfLLEuKxJkncsOA8xKwHILPnJ8jj64jZVhDlT8sSIP8UgaalgdskJEDDGTE6VLmB2
+ xyzVHsefUn3LQet3Mm9twRsRZ+Fm5hJNDFJStEPwx6nDFx5cFRJHfA=
 
-On 3/1/24 09:28, Miguel Ojeda wrote:
-> On Fri, Mar 1, 2024 at 4:22 PM Laura Nao <laura.nao@collabora.com> wrote:
->>
->> Adding --first-time (you meant --first-time, right?) definitely makes
->> sense, thanks for the pointer. I think having the modules being built-in
->> should be treated as a skip, same as when they are not there at all.
-> 
-> Yeah, I meant `--first-time`, sorry.
-> 
-> I didn't see other tests using it, so I am not sure if there is a
-> reason not to do that (ditto for adding `MODULES` etc. to `config` and
-> whether we should fail/skip in certain cases) -- I guess Shuah will
-> let us know.
-> 
->> So something like this:
->>
->>   for sample in "${rust_sample_modules[@]}"; do
->> -    if ! /sbin/modprobe -n -q "$sample"; then
->> +    if ! /sbin/modprobe -n -q --first-time "$sample"; then
->>           ktap_skip_all "module $sample is not found in /lib/modules/$(uname -r)"
->>           exit "$KSFT_SKIP"
->>       fi
->>
->> will cover both cases.
-> 
-> What about the other calls to `modprobe`?
-> 
->> I think it's safe to assume no other module will depend on the sample
->> rust modules, so is there any other reason unloading the modules
->> might fail apart from MODULE_UNLOAD not being enabled? If not, then I
-> 
-> I was thinking more in general terms: that we would like to catch if
-> unloading does not work as expected.
-> 
-> Especially since these "simple samples" are, in part, testing that the
-> basic infrastructure for Rust modules works. So I would say it is
-> important to check whether module unloading failed.
-> 
-> For instance, if something is very broken, a Rust module could in
-> principle fail unloading even if `MODULE_UNLOAD=y` and even if C
-> modules unload without issue.
-> 
->> I can't just simply skip all tests like this though:
->>
->>   for sample in "${rust_sample_modules[@]}"; do
->>       if /sbin/modprobe -q "$sample"; then
->> -        /sbin/modprobe -q -r "$sample"
->> +        if ! /sbin/modprobe -q -r "$sample"; then
->> +            ktap_skip_all "Failed to unload module $sample, please enable CONFIG_MODULE_UNLOAD"
->> +            exit "$KSFT_SKIP"
->> +        fi
->>           ktap_test_pass "$sample"
->>       else
->>           ktap_test_fail "$sample"
->>
->> as the test plan has already been printed by then.
->> I'll need to rework the script a bit to skip the test upon errors on
->> module removal.
-> 
-> Perhaps Shuah prefers to merge this before and then improve it instead
-> -- I don't know. I didn't mean to trigger a rework :)
-> 
-> Especially since it is unclear what is the "pattern" to follow here --
-> perhaps this is another case of a wider cleanup for more tests, like
-> the ktap helpers I suggested (thanks for implementing those by the
-> way!).
-> 
->> If we need more granularity on the feedback provided to the user (i.e.
->> indication on what particular options are missing), then I guess we
->> could check the current kernel config (/proc/config.gz) and skip the
->> entire test if any required config is missing. However, this adds an
->> extra dependency on CONFIG_IKCONFIG=y and CONFIG_IKCONFIG_PROC=y.
->>
->> Any advice on the best approach here?
-> 
-> I guess this also depends on what tests are supposed to do etc., so
-> let's see what Shuah says.
+> >
+> > Add flags to support the shadow call stack sanitizer, both in the
+> > dynamic and non-dynamic modes.
+> >
+> > Right now, the compiler will emit the warning "unknown feature specified
+> > for `-Ctarget-feature`: `reserve-x18`". However, the compiler still
+> > passes it to the codegen backend, so the flag will work just fine. Once
+> > rustc starts recognizing the flag (or provides another way to enable the
+> > feature), it will stop emitting this warning. See [1] for the relevant
+> > issue.
+> >
+> > Currently, the compiler thinks that the aarch64-unknown-none target
+> > doesn't support -Zsanitizer=shadow-call-stack, so the build will fail if
+> > you enable shadow call stack in non-dynamic mode. However, I still think
+> > it is reasonable to add the flag now, as it will at least fail the build
+> > when using an invalid configuration, until the Rust compiler is fixed to
+> > list -Zsanitizer=shadow-call-stack as supported for the target. See [2]
+> > for the feature request to add this.
+> >
+> > I have tested this change with Rust Binder on an Android device using
+> > CONFIG_DYNAMIC_SCS. Without the -Ctarget-feature=+reserve-x18 flag, the
+> > phone crashes immediately on boot, and with the flag, the phone appears
+> > to work normally.
+> >
+> > Link: https://github.com/rust-lang/rust/issues/121970 [1]
+> > Link: https://github.com/rust-lang/rust/issues/121972 [2]
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > It's not 100% clear to me whether this patch is enough for full SCS
+> > support in Rust. If there is some issue where this makes things compile
+> > and work without actually applying SCS to the Rust code, please let me
+> > know. Is there some way to verify that it is actually working?
+>
+> Perhaps you could write a Rust version of the CFI_BACKWARD test in LKDTM?
+>
+> Alternatively, the simplest way to verify this is to look at the
+> disassembly and verify that shadow stack instructions are emitted to
+> Rust functions too. In case of dynamic SCS, you might need to dump
+> function memory in a debugger to verify that PAC instructions were
+> patched correctly. If they're not, the code will just quietly continue
+> working without using shadow stacks.
 
-Kselftest should all the tests it can run and skip only the ones it can't
-run if configuration and other dependencies aren't met. The reason is to
-avoid false failures.
+Was just in the process of doing that:
 
-> 
->> Kselftest exit codes are predefined
->> (https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/kselftest.h?h=v6.8-rc6#n74),
->> so if we use `set -e` and source a missing file we end up returning "1"
->> as if the test was run and failed. With this check we're sure to return
->> a value that makes sense in the event the helpers file ever gets moved.
-> 
-> Yeah, definitely. I was thinking here about just failing if something
-> does not work as expected, i.e. speaking more generally (that is why I
-> also mentioned even other languages).
-> 
-> By "failing" here I didn't mean reporting the test as failing; I see
-> it as something in the layer above. That is, if the helpers file is
-> ever moved or is not installed for whatever reason, then it is the
-> test infrastructure that failed. So I would have expected that "skip"
-> is due to a reason related to the test itself rather than something
-> unexpected related to the infrastructure, but I guess it may be part
-> of the "skip" meaning in kselftests. So it depends on what is supposed
-> to mean in kselftests, which I don't know.
-> 
+- `paciasp`/`autiasp` pairs are emitted for functions in Rust modules.
+- Rust modules have no `.init.eh_frame` section, which implies that
+  `module_finalize` is _not_ rewriting the pac insns when SCS is dynamic.
+  - Confirmed that behavior in the debugger (C modules and the C part of the
+    kernel are correctly rewritten, Rust modules execute with
+    `paciasp`/`autiasp` still in place).
+- Kernel boots just fine with Rust kunit tests, tested with and without dynamic
+  SCS, i.e., on a CPU that supports PAC/BTI and one that does not.
+- Rust sample modules load and unload without problems as well.
+- `x18` is indeed not used in the codegen.
 
-I applied this to linux-kselftest next for Linux 6.9-rc1.
+I guess we might be able to get this working when we tweak the build system
+to emit the missing section for Rust modules.
 
-We can make improvements if any on top of this.
+    - Best Valentin
 
-thanks,
--- Shuah
-
+>
+> > This patch raises the question of whether we should change the Rust
+> > aarch64 support to use a custom target.json specification. If we do
+> > that, then we can fix both the warning for dynamic SCS and the
+> > build-failure for non-dynamic SCS without waiting for a new version of
+> > rustc with the mentioned issues fixed.
+>
+> Sure, having a custom target description for the kernel might be
+> useful for other purposes too. In the meantime:
+>
+> Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+>
+> Sami
+>
+>
