@@ -1,102 +1,136 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BFF482ED;
-	Mon,  4 Mar 2024 16:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5E579925
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Mar 2024 20:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709568436; cv=none; b=aIxVNST48oz5gyXY6sPG6MjcoDZ/EdLftGDUiasqyWm1rkx/VGlEVfA70EO0d1urkhbfPr9C5rrnL84yCc03HOY0m+9Nnu3IHJl+I/3ITAWuzyS47zPyvFM16VmmgPsVG4kw8x3hxQ1LmrdVqN+VB5KsJlwiepXyoeZLuBa0zgE=
+	t=1709583025; cv=none; b=A7u87vzwaTEtXThE/6K8fBXUBniW8ALWqrRlMwdhhJKusc1ju2TIWHPPK5N0cCUL2o7Vy+lmF5FLcBd2sQizW1+743C4sy6T4y9DJw1NCdu53Zqxrv+v15uHgkfAzN77pKMRZL0pDUIqLMdWOchhqicrFoe8cxMBydq88TBq62c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709568436; c=relaxed/simple;
-	bh=k4TR10OnNmINkmPorunrjDAzeD+rHb7FeAaVbqOaY1M=;
+	s=arc-20240116; t=1709583025; c=relaxed/simple;
+	bh=kdQKu3RoxSzAKnls9h9y9cqdioEJoGugPDVhLaSIEWc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=crgQkzjNO49RtuL7ubKsaH/L7I8yOth4BTr99jMxsKOXIb4nrHTbMlBxsDXEc6VS47oIsFg/g4cfd+CBDlLa9m7C1sjpbKhNZwcvCZNOvk/8Y7ZBGTOC8xaoZlYD6kbxeWy46iL9f3XhaJIEyx/0cs22Rwos5yCxvLKbmrv3Dq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/CJu2+P; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=OQCL9I9bDwF1ek9zTyAVmyewvyJSFW7qX+axyYXwiQ0UYQ6B7T1qQY72lpwZgkIWg+yt6JxbQtW5QrKjDm97FChke8O4sehmmrp60ABVpUHMZwvL3oVorGYlgPcXgmRe3+bJemd/+MNdKs1Cv93+69IYPUqnoV5L0PHVLiA2xDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PYxUFNrp; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/CJu2+P"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6e59bbdd8c7so3783153b3a.3;
-        Mon, 04 Mar 2024 08:07:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PYxUFNrp"
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7d5c40f874aso2795846241.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Mar 2024 12:10:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709568434; x=1710173234; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1709583023; x=1710187823; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=k4TR10OnNmINkmPorunrjDAzeD+rHb7FeAaVbqOaY1M=;
-        b=m/CJu2+Pbjyhmw2VJUJkQnQCtkFpJxrHGLFusviOtE57QrQlYj0JV8GDYH7UPApmS+
-         OfQajgoitkqbikc6cKTqY3gzXuMokc8vU1QMrDe9FIbOYnXH4Do0J9wWA0uIUot2N2EC
-         lO3ni+F68czaxLF3PO4uzNe5dDZeRVipeQQUuYMBvAwFSW6fyfzoLJXlpBUaS8UhtChG
-         FLQ7LQuCDvfpCJkHkt4BhZLM5bdInmCQfOhkGcdTV/eIQ/3M3ouk/nUMrIjv8LCmyKe0
-         AnLGGmEkoyPNC/mWDi+i6xoxFBrRJlSCq9mrWF/kY6ry+A4afyFvKz8Qjv4sbmJKIhO4
-         rBQA==
+        bh=kdQKu3RoxSzAKnls9h9y9cqdioEJoGugPDVhLaSIEWc=;
+        b=PYxUFNrpyCeymfEAxMBzc4agC+5XiwQCCZYnTUkmQFqdDahVVc4vUxnB8DcSKoY5bq
+         4geU2Yr0BX0rURJWivnGOQoqRhyW6uAx3mytZBhDA2uS2Y1aBhIIORC1Lxo2MyTPc3mW
+         QDdVn9UAphU/f0pxlRUIbEta03BZACtTBHAWlxr49iK08KKJzU6pGykqeyQyMDHMTHT6
+         WEiHYJ0tGKHKYpw/OdPnQbHiBE/d/pCpf4q3hgJIbRPh/oyzKiBfPHK259AFDxVZca3n
+         Io6XR8wxU2YWx/V9XapFB9/uHQNugXXctpB9N57qtQTBuNunb1yenSV/ZNTcGkQf+LkU
+         +U8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709568434; x=1710173234;
+        d=1e100.net; s=20230601; t=1709583023; x=1710187823;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=k4TR10OnNmINkmPorunrjDAzeD+rHb7FeAaVbqOaY1M=;
-        b=Kw2c9WOhGbGXOZREypfVj5LN9hw6PfSH+tyGDnmbbyHU+KeUeHRqWMPKEY8wA99IHu
-         s7m+xaY9GoFrJj44Q6zaaQMqbFybtkIwU8wGBTfASx+An+KXXYn5uEnhk1kW6juKSkrT
-         19oaz3M0N5cF/vkEZUZtgZAgjViHlVnr2gRxAqfIpY+CRWbL4yKdrzTDqzD5uidKYzXy
-         BHjcAObtpxb97KUTxsjWfjbk0pAPlvemGab346pKtLIPOZ8Ipz3zllK6C8NEzS1ysEvF
-         tCQu4DJrsXG5o8bdKp+x7xX/XNBHyBS+YpTPkhfzcFPUVjnv5s1+rs6EfccuiE6J1S2D
-         VSYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqtX+maSLXZfDSI0s5pUN3W8YJCcBg297al5R7MuB/iCHo9ew737KqFTmIl2rMp+nnF/A1vDtEWs/ArU0oHmL+Z1F/GVi2D7ebOOwYvECMP0I1jidVhaggSHMQ0vMATi5Tv0pXrTV6v7j8zig=
-X-Gm-Message-State: AOJu0YxTKxjLpjo5+52vwMH6a3i1q/GcSGbFxakb5e4NQPjjhQRufWwL
-	nzt46tbtPrpVq/qLH89E+jq/UgW4pN/JAOsm9QJxRe7fN/lfo79sbCT7dONjwBiNY5o0X196j4i
-	zXWMh3hRK5CANLR4KQyc8rDqFI7s=
-X-Google-Smtp-Source: AGHT+IFlTw+graS1GYFpuHX/+si581ZuRx910SbrbDYCgQI+m5x+oiChingS48e76W97/gjoZixOgklCOzjzBhM/d4E=
-X-Received: by 2002:a05:6a20:160d:b0:1a0:dbf2:fd8f with SMTP id
- l13-20020a056a20160d00b001a0dbf2fd8fmr11819869pzj.21.1709568434111; Mon, 04
- Mar 2024 08:07:14 -0800 (PST)
+        bh=kdQKu3RoxSzAKnls9h9y9cqdioEJoGugPDVhLaSIEWc=;
+        b=JezmjJAaQvpJ835ZGHD3Wq32gbjwRkWX8TitAsO+tr/+Ao2NhPN3fRt6Hr4JBs6Z+0
+         lA3ra8Fiybrl8E/Xs8Y9BcEHX2VF4Gfa/9dad0T5camb14cuc288YHDWEgnSCfEsvhIp
+         8DNqDJ5wcTuozqewtN3jQQ+9slEkUsnUrqfk/D1goT45Els+cQoriXBJcZQD9uNrMdWU
+         mSf6RA/lPkkkMtZ6GR/Cs2jrC4J4w7MSSGOz4Ebw4+qaNDuGqc52JDj+UTwtfyA0GozJ
+         0x0VKxpNC9ps+fbQWyYea3Xxm1wgYNUZ0KpRppKYfmLZx+pMyFk70NgMjw4JN4YY2jif
+         hW/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVxYF/4dBv876ek6XNiuESuCVci/e6coL/3vaMNgHWd9afs855b8WdH2LX23u9Wr7VQMlEuo4/5xw1fj6snxk1MSmHUNGC/5k7mSr85hbY=
+X-Gm-Message-State: AOJu0YzxTAh/zSkZ7T2WB6j9peDIP+IAv+EReT5SMjwxKrQzWqLNYb5H
+	V6B5ITw+BMcTBI/A+50r952n4TrZ8r5uXuhKwBenzVOCgiX27Wu5EKJSTxzOqIFSUpTUALFPQfI
+	abb7o04BXZ5md4xVR1Z8U8CnA3zgwGCohCp6b
+X-Google-Smtp-Source: AGHT+IEVa0EzaUVXzcVxUqw7hDykrrvfsa29Bpt49sVGOlnxc+uITAdGh6g6OsI7IoCnd6Z9sxW1oBlNNGF5IRZ3iR4=
+X-Received: by 2002:a05:6102:3a66:b0:470:c99d:6776 with SMTP id
+ bf6-20020a0561023a6600b00470c99d6776mr7873661vsb.13.1709583022912; Mon, 04
+ Mar 2024 12:10:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304141426.163517-1-wangrui@loongson.cn>
-In-Reply-To: <20240304141426.163517-1-wangrui@loongson.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 4 Mar 2024 17:07:00 +0100
-Message-ID: <CANiq72mvdVrzN19PC8pNrvuBLkOEEQ3yX0WG6JcWc+RVaSM2nA@mail.gmail.com>
-Subject: Re: [PATCH] loongarch: rust: Switch to use built-in rustc target
-To: WANG Rui <wangrui@loongson.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20240304-shadow-call-stack-v1-1-f055eaf40a2c@google.com>
+In-Reply-To: <20240304-shadow-call-stack-v1-1-f055eaf40a2c@google.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Mon, 4 Mar 2024 12:09:44 -0800
+Message-ID: <CABCJKuem3GbLO-G7+wi8LPA8rFgNzFVjNof7zcAO1UGJR4u44Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: add flags for shadow call stack sanitizer
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Ard Biesheuvel <ardb@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, WANG Xuerui <kernel@xen0n.name>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, loongson-kernel@lists.loongnix.cn
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 4, 2024 at 3:14=E2=80=AFPM WANG Rui <wangrui@loongson.cn> wrote=
-:
+On Mon, Mar 4, 2024 at 5:17=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> This commit switches to using the built-in rustc
-> loongarch64-unknown-none-softfloat target for LoongArch.
+> Add flags to support the shadow call stack sanitizer, both in the
+> dynamic and non-dynamic modes.
 >
-> The Rust samples have been tested with this commit.
+> Right now, the compiler will emit the warning "unknown feature specified
+> for `-Ctarget-feature`: `reserve-x18`". However, the compiler still
+> passes it to the codegen backend, so the flag will work just fine. Once
+> rustc starts recognizing the flag (or provides another way to enable the
+> feature), it will stop emitting this warning. See [1] for the relevant
+> issue.
 >
-> Signed-off-by: WANG Rui <wangrui@loongson.cn>
+> Currently, the compiler thinks that the aarch64-unknown-none target
+> doesn't support -Zsanitizer=3Dshadow-call-stack, so the build will fail i=
+f
+> you enable shadow call stack in non-dynamic mode. However, I still think
+> it is reasonable to add the flag now, as it will at least fail the build
+> when using an invalid configuration, until the Rust compiler is fixed to
+> list -Zsanitizer=3Dshadow-call-stack as supported for the target. See [2]
+> for the feature request to add this.
+>
+> I have tested this change with Rust Binder on an Android device using
+> CONFIG_DYNAMIC_SCS. Without the -Ctarget-feature=3D+reserve-x18 flag, the
+> phone crashes immediately on boot, and with the flag, the phone appears
+> to work normally.
+>
+> Link: https://github.com/rust-lang/rust/issues/121970 [1]
+> Link: https://github.com/rust-lang/rust/issues/121972 [2]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
-> base-commit: ("rust: Refactor the build target to allow the use of builti=
-n targets")
+> It's not 100% clear to me whether this patch is enough for full SCS
+> support in Rust. If there is some issue where this makes things compile
+> and work without actually applying SCS to the Rust code, please let me
+> know. Is there some way to verify that it is actually working?
 
-I couldn't apply it on top of commit f82811e22b48 in arm64's tree
-(which is the base? -- the offset differs significantly in the arch
-Makefile), but I nevertheless applied it manually on top of that one,
-build-tested it for loongarch64 and boot-tested it for x86_64:
+Perhaps you could write a Rust version of the CFI_BACKWARD test in LKDTM?
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Alternatively, the simplest way to verify this is to look at the
+disassembly and verify that shadow stack instructions are emitted to
+Rust functions too. In case of dynamic SCS, you might need to dump
+function memory in a debugger to verify that PAC instructions were
+patched correctly. If they're not, the code will just quietly continue
+working without using shadow stacks.
 
-Thanks!
+> This patch raises the question of whether we should change the Rust
+> aarch64 support to use a custom target.json specification. If we do
+> that, then we can fix both the warning for dynamic SCS and the
+> build-failure for non-dynamic SCS without waiting for a new version of
+> rustc with the mentioned issues fixed.
 
-Cheers,
-Miguel
+Sure, having a custom target description for the kernel might be
+useful for other purposes too. In the meantime:
+
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+
+Sami
