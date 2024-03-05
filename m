@@ -1,94 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B88D5F87D;
-	Tue,  5 Mar 2024 10:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD9F54917;
+	Tue,  5 Mar 2024 11:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709634242; cv=none; b=rKUEV2TekXGvKU6j/G2D5io1R5ce4g24VXAwJ/LDoO2vp4uOTGU5J+uxfCghbYGixj+vnjahKXhORLFlqaKZ6Sl6qlZ6SnULwTffGXmxksSF+ufUwvEqoxJWfvale2QGqrd1dihxNhPx1q6aCRnuKaZwmvhNzn0Jsi/HX6iVRKc=
+	t=1709638027; cv=none; b=iaQiCXzarsNvs7V8TOdVaYu1gjGiFZRsafp6Gn/85RQOkE2lRL+X76s8isX3whytCWJUvUvD0pAJ+j8RoUyv47aG/5G/7qDAvUk/UVSQ6JbzkPJLZ9/xchRpNJXCQHnP3JizY2UMYaqOTq5JIL/m2POGaUP3eEswykpdut0Ke64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709634242; c=relaxed/simple;
-	bh=i+xbX53pFEooWR3sjGG3TQr7rRgoWh5Ar98goRFmekY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gjdvspqsSb16zDDT1md4VGG36P8kxICtQ2TenHiOfQp0kDHBa+6faMnks842ErHAgiUryXLTVAf8rl5dctpW2Sdwzsw61qkHCYwwqsiWA6onZRJw8RpMyGa3L2xncFkUSPqWHi626RK1D8M54hC1AFHGW7AXWGQEz84F2W5kXn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKdfHfcm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1709638027; c=relaxed/simple;
+	bh=8J3F7dpUbugfhUSCrPuCrCvwKLWOTzLlmXb9efyMG+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BIS/0FZLF8OdpVeg3n2mkOpbAhIya+KGqIbjVcUrjfGdK1LezECjHIGEl0GpFyCW8Uc+Ud6Ag4Acl4iWwqMNCaoO2s4Vp8deaKmlV+KqfS5fJTE7yvO0VayF0M/6Jte3E5RF/FB87tr4wq+Crp8oGJY1KoBZwPaaq/bsNxjdr90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=q/icdnj/; arc=none smtp.client-ip=212.227.126.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKdfHfcm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9776C433B1;
-	Tue,  5 Mar 2024 10:24:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709634241;
-	bh=i+xbX53pFEooWR3sjGG3TQr7rRgoWh5Ar98goRFmekY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OKdfHfcmPN+81pisf/rKa0Zwilc/5cJwS0t3t+RM7TVmVbw7w3TA7Hwu1DPzQ/9/Z
-	 Q2d01B9fxgMNYgG8rtUdxYx2TJx9Kb75eWVofGYYsyAkt+1OoQxvf21J4wYeRulShx
-	 5YRrbDHvpT1uCw9GfliSYHYk99ZIZ++iKdn6Ul70iWdcurULGz4CVmlwkCLlbNVsHp
-	 RhNOtBIU0w+0V7Phra3E4pNa118C0vmx+hyDA4RLrruqJ1elULt3RGtmkQiZ7BF3wq
-	 usTiEv+s3t6f1PmNdYQaKVE/qx3TY0Ow2pqrAxLWMraXAbKpVTcbnNas+CoEmjsE9k
-	 uWaZfuQHLu5YA==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5658082d2c4so7531018a12.1;
-        Tue, 05 Mar 2024 02:24:01 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU6+s/xdfl8kcPQJ49Pwe2ygEHhgFPHyFJDuVfqzBuio4RjMbE4OOXWuNDBCCj+0CLtSrG/aIFp5LBuYrAhXCtrviY7ya6TIQop7W/CvfG8fw/aaQkRlNj+tD9hNTUqB1Ze4IZOuKib1YAbPvU=
-X-Gm-Message-State: AOJu0Yw+EJAad27P98e9FIM4ecjGWldX2T3MxfdGQ7r9cbECgY0m07ua
-	sFavsvu+a1jfjJBXKB1hcUCSNjbU/4uF+c6YjhoDC+gCPSMnqTyUlQwDThYzHiTpA/CIPiyl7ZX
-	WW7dKR7F2WHUNx6IAlaaKAirCE4s=
-X-Google-Smtp-Source: AGHT+IHlFvWBz3wnmsSjVMW5AspWGuH7n2lGRkbQpThZBFkZw5/Abym9wGNUQUXXO0A5jDAM1F8DOoKv++tOu+LpUqo=
-X-Received: by 2002:a17:906:4546:b0:a45:aef0:c3f0 with SMTP id
- s6-20020a170906454600b00a45aef0c3f0mr67378ejq.68.1709634240144; Tue, 05 Mar
- 2024 02:24:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="q/icdnj/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=valentinobst.de;
+	s=s1-ionos; t=1709638007; x=1710242807; i=kernel@valentinobst.de;
+	bh=8J3F7dpUbugfhUSCrPuCrCvwKLWOTzLlmXb9efyMG+Q=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
+	 References;
+	b=q/icdnj/qAB2qiBv8Kg24voOdG/3+W25Sct4I/y+bU8i2P6nZ7y+7C8uKwAd0+G+
+	 EPeQleX5Uz70EEoM8KN3ZSikDoMjWs1Ad9loPVVOUEn4fLFXglI2HB+IFCNuqUVk0
+	 Y0EbunVsk5yPDO028PTeJg7gPgmO8xzqUPEiAmJTl21NX790GnAHaEJH7nAUjQZVT
+	 oZY3TLnZm1T+mK/xYvWQTSh0bPsS+LHw9WYzAsI64cJS4wSqZ9oH8uXufr7fwLJg0
+	 bJB0AgAVeIfIZRegjNZMhYiuNAVSk+a29l9rmI1f1W+pHPv8+VAEdiH8CzKK7Daw7
+	 KwYjT71uDpJzT+cmVQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost.localdomain ([95.223.130.98]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1Mwfj0-1qwTxX2Gi2-00yC8T; Tue, 05 Mar 2024 12:20:21 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+To: aliceryhl@google.com
+Cc: Jamie.Cunliffe@arm.com,
+	a.hindborg@samsung.com,
+	alex.gaynor@gmail.com,
+	ardb@kernel.org,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	gary@garyguo.net,
+	keescook@chromium.org,
+	kernel@valentinobst.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mark.rutland@arm.com,
+	masahiroy@kernel.org,
+	maz@kernel.org,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	nicolas@fjasle.eu,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	samitolvanen@google.com,
+	wedsonaf@gmail.com,
+	will@kernel.org
+Subject: Re: [PATCH] rust: add flags for shadow call stack sanitizer
+Date: Tue,  5 Mar 2024 12:20:17 +0100
+Message-ID: <20240305112017.125061-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <CAH5fLgg0yGbuHnMbMB103Zssg4KSfXUR3kvhr0kuqTSah=6kWg@mail.gmail.com>
+References: <CAH5fLgg0yGbuHnMbMB103Zssg4KSfXUR3kvhr0kuqTSah=6kWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304141426.163517-1-wangrui@loongson.cn> <CANiq72mvdVrzN19PC8pNrvuBLkOEEQ3yX0WG6JcWc+RVaSM2nA@mail.gmail.com>
- <CAAhV-H666zsMadZuzvcRxxkUxSpkka1tt9AJO_WctHDL8j_HNg@mail.gmail.com> <CANiq72mHCNU2wGpELBbgOA8LKQhm_-RyG8+9bP9miYJOkUw2Uw@mail.gmail.com>
-In-Reply-To: <CANiq72mHCNU2wGpELBbgOA8LKQhm_-RyG8+9bP9miYJOkUw2Uw@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 5 Mar 2024 18:23:48 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4-m8hETykn+i1pUzHEjAHtkm4rNXybAtDwc5QyXY+m6Q@mail.gmail.com>
-Message-ID: <CAAhV-H4-m8hETykn+i1pUzHEjAHtkm4rNXybAtDwc5QyXY+m6Q@mail.gmail.com>
-Subject: Re: [PATCH] loongarch: rust: Switch to use built-in rustc target
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: WANG Rui <wangrui@loongson.cn>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, WANG Xuerui <kernel@xen0n.name>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, loongson-kernel@lists.loongnix.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gEEJ6cSatmSGonn8Io6yx8x3YGsfuJgCroTsfGdlZH25jmjFENX
+ 28qC2V9HneRd0N2YxzZt834iCQM8rhN8kZ1MTw1f0AGpDu1VwXQh61OWz19AOEyqbUxCjob
+ iX9omwwG+FLWXzCIAxr+UaGPmyrPutpQWF4d231oD/CP3w5IR/41gcuMix0mM3pGz74azUx
+ ZmnHUMEi4UoT4S1eiAi6A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:vedfcIpbmPY=;dZuHOCTtIcJA3uYMlVFkIktOqig
+ WT8LPNbCsxSxVCGp2kyR8w2z9GBJsIBfW2JhKFiTeMPbNqhaeBp+aQwHLayiDjVKuCAGd/OAS
+ lhpjdAjPhDDvt1F73nZ//+LEL1loUfl2DrImh3PR6xAEPN1CSueOWYG9SCqFuTJv5XMXEdJZ9
+ kU+nZ0pZuWkw1MEY0TpS8UcXK4VArFEQ66JXzykqDSZvxDSmLJ6NhQqb4ns6BvuTrkEP3EEp1
+ 4MUX7YGo/IYFrW4W+VWGubYlFNwvx8S260h4bzq5Tg0dNnHGlV8tI9JBTVo04lTqhXj9WZQWA
+ BeSK1vicUOGSGuMmzX6zrMzbs84VikgL6mRszQ+vUpqMavmqla8vNRwJkEVM8gm+aE8ntJ5eq
+ CeeeiLZ11z5MMn1NRfBFQCwFmVCXPYH3/6ehf8UISd8L7LjjPDN0cWvta/VJNx+LcMQkpKLYu
+ vCHDWUZMWIJ7QvPXl9zxGgtB1mbrnc6phBSHZUArdcJrpZqk4VrtjKyhilotfE9jhuw464HGV
+ q+tbJUIifmVzwijpNRJJ/RfubK6GvV7nigG1c2RGVWG7KNDrFnZ/F0l7xv3UYvAC4GFOomWhY
+ HBbPBfmv1hZB9FK2VH3fe9xV+tg+0Pw1Pmr8YDldRdCVr0wjcf0P6ynOBKv9Zzcie6VTU51TM
+ 57iFh+BQHKgGdCcfU01Dm+b8eSKiO1AIdUgWF3Ku7Mjz1OFQl4n9PK3MGniULBX397nd2jL0V
+ x+Xauh1zQOIXGjlb0xTFF/uWOb4vioPj5BOFir7oLemipa9aRG4Y4s=
 
-On Tue, Mar 5, 2024 at 6:10=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Mar 5, 2024 at 10:58=E2=80=AFAM Huacai Chen <chenhuacai@kernel.or=
-g> wrote:
+> >>> It's not 100% clear to me whether this patch is enough for full SCS
+> >>> support in Rust. If there is some issue where this makes things compile
+> >>> and work without actually applying SCS to the Rust code, please let me
+> >>> know. Is there some way to verify that it is actually working?
+> >>
+> >> Perhaps you could write a Rust version of the CFI_BACKWARD test in LKDTM?
+> >>
+> >> Alternatively, the simplest way to verify this is to look at the
+> >> disassembly and verify that shadow stack instructions are emitted to
+> >> Rust functions too. In case of dynamic SCS, you might need to dump
+> >> function memory in a debugger to verify that PAC instructions were
+> >> patched correctly. If they're not, the code will just quietly continue
+> >> working without using shadow stacks.
 > >
-> > The base of the loongarch tree doesn't contain the arm64 modifications
-> > now, so this patch is better to be applied on the rust tree with my
-> > Acked-by. But if you have some trouble doing that, I can also manually
-> > merge the arm64 parts to the loongarch tree, and then apply this
-> > patch. Thanks.
+> > Was just in the process of doing that:
+> >
+> > - `paciasp`/`autiasp` pairs are emitted for functions in Rust modules.
+> > - Rust modules have no `.init.eh_frame` section, which implies that
+> >   `module_finalize` is _not_ rewriting the pac insns when SCS is dynamic.
+> >   - Confirmed that behavior in the debugger (C modules and the C part of the
+> >     kernel are correctly rewritten, Rust modules execute with
+> >     `paciasp`/`autiasp` still in place).
+> > - Kernel boots just fine with Rust kunit tests, tested with and without dynamic
+> >   SCS, i.e., on a CPU that supports PAC/BTI and one that does not.
+> > - Rust sample modules load and unload without problems as well.
+> > - `x18` is indeed not used in the codegen.
+> >
+> > I guess we might be able to get this working when we tweak the build system
+> > to emit the missing section for Rust modules.
 >
-> The rust tree doesn't have the arm64 changes either (i.e. they are in
-> the arm64 tree), so we would have the same issue.
->
-> Since it is quite late and there is no rush for this, I would suggest
-> applying it after the merge window in loongarch64 and thus avoiding a
-> merge. But, of course, up to you!
-OK, then you just need to do nothing, I will apply at a suitable time
-with your Acked-by.
+> I suppose the -Cforce-unwind-tables=y flag will most likely do it.
 
-Huacai
+Yes, enabling this means that `.eh_frame` sections, which are converted to
+`.init.eh_frame` sections for loadable modules, are generated for Rust
+objects.
+
+Tested booting, kunit tests, sample modules (as builtin and loadable) for
+both, dynamic SCS active and inactive. Backtraces on Rust panicks also look
+normal.
+
+Confirmed that in the debugger that builtin and external modules are
+rewritten (or not rewritten if no dynamic SCS). Did not check that the
+`eh_frame` sections are exhaustive, i.e., cover all `paciasp`/`autiasp`
+pairs, only verified a few functions (in init text and normal text).
+
+> There's also an use_sync_unwind option, but it defaults to no, so it
+> doesn't seem like we need to set it.
+
+Are those defaults stable or will we notice if they change? If not it might
+make sense to set it explicitly anyways to avoid surprises in the future.
+
+    - Best Valentin
 
 >
-> Thanks!
+> Alice
 >
-> Cheers,
-> Miguel
 >
