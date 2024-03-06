@@ -1,157 +1,135 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCCE14CABD
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Mar 2024 18:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066A313E7E1
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Mar 2024 19:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709749541; cv=none; b=bVx3TK59lPn0w2qu5ywt5WAsrPC1Jh18usXYpqDhraRX4WYSKqMf2Ub1HSOEexrK6RoL9jtBydahd9fTb9PKmDRa5GOE5ozikZlQ32veEaS+XTw89R+oSL88KYqvH+pbvyMfRW4oymze6b385/eG+VKEcJBVp0oMSbS7Fu7q48g=
+	t=1709752540; cv=none; b=TM+ePWaL78SMZctQgajU37/QI6bFl/wP5nK9RfTkmK8mM/yuRgHWNwpouEeQN7yNJWFs4QOPa2Nzol29QnAWTxOLMJgx/Bjs3wJQOTbmM1wKXb23WpfdyTarV6nRfF3jUXUqVh2MbJd2pu81m13Bmt3xrE1+yQcbqW7tqAgnhpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709749541; c=relaxed/simple;
-	bh=NrtbL/EY4V8lv5W/NYv3/0shGeJ2rjAV+ZTsI9ELgcc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BRncZuUl+i8POe32qDeF5zjietheGFHkhajv8ktSkTOR1U8EBXYh8hqNaUapxfDUiKi4WHxma6+rk7zqhwCCfs+lrHDkfdhxykLh8cdMnzaua1Yy9j5/KxITKotBh75UvRtP9QcM9ZEDhazTcoWNQVtFYEohEjP8qHu4UtyOV54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bEYq0sVx; arc=none smtp.client-ip=209.85.219.201
+	s=arc-20240116; t=1709752540; c=relaxed/simple;
+	bh=QuS9AXxHXDpbM5rvDh38jn2uMjdWYTRhLPk0WPIY3dI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0hCpnVIBShXvBIawouOYxEGd83PRqb2bwW81KgvEUTJJuZIK6ujezq7gxdVI+L5xSsmzpBbUrhwulVtAsRrQO+pOEZJ3Bt+tdmnQuEuwaO6jE6idNtU/2U73u40RBQ0cQCqJV+rW1cakyqYBkn4grueE0A9fUsWmlRi6qZfUo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TFBZB625; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bEYq0sVx"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbf618042daso10844787276.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 06 Mar 2024 10:25:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TFBZB625"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1dc418fa351so9065235ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 06 Mar 2024 11:15:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709749537; x=1710354337; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K6AcyGgSKYmz5a5MAIaPTUUBsabHZwFmfRjLl2PG8hA=;
-        b=bEYq0sVxHrMuTds06WHbN7Ei0K64EGQ9+W4kMa+0VtpmMjOtDB9a3LqV25pMa2LY4W
-         se0Solh0/mr4sF+09LmbHO1jLF6CwgtNWTKU9Gb2H/IfwY7pZZm0VjJvw+V5EIq4D2BL
-         AqZbCKVforZjCKxwUh8n5A0PCKOisG8lWpGfhIqml6j9VnKrHSVBGIikyCDU5jIqEVSi
-         AlAHJ7GZXIAJmdnE6Tp4HzTBayaiVSnfoWMUMqdsa+a8g9nm+ANYZpOWNTashKR8fH+1
-         un0/FKZCi2HhxUX192UvYNVxAuYEnINLoxTuckoPcAkqfncgH1YGnzQInGjyNtj2t2CD
-         qpEA==
+        d=google.com; s=20230601; t=1709752538; x=1710357338; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jVzv+SoRW1+I9CQGe/RRjiGpq2ikkVRYKb843GfHzio=;
+        b=TFBZB625tDAO2dwG5FHXDg6Augv7nDVXlXCvW6qeCv78fNVOiNI90uV5RUbrB+LuzK
+         KkL8PqjTHY0JRUqGBIiSkv9K82NCHsY/Mk+SaCNMKbK0yAT6R8a/2Eah7f99wvqp+lzf
+         Q8BFJ56Uo6/TQVYlZSQNcrlrKXQr2LxsJN6evoTa7jKqXrc99Rg9XB191HJFJ+kxLv3T
+         jg0Ne6v3fhfw+kZUaLQ9zoV2gFNeRQ66qFen2kLwAJlfdYeC2eTL0aK9inNHFRn6fedb
+         KSzqAMgXOnjGNDuP+L7AZbPVIxGDnIwev9QVKpqFx2MV91tlSkatrlMjvwnXRMehtH4T
+         CRAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709749537; x=1710354337;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=K6AcyGgSKYmz5a5MAIaPTUUBsabHZwFmfRjLl2PG8hA=;
-        b=fxOZTADrg2otoLDhhROIm0S1eqEx6xVOIlScepnZiVOHydeEgnHj0jVuPT4sP5e/s7
-         po4jlqBF7o1p8WLHhHwGsitjbHV01jZ5LcXPI44z+3DjT8iIw5DBZLvN9RdDilnlfLLC
-         xo94S146TpkDbxwEr521Uco3P29w9tsHy11jO9LVSoB/sels7UXJZyqcHZfT8SJlvalM
-         S82ccfvuY3vwpnc5zC+Qdh98FxfzIMjYAWId09CnuQbFtw6wrQ6BfHeHgU/mFff8M5UG
-         O9OMEyzkFjCjahP/pFfjwnbaoFgvE8e6enZOmOLiY9JCHssKWQAguike69rYQFrCAV2b
-         Aowg==
-X-Forwarded-Encrypted: i=1; AJvYcCVTj0kfRmWBdEDYrwD8n5fM7WQsv+NcsWkcrCDpU1IeOT3gV0x9QclHpqyH/Y5jZOjQQYpWXND7T1CRfUAHwCoRKIqYLGAaaoY0n3Q1brQ=
-X-Gm-Message-State: AOJu0YzGvwR1K89AUI+bqAe9SB6iogwmtBDQLv7g+YAPexNA75kNH9fD
-	UEiB6CMkQg3WCA+E3Si2nP5JLhnNnTZ79TbL43kbLOaWsGPMuS2ah8bh7SlTYeXbA/y+Z+adcnN
-	Aaw==
-X-Google-Smtp-Source: AGHT+IHr70OmG1R1IO1Fluk0v1eGaHNwt9Z96sNJit+XMVYfO4W641pUVkuKWr/RRoRl/U2gSXjA5z2Bwhw=
-X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:85f0:e3db:db05:85e2])
- (user=surenb job=sendgmr) by 2002:a05:6902:18d3:b0:dc7:865b:22c6 with SMTP id
- ck19-20020a05690218d300b00dc7865b22c6mr633022ybb.8.1709749536658; Wed, 06 Mar
- 2024 10:25:36 -0800 (PST)
-Date: Wed,  6 Mar 2024 10:24:22 -0800
-In-Reply-To: <20240306182440.2003814-1-surenb@google.com>
+        d=1e100.net; s=20230601; t=1709752538; x=1710357338;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jVzv+SoRW1+I9CQGe/RRjiGpq2ikkVRYKb843GfHzio=;
+        b=DIbKF1FrhLtwMqO5V5YmQE4+7wauouQ2xyejw+UGDtb0TWCrxRTysokcZkZkPJz/kd
+         cxWaorS8sjDI27Un1UdJLEKGzU8TegEO3LLd07eY8Xycjw0//FlKDj4eYyncDaqYV9j8
+         j/+s6dvjYp0umAcoaWO7xtHynOPYkp7OeXixp2R+i99Xot+Qx+mydh0AAivy3kr1Mbuj
+         hG8pzKzN6bR+5E6GU5UakrQDqWSDbC015onYlfgCgGmYgwYkHY2RaW9F4S5IjCMVURC/
+         EMxTlIa0UIAjNCwK01cAj51E9Ls45j3nbPSp9UUWSkggTW4Q9gaSiT/J/gzw4FHKr6iH
+         zWxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1veNFk71pA8F/aIkbaqH+klZUmgaJbGpXgNj4Zv/GnB1TtYjrbrPA0LmRAlFl2+trFHkGqmNMbZ1YjPxyAPTy7U4ZixHIauJbZPGRaPg=
+X-Gm-Message-State: AOJu0YyVZIZya41Oacwb9XMNc/zPJyJg4TiAXzSYwd8VRobLVurDpDNn
+	5qFBVCr6BlZm0X3SKAz//OOAxNNtvQw50E8L3OOtV8tYbFhrF+iXLQkZac5LHg==
+X-Google-Smtp-Source: AGHT+IGuYdCp1Cb41tMReB+PFmMHU4FwyH+nvlsqKqWQhCiftNEMDk5tCFfJIakTDZEyeAYTvDWXzg==
+X-Received: by 2002:a17:902:e5cb:b0:1dc:b64:13cd with SMTP id u11-20020a170902e5cb00b001dc0b6413cdmr1355783plf.27.1709752537788;
+        Wed, 06 Mar 2024 11:15:37 -0800 (PST)
+Received: from google.com ([2620:0:1000:2510:8e30:f1a9:3b07:78c9])
+        by smtp.gmail.com with ESMTPSA id h15-20020a170902680f00b001dd090a7c00sm7520343plk.292.2024.03.06.11.15.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Mar 2024 11:15:37 -0800 (PST)
+Date: Wed, 6 Mar 2024 11:15:31 -0800
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Kees Cook <keescook@chromium.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
+Message-ID: <20240306191531.GA454514@google.com>
+References: <20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240306182440.2003814-1-surenb@google.com>
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Message-ID: <20240306182440.2003814-25-surenb@google.com>
-Subject: [PATCH v5 24/37] rust: Add a rust helper for krealloc()
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, mhocko@suse.com, vbabka@suse.cz, 
-	hannes@cmpxchg.org, roman.gushchin@linux.dev, mgorman@suse.de, 
-	dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com, 
-	penguin-kernel@i-love.sakura.ne.jp, corbet@lwn.net, void@manifault.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, catalin.marinas@arm.com, 
-	will@kernel.org, arnd@arndb.de, tglx@linutronix.de, mingo@redhat.com, 
-	dave.hansen@linux.intel.com, x86@kernel.org, peterx@redhat.com, 
-	david@redhat.com, axboe@kernel.dk, mcgrof@kernel.org, masahiroy@kernel.org, 
-	nathan@kernel.org, dennis@kernel.org, jhubbard@nvidia.com, tj@kernel.org, 
-	muchun.song@linux.dev, rppt@kernel.org, paulmck@kernel.org, 
-	pasha.tatashin@soleen.com, yosryahmed@google.com, yuzhao@google.com, 
-	dhowells@redhat.com, hughd@google.com, andreyknvl@gmail.com, 
-	keescook@chromium.org, ndesaulniers@google.com, vvvvvv@google.com, 
-	gregkh@linuxfoundation.org, ebiggers@google.com, ytcoode@gmail.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, bristot@redhat.com, vschneid@redhat.com, cl@linux.com, 
-	penberg@kernel.org, iamjoonsoo.kim@lge.com, 42.hyeyoo@gmail.com, 
-	glider@google.com, elver@google.com, dvyukov@google.com, shakeelb@google.com, 
-	songmuchun@bytedance.com, jbaron@akamai.com, aliceryhl@google.com, 
-	rientjes@google.com, minchan@google.com, kaleshsingh@google.com, 
-	surenb@google.com, kernel-team@android.com, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
-	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com, 
-	cgroups@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com>
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+On Tue, Mar 05, 2024 at 11:58:45AM +0000, Alice Ryhl wrote:
+> Add flags to support the shadow call stack sanitizer, both in the
+> dynamic and non-dynamic modes.
+> 
+> Right now, the compiler will emit the warning "unknown feature specified
+> for `-Ctarget-feature`: `reserve-x18`". However, the compiler still
+> passes it to the codegen backend, so the flag will work just fine. Once
+> rustc starts recognizing the flag (or provides another way to enable the
+> feature), it will stop emitting this warning. See [1] for the relevant
+> issue.
+> 
+> Currently, the compiler thinks that the aarch64-unknown-none target
+> doesn't support -Zsanitizer=shadow-call-stack, so the build will fail if
+> you enable shadow call stack in non-dynamic mode. However, I still think
+> it is reasonable to add the flag now, as it will at least fail the build
+> when using an invalid configuration, until the Rust compiler is fixed to
+> list -Zsanitizer=shadow-call-stack as supported for the target. See [2]
+> for the feature request to add this.
+> 
+> I have tested this change with Rust Binder on an Android device using
+> CONFIG_DYNAMIC_SCS. Without the -Ctarget-feature=+reserve-x18 flag, the
+> phone crashes immediately on boot, and with the flag, the phone appears
+> to work normally.
+> 
+> This contains a TODO to add the -Zuse-sync-unwind=n flag. The flag
+> defaults to n, so it isn't a problem today, but the flag is unstable, so
+> the default could change in a future compiler release.
+> 
+> Link: https://github.com/rust-lang/rust/issues/121970 [1]
+> Link: https://github.com/rust-lang/rust/issues/121972 [2]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> This patch raises the question of whether we should change the Rust
+> aarch64 support to use a custom target.json specification. If we do
+> that, then we can fix both the warning for dynamic SCS and the
+> build-failure for non-dynamic SCS without waiting for a new version of
+> rustc with the mentioned issues fixed.
+> ---
+> Changes in v2:
+> - Add -Cforce-unwind-tables flag.
+> - Link to v1: https://lore.kernel.org/r/20240304-shadow-call-stack-v1-1-f055eaf40a2c@google.com
 
-Memory allocation profiling is turning krealloc() into a nontrivial
-macro - so for now, we need a helper for it.
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
-Until we have proper support on the rust side for memory allocation
-profiling this does mean that all Rust allocations will be accounted to
-the helper.
-
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>
-Cc: "Bj=C3=B6rn Roy Baron" <bjorn3_gh@protonmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/helpers.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 70e59efd92bc..ad62eaf604b3 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -28,6 +28,7 @@
- #include <linux/mutex.h>
- #include <linux/refcount.h>
- #include <linux/sched/signal.h>
-+#include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
-@@ -157,6 +158,13 @@ void rust_helper_init_work_with_key(struct work_struct=
- *work, work_func_t func,
- }
- EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
-=20
-+void * __must_check rust_helper_krealloc(const void *objp, size_t new_size=
-,
-+					 gfp_t flags) __realloc_size(2)
-+{
-+	return krealloc(objp, new_size, flags);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_krealloc);
-+
- /*
-  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
-  * use it in contexts where Rust expects a `usize` like slice (array) indi=
-ces.
---=20
-2.44.0.278.ge034bb2e1d-goog
-
+Sami
