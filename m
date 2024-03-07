@@ -1,132 +1,88 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CCB13A256
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Mar 2024 20:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A81864A9F;
+	Thu,  7 Mar 2024 21:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709844968; cv=none; b=MgFqwER3ofhfJo3j8DDHJ8408pCNvsWJHtCkiCKog4cUV4quKAEF1Ynbtk1freKh/13wS3+Mci7WTxAbdRPC7xOwuKKpaqa7Hca2WnlDviWZewSVQLv26lhAIImqDOP6+nxK/5d/D9OdWDv6Fc2eBDs5wAeixkLWSGgHvJ/klHg=
+	t=1709847937; cv=none; b=iRpgt6TlM06wGB4M9dFksydBIyOgeYwQg2uCIOHKYpiMbjNtYmXnimso+ShRJUos+47u6RFA4ZtjvHUm+19hRh+reourGK0nsj1RNB7cuizEiB09hCbmLKmyzVzIwo6OqqydgMk1NXwve/aDNCFEfUpxKnMBZ9bcd5kdeGgsdIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709844968; c=relaxed/simple;
-	bh=2n/MjL/4X+81aIV4UEAdU1iKxvGLTF8COYlSEQXZy/U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fUUKOhzIjIYJlK/cg+v/gvEkMm2CNXtX/ARYk2Bng9fyaIB3bTcFNt81Fd6gp/S/CrXcyekUQSXLTi4bEwXzBEdsWc8SAs+T/exMGZAEGD8YWPlrCaIB6bk6OUstnxvwtt5AB+BllDV8QqnKF6epEpxZXFhFXwOflzZSsig8fmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=yup57+5/; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="yup57+5/"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-788412a4b78so10785585a.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 Mar 2024 12:56:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1709844965; x=1710449765; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tw1twkim3tJHa4ruEXI5vxr7AEW36vJHstefhfBYjKw=;
-        b=yup57+5/OnW1ynH5Wx6P5l+ZYF5hRJqTSjU+n+tt6+huLUOXZRS2ynQ/wRtzs7BOf5
-         zYiU679eTbEEZV1/ByHTA8jQZcyQSSuUj8KgD/KOlMul+my3uJe9d7GuvG0qzabS/qXv
-         kLggHc2sIvS4rwmVKf83mgvMFdD10mRDHjYZiJbo+E+18rTtzbcnthwa9x8krRBMsRUw
-         otcKqv8ie+pQucBhWHJ6L4gDTHhNN1apViL7MCJNQK0ZKt/Z2cNf+SWBBUjAZzXihE2O
-         Lvyv+bshmCnAQYxv33D51fRR9541J9Zeq1ZMUxHSk89MP1EVErexUwqVVt11jPgkdrMR
-         eBZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709844965; x=1710449765;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tw1twkim3tJHa4ruEXI5vxr7AEW36vJHstefhfBYjKw=;
-        b=JvRXi6KLa1YTOEVnKbyh59BzPlzRE9NlRCVVXYviMucvJZTcYfwIrjuD6RuK1cqRhv
-         RH+xWfpGp29IRqxbj2apwhkwr0ZfYeypdEZcZz36OlEqVZ8nvVuPftzDdoPvhBbZR6dE
-         iH1JgjF2i1MUGL69VKrzQIFlQAbDciIaMkGVGqViCJ/uF4k0LneOdFQWWgi0SGTxXDD7
-         cA8bDZjOjcJL+sYiLnvJEDlnLX4KUTwdAnfJePEWylokVVCbqtBcmwuzHDmmLpSur/c6
-         L9Mcm20VFPvSfj3RzVl6wTagVaUD0diQwTKIX6fzItmcKpOgXi3kSIJNkNp1HMS0o+nD
-         qFQA==
-X-Gm-Message-State: AOJu0YxUCcluEB7QkoUSLrSA4QaQMlLrmWXVQF6wKt43HYdCsfj4fVNu
-	CQWLhrUbBhDGsxS17TwhROfcpDJB4bWng3jAhnFgFg4arDpdm6/3voKu9zmRdEnVMRM4xx+XsWm
-	qw64=
-X-Google-Smtp-Source: AGHT+IHSboxGSHFyQhRKAiV/dXr6jr+xeGSxmpeqPr8L6HZBuX56WMJ5wkIjORNZwzAww9do3Q4Hdg==
-X-Received: by 2002:a05:620a:31a:b0:788:1a88:3cf6 with SMTP id s26-20020a05620a031a00b007881a883cf6mr8869605qkm.21.1709844965459;
-        Thu, 07 Mar 2024 12:56:05 -0800 (PST)
-Received: from nicolas-tpx395.localdomain ([2606:6d00:15:eba4::7a9])
-        by smtp.gmail.com with ESMTPSA id z17-20020a05620a101100b007876e91f392sm6204346qkj.79.2024.03.07.12.56.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 12:56:05 -0800 (PST)
-Message-ID: <c70935815ffc29ae5256b94c0e4880952abad79c.camel@ndufresne.ca>
-Subject: Re: [RFC PATCH v2 2/2] media: rkvdec: rewrite parts of the driver
- in Rust
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com, 
-	ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, kernel@collabora.com
-Date: Thu, 07 Mar 2024 15:56:03 -0500
-In-Reply-To: <20240307190841.10260-3-daniel.almeida@collabora.com>
+	s=arc-20240116; t=1709847937; c=relaxed/simple;
+	bh=XyrV3yZlEAF1mxbGdo1czbAm9N+9F+OQ3GDp0j0njqM=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=oBOrwQy1ywVVlvj6Hqu2CYWRNvcG2FDhO8zu/k8CH+wfyP1Jl+U6lRdYxOXqevj9QhV/jQ1NBx93IleqIXKbwjv9iqxDn4TI8DonbAPIzjTrL7mGn0rf+OpeUATDK3nubsRHQwuFYnlq5I6RKPkmXXoxxXkX8letoQknERmpUIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id 86CEE37804B2;
+	Thu,  7 Mar 2024 21:45:33 +0000 (UTC)
+From: "Daniel Almeida" <daniel.almeida@collabora.com>
+In-Reply-To: <c70935815ffc29ae5256b94c0e4880952abad79c.camel@ndufresne.ca>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
 References: <20240227215146.46487-1-daniel.almeida@collabora.com>
 	 <20240307190841.10260-1-daniel.almeida@collabora.com>
-	 <20240307190841.10260-3-daniel.almeida@collabora.com>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual; keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	 <20240307190841.10260-3-daniel.almeida@collabora.com> <c70935815ffc29ae5256b94c0e4880952abad79c.camel@ndufresne.ca>
+Date: Thu, 07 Mar 2024 21:45:33 +0000
+Cc: wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, kernel@collabora.com
+To: "Nicolas Dufresne" <nicolas@ndufresne.ca>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <144b27-65ea3580-f-61876d80@130641868>
+Subject: =?utf-8?q?Re=3A?= [RFC PATCH v2 2/2] =?utf-8?q?media=3A?=
+ =?utf-8?q?_rkvdec=3A?= rewrite parts of the driver in Rust
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
 
-Hi Daniel,
+Hi Nicolas,
 
-as I'm already sold to the idea, I decided to discuss other things ;-P see
-below.
+> struct reg123 {
+>   val1 :3  // bit 31-29
+>   val2 :20 // bit 28-9
+>   val3 :9  // bit 8-0
+> };
 
-Le jeudi 07 mars 2024 =C3=A0 16:08 -0300, Daniel Almeida a =C3=A9crit=C2=A0=
-:
-> +++ b/drivers/staging/media/rkvdec/regs.rs
-> @@ -0,0 +1,237 @@
-> +#![allow(dead_code)]
-> +#![allow(unused_macros)]
-> +
-> +pub(crate) const RKVDEC_REG_INTERRUPT: u32 =3D 0x004;
-> +pub(crate) const RKVDEC_INTERRUPT_DEC_E: u32 =3D 1 << 0;
-> +pub(crate) const RKVDEC_CONFIG_DEC_CLK_GATE_E: u32 =3D 1 << 1;
-> +pub(crate) const RKVDEC_E_STRMD_CLKGATE_DIS: u32 =3D 1 << 2;
+What you're describing can be modeled as Ranges in Rust:
 
-Regs file are a bit our coded reference information on how the registers ar=
-e
-layout in memory. So I believe the alignment, indent and readability of tha=
-t
-file would at least need polishing.
+```
+use core::ops::Range;
 
-But to the light of your comment, being able to use more modern utility, is=
-n't
-there something in Rust we could use to better map the registers ? These
-variables are just mask offset to help someone write specific bits within a=
- list
-of 32bit registers (Hantro and RKVDEC have that in common). In downstream m=
-pp
-userspace driver, they maps all the register with a C struct.
+struct Foo {
+    reg1: Range<u32>,
+    reg2: Range<u32>,
+    reg3: Range<u32>
+}
 
-struct reg123 {
-  val1 :3  // bit 31-29
-  val2 :20 // bit 28-9
-  val3 :9  // bit 8-0
+const FOO=5FREGMAP: Foo =3D Foo {
+        reg1: 0..3,
+        reg2: 3..24,
+        reg3: 24..32
 };
+```
 
-I seriously think it looks nicer, and when the compiler does not screw it u=
-p
-(the main reason we don't use that), it is also a lot safer and simpler to =
-use.
-Now, lets forget about C, my question is just if there is something in Rust=
- that
-could give us the safety to edit the right portion of a register, but also =
-allow
-expressing that map in a readable form.
+It becomes more useful when you pair that with a bit writer. For an exa=
+mple of previous art, see Faith's work: [0]
 
-Note that sometimes, we may want to read the register before editing it,
-something MPP giant C struct does not help with.
+This has asserts in the right places so that you do not shoot yourself =
+in the foot. IMHO, such a data structure can be shared with the whole R=
+ust code in the kernel.
 
-Nicolas
+You can then describe your writes using the ranges, e.g.: [1]=20
+
+But as we've established, instead of writing the ranges down directly, =
+you can simply refer to them as FOO=5FREGMAP.reg1, FOO=5FREGMAP.reg2 an=
+d so on.
+
+I believe this is both more readable and safer.
+
+[0]: https://gitlab.freedesktop.org/mesa/mesa/-/blob/main/src/nouveau/c=
+ompiler/bitview/lib.rs?ref=5Ftype=3Dheads
+
+[1]: https://gitlab.freedesktop.org/mesa/mesa/-/blob/main/src/nouveau/c=
+ompiler/nak/encode=5Fsm70.rs?ref=5Ftype=3Dheads#L228
+
