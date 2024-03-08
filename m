@@ -1,130 +1,132 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5805224F0
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Mar 2024 02:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D312B2D05F
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Mar 2024 09:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709863464; cv=none; b=POQLDu0jR1IWE7N+2isllUYlkjy3EKeaWqMDaxmi/pATAP9xke8ywzyBRxYRO4imzbS3+j+lz+7IHqAoou3n1V5bSFb5SQCBN/JYth8+PX0/N7IfFRYgixQr13UndAkI6+nS5mgeFBOWoNqDqEYn9EXq8He76hmTx77dPZy0+5I=
+	t=1709890621; cv=none; b=CoyJ5Optv6JBAs5HetOn7rWSmfL9oQiMXO/uv9PZoBkiSiL/AyNjO/iDzFSrIiWsBDqHHYFGDBwraL2KfgUAVkrgg+GlxEJZ7i/ucLeRB5sPmHkVnW9UzsNDrUlep/tGPWuHezib9J6fM8mm55GazDwaCLqHMWezYHhoszfQybY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709863464; c=relaxed/simple;
-	bh=LNChI/bDv/sWVPlnNFplRS+fOZG6dkv/hkAd8G4MR8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HssoZPlZtMipWh/ODZJkMYElrBe2nJy/ECrqDCBj/YfzwYCbYXAIfXvv8IN2j9HgTy4K3Wq0Wn/Yx8yAACCEpoxjvCHI+y/kVbZ/IPjo2bOnlM3TSxtq9YGLO30js311B/SUbQg3CdQ5IgqrYNlbtqzJmiizLTQ0YADZly6GLwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XOO9zRyW; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1709890621; c=relaxed/simple;
+	bh=ARgIYQHmcT3WDCT/C37sjRzjUfl+5mv5bdkO5HSlrZc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OZKh9/qQNTflZnKemmFvHbPjg6QgP63IhvElqH6yEVAocVrZexFebbV0Ur3ayiO1EkYFas4ZbWvl/3INC0LVvlUvp4yE7PN2QaiDF1H9nZ9AOYTnqQc0AT7S/iBxYJNQysQBmnKuxZ54sC9oZDe2pj2wOslHqGwrDrMJ1BnC7f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gt1SFTqi; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XOO9zRyW"
-Date: Thu, 7 Mar 2024 21:04:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1709863454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9PiUndr45S+vzs9M4BY0xWx9Q6LSRxjPFwpGH0rrUqk=;
-	b=XOO9zRyWT0q3K01U8/NR6mnOgXDj9VVmATWb4yjAULN1z4e5hEWs7JsCUb7+dVUvsHI+oA
-	OqLP5RD/rQH2d1kLWalYL+3zuE43s2gJXNXYHWkhGIkNXoVSOVHmxJbP5uUo+dgrINQGZb
-	Ehx26SA204dvPQdCNV47fOe2DnKVW5Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Thomas Bertschinger <tahbertschinger@gmail.com>
-Cc: Ariel Miculas <ariel.miculas@gmail.com>, 
-	rust-for-linux@vger.kernel.org
-Subject: rust traits in kernel (was: bcachefs meeting)
-Message-ID: <np7mqkkrnpvi4stflwkrrw7uew4fgkt6iqynmoiirxg4sdsjpj@dwnx334lctpk>
-References: <hveywufltgcwqs6gciwuqyse7gv3k6fhvqftnjtc6no76ajdhb@6ro24ggp6qdp>
- <CAPDJoNunCinSA9Y=V5yEiFzTc7QU71Z=XKicJKNCQhDJEm0ROg@mail.gmail.com>
- <20240308003235.GA66553@fedora-laptop>
- <eqixbuwkcqmllbkoszgxxkyo6rj2izq3h5c4m7jtehbbyzqyt5@7upygcsju5ge>
- <20240308014248.GB66553@fedora-laptop>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gt1SFTqi"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-609ff5727f9so13425697b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 Mar 2024 01:36:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709890619; x=1710495419; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=k/FYxEuJJjfDejA1S3OfbTfejCKvINxrPLGNHovjOxc=;
+        b=Gt1SFTqiGfL+hs4Aq7UxK8B8pqQPlLlJJxIPqKu4A4ExdvuLK4VtTTwO4lvFa9fxo9
+         WYcE4NheSozoZ8ZgA04VOEINvQZYbL+I3NwOywoA0/c9zctlQimChQDv4EzibrN4qeFI
+         O/4ReT9K1yw+ond9D84zO7aVUWu0w97ffsKIMx8VP2wnS0JrWPCLW0cqsIMuqIJPqh9i
+         LzX3o6XjKZmeUGqY5edgSzN/c7NDIXY9mm+iOh4Z33fyBPORX8/XBrCS7fMbIP4HX+4w
+         A4e8iQqSJjLVK8zREin8eM01DECFLcS5PAvY17gZGBy9oEiVP2Iio6xJ8uqMoBbYMe01
+         FSLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709890619; x=1710495419;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k/FYxEuJJjfDejA1S3OfbTfejCKvINxrPLGNHovjOxc=;
+        b=F4sUUpVTPEi6mJGqB39R48sn9Lu50bg4wC4Nd9qOJxJuIEE4rLJxh+hljg+ATFG8nf
+         UQNSsMepwxPoH3X1CV07s5aTurp0+7pT39IARjPNmlvsHoirp4H8+FpoDEIaSe9bMrnJ
+         MTlL9BHu10/2JmX0JRrxqmMoo77cUayuOTVNFMzGR7orJh4owp2lDRGxy4lhOvh15yuj
+         LP7kv1Q4ajY91h6Olzlju9Y1QQOjgbWy+GjiUamr/nCBlFRirwDqbNZCRWb9EJo90jRx
+         nE5ZpcVm3UGyE03G8TVjuqol5bShZ+YvQ1NOhb2224bdhR0NfPzp9DGRCUUjsNiCa2dj
+         LD0Q==
+X-Gm-Message-State: AOJu0YzM0Avp3k67kH54pU0x/qXegZHXONlcMKq+HEkPrG4U7N9uxz8G
+	jwleb/x84GJONF5wxmWgcktu3tqIXIHr7mbMtG+OsdEDFwvGcfXawNu75BeVK4KdNELFeFo8QHE
+	VGC9OH/jKNF60nQ==
+X-Google-Smtp-Source: AGHT+IGkL3Ui+SaRSxFgXSCHQwNmZqC+lN7Big70IIcB7TbtSHOU6BLY/t/HxrVy5cmGM1i0ujxLf/IvIE22Ngw=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:4707:b0:609:fdaf:8d0a with SMTP
+ id gz7-20020a05690c470700b00609fdaf8d0amr524280ywb.1.1709890618951; Fri, 08
+ Mar 2024 01:36:58 -0800 (PST)
+Date: Fri,  8 Mar 2024 09:36:31 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240308014248.GB66553@fedora-laptop>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1508; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=ARgIYQHmcT3WDCT/C37sjRzjUfl+5mv5bdkO5HSlrZc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBl6ttfeicdGJCfsaczcFXNtWql+LSBl6Qc4+PnP
+ ywKFtoIraSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZerbXwAKCRAEWL7uWMY5
+ RnVUD/sHQH5VMR08yYy75nUq6fV+Yv5tkgOTsv2agrrP44YcVQqy7U/melDNm3n8nJYrXh2gOpa
+ gOJQ91t+rxLwzIhod7YxtA4+ZXSOmc1MdtahuK7efuKiKgPbmw8Yg58mz5iTmwAkNWhKudF3QM5
+ qMw4n2zKKLH2WlyW+y+inDtP0rfZiX82OPgH7fi05cl5dQYCOYWVL6OACSuUE6/gkumY2pCedgK
+ Qbe3daRvucMgT/Nk5pumZPMrNXzjxL5yhdjDvL27+AOJDVGtcdAwWbts7TxNFA4yEgA8fmzIEPG
+ nclXhKSU4urh3EWFS6qKnAkCOtypDOsGyuwD8Y0shJlBv/XO+CY8rzaSHmO1BJCvMrpax1p/VLa
+ YvBi1/hBRo9nkh81dj2TewoATyV5qNCdIVQNKRjptd6/9kaAUslQyaMMK7iG0Z4dCZ48UZftlAj
+ 9o8SthHY/vY6v/dlm9o2JTm80kYnAA+ybghA38+AbhQUCS7BAJMNXSG8G+DnHB3Mu3SkRIimzi0
+ wxNjQ6lWJ/3+wTnmwSXrxdOlnBdCJuolJUS/m0Wx9+5hHdmD47S4BcDyeO8xOJPU0Lu15pa6QpA
+ icTa8W/M6KURPPJ3vAATosYGDv++n+tFkRqIHUtvcrSEWORaljgvxYA/9WA47zQK+r6FK6PT/to So5T60HPmXn+V6w==
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <20240308-constructors-v1-1-4c811342391c@google.com>
+Subject: [PATCH] rust: don't select CONSTRUCTORS
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Mar 07, 2024 at 06:42:48PM -0700, Thomas Bertschinger wrote:
-> On Thu, Mar 07, 2024 at 08:02:14PM -0500, Kent Overstreet wrote:
-> > That works - you guys want to pick the time then? I'm the more flexible
-> > one.
-> > 
-> How about Wednesday after 8pm UTC, or Thursday after 9:30pm UTC, or
-> any time on Friday?
-> 
-> > > I'll give a quick update on what I've been working on since it's been a
-> > > bit since I've shared anything concrete. I'm trying to create generally
-> > > useful Rust wrappers for the debugfs_*() functions. Currently, working
-> > > on:
-> > > 
-> > > debugfs_create_file_from_iter(parent_dentry, &T)
-> > > 
-> > > where T implements IntoIter and T::item implements Display.
-> > > 
-> > > This should create a debugfs file where read() returns the Display
-> > > format of each item of the iterator. Bcachefs definitely wants this for
-> > > the btree iterators, but I think this seems like a generally useful tool
-> > > so it would be nice to try to make a good generic interface.
-> > > 
-> > > Right now I am working through some interesting lifetime / ownership
-> > > issues that this presents. I can share more details in IRC or in our
-> > > meeting, and hopefully will share something concrete with the mailing
-> > > lists soon, once I have the code working and presentable.
-> > 
-> > Ok, that should work.
-> > 
-> > Did you consider the bytestream iterator approach? That's a more low
-> > levnel approach, but it feels to me like something we're going to want
-> > too. But if this seems like the most straightforward appraoch this
-> > totally works.
->  
-> That's a good point, the bytestream approach is more versatile. I have
-> thought about it a little but I have not attempted to implement it yet,
-> but I can try implementing it and see if it's cleaner that the iterator
-> approach.
-> 
-> I think we would want something like the BufRead trait to make that
-> work. The std::io::BufRead trait isn't available in the kernel so a
-> similar trait would need to be defined. If it is defined, then
->
-> debugfs_create_file_from_bufread(...)
-> 
-> should hopefully be pretty straightforward to implement.
+This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
+static synchronisation primitives") from the old Rust branch, which used
+module constructors to initialize globals containing various
+synchronisation primitives with pin-init. That commit has never been
+upstreamed, but the `select CONSTRUCTORS` statement ended up being
+included in the patch that initially added Rust support to the Linux
+Kernel.
 
-yeah, that does look like what we want. Let's see if we can find out
-what'll be required to pull it in, it shouldn't be much code.
+We are not using module constructors, so let's remove the select.
 
-> > 
-> > How are the lifetime issues looking? 
-> 
-> This works by passing a pointer to the object that implements
-> IntoIterator through the struct inode's private data, and then in the
-> open() method I try to dereference that pointer and call the type's
-> into_iter() method to get an iterator. A pointer to that iterator
-> object is then passed via the struct file's private data to read().
-> 
-> The problem is that Rust refuses to call into_iter() on the dereferenced
-> raw pointer because into_iter() requires taking ownership of the object,
-> but Rust (correctly, from a memory safety point of view) refuses to take
-> ownership of an object behind a raw pointer--even in an unsafe block. Of
-> course, I know that the IntoIterator object was allocated on the Rust
-> side in the first place but the compiler doesn't know that.
-> 
-> I think the most straightforward solution is to require that the
-> IntoIterator object also implement Clone and then clone() it. But it
-> might also be possible to also use another layer of indirection with an
-> Rc<> or Arc<>, but I haven't explored that solution yet.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ init/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-IntoIterator isn't the only way of getting an iterator. This comes up
-with vectors as well, where often you want to be able to iterate over a
-vector without consuming it.
+diff --git a/init/Kconfig b/init/Kconfig
+index 8426d59cc634..41f7fb195382 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1903,21 +1903,20 @@ config RUST
+ config RUST
+ 	bool "Rust support"
+ 	depends on HAVE_RUST
+ 	depends on RUST_IS_AVAILABLE
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+-	select CONSTRUCTORS
+ 	help
+ 	  Enables Rust support in the kernel.
+ 
+ 	  This allows other Rust-related options, like drivers written in Rust,
+ 	  to be selected.
+ 
+ 	  It is also required to be able to load external kernel modules
+ 	  written in Rust.
+ 
+ 	  See Documentation/rust/ for more information.
+ 
+ 	  If unsure, say N.
 
-So vectors have a .iter() method that returns an iterator that just
-takes a reference to the original vector. I don't think there's a
-standard trait for this "borrowed iterator" method, but it's a standard
-thing for container objects - that's what we'll want to do here.
+---
+base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
+change-id: 20240307-constructors-07270b039e2c
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
