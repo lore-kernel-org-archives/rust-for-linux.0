@@ -1,63 +1,116 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2459E55E7E
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Mar 2024 11:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDD115C0;
+	Fri,  8 Mar 2024 15:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709897945; cv=none; b=c/Vi6eyEFWNXkGBsy4AzaTpZF4vMAV4rT98JLy7GTgM7EwnQ+4xlyToL2NcpV1E//y9eu/HNqz1aPCrz4ZaYmzwVsSBxLLuWP5NmpPg/GLv+Ln1nJZ1W8q/pGBCfngCGCXubTo+RDsBErZ/xz9DeAPrQE1diDC4nj8n5bS3gyxQ=
+	t=1709911425; cv=none; b=ebjnSqVdpg6RtvmrOzVfFXIokDPH58wwF8WTkluEFPYRR63IMxyxG5GuB27eFLf3Xc29n/CsOQIU8udx8lHYLzBvnXo0uRULkSI1zeJ0OqQV+fcRjcftHRqn9gCtYGMIX5NTY3DrLNWCxklVtYg++p0y+/zSwzQ3S8aNuPkXTzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709897945; c=relaxed/simple;
-	bh=3B/cw9GjdraPUIrj1ZXN1KUh9QGuUVvejLGEF+4qNxE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZJirfqK5vslJkwxTzWlYUoqrTslbrzIxW7wBzRS8/6Nz8Q4uRbPlcuX0m1Q43K7xG3GCTV6y0XOx5d8xJTr3HvisE3zIc9rUDa7kZfyiSry+l3LXz7AX5k0FNqjStaNksmB0gRuBwESk6iWkMjrcf3eQcvcrfwF+kqIXYpFze9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OSUd4IgM; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1709911425; c=relaxed/simple;
+	bh=smFQqtDCLvrCK6zU35YKk9vivzb3zYgAYB2LYuAuGDE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pvrQ0Xu4nWlu+P/ME4DqMfkXhTzh3V70ChZXG636Sw8AF6pf2GRmSMDK8XfF97jP31UAulgzIOwPTiWSCRjy0uEXhl1TvsKgmnTiBYHzSqGJ8XZ2DTZYoyY3uJWnAvx1l6pD1YETMDLmSMqSjMoN5956/aRKQG84aq5ShhuSvt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dZANEPlx; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OSUd4IgM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1709897934; x=1710157134;
-	bh=3B/cw9GjdraPUIrj1ZXN1KUh9QGuUVvejLGEF+4qNxE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=OSUd4IgMVKN0oOIVzlTktQB29QCcp/OsDT50e1v6XwHBPfETmr9+citxCjFx9rjJ8
-	 YQoii+NhZER+uRDFOCSbp8Bk/AFd5hauvhxYK/ckOyO12LpzAzubl2RwV8lFxQBwmi
-	 SPAhEWrK44I/KcFIRnublcrH+yV9IvT1Svw0nk7yoUFQQlqiPQzIaG43xRMGFnZwiX
-	 4AccqgPVOY+IUw5Ft2bK7uhczBwwxh7eRrOd6pI025qnE3EA2MIbhQC7/x1tuUe2XH
-	 Hh5293mM3MSdEGZiyWVqRXqwzhbVz0+pEqb0dhQTJQnGsq+TptULbha0wirhSKFxPB
-	 eUrjNchctzd0w==
-Date: Fri, 08 Mar 2024 11:38:49 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: don't select CONSTRUCTORS
-Message-ID: <a217a3d3-b81c-47e1-89a3-a67c57b44379@proton.me>
-In-Reply-To: <20240308-constructors-v1-1-4c811342391c@google.com>
-References: <20240308-constructors-v1-1-4c811342391c@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dZANEPlx"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-29a61872f4eso1490952a91.2;
+        Fri, 08 Mar 2024 07:23:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709911424; x=1710516224; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bcBcmCbNUNK8QMRYlD0suSpFuYeDhzgpUC/IVV9/I8w=;
+        b=dZANEPlxwM5oPCBvysfsLEwt5BNASQmYvo5PvBmmGsOI0UnLaIxwoweL9P6HcyPFvD
+         dIvcarMHLLGKTwrwX9ysbLHqaypr+WoqFDdtx8/vF7IhIW3ZFwfijegrKLpMajWzpXfI
+         ISsSSJvPVm17jdRrvEDTbuGeoaX6SxUAZwi/gvwMt8GTe6ST5CyfW4RAHlAa2f0OjVHY
+         7I6PJXSq1M5pG1UEwxsjgfKMy3pvmWVsp137FG7NzkV4McQIZMdsdsf3HAvWfcSQPwCA
+         FA+EGg6mFMCV3iA94fY9KXnjdu3xq1MmKIO69AuVyPBMJ1rgwfKVrbHBU8IxUCz0jjdF
+         3oew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709911424; x=1710516224;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bcBcmCbNUNK8QMRYlD0suSpFuYeDhzgpUC/IVV9/I8w=;
+        b=m1zEzv8mmpofpKmxvVpDtIoN0TkV+k0thCTcH2XBbOy1eVwNaZ8hFTJOUzthKXRzuM
+         TU8gdo5LEXWUVfNuztImE2Fw80pm3Hpq+e1rDl9QPJuvMHKYbHmtr3gLMqmy4X110OG+
+         gJzRng4EDN9wnPuwNea7atLZ/g8G7JcuxP4OusoOX8g+cQ9RUKh85ccVkp1sa60SzxnX
+         DFfe7EV/tKtgIH0e2SccRbs+nHcpJlHUsMPDaJ71Kw4A+f6S85fODME+KAOp3Un0QGR9
+         uS/qdZZE2MUPR1GftTsSJ0KbzkLJQgiK6KA6MSKOX1RvK0jjUx5guERbH8tkXc9bUZuN
+         yaxA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaMoiBGTKQ5WlIYqVj3vXjZrqJGkFyTMfGkwnQJ5Eaz/vegg3IC3o6Hba9rMRCITih2W4OJwziEbKC3lkSwPXK+hAcU60AakJ4n408zdBi6CiHRLWQ5GQOjE+aToz3SLTeJGehLITWmtIhFXuTDYqJYlXRUawEpdQt5koV4YvNbvP6rhZqS/Qkh1xWGLnUWfnyYF8KP3gkh1nu4BaiimerkPgkf4DHHxB/riBjNv88IqO8Mfo9kpzXaxdfqNLfyV0Y4xNbSyDgL6b63mSR/DB6SDhFb/MO45SjJ2T27PHpyNRSciD8ilNYSerY4jZEN32Fw3+//nUbKGC7
+X-Gm-Message-State: AOJu0Yyc+eaKz47yYcEHXvrA3cMxcGFkwPQNL7dqbfVq8289YvnnaMZN
+	DZGv6i5zVPf/VOPV1FyGL+aH9qB7M+sZEyoG1KTXGuYeno3pOLNNR8Ki71MEtcAYPngOdNLsPKe
+	z9Gp+1MrqUcB9JquCKE2758yNhXc=
+X-Google-Smtp-Source: AGHT+IF9xXotb4fKJPIBJiGa5DZoshLJXVEv2bCNouhUyzFoUp1xvycg5pN3kRgz/qcs+lTDSybyD1fvb7+yeBualoQ=
+X-Received: by 2002:a17:90b:613:b0:29b:90d7:36dc with SMTP id
+ gb19-20020a17090b061300b0029b90d736dcmr281082pjb.19.1709911423609; Fri, 08
+ Mar 2024 07:23:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240306182440.2003814-1-surenb@google.com> <20240306182440.2003814-25-surenb@google.com>
+In-Reply-To: <20240306182440.2003814-25-surenb@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 8 Mar 2024 16:23:30 +0100
+Message-ID: <CANiq72mUJ6Nv+tDFoGbRYJs8Nzw18peFU3U-2cnz9MViyiG5ow@mail.gmail.com>
+Subject: Re: [PATCH v5 24/37] rust: Add a rust helper for krealloc()
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, mhocko@suse.com, 
+	vbabka@suse.cz, hannes@cmpxchg.org, roman.gushchin@linux.dev, mgorman@suse.de, 
+	dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com, 
+	penguin-kernel@i-love.sakura.ne.jp, corbet@lwn.net, void@manifault.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, catalin.marinas@arm.com, 
+	will@kernel.org, arnd@arndb.de, tglx@linutronix.de, mingo@redhat.com, 
+	dave.hansen@linux.intel.com, x86@kernel.org, peterx@redhat.com, 
+	david@redhat.com, axboe@kernel.dk, mcgrof@kernel.org, masahiroy@kernel.org, 
+	nathan@kernel.org, dennis@kernel.org, jhubbard@nvidia.com, tj@kernel.org, 
+	muchun.song@linux.dev, rppt@kernel.org, paulmck@kernel.org, 
+	pasha.tatashin@soleen.com, yosryahmed@google.com, yuzhao@google.com, 
+	dhowells@redhat.com, hughd@google.com, andreyknvl@gmail.com, 
+	keescook@chromium.org, ndesaulniers@google.com, vvvvvv@google.com, 
+	gregkh@linuxfoundation.org, ebiggers@google.com, ytcoode@gmail.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, bristot@redhat.com, vschneid@redhat.com, cl@linux.com, 
+	penberg@kernel.org, iamjoonsoo.kim@lge.com, 42.hyeyoo@gmail.com, 
+	glider@google.com, elver@google.com, dvyukov@google.com, shakeelb@google.com, 
+	songmuchun@bytedance.com, jbaron@akamai.com, aliceryhl@google.com, 
+	rientjes@google.com, minchan@google.com, kaleshsingh@google.com, 
+	kernel-team@android.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com, 
+	cgroups@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 3/8/24 10:36, Alice Ryhl wrote:
-> This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
-> static synchronisation primitives") from the old Rust branch, which used
-> module constructors to initialize globals containing various
-> synchronisation primitives with pin-init. That commit has never been
-> upstreamed, but the `select CONSTRUCTORS` statement ended up being
-> included in the patch that initially added Rust support to the Linux
-> Kernel.
->=20
-> We are not using module constructors, so let's remove the select.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Wed, Mar 6, 2024 at 7:26=E2=80=AFPM Suren Baghdasaryan <surenb@google.co=
+m> wrote:
+>
+> +void * __must_check rust_helper_krealloc(const void *objp, size_t new_si=
+ze,
+> +                                        gfp_t flags) __realloc_size(2)
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+The `__realloc_size(2)` should be placed earlier, i.e. this triggers:
 
+rust/helpers.c:162:20: error: GCC does not allow '__alloc_size__'
+attribute in this position on a function definition [-Wgcc-compat]
+
+With that fixed:
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Cheers,
+Miguel
