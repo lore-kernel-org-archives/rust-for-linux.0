@@ -1,71 +1,225 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7702364D8
-	for <rust-for-linux@vger.kernel.org>; Sat,  9 Mar 2024 13:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB8338F97;
+	Sat,  9 Mar 2024 13:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709989453; cv=none; b=F8pAk5brADTfVQl3A/nzMbgZqQegJ6H1lFItFkAXSmCoqmJVaKOkdjoFVS+owXy+oeFsSYnLFos7iFqB9SraQBTxiBlWy+I/wIUkvwUt6H/IJ0+Q91SA8sLeYQp3fH1rzEj4C8AN72gu2CfvhbUe6mOx7ohBzs8+aNaMjfJbaXQ=
+	t=1709991510; cv=none; b=ALewSJOfo/jPEMILLBM8DRFwMbDPXEl0Q/Hq5ZRReEyfp/2m4x2RyMZqE2LwDVyDIf254EMctWydYBPQbejJz17epQ2HrNEJXcJw0GQPIZKU41K0IzSQtVoVH8ikBCAs12B32X9PpDj7LMWIEXS2v3emlZqyE/YODub3C15EpB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709989453; c=relaxed/simple;
-	bh=EUv3cSpiLpsQFBKG1Yjm3U0IIFrHPhV6nt4DTmzqRPI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZwsLW9HMNMRJH/FQbbXovtst5Xcl1Pma68q14eNjasnA3kyjJWv0znLTInKd2Qa1aPbNDHf46HPwVooTHtOzvbrV3btSCK3hAX+nQpQTj7gG9fds8j27mBTybOayau6MTbLvtoHbZjx5pwafkIDgPIpGW7T6AglLzEmqJ5TY3jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HG3nX1K+; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1709991510; c=relaxed/simple;
+	bh=LJZLWpPMSIn8dh1JkUG1cS5BSZ5kFeQDO1hkDSXzojg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rUIEIm5XIxSC9RU2BCYRgdgBTZCZeQ9gfPDgl3EBJoJSO2t6oZ27ZCIJiG4OFqDlrIE73x7BjrJxQeIbb2ioySwnUEZLJMqE++qRYLklqkJKU3EDGk3Brh/IKD8qGpt/Y817oc7fAJ0LB90YKRDkm0J5WW/sCOYAgn+PiCysXI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MreaFjVz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HG3nX1K+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1709989449; x=1710248649;
-	bh=EUv3cSpiLpsQFBKG1Yjm3U0IIFrHPhV6nt4DTmzqRPI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=HG3nX1K+05JUq9ePBatCJW6WRfu+0Hj0C7yqd3UFtOoWZGYRQbL4HDeTPuvKHnSeU
-	 fa7YPt1mSSpSsMNYKexkU1+k30VfR+gz0dC0lITe7QJ52W1ygIqnYjnWsTDm6TbdvA
-	 obRoGuytIVIzJCFdp08RK9Bldqlbe1l2B8aPycIG+M/eHb4EE8rQBWtrav8ATL7AM4
-	 WXz7KIF3Gk/8keigIxHHm3pwtmbuncPDA6weX8p2aKnErH3M8Kfl7gW/sRZLJNPKJS
-	 zL+JfXkj8stjdVqXE7DWhh6R/eJHsnf2l6bcI9me3xSrr4wr5a22HRRaC2+wmRqQeb
-	 V3ix5xqrrGnRw==
-Date: Sat, 09 Mar 2024 13:03:59 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: add `Module::as_ptr`
-Message-ID: <d1890bfd-7d0a-44c5-af14-5228071ec45a@proton.me>
-In-Reply-To: <20240226-module-as-ptr-v1-1-83bc89213113@google.com>
-References: <20240226-module-as-ptr-v1-1-83bc89213113@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MreaFjVz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB36C433F1;
+	Sat,  9 Mar 2024 13:38:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709991509;
+	bh=LJZLWpPMSIn8dh1JkUG1cS5BSZ5kFeQDO1hkDSXzojg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MreaFjVzERgzC1DJyk9D02nAQuCvD0WxKjTNyED8mTOcCiuQCcy+6MvGMlgRDGLax
+	 6Mp3YZBW82RNm0qirCokhpPjL6inkshCMQ+yA+cDdQt8azb3mAwJ8yrWF9aT60WIzb
+	 Nrara0XF/h/MD86pilXcELMp0zoeWN2LkenjJwv/96m8VDs4MAqvSDFQimEsL+M/vv
+	 VWQ+OKkTTV4yzSBB4ZVa9KoBWEW4Yf13iYo6ZvD3PKyHBCwtR/KIutN3o9I/Z+BEh3
+	 rbayphEYuJ5REzWjyg6E6LxbyoTAJAei4SWeXku6YjRZ8Det8e3gKR67KFdxenW4+T
+	 SRd8pHoVpNWmQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust for v6.9
+Date: Sat,  9 Mar 2024 14:38:17 +0100
+Message-ID: <20240309133817.335439-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 2/26/24 10:44, Alice Ryhl wrote:
-> This allows you to get a raw pointer to THIS_MODULE for use in unsafe
-> code. The Rust Binder RFC uses it when defining fops for the binderfs
-> component [1].
->=20
-> This doesn't really need to go in now - it could go in together with
-> Rust Binder like how it is sent in the Rust Binder RFC. However, the
-> upcoming 1.77.0 release of the Rust compiler introduces a new warning,
-> and applying this patch now will silence that warning. That allows us to
-> avoid adding the #[allow(dead_code)] annotation seen in [2].
->=20
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-08=
-ba9197f637@google.com/ [1]
-> Link: https://lore.kernel.org/all/20240217002717.57507-1-ojeda@kernel.org=
-/ [2]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Hi Linus,
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+This is the next round of the Rust support.
 
---=20
+All the commits have been in linux-next for more than a week.
+
+A small conflict with the arm64 pull expected, as well as a trivial one
+with the mm-nonmm. Both are resolved in linux-next in the rust-next
+merge. No changes to the C side.
+
+You will likely get Rust support for arm64, the first kselftest for Rust
+and a couple improvements for Rust net PHY through their respective
+trees as well. LoongArch, RISC-V and VFS pull requests could carry
+something too, but probably on the next one.
+
+Please pull for v6.9 -- thanks!
+
 Cheers,
-Benno
+Miguel
 
+The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd33d:
+
+  Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/rust-6.9
+
+for you to fetch changes up to 768409cff6cc89fe1194da880537a09857b6e4db:
+
+  rust: upgrade to Rust 1.76.0 (2024-02-29 22:18:05 +0100)
+
+----------------------------------------------------------------
+Rust changes for v6.9
+
+Another routine one in terms of features. We got two version upgrades
+this time, but in terms of lines, 'alloc' changes are not very large.
+
+Toolchain and infrastructure:
+
+ - Upgrade to Rust 1.76.0.
+
+   This time around, due to how the kernel and Rust schedules have
+   aligned, there are two upgrades in fact. These allow us to remove two
+   more unstable features ('const_maybe_uninit_zeroed' and
+   'ptr_metadata') from the list, among other improvements.
+
+ - Mark 'rustc' (and others) invocations as recursive, which fixes a new
+   warning and prepares us for the future in case we eventually take
+   advantage of the Make jobserver.
+
+'kernel' crate:
+
+ - Add the 'container_of!' macro.
+
+ - Stop using the unstable 'ptr_metadata' feature by employing the now
+   stable 'byte_sub' method to implement 'Arc::from_raw()'.
+
+ - Add the 'time' module with a 'msecs_to_jiffies()' conversion function
+   to begin with, to be used by Rust Binder.
+
+ - Add 'notify_sync()' and 'wait_interruptible_timeout()' methods to
+   'CondVar', to be used by Rust Binder.
+
+ - Update integer types for 'CondVar'.
+
+ - Rename 'wait_list' field to 'wait_queue_head' in 'CondVar'.
+
+ - Implement 'Display' and 'Debug' for 'BStr'.
+
+ - Add the 'try_from_foreign()' method to the 'ForeignOwnable' trait.
+
+ - Add reexports for macros so that they can be used from the right
+   module (in addition to the root).
+
+ - A series of code documentation improvements, including adding
+   intra-doc links, consistency improvements, typo fixes...
+
+'macros' crate:
+
+ - Place generated 'init_module()' function in '.init.text'.
+
+Documentation:
+
+ - Add documentation on Rust doctests and how they work.
+
+----------------------------------------------------------------
+Alice Ryhl (6):
+      rust: sync: add `CondVar::notify_sync`
+      rust: time: add msecs to jiffies conversion
+      rust: sync: add `CondVar::wait_timeout`
+      rust: sync: update integer types in CondVar
+      rust: kernel: add reexports for macros
+      rust: kernel: stop using ptr_metadata feature
+
+Charalampos Mitrodimas (1):
+      rust: sync: `CondVar` rename "wait_list" to "wait_queue_head"
+
+Dirk Behme (2):
+      docs: rust: Move testing to a separate page
+      docs: rust: Add description of Rust documentation test as KUnit ones
+
+Miguel Ojeda (3):
+      rust: upgrade to Rust 1.75.0
+      kbuild: mark `rustc` (and others) invocations as recursive
+      rust: upgrade to Rust 1.76.0
+
+Mika Westerberg (1):
+      rust: bindings: Order headers alphabetically
+
+Obei Sideg (1):
+      rust: types: add `try_from_foreign()` method
+
+Thomas Bertschinger (1):
+      rust: module: place generated init_module() function in .init.text
+
+Valentin Obst (12):
+      rust: kernel: fix multiple typos in documentation
+      rust: error: improve unsafe code in example
+      rust: ioctl: end top-level module docs with full stop
+      rust: kernel: add srctree-relative doclinks
+      rust: str: use `NUL` instead of 0 in doc comments
+      rust: str: move SAFETY comment in front of unsafe block
+      rust: kernel: unify spelling of refcount in docs
+      rust: kernel: mark code fragments in docs with backticks
+      rust: kernel: add blank lines in front of code blocks
+      rust: kernel: add doclinks
+      rust: kernel: remove unneeded doclink targets
+      rust: locked_by: shorten doclink preview
+
+Wedson Almeida Filho (1):
+      rust: add `container_of!` macro
+
+Yutaro Ohno (1):
+      rust: str: implement `Display` and `Debug` for `BStr`
+
+ Documentation/process/changes.rst          |   2 +-
+ Documentation/rust/general-information.rst |  24 ----
+ Documentation/rust/index.rst               |   1 +
+ Documentation/rust/testing.rst             | 135 ++++++++++++++++++++
+ Makefile                                   |   4 +-
+ rust/Makefile                              |  48 +++----
+ rust/alloc/alloc.rs                        |  12 +-
+ rust/alloc/boxed.rs                        |  34 +++--
+ rust/alloc/collections/mod.rs              |   1 +
+ rust/alloc/lib.rs                          |   9 +-
+ rust/alloc/raw_vec.rs                      |  77 +++++++++---
+ rust/alloc/vec/into_iter.rs                |  16 ++-
+ rust/alloc/vec/mod.rs                      |  81 +++++++++---
+ rust/bindings/bindings_helper.h            |   5 +-
+ rust/kernel/allocator.rs                   |   2 +-
+ rust/kernel/error.rs                       |  10 +-
+ rust/kernel/init.rs                        |  22 ++--
+ rust/kernel/ioctl.rs                       |   6 +-
+ rust/kernel/lib.rs                         |  37 +++++-
+ rust/kernel/str.rs                         | 193 +++++++++++++++++++++++++++--
+ rust/kernel/sync.rs                        |   5 +-
+ rust/kernel/sync/arc.rs                    |  30 +++--
+ rust/kernel/sync/condvar.rs                | 110 ++++++++++++----
+ rust/kernel/sync/lock.rs                   |  19 ++-
+ rust/kernel/sync/lock/mutex.rs             |   3 +-
+ rust/kernel/sync/lock/spinlock.rs          |   5 +-
+ rust/kernel/sync/locked_by.rs              |   7 +-
+ rust/kernel/task.rs                        |  24 +++-
+ rust/kernel/time.rs                        |  20 +++
+ rust/kernel/types.rs                       |  22 ++++
+ rust/kernel/workqueue.rs                   |  78 ++++++------
+ rust/macros/module.rs                      |   7 +-
+ scripts/Makefile.build                     |   8 +-
+ scripts/Makefile.host                      |   2 +-
+ scripts/min-tool-version.sh                |   2 +-
+ 35 files changed, 809 insertions(+), 252 deletions(-)
+ create mode 100644 Documentation/rust/testing.rst
+ create mode 100644 rust/kernel/time.rs
