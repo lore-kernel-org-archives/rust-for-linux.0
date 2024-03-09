@@ -1,225 +1,361 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB8338F97;
-	Sat,  9 Mar 2024 13:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F41C2030B;
+	Sat,  9 Mar 2024 15:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709991510; cv=none; b=ALewSJOfo/jPEMILLBM8DRFwMbDPXEl0Q/Hq5ZRReEyfp/2m4x2RyMZqE2LwDVyDIf254EMctWydYBPQbejJz17epQ2HrNEJXcJw0GQPIZKU41K0IzSQtVoVH8ikBCAs12B32X9PpDj7LMWIEXS2v3emlZqyE/YODub3C15EpB8=
+	t=1709999627; cv=none; b=masleVDo+F+Yp0hsGUE/U2x47P3uuQ+QZ31N7n33aTww2nEN68L6HNhNw019gpZXg61tQEiC8G+agUMQNoHgO/AQacPb8ZPCWXxjXkfObUHPW5CmhMJ0EppsM06qONTCf5zUUS33AA2/+yFoFTBaL2EFX23TH0LSuz+vKV/di78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709991510; c=relaxed/simple;
-	bh=LJZLWpPMSIn8dh1JkUG1cS5BSZ5kFeQDO1hkDSXzojg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rUIEIm5XIxSC9RU2BCYRgdgBTZCZeQ9gfPDgl3EBJoJSO2t6oZ27ZCIJiG4OFqDlrIE73x7BjrJxQeIbb2ioySwnUEZLJMqE++qRYLklqkJKU3EDGk3Brh/IKD8qGpt/Y817oc7fAJ0LB90YKRDkm0J5WW/sCOYAgn+PiCysXI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MreaFjVz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1709999627; c=relaxed/simple;
+	bh=3CWLLoC/YK8LKfOW3IASZsYK5Z1CRArxJnF9ZinGRPI=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=UV8O2fc/odsi+u4W7I5MHZ2s/gz26X8CIxBlu52NNZFlkntMsOYyRhhnq7RGyk9bsOjFmKDsZVv2K1ZSPYH17HOkdR09zxbKzDdVfHoR3QSoUR2ikYUXbRDP0en6B8nwprHoW+pmXwtOMNw0b9WTLaDS4jwwPVODytQlVbUUG2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WogB6urj; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MreaFjVz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB36C433F1;
-	Sat,  9 Mar 2024 13:38:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709991509;
-	bh=LJZLWpPMSIn8dh1JkUG1cS5BSZ5kFeQDO1hkDSXzojg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MreaFjVzERgzC1DJyk9D02nAQuCvD0WxKjTNyED8mTOcCiuQCcy+6MvGMlgRDGLax
-	 6Mp3YZBW82RNm0qirCokhpPjL6inkshCMQ+yA+cDdQt8azb3mAwJ8yrWF9aT60WIzb
-	 Nrara0XF/h/MD86pilXcELMp0zoeWN2LkenjJwv/96m8VDs4MAqvSDFQimEsL+M/vv
-	 VWQ+OKkTTV4yzSBB4ZVa9KoBWEW4Yf13iYo6ZvD3PKyHBCwtR/KIutN3o9I/Z+BEh3
-	 rbayphEYuJ5REzWjyg6E6LxbyoTAJAei4SWeXku6YjRZ8Det8e3gKR67KFdxenW4+T
-	 SRd8pHoVpNWmQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust for v6.9
-Date: Sat,  9 Mar 2024 14:38:17 +0100
-Message-ID: <20240309133817.335439-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WogB6urj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1709999621; x=1710258821;
+	bh=RRl9FSGDDeIIww7fc1iAFlaDT0CLV1heSPjT5dnAYEw=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=WogB6urjQ2N5fE3JjlfUhYh+AoEUfBCHZI4I0qlNBXXCJcAkzd7Ya9i0AGsv6DXfw
+	 uaaSuZIMziNLoY3EQn9VtnEnIKHUNjJJ2xx2e/6LbJQzi9TBl1BPTFn1R5dlitqJ8h
+	 hxHXta9qEuhnlZ8I2uUAplUZGjKHbOW6E7vceaEhl3+QORP77pyFu8SzXYiSXEP5lY
+	 wvA/RxM9iNwa6ARMPPM0KVW/Crq5HeQTzfJCgoyjlsxUFqaNcxwJxPjJDjYlRu62cX
+	 7KmACwYNuT8n59/+X4BTfpmRLYtMNVYVGUDoCC9J5Mh3XMSx+GHOl+VuMx238pY9HX
+	 YYIeyXDjATr1A==
+Date: Sat, 09 Mar 2024 15:53:25 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/3] rust: macros: add `decl_generics` to `parse_generics()`
+Message-ID: <20240309155243.482334-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+The generic parameters on a type definition can specify default values.
+Currently `parse_generics()` cannot handle this though. For example when
+parsing the following generics:
 
-This is the next round of the Rust support.
+    <T: Clone, const N: usize =3D 0>
 
-All the commits have been in linux-next for more than a week.
+The `impl_generics` will be set to `T: Clone, const N: usize =3D 0` and
+`ty_generics` will be set to `T, N`. Now using the `impl_generics` on an
+impl block:
 
-A small conflict with the arm64 pull expected, as well as a trivial one
-with the mm-nonmm. Both are resolved in linux-next in the rust-next
-merge. No changes to the C side.
+    impl<$($impl_generics)*> Foo {}
 
-You will likely get Rust support for arm64, the first kselftest for Rust
-and a couple improvements for Rust net PHY through their respective
-trees as well. LoongArch, RISC-V and VFS pull requests could carry
-something too, but probably on the next one.
+will result in invalid Rust code, because default values are only
+available on type definitions.
 
-Please pull for v6.9 -- thanks!
+Therefore add parsing support for generic parameter default values using
+a new kind of generics called `decl_generics` and change the old
+behavior of `impl_generics` to not contain the generic parameter default
+values.
 
-Cheers,
-Miguel
+Now `Generics` has three fields:
+- `impl_generics`: the generics with bounds
+  (e.g. `T: Clone, const N: usize`)
+- `decl_generics`: the generics with bounds and default values
+  (e.g. `T: Clone, const N: usize =3D 0`)
+- `ty_generics`:  contains the generics without bounds and without
+  default values (e.g. `T, N`)
 
-The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd33d:
+`impl_generics` is designed to be used on `impl<$impl_generics>`,
+`decl_generics` for the type definition, so `struct Foo<$decl_generics>`
+and `ty_generics` whenever you use the type, so `Foo<$ty_generics>`.
 
-  Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
+Here is an example that uses all three different types of generics:
 
-are available in the Git repository at:
+    let (Generics { decl_generics, impl_generics, ty_generics }, rest) =3D =
+parse_generics(input);
+    quote! {
+        struct Foo<$($decl_generics)*> {
+            // ...
+        }
 
-  https://github.com/Rust-for-Linux/linux.git tags/rust-6.9
+        impl<$impl_generics> Foo<$ty_generics> {
+            fn foo() {
+                // ...
+            }
+        }
+    }
 
-for you to fetch changes up to 768409cff6cc89fe1194da880537a09857b6e4db:
+The next commit contains a fix to the `#[pin_data]` macro making it
+compatible with generic parameter default values by relying on this new
+behavior.
 
-  rust: upgrade to Rust 1.76.0 (2024-02-29 22:18:05 +0100)
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
+v2 -> v3:
+- addressed Gary's nits
+- add #[allow(dead_code)] to remove warning
+- rebase onto rust-next
 
-----------------------------------------------------------------
-Rust changes for v6.9
+v1 -> v2:
+- improve documentation and commit message explanation
+- add motivation to commit message
 
-Another routine one in terms of features. We got two version upgrades
-this time, but in terms of lines, 'alloc' changes are not very large.
 
-Toolchain and infrastructure:
+v1: https://lore.kernel.org/rust-for-linux/20231125125024.1235933-1-benno.l=
+ossin@proton.me/
+v2: https://lore.kernel.org/rust-for-linux/20231213220447.3613500-1-benno.l=
+ossin@proton.me/
 
- - Upgrade to Rust 1.76.0.
+ rust/macros/helpers.rs  | 123 ++++++++++++++++++++++++++++++----------
+ rust/macros/pin_data.rs |   1 +
+ rust/macros/zeroable.rs |   1 +
+ 3 files changed, 95 insertions(+), 30 deletions(-)
 
-   This time around, due to how the kernel and Rust schedules have
-   aligned, there are two upgrades in fact. These allow us to remove two
-   more unstable features ('const_maybe_uninit_zeroed' and
-   'ptr_metadata') from the list, among other improvements.
+diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+index afb0f2e3a36a..2497d6519f2f 100644
+--- a/rust/macros/helpers.rs
++++ b/rust/macros/helpers.rs
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+=20
+-use proc_macro::{token_stream, Group, Punct, Spacing, TokenStream, TokenTr=
+ee};
++use proc_macro::{token_stream, Group, TokenStream, TokenTree};
+=20
+ pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String>=
+ {
+     if let Some(TokenTree::Ident(ident)) =3D it.next() {
+@@ -70,8 +70,41 @@ pub(crate) fn expect_end(it: &mut token_stream::IntoIter=
+) {
+     }
+ }
+=20
++/// Parsed generics.
++///
++/// See the field documentation for an explanation what each of the fields=
+ represents.
++///
++/// # Examples
++///
++/// ```rust,ignore
++/// # let input =3D todo!();
++/// let (Generics { decl_generics, impl_generics, ty_generics }, rest) =3D=
+ parse_generics(input);
++/// quote! {
++///     struct Foo<$($decl_generics)*> {
++///         // ...
++///     }
++///
++///     impl<$impl_generics> Foo<$ty_generics> {
++///         fn foo() {
++///             // ...
++///         }
++///     }
++/// }
++/// ```
+ pub(crate) struct Generics {
++    /// The generics with bounds and default values (e.g. `T: Clone, const=
+ N: usize =3D 0`).
++    ///
++    /// Use this on type definitions e.g. `struct Foo<$decl_generics> ...`=
+ (or `union`/`enum`).
++    #[allow(dead_code)]
++    pub(crate) decl_generics: Vec<TokenTree>,
++    /// The generics with bounds (e.g. `T: Clone, const N: usize`).
++    ///
++    /// Use this on `impl` blocks e.g. `impl<$impl_generics> Trait for ...=
+`.
+     pub(crate) impl_generics: Vec<TokenTree>,
++    /// The generics without bounds and without default values (e.g. `T, N=
+`).
++    ///
++    /// Use this when you use the type that is declared with these generic=
+s e.g.
++    /// `Foo<$ty_generics>`.
+     pub(crate) ty_generics: Vec<TokenTree>,
+ }
+=20
+@@ -79,6 +112,8 @@ pub(crate) struct Generics {
+ ///
+ /// The generics are not present in the rest, but a where clause might rem=
+ain.
+ pub(crate) fn parse_generics(input: TokenStream) -> (Generics, Vec<TokenTr=
+ee>) {
++    // The generics with bounds and default values.
++    let mut decl_generics =3D vec![];
+     // `impl_generics`, the declared generics with their bounds.
+     let mut impl_generics =3D vec![];
+     // Only the names of the generics, without any bounds.
+@@ -90,10 +125,17 @@ pub(crate) fn parse_generics(input: TokenStream) -> (G=
+enerics, Vec<TokenTree>) {
+     let mut toks =3D input.into_iter();
+     // If we are at the beginning of a generic parameter.
+     let mut at_start =3D true;
+-    for tt in &mut toks {
++    let mut skip_until_comma =3D false;
++    while let Some(tt) =3D toks.next() {
++        if nesting =3D=3D 1 && matches!(&tt, TokenTree::Punct(p) if p.as_c=
+har() =3D=3D '>') {
++            // Found the end of the generics.
++            break;
++        } else if nesting >=3D 1 {
++            decl_generics.push(tt.clone());
++        }
+         match tt.clone() {
+             TokenTree::Punct(p) if p.as_char() =3D=3D '<' =3D> {
+-                if nesting >=3D 1 {
++                if nesting >=3D 1 && !skip_until_comma {
+                     // This is inside of the generics and part of some bou=
+nd.
+                     impl_generics.push(tt);
+                 }
+@@ -105,49 +147,70 @@ pub(crate) fn parse_generics(input: TokenStream) -> (=
+Generics, Vec<TokenTree>) {
+                     break;
+                 } else {
+                     nesting -=3D 1;
+-                    if nesting >=3D 1 {
++                    if nesting >=3D 1 && !skip_until_comma {
+                         // We are still inside of the generics and part of=
+ some bound.
+                         impl_generics.push(tt);
+                     }
+-                    if nesting =3D=3D 0 {
+-                        break;
+-                    }
+                 }
+             }
+-            tt =3D> {
++            TokenTree::Punct(p) if skip_until_comma && p.as_char() =3D=3D =
+',' =3D> {
+                 if nesting =3D=3D 1 {
+-                    // Here depending on the token, it might be a generic =
+variable name.
+-                    match &tt {
+-                        // Ignore const.
+-                        TokenTree::Ident(i) if i.to_string() =3D=3D "const=
+" =3D> {}
+-                        TokenTree::Ident(_) if at_start =3D> {
+-                            ty_generics.push(tt.clone());
+-                            // We also already push the `,` token, this ma=
+kes it easier to append
+-                            // generics.
+-                            ty_generics.push(TokenTree::Punct(Punct::new('=
+,', Spacing::Alone)));
+-                            at_start =3D false;
+-                        }
+-                        TokenTree::Punct(p) if p.as_char() =3D=3D ',' =3D>=
+ at_start =3D true,
+-                        // Lifetimes begin with `'`.
+-                        TokenTree::Punct(p) if p.as_char() =3D=3D '\'' && =
+at_start =3D> {
+-                            ty_generics.push(tt.clone());
+-                        }
+-                        _ =3D> {}
+-                    }
+-                }
+-                if nesting >=3D 1 {
++                    impl_generics.push(tt.clone());
+                     impl_generics.push(tt);
+-                } else if nesting =3D=3D 0 {
++                    skip_until_comma =3D false;
++                }
++            }
++            _ if !skip_until_comma =3D> {
++                match nesting {
+                     // If we haven't entered the generics yet, we still wa=
+nt to keep these tokens.
+-                    rest.push(tt);
++                    0 =3D> rest.push(tt),
++                    1 =3D> {
++                        // Here depending on the token, it might be a gene=
+ric variable name.
++                        match tt.clone() {
++                            TokenTree::Ident(i) if at_start && i.to_string=
+() =3D=3D "const" =3D> {
++                                let Some(name) =3D toks.next() else {
++                                    // Parsing error.
++                                    break;
++                                };
++                                impl_generics.push(tt);
++                                impl_generics.push(name.clone());
++                                ty_generics.push(name.clone());
++                                decl_generics.push(name);
++                                at_start =3D false;
++                            }
++                            TokenTree::Ident(_) if at_start =3D> {
++                                impl_generics.push(tt.clone());
++                                ty_generics.push(tt);
++                                at_start =3D false;
++                            }
++                            TokenTree::Punct(p) if p.as_char() =3D=3D ',' =
+=3D> {
++                                impl_generics.push(tt.clone());
++                                ty_generics.push(tt);
++                                at_start =3D true;
++                            }
++                            // Lifetimes begin with `'`.
++                            TokenTree::Punct(p) if p.as_char() =3D=3D '\''=
+ && at_start =3D> {
++                                impl_generics.push(tt.clone());
++                                ty_generics.push(tt);
++                            }
++                            // Generics can have default values, we skip t=
+hese.
++                            TokenTree::Punct(p) if p.as_char() =3D=3D '=3D=
+' =3D> {
++                                skip_until_comma =3D true;
++                            }
++                            _ =3D> impl_generics.push(tt),
++                        }
++                    }
++                    _ =3D> impl_generics.push(tt),
+                 }
+             }
++            _ =3D> {}
+         }
+     }
+     rest.extend(toks);
+     (
+         Generics {
+             impl_generics,
++            decl_generics,
+             ty_generics,
+         },
+         rest,
+diff --git a/rust/macros/pin_data.rs b/rust/macros/pin_data.rs
+index 6d58cfda9872..022e68e9720d 100644
+--- a/rust/macros/pin_data.rs
++++ b/rust/macros/pin_data.rs
+@@ -10,6 +10,7 @@ pub(crate) fn pin_data(args: TokenStream, input: TokenStr=
+eam) -> TokenStream {
+     let (
+         Generics {
+             impl_generics,
++            decl_generics: _,
+             ty_generics,
+         },
+         rest,
+diff --git a/rust/macros/zeroable.rs b/rust/macros/zeroable.rs
+index 0d605c46ab3b..cfee2cec18d5 100644
+--- a/rust/macros/zeroable.rs
++++ b/rust/macros/zeroable.rs
+@@ -7,6 +7,7 @@ pub(crate) fn derive(input: TokenStream) -> TokenStream {
+     let (
+         Generics {
+             impl_generics,
++            decl_generics: _,
+             ty_generics,
+         },
+         mut rest,
 
- - Mark 'rustc' (and others) invocations as recursive, which fixes a new
-   warning and prepares us for the future in case we eventually take
-   advantage of the Make jobserver.
+base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+--=20
+2.42.0
 
-'kernel' crate:
 
- - Add the 'container_of!' macro.
-
- - Stop using the unstable 'ptr_metadata' feature by employing the now
-   stable 'byte_sub' method to implement 'Arc::from_raw()'.
-
- - Add the 'time' module with a 'msecs_to_jiffies()' conversion function
-   to begin with, to be used by Rust Binder.
-
- - Add 'notify_sync()' and 'wait_interruptible_timeout()' methods to
-   'CondVar', to be used by Rust Binder.
-
- - Update integer types for 'CondVar'.
-
- - Rename 'wait_list' field to 'wait_queue_head' in 'CondVar'.
-
- - Implement 'Display' and 'Debug' for 'BStr'.
-
- - Add the 'try_from_foreign()' method to the 'ForeignOwnable' trait.
-
- - Add reexports for macros so that they can be used from the right
-   module (in addition to the root).
-
- - A series of code documentation improvements, including adding
-   intra-doc links, consistency improvements, typo fixes...
-
-'macros' crate:
-
- - Place generated 'init_module()' function in '.init.text'.
-
-Documentation:
-
- - Add documentation on Rust doctests and how they work.
-
-----------------------------------------------------------------
-Alice Ryhl (6):
-      rust: sync: add `CondVar::notify_sync`
-      rust: time: add msecs to jiffies conversion
-      rust: sync: add `CondVar::wait_timeout`
-      rust: sync: update integer types in CondVar
-      rust: kernel: add reexports for macros
-      rust: kernel: stop using ptr_metadata feature
-
-Charalampos Mitrodimas (1):
-      rust: sync: `CondVar` rename "wait_list" to "wait_queue_head"
-
-Dirk Behme (2):
-      docs: rust: Move testing to a separate page
-      docs: rust: Add description of Rust documentation test as KUnit ones
-
-Miguel Ojeda (3):
-      rust: upgrade to Rust 1.75.0
-      kbuild: mark `rustc` (and others) invocations as recursive
-      rust: upgrade to Rust 1.76.0
-
-Mika Westerberg (1):
-      rust: bindings: Order headers alphabetically
-
-Obei Sideg (1):
-      rust: types: add `try_from_foreign()` method
-
-Thomas Bertschinger (1):
-      rust: module: place generated init_module() function in .init.text
-
-Valentin Obst (12):
-      rust: kernel: fix multiple typos in documentation
-      rust: error: improve unsafe code in example
-      rust: ioctl: end top-level module docs with full stop
-      rust: kernel: add srctree-relative doclinks
-      rust: str: use `NUL` instead of 0 in doc comments
-      rust: str: move SAFETY comment in front of unsafe block
-      rust: kernel: unify spelling of refcount in docs
-      rust: kernel: mark code fragments in docs with backticks
-      rust: kernel: add blank lines in front of code blocks
-      rust: kernel: add doclinks
-      rust: kernel: remove unneeded doclink targets
-      rust: locked_by: shorten doclink preview
-
-Wedson Almeida Filho (1):
-      rust: add `container_of!` macro
-
-Yutaro Ohno (1):
-      rust: str: implement `Display` and `Debug` for `BStr`
-
- Documentation/process/changes.rst          |   2 +-
- Documentation/rust/general-information.rst |  24 ----
- Documentation/rust/index.rst               |   1 +
- Documentation/rust/testing.rst             | 135 ++++++++++++++++++++
- Makefile                                   |   4 +-
- rust/Makefile                              |  48 +++----
- rust/alloc/alloc.rs                        |  12 +-
- rust/alloc/boxed.rs                        |  34 +++--
- rust/alloc/collections/mod.rs              |   1 +
- rust/alloc/lib.rs                          |   9 +-
- rust/alloc/raw_vec.rs                      |  77 +++++++++---
- rust/alloc/vec/into_iter.rs                |  16 ++-
- rust/alloc/vec/mod.rs                      |  81 +++++++++---
- rust/bindings/bindings_helper.h            |   5 +-
- rust/kernel/allocator.rs                   |   2 +-
- rust/kernel/error.rs                       |  10 +-
- rust/kernel/init.rs                        |  22 ++--
- rust/kernel/ioctl.rs                       |   6 +-
- rust/kernel/lib.rs                         |  37 +++++-
- rust/kernel/str.rs                         | 193 +++++++++++++++++++++++++++--
- rust/kernel/sync.rs                        |   5 +-
- rust/kernel/sync/arc.rs                    |  30 +++--
- rust/kernel/sync/condvar.rs                | 110 ++++++++++++----
- rust/kernel/sync/lock.rs                   |  19 ++-
- rust/kernel/sync/lock/mutex.rs             |   3 +-
- rust/kernel/sync/lock/spinlock.rs          |   5 +-
- rust/kernel/sync/locked_by.rs              |   7 +-
- rust/kernel/task.rs                        |  24 +++-
- rust/kernel/time.rs                        |  20 +++
- rust/kernel/types.rs                       |  22 ++++
- rust/kernel/workqueue.rs                   |  78 ++++++------
- rust/macros/module.rs                      |   7 +-
- scripts/Makefile.build                     |   8 +-
- scripts/Makefile.host                      |   2 +-
- scripts/min-tool-version.sh                |   2 +-
- 35 files changed, 809 insertions(+), 252 deletions(-)
- create mode 100644 Documentation/rust/testing.rst
- create mode 100644 rust/kernel/time.rs
