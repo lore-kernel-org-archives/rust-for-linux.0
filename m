@@ -1,131 +1,128 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DA24503B
-	for <rust-for-linux@vger.kernel.org>; Sat,  9 Mar 2024 15:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0AB7FB;
+	Sun, 10 Mar 2024 00:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709999726; cv=none; b=tXFyFCsYsehoX2YLnzPZ5QcJlia8YdvMEsZubLTBT5BlMBqyiqkiljI+91bWF9Gxs7b6hamerTssuGQMNSIO8SdXRxOrLQEFGlvxHngXrcKGt+/RrawMmdSQG9wg9FRAo6K7+OReqb/+y7tBNu9HtPOuAtv3/Hxe9uSOudQgizo=
+	t=1710028852; cv=none; b=jAGIaonZ2bSw9/RxXsL58PZ0nRoWw4qSwRhqX1ujulCu5cf2pz80IH6iLd4hTvSav4Qs43kht8okM7idlwme3ojHdSu49CMbaotnc1L4/T1ewgpk/HJ+OzCzKPMvSVwaj5EeEN1veyBR+1q6Cur7PQSwk7xMZCXOlFQn8xlZDvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709999726; c=relaxed/simple;
-	bh=d6ujX5QMz1tmNKIt/U0yYWjhSRY/osTOtHSTIF8XBXY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MBQhbBJqiypvWghi7avp01hLpIGF0epqURTrzurc7RSstZ+CESA9YPYlti9UGLBzLmcCyjefzy3QPa15FkLfN3ljEBE7cMmeBPmn4/xm4oiPbiU6y3NHIMna+24r0cJOOK7cdswjcIxihwEQJAk5JoRqKqRxZdOnMLbJ+cZRkAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TmbVPr7Q; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1710028852; c=relaxed/simple;
+	bh=RML27DRyyiUn16dcY0QviyV+2LquzNnHlQBCh1NpsME=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SnQlIs6mZWcM+TccHLVvc/F6drs4TUqYx6K0V6AAMLmCEQTzCvxwrezwuWKnblFXzWDEhnX6wFdKufVU6GAHayv5/6jLxVFBFQ3xqK6AxETZNpZzrzAD6w6ck8fxTmo1UCXMH8a63NaHmyfr7CE6H2VQ1DgHWWH0Vq1dOy0ZNDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hPQrlViw; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TmbVPr7Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1709999717; x=1710258917;
-	bh=/tByVpPOQqxliq0F4vWuV5WVPpv3O6Lr3QVczYQPpwQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=TmbVPr7QReeFYM1W8tqBdf0dUBVpQYXsZpnJwNQkoaD6ipTtjqCT2c9t7Xrhg29Bv
-	 ulf2b5GTTXcI51YeklSyz0mNa9lSw7es2yPXTGrMhN0Ik0l60CDnnomLUrRP/wqCeS
-	 DU4Db0UsmK4TbWgNNL/fzJdSGuXOZ3sjEmQVk6rlZRxwhG7z4nrD/QjfAOciz+A+U/
-	 km++O759mdJZXYH7Ilx5J9EfIV5WYyo+xEhQsPULNDUNSzni1TkkPcXa644nBjanMO
-	 drkeXgQuD2raIJHjkCRnBYLa6nfGsyUO+JPVz2YlE1krkDoV+aPK7AIzqJQKZxyRGS
-	 GXFQ14h2w4lqw==
-Date: Sat, 09 Mar 2024 15:54:52 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Wedson Almeida Filho <walmeida@microsoft.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] rust: workqueue: add `#[pin_data]` to `Work`
-Message-ID: <20240309155243.482334-3-benno.lossin@proton.me>
-In-Reply-To: <20240309155243.482334-1-benno.lossin@proton.me>
-References: <20240309155243.482334-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hPQrlViw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=owQxCJEawx2+vFGH2MvhneRl/3VXioY6Xx4zdNssWVI=; b=hPQrlViwgjeltw5K2REh5r6mm3
+	VRAXzq2Yw1mynUF1ku1hmePQl3/l2bbgJlwxuttOmJ74giN7PQ6IH3FS+tva0EgpJJJqRIlXjOL6X
+	BRkJtxxOzV25xPnLp6MLnvOKMWUjxSxrhN33Uk65JIaYVfsNiwM4AuPb1FEJ1FRtkTLvLQVl68vxT
+	dOmUuABMS5l3k0eip82dxB7YMarrvnKMaqdP3WbaxDZR73GkvWXscpPwf3yJF8ZFLF4zLrdNTfrfk
+	Hs17nX6+dbx67kLJKQrOwn8JHtKUJngATm1OUdeIVXEoS/VsHyJPBano2Oajhdg7zLWDgotRBn4cG
+	E88jC9BQ==;
+Received: from [186.230.26.74] (helo=morissey..)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1rj6c3-008KqR-V5; Sun, 10 Mar 2024 01:00:24 +0100
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Asahi Lina <lina@asahilina.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	kernel-dev@igalia.com,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH v8 1/2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+Date: Sat,  9 Mar 2024 20:57:51 -0300
+Message-ID: <20240309235927.168915-3-mcanal@igalia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240309235927.168915-2-mcanal@igalia.com>
+References: <20240309235927.168915-2-mcanal@igalia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The previous two patches made it possible to add `#[pin_data]` on
-structs with default generic parameter values.
-This patch makes `Work` use `#[pin_data]` and removes an invocation of
-`pin_init_from_closure`. This function is intended as a low level manual
-escape hatch, so it is better to rely on the safe `pin_init!` macro.
+There are cases where we need to check the alignment of the pointers
+returned by `into_foreign`. Currently, this is not possible to be done
+at build time. Therefore, add a property to the trait ForeignOwnable,
+which specifies the alignment of the pointers returned by
+`into_foreign`.
 
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
 ---
-v2 -> v3:
-no changes
+ rust/kernel/sync/arc.rs | 2 ++
+ rust/kernel/types.rs    | 7 +++++++
+ 2 files changed, 9 insertions(+)
 
-v1 -> v2:
-- improve commit message wording
-- change `:` to `<-` in `pin_init!` invocation
-
- rust/kernel/workqueue.rs | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
-
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 544f0c51f1b7..ab4d64fbdb78 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -342,8 +342,10 @@ pub trait WorkItem<const ID: u64 =3D 0> {
- /// This is a helper type used to associate a `work_struct` with the [`Wor=
-kItem`] that uses it.
- ///
- /// [`run`]: WorkItemPointer::run
-+#[pin_data]
- #[repr(transparent)]
- pub struct Work<T: ?Sized, const ID: u64 =3D 0> {
-+    #[pin]
-     work: Opaque<bindings::work_struct>,
-     _inner: PhantomData<T>,
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 7d4c4bf58388..da5c8cc325b6 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -274,6 +274,8 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
  }
-@@ -365,21 +367,22 @@ pub fn new(name: &'static CStr, key: &'static LockCla=
-ssKey) -> impl PinInit<Self
-     where
-         T: WorkItem<ID>,
-     {
--        // SAFETY: The `WorkItemPointer` implementation promises that `run=
-` can be used as the work
--        // item function.
--        unsafe {
--            kernel::init::pin_init_from_closure(move |slot| {
--                let slot =3D Self::raw_get(slot);
--                bindings::init_work_with_key(
--                    slot,
--                    Some(T::Pointer::run),
--                    false,
--                    name.as_char_ptr(),
--                    key.as_ptr(),
--                );
--                Ok(())
--            })
--        }
-+        pin_init!(Self {
-+            work <- Opaque::ffi_init(|slot| {
-+                // SAFETY: The `WorkItemPointer` implementation promises t=
-hat `run` can be used as
-+                // the work item function.
-+                unsafe {
-+                    bindings::init_work_with_key(
-+                        slot,
-+                        Some(T::Pointer::run),
-+                        false,
-+                        name.as_char_ptr(),
-+                        key.as_ptr(),
-+                    )
-+                }
-+            }),
-+            _inner: PhantomData,
-+        })
-     }
-=20
-     /// Get a pointer to the inner `work_struct`.
---=20
-2.42.0
 
+ impl<T: 'static> ForeignOwnable for Arc<T> {
++    const FOREIGN_ALIGN: usize = core::mem::align_of::<ArcInner<T>>();
++
+     type Borrowed<'a> = ArcBorrow<'a, T>;
+
+     fn into_foreign(self) -> *const core::ffi::c_void {
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index aa77bad9bce4..76cd4226dd35 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -20,6 +20,9 @@
+ /// This trait is meant to be used in cases when Rust objects are stored in C objects and
+ /// eventually "freed" back to Rust.
+ pub trait ForeignOwnable: Sized {
++    /// The alignment of pointers returned by `into_foreign`.
++    const FOREIGN_ALIGN: usize;
++
+     /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
+     /// [`ForeignOwnable::from_foreign`].
+     type Borrowed<'a>;
+@@ -68,6 +71,8 @@ unsafe fn try_from_foreign(ptr: *const core::ffi::c_void) -> Option<Self> {
+ }
+
+ impl<T: 'static> ForeignOwnable for Box<T> {
++    const FOREIGN_ALIGN: usize = core::mem::align_of::<T>();
++
+     type Borrowed<'a> = &'a T;
+
+     fn into_foreign(self) -> *const core::ffi::c_void {
+@@ -90,6 +95,8 @@ unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
+ }
+
+ impl ForeignOwnable for () {
++    const FOREIGN_ALIGN: usize = core::mem::align_of::<()>();
++
+     type Borrowed<'a> = ();
+
+     fn into_foreign(self) -> *const core::ffi::c_void {
+--
+2.43.0
 
