@@ -1,88 +1,101 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523B138394;
-	Mon, 11 Mar 2024 13:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08D743ADC;
+	Mon, 11 Mar 2024 15:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710162612; cv=none; b=ZVC9fIesfQMYgLKibayd32aAvZfiSQgdesiVuBVQ8csSqhYJKUw6VFDio99UCi9yhtP79bqLdJuIg4Qz4GxlD75kZx4iAYlzSReMavPuCM3uDYS03tkzDv5ZTha9X5gMvXUlh+zLoM4uG57+lgHb5RcQurWXpYvV9J0CVgtEr1k=
+	t=1710169493; cv=none; b=TI28fP1zwh2WyJL8DL6sRLB/k2hGNVJZBzby71xGbR/qhVvrcKu3FMFJ+DmyPiVYGhrFX7Pntmm0+qOtxpv3KYb94YM0KLfjqQlaVkPB5HSjh80L56IxokIEqDiqQ281C11guOPfG1kSYwswxeOT6FrJ5a0GDIMBUwb7GC11FUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710162612; c=relaxed/simple;
-	bh=A+Mu6MgYNCf5RgY7hNoPKWfgf2zDD0mxKr1RXHYNs0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k3EM31cl64HXgZJP0sdMqTGx4ohmYlCnjUAuNbqYmSMPgqfoDtsxZ41I/KBqIpjCJYKvhD9vALx3zrD9+1d+6hGWE5lrSEXkOhOFstf/6Qp/rCNib6mDFtR87X8vqfWooBfaNqKpErV9JmDGClG332w0WSY3KzTSxhK6uFIkxBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IUnSdRye; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710169493; c=relaxed/simple;
+	bh=rPsgfa/jUXlF5r6wmYl3H5nz8wyQaYnNMQgu78ADxjY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X2ZHBsRdQKr/go3n2EeCz2fMaXebqElBDm2VOKL3ruiqQjDsQAePBLwIPAmb04v905wlY3VievaZw2NEVS6MwWQo4rMXTJzLktPCI8YAGKkJNnp6NQ41691774bsjW8SKhvtYCJ89m9MzymsQQ3w/R6Wws08a4Z0WFMjTLqMcF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ASD/9UEH; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IUnSdRye"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-29c07fac7a4so528970a91.1;
-        Mon, 11 Mar 2024 06:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710162610; x=1710767410; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A+Mu6MgYNCf5RgY7hNoPKWfgf2zDD0mxKr1RXHYNs0k=;
-        b=IUnSdRyeFVAUoym+HZipHTkp+XWGum7rudQhtEGVG2cV9+spoowLJhJgtBOCr4gr+m
-         LOos9HiWW60S8iVEyWL99bxZZ8h7+wIj8wrnlopNXLCkPdZ5yDBy/B749hkjH/r1/Wkm
-         Sx6t1vTe6Dfy9lTp23i6WR4LKDP6t9ySjMPo4xGnJ2sTsD+YcEJkQNByUZhOBBqr1ZdI
-         o7zrVmLYSsOxwPExcz5IwAkWeQwQOWSsOx2LZrayt9mWWdIzhSLng2Dpm1vtD3mYoYhn
-         c2XK+eiqddMvwnO1kUgFquK0r3GmM+37w/WivFZuG3dWu/8UeGrmA3276QD/MwfLLt24
-         WoNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710162610; x=1710767410;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A+Mu6MgYNCf5RgY7hNoPKWfgf2zDD0mxKr1RXHYNs0k=;
-        b=HbDFAkyC4yoK7elCXKk5RUhaQfyVIBOxYZ5DLOMEWjtXZFjYfE9V+VI3XFD7Vzjz7L
-         3Oq8WKxVGOlD4ag4WEXLRESVSZzEvbGPVTJkjT2FQwPJffzUvHsJn+cxwm5mSScYq03B
-         orPRLcXbJ2WUn9V3UpxByauSl5/vJTZFax+MYFv2k/SIpxzXpvbvdJKIlRnp5KpgG6zb
-         3yXQGRjnYptEXkd6YschAxi2BkhMDty7hbddHDsImZl/8KlRbt1+qh2JYILtNOy+eo8D
-         1/nU2FZu1uVM9OJ2yBuYg768dR5Ix1mcRlWujGbMPidz11JosAHrqjNBggFwmwymZFxE
-         K0Og==
-X-Forwarded-Encrypted: i=1; AJvYcCVWhboMIqBIY2YrlZCkkPsKrMRaZI0lT52PDbY/g0dU4hct8yA34EU80qTcgny3uUYc1PGgluyalsJKeWYNUCE9wToCvcggUzxPTl3OHModZwckfHxXqt2yGkDOPKQh3RG0dIxDazsYoG+P6E0=
-X-Gm-Message-State: AOJu0YyL8nCYp7+xrKGvWKU2/uM7DSngQLnVrFrrSOdd66qDwNaIXcQH
-	1yAl+WvUv6vDkzsuYpKcjXX6ilXbcpploR//4uWqI24BHBmRnSIjPrAAY/wNvMXmABPCxAFI6Cs
-	43Ue2r40jrB4tzk0ISqmSBYA0+aM=
-X-Google-Smtp-Source: AGHT+IF6DQWdMMr6b36B8Qz2fGLuC79eyZPhod5NR7nCa/zXGZCZy785W52NqbWXaaLJ8404xu7I3KJw04gurxqO/5M=
-X-Received: by 2002:a17:90a:f3c4:b0:29a:a31d:695a with SMTP id
- ha4-20020a17090af3c400b0029aa31d695amr8716304pjb.1.1710162610571; Mon, 11 Mar
- 2024 06:10:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ASD/9UEH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1710169474; x=1710428674;
+	bh=zjHIIFeLLaVTxCN34fAudxAbK5EtaRui6gv1zvCRSVE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ASD/9UEHSWfJcYBolLhibajFVC0F4Uk5qIEsPLr3kEt2RCOrn0Dsw4+i4tRef80C6
+	 7lHJ5QvzmZ5MpEpCYcysss5Y5gkTFTSaOiWnBnw9h2J12pQzED1VHD9uqElt4UqJnz
+	 R39eB//CrgwG6rtC9ioQBCYV7btwXkenDmM7+TgBSjQZKdQsCNQ4xYeSaPKy4mhvrQ
+	 dgJbrARDXxaL5OHGCTYFlPgwQZj7Bal+TUkod6LphVpgkXHAxTDTYC4IZCkb1XzkyE
+	 5XG3WrwsHZPe3Br3W45KJ/rJn2nKLr9e+wh5D4QaZGF1i2RBepxwU7hP1rrUGktWM7
+	 YS7l2ZJ1vpPPQ==
+Date: Mon, 11 Mar 2024 15:04:27 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: sync: add `ArcBorrow::from_raw`
+Message-ID: <4aef25d7-5135-4444-a461-fdef02f969e0@proton.me>
+In-Reply-To: <CAH5fLggWwOLR0c-MR_p=Tw4vS8RHAEhJZsMLyx9rhYo=eVu+9g@mail.gmail.com>
+References: <20240228-arc-for-list-v2-0-ae93201426b4@google.com> <20240228-arc-for-list-v2-1-ae93201426b4@google.com> <e09ed8fc-d305-4740-8c6e-7308a634b822@proton.me> <CAH5fLggWwOLR0c-MR_p=Tw4vS8RHAEhJZsMLyx9rhYo=eVu+9g@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240223163726.12397-1-dakr@redhat.com> <6ba16a74-6fa4-4051-8cc6-f0e53a68d8b4@redhat.com>
- <Ze73aPMEg-BUCE8W@hs01.dakr.org>
-In-Reply-To: <Ze73aPMEg-BUCE8W@hs01.dakr.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 11 Mar 2024 14:10:04 +0100
-Message-ID: <CANiq72kK5CF0RQathACD_=7K1Ye4eMVdUnRcvkDZx4ALtq46wg@mail.gmail.com>
-Subject: Re: [PATCH v5] rust: str: add {make,to}_{upper,lower}case() to CString
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 11, 2024 at 1:22=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
-wrote:
->
-> It doesn't seem there's any further feedback, thus can this be merged?
+On 3/11/24 09:58, Alice Ryhl wrote:
+> On Sat, Mar 9, 2024 at 1:56=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>>> +    /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously bee=
+n deconstructed with
+>>> +    /// [`Arc::into_raw`].
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// * The provided pointer must originate from a call to [`Arc::in=
+to_raw`].
+>>> +    /// * For the duration of the lifetime annotated on this `ArcBorro=
+w`, the reference count must
+>>> +    ///   not hit zero.
+>>> +    /// * For the duration of the lifetime annotated on this `ArcBorro=
+w`, there must not be a
+>>> +    ///   [`UniqueArc`] reference to this value.
+>>
+>> I am a bit confused, this feels to me like it should be guaranteed by
+>> `UniqueArc` and not by this function. Currently there is not even a way
+>> of getting a `*const T` from a `UniqueArc`.
+>> So I think we can remove this requirement and instead have the
+>> requirement for creating `UniqueArc` that not only the refcount is
+>> exactly 1, but also that no `ArcBorrow` exists.
+>=20
+> If you combine this with `into_unique_or_drop` that is introduced in
+> the next patch of this series, then you could perform these
+> operations:
+>=20
+> * Arc::into_raw
+> * ArcBorrow::from_raw
+> * Arc::from_raw
+> * Arc::into_unique_or_drop
+> * And then use the ArcBorrow
+>=20
+> If we drop the final safety requirement from `ArcBorrow::from_raw`,
+> then the above would be allowed. The refcount does not hit zero at any
+> point during these operations. The only unsafe functions are
+> Arc::into_raw, Arc::from_raw, and ArcBorrow::from_raw, so this safety
+> requirement must go on one of them. It seems to me that, out of these,
+> ArcBorrow::from_raw is the most appropriate choice.
+>=20
+> Thoughts?
 
-No, it cannot be applied until the merge window closes, i.e. 2 weeks from n=
-ow.
+I see, it is a bit unfortunate that we have to put the constraint onto
+`ArcBorrow::from_raw`, but I also do not see a better place. Thus:
 
-Please note that there are other patches yet to be applied that were
-sent before this v5 -- we aim to send early PRs to Linus, and in
-general for at least a week in -next and for at least a week for
-review. Thus -rc5/6 is already quite late in general.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
+--=20
 Cheers,
-Miguel
+Benno
+
