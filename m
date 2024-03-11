@@ -1,132 +1,170 @@
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C38114007
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 09:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F21A36AEF
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 10:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710148003; cv=none; b=OpDJqVPX0kBEXfV7YV2sOenyuMi5hKQ2XHUAOvwqy6/+a1ZNe8NrEyx9rBXVUsaQfabA/AKzNKAN4rYm1KvaphmlAus+PZf0B1y8IpIbAKomBMR0IFdUzJqHLiU15Kk3jdE75DYcGiYtUjsQyPWXTGr+ALXD90eQYKKPBXbqJH0=
+	t=1710154043; cv=none; b=Jb+QV7M6KxwUzelgUXbqViczGXy/S1zAmeWAzPNT5k1e/d+d4xFYX+Tb4oUMzWUsAKIMNjZyE3t7//runQOxYZs2CzImFJOltBYvdUaf5xyYkzfcATC9kH9G1gaxPrcvIuEk+nFlC3o7jHbbHVimHsYtDCss4CSJVeYosk6pA7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710148003; c=relaxed/simple;
-	bh=oDq0wjzK9UeHir6L4tpyPUO+UyOU+IT9339oWwDT8j8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uv6vcR/ztY3zhbCimoiecrEPa/I+wH5pn/yyX+7R6HhxvtJ8DN5ObEhLRu+AIM7EqtNYfkt4V1U28xVgLUt3RDNOLl+n7qhmBKY8NLx0HNS/kOWr9R589o24PLKN9HGgFMhjRhV1n8FIpRrxbQLHwzEJp47E4aj/Mr8r1hKo2kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V2EcnBBh; arc=none smtp.client-ip=209.85.221.176
+	s=arc-20240116; t=1710154043; c=relaxed/simple;
+	bh=eFO8v8hNbjIyLu0r8FdBf9oSrloJURleePlt88en+Ow=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=YnPRdhQWNL0WL7B4EGwawBKQM0/mHtEn0KV92AvCZ2VgUpUHPARzpheFxzxo+C1I68lFjzuMm8TSn58Vi6yB4qMs1n930c0lmZzXSRrpCUmfre0e9VRnx2ytZSvzf4ZxRrXwvZEL0QMWeuAHEXNwMoGOaRSZ5qsj1aD6MxNjYEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sfkt/N98; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V2EcnBBh"
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4d33dd7d354so377172e0c.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 02:06:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sfkt/N98"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-5f38d676cecso64333677b3.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 03:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710148000; x=1710752800; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xT2VVHcsQ51kBeBw51R+w6B1SbBBCUAwVNKiybCExI4=;
-        b=V2EcnBBhpVN+iKWEA/nlo2T+hisDQoIvFqLR9paNLEoDLC4GaKJjWORhZ/v/aFGt7J
-         e5jM8ZYdZqXahvO43a2B5lyFX4+0J3DsuzTA+w8abdlwUaeyIOWLKdwkibL2pnfScAAc
-         7YD/N1ZgUP6eJ045yd1KrLSzXN41bfEhBnkD3oybLqMEDIFGvouERu6/MzBIfJWMAoKE
-         L//TbjXd7iCT5WTCrQmYZ76H+HSObSh5f7eIhYLa6ldcJS4Sz/RHWF9yU6u8u48zk7Mf
-         aHtp1Jjz7L5yRKSREvudflypr4RZTSf57YHi8hk6Y5u8RfaY2gdSvfVRRHM1ovm0VmBl
-         gNCw==
+        d=google.com; s=20230601; t=1710154040; x=1710758840; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OL5M0QWyifHNNdL2G7ppAclszTpwZdkP49JBOmqQfUg=;
+        b=Sfkt/N98IbV0lZ6+5kuYDhjUzjN3znJSGoTELPLw7SRBfLTorLlXa6scD3wDtU8ULu
+         H7rbEKET8r7RJ7ONTUv7pkMMxHp0XAUtC+5Bj/7w9e51cryGG/oOZwfPr2Utdwk+h3l1
+         TgN0Vp4i5dTVplaGHfjsdxZPLnZNhBudnGxTypULRcjoUIUpLtrfASv6LlN+AgADzJTi
+         uuToAh/mbTuerMeTAPMkghmEOwt9WNLBC4FP+E/wPZQPvn04O2FL1b+uJ/tOGDhCHidu
+         Ts5WEbRRlXLTkEfODfc9NFWaz23L9yYsR3fgkIF1wV3ZvvPHvvE5Gh5TbyJ49PES8OeA
+         /vWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710148000; x=1710752800;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xT2VVHcsQ51kBeBw51R+w6B1SbBBCUAwVNKiybCExI4=;
-        b=iUfRXlnPNOhaqMQNF5izZNZ1n5xxCyYdKnj5Wp7gQIBw33QuV/Ekd1Tl9xoTLYBbzA
-         cz72xeanre2ypbtX72FETPDuvidJR4sKp5L//h7VCvcKMjbRam2KcCLLFgQ+wcm0fzJN
-         jsP51fS2IOoVYJ2c8LUVn2IH/H7A6haKE0kfA1iV9LAJv7fN+AowqV9AQN1SIDjheGC4
-         egy3RzVXtWdLgB9gBGAVK4xODKdnPU5UlbsZNi4NLhBxJJtIx9ab22rdZYCWYCVmmj2J
-         KpipFdDvadUHcZvsgSvmoW47pxJRoNFbtpwXTq52MBIeFmrmdgwCX1pi82uVDdDHAdfq
-         VGYw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNosSQe7xj+B5uG+yruue/KqR3IV2XZ7dRLsf88KcLGhsDGatuXtyNcoWbh0WQDLsZi42sdWt3SgHemebof/rOEvv36RSVAMm/WkxLYTk=
-X-Gm-Message-State: AOJu0YzbRflgx3gVKTsoVvpHE0xe7VRdpqjSU1IMkngdG2xHN2OFK6Yr
-	j7MWB/yMAy+prBuTTI3zCD+RivS9JoKwjel8WOplBHSTHK06oESWz1L5vpw3D70NUYttKB/0YFc
-	BgJnT4UzC91giN5Qw4mpkyqp0NFAbLsVTL0tb
-X-Google-Smtp-Source: AGHT+IEnfKZc/O50nVX9EHX3V0Vrm6kYtuWq+ssZzv4pWsg4ZjS5WovMpamitXQrq2ePT4+vm4fwQKkP9M/TBq92QD8=
-X-Received: by 2002:a05:6122:388d:b0:4c0:2abe:d585 with SMTP id
- eo13-20020a056122388d00b004c02abed585mr2691272vkb.6.1710148000298; Mon, 11
- Mar 2024 02:06:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1710154040; x=1710758840;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OL5M0QWyifHNNdL2G7ppAclszTpwZdkP49JBOmqQfUg=;
+        b=l9WwhHAE8QlPF5FE4+Xnu3s3xi2FE/wKyFbkCDRFAwwj588dHXpJD4si41zboGzbUx
+         pS/dPXbA298UO2GAvt6LuRwFBbSDFJSEg4Yc7QC3LuJnxfahCu2iokfxqJYs3FgVJ3Fl
+         zQ0aUyugoD9CMIqeLROtL3dg0daZKHwmSpftTU5+JIQ9dZxe4ktFfgZQoyy4XnGwhl+O
+         lAs1HxqVTHTarVgPbNjPdZwjeiK6Wr/0AMY1hoCf55hBzi14odQ0iskBlgMYUz8mpm2i
+         /JW/iEOcJqFuBdJRDu52LyRTa9ZrNW4KqELnRT9d9fo3ygG0nzXryqXyf5spELBTn7z3
+         it+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVqDb6cnWa9G9R1mmyxk214b71r2Dog5f4V7r97OckgES20JnDBEHEpzVbdLcLVZfCMl6efEt9zANdtSGVp+1hHBELw1Jn8QCHJx11aTPg=
+X-Gm-Message-State: AOJu0YyQdn0qCHECiwo41i4lunttOnTiSKqiAVTfjSTAFmXCxsmENZ1O
+	BFEZlohbmY/LVEcuz+pWPTB6UC9q2azy9hwmEJIA7/l6UpFa3Gz6lDzvejn9BGZcHRwybX/wSAg
+	Qd0sgkFOR1hhIgg==
+X-Google-Smtp-Source: AGHT+IE1ncu/WTcNjGAnRJ10XRaL7XtUuCqTkHwslE1ImUHNhjgR1ywcm4zJ24S5Uy+4a8JfkWXzPThuHXDDTec=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a25:aa14:0:b0:dcc:5463:49a8 with SMTP id
+ s20-20020a25aa14000000b00dcc546349a8mr1576787ybi.6.1710154040582; Mon, 11 Mar
+ 2024 03:47:20 -0700 (PDT)
+Date: Mon, 11 Mar 2024 10:47:12 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240309155243.482334-1-benno.lossin@proton.me>
-In-Reply-To: <20240309155243.482334-1-benno.lossin@proton.me>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADHh7mUC/1WNwQ7CIAxAf2XhLAYKLMST/2E8sK5uJNswYIhm2
+ b8Lu0yPr+17XVmi6CmxS7OySNknH5YC6tQwHN0yEPd9YQYClJRguZs8Ep9n3qFRSpsWiSwr589
+ ID//eU7d74dGnV4ifvZxlndaIFhL0EcmSC95L1yGhVaj1dQhhmOiMYWa1kuEwQfy8z1BNCxJMW WjX/pnbtn0BsZxJJdsAAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2955; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=eFO8v8hNbjIyLu0r8FdBf9oSrloJURleePlt88en+Ow=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBl7uEzbZWmf9BCRypJrSQseEDCZlk4xAlqYenD3
+ TaITrik6PKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZe7hMwAKCRAEWL7uWMY5
+ Rn+BD/0YENdgVIyHtyKKIzmevaWvjv1Bz4CRTnVr6yyDiHjOQ6jb4fmjM1f3PPhdrXpe35T+TwH
+ H5xuahzp3T7osiXs7jAbHzmIUzXei3YH9zY+gxGE/fLxRMSYFzD6FgXyGexkgyIbn1DY8XrmpEl
+ 4vGAoxJD3Lq/vsB8Y8LhmGBRXtEcUJE6pfB9AySb/YhEA1Kn+mhr7JM5EIpZxml71jA9oDvA5zY
+ 50xSALmT51CD31w7V/mSxvUkVX0zIdM5l2r9utasvXSA7f9gQbW0+Jtc2GFukHIAOzVKxaQ0NAx
+ LA9tLpadDKRhtS20aJusKewF2yF7hFS4qk5CrDVKAu6GtwlEScBhfP0GA3PSWAdCg5/FruKhX02
+ pS1XI4SdicSrkAIN289GK/forO9U7CcpAB/pmpaF2+i3D7xyrItmjPMFXMH5zYBREyTgrz72ck+
+ vozSQZTVmQOjsU4L1nI6Qj9olliNU1eK3v3oCZ7fOEDkVTOVqhtUiYgYW112DjQL2P3yzRH01cy
+ h8dzbbAIvuigCzK29AkXE9/6bUujoFFV5GaZRXlfo0c0pjpl4z0duf/yjun894N4XnjdXI/R++I
+ +qiEFJCRPMsGysfiOCcELFNGCqFEUWrutdJpNqBQu2BEpHqNnLydAruOIyJ3Wsfgv8mOHwAsKEe wptsYX5Lzhg7jWg==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com>
+Subject: [PATCH v3 0/4] Memory management patches needed by Rust Binder
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 11 Mar 2024 10:06:29 +0100
-Message-ID: <CAH5fLgiEsYF6AanS4mT_8sPHL6YM6SAsdg1LNMB-FE9yWvSh8w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] rust: macros: add `decl_generics` to `parse_generics()`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Sat, Mar 9, 2024 at 4:53=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
-> wrote:
->
-> The generic parameters on a type definition can specify default values.
-> Currently `parse_generics()` cannot handle this though. For example when
-> parsing the following generics:
->
->     <T: Clone, const N: usize =3D 0>
->
-> The `impl_generics` will be set to `T: Clone, const N: usize =3D 0` and
-> `ty_generics` will be set to `T, N`. Now using the `impl_generics` on an
-> impl block:
->
->     impl<$($impl_generics)*> Foo {}
->
-> will result in invalid Rust code, because default values are only
-> available on type definitions.
->
-> Therefore add parsing support for generic parameter default values using
-> a new kind of generics called `decl_generics` and change the old
-> behavior of `impl_generics` to not contain the generic parameter default
-> values.
->
-> Now `Generics` has three fields:
-> - `impl_generics`: the generics with bounds
->   (e.g. `T: Clone, const N: usize`)
-> - `decl_generics`: the generics with bounds and default values
->   (e.g. `T: Clone, const N: usize =3D 0`)
-> - `ty_generics`:  contains the generics without bounds and without
->   default values (e.g. `T, N`)
->
-> `impl_generics` is designed to be used on `impl<$impl_generics>`,
-> `decl_generics` for the type definition, so `struct Foo<$decl_generics>`
-> and `ty_generics` whenever you use the type, so `Foo<$ty_generics>`.
->
-> Here is an example that uses all three different types of generics:
->
->     let (Generics { decl_generics, impl_generics, ty_generics }, rest) =
-=3D parse_generics(input);
->     quote! {
->         struct Foo<$($decl_generics)*> {
->             // ...
->         }
->
->         impl<$impl_generics> Foo<$ty_generics> {
->             fn foo() {
->                 // ...
->             }
->         }
->     }
->
-> The next commit contains a fix to the `#[pin_data]` macro making it
-> compatible with generic parameter default values by relying on this new
-> behavior.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+This patchset contains some abstractions needed by the Rust
+implementation of the Binder driver for passing data between userspace,
+kernelspace, and directly into other processes.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+These abstractions do not exactly match what was included in the Rust
+Binder RFC - I have made various improvements and simplifications since
+then. Nonetheless, please see the Rust Binder RFC [1] to get an
+understanding for how this will be used:
+
+Users of "rust: add userspace pointers"
+     and "rust: add typed accessors for userspace pointers":
+	rust_binder: add binderfs support to Rust binder
+	rust_binder: add threading support
+	rust_binder: add nodes and context managers
+	rust_binder: add oneway transactions
+	rust_binder: add death notifications
+	rust_binder: send nodes in transactions
+	rust_binder: add BINDER_TYPE_PTR support
+	rust_binder: add BINDER_TYPE_FDA support
+	rust_binder: add process freezing
+
+Users of "rust: add abstraction for `struct page`":
+	rust_binder: add oneway transactions
+	rust_binder: add vma shrinker
+
+Links: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Fix bug in read_all.
+- Add missing `#include <linux/nospec.h>`.
+- Mention that the second patch passes CONFIG_TEST_USER_COPY.
+- Add gfp flags for Page.
+- Minor documentation adjustments.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20240208-alice-mm-v2-0-d821250204a6@google.com/
+
+Changes in v2:
+- Rename user_ptr module to uaccess.
+- Use srctree-relative links.
+- Improve documentation.
+- Rename UserSlicePtr to UserSlice.
+- Make read_to_end append to the buffer.
+- Use named fields for uaccess types.
+- Add examples.
+- Use _copy_from/to_user to skip check_object_size.
+- Rename traits and move to kernel::types.
+- Remove PAGE_MASK constant.
+- Rename page methods to say _raw.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240124-alice-mm-v1-0-d1abcec83c44@google.com/
+
+---
+Alice Ryhl (2):
+      rust: uaccess: add typed accessors for userspace pointers
+      rust: add abstraction for `struct page`
+
+Arnd Bergmann (1):
+      uaccess: always export _copy_[from|to]_user with CONFIG_RUST
+
+Wedson Almeida Filho (1):
+      rust: uaccess: add userspace pointers
+
+ include/linux/uaccess.h         |  38 ++--
+ lib/usercopy.c                  |  30 +---
+ rust/bindings/bindings_helper.h |   3 +
+ rust/helpers.c                  |  34 ++++
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/page.rs             | 223 +++++++++++++++++++++++
+ rust/kernel/types.rs            |  67 +++++++
+ rust/kernel/uaccess.rs          | 388 ++++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 745 insertions(+), 40 deletions(-)
+---
+base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+change-id: 20231128-alice-mm-bc533456cee8
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
