@@ -1,141 +1,122 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5499440BF9
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 15:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3362C68A
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 16:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710172066; cv=none; b=cuHxnrQ0nJwhYFkCWv/JOXOu1LyygFvtH7jDh205gUnNacb5m5jakvjEOvuoZyLJ9LdZMvdK+ttqNrgn/UxL9iu+zvZ+Qp155F7q4lTqvAh2bYxyCGq2+FBzvpFmB54g16WGB39sVBx4vUYcJ84h1k5Ij0CKSRRe/tfQjilSlxE=
+	t=1710173311; cv=none; b=OdaNqBTYkCVBrgZ1QQzlYwc6+zlOiMPBA+GjEEtW78+K+HFRInwRw9Sej1pq8jey//v9aaEi7HbIoEAyF1D1MM2pXgJ5EeaDtxdpCKhwW2048YFWNe2x1lMgvJZFVe6rXmz/rP2ONpM5xjMU3+sXeBFY0jfO7QqmLeZNzNhWYP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710172066; c=relaxed/simple;
-	bh=ie8Prz8cFj64R0Di70+m7ran2yxryj4ASar1kHwJEKU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uKFcLKT+xko57FRYKSQZusiC3AN4B7f3MgH4z5jV4EBwNhYmNOv0L/e4vBEmoXPkA/EGrlgZHASeW42f820I3pWzlmf+VHVshFUrb+0F50movs4Jsz9AkoLrDzU5ySawQ5QscLLdNaVar0DpS3xj0KqGfHi63w73o6RW/RGxHlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=awLHHh1q; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1710173311; c=relaxed/simple;
+	bh=ySoK6anYnEQuPQKErWeKswdt3wR5S4/LScNFn5Jtcz0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RXOOVg2+Wmk0LKCIvt8YZhJFls/Rh9XV0V2pQ3QMbDyKdQWTc7aZHo5fw5K6np9eV6RFlWUbuBpMwPuivYWiDHNol76YImSJdzm+UrYe41aPn7Krga1SiYAmgI24+l9pjlaUGpn1M5828ijRhnLHdja7+UABMCzt3OqQQ3qJ04g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wHtBFKnY; arc=none smtp.client-ip=209.85.167.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="awLHHh1q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1710172062; x=1710431262;
-	bh=BCPyxOpQj1xUiAdi8EVHQZWgJdnxIRG4CYEF8aEZ154=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=awLHHh1qc+d+P+7OR+A0Zji+o8QMzfc5OLXw61LTTycaJzgMEF6R3fcuPPQhhL6Vf
-	 JT4N84b7Y7CPiMH0pvIIqmzt7++HpEdgbzKJppbLA1UkNE//OhsPfrdfAD6I3/ZmOu
-	 aSSHf6ylweV6nlEpD0Uxt6QBpA+O8YJRcPyIkrtKUsKCpexgNoY+RJl/RQjMB1N1sR
-	 hqFq/PJiw3tXntU0yKmkbUdVtq7oNqVTDQ6Z5pyHPfuzfaCQG/hjzz24aod8RW4LDH
-	 KY8kl+gVzkv4L96mEo4S4JBzwdkuwAEEPz3Q/YMk+0QN6RZP2xBY7mk4T8q66L3aAJ
-	 Qg/gGO0Eqw5qQ==
-Date: Mon, 11 Mar 2024 15:47:35 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] rust: sync: add `Arc::into_unique_or_drop`
-Message-ID: <47d24edd-6252-445b-a46e-6eb450f7786b@proton.me>
-In-Reply-To: <CAH5fLgj-CH+DmvUjPe2Kacs6QQUQ0qj8ctFrx_jjJg-w1Xrc_w@mail.gmail.com>
-References: <20240228-arc-for-list-v2-0-ae93201426b4@google.com> <20240228-arc-for-list-v2-2-ae93201426b4@google.com> <d52c5d95-99cd-4bd4-864f-b704299d3b1b@proton.me> <CAH5fLggrRANz1GrjEa671Vj0m9=UDeEcGV5vhOxq8XtR6EjUSg@mail.gmail.com> <7976d136-3cf7-427d-a047-41c29d25ad32@proton.me> <CAH5fLghFKVBucpLGEXQ9CdRZRreEhT+u8tPFi+A9-+CX9_Mz1w@mail.gmail.com> <CAH5fLgj-CH+DmvUjPe2Kacs6QQUQ0qj8ctFrx_jjJg-w1Xrc_w@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wHtBFKnY"
+Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-513b1027dd5so902410e87.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 09:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1710173308; x=1710778108; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=48CSeGdrVrcCZ1Y0plEuj0UXE3BzD77hafsgSY9QDC8=;
+        b=wHtBFKnYDCVKyFWH+ImUbByNqlmtcrvDxFj+/K186avbh7xyjcac3GX28DpOWpNyth
+         k+ZLiGWskC1JDP6Mr3A8ZCjeMXs2Lb8bbhs5LlALcA8Li0dxsoQA2ZDWMGEsPgTA/vaq
+         tRmSePNYDB6w8UVviG8kXlaZBfVmHwnGoc7Su2SYibo1bwt4El3nM9O4qFrvHaPLZYmh
+         u2T6umbDwUQJ9RiNQ7GmTXCFkfDlIzVelQ4pg8yst0jz9MIThSXGFfj9HBB7DzmSJcbA
+         OTpn6OEZKIchZ00nBV0/PO5RPeR1CvnUTCGJ81Q8LkBnhm7MvrgUthm+qkGy0YcR/8qC
+         B7/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710173308; x=1710778108;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=48CSeGdrVrcCZ1Y0plEuj0UXE3BzD77hafsgSY9QDC8=;
+        b=lF1uedRnP2T4S6EkYpI1/rZXgkGX7jfHYP3hmRSeNpdCWo2yXAFiZxtFKTUOXhfwKw
+         HoA40TiejOfup+4Vg3NkZ+Qhl8j3g/cZ5QuhE5GEq1flysGCjibETfSaoN6aCgBRVWPP
+         RjfpoayGXGCwVipk6QA72yFiLS3k5td6yorA/0n3Iynk4ILoUOotfMngBOUV6P5d9KwP
+         3DH03s+VU31ixsqxaAEtpYzzNc0JlGU7swPS/pZ0S3DqExxhSTGUqnfOEsf/rQYwvbDj
+         OwNXOFahViook+8YUGhdP55QQ83KpigTckx3lcu9wgtePq3HjoAK1GMwqb/Ed3K2A1F2
+         AKkA==
+X-Gm-Message-State: AOJu0Yw0Kety5aeQmb/GDLKSooyNtr5zQH3i8AFWy2jXXEi/agGdZyOi
+	ZYQM4YL0QGzileZhBuA5AhS1hxAJoo4BiaLqWxwWp3fetTNGy421DBHD2jtMFtQ9KvfrtPVyAYL
+	5hDZ/7tzpexwYSg==
+X-Google-Smtp-Source: AGHT+IH1ywloar1x2gwt4iiuSGCtyHQl1990db2h+pOSrqLRYARq10doFZh21+l9sdlyhYNPlpJ4jjL57OsMw84=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:252c:b0:513:b11d:63ae with SMTP
+ id be44-20020a056512252c00b00513b11d63aemr1620lfb.11.1710173307466; Mon, 11
+ Mar 2024 09:08:27 -0700 (PDT)
+Date: Mon, 11 Mar 2024 16:08:17 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAHEs72UC/12MQQ6CMBBFr2Jm7Zh2QKSuvIdxUaYFmiA1rWk0h
+ LtbiAtl+X7+exNEG5yNcN5NEGxy0fkxQ7HfAfd67Cw6kxlIUClIKNSBsfUBBxefqIklVUzaHBm
+ y8gi2da81d71l7vPJh/daT3JZvyG5CSWJAo2q2SjiUyWaS+d9N9gD+zsspUQ/NtUbm7KtrSpIy JKqpvyz53n+AI07nQnnAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1482; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=ySoK6anYnEQuPQKErWeKswdt3wR5S4/LScNFn5Jtcz0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBl7yxzx5kfn5OqzhFAWXgk3np/4f3p0ll3GO6vk
+ uRnyNnCB9uJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZe8scwAKCRAEWL7uWMY5
+ RtmHD/9ROGcjuXT5ha91PLGOMBdUn0Fs72Uv2D6C2mkyNgtHSy+fBcyTCJjIq85a9guizqtdnug
+ EjYhaBvTEEOlf0wdTmpbiNSeh1ChbzaFpkHBlHlA7qmjIzSywPhZzN+hik5uW0oscUZ3dgOJQJs
+ e0WWob1mySauWXYzAxdCV9j4WVue3imfYdLWluiyVa+E6FsUYz+uvtQJp5ZfHUwLzzP9vOeqScC
+ 7OshcBSmJqlH2zAhjyi/Oag/erEBT+fuHdf17DSdHSoKsJ3jo6Rv1KB10u84c4plwfdMOPrroPu
+ guRADnHFRPAK7KqoT3Wodb36fRPFjt9VvopjNexDsg1tFdeyO1NKltU7QBW/9vnLEULYmgvczFj
+ miVWcSQdyhC0kZ6Y/ky8tfy7BvqVsUJ/P6eUyB9uqHTX8eNJB9IIGeqXm3eqQH1F1EMFbJI4jn/
+ uCeca9zrtIZ0xXsJHDDDIWRG5VzmTzarZmpRsXKs3RGq6DkT+dts5rze/awj+dJ7u4nC3kJjQME
+ U/iIxjHeCNTKGRjTeXnNuWlCPM6ZmGWFzutF+nIci/KwB0eosk1aINXexGb/Ilhfqu9RX0Ug3HM
+ uwssxz3K0DiJBQqPTJdG5garuzuwhVUp86bWQ2SZrtNQ1xncOxT1CzTxF4fC1zzXUwM1Fk5aesP ocMjDlG5ZSR2qvg==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240311-arc-for-list-v3-0-cba1883c62eb@google.com>
+Subject: [PATCH v3 0/2] Arc methods for linked list
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 3/11/24 16:45, Alice Ryhl wrote:
-> On Mon, Mar 11, 2024 at 4:35=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
->>
->> On Mon, Mar 11, 2024 at 4:15=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>>
->>> On 3/11/24 10:03, Alice Ryhl wrote:
->>>> On Sat, Mar 9, 2024 at 2:02=E2=80=AFPM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
->>>>>
->>>>> On 2/28/24 14:00, Alice Ryhl wrote:
->>>>>> +        // SAFETY: If the refcount reaches a non-zero value, then w=
-e have destroyed this `Arc` and
->>>>>> +        // will return without further touching the `Arc`. If the r=
-efcount reaches zero, then there
->>>>>> +        // are no other arcs, and we can create a `UniqueArc`.
->>>>>
->>>>> This comment is not explaining why it is safe to call
->>>>> `refcount_dec_and_test` on `refcount`.
->>>>> It dose however explain what you are going to do, so please keep it, =
-but
->>>>> not as a SAFETY comment.
->>>>
->>>> I'll reword.
->>>>
->>>>>> +        let is_zero =3D unsafe { bindings::refcount_dec_and_test(re=
-fcount) };
->>>>>> +        if is_zero {
->>>>>> +            // SAFETY: We have exclusive access to the arc, so we c=
-an perform unsynchronized
->>>>>> +            // accesses to the refcount.
->>>>>> +            unsafe { core::ptr::write(refcount, bindings::REFCOUNT_=
-INIT(1)) };
->>>>>> +
->>>>>> +            // SAFETY: We own one refcount, so we can create a `Uni=
-queArc`. It needs to be pinned,
->>>>>> +            // since an `Arc` is pinned.
->>>>>
->>>>> The `unsafe` block is only needed due to the `new_unchecked` call, wh=
-ich
->>>>> you could avoid by using `.into()`. The `SAFETY` should also be an
->>>>> `INVARIANT` comment instead.
->>>>>
->>>>>> +            unsafe {
->>>>>> +                Some(Pin::new_unchecked(UniqueArc {
->>>>>> +                    inner: Arc::from_inner(me.ptr),
->>>>>> +                }))
->>>>>> +            }
->>>>
->>>> The from_inner method is also unsafe.
->>>
->>> Ah I missed that, might be a good reason to split the block.
->>> It confused me that the SAFETY comment did not mention why calling
->>> `new_unchecked` is sound.
->>
->> I don't mind splitting up the unsafe block into several pieces.
->>
->>>> I think that using new_unchecked here makes more sense. That method is
->>>> usually used in the case where something is already pinned, whereas
->>>> into() is usually used to pin something that was not previously
->>>> pinned.
->>>
->>> I get your argument, but doing it this way avoids an unsafe function
->>> call. I think it would be fine to use `.into()` in this case.
->>> Splitting the unsafe block would also be fine with me.
->>
->> If you are okay with splitting the unsafe block instead, then I prefer
->> that. I don't think avoiding unsafe blocks is always the best answer;
->> especially not when you're already using unsafe right next to it.
->>
->> This reminds me of NonNull::new_unchecked(Box::into_raw(my_box)) vs
->> NonNull::from(Box::leak(my_box)). The latter is safe, but I don't
->> necessarily think that makes it the better choice. It's also important
->> that your code carries the right intent.
->>
->> Another way to go around it could be to add UniqueArc::from_raw or
->> from_inner methods, as well as from_raw_pinned and from_inner_pinned,
->> and then use those here.
->=20
-> After looking at the code, I've changed my mind. I will write it like thi=
-s:
->=20
-> Some(Pin::from(UniqueArc { inner: ManuallyDrop::into_inner(me) }))
->=20
-> With an INVARIANT comment. Does that make sense for you?
+This patchset contains two useful methods for the Arc type. They will be
+used in my Rust linked list implementation, which Rust Binder uses. See
+the Rust Binder RFC [1] for more information. Both these commits and
+the linked list that uses them are present in the branch referenced by
+the RFC.
 
-That also looks good to me.
+I will send the linked list to the mailing list soon.
 
---=20
-Cheers,
-Benno
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- No changes to `ArcBorrow::from_raw`, or than adding a Reviewed-by.
+- Update SAFETY comment on `refcount_dec_and_test` call.
+- Simplify the creation of the `UniqueArc` in `into_unique_or_drop`.
+- Link to v2: https://lore.kernel.org/r/20240228-arc-for-list-v2-0-ae93201426b4@google.com
+
+Changes in v2:
+- Move raw_to_inner_ptr to ArcInner and rename to container_of.
+- Reword safety conditions for raw_to_inner_ptr to match its users.
+- Link to v1: https://lore.kernel.org/r/20240219-arc-for-list-v1-0-d98cd92c760b@google.com
+
+---
+Alice Ryhl (2):
+      rust: sync: add `ArcBorrow::from_raw`
+      rust: sync: add `Arc::into_unique_or_drop`
+
+ rust/kernel/sync/arc.rs | 106 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 88 insertions(+), 18 deletions(-)
+---
+base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+change-id: 20240209-arc-for-list-a2c126c2ad5c
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
