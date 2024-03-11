@@ -1,129 +1,243 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B3634CD7
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 10:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DD23BBF0
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 12:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710154261; cv=none; b=IRjvCIy28t0D7h5FQrGbzSYNnt8GRltdZGq10S43ZsJciJ/aa/d7IP0KPKSU4lqOo3A1yo+BmJXnb8tx+x9iEuwExHxdNqJaVH3NAGdX9Weo/TLHs2QohnUHnaXL88OFhtuqTsT/tmF9pxVhFvrGwSsVxjR0AM32Xh1tOrFRhyw=
+	t=1710159735; cv=none; b=R0ceyG0jB87slWOhJWxlnwaIMGP03xGecmcbdYC6b3BVQHyDHJxI8XdS1RfD9Z4C1ZcooLOIexPymSAnAS8GNo+BjHyNeoy/hNx0vIPKPiN/8lnRfUDencJajeZ93peQQ9m8zTNQ6LMBpBbUx0kTyWPasgmU0SIrASWWeinrkpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710154261; c=relaxed/simple;
-	bh=+bJHxt/KB77v31jr8cMHA2sysiR2xPD4/CuaaqwHhpk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jncbaS0hc0AnrxBCn1/jHwIeK918OMULIWZ9J78lA1BpgGaYHjqMpRxpGFtKVR8WT5hJnvaF8i1BQor9OmK9t4yf9fQiaLU0Ldwh9MJW1C3HSXZIE/IflOguIF9xIv8joboiSIypbrpW62LBCWyPQPvlEyOIwGs89QKxvKfxfNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lDe13D55; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1710159735; c=relaxed/simple;
+	bh=nzvi+Q7Zc7v/LHpAYHsUDePwOhaGJa+bGEU5NJIY5g4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=YKJe5cvEtydPzMEDoIVhJRxf0vI5yQlVqa1EF/I3ITG8GDnMk3yyfe0V9SFpdnMU7y5reKiN/EYTNOuBn21NR38/68gHFhsdI8qAqQZOgwb38zWboH3jkl9/f2shT9CTJ7L3jvJuGtuosRbkrqe2Oh5fSkzqYuFjYGmAfPy5SLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JdOdzBmD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lDe13D55"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b26ce0bbso9012258276.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 03:50:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710154259; x=1710759059; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QkH89xHzV1IOGFDhkdj9/o38QLblihNlGOq4CZ122VI=;
-        b=lDe13D55PjwiK7w/nkxe1zF8h1XDwcYnjjchIgKNeOcPO1qYfpG5o1M/AZJK0LdsrE
-         MQiM9vmMRZX3+/xKPwGIZqxaE69qS3hsHQ98mBC+JIF/3NM348q8i3BjMkj/Q6En/7dA
-         88wSHbfH5qqCRfFyg4JJhsxfBIUC9AvE8Dl8t1sMKpdIJKFFSLNPOd4JSQchRhCs0Q6J
-         6lfPtQgi3xYTYfJB6Vw2pAokIC0uQRR0gUNf2aZZiK81q0OXrSby8HdWpATUk9+OGSV5
-         y8BIne2ibnTbDqikWODCexVUUf5FUDA1bgv7/CnuM/uhcfMIQTTMI0vcvHoC5v8nrw9b
-         kqYQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JdOdzBmD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710159733;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Dxf9l3FVcs3Y6LZTf/hatE8AZT2x1pwYFJhqRJ+R4I=;
+	b=JdOdzBmDf5MmBjQoWraRh+AGwCvrWPNBGEgdI+pF5NBhnGZW0Q/rPo1syF02qu53ynJ+Vd
+	HfeWRXFeIf1SFnmDFHLfzjfWSKMnIGCTRCClbgwesVlls1n39UKYrRU5FEED2bnkNkzcTC
+	yKGi1hKp771InA5ml0KfNh5h0Z7bByM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-466-zjmLFHGPM-6MSkSyae6hZQ-1; Mon, 11 Mar 2024 08:22:11 -0400
+X-MC-Unique: zjmLFHGPM-6MSkSyae6hZQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-41312d583dfso17746645e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Mar 2024 05:22:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710154259; x=1710759059;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QkH89xHzV1IOGFDhkdj9/o38QLblihNlGOq4CZ122VI=;
-        b=YAt2ESdDtF1ejGv6C3GWy1ZGngftUljeUITxaRm+TNr0M8RxAp8q6Rt4esrjcO4pYR
-         xqB30iudd99Lgf9qzFHS29wd7Y5Y2DTspve/vFBBwQKM6tNNqiwePzTqifvV7q4CuqF9
-         349NoE7L/xaXD47jbPgBKnu61apd3xouyPSeM8/OYh+FZCclVAjZTypvu7YkGFk7/++w
-         gnRa6+j7JmLZwA5/PxnSxSEIkZmVGU7z2Re9Y0q6rDlA48jMEeyRupYfkL0xOV5J/5cS
-         lzmoUPkCgMQPibkbU5Dr5RXAqt8/pqAt2x+jLgggkPEIPnyhNjoII8EK2vQP8PI38G2K
-         V2Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWiw4uSsPOoevdXpKqq8TCyKIU2tU9thEhp7wXZULW9z803rjeVnsr6YCo7eMOoU2Ul7rRmpQv/uStwLS+ORSv29dpxAIHmMYJ74iWhPQk=
-X-Gm-Message-State: AOJu0YwdcpeaUoMD3TFuJeFCa6RNmyydlrMtIEQ9Abzm33kcKOYrYM+Z
-	GPjpwgosysVdiksMB9mOKBGXYW9DHXD3nz3vYpbBlGuT40vH7QvEygfdsR0U/qsHjbhM4t6ISqe
-	QdMTrxAE/n9S+7Q==
-X-Google-Smtp-Source: AGHT+IGk2L4RyDWsKEcTyzOXU5v0TXO+qH8NTfIYrhBPgHVqCAeETCeddjOHE8Z9t06NiIqRNoH7ePmbWCeR9e4=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a25:dbc2:0:b0:dc6:d233:ffdd with SMTP id
- g185-20020a25dbc2000000b00dc6d233ffddmr1754817ybf.0.1710154259109; Mon, 11
- Mar 2024 03:50:59 -0700 (PDT)
-Date: Mon, 11 Mar 2024 10:50:56 +0000
-In-Reply-To: <20240311-alice-mm-v3-4-cdf7b3a2049c@google.com>
+        d=1e100.net; s=20230601; t=1710159731; x=1710764531;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+Dxf9l3FVcs3Y6LZTf/hatE8AZT2x1pwYFJhqRJ+R4I=;
+        b=EMI+wCdRtYO8YYUnHzlURzUFqxoGubkJg0NjNxGSJQp4jNnS6/fc/CyETm4E8N1p01
+         BykgKDc7FsNk/8oue45VsWp9kj4qY5C4pXAIc+J1MLrhn99p8YM9W09qZqnuF03CgdCU
+         hXBsbDQD0GYW1o/J0Et4VdBksNUmw1xuwEVoK7BmK70g/yhZRKHkvhIygY3fgac67QvB
+         QfK2A5u7cc2g92MDDVRfY0DOdEorGl3Dxf+6bV5fxaPt3wt8Ddsw/1zJpmyFUD6X45Q7
+         jfE+JWSAWbYEKkguUrcHZ61Kc45POBUat1Eji2cJwHT1GiLzr5SnmGbYHWVI0FBF21gR
+         hCrw==
+X-Gm-Message-State: AOJu0YzCLPCCSJfAdpU4D4d00J8RURYYUD7PubAN9XPw149KSgMJ7d24
+	GJY4mmleAmZHlkucS0gY0PPMZD8Q2SXpRcrniRlBPtVrZ1xsCTHr+3HERs2hXsJLRaPBQtqtBJ4
+	VROF52My4jAX9hfjceQJXgwP9lcawQQ7MvbCC5O406zG0KjGab5pkGSohScKNa58b
+X-Received: by 2002:a05:600c:4588:b0:413:2c77:1a22 with SMTP id r8-20020a05600c458800b004132c771a22mr936300wmo.8.1710159730751;
+        Mon, 11 Mar 2024 05:22:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBbb7Y4Loy24pyff1/Zn1iHq6UmVm7da6yocw6+FzEH+R8dsh6vkWk8Gm14feUGP9Ez6PvSQ==
+X-Received: by 2002:a05:600c:4588:b0:413:2c77:1a22 with SMTP id r8-20020a05600c458800b004132c771a22mr936280wmo.8.1710159730348;
+        Mon, 11 Mar 2024 05:22:10 -0700 (PDT)
+Received: from hs01.dakr.org (hs01.dk-develop.de. [2a02:c207:3002:6234::1])
+        by smtp.gmail.com with ESMTPSA id bo5-20020a056000068500b0033e7e9c8657sm6287929wrb.45.2024.03.11.05.22.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Mar 2024 05:22:09 -0700 (PDT)
+Date: Mon, 11 Mar 2024 13:22:00 +0100
+From: Danilo Krummrich <dakr@redhat.com>
+To: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] rust: str: add {make,to}_{upper,lower}case() to
+ CString
+Message-ID: <Ze73aPMEg-BUCE8W@hs01.dakr.org>
+References: <20240223163726.12397-1-dakr@redhat.com>
+ <6ba16a74-6fa4-4051-8cc6-f0e53a68d8b4@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240311-alice-mm-v3-4-cdf7b3a2049c@google.com>
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Message-ID: <20240311105056.122734-1-aliceryhl@google.com>
-Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Matthew Wilcox <willy@infradead.org>, Andreas Hindborg <a.hindborg@samsung.com>
-Cc: akpm@linux-foundation.org, alex.gaynor@gmail.com, arnd@arndb.de, 
-	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, 
-	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
-	keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, 
-	wedsonaf@gmail.com, aliceryhl@google.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+In-Reply-To: <6ba16a74-6fa4-4051-8cc6-f0e53a68d8b4@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Alice Ryhl <aliceryhl@google.com> writes:
-> +/// Flags for the "get free page" function that underlies all memory allocations.
-> +pub mod flags {
-> +    pub type gfp_t = bindings::gfp_t;
-> +
-> +    /// `GFP_KERNEL` is typical for kernel-internal allocations. The caller requires `ZONE_NORMAL`
-> +    /// or a lower zone for direct access but can direct reclaim.
-> +    pub const GFP_KERNEL: gfp_t = bindings::GFP_KERNEL;
-> +    /// `GFP_ZERO` returns a zeroed page on success.
-> +    pub const __GFP_ZERO: gfp_t = bindings::__GFP_ZERO;
-> +    /// `GFP_HIGHMEM` indicates that the allocated memory may be located in high memory.
-> +    pub const __GFP_HIGHMEM: gfp_t = bindings::__GFP_HIGHMEM;
-> +}
->
-> [...]
->
-> +impl Page {
-> +    /// Allocates a new page.
-> +    pub fn alloc_page(gfp_flags: flags::gfp_t) -> Result<Self, AllocError> {
-> +        // SAFETY: The specified order is zero and we want one page.
-> +        let page = unsafe { bindings::alloc_pages(gfp_flags, 0) };
-> +        let page = NonNull::new(page).ok_or(AllocError)?;
-> +        // INVARIANT: We checked that the allocation succeeded.
-> +        Ok(Self { page })
-> +    }
+On Mon, Mar 04, 2024 at 01:22:17PM +0100, Danilo Krummrich wrote:
+> On 2/23/24 17:37, Danilo Krummrich wrote:
+> > Add functions to convert a CString to upper- / lowercase, either
+> > in-place or by creating a copy of the original CString.
+> > 
+> > Naming followes the one from the Rust stdlib, where functions starting
+> > with 'to' create a copy and functions starting with 'make' perform an
+> > in-place conversion.
+> > 
+> > This is required by the Nova project (GSP only Rust successor of
+> > Nouveau) to convert stringified enum values (representing different GPU
+> > chipsets) to strings in order to generate the corresponding firmware
+> > paths. See also [1].
+> 
+> Gentle ping.
 
-Matthew Wilcox: You suggested on a previous version that I use gfp flags
-here, or that I rename it to e.g. BinderPage to make it clear that this
-is specific to the kind of pages that Binder needs.
+It doesn't seem there's any further feedback, thus can this be merged?
 
-In this version I added some gfp flags, but I'm not actually sure that
-the Page abstraction works for all combinations of gfp flags. For
-example, I use kmap_local_page when accessing the page, but is that
-correct if there's a user that doesn't pass GFP_HIGHMEM?
+- Danilo
 
-So perhaps it should be called HighmemPage since the methods on it
-hardcode that. Or maybe it really doesn't make sense to generalize it
-beyond what Binder needs.
+> 
+> > 
+> > [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/String.20manipulation.20in.20kernel.20Rust
+> > 
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > ---
+> > Changes in V5:
+> >    - remove unneeded return statements
+> >    - use Vec::as_mut_slice() instead of a dereference
+> > Changes in V4:
+> >    - move to_ascii_{lower,upper}case() to CStr
+> >    - add a few comments suggested by Alice
+> > Changes in V3:
+> >    - add an `impl DerefMut for CString`, such that these functions can be defined
+> >      for `CStr` as `&mut self` and still be called on a `CString`
+> > Changes in V2:
+> >    - expand commit message mentioning the use case
+> >    - expand function doc comments to match the ones from Rust's stdlib
+> >    - rename to_* to make_* and add the actual to_* implementations
+> > ---
+> >   rust/kernel/str.rs | 87 +++++++++++++++++++++++++++++++++++++++++++++-
+> >   1 file changed, 86 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> > index 7d848b83add4..c1c8ccc80c52 100644
+> > --- a/rust/kernel/str.rs
+> > +++ b/rust/kernel/str.rs
+> > @@ -5,7 +5,7 @@
+> >   use alloc::alloc::AllocError;
+> >   use alloc::vec::Vec;
+> >   use core::fmt::{self, Write};
+> > -use core::ops::{self, Deref, Index};
+> > +use core::ops::{self, Deref, DerefMut, Index};
+> >   use crate::{
+> >       bindings,
+> > @@ -143,6 +143,19 @@ pub const fn from_bytes_with_nul(bytes: &[u8]) -> Result<&Self, CStrConvertError
+> >           unsafe { core::mem::transmute(bytes) }
+> >       }
+> > +    /// Creates a mutable [`CStr`] from a `[u8]` without performing any
+> > +    /// additional checks.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `bytes` *must* end with a `NUL` byte, and should only have a single
+> > +    /// `NUL` byte (or the string will be truncated).
+> > +    #[inline]
+> > +    pub unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mut [u8]) -> &mut CStr {
+> > +        // SAFETY: Properties of `bytes` guaranteed by the safety precondition.
+> > +        unsafe { &mut *(bytes as *mut [u8] as *mut CStr) }
+> > +    }
+> > +
+> >       /// Returns a C pointer to the string.
+> >       #[inline]
+> >       pub const fn as_char_ptr(&self) -> *const core::ffi::c_char {
+> > @@ -206,6 +219,70 @@ pub unsafe fn as_str_unchecked(&self) -> &str {
+> >       pub fn to_cstring(&self) -> Result<CString, AllocError> {
+> >           CString::try_from(self)
+> >       }
+> > +
+> > +    /// Converts this [`CStr`] to its ASCII lower case equivalent in-place.
+> > +    ///
+> > +    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
+> > +    /// but non-ASCII letters are unchanged.
+> > +    ///
+> > +    /// To return a new lowercased value without modifying the existing one, use
+> > +    /// [`to_ascii_lowercase()`].
+> > +    ///
+> > +    /// [`to_ascii_lowercase()`]: #method.to_ascii_lowercase
+> > +    pub fn make_ascii_lowercase(&mut self) {
+> > +        // INVARIANT: This doesn't introduce or remove NUL bytes in the C
+> > +        // string.
+> > +        self.0.make_ascii_lowercase();
+> > +    }
+> > +
+> > +    /// Converts this [`CStr`] to its ASCII upper case equivalent in-place.
+> > +    ///
+> > +    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
+> > +    /// but non-ASCII letters are unchanged.
+> > +    ///
+> > +    /// To return a new uppercased value without modifying the existing one, use
+> > +    /// [`to_ascii_uppercase()`].
+> > +    ///
+> > +    /// [`to_ascii_uppercase()`]: #method.to_ascii_uppercase
+> > +    pub fn make_ascii_uppercase(&mut self) {
+> > +        // INVARIANT: This doesn't introduce or remove NUL bytes in the C
+> > +        // string.
+> > +        self.0.make_ascii_uppercase();
+> > +    }
+> > +
+> > +    /// Returns a copy of this [`CString`] where each character is mapped to its
+> > +    /// ASCII lower case equivalent.
+> > +    ///
+> > +    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
+> > +    /// but non-ASCII letters are unchanged.
+> > +    ///
+> > +    /// To lowercase the value in-place, use [`make_ascii_lowercase`].
+> > +    ///
+> > +    /// [`make_ascii_lowercase`]: str::make_ascii_lowercase
+> > +    pub fn to_ascii_lowercase(&self) -> Result<CString, AllocError> {
+> > +        let mut s = self.to_cstring()?;
+> > +
+> > +        s.make_ascii_lowercase();
+> > +
+> > +        Ok(s)
+> > +    }
+> > +
+> > +    /// Returns a copy of this [`CString`] where each character is mapped to its
+> > +    /// ASCII upper case equivalent.
+> > +    ///
+> > +    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
+> > +    /// but non-ASCII letters are unchanged.
+> > +    ///
+> > +    /// To uppercase the value in-place, use [`make_ascii_uppercase`].
+> > +    ///
+> > +    /// [`make_ascii_uppercase`]: str::make_ascii_uppercase
+> > +    pub fn to_ascii_uppercase(&self) -> Result<CString, AllocError> {
+> > +        let mut s = self.to_cstring()?;
+> > +
+> > +        s.make_ascii_uppercase();
+> > +
+> > +        Ok(s)
+> > +    }
+> >   }
+> >   impl fmt::Display for CStr {
+> > @@ -593,6 +670,14 @@ fn deref(&self) -> &Self::Target {
+> >       }
+> >   }
+> > +impl DerefMut for CString {
+> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+> > +        // SAFETY: A `CString` is always NUL-terminated and contains no other
+> > +        // NUL bytes.
+> > +        unsafe { CStr::from_bytes_with_nul_unchecked_mut(self.buf.as_mut_slice()) }
+> > +    }
+> > +}
+> > +
+> >   impl<'a> TryFrom<&'a CStr> for CString {
+> >       type Error = AllocError;
+> > 
+> > base-commit: 39133352cbed6626956d38ed72012f49b0421e7b
 
-What do you think? How broadly does these implementations generalize? I
-would be happy to hear your advice on this.
-
-
-Andreas Hindborg: I recall you mentioning that you also needed an
-abstraction for pages. To what extent do these abstractions fit your
-needs? Which gfp flags do you need?
-
-
-Also, sorry for taking so long to submit this version. I spent a long
-time debugging the crash that led to the submission of [1].
-
-Alice
-
-[1]: https://lore.kernel.org/rust-for-linux/20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com/
