@@ -1,41 +1,41 @@
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08D743ADC;
-	Mon, 11 Mar 2024 15:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82CD4CDE5;
+	Mon, 11 Mar 2024 15:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710169493; cv=none; b=TI28fP1zwh2WyJL8DL6sRLB/k2hGNVJZBzby71xGbR/qhVvrcKu3FMFJ+DmyPiVYGhrFX7Pntmm0+qOtxpv3KYb94YM0KLfjqQlaVkPB5HSjh80L56IxokIEqDiqQ281C11guOPfG1kSYwswxeOT6FrJ5a0GDIMBUwb7GC11FUA=
+	t=1710170116; cv=none; b=U7NDGSmakSZuzx5539m1t11NzXE7mqBBhhQn2w9ROFG3nc4a/SMryWJlQplr6kumvZx4q/HUyxemftdUSRZBwTVFWiB05fukm3Xachk6rnSw0ew7Wd1/Ab7FUMxxAd2i8C0zxLIjmVD09TbNdUP+bJDopkY55laJzP+2WRUz1rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710169493; c=relaxed/simple;
-	bh=rPsgfa/jUXlF5r6wmYl3H5nz8wyQaYnNMQgu78ADxjY=;
+	s=arc-20240116; t=1710170116; c=relaxed/simple;
+	bh=XhKg+cZDfP4nwiES2xcSxwW8Bp0lPtWE0a+CMh4TiHE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X2ZHBsRdQKr/go3n2EeCz2fMaXebqElBDm2VOKL3ruiqQjDsQAePBLwIPAmb04v905wlY3VievaZw2NEVS6MwWQo4rMXTJzLktPCI8YAGKkJNnp6NQ41691774bsjW8SKhvtYCJ89m9MzymsQQ3w/R6Wws08a4Z0WFMjTLqMcF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ASD/9UEH; arc=none smtp.client-ip=51.77.79.158
+	 MIME-Version:Content-Type; b=DOzg7HKebUJYNnkBbzglrZrIdtS4AvtcIzPZB8rVsWyKs5Kw7Nm9BShqmjQxWqM2F73gQnJDagY33h6TbuCDDG9Bp/FrsNUMlFf22XqKwbbrQRd7XppDKZRtS2bDMfqUaY6y+cNrLlj7ClS94Y5cvAaobHa7wqtvv80+VBLxp2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=acLkFnhn; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ASD/9UEH"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="acLkFnhn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1710169474; x=1710428674;
-	bh=zjHIIFeLLaVTxCN34fAudxAbK5EtaRui6gv1zvCRSVE=;
+	s=protonmail; t=1710170107; x=1710429307;
+	bh=lvIfeHpCjGpzhOm0s3JzfmunEER00+7bS6vjwTGAn0M=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ASD/9UEHSWfJcYBolLhibajFVC0F4Uk5qIEsPLr3kEt2RCOrn0Dsw4+i4tRef80C6
-	 7lHJ5QvzmZ5MpEpCYcysss5Y5gkTFTSaOiWnBnw9h2J12pQzED1VHD9uqElt4UqJnz
-	 R39eB//CrgwG6rtC9ioQBCYV7btwXkenDmM7+TgBSjQZKdQsCNQ4xYeSaPKy4mhvrQ
-	 dgJbrARDXxaL5OHGCTYFlPgwQZj7Bal+TUkod6LphVpgkXHAxTDTYC4IZCkb1XzkyE
-	 5XG3WrwsHZPe3Br3W45KJ/rJn2nKLr9e+wh5D4QaZGF1i2RBepxwU7hP1rrUGktWM7
-	 YS7l2ZJ1vpPPQ==
-Date: Mon, 11 Mar 2024 15:04:27 +0000
+	b=acLkFnhna3Qw1IgdbexjecmXi8V7354RT7VL4FaPfplLHk7SsRygD/jbOAHvZCH7d
+	 kWIkaEOjdlFrHnV9ZChUoxeJoaoYRKQzWbyRsGL2d7aCUASmD9ZqSt+WE3BP4+x6nS
+	 TkVith2TxdnjCeEJ7AVYzgMf/KuoaUeR6fGdCr1XmFty3yRc1Vwyp5jHN1IviPt9g/
+	 HoTTCouvKi/29S3gJ1+Uw+k0pGaP72oUxc4l9ryghJ31P1IukMWC9MdVD+6kfH+ffx
+	 yEkRxKIyxe9wp/pDJrXHvIvnCp/rAtfhXp2AqJB2rcbHpruRwR1dcjuyQVgCEwM6JE
+	 gkLCmwTVgMEhw==
+Date: Mon, 11 Mar 2024 15:15:00 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: sync: add `ArcBorrow::from_raw`
-Message-ID: <4aef25d7-5135-4444-a461-fdef02f969e0@proton.me>
-In-Reply-To: <CAH5fLggWwOLR0c-MR_p=Tw4vS8RHAEhJZsMLyx9rhYo=eVu+9g@mail.gmail.com>
-References: <20240228-arc-for-list-v2-0-ae93201426b4@google.com> <20240228-arc-for-list-v2-1-ae93201426b4@google.com> <e09ed8fc-d305-4740-8c6e-7308a634b822@proton.me> <CAH5fLggWwOLR0c-MR_p=Tw4vS8RHAEhJZsMLyx9rhYo=eVu+9g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] rust: sync: add `Arc::into_unique_or_drop`
+Message-ID: <7976d136-3cf7-427d-a047-41c29d25ad32@proton.me>
+In-Reply-To: <CAH5fLggrRANz1GrjEa671Vj0m9=UDeEcGV5vhOxq8XtR6EjUSg@mail.gmail.com>
+References: <20240228-arc-for-list-v2-0-ae93201426b4@google.com> <20240228-arc-for-list-v2-2-ae93201426b4@google.com> <d52c5d95-99cd-4bd4-864f-b704299d3b1b@proton.me> <CAH5fLggrRANz1GrjEa671Vj0m9=UDeEcGV5vhOxq8XtR6EjUSg@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,54 +46,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 3/11/24 09:58, Alice Ryhl wrote:
-> On Sat, Mar 9, 2024 at 1:56=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+On 3/11/24 10:03, Alice Ryhl wrote:
+> On Sat, Mar 9, 2024 at 2:02=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
 me> wrote:
->>> +    /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously bee=
-n deconstructed with
->>> +    /// [`Arc::into_raw`].
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// * The provided pointer must originate from a call to [`Arc::in=
-to_raw`].
->>> +    /// * For the duration of the lifetime annotated on this `ArcBorro=
-w`, the reference count must
->>> +    ///   not hit zero.
->>> +    /// * For the duration of the lifetime annotated on this `ArcBorro=
-w`, there must not be a
->>> +    ///   [`UniqueArc`] reference to this value.
 >>
->> I am a bit confused, this feels to me like it should be guaranteed by
->> `UniqueArc` and not by this function. Currently there is not even a way
->> of getting a `*const T` from a `UniqueArc`.
->> So I think we can remove this requirement and instead have the
->> requirement for creating `UniqueArc` that not only the refcount is
->> exactly 1, but also that no `ArcBorrow` exists.
+>> On 2/28/24 14:00, Alice Ryhl wrote:
+>>> +        // SAFETY: If the refcount reaches a non-zero value, then we h=
+ave destroyed this `Arc` and
+>>> +        // will return without further touching the `Arc`. If the refc=
+ount reaches zero, then there
+>>> +        // are no other arcs, and we can create a `UniqueArc`.
+>>
+>> This comment is not explaining why it is safe to call
+>> `refcount_dec_and_test` on `refcount`.
+>> It dose however explain what you are going to do, so please keep it, but
+>> not as a SAFETY comment.
 >=20
-> If you combine this with `into_unique_or_drop` that is introduced in
-> the next patch of this series, then you could perform these
-> operations:
+> I'll reword.
 >=20
-> * Arc::into_raw
-> * ArcBorrow::from_raw
-> * Arc::from_raw
-> * Arc::into_unique_or_drop
-> * And then use the ArcBorrow
+>>> +        let is_zero =3D unsafe { bindings::refcount_dec_and_test(refco=
+unt) };
+>>> +        if is_zero {
+>>> +            // SAFETY: We have exclusive access to the arc, so we can =
+perform unsynchronized
+>>> +            // accesses to the refcount.
+>>> +            unsafe { core::ptr::write(refcount, bindings::REFCOUNT_INI=
+T(1)) };
+>>> +
+>>> +            // SAFETY: We own one refcount, so we can create a `Unique=
+Arc`. It needs to be pinned,
+>>> +            // since an `Arc` is pinned.
+>>
+>> The `unsafe` block is only needed due to the `new_unchecked` call, which
+>> you could avoid by using `.into()`. The `SAFETY` should also be an
+>> `INVARIANT` comment instead.
+>>
+>>> +            unsafe {
+>>> +                Some(Pin::new_unchecked(UniqueArc {
+>>> +                    inner: Arc::from_inner(me.ptr),
+>>> +                }))
+>>> +            }
 >=20
-> If we drop the final safety requirement from `ArcBorrow::from_raw`,
-> then the above would be allowed. The refcount does not hit zero at any
-> point during these operations. The only unsafe functions are
-> Arc::into_raw, Arc::from_raw, and ArcBorrow::from_raw, so this safety
-> requirement must go on one of them. It seems to me that, out of these,
-> ArcBorrow::from_raw is the most appropriate choice.
->=20
-> Thoughts?
+> The from_inner method is also unsafe.
 
-I see, it is a bit unfortunate that we have to put the constraint onto
-`ArcBorrow::from_raw`, but I also do not see a better place. Thus:
+Ah I missed that, might be a good reason to split the block.
+It confused me that the SAFETY comment did not mention why calling
+`new_unchecked` is sound.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> I think that using new_unchecked here makes more sense. That method is
+> usually used in the case where something is already pinned, whereas
+> into() is usually used to pin something that was not previously
+> pinned.
+
+I get your argument, but doing it this way avoids an unsafe function
+call. I think it would be fine to use `.into()` in this case.
+Splitting the unsafe block would also be fine with me.
 
 --=20
 Cheers,
