@@ -1,112 +1,230 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253E769976
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Mar 2024 08:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EFA137C47;
+	Tue, 12 Mar 2024 17:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710230918; cv=none; b=Wm/FKphsFjLOiEVXD1WrkVKypN8ZI3DsH1sEPkqg+VXMSyqC0GTLbfY0Whu+3TkP0vM0OelsJtzCRuZdPRqF1Eq9pWLoUQmiUH7qp+s0jn9xATPPgDNd/l8XQiDozi/5DwPeau27V/jr5X0HmtulAnlylxSEA5U9cl3pp/k5uCE=
+	t=1710264523; cv=none; b=piGPvrKXRwK9tkniZI/Ac6qF6dqrrw8CP0PSawI7RYoi7jIyC8SNe/mu2MHFudGsMi2AUQCImFFgqixDd4m3/F2XnN8J8fraUIBTvToxjpJKgRx18u5bMJj5Hfs3DeKeU7Q+sm/uBkQS+m2LEcbHQWcJMRBhCA0yALJKuK/jUss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710230918; c=relaxed/simple;
-	bh=LPn37D0zA4HDuoko8dzIeyqSJ4L8OsaTlUTSJHhe8Z4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NGdYveID5LIX/pvQvvH6Ywjah0srr8LwXoH+WXAM0YDpbv5CeP7/uGTb4wOj01vcT3gUiBEcBaGwzBMqMG6Sj/4XT5nGHvVHxIJ55b0J4rICHkjtZj1DnapcaTWtxoN4+IOPaG4hc0FUw77fjDRQlIkw4EcWLbFs9zj3t9Vih3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OyzqH7Hv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1710264523; c=relaxed/simple;
+	bh=ENWZVIXjn4OnYxJnwCZ78rDryYycT8EGi01bNOWUlCA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dSrTS69drd/PwZx1qy3mrueCWU3qd0gfqwuLrq0WoeAbYq0s2qNzO7UkRCjiOME2Sfom+jp58fescW9BmBYOTlPyHWw94Q2/0LqSUfT7WoB0F3JVg8tuTiqL8QzAiK3vua8bIJNdpM84dpn1Iimmqxm6uTkUr4ej0undKGJ8KOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJ+qMHki; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OyzqH7Hv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710230916;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O2/rmYdA4+aZzxntlZRJDjLbuScRrLz7GRFyLSa8T5I=;
-	b=OyzqH7HvqfCQCUXiC/90UawpboSZcG1l4wE/byklzccGRZJ41oR3xzZ4qo8KL4cCy6ld5G
-	VtBMRr3dhiPbFFiTIVi24tUaQGLTZj4Ix8MDujkas+itu9yB11Jq1A8g04Mr4CPn2R4cBd
-	67BCh2iEgAaBPKPg1vG+Nzn4KAyq+8Q=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-RW-hBORwP8qTeQ3vlaOOKA-1; Tue, 12 Mar 2024 04:08:34 -0400
-X-MC-Unique: RW-hBORwP8qTeQ3vlaOOKA-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33e9203e775so1237160f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Mar 2024 01:08:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710230913; x=1710835713;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJ+qMHki"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-78852e1e923so154451085a.3;
+        Tue, 12 Mar 2024 10:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710264520; x=1710869320; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O2/rmYdA4+aZzxntlZRJDjLbuScRrLz7GRFyLSa8T5I=;
-        b=r5hsDMbmo6PgI07E8p0QQLieXL4cRISspp+JmT8nGLTTXdRRPVBw8VcMUlY+eCDGT7
-         6otr7cSiBGk3jYxPzQvxb01T1AQMUTcYmPB1DmmdalTEIAxUaszTsq/j6EByxzTs9GWF
-         Ajo0618MyfWm8/2HYQZJ5kRcSfyomGL8iBBsaHp0iUa0emqI39R2dOLpxcvNuO7L7c+O
-         dITcryqs7vRhp/gnESfMStoBY6TM5PlyI22LhC3sgyu8PX2yI/ClWXfNVo1SEDbpH4Xz
-         1uykgR1qrbgNx3TcEiEcc01SQCadhlAGLhOpmqmuL0wjxXd2MfjgLiB9ovmc/xQWBaVB
-         yNsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTECLgoilSpwDZpHxkVXwCQrTrTW8ibcGxegRgb3wNGMuJGcbAC8hutK3nHgTNoOP2kqnhiv2qmMnf6c9SccKZ9ZT5/OjE79AcxuOfGnc=
-X-Gm-Message-State: AOJu0Yzd6lYy7ffG/TCCT4wqoppT0uwthjyqr2TxwK9u4kBN3wbFHoog
-	jrB9ZU+fFtFV4SEBtxCmHDw46JYYqtqn0+xhVZGvqcWvmArAC8QZjjtSzO5p5N9BOB3HzAcYIUa
-	Iw7IfkzJpkSCuZGNIdOT0dcvI5x7jPK48ZuyFxBRlF0DQRPUjw4aT8F0yrAFtflqg
-X-Received: by 2002:a5d:5012:0:b0:33e:1560:71a8 with SMTP id e18-20020a5d5012000000b0033e156071a8mr6008820wrt.7.1710230913656;
-        Tue, 12 Mar 2024 01:08:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbIvRLSVeeC7KBq7sBGihqLHQXW7BdA0Q6OrHys5PEY/vV9zGL2DS8+VeL3K+WRBa2nrn5HQ==
-X-Received: by 2002:a5d:5012:0:b0:33e:1560:71a8 with SMTP id e18-20020a5d5012000000b0033e156071a8mr6008804wrt.7.1710230913293;
-        Tue, 12 Mar 2024 01:08:33 -0700 (PDT)
-Received: from [10.32.64.131] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id h11-20020a5d548b000000b0033e3a24f17esm8426405wrv.76.2024.03.12.01.08.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Mar 2024 01:08:32 -0700 (PDT)
-Message-ID: <d0159c8c-f5d8-4731-a820-012702841bfc@redhat.com>
-Date: Tue, 12 Mar 2024 09:08:31 +0100
+        bh=lPzQSsfcXkQnGQoKE12c3XjHugzMxmObuJNN2m4hWcY=;
+        b=ZJ+qMHki5v9Aj4NVpYlThPStf382I5nV5T9F4xc0i6kjaHVsQlh1Fg5WlHNzo4d8sA
+         Gp9ohFAeSqnj4/RYpBUk/7O+s3It3WUDBC9qE06FO93PQNHcqH+QMGnpKeiWjS0L66gw
+         oR7+Dlncb+wLhp9GFE/86EXjF+KcvrzIdDaAxrG4QU1UfyTsIOmsBiyjN5QviPvxNH8Z
+         Y24T67oFExg3TMkAQXGgqpX52FmI92Cg3cZxEgC4X4YZLcGedHOKKdxskMQKk/xL3k5Y
+         TtkomOcDqlJhNrPqWUm5+bxvQdjPGfGU+iiFf8p+JFIbMeHzBCPMEHeQkXxdBdnwXLep
+         9peQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710264520; x=1710869320;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lPzQSsfcXkQnGQoKE12c3XjHugzMxmObuJNN2m4hWcY=;
+        b=EB8tQhRVU+EMjJ6971Ik+FGXOLbTGQs5Oy1POFuSpA4b4/CRXeBhPC+Iqay3aU/ToQ
+         xbwQClVz0aqaJRCed5hYcG8IiqsQSpLRyW9s1PMUEZUxodwLwCEahA0jiqXGtO/f/eBG
+         +lxhiKFqGbYhUSYFUuD0+MkApIPKQpQvODG6i1F+1trJM/O/AxfbCCyJ6SFiZ3/Jofrj
+         NSBwrJDSLxoIKEcwoEO1sAa9AU73CUobe2gk72pjjY1Gk5NjISnV6ujTo/jeS8MUy76y
+         bBuQTFgcxLU+N1kZVTbh5gSDL1aFxoUxvQ0IbMbHzS1Jz6ius71T906mxY+15BE1CYUg
+         fyOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxiRCHAgHpUhqhnDfmGJE52/dc8PitchUJyVC9jGMFkFdy/ZURVfw5CZ8dw6gF5Ut8tExyIIFBCDLiRsRuNCML8oYt3X66XLZLOqVS79Nz1Vzz0gLnhVJenqFmcSOZZ3PgifaloPEveLzGKgU=
+X-Gm-Message-State: AOJu0YzP/i78EG/sM64l/yvReNbwBzYEWEEfPDzYknRtw725/LN/32Yd
+	lqVpTmvfEa/9gUCtlUjeS994MptYbIVOgVYwyBZBwcuY3KV2o/k3
+X-Google-Smtp-Source: AGHT+IG/a5EzG+Tv1QMXnMO72Wa4DdyPwE/Z4HBKV58KE81lyoiMZeza9vZ/1wOuZlXTUlg3KmykTA==
+X-Received: by 2002:a05:620a:4691:b0:789:c68d:82d3 with SMTP id bq17-20020a05620a469100b00789c68d82d3mr233108qkb.33.1710264520538;
+        Tue, 12 Mar 2024 10:28:40 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id a19-20020a05620a125300b0078837b90db7sm3884187qkl.32.2024.03.12.10.28.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Mar 2024 10:28:39 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 4E2321200043;
+	Tue, 12 Mar 2024 13:28:39 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Tue, 12 Mar 2024 13:28:39 -0400
+X-ME-Sender: <xms:x5DwZetE3kHEYW6zledBWF3vRFrB5iHdr4ox6ed8Xyw0xQQP-iQ6Qw>
+    <xme:x5DwZTeWKFjvvlnO4PQ9yCXoAslLB1F7hFlz7ZK-3vui5wavuDloa1SJMmFd3MSNX
+    CxUVmEnrjIv3w7p_Q>
+X-ME-Received: <xmr:x5DwZZy3USTmVK_bsHX6T6ZVVDg0wAtCR-_gssj9dFXZnTJG7wv_MGLhQxz3Cg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjeefgddutdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpefhkeduhfefffdvhffhvdethfevfffhfedtfedvheejgeekfedtgefgveff
+    hfevkeenucffohhmrghinhepphhtrhdrrghsnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
+    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
+    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:x5DwZZPBdLJTbm-Sz9nDmjUi9DIlUgxw3nvxnevQMzLgawkJ-BCbIA>
+    <xmx:x5DwZe9BaAtNWMQCDis4Ul18tje-YoDorYzGbg34Vo72lPR2IzIc7g>
+    <xmx:x5DwZRVp2xEvNSYS4hnvwr5s90Z4iLuTEnKMBT0s7i7LlHZ3QDyk8Q>
+    <xmx:x5DwZXctzkKvAx_wXDslWOcUN0f2vytx1BpMzIOraITIj8evRSelEA>
+    <xmx:x5DwZRXroftjil0D3pUSyB3BYc3Perud06XHSdGx488jl5AAirZ6NJI5TZs>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Mar 2024 13:28:38 -0400 (EDT)
+Date: Tue, 12 Mar 2024 10:28:26 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] rust: sync: add `Arc::into_unique_or_drop`
+Message-ID: <ZfCQuh-JrplKtbco@boqun-archlinux>
+References: <20240311-arc-for-list-v3-0-cba1883c62eb@google.com>
+ <20240311-arc-for-list-v3-2-cba1883c62eb@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] rust: str: add {make,to}_{upper,lower}case() to
- CString
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240223163726.12397-1-dakr@redhat.com>
- <6ba16a74-6fa4-4051-8cc6-f0e53a68d8b4@redhat.com>
- <Ze73aPMEg-BUCE8W@hs01.dakr.org>
- <CANiq72kK5CF0RQathACD_=7K1Ye4eMVdUnRcvkDZx4ALtq46wg@mail.gmail.com>
-From: Danilo Krummrich <dakr@redhat.com>
-Organization: RedHat
-In-Reply-To: <CANiq72kK5CF0RQathACD_=7K1Ye4eMVdUnRcvkDZx4ALtq46wg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311-arc-for-list-v3-2-cba1883c62eb@google.com>
 
-On 3/11/24 14:10, Miguel Ojeda wrote:
-> On Mon, Mar 11, 2024 at 1:22 PM Danilo Krummrich <dakr@redhat.com> wrote:
->>
->> It doesn't seem there's any further feedback, thus can this be merged?
+On Mon, Mar 11, 2024 at 04:08:19PM +0000, Alice Ryhl wrote:
+> Decrement the refcount of an `Arc`, but handle the case where it hits
+> zero by taking ownership of the now-unique `Arc`, instead of destroying
+> and deallocating it.
 > 
-> No, it cannot be applied until the merge window closes, i.e. 2 weeks from now.
+> This is a dependency of the linked list that Rust Binder uses. The
+> linked list uses this method as part of its `ListArc` abstraction.
 > 
-> Please note that there are other patches yet to be applied that were
-> sent before this v5 -- we aim to send early PRs to Linus, and in
-> general for at least a week in -next and for at least a week for
-> review. Thus -rc5/6 is already quite late in general.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/sync/arc.rs | 30 ++++++++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+> 
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 53addb8876c2..ef8b520f65a8 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -290,6 +290,36 @@ pub fn as_arc_borrow(&self) -> ArcBorrow<'_, T> {
+>      pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+>          core::ptr::eq(this.ptr.as_ptr(), other.ptr.as_ptr())
+>      }
+> +
+> +    /// Converts this [`Arc`] into a [`UniqueArc`], or destroys it if it is not unique.
+> +    ///
+> +    /// When this destroys the `Arc`, it does so while properly avoiding races. This means that
+> +    /// this method will never call the destructor of the value.
+> +    pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
+> +        // We will manually manage the refcount in this method, so we disable the destructor.
+> +        let me = ManuallyDrop::new(self);
+> +        // SAFETY: We own a refcount, so the pointer is still valid.
+> +        let refcount = unsafe { me.ptr.as_ref() }.refcount.get();
+> +
+> +        // If the refcount reaches a non-zero value, then we have destroyed this `Arc` and will
+> +        // return without further touching the `Arc`. If the refcount reaches zero, then there are
+> +        // no other arcs, and we can create a `UniqueArc`.
+> +        //
+> +        // SAFETY: We own a refcount, so the pointer is not dangling.
+> +        let is_zero = unsafe { bindings::refcount_dec_and_test(refcount) };
+> +        if is_zero {
+> +            // SAFETY: We have exclusive access to the arc, so we can perform unsynchronized
+> +            // accesses to the refcount.
+> +            unsafe { core::ptr::write(refcount, bindings::REFCOUNT_INIT(1)) };
+> +
+> +            // INVARIANT: We own the only refcount to this arc, so we may create a `UniqueArc`. We
+> +            // must pin the `UniqueArc` because the values was previously in an `Arc`, and they pin
+> +            // their values.
+> +            Some(Pin::from(UniqueArc { inner: ManuallyDrop::into_inner(me) }))
+> +        } else {
+> +            None
+> +        }
+> +    }
+>  }
+>  
+>  impl<T: 'static> ForeignOwnable for Arc<T> {
+> 
 
-Thanks for sharing, that sounds all good. Just wanted to know if the
-patch was queued up.
+The code looks good, and FWIW, I added the Examples section for the
+function since I at least need something to run when queuing it to
+rust-dev branch ;-) And I think it's overall good to have examples for
+every `pub` function. If there is a next version (which is unlikely),
+feel free to fold it. I can also send it alone once Miguel put your
+patches into the rust-next branch.
 
-- Danilo
+Regards,
+Boqun
 
-> 
-> Cheers,
-> Miguel
-> 
+--------------------------------------------------->8
+From 7d26d1177a2788ba96c607fd9dc45baf469fb439 Mon Sep 17 00:00:00 2001
+From: Boqun Feng <boqun.feng@gmail.com>
+Date: Tue, 12 Mar 2024 10:03:39 -0700
+Subject: [PATCH] kernel: sync: Add "Examples" section for
+ Arc::into_unique_or_drop()
+
+These examples provide better documentation and can serve as unit tests
+as well, so add them.
+
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+---
+ rust/kernel/sync/arc.rs | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index fda737f5b1e9..7cf066cfb321 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -295,6 +295,36 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+     ///
+     /// When this destroys the `Arc`, it does so while properly avoiding races. This means that
+     /// this method will never call the destructor of the value.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::sync::{Arc, UniqueArc};
++    ///
++    /// let arc = Arc::try_new(42)?;
++    /// let unique_arc = arc.into_unique_or_drop();
++    ///
++    /// // The above conversion should succeed since refcount of `arc` is 1.
++    /// assert!(unique_arc.is_some());
++    ///
++    /// assert_eq!(*(unique_arc.unwrap()), 42);
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
++    ///
++    /// ```
++    /// use kernel::sync::{Arc, UniqueArc};
++    ///
++    /// let arc = Arc::try_new(42)?;
++    /// let another = arc.clone();
++    ///
++    /// let unique_arc = arc.into_unique_or_drop();
++    ///
++    /// // The above conversion should fail since refcount of `arc` is >1.
++    /// assert!(unique_arc.is_none());
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
+     pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
+         // We will manually manage the refcount in this method, so we disable the destructor.
+         let me = ManuallyDrop::new(self);
+-- 
+2.44.0
 
