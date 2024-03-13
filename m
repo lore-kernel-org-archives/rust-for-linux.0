@@ -1,97 +1,95 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390241A38E7;
-	Wed, 13 Mar 2024 17:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3741C61675;
+	Wed, 13 Mar 2024 17:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710349719; cv=none; b=FWtVfDNMw1fZdweU0GI/UqvDA8ZPkfMiSP/RKuVOBcp5Kl3IZ+bDqWh0dgLQ+xm+B0siBmNWgzlceUPFGgqQAPYWFoMJnygsOelsU2NTsnKO3AXYMFowqZqB39yhfe78CB5DSsuJ/KPK15JroheA0G1dSbBE0fzCLGLn+ipwPOw=
+	t=1710349971; cv=none; b=X5gHK8ltQ407C0ZofXkBu7zI6LMHscdOKT6QrscL4m91ypL1Cxm2/FBK+DuS0HNmNn9phS8aQwpTS9CTfGl+nQPAIESpVwN5bGth+O+6YvqayQwncMDI909aQsFL1BxNh+2MLfQ5SB+YtJq/s7cgpgczdh6il0dabdPTFO47nAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710349719; c=relaxed/simple;
-	bh=iR4rrgnspB8K7zSxyqEsmpQYGzBigUTvAURU0uKdVWI=;
+	s=arc-20240116; t=1710349971; c=relaxed/simple;
+	bh=CGtEhdwmrm5/UaNMYSgG9Qpd3QrEM1t+g+OOYfaXvrs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QuONDHSWrCROa0ZNdl+TY2NBcdqryiZKd8MZ0f1yFoFLJynxHlfEEBU+EI3TkC7NNrWq7ResTZyn9XyEBGTA+YqCy3dVvgpknIg+V+HWM5bsWbraZJn3jcvcfAFTX626a58YxX4AHk9ZTfz43szUWyh3I0SlB+K4blibgvfE7gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPOI76tY; arc=none smtp.client-ip=209.85.219.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z9GfHK8GXRgEcC8NF0SwPgI1o92q3y3L+1w2/xqTmJFj+5+4FglMeZQ7L4niWDPzs1gAjGhQM2xUAt9S5MJkZrsAjWYlObbp0Tfm52LBlXYcA3ZYPJ2qtoVTWI/lGc9+7CIJ0t1PT+AQnBtbDiU2JdUP558znDXOpOOQD+6mKnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbtyHUv8; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPOI76tY"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-690be84583fso748546d6.1;
-        Wed, 13 Mar 2024 10:08:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbtyHUv8"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-690b24973beso9275786d6.0;
+        Wed, 13 Mar 2024 10:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710349717; x=1710954517; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710349969; x=1710954769; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3rw4WYHE6w3+yrD7ysvFm8I/0T+XNiawVhUxQiwrSS4=;
-        b=NPOI76tYgZG60zAPjELJvJa1gv/z8k0F1lze9fTIi2frsaQPZPnU9MJrcaioSgigwv
-         YXvPpF2ohPMI/2A6VcPLOhYopJxu/EoiBNHn8AWpR2XFnK/6PSgEoNrGohAUrjxmyO+R
-         pwEN3aHbQPg8z2ZldxKlPAArFCnv9d8cFS1E9xgRWNm4UTYGszOEOJVdVtnTTeP2+nYM
-         76E8Yuq8lRpsAb9cKkCtbLb9JtirTyaJRy8NNrYB1J3au97Jvv/sC8Zci9a7/K5bf6Cp
-         Xcf541jlglEL8MphAXHIjeTHvjvwzEERm/0W3Lv7Rmxn1Q3INQyPWbbg6N5lpB6RCgpK
-         0enA==
+        bh=XpBNctat7CfTRjsNkuYxZn5BwpmaKOl12v6NjpLVXV8=;
+        b=nbtyHUv8TnlFMLgrLtte3OsZlPTV3TYxHGeHT/wVEpvCVcC3WyoVoPzHtmahZn55BO
+         e1ZTbAioyRqfWTD5Ktc9Up/fsSnVBEHACIn8VDrPdjfKcZAl26Gw0cgAnzXeFfvN9dNR
+         tCvkE2k+Bn11w6dOezSoLV3ftXRwleTSi+O0ynnz51vr5V47e72KcQ8SjWmqdpn15iEz
+         ynye5Pj4OHVQWa3mhuHbG/lO3V5xCQfoA8zDANPeJx969tIXBwRWN4C+unEfbhvRqeFy
+         4VjzZc95BEtnsyTOG4SrdVi0PHmMjWd0Je6MSLFDOS1LDsZDi93BmiapxCxaibf3VBOD
+         awHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710349717; x=1710954517;
+        d=1e100.net; s=20230601; t=1710349969; x=1710954769;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3rw4WYHE6w3+yrD7ysvFm8I/0T+XNiawVhUxQiwrSS4=;
-        b=xUMXsPy9KILY5nap7TJsbhIGsVQU77MlfPD8svIi9dcHIYhPyUEiCOjXvOcK6vfB55
-         CUcGba+nclk1Tx/vS+PYPfxCoWW0o0y/iCBYcen1xghQylp0mZ+vy0oc27V0A9ISo4i+
-         vhkYX8RSSMbg7gPhLTFjHQzwDcjnAn8A2ZltuL51H06LFuXRZEHttLEaZBPi3i7mYMp4
-         m50lFYjVwXk2ePVh0b+zouwTpBlddkyQm3i//8N4DFy6XILC3fXbJs3jTs3HnJ3sRqeT
-         L7VCAG+ZEAlY9T6SplDrYTsX4KXhZUji+3D8htmwRJCgRWxWLpRc15rOfsuv2XjFRTqb
-         nstQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVerC3t3uyOtUy2jdwHlR+GDW5YKCmX3fJk4RJ4avEUkdnNLsySKZuY+gCmUzb3Fc9Vg1DZEdPTkco8a3cg+GPHRRlA7le+uqvr15I1AS7fqHi7NfpcZT/oh6ZSb82RF3ttRGeiJQwATBahB3k=
-X-Gm-Message-State: AOJu0YzNMK3GanxHetHo5YzT8hqOlbRQ8ZkAAaNOpVS1pW8pdT/41anu
-	tkR7sqQA/7jidoa44D3rFDNXpwQt1bdh7AbE0CkyNOB1C769ziHQ29MK8HCJ
-X-Google-Smtp-Source: AGHT+IF4pVSjBWYic+Loe2Hisw20VYkQDVCxBhnYqTIhpB0QqVTlxLDx2mqXTkW8QQNVFzTLFRspHg==
-X-Received: by 2002:a05:6214:5587:b0:691:193a:370c with SMTP id mi7-20020a056214558700b00691193a370cmr494070qvb.23.1710349717005;
-        Wed, 13 Mar 2024 10:08:37 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id dd8-20020ad45808000000b00690db447fb7sm2576495qvb.69.2024.03.13.10.08.36
+        bh=XpBNctat7CfTRjsNkuYxZn5BwpmaKOl12v6NjpLVXV8=;
+        b=dm3WmFNKOmREnLwvy8mjTg8LnCh8sanN0aRucxBMlN8ABCkGU4YiuHw2krZewfIGzt
+         7Ny+3myv1D3BcQI2bzZ9ZqYMpnaigsYh+QAs4GNJ458hXl1Y6yOt1Z/MUA9G6LY3El1r
+         iWyMsqRnV695D8lu4pNwv5EDLueSRb6SbKUb7FIzADHezjnvLl7d6iSGmCjWGtPt+nYH
+         T9eMlVe3Pp4LTcsHAfy3PXMMLUgkt+vH2DM+MkHZEnAr6/Tb1UaeaN30tWWVV8687EY7
+         /iR740zFd6PpAZtFAFM5kYx4fuld0u7W6nJLmZx2nzFH1QAhfm85RPccVPXodzSVKbCc
+         2qHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3SPwCihT54BsxAHYosCc8ZYbs14WI+GxZZ+Ms2Fnx17NyNSk8nfTRH53e0Md18b2aaiF28ujI2S3nzOEyDo+sga9+obUqlfRhs9x1A710q+bQwRBkoBILnr3zz5QOaAeDtzAyTNXx7Mudb28=
+X-Gm-Message-State: AOJu0YyEDFZGE5pqfiuAc9TKG0sRZ6UismHWB52vlVlJJLypvzNtTUcr
+	2gDghiJqD7mEeZUtFmAxx1A4PbpIvqK8N2vhkLtCSkNFTzccJpBX
+X-Google-Smtp-Source: AGHT+IEKYoX53WR1XBO/FpN7W909KsrVm9qTaiMAgbvqLtMsJn2thhDcEE1Qvu13gSqv1a4SMQLHuw==
+X-Received: by 2002:a0c:9a08:0:b0:690:b85a:7030 with SMTP id p8-20020a0c9a08000000b00690b85a7030mr775770qvd.1.1710349969112;
+        Wed, 13 Mar 2024 10:12:49 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id o8-20020a056214180800b0068ff79d8d97sm4924415qvw.41.2024.03.13.10.12.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 10:08:36 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 1705727C005B;
-	Wed, 13 Mar 2024 13:08:36 -0400 (EDT)
+        Wed, 13 Mar 2024 10:12:48 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 415971200068;
+	Wed, 13 Mar 2024 13:12:48 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 13 Mar 2024 13:08:36 -0400
-X-ME-Sender: <xms:k93xZRY9S3GK5dTXaxQYZUPh8wxDkv76maV4rJ2kcJ5T3EO75THOeA>
-    <xme:k93xZYbiKIK8GQBxYUad5vXvi922UUoekPvFTPJSm1BAMkUETbnzVVLR1qmZEDBVs
-    oxgJhGsiHGrg5Qmcg>
-X-ME-Received: <xmr:k93xZT8v1SXKliDKM3Zf_nGuL1D2HivFDQjwMGR8ZDGKD1UcrUUzhoUSrHNGvQ>
+  by compute4.internal (MEProxy); Wed, 13 Mar 2024 13:12:48 -0400
+X-ME-Sender: <xms:j97xZcP4ekLZyuLFSffkH5mn6zOy-lMw5vkeftLqxOI8bBoiFs1Jqg>
+    <xme:j97xZS85lX99rgqK2mI5hUzIGDfrTWD5pLI2NGL9iF40dEhcGKjzarbc28owB5mHl
+    nPWJei8HViDiYUiJA>
+X-ME-Received: <xmr:j97xZTTrndTlfp5rMW8GGxwoC3VE4s-IRWk8b3ViUIPlK_Gil49yZFPf82wybQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjeehgdeliecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
     ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddv
-    hedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhp
-    vghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrd
-    hfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:k93xZfojLxmcv4CTd7hbjL7aVh43Gnr94AOzdyF6J84cARplM9i-DA>
-    <xmx:k93xZcqxIEZJ97XJijOa0aP3bSy14hLDdTw6h1shUw7ihCXPCQ_fNg>
-    <xmx:k93xZVTLxc4wU4u8euEyENt_bGb-MFQNVgAKoqUK1KSBV1x7Go91dQ>
-    <xmx:k93xZUqc8noXxs1bkLk0q21iyk9gWN-BRRrzF8n4mfu3rB6NTkpNaA>
-    <xmx:lN3xZRRbdexzCa1dc_ShLmNzXkQR-8Lqg4ad51yf7MuQAZscl0TOLA>
+    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
+    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:j97xZUtJYZkQ-GFuo4LzmKvZ5CpZtYydPBKGHU_m_EV8URBbpMoWZQ>
+    <xmx:j97xZUdbrY1ldRBl5U6CR59aX4pAzrIc_6BJw-oO9URuT2kmHVsoJw>
+    <xmx:j97xZY1DLEuSDMDPWysVxZbSN1ODcDbqG20LYQLSpaUm9iadWOLtdQ>
+    <xmx:j97xZY8CI8UxkqllJygc347AvjXvjW6wLvRy-dQAgZyU8qZwufeGbw>
+    <xmx:kN7xZY1TPimN4QStyILpFjF9cFtMM5mfeRTyWlwPYDwOg7DonwaiqTsrnZs>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 13 Mar 2024 13:08:35 -0400 (EDT)
-Date: Wed, 13 Mar 2024 10:08:32 -0700
+ 13 Mar 2024 13:12:47 -0400 (EDT)
+Date: Wed, 13 Mar 2024 10:12:44 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] Arc methods for linked list
-Message-ID: <ZfHdkNBzhn0hc7z7@boqun-archlinux>
-References: <20240311-arc-for-list-v3-0-cba1883c62eb@google.com>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com, gary@garyguo.net,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH v3 2/2] rust: sync: add `Arc::into_unique_or_drop`
+Message-ID: <ZfHejEkGKPPHPx05@boqun-archlinux>
+References: <ZfCQuh-JrplKtbco@boqun-archlinux>
+ <20240313095059.844387-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -100,70 +98,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240311-arc-for-list-v3-0-cba1883c62eb@google.com>
+In-Reply-To: <20240313095059.844387-1-aliceryhl@google.com>
 
-On Mon, Mar 11, 2024 at 04:08:17PM +0000, Alice Ryhl wrote:
-> This patchset contains two useful methods for the Arc type. They will be
-> used in my Rust linked list implementation, which Rust Binder uses. See
-> the Rust Binder RFC [1] for more information. Both these commits and
-> the linked list that uses them are present in the branch referenced by
-> the RFC.
+On Wed, Mar 13, 2024 at 09:50:59AM +0000, Alice Ryhl wrote:
+> Boqun Feng <boqun.feng@gmail.com> writes:
+> > The code looks good, and FWIW, I added the Examples section for the
+> > function since I at least need something to run when queuing it to
+> > rust-dev branch ;-) And I think it's overall good to have examples for
+> > every `pub` function. If there is a next version (which is unlikely),
+> > feel free to fold it. I can also send it alone once Miguel put your
+> > patches into the rust-next branch.
 > 
-> I will send the linked list to the mailing list soon.
+> Thanks! If you have reviewed it, could I have your Reviewed-by tag?
 > 
 
-For the whole series:
+Done.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> > From 7d26d1177a2788ba96c607fd9dc45baf469fb439 Mon Sep 17 00:00:00 2001
+> > From: Boqun Feng <boqun.feng@gmail.com>
+> > Date: Tue, 12 Mar 2024 10:03:39 -0700
+> > Subject: [PATCH] kernel: sync: Add "Examples" section for
+> >  Arc::into_unique_or_drop()
+> > 
+> > These examples provide better documentation and can serve as unit tests
+> > as well, so add them.
+> > 
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> 
 
-Note there's a nit for rustfmt fix of patch #2 (which is reported by
-Miguel):
-
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 7cf066cfb321..c9773d0050c2 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -345,7 +345,9 @@ pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
-             // INVARIANT: We own the only refcount to this arc, so we may create a `UniqueArc`. We
-             // must pin the `UniqueArc` because the values was previously in an `Arc`, and they pin
-             // their values.
--            Some(Pin::from(UniqueArc { inner: ManuallyDrop::into_inner(me) }))
-+            Some(Pin::from(UniqueArc {
-+                inner: ManuallyDrop::into_inner(me),
-+            }))
-         } else {
-             None
-         }
+Thanks! I will add it.
 
 Regards,
 Boqun
 
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Changes in v3:
-> - No changes to `ArcBorrow::from_raw`, or than adding a Reviewed-by.
-> - Update SAFETY comment on `refcount_dec_and_test` call.
-> - Simplify the creation of the `UniqueArc` in `into_unique_or_drop`.
-> - Link to v2: https://lore.kernel.org/r/20240228-arc-for-list-v2-0-ae93201426b4@google.com
-> 
-> Changes in v2:
-> - Move raw_to_inner_ptr to ArcInner and rename to container_of.
-> - Reword safety conditions for raw_to_inner_ptr to match its users.
-> - Link to v1: https://lore.kernel.org/r/20240219-arc-for-list-v1-0-d98cd92c760b@google.com
-> 
-> ---
-> Alice Ryhl (2):
->       rust: sync: add `ArcBorrow::from_raw`
->       rust: sync: add `Arc::into_unique_or_drop`
-> 
->  rust/kernel/sync/arc.rs | 106 ++++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 88 insertions(+), 18 deletions(-)
-> ---
-> base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
-> change-id: 20240209-arc-for-list-a2c126c2ad5c
-> 
-> Best regards,
-> -- 
-> Alice Ryhl <aliceryhl@google.com>
-> 
+> Alice
