@@ -1,97 +1,101 @@
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183315F54C
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 19:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EFE604C5;
+	Wed, 13 Mar 2024 19:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710357013; cv=none; b=oSkmUwhas5sMgN+DXZ20SFkceyVy3J0IWsztHkjkH+XtWkMIzENlCrawOFsxdBXBEu7V69elkBpKBtFEQBkkaKy8dXbYQ1JHT+HQL6FlIq//Soh3SKdMyt/5JqT8CM4l58JZkOv+t3DqlNGpn3dgys8PQExfjATWHLHgqqeEnYs=
+	t=1710357130; cv=none; b=rGOhxDibwM3HSs3gpvuR6m/rLgOv/yeJagRUV/iFNhMLD1mvjGGPp+L7msqVf8wr4kwFsjicDoj7Fi032tYIKJbO3VSL5j4SH1/CWYgr2YIKCdDUCzM0wkI3oaFHcXuMJp+YO4KPGymyLL0hGcS5nNae1AOYOrKh/U+idfHtcno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710357013; c=relaxed/simple;
-	bh=/e3ATDPA/qgTUOtidYV6rPYvJSOmSFfRGP3WmLW3+Dw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rxm/l+qmesuLCNXMrlez+H7AUyO1rG1YfjjLH2IengI0jTVUWA7u6DbQZ7t/zicPRZEvTZjNS3ueMAaYgOcjUapVX8zkighs9PBLFs1UsRK0FRY5DinTnGYXb7cT06IhSiEgMcY6TRegolDl5Zk+1Rw7ekxI75DpTn8tuZLIyoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=LYsMbAFD; arc=none smtp.client-ip=209.85.219.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1710357130; c=relaxed/simple;
+	bh=i1sWYvJRR67mPoxsHtNcMGdTsNgujrMd6hvVpbLYz74=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sff3nckbcLZ7YbWoOY7bNEYwYIjUFVUAIoxy/Jg8kXUDDpDNRChEO2Smno5cvxnmMdB0lwfv2h/AEmvhoHTqi6VYre7aaNepQjBuMp307z/pHJfgt7V07JfzoygnR8ATv5m8iUHraujz9Sy79IYDHwqhyiiNeSP3gnOUR0EA1nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=R15hv2mC; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="LYsMbAFD"
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dc6d9a8815fso89067276.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 12:10:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1710357009; x=1710961809; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/e3ATDPA/qgTUOtidYV6rPYvJSOmSFfRGP3WmLW3+Dw=;
-        b=LYsMbAFDYCXD3MckZOTcH77u6prmiAFYWj5M/UWnnbUCJPyu1HFKN2EBw/wgo70z5X
-         lfoUvGTOq0rkqXm0RG0cx8tNzNYpZE0UqX06UN0NyYJ5u3BUxMtFvaAhhBJW59gyaVIn
-         cq7U8n2L3f87gYKch4sl0Qoe5sm6j3A/z+PxVaZ2OC2MLgUwRWCRkI3GS9uOcG+6aRdS
-         f9MLXL7Wr1ukbPIICewbagdxRHz7ZlFE8tAB5/5c7gAdkk2eVSAMz+LahFzvYLB3WSBX
-         cTwfAO+C5Im7qxOL0COA7QnDFGN7cbEOZ0ct65qn+h+GHuBz4aH05STW1cvgCChB/ZeU
-         spfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710357009; x=1710961809;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/e3ATDPA/qgTUOtidYV6rPYvJSOmSFfRGP3WmLW3+Dw=;
-        b=q4+DH9qmJelb+OWvVCv5G4F+b34gKLYFZMhTYzkNIXf07p0qAwJp4twGREkvb46IRN
-         XlqLMOu1tzgwjtInVhQ0jTg+qnP583wj6R3SulNnRKNqzkSh6NiJKSn1Zza8UK1d04md
-         lmNbHIMqFee3vM/6C4NNLMEWPo5O5zpRUBhZwgJtLqhGjqq9DqIsyMixa0X9ZGnQg7XL
-         TNLWdBm6QjiPU25gFzBzFVRZotCo1yXmm+m5GcXYbV3hDMTCf4evFUKSkGyFbY9A4Qnf
-         z0KRvjDdc/MfnXdlYKpMUyt05Zjpezzzkh84Q4xsMfYMCsnHQvMuDGPwDZU4EJgJ6KSQ
-         ibrg==
-X-Forwarded-Encrypted: i=1; AJvYcCWRv8ZIia9FY6pbmSvE0DFMVFGx1QieATtwA/wZJhFWnAcw/Bbi+rcapp326tH3KcoFhcUOwyKr5oKLm6iME2GTYyyLzQyQowQ7C79Macg=
-X-Gm-Message-State: AOJu0YyRmUcbrfqtjTsWa2PLgj+J3p3uwk/pheICHmhnOA6oFfLcS0aZ
-	aBf6Fuwm3g+1CLlIWewk28JM/T1yTZjC5rEoHAYsab2sL+ENNeG6g5M5/3L0qo63vI7lVcq/EvF
-	peToBIXguNUmKV9aFirLzB4ibeYbC6GeWXSR1aA==
-X-Google-Smtp-Source: AGHT+IHvOz3vvevhU2+NsarhVCjZjHX3GiH9Xw/oej3y1FW1AAmW1J//l0DcmlTRyaKEnQOT8zoUg7tohMa0pFI5kpg=
-X-Received: by 2002:a5b:88d:0:b0:dcc:56b6:6606 with SMTP id
- e13-20020a5b088d000000b00dcc56b66606mr3166914ybq.40.1710357009091; Wed, 13
- Mar 2024 12:10:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="R15hv2mC"
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4Tw0W63ZzRz6ClSr9;
+	Wed, 13 Mar 2024 19:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:references:content-language:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1710357113; x=1712949114; bh=35L+R0W2D8tp7YUdieD0FUY/
+	PiWMGSyPa2r6p64YId4=; b=R15hv2mCgKMSf2HTayPe5hejHC4E5N8a4yM4M9YX
+	IqB/0xusf+mTSKDES3Me+Qqt0pQr27rGGsQwTTn2j6ikk643vmT9p90RgDufN+Jv
+	wvkShwKwsLO6eHYn+6ZJVrZOGsdJS7zok9Sp8Hl7DrqL2WhwtmZa7pznVWcy+72q
+	/9u7F9ba0WuCL302Fo5wB7JHlq3dC+hgi6JEHdGj2GGqXVIHA19TIXccNuJBWB1E
+	zJ6M71FDuWoy+5cBD64C5kl56EZ7qBsIijZ+YvJZSXatHaCXbpWMpYG3iHlpQ4EZ
+	3Qf7YUZS0mB49aNU9Di3vqqcP0wyvuOGHui//WTUvXwifA==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id SCYItGCkl88g; Wed, 13 Mar 2024 19:11:53 +0000 (UTC)
+Received: from [100.96.154.173] (unknown [104.132.1.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4Tw0Vt6PD8z6ClTNc;
+	Wed, 13 Mar 2024 19:11:50 +0000 (UTC)
+Message-ID: <2212ce5f-940c-48aa-966d-2b4fa4a5ad8c@acm.org>
+Date: Wed, 13 Mar 2024 12:11:48 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240226-module-as-ptr-v1-1-83bc89213113@google.com>
-In-Reply-To: <20240226-module-as-ptr-v1-1-83bc89213113@google.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 13 Mar 2024 15:09:57 -0400
-Message-ID: <CALNs47tj0=k7UeoKp6Myfh8tiLnJwxm3cHa4Qj2cY7sihOo9sQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: add `Module::as_ptr`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] Rust block device driver API and null block
+ driver
+Content-Language: en-US
+To: Andreas Hindborg <nmi@metaspace.dk>, Boqun Feng <boqun.feng@gmail.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>,
+ Hannes Reinecke <hare@suse.de>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Chaitanya Kulkarni <chaitanyak@nvidia.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>,
+ =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
+ Joel Granados <j.granados@samsung.com>,
+ "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ Daniel Gomez <da.gomez@samsung.com>, open list
+ <linux-kernel@vger.kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+ "gost.dev@samsung.com" <gost.dev@samsung.com>
+References: <20240313110515.70088-1-nmi@metaspace.dk>
+ <855a006d-5afc-4f70-90a9-ec94c0414d4f@acm.org>
+ <ZfHu48NGktOx_uhG@boqun-archlinux> <87r0get0no.fsf@metaspace.dk>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <87r0get0no.fsf@metaspace.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 26, 2024 at 5:13=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This allows you to get a raw pointer to THIS_MODULE for use in unsafe
-> code. The Rust Binder RFC uses it when defining fops for the binderfs
-> component [1].
->
-> This doesn't really need to go in now - it could go in together with
-> Rust Binder like how it is sent in the Rust Binder RFC. However, the
-> upcoming 1.77.0 release of the Rust compiler introduces a new warning,
-> and applying this patch now will silence that warning. That allows us to
-> avoid adding the #[allow(dead_code)] annotation seen in [2].
->
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-08=
-ba9197f637@google.com/ [1]
-> Link: https://lore.kernel.org/all/20240217002717.57507-1-ojeda@kernel.org=
-/ [2]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+On 3/13/24 12:03, Andreas Hindborg wrote:
+> I think it is great that people are starting to realize that bringing
+> memory safety to other systems languages is a good idea.
 
-This exposes a `bindings` type to the user which we don't really do in
-many other places, but it makes sense here of course.
+Totally agree :-)
+
+> But from one person blogging about it to things being ready for
+> production is a long journey.
+In case you wouldn't be aware of this, Herb Sutter is not a random 
+blogger - he is the chair of the ISO C++ standards committee since 2002.
+
+Thanks,
+
+Bart.
+
