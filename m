@@ -1,57 +1,57 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725BE3F8FB
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 11:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A9541238
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 11:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710327969; cv=none; b=Zrajp2SAGn8jPpZO7gjR295Qfc6baKaiU8y7TQdp8IhIti80TjRCd2VnlUK3LjMVvaxjy7h9w+IKO0DPEDsEqLQE1+ygWiEUAvfItcQiPqiC4bsTrA+h3uCut0c2qBhV4b6uTeIxnOfy9lsl2RCIItKk4o/vSnXCA1UvzXVdFB0=
+	t=1710327972; cv=none; b=T6Bf8EKLkXjS4vHc0IhJMAGXrQxb5tdm/EEHZgGf8r1RY7rMxNW82xRlDtj5tAs7icvATYx8Kv8udGuc+JVa2jMmT9kHhZXThA0xhdJhI7DqaQfcEMNEW8ZW/CF3pLpDx1L8dryCySXfoUp621GD+EzOxTGsPtDICjrw8ryYhQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710327969; c=relaxed/simple;
-	bh=xjQCJb4J7tMhqbOJEMnpM+ZXei9HK+wmDq2+xus48ZQ=;
+	s=arc-20240116; t=1710327972; c=relaxed/simple;
+	bh=poKb8VxBrFQtoK1H4oQ1UgXa3OWgewJdw+oLXHq0Dns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lG0fef7x12iJbgdy9VKpow7Okr/jHMabiJ6gNFuK1JSMN2YUvJvJUIM0p78qfxHwbBhXtooJLU1Oq3VVEJTT6XfzEqUEsg8sB3ZrslxP7KafJzsh/VPOTTdX7MIveQfVUcGXAclhbwa+AMPHQRzHp4l3Egqu3Ytg7/LEhO4XFsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=0A3yRXY1; arc=none smtp.client-ip=209.85.208.44
+	 MIME-Version; b=OW6+QAVuU/3a/0yqcb2ZsY2K47Rl8FGbhSFkp/dpKSnNXG8iSH0WU+zK/Gb+Wdh8y4BtKv13LU+IbYtX/6Uvt92ZxQrA975Nvi2hsD7Jds4OXK/AyloTWilC808TkkDcIrLhQwJzxxQ5O3EEzyY92kHALrzwciVOGED5SGCBANE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=TPwjM3jM; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="0A3yRXY1"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5686677bda1so1379448a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 04:06:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="TPwjM3jM"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a44d084bfe1so620036266b.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 04:06:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710327966; x=1710932766; darn=vger.kernel.org;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710327968; x=1710932768; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2I4BjeZBW5065VSFTPBsKa9SI4Ksu3+QBW/uFzCaABA=;
-        b=0A3yRXY1VMqCKvJ6Oe6xCSlecM4puPbyCfKKksLY9sMVEx29KhWIVrKAHBzgA7zsgy
-         sJ9CnvWD6+jnICpW+lhZRknTGK+z9TYQd+OzBM05W3957eg7KPMahmVpV6KgIVz6itU/
-         D25YRI54VRKFS8FIr+GsQpDK2hg7M68gxJm1Or6CMtSsXDeoOLT63CI1FxfP0VUoMvrb
-         RF+rd3IlgH7WQ5Lr/4g0oJMxuht8CQgbLYulzBcBu/M/DvtlIjEPD5CfVAhZiWqlbyBI
-         U7nGzWnq6eDsCx7hLhfuDSMuE47P3ztPLZIauGOpBGDA9BtlY+YbIBkYT/YKr/Cy1CHB
-         Elaw==
+        bh=ZJhpLaBye+vDxABkGVxNk0R4/Je1BHTggYd+F9CS0JE=;
+        b=TPwjM3jMqw80NkaKsRfTJcf8kAhvMWN4NrwL/mKZKZBzeEAgNwWUAEH2UFzY1ZyFXZ
+         95PP6VA5FBk8NGCFWrMiLp16CF2UmGsZD1jK+R+JLTbxOfIR2Vwfe5F1dH3Dqo+HhMHn
+         DD1fvIA98FBH17Zqga8Axn7fuwA1xpTqo8pc2cBRDFDPbqTgw0Zyzl6PLQw/oma9M/pK
+         oR1guAO0pF+al7Z7EObuYOMOYhWuFljZuwULxSJEOKgCC+dLdD//C6Vt0PZnoFoOg4W9
+         1IcWM42+GtYqxJVpl+imHtn7MK/0ORqFThIS00vHmONRFldclB2xPughk+iFTdAxBwvF
+         xgvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710327966; x=1710932766;
+        d=1e100.net; s=20230601; t=1710327968; x=1710932768;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2I4BjeZBW5065VSFTPBsKa9SI4Ksu3+QBW/uFzCaABA=;
-        b=ipKp062B/VcDIwZpIQ5Uixc3/cx3hlhu64wkfK2ZsW5yDt7Wmlf4nYPZl+SULxuqEI
-         /OwPcRANfplnXc2fSCom+tvd12yBp4HP8YXdVQUDztvif66ITkA4usvSa5bie+8VHp7U
-         dCIBleyMwHyyRaa+xsXScraFTzmNhN2a+lq6/k3ZLeRkIl0TtJnCLnfW+qlus47NVv2P
-         Aj5yOpvUq+ru5oZ3X+W/ZmPiIWJSCiUm/mFWquyiXntv5ayRKPU9hcmMLZqX3MQjOrlz
-         miRFrA4hanQqSaHc58zdxmux8ECfZBk1wpgxbXf4Q9VpzaPZzrmTJ6aV5W8LHcYCA7sN
-         pIgA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3uS0eRj39H3amYKDwm6G4+eAnL3wu+P21+LFCMle6VzWDyr8Lfpx10IxnSWQ+1/OAJQJeNaJNlrhkN7frJTqzBwfI/bJRqKQSkytChB0=
-X-Gm-Message-State: AOJu0YwtBKHEsj1HT/mu4l7fvc8MGa7DQ/t30qg93Y+4JaDF3oFGVNhP
-	WaH5B9rFB695Dfg786ezlyN4/G8JLp1ifNACtUvrxBcKZGoqXBL/R1XtNJfpTpo=
-X-Google-Smtp-Source: AGHT+IGOchPTEwVc1NP+20OHE3woXNtq7ZGAK95XOq6o/e/XnJ5OU4vtDQ9GpW7fyFG0Xs6V3WYxGw==
-X-Received: by 2002:a17:906:54c2:b0:a44:52ec:b9e7 with SMTP id c2-20020a17090654c200b00a4452ecb9e7mr1771157ejp.16.1710327965737;
-        Wed, 13 Mar 2024 04:06:05 -0700 (PDT)
+        bh=ZJhpLaBye+vDxABkGVxNk0R4/Je1BHTggYd+F9CS0JE=;
+        b=oaF+TFaXsEcWVRGgg7k39PxZEJEqxW870Xk6yCM6uSp0GvcMphTa/OsHBByYrk7/Xn
+         ZmaKri1smM5rma6K/rzMbeyWKMJdaQ2W1QtD+Uvmb5VD0+j8dxRRl5ek25PkYRyrTV6y
+         TV+fzTTsiwi2bM+hD9EP1Cqfw7qlrNdnypmF3RNGOpN+Nf9VHLduQu5/Bst3lkvxZWHb
+         MlPRHDgd6t5OLcOKdPuyDtDKiad5xBLzftvcmw7igtC1TyCIeMOpSACi5hRbBiZdfsjA
+         zcBeD43AIVSW+xwHRlvMveAKPCiyPBnUm29GgMuhuo5EL9EffZDXQA4/Q6TUvS1clF0V
+         +RmA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgDk2shkeMbYakBPyetQEj12ORw70FJZIEUIyAQCPjgwPHDyI5S6nkle5ScMStMj7FyGhefo9KLXoZwLJZ90M4NF4dZ0a7boCOhfqDoMQ=
+X-Gm-Message-State: AOJu0YxoMw0Mgbm8PJnCKHXJYh+FcuYn7dhZSzCLdiZYc3vgojty31qA
+	ZxU5UOPs0n+LI0L/bhk2TSIZtF8tqeG+6Thu381hdjAxqeMXK24KZbwTbmjQWbg=
+X-Google-Smtp-Source: AGHT+IH2kW+8cJvn0ZC8fmOzX8cVltqW6h1KgZezqvXcb0+MfBFkrVtJmrcgIoAGxQxFO9AZ2LURKQ==
+X-Received: by 2002:a17:907:8a85:b0:a46:5dc4:dab9 with SMTP id sf5-20020a1709078a8500b00a465dc4dab9mr951325ejc.38.1710327968092;
+        Wed, 13 Mar 2024 04:06:08 -0700 (PDT)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id jw22-20020a170906e95600b00a4623030893sm3173785ejb.126.2024.03.13.04.06.05
+        by smtp.gmail.com with ESMTPSA id bf2-20020a170907098200b00a461e206c00sm3397412ejc.20.2024.03.13.04.06.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 04:06:05 -0700 (PDT)
+        Wed, 13 Mar 2024 04:06:06 -0700 (PDT)
 From: Andreas Hindborg <nmi@metaspace.dk>
 To: Jens Axboe <axboe@kernel.dk>,
 	Christoph Hellwig <hch@lst.de>,
@@ -83,9 +83,9 @@ Cc: Andreas Hindborg <a.hindborg@samsung.com>,
 	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
 	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
 	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: [RFC PATCH 4/5] rust: block: add rnull, Rust null_blk implementation
-Date: Wed, 13 Mar 2024 12:05:11 +0100
-Message-ID: <20240313110515.70088-5-nmi@metaspace.dk>
+Subject: [RFC PATCH 5/5] MAINTAINERS: add entry for Rust block device driver API
+Date: Wed, 13 Mar 2024 12:05:12 +0100
+Message-ID: <20240313110515.70088-6-nmi@metaspace.dk>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240313110515.70088-1-nmi@metaspace.dk>
 References: <20240313110515.70088-1-nmi@metaspace.dk>
@@ -101,397 +101,34 @@ From: Andreas Hindborg <a.hindborg@samsung.com>
 
 Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 ---
- drivers/block/Kconfig  |   4 +
- drivers/block/Makefile |   3 +
- drivers/block/rnull.rs | 323 +++++++++++++++++++++++++++++++++++++++++
- rust/helpers.c         |   1 +
- scripts/Makefile.build |   2 +-
- 5 files changed, 332 insertions(+), 1 deletion(-)
- create mode 100644 drivers/block/rnull.rs
+ MAINTAINERS | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
-index 5b9d4aaebb81..fb877d4f8ddf 100644
---- a/drivers/block/Kconfig
-+++ b/drivers/block/Kconfig
-@@ -354,6 +354,10 @@ config VIRTIO_BLK
- 	  This is the virtual block driver for virtio.  It can be used with
-           QEMU based VMMs (like KVM or Xen).  Say Y or M.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1aabf1c15bb3..031198967782 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3623,6 +3623,20 @@ F:	include/linux/blk*
+ F:	kernel/trace/blktrace.c
+ F:	lib/sbitmap.c
  
-+config BLK_DEV_RUST_NULL
-+	tristate "Rust null block driver"
-+	depends on RUST
++BLOCK LAYER DEVICE DRIVER API [RUST]
++M:	Andreas Hindborg <a.hindborg@samsung.com>
++R:	Boqun Feng <boqun.feng@gmail.com>
++L:	linux-block@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Supported
++W:	https://rust-for-linux.com
++B:	https://github.com/Rust-for-Linux/linux/issues
++C:	https://rust-for-linux.zulipchat.com/#narrow/stream/Block
++T:	git https://github.com/Rust-for-Linux/linux.git rust-block-next
++F:	drivers/block/rnull.rs
++F:	rust/kernel/block.rs
++F:	rust/kernel/block/
 +
- config BLK_DEV_RBD
- 	tristate "Rados block device (RBD)"
- 	depends on INET && BLOCK
-diff --git a/drivers/block/Makefile b/drivers/block/Makefile
-index 101612cba303..1105a2d4fdcb 100644
---- a/drivers/block/Makefile
-+++ b/drivers/block/Makefile
-@@ -9,6 +9,9 @@
- # needed for trace events
- ccflags-y				+= -I$(src)
- 
-+obj-$(CONFIG_BLK_DEV_RUST_NULL) += rnull_mod.o
-+rnull_mod-y := rnull.o
-+
- obj-$(CONFIG_MAC_FLOPPY)	+= swim3.o
- obj-$(CONFIG_BLK_DEV_SWIM)	+= swim_mod.o
- obj-$(CONFIG_BLK_DEV_FD)	+= floppy.o
-diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
-new file mode 100644
-index 000000000000..05fef30e910c
---- /dev/null
-+++ b/drivers/block/rnull.rs
-@@ -0,0 +1,323 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! This is a Rust implementation of the C null block driver.
-+//!
-+//! Supported features:
-+//!
-+//! - optional memory backing
-+//! - blk-mq interface
-+//! - direct completion
-+//! - softirq completion
-+//! - timer completion
-+//!
-+//! The driver is configured at module load time by parameters
-+//! `param_memory_backed`, `param_capacity_mib`, `param_irq_mode` and
-+//! `param_completion_time_nsec!.
-+
-+use core::ops::Deref;
-+
-+use kernel::{
-+    bindings,
-+    block::{
-+        bio::Segment,
-+        mq::{self, GenDisk, Operations, RequestDataRef, TagSet},
-+    },
-+    error::Result,
-+    folio::*,
-+    hrtimer::{RawTimer, TimerCallback},
-+    new_mutex, pr_info,
-+    prelude::*,
-+    sync::{Arc, Mutex},
-+    types::{ARef, ForeignOwnable},
-+    xarray::XArray,
-+};
-+
-+use kernel::new_spinlock;
-+use kernel::CacheAligned;
-+use kernel::sync::SpinLock;
-+
-+module! {
-+    type: NullBlkModule,
-+    name: "rnull_mod",
-+    author: "Andreas Hindborg",
-+    license: "GPL v2",
-+    params: {
-+        param_memory_backed: bool {
-+            default: true,
-+            permissions: 0,
-+            description: "Use memory backing",
-+        },
-+        // Problems with pin_init when `irq_mode`
-+        param_irq_mode: u8 {
-+            default: 0,
-+            permissions: 0,
-+            description: "IRQ Mode (0: None, 1: Soft, 2: Timer)",
-+        },
-+        param_capacity_mib: u64 {
-+            default: 4096,
-+            permissions: 0,
-+            description: "Device capacity in MiB",
-+        },
-+        param_completion_time_nsec: u64 {
-+            default: 1_000_000,
-+            permissions: 0,
-+            description: "Completion time in nano seconds for timer mode",
-+        },
-+        param_block_size: u16 {
-+            default: 4096,
-+            permissions: 0,
-+            description: "Block size in bytes",
-+        },
-+    },
-+}
-+
-+#[derive(Debug)]
-+enum IRQMode {
-+    None,
-+    Soft,
-+    Timer,
-+}
-+
-+impl TryFrom<u8> for IRQMode {
-+    type Error = kernel::error::Error;
-+
-+    fn try_from(value: u8) -> Result<Self> {
-+        match value {
-+            0 => Ok(Self::None),
-+            1 => Ok(Self::Soft),
-+            2 => Ok(Self::Timer),
-+            _ => Err(kernel::error::code::EINVAL),
-+        }
-+    }
-+}
-+
-+struct NullBlkModule {
-+    _disk: Pin<Box<Mutex<GenDisk<NullBlkDevice>>>>,
-+}
-+
-+fn add_disk(tagset: Arc<TagSet<NullBlkDevice>>) -> Result<GenDisk<NullBlkDevice>> {
-+    let block_size = *param_block_size.read();
-+    if block_size % 512 != 0 || !(512..=4096).contains(&block_size) {
-+        return Err(kernel::error::code::EINVAL);
-+    }
-+
-+    let irq_mode = (*param_irq_mode.read()).try_into()?;
-+
-+    let queue_data = Box::pin_init(pin_init!(
-+        QueueData {
-+            tree <- TreeContainer::new(),
-+            completion_time_nsec: *param_completion_time_nsec.read(),
-+            irq_mode,
-+            memory_backed: *param_memory_backed.read(),
-+            block_size,
-+        }
-+    ))?;
-+
-+    let block_size = queue_data.block_size;
-+
-+    let mut disk = GenDisk::try_new(tagset, queue_data)?;
-+    disk.set_name(format_args!("rnullb{}", 0))?;
-+    disk.set_capacity_sectors(*param_capacity_mib.read() << 11);
-+    disk.set_queue_logical_block_size(block_size.into());
-+    disk.set_queue_physical_block_size(block_size.into());
-+    disk.set_rotational(false);
-+    Ok(disk)
-+}
-+
-+impl kernel::Module for NullBlkModule {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Rust null_blk loaded\n");
-+        let tagset = Arc::pin_init(TagSet::try_new(1, (), 256, 1))?;
-+        let disk = Box::pin_init(new_mutex!(add_disk(tagset)?, "nullb:disk"))?;
-+
-+        disk.lock().add()?;
-+
-+        Ok(Self { _disk: disk })
-+    }
-+}
-+
-+impl Drop for NullBlkModule {
-+    fn drop(&mut self) {
-+        pr_info!("Dropping rnullb\n");
-+    }
-+}
-+
-+struct NullBlkDevice;
-+
-+type Tree = XArray<Box<UniqueFolio>>;
-+type TreeRef<'a> = &'a Tree;
-+
-+#[pin_data]
-+struct TreeContainer {
-+    // `XArray` is safe to use without a lock, as it applies internal locking.
-+    // However, there are two reasons to use an external lock: a) cache line
-+    // contention and b) we don't want to take the lock for each page we
-+    // process.
-+    //
-+    // A: The `XArray` lock (xa_lock) is located on the same cache line as the
-+    // xarray data pointer (xa_head). The effect of this arrangement is that
-+    // under heavy contention, we often get a cache miss when we try to follow
-+    // the data pointer after acquiring the lock. We would rather have consumers
-+    // spinning on another lock, so we do not get a miss on xa_head. This issue
-+    // can potentially be fixed by padding the C `struct xarray`.
-+    //
-+    // B: The current `XArray` Rust API requires that we take the `xa_lock` for
-+    // each `XArray` operation. This is very inefficient when the lock is
-+    // contended and we have many operations to perform. Eventually we should
-+    // update the `XArray` API to allow multiple tree operations under a single
-+    // lock acquisition. For now, serialize tree access with an external lock.
-+    #[pin]
-+    tree: CacheAligned<Tree>,
-+    #[pin]
-+    lock: CacheAligned<SpinLock<()>>,
-+}
-+
-+impl TreeContainer {
-+    fn new() -> impl PinInit<Self> {
-+        pin_init!(TreeContainer {
-+            tree <- CacheAligned::new_initializer(XArray::new(0)),
-+            lock <- CacheAligned::new_initializer(new_spinlock!((), "rnullb:mem")),
-+        })
-+    }
-+}
-+
-+#[pin_data]
-+struct QueueData {
-+    #[pin]
-+    tree: TreeContainer,
-+    completion_time_nsec: u64,
-+    irq_mode: IRQMode,
-+    memory_backed: bool,
-+    block_size: u16,
-+}
-+
-+impl NullBlkDevice {
-+    #[inline(always)]
-+    fn write(tree: TreeRef<'_>, sector: usize, segment: &Segment<'_>) -> Result {
-+        let idx = sector >> bindings::PAGE_SECTORS_SHIFT;
-+
-+        let mut folio = if let Some(page) = tree.get_locked(idx) {
-+            page
-+        } else {
-+            tree.set(idx, Box::try_new(Folio::try_new(0)?)?)?;
-+            tree.get_locked(idx).unwrap()
-+        };
-+
-+        segment.copy_to_folio(&mut folio)?;
-+
-+        Ok(())
-+    }
-+
-+    #[inline(always)]
-+    fn read(tree: TreeRef<'_>, sector: usize, segment: &mut Segment<'_>) -> Result {
-+        let idx = sector >> bindings::PAGE_SECTORS_SHIFT;
-+
-+        if let Some(folio) = tree.get_locked(idx) {
-+            segment.copy_from_folio(folio.deref())?;
-+        }
-+
-+        Ok(())
-+    }
-+
-+    #[inline(never)]
-+    fn transfer(
-+        command: bindings::req_op,
-+        tree: TreeRef<'_>,
-+        sector: usize,
-+        segment: &mut Segment<'_>,
-+    ) -> Result {
-+        match command {
-+            bindings::req_op_REQ_OP_WRITE => Self::write(tree, sector, segment)?,
-+            bindings::req_op_REQ_OP_READ => Self::read(tree, sector, segment)?,
-+            _ => (),
-+        }
-+        Ok(())
-+    }
-+}
-+
-+#[pin_data]
-+struct Pdu {
-+    #[pin]
-+    timer: kernel::hrtimer::Timer<Self>,
-+}
-+
-+impl TimerCallback for Pdu {
-+    type Receiver = RequestDataRef<NullBlkDevice>;
-+
-+    fn run(this: Self::Receiver) {
-+        this.request().end_ok();
-+    }
-+}
-+
-+kernel::impl_has_timer! {
-+    impl HasTimer<Self> for Pdu { self.timer }
-+}
-+
-+#[vtable]
-+impl Operations for NullBlkDevice {
-+    type RequestData = Pdu;
-+    type RequestDataInit = impl PinInit<Pdu>;
-+    type QueueData = Pin<Box<QueueData>>;
-+    type HwData = ();
-+    type TagSetData = ();
-+
-+    fn new_request_data(
-+        _tagset_data: <Self::TagSetData as ForeignOwnable>::Borrowed<'_>,
-+    ) -> Self::RequestDataInit {
-+        pin_init!( Pdu {
-+            timer <- kernel::hrtimer::Timer::new(),
-+        })
-+    }
-+
-+    #[inline(always)]
-+    fn queue_rq(
-+        _hw_data: (),
-+        queue_data: &QueueData,
-+        rq: ARef<mq::Request<Self>>,
-+        _is_last: bool,
-+    ) -> Result {
-+        rq.start();
-+        if queue_data.memory_backed {
-+            let guard = queue_data.tree.lock.lock();
-+            let tree = queue_data.tree.tree.deref();
-+
-+            let mut sector = rq.sector();
-+            for bio in rq.bio_iter() {
-+                for mut segment in bio.segment_iter() {
-+                    Self::transfer(rq.command(), tree, sector, &mut segment)?;
-+                    sector += segment.len() >> bindings::SECTOR_SHIFT;
-+                }
-+            }
-+
-+            drop(guard);
-+        }
-+
-+
-+        match queue_data.irq_mode {
-+            IRQMode::None => rq.end_ok(),
-+            IRQMode::Soft => rq.complete(),
-+            IRQMode::Timer => {
-+                mq::Request::owned_data_ref(rq).schedule(queue_data.completion_time_nsec)
-+            }
-+        }
-+
-+        Ok(())
-+    }
-+
-+    fn commit_rqs(
-+        _hw_data: <Self::HwData as ForeignOwnable>::Borrowed<'_>,
-+        _queue_data: <Self::QueueData as ForeignOwnable>::Borrowed<'_>,
-+    ) {
-+    }
-+
-+    fn complete(rq: &mq::Request<Self>) {
-+        rq.end_ok();
-+    }
-+
-+    fn init_hctx(
-+        _tagset_data: <Self::TagSetData as ForeignOwnable>::Borrowed<'_>,
-+        _hctx_idx: u32,
-+    ) -> Result<Self::HwData> {
-+        Ok(())
-+    }
-+}
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 017fa90366e6..9c8976629e90 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -200,6 +200,7 @@ struct page *rust_helper_folio_page(struct folio *folio, size_t n)
- {
- 	return folio_page(folio, n);
- }
-+EXPORT_SYMBOL_GPL(rust_helper_folio_page);
- 
- loff_t rust_helper_folio_pos(struct folio *folio)
- {
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index dae447a1ad30..f64be2310010 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -262,7 +262,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
- 
--rust_allowed_features := new_uninit,offset_of
-+rust_allowed_features := new_uninit,offset_of,allocator_api,impl_trait_in_assoc_type
- 
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
+ BLOCK2MTD DRIVER
+ M:	Joern Engel <joern@lazybastard.org>
+ L:	linux-mtd@lists.infradead.org
 -- 
 2.44.0
 
