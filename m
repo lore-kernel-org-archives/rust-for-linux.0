@@ -1,97 +1,85 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AD450278;
-	Wed, 13 Mar 2024 19:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8D35CDDD
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 23:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710357154; cv=none; b=RKpNG/ljish6dOtgydIPZMznzA6BuxGrZegkQmqoLE7gJidMPvptN9O8xzW2w94d9LPfDIZ19WqpACYqTr2Hn0VdeeBklUfP+Rc/WM9+4tBSO/3nZY0Pzh+etRyFrIrcUwzjB4CFpTSsLHM3py1aZVqD7iY0GxekETywsJIpSNg=
+	t=1710371410; cv=none; b=RJ55T0uptggQDVyPEI0tLEfGpxveyRoasUX6/10OqcNDcqRXdkc7ZtQ3XXVC7kKK6OYUf9+dpUPqL+saPl83bLNAtoiZiX43c3NPDGSkpyr+oVZZDzjMFUntHoJNot8lhYEfi/EEdCj9j6m27xNB2MP2HSR7ldIGw2XmWiwJg1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710357154; c=relaxed/simple;
-	bh=ymKP3IS2cmfQeizc365gbXNTGJ8tjNwTUcgrrr5ZdkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ccL4h50kXWiG4fqn8BPL90y1jCrqCYsNOGxbYFALLkBerCbSj4oYfsIRMueVlgWX1nw/0XQ/d5Rre04EfGEtEDVsYQ7J/L6lj5BsbCCahAwDRfqGinpWkRi3rlYATLBeWyoHHqOgtt2d5Jl+l8YQcVFY4mB9rrew8n55ayr/NGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=o3d4YVLf; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1710371410; c=relaxed/simple;
+	bh=kdHGNf15Fkji+Yncd0qKZLXXXshvhJrNdSwpkSrHW2E=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ZtMYqpCKVR3rwlgsO68K9vvUxWZ1RhRXbPd5nvdvG7XIYZyJpuLSdUyk7Xu8QpOndu28+BAmWphYenMWmr0iZUBwPtM9q3YfOsgfoKDy+tlqmsFXFXPRfx4r0wF+heig7mXyXqtMqN55TfKR7pMOOvCzXGobzIWaV0vppUrrYgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fTo9IO2q; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="o3d4YVLf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Y7M7m8+z9Pxp+WtOGCbb1eIYlLSjTSrvSDU8UY51Iko=; b=o3d4YVLf5C9RxU4fFRGRhqJ8bh
-	lSpLcfO+WTl5BlF7HzhfXgpyEFMMReDhLco4YG6HVRf3nAc83qUBTS9hDA5fnMk7Jz8kHzSJY8Vhq
-	11V63o5qJfLinTCBh7aEoarX5LpDlZeqErxbuW1Cb6gTarsLaB7CljPOXwMX4ajZEuLhfrHaXJFdO
-	kV38rFQSgDOR0YH25ZUH+B9y4TNnl+YhIaNFHHZqmz1jp965FXP2Gax8lYem0HZ0hLL/HRbLemGpS
-	nczA0yvF9V50b8QtxWDLfbEsbZGJnq0NSkFDKDe6a+68mcXSEL6Jck+u1wSrze+hE7GRK06z6lZkX
-	S7PMNAfw==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkU1V-000000064gw-2tQM;
-	Wed, 13 Mar 2024 19:12:21 +0000
-Date: Wed, 13 Mar 2024 19:12:21 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>,
-	Damien Le Moal <Damien.LeMoal@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yexuan Yang <1182282462@bupt.edu.cn>,
-	Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>,
-	Joel Granados <j.granados@samsung.com>,
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 0/5] Rust block device driver API and null block
- driver
-Message-ID: <ZfH6lTDQygFd1hz-@casper.infradead.org>
-References: <20240313110515.70088-1-nmi@metaspace.dk>
- <855a006d-5afc-4f70-90a9-ec94c0414d4f@acm.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fTo9IO2q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=3qu2niw75nb2xbjezbisjc3dce.protonmail; t=1710371398; x=1710630598;
+	bh=rYZPrBzSjkyRIMR5GIwY/KAK6jPdoSu7grZu7ns8X4Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=fTo9IO2qtRKJE1X29fMuTUGTtSPKC1Y/lyivka8OWJABM8Bpd764HMOCR/vxeW14V
+	 zRJkNTTeUe7eHXqgM5qKGYS8Uhm/UbJbRFPOa6CbeBdO0ATMw2WB+UtCiDBTp8e8YH
+	 0m05TS0wYo+qGfDNZXJM1Ic0RKKgmJszbR4TXGMqiSZ3uYrAXU/y839sKjLmDMZrbG
+	 64VvCO3nt9XSKT3ZRLQvua04GOU8o+G59eGJ46X3azCa5xo3rPTKnNjww8WzpUqFXe
+	 54UOdOd/L2el/nKQuZ96+hDYefQj+UIJEDJgICx2rEvmccewi0z3ks832LpCQmb/Cl
+	 ZryR0wOx3uSqQ==
+Date: Wed, 13 Mar 2024 23:09:37 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Laine Taffin Altman <alexanderaltman@me.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: init: remove impl Zeroable for Infallible
+Message-ID: <20240313230713.987124-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <855a006d-5afc-4f70-90a9-ec94c0414d4f@acm.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2024 at 11:02:23AM -0700, Bart Van Assche wrote:
-> On 3/13/24 04:05, Andreas Hindborg wrote:
-> > This is the second version of the Rust block device driver API and the Rust null
-> > block driver. The context and motivation can be seen in cover letter of the RFC
-> > v1 [1]. If more context is required, a talk about this effort was recorded at
-> > LPC [2]. I hope to be able to discuss this series at LSF this year [3].
-> 
-> Memory safety may land in C++ in the near future (see also
-> https://herbsutter.com/2024/03/). If memory-safe C++ or memory-safe C
-> would be adopted in the kernel, it would allow writing memory-safe
-> drivers without having to add complicated bindings between existing C
-> code and new Rust code. Please do not take this as personal criticism -
-> I appreciate the effort that has been spent on coming up with great
-> Rust bindings for the Linux kernel block layer.
+From: Laine Taffin Altman <alexanderaltman@me.com>
 
-You know, this reminds me of when I was at Intel working on NVMe.
-We had a product all ready to ship and a manager suggested that we delay
-shipping it until the SCSI-over-PCI standard was finished and ratified
-so that the same piece of silicon could support both.
+It is not enough for a type to be a ZST to guarantee that zeroed memory
+is a valid value for it; it must also be inhabited. Creating a value of
+an uninhabited type, ZST or no, is immediate UB.
+Thus remove the implementation of `Zeroable` for `Infallible`, since
+that type is not inhabited.
 
-Fortunately, said manager was overruled, but it's a great example of
-how this kind of FUD can actually work.
+Cc: stable@vger.kernel.org
+Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` f=
+unction")
+Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
+ rust/kernel/init.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 424257284d16..538e03cfc84a 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1292,8 +1292,8 @@ macro_rules! impl_zeroable {
+     i8, i16, i32, i64, i128, isize,
+     f32, f64,
+=20
+-    // SAFETY: These are ZSTs, there is nothing to zero.
+-    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, Infallible,=
+ (),
++    // SAFETY: These are inhabited ZSTs, there is nothing to zero and a va=
+lid value exists.
++    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
+=20
+     // SAFETY: Type is allowed to take any value, including all zeros.
+     {<T>} MaybeUninit<T>,
+
+base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+--=20
+2.42.0
+
+
