@@ -1,130 +1,97 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813465A792
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 19:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183315F54C
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 19:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710356603; cv=none; b=o/NuNX1PWQ3JQNcEEGwig8DnGYLzhZWWIiiCtYXRk/5gGfHGBMDjZQVg6x+26YPrL8YJmdEXJuM0ndlYr5nQGEDLe3cLCvqPkSjTrq9hiC1+l3nqkro0w7pZfyk3CS7Btw/nFX8JnA8kaCisKoQQ9LRfry8Bq4O8UssineDILl0=
+	t=1710357013; cv=none; b=oSkmUwhas5sMgN+DXZ20SFkceyVy3J0IWsztHkjkH+XtWkMIzENlCrawOFsxdBXBEu7V69elkBpKBtFEQBkkaKy8dXbYQ1JHT+HQL6FlIq//Soh3SKdMyt/5JqT8CM4l58JZkOv+t3DqlNGpn3dgys8PQExfjATWHLHgqqeEnYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710356603; c=relaxed/simple;
-	bh=SX+fEPlUzQH+SDjF+fg9M0nYR4xU4g4PvaNbAOfrrho=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eQUclu7hSfzv6EH58739meB5Li6GkilKIWgaNF0emaYHMLexolDDL+M7DBVe2Hd8q8hlQNc9lyMW6agsyvF+6SX7nMfOZsD/dJp4UcNwCO+FFZqMH/sa8d4fkUC9dtgJ4FdA2zCj1FNSn+JDxTMVKtx7bSQM3Ensvlpzcjk8OEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=L1pgeIkS; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1710357013; c=relaxed/simple;
+	bh=/e3ATDPA/qgTUOtidYV6rPYvJSOmSFfRGP3WmLW3+Dw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rxm/l+qmesuLCNXMrlez+H7AUyO1rG1YfjjLH2IengI0jTVUWA7u6DbQZ7t/zicPRZEvTZjNS3ueMAaYgOcjUapVX8zkighs9PBLFs1UsRK0FRY5DinTnGYXb7cT06IhSiEgMcY6TRegolDl5Zk+1Rw7ekxI75DpTn8tuZLIyoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=LYsMbAFD; arc=none smtp.client-ip=209.85.219.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="L1pgeIkS"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5658082d2c4so181014a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 12:03:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="LYsMbAFD"
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dc6d9a8815fso89067276.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 12:10:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710356599; x=1710961399; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=z0czGQahQJmLOhb1t7D6nFie7YcEp1Eo0BOuwVvzqhY=;
-        b=L1pgeIkSkB6oidxQZW6w0VEPRoHmSjDrbfQchntBbcZuaO7ElZW3FyTCpKsEtQY9OH
-         pU8d6ZfECLovqMLuWahuE32Lu33FenkpsBQ/AUteZf4j3h+QNcqdyG2qksNxIWVKKvdX
-         2ebRMxIzu8A2J3SLZ0O6/zXHuiF14s1TpFxx1GgAQAgXcWKesCFP6LDJaejcR35nGFeq
-         cGa7D/742K6iQHhk3J4qxSbLS54rPCBo92G3TsuVWKXeG977KRORTj6ZqmAh3kWEUqIO
-         HUIBInQVaiz3OvocMvgRGG8g/iSsq6fwfEf87L9CPEZ7hbz+dv2VaC/3LQ1Yb5Q8LCRi
-         4aFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710356599; x=1710961399;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1710357009; x=1710961809; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z0czGQahQJmLOhb1t7D6nFie7YcEp1Eo0BOuwVvzqhY=;
-        b=tHzKPiDEZtpmIjc1k1zX3XBBrkvpCWZZr0nsins3K1ke/JSVglq2mt/b9zgRPdO+ig
-         O5bj5ZnaFa8nJrEG55V7bIgzAFWduUb5rZ7aWy4Zb1RqsxV1MSDr6vFT6CHk79fG31Pi
-         Gfvzkvl/X9WRGPQXfEYkfGagla5Hi7cc3wjUMX/XvtbkSxLtf6dG0KTj0jHucZrvakL8
-         JdIWwh2syO8zwNvxaiz8t0E88LTuEhaypJMC621ZWw7ClQvY3smvBTq6zoE9F6hCOy/l
-         jhVGMF+a/AnCOxFqrT37ZlrSazQYws+H6hMSVoNPI9yhnzYFhp/p7lOb77swReEjRHKW
-         /dDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYTWrgej7ix1e/9RSc6CxEgoCdF6sq5BHPTxpHIWi4DJIPZK4ixOvbcwRsHWf08uZte2IcUjY9BBg7by7Js0JHpgCOfxB8bHRXTbr0gPM=
-X-Gm-Message-State: AOJu0Yy0m3sumkiCArPjTAod9cjKjQ1whLylvvFYmn+4oyNoDTus+gPy
-	XqFwPyBoiw5y+UzsjQ5Zwv6dQPGAojCqRNZw5KAAh6cIURpJpoyBiu5vWhvXZlw=
-X-Google-Smtp-Source: AGHT+IHlCY08CcHpJhARgnL+nVCYWz4gNBvKEftYoIsGP8VnUgwgLnr/RbwslLxE6aluPvisCaT/ug==
-X-Received: by 2002:a17:906:1308:b0:a46:60c6:98c9 with SMTP id w8-20020a170906130800b00a4660c698c9mr1283936ejb.68.1710356599394;
-        Wed, 13 Mar 2024 12:03:19 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id r1-20020a170906364100b00a4320e22b31sm5163914ejb.19.2024.03.13.12.03.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 12:03:19 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Bart Van Assche <bvanassche@acm.org>,  Jens Axboe <axboe@kernel.dk>,
-  Christoph Hellwig <hch@lst.de>,  Keith Busch <kbusch@kernel.org>,  Damien
- Le Moal <Damien.LeMoal@wdc.com>, 	Hannes Reinecke <hare@suse.de>,
-  "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,  Andreas
- Hindborg <a.hindborg@samsung.com>,  Niklas Cassel <Niklas.Cassel@wdc.com>,
-  Greg KH <gregkh@linuxfoundation.org>,  Matthew Wilcox
- <willy@infradead.org>, 	Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
- <alex.gaynor@gmail.com>,  Wedson Almeida Filho <wedsonaf@gmail.com>, 	Gary
- Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  Benno Lossin <benno.lossin@proton.me>, 	Alice Ryhl
- <aliceryhl@google.com>,  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis
- Chamberlain <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,
-  Sergio =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
- Granados
- <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
- <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  open
- list <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
- <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
- <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 0/5] Rust block device driver API and null block driver
-In-Reply-To: <ZfHu48NGktOx_uhG@boqun-archlinux> (Boqun Feng's message of "Wed,
-	13 Mar 2024 11:22:27 -0700")
-References: <20240313110515.70088-1-nmi@metaspace.dk>
-	<855a006d-5afc-4f70-90a9-ec94c0414d4f@acm.org>
-	<ZfHu48NGktOx_uhG@boqun-archlinux>
-User-Agent: mu4e 1.12.0; emacs 29.2
-Date: Wed, 13 Mar 2024 20:03:07 +0100
-Message-ID: <87r0get0no.fsf@metaspace.dk>
+        bh=/e3ATDPA/qgTUOtidYV6rPYvJSOmSFfRGP3WmLW3+Dw=;
+        b=LYsMbAFDYCXD3MckZOTcH77u6prmiAFYWj5M/UWnnbUCJPyu1HFKN2EBw/wgo70z5X
+         lfoUvGTOq0rkqXm0RG0cx8tNzNYpZE0UqX06UN0NyYJ5u3BUxMtFvaAhhBJW59gyaVIn
+         cq7U8n2L3f87gYKch4sl0Qoe5sm6j3A/z+PxVaZ2OC2MLgUwRWCRkI3GS9uOcG+6aRdS
+         f9MLXL7Wr1ukbPIICewbagdxRHz7ZlFE8tAB5/5c7gAdkk2eVSAMz+LahFzvYLB3WSBX
+         cTwfAO+C5Im7qxOL0COA7QnDFGN7cbEOZ0ct65qn+h+GHuBz4aH05STW1cvgCChB/ZeU
+         spfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710357009; x=1710961809;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/e3ATDPA/qgTUOtidYV6rPYvJSOmSFfRGP3WmLW3+Dw=;
+        b=q4+DH9qmJelb+OWvVCv5G4F+b34gKLYFZMhTYzkNIXf07p0qAwJp4twGREkvb46IRN
+         XlqLMOu1tzgwjtInVhQ0jTg+qnP583wj6R3SulNnRKNqzkSh6NiJKSn1Zza8UK1d04md
+         lmNbHIMqFee3vM/6C4NNLMEWPo5O5zpRUBhZwgJtLqhGjqq9DqIsyMixa0X9ZGnQg7XL
+         TNLWdBm6QjiPU25gFzBzFVRZotCo1yXmm+m5GcXYbV3hDMTCf4evFUKSkGyFbY9A4Qnf
+         z0KRvjDdc/MfnXdlYKpMUyt05Zjpezzzkh84Q4xsMfYMCsnHQvMuDGPwDZU4EJgJ6KSQ
+         ibrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRv8ZIia9FY6pbmSvE0DFMVFGx1QieATtwA/wZJhFWnAcw/Bbi+rcapp326tH3KcoFhcUOwyKr5oKLm6iME2GTYyyLzQyQowQ7C79Macg=
+X-Gm-Message-State: AOJu0YyRmUcbrfqtjTsWa2PLgj+J3p3uwk/pheICHmhnOA6oFfLcS0aZ
+	aBf6Fuwm3g+1CLlIWewk28JM/T1yTZjC5rEoHAYsab2sL+ENNeG6g5M5/3L0qo63vI7lVcq/EvF
+	peToBIXguNUmKV9aFirLzB4ibeYbC6GeWXSR1aA==
+X-Google-Smtp-Source: AGHT+IHvOz3vvevhU2+NsarhVCjZjHX3GiH9Xw/oej3y1FW1AAmW1J//l0DcmlTRyaKEnQOT8zoUg7tohMa0pFI5kpg=
+X-Received: by 2002:a5b:88d:0:b0:dcc:56b6:6606 with SMTP id
+ e13-20020a5b088d000000b00dcc56b66606mr3166914ybq.40.1710357009091; Wed, 13
+ Mar 2024 12:10:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240226-module-as-ptr-v1-1-83bc89213113@google.com>
+In-Reply-To: <20240226-module-as-ptr-v1-1-83bc89213113@google.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Wed, 13 Mar 2024 15:09:57 -0400
+Message-ID: <CALNs47tj0=k7UeoKp6Myfh8tiLnJwxm3cHa4Qj2cY7sihOo9sQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: add `Module::as_ptr`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Boqun Feng <boqun.feng@gmail.com> writes:
-
-> On Wed, Mar 13, 2024 at 11:02:23AM -0700, Bart Van Assche wrote:
->> On 3/13/24 04:05, Andreas Hindborg wrote:
->> > This is the second version of the Rust block device driver API and the Rust null
->> > block driver. The context and motivation can be seen in cover letter of the RFC
->> > v1 [1]. If more context is required, a talk about this effort was recorded at
->> > LPC [2]. I hope to be able to discuss this series at LSF this year [3].
->> 
->> Memory safety may land in C++ in the near future (see also
->> https://herbsutter.com/2024/03/). If memory-safe C++ or memory-safe C
->> would be adopted in the kernel, it would allow writing memory-safe
->> drivers without having to add complicated bindings between existing C
+On Mon, Feb 26, 2024 at 5:13=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> I honestly doubt it, memory-safe is not free, basically you will still
-> want unsafe part for the performance reason (or interacting with
-> hardware), and provide a safe API for driver development. I don't think
-> that part will be gone with a memory-safe C++. So the complication still
-> exists. But I'm happy to be proved wrong ;-)
+> This allows you to get a raw pointer to THIS_MODULE for use in unsafe
+> code. The Rust Binder RFC uses it when defining fops for the binderfs
+> component [1].
+>
+> This doesn't really need to go in now - it could go in together with
+> Rust Binder like how it is sent in the Rust Binder RFC. However, the
+> upcoming 1.77.0 release of the Rust compiler introduces a new warning,
+> and applying this patch now will silence that warning. That allows us to
+> avoid adding the #[allow(dead_code)] annotation seen in [2].
+>
+> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-08=
+ba9197f637@google.com/ [1]
+> Link: https://lore.kernel.org/all/20240217002717.57507-1-ojeda@kernel.org=
+/ [2]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
 
-I think it is great that people are starting to realize that bringing
-memory safety to other systems languages is a good idea. But from one
-person blogging about it to things being ready for production is a long
-journey. Language designers have to design ways to express the new
-semantics, standards committees has to agree, compiler engineers have to
-build and test their compilers. Probably we need a few cycles of this to
-get things right. At any rate, it is going to take a while.
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
 
-Second, as Boqun is saying, interfacing the unsafe C part of the kernel
-with memory safe C++ is going to require the same complicated
-abstraction logic as the safe Rust APIs are bringing. The complexity in
-bringing Rust to the kernel is not coming from interfacing a foreign
-language. It stems from the inherent difficulty in designing memory safe
-wrappers around unsafe C APIs.
-
-Best regards,
-Andreas
+This exposes a `bindings` type to the user which we don't really do in
+many other places, but it makes sense here of course.
