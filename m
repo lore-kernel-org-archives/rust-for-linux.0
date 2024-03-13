@@ -1,95 +1,280 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F7F2562F
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 09:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D573EA7B
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 11:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710323467; cv=none; b=PamUAsfVKSWxm24dC1ckW82skwUxlaaPk579/QjYwURZHHOsFGcWyucLghIW4z+zgX81bp7FJ8f+ozNckIESGEROBPy6fN3NBrYthJlPCGtPunAWblOHFoNbJPh2/wnHxXSoCnFweMRPjI1btbi6qEHsJLPZaWOuNg9kHZE7nxY=
+	t=1710327966; cv=none; b=CHC3tkehrkBFt2VbVI1QDg1qn0Kd7S8wXkRKrZQpLdisPD9sZIsT96shr7ubTKiVgcSygmR2PPJ0Q6P2lgB2/DDLUp9pJ8MxAuzsoDQys/XKprzT+28slZ8tY4GpSGTLR5h4/hJytChdqhbfixo8rKsqXL+GzKP+hDLDO+LuMwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710323467; c=relaxed/simple;
-	bh=VALqgjTPnatoPxcvD7oU1/NWjcytUzXnQ7aea0zfd7I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NT3/B0ZeMtqvCQUUVnYiNkIX2KovkkK2EVgu3LfSQqTWKI+UuvumzfIiNOu1nVgtrdz/qhSHcWFSIvtOiFpUYlFnGEmHlsmI7XUo2yTDpYhqkvcK9YKHyIWBPhLBErBkze59+WOeF8Rki6Jxup0dZ55m7kY0waOLw7TX67XeS88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B33RN2S6; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1710327966; c=relaxed/simple;
+	bh=+7p29bGGxWJhQPF+XbBPwBQGGdm2QhUpvCj1q5NEvAM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s/jojYRsYduvHkhT4D7camAgU11fZKpdejDIgWzmp1NlvHQZbr0ufq236kh6usycp/M8knHLLkyth/YUaOojBcQpXKfMQpJvUOwPCwzxStVLCsqggxz/PTgWM725/qWQ8c6aMbZw+A6nbPInNgWQKRIbK9QOkrHn48L17SFVi34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=DVKs6gbv; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B33RN2S6"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-60a0694df25so54194137b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 02:51:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="DVKs6gbv"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-56845954fffso5537934a12.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Mar 2024 04:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710323465; x=1710928265; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XRJfQxahYGAkNrqo7I2PmE92A0G8ANlJPrSGDn6Zu48=;
-        b=B33RN2S6UPtn4nbljYXOGlyGZtZrF1eHxck7ZmwxZHmT4XKoLcO8kOzgyOKriI38jz
-         dB4yKxutVHtmTBgM0UzKzqw0MOlDlEZV3JYi+Gwill/nOfFq252DVeAhMdGrFdwY/KhU
-         tFaX9oqnuVoOUjDls4yTXhcpZaTQIx+w8EzoKkvT4rAJXmNX8sVBP7XtuyaD25w7m+qe
-         91ftt27nlLMvKdWOu/YJEzBHhTTZiNd5IgiwSaqqKd8kt3lp3qAbKjufNz+Ytr0QMxou
-         up+5kIL8YHpjOuRoTUQSF11HZjmPzNj9VM68HcoxXZUIRZJRDa6g4DZ8f1mejOJ3t5tX
-         Fq/w==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710327962; x=1710932762; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E6ChQUoNXFzZpGvU3Nd1F1JeRFjGX/gvu+taEqVhzo4=;
+        b=DVKs6gbvC7GS455jiIyvPDGJUxK7SFyUNXv0tWWchUmyyb+C+zkWDRHCWDnJ8hud+V
+         xrt0NFHnGcedL+sgFHNOcRmmWuBQvs0TyGV/XIDLgm0UmZ+UGGsvmlVIfHfSIuGUusCY
+         YNm7lCvYo7RoBSikKipsqKpeMxjuzQynzUQu5KJWWsJrehI1T2b1eW7qd8opIpu19EOL
+         sv4G1wtPncRH+xjPLY6pxf+27ebI3y92ZsTQYr0cnTGc8PFxw5KbGYV5UrYQb34WKQcQ
+         zjVZzuJmdPfmWx8rmRCIr6Ct4oH4ivba/5O6RAxEisMmHO6G0bsSOh1FtiijLkK7GfTe
+         TSsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710323465; x=1710928265;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XRJfQxahYGAkNrqo7I2PmE92A0G8ANlJPrSGDn6Zu48=;
-        b=wSlR9RcBR5YdCpLzpdMYSrTF5A4CCINqzEIPvFR0LWoOdJ4YfrGb0nPPvKSMn4mSX+
-         xmSMeWo0e78Tc95pkmevlQQgvVt5326ZgVl0sVJ2v2SdleYY/jfsT8nn+6LwzXdHn9r7
-         pkr8CjxksQgGw74FcRTEz82SuE8uiRyXZ4fsnpOLE2vrBcsqb4TKf61Ts3hC8Kt4nuk4
-         AbYBb36RL55bA8cbKWLkECzScWXLh9D6sjRGly0CThG39486nBWNHJpQqq+JtQwBsO80
-         yvkf3elL4ODO86ENkZLizNgQA+iPkJfsntfpYG3P0hOoipZOIAYXEgzaKNeVUoAkxucD
-         UDYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyxABDr/nWmazFA6HWxbW7BCxLYzZOonUlhy/pwEoVplmpn4w+skXcjNiIYT4BEP4qy9pIF2qXZjFghyhbJzHWoIymR9G38F1lzi/lytI=
-X-Gm-Message-State: AOJu0YxsgpODJBmrRHF5ihoNuCE8ztLqykxAXTIiSntpDfHTKv7CULpp
-	SMqrUxem5361tG97NhqJentuht0P6GEeSGg4GqCdONMrF9pM+f0od5n7Otwaglq4kR7LH0yrfYP
-	Jva3wjChmW4A8Ug==
-X-Google-Smtp-Source: AGHT+IEJpiShMQsaleNGTKsdQI82HF3B6Dh14JeDghGydl0QX1ub+75M2xBZWQMzwcI/zPkgrssHsW93gsXcgGI=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:188c:b0:dcc:6bf0:2eb6 with SMTP
- id cj12-20020a056902188c00b00dcc6bf02eb6mr61977ybb.6.1710323464848; Wed, 13
- Mar 2024 02:51:04 -0700 (PDT)
-Date: Wed, 13 Mar 2024 09:50:59 +0000
-In-Reply-To: <ZfCQuh-JrplKtbco@boqun-archlinux>
+        d=1e100.net; s=20230601; t=1710327962; x=1710932762;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E6ChQUoNXFzZpGvU3Nd1F1JeRFjGX/gvu+taEqVhzo4=;
+        b=JB3pvXpY7L/JEwJ3gy/X+Aq05dcavYqWN8G6gb1C36+nIoMth9X+UgKYV0xVrkkHFE
+         PgkGMyBXBgs2Qig3GndRH226bJmDzyPPdpOJVIL9iIWL9036OyiGVbkGzckb7tIUGOGc
+         IpZcZlBMJqfXonyE8Pgi8+BpHhPukVlnUSx6Q8dt0wXNn8zPkQ3YmEczxObXB5lTu0EO
+         CrCUL+yxNJwFyWIhA8nh465Dz20Dd6v0FaLiTfpdbFdI/wmTWiqCiYgtNR44MpJ00QJb
+         +vG4povbLY8AuZSHPghgRjBZgwu2kEZr5P1kJhKPScDunkG76IXLxonoR1wL8Dj1VKZD
+         6OZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUlUU/WGkEQhX64ACEmQPmQSEBfASxE62gFJxhLJB+z2mxPT9oLsWST01VEVo332MpkY2N1KoCW1u3ieyCPOZqw9T/4nkvjV1qykO0Z58s=
+X-Gm-Message-State: AOJu0YyEIbM5CfEH6jUI1LqaoKS3wMkVt3F4clLAnzg9iVfaTFgKP6Js
+	QAgqVdpVf1nDEXSBRbsgt4FxBA8ln3YQjNyRbWawcGJeV2Vh5LakOUD9bgOY3gL9moHoW7zhLyv
+	d
+X-Google-Smtp-Source: AGHT+IF2qHriqmWq4ZDmQaUBHxnPl/trI9zY0IN49oPlTnPUdziuSefAOXAS40sPWtFRzodghFtyXA==
+X-Received: by 2002:a17:907:d40a:b0:a45:2f1b:c07d with SMTP id vi10-20020a170907d40a00b00a452f1bc07dmr9360512ejc.10.1710327961729;
+        Wed, 13 Mar 2024 04:06:01 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id n17-20020a170906701100b00a46372f6c69sm2160263ejj.190.2024.03.13.04.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Mar 2024 04:06:01 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Damien Le Moal <Damien.LeMoal@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>,
+	Niklas Cassel <Niklas.Cassel@wdc.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Yexuan Yang <1182282462@bupt.edu.cn>,
+	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
+	Joel Granados <j.granados@samsung.com>,
+	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+	"gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: [RFC PATCH 0/5] Rust block device driver API and null block driver
+Date: Wed, 13 Mar 2024 12:05:07 +0100
+Message-ID: <20240313110515.70088-1-nmi@metaspace.dk>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ZfCQuh-JrplKtbco@boqun-archlinux>
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Message-ID: <20240313095059.844387-1-aliceryhl@google.com>
-Subject: Re: [PATCH v3 2/2] rust: sync: add `Arc::into_unique_or_drop`
-From: Alice Ryhl <aliceryhl@google.com>
-To: boqun.feng@gmail.com
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, gary@garyguo.net, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Boqun Feng <boqun.feng@gmail.com> writes:
-> The code looks good, and FWIW, I added the Examples section for the
-> function since I at least need something to run when queuing it to
-> rust-dev branch ;-) And I think it's overall good to have examples for
-> every `pub` function. If there is a next version (which is unlikely),
-> feel free to fold it. I can also send it alone once Miguel put your
-> patches into the rust-next branch.
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-Thanks! If you have reviewed it, could I have your Reviewed-by tag?
+Hi All!
 
-> From 7d26d1177a2788ba96c607fd9dc45baf469fb439 Mon Sep 17 00:00:00 2001
-> From: Boqun Feng <boqun.feng@gmail.com>
-> Date: Tue, 12 Mar 2024 10:03:39 -0700
-> Subject: [PATCH] kernel: sync: Add "Examples" section for
->  Arc::into_unique_or_drop()
-> 
-> These examples provide better documentation and can serve as unit tests
-> as well, so add them.
-> 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+This is the second version of the Rust block device driver API and the Rust null
+block driver. The context and motivation can be seen in cover letter of the RFC
+v1 [1]. If more context is required, a talk about this effort was recorded at
+LPC [2]. I hope to be able to discuss this series at LSF this year [3].
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+The series is still in RFC state, as many dependencies have not yet been merged.
 
-Alice
+Changes from v1:
+ - Improved request lifetime tracking
+ - Changed rust null block driver name to `rnull`
+ - Added timer completion support to `rnull`
+ - Added softirq completion support to `rnull`
+ - Moved to `xarray` for memory backing
+ - Adopted the folio abstraction where applicable
+ - Added `SAFETY` comments to all unsafe blocks
+ - Improved documentation and added examples
+ - Fixed up `vtable` default method behavior
+ - Dropped `unsafe` from vtable builder
+ - Fixed a safety issue in `RawWriter`
+ - Dropped the `TagSetRef` abstraction
+ - Renamed `Bio::iter` -> `Bio::raw_iter`
+ - Updated `core::fmt::Display for Bio` for readability
+ - Simplified `BioIterator::next`
+ - Documented and refactored `bvec_iter` functions
+ - Moved cache alignment out of `Lock`
+ - Added MAINTAINER entry
+
+Thanks for all the input on v1!
+
+
+Performance
+===========
+
+Rather than include an abundance of performance numbers in this letter, I would
+refer to [4] for a comparison of performance to the C null block driver. In
+general across all of the benchmark configurations, the mean of the difference
+is -2.5%, with individual configurations showing [-10%;30%] difference in IO/s.
+
+
+Request lifetime modeling
+=========================
+
+While implementing timer completion, it became clear that the request lifetime
+modeling applied in the v1 RFC was not adequate. With that modeling, combined
+with the timer callback feature, a developer would be able to write safe Rust
+code that violates the Rust invariants for references, thus leading to undefined
+behavior. A similar situation would happen in the completion path when
+developers write code to convert from a completion id to a `&Request`.
+
+To make these situations safe, and thus free from undefined behavior, the
+`Request` type now applies reference counting. The logic piggybacks on the
+`atomic_t ref` field of the C `struct request`. In order to make this work, the
+Rust code has to be able to free requests when the refcount reaches zero.
+Therefore, the series exposes (EXPORT_SYMBOL_GPL) the internal blk-mq symbol
+`__blk_mq_free_request`.
+
+I am curious what the community thinks of this approach and whether it is OK to
+expose this symbol so that Rust can call it.
+
+One consequence of these changes is that requests that are processed by a Rust
+block device driver, are freed at a different place in the completion path, than
+requests processed by C drivers. Requests processed by C drivers are typically
+freed and recycled inline during the call to `blk_mq_complete_request`. The
+requests processed by a Rust driver will be recycled when the `RequestRef` is
+dropped, which is usually at some time after the request has been completed.
+
+There does not seem to be any statistically significant effect on performance
+for the rust null block implementation due to this change.
+
+
+Dependencies
+============
+
+This series is based on the branch `rnull-deps-v6.8` of [5]. This tree is based
+on the upstream `v6.8` tag and has been prepared with dependencies for this
+series:
+
+- [17] rust: add `CacheAligned` for easy cache line alignment of values
+- [16] rust: xarray: add mutable access through `Guard`
+- [15] rust: hrtimer: introduce hrtimer support
+- [14] rust: add `Opaque::try_ffi_init`
+- [13] rust: make `ARef` repr transparent
+- [12] rust: folio: add `with_slice_into_page()`
+- [11] rust: page: add `from_raw()`
+- [10] rust: page: add `with_slice_into_page()`
+- [ 9] IM: implement `ForeignOwnable` for `Pin`
+- [ 8] IM: add `module_params` macro
+- [ 7] rust: xarray: fix example
+- [ 6] LIST: rust: xarray: Add an abstraction for XArray
+- [ 5] LIST: rust: types: add FOREIGN_ALIGN to ForeignOwnable
+- [ 4] LIST: rust: lock: implement `IrqSaveBackend` for `SpinLock`
+- [ 3] LIST: rust: lock: add support for `Lock::lock_irqsave`
+- [ 2] LIST: rust: add improved version of `ForeignOwnable::borrow_mut`
+- [ 1] LIST: rust: folio: introduce basic support for folios
+- [ 0] LIST: rust: add abstraction for `struct page`
+
+Dependencies 0-6 are patches that have appeared on the list but are not yet
+merged. Dependencies 8-9 are imports from the `rust` branch [6,7] that have not
+yet been submitted. Dependencies 10-17 I will submit independently in the near
+future.
+
+If the upstream maintainers agree, then when the dependencies are merged, I will
+eventually start submitting PRs to Jens. I fully commit to maintain this code as
+indicated in the MAINTAINERS entry.
+
+Best regards,
+Andreas Hindborg
+
+
+[1] https://lore.kernel.org/rust-for-linux/20230503090708.2524310-1-nmi@metaspace.dk
+[2] https://lpc.events/event/17/contributions/1425
+[3] https://lore.kernel.org/rust-for-linux/87v87cgsp8.fsf@metaspace.dk
+[4] https://rust-for-linux.com/null-block-driver
+[5] git https://github.com/metaspace/linux.git rnull-deps-v6.8
+[6] git https://github.com/rust-for-Linux/linux.git rust
+[7] https://rust-for-linux.com/branches#rust
+
+
+Andreas Hindborg (5):
+  rust: block: introduce `kernel::block::mq` module
+  rust: block: introduce `kernel::block::bio` module
+  rust: block: allow `hrtimer::Timer` in `RequestData`
+  rust: block: add rnull, Rust null_blk implementation
+  MAINTAINERS: add entry for Rust block device driver API
+
+ MAINTAINERS                        |  14 ++
+ block/blk-mq.c                     |   3 +-
+ drivers/block/Kconfig              |   4 +
+ drivers/block/Makefile             |   3 +
+ drivers/block/rnull.rs             | 323 +++++++++++++++++++++++++++
+ include/linux/blk-mq.h             |   1 +
+ rust/bindings/bindings_helper.h    |   2 +
+ rust/helpers.c                     |  46 ++++
+ rust/kernel/block.rs               |   6 +
+ rust/kernel/block/bio.rs           | 112 ++++++++++
+ rust/kernel/block/bio/vec.rs       | 279 +++++++++++++++++++++++
+ rust/kernel/block/mq.rs            | 131 +++++++++++
+ rust/kernel/block/mq/gen_disk.rs   | 174 +++++++++++++++
+ rust/kernel/block/mq/operations.rs | 346 +++++++++++++++++++++++++++++
+ rust/kernel/block/mq/raw_writer.rs |  60 +++++
+ rust/kernel/block/mq/request.rs    | 269 ++++++++++++++++++++++
+ rust/kernel/block/mq/tag_set.rs    | 117 ++++++++++
+ rust/kernel/error.rs               |   5 +
+ rust/kernel/lib.rs                 |   1 +
+ scripts/Makefile.build             |   2 +-
+ 20 files changed, 1896 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/block/rnull.rs
+ create mode 100644 rust/kernel/block.rs
+ create mode 100644 rust/kernel/block/bio.rs
+ create mode 100644 rust/kernel/block/bio/vec.rs
+ create mode 100644 rust/kernel/block/mq.rs
+ create mode 100644 rust/kernel/block/mq/gen_disk.rs
+ create mode 100644 rust/kernel/block/mq/operations.rs
+ create mode 100644 rust/kernel/block/mq/raw_writer.rs
+ create mode 100644 rust/kernel/block/mq/request.rs
+ create mode 100644 rust/kernel/block/mq/tag_set.rs
+
+
+base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
+prerequisite-patch-id: 299c2cc48c45c8149e7cb18c6146a0308e5d0a44
+prerequisite-patch-id: 5153ee1c410dbdf22a6fd40667712943b4b89a97
+prerequisite-patch-id: 4d025bab9bc9741aedecc5327ad18f88f9105271
+prerequisite-patch-id: a5e932c86fa6c68234764aa3d7f314e5b534b1d9
+prerequisite-patch-id: aef3042976c4c678b7aa96154fc280f9061ebaf7
+prerequisite-patch-id: 8bf108ad0af2a3ec89acb8d99ee1b49ca2f51c69
+prerequisite-patch-id: a803b221c3232db3258406a4075558e85acefd09
+prerequisite-patch-id: 5e9cbcd0dc56a83353f0e4a3b5d4e8d5b51f3160
+prerequisite-patch-id: 28bae4a7fe83b36afed9892515a6dde1ea51e98a
+prerequisite-patch-id: 5b5ea2a21b37afb05fdf655396a6f74d83bb99c4
+prerequisite-patch-id: dc53b6ce21f74726d5d13988398c2954da07bcb6
+prerequisite-patch-id: b86d2b14f1770c1d4756ca10b93efaada643e560
+prerequisite-patch-id: 6a155859eb9a18afcd22a5bda3350d45d92e2fc7
+prerequisite-patch-id: c8ca075008f50d3cf1781c1ea1130a8ee735e7d2
+prerequisite-patch-id: b000cd190fe80dea3f4dd9172ecf8787f23b72be
+prerequisite-patch-id: b72f1fc3bd44b60911d9d91ecc5a45812a75eba3
+prerequisite-patch-id: 167c7770e124b9afa44bead742f90a57ac73f2d7
+prerequisite-patch-id: cc24a3135b4f258f4b1ea83ac91c2be4ffe31772
+-- 
+2.44.0
+
