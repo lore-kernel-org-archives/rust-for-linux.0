@@ -1,57 +1,57 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225B2762D9
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Mar 2024 19:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945A5757EF
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Mar 2024 19:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710444187; cv=none; b=cOgkIr10hH6TlEZazrJhdOXbRCLd8SD4cdfuFAvEs4HvgIneLq4ZKM9GjWR3wiDLclAaeEaSi2msSG3oaoyVgM7lopOr8xqCEO1gO7Vk4nxHbvBBeZTffb3NVfKIAU3UmooXVETNsUgRDR91nXwSU8Yk+K4HoIDkMOCZeOFQCc8=
+	t=1710445282; cv=none; b=eKo/Qq+eKC+oXwagKCaTpBuDFEOwfpNHjXDKYE1u8lGauVhOs5uNAYSiV+BajCbZiMhJzz8fzxX5V4vVGuwA7enptO13Aqjpmd/oqUUQCNNu4Jr1R06NtmaJDXQ48mOHxG5oVTgOT7Gob98TA7IAUPEXJRLz9+Qb2OLd4bVbl94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710444187; c=relaxed/simple;
-	bh=UZknqzvQ4FXnNpri558VcyxPoGTUJkGKM/XaMZJUDBU=;
+	s=arc-20240116; t=1710445282; c=relaxed/simple;
+	bh=onEktwJBHB2eXNJMOcrh4ORRowNVQ4kkEBJ7zXW9BpA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mRG98Y7Ln37d4w6PJA5HTu9lHsfY/6rMAnvIARsbQ9LkpPTiNze1oXpDedeU6POaTOIJedZ7Bd84qmHeeCulTg8G67mZ2jV28QVIiP3UBrl7GXco7zhnez5HMj6KpzrlCdKWGxNqdO5HXd9u1X5f+0Ht3qpgx0fwi0byuQF2/00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=zJaYdoR6; arc=none smtp.client-ip=209.85.208.42
+	 MIME-Version:Content-Type; b=MwDqUKlLsHwiKf92PqPO8hILoNqhutle7yWiDzzJRpVojNS9rKEg2x+dLo1OilbdlYoVv5vovKololQgs3xLo7f23LzIjq9elr6WJ5h5uU8V8MB8R9IzZZaxn7r5PC8qblCbj75SrYeGZZO67cSZ+XRiRFFHyOyCP8/8+xcQLzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=oelIcVXH; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="zJaYdoR6"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5684073ab38so2470358a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 14 Mar 2024 12:23:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="oelIcVXH"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-56899d9bf52so1924433a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 14 Mar 2024 12:41:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710444183; x=1711048983; darn=vger.kernel.org;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710445279; x=1711050079; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:user-agent
          :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UZknqzvQ4FXnNpri558VcyxPoGTUJkGKM/XaMZJUDBU=;
-        b=zJaYdoR62LpQZ4gmNRiW90HBcvll6kmkTT0I8yiYizL+rgm1f1h4XvDJDWfVbvVfs9
-         esDRZVRZzuOaGHudRXs1mK796AoaHv9qfKxFDCMe/0m9vKPx9FCx4y+XffTxMMk1VYcy
-         QvsFIIWRfGERdJhPGSujmoYhnU2g9Hpl1KRlD06yUzjYOUGkvvPrd23xHZCi9DT3fKie
-         f1EaIgQ/HuXV4PgDSc9d7T2RHRYeIL5LAacRvrjgZT8XDlL6061WKUFehGSGtmB1tuUE
-         bBuzON26u2FJx+fgX6U2aQDufjqwUaZDwxsYK64lyATFA0GgcMgIeRc8SrYRi1z8m5PA
-         LfWA==
+        bh=onEktwJBHB2eXNJMOcrh4ORRowNVQ4kkEBJ7zXW9BpA=;
+        b=oelIcVXHmAxAgJy++hRkxCKVyUb5JZiFiSwX6PT+K54sa6aWdq6+QmNCPY2vjzOxVB
+         BImHM41VK05Bc3zhxrNYknDQNjth5ZliXoGozxhwA59IZSy1CBuAR6XYnT7CT2fL6jCM
+         V3sbwrtJ5Z5NJ1KIhyEzbilcM0EBtXbCAV5/BEsvzGnPk9W0bqSGRIVyJT5+dQEf+00D
+         d2X/8F/SqKPztERzQ2A8CndAXCWMcPcHc+R54eaVrRYaFCvtXsPNio9ENcThnMzTmhY+
+         /9E8VctpEGb384dNrS242BoPCBSlkHE61f/8fB6eO7PPZS/KhTt2IfJ9T4KT7A5fjmmg
+         mMuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710444183; x=1711048983;
+        d=1e100.net; s=20230601; t=1710445279; x=1711050079;
         h=content-transfer-encoding:mime-version:message-id:date:user-agent
          :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UZknqzvQ4FXnNpri558VcyxPoGTUJkGKM/XaMZJUDBU=;
-        b=fdGpIKrjGQtENfwQcRCLzxM7zLcBXjUqj++pynPg9hbe/0wOHc1GqmYYAd5on7zqhY
-         /BJ8cJ8qO7ptSsdmEm+OUYKcbyt0Sn8ACG65l8Zd5sJEiyhfxQm3zjVmccAR6GASzXC3
-         /rVOzx4gd2RCh/cI39efzCO43/gdnQTlPoFpNIJhHdrEVRRXDR3wfxCgpMIf4WUCSZHi
-         3iEqJH6rH1gRBRDcGRr9ouLIp4voktMfqZiDtec4RBDCdgQRsyikz4+09RgAxz81XV0D
-         ZaDYng9dM9ZmEyh0em64s+u0u0ciIPLGECMWMHig2YzhSfjYZZCPIzzvX85JtRw5Hp9/
-         vxlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXK05MlBhCqo40S8hZoMReo8ZjTstootkO9AiGcuelpHksNuVIUl65wMEjL+cNkygFKbI64+wUiJrK8sl00Yw54cwZaviMGjHIAh3BjKos=
-X-Gm-Message-State: AOJu0YyB7JFXTsUDQy0eBz1fZqEthH7NYPboX6kPNxtJhNMQ4KCF6A2M
-	wTgvsiGW3jEltcvgDxk3TWB7G1xGNLS1Jc8rN1Mqs5D6DFUi9E1ikNl8KAt1hFo=
-X-Google-Smtp-Source: AGHT+IEQiBoHqZGzF80uJgL2VLJfYI3sQXzz6qKOOI7PtZ2ZTkI1WY3DSt46ADJnk/nmochY/RgTWQ==
-X-Received: by 2002:a05:6402:4493:b0:567:80c7:33bf with SMTP id er19-20020a056402449300b0056780c733bfmr3038848edb.7.1710444183353;
-        Thu, 14 Mar 2024 12:23:03 -0700 (PDT)
+        bh=onEktwJBHB2eXNJMOcrh4ORRowNVQ4kkEBJ7zXW9BpA=;
+        b=LWYqU/AdsBP7G2IV6cOoFNYIMLDStfLYn0lHQk4rEKtlKa/+3alApxtFLTFygcVTMt
+         uicz5tc9RxzS2naAgXB2Y7XYpiIvCNnJh79x0P4AEhspbeJ9WLsodr4dNwCSld0lGmov
+         n+qzbkse7FeluOURDJjqNjVJ3P3xUkI/M0yOxlaZcyUMFUnlA9r6SVANuvMuSzlGSMVQ
+         JS2UBen+yrjPvdECpFB4W3pZpqyFIPggEDeF/TdqHLbYlhz6dny2PXopYjKJT975miyL
+         V+PF1vFebHZnNEi+ngNLb3YK6esQUU25f8u26v9pJkRX8thUojnAHmye7COj1xotD2tD
+         W5Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCUKVgSPgul+Ip8pfNrO54PuPVrZ+dDorlNYC98cKp1j0wiTmbL5Yubm00/FBx1oaWWJWbpA6U7mPYWlWZ2K7jY60/Pd2bhIRsnLr+bvuQk=
+X-Gm-Message-State: AOJu0Yy7Rg/pHbpqoWugT11nfFqKr7fCRMvcekfZOsLxEK60xrBC44qK
+	wfheAPW5X1XyYSAOWttbv72HsSYt6N/4kzhdDGWvESgzxB1vOoU19xIR2VFJcRw=
+X-Google-Smtp-Source: AGHT+IH8czNlNagx2kXUJ8xAoaQoY9sfM4cx5YqDd4DehyKpFMZ6MjCDM1M528wBaOxegt8hCWznIQ==
+X-Received: by 2002:a17:906:c0cc:b0:a46:2100:da56 with SMTP id bn12-20020a170906c0cc00b00a462100da56mr1804417ejb.55.1710445278810;
+        Thu, 14 Mar 2024 12:41:18 -0700 (PDT)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id et4-20020a056402378400b00568a15b063csm799503edb.2.2024.03.14.12.23.02
+        by smtp.gmail.com with ESMTPSA id o11-20020a1709061b0b00b00a3fb9f1f10csm972383ejg.161.2024.03.14.12.41.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Mar 2024 12:23:02 -0700 (PDT)
+        Thu, 14 Mar 2024 12:41:18 -0700 (PDT)
 From: Andreas Hindborg <nmi@metaspace.dk>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>,  Jens Axboe <axboe@kernel.dk>,
@@ -75,16 +75,16 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,  Jens Axboe <axboe@kernel.dk>,
   "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
   "gost.dev@samsung.com" <gost.dev@samsung.com>
 Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
-In-Reply-To: <CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Thu, 14 Mar 2024 19:55:49 +0100")
+In-Reply-To: <87plvwsjn5.fsf@metaspace.dk> (Andreas Hindborg's message of
+	"Thu, 14 Mar 2024 20:22:54 +0100")
 References: <20240313110515.70088-1-nmi@metaspace.dk>
 	<20240313110515.70088-2-nmi@metaspace.dk> <ZfI8-14RUqGqoRd-@boqun-archlinux>
 	<87il1ptck0.fsf@metaspace.dk>
 	<CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
+	<87plvwsjn5.fsf@metaspace.dk>
 User-Agent: mu4e 1.12.0; emacs 29.2
-Date: Thu, 14 Mar 2024 20:22:54 +0100
-Message-ID: <87plvwsjn5.fsf@metaspace.dk>
+Date: Thu, 14 Mar 2024 20:41:10 +0100
+Message-ID: <87h6h8sisp.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -94,26 +94,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+Andreas Hindborg <nmi@metaspace.dk> writes:
 
-> On Thu, Mar 14, 2024 at 9:58=E2=80=AFAM Andreas Hindborg <nmi@metaspace.d=
-k> wrote:
->>
->> Yes, good point. Another option suggested by Miguel is that
->> `__blk_mq_free_request` need not be exported at all. We can make it
->> non-static and then call it from
->> `rust_helper_blk_mq_free_request_internal()`. Then only the latter will
->> be in the kernel image symbol table, which might be better in terms of
->> not exposing `__blk_mq_free_request()` directly.
+> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
 >
-> The helper is not needed, i.e. what I meant was to make it non-static
-> and add it to `include/linux/blk-mq.h`.
+>> On Thu, Mar 14, 2024 at 9:58=E2=80=AFAM Andreas Hindborg <nmi@metaspace.=
+dk> wrote:
+>>>
+>>> Yes, good point. Another option suggested by Miguel is that
+>>> `__blk_mq_free_request` need not be exported at all. We can make it
+>>> non-static and then call it from
+>>> `rust_helper_blk_mq_free_request_internal()`. Then only the latter will
+>>> be in the kernel image symbol table, which might be better in terms of
+>>> not exposing `__blk_mq_free_request()` directly.
+>>
+>> The helper is not needed, i.e. what I meant was to make it non-static
+>> and add it to `include/linux/blk-mq.h`.
+>
+> The way the current code compiles, <kernel::block::mq::Request as
+> kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the `rnull`
+> module. A relocation for `rust_helper_blk_mq_free_request_internal`
+> appears in `rnull_mod.ko`. I didn't test it yet, but if
+> `__blk_mq_free_request` (or the helper) is not exported, I don't think
+> this would be possible?
+>
 
-The way the current code compiles, <kernel::block::mq::Request as
-kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the `rnull`
-module. A relocation for `rust_helper_blk_mq_free_request_internal`
-appears in `rnull_mod.ko`. I didn't test it yet, but if
-`__blk_mq_free_request` (or the helper) is not exported, I don't think
-this would be possible?
+I just tested what you suggested Miguel, and I get a link error for
+`__blk_mq_free_request` being undefined when the module is linked. This
+is even though the code that calls this function lives in the `kernel`
+crate, because it is inlined.
 
 BR Andreas
