@@ -1,138 +1,454 @@
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152BA18E20;
-	Thu, 14 Mar 2024 17:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27505DF53;
+	Thu, 14 Mar 2024 17:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710435836; cv=none; b=fTmAZmuIixJft8GsPuVwk0shdZ9nvMvuxarn36BbR1tPxa7xJil88sw4WKJwPTD2P0IFBrjB0h0g1h6ghd74qma/NX5WDSUug6ndxt8MCde9H0d+2eIWnaZwrb6eTqRm5pzg62ryA3YYnn3+sTLGKIVTiwiaBFfZl9+4/qPbRpo=
+	t=1710436424; cv=none; b=T3tJytxeLeqyLt25pJhKK7MhhJ8sBmdzIMS+1RF5qJztW7OI5zJrIdE2RTkZRnTkM9iuZ25VlYWWwpAeRhUKICwC+a9s6v4wlKzBrppTMWvoUwYoTabWLv4AcDUJ59kzEjwn/AdXIPlowhDZFYPbKwMPBOeVyIrfKCaryjtyP0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710435836; c=relaxed/simple;
-	bh=ltX9xyzVbNiJ0K+V1nTTJSIWdXTIXSSXqkHz5bWJy3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cwrmEHC/eqXLt+6gNWIjLLNtFGG8PvHMkLcA070D09jTa9UqILI70+dV2i5256EZdL+EQL5TgyvOE+bqhy0bEHNKxl6iMcJl7E2+bil1VBTigHNNbGYbILnU8EmNmwR2AEkc1MqQ5+47711nolDC0yS1EM9Uy2ovlBMACiyEn8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=erQ/OAUZ; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1710436424; c=relaxed/simple;
+	bh=hMBd9er7HVbhxDbEsis1HtAr5PExcx5Zy2nDNPsUFiQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EUVNPq3LFpLPTZEUiGoTAps7VLNaND3mph+h0G73RSdhtALWtA2p5CfszMOEL5MktbkKOROzfGXO6STMJyar+AXuWbqbKOuh5swjOVIfz59qI7vF9HL1lResfHrxH23ktA6pe8pazOq1Z0OIiNrzu/ZjQK3Q+S8eR6EX7jK3uFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=b/AI9dTO; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="erQ/OAUZ"
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4TwYcf5hDBzlgVnf;
-	Thu, 14 Mar 2024 17:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:references:content-language:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1710435812; x=1713027813; bh=ltX9xyzVbNiJ0K+V1nTTJSIW
-	dXTIXSSXqkHz5bWJy3w=; b=erQ/OAUZfLhmU0b7rda2YD9kDXmunQi3lfbHtWvE
-	O3sFvjsc2tu91iMPQbM9M94H0xdORfp0ZUZUV9ky/jHeQVfXASFRxFQIoRxaEygU
-	NzwUB6V9qQYAID9XZwSyzHA+msPTv5oY1CB62ST+hXEbJaEB6+pnyZb1kemrYp3E
-	9qjGFnSfrLHHWUN5bT14wmjwHjPXM7pGwtLIe5h56eEdV0AxAxNcFIuDiNbHf5l6
-	52SYczVy6np6jxqPQZVKCVFTr58CGfm1VmEFVHdHRJjeoQSKrbzasTFnOEjxSIqe
-	NNC4bmTyrh6je0O2u7n1brxnpf4KeO+XwFVNYYvkybhjAQ==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id DUbUGxRl-_3F; Thu, 14 Mar 2024 17:03:32 +0000 (UTC)
-Received: from [100.96.154.173] (unknown [104.132.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4TwYcK3CclzlgVnW;
-	Thu, 14 Mar 2024 17:03:29 +0000 (UTC)
-Message-ID: <5f502f91-0450-454d-ae8f-36223920532e@acm.org>
-Date: Thu, 14 Mar 2024 10:03:28 -0700
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="b/AI9dTO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1710436418; x=1710695618;
+	bh=TgCp8KkgPsnDNo355xestkQOzN3oWKXMxFSOF/7Vm4w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=b/AI9dTOXoKaZIyeOvQApzX0aCXcm8WJa6ybvG+5MwTf2lF7tA09iF+/RApQpQad9
+	 q85aTTbnBU2JK0h63y8m5G79ErLpaZ67UoFA8kqJJuw5Tec6PaFcLcOfWQPy2GSZxy
+	 rw9O59bJYiJMoNUtUob0rPjvHvg9hVKWjPYZyqZUFVlb1TtTtWNGPi66rlYl2AZeK7
+	 iInZzNAjHPQsa+5MbbiOeNuuJrKTvhox2WgzdG+n9+h8tDaRLVhMjKxY+cRW3yriBf
+	 sGEysGaA9Cakw4HLve7odrJj/SEnGf6eCJbjBcy/RHs1eCsnk6lcfuzDVW2SkCz7b9
+	 2KyWBq8eboSsw==
+Date: Thu, 14 Mar 2024 17:13:26 +0000
+To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] rust: rbtree: add `RBTreeCursor`
+Message-ID: <ebc7d46f-80f9-4663-a08a-2796758afe10@proton.me>
+In-Reply-To: <20240219-b4-rbtree-v2-5-0b113aab330d@google.com>
+References: <20240219-b4-rbtree-v2-0-0b113aab330d@google.com> <20240219-b4-rbtree-v2-5-0b113aab330d@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/5] Rust block device driver API and null block
- driver
-Content-Language: en-US
-To: Philipp Stanner <pstanner@redhat.com>, Andreas Hindborg
- <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>,
- Damien Le Moal <Damien.LeMoal@wdc.com>, Hannes Reinecke <hare@suse.de>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>,
- Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>,
- Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- Chaitanya Kulkarni <chaitanyak@nvidia.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>,
- =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
- Joel Granados <j.granados@samsung.com>,
- "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
- Daniel Gomez <da.gomez@samsung.com>, open list
- <linux-kernel@vger.kernel.org>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
- "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
- "gost.dev@samsung.com" <gost.dev@samsung.com>
-References: <20240313110515.70088-1-nmi@metaspace.dk>
- <855a006d-5afc-4f70-90a9-ec94c0414d4f@acm.org>
- <c38358c418d4db11221093d7c38c080e4c2d737f.camel@redhat.com>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <c38358c418d4db11221093d7c38c080e4c2d737f.camel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 3/14/24 05:14, Philipp Stanner wrote:
-> On Wed, 2024-03-13 at 11:02 -0700, Bart Van Assche wrote:
->> On 3/13/24 04:05, Andreas Hindborg wrote:
->>> This is the second version of the Rust block device driver API and
->>> the Rust null
->>> block driver. The context and motivation can be seen in cover
->>> letter of the RFC
->>> v1 [1]. If more context is required, a talk about this effort was
->>> recorded at
->>> LPC [2]. I hope to be able to discuss this series at LSF this year
->>> [3].
->>
->> Memory safety may land in C++ in the near future (see also
->> https://herbsutter.com/2024/03/). If memory-safe C++ or memory-safe C
->> would be adopted in the kernel, it would allow writing memory-safe
->> drivers without having to add complicated bindings between existing C
->> code and new Rust code.
+On 2/19/24 12:48, Matt Gilbride wrote:
+> Add a cursor interface to `RBTree`, supporting the following use cases:
+> - Inspect the current node pointed to by the cursor, inspect/move to
+>    it's neighbors in sort order (bidirectionally).
+> - Mutate the tree itself by removing the current node pointed to by the
+>    cursor, or one of its neighbors.
 >=20
-> Correct, but it would also most likely allow to just arbitrarily ignore
-> the "modern, memory safe C" (or C++) and write it the old way.
+> Add functions to obtain a cursor to the tree by key:
+> - The node with the smallest key
+> - The node with the largest key
+> - The node matching the given key, or the one with the next larger key
+>=20
+> The cursor abstraction is needed by the binder driver to efficiently
+> search for nodes and (conditionally) modify them, as well as their
+> neighbors [1].
+>=20
+> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-6-08=
+ba9197f637@google.com/ [1]
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Tested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+> ---
+>   rust/kernel/rbtree.rs | 512 +++++++++++++++++++++++++++++++++++++++++++=
++++++++
+>   1 file changed, 512 insertions(+)
+>=20
+> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> index ccf74e0dc3ec..6c3b10e46517 100644
+> --- a/rust/kernel/rbtree.rs
+> +++ b/rust/kernel/rbtree.rs
+> @@ -245,6 +245,36 @@ pub fn values(&self) -> impl Iterator<Item =3D &'_ V=
+> {
+>       pub fn values_mut(&mut self) -> impl Iterator<Item =3D &'_ mut V> {
+>           self.iter_mut().map(|(_, v)| v)
+>       }
+> +
+> +    /// Returns a cursor over the tree nodes, starting with the smallest=
+ key.
+> +    pub fn cursor_front(&mut self) -> Option<RBTreeCursor<'_, K, V>> {
+> +        let root =3D addr_of_mut!(self.root);
+> +        // SAFETY: `self.root` is always a valid root node
+> +        let current =3D unsafe { bindings::rb_first(root) };
+> +        if current.is_null() {
+> +            return None;
+> +        }
+> +        Some(RBTreeCursor {
 
-Linux kernel developers have the choice today between memory-unsafe C
-and memory-safe Rust so they already have the freedom to ignore memory
-safety by choosing for C. In my opinion a compiler option should be
-introduced once memory-safe C or C++ is available that can be set per
-source file and that makes the build fail for source files that
-unintentionally do not follow the memory-safety rules.
+Missing INVARIANT comment.
 
-> The Kernel's C already has more memory safety than standardized C:
-> There's devres, and since last year there's the __cleanup attribute.
-> =E2=80=93 but the thing is, you can just ignore it and do it the old wa=
-y.
+> +            _tree: PhantomData,
+> +            root,
+> +            current,
+> +        })
+> +    }
+> +
+> +    /// Returns a cursor over the tree nodes, starting with the largest =
+key.
+> +    pub fn cursor_back(&mut self) -> Option<RBTreeCursor<'_, K, V>> {
+> +        let root =3D addr_of_mut!(self.root);
+> +        // SAFETY: `self.root` is always a valid root node
+> +        let current =3D unsafe { bindings::rb_last(root) };
+> +        if current.is_null() {
+> +            return None;
+> +        }
+> +        Some(RBTreeCursor {
 
-devres is controversial - see also Laurent Pinchart, "Why is
-devm_kzalloc() harmful and what can we do about it", LPC, 2022
-(https://lpc.events/event/16/contributions/1227/).
+Ditto.
 
-> One of the stronger arguments behind the push for Rust is that the
-> language by design forces you to obey, because otherwise the compiler
-> will just reject building.
+> +            _tree: PhantomData,
+> +            root,
+> +            current,
+> +        })
+> +    }
+>   }
+>=20
+>   impl<K, V> RBTree<K, V>
+> @@ -377,6 +407,59 @@ pub fn remove(&mut self, key: &K) -> Option<V> {
+>           } =3D *node;
+>           Some(value)
+>       }
+> +
+> +    /// Returns a cursor over the tree nodes based on the given key.
+> +    ///
+> +    /// If the given key exists, the cursor starts there.
+> +    /// Otherwise it starts with the first larger key in sort order.
+> +    /// If there is no larger key, it returns [`None`].
+> +    pub fn cursor_lower_bound(&mut self, key: &K) -> Option<RBTreeCursor=
+<'_, K, V>>
+> +    where
+> +        K: Ord,
+> +    {
+> +        let mut node =3D self.root.rb_node;
+> +        let mut best_match: Option<NonNull<Node<K, V>>> =3D None;
+> +        while !node.is_null() {
+> +            // SAFETY: All links fields we create are in a `Node<K, V>`.
+> +            let this =3D unsafe { crate::container_of!(node, Node<K, V>,=
+ links) }.cast_mut();
+> +            // SAFETY: `this` is a non-null node so it is valid by the t=
+ype invariants.
+> +            let this_key =3D unsafe { &(*this).key };
+> +            // SAFETY: `node` is a non-null node so it is valid by the t=
+ype invariants.
+> +            let left_child =3D unsafe { (*node).rb_left };
+> +            // SAFETY: `node` is a non-null node so it is valid by the t=
+ype invariants.
+> +            let right_child =3D unsafe { (*node).rb_right };
+> +            if key =3D=3D this_key {
+> +                return Some(RBTreeCursor {
 
-Rust has a very significant disadvantage that memory-safe C/C++ won't
-have: supporting Rust means adding Rust bindings for all C functions
-called from Rust code. This forces everyone who wants to change an
-interface to also change the Rust bindings and hence will make it
-harder to maintain the Linux kernel in its entirety.
+Ditto.
 
-Thanks,
+> +                    _tree: PhantomData,
+> +                    root: addr_of_mut!(self.root),
+> +                    current: node,
+> +                });
+> +            } else {
+> +                node =3D if key > this_key {
+> +                    right_child
+> +                } else {
+> +                    let is_better_match =3D match best_match {
+> +                        None =3D> true,
+> +                        Some(best) =3D> {
+> +                            // SAFETY: `best` is a non-null node so it i=
+s valid by the type invariants.
+> +                            let best_key =3D unsafe { &(*best.as_ptr()).=
+key };
+> +                            best_key > this_key
+> +                        }
+> +                    };
+> +                    if is_better_match {
+> +                        best_match =3D NonNull::new(this);
+> +                    }
+> +                    left_child
+> +                }
+> +            };
+> +        }
+> +        best_match.map(|best| RBTreeCursor {
 
-Bart.
+Ditto.
 
+> +            _tree: PhantomData,
+> +            root: addr_of_mut!(self.root),
+> +            // SAFETY: `best` is a non-null node so it is valid by the t=
+ype invariants.
+> +            current: unsafe { addr_of_mut!((*best.as_ptr()).links) },
+> +        })
+> +    }
+>   }
+>=20
+>   impl<K, V> Default for RBTree<K, V> {
+> @@ -407,6 +490,435 @@ fn drop(&mut self) {
+>       }
+>   }
+>=20
+> +/// A bidirectional cursor over the tree nodes, sorted by key.
+> +///
+> +/// # Invariants
+> +///
+> +/// In instance of `RBTreeCursor` is only acquired from [`RBTree`].
+> +/// A reference to the tree used to create the cursor outlives the curso=
+r, so
+> +/// the tree cannot change. By the tree invariant, all nodes are valid.
+
+Make the invariant mention the fields directly:
+- `root` and `current` are valid pointers
+- `root` points to the `root` node of an [`RBTree`]
+- `current` points to a node that is in the same [`RBTree`] that `root` is =
+pointing to
+
+> +///
+> +/// # Examples
+
+[...]
+
+> +pub struct RBTreeCursor<'a, K, V> {
+> +    _tree: PhantomData<&'a RBTree<K, V>>,
+> +    root: *mut bindings::rb_root,
+> +    current: *mut bindings::rb_node,
+> +}
+> +
+> +// SAFETY: An [`RBTree`] allows the same kinds of access to its values t=
+hat a struct allows to its
+> +// fields, so we use the same Send condition as would be used for a stru=
+ct with K and V fields.
+> +unsafe impl<'a, K: Send, V: Send> Send for RBTreeCursor<'a, K, V> {}
+> +
+> +// SAFETY: An [`RBTree`] allows the same kinds of access to its values t=
+hat a struct allows to its
+> +// fields, so we use the same Sync condition as would be used for a stru=
+ct with K and V fields.
+> +unsafe impl<'a, K: Sync, V: Sync> Sync for RBTreeCursor<'a, K, V> {}
+> +
+> +impl<'a, K, V> RBTreeCursor<'a, K, V> {
+> +    /// The current node
+> +    pub fn current(&self) -> (&K, &V) {
+> +        Self::to_key_value(self.current)
+> +    }
+> +
+> +    /// The current node, with a mutable value
+> +    pub fn current_mut(&mut self) -> (&K, &mut V) {
+> +        Self::to_key_value_mut(self.current)
+> +    }
+> +
+> +    /// Remove the current node from the tree.
+> +    ///
+> +    /// Returns a cursor to the next node, if it exists,
+> +    /// else the previous node. Returns [`None`] if the tree
+> +    /// becomes empty.
+> +    pub fn remove_current(mut self) -> Option<Self> {
+> +        let prev =3D self.get_neighbor_raw(Direction::Prev);
+> +        let next =3D self.get_neighbor_raw(Direction::Next);
+> +        // SAFETY: All links fields we create are in a `Node<K, V>`.
+
+This safety comment should be updated like the ones in the earlier
+patches.
+
+> +        let this =3D unsafe { crate::container_of!(self.current, Node<K,=
+ V>, links) }.cast_mut();
+> +        // SAFETY: The reference to the tree used to create the cursor o=
+utlives the cursor, so
+> +        // the tree cannot change. By the tree invariant, all nodes are =
+valid.
+> +        unsafe { bindings::rb_erase(&mut (*this).links, self.root) };
+> +
+> +        let current =3D match (prev, next) {
+> +            (_, Some(next)) =3D> next,
+> +            (Some(prev), None) =3D> prev,
+> +            (None, None) =3D> {
+> +                return None;
+> +            }
+> +        };
+> +
+> +        Some(Self {
+
+Missing INVARIANT comment.
+
+> +            current,
+> +            _tree: self._tree,
+> +            root: self.root,
+> +        })
+> +    }
+> +
+> +    /// Remove the previous node, returning it if it exists.
+> +    pub fn remove_prev(&mut self) -> Option<(K, V)> {
+> +        self.remove_neighbor(Direction::Prev)
+> +    }
+> +
+> +    /// Remove the next node, returning it if it exists.
+> +    pub fn remove_next(&mut self) -> Option<(K, V)> {
+> +        self.remove_neighbor(Direction::Next)
+> +    }
+> +
+> +    fn remove_neighbor(&mut self, direction: Direction) -> Option<(K, V)=
+> {
+> +        if let Some(neighbor) =3D self.get_neighbor_raw(direction) {
+> +            // SAFETY: All links fields we create are in a `Node<K, V>`.
+> +            let this =3D unsafe { crate::container_of!(neighbor, Node<K,=
+ V>, links) }.cast_mut();
+> +            // SAFETY: The reference to the tree used to create the curs=
+or outlives the cursor, so
+> +            // the tree cannot change. By the tree invariant, all nodes =
+are valid.
+> +            unsafe { bindings::rb_erase(&mut (*this).links, self.root) }=
+;
+> +            return Some(Self::to_key_value_owned(neighbor));
+> +        }
+> +        None
+> +    }
+> +
+> +    /// Move the cursor to the previous node, returning [`None`] if it d=
+oesn't exist.
+> +    pub fn move_prev(self) -> Option<Self> {
+> +        self.mv(Direction::Prev)
+> +    }
+> +
+> +    /// Move the cursor to the next node, returning [`None`] if it doesn=
+'t exist.
+> +    pub fn move_next(self) -> Option<Self> {
+> +        self.mv(Direction::Next)
+> +    }
+> +
+> +    fn mv(mut self, direction: Direction) -> Option<Self> {
+> +        self.get_neighbor_raw(direction).map(|neighbor| Self {
+
+Ditto.
+
+> +            _tree: self._tree,
+> +            root: self.root,
+> +            current: neighbor,
+> +        })
+> +    }
+
+[...]
+
+> +    fn peek_mut(&mut self, direction: Direction) -> Option<(&K, &mut V)>=
+ {
+> +        // SAFETY: `self.current` is valid by the type invariants.
+> +        let neighbor =3D unsafe {
+> +            match direction {
+> +                Direction::Prev =3D> bindings::rb_prev(self.current),
+> +                Direction::Next =3D> bindings::rb_next(self.current),
+> +            }
+> +        };
+> +
+> +        if neighbor.is_null() {
+> +            return None;
+> +        }
+
+Why not use `get_neighbor_raw` here?
+
+> +
+> +        Some(Self::to_key_value_mut(neighbor))
+> +    }
+> +
+> +    fn get_neighbor_raw(&mut self, direction: Direction) -> Option<*mut =
+bindings::rb_node> {
+> +        // SAFETY: `self.current` is valid by the type invariants.
+> +        let neighbor =3D unsafe {
+> +            match direction {
+> +                Direction::Prev =3D> bindings::rb_prev(self.current),
+> +                Direction::Next =3D> bindings::rb_next(self.current),
+> +            }
+> +        };
+> +
+> +        if neighbor.is_null() {
+> +            return None;
+> +        }
+> +
+> +        Some(neighbor)
+> +    }
+> +
+> +    // This internal method should *only* be called with a valid pointer=
+ to a node.
+> +    fn to_key_value(node: *mut bindings::rb_node) -> (&'a K, &'a V) {
+> +        // SAFETY: All links fields we create are in a `Node<K, V>`.
+> +        let this =3D unsafe { crate::container_of!(node, Node<K, V>, lin=
+ks) };
+> +        // SAFETY: The passed `node` is the current node or a non-null n=
+eighbor,
+> +        // thus `this` is valid by the type invariants.
+> +        let k =3D unsafe { &(*this).key };
+> +        // SAFETY: The passed `node` is the current node or a non-null n=
+eighbor,
+> +        // thus `this` is valid by the type invariants.
+> +        let v =3D unsafe { &(*this).value };
+> +        (k, v)
+> +    }
+> +
+> +    // This internal method should *only* be called with a valid pointer=
+ to a node.
+> +    fn to_key_value_mut(node: *mut bindings::rb_node) -> (&'a K, &'a mut=
+ V) {
+> +        // SAFETY: All links fields we create are in a `Node<K, V>`.
+> +        let this =3D unsafe { crate::container_of!(node, Node<K, V>, lin=
+ks) }.cast_mut();
+> +        // SAFETY: The passed `node` is the current node or a non-null n=
+eighbor,
+> +        // thus `this` is valid by the type invariants.
+> +        let k =3D unsafe { &(*this).key };
+> +        // SAFETY: The passed `node` is the current node or a non-null n=
+eighbor,
+> +        // thus `this` is valid by the type invariants.
+> +        let v =3D unsafe { &mut (*this).value };
+> +        (k, v)
+> +    }
+> +
+> +    // This internal method should *only* be called with a valid pointer=
+ to a node *that is being removed*.
+> +    fn to_key_value_owned(node: *mut bindings::rb_node) -> (K, V) {
+> +        // SAFETY: All links fields we create are in a `Node<K, V>`.
+> +        let this =3D unsafe { crate::container_of!(node, Node<K, V>, lin=
+ks) }.cast_mut();
+> +        // SAFETY: The passed `node` is the current node or a non-null n=
+eighbor,
+> +        // thus `this` is valid by the type invariants.
+> +        let n =3D unsafe { Box::from_raw(this) };
+> +
+> +        (n.key, n.value)
+> +    }
+
+These internal methods should be `unsafe` and have a Safety section.
+
+--=20
+Cheers,
+Benno
+
+> +}
+> +
+> +/// Direction for [`RBTreeCursor`] operations.
+> +enum Direction {
+> +    /// the node immediately before, in sort order
+> +    Prev,
+> +    /// the node immediately after, in sort order
+> +    Next,
+> +}
+> +
+>   impl<'a, K, V> IntoIterator for &'a RBTree<K, V> {
+>       type Item =3D (&'a K, &'a V);
+>       type IntoIter =3D RBTreeIterator<'a, K, V>;
+>=20
+> --
+> 2.44.0.rc0.258.g7320e95886-goog
+>=20
 
