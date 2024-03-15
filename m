@@ -1,86 +1,42 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1357F1C68A
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 12:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A68A1C696;
+	Fri, 15 Mar 2024 12:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710505091; cv=none; b=CidXnolDvhvhYEQeih7FbHN4XcxRPfcBaj4wwF7Ne+peGx8q/SEG7/6gKUwrrLLVP3nlPsixrftqXP9Ktu8kVA/JPchb3zL22ce6Xm7kGrDpJM7t/PN1ExS4R4m9t0DGS8+OEQRz1oX87u805Da8Jxi7LSyWm4vjA2HDMYRZckA=
+	t=1710505196; cv=none; b=hVEnm0oqFbykyB1GQy4y8RvLNpLsFy+VrXstnaoEZYovBBphX5hjzQmaL35QL1nqOUJAGN35pO02QDMZE9CpNieXQT0HTVc0DSlftW5x2CKX1i+bUssrJOpwjJf8SjwZrSUj8oMRBEVx2Ntn9LeZCMdVwV34FrEF4eONuJ4P1KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710505091; c=relaxed/simple;
-	bh=OXBEZqhs7kDse6BVOLPyb/0TPxks7Uu4zNmjP25UPs4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VjZczs7uP0emNMMBgEDXVVmDmbXlRDdk0upjEnbFMITwNhBWe47jo84D5EcW3Hm+g4IQWbYfiZYoFgoiUrr/rUOsuHQSjjC2dFj7Ti+9eWHZmQExVT+WtxT1aevLZaRr4XAemjgc9PBxcJ8KUCnWCnP8U/iiS1R6XjaqaHLesuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O8CPO8hk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1710505196; c=relaxed/simple;
+	bh=eQPV+J4zFpjgNX9cMFlMvAWLLEHvyDyujFkI7bIr9pM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YhkfoXi8twWUEN8Nzpo4hzUa0KWwT+VQgcj8FWUaQfGc50weUNQq+UNNQGmcFe9Ro0SNYu7YeUuWeCgkeAUkfQn0CR2xZYUDoSHZx01ywOicCnZTK5G0rJfB7slB2v24b77xp/DNkJT4efAg0ximhHcFAUdXW1AuixV8akDOABU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IyfTnT7k; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O8CPO8hk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710505089;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RkV+0UDwdwnEtpTzSiYVVxf6L/nYIk2GiTDZOWrLMLA=;
-	b=O8CPO8hkFsReA0TzyII3P7kY5yAG7zq6uPdT7XywlxFaoDTb/jKmOw9OdndNlH+KlYg200
-	gWEWpnZOPsAXpCYu9yuLJWHpL75ehgQ6rriX7wjOP8dpgSX+QvGQ0Lpit2iFB9gJ+aCdKa
-	1dlxPVfrM2l1n+yqmbRpbQS4YqKliGw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-2P5q7AxxOZCO0dI-vc4yOw-1; Fri, 15 Mar 2024 08:17:50 -0400
-X-MC-Unique: 2P5q7AxxOZCO0dI-vc4yOw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E5F5185A781;
-	Fri, 15 Mar 2024 12:17:49 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.52])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id D18562166B4F;
-	Fri, 15 Mar 2024 12:17:35 +0000 (UTC)
-Date: Fri, 15 Mar 2024 20:17:31 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <Damien.LeMoal@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hannes Reinecke <hare@suse.de>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yexuan Yang <1182282462@bupt.edu.cn>,
-	Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>,
-	Joel Granados <j.granados@samsung.com>,
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
-Message-ID: <ZfQ8Wz9gMqsN02Mv@fedora>
-References: <20240313110515.70088-1-nmi@metaspace.dk>
- <20240313110515.70088-2-nmi@metaspace.dk>
- <ZfI8-14RUqGqoRd-@boqun-archlinux>
- <87il1ptck0.fsf@metaspace.dk>
- <CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
- <87plvwsjn5.fsf@metaspace.dk>
- <CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
- <8734ssrkxd.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IyfTnT7k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=2egbhkk2rfd2hpbcyznjwx537u.protonmail; t=1710505190; x=1710764390;
+	bh=65NwudR1lOE2ENn7UhnnlxMGQQyUDmaHvqbnfkcSrss=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=IyfTnT7kgrPFoIQsjxjP1kDxpU92URnkX1avKOwjXRO1vqiyFPmRU1Qy8251b1aCM
+	 YLXUcaWd5qWSxKhBO5TtI/pRlzznboUrWBSeIRb14Q37wFuMUqKc9VpTQyQsrxbrjg
+	 W/94wCWnUv1z/VvrIVdYh+21XM2xNHX6hvaw8fcEvF+kGUb/8TwYjygu0KWZbdWhYW
+	 QHWcS77DIf/MX+T9UyxLYaaM8fxUPWRawsK8MgauCbTcVg+iqTcNuiKzgaejSONG+l
+	 drZ9V9COFjkA2Ov/YL3cyudCAROCAQTeV6SQ4VNob6AemjwAXmPAhbrWz/n3O1dQdQ
+	 Z097QCyrI22qA==
+Date: Fri, 15 Mar 2024 12:19:42 +0000
+To: =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH v8 1/2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+Message-ID: <b73d15ac-49b4-497c-a5ea-4756e2704290@proton.me>
+In-Reply-To: <20240309235927.168915-3-mcanal@igalia.com>
+References: <20240309235927.168915-2-mcanal@igalia.com> <20240309235927.168915-3-mcanal@igalia.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,44 +44,82 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8734ssrkxd.fsf@metaspace.dk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 15, 2024 at 08:52:46AM +0100, Andreas Hindborg wrote:
-> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
-> 
-> > On Thu, Mar 14, 2024 at 8:23 PM Andreas Hindborg <nmi@metaspace.dk> wrote:
-> >>
-> >> The way the current code compiles, <kernel::block::mq::Request as
-> >> kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the `rnull`
-> >> module. A relocation for `rust_helper_blk_mq_free_request_internal`
-> >> appears in `rnull_mod.ko`. I didn't test it yet, but if
-> >> `__blk_mq_free_request` (or the helper) is not exported, I don't think
-> >> this would be possible?
-> >
-> > Yeah, something needs to be exported since there is a generic
-> > involved, but even if you want to go the route of exporting only a
-> > different symbol, you would still want to put it in the C header so
-> > that you don't get the C missing declaration warning and so that we
-> > don't have to write the declaration manually in the helper.
-> 
-> That is what I did:
-> 
-> @@ -703,6 +703,7 @@ int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_set *set,
->  		unsigned int set_flags);
->  void blk_mq_free_tag_set(struct blk_mq_tag_set *set);
->  
-> +void __blk_mq_free_request(struct request *rq);
->  void blk_mq_free_request(struct request *rq);
->  int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
->  		unsigned int poll_flags);
+On 3/10/24 00:57, Ma=C3=ADra Canal wrote:
+> There are cases where we need to check the alignment of the pointers
+> returned by `into_foreign`. Currently, this is not possible to be done
+> at build time. Therefore, add a property to the trait ForeignOwnable,
+> which specifies the alignment of the pointers returned by
+> `into_foreign`.
+>=20
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>   rust/kernel/sync/arc.rs | 2 ++
+>   rust/kernel/types.rs    | 7 +++++++
+>   2 files changed, 9 insertions(+)
+>=20
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 7d4c4bf58388..da5c8cc325b6 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -274,6 +274,8 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+>   }
+>=20
+>   impl<T: 'static> ForeignOwnable for Arc<T> {
+> +    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<ArcInner<T>>();
+> +
+>       type Borrowed<'a> =3D ArcBorrow<'a, T>;
+>=20
+>       fn into_foreign(self) -> *const core::ffi::c_void {
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index aa77bad9bce4..76cd4226dd35 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -20,6 +20,9 @@
+>   /// This trait is meant to be used in cases when Rust objects are store=
+d in C objects and
+>   /// eventually "freed" back to Rust.
+>   pub trait ForeignOwnable: Sized {
+> +    /// The alignment of pointers returned by `into_foreign`.
+> +    const FOREIGN_ALIGN: usize;
+> +
 
-Can you explain in detail why one block layer internal helper is
-called into rnull driver directly? It never happens in C driver code.
+I think we need to make the trait `unsafe`, since we want `unsafe` code
+to be able to rely on this value being correct.
 
+--=20
+Cheers,
+Benno
 
-Thanks,
-Ming
+>       /// Type of values borrowed between calls to [`ForeignOwnable::into=
+_foreign`] and
+>       /// [`ForeignOwnable::from_foreign`].
+>       type Borrowed<'a>;
+> @@ -68,6 +71,8 @@ unsafe fn try_from_foreign(ptr: *const core::ffi::c_voi=
+d) -> Option<Self> {
+>   }
+>=20
+>   impl<T: 'static> ForeignOwnable for Box<T> {
+> +    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<T>();
+> +
+>       type Borrowed<'a> =3D &'a T;
+>=20
+>       fn into_foreign(self) -> *const core::ffi::c_void {
+> @@ -90,6 +95,8 @@ unsafe fn from_foreign(ptr: *const core::ffi::c_void) -=
+> Self {
+>   }
+>=20
+>   impl ForeignOwnable for () {
+> +    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<()>();
+> +
+>       type Borrowed<'a> =3D ();
+>=20
+>       fn into_foreign(self) -> *const core::ffi::c_void {
+> --
+> 2.43.0
+>=20
 
