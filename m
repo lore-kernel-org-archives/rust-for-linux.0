@@ -1,143 +1,105 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D63A13FE7
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 07:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F9515E81
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 08:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710489182; cv=none; b=NFBbqUzVxTpFysqLXQdhoECmCX5xuql0+cJymic6Qe3EZnA9yfC8oh3DpOGITd+FIfE9IZAIxTLgSy52W1yxIAGXOQC8jX27qgNWmSFIV/3ZF+1XWvb3TgshYkQp5gzQsTydGEfKtg7Hw0SQvw+A+Ia7XWG5EuFgQQF09FFMVng=
+	t=1710490604; cv=none; b=akKrSEo6tFxASZg5bFRwgAVfxXRUJ7vT8bhBG6Eh0i8DpJHo6Wcg/hJYuywd7+ulsoNU51XhZWCFVG5b1Hg2IlIa/qI9NyxPy8/UH2HwyAKVvo9ZnhFkZ0dW4ZNzoSKna8gewwiLD1K6GGM1Eg++1IDnz2lKkcKCq4ZDuFYCMKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710489182; c=relaxed/simple;
-	bh=fKPj1XO0uWZHux7BrNWQJTo/4+56D+wBsGix9OTtOtQ=;
+	s=arc-20240116; t=1710490604; c=relaxed/simple;
+	bh=G3LXo/8SAPK1qMap7q7cDulVLMuCk5g6x5WEmLjyGwA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Bj9LlASBoR0lt3LSUi9/hHZt45lySCWYGv6HuvFAjAY6ccA8P+/3j/8k6HHnoStU/6BRWfU5klgsUlNnroMpptJRpSxfoWM0s/bLjjEbkvuLi6CGc5EBRuqZG4qJSFVFvvpYknBXqCqd2W6E2OEGU3AIz4FW+3tPRIYdQok6C3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=FpDoodmo; arc=none smtp.client-ip=209.85.218.52
+	 MIME-Version:Content-Type; b=dgQmcGt+EaJka2pTiOkjNJZsQ3ukCfGx/B6n+aysOH9mjfQSNR4v5X+Cf01ietyIstir59agKi8OvjkpL62ZNArCtOCKpRYjwElMKLDHcZD4/SmP6j53perNqSsbbwaLbhfLVLWo0LZk46iOJ+6i/hibVfbYBRbb/QzF7GXt6ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=JqQvmBGC; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="FpDoodmo"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a468616ed70so43617966b.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 00:52:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="JqQvmBGC"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5687feeb1feso2069937a12.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 01:16:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710489176; x=1711093976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zXPP3lJYG4o/agsHuJCSdDmnxTSG2DCox+x3uG23L18=;
-        b=FpDoodmoXqEe6hPy6+1y5/Dr+WNp/Q7zvhg11e+5fSfMqPwe6yhhGoGlPyq5r8gaDt
-         fuSqsroJsqtMUHZYqptnunmNuGpZbSvCG+FMrLsj3h7vLHUQhOHiIYe7ZOpOXmpt7kQe
-         Df6EzyDtEvE/k1U+TKR94osfjbl5k4y2zjXmTBJQA/7L6Bj/dVSpKrDJOovXtxbgeVAJ
-         Evr7NSqSbAo5nRt7XDKAbwKQXRXZwKC18Fd3JL0EjLio4WZVc/m+Pg6VT06HDXsrHvrn
-         1w0lFma0CpAyLYVcBzKWDuudhNaV8HOopQHEA+vNGdVt75Qwd2gbIg1FnD50mwes5GnB
-         lP2A==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710490600; x=1711095400; darn=vger.kernel.org;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G3LXo/8SAPK1qMap7q7cDulVLMuCk5g6x5WEmLjyGwA=;
+        b=JqQvmBGC84yhzO7ANXvhDbUV9lL95F4ySMxh/FXyCOv/UB5QBIBL1QmNLi+KEUbev4
+         XJ0QbmSeYaBDhCA+nfqAtH8xt5Y7m3TmelTJ01pQQX79KhzHOurXWs34y0d4Xk0cReZc
+         nQV3MYyrhEik/+r1dN9BhZNY1Q4bXH0ktIbT/QruxnULyCrPb9NEFVz+PL6TzcQFERUC
+         zbwGNhoFaiPeRseTBN5z5Q5ttUTCFH3ODM3E/G+kjzFVrS/yATQKSp2JblBmZeyntgsJ
+         TeCIO1fnah58GaoSPFGoDBL1W3WUQmXiy3WLzTTNhMnrv9zSz33ONI8pSO/QRxy96kDK
+         gD2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710489176; x=1711093976;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zXPP3lJYG4o/agsHuJCSdDmnxTSG2DCox+x3uG23L18=;
-        b=sYo2Nw1UQ4ZH+2TRmxzR1ArMnVwfNO1imR6U6M0R1VO1D+CpDNC0l7W1PoiT1MxvNp
-         MnFnOMDbRwthhjbv/qtuN2oi4OiSoHtZ0bdJMUW4ds8GICiJIq7SX9t2ZwQilPEA/eE7
-         EzwkkRUM4A51GFWScb9isalpz2Tgr7pvfpSX8w2re5jJpPlOmJXPT0p7Jfs9N6CiqHbJ
-         s8X1i08Ri9OoK3afxHcJcWLe77SK4MpyPDsGAY+tt55FWlZ+jMI1w4N6/S//9Z8Nn2ZY
-         2vaNsXlZvOeckzZqzxi6P+JSoyFV98w4EGDqsllgRCVVyaRaV/gGh37eWbIMLkJ02GyC
-         9szQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXIwmM99cp8Chpq9zImoYWzjg4jh1iuB6X+b9/PbJTahlTLECrTeR9HTAx7I6w6V2uEnA1gsKlZwYEW3sG6qfymwTvTvXfCvPzZ2w+gRso=
-X-Gm-Message-State: AOJu0YySQPmvzacyKnFvKdFXyFqaCtG7hQ+Ku7EzB+xoGO0kukEiTD+Z
-	VIVsgiBt8zaQO4jJQb7sq5/Wue/5ulZfPgVmDpuGoB+clsaos2K2kWJ1N+VV1Ow=
-X-Google-Smtp-Source: AGHT+IFTO2DYaoVAjSu0M3KgKLmvykW5UhcvX3tBlSuDHByvqa85Ukxe2YkzMKaS2gKC+1a2E1+wEQ==
-X-Received: by 2002:a17:907:c244:b0:a46:66d4:6d24 with SMTP id tj4-20020a170907c24400b00a4666d46d24mr3647427ejc.37.1710489176432;
-        Fri, 15 Mar 2024 00:52:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1710490600; x=1711095400;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G3LXo/8SAPK1qMap7q7cDulVLMuCk5g6x5WEmLjyGwA=;
+        b=Ltlhy8uZBJ297GkXlODHU1EZk74QiETYHZuncIKyAaWWHOhGj5+WzJiSlnW9iRtxy5
+         rW3PCrdnQ16pcP5CCtNAot+y3c00hNzkVKgTPQ3AWFYqlT6hARr4Ga2IBhDgmVoussRo
+         iBVdA3v/YPbjTtDRvee0VJKHOQbi8h2LazIw0PaA25xLWdAmf7N/jghNbX4241ReqCLb
+         tzqFPES/0a12McHxVnk02KPlJLpwQSI0uVRosQt2MBiVf58Tx99RNn5q3WAaQGg8o2d+
+         SaqLp3Yue/KlLJ0Xue3/z7Gi1fksW0re2ZucCAlJf8/ZeF5PYwrMPIVABhT9aopGqyQj
+         MQoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBQyJ+wxqrdocsDEqbdp4bWanSviX01yWrwHE1Skj8X58LuVbE07BugBen2Ab9fSe4xMgXNXmOIiNZ7O1mi2HagkwqPqsk5ygmP/BiVpE=
+X-Gm-Message-State: AOJu0YyF81AGqcp2qemTfbibXlhxlw8zVvfN4ONwtnH0RLI0kPw6QRP+
+	nzRdfWoNmGUBxM8ImwKDzQmMOFIgKTJ6ROs1C1AUCxeqdvRn0WRxRxE3fGHlOgo=
+X-Google-Smtp-Source: AGHT+IG7Iq8e4QX5tNKzGQjmTkOhzLhVMQZNEC1/svRFC11/pvZWvj4VBzkScAqS1k2USSm5kMesMQ==
+X-Received: by 2002:a05:6402:28c9:b0:568:9e92:2847 with SMTP id ef9-20020a05640228c900b005689e922847mr2213502edb.40.1710490599758;
+        Fri, 15 Mar 2024 01:16:39 -0700 (PDT)
 Received: from localhost ([194.62.217.2])
-        by smtp.gmail.com with ESMTPSA id wr6-20020a170907700600b00a466c66804bsm1436273ejb.49.2024.03.15.00.52.55
+        by smtp.gmail.com with ESMTPSA id q12-20020a056402248c00b005676dc74568sm1451876eda.92.2024.03.15.01.16.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Mar 2024 00:52:56 -0700 (PDT)
+        Fri, 15 Mar 2024 01:16:39 -0700 (PDT)
 From: Andreas Hindborg <nmi@metaspace.dk>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Jens Axboe
- <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, Keith Busch
- <kbusch@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,  Christoph Hellwig <hch@lst.de>,
-    Damien Le Moal <Damien.LeMoal@wdc.com>,  Bart Van Assche
- <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,
-  "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,  Andreas
- Hindborg <a.hindborg@samsung.com>,  Wedson Almeida Filho
- <wedsonaf@gmail.com>,  Niklas Cassel <Niklas.Cassel@wdc.com>,  Greg KH
- <gregkh@linuxfoundation.org>,  Matthew Wilcox <willy@infradead.org>,
-  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
- <aliceryhl@google.com>,  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis
- Chamberlain <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,
-  Sergio =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
- Granados
- <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
- <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  open
- list <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
- <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
- <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
-In-Reply-To: <CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Thu, 14 Mar 2024 20:41:32 +0100")
-References: <20240313110515.70088-1-nmi@metaspace.dk>
-	<20240313110515.70088-2-nmi@metaspace.dk> <ZfI8-14RUqGqoRd-@boqun-archlinux>
-	<87il1ptck0.fsf@metaspace.dk>
-	<CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
-	<87plvwsjn5.fsf@metaspace.dk>
-	<CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>,  Andreas Hindborg
+ <a.hindborg@samsung.com>,  akpm@linux-foundation.org,
+  alex.gaynor@gmail.com,  arnd@arndb.de,  arve@android.com,
+  benno.lossin@proton.me,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
+  brauner@kernel.org,  cmllamas@google.com,  gary@garyguo.net,
+  gregkh@linuxfoundation.org,  joel@joelfernandes.org,
+  keescook@chromium.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org,  maco@android.com,  ojeda@kernel.org,
+  rust-for-linux@vger.kernel.org,  surenb@google.com,  tkjos@android.com,
+  viro@zeniv.linux.org.uk,  wedsonaf@gmail.com
+Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+In-Reply-To: <20240311105056.122734-1-aliceryhl@google.com> (Alice Ryhl's
+	message of "Mon, 11 Mar 2024 10:50:56 +0000")
+References: <20240311-alice-mm-v3-4-cdf7b3a2049c@google.com>
+	<20240311105056.122734-1-aliceryhl@google.com>
 User-Agent: mu4e 1.12.0; emacs 29.2
-Date: Fri, 15 Mar 2024 08:52:46 +0100
-Message-ID: <8734ssrkxd.fsf@metaspace.dk>
+Date: Fri, 15 Mar 2024 09:16:32 +0100
+Message-ID: <87ttl7rjtr.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+Alice Ryhl <aliceryhl@google.com> writes:
 
-> On Thu, Mar 14, 2024 at 8:23=E2=80=AFPM Andreas Hindborg <nmi@metaspace.d=
-k> wrote:
->>
->> The way the current code compiles, <kernel::block::mq::Request as
->> kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the `rnull`
->> module. A relocation for `rust_helper_blk_mq_free_request_internal`
->> appears in `rnull_mod.ko`. I didn't test it yet, but if
->> `__blk_mq_free_request` (or the helper) is not exported, I don't think
->> this would be possible?
+> Alice Ryhl <aliceryhl@google.com> writes:
 >
-> Yeah, something needs to be exported since there is a generic
-> involved, but even if you want to go the route of exporting only a
-> different symbol, you would still want to put it in the C header so
-> that you don't get the C missing declaration warning and so that we
-> don't have to write the declaration manually in the helper.
+> Andreas Hindborg: I recall you mentioning that you also needed an
+> abstraction for pages. To what extent do these abstractions fit your
+> needs? Which gfp flags do you need?
+>
 
-That is what I did:
+I based the block device driver API and null block driver series on v1
+of this patch and v3 should still be good for that. The null block
+driver uses `Page` indirectly through `UniqueFolio` with `GFP_KERNEL`
+alloc flags. I do not need to customize the flags outside of that.
 
-@@ -703,6 +703,7 @@ int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_set *set,
- 		unsigned int set_flags);
- void blk_mq_free_tag_set(struct blk_mq_tag_set *set);
-=20
-+void __blk_mq_free_request(struct request *rq);
- void blk_mq_free_request(struct request *rq);
- int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
- 		unsigned int poll_flags);
-
-> In any case, if we really want to avoid exporting the original symbol
-> (perhaps so that "only Rust" can use it -- or someone trying hard to
-> bypass things on purpose), then we could still avoid the helper and
-> instead write a non-generic `kernel`-private Rust function instead.
-
-Let's see what the block layer experts say first. Perhaps it is OK to
-expose this symbol like this or maybe it can be made more generic
-somehow.
-
-Jens, Ming, Keith, do you have any comments?
+As an aside, I added methods to safely operate on the page contents [1].
+`kernel::block::vec::Segment` indirectly uses this to move data to and
+from pages [2].
 
 Best regards,
 Andreas
+
+
+[1] https://github.com/metaspace/linux/commit/e88f4dc928233fcedcb0afec40be9bc2f8f74e3b
+[2] https://lore.kernel.org/rust-for-linux/87y1akso83.fsf@metaspace.dk/T/#me6497ec69544efd21908f1acc6b3a1ab8b148ba0
