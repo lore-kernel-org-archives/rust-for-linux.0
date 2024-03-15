@@ -1,111 +1,143 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47176763F3;
-	Thu, 14 Mar 2024 20:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D63A13FE7
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 07:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710449805; cv=none; b=TXa9RnzJC1BpBik4so3sxnM7H+Z7sIJZQ1ufXVa7VXvgvzMvhAauhpkZtxiUoQP22iI1kU8R9VotaF5t1Et0XfJJcJwBSfEP26s5JWNiG3EB3HizcebcqF+pYIAdZXWglNLYQhHOf0cJPojhXEQWfMB0EYLcd504tYE1645O82Q=
+	t=1710489182; cv=none; b=NFBbqUzVxTpFysqLXQdhoECmCX5xuql0+cJymic6Qe3EZnA9yfC8oh3DpOGITd+FIfE9IZAIxTLgSy52W1yxIAGXOQC8jX27qgNWmSFIV/3ZF+1XWvb3TgshYkQp5gzQsTydGEfKtg7Hw0SQvw+A+Ia7XWG5EuFgQQF09FFMVng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710449805; c=relaxed/simple;
-	bh=vVexG+y35tQ9uiNulQsBhDXB6JraRtnHZp6M/RG+asg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QEkMQuH5vGHB+zpmlDRkl9A+09NCb2Aqv9iKce2ckDFaQCuOWbh06WavVv0kGf0Vw193+PZLJvJD3J4ZbxjUILMyWB4aie25LW+fKwhjKrUk2dXNkZWbm0uQPjk0HvmUqkbA5jQ8HnhkqA1R6Xtf9e6TSZt4D0ZnnlFZoBQeabo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ArR2IdJa; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710489182; c=relaxed/simple;
+	bh=fKPj1XO0uWZHux7BrNWQJTo/4+56D+wBsGix9OTtOtQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Bj9LlASBoR0lt3LSUi9/hHZt45lySCWYGv6HuvFAjAY6ccA8P+/3j/8k6HHnoStU/6BRWfU5klgsUlNnroMpptJRpSxfoWM0s/bLjjEbkvuLi6CGc5EBRuqZG4qJSFVFvvpYknBXqCqd2W6E2OEGU3AIz4FW+3tPRIYdQok6C3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=FpDoodmo; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ArR2IdJa"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-29c731ba369so1156382a91.3;
-        Thu, 14 Mar 2024 13:56:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="FpDoodmo"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a468616ed70so43617966b.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 00:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710449803; x=1711054603; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710489176; x=1711093976; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vVexG+y35tQ9uiNulQsBhDXB6JraRtnHZp6M/RG+asg=;
-        b=ArR2IdJaBNB6LDskwV1CvU0y3BCddnsUJ15ZQea5mhdl7HVHeBJRHhocwskvkAvXXe
-         qBvoUfuOsQiVhjhHP5XviKFca454LBq9X+5i5tfeX6pumPU73Rs6TiNktmE3X0SgPRPS
-         DBt0/e9LJPsSZ8YXe3Bn4akZSlNtlusudo04KjDOGX2FrURlekhQbaGOJrAAenmEVya5
-         Z2ojscwHEZSjHMgVEQ84R1j4bw0YkDRjlPpGYPmH+NwS7lXYuXIgm+w1TWCEXRriM3B7
-         MN+5git9hsrT4varHBvm0kvKypVo57gH19mYR6zTX8C0KxX0WRkHfig1DeJV8P35RljF
-         8cvA==
+        bh=zXPP3lJYG4o/agsHuJCSdDmnxTSG2DCox+x3uG23L18=;
+        b=FpDoodmoXqEe6hPy6+1y5/Dr+WNp/Q7zvhg11e+5fSfMqPwe6yhhGoGlPyq5r8gaDt
+         fuSqsroJsqtMUHZYqptnunmNuGpZbSvCG+FMrLsj3h7vLHUQhOHiIYe7ZOpOXmpt7kQe
+         Df6EzyDtEvE/k1U+TKR94osfjbl5k4y2zjXmTBJQA/7L6Bj/dVSpKrDJOovXtxbgeVAJ
+         Evr7NSqSbAo5nRt7XDKAbwKQXRXZwKC18Fd3JL0EjLio4WZVc/m+Pg6VT06HDXsrHvrn
+         1w0lFma0CpAyLYVcBzKWDuudhNaV8HOopQHEA+vNGdVt75Qwd2gbIg1FnD50mwes5GnB
+         lP2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710449803; x=1711054603;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vVexG+y35tQ9uiNulQsBhDXB6JraRtnHZp6M/RG+asg=;
-        b=ZyBysuIFfrncaJz1Il8NT2/4Iwrlynu6sez/MsZVzKrUmE0LuaJWgdhb5ZN9wsu7F2
-         dBdfKs0jpchXD7/cOVmEOAoQudOTcvk02gq0svwdjEhN/3EEHmGcp+DP3CvkuKnoTKEb
-         a8L+lTxfJ+4DiqFS5xyT0dvpm3JretDgD0PGAPyFMngnaSTUf54KGKnmVNIMlJajQf/i
-         P5aqCbwcS9VaDfNLW5KoW7oSXm1mKMInKO1/Tv3LV1Vzer178H/sPkQofem+P6lMWNlr
-         DCIHJwX8s4FZicC+R12/eHtj3AsErjhgoI7bngSIlSn4MCRZbF+4scZIMlbg0/eEGzo7
-         r1KA==
-X-Forwarded-Encrypted: i=1; AJvYcCWapOBqqoIcYdP6w4WpsOTttTH5uyaNdDMhwdtytTp76wLc4g+kUq5x05C6bzDlOce6H4qCTKehtonb+1f2RRpza6omA/KAiCM3BL9SMFNEHG9uaHNPDmsrRYRMwWzaUcGfjri0zLh/X4VJyDnHB3Xay2uzYJJxT1AoGy/j+xPff21+ZzN3Nv8ytg==
-X-Gm-Message-State: AOJu0YwvP3tjm8Y4kvTfixOqi/OPEsIp921MhOc4dzALu3kK68F6Vf0g
-	Lmkcp27Udat9h6os2GS8HSRkVKbrKSl7SC+83bBgx5UIRXnIVU5IOTEPXORFq/44JhDls2PnZSS
-	w2CtTDJ2sza1BqK+ZnoqDjy/Wvk8=
-X-Google-Smtp-Source: AGHT+IG4wxqkAxjdwKlg1zhlT5ni1nrZhArv7cmYlou+sBdAxdO9JwjEtP6sfS1qBKW4ZUbRHqGkBMyDjHAU8zKgLeM=
-X-Received: by 2002:a17:90a:ce12:b0:29b:f2b1:6973 with SMTP id
- f18-20020a17090ace1200b0029bf2b16973mr2930051pju.20.1710449803547; Thu, 14
- Mar 2024 13:56:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1710489176; x=1711093976;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zXPP3lJYG4o/agsHuJCSdDmnxTSG2DCox+x3uG23L18=;
+        b=sYo2Nw1UQ4ZH+2TRmxzR1ArMnVwfNO1imR6U6M0R1VO1D+CpDNC0l7W1PoiT1MxvNp
+         MnFnOMDbRwthhjbv/qtuN2oi4OiSoHtZ0bdJMUW4ds8GICiJIq7SX9t2ZwQilPEA/eE7
+         EzwkkRUM4A51GFWScb9isalpz2Tgr7pvfpSX8w2re5jJpPlOmJXPT0p7Jfs9N6CiqHbJ
+         s8X1i08Ri9OoK3afxHcJcWLe77SK4MpyPDsGAY+tt55FWlZ+jMI1w4N6/S//9Z8Nn2ZY
+         2vaNsXlZvOeckzZqzxi6P+JSoyFV98w4EGDqsllgRCVVyaRaV/gGh37eWbIMLkJ02GyC
+         9szQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXIwmM99cp8Chpq9zImoYWzjg4jh1iuB6X+b9/PbJTahlTLECrTeR9HTAx7I6w6V2uEnA1gsKlZwYEW3sG6qfymwTvTvXfCvPzZ2w+gRso=
+X-Gm-Message-State: AOJu0YySQPmvzacyKnFvKdFXyFqaCtG7hQ+Ku7EzB+xoGO0kukEiTD+Z
+	VIVsgiBt8zaQO4jJQb7sq5/Wue/5ulZfPgVmDpuGoB+clsaos2K2kWJ1N+VV1Ow=
+X-Google-Smtp-Source: AGHT+IFTO2DYaoVAjSu0M3KgKLmvykW5UhcvX3tBlSuDHByvqa85Ukxe2YkzMKaS2gKC+1a2E1+wEQ==
+X-Received: by 2002:a17:907:c244:b0:a46:66d4:6d24 with SMTP id tj4-20020a170907c24400b00a4666d46d24mr3647427ejc.37.1710489176432;
+        Fri, 15 Mar 2024 00:52:56 -0700 (PDT)
+Received: from localhost ([194.62.217.2])
+        by smtp.gmail.com with ESMTPSA id wr6-20020a170907700600b00a466c66804bsm1436273ejb.49.2024.03.15.00.52.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Mar 2024 00:52:56 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Jens Axboe
+ <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, Keith Busch
+ <kbusch@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,  Christoph Hellwig <hch@lst.de>,
+    Damien Le Moal <Damien.LeMoal@wdc.com>,  Bart Van Assche
+ <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,
+  "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,  Andreas
+ Hindborg <a.hindborg@samsung.com>,  Wedson Almeida Filho
+ <wedsonaf@gmail.com>,  Niklas Cassel <Niklas.Cassel@wdc.com>,  Greg KH
+ <gregkh@linuxfoundation.org>,  Matthew Wilcox <willy@infradead.org>,
+  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
+ <aliceryhl@google.com>,  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis
+ Chamberlain <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,
+  Sergio =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
+ Granados
+ <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
+ <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  open
+ list <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
+ <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
+ <gost.dev@samsung.com>
+Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
+In-Reply-To: <CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Thu, 14 Mar 2024 20:41:32 +0100")
+References: <20240313110515.70088-1-nmi@metaspace.dk>
+	<20240313110515.70088-2-nmi@metaspace.dk> <ZfI8-14RUqGqoRd-@boqun-archlinux>
+	<87il1ptck0.fsf@metaspace.dk>
+	<CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
+	<87plvwsjn5.fsf@metaspace.dk>
+	<CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
+User-Agent: mu4e 1.12.0; emacs 29.2
+Date: Fri, 15 Mar 2024 08:52:46 +0100
+Message-ID: <8734ssrkxd.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313110515.70088-1-nmi@metaspace.dk> <20240313110515.70088-2-nmi@metaspace.dk>
- <ZfI8-14RUqGqoRd-@boqun-archlinux> <87il1ptck0.fsf@metaspace.dk>
- <CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
- <87plvwsjn5.fsf@metaspace.dk> <CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
-In-Reply-To: <CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 14 Mar 2024 21:56:31 +0100
-Message-ID: <CANiq72noqwU9_wC28Emc2LNyD70JFcS+4MXWuwYUTUWq8ragCg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, 
-	Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, 
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Yexuan Yang <1182282462@bupt.edu.cn>, 
-	=?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
-	Joel Granados <j.granados@samsung.com>, 
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, 
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, 
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 14, 2024 at 8:41=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+
+> On Thu, Mar 14, 2024 at 8:23=E2=80=AFPM Andreas Hindborg <nmi@metaspace.d=
+k> wrote:
+>>
+>> The way the current code compiles, <kernel::block::mq::Request as
+>> kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the `rnull`
+>> module. A relocation for `rust_helper_blk_mq_free_request_internal`
+>> appears in `rnull_mod.ko`. I didn't test it yet, but if
+>> `__blk_mq_free_request` (or the helper) is not exported, I don't think
+>> this would be possible?
 >
+> Yeah, something needs to be exported since there is a generic
+> involved, but even if you want to go the route of exporting only a
+> different symbol, you would still want to put it in the C header so
+> that you don't get the C missing declaration warning and so that we
+> don't have to write the declaration manually in the helper.
+
+That is what I did:
+
+@@ -703,6 +703,7 @@ int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_set *set,
+ 		unsigned int set_flags);
+ void blk_mq_free_tag_set(struct blk_mq_tag_set *set);
+=20
++void __blk_mq_free_request(struct request *rq);
+ void blk_mq_free_request(struct request *rq);
+ int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
+ 		unsigned int poll_flags);
+
 > In any case, if we really want to avoid exporting the original symbol
 > (perhaps so that "only Rust" can use it -- or someone trying hard to
 > bypass things on purpose), then we could still avoid the helper and
 > instead write a non-generic `kernel`-private Rust function instead.
 
-The advantages would be that we get the export done automatically and
-that we could write in Rust, e.g. with restricted visibility.
+Let's see what the block layer experts say first. Perhaps it is OK to
+expose this symbol like this or maybe it can be made more generic
+somehow.
 
-But we could need `#[inline(never)]` (or ideally `#[used]` if it could
-go on functions) or `#[no_mangle]` (but we would lose the mangling).
+Jens, Ming, Keith, do you have any comments?
 
-Anyway, the simplest is to export the original symbol, but we could
-consider to provide support one way or another for this kind of
-"helpers" (i.e. leaving the current helpers as those for macros and
-inline functions), so that it is clear what symbols are only exported
-for Rust use (and not other C code).
-
-Cheers,
-Miguel
+Best regards,
+Andreas
