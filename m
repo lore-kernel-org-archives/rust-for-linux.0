@@ -1,88 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543BD3BB52
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 15:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13BF4CB37
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 17:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710516294; cv=none; b=syd4Pq5P7eb0Sjl0Ix2+a27fIT1OUGXmPeiejMl5nMuSRKNdTQ3zp5NgJY5w34LPUlIT3w13M6rYKkLPoyuJ5qXZDt+k/Zbu9KE2JYLJ0sp83QNb2qxnvlKEDn5jOuiu3louC6FjITwwP9bOokIkOgvFeiUagbVMpvi9IhCgQjc=
+	t=1710524993; cv=none; b=JrgVu4/xANSIpabVvlqmCDfnMsadfMmYjVKJDMomGG54RP2EIZAf3H6vS3SB50JNuQw8aEge+SvVNC4C06sOfWQPT1u5Wj3pFwfhrm7MVbAxrHZgLrvIQRyOPZmRxpuiLkNbcPINrmaE+2uJ8Nbx/NBe0IPt2+5xmDqV4C7N/co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710516294; c=relaxed/simple;
-	bh=txagI/T+kcFTGonyWWYBOzz8k+ZSE6z4gBs79vLf9i0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rXGngLtwHdjrAr/a5bPxBOdp0ny6v4uYT+vSI53h6bjdph39sEkd6SUmtsw3pmO4qW0u8y9m5mi73ylocj2WJJm1XPd8BCC1NfApWbz/SRBB/t7MqCQQI4CJxtkUqptcdI/tFs2wjg1M2yK2UDVJ7miRa2UPsh1RqzoC1PR3/BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D14Ir4T1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1710524993; c=relaxed/simple;
+	bh=AgjuwmLizdLncxaEVdxa5G6gYOJ9fxm5TNQBPG1v8Pk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=odAgmqqCNWir7qJl7/V2FVKUHIAFUpJw+k4eza/EZuiG6g0FYI3keDwPvT0JmNAyLfyR9aSjcMCgrGa/cB85v16BEIDpxEEB6SEw/soAYq0smdtYkekkHSdwzBEbAfo0vyGeFfdMTQJ0RI4EQx1kdXyQlOa0xImDz9r8zMeNhTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=bxQBS38M; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D14Ir4T1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710516290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FW5Vr1gDYBniy1MSzi0AljuuiEKIG0vHfpgNYvthLcs=;
-	b=D14Ir4T1/mWBuP9yGtinAoL+9wChGkitbMJjMmyZ0e9q2cF9/ihckR6uYrKvpzmUUci0IM
-	r1xp1GlFARRdX+869ry6PCRZlNwx82s8brNODahlmQG4HFCZWvWp5NnaiEnnoX6uTP/Gro
-	9mdDVpVvupTMgquv4Eb1jz+SoPKd9X0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-vri6rDGMO7SzEzKgLnwq5w-1; Fri, 15 Mar 2024 11:24:46 -0400
-X-MC-Unique: vri6rDGMO7SzEzKgLnwq5w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0B2BE101CC6D;
-	Fri, 15 Mar 2024 15:24:44 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.52])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 1FF9B1C060D1;
-	Fri, 15 Mar 2024 15:24:30 +0000 (UTC)
-Date: Fri, 15 Mar 2024 23:24:23 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <Damien.LeMoal@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hannes Reinecke <hare@suse.de>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yexuan Yang <1182282462@bupt.edu.cn>,
-	Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>,
-	Joel Granados <j.granados@samsung.com>,
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="bxQBS38M"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a4644bde1d4so307304066b.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Mar 2024 10:49:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710524989; x=1711129789; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IBckmq0lRrEdCK7ZRxBGutF7hwnT74BhLWa7MU2ofao=;
+        b=bxQBS38MyhjZU6ZtW81GeSPNAdD4XE7hwNpht/kyOSx44I1yKcaZDv+CpAmBuMM24R
+         avAkFD7CgeQp0PaaUPptlY/R6uabcY/MzEAS3VNxlZ7Ji0iHc7uhFRVj2rjZfdHr+biR
+         pZxMqAaSSXG0jJjtaxYhbZ3N4QDwkuXFcGnjzZxJLTto4vgf+uVPnTCTuEGPw2c2xPgC
+         FReZfp+c5vT+qKOJYEFK6AyV64FflLV81wtyyrPMYWkJV/5BmmNjgtfohEB2U24RdEUW
+         AnuAgGVk6P8i62DBkf4u3yVJS066YcUy70m3MfBNkKhi9mptyt6yNOOCKmkkSUOMMJr5
+         ZyZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710524989; x=1711129789;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IBckmq0lRrEdCK7ZRxBGutF7hwnT74BhLWa7MU2ofao=;
+        b=TlT9XZu6yh0grPhc+VNUyMaNt0KCmFrMU8UKpda/IFKRDbGpbX39eqJ33vIgnouiA1
+         ti/OPH84khB8MQCemUUHgPO1xKpNwjX92NGJkS4qUcGP4F2dTOTGtsm6QzUmxAjAesK0
+         0EQH2Dsi3pzBcPvcfbrQYxu9SqRGDAZ6rHnwozcdEkET8VJK3MYMc3gmE+lZxU1BKuVq
+         HuOIYPO+1jOi+QeLvr0dxahid6h7uDYAbetOvWqPBDn3FMeNVj2Yb7NwpUbxxqLoTOyl
+         a1gUEz7Xvs/fpWRQ/b43qbnPyqP97gs1UhUpbBFLM3VOxQBl6C5mcBuU8HVVbPNfz7cz
+         lmIw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3zooPnQeP0s7To4lU9wm/yKW+6YcLS/OM5J1oxlssfE8Ezhbl1/hgJpAGPOMtRsMMEqjvVBrC7Ta69calXWXiIf8PQl7fYlA99XAL3NA=
+X-Gm-Message-State: AOJu0YyVbsIrahwh9/gTTHdqAjamR3xdwuJdEnvg/ELjuguFS53NX2dd
+	Ak9RPIRkro2+7X7tFGoZFasHJHDeTDSXj9v4FMAwI3R2iHEfVExoxPZ1Gv2mn+0=
+X-Google-Smtp-Source: AGHT+IE6q+BbYIVJVQW18ZUeWJfNw8Na4IPiPm+TxOTb4Agzzdp7H6s0s02T0AtxVs3F1j7ksAoPsg==
+X-Received: by 2002:a17:907:6d24:b0:a46:707b:8ff6 with SMTP id sa36-20020a1709076d2400b00a46707b8ff6mr2491257ejc.62.1710524988440;
+        Fri, 15 Mar 2024 10:49:48 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id gx27-20020a1709068a5b00b00a465fd3977esm1941238ejc.143.2024.03.15.10.49.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Mar 2024 10:49:47 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Ming Lei <ming.lei@redhat.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,  Jens Axboe
+ <axboe@kernel.dk>,  Keith Busch <kbusch@kernel.org>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Christoph Hellwig <hch@lst.de>,  Damien Le Moal
+ <Damien.LeMoal@wdc.com>,  Bart Van Assche <bvanassche@acm.org>,  Hannes
+ Reinecke <hare@suse.de>,  "linux-block@vger.kernel.org"
+ <linux-block@vger.kernel.org>,  Andreas Hindborg <a.hindborg@samsung.com>,
+  Wedson Almeida Filho <wedsonaf@gmail.com>,  Niklas Cassel
+ <Niklas.Cassel@wdc.com>,  Greg KH <gregkh@linuxfoundation.org>,  Matthew
+ Wilcox <willy@infradead.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex
+ Gaynor <alex.gaynor@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
+  Alice Ryhl <aliceryhl@google.com>,  Chaitanya Kulkarni
+ <chaitanyak@nvidia.com>,  Luis Chamberlain <mcgrof@kernel.org>,  Yexuan
+ Yang <1182282462@bupt.edu.cn>,  Sergio =?utf-8?Q?Gonz=C3=A1lez?= Collado
+ <sergio.collado@gmail.com>,  Joel Granados <j.granados@samsung.com>,
+  "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,  Daniel Gomez
+ <da.gomez@samsung.com>,  open list <linux-kernel@vger.kernel.org>,
+  "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+  "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+  "gost.dev@samsung.com" <gost.dev@samsung.com>
 Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
-Message-ID: <ZfRoJxzOLZEIaQK7@fedora>
+In-Reply-To: <ZfRoJxzOLZEIaQK7@fedora> (Ming Lei's message of "Fri, 15 Mar
+	2024 23:24:23 +0800")
 References: <20240313110515.70088-1-nmi@metaspace.dk>
- <20240313110515.70088-2-nmi@metaspace.dk>
- <ZfI8-14RUqGqoRd-@boqun-archlinux>
- <87il1ptck0.fsf@metaspace.dk>
- <CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
- <87plvwsjn5.fsf@metaspace.dk>
- <CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
- <8734ssrkxd.fsf@metaspace.dk>
- <ZfQ8Wz9gMqsN02Mv@fedora>
- <87o7bfr7bt.fsf@metaspace.dk>
+	<20240313110515.70088-2-nmi@metaspace.dk> <ZfI8-14RUqGqoRd-@boqun-archlinux>
+	<87il1ptck0.fsf@metaspace.dk>
+	<CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
+	<87plvwsjn5.fsf@metaspace.dk>
+	<CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
+	<8734ssrkxd.fsf@metaspace.dk> <ZfQ8Wz9gMqsN02Mv@fedora>
+	<87o7bfr7bt.fsf@metaspace.dk> <ZfRoJxzOLZEIaQK7@fedora>
+User-Agent: mu4e 1.12.0; emacs 29.2
+Date: Fri, 15 Mar 2024 18:49:39 +0100
+Message-ID: <87il1nqtak.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -90,90 +96,130 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87o7bfr7bt.fsf@metaspace.dk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 15, 2024 at 01:46:30PM +0100, Andreas Hindborg wrote:
-> Ming Lei <ming.lei@redhat.com> writes:
-> > On Fri, Mar 15, 2024 at 08:52:46AM +0100, Andreas Hindborg wrote:
-> >> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
-> >> 
-> >> > On Thu, Mar 14, 2024 at 8:23 PM Andreas Hindborg <nmi@metaspace.dk> wrote:
-> >> >>
-> >> >> The way the current code compiles, <kernel::block::mq::Request as
-> >> >> kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the `rnull`
-> >> >> module. A relocation for `rust_helper_blk_mq_free_request_internal`
-> >> >> appears in `rnull_mod.ko`. I didn't test it yet, but if
-> >> >> `__blk_mq_free_request` (or the helper) is not exported, I don't think
-> >> >> this would be possible?
-> >> >
-> >> > Yeah, something needs to be exported since there is a generic
-> >> > involved, but even if you want to go the route of exporting only a
-> >> > different symbol, you would still want to put it in the C header so
-> >> > that you don't get the C missing declaration warning and so that we
-> >> > don't have to write the declaration manually in the helper.
-> >> 
-> >> That is what I did:
-> >> 
-> >> @@ -703,6 +703,7 @@ int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_set *set,
-> >>  		unsigned int set_flags);
-> >>  void blk_mq_free_tag_set(struct blk_mq_tag_set *set);
-> >>  
-> >> +void __blk_mq_free_request(struct request *rq);
-> >>  void blk_mq_free_request(struct request *rq);
-> >>  int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
-> >>  		unsigned int poll_flags);
-> >
-> > Can you explain in detail why one block layer internal helper is
-> > called into rnull driver directly? It never happens in C driver code.
-> 
-> It is not the rust null block driver that calls this symbol directly. It
-> is called by the Rust block device driver API. But because of inlining,
-> the symbol is referenced from the loadable object.
+Ming Lei <ming.lei@redhat.com> writes:
 
-What is the exact Rust block device driver API? The key point is that how
-the body of one exported kernel C API(EXPORT_SYMBOL) becomes inlined
-with Rust driver.
+> On Fri, Mar 15, 2024 at 01:46:30PM +0100, Andreas Hindborg wrote:
+>> Ming Lei <ming.lei@redhat.com> writes:
+>> > On Fri, Mar 15, 2024 at 08:52:46AM +0100, Andreas Hindborg wrote:
+>> >> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+>> >>=20
+>> >> > On Thu, Mar 14, 2024 at 8:23=E2=80=AFPM Andreas Hindborg <nmi@metas=
+pace.dk> wrote:
+>> >> >>
+>> >> >> The way the current code compiles, <kernel::block::mq::Request as
+>> >> >> kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the `rn=
+ull`
+>> >> >> module. A relocation for `rust_helper_blk_mq_free_request_internal`
+>> >> >> appears in `rnull_mod.ko`. I didn't test it yet, but if
+>> >> >> `__blk_mq_free_request` (or the helper) is not exported, I don't t=
+hink
+>> >> >> this would be possible?
+>> >> >
+>> >> > Yeah, something needs to be exported since there is a generic
+>> >> > involved, but even if you want to go the route of exporting only a
+>> >> > different symbol, you would still want to put it in the C header so
+>> >> > that you don't get the C missing declaration warning and so that we
+>> >> > don't have to write the declaration manually in the helper.
+>> >>=20
+>> >> That is what I did:
+>> >>=20
+>> >> @@ -703,6 +703,7 @@ int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_set=
+ *set,
+>> >>  		unsigned int set_flags);
+>> >>  void blk_mq_free_tag_set(struct blk_mq_tag_set *set);
+>> >>=20=20
+>> >> +void __blk_mq_free_request(struct request *rq);
+>> >>  void blk_mq_free_request(struct request *rq);
+>> >>  int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
+>> >>  		unsigned int poll_flags);
+>> >
+>> > Can you explain in detail why one block layer internal helper is
+>> > called into rnull driver directly? It never happens in C driver code.
+>>=20
+>> It is not the rust null block driver that calls this symbol directly. It
+>> is called by the Rust block device driver API. But because of inlining,
+>> the symbol is referenced from the loadable object.
+>
+> What is the exact Rust block device driver API? The key point is that how
+> the body of one exported kernel C API(EXPORT_SYMBOL) becomes inlined
+> with Rust driver.
 
-> 
-> The reason we have to call this symbol directly is to ensure proper
-> lifetime of the `struct request`. For example in C, when a driver
+This happens when `ARef<Request<_>>` is dropped. The drop method
+(destructor) of this smart pointer decrements the refcount and
+potentially calls `__blk_mq_free_request`.
 
-Sounds Rust API still calls into __blk_mq_free_request() directly, right?
+>>=20
+>> The reason we have to call this symbol directly is to ensure proper
+>> lifetime of the `struct request`. For example in C, when a driver
+>
+> Sounds Rust API still calls into __blk_mq_free_request() directly, right?
 
-If that is the case, the usecase need to be justified, and you need
-to write one standalone patch with the exact story for exporting
-__blk_mq_free_request().
+Yes, the Rust block device driver API will call this request if an
+`ARef<Request<_>>` is dropped and the refcount goes to 0.
 
-> converts a tag to a request, the developer makes sure to only ask for
-> requests which are outstanding in the driver. In Rust, for the API to be
-> sound, we must ensure that the developer cannot write safe code that
-> obtains a reference to a request that is not owned by the driver.
-> 
-> A similar issue exists in the null block driver when timer completions
-> are enabled. If the request is cancelled and the timer fires after the
-> request has been recycled, there is a problem because the timer holds a
-> reference to the request private data area.
-> 
-> To that end, I use the `atomic_t ref` field of the C `struct request`
-> and implement the `AlwaysRefCounted` Rust trait for the request type.
-> This is a smart pointer that owns a reference to the pointee. In this
-> way, the request is not freed and recycled until the smart pointer is
-> dropped. But if the smart pointer holds the last reference when it is
-> dropped, it must be able to free the request, and hence it has to call
-> `__blk_mq_free_request`.
+> If that is the case, the usecase need to be justified, and you need
+> to write one standalone patch with the exact story for exporting
+> __blk_mq_free_request().
 
-For callbacks(queue_rq, timeout, complete) implemented by driver, block
-layer core guaranteed that the passed request reference is live.
+Ok, I can do that.
 
-So driver needn't to worry about request lifetime, same with Rust
-driver, I think smart pointer isn't necessary for using request in
-Rust driver.
+>
+>> converts a tag to a request, the developer makes sure to only ask for
+>> requests which are outstanding in the driver. In Rust, for the API to be
+>> sound, we must ensure that the developer cannot write safe code that
+>> obtains a reference to a request that is not owned by the driver.
+>>=20
+>> A similar issue exists in the null block driver when timer completions
+>> are enabled. If the request is cancelled and the timer fires after the
+>> request has been recycled, there is a problem because the timer holds a
+>> reference to the request private data area.
+>>=20
+>> To that end, I use the `atomic_t ref` field of the C `struct request`
+>> and implement the `AlwaysRefCounted` Rust trait for the request type.
+>> This is a smart pointer that owns a reference to the pointee. In this
+>> way, the request is not freed and recycled until the smart pointer is
+>> dropped. But if the smart pointer holds the last reference when it is
+>> dropped, it must be able to free the request, and hence it has to call
+>> `__blk_mq_free_request`.
+>
+> For callbacks(queue_rq, timeout, complete) implemented by driver, block
+> layer core guaranteed that the passed request reference is live.
+>
+> So driver needn't to worry about request lifetime, same with Rust
+> driver, I think smart pointer isn't necessary for using request in
+> Rust driver.
 
+Using the C API, there is nothing preventing a driver from using the
+request after the lifetime ends. With Rust, we have to make it
+impossible. Without the refcount and associated call to
+`__blk_mq_free_request`, it would be possible to write Rust code that
+access the request after the lifetime ends. This is not sound, and it is
+something we need to avoid in the Rust abstractions.
 
+One concrete way to do write unsound code with a Rust API where lifetime
+is not tracked with refcount, is if the null block timer completion
+callback fires after the request is completed. Perhaps the driver
+cancels the request but forgets to cancel the timer. When the timer
+fires, it will access the request via the context pointer, but the
+request will be invalid. In C we have to write the driver code so this
+cannot happen. In Rust, the API must prevent this from happening. So any
+driver written in the safe subset of Rust using this API can never
+trigger this behavior.
 
-Thanks, 
-Ming
+By using the refcount, we ensure that the request is alive until all
+users who hold a reference to it are dropped.
 
+Another concrete example is when a driver calls `blk_mq_tag_to_rq` with
+an invalid tag. This can return a reference to an invalid tag, if the
+driver is not implemented correctly. By using `req_ref_inc_not_zero` we
+can assert that the request is live before we create a Rust reference to
+it, and even if the driver code has bugs, it can never access an invalid
+request, and thus it can be memory safe.
+
+We move the responsibility of correctness, in relation to memory safety,
+from the driver implementation to the API implementation.
+
+Best regards,
+Andreas
