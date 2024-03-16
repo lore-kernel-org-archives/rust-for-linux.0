@@ -1,81 +1,98 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7230F17BA6
-	for <rust-for-linux@vger.kernel.org>; Sat, 16 Mar 2024 14:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6211BC56;
+	Sat, 16 Mar 2024 15:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710601014; cv=none; b=k3XxYKzsNogL670REte4oj+1S7a8z+zf4MMu/WQSYOdKA67/Nv2TmeizigcIW21Up5gJtATClpKOO49hq1xyj2hbMkVJz7bWuF2SVOgwQy2MwyV4u5SZkKEHRd68WhQWrs2+Sgrxg1Ze1NU8X3swCXFO6P3joqJ37FatWUnUqeU=
+	t=1710603062; cv=none; b=ARg+tBTr2ZBqTd3cdDpUfnI+uRMNz3nBeAgAbqqqRxy/qeDb46eM7HCRbB7yiTfxzzqG0DSFFzTLdeEwvUJCqC6BvI10TkVKGAbevxLbQANuPmoWz+QiJZXyWxsj2Hdo7hDR8YfHx2NtJQlQQvxynhTVo7Jz/ryNnmGpiSYazy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710601014; c=relaxed/simple;
-	bh=aR8hRTDJ4hTgIYaydeSVXJDQzHAYa1X6w7iYETfJq50=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nL7o0mb/xenizzBpmdcnLaXHgxj8DM9MDHTAxy2qmyAUIRCsTaxnP9y1UA6mDIaPdqXS8R5vr974mdnAkZiSKhtY7NVQMV2T0bMzuW9t3A8yQ5X93HY/Oj+AVSnk/glDYv1zfpx7g2pTNWnIeoi2BN5MwUFAu7pkRdn+AtmTUi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=m/VKuASJ; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1710603062; c=relaxed/simple;
+	bh=fSghzQs8kcGSEE7pAW2QaeYyUehledWsiTewKhhyC7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XuvIG41l40yDMbp2nWgBucMHov9gbTirFG2cyPZWS2UBOGzvpk5Q4rfJGJ71SMA8tNSPTflaofStxWzHDUwjsgl9MA7DI1jkHhXlSCSeXtQuZmikr95Do3BKsdN6vviTxhm0QKszHIlj8W4i+nPv0dNidRUXJdoSvWaUtcvpWfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wHcxnIeK; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="m/VKuASJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1710601009; x=1710860209;
-	bh=aR8hRTDJ4hTgIYaydeSVXJDQzHAYa1X6w7iYETfJq50=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=m/VKuASJXwwnVqQACEPvl18cZBFzaSKlB7sM8uH/j5gY4nw5E9hGRK+T0vKQfpu3G
-	 6VOvMXwJWTXqW4CamNaSMUey+ourE9ltMlhWEPG1RJSGsAKb9Gyr99Op0/3hW6gTpq
-	 C+GnYPz6qtNtXRH6k7E/C9oINuE0zroL3rHy7zK9SqHnOlPdFkIU+X38coCCzs1kmr
-	 W0PzA4yIDnvXmq+RgatQ+oykFs+gLlUYE4HAMP+1HEYkjC9SiGFjEGuDXgo3uy7jAc
-	 rhR9TyuaUdhtN9Lvu+k/wehKRFRBJ9lX9oeh7RuzM2q7rJA3YwfGjhvvi2gA9z1mWf
-	 hziN79QEGz18A==
-Date: Sat, 16 Mar 2024 14:56:20 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v3 3/4] rust: uaccess: add typed accessors for userspace pointers
-Message-ID: <d4c6376c-5545-4aba-bd8e-39c7c9a8127d@proton.me>
-In-Reply-To: <20240311-alice-mm-v3-3-cdf7b3a2049c@google.com>
-References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com> <20240311-alice-mm-v3-3-cdf7b3a2049c@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wHcxnIeK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6NKH9ylLcbG8QjuxQgDshz8FPMhAT6bvoDiWMjFubzQ=; b=wHcxnIeKUYQNDTuF/vCAGoKixu
+	vbUOq7RhCmyJGKWswlyAgwqueuPTkAoiW+/nbx+rjweeOzxvXeAviBSZ1S0Qe7QNWULjD6vpFf1bT
+	PAGvbvy7pfd4RvyX5yc2KyAU9LbJXDU1UXuxney98cKoNMn8wz5xovjF3JsDabhyVUL0ME3OJU9ss
+	iyKFt5f1dikTI+jllk9QG8mX1fspoeSQA6KCeIHC1pLRvY6xfpuUu5HnAEqtI2x1TIzIVyKxlAc8H
+	iyLoNEOPJ7MGebzzIP/hPnotIqq1WTbfbt2LqRsvPPNIJrcgk1lQ6HidsowW863QzXWqRZchaMFF0
+	1lF2KLdw==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rlVzj-0000000ClgU-2tv5;
+	Sat, 16 Mar 2024 15:30:47 +0000
+Date: Sat, 16 Mar 2024 15:30:47 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, akpm@linux-foundation.org,
+	alex.gaynor@gmail.com, arnd@arndb.de, arve@android.com,
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com,
+	gary@garyguo.net, gregkh@linuxfoundation.org,
+	joel@joelfernandes.org, keescook@chromium.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, maco@android.com,
+	ojeda@kernel.org, rust-for-linux@vger.kernel.org, surenb@google.com,
+	tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com
+Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+Message-ID: <ZfW7J2uS28hlFWcd@casper.infradead.org>
+References: <20240311-alice-mm-v3-4-cdf7b3a2049c@google.com>
+ <20240311105056.122734-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311105056.122734-1-aliceryhl@google.com>
 
-On 3/11/24 11:47, Alice Ryhl wrote:
-> Add safe methods for reading and writing Rust values to and from
-> userspace pointers.
->=20
-> The C methods for copying to/from userspace use a function called
-> `check_object_size` to verify that the kernel pointer is not dangling.
-> However, this check is skipped when the length is a compile-time
-> constant, with the assumption that such cases trivially have a correct
-> kernel pointer.
->=20
-> In this patch, we apply the same optimization to the typed accessors.
-> For both methods, the size of the operation is known at compile time to
-> be size_of of the type being read or written. Since the C side doesn't
-> provide a variant that skips only this check, we create custom helpers
-> for this purpose.
->=20
-> The majority of reads and writes to userspace pointers in the Rust
-> Binder driver uses these accessor methods. Benchmarking has found that
-> skipping the `check_object_size` check makes a big difference for the
-> cases being skipped here. (And that the check doesn't make a difference
-> for the cases that use the raw read/write methods.)
->=20
-> This code is based on something that was originally written by Wedson on
-> the old rust branch. It was modified by Alice to skip the
-> `check_object_size` check, and to update various comments, including the
-> notes about kernel pointers in `WritableToBytes`.
->=20
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Mon, Mar 11, 2024 at 10:50:56AM +0000, Alice Ryhl wrote:
+> Alice Ryhl <aliceryhl@google.com> writes:
+> > +/// Flags for the "get free page" function that underlies all memory allocations.
+> > +pub mod flags {
+> > +    pub type gfp_t = bindings::gfp_t;
+> > +
+> > +    /// `GFP_KERNEL` is typical for kernel-internal allocations. The caller requires `ZONE_NORMAL`
+> > +    /// or a lower zone for direct access but can direct reclaim.
+> > +    pub const GFP_KERNEL: gfp_t = bindings::GFP_KERNEL;
+> > +    /// `GFP_ZERO` returns a zeroed page on success.
+> > +    pub const __GFP_ZERO: gfp_t = bindings::__GFP_ZERO;
+> > +    /// `GFP_HIGHMEM` indicates that the allocated memory may be located in high memory.
+> > +    pub const __GFP_HIGHMEM: gfp_t = bindings::__GFP_HIGHMEM;
+> > +}
+> >
+> > [...]
+> >
+> > +impl Page {
+> > +    /// Allocates a new page.
+> > +    pub fn alloc_page(gfp_flags: flags::gfp_t) -> Result<Self, AllocError> {
+> > +        // SAFETY: The specified order is zero and we want one page.
+> > +        let page = unsafe { bindings::alloc_pages(gfp_flags, 0) };
+> > +        let page = NonNull::new(page).ok_or(AllocError)?;
+> > +        // INVARIANT: We checked that the allocation succeeded.
+> > +        Ok(Self { page })
+> > +    }
+> 
+> Matthew Wilcox: You suggested on a previous version that I use gfp flags
+> here, or that I rename it to e.g. BinderPage to make it clear that this
+> is specific to the kind of pages that Binder needs.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+I think what you have here is good.
+
+> In this version I added some gfp flags, but I'm not actually sure that
+> the Page abstraction works for all combinations of gfp flags. For
+> example, I use kmap_local_page when accessing the page, but is that
+> correct if there's a user that doesn't pass GFP_HIGHMEM?
+
+Yes, kmap_local_page() works for non-highmem pages (it's essentially a
+no-op)
 
