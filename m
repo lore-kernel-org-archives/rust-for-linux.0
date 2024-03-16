@@ -1,93 +1,42 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021401C687
-	for <rust-for-linux@vger.kernel.org>; Sat, 16 Mar 2024 17:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77D31C280;
+	Sat, 16 Mar 2024 20:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710610057; cv=none; b=NVT3QZfFL4eOIf30XxMX1C1InY1uE3MF6dRU2ZsbUPSeF8UTwHN/deJG+Fml2/NCLWzgdnxu+h5TMCvzlziGcotJHmZFR4fSM22Gg5t7JC5OdXW2+XLGVbSxo8jnujsB9x4Bd1MPrQbbayptbT71zEU0hSqv59Sbo29MgwFSR5Q=
+	t=1710621614; cv=none; b=SQthdQBZmx7DKa/OA8ezpyjHD2FUm/4/+PUk/tilVOhFlGeM9JKXYgugT3ml3VkvE5cBad9hj4Vse2RRwTaGjyIYYnHZh5BMKDkFnuOofhfNiZ2fi/AkLyTDSRx1VPpCZKaoijiB2vUIlstfwwzUX2jynjLhZMrGDKMdpAL5VMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710610057; c=relaxed/simple;
-	bh=rlqQHY/Iru95tLSYrHqyJIG83LeQkWO2iRzCE/rjTgw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UMWEVdtkW+oAsoXyGbgPOKfn8Cc8+YfGNu4Af4H1VLzXVly9JHBc/RDCotULUP9T+bpIAkYMghMHahOXOlhVz+EFAdeMDY5UyPjoKV7+r/dBpsqU9dovtV1xmPnN/VjGrxWk4TDmyQiXlG/nepVgjjNXWndByIInShkLGJnP7jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=Fj2T0jc6; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1710621614; c=relaxed/simple;
+	bh=58qvFg1dNbBCwLLsr/YODHvr/DIfRi6oxdDcpHNBgbU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=STmxKkptUraF97oLsCDOOOuApQJZAJr1bC8CwHaTS/jvTF2Mabbo9oj0PB0DNvwiwed/Q6Yyg3zooMKudKXPeuEF4tnC6j9Vpb6W3gbiD03ZjZXguGh1psgYa5pcyhAQ2r4aFZckLutF7/GB3gj3E0JsTFrYhZKu4hnUZ02p6Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=JgGHx0uu; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="Fj2T0jc6"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-513cf9bacf1so3950040e87.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 16 Mar 2024 10:27:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1710610051; x=1711214851; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ldIeQ0x8GcqpmGtokI1YG/KjLGWPo0JWFs82jZy3wgU=;
-        b=Fj2T0jc6Oq8Cg/+ddV44q21UZsa5YSbow3RY2BpzX5ULaTf88nqeZEObZ7OeVl2+ZZ
-         zOqAkcxuOooxQis1GqvTnE/ifVYEbbwJJsoZuEodIQRx9l3d9K6WVcTdqFqs2ud6J4Zv
-         o7lGJmzkr0Qv/tqPaw45m98QSNeldohAtpga6pcCRN8zhjSKoS4iVbS4PeqJtUk+eImB
-         wJhq69q7GU922LVjXUs3G2Drh4QSnbyyU5HGaTymUg9yRwPnki3JfHmXOAsPIIUZWdPD
-         2xddLMkkY+4DXoU5KO4/h36JSj/QgrRQ85YFmRzzuDSyPUsUkX+I6OfyDbsKrYde00DP
-         5v4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710610051; x=1711214851;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ldIeQ0x8GcqpmGtokI1YG/KjLGWPo0JWFs82jZy3wgU=;
-        b=kKyeFtSlKjhGXkDcxDPuMC2WRxIZ2UWOaLJcBwC6QXo68KH0M8sVF4c6l5l3iQGjX+
-         5dmD3FSCuCQbiPQgJR9XiUCPq+wk5CBS5ygxR1CyLd1NzAN1HBznFwNslDAloYwSGxKh
-         IFTqxprBQyLstKVVD5n71GUcntD8K9QgoOPRnPish/BGteao67wJv7kpucxlDD78kZgq
-         yQ2C6LRUcKcAaa4nsSaGh2a/YGi5uodUKgvuOswQE/yVCWbz3XnsjJCmEzBr/UA6DpI0
-         edSvabN4kv7P/uVRLuTozVGLS0rtci5fnLRT44BYjpAIUOcGa3Lfcde12TqGDp4UrEyZ
-         PVLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbFw03l4vWff8fGmQX5Ij28FLWf+xFR/4mbZRWlsulIlzhXESA3A0HGVp7IFqU/+h9UAUPCNjB7Vr1Vxkea3qMFBWtbo9b5z9WE3lj2IU=
-X-Gm-Message-State: AOJu0YyS9BR953rTTACw2f/NNxdMg9y0DxvGhLnOyAuzX2o2IEeL3289
-	nOecibl9A5KEieJbNj9Breq3UtoqYjIeiXojFRueOvLjgCXtPRZ8gc1z1au/nnk=
-X-Google-Smtp-Source: AGHT+IEgn2nD6Ekhe0UTM1uxUR2tB9g9Tk4Fntk67sLksxOmjaiU9EGRcMT21FlbyM2Q4WLrp/HV3Q==
-X-Received: by 2002:a05:6512:61:b0:513:a7c5:15d with SMTP id i1-20020a056512006100b00513a7c5015dmr4376959lfo.47.1710610050593;
-        Sat, 16 Mar 2024 10:27:30 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id qk26-20020a170906d9da00b00a45bb14b1a5sm2921212ejb.89.2024.03.16.10.27.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Mar 2024 10:27:30 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,  Jens Axboe
- <axboe@kernel.dk>,  Keith Busch <kbusch@kernel.org>,  Boqun Feng
- <boqun.feng@gmail.com>,  Christoph Hellwig <hch@lst.de>,  Damien Le Moal
- <Damien.LeMoal@wdc.com>,  Bart Van Assche <bvanassche@acm.org>,  Hannes
- Reinecke <hare@suse.de>,  "linux-block@vger.kernel.org"
- <linux-block@vger.kernel.org>,  Andreas Hindborg <a.hindborg@samsung.com>,
-  Wedson Almeida Filho <wedsonaf@gmail.com>,  Niklas Cassel
- <Niklas.Cassel@wdc.com>,  Greg KH <gregkh@linuxfoundation.org>,  Matthew
- Wilcox <willy@infradead.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex
- Gaynor <alex.gaynor@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
-  Alice Ryhl <aliceryhl@google.com>,  Chaitanya Kulkarni
- <chaitanyak@nvidia.com>,  Luis Chamberlain <mcgrof@kernel.org>,  Yexuan
- Yang <1182282462@bupt.edu.cn>,  Sergio =?utf-8?Q?Gonz=C3=A1lez?= Collado
- <sergio.collado@gmail.com>,  Joel Granados <j.granados@samsung.com>,
-  "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,  Daniel Gomez
- <da.gomez@samsung.com>,  open list <linux-kernel@vger.kernel.org>,
-  "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-  "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-  "gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
-In-Reply-To: <ZfWxOgYLgRN6Pcge@fedora> (Ming Lei's message of "Sat, 16 Mar
-	2024 22:48:26 +0800")
-References: <ZfI8-14RUqGqoRd-@boqun-archlinux> <87il1ptck0.fsf@metaspace.dk>
-	<CANiq72mzBe2npLo=CVR=ShyMuDmr0+TW4Gy0coPFQOBQZ_VnwQ@mail.gmail.com>
-	<87plvwsjn5.fsf@metaspace.dk>
-	<CANiq72neNUL1m0AbY78eXWJMov4fgjnNcQ_16SoT=ikJ3K7bZQ@mail.gmail.com>
-	<8734ssrkxd.fsf@metaspace.dk> <ZfQ8Wz9gMqsN02Mv@fedora>
-	<87o7bfr7bt.fsf@metaspace.dk> <ZfRoJxzOLZEIaQK7@fedora>
-	<87il1nqtak.fsf@metaspace.dk> <ZfWxOgYLgRN6Pcge@fedora>
-User-Agent: mu4e 1.12.0; emacs 29.2
-Date: Sat, 16 Mar 2024 18:27:22 +0100
-Message-ID: <87cyruqe85.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="JgGHx0uu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1710621600; x=1710880800;
+	bh=A+6SILfQFnqsXEoZHJxtgDtsdF1CEuXy/QosmJOt4ws=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=JgGHx0uuMKBY3EgucoOqQigFj4ZnBofZ9IxIHHWScg/kbyb+yXdlWDAmFJFDQ3OuR
+	 fpumksGePiOKvE4YlfElV5zQSq3SbTtpFQYFj7UuWR93EyVxgHXpOhFfvhN2zcIpG4
+	 Kmhj+3GyqOp9Ga/sVM5GgYasYfzvMFBHFD2zkK0KbSNvy38WRXlYd3CiJlntNnO5nB
+	 JnFk46P9Lc7TJ9TlljquzGRU5Lg7Y9K1N/aMvDAtCWpY8lAWnXDTcmeZXPQeF9jF79
+	 hIL8H81YQH0qu7QHhjNjj2BwC3jt78ZydYOdynUzsBHJqKMv4Uf4e1MvT/PK5IqGNx
+	 h6hMuqChE8Rhw==
+Date: Sat, 16 Mar 2024 20:39:34 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+Message-ID: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
+In-Reply-To: <20240311-alice-mm-v3-4-cdf7b3a2049c@google.com>
+References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com> <20240311-alice-mm-v3-4-cdf7b3a2049c@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -97,250 +46,155 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Ming Lei <ming.lei@redhat.com> writes:
+On 3/11/24 11:47, Alice Ryhl wrote:
+> +/// A pointer to a page that owns the page allocation.
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer points at a page, and has ownership over the page.
 
-> On Fri, Mar 15, 2024 at 06:49:39PM +0100, Andreas Hindborg wrote:
->> Ming Lei <ming.lei@redhat.com> writes:
->>=20
->> > On Fri, Mar 15, 2024 at 01:46:30PM +0100, Andreas Hindborg wrote:
->> >> Ming Lei <ming.lei@redhat.com> writes:
->> >> > On Fri, Mar 15, 2024 at 08:52:46AM +0100, Andreas Hindborg wrote:
->> >> >> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
->> >> >>=20
->> >> >> > On Thu, Mar 14, 2024 at 8:23=E2=80=AFPM Andreas Hindborg <nmi@me=
-taspace.dk> wrote:
->> >> >> >>
->> >> >> >> The way the current code compiles, <kernel::block::mq::Request =
-as
->> >> >> >> kernel::types::AlwaysRefCounted>::dec_ref` is inlined into the =
-`rnull`
->> >> >> >> module. A relocation for `rust_helper_blk_mq_free_request_inter=
-nal`
->> >> >> >> appears in `rnull_mod.ko`. I didn't test it yet, but if
->> >> >> >> `__blk_mq_free_request` (or the helper) is not exported, I don'=
-t think
->> >> >> >> this would be possible?
->> >> >> >
->> >> >> > Yeah, something needs to be exported since there is a generic
->> >> >> > involved, but even if you want to go the route of exporting only=
- a
->> >> >> > different symbol, you would still want to put it in the C header=
- so
->> >> >> > that you don't get the C missing declaration warning and so that=
- we
->> >> >> > don't have to write the declaration manually in the helper.
->> >> >>=20
->> >> >> That is what I did:
->> >> >>=20
->> >> >> @@ -703,6 +703,7 @@ int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_=
-set *set,
->> >> >>  		unsigned int set_flags);
->> >> >>  void blk_mq_free_tag_set(struct blk_mq_tag_set *set);
->> >> >>=20=20
->> >> >> +void __blk_mq_free_request(struct request *rq);
->> >> >>  void blk_mq_free_request(struct request *rq);
->> >> >>  int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
->> >> >>  		unsigned int poll_flags);
->> >> >
->> >> > Can you explain in detail why one block layer internal helper is
->> >> > called into rnull driver directly? It never happens in C driver cod=
-e.
->> >>=20
->> >> It is not the rust null block driver that calls this symbol directly.=
- It
->> >> is called by the Rust block device driver API. But because of inlinin=
-g,
->> >> the symbol is referenced from the loadable object.
->> >
->> > What is the exact Rust block device driver API? The key point is that =
-how
->> > the body of one exported kernel C API(EXPORT_SYMBOL) becomes inlined
->> > with Rust driver.
->>=20
->> This happens when `ARef<Request<_>>` is dropped. The drop method
->> (destructor) of this smart pointer decrements the refcount and
->> potentially calls `__blk_mq_free_request`.
->>=20
->> >>=20
->> >> The reason we have to call this symbol directly is to ensure proper
->> >> lifetime of the `struct request`. For example in C, when a driver
->> >
->> > Sounds Rust API still calls into __blk_mq_free_request() directly, rig=
-ht?
->>=20
->> Yes, the Rust block device driver API will call this request if an
->> `ARef<Request<_>>` is dropped and the refcount goes to 0.
->>=20
->> > If that is the case, the usecase need to be justified, and you need
->> > to write one standalone patch with the exact story for exporting
->> > __blk_mq_free_request().
->>=20
->> Ok, I can do that.
->>=20
->> >
->> >> converts a tag to a request, the developer makes sure to only ask for
->> >> requests which are outstanding in the driver. In Rust, for the API to=
- be
->> >> sound, we must ensure that the developer cannot write safe code that
->> >> obtains a reference to a request that is not owned by the driver.
->> >>=20
->> >> A similar issue exists in the null block driver when timer completions
->> >> are enabled. If the request is cancelled and the timer fires after the
->> >> request has been recycled, there is a problem because the timer holds=
- a
->> >> reference to the request private data area.
->> >>=20
->> >> To that end, I use the `atomic_t ref` field of the C `struct request`
->> >> and implement the `AlwaysRefCounted` Rust trait for the request type.
->> >> This is a smart pointer that owns a reference to the pointee. In this
->> >> way, the request is not freed and recycled until the smart pointer is
->> >> dropped. But if the smart pointer holds the last reference when it is
->> >> dropped, it must be able to free the request, and hence it has to call
->> >> `__blk_mq_free_request`.
->> >
->> > For callbacks(queue_rq, timeout, complete) implemented by driver, block
->> > layer core guaranteed that the passed request reference is live.
->> >
->> > So driver needn't to worry about request lifetime, same with Rust
->> > driver, I think smart pointer isn't necessary for using request in
->> > Rust driver.
->>=20
->> Using the C API, there is nothing preventing a driver from using the
->> request after the lifetime ends.
->
-> Yes, it is true for C, so will Rust-for-linux need to add refcount for
-> most exported kernel C structure? such as by implementing AlwaysRefCounted
-> traits?
+Why not "`page` is valid"?
+Do you mean by ownership of the page that `page` has ownership of the
+allocation, or does that entail any other property/privilege?
 
-Not for all types and not all the time. For instance the Rust block
-device driver API does not always use refcounting for `struct request`.
-Only when it cannot determine the lifetime of a request reference at
-compile time.
+> +pub struct Page {
+> +    page: NonNull<bindings::page>,
+> +}
+> +
+> +// SAFETY: It is safe to transfer page allocations between threads.
 
->
->> With Rust, we have to make it
->> impossible.Without the refcount and associated call to
->> `__blk_mq_free_request`, it would be possible to write Rust code that
->> access the request after the lifetime ends. This is not sound, and it is
->> something we need to avoid in the Rust abstractions.
->>=20
->> One concrete way to do write unsound code with a Rust API where lifetime
->> is not tracked with refcount, is if the null block timer completion
->> callback fires after the request is completed. Perhaps the driver
->> cancels the request but forgets to cancel the timer. When the timer
->> fires, it will access the request via the context pointer, but the
->> request will be invalid.
->
-> The issue is less serious for blk-mq request, which is pre-allocated,
-> and one freed request just means it can be re-allocated for other IO
-> in same queue, and the pointed memory won't be really freed.
+Why?
 
-The issue here is not so much use after free as it is aliasing of
-mutable and shared references. This is illegal in Rust, and programs
-that allow this may exhibit undefined behavior.
+> +unsafe impl Send for Page {}
+> +
+> +// SAFETY: As long as the safety requirements for `&self` methods on thi=
+s type
+> +// are followed, there is no problem with calling them in parallel.
 
-> Also as I mentioned, inside driver's ->timeout(), the request is
-> guaranteed to be live by block layer core(won't be re-allocated to other =
-IO),
-> the passed-in request is referenced already, please see bt_iter() which
-> is called from blk_mq_timeout_work(). Here, block layer core just
-> borrows request, then passed the reference to ->timeout(), when
-> request is owned by driver actually.
+Why?
 
-I understand. I am not referring to `blk_mq_opw.timeout`. The null block
-driver has a feature where requests complete after a delay. This is
-implemented via the `hrtimer` subsystem.
+> +unsafe impl Sync for Page {}
+> +
+> +impl Page {
+> +    /// Allocates a new page.
+> +    pub fn alloc_page(gfp_flags: flags::gfp_t) -> Result<Self, AllocErro=
+r> {
+> +        // SAFETY: The specified order is zero and we want one page.
 
-> I understand Rust block driver still need to implement ->queue_rq(),
-> ->timeout(), ..., just like C driver, but maybe I am wrong? Or Rust block=
- driver
-> will re-implement part of block layer core code? such as, get one extra
-> reference of request no matter block core has done that.
+This doesn't explain why it is sound to call the function. I expect that
+it is always sound to call this function with valid arguments.
 
-The Rust block driver API implements the `blk_mq_ops` vtable on behalf
-of the driver. There is a little bit of glue code inserted between the C
-symbols called by the kernel and the Rust functions that the block device
-driver provides.
+> +        let page =3D unsafe { bindings::alloc_pages(gfp_flags, 0) };
+> +        let page =3D NonNull::new(page).ok_or(AllocError)?;
+> +        // INVARIANT: We checked that the allocation succeeded.
 
->> In C we have to write the driver code so this
->> cannot happen. In Rust, the API must prevent this from happening. So any
->> driver written in the safe subset of Rust using this API can never
->> trigger this behavior.
->>=20
->> By using the refcount, we ensure that the request is alive until all
->> users who hold a reference to it are dropped.
->
-> block layer has provided such guarantee if Rust driver follows current
-> block driver model.
+Doesn't mention ownership.
 
-I understand that the driver has exclusive ownership of the request
-between `queue_rq()` and `complete()`. What we want to guarantee is that
-the author of a block device driver is not able to access a request
-after block layer has regained ownership of the request (after complete).
-The way we achieve this is by preventing block layer from calling
-`__blk_mq_free_request` if the Rust driver did not destroy all
-references to the request.
+> +        Ok(Self { page })
+> +    }
+> +
+> +    /// Returns a raw pointer to the page.
+> +    pub fn as_ptr(&self) -> *mut bindings::page {
+> +        self.page.as_ptr()
+> +    }
+> +
+> +    /// Runs a piece of code with this page mapped to an address.
+> +    ///
+> +    /// The page is unmapped when this call returns.
+> +    ///
+> +    /// It is up to the caller to use the provided raw pointer correctly=
+.
 
-I understand that this is not necessary for correct operation of a
-block device driver. However, it is necessary to uphold invariants of
-the Rust language for references.
+This says nothing about what 'correctly' means. What I gathered from the
+implementation is that the supplied pointer is valid for the execution
+of `f` for `PAGE_SIZE` bytes.
+What other things are you allowed to rely upon?
 
->>=20
->> Another concrete example is when a driver calls `blk_mq_tag_to_rq` with
->> an invalid tag. This can return a reference to an invalid tag, if the
->> driver is not implemented correctly. By using `req_ref_inc_not_zero` we
->> can assert that the request is live before we create a Rust reference to
->> it, and even if the driver code has bugs, it can never access an invalid
->> request, and thus it can be memory safe.
->>=20
->> We move the responsibility of correctness, in relation to memory safety,
->> from the driver implementation to the API implementation.
->
-> After queue_rq(req) is called, request ownership is actually transferred =
-to
-> driver like Rust's move, then driver is free to call blk_mq_tag_to_rq(), =
-and
-> finally return request to block core after the request is completed by dr=
-iver.
+Is it really OK for this function to be called from multiple threads?
+Could that not result in the same page being mapped multiple times? If
+that is fine, what about potential data races when two threads write to
+the pointer given to `f`?
 
-As I said, I understand and appreciate this design. But there is a
-possibility for a buggy driver to not obey. The Rust abstractions must
-prevent this buggy code from compiling at all. In Rust, it must be
-impossible to call `blk_mq_tag_to_rq()` for a tag that is not owned by
-the driver. `blk_mq_tag_to_rq` takes an integer, so the driver developer
-can call this function with an invalid tag like
-`blk_mq_tag_to_rq(tagset, 5)`. If 5 is not owned by the driver, this
-will return a request pointer that will alias with mutable access. When
-this pointer is converted to a Rust reference, this will give undefined
-behavior. For Rust, we must prevent code like this from compiling in the
-first place.
+> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) -> T=
+ {
+> +        // SAFETY: `page` is valid due to the type invariants on `Page`.
+> +        let mapped_addr =3D unsafe { bindings::kmap_local_page(self.as_p=
+tr()) };
+> +
+> +        let res =3D f(mapped_addr.cast());
+> +
+> +        // SAFETY: This unmaps the page mapped above.
 
-> The biggest question should be how Rust block driver will be designed &
-> implemented? Will rust block driver follow current C driver's model, such
-> as implementing ->queue_rq(), ->timeout(), ->complete()...?
+This doesn't explain why it is sound.
 
-The Rust driver API does follow the design of the C driver model. It
-does implement the `blk_mq_ops` vtable. Rust block drivers must
-implement a set of Rust functions that very closely follow this vtable.
-But when it is not possible to statically determine the lifetime of an
-object, to the point where the compiler will refuse to compile the code
-that violates the lifetime durations of the object, we must revert to
-reference counting.
+> +        //
+> +        // Since this API takes the user code as a closure, it can only =
+be used
+> +        // in a manner where the pages are unmapped in reverse order. Th=
+is is as
+> +        // required by `kunmap_local`.
+> +        //
+> +        // In other words, if this call to `kunmap_local` happens when a
+> +        // different page should be unmapped first, then there must nece=
+ssarily
+> +        // be a call to `kmap_local_page` other than the call just above=
+ in
+> +        // `with_page_mapped` that made that possible. In this case, it =
+is the
+> +        // unsafe block that wraps that other call that is incorrect.
+> +        unsafe { bindings::kunmap_local(mapped_addr) };
+> +
+> +        res
+> +    }
+> +
+> +    /// Runs a piece of code with a raw pointer to a slice of this page,=
+ with
+> +    /// bounds checking.
+> +    ///
+> +    /// If `f` is called, then it will be called with a pointer that poi=
+nts at
+> +    /// `off` bytes into the page, and the pointer will be valid for at =
+least
+> +    /// `len` bytes. The pointer is only valid on this task, as this met=
+hod uses
+> +    /// a local mapping.
 
-I understand that a correctly implemented block device driver will not
-violate lifetime of the request structure. Incorrect driver code might
-violate the lifetime though. With Rust, we must prevent incorrectly
-implemented drivers from compiling at all. We need the refcount for
-that. By only allowing access to the request through the refcounted
-pointer in certain cases, we prevent the safe driver code from
-misbehaving.
+This information about the pointer only being valid on this task should
+also apply to `with_page_mapped`, right?
 
-It might seem cumbersome to do this dance at first. After all, we can
-just write the device drivers correctly without memory safety bugs. But
-the reward for all this work is that if a device driver is implemented
-in the safe subset of Rust, it _cannot_ exhibit memory safety related
-bugs. We don't have to review a device driver implemented in safe Rust
-for memory safety issues at all.
+> +    ///
+> +    /// If `off` and `len` refers to a region outside of this page, then=
+ this
+> +    /// method returns `EINVAL` and does not call `f`.
+> +    ///
+> +    /// It is up to the caller to use the provided raw pointer correctly=
+.
 
-Best regards,
-Andreas
+Again, please specify what 'correctly' means.
+
+--=20
+Cheers,
+Benno
+
+> +    pub fn with_pointer_into_page<T>(
+> +        &self,
+> +        off: usize,
+> +        len: usize,
+> +        f: impl FnOnce(*mut u8) -> Result<T>,
+> +    ) -> Result<T> {
+> +        let bounds_ok =3D off <=3D PAGE_SIZE && len <=3D PAGE_SIZE && (o=
+ff + len) <=3D PAGE_SIZE;
+> +
+> +        if bounds_ok {
+> +            self.with_page_mapped(move |page_addr| {
+> +                // SAFETY: The `off` integer is at most `PAGE_SIZE`, so =
+this pointer offset will
+> +                // result in a pointer that is in bounds or one off the =
+end of the page.
+> +                f(unsafe { page_addr.add(off) })
+> +            })
+> +        } else {
+> +            Err(EINVAL)
+> +        }
+> +    }
+
