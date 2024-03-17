@@ -1,104 +1,86 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D47320B35;
-	Sun, 17 Mar 2024 21:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389A721353;
+	Sun, 17 Mar 2024 21:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710711257; cv=none; b=tzgTcYuqIdEU+ZsAk4WywFkErjKLYdngzHabjY6FSmeQRWdLNoo1SvwNsNogaGL7F/WyMAbhJWC/uJZz+P1DLw90ydVbSMZAj+a1SZ6wp8vU0Hr5zyxGBPltHbMSCRklh862tQie8wXW8r8y9h/bG8ASggy0/rvqBaft087OYYw=
+	t=1710712418; cv=none; b=bwsg3Mp1DOmjPkaAz99QUN4JCdCrlAhJe3IhLqQuzkL+7YJkzfjFHy+jim6t07r08GqSpBIPzAVLbkBrSsxt4KzcxJot3h2sx2H/ZV96Yp4QlatoTzSWBB9E7IfPL9GyFwnLDcPS7EIwG4dMoAkpmlI+3eSAjiXctMxJoS/salg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710711257; c=relaxed/simple;
-	bh=JL4f9CkTc1PhMvDJqtVSNWVDRsuHiAIaDHnKNLauDrw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=enX4jrTDhiLUdXmBu31tU2xPCdq8CIUP7g/MzLyVJ+SKJmreUv3MZUV9qazuoh58inKRl21pLalVYw0lwzrYFmu/cANC1Ei6m7xMnp1wcgUy77weHdf+jFTh+9+f6nIQOBHiAvhR1qQZvbApby7cRh+IyYNP4hlI1ABLXQ/NfQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GTvPGMUA; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1710712418; c=relaxed/simple;
+	bh=9hghy2cayv8TUs+RB7XP/7Zs/PgLO8mmUWFiDbdfKaA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I8E9UkQP0krp18G+1qOwO7yl41GqLmECGYx0fmkX+pOplBN97yZD4FS4XXcngIxE7CwBix1EZFd8MvcJkJid2Grqiyf0phP/Zrz7zTtSnnWs8hCEQGy/kohhRzIQa5ZY7b3azRb0dFXgHq9TYOA5WIUvwUMT16LUyXdpfooKry8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TgiMKTV9; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GTvPGMUA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=mhmd4DQYdANeIXg1gAXPMMRysX1z3GDQw6kVU6mRTr0=; b=GTvPGMUANvAVfkSRGVTb9VOlGV
-	LRmBd/rJHeORLF/hpnwFvVXYQ8IzeOFBmhW6ipeXMalh2qVUJeeX2HcLXblOxP+Zvi9TUF2CqvxBZ
-	HX1Jf/9BLDdHOWcTuqdXXVSuuda74pmfKU/VDdbsKnMvh9+kIOU3JTUyV06ozqohwWWgxbMEDymBD
-	x8E1j5UeBFZlyU0ojq437+xL0u+c3r9NOYgxZccJvEoB/iHdQntQoQ792/XOVEH7Sq9390GzPo44W
-	cBZYUgdhveX0D3ffJEf1fp/tbI2zm7Id7MxH0Hto9FWfr5zQSFCym8nL7HYi2kBMagTPvnWZLA7Gt
-	avc6qhtA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rly8n-0000000Fe5u-2tqR;
-	Sun, 17 Mar 2024 21:34:01 +0000
-Date: Sun, 17 Mar 2024 21:34:01 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Damien Le Moal <Damien.LeMoal@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hannes Reinecke <hare@suse.de>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yexuan Yang <1182282462@bupt.edu.cn>,
-	Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>,
-	Joel Granados <j.granados@samsung.com>,
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 0/5] Rust block device driver API and null block
- driver
-Message-ID: <ZfdhyfLWBIFtKO81@casper.infradead.org>
-References: <20240313110515.70088-1-nmi@metaspace.dk>
- <ZfZajb_vcRwLacfH@casper.infradead.org>
- <874jd5qqpq.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TgiMKTV9"
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3c3747e7f8cso1932237b6e.0;
+        Sun, 17 Mar 2024 14:53:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710712416; x=1711317216; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9hghy2cayv8TUs+RB7XP/7Zs/PgLO8mmUWFiDbdfKaA=;
+        b=TgiMKTV97LPnMzM+CzRsz0dzhcwNSWhtheLhbJcTbTnDKs4a/Wpdx+W84vIkhOmxF0
+         crijatoBRDChbb88v0Mwh81GrL3HU74XV1gvj6HlD9GCiEk36KjGF193Ir2egY5+Epd8
+         zzL+02J8/2uMJ8fYCh0jIYw+a2cucryWsdjoKoozTRrTxGy9wXFEGDYkIOUg28GdS4jc
+         /nyehh98D6AbbLe1+OfogP8GfClfPZzYjaWS9XFBk/nsMEvtrgly4Fv1LvswPLMyoTOc
+         8GrCLdL73Qom38FU7YNBNKdldVkZXibrejMjsdwcG9v/FPWmbVlKjWB/2YjxyZrgriDh
+         LMNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710712416; x=1711317216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9hghy2cayv8TUs+RB7XP/7Zs/PgLO8mmUWFiDbdfKaA=;
+        b=Wi6Mw7YVbD2otRaCYf9nsnjVCbzuXl/xdjUccWnQShgWOPJvo+6w4oeYc+NrE5bQLj
+         h1ipK/Z2E++Ktc7g4Nuzbanv05GVNwLZJEvrGZPiRvQpr5t4c6D0gaxqfUeZ5bXbhdP0
+         wVNIXKlvaiGMuW80Lk5OqUcTB4hMHHVAP616It7iV69SghK6i4OuRDYHj1e35vjjGE8h
+         jot5QqngSoCo7gesAyb+XFJxnWqlrz9IGZjseljRVPU1SJGR+SdEQteZOirisbPr8q+E
+         KUqQGmN2zofSb2R0FIp9mh1cNGyXv/ZpAvtNLSe/Tf0+QxmdIm/QDolcyQPkkCAE1y96
+         T5xg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8eaTiq9mYlpQ2hoLGjBHOhEmQkEh1asea14FZRCTLrXiaunbRjljmQuD3fUuqnQMuePlXErFs3q+1WIc2WGh76fUnGwseJi6B/n+MDXRl1KbxPWf2yiJ2fYI82OTQWqv8SJg8vV2N3L60Wh0=
+X-Gm-Message-State: AOJu0Yx/GuD7ChokUCth8Ist9/f1sO8iQrU8wX72luBFsEOsys/q7hDP
+	ZzhpPZ7OeP6C3grCZvr9Z4xEukccUF8mOBb1guT1SFslCws2Kr32tdH9/dahKxCtvmwNLluv5Hw
+	VqtYx71HCuspetWWO9KArrdR40IY=
+X-Google-Smtp-Source: AGHT+IEmOoDTy7JXdmINjJNl7nOK2XSxmSAaTxfxxxXAKNF8Oi2WQPcrleXEZJyYTctSYgETkjO8ZWPla+Rew2yJNqg=
+X-Received: by 2002:a05:6358:9497:b0:17e:4fc7:d95 with SMTP id
+ i23-20020a056358949700b0017e4fc70d95mr11914523rwb.17.1710712416202; Sun, 17
+ Mar 2024 14:53:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <874jd5qqpq.fsf@metaspace.dk>
+References: <20240223163726.12397-1-dakr@redhat.com> <6ba16a74-6fa4-4051-8cc6-f0e53a68d8b4@redhat.com>
+ <Ze73aPMEg-BUCE8W@hs01.dakr.org> <CANiq72kK5CF0RQathACD_=7K1Ye4eMVdUnRcvkDZx4ALtq46wg@mail.gmail.com>
+ <d0159c8c-f5d8-4731-a820-012702841bfc@redhat.com>
+In-Reply-To: <d0159c8c-f5d8-4731-a820-012702841bfc@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 17 Mar 2024 22:53:17 +0100
+Message-ID: <CANiq72=CQ1EZGuGU2vJ-JuGh3J7J=p_xtpUdn0q2eaLmAvh-Hg@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: str: add {make,to}_{upper,lower}case() to CString
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 17, 2024 at 08:09:53AM +0100, Andreas Hindborg wrote:
-> I was under the impression that using folios also give the advantage
-> that handles are always head pages. No need to worry about head/tail
-> pages. If the driver moves to use higher order pages for larger block
-> sizes, would it then make sense with folios, or are page still
-> preferred?
+On Tue, Mar 12, 2024 at 9:08=E2=80=AFAM Danilo Krummrich <dakr@redhat.com> =
+wrote:
+>
+> Thanks for sharing, that sounds all good. Just wanted to know if the
+> patch was queued up.
 
-This is a good question.
+My pleasure -- I took the chance to add it to our Contributing page
+(which is our `P:` field, i.e. Maintainer Entry Profile):
+https://rust-for-linux.com/contributing
 
-If you do enhance this driver to support larger block sizes, I would
-recommend indexing the xarray by sector number instead of page number.
-You would allocate a compound page, but at no point would you need to
-ask the page what order it is (you already know), you don't need to
-change the page flags, etc, etc.
-
-The page cache is in a bit of a different spot.  It has to support
-multiple folio sizes for the same file; it has to support folios being
-split, it has to support lookup from users who don't know what the folio
-size is, etc, etc.
-
-I don't think there's ever a point at which you'd need to call
-compound_head() because you'd always look up the head page.  You'd still
-want an iterator of some kind to copy to a compound page (because you
-can only map one at a time).  And that might look a lot like the folio
-copying code.  Probably the right way to handle this is for the folio
-copying code to call the page copying code since a folio is always
-composed of pages.
+Cheers,
+Miguel
