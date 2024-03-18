@@ -1,256 +1,115 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6FF4779F;
-	Mon, 18 Mar 2024 18:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F7556756
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Mar 2024 19:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710788375; cv=none; b=hQikiAwMy5ZkTM0jlq/ADyQSk007WwGgxKfIypx5pWOmGHnp+8TUbc/Jq3KN1Zlvf+o4Sw8wP+6cB1VmemnwVH3REvIf785NRQtxqHSwtmto8Sz9XPczIwnLmX4IC7+wjWfgEjzWUFW0JvZ6oyCKrl5FaxHpezWcXL99l0Otaq0=
+	t=1710789161; cv=none; b=jJRREF4Gljboklp4XUd0Lbetsa6eU5xQ5+NuhihP9ta1ozeDypo9JYZ9yPb0C4GeNsPMUERWlnUIGgrIa81/4jH13sGYECH+TjnE0uLPBApNuU11hZChBCub3y3w5ydSJQUBI8dCA5qkU+DK0DqUNNzZSBGoj3ZtsCe01OIo7YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710788375; c=relaxed/simple;
-	bh=l5t8MphKyGtWNovhRr2a0wnmyVUSJcwUE4jX+Oab91Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X/aJHV69sZsxF2+ydq9Hohm33mlxUQa20Mhg8dRj9a/Hhr5wUhHWhSh6CCqw9ctaz1zJXm+OhzQKLaL0Vg5VHrDn4lS5P46NrCdHZBz4vDylaei9fqqOVHLzG7IS54ksHdZeuolCtwEKbUHxmZ1m5kgfFqs3llKZGlzWwjYmQvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=chjhjM+X; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710789161; c=relaxed/simple;
+	bh=azAsnPQAVK2iBIAnXaor0VpPHFvaPYrmjfryKMkNBHc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NWNqjZy0uPs6TAiNfexZ3d4hyBFrLDY2kw6Q6OZjWJdl2adsfTkNqgVr+3n61ieABvmsmi/ZPYiMoryu4cY/MLC/UMnqIk3TI/mqOuBcs9BiHx3GZRGeIShK6EjgYMiD/RvYIKi3MtSCiUUejgdaj4UwqEQ2C0LVPiqeAm5y/qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ohlCySQn; arc=none smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="chjhjM+X"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-789e3f17a6eso239464085a.0;
-        Mon, 18 Mar 2024 11:59:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ohlCySQn"
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-4765792fc76so990730137.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Mar 2024 12:12:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710788372; x=1711393172; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1710789159; x=1711393959; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7h7+2OWF6v/Pkb4i25rctRGD7lK8C3lTs+tkkbaSwa4=;
-        b=chjhjM+XTeKOB1/GWnoklznxLEMHWIvzz0YDBSqcSXiVqP/w7G+7OKQ6oTfumrlnJp
-         kAbeLIKrSdKzROfoa/1SirZUgIOKEjahW/aHGcOw3UawPA/CsLFpiMJGtVlWam82hrbA
-         9wjtBKEzeCa/I4G0r48MKLta09uyRR7Fh090J45FTEPHD0ATaESHuiUcEj6wGoeIgFE6
-         TOuAbcHNUl8fHk1twFR/VdKL3t7lPZMgUlqyubDTX+lkX3GhCZO7SDR36m652udw6CD2
-         aS4Tea4H1iUe3Bm1ND5fEmB+hBLdQXj2/C0AQNHz4VlJwIxEwGlyGh5yuJxyzwtdJL5G
-         05+g==
+        bh=lIPYiS6AqT1tNRa+kXH/qxTnijO9SB6Y3hbgkaDiv84=;
+        b=ohlCySQnxier1SqXYCtxavbjBcoJEYaDwqDVXsUoUJG1wJdx6ISW0U2gvkfk9tMaIB
+         f4p/JadXVx4vOcdKuHMGR/I0GBhx4H5JcLF6ULxAidWtajKTyQwOMXmr+LocMSDVmGIY
+         JNqXky4pXo5vxp5l91VKsRBJSBcOONM1VNcow3VX8evSDhrWiYl0jjYrGlS/Pr+dQBt4
+         ef+gfk+6e4DX8R6Hi3Ggk8sxZnCSpftwBYZik3L2HiWvomExYOEliTTi+IYtBq0YR5Ih
+         3gt2C/jwJ4cMx9yqHe5LF+tLJa6qoz9XF33tnN8GRjGAu3QQ0/swcOCtUY3W2ER6lN8J
+         fT8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710788372; x=1711393172;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1710789159; x=1711393959;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7h7+2OWF6v/Pkb4i25rctRGD7lK8C3lTs+tkkbaSwa4=;
-        b=O6c9vH1xV+XghHBAawrbyTAppWSL8YGPcAvxpEHY/V36yLME9T1R/fKk6sKVaAv8wv
-         Es0FU6dx1CFx4fhFd+cgcs7aGJ/EQPWmcdWdjfbU0KunvVg64goYgn5+7QI7HhvYY8wX
-         JLeIalQBC8k/j15eHSby2Jo3yikbM0+zA8abg6/4aZQNu663/2SfvTJMOlx6MlG2/51A
-         lj3PIN6SEIUN7ThBdXp/BmgQYL7Vbo27xpiDBYe25qwvbdK+4LaKgBAR275Yq158HZ4m
-         jF23/JONJJxjcVQwMQcbVLedRni8D910VP+kf5Q19XL7PRsiJ2L3l+DWvPwcSnmTLEjA
-         /1wA==
-X-Forwarded-Encrypted: i=1; AJvYcCWguJ2OZDOomEXL1EfKA5xkGoD9u+p+Ba4xEAGlwQVg2HjNkZhjpMtWNWuPPDjZAlRrcVO+d304XcliMIzkxmYpUYsz8xBC9h1Rc3NmzJGMt1KBEwAUqpS4ROFlLaSmmEogG7Pvmq4hRl3HohY=
-X-Gm-Message-State: AOJu0YyOXVPPcwpaZhijhpj+c1ORqoMHskheL/JVxjyOt7egFngTJLnU
-	gYNVgEwr+YH+Q0kkzvbjcOZT+4ZsLBQyRZlCPqthjA0C9cTO6Mpi
-X-Google-Smtp-Source: AGHT+IFJ+deQPfORoCfSt7LaRwTfKef28eErqe6B6pNphIrPzybCAUbOKyybda1jxKsb8KNqouAViA==
-X-Received: by 2002:a05:6214:8e7:b0:690:a862:9444 with SMTP id dr7-20020a05621408e700b00690a8629444mr263495qvb.47.1710788372450;
-        Mon, 18 Mar 2024 11:59:32 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id pn4-20020a056214130400b006961c1d2b6fsm1521540qvb.80.2024.03.18.11.59.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Mar 2024 11:59:31 -0700 (PDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 4A78B1200032;
-	Mon, 18 Mar 2024 14:59:30 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Mon, 18 Mar 2024 14:59:30 -0400
-X-ME-Sender: <xms:EY_4ZfbMJgQAsXxE2Jv7isWpXdPqTEJHw6ZSzvJwsvB_uPPz0Phb9w>
-    <xme:EY_4ZeZkaC_ASxLSx71HR3kjT8JdSO39gOaiG3TEUgEyLokAYVIm2GJCqcZdGkxSl
-    UtSQsvoRzCy2UPkaQ>
-X-ME-Received: <xmr:EY_4ZR_ygWl-jUBCc_o4hWdI5ERmzU6ggkwyM_Vr7m3TkGLvkQPHyWUCRvc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrkeejgdduudelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpedvhedtgfefgfffvdffgfetheehtdfhfeekveelieeiudegheehleelteef
-    gfefffenucffohhmrghinhepshhprghrvggptggrphgrtghithihpghmuhhtrdgrshenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
-    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
-    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
-    rghmvg
-X-ME-Proxy: <xmx:EY_4ZVpdUwcQp8X3O-f2iUKoMTzgb2MayMuMuCmcz2PkVVryxtClOQ>
-    <xmx:EY_4ZapfmVs3sCQHD8zdOkypyQipM4EX8nhAfomqwzh-nKKXSlHSmg>
-    <xmx:EY_4ZbQT3-lR9DpFpi91Q5w2de0QgxEM1K1a5SpOFGKmipSyN32vog>
-    <xmx:EY_4ZSqtPLSuEuJAu3XL5ldzGAFI_j359hrlIvZzg6leKhq7LYW70g>
-    <xmx:Eo_4ZUiY_tLYYrF788VoX5Mob2DslNV9W4y7EjHgnGBksNNvCNUi8Itfn8Q>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Mar 2024 14:59:29 -0400 (EDT)
-Date: Mon, 18 Mar 2024 11:59:19 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v3 1/4] rust: uaccess: add userspace pointers
-Message-ID: <ZfiPB_iavHr8hNbm@boqun-archlinux>
-References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com>
- <20240311-alice-mm-v3-1-cdf7b3a2049c@google.com>
+        bh=lIPYiS6AqT1tNRa+kXH/qxTnijO9SB6Y3hbgkaDiv84=;
+        b=RC+1OGo4BsivYVlKofUZtYzJsHGOUNNdl0cjSn8vFVYYcBO5bMAoe+zxYREAoeIydV
+         24sxftAsFiz4dK0trxiowJ7BSRMDeyFqTIcnuW9bnbGOK8dYc5rS55JCJ6LMgsw4QHAJ
+         gN0N9I4Bs7IB61CaPH8PrpK5cP56ILKOC/3r69LkKX9KnBw5mHTSFQRQpS+CRewau12S
+         ybzXjJ6OUWxk/FJzs9WbqIasNnVW2uYQBsG1Ua0PAEyKjr3zSN3nqX6fXCCzPTMnKnMD
+         gLEzCah7LixVaqad48sAnjDK7g2hZTmC+YJfl+f1iKH3k3nvC6SV3/I7jWk5H870XWiR
+         v6mw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQmcA8G63Y9iGdxMzMQd4Bufy7nL8yZrAqoMf0S2EfcKJJTVZ0yJu38AnXy2C2WuF6R6qahenb9I8SzsyxcVexWhkcIrT8DhVve1Qem7s=
+X-Gm-Message-State: AOJu0Yy16LHKXutc3kr+ZmqA8jy6RNBbjC2yBFPtrDZHtilQQLp+v2YW
+	SuIt2j9xqSGdOr/TzDzpAqlTo2mbEAB+HLuwZpWbY6sr6glKFU6R6+m4SV4S6EqFGt9W7ZnlzCO
+	lU8T3qwzRiBW82Q8GVfJQX19n98k0upyQzRgW
+X-Google-Smtp-Source: AGHT+IFEDnXmFC0T46g4e3RXdTra2OHUDn/F9pxl9qas27NyWz4W8MEV58eyTz1wBY4vhIQxnax9RfgFyGEFnEXlN/4=
+X-Received: by 2002:a05:6102:a54:b0:473:ac82:27dd with SMTP id
+ i20-20020a0561020a5400b00473ac8227ddmr329639vss.6.1710789158712; Mon, 18 Mar
+ 2024 12:12:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311-alice-mm-v3-1-cdf7b3a2049c@google.com>
+References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com>
+ <20240311-alice-mm-v3-1-cdf7b3a2049c@google.com> <ZfiPB_iavHr8hNbm@boqun-archlinux>
+In-Reply-To: <ZfiPB_iavHr8hNbm@boqun-archlinux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 18 Mar 2024 20:12:27 +0100
+Message-ID: <CAH5fLghs7=V2hHYBnQE-h=xpQYKX5ZxrV1iVdB4ybt7pAXFMWQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] rust: uaccess: add userspace pointers
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 11, 2024 at 10:47:13AM +0000, Alice Ryhl wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> 
-[...]
-> +
-> +/// A reader for [`UserSlice`].
-> +///
-> +/// Used to incrementally read from the user slice.
-> +pub struct UserSliceReader {
-> +    ptr: *mut c_void,
-> +    length: usize,
-> +}
-> +
-> +impl UserSliceReader {
-[...]
-> +
-> +    /// Reads raw data from the user slice into a raw kernel buffer.
-> +    ///
-> +    /// Fails with `EFAULT` if the read encounters a page fault.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The `out` pointer must be valid for writing `len` bytes.
-> +    pub unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Result {
+On Mon, Mar 18, 2024 at 7:59=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Mon, Mar 11, 2024 at 10:47:13AM +0000, Alice Ryhl wrote:
+> > +
+> > +    /// Reads raw data from the user slice into a raw kernel buffer.
+> > +    ///
+> > +    /// Fails with `EFAULT` if the read encounters a page fault.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The `out` pointer must be valid for writing `len` bytes.
+> > +    pub unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Res=
+ult {
+>
+> I don't think we want to promote the pub usage of this unsafe function,
+> right? We can provide a safe version:
+>
+>         pub fn read_slice(&mut self, to: &[u8]) -> Result
+>
+> and all users can just use the safe version (with the help of
+> slice::from_raw_parts_mut() if necessary).
 
-I don't think we want to promote the pub usage of this unsafe function,
-right? We can provide a safe version:
+Personally, I think having the function be unsafe is plenty discouragement.
 
-	pub fn read_slice(&mut self, to: &[u8]) -> Result
+Also, this method would need an &mut [u8], which opens the can of
+worms related to uninitialized memory. The _raw version of this method
+is strictly more powerful.
 
-and all users can just use the safe version (with the help of
-slice::from_raw_parts_mut() if necessary).
+I don't think I actually use it directly in Binder, so I can make it
+private if you think that's important. It needs to be pub(crate),
+though, since it is used in `Page`.
 
-> +        if len > self.length {
-> +            return Err(EFAULT);
-> +        }
-> +        let Ok(len_ulong) = c_ulong::try_from(len) else {
-> +            return Err(EFAULT);
-> +        };
-> +        // SAFETY: The caller promises that `out` is valid for writing `len` bytes.
-> +        let res = unsafe { bindings::copy_from_user(out.cast::<c_void>(), self.ptr, len_ulong) };
-> +        if res != 0 {
-> +            return Err(EFAULT);
-> +        }
-> +        // Userspace pointers are not directly dereferencable by the kernel, so
-> +        // we cannot use `add`, which has C-style rules for defined behavior.
-> +        self.ptr = self.ptr.wrapping_byte_add(len);
-> +        self.length -= len;
-> +        Ok(())
-> +    }
-> +
-> +    /// Reads the entirety of the user slice, appending it to the end of the
-> +    /// provided buffer.
-> +    ///
-> +    /// Fails with `EFAULT` if the read encounters a page fault.
-> +    pub fn read_all(mut self, buf: &mut Vec<u8>) -> Result {
-> +        let len = self.length;
-> +        buf.try_reserve(len)?;
-> +
-> +        // SAFETY: The call to `try_reserve` was successful, so the spare
-> +        // capacity is at least `len` bytes long.
-> +        unsafe { self.read_raw(buf.spare_capacity_mut().as_mut_ptr().cast(), len)? };
-> +
-> +        // SAFETY: Since the call to `read_raw` was successful, so the next
-> +        // `len` bytes of the vector have been initialized.
-> +        unsafe { buf.set_len(buf.len() + len) };
-> +        Ok(())
-> +    }
-> +}
-> +
-> +/// A writer for [`UserSlice`].
-> +///
-> +/// Used to incrementally write into the user slice.
-> +pub struct UserSliceWriter {
-> +    ptr: *mut c_void,
-> +    length: usize,
-> +}
-> +
-> +impl UserSliceWriter {
-> +    /// Returns the amount of space remaining in this buffer.
-> +    ///
-> +    /// Note that even writing less than this number of bytes may fail.
-> +    pub fn len(&self) -> usize {
-> +        self.length
-> +    }
-> +
-> +    /// Returns `true` if no more data can be written to this buffer.
-> +    pub fn is_empty(&self) -> bool {
-> +        self.length == 0
-> +    }
-> +
-> +    /// Writes raw data to this user pointer from a raw kernel buffer.
-> +    ///
-> +    /// Fails with `EFAULT` if the write encounters a page fault.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The `data` pointer must be valid for reading `len` bytes.
-> +    pub unsafe fn write_raw(&mut self, data: *const u8, len: usize) -> Result {
-
-Same here, just remove the `pub`, and users should use write_slice()
-(with the help of slice::from_raw_parts() if necessary).
-
-Regards,
-Boqun
-
-> +        if len > self.length {
-> +            return Err(EFAULT);
-> +        }
-> +        let Ok(len_ulong) = c_ulong::try_from(len) else {
-> +            return Err(EFAULT);
-> +        };
-> +        let res = unsafe { bindings::copy_to_user(self.ptr, data.cast::<c_void>(), len_ulong) };
-> +        if res != 0 {
-> +            return Err(EFAULT);
-> +        }
-> +        // Userspace pointers are not directly dereferencable by the kernel, so
-> +        // we cannot use `add`, which has C-style rules for defined behavior.
-> +        self.ptr = self.ptr.wrapping_byte_add(len);
-> +        self.length -= len;
-> +        Ok(())
-> +    }
-> +
-> +    /// Writes the provided slice to this user pointer.
-> +    ///
-> +    /// Fails with `EFAULT` if the write encounters a page fault.
-> +    pub fn write_slice(&mut self, data: &[u8]) -> Result {
-> +        let len = data.len();
-> +        let ptr = data.as_ptr();
-> +        // SAFETY: The pointer originates from a reference to a slice of length
-> +        // `len`, so the pointer is valid for reading `len` bytes.
-> +        unsafe { self.write_raw(ptr, len) }
-> +    }
-> +}
-> 
-> -- 
-> 2.44.0.278.ge034bb2e1d-goog
-> 
+Alice
