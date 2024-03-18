@@ -1,86 +1,121 @@
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389A721353;
-	Sun, 17 Mar 2024 21:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFA73770C
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Mar 2024 12:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710712418; cv=none; b=bwsg3Mp1DOmjPkaAz99QUN4JCdCrlAhJe3IhLqQuzkL+7YJkzfjFHy+jim6t07r08GqSpBIPzAVLbkBrSsxt4KzcxJot3h2sx2H/ZV96Yp4QlatoTzSWBB9E7IfPL9GyFwnLDcPS7EIwG4dMoAkpmlI+3eSAjiXctMxJoS/salg=
+	t=1710763850; cv=none; b=nThsY4J5Fl2RTUbo3FCe9O+Viyzt3dSUsetkJffIYiefOoCAnmGaEfOpFqSWQmK1ewNZKtmt36b547JwtKiN2emfK1zarKis3pCmcZ6H0jYDUzqwFlGLjbWssKOrKkJcsHKJfgBZq7M4qLIHfNRmyvsRtRYgYggloX98yb85v38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710712418; c=relaxed/simple;
-	bh=9hghy2cayv8TUs+RB7XP/7Zs/PgLO8mmUWFiDbdfKaA=;
+	s=arc-20240116; t=1710763850; c=relaxed/simple;
+	bh=7C5gRByOTiBepMYDEh4/2vOam5byMw39eopNXREv3n8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I8E9UkQP0krp18G+1qOwO7yl41GqLmECGYx0fmkX+pOplBN97yZD4FS4XXcngIxE7CwBix1EZFd8MvcJkJid2Grqiyf0phP/Zrz7zTtSnnWs8hCEQGy/kohhRzIQa5ZY7b3azRb0dFXgHq9TYOA5WIUvwUMT16LUyXdpfooKry8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TgiMKTV9; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=N7Ia59eCayPS/XmoPHZ7xvf370hNfAyn/uULdrQprVw2z4wjqDbLUdBHSqNeUPsPbpB7SgWFZSw9P+vu+0Dp8GjSks0qA3Gg4WoDHOZMaGYg+PZbHBsR0fp4IBUmOlpsKYDeXujqwSUFJL7bcanh3+bNY2IRHiJjrFRewkTh+Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OGeLIBIr; arc=none smtp.client-ip=209.85.219.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TgiMKTV9"
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3c3747e7f8cso1932237b6e.0;
-        Sun, 17 Mar 2024 14:53:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OGeLIBIr"
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dcc7cdb3a98so4076997276.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Mar 2024 05:10:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710712416; x=1711317216; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1710763847; x=1711368647; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9hghy2cayv8TUs+RB7XP/7Zs/PgLO8mmUWFiDbdfKaA=;
-        b=TgiMKTV97LPnMzM+CzRsz0dzhcwNSWhtheLhbJcTbTnDKs4a/Wpdx+W84vIkhOmxF0
-         crijatoBRDChbb88v0Mwh81GrL3HU74XV1gvj6HlD9GCiEk36KjGF193Ir2egY5+Epd8
-         zzL+02J8/2uMJ8fYCh0jIYw+a2cucryWsdjoKoozTRrTxGy9wXFEGDYkIOUg28GdS4jc
-         /nyehh98D6AbbLe1+OfogP8GfClfPZzYjaWS9XFBk/nsMEvtrgly4Fv1LvswPLMyoTOc
-         8GrCLdL73Qom38FU7YNBNKdldVkZXibrejMjsdwcG9v/FPWmbVlKjWB/2YjxyZrgriDh
-         LMNg==
+        bh=z8XaTQbE1O0a0/DruCXEWFfXkhfUXOtTJuF3lZFPpKI=;
+        b=OGeLIBIrbBl1wS++5IgDfxJUtQhbKyzaUJCruOG93fptOob1QfcsFndguweA41xS4o
+         cz3bAmvrcu2YXeoBZ7HfJRuYmkGVEZhpW9EXGsA6+EYnaGJ2qA5WE8PjKRR6fyNxeVKH
+         n67aJGVdddG+v+xtcbIcjj825N+tlfFZHtYi/RN9kxzDEvYqqJNKvXDjxCAwX7KuExIo
+         ictT+8VdXNXXzucx2sZ+ltwgldkis0kEpg+vU3zB5Afg5lUA3ktbaRSqsLI35bTqlrHx
+         SiI3QzGrc/w7e73VxGSar9mZvXkT/fHxFp6azJcDPrpKfadmgP3YCxDgSpLJ0KPbe9EY
+         P7Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710712416; x=1711317216;
+        d=1e100.net; s=20230601; t=1710763847; x=1711368647;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9hghy2cayv8TUs+RB7XP/7Zs/PgLO8mmUWFiDbdfKaA=;
-        b=Wi6Mw7YVbD2otRaCYf9nsnjVCbzuXl/xdjUccWnQShgWOPJvo+6w4oeYc+NrE5bQLj
-         h1ipK/Z2E++Ktc7g4Nuzbanv05GVNwLZJEvrGZPiRvQpr5t4c6D0gaxqfUeZ5bXbhdP0
-         wVNIXKlvaiGMuW80Lk5OqUcTB4hMHHVAP616It7iV69SghK6i4OuRDYHj1e35vjjGE8h
-         jot5QqngSoCo7gesAyb+XFJxnWqlrz9IGZjseljRVPU1SJGR+SdEQteZOirisbPr8q+E
-         KUqQGmN2zofSb2R0FIp9mh1cNGyXv/ZpAvtNLSe/Tf0+QxmdIm/QDolcyQPkkCAE1y96
-         T5xg==
-X-Forwarded-Encrypted: i=1; AJvYcCU8eaTiq9mYlpQ2hoLGjBHOhEmQkEh1asea14FZRCTLrXiaunbRjljmQuD3fUuqnQMuePlXErFs3q+1WIc2WGh76fUnGwseJi6B/n+MDXRl1KbxPWf2yiJ2fYI82OTQWqv8SJg8vV2N3L60Wh0=
-X-Gm-Message-State: AOJu0Yx/GuD7ChokUCth8Ist9/f1sO8iQrU8wX72luBFsEOsys/q7hDP
-	ZzhpPZ7OeP6C3grCZvr9Z4xEukccUF8mOBb1guT1SFslCws2Kr32tdH9/dahKxCtvmwNLluv5Hw
-	VqtYx71HCuspetWWO9KArrdR40IY=
-X-Google-Smtp-Source: AGHT+IEmOoDTy7JXdmINjJNl7nOK2XSxmSAaTxfxxxXAKNF8Oi2WQPcrleXEZJyYTctSYgETkjO8ZWPla+Rew2yJNqg=
-X-Received: by 2002:a05:6358:9497:b0:17e:4fc7:d95 with SMTP id
- i23-20020a056358949700b0017e4fc70d95mr11914523rwb.17.1710712416202; Sun, 17
- Mar 2024 14:53:36 -0700 (PDT)
+        bh=z8XaTQbE1O0a0/DruCXEWFfXkhfUXOtTJuF3lZFPpKI=;
+        b=Pp+2526Ybz9fMfquNpNZl9Z4bttEhxod/N6a3ytc7b3F/0MBUofleGo5/THBcikGfh
+         6r8OX6J0VF5KCym39L1XnKcLDGsOQ4RPhKZdpACZ9fVSMnZVuFbkYSxZGybUtcsoLbDX
+         n82HQ2uUsD2CANd4r1BlwvFGepkE6RmLRzNet4qf4Ki1VjrGPFtsbnppRlcaNIHYr3ea
+         Rq2+46XpZSsaiO+GutroCdwRxt9QhGXwSjv+42U58jvDn8qQ9WtWL0W6W+9s5Bt/S6Sd
+         3ePnH/0blLEg1dC9UD/3ldgn8ENgtXpAN3MWgECsan6qA2FAq3mh5O2xTZCr7BaxkQSK
+         6JrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSzSJbEBfoC6CSM2ZoSp+4TlSAKrQ9xXnM/hsZCtNjaEFTxSTkvO3eER5yDA8ZmsonWbvRO6MgQebTVdJ1qTPm7JTFmO5uqu/8N1gbPxY=
+X-Gm-Message-State: AOJu0Yw8K9UKZRU8sdtUZOVFQqwtt3z2+x41+3EFYmeaRaTE6m97uQEi
+	KbhdvIHGmf30qDgpXaENur/i/XYVlQxeeG9PzC8djPzHMPME5IulWQpIvgIWj0wo16gwWv8ZkCT
+	672OZkTDPiUCHpK7V6dj6WCZO8Q1RUp3Eklyo
+X-Google-Smtp-Source: AGHT+IF0o8YCJwyZootm2txwhqaD34gHDzLw+VYz4p/Uyk4KgCREaF0sTQ1a2ev5uipb6KhEUuWEa8OZkGTEaGcgl94=
+X-Received: by 2002:a25:e0d5:0:b0:dcf:a4a9:98bd with SMTP id
+ x204-20020a25e0d5000000b00dcfa4a998bdmr10530889ybg.20.1710763847155; Mon, 18
+ Mar 2024 05:10:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240223163726.12397-1-dakr@redhat.com> <6ba16a74-6fa4-4051-8cc6-f0e53a68d8b4@redhat.com>
- <Ze73aPMEg-BUCE8W@hs01.dakr.org> <CANiq72kK5CF0RQathACD_=7K1Ye4eMVdUnRcvkDZx4ALtq46wg@mail.gmail.com>
- <d0159c8c-f5d8-4731-a820-012702841bfc@redhat.com>
-In-Reply-To: <d0159c8c-f5d8-4731-a820-012702841bfc@redhat.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 17 Mar 2024 22:53:17 +0100
-Message-ID: <CANiq72=CQ1EZGuGU2vJ-JuGh3J7J=p_xtpUdn0q2eaLmAvh-Hg@mail.gmail.com>
-Subject: Re: [PATCH v5] rust: str: add {make,to}_{upper,lower}case() to CString
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240309235927.168915-2-mcanal@igalia.com> <20240309235927.168915-4-mcanal@igalia.com>
+In-Reply-To: <20240309235927.168915-4-mcanal@igalia.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 18 Mar 2024 13:10:35 +0100
+Message-ID: <CAH5fLgi9uaOOT=fHKWmXT7ETv+Nf6_TVttuWoyMtuYNguCGYtw@mail.gmail.com>
+Subject: Re: [PATCH v8 2/2] rust: xarray: Add an abstraction for XArray
+To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
+Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Matthew Wilcox <willy@infradead.org>, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 12, 2024 at 9:08=E2=80=AFAM Danilo Krummrich <dakr@redhat.com> =
-wrote:
+On Sun, Mar 10, 2024 at 1:00=E2=80=AFAM Ma=C3=ADra Canal <mcanal@igalia.com=
+> wrote:
 >
-> Thanks for sharing, that sounds all good. Just wanted to know if the
-> patch was queued up.
+> From: Asahi Lina <lina@asahilina.net>
+>
+> The XArray is an abstract data type which behaves like a very large
+> array of pointers. Add a Rust abstraction for this data type.
+>
+> The initial implementation uses explicit locking on get operations and
+> returns a guard which blocks mutation, ensuring that the referenced
+> object remains alive. To avoid excessive serialization, users are
+> expected to use an inner type that can be efficiently cloned (such as
+> Arc<T>), and eagerly clone and drop the guard to unblock other users
+> after a lookup.
+>
+> Future variants may support using RCU instead to avoid mutex locking.
+>
+> This abstraction also introduces a reservation mechanism, which can be
+> used by alloc-capable XArrays to reserve a free slot without immediately
+> filling it, and then do so at a later time. If the reservation is
+> dropped without being filled, the slot is freed again for other users,
+> which eliminates the need for explicit cleanup code.
+>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> Co-developed-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-My pleasure -- I took the chance to add it to our Contributing page
-(which is our `P:` field, i.e. Maintainer Entry Profile):
-https://rust-for-linux.com/contributing
+Overall looks good to me.
 
-Cheers,
-Miguel
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+> +        if ret < 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            guard.dismiss();
+> +            Ok(id as usize)
+> +        }
+
+You could make this easier to read using to_result.
+
+to_result(ret)?;
+guard.dismiss();
+Ok(id as usize)
+
+Alice
