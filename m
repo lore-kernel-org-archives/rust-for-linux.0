@@ -1,109 +1,159 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CAB54FAB;
-	Tue, 19 Mar 2024 11:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFD93B289;
+	Tue, 19 Mar 2024 19:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710847479; cv=none; b=UY3CRgGXDgq9Y1xqiFQOshBM1v1pOF7dB5QhAN0gjsXnZ2fh8I68luX3hYBgKDrClKWWEv/qXZa2Xnp1DrGt42eeuD4zF9JXa9kUneCDwdAshYwl3noeFs6DllMOPWDYsZxp7fSYrvkxKMEQZNtVl/neqPWfUOk9yWH+vXq4x60=
+	t=1710876789; cv=none; b=n5nkBqaxlcdXDLs/dUb1q8dUjsycdsCjjwlPei+nmgGQwzq10kLlARwXLafu85nRAjXHBrInwzMtfmnN5qllh5czLLrMxhdOkIlQFzFZbbKmwvMjthcQb+BMlRsHPINcAXa6CR0G5SiIGtyjs1j8IgETZlMd9ieoJNJsYVZGAEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710847479; c=relaxed/simple;
-	bh=2wx24UAHiVtV4+ypaJ0gY9Zi1VLzStuGl2jUigSabYE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U6N747r//6PbSxUvIYhh8HL5nzYc584fDa2CcoiGIHdRBH15BwNhJdaB5cppjlcfiCdp67RWEazzM+nuhZC7R2vzgMoBhH3Gn+rB1GudjWx7zmevHlTtMBXj3evEHeIK38B/tXmXqlDB3UhKEJMoND9xJl2phZa1jDMZDaRV0Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TYX++6X0; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1710876789; c=relaxed/simple;
+	bh=4rFd3TVErriJNhhMqeXGwN0oupdCKObtCaZ2O17N7qE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l/XbC9HubXwU7V6cF8bjLUCwZvqGkdZf0bvFptn3KK128xFf0386/hp0nmqYYKYUkap1DsTmrUNo8Knkn/ZeIkaSQbYp1wDJKjd7MhlaSrglBpeO9CclLqWoX+Ck0u6v4Fcu/mkH757iVj+EjsjmHQDE+rkhV95d+5wfpvB0MsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fWv7ep4E; arc=none smtp.client-ip=209.85.219.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TYX++6X0"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-29c5f8bc830so3655606a91.2;
-        Tue, 19 Mar 2024 04:24:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fWv7ep4E"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dcc4de7d901so4768419276.0;
+        Tue, 19 Mar 2024 12:33:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710847477; x=1711452277; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1710876786; x=1711481586; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BR78YNxmtioAHYTNgvqa14nzPMCB8nOTuQY3ZK9gT7U=;
-        b=TYX++6X0ebo3EqeuPDUYCSJHqj9t2zhdTDPTn5hi2eq1lhA7DgJThpaeci1H25YhKf
-         cXtJiA3TQxLRID3f3fWbZ9eorGJmfbRBUUvRyB8kiWiCkhDRXBcL2MGtoSGozrukXfKd
-         zyI6C0TpfiWn/lpJEBUe6Dg7vBwhhe5br2gcyyq1vr45VT5VZCEkOGKWwfJOdb9c2Epo
-         V3/nQWUiP+VApEsB8rk02BTTdR2M+KeYWH06stC5jkL2gQ0ry2S/ldO6D8Kjoi1tfMWp
-         8ke0zmS2R6EMjE5ngEvlJbEDCvBwwcI9o2vJN57eA35VY/MRjdF6dfcT9feqp6mYCni1
-         zqrQ==
+        bh=FYOLOG9hKOFqz5xSRG6U5vM/st2PrJ7TeyrVBhptWm8=;
+        b=fWv7ep4EoFUgpJJ+fPoZcdGGmwjcJTpWd3SgoK3V/DJxMbhdI9Z8eyX2kiBusBZnew
+         1T/cZQv614spd6VEpMCvam6XLewbMBaowV5g6jJg7/d3uNar30NyN6JJSXbZ0kHLnf23
+         SXydERphui/JQ6m6h1VsNIoFyDkvNyMzOsTCljh0Qvp6ukYdzB+BUPqYoKhAtPH8tFru
+         CX1JLcojzycBlq8eg+eOY6EeOk0EeZZnrnJiUHDeTPkxsdAjZ+FQCy8iIY0g3ZHKTOlQ
+         YqXmYpc7rn8pDBL8bnqYhe//yZKkOkCZvuKDZvlujdkzMHpLvaEVtdTQoLu+lvezIK3c
+         +wOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710847477; x=1711452277;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1710876786; x=1711481586;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BR78YNxmtioAHYTNgvqa14nzPMCB8nOTuQY3ZK9gT7U=;
-        b=jdBympY7b20Y880Gb/BhzQG2KJT9HarFAIgpn/ROIZeVrhirB3OvIQUDK3PT1HBMia
-         XqBgQ4Ovq2FIYsPXXrD4Jqk8IjB0eohklBtKNccAJTmwbOTvIGdzddPxQ5inEfipoV9D
-         4SqjhXC09lHfFHDKzkfEVng5yjs7/W47K/edefasRm2vvqveJQGdE4ZBrijT/tC7fIqn
-         PRRHYA8mi82CbzPVOIt8LG3Y1G0ZUi93ifUE883ntQJy/05cObQ4WgeDJHgX51WpTqBA
-         u+FX9gZITKDkCx5ND5jAQE01Ecw/YZDojSvgJU0cLC+u9wAdf5UpaF5zOP/Pur+lLZf7
-         5pTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUksndAFvk8MQxNv5SGIX4hs9Jm2MEPgBNuJDykSWxSx9h1k9NZGKixfAqTWhRtgYhz06Jp07zfzmF6vgGJn5eYowMnnvvwZiQomaUuQdrkJumfXp1BVhQltuQp0H3VV+5NwfC9s0aLD7WJhvfcPkTGd9Reyqrgv+xGMOdN1kT9BmsYFYI=
-X-Gm-Message-State: AOJu0Yz2XrrESgfo/qtqXenkc3PqUdVH9ipjZqpB0ZVExcoMHwaNwVxQ
-	JUmrnPa3v+nJiUl4NEZ10RQgiAbKwXrtJaf1t31E6qDsf9y9P9+lv+K4SPQjdt+7NVMt++o5GEO
-	4sjfc63xEI7Zw/QTPbb3/5ZwyaNUIWMFXHaM=
-X-Google-Smtp-Source: AGHT+IHltyFVuxTP9oHxkHm5cMbzoKM+IH9GPaqGQW9To6riJMOSynrT/GUGulV/RkLMhkCoa3eVryaN8txx2R2x5OY=
-X-Received: by 2002:a17:90a:1f4b:b0:29c:74a4:72b3 with SMTP id
- y11-20020a17090a1f4b00b0029c74a472b3mr10354367pjy.8.1710847477474; Tue, 19
- Mar 2024 04:24:37 -0700 (PDT)
+        bh=FYOLOG9hKOFqz5xSRG6U5vM/st2PrJ7TeyrVBhptWm8=;
+        b=eAQW3YgfRelddAQr7l43JIcXacrZK0AfEtGITXsogxGYRqfsLMQ5ZBldY6MmuA8Mde
+         Nvp2OV7Kyp+l4hvHdmdxkDe7fszhwx5KYhceuNYFbV5zM+uUx1/BLTHBdd6tt+sXyuj6
+         /pocqvB+g0clArjY6OkajhPLSXhUXd+qT69orfVDElIXLFNpDNubqcEZPbqywf/f7pI2
+         AH8ZPzcGVJKR+vylkIfnXdgmdES+CMrqh2PR/zhIyv1CFhOsweiFbj1rf8wrOTdOJ3yL
+         dErWvPf9B5pHrdA66VwxQgAP87xmDe1YPvOQyzNG7k3makyt5eEPDWxEvhESCPl9kBwX
+         eBBg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKKhXuPc+yn7Oc2Sy14BODWAKXswE3BhfnSXEUwW1xiO+jZ/o/+d76y707OgbsbQuCtbl0N6Lm4sEbkkP9C6oE0BzdTAGbLq4pyiPgr3Le5d0H/cHb8ESYIBE1sMQ3Ht4zmwqXLqNLZ9tVEl8=
+X-Gm-Message-State: AOJu0YzySy1yeV/351sxyoweZMJgqt955A6IfRN/SP6qleLgSRwroaFr
+	oLLrAAB5cApuNVrq7xkDhaQSIb94pblGCpnLiO3r83w2NLBrDmrH
+X-Google-Smtp-Source: AGHT+IGyhzzuzo2fbeyEEutYpQHNHgNytYw/2oxy6RUhbTVX4Hwu18JQfDCF7UAcyT+VipOhCoHWnw==
+X-Received: by 2002:a25:9388:0:b0:dcd:b034:b504 with SMTP id a8-20020a259388000000b00dcdb034b504mr2781428ybm.27.1710876786538;
+        Tue, 19 Mar 2024 12:33:06 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id bv12-20020a05622a0a0c00b00430ef755b74sm639052qtb.27.2024.03.19.12.33.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Mar 2024 12:33:05 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id EC3721200032;
+	Tue, 19 Mar 2024 15:33:04 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Tue, 19 Mar 2024 15:33:04 -0400
+X-ME-Sender: <xms:cOj5ZaeNtfRqJ31XFlPmNBihefK5ralnIyI4l2-SuLTRbTDUOa0UXw>
+    <xme:cOj5ZUN2e_7F7Ck0Vb3wdj0l2iji2PNKjvwSSU691meFAnKDdJzSSi1Ve05Itdgjz
+    2BfKkz0lrEg2qsaQg>
+X-ME-Received: <xmr:cOj5Zbjk9V1LN8i6nlmCwER0m48OJ3cEZyeyIyaD-68clj3PgNSYAkY5JbgSqQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrledtgddutddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:cOj5ZX8es5ueJWYzJS2c4l8w4Cx97jRvKcBnKcnH8UeLO4OAfwQ3uQ>
+    <xmx:cOj5ZWvaAbQLbP_B4xBZk3OSPeTvQ_lJpQesjzUsezIs26gfAFesAw>
+    <xmx:cOj5ZeG9kPTlrIACgELr6k3T-Ju_aa0i3K19yb9wq5JQmkMd1Ui_iQ>
+    <xmx:cOj5ZVOQQsgo9kKrOmSZ_c0k-73-fI7UeibNRC5hHdnbcYAwEgDpdw>
+    <xmx:cOj5Ze3PlhOc3tEhd3tg-atBEmoj3-AtKhnv7FTFsDJrIpo6AWJ1ZA5YtuA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 19 Mar 2024 15:33:03 -0400 (EDT)
+Date: Tue, 19 Mar 2024 12:32:50 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v3 3/4] rust: uaccess: add typed accessors for userspace
+ pointers
+Message-ID: <ZfnoYoki--zy2Qq0@boqun-archlinux>
+References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com>
+ <20240311-alice-mm-v3-3-cdf7b3a2049c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313230713.987124-1-benno.lossin@proton.me>
- <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
- <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
- <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me>
-In-Reply-To: <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 19 Mar 2024 12:24:16 +0100
-Message-ID: <CANiq72k6Vv2L+q9iV6Djx1=VGYCANegOLb_Kp-yMscMgYzvfRw@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Laine Taffin Altman <alexanderaltman@me.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311-alice-mm-v3-3-cdf7b3a2049c@google.com>
 
-On Tue, Mar 19, 2024 at 11:34=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> I can re-send it for you again, or do you want to send it yourself?
-> I think it is also a good idea to add a link to [1] in the code, since
-> the above explanation is rather long and fits better in the commit
-> message.
+On Mon, Mar 11, 2024 at 10:47:15AM +0000, Alice Ryhl wrote:
+> Add safe methods for reading and writing Rust values to and from
+> userspace pointers.
+> 
+> The C methods for copying to/from userspace use a function called
+> `check_object_size` to verify that the kernel pointer is not dangling.
+> However, this check is skipped when the length is a compile-time
+> constant, with the assumption that such cases trivially have a correct
+> kernel pointer.
+> 
+> In this patch, we apply the same optimization to the typed accessors.
+> For both methods, the size of the operation is known at compile time to
+> be size_of of the type being read or written. Since the C side doesn't
+> provide a variant that skips only this check, we create custom helpers
+> for this purpose.
+> 
+> The majority of reads and writes to userspace pointers in the Rust
+> Binder driver uses these accessor methods. Benchmarking has found that
+> skipping the `check_object_size` check makes a big difference for the
+> cases being skipped here. (And that the check doesn't make a difference
+> for the cases that use the raw read/write methods.)
+> 
+> This code is based on something that was originally written by Wedson on
+> the old rust branch. It was modified by Alice to skip the
+> `check_object_size` check, and to update various comments, including the
+> notes about kernel pointers in `WritableToBytes`.
+> 
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Agreed, if you want to have a note in the code itself (to avoid
-mistakes re-adding them, I imagine), then I would say a short sentence
-+ link is best.
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-Your link is a good one for an explanation, since it mentions
-explicitly the UB. The reference's list [1] would be a good fit for
-non-explanation purposes -- it mentions explicitly `!` (and
-`Infallible` is supposed to eventually be an alias as far as I know).
+Regards,
+Boqun
 
-In addition, while it is not important in this case (i.e. most likely
-nobody is affected), it doesn't hurt to include an example that shows
-the issue in general for this sort of patches, i.e. what kind of code
-will be prevented from compiling, e.g.
-
-    pr_info!("{}",
-Box::<core::convert::Infallible>::init(kernel::init::zeroed())?);
-
-In any case, even v1 looks good to me -- thanks!
-
-[1] https://doc.rust-lang.org/reference/behavior-considered-undefined.html
-
-Cheers,
-Miguel
+> ---
+>  rust/kernel/types.rs   | 67 ++++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/uaccess.rs | 75 +++++++++++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 141 insertions(+), 1 deletion(-)
+[...]
