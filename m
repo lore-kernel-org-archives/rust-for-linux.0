@@ -1,138 +1,152 @@
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mr85p00im-ztdg06021801.me.com (mr85p00im-ztdg06021801.me.com [17.58.23.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D05B58224;
-	Mon, 18 Mar 2024 21:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5528A7317D
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Mar 2024 03:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710796597; cv=none; b=p9in9BwL7Qf/sVT4Kmv4HScHJwrsViqPomkxIxciT/eaJXasQa6AsG0e6vShYFPjsGWr5xIISYYJZsixHT/pe2hINsEjy+XmjNG1ZGG+RFj+c+k4I9W7UWv5HTlwrHXIbM73hM0te4n48wAuooVjnv2WuYRaTFrxtxLPA05PUXo=
+	t=1710818246; cv=none; b=KVFwXuj6c59OVEqLWAmjPDM5oZyg3/8e3NKZjPyyJtRveP/iF2fedeIG7T/HqImxR8yHVIF3bmJ4NvTdVPp5c6knGBGtuf+MSYOPk7sfeC+2HCby4435LIo90nUzwbMaa3LJ54LIHR9wiYj/XTXKws5cM6ca6qcV/+VnIuzir1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710796597; c=relaxed/simple;
-	bh=Yt0f+dVHrji/FGnjmFC58DJf7pxYkZrEgSIp3AfMov8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gsInghL3AoncXztpGWOitkGWKYy1oCR4ji8iBxcrNgjnExBMGTtTdvf8QQxAE+yIud7MZ6uE8FkJugdAgsoJA8jQsFabkJ7eRvWEmMFfZdA/0hWFnGnJ92paY4sjJdSdrLes54lE2ZmblNkCKnHvCY8HgSLOuwnRGuocOI0n7Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PvdQ02Mz; arc=none smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710818246; c=relaxed/simple;
+	bh=zQcc3jxKfVQ2PUuIjCsWgbLI7wBdLmJQ1WeBWFM1saU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=o4DQCpwu+ziZ3rU+C+8J8K/E9UZOLSQUH85qHt4ka+RxwPlDgsNlajMypDh0Nbf5UZeysgDYvM8VnJwUSVAkJiPwEDvMkIysjj40h1naaku/Omwfpv2jO9JHwwIOCvw/dVJcC9nLQPjen1D+MsxE1DQkLY6y3n/uYH/N7uKdxRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=PvYy4bbC; arc=none smtp.client-ip=17.58.23.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PvdQ02Mz"
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2297d0d6013so98653fac.0;
-        Mon, 18 Mar 2024 14:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710796594; x=1711401394; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8QJWxTmIJrEhWMzXrfsFzOSKGe8edB69jBc3Ml/9B9o=;
-        b=PvdQ02MzLXob0fpaxEA6zwTIGl4vXGeL76+vQS6ac3/ilsLcBMWrqC1XPDe+mQVgJL
-         Ni7mQX0t7TWspGmTU+PoA3e6t/EonMkanQ2NSNTHFobpwidLy7rx2vdnb6gHcjXV0wwX
-         a2HubcDGA9CyYXwzRu5vfradQ/CwK9l4evvaVpcCESa//pAWq1iqWDppmn7M++TTSCEd
-         SPJwbx1S4ONjDuf7JRKgg/It6HZbdSUmt2OgIXLWQ3UFxIFdkMjUgNVvxyd2nOcgyZWh
-         2vX5xVHqJ6r/H3qmhUvTIIJW0eKMBr2FPkEh5NSBmgjFWX+VkZe709/M2LwfMg+yOVFs
-         eANg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710796594; x=1711401394;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8QJWxTmIJrEhWMzXrfsFzOSKGe8edB69jBc3Ml/9B9o=;
-        b=ZI5X9cwmgUW4SOpXUxsyVBE2OdYFmcNHUGEtahJhbzOvFKEVkVPJ3t5bss3icxyV6a
-         lRIjSTwu6ScRazyBz6e96aUkUfEYFOht354vt8HF1270jE5/dHZ2IKrc5WdXyHiv20Vk
-         NgWIaLqokPp12hQFD1umc4XAcPbq3wE58hW7CGp0JViMF2ovsEuNPLPMcKY79BttXGFZ
-         QgN+pB2OfDISZZMcj52ssennJgeFgiMdgOpMLNtqQuU90RPA2hu2+h3JrJTeKvva7g+3
-         dZllJhNIxr6r75HN+ye6xm35/rL/v1EgD3atsAlKnyCeIi3cNzcMZtNdNrgv0b6US9bB
-         BFoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTJrPvl7A2qF2X1IRnvvFibvKLtnqh3A07PG7AKvrKX1EcUcgiRteZaTc4YQGdCJ29OP+I4swrVl4rfgj+s8a6BwkwOTe+U+tQAhn98o1FIyjkotvZfYiW/UncYgB3m0xcu4Jq6JwJPH/+4dU=
-X-Gm-Message-State: AOJu0YyVJvfmiM3ejBQ+W7t2mRXtNEyjHPrkK6O6aB/BXQ60e0jvXrR/
-	AT9U5L6f29m4pHAfU/7j8O5ERdPb3zr8mhKJJmd2s5oa2gsanvRM
-X-Google-Smtp-Source: AGHT+IEVxMBj1ySrAZy1h4aIv0Q09QPCGofkuXyjet6GfgHFvDWyvLhUpyruY9PUdSMRW22egpzpKQ==
-X-Received: by 2002:a05:6870:2315:b0:221:5c49:5d02 with SMTP id w21-20020a056870231500b002215c495d02mr12691764oao.51.1710796594664;
-        Mon, 18 Mar 2024 14:16:34 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id gu15-20020a056214260f00b006905c8b37bbsm5715590qvb.133.2024.03.18.14.16.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Mar 2024 14:16:34 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 5A5AF1200043;
-	Mon, 18 Mar 2024 17:16:33 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Mon, 18 Mar 2024 17:16:33 -0400
-X-ME-Sender: <xms:MK_4ZUnSqbuoSRdN51SKopiueOmcf8Mn61jAh1cN7rIqsC9wUN-XRw>
-    <xme:MK_4ZT07futncp-PmqIfIMgcC2BMxLJM_sosJWX_MLyhQLlhSbdPR-WC91Q8ABoG-
-    kERW7r0M3fk5UCMGw>
-X-ME-Received: <xmr:MK_4ZSpflCeIuYa30osxDA6pUFQ1nflaFs41mpjrGCHz6QSB6bluVC88q-w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrkeejgddugeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeeitdefvefhteeklefgtefhgeelkeefffelvdevhfehueektdevhfettddv
-    teevvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:MK_4ZQmtR5N5La4Q6xWKLUwfz9qab6ckAYBkEKwxAxugKvA5HwBqOA>
-    <xmx:MK_4ZS2HiqmNAhg5XqImeHmaTPX5MkzWk6TBp29w7eI34CwLhm0ZLQ>
-    <xmx:MK_4ZXuY0MlJl1TU9idc_DKtiMOyrMARh_yx8jlLc6woBLHjA4wC2g>
-    <xmx:MK_4ZeX_0ATj5D4kM6Oaw-uJ0MzoKbn4iA97BWxnhLvD28YMcdGuHw>
-    <xmx:Ma_4ZXdrV0oXuSVF9Z8dgDwh5Gqu1bppYJnNCRHQXBt6tzc09J84bAXUhB0>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Mar 2024 17:16:32 -0400 (EDT)
-Date: Mon, 18 Mar 2024 14:16:17 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v3 2/4] uaccess: always export _copy_[from|to]_user with
- CONFIG_RUST
-Message-ID: <ZfivIRxNmjaljsuP@boqun-archlinux>
-References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com>
- <20240311-alice-mm-v3-2-cdf7b3a2049c@google.com>
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="PvYy4bbC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+	t=1710818244; bh=XGDkgB5unVzSxGvf5tmV1LkBUwsiz/E+a+Vzkcg7yZ8=;
+	h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
+	b=PvYy4bbCdIXJWEwsy5MzB3cS6Q2JH23hg2zSzb0wP995crx2HGDsoT5tt0orjuzeW
+	 sngf2Sq35dRa8qRBDxYQgnDG7704KtQIxIdUlv8n03bmsM5/LpGSQ+Ig5bA5EebZsF
+	 HopdNOzwTsjYEcnI6Kqk5/7IkZB87qlY4EOw24KryPQJiiYIOAhU/RiBjrmt5S7+Qi
+	 O1stTmY7I3pf7wyZYw98UeFtLjxy+proH0bLWmzwUcnX0iNjUk4+ZRTUD9SvhP2tzT
+	 tk6eeqrRhLsHAaMskdBg2RN6kzXcBrXPqqnsXWFSh+T6/fj5Ic7hOh8a4fYro5Bdvn
+	 yPqJk8wSimveQ==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-ztdg06021801.me.com (Postfix) with ESMTPSA id 2527DD001E7;
+	Tue, 19 Mar 2024 03:17:20 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311-alice-mm-v3-2-cdf7b3a2049c@google.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+From: Laine Taffin Altman <alexanderaltman@me.com>
+In-Reply-To: <Zfh5DYkxNAm-mY_9@boqun-archlinux>
+Date: Mon, 18 Mar 2024 20:17:07 -0700
+Cc: Benno Lossin <benno.lossin@proton.me>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ stable@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ lkml <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
+References: <20240313230713.987124-1-benno.lossin@proton.me>
+ <Zfh5DYkxNAm-mY_9@boqun-archlinux>
+To: Boqun Feng <boqun.feng@gmail.com>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
+X-Proofpoint-GUID: 0yLkaEkWSF4_UXEdezHhbfjnJH5PAumf
+X-Proofpoint-ORIG-GUID: 0yLkaEkWSF4_UXEdezHhbfjnJH5PAumf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 clxscore=1011 adultscore=0 mlxlogscore=999 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2403190024
 
-On Mon, Mar 11, 2024 at 10:47:14AM +0000, Alice Ryhl wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Rust code needs to be able to access _copy_from_user and _copy_to_user
-> so that it can skip the check_copy_size check in cases where the length
-> is known at compile-time, mirroring the logic for when C code will skip
-> check_copy_size. To do this, we ensure that exported versions of these
-> methods are available when CONFIG_RUST is enabled.
-> 
-> Alice has verified that this patch passes the CONFIG_TEST_USER_COPY test
-> on x86 using the Android cuttlefish emulator.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng <boqun.feng@gmail.com> =
+wrote:
+> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
+>> From: Laine Taffin Altman <alexanderaltman@me.com>
+>>=20
+>> It is not enough for a type to be a ZST to guarantee that zeroed =
+memory
+>> is a valid value for it; it must also be inhabited. Creating a value =
+of
+>> an uninhabited type, ZST or no, is immediate UB.
+>> Thus remove the implementation of `Zeroable` for `Infallible`, since
+>> that type is not inhabited.
+>>=20
+>> Cc: stable@vger.kernel.org
+>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
+`init::zeroed` function")
+>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>=20
+> I think either in the commit log or in the code comment, there better =
+be
+> a link or explanation on "(un)inhabited type". The rest looks good to
+> me.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Would the following be okay for that purpose?
 
-Regards,
-Boqun
+A type is inhabited if at least one valid value of that type exists; a
+type is uninhabited if no valid values of that type exist.  The terms
+"inhabited" and "uninhabited" in this sense originate in type theory,
+a branch of mathematics.
+
+In Rust, producing an invalid value of any type is immediate undefined
+behavior (UB); this includes via zeroing memory.  Therefore, since an
+uninhabited type has no valid values, producing any values at all for
+it is UB.
+
+The Rust standard library type `core::convert::Infallible` is
+uninhabited, by virtue of having been declared as an enum with no
+cases, which always produces uninhabited types in Rust.  Thus, remove
+the implementation of `Zeroable` for `Infallible`, thereby avoiding
+the UB.
+
+Thanks,
+Laine
+
+>=20
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>=20
+> Regards,
+> Boqun
+>=20
+>> ---
+>> rust/kernel/init.rs | 4 ++--
+>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+>> index 424257284d16..538e03cfc84a 100644
+>> --- a/rust/kernel/init.rs
+>> +++ b/rust/kernel/init.rs
+>> @@ -1292,8 +1292,8 @@ macro_rules! impl_zeroable {
+>>     i8, i16, i32, i64, i128, isize,
+>>     f32, f64,
+>>=20
+>> -    // SAFETY: These are ZSTs, there is nothing to zero.
+>> -    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, =
+Infallible, (),
+>> +    // SAFETY: These are inhabited ZSTs, there is nothing to zero =
+and a valid value exists.
+>> +    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
+>>=20
+>>     // SAFETY: Type is allowed to take any value, including all =
+zeros.
+>>     {<T>} MaybeUninit<T>,
+>>=20
+>> base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+>> --=20
+>> 2.42.0
+>>=20
+>>=20
+>>=20
+
