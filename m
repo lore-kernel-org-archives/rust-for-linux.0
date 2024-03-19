@@ -1,192 +1,175 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms11p00im-qufo17281301.me.com (ms11p00im-qufo17281301.me.com [17.58.38.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9CD2744B;
-	Tue, 19 Mar 2024 04:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC2033C9
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Mar 2024 05:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710823160; cv=none; b=bltRnzgclthUccmZc4jQp0bMYTh4OEjzuCw7N8n8LXvHUrgroHxteFrmBXJp+JgdqTcc6iEgQfh+vfrjXrvSRs0pxu5NaiAiK664SdIKPGPQijQKBIOgGg55et387YMu4E8vC2hfE6i1QdNK1/3SEQwJ4td2F4SMkXIJ7kY0008=
+	t=1710826131; cv=none; b=Fiz3Q5m4f1PNwV0BavIyBTjkDG/sO3rWzpd9LXF0s6jCYWmxBL0mSDK8td7hY8c5xZuIciLZq9wserb+kgTKm8OMxUA3VILAgEiGAu6nNq3SRZB+LY4MFdU44Je5UBug+SzsURpYAqZlImPyg9HIZEQz1aERJrsh1ycpvYObqAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710823160; c=relaxed/simple;
-	bh=EX6GHgLPuSo2ubcFe0HUyPHI95YPFIuR96s31sKY5WE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qPHV4yc2OKNusOh6qrkGO+MVg/p2x9D/hZF0Vq04PjoPPX6vOceNQSk0yHUnIoFKm+BFMuFdPDcO78Exja0AgFMOXTz1A8EIkl/qLRQb4wxz9Wwh9qHyCeuD17ekiuKDZ2U0paoTytunbsJpvh2K9ZCCu3uSMYMNrsvSbwSpfDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VmxJF6JK; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710826131; c=relaxed/simple;
+	bh=GQ69sst6KtWZRI9xIfR8OlxbHRzyV2W310g5+1K6fxg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=HVAOHeaGpBMBYrNAf6zWX8FrWknZ74Vn83cDj2Wlz3Bac/ecE1XBlL22o8JGm/xBLTo0sP6qwM+pD9LduvFiMWjTQvk+sEc7r0CubM+JE4vdmw/iYaOd5aAJipEzu2eqLOnQSs4XWfmjOYncHwuNhGPY07st7d+RYcHYBOFlPfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=k4dXykRg; arc=none smtp.client-ip=17.58.38.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VmxJF6JK"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-789e5021703so188729885a.0;
-        Mon, 18 Mar 2024 21:39:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710823157; x=1711427957; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TCcPcWRQCvkbSDI9YFfpJrZ4gRBUtJwDb7Mt4FY2BYo=;
-        b=VmxJF6JKEYKGeVdz3E7CS2rN+xSq6gVFFgm0jkklQTq7F0mpZ4wJXHyZlUIRlbpVOx
-         dKYyV6BOf9I4xGDJSjekeOzFsiu3uPcM0CRKe/LYo//lmOMuyPsj2u8a9OdbovVb7Tax
-         wdDMLDTo/Cs7JpHGXntoLpC+vs/KM18gcBsI/Yq2TuNI0ZJx9V9mW1Upd7miLnl6ZD70
-         aq6B+ZrDEdV7053YnioEsqp3weGeavFR5ty7ZU0KW4PJNjIgvHu/8wQK6KyXSKqUcoqa
-         dmqTgHFbvR88n1OW/o1GHDJ1BHRtHkiR2+yuWbMe8jYpzTy21Rg/FHJzr0s0ryeHk9F4
-         r7FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710823157; x=1711427957;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TCcPcWRQCvkbSDI9YFfpJrZ4gRBUtJwDb7Mt4FY2BYo=;
-        b=ny+20ERWjR2tdWUyN810sasfe8/naMf3ePBVl343SQm7r8vA+hEpLfqroSjLDIlV0J
-         rnFmfElw/HKE4ESWpC6+mItpU4+B6En7w/VOWpplshyjz9EY6lu1orpop0Xe+M631aJp
-         gFDghhnf2X5aKJ7fYn3yBRVUy3hhcWb7ZQFPI/Bp2bUFMx+Pa70bgNH+M67HIBkQV7FA
-         mJ/N1AtNPpIYNZqgU/AK3UTbYltVebKDlgEoMk8iZfpFphYJ8rEIKyhmJc6f4O06eQS1
-         v3cI9O/7eevmTYXXKzNhUCSv74VkCo7OhwpWf2CaBe/++0B9OmuehmgfHYoeQadyAjlZ
-         w8Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTWTk0bsoBQ0BVu6+xPorMRC4se55vBtGTTkbABCRBnbpLj0gcN1GFMfAcznFFuuFh2xC0anEUWsVoKabOEqdhhvzHcqI42LEOCAdMrWzxcLWlXXrcJKqGTAZ+u/HD5bQDVv0UVqbdJoMkByos05FH3t98wtp2YCGnm6JDFbVah2FcID8=
-X-Gm-Message-State: AOJu0YzafC/gRAG7/YPUBOSFfDVfwAV/grJmPHvX8zQoROhXX4L54knZ
-	kro6Z81819hFTUUd0aizvkbNCnBAWH6AFKFMJw48UeIkJcFpjore
-X-Google-Smtp-Source: AGHT+IFN1Yhduoy7Ie2uRd11YLexgCfD2/7uYVkisBsxlA44/RQ6lr2E8lvsgj2r9j+5kmdSkL2/Og==
-X-Received: by 2002:a05:620a:44d1:b0:789:f2fe:4ca1 with SMTP id y17-20020a05620a44d100b00789f2fe4ca1mr2543239qkp.52.1710823157671;
-        Mon, 18 Mar 2024 21:39:17 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id m22-20020ae9e016000000b00789fa326156sm1925414qkk.82.2024.03.18.21.39.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Mar 2024 21:39:17 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 823F71200032;
-	Tue, 19 Mar 2024 00:39:16 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Tue, 19 Mar 2024 00:39:16 -0400
-X-ME-Sender: <xms:9Bb5ZY2gYHUNG-AMsxEIH3VwjZmSOCsCt36qxDkOyUDGWJ8K64Ptlw>
-    <xme:9Bb5ZTEmVVrq-OVRmBS2z0n581-oLepe_HrnrXKBt6BQ7Ci0muJsp7CYFxMabOwuw
-    Vt5u6xRII3U4Hy-LA>
-X-ME-Received: <xmr:9Bb5ZQ6hHaFMLbhxogjK_If0JA6q9-6C92e_XwxxUJ3jNdHWmgg8up-Iag>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrkeekgdejgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeegkeegtedtleffkeeftdevleeuieduveejgeeikedvgeekudefteefieei
-    vdeuleenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
-    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
-    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:9Bb5ZR2TGxoUSVfk1k2XO7_F9l23_E_UDVlB9x6olUio9nbg4h5L-Q>
-    <xmx:9Bb5ZbF16eStfC4V9sIuNvVBDFTwq49shkqy5N_k17_4aYBZaqVoyg>
-    <xmx:9Bb5Za--NrVfdEfOMuNbKhaZ4AVZxEZSL30hhU1_psuUikPIztq2HQ>
-    <xmx:9Bb5ZQn8kVXudi_cblD-mlZgOMnhfuOULQaFFJ7bcXJNGev4YcSDgA>
-    <xmx:9Bb5ZYc-Ip2tGNzZQPwStrhXJiboDfqlPz1P8nePjWbIK9tIvNTQ7PEmGcM>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 19 Mar 2024 00:39:15 -0400 (EDT)
-Date: Mon, 18 Mar 2024 21:39:14 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Laine Taffin Altman <alexanderaltman@me.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	stable@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
-Message-ID: <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home>
-References: <20240313230713.987124-1-benno.lossin@proton.me>
- <Zfh5DYkxNAm-mY_9@boqun-archlinux>
- <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="k4dXykRg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+	t=1710826129; bh=jtDAYiiHKEo7z1XIeH+DbE76nJx6PwjxTaWNlxP+9zo=;
+	h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
+	b=k4dXykRgixbyPj5jQHYrHy0Oyj/E+OVV9OpR33I95R43Jtb7zwE4xphgzFNEN5rLK
+	 3ZmtWQUzHd6vCOcWexL+Wos3ZV3RzRb4c0OGzuMsY7epNElCLfcCvByXuzDA6zuxZd
+	 5MAIRcEDa5u9KE7abEPH7EQA1L9pgvZcInSf1N6S8mFwEz75HkqEO/c/E+jSODuO1p
+	 pJSgRWIwzZgWFnHjrFrCFN7A9+tYWtksglCjzHi70XNls9c3uwQ4b25R50hn/lA3dc
+	 hP8SkSOr3AmOWaFNXf8mSC6XR18CH6G7BYnQjEcmjPgEPEfy5cUuofm6+QHw6L2C4x
+	 eIoCmvXuAuhvQ==
+Received: from smtpclient.apple (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
+	by ms11p00im-qufo17281301.me.com (Postfix) with ESMTPSA id D0D40CC0180;
+	Tue, 19 Mar 2024 05:28:47 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+From: Laine Taffin Altman <alexanderaltman@me.com>
+In-Reply-To: <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home>
+Date: Mon, 18 Mar 2024 22:28:35 -0700
+Cc: Benno Lossin <benno.lossin@proton.me>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ stable@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ lkml <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
+References: <20240313230713.987124-1-benno.lossin@proton.me>
+ <Zfh5DYkxNAm-mY_9@boqun-archlinux>
+ <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
+ <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home>
+To: Boqun Feng <boqun.feng@gmail.com>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
+X-Proofpoint-GUID: JV1TEgZWRV4Q51EWUDIrXol7s29j4YsT
+X-Proofpoint-ORIG-GUID: JV1TEgZWRV4Q51EWUDIrXol7s29j4YsT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2403190041
 
-On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
-> On Mar 18, 2024, at 10:25 AM, Boqun Feng <boqun.feng@gmail.com> wrote:
-> > On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
-> >> From: Laine Taffin Altman <alexanderaltman@me.com>
-> >> 
-> >> It is not enough for a type to be a ZST to guarantee that zeroed memory
-> >> is a valid value for it; it must also be inhabited. Creating a value of
-> >> an uninhabited type, ZST or no, is immediate UB.
-> >> Thus remove the implementation of `Zeroable` for `Infallible`, since
-> >> that type is not inhabited.
-> >> 
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` function")
-> >> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
-> >> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
-> >> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> > 
-> > I think either in the commit log or in the code comment, there better be
-> > a link or explanation on "(un)inhabited type". The rest looks good to
-> > me.
-> 
-> Would the following be okay for that purpose?
-> 
-> A type is inhabited if at least one valid value of that type exists; a
-> type is uninhabited if no valid values of that type exist.  The terms
-> "inhabited" and "uninhabited" in this sense originate in type theory,
-> a branch of mathematics.
-> 
-> In Rust, producing an invalid value of any type is immediate undefined
-> behavior (UB); this includes via zeroing memory.  Therefore, since an
-> uninhabited type has no valid values, producing any values at all for
-> it is UB.
-> 
-> The Rust standard library type `core::convert::Infallible` is
-> uninhabited, by virtue of having been declared as an enum with no
-> cases, which always produces uninhabited types in Rust.  Thus, remove
-> the implementation of `Zeroable` for `Infallible`, thereby avoiding
-> the UB.
-> 
+On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng <boqun.feng@gmail.com> =
+wrote:
+> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
+>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng =
+<boqun.feng@gmail.com> wrote:
+>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
+>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>=20
+>>>> It is not enough for a type to be a ZST to guarantee that zeroed =
+memory
+>>>> is a valid value for it; it must also be inhabited. Creating a =
+value of
+>>>> an uninhabited type, ZST or no, is immediate UB.
+>>>> Thus remove the implementation of `Zeroable` for `Infallible`, =
+since
+>>>> that type is not inhabited.
+>>>>=20
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
+`init::zeroed` function")
+>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>>=20
+>>> I think either in the commit log or in the code comment, there =
+better be
+>>> a link or explanation on "(un)inhabited type". The rest looks good =
+to
+>>> me.
+>>=20
+>> Would the following be okay for that purpose?
+>>=20
+>> A type is inhabited if at least one valid value of that type exists; =
+a
+>> type is uninhabited if no valid values of that type exist.  The terms
+>> "inhabited" and "uninhabited" in this sense originate in type theory,
+>> a branch of mathematics.
+>>=20
+>> In Rust, producing an invalid value of any type is immediate =
+undefined
+>> behavior (UB); this includes via zeroing memory.  Therefore, since an
+>> uninhabited type has no valid values, producing any values at all for
+>> it is UB.
+>>=20
+>> The Rust standard library type `core::convert::Infallible` is
+>> uninhabited, by virtue of having been declared as an enum with no
+>> cases, which always produces uninhabited types in Rust.  Thus, remove
+>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
+>> the UB.
+>>=20
+>=20
+> Yeah, this works for me. Thanks!
 
-Yeah, this works for me. Thanks!
+Great!  Should it be re-sent or can the new wording be incorporated upon =
+merge?
 
-Regards,
-Boqun
+Thank,
+Laine
 
-> Thanks,
-> Laine
-> 
-> > 
-> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> > 
-> > Regards,
-> > Boqun
-> > 
-> >> ---
-> >> rust/kernel/init.rs | 4 ++--
-> >> 1 file changed, 2 insertions(+), 2 deletions(-)
-> >> 
-> >> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> >> index 424257284d16..538e03cfc84a 100644
-> >> --- a/rust/kernel/init.rs
-> >> +++ b/rust/kernel/init.rs
-> >> @@ -1292,8 +1292,8 @@ macro_rules! impl_zeroable {
-> >>     i8, i16, i32, i64, i128, isize,
-> >>     f32, f64,
-> >> 
-> >> -    // SAFETY: These are ZSTs, there is nothing to zero.
-> >> -    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, Infallible, (),
-> >> +    // SAFETY: These are inhabited ZSTs, there is nothing to zero and a valid value exists.
-> >> +    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
-> >> 
-> >>     // SAFETY: Type is allowed to take any value, including all zeros.
-> >>     {<T>} MaybeUninit<T>,
-> >> 
-> >> base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
-> >> -- 
-> >> 2.42.0
-> >> 
-> >> 
-> >> 
-> 
+>=20
+> Regards,
+> Boqun
+>=20
+>> Thanks,
+>> Laine
+>>=20
+>>>=20
+>>> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>>>=20
+>>> Regards,
+>>> Boqun
+>>>=20
+>>>> ---
+>>>> rust/kernel/init.rs | 4 ++--
+>>>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>=20
+>>>> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+>>>> index 424257284d16..538e03cfc84a 100644
+>>>> --- a/rust/kernel/init.rs
+>>>> +++ b/rust/kernel/init.rs
+>>>> @@ -1292,8 +1292,8 @@ macro_rules! impl_zeroable {
+>>>>    i8, i16, i32, i64, i128, isize,
+>>>>    f32, f64,
+>>>>=20
+>>>> -    // SAFETY: These are ZSTs, there is nothing to zero.
+>>>> -    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, =
+Infallible, (),
+>>>> +    // SAFETY: These are inhabited ZSTs, there is nothing to zero =
+and a valid value exists.
+>>>> +    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
+>>>>=20
+>>>>    // SAFETY: Type is allowed to take any value, including all =
+zeros.
+>>>>    {<T>} MaybeUninit<T>,
+>>>>=20
+>>>> base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+>>>> --=20
+>>>> 2.42.0
+>>>>=20
+>>>>=20
+>>>>=20
+>>=20
+
