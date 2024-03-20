@@ -1,233 +1,216 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCF37489;
-	Wed, 20 Mar 2024 02:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D6B39FC3
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Mar 2024 08:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710901677; cv=none; b=f44dXxfESXyoAdpC0gpFcb0jS4tQofw4tsNVMFCHkrnOn4SIds2GkvaKg0JcpMGu/WIuzAj7BeP4kx9dHqxwJzp9a5xQiJ0ZVlAwvQdiCJ64AjIoA8wUKHeFYucS6xsDBfnq4iOUPy2CgeZiHzTUdUbDwqMiNvOfzuxXXhxipAI=
+	t=1710924396; cv=none; b=Z/DB4uG/7fJ1jwdQm0yHTacGrMcL5r9IC8qonFfOpkGXMyWGHgYyOwNS0p0CmrXvY9CljIO2OvbBcEijLu/T2N72mH8HS0ErOyvmmyhA9uHNFe8/k0d32nyJ+NnyWwuJWpBo33Zprj93MAHNVy73ojfKAaSQxqXg8+p3iVMssz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710901677; c=relaxed/simple;
-	bh=6CJWoFb4kvUK4ntLfUsptms1BUN5l+ymtlBqPsp9uoA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DDGlHiDvv//MCa9igrUe5zQjtGewVZWcaLLgxDboloEM3ZlARiJxHIob0duLmkUazme086Iaxy/6ZpDR1HHWblFpHTAwxwIir22ezkcV0PAQtW9p6DchVpFMHXCOInOKj6BlGtmNDfSN1Qs8yXyFpe+Jd90kfSCuilSHjsfqP8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2ndfG3c; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710924396; c=relaxed/simple;
+	bh=Q4ONw+59Vbz8TiQ9wHPgnNATdK0mtXhgpFJ6lJ0jOhM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iam70jvSEaYT+4Ym2yeq2u4YD+IUQTuOhqNZ2rU9I3GJh3w1/4HUiGxAp7oP0PTC3hBjfl6yq3Lhji+w6UECtBB6z9ZBu0BjDgY47p5EMFufn0jucL7sCha65X1CM8j42wQib/62lviE5OUoRtV+/61GVfP/t13h7hVdeL0ZptE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4vaqqdUZ; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2ndfG3c"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-789e4a4d3a5so302130185a.1;
-        Tue, 19 Mar 2024 19:27:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4vaqqdUZ"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-610b96c8ca2so58849337b3.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 20 Mar 2024 01:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710901675; x=1711506475; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BoYH80sJnhdliON/wfQAq4dWt7OAKJu6XRvbeyVwYo0=;
-        b=F2ndfG3calznTzI4/X6AkGWT7gD4WyYCuOMOlAZEsURNRsemM2OQ+STQuUrLd13FtD
-         jXJeltP+cJAzHjkazP95GQ/ECEaK076uXk5AF3ffDx/y3ZVTgb2pRqRCFt+VlV3duXS7
-         lVoBxxKEAuFstgdJDJn8FyBgKgecUGxK8q2jRDa5hgHD+kIU9/TlokrmD9Bkz8Fi6akR
-         K74vRdgKcQYEfixmM8vZOfPs0sICTJ5OhWm68G4XK2fe8Lsr8RxA7rczgpemoDESmCMe
-         pechVgiGdcm+sN/7S1TXx6m+RB0m1VDFX4q5bpIWMeobqksQ9SmA0f5GmsPnyGfo4Pvu
-         UHOA==
+        d=google.com; s=20230601; t=1710924393; x=1711529193; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UK1n2ZUFasdNJS4tL/dUBZ9HzwBNAKoJUXbp2GIlPGA=;
+        b=4vaqqdUZnGKFg+6XPkgEheNFHBlx5J/Q2SqcMubHub38gB9tO+l9OyOs6Q2uUtEYI+
+         v4Xer7mgjPGEUWNw+q7AcfufydzBRIdPNgQ53z+Pofx3QFniRWIQpg5RehVdBT0tOrqM
+         4LMESATryICogY53F6aY/oayfQmhOFAj9XqgidE1EMFoLAQV0NLfa4l6CqNAGtH8e3yx
+         M3KW/SNsA+HTRVAPS8nIO18veKNf9SPpYiMmUCd/OKk3/HY6qCeklkqqaOXcLh9KBmCR
+         vB1MgAlBaDO3zwIzP7jFM1APIcnRLzM+uDa+Oao1fZUsEvTECFkSP9JOrhQkU50VLDwX
+         SG/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710901675; x=1711506475;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BoYH80sJnhdliON/wfQAq4dWt7OAKJu6XRvbeyVwYo0=;
-        b=vvegdtu8woptZQrvurhrF4J9i11oWSAGtEPGut4J9uBOq8Kh7QM5HjN5CnkY/q6Mi3
-         JcquKPvvWRzLutkh6OUtcD4JFAot4MBowFcqha3l/hqAQGPlTorAD4e6y/HDM8VcKDAR
-         0MU2Z4TzBZSdTx0mnh79N+RwUneD8jFduDa2Zjf3/tiP8ZGIjZkiXhqQLSssf91nHW1W
-         pYD9vef14r8bUf7vikRGnQT16144AoOmWkhwk665JBBTPXHWr4uv1NSiK2kSmXSPlygm
-         Z2GJO+/kHbiWeQD7U7PF/7q6lw3yLWDLMOtshSE0wDpR4E1Ce7yuO++AjxMv4ijHhveR
-         d2Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/kVe8/J+LitZmZF53eQ8JyV0n3LsF0kxEM5mkCSQYy8liIAV6TKil3KoUDfYNHNd3kmyltB7YcYV/4/XmLuR5nJkYINnJ2NJySxXpkGMQ2K1PdpEgxfz4nZL9jPRTjowxLY+qASxVNA/00qs=
-X-Gm-Message-State: AOJu0YzEKuVXmpJt9o+1WSs8wKcWFB68bOnCw33nNrnlvcJtPFlG2q2D
-	JD1mhG/3X6Ei+KqlqQlAekBN7rQeGZK3Vm9zORs9D5/G4VSS/4yv
-X-Google-Smtp-Source: AGHT+IHkAo9eiqZEBwRiPx6Er0DVaobmgBZ9GU8BbZoe5uwTFIH5mrJndnxU84N5b4b+Ka9j6hodbw==
-X-Received: by 2002:a05:6214:5188:b0:690:bdd5:f25e with SMTP id kl8-20020a056214518800b00690bdd5f25emr618855qvb.59.1710901674843;
-        Tue, 19 Mar 2024 19:27:54 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id j10-20020a0cf30a000000b006915cc2f655sm7167436qvl.30.2024.03.19.19.27.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Mar 2024 19:27:54 -0700 (PDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id A9CAF1200032;
-	Tue, 19 Mar 2024 22:27:53 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Tue, 19 Mar 2024 22:27:53 -0400
-X-ME-Sender: <xms:qUn6ZZusapBKdG8mib9oUwmKQcnjaqz7jBvHqEEWkk9Cs5CjOpqJkA>
-    <xme:qUn6ZSfcWCVnKoBJVQigrM5uMEth7blFIFn6pJqzA73sDcGvZ9SwJ-6r80w2QMQo4
-    Mu5I0Momtt_8nPY9g>
-X-ME-Received: <xmr:qUn6Zcwe9XmQw1XNJ2fOCI3WJjW9nQQr6fwck-Syfl1NBxma9lPL0OEhXU31IQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrledvgddujecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepvefhueduudehhedtffehffdutddugefgteeihfdvvddvhfdufefggefgfefg
-    vdelnecuffhomhgrihhnpehrvggrshhonhdrthhopdduqddvtddtuddrshhonecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgv
-    shhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehhe
-    ehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:qUn6ZQPR_Lf5Y75aF5eYaCwaKfOihzuNyMLk04eiZOrJYaq4ocVhNQ>
-    <xmx:qUn6ZZ90df_frOZRY8I8YvX3Kl8FwAL-9pK5w7FifxEGy8LzFP4nNQ>
-    <xmx:qUn6ZQUeRDGu4gQd8f7pn-TXeFGni2QBy63EQAWYNPa7SwRxMAV85Q>
-    <xmx:qUn6ZafXMqIrzwu8_ERu4cE8_c8DM6gsdAO2ZySMinCFIQgiheioxA>
-    <xmx:qUn6ZXEU4IIpQn_FyLvxltU7RZTQwslvH9GxisGWZvXtUELgmMp3uD9UJKI>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 19 Mar 2024 22:27:52 -0400 (EDT)
-Date: Tue, 19 Mar 2024 19:27:38 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v3 1/4] rust: uaccess: add userspace pointers
-Message-ID: <ZfpJmmO2h4PxGshH@boqun-archlinux>
-References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com>
- <20240311-alice-mm-v3-1-cdf7b3a2049c@google.com>
+        d=1e100.net; s=20230601; t=1710924393; x=1711529193;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UK1n2ZUFasdNJS4tL/dUBZ9HzwBNAKoJUXbp2GIlPGA=;
+        b=rH7pcLqpbbOMgmK2pDoaak/BY2GzfglbnoV+K4/AiMy3bXw8k+u5Vk3U72YpWpnaE2
+         MpgdtX8hybf2jgG0UVBazRB6fAxfvMjVCRY0AfDsupdXT/x87v3M91n7HtomJ8XYBsS1
+         /vgTehRq96XmlAOS5vMaFuYr+KD65ltLLEBdH+AQD1EqEvoWKIRibKZQN/eXMqtfiFL3
+         fpav7g4zDLNbaQPnDheqYjUPnwXIafY1EcrKk8QcBk2NvsaTS8jx4cKsqSo6wL1eacqW
+         a/6Bj/8rGUe5glTjMYOF3qo0wmvG8rKOiSDVypDZvsAp1MI2tm15yyedi8UGp9hjZ8Vx
+         zzvA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAsi79VkuqHshRMctCbVCaKcHUncN8bpsYHNuoE6fD5mlCVgjGokiXC8he45pxeNPF/d9j6NIV7tDXJJVogTIE189P7CAquNR72w96Slg=
+X-Gm-Message-State: AOJu0YzLDMHBjyU9rBWegMtYPYaBK/tUKLUqMLk7FmNlxpYekpGYnDn5
+	M4kmD9emqXegJrRqOFO8z1XrsK7H7T2b8wninNPq/SUEDIOnrJGvamx1ZVEElHoBttTBkXG30TI
+	B1ZQ6lX7hkFY/eA==
+X-Google-Smtp-Source: AGHT+IHhO69PTaN4boKOvVHCOJk+p5noJ7sGfzArQ8mOhKPuKZfczEJL2sh4BtJrZ5uOiOp76ApjmtaKNMUWfnM=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:124b:b0:dc2:398d:a671 with SMTP
+ id t11-20020a056902124b00b00dc2398da671mr4614173ybu.10.1710924393527; Wed, 20
+ Mar 2024 01:46:33 -0700 (PDT)
+Date: Wed, 20 Mar 2024 08:46:30 +0000
+In-Reply-To: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311-alice-mm-v3-1-cdf7b3a2049c@google.com>
+Mime-Version: 1.0
+References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
+X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
+Message-ID: <20240320084630.2727355-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+From: Alice Ryhl <aliceryhl@google.com>
+To: benno.lossin@proton.me
+Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
+	aliceryhl@google.com, arnd@arndb.de, arve@android.com, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, 
+	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
+	viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
+Content-Type: text/plain; charset="utf-8"
 
-Hi Alice,
+> On 3/11/24 11:47, Alice Ryhl wrote:
+> > +/// A pointer to a page that owns the page allocation.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The pointer points at a page, and has ownership over the page.
+> 
+> Why not "`page` is valid"?
+> Do you mean by ownership of the page that `page` has ownership of the
+> allocation, or does that entail any other property/privilege?
 
-I was trying to work on a patch for UserSlice::read_slice(), and I found
-a few place that may need some documentation improvements. Please see
-below:
+I can add "at a valid page".
 
-On Mon, Mar 11, 2024 at 10:47:13AM +0000, Alice Ryhl wrote:
-[...]
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> new file mode 100644
-> index 000000000000..020f3847683f
-> --- /dev/null
-> +++ b/rust/kernel/uaccess.rs
-> @@ -0,0 +1,315 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! User pointers.
+By ownership I mean that we are allowed to pass it to __free_page and
+that until we do, we can access the page. If you want me to reword this,
+please tell me what you want it to say.
 
-Since the type is renamed as UserSlice, maybe:
+> > +// SAFETY: It is safe to transfer page allocations between threads.
+> 
+> Why?
+> 
+> > +unsafe impl Send for Page {}
 
-//! Slices to user space memory regions.
+How about:
 
-?
+// SAFETY: Pages have no logic that relies on them staying on a given
+// thread, so moving them across threads is safe.
 
-> +//!
-> +//! C header: [`include/linux/uaccess.h`](srctree/include/linux/uaccess.h)
-> +
-> +use crate::{bindings, error::code::*, error::Result};
-> +use alloc::vec::Vec;
-> +use core::ffi::{c_ulong, c_void};
-> +
-> +/// A pointer to an area in userspace memory, which can be either read-only or
-> +/// read-write.
-> +///
-> +/// All methods on this struct are safe: attempting to read or write invalid
-> +/// pointers will return `EFAULT`. Concurrent access, *including data races
+> > +// SAFETY: As long as the safety requirements for `&self` methods on this type
+> > +// are followed, there is no problem with calling them in parallel.
+> 
+> Why?
+> 
+> > +unsafe impl Sync for Page {}
 
-Probably reword this a little bit:
+How about:
 
-"All methods on this struct are safe: attempting to read or write on bad
-addresses (either out of the bound of the slice or unmapped addresses)
-will return `EFAULT`."
+// SAFETY: Pages have no logic that relies on them not being accessed
+// concurrently, so accessing them concurrently is safe.
 
-, please see below for the reason.
+> > +        // SAFETY: The specified order is zero and we want one page.
+> 
+> This doesn't explain why it is sound to call the function. I expect that
+> it is always sound to call this function with valid arguments.
+> 
+> > +        let page = unsafe { bindings::alloc_pages(gfp_flags, 0) };
 
-> +/// to/from userspace memory*, is permitted, because fundamentally another
-> +/// userspace thread/process could always be modifying memory at the same time
-> +/// (in the same way that userspace Rust's [`std::io`] permits data races with
-> +/// the contents of files on disk). In the presence of a race, the exact byte
-> +/// values read/written are unspecified but the operation is well-defined.
-> +/// Kernelspace code should validate its copy of data after completing a read,
-> +/// and not expect that multiple reads of the same address will return the same
-> +/// value.
-> +///
-> +/// These APIs are designed to make it difficult to accidentally write TOCTOU
-> +/// (time-of-check to time-of-use) bugs. Every time a memory location is read,
-> +/// the reader's position is advanced by the read length and the next read will
-> +/// start from there. This helps prevent accidentally reading the same location
-> +/// twice and causing a TOCTOU bug.
-> +///
-> +/// Creating a [`UserSliceReader`] and/or [`UserSliceWriter`] consumes the
-> +/// `UserSlice`, helping ensure that there aren't multiple readers or writers to
-> +/// the same location.
-> +///
-> +/// If double-fetching a memory location is necessary for some reason, then that
-> +/// is done by creating multiple readers to the same memory location, e.g. using
-> +/// [`clone_reader`].
-> +///
+How about:
 
-[...]
+// SAFETY: Depending on the value of `gfp_flags`, this call may sleep.
+// Other than that, it is always safe to call this method.
 
-> +    /// Reads raw data from the user slice into a raw kernel buffer.
-> +    ///
-> +    /// Fails with `EFAULT` if the read encounters a page fault.
+> > +        // INVARIANT: We checked that the allocation succeeded.
+> 
+> Doesn't mention ownership.
+> 
+> > +        Ok(Self { page })
 
-Technically, this is not correct, since normal page faults can happen
-during copy_from_user() (for example, userspace memory gets swapped). So
-returning `EFAULT` really means the read happens on a bad address, which
-also matches `EFAULT`'s definition:
+How about:
 
-	EFAULT          Bad address (POSIX.1-2001).
+// INVARIANT: We just successfully allocated a page, so we now have
+// ownership of the newly allocated page. We transfer that ownership to
+// the new `Page` object.
 
-so maybe reword this and the similar ones below into something like:
+> > +    /// Runs a piece of code with this page mapped to an address.
+> > +    ///
+> > +    /// The page is unmapped when this call returns.
+> > +    ///
+> > +    /// It is up to the caller to use the provided raw pointer correctly.
+> 
+> This says nothing about what 'correctly' means. What I gathered from the
+> implementation is that the supplied pointer is valid for the execution
+> of `f` for `PAGE_SIZE` bytes.
+> What other things are you allowed to rely upon?
+> 
+> Is it really OK for this function to be called from multiple threads?
+> Could that not result in the same page being mapped multiple times? If
+> that is fine, what about potential data races when two threads write to
+> the pointer given to `f`?
+> 
+> > +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) -> T {
 
-	/// Fails with `EFAULT` if the read happens on a bad address.
+I will say:
 
-Otherwise, people may think that this function just abort whenever there
-is a page fault. Thoughts?
+/// It is up to the caller to use the provided raw pointer correctly.
+/// The pointer is valid for `PAGE_SIZE` bytes and for the duration in
+/// which the closure is called. Depending on the gfp flags and kernel
+/// configuration, the pointer may only be mapped on the current thread,
+/// and in those cases, dereferencing it on other threads is UB. Other
+/// than that, the usual rules for dereferencing a raw pointer apply.
+/// (E.g., don't cause data races, the memory may be uninitialized, and
+/// so on.)
 
-Regards,
-Boqun
+It's okay to map it multiple times from different threads.
 
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The `out` pointer must be valid for writing `len` bytes.
-> +    pub unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Result {
-> +        if len > self.length {
-> +            return Err(EFAULT);
-> +        }
-> +        let Ok(len_ulong) = c_ulong::try_from(len) else {
-> +            return Err(EFAULT);
-> +        };
-> +        // SAFETY: The caller promises that `out` is valid for writing `len` bytes.
-> +        let res = unsafe { bindings::copy_from_user(out.cast::<c_void>(), self.ptr, len_ulong) };
-> +        if res != 0 {
-> +            return Err(EFAULT);
-> +        }
-> +        // Userspace pointers are not directly dereferencable by the kernel, so
-> +        // we cannot use `add`, which has C-style rules for defined behavior.
-> +        self.ptr = self.ptr.wrapping_byte_add(len);
-> +        self.length -= len;
-> +        Ok(())
-> +    }
-> +
-[...]
+> > +        // SAFETY: This unmaps the page mapped above.
+> 
+> This doesn't explain why it is sound.
+> 
+> > +        //
+> > +        // Since this API takes the user code as a closure, it can only be used
+> > +        // in a manner where the pages are unmapped in reverse order. This is as
+> > +        // required by `kunmap_local`.
+> > +        //
+> > +        // In other words, if this call to `kunmap_local` happens when a
+> > +        // different page should be unmapped first, then there must necessarily
+> > +        // be a call to `kmap_local_page` other than the call just above in
+> > +        // `with_page_mapped` that made that possible. In this case, it is the
+> > +        // unsafe block that wraps that other call that is incorrect.
+> > +        unsafe { bindings::kunmap_local(mapped_addr) };
+
+Why do you say that? The kunmap_local method requires that the address
+being unmapped is currently mapped, and that pages are unmapped in
+reverse order. The safety comment explains that the page is currently
+mapped and that this method cannot be used to unmap them in anything
+other than reverse order.
+
+> > +    /// Runs a piece of code with a raw pointer to a slice of this page, with
+> > +    /// bounds checking.
+> > +    ///
+> > +    /// If `f` is called, then it will be called with a pointer that points at
+> > +    /// `off` bytes into the page, and the pointer will be valid for at least
+> > +    /// `len` bytes. The pointer is only valid on this task, as this method uses
+> > +    /// a local mapping.
+> 
+> This information about the pointer only being valid on this task should
+> also apply to `with_page_mapped`, right?
+> 
+> > +    ///
+> > +    /// If `off` and `len` refers to a region outside of this page, then this
+> > +    /// method returns `EINVAL` and does not call `f`.
+> > +    ///
+> > +    /// It is up to the caller to use the provided raw pointer correctly.
+> 
+> Again, please specify what 'correctly' means.
+
+I will remove the "The pointer is only valid on this task, as this
+method uses a local mapping." sentence and copy the same paragraph as
+previously (without the `PAGE_SIZE` remark).
+
+Alice
