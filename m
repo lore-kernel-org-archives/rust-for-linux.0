@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B85A2628D;
-	Wed, 20 Mar 2024 14:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD202524B7;
+	Wed, 20 Mar 2024 15:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710944527; cv=none; b=egfRzDjmKFunaWY62u+46F126FRyt5LD//f0X2HpyFZRtO3LPQx1onDe3lGd2jyygDUuLZ1DYB9qJVFKSNCnYoBN8xvFJJT5A95QW7/R/XWj0Y7bwCaUYjfX578dq4nusFDskfAWbVm6LxBE+rWlN55ekObXmkzTh/kpgI8k0SU=
+	t=1710948030; cv=none; b=tbQsr9Vy3Jk4gLIUWR36Y8lS6PerF9juf1gwJPgc7weQpbsKJgBZDK9WUhfUPf/6uDLuBqM5rxbia9WHvD6Bq/+LdpnRrYu0UumqRWH/a78VaWrit+j5HfmW9epPq/xRHvcLXiDCqs7+OmCbUYxPDsoeILY3z+MJp85qxJ7ZP4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710944527; c=relaxed/simple;
-	bh=YeiTVtpHC2NPLqJdgcme5WeBzb4ywOWTrrfGUMyIySg=;
+	s=arc-20240116; t=1710948030; c=relaxed/simple;
+	bh=5xhGYzjIhTvHnRe5USdUzKPZAEI/ek4ZOixku584Vr8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KQDy4fkRP/dU3zGo4SaTzW4QKfPxdBGutZcq0eo0T25EQ/BF8sNrujj6V1RN1Kb3Ojvblbxl9Y9K0ZObOjcEXKY3EmIUfhm62/YDTGLDTRgqzH4YcwpKF6PoS4f8SEeLYoU51hXGl4Bww7NW3ecTQ63wPZyixo2h/hsxrhf/fL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnOehN3b; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=vAfWR1lSw16YkuE3nmBxz5b2DFgasT5/6yQE62B4/onMWoq8sfR3LOFkk5rFUbVj5/H6TPV9Wj/LiACqsyLHyMK1dxAALpXcOYoshfSjQS2P5+qcV+Y75I+EmUdF9za0Cy7A+S7q7Wsat2PJvH6ZsfN3KS5mynYJiyn+9tX+7S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B54hz+RX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnOehN3b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA54C433F1;
-	Wed, 20 Mar 2024 14:22:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B54hz+RX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0ADC43390;
+	Wed, 20 Mar 2024 15:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710944526;
-	bh=YeiTVtpHC2NPLqJdgcme5WeBzb4ywOWTrrfGUMyIySg=;
+	s=k20201202; t=1710948029;
+	bh=5xhGYzjIhTvHnRe5USdUzKPZAEI/ek4ZOixku584Vr8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VnOehN3b/wnZSMRQ2j/r1qmFplJ4uAOfyVZdB440PnrJ7/kg5FWXPsA71E7SwyhQP
-	 +Y+TalNw0s1ODvvbHrcRv7ElvKRmG+qbIRo55HOipMetgy+z2Qw40dnBVVeikz9dxx
-	 bGjWV1ZSDZxWgtW5C7iKh6CnNPnfH1y0Hl7GkopIeh20C/WY+RdAQFyrqb/TAlb9rH
-	 GOIbjgrUDOEfgnqK99gYBa2kTGHqxSG46BdMtRI6hOh+yfosV/x1U047/fNOGaAwPR
-	 SPhqMVSDnMVRaw1t8oDJfjvGb/ptgF/15b7x5nhwaoaOBfo6axehvgzfmP/jss7hYd
-	 KMwnoQarXpLLg==
-Date: Wed, 20 Mar 2024 15:21:57 +0100
+	b=B54hz+RX9R9nM2ThzIeqW44Ilda9ha3rkQY5+cgsmKWySQerscmW+xea38h3LA+4S
+	 V24dpSBYgi1PWKL9kdRWZgLTXokC1gfjQ2SEhLXX6STIFuemLlqfj+uhcagv0+Dzl7
+	 i79uJdVIO/sJfVgt49oDEfemED/ZbLMjpqxRtbAEujqcgms8k+wIBAOlbJtHN8Vgcc
+	 UpywGJVRTk2/8U8sNqEGn1VVKfmrlTQsscHfWp9Zt+OlQEg0K+3omQzcoTWvjtVpPP
+	 5HypfLt2GF+aBej85l92z0KEk0Tr6+lm+WzEt421d+td4T7x7DM4c8NmAM6mNHT7y7
+	 /Vn37AVIUi7qw==
+Date: Wed, 20 Mar 2024 16:20:20 +0100
 From: Christian Brauner <brauner@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -40,11 +40,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
 	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v5 8/9] rust: file: add `DeferredFdCloser`
-Message-ID: <20240320-massieren-lackschaden-9b30825babec@brauner>
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH v5 3/9] rust: file: add Rust abstraction for `struct file`
+Message-ID: <20240320-wegziehen-teilhaben-86e071fa163c@brauner>
 References: <20240209-alice-file-v5-0-a37886783025@google.com>
- <20240209-alice-file-v5-8-a37886783025@google.com>
+ <20240209-alice-file-v5-3-a37886783025@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,333 +53,417 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240209-alice-file-v5-8-a37886783025@google.com>
+In-Reply-To: <20240209-alice-file-v5-3-a37886783025@google.com>
 
-On Fri, Feb 09, 2024 at 11:18:21AM +0000, Alice Ryhl wrote:
-> To close an fd from kernel space, we could call `ksys_close`. However,
-> if we do this to an fd that is held using `fdget`, then we may trigger a
-> use-after-free. Introduce a helper that can be used to close an fd even
-> if the fd is currently held with `fdget`. This is done by grabbing an
-> extra refcount to the file and dropping it in a task work once we return
-> to userspace.
+On Fri, Feb 09, 2024 at 11:18:16AM +0000, Alice Ryhl wrote:
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > 
-> This is necessary for Rust Binder because otherwise the user might try
-> to have Binder close its fd for /dev/binder, which would cause problems
-> as this happens inside an ioctl on /dev/binder, and ioctls hold the fd
-> using `fdget`.
+> This abstraction makes it possible to manipulate the open files for a
+> process. The new `File` struct wraps the C `struct file`. When accessing
+> it using the smart pointer `ARef<File>`, the pointer will own a
+> reference count to the file. When accessing it as `&File`, then the
+> reference does not own a refcount, but the borrow checker will ensure
+> that the reference count does not hit zero while the `&File` is live.
 > 
-> Additional motivation can be found in commit 80cd795630d6 ("binder: fix
-> use-after-free due to ksys_close() during fdget()") and in the comments
-> on `binder_do_fd_close`.
+> Since this is intended to manipulate the open files of a process, we
+> introduce an `fget` constructor that corresponds to the C `fget`
+> method. In future patches, it will become possible to create a new fd in
+> a process and bind it to a `File`. Rust Binder will use these to send
+> fds from one process to another.
 > 
-> If there is some way to detect whether an fd is currently held with
-> `fdget`, then this could be optimized to skip the allocation and task
-> work when this is not the case. Another possible optimization would be
-> to combine several fds into a single task work, since this is used with
-> fd arrays that might hold several fds.
+> We also provide a method for accessing the file's flags. Rust Binder
+> will use this to access the flags of the Binder fd to check whether the
+> non-blocking flag is set, which affects what the Binder ioctl does.
 > 
-> That said, it might not be necessary to optimize it, because Rust Binder
-> has two ways to send fds: BINDER_TYPE_FD and BINDER_TYPE_FDA. With
-> BINDER_TYPE_FD, it is userspace's responsibility to close the fd, so
-> this mechanism is used only by BINDER_TYPE_FDA, but fd arrays are used
-> rarely these days.
+> This introduces a struct for the EBADF error type, rather than just
+> using the Error type directly. This has two advantages:
+> * `File::from_fd` returns a `Result<ARef<File>, BadFdError>`, which the
+
+Sorry, where's that method?
+
+>   compiler will represent as a single pointer, with null being an error.
+>   This is possible because the compiler understands that `BadFdError`
+>   has only one possible value, and it also understands that the
+>   `ARef<File>` smart pointer is guaranteed non-null.
+> * Additionally, we promise to users of the method that the method can
+>   only fail with EBADF, which means that they can rely on this promise
+>   without having to inspect its implementation.
+> That said, there are also two disadvantages:
+> * Defining additional error types involves boilerplate.
+> * The question mark operator will only utilize the `From` trait once,
+>   which prevents you from using the question mark operator on
+>   `BadFdError` in methods that return some third error type that the
+>   kernel `Error` is convertible into. (However, it works fine in methods
+>   that return `Error`.)
 > 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
+> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
+>  fs/file.c                       |   7 ++
 >  rust/bindings/bindings_helper.h |   2 +
->  rust/helpers.c                  |   8 ++
->  rust/kernel/file.rs             | 184 +++++++++++++++++++++++++++++++++++++++-
->  rust/kernel/task.rs             |  14 +++
->  4 files changed, 207 insertions(+), 1 deletion(-)
+>  rust/helpers.c                  |   7 ++
+>  rust/kernel/file.rs             | 254 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  5 files changed, 271 insertions(+)
 > 
+> diff --git a/fs/file.c b/fs/file.c
+> index 3b683b9101d8..f2eab5fcb87f 100644
+> --- a/fs/file.c
+> +++ b/fs/file.c
+> @@ -1127,6 +1127,13 @@ EXPORT_SYMBOL(task_lookup_next_fdget_rcu);
+>   *
+>   * The fput_needed flag returned by fget_light should be passed to the
+>   * corresponding fput_light.
+> + *
+> + * (As an exception to rule 2, you can call filp_close between fget_light and
+> + * fput_light provided that you capture a real refcount with get_file before
+> + * the call to filp_close, and ensure that this real refcount is fput *after*
+> + * the fput_light call.)
+> + *
+> + * See also the documentation in rust/kernel/file.rs.
+>   */
+>  static unsigned long __fget_light(unsigned int fd, fmode_t mask)
+>  {
 > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 4194b057ef6b..f4d9d04333c0 100644
+> index 936651110c39..41fcd2905ed4 100644
 > --- a/rust/bindings/bindings_helper.h
 > +++ b/rust/bindings/bindings_helper.h
-> @@ -10,6 +10,7 @@
->  #include <linux/cred.h>
+> @@ -9,6 +9,8 @@
+>  #include <kunit/test.h>
 >  #include <linux/errname.h>
 >  #include <linux/ethtool.h>
-> +#include <linux/fdtable.h>
->  #include <linux/file.h>
->  #include <linux/fs.h>
+> +#include <linux/file.h>
+> +#include <linux/fs.h>
 >  #include <linux/jiffies.h>
-> @@ -21,6 +22,7 @@
->  #include <linux/refcount.h>
->  #include <linux/wait.h>
->  #include <linux/sched.h>
-> +#include <linux/task_work.h>
->  #include <linux/workqueue.h>
->  
->  /* `bindgen` gets confused at certain things. */
+>  #include <linux/mdio.h>
+>  #include <linux/phy.h>
 > diff --git a/rust/helpers.c b/rust/helpers.c
-> index 58e3a9dff349..d146bbf25aec 100644
+> index 70e59efd92bc..03141a3608a4 100644
 > --- a/rust/helpers.c
 > +++ b/rust/helpers.c
-> @@ -32,6 +32,7 @@
+> @@ -25,6 +25,7 @@
+>  #include <linux/build_bug.h>
+>  #include <linux/err.h>
+>  #include <linux/errname.h>
+> +#include <linux/fs.h>
+>  #include <linux/mutex.h>
+>  #include <linux/refcount.h>
 >  #include <linux/sched/signal.h>
->  #include <linux/security.h>
->  #include <linux/spinlock.h>
-> +#include <linux/task_work.h>
->  #include <linux/wait.h>
->  #include <linux/workqueue.h>
+> @@ -157,6 +158,12 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
 >  
-> @@ -243,6 +244,13 @@ void rust_helper_security_release_secctx(char *secdata, u32 seclen)
->  EXPORT_SYMBOL_GPL(rust_helper_security_release_secctx);
->  #endif
->  
-> +void rust_helper_init_task_work(struct callback_head *twork,
-> +				task_work_func_t func)
+> +struct file *rust_helper_get_file(struct file *f)
 > +{
-> +	init_task_work(twork, func);
+> +	return get_file(f);
 > +}
-> +EXPORT_SYMBOL_GPL(rust_helper_init_task_work);
+> +EXPORT_SYMBOL_GPL(rust_helper_get_file);
 > +
 >  /*
 >   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
 >   * use it in contexts where Rust expects a `usize` like slice (array) indices.
 > diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-> index fb903b7f23fe..8902f490ccc8 100644
-> --- a/rust/kernel/file.rs
+> new file mode 100644
+> index 000000000000..cf8ebf619379
+> --- /dev/null
 > +++ b/rust/kernel/file.rs
-> @@ -11,7 +11,8 @@
->      error::{code::*, Error, Result},
->      types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
->  };
-> -use core::ptr;
-> +use alloc::boxed::Box;
-> +use core::{alloc::AllocError, mem, ptr};
->  
->  /// Flags associated with a [`File`].
->  pub mod flags {
-> @@ -318,6 +319,187 @@ fn drop(&mut self) {
->      }
->  }
->  
-> +/// Helper used for closing file descriptors in a way that is safe even if the file is currently
-> +/// held using `fdget`.
-> +///
-> +/// Additional motivation can be found in commit 80cd795630d6 ("binder: fix use-after-free due to
-> +/// ksys_close() during fdget()") and in the comments on `binder_do_fd_close`.
-> +pub struct DeferredFdCloser {
-> +    inner: Box<DeferredFdCloserInner>,
+> @@ -0,0 +1,254 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Files and file descriptors.
+> +//!
+> +//! C headers: [`include/linux/fs.h`](srctree/include/linux/fs.h) and
+> +//! [`include/linux/file.h`](srctree/include/linux/file.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    error::{code::*, Error, Result},
+> +    types::{ARef, AlwaysRefCounted, Opaque},
+> +};
+> +use core::ptr;
+> +
+> +/// Flags associated with a [`File`].
+> +pub mod flags {
+> +    /// File is opened in append mode.
+> +    pub const O_APPEND: u32 = bindings::O_APPEND;
+> +
+> +    /// Signal-driven I/O is enabled.
+> +    pub const O_ASYNC: u32 = bindings::FASYNC;
+> +
+> +    /// Close-on-exec flag is set.
+> +    pub const O_CLOEXEC: u32 = bindings::O_CLOEXEC;
+> +
+> +    /// File was created if it didn't already exist.
+> +    pub const O_CREAT: u32 = bindings::O_CREAT;
+> +
+> +    /// Direct I/O is enabled for this file.
+> +    pub const O_DIRECT: u32 = bindings::O_DIRECT;
+> +
+> +    /// File must be a directory.
+> +    pub const O_DIRECTORY: u32 = bindings::O_DIRECTORY;
+> +
+> +    /// Like [`O_SYNC`] except metadata is not synced.
+> +    pub const O_DSYNC: u32 = bindings::O_DSYNC;
+> +
+> +    /// Ensure that this file is created with the `open(2)` call.
+> +    pub const O_EXCL: u32 = bindings::O_EXCL;
+> +
+> +    /// Large file size enabled (`off64_t` over `off_t`).
+> +    pub const O_LARGEFILE: u32 = bindings::O_LARGEFILE;
+> +
+> +    /// Do not update the file last access time.
+> +    pub const O_NOATIME: u32 = bindings::O_NOATIME;
+> +
+> +    /// File should not be used as process's controlling terminal.
+> +    pub const O_NOCTTY: u32 = bindings::O_NOCTTY;
+> +
+> +    /// If basename of path is a symbolic link, fail open.
+> +    pub const O_NOFOLLOW: u32 = bindings::O_NOFOLLOW;
+> +
+> +    /// File is using nonblocking I/O.
+> +    pub const O_NONBLOCK: u32 = bindings::O_NONBLOCK;
+> +
+> +    /// File is using nonblocking I/O.
+> +    ///
+> +    /// This is effectively the same flag as [`O_NONBLOCK`] on all architectures
+> +    /// except SPARC64.
+> +    pub const O_NDELAY: u32 = bindings::O_NDELAY;
+> +
+> +    /// Used to obtain a path file descriptor.
+> +    pub const O_PATH: u32 = bindings::O_PATH;
+> +
+> +    /// Write operations on this file will flush data and metadata.
+> +    pub const O_SYNC: u32 = bindings::O_SYNC;
+> +
+> +    /// This file is an unnamed temporary regular file.
+> +    pub const O_TMPFILE: u32 = bindings::O_TMPFILE;
+> +
+> +    /// File should be truncated to length 0.
+> +    pub const O_TRUNC: u32 = bindings::O_TRUNC;
+> +
+> +    /// Bitmask for access mode flags.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::file;
+> +    /// # fn do_something() {}
+> +    /// # let flags = 0;
+> +    /// if (flags & file::flags::O_ACCMODE) == file::flags::O_RDONLY {
+> +    ///     do_something();
+> +    /// }
+> +    /// ```
+> +    pub const O_ACCMODE: u32 = bindings::O_ACCMODE;
+> +
+> +    /// File is read only.
+> +    pub const O_RDONLY: u32 = bindings::O_RDONLY;
+> +
+> +    /// File is write only.
+> +    pub const O_WRONLY: u32 = bindings::O_WRONLY;
+> +
+> +    /// File can be both read and written.
+> +    pub const O_RDWR: u32 = bindings::O_RDWR;
 > +}
 > +
-> +/// SAFETY: This just holds an allocation with no real content, so there's no safety issue with
-> +/// moving it across threads.
-> +unsafe impl Send for DeferredFdCloser {}
-> +unsafe impl Sync for DeferredFdCloser {}
-> +
+> +/// Wraps the kernel's `struct file`.
+> +///
+> +/// This represents an open file rather than a file on a filesystem. Processes generally reference
+> +/// open files using file descriptors. However, file descriptors are not the same as files. A file
+> +/// descriptor is just an integer that corresponds to a file, and a single file may be referenced
+> +/// by multiple file descriptors.
+> +///
+> +/// # Refcounting
+> +///
+> +/// Instances of this type are reference-counted. The reference count is incremented by the
+> +/// `fget`/`get_file` functions and decremented by `fput`. The Rust type `ARef<File>` represents a
+> +/// pointer that owns a reference count on the file.
+> +///
+> +/// Whenever a process opens a file descriptor (fd), it stores a pointer to the file in its `struct
+> +/// files_struct`. This pointer owns a reference count to the file, ensuring the file isn't
+> +/// prematurely deleted while the file descriptor is open. In Rust terminology, the pointers in
+> +/// `struct files_struct` are `ARef<File>` pointers.
+> +///
+> +/// ## Light refcounts
+> +///
+> +/// Whenever a process has an fd to a file, it may use something called a "light refcount" as a
+> +/// performance optimization. Light refcounts are acquired by calling `fdget` and released with
+> +/// `fdput`. The idea behind light refcounts is that if the fd is not closed between the calls to
+> +/// `fdget` and `fdput`, then the refcount cannot hit zero during that time, as the `struct
+> +/// files_struct` holds a reference until the fd is closed. This means that it's safe to access the
+> +/// file even if `fdget` does not increment the refcount.
+> +///
+> +/// The requirement that the fd is not closed during a light refcount applies globally across all
+> +/// threads - not just on the thread using the light refcount. For this reason, light refcounts are
+> +/// only used when the `struct files_struct` is not shared with other threads, since this ensures
+> +/// that other unrelated threads cannot suddenly start using the fd and close it. Therefore,
+> +/// calling `fdget` on a shared `struct files_struct` creates a normal refcount instead of a light
+> +/// refcount.
+
+When the fdget() calling task doesn't have a shared file descriptor
+table fdget() will not increment the reference count, yes. This
+also implies that you cannot have task A use fdget() and then pass
+f.file to task B that holds on to it while A returns to userspace. It's
+irrelevant that task A won't drop the reference count or that task B
+won't drop the reference count. Because task A could return back to
+userspace and immediately close the fd via a regular close() system call
+at which point task B has a UAF. In other words a file that has been
+gotten via fdget() can't be Send to another task without the Send
+implying taking a reference to it.
+
+> +///
+> +/// Light reference counts must be released with `fdput` before the system call returns to
+> +/// userspace. This means that if you wait until the current system call returns to userspace, then
+> +/// all light refcounts that existed at the time have gone away.
+> +///
+> +/// ## Rust references
+> +///
+> +/// The reference type `&File` is similar to light refcounts:
+> +///
+> +/// * `&File` references don't own a reference count. They can only exist as long as the reference
+> +///   count stays positive, and can only be created when there is some mechanism in place to ensure
+> +///   this.
+> +///
+> +/// * The Rust borrow-checker normally ensures this by enforcing that the `ARef<File>` from which
+> +///   a `&File` is created outlives the `&File`.
+
+The section confuses me a little: Does the borrow-checker always ensure
+that a &File stays valid or are there circumstances where it doesn't or
+are you saying it doesn't enforce it?
+
+> +///
+> +/// * Using the unsafe [`File::from_ptr`] means that it is up to the caller to ensure that the
+> +///   `&File` only exists while the reference count is positive.
+
+What is this used for in binder? If it's not used don't add it.
+
+> +///
+> +/// * You can think of `fdget` as using an fd to look up an `ARef<File>` in the `struct
+
+Could you explain why there isn't an explicit fdget() then and you have
+that from_ptr() method?
+
+> +///   files_struct` and create an `&File` from it. The "fd cannot be closed" rule is like the Rust
+> +///   rule "the `ARef<File>` must outlive the `&File`".
+> +///
 > +/// # Invariants
 > +///
-> +/// If the `file` pointer is non-null, then it points at a `struct file` and owns a refcount to
-> +/// that file.
-> +#[repr(C)]
-> +struct DeferredFdCloserInner {
-> +    twork: mem::MaybeUninit<bindings::callback_head>,
-> +    file: *mut bindings::file,
-> +}
+> +/// * Instances of this type are refcounted using the `f_count` field.
+> +/// * If an fd with active light refcounts is closed, then it must be the case that the file
+> +///   refcount is positive until all light refcounts of the fd have been dropped.
+> +/// * A light refcount must be dropped before returning to userspace.
+> +#[repr(transparent)]
+> +pub struct File(Opaque<bindings::file>);
 > +
-> +impl DeferredFdCloser {
-
-So the explicitly deferred close is due to how binder works so it's not
-much of a general purpose interface as I don't recall having other
-codepaths with similar problems. So this should live in the binder
-specific rust code imo.
-
-> +    /// Create a new [`DeferredFdCloser`].
-> +    pub fn new() -> Result<Self, AllocError> {
-> +        Ok(Self {
-> +            // INVARIANT: The `file` pointer is null, so the type invariant does not apply.
-> +            inner: Box::try_new(DeferredFdCloserInner {
-> +                twork: mem::MaybeUninit::uninit(),
-> +                file: core::ptr::null_mut(),
-> +            })?,
-> +        })
-> +    }
+> +// SAFETY:
+> +// - `File::dec_ref` can be called from any thread.
+> +// - It is okay to send ownership of `struct file` across thread boundaries.
+> +unsafe impl Send for File {}
 > +
-> +    /// Schedule a task work that closes the file descriptor when this task returns to userspace.
+> +// SAFETY: All methods defined on `File` that take `&self` are safe to call even if other threads
+> +// are concurrently accessing the same `struct file`, because those methods either access immutable
+> +// properties or have proper synchronization to ensure that such accesses are safe.
+> +unsafe impl Sync for File {}
+> +
+> +impl File {
+> +    /// Constructs a new `struct file` wrapper from a file descriptor.
 > +    ///
-> +    /// Fails if this is called from a context where we cannot run work when returning to
-> +    /// userspace. (E.g., from a kthread.)
-> +    pub fn close_fd(self, fd: u32) -> Result<(), DeferredFdCloseError> {
-> +        use bindings::task_work_notify_mode_TWA_RESUME as TWA_RESUME;
+> +    /// The file descriptor belongs to the current process.
+> +    pub fn fget(fd: u32) -> Result<ARef<Self>, BadFdError> {
+> +        // SAFETY: FFI call, there are no requirements on `fd`.
+> +        let ptr = ptr::NonNull::new(unsafe { bindings::fget(fd) }).ok_or(BadFdError)?;
 > +
-> +        // In this method, we schedule the task work before closing the file. This is because
-> +        // scheduling a task work is fallible, and we need to know whether it will fail before we
-> +        // attempt to close the file.
-> +
-> +        // Task works are not available on kthreads.
-> +        let current = crate::current!();
-> +        if current.is_kthread() {
-> +            return Err(DeferredFdCloseError::TaskWorkUnavailable);
-> +        }
-> +
-> +        // Transfer ownership of the box's allocation to a raw pointer. This disables the
-> +        // destructor, so we must manually convert it back to a Box to drop it.
+> +        // SAFETY: `bindings::fget` either returns null or a valid pointer to a file, and we
+> +        // checked for null above.
 > +        //
-> +        // Until we convert it back to a `Box`, there are no aliasing requirements on this
-> +        // pointer.
-> +        let inner = Box::into_raw(self.inner);
-> +
-> +        // The `callback_head` field is first in the struct, so this cast correctly gives us a
-> +        // pointer to the field.
-> +        let callback_head = inner.cast::<bindings::callback_head>();
-> +        // SAFETY: This pointer offset operation does not go out-of-bounds.
-> +        let file_field = unsafe { core::ptr::addr_of_mut!((*inner).file) };
-> +
-> +        let current = current.as_raw();
-> +
-> +        // SAFETY: This function currently has exclusive access to the `DeferredFdCloserInner`, so
-> +        // it is okay for us to perform unsynchronized writes to its `callback_head` field.
-> +        unsafe { bindings::init_task_work(callback_head, Some(Self::do_close_fd)) };
-> +
-> +        // SAFETY: This inserts the `DeferredFdCloserInner` into the task workqueue for the current
-> +        // task. If this operation is successful, then this transfers exclusive ownership of the
-> +        // `callback_head` field to the C side until it calls `do_close_fd`, and we don't touch or
-> +        // invalidate the field during that time.
-> +        //
-> +        // When the C side calls `do_close_fd`, the safety requirements of that method are
-> +        // satisfied because when a task work is executed, the callback is given ownership of the
-> +        // pointer.
-> +        //
-> +        // The file pointer is currently null. If it is changed to be non-null before `do_close_fd`
-> +        // is called, then that change happens due to the write at the end of this function, and
-> +        // that write has a safety comment that explains why the refcount can be dropped when
-> +        // `do_close_fd` runs.
-> +        let res = unsafe { bindings::task_work_add(current, callback_head, TWA_RESUME) };
-> +
-> +        if res != 0 {
-> +            // SAFETY: Scheduling the task work failed, so we still have ownership of the box, so
-> +            // we may destroy it.
-> +            unsafe { drop(Box::from_raw(inner)) };
-> +
-> +            return Err(DeferredFdCloseError::TaskWorkUnavailable);
-> +        }
-> +
-> +        // This removes the fd from the fd table in `current`. The file is not fully closed until
-> +        // `filp_close` is called. We are given ownership of one refcount to the file.
-> +        //
-> +        // SAFETY: This is safe no matter what `fd` is. If the `fd` is valid (that is, if the
-> +        // pointer is non-null), then we call `filp_close` on the returned pointer as required by
-> +        // `file_close_fd`.
-> +        let file = unsafe { bindings::file_close_fd(fd) };
-> +        if file.is_null() {
-> +            // We don't clean up the task work since that might be expensive if the task work queue
-> +            // is long. Just let it execute and let it clean up for itself.
-> +            return Err(DeferredFdCloseError::BadFd);
-> +        }
-> +
-> +        // Acquire a second refcount to the file.
-> +        //
-> +        // SAFETY: The `file` pointer points at a file with a non-zero refcount.
-> +        unsafe { bindings::get_file(file) };
-> +
-> +        // This method closes the fd, consuming one of our two refcounts. There could be active
-> +        // light refcounts created from that fd, so we must ensure that the file has a positive
-> +        // refcount for the duration of those active light refcounts. We do that by holding on to
-> +        // the second refcount until the current task returns to userspace.
-> +        //
-> +        // SAFETY: The `file` pointer is valid. Passing `current->files` as the file table to close
-> +        // it in is correct, since we just got the `fd` from `file_close_fd` which also uses
-> +        // `current->files`.
-> +        //
-> +        // Note: fl_owner_t is currently a void pointer.
-> +        unsafe { bindings::filp_close(file, (*current).files as bindings::fl_owner_t) };
-> +
-> +        // We update the file pointer that the task work is supposed to fput. This transfers
-> +        // ownership of our last refcount.
-> +        //
-> +        // INVARIANT: This changes the `file` field of a `DeferredFdCloserInner` from null to
-> +        // non-null. This doesn't break the type invariant for `DeferredFdCloserInner` because we
-> +        // still own a refcount to the file, so we can pass ownership of that refcount to the
-> +        // `DeferredFdCloserInner`.
-> +        //
-> +        // When `do_close_fd` runs, it must be safe for it to `fput` the refcount. However, this is
-> +        // the case because all light refcounts that are associated with the fd we closed
-> +        // previously must be dropped when `do_close_fd`, since light refcounts must be dropped
-> +        // before returning to userspace.
-> +        //
-> +        // SAFETY: Task works are executed on the current thread right before we return to
-> +        // userspace, so this write is guaranteed to happen before `do_close_fd` is called, which
-> +        // means that a race is not possible here.
-> +        unsafe { *file_field = file };
-> +
-> +        Ok(())
+> +        // INVARIANT: `bindings::fget` creates a refcount, and we pass ownership of the refcount to
+> +        // the new `ARef<File>`.
+> +        Ok(unsafe { ARef::from_raw(ptr.cast()) })
 > +    }
 > +
+> +    /// Creates a reference to a [`File`] from a valid pointer.
+> +    ///
 > +    /// # Safety
 > +    ///
-> +    /// The provided pointer must point at the `twork` field of a `DeferredFdCloserInner` stored in
-> +    /// a `Box`, and the caller must pass exclusive ownership of that `Box`. Furthermore, if the
-> +    /// file pointer is non-null, then it must be okay to release the refcount by calling `fput`.
-> +    unsafe extern "C" fn do_close_fd(inner: *mut bindings::callback_head) {
-> +        // SAFETY: The caller just passed us ownership of this box.
-> +        let inner = unsafe { Box::from_raw(inner.cast::<DeferredFdCloserInner>()) };
-> +        if !inner.file.is_null() {
-> +            // SAFETY: By the type invariants, we own a refcount to this file, and the caller
-> +            // guarantees that dropping the refcount now is okay.
-> +            unsafe { bindings::fput(inner.file) };
-> +        }
-> +        // The allocation is freed when `inner` goes out of scope.
+> +    /// The caller must ensure that `ptr` points at a valid file and that the file's refcount is
+> +    /// positive for the duration of 'a.
+> +    pub unsafe fn from_ptr<'a>(ptr: *const bindings::file) -> &'a File {
+> +        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
+> +        // duration of 'a. The cast is okay because `File` is `repr(transparent)`.
+> +        //
+> +        // INVARIANT: The safety requirements guarantee that the refcount does not hit zero during
+> +        // 'a.
+> +        unsafe { &*ptr.cast() }
 > +    }
-> +}
 > +
-> +/// Represents a failure to close an fd in a deferred manner.
-> +#[derive(Copy, Clone, Debug, Eq, PartialEq)]
-> +pub enum DeferredFdCloseError {
-> +    /// Closing the fd failed because we were unable to schedule a task work.
-> +    TaskWorkUnavailable,
-> +    /// Closing the fd failed because the fd does not exist.
-> +    BadFd,
-> +}
-> +
-> +impl From<DeferredFdCloseError> for Error {
-> +    fn from(err: DeferredFdCloseError) -> Error {
-> +        match err {
-> +            DeferredFdCloseError::TaskWorkUnavailable => ESRCH,
-> +            DeferredFdCloseError::BadFd => EBADF,
-> +        }
-> +    }
-> +}
-> +
->  /// Represents the `EBADF` error code.
->  ///
->  /// Used for methods that can only fail with `EBADF`.
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index f46ea3ba9e8e..6adcd8ffcfde 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -145,6 +145,12 @@ fn deref(&self) -> &Self::Target {
->          }
->      }
->  
-> +    /// Returns a raw pointer to the task.
+> +    /// Returns a raw pointer to the inner C struct.
 > +    #[inline]
-> +    pub fn as_raw(&self) -> *mut bindings::task_struct {
+> +    pub fn as_ptr(&self) -> *mut bindings::file {
 > +        self.0.get()
 > +    }
 > +
->      /// Returns the group leader of the given task.
->      pub fn group_leader(&self) -> &Task {
->          // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
-> @@ -189,6 +195,14 @@ pub fn pid_in_current_ns(&self) -> Pid {
->          unsafe { bindings::task_tgid_nr_ns(self.0.get(), ptr::null_mut()) }
->      }
->  
-> +    /// Returns whether this task corresponds to a kernel thread.
-> +    pub fn is_kthread(&self) -> bool {
-> +        // SAFETY: By the type invariant, we know that `self.0.get()` is non-null and valid. There
-> +        // are no further requirements to read the task's flags.
-> +        let flags = unsafe { (*self.0.get()).flags };
-> +        (flags & bindings::PF_KTHREAD) != 0
+> +    /// Returns the flags associated with the file.
+> +    ///
+> +    /// The flags are a combination of the constants in [`flags`].
+> +    pub fn flags(&self) -> u32 {
+> +        // This `read_volatile` is intended to correspond to a READ_ONCE call.
+> +        //
+> +        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
+> +        //
+> +        // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+> +        unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_volatile() }
+> +    }
+> +}
+> +
+> +// SAFETY: The type invariants guarantee that `File` is always ref-counted. This implementation
+> +// makes `ARef<File>` own a normal refcount.
+> +unsafe impl AlwaysRefCounted for File {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+> +        unsafe { bindings::get_file(self.as_ptr()) };
 > +    }
 > +
->      /// Wakes up the task.
->      pub fn wake_up(&self) {
->          // SAFETY: By the type invariant, we know that `self.0.get()` is non-null and valid.
+> +    unsafe fn dec_ref(obj: ptr::NonNull<File>) {
+> +        // SAFETY: To call this method, the caller passes us ownership of a normal refcount, so we
+> +        // may drop it. The cast is okay since `File` has the same representation as `struct file`.
+> +        unsafe { bindings::fput(obj.cast().as_ptr()) }
+> +    }
+> +}
+> +
+> +/// Represents the `EBADF` error code.
+> +///
+> +/// Used for methods that can only fail with `EBADF`.
+> +#[derive(Copy, Clone, Eq, PartialEq)]
+> +pub struct BadFdError;
+> +
+> +impl From<BadFdError> for Error {
+> +    fn from(_: BadFdError) -> Error {
+> +        EBADF
+> +    }
+> +}
+> +
+> +impl core::fmt::Debug for BadFdError {
+> +    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+> +        f.pad("EBADF")
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index b89ecf4e97a0..9353dd713a20 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -34,6 +34,7 @@
+>  mod allocator;
+>  mod build_assert;
+>  pub mod error;
+> +pub mod file;
+>  pub mod init;
+>  pub mod ioctl;
+>  #[cfg(CONFIG_KUNIT)]
 > 
 > -- 
 > 2.43.0.687.g38aa6559b0-goog
