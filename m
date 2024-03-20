@@ -1,216 +1,186 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D6B39FC3
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Mar 2024 08:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0063BBE3
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Mar 2024 10:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710924396; cv=none; b=Z/DB4uG/7fJ1jwdQm0yHTacGrMcL5r9IC8qonFfOpkGXMyWGHgYyOwNS0p0CmrXvY9CljIO2OvbBcEijLu/T2N72mH8HS0ErOyvmmyhA9uHNFe8/k0d32nyJ+NnyWwuJWpBo33Zprj93MAHNVy73ojfKAaSQxqXg8+p3iVMssz0=
+	t=1710929334; cv=none; b=OeDtpsuw7qoDyzYsNDBBpQfZ5BKUpnjFQBVB2KWCkq8ePu26mc/A9VSnFyljOnta7wJe9PdaVnzwW/JQguJemG4bTWbKPxJa217ygCxgQ+IiGZnuoNG49CcT77Jpepx87RUEM37DWPRvj6R7aLj6yYGN7akrR09ciCYBLmRpO7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710924396; c=relaxed/simple;
-	bh=Q4ONw+59Vbz8TiQ9wHPgnNATdK0mtXhgpFJ6lJ0jOhM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iam70jvSEaYT+4Ym2yeq2u4YD+IUQTuOhqNZ2rU9I3GJh3w1/4HUiGxAp7oP0PTC3hBjfl6yq3Lhji+w6UECtBB6z9ZBu0BjDgY47p5EMFufn0jucL7sCha65X1CM8j42wQib/62lviE5OUoRtV+/61GVfP/t13h7hVdeL0ZptE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4vaqqdUZ; arc=none smtp.client-ip=209.85.128.201
+	s=arc-20240116; t=1710929334; c=relaxed/simple;
+	bh=dsikV6HHaefXhxzLYHXv5UeUFSgszQgEUBeMyO6ZNdQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aNPkcZu6tWPQ5NlFx4GCqe17kkt2VMJQuMFAAZd/hj+CYQHQ/15zhbue+UL+LgPRarP9QmUlYvD+/6/TyIVNpBgKCQxzuHXm16NBaIfsZCRgt0LxMzGMvIMkgx3lGmvUcGFoJLPHLKway9KzzqHzNgUk5UWhvzGPr6BBPLIaJso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TSNvI2A6; arc=none smtp.client-ip=209.85.167.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4vaqqdUZ"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-610b96c8ca2so58849337b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 20 Mar 2024 01:46:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TSNvI2A6"
+Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-513d4bcca5eso4269800e87.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 20 Mar 2024 03:08:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710924393; x=1711529193; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UK1n2ZUFasdNJS4tL/dUBZ9HzwBNAKoJUXbp2GIlPGA=;
-        b=4vaqqdUZnGKFg+6XPkgEheNFHBlx5J/Q2SqcMubHub38gB9tO+l9OyOs6Q2uUtEYI+
-         v4Xer7mgjPGEUWNw+q7AcfufydzBRIdPNgQ53z+Pofx3QFniRWIQpg5RehVdBT0tOrqM
-         4LMESATryICogY53F6aY/oayfQmhOFAj9XqgidE1EMFoLAQV0NLfa4l6CqNAGtH8e3yx
-         M3KW/SNsA+HTRVAPS8nIO18veKNf9SPpYiMmUCd/OKk3/HY6qCeklkqqaOXcLh9KBmCR
-         vB1MgAlBaDO3zwIzP7jFM1APIcnRLzM+uDa+Oao1fZUsEvTECFkSP9JOrhQkU50VLDwX
-         SG/g==
+        d=google.com; s=20230601; t=1710929331; x=1711534131; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8FtFKTpG+fJZqrpFDR60HPuFRsB2Dp3iCYSe7eAKvzg=;
+        b=TSNvI2A6AUVh1y3ESB0Fj24Gu2gZsayRWXU7Xi2WRWPLpn30UN3bWCeJ5in8x5pYH7
+         rS+Bw8H/56iyDuaBVEVpG+jKBvJh5hJQ37/fskG9Nm75TgMymr3Vz2vqxHzyiuob5auH
+         SNjMTuRmOyHmTwSddtw70/Np7JZrosEeFzZn8O/ywJt+V/qrAZE5k3y8tFTUxSAFEeKr
+         rwnKetjFjLseIZvYpb+YVB7YVLw/CoCYEUXJH9bQOhTYamppgfLpThMoxqyO8EvC8vyY
+         pSyNoQrp5NB8bj6H/mVke7HqSpB5F6rucW4lncPWGxzchm2E1i9Rxvy4cSToyM1yvdE4
+         SrLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710924393; x=1711529193;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UK1n2ZUFasdNJS4tL/dUBZ9HzwBNAKoJUXbp2GIlPGA=;
-        b=rH7pcLqpbbOMgmK2pDoaak/BY2GzfglbnoV+K4/AiMy3bXw8k+u5Vk3U72YpWpnaE2
-         MpgdtX8hybf2jgG0UVBazRB6fAxfvMjVCRY0AfDsupdXT/x87v3M91n7HtomJ8XYBsS1
-         /vgTehRq96XmlAOS5vMaFuYr+KD65ltLLEBdH+AQD1EqEvoWKIRibKZQN/eXMqtfiFL3
-         fpav7g4zDLNbaQPnDheqYjUPnwXIafY1EcrKk8QcBk2NvsaTS8jx4cKsqSo6wL1eacqW
-         a/6Bj/8rGUe5glTjMYOF3qo0wmvG8rKOiSDVypDZvsAp1MI2tm15yyedi8UGp9hjZ8Vx
-         zzvA==
-X-Forwarded-Encrypted: i=1; AJvYcCWAsi79VkuqHshRMctCbVCaKcHUncN8bpsYHNuoE6fD5mlCVgjGokiXC8he45pxeNPF/d9j6NIV7tDXJJVogTIE189P7CAquNR72w96Slg=
-X-Gm-Message-State: AOJu0YzLDMHBjyU9rBWegMtYPYaBK/tUKLUqMLk7FmNlxpYekpGYnDn5
-	M4kmD9emqXegJrRqOFO8z1XrsK7H7T2b8wninNPq/SUEDIOnrJGvamx1ZVEElHoBttTBkXG30TI
-	B1ZQ6lX7hkFY/eA==
-X-Google-Smtp-Source: AGHT+IHhO69PTaN4boKOvVHCOJk+p5noJ7sGfzArQ8mOhKPuKZfczEJL2sh4BtJrZ5uOiOp76ApjmtaKNMUWfnM=
+        d=1e100.net; s=20230601; t=1710929331; x=1711534131;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8FtFKTpG+fJZqrpFDR60HPuFRsB2Dp3iCYSe7eAKvzg=;
+        b=fSYIiGalG133ntxQOGrD3z9MU4Eti5TChovQeaZ0cRBOB0ghZmkHHr+hUP08+V00gc
+         EWg5RLU8BRKn+J55p6/qzBolmQiGEBcQFAOtyR9IvZ3IES8RTgjj0tw0I2dUA+6h0N3B
+         0OX1LB61AJ+u0EKG7t9nEHu6XI1/QOrZ3q9AQxDwjg/3Ry9VMEL6WjPA5JHmK5YOLty1
+         HbilTFE2qMuHiMLo8mR4FvDdR2m/hjKFIDKB/KwCjkLbaqo2uT8ljv/kPFEJtZFC6CfI
+         uTlUIcWGLYkWotpCxw5Q/rRweLXRgrF4qqfAtHXaLcCVkYw3jJQ8Z8XabkgBo+Gn0R7r
+         sLJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXkeSd/l5zB2INqUKM58gnY3821Lst6GixpocFetuuZvAAHkTHs2htX0tqxR+XO1GMnCJQKBpoe33yQRqhfGD1RVrUP/0M7KZelPbLo/GQ=
+X-Gm-Message-State: AOJu0YxbyBGS8GHlh1z5Tk6qF9YaNIFwNi30kGinQv3Rc3xEypx62P1V
+	/ZnNr6+Zs/JfjtvKi+1VWZpwjCEKj8rTtp6XIpxpTze83Wc7aecQW5BahxluSeyvU0/YygJQl3v
+	HGYhho6QNr5YNTA==
+X-Google-Smtp-Source: AGHT+IEw+6fkLpG9/sHjTwt0dVYYUXys5WdUg2chf3xXBucDE7JuRZYpka2H9ZWYkbxdIIUsrZewbA4OIecFIto=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:124b:b0:dc2:398d:a671 with SMTP
- id t11-20020a056902124b00b00dc2398da671mr4614173ybu.10.1710924393527; Wed, 20
- Mar 2024 01:46:33 -0700 (PDT)
-Date: Wed, 20 Mar 2024 08:46:30 +0000
-In-Reply-To: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:3c8e:b0:515:8856:121 with SMTP
+ id h14-20020a0565123c8e00b0051588560121mr2109lfv.9.1710929330802; Wed, 20 Mar
+ 2024 03:08:50 -0700 (PDT)
+Date: Wed, 20 Mar 2024 10:08:45 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
-X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
-Message-ID: <20240320084630.2727355-1-aliceryhl@google.com>
-Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+X-B4-Tracking: v=1; b=H4sIAKy1+mUC/x3MSQqAMAxA0atI1hZiFRyuIlKqRg2ONFUE8e4Wl
+ 2/x/wNCjkmgih5wdLHwvgUkcQTdZLeRFPfBoFFnmGpU7hSvZs8rmVVMT4u3Ks9axK60bZFrCOX haOD7v9bN+36sRy7NZQAAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2952; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=dsikV6HHaefXhxzLYHXv5UeUFSgszQgEUBeMyO6ZNdQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBl+rWvsv3i51cmcXwxFaAJMqx26XB5MxEAJRqIm
+ CFdHV9AhwWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZfq1rwAKCRAEWL7uWMY5
+ RvZED/9sOln6QF5b9/9VtU9m4v51vVAyULZtziciiZryljVVj9tzSGN6cGylE8hM82k81887ggu
+ hQSGjlzgFYudz/rTX4AXnkxLo7A2RUpF43cRcJm9KDZMlV0c15rgKK38Q/woYOeKQxQfGH5dMvB
+ yIRs2u8FXDGvquY7ouLUQjBrTe3pINWrKVeMkSAbYJrSt+ziUxTY0HJ69Md5vTXhNbWiNwI2yRw
+ wYxeci83RIrYd1HEOQC0m6m3n1EFyL6/M6V87zzlegkLn5WQkWzDPUUwuGB7fGxxrSVdpUlBZ1C
+ zvqw1D0EirGX7KHYFg/9LzsKr8YxZQp1EBpPcYiyhSQFvs599F72xeST5orVQ7kwhKzTRitRvtc
+ Q2h5dg0y0wzHLqrf39IIXDaKsfhoeDVO8u2GIaf1PwMQ/phHcD+GVCM25P8A0PyrXMnNxgMbFCb
+ ki4Ch44dsEKF/63yjAZBANXR5SR8/C8MC3j5hknR1Hi9P+be4KjE4AaxggHdrDaQd9LvTB5Eu0X
+ KqbgiT8nzZY4OCPfjoMQ8c0No0ZP1Po8p88KraYv1q6EqhxCIlwL9LHQduNOpkLqzzxaosP2Dg8
+ Inp+mTHs24mzeDf7NUg5nVVMAfZ9T7vBNqm2ltGGNLPQy6SUZUUUbtPSsWRq+VP7uyPu7r08v9e I0aunXke90cEBww==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240320-rust-ktime_ms_delta-v1-1-ccb8672a0941@google.com>
+Subject: [PATCH] rust: time: add Ktime
 From: Alice Ryhl <aliceryhl@google.com>
-To: benno.lossin@proton.me
-Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
-	aliceryhl@google.com, arnd@arndb.de, arve@android.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, 
-	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
-	viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
+To: Miguel Ojeda <ojeda@kernel.org>, John Stultz <jstultz@google.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Stephen Boyd <sboyd@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-> On 3/11/24 11:47, Alice Ryhl wrote:
-> > +/// A pointer to a page that owns the page allocation.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The pointer points at a page, and has ownership over the page.
-> 
-> Why not "`page` is valid"?
-> Do you mean by ownership of the page that `page` has ownership of the
-> allocation, or does that entail any other property/privilege?
+Introduce a wrapper around `ktime_t` with a few different useful
+methods.
 
-I can add "at a valid page".
+Rust Binder will use these bindings to compute how many milliseconds a
+transaction has been active for when dumping the current state of the
+Binder driver. This replicates the logic in C Binder [1].
 
-By ownership I mean that we are allowed to pass it to __free_page and
-that until we do, we can access the page. If you want me to reword this,
-please tell me what you want it to say.
+For a usage example, see [2].
 
-> > +// SAFETY: It is safe to transfer page allocations between threads.
-> 
-> Why?
-> 
-> > +unsafe impl Send for Page {}
+Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830fab.1682333709.git.zhangchuang3@xiaomi.com/ [1]
+Link: https://r.android.com/3004103
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/time.rs | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-How about:
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index 25a896eed468..ac8b35f662af 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -5,6 +5,9 @@
+ //! This module contains the kernel APIs related to time and timers that
+ //! have been ported or wrapped for usage by Rust code in the kernel.
+ 
++/// The number of nanoseconds per millisecond.
++pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
++
+ /// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
+ pub type Jiffies = core::ffi::c_ulong;
+ 
+@@ -18,3 +21,60 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
+     // matter what the argument is.
+     unsafe { bindings::__msecs_to_jiffies(msecs) }
+ }
++
++/// A Rust wrapper around a `ktime_t`.
++#[repr(transparent)]
++#[derive(Copy, Clone)]
++pub struct Ktime {
++    inner: bindings::ktime_t,
++}
++
++impl Ktime {
++    /// Create a `Ktime` from a raw `ktime_t`.
++    #[inline]
++    pub fn from_raw(inner: bindings::ktime_t) -> Self {
++        Self { inner }
++    }
++
++    /// Get the current time using `CLOCK_MONOTONIC`.
++    #[inline]
++    pub fn ktime_get() -> Self {
++        // SAFETY: It is always safe to call `ktime_get`.
++        Self::from_raw(unsafe { bindings::ktime_get() })
++    }
++
++    /// Divide the number of nanoseconds by a compile-time constant.
++    #[inline]
++    fn divns_constant<const DIV: i64>(self) -> i64 {
++        self.to_ns() / DIV
++    }
++
++    /// Returns the number of nanoseconds.
++    #[inline]
++    pub fn to_ns(self) -> i64 {
++        self.inner
++    }
++
++    /// Returns the number of milliseconds.
++    #[inline]
++    pub fn to_ms(self) -> i64 {
++        self.divns_constant::<NSEC_PER_MSEC>()
++    }
++}
++
++/// Returns the number of milliseconds between two ktimes.
++#[inline]
++pub fn ktime_ms_delta(later: Ktime, earlier: Ktime) -> i64 {
++    (later - earlier).to_ms()
++}
++
++impl core::ops::Sub for Ktime {
++    type Output = Ktime;
++
++    #[inline]
++    fn sub(self, other: Ktime) -> Ktime {
++        Self {
++            inner: self.inner - other.inner,
++        }
++    }
++}
 
-// SAFETY: Pages have no logic that relies on them staying on a given
-// thread, so moving them across threads is safe.
+---
+base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+change-id: 20240320-rust-ktime_ms_delta-74b00c9ab872
 
-> > +// SAFETY: As long as the safety requirements for `&self` methods on this type
-> > +// are followed, there is no problem with calling them in parallel.
-> 
-> Why?
-> 
-> > +unsafe impl Sync for Page {}
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-How about:
-
-// SAFETY: Pages have no logic that relies on them not being accessed
-// concurrently, so accessing them concurrently is safe.
-
-> > +        // SAFETY: The specified order is zero and we want one page.
-> 
-> This doesn't explain why it is sound to call the function. I expect that
-> it is always sound to call this function with valid arguments.
-> 
-> > +        let page = unsafe { bindings::alloc_pages(gfp_flags, 0) };
-
-How about:
-
-// SAFETY: Depending on the value of `gfp_flags`, this call may sleep.
-// Other than that, it is always safe to call this method.
-
-> > +        // INVARIANT: We checked that the allocation succeeded.
-> 
-> Doesn't mention ownership.
-> 
-> > +        Ok(Self { page })
-
-How about:
-
-// INVARIANT: We just successfully allocated a page, so we now have
-// ownership of the newly allocated page. We transfer that ownership to
-// the new `Page` object.
-
-> > +    /// Runs a piece of code with this page mapped to an address.
-> > +    ///
-> > +    /// The page is unmapped when this call returns.
-> > +    ///
-> > +    /// It is up to the caller to use the provided raw pointer correctly.
-> 
-> This says nothing about what 'correctly' means. What I gathered from the
-> implementation is that the supplied pointer is valid for the execution
-> of `f` for `PAGE_SIZE` bytes.
-> What other things are you allowed to rely upon?
-> 
-> Is it really OK for this function to be called from multiple threads?
-> Could that not result in the same page being mapped multiple times? If
-> that is fine, what about potential data races when two threads write to
-> the pointer given to `f`?
-> 
-> > +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) -> T {
-
-I will say:
-
-/// It is up to the caller to use the provided raw pointer correctly.
-/// The pointer is valid for `PAGE_SIZE` bytes and for the duration in
-/// which the closure is called. Depending on the gfp flags and kernel
-/// configuration, the pointer may only be mapped on the current thread,
-/// and in those cases, dereferencing it on other threads is UB. Other
-/// than that, the usual rules for dereferencing a raw pointer apply.
-/// (E.g., don't cause data races, the memory may be uninitialized, and
-/// so on.)
-
-It's okay to map it multiple times from different threads.
-
-> > +        // SAFETY: This unmaps the page mapped above.
-> 
-> This doesn't explain why it is sound.
-> 
-> > +        //
-> > +        // Since this API takes the user code as a closure, it can only be used
-> > +        // in a manner where the pages are unmapped in reverse order. This is as
-> > +        // required by `kunmap_local`.
-> > +        //
-> > +        // In other words, if this call to `kunmap_local` happens when a
-> > +        // different page should be unmapped first, then there must necessarily
-> > +        // be a call to `kmap_local_page` other than the call just above in
-> > +        // `with_page_mapped` that made that possible. In this case, it is the
-> > +        // unsafe block that wraps that other call that is incorrect.
-> > +        unsafe { bindings::kunmap_local(mapped_addr) };
-
-Why do you say that? The kunmap_local method requires that the address
-being unmapped is currently mapped, and that pages are unmapped in
-reverse order. The safety comment explains that the page is currently
-mapped and that this method cannot be used to unmap them in anything
-other than reverse order.
-
-> > +    /// Runs a piece of code with a raw pointer to a slice of this page, with
-> > +    /// bounds checking.
-> > +    ///
-> > +    /// If `f` is called, then it will be called with a pointer that points at
-> > +    /// `off` bytes into the page, and the pointer will be valid for at least
-> > +    /// `len` bytes. The pointer is only valid on this task, as this method uses
-> > +    /// a local mapping.
-> 
-> This information about the pointer only being valid on this task should
-> also apply to `with_page_mapped`, right?
-> 
-> > +    ///
-> > +    /// If `off` and `len` refers to a region outside of this page, then this
-> > +    /// method returns `EINVAL` and does not call `f`.
-> > +    ///
-> > +    /// It is up to the caller to use the provided raw pointer correctly.
-> 
-> Again, please specify what 'correctly' means.
-
-I will remove the "The pointer is only valid on this task, as this
-method uses a local mapping." sentence and copy the same paragraph as
-previously (without the `PAGE_SIZE` remark).
-
-Alice
