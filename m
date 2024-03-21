@@ -1,266 +1,238 @@
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8D185264
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 14:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B115585279
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 14:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711030580; cv=none; b=MhX56cH3spUcwHAJxY4YFtVNhnDGZQ5gqLdknEwnFl4fTrqol23zFeqQsQC0fgiQA6f5E9eUZoY8lR7jFKJSaUZrmshyZoqbv/DIsDHz5UMZ/bRKn3a2DwLRZLPP2e5jmPbQ9CsEACz62pxvZMtyQv0RYFA4e+eXp7HAkWX8phk=
+	t=1711030814; cv=none; b=TB4RtMdhw4TYAJfzPVstxHwjzPTeUoxG/BSA0b1jpS1lteqF9T91THisu4u+eTOPtNzvox8WQCH7AcsTqVJo2cUiJkRao4N5GitkX499jzjWNVPovt+yT+Y7p8UjZHAvf28hXSL/gubctGitdbtFlr3D+1zouBausJwLFbtKmOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711030580; c=relaxed/simple;
-	bh=4JpfyFYi13F0eeoXOWgJCB2zwugzgo3FJPnG58UQB0w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G9bLeD0NLSFveEbiaLRgq9aowOP0F905vbpMrZY3JPqJjZdrA7NrifjLmTq+p3dZKQWpdAcgRSJ0zkRXGHLrEJW4Z9h8Mx3WZ1CfKQeohT7Iyuc6CeD8oeGO7/AIB4FKlvLMZAWqF/iqA2ilOWY1s40IRT/REy22/wY193Fhedg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AHLGL+X9; arc=none smtp.client-ip=209.85.167.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1711030814; c=relaxed/simple;
+	bh=6xyeLUgAwxmqGgmY+Lxx+AP/kDtnBc74/itYOT89GNM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GySKhZYFwMvjT4q+o4FpW7bJ66Mh6CfavSGQGX9Mo8pWaRUGPRBLrhSWGIUSkJdGqP1bB3dRGV2SkOZHDH+ubWoGu+VbeEFTW9WBfd9zT5ShuSwEc9EvIRjGWtg/0y6OXYGXOE3WgnvyBTwAiaLmlY8+5KmFxPbUnCR3Umv7VVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=InaLxO/o; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AHLGL+X9"
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3c3a4101721so650891b6e.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 07:16:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711030578; x=1711635378; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9PbBzEMEXXAeq4LLgNricDK4jILoebAZr7BEjc950wk=;
-        b=AHLGL+X9gIL1tBMKihOLkdE82qvJKGQdEUcP6lsEGJv+pW1pf5pvv2pSNrODs4F8C7
-         KUjK1O4rTn6ka/sY5S2fsMWv8GZncznh0/Q/TlCZAFWd1ICqdef6pzWSM6A7aEAErDnt
-         cMZozOdbcydU5FHkLc/WLKbLXlrY1e87YVohjNLsLPyRy8zoKivmuGQqpkJIf1Wcdp/l
-         VOMWVLjDR7TaqFirw6Rvq3Ef4tyBmb36IJmafwDaVzl+Y7D2CtBK59SvdALi82XzuHFn
-         4LxB0v7p39LuMV4SoH22HxVBiILdJX3cQ66Gc8u7Lc09mAEuZmILW06kwHDvS2WuevSB
-         uNEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711030578; x=1711635378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9PbBzEMEXXAeq4LLgNricDK4jILoebAZr7BEjc950wk=;
-        b=QUb9JBbVKuLb/uYACKqK8HpwmpHhURwbBFrcVtwPe4rj1OJCgrWQMKnHNMnnrmPW+x
-         zzUbkEetRDFy6wv0p+xiBGnWWEePNbU6tZE4C68tCTR5u3sXF3CbJo9z6t3rFVzAbTex
-         qip0PkRiHjTK+I98La4feM7HsfLC1GuuVKk3uV9tXkcyvMp1Xml6aHTY16gh29eokUVI
-         699ymAD0Wl3d/k8iMrPqtfLs9MOg+Q5y/OQNQF0a5EJMDk0JYzW0chgFnk8EBmS8OPSG
-         RB3oeh+mbxqmUSC4mPtxDwIULYjE2AwMdIGHEDazT2M2RoAx+UMGm4eAmWBPHUrmojfR
-         Khtg==
-X-Forwarded-Encrypted: i=1; AJvYcCVQUJv0aoUE/tQ9W1GZ/LZSVKpk4eGZI5kHhSddA5SV/6PWyouFBf0WeGuJGCzTN0jxZozCa9oRapCqmMpuRc0bojFllxwSqu9hYelZ2a8=
-X-Gm-Message-State: AOJu0YwbP1RhqzHP2ouChCBmqMZOiJhvkP6rdH7EHecG8TUB7VqyE92y
-	lA4wRVn4KvWHzQ9Al7tUqYbp88fPYOAz56OV0ByQNXOVX5nck4tlZeKY5u+2pEfzOfZ+zgLAFTa
-	Dbe/dpx+Xd5MSxxDu1wOWKLJiVETLIutxoYNh
-X-Google-Smtp-Source: AGHT+IH4TEVVFQK/YJPG19j7ZpbabVGsjRX1xScFkHE3KNMxeLkKxELqwdZFyKY+cYQcAqD1S7so3f6XqUodsJZwoyk=
-X-Received: by 2002:a05:6808:1292:b0:3c3:865b:5311 with SMTP id
- a18-20020a056808129200b003c3865b5311mr11092810oiw.48.1711030577997; Thu, 21
- Mar 2024 07:16:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="InaLxO/o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=rz63pa25ejeqzkhf77wqfydujq.protonmail; t=1711030803; x=1711290003;
+	bh=NiTFkvVVIBt3Zp4d7bg0Q/59Q6CidDiKN7ppRU78CAw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=InaLxO/o6NGTLercgTkCaaGLUifhedx7egjA4JUq0AH/FATkjVUxf0CCPLiFbwGGa
+	 T+NwtBfwQOPrJChIfXCvJVFx1WmDhDjJOpt57nHQSbE9orwx+TJgq02S9JiKDTmqg3
+	 ucDDPWXR9gLHQRsvZGLU7ynjWmsYmN1DC+eOPRMwIvNZfhiHclxw19COQMK+kzK3Z5
+	 tz/xRwUOBXa6fBQguKESxk0M3rJHdDIXhksKEtFWKt1/P5TaseaZ5NpVLm+WQOSZPO
+	 ogf7fcdC/+qCI5QgrW1mghPY6JfPkElUmSd5i0BSA1+PYTTsYAdD15/REEX/EmIPKK
+	 DE1n0eqx8LQvg==
+Date: Thu, 21 Mar 2024 14:19:48 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, arnd@arndb.de, arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
+Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+Message-ID: <504d1e4e-97f6-425b-98a2-a2a32dff1313@proton.me>
+In-Reply-To: <CAH5fLggy1ci+gu2eVzjo0nHtNzT=+NgaaU5WAwq8qHrhu1QCYw@mail.gmail.com>
+References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me> <20240320084630.2727355-1-aliceryhl@google.com> <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me> <CAH5fLgj_vmhCV-Ptfbjbq=FZOuVSLOEsatELaPmz=BuDuemghw@mail.gmail.com> <e088f9a2-c0aa-41b6-993b-01adb5fba929@proton.me> <CAH5fLggy1ci+gu2eVzjo0nHtNzT=+NgaaU5WAwq8qHrhu1QCYw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
- <20240320084630.2727355-1-aliceryhl@google.com> <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me>
- <CAH5fLgj_vmhCV-Ptfbjbq=FZOuVSLOEsatELaPmz=BuDuemghw@mail.gmail.com>
- <e088f9a2-c0aa-41b6-993b-01adb5fba929@proton.me> <CAH5fLggy1ci+gu2eVzjo0nHtNzT=+NgaaU5WAwq8qHrhu1QCYw@mail.gmail.com>
-In-Reply-To: <CAH5fLggy1ci+gu2eVzjo0nHtNzT=+NgaaU5WAwq8qHrhu1QCYw@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 21 Mar 2024 15:16:07 +0100
-Message-ID: <CAH5fLgiHcru2uFmfwSvTnZvcnxh5Av-UWx1EEvttA0OyzhXSVQ@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
-	arnd@arndb.de, arve@android.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, 
-	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
-	keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, 
-	wedsonaf@gmail.com, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 21, 2024 at 3:11=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
+On 3/21/24 15:11, Alice Ryhl wrote:
 > On Thu, Mar 21, 2024 at 2:56=E2=80=AFPM Benno Lossin <benno.lossin@proton=
 .me> wrote:
-> >
-> > On 3/21/24 14:42, Alice Ryhl wrote:
-> > > On Thu, Mar 21, 2024 at 2:16=E2=80=AFPM Benno Lossin <benno.lossin@pr=
-oton.me> wrote:
-> > >>
-> > >> On 3/20/24 09:46, Alice Ryhl wrote:
-> > >>>> On 3/11/24 11:47, Alice Ryhl wrote:
-> > >>>>> +/// A pointer to a page that owns the page allocation.
-> > >>>>> +///
-> > >>>>> +/// # Invariants
-> > >>>>> +///
-> > >>>>> +/// The pointer points at a page, and has ownership over the pag=
-e.
-> > >>>>
-> > >>>> Why not "`page` is valid"?
-> > >>>> Do you mean by ownership of the page that `page` has ownership of =
-the
-> > >>>> allocation, or does that entail any other property/privilege?
-> > >>>
-> > >>> I can add "at a valid page".
-> > >>
-> > >> I don't think that helps, what you need as an invariant is that the
-> > >> pointer is valid.
-> > >
-> > > To me "points at a page" implies that the pointer is valid. I mean, i=
-f
-> > > it was dangling, it would not point at a page?
-> > >
-> > > But I can reword to something else if you have a preferred phrasing.
-> >
-> > I would just say "`page` is valid" or "`self.page` is valid".
-> >
-> > >>>>> +    /// Runs a piece of code with this page mapped to an address=
-.
-> > >>>>> +    ///
-> > >>>>> +    /// The page is unmapped when this call returns.
-> > >>>>> +    ///
-> > >>>>> +    /// It is up to the caller to use the provided raw pointer c=
-orrectly.
-> > >>>>
-> > >>>> This says nothing about what 'correctly' means. What I gathered fr=
-om the
-> > >>>> implementation is that the supplied pointer is valid for the execu=
-tion
-> > >>>> of `f` for `PAGE_SIZE` bytes.
-> > >>>> What other things are you allowed to rely upon?
-> > >>>>
-> > >>>> Is it really OK for this function to be called from multiple threa=
-ds?
-> > >>>> Could that not result in the same page being mapped multiple times=
-? If
-> > >>>> that is fine, what about potential data races when two threads wri=
-te to
-> > >>>> the pointer given to `f`?
-> > >>>>
-> > >>>>> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) ->=
- T) -> T {
-> > >>>
-> > >>> I will say:
-> > >>>
-> > >>> /// It is up to the caller to use the provided raw pointer correctl=
-y.
-> > >>> /// The pointer is valid for `PAGE_SIZE` bytes and for the duration=
- in
-> > >>> /// which the closure is called. Depending on the gfp flags and ker=
-nel
-> > >>> /// configuration, the pointer may only be mapped on the current th=
-read,
-> > >>> /// and in those cases, dereferencing it on other threads is UB. Ot=
-her
-> > >>> /// than that, the usual rules for dereferencing a raw pointer appl=
-y.
-> > >>> /// (E.g., don't cause data races, the memory may be uninitialized,=
- and
-> > >>> /// so on.)
-> > >>
-> > >> I would simplify and drop "depending on the gfp flags and kernel..."=
- and
-> > >> just say that the pointer is only valid on the current thread.
-> > >
-> > > Sure, that works for me.
-> > >
-> > >> Also would it make sense to make the pointer type *mut [u8; PAGE_SIZ=
-E]?
-> > >
-> > > I think it's a trade-off. That makes the code more error-prone, since
-> > > `pointer::add` now doesn't move by a number of bytes, but a number of
-> > > pages.
-> >
-> > Yeah. As long as you document that the pointer is valid for r/w with
-> > offsets in `0..PAGE_SIZE` bytes, leaving the type as is, is fine by me.
-> >
-> >
-> > >>> It's okay to map it multiple times from different threads.
-> > >>
-> > >> Do you still need to take care of data races?
-> > >> So would it be fine to execute this code on two threads in parallel?
-> > >>
-> > >>       static PAGE: Page =3D ...; // assume we have a page accessible=
- by both threads
-> > >>
-> > >>       PAGE.with_page_mapped(|ptr| {
-> > >>           loop {
-> > >>               unsafe { ptr.write(0) };
-> > >>               pr_info!("{}", unsafe { ptr.read() });
-> > >>           }
-> > >>       });
-> > >
-> > > Like I said, the usual pointer rules apply. Two threads can access it
-> > > in parallel as long as one of the following are satisfied:
-> > >
-> > > * Both accesses are reads.
-> > > * Both accesses are atomic.
-> > > * They access disjoint byte ranges.
-> > >
-> > > Other than the fact that it uses a thread-local mapping on machines
-> > > that can't address all of their memory at the same time, it's
-> > > completely normal memory. It's literally just a PAGE_SIZE-aligned
-> > > allocation of PAGE_SIZE bytes.
-> >
-> > Thanks for the info, what do you think of this?:
-> >
-> > /// It is up to the caller to use the provided raw pointer correctly. T=
-he pointer is valid for reads
-> > /// and writes for `PAGE_SIZE` bytes and for the duration in which the =
-closure is called. The
-> > /// pointer must only be used on the current thread. The caller must al=
-so ensure that no data races
-> > /// occur: when mapping the same page on two threads accesses to memory=
- with the same offset must be
-> > /// synchronized.
->
+>>
+>> On 3/21/24 14:42, Alice Ryhl wrote:
+>>> On Thu, Mar 21, 2024 at 2:16=E2=80=AFPM Benno Lossin <benno.lossin@prot=
+on.me> wrote:
+>>>>
+>>>> On 3/20/24 09:46, Alice Ryhl wrote:
+>>>>>> On 3/11/24 11:47, Alice Ryhl wrote:
+>>>>>>> +/// A pointer to a page that owns the page allocation.
+>>>>>>> +///
+>>>>>>> +/// # Invariants
+>>>>>>> +///
+>>>>>>> +/// The pointer points at a page, and has ownership over the page.
+>>>>>>
+>>>>>> Why not "`page` is valid"?
+>>>>>> Do you mean by ownership of the page that `page` has ownership of th=
+e
+>>>>>> allocation, or does that entail any other property/privilege?
+>>>>>
+>>>>> I can add "at a valid page".
+>>>>
+>>>> I don't think that helps, what you need as an invariant is that the
+>>>> pointer is valid.
+>>>
+>>> To me "points at a page" implies that the pointer is valid. I mean, if
+>>> it was dangling, it would not point at a page?
+>>>
+>>> But I can reword to something else if you have a preferred phrasing.
+>>
+>> I would just say "`page` is valid" or "`self.page` is valid".
+>>
+>>>>>>> +    /// Runs a piece of code with this page mapped to an address.
+>>>>>>> +    ///
+>>>>>>> +    /// The page is unmapped when this call returns.
+>>>>>>> +    ///
+>>>>>>> +    /// It is up to the caller to use the provided raw pointer cor=
+rectly.
+>>>>>>
+>>>>>> This says nothing about what 'correctly' means. What I gathered from=
+ the
+>>>>>> implementation is that the supplied pointer is valid for the executi=
+on
+>>>>>> of `f` for `PAGE_SIZE` bytes.
+>>>>>> What other things are you allowed to rely upon?
+>>>>>>
+>>>>>> Is it really OK for this function to be called from multiple threads=
+?
+>>>>>> Could that not result in the same page being mapped multiple times? =
+If
+>>>>>> that is fine, what about potential data races when two threads write=
+ to
+>>>>>> the pointer given to `f`?
+>>>>>>
+>>>>>>> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T=
+) -> T {
+>>>>>
+>>>>> I will say:
+>>>>>
+>>>>> /// It is up to the caller to use the provided raw pointer correctly.
+>>>>> /// The pointer is valid for `PAGE_SIZE` bytes and for the duration i=
+n
+>>>>> /// which the closure is called. Depending on the gfp flags and kerne=
+l
+>>>>> /// configuration, the pointer may only be mapped on the current thre=
+ad,
+>>>>> /// and in those cases, dereferencing it on other threads is UB. Othe=
+r
+>>>>> /// than that, the usual rules for dereferencing a raw pointer apply.
+>>>>> /// (E.g., don't cause data races, the memory may be uninitialized, a=
+nd
+>>>>> /// so on.)
+>>>>
+>>>> I would simplify and drop "depending on the gfp flags and kernel..." a=
+nd
+>>>> just say that the pointer is only valid on the current thread.
+>>>
+>>> Sure, that works for me.
+>>>
+>>>> Also would it make sense to make the pointer type *mut [u8; PAGE_SIZE]=
+?
+>>>
+>>> I think it's a trade-off. That makes the code more error-prone, since
+>>> `pointer::add` now doesn't move by a number of bytes, but a number of
+>>> pages.
+>>
+>> Yeah. As long as you document that the pointer is valid for r/w with
+>> offsets in `0..PAGE_SIZE` bytes, leaving the type as is, is fine by me.
+>>
+>>
+>>>>> It's okay to map it multiple times from different threads.
+>>>>
+>>>> Do you still need to take care of data races?
+>>>> So would it be fine to execute this code on two threads in parallel?
+>>>>
+>>>>        static PAGE: Page =3D ...; // assume we have a page accessible =
+by both threads
+>>>>
+>>>>        PAGE.with_page_mapped(|ptr| {
+>>>>            loop {
+>>>>                unsafe { ptr.write(0) };
+>>>>                pr_info!("{}", unsafe { ptr.read() });
+>>>>            }
+>>>>        });
+>>>
+>>> Like I said, the usual pointer rules apply. Two threads can access it
+>>> in parallel as long as one of the following are satisfied:
+>>>
+>>> * Both accesses are reads.
+>>> * Both accesses are atomic.
+>>> * They access disjoint byte ranges.
+>>>
+>>> Other than the fact that it uses a thread-local mapping on machines
+>>> that can't address all of their memory at the same time, it's
+>>> completely normal memory. It's literally just a PAGE_SIZE-aligned
+>>> allocation of PAGE_SIZE bytes.
+>>
+>> Thanks for the info, what do you think of this?:
+>>
+>> /// It is up to the caller to use the provided raw pointer correctly. Th=
+e pointer is valid for reads
+>> /// and writes for `PAGE_SIZE` bytes and for the duration in which the c=
+losure is called. The
+>> /// pointer must only be used on the current thread. The caller must als=
+o ensure that no data races
+>> /// occur: when mapping the same page on two threads accesses to memory =
+with the same offset must be
+>> /// synchronized.
+>=20
 > I would much rather phrase it in terms of "the usual pointer" rules. I
 > mean, the memory could also be uninitialized if you don't pass
 > __GFP_ZERO when you create it, so you also have to make sure to follow
 > the rules about uninitialized memory. I don't want to be in the
 > business of listing all requirements for accessing memory here.
->
-> > >> If this is not allowed, I don't really like the API. As a raw versio=
-n it
-> > >> would be fine, but I think we should have a safer version (eg by tak=
-ing
-> > >> `&mut self`).
-> > >
-> > > I don't understand what you mean. It is the *most* raw API that `Page=
-`
-> > > has. I can make them private if you want me to. The API cannot take
-> > > `&mut self` because I need to be able to unsafely perform concurrent
-> > > writes to disjoint byte ranges.
-> >
-> > If you don't need these functions to be public, I think we should
-> > definitely make them private.
-> > Also we could add a `raw` suffix to the functions to make it clear that
-> > it is a primitive API. If you think that it is highly unlikely that we
-> > get a safer version, then I don't think there is value in adding the
-> > suffix.
->
+
+Sure you can add that part again, I just want to highlight that mapping
+the same page multiple times means that the caller has to synchronize
+accesses to those pointers even if the pointers do not have the same
+address value. That is not normally something you need to take care of,
+ie normally if `ptr1.addr() !=3D ptr2.addr()` then you can access them
+without synchronization.
+
+>>>> If this is not allowed, I don't really like the API. As a raw version =
+it
+>>>> would be fine, but I think we should have a safer version (eg by takin=
+g
+>>>> `&mut self`).
+>>>
+>>> I don't understand what you mean. It is the *most* raw API that `Page`
+>>> has. I can make them private if you want me to. The API cannot take
+>>> `&mut self` because I need to be able to unsafely perform concurrent
+>>> writes to disjoint byte ranges.
+>>
+>> If you don't need these functions to be public, I think we should
+>> definitely make them private.
+>> Also we could add a `raw` suffix to the functions to make it clear that
+>> it is a primitive API. If you think that it is highly unlikely that we
+>> get a safer version, then I don't think there is value in adding the
+>> suffix.
+>=20
 > The old code on the Rust branch didn't have these functions, but
 > that's because the old `read_raw` and `write_raw` methods did all of
 > these things directly in their implementation:
->
+>=20
 > * Map the memory so we can get a pointer.
 > * Get a pointer to a subslice (with bounds checks!)
 > * Do the actual read/write.
->
+>=20
 > I thought that doing this many things in a single function was
 > convoluted, so I decided to refactor the code by extracting the "get a
 > pointer to the page" logic into `with_page_mapped` and the "point to
 > subslice with bounds check" logic into `with_pointer_into_page`. That
 > way, each function has only one responsibility, instead of mixing
 > three responsibilities into one.
->
+
+I think that design decision is good.
+
 > So even if we get a safer version, I would not want to get rid of this
 > method. I don't want to inline its implementation into more
 > complicated functions. The safer method would call the raw method, and
 > then do whatever additional logic it wants to do on top of that.
 
-Adding to this: To me, we *do* already have safer versions of this
-method. Those are the read_raw and write_raw and fill_zero and
-copy_from_user_slice methods.
+I was not suggesting removing this method, rather renaming it to reflect
+that it is a primitive API that should be avoided if possible.
 
-Alice
+--=20
+Cheers,
+Benno
+
