@@ -1,184 +1,185 @@
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F100183CBD
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 13:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C9E84A38
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 13:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711028586; cv=none; b=RvNLAjqsgZsDcqy9tBAt9QLW5WRovUChc1ZF+JDi5bGPYvoxOpEpk9zdkkWaOA731fZW/X5MYrIdMpWBEJ5DEZERluNkDrWi9ikGjo1Qs9y8AwtjC7mlOf6bUy0gA2eZ83Fz0qRpkppU8Skd47lOtlE3PDAgTj6Q/24RZunFcMk=
+	t=1711029396; cv=none; b=iHropUN0Nt10e1bRpkdT4NPQZ6+3TPU78TqrU1anlBb/i6JB5B6Dc6RtGmzsbb/fZNLEBB5dathJHkRvUjFxiNuHwk+jhWPBQunidyuLJOo4ZiKETBtAM39bXyy91BtPqb+ecvZGaJiHbPBhfSbCbG4fErtyxkbm979LnE+1ib4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711028586; c=relaxed/simple;
-	bh=Glii2nHLfaBzdSZO2EKVirfpspWb+nv9s2Bi5rvMmyI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WMlJg9/5aYHwYWGvOelYRLTR5u/QlAFZELXV/dot2DeKmkRuOpAMpOXHxGTVErM8l/s2WaMt6cvdBr5lfCsov/Ck6r+2Yf6vHPDLGrNlXDXS+G7YIxJJjYH+kXkz90AvEnA9hzKkeo+tkoookE5pZ4L03w9/AawwA0viF2AUF9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GN4BfZDq; arc=none smtp.client-ip=209.85.217.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1711029396; c=relaxed/simple;
+	bh=qXTQzXE42jIqU86dY8JNyjmzbaiF6mqxNVesECoZkAk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tSLT8Gu7WTQ/ruZ8Owca4CViiykccGnvRquUJg09Tk0J9KR1IZky/aOUbma45c7AgU6WOOAeasj4tjAK8hXoms6lby4+8t9l/xeIliLJgT4kXh+sachHPo633sEctVlDgCrsVSItBTzMrHRn5/czbZoZVgY50i0QvmNRmt4jqK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CwO5JKKg; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GN4BfZDq"
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-47341f709c6so504306137.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 06:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711028584; x=1711633384; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2vO+ESJOepqx5jEo9fnNt4JlqMEXC9syS7LVjRc4fMA=;
-        b=GN4BfZDqlr1aZNG6VZB9igAvDFeCJ/mxOdKifLN0jqPHQJLtoKtqIu4cqzrCW+dhR3
-         +kOImPBgZm3bYlphGQsjx3sWigI710oCWWBfZAA4PcXkKN3bJWcfSgBTdxnqoMtUwkql
-         jPaLbYHmQzb87KmgmjNwRyhcUd0l0w/U/YVfAwbRg0GRFCwjXhw9FaqsmZ9UZ5NjJm40
-         x6oRFeKRxBN3Y3MwcfxVbDNpmKZTGQxI3GiuWR4sJnBIFcF8LEfIG2w/tSXPVXMLwc3d
-         BkkDQhITorI9JXR16+ENkjEcD0SDHrodmS8C/oqIzJCq9e/M/SZlcqismaQzejvIEIRP
-         F6LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711028584; x=1711633384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2vO+ESJOepqx5jEo9fnNt4JlqMEXC9syS7LVjRc4fMA=;
-        b=ZGwF5aIB4x+HHxD+xSW6HaZcvzIz4UlecqoSIoUuPxYqUXojft7Iqh7yFguPwvhPey
-         vqr6skZ9TW9B31n54UefwWKzWTIZWpuSTJcZnAho4Zcglcy5uyb8+cQ5h4//iaX7fdP6
-         LKAxVOaXLX65LT6/0SEO0BUjdkzRCvJmaJFboob4C6OpNhftZol2cqOsz196Ye5x8DIT
-         3AEHofKkY73IOcASNg6WGDeAUmcEUnXfBc1CJqBUUAgmYr7NP85zY08z3Ss53wHXp3yr
-         IbdsX0xoyegTR3U7d8Xip2yEUtFc3ex8jQ+pblwnwiFBNmAbqkNL19IwX7TJiv+WC4Mu
-         ERaA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8QlodB7nkj+BotVBeDKjsDZG1UdeZPfT7cFbkREpPhLkOE7sqXnGmV6fcI6ZO1B4JUuNGsAjN8c0y7FRcz4LteqM2SJ6E5oZdPMeoSNQ=
-X-Gm-Message-State: AOJu0Yx+3c6wp8wTkzhZ6YaA7zMQkrwhJ062A90oL1zdYnVeiAmxvXqf
-	gibgjWyEbp0zpfZdAlGmOssiJ3Qbcy/nv+BUS9sXrgxwnJu4rbGMzF1Pb/+ra9aIoXaf8jxXjme
-	Ng9XQPyD2aOUN2U00mbzvb+LaBt9eZDSPk0yb
-X-Google-Smtp-Source: AGHT+IFpF8BS4GfselaMHG+IryrYPtK57pw+o2yCIAHSrUdVDoy4xFzEjFVwLzlJP0+H8lVOFbL+cmq9d4teTS+XZZU=
-X-Received: by 2002:a05:6102:3588:b0:476:c74a:1544 with SMTP id
- h8-20020a056102358800b00476c74a1544mr934771vsu.6.1711028583745; Thu, 21 Mar
- 2024 06:43:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CwO5JKKg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711029385; x=1711288585;
+	bh=+DZVzwGA3DNwg1DykuRDpqsopt/Gmedd14krbU6mhdE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=CwO5JKKgXVn+JoGs/oxfHnLuOyuxpDFkQiKIHtgtT472HlueJhv0iSK590fc+QdMr
+	 4ZZvdyJfubOA8rbBKo2cbbYcbxRANSBUeL3kxYYKUMv1Rk/BeIsHh1JwT4ZstA6VRF
+	 czmYQzARvgK0c39fgn0Dfq27/7/VF+zelB8iskbVAoCPdmaNc7zJlgYCpl1S8hBUir
+	 /dq64fhB4jQaqrCMX+tH/8OPGLRcHV5qfhVLhl90sh9WXwfSFDWPARDMrXdFqb0CQR
+	 adGovePRsjpcc92pFMbrvFVfk7tKdAkzrmDzUX/9LAFBzAkYwRGSZE3gfvKg6rA/XI
+	 /kG4xT5Y5ceOQ==
+Date: Thu, 21 Mar 2024 13:56:11 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, arnd@arndb.de, arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
+Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+Message-ID: <e088f9a2-c0aa-41b6-993b-01adb5fba929@proton.me>
+In-Reply-To: <CAH5fLgj_vmhCV-Ptfbjbq=FZOuVSLOEsatELaPmz=BuDuemghw@mail.gmail.com>
+References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me> <20240320084630.2727355-1-aliceryhl@google.com> <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me> <CAH5fLgj_vmhCV-Ptfbjbq=FZOuVSLOEsatELaPmz=BuDuemghw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
- <20240320084630.2727355-1-aliceryhl@google.com> <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me>
-In-Reply-To: <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 21 Mar 2024 14:42:52 +0100
-Message-ID: <CAH5fLgj_vmhCV-Ptfbjbq=FZOuVSLOEsatELaPmz=BuDuemghw@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
-	arnd@arndb.de, arve@android.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, 
-	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
-	keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, 
-	wedsonaf@gmail.com, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 21, 2024 at 2:16=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 3/20/24 09:46, Alice Ryhl wrote:
-> >> On 3/11/24 11:47, Alice Ryhl wrote:
-> >>> +/// A pointer to a page that owns the page allocation.
-> >>> +///
-> >>> +/// # Invariants
-> >>> +///
-> >>> +/// The pointer points at a page, and has ownership over the page.
-> >>
-> >> Why not "`page` is valid"?
-> >> Do you mean by ownership of the page that `page` has ownership of the
-> >> allocation, or does that entail any other property/privilege?
-> >
-> > I can add "at a valid page".
->
-> I don't think that helps, what you need as an invariant is that the
-> pointer is valid.
+On 3/21/24 14:42, Alice Ryhl wrote:
+> On Thu, Mar 21, 2024 at 2:16=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 3/20/24 09:46, Alice Ryhl wrote:
+>>>> On 3/11/24 11:47, Alice Ryhl wrote:
+>>>>> +/// A pointer to a page that owns the page allocation.
+>>>>> +///
+>>>>> +/// # Invariants
+>>>>> +///
+>>>>> +/// The pointer points at a page, and has ownership over the page.
+>>>>
+>>>> Why not "`page` is valid"?
+>>>> Do you mean by ownership of the page that `page` has ownership of the
+>>>> allocation, or does that entail any other property/privilege?
+>>>
+>>> I can add "at a valid page".
+>>
+>> I don't think that helps, what you need as an invariant is that the
+>> pointer is valid.
+>=20
+> To me "points at a page" implies that the pointer is valid. I mean, if
+> it was dangling, it would not point at a page?
+>=20
+> But I can reword to something else if you have a preferred phrasing.
 
-To me "points at a page" implies that the pointer is valid. I mean, if
-it was dangling, it would not point at a page?
+I would just say "`page` is valid" or "`self.page` is valid".
 
-But I can reword to something else if you have a preferred phrasing.
-
-> >>> +    /// Runs a piece of code with this page mapped to an address.
-> >>> +    ///
-> >>> +    /// The page is unmapped when this call returns.
-> >>> +    ///
-> >>> +    /// It is up to the caller to use the provided raw pointer corre=
+>>>>> +    /// Runs a piece of code with this page mapped to an address.
+>>>>> +    ///
+>>>>> +    /// The page is unmapped when this call returns.
+>>>>> +    ///
+>>>>> +    /// It is up to the caller to use the provided raw pointer corre=
 ctly.
-> >>
-> >> This says nothing about what 'correctly' means. What I gathered from t=
+>>>>
+>>>> This says nothing about what 'correctly' means. What I gathered from t=
 he
-> >> implementation is that the supplied pointer is valid for the execution
-> >> of `f` for `PAGE_SIZE` bytes.
-> >> What other things are you allowed to rely upon?
-> >>
-> >> Is it really OK for this function to be called from multiple threads?
-> >> Could that not result in the same page being mapped multiple times? If
-> >> that is fine, what about potential data races when two threads write t=
+>>>> implementation is that the supplied pointer is valid for the execution
+>>>> of `f` for `PAGE_SIZE` bytes.
+>>>> What other things are you allowed to rely upon?
+>>>>
+>>>> Is it really OK for this function to be called from multiple threads?
+>>>> Could that not result in the same page being mapped multiple times? If
+>>>> that is fine, what about potential data races when two threads write t=
 o
-> >> the pointer given to `f`?
-> >>
-> >>> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) =
+>>>> the pointer given to `f`?
+>>>>
+>>>>> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) =
 -> T {
-> >
-> > I will say:
-> >
-> > /// It is up to the caller to use the provided raw pointer correctly.
-> > /// The pointer is valid for `PAGE_SIZE` bytes and for the duration in
-> > /// which the closure is called. Depending on the gfp flags and kernel
-> > /// configuration, the pointer may only be mapped on the current thread=
+>>>
+>>> I will say:
+>>>
+>>> /// It is up to the caller to use the provided raw pointer correctly.
+>>> /// The pointer is valid for `PAGE_SIZE` bytes and for the duration in
+>>> /// which the closure is called. Depending on the gfp flags and kernel
+>>> /// configuration, the pointer may only be mapped on the current thread=
 ,
-> > /// and in those cases, dereferencing it on other threads is UB. Other
-> > /// than that, the usual rules for dereferencing a raw pointer apply.
-> > /// (E.g., don't cause data races, the memory may be uninitialized, and
-> > /// so on.)
->
-> I would simplify and drop "depending on the gfp flags and kernel..." and
-> just say that the pointer is only valid on the current thread.
+>>> /// and in those cases, dereferencing it on other threads is UB. Other
+>>> /// than that, the usual rules for dereferencing a raw pointer apply.
+>>> /// (E.g., don't cause data races, the memory may be uninitialized, and
+>>> /// so on.)
+>>
+>> I would simplify and drop "depending on the gfp flags and kernel..." and
+>> just say that the pointer is only valid on the current thread.
+>=20
+> Sure, that works for me.
+>=20
+>> Also would it make sense to make the pointer type *mut [u8; PAGE_SIZE]?
+>=20
+> I think it's a trade-off. That makes the code more error-prone, since
+> `pointer::add` now doesn't move by a number of bytes, but a number of
+> pages.
 
-Sure, that works for me.
+Yeah. As long as you document that the pointer is valid for r/w with
+offsets in `0..PAGE_SIZE` bytes, leaving the type as is, is fine by me.
 
-> Also would it make sense to make the pointer type *mut [u8; PAGE_SIZE]?
 
-I think it's a trade-off. That makes the code more error-prone, since
-`pointer::add` now doesn't move by a number of bytes, but a number of
-pages.
+>>> It's okay to map it multiple times from different threads.
+>>
+>> Do you still need to take care of data races?
+>> So would it be fine to execute this code on two threads in parallel?
+>>
+>>       static PAGE: Page =3D ...; // assume we have a page accessible by =
+both threads
+>>
+>>       PAGE.with_page_mapped(|ptr| {
+>>           loop {
+>>               unsafe { ptr.write(0) };
+>>               pr_info!("{}", unsafe { ptr.read() });
+>>           }
+>>       });
+>=20
+> Like I said, the usual pointer rules apply. Two threads can access it
+> in parallel as long as one of the following are satisfied:
+>=20
+> * Both accesses are reads.
+> * Both accesses are atomic.
+> * They access disjoint byte ranges.
+>=20
+> Other than the fact that it uses a thread-local mapping on machines
+> that can't address all of their memory at the same time, it's
+> completely normal memory. It's literally just a PAGE_SIZE-aligned
+> allocation of PAGE_SIZE bytes.
 
-> > It's okay to map it multiple times from different threads.
->
-> Do you still need to take care of data races?
-> So would it be fine to execute this code on two threads in parallel?
->
->      static PAGE: Page =3D ...; // assume we have a page accessible by bo=
-th threads
->
->      PAGE.with_page_mapped(|ptr| {
->          loop {
->              unsafe { ptr.write(0) };
->              pr_info!("{}", unsafe { ptr.read() });
->          }
->      });
+Thanks for the info, what do you think of this?:
 
-Like I said, the usual pointer rules apply. Two threads can access it
-in parallel as long as one of the following are satisfied:
+/// It is up to the caller to use the provided raw pointer correctly. The p=
+ointer is valid for reads
+/// and writes for `PAGE_SIZE` bytes and for the duration in which the clos=
+ure is called. The
+/// pointer must only be used on the current thread. The caller must also e=
+nsure that no data races
+/// occur: when mapping the same page on two threads accesses to memory wit=
+h the same offset must be
+/// synchronized.
 
-* Both accesses are reads.
-* Both accesses are atomic.
-* They access disjoint byte ranges.
+>=20
+>> If this is not allowed, I don't really like the API. As a raw version it
+>> would be fine, but I think we should have a safer version (eg by taking
+>> `&mut self`).
+>=20
+> I don't understand what you mean. It is the *most* raw API that `Page`
+> has. I can make them private if you want me to. The API cannot take
+> `&mut self` because I need to be able to unsafely perform concurrent
+> writes to disjoint byte ranges.
 
-Other than the fact that it uses a thread-local mapping on machines
-that can't address all of their memory at the same time, it's
-completely normal memory. It's literally just a PAGE_SIZE-aligned
-allocation of PAGE_SIZE bytes.
+If you don't need these functions to be public, I think we should
+definitely make them private.
+Also we could add a `raw` suffix to the functions to make it clear that
+it is a primitive API. If you think that it is highly unlikely that we
+get a safer version, then I don't think there is value in adding the
+suffix.
 
-> If this is not allowed, I don't really like the API. As a raw version it
-> would be fine, but I think we should have a safer version (eg by taking
-> `&mut self`).
+--=20
+Cheers,
+Benno
 
-I don't understand what you mean. It is the *most* raw API that `Page`
-has. I can make them private if you want me to. The API cannot take
-`&mut self` because I need to be able to unsafely perform concurrent
-writes to disjoint byte ranges.
-
-Alice
