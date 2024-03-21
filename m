@@ -1,228 +1,158 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mr85p00im-ztdg06021701.me.com (mr85p00im-ztdg06021701.me.com [17.58.23.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01914F214;
-	Wed, 20 Mar 2024 18:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426F46FBF
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 04:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710959994; cv=none; b=PyCxHCSWDy0BGa2VEIjTV+88YoMj+URjARyaWAWr6aK2LGiVE+Aeg9TIiLhcS37u/RtZDY8oKSWpoO7iiPoyAuUBtEcCz9qrIx/uIuZeYx+LtmEnCde031l0+RxxPnNRI1V/AnhqJdIlxENCXGMn/hou3QR+CcG+p9Scs7ZnOeQ=
+	t=1710996838; cv=none; b=iRGXixIjGcyqpR8uX4qQaZoCUCz6HUI5FXt5Q+r/hIBU+cRehfj3ynuGXq8kgk12HitdcnkKwRr8P6F/J9EhVeY65lBr3glOVoUrytu5cUSrJX7MO1AAkNUmSxRepPegeoGitaBJL2hBZkF+v0mEq2LESdxlhFYkW3l/V3bEBgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710959994; c=relaxed/simple;
-	bh=S/sytZTQ/V3fEb3RY0qv+twoobr9IaTxQMa2BQaJYzQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kR87SUe8BFHuxu8IeZ1h1n9c1iAHqqsaYU32d3Xa7Bjb8Ghhb1gED4ylLXO8q9yhGibHNEpJEVIuMXcEbfK9dPVaau1EJItzri11rUv+GX3zlLMU9IBXi49wy49VWsHL3VaYfzljACjMReSHLbjKnf52u7nk0jQi3UaFD13zjaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H5TIoIGo; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710996838; c=relaxed/simple;
+	bh=kmIKewn0OS9jBtK0VejszCjBQ3tt+jG0o6bU6vJqHAY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=qHQd80jWrbngWl2cxUkAfDcpQkK9O50K7lDnYe3gOlvQa3o0UKevasrZlOnqqX58C0E4OeZZe5I3hdS0Cqq+ZNwlbLArMmIpQvHWkVATWRKCKkdSGKtqqwU8cB3yRUxYGIDklWoVlrQ6Sq3UcndSiETEgOrDj/dkv1K3LK8XBJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=WYBAEEao; arc=none smtp.client-ip=17.58.23.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H5TIoIGo"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-430a7497700so1302031cf.1;
-        Wed, 20 Mar 2024 11:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710959992; x=1711564792; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xWRvU83WE/XxBo1v/F0X5t/KDOzdzaHYVuEHQEDHtYc=;
-        b=H5TIoIGoevzaoQUUJ+xBevuzfXysfgwcWqbsiNERd84oyEwpTiggF3ODIjjfSnku9x
-         zeLO1EFpufEHDvUMe0rrcR/EzbhdJa0ELd2rdHdi93/2u8yzsFcEySyCh3kEqEElq+uh
-         wbk7JPlkNnGfiOfIb3ugNeEIeSTaBVwPGf6O+fb3WSwQFyghxs1x8MFedogloiygajfW
-         XjTSpKW0+IULbjPtWXk344XscuCrOLpa/qBM7xmWpuQflye1A+EMsFeQ5fA71noPeCBA
-         tBBaBKzgP2HVhjfRJK4kD7nI6i7dMH2s8hrDfk9tMrgrifCRsREZISXQP8NKGlpYY99z
-         43mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710959992; x=1711564792;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xWRvU83WE/XxBo1v/F0X5t/KDOzdzaHYVuEHQEDHtYc=;
-        b=HykhJh5t95OQ2GZ7ERhhXkYTiH29PXEXz2sNV0/Rk5a6o7huCzWsUCRumaqgpRC41M
-         caQb0yWcXha+cop0aTAADFD94YY6VfD2WPQ65EHHO1AM7pDI1qPpgoeOv+hvIL03TQBt
-         43RKLlp6mZxFt8S1Htmetf8TscKxuEjUwYaCO3PzGXS+2cQfdD8m3Ie6EnvisuJIuJCT
-         yD0I9NctKnFYQsw2R57MS7npSPoQyqNJAZ81g65gZccsmddnoIJcwburKdZwH6DfdnY4
-         qTV7e563+yh/0Bby8GxQFTp20S41S7KFZySSeDNoeBh1+m9omoxNj6YE4PhKWo+QyMRk
-         Kztg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6CikpnL5frIs1ZCzTeqnfiwMee0LmZcZx889YNPY5rX9stALf+mYvAJKKupykTyy60STjbp7ExzDlDFKNxUZZT43uwoNN8581VCSGJsnUxualKhJJ5R9q/XeEgvCKcxQYTgDWa8024SV4E+s=
-X-Gm-Message-State: AOJu0YzsamEDoGKCfVAZACsGcA/ol+c6BZhsLfdY9g2hTsLWp3niNX8b
-	4FrdH8xrnyKJiwKgonWo4fMw17D/QkMt7mvIEz14VhPTXyKiVfli
-X-Google-Smtp-Source: AGHT+IFS9uSNLSBh1XOFh0ALtqPOKyEM9BMZXRgz5Y/IEkIql9atTB8xsItHCTfp9JxRAMGj2zrWjg==
-X-Received: by 2002:a05:622a:1804:b0:430:ba7a:fe7b with SMTP id t4-20020a05622a180400b00430ba7afe7bmr14742759qtc.44.1710959991779;
-        Wed, 20 Mar 2024 11:39:51 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id fb19-20020a05622a481300b004309cf16815sm4019519qtb.39.2024.03.20.11.39.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 11:39:51 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id A2C461200066;
-	Wed, 20 Mar 2024 14:39:50 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Wed, 20 Mar 2024 14:39:50 -0400
-X-ME-Sender: <xms:dS37ZTNLe09Fb7QwOs_4Cujp7ENOGs-njgdpGennczPhcTwd-YgdVA>
-    <xme:dS37Zd_yCHIJFuLvi_TKJu0-dPELv3Bf73eEmduVhXvuhQqRo3maMfitV-R9wWc7U
-    K3GCxI41HRCDwCd8g>
-X-ME-Received: <xmr:dS37ZSQb-NYnQ1yYjHx8GtzVqhXmtY62C6woSsHouHuE-My41hy_g5xYvGimWg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrleeggdduudegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedvveevleevhfekhefftdek
-    ieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
-    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
-    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:di37ZXtSGfJ4RJiEyvT6nQBMtYNjN417sebdNcahW2VJ27hGoq8NOQ>
-    <xmx:di37ZbdkisSEkTyCzfdzGZ3luAiBYSGNElPGLy-tvk3l1XEbmSY17g>
-    <xmx:di37ZT3oAxGEE_yQp_rk9e19dg15LESFaPP63oZOqs8wlqSPmjq1Sw>
-    <xmx:di37ZX9BKjIVQXbhRVtudAZ7rGPrcTvVNMWRjmCPbiox5G5ke6bugQ>
-    <xmx:di37ZemxcpF3Eo5mHsgVJRWuSxWUfQnKBdLyruG4jkKOjg6lIA-c8yOIHF4>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 20 Mar 2024 14:39:49 -0400 (EDT)
-Date: Wed, 20 Mar 2024 11:39:33 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v3 1/4] rust: uaccess: add userspace pointers
-Message-ID: <ZfstZZbagFLj7dqq@boqun-archlinux>
-References: <20240311-alice-mm-v3-0-cdf7b3a2049c@google.com>
- <20240311-alice-mm-v3-1-cdf7b3a2049c@google.com>
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="WYBAEEao"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+	t=1710996836; bh=+3hJM/vrryWqnRrbEBildsXcg7SPWAKSHMy2nbEpucI=;
+	h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
+	b=WYBAEEao7veau/h+dkj5VkV+mLzEJu8UybYGkwgD5TSoAKhp7sPAkR5QvtLMl2wv7
+	 45UIQZLM0/N2zfO5xBMX7gbZlT+g1EGm02IaGW7Hte6z5KH39+VlgiGse+P+HkSxTb
+	 2F2XUFRJEyCT19/u+3Q9tCGGxLCBhq9sKLhk3+E/eQ4PQOmplKFxRtw/RN2tBIzMlw
+	 Zao7gbEEnHisQC8jSL7+7DWRWjM09yvapJP+EtH0kZSUysrRT4tHgVfwxCTmtS+Bpc
+	 nOBPCxD1SwaScoJWWq5XUFLYJsig5Cnb7VjnwfVKLyMlPbE57gdb5vvdHo9BooaRBN
+	 6NQSM8bdiURbw==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-ztdg06021701.me.com (Postfix) with ESMTPSA id A1F652633222;
+	Thu, 21 Mar 2024 04:53:54 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311-alice-mm-v3-1-cdf7b3a2049c@google.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+From: Laine Taffin Altman <alexanderaltman@me.com>
+In-Reply-To: <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me>
+Date: Wed, 20 Mar 2024 21:53:42 -0700
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ stable@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ lkml <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
+References: <20240313230713.987124-1-benno.lossin@proton.me>
+ <Zfh5DYkxNAm-mY_9@boqun-archlinux>
+ <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
+ <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home>
+ <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
+ <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me>
+To: Benno Lossin <benno.lossin@proton.me>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
+X-Proofpoint-ORIG-GUID: 8t8BjbHkZ_z8T1oGI4ChJjWvYynAMZf7
+X-Proofpoint-GUID: 8t8BjbHkZ_z8T1oGI4ChJjWvYynAMZf7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-21_02,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 bulkscore=0
+ clxscore=1015 mlxscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2403210031
 
-On Mon, Mar 11, 2024 at 10:47:13AM +0000, Alice Ryhl wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> 
-[...]
-> +/// # Examples
-> +///
-> +/// Takes a region of userspace memory from the current process, and modify it
-> +/// by adding one to every byte in the region.
-> +///
-> +/// ```no_run
-> +/// use alloc::vec::Vec;
-> +/// use core::ffi::c_void;
-> +/// use kernel::error::Result;
-> +/// use kernel::uaccess::UserSlice;
-> +///
-> +/// pub fn bytes_add_one(uptr: *mut c_void, len: usize) -> Result<()> {
+On Mar 19, 2024, at 3:34=E2=80=AFAM, Benno Lossin =
+<benno.lossin@proton.me> wrote:
+> On 3/19/24 06:28, Laine Taffin Altman wrote:
+>> On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng =
+<boqun.feng@gmail.com> wrote:
+>>> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
+>>>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng =
+<boqun.feng@gmail.com> wrote:
+>>>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
+>>>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>>>=20
+>>>>>> It is not enough for a type to be a ZST to guarantee that zeroed =
+memory
+>>>>>> is a valid value for it; it must also be inhabited. Creating a =
+value of
+>>>>>> an uninhabited type, ZST or no, is immediate UB.
+>>>>>> Thus remove the implementation of `Zeroable` for `Infallible`, =
+since
+>>>>>> that type is not inhabited.
+>>>>>>=20
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
+`init::zeroed` function")
+>>>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+>>>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>>>>=20
+>>>>> I think either in the commit log or in the code comment, there =
+better be
+>>>>> a link or explanation on "(un)inhabited type". The rest looks good =
+to
+>>>>> me.
+>>>>=20
+>>>> Would the following be okay for that purpose?
+>>>>=20
+>>>> A type is inhabited if at least one valid value of that type =
+exists; a
+>>>> type is uninhabited if no valid values of that type exist.  The =
+terms
+>>>> "inhabited" and "uninhabited" in this sense originate in type =
+theory,
+>>>> a branch of mathematics.
+>>>>=20
+>>>> In Rust, producing an invalid value of any type is immediate =
+undefined
+>>>> behavior (UB); this includes via zeroing memory.  Therefore, since =
+an
+>>>> uninhabited type has no valid values, producing any values at all =
+for
+>>>> it is UB.
+>>>>=20
+>>>> The Rust standard library type `core::convert::Infallible` is
+>>>> uninhabited, by virtue of having been declared as an enum with no
+>>>> cases, which always produces uninhabited types in Rust.  Thus, =
+remove
+>>>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
+>>>> the UB.
+>>>>=20
+>>>=20
+>>> Yeah, this works for me. Thanks!
+>>=20
+>> Great!  Should it be re-sent or can the new wording be incorporated =
+upon merge?
+>=20
+> I can re-send it for you again, or do you want to send it yourself?
+> I think it is also a good idea to add a link to [1] in the code, since
+> the above explanation is rather long and fits better in the commit
+> message.
+>=20
 
-I hit the following compile error when trying to run kunit test:
+I=E2=80=99ll try and do it myself; thank you for sending the first round =
+for me and illustrating procedures!  What =
+Reviewed-By=E2=80=99s/Signed-Off-By's should I retain?
 
-	ERROR:root:error: unreachable `pub` item
-	    --> rust/doctests_kernel_generated.rs:4167:1
-	     |
-	4167 | pub fn bytes_add_one(uptr: *mut c_void, len: usize) -> Result<()> {
-	     | ---^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	     | |
-	     | help: consider restricting its visibility: `pub(crate)`
-	     |
-	     = help: or consider exporting it for use by other crates
-	     = note: requested on the command line with `-D unreachable-pub`
+Thanks,
+Laine
 
-	error: unreachable `pub` item
-	    --> rust/doctests_kernel_generated.rs:4243:1
-	     |
-	4243 | pub fn get_bytes_if_valid(uptr: *mut c_void, len: usize) -> Result<Vec<u8>> {
-	     | ---^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	     | |
-	     | help: consider restricting its visibility: `pub(crate)`
-	     |
-	     = help: or consider exporting it for use by other crates
+> --=20
+> Cheers,
+> Benno
+>=20
+> [1]: https://doc.rust-lang.org/nomicon/exotic-sizes.html#empty-types
 
-	error: aborting due to 2 previous errors
 
-, which should be fixed if we make the function in the example not
-`pub`.
-
-> +///     let (read, mut write) = UserSlice::new(uptr, len).reader_writer();
-> +///
-> +///     let mut buf = Vec::new();
-> +///     read.read_all(&mut buf)?;
-> +///
-> +///     for b in &mut buf {
-> +///         *b = b.wrapping_add(1);
-> +///     }
-> +///
-> +///     write.write_slice(&buf)?;
-> +///     Ok(())
-> +/// }
-> +/// ```
-> +///
-> +/// Example illustrating a TOCTOU (time-of-check to time-of-use) bug.
-> +///
-> +/// ```no_run
-> +/// use alloc::vec::Vec;
-> +/// use core::ffi::c_void;
-> +/// use kernel::error::{code::EINVAL, Result};
-> +/// use kernel::uaccess::UserSlice;
-> +///
-> +/// /// Returns whether the data in this region is valid.
-> +/// fn is_valid(uptr: *mut c_void, len: usize) -> Result<bool> {
-> +///     let read = UserSlice::new(uptr, len).reader();
-> +///
-> +///     let mut buf = Vec::new();
-> +///     read.read_all(&mut buf)?;
-> +///
-> +///     todo!()
-> +/// }
-> +///
-> +/// /// Returns the bytes behind this user pointer if they are valid.
-> +/// pub fn get_bytes_if_valid(uptr: *mut c_void, len: usize) -> Result<Vec<u8>> {
-
-Ditto here.
-
-> +///     if !is_valid(uptr, len)? {
-> +///         return Err(EINVAL);
-> +///     }
-> +///
-> +///     let read = UserSlice::new(uptr, len).reader();
-> +///
-> +///     let mut buf = Vec::new();
-> +///     read.read_all(&mut buf)?;
-> +///
-> +///     // THIS IS A BUG! The bytes could have changed since we checked them.
-> +///     //
-> +///     // To avoid this kind of bug, don't call `UserSlice::new` multiple
-> +///     // times with the same address.
-> +///     Ok(buf)
-> +/// }
-> +/// ```
-> +///
-> +/// [`std::io`]: https://doc.rust-lang.org/std/io/index.html
-> +/// [`clone_reader`]: UserSliceReader::clone_reader
-> +pub struct UserSlice {
-> +    ptr: *mut c_void,
-> +    length: usize,
-> +}
-> +
-
-Regards,
-Boqun
-
-[...]
