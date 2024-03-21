@@ -1,250 +1,135 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8644783CD9
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 13:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2A084038
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 13:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711026987; cv=none; b=F6mMIZprMmXm51aWbbbpAaZa13SjwMHanGWyTwm+Er/NWaRgFD0dIv2AFHEstDsgkf5zXVte4deD0hGIMPxMEnG24q7VthNFps+xfScWaBTKLqIRCZPPhTfd65j65bwAe7epyO8J0G9ZAWhlb1JRb5C53dnQfmfiEDO4XCUM1a8=
+	t=1711027709; cv=none; b=AycfP+rmpBeTVMzUE84AE80FIqVgAhk3n2A3RCw87IrLxeIeJ/+wInhNAfGCbJm/Pr9KFUXugdLVxEBKmBJmH30Hezbx6xP+pa1Yzomsz2PuXhHtwMxKjn7Gq/kIQErj59cC+HHvVbl/S0L46LSVUD9yKseTcJOQAFSgnz4o2gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711026987; c=relaxed/simple;
-	bh=Nk9b5oqwgKE06yFCMJlcUgDcBJvztR/AqGsXmLiNX+E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=goq9B9ciSVigxOVUufaow87f/0lHFyNCHPeQVETLbjNgpUYMzzkvH3H/iZF/ZepxX/s3WDSr4Y0/ENvNXBTk59cLJfnWSvMiATEgwcPc5UMv/QcFXlEMqJyROUPg44tCnYlOrP5VOfWuqznDwD5Q/8hkmVFU4SzPec2zKdFyh8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IWFqDMYP; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711027709; c=relaxed/simple;
+	bh=Fq8KLFQJSw1OvZB7PQpHngU+2ITGmNUv3F3KHyGJK8M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZHQBHtbPPXFGH7GHJkukrZlrxMtwZvJ1AAcJCHmI8mufyIdI25v7fu3rgDXYNIg958uJwD03VUzSwHEHyHzSD0u6UoWFNO2BrBQyIb1zgGYcdcxSY5KEjIWdg0SdO4QHFHYQWgv132CFQH6CFbm9jmIeHYt7LLZf/D2RcPN3dMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S7Bh47gm; arc=none smtp.client-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IWFqDMYP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711026975; x=1711286175;
-	bh=0/ojodZuZWU9umhLIhWLYR7XmIcfv7rcwjbeCgN2brI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=IWFqDMYPUsqeZgQ45aFrjE6/9xYtmwZFoQ9z4oTPMSbsr2ZeDE4Dj/4L3pPLQ6yIc
-	 DQbn7Q//kH4L8bqOOZScCu09j3nawzYCm8I3obNH1gjVi2JPF6HLC6wCCb4RM9B0U6
-	 K9ZB15K5Z6YXMXo7P49PIdoqer+fZqAu/+6HXYQmzu1sFY0AKlQE+43Ap0snIcszG0
-	 nfFaWVWe7xYJQcmSWrcFUmy/evESXDYDBxmAXxnP4LhZOqaVv3DlGvT1+cgYhoqcD6
-	 juCz+O2Hv9mM1MXbITepHM1DpoIOScpW9kk3QCC/DyYWusCB+HXUYePpdSySvhX94z
-	 BwayFaWfAl7Qg==
-Date: Thu, 21 Mar 2024 13:15:58 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, arnd@arndb.de, arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
-Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
-Message-ID: <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me>
-In-Reply-To: <20240320084630.2727355-1-aliceryhl@google.com>
-References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me> <20240320084630.2727355-1-aliceryhl@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S7Bh47gm"
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7e0425e5aa8so465617241.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 06:28:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1711027706; x=1711632506; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TWH+6eW0sGOMBcqq3GR/+5MQ85rnPGezuZLizVnSsrs=;
+        b=S7Bh47gmFs7ZNPFCC1HtGc//w3tte6KUhETVhV1mXSi+p6SM7wAeHXGOm4s+iUmYZQ
+         E0qfXt4LDO1ZHd3tkQb27pltMOxjJLtBgsbhgXRvm3OeXDZqlhf2/vfTkzfqEJ8kFozL
+         KOpBVxR2K8n1G48KLUuWzEqa5lJKfFtkZ1FeM359E7orsTsxBTUwbHtBIG3frbL+QD83
+         58FusM2sYlqZ+vbK7ShNAc9bzAvx4JA3+u5TR6ozPm7BadfQhsfm/z41qcvysxRQ0jpb
+         R5aTZbRrDFyPipWnyibVV/G/a8En3MGb53+y4xC+Gl/KqhRuIyZ7SLIx1Tq9/0oVfrNA
+         52Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711027706; x=1711632506;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TWH+6eW0sGOMBcqq3GR/+5MQ85rnPGezuZLizVnSsrs=;
+        b=De0E6NjuXu0JHUKtdP7f0yAiQErRRYgoMrvWWdLxtmJ1Q3SEl+ILSFHv4HPqO2XVrZ
+         AyXB22MiHeTneGzagaIbKBrkhx6GYno+75o9A9EtbG6gl3p4YFjrNSWZzHUmLeJz4VOf
+         hBCT4MPIupGD2FfDb6MkUPaQ8TLKZOfbAu7dnjcBTHasj+UYPLogotgDFzQfSuaEEyCT
+         eQogozOMuqXHSMnC5d/u1pHEoy+xvcBqZTNKFyqwiGt1aITo8pPP2QhlXiZobVlATEET
+         d6BfCo3JBXaqn2p9I/SZuXbR2y+dhvGAqi4lzvLcLKTEvID8oGczgkDIaGZ6aEzZjX5L
+         QinA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUcJrU3TxfC1toYUb7k4w5wMQ6O9UDxpo2pPVaVIOW+SdCIwQKfcLhQJ06KXuSpGQwzbewYNM4RZE+BhKI0Ky80w/XeHRDNvEFB/OQZfc=
+X-Gm-Message-State: AOJu0Ywe3/Nx2wVWXsgN8yGqaUAOJThaC0LzsF46ff1vpP6WnC0sry2S
+	deyYWUA26NpWY769YVfOfBwi416VZDKNKa0Bp1qt+etv/KvHZ2zWRYVohpInfPULDYWTx7Mz8BG
+	NRbTj3997HkeHaTNZTZocDE55FHgWcpYbqfRV
+X-Google-Smtp-Source: AGHT+IE+j+Qli1XePxAilxL5R4FQhkJSRHtQ+wFvcX+d7554bq37l+EQBnd62M0HSJSkW5gjbHPTrWC84iG4Aiv+Geg=
+X-Received: by 2002:a05:6122:20a2:b0:4d3:36b9:2c26 with SMTP id
+ i34-20020a05612220a200b004d336b92c26mr20776441vkd.14.1711027706376; Thu, 21
+ Mar 2024 06:28:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240209-alice-file-v5-0-a37886783025@google.com>
+ <20240209-alice-file-v5-8-a37886783025@google.com> <20240320-massieren-lackschaden-9b30825babec@brauner>
+In-Reply-To: <20240320-massieren-lackschaden-9b30825babec@brauner>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 21 Mar 2024 14:28:15 +0100
+Message-ID: <CAH5fLgjeet1nhycCqdaKE9CSY02XW85jn302zNEjJNQaJ1czGQ@mail.gmail.com>
+Subject: Re: [PATCH v5 8/9] rust: file: add `DeferredFdCloser`
+To: Christian Brauner <brauner@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 3/20/24 09:46, Alice Ryhl wrote:
->> On 3/11/24 11:47, Alice Ryhl wrote:
->>> +/// A pointer to a page that owns the page allocation.
->>> +///
->>> +/// # Invariants
->>> +///
->>> +/// The pointer points at a page, and has ownership over the page.
->>
->> Why not "`page` is valid"?
->> Do you mean by ownership of the page that `page` has ownership of the
->> allocation, or does that entail any other property/privilege?
->=20
-> I can add "at a valid page".
+On Wed, Mar 20, 2024 at 3:22=E2=80=AFPM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+>
+> On Fri, Feb 09, 2024 at 11:18:21AM +0000, Alice Ryhl wrote:
+> >
+> > +/// Helper used for closing file descriptors in a way that is safe eve=
+n if the file is currently
+> > +/// held using `fdget`.
+> > +///
+> > +/// Additional motivation can be found in commit 80cd795630d6 ("binder=
+: fix use-after-free due to
+> > +/// ksys_close() during fdget()") and in the comments on `binder_do_fd=
+_close`.
+> > +pub struct DeferredFdCloser {
+> > +    inner: Box<DeferredFdCloserInner>,
+> > +}
+> > +
+> > +/// SAFETY: This just holds an allocation with no real content, so the=
+re's no safety issue with
+> > +/// moving it across threads.
+> > +unsafe impl Send for DeferredFdCloser {}
+> > +unsafe impl Sync for DeferredFdCloser {}
+> > +
+> > +/// # Invariants
+> > +///
+> > +/// If the `file` pointer is non-null, then it points at a `struct fil=
+e` and owns a refcount to
+> > +/// that file.
+> > +#[repr(C)]
+> > +struct DeferredFdCloserInner {
+> > +    twork: mem::MaybeUninit<bindings::callback_head>,
+> > +    file: *mut bindings::file,
+> > +}
+> > +
+> > +impl DeferredFdCloser {
+>
+> So the explicitly deferred close is due to how binder works so it's not
+> much of a general purpose interface as I don't recall having other
+> codepaths with similar problems. So this should live in the binder
+> specific rust code imo.
 
-I don't think that helps, what you need as an invariant is that the
-pointer is valid.
+Hmm. Are there really no other ioctls that call ksys_close on a
+user-provided fd?
 
-> By ownership I mean that we are allowed to pass it to __free_page and
-> that until we do, we can access the page. If you want me to reword this,
-> please tell me what you want it to say.
+As far as I can tell, this kind of deferred API is the only way for us
+to provide a fully safe Rust api for closing an fd. Directly calling
+ksys_close must unsafely assert that the fd does not have an active
+fdget call. So it makes sense to me as an API that others might want
+to use.
 
-I see, no need to change it.
+Still I can move it elsewhere if necessary.
 
->>> +// SAFETY: It is safe to transfer page allocations between threads.
->>
->> Why?
->>
->>> +unsafe impl Send for Page {}
->=20
-> How about:
->=20
-> // SAFETY: Pages have no logic that relies on them staying on a given
-> // thread, so moving them across threads is safe.
-
-Sounds good.
-
->>> +// SAFETY: As long as the safety requirements for `&self` methods on t=
-his type
->>> +// are followed, there is no problem with calling them in parallel.
->>
->> Why?
->>
->>> +unsafe impl Sync for Page {}
->=20
-> How about:
->=20
-> // SAFETY: Pages have no logic that relies on them not being accessed
-> // concurrently, so accessing them concurrently is safe.
-
-Sounds good.
-
->>> +        // SAFETY: The specified order is zero and we want one page.
->>
->> This doesn't explain why it is sound to call the function. I expect that
->> it is always sound to call this function with valid arguments.
->>
->>> +        let page =3D unsafe { bindings::alloc_pages(gfp_flags, 0) };
->=20
-> How about:
->=20
-> // SAFETY: Depending on the value of `gfp_flags`, this call may sleep.
-> // Other than that, it is always safe to call this method.
-
-Sounds good.
-
->>> +        // INVARIANT: We checked that the allocation succeeded.
->>
->> Doesn't mention ownership.
->>
->>> +        Ok(Self { page })
->=20
-> How about:
->=20
-> // INVARIANT: We just successfully allocated a page, so we now have
-> // ownership of the newly allocated page. We transfer that ownership to
-> // the new `Page` object.
-
-Sounds good.
-
->>> +    /// Runs a piece of code with this page mapped to an address.
->>> +    ///
->>> +    /// The page is unmapped when this call returns.
->>> +    ///
->>> +    /// It is up to the caller to use the provided raw pointer correct=
-ly.
->>
->> This says nothing about what 'correctly' means. What I gathered from the
->> implementation is that the supplied pointer is valid for the execution
->> of `f` for `PAGE_SIZE` bytes.
->> What other things are you allowed to rely upon?
->>
->> Is it really OK for this function to be called from multiple threads?
->> Could that not result in the same page being mapped multiple times? If
->> that is fine, what about potential data races when two threads write to
->> the pointer given to `f`?
->>
->>> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) ->=
- T {
->=20
-> I will say:
->=20
-> /// It is up to the caller to use the provided raw pointer correctly.
-> /// The pointer is valid for `PAGE_SIZE` bytes and for the duration in
-> /// which the closure is called. Depending on the gfp flags and kernel
-> /// configuration, the pointer may only be mapped on the current thread,
-> /// and in those cases, dereferencing it on other threads is UB. Other
-> /// than that, the usual rules for dereferencing a raw pointer apply.
-> /// (E.g., don't cause data races, the memory may be uninitialized, and
-> /// so on.)
-
-I would simplify and drop "depending on the gfp flags and kernel..." and
-just say that the pointer is only valid on the current thread.
-
-Also would it make sense to make the pointer type *mut [u8; PAGE_SIZE]?
-
-> It's okay to map it multiple times from different threads.
-
-Do you still need to take care of data races?
-So would it be fine to execute this code on two threads in parallel?
-
-     static PAGE: Page =3D ...; // assume we have a page accessible by both=
- threads
-    =20
-     PAGE.with_page_mapped(|ptr| {
-         loop {
-             unsafe { ptr.write(0) };
-             pr_info!("{}", unsafe { ptr.read() });
-         }
-     });
-
-If this is not allowed, I don't really like the API. As a raw version it
-would be fine, but I think we should have a safer version (eg by taking
-`&mut self`).
-
->>> +        // SAFETY: This unmaps the page mapped above.
->>
->> This doesn't explain why it is sound.
->>
->>> +        //
->>> +        // Since this API takes the user code as a closure, it can onl=
-y be used
->>> +        // in a manner where the pages are unmapped in reverse order. =
-This is as
->>> +        // required by `kunmap_local`.
->>> +        //
->>> +        // In other words, if this call to `kunmap_local` happens when=
- a
->>> +        // different page should be unmapped first, then there must ne=
-cessarily
->>> +        // be a call to `kmap_local_page` other than the call just abo=
-ve in
->>> +        // `with_page_mapped` that made that possible. In this case, i=
-t is the
->>> +        // unsafe block that wraps that other call that is incorrect.
->>> +        unsafe { bindings::kunmap_local(mapped_addr) };
->=20
-> Why do you say that? The kunmap_local method requires that the address
-> being unmapped is currently mapped, and that pages are unmapped in
-> reverse order. The safety comment explains that the page is currently
-> mapped and that this method cannot be used to unmap them in anything
-> other than reverse order.
-
-Sorry it seems I thought that the safety comment ended after the first
-sentence. Can you (re)move that first sentence, since it is not part of
-a justification?
-The rest is fine.
-
->>> +    /// Runs a piece of code with a raw pointer to a slice of this pag=
-e, with
->>> +    /// bounds checking.
->>> +    ///
->>> +    /// If `f` is called, then it will be called with a pointer that p=
-oints at
->>> +    /// `off` bytes into the page, and the pointer will be valid for a=
-t least
->>> +    /// `len` bytes. The pointer is only valid on this task, as this m=
-ethod uses
->>> +    /// a local mapping.
->>
->> This information about the pointer only being valid on this task should
->> also apply to `with_page_mapped`, right?
->>
->>> +    ///
->>> +    /// If `off` and `len` refers to a region outside of this page, th=
-en this
->>> +    /// method returns `EINVAL` and does not call `f`.
->>> +    ///
->>> +    /// It is up to the caller to use the provided raw pointer correct=
-ly.
->>
->> Again, please specify what 'correctly' means.
->=20
-> I will remove the "The pointer is only valid on this task, as this
-> method uses a local mapping." sentence and copy the same paragraph as
-> previously (without the `PAGE_SIZE` remark).
-
-Sounds good.
-
---=20
-Cheers,
-Benno
-
+Alice
