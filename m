@@ -1,135 +1,184 @@
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2A084038
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 13:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F100183CBD
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 13:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711027709; cv=none; b=AycfP+rmpBeTVMzUE84AE80FIqVgAhk3n2A3RCw87IrLxeIeJ/+wInhNAfGCbJm/Pr9KFUXugdLVxEBKmBJmH30Hezbx6xP+pa1Yzomsz2PuXhHtwMxKjn7Gq/kIQErj59cC+HHvVbl/S0L46LSVUD9yKseTcJOQAFSgnz4o2gI=
+	t=1711028586; cv=none; b=RvNLAjqsgZsDcqy9tBAt9QLW5WRovUChc1ZF+JDi5bGPYvoxOpEpk9zdkkWaOA731fZW/X5MYrIdMpWBEJ5DEZERluNkDrWi9ikGjo1Qs9y8AwtjC7mlOf6bUy0gA2eZ83Fz0qRpkppU8Skd47lOtlE3PDAgTj6Q/24RZunFcMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711027709; c=relaxed/simple;
-	bh=Fq8KLFQJSw1OvZB7PQpHngU+2ITGmNUv3F3KHyGJK8M=;
+	s=arc-20240116; t=1711028586; c=relaxed/simple;
+	bh=Glii2nHLfaBzdSZO2EKVirfpspWb+nv9s2Bi5rvMmyI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZHQBHtbPPXFGH7GHJkukrZlrxMtwZvJ1AAcJCHmI8mufyIdI25v7fu3rgDXYNIg958uJwD03VUzSwHEHyHzSD0u6UoWFNO2BrBQyIb1zgGYcdcxSY5KEjIWdg0SdO4QHFHYQWgv132CFQH6CFbm9jmIeHYt7LLZf/D2RcPN3dMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S7Bh47gm; arc=none smtp.client-ip=209.85.222.41
+	 To:Cc:Content-Type; b=WMlJg9/5aYHwYWGvOelYRLTR5u/QlAFZELXV/dot2DeKmkRuOpAMpOXHxGTVErM8l/s2WaMt6cvdBr5lfCsov/Ck6r+2Yf6vHPDLGrNlXDXS+G7YIxJJjYH+kXkz90AvEnA9hzKkeo+tkoookE5pZ4L03w9/AawwA0viF2AUF9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GN4BfZDq; arc=none smtp.client-ip=209.85.217.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S7Bh47gm"
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7e0425e5aa8so465617241.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 06:28:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GN4BfZDq"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-47341f709c6so504306137.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 06:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711027706; x=1711632506; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1711028584; x=1711633384; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TWH+6eW0sGOMBcqq3GR/+5MQ85rnPGezuZLizVnSsrs=;
-        b=S7Bh47gmFs7ZNPFCC1HtGc//w3tte6KUhETVhV1mXSi+p6SM7wAeHXGOm4s+iUmYZQ
-         E0qfXt4LDO1ZHd3tkQb27pltMOxjJLtBgsbhgXRvm3OeXDZqlhf2/vfTkzfqEJ8kFozL
-         KOpBVxR2K8n1G48KLUuWzEqa5lJKfFtkZ1FeM359E7orsTsxBTUwbHtBIG3frbL+QD83
-         58FusM2sYlqZ+vbK7ShNAc9bzAvx4JA3+u5TR6ozPm7BadfQhsfm/z41qcvysxRQ0jpb
-         R5aTZbRrDFyPipWnyibVV/G/a8En3MGb53+y4xC+Gl/KqhRuIyZ7SLIx1Tq9/0oVfrNA
-         52Gw==
+        bh=2vO+ESJOepqx5jEo9fnNt4JlqMEXC9syS7LVjRc4fMA=;
+        b=GN4BfZDqlr1aZNG6VZB9igAvDFeCJ/mxOdKifLN0jqPHQJLtoKtqIu4cqzrCW+dhR3
+         +kOImPBgZm3bYlphGQsjx3sWigI710oCWWBfZAA4PcXkKN3bJWcfSgBTdxnqoMtUwkql
+         jPaLbYHmQzb87KmgmjNwRyhcUd0l0w/U/YVfAwbRg0GRFCwjXhw9FaqsmZ9UZ5NjJm40
+         x6oRFeKRxBN3Y3MwcfxVbDNpmKZTGQxI3GiuWR4sJnBIFcF8LEfIG2w/tSXPVXMLwc3d
+         BkkDQhITorI9JXR16+ENkjEcD0SDHrodmS8C/oqIzJCq9e/M/SZlcqismaQzejvIEIRP
+         F6LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711027706; x=1711632506;
+        d=1e100.net; s=20230601; t=1711028584; x=1711633384;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TWH+6eW0sGOMBcqq3GR/+5MQ85rnPGezuZLizVnSsrs=;
-        b=De0E6NjuXu0JHUKtdP7f0yAiQErRRYgoMrvWWdLxtmJ1Q3SEl+ILSFHv4HPqO2XVrZ
-         AyXB22MiHeTneGzagaIbKBrkhx6GYno+75o9A9EtbG6gl3p4YFjrNSWZzHUmLeJz4VOf
-         hBCT4MPIupGD2FfDb6MkUPaQ8TLKZOfbAu7dnjcBTHasj+UYPLogotgDFzQfSuaEEyCT
-         eQogozOMuqXHSMnC5d/u1pHEoy+xvcBqZTNKFyqwiGt1aITo8pPP2QhlXiZobVlATEET
-         d6BfCo3JBXaqn2p9I/SZuXbR2y+dhvGAqi4lzvLcLKTEvID8oGczgkDIaGZ6aEzZjX5L
-         QinA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUcJrU3TxfC1toYUb7k4w5wMQ6O9UDxpo2pPVaVIOW+SdCIwQKfcLhQJ06KXuSpGQwzbewYNM4RZE+BhKI0Ky80w/XeHRDNvEFB/OQZfc=
-X-Gm-Message-State: AOJu0Ywe3/Nx2wVWXsgN8yGqaUAOJThaC0LzsF46ff1vpP6WnC0sry2S
-	deyYWUA26NpWY769YVfOfBwi416VZDKNKa0Bp1qt+etv/KvHZ2zWRYVohpInfPULDYWTx7Mz8BG
-	NRbTj3997HkeHaTNZTZocDE55FHgWcpYbqfRV
-X-Google-Smtp-Source: AGHT+IE+j+Qli1XePxAilxL5R4FQhkJSRHtQ+wFvcX+d7554bq37l+EQBnd62M0HSJSkW5gjbHPTrWC84iG4Aiv+Geg=
-X-Received: by 2002:a05:6122:20a2:b0:4d3:36b9:2c26 with SMTP id
- i34-20020a05612220a200b004d336b92c26mr20776441vkd.14.1711027706376; Thu, 21
- Mar 2024 06:28:26 -0700 (PDT)
+        bh=2vO+ESJOepqx5jEo9fnNt4JlqMEXC9syS7LVjRc4fMA=;
+        b=ZGwF5aIB4x+HHxD+xSW6HaZcvzIz4UlecqoSIoUuPxYqUXojft7Iqh7yFguPwvhPey
+         vqr6skZ9TW9B31n54UefwWKzWTIZWpuSTJcZnAho4Zcglcy5uyb8+cQ5h4//iaX7fdP6
+         LKAxVOaXLX65LT6/0SEO0BUjdkzRCvJmaJFboob4C6OpNhftZol2cqOsz196Ye5x8DIT
+         3AEHofKkY73IOcASNg6WGDeAUmcEUnXfBc1CJqBUUAgmYr7NP85zY08z3Ss53wHXp3yr
+         IbdsX0xoyegTR3U7d8Xip2yEUtFc3ex8jQ+pblwnwiFBNmAbqkNL19IwX7TJiv+WC4Mu
+         ERaA==
+X-Forwarded-Encrypted: i=1; AJvYcCV8QlodB7nkj+BotVBeDKjsDZG1UdeZPfT7cFbkREpPhLkOE7sqXnGmV6fcI6ZO1B4JUuNGsAjN8c0y7FRcz4LteqM2SJ6E5oZdPMeoSNQ=
+X-Gm-Message-State: AOJu0Yx+3c6wp8wTkzhZ6YaA7zMQkrwhJ062A90oL1zdYnVeiAmxvXqf
+	gibgjWyEbp0zpfZdAlGmOssiJ3Qbcy/nv+BUS9sXrgxwnJu4rbGMzF1Pb/+ra9aIoXaf8jxXjme
+	Ng9XQPyD2aOUN2U00mbzvb+LaBt9eZDSPk0yb
+X-Google-Smtp-Source: AGHT+IFpF8BS4GfselaMHG+IryrYPtK57pw+o2yCIAHSrUdVDoy4xFzEjFVwLzlJP0+H8lVOFbL+cmq9d4teTS+XZZU=
+X-Received: by 2002:a05:6102:3588:b0:476:c74a:1544 with SMTP id
+ h8-20020a056102358800b00476c74a1544mr934771vsu.6.1711028583745; Thu, 21 Mar
+ 2024 06:43:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240209-alice-file-v5-0-a37886783025@google.com>
- <20240209-alice-file-v5-8-a37886783025@google.com> <20240320-massieren-lackschaden-9b30825babec@brauner>
-In-Reply-To: <20240320-massieren-lackschaden-9b30825babec@brauner>
+References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me>
+ <20240320084630.2727355-1-aliceryhl@google.com> <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me>
+In-Reply-To: <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 21 Mar 2024 14:28:15 +0100
-Message-ID: <CAH5fLgjeet1nhycCqdaKE9CSY02XW85jn302zNEjJNQaJ1czGQ@mail.gmail.com>
-Subject: Re: [PATCH v5 8/9] rust: file: add `DeferredFdCloser`
-To: Christian Brauner <brauner@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Date: Thu, 21 Mar 2024 14:42:52 +0100
+Message-ID: <CAH5fLgj_vmhCV-Ptfbjbq=FZOuVSLOEsatELaPmz=BuDuemghw@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
+	arnd@arndb.de, arve@android.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, 
+	gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, 
+	keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, 
+	wedsonaf@gmail.com, willy@infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 20, 2024 at 3:22=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
+On Thu, Mar 21, 2024 at 2:16=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> On Fri, Feb 09, 2024 at 11:18:21AM +0000, Alice Ryhl wrote:
+> On 3/20/24 09:46, Alice Ryhl wrote:
+> >> On 3/11/24 11:47, Alice Ryhl wrote:
+> >>> +/// A pointer to a page that owns the page allocation.
+> >>> +///
+> >>> +/// # Invariants
+> >>> +///
+> >>> +/// The pointer points at a page, and has ownership over the page.
+> >>
+> >> Why not "`page` is valid"?
+> >> Do you mean by ownership of the page that `page` has ownership of the
+> >> allocation, or does that entail any other property/privilege?
 > >
-> > +/// Helper used for closing file descriptors in a way that is safe eve=
-n if the file is currently
-> > +/// held using `fdget`.
-> > +///
-> > +/// Additional motivation can be found in commit 80cd795630d6 ("binder=
-: fix use-after-free due to
-> > +/// ksys_close() during fdget()") and in the comments on `binder_do_fd=
-_close`.
-> > +pub struct DeferredFdCloser {
-> > +    inner: Box<DeferredFdCloserInner>,
-> > +}
-> > +
-> > +/// SAFETY: This just holds an allocation with no real content, so the=
-re's no safety issue with
-> > +/// moving it across threads.
-> > +unsafe impl Send for DeferredFdCloser {}
-> > +unsafe impl Sync for DeferredFdCloser {}
-> > +
-> > +/// # Invariants
-> > +///
-> > +/// If the `file` pointer is non-null, then it points at a `struct fil=
-e` and owns a refcount to
-> > +/// that file.
-> > +#[repr(C)]
-> > +struct DeferredFdCloserInner {
-> > +    twork: mem::MaybeUninit<bindings::callback_head>,
-> > +    file: *mut bindings::file,
-> > +}
-> > +
-> > +impl DeferredFdCloser {
+> > I can add "at a valid page".
 >
-> So the explicitly deferred close is due to how binder works so it's not
-> much of a general purpose interface as I don't recall having other
-> codepaths with similar problems. So this should live in the binder
-> specific rust code imo.
+> I don't think that helps, what you need as an invariant is that the
+> pointer is valid.
 
-Hmm. Are there really no other ioctls that call ksys_close on a
-user-provided fd?
+To me "points at a page" implies that the pointer is valid. I mean, if
+it was dangling, it would not point at a page?
 
-As far as I can tell, this kind of deferred API is the only way for us
-to provide a fully safe Rust api for closing an fd. Directly calling
-ksys_close must unsafely assert that the fd does not have an active
-fdget call. So it makes sense to me as an API that others might want
-to use.
+But I can reword to something else if you have a preferred phrasing.
 
-Still I can move it elsewhere if necessary.
+> >>> +    /// Runs a piece of code with this page mapped to an address.
+> >>> +    ///
+> >>> +    /// The page is unmapped when this call returns.
+> >>> +    ///
+> >>> +    /// It is up to the caller to use the provided raw pointer corre=
+ctly.
+> >>
+> >> This says nothing about what 'correctly' means. What I gathered from t=
+he
+> >> implementation is that the supplied pointer is valid for the execution
+> >> of `f` for `PAGE_SIZE` bytes.
+> >> What other things are you allowed to rely upon?
+> >>
+> >> Is it really OK for this function to be called from multiple threads?
+> >> Could that not result in the same page being mapped multiple times? If
+> >> that is fine, what about potential data races when two threads write t=
+o
+> >> the pointer given to `f`?
+> >>
+> >>> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) =
+-> T {
+> >
+> > I will say:
+> >
+> > /// It is up to the caller to use the provided raw pointer correctly.
+> > /// The pointer is valid for `PAGE_SIZE` bytes and for the duration in
+> > /// which the closure is called. Depending on the gfp flags and kernel
+> > /// configuration, the pointer may only be mapped on the current thread=
+,
+> > /// and in those cases, dereferencing it on other threads is UB. Other
+> > /// than that, the usual rules for dereferencing a raw pointer apply.
+> > /// (E.g., don't cause data races, the memory may be uninitialized, and
+> > /// so on.)
+>
+> I would simplify and drop "depending on the gfp flags and kernel..." and
+> just say that the pointer is only valid on the current thread.
+
+Sure, that works for me.
+
+> Also would it make sense to make the pointer type *mut [u8; PAGE_SIZE]?
+
+I think it's a trade-off. That makes the code more error-prone, since
+`pointer::add` now doesn't move by a number of bytes, but a number of
+pages.
+
+> > It's okay to map it multiple times from different threads.
+>
+> Do you still need to take care of data races?
+> So would it be fine to execute this code on two threads in parallel?
+>
+>      static PAGE: Page =3D ...; // assume we have a page accessible by bo=
+th threads
+>
+>      PAGE.with_page_mapped(|ptr| {
+>          loop {
+>              unsafe { ptr.write(0) };
+>              pr_info!("{}", unsafe { ptr.read() });
+>          }
+>      });
+
+Like I said, the usual pointer rules apply. Two threads can access it
+in parallel as long as one of the following are satisfied:
+
+* Both accesses are reads.
+* Both accesses are atomic.
+* They access disjoint byte ranges.
+
+Other than the fact that it uses a thread-local mapping on machines
+that can't address all of their memory at the same time, it's
+completely normal memory. It's literally just a PAGE_SIZE-aligned
+allocation of PAGE_SIZE bytes.
+
+> If this is not allowed, I don't really like the API. As a raw version it
+> would be fine, but I think we should have a safer version (eg by taking
+> `&mut self`).
+
+I don't understand what you mean. It is the *most* raw API that `Page`
+has. I can make them private if you want me to. The API cannot take
+`&mut self` because I need to be able to unsafely perform concurrent
+writes to disjoint byte ranges.
 
 Alice
