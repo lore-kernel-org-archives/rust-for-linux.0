@@ -1,238 +1,157 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B115585279
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 14:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58B713B28E
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 16:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711030814; cv=none; b=TB4RtMdhw4TYAJfzPVstxHwjzPTeUoxG/BSA0b1jpS1lteqF9T91THisu4u+eTOPtNzvox8WQCH7AcsTqVJo2cUiJkRao4N5GitkX499jzjWNVPovt+yT+Y7p8UjZHAvf28hXSL/gubctGitdbtFlr3D+1zouBausJwLFbtKmOA=
+	t=1711039085; cv=none; b=IMWqcp+09m+B9heS3lMPb3qmxUdgRre16J3oVc1sXijPqX6sk5N0JGqdhgmkShjro12zYJd2trMt6FHITyoiCQ3mieMSvB4jGBuC0HBGornDyawBCjzZ5K3qJuMWhmvJQKFnXLt0hw0YqE/Mnnm6FdJaDgznyAmhwNehbLUKiew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711030814; c=relaxed/simple;
-	bh=6xyeLUgAwxmqGgmY+Lxx+AP/kDtnBc74/itYOT89GNM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GySKhZYFwMvjT4q+o4FpW7bJ66Mh6CfavSGQGX9Mo8pWaRUGPRBLrhSWGIUSkJdGqP1bB3dRGV2SkOZHDH+ubWoGu+VbeEFTW9WBfd9zT5ShuSwEc9EvIRjGWtg/0y6OXYGXOE3WgnvyBTwAiaLmlY8+5KmFxPbUnCR3Umv7VVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=InaLxO/o; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711039085; c=relaxed/simple;
+	bh=jXsURVn8SIEDSxm3ybi646KeGxqom+Lp+iDA2OWR8bA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GcqXmzvz49OH9jYEWG+4xLPPuJtMhFCmiV9FVEXSoSCieYPyqYGJ7tBz7LFDqMu4doKlJWS45bSGpXK5xF9M+/JuP5KDq/7BZ8n2RrzF3iFxBkTzul7w07Y1uY9+al6j+Je6eWSYyh25pncwq7BrYO1OqP7FseqX0WsZi7KH8Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CQ6t8u0m; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="InaLxO/o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=rz63pa25ejeqzkhf77wqfydujq.protonmail; t=1711030803; x=1711290003;
-	bh=NiTFkvVVIBt3Zp4d7bg0Q/59Q6CidDiKN7ppRU78CAw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=InaLxO/o6NGTLercgTkCaaGLUifhedx7egjA4JUq0AH/FATkjVUxf0CCPLiFbwGGa
-	 T+NwtBfwQOPrJChIfXCvJVFx1WmDhDjJOpt57nHQSbE9orwx+TJgq02S9JiKDTmqg3
-	 ucDDPWXR9gLHQRsvZGLU7ynjWmsYmN1DC+eOPRMwIvNZfhiHclxw19COQMK+kzK3Z5
-	 tz/xRwUOBXa6fBQguKESxk0M3rJHdDIXhksKEtFWKt1/P5TaseaZ5NpVLm+WQOSZPO
-	 ogf7fcdC/+qCI5QgrW1mghPY6JfPkElUmSd5i0BSA1+PYTTsYAdD15/REEX/EmIPKK
-	 DE1n0eqx8LQvg==
-Date: Thu, 21 Mar 2024 14:19:48 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, arnd@arndb.de, arve@android.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
-Subject: Re: [PATCH v3 4/4] rust: add abstraction for `struct page`
-Message-ID: <504d1e4e-97f6-425b-98a2-a2a32dff1313@proton.me>
-In-Reply-To: <CAH5fLggy1ci+gu2eVzjo0nHtNzT=+NgaaU5WAwq8qHrhu1QCYw@mail.gmail.com>
-References: <baee63d9-273a-48aa-b3cc-f15e3782156b@proton.me> <20240320084630.2727355-1-aliceryhl@google.com> <9ed03148-5ceb-40f2-9c2d-31e2b8918888@proton.me> <CAH5fLgj_vmhCV-Ptfbjbq=FZOuVSLOEsatELaPmz=BuDuemghw@mail.gmail.com> <e088f9a2-c0aa-41b6-993b-01adb5fba929@proton.me> <CAH5fLggy1ci+gu2eVzjo0nHtNzT=+NgaaU5WAwq8qHrhu1QCYw@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CQ6t8u0m"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-60a54004e9fso21458117b3.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Mar 2024 09:38:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1711039082; x=1711643882; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s40WFNE8AOKkW3fMlFNAMtyrdkqCS9mljSRdY//hl9w=;
+        b=CQ6t8u0msbijO81264wqXFw8BKrxYLrJuEZuSSTwkWEAqjDy/Q856UuJhkY5p+lnvz
+         6TC7Ca0uS/TphDMECYCmS2UeoRk+YO8XQEW/0+SwfexB8JfPBfisXkLBgF4/HC8+k27R
+         j993HXFtLbTxTfGtrYGDhlG0r7kpf6NZ55u+tGs9q2uDCRiKunTuM91MCuxr0OfsU1oz
+         POegw9ggM0eo/7L0VU4f7EN1hrXC9JKao7nunpo+ol0iFfgiCWTrdViub0KDPvQe2u2R
+         wxtUJuRgZR4EJRtONFiiIOiFx2W2w/M+dgfy93A9T3GXXU2pEZG8XYIO0sgM/U6S2dEF
+         XUjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711039082; x=1711643882;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=s40WFNE8AOKkW3fMlFNAMtyrdkqCS9mljSRdY//hl9w=;
+        b=hvmUhRVj7j2DBVFaR3UdAF5XZjtzLeTC59NVTiBH2xfMS9mYsoWUSkdhoZrK2emDRS
+         mhCK5UtiTPqNp8E4pXtPSKDnrORYCjjNY0pACUs1+7kE8MC9qAjcO/fpYoHFv5a3BA1C
+         35wnGsBAjeBJngGl/cxWxowcD/JkkgOfL2kevfosJ2a1e7Xj5Jkb/cT0WcBdBfEw7ztL
+         gqKzVY1kkEhsn7FKLmU+Z6sTmZ95eFJfyPdxmR20LOJfkZ8XeCf+cP6KyOPiMk20K3Sk
+         0VDTXeqA3GQFsU9jX798MxzpgrGvF/E53srDDJO9p+WryXrENHfXWGQFtSVfvx8Inu+f
+         ud2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXe13RWwtPg0IWNeX45A6AVCNkumPnVN8YMxjZ3e6ciWQCcKxyN1HvzK7h834NdaPpBJPiOY43Rwg/kKr9h1ELFO55+l8Sxg8KX3Cby7E8=
+X-Gm-Message-State: AOJu0YwfZcnAosPMd/OkPkH7U7H7ikjenotU7ZJdHwHbW+ZRV+CYS0WB
+	zCVWL0tutjQCle6QwPD7jojt5xxz6dUXhAaobfxnf8WLMQ5nV3M/gkIe8ZrQieg9juELmW+K9Al
+	CkA==
+X-Google-Smtp-Source: AGHT+IFs+Nf82Ul1t74I4vPuVX4weNJROFN7yWXEOAVfX30LUtXPCkGRPdyvAgyHRn4LwSGt1RsLpaikF8g=
+X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:a489:6433:be5d:e639])
+ (user=surenb job=sendgmr) by 2002:a0d:ca91:0:b0:610:fc58:5b83 with SMTP id
+ m139-20020a0dca91000000b00610fc585b83mr1061193ywd.8.1711039081806; Thu, 21
+ Mar 2024 09:38:01 -0700 (PDT)
+Date: Thu, 21 Mar 2024 09:36:46 -0700
+In-Reply-To: <20240321163705.3067592-1-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
+References: <20240321163705.3067592-1-surenb@google.com>
+X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
+Message-ID: <20240321163705.3067592-25-surenb@google.com>
+Subject: [PATCH v6 24/37] rust: Add a rust helper for krealloc()
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, mhocko@suse.com, vbabka@suse.cz, 
+	hannes@cmpxchg.org, roman.gushchin@linux.dev, mgorman@suse.de, 
+	dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com, 
+	penguin-kernel@i-love.sakura.ne.jp, corbet@lwn.net, void@manifault.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, catalin.marinas@arm.com, 
+	will@kernel.org, arnd@arndb.de, tglx@linutronix.de, mingo@redhat.com, 
+	dave.hansen@linux.intel.com, x86@kernel.org, peterx@redhat.com, 
+	david@redhat.com, axboe@kernel.dk, mcgrof@kernel.org, masahiroy@kernel.org, 
+	nathan@kernel.org, dennis@kernel.org, jhubbard@nvidia.com, tj@kernel.org, 
+	muchun.song@linux.dev, rppt@kernel.org, paulmck@kernel.org, 
+	pasha.tatashin@soleen.com, yosryahmed@google.com, yuzhao@google.com, 
+	dhowells@redhat.com, hughd@google.com, andreyknvl@gmail.com, 
+	keescook@chromium.org, ndesaulniers@google.com, vvvvvv@google.com, 
+	gregkh@linuxfoundation.org, ebiggers@google.com, ytcoode@gmail.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, bristot@redhat.com, vschneid@redhat.com, cl@linux.com, 
+	penberg@kernel.org, iamjoonsoo.kim@lge.com, 42.hyeyoo@gmail.com, 
+	glider@google.com, elver@google.com, dvyukov@google.com, 
+	songmuchun@bytedance.com, jbaron@akamai.com, aliceryhl@google.com, 
+	rientjes@google.com, minchan@google.com, kaleshsingh@google.com, 
+	surenb@google.com, kernel-team@android.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, kasan-dev@googlegroups.com, 
+	cgroups@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 3/21/24 15:11, Alice Ryhl wrote:
-> On Thu, Mar 21, 2024 at 2:56=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>
->> On 3/21/24 14:42, Alice Ryhl wrote:
->>> On Thu, Mar 21, 2024 at 2:16=E2=80=AFPM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
->>>>
->>>> On 3/20/24 09:46, Alice Ryhl wrote:
->>>>>> On 3/11/24 11:47, Alice Ryhl wrote:
->>>>>>> +/// A pointer to a page that owns the page allocation.
->>>>>>> +///
->>>>>>> +/// # Invariants
->>>>>>> +///
->>>>>>> +/// The pointer points at a page, and has ownership over the page.
->>>>>>
->>>>>> Why not "`page` is valid"?
->>>>>> Do you mean by ownership of the page that `page` has ownership of th=
-e
->>>>>> allocation, or does that entail any other property/privilege?
->>>>>
->>>>> I can add "at a valid page".
->>>>
->>>> I don't think that helps, what you need as an invariant is that the
->>>> pointer is valid.
->>>
->>> To me "points at a page" implies that the pointer is valid. I mean, if
->>> it was dangling, it would not point at a page?
->>>
->>> But I can reword to something else if you have a preferred phrasing.
->>
->> I would just say "`page` is valid" or "`self.page` is valid".
->>
->>>>>>> +    /// Runs a piece of code with this page mapped to an address.
->>>>>>> +    ///
->>>>>>> +    /// The page is unmapped when this call returns.
->>>>>>> +    ///
->>>>>>> +    /// It is up to the caller to use the provided raw pointer cor=
-rectly.
->>>>>>
->>>>>> This says nothing about what 'correctly' means. What I gathered from=
- the
->>>>>> implementation is that the supplied pointer is valid for the executi=
-on
->>>>>> of `f` for `PAGE_SIZE` bytes.
->>>>>> What other things are you allowed to rely upon?
->>>>>>
->>>>>> Is it really OK for this function to be called from multiple threads=
-?
->>>>>> Could that not result in the same page being mapped multiple times? =
-If
->>>>>> that is fine, what about potential data races when two threads write=
- to
->>>>>> the pointer given to `f`?
->>>>>>
->>>>>>> +    pub fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T=
-) -> T {
->>>>>
->>>>> I will say:
->>>>>
->>>>> /// It is up to the caller to use the provided raw pointer correctly.
->>>>> /// The pointer is valid for `PAGE_SIZE` bytes and for the duration i=
-n
->>>>> /// which the closure is called. Depending on the gfp flags and kerne=
-l
->>>>> /// configuration, the pointer may only be mapped on the current thre=
-ad,
->>>>> /// and in those cases, dereferencing it on other threads is UB. Othe=
-r
->>>>> /// than that, the usual rules for dereferencing a raw pointer apply.
->>>>> /// (E.g., don't cause data races, the memory may be uninitialized, a=
-nd
->>>>> /// so on.)
->>>>
->>>> I would simplify and drop "depending on the gfp flags and kernel..." a=
-nd
->>>> just say that the pointer is only valid on the current thread.
->>>
->>> Sure, that works for me.
->>>
->>>> Also would it make sense to make the pointer type *mut [u8; PAGE_SIZE]=
-?
->>>
->>> I think it's a trade-off. That makes the code more error-prone, since
->>> `pointer::add` now doesn't move by a number of bytes, but a number of
->>> pages.
->>
->> Yeah. As long as you document that the pointer is valid for r/w with
->> offsets in `0..PAGE_SIZE` bytes, leaving the type as is, is fine by me.
->>
->>
->>>>> It's okay to map it multiple times from different threads.
->>>>
->>>> Do you still need to take care of data races?
->>>> So would it be fine to execute this code on two threads in parallel?
->>>>
->>>>        static PAGE: Page =3D ...; // assume we have a page accessible =
-by both threads
->>>>
->>>>        PAGE.with_page_mapped(|ptr| {
->>>>            loop {
->>>>                unsafe { ptr.write(0) };
->>>>                pr_info!("{}", unsafe { ptr.read() });
->>>>            }
->>>>        });
->>>
->>> Like I said, the usual pointer rules apply. Two threads can access it
->>> in parallel as long as one of the following are satisfied:
->>>
->>> * Both accesses are reads.
->>> * Both accesses are atomic.
->>> * They access disjoint byte ranges.
->>>
->>> Other than the fact that it uses a thread-local mapping on machines
->>> that can't address all of their memory at the same time, it's
->>> completely normal memory. It's literally just a PAGE_SIZE-aligned
->>> allocation of PAGE_SIZE bytes.
->>
->> Thanks for the info, what do you think of this?:
->>
->> /// It is up to the caller to use the provided raw pointer correctly. Th=
-e pointer is valid for reads
->> /// and writes for `PAGE_SIZE` bytes and for the duration in which the c=
-losure is called. The
->> /// pointer must only be used on the current thread. The caller must als=
-o ensure that no data races
->> /// occur: when mapping the same page on two threads accesses to memory =
-with the same offset must be
->> /// synchronized.
->=20
-> I would much rather phrase it in terms of "the usual pointer" rules. I
-> mean, the memory could also be uninitialized if you don't pass
-> __GFP_ZERO when you create it, so you also have to make sure to follow
-> the rules about uninitialized memory. I don't want to be in the
-> business of listing all requirements for accessing memory here.
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-Sure you can add that part again, I just want to highlight that mapping
-the same page multiple times means that the caller has to synchronize
-accesses to those pointers even if the pointers do not have the same
-address value. That is not normally something you need to take care of,
-ie normally if `ptr1.addr() !=3D ptr2.addr()` then you can access them
-without synchronization.
+Memory allocation profiling is turning krealloc() into a nontrivial
+macro - so for now, we need a helper for it.
 
->>>> If this is not allowed, I don't really like the API. As a raw version =
-it
->>>> would be fine, but I think we should have a safer version (eg by takin=
-g
->>>> `&mut self`).
->>>
->>> I don't understand what you mean. It is the *most* raw API that `Page`
->>> has. I can make them private if you want me to. The API cannot take
->>> `&mut self` because I need to be able to unsafely perform concurrent
->>> writes to disjoint byte ranges.
->>
->> If you don't need these functions to be public, I think we should
->> definitely make them private.
->> Also we could add a `raw` suffix to the functions to make it clear that
->> it is a primitive API. If you think that it is highly unlikely that we
->> get a safer version, then I don't think there is value in adding the
->> suffix.
->=20
-> The old code on the Rust branch didn't have these functions, but
-> that's because the old `read_raw` and `write_raw` methods did all of
-> these things directly in their implementation:
->=20
-> * Map the memory so we can get a pointer.
-> * Get a pointer to a subslice (with bounds checks!)
-> * Do the actual read/write.
->=20
-> I thought that doing this many things in a single function was
-> convoluted, so I decided to refactor the code by extracting the "get a
-> pointer to the page" logic into `with_page_mapped` and the "point to
-> subslice with bounds check" logic into `with_pointer_into_page`. That
-> way, each function has only one responsibility, instead of mixing
-> three responsibilities into one.
+Until we have proper support on the rust side for memory allocation
+profiling this does mean that all Rust allocations will be accounted to
+the helper.
 
-I think that design decision is good.
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: "Bj=C3=B6rn Roy Baron" <bjorn3_gh@protonmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/helpers.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> So even if we get a safer version, I would not want to get rid of this
-> method. I don't want to inline its implementation into more
-> complicated functions. The safer method would call the raw method, and
-> then do whatever additional logic it wants to do on top of that.
-
-I was not suggesting removing this method, rather renaming it to reflect
-that it is a primitive API that should be avoided if possible.
-
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 70e59efd92bc..858d802abd11 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -28,6 +28,7 @@
+ #include <linux/mutex.h>
+ #include <linux/refcount.h>
+ #include <linux/sched/signal.h>
++#include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+@@ -157,6 +158,13 @@ void rust_helper_init_work_with_key(struct work_struct=
+ *work, work_func_t func,
+ }
+ EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
+=20
++void * __must_check __realloc_size(2)
++rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
++{
++	return krealloc(objp, new_size, flags);
++}
++EXPORT_SYMBOL_GPL(rust_helper_krealloc);
++
+ /*
+  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+  * use it in contexts where Rust expects a `usize` like slice (array) indi=
+ces.
 --=20
-Cheers,
-Benno
+2.44.0.291.gc1ea87d7ee-goog
 
