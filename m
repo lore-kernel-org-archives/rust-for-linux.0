@@ -1,96 +1,309 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F1E225AF
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Mar 2024 10:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979CC3E47F
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Mar 2024 11:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711102687; cv=none; b=DPPMRVmeEc8SUQlFzmI/ASlF0rS22ESKQZ1/YpKesMp1tIWM+aSfK9dd+nDRnZC4EGfcyiOttS1NAAkIT5LJk0h0X+874DkXZI7mTUoVvj0bej1rMFJ2Igg5cNoz+6TQp3Dlab/w6BBaL/AOsaneM5AA2VmoVoGCwSplVidzcRQ=
+	t=1711105958; cv=none; b=ZGVI0CZ4S9lk6MOwrVjyGnsQZTtU70nP1a+buSNMP9J8uSbzU0+LM9Z0KOQN47jzmthTn95WiRuyKr9bRnxZ7pe8S3ZBaFArsny+0dm6Jnqpb0ccBndGPVf6f/PKl0OreVT/Eo0zGvSdWhNyACdctz6ndWrhPWQnF8lUm2P78t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711102687; c=relaxed/simple;
-	bh=Pvx75pjUmfAFix8YdtVQOmsT9EGDVWYx2bvbS3+FwfA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i+9jerEE2Eq5PHvY/J24BY97nx1uxJuUx93+VerTITSUJRyrN51IzBA78Y4srxfbqIkQb0+5EFOH4aQEc/D6eJnPZuR9rktEvnMBcjLYroDCQobN/ocPM6WDZw40rvU7O9zHMgSZbg/dyurmmY96iqTTXrRmvysJsBisPeeYEiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3GbQ6/4N; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1711105958; c=relaxed/simple;
+	bh=pL7XGfuQrvBIFhZjx+b4qvEY55H0D6drzjDhT+HAE0A=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TDh44koPiSereDLu2Bt2qm4czU/8a4kN2EDvaHgu03q9RIBKGqZMVaDvaDdzQtfTBqWs7hNZ9iMXHOubmshtUzqShQrEC51APlEhX/UBQvU1lrJHZZ4k8veyOPzM5WYP+EnB5boq7dQ3KSm08fH+5qj5LFtUKkyX0F49G8z/Jew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=LvjO5h5G; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3GbQ6/4N"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbf216080f5so3174126276.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Mar 2024 03:18:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711102685; x=1711707485; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ACnQs7aBrEZBi3RLGYrxwrSPV2Zrt2coy5sWl3wY0QA=;
-        b=3GbQ6/4Nq2m7q1fQ0gCoFAI0DNi3i+lJLYXtQoG9ik7oPnl8UtnD6PovuQLITi6JfM
-         hOMdwyh2BdUbczT10C4LaE8S7Iv82eOW+dDHSFru6ZtUHcSIMdjJZCCeQI2lTpRpRZ+A
-         0rHltXTFW1DAoJ5yjaMuej6n8KvzgThx2arFJV2ACvFanaG8/tJwbW0JqIwyOuKzJ7Yq
-         lB6+133f1JzaANO2+PUKBkQM4LEjbBCgONYzqM+bi8EarADottlKAhOWjOHrb+UUjpim
-         J+TgG/N+51FkcpFg6QTcHxzRBBOdxt+/2E6Z8uwLk4Vt85PFXvXAGXP1NOIzQo+phZ/C
-         a5VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711102685; x=1711707485;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ACnQs7aBrEZBi3RLGYrxwrSPV2Zrt2coy5sWl3wY0QA=;
-        b=XsZx9YFWIK1K3F1X75SsfPZ69GK24x3OEw9xs6e+TSoikeFQKUFvDI1UBryIq8Q/jV
-         NZmfuwZPAk4OnzZefZl65egh9+kU5MM1q0uqV8QY+28OEqskAC3YJR0Y/7XZjN8F+jYH
-         ZEPKwt3ty1+2AD6an5ykNlvoKAjZvX8c/lVy1kPIuPkf+veiTR+Hc6ycrLY56458pCRY
-         Hi6+PGpEMSnIEWmAzKhEGCstjQWC5gwn5hGDQvFd5jweOvOiGOzQDqFSpzXECloLcWXQ
-         /qH5/G1bOckDbR39SaOCbFyPcyqWwBdyo3itdAddpG56QZGKdoU45NntMkK+MYj67KaQ
-         ChRw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9wZ77J9f8bFKxSGqFvyzsAqrHEV4aQkazBRv/VbVmWpBOYlnT5kqx4LGzMARqyUd7VFLLcRhaYQVSeoZI5iqMOAIYWAO3dr4Cup6iEJk=
-X-Gm-Message-State: AOJu0YzN92CWD6FRzk0i9xsPRQ8TSXesqsiHu3i9qSg3jRcxKh5XAoby
-	2EFY+Z18DTgMTUxasxq38ibWU161B0FLSiRLBOWe08HChCSIxiNmh5/rKYStU26ghUetfT6flL7
-	GefYd/6XoF9oJ2A==
-X-Google-Smtp-Source: AGHT+IFFpd2y4r17dMtANQ7EJXXpErok7tREHxgAjPnoff6hqLaJf+G18lXV1ORhcR/6TZaKCbZ+5IgRff5HgU4=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:1009:b0:dd9:20d9:d010 with SMTP
- id w9-20020a056902100900b00dd920d9d010mr595720ybt.3.1711102685532; Fri, 22
- Mar 2024 03:18:05 -0700 (PDT)
-Date: Fri, 22 Mar 2024 10:18:02 +0000
-In-Reply-To: <2ecf6529-5408-4621-becc-2f30e1039079@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LvjO5h5G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711105949; x=1711365149;
+	bh=3OKqvzassCqyZXU0pcpOTji/2AT+E62EbjkKl8453JE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LvjO5h5GY53O78JIb6Q3mEW/44We+ruJZkwetNu3S7Dz48pYVy5931cbuBT2rKT9C
+	 OfUbN4/I6q19zrNUv/3DYxhRetMh+r40eU/yKsH93SA+VGKFAEwXOy4PB5cLQ85sLn
+	 0xQE+tskxYLEBmoXdOcWOnlg/MvHOXZ8n8Ia4ZqZAmNX7viTuJoJb3y20W+XWsSlb9
+	 SS+Y6oKrtqf6VyezqoOFwgn2iUmdVbl6TSRbgx1CbYiDgkYwoexPaZy6cl4TZR3VPD
+	 Dv1//kjf8DrXWFvhMM0QvRsUGX8zqIFlt/6gHeZRL4ZFyhOmbUE0btAXmmI4RTK8r6
+	 gs6YPrlaLf6uw==
+Date: Fri, 22 Mar 2024 11:12:00 +0000
+To: =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH v8 2/2] rust: xarray: Add an abstraction for XArray
+Message-ID: <8af4aa57-b1c4-44e4-a281-24ed45bbc312@proton.me>
+In-Reply-To: <20240309235927.168915-4-mcanal@igalia.com>
+References: <20240309235927.168915-2-mcanal@igalia.com> <20240309235927.168915-4-mcanal@igalia.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2ecf6529-5408-4621-becc-2f30e1039079@proton.me>
-X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
-Message-ID: <20240322101803.400735-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust: time: add Ktime
-From: Alice Ryhl <aliceryhl@google.com>
-To: benno.lossin@proton.me
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	jstultz@google.com, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Benno Lossin <benno.lossin@proton.me> wrote:
-> On 3/22/24 09:59, Alice Ryhl wrote:
->> +/// Returns the number of milliseconds between two ktimes.
->> +#[inline]
->> +pub fn ktime_ms_delta(later: Ktime, earlier: Ktime) -> i64 {
->> +    (later - earlier).to_ms()
->> +}
-> 
-> Is there a reason for this function being standalone?
+On 3/10/24 00:57, Ma=C3=ADra Canal wrote:
 
-I think for a Rust time API, we should make one of two choices:
+[...]
 
-* Match the C ktime_t API as closely as possible.
-* Match the Rust standard library std::time API as closely as possible.
+> +// Convenience impl for [`ForeignOwnable`] types whose [`Borrowed`] form
+> +// implements [`Deref`].
+> +impl<'a, T: ForeignOwnable> Deref for Guard<'a, T>
+> +where
+> +    T::Borrowed<'a>: Deref,
+> +    for<'b> T::Borrowed<'b>: Into<&'b <T::Borrowed<'a> as Deref>::Target=
+>,
 
-This patchset has made the former choice, and that is why I went with
-this design.
+I took a look at this again and it currently is not really helpful.
+`ArcBorrow<'b, T>` does not implement `Into<&'b T>` and it never is
+going to, since it is impossible due to Rust's orphan rules. We have two
+options:
+1. Remove this impl.
+2. Create a `IntoRef` trait that does the job instead and implement it
+    for `ArcBorrow`.
 
-In the future it could make sense to add a more "Rusty" API, but even
-then I think it could make sense to have both and implement the latter
-in terms of the former. That way, only the API that closely matches the
-C ktime_t API needs to concern itself with unsafely calling into C.
+If you go for option 2, I think `IntoRef` should look like this:
+     pub trait IntoRef<'a, T: ?Sized> {
+         fn into_ref(self) -> &'a T;
+     }
 
-Alice
+But this can also easily be done in a future patch, so feel free to
+choose option 1.
+
+> +{
+> +    type Target =3D <T::Borrowed<'a> as Deref>::Target;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        self.borrow().into()
+> +    }
+> +}
+> +
+> +impl<'a, T: ForeignOwnable> Drop for Guard<'a, T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: By the type invariant, we own the [`XArray`] lock, so=
+ we must
+> +        // unlock it here.
+
+I think the "so we must unlock it here" part is unnecessary.
+
+> +        unsafe { bindings::xa_unlock(self.1.xa.get()) };
+> +    }
+> +}
+
+[...]
+
+> +/// # Examples
+> +///
+> +/// ```rust
+> +/// use kernel::xarray::{XArray, flags};
+> +/// use kernel::sync::Arc;
+> +///
+> +/// struct Foo {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// let arr =3D Box::pin_init(XArray::<Arc<Foo>>::new(flags::ALLOC1))?;
+> +///
+> +/// let item =3D Arc::try_new(Foo { a : 1, b: 2 })?;
+> +/// let index =3D arr.alloc(item)?;
+> +///
+> +/// if let Some(guard) =3D arr.get_locked(index) {
+> +///     assert_eq!(guard.borrow().a, 1);
+> +///     assert_eq!(guard.borrow().b, 2);
+> +/// } else {
+> +///     pr_info!("No value found in index {}", index);
+> +/// }
+> +///
+> +/// let item =3D Arc::try_new(Foo { a : 3, b: 4 })?;
+> +/// let index =3D arr.alloc(item)?;
+> +///
+> +/// if let Some(removed_data) =3D arr.remove(index) {
+> +///     assert_eq!(removed_data.a, 3);
+> +///     assert_eq!(removed_data.b, 4);
+> +/// } else {
+> +///     pr_info!("No value found in index {}", index);
+> +/// }
+> +/// # Ok::<(), Error>(())
+> +/// ```
+
+I think it would make more sense to move these examples into the
+documentation of `XArray<T>` itself.
+
+> +impl<T: ForeignOwnable> XArray<T> {
+> +    /// Creates a new [`XArray`] with the given flags.
+> +    pub fn new(flags: Flags) -> impl PinInit<Self> {
+> +        pin_init!(Self {
+> +            // SAFETY: `xa` is valid while the closure is called.
+> +            xa <- Opaque::ffi_init(|xa| unsafe {
+> +                bindings::xa_init_flags(xa, flags)
+> +            }),
+> +            _p: PhantomData,
+> +        })
+> +    }
+> +
+> +    /// Converts [`usize`] to `unsigned long`.
+> +    fn to_index(i: usize) -> c_ulong {
+> +        // The type is `unsigned long`, which is always the same as `usi=
+ze` in
+> +        // the kernel.
+> +        build_assert!(mem::size_of::<usize>() =3D=3D mem::size_of::<c_ul=
+ong>());
+> +        i as c_ulong
+> +    }
+> +
+> +    /// Replaces an entry with a new value, returning the old value (if =
+any).
+> +    pub fn replace(&self, index: usize, value: T) -> Result<Option<T>> {
+> +        let new =3D value.into_foreign();
+> +
+> +        build_assert!(T::FOREIGN_ALIGN >=3D 4);
+
+This looks good. Which unsafe function call required this again? I can't
+find it in the safety comments below.
+
+As I wrote in my mail to the first patch, `ForeignOwnable` needs to
+guarantee that `T::FOREIGN_ALIGN` actually is the alignment of the
+pointers returned by `into_foreign()`, so it must be an `unsafe` trait.
+
+> +
+> +        // SAFETY: `new` just came from [`into_foreign()`], and we dismi=
+ss this guard
+> +        // if the `xa_store` operation succeeds and takes ownership of t=
+he pointer.
+> +        let guard =3D ScopeGuard::new(|| unsafe {
+> +            drop(T::from_foreign(new));
+> +        });
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant, and =
+we are
+> +        // storing a [`T::into_foreign()`] result which upholds the late=
+r invariants.
+
+The second part of this comment should be an `INVARIANT` comment
+instead. So "INVARIANT: `new` came from [`T::into_foreign()`]."
+
+> +        let old =3D unsafe {
+> +            bindings::xa_store(
+> +                self.xa.get(),
+> +                Self::to_index(index),
+> +                new.cast_mut(),
+> +                bindings::GFP_KERNEL,
+> +            )
+> +        };
+> +
+> +        // SAFETY: `xa_store` returns the old entry at this index on suc=
+cess or
+> +        // a [`XArray`] result, which can be turn into an errno through =
+`xa_err`.
+> +        to_result(unsafe { bindings::xa_err(old) })?;
+> +        guard.dismiss();
+> +
+> +        Ok(if old.is_null() {
+> +            None
+> +        } else {
+> +            // SAFETY: The old value must have been stored by either thi=
+s function or
+> +            // `insert_between`, both of which ensure non-NULL entries a=
+re valid
+> +            // [`ForeignOwnable`] pointers.
+
+This should be replaced by "by the type invariant of `Self`, `old` is
+either NULL, or came from `T::into_foreign()`.".
+
+> +            Some(unsafe { T::from_foreign(old) })
+> +        })
+> +    }
+
+[...]
+
+> +    /// Allocates a new index in the array, optionally storing a new val=
+ue into
+> +    /// it, with configurable bounds for the index range to allocate fro=
+m.
+> +    ///
+> +    /// If `value` is [`None`], then the index is reserved from further =
+allocation
+> +    /// but remains free for storing a value into it.
+> +    fn insert_between(&self, value: Option<T>, min: u32, max: u32) -> Re=
+sult<usize> {
+> +        let new =3D value.map_or(core::ptr::null(), |a| a.into_foreign()=
+);
+> +        let mut id: u32 =3D 0;
+> +
+> +        let guard =3D ScopeGuard::new(|| {
+> +            if !new.is_null() {
+> +                // SAFETY: If `new` is not NULL, it came from the [`Fore=
+ignOwnable`]
+> +                // we got from the caller.
+> +                unsafe { drop(T::from_foreign(new)) };
+> +            }
+> +        });
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        //
+> +        // If this succeeds, it takes ownership of the passed `T` (if an=
+y).
+> +        // If it fails, we must drop the `T` again.
+> +        let ret =3D unsafe {
+> +            bindings::xa_alloc(
+> +                self.xa.get(),
+> +                &mut id,
+> +                new.cast_mut(),
+> +                bindings::xa_limit { min, max },
+> +                bindings::GFP_KERNEL,
+> +            )
+> +        };
+
+This function call is missing an INVARIANT comment stating that `new` is
+either NULL or came from `T::into_foreign()`.
+
+> +
+> +        if ret < 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            guard.dismiss();
+> +            Ok(id as usize)
+> +        }
+> +    }
+
+[...]
+
+> +// SAFETY: It is safe to send `XArray<T>` to another thread when the und=
+erlying
+> +// `T` is `Send` because XArray is thread-safe and all mutation operatio=
+ns are
+> +// internally locked. `T` must be `ForeignOwnable` because all pointers =
+stored
+> +// in the array are pointers obtained by calling `T::into_foreign` or ar=
+e NULL
+> +// pointers.
+> +unsafe impl<T: Send + ForeignOwnable> Send for XArray<T> {}
+> +//
+> +// SAFETY: It is safe to send `&XArray<T>` to another thread when the un=
+derlying
+> +// `T` is `Sync` because it effectively means sharing `&T` (which is saf=
+e because
+> +// `T` is `Sync`). Additionally, `T` is `Send` because XArray is thread-=
+safe and
+> +// all mutation operations are internally locked. `T` must be `ForeignOw=
+nable`
+> +// because all pointers stored in the array are pointers obtained by cal=
+ling
+> +// `T::into_foreign` or are NULL pointers.
+> +unsafe impl<T: Send + Sync + ForeignOwnable> Sync for XArray<T> {}
+
+The part about "`T` must be `ForeignOwnable`..." is not needed here.
+
+--=20
+Cheers,
+Benno
+
+> --
+> 2.43.0
+>=20
+
