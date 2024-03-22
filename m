@@ -1,71 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D72823BE
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Mar 2024 22:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30CF1D6AE;
+	Fri, 22 Mar 2024 23:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711145743; cv=none; b=gbJEjX7nNmDYgf4WiXJ+guFVEMpicRnkIgWqk2uEIVQqBMfvytT7yeGvHkj/tQ/pYTvG6qRjGPozqx4A8iVq2G5CR0BKOUrmTZQYACpE7M84eLSwh8tjvqRSu3C4XpfAxTgmm+hpccn+XCnjJo99s/fL5vOK6RltzaOBuh4lMOI=
+	t=1711150750; cv=none; b=WcQIrJZksq72q7SBrG2leWSj+3MbBa8DQbdlabN1Zh6dKwg0lbytbcqCANaJUX4XQgirgLRNamHw2+4vUr4qosD5nwCEm2f+eJhun4Ifu8L3ScX9/cHbcJqAzOPenCCBLxgrh9deuNsZqanIB3AKZQEzmXosmed7s8dJ3XqmNZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711145743; c=relaxed/simple;
-	bh=ycMrtdPn68CTRrt3aDmyI8tifKQ2EOf0nLCRHFWzr08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9Fe5PaDefJwTuDkejMrR9S8oiGZsn5A71MRD2NkCPPvVyvZHrWeDL2yGbplfrP0cHKeIFN2Ac0IIg2pp4AZVvJsHqtF4saMlO14i0Tnwf6GJbef7pchSe/Wr4SpTcEtMvES5VyVXZLxaJpaGwLkGwHdyJE4HvSD9Xq/gOHBGQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F8K048Xd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1711150750; c=relaxed/simple;
+	bh=IKpP9NgiLUwguiKBIu5gVMzGr4TtPK8PH/h8qTGsc7g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VAz2dQGBPoaAEyhodbDeW+SPHTnpvr5X5XrTAp1daO2Sxum+ryWNfsOhwdGyKVIvdWMCSG41U/CiHanaBRlDjth8eMkf9y/dVHWFmJlkoGq1qK5rON0fovOnOF6SUCC6q3y1BDTz7+cXylKRq9Y3cAeBg9Y1FMQsCnqX4W9AhZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AF3+WOj8; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F8K048Xd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711145740;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t+o/hq/vRaAlqZorXgz61wZ5x9VfNVOFlmD2hAnuwQc=;
-	b=F8K048XdEA/nU4I7Ui3jMlm41WgwgC3FEjdV6VLtU3l+lQ//8h8cTNgHkhwdxhM5tH86oG
-	rGKKaxbIcK19/t46NtVYnZFVUOgP7QP9d4eGhFFXVcur62unrdk93HUMJgZa35cwq/u5GJ
-	LQH3LbCX88AhSE6gynEeS47VUn480+U=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-159-JjZz40PEMPe23vRDS-XaXg-1; Fri,
- 22 Mar 2024 18:15:38 -0400
-X-MC-Unique: JjZz40PEMPe23vRDS-XaXg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E5C3D3C02454;
-	Fri, 22 Mar 2024 22:15:36 +0000 (UTC)
-Received: from emerald.redhat.com (unknown [10.22.8.130])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 3BA338173;
-	Fri, 22 Mar 2024 22:15:36 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AF3+WOj8"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-42ee23c64e3so12285081cf.2;
+        Fri, 22 Mar 2024 16:39:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711150748; x=1711755548; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ihthLhUKDez7apre5WNcowgmLHfDAeuMZ64Fs/0tAkA=;
+        b=AF3+WOj8E09gpP3zaQY1bzemkmU1GSZZH2UFk38zSqdESndXuONXf8wziK+UKLxeAh
+         9YGrVClbXveMXUqVdmXVp/yXCgab8McCyOcqwckGTGvElrczwnip6Np5gbCOFqcb/T+f
+         YhJtwqEW73PQ/EuTDscAoZi2A77zq0QAxi81Zhoi3yEcY4a/GL2L2rLvSFGj5vWd25M8
+         fB8LX8ouAMXGeq0NxL8jEPolh/gG0sC0E1HRVSZCeTBDAQ4YTyy4x17M+5GMFWZhx1uu
+         Z5gyRKSef3SOj+hmPcK5KsmmS05ZbGOdwz5mmMUFzsSoKtAOZAlK7dYDCNuEKkcGlfvl
+         OQHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711150748; x=1711755548;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ihthLhUKDez7apre5WNcowgmLHfDAeuMZ64Fs/0tAkA=;
+        b=j1PQcnarcjYZi4rrNfTDcn2qW2lkf+ZLrVvpCLHXL/ExMH2kRWOb665WOqbmOAkEua
+         ECpPlScaXAOP47UA44f84GEFb9PRYG+ESVJhIwFvQSAyFSWWELj89s36PpCpQJ/CRL/J
+         36DQ4TJynpnIlHK6aPZIkvLLOudUaEz+xiEas5n81WgcBRjdYq+elIQNBfjqjwRoZZS5
+         Nu60yNxGvQjuAtn9ksw6NFmXE5L9ccvKZdN3ECHAO//NvN5mueag+G5DWkPVuEPSjb4h
+         elgz1F2WEMAKo0Tps4oQ2Sfp/7BST64XeNxMNjaQ/yViYS/QmPFQk5dVUOrSUhpviqH1
+         7asw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPRoLYViMmlj0A6xGaOUYjXhZHBY8ttq7leoemn3UFkhBgQc+ZZdfTg5lZpDVw8Len63rB3JBihKth7QfCmcDZqQmUSO4KbPXFmn4bI7Jjczqo3kRc8foTzfVew+Lzr/VTXeHkjWgKiFZOYBEvt9VGpY/1P8YKYmKlNxtglXIvGgff3SkA+eI=
+X-Gm-Message-State: AOJu0YxOtQHRWQbk8/nuSdtHWHXXp49afcEYHJ7Kk9tJC6xmqGMeImYh
+	lwmnaClkrdXM+WghtqNxpK4YBygjBQ9LV44h7oLAstjcRKyNks4Z
+X-Google-Smtp-Source: AGHT+IEtxqGn3kAtIV4D96rJILpY2Sr7kOPlyrqC9vZdift3MfB5dK3Ly5o2AHSrAoeMz8EZNAQnbw==
+X-Received: by 2002:a05:622a:5b89:b0:431:3d52:2fdc with SMTP id ec9-20020a05622a5b8900b004313d522fdcmr874851qtb.65.1711150747498;
+        Fri, 22 Mar 2024 16:39:07 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id g26-20020ac84dda000000b00430b3fbfeb3sm285249qtw.47.2024.03.22.16.39.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Mar 2024 16:39:07 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id D8C561200032;
+	Fri, 22 Mar 2024 19:39:05 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Fri, 22 Mar 2024 19:39:05 -0400
+X-ME-Sender: <xms:lxb-ZSqXNEAzynlHnF4fFGyRoHtOexi5knH7feyxPDs96NA_Th3nRw>
+    <xme:lxb-ZQo14qQC0HDkun8fN8dNZc31jLQaSSwRp-lSRRbuGMUv8ZZrg1xCldhdG0Wg5
+    IFhOLd4gw-M5-JhZw>
+X-ME-Received: <xmr:lxb-ZXPpj_hbXPHfobZ5yBfALoDbmEbVHufDqKh84HHxVTsFoobaCxbToRSHag>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddtfedgudegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeeivdevvedvffejuedvudekfeeltdeguedtleetudehudfffeejvdelkefgueeh
+    ueenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhruhhsthdqlhgrnhhgrdhorhhgpd
+    iiuhhlihhptghhrghtrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
+    pehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlih
+    hthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhm
+    rghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:lxb-ZR4k61VpjjUgrxvZg6z9Sw0lQEzr87LoxOCl1CB5O4SlQflMpw>
+    <xmx:lxb-ZR4ZfWPemcqH1PHUXr6f0hYuQnOym5JONG25ZMBBHNfA1yWQPQ>
+    <xmx:lxb-ZRhCY22Y5uR5nXDYDfRfTT9l5j-MkUkRzUHNIVyJK3bPNpooRQ>
+    <xmx:lxb-Zb5FYvHuId1iM5Q9_nh_iqfFheWz3O8ETXDxkQLz42YyAeGz6Q>
+    <xmx:mRb-Zf6532KQ_U8X8pWPAji-X5fWb2wIg5ADz9JBWOgwYSb7-WrY8pXD0Eb3_0Xl>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 Mar 2024 19:39:02 -0400 (EDT)
+From: Boqun Feng <boqun.feng@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev
+Cc: Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+	Boqun Feng <boqun.feng@gmail.com>,	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Asahi Lina <lina@asahilina.net>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	linux-kernel@vger.kernel.org (open list),
-	rust-for-linux@vger.kernel.org (open list:RUST)
-Subject: [PATCH 4/4] WIP: rust/drm/kms: Add ShadowPlaneState<T>
-Date: Fri, 22 Mar 2024 18:03:36 -0400
-Message-ID: <20240322221305.1403600-5-lyude@redhat.com>
-In-Reply-To: <20240322221305.1403600-1-lyude@redhat.com>
-References: <20240322221305.1403600-1-lyude@redhat.com>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,	elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+	linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org
+Subject: [WIP 0/3] Memory model and atomic API in Rust
+Date: Fri, 22 Mar 2024 16:38:35 -0700
+Message-ID: <20240322233838.868874-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -73,121 +119,82 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- drivers/gpu/drm/rvkms/plane.rs           |  7 +++-
- rust/bindings/bindings_helper.h          |  2 +
- rust/kernel/drm/kms.rs                   |  1 +
- rust/kernel/drm/kms/gem_atomic_helper.rs | 48 ++++++++++++++++++++++++
- 4 files changed, 56 insertions(+), 2 deletions(-)
- create mode 100644 rust/kernel/drm/kms/gem_atomic_helper.rs
+Hi,
 
-diff --git a/drivers/gpu/drm/rvkms/plane.rs b/drivers/gpu/drm/rvkms/plane.rs
-index d98a1f7bf79e2..5fb1b63842929 100644
---- a/drivers/gpu/drm/rvkms/plane.rs
-+++ b/drivers/gpu/drm/rvkms/plane.rs
-@@ -4,7 +4,10 @@
-     prelude::*,
-     drm::{
-         device::Device,
--        kms::plane::{self, DriverPlaneState},
-+        kms::{
-+            plane::{self, DriverPlaneState},
-+            gem_atomic_helper::ShadowPlaneState,
-+        }
-     },
- };
- 
-@@ -15,7 +18,7 @@ pub(crate) struct DriverPlane {
- }
- 
- pub(crate) type Plane = plane::Plane<DriverPlane>;
--pub(crate) type PlaneState = plane::PlaneState<RvkmsPlaneState>;
-+pub(crate) type PlaneState = ShadowPlaneState<RvkmsPlaneState>;
- 
- impl plane::DriverPlane for DriverPlane {
-     type Initializer = impl PinInit<Self, Error>;
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 5856afbe6e8f6..73a5eb00e8625 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -12,6 +12,8 @@
- #include <drm/drm_edid.h>
- #include <drm/drm_file.h>
- #include <drm/drm_gem.h>
-+#include <drm/drm_gem_atomic_helper.h>
-+#include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_gem_shmem_helper.h>
- #include <drm/drm_ioctl.h>
-diff --git a/rust/kernel/drm/kms.rs b/rust/kernel/drm/kms.rs
-index b55d14415367a..14f4c3842ada0 100644
---- a/rust/kernel/drm/kms.rs
-+++ b/rust/kernel/drm/kms.rs
-@@ -6,6 +6,7 @@
- pub mod crtc;
- pub mod encoder;
- pub mod plane;
-+pub mod gem_atomic_helper;
- 
- use crate::{
-     drm::{drv, device::Device},
-diff --git a/rust/kernel/drm/kms/gem_atomic_helper.rs b/rust/kernel/drm/kms/gem_atomic_helper.rs
-new file mode 100644
-index 0000000000000..85bc3df32d8b7
---- /dev/null
-+++ b/rust/kernel/drm/kms/gem_atomic_helper.rs
-@@ -0,0 +1,48 @@
-+use crate::{
-+    prelude::*,
-+    private::Sealed,
-+    bindings,
-+    init::Zeroable,
-+};
-+use super::plane::{IntoPlaneState, DriverPlaneState};
-+
-+unsafe impl Zeroable for bindings::drm_shadow_plane_state {}
-+
-+#[derive(Default)]
-+#[repr(C)]
-+pub struct ShadowPlaneState<T: DriverPlaneState> {
-+    shadow_state: bindings::drm_shadow_plane_state,
-+    inner: T,
-+}
-+
-+impl<T: DriverPlaneState> Sealed for ShadowPlaneState<T> {}
-+
-+static_assert!(crate::offset_of!(bindings::drm_shadow_plane_state, base) == 0);
-+
-+// SAFETY: Our data layout starts with drm_plane_state (contained at the start of
-+// drm_shadow_plane_state)
-+unsafe impl<T: DriverPlaneState> IntoPlaneState for ShadowPlaneState<T> {
-+    fn __duplicate_state(&self, plane: *mut bindings::drm_plane) -> Result<Box<Self>> {
-+        let mut new: Box<Self> = Box::try_init(try_init!(Self {
-+            shadow_state: bindings::drm_shadow_plane_state { ..Default::default() },
-+            inner: self.inner.clone()
-+        }))?;
-+
-+        // SAFETY: FFI call with no special requirements
-+        unsafe { bindings::__drm_gem_duplicate_shadow_plane_state(plane, &mut new.shadow_state) };
-+
-+        Ok(new)
-+    }
-+
-+    fn __destroy_state(state: *mut bindings::drm_plane_state) {
-+        // SAFETY: This would not be called without a plane state to destroy, and our data layout
-+        // starts with `bindings::drm_plane_state`
-+        unsafe { bindings::__drm_gem_destroy_shadow_plane_state(state.cast()) };
-+    }
-+
-+    fn __reset_state(plane: *mut bindings::drm_plane, state: *mut bindings::drm_plane_state) {
-+        // SAFETY: This would not be called without a plane state to reset, and our data layout
-+        // starts with `bindings::drm_plane_state`
-+        unsafe { bindings::__drm_gem_reset_shadow_plane(plane, state.cast()) }
-+    }
-+}
+Since I see more and more Rust code is comming in, I feel like this
+should be sent sooner rather than later, so here is a WIP to open the
+discussion and get feedback.
+
+One of the most important questions we need to answer is: which
+memory (ordering) model we should use when developing Rust in Linux
+kernel, given Rust has its own memory ordering model[1]. I had some
+discussion with Rust language community to understand their position
+on this:
+
+	https://github.com/rust-lang/unsafe-code-guidelines/issues/348#issuecomment-1218407557
+	https://github.com/rust-lang/unsafe-code-guidelines/issues/476#issue-2001382992
+
+My takeaway from these discussions, along with other offline discussion
+is that supporting two memory models is challenging for both correctness
+reasoning (some one needs to provide a model) and implementation (one
+model needs to be aware of the other model). So that's not wise to do
+(at least at the beginning). So the most reasonable option to me is:
+
+	we only use LKMM for Rust code in kernel (i.e. avoid using
+	Rust's own atomic).
+
+Because kernel developers are more familiar with LKMM and when Rust code
+interacts with C code, it has to use the model that C code uses.
+
+
+And this patchset is the result of that option. I introduced an atomic
+library to wrap and implement LKMM atomics (of course, given it's a WIP,
+so it's unfinished). Things to notice:
+
+* I know I could use Rust macro to generate the whole set of atomics,
+  but I choose not to in the beginning, as I want to make it easier to
+  review.
+
+* Very likely, we will only have AtomicI32, AtomicI64 and AtomicUsize
+  (i.e no atomic for bool, u8, u16, etc), with limited support for
+  atomic load and store on 8/16 bits.
+
+* I choose to re-implement atomics in Rust `asm` because we are still
+  figuring out how we can make it easy and maintainable for Rust to call
+  a C function _inlinely_ (Gary makes some progress [2]). Otherwise,
+  atomic primitives would be function calls, and that can be performance
+  bottleneck in a few cases.
+
+* I only have two API implemented and two architecture supported yet,
+  the complete support surely can be added when everyone is on the same
+  page.
+
+
+Any suggestion, question, review, help is welcome!
+
+Regards,
+Boqun
+
+[1]: https://doc.rust-lang.org/std/sync/atomic/#memory-model-for-atomic-accesses
+[2]: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/LTO.20Rust.20modules.20with.20C.20helpers/near/425361365
+
+Boqun Feng (3):
+  rust: Introduce atomic module
+  rust: atomic: Add ARM64 fetch_add_relaxed()
+  rust: atomic: Add fetch_sub_release()
+
+ rust/kernel/sync.rs                   |  1 +
+ rust/kernel/sync/atomic.rs            | 65 +++++++++++++++++++++++++++
+ rust/kernel/sync/atomic/arch.rs       | 15 +++++++
+ rust/kernel/sync/atomic/arch/arm64.rs | 46 +++++++++++++++++++
+ rust/kernel/sync/atomic/arch/x86.rs   | 48 ++++++++++++++++++++
+ 5 files changed, 175 insertions(+)
+ create mode 100644 rust/kernel/sync/atomic.rs
+ create mode 100644 rust/kernel/sync/atomic/arch.rs
+ create mode 100644 rust/kernel/sync/atomic/arch/arm64.rs
+ create mode 100644 rust/kernel/sync/atomic/arch/x86.rs
+
 -- 
-2.43.0
+2.44.0
 
