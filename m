@@ -1,358 +1,447 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911B843AAB;
-	Fri, 22 Mar 2024 15:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3633F627FC
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Mar 2024 22:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711121553; cv=none; b=HLI5/9c9FiZxrDh1c95y2Ot00Lb0b0vWOiCLyL2OGlq4DTitHBuN0D4I/8YRduccRz7n1kL0fO7y5koXA0DTxmiilV62/uZdmuLQLn1A/HtuS4xGLiGdq57/gPWeFIli+wivtuofsn3mxb+L2IT432Z7GG5CAi873pk541MW1KE=
+	t=1711145687; cv=none; b=SKWclC9euPahE7dPCUzVjDfIq+SS7V/ijh18Ekmf7uh16PGFnRngAkAoSZbajkZJVEI/e5HMtgzknKa8sluBFN28SkqcBSlVjbAfZS1132h+N+zmNtNZZeF2cHZdQ2WSLmxLcNAK3kgD+aEomSWyd3nIFsOMWCSzP6PqA80xOF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711121553; c=relaxed/simple;
-	bh=P3wyIxoBFXK1mVKfrTE7kGKRqmQadcn0/NHqsFnj96c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pL3kbza457z7JmO6KnE5bKcfz5fELjGgl4MKzbfX3vgP7ZZ1nz/ZzRr3vlS6WKXbdJwmtVRCrWEZAhWendiCFj5Eaz80j+aHnjsBaC9x9BaoMWXWSrI2eHQc56AVTHMutf8hivQ+lGzefUdVqvoz3X7g3za2svsd556p7llJOZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GkrBJ4D5; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711145687; c=relaxed/simple;
+	bh=rUGFDxp8E7JFKtW0EKzcwHzlwL8qQqOC600YqLayJzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u/Xsvzo5XTw0BXTDPc1o99TGeB2IWRG+crg0EztgQXG0zl1QKkUZIwXKR5Wxr6xvQJXp6oMI0YzlCnY1v+my4XpXhTTANQDUv+9l+QXkZFtDXFaWVL7nvOjPq2r4/MAMrL76JzDpR0M0CZ3JdFppV1B+EN3zu2hHoCoLIyHCOGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X1BlscDM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GkrBJ4D5"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6918781a913so18623706d6.3;
-        Fri, 22 Mar 2024 08:32:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711121550; x=1711726350; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=h1K6z7fXnB/y40CAaLq2u2T8rIHyCDP9Eyty22Wlld8=;
-        b=GkrBJ4D5IbQfzmyu9sgFoJc4AZz9+nptw/f9uqsLT5GK/ApxI7dsRNT5CXXHkAUiU/
-         gUlbphfbgY5mNo9G7Zpnt0Q1rjvEW92Hk1efT0YiwzfEu2gC9tL2MSurG5kGbGbHDZ+L
-         bg6f+7M0Ji87Va86GUjAq+tl4T9jntRPxXF1JVxhPKFTfNS/dvmEH1pGMWLLDvEy0OcU
-         JVgr9VetwT0EtePOJNdu82Lr5pcg9y6RlJjomKYjJZPpJwHWtFpwStyVTRTKZV1D53AX
-         JErhoKwBW807iAVmuSdLsuWdWK4+lzB6nfLOiSGIhna6qaVfDBDT+LjiU5A9dS14dzZD
-         6w6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711121550; x=1711726350;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h1K6z7fXnB/y40CAaLq2u2T8rIHyCDP9Eyty22Wlld8=;
-        b=jxg+MSPhzl6/6uE16Hw/jMTS1HzS0Y1qoQkKIY6zko8DtoBnP0njAv4RvyviFzeGBa
-         8N1Hi0cxuxSl1NDXW8mNzLHw2+eGnQmIXh7elr2bR6pFXmoJYJ4ZaboVCh49YA6chC7N
-         PqLDs2RsfAy97fh4qMz6WsIEjim3K+nKZOgJNaabcsmqHKxwQjpd/TIRyraUWxHgVAoV
-         yfm5Oc62OrA++X1mKHgj7fS9gSVpeDPz+1mtDrBf1zL/jR6ShTqNTAYsXbGEghzerWsP
-         dzG81sigixXCpLSSHdDHiIoZsMZib+//LyMkLwtJ4B1YHtM8ccHMjcZft/pFFbYVXYVS
-         xIxw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+2ikN+PkVjNY6zpA7KrPATs/IEmr29fyL4f9Ot2WYqHikQybnaSJzyK+H99lSuBY+kHHW+p5wGokwOw4n5G/yNS+k5CJYJMPHOUE9QAB3sbmNzWDMywd2ncdptiqT9f9nYzbHsO5xJrsvvTw=
-X-Gm-Message-State: AOJu0YxB/85gnGgDxbDQn7cc3VKCrCgEmEEed/GYZbgt67E4Ba8YSgky
-	FlQ/wpAA9za+a4Kj9WsPdztkHIZgOlZAjyPybpQVHonr3q2Sn5Mb
-X-Google-Smtp-Source: AGHT+IGaO1+EvCcnVniGMfSPDZOPk8jpiG5xa91KWDNtek3tBbzaK6IbL+JZODUhmds+LX1/btEYaA==
-X-Received: by 2002:ad4:5fcf:0:b0:690:d754:284 with SMTP id jq15-20020ad45fcf000000b00690d7540284mr2259366qvb.27.1711121550448;
-        Fri, 22 Mar 2024 08:32:30 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id cy17-20020a05621418d100b0068f6e1c3582sm425573qvb.146.2024.03.22.08.32.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Mar 2024 08:32:29 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 6EEAA1200066;
-	Fri, 22 Mar 2024 11:32:29 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Fri, 22 Mar 2024 11:32:29 -0400
-X-ME-Sender: <xms:jKT9ZXW8juNAixHYWl23vDN4r2HD-_LY4H3gga8fw9I7Cs6EJubA6Q>
-    <xme:jKT9Zfl36ZrZJ1cLP42wEl1-PujlvOA_ZdeR1LRqMceGK7zCujJO3hW0RN6XrHo_7
-    A-jS680h9WOztxomg>
-X-ME-Received: <xmr:jKT9ZTYjHjZVlRWiuxg9mvy52l-_AHlbSzZv1K6UzY7GgVhW9kkpQwRFsQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddtvddgudefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtqhertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnheptdeijeetheelhedvfeehgeegjeeihfeihedvlefhveehueetffetieev
-    udegudeinecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdprghnughrohhiugdrtghomh
-    dprhhushhtqdhfohhrqdhlihhnuhigrdgtohhmpdgvlhgrphhsvggurdhtohenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvg
-    hsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheeh
-    hedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:jKT9ZSXuIq2ExToqdvKjKaEjbF8AuPJtE1HEle0py0KOB79B4xKh5A>
-    <xmx:jKT9ZRloNPb020IzhvRKk9ouIMDsxHgtAQrpdt-L8PJcONKUJwP-XQ>
-    <xmx:jKT9ZfdkyQ825Fgo8VhPqlDWPd4j76vMwuxIxNuGOswvC3mAF5sVAA>
-    <xmx:jKT9ZbF4x2G1bbxC35nLVxXfMJUpEDRjc60ZfW6c3JB4whEPZ5jBoQ>
-    <xmx:jaT9ZT3ZOqVvishrBoettkZDpY24Gfv6NwGjzZ41mjoVy4qdQS6M2WQPKr4>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 Mar 2024 11:32:28 -0400 (EDT)
-Date: Fri, 22 Mar 2024 08:32:26 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: benno.lossin@proton.me, a.hindborg@samsung.com, alex.gaynor@gmail.com,
-	bjorn3_gh@protonmail.com, gary@garyguo.net, jstultz@google.com,
-	linux-kernel@vger.kernel.org, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org,
-	tglx@linutronix.de, wedsonaf@gmail.com, lina@asahilina.net,
-	heghedus.razvan@protonmail.com
-Subject: Re: [PATCH v2] rust: time: add Ktime
-Message-ID: <Zf2kio8NYG5DEgyY@tardis>
-References: <2ecf6529-5408-4621-becc-2f30e1039079@proton.me>
- <20240322101803.400735-1-aliceryhl@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X1BlscDM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711145684;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZceXvUPFywnM9XOG18mYfgVHe3urtUNxPclIqQokvbY=;
+	b=X1BlscDM8OsWNQHs4pf/VIpLn69BbCKVsqeYTqesfDw9MUDmWG+U88BcMWUM9BlrZ9mlwx
+	Ny16CC5CJBYofD7uH7WZ2Kp7JSiiH5JMwX9kvX3MaKDCAzNOrk/rofTgHevEV+wS4AkKUD
+	MzZqgT/6vS7U+x8gt0s7ow39yzOAXRg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-h2LJRQGpM-6hcydqIbXLZQ-1; Fri, 22 Mar 2024 18:14:38 -0400
+X-MC-Unique: h2LJRQGpM-6hcydqIbXLZQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 53F528007A3;
+	Fri, 22 Mar 2024 22:14:38 +0000 (UTC)
+Received: from emerald.redhat.com (unknown [10.22.8.130])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id C68A98173;
+	Fri, 22 Mar 2024 22:14:37 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org (open list:RUST:Keyword:\b(?i:rust)\b)
+Subject: [RFC WIP 0/4] Rust bindings for KMS + RVKMS
+Date: Fri, 22 Mar 2024 18:03:32 -0400
+Message-ID: <20240322221305.1403600-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240322101803.400735-1-aliceryhl@google.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Fri, Mar 22, 2024 at 10:18:02AM +0000, Alice Ryhl wrote:
-> Benno Lossin <benno.lossin@proton.me> wrote:
-> > On 3/22/24 09:59, Alice Ryhl wrote:
-> >> +/// Returns the number of milliseconds between two ktimes.
-> >> +#[inline]
-> >> +pub fn ktime_ms_delta(later: Ktime, earlier: Ktime) -> i64 {
-> >> +    (later - earlier).to_ms()
-> >> +}
-> >=20
-> > Is there a reason for this function being standalone?
->=20
-> I think for a Rust time API, we should make one of two choices:
->=20
-> * Match the C ktime_t API as closely as possible.
-> * Match the Rust standard library std::time API as closely as possible.
->=20
-> This patchset has made the former choice, and that is why I went with
-> this design.
->=20
-> In the future it could make sense to add a more "Rusty" API, but even
-> then I think it could make sense to have both and implement the latter
-> in terms of the former. That way, only the API that closely matches the
-> C ktime_t API needs to concern itself with unsafely calling into C.
->=20
+Hi everyone! I mentioned a little while ago that I've been working on
+porting vkms over to rust so that we could come up with a set of rust
+KMS bindings for the nova driver to be able to have a modesetting driver
+written in rust. This driver currently doesn't really do much, but it
+does load and register a modesetting device!
 
-So I create the following one based on this patch and the previous we
-have. I changed the title a bit, did a s/Ktime/KTime and add the part of
-`Instant`, please take a look, I think the binder usage is still
-covered.
+I wanted to send this early on so that people could take a look and tell
+me if there's anything I've overlooked so far. As well, I've written up
+a high level overview of how the interface works - along with my
+reasoning for a lot of the design choices here. I'm sure things will
+change a bit as I figure out what we really need while porting rvkms,
+but I'm hoping this is pretty close to what the final set of bindings
+are going to look like.
 
-Benno, I dropped your Reviewed-by since the patch has been changed.
-Please take annother look.
+Note: not all of the patches required for building this have been
+included. I've just included the kms/rvkms bits here, but the full
+branch can be found here:
 
-Thomas, I tried to resolve a few comments you had for the previous
-version, please let me know whether this version looks OK to you.
+https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-03222024
 
-Regards,
-Boqun
+So, the overview!
 
----------------------------->8
-Subject: [PATCH] rust: time: Add clock source reading functionality
+# Modesetting objects and atomic states
 
-Introduce wrappers around `ktime_t` with a time duration type `KTime`
-and a timestamp type `Instant`.
+A general overview of the interface: so far we have the following traits
+for drivers to implement:
 
-Rust Binder will use these bindings to compute how many milliseconds a
-transaction has been active for when dumping the current state of the
-Binder driver. This replicates the logic in C Binder [1].
+  * DriverConnector
+  * DriverCrtc
+  * DriverPlane
+  * DriverEncoder
 
-For a usage example in Rust Binder, see [2].
+Each one of these modesetting objects also has a typed container that
+can be used to refer to it by drivers: Connector<T>, Plane<T>, etc. Each
+typed container has only two members (not counting phantoms). Using
+Crtc<T> as an example:
 
-The `ktime_get` method cannot be safely called in NMI context. This
-requirement is not checked by these abstractions, but it is intended
-that klint [3] or a similar tool will be used to check it in the future.
+/// A typed KMS CRTC with a specific driver.
+#[repr(C)]
+#[pin_data]
+pub struct Crtc<T: DriverCrtc> {
+    // The FFI drm_crtc object
+    pub(super) crtc: Opaque<bindings::drm_crtc>,
+    /// The driver's private inner data
+    #[pin]
+    inner: T,
+    #[pin]
+    _p: PhantomPinned,
+}
 
-Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830fab=
-=2E1682333709.git.zhangchuang3@xiaomi.com/ [1]
-Link: https://r.android.com/3004103 [2]
-Link: https://rust-for-linux.com/klint [3]
-Originally-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-Originally-by: Asahi Lina <lina@asahilina.net>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/kernel/time.rs | 158 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 158 insertions(+)
+The first member is an Opaque<> container containing the FFI struct for
+the modesetting object, and the second `inner` contains the implementing
+driver's private data for the modesetting object. Each modesetting
+object container can be coerced (through Deref<>) into an immutable
+reference to inner to make accessing driver-private data easy. This
+allows subclassing of modesetting objects in a similar manner to what we
+currently do in C.
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 25a896eed468..50cc063aa9b4 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -4,6 +4,15 @@
- //!
- //! This module contains the kernel APIs related to time and timers that
- //! have been ported or wrapped for usage by Rust code in the kernel.
-+//!
-+//! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
-+//! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
-+
-+use crate::pr_err;
-+use core::marker::PhantomData;
-+
-+/// The number of nanoseconds per millisecond.
-+pub const NSEC_PER_MSEC: i64 =3D bindings::NSEC_PER_MSEC as i64;
-=20
- /// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
- pub type Jiffies =3D core::ffi::c_ulong;
-@@ -18,3 +27,152 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
-     // matter what the argument is.
-     unsafe { bindings::__msecs_to_jiffies(msecs) }
- }
-+
-+/// A kernel time duration.
-+///
-+/// This type basically wraps the `ktime_t` with one restriction: it shoul=
-d only be used for
-+/// representing a time duration, in other words, it's not the type for ti=
-mestamps.
-+#[repr(transparent)]
-+#[derive(Debug, Copy, Clone, PartialEq, PartialOrd)]
-+pub struct KTime {
-+    inner: bindings::ktime_t,
-+}
-+
-+impl KTime {
-+    /// Create a [`KTime`] from a raw `ktime_t`.
-+    #[inline]
-+    pub fn from_raw(inner: bindings::ktime_t) -> Self {
-+        Self { inner }
-+    }
-+
-+    /// Divide the number of nanoseconds by a compile-time constant.
-+    #[inline]
-+    fn divns_constant<const DIV: i64>(self) -> i64 {
-+        self.to_ns() / DIV
-+    }
-+
-+    /// Returns the number of nanoseconds.
-+    #[inline]
-+    pub fn to_ns(self) -> i64 {
-+        self.inner
-+    }
-+
-+    /// Returns the number of milliseconds.
-+    #[inline]
-+    pub fn to_ms(self) -> i64 {
-+        self.divns_constant::<NSEC_PER_MSEC>()
-+    }
-+}
-+
-+impl core::ops::Sub for KTime {
-+    type Output =3D KTime;
-+
-+    #[inline]
-+    fn sub(self, other: KTime) -> KTime {
-+        Self {
-+            inner: self.inner - other.inner,
-+        }
-+    }
-+}
-+
-+/// Represents a clock, that is, a unique time source and it can be querie=
-d for the current time.
-+pub trait Clock: Sized {
-+    /// Returns the current time for this clock.
-+    fn now() -> Instant<Self>;
-+}
-+
-+/// Marker trait for clock sources that are guaranteed to be monotonic.
-+pub trait Monotonic {}
-+
-+/// An instant in time associated with a given clock source.
-+#[derive(Debug)]
-+pub struct Instant<T: Clock> {
-+    ktime: KTime,
-+    _type: PhantomData<T>,
-+}
-+
-+impl<T: Clock> Clone for Instant<T> {
-+    fn clone(&self) -> Self {
-+        *self
-+    }
-+}
-+
-+impl<T: Clock> Copy for Instant<T> {}
-+
-+impl<T: Clock> Instant<T> {
-+    fn new(ktime: KTime) -> Self {
-+        Instant {
-+            ktime,
-+            _type: PhantomData,
-+        }
-+    }
-+
-+    /// Returns the time elapsed since an earlier [`Instant`], or None if =
-the argument is a later
-+    /// Instant.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::{Clock, clock::KernelTime};
-+    ///
-+    /// let a =3D KernelTime::now();
-+    /// let b =3D KernelTime::now();
-+    ///
-+    /// // `KernelTime` is monotonic.
-+    /// assert_eq!(a.since(b), None);
-+    /// assert_eq!(b.since(a).map(|d| d.to_ns() >=3D 0), Some(true));
-+    ///
-+    /// ```
-+    pub fn since(&self, earlier: Instant<T>) -> Option<KTime> {
-+        if self.ktime < earlier.ktime {
-+            None
-+        } else {
-+            Some(self.ktime - earlier.ktime)
-+        }
-+    }
-+}
-+
-+impl<T: Clock + Monotonic> Instant<T> {
-+    /// Returns the time elapsed since this [`Instant`].
-+    ///
-+    /// This is guaranteed to return a non-negative result, since it is on=
-ly implemented for
-+    /// monotonic clocks.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::{Clock, clock::KernelTime};
-+    ///
-+    /// let a =3D KernelTime::now();
-+    ///
-+    /// // `KernelTime` is monotonic.
-+    /// assert!(a.elapsed().to_ns() >=3D 0);
-+    ///
-+    /// ```
-+    pub fn elapsed(&self) -> KTime {
-+        self.since(T::now()).unwrap_or_else(|| {
-+            pr_err!(
-+                "Monotonic clock {} went backwards!",
-+                core::any::type_name::<T>()
-+            );
-+            KTime::from_raw(0)
-+        })
-+    }
-+}
-+
-+/// Contains the various clock source types available to the kernel.
-+pub mod clock {
-+    use super::*;
-+
-+    /// A clock representing the default kernel time source (`CLOCK_MONOTO=
-NIC`).
-+    pub struct KernelTime;
-+
-+    impl Monotonic for KernelTime {}
-+    impl Clock for KernelTime {
-+        #[inline]
-+        fn now() -> Instant<Self> {
-+            // SAFETY: It is always safe to call `ktime_get` outside of NM=
-I context.
-+            Instant::<Self>::new(KTime::from_raw(unsafe { bindings::ktime_=
-get() }))
-+        }
-+    }
-+}
---=20
+The main difference is that modesetting objects are immutable to drivers
+(as in, drivers can only get immutable references to these objects). The
+reason for this is that while it's common for drivers to stick their own
+private data in objects, pretty much all of this data falls into one of
+these categories:
+
+* Static driver data which is assigned during driver init. In our
+  abstraction, this assignment will happen in each modesetting object's
+  T::new() function - where the driver can use each modesetting object
+  trait's Args type to specify a data type containing such data which
+  will be passed to T::new(). This should always be available through
+  immutable references.
+* Modesetting state for drivers which needs to be kept track of
+  independently of the atomic state. As the name entails, all data in
+  this category is assumed to only be accessible within a modesetting
+  context - which itself ensures synchronization. At some point we will
+  implement a container type for this, which only provides a &mut
+  reference once the caller provides proof that we're in an atomic
+  modesetting context and thus - are the only ones who could possibly
+  hold a mutable reference.
+* Miscellaneous driver state, which may need to be accessed both inside
+  and outside of the atomic modesetting context. We will provide no
+  container type for this, and it will be up to the driver to provide an
+  appropriate container that ensures synchronization and hands out
+  mutable references as needed. A simple example of such a container
+  would be Mutex<T>.
+
+# Opaque modesetting objects
+
+This is something I haven't written up code for yet because we haven't
+run into any use for it, but presumably we will eventually. Basically:
+since we have driver subclassing through types like Connector<T> which
+the main DRM device trait doesn't need to know about - it is technically
+possible for us to have multiple different implementations of a
+modesetting object (for instance, a driver could have two
+DriverConnector implementations for different types of display
+connectors). At first I thought this might be too complicated, but I
+don't think it is! To support this, we would use a similar solution to
+what the GEM bindings currently do - by providing an opaque version of
+each modesetting object which only can be used for operations common
+across different implementations of that object. This Opaque struct
+could then be fallibly converted to its more qualified type, and we can
+ensure type safety here by simply using each implementation's vtable
+pointer (all of which should be 'static) to tell whether an opaque
+object matches the qualified type the driver is expecting. Here's some
+example psuedocode to give you an idea:
+
+```
+let drm_dev: drm::device::Device<Driver>; /* initialized elsewhere */
+
+type Plane = drm::kms::plane::Plane<DriverPlane>;
+
+for plane in drm_dev.iter_planes().filter_map(Plane::from_opaque) {
+  // ... do something
+}
+```
+
+We'd only really need to use these opaque types in situations where we
+can't guarantee type invariance, like iterating a list of multiple impls
+of modesetting objects. So, that more or less just means "anywhere
+outside of a DRM callback" (callbacks can ensure type invariance since
+each type has its own vtable).
+
+# Atomic states for modesetting objects
+
+For objects with atomic states, these traits are also implemented by the
+driver and allow subclassing as well - but with a few differences:
+
+* ConnectorState
+* CrtcState
+* PlaneState
+
+The main difference is that unlike with modesetting objects, atomic
+states are initially* considered mutable objects. This is mainly since
+contexts like atomic_check can satisfy rust's data aliasing rules, and
+it's just a lot easier for drivers to be able to get &mut references to
+these easily. It is likely that we may expose these objects later on
+through Pin<&mut> - since we don't want to allow them to move as certain
+drivers will do things like storing work structs in their states. I
+haven't gotten this far in the code yet though!
+
+# Helpers
+
+VKMS does not actually use drm_plane_state! Instead, it actually uses a
+GEM provided atomic state helper and the drm_shadow_plane_struct - which
+contains a drm_plane_state. And this is only a single example of such a
+helper, as a number of other ones which change the struct type a driver
+uses exist. So, how do we actually handle this in our bindings? Well, by
+shamelessly copying what the GEM bindings do!
+
+For modesetting objects where we want to also support the use of a
+helper that comes with it's own modesetting object/atomic state struct,
+we can follow another trait pattern. Using PlaneState<T> and shadow
+planes as an example: we can introduce a sealed trait named
+IntoPlaneState. This trait will represent any object in rust which
+contains a drm_plane_state - along with providing a set of functions
+that can be implemented to tell rust how to translate the object into a
+drm_plane_state, along with providing methods for invoking any other DRM
+functions that might be different for a helper. In the patch series I've
+posted, I've included some of the WIP code for handling shadow planes in
+this manner.
+
+# The initially* mutable global atomic state
+
+I have some WIP code written up for this, but nothing very complete
+quite yet as we haven't yet needed to manually instantiate an atomic
+state yet. But in some of the code I wrote up, I noticed some funny
+gotchas.
+
+The main drm_atomic_state structure is refcounted - which means multiple
+references to an atomic state can exist at once. This complicates things
+just a bit - as rust's data aliasing rules only allow for one mutable
+reference to an object to exist at a time. My current plan for handling
+this is to extend the kernel's ARef<T> type to also include a
+UniqueARef<T> type. This is basically the same as the kernel's
+UniqueArc<T> type, but for already refcounted objects - which will allow
+a caller mutable access to the underlying object so long as it's the
+only one holding a ref to it. Sharing references to the atomic state
+requires will require converting away from the UniqueARef. I think this
+should be enough, since drivers shouldn't really be making any changes
+to a state after the atomic check phase - so only having immutable
+references after that point should be good enough to make everyone
+happy.
+
+# Modesetting object lifetimes, ModesetObject and StaticModesetObject
+
+I think sima may have tried to warn me about this, because this was
+definitely a strange bit to figure out. There are two main types of
+modesetting objects in the kernel: refcounted modesetting objects, and
+non-refcounted modesetting objects. Reference counted objects are easy:
+we just implement the kernel's AlwaysRefCounted trait for them.
+Non-refcounted modesetting objects are weirder, as they share the
+lifetime of the device. This was one of the other big reasons we have to
+always expose modesetting objects through immutable references giving
+driver ownership over these structs would imply the driver could drop
+them before the drm device has been dropped which would cause UB. I
+originally considered having modesetting objects live in Arc<>
+internally to workaround this, but decided against it as this would mean
+we could make a non-refcounted modesetting object outlive it's device -
+which could also cause UB if a driver tried to do a modesetting
+operation with said object.
+
+I'd _really_ love to figure out how to handle this with references and
+lifetimes, as right now we currently tie the lifetime of a modesetting
+object's reference to the lifetime of the reference to the DRM device
+that created it - but this isn't currently enough to store those
+references in a driver's private data as I can't figure out how to tell
+the compiler "this reference is valid for as long as you hold an ARef
+for the DRM device". Which brings us to ModesetObject and
+StaticModesetObject. ModesetObject is a simple trait implemented by all
+DRM modesetting objects, which provides access to functions common
+across them (such as fetching the DRM device associated with a
+modesetting object). StaticModesetObject is a supertrait of
+ModesetObject which essentially marks a modesetting object as not having
+a refcount. We then provide KmsRef<T> which can be used to retrieve a
+"owned" reference to a modesetting object which can be stored in device
+state. This owned reference is simply a pointer to the modesetting
+object, along with an owned refcount for that object's parent device -
+which should ensure that the modesetting object is initialized and valid
+for as long as a KmsRef<> is held. I'm open for better ideas to solve
+this though :).
+
+# BFLs
+
+Unfortunately KMS has a few BFLs. In particular,
+drm_device.mode_config.mutex is one such BFL that protects anything
+related to hotplugging state (and probably a few other things?). In
+rust, data races are considered UB - so we need to be careful to ensure
+that any safe bindings we expose take care to be thread safe. Since rust
+usually represents locks as container types (e.g. Mutex<T>), but we have
+to deal with a BFL, we need a different solution that we can use to
+represent critical sections under this BFL. This brings us to
+ModeConfigGuard and ConnectorGuard.
+
+In rust, upon acquiring access to a mutex - you're given a "Guard"
+object which will release its respective lock once its dropped, and
+ModeConfigGuard is our version of this. ModeConfigGuards can either be
+"owned" or "borrowed". "Owned" means the rust code acquired the lock
+itself and thus - the lock must be dropped when the guard goes out of
+scope. "Borrowed" guards can only be created using unsafe functions, and
+are basically simply a promise that the mode config lock is held for the
+entire scope in which the ModeConfigGuard is alive. Borrowed guards are
+really only something that will be used on the FFI side of things for
+callbacks like drm_connector.get_modes() - where we know that the
+mode_config_lock was acquired prior to our get_modes() callback being
+invoked by DRM.
+
+ConnectorGuard is basically just a helpful extension of this that can be
+instantiated cheaply from a ModeConfigGuard, and it basically just
+provides access to methods for individual connectors that can only
+happen under the mode_config lock. You can see an example of this in
+rust/kernel/drm/kms/connector.rs and drivers/gpu/drm/rvkms/connector.rs.
+Keep in mind we currently don't have an implementation of an owned
+ModeConfigGuard, as no use for one has arisen in rvkms quite yet.
+
+Note: I did (and still am) considering using the kernel's already-made
+LockedBy<> type - however, this seems rather difficult to do considering
+that the BFL and connector live in different structs - and those structs
+are FFI structs. I shoud look a bit closer at some point soon though. As
+well, I expect the semantics around how this type works might change
+slightly - as I'd also like to see if we can represent the difference
+between owned and borrowed guards such that no checks need to be done at
+runtime.
+
+# Actually registering a modesetting device
+
+This part is still very much in flux I think, and it's worth explaining
+why. Currently from the DRM bindings we inherited from Asahi, the
+lifetime of a DRM device's registration is represented by
+drm::drv::Registration<T>. Unsurprisingly, the purpose of this is that
+once the Registration<T> object is dropped - the DRM device is
+unregistered. There's some complications around this though.
+
+The big one is that modesetting initialization is single threaded. This
+should be fine, but, currently (following how Asahi's driver does this)
+we ensure automatic reg/unreg by sticking the Registration<T> object in
+our registration device data (see `device::Data<T, U, V>` for an
+explanation of what this means). And that would also be fine, except for
+the fact that said device data has to be thread safe. This means it
+needs Send/Sync, which also means we basically have to treat the
+registration as multi-threaded despite the fact it really should never
+actually be happening in multiple threads. We also have a
+RegistrationInfo struct i had to come up with, which provides access to
+an atomic boolean that tracks whether or not we've actually registered
+the device. This part was only needed because while DRM does have a
+variable for tracking this in drm_device already, the Registration<T>
+object is created before registration actually happens - so it needs a
+thread-safe way of knowing whether or not it needs to unregister the
+device upon being dropped.
+
+The other thing I haven't been able to figure out: a way of safely
+gating global modesetting device functions so that they only can be used
+on DRM devices that support KMS (an example of one such function -
+drm_mode_config_reset()). Since the callbacks for modesetting devices
+and the rest of DRM live in the same struct, the same struct is used for
+both cases - even though it's entirely possible to have a drm_device
+without KMS support and thus without an initialized mode_config struct.
+This would be very nice to figure out, because I assume there's likely
+to be UB if a non-KMS device attempts to do KMS-like operations on
+itself. Currently, a modesetting device indicates it has KMS in my
+branch by doing two things:
+
+* Setting FEAT_MODESET and FEAT_ATOMIC in drm::drv::Driver::FEATURES
+* Passing a ModeConfigInfo struct to drm::drv::Registration::register(),
+  containing various misc. information drivers usually populate in
+  mode_config
+
+Figuring out how to gate these to only KMS-supporting devices would
+likely mean moving the global modesetting callbacks we need to support
+into a different trait that's only implemented by KMS drivers - but I'm
+not quite sure how to do that cleanly yet.
+
+# Other issues/hacks
+
+* Currently, a DRM driver's vtable and file operations table are not
+  static. I totally think we can (and should) make this static by making
+  drm::gem::create_fops() a const fn, and also turning DriverOps's
+  constructors into const fns. The current blocker for this is that
+  Default::default() is not const, along with mem::zeroed() - giving us
+  no way of creating a zero-initialized struct at compile-time.
+  Coincidentally, mem::zeroed() actually becomes const in rust 1.75 - so
+  once the kernel updates its rust version we should be able to fix
+  this.
+* There is a leak somewhere? Unloading rvkms currently leaves behind a
+  few DRI directories, I'm not totally sure why yet - but I think this
+  may be an issue with the DRM bindings themselves.
+* bindgen doesn't understand fourcc, and probably a number of other
+  similar files. So we're going to need some nasty hacks to expose
+  these.
+* I'm sure there's bits of code that need cleaning up, but I figured it
+  was more important to start getting feedback on all of this first :).
+
+Lyude Paul (4):
+  WIP: rust: Add basic KMS bindings
+  WIP: drm: Introduce rvkms
+  rust/drm/kms: Extract PlaneState<T> into IntoPlaneState
+  WIP: rust/drm/kms: Add ShadowPlaneState<T>
+
+ drivers/gpu/drm/Kconfig                  |   2 +
+ drivers/gpu/drm/Makefile                 |   1 +
+ drivers/gpu/drm/rvkms/Kconfig            |   3 +
+ drivers/gpu/drm/rvkms/Makefile           |   1 +
+ drivers/gpu/drm/rvkms/connector.rs       |  55 +++
+ drivers/gpu/drm/rvkms/crtc.rs            |  40 +++
+ drivers/gpu/drm/rvkms/encoder.rs         |  26 ++
+ drivers/gpu/drm/rvkms/file.rs            |  22 ++
+ drivers/gpu/drm/rvkms/gem.rs             |  32 ++
+ drivers/gpu/drm/rvkms/output.rs          |  72 ++++
+ drivers/gpu/drm/rvkms/plane.rs           |  42 +++
+ drivers/gpu/drm/rvkms/rvkms.rs           | 146 ++++++++
+ rust/bindings/bindings_helper.h          |   6 +
+ rust/helpers.c                           |  17 +
+ rust/kernel/drm/device.rs                |   2 +
+ rust/kernel/drm/drv.rs                   | 115 ++++++-
+ rust/kernel/drm/kms.rs                   | 147 +++++++++
+ rust/kernel/drm/kms/connector.rs         | 404 +++++++++++++++++++++++
+ rust/kernel/drm/kms/crtc.rs              | 300 +++++++++++++++++
+ rust/kernel/drm/kms/encoder.rs           | 175 ++++++++++
+ rust/kernel/drm/kms/gem_atomic_helper.rs |  48 +++
+ rust/kernel/drm/kms/plane.rs             | 339 +++++++++++++++++++
+ rust/kernel/drm/mod.rs                   |   1 +
+ 23 files changed, 1980 insertions(+), 16 deletions(-)
+ create mode 100644 drivers/gpu/drm/rvkms/Kconfig
+ create mode 100644 drivers/gpu/drm/rvkms/Makefile
+ create mode 100644 drivers/gpu/drm/rvkms/connector.rs
+ create mode 100644 drivers/gpu/drm/rvkms/crtc.rs
+ create mode 100644 drivers/gpu/drm/rvkms/encoder.rs
+ create mode 100644 drivers/gpu/drm/rvkms/file.rs
+ create mode 100644 drivers/gpu/drm/rvkms/gem.rs
+ create mode 100644 drivers/gpu/drm/rvkms/output.rs
+ create mode 100644 drivers/gpu/drm/rvkms/plane.rs
+ create mode 100644 drivers/gpu/drm/rvkms/rvkms.rs
+ create mode 100644 rust/kernel/drm/kms.rs
+ create mode 100644 rust/kernel/drm/kms/connector.rs
+ create mode 100644 rust/kernel/drm/kms/crtc.rs
+ create mode 100644 rust/kernel/drm/kms/encoder.rs
+ create mode 100644 rust/kernel/drm/kms/gem_atomic_helper.rs
+ create mode 100644 rust/kernel/drm/kms/plane.rs
+
+-- 
 2.43.0
 
