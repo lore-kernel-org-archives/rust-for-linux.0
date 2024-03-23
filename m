@@ -1,142 +1,102 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D25046A2
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 04:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF691841
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 07:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711167380; cv=none; b=gut+aKdJxFooQf1rOgtrIyituyk924vqb03WS7nHhLouX7+NDzdVipvTYbFiz7bas2Ee92whNuagl+Y+X7nKRHAeJ+wjLfcCvhJjddVOnE5W638k1ShOfv8IogeWcVXzFitp29alw2uB/Qq+HPeu8aVTPIXZrxi4vrb+LpUi/aE=
+	t=1711179635; cv=none; b=SZ1ObdqTsJfL/vmJR5udX1XmfwHHkeRLHIEeM3hWnsKL7q3jEmRL2zN7YCg+t6W8Pb8xXugPma1GHYNTewpze+ZjC3pIkFa7dJTymNMs4mIhCfzC3PmTVJ+aywpS7Udm8lhntB4w+XC3pHiOifQxZYktTDhMaY41PKX5yRnW9+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711167380; c=relaxed/simple;
-	bh=oQwQPzepAo9xty2ZLMz/v4lfOpbZlyrOY1++1B41TBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TJ9BchIehzRCvY+/ilSPbQd38zvUJsUho+aPf25io5+3PSfA67PoRWCDsPquY+cmzcS0ch3NEChWR2vziiCeTUVSNUYxs5m3rgSwO2pMgRd9eup0bPTWterlah7/51mmz97EYkEO5lZvqgAl8rp+03Z8pKus7kn+S87XgQ0Ajqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IDRcUmdN; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1711179635; c=relaxed/simple;
+	bh=MjOXj5qmGrBYgO93Ki0Z5b8h4eoEMgGLlXrm9dIp+8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qgvenj9ZtWjBBOQ39+F/55okYs99QMFGLsf51eZTWjvUpLoOzmvu4su4VzqreTISECOlfnepFChdb9iLTwnwH8WksN0sqOag+3KuvfDNBWW1/UyjxCG1kFBkeaf32bNfnbvOYMOqiGDviWxoqR+anbwXU851P5G4XzveO3MpTbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IP6Ppwyd; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IDRcUmdN"
-Date: Sat, 23 Mar 2024 00:16:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1711167376;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y0TVAH0ZYdb3ue+80a0C1DdjCsmM6e0n7TfPjNRdLqQ=;
-	b=IDRcUmdN8orWoZ4O6XUTc0cdl71Ze4mloh1oBhIoF0zrSqXDQomr/bG5vKi/fR9JnYYoPv
-	Rk4vAube+jtJ/qUZcGEgFwatJoO7CRYtry2xosgiRsPu5tsnK4eT43YGs2Jtd3JyJTAPfP
-	E9PqylE35oFyzjlsZnYy+uumLQPen6A=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
-	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, Mark Rutland <mark.rutland@arm.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-Message-ID: <4ciizx33vzooa33ikjn7env6kvkpcv44dsawm4i2avqou2kdk4@b4hj6252l22l>
-References: <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
- <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
- <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
- <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <3modld2dafaqjxa2b7jln47ws4ylzhbsvhvnphoklwvzange5p@wlir7276aitp>
- <Zf491DuptReGqvfd@Boquns-Mac-mini.home>
- <34r4signulvsclmsiqgghskmj5xce3zs5hwgfulzaez2wdyklr@ck6zrj732c4m>
- <Zf5FEFCfuy0TAjV6@Boquns-Mac-mini.home>
- <qsw2v5ikt2w6m2xfr6h4e2xauobhy37nrskarlfjro4ek4qw4b@jgxhav7bia55>
- <Zf5Rp0zR_fyZMADn@Boquns-Mac-mini.home>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IP6Ppwyd"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1dee5daa236so20613035ad.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 00:40:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711179633; x=1711784433; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=17FHxgg9L/Jl/RleBk+W8OQtyM3DyDb0PgEO6viQP+w=;
+        b=IP6Ppwyd2nG8Vpy8kcoSbS1sUWg5m+3ofaNz19M94QlOxc/h+RBDLKwxlmX7Pid/2q
+         xNOsTmvL8zm7uPYYf5LDfmm9SbC4hUpWiriYk8IhQUw6KmWgCHkcZcFHoMIy6RXp+wpC
+         nM+YQahdquCSsTR1nR+3HhTMUXQe+DW5v/zmXqKUGDeyXAWJMz+VclhLrMy7uTDObIpo
+         6xqwndSha6uw/TbPRMwaRNUUZPz0KG0jOaspZn57FlRZ3SFhzky3eDkFLfG6JIrAT42C
+         xmwgFizAgGgIhwFHQ1cjem5xw1wWHOvMF5nl13Zs8v9C0L+RHpQXMJtDWk5eUzY0vTL5
+         SMEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711179633; x=1711784433;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=17FHxgg9L/Jl/RleBk+W8OQtyM3DyDb0PgEO6viQP+w=;
+        b=rMp7upBibEQ9Bj5b4awONQB7az/YUzfed5F4vX2Qg40yhM9fgzJKAcvmkM2xw+5DUk
+         r3zXQ+T4DltvYQ2qdRNxHlK8GHGipdd0nIKDv1u/luUh51+CPK31QGLD8rKWWNdHtPOh
+         W+8BgGRmbm07iHWj9Z+zqRZCmXq7uSNEdeYW6YIDpzwJYRt6JZiFmisDBfFdx0b1Ei95
+         1/c25NEJywIeRsEEyiaObuammCwjA/g08jKUjpMEFdVJsujBS5HvDcP3yWzgcyuadvFS
+         F2e/+cacIEKvITOQENFg3bJd+U2lfvbc8fj3yTUkQVS8SjuxwoL9VEpM8eIKZdtNNwKA
+         cRDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCKhZgs7137uqmdfhUm184N63iule0rlx/XAo2WVtRCsnGD5ZRr3XIyKRjsgX7caBZyTb+OghscK8lS77ggdmam5bRh8kWkq8jAeZVUUc=
+X-Gm-Message-State: AOJu0YxD7/9LjASKLmqU7e+24zIJjRhJf0BFV3mfvfCgqkjsjw+gQtUv
+	egoLGYGP50pifiMR8qxX1cR+b0YdD6nMRtE5Kj+bkCZx+D24tSeXhvRRFGSM1bU=
+X-Google-Smtp-Source: AGHT+IFuyRHF9sqVJoYr8RuqCgoExRHUVpVLXTKzWTk/lLRubf8Iio13+/bewfBSpo7WC76tBnyIkw==
+X-Received: by 2002:a17:902:e945:b0:1dd:96ca:e1ae with SMTP id b5-20020a170902e94500b001dd96cae1aemr2557001pll.69.1711179632921;
+        Sat, 23 Mar 2024 00:40:32 -0700 (PDT)
+Received: from localhost.localdomain (36-231-152-158.dynamic-ip.hinet.net. [36.231.152.158])
+        by smtp.gmail.com with ESMTPSA id l5-20020a170903120500b001dffa017c5esm969684plh.22.2024.03.23.00.40.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Mar 2024 00:40:32 -0700 (PDT)
+From: Bo-Wei Chen <tim.chenbw@gmail.com>
+To: ojeda@kernel.org,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	tim.chenbw@gmail.com
+Subject: [PATCH] Documentation: rust: Fix improper rendering in arch support page
+Date: Sat, 23 Mar 2024 15:40:06 +0800
+Message-ID: <20240323074006.2940679-1-tim.chenbw@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zf5Rp0zR_fyZMADn@Boquns-Mac-mini.home>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 22, 2024 at 08:51:03PM -0700, Boqun Feng wrote:
-> On Fri, Mar 22, 2024 at 11:10:36PM -0400, Kent Overstreet wrote:
-> > On Fri, Mar 22, 2024 at 07:57:20PM -0700, Boqun Feng wrote:
-> > > On Fri, Mar 22, 2024 at 10:33:13PM -0400, Kent Overstreet wrote:
-> > > > On Fri, Mar 22, 2024 at 07:26:28PM -0700, Boqun Feng wrote:
-> > > > > On Fri, Mar 22, 2024 at 10:07:31PM -0400, Kent Overstreet wrote:
-> > > > > [...]
-> > > > > > > Boqun already mentioned the "mixing access sizes", which is actually
-> > > > > > > quite fundamental in the kernel, where we play lots of games with that
-> > > > > > > (typically around locking, where you find patterns line unlock writing
-> > > > > > > a zero to a single byte, even though the whole lock data structure is
-> > > > > > > a word). And sometimes the access size games are very explicit (eg
-> > > > > > > lib/lockref.c).
-> > > > > > 
-> > > > > > I don't think mixing access sizes should be a real barrier. On the read
-> > > > > 
-> > > > > Well, it actually is, since mixing access sizes is, guess what,
-> > > > > an undefined behavior:
-> > > > > 
-> > > > > (example in https://doc.rust-lang.org/std/sync/atomic/#memory-model-for-atomic-accesses)
-> > > > > 
-> > > > > 	thread::scope(|s| {
-> > > > > 	    // This is UB: using different-sized atomic accesses to the same data
-> > > > > 	    s.spawn(|| atomic.store(1, Ordering::Relaxed));
-> > > > > 	    s.spawn(|| unsafe {
-> > > > > 		let differently_sized = transmute::<&AtomicU16, &AtomicU8>(&atomic);
-> > > > > 		differently_sized.store(2, Ordering::Relaxed);
-> > > > > 	    });
-> > > > > 	});
-> > > > > 
-> > > > > Of course, you can say "I will just ignore the UB", but if you have to
-> > > > > ignore "compiler rules" to make your code work, why bother use compiler
-> > > > > builtin in the first place? Being UB means they are NOT guaranteed to
-> > > > > work.
-> > > > 
-> > > > That's not what I'm proposing - you'd need additional compiler support.
-> > > 
-> > > Ah, OK.
-> > > 
-> > > > but the new intrinsic would be no different, semantics wise for the
-> > > > compiler to model, than a "lock orb".
-> > > 
-> > > Be ready to be disappointed:
-> > > 
-> > > 	https://rust-lang.zulipchat.com/#narrow/stream/136281-t-opsem/topic/is.20atomic.20aliasing.20allowed.3F/near/402078545
-> > > 	https://rust-lang.zulipchat.com/#narrow/stream/136281-t-opsem/topic/is.20atomic.20aliasing.20allowed.3F/near/402082631
-> > > 
-> > > ;-)
-> > > 
-> > > In fact, if you get a chance to read the previous discussion links I
-> > > shared, you will find I was just like you in the beginning: hope we
-> > > could extend the model to support more kernel code properly. But my
-> > > overall feeling is that it's either very challenging or lack of
-> > > motivation to do.
-> > 
-> > That's casting - that doesn't work because compiler people hate
-> > aliasing.
-> > 
-> > But intrinsics for e.g.
-> > __atomic32_read_u8(atomic_u32_t *a, unsigned byte)
-> > __atomic32_write_u8(atomic_u32_t a*, unsigned byte)
-> > 
-> 
-> so "byte" here is the byte indexing in the u32? Hmm... I guess that'll
-> work. But I really don't know whether LLVM/Rust will support such an
-> intrinsic...
+Fix improper rendering of table cell(empty bullet list). Rendering as a
+dash instead.
 
-They're going to need this eventually - really, entire structs that can
-be marked as atomic. Types aren't limited to the integers.
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1069
+Signed-off-by: Bo-Wei Chen <tim.chenbw@gmail.com>
+---
+ Documentation/rust/arch-support.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+index 73203ba1e901..c4773d2fce66 100644
+--- a/Documentation/rust/arch-support.rst
++++ b/Documentation/rust/arch-support.rst
+@@ -15,7 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+ =============  ================  ==============================================
+ Architecture   Level of support  Constraints
+ =============  ================  ==============================================
+-``loongarch``  Maintained        -
++``loongarch``  Maintained        ``-``
+ ``um``         Maintained        ``x86_64`` only.
+ ``x86``        Maintained        ``x86_64`` only.
+ =============  ================  ==============================================
+-- 
+2.42.0
+
