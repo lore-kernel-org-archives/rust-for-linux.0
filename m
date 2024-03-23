@@ -1,97 +1,106 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5D2940B
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 18:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C34863D;
+	Sat, 23 Mar 2024 19:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711220241; cv=none; b=lZaOScQ2tiM6MRuMNndjVUOBHIdPl8Fyw+OEFo843Z0UHzxuziLQEn97P9jok+mxSaMyUpqtMd9yDatlMgt1Vdgl56Zr6wqJ9DCJ3W7ySYt1GOZtcpkcBqCACVexbvEebf7YLdZHSX6xwkm4pxw+BHiMo+MpvZZQ+DpzK8Buw4Y=
+	t=1711221024; cv=none; b=tficyJZVrPhkJQDz0xXn9VG4B55gZIN30oBgTxL7aeZcrLhNjKnlZ8Qa6zlbTACybbub7gs5lOPudk8rz18cSvv/7ra6TCUtKG9eveCFvVudM/KGErkGgxZW5gas8XgXZp2NEQExmbqwyb8pNawBfykZ/SyW+lWZ7TV4BnhXXHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711220241; c=relaxed/simple;
-	bh=QRHj2kqKKLx11zx+9iZ7hIIYExHKQ2a2L4lqgJzD6MQ=;
+	s=arc-20240116; t=1711221024; c=relaxed/simple;
+	bh=ueCTxwBoM4hJHV9z5OKPHfj7Mct2XSkw55kGkcJ/dgY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aL2ck3rPepVfCZ+eItyI0M+fwFugdaSy3hlfB53nYh/a5gMDd/34LhacGOaTw0Rwc1sabEUi/kfa/jlKTOPHdgoAw1bAbYsPwbNNQl8XHf19qk6e0CmCjQ5OTOn0emkVylj/AzIZLWudO2CTV2UXnvxOMsgs1Mbr9IGA9wq31eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aHRzAIDn; arc=none smtp.client-ip=209.85.216.49
+	 To:Cc:Content-Type; b=YP6nRtunY4KFRs3NqiqSxtuenCKUwcwZAaLhqsmtXVKwWwDt6ndxAs4mIq/aSvo35uvZWMwRg9ewa4oIdxyK6GZlIESgb1vT4tzPJ0NmKUzXwb08OHk7GBqlbkX6BPShNkOvfySvjy92C8xv151uLz1hI/+BKKGAWts1jgJXwqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gH2PGpXO; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aHRzAIDn"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-29c731ba369so2214213a91.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 11:57:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gH2PGpXO"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-29b7164eef6so2378456a91.2;
+        Sat, 23 Mar 2024 12:10:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711220239; x=1711825039; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1711221022; x=1711825822; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zdz3LmI26VEYpSJQi9gIFGQMp3GSRqIDdeTemC40poI=;
-        b=aHRzAIDneK3uW4w79HbMDXcf73s1qRkTrh+Uv1868k23AU05SL8r9gd16+eZaf8zIK
-         6o4QdETDZeDAoLqYTZiO7vvmqRQ1eW7UpPbdUICwmitGN+kpvkCODJKnA3RO4jLhwzOY
-         Cs2CVEYq3YfSUA/BnSjNTbE3PGOntDWgtYrCLq5AtNVvXOQhXrflb9qD0RIzjaLiQRbU
-         H/m30pQzZOHG7NOEDSDSdcr07BcHpqSNcT33ka5f9/jPqB1qFT4ue4qC9uRLV0dsdsVx
-         2LhbsWOjG8ZarVlQpJZZXwDyUM+ARJBVEgO8mbBq68GThAYMGLsS1xlt+t0wu8b6dqpz
-         2b6A==
+        bh=ueCTxwBoM4hJHV9z5OKPHfj7Mct2XSkw55kGkcJ/dgY=;
+        b=gH2PGpXOvYL/AV4fSRqSj4etmY+yAZCC+0xmFq8jzXgvyRHkRSnfKUpscXJ4ghA3EA
+         ef1xQtZ6qODMz1DvjD7ETJPjrJQvh2OxeXx0xGWZIBJsz9T5DhA75z7BVSZ2/6CO6fzX
+         zHjV1Xi8mEj5yQdIqEB5k87wD6dmVVT5gRftt0SOs+ZK3JSgFUtLptCeaGSFP37ycDQ5
+         u0MOFQSHqB1R3AgaRSf+TDOr+tIHNZ7xISwkwAYORXWhEjIpBGk0tXU1AUUxvtWkTMdT
+         Lq3p0ioCBFEYgi4UXL7ll1URBKqycBD/aTZbjN5NzjifSTgk/YUZZU7Xt8qLKKLaYZkx
+         b2EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711220239; x=1711825039;
+        d=1e100.net; s=20230601; t=1711221022; x=1711825822;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Zdz3LmI26VEYpSJQi9gIFGQMp3GSRqIDdeTemC40poI=;
-        b=NEbf0vTFVFWlyO4DiKIjX8FICENdiXnUKXLDaQ0uFhuGlC903CQl9/43UzZGxdE67a
-         j240ulKQ8uX6F1UBx9xyU+6/uoLFhOCIjDU61dEPsMqEaZvAOAuuHKz0aMfBojuYxVYT
-         VLan+7pxS42y0BuCGlFNCXTQ23c27AuCvN+uN+RW0SGa/oDua/vOlE0gBZGP2WdKOdTl
-         m5TdaXJJxPOIyWlJl/YgwD6jVRkYQeJHyU3x31w9DlERMLjZRBc7kwH5qgqepmLhX9aw
-         VbBXC1EqG7vTeNNm5TXPx1VxPkCSHRcEf6tcxtXtk1+NX3uik++Yr5kohj9UPFICreSe
-         1hWw==
-X-Forwarded-Encrypted: i=1; AJvYcCWMlJ6l6jwblR69mbX0qXJY5/+fPsudroponzL9iNqSwJXfh4bc/JLDKRi7zErj6a0inb6uCpvJlTHEsYaQ3wcpTAYEMPH7B/bI9X4Uc9M=
-X-Gm-Message-State: AOJu0YzQkzFhAmivqnYueX+Dhss+aYE1CUrf5/f1uLw9vIRIptMxXD8U
-	kEfQCDQ0irOQFK6FyoApncjoa3FUjLq25ae0buxfqG5yJ0JOW4wA03JbNdJRwM07zhES//vLqFg
-	PV720PoSR0yaj4kZqVJXDrFQ4V/I=
-X-Google-Smtp-Source: AGHT+IEV2SCEQfBz9PGW+AgGaGq65kHHJC3n3LRHMK/dAAr1RVdPrQYr2WD++5oGbWjBxTXzUKHhdePl9lNU/nZwV74=
-X-Received: by 2002:a17:90a:f40c:b0:29c:761e:3955 with SMTP id
- ch12-20020a17090af40c00b0029c761e3955mr2339739pjb.17.1711220239006; Sat, 23
- Mar 2024 11:57:19 -0700 (PDT)
+        bh=ueCTxwBoM4hJHV9z5OKPHfj7Mct2XSkw55kGkcJ/dgY=;
+        b=qiNj0noY4XUgyZQiTGBC4UwO3YsLINIMOV3H2HeD3DyB81rPD6bBh9zQPqcAXelXbg
+         hIedEN/fNBUd03tFSNjzSJqh9iMxPrDXKp0jLl1hAKW9Tbrexy4bbHl8aB2OpPeaTCaP
+         OWwuwDO+Y2SqVdyaadlX+qJFT7q2FxG+mAXWt/FTobsZEb0JT8VbbaA36MlYeOnp/QUM
+         DWz2je90T+UftSodSWr4PGxxx50OXR1zfcPjMgFsdqG38iv7/IOS7ni2IN46E9/g0F0L
+         2l1/8xkVbjRooNDVcP4ZRZXIbap+EqreG4ohuz1jvzdCtEjtBsR5eL9vacA7sjgnKvsq
+         JDvA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbYAc+rW5JobqTAwWKY0S4Bec+I/kGIfhEHXckPdwKvSSjbr2XxuJnASH5EgSpug6KBOsekvsQY3HdRlY0VqXXuC4O2ZqqYSJSg2likVXpZXcsPHgCyhImGAYuBhV5pSMd0jpE+sTiwixnLNrjI0YhNpOFMN1gNjPamh8fFhKQjd2GJA/yOJtOq2BHSeCTdhApNmnA0wJRo5Ovt+ZVxYtXfdN/q7aAqg==
+X-Gm-Message-State: AOJu0YzPEIFMWKXDTf39W/vZIugo3RN+PF9DGl/mYLUKoUa/ZmhSrW90
+	PSeCsS6iw6otgKhKnvVLMpdJKjJi8h+l9Q+ZV6qg1mX1lrvjPyP1QXKHKr3ew4VzngisWtwjR1D
+	BMTq50XLBrLobaPikdGadGv7eqfU=
+X-Google-Smtp-Source: AGHT+IGwahkkdd9J1rTcWINtRLDJq4UgsSSVueZO7bQhn7sYYNOp7aQF0yI108KG9KgG8wRB0n2yrE30IMHnBoQhcjw=
+X-Received: by 2002:a17:90a:4947:b0:2a0:2f8e:76fc with SMTP id
+ c65-20020a17090a494700b002a02f8e76fcmr2513410pjh.28.1711221021961; Sat, 23
+ Mar 2024 12:10:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240323074006.2940679-1-tim.chenbw@gmail.com>
-In-Reply-To: <20240323074006.2940679-1-tim.chenbw@gmail.com>
+References: <20240322233838.868874-1-boqun.feng@gmail.com> <20240322233838.868874-2-boqun.feng@gmail.com>
+ <068a5983-8216-48a5-9eb5-784a42026836@lunn.ch> <CAH5fLggdVDccDwBa3z+3YfjKFLegh7ZvcSzfhnEbAGSk=THKrw@mail.gmail.com>
+ <497668ec-c2d5-4cb4-9c2d-8e6f7129a42e@lunn.ch>
+In-Reply-To: <497668ec-c2d5-4cb4-9c2d-8e6f7129a42e@lunn.ch>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 23 Mar 2024 19:56:54 +0100
-Message-ID: <CANiq72=v_Hw8Nbpw9Y8V5uBTAifmwAhK_iqF_eV+5MtXe_1Ohg@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: rust: Fix improper rendering in arch
- support page
-To: Bo-Wei Chen <tim.chenbw@gmail.com>
-Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Sat, 23 Mar 2024 20:09:57 +0100
+Message-ID: <CANiq72m4n2B0K5t1ZESMcL_k=Wgttuwd8=THBbOYYPq_D+4hsg@mail.gmail.com>
+Subject: Re: [WIP 1/3] rust: Introduce atomic module
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+	Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, 
+	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, 
+	Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, 
+	Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
+	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 23, 2024 at 8:40=E2=80=AFAM Bo-Wei Chen <tim.chenbw@gmail.com> =
-wrote:
+On Sat, Mar 23, 2024 at 3:10=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> Fix improper rendering of table cell(empty bullet list). Rendering as a
-> dash instead.
+> Just looking down the road a bit, are there other features in the
+> standard library which are not applicable to Linux kernel space?
+> Ideally we want a solution not just for atomics but a generic solution
+> which can disable a collection of features? Maybe one by one?
 
-Thanks for the patch! I hope it was easy to set it up :)
+We requested a few of these in the past for both `core` [1] and
+`alloc` [2], and we got some which we use (see the `cfg(no_*)`s). It
+is what we called "modularization of `core`" too.
 
-> +``loongarch``  Maintained        ``-``
-
-I imagine this renders as a code block, right? That would be better
-and we can go with it, but did you check if there was any other way to
-get a normal text dash with rST/Sphinx? e.g. perhaps escaping with a
-backslash? [1]
-
-We could also simply leave the cell empty if the escaping or similar
-do not work.
-
-[1] https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#esca=
-ping-mechanism
+[1] https://github.com/Rust-for-Linux/linux/issues/514
+[2] https://github.com/Rust-for-Linux/linux/issues/408
 
 Cheers,
 Miguel
