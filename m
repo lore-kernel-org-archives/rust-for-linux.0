@@ -1,156 +1,145 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76645623
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 00:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9763B621;
+	Sat, 23 Mar 2024 00:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711154182; cv=none; b=L3Us0WT3KFdK5xVjPxO7Oj+LdSUrpbwZwhmNgNlDT5Zwu/u/s8tkSXsJYO6oUgmhKLPgd2EEA31UKwPWw/5vOaCCPqNKY7KPZAISbEU9rUgiMeERZspLeUquFu6p+Bl2LugSi94zbPNTFsPpRhRIMH91SHk8xkcTdg5+UGRDzuw=
+	t=1711154991; cv=none; b=H5Wp9fNcSrbKJ+Dh6VrNm+UHAGeSHr7BBw19l4wvzdfKYX0/70vzsayrkxKUBieXB0C08lbROMQ19SsT2vjTFREyUlSa7pNnHUd4L2tls0O3d7ypDPAGOYfAsPDN6/7j5rxNoBjIKfB1Z5uJU4SN68O6BOLskPrw4/A0EKztayY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711154182; c=relaxed/simple;
-	bh=j7JyDQ2Yopzv+1fWqR18eqoGt0JNvJeLXCqR09mac8o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I+g24kn9PvOFLvbVdBsv1aQJtanI430i8MCaxRTR0vNHX2aG7sdINpa09prJdSAMkhJiw6eK2jyHy05ncpnKnOYFUoYwonEa4uSVI7DG4VHl8VezPxols2cbY8uEBDi22RDXvSE1LUobVqxr5eCsl02Sq5cUtUhvDelFfkC8Ef4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TxRpll1Z; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1711154991; c=relaxed/simple;
+	bh=UQkYXrBRw3g/7sldWDk09B3+ow7yRo71hjCVT0Y7WMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mh7AVDzNkFyuuc7U5BkJnsXg5FxICDLEuKwnqslEaU/64LQFEBimNwcqovCOPAFfn31KmmXs8gcCeCKIa5KTNn8vcHJ+CYyZFHStSVQMu5DzbKqBysURAQQTLXsTGGnb8HzNyi9Zu83ev2R0/DC5jkAZCC2t4MJdy2FFc53HnXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IvqxBjo6; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TxRpll1Z"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d4a8bddc21so36492251fa.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Mar 2024 17:36:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IvqxBjo6"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-611248b4805so11023397b3.0;
+        Fri, 22 Mar 2024 17:49:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1711154178; x=1711758978; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GNrld7J3rRC7RvH2KCmmyzFGDmF8jJ8gCeKdRT3S6xQ=;
-        b=TxRpll1ZRwp9xCI0psNRvb/2vVISI1rXqL5crZA8I7/8k9GoW5e/VGT7gVDAdaJO3/
-         caEgxQ+xcyIsOIumDQ11p6lIaEmS9C7WUTsn1phKr6b7fvQMnKfxxbo9rlvAPUBYBzjG
-         zEw2i5MlJN+NyU1pFnSBINdmf/ztn+ZhVTLQU=
+        d=gmail.com; s=20230601; t=1711154988; x=1711759788; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZJ5iJEyxp0TFbjOIBhDcRyFjdhS9GLo8uwaFuutf5pw=;
+        b=IvqxBjo6krSEE7mxdXJmMYMcxI84tZqeE1aHY/Co04IFHF1UG+E2ahn3SQ6ffu/+Gx
+         COctBBGvedXpvuWRa7FHT84t01ZNjtyK1gr2ETKrKggDDjtF1qyln4wx4R8IJhOGcPbQ
+         hwOz3Q7nH3wLozfNfA0d3vSLtdGKbS+zVUhDiYzgV2SR5bLTG427TgziQuJTLUmmFRZF
+         RmCWlrC/V7U7DWvqHB7kKapsqZ2SV6os1U01ih+Ly++ftXh5Ii9YgGIOWJTONjPyk4H9
+         uIPRYBWHX1aDLtR0bDbFiW3YaTsLjCNjYOfl2CMlMp/LYasAcp8aL+yYBMFLpWmdXFHl
+         Koag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711154178; x=1711758978;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GNrld7J3rRC7RvH2KCmmyzFGDmF8jJ8gCeKdRT3S6xQ=;
-        b=aHY3lOAS1nL77pOvXk67nEXqbhBAhXTT/RNG8WX2y7pBFgE0H3K0uyR4igQcTSyWjT
-         TdLQJUHPcUP6zLO+aqQeSqvoXuoZUMDdED9xgmLpq6yKqtLybyBMvMVg0exLfShYH9UV
-         oPlXFRfIIXOtNZIhgpSUZRuYiVnhROPLVLAdDBZhaCVB+jsPeQvnhuXLnHP7JSSbRPSx
-         iIM7FLOZ1N73B/KpRdw9KX5D/y2dQW2AkctdCu6IFIV1hxxLepbFn7+9McnbvtJqAx7F
-         0vhsbocMJC3d7Y43gUyIF5lzHrSLzBgyqLVyKuo4cwTxHF6EtYkiWFZynceB73htCLwD
-         nJbw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvvxweD+ghr7b4iZvcoeWlrBoYZsBi/OGUhCaXXF00+8p3hGqIAl78ZCPaNecETS9tnZIZ0qzHjosgzf42T0NoSffQMlT+mvCN1ZjPwWo=
-X-Gm-Message-State: AOJu0YwhNqfyEubmWQ2TeuSsL2Hgh0YtNeY/CfsaGy+9pBnHnD0yHwuF
-	2zq7KhcCJru3YdVK0Ir3F88HAyuKPKlGAzp6KBBGX8yXEYamyCG/pr+kp8O5YY6gCbCJ+uCWpoj
-	omSAw3w==
-X-Google-Smtp-Source: AGHT+IHMKr8W3KQfkMgx/Za2C94JtQlZcMYVqNtAQnHDXEKDVGwlaNaZEcsb/jqZImnRbdy4KITVUg==
-X-Received: by 2002:a2e:9945:0:b0:2d2:ed31:9fb7 with SMTP id r5-20020a2e9945000000b002d2ed319fb7mr677122ljj.4.1711154178334;
-        Fri, 22 Mar 2024 17:36:18 -0700 (PDT)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com. [209.85.167.46])
-        by smtp.gmail.com with ESMTPSA id x4-20020a05651c104400b002d6b0c8d999sm426621ljm.4.2024.03.22.17.36.17
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Mar 2024 17:36:17 -0700 (PDT)
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513e25afabaso3120147e87.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Mar 2024 17:36:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVKJZFOwHX5P/qEQUi1mNtxBf7IRkR8tCKxJ2CIp7Tgn3caj0sljpeF5nBKuiOLoPKVtQ8pRhfcfX1HIF4DGnY20oBnEM1dNY2wNA7W6n0=
-X-Received: by 2002:a19:f806:0:b0:515:9d4a:d580 with SMTP id
- a6-20020a19f806000000b005159d4ad580mr604299lff.26.1711154177346; Fri, 22 Mar
- 2024 17:36:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711154988; x=1711759788;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZJ5iJEyxp0TFbjOIBhDcRyFjdhS9GLo8uwaFuutf5pw=;
+        b=uddkhN8p1+Q65e7cTCvMNex1L8/PYz2TEse4Qordj+Ze3w07D4mF58ru5/K+UIOyHo
+         9qA5CtTzfEkOVhjHUT3TxozCDEA27cAU1zSgRVKL8ialKVd0/XUtwl4+tQ26zotLNV4w
+         0vA9TrrW0GFmxfnLTJoC/R/1jkudJbXzZhGFBc3d6ijM6/6RSATys8C3/cYFjVSfxG63
+         Vp6rgtJaFhOgvv4y7gpNmDp3YZ3x4x5cLudIzNvq+NYYArylO9JCgeMkV24ehHbyopyj
+         7Fr4IZuNzhGSXTSidpmRV/8MGUgZvpKJmBFjks2UJOmai3pREIJrIqzbqW1TNh5tJP6v
+         ZVFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXqHy7pt4v9tcFpEhZJdOEbGrTfhUYPr1i2FJjq9Y2gsahBUXIpRYOOHsiPAwyVMNTdlr0AxAD6djwdEYTAkQt9iaEs6XAUY1h66pMR8oAASUSpY+UZwrD+Jh8xzDjjKvTkqkRBx9d8NwctsvyAyF6xgTrszJCsoQx1vXN4qbbURZW4Zlhtbo=
+X-Gm-Message-State: AOJu0YwAtwzsyNPp9H5CdUZ+IQr581mM1wsSglabs49+PjQCo+O1uBft
+	XxAK/FJONq9pRfCLZip8LVtR3eNFJ6UxrTZ9Giam/CNUf+mnv3XM
+X-Google-Smtp-Source: AGHT+IETDJYmnh9BWQauIg052TpIhJFT1IQ4W9EH99k2XBBCRGg9iBUv1l3y+OMtpyk3nKx/JVIcEA==
+X-Received: by 2002:a0d:e542:0:b0:609:879a:aef7 with SMTP id o63-20020a0de542000000b00609879aaef7mr1208456ywe.30.1711154988612;
+        Fri, 22 Mar 2024 17:49:48 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id fa12-20020a05622a4ccc00b00430ad0bda57sm337957qtb.21.2024.03.22.17.49.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Mar 2024 17:49:48 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 136631200066;
+	Fri, 22 Mar 2024 20:49:47 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Fri, 22 Mar 2024 20:49:47 -0400
+X-ME-Sender: <xms:KSf-ZVtFLxaw1-QrJZaVB7vB7kF6a7U779wLGmZubuDj7QEq57RoKw>
+    <xme:KSf-ZedlSgwPiOPAVyQrfKgA_RdAvf0Lau-_Nv5YAnjZvdq860CXtwMaQua0DXaTd
+    _j7w4aaiDHK31ir_A>
+X-ME-Received: <xmr:KSf-ZYxFj026LOkybOdzXXT8YJYaI7TpNYoKfo6vnzaxjvhj1LKz_2OIYn-hHg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddtfedgvdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:KSf-ZcPQb4gCA79UNR0ibB1j77NLHhlWi9wSK_TzkxMOyrNn5DNGcg>
+    <xmx:Kif-ZV_ZMlcx9Z9vbHNS581uzFh7ZbqBDyx3VWylanHnLAHVouUHyA>
+    <xmx:Kif-ZcWDbBYs9r6572BITnmxBijz9q51BRA2H2_bMd3MTd4LjCAxWw>
+    <xmx:Kif-ZWeq0MwLMUpEW6beMQ63RriD4s7-o59J_yeVCidHIseVxgcK-A>
+    <xmx:Kyf-Ze8pkFofcyO3vmT79bm9VwCUDMNzsaiiqVRPuNVg9_TcmoFZyzdA18fR0zrJ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 Mar 2024 20:49:45 -0400 (EDT)
+Date: Fri, 22 Mar 2024 17:49:23 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+ linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+Message-ID: <Zf4nE_AvHPx9F2nQ@boqun-archlinux>
+References: <20240322233838.868874-1-boqun.feng@gmail.com>
+ <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
+ <Zf4fDJNBeRN5HOYo@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322233838.868874-1-boqun.feng@gmail.com> <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
- <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com> <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
-In-Reply-To: <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 22 Mar 2024 17:36:00 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
-Message-ID: <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
-	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zf4fDJNBeRN5HOYo@boqun-archlinux>
 
-On Fri, 22 Mar 2024 at 17:21, Kent Overstreet <kent.overstreet@linux.dev> wrote:
->
-> Besides that there's cross arch support to think about - it's hard to
-> imagine us ever ditching our own atomics.
+On Fri, Mar 22, 2024 at 05:15:08PM -0700, Boqun Feng wrote:
+[...]
+> > 
+> > I wonder about that. The disadvantage of only supporting LKMM atomics is
+> > that we'll be incompatible with third party code, and we don't want to
+> > be rolling all of our own data structures forever.
+> > 
+> 
+> A possible solution to that is a set of C++ memory model atomics
+> implemented by LKMM atomics. That should be possible.
+> 
 
-Well, that's one of the advantages of using compiler builtins -
-projects that do want cross-architecture support, but that aren't
-actually maintaining their _own_ architecture support.
+Another possible "solution" works in the opposite direction, since the
+folder rust/kernel/sync/atomic is quite stand-alone, we can export that
+as a Rust crate (library), and third party code can support using LKMM
+atomics instead of Rust own atomics ;-) Of course if the project is
+supposed to work with Linux kernel.
 
-So I very much see the lure of compiler support for that kind of
-situation - to write portable code without having to know or care
-about architecture details.
-
-This is one reason I think the kernel is kind of odd and special -
-because in the kernel, we obviously very fundamentally have to care
-about the architecture details _anyway_, so then having the
-architecture also define things like atomics is just a pretty small
-(and relatively straightforward) detail.
-
-The same argument goes for compiler builtins vs inline asm. In the
-kernel, we have to have people who are intimately familiar with the
-architecture _anyway_, so inline asms and architecture-specific header
-files aren't some big pain-point: they'd be needed _anyway_.
-
-But in some random user level program, where all you want is an
-efficient way to do "find first bit"? Then using a compiler intrinsic
-makes a lot more sense.
-
-> I was thinking about something more incremental - just an optional mode
-> where our atomics were C atomics underneath. It'd probably give the
-> compiler people a much more effective way to test their stuff than
-> anything they have now.
-
-I suspect it might be painful, and some compiler people would throw
-their hands up in horror, because the C++ atomics model is based
-fairly solidly on atomic types, and the kernel memory model is much
-more fluid.
-
-Boqun already mentioned the "mixing access sizes", which is actually
-quite fundamental in the kernel, where we play lots of games with that
-(typically around locking, where you find patterns line unlock writing
-a zero to a single byte, even though the whole lock data structure is
-a word). And sometimes the access size games are very explicit (eg
-lib/lockref.c).
-
-But it actually goes deeper than that. While we do have "atomic_t" etc
-for arithmetic atomics, and that probably would map fairly well to C++
-atomics, in other cases we simply base our atomics not on _types_, but
-on code.
-
-IOW, we do things like "cmpxchg()", and the target of that atomic
-access is just a regular data structure field.
-
-It's kind of like our "volatile" usage. If you read the C (and C++)
-standards, you'll find that you should use "volatile" on data types.
-That's almost *never* what the kernel does. The kernel uses "volatile"
-in _code_ (ie READ_ONCE() etc), and uses it by casting etc.
-
-Compiler people don't tend to really like those kinds of things.
-
-            Linus
+Regards,
+Boqun
