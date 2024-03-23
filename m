@@ -1,108 +1,178 @@
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46D0DDDD
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 09:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2090610957;
+	Sat, 23 Mar 2024 10:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711187910; cv=none; b=ZFD2ZpWuUrNrKhs/2q0VDoBZl7292h8ZpKvyfApyh1wwGrxCBQt59CjaEjq476aOpC2KznIL7+gw2166PJRuUDxR5na35m074e/gVF8f4hmYBNqsTe+TWPGFplUaDKFIv3OPeAon42WgU0V2b3bWdU73W3rm4Fe/9EOCoi6jtYY=
+	t=1711191129; cv=none; b=es/pDlJFQ9eFtfuBQDMnu3vpBfwCZX0nVkjjwy9AbRWPmish6xVwZgWfAv2+OQ2niVIZ1MJj5xOy0xDvADJazvN2AfVwLxvjpcztw/ZpUOL71KO9/K/teFMa0WNZKI86zkjCP/8OgD2CLdMzsIXKCOs9IFbdK+U02tcoYRClr1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711187910; c=relaxed/simple;
-	bh=88XYaAUkw5+FIlN0k+w5zlI1HA5aU9i8sSo1I2tq1TI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HuBkk9s0Sv8IrUYxDYe1oRneitvT26jIv35xjg4kSWiaq548uZS7Sht6/WKm90iKPCQ6meLl1fKkYfpLjpcgFbNpDkFjUaIvjpQuhfXue8In5FREEEIVnkJcakJp36vEnLfiaRARK/CgG5U6QBrq95YKH6gyBuGDzircKa+FGgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x3z+EhBi; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1711191129; c=relaxed/simple;
+	bh=lDUbweLZTFKaO03LACvqE5G6z4ibhw1S8CeSImz9FQs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cFIADQ0lxmb3HU/hS8PyPpJXq5E5JsiribH0EX9AUI1lVbgZSjfpu7GKSlL+cKSBBrv9YF6kBXYOOIF125g+ZdqXdcr1hdE3pfFMntJ9gy0UBmR02zsUeVwACZC8mstU8x7ls122ER8FMbTrccKWsDBFfpLbpD9HfcY/ik4QuTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=jJkd9oiZ; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x3z+EhBi"
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4d438e141d5so1662419e0c.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 02:58:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711187908; x=1711792708; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ByMFrWADWxfCqmgsuCZcbqeVUMaKvKom3ZFjR5jUOA4=;
-        b=x3z+EhBiDuGM8qoo0YaBRIr2g2JtN6oF852DpOPxpgSDC3Io15Fx53EWLDscZ/hdy1
-         1S+YtWY3X6wyTGDQOTSWmsPFCJ5qjCG9Wtbe9nhFbc644Fh/HFPBgzeqg1WPKMlbpV22
-         kdTlJa+teMtVEwIj3Jk35NxgAE5fwkmaWL3LwnUlnTE80DF7sYXADPZup5w+1EnLpKR5
-         jm2Lc/4FjArKCTkRjBlvzYoWFYrK14ZqE52qALjh0ByHu/20pnYW29krb3Liy31+Bu0R
-         2yKSLnmQHrpT0xCixz6+59VXDGZK0L+uN8UpkWjLMmfCivsFDjCiHXdwLonYnDa1A6eC
-         MkdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711187908; x=1711792708;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ByMFrWADWxfCqmgsuCZcbqeVUMaKvKom3ZFjR5jUOA4=;
-        b=cZejiRB8YwmKasb+gR7kRdeek9LtbhL/Fq8IySph+74ZCfeehYS0OIISDUcPMCc7q6
-         q3/h4QY8eabSORgY3Cq5yjR1aKZ8JEXRaL+/mIn1+QQ348Rc2eaKkgdrKmouW4IYdxn6
-         eGd9BONsf07BZBDZEQnotli0+9ufGpKvcT3IK875KjxcUmT76doeTChKswhsm7RPOply
-         zkq7SYl272ZCd9sKvEdiTY3BIRD/8CtQWO8POnR1H6I8oFhaeHzAlOoO5dB8czw0+kLZ
-         RMKqKgYToqm5PvQpinSZGyqEZiNN5d7qvAo/rBFTOYQvJORfwwKaFKTQrWWksgRo7GNd
-         Wquw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHNe6+KVkX4QrizYnhFfjv8vagGYz0+b1ujjCmy6TtJFaHYhgCqQSbTy9AF6qxANfGKLtal93O478TCRDTqZ7NfLKpyjX6RCkZGWQs55g=
-X-Gm-Message-State: AOJu0Yw0jc6puEgmuW5vlWIAjLabWwTeWwEYSvDCfWBQcD64+p2B0JP2
-	PesSLGEjmwUV5KJj2kUcZoNuakuxK5aHsUg0CZMafn7a9IbYyqWIh0rpiHvOC4pW6C5PzLy+njc
-	MwZEOvOochBZsDxEJDoWVz9mCdg4GtQFNuCfK
-X-Google-Smtp-Source: AGHT+IHAgBE9Mt9tCncQbdq3kL3/YyCXJsjych9A8TVxZPi3s8EhiSf04grenMGGPKfBQGLsBYx9mC23O4pppsMnfhE=
-X-Received: by 2002:a05:6122:2524:b0:4d8:7296:f52b with SMTP id
- cl36-20020a056122252400b004d87296f52bmr612108vkb.5.1711187907683; Sat, 23 Mar
- 2024 02:58:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="jJkd9oiZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=7jitdd4ym5b4jkxz7i33jwzxwm.protonmail; t=1711191123; x=1711450323;
+	bh=pkgJxujshGHrdAmanmDwjDVhz1xUKbpjmGsOJY8+AlM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=jJkd9oiZ69Ou2NS4nQHAOkC6/NYnkBCUOuAAFqkRAWVQIASX5+9jm5MmIO/EQ7bbc
+	 x7yv2gVUReEe5+QKwt7X+hqhsiQ+yWHzze+J9JmS7wbKhRwMCSVXgPMODAcnWbkawT
+	 hSw9d9h4yMFLpaz2YWeqocU9XCFYTQbEmKXl1aVsUE/fz9myzL8eUeIRgNFJeqS7Wo
+	 CNBXT7exxSLPKNbRcRDBRWUKfJF6xyNox8H1/gj/QjAsAKxKvtzV5eYIbde40RwXLi
+	 OpAym1nenCTvH+Sd0GsO/adsrrmghad3krGqQHOpHXnIPm2Z11V0rG/MofHSXH0wv2
+	 4ZKVcdyA7fenA==
+Date: Sat, 23 Mar 2024 10:51:57 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
+	<da.gomez@samsung.com>, open list <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: Re: [RFC PATCH 3/5] rust: block: allow `hrtimer::Timer` in `RequestData`
+Message-ID: <sHRsbsEAgQZOgBjItL1A-a1BOEGTeH4CWqZsrdny4vCI06o56pmKluCTbY_EwRDO1hCjEp9Cuq9_8S8Co2I9c8wquHWZH_KGjOpmbF1YiJc=@proton.me>
+In-Reply-To: <20240313110515.70088-4-nmi@metaspace.dk>
+References: <20240313110515.70088-1-nmi@metaspace.dk> <20240313110515.70088-4-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322233838.868874-1-boqun.feng@gmail.com> <20240322233838.868874-2-boqun.feng@gmail.com>
- <068a5983-8216-48a5-9eb5-784a42026836@lunn.ch>
-In-Reply-To: <068a5983-8216-48a5-9eb5-784a42026836@lunn.ch>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 23 Mar 2024 10:58:16 +0100
-Message-ID: <CAH5fLggdVDccDwBa3z+3YfjKFLegh7ZvcSzfhnEbAGSk=THKrw@mail.gmail.com>
-Subject: Re: [WIP 1/3] rust: Introduce atomic module
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, 
-	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, 
-	Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, 
-	Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 23, 2024 at 12:52=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
-:
->
-> > +//! These primitives should have the same semantics as their C counter=
-parts, for precise definitions
-> > +//! of the semantics, please refer to tools/memory-model. Note that Li=
-nux Kernel Memory
-> > +//! (Consistency) Model is the only model for Rust development in kern=
-el right now, please avoid to
-> > +//! use Rust's own atomics.
->
-> Is it possible to somehow poison rusts own atomics?  I would not be
-> too surprised if somebody with good Rust knowledge but new to the
-> kernel tries using Rusts atomics. Either getting the compiler to fail
-> the build, or it throws an Opps on first invocation would be good.
+On 3/13/24 12:05, Andreas Hindborg wrote:> From: Andreas Hindborg <a.hindbo=
+rg@samsung.com>
+>=20
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> ---
+>   rust/kernel/block/mq/request.rs | 67 ++++++++++++++++++++++++++++++++-
+>   1 file changed, 66 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/reque=
+st.rs
+> index cccffde45981..8b7f08f894be 100644
+> --- a/rust/kernel/block/mq/request.rs
+> +++ b/rust/kernel/block/mq/request.rs
+> @@ -4,13 +4,16 @@
+>   //!
+>   //! C header: [`include/linux/blk-mq.h`](srctree/include/linux/blk-mq.h=
+)
+>=20
+> +use kernel::hrtimer::RawTimer;
+> +
+>   use crate::{
+>       bindings,
+>       block::mq::Operations,
+>       error::{Error, Result},
+> +    hrtimer::{HasTimer, TimerCallback},
+>       types::{ARef, AlwaysRefCounted, Opaque},
+>   };
+> -use core::{ffi::c_void, marker::PhantomData, ops::Deref};
+> +use core::{ffi::c_void, marker::PhantomData, ops::Deref, ptr::NonNull};
+>=20
+>   use crate::block::bio::Bio;
+>   use crate::block::bio::BioIterator;
+> @@ -175,6 +178,68 @@ fn deref(&self) -> &Self::Target {
+>       }
+>   }
+>=20
+> +impl<T> RawTimer for RequestDataRef<T>
+> +where
+> +    T: Operations,
+> +    T::RequestData: HasTimer<T::RequestData>,
+> +    T::RequestData: Sync,
+> +{
+> +    fn schedule(self, expires: u64) {
+> +        let self_ptr =3D self.deref() as *const T::RequestData;
+> +        core::mem::forget(self);
+> +
+> +        // SAFETY: `self_ptr` is a valid pointer to a `T::RequestData`
+> +        let timer_ptr =3D unsafe { T::RequestData::raw_get_timer(self_pt=
+r) };
+> +
+> +        // `Timer` is `repr(transparent)`
+> +        let c_timer_ptr =3D timer_ptr.cast::<bindings::hrtimer>();
+> +
+> +        // Schedule the timer - if it is already scheduled it is removed=
+ and
+> +        // inserted
+> +
+> +        // SAFETY: c_timer_ptr points to a valid hrtimer instance that w=
+as
+> +        // initialized by `hrtimer_init`
+> +        unsafe {
+> +            bindings::hrtimer_start_range_ns(
+> +                c_timer_ptr as *mut _,
+> +                expires as i64,
+> +                0,
+> +                bindings::hrtimer_mode_HRTIMER_MODE_REL,
+> +            );
+> +        }
+> +    }
+> +}
+> +
+> +impl<T> kernel::hrtimer::RawTimerCallback for RequestDataRef<T>
+> +where
+> +    T: Operations,
+> +    T: Sync,
 
-We could try to get a flag added to the Rust standard library that
-removes the core::sync::atomic module entirely, then pass that flag.
+Why is this needed? Shouldn't this be `T::RequestData: Sync`?
 
-Alice
+Is the `run` function below executed on a different thread compared to
+the `schedule` function above?
+If yes, then `T::RequestData` probably also needs to be `Send`.
+You also would need to adjust the bounds in the impl above.
+
+--=20
+Cheers,
+Benno
+
+> +    T::RequestData: HasTimer<T::RequestData>,
+> +    T::RequestData: TimerCallback<Receiver =3D Self>,
+> +{
+> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::h=
+rtimer_restart {
+> +        // `Timer` is `repr(transparent)`
+> +        let timer_ptr =3D ptr.cast::<kernel::hrtimer::Timer<T::RequestDa=
+ta>>();
+> +
+> +        // SAFETY: By C API contract `ptr` is the pointer we passed when
+> +        // enqueing the timer, so it is a `Timer<T::RequestData>` embedd=
+ed in a `T::RequestData`
+> +        let receiver_ptr =3D unsafe { T::RequestData::timer_container_of=
+(timer_ptr) };
+> +
+> +        // SAFETY: The pointer was returned by `T::timer_container_of` s=
+o it
+> +        // points to a valid `T::RequestData`
+> +        let request_ptr =3D unsafe { bindings::blk_mq_rq_from_pdu(receiv=
+er_ptr.cast::<c_void>()) };
+> +
+> +        // SAFETY: We own a refcount that we leaked during `RawTimer::sc=
+hedule()`
+> +        let dref =3D RequestDataRef::new(unsafe {
+> +            ARef::from_raw(NonNull::new_unchecked(request_ptr.cast::<Req=
+uest<T>>()))
+> +        });
+> +
+> +        T::RequestData::run(dref);
+> +
+> +        bindings::hrtimer_restart_HRTIMER_NORESTART
+> +    }
+> +}
+> +
+>   // SAFETY: All instances of `Request<T>` are reference counted. This
+>   // implementation of `AlwaysRefCounted` ensure that increments to the r=
+ef count
+>   // keeps the object alive in memory at least until a matching reference=
+ count
+> --
+> 2.44.0
+> 
