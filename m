@@ -1,43 +1,75 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266392C80
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Mar 2024 11:33:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4421A38F4;
+	Sat, 23 Mar 2024 14:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711193622; cv=none; b=kTxns2B+jO69EIkwZe2kRJAQCvCcoeJOOsTXNEQ5I4EUrwEX7TW4g+JqRKMG6c5RFMY2DtLD2StAIROjvsLHS/1BgQb0sXu9rEvHIyPVAy57H4Hij5LQNRvHSo/qmQHY3r5YmqWOPzx0y26P7P4Dw3M6jpDFVPkqTE3s0yUBiMc=
+	t=1711203034; cv=none; b=pJO5d9eBlKVfCGxIAHbcSNa48a/J7bPjrvTjkeJFjotbnId4XdtsQUKqxno0Kmag2Hj4VZ+0k3cfcjYJ6I1fmDEAz1idCNVNvehIHqQZqN1RO/Rd6LOSOO63JUHHGGLaas0Xr0cE7pcgeIwg+Qxz/xGoJ64/gHXCT+lGcHzW6eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711193622; c=relaxed/simple;
-	bh=lVMTPBer1GBC0aTfV+tnwQGV28AQ0c+Wn1dED58wnnA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R4kRwDLjz9MvQx9QpwBlZPEm9+xIHNZSxmdVK3Vx4Z5OBRTChHP7xVua+rhSBRa7/+3ZLBXUomXlSBS8IFsrng2tkS0bVLxjMhbxjOfHn3GWHda5OOkGDHlVcvur6B7ZmMEG+zV+yfEOFa8SuIltmKCQLnlHP/BLZRGmK1EQe5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nlo3uo5j; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711203034; c=relaxed/simple;
+	bh=vpI2jBHlh6dsG2SS2eT9xX6YVg4ZX5BR2WV/eWEg+MA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TjeLqe+Cs3jgklzYbL3cFbL3b7L90JujbgPM6iTgSCFVRXPPuaGT8BkEvRRuqJcGkHF6lJY0c/XpIS8ari/uOLyzckHSfPhray7qJHOV4BYyazOaT/15vQw/Le/v+M5Tn0IE9KU3115tTgzECKZo/H+6M0Egbld4aW3AimpYuI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Mb97SIkc; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nlo3uo5j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=cxg2ykibv5bgfaxqtmlv6yvxne.protonmail; t=1711193617; x=1711452817;
-	bh=sbVf4Q+GEkWRKl3AKJdJ5EZhyVY97cY1z0wDeX4RD08=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=nlo3uo5jwFPV3LASuBdaa9tVkJKHDJCB94VS22/mtbkuqjcIowj7yS2BfgxC48L3v
-	 2DQGRppJKjlv0EJO/8XDfp1POJ516p/CoNAHURwASRN3LsuQqNPvIc5wSo7RtGtmbB
-	 ZNIw8OTenu2gsrOZ8RNgQhjGOUy7GuAQzrab9naDx+ZYQXbMSRgZxlp1R5P52L5zmE
-	 UfyoFdwzx7U+FiATuaoQy+4dh97ISrkjkNAh5IUXPfbx74L8yg07wD61zbCjMMh25d
-	 pkV84OSACZzeAS31YlS5hW3mObB21Mk1CMUR7cq8hp3ps1u74V6HWOqSqrDTiNo6a4
-	 x5Z1ZeWYqSOhg==
-Date: Sat, 23 Mar 2024 11:33:26 +0000
-To: Andreas Hindborg <nmi@metaspace.dk>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
-	<da.gomez@samsung.com>, open list <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 4/5] rust: block: add rnull, Rust null_blk implementation
-Message-ID: <QqpNcEOxhslSB7-34znxmQK_prPJfe2GT0ejWLesj-Dlse1ueCacbzsJOM0LK3YmgQsUWAR58ZFPPh1MUCliionIXrvLNsOqTS_Ee3bXEuQ=@proton.me>
-In-Reply-To: <20240313110515.70088-5-nmi@metaspace.dk>
-References: <20240313110515.70088-1-nmi@metaspace.dk> <20240313110515.70088-5-nmi@metaspace.dk>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Mb97SIkc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=mMJIH5/fIvPZW8NeQXlIeeRpf5h3/o6asdfcYdeLYYU=; b=Mb
+	97SIkcFf6RiGosPIvWmz81W9Tp/neBsuP1WTUaUSrsWhsiDdOVBFU6SmKQvKIJU5t9HoTng5vbAHz
+	cee9x2n3fWh4zNNBCVa1YJLNPHa309YzyVDRdbNna5ABsrhzUGFbEqN+NhrfCEvPB8JwkajSLYHwu
+	kDuu1og5p4MP98w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ro24j-00B3OA-OU; Sat, 23 Mar 2024 15:10:21 +0100
+Date: Sat, 23 Mar 2024 15:10:21 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [WIP 1/3] rust: Introduce atomic module
+Message-ID: <497668ec-c2d5-4cb4-9c2d-8e6f7129a42e@lunn.ch>
+References: <20240322233838.868874-1-boqun.feng@gmail.com>
+ <20240322233838.868874-2-boqun.feng@gmail.com>
+ <068a5983-8216-48a5-9eb5-784a42026836@lunn.ch>
+ <CAH5fLggdVDccDwBa3z+3YfjKFLegh7ZvcSzfhnEbAGSk=THKrw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,48 +77,33 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLggdVDccDwBa3z+3YfjKFLegh7ZvcSzfhnEbAGSk=THKrw@mail.gmail.com>
 
-On 3/13/24 12:05, Andreas Hindborg wrote:
-> +module! {
-> +    type: NullBlkModule,
-> +    name: "rnull_mod",
-> +    author: "Andreas Hindborg",
-> +    license: "GPL v2",
-> +    params: {
-> +        param_memory_backed: bool {
-> +            default: true,
-> +            permissions: 0,
-> +            description: "Use memory backing",
-> +        },
-> +        // Problems with pin_init when `irq_mode`
+On Sat, Mar 23, 2024 at 10:58:16AM +0100, Alice Ryhl wrote:
+> On Sat, Mar 23, 2024 at 12:52 AM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > > +//! These primitives should have the same semantics as their C counterparts, for precise definitions
+> > > +//! of the semantics, please refer to tools/memory-model. Note that Linux Kernel Memory
+> > > +//! (Consistency) Model is the only model for Rust development in kernel right now, please avoid to
+> > > +//! use Rust's own atomics.
+> >
+> > Is it possible to somehow poison rusts own atomics?  I would not be
+> > too surprised if somebody with good Rust knowledge but new to the
+> > kernel tries using Rusts atomics. Either getting the compiler to fail
+> > the build, or it throws an Opps on first invocation would be good.
+> 
+> We could try to get a flag added to the Rust standard library that
+> removes the core::sync::atomic module entirely, then pass that flag.
 
-Can you elaborate?
+Just looking down the road a bit, are there other features in the
+standard library which are not applicable to Linux kernel space?
+Ideally we want a solution not just for atomics but a generic solution
+which can disable a collection of features? Maybe one by one?
 
---=20
-Cheers,
-Benno
+And i assume somebody will try to use Rust in uboot/barebox. It
+probably has similar requirements to the Linux kernel? But what about
+Zephyr? Or VxWorks? Darwin?
 
-> +        param_irq_mode: u8 {
-> +            default: 0,
-> +            permissions: 0,
-> +            description: "IRQ Mode (0: None, 1: Soft, 2: Timer)",
-> +        },
-> +        param_capacity_mib: u64 {
-> +            default: 4096,
-> +            permissions: 0,
-> +            description: "Device capacity in MiB",
-> +        },
-> +        param_completion_time_nsec: u64 {
-> +            default: 1_000_000,
-> +            permissions: 0,
-> +            description: "Completion time in nano seconds for timer mode=
-",
-> +        },
-> +        param_block_size: u16 {
-> +            default: 4096,
-> +            permissions: 0,
-> +            description: "Block size in bytes",
-> +        },
-> +    },
-> +}
+	Andrew
