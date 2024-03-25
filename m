@@ -1,217 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763753DAC19
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 18:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FFC3DB9B
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 18:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711390669; cv=none; b=myTeWNMYy2XiYaPWOHWDImhJ/eWtqAWbBtDr6io67Zcn7vmKdubUXbDdskJd6rLtmHfntxTQjizWTFuvaJ8VGM6m9V/f877doimtniROVbNcL9kAsdwbYrmI/LcK4E0x616SK25GCVNDThWgiJ/KKH7M6v9h2NdY2xsLA9N+Heo=
+	t=1711390726; cv=none; b=RP1pDZquAGxfDqGKHAqWC+W7yGR5S+YDJ/2Y5VqoQ5O4hFGaHskyaVpBY1CFaCR6brgevZytMBrt4NREM2uGbRjbwrXFUOgyF3v/NKG0gRWXzbpfA/JbZ7xHZny/0ED9yyoNFuDoDiAxWA7+ludYJn691I/cl27buxLsb08aj+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711390669; c=relaxed/simple;
-	bh=Rfz0rUg0/DBlNV8+KCm2H639pKrerekiO9oMebSNsM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C2wgBpz0ns2fjQs8zl64jaXuumAb0FCi9fc3Q6E8ZhUJ6YTwrnUxvb8ZSGbWxomr7qM/VD0jDiROe1AO01Y6DKHjq13knfPwQtaPId8MY0L32xiZmqg0vV3cHDiSzPYqajIK3AnhRDkzPlyF8Ld2K/kA4aNRBkSlPdGhozQBun8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2OnyZik; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711390726; c=relaxed/simple;
+	bh=elUiqJTvAYdGzopmAo5Uvvb6bI2FhG9bkFwgckDVJZ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rSgMtSMhhqM4hMUnSN3W0MQP29WCSifbRuBM1+dilk5tR8tadp83jCAHnZ29YLU+PrSpuvyfIBGtUxu19EYtkkMOMMP+f1eksQBlzaI3gbRnVy55GPNiGcJPNbR4Zam+i2Hst3YzcQskJLrsGJsjCjmR0IcNBPXpgxuWApUUskg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RGDGHzjH; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2OnyZik"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568BFC433F1;
-	Mon, 25 Mar 2024 18:17:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711390668;
-	bh=Rfz0rUg0/DBlNV8+KCm2H639pKrerekiO9oMebSNsM4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q2OnyZikx7PtJQxLfvOd7Z3rF4jEkhkK66AsS8nbcGyv23bmGz0JrDH/QrKRaFByG
-	 iwqUoZ+7h+jxXBEFZVNXIlMmQFFdSPk1UCqnzzC1qTyhlHrrtu4ABueN99PcmP6G0f
-	 3iV1d/1ofBGQK70NOWNqnTc5JM34OkiO/scS6zEo=
-Date: Mon, 25 Mar 2024 19:17:46 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
-	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 3/8] rust: device: Add a stub abstraction for devices
-Message-ID: <2024032518-swampland-chaperone-317b@gregkh>
-References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-4-dakr@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RGDGHzjH"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6e6bee809b8so4000248b3a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 11:18:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711390724; x=1711995524; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=elUiqJTvAYdGzopmAo5Uvvb6bI2FhG9bkFwgckDVJZ0=;
+        b=RGDGHzjHGOy24jQ5xLO27Tr0VUEcvjBrk/+TcZctcVqRNFhJDzLXbzCdB9maCSa6KZ
+         U3ZtW9T6p7yQQeAF9wKzBDVA/LGCgRdjBqhGEvzpKvBJurner2Ca85skiWyraYAqpnWo
+         almznwoFrSKr/lcKXgeN7rMcPW0/JX83aoGDZvlGnbzesqtr0MDUsJijFwTyTHuVnqr9
+         NJJ86JjSy1H9HIbhc79cLMmkVjgZK3xF3TORNhuAyOAuXBznP8mNx3K/5aguhaXKCvQa
+         0BBTEM7619ZCx7QHLamRCGOJhR32BCzQMg1mbQknBxKU7e9IGdzqLMh+W3L7Zwdy/lU4
+         Styg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711390724; x=1711995524;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=elUiqJTvAYdGzopmAo5Uvvb6bI2FhG9bkFwgckDVJZ0=;
+        b=FtkawuLeEr4ql870uKTAtjAFYYFJx0wRazLWGwB180ruqFuGh/dEVL/HoOvs9Npf/e
+         S5cPpKRlgR4oqGe7MLMRuD+YcB0fwXCrLbVEC/uxL0OWMoBl7P/rkTakUl08ZkuZ7OuU
+         nsnFHJukGhAz7TLBRCWI8Clfpyzv6t52iYkEdS25LL/cRNA/hT6Swb43HJ2KOzrFgJas
+         2BbzXyTCNI8yei6g1LZo7MuMMQB4wDYzAZskukYAsAzcVIkxJlCQ1JgejLgMN8qLtw7Q
+         BDHa91HioOwhD8EmLw6T0xj33cXBfcQpktwrRb1gXrQB2glmgelleMMCBCbppmfVO82E
+         7swA==
+X-Forwarded-Encrypted: i=1; AJvYcCVShaTKERAFORm3frTxR+T0Uwl3Uq2aoNkwJeQbqEgpROazusYRFNU1A3bfAzog34ZT/DPwSjJ47lOB7zvguu6V7wsT+Y2b6F+p+6SDOLo=
+X-Gm-Message-State: AOJu0YwXKIHw4hcnKYt0Kut7vjb9X+kjumdNJRGxeVqupHnrCEonfy3O
+	tCZVuah6pFgv8cfAoXUaFvQUdI2Xfs2jnQ3UhVEqwddXKKtyy+Ro20qiz5Q2Y2iUnsjs/Bkx3jw
+	cH75WccCaJQd6OuZXzNrzVr+NSDA=
+X-Google-Smtp-Source: AGHT+IGXuTSMTH1Xmsa4XS33Fl7mJkCgXtkE3YoWXprmjgzGUmJ6723rlVGoIVMyVdzJ1eCIA8FYtmJ8PKmc/UCXbYc=
+X-Received: by 2002:a17:90a:658a:b0:29f:6d8d:da34 with SMTP id
+ k10-20020a17090a658a00b0029f6d8dda34mr6262444pjj.24.1711390723971; Mon, 25
+ Mar 2024 11:18:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240325174924.95899-4-dakr@redhat.com>
+References: <20240325174924.95899-1-dakr@redhat.com> <20240325174924.95899-2-dakr@redhat.com>
+ <CANiq72n+ufjp3HfDQKqFdbzv1_WErH+oYLF=g9gW6DYG0XAy8g@mail.gmail.com> <ZgG8BUk9PgvdXaYl@cassiopeiae>
+In-Reply-To: <ZgG8BUk9PgvdXaYl@cassiopeiae>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 25 Mar 2024 19:18:16 +0100
+Message-ID: <CANiq72mjNjvkZAVK-HbiRJotoUgyreepTVP2fJ4QNdfxPuqx7g@mail.gmail.com>
+Subject: Re: [PATCH 1/8] arch: x86: tools: increase symbol name size
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com, 
+	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com, 
+	David Rheinsberg <david@readahead.eu>, =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 25, 2024 at 06:49:07PM +0100, Danilo Krummrich wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> 
-> Add a Device type which represents an owned reference to a generic
-> struct device. This minimal implementation just handles reference
-> counting and allows the user to get the device name.
-> 
-> Also, implement the rust_helper_dev_get_drvdata helper.
-> 
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Co-developed-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> ---
->  rust/helpers.c        | 13 ++++++++
->  rust/kernel/device.rs | 76 ++++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 88 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 70e59efd92bc..1e40661a33d1 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -23,6 +23,7 @@
->  #include <kunit/test-bug.h>
->  #include <linux/bug.h>
->  #include <linux/build_bug.h>
-> +#include <linux/device.h>
->  #include <linux/err.h>
->  #include <linux/errname.h>
->  #include <linux/mutex.h>
-> @@ -157,6 +158,18 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
->  
-> +void *rust_helper_dev_get_drvdata(struct device *dev)
-> +{
-> +	return dev_get_drvdata(dev);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_dev_get_drvdata);
-> +
-> +const char *rust_helper_dev_name(const struct device *dev)
-> +{
-> +	return dev_name(dev);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_dev_name);
-> +
->  /*
->   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
->   * use it in contexts where Rust expects a `usize` like slice (array) indices.
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 9be021e393ca..7309a236f512 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -4,7 +4,7 @@
->  //!
->  //! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
->  
-> -use crate::bindings;
-> +use crate::{bindings, str::CStr};
->  
->  /// A raw device.
->  ///
-> @@ -20,4 +20,78 @@
->  pub unsafe trait RawDevice {
->      /// Returns the raw `struct device` related to `self`.
->      fn raw_device(&self) -> *mut bindings::device;
-> +
-> +    /// Returns the name of the device.
-> +    fn name(&self) -> &CStr {
-> +        let ptr = self.raw_device();
-> +
-> +        // SAFETY: `ptr` is valid because `self` keeps it alive.
+On Mon, Mar 25, 2024 at 7:01=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
+wrote:
+>
+> Huh! The patches, especially [1], seem to be around for quite a while. Wh=
+ich
+> also means people were hitting this beforehand. Any reason a fix did not =
+land
+> yet?
 
-How can self keep it alive?
+To be clear, the patch I linked is older than the one you linked (that
+is why I linked that one).
 
-> +        let name = unsafe { bindings::dev_name(ptr) };
-> +
-> +        // SAFETY: The name of the device remains valid while it is alive (because the device is
-> +        // never renamed, per the safety requirement of this trait). This is guaranteed to be the
-> +        // case because the reference to `self` outlives the one of the returned `CStr` (enforced
-> +        // by the compiler because of their lifetimes).
+I don't know if there is a particular reason -- I pinged recently in
+the thread I linked above [1] and mentioned Sergio's patches too. I
+guess they may be overloaded, but it would be definitely nice to at
+least have the `256 + KSYM_NAME_LEN` fix/approach, even if it is not
+the cleanest.
 
-devices are renamed all the time, I don't understand how this can be
-true here.
+[1] https://lore.kernel.org/rust-for-linux/CANiq72meap5C9bkj5rNDE=3D0U5gb5O=
+KwDrrTSrVRwJbkAPWgUsg@mail.gmail.com/
 
-
-> +        unsafe { CStr::from_char_ptr(name) }
-> +    }
-> +}
-> +
-> +/// A ref-counted device.
-> +///
-> +/// # Invariants
-> +///
-> +/// `ptr` is valid, non-null, and has a non-zero reference count. One of the references is owned by
-> +/// `self`, and will be decremented when `self` is dropped.
-> +pub struct Device {
-> +    pub(crate) ptr: *mut bindings::device,
-> +}
-> +
-> +// SAFETY: `Device` only holds a pointer to a C device, which is safe to be used from any thread.
-> +unsafe impl Send for Device {}
-
-It's safe if you have a reference count on the pointer.  Do you have
-that?
-
-> +
-> +// SAFETY: `Device` only holds a pointer to a C device, references to which are safe to be used
-> +// from any thread.
-> +unsafe impl Sync for Device {}
-
-Same as above.
-
-
-> +
-> +impl Device {
-> +    /// Creates a new device instance.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
-
-device pointers are NULL all the time, you better be able to handle this
-otherwise it's not going to go well :(
-
-> +    pub unsafe fn new(ptr: *mut bindings::device) -> Self {
-> +        // SAFETY: By the safety requirements, ptr is valid and its refcounted will be incremented.
-> +        unsafe { bindings::get_device(ptr) };
-> +        // INVARIANT: The safety requirements satisfy all but one invariant, which is that `self`
-> +        // owns a reference. This is satisfied by the call to `get_device` above.
-> +        Self { ptr }
-> +    }
-> +
-> +    /// Creates a new device instance from an existing [`RawDevice`] instance.
-> +    pub fn from_dev(dev: &dyn RawDevice) -> Self {
-> +        // SAFETY: The requirements are satisfied by the existence of `RawDevice` and its safety
-> +        // requirements.
-> +        unsafe { Self::new(dev.raw_device()) }
-> +    }
-> +}
-> +
-> +// SAFETY: The device returned by `raw_device` is the one for which we hold a reference.
-> +unsafe impl RawDevice for Device {
-> +    fn raw_device(&self) -> *mut bindings::device {
-> +        self.ptr
-> +    }
-> +}
-> +
-> +impl Drop for Device {
-> +    fn drop(&mut self) {
-> +        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
-> +        // relinquish it now.
-> +        unsafe { bindings::put_device(self.ptr) };
-> +    }
-> +}
-> +
-> +impl Clone for Device {
-> +    fn clone(&self) -> Self {
-> +        Self::from_dev(self)
-
-Does this increment the reference count?
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
