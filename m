@@ -1,62 +1,60 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBA31C290
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E502D1E4BA
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711388878; cv=none; b=EHQDAjEJVZs2jFWnFsRAgoajJaNcbNQ8UZ6eTSF5tkkMOfGKgKJo+AX8s1hAcSJh9jnQJ7/zcEUmN2cSf3wcPE7g+iri8SSaKtieQJn7scDf1oItj7ou9Vp7FTLWVghPsX4d0rH70D3ArmPjk9ZRQLKeDukpHTgVflG1ejw55yc=
+	t=1711388975; cv=none; b=QxVE8in1pU2Ji18KgzGFgwXbMxFB5M3C9afFleLdv/loDMqbmPqoH/E0weuJqXPRy8yoHtXC0PB1keFaP4PpCx2RFexBf807QRle50cZHosDvlbr/sMio7tDBSXZtqFn4MCIUoB3Ioe6bXL5We7YNYRmdFGW0xx9c7LGX/yNOYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711388878; c=relaxed/simple;
-	bh=QkaqBEy+ZCn/Stm1e8UG4/ZIpXSKHQZpx8FxlH+tlNk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rj/sqVG36W9Z46uRGnFd0ctm9bcmfQ0p6ja/v5TLKI4ZoPBRD5t1bCaOKytPtv9d6uenNgFUuBg8ST7iRLjtxQeLT1AUE0ZcHD0W4j0csRCgufzaVLFrrLSrmEFLcMUSpxxCGfUdsUgJFFL7MA9Mojdl8RQ3NwDycSeadWIAa6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hFGMMrT2; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1711388975; c=relaxed/simple;
+	bh=0KJffezjVyzqS/UlwE1AO/6G0SUoub1lN1ZNsV+Ylb4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MTfFKrYjGPIQc8y7jvIx8n8GATs7nsT/gL3OR8vHR1nfyZAF4oaX5vzrXwTMMDRJd27WsvOVoPNm9EiSk/30Y6frZJ+1pcXBDF0jxVskWDnLU8L99OcIe3XoyaJ7Anakn340fgLYIpa6f7329KqOdXDuIs9G4EjyhkQYkqILUn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Du8+gjVq; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hFGMMrT2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Du8+gjVq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711388876;
+	s=mimecast20190719; t=1711388972;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G5JpKnaGqEC+8QydBQh1MC+zGWiofGXoQh/4syQO3TA=;
-	b=hFGMMrT2l8CjHSgWXOCjVGLLrsgitj3x5E15hFKc6sd7me9XyZGwcpB4dGZzLe1E5FPAw6
-	+LLLJvFftzEzBq6BHdzZTaJQMhvnydV21AgQY72bpiqSxBzzygmDxKvAQg73ma4v+I3mJ6
-	sgRwWeFtkrK6QG2h5Ny4zekFaQ/Ni5Y=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=omO/qOA+iXX1seZX2dEPpZ2scpnJFXkCTiiN29qltEc=;
+	b=Du8+gjVqS7US0w4V0QP8Sf/Y6JoJBcFWNux0IZshGBidWGD4AyopcSZNVAh/nmPsWXzmTE
+	+zpjPvy+/Kbdrk8ydM9J1qK+utnghrLLo+xlLYZlGSZABbwtcFxgv9lT37Mp2bK9rw3jW9
+	CxunJ1Ihf+fkMah3GJQO0GJupLfhiBw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-lHZlFs6iPzago1qQ-hukvQ-1; Mon, 25 Mar 2024 13:47:52 -0400
-X-MC-Unique: lHZlFs6iPzago1qQ-hukvQ-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4147e733d20so11814925e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:47:52 -0700 (PDT)
+ us-mta-633-5Mw7zbkGMv6k-8vJZqgTkQ-1; Mon, 25 Mar 2024 13:49:31 -0400
+X-MC-Unique: 5Mw7zbkGMv6k-8vJZqgTkQ-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-33e4397540bso2698506f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:49:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711388871; x=1711993671;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G5JpKnaGqEC+8QydBQh1MC+zGWiofGXoQh/4syQO3TA=;
-        b=P0/kVt0z+qV2OQZcPYWD+hJuRXXsZrvLPNMrROJC0PdVUNQfgzUuIyJXTf++6WOaGd
-         NmD+wa9SHS4ySzmRozDwnwHxCRcmpSxBEpKirNZt9TTNp/xg+/x1QYzJN05ANgybYWjM
-         cUXvdzDxqRs5935PBCdgoSEryK8KC7PFThM5TRP9cICeAKI3pH+k6c7+fJpUdoJOMauw
-         hlcNZhtLoqIPCWvvE3s8V/+Ip6euhbdrrdabXY7cI4+V4LsU3Fr53PD3UjyDwbrGOUbH
-         9wMapccCWN0KaChkMh1TttNyvDI552/eXHS64IEMSZHcOkSqCFEJ1dDDIMgXD9XBRPDt
-         erDA==
-X-Gm-Message-State: AOJu0YzB/kb+b5ywjB1eJizxnO8qXzIFBYmYsLrdfoKGYyyfEP9YmJJ/
-	F/CXsmjC/TSDNDYU2ESwRzCDOja9quXFMQ0ygleyj9pOhd6SX/Upuq2mh4X1yHIWFkfjonxpAJ/
-	U0LfjA4+hGfwAKctW9TqmpzUEhG6isKAg0IJyjNz/Xk4Lh464PdVv/SnC3q+sTAxS
-X-Received: by 2002:a05:600c:2807:b0:413:38ee:69e7 with SMTP id m7-20020a05600c280700b0041338ee69e7mr5292519wmb.36.1711388871516;
-        Mon, 25 Mar 2024 10:47:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5vWnIhTRe0oKqtlYhfwYEhtdZ3dok4uC4wvkcwLyRDRUQmfXBEPH6ks1ZweENgUMgGhu4MA==
-X-Received: by 2002:a05:600c:2807:b0:413:38ee:69e7 with SMTP id m7-20020a05600c280700b0041338ee69e7mr5292510wmb.36.1711388871217;
-        Mon, 25 Mar 2024 10:47:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711388970; x=1711993770;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=omO/qOA+iXX1seZX2dEPpZ2scpnJFXkCTiiN29qltEc=;
+        b=LfDzlI0u48RNuqh3u8EKL/GJfukmVePXOMrIOGaCIlNmVhLeGe/mF3lec9C3laewMZ
+         AAdoXpCSGtfscO8enf5Y4SvYQsAag9SaeUN3DeKAYYOppdeiKuq0NO2JVKrVTw6noXQh
+         bOZMKuNi5bzcYo5mMqkVjzazbt23aHDwqMc86SM8Jc4dDE2inQXJDp9EZrxhc9XzwTs/
+         v6OlRGZ652NNhFNHy+kxtGXsxoEGBeqJ0eOdr5jxlBurwb4hmeUXSuZpZhpXARTkUhX0
+         oHVmxXohEoEju8rPTaX5c1Gt/1W5rInFo1lQBc9zmWi2b4X6J35mJlLQNFDaIlcPoKn2
+         b3FQ==
+X-Gm-Message-State: AOJu0Yz8DUHoTVYubDO+wN/sV33mu0xv5zderg93HCZhu6AA/rdpWOhU
+	pzAUDkLleCUN5rG6OHxjjWqIoVHYNClu5pUg18/6oO4w5mHz93VdQWYrAwtcXJP07DFw5rs6GSf
+	9aw+eXQZVvAGEN/2AqWC1VnClQcg2F+ciXcysR1xTpvQXTycFiRRFNgMeWhz0CSzk
+X-Received: by 2002:a05:600c:19c9:b0:414:8aaa:acb5 with SMTP id u9-20020a05600c19c900b004148aaaacb5mr235315wmq.16.1711388970687;
+        Mon, 25 Mar 2024 10:49:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGegRswWyT08KCpAMDXQaIzUr9wy+1F8pd/tG+PJF6iWyq9qrDiQmjFFclWqppaf2uca2mSxg==
+X-Received: by 2002:a05:600c:19c9:b0:414:8aaa:acb5 with SMTP id u9-20020a05600c19c900b004148aaaacb5mr235288wmq.16.1711388970384;
+        Mon, 25 Mar 2024 10:49:30 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id p12-20020a05600c1d8c00b004148b8fb25fsm2000771wms.22.2024.03.25.10.47.50
+        by smtp.gmail.com with ESMTPSA id bi16-20020a05600c3d9000b004148cc530a9sm371294wmb.7.2024.03.25.10.49.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 10:47:50 -0700 (PDT)
+        Mon, 25 Mar 2024 10:49:30 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -80,12 +78,10 @@ Cc: rust-for-linux@vger.kernel.org,
 	ajanulgu@redhat.com,
 	airlied@redhat.com,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v7 1/8] arch: x86: tools: increase symbol name size
-Date: Mon, 25 Mar 2024 18:47:17 +0100
-Message-ID: <20240325174743.95542-2-dakr@redhat.com>
+Subject: [PATCH 0/8] [RFC] Rust device / driver abstractions
+Date: Mon, 25 Mar 2024 18:49:04 +0100
+Message-ID: <20240325174924.95899-1-dakr@redhat.com>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240325174743.95542-1-dakr@redhat.com>
-References: <20240325174743.95542-1-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -97,31 +93,52 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Increase the symbol name size as the Rust compiler seems to generate
-symbol names exceeding the previous buffer size of 256.
+Hi,
 
-arch/x86/tools/insn_decoder_test: error: malformed line 2486512:
-77620
-make[2]: *** [arch/x86/tools/Makefile:26: posttest] Error 3
+This patch series provides some initial Rust abstractions around the device /
+driver model, including an abstraction for device private data.
 
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
----
- arch/x86/tools/insn_decoder_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This patch series is sent in the context of [1] and is also available at [2].
 
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-index 472540aeabc2..18601b3c5037 100644
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -106,7 +106,7 @@ static void parse_args(int argc, char **argv)
- 	}
- }
- 
--#define BUFSIZE 256
-+#define BUFSIZE 1024
- 
- int main(int argc, char **argv)
- {
+- Danilo
+
+[1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
+[2] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
+
+Danilo Krummrich (1):
+  arch: x86: tools: increase symbol name size
+
+Wedson Almeida Filho (7):
+  rust: device: Add a minimal RawDevice trait
+  rust: device: Add a stub abstraction for devices
+  rust: add driver abstraction
+  rust: add rcu abstraction
+  rust: add revocable mutex
+  rust: add revocable objects
+  rust: add device::Data
+
+ arch/x86/tools/insn_decoder_test.c |   2 +-
+ rust/bindings/bindings_helper.h    |   1 +
+ rust/helpers.c                     |  28 ++
+ rust/kernel/device.rs              | 215 +++++++++++++
+ rust/kernel/driver.rs              | 493 +++++++++++++++++++++++++++++
+ rust/kernel/lib.rs                 |   6 +-
+ rust/kernel/revocable.rs           | 438 +++++++++++++++++++++++++
+ rust/kernel/sync.rs                |   3 +
+ rust/kernel/sync/rcu.rs            |  52 +++
+ rust/kernel/sync/revocable.rs      |  98 ++++++
+ rust/macros/module.rs              |   2 +-
+ samples/rust/rust_minimal.rs       |   2 +-
+ samples/rust/rust_print.rs         |   2 +-
+ 13 files changed, 1337 insertions(+), 5 deletions(-)
+ create mode 100644 rust/kernel/device.rs
+ create mode 100644 rust/kernel/driver.rs
+ create mode 100644 rust/kernel/revocable.rs
+ create mode 100644 rust/kernel/sync/rcu.rs
+ create mode 100644 rust/kernel/sync/revocable.rs
+
+
+base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
 -- 
 2.44.0
 
