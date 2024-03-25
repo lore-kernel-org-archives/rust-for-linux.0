@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F353DABE6
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 18:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB216E613
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 18:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711390896; cv=none; b=S+5BC1ga+U1bKqVohEkhJVW8KMn8TmD4CyrUbzViPHfvEU6xHXaj9rWBiF6HvlI8Mt25raP6jOGGuvVknsvRdbtWD3pki1inT1fXTYvQm0k5WUeL/irYDHKyta6kZwG4u1NcI1i4xb+JU7YY3rBf4z5+15+skcg0QUrEPiCyTfM=
+	t=1711390939; cv=none; b=Lzac0lD4SN9tRIcqOh0rz61s8p1IxaPOHXj3RF2IDtg10GUuVlkyTLyyuVDSQXsPpGadfZetcF+NJF+KAW2WSZp2/SERsdINvs3RQFF47HA7BhjV/PSToukJuVo6398LVGHcqxjrsDKDUG71cWLg+dST+L5xQh/lWvNcdCRdbRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711390896; c=relaxed/simple;
-	bh=AV9c25RTiEGEN8J4EeBrFRI8HxDbL7j/xHeWdudm9ZM=;
+	s=arc-20240116; t=1711390939; c=relaxed/simple;
+	bh=eWx8xv2fUTmp115FP2mmw3U76BCz9ryhWIO4pwCDjSo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVThfXzuG5AwPC/frRvesMBoj7lwoYlz0r/gJsH9HIcOZk55HvIRDmbZLCE3YbYEO6M4DWS4qPbwBJzXYpPjd9yVh8fqWNDZnUdsdag2/3gY/PpyCSVTjlrABIbp+ItRoJ1mY1P92gk/x2zVkV3M5nyx54BO92yjl7dyDoXKBXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtYZL9Xs; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=EZK8m88DCOtMG6sQH0WpA7e4oTLeMiKiyZ4FdcvBNvShfbWiZHLjt2upBAQTdn9RNRj1a6doBERr934cBxavFjASAcQCc3V9vLI87xwnallTUvfJ8VnYpCTFbguoMnV/3CXHbBRn8sCfm+TXp/ox7VUynsF6K1wutRth1Tii9Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sqg+cO85; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtYZL9Xs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D073AC43390;
-	Mon, 25 Mar 2024 18:21:34 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sqg+cO85"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3A6C433C7;
+	Mon, 25 Mar 2024 18:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711390895;
-	bh=AV9c25RTiEGEN8J4EeBrFRI8HxDbL7j/xHeWdudm9ZM=;
+	s=korg; t=1711390938;
+	bh=eWx8xv2fUTmp115FP2mmw3U76BCz9ryhWIO4pwCDjSo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rtYZL9XsJ2JAOqBY80THpTAwQQyM3snprj/FMpBOo2jxAnim98LPFZcQYAUZq4rPl
-	 MpoauajFPqAv+yfC+FGlsBJ01IFpb96DwZZcYEyT0V6RSw4+HOuZ0YW/8bwjuQEd68
-	 8/xfFrs4a0OprrgbVE26JXsjL1Jo0ueMxiZFL0Oo=
-Date: Mon, 25 Mar 2024 19:21:32 +0100
+	b=Sqg+cO85CoeKPA1AxqMz8064fto/KNkAn7NfBKSKAAk90btDgkHZFBjBP2cx3Rnfl
+	 qJQEM+k7DIjrFSRymYw1rjSk6xm1OHN1DhSKzoH8ofYtTtP2p6Rxzs1x20vSPaeD+e
+	 h9De+JKcPYc4syz6ka3H8xlqwwTCFgs6+BFW/MrE=
+Date: Mon, 25 Mar 2024 19:22:15 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Danilo Krummrich <dakr@redhat.com>
 Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
@@ -33,10 +33,10 @@ Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
 	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
 	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
 	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
-Subject: Re: [PATCH 7/8] rust: add revocable objects
-Message-ID: <2024032514-happier-hazelnut-4b50@gregkh>
+Subject: Re: [PATCH 6/8] rust: add revocable mutex
+Message-ID: <2024032553-facing-thaw-7048@gregkh>
 References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-8-dakr@redhat.com>
+ <20240325174924.95899-7-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,22 +45,25 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325174924.95899-8-dakr@redhat.com>
+In-Reply-To: <20240325174924.95899-7-dakr@redhat.com>
 
-On Mon, Mar 25, 2024 at 06:49:11PM +0100, Danilo Krummrich wrote:
+On Mon, Mar 25, 2024 at 06:49:10PM +0100, Danilo Krummrich wrote:
 > From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > 
-> This implements the Revocable and AsyncRevocable types.
+> This is a mutex where access to its contents can be revoked at runtime.
 > 
-> Revocable allows access to objects to be safely revoked at run time.
+> This is different from `Revocable` in a few ways:
+>   1. The caller may sleep while holding a guard.
+>   2. Accessors are all serialised.
+>   3. Accessing is not as cheap (because it involves acquiring the mutex).
+>   4. The size of the object is larger (because it involves a mutex +
+>      flag).
 > 
-> This is useful, for example, for resources allocated during device probe;
-> when the device is removed, the driver should stop accessing the device
-> resources even if other state is kept in memory due to existing
-> references (i.e., device context data is ref-counted and has a non-zero
-> refcount after removal of the device).
+> An example of where this a good fit to be used in device state that
+> holds registrations to other subsystems.
 
-Again, device removal is different from unbinding a driver from a
-device.  Please fix this all up.
+Why don't we need this in .c files if it is so needed in drivers today?
+
+thanks,
 
 greg k-h
