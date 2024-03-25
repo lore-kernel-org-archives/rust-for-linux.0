@@ -1,182 +1,147 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF106E2AB
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 22:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A946E71732
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 22:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711404356; cv=none; b=jmk9ezbwAt5qunC8SDdb+l68xO/9v3tNSNV5L3tN5HAfm/N+xmGCbfihWIpRRVu9IuIfQk4yai5fA0MLREBVi+v0uTin6YSfPkAiLDilasktsnQ1A403iK2cM51pInIMbLvhZnb+CKG/v8GOxVYTRWCfDnkAP1nDGxyibXdbxBI=
+	t=1711404570; cv=none; b=uvH22d1f3cYpJ0wY+K96+CyF0okG6sWKIJadilV+5G3XibNgqdY70pFZJgpOSFUbEv7BYZJLjtKZK1nzb9h31SEGQSZ+Q3qvodHpFY101GnEH6Gp3SJAo1q6bgdlviHjoA2E5t6iKV3bJWB80JvTDKu+ZB6GSzgVN+zS4qEYRsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711404356; c=relaxed/simple;
-	bh=ZFvuyhlVXgsXqn+uiOPjOuC5HwV1VdVaF4Yn0pW8M4M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NfZ+BMU5i5HhkvGydiRo205qCkfAg/yro2dZGgJ38ff7i1ngG3dsLGKCE4BF+9FBjv6DVwwuQdTSOAIwUTeIsitmqioo69S3SpqEnm0vsjg4Dhkz+23L6l7qQgrMa1Lid25fY7I2mSTkyaO+aAKhnAhmU31c7XZOZ6E+UvMCoSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OVRRyW8T; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711404570; c=relaxed/simple;
+	bh=fW2hIWHhR41/L1F+bpZzRKnNxDSzchbJIxBCkq7SfGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GHp+gm6xIIIRW4aCOuXIJ4vtBPP/uiOEOa5Rvr503Z+SX7Gj4hr1fXfsF49tNFitM1Lqy6Qx+2yg/q4b0fcnrjB5qJ0W8RWsClsVlMqJlfrjsET86P1d1dQhKLjaYIwn4jTvWqgS2//0X7kd6qO9x5Nyq/NdUbpstAr3paNcBng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b+sCf2Jf; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OVRRyW8T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711404348; x=1711663548;
-	bh=tN0+ubZJmKVdLvvMpKN2/OFQiM5GjH39Al+PCbsrl/Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=OVRRyW8ThiI6rpDGKa5zg2dheAWiiV3l53xdA7onmobWe3rTmsBn0Nv9qOAdBtg0P
-	 LGGHI3L5/P17Z4lPpvted5S2vyYAZSBhwNKdzufXNXjCRh4B8fHkZm25dlSsgoCkWi
-	 ZsNCntOaYlPIqcTwtYpeFRQ+qT0mYBQX1SuUJ48wzrNUFlRFPL06afTtH7ZaM/bcLC
-	 INMudYDgzCAyPXDyXQf3B7jMTi8q5QmF1a0amvwd7+151Vdz6hNS1ETdK97OWVHZYS
-	 vThx9PsvTTllKWXrYyGccU8CUjpXwky4c0RIV01HhPb4TyK0SxAr/2mAk94+rwxgBP
-	 Ke6JzxBiF+8mg==
-Date: Mon, 25 Mar 2024 22:05:33 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 02/10] rust: alloc: introduce the `VecExt` trait
-Message-ID: <g2iK91tWPKM5kXi-N6Nn3tn5jG4qvB6txrpq0ejLnQYgRNZJE1OO__SDANkSNP0JjMrqhEdc0m6YyxNlicxqzGr4hEsLAxPgCyPeyRoXLq0=@proton.me>
-In-Reply-To: <20240325195418.166013-3-wedsonaf@gmail.com>
-References: <20240325195418.166013-1-wedsonaf@gmail.com> <20240325195418.166013-3-wedsonaf@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="b+sCf2Jf"
+Date: Mon, 25 Mar 2024 18:09:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1711404566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=afGy8CRECdAELjgTa63PphAb8Je/7LgfWp/vpSHkqks=;
+	b=b+sCf2JfZ1bUx+SgaAuv492wBmpuur/6BjEMdbR9Z4ZCD4+uG7E/QItW3rmDr4vs7AeTLM
+	Xi1XoeDaJNa86zHWG0ZtX4cQdV1EpkxCGd1xKdkCh2oT+rvTG85ldwxSNrlBGl947PDi2s
+	eNzsKmqELeZnnjPlz9lpgr/m4xIcqSQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Philipp Stanner <pstanner@redhat.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
+	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
+	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, Mark Rutland <mark.rutland@arm.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+Message-ID: <jyijwrrzzhlsrffj37xj4sskipxqbxfewydnb3yzgybjobj6tg@cbv5y7znhm3n>
+References: <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
+ <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
+ <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
+ <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
+ <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
+ <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
+ <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
+ <CAHk-=wgLGWBXvNODAkzkVHEj7zrrnTq_hzMft62nKNkaL89ZGQ@mail.gmail.com>
+ <gewmacbbjxwsn4h54w2jfvbiq5iwr2zdm56pc3pv3rctxyd4lt@sqqa544ezmez>
+ <ZgHuioMM1cAWNDiX@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZgHuioMM1cAWNDiX@boqun-archlinux>
+X-Migadu-Flow: FLOW_OUT
 
-On 25.03.24 20:54, Wedson Almeida Filho wrote:> From: Wedson Almeida Filho =
-<walmeida@microsoft.com>
->=20
-> Make `try_with_capacity`, `try_push`, and `try_extend_from_slice`
-> methods available in `Vec` even though it doesn't implement them. It is
-> implemented with `try_reserve` and `push_within_capacity`.
->=20
-> This is in preparation for switching to the upstream `alloc` crate.
->=20
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->   rust/kernel/alloc.rs        |  1 +
->   rust/kernel/alloc/vecext.rs | 52 +++++++++++++++++++++++++++++++++++++
->   rust/kernel/lib.rs          |  1 +
->   rust/kernel/prelude.rs      |  2 ++
->   4 files changed, 56 insertions(+)
->   create mode 100644 rust/kernel/alloc/vecext.rs
->=20
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index ccd4149932c3..8ad57a2e693e 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -5,3 +5,4 @@
->   #[cfg(not(test))]
->   #[cfg(not(testlib))]
->   mod allocator;
-> +pub mod vecext;
-> diff --git a/rust/kernel/alloc/vecext.rs b/rust/kernel/alloc/vecext.rs
-> new file mode 100644
-> index 000000000000..59e92bab534e
-> --- /dev/null
-> +++ b/rust/kernel/alloc/vecext.rs
-> @@ -0,0 +1,52 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Extensions to [`Vec`] for fallible allocations.
-> +
-> +use alloc::{collections::TryReserveError, vec::Vec};
-> +use core::result::Result;
-> +
-> +/// Extensions to [`Vec`].
-> +pub trait VecExt<T>: Sized {
-> +    /// Creates a new [`Vec`] instance with at least the given capacity.
-> +    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveErro=
-r>;
-> +
-> +    /// Appends an element to the back of the [`Vec`] instance.
-> +    fn try_push(&mut self, v: T) -> Result<(), TryReserveError>;
-> +
-> +    /// Pushes clones of the elements of slice into the [`Vec`] instance=
-.
-> +    fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryRe=
-serveError>
-> +    where
-> +        T: Clone;
-
-All of the non `try_` prefix functions require=20
-`not(no_global_oom_handling)`, so we could also drop the `try_` prefix
-here.
-What do you think?
-
-> +}
-> +
-> +impl<T> VecExt<T> for Vec<T> {
-> +    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveErro=
-r> {
-> +        let mut v =3D Vec::new();
-> +        v.try_reserve(capacity)?;
-> +        Ok(v)
-> +    }
-> +
-> +    fn try_push(&mut self, v: T) -> Result<(), TryReserveError> {
-> +        if let Err(retry) =3D self.push_within_capacity(v) {
-> +            self.try_reserve(1)?;
-> +            let _ =3D self.push_within_capacity(retry);
-> +        }
-> +        Ok(())
-> +    }
-> +
-> +    fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryRe=
-serveError>
-> +    where
-> +        T: Clone,
-> +    {
-> +        let extra_cap =3D self.capacity() - self.len();
-> +        if extra_cap > 0 {
-> +            self.try_reserve(extra_cap)?;
-> +        }
-
-I am confused, why are you doing this? Did you mean to do this?:
-    let extra_cap =3D self.capacity() - self.len() - other.len();
-
---=20
-Cheers,
-Benno
-
-> +
-> +        for item in other {
-> +            self.try_push(item.clone())?;
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 51f30e55bd00..7f2841a18d05 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -19,6 +19,7 @@
->   #![feature(offset_of)]
->   #![feature(receiver_trait)]
->   #![feature(unsize)]
-> +#![feature(vec_push_within_capacity)]
->=20
->   // Ensure conditional compilation based on the kernel configuration wor=
-ks;
->   // otherwise we may silently break things like initcall handling.
-> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> index ae21600970b3..a0177f195dec 100644
-> --- a/rust/kernel/prelude.rs
-> +++ b/rust/kernel/prelude.rs
-> @@ -14,6 +14,8 @@
->   #[doc(no_inline)]
->   pub use core::pin::Pin;
->=20
-> +pub use crate::alloc::vecext::VecExt;
-> +
->   #[doc(no_inline)]
->   pub use alloc::{boxed::Box, vec::Vec};
->=20
-> --
-> 2.34.1
+On Mon, Mar 25, 2024 at 02:37:14PM -0700, Boqun Feng wrote:
+> On Mon, Mar 25, 2024 at 05:14:41PM -0400, Kent Overstreet wrote:
+> > On Mon, Mar 25, 2024 at 12:44:34PM -0700, Linus Torvalds wrote:
+> > > On Mon, 25 Mar 2024 at 11:59, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> > > >
+> > > > To be fair, "volatile" dates from an era when we didn't have the haziest
+> > > > understanding of what a working memory model for C would look like or
+> > > > why we'd even want one.
+> > > 
+> > > I don't disagree, but I find it very depressing that now that we *do*
+> > > know about memory models etc, the C++ memory model basically doubled
+> > > down on the same "object" model.
+> > > 
+> > > > The way the kernel uses volatile in e.g. READ_ONCE() is fully in line
+> > > > with modern thinking, just done with the tools available at the time. A
+> > > > more modern version would be just
+> > > >
+> > > > __atomic_load_n(ptr, __ATOMIC_RELAXED)
 > 
+> Note that Rust does have something similiar:
+> 
+> 	https://doc.rust-lang.org/std/ptr/fn.read_volatile.html
+> 
+> 	pub unsafe fn read_volatile<T>(src: *const T) -> T
+> 
+> (and also write_volatile()). So they made a good design putting the
+> volatile on the accesses rather than the type. However, per the current
+> Rust memory model these two primitives will be UB when data races happen
+> :-(
+> 
+> I mean, sure, if I use read_volatile() on an enum (whose valid values
+> are only 0, 1, 2), and I get a value 3, and the compiler says "you have
+> a logic bug and I refuse to compile the program correctly", I'm OK. But
+> if I use read_volatile() to read something like a u32, and I know it's
+> racy so my program actually handle that, I don't know any sane compiler
+> would miss-compile, so I don't know why that has to be a UB.
+
+Well, if T is too big to read/write atomically then you'll get torn
+reads, including potentially a bit representation that is not a valid T.
+
+Which is why the normal read_volatile<> or Volatile<> should disallow
+that.
+
+> > where T is any type that fits in a machine word, and the only operations
+> > it supports are get(), set(), xchg() and cmpxchG().
+> > 
+> > You DO NOT want it to be possible to transparantly use Volatile<T> in
+> > place of a regular T - in exactly the same way as an atomic_t can't be
+> > used in place of a regular integer.
+> 
+> Yes, this is useful. But no it's not that useful, how could you use that
+> to read another CPU's stack during some debug functions in a way you
+> know it's racy?
+
+That's a pretty difficult thing to do, because you don't know the
+_layout_ of the other CPU's stack, and even if you do it's going to be
+changing underneath you without locking.
+
+So the races thare are equivalent to a bad mem::transmute(), and that is
+very much UB.
+
+For a more typical usage of volatile, consider a ringbuffer with one
+thread producing and another thread consuming. Then you've got head and
+tail pointers, each written by one thread and read by another.
+
+You don't need any locking, just memory barriers and
+READ_ONCE()/WRITE_ONCE() to update the head and tail pointers. If you
+were writing this in Rust today the easy way would be an atomic integer,
+but that's not really correct - you're not doing atomic operations
+(locked arithmetic), just volatile reads and writes.
+
+Volatile<T> would be Send and Sync, just like atomic integers. You don't
+need locking if you're just working with single values that are small
+enough for the machine to read/write atomically.
