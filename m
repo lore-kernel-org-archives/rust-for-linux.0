@@ -1,251 +1,139 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4D53E498
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3D3130AD1
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711389006; cv=none; b=rLJdXArmEj74bdv9UsIKnUjCLCnKrqlDn0cvtLHuCejgdzxPSL5zp6JaK3EkT3piN/MaYALrmPTNLcYaRdHDykY3bHJg/5P8mlck9uczre0628sVBlXuQZvKRHtdkeX90L4ZWTxILjQtQ+Jff7UvWzB3TtAVs14P0Qv8n6vYMoM=
+	t=1711389191; cv=none; b=S6JP5PvnoTrJ4hS/SyJW/mLohRXfgmqzgUU9cighYtovJk+i+uJWotjirsGX8M7KNBfp4m+lju/OXl5mhR5tC5lXm4K8aZPR/vyzH83M7E9eD8XaPrbYhCc8VsAxG8AiTmYNFoepQAKkV1N5ZIMr0lQlDMo21TFWceDrwY+xxUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711389006; c=relaxed/simple;
-	bh=Csg25TMmXlsPfUWjg8c5RaDN8Ky+cfTv+YdstZXoYec=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pCfbSKT2ZVM/IgnLAcv58mS/QIP9EceaRi6AZUCvf3BgIelzUj3pUbzN93/lymoNbrYWw3zx0xKaC80CdDO0Vsq5YZtIPs0PKAKA1vife/Ykh9wQwbfjKPGS/B89K0r2LqYkkS/WcqqVS8mthjFZFo6b0FcgWR1jmkrVXdM2/u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FIUp5aEV; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1711389191; c=relaxed/simple;
+	bh=psr5z/LfipgjHoDYbWzk4ufCXlgcQCaqDDrc+lgYd1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jF8dSk3MhziVHnItTyndR9UA13xR8kzRY8FT81GkAeJ7d2LMDCaK8O91YY+4KlsZIEJjP0DrPAn3F+e/JuR8A4bgj3IbaUdWdLs12Yt3xEoYmHdKGowIs0hvrlnprOrVpYNZT7sRIFpdk1Q4GtO9PRW8Lj16AaxAKk7ucTQBJ94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SGYIdyFv; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FIUp5aEV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SGYIdyFv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711389003;
+	s=mimecast20190719; t=1711389189;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b22L7dtBLsIt7xjz+3x75joldlmk5k7EqKyOfwv3rM4=;
-	b=FIUp5aEVhBM1BM4MY+BdQ/7Ce2e1kkeUxX68Z8dStEN9LGSLEECThBqQnagkmsLOigZZ6G
-	YPjf3fixwpXAhmjpnYB+ZpC+nSplVcwZ7bU0SVg8uPgxCAqpKk4uSB5hbqI5KuEjmifj/r
-	La8B8zEC2IAKnrd1e75pwUaKoBKv12A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nSTFl3hACvw6cZYxH2tg8DbmgXprGLFq2bsIr9Uj77w=;
+	b=SGYIdyFvLLzsAQ7C0/WSAWd4w7r7YiibQ7U8dvc0qOWxnZZlEpjl0GqGv2haiB7x+QW3Dg
+	f3r0+YLH0oZJKled2fn8n4OYupWU/kVS2LOXL3RUt7JtNd6mEzuxSKdDkFUKRTz9y2X18T
+	hUoJciX79GkciYGfQ+y1kL7TAsY8X0c=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-oekuZM8RNGOOvYQ4oN3-JQ-1; Mon, 25 Mar 2024 13:50:02 -0400
-X-MC-Unique: oekuZM8RNGOOvYQ4oN3-JQ-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-33eca7270ccso1972208f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:50:02 -0700 (PDT)
+ us-mta-330-YfeCh6eJOo6Q1aqslz_C8Q-1; Mon, 25 Mar 2024 13:53:07 -0400
+X-MC-Unique: YfeCh6eJOo6Q1aqslz_C8Q-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2d47e55dfd1so44435801fa.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:53:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711389001; x=1711993801;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b22L7dtBLsIt7xjz+3x75joldlmk5k7EqKyOfwv3rM4=;
-        b=JNpjxurCwyNJNjWOBW/wC+sff5414NC9MOlkAx5XSEZFII0hSoK+u09AOsgm8+OOSg
-         PFXdE9RoRhfCRYPGmALF9FryyEogcfLrCczLtqBjlmdaacNnGkMfYFqMmyGqYFbkVimu
-         2Ryzqcl2llFaenvQ2B370P725bWMvXZd80p/WgPa5XpoT7orUJ/Q980VtbIKPzVRDQsj
-         qLHivbz8caE1uyOhaHGIhvxrI4LejzQhelwtCmCorruuJePZazhwAOX+9FYvrkMPOeiy
-         VJewIN9aG3TRSAlD2dGR3hSgy2AsIaq/+F/Yxaks8fGrsp4aGIi+kMTDjvFmNlC7/PUM
-         HV+g==
-X-Gm-Message-State: AOJu0YwA2LmOgnKtAMBdLomLPEfVVYW3Vk9WkCxxdE65UlIAmgm7G+2/
-	cMRzly4i9NEiF4W0qUNhKA5kSQ6w6y6SG/7ZZ8b0gGtLZAlaQioyRPn9IQ9zGbgbFBSR/9geyZE
-	+FBF9HwvFm6nqZiVNDje0hTpv/mAICMwqo2EYfC1lTGZpqGwFohME3YVQAzQo1zFc
-X-Received: by 2002:a5d:6044:0:b0:33e:c07b:cad with SMTP id j4-20020a5d6044000000b0033ec07b0cadmr6689601wrt.0.1711389001412;
-        Mon, 25 Mar 2024 10:50:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqeNLFX7mfakYTyW3nITiP/w3Z3JAlNcdUTIfDGnL278BxO5VjmYi8Q/88BY0tTp214v4WmQ==
-X-Received: by 2002:a5d:6044:0:b0:33e:c07b:cad with SMTP id j4-20020a5d6044000000b0033ec07b0cadmr6689575wrt.0.1711389001150;
-        Mon, 25 Mar 2024 10:50:01 -0700 (PDT)
-Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id l15-20020adfa38f000000b0033e03a6b1ecsm10115918wrb.18.2024.03.25.10.50.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 10:50:00 -0700 (PDT)
-From: Danilo Krummrich <dakr@redhat.com>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com
-Cc: rust-for-linux@vger.kernel.org,
-	x86@kernel.org,
-	lyude@redhat.com,
-	pstanner@redhat.com,
-	ajanulgu@redhat.com,
-	airlied@redhat.com,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 8/8] rust: add device::Data
-Date: Mon, 25 Mar 2024 18:49:12 +0100
-Message-ID: <20240325174924.95899-9-dakr@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240325174924.95899-1-dakr@redhat.com>
-References: <20240325174924.95899-1-dakr@redhat.com>
+        d=1e100.net; s=20230601; t=1711389179; x=1711993979;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nSTFl3hACvw6cZYxH2tg8DbmgXprGLFq2bsIr9Uj77w=;
+        b=tOMjZZbEM87vy7KENVqrzjzih/DpIzn06RSAHBLe95I8wBrsYGoGRiu9gg+djHIVeD
+         TmSPIk91yYlNEEziRqvqvuXlL03ehsLpD0Uhqq5EtSM/nAU7Z/V6X/oMTawm90XT7DYQ
+         y/JDeJ2E0OcQ3dQxfgOuGANta31VVx8DjeO8qTlBBFjd/9ihMaM/7ysqm+CClfrG+T58
+         72qV1aqHkhnrqdYNagoBnCBV19Q4PQakcqX5lqxxz5XC0LwH9cil1U78kwvKeDEngWGs
+         FIQc2ux9BK9XTFJ0IeZRt9zYBi52jVUXFY6d64wIPy5zEuSmd0++d/AdEUDV22alcGwI
+         fJjQ==
+X-Gm-Message-State: AOJu0YyVevg/SIdPcG7QcbNbDQICqW1RQlC1AqSozpRrE6CTuufxK711
+	+V8f37Yt0PDVzbM3T2llXYUp5e+1OmV0vHNwF5rSWdC90gKbuUKafQmbjk5+0XqGZs9N0FCl00+
+	DJAotq7wgzhnohROJRuWgJC8cauRQM006Eik8SGK0/D0C0c7g6Wi73i/xVMFLHFWv
+X-Received: by 2002:a2e:9845:0:b0:2d6:acb7:936b with SMTP id e5-20020a2e9845000000b002d6acb7936bmr5048390ljj.20.1711389179349;
+        Mon, 25 Mar 2024 10:52:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErFfYKN6mJZuqgyNGrVlMo7m+gsQbKeFkmn09iM/Ous6KaYLGNo6+Cfla6TjsBW2bCmVjigg==
+X-Received: by 2002:a2e:9845:0:b0:2d6:acb7:936b with SMTP id e5-20020a2e9845000000b002d6acb7936bmr5048367ljj.20.1711389178981;
+        Mon, 25 Mar 2024 10:52:58 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id t13-20020adfe10d000000b00341cb49f83bsm4254224wrz.79.2024.03.25.10.52.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Mar 2024 10:52:58 -0700 (PDT)
+Message-ID: <7dbc19ee-ac0d-426e-b2c5-ed4d4a778962@redhat.com>
+Date: Mon, 25 Mar 2024 18:52:57 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/8] [RFC] Rust device / driver abstractions
+To: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com
+Cc: rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
+ pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
+References: <20240325174743.95542-1-dakr@redhat.com>
+From: Danilo Krummrich <dakr@redhat.com>
+Organization: RedHat
+In-Reply-To: <20240325174743.95542-1-dakr@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Please ignore this one, I fat-fingered the version of the series.
 
-This allows access to registrations and io resources to be automatically
-revoked when devices are removed, even if the ref count to their state
-is non-zero.
+- Danilo
 
-Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
----
- rust/kernel/device.rs | 120 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 119 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 7309a236f512..707c699c3090 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -4,7 +4,22 @@
- //!
- //! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
- 
--use crate::{bindings, str::CStr};
-+use macros::pin_data;
-+
-+use crate::{
-+    bindings,
-+    error::Result,
-+    init::InPlaceInit,
-+    init::PinInit,
-+    pin_init,
-+    revocable::{Revocable, RevocableGuard},
-+    str::CStr,
-+    sync::{LockClassKey, RevocableMutex, UniqueArc},
-+};
-+use core::{
-+    ops::{Deref, DerefMut},
-+    pin::Pin,
-+};
- 
- /// A raw device.
- ///
-@@ -95,3 +110,106 @@ fn clone(&self) -> Self {
-         Self::from_dev(self)
-     }
- }
-+
-+/// Device data.
-+///
-+/// When a device is removed (for whatever reason, for example, because the device was unplugged or
-+/// because the user decided to unbind the driver), the driver is given a chance to clean its state
-+/// up, and all io resources should ideally not be used anymore.
-+///
-+/// However, the device data is reference-counted because other subsystems hold pointers to it. So
-+/// some device state must be freed and not used anymore, while others must remain accessible.
-+///
-+/// This struct separates the device data into three categories:
-+///   1. Registrations: are destroyed when the device is removed, but before the io resources
-+///      become inaccessible.
-+///   2. Io resources: are available until the device is removed.
-+///   3. General data: remain available as long as the ref count is nonzero.
-+///
-+/// This struct implements the `DeviceRemoval` trait so that it can clean resources up even if not
-+/// explicitly called by the device drivers.
-+#[pin_data]
-+pub struct Data<T, U, V> {
-+    #[pin]
-+    registrations: RevocableMutex<T>,
-+    #[pin]
-+    resources: Revocable<U>,
-+    #[pin]
-+    general: V,
-+}
-+
-+/// Safely creates an new reference-counted instance of [`Data`].
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! new_device_data {
-+    ($reg:expr, $res:expr, $gen:expr, $name:literal) => {{
-+        static CLASS1: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        let regs = $reg;
-+        let res = $res;
-+        let gen = $gen;
-+        let name = $crate::c_str!($name);
-+        $crate::device::Data::try_new(regs, res, gen, name, &CLASS1)
-+    }};
-+}
-+
-+impl<T, U, V> Data<T, U, V> {
-+    /// Creates a new instance of `Data`.
-+    ///
-+    /// It is recommended that the [`new_device_data`] macro be used as it automatically creates
-+    /// the lock classes.
-+    pub fn try_new(
-+        registrations: T,
-+        resources: impl PinInit<U>,
-+        general: impl PinInit<V>,
-+        name: &'static CStr,
-+        key1: &'static LockClassKey,
-+    ) -> Result<Pin<UniqueArc<Self>>> {
-+        let ret = UniqueArc::pin_init(pin_init!(Self {
-+            registrations <- RevocableMutex::new(
-+                registrations,
-+                name,
-+                key1,
-+            ),
-+            resources <- Revocable::new(resources),
-+            general <- general,
-+        }))?;
-+
-+        Ok(ret)
-+    }
-+
-+    /// Returns the resources if they're still available.
-+    pub fn resources(&self) -> Option<RevocableGuard<'_, U>> {
-+        self.resources.try_access()
-+    }
-+
-+    /// Returns the locked registrations if they're still available.
-+    #[cfg(disabled)]
-+    pub fn registrations(&self) -> Option<RevocableMutexGuard<'_, T>> {
-+        self.registrations.try_write()
-+    }
-+}
-+
-+impl<T, U, V> crate::driver::DeviceRemoval for Data<T, U, V> {
-+    fn device_remove(&self) {
-+        // We revoke the registrations first so that resources are still available to them during
-+        // unregistration.
-+        self.registrations.revoke();
-+
-+        // Release resources now. General data remains available.
-+        self.resources.revoke();
-+    }
-+}
-+
-+impl<T, U, V> Deref for Data<T, U, V> {
-+    type Target = V;
-+
-+    fn deref(&self) -> &V {
-+        &self.general
-+    }
-+}
-+
-+impl<T, U, V> DerefMut for Data<T, U, V> {
-+    fn deref_mut(&mut self) -> &mut V {
-+        &mut self.general
-+    }
-+}
--- 
-2.44.0
+On 3/25/24 18:47, Danilo Krummrich wrote:
+> Hi,
+> 
+> This patch series provides some initial Rust abstractions around the device /
+> driver model, including an abstraction for device private data.
+> 
+> This patch series is sent in the context of [1] and is also available at [2].
+> 
+> - Danilo
+> 
+> [1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
+> [2] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
+> 
+> Danilo Krummrich (1):
+>    arch: x86: tools: increase symbol name size
+> 
+> Wedson Almeida Filho (7):
+>    rust: device: Add a minimal RawDevice trait
+>    rust: device: Add a stub abstraction for devices
+>    rust: add driver abstraction
+>    rust: add rcu abstraction
+>    rust: add revocable mutex
+>    rust: add revocable objects
+>    rust: add device::Data
+> 
+>   arch/x86/tools/insn_decoder_test.c |   2 +-
+>   rust/bindings/bindings_helper.h    |   1 +
+>   rust/helpers.c                     |  28 ++
+>   rust/kernel/device.rs              | 215 +++++++++++++
+>   rust/kernel/driver.rs              | 493 +++++++++++++++++++++++++++++
+>   rust/kernel/lib.rs                 |   6 +-
+>   rust/kernel/revocable.rs           | 438 +++++++++++++++++++++++++
+>   rust/kernel/sync.rs                |   3 +
+>   rust/kernel/sync/rcu.rs            |  52 +++
+>   rust/kernel/sync/revocable.rs      |  98 ++++++
+>   rust/macros/module.rs              |   2 +-
+>   samples/rust/rust_minimal.rs       |   2 +-
+>   samples/rust/rust_print.rs         |   2 +-
+>   13 files changed, 1337 insertions(+), 5 deletions(-)
+>   create mode 100644 rust/kernel/device.rs
+>   create mode 100644 rust/kernel/driver.rs
+>   create mode 100644 rust/kernel/revocable.rs
+>   create mode 100644 rust/kernel/sync/rcu.rs
+>   create mode 100644 rust/kernel/sync/revocable.rs
+> 
+> 
+> base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
 
