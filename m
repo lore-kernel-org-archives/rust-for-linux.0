@@ -1,100 +1,117 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBBC5D725;
-	Mon, 25 Mar 2024 20:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE11D5BAFA;
+	Mon, 25 Mar 2024 21:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711399498; cv=none; b=ddX9yq3l/XwVcz0VuLr6APj32dbUtCO5lHKTQkxPu5Si02izTi1HfWtBsWEK16IrqbeTeKLIoYbbkqDlJNJYAKxKTD8lUkEG4jBV2d/4ksefTrPVWQcfhPBMtd7tJWFFwZdk/s7/vPnY5z8VQWNMmqbmBKoDd/ySbS63tq4X/po=
+	t=1711400435; cv=none; b=gY+9J64wP3Av0s/RifNHikfB+IJpBA3SOsXH2iJAYf7BowOouPyYQNf6xNRxTFq2gFQdfhtzkVzxcGBjXyV9YNrnBRglTmqzJOA4EvrKNwiLzSRtmTmbzMyq53ke/XBDWpanxHRJWqhdKLsCzPtk77skVPmW+B8qIi5WkEanveA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711399498; c=relaxed/simple;
-	bh=SZAzcMIK7i3P4s4qLrG+0au4O9rvfOdsoCETN86sg8I=;
+	s=arc-20240116; t=1711400435; c=relaxed/simple;
+	bh=4/DCfORHZvvO5HUER8a/EYr7x51a5ySHQFviZ6wk7tU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hds7TfgzBX3V3ypy87JTT+i1tpniau0/FH2jvLdIg7Uh9ztJWkF0wGEU0rrSyl3JAwaCw3FgbECUrdj20LQs0l9kwUO6cnTEzk62pG8rKAZhTwsyvZ5b/GAJxZWrpRdUaMFHnnPUuZc6gNR+MT4iAybeXkCs5M/iAnDvWJTQWFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bOYJ9sBi; arc=none smtp.client-ip=209.85.222.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=LFD8bqJeoWDYZAQsX9eTZr6lY9yNzalylIKBwdC94QamIILfO5ytrd8CTp9M2ST5sS+ZeqOSKB0jvwdT4ddfQLVLRbU7HgxWdNxgjhF+4evOgbw0i3iIpa5dU0nauCi77dBkL8094zh3twR646oVbd5QwsKNPdsGQqye5iAlcA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nGzjJ8NC; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bOYJ9sBi"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-7db44846727so1030366241.0;
-        Mon, 25 Mar 2024 13:44:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nGzjJ8NC"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-78a01a3012aso339323285a.2;
+        Mon, 25 Mar 2024 14:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711399496; x=1712004296; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1711400432; x=1712005232; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4DEZYFsrrJ3tXkcdN4NmU+Au67F0Ql9JXSFSSgEu1ho=;
-        b=bOYJ9sBiCVMBgeppLoLHCOXf3wVSmonTPF5apo0FCFjze0HdJNFIO3pJVsEAZMOl7v
-         tXFi32d3pHjj4ydp6I5PbodxWFz/yIz1IIr9yEXFw33dxln7ATsRx1s3B4EQKmBxDGjS
-         cOgsYqvt+GO8RW8gPjEaz0du3YDe6oIJvdwAOpUhOOou10BWeuExxrxxXrvbl+2RTrG6
-         819mpzFsiM5A/ZugHjsQxm1outZs9XcW1Y7fzYegxhbY2+fU1YP1kzsKayvDCwLAgn1l
-         tqSkPN4zu605dKJ3jB68zuXMxYTHGnyjYbV47ySpGlv1E5p/1QLx/gUa3LTLEvtLHk+g
-         +/0A==
+        bh=0aIiJsbK/FOYiRULxUQpBOQ0+fV2pbpaO5YH9xL5kFE=;
+        b=nGzjJ8NCiv1FyRq5tzrvDyMvLDsN8QDz3EwXuqD+36BHZAizW4rtV9N+Fagx4kk+GF
+         rUK+Y50Bu1PLFTLzHvyTZWrcrhsF8Y+mRXuUEC3qRalgUwxnWrHpbwV7kGL5/3eH3FKO
+         KWIxdxkP7clhSH2FDHGiG9mdETSPdlYMQplxltjjApgtJC5OXtoWEeCM9F60pZ2cVBWs
+         dQUAIwQ80uDdKypN7dyJMolhgul2348YZpyK8my3PX3OfYHCFCTa1dOcqrQ7+N/Bw2S9
+         1a32TRNTiJNXd44cWjR19cF7ukLM1YKqS2dgY8M+gNZSSO41VJ5VNYs5oMu4+eqcxx4N
+         /Mdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711399496; x=1712004296;
+        d=1e100.net; s=20230601; t=1711400432; x=1712005232;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4DEZYFsrrJ3tXkcdN4NmU+Au67F0Ql9JXSFSSgEu1ho=;
-        b=WXK6T9YN4utyK0wLcMAzXniqwhIzPrYc0phJ51ldtNhPFnTh1I1c9s8Y+XPwGWmy98
-         V3mbIfGPrAz/DOkOK3U4yvqcTHHNJ9Moi6Opb8OcNVpjoaFZ4X4X9f9DCZjZqYlGXMYg
-         nI60HICNdBI7/B06h6m1Byr1QW6SW1G8CxeOHb7t3YuLdzUT20VBEPAQwOSDMvOfQghv
-         PVd/ThzwKugVWwbQ0+cDxGayD1HbFvqHDzG6FNL2ErprqlUGtPRT7cdhzHa970n/EN2/
-         YKQ03ZDgFTw2nlwvlPM+cQWWn41KpiZrvrDkvySRmiOUHlV90MhxCQDfLZeWQyF8T8E7
-         CaIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVGzT3YRzu2/hq1DyEBuT4AVtisyWz+m1q+PG1+rcHa79x4g7ZI82Y6YlCBu8c5eidGDxBmiZH5IaxHb9TjIAJBdElmFPDY5GBZMmtR
-X-Gm-Message-State: AOJu0YyDmCc0cr2whVluImlu0H5hRNIo6oEKrZ9IPuONxi7tVM7z/mJK
-	fg0nvWjav0PKNKY+r2SgrreBul1G6sgmhlKPtail6IY0YYqanKTm
-X-Google-Smtp-Source: AGHT+IEWYnFxZLLkDrEyIi/t2Q5S4gSo26mW90rdu9+xogc74glHDUYiwZXSXl46l2pV13sKjDwMJA==
-X-Received: by 2002:a05:6102:3561:b0:476:e1f5:43b8 with SMTP id bh1-20020a056102356100b00476e1f543b8mr4071235vsb.25.1711399495737;
-        Mon, 25 Mar 2024 13:44:55 -0700 (PDT)
+        bh=0aIiJsbK/FOYiRULxUQpBOQ0+fV2pbpaO5YH9xL5kFE=;
+        b=mlSaU2jdAMtvll4tO9TWn3HevnPmo5lAyMRYiFZFnsGuDX1hlRExyFJ7BttNQqaG6V
+         tB78yfXGR7ato/QUG/wwYSmLhHBtrgXqURu0OVVyjU7TunIcsZnDnF0+HhN9W7s2NGLI
+         qxyC4mcQ0aMywT2RLXo5vMAcyCuryjw9oly1KFwV8WwsfxAVb8MHIwDxK8AsznWddfAk
+         oEqlyNY41hCFFObFJINgzEJKGXrHI6q1SWvj+vM+gVTiMyofMshyWuVM4f/K1sAsi58y
+         eBZWWjIONVzF87kJwCFt+giXOVLgY3rGiU6V1esB54Z01xDg6HFCBRtZ+uas8Eqd661E
+         t9uw==
+X-Forwarded-Encrypted: i=1; AJvYcCVj0lb1JefuJC4I/U4Twty9rtdzWfcmeKLaxef3rkmG95zuwi0aLhw31W/uyyRKh0G3N+Zuwz3B0vtyrINu02CzaRxSc5KYyWqBw+J+lKxow2bbUef2qB27iD7RTMe5XW5mT0y1tNVUbyufHNax8elJuh+Sni31JRNaMsSxLmSCSANOo4jiHzw=
+X-Gm-Message-State: AOJu0YzUBYyTUmGqPRvINHst9N0D5vzU+zIhIVZ+J02/7Ic0wSvjg0Ic
+	+b/HSFmWWHHWxdezUvzcOHhEjTle0p3OE+fxUIgiTiMpcnpCcV6B
+X-Google-Smtp-Source: AGHT+IEmrJY2YuqwFggGagE/+e8uVbOWYgKk3UIvG8boqku1ije64OUVXZ9orjGM9gQQ0wlamMqAZQ==
+X-Received: by 2002:ae9:ee13:0:b0:78a:5ed7:be26 with SMTP id i19-20020ae9ee13000000b0078a5ed7be26mr974913qkg.65.1711400431680;
+        Mon, 25 Mar 2024 14:00:31 -0700 (PDT)
 Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id v26-20020a05620a091a00b007887583762csm2423631qkv.94.2024.03.25.13.44.54
+        by smtp.gmail.com with ESMTPSA id k1-20020a05620a0b8100b0078a4fe9bf69sm1715548qkh.57.2024.03.25.14.00.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 13:44:55 -0700 (PDT)
+        Mon, 25 Mar 2024 14:00:31 -0700 (PDT)
 Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id ABB561200066;
-	Mon, 25 Mar 2024 16:44:54 -0400 (EDT)
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 1821F1200043;
+	Mon, 25 Mar 2024 17:00:30 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 25 Mar 2024 16:44:54 -0400
-X-ME-Sender: <xms:RuIBZlakNYXySYRQ_KiIPQJqSrUHe6-ONcckjEfiaeJpIjmkKiy6bQ>
-    <xme:RuIBZsZYukQJB8BNEducDLT4LOvzn5Uh3pMwc4ZTAb6n-jiwczvXQJYSSOfW2bcJB
-    tv4KromCPrhQ9MNVQ>
-X-ME-Received: <xmr:RuIBZn8IAjEN5_OOKZtocdSGVUeRIm4VGvTmzo6wx4kkuWSeW6LSmKwzRLx0WQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudduuddgkedtucetufdoteggodetrfdotf
+  by compute2.internal (MEProxy); Mon, 25 Mar 2024 17:00:30 -0400
+X-ME-Sender: <xms:6-UBZpM5Tshc-CtjpTkTKmhsk51vaHkOzddxRXkfq_dO9MF5hdrnzg>
+    <xme:6-UBZr-xgmbJWemwti49N0igXBZWLCoJ9fpADD9F86xX6x6K1xiOyYH_gs-b4g58c
+    4zVedC4v1KP5dX9bA>
+X-ME-Received: <xmr:6-UBZoSgy4aSWX_9lia6EwdlN0ENgdev2pW8onGnMsooPvP7p1nb0OxUlfwIeQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudduuddgkeegucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
     nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeduveeijeehvdekjeeffeethefhgeevvdeuvdekueeileeuleehleeuledt
-    hfdthfenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghdpshhprghrvggptggrph
-    grtghithihpghmuhhtrdgrshenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
-    mhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhith
-    ihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgr
-    ihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:RuIBZjokd-02NW17Y5RVkrmPAr76oZRlBMrM_z7l1hqzc-1FiXOR-Q>
-    <xmx:RuIBZgpNAhQe1_k1op2-vJ5-TOb4V6bn7oFzofrBYFkd_h6LS0oMaQ>
-    <xmx:RuIBZpRlUMgojKBKEOZsVwu2brF6SPzUb3yFFVpUDq_frOhhLafekw>
-    <xmx:RuIBZorJi_QEhoeSDfuC708eTUfKZ0MSZUAcUywaULUNImwfcNQggg>
-    <xmx:RuIBZmhARegcYcjy0jFaPm6VwhctnZNga5jkSuc2XIU9p9H-BaXsSuQa8Qo>
+    htthgvrhhnpeffleejleehveelteeltedugffhhedvkefgvdehfeeiffeihfeigfdvtdeu
+    hfdtteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhthhhusgdrtghomhenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvg
+X-ME-Proxy: <xmx:6-UBZltcfQ0QB0cAeGdnsDsuL7jndG7Ucoe-gE-opPwfdGN7ntgmpQ>
+    <xmx:6-UBZhfZgamJm562i4cZaL6MromTCguYiehjc-XJwwQuvuTANbmrxQ>
+    <xmx:6-UBZh21bmniCmLuxrubcoY_-5tFBxlCX2DaU_fPcF4P8r0JY9k3pA>
+    <xmx:6-UBZt-8NOr3p4SFiX8GqA0t7n1p4qdkiQSMwTFBQhIX_pm-Y-eu9A>
+    <xmx:7uUBZvv9S3sdCDei9n1d78JQM-fTSpBTEoSwu9vmACzzWsAxJcpzGsfOEmAkrhi4>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 Mar 2024 16:44:54 -0400 (EDT)
-Date: Mon, 25 Mar 2024 13:44:23 -0700
+ 25 Mar 2024 17:00:26 -0400 (EDT)
+Date: Mon, 25 Mar 2024 13:59:55 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
+	"Bj\"orn Roy Baron" <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 07/10] rust: alloc: update `VecExt` to take allocation
- flags
-Message-ID: <ZgHiJ23TdOmnSGe9@boqun-archlinux>
-References: <20240325195418.166013-1-wedsonaf@gmail.com>
- <20240325195418.166013-8-wedsonaf@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+ linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+Message-ID: <ZgHly_fioG7X4wGE@boqun-archlinux>
+References: <20240322233838.868874-1-boqun.feng@gmail.com>
+ <ZgFVnar3nS4F8eIX@FVFF77S0Q05N>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -103,43 +120,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325195418.166013-8-wedsonaf@gmail.com>
+In-Reply-To: <ZgFVnar3nS4F8eIX@FVFF77S0Q05N>
 
-On Mon, Mar 25, 2024 at 04:54:15PM -0300, Wedson Almeida Filho wrote:
+On Mon, Mar 25, 2024 at 10:44:45AM +0000, Mark Rutland wrote:
 [...]
-> +    fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
-> +        <Self as VecExt<_>>::reserve(self, 1, flags)?;
-> +        let (ptr, len, cap) = destructure(self);
-> +        // SAFETY: ptr is valid for `cap` elements. And `cap` is greater (by at least 1) than
-> +        // `len` because of the call to `reserve` above. So the pointer after offsetting by `len`
-> +        // elements is valid for write.
-> +        unsafe { ptr.wrapping_add(len).write(v) };
-> +
-> +        // SAFETY: The only difference from the values returned by `destructure` is that `length`
-> +        // is incremented by 1, which is fine because we have just initialised the element at
-> +        // offset `length`.
-> +        unsafe { rebuild(self, ptr, len + 1, cap) };
+> > 
+> > * I choose to re-implement atomics in Rust `asm` because we are still
+> >   figuring out how we can make it easy and maintainable for Rust to call
+> >   a C function _inlinely_ (Gary makes some progress [2]). Otherwise,
+> >   atomic primitives would be function calls, and that can be performance
+> >   bottleneck in a few cases.
+> 
+> I don't think we want to maintain two copies of each architecture's atomics.
+> This gets painful very quickly (e.g. as arm64's atomics get patched between
+> LL/SC and LSE forms).
+> 
 
-probably use spare_capacity_mut() here to avoid `destructure` and
-`rebuild`?
-	
-	https://doc.rust-lang.org/std/vec/struct.Vec.html#method.spare_capacity_mut
+No argument here ;-)
 
-	// .. after reserve succeed.
-	// there must be room for adding one more.
-	self.spare_capacity_mut()[0].write(v);
-	// or unsafe { self.spare_capacity_mut().as_mut_ptr().cast().write(v); }
+> Can we start off with out-of-line atomics, and see where the bottlenecks are?
+> 
+> It's relatively easy to do that today, at least for the atomic*_*() APIs:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/commit/?h=atomics/outlined&id=e0a77bfa63e7416d610769aa4ab62bc06993ce56
+> 
+> ... which IIUC covers the "AtomicI32, AtomicI64 and AtomicUsize" cases you
+> mention above.
+> 
 
-	unsafe {
-		self.set_len(self.len() + 1);
-	}
+Thanks! Yes, I know I should check with you before I finalize the
+implementation ;-) I will try to integrate that but things to notice:
 
-Thoughts?
+* For module usage, we need to EXPORT_SYMBOL_GPL() all the atomics, I'm
+  OK with that, but I don't know how others feel about it.
+
+* Alice reported performance gap between inline and out-of-line refcount
+  operations in Rust binder driver:
+
+	https://github.com/Darksonn/linux/commit/b4be1bd6c44225bf7276a4666fd30b8da9cba517	
+
+  I don't know how much worse since I don't have the data, but that's
+  one of the reasons I started with inline asm.
+
+That being said, I totally agree that we could start with out-of-line
+atomics, and maybe provide inline version for performance critical
+paths. Hoping is we can figure out how Rust could inline a C function
+eventually.
 
 Regards,
 Boqun
 
->          Ok(())
->      }
->  
-[...]
+> Mark.
