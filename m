@@ -1,62 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5677E6BFA5
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4BB6DCE3
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711388999; cv=none; b=ROkFfm0cNmbZJ7yJz7Z5o6fuGosk9dDHa3xUhFBVYjeDv426hW8hPtNv+LYQ5LzauIy6ObQdu3WVLmJyxWxRXn3JPnFEEIblZaxPDZn37JV9uG1EXW+T7RYNV6M1M2yD5FY12251aGvV0ce2yqkjueRkgwweTEr8C1vZ3Hju/HY=
+	t=1711389006; cv=none; b=CvmL9PkxP0n2qnq6qon3bDjCVD9Ysj5L3WZdGN8sAJgF5HXAZf7imffWIE0TxTdxpBViCmnn64JAVq/jDG/1NCjoJ1AnlM15q+FxqNoyPD686PMxSPJPr8k7qVJ6GQg/5Wx3sQjrBopoY9mpQtvqO6+b81U2U2jdWfdXA04tM1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711388999; c=relaxed/simple;
-	bh=7XXzcOHCfArutmV2jSulu5L7vI3q9gGArxrBjK3ezS8=;
+	s=arc-20240116; t=1711389006; c=relaxed/simple;
+	bh=+2pYNi7pop93qlDp8d20t6nM6/5ub+q2Kq3/gS335as=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qeLRLgZwHQZxP5R1sXEP/Q1t6VMDRFJ7NGrb9oh3oXawhUeR6IbEco1WDhmMEnf3gL9i4nboweXU6uN/dNGc3ciEmKpLnn/sX8UZ7WO3U96xfQPwnwrmqjXK68QYGHVX0OTm6NPyOEqqM8nF+bM6QhU5tMGxEnRz20A7EsXPQTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d9dyOa3K; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=TckbhkCOxJeaYVkeFJsuWbH3Xt9bLlYxXn/QrRhekm/VSgwBrdwsgbf2dC+OIaICyl8Vghu8P49NRsLkZXdbkZG/5CiPAb6iWWrb9FU20hMFPwJm8Aqc066UwXvYxqWEmV2a7VG6/8YkC8i2K3tjXdaOFY0SppQzCXbxZjLcD0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MdukSuTd; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d9dyOa3K"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MdukSuTd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711388996;
+	s=mimecast20190719; t=1711389002;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vkx2LD4BLyLJHY1WcYRTjzgqupESD892FjxeFLeB60M=;
-	b=d9dyOa3K5+Spe4fYpYU7onT+zTfMMOLJcXyq1J8Xl5jZ5M4UIiLIchktkKftjNCf/trqMH
-	YGYp0qDjK/i9B7mlH2fShxNIUlwBZdf8NM2+Nsv77e3HVQMXJQkjLll3hm//QBtde7IEVs
-	zsJ9ucE2jEMP0GqYUI6+V5TD+CcVBM8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=sGcP5yx+wIijP9PFtWPfzuXk+p+xMDjm797xQz5PS2Y=;
+	b=MdukSuTdBRTfRKpbePHWD36DbOu+g5kr4+IObN/OTJm+R1WOCSLemt8Qv5rhX5OWRJkrkU
+	vwp2ACPrRlETwl9uOkAe7lDEQncseTUIkegf84hVwkQrQFyiv6ctnOS291S0tj8V66fe6i
+	WN40CkvMu2jfEXRbfOiVJzC/9R5950k=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-Q5dzvp7JNvOQUcPqNWJTxw-1; Mon, 25 Mar 2024 13:49:54 -0400
-X-MC-Unique: Q5dzvp7JNvOQUcPqNWJTxw-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4148c816d62so1482065e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:49:54 -0700 (PDT)
+ us-mta-17-PRazzDuPP1enH_u--ChXlA-1; Mon, 25 Mar 2024 13:49:59 -0400
+X-MC-Unique: PRazzDuPP1enH_u--ChXlA-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-33eca6f6e4bso2808517f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:49:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711388993; x=1711993793;
+        d=1e100.net; s=20230601; t=1711388998; x=1711993798;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vkx2LD4BLyLJHY1WcYRTjzgqupESD892FjxeFLeB60M=;
-        b=LUzkURKalI++yySzZ0IdLXR8n5id1TTIOaODGYth7B4gcdcPHISBOrOTyfvxwmhGAM
-         HZ/YiXqgZECQIIWDEG5Nco4g+fvVH1IID80Cf3cwcSVg+41AznPj6WD+Du0JO+EzFijC
-         Gz5qlCgjHewrpV2Mz68OHQwZ4eyM7dMDVQqMeb6XmeoCiDVsrM6isXMJmQvHxwMCLsko
-         fwoLxsiCYxaj4IQpqDsHAc2UEwCZJFDRS3CoMjF5NzkBCG97vxGejWrpYa50+VBuP5Q6
-         a5gpFKtykvjD0WQdGDVnG3mxqODoY9GVGfTmClh1qgDT+bBaRLNsCe7O1ybEf/486Olk
-         UNgg==
-X-Gm-Message-State: AOJu0YyBp27nnAyCUe/m00ZLwJeMxNgpFGsAyrwNnCzLdDKt30ABsza/
-	o7MccqsB1iAxSTj6VGtJNZBTpe/w2Palv/4wHN1lgfnCZO3qsP0JcrGbxzT6keYGGOGu9kU+8CD
-	wtOUqARzJZ5LTLtXmcXcmN5kn0q3XUmBPK1tey6b/olAIKRrkooFdrx6xpLC/FD3s
-X-Received: by 2002:a05:600c:4691:b0:412:dcab:7c79 with SMTP id p17-20020a05600c469100b00412dcab7c79mr5473972wmo.10.1711388993694;
-        Mon, 25 Mar 2024 10:49:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFft8FXFPxQmPVpU93iaPcyARn0RiLN/FIXqTrfxx7oGQ7V7hUrH2uUzXP1tQDZXJQ5VIrJ8A==
-X-Received: by 2002:a05:600c:4691:b0:412:dcab:7c79 with SMTP id p17-20020a05600c469100b00412dcab7c79mr5473954wmo.10.1711388993430;
-        Mon, 25 Mar 2024 10:49:53 -0700 (PDT)
+        bh=sGcP5yx+wIijP9PFtWPfzuXk+p+xMDjm797xQz5PS2Y=;
+        b=GfQ8P+oQMgZpu7PcR+yJF0hnxqOrsPQAo6mLo3LMDcHMWTAuYwSl7DL+zrWsxphQ6S
+         ODLPtpkOvi5RgeRrktefLtrf5cG53AbxX3arASnySiNf8nOzJkAna5JjtfLsqXRtny98
+         OfWvBjhxK5mYeVr2+fVJWHMw1A5ND2xJ4QvJFEYAk1BEGpqGd1CmoevMD9Zpj5vLIe5U
+         k5HXdQHKbPsikcNfgiRjuFxnn2czgL03/X/TqDRG/6ke44Q2P5gMTfkQBJ4gqjgWiHWW
+         1bC5Vo+EjKvICzievzAduVVkVf23pNPwM6F0PS7ZCooWQM63IXU+VzxYtmWfTa59InTI
+         Bndg==
+X-Gm-Message-State: AOJu0Yzw3yrJFG634PAB8W8KIdi3jBY9CZc7o7JZDqGRZ+akuY8BdgH7
+	f9QNrNl7rzRgEmQ6RE5i5uCkQJaeOyEks2DbsSuGGfw8RipjfUcAQS4+SrNGknbgeWMs7BEB1ip
+	gwXYSBdsbVrdxZ6//iOJzFEl1v1YPeZWfeLOGwS3QJTbD9f08gxVwq8QFdMzASiMF
+X-Received: by 2002:a05:6000:88e:b0:341:cf7c:be50 with SMTP id cs14-20020a056000088e00b00341cf7cbe50mr1797706wrb.65.1711388997779;
+        Mon, 25 Mar 2024 10:49:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE95rbGY+AD2/L0wMqFFKT9HqxXLIcO8BGWz6Ou3SY64GJ/QCFuYMTZ0/2z3QVfKpGPaX888A==
+X-Received: by 2002:a05:6000:88e:b0:341:cf7c:be50 with SMTP id cs14-20020a056000088e00b00341cf7cbe50mr1797689wrb.65.1711388997369;
+        Mon, 25 Mar 2024 10:49:57 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id h17-20020a5d6891000000b0033d202abf01sm10069637wru.28.2024.03.25.10.49.52
+        by smtp.gmail.com with ESMTPSA id ay41-20020a05600c1e2900b004148c10db66sm1402021wmb.26.2024.03.25.10.49.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 10:49:53 -0700 (PDT)
+        Mon, 25 Mar 2024 10:49:56 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -80,9 +80,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	ajanulgu@redhat.com,
 	airlied@redhat.com,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 6/8] rust: add revocable mutex
-Date: Mon, 25 Mar 2024 18:49:10 +0100
-Message-ID: <20240325174924.95899-7-dakr@redhat.com>
+Subject: [PATCH 7/8] rust: add revocable objects
+Date: Mon, 25 Mar 2024 18:49:11 +0100
+Message-ID: <20240325174924.95899-8-dakr@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240325174924.95899-1-dakr@redhat.com>
 References: <20240325174924.95899-1-dakr@redhat.com>
@@ -99,150 +99,486 @@ Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
 From: Wedson Almeida Filho <wedsonaf@gmail.com>
 
-This is a mutex where access to its contents can be revoked at runtime.
+This implements the Revocable and AsyncRevocable types.
 
-This is different from `Revocable` in a few ways:
-  1. The caller may sleep while holding a guard.
-  2. Accessors are all serialised.
-  3. Accessing is not as cheap (because it involves acquiring the mutex).
-  4. The size of the object is larger (because it involves a mutex +
-     flag).
+Revocable allows access to objects to be safely revoked at run time.
 
-An example of where this a good fit to be used in device state that
-holds registrations to other subsystems.
+This is useful, for example, for resources allocated during device probe;
+when the device is removed, the driver should stop accessing the device
+resources even if other state is kept in memory due to existing
+references (i.e., device context data is ref-counted and has a non-zero
+refcount after removal of the device).
+
+AsyncRevocable allows access to objects to be revoked without having to
+wait for existing users to complete. This will be used to drop futures
+in tasks when executors are being torn down.
 
 Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
 Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/sync.rs           |  2 +
- rust/kernel/sync/revocable.rs | 98 +++++++++++++++++++++++++++++++++++
- 2 files changed, 100 insertions(+)
- create mode 100644 rust/kernel/sync/revocable.rs
+ rust/kernel/lib.rs       |   1 +
+ rust/kernel/revocable.rs | 438 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 439 insertions(+)
+ create mode 100644 rust/kernel/revocable.rs
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 874a45b0c168..377446e37961 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -12,11 +12,13 @@
- pub mod lock;
- mod locked_by;
- pub mod rcu;
-+mod revocable;
- 
- pub use arc::{Arc, ArcBorrow, UniqueArc};
- pub use condvar::CondVar;
- pub use lock::{mutex::Mutex, spinlock::SpinLock};
- pub use locked_by::LockedBy;
-+pub use revocable::RevocableMutex;
- 
- /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
- #[repr(transparent)]
-diff --git a/rust/kernel/sync/revocable.rs b/rust/kernel/sync/revocable.rs
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index e5a0a97acaf0..89b31a46ae92 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -46,6 +46,7 @@
+ pub mod net;
+ pub mod prelude;
+ pub mod print;
++pub mod revocable;
+ mod static_assert;
+ #[doc(hidden)]
+ pub mod std_vendor;
+diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
 new file mode 100644
-index 000000000000..cb987c293669
+index 000000000000..de23b9f38c4e
 --- /dev/null
-+++ b/rust/kernel/sync/revocable.rs
-@@ -0,0 +1,98 @@
++++ b/rust/kernel/revocable.rs
+@@ -0,0 +1,438 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Synchronisation primitives where access to their contents can be revoked at runtime.
-+
-+use macros::pin_data;
++//! Revocable objects.
++//!
++//! The [`Revocable`] type wraps other types and allows access to them to be revoked. The existence
++//! of a [`RevocableGuard`] ensures that objects remain valid.
 +
 +use crate::{
-+    init::PinInit,
-+    pin_init,
-+    str::CStr,
-+    sync::{lock, lock::Lock, LockClassKey},
++    bindings,
++    init::{self},
++    prelude::*,
++    sync::rcu,
 +};
-+use core::mem::MaybeUninit;
++use core::{
++    cell::UnsafeCell,
++    marker::PhantomData,
++    mem::MaybeUninit,
++    ops::Deref,
++    ptr::drop_in_place,
++    sync::atomic::{fence, AtomicBool, AtomicU32, Ordering},
++};
 +
-+use super::lock::Guard;
-+
-+/// The state within the revocable synchronisation primitive.
++/// An object that can become inaccessible at runtime.
 +///
-+/// We don't use simply `Option<T>` because we need to drop in-place because the contents are
-+/// implicitly pinned.
++/// Once access is revoked and all concurrent users complete (i.e., all existing instances of
++/// [`RevocableGuard`] are dropped), the wrapped object is also dropped.
 +///
-+/// # Invariants
++/// # Examples
 +///
-+/// The `is_available` field determines if `data` is initialised.
-+struct Inner<T> {
-+    is_available: bool,
-+    data: MaybeUninit<T>,
-+}
-+
-+impl<T> Inner<T> {
-+    fn new(data: T) -> Self {
-+        // INVARIANT: `data` is initialised and `is_available` is `true`, so the state matches.
-+        Self {
-+            is_available: true,
-+            data: MaybeUninit::new(data),
-+        }
-+    }
-+
-+    fn drop_in_place(&mut self) {
-+        if !self.is_available {
-+            // Already dropped.
-+            return;
-+        }
-+
-+        // INVARIANT: `data` is being dropped and `is_available` is set to `false`, so the state
-+        // matches.
-+        self.is_available = false;
-+
-+        // SAFETY: By the type invariants, `data` is valid because `is_available` was true.
-+        unsafe { self.data.assume_init_drop() };
-+    }
-+}
-+
-+impl<T> Drop for Inner<T> {
-+    fn drop(&mut self) {
-+        self.drop_in_place();
-+    }
-+}
-+
-+#[pin_data]
-+pub struct Revocable<T, B: lock::Backend> {
++/// ```
++/// # use kernel::revocable::Revocable;
++///
++/// struct Example {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// fn add_two(v: &Revocable<Example>) -> Option<u32> {
++///     let guard = v.try_access()?;
++///     Some(guard.a + guard.b)
++/// }
++///
++/// let v = Revocable::new(Example { a: 10, b: 20 });
++/// assert_eq!(add_two(&v), Some(30));
++/// v.revoke();
++/// assert_eq!(add_two(&v), None);
++/// ```
++///
++/// Sample example as above, but explicitly using the rcu read side lock.
++///
++/// ```
++/// # use kernel::revocable::Revocable;
++/// use kernel::sync::rcu;
++///
++/// struct Example {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// fn add_two(v: &Revocable<Example>) -> Option<u32> {
++///     let guard = rcu::read_lock();
++///     let e = v.try_access_with_guard(&guard)?;
++///     Some(e.a + e.b)
++/// }
++///
++/// let v = Revocable::new(Example { a: 10, b: 20 });
++/// assert_eq!(add_two(&v), Some(30));
++/// v.revoke();
++/// assert_eq!(add_two(&v), None);
++/// ```
++#[pin_data(PinnedDrop)]
++pub struct Revocable<T> {
++    is_available: AtomicBool,
 +    #[pin]
-+    inner: Lock<Inner<T>, B>,
++    data: MaybeUninit<UnsafeCell<T>>,
 +}
 +
-+/// Safely initialises a [`Revocable`] instance with the given name, generating a new lock class.
-+// #[macro_export]
-+// macro_rules! revocable_init {
-+//     ($mutex:expr, $name:literal) => {
-+//         $crate::init_with_lockdep!($mutex, $name)
-+//     };
-+// }
++// SAFETY: `Revocable` is `Send` if the wrapped object is also `Send`. This is because while the
++// functionality exposed by `Revocable` can be accessed from any thread/CPU, it is possible that
++// this isn't supported by the wrapped object.
++unsafe impl<T: Send> Send for Revocable<T> {}
 +
-+impl<T, B> Revocable<T, B>
-+where
-+    B: lock::Backend,
-+{
-+    /// Creates a new revocable instance of the given lock.
-+    pub fn new(data: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
++// SAFETY: `Revocable` is `Sync` if the wrapped object is both `Send` and `Sync`. We require `Send`
++// from the wrapped object as well because  of `Revocable::revoke`, which can trigger the `Drop`
++// implementation of the wrapped object from an arbitrary thread.
++unsafe impl<T: Sync + Send> Sync for Revocable<T> {}
++
++impl<T> Revocable<T> {
++    /// Creates a new revocable instance of the given data.
++    pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
 +        pin_init!(Self {
-+            inner <- Lock::new(Inner::new(data), name, key) ,
++            is_available: AtomicBool::new(true),
++            data <- unsafe { init::pin_init_from_closure(move |slot: *mut MaybeUninit<UnsafeCell<T>>| {
++                init::PinInit::<T, core::convert::Infallible>::__pinned_init(data, slot as *mut T)?;
++                Ok::<(), core::convert::Infallible>(())
++            })},
 +        })
++    }
++
++    /// Tries to access the \[revocable\] wrapped object.
++    ///
++    /// Returns `None` if the object has been revoked and is therefore no longer accessible.
++    ///
++    /// Returns a guard that gives access to the object otherwise; the object is guaranteed to
++    /// remain accessible while the guard is alive. In such cases, callers are not allowed to sleep
++    /// because another CPU may be waiting to complete the revocation of this object.
++    pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
++        let guard = rcu::read_lock();
++        if self.is_available.load(Ordering::Relaxed) {
++            // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
++            // valid because the RCU read side lock prevents it from being dropped.
++            Some(unsafe { RevocableGuard::new(self.data.assume_init_ref().get(), guard) })
++        } else {
++            None
++        }
++    }
++
++    /// Tries to access the \[revocable\] wrapped object.
++    ///
++    /// Returns `None` if the object has been revoked and is therefore no longer accessible.
++    ///
++    /// Returns a shared reference to the object otherwise; the object is guaranteed to
++    /// remain accessible while the rcu read side guard is alive. In such cases, callers are not
++    /// allowed to sleep because another CPU may be waiting to complete the revocation of this
++    /// object.
++    pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
++        if self.is_available.load(Ordering::Relaxed) {
++            // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
++            // valid because the RCU read side lock prevents it from being dropped.
++            Some(unsafe { &*self.data.assume_init_ref().get() })
++        } else {
++            None
++        }
 +    }
 +
 +    /// Revokes access to and drops the wrapped object.
 +    ///
-+    /// Revocation and dropping happen after ongoing accessors complete.
++    /// Access to the object is revoked immediately to new callers of [`Revocable::try_access`]. If
++    /// there are concurrent users of the object (i.e., ones that called [`Revocable::try_access`]
++    /// beforehand and still haven't dropped the returned guard), this function waits for the
++    /// concurrent access to complete before dropping the wrapped object.
 +    pub fn revoke(&self) {
-+        self.lock().drop_in_place();
-+    }
++        if self
++            .is_available
++            .compare_exchange(true, false, Ordering::Relaxed, Ordering::Relaxed)
++            .is_ok()
++        {
++            // SAFETY: Just an FFI call, there are no further requirements.
++            unsafe { bindings::synchronize_rcu() };
 +
-+    fn lock(&self) -> Guard<'_, Inner<T>, B> {
-+        self.inner.lock()
++            // SAFETY: We know `self.data` is valid because only one CPU can succeed the
++            // `compare_exchange` above that takes `is_available` from `true` to `false`.
++            unsafe { drop_in_place(self.data.assume_init_ref().get()) };
++        }
 +    }
 +}
 +
-+/// Type alias for a `Revocable` with a `MutexBackend`.
-+pub type RevocableMutex<T> = Revocable<T, super::lock::mutex::MutexBackend>;
++#[pinned_drop]
++impl<T> PinnedDrop for Revocable<T> {
++    fn drop(self: Pin<&mut Self>) {
++        // Drop only if the data hasn't been revoked yet (in which case it has already been
++        // dropped).
++        // SAFETY: We are not moving out of `p`, only dropping in place
++        let p = unsafe { self.get_unchecked_mut() };
++        if *p.is_available.get_mut() {
++            // SAFETY: We know `self.data` is valid because no other CPU has changed
++            // `is_available` to `false` yet, and no other CPU can do it anymore because this CPU
++            // holds the only reference (mutable) to `self` now.
++            unsafe { drop_in_place(p.data.assume_init_ref().get()) };
++        }
++    }
++}
++
++/// A guard that allows access to a revocable object and keeps it alive.
++///
++/// CPUs may not sleep while holding on to [`RevocableGuard`] because it's in atomic context
++/// holding the RCU read-side lock.
++///
++/// # Invariants
++///
++/// The RCU read-side lock is held while the guard is alive.
++pub struct RevocableGuard<'a, T> {
++    data_ref: *const T,
++    _rcu_guard: rcu::Guard,
++    _p: PhantomData<&'a ()>,
++}
++
++impl<T> RevocableGuard<'_, T> {
++    fn new(data_ref: *const T, rcu_guard: rcu::Guard) -> Self {
++        Self {
++            data_ref,
++            _rcu_guard: rcu_guard,
++            _p: PhantomData,
++        }
++    }
++}
++
++impl<T> Deref for RevocableGuard<'_, T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: By the type invariants, we hold the rcu read-side lock, so the object is
++        // guaranteed to remain valid.
++        unsafe { &*self.data_ref }
++    }
++}
++
++/// An object that can become inaccessible at runtime.
++///
++/// Once access is revoked and all concurrent users complete (i.e., all existing instances of
++/// [`AsyncRevocableGuard`] are dropped), the wrapped object is also dropped.
++///
++/// Unlike [`Revocable`], [`AsyncRevocable`] does not wait for concurrent users of the wrapped
++/// object to finish before [`AsyncRevocable::revoke`] completes -- thus the async qualifier. This
++/// has the advantage of not requiring RCU locks or waits of any kind.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::revocable::AsyncRevocable;
++///
++/// struct Example {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// fn add_two(v: &AsyncRevocable<Example>) -> Option<u32> {
++///     let guard = v.try_access()?;
++///     Some(guard.a + guard.b)
++/// }
++///
++/// let v = AsyncRevocable::new(Example { a: 10, b: 20 });
++/// assert_eq!(add_two(&v), Some(30));
++/// v.revoke();
++/// assert_eq!(add_two(&v), None);
++/// ```
++///
++/// Example where revocation happens while there is a user:
++///
++/// ```
++/// # use kernel::revocable::AsyncRevocable;
++/// use core::sync::atomic::{AtomicBool, Ordering};
++///
++/// struct Example {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// static DROPPED: AtomicBool = AtomicBool::new(false);
++///
++/// impl Drop for Example {
++///     fn drop(&mut self) {
++///         DROPPED.store(true, Ordering::Relaxed);
++///     }
++/// }
++///
++/// fn add_two(v: &AsyncRevocable<Example>) -> Option<u32> {
++///     let guard = v.try_access()?;
++///     Some(guard.a + guard.b)
++/// }
++///
++/// let v = AsyncRevocable::new(Example { a: 10, b: 20 });
++/// assert_eq!(add_two(&v), Some(30));
++///
++/// let guard = v.try_access().unwrap();
++/// assert!(!v.is_revoked());
++/// assert!(!DROPPED.load(Ordering::Relaxed));
++/// v.revoke();
++/// assert!(!DROPPED.load(Ordering::Relaxed));
++/// assert!(v.is_revoked());
++/// assert!(v.try_access().is_none());
++/// assert_eq!(guard.a + guard.b, 30);
++/// drop(guard);
++/// assert!(DROPPED.load(Ordering::Relaxed));
++/// ```
++pub struct AsyncRevocable<T> {
++    usage_count: AtomicU32,
++    data: MaybeUninit<UnsafeCell<T>>,
++}
++
++// SAFETY: `AsyncRevocable` is `Send` if the wrapped object is also `Send`. This is because while
++// the functionality exposed by `AsyncRevocable` can be accessed from any thread/CPU, it is
++// possible that this isn't supported by the wrapped object.
++unsafe impl<T: Send> Send for AsyncRevocable<T> {}
++
++// SAFETY: `AsyncRevocable` is `Sync` if the wrapped object is both `Send` and `Sync`. We require
++// `Send` from the wrapped object as well because  of `AsyncRevocable::revoke`, which can trigger
++// the `Drop` implementation of the wrapped object from an arbitrary thread.
++unsafe impl<T: Sync + Send> Sync for AsyncRevocable<T> {}
++
++const REVOKED: u32 = 0x80000000;
++const COUNT_MASK: u32 = !REVOKED;
++const SATURATED_COUNT: u32 = REVOKED - 1;
++
++impl<T> AsyncRevocable<T> {
++    /// Creates a new asynchronously revocable instance of the given data.
++    pub fn new(data: T) -> Self {
++        Self {
++            usage_count: AtomicU32::new(0),
++            data: MaybeUninit::new(UnsafeCell::new(data)),
++        }
++    }
++
++    /// Tries to access the \[revocable\] wrapped object.
++    ///
++    /// Returns `None` if the object has been revoked and is therefore no longer accessible.
++    ///
++    /// Returns a guard that gives access to the object otherwise; the object is guaranteed to
++    /// remain accessible while the guard is alive.
++    pub fn try_access(&self) -> Option<AsyncRevocableGuard<'_, T>> {
++        loop {
++            let count = self.usage_count.load(Ordering::Relaxed);
++
++            // Fail attempt to access if the object is already revoked.
++            if count & REVOKED != 0 {
++                return None;
++            }
++
++            // No need to increment if the count is saturated.
++            if count == SATURATED_COUNT
++                || self
++                    .usage_count
++                    .compare_exchange(count, count + 1, Ordering::Relaxed, Ordering::Relaxed)
++                    .is_ok()
++            {
++                return Some(AsyncRevocableGuard { revocable: self });
++            }
++        }
++    }
++
++    /// Revokes access to the protected object.
++    ///
++    /// Returns `true` if access has been revoked, or `false` when the object has already been
++    /// revoked by a previous call to [`AsyncRevocable::revoke`].
++    ///
++    /// This call is non-blocking, that is, no new users of the revocable object will be allowed,
++    /// but potential current users are able to continue to use it and the thread won't wait for
++    /// them to finish. In such cases, the object will be dropped when the last user completes.
++    pub fn revoke(&self) -> bool {
++        // Set the `REVOKED` bit.
++        //
++        // The acquire barrier matches up with the release when decrementing the usage count.
++        let prev = self.usage_count.fetch_or(REVOKED, Ordering::Acquire);
++        if prev & REVOKED != 0 {
++            // Another thread already revoked this object.
++            return false;
++        }
++
++        if prev == 0 {
++            // SAFETY: This thread just revoked the object and the usage count is zero, so the
++            // object is valid and there will be no future users.
++            unsafe { drop_in_place(UnsafeCell::raw_get(self.data.as_ptr())) };
++        }
++
++        true
++    }
++
++    /// Returns whether access to the object has been revoked.
++    pub fn is_revoked(&self) -> bool {
++        self.usage_count.load(Ordering::Relaxed) & REVOKED != 0
++    }
++}
++
++impl<T> Drop for AsyncRevocable<T> {
++    fn drop(&mut self) {
++        let count = *self.usage_count.get_mut();
++        if count != REVOKED {
++            // The object hasn't been dropped yet, so we do it now.
++
++            // This matches with the release when decrementing the usage count.
++            fence(Ordering::Acquire);
++
++            // SAFETY: Since `count` is does not indicate a count of 0 and the REVOKED bit set, the
++            // object is still valid.
++            unsafe { drop_in_place(UnsafeCell::raw_get(self.data.as_ptr())) };
++        }
++    }
++}
++
++/// A guard that allows access to a revocable object and keeps it alive.
++///
++/// # Invariants
++///
++/// The owner owns an increment on the usage count (which may have saturated it), which keeps the
++/// revocable object alive.
++pub struct AsyncRevocableGuard<'a, T> {
++    revocable: &'a AsyncRevocable<T>,
++}
++
++impl<T> Deref for AsyncRevocableGuard<'_, T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The type invariants guarantee that the caller owns an increment.
++        unsafe { &*self.revocable.data.assume_init_ref().get() }
++    }
++}
++
++impl<T> Drop for AsyncRevocableGuard<'_, T> {
++    fn drop(&mut self) {
++        loop {
++            let count = self.revocable.usage_count.load(Ordering::Relaxed);
++            let actual_count = count & COUNT_MASK;
++            if actual_count == SATURATED_COUNT {
++                // The count is saturated, so we won't decrement (nor do we drop the object).
++                return;
++            }
++
++            if actual_count == 0 {
++                // Trying to underflow the count.
++                panic!("actual_count is zero");
++            }
++
++            // On success, we use release ordering, which matches with the acquire in one of the
++            // places where we drop the object, namely: below, in `AsyncRevocable::revoke`, or in
++            // `AsyncRevocable::drop`.
++            if self
++                .revocable
++                .usage_count
++                .compare_exchange(count, count - 1, Ordering::Release, Ordering::Relaxed)
++                .is_ok()
++            {
++                if count == 1 | REVOKED {
++                    // `count`  is now zero and it is revoked, so free it now.
++
++                    // This matches with the release above (which may have happened in other
++                    // threads concurrently).
++                    fence(Ordering::Acquire);
++
++                    // SAFETY: Since `count` was 1, the object is still alive.
++                    unsafe { drop_in_place(UnsafeCell::raw_get(self.revocable.data.as_ptr())) };
++                }
++
++                return;
++            }
++        }
++    }
++}
 -- 
 2.44.0
 
