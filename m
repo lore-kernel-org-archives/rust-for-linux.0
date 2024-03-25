@@ -1,131 +1,100 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E493B4A29;
-	Mon, 25 Mar 2024 18:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F8F14AB8
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 19:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711393185; cv=none; b=VgEu0VvAOh0UQkr1GZJpdkNjIFJElDEDQXMsT8iKiKHAC5eBTDQHPxZ+9HIUCJekqqegyWrcjv1qJgo8Dv+Z9aOGcCDvz/fkGSKvsVOpwx/43OE/v1+RbmdKoBxEhx25LJOZr4DNCYyBr4u3AxhqmBWWLF3YNYdgnT6Iv5pbmEg=
+	t=1711395391; cv=none; b=caK+wgnE2DaGVaPTCLO+T8rjrAihWq319OKz0Q1oba5cqTpIPTUE9+dh1VXVQ6R40Vm+CH+ErN6ylR9shqCUsHr5ZD4RNFeAGYZgzIFw5if1YC+661vKzmrZLs+A2kUaf1TYjwxerLV02J9LIlwae8Uy8ApyGleoOrtHkBfAv4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711393185; c=relaxed/simple;
-	bh=5gZosMRdgXPNa3JQMcKlsbHmM1gyLPrPMFgAM70+YQw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k2mCpyj9btd32YHNiwpnvOwBQwIjh/+4JqUkRe5YMD+5058GfTKERcGFOqua7U6+3J/nKs/Qt4z9CBhRGr2dXeOEuyu910MmvWa/jYX8fRwjObBHx4MSfy0T/dQYkESVWH+JfEbY69ycn6ilABSrOJENWNW34O5CdSYB8zsItxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Dq7T0k6+; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1711395391; c=relaxed/simple;
+	bh=/EE6zEdy8vSyxaXssqys9K8UV1bHGJS0xUN4BKgSbsk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jr0mIGR7kvH7fnnNnwdzGmhSOZ53Sf1w7vnZTn7bvgfYFAnMSfiv4kxitZFcd3QTqqtiL10Cp3vDVlzGqQKQ3A0Imy04cgNrhkkyEBhfrU4VPNypLIr5lUb6mPuVnjoVUFxCfw0sXVQaYGCp+WMvWWdanBNufIMDQFStfjXy5D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KYNBN/j9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Dq7T0k6+"
-Date: Mon, 25 Mar 2024 14:59:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1711393181;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KYNBN/j9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711395388;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VkxyhaTa5U3F8wqjsa7LRBFbMSJiyk7bCAom1K7zW40=;
-	b=Dq7T0k6+H7nOTJbABp2Z2wN8NULCHNW0C7jHxsGk8umchshL+Bt0+paSu3yXZ0U/Y4O7Qw
-	2Wpvlj/e3fmhSm/vChaqixf/iHXD+YHD9CLhy0X4PoAiONraZ+KcYsPwPUDyOPWoE0DhGp
-	ati/oPgLBYa7j6sRtKFgS2L5MNPZSGU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Philipp Stanner <pstanner@redhat.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
-	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, Mark Rutland <mark.rutland@arm.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-Message-ID: <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
-References: <20240322233838.868874-1-boqun.feng@gmail.com>
- <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
- <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
- <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
- <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
- <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
+	bh=Yzwruq1dcXbmlOClzgmGYNa6UBZFuYCLjP9xxjlmShg=;
+	b=KYNBN/j9R+wghjkDnMGTs9ZZ2n87zhxe45aaHjf47ISHeElPN3e9UBIANDCvGwG23DfSOa
+	2bH4W77bUUDOtdmTPCYh8hN1cK9YQ4x5pNrw4mgKhk5kDwJBkowI4VYcd1XgFABjCUndGo
+	XiddRS/pXiEkEigJBuwBtnmkdP0jL2Q=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-660-0jaJiwv9O2WR8rflA7p5WA-1; Mon, 25 Mar 2024 15:36:26 -0400
+X-MC-Unique: 0jaJiwv9O2WR8rflA7p5WA-1
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-430f04c2834so83056721cf.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 12:36:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711395385; x=1712000185;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yzwruq1dcXbmlOClzgmGYNa6UBZFuYCLjP9xxjlmShg=;
+        b=nUTZsD+U5x2GQE9YL+Vwj63vH7B1kSyDkaDIWb2QFoctt49uJRW7htI1K6YklYvdE0
+         xpRmQrkuZU2meuG8M3Z5FCdtHxh2PczGinhl3C/eTeWlwM3rUJZ0jFNIBSZSd52Y7JUO
+         jm6bp1dMUo+CXQGbrXTHmgp57Wj+Ufs5zOL9jMQVym6kJFGGrTGI2l0xe8rGtqDe+60F
+         bgi1zsTwbCv4uFQLZVHIG+l9u0xdp9n4kKfXtAsGJndTGhCvNA3Z/if9THi17nCRX7MM
+         fl0i1oyv758XQxiCZK6C6M4jg5Nxbj3Lpm7Z77xzO7lL/ChWR6am8d2qNTvG/vPGBb4m
+         TSVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNLFJhq3/wQRD3cZZ6+0ZMnW8+FzFicaFvnQctZ/vTK0Q8FrOhLiujYm5y/3tFqyZhuRiJ+N2Pur0gGQgzM6rayDxA1NOyL1RSxbkawnQ=
+X-Gm-Message-State: AOJu0YzYLTBueYGzm3xLuNhiFk5NS/D7jWbsdTy6ZeFGQAjbGH3wwZ16
+	RXJr8oB19IbJuC9MOjMUABqEmm00WWWShIrO+2OfQjxHgPFVoo5kQwkvZ+rBep4QZr27fesG8gD
+	7hpSXyGovxACd1UAuFcmBwZVFAonsOGpn2/raeHHerbYEo0iGQ17BFxR52nWtWQsF2eFubs/bRq
+	y3ncayhm6r1p2Sh4inMDzMXouzfaOZkuAqC9kEt9Q=
+X-Received: by 2002:a05:622a:1cb:b0:431:27fe:12bd with SMTP id t11-20020a05622a01cb00b0043127fe12bdmr11879587qtw.3.1711395385727;
+        Mon, 25 Mar 2024 12:36:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYYtzFF61PP2c4bICaIqKgUkU50/P3At2I+vRRcp9Usv80i7IQ0SoXmdvrhnVPICgXzkWItdvcUFg9qo1Pah4=
+X-Received: by 2002:a05:622a:1cb:b0:431:27fe:12bd with SMTP id
+ t11-20020a05622a01cb00b0043127fe12bdmr11879561qtw.3.1711395385502; Mon, 25
+ Mar 2024 12:36:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20240325174924.95899-1-dakr@redhat.com> <20240325174924.95899-5-dakr@redhat.com>
+ <2024032530-fester-dedicator-a8a9@gregkh>
+In-Reply-To: <2024032530-fester-dedicator-a8a9@gregkh>
+From: David Airlie <airlied@redhat.com>
+Date: Tue, 26 Mar 2024 05:36:14 +1000
+Message-ID: <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
+Subject: Re: [PATCH 4/8] rust: add driver abstraction
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com, 
+	pstanner@redhat.com, ajanulgu@redhat.com, Asahi Lina <lina@asahilina.net>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 25, 2024 at 10:44:43AM -0700, Linus Torvalds wrote:
-> On Mon, 25 Mar 2024 at 06:57, Philipp Stanner <pstanner@redhat.com> wrote:
-> >
-> > On Fri, 2024-03-22 at 17:36 -0700, Linus Torvalds wrote:
-> > >
-> > > It's kind of like our "volatile" usage. If you read the C (and C++)
-> > > standards, you'll find that you should use "volatile" on data types.
-> > > That's almost *never* what the kernel does. The kernel uses
-> > > "volatile"
-> > > in _code_ (ie READ_ONCE() etc), and uses it by casting etc.
-> > >
-> > > Compiler people don't tend to really like those kinds of things.
-> >
-> > Just for my understanding: Why don't they like it?
-> 
-> So I actually think most compiler people are perfectly fine with the
-> kernel model of mostly doing 'volatile' not on the data structures
-> themselves, but as accesses through casts.
-> 
-> It's very traditional C, and there's actually nothing particularly odd
-> about it. Not even from a compiler standpoint.
-> 
-> In fact, I personally will argue that it is fundamentally wrong to
-> think that the underlying data has to be volatile. A variable may be
-> entirely stable in some cases (ie locks held), but not in others.
-> 
-> So it's not the *variable* (aka "object") that is 'volatile', it's the
-> *context* that makes a particular access volatile.
-> 
-> That explains why the kernel has basically zero actual volatile
-> objects, and 99% of all volatile accesses are done through accessor
-> functions that use a cast to mark a particular access volatile.
-> 
-> But I've had negative comments from compiler people who read the
-> standards as language lawyers (which honestly, I despise - it's always
-> possible to try to argue what the meaning of some wording is), and
-> particularly C++ people used to be very very antsy about "volatile".
-> 
-> They had some truly _serious_ problems with volatile.
-> 
-> The C++ people spent absolutely insane amounts of time arguing about
-> "volatile objects" vs "accesses", and how an access through a cast
-> didn't make the underlying object volatile etc.
+> I stopped here.  Please build on existing code in the kernel, and also,
+> a real user of these structures is needed to see if/how any of this
+> actually works.  Why not implement something that uses them that we can
+> actually review?
 
-To be fair, "volatile" dates from an era when we didn't have the haziest
-understanding of what a working memory model for C would look like or
-why we'd even want one.
+Seems like you missed where the cover letter explained that this was
+in the context of:
+https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
 
-(Someone might want to think about depracating volatile on objects and
-adding compiler flag to disable it; I suspect it'd be a useful cleanup
-for the compiler guys if they could get rid of it.)
+Can we stop feeding the chicken/egg problem? :-) This posting attempts
+to focus people on *device* abstraction problem, by posting small
+patch series directly affecting things in an effort to get them
+reviewed, or we post the full patch series touching every subsystem
+and then nobody reviews it because it's 50 patches and it isn't
+focused on the one thing they care about.
 
-The way the kernel uses volatile in e.g. READ_ONCE() is fully in line
-with modern thinking, just done with the tools available at the time. A
-more modern version would be just
+Dave.
 
-__atomic_load_n(ptr, __ATOMIC_RELAXED)
-
-Except C atomics only support pointer and integer types, READ_ONCE()
-supports anything up to machine word size - that's something the C
-people need to fix.
