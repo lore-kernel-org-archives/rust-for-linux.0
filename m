@@ -1,62 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1896141C79
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5677E6BFA5
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 17:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711388995; cv=none; b=n7NsbrqERzM01Gxv/KIP0FpesMGa+qKAPeVE+U1NBDO/c1SVYd8XUxbl4mEalLuKmK6YgCZKKTApHzavtCPA3vEV26gTgbp4f3w0FVx344gk7XRSk8sInttDSsd/LAYm+qIccRR4kLrTTm6kjHugRAbOkiPURMhqjhznRltAkz4=
+	t=1711388999; cv=none; b=ROkFfm0cNmbZJ7yJz7Z5o6fuGosk9dDHa3xUhFBVYjeDv426hW8hPtNv+LYQ5LzauIy6ObQdu3WVLmJyxWxRXn3JPnFEEIblZaxPDZn37JV9uG1EXW+T7RYNV6M1M2yD5FY12251aGvV0ce2yqkjueRkgwweTEr8C1vZ3Hju/HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711388995; c=relaxed/simple;
-	bh=EVuWp1zGaihYsT1Hf2wJ2HU9PQ7XKXhZMB/sdA784QE=;
+	s=arc-20240116; t=1711388999; c=relaxed/simple;
+	bh=7XXzcOHCfArutmV2jSulu5L7vI3q9gGArxrBjK3ezS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lyADWcLGmfBOHGVKtttru93MElQVs5peaR3LEY4Wjc1vmPI1xqw66oqs+ZFDS0e8qFuwatxJ+3YX1f//0Y8fznzTDJNjk/DG6FhWVr6236KBNdLPhgFt4q97UgJj09b5Ljfr1o4Ddqhb++bffVrEAawJA/JqYfyZS9Cfk8H839w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L27ScfBr; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=qeLRLgZwHQZxP5R1sXEP/Q1t6VMDRFJ7NGrb9oh3oXawhUeR6IbEco1WDhmMEnf3gL9i4nboweXU6uN/dNGc3ciEmKpLnn/sX8UZ7WO3U96xfQPwnwrmqjXK68QYGHVX0OTm6NPyOEqqM8nF+bM6QhU5tMGxEnRz20A7EsXPQTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d9dyOa3K; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L27ScfBr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d9dyOa3K"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711388993;
+	s=mimecast20190719; t=1711388996;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Lum2Y4ltlaF+Imf4CoR5OYwHrzy4PUHZ9DV7KjS3VX8=;
-	b=L27ScfBrhGtUbRP/cTwMOqCnm8P0M3ayK4AxEPE6FnKlRO9reVYvuK9hcfGSAcux0Lnor3
-	8Bpo+Qgiur+PkvfJvRVnbz8bn6IZq05P6uzwVQif6jvq+Z/yre/NTPFXCcwRqaSqUUlcSY
-	51MHSDavd2um57gtdVzKU4pxyVtxDl0=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=vkx2LD4BLyLJHY1WcYRTjzgqupESD892FjxeFLeB60M=;
+	b=d9dyOa3K5+Spe4fYpYU7onT+zTfMMOLJcXyq1J8Xl5jZ5M4UIiLIchktkKftjNCf/trqMH
+	YGYp0qDjK/i9B7mlH2fShxNIUlwBZdf8NM2+Nsv77e3HVQMXJQkjLll3hm//QBtde7IEVs
+	zsJ9ucE2jEMP0GqYUI6+V5TD+CcVBM8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-557-BMzWPkeeOeK0jVUy5R-Upg-1; Mon, 25 Mar 2024 13:49:51 -0400
-X-MC-Unique: BMzWPkeeOeK0jVUy5R-Upg-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2d48af389acso35858551fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:49:51 -0700 (PDT)
+ us-mta-439-Q5dzvp7JNvOQUcPqNWJTxw-1; Mon, 25 Mar 2024 13:49:54 -0400
+X-MC-Unique: Q5dzvp7JNvOQUcPqNWJTxw-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4148c816d62so1482065e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 10:49:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711388990; x=1711993790;
+        d=1e100.net; s=20230601; t=1711388993; x=1711993793;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Lum2Y4ltlaF+Imf4CoR5OYwHrzy4PUHZ9DV7KjS3VX8=;
-        b=hclA6mE/dd7UxMRur+hywFrYzYqZb5IPedkz+w6OI+JnOegGw+6HwArGC7w40w6mzX
-         r039/zVMWu8C+lcsF4sdmZ2zL2IK2+++H2Eiv4SEnF6TFWPJ4oeZ0pJGD3S5XVtEcwNG
-         n1c/lGwp4sfQnFSqFCC+gYvXdlZioZUuPITaUaeq7pnXsxbuz583ZGj4ExHcLMXz/0g5
-         X1vKnNtl6lj23NvspdcdZBgnf8oyymCdglT+uu3B6jKF0Tbv/JSPy044ZHzIZU8JRzoW
-         gQOHt+c4URZa1nfRkXfUJs/PtK80GEc1yzIxmy0iW4jbEcItAeXZapgR7/K18PRqp52u
-         ANvg==
-X-Gm-Message-State: AOJu0YyLlsNPRcOzJG+ed0ROfnq9hC15ITvXR7Gb2iONduoNYxz59j/4
-	YCKApI6e36kMwTqoxNa0LG1S4yLNXmTzQ2y1FrXZalaU+DwitAgU7o0dkK4V65KUWm834tTAZ8W
-	cHi9s6+p9jgzVLVA/54Kbp7T7hbNvKoMMl5QZkDevmpAbzlw/YM/QNphdxX4pF5uz
-X-Received: by 2002:a05:651c:2108:b0:2d6:cd05:1890 with SMTP id a8-20020a05651c210800b002d6cd051890mr4246245ljq.0.1711388989991;
-        Mon, 25 Mar 2024 10:49:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHtt/fYmTQQ1pPtmdh7pY0Rm7XiHlNWFUgwVQM8q8rIhLCIJdFMIaIl9LytXACy6hFqvIHVng==
-X-Received: by 2002:a05:651c:2108:b0:2d6:cd05:1890 with SMTP id a8-20020a05651c210800b002d6cd051890mr4246221ljq.0.1711388989622;
-        Mon, 25 Mar 2024 10:49:49 -0700 (PDT)
+        bh=vkx2LD4BLyLJHY1WcYRTjzgqupESD892FjxeFLeB60M=;
+        b=LUzkURKalI++yySzZ0IdLXR8n5id1TTIOaODGYth7B4gcdcPHISBOrOTyfvxwmhGAM
+         HZ/YiXqgZECQIIWDEG5Nco4g+fvVH1IID80Cf3cwcSVg+41AznPj6WD+Du0JO+EzFijC
+         Gz5qlCgjHewrpV2Mz68OHQwZ4eyM7dMDVQqMeb6XmeoCiDVsrM6isXMJmQvHxwMCLsko
+         fwoLxsiCYxaj4IQpqDsHAc2UEwCZJFDRS3CoMjF5NzkBCG97vxGejWrpYa50+VBuP5Q6
+         a5gpFKtykvjD0WQdGDVnG3mxqODoY9GVGfTmClh1qgDT+bBaRLNsCe7O1ybEf/486Olk
+         UNgg==
+X-Gm-Message-State: AOJu0YyBp27nnAyCUe/m00ZLwJeMxNgpFGsAyrwNnCzLdDKt30ABsza/
+	o7MccqsB1iAxSTj6VGtJNZBTpe/w2Palv/4wHN1lgfnCZO3qsP0JcrGbxzT6keYGGOGu9kU+8CD
+	wtOUqARzJZ5LTLtXmcXcmN5kn0q3XUmBPK1tey6b/olAIKRrkooFdrx6xpLC/FD3s
+X-Received: by 2002:a05:600c:4691:b0:412:dcab:7c79 with SMTP id p17-20020a05600c469100b00412dcab7c79mr5473972wmo.10.1711388993694;
+        Mon, 25 Mar 2024 10:49:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFft8FXFPxQmPVpU93iaPcyARn0RiLN/FIXqTrfxx7oGQ7V7hUrH2uUzXP1tQDZXJQ5VIrJ8A==
+X-Received: by 2002:a05:600c:4691:b0:412:dcab:7c79 with SMTP id p17-20020a05600c469100b00412dcab7c79mr5473954wmo.10.1711388993430;
+        Mon, 25 Mar 2024 10:49:53 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id r16-20020a05600c35d000b004147de73a5asm9021760wmq.24.2024.03.25.10.49.48
+        by smtp.gmail.com with ESMTPSA id h17-20020a5d6891000000b0033d202abf01sm10069637wru.28.2024.03.25.10.49.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 10:49:49 -0700 (PDT)
+        Mon, 25 Mar 2024 10:49:53 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -80,9 +80,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	ajanulgu@redhat.com,
 	airlied@redhat.com,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 5/8] rust: add rcu abstraction
-Date: Mon, 25 Mar 2024 18:49:09 +0100
-Message-ID: <20240325174924.95899-6-dakr@redhat.com>
+Subject: [PATCH 6/8] rust: add revocable mutex
+Date: Mon, 25 Mar 2024 18:49:10 +0100
+Message-ID: <20240325174924.95899-7-dakr@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240325174924.95899-1-dakr@redhat.com>
 References: <20240325174924.95899-1-dakr@redhat.com>
@@ -99,123 +99,150 @@ Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
 From: Wedson Almeida Filho <wedsonaf@gmail.com>
 
-Add a simple abstraction to guard critical code sections with an rcu
-read lock.
+This is a mutex where access to its contents can be revoked at runtime.
+
+This is different from `Revocable` in a few ways:
+  1. The caller may sleep while holding a guard.
+  2. Accessors are all serialised.
+  3. Accessing is not as cheap (because it involves acquiring the mutex).
+  4. The size of the object is larger (because it involves a mutex +
+     flag).
+
+An example of where this a good fit to be used in device state that
+holds registrations to other subsystems.
 
 Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
 Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/helpers.c          | 15 ++++++++++++
- rust/kernel/sync.rs     |  1 +
- rust/kernel/sync/rcu.rs | 52 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+)
- create mode 100644 rust/kernel/sync/rcu.rs
+ rust/kernel/sync.rs           |  2 +
+ rust/kernel/sync/revocable.rs | 98 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 100 insertions(+)
+ create mode 100644 rust/kernel/sync/revocable.rs
 
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 1e40661a33d1..3b9ef2868c7c 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -27,6 +27,7 @@
- #include <linux/err.h>
- #include <linux/errname.h>
- #include <linux/mutex.h>
-+#include <linux/rcupdate.h>
- #include <linux/refcount.h>
- #include <linux/sched/signal.h>
- #include <linux/spinlock.h>
-@@ -170,6 +171,20 @@ const char *rust_helper_dev_name(const struct device *dev)
- }
- EXPORT_SYMBOL_GPL(rust_helper_dev_name);
- 
-+/* rcu */
-+void rust_helper_rcu_read_lock(void)
-+{
-+	rcu_read_lock();
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_rcu_read_lock);
-+
-+void rust_helper_rcu_read_unlock(void)
-+{
-+	rcu_read_unlock();
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_rcu_read_unlock);
-+/* end rcu */
-+
- /*
-  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
-  * use it in contexts where Rust expects a `usize` like slice (array) indices.
 diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index d219ee518eff..874a45b0c168 100644
+index 874a45b0c168..377446e37961 100644
 --- a/rust/kernel/sync.rs
 +++ b/rust/kernel/sync.rs
-@@ -11,6 +11,7 @@
- mod condvar;
+@@ -12,11 +12,13 @@
  pub mod lock;
  mod locked_by;
-+pub mod rcu;
+ pub mod rcu;
++mod revocable;
  
  pub use arc::{Arc, ArcBorrow, UniqueArc};
  pub use condvar::CondVar;
-diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+ pub use lock::{mutex::Mutex, spinlock::SpinLock};
+ pub use locked_by::LockedBy;
++pub use revocable::RevocableMutex;
+ 
+ /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+ #[repr(transparent)]
+diff --git a/rust/kernel/sync/revocable.rs b/rust/kernel/sync/revocable.rs
 new file mode 100644
-index 000000000000..1a1c8ea49359
+index 000000000000..cb987c293669
 --- /dev/null
-+++ b/rust/kernel/sync/rcu.rs
-@@ -0,0 +1,52 @@
++++ b/rust/kernel/sync/revocable.rs
+@@ -0,0 +1,98 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! RCU support.
-+//!
-+//! C header: [`include/linux/rcupdate.h`](../../../../include/linux/rcupdate.h)
++//! Synchronisation primitives where access to their contents can be revoked at runtime.
 +
-+use crate::bindings;
-+use core::marker::PhantomData;
++use macros::pin_data;
 +
-+/// Evidence that the RCU read side lock is held on the current thread/CPU.
++use crate::{
++    init::PinInit,
++    pin_init,
++    str::CStr,
++    sync::{lock, lock::Lock, LockClassKey},
++};
++use core::mem::MaybeUninit;
++
++use super::lock::Guard;
++
++/// The state within the revocable synchronisation primitive.
 +///
-+/// The type is explicitly not `Send` because this property is per-thread/CPU.
++/// We don't use simply `Option<T>` because we need to drop in-place because the contents are
++/// implicitly pinned.
 +///
 +/// # Invariants
 +///
-+/// The RCU read side lock is actually held while instances of this guard exist.
-+pub struct Guard {
-+    _not_send: PhantomData<*mut ()>,
++/// The `is_available` field determines if `data` is initialised.
++struct Inner<T> {
++    is_available: bool,
++    data: MaybeUninit<T>,
 +}
 +
-+impl Guard {
-+    /// Acquires the RCU read side lock and returns a guard.
-+    pub fn new() -> Self {
-+        // SAFETY: An FFI call with no additional requirements.
-+        unsafe { bindings::rcu_read_lock() };
-+        // INVARIANT: The RCU read side lock was just acquired above.
++impl<T> Inner<T> {
++    fn new(data: T) -> Self {
++        // INVARIANT: `data` is initialised and `is_available` is `true`, so the state matches.
 +        Self {
-+            _not_send: PhantomData,
++            is_available: true,
++            data: MaybeUninit::new(data),
 +        }
 +    }
 +
-+    /// Explicitly releases the RCU read side lock.
-+    pub fn unlock(self) {}
-+}
++    fn drop_in_place(&mut self) {
++        if !self.is_available {
++            // Already dropped.
++            return;
++        }
 +
-+impl Default for Guard {
-+    fn default() -> Self {
-+        Self::new()
++        // INVARIANT: `data` is being dropped and `is_available` is set to `false`, so the state
++        // matches.
++        self.is_available = false;
++
++        // SAFETY: By the type invariants, `data` is valid because `is_available` was true.
++        unsafe { self.data.assume_init_drop() };
 +    }
 +}
 +
-+impl Drop for Guard {
++impl<T> Drop for Inner<T> {
 +    fn drop(&mut self) {
-+        // SAFETY: By the type invariants, the rcu read side is locked, so it is ok to unlock it.
-+        unsafe { bindings::rcu_read_unlock() };
++        self.drop_in_place();
 +    }
 +}
 +
-+/// Acquires the RCU read side lock.
-+pub fn read_lock() -> Guard {
-+    Guard::new()
++#[pin_data]
++pub struct Revocable<T, B: lock::Backend> {
++    #[pin]
++    inner: Lock<Inner<T>, B>,
 +}
++
++/// Safely initialises a [`Revocable`] instance with the given name, generating a new lock class.
++// #[macro_export]
++// macro_rules! revocable_init {
++//     ($mutex:expr, $name:literal) => {
++//         $crate::init_with_lockdep!($mutex, $name)
++//     };
++// }
++
++impl<T, B> Revocable<T, B>
++where
++    B: lock::Backend,
++{
++    /// Creates a new revocable instance of the given lock.
++    pub fn new(data: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
++        pin_init!(Self {
++            inner <- Lock::new(Inner::new(data), name, key) ,
++        })
++    }
++
++    /// Revokes access to and drops the wrapped object.
++    ///
++    /// Revocation and dropping happen after ongoing accessors complete.
++    pub fn revoke(&self) {
++        self.lock().drop_in_place();
++    }
++
++    fn lock(&self) -> Guard<'_, Inner<T>, B> {
++        self.inner.lock()
++    }
++}
++
++/// Type alias for a `Revocable` with a `MutexBackend`.
++pub type RevocableMutex<T> = Revocable<T, super::lock::mutex::MutexBackend>;
 -- 
 2.44.0
 
