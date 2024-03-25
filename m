@@ -1,126 +1,132 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B7A1B7CF9
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 11:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC0017D23D;
+	Mon, 25 Mar 2024 10:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711364705; cv=none; b=ZHswwzsSxg27URyk4yoo8lolJmsYL5ShJPvEbLl+2XpWesNriubdU618MmtVNr3kNeR6GPzbKepHlQvtpcCDMmBWMUS5pU5SuQeotMg9RkQJVexac2s3tImQ34XVGFp+67WpsKsSGnHEgB3uzAEstnzv2rVl2//FM8X7qUpk+vc=
+	t=1711363501; cv=none; b=lol9DxDbvPP9K2/71SQ/SYgMCxeAmgN6lujHBpZzzpSdwiXXwNxPREV6yNZqaXLWpaxWjrWy34ee5cJ8cxaqzoSffbrjP873+ruU/OyhBpfYGE01q0NWlP/dC7lq/sy6r5k+41zMhQL+tepVhUwDHztnWOakWV1cA08FQXDPFds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711364705; c=relaxed/simple;
-	bh=8qGxdPp0ebqQ8BJrXZEREU34pnPm9lzorTk5SAfMphc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O+ekn0USRtusC9LZp0G6GsxVsNDXx6cDNIIIMS+ARPn3/WqwyrpPgK7VK2xvsEKfh8JecxdAyM5vttXrssQS64UYAzualQybc5+iNQivlRaUOOvAK3XCRqIRCWYqF+TrTbcgaxovrSfa8iG8+nuKqEDg8ryr7lAVSuLOXFazFZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TFTZa4Y9; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TFTZa4Y9"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-41482aa8237so13569265e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 04:05:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711364701; x=1711969501; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fP7Ls7uWKfPWUstbGnxIlos5de3ZaTK6YiZZAdmhw4c=;
-        b=TFTZa4Y9AiX3lEz5QfBPOftVR6Jur1W8zgKznuFgi0TyiUTXtTsiUeprTr4KTOcUAH
-         LrLk3G6Mi3Zivb8upDclcDNvf6t44gKUKLDdfn1o2DXgV7EBvy4Qav5EQKcE4Ce5OukD
-         CD6QkUV5CXO1MvBILeOXrQtHlV/xpZ3xjpERFUe4QFdHa45pdg4tg8NONfvsQyd+JHLG
-         VTvov9nIKOVso/jnVUv+wPHioxkc4MuhaN8B0slqVC7yIPrnA0Y1uhYTGSREMDkMZkx6
-         6ji2WZ7C77wsn/h/Df8lWYfuu6ydCFkkOjcd3nIYYZm0dJHsposrY9IBWF+8SKlDAopX
-         GTkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711364701; x=1711969501;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fP7Ls7uWKfPWUstbGnxIlos5de3ZaTK6YiZZAdmhw4c=;
-        b=weS/S86yucNeUpzz5t7DIE0pI/4X6ym9ggswe/VQB/ZcGaG5CEcvmScyUMbTYucSit
-         O7/ABrIkurkRFPPK2IUbGy9ZTsNoRU+3wgoJBa3du8lwk9Wzjd+tXwftMrlL3/Wk+o9D
-         g1ZeMoK0O7Q88F5NWZkAV3IO3i/NJXh8raAHG3NzqB881tDYLra59Ankpt0KfCj9LY3S
-         hB1jUv1JR1vpxR/i2zFsJnMTYYF9IG0wlSaj4RtFhsDaDDR2J9ppbj89jXE7mg1f3aED
-         zjblDNfkT2scZCkMxp5ahxgpP2csFEVY1ZDNPy4MuL09JLM8rRVEjA+n5Mq1LKp7OTle
-         G92g==
-X-Forwarded-Encrypted: i=1; AJvYcCWTYRxlZivlKlSCQ8uZfPWyh85h33KPkOaXASjOIUSyKIoATIHrQtYS/cRZS348NZfBmnyf8gHIO1gStdF8KVdviypfE0Pc0Ovh1eHRjAU=
-X-Gm-Message-State: AOJu0YyBu6v9QD+6Dj8FWONKPLSS9tt0p7JY2BSom70PX/Qu9ot69WCO
-	cTYA638tXRRguxorNfPb2/+8n5elJBzi+uGeFYlz6UKGTukjrEr8bxMdVRFE
-X-Google-Smtp-Source: AGHT+IEpXxoZypR14eQK5FYki2Gu1MMymhuncfKeObEHnarOhbyHzSE9i1TWnSknu+Fokk0sMtc1WQ==
-X-Received: by 2002:a05:6000:1564:b0:341:c83c:374d with SMTP id 4-20020a056000156400b00341c83c374dmr4414226wrz.71.1711364700940;
-        Mon, 25 Mar 2024 04:05:00 -0700 (PDT)
-Received: from vincenzopalazzo-arch-dev.fritz.box ([2001:1620:71db:0:cc57:871f:84ee:1b83])
-        by smtp.gmail.com with ESMTPSA id bq28-20020a5d5a1c000000b00341cf275252sm1833628wrb.94.2024.03.25.04.04.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 04:05:00 -0700 (PDT)
-From: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-To: ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-	Kartik Prajapati <kartikprajapati987@gmail.com>
-Subject: [PATCH v1] rust: kernel: types: Add `ARef::into_raw`
-Date: Mon, 25 Mar 2024 12:04:26 +0100
-Message-ID: <20240325110451.42277-1-vincenzopalazzodev@gmail.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1711363501; c=relaxed/simple;
+	bh=HVlViT7fg37ArzDR5okosyV0TQroP4C7gOqT9V4q2f0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LJVgG1cja4QnpRC+43Tf3ug6jce0R7PXmitvWr8upEsksCGCbGoAMRLoH4HTE92+Ct0wLJ40FoMz4Nn6rTOG0AHm5FTsg9jCaOyLcPuG67SI9sr7DBzuMXUxYcgh6a3O4OmtYpjBOAGYPMXy19Z8pUNo6PYKz6RzrBhlyeJpqKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C15E01FB;
+	Mon, 25 Mar 2024 03:45:31 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.16.150])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AFF8B3F67D;
+	Mon, 25 Mar 2024 03:44:51 -0700 (PDT)
+Date: Mon, 25 Mar 2024 10:44:45 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?us-ascii?Q?Bj=22orn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+Message-ID: <ZgFVnar3nS4F8eIX@FVFF77S0Q05N>
+References: <20240322233838.868874-1-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240322233838.868874-1-boqun.feng@gmail.com>
 
-Add the function `into_raw` to `ARef<T>`. This method
-can be used to turn an `ARef` into a raw pointer.
+On Fri, Mar 22, 2024 at 04:38:35PM -0700, Boqun Feng wrote:
+> Hi,
+> 
+> Since I see more and more Rust code is comming in, I feel like this
+> should be sent sooner rather than later, so here is a WIP to open the
+> discussion and get feedback.
+> 
+> One of the most important questions we need to answer is: which
+> memory (ordering) model we should use when developing Rust in Linux
+> kernel, given Rust has its own memory ordering model[1]. I had some
+> discussion with Rust language community to understand their position
+> on this:
+> 
+> 	https://github.com/rust-lang/unsafe-code-guidelines/issues/348#issuecomment-1218407557
+> 	https://github.com/rust-lang/unsafe-code-guidelines/issues/476#issue-2001382992
+> 
+> My takeaway from these discussions, along with other offline discussion
+> is that supporting two memory models is challenging for both correctness
+> reasoning (some one needs to provide a model) and implementation (one
+> model needs to be aware of the other model). So that's not wise to do
+> (at least at the beginning). So the most reasonable option to me is:
+> 
+> 	we only use LKMM for Rust code in kernel (i.e. avoid using
+> 	Rust's own atomic).
+> 
+> Because kernel developers are more familiar with LKMM and when Rust code
+> interacts with C code, it has to use the model that C code uses.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1044
-Co-developed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Signed-off-by: Kartik Prajapati <kartikprajapati987@gmail.com>
-Signed-off-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
----
- rust/kernel/types.rs | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+I think that makes sense; if nothing else it's consistent with how we handle
+the C atomics today.
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index aa77bad9bce4..b2a243bb810e 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -366,6 +366,38 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-             _p: PhantomData,
-         }
-     }
-+
-+    /// Deconstructs a [`ARef`] object into a raw pointer.
-+    ///
-+    /// It can be reconstructed once via [`ARef::from_raw`].
-+    ///
-+    /// Note: This function does not decrement the reference count.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use core::ptr::NonNull;
-+    /// use kernel::AlwaysRefCounted;
-+    ///
-+    /// struct Empty {}
-+    ///
-+    /// unsafe impl AlwaysRefCounted for Empty {
-+    ///     fn inc_ref(&self) {}
-+    ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-+    /// }
-+    ///
-+    /// let mut data = Empty {};
-+    /// let ptr = NonNull::<Empty>::new(&mut data as *mut _).unwrap();
-+    /// let data_ref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
-+    /// let raw_ptr: *mut Empty = ARef::into_raw(data_ref);
-+    ///
-+    /// assert_eq!(ptr.as_ptr(), raw_ptr);
-+    /// ```
-+    pub fn into_raw(obj: Self) -> *mut T {
-+        let ptr = obj.ptr.as_ptr();
-+        core::mem::forget(obj);
-+        ptr
-+    }
- }
- 
- impl<T: AlwaysRefCounted> Clone for ARef<T> {
--- 
-2.44.0
+> And this patchset is the result of that option. I introduced an atomic
+> library to wrap and implement LKMM atomics (of course, given it's a WIP,
+> so it's unfinished). Things to notice:
+> 
+> * I know I could use Rust macro to generate the whole set of atomics,
+>   but I choose not to in the beginning, as I want to make it easier to
+>   review.
+> 
+> * Very likely, we will only have AtomicI32, AtomicI64 and AtomicUsize
+>   (i.e no atomic for bool, u8, u16, etc), with limited support for
+>   atomic load and store on 8/16 bits.
+> 
+> * I choose to re-implement atomics in Rust `asm` because we are still
+>   figuring out how we can make it easy and maintainable for Rust to call
+>   a C function _inlinely_ (Gary makes some progress [2]). Otherwise,
+>   atomic primitives would be function calls, and that can be performance
+>   bottleneck in a few cases.
 
+I don't think we want to maintain two copies of each architecture's atomics.
+This gets painful very quickly (e.g. as arm64's atomics get patched between
+LL/SC and LSE forms).
+
+Can we start off with out-of-line atomics, and see where the bottlenecks are?
+
+It's relatively easy to do that today, at least for the atomic*_*() APIs:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/commit/?h=atomics/outlined&id=e0a77bfa63e7416d610769aa4ab62bc06993ce56
+
+... which IIUC covers the "AtomicI32, AtomicI64 and AtomicUsize" cases you
+mention above.
+
+Mark.
