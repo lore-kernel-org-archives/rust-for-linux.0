@@ -1,41 +1,41 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6674B757F8
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 22:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC918002A
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 22:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711405480; cv=none; b=ZPeexdkNZDkhdk4tJEYA3ofVmSPzWbpTasNWqOH/oiK2Gwj2PNQ01L1GYe5emv8upyRHnpQdI/DCxr5IA1MpEyQfcIawOpz+WgkrZSpYi7Xcvq6nhmXhVyl63cebMaNUPv31L+fD6pNjzK+wqxmu03A+kFXpIezQkz+74vnxCqQ=
+	t=1711405626; cv=none; b=na0FlPS41MzaDiTIWMpEU+7z5Eqpr9v1VfoKfxLgwq3zrVMJ1mTkVTBDRGfbDV3pykKuT3KF4W9s9GSUZHu0v011ftxH209foMZ3+fW5b3XXtJWIAZWnrLGgSFTiz9Mrz0aj4KTvn2O10ekG43nXx+k0xI1rqFJWK83DmixqaD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711405480; c=relaxed/simple;
-	bh=qUf/lMSFpgM0OC3FLLVNDJ1XXx/LnvanuJ2KlOt+NpY=;
+	s=arc-20240116; t=1711405626; c=relaxed/simple;
+	bh=GZwKSyme3Qv/tXzsXFUJNx/0YQ7r8OnUgRcmfYjAwCg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YAsZrhNsmbZ/3YV4XS46ksLuQMnJVGm/OSFvhWMpKVs+/RlnrXwVKaRWQxu1PBl4zvRj3gCAOej4FSfeu9hX89E9zXETeC+JfzuY1Acsc+hgczuDk42YJ4JKmykzwlWw0xz3A6aPkQLg6mMAiFpUhIRESYiOpx5hp+jNVoazcTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FmR5WWpA; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=cCvqF8FiIOy+lbbZjPfIIfKfqygJfQ4oyymy/Xt9UcaCVageJKmuXFUlfciGTZERUdDNEroMmWgxToQpXAOFZMm4wNTmrWW5wiLpxYaO0q+fm6IGMrIyMbpNeNFGiNqnlcNbMn5kYD2ylnqGwQ+ZSDZtsGUyEvgZPlGfE8nEq7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VYNiNH3R; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FmR5WWpA"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VYNiNH3R"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711405476; x=1711664676;
-	bh=aWrPyMoWRF/FgF4vWS28ZEGuUYCg1AOjVlZZ0z+Ar/c=;
+	s=protonmail; t=1711405622; x=1711664822;
+	bh=GZwKSyme3Qv/tXzsXFUJNx/0YQ7r8OnUgRcmfYjAwCg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=FmR5WWpA+o96aczwdkg7XsKnr+OTQHtJg7NUcSFnY5nnl8emjH6NvP0exW0ZnleOk
-	 ZFmd08um2plFm/fLPmV9ojikLkHo+Gm5MybYvhibbcESKYAsIX8Lg31E0QNpYXxiAq
-	 0sKYrxWU637AMzJmUa7ovPbh+qccQQWfioSVzujtSLDX8MDk6fTaYHxjXL3BLlgSAS
-	 uXZFw6T6geRStSTKQfpLwD8v/u4FyQ/I+FW6mllmOKUpgU38aLECU1Q3K571gegmqK
-	 KHZdFVD0m5IttqO+qARPFGJt7YOdUr7OcBVinnF7WtKgRtF9rcqWIBJVfJQns2w13Z
-	 Lzboy2KWUQRag==
-Date: Mon, 25 Mar 2024 22:24:20 +0000
+	b=VYNiNH3Rx4qIPWgeuWfYLOy+W27Flh4CrflS+/NNBRirmXH7U0ZCjb0lMuBt2uTRl
+	 Cdof4Uq8jvDe2Tlw/UFmc+ToI7fAfyu4B6QQsuw2VxFpdhBsYQtZPfizz8Vn1nrH4k
+	 5RVmnCr/1xf57J7HFqKEgglaP/LWrkzgvadmvU1DHkOSlotOWELvE6j8yYesjVZk98
+	 354z42ZnM3ml0Ygv2PsUy+wG3yrCD4QQAffcN4xsDAl8hEIUtj/gw09rlgq8wrVeXY
+	 311Um/6FhbbSlJitDfFJh78e0N9uYnWqQ8MJ1p6Upb8RqxaF/yA+pVAbY3rmOZr5TW
+	 v/BW1oNz0b3cg==
+Date: Mon, 25 Mar 2024 22:26:56 +0000
 To: Wedson Almeida Filho <wedsonaf@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 04/10] rust: alloc: remove our fork of the `alloc` crate
-Message-ID: <B_2mY6rCanHqb2TTjBPjW3caOJDXHH47O96PklhDUac3opxQSIf7U5O-neiOPYIX1gYGt5hPvrkj8oGAyDkeotYKYiNYmSxnQ7A3rmlZS7c=@proton.me>
-In-Reply-To: <20240325195418.166013-5-wedsonaf@gmail.com>
-References: <20240325195418.166013-1-wedsonaf@gmail.com> <20240325195418.166013-5-wedsonaf@gmail.com>
+Subject: Re: [PATCH 05/10] rust: alloc: introduce allocation flags
+Message-ID: <lD6nFi45lZHea8jd_AG2CbXQg3xE9XMBaCTLdqJQxj8JcezXEOmFET0HDFrprPSUoBFkwfZl5kuIsKZncg8E5zTM8os99A551s2avkJuvxw=@proton.me>
+In-Reply-To: <20240325195418.166013-6-wedsonaf@gmail.com>
+References: <20240325195418.166013-1-wedsonaf@gmail.com> <20240325195418.166013-6-wedsonaf@gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -49,28 +49,11 @@ Content-Transfer-Encoding: quoted-printable
 On 25.03.24 20:54, Wedson Almeida Filho wrote:
 > From: Wedson Almeida Filho <walmeida@microsoft.com>
 >=20
-> It is not used anymore as `VecExt` now provides the functionality we
-> depend on.
+> We'll use them when allocating `Box`, `Arc`, and `UniqueArc` instances,
+> as well as when allocating memory for `Vec` elements. These changes will
+> come in subsequent patches.
 >=20
 > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->   rust/alloc/README.md              |   36 -
->   rust/alloc/alloc.rs               |  452 ----
->   rust/alloc/boxed.rs               | 2463 -------------------
->   rust/alloc/collections/mod.rs     |  160 --
->   rust/alloc/lib.rs                 |  288 ---
->   rust/alloc/raw_vec.rs             |  611 -----
->   rust/alloc/slice.rs               |  890 -------
->   rust/alloc/vec/drain.rs           |  255 --
->   rust/alloc/vec/extract_if.rs      |  115 -
->   rust/alloc/vec/into_iter.rs       |  454 ----
->   rust/alloc/vec/is_zero.rs         |  204 --
->   rust/alloc/vec/mod.rs             | 3683 -----------------------------
->   rust/alloc/vec/partial_eq.rs      |   49 -
->   rust/alloc/vec/set_len_on_drop.rs |   35 -
->   rust/alloc/vec/spec_extend.rs     |  119 -
->   15 files changed, 9814 deletions(-)
-
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 --=20
