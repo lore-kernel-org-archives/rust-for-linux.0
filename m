@@ -1,169 +1,174 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096B91F5F3
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 19:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AF54654D;
+	Mon, 25 Mar 2024 19:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711395896; cv=none; b=GBA3eRr1+8VHNZpLoI9ky01QYWYJcv2Ope6LhHl9+sTRcLr9wmhRpwbOewZ2PHcViapmQxmQjGf/4HQKgQ9olsIgTeJ0t3Ij4qlQiGMMuGLXyrSiCybCwrE2+Qeg2EMmI+OXfOMFXVbLQh2O09qqMQ/Z3VpaKPA7Qiq+R29gUrY=
+	t=1711396488; cv=none; b=ijti8HpfAuwXZEBxN52b+d+5UqcbxYftjaSYoyl6Wveq1ITW2XgFJyJe+ZaC5Bx/a9eZoCuLJPQ2b4yMLASlvg+DXQZGWab9LDl9K5bg4lMRaW/djvoKtG734ggpLxFeJvD/mDdchYy2xpDuVGUePqttlLW17Bnvl9DLS3Hzrw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711395896; c=relaxed/simple;
-	bh=A9iFiK6Y1wte6MuOGQxLuhRQjW57DRplpjuGYIs8fYM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K0UTKmS9sInrzzVwtZ/YKi5ffrvIxncayilSsRDcqARyB9Yja/R50QzeZaCz7/vBAD9mFo4yHWvXTXmWxjV6dt6yEbUHkFGY18BiiVKY2N/wsV7+5GJFljizblpnKOlIbe/4DRAx2HZ4gNkA7++mIq4RwKS+KmUwZHJ133xrIOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KbsF9HJK; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1711396488; c=relaxed/simple;
+	bh=PDJS0LCKHcVBTSHdWND99CZ76nchhOVLaj+dCz8+awU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uNkl6Je4PUkzz37M7T6iCmTX3uLxuwxpdpwUZsSJt3jjsjkaxsQSaNe/+rtyT/QHBy3QEYadhM7LtJJEEtPxezZP7V8zwnn0hxvxVdmIrdBtlmZPxz5eEW2CM7aH2e5EXqr6J8UAQ0b8TLRjvK5UjlmEhw8Ydha32/hyvwqy700=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WXAPgAvf; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KbsF9HJK"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a466e53f8c0so622492066b.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 12:44:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXAPgAvf"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6e704078860so3321196b3a.0;
+        Mon, 25 Mar 2024 12:54:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1711395892; x=1712000692; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/SDMeVL08gBgcdBP5iWFLp8wMiMUpYFhuW9V2Wg1OXU=;
-        b=KbsF9HJKr2zJSUU2kIEhLUw1xVXYhpsmKCs72xfcwLkbuzvDoyBi8ox3XL4bCBbxVM
-         zQH+/pRAYFswwEpPtDOYD1oXrHOlvcce8i5GBybvIeYP6xrprynlWVmLxGnn4lPNZ06J
-         GH537vG1cxPXPtiYJNOqGjolhiG8GM0Yto+yM=
+        d=gmail.com; s=20230601; t=1711396485; x=1712001285; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TKGh+mBJ4bSqQkNDxYsl6/3gDdvQ9dd9H+apbAhd0cg=;
+        b=WXAPgAvfdwvM8MCCwCr2PT3f1Ax5nw9BCwhdLZLHVhYQgLSzpRPZlmIz21W6sFUT0A
+         H0Z+Zvw/dix0uUgEGIQtEcwAl926rw595kg58/2aWr+BJnzlhICyVUQioR2QGIdQ1zf/
+         jXLTZuD9INyYXZ6z3P7xfsjFWWGISoVUMNP7ithspbCgwkLwFrC4n0gQqbQKNFbbZyOE
+         rf8YVZTXdswWz2FBkgTGpF43SIgRdxoe8aV0H8ngD3sW23ZM4qzjRptouDVqAUXdyyvN
+         ++bNEi6eluKurnZ7yMsAqRYj72wj75k/NW7pf7+iKgD87vR9CULCnmhhTtX/CZd9YkBA
+         kQfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711395892; x=1712000692;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1711396485; x=1712001285;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/SDMeVL08gBgcdBP5iWFLp8wMiMUpYFhuW9V2Wg1OXU=;
-        b=wnfDRdmaeLfBVjfCpflOF/dvjMfOPpiHpdVPBpM6brk6HQhHuqu1LeLJ/dQpcBu1TA
-         olRoCWv1yElfZO95LcKyIT/yA//52buG2vCW/sDpzx81jJi2+ALV5n3oA0pJ4w6gQQ8T
-         Mvh8p0XNS1RDpLUmSu1DcYJdb2lm0ZsSmtKRsD8NNcRhyvpcNjBrerZMAw+BoLn0jwi5
-         tEhBVhn7IIRJ/D/OJmhN00QYcBgGT0Pk66WNBF5mMv6Zfpo5+19ttAPQFC+Zw6Hi6t+q
-         81vjovib5Dg/5raqUpvIRIUYrBDojU5dbsGMY3T6/UAs07XslPUCR8whROsu0vbye3+I
-         TmvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVkzypLWFuwNwHGMOVyz5IZwZvJiJTKNKFSKiTpbyvdv7iq5hpmPmggiXRYU/QfIvjYuBNDxfQfsdPjzaNrfWLAQfzFOUelYf/1bPCxdek=
-X-Gm-Message-State: AOJu0YzVw2VTadZCNgd/ppW0rltJWcZrkEFHCfiH/OFgIP+A62cLqxkU
-	dYEGWE9rGnAB+PZ386UqzP4GExRwVue8w+eDKN3zD0ewGcsYEIWVhhVu/PMwx35dHMbxQAOGlXS
-	ZqyMoqw==
-X-Google-Smtp-Source: AGHT+IFng+IX32SXPrTENw+yqn1mQX9NslnEvGd28F4XTXui0eT/Fwdn3uR+0sTR+cy9eyHLFYfTAA==
-X-Received: by 2002:a17:906:a94d:b0:a46:36ee:cfac with SMTP id hh13-20020a170906a94d00b00a4636eecfacmr5251734ejb.77.1711395891856;
-        Mon, 25 Mar 2024 12:44:51 -0700 (PDT)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
-        by smtp.gmail.com with ESMTPSA id wk15-20020a170907054f00b00a4a3600d2absm1359395ejb.172.2024.03.25.12.44.51
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 12:44:51 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-566e869f631so5092936a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 12:44:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVFr1U8L9CjMRqrGnttS32sdqvloQ9G577lFXmPTYACAnQ/Pa84bOHji9bebUsMI/eZr2sikQJoCal91iF1Pv0JAy3F6DX9LXQOAOnhCcc=
-X-Received: by 2002:a17:906:4a56:b0:a46:9b7c:c962 with SMTP id
- a22-20020a1709064a5600b00a469b7cc962mr5818699ejv.47.1711395890869; Mon, 25
- Mar 2024 12:44:50 -0700 (PDT)
+        bh=TKGh+mBJ4bSqQkNDxYsl6/3gDdvQ9dd9H+apbAhd0cg=;
+        b=kzeo8xSBKu7eaveYOQERoIMDlxvRQ6nIk/555Ig4qAKLfy+1zbRkBBayo22xsNiSxL
+         vcLyfYvBd+54cjNrb50aHJUajs6De0g+6rb04mWuv5NShpEwFcvaSa5kwsq25WjUoVwk
+         cGgVqFOeqX4GvKH5m+OaifpaZhOrTvG8TKsnl0VfOFaRkbZQFjWe6ZzSGrJG+XrYoGcr
+         hfL/78tAJUUjwwcnoe1QoHQB4wmNAQwvZ2bhzCDUrB6EwaK1yA6Q/p4VSU11Nk7PJRck
+         drPbxVH1wyc4fRSva401+HYeyBsivchUApMcjW+Jkfudzj78QL1BDMFWduNeMr6TnKE2
+         BghA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmDSS3g2yXnKdpfywfjn/DR+jwK4j8O5tDcA9YLS1Sh/yU5/G5WqZvddE46Kb5PPU6UkGRdcTGmVlDPS6B4SYYqP2+Cq4teT6oUHZp
+X-Gm-Message-State: AOJu0YwQQKmoEG3/LFoHZIKghcdFqK6DEbVhe1eeBD29+xPNC0ojFJat
+	lZPKRf5a/u8Go6tsoHFF8C9+T3a0nB/pxitLy/iMlttiKGtuNuBpkAjgN0WF
+X-Google-Smtp-Source: AGHT+IENhWGbwBxi2k1Je3D+EGHuHF2yKXZPWGntwgjaXQahs1ZLLIScPpEVGH+NO1qhHy9E5t4ohw==
+X-Received: by 2002:a05:6a21:3945:b0:1a3:d406:4344 with SMTP id ac5-20020a056a21394500b001a3d4064344mr773058pzc.32.1711396484747;
+        Mon, 25 Mar 2024 12:54:44 -0700 (PDT)
+Received: from wedsonaf-dev.home.lan ([189.124.190.154])
+        by smtp.googlemail.com with ESMTPSA id q1-20020a170902dac100b001e06c1eee22sm5099585plx.74.2024.03.25.12.54.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 12:54:44 -0700 (PDT)
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: [PATCH 00/10] Allocation APIs
+Date: Mon, 25 Mar 2024 16:54:08 -0300
+Message-Id: <20240325195418.166013-1-wedsonaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322233838.868874-1-boqun.feng@gmail.com> <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
- <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
- <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
- <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
- <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com> <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
-In-Reply-To: <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 25 Mar 2024 12:44:34 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgLGWBXvNODAkzkVHEj7zrrnTq_hzMft62nKNkaL89ZGQ@mail.gmail.com>
-Message-ID: <CAHk-=wgLGWBXvNODAkzkVHEj7zrrnTq_hzMft62nKNkaL89ZGQ@mail.gmail.com>
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Philipp Stanner <pstanner@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
-	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 25 Mar 2024 at 11:59, Kent Overstreet <kent.overstreet@linux.dev> wrote:
->
-> To be fair, "volatile" dates from an era when we didn't have the haziest
-> understanding of what a working memory model for C would look like or
-> why we'd even want one.
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-I don't disagree, but I find it very depressing that now that we *do*
-know about memory models etc, the C++ memory model basically doubled
-down on the same "object" model.
+Revamp how we use the `alloc` crate.
 
-> The way the kernel uses volatile in e.g. READ_ONCE() is fully in line
-> with modern thinking, just done with the tools available at the time. A
-> more modern version would be just
->
-> __atomic_load_n(ptr, __ATOMIC_RELAXED)
+We currently have a fork of the crate with changes to `Vec`; other
+changes have been upstreamed (to the Rust project). This series removes
+the fork and exposes all the functionality as extension traits.
 
-Yes. Again, that's the *right* model in many ways, where you mark the
-*access*, not the variable. You make it completely and utterly clear
-that this is a very explicit access to memory.
+Additionally, it also introduces allocation flag parameters to all
+functions that may result in allocations (e.g., `Box::new`, `Arc::new`,
+`Vec::push`, etc.) without the `try_` prefix -- the names are available
+because we build `alloc` with `no_global_oom_handling`.
 
-But that's not what C++ actually did. They went down the same old
-"volatile object" road, and instead of marking the access, they mark
-the object, and the way you do the above is
+Lastly, the series also removes our reliance on the `allocator_api`
+unstable feature.
 
-    std::atomic_int value;
+Long term, we still want to make such functionality available in
+upstream Rust, but this allows us to make progress now and reduces our
+maintainance burden.
 
-and then you just access 'value' and magic happens.
+In summary:
+1. Removes `alloc` fork
+2. Removes use of `allocator_api` unstable feature
+3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
 
-EXACTLY the same way that
+Wedson Almeida Filho (10):
+  rust: kernel: move `allocator` module under `alloc`
+  rust: alloc: introduce the `VecExt` trait
+  kbuild: use the upstream `alloc` crate
+  rust: alloc: remove our fork of the `alloc` crate
+  rust: alloc: introduce allocation flags
+  rust: alloc: introduce the `BoxExt` trait
+  rust: alloc: update `VecExt` to take allocation flags
+  rust: sync: update `Arc` and `UniqueArc` to take allocation flags
+  rust: init: update `init` module to take allocation flags
+  rust: kernel: remove usage of `allocator_api` unstable feature
 
-   volatile int value;
+ rust/Makefile                        |   16 +-
+ rust/alloc/README.md                 |   36 -
+ rust/alloc/alloc.rs                  |  452 ----
+ rust/alloc/boxed.rs                  | 2463 -----------------
+ rust/alloc/collections/mod.rs        |  160 --
+ rust/alloc/lib.rs                    |  288 --
+ rust/alloc/raw_vec.rs                |  611 -----
+ rust/alloc/slice.rs                  |  890 -------
+ rust/alloc/vec/drain.rs              |  255 --
+ rust/alloc/vec/extract_if.rs         |  115 -
+ rust/alloc/vec/into_iter.rs          |  454 ----
+ rust/alloc/vec/is_zero.rs            |  204 --
+ rust/alloc/vec/mod.rs                | 3683 --------------------------
+ rust/alloc/vec/partial_eq.rs         |   49 -
+ rust/alloc/vec/set_len_on_drop.rs    |   35 -
+ rust/alloc/vec/spec_extend.rs        |  119 -
+ rust/bindings/bindings_helper.h      |    3 +
+ rust/kernel/alloc.rs                 |   68 +
+ rust/kernel/{ => alloc}/allocator.rs |    6 +-
+ rust/kernel/alloc/boxext.rs          |   60 +
+ rust/kernel/alloc/vecext.rs          |  120 +
+ rust/kernel/error.rs                 |   13 +-
+ rust/kernel/init.rs                  |   57 +-
+ rust/kernel/lib.rs                   |    5 +-
+ rust/kernel/prelude.rs               |    2 +
+ rust/kernel/str.rs                   |    6 +-
+ rust/kernel/sync/arc.rs              |   44 +-
+ rust/kernel/sync/condvar.rs          |    2 +-
+ rust/kernel/sync/lock/mutex.rs       |    2 +-
+ rust/kernel/sync/lock/spinlock.rs    |    2 +-
+ rust/kernel/types.rs                 |    4 +-
+ rust/kernel/workqueue.rs             |   14 +-
+ samples/rust/rust_minimal.rs         |    6 +-
+ samples/rust/rust_print.rs           |    4 +-
+ scripts/generate_rust_analyzer.py    |    2 +-
+ 35 files changed, 340 insertions(+), 9910 deletions(-)
+ delete mode 100644 rust/alloc/README.md
+ delete mode 100644 rust/alloc/alloc.rs
+ delete mode 100644 rust/alloc/boxed.rs
+ delete mode 100644 rust/alloc/collections/mod.rs
+ delete mode 100644 rust/alloc/lib.rs
+ delete mode 100644 rust/alloc/raw_vec.rs
+ delete mode 100644 rust/alloc/slice.rs
+ delete mode 100644 rust/alloc/vec/drain.rs
+ delete mode 100644 rust/alloc/vec/extract_if.rs
+ delete mode 100644 rust/alloc/vec/into_iter.rs
+ delete mode 100644 rust/alloc/vec/is_zero.rs
+ delete mode 100644 rust/alloc/vec/mod.rs
+ delete mode 100644 rust/alloc/vec/partial_eq.rs
+ delete mode 100644 rust/alloc/vec/set_len_on_drop.rs
+ delete mode 100644 rust/alloc/vec/spec_extend.rs
+ create mode 100644 rust/kernel/alloc.rs
+ rename rust/kernel/{ => alloc}/allocator.rs (96%)
+ create mode 100644 rust/kernel/alloc/boxext.rs
+ create mode 100644 rust/kernel/alloc/vecext.rs
 
-works, in other words. With exactly the same downsides.
 
-And yes, I think that model is a nice shorthand. But it should be a
-*shorthand*, not the basis of the model.
+base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+-- 
+2.34.1
 
-I do find it annoying, because the C++ people literally started out
-with shorthands. The whole "pass by reference" is literally nothing
-but a shorthand for pointers (ooh, scary scary pointers), where the
-address-of is implied at the call site, and the 'dereference'
-operation is implied at use.
-
-So it's not that shorthands are wrong. And it's not that C++ isn't
-already very fundamentally used to them. But despite that, the C++
-memory model is very much designed around the broken object model, and
-as already shown in this thread, it causes actual immediate problems.
-
-And it's not just C++. Rust is supposed to be the really moden thing.
-And it made the *SAME* fundamental design mistake.
-
-IOW, the whole access size problem that Boqun described is
-*inherently* tied to the fact that the C++ and Rust memory model is
-badly designed from the wrong principles.
-
-Instead of designing it as a "this is an atomic object that you can do
-these operations on", it should have been "this is an atomic access,
-and you can use this simple object model to have the compiler generate
-the accesses for you".
-
-This is why I claim that LKMM is fundamentally better. It didn't start
-out from a bass-ackwards starting point of marking objects "atomic".
-
-And yes, the LKMM is a bit awkward, because we don't have the
-shorthands, so you have to write out "atomic_read()" and friends.
-
-Tough. It's better to be correct than to be simple.
-
-             Linus
