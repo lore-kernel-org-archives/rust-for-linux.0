@@ -1,170 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2A213C81E
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 13:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692AF148853
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 14:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711375028; cv=none; b=IHYCOIq6ia1dRLGFQmOOwOM4lPXeK4VH5pwjNpF/REbqsTurouGeTy74VabI84FUaUMs9I4iUeAUndIO0Lhyxduru8KicJiZAQQd28R3weZ1LQjP8469wam4MBPmj2bCtF2l6Sc6mrsmmX6R7tXm7fTPHL/+IjnEH0rnbNzwpQc=
+	t=1711375831; cv=none; b=jiKzZGOdGaPw5GR+A+IBMEBsWPS0NLysDjkxC2KMCx+A/5/W0ehcDEaEq3LLt4pHdla1X7ZMZr8ngXcfzeZMQh73Mpup7PTbu+VXlAIpJ2B5j4GfpoNKlWlpExpyjaZ3VYxjpsl9pdki3RK/4Kw2bg653oogb7u2c5e+prxzPUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711375028; c=relaxed/simple;
-	bh=Su0oRSDMDN6WKCvVoRZlpj1EX7RmBmcvnQ0SRJYHWr0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UyaXzmOcDLv9ZR9FrDgEufb31s6kbeSTBWDAyp0quheg6UtKPwZJoERmomIVtRpQ9NkS34QYICQ5iVI31cSKaRBQWa5yBNu1Lst8bt728bkly7CkjY1qiRkk85aMcXjQFiqw7hCCPPPXT3W3AXC2y2IQW0oV+OVa4c3wQnN6dQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aEMugEbk; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1711375831; c=relaxed/simple;
+	bh=4Kn32RsuIuYn/L+que2osNAj/d2NbRateANJg7z8VJo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CKD1gbbslub659yRBlp+2GuF2g8YHexeZiv2VrF81e9xe/mYuyFcpdQtNW1jav9pbF+BR1LXCArcitPjyrSH85Fx1ATbvdGZgSxadf/V1RyaKht196eaOqs6lgROBtfz8O6sSkv61KfhkiySjmmTbZl3JKLoWJgSwV2EUtERmOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DRdlxb9R; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aEMugEbk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711375025;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Su0oRSDMDN6WKCvVoRZlpj1EX7RmBmcvnQ0SRJYHWr0=;
-	b=aEMugEbkulQEEQjmk1XhINUNj04ER4yYwKBpTJ4PkPSfJ/qe3yiAwW7KlDWlITElNrdQkL
-	Hqvt5+6Qnroinma8jGFgu4o9l6No0hV6CUTBUJilOZJjkHEkCXdjy/iaD/qHPDx+BKzehS
-	4Nh4i6eVRslN/GOYcf6jsMhre0yxdfg=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-NPbNGDGJOQ2jtbu-UDEutg-1; Mon, 25 Mar 2024 09:57:04 -0400
-X-MC-Unique: NPbNGDGJOQ2jtbu-UDEutg-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2d6c5548f93so5085861fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 06:57:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DRdlxb9R"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5e8470c1cb7so3021941a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 07:10:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711375830; x=1711980630; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iaopeeoIF1ul82xdPQHtjfC6JV6rfK+Sm0ziqY6Hxuw=;
+        b=DRdlxb9R5wUjkCwpCpg3HX6htzgE6J1xpjgW+6b5kShM8rgOBaQRsYD2MbaHUv1EdC
+         rCt2KZFZWH9drpg10UxxGS3XVp0ccrWuPK3Y5ZdMhqyZ2dWWsCuCFbMLosM6zXAfrJ62
+         NraWJcAxiSb9134yKu/JB9t+4Ry/+bBM5VRNZYfzAfMfYejwYBTC8/t7/XA5anXUdeI6
+         sHW7x7kubAxUUaANiwgk7IOlWHjAffNCUUUTDs1yvd88pH420bPqaWoifPW8lapB6VoC
+         V/GAU16bg4nPC6BveBYqoWnjx+LU7VEEVBVhIkaOkKrJrfym2sf8CEFaOI73emeerxM8
+         UV/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711375021; x=1711979821;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Su0oRSDMDN6WKCvVoRZlpj1EX7RmBmcvnQ0SRJYHWr0=;
-        b=Glic0OQ97MbxTg0nTjbSe0heKBab7C2Wg/wKDaKREYmiEuX1mYHDe/01zo0PV2MeWM
-         nILDd8LkkJyVFBq6Wt7zv2jtcd970MtjnQE5f8DxqGEZ8qEyRyjWB/ZVngynSNKwFP6J
-         MMLFC8JUkF+yUQ95Xq5T9c3pwGUMGTxJzwgV0RXT8/5rF3pe9bHbA3F4NqlLcL8b8e4G
-         H5M6wxB51D5f+I6BOjQ9+96eaIYlLNU47ZMqyjnUvReOGj1NJljcvsdbiK3PrvQ9koPd
-         Hc+/cVf/rKCtvyUQD1cYANr/o6SGXkyg2i2fEA8zaktMPiomlHUIDd/ZtTw/tLw31Bha
-         Wtww==
-X-Forwarded-Encrypted: i=1; AJvYcCV2s7OLvvP9cpu8FYbxeGy/4ANfEbgwaN+rkVzajj0aYTrrQnFquZv8ywW5hjH2/fuffGvmHuB1c2XOco5mewDyR4dFvJ0R4rnakVLN3/8=
-X-Gm-Message-State: AOJu0YyMQM44///jpgwboH25nTiTq+asoynid2q5PIh7QCaCR5MMxmCn
-	hj4dSR0ssnrw7Cod9AcEfg8D6/IiMsIIoaALL2ujt36dShRpa+IZpV0UX5poVxd4TQbhLyw6Qh3
-	uzaHXW8qQXX+bi2U+WY6KXSgPOzSVyjN1BuvolOBMeD+qQ5TuvYB/1+XPQI8M3FC0
-X-Received: by 2002:a2e:88d0:0:b0:2d4:78b4:e568 with SMTP id a16-20020a2e88d0000000b002d478b4e568mr4342014ljk.1.1711375021350;
-        Mon, 25 Mar 2024 06:57:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsEsxChr4oIHfPIiuFPvTM+72aemZNo0G3gI+fLGhTYtrb+QS9VpjMdi/YbUXjC7EP1XZSIg==
-X-Received: by 2002:a2e:88d0:0:b0:2d4:78b4:e568 with SMTP id a16-20020a2e88d0000000b002d478b4e568mr4341961ljk.1.1711375020848;
-        Mon, 25 Mar 2024 06:57:00 -0700 (PDT)
-Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id n3-20020a05600c4f8300b00414887d9329sm4600055wmq.46.2024.03.25.06.56.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 06:57:00 -0700 (PDT)
-Message-ID: <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-From: Philipp Stanner <pstanner@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>, Kent Overstreet
-	 <kent.overstreet@linux.dev>
-Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- llvm@lists.linux.dev,  Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Alan
- Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>,
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>,
- Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>,
- "Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>,
- Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes
- <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, Nick
- Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com,  Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, Mark Rutland
- <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Date: Mon, 25 Mar 2024 14:56:58 +0100
-In-Reply-To: <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
-References: <20240322233838.868874-1-boqun.feng@gmail.com>
-	 <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
-	 <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
-	 <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
-	 <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
+        d=1e100.net; s=20230601; t=1711375830; x=1711980630;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iaopeeoIF1ul82xdPQHtjfC6JV6rfK+Sm0ziqY6Hxuw=;
+        b=G1BSUTUdzmkL0uw7uHevXwO/bGph1zadn3e2inoWC1UT+Du3ycw11wwDnECetbGa3i
+         l4b1UZrRx84lZiOuXh9NgztYpobIhOIHmHuuvnaDm1AFZu5mrTLsCQrhYSN7ebsJGnqc
+         R7q4Yy4W4mLQTRl+s20+bBQ7HHr+N8FZsZNFNm00V94Lz/SjY4oA4O3pZu4Ul/jJxNc4
+         mr0SfosBpG6gAvDdcIPcOIV7ekIjjk7lo0gswah7We1UVL0Mcsd82tYWxR8zTMquzXj6
+         u6Tk4d/Q04wCGZhrxNNagELstq/HtYMGeYKEQ1AOf4VDSvIhPvOGFQh4vXVN4cb1s4OL
+         o7vw==
+X-Forwarded-Encrypted: i=1; AJvYcCWAiHWzXeGK1lXJXcdDOBL4cSe7D61k36pkrbqY8j5gbRz9bh7SWsSjvNev3kClrccpnhESWWn8gov6tD9cfChmXDrUad3Mi/7CPWBaNT8=
+X-Gm-Message-State: AOJu0Yx2V5DE1RM8EFz3gLZ1TWC2IbiPqA+0Df9L08VBm+gd9hfUSJ60
+	okA+CCcfG38u3Hsh35NJGcsQbj+oM7Hqa3HO9DUpVq1QFBG9cQYIoO34KMMFMAIdQ+aF7TujWVw
+	hNL2u5th+bbeGiUDjqGCOl+1XS5Y=
+X-Google-Smtp-Source: AGHT+IGy7TC00XH3x3iAMRG1svJm3PRVQazscYiWkRe9waVxT551fjhrcPo4OhsPdVWOvId8b34lESXW//zUodz4pgg=
+X-Received: by 2002:a17:90b:4b45:b0:29a:e05f:3f55 with SMTP id
+ mi5-20020a17090b4b4500b0029ae05f3f55mr4711362pjb.2.1711375829505; Mon, 25 Mar
+ 2024 07:10:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20240325110451.42277-1-vincenzopalazzodev@gmail.com>
+In-Reply-To: <20240325110451.42277-1-vincenzopalazzodev@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 25 Mar 2024 15:10:02 +0100
+Message-ID: <CANiq72==OBG+KVJuzW0S5aYowAZ4oq91pk=phRgtedUrGYeHAg@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: kernel: types: Add `ARef::into_raw`
+To: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	Kartik Prajapati <kartikprajapati987@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2024-03-22 at 17:36 -0700, Linus Torvalds wrote:
-> On Fri, 22 Mar 2024 at 17:21, Kent Overstreet
-> <kent.overstreet@linux.dev> wrote:
-> >=20
-> > Besides that there's cross arch support to think about - it's hard
-> > to
-> > imagine us ever ditching our own atomics.
->=20
-> > [... SNIP ...]
-> >=20
-> > I was thinking about something more incremental - just an optional
-> > mode
-> > where our atomics were C atomics underneath. It'd probably give the
-> > compiler people a much more effective way to test their stuff than
-> > anything they have now.
->=20
-> I suspect it might be painful, and some compiler people would throw
-> their hands up in horror, because the C++ atomics model is based
-> fairly solidly on atomic types, and the kernel memory model is much
-> more fluid.
->=20
-> Boqun already mentioned the "mixing access sizes", which is actually
-> quite fundamental in the kernel, where we play lots of games with
-> that
-> (typically around locking, where you find patterns line unlock
-> writing
-> a zero to a single byte, even though the whole lock data structure is
-> a word). And sometimes the access size games are very explicit (eg
-> lib/lockref.c).
->=20
-> But it actually goes deeper than that. While we do have "atomic_t"
-> etc
-> for arithmetic atomics, and that probably would map fairly well to
-> C++
-> atomics, in other cases we simply base our atomics not on _types_,
-> but
-> on code.
->=20
-> IOW, we do things like "cmpxchg()", and the target of that atomic
-> access is just a regular data structure field.
->=20
-> It's kind of like our "volatile" usage. If you read the C (and C++)
-> standards, you'll find that you should use "volatile" on data types.
-> That's almost *never* what the kernel does. The kernel uses
-> "volatile"
-> in _code_ (ie READ_ONCE() etc), and uses it by casting etc.
->=20
-> Compiler people don't tend to really like those kinds of things.
+Hi Vincenzo,
 
-Just for my understanding: Why don't they like it?
+Thanks for sending this!
 
-I guess since compiler people have to support volatile pointers
-anyways, temporarily casting something to such a volatile pointer
-shouldn't be a problem either =E2=80=93 so they don't dislike it because it=
-'s
-more difficult to implement, but because it's more difficult to verify
-for correctness?
+(This is a resend -- apparently vger has had some delays for the last
+~14 hours or so.)
 
+On Mon, Mar 25, 2024 at 12:05=E2=80=AFPM Vincenzo Palazzo
+<vincenzopalazzodev@gmail.com> wrote:
+>
+> Add the function `into_raw` to `ARef<T>`. This method
+> can be used to turn an `ARef` into a raw pointer.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1044
+> Co-developed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> Signed-off-by: Kartik Prajapati <kartikprajapati987@gmail.com>
+> Signed-off-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 
-P.
+Given what you wrote here, I think you intended to give the primary
+authorship to Kartik, right? If that is the case, that would require a
+different ordering of these lines (like the last example at
+https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-b=
+y-cc-and-co-developed-by):
 
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Linus
->=20
+    Signed-off-by: Kartik Prajapati <kartikprajapati987@gmail.com>
+    Co-developed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+    Signed-off-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 
+In addition, the commit should be properly attributed to Kartik in
+Git, which means you will automatically get the `From: Kartik ...`
+line too that you see in the example of the documentation I linked
+above.
+
+However, from what I can tell, you didn't modify the commit from
+Kartik at all. If that is correct, then the `Co-developed-by` should
+not be there (https://docs.kernel.org/process/submitting-patches.html#devel=
+oper-s-certificate-of-origin-1-1
+has the details).
+
+Finally, for v2, could you please To/Cc the rest of the
+maintainers/reviewers? You can use `scripts/get_maintainer.pl` for
+that, or the couple commands at
+https://rust-for-linux.com/contributing#submitting-patches.
+
+Thanks!
+
+Cheers,
+Miguel
