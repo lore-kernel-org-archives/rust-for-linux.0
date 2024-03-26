@@ -1,181 +1,239 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFA112B6C;
-	Tue, 26 Mar 2024 12:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CE667A00
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 13:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711455834; cv=none; b=LxIRq2w7N1pWPW1PNOfIpuQexLyBSN923VT+Uusm6cqNGGPB/wdStbDTM1A68juNBag4zy34AcD7lrxDnHZXw+iWMBR49drFvneVE9RCqJFyKZGaGZats1quejmqKiQCFipjkiDjFlsBfMebrSXfdtBIsBAYyfVz5Icoq2cHU7I=
+	t=1711459845; cv=none; b=f/zfJWlYvAPZN0F87UojUywwwUUSNBFetUNNVLzJnGDnG+cFiPBZhoWhvRgr/hi1JqfvwgaKpkzwvG9McyWgLvLnNso9OYOB0OU8VhlKsT5sftgnQvnlCh8hnO812LzuVMb6eOdqxH3LWcczUClsIUmBMMVDIEKRZWQgPgyYI3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711455834; c=relaxed/simple;
-	bh=4VlVLK2sdJR7lKxQDcN7Nw94rnswCWGOJygtw3l0Z2Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PHTQdwFlxjNtEROzPwz9I7Q/lQl8gNMNJJ/+zl8xEEwi5QFQkRWsc6WkxKqas+4kiT8LHI0M4bIPBeel2fssCStLuJSkrF9j2VkUeiOOm0pVbI8Adkbs5aqRgc2dFTtay2NfLvCXJjRf6ZNWbNKIm4YJ7hKZASB0p/vcohe4h00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNQQoOsx; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711459845; c=relaxed/simple;
+	bh=70AG2YjbJYgkjFfQ8mU0frlGAVmRzwphrZANyFalLkE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YHEMSrMs8kAWgjodie4USzAvRPU72RCgxLENAwDX/Yjl1mFXol+mxMS2IVez6EtDp6bCGb+VVo4twUQ1CgHhCfWRKmOUPBjtfgxYTqP8tOI7dLwa4EQsdQcACFYeVradJxKoYoQaAhlna7Cm+Z9RXTw7Y87t0ocTPqOXwdy5b0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WKhKWrvY; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNQQoOsx"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-29fa10274e5so3605333a91.3;
-        Tue, 26 Mar 2024 05:23:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711455833; x=1712060633; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4VlVLK2sdJR7lKxQDcN7Nw94rnswCWGOJygtw3l0Z2Q=;
-        b=dNQQoOsx9zbo+dE6oIa5JHFWtTb8lcDqijnPg9Lin9sopk/ZOPVErtNjBkb5IsL+nm
-         SB9lMw/xZgARByCKHt8mseLlUdlNOP/cW2aRoXdsOUc27CPkNTWxSli78pqG3MVzawLC
-         PmTuDFBzHsaMEBPMsizGlGI3OQ0DQ4hjm+MXc125SbbOFJ+uOllPNRR+oks36opQwBTK
-         yFqcL/z6WmzNp6pifM/p3/hiaI52+ukicekAOYJLub5WX4LryWUE5YE9ASVY1ypW7DZF
-         gpZXa73f3ouIwoKEaM0wvH8WfA8SGzpCrHLwl6vat27PRM19U/JACBJcgdyD4MzGehwn
-         33kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711455833; x=1712060633;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4VlVLK2sdJR7lKxQDcN7Nw94rnswCWGOJygtw3l0Z2Q=;
-        b=oONt7tuHvS352IV8Rj7XNsMWCWYZNhbZlmtN/M/l3yLzjjJH27PF+T6Hb1t6jRN+LE
-         THSIxthBFScrc4BfaNFLEaFklLCRO/1aEyffr3T/VyRDxBlN6C83UzWVJU+V1zbv5jMo
-         bP1VqBt2hWy8Fz0Wz+e3KBDWCxmCzqpcZBFW6esgQ5rGUGoRKGlQWapH8J2MqIpgxJPt
-         fKKh3ba9Xt3J0Og1LAhzoTwMHx62OIIyqSyNYLLGmXFUIHc81G5igoGhXLqALupe+JSZ
-         WaXK9fJjEt6cLgo7fTIJ1EeOr0QOkY1IQXBkIZWkf3QPYTjowfswvaPfsLDbgV40BRwE
-         8VPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXu152mRDQg1psZSiH3EbLkiMJuX7vrJfd8q2Ex94Z4njU4dF265YtONnO8umfMFAl0W5SlgH0YeefSZIJdTzTuH2K9lYDu5fIt5Xt+ONo71yatSoD5Cyy4dr6LD/uYpvnoTJ7TfFX32qaxUbHT
-X-Gm-Message-State: AOJu0YyAL9WEe0mDHazEJeC8FZUk5C05XMo9FqfGsXuzW+hVTIvYaK/R
-	kJ34RnqKAik485cNy3Lg30A+AgS+Lcv0dZ79FqCOBzjTmXL1BVSPsx3oU992OUThx2JNypEKd9z
-	zXHNtAWuokS2kuW0XuJul+vb9udI=
-X-Google-Smtp-Source: AGHT+IHGxv7/5zhs2iRpuZ817ZZrm39w00aoZ6a9Y5udibuKXf94oH1WCbdxNgUhyJd0u5zI9NSI/YjP1hFYA65UElA=
-X-Received: by 2002:a17:90b:3d0b:b0:29f:9275:b660 with SMTP id
- pt11-20020a17090b3d0b00b0029f9275b660mr1048310pjb.38.1711455832733; Tue, 26
- Mar 2024 05:23:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WKhKWrvY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711459841; x=1711719041;
+	bh=3zjQ7eC3k+N5mljsGCsXBKGxRRF33muyXP+mt9iMhxc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=WKhKWrvYk/VWRvJ/ue+hTCzftOtGCmLJRnUdtviNEV10TKZGlO0z3TWpmkFY65vk2
+	 NvyroSufVio5X1UWlAXTfM/2oWyyBIyPANLtbEuzTFXAGtV0lMnNTGEkT3vqPb8JvX
+	 VFx/1/aamSD/wwd2ilFs0V6MSbAJ4ZzT4AHlYrbDGts5Fxq2V89wyYjwzUJM6LfDOZ
+	 wvkFBy7+6gqK62K007tkgw29R9CwZNtU57+tfMXBrFl6K3uzYuy9YcdthzK5Vxe64F
+	 qIoqJVqPky3eXcHfOFSpWuYtvRlBVwWvv5uI4SO93qblLS4wuu3pRpdmnH4WfsmUbi
+	 JGmEQ3o+gavzA==
+Date: Tue, 26 Mar 2024 13:30:23 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH 06/10] rust: alloc: introduce the `BoxExt` trait
+Message-ID: <4HXcIXSpP2nHdpuTb2aAIwspZ8Az9XYU3KUp18oUlsi3yIqXNPvbe80x57P0hLIYHrlf67DUCxD96blhqCsGmR3oecopCnaZA6kRlvKCl5g=@proton.me>
+In-Reply-To: <CANeycqrbuzDwDhUjz+rZv2Q_peK54L1yPG6A1L6-PwjyLKiSAw@mail.gmail.com>
+References: <20240325195418.166013-1-wedsonaf@gmail.com> <20240325195418.166013-7-wedsonaf@gmail.com> <9AmQ4moOGHvMXp-MH65qG1fS7v14hypIjEwsPlYLdLJD2NMVOQFwFvzpETrxHSSMt-Y6Gz_TZfwXgROJys72ZIpB-Je4obAuZ2knpT9R3yo=@proton.me> <CANeycqrbuzDwDhUjz+rZv2Q_peK54L1yPG6A1L6-PwjyLKiSAw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240309235927.168915-2-mcanal@igalia.com> <20240309235927.168915-4-mcanal@igalia.com>
- <CAH5fLgi9uaOOT=fHKWmXT7ETv+Nf6_TVttuWoyMtuYNguCGYtw@mail.gmail.com>
- <c8279ceb44cf430e039a66d67ac2aa1d75e7e285.camel@redhat.com>
- <f0b1ca50-dd0c-447e-bf21-6e6cac2d3afb@nvidia.com> <Zfzc09QY5IWKeeUB@Boquns-Mac-mini.home>
- <31263f2235b7f399b2cc350b7ccb283a84534a4b.camel@redhat.com>
-In-Reply-To: <31263f2235b7f399b2cc350b7ccb283a84534a4b.camel@redhat.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 26 Mar 2024 13:23:25 +0100
-Message-ID: <CANiq72=1hY2NcyWmkR9Z4jop01kRqTMby6Kd6hW_AOzaMQRm-w@mail.gmail.com>
-Subject: Re: [PATCH v8 2/2] rust: xarray: Add an abstraction for XArray
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Alice Ryhl <aliceryhl@google.com>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Matthew Wilcox <willy@infradead.org>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 26, 2024 at 8:41=E2=80=AFAM Philipp Stanner <pstanner@redhat.co=
-m> wrote:
->
-> I actually think it would be nice to have variable declarations at the
-> top of the functions, but that would obviously very frequently collide
-> with Rust's concept of data being immutable by default.
+On 26.03.24 01:17, Wedson Almeida Filho wrote:
+> On Mon, 25 Mar 2024 at 19:37, Benno Lossin <benno.lossin@proton.me> wrote=
+:
+>>
+>> On 25.03.24 20:54, Wedson Almeida Filho wrote:
+>>> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>>>
+>>> Make fallible versions of `new` and `new_uninit` methods available in
+>>> `Box` even though it doesn't implement them because we build `alloc`
+>>> with the `no_global_oom_handling` config.
+>>>
+>>> They also have an extra `flags` parameter that allows callers to pass
+>>> flags to the allocator.
+>>>
+>>> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+>>> ---
+>>>    rust/kernel/alloc.rs           |  1 +
+>>>    rust/kernel/alloc/allocator.rs |  6 +++-
+>>>    rust/kernel/alloc/boxext.rs    | 61 ++++++++++++++++++++++++++++++++=
+++
+>>>    rust/kernel/init.rs            | 13 ++++----
+>>>    rust/kernel/prelude.rs         |  2 +-
+>>>    rust/kernel/sync/arc.rs        |  3 +-
+>>>    6 files changed, 77 insertions(+), 9 deletions(-)
+>>>    create mode 100644 rust/kernel/alloc/boxext.rs
+>>>
+>>> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+>>> index ad48ac8dc13d..5712c81b1308 100644
+>>> --- a/rust/kernel/alloc.rs
+>>> +++ b/rust/kernel/alloc.rs
+>>> @@ -5,6 +5,7 @@
+>>>    #[cfg(not(test))]
+>>>    #[cfg(not(testlib))]
+>>>    mod allocator;
+>>> +pub mod boxext;
+>>>    pub mod vecext;
 
-It is true that deferring bindings sometimes allows for more
-immutability (this also applies to kernel C to some degree with
-variables at the top, by the way). However, it is more about other
-things like when new objects can be constructed (when can invariants
-be set), when destructors run and in what order, even the type itself
-(rebinding).
+One thing I forgot to say: I think these modules should be named
+`box_ext` and `vec_ext`. It fits better with the usual style.
 
-But it is not just this (where to place variables/bindings) -- there
-are other kernel C guidelines that do not make sense for Rust, and
-trying to apply them is a bad idea.
+>>>
+>>>    /// Flags to be used when allocating memory.
+>>> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocat=
+or.rs
+>>> index 01ad139e19bc..fc0439455faa 100644
+>>> --- a/rust/kernel/alloc/allocator.rs
+>>> +++ b/rust/kernel/alloc/allocator.rs
+>>> @@ -15,7 +15,11 @@
+>>>    ///
+>>>    /// - `ptr` can be either null or a pointer which has been allocated=
+ by this allocator.
+>>>    /// - `new_layout` must have a non-zero size.
+>>> -unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: bi=
+ndings::gfp_t) -> *mut u8 {
+>>> +pub(crate) unsafe fn krealloc_aligned(
+>>> +    ptr: *mut u8,
+>>> +    new_layout: Layout,
+>>> +    flags: bindings::gfp_t,
+>>> +) -> *mut u8 {
+>>>        // Customized layouts from `Layout::from_size_align()` can have =
+size < align, so pad first.
+>>>        let layout =3D new_layout.pad_to_align();
+>>>
+>>> diff --git a/rust/kernel/alloc/boxext.rs b/rust/kernel/alloc/boxext.rs
+>>> new file mode 100644
+>>> index 000000000000..26a918df7acf
+>>> --- /dev/null
+>>> +++ b/rust/kernel/alloc/boxext.rs
+>>> @@ -0,0 +1,61 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Extensions to [`Box`] for fallible allocations.
+>>> +
+>>> +use super::Flags;
+>>> +use alloc::boxed::Box;
+>>> +use core::alloc::AllocError;
+>>> +use core::mem::MaybeUninit;
+>>> +use core::result::Result;
+>>> +
+>>> +/// Extensions to [`Box`].
+>>> +pub trait BoxExt<T>: Sized {
+>>> +    /// Allocates a new box.
+>>> +    ///
+>>> +    /// The allocation may fail, in which case an error is returned.
+>>> +    fn new(x: T, flags: Flags) -> Result<Self, AllocError>;
+>>> +
+>>> +    /// Allocates a new uninitialised box.
+>>> +    ///
+>>> +    /// The allocation may fail, in which case an error is returned.
+>>> +    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocEr=
+ror>;
+>>> +}
+>>> +
+>>> +impl<T> BoxExt<T> for Box<T> {
+>>> +    #[cfg(any(test, testlib))]
+>>> +    fn new(x: T, _flags: Flags) -> Result<Self, AllocError> {
+>>> +        Ok(Box::new(x))
+>>> +    }
+>>
+>> When running under `cfg(test)`, are we using the normal standard
+>> library? Or why is this needed?
+>=20
+> Because it uses 34 other crates that rely on `Box::new` and friends.
+>=20
+> I discussed this with Miguel recently and once he's done with the
+> build system changes, he will think about what to do with tests. It
+> may be that we abandon the current method of running standalone tests
+> and run everything in kunit, or perhaps we'll find a way to exclude
+> code that won't run in standalone tests anyway...
 
-Where possible and where it makes sense, we should try to keep it
-consistent, of course. For instance, naming concerns have been
-discussed many times (avoiding different names for existing things) --
-that can be indeed be confusing and introduce mental overhead, and
-thus we try to avoid it, even if sometimes it may have been locally
-the best solution.
+Ah I see, I think it would be nice to not need this. Let's see what the
+new build system can do here.
 
-> Regarding our example, my hope would be that `if ret < 0 ` should
-> always be fine, because, what else could it be? A float?
+>=20
+>>> +
+>>> +    #[cfg(not(any(test, testlib)))]
+>>> +    fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
+>>> +        let ptr =3D if core::mem::size_of::<T>() =3D=3D 0 {
+>>> +            core::ptr::NonNull::<T>::dangling().as_ptr()
+>>> +        } else {
+>>> +            let layout =3D core::alloc::Layout::new::<T>();
+>>> +
+>>> +            // SAFETY: Memory is being allocated (first arg is null). =
+The only other source of
+>>> +            // safety issues is sleeping on atomic context, which is a=
+ddressed by klint.
+>>
+>> The `krealloc_aligned` function states:
+>>
+>> /// # Safety
+>> ///
+>> /// - `ptr` can be either null or a pointer which has been allocated by =
+this allocator.
+>> /// - `new_layout` must have a non-zero size.
+>>
+>> So it should also mention that you checked for `layout.size() > 0`
+>> above.
+>=20
+> Good point. I mentioned this in the VecExt version but not here. I
+> will update this for v2.
+>=20
+>>> +            let ptr =3D unsafe {
+>>> +                super::allocator::krealloc_aligned(core::ptr::null_mut=
+(), layout, flags.0)
+>>> +            };
+>>> +            if ptr.is_null() {
+>>> +                return Err(AllocError);
+>>> +            }
+>>> +
+>>> +            let ptr =3D ptr.cast::<T>();
+>>> +
+>>> +            // SAFETY: We just allocated the memory above, it is valid=
+ for write.
+>>> +            unsafe { ptr.write(x) };
+>>> +            ptr
+>>> +        };
+>>> +
+>>> +        // SAFETY: For non-zero-sized types, we allocate above using t=
+he global allocator. For
+>>> +        // zero-sized types, we use `NonNull::dangling`.
+>>> +        Ok(unsafe { Box::from_raw(ptr) })
+>>> +    }
+>>> +
+>>> +    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocEr=
+ror> {
+>>> +        <Box<_> as BoxExt<_>>::new(MaybeUninit::<T>::uninit(), flags)
+>>
+>> Why do you use the extended syntax? I tried to use `Box::new` and it
+>> compiled.
+>=20
+> It works when compiling the kernel but fails when compiling for
+> userspace with regular (no_global_oom_handling disabled) `alloc` when
+> running `make rusttest`. In the latter case, it chooses the inherent
+> version of `Box::new` which is infallible and doesn't take flags so it
+> fails to compile.
+>=20
+> Using the extended syntax allows it always pick the right version,
+> regardless of how `alloc` is compiled.
+>=20
+> There are 5 places in existing code that required this change and this
+> is limited to the kernel crate (e.g., drivers, samples and
+> documentation examples can continue to use `Box::new`). So we thought
+> it was ok until Miguel figures out what we want to do with tests.
 
-I think one of the things Boqun was referring to were the semantics of
-the value, which is why one advantage of `to_result` is that, when
-dealing with a C function that does not follow the usual pattern, it
-stands out more.
+Thanks for the explanation, again it would be nice to be able to just
+write `Box::new`.
 
-> I'm very happy to hear that we're on sync here :)
->
-> Though there will be a lot to be discussed and done. As I see it, so
-> far the clippy rules for example are global, aren't they?
-
-Yeah, and that is intentional.
-
-Of course, as with anything else, there can be exceptions where they
-make sense. But the point is to avoid diverging in how we write the
-code in different parts of the kernel unless there is a good reason.
-
-This is essentially the same as the formatting discussion. The flags
-for `rustfmt`, Clippy or the compiler diagnostics can and will change
-to try to come up with the optimal set as we learn more (and as new
-flags appear or if they change behavior in a way that we didn't expect
--- hopefully not -- etc.), but they should be consistent for the
-entire kernel, except where there is a good reason not to.
-
-> I think the ideal end result would be one where we have rules and
-> enforcement similar to how it's done in C:
-> C has checkpatch, which fires errors for some things, and warnings for
-> others. And, if it makes sense, you or the maintainer can ignore the
-> warning.
-
-I may not be understanding this part, but that is already the case, no?
-
-In any case, I am not sure we should look at `checkpatch.pl` as a
-reference here, because it is a tool that we apply against patches,
-i.e. something done at a given point in time once against "ephemeral"
-entities.
-
-In other words, it is always possible to ignore any and all of its
-warnings/errors, at the discretion of the maintainer, and thus it is
-not as big of a deal to have false positives for the checks (in fact,
-it is good that it does, because it allows `checkpatch.pl` more leeway
-to catch more issues).
-
-We could have different sets like with `W=3D`, though, including perhaps
-one for "development" where it is even more relaxed (e.g. no missing
-documentation warning).
-
-> When the build chain checks global rules we can't really ignore any
-> rule without some kind of annotation in the code, because otherwise
-> we'd permanently spam the build log
-
-That is the intention, i.e. that they are enforced as much as
-reasonably possible, but one can still ignore the rule if really
-needed (and even better, one can do it as locally as possible, e.g.
-right at the item that requires it instead of file-wide).
-
-> Yeah, I get where that comes from. Many new languages attempt to end
-> endless style discussions etc. by axiomatically defining a canonical
-> style.
->
-> But we're living in this special world called kernel with its own laws
-> of physics so to speak. To some degree we already have to use a
-> "dialect / flavor" of Rust (CStr, try_push()?)
-> Will be interesting to see how it all plays out for us once the users
-> and use cases increase in number more and more
-
-The "dialect" you are speaking about is global for the kernel. That is
-completely fine, and as you say, needed in some aspects.
-
-But what we do not want is to end up with different "dialects" within
-the kernel, unless there is a very good reason for exceptional cases.
-
+--=20
 Cheers,
-Miguel
+Benno
+
