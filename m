@@ -1,63 +1,63 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28121CAAE
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 22:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47846131185
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 22:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711491885; cv=none; b=kP9xVaYI+HtMpattZnY8OnDygn/zKfNpDd81uNka5r/gSIXIsYQSY2DaAOOJic33p15+pTd65fESvZ1D5JZRDqD3sXRi7YA2tqWnlGVMzApwmE+DZ6q6aDurzPmeKnQwKZx9FLqC4qRRDQQm+Tjwg70YB5Dd/zX/iBZDGzHKCc8=
+	t=1711492734; cv=none; b=c1oaKMTeIit6rflsYOqZwMq7zyMQ1PtuVAcDjqDrxx29HUus/V50Tb3+z4wksPPqSI/C8RSbNS07aEdH7ICbnfYtJYSeP5lh5mE3lX01TIkhtv7OIfxLHsfMUhfBcmNvmuSmg00tuIZAG0gmlmD18U/bsWsahNoB72kbANPCdS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711491885; c=relaxed/simple;
-	bh=D7hqrY4hxyuXLgUF/GnaQCJDBLIklHdBUBk9qWxEmrk=;
+	s=arc-20240116; t=1711492734; c=relaxed/simple;
+	bh=OHFxwnRky2FK7BMBz2InBtwZu32sh7UmGU3TwpDMV60=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=LTLcb8LmBoh/DNXvlBX8tlGnFsGFizBPxdHFC+gGq3IIBQv6hZfoNfJFkF4m8P9cPsqFWA63xi9BRUQh6bxTqcMq1G0DyMkubWqh5ncL0DQ5IGQAUdZteI1vdEciV26Hun2dwh8pJBfBbNpLXTgCCY/7OWJZaacCgADtJhVKknU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gc3TH6Wp; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type:Content-Disposition; b=fWS++OTdIpbDqQvp4jChYZTSNQn3SyO/yZOpizTaQ/MgdC7ks+acOQbXaqWQKPl33I3J93J80JT4rw+3XFCsPn4LDD0lZ/HNzl6Tfs6zaHXrgaDtqnTUNlH8txizrti1pODXIkS4XMLscTVQ8BSySgmeESK3vEbbaQbrCPsz4Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XC94UeKo; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gc3TH6Wp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XC94UeKo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711491882;
+	s=mimecast20190719; t=1711492731;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5QsM3a4OixPoYqAMMlWjGJAvEdFJzrqpIju+R+yECgg=;
-	b=gc3TH6WpWv0NOk4/N0YV+MugzNExoIPz3qQ770tNa+PUdE5lHjlOpyCViKXr2BfvyyJUDU
-	hSre5nu6bvqHSl1UTe5M7CWytWf9CY9y6maSeWs32ulEzU7i4ZAMDyUPYfLX184dfHrjUw
-	bGXgqbqpWw9ghqyquzNBBF9hi951jKk=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=IB9H9pdE4SujjQ9kiHwCF+AHY0JaTjnlhOQ1DprkoxQ=;
+	b=XC94UeKo0iDNk07IkJLpTRmNr3gvQ/lw1i3Y3Xx1hl+J70KxlbJSwGp3G8Db1tS1U0uWPd
+	FOdaA6g+zZDPZmJzxkMSXHqN2JlFB3C3Scipjs6+P2UtMifqWb226ZZwc66J2Feo2VzvCi
+	jU3fdgNy1Vev0bJhcedn8oS9h3gGz2s=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-6nh0gMYGOyiCBA-co3Qldg-1; Tue, 26 Mar 2024 18:24:40 -0400
-X-MC-Unique: 6nh0gMYGOyiCBA-co3Qldg-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a4751b21400so26804066b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 15:24:40 -0700 (PDT)
+ us-mta-614-RztJgI23Ox6nnghhxCFcWA-1; Tue, 26 Mar 2024 18:38:49 -0400
+X-MC-Unique: RztJgI23Ox6nnghhxCFcWA-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-56be6572ebfso1864109a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 15:38:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711491879; x=1712096679;
+        d=1e100.net; s=20230601; t=1711492728; x=1712097528;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5QsM3a4OixPoYqAMMlWjGJAvEdFJzrqpIju+R+yECgg=;
-        b=Gk+z5JlX2xsYYk3Smpq9Vqx/pUyKNKSr/Fp3BklX/jN3/v51y2dZdx8aI3JmK6m2iH
-         NKANpArXvnpt6v0qR+35Eo2JmgDZJQSuhwWtLrPn61V2PWFTDinX/qvaL/SdDYj51a53
-         Wfa3D48REmTlc1RPMzM0m6myIblGQf557fXD37V+0gYaDbjUBiaZkKs6SSzSorF5g7yT
-         rEyhQBc2JOPoOBFWy03oeSMXXbUUnQGeII18iQzwRQ8W/leyCUXb+3t9TDwgwmquvBWc
-         MHc3nhTpwYksZEChoexeGM8EW+F1f6P/d/2ij7Xrjjx3bi8z9jyncpsBPfUW7cSvysD3
-         1RjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZvDbJs+oVmGySXVu1RH2e8qWcXpXhLMrTzgYFQSVzkiJWHixvjH1cSZxrQzY4Ml0MIjeRkMzY6G1miWItWk16yAFJYd2FSY7oXikOEZI=
-X-Gm-Message-State: AOJu0YyXsuHn5ixLZJogIdskqqFig1UTs7JGZil3+DbutjktrQtaEu2E
-	/xXo16/kDAwoXv8VNR00C7kTd37XQhkVuOW8fVjxDJbWFExlbuJUwkSEgg8NZWYL/jO/Ip4C6mH
-	yfPHhM06DH/Ap9NPUAmxQJIHFXnTGsX9ZFak48QL9AX0dfpckEjawYO1WQn12XTNz
-X-Received: by 2002:a17:906:5512:b0:a46:a28d:2f49 with SMTP id r18-20020a170906551200b00a46a28d2f49mr2345405ejp.32.1711491879330;
-        Tue, 26 Mar 2024 15:24:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+OWc+IDSi+LOspQiMIVPe/F262DZdC2Vj8k/H7sdxQ+cE5Dtx/d1WWu9Lk7uiLzF4nEQ0/Q==
-X-Received: by 2002:a17:906:5512:b0:a46:a28d:2f49 with SMTP id r18-20020a170906551200b00a46a28d2f49mr2345377ejp.32.1711491878924;
-        Tue, 26 Mar 2024 15:24:38 -0700 (PDT)
+        bh=IB9H9pdE4SujjQ9kiHwCF+AHY0JaTjnlhOQ1DprkoxQ=;
+        b=Z6ElqLp9tgj0Vbr9+r8w2HUITmOntcj5e/EHy2aRZj5bum6sGJmAI587TEi81ac1GS
+         1lMrhephHRDo3sIWxngw+5vKFrEcAbJ1sBY8DCOoZcT6Qr3vh9atyYVIrT5I6PI2N7ZW
+         i8UHUnBd3guUCYb2g4JTCdc0C6Cy2PVlPUMvGHSBGivBuXFcO9qkX35xgO+flTX9CxJX
+         RuzGSGq9WXwS9yiC9wN1C2/7VbTwXLdiFnoTOwrQ8yK/LHChStqFwAqeNAGcPRjz6SNr
+         NDVfwsFIJhikKLUmlEW/HDuPVuVBtUoTazqMnJvsnLd5jioTJbpbw6Z1Kwnhun/+I77z
+         1rGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXeFWguHSt/gNPauw7Vm8Pn4t3pSwSFhipK/lZiWqeFDxPwQ5us438nshxRxzVydQH0JwhaGvEilTW7WEXuk63mmdmGSjBY+OCslKmO3/0=
+X-Gm-Message-State: AOJu0YwULTdQk64jlm3loH1sEajY6FF0H+V066IslJoLvoR9O6iE4wsQ
+	NpeK+iNNbrt3xAnl9jhIyqiHwZQ6t39OsS4iecSpPy75wA/Y/4yN3uYD5HxowaoMWQmvOVZHcr3
+	Wum9vMU3Lc1v+jrGgB6bkQaObpfk5SRGEi7ty53Ml4LuYWhiu9O4W5nrYe8u1MizP
+X-Received: by 2002:a50:d685:0:b0:568:9c6b:eb0f with SMTP id r5-20020a50d685000000b005689c6beb0fmr9093200edi.21.1711492728199;
+        Tue, 26 Mar 2024 15:38:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxFxSzUE5NiKGkgwJEzGz5/M6nHUdu49tDEHxQ8sBNPYtgP6+0TnPRYBvmomQ0t2ec9XfGug==
+X-Received: by 2002:a50:d685:0:b0:568:9c6b:eb0f with SMTP id r5-20020a50d685000000b005689c6beb0fmr9093175edi.21.1711492727840;
+        Tue, 26 Mar 2024 15:38:47 -0700 (PDT)
 Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id jy10-20020a170907762a00b00a461e10094asm4718329ejc.95.2024.03.26.15.24.37
+        by smtp.gmail.com with ESMTPSA id cx10-20020a05640222aa00b0056bb1b017besm4584716edb.23.2024.03.26.15.38.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 15:24:38 -0700 (PDT)
-Date: Tue, 26 Mar 2024 23:24:36 +0100
+        Tue, 26 Mar 2024 15:38:47 -0700 (PDT)
+Date: Tue, 26 Mar 2024 23:38:45 +0100
 From: Danilo Krummrich <dakr@redhat.com>
 To: Greg KH <gregkh@linuxfoundation.org>
 Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
@@ -67,161 +67,66 @@ Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
 	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
 	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
 	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
-Subject: Re: [PATCH 8/8] rust: add device::Data
-Message-ID: <ZgNLJEpw670wca_M@pollux>
+Subject: Re: [PATCH 2/8] rust: device: Add a minimal RawDevice trait
+Message-ID: <ZgNOda6P-dfUaZSV@pollux>
 References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-9-dakr@redhat.com>
- <2024032509-tanned-calamity-4e1c@gregkh>
- <ZgL9u-L1T_J1UZLt@pollux>
- <2024032651-chrome-museum-7027@gregkh>
+ <20240325174924.95899-3-dakr@redhat.com>
+ <2024032501-unplanned-detergent-4357@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2024032651-chrome-museum-7027@gregkh>
+In-Reply-To: <2024032501-unplanned-detergent-4357@gregkh>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Mar 26, 2024 at 07:12:29PM +0100, Greg KH wrote:
-> On Tue, Mar 26, 2024 at 05:54:19PM +0100, Danilo Krummrich wrote:
-> > On Mon, Mar 25, 2024 at 07:21:04PM +0100, Greg KH wrote:
-> > > On Mon, Mar 25, 2024 at 06:49:12PM +0100, Danilo Krummrich wrote:
-> > > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > > > 
-> > > > This allows access to registrations and io resources to be automatically
-> > > > revoked when devices are removed, even if the ref count to their state
-> > > > is non-zero.
-> > > 
-> > > So it's re-implementing the devm_*() calls?  Why?
+On Mon, Mar 25, 2024 at 07:14:17PM +0100, Greg KH wrote:
+> On Mon, Mar 25, 2024 at 06:49:06PM +0100, Danilo Krummrich wrote:
+> > From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > > 
-> > It's not. Taking IO resources as an example it's more a generalization of what
-> > e.g. DRM solves with drm_dev_unplug() and drm_dev_{enter,exit}().
-> 
-> That is a drm specific way to handle devm_* stuff, right?
-
-Depends, if you mean it's a DRM specific way to ensure devm_* managed resources
-can't be accessed anymore after the device is "gone" from the perspective of
-the driver, then yes. If you confuse it with drmm_* stuff, which ties resources
-to the actual lifetime of a struct drm_device (device is freed), then no.
-
-It's basically the DRM way to implement Revocable<>. drm_dev_unplug() marks a
-struct drm_device as unplugged (protected by SRCU). drm_dev_{enter,exit}() are
-used as conditional entry / exit points of code sections that access resources
-that might have been released by devm_* stuff already, such as IO mappings.
-
-> 
-> If that is to be "baked" into different bus types, great, let's make it
-> a bus-specific thing and put it in the driver core, but don't make it
-> something that is tied to rust devices only as that feels odd, right?
-
-You lost me a bit on this one. Can you please clarify?
-
-> 
-> Also, work with the patterns we have, don't create new ones as that just
-> causes confusion for all of us working on this part of the kernel.
-> 
-> > While devm_*() ensures to, for instance, iounmap() a mapping when a device is
-> > detached, the Revocable<> resource ensures that a driver can't access the
-> > pointer pointing to the just unmapped memory anymore.
-> 
-> Great, this is something that we have been asking for in a generic way
-> for all drivers/devices in the kernel (see the many talks over the past
-> years at conferences about it.)  Please work with the developers who are
-> doing this in the .c side to be sure that things are aligned properly to
-> work the same.
-
-Unfortunately, I'm neither aware of those efforts, nor the talks. Mind providing
-me some pointers?
-
-> 
-> > So, this isn't something that replaces devm_*(), but kinda builds on top of it.
-> 
-> Perhaps document it that way?
-
-Sure, I can add this example.
-
-> 
-> > For instance, we could call Revocable::revoke() from a devm_*() callback.
-> > However, and that' what this patch currently does for simplicity, we could also
-> > just call it from the corresponding driver's remove() callback.
-> 
-> If that's the proper place for that, yes.  It could be the proper place
-> is in the close() system call as well, right?  But again, document it to
-> explain what this is please, as it was not obvious at all.
-
-Correct, it depends on what you use Revocable<> for, device resources is just
-one example where this is useful.
-
-> 
-> > > And this will trigger only on remove, but which remove?  The bus remove?
-> > > Or the unbinding of the driver to the device (two totally different
-> > > things, be specific and very careful here.)
+> > Add a RawDevice trait which can be implemented by any type representing
+> > a device class (such as a PlatformDevice). This is the minimum amount of
+> > Device support code required to unblock abstractions that need to take
+> > device pointers.
 > > 
-> > The above comment says "device remove", maybe say device / driver detach
-> > instead?
+> > Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > ---
+> >  rust/bindings/bindings_helper.h |  1 +
+> >  rust/kernel/device.rs           | 23 +++++++++++++++++++++++
 > 
-> It depends on what you mean.  Those are different things, as explained
-> in other places.  Where do you want this to happen?  Where should it
-> happen?  And why in only those places?
+> As fun as it is to bury .rs files down in rust/ where no one notices
+> them, I'm going to ask for this to live in drivers/base/ please so that
+> we notice it and it shows up as a first-class interface here.  Otherwise
+> it's going to be impossible to keep in sync over time.
+> 
+> Also, who is going to maintain this?  Didn't checkpatch warn you when
+> you ran it against this patch?  You did use checkpatch, right?  :)
 
-For device resources, device / driver detach should be the correct place. Agree?
+Sure, but I left this open to discuss this intentionally.
 
-> 
-> > > > +/// Device data.
-> > > > +///
-> > > > +/// When a device is removed (for whatever reason, for example, because the device was unplugged or
-> > > > +/// because the user decided to unbind the driver), the driver is given a chance to clean its state
-> > > > +/// up, and all io resources should ideally not be used anymore.
-> > > 
-> > > Wait, unplugging a device and unbinding a device from a driver are two
-> > > totally different things, do NOT get them mixed up or assume that they
-> > > are the same thing at all please.  They have different lifetime rules
-> > > and different patterns of what happens.
-> > 
-> > I think the comment does not claim that device unplug and device / driver
-> > unbind are the same thing. I rather think in this context the expection is that,
-> > ultimately, both result into the fact that the corresponding device resources
-> > are not available anymore and hence shouldn't be used anymore. Where the latter
-> > is enforced by using Revocable<>.
-> 
-> But those are different things happening, and different things happen to
-> the objects when those different things happen, so while a driver might
-> seem to see the same thing happen from its point of view, the lifespan
-> of the object itself is VERY different here (could be passed back to the
-> driver, could be freed, could be sent to a different driver, could just
-> be ignored for a long time, etc.)
-> 
-> So be specific as to what viewpoint you are considering here, a device
-> object has a lifespan that greatly exceeds that of just the window where
-> a driver happens to see it :)
+As you might have noticed, I'm not the original author of those patches. I
+gathered them from various places (mostly the original R4L "rust" branch).
 
-Fully agree, this is indeed from the viewpoint of the driver. We don't really
-care what is happening to the device after detach. We only care about all the
-cases above lead to a detach, which is the point where we have to make sure
-we're not accessing any device resources anymore.
+I basically figured out the dependencies, structured things in corresponding
+staging branches, fixed some issues and polished the commits; the details are
+in [1].
 
-I will try to make this more clear.
+Of course, since I've taken the effort to upstream them, I will also improve
+them based on the feedback I get.
 
-> 
-> > > So this needs to be taken out and rewritten from the beginning please.
-> > > If the comments describe something that is incorrect, I can't trust that
-> > > the code is correct...
-> > 
-> > Not sure the comment is actually claiming something incorrect. If, with the
-> > above explanation, you still think so, please let me know how to phrase it
-> > correctly, such that I can improve this patch accordingly.
-> 
-> Please step back and try to determine what you want here.  How devices
-> are created, assigned, reassigned, removed, renamed, destroyed, etc.
-> They have a well known "phase of life" and one that different parts of
-> the kernel sees in different ways (driver core, busses, classes,
-> drivers, userspace, etc.)  Be aware of what you are wanting to do here,
-> and who is acting on the structure where and what they are wanting to do
-> with it.
+Having that said, the best candidates to maintain this are probably the current
+maintainers and / or the original authors. However, I'm happy to volunteer as
+well.
+
+[1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
+
 > 
 > thanks,
 > 
