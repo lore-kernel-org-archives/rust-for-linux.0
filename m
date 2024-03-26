@@ -1,123 +1,126 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2F91CD30
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 17:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6445E8627B;
+	Tue, 26 Mar 2024 17:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711472631; cv=none; b=oSN3EluwqtxmFHU60+CU3lcXdZU5KO8TTweL+I37dqU8XRpmvWrVe29PHjuNO/J0MIQI3oiJD+LhbwWRWs3Pz3ZKzWkw3vUVhhhX5BOQlgWYJlyW0wKtQ9JP/gLydti1lLCU9aHgtxFbYH5++7XkQ7OK7QtBOJBp2U4AiX5fFOo=
+	t=1711472669; cv=none; b=SYmFfHG6KCnGFiN8PnGg9ovxsGybcsPCYSA+Bkb0wN9KRXLp51juY4xZo/5HGQ925/CZb23egpO3eSpr5FKVx9N7Pu/vRT6iQnktowqqsDvFEAH9dMJ2F9uh0cEIl9giXy8BYejWFjGpJcC5C4oErkv7Xgng89z26k9OXD0O3gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711472631; c=relaxed/simple;
-	bh=wOZNZfomGTf09846FMrd2stSkyFpKdRYfI18SIaqofY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wtj0RzV+ZNcXzDz2gCHtvVjjzf4GooxJZJs484k7VBiZnXbqFWRlweMTmu3wEoBkpOpu8geoMWa3fO7sPYZQkJbJ1gTdKl907eZodyaDe6r+VtAxAIEP1wqsaHVjKEs0hcV+xsg2saDPefGGdUw0jI8ma9X+NCLwCDGI7bSnCz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IhThkzkP; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711472669; c=relaxed/simple;
+	bh=yXY2WhzisLx9owVvt4Jz3mM6SUUgl3eE1txAJxejugQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ay6Muwb2QVcr9MtkPmQ2rIL6zIYVqo6tVDfiNoPtjezIQ7j/y3+V9jZH71riFtg7cv11Xso/O6iQWgajYWSEFPRTWHDDeD8PpNmdfrj/mOkkQ/46uPHax/z1W/ot4OP2hZ/oxMqbXT8E2iH93X6UtH8+eu75MLuBOF3ofac467M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLyu0CxP; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IhThkzkP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=4q2uozfqpzck3c7isjb5szza2i.protonmail; t=1711472627; x=1711731827;
-	bh=rtXdk3BS/YRFaYMhxgJIWorIJjeDwKo7k6/Ds/zUnk4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=IhThkzkPWttmF06bgJPyLmmbKIqfLs4Zv341oKnGjka7RHSUH/HQZjg/luJtpzB9T
-	 fF1exY1cbkHThksDlYw6h8S4FpzfWNjaqlwNE6gcJtgmqaWMo+NVuDBG/F749L8+5p
-	 oj9NWhBK4yghTgxnS2HImZ2Nhga68jn0jyVWZcP71+xdTj4DI/4rZYhuPysNDaPqnF
-	 7zGCvUYTUW54gP8EzHDVvdt8RXBZ7369ItneM1kovMPmLtw6ERps8AtBfpKPygzaS8
-	 2R3EWjZBE0MRZQzdTWiq4UTAaRFTVQ4JV0m/QyMyM4LIZkoCnuISBfxZC3r8mJ9zpc
-	 lsXT3t3PY6WCA==
-Date: Tue, 26 Mar 2024 17:03:41 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Valentin Obst <kernel@valentinobst.de>, Heghedus Razvan <heghedus.razvan@protonmail.com>, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 4/5] rust: time: Support reading CLOCK_MONOTONIC
-Message-ID: <4wFCQqSgpLIPmdFau6MTL1XLLB73d9Tuv5y-VFnXTDc1DFuTnmNV-GLtF582V5yz8s9ogWP_4U0NK3ei6sZlD1oLl929f8ADoT5K9bO6uKs=@proton.me>
-In-Reply-To: <20240324223339.971934-5-boqun.feng@gmail.com>
-References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-5-boqun.feng@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLyu0CxP"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5dc949f998fso3412640a12.3;
+        Tue, 26 Mar 2024 10:04:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711472668; x=1712077468; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yXY2WhzisLx9owVvt4Jz3mM6SUUgl3eE1txAJxejugQ=;
+        b=BLyu0CxPhM4W4P/5tbx5yjVmTGY0dNr/Uk/1EsK/aEwe5fAk3k13byVfB4V9a1kJbN
+         0j6EUAK/6hTOaXHuevknImEmzndHZXqYKBRZNzc/93AXpdXsQjrAUK879l12VzJtDuQ0
+         wZa96usivOMXa1IPTiEIf9Vouug8Ms8fnAz6CAZ3QwAKvrC9V/kx1s5azDXOZDhvm2HZ
+         OFWA0/OsYDyFysJalptXvIk4tWeencEtwRwbG/ixBIQyekYvdhOxkLZ+4763zK5cDdko
+         c0bR2jKqfQ6+6XCluLone5DyPvn4EXQXixgFGNICSbz/BqRdND8ot7BG9642/AFabz7X
+         RZzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711472668; x=1712077468;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yXY2WhzisLx9owVvt4Jz3mM6SUUgl3eE1txAJxejugQ=;
+        b=lNDFIv8k/IuQ6lqBEPwKHmDNVPy5yuUG2AXhY1r3r4geSgmOwEPd6w7pf9u4+sOlhv
+         A3dUBRFjW0m1cTdRKedOEGaUzdrYzKG7ArNdZqIQmOQtkeHvFVASQhKmp+4BVn0faovA
+         lV6ix786lqAZNAQVlypP7rgrCIKsNFI9fvHlyK2quitDzc8B+2kQcjRhW5X152i+ApcH
+         hu2qBhhfhzfh7QM5tIjn3zjkZ7oxA3Y5I272NJ05YIHtc+P8BQ8U/uzitpJrR4BukPa1
+         TpGgoMPIB1OkOfYKqB5jKkUUAQZbghvbumH4uY4PUMU8TGMdv6iJszvEampQMu0AmnKL
+         sw6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUmipMz9Ua9LjAoT03ReOiUfbKTpdyQBDqgCOViWO4Gq3xCZLp+LepC5ZsZtlQzIie1gXGydJnB3VlszVPFOzhJeMyJiq8LmdYSfAvIBj1G+Std+8flDg2FMs8eOUvTc2z+xnkax84gM1f8N1zP
+X-Gm-Message-State: AOJu0Yyn41E6HWDX1eXFf1kK3uD3/9cBSCFz4ydAiGZPFXH5/NMVw656
+	LTSqQgPRe26GyPxeERN23+NuNPYDSgsQtN+XjcNc7q6wAqCgaFqizAkPFld2g0FoLomV0NmOjtm
+	vQnvzeWhJ88sqXZ0JlNJhndGRXGE=
+X-Google-Smtp-Source: AGHT+IHX1wlYMCI+6kMyUtB5VsDPIH1w+HKZqoE0aRWzlpD59eh3+QAnEjUmz9+Nmjmh6RurJCmPm43yEI1ldIzJM7w=
+X-Received: by 2002:a17:90b:f08:b0:29c:6c79:7e92 with SMTP id
+ br8-20020a17090b0f0800b0029c6c797e92mr7698538pjb.19.1711472667548; Tue, 26
+ Mar 2024 10:04:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240309235927.168915-2-mcanal@igalia.com> <20240309235927.168915-4-mcanal@igalia.com>
+ <CAH5fLgi9uaOOT=fHKWmXT7ETv+Nf6_TVttuWoyMtuYNguCGYtw@mail.gmail.com>
+ <c8279ceb44cf430e039a66d67ac2aa1d75e7e285.camel@redhat.com>
+ <f0b1ca50-dd0c-447e-bf21-6e6cac2d3afb@nvidia.com> <Zfzc09QY5IWKeeUB@Boquns-Mac-mini.home>
+ <31263f2235b7f399b2cc350b7ccb283a84534a4b.camel@redhat.com>
+ <CANiq72=1hY2NcyWmkR9Z4jop01kRqTMby6Kd6hW_AOzaMQRm-w@mail.gmail.com> <5e19d7959d43afe0d95d5b8e9a9b58472fe56656.camel@redhat.com>
+In-Reply-To: <5e19d7959d43afe0d95d5b8e9a9b58472fe56656.camel@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 Mar 2024 18:03:59 +0100
+Message-ID: <CANiq72=5ajtjKK5+XihiCuK32TALDi4qaMSJ-0UHDXq5mxtdCw@mail.gmail.com>
+Subject: Re: [PATCH v8 2/2] rust: xarray: Add an abstraction for XArray
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Alice Ryhl <aliceryhl@google.com>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Matthew Wilcox <willy@infradead.org>, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 24.03.24 23:33, Boqun Feng wrote:
-> Rust Binder will need to read CLOCK_MONOTONIC to compute how many
-> milliseconds a transaction has been active for when dumping the current
-> state of the Binder driver. This replicates the logic in C Binder [1].
->=20
-> For a usage example in Rust Binder, see [2].
->=20
-> Hence add the support for CLOCK_MONOTONIC read.
->=20
-> The `ktime_get` method cannot be safely called in NMI context. This
-> requirement is not checked by these abstractions, but it is intended
-> that klint [3] or a similar tool will be used to check it in the future.
->=20
-> Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830f=
-ab.1682333709.git.zhangchuang3@xiaomi.com/ [1]
-> Link: https://r.android.com/3004103 [2]
-> Link: https://rust-for-linux.com/klint [3]
-> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-> Signed-off-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-> Co-developed-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+On Tue, Mar 26, 2024 at 2:53=E2=80=AFPM Philipp Stanner <pstanner@redhat.co=
+m> wrote:
+>
+> You mean if `ret` was a pointer that, consequently, would have to be
+> checked for equality rather then for less-than 0?
 
-With the nit fixed:
+No, I meant a C function that happens to return an `int` with
+different semantics (e.g. encoding for the error) than the usual ones
+(Rust does not allow to compare a raw pointer with an integer).
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> The difference is that checkpatch is an additional tool that is not
+> tied to the compiler or build chain.
 
-> ---
-> @Alice, I still put the link to the usage of Android binder here, if you
-> want to remove that, please let me know.
->=20
->  rust/kernel/time.rs | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->=20
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 0f9f5605ed48..5cd669cbea01 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -113,3 +113,22 @@ fn sub(self, other: Self) -> Self::Output {
->          Duration::new(self.inner.wrapping_sub(other.inner))
->      }
->  }
-> +
-> +/// Contains the various clock source types available to the kernel.
-> +pub mod clock {
-> +    use super::*;
-> +
-> +    /// A clock representing the default kernel time source (`CLOCK_MONO=
-TONIC`).
-> +    pub struct KernelTime;
-> +
-> +    /// `CLOCK_MONOTONIC` is monotonic.
-> +    impl Monotonic for KernelTime {}
-> +
-> +    impl Clock for KernelTime {
-> +        #[inline]
-> +        fn now() -> Instant<Self> {
-> +            // SAFETY: It is always safe to call `ktime_get` outside of =
-NMI context.
-> +            Instant::<Self>::new(unsafe { bindings::ktime_get() })
+Perhaps a better comparison would be Sparse or Coccinelle then? (i.e.
+in that we ideally would test the source code, not the patches, all
+the time).
 
-I don't think the turbofish syntax (the `::<Self>` part) is needed here.
+In any case, if you mean to have kernel-only lints, Gary created klint
+[1] for that and Julia and Tathagata announced Coccinelle for Rust [2]
+some months ago.
 
---=20
+We hope we can start putting these tools into good use soon (not to
+say they are not useful already, e.g. klint already found actual
+issues in the past), ideally running them all the time for all code.
+
+Unless you mean replicating all the compiler diagnostics -- that is
+not really feasible (bandwidth-wise) and I am not sure what we would
+gain in practice. We don't do that either for kernel C.
+
+[1] https://rust-for-linux.com/klint
+[2] https://rust-for-linux.com/coccinelle-for-rust
+
+> Yes, and I think that shouldn't be done. The C coding guideline is more
+> of a recommendation.
+
+Kernel C is quite consistent (relative to what you could randomly do
+in C), even including the big differences from some subsystems. So, in
+practice, some of the guidelines are rules.
+
+For Rust, we had the chance to be even more consistent (thanks to
+having the tooling available from the start), and we went for that,
+because we see that as a good thing that will pay off long term.
+
 Cheers,
-Benno
-
-> +        }
-> +    }
-> +}
-> --
-> 2.44.0
-> 
+Miguel
