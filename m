@@ -1,247 +1,287 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B5313AD03;
-	Tue, 26 Mar 2024 15:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F4513C66F
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 16:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711466854; cv=none; b=ftsvJKqj3oTkzk55jTB2Pgl7prwwgx16/GarFUtYDOexmgsu5Nz7rtkesJ3QkjfPPc3dOV4hOSziA3Q+ZefOY7aM91rF7s5XM0guo2qCWImJm+XbyWGfoHF9E8rpbGZ3EK/2SBlxdnyYDe+k9CrIJq0Olj13oc7oAtznm/a6LB4=
+	t=1711468924; cv=none; b=djeXd2brAzcJUd2arFimNrlBnmA4z5MwzwuSgSeg3DLCP+ND6rcEInpyKzOHpnuG9er8wYHOqYqx7Lnlfgsid41f7ICKl8oQRV/U4Og6YMvGFYd//GhJJDIwl1dZg30nBgEqHKkN6P+I7keKhqNFg+kngh3kMA0BeILVVX5yfI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711466854; c=relaxed/simple;
-	bh=gtc56Pzxa3zd+Gz4XQo7A+Xwpso4wNo6AuhvzHHOn40=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M+YWkx3yg7hlhwwjML7ailQZk5lv/LWMDudczFpIz1uBkidVFkPGYxrT2zR38g7wjAG/vJhxK7QqdUvXYHXJk678KIRRBqw5BHMxxWFEO5TihoewPr0TQnhufDudSXE+AbCtWk56CEsy2ExF5XpXm+hGApegIVQKT49T9ib17ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H+bHkuwk; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711468924; c=relaxed/simple;
+	bh=pb+Bl8Wz5dzM0KVQ7OIBbYx3YFhd0hpHZlq5EbLWpWg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=A0YKgJq9tj8aejTOchpyHLMC1B14VUyx0ndr+/5kV+P20Zc2NwxJ/OsVewH91oHnX70UBMxoMiRqMrhkPRqxeCcqRySZIqH6VyIFT236MsdOyDspVeuBS4aey5N58udWd+n43h+hxT7gbrNvcqhQIkErUPvxTc92MjBUwGajOeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J3F9uAtL; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H+bHkuwk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711466843; x=1711726043;
-	bh=VkNrGer7rVWeExc2E5LbUsoDSwgiynWRPlczlazpxoo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=H+bHkuwkkSJypF0R8vtRs48GgmMDJ/eH2Pn0W1qQucESJPqZt5dm3wwfQ15nWkg9D
-	 HC4ggxZOIdiyflP8qNcYv2V57EXKrkgE06Gp6m/Yof0MMcOt/BusW7qXu/nGKb81zQ
-	 lWGr0vHsGosqvDgStJnPz5GDQd6gmsqVhwBtDlmE2CRuxgLKE2v8wzl95AiikwY5j2
-	 5H7qelFswlaEoiQpJyPsQTqfb/z71J1Ic7p2gbyFyjzsn+xHrSSBpFlcYyP3bOz8T+
-	 +IRCivbm2Y+E8ZHmZfiGUU6mA+a3D1Poq5L54uqaBcybEmTcVLtdk8p01OMQXlIBzP
-	 /zi48WmL1eOtQ==
-Date: Tue, 26 Mar 2024 15:27:18 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 10/10] rust: kernel: remove usage of `allocator_api` unstable feature
-Message-ID: <0LNSiT6NSGVXUXFMn80Z2GCSdjCmJfd1idFp6dTgEf4hfDyjNHq59jLZD9U6BcWVCo1QVvRvHb5Pjr7DOUlqnHabGeOAhmLguV0kGcruqS4=@proton.me>
-In-Reply-To: <20240325195418.166013-11-wedsonaf@gmail.com>
-References: <20240325195418.166013-1-wedsonaf@gmail.com> <20240325195418.166013-11-wedsonaf@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J3F9uAtL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711468920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+JHT+qs7d5xGgM52y/zA3jfhIt76hKSRJuKLXLWCCJA=;
+	b=J3F9uAtLrnmxIQ7ioL5Nv4DXOKYw21hY3xrEN95GGJ+LoYItKkF1NRt4Ogi2EE9OHC4P60
+	AKqumLTHsRawJIX+KPt8X+bCgsXI2Ka9l9poqydeioHA3mAdPbiEtwgH+VcKi4uKA/0O5R
+	FsMs3Coizxl7K3Wiz86Dqvl479V+7to=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-vrpcsZwHMfKbvc55v5Rq5A-1; Tue, 26 Mar 2024 12:01:57 -0400
+X-MC-Unique: vrpcsZwHMfKbvc55v5Rq5A-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a46cc88be5fso385425566b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 09:01:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711468916; x=1712073716;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+JHT+qs7d5xGgM52y/zA3jfhIt76hKSRJuKLXLWCCJA=;
+        b=QRgqjbdC5wRR8+x8/ix617+oOs+kux/7ywy2BhTPS2zYP/rRcx4U+K15tHROFIJffy
+         Jju2rEOqJen7v5PqbwDHPqgFxJBpYWoBpBq1rF0nLCHesII14mUNX6zaTiDEqzRSuDdu
+         tvaem480ZFxtVhyZhqC9poADo2VTMSFlL34THJoATEzbec0OJz6eTI4kJ67BcE59KbGI
+         YGGRNI7si5BbGShz7gynby1Qszj1h6eip7TOPFnIh4LcNrXChJcU+njfi+0L3AxnmeEj
+         ecaBS6Y4htxlLP1PNkiXYvppEarT81tCQnbRLGsh8NgecsbwMOjWCADmYQyyzUOvkEmw
+         O8Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuF7XfyT58Oe1u69zl3ylI4Fcy92yITa7H8E8VgT/B4C+vTDim4oGN23Pcz1SM6spyeYPY9aEOb3gTwl9PN0bR0u9J0X7PSEC8PVvhXmM=
+X-Gm-Message-State: AOJu0YwHa5CO15niqpyskcPYhY2JEQE9uQ8t0MvXoBslQn4BeFqMQcy6
+	0JbO3dwA6nOyxYHtSrhr2qXCbxCwAgUId28ZpZEgAo4SVRXVLrc74rR1sByOaabN1rDSe69gHcP
+	Q1g9lYC1ZlTWm7WK8iTgzVykBod3fHtK6ooNIz7NqXdXNoR1Oxj0fkESxEgY23L4e
+X-Received: by 2002:a17:906:c307:b0:a47:345f:4ec1 with SMTP id s7-20020a170906c30700b00a47345f4ec1mr1194918ejz.57.1711468916680;
+        Tue, 26 Mar 2024 09:01:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtMnhn+EP8+m1X3gDg3NtZkLG3VTI9gS1vRUtSJMgNQlnfZvtuTb7w7TQ2z0rb0eS0rSHYUA==
+X-Received: by 2002:a17:906:c307:b0:a47:345f:4ec1 with SMTP id s7-20020a170906c30700b00a47345f4ec1mr1194887ejz.57.1711468916320;
+        Tue, 26 Mar 2024 09:01:56 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id x15-20020a1709060a4f00b00a455519bcb3sm4380911ejf.55.2024.03.26.09.01.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Mar 2024 09:01:55 -0700 (PDT)
+Date: Tue, 26 Mar 2024 17:01:53 +0100
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
+	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com,
+	Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH 3/8] rust: device: Add a stub abstraction for devices
+Message-ID: <ZgLxcXTw3awyW7cH@pollux>
+References: <20240325174924.95899-1-dakr@redhat.com>
+ <20240325174924.95899-4-dakr@redhat.com>
+ <2024032518-swampland-chaperone-317b@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2024032518-swampland-chaperone-317b@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 25.03.24 20:54, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->=20
-> With the adoption of `BoxExt` and `VecExt`, we don't need the functions
-> provided by this feature (namely the methods prefixed with `try_` and
-> different allocator per collection instance).
->=20
-> We do need `AllocError`, but we define our own as it is a trivial empty
-> struct.
->=20
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->  rust/kernel/alloc.rs        |  3 +++
->  rust/kernel/alloc/boxext.rs |  3 +--
->  rust/kernel/alloc/vecext.rs |  4 ++--
->  rust/kernel/error.rs        | 13 ++-----------
->  rust/kernel/init.rs         |  3 +--
->  rust/kernel/lib.rs          |  1 -
->  rust/kernel/str.rs          |  3 +--
->  rust/kernel/sync/arc.rs     |  4 ++--
->  rust/kernel/workqueue.rs    |  3 +--
->  9 files changed, 13 insertions(+), 24 deletions(-)
->=20
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index 5712c81b1308..f17f48130f13 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -8,6 +8,9 @@
->  pub mod boxext;
->  pub mod vecext;
->=20
-> +/// Indicates an allocation error.
-> +pub struct AllocError;
-
-I think it would be sensible to add this now:
-    #[derive(Copy, Clone, PartialEq, Eq, Debug)]
-
-> +
->  /// Flags to be used when allocating memory.
->  ///
->  /// They can be combined with the operators `|`, `&`, and `!`.
-> diff --git a/rust/kernel/alloc/boxext.rs b/rust/kernel/alloc/boxext.rs
-> index 26a918df7acf..3cdda0f635a3 100644
-> --- a/rust/kernel/alloc/boxext.rs
-> +++ b/rust/kernel/alloc/boxext.rs
-> @@ -2,9 +2,8 @@
->=20
->  //! Extensions to [`Box`] for fallible allocations.
->=20
-> -use super::Flags;
-> +use super::{AllocError, Flags};
->  use alloc::boxed::Box;
-> -use core::alloc::AllocError;
->  use core::mem::MaybeUninit;
->  use core::result::Result;
->=20
-> diff --git a/rust/kernel/alloc/vecext.rs b/rust/kernel/alloc/vecext.rs
-> index 1d4d51b45a49..85ca6a6db6de 100644
-> --- a/rust/kernel/alloc/vecext.rs
-> +++ b/rust/kernel/alloc/vecext.rs
-> @@ -2,8 +2,8 @@
->=20
->  //! Extensions to [`Vec`] for fallible allocations.
->=20
-> -use super::Flags;
-> -use alloc::{alloc::AllocError, vec::Vec};
-> +use super::{AllocError, Flags};
-> +use alloc::vec::Vec;
->  use core::{mem::ManuallyDrop, result::Result};
->=20
->  /// Extensions to [`Vec`].
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 4786d3ee1e92..fc986bc24c6d 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -4,12 +4,9 @@
->  //!
->  //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/=
-uapi/asm-generic/errno-base.h)
->=20
-> -use crate::str::CStr;
-> +use crate::{alloc::AllocError, str::CStr};
->=20
-> -use alloc::{
-> -    alloc::{AllocError, LayoutError},
-> -    collections::TryReserveError,
-> -};
-> +use alloc::alloc::LayoutError;
->=20
->  use core::convert::From;
->  use core::fmt;
-> @@ -192,12 +189,6 @@ fn from(_: Utf8Error) -> Error {
->      }
->  }
->=20
-> -impl From<TryReserveError> for Error {
-> -    fn from(_: TryReserveError) -> Error {
-> -        code::ENOMEM
-> -    }
-> -}
-> -
-
-Why are you removing this?
-
---=20
-Cheers,
-Benno
-
->  impl From<LayoutError> for Error {
->      fn from(_: LayoutError) -> Error {
->          code::ENOMEM
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index 1a8b0464db0c..1f7a6b5892ac 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -211,14 +211,13 @@
->  //! [`pin_init!`]: crate::pin_init!
->=20
->  use crate::{
-> -    alloc::{boxext::BoxExt, Flags},
-> +    alloc::{boxext::BoxExt, AllocError, Flags},
->      error::{self, Error},
->      sync::UniqueArc,
->      types::{Opaque, ScopeGuard},
->  };
->  use alloc::boxed::Box;
->  use core::{
-> -    alloc::AllocError,
->      cell::UnsafeCell,
->      convert::Infallible,
->      marker::PhantomData,
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 51f30e55bd00..5c641233e26d 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -12,7 +12,6 @@
->  //! do so first instead of bypassing this crate.
->=20
->  #![no_std]
-> -#![feature(allocator_api)]
->  #![feature(coerce_unsized)]
->  #![feature(dispatch_from_dyn)]
->  #![feature(new_uninit)]
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 34dbc85b5220..5206b18f882b 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -2,8 +2,7 @@
->=20
->  //! String representations.
->=20
-> -use crate::alloc::{flags::*, vecext::VecExt};
-> -use alloc::alloc::AllocError;
-> +use crate::alloc::{flags::*, vecext::VecExt, AllocError};
->  use alloc::vec::Vec;
->  use core::fmt::{self, Write};
->  use core::ops::{self, Deref, Index};
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index af539c5eb4bc..8db25f73b37f 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -16,7 +16,7 @@
->  //! [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
->=20
->  use crate::{
-> -    alloc::{boxext::BoxExt, Flags},
-> +    alloc::{boxext::BoxExt, AllocError, Flags},
->      bindings,
->      error::{self, Error},
->      init::{self, InPlaceInit, Init, PinInit},
-> @@ -25,7 +25,7 @@
->  };
->  use alloc::boxed::Box;
->  use core::{
-> -    alloc::{AllocError, Layout},
-> +    alloc::Layout,
->      fmt,
->      marker::{PhantomData, Unsize},
->      mem::{ManuallyDrop, MaybeUninit},
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 09a0f158ff1b..50837e56efc7 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -132,9 +132,8 @@
->  //!
->  //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqu=
-eue.h)
->=20
-> -use crate::alloc::Flags;
-> +use crate::alloc::{AllocError, Flags};
->  use crate::{bindings, prelude::*, sync::Arc, sync::LockClassKey, types::=
-Opaque};
-> -use alloc::alloc::AllocError;
->  use alloc::boxed::Box;
->  use core::marker::PhantomData;
->  use core::pin::Pin;
-> --
-> 2.34.1
+On Mon, Mar 25, 2024 at 07:17:46PM +0100, Greg KH wrote:
+> On Mon, Mar 25, 2024 at 06:49:07PM +0100, Danilo Krummrich wrote:
+> > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > 
+> > Add a Device type which represents an owned reference to a generic
+> > struct device. This minimal implementation just handles reference
+> > counting and allows the user to get the device name.
+> > 
+> > Also, implement the rust_helper_dev_get_drvdata helper.
+> > 
+> > Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > Co-developed-by: Asahi Lina <lina@asahilina.net>
+> > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > ---
+> >  rust/helpers.c        | 13 ++++++++
+> >  rust/kernel/device.rs | 76 ++++++++++++++++++++++++++++++++++++++++++-
+> >  2 files changed, 88 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/rust/helpers.c b/rust/helpers.c
+> > index 70e59efd92bc..1e40661a33d1 100644
+> > --- a/rust/helpers.c
+> > +++ b/rust/helpers.c
+> > @@ -23,6 +23,7 @@
+> >  #include <kunit/test-bug.h>
+> >  #include <linux/bug.h>
+> >  #include <linux/build_bug.h>
+> > +#include <linux/device.h>
+> >  #include <linux/err.h>
+> >  #include <linux/errname.h>
+> >  #include <linux/mutex.h>
+> > @@ -157,6 +158,18 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
+> >  }
+> >  EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
+> >  
+> > +void *rust_helper_dev_get_drvdata(struct device *dev)
+> > +{
+> > +	return dev_get_drvdata(dev);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_dev_get_drvdata);
+> > +
+> > +const char *rust_helper_dev_name(const struct device *dev)
+> > +{
+> > +	return dev_name(dev);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_dev_name);
+> > +
+> >  /*
+> >   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+> >   * use it in contexts where Rust expects a `usize` like slice (array) indices.
+> > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> > index 9be021e393ca..7309a236f512 100644
+> > --- a/rust/kernel/device.rs
+> > +++ b/rust/kernel/device.rs
+> > @@ -4,7 +4,7 @@
+> >  //!
+> >  //! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
+> >  
+> > -use crate::bindings;
+> > +use crate::{bindings, str::CStr};
+> >  
+> >  /// A raw device.
+> >  ///
+> > @@ -20,4 +20,78 @@
+> >  pub unsafe trait RawDevice {
+> >      /// Returns the raw `struct device` related to `self`.
+> >      fn raw_device(&self) -> *mut bindings::device;
+> > +
+> > +    /// Returns the name of the device.
+> > +    fn name(&self) -> &CStr {
+> > +        let ptr = self.raw_device();
+> > +
+> > +        // SAFETY: `ptr` is valid because `self` keeps it alive.
 > 
+> How can self keep it alive?
+
+Device::new() calls get_device(), while the drop trait calls put_device(), hence
+the expectation is that as long as self exists, we still hold a reference to the
+raw device.
+
+> 
+> > +        let name = unsafe { bindings::dev_name(ptr) };
+> > +
+> > +        // SAFETY: The name of the device remains valid while it is alive (because the device is
+> > +        // never renamed, per the safety requirement of this trait). This is guaranteed to be the
+> > +        // case because the reference to `self` outlives the one of the returned `CStr` (enforced
+> > +        // by the compiler because of their lifetimes).
+> 
+> devices are renamed all the time, I don't understand how this can be
+> true here.
+
+As the comment says, it's the safety requirement of this trait, which is
+documented in the DOC comment of trait RawDevice. Admittedly, it's not obvious,
+since the comment isn't part of this diff and was introduced in the previous
+commit "rust: device: Add a minimal RawDevice trait". Maybe we should move it to
+this commit then.
+
+It says: "Additionally, implementers must ensure that the device is never
+renamed. Commit a5462516aa99 ("driver-core: document restrictions on
+device_rename()") has details on why `device_rename` should not be used."
+
+> 
+> 
+> > +        unsafe { CStr::from_char_ptr(name) }
+> > +    }
+> > +}
+> > +
+> > +/// A ref-counted device.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// `ptr` is valid, non-null, and has a non-zero reference count. One of the references is owned by
+> > +/// `self`, and will be decremented when `self` is dropped.
+> > +pub struct Device {
+> > +    pub(crate) ptr: *mut bindings::device,
+> > +}
+> > +
+> > +// SAFETY: `Device` only holds a pointer to a C device, which is safe to be used from any thread.
+> > +unsafe impl Send for Device {}
+> 
+> It's safe if you have a reference count on the pointer.  Do you have
+> that?
+
+Yes, Device::new() calls get_device().
+
+> 
+> > +
+> > +// SAFETY: `Device` only holds a pointer to a C device, references to which are safe to be used
+> > +// from any thread.
+> > +unsafe impl Sync for Device {}
+> 
+> Same as above.
+> 
+> 
+> > +
+> > +impl Device {
+> > +    /// Creates a new device instance.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
+> 
+> device pointers are NULL all the time, you better be able to handle this
+> otherwise it's not going to go well :(
+
+You mean as in check for NULL and return an error in case? I wouldn't see much
+value in that.
+
+I think the only places where we call this are the ones where the C side already
+guarantees that the raw device pointer is valid, e.g. probe() or remove()
+callbacks.
+
+> 
+> > +    pub unsafe fn new(ptr: *mut bindings::device) -> Self {
+> > +        // SAFETY: By the safety requirements, ptr is valid and its refcounted will be incremented.
+> > +        unsafe { bindings::get_device(ptr) };
+> > +        // INVARIANT: The safety requirements satisfy all but one invariant, which is that `self`
+> > +        // owns a reference. This is satisfied by the call to `get_device` above.
+> > +        Self { ptr }
+> > +    }
+> > +
+> > +    /// Creates a new device instance from an existing [`RawDevice`] instance.
+> > +    pub fn from_dev(dev: &dyn RawDevice) -> Self {
+> > +        // SAFETY: The requirements are satisfied by the existence of `RawDevice` and its safety
+> > +        // requirements.
+> > +        unsafe { Self::new(dev.raw_device()) }
+> > +    }
+> > +}
+> > +
+> > +// SAFETY: The device returned by `raw_device` is the one for which we hold a reference.
+> > +unsafe impl RawDevice for Device {
+> > +    fn raw_device(&self) -> *mut bindings::device {
+> > +        self.ptr
+> > +    }
+> > +}
+> > +
+> > +impl Drop for Device {
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
+> > +        // relinquish it now.
+> > +        unsafe { bindings::put_device(self.ptr) };
+> > +    }
+> > +}
+> > +
+> > +impl Clone for Device {
+> > +    fn clone(&self) -> Self {
+> > +        Self::from_dev(self)
+> 
+> Does this increment the reference count?
+
+Yes, it does. from_dev() calls new() and new() calls get_device() again.
+
+> 
+> thanks,
+> 
+> greg k-h
+> 
+
