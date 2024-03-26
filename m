@@ -1,41 +1,41 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570D613D2BE
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 17:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2F91CD30
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 17:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711472454; cv=none; b=g+nfMJOewA+2vOnIgpU9XvZbPHt8/Se9k+AnwH2msEvwJ9MIi8SfhEF5kH6eHKaKiVrfyhsa8LdXJi34ROyBmnqNrJ8o3/S453veCgyR/T12pFT3s8QENU0aDHWIsqCrV5R5Mi/YxpWH+7WXuJkY5wApv8PfhDt4i3RYYU1xGtE=
+	t=1711472631; cv=none; b=oSN3EluwqtxmFHU60+CU3lcXdZU5KO8TTweL+I37dqU8XRpmvWrVe29PHjuNO/J0MIQI3oiJD+LhbwWRWs3Pz3ZKzWkw3vUVhhhX5BOQlgWYJlyW0wKtQ9JP/gLydti1lLCU9aHgtxFbYH5++7XkQ7OK7QtBOJBp2U4AiX5fFOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711472454; c=relaxed/simple;
-	bh=CtLOcxudgrp9+pmo6QzQf8rk8HsbaSoWbUzcGjkYPpg=;
+	s=arc-20240116; t=1711472631; c=relaxed/simple;
+	bh=wOZNZfomGTf09846FMrd2stSkyFpKdRYfI18SIaqofY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JHIV5nLAlJrCpY8OUNpAV0G20A8oQegZ/1f51e48DGtFWVc9Pjd1H599B6ueYM1NkDbNgWcTPAQPOCyY2i10J/1JZK4rvnEN2ZI2nPuq+sFwuw18CBmLLK3wl9AdVr0bN+1BQRZt9if0E5HEk8fgzWN+JnbNY48uZF92sEbrkEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Bq8BxIi3; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=Wtj0RzV+ZNcXzDz2gCHtvVjjzf4GooxJZJs484k7VBiZnXbqFWRlweMTmu3wEoBkpOpu8geoMWa3fO7sPYZQkJbJ1gTdKl907eZodyaDe6r+VtAxAIEP1wqsaHVjKEs0hcV+xsg2saDPefGGdUw0jI8ma9X+NCLwCDGI7bSnCz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IhThkzkP; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Bq8BxIi3"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IhThkzkP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711472449; x=1711731649;
-	bh=JbKvJkvXu2iWSuwGdU1AIzET2bU96rDLVAc7bBO6aLw=;
+	s=4q2uozfqpzck3c7isjb5szza2i.protonmail; t=1711472627; x=1711731827;
+	bh=rtXdk3BS/YRFaYMhxgJIWorIJjeDwKo7k6/Ds/zUnk4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Bq8BxIi3qd+9EkR1NWQWDt5q8Prr2Fm1Ac2IhTEUUxaOW6KBU6GWhluOBpMaSl6y7
-	 01zCTsOYMhDrhWApuTstxbepjc5uWNulk81Ew5AXYb0OR21s87HSZ+i5Fd30Qmc1DM
-	 rORVqAYnEwmGmZ0y7aU9/KmybTyYTwb4lHJMCVb3zo3Ol4yMcB+pL1jQzAEEVpOejO
-	 zkxvrhp5SWXKIIZ/sk1tKtBmuWVHbJmtpsMppUAK32D1Y9Xu/HDJTZ+CiPWZICWYHM
-	 nzmr0IzmCKKcUn4/LLV36U7MZn5hqbGGxNdnpCufxVte8Gv5kJommIzKvKy5+NHeJy
-	 GebvbgHJdWLcw==
-Date: Tue, 26 Mar 2024 17:00:39 +0000
+	b=IhThkzkPWttmF06bgJPyLmmbKIqfLs4Zv341oKnGjka7RHSUH/HQZjg/luJtpzB9T
+	 fF1exY1cbkHThksDlYw6h8S4FpzfWNjaqlwNE6gcJtgmqaWMo+NVuDBG/F749L8+5p
+	 oj9NWhBK4yghTgxnS2HImZ2Nhga68jn0jyVWZcP71+xdTj4DI/4rZYhuPysNDaPqnF
+	 7zGCvUYTUW54gP8EzHDVvdt8RXBZ7369ItneM1kovMPmLtw6ERps8AtBfpKPygzaS8
+	 2R3EWjZBE0MRZQzdTWiq4UTAaRFTVQ4JV0m/QyMyM4LIZkoCnuISBfxZC3r8mJ9zpc
+	 lsXT3t3PY6WCA==
+Date: Tue, 26 Mar 2024 17:03:41 +0000
 To: Boqun Feng <boqun.feng@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Valentin Obst <kernel@valentinobst.de>, Heghedus Razvan <heghedus.razvan@protonmail.com>, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 3/5] rust: time: Introduce clock reading framework
-Message-ID: <c2XJe4xCqT5WrHu9XZKQ03ggEZLwd2KBuSBb9Onivny9v7fqKBkm1aywmztjiDyuLKqr2Igt_6XUJiuArLl9JVwq0xa4gKfocP2H5YZDrFk=@proton.me>
-In-Reply-To: <20240324223339.971934-4-boqun.feng@gmail.com>
-References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-4-boqun.feng@gmail.com>
+Subject: Re: [PATCH 4/5] rust: time: Support reading CLOCK_MONOTONIC
+Message-ID: <4wFCQqSgpLIPmdFau6MTL1XLLB73d9Tuv5y-VFnXTDc1DFuTnmNV-GLtF582V5yz8s9ogWP_4U0NK3ei6sZlD1oLl929f8ADoT5K9bO6uKs=@proton.me>
+In-Reply-To: <20240324223339.971934-5-boqun.feng@gmail.com>
+References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-5-boqun.feng@gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -47,104 +47,75 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 24.03.24 23:33, Boqun Feng wrote:
-> To make sure Rust code doesn't mix timestamps from different clocks, a
-> type safe clock reading framework is introduced. It includes:
+> Rust Binder will need to read CLOCK_MONOTONIC to compute how many
+> milliseconds a transaction has been active for when dumping the current
+> state of the Binder driver. This replicates the logic in C Binder [1].
 >=20
-> * A `Clock` trait that represents different clocks, to read a particular
->   clock, one needs implement the `Clock::now()` function.
+> For a usage example in Rust Binder, see [2].
 >=20
-> * A `Instant<Clock>` type that represents timestamps of different
->   clocks, whose implementation is just a `ktime_t`, so all the
->   calculation on `ktime_t` should apply to it as well.
+> Hence add the support for CLOCK_MONOTONIC read.
 >=20
+> The `ktime_get` method cannot be safely called in NMI context. This
+> requirement is not checked by these abstractions, but it is intended
+> that klint [3] or a similar tool will be used to check it in the future.
+>=20
+> Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830f=
+ab.1682333709.git.zhangchuang3@xiaomi.com/ [1]
+> Link: https://r.android.com/3004103 [2]
+> Link: https://rust-for-linux.com/klint [3]
 > Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
 > Signed-off-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
 > Co-developed-by: Asahi Lina <lina@asahilina.net>
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+
+With the nit fixed:
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
 > ---
->  rust/kernel/time.rs | 49 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
+> @Alice, I still put the link to the usage of Android binder here, if you
+> want to remove that, please let me know.
+>=20
+>  rust/kernel/time.rs | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 >=20
 > diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index b238b3a4e899..0f9f5605ed48 100644
+> index 0f9f5605ed48..5cd669cbea01 100644
 > --- a/rust/kernel/time.rs
 > +++ b/rust/kernel/time.rs
-> @@ -6,6 +6,9 @@
->  //! have been ported or wrapped for usage by Rust code in the kernel.
->  //!
->  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.=
-h).
-> +//! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
-> +
-> +use core::marker::PhantomData;
->=20
->  /// The number of nanoseconds per millisecond.
->  pub const NSEC_PER_MSEC: i64 =3D bindings::NSEC_PER_MSEC as i64;
-> @@ -64,3 +67,49 @@ pub fn to_ns(self) -> i64 {
->          self.inner
+> @@ -113,3 +113,22 @@ fn sub(self, other: Self) -> Self::Output {
+>          Duration::new(self.inner.wrapping_sub(other.inner))
 >      }
 >  }
 > +
-> +/// Represents a clock, that is, a unique time source and it can be quer=
-ied for the current time.
-> +pub trait Clock: Sized {
-> +    /// Returns the current time for this clock.
-> +    fn now() -> Instant<Self>;
-> +}
+> +/// Contains the various clock source types available to the kernel.
+> +pub mod clock {
+> +    use super::*;
 > +
-> +/// Marker trait for clock sources that are guaranteed to be monotonic.
-> +pub trait Monotonic {}
-
-Why is this trait not an extension of `Clock`?
-
+> +    /// A clock representing the default kernel time source (`CLOCK_MONO=
+TONIC`).
+> +    pub struct KernelTime;
 > +
-> +/// A timestamp of a given [`Clock`]
-
-Missing '.'.
-
-> +#[repr(transparent)]
-> +#[derive(Debug)]
-> +pub struct Instant<T: Clock> {
-> +    inner: bindings::ktime_t,
-> +    clock: PhantomData<T>,
-> +}
+> +    /// `CLOCK_MONOTONIC` is monotonic.
+> +    impl Monotonic for KernelTime {}
 > +
-> +impl<T: Clock> Clone for Instant<T> {
-> +    fn clone(&self) -> Self {
-> +        *self
-> +    }
-> +}
-> +
-> +impl<T: Clock> Copy for Instant<T> {}
-> +
-> +impl<T: Clock> Instant<T> {
-> +    fn new(ktime: bindings::ktime_t) -> Self {
+> +    impl Clock for KernelTime {
+> +        #[inline]
+> +        fn now() -> Instant<Self> {
+> +            // SAFETY: It is always safe to call `ktime_get` outside of =
+NMI context.
+> +            Instant::<Self>::new(unsafe { bindings::ktime_get() })
 
-When compiling, this function is marked as dead-code in this patch.
+I don't think the turbofish syntax (the `::<Self>` part) is needed here.
 
 --=20
 Cheers,
 Benno
 
-> +        Self {
-> +            inner: ktime,
-> +            clock: PhantomData,
 > +        }
-> +    }
-> +}
-> +
-> +impl<T: Clock> core::ops::Sub for Instant<T> {
-> +    type Output =3D Duration;
-> +
-> +    /// Returns the difference of two timestamps.
-> +    #[inline]
-> +    fn sub(self, other: Self) -> Self::Output {
-> +        // `ktime_t` is an `i64` value of nanoseconds, and kernel define=
-s signed overflow to behave
-> +        // like 2s-complement, hence `wrapping_sub()` is used here to mi=
-rror `ktime_sub()`.
-> +        Duration::new(self.inner.wrapping_sub(other.inner))
 > +    }
 > +}
 > --
