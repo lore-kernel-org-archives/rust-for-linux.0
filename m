@@ -1,63 +1,63 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C985212B151
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 21:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28121CAAE
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 22:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711489708; cv=none; b=F/L70CCRM89hj7cIeR2dxbVgDPqmhB657OZZ8XKHDJlW7Zx2P9xefiE6vQUN/B9d/U5HNb/g8J91ly7EnKu+pHVhFpMJ1iKbhryzYJlqdtJvgN6wOD2K08JeLLG2osocftc2MagsvjrYdPTr7tMvF4/iJD+dWyKYkHA3Yh6Uu7Q=
+	t=1711491885; cv=none; b=kP9xVaYI+HtMpattZnY8OnDygn/zKfNpDd81uNka5r/gSIXIsYQSY2DaAOOJic33p15+pTd65fESvZ1D5JZRDqD3sXRi7YA2tqWnlGVMzApwmE+DZ6q6aDurzPmeKnQwKZx9FLqC4qRRDQQm+Tjwg70YB5Dd/zX/iBZDGzHKCc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711489708; c=relaxed/simple;
-	bh=6llJh8uaXP3SWcIkDGvMNS3hazSQXGdIxBAZ62166kg=;
+	s=arc-20240116; t=1711491885; c=relaxed/simple;
+	bh=D7hqrY4hxyuXLgUF/GnaQCJDBLIklHdBUBk9qWxEmrk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=iIiMTwYf6yabC5ZhDsfXYomSJg+//Bwt3B1vUGNZ7epLfI14xKx+avyJ9IcdwxnKTzd+PQeaZ/07KMIW2nxrdC+3li1Vo7SBldIdxtwODnwhDXVLmnpJ2hqEHPqsopDh7LqI/ZiLSb1rWjjJ7DOzzdGAiTISAAh7szHslhKSdp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RhOwz67S; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type:Content-Disposition; b=LTLcb8LmBoh/DNXvlBX8tlGnFsGFizBPxdHFC+gGq3IIBQv6hZfoNfJFkF4m8P9cPsqFWA63xi9BRUQh6bxTqcMq1G0DyMkubWqh5ncL0DQ5IGQAUdZteI1vdEciV26Hun2dwh8pJBfBbNpLXTgCCY/7OWJZaacCgADtJhVKknU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gc3TH6Wp; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RhOwz67S"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gc3TH6Wp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711489705;
+	s=mimecast20190719; t=1711491882;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=82puOO7vOBue+wR9Pru9xTMnlwUk3sqY/Gr8xHU5OV8=;
-	b=RhOwz67ShibcWeTwnakt9L88UmoRcF3qZub8+yc4k2bGTviXyOxVbcOmWZAGm8cZc0r/Z1
-	gJ4yZmZz//TkQAqzc8EPTXi01Mg0OpqsOT2e37VeA/8dVSZhCuy1LuXBDsB7EtN2kBeHDj
-	4DXBzpmuURcyn0/hARRt5+BQias5poU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=5QsM3a4OixPoYqAMMlWjGJAvEdFJzrqpIju+R+yECgg=;
+	b=gc3TH6WpWv0NOk4/N0YV+MugzNExoIPz3qQ770tNa+PUdE5lHjlOpyCViKXr2BfvyyJUDU
+	hSre5nu6bvqHSl1UTe5M7CWytWf9CY9y6maSeWs32ulEzU7i4ZAMDyUPYfLX184dfHrjUw
+	bGXgqbqpWw9ghqyquzNBBF9hi951jKk=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-0ky5j1T3PJmP-jI4Qdb2Hg-1; Tue, 26 Mar 2024 17:48:24 -0400
-X-MC-Unique: 0ky5j1T3PJmP-jI4Qdb2Hg-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a46d59152c9so445247566b.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 14:48:24 -0700 (PDT)
+ us-mta-470-6nh0gMYGOyiCBA-co3Qldg-1; Tue, 26 Mar 2024 18:24:40 -0400
+X-MC-Unique: 6nh0gMYGOyiCBA-co3Qldg-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a4751b21400so26804066b.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 15:24:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711489703; x=1712094503;
+        d=1e100.net; s=20230601; t=1711491879; x=1712096679;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=82puOO7vOBue+wR9Pru9xTMnlwUk3sqY/Gr8xHU5OV8=;
-        b=SgOD14bp/AT0iUAuAclRKRlyE5pe7Azac1AJhuSzqvvJ7OAsPLhazKshllkFacoQc9
-         5y5OWcIFl3T3pbQzde07KDYh78MiLQyNYcdacBgepN39BatWb07hC2eDvy0jlgPBM5Ap
-         vYc1mRGqydBeRt0yrpPPY/Q4265W0KDaVIZZDfdzy3hFb4Uz+i2TNrTWhmqBW4iwOxT8
-         OwJNcbB52z6KdOHqGrkWqqKXK1f4Tp3dE+kKlUVMnyvPkXOZuQM2K8h5j7XAFNEK32pk
-         ixD0UY8lCbJXoBqbUZKa9TulDezyPfJvFN+lCO+yQoRXvYUueEV+FbbDkMA7V6ysTWmH
-         I44w==
-X-Forwarded-Encrypted: i=1; AJvYcCUhGUwMF2BY+W070EbhowFKUgE7+9GauJso3eIphgxqPogDwJrkKdC0q5eVC1+zSKiKwBwIHMxbgvN07Waebo2Y4+HHEkwAyySsGKiTVvI=
-X-Gm-Message-State: AOJu0Yys/dgS32IMQuCVlIcDCM5rFjl+z7pmzjxrZclCWEzLY3onFfAH
-	2jRI2e2J2hMWvjG8LKDPiEM+Cx1HZDEseJvbQ7uj0p/dMqvRRHNVI9VshUc1shIsjAvrk59goMk
-	6AvsniX/CmU4oefwz+tjpNX4Wl3Dp3Fz0VTP6n+0SQ1pY7RFA6DOz/XtQH3coyE5J
-X-Received: by 2002:a17:906:39d9:b0:a4d:f9b1:6e7d with SMTP id i25-20020a17090639d900b00a4df9b16e7dmr630886eje.76.1711489703101;
-        Tue, 26 Mar 2024 14:48:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFuR3grwkz7w+Qrc5hJmckpQQJuSlzwJENUYsASaYmxlSq808IWf9FpJvldDVB0UKRJNLI8g==
-X-Received: by 2002:a17:906:39d9:b0:a4d:f9b1:6e7d with SMTP id i25-20020a17090639d900b00a4df9b16e7dmr630873eje.76.1711489702791;
-        Tue, 26 Mar 2024 14:48:22 -0700 (PDT)
+        bh=5QsM3a4OixPoYqAMMlWjGJAvEdFJzrqpIju+R+yECgg=;
+        b=Gk+z5JlX2xsYYk3Smpq9Vqx/pUyKNKSr/Fp3BklX/jN3/v51y2dZdx8aI3JmK6m2iH
+         NKANpArXvnpt6v0qR+35Eo2JmgDZJQSuhwWtLrPn61V2PWFTDinX/qvaL/SdDYj51a53
+         Wfa3D48REmTlc1RPMzM0m6myIblGQf557fXD37V+0gYaDbjUBiaZkKs6SSzSorF5g7yT
+         rEyhQBc2JOPoOBFWy03oeSMXXbUUnQGeII18iQzwRQ8W/leyCUXb+3t9TDwgwmquvBWc
+         MHc3nhTpwYksZEChoexeGM8EW+F1f6P/d/2ij7Xrjjx3bi8z9jyncpsBPfUW7cSvysD3
+         1RjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZvDbJs+oVmGySXVu1RH2e8qWcXpXhLMrTzgYFQSVzkiJWHixvjH1cSZxrQzY4Ml0MIjeRkMzY6G1miWItWk16yAFJYd2FSY7oXikOEZI=
+X-Gm-Message-State: AOJu0YyXsuHn5ixLZJogIdskqqFig1UTs7JGZil3+DbutjktrQtaEu2E
+	/xXo16/kDAwoXv8VNR00C7kTd37XQhkVuOW8fVjxDJbWFExlbuJUwkSEgg8NZWYL/jO/Ip4C6mH
+	yfPHhM06DH/Ap9NPUAmxQJIHFXnTGsX9ZFak48QL9AX0dfpckEjawYO1WQn12XTNz
+X-Received: by 2002:a17:906:5512:b0:a46:a28d:2f49 with SMTP id r18-20020a170906551200b00a46a28d2f49mr2345405ejp.32.1711491879330;
+        Tue, 26 Mar 2024 15:24:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+OWc+IDSi+LOspQiMIVPe/F262DZdC2Vj8k/H7sdxQ+cE5Dtx/d1WWu9Lk7uiLzF4nEQ0/Q==
+X-Received: by 2002:a17:906:5512:b0:a46:a28d:2f49 with SMTP id r18-20020a170906551200b00a46a28d2f49mr2345377ejp.32.1711491878924;
+        Tue, 26 Mar 2024 15:24:38 -0700 (PDT)
 Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id q2-20020a17090609a200b00a3efa4e033asm4642879eje.151.2024.03.26.14.48.21
+        by smtp.gmail.com with ESMTPSA id jy10-20020a170907762a00b00a461e10094asm4718329ejc.95.2024.03.26.15.24.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 14:48:22 -0700 (PDT)
-Date: Tue, 26 Mar 2024 22:48:19 +0100
+        Tue, 26 Mar 2024 15:24:38 -0700 (PDT)
+Date: Tue, 26 Mar 2024 23:24:36 +0100
 From: Danilo Krummrich <dakr@redhat.com>
 To: Greg KH <gregkh@linuxfoundation.org>
 Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
@@ -67,71 +67,161 @@ Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
 	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
 	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
 	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
-Subject: Re: [PATCH 7/8] rust: add revocable objects
-Message-ID: <ZgNCo4Hvs-EjDNGT@pollux>
+Subject: Re: [PATCH 8/8] rust: add device::Data
+Message-ID: <ZgNLJEpw670wca_M@pollux>
 References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-8-dakr@redhat.com>
- <2024032514-happier-hazelnut-4b50@gregkh>
- <ZgMA2AFc6mJ8g3RG@pollux>
- <2024032637-nervous-blustery-2566@gregkh>
+ <20240325174924.95899-9-dakr@redhat.com>
+ <2024032509-tanned-calamity-4e1c@gregkh>
+ <ZgL9u-L1T_J1UZLt@pollux>
+ <2024032651-chrome-museum-7027@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2024032637-nervous-blustery-2566@gregkh>
+In-Reply-To: <2024032651-chrome-museum-7027@gregkh>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Mar 26, 2024 at 07:16:51PM +0100, Greg KH wrote:
-> On Tue, Mar 26, 2024 at 06:07:36PM +0100, Danilo Krummrich wrote:
-> > On Mon, Mar 25, 2024 at 07:21:32PM +0100, Greg KH wrote:
-> > > On Mon, Mar 25, 2024 at 06:49:11PM +0100, Danilo Krummrich wrote:
+On Tue, Mar 26, 2024 at 07:12:29PM +0100, Greg KH wrote:
+> On Tue, Mar 26, 2024 at 05:54:19PM +0100, Danilo Krummrich wrote:
+> > On Mon, Mar 25, 2024 at 07:21:04PM +0100, Greg KH wrote:
+> > > On Mon, Mar 25, 2024 at 06:49:12PM +0100, Danilo Krummrich wrote:
 > > > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > > > > 
-> > > > This implements the Revocable and AsyncRevocable types.
-> > > > 
-> > > > Revocable allows access to objects to be safely revoked at run time.
-> > > > 
-> > > > This is useful, for example, for resources allocated during device probe;
-> > > > when the device is removed, the driver should stop accessing the device
-> > > > resources even if other state is kept in memory due to existing
-> > > > references (i.e., device context data is ref-counted and has a non-zero
-> > > > refcount after removal of the device).
+> > > > This allows access to registrations and io resources to be automatically
+> > > > revoked when devices are removed, even if the ref count to their state
+> > > > is non-zero.
 > > > 
-> > > Again, device removal is different from unbinding a driver from a
-> > > device.  Please fix this all up.
+> > > So it's re-implementing the devm_*() calls?  Why?
 > > 
-> > I think this isn't an "again", "[PATCH 8/8] rust: add device::Data" actually
-> > phrased things differently (which indeed isn't great and needs to be fixed).
-> > 
-> > This comment indeed implies that device removal actually means unbinding a
-> > driver from a device. I think "device remove" is meant here as the drivers
-> > remove() callback is called.
-> > 
-> > Your comment seems to imply you have a different understanding of what "device
-> > remove" means?
+> > It's not. Taking IO resources as an example it's more a generalization of what
+> > e.g. DRM solves with drm_dev_unplug() and drm_dev_{enter,exit}().
 > 
-> Yes, see my other comments.  A device has a lifespan that exceeds that
-> of a driver, and "remove" does not mean it is gone from the system just
-> because the remove() callback of a single driver is called.  It still
-> can, and does, live outside of a driver quite well, and in fact, the
-> driver is not in control of its lifespan at all!
+> That is a drm specific way to handle devm_* stuff, right?
 
-Yes, that's clear. But what does "device remove" mean for you then?
+Depends, if you mean it's a DRM specific way to ensure devm_* managed resources
+can't be accessed anymore after the device is "gone" from the perspective of
+the driver, then yes. If you confuse it with drmm_* stuff, which ties resources
+to the actual lifetime of a struct drm_device (device is freed), then no.
 
-I think this one here mostly seems to be about terminology and I want to make
-sure I don't create any other misunderstandings e.g. by using "device remove"
-for unbinding a driver from a device.
+It's basically the DRM way to implement Revocable<>. drm_dev_unplug() marks a
+struct drm_device as unplugged (protected by SRCU). drm_dev_{enter,exit}() are
+used as conditional entry / exit points of code sections that access resources
+that might have been released by devm_* stuff already, such as IO mappings.
 
 > 
-> All a driver can know is that it has a valid reference to a device for
-> the amount of time from probe() to remove().  Outside of that a driver
-> can not touch it, BUT the device structure lives on and can do lots of
-> other things that do not involve the driver at all.
+> If that is to be "baked" into different bus types, great, let's make it
+> a bus-specific thing and put it in the driver core, but don't make it
+> something that is tied to rust devices only as that feels odd, right?
+
+You lost me a bit on this one. Can you please clarify?
+
+> 
+> Also, work with the patterns we have, don't create new ones as that just
+> causes confusion for all of us working on this part of the kernel.
+> 
+> > While devm_*() ensures to, for instance, iounmap() a mapping when a device is
+> > detached, the Revocable<> resource ensures that a driver can't access the
+> > pointer pointing to the just unmapped memory anymore.
+> 
+> Great, this is something that we have been asking for in a generic way
+> for all drivers/devices in the kernel (see the many talks over the past
+> years at conferences about it.)  Please work with the developers who are
+> doing this in the .c side to be sure that things are aligned properly to
+> work the same.
+
+Unfortunately, I'm neither aware of those efforts, nor the talks. Mind providing
+me some pointers?
+
+> 
+> > So, this isn't something that replaces devm_*(), but kinda builds on top of it.
+> 
+> Perhaps document it that way?
+
+Sure, I can add this example.
+
+> 
+> > For instance, we could call Revocable::revoke() from a devm_*() callback.
+> > However, and that' what this patch currently does for simplicity, we could also
+> > just call it from the corresponding driver's remove() callback.
+> 
+> If that's the proper place for that, yes.  It could be the proper place
+> is in the close() system call as well, right?  But again, document it to
+> explain what this is please, as it was not obvious at all.
+
+Correct, it depends on what you use Revocable<> for, device resources is just
+one example where this is useful.
+
+> 
+> > > And this will trigger only on remove, but which remove?  The bus remove?
+> > > Or the unbinding of the driver to the device (two totally different
+> > > things, be specific and very careful here.)
+> > 
+> > The above comment says "device remove", maybe say device / driver detach
+> > instead?
+> 
+> It depends on what you mean.  Those are different things, as explained
+> in other places.  Where do you want this to happen?  Where should it
+> happen?  And why in only those places?
+
+For device resources, device / driver detach should be the correct place. Agree?
+
+> 
+> > > > +/// Device data.
+> > > > +///
+> > > > +/// When a device is removed (for whatever reason, for example, because the device was unplugged or
+> > > > +/// because the user decided to unbind the driver), the driver is given a chance to clean its state
+> > > > +/// up, and all io resources should ideally not be used anymore.
+> > > 
+> > > Wait, unplugging a device and unbinding a device from a driver are two
+> > > totally different things, do NOT get them mixed up or assume that they
+> > > are the same thing at all please.  They have different lifetime rules
+> > > and different patterns of what happens.
+> > 
+> > I think the comment does not claim that device unplug and device / driver
+> > unbind are the same thing. I rather think in this context the expection is that,
+> > ultimately, both result into the fact that the corresponding device resources
+> > are not available anymore and hence shouldn't be used anymore. Where the latter
+> > is enforced by using Revocable<>.
+> 
+> But those are different things happening, and different things happen to
+> the objects when those different things happen, so while a driver might
+> seem to see the same thing happen from its point of view, the lifespan
+> of the object itself is VERY different here (could be passed back to the
+> driver, could be freed, could be sent to a different driver, could just
+> be ignored for a long time, etc.)
+> 
+> So be specific as to what viewpoint you are considering here, a device
+> object has a lifespan that greatly exceeds that of just the window where
+> a driver happens to see it :)
+
+Fully agree, this is indeed from the viewpoint of the driver. We don't really
+care what is happening to the device after detach. We only care about all the
+cases above lead to a detach, which is the point where we have to make sure
+we're not accessing any device resources anymore.
+
+I will try to make this more clear.
+
+> 
+> > > So this needs to be taken out and rewritten from the beginning please.
+> > > If the comments describe something that is incorrect, I can't trust that
+> > > the code is correct...
+> > 
+> > Not sure the comment is actually claiming something incorrect. If, with the
+> > above explanation, you still think so, please let me know how to phrase it
+> > correctly, such that I can improve this patch accordingly.
+> 
+> Please step back and try to determine what you want here.  How devices
+> are created, assigned, reassigned, removed, renamed, destroyed, etc.
+> They have a well known "phase of life" and one that different parts of
+> the kernel sees in different ways (driver core, busses, classes,
+> drivers, userspace, etc.)  Be aware of what you are wanting to do here,
+> and who is acting on the structure where and what they are wanting to do
+> with it.
 > 
 > thanks,
 > 
