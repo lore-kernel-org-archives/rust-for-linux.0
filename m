@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7B04EB22
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 18:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAAB1CD30
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711477015; cv=none; b=nxy3xm61tv8lFp0TEkbWkLVoDZ981SAt8jk4Ch9NFA9nFxSpXs+0rIN/cs/RR/uAMrOR5Pe8S8S5HT+Ev8n86s2DngqudjtP/5U6LnpiIoZV4bpJ6G0Eaxz5H/2XYVEL3o6PKBU/gaKBFBiOa17JZRim/hp42bWClYKK4JYraXo=
+	t=1711477082; cv=none; b=SXMezkAnWPJ2KHeeEZJvw7aRxtwitY95JM3nr2fMxvnEYEQyb8ap9He80rhDZSaJ/lhJ3lff04VUmbdZqi0I8VXK3vFe7Ehxbmv7tYhDAnnXaf+LsafK4iijT5Xy9unyKkJ1u46o8Qf0R4S6fO4lgYksJKYUP2Ujwuf+1wYPiQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711477015; c=relaxed/simple;
-	bh=M/XLvfoo4/NBo1xyM3EfkcYuf3Krfyx3mp767Pooag4=;
+	s=arc-20240116; t=1711477082; c=relaxed/simple;
+	bh=wl/IL2dzaTq0EKkByHN0MPjD7sPc/COGX0qFcMtevCY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NJTqigEIt+NmcD2JcHp7Oj94JFveOlGSAY7tfkhRQIjkqPtf8RLRfelD23Aggy6tMSp2QZYn806movLG7mpTRkXBvIiq/OH7Y3N6plc3musKb8vGe6Ly9FUsRpfpKQwrDEP1mH0zgfTsa0vReJyrsgkodmUyEaeRBiucg50VLos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM1t1Z78; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ry3KyU42el+wEL7AfLAng5qL7aFTHqbIKh5/R5vB1lrGRi7fCENd8llVwfqUJ6iP6Sa2lPJr6OiAJZQBRHAWFbaOzzRds9G6SQrmjTL5y/0S7yFUSGKkc191H2wt0PAxL2g1N7uRD4p0WDC5vfe+zrG/C+9u9jhzvdFSHsZTwkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohW9rfy5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM1t1Z78"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A1EC433C7;
-	Tue, 26 Mar 2024 18:16:54 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohW9rfy5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E80C433C7;
+	Tue, 26 Mar 2024 18:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711477014;
-	bh=M/XLvfoo4/NBo1xyM3EfkcYuf3Krfyx3mp767Pooag4=;
+	s=korg; t=1711477081;
+	bh=wl/IL2dzaTq0EKkByHN0MPjD7sPc/COGX0qFcMtevCY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DM1t1Z78fiwRSUaVMz+FGm9m5IyKT9eQBvK3epTbAC3ni2zKxvjXai3SM0fGtGPWJ
-	 iLfzs/Rx6+wyUmUcAPomu1r7n4bmgyLzkN66xVUVnPMyL2XY3Mle29JXioqtDc727U
-	 mCPrNmP8L8VaXtqVSfvxPM2f2SyXKn7TucOB5X3k=
-Date: Tue, 26 Mar 2024 19:16:51 +0100
+	b=ohW9rfy5kF77Skx6N7gksxx/p3UiuE5U+P7b1xWYH9H6qE83pMMemVZGhOWphrcwy
+	 EAJbzq7lA8tURgC4mMj/17lXy9RvzS00G58M761mbX53icsKxW7WCHNOihzK413Y5m
+	 HqyQ5ZKqapX8V/3tbswpj2/rTw8MIL7YoIPBhMEw=
+Date: Tue, 26 Mar 2024 19:17:59 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Danilo Krummrich <dakr@redhat.com>
 Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
@@ -33,12 +33,12 @@ Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
 	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
 	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
 	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
-Subject: Re: [PATCH 7/8] rust: add revocable objects
-Message-ID: <2024032637-nervous-blustery-2566@gregkh>
+Subject: Re: [PATCH 6/8] rust: add revocable mutex
+Message-ID: <2024032621-enlisted-humbly-7bb4@gregkh>
 References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-8-dakr@redhat.com>
- <2024032514-happier-hazelnut-4b50@gregkh>
- <ZgMA2AFc6mJ8g3RG@pollux>
+ <20240325174924.95899-7-dakr@redhat.com>
+ <2024032553-facing-thaw-7048@gregkh>
+ <ZgMQOS01jMa651QO@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,46 +47,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZgMA2AFc6mJ8g3RG@pollux>
+In-Reply-To: <ZgMQOS01jMa651QO@pollux>
 
-On Tue, Mar 26, 2024 at 06:07:36PM +0100, Danilo Krummrich wrote:
-> On Mon, Mar 25, 2024 at 07:21:32PM +0100, Greg KH wrote:
-> > On Mon, Mar 25, 2024 at 06:49:11PM +0100, Danilo Krummrich wrote:
+On Tue, Mar 26, 2024 at 07:13:13PM +0100, Danilo Krummrich wrote:
+> On Mon, Mar 25, 2024 at 07:22:15PM +0100, Greg KH wrote:
+> > On Mon, Mar 25, 2024 at 06:49:10PM +0100, Danilo Krummrich wrote:
 > > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > > > 
-> > > This implements the Revocable and AsyncRevocable types.
+> > > This is a mutex where access to its contents can be revoked at runtime.
 > > > 
-> > > Revocable allows access to objects to be safely revoked at run time.
+> > > This is different from `Revocable` in a few ways:
+> > >   1. The caller may sleep while holding a guard.
+> > >   2. Accessors are all serialised.
+> > >   3. Accessing is not as cheap (because it involves acquiring the mutex).
+> > >   4. The size of the object is larger (because it involves a mutex +
+> > >      flag).
 > > > 
-> > > This is useful, for example, for resources allocated during device probe;
-> > > when the device is removed, the driver should stop accessing the device
-> > > resources even if other state is kept in memory due to existing
-> > > references (i.e., device context data is ref-counted and has a non-zero
-> > > refcount after removal of the device).
+> > > An example of where this a good fit to be used in device state that
+> > > holds registrations to other subsystems.
 > > 
-> > Again, device removal is different from unbinding a driver from a
-> > device.  Please fix this all up.
+> > Why don't we need this in .c files if it is so needed in drivers today?
 > 
-> I think this isn't an "again", "[PATCH 8/8] rust: add device::Data" actually
-> phrased things differently (which indeed isn't great and needs to be fixed).
-> 
-> This comment indeed implies that device removal actually means unbinding a
-> driver from a device. I think "device remove" is meant here as the drivers
-> remove() callback is called.
-> 
-> Your comment seems to imply you have a different understanding of what "device
-> remove" means?
+> You mean revoking access to a resource in general? 
 
-Yes, see my other comments.  A device has a lifespan that exceeds that
-of a driver, and "remove" does not mean it is gone from the system just
-because the remove() callback of a single driver is called.  It still
-can, and does, live outside of a driver quite well, and in fact, the
-driver is not in control of its lifespan at all!
-
-All a driver can know is that it has a valid reference to a device for
-the amount of time from probe() to remove().  Outside of that a driver
-can not touch it, BUT the device structure lives on and can do lots of
-other things that do not involve the driver at all.
+I mean "having a mutex that can be revokable" as you describe here.  Why
+is a driver written in rust unique in needing this?
 
 thanks,
 
