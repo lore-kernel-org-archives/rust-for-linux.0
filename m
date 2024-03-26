@@ -1,193 +1,85 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9772021353
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 03:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F126AC3
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 05:37:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711425405; cv=none; b=jOhyIq4zSBaDfV6JgVm29fdxqKsC4nLKOFQ602HHs57QxiAB9vxf4qmbeowXnerCJi0p/7hSWY0hi/hdWPfk0CtRLtvg2gHpR5JgURWTIlO5CJaLR1a28j0R/6SlJPh29UlaUyi3FmO3a2AZ1dV727ygTA6CumZFK0WX0AAUZRI=
+	t=1711431473; cv=none; b=WMWVMSZUhDRVlgx6xz4NnwFxQse//YNshMJ+3o1iSiqO49GRwOV0M6XhUG5HSsVJdMuGWnrtjx9owlYiZ3elugzEvQNAQccIl49swoQRxEKFEgvoJNjl0lkeLAPHpLHu7c2nKoptfMIVkLYEy37hUQflKrC8TP+cNJ4aEP46LEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711425405; c=relaxed/simple;
-	bh=WOA0jjSHA8PSWAbj27+clOuIsbbUO3Vmsfst/KpUulY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZiPyLPPVOIQncrYJva+TtGckMkiBfibCdi0Pa4KPziieM0bIQ2Wn43347oUZ3TrgcIQf0nEm/4VIfq86L/N+VU7476eKaSxJ9FT0aUN0jzQuxJspvcvc4eg2nEuKSdNjOkN6lN1L/e549vVwBLfEai2NdKoYqcz6gyYqM330EYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=L3TxAdjz; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1711431473; c=relaxed/simple;
+	bh=0OO5zLwNzI80ckcNfyRAcblDARLbHI1k9gWkDdwlPpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VZgWdFeCwiAEnTrlJvNEx16uHHb8B40dDcF4R8xOHXffgWEZhREY3bnN8lqCgiD6kFEyTBGsN2gVgnAkq4S3CDI7X7pN4+F70CDueKUoEuoRfLcgUVpFnYEjuAirZb/M2YFxVfZ///dyMq+BUcCbbOPe9pKtBX20L4kEcOUW+Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f74Pg2iS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="L3TxAdjz"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-513d4559fb4so6768185e87.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 20:56:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1711425401; x=1712030201; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VIHIysdOPquKQ4BdUP2bPIlHtyK3i5gWkh5V6JlSRrw=;
-        b=L3TxAdjz2kHUyLXxayyWeRNx+sruxmRInnaEwgLw5DnoCXTnoFHw9RTvNbI3RQWqaP
-         Het7wEtOHsjDJKNLqJP2hBuPL5+9jbaPZW7GX+O196qi+8965UuRb/6X2XTmdUYVKawc
-         Pu1cpgtrhWsSnPVriw15fupJfkiZB4VLwQjKo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711425401; x=1712030201;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VIHIysdOPquKQ4BdUP2bPIlHtyK3i5gWkh5V6JlSRrw=;
-        b=gwxmhvmWNxW45V/Q04AZESM5AWdILemZmLpVMc+ouTOCL0vhetPPhFh92DNSinNnQl
-         1C7Sicn9oNNA4P7/FNcLNg2lMLZEolKyJnf1AAcSzVQu3MXuKb1su7JJ5gPv83EFteht
-         XUVeGkBK8vVat1rSozzvpqaQvyQoZbrAApZxUDKB97F3qBsQLoaNnNX8DcnmcyPeWWXp
-         j8JQmNBzN+cYBRo4/P9LaNAlyoVj9Cilg+5Dve9z4GEE4+gKaYY9F9EeGSo2gI02bPud
-         lxBTyUOLRKV9DlFwOgsqK0NySdk7UTrKITDJQK2sL/wn2CON3AAD7gbMjvAfmzM6rUae
-         6g0g==
-X-Forwarded-Encrypted: i=1; AJvYcCX7JfTnI72dtyeBkAZqd0/mtgKE6K1aa/qsUAqr4bAp6KG94h0njsvoydRKFYjD1GaOiIFI3ZK3UXBASxVuNiW8NcaEAjSt3EfCuQtn+5M=
-X-Gm-Message-State: AOJu0Ywk7OFsz7PwkiXrPm1brZ37zGadKLSUz5eBIclCEqX5TdpDFDS9
-	VOw5W8phdppdpR94XZX++7Z32W8zCTewCXEicKhYaIuF3bQPZ2vlHWbmNETPA1kQZodlMni8dkH
-	g8sBXhg==
-X-Google-Smtp-Source: AGHT+IEmuxVSoYYqmgMQHUFeZ57s6vO2DjQZFMVH4A3Xb4Lj2uScuG70n76wqDWi5BG4HSfp25vxLw==
-X-Received: by 2002:a19:ca07:0:b0:513:a833:cda2 with SMTP id a7-20020a19ca07000000b00513a833cda2mr5983399lfg.53.1711425401413;
-        Mon, 25 Mar 2024 20:56:41 -0700 (PDT)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
-        by smtp.gmail.com with ESMTPSA id i14-20020ac25d2e000000b00513d10789easm1373638lfb.180.2024.03.25.20.56.41
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 20:56:41 -0700 (PDT)
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d6c220a377so31493731fa.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 20:56:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXPyF7oU2Z8KLcQFa8OLTMw3ApRX4HWLK1Pcc9sr6rFfzne8WuYmckBH0RZFqFT+2ZE4iRdhFo/gu5HdnWbVnlsUIIuj1Jhz4Kns1o0A18=
-X-Received: by 2002:a17:907:9722:b0:a47:48b0:922e with SMTP id
- jg34-20020a170907972200b00a4748b0922emr6654391ejc.23.1711424968017; Mon, 25
- Mar 2024 20:49:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f74Pg2iS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13240C433F1;
+	Tue, 26 Mar 2024 05:37:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711431472;
+	bh=0OO5zLwNzI80ckcNfyRAcblDARLbHI1k9gWkDdwlPpY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f74Pg2iS/Bp5bCHMJRG8ZgBtHyghOSJltZoNJVYL3WrIK/y0Goq2WenHKu0zlZsZG
+	 mlxKFd5HnWgyQ023xh8ujXb1QpgyWHjg1lttSK7AJWfW5GtQ8tlqth13YN8cQIoZiR
+	 pXVoQTXnR1UM8uTpwsquLTPCZaMtMFZ17Z1OzU/Y=
+Date: Tue, 26 Mar 2024 06:37:48 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Airlie <airlied@redhat.com>
+Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
+	pstanner@redhat.com, ajanulgu@redhat.com,
+	Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH 4/8] rust: add driver abstraction
+Message-ID: <2024032601-deceased-premiere-1c02@gregkh>
+References: <20240325174924.95899-1-dakr@redhat.com>
+ <20240325174924.95899-5-dakr@redhat.com>
+ <2024032530-fester-dedicator-a8a9@gregkh>
+ <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322233838.868874-1-boqun.feng@gmail.com> <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
- <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
- <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
- <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
- <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
- <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
- <CAHk-=wgLGWBXvNODAkzkVHEj7zrrnTq_hzMft62nKNkaL89ZGQ@mail.gmail.com> <ZgIRXL5YM2AwBD0Y@gallifrey>
-In-Reply-To: <ZgIRXL5YM2AwBD0Y@gallifrey>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 25 Mar 2024 20:49:11 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjwxKD9CxYsf5x+K5fJbJa_JYZh1eKB4PT5cZJq1+foGw@mail.gmail.com>
-Message-ID: <CAHk-=wjwxKD9CxYsf5x+K5fJbJa_JYZh1eKB4PT5cZJq1+foGw@mail.gmail.com>
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, Philipp Stanner <pstanner@redhat.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
-	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
 
-On Mon, 25 Mar 2024 at 17:05, Dr. David Alan Gilbert <dave@treblig.org> wrote:
->
-> Isn't one of the aims of the Rust/C++ idea that you can't forget to access
-> a shared piece of data atomically?
+On Tue, Mar 26, 2024 at 05:36:14AM +1000, David Airlie wrote:
+> > I stopped here.  Please build on existing code in the kernel, and also,
+> > a real user of these structures is needed to see if/how any of this
+> > actually works.  Why not implement something that uses them that we can
+> > actually review?
+> 
+> Seems like you missed where the cover letter explained that this was
+> in the context of:
+> https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
 
-If that is an aim, it's a really *bad* one.
+Yes I did.
 
-Really.
+> Can we stop feeding the chicken/egg problem? :-) This posting attempts
+> to focus people on *device* abstraction problem, by posting small
+> patch series directly affecting things in an effort to get them
+> reviewed, or we post the full patch series touching every subsystem
+> and then nobody reviews it because it's 50 patches and it isn't
+> focused on the one thing they care about.
 
-It very much should never have been an aim, and I hope it wasn't. I
-think, and hope, that the source of the C++ and Rust bad decisions is
-cluelessness, not active malice.
+Would you want to review new api additions without ever seeing how they
+are used at all?  I can't agree to that, and neither would you, that's
+not how any of this works, sorry.
 
-Take Rust - one big point of Rust is the whole "safe" thing, but it's
-very much not a straightjacket like Pascal was. There's a "safe" part
-to Rust, but equally importantly, there's also the "unsafe" part to
-Rust.
+I can provide general "this looks really odd" comments, but I can never
+give a "acked-by:" for something that doesn't have a user, that's just
+impossible.
 
-The safe part is the one that most programmers are supposed to use.
-It's the one that allows you to not have to worry too much about
-things. It's the part that makes it much harder to screw up.
+I understand your prediciment, so work at it in tiny steps like everyone
+does when adding new apis, this isn't new.
 
-But the *unsafe* part is what makes Rust powerful. It's the part that
-works behind the curtain. It's the part that may be needed to make the
-safe parts *work*.
+thanks,
 
-And yes, an application programmer might never actually need to use
-it, and in fact in many projects the rule might be that unsafe Rust is
-simply never even an option - but that doesn't mean that the unsafe
-parts don't exist.
-
-Because those unsafe parts are needed to make it all work in reality.
-
-And you should never EVER base your whole design around the "safe"
-part. Then you get a language that is a straight-jacket.
-
-So I'd very strongly argue that the core atomics should be done the
-"unsafe" way - allow people to specify exactly when they want exactly
-what access. Allow people to mix and match and have overlapping
-partial aliases, because if you implement things like locking, you
-*need* those partially aliasing accesses, and you need to make
-overlapping atomics where sometimes you access only one part of the
-field.
-
-And yes, that will be unsafe, and it might even be unportable, but
-it's exactly the kind of thing you need in order to avoid having to
-use assembly language to do your locking.
-
-And by all means, you should relegate that to the "unsafe corner" of
-the language. And maybe don't talk about the unsafe sharp edges in the
-first chapter of the book about the language.
-
-But you should _start_ the design of your language memory model around
-the unsafe "raw atomic access operations" model.
-
-Then you can use those strictly more powerful operations, and you
-create an object model *around* it.
-
-So you create safe objects like just an atomic counter. In *that*
-corner of the language, you have the "safe atomics" - they aren't the
-fundamental implementation, but they are the safe wrappers *around*
-the more powerful (but unsafe) core.
-
-With that "atomic counter" you cannot forget to do atomic accesses,
-because that safe corner of the world doesn't _have_ anything but the
-safe atomic accesses for every time you use the object.
-
-See? Having the capability to do powerful and maybe unsafe things does
-not force people to expose and use all that power. You can - and
-should - wrap the powerful model with safer and simpler interfaces.
-
-This isn't something specific to atomics. Not even remotely. This is
-quite fundamental. You often literally _cannot_ do interesting things
-using only safe interfaces. You want safe memory allocations - but to
-actually write the allocator itself, you want to have all those unsafe
-escape methods - all those raw pointers with arbitrary arithmetic etc.
-
-And if you don't have unsafe escapes, you end up doing what so many
-languages did: the libraries are written in something more powerful
-like C, because C literally can do things that other languages
-*cannot* do.
-
-Don't let people fool you with talk about Turing machines and similar
-smoke-and-mirror garbage. It's a bedtime story for first-year CS
-students. It's not true.
-
-Not all languages are created equal. Not all languages can do the same
-things. If your language doesn't have those unsafe escapes, your
-language is inherently weaker, and inherently worse for it.
-
-           Linus
+greg k-h
