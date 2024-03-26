@@ -1,85 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F126AC3
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 05:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE3784D0D
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 05:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711431473; cv=none; b=WMWVMSZUhDRVlgx6xz4NnwFxQse//YNshMJ+3o1iSiqO49GRwOV0M6XhUG5HSsVJdMuGWnrtjx9owlYiZ3elugzEvQNAQccIl49swoQRxEKFEgvoJNjl0lkeLAPHpLHu7c2nKoptfMIVkLYEy37hUQflKrC8TP+cNJ4aEP46LEM=
+	t=1711432622; cv=none; b=eZZDc5GohyKweXNr+wbs6iHV3LuXVhyMXNqM+MqlOgK9308dI3v8zRRONsGilklKudZFyi0z4Ng6B4kULXC5GcSRn1eyfOoOw4cZGPfGEa0mTIcs+pOMy66ySVkrX1/GO5azWQRzWFpztmFQsm7oQrDKPQmvI59Bl/7nSSBiOLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711431473; c=relaxed/simple;
-	bh=0OO5zLwNzI80ckcNfyRAcblDARLbHI1k9gWkDdwlPpY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VZgWdFeCwiAEnTrlJvNEx16uHHb8B40dDcF4R8xOHXffgWEZhREY3bnN8lqCgiD6kFEyTBGsN2gVgnAkq4S3CDI7X7pN4+F70CDueKUoEuoRfLcgUVpFnYEjuAirZb/M2YFxVfZ///dyMq+BUcCbbOPe9pKtBX20L4kEcOUW+Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f74Pg2iS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711432622; c=relaxed/simple;
+	bh=ND9Y2sxlabnYJnhIIV0KvAzdrK9FLJxwJWh3pj7SGmo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fX1F3euAITHf+EkpM+Bnb1c9uPIiatAam4jVRn92PTeDtfqNaz33+f88bB7N6HqwBb3jGC4JayNWq91YJaf+7BJ0jMQbJtgZ/tifAwPpDA35Z0FFpOfsNeq1RbuS2XuDBCR5ER1xo+hsqZ0BpU8SMx85KdacvGZKgNiA3bWe91w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=DwQRSX7x; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f74Pg2iS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13240C433F1;
-	Tue, 26 Mar 2024 05:37:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711431472;
-	bh=0OO5zLwNzI80ckcNfyRAcblDARLbHI1k9gWkDdwlPpY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f74Pg2iS/Bp5bCHMJRG8ZgBtHyghOSJltZoNJVYL3WrIK/y0Goq2WenHKu0zlZsZG
-	 mlxKFd5HnWgyQ023xh8ujXb1QpgyWHjg1lttSK7AJWfW5GtQ8tlqth13YN8cQIoZiR
-	 pXVoQTXnR1UM8uTpwsquLTPCZaMtMFZ17Z1OzU/Y=
-Date: Tue, 26 Mar 2024 06:37:48 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: David Airlie <airlied@redhat.com>
-Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
-	pstanner@redhat.com, ajanulgu@redhat.com,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 4/8] rust: add driver abstraction
-Message-ID: <2024032601-deceased-premiere-1c02@gregkh>
-References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-5-dakr@redhat.com>
- <2024032530-fester-dedicator-a8a9@gregkh>
- <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="DwQRSX7x"
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dc6dcd9124bso4915641276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 22:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1711432620; x=1712037420; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PPkjY6tTJjq9XlGXu2wl3SzG0jXY288ke/okKd5Kw2o=;
+        b=DwQRSX7xXn0tiE7O/iVzvcILfAA5V+It8QlyxT+GeYMvSYtObXDUYJfIC0sJ4lbv9k
+         Trw5xlTNzUjYovObDw/DDLw4ybvqd/gNC3ZCzpyFxYLSP1cLkQM1sqR78bZPPqg2ECr3
+         pd9vvGgT+U+ZO3BHwiMYa+few2d+6Ai3cR29A4AzYy+BU86eQSAzjtGup+7kYoi3Hq+j
+         EExhVbzSq0roJ8/CfD2Rob3cBZyA1jje1QdRKEKDm92X/TJte/qplh/WlAn6b75vt9A8
+         gdWUQYFVAe8ukaSRtmN1nXAhQqrYPZwkPn7Lu1/HPd4tOWO264NF1OXno3nJrWAjf/0p
+         x0Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711432620; x=1712037420;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PPkjY6tTJjq9XlGXu2wl3SzG0jXY288ke/okKd5Kw2o=;
+        b=XhU6XjTIfwHNYNabDfCmd9Hekk4zUfHuFuzE1nYeO5JRtaD2VEdUNmGtE9zNst8Dru
+         ELI8O6iMSQNqdZ0tWH+DfwZXfpYCniNMuvLB0TvdSujWj3gexK/CX2Un/yglmaQ38nDx
+         OlWXo+l0Yh25/ZJa3uzQyb0PL4UVMFeqyEixwNjyRZBm2baKpPB8ieoGeSolSM6pIe94
+         jl1lTtg2DlJ/p/bWbJrHRoC0nldGJOBIwRbnCVtL52kBvdVQQGOAyd2lkVlTuTFkq1Wn
+         TRqBg8PUke5ZvcJHjMbCZ3NRkCVXWgUa7BcMGI/pFR/UKuExb5sPqQEeDCJlh65602uZ
+         Zw8A==
+X-Forwarded-Encrypted: i=1; AJvYcCU+vpB3XoNQRW6NftpJwGgO0JUravwMl/HbV5blrWxTr3cviqqz3ocGcS9M6nRYsg2Vc0kfPbgii6PuGG7r1JSAgfmgWS3TXWEeQik3PgI=
+X-Gm-Message-State: AOJu0Yx5PGLnPpb0NP3s3HfAvEEZMMRyGOKXYXZChvvWQtM0NMmy56aU
+	JkRgapEmGKY9tAgRfWIDhtWznT1qm+nwysbn8nn/TuhK2dgFS1aM0TnHV/yZhLbNxJASUK0f0/H
+	dN8huAmN3YxhB52QyJ469ULseKsOHFlYk1uumAA==
+X-Google-Smtp-Source: AGHT+IEZ5qdBLVvKB5XTD+4JNcNopYd0Qw8YU24zs9LsT+BKNrCyfLvgj0YV5WuY7LflHPoWR30CvJt+jqecqoOosTk=
+X-Received: by 2002:a25:2fd2:0:b0:dc2:398b:fa08 with SMTP id
+ v201-20020a252fd2000000b00dc2398bfa08mr6083186ybv.31.1711432619981; Mon, 25
+ Mar 2024 22:56:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
+References: <20240322233838.868874-1-boqun.feng@gmail.com> <20240322233838.868874-2-boqun.feng@gmail.com>
+ <068a5983-8216-48a5-9eb5-784a42026836@lunn.ch> <CAH5fLggdVDccDwBa3z+3YfjKFLegh7ZvcSzfhnEbAGSk=THKrw@mail.gmail.com>
+ <497668ec-c2d5-4cb4-9c2d-8e6f7129a42e@lunn.ch>
+In-Reply-To: <497668ec-c2d5-4cb4-9c2d-8e6f7129a42e@lunn.ch>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Tue, 26 Mar 2024 01:56:48 -0400
+Message-ID: <CALNs47uEE9f73mtoXtJ52wS4nCOjTVxUtyPfQexF1mzHg6W5JA@mail.gmail.com>
+Subject: Re: [WIP 1/3] rust: Introduce atomic module
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, 
+	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, 
+	Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, 
+	Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
+	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 26, 2024 at 05:36:14AM +1000, David Airlie wrote:
-> > I stopped here.  Please build on existing code in the kernel, and also,
-> > a real user of these structures is needed to see if/how any of this
-> > actually works.  Why not implement something that uses them that we can
-> > actually review?
-> 
-> Seems like you missed where the cover letter explained that this was
-> in the context of:
-> https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
+On Sat, Mar 23, 2024 at 10:10=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
+:
+> > > Is it possible to somehow poison rusts own atomics?  I would not be
+> > > too surprised if somebody with good Rust knowledge but new to the
+> > > kernel tries using Rusts atomics. Either getting the compiler to fail
+> > > the build, or it throws an Opps on first invocation would be good.
+> >
+> > We could try to get a flag added to the Rust standard library that
+> > removes the core::sync::atomic module entirely, then pass that flag.
+>
+> Just looking down the road a bit, are there other features in the
+> standard library which are not applicable to Linux kernel space?
+> Ideally we want a solution not just for atomics but a generic solution
+> which can disable a collection of features? Maybe one by one?
 
-Yes I did.
+Clippy is an easy way to do this via the disallowed_* lints.
+disallowed_types [1] would be applicable here to forbid
+`core::atomic::Atomic*`.
 
-> Can we stop feeding the chicken/egg problem? :-) This posting attempts
-> to focus people on *device* abstraction problem, by posting small
-> patch series directly affecting things in an effort to get them
-> reviewed, or we post the full patch series touching every subsystem
-> and then nobody reviews it because it's 50 patches and it isn't
-> focused on the one thing they care about.
+I don't think KCI currently checks clippy, but we probably want that
+at some point.
 
-Would you want to review new api additions without ever seeing how they
-are used at all?  I can't agree to that, and neither would you, that's
-not how any of this works, sorry.
+- Trevor
 
-I can provide general "this looks really odd" comments, but I can never
-give a "acked-by:" for something that doesn't have a user, that's just
-impossible.
+[1]: https://rust-lang.github.io/rust-clippy/master/index.html#/disallowed_=
+types
 
-I understand your prediciment, so work at it in tiny steps like everyone
-does when adding new apis, this isn't new.
-
-thanks,
-
-greg k-h
+> And i assume somebody will try to use Rust in uboot/barebox. It
+> probably has similar requirements to the Linux kernel? But what about
+> Zephyr? Or VxWorks? Darwin?
+>
+>         Andrew
+>
