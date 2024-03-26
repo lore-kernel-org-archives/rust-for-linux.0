@@ -1,138 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D26A823C7
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 06:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6B5A954
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 06:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711433669; cv=none; b=fKVqc8kd04QGzMtTjKtl/bRnwo4dxXrNxZIB/Bc3brlv3z6LDw7I2fdtpTx32wsksegH2RSWwdC9/O0JUUMyBJa3x597aUh09kDD0xfAhqx48yBrhZUSj1+MTFjK09JitCgwQNhpB8gCGtYlVRinVz3H8tCsFPih6OUMLdsaW5w=
+	t=1711434890; cv=none; b=jUXTiYEvCDUcu9qBtNz2AWumrrFfCLwV/ShYcuAlnLpmsDLYe/C11qDpGEk0JUf5e8HxbeU6/wAjPoW92XR5pImokSJhmAuODgAyds1g7lbsS2KO/AvrNCHOfByPLMcLaJERVBVKN9gxO8EA8QTUjPrx48ocJFnNarpLqjWUWkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711433669; c=relaxed/simple;
-	bh=cTEK8x06/OStCtTrKrpqIKuuoGoBYpMIhikHZGujxNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qPFpPskWcue+2ymQIkho0enQrK+XD/uFG+XYsx1SejeOgowiDUiT/6cSDFKg8v+foaWOiq6q5kjbF3Pcj6x+2aIM9FSTnLk5/96Ba4iLk6ECUyMc3dzxQYr6DjndFiQFKw0gB0b58pFeDh2BECYBQkYJDyMPq7Q63ephoOfYTOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vgm++Js9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711434890; c=relaxed/simple;
+	bh=gO6Na9BkkIW3cTqFhPkilAo4Cq4SFPcoG6gBOazwW54=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pzBp2txbjXVGvQIjWpGXh55P/1S94VBvOlQEjESFsohu0T/RaI9lIfPVi7de0pXYTUQgcZHkLe3xThsXb1dCAK0Ik4kgfgCk6A7nuE0gMA0Es1wOn8pFwtqr/Hpr1AhQFUW641YkB2BETRux1pTSfL8yu/OkGQzxOBq5crnVqiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PUlxpurF; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vgm++Js9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C06CC433F1;
-	Tue, 26 Mar 2024 06:14:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711433668;
-	bh=cTEK8x06/OStCtTrKrpqIKuuoGoBYpMIhikHZGujxNI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vgm++Js9T5iNYqPyjsFkQ/PCOlD8bo3pT9jU4SWeSmjMr+OcK9phQLZ5PDHM5Euz0
-	 OebJkCcKccMTouRmHWKgwYIiREdBZVnoi+ugEXbsTXTgk2ZeKlYTO7kXUY2YkoT/DI
-	 wgakn4KsRMphIcTsDLbOf/URb289MJyOB1uOrq5Y=
-Date: Tue, 26 Mar 2024 07:14:25 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: David Airlie <airlied@redhat.com>
-Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
-	pstanner@redhat.com, ajanulgu@redhat.com,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 4/8] rust: add driver abstraction
-Message-ID: <2024032606-dutiful-tusk-5da3@gregkh>
-References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-5-dakr@redhat.com>
- <2024032530-fester-dedicator-a8a9@gregkh>
- <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
- <2024032601-deceased-premiere-1c02@gregkh>
- <CAMwc25omcj6_OKdcBkke5yzC2M5oNO=E3EG4aezNfEMRAp9Wvg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PUlxpurF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711434888;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TzNhwpd5xedlbWxj8dWvJN1JPUpbBgrK+qsHh7egwgw=;
+	b=PUlxpurF40a4NdJMBKaNOF/+fjSU8uiX9qi3tRHzt24UBW3n7HSLJt9ixraoDa6XlB2trj
+	rBKiitbaPUsQJTFChb4VJDHp25q9Z3W7mQ8O1cOp+Is5xly9bBm0lALD98nqOQ26g2qTW9
+	nAl+EP3F9LGiSi+5abYzfSegcDSHwoA=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-21-LNVsRezWO7e85GmlD57RBw-1; Tue, 26 Mar 2024 02:34:45 -0400
+X-MC-Unique: LNVsRezWO7e85GmlD57RBw-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6963cd45fddso115239816d6.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 23:34:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711434885; x=1712039685;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TzNhwpd5xedlbWxj8dWvJN1JPUpbBgrK+qsHh7egwgw=;
+        b=bNnEg62sh2yHnrkK27bEPuiCcDB/FNp6Q9odihthG3KSuw12VGxx1sXog3/CW6pxjb
+         9fQEDtJefGuGkZG1V7ndyBJqro/bm8lf28dGDUiviy679yQkIYDYDhizASHydAx80S42
+         Fyw+DHhS33Jf2sr/xf7fARYSso7/+Sj78mV5TXJZTaY0D8ovv+21NnA0ciobhe7BvvUz
+         ie79F4yUPOyN0EOZQE6uig9KgXPDfP+BZKlDLMeSMwOkDN2CLBTkHocrLg/4LOSfOT4j
+         +PZGcLGqJaXYqnJDJI7N/7LN2oesOcR5iQfeomMM0GkFYKAitBiSpdK41eb+Vno9kEts
+         qR1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUhT/geG4MlbK1bx0d+3GEDwAL2XnliEoZEvGGbugnc/JlNEBTOwRLXBWjICABvlXddXOTMg6Xc49wuPkEZg+hEA4jdjOkWzACExrZk7+w=
+X-Gm-Message-State: AOJu0Yx+WpoI3s8wb4T4OqY6JtGwKVtYCh0waNyNhDaaq0eFaIqDN1UQ
+	bQ5nDsIWXb+sjTNq0p+3QkGAYOqKsxo6F8hHFNHYO39TQdk7YXmNVA+xx/TuGqq9vKg5RMk4VtX
+	azrb8um/kscaRVoM4w7wf9GCaevas166FZREfYo9fOZIHDU1JXuwXgkQqXxb6fHOIBTBeQxFCVS
+	LraWCXqWX2xhkcRp9Yig+rByEbXOkA3/v75ZTEg9k=
+X-Received: by 2002:a05:6214:c6c:b0:696:8ecf:5742 with SMTP id t12-20020a0562140c6c00b006968ecf5742mr681048qvj.4.1711434885504;
+        Mon, 25 Mar 2024 23:34:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuKhudNzqVu1Vkbt/8BJR/bAgZP2fJRW1wYE5Q0NvJEEGjezabVDL2BT6lb6K9v8ETugDUTBMV470jGw2V42U=
+X-Received: by 2002:a05:6214:c6c:b0:696:8ecf:5742 with SMTP id
+ t12-20020a0562140c6c00b006968ecf5742mr681028qvj.4.1711434885233; Mon, 25 Mar
+ 2024 23:34:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMwc25omcj6_OKdcBkke5yzC2M5oNO=E3EG4aezNfEMRAp9Wvg@mail.gmail.com>
+References: <20240325174924.95899-1-dakr@redhat.com> <20240325174924.95899-5-dakr@redhat.com>
+ <2024032530-fester-dedicator-a8a9@gregkh> <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
+ <2024032601-deceased-premiere-1c02@gregkh> <CAMwc25omcj6_OKdcBkke5yzC2M5oNO=E3EG4aezNfEMRAp9Wvg@mail.gmail.com>
+ <2024032606-dutiful-tusk-5da3@gregkh>
+In-Reply-To: <2024032606-dutiful-tusk-5da3@gregkh>
+From: David Airlie <airlied@redhat.com>
+Date: Tue, 26 Mar 2024 16:34:33 +1000
+Message-ID: <CAMwc25ozHGVS5jE3QnDx7EgryL+=dCdUbm6PNBcsy5P8CtX8Lg@mail.gmail.com>
+Subject: Re: [PATCH 4/8] rust: add driver abstraction
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com, 
+	pstanner@redhat.com, ajanulgu@redhat.com, Asahi Lina <lina@asahilina.net>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 26, 2024 at 04:02:04PM +1000, David Airlie wrote:
-> On Tue, Mar 26, 2024 at 3:37 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, Mar 26, 2024 at 05:36:14AM +1000, David Airlie wrote:
-> > > > I stopped here.  Please build on existing code in the kernel, and also,
-> > > > a real user of these structures is needed to see if/how any of this
-> > > > actually works.  Why not implement something that uses them that we can
-> > > > actually review?
-> > >
-> > > Seems like you missed where the cover letter explained that this was
-> > > in the context of:
-> > > https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
-> >
-> > Yes I did.
-> >
-> > > Can we stop feeding the chicken/egg problem? :-) This posting attempts
-> > > to focus people on *device* abstraction problem, by posting small
-> > > patch series directly affecting things in an effort to get them
-> > > reviewed, or we post the full patch series touching every subsystem
-> > > and then nobody reviews it because it's 50 patches and it isn't
-> > > focused on the one thing they care about.
-> >
-> > Would you want to review new api additions without ever seeing how they
-> > are used at all?  I can't agree to that, and neither would you, that's
-> > not how any of this works, sorry.
-> >
-> > I can provide general "this looks really odd" comments, but I can never
-> > give a "acked-by:" for something that doesn't have a user, that's just
-> > impossible.
-> >
-> > I understand your prediciment, so work at it in tiny steps like everyone
-> > does when adding new apis, this isn't new.
-> >
-> 
-> These are the tiny steps, unfortunately to even create a driver with
-> enough "driver" that you have something to review requires a bunch of
-> abstractions to a bunch of subsystems.
-> 
-> In order to do a stub drm driver, we need at least the device, pci and
-> drm device abstractions, they all build on each other, and have
-> different sets of expert opinions to gather from different people.
-> 
-> We just end up losing the reviewers in the noise, because there are 50
-> patches to review and nobody wants to look at it. Maybe you would
-> prefer things that way, and we can certainly optimise for you, but I
-> think there'll be a bunch of other less rust friendly maintainers that
-> might be more painful.
-> 
-> Thanks for the review so far, and I don't think we are at the
-> expecting acks stage anyways, just discussion around lifetimes and how
-> it integrates with the C side are probably way more valuable.
-> 
-> Maybe for next sending, Danilo can try the all the patches approach
-> and we can see if your expectations of kernel maintainers align with
-> mine :-)
+> I don't mind 50 patch long series, those are fine as we can see how
+> things are actually used.
+>
+> But for complex beasts like DRM drivers, perhaps people should stop and
+> implement the tiny "easy" things first, with working users, to verify
+> that it is all ok first before biting off the big ones.
+>
+> Like implement a "simple" bus, which means that you have to have the
+> driver core bindings all working properly and correctly.  Once that is
+> done and merged then move to the next thing (i.e. a more complex bus
+> like PCI or USB or platform).
 
-I don't mind 50 patch long series, those are fine as we can see how
-things are actually used.
+This is just reintroducing the chicken/egg problem. Implementing a
+"simple" bus usually means implementing a "simple" driver for that
+bus. Implementing a simple driver for that bus often means
+reimplementing an existing driver that is already in the tree. The
+"simple" bus driver gets pushed back on because it's duplicating
+functionality that is already in the tree and nobody reviews anything
+and we re-enter the deadlock cycle. We are actively trying to break
+the cycle and get stuff upstream so this can be properly explored
+rather than 20 independent trees carrying out of date patchsets to get
+anywhere.
 
-But for complex beasts like DRM drivers, perhaps people should stop and
-implement the tiny "easy" things first, with working users, to verify
-that it is all ok first before biting off the big ones.
+> Drivers consume from almost all of the kernel at once, attempting to
+> write a driver in rust requires bindings from all of those things at
+> once, a very daunting and difficult task as people are quickly finding
+> out.  Break it down into smaller things, like the phy driver did, and
+> move forward that way if people wish to see rust succeed.  Don't attempt
+> to go and do the biggest beast first, that's just going to make people
+> frustrated quickly as you have to interact with too many different parts
+> of the kernel all at once.
 
-Like implement a "simple" bus, which means that you have to have the
-driver core bindings all working properly and correctly.  Once that is
-done and merged then move to the next thing (i.e. a more complex bus
-like PCI or USB or platform).
+This is all of that, in the drm community we have an out-of-tree
+driver done the hard to upstream way, we've decided a small simple drm
+driver is the simplest place to write a driver from scratch that has a
+friendly enough maintainer that it won't be refused on grounds of
+duplication or not implementing a completely functional driver. I
+don't think it's unreasonable to start this with a drm driver, we've
+at least got developers and maintainers who understand lifetimes, it's
+just how we get over the initial device/pci/drm bindings without
+blinding intermediate developers with the patch noise.
 
-Drivers consume from almost all of the kernel at once, attempting to
-write a driver in rust requires bindings from all of those things at
-once, a very daunting and difficult task as people are quickly finding
-out.  Break it down into smaller things, like the phy driver did, and
-move forward that way if people wish to see rust succeed.  Don't attempt
-to go and do the biggest beast first, that's just going to make people
-frustrated quickly as you have to interact with too many different parts
-of the kernel all at once.
+Next time I think Danilo can just send the monster patchset and we can
+see how people feel about things then as well.
 
-Heck, we don't even have working atomics in rust yet, the basic building
-blocks of almost all drivers that have complex data paths...
+Dave.
 
-good luck!
-
-greg k-h
