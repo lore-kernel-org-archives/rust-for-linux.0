@@ -1,312 +1,219 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD1683CA4;
-	Mon, 25 Mar 2024 23:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E721367;
+	Tue, 26 Mar 2024 00:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711410116; cv=none; b=pkP+/YNRpRzCpHS88CFL8yyfjOJNiy7FX6ZqWp8x4FUiJeNO/H493ysrYpxizdiptzssUrekcutgC4qhExBNzNLhP+eq7VXmdniDdEMdnHzEjvW/cme46FZEiUyQ9zHaDFVih1Pc+HinE6EZ0FFDcASwkFIC7ZxSwzWObzGAW+U=
+	t=1711411366; cv=none; b=pxQQhScaamt6bNi6QRyeBIwwjRy6MCahfVKI46CiNdF6ZWXR/rRzcXxEsfvUUWFb/KthXeVz89UDGIixIMxrBhMUiqG1F9gM3plLKMU+XLrUhJ/e/E3b+tEzRtminHc6F7qUlDyJUQ47NtFz5PNDMztkvMU4qa+HewWLO/vNc6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711410116; c=relaxed/simple;
-	bh=8wtoXalC0rIot47YssKWI4aZamE8d7fHGPD58F/CrCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b1G6++0yGpt6apDDc2VM5SpbQshmBl5T8bxWfjQ6Sha4iLek+ujW/RF6q6VMNl0C6yCUfiE22neQrRPYAznllFMfbmh4vnFg5sHDBUaDo+iPzusf0rRIcxoxVurDprOBl9dCtbgJk0m8V9uc0+b2ZjfNQdzg/qWv+ZgG3IYngTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GdTVfaWx; arc=none smtp.client-ip=209.85.219.52
+	s=arc-20240116; t=1711411366; c=relaxed/simple;
+	bh=Swt6+93KTELzBLQj7zUwl5HIGVhxbZse+TMgVXv8e0Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AbFM32ABHuVZk8/f8HkV5qjeiScNOy/g6PTCXhPGQ1+hkdTXzNgchy1CbIOCN7G2263x9/Rgp3Sbl/Wm7GwHO0UpfJIk8h1dmVK20YnobBuKz8PqGbUQFOOYsdOHFObR0dvnO2eiDVc+NDfRkGP+BmkxqWFNEjqHspL+baSm55M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3icT/pb; arc=none smtp.client-ip=209.85.219.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GdTVfaWx"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6918781a913so41496086d6.3;
-        Mon, 25 Mar 2024 16:41:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S3icT/pb"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dc6dcd9124bso4757480276.1;
+        Mon, 25 Mar 2024 17:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711410114; x=1712014914; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yJGcRjWxujI/xbMJS+9v8/3RkR6IQk/HoBXdHo4IvJM=;
-        b=GdTVfaWx01v07Aj+NJLr/jCNIbxMwTiQDERbcKPCzJTvlh8P8cTiREqLh1TBlRZ5p9
-         tuHXJQ464OnGuonwqg6Kraj2HMFIGU2zky24yZRecrX1ARv+rXgTVI5eusA/a3qj6Xzv
-         ujNzTZLl0r49pPTCe4JeVvN1zUUKwbkp4NhpbaURlCTiHYvE18s1ein4kduWGUqYnYrW
-         ItjKLRrHknI2BqwN24Kpjn5roAj95JHf7FuOhvvcVdar0/Ea7vE+lvMelTE9prsZELQu
-         DjwPF+YAPmyyFmmC3mB1Fr7WaB4pYz5CHpELiAd2/AOSI8TON5/lY9vYampe2YCcQJ+S
-         MmIQ==
+        d=gmail.com; s=20230601; t=1711411364; x=1712016164; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0ZSaVSDwUkk79xkN09Vf+/rrtBLYHXzzW+Z8vmjcWb0=;
+        b=S3icT/pb4Y4T9bZrSidffyuyodQTjOQHDb74QiQjZffJ4Evn4JpnrVZwydAkdcymkw
+         w418xl1pzYCuuLFDI9DxTnUi73oVvH9URxFZRUweWNPFMZD6tR4GwPPsh9CO1C/u9zb2
+         IRbHIq/EWOn+rPJhzywLKgoFJ/L0PqmVzWVRUlbu//9XF11/hS0qd3VcOR3sCljqNsvt
+         SysIBLPWsA62+xA4oewG9O5cLeEvNpygiUvLM2LaWswd/BauOZMgU5JQG02kHl1wgpIu
+         vryuP+CKjFtgoAViT4pTYoq0g5LHvbIt7bUtSuuehDfCEOwiIK9VVNHvqLzxKpfBp0DP
+         s8Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711410114; x=1712014914;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yJGcRjWxujI/xbMJS+9v8/3RkR6IQk/HoBXdHo4IvJM=;
-        b=vKcvzpza6QAjMCQSgw7FNjFjurH12FfqX5qYJpb80BiyVsKvz7AFuW5FjChJS+j2kc
-         DQMAlEnHiMamtbBWFfogvkmJUvZPPQPeVs19W1hVr8EVUDEMb5Uv4EhQcYoAQevJTBlr
-         7MfaubmTxxUmij3urmhXvxqniMvPEh20oJfmS/gNCg2SVtxrdhj5X+Wna/UoxW8iU9sJ
-         MCmPjRc4aqtSOE1+PNalR6JobKhyK8BSOjWKNM93HMwSxFVzG/QSAgvqiSueDTNxGAtI
-         qxdZKEzoOn1COEjPJ3x9sRLx4eHxGRsUnPeQUb147mKHJ57VldsbHGzNhwqt3E3TSdxM
-         pH6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWdy5TZ43fy34ytk5f72NJVqmlyxwteS6HMC4VqAB5fR8zcbWYoSnIZUUq6PpH7pgMLpqxcs6elx9g8dhnqvQaCsIH+05O5X7Jtrju/mxcRf4/f7cqvGmm+Fl9IlzfSNwY623eMKA3Fa0gYZUkgAPvZdkELo8ECeRnOdBurfW+XliL9mBZO36RYl7ha7d2JovqgoiQwWZjC34xM1g2pAC2oCALlx0xGvA==
-X-Gm-Message-State: AOJu0Yw9Pnf0cyMAw0UO0P/Z1azKUdxixA9V3ykQdPR9ZJtwCvP01nIg
-	TduYvnEOrmJYGJ4dtIddaxXF0Hz5Nwy8e7qj478YxyB97j8h1HWx
-X-Google-Smtp-Source: AGHT+IEdPU4dTEy2JZqf6+fOq13iZJz6jJM2/V2qB77B0kCBgeR/Ks/8yVDV8iurZcon/ktLSAu9Dw==
-X-Received: by 2002:a05:6214:20e7:b0:696:89f6:28d5 with SMTP id 7-20020a05621420e700b0069689f628d5mr5443333qvk.50.1711410113750;
-        Mon, 25 Mar 2024 16:41:53 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id pn16-20020a056214131000b00690afbf56d5sm4549850qvb.66.2024.03.25.16.41.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 16:41:53 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 0DD1A1200032;
-	Mon, 25 Mar 2024 19:41:52 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Mon, 25 Mar 2024 19:41:52 -0400
-X-ME-Sender: <xms:vwsCZvsaCSxos8n79rZkAnGlOLB2T3k0UOcwZUN8am2ifjKvkR6qAQ>
-    <xme:vwsCZgcbeL9ZUoKDC84FCXvXT50zsbQLmYIZwAELH26czQlsmNuaRuvnuhqqBwu7R
-    ghIgUv7_CmxngQjkg>
-X-ME-Received: <xmr:vwsCZiwkQGJyk9mLCVEH4OO83Fe-KY7HEZ9mTurW_zD-zL8662W1ASrrCIw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudduvddgudefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeevvdejffefgeffhfelffeikeeigeehjeekgfefudeugfejfefhteekvedu
-    teelhfenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghdpiihulhhiphgthhgrth
-    drtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
-    pegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtd
-    eigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehf
-    ihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:vwsCZuNaQjsRCLUNW8IaAff0EyoUoWu_fUrBqrZKEsNReL9iHs8kFg>
-    <xmx:vwsCZv9ocLjBkeOeNf-GDgorBHdbW30PbcdI4nVzT3zrOUogmMhSIA>
-    <xmx:vwsCZuVqLPTJVJhxer93DncKKWLfZcU7ABwCONtY-6l6fztq-LpCKA>
-    <xmx:vwsCZgfTrHJpR_1BcTK--XiAOr8c5rkvIZZWJeQfLZMXK4ijfwf-RQ>
-    <xmx:wAsCZl4i7_IgwVOE5CIKAS825amAtXL6LwfmgSXfqwER1O_snhWyF99VBEV0nCdF>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 Mar 2024 19:41:50 -0400 (EDT)
-Date: Mon, 25 Mar 2024 16:41:19 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Philipp Stanner <pstanner@redhat.com>,	rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,	linux-arch@vger.kernel.org,
- llvm@lists.linux.dev,	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-Message-ID: <ZgILn_Uy5nSodrcY@boqun-archlinux>
-References: <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
- <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
- <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
- <CAHk-=wgLGWBXvNODAkzkVHEj7zrrnTq_hzMft62nKNkaL89ZGQ@mail.gmail.com>
- <gewmacbbjxwsn4h54w2jfvbiq5iwr2zdm56pc3pv3rctxyd4lt@sqqa544ezmez>
- <ZgHuioMM1cAWNDiX@boqun-archlinux>
- <jyijwrrzzhlsrffj37xj4sskipxqbxfewydnb3yzgybjobj6tg@cbv5y7znhm3n>
- <ZgH86EUON30lUk6m@boqun-archlinux>
- <qo6z3j2h32rzwr6bcnkrrw7irdqwakgymcf2jodnq5nz3simwq@tqydlv4mctrv>
+        d=1e100.net; s=20230601; t=1711411364; x=1712016164;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0ZSaVSDwUkk79xkN09Vf+/rrtBLYHXzzW+Z8vmjcWb0=;
+        b=JrJ95UowMd7O0OxRAcBQvTmeL3pqNyS3qMocbxAvFqvQR7QgbCTskG4V78PNvEPhEq
+         MQeqH0jbNqdEF033tELc2rAumlPaiyXzM28Biid1iRmHygY/EaVpLi6V2Nid4cWG9nao
+         61j0ZImdp8lTmmVUIV2iQ5aYkWH4xyDdse1MPcU5wUS0xZTo2y5keTXDOYzFR+3WcfdL
+         iEE3w3LTNhwE2JwJ3icn8HIQDiFAI/E6tYum26uFZYMR86IZj1BY3IOAI3Fa8lJRHt7/
+         zt2MTFOVxGpGpB8DNE94VvtbDl3+or5zdWzGa4vt2LM847xFgTpZzfJDCLnDqKOI0ar3
+         tjKA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7BiqLiH/dwOIhoZu8aIWNQwGX9XabZYLodDtBZ1KgQp+ebMCHOz/poctdF2MVtA6erkp9wbvIKtHgkjQMQHN4Pu7+3t0uI9wgBqew
+X-Gm-Message-State: AOJu0YxmTIW9NyEFSeLdlj4HmE5fZM2hZl9DBJH8k1A98qJ1b2HosBKG
+	2Ug5itUgVT2DeorzUXxMlcKVn5xZTYDkZtB23OIMB1gk2cRiskN3V0bq4hesIc23WsFcTGYkoJf
+	wLg+qta4z3pzQHWdK1UywNnazllfzQtaPMVQ=
+X-Google-Smtp-Source: AGHT+IFJi4vw/rc8aDbAC5HKMEpuoPFUHrRZWYY8njdIFdukqddR/0qIDK5mDw85caFQ42g71xF1aSZoDSXATuOmB+4=
+X-Received: by 2002:a25:361e:0:b0:dcc:9dcc:a433 with SMTP id
+ d30-20020a25361e000000b00dcc9dcca433mr6546513yba.54.1711411364125; Mon, 25
+ Mar 2024 17:02:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <qo6z3j2h32rzwr6bcnkrrw7irdqwakgymcf2jodnq5nz3simwq@tqydlv4mctrv>
+References: <20240325195418.166013-1-wedsonaf@gmail.com> <20240325195418.166013-3-wedsonaf@gmail.com>
+ <g2iK91tWPKM5kXi-N6Nn3tn5jG4qvB6txrpq0ejLnQYgRNZJE1OO__SDANkSNP0JjMrqhEdc0m6YyxNlicxqzGr4hEsLAxPgCyPeyRoXLq0=@proton.me>
+In-Reply-To: <g2iK91tWPKM5kXi-N6Nn3tn5jG4qvB6txrpq0ejLnQYgRNZJE1OO__SDANkSNP0JjMrqhEdc0m6YyxNlicxqzGr4hEsLAxPgCyPeyRoXLq0=@proton.me>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Mon, 25 Mar 2024 21:02:33 -0300
+Message-ID: <CANeycqq+uVp1O5k56LPtzvJQObrjT9JY3zBiX8T0nu6Gdsbu6g@mail.gmail.com>
+Subject: Re: [PATCH 02/10] rust: alloc: introduce the `VecExt` trait
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 25, 2024 at 07:02:12PM -0400, Kent Overstreet wrote:
-> On Mon, Mar 25, 2024 at 03:38:32PM -0700, Boqun Feng wrote:
-> > On Mon, Mar 25, 2024 at 06:09:19PM -0400, Kent Overstreet wrote:
-> > > On Mon, Mar 25, 2024 at 02:37:14PM -0700, Boqun Feng wrote:
-> > > > On Mon, Mar 25, 2024 at 05:14:41PM -0400, Kent Overstreet wrote:
-> > > > > On Mon, Mar 25, 2024 at 12:44:34PM -0700, Linus Torvalds wrote:
-> > > > > > On Mon, 25 Mar 2024 at 11:59, Kent Overstreet <kent.overstreet@linux.dev> wrote:
-> > > > > > >
-> > > > > > > To be fair, "volatile" dates from an era when we didn't have the haziest
-> > > > > > > understanding of what a working memory model for C would look like or
-> > > > > > > why we'd even want one.
-> > > > > > 
-> > > > > > I don't disagree, but I find it very depressing that now that we *do*
-> > > > > > know about memory models etc, the C++ memory model basically doubled
-> > > > > > down on the same "object" model.
-> > > > > > 
-> > > > > > > The way the kernel uses volatile in e.g. READ_ONCE() is fully in line
-> > > > > > > with modern thinking, just done with the tools available at the time. A
-> > > > > > > more modern version would be just
-> > > > > > >
-> > > > > > > __atomic_load_n(ptr, __ATOMIC_RELAXED)
-> > > > 
-> > > > Note that Rust does have something similiar:
-> > > > 
-> > > > 	https://doc.rust-lang.org/std/ptr/fn.read_volatile.html
-> > > > 
-> > > > 	pub unsafe fn read_volatile<T>(src: *const T) -> T
-> > > > 
-> > > > (and also write_volatile()). So they made a good design putting the
-> > > > volatile on the accesses rather than the type. However, per the current
-> > > > Rust memory model these two primitives will be UB when data races happen
-> > > > :-(
-> > > > 
-> > > > I mean, sure, if I use read_volatile() on an enum (whose valid values
-> > > > are only 0, 1, 2), and I get a value 3, and the compiler says "you have
-> > > > a logic bug and I refuse to compile the program correctly", I'm OK. But
-> > > > if I use read_volatile() to read something like a u32, and I know it's
-> > > > racy so my program actually handle that, I don't know any sane compiler
-> > > > would miss-compile, so I don't know why that has to be a UB.
-> > > 
-> > > Well, if T is too big to read/write atomically then you'll get torn
-> > > reads, including potentially a bit representation that is not a valid T.
-> > > 
-> > > Which is why the normal read_volatile<> or Volatile<> should disallow
-> > > that.
-> > > 
-> > 
-> > Well, why a racy read_volatile<> is UB on a T who is valid for all bit
-> > representations is what I was complaining about ;-)
-> 
-> yeah, that should not be considered UB; that should be an easy fix. Are
-> you talking to Rust compiler people about this stuff? I've been meaning
+On Mon, 25 Mar 2024 at 19:05, Benno Lossin <benno.lossin@proton.me> wrote:
+>
+> On 25.03.24 20:54, Wedson Almeida Filho wrote:> From: Wedson Almeida Filho <walmeida@microsoft.com>
+> >
+> > Make `try_with_capacity`, `try_push`, and `try_extend_from_slice`
+> > methods available in `Vec` even though it doesn't implement them. It is
+> > implemented with `try_reserve` and `push_within_capacity`.
+> >
+> > This is in preparation for switching to the upstream `alloc` crate.
+> >
+> > Suggested-by: Gary Guo <gary@garyguo.net>
+> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> > ---
+> >   rust/kernel/alloc.rs        |  1 +
+> >   rust/kernel/alloc/vecext.rs | 52 +++++++++++++++++++++++++++++++++++++
+> >   rust/kernel/lib.rs          |  1 +
+> >   rust/kernel/prelude.rs      |  2 ++
+> >   4 files changed, 56 insertions(+)
+> >   create mode 100644 rust/kernel/alloc/vecext.rs
+> >
+> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> > index ccd4149932c3..8ad57a2e693e 100644
+> > --- a/rust/kernel/alloc.rs
+> > +++ b/rust/kernel/alloc.rs
+> > @@ -5,3 +5,4 @@
+> >   #[cfg(not(test))]
+> >   #[cfg(not(testlib))]
+> >   mod allocator;
+> > +pub mod vecext;
+> > diff --git a/rust/kernel/alloc/vecext.rs b/rust/kernel/alloc/vecext.rs
+> > new file mode 100644
+> > index 000000000000..59e92bab534e
+> > --- /dev/null
+> > +++ b/rust/kernel/alloc/vecext.rs
+> > @@ -0,0 +1,52 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Extensions to [`Vec`] for fallible allocations.
+> > +
+> > +use alloc::{collections::TryReserveError, vec::Vec};
+> > +use core::result::Result;
+> > +
+> > +/// Extensions to [`Vec`].
+> > +pub trait VecExt<T>: Sized {
+> > +    /// Creates a new [`Vec`] instance with at least the given capacity.
+> > +    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveError>;
+> > +
+> > +    /// Appends an element to the back of the [`Vec`] instance.
+> > +    fn try_push(&mut self, v: T) -> Result<(), TryReserveError>;
+> > +
+> > +    /// Pushes clones of the elements of slice into the [`Vec`] instance.
+> > +    fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryReserveError>
+> > +    where
+> > +        T: Clone;
+>
+> All of the non `try_` prefix functions require
+> `not(no_global_oom_handling)`, so we could also drop the `try_` prefix
+> here.
+> What do you think?
 
-Here you go:
+Yes, I do drop the `try_` prefixes in patch 7.
 
-	https://rust-lang.zulipchat.com/#narrow/stream/136281-t-opsem/topic/UB.20caused.20by.20races.20on.20.60.7Bread.2Cwrite.7D_volatile.60/near/399343771	
+Patches 1 through 4 remove the fork with minimal changes. Patches 5 to
+10 introduce new functions with flags and drop `allocator_api`.
 
-but maybe instead of Rust, LLVM is the best one to talk with on this.
-Because my take from the communication with Rust folks is more like
-"it's more up to LLVM on this".
+> > +}
+> > +
+> > +impl<T> VecExt<T> for Vec<T> {
+> > +    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveError> {
+> > +        let mut v = Vec::new();
+> > +        v.try_reserve(capacity)?;
+> > +        Ok(v)
+> > +    }
+> > +
+> > +    fn try_push(&mut self, v: T) -> Result<(), TryReserveError> {
+> > +        if let Err(retry) = self.push_within_capacity(v) {
+> > +            self.try_reserve(1)?;
+> > +            let _ = self.push_within_capacity(retry);
+> > +        }
+> > +        Ok(())
+> > +    }
+> > +
+> > +    fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryReserveError>
+> > +    where
+> > +        T: Clone,
+> > +    {
+> > +        let extra_cap = self.capacity() - self.len();
+> > +        if extra_cap > 0 {
+> > +            self.try_reserve(extra_cap)?;
+> > +        }
+>
+> I am confused, why are you doing this? Did you mean to do this?:
+>     let extra_cap = self.capacity() - self.len() - other.len();
 
-> to make my own contacts there, but - sadly, busy as hell.
-> 
-> > > > > where T is any type that fits in a machine word, and the only operations
-> > > > > it supports are get(), set(), xchg() and cmpxchG().
-> > > > > 
-> > > > > You DO NOT want it to be possible to transparantly use Volatile<T> in
-> > > > > place of a regular T - in exactly the same way as an atomic_t can't be
-> > > > > used in place of a regular integer.
-> > > > 
-> > > > Yes, this is useful. But no it's not that useful, how could you use that
-> > > > to read another CPU's stack during some debug functions in a way you
-> > > > know it's racy?
-> > > 
-> > > That's a pretty difficult thing to do, because you don't know the
-> > > _layout_ of the other CPU's stack, and even if you do it's going to be
-> > > changing underneath you without locking.
-> > > 
-> > 
-> > It's a debug function, I don't care whether the data is accurate, I just
-> > want to get much information as possible.
-> 
-> yeah, if you just want the typical backtrace functionality where you're
-> just looking for instruction pointers - that's perfectly
-> straightforward.
-> 
-> > This kinda of usage, along
-> > with cases where the alorigthms are racy themselves are the primary
-> > reasons of volatile _accesses_ instead of volatile _types_. For example,
-> > you want to read ahead of a counter protected by a lock:
-> > 
-> > 	if (unlikely(READ_ONCE(cnt))) {
-> > 		spin_lock(lock);
-> > 		int c = cnt; // update of the cnt is protected by a lock.
-> > 		...
-> > 	}
-> > 
-> > because you want to skip the case where cnt == 0 in a hotpath, and you
-> > know someone is going to check this again in some slowpath, so
-> > inaccurate data doesn't matter.
-> 
-> That's an interesting one because in Rust cnt is "inside" the lock, you
-> can't access it at all without taking the lock - and usually that's
-> exactly right.
-> 
+I originally meant `extracap = other.len() - self.capacity() +
+self.len()` because originally I thought `additional` meant additional
+capacity (so the final capacity would be original capacity plus
+`additional`). But after I looked at the code I learned that
+`additional` is really the minimum capacity.
 
-(Now you mention that, once I was trying to construct a deadlock case
-with some Rust code, but I couldn't since the locks are naturally
-hierarchical because of the types, therefore it's impossible to reverse
-the lock ordering. Yes, you still can have deadlocks in Rust, but that
-hierarchial type trees really help a lot).
+Then I decided that we don't need this check at all in
+`try_extend_from_slice`, which I removed in patch 7, I just call
+`reserve` directly with `other.len()`.
 
-> So to allow this we'd annotate in the type definition (with an
-> attribute) which fields we allow read access to without the lock, then
-> with some proc macro wizardry we'd get accessors that we can call without
-> the lock held.
-> 
+The code happens to work now because the `try_push` calls below ensure
+the capacity gets expanded. In any case, I'll fix this in v2.
 
-Right, that's field projection:
-
-	https://internals.rust-lang.org/t/pre-rfc-field-projection/17383	
-
-> So that probably wouldn't be a Volatile<T> thing, that'd be coupled with
-> the lock implementation because that's where the accessors would hang
-> off of and they'd internally probably just use mem::volatile_read().
-> 
-
-So we can play the type game as deep as we can, and I'm sure it'll be
-helpful, but in the same time, having a reasonable
-{read,write}_volatile() semantics on UB and races is also what we need.
-
-> > > So the races thare are equivalent to a bad mem::transmute(), and that is
-> > > very much UB.
-> > > 
-> > > For a more typical usage of volatile, consider a ringbuffer with one
-> > > thread producing and another thread consuming. Then you've got head and
-> > > tail pointers, each written by one thread and read by another.
-> > > 
-> > > You don't need any locking, just memory barriers and
-> > > READ_ONCE()/WRITE_ONCE() to update the head and tail pointers. If you
-> > > were writing this in Rust today the easy way would be an atomic integer,
-> > > but that's not really correct - you're not doing atomic operations
-> > > (locked arithmetic), just volatile reads and writes.
-> > > 
-> > 
-> > Confused, I don't see how Volatile<T> is better than just atomic in this
-> > case, since atomc_load() and atomic_store() are also not locked in any
-> > memory model if lockless implementation is available.
-> 
-> It certainly compiles to the same code, yeah. But Volatile<T> really is
-> the more primitive/generic concept, Atomic<T> is a specialization.
-> 
-> > > Volatile<T> would be Send and Sync, just like atomic integers. You don't
-> > > need locking if you're just working with single values that are small
-> > > enough for the machine to read/write atomically.
-> > 
-> > So to me Volatile<T> can help in the cases where we know some memory is
-> > "external", for example a MMIO address, or ringbuffer between guests and
-> > hypervisor. But it doesn't really fix the missing functionality here:
-> > allow generating a plain "mov" instruction on x86 for example on _any
-> > valid memory_, and programmers can take care of the result.
-> 
-> You're talking about going completely outside the type system, though.
-> There is a need for that, but it's very rare and something we really
-> want to discourage. Usually, even with volatile access, you do know the
-
-Hey, in memory ordering model areas, we are supposed to work on these
-rare cases ;-) These are building blocks for high level synchronization
-constructions, so I'm entitled to complain ;-) But yes, to your point,
-type system can help a lot, however, there are still cases we need to
-roll our own.
-
-Regard,
-Boqun
-
-> type - and even if you don't, you have to treat it as _something_ so
-> Volatile<ulong> is probably as good as anything.
+> --
+> Cheers,
+> Benno
+>
+> > +
+> > +        for item in other {
+> > +            self.try_push(item.clone())?;
+> > +        }
+> > +
+> > +        Ok(())
+> > +    }
+> > +}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 51f30e55bd00..7f2841a18d05 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -19,6 +19,7 @@
+> >   #![feature(offset_of)]
+> >   #![feature(receiver_trait)]
+> >   #![feature(unsize)]
+> > +#![feature(vec_push_within_capacity)]
+> >
+> >   // Ensure conditional compilation based on the kernel configuration works;
+> >   // otherwise we may silently break things like initcall handling.
+> > diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> > index ae21600970b3..a0177f195dec 100644
+> > --- a/rust/kernel/prelude.rs
+> > +++ b/rust/kernel/prelude.rs
+> > @@ -14,6 +14,8 @@
+> >   #[doc(no_inline)]
+> >   pub use core::pin::Pin;
+> >
+> > +pub use crate::alloc::vecext::VecExt;
+> > +
+> >   #[doc(no_inline)]
+> >   pub use alloc::{boxed::Box, vec::Vec};
+> >
+> > --
+> > 2.34.1
+> >
