@@ -1,123 +1,145 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE3784D0D
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 05:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9698E823C7
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 06:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711432622; cv=none; b=eZZDc5GohyKweXNr+wbs6iHV3LuXVhyMXNqM+MqlOgK9308dI3v8zRRONsGilklKudZFyi0z4Ng6B4kULXC5GcSRn1eyfOoOw4cZGPfGEa0mTIcs+pOMy66ySVkrX1/GO5azWQRzWFpztmFQsm7oQrDKPQmvI59Bl/7nSSBiOLo=
+	t=1711432942; cv=none; b=T2DD5TOT3dMUoXQwjCbaSBHXFeC8CsVv4550BMdDxeg1gC6xC2RjoaX14ndG/lAh+EC0cppNOHMv7p9z8fQq1m612T1Mg/w4PTIDmB/uQAW5QZQ8HuHhklMtsCSQoLmvJcmwdTUFPHGAQ4T1XkBX8QuADfZR5ucPiJCbefj4on0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711432622; c=relaxed/simple;
-	bh=ND9Y2sxlabnYJnhIIV0KvAzdrK9FLJxwJWh3pj7SGmo=;
+	s=arc-20240116; t=1711432942; c=relaxed/simple;
+	bh=/bUeg0GDwYTXsxeveP0N085DxjZefl0ikl6XHLIu+TY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fX1F3euAITHf+EkpM+Bnb1c9uPIiatAam4jVRn92PTeDtfqNaz33+f88bB7N6HqwBb3jGC4JayNWq91YJaf+7BJ0jMQbJtgZ/tifAwPpDA35Z0FFpOfsNeq1RbuS2XuDBCR5ER1xo+hsqZ0BpU8SMx85KdacvGZKgNiA3bWe91w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=DwQRSX7x; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	 To:Cc:Content-Type; b=CCZavAoxP7ArmkX4MMS4aveU3DR0nK7A30iesjZJzSxLHsgbhVHi26A44OxIGlqG9l3yYtRwk8v48uloZBsCs8RfYFbw0D6zwWzwAxG57LZ9mU4jTXAAgRrCBxkJ61qLH5Nl/g3hGLztuw3HA5ewsWl2YJNHb54WcA+dv1sLWqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fuBmI+iv; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="DwQRSX7x"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dc6dcd9124bso4915641276.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 22:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1711432620; x=1712037420; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PPkjY6tTJjq9XlGXu2wl3SzG0jXY288ke/okKd5Kw2o=;
-        b=DwQRSX7xXn0tiE7O/iVzvcILfAA5V+It8QlyxT+GeYMvSYtObXDUYJfIC0sJ4lbv9k
-         Trw5xlTNzUjYovObDw/DDLw4ybvqd/gNC3ZCzpyFxYLSP1cLkQM1sqR78bZPPqg2ECr3
-         pd9vvGgT+U+ZO3BHwiMYa+few2d+6Ai3cR29A4AzYy+BU86eQSAzjtGup+7kYoi3Hq+j
-         EExhVbzSq0roJ8/CfD2Rob3cBZyA1jje1QdRKEKDm92X/TJte/qplh/WlAn6b75vt9A8
-         gdWUQYFVAe8ukaSRtmN1nXAhQqrYPZwkPn7Lu1/HPd4tOWO264NF1OXno3nJrWAjf/0p
-         x0Fg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fuBmI+iv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711432939;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7TObN82cUc8l7ZLlVD4+WlQ5TlSdceF/P60JgrVAgnw=;
+	b=fuBmI+ivsTxP4pAOvnDfETHFnSVYjyS6YgWCiDShI6mw7a7LVF4UdP+WUY2Ui+fmzFGSzp
+	CS9VzrWl9139Ve4C+2gfm/AgoDIdNLLALzIgaVJgorlDnx0IZSqTFT+5wpyWwKlJvkGhmT
+	1rlQnTIdIqkYqfe5HwOrwSfAVaWG/VI=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-WjMLgoUxPt6J5v8DKGf0tQ-1; Tue, 26 Mar 2024 02:02:17 -0400
+X-MC-Unique: WjMLgoUxPt6J5v8DKGf0tQ-1
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-3c38f7e7c46so4801680b6e.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Mar 2024 23:02:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711432620; x=1712037420;
+        d=1e100.net; s=20230601; t=1711432936; x=1712037736;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PPkjY6tTJjq9XlGXu2wl3SzG0jXY288ke/okKd5Kw2o=;
-        b=XhU6XjTIfwHNYNabDfCmd9Hekk4zUfHuFuzE1nYeO5JRtaD2VEdUNmGtE9zNst8Dru
-         ELI8O6iMSQNqdZ0tWH+DfwZXfpYCniNMuvLB0TvdSujWj3gexK/CX2Un/yglmaQ38nDx
-         OlWXo+l0Yh25/ZJa3uzQyb0PL4UVMFeqyEixwNjyRZBm2baKpPB8ieoGeSolSM6pIe94
-         jl1lTtg2DlJ/p/bWbJrHRoC0nldGJOBIwRbnCVtL52kBvdVQQGOAyd2lkVlTuTFkq1Wn
-         TRqBg8PUke5ZvcJHjMbCZ3NRkCVXWgUa7BcMGI/pFR/UKuExb5sPqQEeDCJlh65602uZ
-         Zw8A==
-X-Forwarded-Encrypted: i=1; AJvYcCU+vpB3XoNQRW6NftpJwGgO0JUravwMl/HbV5blrWxTr3cviqqz3ocGcS9M6nRYsg2Vc0kfPbgii6PuGG7r1JSAgfmgWS3TXWEeQik3PgI=
-X-Gm-Message-State: AOJu0Yx5PGLnPpb0NP3s3HfAvEEZMMRyGOKXYXZChvvWQtM0NMmy56aU
-	JkRgapEmGKY9tAgRfWIDhtWznT1qm+nwysbn8nn/TuhK2dgFS1aM0TnHV/yZhLbNxJASUK0f0/H
-	dN8huAmN3YxhB52QyJ469ULseKsOHFlYk1uumAA==
-X-Google-Smtp-Source: AGHT+IEZ5qdBLVvKB5XTD+4JNcNopYd0Qw8YU24zs9LsT+BKNrCyfLvgj0YV5WuY7LflHPoWR30CvJt+jqecqoOosTk=
-X-Received: by 2002:a25:2fd2:0:b0:dc2:398b:fa08 with SMTP id
- v201-20020a252fd2000000b00dc2398bfa08mr6083186ybv.31.1711432619981; Mon, 25
- Mar 2024 22:56:59 -0700 (PDT)
+        bh=7TObN82cUc8l7ZLlVD4+WlQ5TlSdceF/P60JgrVAgnw=;
+        b=QcIPKYHNckERuP94MpOX2XR/Bs3dCrgAe4sx8Fu4fmp1smERZlBLNbl6VB8U984rMb
+         YkJcrvZFQmGGWWLqOOEmrEVUnEkPKcvSg11AqDENYA4L554XMQqHn9uVZ73lwxY0OJEe
+         Dr2GDzPWTGgR7iGvAzGmD23XTwIcdB+JeOa2sNUBCfw08+LaT6VXnbnTM1oOTybPsT8J
+         VBB8y17gPd5C8Ik0KzxtQumuK7Y7sNxwnFNI5ZPqIV6dBy9m9uBY6gpPac8AqtyeLS57
+         aNxbY+aZdof+zWApE6qAj2sguNi9fxTSqoK3ck6TPbqFStfqzLd1YtmoD6WT6q5UHEUc
+         tUXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXk8DNpcgK2Z1ez8JBxYPXk5c/5DTLdYX62R8fuP6PCDHuK53ZXPoQmttELX3hUdRnj7eVJHsA0YiynRBpOPRp1u1LFqZGZ1FQyHtkJDOE=
+X-Gm-Message-State: AOJu0YxtZLvLfd4F8ExU5zX8DDtYacDeqZLs9HWZBILM1ufVdXVbE615
+	/S6Y6s5gIA/zXjO5GrTB+JEJ9TAJDNtaHalYRAKW16a5XeNrz0dmTfn3OpsMGhZRsserPZ4nUkZ
+	zQGowkc37/Zeh3B9DbyFx9D/zD1wFoK4f8FOpdUHK56+b/tT0yqCNR05cJL2ip7f68ACTj32Y1j
+	b07wQ4kAVhDkfuqxCL9jZKI6pmRRiY9MIaIxxyqOg=
+X-Received: by 2002:a05:6808:3c8f:b0:3c3:bfe4:7da6 with SMTP id gs15-20020a0568083c8f00b003c3bfe47da6mr12541416oib.58.1711432936555;
+        Mon, 25 Mar 2024 23:02:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGr940U56ri+DXt88z3vOxMXCURgRfN46WMJZRLZrxl+9FG0Gt+EX7rzIW/YLrUroDOXL6o4p2y+EAJV2evQH4=
+X-Received: by 2002:a05:6808:3c8f:b0:3c3:bfe4:7da6 with SMTP id
+ gs15-20020a0568083c8f00b003c3bfe47da6mr12541391oib.58.1711432936353; Mon, 25
+ Mar 2024 23:02:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322233838.868874-1-boqun.feng@gmail.com> <20240322233838.868874-2-boqun.feng@gmail.com>
- <068a5983-8216-48a5-9eb5-784a42026836@lunn.ch> <CAH5fLggdVDccDwBa3z+3YfjKFLegh7ZvcSzfhnEbAGSk=THKrw@mail.gmail.com>
- <497668ec-c2d5-4cb4-9c2d-8e6f7129a42e@lunn.ch>
-In-Reply-To: <497668ec-c2d5-4cb4-9c2d-8e6f7129a42e@lunn.ch>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 26 Mar 2024 01:56:48 -0400
-Message-ID: <CALNs47uEE9f73mtoXtJ52wS4nCOjTVxUtyPfQexF1mzHg6W5JA@mail.gmail.com>
-Subject: Re: [WIP 1/3] rust: Introduce atomic module
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, 
-	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, 
-	Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, 
-	Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+References: <20240325174924.95899-1-dakr@redhat.com> <20240325174924.95899-5-dakr@redhat.com>
+ <2024032530-fester-dedicator-a8a9@gregkh> <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
+ <2024032601-deceased-premiere-1c02@gregkh>
+In-Reply-To: <2024032601-deceased-premiere-1c02@gregkh>
+From: David Airlie <airlied@redhat.com>
+Date: Tue, 26 Mar 2024 16:02:04 +1000
+Message-ID: <CAMwc25omcj6_OKdcBkke5yzC2M5oNO=E3EG4aezNfEMRAp9Wvg@mail.gmail.com>
+Subject: Re: [PATCH 4/8] rust: add driver abstraction
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com, 
+	pstanner@redhat.com, ajanulgu@redhat.com, Asahi Lina <lina@asahilina.net>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 23, 2024 at 10:10=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
-:
-> > > Is it possible to somehow poison rusts own atomics?  I would not be
-> > > too surprised if somebody with good Rust knowledge but new to the
-> > > kernel tries using Rusts atomics. Either getting the compiler to fail
-> > > the build, or it throws an Opps on first invocation would be good.
+On Tue, Mar 26, 2024 at 3:37=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, Mar 26, 2024 at 05:36:14AM +1000, David Airlie wrote:
+> > > I stopped here.  Please build on existing code in the kernel, and als=
+o,
+> > > a real user of these structures is needed to see if/how any of this
+> > > actually works.  Why not implement something that uses them that we c=
+an
+> > > actually review?
 > >
-> > We could try to get a flag added to the Rust standard library that
-> > removes the core::sync::atomic module entirely, then pass that flag.
+> > Seems like you missed where the cover letter explained that this was
+> > in the context of:
+> > https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
 >
-> Just looking down the road a bit, are there other features in the
-> standard library which are not applicable to Linux kernel space?
-> Ideally we want a solution not just for atomics but a generic solution
-> which can disable a collection of features? Maybe one by one?
-
-Clippy is an easy way to do this via the disallowed_* lints.
-disallowed_types [1] would be applicable here to forbid
-`core::atomic::Atomic*`.
-
-I don't think KCI currently checks clippy, but we probably want that
-at some point.
-
-- Trevor
-
-[1]: https://rust-lang.github.io/rust-clippy/master/index.html#/disallowed_=
-types
-
-> And i assume somebody will try to use Rust in uboot/barebox. It
-> probably has similar requirements to the Linux kernel? But what about
-> Zephyr? Or VxWorks? Darwin?
+> Yes I did.
 >
->         Andrew
+> > Can we stop feeding the chicken/egg problem? :-) This posting attempts
+> > to focus people on *device* abstraction problem, by posting small
+> > patch series directly affecting things in an effort to get them
+> > reviewed, or we post the full patch series touching every subsystem
+> > and then nobody reviews it because it's 50 patches and it isn't
+> > focused on the one thing they care about.
 >
+> Would you want to review new api additions without ever seeing how they
+> are used at all?  I can't agree to that, and neither would you, that's
+> not how any of this works, sorry.
+>
+> I can provide general "this looks really odd" comments, but I can never
+> give a "acked-by:" for something that doesn't have a user, that's just
+> impossible.
+>
+> I understand your prediciment, so work at it in tiny steps like everyone
+> does when adding new apis, this isn't new.
+>
+
+These are the tiny steps, unfortunately to even create a driver with
+enough "driver" that you have something to review requires a bunch of
+abstractions to a bunch of subsystems.
+
+In order to do a stub drm driver, we need at least the device, pci and
+drm device abstractions, they all build on each other, and have
+different sets of expert opinions to gather from different people.
+
+We just end up losing the reviewers in the noise, because there are 50
+patches to review and nobody wants to look at it. Maybe you would
+prefer things that way, and we can certainly optimise for you, but I
+think there'll be a bunch of other less rust friendly maintainers that
+might be more painful.
+
+Thanks for the review so far, and I don't think we are at the
+expecting acks stage anyways, just discussion around lifetimes and how
+it integrates with the C side are probably way more valuable.
+
+Maybe for next sending, Danilo can try the all the patches approach
+and we can see if your expectations of kernel maintainers align with
+mine :-)
+
+Dave.
+
