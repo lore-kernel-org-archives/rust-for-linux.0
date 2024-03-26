@@ -1,126 +1,165 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5FD1BC41
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Mar 2024 17:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA671C6B0;
+	Tue, 26 Mar 2024 17:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711473231; cv=none; b=K4ErRlLC4ORIzAEH0whJLfSLB+v8zUztyy8tHlFe6V9dpJuYjrcyDenUaVqXofZanZlUPfHq2OnSvC0gQ6RGc38pQgriMBedN+wjwO9BA70NwoCzMizg/3vSeqJw+pnTGn2wd/4johW6E1OKIAwkhTCUjpn2S6fK0aaHtMGlJrg=
+	t=1711473721; cv=none; b=pZWhtrWJS6mNechfSM7/672boc9CAdKClMxU61Z6DiqFDFwZwQ3DmiZRER8RqHl2slzZ+ANusPtjZ+T3XdkJa3ZWOXkO25v+UmBKeuy1ZCRnFf4o3QGcrCuXUyTm8ywwb1tPaABQN2vpGtklb/bwAo9jTLpWQg45BwzYirepzd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711473231; c=relaxed/simple;
-	bh=FrW4urb3kaGNnmCDOoJ/pJREbGJJEOcKrsesprEishU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lLzCMJWu+l2U63EBcs32gnMWVG8YFufiKz75jlEdN+vEtqBHTBEATnBlYZ/l3YpCm2Z2xlBjgKOXGAVbOlJ/DJMvFnJawYWuSRsgrnhZ9KN+jxFnJxWxS2gSAT0VINeQL6aL7nPtfSJxqhjok2Oabuj+Wxo6FJSCJZENyRXxK40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AY/oPqhF; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711473721; c=relaxed/simple;
+	bh=jZd3DMYTrkPjgcF+GXb0XDthojSFtmH0ibUcyxTWHgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=snF8vsuxekFQR7TjUodmvzzJMWrhiNYJVzJI+SW6NUEktP5g8cn8Fjiyl+cdZDxe9i41H9EFzSE3MtAx8F1pr3V1Ic94xb2LvgYUZ70IyoaSkPW1sitzThJLdWlSbFt4qQHWH3LRPpVc3rZ4IMl78uGmjuVrVkn34VhEhZu0z3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BhtthlM9; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AY/oPqhF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711473227; x=1711732427;
-	bh=2SMAljw4XINFd821G0mOj/hS2BbJyOq2IwtofbwqjYM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AY/oPqhFT+U/f9Jb34/v0EuZ9Y6G7v5QpAIgG/qKhmEwTwMQUg7LVx9edtm/wvfAL
-	 BuqY0+sQf8DmK2UUU+uVyDSyq6pLg3e4KJuKvcBXjqUxc8aNbyRr+QiWOX08grkAhX
-	 JyNDw4gxpYj+SRlWsyCK7i3yWoQG8Z5KEVqCGEQzKASxoubipZoicMK4lWlv5acRub
-	 6ynza26Kypc8FdmGPTTI+sSkCYSV+/5bUSaHEDV9wW2nbhgnvAR6z8qNcyENN+CtG7
-	 9d4zQNfcpM15EZtUJgE2ww478Un+/QI3FVMe0jIcdqskzR9Wuzc2Z1zoP3cwxX05N1
-	 AS2FY5L160fug==
-Date: Tue, 26 Mar 2024 17:13:38 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Valentin Obst <kernel@valentinobst.de>, Heghedus Razvan <heghedus.razvan@protonmail.com>, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 5/5] rust: time: Add Instant::elapsed() for monotonic clocks
-Message-ID: <kZmwObXVcyEJFVR3I05Nab0WdjcccDVARoOm6U9EmXhd89fxYRjvNmEAUZsueWTUlBlHp8jpU3i2YfgN9aWCLZameta0tPT_OgQdBOWUIko=@proton.me>
-In-Reply-To: <20240324223339.971934-6-boqun.feng@gmail.com>
-References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-6-boqun.feng@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BhtthlM9"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-789db917876so351186285a.1;
+        Tue, 26 Mar 2024 10:22:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711473719; x=1712078519; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7T5hEhkUDazJ47kggL6Q/TiVuUfZy8/rH8kDSRQfdQM=;
+        b=BhtthlM9bFY0vBOiLrF4eyxTrmb8l8V0AnhjaCENBIkCfmjQ1lxZvhkc8yaZXPauHA
+         JhIzfG48RqvECKlNPG94CXXU8BAi0IqhGTlWd8n9LlrW6f+cDmX4jq4f4z+WTy5tJ8DW
+         TYkBlfKMGdkvDLTFr2Eq/coBguHA+Ojez0VJuthMz8IgU1RuJgMdQtETQD0amaA4+Hd0
+         jhXFLLh/ymKCUGLKc7vsawOLLAzQ/E4lGWl6UOx3rccqN48aNfag2t3anSm6FZed2A9o
+         ZFigZ+Im+/BrG20iO8Ug47vgj770XEFRs+cUEFzsL4m8zF8y/hJ9R5jzg2WtkSgJPmwp
+         Qo3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711473719; x=1712078519;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7T5hEhkUDazJ47kggL6Q/TiVuUfZy8/rH8kDSRQfdQM=;
+        b=U5avNB5vmvQLsccnF6ZJ+F6dR5nT8cbj/a6MKlNo7mO7FUu1/oYIBWXK6/pXEWbP8s
+         cc6DUYkAnwWcMM9aUXofe7xCysI1brSxD2e2DpRZ6GZH7IH+W9Aut+55OB46aRZHxeuf
+         MBVRFp2+9iMu5OXWOpw9kAMWEkIIaD1SjcN62ABpv6R0omeKu2NL6rVIsIsBUeF/A3GG
+         7U8iR8yyzXVwMAsXtQbUlqSoVHuZ8n6RfBZYFGuWhy3ZBQrpSQgiwJHisXpl05P8HUNo
+         tAX5x7fhMNTG6K9yGsI6lMOrkXsXOH+pyaefedpc9E5VeCMvGssbTnnynzJChhEl00cs
+         Nchw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+KpG1HlkdsYPmGeJit/5WsM+e9Jnq1OFC2xxtsLE/XEYp4e4Zy0UUuZ/cYs6Eu1CGQsvnpxOlMhlcKDZikj6fIzWgfhItdgUxQdwr
+X-Gm-Message-State: AOJu0YzFeq4J/bu3vbp6OX5vP1mLzl+SFZdC5kRd2xweuOh410BbFQsG
+	L0vpDBScOYIxj2VCd62QhRt8Mpw0dXT9h43/AKKh9cnJ5prP2aRc
+X-Google-Smtp-Source: AGHT+IHCXG3xzMmTxa1DKywKi/TlD+cjAa+sCSpdtV87oMnu6QfzR/ctvgMOWc4Gnxx9Tm2lFypRmQ==
+X-Received: by 2002:ae9:f714:0:b0:78a:2900:418e with SMTP id s20-20020ae9f714000000b0078a2900418emr1875997qkg.60.1711473718776;
+        Tue, 26 Mar 2024 10:21:58 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id z22-20020ae9c116000000b0078a68410731sm415879qki.25.2024.03.26.10.21.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Mar 2024 10:21:58 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 82FE71200074;
+	Tue, 26 Mar 2024 13:17:47 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Tue, 26 Mar 2024 13:17:47 -0400
+X-ME-Sender: <xms:OwMDZhf4NHW2bPRgdqYgkYnpi9VUXwdo3aonn5pXf16BIqGgiLkWew>
+    <xme:OwMDZvNnnG3QsB03Z1_5315VZz2dXn4xqrKy81PCULIbMnr20BmIvczZQUOYHXhaa
+    4dZMFlCHMditpspDQ>
+X-ME-Received: <xmr:OwMDZqjsYLYXwNwBAglwBsyW-y4ZYALaEvbOYlQvvJbNNAMg1uvEY3hycTqv9Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddufedgleelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:OwMDZq8fp9u8t8n2pUdXNVvl0DFquFdAT7-UtY7LtZyPZPKyWDCl3w>
+    <xmx:OwMDZtt7N-D2WskEQ2GtlkJO80VYP_f5W_QHK1hPFNciwsnnucjS2g>
+    <xmx:OwMDZpEasenjjFejRwZKKT3HsNk8f146m-6Ks22DCYvZ1Tqzoec0bQ>
+    <xmx:OwMDZkMnkEzL7nLxu322eP9bmJpOi9FdUGVtpyZaJag6x4NRBiBQxw>
+    <xmx:OwMDZtPvLxTyr19lAIPRkHuMbDMCFNe3XXl_t0DDSfeMRTcWXq1gbDvSpRc>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 26 Mar 2024 13:17:46 -0400 (EDT)
+Date: Tue, 26 Mar 2024 10:17:13 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH 2/5] rust: time: Introduce Duration type
+Message-ID: <ZgMDGYMj7V50PZbP@boqun-archlinux>
+References: <20240324223339.971934-1-boqun.feng@gmail.com>
+ <20240324223339.971934-3-boqun.feng@gmail.com>
+ <4hYJbftgOk1JOPbJ6CfKZell6ngp8GljwIUIB1vOQvIf-7jiogG5xDtCvcMlF7cIJAdy9fO5HLQh_8ohnWNB3MAaj0xjAGeyyDowemgunOU=@proton.me>
+ <ZgMBqzv0r98_EGGR@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZgMBqzv0r98_EGGR@boqun-archlinux>
 
-On 24.03.24 23:33, Boqun Feng wrote:
-> This is a convenient way to do:
->=20
-> =09t1 =3D Clock::now();
-> =09...
-> =09delta =3D  Clock::now() - t1;
->=20
-> Hence add it.
->=20
-> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-> Signed-off-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-> Co-developed-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/kernel/time.rs | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
->=20
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 5cd669cbea01..cd1e45169517 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -114,6 +114,31 @@ fn sub(self, other: Self) -> Self::Output {
->      }
->  }
->=20
-> +impl<T: Clock + Monotonic> Instant<T> {
-> +    /// Returns the time elapsed since this [`Instant`].
-> +    ///
-> +    /// This provides a convenient way to calculate time elapsed since a=
- previous [`Clock::now`].
-> +    /// Note even though the function only exists for monotonic clocks, =
-it could still return
-> +    /// negative [`Duration`] if the current time is earlier than the ti=
-me of `&self`, and this
-> +    /// could happen if `&self` is a timestamp generated by a [`Instant`=
-] + [`Duration`].
-
-But there currently is no way to add an `Instant<T>` to a `Duration`.
-
-> +    ///
-> +    /// But for typical usages, it should always return non-negative [`D=
-uration`]:
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::time::{Clock, clock::KernelTime};
-> +    ///
-> +    /// let ts =3D KernelTime::now();
-> +    ///
-> +    /// // `KernelTime` is monotonic.
-> +    /// assert!(ts.elapsed().to_ns() >=3D 0);
-
-Now that I thought a bit more about the design, I think allowing
-negative durations is a bad idea.
-Do you disagree?
-
-If there is a case where you have a non-monotonic clock, or you are not
-sure if two timestamps are in the correct relation, we could have a
-function that returns a `Option<Duration>` or `Result<Duration>`.
-
---=20
-Cheers,
-Benno
-
-> +    /// ```
-> +    pub fn elapsed(&self) -> Duration {
-> +        T::now() - *self
-> +    }
-> +}
-> +
->  /// Contains the various clock source types available to the kernel.
->  pub mod clock {
->      use super::*;
-> --
-> 2.44.0
+On Tue, Mar 26, 2024 at 10:11:07AM -0700, Boqun Feng wrote:
+[...]
+> > > +impl Duration {
+> > > +    /// Creates a new duration of `ns` nanoseconds.
+> > > +    pub const fn new(ns: i64) -> Self {
+> > > +        Self { inner: ns }
+> > > +    }
+> > > +
+> > > +    /// Divides the number of nanoseconds by a compile-time constant.
+> > > +    #[inline]
+> > > +    fn divns_constant<const DIV: i64>(self) -> i64 {
+> > > +        self.to_ns() / DIV
+> > > +    }
+> > 
+> > I am a bit confused, why is this better than writing
+> > `self.to_ns() / DIV` at the callsite?
+> > 
 > 
+> Hmm.. you're right, there should be no difference I think. If there is
+> nothing I'm missing from Alice, I will drop this function in the next
+> version.
+> 
+
+On a second thought, I think this prevents accidentally divide a
+non-const value, in other words, if you use this function, you're
+guaranteed the divisor is a constant, and you have the compiler checking
+that for you. So in that sense, I think it makes sense to remain it
+here. Thoughts?
+
+Regards,
+Boqun
+
+> Regards,
+> Boqun
+> 
+> > -- 
+> > Cheers,
+> > Benno
+> > 
+> > > +
+> > > +    /// Returns the number of milliseconds.
+> > > +    #[inline]
+> > > +    pub fn to_ms(self) -> i64 {
+> > > +        self.divns_constant::<NSEC_PER_MSEC>()
+> > > +    }
+> > > +
+> > > +    /// Returns the number of nanoseconds.
+> > > +    #[inline]
+> > > +    pub fn to_ns(self) -> i64 {
+> > > +        self.inner
+> > > +    }
+> > > +}
+> > > --
+> > > 2.44.0
+> > >
