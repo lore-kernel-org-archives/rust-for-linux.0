@@ -1,250 +1,396 @@
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453F614F13F;
-	Wed, 27 Mar 2024 17:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF213E3E4;
+	Wed, 27 Mar 2024 18:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711561830; cv=none; b=X4uwr7aTq0cU6he8x6yfnHhlDfsMAwYBWdxaEo+BqQ346iyDlY2lI7xoJcuzNTqRmnDOPZ4N2o0EZSUfWwtuF5Ewb/Ht5pWceLB5345Uv2owHLW/IMq79l5NyG0Ea2pSOOLGFRnsCWQ8yt1NmgUJeSDR3PtoJDk/iWwMqottr68=
+	t=1711563605; cv=none; b=Q3wlNMMHNHXoJgDVD0f0fKkpkk/Fq9fO0/ECp/1AupxF7JKAIsJPHYEKk+obwOdTKaA80wkov1f08Kxr5YKIFpFcO2BJsusL7vw4TG/FgI3Eze80RNJY3vFF9vCVC3C9A29SXpMz+HbPRjhNpr+MCJTSJZqmkMOdAYb0BiSQpnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711561830; c=relaxed/simple;
-	bh=jSrI8f+0WHime70CtD6JWOJKTtwPj8gpVVqn8XzW2rc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CnQe7KCxuVZ0zeM8D5+O0anbUq6RfdUYrN94N692IdlrnSG5WotFyraRyo8qqfzcqZlD22KrfHER7g9DGXEqbNX5zZ06daYP0b4gA6D5D0DDr65VYKpfVNH+9Z3V1oTMR3NjtY3TEehr/siXeCnxAUgB1qwnQSFH/h97nQsZ0TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sjealq06; arc=none smtp.client-ip=209.85.167.176
+	s=arc-20240116; t=1711563605; c=relaxed/simple;
+	bh=EbYlIJzhW8u2BE4aHp1VB9uHACFNVsODV2iH4y2VrtU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QBtINwfAWqLj4AHrd9/Aou0hobBWDgyOhwbH+kgJ1o+9gsAtzKVfKlaUYmrJ5ctM5QDRYYWI4K7fJG9vCHi1P6hFz3ZIkGQNrxl5z+cw5lyigV2MSPqGNll80kxrizIgQwutF+lNw50N5amO19jK50ySzRxmWZ4nCEeX5TuH+BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B1HFVXHZ; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sjealq06"
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3c3ae8fa863so82611b6e.2;
-        Wed, 27 Mar 2024 10:50:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B1HFVXHZ"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-611248b4805so1417507b3.0;
+        Wed, 27 Mar 2024 11:20:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711561828; x=1712166628; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=68jA08xSlThbpLPscVbPB/44K2PEdU1UR7hQ+UQDb/Y=;
-        b=Sjealq06oRsqc//ZM3n1C85TI9dIgMH74466PITgpaiz+q8i/67syPja3WWCci0G49
-         sflwhxaDZ/UGuRNqBXzaag7trw42xtQ9PbmLDaKxiD2EYUla6CMeBF0zZUqY8/v63PZe
-         RxMPayeHYUaCRA8sXHRcKe3I6rUTcVc1ZpQPriHlOpTy273nI6MRaSAfUrwIzVS3uEjV
-         T7z1Xbh+VNcGUS9SoleoAmVfUKnDuRk1X+kbm65Mar748DetVM9vptNPbuhwT47mYUXr
-         XGyBefjy4DiqnBZZBkKFIDMME6nRhD2Hdv2CFu5wgS5Md+Q7/I+XPSRuoAHZGXbhUKo5
-         2tQg==
+        d=gmail.com; s=20230601; t=1711563602; x=1712168402; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uzvvry9P6I8KLvhWewHOJ7IT8ezc0kCkdqVf56xpBYE=;
+        b=B1HFVXHZJcxGxHDVD6tNCiPpbghEOGXmi4IFKrD2VpWjiue6W02XR3jYWls+ffG/mz
+         f3TVbiiBu9f2VZ65aeiCQws8MzUp2dWlrQ404wQh7n0NCTLvy7xKGuQ5GdHLbU5R0x9T
+         3HB8Zo8Yv/2Yp2aEwO9fSfNo7Xz/q2YMEZcBQT2GjByfJW1nRNit9NlFAB/O83k8MrY/
+         Ba2QKMBfvzuUzqKTxKvOzr5rGm1eiDpNUehewseDwCW6dm8aUh6HEG4fnsaCTS185aqK
+         Wz2V+/V6mqdRaorHWQlnz5g39+XJ0+NxYWZ/mHbxkKRHlpkK6CM/TVXZVN3U9/XO5/iS
+         WP/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711561828; x=1712166628;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=68jA08xSlThbpLPscVbPB/44K2PEdU1UR7hQ+UQDb/Y=;
-        b=aClgR4WNXvo0P9Tq9NvbXASDRqNnqIp/7awqQ78FVTDXxEQaCfDm2MK+L4/1XQaGkL
-         9xiERcipwtKZdRv2bV6UNaIYcK317Yp1U4yuPkqJGXbcB0h7H/N8qEYLxMEzQ9G92e+v
-         tvyPTHED52oD+TlpmFG79tGg/VOS8/tmptmr1Iyo5zQ/e4A8Hr1BvTw1bkydigwTiqxI
-         tkUw3kSnPaTAWl0nPOUVamVrKlLTyy5SBmg9cJc1X/bHV5r6faq8rBfrfvYdrVXLEF2q
-         Myws1rZvYmwtJts30iSePBqBRERExr8LlaHf/O6HfrIpv1TNc0YZkBzs2u5WdmW1qkWz
-         tE8g==
-X-Forwarded-Encrypted: i=1; AJvYcCXlEfx4ZItxS/FCI09mkD22FnDHLPVDIkpWuB/Tc0hCBuEqIzoBVACWO4G4rJlBKLO8eLQYesjGn2tmL8MOANR4Je4vwAaGGswnDV1P
-X-Gm-Message-State: AOJu0YxC4wDbMDGyCyG/zsyrQ39RUA80ASRaQlTSJHHhC7ko/mGqaNmq
-	60+UzJ4Lx5hR019hQcARQHYj800pH9a19uLs8bX+6SvDumiAdskR
-X-Google-Smtp-Source: AGHT+IHtH7OmVncncj8pvfBW2eOV/vPtnSTY5ldt2l137sW1ZTpwfP1mlTS9uZ9CtCKxCPOxbf3yGQ==
-X-Received: by 2002:a05:6808:15a6:b0:3c3:7a97:3de4 with SMTP id t38-20020a05680815a600b003c37a973de4mr653528oiw.15.1711561828290;
-        Wed, 27 Mar 2024 10:50:28 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id i5-20020ac813c5000000b004312a7b4715sm4954354qtj.88.2024.03.27.10.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 10:50:27 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 2B60C1200066;
-	Wed, 27 Mar 2024 13:50:27 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 27 Mar 2024 13:50:27 -0400
-X-ME-Sender: <xms:YlwEZnKWHSLocMaTYZ0NcG7xQ__mQU0V4AmbDeZqPMNL0YSt1ctRPQ>
-    <xme:YlwEZrKW0fDF4dEBc2E4g5irTQ8E0fWCZcyG5jk_vjWDNrJgTelyAkdnlx6DTyOY_
-    P0D4_Rt81jwyQDKqQ>
-X-ME-Received: <xmr:YlwEZvttGRbBEc3POC6dYLmjObOQcPczA0Hgi5QkZOcbtoiulyRAL6Db3c02mA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudduiedgkeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:YlwEZgbC6pNRjosKm4jByXOIX9_f0KU49Ecs9TeiSD8Ae1_SjPbpNA>
-    <xmx:YlwEZubEETNseIgHb1Yy_W37fbJNgrH7H7JLi5OawxxC86MiPesKhQ>
-    <xmx:YlwEZkAWZi75nlPiuNjvKp2_JNRBXwb9UXi-gOhtcI16BXnLMxRxog>
-    <xmx:YlwEZsaKEu-wX5naF8_K1PaJmfKspM4d-GF0fifI_ZfplP8U9FMOSQ>
-    <xmx:Y1wEZgss17AahhJdH73U5Vr0gzbXWGoo1ok77QpKmNXuiq9X1o_XKO9WUT4>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 Mar 2024 13:50:25 -0400 (EDT)
-Date: Wed, 27 Mar 2024 10:49:49 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Heghedus Razvan <heghedus.razvan@protonmail.com>,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 3/5] rust: time: Introduce clock reading framework
-Message-ID: <ZgRcPd8nA3GQILmr@boqun-archlinux>
-References: <20240324223339.971934-1-boqun.feng@gmail.com>
- <20240324223339.971934-4-boqun.feng@gmail.com>
- <c2XJe4xCqT5WrHu9XZKQ03ggEZLwd2KBuSBb9Onivny9v7fqKBkm1aywmztjiDyuLKqr2Igt_6XUJiuArLl9JVwq0xa4gKfocP2H5YZDrFk=@proton.me>
- <ZgMfsaiOlA87PAUf@boqun-archlinux>
- <15DXPOXjBar-JYHVrrgVXI_f3BF5JenfeXEmmxgra6my42Ot9O9Wrc-nc-0O13C5EFTnm0SDac1Muau15mHLmb4So2292uALNSwXKoK75FQ=@proton.me>
+        d=1e100.net; s=20230601; t=1711563602; x=1712168402;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uzvvry9P6I8KLvhWewHOJ7IT8ezc0kCkdqVf56xpBYE=;
+        b=OCLddmViHHLP2ENTzYH9KftlCb0qngvWRgi8WBi0PzuWMorBrDtNiMMEyJUDSwcwfN
+         ktNLBOW1/1Mc+66z5BqcIeA8Lw/LWKC7CPljgXPu1dNsMjahoFcs2X9nvAWMVeY/vKxb
+         /hOFzRTPN3/ZBhnAYDNxZ+ZCpNrMDsavF++XbRRz5g0irWTeUwvsqxIUJ16z3JqGAB7g
+         KC86DDyk3jxz2QHUX5CEpHAmbrl4a2pl1ytZ9Y94Sacstx0AaAKhEyy6mkSHOTaIG6Tm
+         NpG+PUTzt2VMzg7jrwTRSoTBUnQX4O/hlBLrs1saK859RjoXVv/dLo9CGDApr6n0vT4Q
+         LKUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeDmzuQXdIehQnVdMMPsiuVPSz/M4r3V74DVBxKkzfPRxy7vPfqQbaboNYBZrRZ7r8lk6dlgJF9lsX/OUQ1T39jUKqnsKk2idGfFfI
+X-Gm-Message-State: AOJu0YwYoYfRcBxUy+nW3Qi0+EamBMPmcdL15xEsG1/88bwE3FMAlwfE
+	f49p1Ig1mIx94BVSicOggT9XL4PX2x70+bUkmQfTXMAoHGveGtE/PBdF8V6brEev/UVe7JuWAmY
+	uY3P4DvYGtpD+Jmz8grQ1+wDxGVI=
+X-Google-Smtp-Source: AGHT+IEpyp1mFlgMWDmVJJjTuHmjhRtEMSa19jqwhuMGRicFUP7WsaBTomMJ94X9WX3oH27Trvmama4gxQ7m/0rgDnE=
+X-Received: by 2002:a5b:312:0:b0:dcf:a52d:6134 with SMTP id
+ j18-20020a5b0312000000b00dcfa52d6134mr603432ybp.26.1711563602093; Wed, 27 Mar
+ 2024 11:20:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <15DXPOXjBar-JYHVrrgVXI_f3BF5JenfeXEmmxgra6my42Ot9O9Wrc-nc-0O13C5EFTnm0SDac1Muau15mHLmb4So2292uALNSwXKoK75FQ=@proton.me>
+References: <20240327023531.187880-1-wedsonaf@gmail.com> <20240327023531.187880-8-wedsonaf@gmail.com>
+ <ZgOXGSDmIgrENB7d@Boquns-Mac-mini.home>
+In-Reply-To: <ZgOXGSDmIgrENB7d@Boquns-Mac-mini.home>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Wed, 27 Mar 2024 15:19:51 -0300
+Message-ID: <CANeycqrz=4cyT6Q1r+n_oJChOKDK+yeVUX7fWo21PEanZZMXzA@mail.gmail.com>
+Subject: Re: [PATCH v2 07/10] rust: alloc: update `VecExt` to take allocation flags
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Mar 27, 2024 at 12:50:50PM +0000, Benno Lossin wrote:
-> On 26.03.24 20:19, Boqun Feng wrote:
-> > On Tue, Mar 26, 2024 at 05:00:39PM +0000, Benno Lossin wrote:
-> >> On 24.03.24 23:33, Boqun Feng wrote:
-> >>> To make sure Rust code doesn't mix timestamps from different clocks, a
-> >>> type safe clock reading framework is introduced. It includes:
-> >>>
-> >>> * A `Clock` trait that represents different clocks, to read a particular
-> >>>    clock, one needs implement the `Clock::now()` function.
-> >>>
-> >>> * A `Instant<Clock>` type that represents timestamps of different
-> >>>    clocks, whose implementation is just a `ktime_t`, so all the
-> >>>    calculation on `ktime_t` should apply to it as well.
-> >>>
-> >>> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-> >>> Signed-off-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-> >>> Co-developed-by: Asahi Lina <lina@asahilina.net>
-> >>> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> >>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> >>> ---
-> >>>   rust/kernel/time.rs | 49 +++++++++++++++++++++++++++++++++++++++++++++
-> >>>   1 file changed, 49 insertions(+)
-> >>>
-> >>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> >>> index b238b3a4e899..0f9f5605ed48 100644
-> >>> --- a/rust/kernel/time.rs
-> >>> +++ b/rust/kernel/time.rs
-> >>> @@ -6,6 +6,9 @@
-> >>>   //! have been ported or wrapped for usage by Rust code in the kernel.
-> >>>   //!
-> >>>   //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
-> >>> +//! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
-> >>> +
-> >>> +use core::marker::PhantomData;
-> >>>
-> >>>   /// The number of nanoseconds per millisecond.
-> >>>   pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
-> >>> @@ -64,3 +67,49 @@ pub fn to_ns(self) -> i64 {
-> >>>           self.inner
-> >>>       }
-> >>>   }
-> >>> +
-> >>> +/// Represents a clock, that is, a unique time source and it can be queried for the current time.
-> >>> +pub trait Clock: Sized {
-> >>> +    /// Returns the current time for this clock.
-> >>> +    fn now() -> Instant<Self>;
-> >>> +}
-> >>> +
-> >>> +/// Marker trait for clock sources that are guaranteed to be monotonic.
-> >>> +pub trait Monotonic {}
-> >>
-> >> Why is this trait not an extension of `Clock`?
-> >>
-> > 
-> > This was carried over from the old version, for myself, it doesn't make
-> > much difference between:
-> > 
-> > 	trait A { .. }
-> > 	trait B { .. }
-> > 
-> > 	impl<T: A + B> ...
-> > 
-> > vs
-> > 
-> > 	trait A { .. }
-> > 	trait B: A { .. }
-> > 
-> > 	impl<T: B> ...
-> > 
-> > hence I kept it as it is, but yes, it a `Monotonic` *`Clock`*, so I will
-> > change it in the next version.
-> 
-> I think it would also make sense to rename it to `MonotonicClock`.
-> 
-> > 
-> >>> +
-> >>> +/// A timestamp of a given [`Clock`]
-> >>
-> >> Missing '.'.
-> >>
-> > 
-> > Fixed locally.
-> > 
-> >>> +#[repr(transparent)]
-> >>> +#[derive(Debug)]
-> >>> +pub struct Instant<T: Clock> {
-> >>> +    inner: bindings::ktime_t,
-> >>> +    clock: PhantomData<T>,
-> >>> +}
-> >>> +
-> >>> +impl<T: Clock> Clone for Instant<T> {
-> >>> +    fn clone(&self) -> Self {
-> >>> +        *self
-> >>> +    }
-> >>> +}
-> >>> +
-> >>> +impl<T: Clock> Copy for Instant<T> {}
-> >>> +
-> >>> +impl<T: Clock> Instant<T> {
-> >>> +    fn new(ktime: bindings::ktime_t) -> Self {
-> >>
-> >> When compiling, this function is marked as dead-code in this patch.
-> >>
-> > 
-> > Hmm... I cannot trigger any compile errors with this patch. If you see
-> > an error, could you share the build command? It's not a `pub` function
-> > though.
-> 
-> I created a fresh config using `menuconfig` and enabled CONFIG_RUST.
-> Then I get this error:
-> 
->     error: associated function `new` is never used
->       --> rust/kernel/time.rs:97:8
->        |
->     96 | impl<T: Clock> Instant<T> {
->        | ------------------------- associated function in this implementation
->     97 |     fn new(ktime: bindings::ktime_t) -> Self {
->        |        ^^^
->        |
->        = note: `-D dead-code` implied by `-D warnings`
->        = help: to override `-D warnings` add `#[allow(dead_code)]`
->     
->     error: aborting due to 1 previous error
-> 
-> Note that the error vanishes in the next patch, since there you do have
-> a user for `new`.
-> 
+On Wed, 27 Mar 2024 at 00:48, Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> On Tue, Mar 26, 2024 at 11:35:28PM -0300, Wedson Almeida Filho wrote:
+> > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> >
+> > We also rename the methods by removing the `try_` prefix since the names
+> > are available due to our usage of the `no_global_oom_handling` config
+> > when building the `alloc` crate.
+> >
+> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> > ---
+> >  rust/kernel/alloc/vec_ext.rs | 106 ++++++++++++++++++++++++++++++-----
+> >  rust/kernel/error.rs         |  11 +---
+> >  rust/kernel/lib.rs           |   1 -
+> >  rust/kernel/str.rs           |   6 +-
+> >  rust/kernel/types.rs         |   4 +-
+> >  samples/rust/rust_minimal.rs |   6 +-
+> >  6 files changed, 100 insertions(+), 34 deletions(-)
+> >
+> > diff --git a/rust/kernel/alloc/vec_ext.rs b/rust/kernel/alloc/vec_ext.rs
+> > index 311e62cc5784..bb6cb1c4ea67 100644
+> > --- a/rust/kernel/alloc/vec_ext.rs
+> > +++ b/rust/kernel/alloc/vec_ext.rs
+> > @@ -2,47 +2,123 @@
+> >
+> >  //! Extensions to [`Vec`] for fallible allocations.
+> >
+> > -use alloc::{collections::TryReserveError, vec::Vec};
+> > +use super::Flags;
+> > +use alloc::{alloc::AllocError, vec::Vec};
+> >  use core::result::Result;
+> >
+> >  /// Extensions to [`Vec`].
+> >  pub trait VecExt<T>: Sized {
+> >      /// Creates a new [`Vec`] instance with at least the given capacity.
+> > -    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveError>;
+> > +    fn with_capacity(capacity: usize, flags: Flags) -> Result<Self, AllocError>;
+> >
+> >      /// Appends an element to the back of the [`Vec`] instance.
+> > -    fn try_push(&mut self, v: T) -> Result<(), TryReserveError>;
+> > +    fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError>;
+> >
+> >      /// Pushes clones of the elements of slice into the [`Vec`] instance.
+> > -    fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryReserveError>
+> > +    fn extend_from_slice(&mut self, other: &[T], flags: Flags) -> Result<(), AllocError>
+> >      where
+> >          T: Clone;
+> > +
+> > +    /// Ensures that the capacity exceeds the length by at least `additional` elements.
+> > +    fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocError>;
+> >  }
+> >
+> >  impl<T> VecExt<T> for Vec<T> {
+> > -    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveError> {
+> > +    fn with_capacity(capacity: usize, flags: Flags) -> Result<Self, AllocError> {
+> >          let mut v = Vec::new();
+> > -        v.try_reserve(capacity)?;
+> > +        <Self as VecExt<_>>::reserve(&mut v, capacity, flags)?;
+> >          Ok(v)
+> >      }
+> >
+> > -    fn try_push(&mut self, v: T) -> Result<(), TryReserveError> {
+> > -        if let Err(retry) = self.push_within_capacity(v) {
+> > -            self.try_reserve(1)?;
+> > -            let _ = self.push_within_capacity(retry);
+> > -        }
+> > +    fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+> > +        <Self as VecExt<_>>::reserve(self, 1, flags)?;
+> > +        let s = self.spare_capacity_mut();
+> > +        s[0].write(v);
+> > +
+> > +        // SAFETY: We just initialised the first spare entry, so it is safe to increase the length
+> > +        // by 1. We also know that the new length is <= capacity because of the previous call to
+> > +        // `reserve` above.
+> > +        unsafe { self.set_len(self.len() + 1) };
+> >          Ok(())
+> >      }
+> >
+> > -    fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryReserveError>
+> > +    fn extend_from_slice(&mut self, other: &[T], flags: Flags) -> Result<(), AllocError>
+> >      where
+> >          T: Clone,
+> >      {
+> > -        self.try_reserve(other.len())?;
+> > -        for item in other {
+> > -            self.try_push(item.clone())?;
+> > +        <Self as VecExt<_>>::reserve(self, other.len(), flags)?;
+> > +        for (slot, item) in core::iter::zip(self.spare_capacity_mut(), other) {
+> > +            slot.write(item.clone());
+>
+> /me likes this! ;-) Too bad `write_slice_cloned()` is not stablized:
+>
+>         https://doc.rust-lang.org/core/mem/union.MaybeUninit.html#method.write_slice_cloned
+>
+> >          }
+> >
+> > +        // SAFETY: We just initialised the `other.len()` spare entries, so it is safe to increase
+> > +        // the length by the same amount. We also know that the new length is <= capacity because
+> > +        // of the previous call to `reserve` above.
+> > +        unsafe { self.set_len(self.len() + 1) };
+>
+> should be
+>
+>         unsafe { self.set_len(self.len() + other.len()) };
+>
+> , right?
 
-Seems I didn't select CONFIG_WERROR=y, so I missed it as a warning.
-and I can hit it now with that config. Will fix it in the next version.
-Thanks!
+Yes, thanks for catching this!
 
-Regards
+> We probably should put some unit tests for these functions.
 
-> -- 
-> Cheers,
-> Benno
+Yeah, I added examples in documentation with asserts that work as
+tests in kunit in v3.
+
+>
+> > +        Ok(())
+> > +    }
+> > +
+> > +    #[cfg(any(test, testlib))]
+> > +    fn reserve(&mut self, additional: usize, _flags: Flags) -> Result<(), AllocError> {
+> > +        Vec::reserve(self, additional);
+> >          Ok(())
+> >      }
+> > +
+> > +    #[cfg(not(any(test, testlib)))]
+> > +    fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocError> {
+> > +        let len = self.len();
+> > +        let cap = self.capacity();
+> > +
+> > +        if cap - len >= additional {
+> > +            return Ok(());
+> > +        }
+> > +
+> > +        if core::mem::size_of::<T>() == 0 {
+> > +            // The capacity is already `usize::MAX` for SZTs, we can't go higher.
+> > +            return Err(AllocError);
+> > +        }
+> > +
+> > +        // We know cap is <= `isize::MAX` because `Layout::array` fails if the resulting byte size
+> > +        // is greater than `isize::MAX`. So the multiplication by two won't overflow.
+> > +        let new_cap = core::cmp::max(cap * 2, len.checked_add(additional).ok_or(AllocError)?);
+> > +        let layout = core::alloc::Layout::array::<T>(new_cap).map_err(|_| AllocError)?;
+> > +
+> > +        let (ptr, len, cap) = destructure(self);
+> > +
+> > +        // SAFETY: `ptr` is valid because it's either NULL or comes from a previous call to
+> > +        // `krealloc_aligned`. We also verified that the type is not a ZST.
+> > +        let new_ptr = unsafe { super::allocator::krealloc_aligned(ptr.cast(), layout, flags.0) };
+>
+> One optimization we can do later: if the alignment requirement of `T` is
+> larger than SLAB_MINALIGN, `krealloc_aligned()` will allocate a power
+> of 2 bytes big enough to hold `layout`, that means we may have enough
+> room to fit extra `T`s, for example:
+>
+>         if align of `T` is 32 and size of `T` is 96, `new_cap` is 4,
+>         then the size of array is 96 * 4 = 384, and `krealloc_aligned()`
+>         will allocate 512 bytes, and we can fit an extra `T` here
+>         (because 512 - 384 = 128 > 96)
+>
+> But of course, I don't think we have such a user yet. I will open an
+> issue later this week if this sounds reasonable.
+
+It sounds reasonable to me, with one caveat: the information of how
+much extra space was allocated should come from `krealloc_aligned`.
+
+IOW, we shouldn't have callers use implementation details from
+`krealloc_aligned`. (One possible way to do it is to return the actual
+allocated length in addition to the pointer to the allocated block.)
+
+> The rest looks good to me. (`destructure` and `rebuild` are obviously
+> very creative to me ;-))
+
+They are the functions that make this possible :)
+
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>
+> Regards,
+> Boqun
+>
+> > +        if new_ptr.is_null() {
+> > +            // SAFETY: We are just rebuilding the existing `Vec` with no changes.
+> > +            unsafe { rebuild(self, ptr, len, cap) };
+> > +            Err(AllocError)
+> > +        } else {
+> > +            // SAFETY: `ptr` has been reallocated with the layout for `new_cap` elements. New cap
+> > +            // is greater than `cap`, so it continues to be >= `len`.
+> > +            unsafe { rebuild(self, new_ptr.cast::<T>(), len, new_cap) };
+> > +            Ok(())
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +#[cfg(not(any(test, testlib)))]
+> > +fn destructure<T>(v: &mut Vec<T>) -> (*mut T, usize, usize) {
+> > +    let mut tmp = Vec::new();
+> > +    core::mem::swap(&mut tmp, v);
+> > +    let mut tmp = core::mem::ManuallyDrop::new(tmp);
+> > +    let len = tmp.len();
+> > +    let cap = tmp.capacity();
+> > +    (tmp.as_mut_ptr(), len, cap)
+> > +}
+> > +
+> > +/// Rebuilds a `Vec` from a pointer, length, and capacity.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// The same as [`Vec::from_raw_parts`].
+> > +#[cfg(not(any(test, testlib)))]
+> > +unsafe fn rebuild<T>(v: &mut Vec<T>, ptr: *mut T, len: usize, cap: usize) {
+> > +    // SAFETY: The safety requirements from this function satisfy those of `from_raw_parts`.
+> > +    let mut tmp = unsafe { Vec::from_raw_parts(ptr, len, cap) };
+> > +    core::mem::swap(&mut tmp, v);
+> >  }
+> > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> > index 4786d3ee1e92..e53466937796 100644
+> > --- a/rust/kernel/error.rs
+> > +++ b/rust/kernel/error.rs
+> > @@ -6,10 +6,7 @@
+> >
+> >  use crate::str::CStr;
+> >
+> > -use alloc::{
+> > -    alloc::{AllocError, LayoutError},
+> > -    collections::TryReserveError,
+> > -};
+> > +use alloc::alloc::{AllocError, LayoutError};
+> >
+> >  use core::convert::From;
+> >  use core::fmt;
+> > @@ -192,12 +189,6 @@ fn from(_: Utf8Error) -> Error {
+> >      }
+> >  }
+> >
+> > -impl From<TryReserveError> for Error {
+> > -    fn from(_: TryReserveError) -> Error {
+> > -        code::ENOMEM
+> > -    }
+> > -}
+> > -
+> >  impl From<LayoutError> for Error {
+> >      fn from(_: LayoutError) -> Error {
+> >          code::ENOMEM
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 7f2841a18d05..51f30e55bd00 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -19,7 +19,6 @@
+> >  #![feature(offset_of)]
+> >  #![feature(receiver_trait)]
+> >  #![feature(unsize)]
+> > -#![feature(vec_push_within_capacity)]
+> >
+> >  // Ensure conditional compilation based on the kernel configuration works;
+> >  // otherwise we may silently break things like initcall handling.
+> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> > index e1be6c5e72a9..58f2ddafb326 100644
+> > --- a/rust/kernel/str.rs
+> > +++ b/rust/kernel/str.rs
+> > @@ -2,7 +2,7 @@
+> >
+> >  //! String representations.
+> >
+> > -use crate::alloc::vec_ext::VecExt;
+> > +use crate::alloc::{flags::*, vec_ext::VecExt};
+> >  use alloc::alloc::AllocError;
+> >  use alloc::vec::Vec;
+> >  use core::fmt::{self, Write};
+> > @@ -730,7 +730,7 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) -> Result<Self, Error> {
+> >          let size = f.bytes_written();
+> >
+> >          // Allocate a vector with the required number of bytes, and write to it.
+> > -        let mut buf = Vec::try_with_capacity(size)?;
+> > +        let mut buf = <Vec<_> as VecExt<_>>::with_capacity(size, GFP_KERNEL)?;
+> >          // SAFETY: The buffer stored in `buf` is at least of size `size` and is valid for writes.
+> >          let mut f = unsafe { Formatter::from_buffer(buf.as_mut_ptr(), size) };
+> >          f.write_fmt(args)?;
+> > @@ -771,7 +771,7 @@ impl<'a> TryFrom<&'a CStr> for CString {
+> >      fn try_from(cstr: &'a CStr) -> Result<CString, AllocError> {
+> >          let mut buf = Vec::new();
+> >
+> > -        buf.try_extend_from_slice(cstr.as_bytes_with_nul())
+> > +        <Vec<_> as VecExt<_>>::extend_from_slice(&mut buf, cstr.as_bytes_with_nul(), GFP_KERNEL)
+> >              .map_err(|_| AllocError)?;
+> >
+> >          // INVARIANT: The `CStr` and `CString` types have the same invariants for
+> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > index aa77bad9bce4..8fad61268465 100644
+> > --- a/rust/kernel/types.rs
+> > +++ b/rust/kernel/types.rs
+> > @@ -157,11 +157,11 @@ unsafe fn from_foreign(_: *const core::ffi::c_void) -> Self {}
+> >  ///     let mut vec =
+> >  ///         ScopeGuard::new_with_data(Vec::new(), |v| pr_info!("vec had {} elements\n", v.len()));
+> >  ///
+> > -///     vec.try_push(10u8)?;
+> > +///     vec.push(10u8, GFP_KERNEL)?;
+> >  ///     if arg {
+> >  ///         return Ok(());
+> >  ///     }
+> > -///     vec.try_push(20u8)?;
+> > +///     vec.push(20u8, GFP_KERNEL)?;
+> >  ///     Ok(())
+> >  /// }
+> >  ///
+> > diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+> > index dc05f4bbe27e..2a9eaab62d1c 100644
+> > --- a/samples/rust/rust_minimal.rs
+> > +++ b/samples/rust/rust_minimal.rs
+> > @@ -22,9 +22,9 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
+> >          pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
+> >
+> >          let mut numbers = Vec::new();
+> > -        numbers.try_push(72)?;
+> > -        numbers.try_push(108)?;
+> > -        numbers.try_push(200)?;
+> > +        numbers.push(72, GFP_KERNEL)?;
+> > +        numbers.push(108, GFP_KERNEL)?;
+> > +        numbers.push(200, GFP_KERNEL)?;
+> >
+> >          Ok(RustMinimal { numbers })
+> >      }
+> > --
+> > 2.34.1
+> >
