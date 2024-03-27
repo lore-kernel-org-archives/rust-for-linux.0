@@ -1,66 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A772C848
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 09:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FE94F1F6;
+	Wed, 27 Mar 2024 10:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711530789; cv=none; b=Ug9ajrZGPUcbRPL7W6BL0ZO95/CAox3K8fylho6LJLxyKKLRIjqIb4kfQWAT/tS/4JS1oAwdnFXlC43WPxnsYqnEwUPkWCYoowCb/aWg2ePzvl5kH5imkGb5fouUVU+Sfwk2mtUqB8slZXCPnTun8GNC73u8Bwd6andvpDibCdQ=
+	t=1711536612; cv=none; b=XV/exygPBRpNU/KjwLuuwErhl0ZuCe6DpXE50gNW11nTMN1oRUzmvo/HHQzfitc7TlY6NaXRvk+1MlVMKKOZegCifVBn/G4e08Jm7BypHKlyE+liizFk52qm2Sy111JrUFl6W+lv3xM/dZDsC7aNMy0AfR9LaGHYFsZkqduYD/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711530789; c=relaxed/simple;
-	bh=23oiM3VF61FT/0f8zyM4/HL6sW4bQtzpj3SCE778ZMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AX9IDYsWWformeOiw9YUpIQ41SPlNZmswhmZ2rKB0co9/xaoyIjUMrkwYT416OtBBZ5rkHp+Ty7S6fqOZw2kDCAPPwxe2QKe473oKkR4EWLRaK1fMbQEpj66Mz3mtXwCGHdkrk2asSBdmlundzTJtX2MgHnmdkBuHdICTeE6T+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxZ2qh+a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711536612; c=relaxed/simple;
+	bh=hRZ12UFk01NEt79oTtxQRbJ/1y3rDaUGFfV1INmoIGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t6pxmjFk29GASNcJrywbIplgb0UOZVj48gG6ZQmtNJ5tGUNdTA4q5PzwRmvzaofjiLGWpUxdsrgrJ47UAMGNEdu/MTRyPBImjmUrHQPETuZW7u2EcPeaC1jLnILQzSaLs28Jrpaz14SWV9G0QvKm/4x25QI9m7f86OdpLXRsLnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HaCmLsTc; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxZ2qh+a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F281C433C7;
-	Wed, 27 Mar 2024 09:13:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711530789;
-	bh=23oiM3VF61FT/0f8zyM4/HL6sW4bQtzpj3SCE778ZMI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OxZ2qh+asCUef12ILoEbKt3z/VZaf9oStopmycTqQsQWAByzkdHtj9MuwO0bHoswO
-	 ZewSXpdz9ip8oky67S4+CE34lk3cIYrnoIPr7AuGLQkZDsUDDcjhpZPx/Pa+u6p8CM
-	 bX/QVbmKN+8mKfD/EswnyHeNe6QIz98LyeNedu6c=
-Date: Wed, 27 Mar 2024 10:13:06 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
-	ajanulgu@redhat.com, airlied@redhat.com,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 3/8] rust: device: Add a stub abstraction for devices
-Message-ID: <2024032730-clamor-anything-ce16@gregkh>
-References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-4-dakr@redhat.com>
- <2024032518-swampland-chaperone-317b@gregkh>
- <CANeycqqQjSqA8CK66wyaNnSckr2GNDtfEUv_Tm29WbzAs7Njzg@mail.gmail.com>
- <2024032703-mobile-perch-0a55@gregkh>
- <dc21d9dc9be739122e60caefa0f75ac29bd2a3c7.camel@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HaCmLsTc"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6e6f69e850bso5946943b3a.0;
+        Wed, 27 Mar 2024 03:50:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711536609; x=1712141409; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ture+LxIapYu0oPV7sdPwmJ6Rv+cKuHE663qPdR1ILM=;
+        b=HaCmLsTcoS6LBlwQ9LXTkoM8GwzAje0CXnAhQywu2SBc+URjQ99rna6w7cXJFYuGVI
+         r9FFlrbBMZWjmiYBIign2wJ/IFwbWTYrPGJ+1+SD6usodQNkBAuiAvqvi9R371N0PTDw
+         w5jp3tykqXK42qdSjjryJqxMxDmVcQdq14MzDPxK3W49E/rKiFW5cOn1gSqMuWgnstzs
+         i4D1Jz9DVt0bjOAR5TBxFcWFM7qjnc9cAM361cGimNz+4S17wGEl0DXW561wEgxHav2i
+         KIhN8hueU/juFLNOc9LDdI4srYn69i/2LrQR/7QE73WFS8QDcSVNxEXtPTSRFAsn++a4
+         SuzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711536609; x=1712141409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ture+LxIapYu0oPV7sdPwmJ6Rv+cKuHE663qPdR1ILM=;
+        b=UrxkFq3Ic/QOuHou143D+t8tpB7rW2wvEFlnQY4/yDCEqFy5piArnt5zYtR1r7DIpv
+         xkvorWYxWaZewJg8mVTTisvWkmIqCxTthMhUS/6rzm4jxrGgxImvHUvFTdWqiCFhlGvX
+         tLB5PdEopqqSbI9x9onOZwxxFMOIH8yzbN4OfWQIlgvZqMtlvsRXCJSfKQifdw41b/de
+         tZq1q1CnBkfvccZhSnd0c+dMeNrRnYZTJhdJd8MTIDs6AtpdCXrl0GMWKeIQo0tOixkp
+         ZERiSq0FFDtZVuT0TSg2bhi78B3tGg9hm6TnNP4dJpkES2n1EGnwoIJCVyw3kUCf+uIe
+         fzYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEhzdDC6J16T/pvmKmFAQkLC2mhKw2yCgXtDpImJHSkSg+C1VUrAUdwyvvdvoBfEzdGHLqg998ISb3iLzAN1X6rJmyf0W0SVgyW1IkNBguiz7wa2imYhneCsfT1OOnzCK/tSIyYwHEPIg79go=
+X-Gm-Message-State: AOJu0Yz1pLkdpuLGhil/My6NRo/wObT0jKsrw6Pn6uWJ3lqr3VQOkg8J
+	xVST3GEgUqPPUxYVIxC4CynxXTrSaBlft8jspUcamR21dnBs1XK82WbVzqIF1Lg9pcd4kIEh/GT
+	raWeou9g6i+NgsX5OkoWwr7hmvNw=
+X-Google-Smtp-Source: AGHT+IGJj/bSZAP3EjL/JWUjRKPP2j3anmA/ZNQuHSO9LvWflS1OwWtEtEuC5q5HpCiPQAhY9CM7STns6XpVssCEc7U=
+X-Received: by 2002:a05:6a20:7351:b0:1a3:c4b9:dbd9 with SMTP id
+ v17-20020a056a20735100b001a3c4b9dbd9mr3971300pzc.42.1711536608991; Wed, 27
+ Mar 2024 03:50:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dc21d9dc9be739122e60caefa0f75ac29bd2a3c7.camel@redhat.com>
+References: <20240327023531.187880-1-wedsonaf@gmail.com> <20240327023531.187880-8-wedsonaf@gmail.com>
+ <ZgOXGSDmIgrENB7d@Boquns-Mac-mini.home>
+In-Reply-To: <ZgOXGSDmIgrENB7d@Boquns-Mac-mini.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 27 Mar 2024 11:49:41 +0100
+Message-ID: <CANiq72=0Q2KJ_Rmnsa596fRA0E3tE4cZtG7W7DHU94=nWLMoSg@mail.gmail.com>
+Subject: Re: [PATCH v2 07/10] rust: alloc: update `VecExt` to take allocation flags
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 27, 2024 at 10:05:51AM +0100, Philipp Stanner wrote:
-> Regarding the feedback from the thread from a year ago: Assuming we
-> implement as much of that as possible, could we get back at you with
-> follow up questions and discussions here in this thread?
+On Wed, Mar 27, 2024 at 4:48=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> /me likes this! ;-) Too bad `write_slice_cloned()` is not stablized:
+>
+>         https://doc.rust-lang.org/core/mem/union.MaybeUninit.html#method.=
+write_slice_cloned
 
-I'm always willing to review patches, just not patches where previous
-review comments are ignored, for obvious reasons.
+For future reference, it will be called `clone_from_slice` soon (1.78):
 
-thanks,
+    https://doc.rust-lang.org/beta/core/mem/union.MaybeUninit.html#method.c=
+lone_from_slice
+    https://github.com/rust-lang/rust/issues/79995
 
-greg k-h
+This could be a "good first issue", i.e. to replace these if these get
+stabilized (which seems likely).
+
+Though that one has to account for panics -- it would be good to check
+codegen if we do replace it.
+
+Cheers,
+Miguel
