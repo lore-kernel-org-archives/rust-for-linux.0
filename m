@@ -1,188 +1,206 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A6112F360
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 16:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D82513CC5C
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 16:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711556218; cv=none; b=G/W2BFnMxVRrjObQHE6Odi+TfcJp3yYCLI5zlNduasrZS8CBSl0/8IpYrrOvSbxmNI0Om01dnCwV8hTNh/Q3sHukOKcC6lbY3J0xfQN7Wj675+gTNFjIxrEkS1yXz1HcyqDIzN1LAaZ5dic2sDD6dRP8c9SDXrDM3CUf/2lO+P8=
+	t=1711557050; cv=none; b=iRHnXy2JNqkX/BuQE9cv+PngZMeakG7tcsq8KZvZt+AGtPPBZtfS/kXkUHIFnR7hPovVIL8hiB1U94kbjYJytB9XUBKqinfHBjSTyKnnYWZ+aZl2ISR9ZxuIXWppC9db3xgK3SVOAIN2G7zg4ZECle02lxNEF05T6Iw4uGPlDgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711556218; c=relaxed/simple;
-	bh=sT+XSyK8g3hoLB6WyZQzp0atORjqibEBbeZ/n0I3qqE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=umjldhV44k53l/tZKbxN1FQHTUsa1BH82hkBOBJLbqN0YGKsaEjwz8PKfAZAbTytoNbtRHoY5y6JBJ6Ic47uDw/9QXsCyqdmK42Dgh2sTHiWh9bWy2TRjjGmf1Qf3BbuVwY9ZEG/K6LC/mBYIs6SAvvnj4KVBzD9hJqaQttQF8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CmtSSXme; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711557050; c=relaxed/simple;
+	bh=B+y3KfTmF29v6VYHD7tORMKanRDvDZ0THIjtmMQtUck=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fFMRp/jhqLxIP73ZEUOicAVv0HrXqOJGK8EhTUsSwDmY20inZRTGghrB1vwqR0cOZiO9bW7srvHs9TB7Q+SqAHFmnRwBSyI6z2aORLm9RtiPY6F6syxmNwIy39girItN3d0bCuBqgs5pLngXefHy0mUD29wF2UwrHfA1w4yMdF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jz2lljQt; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CmtSSXme"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711556208; x=1711815408;
-	bh=G/e/npas1/bGg+7eT8JQjC5kkF+PlgUlu2xBXL7JzFM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=CmtSSXmeJqyCDvrxz/ujRxKklqo3n5yinfdAzeFaCpXNwM+/LouWzkuH1MMkkl4vR
-	 e1WCWozqUYgIsd2blozs0Nhfo/YmBNfhjyrulekfZxQ8lGnn5Mj20ShGWX++AujijA
-	 yuZ905Ge6s2KeqTdeH+E5vxk/afjyrI/faqnSSTey18eXQOq2sGqeroRpE0evDK+CI
-	 PlOAfYgNr/mY4C0sdz4OAIj6opFxya+hNVuIvT6wjt5Pm/LTvPrCfkZx1U+IQ2CruN
-	 er0mphtVZ8dCEGhkdhbvMKUGGtQXO+k6wUBuy5UVqUwshiZcdj/jOdUfyyjLnZ4rw+
-	 IiwujdrO/mohw==
-Date: Wed, 27 Mar 2024 16:16:33 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 1/2] rust: introduce `InPlaceModule`
-Message-ID: <b5ef6fdb-781f-4caf-98ac-1f2ceca9f6d0@proton.me>
-In-Reply-To: <20240327032337.188938-2-wedsonaf@gmail.com>
-References: <20240327032337.188938-1-wedsonaf@gmail.com> <20240327032337.188938-2-wedsonaf@gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jz2lljQt"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5d3907ff128so5217591a12.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 09:30:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711557047; x=1712161847; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lgZvJNSc77OLkxWq3dlzWEXQulVrBf5A1FquBlsE+hM=;
+        b=Jz2lljQtz6oCebhrrG5S1dd3119+VVynz7eEvEhW1rdZsHrKTeSdZBuExooccXlnCe
+         vdBt5XcSQdTcRTHrtVBKU1wxVIuv0PRBqnzlWppKex1NeasUgElg/N4KgoevUileov30
+         jZoNfkPO1uEISZiNVJ2wupQm93nNZitp5pusp9orVU9xs/00x9ur0plal8XgKPjRmCnC
+         F9zuKk9fTaBbVFI/mN7T88f2RWIa93l2++zq/Mz/oSLq1XPJVifnguhtL/P/GUWcE/Es
+         4iTLGzsDJ/hTtL/maczn7lCQO2wQK8OhlBUyDOC12sxuPNb4Wc8znAG6qKtqVtzlcnHa
+         QXIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711557047; x=1712161847;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lgZvJNSc77OLkxWq3dlzWEXQulVrBf5A1FquBlsE+hM=;
+        b=NRqGzAG6cR8LkXdBzq0vmTPFrjsgvrdfrrJUdxhtAaQYYzb8yycuR+s+s+w7im94li
+         MDw5l5ZB3cppJxcjmG82wuOKYlHuOYJkUA+cTPmIdFIzGc4KwhPOz4sUkxqvLOUBdkog
+         xYtbSlEQ/wLYunx6mHrXvm6RyY3AI/JyKstz+uZNm9Bw2onb8aMnePugrUMC97PfLuda
+         glzGnmnsDI0tw0EAshNvrZLjHmqMQsjRS65Ls9mFhGw1ihsE3eq2EwiGVMLtlaSIVCxv
+         Q8d3Z5+TemcoqC8qEDrFBJ7f/Nk/uwCRC+ceOV7jts2fNhQFTF6Pmzrac0CHNPBH8aJT
+         48zw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxOTTsHFLjliB1KI9sJf8dQQrIGyg8QjkcvDs6ZQLryTGH7rQweCOmTlAtt0bmW5R2HQPc9S9niFRzRTDvF76PFTsrxWUZSTAorFpDYdc=
+X-Gm-Message-State: AOJu0YxlBmQhS+yX2KU0AMrqsQd1I1sfg+0Vh+9BAUBgBurbPQ63vaFh
+	aTJqpJfFlarHDqCyaq+rnDfX/ASyoeZFTmryMa34JtGqRjVlk1c08ry5wZACWBmanSCQKdXCQrZ
+	F7JBE9FSb+kPNzWDGi4qs+2HsRP8=
+X-Google-Smtp-Source: AGHT+IGxYd85hhUY5l0m/3Xx4Z/Vi3X5oh99rrWRqYJ4YKmvckiJ7mYxYAnHa2nDXkIYJMNrvFp65DYqG2lCayJ4aOs=
+X-Received: by 2002:a17:90a:ca90:b0:2a0:1167:bfea with SMTP id
+ y16-20020a17090aca9000b002a01167bfeamr180397pjt.5.1711557047276; Wed, 27 Mar
+ 2024 09:30:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240325174743.95542-1-dakr@redhat.com> <CANeycqq=qETyG5ZwmKo0-iLehWeGVf_WqLf=OK3D1LN2yzYbCg@mail.gmail.com>
+ <ZgQCF3jp73n4BTs4@pollux> <CANiq72=s576RhVFCK0+BHSY7Z7gsef9ddh586zrEDhQSoXAXwA@mail.gmail.com>
+ <ZgQx_rjWrelMGm04@pollux>
+In-Reply-To: <ZgQx_rjWrelMGm04@pollux>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 27 Mar 2024 17:30:19 +0100
+Message-ID: <CANiq72kXDAiYdCARMbK5Z3QWQNm=MQa4Va7PTc5zJm=9+cH_5Q@mail.gmail.com>
+Subject: Re: [PATCH v7 0/8] [RFC] Rust device / driver abstractions
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com, 
+	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 27.03.24 04:23, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->=20
-> This allows modules to be initialised in-place in pinned memory, which
-> enables the usage of pinned types (e.g., mutexes, spinlocks, driver
-> registrations, etc.) in modules without any extra allocations.
->=20
-> Drivers that don't need this may continue to implement `Module` without
-> any changes.
->=20
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+On Wed, Mar 27, 2024 at 3:49=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
+wrote:
+>
+> Sorry, I wasn't aware that you prefer to have some extra process / stage =
+of
+> revisiting / reviewing of existing patches / code that is picked up from
+> R4L/rust.
 
-I have some suggestions below, with those fixed,
+No worries. It is up to the submitters in the end (i.e. you in this
+case) -- we just try to help by suggesting what we think may have the
+best chances of succeeding.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+In other words, it is not that we want to have "extra process". In
+fact, we are not the ones that should/will decide when to merge code
+in many/most cases (it is the relevant subsystems where applicable).
+But we are trying to help you get there.
 
-> ---
->  rust/kernel/lib.rs    | 25 ++++++++++++++++++++++++-
->  rust/macros/module.rs | 18 ++++++------------
->  2 files changed, 30 insertions(+), 13 deletions(-)
->=20
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 5c641233e26d..64aee4fbc53b 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -62,7 +62,7 @@
->  /// The top level entrypoint to implementing a kernel module.
->  ///
->  /// For any teardown or cleanup operations, your type may implement [`Dr=
-op`].
-> -pub trait Module: Sized + Sync {
-> +pub trait Module: Sized + Sync + Send {
->      /// Called at module initialization time.
->      ///
->      /// Use this method to perform whatever setup or registration your m=
-odule
-> @@ -72,6 +72,29 @@ pub trait Module: Sized + Sync {
->      fn init(module: &'static ThisModule) -> error::Result<Self>;
->  }
->=20
-> +/// A module that is pinned and initialised in-place.
-> +pub trait InPlaceModule: Sync + Send {
-> +    /// Creates an initialiser for the module.
-> +    ///
-> +    /// It is called when the module is loaded.
-> +    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, err=
-or::Error>;
-> +}
-> +
-> +impl<T: Module> InPlaceModule for T {
-> +    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, err=
-or::Error> {
-> +        let initer =3D move |slot: *mut Self| {
-> +            let m =3D <Self as Module>::init(module)?;
-> +
-> +            // SAFETY: `slot` is valid for write per the contract with `=
-pin_init_from_closure`.
-> +            unsafe { slot.write(m) };
-> +            Ok(())
-> +        };
-> +
-> +        // SAFETY: On success, `initer` always fully initialises an inst=
-ance of `Self`.
-> +        unsafe { init::pin_init_from_closure(initer) }
-> +    }
-> +}
-> +
->  /// Equivalent to `THIS_MODULE` in the C API.
->  ///
->  /// C header: [`include/linux/export.h`](srctree/include/linux/export.h)
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index 27979e582e4b..0b2bb4ec2fba 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -208,7 +208,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream =
-{
->              #[used]
->              static __IS_RUST_MODULE: () =3D ();
->=20
-> -            static mut __MOD: Option<{type_}> =3D None;
-> +            static mut __MOD: core::mem::MaybeUninit<{type_}> =3D core::=
-mem::MaybeUninit::uninit();
+In particular, the old `rust` branch contained a lot of work from
+different people, in different stages. Some was mainlined. Some was
+marked as unfinished. Some is now old enough that requires adjustments
+to new stuff like pinned-init, or maybe the C side has changed since
+then, etc. even if it was upstreamable. Some was definitely not
+intended/ready for upstreaming.
 
-I would prefer `::core::mem::MaybeUninit`, since that prevents
-accidentally referring to a module named `core`.
+> Maybe it would have been good to give me this pointer when I asked: "how =
+(and
+> where) to get specific code discussed." [1]
 
->=20
->              // SAFETY: `__this_module` is constructed by the kernel at l=
-oad time and will not be
->              // freed until the module is unloaded.
-> @@ -275,23 +275,17 @@ pub(crate) fn module(ts: TokenStream) -> TokenStrea=
-m {
->              }}
->=20
->              fn __init() -> core::ffi::c_int {{
-> -                match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
-> -                    Ok(m) =3D> {{
-> -                        unsafe {{
-> -                            __MOD =3D Some(m);
-> -                        }}
-> -                        return 0;
-> -                    }}
-> -                    Err(e) =3D> {{
-> -                        return e.to_errno();
-> -                    }}
-> +                let initer =3D <{type_} as kernel::InPlaceModule>::init(=
-&THIS_MODULE);
+I think we talked about the usual process we have been
+following/suggesting in our virtual call. I don't discount having been
+unclear or not mentioning everything to you, but it was a fairly long
+call (~3 hours I think! :)
 
-Ditto with `::kernel::InPlaceModule`.
+We also have some of our recommendations at
+https://rust-for-linux.com/contributing#submitting-new-abstractions-and-mod=
+ules
 
-> +                match unsafe {{ initer.__pinned_init(__MOD.as_mut_ptr())=
- }} {{
+i.e. the main point for work like this is to get people involved.
+Sending the patches like you did is one way of doing it, but sometimes
+it is best to approach it a bit differently, and thus our suggestions.
 
-This requires that the `PinInit` trait is in scope, I would use:
+> Maybe I'm also misunderstanding what you mean by "revisiting".
+>
+> Anyway, how can we proceed? Can we just continue with this series and imp=
+rove
+> things by further review? Do you prefer to approach it differently?
 
-     match unsafe {{ ::kernel::init::PinInit::__pinned_init(initer, __MOD.a=
-s_mut_ptr()) }} {{
+Up to you, but I would suggest taking a look at what Greg & Wedson
+have mentioned so far (last time this was submitted and now), fixing
+whatever is needed there (like the pinned-init stuff) and improving
+the documentation (API documentation, code comments, even `Doc/` if
+needed) as much as possible where needed (so that maintainers can very
+clearly see what you are doing, and it will also help other people
+later on too), perhaps replying to all the previous feedback in a
+summary in the cover letter...
 
---=20
+Then I would double-check afterwards with Wedson and others if it
+looks better, and then resubmitting to the list.
+
+Or maybe Wedson wants to revisit and submit these himself -- I would
+check with him, perhaps you can save yourself some work :)
+
+> I think that's actually explained in [2], which I referenced in the cover
+> letter. If you think there should be additional information, please let m=
+e know,
+> I'm happy to add it.
+
+I did read your Nova message before my other reply, and I pointed it
+out because it is not (even assuming your readers do read that other
+message).
+
+That message just says "something" was taking from "somewhere",
+essentially. You want to be way more concrete. For instance:
+
+  - From where/when it was taken: i.e. it could have been the `rust`
+branch, or another tree from one of the main users, or a personal tree
+(e.g. Wedson's in this case), or even a random one somewhere else (and
+somebody there could have had the code modified without telling
+anybody anything nor adding a SoB etc.).
+
+    It could also have been not the latest version from one of those
+trees, either.
+
+    You could provide the URL/hash if you think it is useful.
+
+  - Why it was taken: i.e. what will require this code? Yes, "Nova",
+but ideally you want to be more concrete. You can even get to the
+point where, if you are e.g. adding a function, and you already have
+the code somewhere that calls the function, then if you can include a
+link (or even an example of the caller inline if that makes sense,
+assuming there is not an example in the API documentation itself), it
+will help a lot readers.
+
+    After all, the main blocker for some of these things is the
+"chicken-and-egg" issue, thus clarifying helps.
+
+    For instance, take a look at e.g. commit e7b9b1ff1d49 ("rust:
+sync: add `CondVar::wait_timeout`"), where Alice most recently wrote:
+
+        This is used by Rust Binder for process freezing. There, we want to
+        sleep until the freeze operation completes, but we want to be able =
+to
+        abort the process freezing if it doesn't complete within some timeo=
+ut.
+
+And this typically you should do per series at least, or in some cases
+per patch may be best.
+
+> Noted. But just to clarify (and I'm clearly not saying you implied someth=
+ing
+> else), not doing so is not meant to be understood as doing it without pro=
+per
+> deference. I was very careful in setting up proper authorship and co-auth=
+orship
+> (e.g. for fixes that I squashed into some commits).
+
+Yeah, the authorship looks fine -- I meant to be clear when you didn't
+hear from the authors.
+
+i.e. I would recommend pinging, waiting a fair amount of time, and if
+you don't hear from them, saying so in the cover letter (so that
+everybody understands that they may not have realized this was sent,
+or they may not have had the chance to comment, or they may not be
+ready to reply in the mailing list, etc.).
+
+I hope that helps, and thanks for working on this!
+
 Cheers,
-Benno
-
-> +                    Ok(m) =3D> 0,
-> +                    Err(e) =3D> e.to_errno(),
->                  }}
->              }}
->=20
->              fn __exit() {{
->                  unsafe {{
->                      // Invokes `drop()` on `__MOD`, which should be used=
- for cleanup.
-> -                    __MOD =3D None;
-> +                    __MOD.assume_init_drop();
->                  }}
->              }}
->=20
-> --
-> 2.34.1
->=20
-
+Miguel
