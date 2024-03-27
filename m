@@ -1,184 +1,115 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C248137749;
-	Wed, 27 Mar 2024 12:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360E913B2B2
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 13:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711543864; cv=none; b=UNwp+tFf2KJiXywTxDjTLc+hbZDUhR7sToMva1/BSzedcAhpHwwQo7OTMiKPDS1SzNLIULQHKqXtkl0otMVi2qJN/kbybd3b0vli31Qk7aFeqQsmZQgJKZUmReeiVLr+zLXWVFZNmSGq9Ktse/YE9q8sGvM6OCpKauUTbR3RmGg=
+	t=1711546306; cv=none; b=gtabNOH9pAzXrQEqjm3Njhc4lw+UKkvl77sIqesmtgCMUnjVYeItSqAR/G4xPsX/MKKOsrjbP13A1yVWU2RAkGzILm/sqXCKI65P9ib14rbOqtXmefqKlY7I8JxqV0qibDuWbgYDMqycXjy0HfdbZQ8bB3tUSARRjcSaUW3Mu+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711543864; c=relaxed/simple;
-	bh=fS6w+vfuAACucWDgPNQUe9sHdSzc9iZ6l94DU6VIXaE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ly1rbfcYVrHunAlDlZnXOmPmFbw9qcUETWXlD04M5kFPGoGcQUcxTzt10gcSs0JXydSA9j/TMo//xU0ZbGR1VeLoLc2ey8a7WH22GnbNkLqEJuhPmEJtxSEfQayh+VZKfF8Gj4ayIM7HWwfkF7xSdvDqx+RuiBovkAfuIubyGME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Ibw6LTki; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711546306; c=relaxed/simple;
+	bh=KLa9HND9XMxoUTfY1WBAdWlDKV7AEQUyDv5dh6zhcc0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GwrGc4EyZ6QXo+RE0XRTvLryoXeYjew/m/VjNfD4Uc9VnjtghLcPd4zDitL56TjLf/yAK7SGLIGCGa9POlws8eInh9GeSnzv9EaQGX6a7W6Rl+WZar+fEL3pLAvrVtm1V5RPLvijgmFYGVlhn/RZrx9O5ntyEqEQpjihgAC0KYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OkOaeIMG; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ibw6LTki"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=bg2oeawsjrhsloml6ikhsg4wbq.protonmail; t=1711543858; x=1711803058;
-	bh=C9j9icvWUZHeELj3CV4tqk50BX3HHFMwnJFINnp3JyA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Ibw6LTkilVdqr0qEI8usHh8AwwoXiGLXoMeLzij9jCyAumZ3KbLR+osG5mA6YuTMK
-	 vjzDwDCh+hX9VSjsXNfEW6osXZ+xpLDU4UGhH3UwpU2s8AoQO3JXEb2zHNlVlovhoS
-	 7Ryba8py5YHDy50y5JU0kq60SSkv/y5WTidZNBXh0Dx4sc6mUG4hU3mJusbFMWlaZJ
-	 DXLF1rM2g9WLJ7emOjQdFhHmgf7CM9yoUe3tRIDFEqXTXS6/GOHNKZc8pTCHMBzhxG
-	 Bu1cJADKtBkGldTzEcaR1Kze0Q49wyiw2yslPPo1F8jdNh5Nucax8MnZEd0rzCzp71
-	 Rb4s7UBt2wcAA==
-Date: Wed, 27 Mar 2024 12:50:50 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Valentin Obst <kernel@valentinobst.de>, Heghedus Razvan <heghedus.razvan@protonmail.com>, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 3/5] rust: time: Introduce clock reading framework
-Message-ID: <15DXPOXjBar-JYHVrrgVXI_f3BF5JenfeXEmmxgra6my42Ot9O9Wrc-nc-0O13C5EFTnm0SDac1Muau15mHLmb4So2292uALNSwXKoK75FQ=@proton.me>
-In-Reply-To: <ZgMfsaiOlA87PAUf@boqun-archlinux>
-References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-4-boqun.feng@gmail.com> <c2XJe4xCqT5WrHu9XZKQ03ggEZLwd2KBuSBb9Onivny9v7fqKBkm1aywmztjiDyuLKqr2Igt_6XUJiuArLl9JVwq0xa4gKfocP2H5YZDrFk=@proton.me> <ZgMfsaiOlA87PAUf@boqun-archlinux>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OkOaeIMG"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6ea9a616cc4so2972333b3a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 06:31:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711546304; x=1712151104; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KLa9HND9XMxoUTfY1WBAdWlDKV7AEQUyDv5dh6zhcc0=;
+        b=OkOaeIMGBdsBC4xsy4Zx2efwyURN1ZKUXvRhQfQHnlyopelUciTjyyfdU5kCLSSwvM
+         Qwp1CvpttCvE+hbGQJKqEx0iOqhR3Mt9X8mprTJe4IRkLVMMlthC/iV0bRJUyNYgOCCV
+         g/+iFz2wv3qEgxiL8/L4lL9XPr/IZIhHkYySk3A63sQHKO5Pif/g5DqQuyJOe4Xg61/8
+         bfBCxd4eIU84u5VrfGvptn+WdrQvO5Cd8C9lPEmbKRWbLYslkOmrHg5Fzfo7K8GFtC8F
+         ae59B9MNmajK7Z8R+tb0oSb6KAW7f79lRUGUsZwuPE46xrkSRNfjoaBt+ke3MIEUI/8V
+         gmNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711546304; x=1712151104;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KLa9HND9XMxoUTfY1WBAdWlDKV7AEQUyDv5dh6zhcc0=;
+        b=sp4/G7q7b2kDSd3Iczy/ZD0idwRpZtTSgap+N+Hv0Ksojoizj/fHpomQchaVV0F8RB
+         ljIyCcDAHvUosa3uOIZKOYrMwHNCqLHqvf2nrSslLw7C6l2NVpJ03jEZRf34SlBXPjpF
+         GArdK+ylNKUMhJshIJuBUsTpFg4o8k/9Z0Hady8H5uOi6sgsCwRuNV+HY3thrdO01Vc2
+         Di6KCIRocDxe4f8XpK5VlB14R6eGJvWYlzEPQsfLEf2T65GJMMWyC17xo0t9NzdEvst4
+         +knHzAFjy5oERKyr1KqiVLv2R/RsfreGLSWsTxm+4BRtXjINInG83R1EjCxTBPvTIjjv
+         j/rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVBSva58ZIF7zi8mXrEXaZSO8XCzWIFrT0z7kzV7V1YZJPExwAKhYakvE2QCElNBKmVAK+w9k0HcgB47uD6C+WW+ZW5pCFnwlIzqaQjmW8=
+X-Gm-Message-State: AOJu0YwbvmaustgbCSrNwQuq/uxDiIXDb6KGHLFbd6BebLp75SWUk4lD
+	V5VCUaIhSYmcUR24tmg5DKOUWLubrIIIdrGuaL1AhuaGAmL/N8vH0R1PoOWMIWW93moC6+S9s5H
+	dG5iJBJfx06Pc9D+Z0NdoLuSLUKI=
+X-Google-Smtp-Source: AGHT+IGrwtZDjHS5kyaqYYB0ZPUMxAvHFV5Y9KTa3T92KNEXD6c7UJbhMW37Najye1kADHdgZSYgkE3ZFdQ8x2zqxtQ=
+X-Received: by 2002:a05:6a21:168d:b0:1a3:6aba:e9fb with SMTP id
+ np13-20020a056a21168d00b001a36abae9fbmr1092038pzb.25.1711546304433; Wed, 27
+ Mar 2024 06:31:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240325174743.95542-1-dakr@redhat.com> <CANeycqq=qETyG5ZwmKo0-iLehWeGVf_WqLf=OK3D1LN2yzYbCg@mail.gmail.com>
+ <ZgQCF3jp73n4BTs4@pollux>
+In-Reply-To: <ZgQCF3jp73n4BTs4@pollux>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 27 Mar 2024 14:31:16 +0100
+Message-ID: <CANiq72=s576RhVFCK0+BHSY7Z7gsef9ddh586zrEDhQSoXAXwA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/8] [RFC] Rust device / driver abstractions
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com, 
+	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 26.03.24 20:19, Boqun Feng wrote:
-> On Tue, Mar 26, 2024 at 05:00:39PM +0000, Benno Lossin wrote:
->> On 24.03.24 23:33, Boqun Feng wrote:
->>> To make sure Rust code doesn't mix timestamps from different clocks, a
->>> type safe clock reading framework is introduced. It includes:
->>>
->>> * A `Clock` trait that represents different clocks, to read a particula=
-r
->>>    clock, one needs implement the `Clock::now()` function.
->>>
->>> * A `Instant<Clock>` type that represents timestamps of different
->>>    clocks, whose implementation is just a `ktime_t`, so all the
->>>    calculation on `ktime_t` should apply to it as well.
->>>
->>> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
->>> Signed-off-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
->>> Co-developed-by: Asahi Lina <lina@asahilina.net>
->>> Signed-off-by: Asahi Lina <lina@asahilina.net>
->>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->>> ---
->>>   rust/kernel/time.rs | 49 ++++++++++++++++++++++++++++++++++++++++++++=
-+
->>>   1 file changed, 49 insertions(+)
->>>
->>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
->>> index b238b3a4e899..0f9f5605ed48 100644
->>> --- a/rust/kernel/time.rs
->>> +++ b/rust/kernel/time.rs
->>> @@ -6,6 +6,9 @@
->>>   //! have been ported or wrapped for usage by Rust code in the kernel.
->>>   //!
->>>   //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffi=
-es.h).
->>> +//! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h)=
-.
->>> +
->>> +use core::marker::PhantomData;
->>>
->>>   /// The number of nanoseconds per millisecond.
->>>   pub const NSEC_PER_MSEC: i64 =3D bindings::NSEC_PER_MSEC as i64;
->>> @@ -64,3 +67,49 @@ pub fn to_ns(self) -> i64 {
->>>           self.inner
->>>       }
->>>   }
->>> +
->>> +/// Represents a clock, that is, a unique time source and it can be qu=
-eried for the current time.
->>> +pub trait Clock: Sized {
->>> +    /// Returns the current time for this clock.
->>> +    fn now() -> Instant<Self>;
->>> +}
->>> +
->>> +/// Marker trait for clock sources that are guaranteed to be monotonic=
-.
->>> +pub trait Monotonic {}
->>
->> Why is this trait not an extension of `Clock`?
->>
->=20
-> This was carried over from the old version, for myself, it doesn't make
-> much difference between:
->=20
-> =09trait A { .. }
-> =09trait B { .. }
->=20
-> =09impl<T: A + B> ...
->=20
-> vs
->=20
-> =09trait A { .. }
-> =09trait B: A { .. }
->=20
-> =09impl<T: B> ...
->=20
-> hence I kept it as it is, but yes, it a `Monotonic` *`Clock`*, so I will
-> change it in the next version.
+On Wed, Mar 27, 2024 at 12:25=E2=80=AFPM Danilo Krummrich <dakr@redhat.com>=
+ wrote:
+>
+> In [2] I was asking about the preferred way to get some immediate discuss=
+ions
+> going. When I proposed to send links to the corresponding branches to the
+> mailing list or send a patch series (for rust-device I ended up doing bot=
+h) I
+> did not hear any contradiction.
 
-I think it would also make sense to rename it to `MonotonicClock`.
+Sending patch series directly is something you/Philipp proposed. And
+that is fine -- nobody can tell you to not send patches. But, from
+experience, we know sometimes it is best to get in the same page
+and/or room.
 
->=20
->>> +
->>> +/// A timestamp of a given [`Clock`]
->>
->> Missing '.'.
->>
->=20
-> Fixed locally.
->=20
->>> +#[repr(transparent)]
->>> +#[derive(Debug)]
->>> +pub struct Instant<T: Clock> {
->>> +    inner: bindings::ktime_t,
->>> +    clock: PhantomData<T>,
->>> +}
->>> +
->>> +impl<T: Clock> Clone for Instant<T> {
->>> +    fn clone(&self) -> Self {
->>> +        *self
->>> +    }
->>> +}
->>> +
->>> +impl<T: Clock> Copy for Instant<T> {}
->>> +
->>> +impl<T: Clock> Instant<T> {
->>> +    fn new(ktime: bindings::ktime_t) -> Self {
->>
->> When compiling, this function is marked as dead-code in this patch.
->>
->=20
-> Hmm... I cannot trigger any compile errors with this patch. If you see
-> an error, could you share the build command? It's not a `pub` function
-> though.
+I specifically suggested reporting your progress in Zulip and/or the
+mailing lists for that reason, and because lifting code from other
+places like `rust` generally requires revisiting it first like Wedson
+mentioned.
 
-I created a fresh config using `menuconfig` and enabled CONFIG_RUST.
-Then I get this error:
+In addition, we always suggest pinging directly the original authors
+too before submitting patches from them, to avoid this kind of thing.
 
-    error: associated function `new` is never used
-      --> rust/kernel/time.rs:97:8
-       |
-    96 | impl<T: Clock> Instant<T> {
-       | ------------------------- associated function in this implementati=
-on
-    97 |     fn new(ktime: bindings::ktime_t) -> Self {
-       |        ^^^
-       |
-       =3D note: `-D dead-code` implied by `-D warnings`
-       =3D help: to override `-D warnings` add `#[allow(dead_code)]`
-   =20
-    error: aborting due to 1 previous error
+Moreover, I would recommend tagging more prominently the patches as
+staging/RFC/... (i.e. each of them). I know you have "RFC" in the
+cover letter one, but I am aware of at least one person that did not
+realize initially the patches were actually RFC. In addition, I would
+suggest that the cover letter explains where and how the patches where
+lifted from, so that people are aware of their state etc. I would also
+recommend, for clarity and even if out of deference only, to mention
+whether the authors of the patches you are carrying were aware of this
+submission (i.e. if you explicitly heard from them).
 
-Note that the error vanishes in the next patch, since there you do have
-a user for `new`.
+Finally, it is not always possible "to get some immediate discussions
+going" (i.e. emphasis on "immediate"). It all depends on who / which
+subsystem / etc. you are dealing with.
 
---=20
 Cheers,
-Benno
+Miguel
