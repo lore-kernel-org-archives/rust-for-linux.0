@@ -1,206 +1,163 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D052637162;
-	Wed, 27 Mar 2024 14:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544471384B8
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 14:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711549454; cv=none; b=VBP3L62SZXje1VAPCbPhvFeSfzsWJt0zJOLyoeKS6ZvWvAwF0dsrc0qdKeJbqfLMVWHP5baO2r4AopHbhyLgUMkkmnp0q8cGAMUFLcXLA886xGmhWAlWC26NlTcSJq5or02jUGjtuC6uWHmib7XRoSgVpCDv6GdMmplXlWg2OQY=
+	t=1711550983; cv=none; b=s4PfVhwyuabqaACt7Ao5COFGeN/cfKThrcH33bRQETkYgzQbAxKrcCXFuAwh0WypecxodoiF1sreTVOBEUFZLwoZc/ki8Oxe8v+oKv5SkAt4pVX28lXA/KZBGlEJwNzlYPLN2Er8Nkxigh/75hUDb4YKgbJYDBHiGrwg7cvWlpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711549454; c=relaxed/simple;
-	bh=5uybJQeoz0UlYmhYcedH9Y62JUHYOiDZUT4JRsBnQI4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rlzX8srk+f0Mszz9NbNjpCwOhhf2f3PgDG4iyuTRg5WPK4FgxEdxJtKziQl6s/RAcaJglujysYtS9CPwjusGaI2a0ynuKpptTysb1avJUUNafXfGPBy4XnM8qBU5ykMZRnt+foa7MuyYNx038h8m6Jye5GGD99HY3R8gPjPSya8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IAnLAVG7; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711550983; c=relaxed/simple;
+	bh=YnWD4qe8nKwyqN2vBn4tIVS/c5domn3aOcettabt+ks=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=D10CnqsuHnCr9JzRP6clHW+8x6jDPg5zaIbL+7D5ZA7PInmYvSifGmQvCUjFz+lbiXYyRCdHcIQ3JufNFRL3G/yxLNFpIdmUEjg0N6045IZFP2V03DKnwhbqb8nbpvgHLidmhkawumyTekBpZ8HSJIU+0Z0m8q9yGezr0dsvEfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ezIIoQEY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IAnLAVG7"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-60a0579a968so72531987b3.3;
-        Wed, 27 Mar 2024 07:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711549451; x=1712154251; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RRkC23Bbx4fNIp5RQWCN9/rshJX5/fqHtJ7QVDAkoWQ=;
-        b=IAnLAVG7wXT/vub8/8/rTuNOTDzNZMkzNOO0g9ODvvNqVW4x/gL32Aa/SHVnm/tQTr
-         JWk39TNlwkEuJLB45o7UNwI6XJ/nhJfKzvn3ytM1CcBP998wyX9l9ZOCZle4iXoW0z2G
-         GoJ06pFyvZMLXFe+B8tq/UYcNHUsLXK+x5qOjC1NgRpLXZnuNBREuDATLtsvtnkRrRDL
-         8bSn5Fsv8yZV+Zul1oFN7flsviX19f/nIiS5VpsuFRFVra9A+OoFPC9ReAQ7FGnqzwSM
-         ZEvb07UHL5G/kpT3E3kbNoShQ7Gf3PY9DSEbifzLzgdGnmBJpeg5mG3UB/ggjDZe5aCZ
-         s4QQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ezIIoQEY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711550980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8idY4tnyFfpBvQ/io2t3P6xDJH8JBwIA7PqgAqTfytE=;
+	b=ezIIoQEYmKczxBItqrcQf61bO+CgZTCL91TdWPLgEg5CRvUZlaQAnULqMac/aN+3emOsBe
+	sRYDbDD6efsxPzFLPXWJjeb4wtGX0uDneSNsPnR3BGHssMgHEhUiylzZrGyd9Xy75e04Sr
+	GEJc1JBibayrOOATyuowxiqq31oMSPQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-118-YdGUmhoAN0Gdu7h1xVAetg-1; Wed, 27 Mar 2024 10:49:38 -0400
+X-MC-Unique: YdGUmhoAN0Gdu7h1xVAetg-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40e4478a3afso5732005e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 07:49:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711549451; x=1712154251;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RRkC23Bbx4fNIp5RQWCN9/rshJX5/fqHtJ7QVDAkoWQ=;
-        b=OvGdQFWjmzT41K19CrMJ8bVarahkStf6Kq2wUM7BVyjoBFk9IhILScmZoa7PDE1UAF
-         4+BLeTAuyNKCbzPmnYV944+P4G9QANC0OLmSvFRa00BkvyqIMlP7TyEfI6qnZ6+KA3Cf
-         NIl3tCe1dZRI/9qF8VJMKJhX7L74QfJEC+yt7wGmNSlJEDOeaxNs0Br3otuMjfgzprUh
-         wkqwg4pFo+IXNXcPrJa4V54gAb9N4Pk43rIG5ogK1s9d7GLWEQPitFtydl4vH17zJJBZ
-         oGRAy+9y51PqBiKM+pDLHlApNO7M2rXhY/StiH6DbMjZ/gVI2+EdIHJdLtHhA09hpMRx
-         kIWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUfIbaCmNn+8ugc2vQom4gQf15HdItAFDISFUr3zbT+iHYDJS6fBK9oR1UIin6OlnasEQJF7ACTP7u1dWq9P8gK5U6oBIdXV6fRjQG4++M1RCyPghUiG8GEQDsajfkbuTEr963VaiHirUxKjwA=
-X-Gm-Message-State: AOJu0YwGOL1npaYT3JzPn7k5AlPtOLa59t3Xdxm66dtTyoWAJBY6yPt/
-	A4pSJUXCqrnZheX7KoRBMvdQmclrv9nbOCjkXDD24hX5x3rKrb71igXhK1Cfgxgmr4tIDx4rQdy
-	gcdK6EWKD4j8FC92Pppn4AlaKTnw=
-X-Google-Smtp-Source: AGHT+IGF8iJXEFFPCUrOJPMSEJRnBYJOyochq9rP2jG94TH4EA+XFTak+JA6CGAod218V07rScTsQUgah2QISYfNZEo=
-X-Received: by 2002:a81:a011:0:b0:611:3002:30 with SMTP id x17-20020a81a011000000b0061130020030mr2742805ywg.8.1711549450809;
- Wed, 27 Mar 2024 07:24:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711550977; x=1712155777;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8idY4tnyFfpBvQ/io2t3P6xDJH8JBwIA7PqgAqTfytE=;
+        b=rdaQgGjvEK7JDEcHUFWjjwF8qfcLfr4oYQqZASCxpxyGSQ1HxnSKKoLmhwR5XsE4Xk
+         23iEyqBuQ/NCcqQpQL6PZ4v/N8+8YfV9ueLgnDsxfYhCHzIXI8USk4Knh8Ti9f0eaxQe
+         WZk1IDBeUCNhCYiwrSUTxHpRgXLMerH/WJ7Z7imcKZ1q6acYQ+TovYxefs7/xw5aiShY
+         PBIdOwEZJHRLpyScBOsyB576jgmbgIu2TI+3CFp2MLMdD+RJvHM76lY4ncqTMrfs+TyU
+         BgFUx1rXqtystPHa4mNinqBwGRbxfzaQcF5TkR182WD1Y9MC5/crkoFPi3q/LsRtJrJE
+         R0zA==
+X-Forwarded-Encrypted: i=1; AJvYcCWsgn4cx1zjeN8pM8xYpu7oJmIQhuvWuxs/3SmXqnwO8qleiSE2eMPS/PPgtf5aGBJKNRJATakaREjMwyVN/r1fltmfcTH2xGsKjJzewnk=
+X-Gm-Message-State: AOJu0YyUJd1XYGprmJko6dqormOBe1YuoPCZHhwxP69Rql+Ru1BGtv0w
+	FHYsRZUGXfGCWpOK9sjOd3UVVdL/t6EtebbS66yEodYCC0bt5SmM6aS7elikWUM9mdSptWKPEFZ
+	4jz0Mdh/SEuuWwv/hP7fLQBNLpizIM0UJJp9ao00pr2R1x9Ndjlu4RJ8OGo2jJLt+
+X-Received: by 2002:a05:600c:4746:b0:414:927d:60db with SMTP id w6-20020a05600c474600b00414927d60dbmr2429307wmo.17.1711550977427;
+        Wed, 27 Mar 2024 07:49:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZj7FHfd3sxNFj3CJ1ejm8hsXuWeoxxUMppTNDnImZ+h203hOk1igsKFyRb0kli9p/Zh5NIQ==
+X-Received: by 2002:a05:600c:4746:b0:414:927d:60db with SMTP id w6-20020a05600c474600b00414927d60dbmr2429289wmo.17.1711550976998;
+        Wed, 27 Mar 2024 07:49:36 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id bg34-20020a05600c3ca200b004148cd4d484sm2392203wmb.9.2024.03.27.07.49.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Mar 2024 07:49:36 -0700 (PDT)
+Date: Wed, 27 Mar 2024 15:49:34 +0100
+From: Danilo Krummrich <dakr@redhat.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com,
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
+	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
+Subject: Re: [PATCH v7 0/8] [RFC] Rust device / driver abstractions
+Message-ID: <ZgQx_rjWrelMGm04@pollux>
+References: <20240325174743.95542-1-dakr@redhat.com>
+ <CANeycqq=qETyG5ZwmKo0-iLehWeGVf_WqLf=OK3D1LN2yzYbCg@mail.gmail.com>
+ <ZgQCF3jp73n4BTs4@pollux>
+ <CANiq72=s576RhVFCK0+BHSY7Z7gsef9ddh586zrEDhQSoXAXwA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327032337.188938-2-wedsonaf@gmail.com> <20240327081317.45574-1-kernel@valentinobst.de>
-In-Reply-To: <20240327081317.45574-1-kernel@valentinobst.de>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Wed, 27 Mar 2024 11:23:59 -0300
-Message-ID: <CANeycqo9noMJGSCsjCoH29xuPTJ7NEmYnFBE__9D+tvaqsiLdQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: introduce `InPlaceModule`
-To: Valentin Obst <kernel@valentinobst.de>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, walmeida@microsoft.com, 
-	Trevor Gross <tmgross@umich.edu>, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CANiq72=s576RhVFCK0+BHSY7Z7gsef9ddh586zrEDhQSoXAXwA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Wed, 27 Mar 2024 at 05:13, Valentin Obst <kernel@valentinobst.de> wrote:
->
-> > This allows modules to be initialised in-place in pinned memory, which
-> > enables the usage of pinned types (e.g., mutexes, spinlocks, driver
-> > registrations, etc.) in modules without any extra allocations.
+On Wed, Mar 27, 2024 at 02:31:16PM +0100, Miguel Ojeda wrote:
+> On Wed, Mar 27, 2024 at 12:25 PM Danilo Krummrich <dakr@redhat.com> wrote:
 > >
-> > Drivers that don't need this may continue to implement `Module` without
-> > any changes.
-> >
-> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> > ---
-> >  rust/kernel/lib.rs    | 25 ++++++++++++++++++++++++-
-> >  rust/macros/module.rs | 18 ++++++------------
-> >  2 files changed, 30 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index 5c641233e26d..64aee4fbc53b 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -62,7 +62,7 @@
-> >  /// The top level entrypoint to implementing a kernel module.
-> >  ///
-> >  /// For any teardown or cleanup operations, your type may implement [`Drop`].
-> > -pub trait Module: Sized + Sync {
-> > +pub trait Module: Sized + Sync + Send {
->
-> This does not compile with `CONFIG_AX88796B_RUST_PHY=y || m` (or the
-> phylib abstractions' doctests) since the module `Registration` is not
-> `Send`.
+> > In [2] I was asking about the preferred way to get some immediate discussions
+> > going. When I proposed to send links to the corresponding branches to the
+> > mailing list or send a patch series (for rust-device I ended up doing both) I
+> > did not hear any contradiction.
+> 
+> Sending patch series directly is something you/Philipp proposed. And
+> that is fine -- nobody can tell you to not send patches. But, from
+> experience, we know sometimes it is best to get in the same page
+> and/or room.
+> 
+> I specifically suggested reporting your progress in Zulip and/or the
+> mailing lists for that reason, and because lifting code from other
+> places like `rust` generally requires revisiting it first like Wedson
+> mentioned.
 
-Thanks for the heads up. I thought I had enabled all rust code but
-indeed I was missing this. I will fix it in v2.
+Sorry, I wasn't aware that you prefer to have some extra process / stage of
+revisiting / reviewing of existing patches / code that is picked up from
+R4L/rust.
 
-> I remember Trevor raising the question whether we want to require modules
-> to be `Send`. I am not aware of any examples of `!Send` modules but I guess
-> it would be possible to write code that is only correct under the
-> assumption that it is loaded/unloaded in the same context.
+Maybe it would have been good to give me this pointer when I asked: "how (and
+where) to get specific code discussed." [1]
 
-It might be possible in the future, but I don't believe it is now
-because all rust modules support unloading. And there is no guarantee
-that the thread unloading (and therefore calling module_exit) is the
-same that loaded (and called module_init), so a module must be Send to
-properly handle drop being called from a different thread.
+Maybe I'm also misunderstanding what you mean by "revisiting".
 
-Not requiring Send on the original Module trait was an oversight that
-I don't want to repeat in InPlaceModule.
+Anyway, how can we proceed? Can we just continue with this series and improve
+things by further review? Do you prefer to approach it differently?
 
->
-> @Trevor: Are you aware of any modules with that requirement?
->
-> I have been using this patch for quite a while with my TCP CCAs now
-> (without the `Send` bound) and did not experience any other issues; thus
-> offering:
->         Tested-by: Valentin Obst <kernel@valentinobst.de>
+> 
+> In addition, we always suggest pinging directly the original authors
+> too before submitting patches from them, to avoid this kind of thing.
 
-Thanks!
+As already mentioned, fully agree.
 
->
->         - Best Valentin
->
-> >      /// Called at module initialization time.
-> >      ///
-> >      /// Use this method to perform whatever setup or registration your module
-> > @@ -72,6 +72,29 @@ pub trait Module: Sized + Sync {
-> >      fn init(module: &'static ThisModule) -> error::Result<Self>;
-> >  }
-> >
-> > +/// A module that is pinned and initialised in-place.
-> > +pub trait InPlaceModule: Sync + Send {
-> > +    /// Creates an initialiser for the module.
-> > +    ///
-> > +    /// It is called when the module is loaded.
-> > +    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, error::Error>;
-> > +}
-> > +
-> > +impl<T: Module> InPlaceModule for T {
-> > +    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, error::Error> {
-> > +        let initer = move |slot: *mut Self| {
-> > +            let m = <Self as Module>::init(module)?;
-> > +
-> > +            // SAFETY: `slot` is valid for write per the contract with `pin_init_from_closure`.
-> > +            unsafe { slot.write(m) };
-> > +            Ok(())
-> > +        };
-> > +
-> > +        // SAFETY: On success, `initer` always fully initialises an instance of `Self`.
-> > +        unsafe { init::pin_init_from_closure(initer) }
-> > +    }
-> > +}
-> > +
-> >  /// Equivalent to `THIS_MODULE` in the C API.
-> >  ///
-> >  /// C header: [`include/linux/export.h`](srctree/include/linux/export.h)
-> > diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> > index 27979e582e4b..0b2bb4ec2fba 100644
-> > --- a/rust/macros/module.rs
-> > +++ b/rust/macros/module.rs
-> > @@ -208,7 +208,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-> >              #[used]
-> >              static __IS_RUST_MODULE: () = ();
-> >
-> > -            static mut __MOD: Option<{type_}> = None;
-> > +            static mut __MOD: core::mem::MaybeUninit<{type_}> = core::mem::MaybeUninit::uninit();
-> >
-> >              // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
-> >              // freed until the module is unloaded.
-> > @@ -275,23 +275,17 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-> >              }}
-> >
-> >              fn __init() -> core::ffi::c_int {{
-> > -                match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
-> > -                    Ok(m) => {{
-> > -                        unsafe {{
-> > -                            __MOD = Some(m);
-> > -                        }}
-> > -                        return 0;
-> > -                    }}
-> > -                    Err(e) => {{
-> > -                        return e.to_errno();
-> > -                    }}
-> > +                let initer = <{type_} as kernel::InPlaceModule>::init(&THIS_MODULE);
-> > +                match unsafe {{ initer.__pinned_init(__MOD.as_mut_ptr()) }} {{
-> > +                    Ok(m) => 0,
-> > +                    Err(e) => e.to_errno(),
-> >                  }}
-> >              }}
-> >
-> >              fn __exit() {{
-> >                  unsafe {{
-> >                      // Invokes `drop()` on `__MOD`, which should be used for cleanup.
-> > -                    __MOD = None;
-> > +                    __MOD.assume_init_drop();
-> >                  }}
-> >              }}
-> >
-> > --
+> 
+> Moreover, I would recommend tagging more prominently the patches as
+> staging/RFC/... (i.e. each of them). I know you have "RFC" in the
+> cover letter one, but I am aware of at least one person that did not
+> realize initially the patches were actually RFC. In addition, I would
+
+Sure, I can try to make it more obvious by adding --subject-prefix="RFC: PATCH"
+to git-format-patch.
+
+> suggest that the cover letter explains where and how the patches where
+> lifted from, so that people are aware of their state etc. I would also
+
+I think that's actually explained in [2], which I referenced in the cover
+letter. If you think there should be additional information, please let me know,
+I'm happy to add it.
+
+> recommend, for clarity and even if out of deference only, to mention
+> whether the authors of the patches you are carrying were aware of this
+> submission (i.e. if you explicitly heard from them).
+
+Noted. But just to clarify (and I'm clearly not saying you implied something
+else), not doing so is not meant to be understood as doing it without proper
+deference. I was very careful in setting up proper authorship and co-authorship
+(e.g. for fixes that I squashed into some commits).
+
+> 
+> Finally, it is not always possible "to get some immediate discussions
+> going" (i.e. emphasis on "immediate"). It all depends on who / which
+> subsystem / etc. you are dealing with.
+> 
+> Cheers,
+> Miguel
+> 
+
+[1] https://rust-for-linux.zulipchat.com/#narrow/stream/415254-DRM/topic/Topic.20branches.20for.20staging.20Rust.20abstractions/near/426750399
+[2] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
+
