@@ -1,57 +1,55 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2D22C68B;
-	Wed, 27 Mar 2024 02:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E5217545;
+	Wed, 27 Mar 2024 03:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711507000; cv=none; b=czEY8rCxTsR6QsezsfZg46Y70DTMjvJ1LP4bpWjKpnm4GyvVZ6f5P2ESFMrol3MHMmcG/qgSsbnA7z1CIfQ3I7iNV2BS+tIcPsfv5dW4ytleg184TqzS6LhzrTQV6Y6rw6PTLulaf326iaF1+COeDVqwBaslV2oRqL4k9q2JILg=
+	t=1711509833; cv=none; b=GiI560JTOhroPUa0Yqgo8nWdGDAXJcLKuMEc7ZIla/5IlfAD8MJFYfWh0M9pKxTv2pakYTp9bgsU/9XjqOekmp5bTjXJcsxpOQ4qvKvGUvP1hiHqqcFJC3gu7eE1MI5XxQG9tit0/xuy/Zu7odgKvDTkjWU7ho1seYtXjVHybKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711507000; c=relaxed/simple;
-	bh=b9alF6sEGnAWF3DsTbS3LyfyRWGhyBPjFkyJBWiDY+U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h1rJExApjP7O85t6xkSlvhKiJUx06KYBD7cs2X9/7yU3NkHKtsDL2qFDYmObwbnmZgcTNPsGm34OIr3owaxgI9pNMjVJSH+8cW1ezMbzz5HcmeIRbAkCoDRqwrw45VmpizLO1ypBO9cL/+LlcVgTg1t/OwwhG4PwMXzn2nnRhGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=loBNYcQA; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1711509833; c=relaxed/simple;
+	bh=qM6iGV5jNuZ8RxUHGK1v73pIuVWWgfp6DGOZSTMzbnE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BkMKjkQh9NPprnpB9WXODaz1GP6wPBN1ZpDRyzK1VxyuQ1kI8fz8JsCF2bQofciSpwtdc8NXEdVNGB15P5QOCdzGMyN7dRHL5xSGYD15Jgh9nm81UZRkMVUF1vt02AXLn06W0dDODtjpEXJrnGR0/HIF6W8UgQNhhmE8+jBUYWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i5hCh7BI; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="loBNYcQA"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5d8ddbac4fbso4439627a12.0;
-        Tue, 26 Mar 2024 19:36:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i5hCh7BI"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1df01161b39so51163805ad.3;
+        Tue, 26 Mar 2024 20:23:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711506998; x=1712111798; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vQoBOKp3EwJBmRTdBR9tFZY4h3sKJNPj+YlazUqopAk=;
-        b=loBNYcQAthazen8uJ/UfQrjk5FXJ8ykUZQ7ecNaRRs4SJgHJIxk23mD8wiCCSUgLeB
-         1Yehl1XjAM+ZkGv4gj6d1y/yqYVZhfBBYnAQ21+3gb4uWIXnucJScVfhkB89p3HkXWZj
-         /bGj3HQjIT/mXD7o+C2ojqIcIgZKb65aueMiQOPPSp97WFnJyRw0Ef+rOrkyUjVGZMmV
-         VmEmTmoKBLXSnLHZVd/N12WD8ql+EoiETeyhP/wsFfXBEaI/IhJ2VAJ9JgeCpeQh0bxz
-         TA3oeffEAq/ROVp0nbrZNhuSfdkKRQnEFc0vEHi3K8ebu2zLPJC92M+eS+71U300Tpoy
-         mzRA==
+        d=gmail.com; s=20230601; t=1711509831; x=1712114631; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=quchINbY6RElSjO1aqPi5tTjS1pbZmgP1zzsUpD/qO0=;
+        b=i5hCh7BIVFVwrMDBnyLNvh7x+qVe56x3cu7Ac+KSpO2kVBT5IBuypW5F1SmblNMHVR
+         oD9+c5pG6JL1hUVWe8n3Bk3UJ09X2cLGeTs4syyvDhH4Ym0hE7RArIjr8g/pHWG8oaoi
+         w08w8RP0CTLbWloqWytR2emupFjVR+uCd1zsUSWZTzK7TN1C1JX7vXdspXvNCnxsG7Pl
+         9nyqA+E4RcQlm23yrOpW3eMLs+ZuxJ6s4lpZIwLnc7koCpSD/trEVetkLrAoEpFHxXBV
+         rPUua5N18N723v6q7l23Aq4Cic0xiKoeIPSykaly2AIiXKcOOV/+XJ3nnjbemGw9tSX7
+         aqxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711506998; x=1712111798;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vQoBOKp3EwJBmRTdBR9tFZY4h3sKJNPj+YlazUqopAk=;
-        b=mjOo4tM6rhfU78uGuSENM1oL0MSHIukIppLYnz1mhiYmYPVaxhxfFg8i1pvF0JRKjP
-         7u0d0Nuz1tht2d4WQW1kl/QLRT1cfq3gWLPq+6mgNgM1m1U0ZcGxXsJE2IcGszsfHqcS
-         bSkxDxLSxLNvJEW7n8fNRXpjYjPWLiQaPaMHHvW3yuscp9D/IsCN94qzqNcwhJg2rP3k
-         IBe3F01NbrCPzTNii0WYF4B/ZMbN5DB5R0ljKNhLiluK29W+Ki0WkF4VgR8Y9d/fAD2M
-         IbVZV41VPbxdOKQqdkJEsppNvyHe9B1Sym4hxcdcDOd186yz2GDpLQHn5hUfJGufjI0N
-         J83A==
-X-Forwarded-Encrypted: i=1; AJvYcCVu/zyjqAashgCBHMPvTDJ7Y8c+bbcB7rCmLaeRO79bXkviHvLwywz+IPljNSqoAOJRC4apLSOM1d6aNh6q8b/uuQIkTeTOHlMHAWyb
-X-Gm-Message-State: AOJu0YwJaomUSRZXfU6ouw36rkAZUwg7ewHSFog035XE3QAv7Q1jjYCp
-	QSgl5yyO8Hh0cSGlIeG4tGkBpQuoO0OVZffwwdOWNmTXCXhLJ6LZdKrRnQqO
-X-Google-Smtp-Source: AGHT+IFWY2mh0CdivaeSNw4Td6JCtleJ4YJWfrzPeRqtVxSTyTnVsH8BTJXRS8fp1B4JFwtj2CsSQg==
-X-Received: by 2002:a17:90a:6d61:b0:29c:b540:706b with SMTP id z88-20020a17090a6d6100b0029cb540706bmr10445973pjj.17.1711506998404;
-        Tue, 26 Mar 2024 19:36:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711509831; x=1712114631;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=quchINbY6RElSjO1aqPi5tTjS1pbZmgP1zzsUpD/qO0=;
+        b=DDH129cjLpRDSi8mJuPxs6z7FVfCn0SgdxHA8OUEJ4N75AoMIyIfCpcNJkUQz5qfI0
+         uz57ic+5oJtQObUjGFU82RcHB0jrV17eiSkz8pCqSoJ5+eQ/kSa5w4kSLL0Wmdxl5+6R
+         enSOTtfG0eY9S6r76bwQJFdlDak9eJFPS6E4GrjZpLCQ4HP8e2ZQxpQmeMhQ0FY5rJF/
+         eKna8netLDzhjz3Arw21tCX5ps6wa5iGtCdOSRWNzfk7UhVWu7mzOWm/scXBq5HbUSnE
+         1gfe9/6stIHPUJs+tcv+fJoA9qcoDN4+AouDjSe4e8OZkHhZZs4rsC/4dVw6ap4PG104
+         Y0cA==
+X-Forwarded-Encrypted: i=1; AJvYcCWYVqdOEAnEwhWjB1x96TNGsPYBh7FZwHjAJY66KJ4VMhTUpyzdnr0lioQAjaDxUvvAuNZs9tpgkgTCD1RI75iHVqhBucCPd4q7GWVu
+X-Gm-Message-State: AOJu0YwG2x5m5hYlHgVCo/3zHWqkgWKppZz4ctza2icitIcCbnoZ9WMS
+	58H4EGzQvF5brTS8m9tUxCpzLF3tyKNDUCL9lsqd5gw2ITu2ymV2iMTePtL+
+X-Google-Smtp-Source: AGHT+IGd6mGZb68Ym71AilGxnur6mTDmbwu0NzD17TxXGkZeil7mFdBYIowLvo6VOxx/gTDfxFEDYw==
+X-Received: by 2002:a17:902:e748:b0:1e0:ab21:4e9a with SMTP id p8-20020a170902e74800b001e0ab214e9amr1795982plf.21.1711509831515;
+        Tue, 26 Mar 2024 20:23:51 -0700 (PDT)
 Received: from wedsonaf-dev.home.lan ([189.124.190.154])
-        by smtp.googlemail.com with ESMTPSA id l20-20020a17090a409400b0029b2e5bc1b9sm347441pjg.23.2024.03.26.19.36.33
+        by smtp.googlemail.com with ESMTPSA id y1-20020a17090322c100b001e043df262dsm7729090plg.33.2024.03.26.20.23.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 19:36:38 -0700 (PDT)
+        Tue, 26 Mar 2024 20:23:51 -0700 (PDT)
 From: Wedson Almeida Filho <wedsonaf@gmail.com>
 To: rust-for-linux@vger.kernel.org
 Cc: Miguel Ojeda <ojeda@kernel.org>,
@@ -64,12 +62,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	linux-kernel@vger.kernel.org,
 	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: [PATCH v2 10/10] rust: kernel: remove usage of `allocator_api` unstable feature
-Date: Tue, 26 Mar 2024 23:35:31 -0300
-Message-Id: <20240327023531.187880-11-wedsonaf@gmail.com>
+Subject: [PATCH 0/2] In-place module initialisation
+Date: Wed, 27 Mar 2024 00:23:35 -0300
+Message-Id: <20240327032337.188938-1-wedsonaf@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240327023531.187880-1-wedsonaf@gmail.com>
-References: <20240327023531.187880-1-wedsonaf@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,170 +76,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-With the adoption of `BoxExt` and `VecExt`, we don't need the functions
-provided by this feature (namely the methods prefixed with `try_` and
-different allocator per collection instance).
+Introduce `InPlaceModule`, which allows modules to be initialised
+inplace, as opposed to the current state where modules must return an
+instance which is moved to its final memory location.
 
-We do need `AllocError`, but we define our own as it is a trivial empty
-struct.
+This allows us to have modules whose state hold objects that must be
+initialised inplace like locks. It also allows us to implement
+registrations (e.g., driver registration) inplace and have them similar
+to their C counterparts where no new allocations are needed.
 
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
----
- rust/kernel/alloc.rs         | 4 ++++
- rust/kernel/alloc/box_ext.rs | 3 +--
- rust/kernel/alloc/vec_ext.rs | 4 ++--
- rust/kernel/error.rs         | 4 ++--
- rust/kernel/init.rs          | 3 +--
- rust/kernel/lib.rs           | 1 -
- rust/kernel/str.rs           | 3 +--
- rust/kernel/sync/arc.rs      | 4 ++--
- rust/kernel/workqueue.rs     | 3 +--
- 9 files changed, 14 insertions(+), 15 deletions(-)
+This is built on top of the allocation APIs because the sample module is
+a modified version of rust_minimal, which would be incompatible with the
+allocation API series because it uses vectors.
 
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index a4c4b1f79bc9..5b35786b6279 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -8,6 +8,10 @@
- pub mod box_ext;
- pub mod vec_ext;
- 
-+/// Indicates an allocation error.
-+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-+pub struct AllocError;
-+
- /// Flags to be used when allocating memory.
- ///
- /// They can be combined with the operators `|`, `&`, and `!`.
-diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-index aaa6a20d12b6..8dad58f23b11 100644
---- a/rust/kernel/alloc/box_ext.rs
-+++ b/rust/kernel/alloc/box_ext.rs
-@@ -2,9 +2,8 @@
- 
- //! Extensions to [`Box`] for fallible allocations.
- 
--use super::Flags;
-+use super::{AllocError, Flags};
- use alloc::boxed::Box;
--use core::alloc::AllocError;
- use core::mem::MaybeUninit;
- use core::result::Result;
- 
-diff --git a/rust/kernel/alloc/vec_ext.rs b/rust/kernel/alloc/vec_ext.rs
-index bb6cb1c4ea67..25305ff2fac4 100644
---- a/rust/kernel/alloc/vec_ext.rs
-+++ b/rust/kernel/alloc/vec_ext.rs
-@@ -2,8 +2,8 @@
- 
- //! Extensions to [`Vec`] for fallible allocations.
- 
--use super::Flags;
--use alloc::{alloc::AllocError, vec::Vec};
-+use super::{AllocError, Flags};
-+use alloc::vec::Vec;
- use core::result::Result;
- 
- /// Extensions to [`Vec`].
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index e53466937796..fc986bc24c6d 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -4,9 +4,9 @@
- //!
- //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
- 
--use crate::str::CStr;
-+use crate::{alloc::AllocError, str::CStr};
- 
--use alloc::alloc::{AllocError, LayoutError};
-+use alloc::alloc::LayoutError;
- 
- use core::convert::From;
- use core::fmt;
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index fec47b274ec3..9608f2bd2211 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -211,14 +211,13 @@
- //! [`pin_init!`]: crate::pin_init!
- 
- use crate::{
--    alloc::{box_ext::BoxExt, Flags},
-+    alloc::{box_ext::BoxExt, AllocError, Flags},
-     error::{self, Error},
-     sync::UniqueArc,
-     types::{Opaque, ScopeGuard},
- };
- use alloc::boxed::Box;
- use core::{
--    alloc::AllocError,
-     cell::UnsafeCell,
-     convert::Infallible,
-     marker::PhantomData,
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 51f30e55bd00..5c641233e26d 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -12,7 +12,6 @@
- //! do so first instead of bypassing this crate.
- 
- #![no_std]
--#![feature(allocator_api)]
- #![feature(coerce_unsized)]
- #![feature(dispatch_from_dyn)]
- #![feature(new_uninit)]
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 58f2ddafb326..dfd1c40d46a2 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -2,8 +2,7 @@
- 
- //! String representations.
- 
--use crate::alloc::{flags::*, vec_ext::VecExt};
--use alloc::alloc::AllocError;
-+use crate::alloc::{flags::*, vec_ext::VecExt, AllocError};
- use alloc::vec::Vec;
- use core::fmt::{self, Write};
- use core::ops::{self, Deref, Index};
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 0866378f1360..c2a3a2c7cbc5 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -16,7 +16,7 @@
- //! [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
- 
- use crate::{
--    alloc::{box_ext::BoxExt, Flags},
-+    alloc::{box_ext::BoxExt, AllocError, Flags},
-     bindings,
-     error::{self, Error},
-     init::{self, InPlaceInit, Init, PinInit},
-@@ -25,7 +25,7 @@
- };
- use alloc::boxed::Box;
- use core::{
--    alloc::{AllocError, Layout},
-+    alloc::Layout,
-     fmt,
-     marker::{PhantomData, Unsize},
-     mem::{ManuallyDrop, MaybeUninit},
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 09a0f158ff1b..50837e56efc7 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -132,9 +132,8 @@
- //!
- //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
- 
--use crate::alloc::Flags;
-+use crate::alloc::{AllocError, Flags};
- use crate::{bindings, prelude::*, sync::Arc, sync::LockClassKey, types::Opaque};
--use alloc::alloc::AllocError;
- use alloc::boxed::Box;
- use core::marker::PhantomData;
- use core::pin::Pin;
+Wedson Almeida Filho (2):
+  rust: introduce `InPlaceModule`
+  samples: rust: add in-place initialisation sample
+
+ rust/kernel/lib.rs           | 25 ++++++++++++++++++++-
+ rust/macros/module.rs        | 18 ++++++----------
+ samples/rust/Kconfig         | 11 ++++++++++
+ samples/rust/Makefile        |  1 +
+ samples/rust/rust_inplace.rs | 42 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 84 insertions(+), 13 deletions(-)
+ create mode 100644 samples/rust/rust_inplace.rs
+
+
+base-commit: e0ff891dbadea6226042574a0cbfc24df0318b13
 -- 
 2.34.1
 
