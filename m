@@ -1,40 +1,89 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B70A42A83
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 19:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F8A152190
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 20:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711568488; cv=none; b=PVDqmdQvU5vByMSDVEoxVSIlXMJWZCPNncOMPwaIcXMnzpwNgyJP+NE9hUt78SnsCDi0CqNOWs3onMdG5okHbezDkUiFnp76QO7x4SoKQ2EpNhairvqK8Gd79N/OsP7o3L0Sh5iTPZNz8BdJJLsjxITwvaYteMMIHd7M7PvkKzU=
+	t=1711572368; cv=none; b=KCnmuk8zzwepvLi9XNtS8ituhe899XjoTOEEjt84tCGZzhHup1t4ErEEInW56ekCBanWjTnykHtj2KaF/xP54d6pIyIy1wBGlMOcy6dIxeKJW3lGVsTgjzp7NZlQHp5TsjEUsudIDDFOWkWIusnUd9tjv9M5kNIm5HSCXGd1vxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711568488; c=relaxed/simple;
-	bh=DbVcT/GqVrdr44Z2rkufZ1Y6/S3nUoKZvEfChOqWVTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3zeDGBvM/4ZgNJajbklymfu4WftxWv4hWiSl7CWSdj9cpwtuMKPVXNcmY/OhBJ7pBzG61LSFlVRA9wRSekeVBW+HDMoonXM1rm9NC1uKzupveUyYrR3xSLIHnoXUT8YHgOLbMJh7Vi1LxNs159eiJbooN6GxrZ6XShl/WSohF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xGJUKen3; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1711572368; c=relaxed/simple;
+	bh=RuCWKtbRzqJIEwrREMPn1YstKGaBmUG9LovdmLij8Z8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=li8OF1PMQLnx+g0SBEv7y3WObZZDClwT521JbLBqkgE2wbcierzzSWaObu//utCIxHwcnsecB4SEzqvL98MdjdiaY5E1DrU/JmTXvqnoypxl0WTN9a90/77bdD/k3oq4n2mFfG0Tja/6+jPh0rTFEIAfjwh1rHCeMUtXl0u2lM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ou0vZTZT; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xGJUKen3"
-Date: Wed, 27 Mar 2024 15:41:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1711568485;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zm/x/ZeAIuXqSrAULm8c6bXhsoD6FLOm8Awi8FqLz6Y=;
-	b=xGJUKen3fF2NY5gK5gpmGfgRcLbRzTst3KLdtG0DG3xf2Zy93WUNxRSNINO5KHYTBg7ECe
-	g2kaRTQd4bv4SvMaERqJlXyz6eXnbNKoRvXc8XITJEWQSA5ijJkdax3Z89kkvyEghf0E8T
-	JAp3GAHAsmWigw+JmlVQE1cCYwIy05A=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Linus Torvalds <torvalds@linux-foundation.org>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ou0vZTZT"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a47385a4379so245279266b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 13:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1711572365; x=1712177165; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MmaskrdbVq30uGRTY87iYuCKuy48OuaJH0qBlabGSIs=;
+        b=Ou0vZTZTW9vFLlzd7o1NnmYGxW3i2eJBW+31PNcH/aerZATE0jRdCs5oyvR/BV3hCu
+         Ze34ZXyGMlqS+PnxdbTQ7h1z7msIs7V1fNSolfYwE9h3E4h6swj7fHYPmFtGq3xkvwrh
+         nIO5HC1UOMhJsv7NXwnPH11S/LQoGargDU2vs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711572365; x=1712177165;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MmaskrdbVq30uGRTY87iYuCKuy48OuaJH0qBlabGSIs=;
+        b=UCu2tcFYuULXsL7dTuvnb33APdM8LdDKbdg8B4MMIZEH25gIs8fJ/kXKbGokDBT4Kd
+         hgjiKV5Y0/o2VopSIK0He7znGSuvIm94tUlr9MY19v9dZ6a8EO9LKmIR0SapQrtcuzij
+         T50qhljwg6+MSXzeQMpn93JONuRCMviMs5xVfaqz8OOEwvyIoVX9UPHoY8ANFzhgaIs7
+         +A9FA3GkE43kI44qr2NU1Y8BjQdBY7REJ0hpd3MwG+wpMGMLtMgxduijWwRof7KEEqMx
+         uMkjy1J4avdYLzrv4cOnOJ4RQPebwEvPtoxBye3Er3HXMAUFd9WgZlHD0PauEK+VxZXg
+         7tmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwSHmTqydIyuRUBtNcfWnJdOY589JVblUXL4xpUfsKbCuqkvYqYILx51cRZxZBB+joK/nL+yQ2iZBvL4OmV8qi1ffj0uEkryF9HOr0Ht0=
+X-Gm-Message-State: AOJu0YyL55KRR3RmZNEmPcloujDk82wHBCJHaSc8txd7z1+BGDqtqt1t
+	aRezNGoUQkw07y+JPdOWp3kXPVp18Bim1lK3mr9FHsjz2gLZSXav4Hbrd2B7Obv4lWGvDEJZLou
+	yCq/1XQ==
+X-Google-Smtp-Source: AGHT+IEAzWT0KF3amPGpOx/cVHR2aZ3tEZpLAH05Q8sDur/s4WociEbM4UmZ2OEfyAVkH1NTPBo76w==
+X-Received: by 2002:a17:906:714a:b0:a4e:f91:4694 with SMTP id z10-20020a170906714a00b00a4e0f914694mr411438ejj.27.1711572364848;
+        Wed, 27 Mar 2024 13:46:04 -0700 (PDT)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
+        by smtp.gmail.com with ESMTPSA id l24-20020a1709066b9800b00a46be85684bsm5833674ejr.223.2024.03.27.13.46.03
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Mar 2024 13:46:03 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a46ea03c2a5so53383866b.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 13:46:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVn/RSbmkFR1w3rXfByWwPP4Sp+pWzkz0EcPA7SxjGcpmHYvX2ND+zGTpkf+gzgcqjgGJJpp9+nGT0duA0YNjwyRoOpOn0ymDBpFLegcjQ=
+X-Received: by 2002:a17:906:ca59:b0:a45:40e4:8c8 with SMTP id
+ jx25-20020a170906ca5900b00a4540e408c8mr355615ejb.16.1711572362918; Wed, 27
+ Mar 2024 13:46:02 -0700 (PDT)
+Precedence: bulk
+X-Mailing-List: rust-for-linux@vger.kernel.org
+List-Id: <rust-for-linux.vger.kernel.org>
+List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
+ <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
+ <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
+ <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
+ <CAHk-=wgLGWBXvNODAkzkVHEj7zrrnTq_hzMft62nKNkaL89ZGQ@mail.gmail.com>
+ <ZgIRXL5YM2AwBD0Y@gallifrey> <CAHk-=wjwxKD9CxYsf5x+K5fJbJa_JYZh1eKB4PT5cZJq1+foGw@mail.gmail.com>
+ <160DB953-1588-418E-A490-381009CD8DE0@gmail.com> <qyjrex54hbhvhw4gmn7b6l2hr45o56bwt6fazfalykwcp5zzkx@vwt7k3d6kdwt>
+ <CAHk-=wgQy+FRKjO_BvZgZN56w6-+jDO8p-Mt=X=zM70CG=CVBQ@mail.gmail.com> <bjorlxatlpzjlh6dfulham3u4mqsfqt7ir5wtayacaoefr2r7x@lmfcqzcobl3f>
+In-Reply-To: <bjorlxatlpzjlh6dfulham3u4mqsfqt7ir5wtayacaoefr2r7x@lmfcqzcobl3f>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 27 Mar 2024 13:45:46 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiSiNtf4Z=Bvfs=sGJn6SYCZ=F7hvWwsQiOX4=V0Bgp_Q@mail.gmail.com>
+Message-ID: <CAHk-=wiSiNtf4Z=Bvfs=sGJn6SYCZ=F7hvWwsQiOX4=V0Bgp_Q@mail.gmail.com>
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+To: Kent Overstreet <kent.overstreet@linux.dev>
 Cc: comex <comexk@gmail.com>, "Dr. David Alan Gilbert" <dave@treblig.org>, 
 	Philipp Stanner <pstanner@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
 	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
 	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
@@ -47,75 +96,50 @@ Cc: comex <comexk@gmail.com>, "Dr. David Alan Gilbert" <dave@treblig.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Marco Elver <elver@google.com>, 
 	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-Message-ID: <bjorlxatlpzjlh6dfulham3u4mqsfqt7ir5wtayacaoefr2r7x@lmfcqzcobl3f>
-References: <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
- <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
- <bu3seu56hfozsvgpdqjarbdkqo3lsjfc4lhluk5oj456xmrjc7@lfbbjxuf4rpv>
- <CAHk-=wgLGWBXvNODAkzkVHEj7zrrnTq_hzMft62nKNkaL89ZGQ@mail.gmail.com>
- <ZgIRXL5YM2AwBD0Y@gallifrey>
- <CAHk-=wjwxKD9CxYsf5x+K5fJbJa_JYZh1eKB4PT5cZJq1+foGw@mail.gmail.com>
- <160DB953-1588-418E-A490-381009CD8DE0@gmail.com>
- <qyjrex54hbhvhw4gmn7b6l2hr45o56bwt6fazfalykwcp5zzkx@vwt7k3d6kdwt>
- <CAHk-=wgQy+FRKjO_BvZgZN56w6-+jDO8p-Mt=X=zM70CG=CVBQ@mail.gmail.com>
-Precedence: bulk
-X-Mailing-List: rust-for-linux@vger.kernel.org
-List-Id: <rust-for-linux.vger.kernel.org>
-List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgQy+FRKjO_BvZgZN56w6-+jDO8p-Mt=X=zM70CG=CVBQ@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Mar 27, 2024 at 12:07:26PM -0700, Linus Torvalds wrote:
-> On Wed, 27 Mar 2024 at 11:51, Kent Overstreet <kent.overstreet@linux.dev> wrote:
-> >
-> > On Wed, Mar 27, 2024 at 09:16:09AM -0700, comex wrote:
-> > > Meanwhile, Rust intentionally lacks strict aliasing.
-> >
-> > I wasn't aware of this. Given that unrestricted pointers are a real
-> > impediment to compiler optimization, I thought that with Rust we were
-> > finally starting to nail down a concrete enough memory model to tackle
-> > this safely. But I guess not?
-> 
-> Strict aliasing is a *horrible* mistake.
-> 
-> It's not even *remotely* "tackle this safely". It's the exact
-> opposite. It's completely broken.
-> 
-> Anybody who thinks strict aliasing is a good idea either
-> 
->  (a) doesn't understand what it means
-> 
->  (b) has been brainwashed by incompetent compiler people.
-> 
-> it's a horrendous crock that was introduced by people who thought it
-> was too complicated to write out "restrict" keywords, and that thought
-> that "let's break old working programs and make it harder to write new
-> programs" was a good idea.
+On Wed, 27 Mar 2024 at 12:41, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+>
+> _But_: the lack of any aliasing guarantees means that writing through
+> any pointer can invalidate practically anything, and this is a real
+> problem.
 
-Strict aliasing is crap in C and C++ because we started out with
-unrestricetd pointers, and it just doesn't work in C and C++ with the
-realities of the kind of code we have to write, and we never got any
-kind of a model that would have made it workable. Never mind trying to
-graft that onto existing codebases...
+It's actually much less of a problem than you make it out to be.
 
-(Restrict was crap too... no scoping, nothing but a single f*cking
-keyword? Who ever thought _that_ was going to work?)
+A lot of common aliasing information is statically visible (offsets
+off the same struct pointer etc).
 
-_But_: the lack of any aliasing guarantees means that writing through
-any pointer can invalidate practically anything, and this is a real
-problem. A lot of C programmers have stockholm syndrome when it comes to
-this, we end up writing a lot of code in weirdly baroque and artificial
-styles to partially work around this when we care about performance -
-saving things into locals because at least the _stack_ generally can't
-alias to avoid forced reloads, or passing and returning things by
-reference instead of by value when that's _not the semantics we want_
-because otherwise the compiler is going to do an unnecessary copy -
-again, that's fundamentally because of aliasing.
+The big problems tend to be
+
+ (a) old in-order hardware that really wants the compiler to schedule
+memory operations
+
+ (b) vectorization and HPC
+
+and honestly, (a) is irrelevant, and (b) is where 'restrict' and
+actual real vector extensions come in. In fact, the type-based
+aliasing often doesn't help (because you have arrays of the same FP
+types), and so you really just need to tell the compiler that your
+arrays are disjoint.
+
+Yes, yes, possible aliasing means that the compiler won't generate
+nice-looking code in many situations and will end up reloading values
+from memory etc.
+
+AND NONE OF THAT MATTERS IN REALITY.
+
+Performance issues to a close approximation come from cache misses and
+branch mispredicts. The aliasing issue just isn't the horrendous issue
+people claim it is. It's most *definitely* not worth the absolute
+garbage that is C type-based aliasing.
+
+And yes, I do think it might be nice to have a nicer 'restrict' model,
+because yes, I look at the generated asm and I see the silly code
+generation too. But describing aliasing sanely in general is just hard
+(both for humans _and_ for some sane machine interface), and it's very
+very seldom worth the pain.
+
+            Linus
