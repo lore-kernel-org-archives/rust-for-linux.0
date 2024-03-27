@@ -1,202 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5DF6F53A
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 11:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7434B7FBD5;
+	Wed, 27 Mar 2024 11:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711538720; cv=none; b=dVkVwGVmDkkQ9svNgXF8wjR6lcoRUKedsvEOjV2Rze7Qhh2aL4cXquEcRatqGrHTz28AZ9KaPdB/aacfWVJQRfTAwPvb5hZIrhiE3LPhwS4Cn0Q15+8hvT1B+9wxijp5GiOAioDdo4sRuG7dvDEksfRffE4tEUgc02upItKy6bE=
+	t=1711539090; cv=none; b=IVu+D3R5wPgll+Jgv6BtedJWTV71mnwHaTR7uDfTDT3i84+yuAcc7EXRa5mkwEhvemCtsy4q/c1EBgt7Bj/8wraZyKwaugWUyx3YgZhuEkTSbqhKs2cNimN4h3bNauYPF2fgKvWVJ92gEZbp7D7RNtQrsADETPMbIcfgobukGG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711538720; c=relaxed/simple;
-	bh=tt3uYLcmwp60gY89yf3+gAmiY7Gi0Bg7JTaW7JDyKfU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=Du0BMiwZ3QUvgqdQ9DQZxEMID5H3WS4kKokui12qU/OExKOdwYG8M0L2G4yDs+LX1llMWVH1ippDX2WrzZz4tZXB3Ux3cCxuvzXURl64tVNCcVABD2PJuxnpxBBgnvS78BiNoeoQWidDLWupADeVCdBXFmRWZJLO1TrMq4UIKvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LhtpeGc3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1711539090; c=relaxed/simple;
+	bh=qlHAixuXWiIW20mFlDDIQCSWORvB+zfn/vDiVt8QhCM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GVQszPe3/n88OBbB7/Y7HR0U5CME9OCyEOsFe2TZZz65I1wSoNPcvsaHtsoze/qROUNpQav230yKgwwyoVOoksGra0BTybSfXCJCdrVf70u6RW+KjIM6ypwDiOI1UohYS7NWA/TwIUbgAdXodslnH19/5a9BU24NSbnXs5U2m6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dPX6nrSl; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LhtpeGc3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711538718;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PlqgO9bfXuGRYNe6qd69JuIZ2ZjoVMXD+6DMGi4T6E0=;
-	b=LhtpeGc3GXmQLRxRbAtNGH9TjsGoISORoFUmZ/5aLg326X40T8fgKqxK4p+pW/ChFbpN+z
-	Ah0MkaHjzDsounubNMUwO4Jf9kkEeX8WLNhIT9XXeKmtgn1XmIPtbCzfyvFQChO3L38kcW
-	VHOuvvKsUoW9909qtADaMPSIqSxzTjc=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-569-i9kKlvzhOyu_3z5SAfd2Kg-1; Wed, 27 Mar 2024 07:25:16 -0400
-X-MC-Unique: i9kKlvzhOyu_3z5SAfd2Kg-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-513e31aef6cso5564822e87.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 04:25:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711538715; x=1712143515;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PlqgO9bfXuGRYNe6qd69JuIZ2ZjoVMXD+6DMGi4T6E0=;
-        b=vY1YMj9LzLlBHKxZqgACJuiUERNelt8PV+3w2Yaa7Aip4ZIZYY/KK15xkYj6IviNip
-         pUEaiFQt1vX0LMFsQBPra3eylg1+c1ANx49epqiuUX8hReezRnjer3rjNfhv24ydKLrx
-         gwoNWKcPwMQJ4f3AAVZwvzZ/PlzYb5TGJLT3phP8T8LyMvjdFfSkGcWR17m5M0jdU9Lx
-         I5z8/GEoHXQ2+k7+zV2f0mVgfCiVPhFqPuGAyc+wjzK3E4FDQ+DkUKF8Xnrl/AicsLkf
-         IJiACUtJhQyjC4hIt+oWojJhTkIHyV9CQpUDNR7eKwf/nSkVrl8NbyrHLk8VD4+Vo9eV
-         W6cw==
-X-Forwarded-Encrypted: i=1; AJvYcCVz2gUh1MxII73meo6pzA2041DNiaqEcFEdWAU5rg7lUgm3sav55wLhKzUdXJJUiTMHRtVhIPPyEEOBYO8jAD2ns4MiFYC3HZ/83wqv0BM=
-X-Gm-Message-State: AOJu0Yw8YaT+Mbge3zCyErq3aIQ5fDDTGzQxOUbkwCFrBJ8jNR8a5/ZY
-	BfyNh6fKHqfqDL/CU/DI0GKkCFVtTaPHs7282kZpXqaQDfL/6mnnjoNiTTvvESTKQnoaQde8ETi
-	19iwj1u3GsDwazfXbfzrg6FE350Ga252udjU54Vm16yIIomKL9hsHp9DEEO+IWvZa
-X-Received: by 2002:a05:6512:34cd:b0:515:b0be:3a42 with SMTP id w13-20020a05651234cd00b00515b0be3a42mr1767592lfr.33.1711538715115;
-        Wed, 27 Mar 2024 04:25:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFElcIsrWR+FI+I+KEdfzHSfNoxRD2JE7NzKX/u2qUsC8OzBcotpoK803NhliuzyGZo4FxPuA==
-X-Received: by 2002:a05:6512:34cd:b0:515:b0be:3a42 with SMTP id w13-20020a05651234cd00b00515b0be3a42mr1767567lfr.33.1711538714569;
-        Wed, 27 Mar 2024 04:25:14 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id u8-20020a170906124800b00a46d6e51a6fsm5365487eja.63.2024.03.27.04.25.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 04:25:14 -0700 (PDT)
-Date: Wed, 27 Mar 2024 12:25:11 +0100
-From: Danilo Krummrich <dakr@redhat.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
-	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com
-Subject: Re: [PATCH v7 0/8] [RFC] Rust device / driver abstractions
-Message-ID: <ZgQCF3jp73n4BTs4@pollux>
-References: <20240325174743.95542-1-dakr@redhat.com>
- <CANeycqq=qETyG5ZwmKo0-iLehWeGVf_WqLf=OK3D1LN2yzYbCg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dPX6nrSl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711539086; x=1711798286;
+	bh=YemPlwTUqK2re1xP2YFxKbLQSvS96km8r51Bibx9wFw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=dPX6nrSltm+a/i+1Q/lgDa617BzeAJM/Fk6Ac35gz+WA539tozygRNmaGTAZ21kaO
+	 LRxTU+l43CZ5YK3ZDE/JWGlXUiQfpN7eD2E/zEjYOa9182iaaa3QQFq6sioBnFgSJw
+	 62pwp8QVYwOmB83aSuoVy+IqdLXUu8KccdnEHmfMZhVIpsUFwYQgXtjVNv4bVvDjGB
+	 6TxIJAdT7A/bxy5UHMd7WFq849eh61Ytltq2yJMmFO40XkLs4a+5oEVxSlr8eYbGmp
+	 gmt4j5iu3wjdCGoy5JkaV6PYOIrTdu9SBWEHsYRdbJwJa08wQdHZFGmT+KH2lQINkS
+	 S/V80fKuvs7dA==
+Date: Wed, 27 Mar 2024 11:31:10 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Valentin Obst <kernel@valentinobst.de>, Heghedus Razvan <heghedus.razvan@protonmail.com>, Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH 5/5] rust: time: Add Instant::elapsed() for monotonic clocks
+Message-ID: <9EAfAZHp8DflAFFp9hRs3vo2uuwLkwdGSRUVLQiIpCMHcKvjE95lT-VnO8DzJbL7u5Tw66qe-0_R56nwJsdcpeRGeS0794WzOPPexJZR9PA=@proton.me>
+In-Reply-To: <ZgNxy70__7-x0c-8@Boquns-Mac-mini.home>
+References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-6-boqun.feng@gmail.com> <kZmwObXVcyEJFVR3I05Nab0WdjcccDVARoOm6U9EmXhd89fxYRjvNmEAUZsueWTUlBlHp8jpU3i2YfgN9aWCLZameta0tPT_OgQdBOWUIko=@proton.me> <ZgMNVNOjoLH4S4Fb@boqun-archlinux> <ZgNxy70__7-x0c-8@Boquns-Mac-mini.home>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CANeycqq=qETyG5ZwmKo0-iLehWeGVf_WqLf=OK3D1LN2yzYbCg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 26, 2024 at 09:48:07PM -0300, Wedson Almeida Filho wrote:
-> On Mon, 25 Mar 2024 at 14:47, Danilo Krummrich <dakr@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > This patch series provides some initial Rust abstractions around the device /
-> > driver model, including an abstraction for device private data.
-> >
-> > This patch series is sent in the context of [1] and is also available at [2].
-> >
-> > - Danilo
-> >
-> > [1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
-> > [2] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
-> >
-> > Danilo Krummrich (1):
-> >   arch: x86: tools: increase symbol name size
-> >
-> > Wedson Almeida Filho (7):
-> >   rust: device: Add a minimal RawDevice trait
-> >   rust: device: Add a stub abstraction for devices
-> >   rust: add driver abstraction
-> >   rust: add rcu abstraction
-> >   rust: add revocable mutex
-> >   rust: add revocable objects
-> >   rust: add device::Data
-> 
-> Danilo,
-> 
-> It seems like I'm the original author of the vast majority of the code
-> in this RFC series, yet I wasn't contacted by you for coordination
-> before you sent this.
+On 27.03.24 02:09, Boqun Feng wrote:
+> On Tue, Mar 26, 2024 at 11:00:52AM -0700, Boqun Feng wrote:
+>> On Tue, Mar 26, 2024 at 05:13:38PM +0000, Benno Lossin wrote:
+>>> On 24.03.24 23:33, Boqun Feng wrote:
+>>>> This is a convenient way to do:
+>>>>
+>>>> =09t1 =3D Clock::now();
+>>>> =09...
+>>>> =09delta =3D  Clock::now() - t1;
+>>>>
+>>>> Hence add it.
+>>>>
+>>>> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
+>>>> Signed-off-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
+>>>> Co-developed-by: Asahi Lina <lina@asahilina.net>
+>>>> Signed-off-by: Asahi Lina <lina@asahilina.net>
+>>>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>>>> ---
+>>>>   rust/kernel/time.rs | 25 +++++++++++++++++++++++++
+>>>>   1 file changed, 25 insertions(+)
+>>>>
+>>>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+>>>> index 5cd669cbea01..cd1e45169517 100644
+>>>> --- a/rust/kernel/time.rs
+>>>> +++ b/rust/kernel/time.rs
+>>>> @@ -114,6 +114,31 @@ fn sub(self, other: Self) -> Self::Output {
+>>>>       }
+>>>>   }
+>>>>
+>>>> +impl<T: Clock + Monotonic> Instant<T> {
+>>>> +    /// Returns the time elapsed since this [`Instant`].
+>>>> +    ///
+>>>> +    /// This provides a convenient way to calculate time elapsed sinc=
+e a previous [`Clock::now`].
+>>>> +    /// Note even though the function only exists for monotonic clock=
+s, it could still return
+>>>> +    /// negative [`Duration`] if the current time is earlier than the=
+ time of `&self`, and this
+>>>> +    /// could happen if `&self` is a timestamp generated by a [`Insta=
+nt`] + [`Duration`].
+>>>
+>>> But there currently is no way to add an `Instant<T>` to a `Duration`.
+>>>
+>>
+>> This is kinda the disadvantages of "upstreaming the bits you only need",
+>> we know for sure there will be a way to generate an `Instant` with an
+>> addition of a `Duration`. I can of course provide that function in this
+>> series. But let's settle down on "negative durations" first.
+>>
+>=20
+> Hmm... I'd like to propose a change here. After some thoughts, I think
+> we should have two timestamp types: `Instant` and `KTime`, where
+> `Instant` represents solely a reading of a clocksource, and `KTime` is
+> just the normal timestamp. This means the only way to get an `Instant`
+> is via `Clock::now()`, and you cannot get an `Instant` by `Instant` +
+> `Duration` (this could return a `KTime`). And a `Instant` can always
+> `into_ktime()` return a `KTime` which support add/sub a duration. But
+> again you cannot get an `Instant` from a `KTime`.
+>=20
+> Having this setup means for the same monotonic clocksource,
+> `Clock::now()` is always later than any `Instant`, since any `Instant`
+> must be created by a previous `Clock::now()`. And this makes a lot of
+> sense. Moreover, I could introduce `KTime` in a later patchset, since
+> `Instant` and `Duration` can fulfill the current requirement. We still
+> need two duration types though...
 
-Agree, it would have been better to directly contact you again.
+I also wanted to suggest this. Another name for `KTime` could be
+`Timestamp`. I think `Timedelta` is a good fit for a duration-like type
+that allows negative values.
 
-Except for patches 2 & 3 the other ones are created from patches that
-"extracted" code from the HEAD of R4L/rust. I just fixed authorship before
-sending them, hence I think I didn't really notice that you are the original
-author of all device / driver abstractions.
+I don't remember exactly what binder needed the time stuff for, but
+given that you cannot create negative durations with this design, I
+think going for the `Duration` and `Instant` approach in this series
+should be fine, right?
+If then later you want to compute `Timedelta`s between `Timestamp`s we
+can have another series.
 
-Please also note that I announced these efforts a couple of times, e.g. in [1]
-and [2].
+>=20
+> Regards,
+> Boqun
+>=20
+>>>> +    ///
+>>>> +    /// But for typical usages, it should always return non-negative =
+[`Duration`]:
+>>>> +    ///
+>>>> +    /// # Examples
+>>>> +    ///
+>>>> +    /// ```
+>>>> +    /// use kernel::time::{Clock, clock::KernelTime};
+>>>> +    ///
+>>>> +    /// let ts =3D KernelTime::now();
+>>>> +    ///
+>>>> +    /// // `KernelTime` is monotonic.
+>>>> +    /// assert!(ts.elapsed().to_ns() >=3D 0);
+>>>
+>>> Now that I thought a bit more about the design, I think allowing
+>>> negative durations is a bad idea.
+>>> Do you disagree?
+>>>
+>>
+>> So yes, I don't think allowing negative duration is really good design.
+>> But as I mentioned in the cover letter, I hope to support cases where:
+>>
+>> =09d =3D ts2 - ts1;
+>> =09ts =3D ts3 + d;
+>>
+>> =09(where ts1, ts2, ts3 is Instant, and d is of course Duration)
+>>
+>> without any branch instruction in the asm code. It's useful in the case
+>> where ts1 is a old time base, and ts3 is the new one, and you want to
+>> "remain" the delta between ts2 and t1 and apply that on ts3. To me there
+>> are three options to achieve that: 1) allow negative durations (this
+>> also mirrors what `ktime_t` represents for timedelta AKAIU), 2) have
+>> a timedelta type that differs from Duration, and it can be negative, 3)
+>> provide a function to do the above calculation for `Instant`. I choose
+>> the first one because it's quick and simple (also easy to map to
+>> `ktime_t`). But I don't have my own preference on these three options.
 
-> 
-> A bunch (all?) of these patches were already submitted upstream with a
-> lot of discussion and decisions made to modify things. Why are you
-> resubmitting them basically ignoring all previous discussions? Take
-> patches 2 & 3 as examples (I don't bother to look for others now):
-> 
-> https://lore.kernel.org/lkml/20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net/
-> https://lore.kernel.org/lkml/20230224-rust-iopt-rtkit-v1-5-49ced3391295@asahilina.net/o
+I think that if the strongest motivation for allowing negative duration
+is "it is more performant, since we don't need as many branches", then
+the motivation for disallowing negative durations is stronger.
 
-For the patches 2 & 3 I'm aware of the previous discussions. However, I have to
-admit it's been a while since I read them and hence I forgot to mention that
-this series is, besides others, also a follow up of that one.
+I think having multiple types is the solution.
 
-For everything else I'm not aware of previous discussions, if there are any,
-I'm sorry I missed them. Also please let me know if there are any, such that I
-can follow up.
-
-> 
-> Also, these patches were written in the rust branch. Before we
-> upstream them, we have to revisit them to check if changes are needed
-> given the changes/improvements we have made; for example, pin init now
-> allows us to initialise pinned objects safely -- we need to follow the
-> new way now and I see that you don't in `RevocableMutex`. PinInit also
->  enables us to have pinned modules, which simplifies how we do
-> registrations (so they also need to be updated), locks have been
-> redone with a common `Lock` type, etc.
-
-In [2] I was asking about the preferred way to get some immediate discussions
-going. When I proposed to send links to the corresponding branches to the
-mailing list or send a patch series (for rust-device I ended up doing both) I
-did not hear any contradiction.
-
-To me the mailing list seems to be a good place to revisit, review and improve
-these patches.
-
-I'd propose to just continue with this series and collaborate on improving it.
-Are you fine with that?
-
-- Danilo
-
-[1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
-[2] https://rust-for-linux.zulipchat.com/#narrow/stream/415254-DRM/topic/Topic.20branches.20for.20staging.20Rust.20abstractions/near/426580539
-
-> 
-> In summary, we can't just copy code, we need to revisit some of it and
-> at least check suitability before submitting them.
-> 
-> >  arch/x86/tools/insn_decoder_test.c |   2 +-
-> >  rust/bindings/bindings_helper.h    |   1 +
-> >  rust/helpers.c                     |  28 ++
-> >  rust/kernel/device.rs              | 215 +++++++++++++
-> >  rust/kernel/driver.rs              | 493 +++++++++++++++++++++++++++++
-> >  rust/kernel/lib.rs                 |   6 +-
-> >  rust/kernel/revocable.rs           | 438 +++++++++++++++++++++++++
-> >  rust/kernel/sync.rs                |   3 +
-> >  rust/kernel/sync/rcu.rs            |  52 +++
-> >  rust/kernel/sync/revocable.rs      |  98 ++++++
-> >  rust/macros/module.rs              |   2 +-
-> >  samples/rust/rust_minimal.rs       |   2 +-
-> >  samples/rust/rust_print.rs         |   2 +-
-> >  13 files changed, 1337 insertions(+), 5 deletions(-)
-> >  create mode 100644 rust/kernel/device.rs
-> >  create mode 100644 rust/kernel/driver.rs
-> >  create mode 100644 rust/kernel/revocable.rs
-> >  create mode 100644 rust/kernel/sync/rcu.rs
-> >  create mode 100644 rust/kernel/sync/revocable.rs
-> >
-> >
-> > base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
-> > --
-> > 2.44.0
-> >
-> 
-
+--=20
+Cheers,
+Benno
