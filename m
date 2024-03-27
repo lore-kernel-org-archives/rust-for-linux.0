@@ -1,175 +1,223 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7434B7FBD5;
-	Wed, 27 Mar 2024 11:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22701EF13
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 11:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711539090; cv=none; b=IVu+D3R5wPgll+Jgv6BtedJWTV71mnwHaTR7uDfTDT3i84+yuAcc7EXRa5mkwEhvemCtsy4q/c1EBgt7Bj/8wraZyKwaugWUyx3YgZhuEkTSbqhKs2cNimN4h3bNauYPF2fgKvWVJ92gEZbp7D7RNtQrsADETPMbIcfgobukGG0=
+	t=1711539333; cv=none; b=j6HsCniBWynI+XnPhE7sCkiJPZMDftIC+YGQNBMeuM4xXSQCVukdmBU9Wf5GkhZbzKLgVjYjYDoRXsiSEePphM+Dsc/K2t1bkMhmSsLgtmjBa0VKplPgeJG2LxILI+s1Zrft+bWGC/23T0cvPCM4vCm/grSDarreKCcg9+pXkwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711539090; c=relaxed/simple;
-	bh=qlHAixuXWiIW20mFlDDIQCSWORvB+zfn/vDiVt8QhCM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GVQszPe3/n88OBbB7/Y7HR0U5CME9OCyEOsFe2TZZz65I1wSoNPcvsaHtsoze/qROUNpQav230yKgwwyoVOoksGra0BTybSfXCJCdrVf70u6RW+KjIM6ypwDiOI1UohYS7NWA/TwIUbgAdXodslnH19/5a9BU24NSbnXs5U2m6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dPX6nrSl; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711539333; c=relaxed/simple;
+	bh=wuZEbGBBWEhSCgmnsKzymOYEpYZZBAUgrjgYcO+fsZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=B1n6VuEOWRUEvz9E+Pk8SnJNt8JFwbNe96VLRmCvWou1TxvIUbB/1ONd7oDKFMxW7pMwBgq7Ms/EyB81vyKZJOeo1MLusjMYKsHg0U3JZfp3JdCtHyMowlKbMKr7/g1cjvq2HMGLkqpNMWMkMmJshRbxmaoNf+2MOAE8fbcejqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ucp3pCL0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dPX6nrSl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711539086; x=1711798286;
-	bh=YemPlwTUqK2re1xP2YFxKbLQSvS96km8r51Bibx9wFw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dPX6nrSltm+a/i+1Q/lgDa617BzeAJM/Fk6Ac35gz+WA539tozygRNmaGTAZ21kaO
-	 LRxTU+l43CZ5YK3ZDE/JWGlXUiQfpN7eD2E/zEjYOa9182iaaa3QQFq6sioBnFgSJw
-	 62pwp8QVYwOmB83aSuoVy+IqdLXUu8KccdnEHmfMZhVIpsUFwYQgXtjVNv4bVvDjGB
-	 6TxIJAdT7A/bxy5UHMd7WFq849eh61Ytltq2yJMmFO40XkLs4a+5oEVxSlr8eYbGmp
-	 gmt4j5iu3wjdCGoy5JkaV6PYOIrTdu9SBWEHsYRdbJwJa08wQdHZFGmT+KH2lQINkS
-	 S/V80fKuvs7dA==
-Date: Wed, 27 Mar 2024 11:31:10 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Valentin Obst <kernel@valentinobst.de>, Heghedus Razvan <heghedus.razvan@protonmail.com>, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 5/5] rust: time: Add Instant::elapsed() for monotonic clocks
-Message-ID: <9EAfAZHp8DflAFFp9hRs3vo2uuwLkwdGSRUVLQiIpCMHcKvjE95lT-VnO8DzJbL7u5Tw66qe-0_R56nwJsdcpeRGeS0794WzOPPexJZR9PA=@proton.me>
-In-Reply-To: <ZgNxy70__7-x0c-8@Boquns-Mac-mini.home>
-References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-6-boqun.feng@gmail.com> <kZmwObXVcyEJFVR3I05Nab0WdjcccDVARoOm6U9EmXhd89fxYRjvNmEAUZsueWTUlBlHp8jpU3i2YfgN9aWCLZameta0tPT_OgQdBOWUIko=@proton.me> <ZgMNVNOjoLH4S4Fb@boqun-archlinux> <ZgNxy70__7-x0c-8@Boquns-Mac-mini.home>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ucp3pCL0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711539330;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TMx4Yf87psdeqHlbuuQ7Jv+v7oNzI3uzggvCBPMDHvk=;
+	b=Ucp3pCL031abqgoEymtHAU8/wW08GYAOS+ULULnoKsRHB3yr3MSPxJU7RBgDP2FHMpREMu
+	6ySP/IVQzSX42jiczgfH4M+3RSiw3ui4sa6LMh1zMXTSRg5khlr4sBvljqmFKMu8kTVdOW
+	ldJNDunyxYJ6C4+/uaPGYSim7C3AKIY=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-335-rCvNy4tpMkOI1b8esymGLg-1; Wed, 27 Mar 2024 07:35:29 -0400
+X-MC-Unique: rCvNy4tpMkOI1b8esymGLg-1
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-515943d45feso5603466e87.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 04:35:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711539328; x=1712144128;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TMx4Yf87psdeqHlbuuQ7Jv+v7oNzI3uzggvCBPMDHvk=;
+        b=SJ9wp1UNGNrPTnJKh0y8Dr0IgLEbiioic2hlz66/x1/lgnYR9iJZ02leKp/k9Sp6Ip
+         iaT8CRYrcKOZqJunEycBOfqybuLm6PblAn9NayYN1B0Wf4gYTXSNaXT7kC6ru/lVwc0h
+         z0uNWtro+4GpbHSy5fycm/8onxoe431SVRNmmgobGUcPtnT4k/rvWpYGd4gnvVp0xImD
+         DZEBa75bZ93TwmlI5s71zXJTytHY2R+BKaRQNsAn94SA0rPXA7P28R2tAkHKx0f/Kzq9
+         fyKH5858W9ot4fa85jx20GOljnjMxcWErgnQWDE0gm/3Kn1lpEvLyuL4ZW812Sx9+qp7
+         Bdvg==
+X-Forwarded-Encrypted: i=1; AJvYcCX/pY7uPKMFxCj7q7bTUGAVbC5C1izxZ7kGFB1/pBhDq1Qn/MQLEO7ESgX4mgqtoOkFi6EPCdD9Eon8t5FD39u8LIIfbdfmO1gnr0pbxLY=
+X-Gm-Message-State: AOJu0YxZgHA3rHDfUvGIFs/3o4pA5jfIqnf7dnbLiBrthbDbvgJLlrBm
+	TuAB0pkjKPYWq0q++udjAVXdn2E5pWYoopPDgAxpkkpdtFXOQw044vZiXvHTIyOuS996xBxKUY8
+	I/XRV85Vl3JSaXxzJB41DcimKSx8LeDJCY75cjdWbsKajrSxn9PuaRfiR1RQr+iqB
+X-Received: by 2002:a19:914c:0:b0:514:d262:4086 with SMTP id y12-20020a19914c000000b00514d2624086mr751890lfj.55.1711539327781;
+        Wed, 27 Mar 2024 04:35:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTtMHov7jE3Rmu6MoLktbYK9eeBlet6uqycES7KWveJqckDvSdY1lLyo874BZ1wncGnpT1JA==
+X-Received: by 2002:a19:914c:0:b0:514:d262:4086 with SMTP id y12-20020a19914c000000b00514d2624086mr751851lfj.55.1711539327395;
+        Wed, 27 Mar 2024 04:35:27 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id cw10-20020a056000090a00b0033e7a102cfesm14695239wrb.64.2024.03.27.04.35.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Mar 2024 04:35:26 -0700 (PDT)
+Date: Wed, 27 Mar 2024 12:35:24 +0100
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, rafael@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
+	pstanner@redhat.com, ajanulgu@redhat.com, airlied@redhat.com,
+	Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH 3/8] rust: device: Add a stub abstraction for devices
+Message-ID: <ZgQEfCFWN6zNbuiz@pollux>
+References: <20240325174924.95899-1-dakr@redhat.com>
+ <20240325174924.95899-4-dakr@redhat.com>
+ <2024032518-swampland-chaperone-317b@gregkh>
+ <CANeycqqQjSqA8CK66wyaNnSckr2GNDtfEUv_Tm29WbzAs7Njzg@mail.gmail.com>
+ <2024032703-mobile-perch-0a55@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2024032703-mobile-perch-0a55@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 27.03.24 02:09, Boqun Feng wrote:
-> On Tue, Mar 26, 2024 at 11:00:52AM -0700, Boqun Feng wrote:
->> On Tue, Mar 26, 2024 at 05:13:38PM +0000, Benno Lossin wrote:
->>> On 24.03.24 23:33, Boqun Feng wrote:
->>>> This is a convenient way to do:
->>>>
->>>> =09t1 =3D Clock::now();
->>>> =09...
->>>> =09delta =3D  Clock::now() - t1;
->>>>
->>>> Hence add it.
->>>>
->>>> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
->>>> Signed-off-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
->>>> Co-developed-by: Asahi Lina <lina@asahilina.net>
->>>> Signed-off-by: Asahi Lina <lina@asahilina.net>
->>>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->>>> ---
->>>>   rust/kernel/time.rs | 25 +++++++++++++++++++++++++
->>>>   1 file changed, 25 insertions(+)
->>>>
->>>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
->>>> index 5cd669cbea01..cd1e45169517 100644
->>>> --- a/rust/kernel/time.rs
->>>> +++ b/rust/kernel/time.rs
->>>> @@ -114,6 +114,31 @@ fn sub(self, other: Self) -> Self::Output {
->>>>       }
->>>>   }
->>>>
->>>> +impl<T: Clock + Monotonic> Instant<T> {
->>>> +    /// Returns the time elapsed since this [`Instant`].
->>>> +    ///
->>>> +    /// This provides a convenient way to calculate time elapsed sinc=
-e a previous [`Clock::now`].
->>>> +    /// Note even though the function only exists for monotonic clock=
-s, it could still return
->>>> +    /// negative [`Duration`] if the current time is earlier than the=
- time of `&self`, and this
->>>> +    /// could happen if `&self` is a timestamp generated by a [`Insta=
-nt`] + [`Duration`].
->>>
->>> But there currently is no way to add an `Instant<T>` to a `Duration`.
->>>
->>
->> This is kinda the disadvantages of "upstreaming the bits you only need",
->> we know for sure there will be a way to generate an `Instant` with an
->> addition of a `Duration`. I can of course provide that function in this
->> series. But let's settle down on "negative durations" first.
->>
->=20
-> Hmm... I'd like to propose a change here. After some thoughts, I think
-> we should have two timestamp types: `Instant` and `KTime`, where
-> `Instant` represents solely a reading of a clocksource, and `KTime` is
-> just the normal timestamp. This means the only way to get an `Instant`
-> is via `Clock::now()`, and you cannot get an `Instant` by `Instant` +
-> `Duration` (this could return a `KTime`). And a `Instant` can always
-> `into_ktime()` return a `KTime` which support add/sub a duration. But
-> again you cannot get an `Instant` from a `KTime`.
->=20
-> Having this setup means for the same monotonic clocksource,
-> `Clock::now()` is always later than any `Instant`, since any `Instant`
-> must be created by a previous `Clock::now()`. And this makes a lot of
-> sense. Moreover, I could introduce `KTime` in a later patchset, since
-> `Instant` and `Duration` can fulfill the current requirement. We still
-> need two duration types though...
+On Wed, Mar 27, 2024 at 06:22:36AM +0100, Greg KH wrote:
+> On Tue, Mar 26, 2024 at 10:38:49PM -0300, Wedson Almeida Filho wrote:
+> > On Mon, 25 Mar 2024 at 15:17, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Mon, Mar 25, 2024 at 06:49:07PM +0100, Danilo Krummrich wrote:
+> > > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > >
+> > > > Add a Device type which represents an owned reference to a generic
+> > > > struct device. This minimal implementation just handles reference
+> > > > counting and allows the user to get the device name.
+> > > >
+> > > > Also, implement the rust_helper_dev_get_drvdata helper.
+> > > >
+> > > > Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> > > > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > > > Co-developed-by: Asahi Lina <lina@asahilina.net>
+> > > > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > > > ---
+> > > >  rust/helpers.c        | 13 ++++++++
+> > > >  rust/kernel/device.rs | 76 ++++++++++++++++++++++++++++++++++++++++++-
+> > > >  2 files changed, 88 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/rust/helpers.c b/rust/helpers.c
+> > > > index 70e59efd92bc..1e40661a33d1 100644
+> > > > --- a/rust/helpers.c
+> > > > +++ b/rust/helpers.c
+> > > > @@ -23,6 +23,7 @@
+> > > >  #include <kunit/test-bug.h>
+> > > >  #include <linux/bug.h>
+> > > >  #include <linux/build_bug.h>
+> > > > +#include <linux/device.h>
+> > > >  #include <linux/err.h>
+> > > >  #include <linux/errname.h>
+> > > >  #include <linux/mutex.h>
+> > > > @@ -157,6 +158,18 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
+> > > >  }
+> > > >  EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
+> > > >
+> > > > +void *rust_helper_dev_get_drvdata(struct device *dev)
+> > > > +{
+> > > > +     return dev_get_drvdata(dev);
+> > > > +}
+> > > > +EXPORT_SYMBOL_GPL(rust_helper_dev_get_drvdata);
+> > > > +
+> > > > +const char *rust_helper_dev_name(const struct device *dev)
+> > > > +{
+> > > > +     return dev_name(dev);
+> > > > +}
+> > > > +EXPORT_SYMBOL_GPL(rust_helper_dev_name);
+> > > > +
+> > > >  /*
+> > > >   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+> > > >   * use it in contexts where Rust expects a `usize` like slice (array) indices.
+> > > > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> > > > index 9be021e393ca..7309a236f512 100644
+> > > > --- a/rust/kernel/device.rs
+> > > > +++ b/rust/kernel/device.rs
+> > > > @@ -4,7 +4,7 @@
+> > > >  //!
+> > > >  //! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
+> > > >
+> > > > -use crate::bindings;
+> > > > +use crate::{bindings, str::CStr};
+> > > >
+> > > >  /// A raw device.
+> > > >  ///
+> > > > @@ -20,4 +20,78 @@
+> > > >  pub unsafe trait RawDevice {
+> > > >      /// Returns the raw `struct device` related to `self`.
+> > > >      fn raw_device(&self) -> *mut bindings::device;
+> > > > +
+> > > > +    /// Returns the name of the device.
+> > > > +    fn name(&self) -> &CStr {
+> > > > +        let ptr = self.raw_device();
+> > > > +
+> > > > +        // SAFETY: `ptr` is valid because `self` keeps it alive.
+> > >
+> > > How can self keep it alive?
+> > >
+> > > > +        let name = unsafe { bindings::dev_name(ptr) };
+> > > > +
+> > > > +        // SAFETY: The name of the device remains valid while it is alive (because the device is
+> > > > +        // never renamed, per the safety requirement of this trait). This is guaranteed to be the
+> > > > +        // case because the reference to `self` outlives the one of the returned `CStr` (enforced
+> > > > +        // by the compiler because of their lifetimes).
+> > >
+> > > devices are renamed all the time, I don't understand how this can be
+> > > true here.
+> > 
+> > This was discussed before:
+> > https://lore.kernel.org/lkml/ZAnB%2FDozWsir1cIE@kroah.com/
+> > 
+> > I even sent a patch (that Greg applied) that fixes the C comment that
+> > lead to the safety comment above:
+> > https://lore.kernel.org/lkml/20230406045435.19452-1-wedsonaf@gmail.com/
+> > 
+> > The decision then was to remove the `name` method until some driver
+> > actually needed it. (We had no plans to upstream the one that used it
+> > in the rust branch, pl061 gpio.)
+> 
+> Ah, I thought I had reviewed all of this before, thanks for pointing
+> this out.  And sad that nothing really changed since then, I'll just
+> ignore all of this thread for now someone figures out how to act on
+> review comments that are made.
 
-I also wanted to suggest this. Another name for `KTime` could be
-`Timestamp`. I think `Timedelta` is a good fit for a duration-like type
-that allows negative values.
+I was aware of the previous discussions, but I read them quite a while before I
+sent this series and hence I think I forgot to mention that this is, partially,
+a follow-up. Sorry for that.
 
-I don't remember exactly what binder needed the time stuff for, but
-given that you cannot create negative durations with this design, I
-think going for the `Duration` and `Instant` approach in this series
-should be fine, right?
-If then later you want to compute `Timedelta`s between `Timestamp`s we
-can have another series.
+However, the only relevant outcome for this series seems to be that you agreed
+on dropping RawDevice::name(). I was considering to use the PCI device name in
+Nova in the context of debugfs entries for the GSP firmware, which is why I did
+not drop this function. Again sorry, should have made this transparent.
 
->=20
-> Regards,
-> Boqun
->=20
->>>> +    ///
->>>> +    /// But for typical usages, it should always return non-negative =
-[`Duration`]:
->>>> +    ///
->>>> +    /// # Examples
->>>> +    ///
->>>> +    /// ```
->>>> +    /// use kernel::time::{Clock, clock::KernelTime};
->>>> +    ///
->>>> +    /// let ts =3D KernelTime::now();
->>>> +    ///
->>>> +    /// // `KernelTime` is monotonic.
->>>> +    /// assert!(ts.elapsed().to_ns() >=3D 0);
->>>
->>> Now that I thought a bit more about the design, I think allowing
->>> negative durations is a bad idea.
->>> Do you disagree?
->>>
->>
->> So yes, I don't think allowing negative duration is really good design.
->> But as I mentioned in the cover letter, I hope to support cases where:
->>
->> =09d =3D ts2 - ts1;
->> =09ts =3D ts3 + d;
->>
->> =09(where ts1, ts2, ts3 is Instant, and d is of course Duration)
->>
->> without any branch instruction in the asm code. It's useful in the case
->> where ts1 is a old time base, and ts3 is the new one, and you want to
->> "remain" the delta between ts2 and t1 and apply that on ts3. To me there
->> are three options to achieve that: 1) allow negative durations (this
->> also mirrors what `ktime_t` represents for timedelta AKAIU), 2) have
->> a timedelta type that differs from Duration, and it can be negative, 3)
->> provide a function to do the above calculation for `Instant`. I choose
->> the first one because it's quick and simple (also easy to map to
->> `ktime_t`). But I don't have my own preference on these three options.
+> 
+> Ignoring them for a year and resending the lot just wastes everyone's
+> time :(
 
-I think that if the strongest motivation for allowing negative duration
-is "it is more performant, since we don't need as many branches", then
-the motivation for disallowing negative durations is stronger.
+Except for the above all the other discussions we currently have doesn't seem to
+be repetitive and I think we were making good progress. I think it would be
+unfortunate to start over on them in a v2. Can we please continue?
 
-I think having multiple types is the solution.
+Besides that, I also think that even the dev_name() discussion we have is worth
+to follow up in general, even if we just drop RawDevice::name() for now, which
+I'm fine with.
 
---=20
-Cheers,
-Benno
+- Danilo
+
+> 
+> greg k-h
+> 
+
