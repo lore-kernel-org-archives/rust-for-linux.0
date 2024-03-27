@@ -1,97 +1,88 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FE94F1F6;
-	Wed, 27 Mar 2024 10:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840965D498
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Mar 2024 11:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711536612; cv=none; b=XV/exygPBRpNU/KjwLuuwErhl0ZuCe6DpXE50gNW11nTMN1oRUzmvo/HHQzfitc7TlY6NaXRvk+1MlVMKKOZegCifVBn/G4e08Jm7BypHKlyE+liizFk52qm2Sy111JrUFl6W+lv3xM/dZDsC7aNMy0AfR9LaGHYFsZkqduYD/M=
+	t=1711538339; cv=none; b=oH+j07cPmdmvjz0Ec9Em+Q5/UdWG5qvhBeZBEyiQqIqTaUliwZWz8pe8IQMjStj9uvYpYswRIZwwMSVq4F+ZQUum8XlLBnUlOrmwVPVB6DM9Ne//FA5U6ggyaqvOunIxhcZtlcNTjS6x0if+yJZQ9NBqnldMTqm6DFf31ec6eys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711536612; c=relaxed/simple;
-	bh=hRZ12UFk01NEt79oTtxQRbJ/1y3rDaUGFfV1INmoIGs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t6pxmjFk29GASNcJrywbIplgb0UOZVj48gG6ZQmtNJ5tGUNdTA4q5PzwRmvzaofjiLGWpUxdsrgrJ47UAMGNEdu/MTRyPBImjmUrHQPETuZW7u2EcPeaC1jLnILQzSaLs28Jrpaz14SWV9G0QvKm/4x25QI9m7f86OdpLXRsLnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HaCmLsTc; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711538339; c=relaxed/simple;
+	bh=mhOieoq7DfxAaJ++d+O0WtR+BfTTgESKgZZHlPaztWg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G0ygWO4z+lQ3ncKVlNe8YbA+EX63bbkWth/PxsQa8AveISS60wJSo8VUPC4xuo48rtgikyHfZoYT74oQN0QLOIfBdWDGvuCsAvvdg6nAcKLltHEy4zsmQnc6GgqmusRDOGUkH9+iHOUgc+6JLWoiSVu8FoOmroXSdu+kU69XmTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=M0B4jITA; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HaCmLsTc"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6e6f69e850bso5946943b3a.0;
-        Wed, 27 Mar 2024 03:50:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711536609; x=1712141409; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ture+LxIapYu0oPV7sdPwmJ6Rv+cKuHE663qPdR1ILM=;
-        b=HaCmLsTcoS6LBlwQ9LXTkoM8GwzAje0CXnAhQywu2SBc+URjQ99rna6w7cXJFYuGVI
-         r9FFlrbBMZWjmiYBIign2wJ/IFwbWTYrPGJ+1+SD6usodQNkBAuiAvqvi9R371N0PTDw
-         w5jp3tykqXK42qdSjjryJqxMxDmVcQdq14MzDPxK3W49E/rKiFW5cOn1gSqMuWgnstzs
-         i4D1Jz9DVt0bjOAR5TBxFcWFM7qjnc9cAM361cGimNz+4S17wGEl0DXW561wEgxHav2i
-         KIhN8hueU/juFLNOc9LDdI4srYn69i/2LrQR/7QE73WFS8QDcSVNxEXtPTSRFAsn++a4
-         SuzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711536609; x=1712141409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ture+LxIapYu0oPV7sdPwmJ6Rv+cKuHE663qPdR1ILM=;
-        b=UrxkFq3Ic/QOuHou143D+t8tpB7rW2wvEFlnQY4/yDCEqFy5piArnt5zYtR1r7DIpv
-         xkvorWYxWaZewJg8mVTTisvWkmIqCxTthMhUS/6rzm4jxrGgxImvHUvFTdWqiCFhlGvX
-         tLB5PdEopqqSbI9x9onOZwxxFMOIH8yzbN4OfWQIlgvZqMtlvsRXCJSfKQifdw41b/de
-         tZq1q1CnBkfvccZhSnd0c+dMeNrRnYZTJhdJd8MTIDs6AtpdCXrl0GMWKeIQo0tOixkp
-         ZERiSq0FFDtZVuT0TSg2bhi78B3tGg9hm6TnNP4dJpkES2n1EGnwoIJCVyw3kUCf+uIe
-         fzYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWEhzdDC6J16T/pvmKmFAQkLC2mhKw2yCgXtDpImJHSkSg+C1VUrAUdwyvvdvoBfEzdGHLqg998ISb3iLzAN1X6rJmyf0W0SVgyW1IkNBguiz7wa2imYhneCsfT1OOnzCK/tSIyYwHEPIg79go=
-X-Gm-Message-State: AOJu0Yz1pLkdpuLGhil/My6NRo/wObT0jKsrw6Pn6uWJ3lqr3VQOkg8J
-	xVST3GEgUqPPUxYVIxC4CynxXTrSaBlft8jspUcamR21dnBs1XK82WbVzqIF1Lg9pcd4kIEh/GT
-	raWeou9g6i+NgsX5OkoWwr7hmvNw=
-X-Google-Smtp-Source: AGHT+IGJj/bSZAP3EjL/JWUjRKPP2j3anmA/ZNQuHSO9LvWflS1OwWtEtEuC5q5HpCiPQAhY9CM7STns6XpVssCEc7U=
-X-Received: by 2002:a05:6a20:7351:b0:1a3:c4b9:dbd9 with SMTP id
- v17-20020a056a20735100b001a3c4b9dbd9mr3971300pzc.42.1711536608991; Wed, 27
- Mar 2024 03:50:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="M0B4jITA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711538321; x=1711797521;
+	bh=b+ixGN0r2/X/83UL4UB0Gt8jkXQcthsc8tHh8gZmqG0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=M0B4jITA+ZBAu+TvTskwA5UPn3mlMurWkFylBxDnHhZW19+fG7cTiwLFINyYSE0oI
+	 ZoJ+8kBSbJtbSzvusod86Bd15kt1ix50aAt4SvbxONrXhCKEBjItFc/mrtVySGNDoM
+	 LOkRqViBBLNI0Bn3wTDFPuVfM7Kl8hfy25QC+WLhoWIYGA/4eoa61S/07heIgRdQp5
+	 oQt6/xQVjjjZwV2q2oJUgAiCqKJbR4vrkLw39rhrW2hAJVYF0UcXViDiz0a0Ds1A74
+	 NWEK77SjvvL1UcyQK9yICxHKVgM6VpTg7R8Z7WEH3rLabzNPtNTfAmlWITYQvQOLT4
+	 2y6qfHdiG4qug==
+Date: Wed, 27 Mar 2024 11:18:28 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH 2/5] rust: time: Introduce Duration type
+Message-ID: <e93d124b-e2db-4a7d-848c-6d4fb389d780@proton.me>
+In-Reply-To: <ZgMDGYMj7V50PZbP@boqun-archlinux>
+References: <20240324223339.971934-1-boqun.feng@gmail.com> <20240324223339.971934-3-boqun.feng@gmail.com> <4hYJbftgOk1JOPbJ6CfKZell6ngp8GljwIUIB1vOQvIf-7jiogG5xDtCvcMlF7cIJAdy9fO5HLQh_8ohnWNB3MAaj0xjAGeyyDowemgunOU=@proton.me> <ZgMBqzv0r98_EGGR@boqun-archlinux> <ZgMDGYMj7V50PZbP@boqun-archlinux>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327023531.187880-1-wedsonaf@gmail.com> <20240327023531.187880-8-wedsonaf@gmail.com>
- <ZgOXGSDmIgrENB7d@Boquns-Mac-mini.home>
-In-Reply-To: <ZgOXGSDmIgrENB7d@Boquns-Mac-mini.home>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 27 Mar 2024 11:49:41 +0100
-Message-ID: <CANiq72=0Q2KJ_Rmnsa596fRA0E3tE4cZtG7W7DHU94=nWLMoSg@mail.gmail.com>
-Subject: Re: [PATCH v2 07/10] rust: alloc: update `VecExt` to take allocation flags
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 27, 2024 at 4:48=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> /me likes this! ;-) Too bad `write_slice_cloned()` is not stablized:
->
->         https://doc.rust-lang.org/core/mem/union.MaybeUninit.html#method.=
-write_slice_cloned
+On 26.03.24 18:17, Boqun Feng wrote:
+> On Tue, Mar 26, 2024 at 10:11:07AM -0700, Boqun Feng wrote:
+> [...]
+>>>> +impl Duration {
+>>>> +    /// Creates a new duration of `ns` nanoseconds.
+>>>> +    pub const fn new(ns: i64) -> Self {
+>>>> +        Self { inner: ns }
+>>>> +    }
+>>>> +
+>>>> +    /// Divides the number of nanoseconds by a compile-time constant.
+>>>> +    #[inline]
+>>>> +    fn divns_constant<const DIV: i64>(self) -> i64 {
+>>>> +        self.to_ns() / DIV
+>>>> +    }
+>>>
+>>> I am a bit confused, why is this better than writing
+>>> `self.to_ns() / DIV` at the callsite?
+>>>
+>>
+>> Hmm.. you're right, there should be no difference I think. If there is
+>> nothing I'm missing from Alice, I will drop this function in the next
+>> version.
+>>
+>=20
+> On a second thought, I think this prevents accidentally divide a
+> non-const value, in other words, if you use this function, you're
+> guaranteed the divisor is a constant, and you have the compiler checking
+> that for you. So in that sense, I think it makes sense to remain it
+> here. Thoughts?
 
-For future reference, it will be called `clone_from_slice` soon (1.78):
+I don't see the value in that. It does not prevent me from just doing
+`self.to_ns() / DIV` now. I imagine that 99% of the time users will want
+to get milliseconds or microseconds and we should have methods for that
+(when we have users). But for the last 1% I don't think we need this
+method.
 
-    https://doc.rust-lang.org/beta/core/mem/union.MaybeUninit.html#method.c=
-lone_from_slice
-    https://github.com/rust-lang/rust/issues/79995
-
-This could be a "good first issue", i.e. to replace these if these get
-stabilized (which seems likely).
-
-Though that one has to account for panics -- it would be good to check
-codegen if we do replace it.
-
+--=20
 Cheers,
-Miguel
+Benno
+
