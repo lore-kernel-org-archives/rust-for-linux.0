@@ -1,147 +1,126 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769112D792;
-	Thu, 28 Mar 2024 13:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A284B137C26;
+	Thu, 28 Mar 2024 19:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711630830; cv=none; b=QeT2eL4Q9gwpkZ1InHZlazedrooRfK3xYO9y0EuNbZcrGQp/Z114/qqZ6JGbJ/uNFLB9L66uFKtkCIdP74U6z0Dr7/nQQZdKNZpDyvLOz+ML7haXuOtLzzo5EtOE/9mFwL5osLeK3PpnBQ5U18/LdV51By5aAeWC3WW7xg/CBWw=
+	t=1711655715; cv=none; b=le2xP5YTPEt59j8kYrfqtJlN+hgPbWDS/JCmuyQ0C4dBrblWswndSaPs4wsZ5CHYYV/4Mc5yz6NZzylOU/SrhlYW2v23TUJzdpfV9fanDJnINyiYl3rNZe/On454hORaP+IQ23mlPk87vToSV8zSFNkKZnExfeqO9TVFHEMk30o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711630830; c=relaxed/simple;
-	bh=ytlDWQ3r0yK5DRXkZh2+9C09CjyHTWVJS0gSnhKeG1g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SuogrpNjQbyE1X9PPQdUe2nmtAiARhGD9epsyCs++uJQoDL+1hszumH0JTV37Ej4bB4RYHNwm+qlIDPD7ZxzeNxbCTGfsKIAJUAQ13m/SvMinN/4ACNSBQ/lbLessbYvBm3+JgX5Z/BeilOeHFAVAGJH7ExqP5XazG4CCIQn2GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EgOmWPFW; arc=none smtp.client-ip=209.85.128.179
+	s=arc-20240116; t=1711655715; c=relaxed/simple;
+	bh=nZaQEnidgOuWecUtT416/mVD/axNf4qn18t+llX9f5U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cK4e87GFq6jhj6yx0Ufbd5ezjXjpBY4B+D/I9MvZzEb6iFV4B2UiuGCz/xud/HDDSER0gTRWkO1SVWWL7a4MKi+8aWqjB0YhindSBm+c6FM6rLEdVLfaokIwReefEKS+CQGd7zUNliNpIhibVQwnlU+PgPmrZZmA2Uaj7uec834=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZH6gbo5z; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EgOmWPFW"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-61149e50602so7254057b3.0;
-        Thu, 28 Mar 2024 06:00:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZH6gbo5z"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1e21d1e8307so5560255ad.2;
+        Thu, 28 Mar 2024 12:55:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711630827; x=1712235627; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=f/AjMOT3HT8tt2clqaveH3JYtGktFT3MJvxhAn7/WUU=;
-        b=EgOmWPFWrFER7QZhHz9BkULp2rvqocyUBeeNn6BomHeaaAZlogpYPjyIBTRMzPGJLN
-         kV8vJlfCb/mk+vQjBFCVR9VRWUOdh0QczuLWZ8Yf9VQqbQjZiH2ERegMc+7LsT7AiKyc
-         SOq9tPXjerqK2JRM2HMBAve9+XXLdFeNapdHIVyymGYEsGvfKxMEUSLJ4SKHSIY3B3rN
-         B6yRbqS8OpYdsAl1K2fPPqGdfY0lqYJ7jQC/D74eYYXzmuCVxUXT2ULPFb1TJGHATWcC
-         jhklbHryB5oD18cBXhttn/ZjyVrrR8BQaj6ypse10svKv1UQhMoca8QgFMLC+DYl4A7E
-         ypqw==
+        d=gmail.com; s=20230601; t=1711655713; x=1712260513; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uty8UkCKWRel+6ILHWv9WEZYPVQazLXowk/xRzK5PO0=;
+        b=ZH6gbo5z3N1WeOw97l9FCM7MhNJPhJL/Rbwanx3Ij+BIdWR1/Q4myqNrZoHnB8uyMq
+         H8S1/WKX12gKdGYcz1Gf8n0oFUTEoy7G6ALKxqWd6WeVx3geLdGeB43JZSdxdRG9Nroq
+         354M1Vw8kr/7x5R6ZkfTrT/ZutxEs3S/zC57t4CAKuAAgfwIrJ3ha+zjMRCBMzqJiAP/
+         0o70CxOqXpnvIwOEefMxRgQKpB/2vuVIF+qoe1UZIQC0MRSqLdSka5+od9k8/BPUqJhc
+         y1oAl1s8AzbgyM7a80wKkTK2ZpP8zCCww9cu0Gnbnj8l3z3j9QwTPBR3XQ5ngudcZPF0
+         Zrmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711630827; x=1712235627;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1711655713; x=1712260513;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=f/AjMOT3HT8tt2clqaveH3JYtGktFT3MJvxhAn7/WUU=;
-        b=Vu6zzpsplfE9Z+/Nwx3p80255uihqVKjSeWafN+tmjaYB+fxO9vYQxomwRwBcfR3ax
-         u4FXujBUiWGAB0jbQ7P0fEYt5omKXGYj/pg6wOGsObsolNSiRqTNoUheUuXX2dvUjWMa
-         1jxS1+Ldg5ZN7pSMHziKDGnn9RHD0R0FjCNgQdFYV3ies2eJpowqTOb2PIVLTU2B1yid
-         IKCQK4ovOA2Xz4g2x1Y/djDSzHSq/MP++lmRWkjyGmnhFJJ+1jXlng9saAbmSp8HNSfW
-         mZSPfbOGU1dX/HhJREIKK5gEpaRTprq13f7GD1b71cg5UZfBjnRqMnyVBe6kPO1TjMI3
-         ek+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWi5EpqC5ssCPfvYjz8r7vOciOVWX6GXomtwxh2GzjPPXbEqa7xuYZ8SDWTUh39pXv7hfRAKe2d1hXPdhpC+aTVvY/uqDIICYb3+li/
-X-Gm-Message-State: AOJu0Yx6Un4ue9oH5F+nYFtbA/zthe/u9XuLYTbdkYqZpml7s6a3u5Bp
-	gKdY22PtvoXcnv2DQ8lDT/IJB1QGumAjjJV99ZPGByYrU3c8vJxFsxTY292vYWc5Sa+J2/1dF0D
-	CnaqRZbBMBpYlRrzZAJukPzqbLGE=
-X-Google-Smtp-Source: AGHT+IFIS1ir+HV9i+A50lcERS3uuHvos/1q6/p2/DPOxQHumrqAlPqWxS8NZtvVFTPkDZB6iPwVOPr3TTVui6ePPOE=
-X-Received: by 2002:a81:47c1:0:b0:613:fb28:b694 with SMTP id
- u184-20020a8147c1000000b00613fb28b694mr1127105ywa.3.1711630827494; Thu, 28
- Mar 2024 06:00:27 -0700 (PDT)
+        bh=Uty8UkCKWRel+6ILHWv9WEZYPVQazLXowk/xRzK5PO0=;
+        b=gf3LSXGme5/nQTyEdoKRd7PMdT03kQZF5MCyBxDHnTOdgcGlgOByz411jHAQ4iPnCT
+         O8a4fvhXEr/+F4u1Wr7Wuj6CUWYGKysigNTEjmvO3TLLAEfx/8kCvAS/EHNURQF5MFK3
+         OLqJDVgxwxCMJuO8NsHaOz/iiQLbK1/tQquHLqF3tSgxgs8rnbS5Bd9rF/GOj62c5pCm
+         Fv30u14l6MeqcaCuSQwDWjFH0JWJgniJlK2uh3h1mJBzENbPv3i379SSrWQ4/Wt2H8jX
+         013pAhKllOyoSsRCYuF1b6l36nfHGOtbBwRnLNojknJ3rv9U/7fVJA8wxg9j6yy6glbu
+         yTfw==
+X-Forwarded-Encrypted: i=1; AJvYcCVaA3Btkrj+gQvZ3vEhvX7GyiIQKEAhiAZlsg0T9g+lIfMy9YXXx2v6QfrEfwxPiyAEUVHhpkWaPQQSf96JYZq6cNvJ/sOpbWThF11R
+X-Gm-Message-State: AOJu0YywRPZrHaidJKMd/L9UdkzQVpoYVE+GVsDiHMDV/Xt2zNCnqR1/
+	9nVRBFb8jarjPRWDtJ/2uOAZpg6PC4mTOCZNx6QBSHbTEo0Szk76TF0ogk0f
+X-Google-Smtp-Source: AGHT+IElnhBk7d/VB908EFbFbv6uktbtDvC3+sx5GgszAqs583nTVEUNlKwm5IQm45b6KqgF3nKS8Q==
+X-Received: by 2002:a17:902:9a0c:b0:1e0:342b:af6f with SMTP id v12-20020a1709029a0c00b001e0342baf6fmr531706plp.16.1711655712685;
+        Thu, 28 Mar 2024 12:55:12 -0700 (PDT)
+Received: from wedsonaf-dev.home.lan ([189.124.190.154])
+        by smtp.googlemail.com with ESMTPSA id p16-20020a170902e75000b001dd7a97a266sm2006520plf.282.2024.03.28.12.55.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 12:55:12 -0700 (PDT)
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: [PATCH v2 0/5] In-place module initialisation
+Date: Thu, 28 Mar 2024 16:54:52 -0300
+Message-Id: <20240328195457.225001-1-wedsonaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327032337.188938-1-wedsonaf@gmail.com> <20240327032337.188938-3-wedsonaf@gmail.com>
- <ffuYV4VQCfRoM7Fws9Z7TOVXS_dJp89q9--Sv9fipzWpOUqkjad5EfXsZPcBZ8ciGzrPo-U-2rEy5CUOitXNp4e4hAJHwZ0uH_u3zDxr0zE=@proton.me>
-In-Reply-To: <ffuYV4VQCfRoM7Fws9Z7TOVXS_dJp89q9--Sv9fipzWpOUqkjad5EfXsZPcBZ8ciGzrPo-U-2rEy5CUOitXNp4e4hAJHwZ0uH_u3zDxr0zE=@proton.me>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Thu, 28 Mar 2024 10:00:16 -0300
-Message-ID: <CANeycqp08CFeh4rO+b1ocGDp_nViN2uYhL6_RZ4PWn5TeVmNVQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] samples: rust: add in-place initialisation sample
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, 27 Mar 2024 at 10:53, Benno Lossin <benno.lossin@proton.me> wrote:
->
-> On 27.03.24 04:23, Wedson Almeida Filho wrote:
-> > diff --git a/samples/rust/rust_inplace.rs b/samples/rust/rust_inplace.rs
-> > new file mode 100644
-> > index 000000000000..ba8d051cac56
-> > --- /dev/null
-> > +++ b/samples/rust/rust_inplace.rs
-> > @@ -0,0 +1,42 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Rust minimal in-place sample.
-> > +
-> > +use kernel::prelude::*;
-> > +
-> > +module! {
-> > +    type: RustInPlace,
-> > +    name: "rust_inplace",
-> > +    author: "Rust for Linux Contributors",
-> > +    description: "Rust minimal in-place sample",
-> > +    license: "GPL",
-> > +}
-> > +
-> > +#[pin_data(PinnedDrop)]
-> > +struct RustInPlace {
-> > +    numbers: Vec<i32>,
-> > +}
-> > +
-> > +impl kernel::InPlaceModule for RustInPlace {
-> > +    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-> > +        pr_info!("Rust minimal sample (init)\n");
->
-> This text needs updating.
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-Fixed in v2.
+Introduce `InPlaceModule`, which allows modules to be initialised
+inplace, as opposed to the current state where modules must return an
+instance which is moved to its final memory location.
 
->
-> > +        pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
-> > +        try_pin_init!(Self {
-> > +            numbers: {
-> > +                let mut numbers = Vec::new();
-> > +                numbers.push(72, GFP_KERNEL)?;
-> > +                numbers.push(108, GFP_KERNEL)?;
-> > +                numbers.push(200, GFP_KERNEL)?;
-> > +                numbers
-> > +            },
-> > +        })
->
-> I think it might be useful to also have a field that needs pin-init, eg
-> a `Mutex` or similar. What about placing the `Vec` inside of a mutex?
+This allows us to have modules whose state hold objects that must be
+initialised inplace like locks. It also allows us to implement
+registrations (e.g., driver registration) inplace and have them similar
+to their C counterparts where no new allocations are needed.
 
-I'm not sure this belongs in a "minimal" example.
+This is built on top of the allocation APIs because the sample module is
+a modified version of rust_minimal, which would be incompatible with the
+allocation API series because it uses vectors.
 
-But I added it in v2 because we're already violating minimality with
-vectors anyway. Perhaps we should later have minimal samples and
-rename these to something else.
+---
 
-> --
-> Cheers,
-> Benno
->
-> > +    }
-> > +}
-> > +
-> > +#[pinned_drop]
-> > +impl PinnedDrop for RustInPlace {
-> > +    fn drop(self: Pin<&mut Self>) {
-> > +        pr_info!("My numbers are {:?}\n", self.numbers);
-> > +        pr_info!("Rust minimal inplace sample (exit)\n");
-> > +    }
-> > +}
-> > --
-> > 2.34.1
-> >
->
+Changes in v2:
+
+- Rebased to latest rust-next 
+- Split off adding `Send` requirement to `Module` into a separate patch
+- Prefixed all `core` and `kernel` references with `::` in
+  `module!` macro-generated code.
+- Calling `__pinned_init` with explicit full path.
+- Add `Mutex` to `rust_inplace`  sample.
+- Added `Send` implementation for `Registration` in net/phy.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240327032337.188938-1-wedsonaf@gmail.com/T/#t
+
+---
+Wedson Almeida Filho (5):
+  rust: phy: implement `Send` for `Registration`
+  rust: kernel: require `Send` for `Module` implementations
+  rust: module: prefix all module paths with `::`
+  rust: introduce `InPlaceModule`
+  samples: rust: add in-place initialisation sample
+
+ rust/kernel/lib.rs           | 25 +++++++++++++++++++-
+ rust/kernel/net/phy.rs       |  4 ++++
+ rust/macros/module.rs        | 36 ++++++++++++-----------------
+ samples/rust/Kconfig         | 11 +++++++++
+ samples/rust/Makefile        |  1 +
+ samples/rust/rust_inplace.rs | 44 ++++++++++++++++++++++++++++++++++++
+ 6 files changed, 99 insertions(+), 22 deletions(-)
+ create mode 100644 samples/rust/rust_inplace.rs
+
+
+base-commit: 453275c66aa4d87c73c5152140b3573ab2435bb7
+-- 
+2.34.1
+
