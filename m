@@ -1,80 +1,112 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6ED11721
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Mar 2024 15:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2D84C89
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Mar 2024 15:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711724890; cv=none; b=Jv5DgwRblGz41nykAUA7FHiKoBFqHoM88Hy59hjp1eeoQFmVaJqDCJmS+AYBaVAvv6kElByu8nAqUhsYsDSTZ5aqS1SGn4I3bc13QrO8CWFAMtQ473BWt6dDL0JFpxzPUjczCYTOQARMQUyyjobMYKiRio5l108RYcoQAK7EGMc=
+	t=1711726238; cv=none; b=tJ6t7ZfbNaEjK6yUrmuu7tRWogtkqC21+wf/jP9Q9VNA+ohxpNmYR51J+ro758AGoIC18StRVKRAUo1Pi8ZxnAQhyxQnpruDoKq4q6vhBn/n1ty5fB+/p1ku0VoLLMrQwxTNPadgIxepta3CNlaVdYNYjxVErg5q/YDv6pi/3Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711724890; c=relaxed/simple;
-	bh=dxsK+A0zGzWuoyy/rv8SNAdBIJ4VUlSM+Fjev0Dd4os=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UCc5Kha+KIWU4T4TXU/Ewd3+K5rknYBvQN26jpVdpfW0F21fI7UgHgaC1T/EZn4TDzfVa6Xd+wP0ZUNhqrU/XnchpBqZ1hiiG7bYX4XIFIFwpxUnctaNZZcrg1fKn/zvOOh30MdamWF/z14EJx/07gtvT0GJZzwvp4dE6SHKUg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=L/9teXmA; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1711726238; c=relaxed/simple;
+	bh=4GmSRYCt1tXa3I6neGOfIWibn51R2sbrgglBMoO5B1A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K56/PNyJzGPGCtDfTecUmzuaDw7zmUUcQ2m0ueScgsuX0Dto083z5yDLxTlq9U+CgBgVf0agDRb1Sv9Pxhpt91SZISFzOw5QJGQk4uKm0XXwVQybR1xgBBhnolweD0zn480s4WFemcy+Cnpu96Mlm7bFzawZ3NbPnMIqrl8rpUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VnEQWD6s; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="L/9teXmA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711724880; x=1711984080;
-	bh=TwY71wkAkVzxEFQEXuu91xb0QlVVxXbICyOBQ0qK7/Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=L/9teXmAuZm2PqAvmPxW8XhLSUIku4P5Cw6jwo0QLtWXE+zg367gaLokhspFzj2fJ
-	 oNfJyH1SKbPNQK/ua+A2HZWmx+fTTH9NrEPiNkjGJ2/KRLAoZvdA3qArVHKpc5gEts
-	 KKjDpfvLbRF7CW6LuLDOmh6JHQTAKRM04lm3Bhf5XCqA4xQqUgUtNN5J0LklXnCj2T
-	 cslNiUrNuAyNUicXsNdQyclAjtFWqazLMpUVqQ6MDRcWWmDognXxTe6Ok7XYRqMIsS
-	 9Pn491iU9luYMFYz0GNGLb1/lN13eFI0+PiZwVqw9Vnr+iC1kCZ/HcZ7mF6QWO8sIc
-	 /s/WM2LjwKoog==
-Date: Fri, 29 Mar 2024 15:07:55 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 2/2] samples: rust: add in-place initialisation sample
-Message-ID: <6f789e0a-2e98-4ee8-a905-f2ae7c45cc48@proton.me>
-In-Reply-To: <CANeycqp08CFeh4rO+b1ocGDp_nViN2uYhL6_RZ4PWn5TeVmNVQ@mail.gmail.com>
-References: <20240327032337.188938-1-wedsonaf@gmail.com> <20240327032337.188938-3-wedsonaf@gmail.com> <ffuYV4VQCfRoM7Fws9Z7TOVXS_dJp89q9--Sv9fipzWpOUqkjad5EfXsZPcBZ8ciGzrPo-U-2rEy5CUOitXNp4e4hAJHwZ0uH_u3zDxr0zE=@proton.me> <CANeycqp08CFeh4rO+b1ocGDp_nViN2uYhL6_RZ4PWn5TeVmNVQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VnEQWD6s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1711726233;
+	bh=4GmSRYCt1tXa3I6neGOfIWibn51R2sbrgglBMoO5B1A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VnEQWD6sJh7NYp36NPsw4lviJy2nafhCuSHH9nrht1nXssLlj3ROCi0YpIcatZbm4
+	 qaKEvLcxa7zz1c50ySGxm3BgrJ4wYSNtx1xMpBqWE05IjPPo2fCEmB5iZ67IJ1F1Mm
+	 W0b/+RU9Q4gruf/05rEBMsY/NKlRgYHgbg4nKD74H6Fl4u7HzQp/I01rnKJb/3CfeO
+	 jo4kx2XXn4F7UpmCId1m4cHH7SzriRATWNkWrQaSyYrZtK2+wTpAUfitOAmtSQ2py5
+	 EHZNmAVq/ACV1ZQFg+xPzUGUHAKgwm4af0zi0V7Ltt2TMTNvYg4h/wo96zjAmcfbtS
+	 i+aNspCGY55Hg==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 28EAF37811D4;
+	Fri, 29 Mar 2024 15:30:32 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com
+Cc: boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	rust-for-linux@vger.kernel.org,
+	kernel-linux@vger.kernel.org,
+	dirk.behme@de.bosch.com,
+	kernel@valentinobst.de,
+	kernel@collabora.com,
+	Laura Nao <laura.nao@collabora.com>
+Subject: [PATCH] docs: rust: Add instructions for the Rust kselftest
+Date: Fri, 29 Mar 2024 16:30:25 +0100
+Message-Id: <20240329153025.150112-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 28.03.24 14:00, Wedson Almeida Filho wrote:
-> On Wed, 27 Mar 2024 at 10:53, Benno Lossin <benno.lossin@proton.me> wrote=
-:
->> On 27.03.24 04:23, Wedson Almeida Filho wrote:
->>> +        pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
->>> +        try_pin_init!(Self {
->>> +            numbers: {
->>> +                let mut numbers =3D Vec::new();
->>> +                numbers.push(72, GFP_KERNEL)?;
->>> +                numbers.push(108, GFP_KERNEL)?;
->>> +                numbers.push(200, GFP_KERNEL)?;
->>> +                numbers
->>> +            },
->>> +        })
->>
->> I think it might be useful to also have a field that needs pin-init, eg
->> a `Mutex` or similar. What about placing the `Vec` inside of a mutex?
->=20
-> I'm not sure this belongs in a "minimal" example.
->=20
-> But I added it in v2 because we're already violating minimality with
-> vectors anyway. Perhaps we should later have minimal samples and
-> rename these to something else.
+Add section describing how to build and run the Rust kselftest.
 
-I think a fully minimal example would be less valuable as a learning
-resource. We can of course have both, but I think having real usage of
-pin-init in this example can help people get familiar with it.
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
+---
+ Documentation/rust/testing.rst | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
---=20
-Cheers,
-Benno
+diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+index 6658998d1b6c..b5b99e625a01 100644
+--- a/Documentation/rust/testing.rst
++++ b/Documentation/rust/testing.rst
+@@ -6,10 +6,11 @@ Testing
+ This document contains useful information how to test the Rust code in the
+ kernel.
+ 
+-There are two sorts of tests:
++There are three sorts of tests:
+ 
+ - The KUnit tests.
+ - The ``#[test]`` tests.
++- The Kselftest.
+ 
+ The KUnit tests
+ ---------------
+@@ -133,3 +134,22 @@ Additionally, there are the ``#[test]`` tests. These can be run using the
+ This requires the kernel ``.config`` and downloads external repositories. It
+ runs the ``#[test]`` tests on the host (currently) and thus is fairly limited in
+ what these tests can test.
++
++The Kselftest
++---------------------
++
++A Kselftest is also available, which verifies that the Rust sample modules
++can be added and removed correctly.
++
++The kernel config options required for the test are listed in the
++tools/testing/selftests/rust/config file and can be included with the aid
++of the merge_config.sh script::
++
++	./scripts/kconfig/merge_config.sh .config tools/testing/selftests/rust/config
++
++To build and run the test, use::
++
++	make TARGETS="rust" kselftest
++
++Refer to Documentation/dev-tools/kselftest.rst for the general Kselftest
++documentation.
+-- 
+2.30.2
 
