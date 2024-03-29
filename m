@@ -1,129 +1,89 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C9B85942;
-	Fri, 29 Mar 2024 14:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778FE69DF4;
+	Fri, 29 Mar 2024 14:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711720865; cv=none; b=KUiN6urOv4WlOkD5Ua689BbeuxTR3Hu8ZUMIxq0AxmuprJKSHc3coGMbkyOh/tOo35Fu7YCoQnYlg0Uo9fte7opWP8NCzo1U201WOLUfK2FJeJrUhNQNkfzpJVArb+jtvLBImYfwfK5Fa6zhUM1MgQX7+sJyNS/XtxSwodX2XSk=
+	t=1711722398; cv=none; b=AlQCcBlZPuIhUOSRmKfUJQoqmYKBslx+WpK7GK1QgiTh7y7afqD9j6Lpcf4/sw8AqPRgfJ6+UeIhb6Nf7pdDvI0DyuxrHGvYOzfMfgr05rTBQF50tQhH/ZS+ypgG3SK2v13Ofv+BvKkDRNiHkUhA/4SUDwMvfN8rk6dC5fVCF8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711720865; c=relaxed/simple;
-	bh=848xYqvHSlvZv4EmGypUnq2Ezo1QbWqY5bjvT/HGv0g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7uVtA9f6h+aXuTiHZgevChtfEAOjkCF3UKlwTCml+/ottNCii3EqL4fdldG8LcPPSW9WgD3HU1ZBSg5EJSv9g6Kkx/MH4zJWmqQG2ZEomPfTjxFZosBNOXCz8uoXSauLrUVsykk4RKrtjzIswRxqBSBvl9MDjJa5p1jksliXm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=sD1wxys6; arc=none smtp.client-ip=212.227.126.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+	s=arc-20240116; t=1711722398; c=relaxed/simple;
+	bh=UFrvBTUqTAQ0nC/FyBljDk18vcMjjZLvtKE/7fdICFk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fV1bVVR0aaqsLEAPzfhMeXjIhuDEf1fUCTmlhcPLaxW5NoLPVsy0/ahBIlssbUrg1CdElF7D4E+tatRXG/oJFY54IM35KTB1wmp3VFf1i8fGNqDzwYNVvgI8y/FwLq+QdzPIn6wr4Il4QVuy0qEB7LWAAAyZKcdKC9sDSplLtF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mwjozn5p; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="sD1wxys6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valentinobst.de;
-	s=s1-ionos; t=1711720833; x=1712325633; i=kernel@valentinobst.de;
-	bh=0tMA2u3w4HmA258Ye88saoMTFiNQAuOCRNaKaxACFf0=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=sD1wxys68MJruL41JGvPmGKq91qdw1mq5GA7z8iOwfDd36ZK7kQfmU8oFYQMOB4I
-	 A047IKO+2Ps5aPc3W8mi9zMQaeywOVlGfA/ehW2Ux5spjPRjaBydXHxoKp1WCUhNE
-	 00TC/kM7vb1lSi9w4HKcFlzlGGU7YkmZIXI1KEl5/gqLEWEniSobcVpRCpyVi9IdR
-	 06wiOY3N9iPYfWATgR1fegrJt086OYVeVvYMTE1fR+2f24cVZoslPwIOuTAt/+6Pv
-	 vFNBcSGs7jo2whTRpJy7UW4SEGX4esLzmKDeGMJVh0yL3Q6kl3dAryI2M9+KjYg09
-	 3hE4chjPxCfijDpFvA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from archbook.fritz.box ([217.249.70.154]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MjjOl-1sa14E0ZwJ-00lGU0; Fri, 29 Mar 2024 15:00:33 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@samsung.com,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	kernel@valentinobst.de,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	walmeida@microsoft.com,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH v2 0/5] In-place module initialisation
-Date: Fri, 29 Mar 2024 15:00:30 +0100
-Message-ID: <20240329140030.3989-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <CANiq72mkHM3qfq66oDZyZMCuLK8Y1tJxEqFhSYpFWg7ihfcvEA@mail.gmail.com>
-References: <CANiq72mkHM3qfq66oDZyZMCuLK8Y1tJxEqFhSYpFWg7ihfcvEA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mwjozn5p"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-29fb12a22afso1544486a91.3;
+        Fri, 29 Mar 2024 07:26:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711722397; x=1712327197; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=awx3iXILJ3etJ27hrz3eMY5jbcEJQVk2l5+2WFH7sG4=;
+        b=Mwjozn5pUwOpmOlAx7ZSmRSmY+1tlrHedVq8VtWJtJry9a8RnUo09euwhskkk/Q+l9
+         sdmfonB7ShzoNXHkbABqT45Sy5w3MDU0w7h7c7PEdxN0kTzW3qALAG1ulgi7PPQ7VnQ1
+         kUVDhCGZVXZlODX9vs1r0glLpqRDcr5okc4uIun2cpjZjHQ3DcNt3W1hAcP/AI7wscgL
+         PwrrI6sQFvN4YytDfZ/Mvwuozj2ZjLAcyOzOtPQxWtRTkQIaOTfLFDqwZVotSgCKo67F
+         9xLJ6TX7I5N+SrWCJJMCcSRVRb+PiCh5nNLexkvY8FRdZWtiSp/0zCAGP+kjD0aJ6MOn
+         dnDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711722397; x=1712327197;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=awx3iXILJ3etJ27hrz3eMY5jbcEJQVk2l5+2WFH7sG4=;
+        b=cj5Q9jRGyPXwgG6jY6XHTB7HrF7O2S+wPZYQY2rnzvqWNeEFsKVDj4AUNj2WODQQSv
+         kSZJVytuf7bPouDQ6vTqH7lMsthvPXKsvWuQaOvayVjnFaPHzJTxnFgeSGG23hekDNyX
+         0B6caZBsxYXH5QAofA6nNL21o1f1OuhuT+wBCnc4o4I27MZS6oB5ePeBhHIltV7zUI4E
+         jfQbhljVdsNG3d/Dgd6AdzWRHGqHQ1Jmy4CyrwyYobAIZQeuDYmaZ8vUGeTjDvOstsUK
+         +ZHpW/bsu1xTe+OqgirItAT7geKhYp0lSkHDavcDYy+RHMlVV29kTS3Qc71pmCqoa/lt
+         M0Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQyxbSXtacQA/5k20nyab21ViGaD4kUOgtZUMGNb4FuFpyaKyskewWaKFj3vamI0u1cpnaOWCNoIeLAAHNfW95ZrxypFLjfUMCDQqrgfMjBn/iyXpFqeFT921VA8J9jQt/ba1Tg8xlcP59yEY=
+X-Gm-Message-State: AOJu0YyKVNN6j1sHhjemQs2OMQW+KZk29AWXYIkshdLG4ppkfcf5BxSy
+	f93Mrj0kdpkEuzvidjbHGzYfPq9pRuIdJig8i217c8PxQiop/PX7l7nC85FXh3mzgDM3QiyqaNm
+	LRHV4iyp7DmVbcZaQqWw2GEORH34=
+X-Google-Smtp-Source: AGHT+IEAS9Cd0/AwNseDmaLsCeORItwmWKa57G0+mDoS5jtqWRJZrc/iltvm4Uybh0TCL3z+B9n9LyA3A2tnxTfkMiM=
+X-Received: by 2002:a17:90b:1643:b0:29f:f876:18ac with SMTP id
+ il3-20020a17090b164300b0029ff87618acmr2307022pjb.35.1711722396743; Fri, 29
+ Mar 2024 07:26:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <CANiq72mkHM3qfq66oDZyZMCuLK8Y1tJxEqFhSYpFWg7ihfcvEA@mail.gmail.com>
+ <20240329140030.3989-1-kernel@valentinobst.de>
+In-Reply-To: <20240329140030.3989-1-kernel@valentinobst.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 29 Mar 2024 15:26:02 +0100
+Message-ID: <CANiq72nuRGUqi7JxdNpFPyTD2onNXvujZHk_5xuxwFSxqWh0xQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] In-place module initialisation
+To: Valentin Obst <kernel@valentinobst.de>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, walmeida@microsoft.com, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:q4NjzGhTgNqS2vaM4SlQZAE7CMr8S72aidVH2H2xW52ioXTzxK4
- cxcQWd88Tt8fjhYVtp7OUMM5p0QB0v81pJBqJ437UpexwEjTGonmQCCzhl0b/wg/GcKIiW4
- KqgXAjcxuwYmVuPWbmLmtBgKVIfHZd0foKa/1SaWMdR9cheEN4rofjh+BDZGXDvvYvXpIFX
- njzCCGtJKDH6tlCVVrNyQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:vZSxkjK2pFM=;yHMq3mvBCSS8jCePIb97pS1ScpS
- AS3W/yCGIrcZFiaa4aPIkecMJWuJKPQfBWIZ0cikQXd88S2wc6yfDNPIEGSZMkDHuf/TnPdu4
- 0C+W1pHzeMEsAe8E4x9SEuMEwFFUvpH0+Xz0CANThyVMGa0YDMV30XkvcA9AhQ7ZVTdi7+/1C
- LAwGl18TWZwsldy5N6IrWwwCKwhRzYEPmhg5nC1EQJvi/FzNHKLWhi8ZFG/vZIZ3PXh7UkTUC
- xJ4VN4+9ItrbhPIiBLdGgLaFdOqm+Vrk/r075dENsm7yivVIF56u+E9dtMHnmBY34zwtU/0mI
- lARKISM2H2ARDkVEfbNauB06DlDHuNjBqwbeEpihpOaLpc65YGPeeTLi+toqskSqfeB1ISyQU
- 6kRTxkZ0qMifElnu8B+5G8hQI2kqT0UBqZ+tnIVyv0BHxROc9Xm/svbyJoGJVxKLL5WhqtJ5P
- cu3qwW7sPMBfYAW9MkWzTWZMFZZlg/dD77URHq/wgHEhPzN+nOjREs64npSSNJqtEvdsRZO6b
- 8gH1bNeB6+bnFpZjaUDSdciltQVcCOYhNgeXPIm5nkGg+WH9UlN6tFvqF8U5CqabABX8+sL2t
- d92zNMQOxBZuDpSJmDrstwpPj+ixNGNQZNCSUtQ9BfNXFmIhvJVHJ1N+kNE65AwUYN2/IboIQ
- P0Sb4ZI3M5ibcVucNlZVGGzTRoq3g0cZISTz907FsU2yDOZA3hUdGCOUQNWnkDPnkKbsDKBjr
- AfdAjpZgExZ1irZVFd+hbYSQ6nyEq89ry1VLc44M4CKnrg9Wh7RUi0=
 
-> > I think the idea in [1] was to have this patch being included in the
-> > stable trees. I got little experience with stable trees but wouldn't t=
-he
-> > easiest way be that you add:
-> >
-> >         Cc: stable@vger.kernel.org # 6.8.x: 715dd8950d4e rust: phy: im=
-plement `Send` for `Registration`
-> >         Cc: stable@vger.kernel.org
-> >         Fixes: 247b365dc8dc ("rust: add `kernel` crate")
-> >
-> > in the sign-off section for this patch? (Or mark the first one for sta=
-ble
-> > inclusion as well, [2] has more information on that).
+On Fri, Mar 29, 2024 at 3:00=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
+de> wrote:
 >
-> 715dd8950d4e is your local hash for 1/5, right? So I would drop the
-> hash, because it may be confusing.
-
-Ah, right, of course this won't be the hash of the commit in mainline;
-
+> If I interpret the docs correctly, previous patches in the same series ar=
+e
+> only implicitly considered as prerequisites for the marked patch if they
+> are marked themselves:
 >
-> It may be possible to remove the first line (since 1/5 will only apply
-> to 6.8.x and it is already the previous patch in the series, while the
+>     "[...] you do not have to list patch1 as prerequisite of patch2
+>     if you have already marked patch1 for stable inclusion."
 
-If I interpret the docs correctly, previous patches in the same series are
-only implicitly considered as prerequisites for the marked patch if they
-are marked themselves:
+Right, "Cc: stable" would be needed in both 1/5 and 2/5 (but one could
+remove the "# ..." comments in that case, i.e. it seems simpler).
 
-    "[...] you do not have to list patch1 as prerequisite of patch2
-    if you have already marked patch1 for stable inclusion."
-
-So I guess it is important to be explicit.
-
-> `Fixes` tag here may make it clear that 2/5 should still go everywhere
-> regardless of 1/5), but I guess it does not hurt to be extra clear.
->
-> What about:
->
->     Cc: stable@vger.kernel.org # 6.8.x: rust: phy: implement `Send`
-> for `Registration`
->     Cc: stable@vger.kernel.org # 6.1+
->     Fixes: 247b365dc8dc ("rust: add `kernel` crate")
-
-Looks reasonable to me; Also think that the 6.1+ is not striclty necessary
-due to the `Fixes` tag though.
-
-    - Best Valentin
-
->
-> Cheers,
-> Miguel
+Cheers,
+Miguel
