@@ -1,89 +1,80 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778FE69DF4;
-	Fri, 29 Mar 2024 14:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6ED11721
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Mar 2024 15:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711722398; cv=none; b=AlQCcBlZPuIhUOSRmKfUJQoqmYKBslx+WpK7GK1QgiTh7y7afqD9j6Lpcf4/sw8AqPRgfJ6+UeIhb6Nf7pdDvI0DyuxrHGvYOzfMfgr05rTBQF50tQhH/ZS+ypgG3SK2v13Ofv+BvKkDRNiHkUhA/4SUDwMvfN8rk6dC5fVCF8c=
+	t=1711724890; cv=none; b=Jv5DgwRblGz41nykAUA7FHiKoBFqHoM88Hy59hjp1eeoQFmVaJqDCJmS+AYBaVAvv6kElByu8nAqUhsYsDSTZ5aqS1SGn4I3bc13QrO8CWFAMtQ473BWt6dDL0JFpxzPUjczCYTOQARMQUyyjobMYKiRio5l108RYcoQAK7EGMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711722398; c=relaxed/simple;
-	bh=UFrvBTUqTAQ0nC/FyBljDk18vcMjjZLvtKE/7fdICFk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fV1bVVR0aaqsLEAPzfhMeXjIhuDEf1fUCTmlhcPLaxW5NoLPVsy0/ahBIlssbUrg1CdElF7D4E+tatRXG/oJFY54IM35KTB1wmp3VFf1i8fGNqDzwYNVvgI8y/FwLq+QdzPIn6wr4Il4QVuy0qEB7LWAAAyZKcdKC9sDSplLtF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mwjozn5p; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711724890; c=relaxed/simple;
+	bh=dxsK+A0zGzWuoyy/rv8SNAdBIJ4VUlSM+Fjev0Dd4os=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UCc5Kha+KIWU4T4TXU/Ewd3+K5rknYBvQN26jpVdpfW0F21fI7UgHgaC1T/EZn4TDzfVa6Xd+wP0ZUNhqrU/XnchpBqZ1hiiG7bYX4XIFIFwpxUnctaNZZcrg1fKn/zvOOh30MdamWF/z14EJx/07gtvT0GJZzwvp4dE6SHKUg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=L/9teXmA; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mwjozn5p"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-29fb12a22afso1544486a91.3;
-        Fri, 29 Mar 2024 07:26:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711722397; x=1712327197; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=awx3iXILJ3etJ27hrz3eMY5jbcEJQVk2l5+2WFH7sG4=;
-        b=Mwjozn5pUwOpmOlAx7ZSmRSmY+1tlrHedVq8VtWJtJry9a8RnUo09euwhskkk/Q+l9
-         sdmfonB7ShzoNXHkbABqT45Sy5w3MDU0w7h7c7PEdxN0kTzW3qALAG1ulgi7PPQ7VnQ1
-         kUVDhCGZVXZlODX9vs1r0glLpqRDcr5okc4uIun2cpjZjHQ3DcNt3W1hAcP/AI7wscgL
-         PwrrI6sQFvN4YytDfZ/Mvwuozj2ZjLAcyOzOtPQxWtRTkQIaOTfLFDqwZVotSgCKo67F
-         9xLJ6TX7I5N+SrWCJJMCcSRVRb+PiCh5nNLexkvY8FRdZWtiSp/0zCAGP+kjD0aJ6MOn
-         dnDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711722397; x=1712327197;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=awx3iXILJ3etJ27hrz3eMY5jbcEJQVk2l5+2WFH7sG4=;
-        b=cj5Q9jRGyPXwgG6jY6XHTB7HrF7O2S+wPZYQY2rnzvqWNeEFsKVDj4AUNj2WODQQSv
-         kSZJVytuf7bPouDQ6vTqH7lMsthvPXKsvWuQaOvayVjnFaPHzJTxnFgeSGG23hekDNyX
-         0B6caZBsxYXH5QAofA6nNL21o1f1OuhuT+wBCnc4o4I27MZS6oB5ePeBhHIltV7zUI4E
-         jfQbhljVdsNG3d/Dgd6AdzWRHGqHQ1Jmy4CyrwyYobAIZQeuDYmaZ8vUGeTjDvOstsUK
-         +ZHpW/bsu1xTe+OqgirItAT7geKhYp0lSkHDavcDYy+RHMlVV29kTS3Qc71pmCqoa/lt
-         M0Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQyxbSXtacQA/5k20nyab21ViGaD4kUOgtZUMGNb4FuFpyaKyskewWaKFj3vamI0u1cpnaOWCNoIeLAAHNfW95ZrxypFLjfUMCDQqrgfMjBn/iyXpFqeFT921VA8J9jQt/ba1Tg8xlcP59yEY=
-X-Gm-Message-State: AOJu0YyKVNN6j1sHhjemQs2OMQW+KZk29AWXYIkshdLG4ppkfcf5BxSy
-	f93Mrj0kdpkEuzvidjbHGzYfPq9pRuIdJig8i217c8PxQiop/PX7l7nC85FXh3mzgDM3QiyqaNm
-	LRHV4iyp7DmVbcZaQqWw2GEORH34=
-X-Google-Smtp-Source: AGHT+IEAS9Cd0/AwNseDmaLsCeORItwmWKa57G0+mDoS5jtqWRJZrc/iltvm4Uybh0TCL3z+B9n9LyA3A2tnxTfkMiM=
-X-Received: by 2002:a17:90b:1643:b0:29f:f876:18ac with SMTP id
- il3-20020a17090b164300b0029ff87618acmr2307022pjb.35.1711722396743; Fri, 29
- Mar 2024 07:26:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="L/9teXmA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711724880; x=1711984080;
+	bh=TwY71wkAkVzxEFQEXuu91xb0QlVVxXbICyOBQ0qK7/Y=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=L/9teXmAuZm2PqAvmPxW8XhLSUIku4P5Cw6jwo0QLtWXE+zg367gaLokhspFzj2fJ
+	 oNfJyH1SKbPNQK/ua+A2HZWmx+fTTH9NrEPiNkjGJ2/KRLAoZvdA3qArVHKpc5gEts
+	 KKjDpfvLbRF7CW6LuLDOmh6JHQTAKRM04lm3Bhf5XCqA4xQqUgUtNN5J0LklXnCj2T
+	 cslNiUrNuAyNUicXsNdQyclAjtFWqazLMpUVqQ6MDRcWWmDognXxTe6Ok7XYRqMIsS
+	 9Pn491iU9luYMFYz0GNGLb1/lN13eFI0+PiZwVqw9Vnr+iC1kCZ/HcZ7mF6QWO8sIc
+	 /s/WM2LjwKoog==
+Date: Fri, 29 Mar 2024 15:07:55 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH 2/2] samples: rust: add in-place initialisation sample
+Message-ID: <6f789e0a-2e98-4ee8-a905-f2ae7c45cc48@proton.me>
+In-Reply-To: <CANeycqp08CFeh4rO+b1ocGDp_nViN2uYhL6_RZ4PWn5TeVmNVQ@mail.gmail.com>
+References: <20240327032337.188938-1-wedsonaf@gmail.com> <20240327032337.188938-3-wedsonaf@gmail.com> <ffuYV4VQCfRoM7Fws9Z7TOVXS_dJp89q9--Sv9fipzWpOUqkjad5EfXsZPcBZ8ciGzrPo-U-2rEy5CUOitXNp4e4hAJHwZ0uH_u3zDxr0zE=@proton.me> <CANeycqp08CFeh4rO+b1ocGDp_nViN2uYhL6_RZ4PWn5TeVmNVQ@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72mkHM3qfq66oDZyZMCuLK8Y1tJxEqFhSYpFWg7ihfcvEA@mail.gmail.com>
- <20240329140030.3989-1-kernel@valentinobst.de>
-In-Reply-To: <20240329140030.3989-1-kernel@valentinobst.de>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 29 Mar 2024 15:26:02 +0100
-Message-ID: <CANiq72nuRGUqi7JxdNpFPyTD2onNXvujZHk_5xuxwFSxqWh0xQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] In-place module initialisation
-To: Valentin Obst <kernel@valentinobst.de>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, walmeida@microsoft.com, wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 29, 2024 at 3:00=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
-de> wrote:
->
-> If I interpret the docs correctly, previous patches in the same series ar=
-e
-> only implicitly considered as prerequisites for the marked patch if they
-> are marked themselves:
->
->     "[...] you do not have to list patch1 as prerequisite of patch2
->     if you have already marked patch1 for stable inclusion."
+On 28.03.24 14:00, Wedson Almeida Filho wrote:
+> On Wed, 27 Mar 2024 at 10:53, Benno Lossin <benno.lossin@proton.me> wrote=
+:
+>> On 27.03.24 04:23, Wedson Almeida Filho wrote:
+>>> +        pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
+>>> +        try_pin_init!(Self {
+>>> +            numbers: {
+>>> +                let mut numbers =3D Vec::new();
+>>> +                numbers.push(72, GFP_KERNEL)?;
+>>> +                numbers.push(108, GFP_KERNEL)?;
+>>> +                numbers.push(200, GFP_KERNEL)?;
+>>> +                numbers
+>>> +            },
+>>> +        })
+>>
+>> I think it might be useful to also have a field that needs pin-init, eg
+>> a `Mutex` or similar. What about placing the `Vec` inside of a mutex?
+>=20
+> I'm not sure this belongs in a "minimal" example.
+>=20
+> But I added it in v2 because we're already violating minimality with
+> vectors anyway. Perhaps we should later have minimal samples and
+> rename these to something else.
 
-Right, "Cc: stable" would be needed in both 1/5 and 2/5 (but one could
-remove the "# ..." comments in that case, i.e. it seems simpler).
+I think a fully minimal example would be less valuable as a learning
+resource. We can of course have both, but I think having real usage of
+pin-init in this example can help people get familiar with it.
 
+--=20
 Cheers,
-Miguel
+Benno
+
