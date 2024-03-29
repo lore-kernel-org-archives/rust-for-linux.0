@@ -1,92 +1,99 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19EF13B79B;
-	Fri, 29 Mar 2024 19:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFEC13A271;
+	Fri, 29 Mar 2024 19:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711741755; cv=none; b=kMU8ITrzK4MP24eBHCTITbFqTysO9Cw8XF4JJF7wIfNF6YWacSM/1cSY4P9bDbs8ygfeMDN9ARkTxaUTGJgTMmjEQvgUthby1apWy3juf7sl6V/H0StOoxUJiGYlHyVU/n2GJ2padnsoLv5o5gMYIuftpb3iYowUbJEmt1GBIek=
+	t=1711741779; cv=none; b=KSPkdzTVHB6JY/NxpuwcQjRMDsu3yUJvLfmBy0cK9/TAPRIO5njYPgG8T3d1ghnGbo8K36VeMI3I743KlCJyIWxsWx6P6jSBTKzOAtDxc+JY1fOvNHLbcd3wcPqu6/+9oycsgh2kGml/FPeL3aRYntqYk+KDdRRVpRz4nKSs4Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711741755; c=relaxed/simple;
-	bh=sJ+UaoCLh7AzLciVOQ3NMwemWc0ufeeQ/hmoF9nh+m8=;
+	s=arc-20240116; t=1711741779; c=relaxed/simple;
+	bh=o5qud3mWtVnrjDckKIcSTvp7DMPARKTVibRuo3L7bxI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gA3V0B6YRS1+DwDSBef8YbIS7a8n2k/Y/vmPidkDz/ChepphggY5mPK8vQ13EkzyXKqa6V15h3IMYay/pL5tjEdDgRO6X5fy+QYvg9iPgbtKngMyipGyM6isq2MGprsHMirZIVHZ3ef/Rctxq6XvjHFDUg1GlIwHgHr42B6GmTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EqD6DUbT; arc=none smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=vAT6xi3dHxD5ZNz3fLUkkUN0NPFX7igvMiJoI03K9q31e3nZ737lJzg9r7h9yXnfRK7PclSAuIcQmCxmEqn1jqQh2qxuKUNkEf3ItE8VRhbmSWjqftx+Scn1OozQ43+G1Kh62Q/FuVKDS6QFPl70tmNBjnQ2b2Zkqe6lV9sbbDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DbwknhVb; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EqD6DUbT"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-29f69710cbbso1587763a91.1;
-        Fri, 29 Mar 2024 12:49:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DbwknhVb"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-29c7512e3b8so1814714a91.1;
+        Fri, 29 Mar 2024 12:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711741753; x=1712346553; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1711741778; x=1712346578; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sJ+UaoCLh7AzLciVOQ3NMwemWc0ufeeQ/hmoF9nh+m8=;
-        b=EqD6DUbTtry/xdO1OjL6c1VJOwQnyMnoy8kJDEwqaougn7wdtvm775I61Lh4Ue1ScQ
-         rfoJRE/H6tV4rK0wLQy0Dbh8+F+Iky9RCOCGLr8HMhpTAcweB2Oogr7P8UJlJrnzv+Lb
-         APTDMxzvV0d7IsKUo/ekE7kMAqV/HESn7GfTm0jm9ogSvx+4kc/CIHLHA9lK2Wo8KGSY
-         e6r6BEWD2he6G2vOeyxqxPjZ43OZZTZdbIYTxnAQsSJd7Y/Soe6gz7GorfKv59pZo6Zj
-         8kdk04wrP2hRATmaPBHQBPG/6IBTLVQwYl2Yk7o87jIXGPfmzA5pNESHTA0a8IxfeySb
-         p8CA==
+        bh=o5qud3mWtVnrjDckKIcSTvp7DMPARKTVibRuo3L7bxI=;
+        b=DbwknhVb3Y3oUlDmGykq02i5950MyOGyRLGxbl2d8VZlITU1Z48HV913kiPokFqJcq
+         gXzJapwBBEUsJVka1qet+uCNQ7Z6J1oEYrfW+FwefI2QyXZ5IEKHrBQEtuIxoqOGzqTZ
+         e0rWzWMaPXOJzcZClsRhRgKsHJBawYg9M5bFJ9ewbnXZ9M/LxYAuDCTj0JWQHNiiZTo2
+         SJzjS1jrpLChnN69KlTPhgiHziWPzpZTRRT3J9auCPDaJg6EnDeyKPQmomm+XJDTrK/T
+         GS++h3ZNCwhMhzCzAP/8ylKp6llBvlAd0s4QHttM4yHzMfEiP4HyPmHMhQfkQLDtYI7I
+         71hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711741753; x=1712346553;
+        d=1e100.net; s=20230601; t=1711741778; x=1712346578;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sJ+UaoCLh7AzLciVOQ3NMwemWc0ufeeQ/hmoF9nh+m8=;
-        b=ihFnJCD/chgoXCbJ/yYtg2Ecc03vmX3TcwL5xHGaYR5nMKjftFW4EgeatZKGLcWIrz
-         fy99RhnYstbpKsnN3UxghBDo1KVmlzGZTTPNTm1blagy24IiL4bmFW81zxptkWPWuLDq
-         Mtlic6qQcxfnYMLKe4/UBasQ5F0GUtqe35JSwDVIPorI1zZqJtiHsFmkGc//xdQlX7VA
-         LDuNhiFIj17pJSDO/2VTxOz77Gwal76gsmo+oa6kOWgc5ma/b7jEf/BBrceQ52MdwGiI
-         Rba6YTJMlor0UoQeCWG6uhREqm7KPZMYYh4Kv7puoZGBLlEJpEyzCp8Dns1r+7CH+he9
-         UVgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWoeF2rDh0x+8VcqvM66ZGK3on+TZ67Bvhi73r2+Bd8pXn+CEh8FPouRcZnn66cOz607q5//XM04IXIHWVEtBry+/1Ipg23j/EsPerae7hvk3iZwQtW/fOz+gth2kHapDsFqgD1dfiKHp8bNARY1NR3duowgEgyRSnQeEe5xlJ2MXdbECEl1+0ZRA=
-X-Gm-Message-State: AOJu0YwU3mBnbMDJWHNMgCmSCIySGLNnJ/5SlsO7WS0kRNLyTyQvhjBF
-	iY3aHNmh4ndsR+3dw71Le19tyc2jZBMUw6CGyD7J6WJ+l1ehJcOe+XVu4TDRxIGs5mN/biNWxDy
-	h2Ha3XT3bRxUlff1Bng2K8fdDcps=
-X-Google-Smtp-Source: AGHT+IHOS/4TcCdBp8AgH2utv2wzrfe7U/6wBTLC8E1hnxWIey6SVgZ3g1TxwoMe1ZNo2sz/IHrk/09TAhBFWFojriE=
-X-Received: by 2002:a17:90a:c391:b0:29d:fb99:7dcc with SMTP id
- h17-20020a17090ac39100b0029dfb997dccmr8838505pjt.18.1711741753063; Fri, 29
- Mar 2024 12:49:13 -0700 (PDT)
+        bh=o5qud3mWtVnrjDckKIcSTvp7DMPARKTVibRuo3L7bxI=;
+        b=CGpDh/BB+n8lrFYDqycJmV6B59vm3MSMYOe0S5412eAb0ImquRxMzo+gIawv69gq8v
+         ++3ywJNxHSdHQBx9kJzfi6JpSGUFA5fYeC9qi1zHWi8KRp6j3W4ef3LpUDmp6Mb77EnC
+         yNgbtDdeXuElM4qIFnRLq2EbCfTTH9CjqDPby/j5nSMR2u4G0JROO6I5yttAyq/GdfeS
+         E0B2Al8WX0upIPcUiLJsWDdX1X7V8SwcnO0CS/ccKV+7S7vJZWGUNBK87fwSIRQNRhvj
+         uoUdLCbQuvC58axJ9ScsaSvR4eN5pdc0XXnEdbdcxT7O9UEg66dOxBJt6aVkSO24FULC
+         cmCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC5kfGFdA2xw2tzAhjRfZgzAGmxMmkio5aALIvEhep2ouFLdj569yJoptwNBTBZzIrlKjhBvqVZNBjk5xp6VWgAImFbZjbjU9AoNHLmWUsu50i5TawGnhBeHLkZQBtjn1vkypgQaIJwk2r3dA=
+X-Gm-Message-State: AOJu0YzDSKhZmABqPN8W1dfUY8jtnmt9iRx19on6MVRzsdVQ/mAeRlMu
+	X6d7mPsvipevQZ8f3E1MQyswleQ4Ec9LGshwD9nd9RZE2aUOsTzxHmcNwS6XIbYHxyc3sUZiN21
+	eGSPWDszzwnBaIv0CBS89hKiwk9s=
+X-Google-Smtp-Source: AGHT+IFoq+BVUHSzqFryA4cVhLIETCieI3IbD9cO96joglRL4zZ7C0UiAyzLd6XtsNqtVNNOe/v1DWUBb+uzDL5RYLo=
+X-Received: by 2002:a17:90a:8b15:b0:2a0:86b6:2e9 with SMTP id
+ y21-20020a17090a8b1500b002a086b602e9mr2955844pjn.12.1711741777884; Fri, 29
+ Mar 2024 12:49:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240217002622.57322-1-ojeda@kernel.org>
-In-Reply-To: <20240217002622.57322-1-ojeda@kernel.org>
+References: <20240223163726.12397-1-dakr@redhat.com>
+In-Reply-To: <20240223163726.12397-1-dakr@redhat.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 29 Mar 2024 20:48:39 +0100
-Message-ID: <CANiq72nD4dLDRN09YC+TeFKsjF8Kmh9UyP6Za4g6RRLixjN+Kg@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: use `-Zdebuginfo-compression`
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Date: Fri, 29 Mar 2024 20:49:03 +0100
+Message-ID: <CANiq72=AVdw0gHfRug2cKfEXHnTJvU92SPt7YYZNnpBy19zvaw@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: str: add {make,to}_{upper,lower}case() to CString
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 17, 2024 at 1:26=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Fri, Feb 23, 2024 at 5:37=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
+wrote:
 >
-> Rust 1.74.0 introduced (unstable) support for the
-> `-Zdebuginfo-compression` flag, thus use it.
+> Add functions to convert a CString to upper- / lowercase, either
+> in-place or by creating a copy of the original CString.
 >
-> Link: https://github.com/rust-lang/rust/issues/120953
-> Link: https://github.com/rust-lang/rust/pull/115358
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Naming followes the one from the Rust stdlib, where functions starting
+> with 'to' create a copy and functions starting with 'make' perform an
+> in-place conversion.
+>
+> This is required by the Nova project (GSP only Rust successor of
+> Nouveau) to convert stringified enum values (representing different GPU
+> chipsets) to strings in order to generate the corresponding firmware
+> paths. See also [1].
+>
+> [1] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/to=
+pic/String.20manipulation.20in.20kernel.20Rust
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 
-[ Added note about zstd support in Rust-provided binaries. ]
+[ Reworded to fix typo and to make the link use the `Link:` tag. ]
 
-Applied to `rust-next` -- please feel free to still send reviews or
-tested-bys for this one!
+Applied to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
