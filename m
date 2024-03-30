@@ -1,41 +1,41 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2C4383A5
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 Mar 2024 11:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFCE38F84
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 Mar 2024 12:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711799934; cv=none; b=sITgGERyKASDKFLI4wz9/zTi99cuiQ13j1pPq92D1XofYUwiOn5HMFadZH9OxT1AjlZ8MeoIVWg5OJEpZXgD5f9E3iUmJwFFi/Xh20SMZ6Jee6IRWaRoZ96g5yqL/U72k7GuR5owy2Q86Sk8zJGgTOtOxgkvRH2rKwCbFvFTswg=
+	t=1711800226; cv=none; b=Pklcv+K24HkB/E2T0TSh00/xtes4vBcO3+6QZnWfhuTO336niu0RvwOCs0UkK3iE46CqoEBOCxLxpIAAneM2Mhl3i+lnNFjovfTzmXZvZ7hIjzn0k/hGdk4cdu3pFoVyg4WAn8a/IPBCnPlDqmURe5my83P3RQCSLXlo6tW3lcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711799934; c=relaxed/simple;
-	bh=kiSdp5wgahJrdAgVwOmpWR86ieCs7wkic4oDURmLcZM=;
+	s=arc-20240116; t=1711800226; c=relaxed/simple;
+	bh=+Nha7AhXlZIaPPsVuUPnRGZTRCFgib3EZhIf2wQU+fA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pmaD8SiqFuD1ksfcu+DgRaf/nxfERhgdJxdRqC+NUCXEcc33Vy4TnX4HExTLWXS67P6Y+EXNvAYM1+DeEHv6ngJf0sQ0wsZJgyyki9HMbCjain/AH8svwM6FdE7snQAMrrGonsq6e16moTtHUFLnC6HeCRg7/9HR4iphTm0TYnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nsru7nrL; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=SXS2ByPmDqV2m9zxLWcH+dbQQnvSomC4277Izdip8+j6ORlyda3KpQGvNZZVAa9ei+JCfeJwnp/YsIAN86oqS8o72d59v8xpE3U5amo5JoFtVtVKuFECnQgBa2W046KYJGMhaDOK4k14ALrgStNhCdYPnbiS4EzWkvjxKM5tAnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=f+F9bupj; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nsru7nrL"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="f+F9bupj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711799930; x=1712059130;
-	bh=u77fpTTMNz3LT1eN+TJD4Ft6+92v6mNwqOjQGXSD8MM=;
+	s=protonmail; t=1711800216; x=1712059416;
+	bh=3whj0k58pL0GaO5Dv0/Jw6FeGqHzzIhwiZFFSAfmeos=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=nsru7nrLnxNc1XHi8AxKUUmTDdAi6XJlrMNKNQLwHlXZE97IcvE+2p/84IfZsnu9b
-	 498n/qEWieuUy9NAVqnp8EvhI9F3Wkp6HG1uC4Hgyhym2ewbrUnEYlGVvANdtZRR7B
-	 80p4JVOQ3AAkig0zyYJGx8KMOQ8DSVx+62ARyscil/GkHcgnvYuO3lXEGL+UNCPjR7
-	 oQae3IoDbXnsCMt2r7XczLVC2UPrqctrj0orRRzisycqe9inEIzibkuIjnkQwevBFA
-	 +RS4p6KxweYrLY2MmB0HC4R/GYxTGVNf/vTyqzw3j7jX3F0e+l52vrvWTDgK8kmLRc
-	 eB7SikMKryy8A==
-Date: Sat, 30 Mar 2024 11:58:46 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
+	b=f+F9bupjAOinB4jRtXK5mnJLbyT1QFx1iwXvWC5hn1ubqcy0sYFh6tQ+RpcYwo+/W
+	 EFQyREP8o86fEprsNdEdxSZmyBQR+zgfN7jD/Ih8tOxnBBUUbnZyVpV1K2MpSFluHy
+	 6mJk4Nss7yYMWvUbI8NdvUpxuRJwqhQ5l42Z/N9WykoqUUW+LmA//JMcY8dB1oq8hf
+	 9qaG/tVNJsclmVs/3303RIcI71d0UO3EM+LbWQIoPH/c8+0/Rf2DkMh3QrAxSfcHm8
+	 wIKPu95RMA0oX6/PCx+MNKhseEj4cW41Wpv+0df6/J96Fdduit96Rrv81ofGInKC3I
+	 aHhvl5w0OBxGg==
+Date: Sat, 30 Mar 2024 12:03:31 +0000
+To: Laine Taffin Altman <alexanderaltman@me.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 2/5] rust: kernel: require `Send` for `Module` implementations
-Message-ID: <f0606995-18d5-4663-9882-a8349bbc1328@proton.me>
-In-Reply-To: <20240328195457.225001-3-wedsonaf@gmail.com>
-References: <20240328195457.225001-1-wedsonaf@gmail.com> <20240328195457.225001-3-wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+Message-ID: <2dd2c052-0d1f-4a77-9fff-1d6db80310e1@proton.me>
+In-Reply-To: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
+References: <20240313230713.987124-1-benno.lossin@proton.me> <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com> <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com> <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me> <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,25 +46,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 28.03.24 20:54, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
+On 21.03.24 05:53, Laine Taffin Altman wrote:
+> On Mar 19, 2024, at 3:34=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>> On 3/19/24 06:28, Laine Taffin Altman wrote:
+>>> On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng <boqun.feng@gmail.com> =
+wrote:
+>>>> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
+>>>>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
+>>>>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
+>>>>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>>>>
+>>>>>>> It is not enough for a type to be a ZST to guarantee that zeroed me=
+mory
+>>>>>>> is a valid value for it; it must also be inhabited. Creating a valu=
+e of
+>>>>>>> an uninhabited type, ZST or no, is immediate UB.
+>>>>>>> Thus remove the implementation of `Zeroable` for `Infallible`, sinc=
+e
+>>>>>>> that type is not inhabited.
+>>>>>>>
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::z=
+eroed` function")
+>>>>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+>>>>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>>>>>
+>>>>>> I think either in the commit log or in the code comment, there bette=
+r be
+>>>>>> a link or explanation on "(un)inhabited type". The rest looks good t=
+o
+>>>>>> me.
+>>>>>
+>>>>> Would the following be okay for that purpose?
+>>>>>
+>>>>> A type is inhabited if at least one valid value of that type exists; =
+a
+>>>>> type is uninhabited if no valid values of that type exist.  The terms
+>>>>> "inhabited" and "uninhabited" in this sense originate in type theory,
+>>>>> a branch of mathematics.
+>>>>>
+>>>>> In Rust, producing an invalid value of any type is immediate undefine=
+d
+>>>>> behavior (UB); this includes via zeroing memory.  Therefore, since an
+>>>>> uninhabited type has no valid values, producing any values at all for
+>>>>> it is UB.
+>>>>>
+>>>>> The Rust standard library type `core::convert::Infallible` is
+>>>>> uninhabited, by virtue of having been declared as an enum with no
+>>>>> cases, which always produces uninhabited types in Rust.  Thus, remove
+>>>>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
+>>>>> the UB.
+>>>>>
+>>>>
+>>>> Yeah, this works for me. Thanks!
+>>>
+>>> Great!  Should it be re-sent or can the new wording be incorporated upo=
+n merge?
+>>
+>> I can re-send it for you again, or do you want to send it yourself?
+>> I think it is also a good idea to add a link to [1] in the code, since
+>> the above explanation is rather long and fits better in the commit
+>> message.
+>>
 >=20
-> The thread that calls the module initialisation code when a module is
-> loaded is not guaranteed [in fact, it is unlikely] to be the same one
-> that calls the module cleanup code on module unload, therefore, `Module`
-> implementations must be `Send` to account for them moving from one
-> thread to another implicitly.
->=20
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
->   rust/kernel/lib.rs | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> I=E2=80=99ll try and do it myself; thank you for sending the first round =
+for me and illustrating procedures!  What Reviewed-By=E2=80=99s/Signed-Off-=
+By's should I retain?
 
-As already said by Valentin, this should go to the stable tree. (and
-patch 1 should also go to stable 6.8.2, since IIRC the phy-driver is in
-that tree)
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Do you still want to send it yourself? If you don't have the time, no
+problem, I can send it again.
 
 --=20
 Cheers,
