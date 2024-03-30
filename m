@@ -1,41 +1,41 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63DC1EF1E
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 Mar 2024 13:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60111EA74;
+	Sat, 30 Mar 2024 13:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711805427; cv=none; b=Sk0Ga7f1mPzYcFZA+9TBM3H8EBXsJSI/wM7xFX3TasWoS8pUH/eguT3WWO9AKxOA17Db+4etW7/0qe3gQ2nQLtP4UQ/nPi1hqO2mN41aA6qWpuBSvf0FUaP2f4UIDeyw6WeV82A2DIQ/giEAaSdXua2jUkcbZd8Ru9ZTzZsFkj4=
+	t=1711805712; cv=none; b=TunKf1+3fBL6EYFAYNZjolgG9rmUcDlE6fBbgtIfXFASNsOAU+Ycgl/s8A9GzkGUq6xYAStRqbHfc81p8AdDy4n9rUY4psNXtfm2R3ESNO9CRx+zwohEBAx9wddItP4iKZqCq9xgRx1lZSSo2JoOaL6ZJ0qRJ0foz8WWH5hpo1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711805427; c=relaxed/simple;
-	bh=GLLwLtiEelDru1aU0jJLyGv2vCHKaxAMXL3mAm4EGIc=;
+	s=arc-20240116; t=1711805712; c=relaxed/simple;
+	bh=QYb6/7sQ3bPgMY58EPb6y4dlsMY33z1x/wCF5aSqz2M=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I6JuroylYZcs/MrEjN6DbxiS09VnrkAiqoVZxe1MWAN+4iG8WGopZFpUezSRrUt5Ers8xaS0uS06wtsBQI3uJr9E7uGcrq8+R4DTOx/yAvWoVpClOwfrCXTjnQVL/BWjiz7MKqyb7ZYnr8L8YT6k5vx9qN0eLMdgvseQmf3jLMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MGxxuQcr; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=P1DA9UdkunJyZszpVO0e5sttFYdBgFFhuhrL9avM76VwhKd8uw5tqx8+oJXQ9dXwELufoO/WEp55m9J0iSh7rEIQ4TSuARVv1nmHYLm0jbhW8ESfcJ/NoIkZJQMa/N+6u7NSi2cNyQ+XMt5ubBhWqhKUrMBtspdJ9wfXMkCcPLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TWLcUnn4; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MGxxuQcr"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TWLcUnn4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711805423; x=1712064623;
-	bh=+HEtdPx7OqmXqU11OfG7F3JXZQBoM0zTuzWJZUMp+2c=;
+	s=protonmail; t=1711805708; x=1712064908;
+	bh=qijb/PtssBKhbeYXFRSbFkJKp9EFEcX+rCDOKjXfYYQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=MGxxuQcr8IDcwNs75Wb20ZUSh4dEwScMcwvr4+oBW1H1aF5OYZpns20LEjjMbfUUo
-	 /IT0ZWxhu9Nv1SUShOWgh+grbfEGPGbvwKvHOmLL71f62SaLJ/5mysAiuIV+2BvmOX
-	 AzeIjxotNW4ObdrOKteOPCuFNjbY56gKSk+L5V8xArLG5eSiuXEjtRbKna5cM4X39N
-	 inXZ7IBj99QAHRpqMFis5Tb7m+Zu6mjbzRuqO+tQkYYYufj5ueytc1AxZ15WdJnxCG
-	 CF77vZ4UCUnvY0n9fSQfx8hiU8IDKszenaXJybL4ypGaToUSirluVSTqWADeUTqSss
-	 MCXgjZvF426EA==
-Date: Sat, 30 Mar 2024 13:30:17 +0000
+	b=TWLcUnn4mXryIbdSIVepkWPLIHpkLvguRNx42gykn6NrTrJTUEtBl1ivYFCYXUVlm
+	 JCu3nCpyheZr037QaGoaaQlfYKoG5g8II0ShJMFm8IOYrMwEEaF2GCLz0+npGEOrPO
+	 6St1RsoFwqusft2iLmGyCAjS4iCzHO2qJ8TCMrBCAOWrKpR24Ga5d4ZeLC7O/IQumW
+	 jIFV12U86VfvOd3pcRQG9UqYOxxqcmmmsUo2dNlgZ5DH+0h4k6OqVmzOdGlGyMWIGP
+	 1dUn6KjW6tXdsHLWHhmib11hbyKQyHGrRwbc269t3lpsii1G2Jt5MaRw3xMzBD/Yy8
+	 uKorhl27B5Bvw==
+Date: Sat, 30 Mar 2024 13:35:04 +0000
 To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v3 07/10] rust: alloc: update `VecExt` to take allocation flags
-Message-ID: <59c5bda5-6116-42f1-bf8e-47eba02e2ecb@proton.me>
-In-Reply-To: <20240328013603.206764-8-wedsonaf@gmail.com>
-References: <20240328013603.206764-1-wedsonaf@gmail.com> <20240328013603.206764-8-wedsonaf@gmail.com>
+Subject: Re: [PATCH v3 06/10] rust: alloc: introduce the `BoxExt` trait
+Message-ID: <6a684f4d-6f95-4c52-b515-73c832f050a8@proton.me>
+In-Reply-To: <20240328013603.206764-7-wedsonaf@gmail.com>
+References: <20240328013603.206764-1-wedsonaf@gmail.com> <20240328013603.206764-7-wedsonaf@gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,67 +46,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 28.03.24 02:36, Wedson Almeida Filho wrote:
+On 28.03.24 02:35, Wedson Almeida Filho wrote:
 > From: Wedson Almeida Filho <walmeida@microsoft.com>
 >=20
-> We also rename the methods by removing the `try_` prefix since the names
-> are available due to our usage of the `no_global_oom_handling` config
-> when building the `alloc` crate.
+> Make fallible versions of `new` and `new_uninit` methods available in
+> `Box` even though it doesn't implement them because we build `alloc`
+> with the `no_global_oom_handling` config.
 >=20
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> They also have an extra `flags` parameter that allows callers to pass
+> flags to the allocator.
+>=20
 > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > ---
->   rust/kernel/alloc/vec_ext.rs | 158 +++++++++++++++++++++++++++++++----
->   rust/kernel/error.rs         |  11 +--
->   rust/kernel/lib.rs           |   1 -
->   rust/kernel/str.rs           |   6 +-
->   rust/kernel/types.rs         |   4 +-
->   samples/rust/rust_minimal.rs |   6 +-
->   6 files changed, 152 insertions(+), 34 deletions(-)
+>   rust/kernel/alloc.rs           |  1 +
+>   rust/kernel/alloc/allocator.rs |  2 +-
+>   rust/kernel/alloc/box_ext.rs   | 60 ++++++++++++++++++++++++++++++++++
+>   rust/kernel/init.rs            | 13 ++++----
+>   rust/kernel/prelude.rs         |  2 +-
+>   rust/kernel/sync/arc.rs        |  3 +-
+>   6 files changed, 72 insertions(+), 9 deletions(-)
+>   create mode 100644 rust/kernel/alloc/box_ext.rs
+
+With Boqun's suggestion (feel free to take your variant):
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 [...]
 
->   impl<T> VecExt<T> for Vec<T> {
-> -    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveErro=
+> +impl<T> BoxExt<T> for Box<T> {
+> +    fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
+> +        let mut b =3D <Self as BoxExt<_>>::new_uninit(flags)?;
+> +        b.write(x);
+> +        // SAFETY: The contents were just initialised in the line above.
+> +        Ok(unsafe { b.assume_init() })
+> +    }
+> +
+> +    #[cfg(any(test, testlib))]
+> +    fn new_uninit(_flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocErr=
+or> {
+> +        Ok(Box::new_uninit())
+> +    }
+> +
+> +    #[cfg(not(any(test, testlib)))]
+> +    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocErro=
 r> {
-> +    fn with_capacity(capacity: usize, flags: Flags) -> Result<Self, Allo=
-cError> {
->           let mut v =3D Vec::new();
-> -        v.try_reserve(capacity)?;
-> +        <Self as VecExt<_>>::reserve(&mut v, capacity, flags)?;
->           Ok(v)
->       }
->=20
-> -    fn try_push(&mut self, v: T) -> Result<(), TryReserveError> {
-> -        if let Err(retry) =3D self.push_within_capacity(v) {
-> -            self.try_reserve(1)?;
-> -            let _ =3D self.push_within_capacity(retry);
-> -        }
-> +    fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
-> +        <Self as VecExt<_>>::reserve(self, 1, flags)?;
-> +        let s =3D self.spare_capacity_mut();
-> +        s[0].write(v);
+> +        let ptr =3D if core::mem::size_of::<MaybeUninit<T>>() =3D=3D 0 {
+> +            core::ptr::NonNull::<_>::dangling().as_ptr()
+> +        } else {
+> +            let layout =3D core::alloc::Layout::new::<MaybeUninit<T>>();
+> +
+> +            // SAFETY: Memory is being allocated (first arg is null). Th=
+e only other source of
+> +            // safety issues is sleeping on atomic context, which is add=
+ressed by klint. Lastly,
+> +            // the type is not a SZT (checked above).
+> +            let ptr =3D
+> +                unsafe { super::allocator::krealloc_aligned(core::ptr::n=
+ull_mut(), layout, flags) };
 
-I haven't checked the codegen, but this could result in an additional
-bound check. We don't need to care about this now, but at some point we
-should do a performance test. There are probably other things that I
-have missed.
+Personally, I would rather import `krealloc_aligned` and not have this
+weird formatting here.
 
 --=20
 Cheers,
 Benno
 
+> +            if ptr.is_null() {
+> +                return Err(AllocError);
+> +            }
 > +
-> +        // SAFETY: We just initialised the first spare entry, so it is s=
-afe to increase the length
-> +        // by 1. We also know that the new length is <=3D capacity becau=
-se of the previous call to
-> +        // `reserve` above.
-> +        unsafe { self.set_len(self.len() + 1) };
->           Ok(())
->       }
+> +            ptr.cast::<MaybeUninit<T>>()
+> +        };
+> +
+> +        // SAFETY: For non-zero-sized types, we allocate above using the=
+ global allocator. For
+> +        // zero-sized types, we use `NonNull::dangling`.
+> +        Ok(unsafe { Box::from_raw(ptr) })
+> +    }
+> +}
 
 [...]
 
