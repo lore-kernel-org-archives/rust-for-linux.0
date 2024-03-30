@@ -1,182 +1,66 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1797A10FF;
-	Sat, 30 Mar 2024 00:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918C42F50;
+	Sat, 30 Mar 2024 11:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711760244; cv=none; b=O5kU+feZBxygalS3Sqh6O/WnPhREh3u+GRICaAHFft1Yk+Zx6aTz6K6dI7Zn/Zp5hduMjjcREcZQbeL0WEubPctDOe9S6hN6m+TFBrX6/6eNfxHpOj8yiT7zeqhq+tLLcYqBeG5BrpjJUfct1lupNreErIsaFbDASEU5ThpNKPM=
+	t=1711799226; cv=none; b=n/rIOVhgJLGCOU+uKl8GR5zTC7jtmzO0yLgV9QP1dX23rgCVEU3GGDugSJt7KSjBF/ORzxrG1cXhzHu7iDglTlCXbk9OA/LGqgPyt/mk9E9XyEJgbz7ntBaS9TC/ub9VPI3QtFglDfAQwfQkxYb0xc5aeDSQn53Eca8XUPBuaII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711760244; c=relaxed/simple;
-	bh=Ue1JJLziHW6spZxizNt7JKufb2uby2ccMf7PhyOksXU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RR4lVR37R0YagzA9bvuH/KSAZvEzJ9QAM93Z2mYkfD7TbpkbRYiKAtrSgX/ELfChQoolMlQspsZCtc7RpIvpDpwKPMuj4MRBy/8dom2Zip8a+jn7DBGYYxf3pQZ+oJm7X6kcCbmnOkhckfAreaBOlKdCC1Nrg4dpiJPna4kpmso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IHPN2oAn; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711799226; c=relaxed/simple;
+	bh=y/B/agylf7uKuHNUXIfChqUGT1PsxhcFxHiHH2DMQ6w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mYXXByTxrtb735jBIlGQ2TnNevtxVOu/v1F+DQfTjOqYK5L2T9mgr2MJebA2N+sC+7s8RUfzuiA0GK09idDtkwGxvWPiXO2JOFMOWVeihmRYM5mUx/WOxPdBDLQV7Ynbol3VKD5lDhpOPKfnK4JiBtVWTtem8YlN1UzN5RbrRi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DNsvOk2y; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IHPN2oAn"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-61431e25ca5so16131107b3.2;
-        Fri, 29 Mar 2024 17:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711760242; x=1712365042; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VTC9H20T6m7/ByIM+hnHVqtIqVtNwducSugduOzTMqo=;
-        b=IHPN2oAnMESFFzyXj1mfKCQskxDf/dEVrxh9ZD29DTQz2aOOVNw1j6kJU0w6U3jRAc
-         +h4pwF//pP1goI+1ltLZY0lduumdDeX39ZI8YCnXxgo5BEM5r6X2cXjSYNQuX+JTEQQE
-         n44yipg9v9BTuhq21qb0Q1P7ItLf3t6H3mQJzNQYkdrcF4Qsh+plcKMz8JVuJ8lTb3mP
-         cE/6vMylwI0StKeAm/5Mr212THxqcgewUkcK8pS4I0E4oklWXjF9zzAkRdw4eTfyGIEV
-         9W21oLIBUR9HsJQXGblt/vfoBM8XHP3oWAerRIE8rz9/gpEStzuce34SMxlMq2Y7CytM
-         AmaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711760242; x=1712365042;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VTC9H20T6m7/ByIM+hnHVqtIqVtNwducSugduOzTMqo=;
-        b=I1CRYkXd4qdooIjsWZsqGZNGW7yaDr8bsmXA9tx+dv0x/JRPOPEHcQLBhhkFzMXsyJ
-         IxieCjseCqux4/UP9ReVV9whbFdqwRMRCzIPU3sUtqvzR9Pq5sMrzdod8x3VCem9MJlA
-         g8InH4e9jXP/r6SHL0P8UxZWhVL3nE0DH0iB/yoL0OXAPp0Zt6qsV4PWIzMKji5pmAOn
-         1TEG1e3ehpOP5RhcitDf9BPazzCzx7BQQWrSozvBdffqMVAvhe5MmRR6Xh6BfsyAd/aS
-         R8UlU+MVMNSnu8vq+ac/p+UXmzrDLh/1op8uPB2ysDVXkawfb8O+ehpvHRzn+F/MBIkT
-         Gldw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTKodN9GMhJgfqQwnYqEfjHp6a00IrGY9kC0A2CxRhymc3RtrZ1ma4S3t0e7ipQj6mhryXYgF+zB4E6pUCNzgq5UFDQiyiJ8snOytg
-X-Gm-Message-State: AOJu0Yz1hfvmFWHOIcAU6y+kGiwg7QjRK3ic0tOteWP+UEW1hSv81oB5
-	k9NKgGSio4IOhFLsA/js1iqnNezwZ5JRCSNiT4AenneV5lzM5iXhYIoAGXt7dnIFtcBHGM2YiiF
-	X3lTk4C3HLTWHFOS0dwq6E+6wsZY=
-X-Google-Smtp-Source: AGHT+IFvskvkmWg0t6vLWiiUqTjEUt/wjG55TxzlHdMnjnVdCnoIaR0Df1RuPSFpSzlPDGGo8+iHyuLGTxLfEBkzH9g=
-X-Received: by 2002:a81:7707:0:b0:611:2960:e52b with SMTP id
- s7-20020a817707000000b006112960e52bmr4158666ywc.47.1711760242057; Fri, 29 Mar
- 2024 17:57:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DNsvOk2y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711799215; x=1712058415;
+	bh=rpsvE8XzySfyk6QioK7wTnO1zZ8SiQXa/D4WkxJ5LOg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=DNsvOk2ypHUl3qn6QD+NPb/+O6tyNEoiKc/BpGoLb4lNfbMH4i0ysbCIz3TntDX5S
+	 ZJtLPqRQh5m4YUJzFTW5XtovWcays5cjmZTkXicDSYNGcET6rbDRhDK3GVeTJIbOqs
+	 /ZQd2MMaNqL7QieLvs/Y6GUq7hTXxxrlcHysoO1AgZRCreurY/1hhTyuYSGFfaRufa
+	 +ZPA5WcO0f9zIQpXTq2Hzk+kfPLlYEt+1rDCku6c+ETSQLBXeo0k2tuPC+Uyk6WTr1
+	 Ie0meO2G2SNGktJPc2xvs67+02K19Y6cnGXkK3HXbT32Ru8vltltKxQxxRFWkc4elN
+	 9uXy44k7sz2Jg==
+Date: Sat, 30 Mar 2024 11:46:52 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v2 3/5] rust: module: prefix all module paths with `::`
+Message-ID: <54bc76b0-8391-4723-9477-f74c4185492c@proton.me>
+In-Reply-To: <20240328195457.225001-4-wedsonaf@gmail.com>
+References: <20240328195457.225001-1-wedsonaf@gmail.com> <20240328195457.225001-4-wedsonaf@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328013603.206764-1-wedsonaf@gmail.com> <20240328013603.206764-7-wedsonaf@gmail.com>
- <ZgcBdlELp_5Stdxl@boqun-archlinux>
-In-Reply-To: <ZgcBdlELp_5Stdxl@boqun-archlinux>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Fri, 29 Mar 2024 21:57:11 -0300
-Message-ID: <CANeycqqKiOXTLoSo5YwL9Qbybdm66uOQ9YeM5exeqTX2PhAUEA@mail.gmail.com>
-Subject: Re: [PATCH v3 06/10] rust: alloc: introduce the `BoxExt` trait
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 29 Mar 2024 at 15:00, Boqun Feng <boqun.feng@gmail.com> wrote:
->
-> On Wed, Mar 27, 2024 at 10:35:59PM -0300, Wedson Almeida Filho wrote:
-> > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> >
-> > Make fallible versions of `new` and `new_uninit` methods available in
-> > `Box` even though it doesn't implement them because we build `alloc`
-> > with the `no_global_oom_handling` config.
-> >
-> > They also have an extra `flags` parameter that allows callers to pass
-> > flags to the allocator.
-> >
-> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
->
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->
-> A small nit below..
->
-> > ---
-> >  rust/kernel/alloc.rs           |  1 +
-> >  rust/kernel/alloc/allocator.rs |  2 +-
-> >  rust/kernel/alloc/box_ext.rs   | 60 ++++++++++++++++++++++++++++++++++
-> >  rust/kernel/init.rs            | 13 ++++----
-> >  rust/kernel/prelude.rs         |  2 +-
-> >  rust/kernel/sync/arc.rs        |  3 +-
-> >  6 files changed, 72 insertions(+), 9 deletions(-)
-> >  create mode 100644 rust/kernel/alloc/box_ext.rs
-> >
-> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> > index fd5541991a22..9bc1b48b5641 100644
-> > --- a/rust/kernel/alloc.rs
-> > +++ b/rust/kernel/alloc.rs
-> > @@ -5,6 +5,7 @@
-> >  #[cfg(not(test))]
-> >  #[cfg(not(testlib))]
-> >  mod allocator;
-> > +pub mod box_ext;
-> >  pub mod vec_ext;
-> >
-> >  /// Flags to be used when allocating memory.
-> > diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> > index 8cc7099d6ae1..ff88bce04fd4 100644
-> > --- a/rust/kernel/alloc/allocator.rs
-> > +++ b/rust/kernel/alloc/allocator.rs
-> > @@ -16,7 +16,7 @@
-> >  ///
-> >  /// - `ptr` can be either null or a pointer which has been allocated by this allocator.
-> >  /// - `new_layout` must have a non-zero size.
-> > -unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: Flags) -> *mut u8 {
-> > +pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: Flags) -> *mut u8 {
-> >      // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
-> >      let layout = new_layout.pad_to_align();
-> >
-> > diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-> > new file mode 100644
-> > index 000000000000..c62db0aa4dd1
-> > --- /dev/null
-> > +++ b/rust/kernel/alloc/box_ext.rs
-> > @@ -0,0 +1,60 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Extensions to [`Box`] for fallible allocations.
-> > +
-> > +use super::Flags;
-> > +use alloc::boxed::Box;
-> > +use core::alloc::AllocError;
-> > +use core::mem::MaybeUninit;
-> > +use core::result::Result;
-> > +
-> > +/// Extensions to [`Box`].
-> > +pub trait BoxExt<T>: Sized {
-> > +    /// Allocates a new box.
-> > +    ///
-> > +    /// The allocation may fail, in which case an error is returned.
-> > +    fn new(x: T, flags: Flags) -> Result<Self, AllocError>;
-> > +
-> > +    /// Allocates a new uninitialised box.
-> > +    ///
-> > +    /// The allocation may fail, in which case an error is returned.
-> > +    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
-> > +}
-> > +
-> > +impl<T> BoxExt<T> for Box<T> {
-> > +    fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
-> > +        let mut b = <Self as BoxExt<_>>::new_uninit(flags)?;
-> > +        b.write(x);
-> > +        // SAFETY: The contents were just initialised in the line above.
-> > +        Ok(unsafe { b.assume_init() })
->
-> , since we have the new_uninit feature selected, we can actually do
->
->         fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
->             <Self as BoxExt<_>>::new_uninit(flags).map(|b| Box::write(b, x))
->         }
+On 28.03.24 20:54, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>=20
+> This prevents the macro-generated code from accidentally referring to
+> the wrong symbol if the caller's code happens to have submodules called
+> `core` or `kernel`.
+>=20
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> ---
+>   rust/macros/module.rs | 20 ++++++++++----------
+>   1 file changed, 10 insertions(+), 10 deletions(-)
 
-Oh, this avoids an unsafe block, I like it. Though I think I'm going
-to do a slightly different version:
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-    let b = <Self as BoxExt<_>>::new_uninit(flags)?;
-    Ok(Box::write(b, x))
+--=20
+Cheers,
+Benno
 
-> here.
->
-> Regards,
-> Boqun
->
-> > +    }
-> > +
-> [...]
