@@ -1,41 +1,41 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFCE38F84
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 Mar 2024 12:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63DC1EF1E
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 Mar 2024 13:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711800226; cv=none; b=Pklcv+K24HkB/E2T0TSh00/xtes4vBcO3+6QZnWfhuTO336niu0RvwOCs0UkK3iE46CqoEBOCxLxpIAAneM2Mhl3i+lnNFjovfTzmXZvZ7hIjzn0k/hGdk4cdu3pFoVyg4WAn8a/IPBCnPlDqmURe5my83P3RQCSLXlo6tW3lcI=
+	t=1711805427; cv=none; b=Sk0Ga7f1mPzYcFZA+9TBM3H8EBXsJSI/wM7xFX3TasWoS8pUH/eguT3WWO9AKxOA17Db+4etW7/0qe3gQ2nQLtP4UQ/nPi1hqO2mN41aA6qWpuBSvf0FUaP2f4UIDeyw6WeV82A2DIQ/giEAaSdXua2jUkcbZd8Ru9ZTzZsFkj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711800226; c=relaxed/simple;
-	bh=+Nha7AhXlZIaPPsVuUPnRGZTRCFgib3EZhIf2wQU+fA=;
+	s=arc-20240116; t=1711805427; c=relaxed/simple;
+	bh=GLLwLtiEelDru1aU0jJLyGv2vCHKaxAMXL3mAm4EGIc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SXS2ByPmDqV2m9zxLWcH+dbQQnvSomC4277Izdip8+j6ORlyda3KpQGvNZZVAa9ei+JCfeJwnp/YsIAN86oqS8o72d59v8xpE3U5amo5JoFtVtVKuFECnQgBa2W046KYJGMhaDOK4k14ALrgStNhCdYPnbiS4EzWkvjxKM5tAnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=f+F9bupj; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=I6JuroylYZcs/MrEjN6DbxiS09VnrkAiqoVZxe1MWAN+4iG8WGopZFpUezSRrUt5Ers8xaS0uS06wtsBQI3uJr9E7uGcrq8+R4DTOx/yAvWoVpClOwfrCXTjnQVL/BWjiz7MKqyb7ZYnr8L8YT6k5vx9qN0eLMdgvseQmf3jLMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MGxxuQcr; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="f+F9bupj"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MGxxuQcr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711800216; x=1712059416;
-	bh=3whj0k58pL0GaO5Dv0/Jw6FeGqHzzIhwiZFFSAfmeos=;
+	s=protonmail; t=1711805423; x=1712064623;
+	bh=+HEtdPx7OqmXqU11OfG7F3JXZQBoM0zTuzWJZUMp+2c=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=f+F9bupjAOinB4jRtXK5mnJLbyT1QFx1iwXvWC5hn1ubqcy0sYFh6tQ+RpcYwo+/W
-	 EFQyREP8o86fEprsNdEdxSZmyBQR+zgfN7jD/Ih8tOxnBBUUbnZyVpV1K2MpSFluHy
-	 6mJk4Nss7yYMWvUbI8NdvUpxuRJwqhQ5l42Z/N9WykoqUUW+LmA//JMcY8dB1oq8hf
-	 9qaG/tVNJsclmVs/3303RIcI71d0UO3EM+LbWQIoPH/c8+0/Rf2DkMh3QrAxSfcHm8
-	 wIKPu95RMA0oX6/PCx+MNKhseEj4cW41Wpv+0df6/J96Fdduit96Rrv81ofGInKC3I
-	 aHhvl5w0OBxGg==
-Date: Sat, 30 Mar 2024 12:03:31 +0000
-To: Laine Taffin Altman <alexanderaltman@me.com>
+	b=MGxxuQcr8IDcwNs75Wb20ZUSh4dEwScMcwvr4+oBW1H1aF5OYZpns20LEjjMbfUUo
+	 /IT0ZWxhu9Nv1SUShOWgh+grbfEGPGbvwKvHOmLL71f62SaLJ/5mysAiuIV+2BvmOX
+	 AzeIjxotNW4ObdrOKteOPCuFNjbY56gKSk+L5V8xArLG5eSiuXEjtRbKna5cM4X39N
+	 inXZ7IBj99QAHRpqMFis5Tb7m+Zu6mjbzRuqO+tQkYYYufj5ueytc1AxZ15WdJnxCG
+	 CF77vZ4UCUnvY0n9fSQfx8hiU8IDKszenaXJybL4ypGaToUSirluVSTqWADeUTqSss
+	 MCXgjZvF426EA==
+Date: Sat, 30 Mar 2024 13:30:17 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
-Message-ID: <2dd2c052-0d1f-4a77-9fff-1d6db80310e1@proton.me>
-In-Reply-To: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
-References: <20240313230713.987124-1-benno.lossin@proton.me> <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com> <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com> <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me> <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v3 07/10] rust: alloc: update `VecExt` to take allocation flags
+Message-ID: <59c5bda5-6116-42f1-bf8e-47eba02e2ecb@proton.me>
+In-Reply-To: <20240328013603.206764-8-wedsonaf@gmail.com>
+References: <20240328013603.206764-1-wedsonaf@gmail.com> <20240328013603.206764-8-wedsonaf@gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,80 +46,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 21.03.24 05:53, Laine Taffin Altman wrote:
-> On Mar 19, 2024, at 3:34=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me=
-> wrote:
->> On 3/19/24 06:28, Laine Taffin Altman wrote:
->>> On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng <boqun.feng@gmail.com> =
-wrote:
->>>> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
->>>>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
->>>>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
->>>>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
->>>>>>>
->>>>>>> It is not enough for a type to be a ZST to guarantee that zeroed me=
-mory
->>>>>>> is a valid value for it; it must also be inhabited. Creating a valu=
-e of
->>>>>>> an uninhabited type, ZST or no, is immediate UB.
->>>>>>> Thus remove the implementation of `Zeroable` for `Infallible`, sinc=
-e
->>>>>>> that type is not inhabited.
->>>>>>>
->>>>>>> Cc: stable@vger.kernel.org
->>>>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::z=
-eroed` function")
->>>>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
->>>>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
->>>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>>>>>
->>>>>> I think either in the commit log or in the code comment, there bette=
-r be
->>>>>> a link or explanation on "(un)inhabited type". The rest looks good t=
-o
->>>>>> me.
->>>>>
->>>>> Would the following be okay for that purpose?
->>>>>
->>>>> A type is inhabited if at least one valid value of that type exists; =
-a
->>>>> type is uninhabited if no valid values of that type exist.  The terms
->>>>> "inhabited" and "uninhabited" in this sense originate in type theory,
->>>>> a branch of mathematics.
->>>>>
->>>>> In Rust, producing an invalid value of any type is immediate undefine=
-d
->>>>> behavior (UB); this includes via zeroing memory.  Therefore, since an
->>>>> uninhabited type has no valid values, producing any values at all for
->>>>> it is UB.
->>>>>
->>>>> The Rust standard library type `core::convert::Infallible` is
->>>>> uninhabited, by virtue of having been declared as an enum with no
->>>>> cases, which always produces uninhabited types in Rust.  Thus, remove
->>>>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
->>>>> the UB.
->>>>>
->>>>
->>>> Yeah, this works for me. Thanks!
->>>
->>> Great!  Should it be re-sent or can the new wording be incorporated upo=
-n merge?
->>
->> I can re-send it for you again, or do you want to send it yourself?
->> I think it is also a good idea to add a link to [1] in the code, since
->> the above explanation is rather long and fits better in the commit
->> message.
->>
+On 28.03.24 02:36, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
 >=20
-> I=E2=80=99ll try and do it myself; thank you for sending the first round =
-for me and illustrating procedures!  What Reviewed-By=E2=80=99s/Signed-Off-=
-By's should I retain?
+> We also rename the methods by removing the `try_` prefix since the names
+> are available due to our usage of the `no_global_oom_handling` config
+> when building the `alloc` crate.
+>=20
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> ---
+>   rust/kernel/alloc/vec_ext.rs | 158 +++++++++++++++++++++++++++++++----
+>   rust/kernel/error.rs         |  11 +--
+>   rust/kernel/lib.rs           |   1 -
+>   rust/kernel/str.rs           |   6 +-
+>   rust/kernel/types.rs         |   4 +-
+>   samples/rust/rust_minimal.rs |   6 +-
+>   6 files changed, 152 insertions(+), 34 deletions(-)
 
-Do you still want to send it yourself? If you don't have the time, no
-problem, I can send it again.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+[...]
+
+>   impl<T> VecExt<T> for Vec<T> {
+> -    fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveErro=
+r> {
+> +    fn with_capacity(capacity: usize, flags: Flags) -> Result<Self, Allo=
+cError> {
+>           let mut v =3D Vec::new();
+> -        v.try_reserve(capacity)?;
+> +        <Self as VecExt<_>>::reserve(&mut v, capacity, flags)?;
+>           Ok(v)
+>       }
+>=20
+> -    fn try_push(&mut self, v: T) -> Result<(), TryReserveError> {
+> -        if let Err(retry) =3D self.push_within_capacity(v) {
+> -            self.try_reserve(1)?;
+> -            let _ =3D self.push_within_capacity(retry);
+> -        }
+> +    fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+> +        <Self as VecExt<_>>::reserve(self, 1, flags)?;
+> +        let s =3D self.spare_capacity_mut();
+> +        s[0].write(v);
+
+I haven't checked the codegen, but this could result in an additional
+bound check. We don't need to care about this now, but at some point we
+should do a performance test. There are probably other things that I
+have missed.
 
 --=20
 Cheers,
 Benno
+
+> +
+> +        // SAFETY: We just initialised the first spare entry, so it is s=
+afe to increase the length
+> +        // by 1. We also know that the new length is <=3D capacity becau=
+se of the previous call to
+> +        // `reserve` above.
+> +        unsafe { self.set_len(self.len() + 1) };
+>           Ok(())
+>       }
+
+[...]
 
