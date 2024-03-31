@@ -1,303 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D551C0DD3;
-	Sun, 31 Mar 2024 12:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BD914534E
+	for <rust-for-linux@vger.kernel.org>; Sun, 31 Mar 2024 19:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711889745; cv=none; b=puC2cPP+miNnFoBneQkZgBB99B6fWvzqJhf/n8RBGib+DETaO75ch04yh2NYaO4ooJTmhbFD5PeXfxviWunEZz7OA09kI6A2IQRDjGWSsesmXoHMyK7GEim+hanBRJC0Q1spOHOmF4LpkVgW8d3VrTBu3NM1hswjJkuQlAQe0Ik=
+	t=1711912650; cv=none; b=I2iMD273xrUE82cT6snx+Cff9evBwWYJxf829Tp/grkCpemcY8Aqiw63EQWIbQb+5pk5bpLuasevGrRwcM5izFrEanb3srzGwai34RsoKYncccnSv0EThFTecF8uB/wfEQBMPrxtICv2j7vFND0lFjgBVmRDS6dL4RfQSi/X/ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711889745; c=relaxed/simple;
-	bh=8nhBa9A6E7OCBceKD5lGdt//TuWHKMwSZP1rusZVNGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C+5MjYykpr0L0nzy9bWpra6GJGptBcgO1YAk+IMS0GPaCTyDx22qI6SQRr1w6Szy9hhpZNHEhGCXhCs/N/J4q13hFKGOADEcTbisDeypByiNv7m7NXXsPH90bleBmQlL0nVTAVfW6pCGJHsqVxkD1O31Kff/oXv9UjWZNuFLfS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JIZqx5Ie; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711912650; c=relaxed/simple;
+	bh=SYmvik/fqHvEzHm6pvkK7TqfWET1zzN3no8PyXvMmc8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qAkqiYxJWFOVItxZfsYylVHqOVxg9qsbzUwSWYnfGGtNijPV8zGaNLSahOb5o3eJS/6vIwUpEb5v7SsqoVinbCNzuVbJHuyWKGwSo/YdKRQnE6r8pj6ye7VI/wasndLFkXXv/vjEqmdQ1PaBIE539kpZiANhiXp5FsayVl3KEaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Wv9jGN/a; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JIZqx5Ie"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1DBC433F1;
-	Sun, 31 Mar 2024 12:55:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711889745;
-	bh=8nhBa9A6E7OCBceKD5lGdt//TuWHKMwSZP1rusZVNGw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JIZqx5IeHFq/LF+LOnbGEorwt2qCR42M543FksbPJaB68hgfYHdX3rqm+fRFQabiT
-	 y37CrAJ9idUub/lXCH8yZQ7CGRZ4z587xCuS3KxgEwSI27Z0TsFHSOjfzNmF8mqR+k
-	 nVc32Mi2AJFiLos2AoyMKJkq6NpmxXkcrG07KnNubkbfzRBUqmK/UFSf0b56YEBX8S
-	 wqO8GLu+hAdO/a+GS5MwGT+8MtrAncaCH+uO9anTgzeNS5DaPXLCinpwtLio9H9gfA
-	 UxyoPhUbTl/dFXpAjQjw+zLBAAduMO/U1FBVVCO3Vu1SuJwJTIMfW2eFjKmXbuyBn2
-	 SY+d7eMLpUwwg==
-Date: Sun, 31 Mar 2024 14:55:13 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, arve@android.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, maco@android.com, ojeda@kernel.org, 
-	peterz@infradead.org, rust-for-linux@vger.kernel.org, surenb@google.com, 
-	tglx@linutronix.de, tkjos@android.com, tmgross@umich.edu, viro@zeniv.linux.org.uk, 
-	wedsonaf@gmail.com, willy@infradead.org, yakoyoku@gmail.com
-Subject: Re: [PATCH v5 3/9] rust: file: add Rust abstraction for `struct file`
-Message-ID: <20240331-kellner-ausrufen-5b6c191fba35@brauner>
-References: <20240320-wegziehen-teilhaben-86e071fa163c@brauner>
- <20240320180905.3858535-1-aliceryhl@google.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Wv9jGN/a"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d718ee7344so29168671fa.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 31 Mar 2024 12:17:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711912646; x=1712517446; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mJ/Wgmylc8R9Vu7/stPvLAUd76qAZ8Jvq0rKjpMVKY8=;
+        b=Wv9jGN/aABCZG1zMEfAT6e6l4zIhTNApnMLcJzXT6RO3q38Jm6DB7chGkRQ4rPOhiQ
+         6bkzyiU/C4Y4tILZFlm6/OF2TRaOt/Q4nrgQIFGw5O5fZZKQ2bnjFnuIojLEaT/+RTj8
+         qpXA3SeFKoUpy+JKHsMI1Kg/Vx0xyeMMq1Z1ZzI32t8IY+KDBEaLUIoDovttmjdMqWRc
+         rb99SWkOWoutRXu51wd0ql/Uo6ePcr8egRs6j/fKmoceSLFKLW2YCnMtrWzSMx9f2oiV
+         8REvl9mAC4CSO7QhxTNTtL5wDWOgcLbzENiUlTePnolSuPEKu31LSeh2PQPLCIO/04Za
+         Nqdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711912646; x=1712517446;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mJ/Wgmylc8R9Vu7/stPvLAUd76qAZ8Jvq0rKjpMVKY8=;
+        b=vKF2GwAfsi18H1nN2rrv5fNcnpkKy20QPbprgSBdumyvGzK9OwivF4DO2mWEMJ8c2H
+         TkiE011+izsJkI6VUaHtVQGBScAbfb0LTzk3dF+RC4RubfXlwbdsrO4sMtNkP4qvHVzM
+         lBmOuP+gfIaEvsPgaSz6E7prKQyEjlpZjVJRRh4MdF8h9oeuJAtb4x6ZHwZ4FReY+wnX
+         TSEHltviLylUVw3soS4l+FidOUteCbH8wTXixg5w1Xwd2sKq9OjsNnus0JmdLd9XLcOp
+         6DF0FiBrrme0asfu4Tkd1HbTVuPaR5qzxq8WAu7/0Gzi5sfoRR4b1daF9jSGttQwk464
+         xBeg==
+X-Forwarded-Encrypted: i=1; AJvYcCVz7kxV39AhHfcYHcJaSPpAIJy+2mENFNFdizEZWUyNdK9Ap3li4n9mDe19qhYnFQNxA9l8DHZvqfnHS5zlTSDz7LfG5wvyuHyALWw9koU=
+X-Gm-Message-State: AOJu0Yys05vOm2S4m+stUJm3T38DfcmwU0UPYg8Nyvp+HsHzrgwAfjGW
+	UpI978HD7K3PVPz+uWSF2UwM3722f19T+2JsM5a2/USyML2VZwggQAm7B1TQyeazp5ej40NuKj7
+	cKJW1Jq3NpiBWgcY41ovaVH63gsuKg1pf30TUzg==
+X-Google-Smtp-Source: AGHT+IHpOYLCBQZmMac/uuUyrUixnaKLgKA0eykw1mNyLzYNq/N1jRkXAkWnDujHj4Yyh3oFmyzXRYGwcKcWRj2UlbQ=
+X-Received: by 2002:a05:651c:198c:b0:2d8:15b1:7256 with SMTP id
+ bx12-20020a05651c198c00b002d815b17256mr1067114ljb.4.1711912646151; Sun, 31
+ Mar 2024 12:17:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240320180905.3858535-1-aliceryhl@google.com>
+References: <20240325174924.95899-1-dakr@redhat.com> <20240325174924.95899-5-dakr@redhat.com>
+ <2024032530-fester-dedicator-a8a9@gregkh> <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
+ <2024032601-deceased-premiere-1c02@gregkh> <CAMwc25omcj6_OKdcBkke5yzC2M5oNO=E3EG4aezNfEMRAp9Wvg@mail.gmail.com>
+ <2024032606-dutiful-tusk-5da3@gregkh> <CAMwc25ozHGVS5jE3QnDx7EgryL+=dCdUbm6PNBcsy5P8CtX8Lg@mail.gmail.com>
+In-Reply-To: <CAMwc25ozHGVS5jE3QnDx7EgryL+=dCdUbm6PNBcsy5P8CtX8Lg@mail.gmail.com>
+From: Fabien Parent <fabien.parent@linaro.org>
+Date: Sun, 31 Mar 2024 12:17:15 -0700
+Message-ID: <CAPFo5VLoYGq_OgC5dqcueTyymuSCsLpjasLZnKO1jpY6gV7s2g@mail.gmail.com>
+Subject: Re: [PATCH 4/8] rust: add driver abstraction
+To: David Airlie <airlied@redhat.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	lyude@redhat.com, pstanner@redhat.com, ajanulgu@redhat.com, 
+	Asahi Lina <lina@asahilina.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 20, 2024 at 06:09:05PM +0000, Alice Ryhl wrote:
-> Christian Brauner <brauner@kernel.org> wrote:
-> > On Fri, Feb 09, 2024 at 11:18:16AM +0000, Alice Ryhl wrote:
-> >> From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> >> 
-> >> This abstraction makes it possible to manipulate the open files for a
-> >> process. The new `File` struct wraps the C `struct file`. When accessing
-> >> it using the smart pointer `ARef<File>`, the pointer will own a
-> >> reference count to the file. When accessing it as `&File`, then the
-> >> reference does not own a refcount, but the borrow checker will ensure
-> >> that the reference count does not hit zero while the `&File` is live.
-> >> 
-> >> Since this is intended to manipulate the open files of a process, we
-> >> introduce an `fget` constructor that corresponds to the C `fget`
-> >> method. In future patches, it will become possible to create a new fd in
-> >> a process and bind it to a `File`. Rust Binder will use these to send
-> >> fds from one process to another.
-> >> 
-> >> We also provide a method for accessing the file's flags. Rust Binder
-> >> will use this to access the flags of the Binder fd to check whether the
-> >> non-blocking flag is set, which affects what the Binder ioctl does.
-> >> 
-> >> This introduces a struct for the EBADF error type, rather than just
-> >> using the Error type directly. This has two advantages:
-> >> * `File::from_fd` returns a `Result<ARef<File>, BadFdError>`, which the
-> > 
-> > Sorry, where's that method?
-> 
-> Sorry, this is supposed to say `File::fget`.
-> 
-> >> +/// Wraps the kernel's `struct file`.
-> >> +///
-> >> +/// This represents an open file rather than a file on a filesystem. Processes generally reference
-> >> +/// open files using file descriptors. However, file descriptors are not the same as files. A file
-> >> +/// descriptor is just an integer that corresponds to a file, and a single file may be referenced
-> >> +/// by multiple file descriptors.
-> >> +///
-> >> +/// # Refcounting
-> >> +///
-> >> +/// Instances of this type are reference-counted. The reference count is incremented by the
-> >> +/// `fget`/`get_file` functions and decremented by `fput`. The Rust type `ARef<File>` represents a
-> >> +/// pointer that owns a reference count on the file.
-> >> +///
-> >> +/// Whenever a process opens a file descriptor (fd), it stores a pointer to the file in its `struct
-> >> +/// files_struct`. This pointer owns a reference count to the file, ensuring the file isn't
-> >> +/// prematurely deleted while the file descriptor is open. In Rust terminology, the pointers in
-> >> +/// `struct files_struct` are `ARef<File>` pointers.
-> >> +///
-> >> +/// ## Light refcounts
-> >> +///
-> >> +/// Whenever a process has an fd to a file, it may use something called a "light refcount" as a
-> >> +/// performance optimization. Light refcounts are acquired by calling `fdget` and released with
-> >> +/// `fdput`. The idea behind light refcounts is that if the fd is not closed between the calls to
-> >> +/// `fdget` and `fdput`, then the refcount cannot hit zero during that time, as the `struct
-> >> +/// files_struct` holds a reference until the fd is closed. This means that it's safe to access the
-> >> +/// file even if `fdget` does not increment the refcount.
-> >> +///
-> >> +/// The requirement that the fd is not closed during a light refcount applies globally across all
-> >> +/// threads - not just on the thread using the light refcount. For this reason, light refcounts are
-> >> +/// only used when the `struct files_struct` is not shared with other threads, since this ensures
-> >> +/// that other unrelated threads cannot suddenly start using the fd and close it. Therefore,
-> >> +/// calling `fdget` on a shared `struct files_struct` creates a normal refcount instead of a light
-> >> +/// refcount.
-> > 
-> > When the fdget() calling task doesn't have a shared file descriptor
-> > table fdget() will not increment the reference count, yes. This
-> > also implies that you cannot have task A use fdget() and then pass
-> > f.file to task B that holds on to it while A returns to userspace. It's
-> > irrelevant that task A won't drop the reference count or that task B
-> > won't drop the reference count. Because task A could return back to
-> > userspace and immediately close the fd via a regular close() system call
-> > at which point task B has a UAF. In other words a file that has been
-> > gotten via fdget() can't be Send to another task without the Send
-> > implying taking a reference to it.
-> 
-> That matches my understanding.
-> 
-> I suppose that technically you can still send it to another thread *if* you
-> ensure that the current thread waits until that other thread stops using the
-> file before returning to userspace.
+[re-sending as plain text instead of HTML]
 
-_Technically_ yes, but it would be brittle as hell. The problem is that
-fdget() _relies_ on being single-threaded for the time that fd is used
-until fdput(). There's locking assumptions that build on that e.g., for
-concurrent read/write. So no, that shouldn't be allowed.
+On Mon, Mar 25, 2024 at 11:35=E2=80=AFPM David Airlie <airlied@redhat.com> =
+wrote:
+> > I don't mind 50 patch long series, those are fine as we can see how
+> > things are actually used.
+> >
+> > But for complex beasts like DRM drivers, perhaps people should stop and
+> > implement the tiny "easy" things first, with working users, to verify
+> > that it is all ok first before biting off the big ones.
+> >
+> > Like implement a "simple" bus, which means that you have to have the
+> > driver core bindings all working properly and correctly.  Once that is
+> > done and merged then move to the next thing (i.e. a more complex bus
+> > like PCI or USB or platform).
+>
+> This is just reintroducing the chicken/egg problem. Implementing a
+> "simple" bus usually means implementing a "simple" driver for that
+> bus. Implementing a simple driver for that bus often means
+> reimplementing an existing driver that is already in the tree. The
+> "simple" bus driver gets pushed back on because it's duplicating
+> functionality that is already in the tree and nobody reviews anything
+> and we re-enter the deadlock cycle. We are actively trying to break
+> the cycle and get stuff upstream so this can be properly explored
+> rather than 20 independent trees carrying out of date patchsets to get
+> anywhere.
 
-Look at how this broke our back when we introduced pidfd_getfd() where
-we steal an fd from another task. I have a lengthy explanation how that
-can be used to violate our elided-locking which is based on assuming
-that we're always single-threaded and the file can't be suddenly shared
-with another task. So maybe doable but it would make the semantics even
-more intricate.
+ I've been working on a new driver [0] (not a reimplementation of an
+existing one) that uses I2C. I2C is a "simple bus" and the amount of
+commits is quite reasonable, maybe this would fit better as a consumer
+of the device driver abstractions for upstreaming purposes?
+The work is happening here [1] and is fully functional. Right now the
+branch is not based on this series but based on the device
+abstractions from the old `rust` branch + a few others picked-up from
+the `asahi` tree and the mailing list.
 
-> >> +///
-> >> +/// Light reference counts must be released with `fdput` before the system call returns to
-> >> +/// userspace. This means that if you wait until the current system call returns to userspace, then
-> >> +/// all light refcounts that existed at the time have gone away.
-> >> +///
-> >> +/// ## Rust references
-> >> +///
-> >> +/// The reference type `&File` is similar to light refcounts:
-> >> +///
-> >> +/// * `&File` references don't own a reference count. They can only exist as long as the reference
-> >> +///   count stays positive, and can only be created when there is some mechanism in place to ensure
-> >> +///   this.
-> >> +///
-> >> +/// * The Rust borrow-checker normally ensures this by enforcing that the `ARef<File>` from which
-> >> +///   a `&File` is created outlives the `&File`.
-> > 
-> > The section confuses me a little: Does the borrow-checker always ensure
-> > that a &File stays valid or are there circumstances where it doesn't or
-> > are you saying it doesn't enforce it?
-> 
-> The borrow-checker always ensures it.
+[0] https://github.com/Fabo/linux/commit/64a35401316aa9d77490eadb7c4bb731c7=
+901f69
+[1] https://github.com/Fabo/linux/commits/fparent/rust-ncv6336/
 
-Ok, thanks.
-
-> 
-> A &File is actually short-hand for &'a File, where 'a is some
-> unspecified lifetime. We say that &'a File is annotated with 'a. The
-> borrow-checker rejects any code that tries to use a reference after the
-> end of the lifetime annotated on it.
-
-Thanks for the explanation.
-
-> 
-> So as long as you annotate the reference with a sufficiently short
-> lifetime, the borrow checker will prevent UAF. And outside of cases like
-
-Sorry, but can you explain "sufficiently short lifetime"?
-
-> from_ptr, the borrow-checker also takes care of ensuring that the
-> lifetimes are sufficiently short.
-> 
-> (Technically &'a File and &'b File are two completely different types,
-> so &File is technically a class of types and not a single type. Rust
-> will automatically convert &'long File to &'short File.)
-> 
-> >> +///
-> >> +/// * Using the unsafe [`File::from_ptr`] means that it is up to the caller to ensure that the
-> >> +///   `&File` only exists while the reference count is positive.
-> > 
-> > What is this used for in binder? If it's not used don't add it.
-> 
-> This is used on the boundary between the Rust part of Binder and the
-> binderfs component that is implemented in C. For example:
-
-I see, I'm being foiled by my own code...
-
-> 
-> 	unsafe extern "C" fn rust_binder_open(
-> 	    inode: *mut bindings::inode,
-> 	    file_ptr: *mut bindings::file,
-> 	) -> core::ffi::c_int {
-> 	    // SAFETY: The `rust_binderfs.c` file ensures that `i_private` is set to the return value of a
-> 	    // successful call to `rust_binder_new_device`.
-> 	    let ctx = unsafe { Arc::<Context>::borrow((*inode).i_private) };
-> 	
-> 	    // SAFETY: The caller provides a valid file pointer to a new `struct file`.
-> 	    let file = unsafe { File::from_ptr(file_ptr) };
-
-We need a better name for this helper than from_ptr() imho. I think
-from_ptr() and as_ptr() is odd for C. How weird would it be to call
-that from_raw_file() and as_raw_file()?
-
-But bigger picture I somewhat struggle with the semantics of this
-because this is not an interface that we have in C and this is really
-about a low-level contract between C and Rust. Specifically this states
-that this pointer is _somehow_ guaranteed valid. And really, this seems
-a bit of a hack.
-
-Naively, I think this should probably not be necessary if
-file_operations are properly wrapped. Or it should at least be demotable
-to a purely internal method that can't be called directly or something.
-
-So what I mean is. fdget() may or may not take a reference. The C
-interface internally knows whether a reference is owned or not by
-abusing the lower two bits in a pointer to keep track of that. Naively,
-I would expect the same information to be available to rust so that it's
-clear to Rust wheter it's dealing with an explicitly referenced file or
-an elided-reference file. Maybe that's not possible and I'm not
-well-versed enough to see that yet.
-
-> 	    let process = match Process::open(ctx, file) {
-> 	        Ok(process) => process,
-> 	        Err(err) => return err.to_errno(),
-> 	    };
-> 	    // SAFETY: This file is associated with Rust binder, so we own the `private_data` field.
-> 	    unsafe {
-> 	        (*file_ptr).private_data = process.into_foreign().cast_mut();
-> 	    }
-> 	    0
-> 	}
-> 
-> Here, rust_binder_open is the open function in a struct file_operations
-> vtable. In this case, file_ptr is guaranteed by the caller to be valid
-
-Where's the code that wraps struct file_operations?
-
-> for the duration of the call to rust_binder_open. Binder uses from_ptr
-> to get a &File from the raw pointer.
-> 
-> As far as I understand, the caller of rust_binder_open uses fdget to
-> ensure that file_ptr is valid for the duration of the call, but the Rust
-> code doesn't assume that it does this with fdget. As long as file_ptr is
-> valid for the duration of the rust_binder_open call, this use of
-> from_ptr is okay. It will continue to work even if the caller is changed
-> to use fget.
-
-Ok.
-
-> 
-> As for how this code ensures that `file` ends up annotated with a
-> sufficiently short lifetime, well, that has to do with the signature of
-> Process::open. Here it is:
-> 
-> 	impl Process {
-> 	    pub(crate) fn open(ctx: ArcBorrow<'_, Context>, file: &File) -> Result<Arc<Process>> {
-> 	        Self::new(ctx.into(), ARef::from(file.cred()))
-> 	    }
-> 	}
-> 
-> In this case, &File is used without specifying a lifetime. It's a
-> function argument, so this means that the lifetime annotated on the
-> `file` argument will be exactly the duration in which Process::open is
-> called. So any attempt to use `file` after the end of the call to
-> Process::open will be rejected by the borrow-checker. (E.g., if
-> Process::open tried to schedule something on the workqueue using `file`,
-> then that would not compile. Storing it in a global variable would not
-> compile either.)
-> 
-> This means that the borrow-checker will not catch mistakes in
-> rust_binder_open, but it *will* catch mistakes in Process::open, and
-> anything called by Process::open.
-> 
-> These examples come from patch 2 of the Binder RFC:
-> https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-08ba9197f637@google.com/
-> 
-> >> +///
-> >> +/// * You can think of `fdget` as using an fd to look up an `ARef<File>` in the `struct
-> > 
-> > Could you explain why there isn't an explicit fdget() then and you have
-> > that from_ptr() method?
-> 
-> I don't provide an fdget implementation because Binder never calls it.
-> However, if you would like, I would be happy to add one to the patchset.
-> 
-> As for from_ptr, see above.
-> 
-> Alice
+Fabien
