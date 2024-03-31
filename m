@@ -1,52 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A3777620;
-	Sun, 31 Mar 2024 10:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7681276048
+	for <rust-for-linux@vger.kernel.org>; Sun, 31 Mar 2024 10:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711880838; cv=none; b=N5Z1ojrJ+gJwyhtuVo4RN++hBunKXxFl7NkHOX4UoAPx5Mr3CTSj8r2oF0a+a/1CPJ45S4hDJDYBL8kPkLPSIka4BwnCMQzq9upfqmbd2RPR7Th9DLW+bfAtzrhII9WES6tzGwlvfE5kIo4AJufoe9nbYZ7rP7yyIVWc9YzMmus=
+	t=1711880867; cv=none; b=Zj/iNTpLSoy2DzSn2KtjierRkW5JJD40o97IDVINOGsLoTeGQTkNmL3/NC73EZAHa2SJEK8JI/m2U/VgzALRiZoeTX21jajD60kxaVVf2q1EFYH2jAMZqPmYhHq/UGQdityqES5LnR0DHgD924A2lniaEKh05NRMS/7UZxPPVWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711880838; c=relaxed/simple;
-	bh=lOXebHqDjv7+CsO26vpn2Z87+IhF/5Rp8Ms/Vf7+noY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sPf5/ZbTMf4pi6RtvKWIMpP5NUktd9VkZ91XHZ7QfoiYjMYnFKlAuvhyWwTMx9wGQybr9eKyp36h5NfF2afu/RF0ajgWgI1lY+PN8Uq//KC3KByKwwEekiDqxw6BXprHlyVK7d8njUdNslMv0+XcVQlIiFUkKQYseQjL3FdkTzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cWgBL+qV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711880867; c=relaxed/simple;
+	bh=L/10QJEhsAIm7eEgjRvTrgcoaqTTGRJhJ9WBna1Dhzo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rMwb1CY+AWHvrImKXySrvBUzbl4x3N37Fvj7CxvYSp0N55neeRC+ontkwkK94nps9yu5NsRTidkADFHVDV8LaqKn8lplj6CiZMBAPq74420QxjBltt9nR3EO3v9/iwzarVgtKfqPLBcgQub1XRjVRvy+MCiQbsvANTralGgI884=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=drQZw0N5; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cWgBL+qV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4850C433F1;
-	Sun, 31 Mar 2024 10:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711880838;
-	bh=lOXebHqDjv7+CsO26vpn2Z87+IhF/5Rp8Ms/Vf7+noY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cWgBL+qVQcrZeY6hz1o+C2TbEb+6Hg0Z73F8wCc1FVQbReyqTrOn52MBHUiJ+YGW8
-	 fiHAKoBr9bMy6TP8GsJHgEu16UrRg4nN3KSL9d7i7OIA5rmKGyBMh5Fk7eS8wYpQdH
-	 wldMkmULHBt82g5hAtstNxJ4kD2B4lLq/z4h1fIYZVZPBQ2N0rJlJ//TdyXxW+TYNg
-	 aoQwbozm9kqGr55IcKOQjsA9RGvzaZNF0I366fmhV5fiv+yKHv/q+toxmuDCIlrgJV
-	 4ZVEwHpwcWI2MsUqRTxV8WA/xn05bgdOyKNZ6h5XMCJwdRKU7DLqGGa7MsQKGbxWYN
-	 kQT7G+HhW4bFA==
-Date: Sun, 31 Mar 2024 12:26:44 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v5 8/9] rust: file: add `DeferredFdCloser`
-Message-ID: <20240331-waran-geldregen-aa3d299c6680@brauner>
-References: <20240209-alice-file-v5-0-a37886783025@google.com>
- <20240209-alice-file-v5-8-a37886783025@google.com>
- <20240320-massieren-lackschaden-9b30825babec@brauner>
- <CAH5fLgjeet1nhycCqdaKE9CSY02XW85jn302zNEjJNQaJ1czGQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="drQZw0N5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711880862; x=1712140062;
+	bh=xXth9F6mwWUjnYOxzF4GaPch1yXF0oNpcQcxRS44w7o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=drQZw0N5x+P/gZGHHE0jckPV6Ol7xxWmHl241EVA4RqoHZXHzth9hx7sTbBfj4Ju1
+	 8pOT0V6UUng3HHCl7BXMkwBefdE3p8A/5KDazXZB07HfNMOQJtA+CDLBT6q/zlyqOt
+	 /N2Co0gmGH0WsdP77w9XkNIlQTOPOsjnNsx4MuhJpR0K+5mbXgvpAKHXxcDbYbmwAm
+	 jsDoIUaQNFhBKSZfJJ91qnu+ru1ZKdsBBKwQ3KEFporLzFDvJM32o4+gO3LRHTzsUu
+	 J5wCxK4v9QdcIiN1vliExlJWEdNH2R9RHfQdUESW7DNEOCuecKuDvDljcJvdy9OS0B
+	 uuclS0MVnsaPA==
+Date: Sun, 31 Mar 2024 10:27:37 +0000
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Finn Behrens <me@kloenk.dev>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Daniel Xu <dxu@dxuuu.xyz>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: macros: fix soundness issue in `module!` macro
+Message-ID: <d41d123e-d682-4685-88f5-e45567cc1975@proton.me>
+In-Reply-To: <CANeycqp0o-HKBx6nuGCy9DD6mAwoGWzTR6bm5ceajsUhKcZuQg@mail.gmail.com>
+References: <20240327160346.22442-1-benno.lossin@proton.me> <CANeycqp0o-HKBx6nuGCy9DD6mAwoGWzTR6bm5ceajsUhKcZuQg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,82 +44,138 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjeet1nhycCqdaKE9CSY02XW85jn302zNEjJNQaJ1czGQ@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 21, 2024 at 02:28:15PM +0100, Alice Ryhl wrote:
-> On Wed, Mar 20, 2024 at 3:22 PM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > On Fri, Feb 09, 2024 at 11:18:21AM +0000, Alice Ryhl wrote:
-> > >
-> > > +/// Helper used for closing file descriptors in a way that is safe even if the file is currently
-> > > +/// held using `fdget`.
-> > > +///
-> > > +/// Additional motivation can be found in commit 80cd795630d6 ("binder: fix use-after-free due to
-> > > +/// ksys_close() during fdget()") and in the comments on `binder_do_fd_close`.
-> > > +pub struct DeferredFdCloser {
-> > > +    inner: Box<DeferredFdCloserInner>,
-> > > +}
-> > > +
-> > > +/// SAFETY: This just holds an allocation with no real content, so there's no safety issue with
-> > > +/// moving it across threads.
-> > > +unsafe impl Send for DeferredFdCloser {}
-> > > +unsafe impl Sync for DeferredFdCloser {}
-> > > +
-> > > +/// # Invariants
-> > > +///
-> > > +/// If the `file` pointer is non-null, then it points at a `struct file` and owns a refcount to
-> > > +/// that file.
-> > > +#[repr(C)]
-> > > +struct DeferredFdCloserInner {
-> > > +    twork: mem::MaybeUninit<bindings::callback_head>,
-> > > +    file: *mut bindings::file,
-> > > +}
-> > > +
-> > > +impl DeferredFdCloser {
-> >
-> > So the explicitly deferred close is due to how binder works so it's not
-> > much of a general purpose interface as I don't recall having other
-> > codepaths with similar problems. So this should live in the binder
-> > specific rust code imo.
-> 
-> Hmm. Are there really no other ioctls that call ksys_close on a
-> user-provided fd?
+On 31.03.24 03:00, Wedson Almeida Filho wrote:
+> On Wed, 27 Mar 2024 at 13:04, Benno Lossin <benno.lossin@proton.me> wrote=
+:
+>> +                    #[cfg(not(MODULE))]
+>> +                    #[doc(hidden)]
+>> +                    #[no_mangle]
+>> +                    pub extern \"C\" fn __{name}_exit() {{
+>> +                        __exit()
 
-No, I don't think there are otherwise they would have the same bug that
-binder had. io_uring comes closest but they have their own task work
-and deferred close implementation.
+I just noticed this should be wrapped in an `unsafe` block with a SAFETY
+comment. Will fix this in v2.
 
-> 
-> As far as I can tell, this kind of deferred API is the only way for us
-> to provide a fully safe Rust api for closing an fd. Directly calling
-> ksys_close must unsafely assert that the fd does not have an active
-> fdget call. So it makes sense to me as an API that others might want
-> to use.
+>> +                    }}
+>>
+>> -            #[cfg(not(MODULE))]
+>> -            #[doc(hidden)]
+>> -            #[no_mangle]
+>> -            pub extern \"C\" fn __{name}_exit() {{
+>> -                __exit()
+>> -            }}
+>> +                    /// # Safety
+>> +                    ///
+>> +                    /// This function must
+>> +                    /// - only be called once,
+>> +                    /// - not be called concurrently with `__exit`.
+>=20
+> I don't think the second item is needed here, it really is a
+> requirement on `__exit`.
 
-I'm sorry, I don't quite understand you here.
+Fixed.
 
-What binder is doing iirc is that it's performing an ioctl() using a fd
-to /dev/binderfs/$device-node or similar. The fatal flaw is that binder
-now allows that fd to be closed during that ioctl - and by accident at
-that. It's effectively closing a file it's relying on to not go away.
-That's the original nonsense/creativity that necessitates this whole
-manual task work shenanigans binder is doing. Unless I misremember.
+>=20
+>> +                    unsafe fn __init() -> core::ffi::c_int {{
+>> +                        match <{type_} as kernel::Module>::init(&THIS_M=
+ODULE) {{
+>> +                            Ok(m) =3D> {{
+>> +                                // SAFETY:
+>> +                                // no data race, since `__MOD` can only=
+ be accessed by this module and
+>> +                                // there only `__init` and `__exit` acc=
+ess it. These functions are only
+>> +                                // called once and `__exit` cannot be c=
+alled before or during `__init`.
+>> +                                unsafe {{
+>> +                                    __MOD =3D Some(m);
+>> +                                }}
+>> +                                return 0;
+>> +                            }}
+>> +                            Err(e) =3D> {{
+>> +                                return e.to_errno();
+>> +                            }}
+>> +                        }}
+>> +                    }}
+>>
+>> -            fn __init() -> core::ffi::c_int {{
+>> -                match <{type_} as kernel::Module>::init(&THIS_MODULE) {=
+{
+>> -                    Ok(m) =3D> {{
+>> +                    /// # Safety
+>> +                    ///
+>> +                    /// This function must
+>> +                    /// - only be called once,
+>> +                    /// - be called after `__init`,
+>> +                    /// - not be called concurrently with `__init`.
+>=20
+> The second item is incomplete: it must be called after `__init` *succeeds=
+*.
 
-But that's really frowned upon generally and absolutely not encouraged
-by providing a generic interface for this stuff.
+Indeed.
 
-Sure, we have some users in the kernel that do stuff like call
-close_fd() on a file descriptor they just installed into their file
-descriptor table. That's usually bad design with maybe a few valid
-exceptions. One example where that's still done and should be fixed is
-e.g., cachefiles in fs/cachefiles/ondemand.c. The point is that they at
-least close a file descriptor that they just installed and that they
-don't rely on being valid.
+>=20
+> With that added (which is a different precondition), I think the third
+> item can be dropped because if you have to wait to see whether
+> `__init` succeeded or failed before you can call `__exit`, then
+> certainly you cannot call it concurrently with `__init`.
 
-So really, I need more details why without this interface it would
-prevent Rust from implementing safe file descriptor closing because
-right now all I see is a design flaw in binder being promoted to a
-generic interface. And unless there's detailed reasons for it's
-existence we're not going to do it.
+I would love to drop that requirement, but I am not sure we can. With
+that requirement, I wanted to ensure that no data race on `__MOD` can
+happen. If you need to verify that `__init` succeeded, one might think
+that it is not possible to call `__exit` such that a data race occurs,
+but I think it could theoretically be done if the concrete `Module`
+implementation never failed.
+
+Do you have any suggestion for what I could add to the "be called after
+`__init` was called and returned `0`" requirement to make a data race
+impossible?
+
+--=20
+Cheers,
+Benno
+
+>=20
+>> +                    unsafe fn __exit() {{
+>> +                        // SAFETY:
+>> +                        // no data race, since `__MOD` can only be acce=
+ssed by this module and there
+>> +                        // only `__init` and `__exit` access it. These =
+functions are only called once
+>> +                        // and `__init` was already called.
+>>                           unsafe {{
+>> -                            __MOD =3D Some(m);
+>> +                            // Invokes `drop()` on `__MOD`, which shoul=
+d be used for cleanup.
+>> +                            __MOD =3D None;
+>>                           }}
+>> -                        return 0;
+>>                       }}
+>> -                    Err(e) =3D> {{
+>> -                        return e.to_errno();
+>> -                    }}
+>> -                }}
+>> -            }}
+>>
+>> -            fn __exit() {{
+>> -                unsafe {{
+>> -                    // Invokes `drop()` on `__MOD`, which should be use=
+d for cleanup.
+>> -                    __MOD =3D None;
+>> +                    {modinfo}
+>>                   }}
+>>               }}
+>> -
+>> -            {modinfo}
+>>           ",
+>>           type_ =3D info.type_,
+>>           name =3D info.name,
+>>
+>> base-commit: 4cece764965020c22cff7665b18a012006359095
+>> --
+>> 2.44.0
+>>
+>>
+
