@@ -1,110 +1,134 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E7554FA3;
-	Mon,  1 Apr 2024 21:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826DB53814;
+	Mon,  1 Apr 2024 22:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712008369; cv=none; b=ZxpzSGcaQAmDTRToHuYlXqB7srPSAvqF5vAgveVGyIaYEkRLwZVSY8OkXy76R3ojivWxbHqYwmbkVx9zyv2oDtWbiVgz5dPRpX9d7Mbs/W/ONR33euiaUaZ6oqyARqZA5xnidbOPpC+zL6LwqwsttCnN0Ww8aYpmLJ/9+6DjYSc=
+	t=1712008905; cv=none; b=SOlbILNcCq2KoA3bOhVodJ67+RevGaXJjF61gjHAupte/cFGtdOQ6pRAngyL0hYhaqPSzdh/8p7Hll1Su+o4mWVKMN5QqUO3lRcSyZ0JhRKEXjoG28bPGqUSZA4SAl/ZTgmHSw8Ybk+xLQ91ucdoqMJ3MntUa8MiCvDi9wZkaRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712008369; c=relaxed/simple;
-	bh=+mUgi1Gjenu9kWJsbSxl2FyKXeH8k9dLSGa1afErYxo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BW1kzW8DPYtFhbrC655tLvuE+oCu8743oBTTycOIpNZQ2DqaOr/y3Pv8znQWHqgEv5zbhP7rmE18pN2fXwnbYOs0RnLeLP8/VBHLaloCNSydeWWkxNPWqtbZzOPgAROlupb0NxV9CgAT6HhdzIPXs83SYT98gaiu/wPBc7aET9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GK6ivugc; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712008905; c=relaxed/simple;
+	bh=8vXG12fvbvKQwoT6Od/Q4JR+28AixGCeVdIJLD1KP1w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CnWBz9InjrAqKKuzER46085Jofh7fgDLUaIximNCtw6S4di/W2soflUtCOpP9ooHhlX+cXiEtQeN/KLYCPJ4SCpHpQ0DO+dYSsXSrsFfFuub3ZTqMh91jj0nQhmWL4Sx5iLYSwrp4CIQfGg79CsyEgOwcX7hwoSzOB7NtXyRbMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=M7YwW7N2; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GK6ivugc"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5d8b887bb0cso3651867a12.2;
-        Mon, 01 Apr 2024 14:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712008367; x=1712613167; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+mUgi1Gjenu9kWJsbSxl2FyKXeH8k9dLSGa1afErYxo=;
-        b=GK6ivugcMlPSfINxF+nT8KVqqbQIqxkiB0t8EmdL+HVS6Pd4x39gJF8DdyKx//kswj
-         2R6jRYvxQhSZmvp9XwagCbxIVTPKHvGAPU3d9ZjllvuDyAj9WjL2UfhpQVFTyaL6O7lF
-         4PZiZIiV5SufhrGQyLbIGZ0lFQrt8RKUZti+e+du4ev1qsN95vRRgCyBwjPxYr5smFvd
-         c0FCKOFeiuZYoEH91XHacX8HhKydbrPnWC8xIsK2KGwbORxky/i7GpMMwjlvxyjuacVP
-         Lgq/vsP5xNoN42HVQn5dI1ctrD6H4S7VU0hSBYWPkSj6Y6RhM+0hJszAk4vSQOJo47ea
-         I54g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712008367; x=1712613167;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+mUgi1Gjenu9kWJsbSxl2FyKXeH8k9dLSGa1afErYxo=;
-        b=t3rgUcQ9lpBZj4vzbEtBcl6vHyavb1mEB3mNu43HPcppIL+jYDI5juuPvDx+YFfjTA
-         aSK+XXHZ2BdJWLsuh4RSTsYcAgRSMI6qdD806bcpYOpUzntT+CEarX/OB8xwuVP6RrfR
-         YZyZlfnRWEpoi++Mvrhq2xbRDw/56sZ5y1lU6Jsz7nKDwhthG6XB0tAHaRpSt94i/rzo
-         QWc3JqvV5EfnZ3MJ+apS+bcOg5zdwr/l6B0flS3dJHbjikje2tD+BMAbwrPtiXWonPDt
-         5iLFqXtHjfFZDx9SG6kHHRoDrz0Z/BggyrB7FyP1I5bEC2m8c4YMjy5mc7uBYCN1hGin
-         lloA==
-X-Forwarded-Encrypted: i=1; AJvYcCX200X7X2JQ1aXCbZfPyz5rV813qjA22vC760Oet3VJOb370lBmSZK1CehEfYyuDOvFZL+D27K0cIkSPhI+0FdaLfH9u69R+Ax/Umd+AkNh7Eo3BajE2sRZVH0kJcYbgVu6J/m2c3MJaWdKQMs=
-X-Gm-Message-State: AOJu0YxOKMJRLNKhaejbbiQbTpvlp90rUZZz1NcOOtBr/xJXWB+RhrPq
-	D2F0pfztPfNPrW+TdOtFRyWYX/j6ngGJxRhVi1Q8xsBEBvF2pMP1arBJ0hnxRypZPpTVNPatUfA
-	VeiAzgpnqK5Gq5PSaW3a5CIxkBxA=
-X-Google-Smtp-Source: AGHT+IHOVFFEVYukvj+UTvjExqrrX2EQj/VredfPX+lNRU5rsGxijk8SP8Fgw/EP+hDBGh6McIwYX9ZAn7gfBXG04q0=
-X-Received: by 2002:a17:90a:62c4:b0:2a0:6649:7582 with SMTP id
- k4-20020a17090a62c400b002a066497582mr9131491pjs.46.1712008366778; Mon, 01 Apr
- 2024 14:52:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="M7YwW7N2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712008900; x=1712268100;
+	bh=fCpVJzb7a5fIyG0vdKN2cT5x5fpMk91PsLEh8JmpbLk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=M7YwW7N28CQzWE9px+Kgd3YIaME7NuyGoF1F8TB02+f1Af+USlw6cSS05RpVDQkj6
+	 s4J2RyFiB+pT0oxidrm/nWU86iAdpH29HpIh2zI2ope2A8YzoO0dKn/bYKQsRtgv/b
+	 PgNHc6yUa8p5Jv5lSEZSZDU+X/qePqd29rUzD6GUagvfuDjit/hyU+ykRTxyCiKNzv
+	 02d2xc95SJaWdINMESiQr0OVUKa7U1sPwz15W2yKbkZFY2E+K8Oxnc8I1O5CMTlIxU
+	 nm2nOCHIBulBZfe5V4RF2AZPnKXA7yjvG+GJls8txJZKqCB9YHNlgBQgNPsGoZoe/9
+	 eGwde2q/a/7Fg==
+Date: Mon, 01 Apr 2024 22:01:34 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
+Message-ID: <20fcbbd0-4a7a-49b1-a383-f8b388153066@proton.me>
+In-Reply-To: <Zgsiumknfshjbi9J@boqun-archlinux>
+References: <20240401185222.12015-1-benno.lossin@proton.me> <Zgsiumknfshjbi9J@boqun-archlinux>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240401212303.537355-1-ojeda@kernel.org> <20240401212303.537355-4-ojeda@kernel.org>
-In-Reply-To: <20240401212303.537355-4-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 1 Apr 2024 23:52:11 +0200
-Message-ID: <CANiq72=FM2+VWs1sJTc3i2u4Y4P-DBR8o_h4Gd7MYXfxULjR-A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: upgrade to Rust 1.78.0
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 1, 2024 at 11:23=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> It also means that, ignoring non-language/library features, we are
-> currently left with just the few language features needed to implement th=
-e
-> kernel `Arc`, the `new_uninit` library feature, the `compiler_builtins`
-> marker and the few `no_*` `cfg`s we pass when compiling `core`/`alloc`.
+On 01.04.24 23:10, Boqun Feng wrote:
+> On Mon, Apr 01, 2024 at 06:52:50PM +0000, Benno Lossin wrote:
+> [...]
+>> +            // Double nested modules, since then nobody can access the =
+public items inside.
+>> +            mod __module_init {{
+>> +                mod __module_init {{
+>> +                    use super::super::{type_};
+>> +
+>> +                    /// The \"Rust loadable module\" mark.
+>> +                    //
+>> +                    // This may be best done another way later on, e.g.=
+ as a new modinfo
+>> +                    // key or a new section. For the moment, keep it si=
+mple.
+>> +                    #[cfg(MODULE)]
+>> +                    #[doc(hidden)]
+>> +                    #[used]
+>> +                    static __IS_RUST_MODULE: () =3D ();
+>> +
+>> +                    static mut __MOD: Option<{type_}> =3D None;
+>> +
+>> +                    // SAFETY: `__this_module` is constructed by the ke=
+rnel at load time and will not be
+>> +                    // freed until the module is unloaded.
+>> +                    #[cfg(MODULE)]
+>> +                    static THIS_MODULE: kernel::ThisModule =3D unsafe {=
+{
+>> +                        kernel::ThisModule::from_ptr(&kernel::bindings:=
+:__this_module as *const _ as *mut _)
+>=20
+> While we're at it, probably we want the following as well? I.e. using
+> `Opaque` and extern block, because __this_module is certainly something
+> interior mutable and !Unpin.
+>=20
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index 293beca0a583..8aa4eed6578c 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -219,7 +219,11 @@ mod __module_init {{
+>                       // freed until the module is unloaded.
+>                       #[cfg(MODULE)]
+>                       static THIS_MODULE: kernel::ThisModule =3D unsafe {=
+{
+> -                        kernel::ThisModule::from_ptr(&kernel::bindings::=
+__this_module as *const _ as *mut _)
+> +                        extern \"C\" {{
+> +                            static __this_module: kernel::types::Opaque<=
+kernel::bindings::module>;
+> +                        }}
+> +
+> +                        kernel::ThisModule::from_ptr(__this_module.get()=
+)
+>                       }};
+>                       #[cfg(not(MODULE))]
+>                       static THIS_MODULE: kernel::ThisModule =3D unsafe {=
+{
+>=20
+> Thoughts?
 
-To be clear, by "currently" I meant in mainline, i.e. it does not mean
-that we will not need/add a few more language/library features in the
-future.
+I am not sure we need it. Bindgen generates
 
-> Rust 1.78.0 introduced support for mutable pointers to Rust statics,
-> including a test case for the Linux kernel's `VTABLE` use case [13].
+     extern "C" {
+         pub static mut __this_module: module;
+     }
 
-I should have mentioned constants so that it makes sense. I will link
-to `const_refs_to_static`, i.e.
-https://github.com/rust-lang/rust/issues/119618.
+And the `mut` should take care of the "it might be modified by other
+threads".
+The only thing that sticks out to me is the borrow, it should probably
+be using `addr_of_mut!` instead. Then we don't need to re-import it
+again manually.
 
-> Rust 1.78.0 with debug assertions enabled (i.e. `-Cdebug-assertions=3Dy`,
-> kernel's `CONFIG_RUST_DEBUG_ASSERTIONS=3Dy`) now always checks all unsafe
-> preconditions, without a way to opt-out for particular cases [14].
+I think it should be a separate patch though.
 
-It would be ideal to have a way to selectively disable certain checks
-per-call site for this one (i.e. not just per check but for particular
-instances of a check), even if the vast majority of the checks remain
-in place. I discuss the details a bit more at
-https://github.com/Rust-for-Linux/linux/issues/354.
-
-> Please note that Rust 1.78.0 will be released in a month (2024-05-02).
-
-By the way, I tested these with arm64, loongarch64 and x86_64.
-
+--=20
 Cheers,
-Miguel
+Benno
+
+>=20
+> Note this requires `Opaque::get` to be `const`, which I will send out
+> shortly, I think it's a good change regardless of the usage here.
+>=20
+> Regards,
+> Boqun
+>=20
+
