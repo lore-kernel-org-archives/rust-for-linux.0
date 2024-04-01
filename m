@@ -1,111 +1,97 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54D847A76
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Apr 2024 19:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8463D9E;
+	Mon,  1 Apr 2024 19:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711999697; cv=none; b=XsK+VWPAPSt63w0/bEW+2tT+J8EuAvMs43EyG7ZYXbEINiFkQFi2g3TJUXplHAhM4oAxZTmONZhHbr6oUEi97g/RXYM9eHEOZhAJDdmGqjmAY7dVS5AhxIZRiSYIatbpPMeT4QiWNFCyOPXvXPVkJT6YBLZ1Ok79Q9OuyQ3gyVs=
+	t=1712000556; cv=none; b=apLgwGC618DDOO1PZIiEVZoAhYb0ZaoWVhb4l/DCEyjQ1blrqxcYUCjJA7miCTiOuZRXD2enrOavKzElMEhqzjOtg2fQ1hONvpxmd/tB1OIx4otVxRx9zXHak/NcAYFh/uHVnMK1MiFHX5UOnv19sSsieyFUfcp3Wf9ASlhXgfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711999697; c=relaxed/simple;
-	bh=FtZFlGzW0MUxmZa/IKg7XcCyUtT2vw1AULuLvoBCx/g=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EcZRyzVYQfO+i98/3maW5b76vuWqR2TL4fUbQzIRxJ2pUdhAJ/jWgT7bNEulHt9KWif0wi7fotJZfA56zxzrSaYcJ9eDWTv3cuhwc2DOAWVqNuSVfcXJgpL8tObkB6eZaOic9z86sYgozdup+utT+hvQ/AybEEWkQf5IU7cJ9CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Cd+rwCHl; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1712000556; c=relaxed/simple;
+	bh=F4uOlu0iJswfQVUOUs/h1wLZx+BpMx1FQLUpSBttbAQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p0gMr4XXZD0DhuwCY7kHc76oRPj/yMWSRLBWX45Pcn6Ca41eUycD31qnrTGcflNZMIA47CmJ2pfDQkf4VPcKepRcuaHSOqg1LAXXZxEJHKEkkjXUTJIzCcT7LtoWjCJKjX28TJn6TE2aJzZt8XhH255YeC7OGye9mhrGx9AJh5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mpca0jo0; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Cd+rwCHl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=wclaxxtrgfhp5fwlzubutvdnoi.protonmail; t=1711999686; x=1712258886;
-	bh=a6gs8Co461eG3wpA5ckHsQcQV9C3iIwIFI/gKjKHzRo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Cd+rwCHlBl14MRIpQhRV9HbmzaYxp/tFS5svfZDZDwebUa2Aa9wHWHXQGHEFF1hbv
-	 4rull/MuQxtGHt1O5EjUEwUfcMSynpPf3WF9HiXOfp9USq8Qyytk4mz1CUNV7cwvSv
-	 f6/wZNwtJUny4v11TYz0Tp7QR+G1qx2qxFOSUNtrOUvt5HO+9tsEien0xhhNxY8G4X
-	 tNxRNFgZEXzuPd9+fkqcmv5BFrbXR0rxZyB5kwP4ehApq4tIMS/rdDyrJt18MjlUDG
-	 X7iMhQXdsEGFYxBrlTdRni77tVGRefpp1nWHk6BYOscBAKHX2p3cu6r/352HMgq1vP
-	 PDh4axXklOC5A==
-Date: Mon, 01 Apr 2024 19:27:52 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Finn Behrens <me@kloenk.dev>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Daniel Xu <dxu@dxuuu.xyz>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <06d5ccdb-a5c3-4630-9f97-9a7bdf7b7a48@proton.me>
-In-Reply-To: <CANeycqr_AkxTj2iNdnjRFrC-C8npsBtS34V4hNy35RpQHszG9w@mail.gmail.com>
-References: <20240327160346.22442-1-benno.lossin@proton.me> <CANeycqp0o-HKBx6nuGCy9DD6mAwoGWzTR6bm5ceajsUhKcZuQg@mail.gmail.com> <d41d123e-d682-4685-88f5-e45567cc1975@proton.me> <CANeycqr_AkxTj2iNdnjRFrC-C8npsBtS34V4hNy35RpQHszG9w@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mpca0jo0"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6147942ae18so21501417b3.2;
+        Mon, 01 Apr 2024 12:42:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712000554; x=1712605354; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=F4uOlu0iJswfQVUOUs/h1wLZx+BpMx1FQLUpSBttbAQ=;
+        b=Mpca0jo04ZLwcaSxMd6qmWczgxTesYD0H4OOgBJk3A6PoECTqvo6m+qmKwHYbQcCW8
+         xtiTnW8uCWC7b4Q/wbgwlIQa7ksS0lTtKey8EhqYhRsGh9NQLCuJrh4QvDwu6yVTyojU
+         RC5KpJx/SD0y/roZPg2gTteYpjz0VMVRor5/UYiATAeOj7kCl5s+RSfUT0lRUgyBV++A
+         gBKOX4RCs3C+Iv8fo2JMe11Biekz4PKEsJx8F6OrO3oNazBqU7DALkaW9nQkEA08Gu+y
+         nUNaoUID2YI9Tl5ncdXpWwDY06mpqlhlg4TNQxUGxyr6Jab3FXvuQWz/EAjL45XZj1Sq
+         4D5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712000554; x=1712605354;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F4uOlu0iJswfQVUOUs/h1wLZx+BpMx1FQLUpSBttbAQ=;
+        b=U0gvg6SkhT9H9ASoc4caVP4o6IgSZ0VDDLqjQo/ehro2Y7k5IQzPyGB7r90efbwPMW
+         oQ20J290wJJwq+WHwa+Oay4Jd7qEnUg1fUkzeyMaNqfWervUEHA1xXuG/5jUE94RZeWb
+         Rrjn/MYM7LpDrzAboXRgcHkoAE4wBsC/dlFxPewmqyVLXEy4wWUFrcEt6k5dVIVEF2Kf
+         5NJm9gGxNlrP/FPEwbtY8cFt75bwW6B1LpUpU8gT+iD3DwoqE8Ibdm8ykIsY/bL2p92l
+         lHUnQ7N4mrF8cvCx3Xj3S8Bi2jJj9sUjwcH4H2iz1/SZqZlx+AbYRUEUAqyqdXMOmvxh
+         xThA==
+X-Forwarded-Encrypted: i=1; AJvYcCWr8E+7rCGSu+xbxUAh+K4qy/TIB+bH5/3MSdZ9zs3ADiqu5/LOKml0cpxDqGtrhCwXFai31oVs884FD2XuHYK8JhGidsJ58cMiaEU5LJsoh1zUAXNTKn2RQuVADtHJ8/LTh72koEVcLaXF/Pj5i8aFN71egPQfFp/FMM0xWukmQxk5Znw=
+X-Gm-Message-State: AOJu0YzXSj0L4Q4FPff0+X0UOxDUs4NKuw2ScX5uXQobT/tGN10d0aI7
+	dn3wXpxcF5NmtfD3cLWI5c71Kje5+r8cbYvlvCUII78+4/D4Fcc+WyqdBMwChTlQce4DdwalZcF
+	R28mUe4T8V/cznkqn3fW0H0ndR/I=
+X-Google-Smtp-Source: AGHT+IFk1rGj6CgyKv0DM+vtq6ogRDZ4o/Z28k6W7y5K+/2ghPixrwH899nJaYUN2PN+/oo5Zf7VVcihOXlXXG+uTQg=
+X-Received: by 2002:a05:690c:f10:b0:611:200c:9229 with SMTP id
+ dc16-20020a05690c0f1000b00611200c9229mr7675489ywb.8.1712000554097; Mon, 01
+ Apr 2024 12:42:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20240401185222.12015-1-benno.lossin@proton.me>
+In-Reply-To: <20240401185222.12015-1-benno.lossin@proton.me>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Mon, 1 Apr 2024 16:42:23 -0300
+Message-ID: <CANeycqracHqSh0AS3sSWerMA=tGUWs7U=iPfnL+UzqBQs1oUZw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, 
+	Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, 
+	Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, 
+	Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 01.04.24 21:10, Wedson Almeida Filho wrote:
-> On Sun, 31 Mar 2024 at 07:27, Benno Lossin <benno.lossin@proton.me> wrote=
-:
->>
->> On 31.03.24 03:00, Wedson Almeida Filho wrote:
->>> On Wed, 27 Mar 2024 at 13:04, Benno Lossin <benno.lossin@proton.me> wro=
-te:
->>>> -            fn __init() -> core::ffi::c_int {{
->>>> -                match <{type_} as kernel::Module>::init(&THIS_MODULE)=
- {{
->>>> -                    Ok(m) =3D> {{
->>>> +                    /// # Safety
->>>> +                    ///
->>>> +                    /// This function must
->>>> +                    /// - only be called once,
->>>> +                    /// - be called after `__init`,
->>>> +                    /// - not be called concurrently with `__init`.
->>>
->>> The second item is incomplete: it must be called after `__init` *succee=
-ds*.
->>
->> Indeed.
->>
->>>
->>> With that added (which is a different precondition), I think the third
->>> item can be dropped because if you have to wait to see whether
->>> `__init` succeeded or failed before you can call `__exit`, then
->>> certainly you cannot call it concurrently with `__init`.
->>
->> I would love to drop that requirement, but I am not sure we can. With
->> that requirement, I wanted to ensure that no data race on `__MOD` can
->> happen. If you need to verify that `__init` succeeded, one might think
->> that it is not possible to call `__exit` such that a data race occurs,
->> but I think it could theoretically be done if the concrete `Module`
->> implementation never failed.
->=20
-> I see. If you're concerned about compiler reordering, then we need
-> compiler barriers.
->=20
->> Do you have any suggestion for what I could add to the "be called after
->> `__init` was called and returned `0`" requirement to make a data race
->> impossible?
->=20
-> If you're concerned with reordering from the processor as well, then
-> we need cpu barriers. You'd have to say that the cpu/thread executing
-> `__init` must have a release barrier after `__init` completes, and the
-> thread/cpu doing `__exit` must have an acquire barrier before starting
-> `__exit`.
->=20
-> But I'm not sure we need to go that far. Mostly because C is going to
-> guarantee that ordering for us, so I'd say we can just omit this or
-> perhaps say "This function must only be called from the exit module
-> implementation".
+On Mon, 1 Apr 2024 at 15:52, Benno Lossin <benno.lossin@proton.me> wrote:
+>
+> The `module!` macro creates glue code that are called by C to initialize
+> the Rust modules using the `Module::init` function. Part of this glue
+> code are the local functions `__init` and `__exit` that are used to
+> initialize/destroy the Rust module.
+> These functions are safe and also visible to the Rust mod in which the
+> `module!` macro is invoked. This means that they can be called by other
+> safe Rust code. But since they contain `unsafe` blocks that rely on only
+> being called at the right time, this is a soundness issue.
+>
+> Wrap these generated functions inside of two private modules, this
+> guarantees that the public functions cannot be called from the outside.
+> Make the safe functions `unsafe` and add SAFETY comments.
+>
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/Rust-for-Linux/linux/issues/629
+> Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Yeah, though I do not exactly know where or what the "exit module
-implementation" is. If you are happy with v2, then I think we can go
-with that. This piece of code is also not really something people will
-need to read.
-
---=20
-Cheers,
-Benno
-
+Reviewed-by: Wedson Almeida Filho <walmeida@microsoft.com>
