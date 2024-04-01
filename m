@@ -1,49 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC0F56B87;
-	Mon,  1 Apr 2024 21:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC551C2E;
+	Mon,  1 Apr 2024 21:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712006633; cv=none; b=r9SFjT8BVQhF+PDIlVEJwRtSGQxiCqJ3v4aYpuxmfC5eudAwM5/WSC3DDnCVEBcBvpef88ChEAuLTX/klppIz/21PNxsG4CVcPTDUbpqomVCVdk0ymSY9cx41/Mlw5O7+uaaMQyMl3iTMPUORxX+VwRCbq9rEPSOnxdqald8u6s=
+	t=1712008005; cv=none; b=eFvTonKSujmvPkCLKJXGJ695nhbMlpcI/avERa+Ba4jWh9FKCgfoxpTTznQZGy+rdRA/0kgONwE9BrzPJzuMgomAompbM2Vpb1EMkbYIbgZFc89a3FrnOdAMaGajt10qbUEG+C0iZmAP3IH4PboerMkbMqi/aPaNhiXpUY39x8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712006633; c=relaxed/simple;
-	bh=t1ZeJrMETPQfNrlMHp4pMGLFYeT5RoqomHGFXhf2vQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faBMwRKZ8pz2cC9XMQuDDIbYSXBJp0arfByHX0H/s4f1uSBdMgrP0CZBwFheqprwe+5CSagnK6wOsmn0sOyer4AoHbz3yI0Cj8R2diXhY6r4Wk2QrCO3YnG8qJrZajUEoJyHcKn0AJtuPtflAWXimjgWLSbl9jIbHgfDKVLr+7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YST/10ZF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712008005; c=relaxed/simple;
+	bh=lga2qVC6bx434ILieAy8p2z4iLgehhtKZVAlm+C3omw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C4vcTRAXLcRKHuw+x67ze72X7a8LrROPSOwvlRKiECH4dDimIHG9/lzrbFYD2hChZLAkpVxPS/9NjJAhHyLFOc8wUAsi4/CryOV6l07rLS/3OV5P0ox8q2Pc3bw7ZWoQom+exaE61/WHloYvP9ca+xCSqAlg7cFFJXhnOs6NbH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LicG1RMm; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YST/10ZF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA65C43390;
-	Mon,  1 Apr 2024 21:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712006632;
-	bh=t1ZeJrMETPQfNrlMHp4pMGLFYeT5RoqomHGFXhf2vQM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YST/10ZFa0qLdfZ4VroGx47csOwBXaHD5UdVQkUYR5VwTq2uBOX8pwAK6MFVbaPhs
-	 8cCdlkjqvzMmkAWskrJvBVp1c315YdF0c4FvFm2Gebvzje949yYdOgr1SRdMqDQf6x
-	 BinsXShsX31liDDuN4zvWw8hn7RGc0fCvkWvXLjiddkAS1WgZOAHLKmf7xswQEzzdJ
-	 xCLaE+lHpDVHtfk3P4Zmun7TLb5ZK7EmNC2eSUvpgKa0UJ78vyXPHwPCEcM091Wvql
-	 glqyS/YAYzQAtjEauwKdhPSxETICugeC66Q4WjcbDgisKeePPom4fvf4K/LNkv9t9r
-	 uar+FhQD0ZJ0g==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LicG1RMm"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-432fe06d76fso4733761cf.3;
+        Mon, 01 Apr 2024 14:46:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712008003; x=1712612803; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=J7lSE+wLlV3A/nFCxQIWYeydbyIlsHZV9kGDRSJJqRs=;
+        b=LicG1RMmPvJgno746Ls1Yq/b5s4vDKy0isUFXX5/ULCcIvV7iv9Y428yVfVB62mBCa
+         eaXzfAkNafaaF8u2ETdsQn/hnsZBagNd/XPD9NKKI5ZLkH5i2dMLRwuoNfSx4zCT1lVQ
+         C99ToilLivRZeVF5KDGp80wUoMnbhI7gNHqACKALvhTFIVH2X5jfav8LXvHfBU05mICx
+         zvmSOyTo/mQXC6+zhe0dwq8NnwXq9jJ/7VppK6kInJLzvQMf8LUYhwgkCPzVbnkQAMuE
+         sGhKKcQyZ8kL/+a8geMv6McY6s4l/KEM7StlnxILegKQDrj+4gIWLD59HC51kJhfwdv5
+         WlWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712008003; x=1712612803;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J7lSE+wLlV3A/nFCxQIWYeydbyIlsHZV9kGDRSJJqRs=;
+        b=q/TBEkCbyC4G2CR8s8MhzoyDYwqe+YXnkbaOX1kveMhzKGRNYcJYYiq3J6TKA8eOAw
+         GZqfkEx12HDSH/bZw3boZEn82NcveK5XkLY0YxKCmMYTWzXykJRlZITojc6bpexgB3KA
+         fHzQ5DLtEZspXX7OiMww2xtLUf3yYX3Dyl37qox9vQyxfkWaLsXmQURCMAdAxzaiCQkr
+         wjq4ZQLkqrTboBubJPNhhCaCozgg1c/bY8YCpBxbCS6PW/1HWR9m1PSfnog/oQfD/do8
+         R6fVNXzWr4wW07gADkiTTA36E7c0l4qBPaA0qE0cmCAMnKxfmuyQ7zxkWHC6Tha6Zrub
+         bZ+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVq9MGuTQqfrt0NfSgFA9aoMKjTfRlo2KSJwBxfDLQ8MsCBcbGdx06PIFiGX/Jkt7xUMfppf8SpFWF08w5fYfpJaJDrQAGYCe74FpiI
+X-Gm-Message-State: AOJu0YzYSOaOV9OEXoj5VbXuaRKNqQO7l8JcmOk95umeOoswyXLr4Qr8
+	1+g7NIgsMeL/wAh8o6RbKU+8+IRlLTpjBJ6rwGLCSZm87ANpDqjskc1NLUS5
+X-Google-Smtp-Source: AGHT+IGkGhitdL0UaeFnAewaTn3YCx6nMm4o7HWPHNpZJ8jr8NSOUIc3RxRlXBlWkTeZIrIkh5OpTg==
+X-Received: by 2002:ac8:5e0a:0:b0:431:3fee:9d53 with SMTP id h10-20020ac85e0a000000b004313fee9d53mr13034473qtx.24.1712008002746;
+        Mon, 01 Apr 2024 14:46:42 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id et16-20020a05622a4b1000b00430b385f721sm4908999qtb.15.2024.04.01.14.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Apr 2024 14:46:42 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id DDD321200032;
+	Mon,  1 Apr 2024 17:46:41 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Mon, 01 Apr 2024 17:46:41 -0400
+X-ME-Sender: <xms:QSsLZvnCN0e55lIsGFseg3oI5CMqArkOyDBC4diS3QAwQMJOJBn6YQ>
+    <xme:QSsLZi3Wa1-Z-HkvgnLifSPxZZOjfL6sA9sfg0G5CAsjwcX_-Khr2ztcTdllm7YWI
+    maLftBDxA9yfzsHCw>
+X-ME-Received: <xmr:QSsLZlr3MvJLiQd726F-kQAk2BcfGnJW0UWE8IluEtDu4d14T29aIwY1IU09fg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefuddgtdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpefgteffhfehjeegtdduieffudetfeehgfegudejudfhieefgfeigfevueduledu
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvg
+X-ME-Proxy: <xmx:QSsLZnmZyUHVKKaIfDDtBTt-F1HnNAVm2A6Iw03ObCVCmhRLOZ661g>
+    <xmx:QSsLZt3SiMhUGsdmUBYoF8del72n3v3zZU-swQjA5vcKWKz1mTwhCw>
+    <xmx:QSsLZmvyVtro_8RrotE7Vh2V1lCG6oFaoAKQ9Dty9TG7pvMqs9MsZQ>
+    <xmx:QSsLZhXrEsxKWNg5yXrRmgNP1YpMXzB7LPZukx2MpoBD2sTo21lO_w>
+    <xmx:QSsLZs1rFswAJL8srQsak3IbW8vW1BFqAxa36poAf-5Zjwu-790CU3nLpJQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Apr 2024 17:46:40 -0400 (EDT)
+From: Boqun Feng <boqun.feng@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH 3/3] rust: upgrade to Rust 1.78.0
-Date: Mon,  1 Apr 2024 23:23:03 +0200
-Message-ID: <20240401212303.537355-4-ojeda@kernel.org>
-In-Reply-To: <20240401212303.537355-1-ojeda@kernel.org>
-References: <20240401212303.537355-1-ojeda@kernel.org>
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Obei Sideg <linux@obei.io>
+Subject: [PATCH] rust: types: Make Opaque::get const
+Date: Mon,  1 Apr 2024 14:45:36 -0700
+Message-ID: <20240401214543.1242286-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,147 +103,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is the next upgrade to the Rust toolchain, from 1.77.1 to 1.78.0
-(i.e. the latest) [1].
+To support a potential usage:
 
-See the upgrade policy [2] and the comments on the first upgrade in
-commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+    static foo: Opaque<Foo> = ..; // Or defined in an extern block.
 
-# Unstable features
+    ...
 
-There have been no changes to the set of unstable features used in
-our own code. Therefore, the only unstable features allowed to be used
-outside the `kernel` crate is still `new_uninit`.
+    fn bar() {
+        let ptr = foo.get();
+    }
 
-However, since we are finally dropping our `alloc` fork [3], all the
-unstable features used by `alloc` (~30 language ones, ~60 library ones)
-are not a concern anymore. This reduces the maintenance burden, increases
-the chances of new compiler versions working without changes and gets
-us closer to the goal of supporting several compiler versions.
+`Opaque::get` need to be `const`, otherwise compiler will complain
+because calls on statics are limited to const functions.
 
-It also means that, ignoring non-language/library features, we are
-currently left with just the few language features needed to implement the
-kernel `Arc`, the `new_uninit` library feature, the `compiler_builtins`
-marker and the few `no_*` `cfg`s we pass when compiling `core`/`alloc`.
+Also `Opaque::get` should be naturally `const` since it's a composition
+of two `const` functions: `UnsafeCell::get` and `ptr::cast`.
 
-Please see [4] for details.
-
-# Required changes
-
-## LLVM's data layout
-
-Rust 1.77.0 (i.e. the previous upgrade) introduced a check for matching
-LLVM data layouts [5]. Then, Rust 1.78.0 upgraded LLVM's bundled major
-version from 17 to 18 [6], which changed the data layout in x86 [7]. Thus
-update the data layout in our custom target specification for x86 so
-that the compiler does not complain about the mismatch:
-
-    error: data-layout for target `target-5559158138856098584`,
-    `e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128`,
-    differs from LLVM target's `x86_64-linux-gnu` default layout,
-    `e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128`
-
-In the future, the goal is to drop the custom target specifications.
-Meanwhile, if we want to support other LLVM versions used in `rustc`
-(e.g. for LTO), we will need to add some extra logic (e.g. conditional on
-LLVM's version, or extracting the data layout from an existing built-in
-target specification).
-
-## `unused_imports`
-
-Rust's `unused_imports` lint covers both unused and redundant imports.
-Now, in 1.78.0, the lint detects more cases of redundant imports [8].
-Thus one of the previous patches cleaned them up.
-
-## Clippy's `new_without_default`
-
-Clippy now suggests to implement `Default` even when `new()` is `const`,
-since `Default::default()` may call `const` functions even if it is not
-`const` itself [9]. Thus one of the previous patches implemented it.
-
-# Other changes in Rust
-
-Rust 1.78.0 introduced `feature(asm_goto)` [10] [11]. This feature was
-discussed in the past [12].
-
-Rust 1.78.0 introduced support for mutable pointers to Rust statics,
-including a test case for the Linux kernel's `VTABLE` use case [13].
-
-Rust 1.78.0 with debug assertions enabled (i.e. `-Cdebug-assertions=y`,
-kernel's `CONFIG_RUST_DEBUG_ASSERTIONS=y`) now always checks all unsafe
-preconditions, without a way to opt-out for particular cases [14].
-
-Rust 1.78.0 also improved a couple issues we reported when giving feedback
-for the new `--check-cfg` feature [15] [16].
-
-# `alloc` upgrade and reviewing
-
-As mentioned above, compiler upgrades will not update `alloc` anymore,
-since we are dropping our `alloc` fork [3].
-
-Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1780-2024-05-02 [1]
-Link: https://rust-for-linux.com/rust-version-policy [2]
-Link: https://lore.kernel.org/rust-for-linux/20240328013603.206764-1-wedsonaf@gmail.com/ [3]
-Link: https://github.com/Rust-for-Linux/linux/issues/2 [4]
-Link: https://github.com/rust-lang/rust/pull/120062 [5]
-Link: https://github.com/rust-lang/rust/pull/120055 [6]
-Link: https://reviews.llvm.org/D86310 [7]
-Link: https://github.com/rust-lang/rust/pull/117772 [8]
-Link: https://github.com/rust-lang/rust-clippy/pull/10903 [9]
-Link: https://github.com/rust-lang/rust/pull/119365 [10]
-Link: https://github.com/rust-lang/rust/issues/119364 [11]
-Link: https://lore.kernel.org/rust-for-linux/ZWipTZysC2YL7qsq@Boquns-Mac-mini.home/ [12]
-Link: https://github.com/rust-lang/rust/pull/120932 [13]
-Link: https://github.com/rust-lang/rust/issues/120969 [14]
-Link: https://github.com/rust-lang/rust/pull/121202 [15]
-Link: https://github.com/rust-lang/rust/pull/121237 [16]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 ---
-Please note that Rust 1.78.0 will be released in a month (2024-05-02).
+ rust/kernel/types.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- Documentation/process/changes.rst | 2 +-
- scripts/generate_rust_target.rs   | 2 +-
- scripts/min-tool-version.sh       | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-index b5d3107c6734..5d83958888e0 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -31,7 +31,7 @@ you probably needn't concern yourself with pcmciautils.
- ====================== ===============  ========================================
- GNU C                  5.1              gcc --version
- Clang/LLVM (optional)  13.0.1           clang --version
--Rust (optional)        1.77.1           rustc --version
-+Rust (optional)        1.78.0           rustc --version
- bindgen (optional)     0.65.1           bindgen --version
- GNU make               3.82             make --version
- bash                   4.2              bash --version
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 54919cf48621..3fcbc3737b2e 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -154,7 +154,7 @@ fn main() {
-         ts.push("arch", "x86_64");
-         ts.push(
-             "data-layout",
--            "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
-+            "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
-         );
-         let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
-         if cfg.has("MITIGATION_RETPOLINE") {
-diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
-index 6086e00e640e..91c91201212c 100755
---- a/scripts/min-tool-version.sh
-+++ b/scripts/min-tool-version.sh
-@@ -33,7 +33,7 @@ llvm)
- 	fi
- 	;;
- rustc)
--	echo 1.77.1
-+	echo 1.78.0
- 	;;
- bindgen)
- 	echo 0.65.1
---
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 0949f9971074..25953c8f8acf 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -315,7 +315,7 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> impl PinInit<Self> {
+     }
+ 
+     /// Returns a raw pointer to the opaque data.
+-    pub fn get(&self) -> *mut T {
++    pub const fn get(&self) -> *mut T {
+         UnsafeCell::get(&self.value).cast::<T>()
+     }
+ 
+-- 
 2.44.0
+
