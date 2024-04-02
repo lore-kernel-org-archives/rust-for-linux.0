@@ -1,174 +1,267 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9CA83CBD
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Apr 2024 13:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30255200D4
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Apr 2024 22:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712065872; cv=none; b=QXaC1unbNtmOgnSKCZglFrvY1VuTGxuKpqwUTyBNpHKsalqZpOn7pKYkuZLJdfm3kvCZT0n6axPcTG68VohnUjat9PX1rcJLZdOm78Nn2q7y6r2UuECAIE79M6YJg10Ilz2zGibBuU5aUdC3Lcz0+jyBsmmARkU6NeXhiHDehJw=
+	t=1712097347; cv=none; b=OiHnzAV2l4LbxsAEA/24UX3RfELOet+wK3G3p9xRQX61+w3mtF+TmLeOAxd3lTjFfJJMoG7oMM0pW4nkn4M0zbov+bNZDXVPFpCRfb35+ZzYIbziM+mAxgWezJ8ZWgj1gxcsdbm66wg+YU4/FTV5NFNjq7O8ZmnzMOVy50YT9NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712065872; c=relaxed/simple;
-	bh=vDavRulvcU4J2HUs8SM1QoVpd5r2hxFlvdnsPl32dVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=jeIA9CMKpcNEnTKx13H6KI+VYWINuNu9F6I9v4QUAenKY15RiZdJNRE7ZWmXofmKCdXe+mQ7DIz4jgGjcbFYzvST9evfKmJTmuFsZ1EMFmGpoUrzD7gHEgiybNjiqwzh4QnysXY/QAwDYGuF0R3czMpmL4ba+JpeGcmHb4j69cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZTy1OCRX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1712097347; c=relaxed/simple;
+	bh=jkjZO7jwr0PCImAu66df4aVlb2K6kWhUeVLD66IVeD8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bwvNCN7cryhpU27XcOOCZT8TAi1GRxM90UhCx4sdExTfIFzaAzK04MgF6F/nMYlH7SNRdMiGQbB6iQq8d5unAS8dk0jeWXOsxpffjipT5TKzCtuot/Bo9awjFo1ws389adOv6UxKb9ym0wW+fC4nSWR+fsVR/wAZwObYOmNJXVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Y6alFi2P; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZTy1OCRX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712065870;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2RJTo9QZbqD2d+RUAKT5//4Cs4GMw7g0JcCMFnkbSaM=;
-	b=ZTy1OCRXVk0WYUhNpb9i0B9goS7/DJitwzrfqzMINiWj8MAB4ktiEVl7NuRA8jAaYTNvPi
-	5Jdbgbeu2DI5tmjGl6yl3xOnwac1elpl+uXgvNd3aOKyjqALRi7OAnbZnNuoASZ+2qzKxe
-	IKeKPKNqpj3/ZYOChnLbI+8zfD4fyq0=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-g9rImgOMObiLG4jUg5DFWA-1; Tue, 02 Apr 2024 09:51:08 -0400
-X-MC-Unique: g9rImgOMObiLG4jUg5DFWA-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-51596f968c1so4953554e87.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Apr 2024 06:51:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712065866; x=1712670666;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2RJTo9QZbqD2d+RUAKT5//4Cs4GMw7g0JcCMFnkbSaM=;
-        b=ZfGoknNDZfdXnrjAnSO8q7ND7jDppZjgPKueW5J1Echy3IS55PnYhY33fhFkKN4Hx+
-         PSt9Uj8cD/3iGOeTvH1EVfRx+YTgdvgNEfsjxaapB9mDBUNF4fARPTVA4gSwdRpLCN7m
-         vGlanZJCtskbeM8sfU/KpcIeHuyGnsLLOnvUh40Nu9UbKimtd4u+lzWKWinJVMFc+cn6
-         iU32Tjo95WGv8ZpLGxyh4PqWCh82756a2k3JUV0L4dRRzM46Da/GJ6E62+gPojrlHzVS
-         Ef0NmKQg3W+I69JDRNdcBaSEq9M/OkczT1iODkkV2W8phIxYZbNjgHSYFerOf+bMevle
-         c+Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCW62+j9qq70GiezwPJmjsW8NIZMESKmxakJuL8FabuiYWnDobbnVar8uUiJRkzJChPGLOJmRnc0JqYJepWHkftJpLLsceJJn/ssCHxI1DY=
-X-Gm-Message-State: AOJu0YyMTmLLuhO1CJR1mpb046ZWdNbrcEADWHPZgIescFtt/MRn4VYv
-	q+iz2ykM2H5hn9uoDKQqRTXZOScZoab1JLVZ7kGXZ18vIBucHjE8hmp8a4GQn8tbBNc2SmVaiB3
-	ZxfnpmTMQ7frOsgClB7BAZtwo411Ez/9mOl7SnYdni01OUPDHiAwdrN7PQQ3z2WoT
-X-Received: by 2002:a05:6512:1287:b0:516:a115:4a4d with SMTP id u7-20020a056512128700b00516a1154a4dmr7193279lfs.68.1712065866286;
-        Tue, 02 Apr 2024 06:51:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+g2F5Nlovmzt48Zd/LGCqMAB0+I22rf4CR4KB6v4poVHuh5qcsMoDkmjFHHFX83LMJ0g7mw==
-X-Received: by 2002:a05:6512:1287:b0:516:a115:4a4d with SMTP id u7-20020a056512128700b00516a1154a4dmr7193238lfs.68.1712065865852;
-        Tue, 02 Apr 2024 06:51:05 -0700 (PDT)
-Received: from polis (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id u4-20020adff884000000b00341d9e8cc62sm14198282wrp.100.2024.04.02.06.51.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Apr 2024 06:51:05 -0700 (PDT)
-Date: Tue, 2 Apr 2024 15:51:02 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Fabien Parent <fabien.parent@linaro.org>
-Cc: David Airlie <airlied@redhat.com>, Greg KH <gregkh@linuxfoundation.org>,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	rust-for-linux@vger.kernel.org, x86@kernel.org, lyude@redhat.com,
-	pstanner@redhat.com, ajanulgu@redhat.com,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 4/8] rust: add driver abstraction
-Message-ID: <ZgwNRmzUfO0hCqCm@polis>
-References: <20240325174924.95899-1-dakr@redhat.com>
- <20240325174924.95899-5-dakr@redhat.com>
- <2024032530-fester-dedicator-a8a9@gregkh>
- <CAMwc25ryKE7tqA4WdOeQXWJJ5Z++s+p8=bMBAXPKQiw_Stov0g@mail.gmail.com>
- <2024032601-deceased-premiere-1c02@gregkh>
- <CAMwc25omcj6_OKdcBkke5yzC2M5oNO=E3EG4aezNfEMRAp9Wvg@mail.gmail.com>
- <2024032606-dutiful-tusk-5da3@gregkh>
- <CAMwc25ozHGVS5jE3QnDx7EgryL+=dCdUbm6PNBcsy5P8CtX8Lg@mail.gmail.com>
- <CAPFo5VLoYGq_OgC5dqcueTyymuSCsLpjasLZnKO1jpY6gV7s2g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Y6alFi2P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712097336; x=1712356536;
+	bh=ZR6oanZJrjCoyu/0f+lqsJmEQvmkfNvERkB55FpMbLg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Y6alFi2PVO8tJG/+5EOowTtK6yQ+6aIb1zfjGhrRz4XFdszTaso4nG7qq2q1l6LY+
+	 UjBcXlcQgC1v+9CJIw/VhW9joS+lqyz4GMBIHL+jlObSUxBQAQqya602hokAIoiUFP
+	 b3kQoeWnN5BPVxHGvKa9kLXAs+T3zKIyP7HzmNWETIAH/pB1V+ulitRQKT7+3/s908
+	 1Czkrja20NNZrbd02NDy4tBSDb1XkLEWJ4/0CKsw0hbl36F8YidFnW6vrLaLG0HK0N
+	 S+03aHDnbdVnBf9lFuYk+FA4/L2msRvXoAopXACBRbWwZTCzalO59KEDknT+nycfxA
+	 l2Dax32bzBzbA==
+Date: Tue, 02 Apr 2024 22:35:32 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
+	<da.gomez@samsung.com>, open list <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: Re: [RFC PATCH 4/5] rust: block: add rnull, Rust null_blk implementation
+Message-ID: <1e8a2a1f-abbf-44ba-8344-705a9cbb1627@proton.me>
+In-Reply-To: <87msqc3p0e.fsf@metaspace.dk>
+References: <20240313110515.70088-1-nmi@metaspace.dk> <20240313110515.70088-5-nmi@metaspace.dk> <QqpNcEOxhslSB7-34znxmQK_prPJfe2GT0ejWLesj-Dlse1ueCacbzsJOM0LK3YmgQsUWAR58ZFPPh1MUCliionIXrvLNsOqTS_Ee3bXEuQ=@proton.me> <87msqc3p0e.fsf@metaspace.dk>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAPFo5VLoYGq_OgC5dqcueTyymuSCsLpjasLZnKO1jpY6gV7s2g@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Hi Fabien,
+On 02.04.24 14:52, Andreas Hindborg wrote:
+> Benno Lossin <benno.lossin@proton.me> writes:
+>=20
+>> On 3/13/24 12:05, Andreas Hindborg wrote:
+>>> +module! {
+>>> +    type: NullBlkModule,
+>>> +    name: "rnull_mod",
+>>> +    author: "Andreas Hindborg",
+>>> +    license: "GPL v2",
+>>> +    params: {
+>>> +        param_memory_backed: bool {
+>>> +            default: true,
+>>> +            permissions: 0,
+>>> +            description: "Use memory backing",
+>>> +        },
+>>> +        // Problems with pin_init when `irq_mode`
+>>
+>> Can you elaborate?
+>=20
+> I think we discussed this before, but I do not recall what you decided
+> was the issue.
 
-On Sun, Mar 31, 2024 at 12:17:15PM -0700, Fabien Parent wrote:
-> [re-sending as plain text instead of HTML]
-> 
-> On Mon, Mar 25, 2024 at 11:35 PM David Airlie <airlied@redhat.com> wrote:
-> > > I don't mind 50 patch long series, those are fine as we can see how
-> > > things are actually used.
-> > >
-> > > But for complex beasts like DRM drivers, perhaps people should stop and
-> > > implement the tiny "easy" things first, with working users, to verify
-> > > that it is all ok first before biting off the big ones.
-> > >
-> > > Like implement a "simple" bus, which means that you have to have the
-> > > driver core bindings all working properly and correctly.  Once that is
-> > > done and merged then move to the next thing (i.e. a more complex bus
-> > > like PCI or USB or platform).
-> >
-> > This is just reintroducing the chicken/egg problem. Implementing a
-> > "simple" bus usually means implementing a "simple" driver for that
-> > bus. Implementing a simple driver for that bus often means
-> > reimplementing an existing driver that is already in the tree. The
-> > "simple" bus driver gets pushed back on because it's duplicating
-> > functionality that is already in the tree and nobody reviews anything
-> > and we re-enter the deadlock cycle. We are actively trying to break
-> > the cycle and get stuff upstream so this can be properly explored
-> > rather than 20 independent trees carrying out of date patchsets to get
-> > anywhere.
-> 
->  I've been working on a new driver [0] (not a reimplementation of an
-> existing one) that uses I2C. I2C is a "simple bus" and the amount of
-> commits is quite reasonable, maybe this would fit better as a consumer
-> of the device driver abstractions for upstreaming purposes?
+Ah I vaguely remember.
 
-I don't know if it fits better, but I think it works just as well.
+> It is probably easier if you can apply the patches and try to build with
+> this on top:
+>=20
+> diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
+> index 04bdb6668558..bd089c5e6e89 100644
+> --- a/drivers/block/rnull.rs
+> +++ b/drivers/block/rnull.rs
+> @@ -48,7 +48,7 @@
+>              description: "Use memory backing",
+>          },
+>          // Problems with pin_init when `irq_mode`
+> -        param_irq_mode: u8 {
+> +        irq_mode: u8 {
+>              default: 0,
+>              permissions: 0,
+>              description: "IRQ Mode (0: None, 1: Soft, 2: Timer)",
+> @@ -101,7 +101,7 @@ fn add_disk(tagset: Arc<TagSet<NullBlkDevice>>) -> Re=
+sult<GenDisk<NullBlkDevice>
+>          return Err(kernel::error::code::EINVAL);
+>      }
+>=20
+> -    let irq_mode =3D (*param_irq_mode.read()).try_into()?;
+> +    let irq_mode =3D (*irq_mode.read()).try_into()?;
+>=20
+>      let queue_data =3D Box::pin_init(pin_init!(
+>          QueueData {
+>=20
+> ---
+>=20
+> There is some kind of name clash issue when using `pin_init!` in the expr=
+ession on
+> line 106:
+>=20
+>     let queue_data =3D Box::pin_init(pin_init!(
+>         QueueData {
+>             tree <- TreeContainer::new(),
+>             completion_time_nsec: *param_completion_time_nsec.read(),
+>             irq_mode,
+>             memory_backed: *param_memory_backed.read(),
+>             block_size,
+>         }
+>     ))?;
+>=20
+> I cannot immediately decipher the error message:
+>=20
+>   RUSTC [M] drivers/block/rnull.o
+> error[E0277]: the trait bound `__rnull_mod_irq_mode: From<u8>` is not sat=
+isfied
+>    --> /home/aeh/src/linux-rust/linux/drivers/block/rnull.rs:104:39
+>     |
+> 104 |     let irq_mode =3D (*irq_mode.read()).try_into()?;
+>     |                                       ^^^^^^^^ the trait `From<u8>`=
+ is not implemented for `__rnull_mod_irq_mode`
+>     |
+>     =3D note: required for `u8` to implement `Into<__rnull_mod_irq_mode>`
+>     =3D note: required for `__rnull_mod_irq_mode` to implement `TryFrom<u=
+8>`
+>     =3D note: required for `u8` to implement `TryInto<__rnull_mod_irq_mod=
+e>`
+>=20
+> error[E0308]: mismatched types
+>     --> /home/aeh/src/linux-rust/linux/drivers/block/rnull.rs:106:36
+>      |
+> 106  |       let queue_data =3D Box::pin_init(pin_init!(
+>      |  ____________________________________^
+> 107  | |         QueueData {
+> 108  | |             tree <- TreeContainer::new(),
+> 109  | |             completion_time_nsec: *param_completion_time_nsec.re=
+ad(),
+> ...    |
+> 113  | |         }
+> 114  | |     ))?;
+>      | |     ^
+>      | |     |
+>      | |_____expected `IRQMode`, found `__rnull_mod_irq_mode`
+>      |       arguments to this function are incorrect
+>      |
+> note: function defined here
+>     --> /home/aeh/.rustup/toolchains/1.74.1-x86_64-unknown-linux-gnu/lib/=
+rustlib/src/rust/library/core/src/ptr/mod.rs:1365:21
+>      |
+> 1365 | pub const unsafe fn write<T>(dst: *mut T, src: T) {
+>      |                     ^^^^^
+>      =3D note: this error originates in the macro `$crate::__init_interna=
+l` which comes from the expansion of the macro `pin_init` (in Nightly build=
+s, run with -Z macro-backtrace for more info)
+>=20
+> error[E0308]: mismatched types
+>    --> /home/aeh/src/linux-rust/linux/drivers/block/rnull.rs:106:36
+>     |
+> 39  | / module! {
+> 40  | |     type: NullBlkModule,
+> 41  | |     name: "rnull_mod",
+> 42  | |     author: "Andreas Hindborg",
+> ...   |
+> 71  | |     },
+> 72  | | }
+>     | |_- constant defined here
+> ...
+> 106 |       let queue_data =3D Box::pin_init(pin_init!(
+>     |  ____________________________________^
+>     | |____________________________________|
+>     | |____________________________________|
+>     | |____________________________________|
+>     | |
+> 107 | |         QueueData {
+> 108 | |             tree <- TreeContainer::new(),
+> 109 | |             completion_time_nsec: *param_completion_time_nsec.rea=
+d(),
+> ...   |
+> 113 | |         }
+> 114 | |     ))?;
+>     | |     ^
+>     | |_____|
+>     | |_____expected `DropGuard<IRQMode>`, found `__rnull_mod_irq_mode`
+>     | |_____this expression has type `DropGuard<IRQMode>`
+>     | |_____`irq_mode` is interpreted as a constant, not a new binding
+>     |       help: introduce a new binding instead: `other_irq_mode`
+>     |
+>     =3D note: expected struct `DropGuard<IRQMode>`
+>                found struct `__rnull_mod_irq_mode`
+>     =3D note: this error originates in the macro `$crate::__init_internal=
+` which comes from the expansion of the macro `pin_init` (in Nightly builds=
+, run with -Z macro-backtrace for more info)
+>=20
+> error: aborting due to 3 previous errors
+>=20
+> Some errors have detailed explanations: E0277, E0308.
+> For more information about an error, try `rustc --explain E0277`.
+> make[5]: *** [/home/aeh/src/linux-rust/linux/scripts/Makefile.build:293: =
+drivers/block/rnull.o] Error 1
 
-The whole reason Dave agreed to take a stub Nova driver [1] is to keep things
-simple enough to get the corresponding *basic* device / driver, PCI and DRM
-bindings upstream. I don't think the initial PCI device bindings turn out to be
-more complex than any other subsystem device bindings in terms of delivering the
-required context to review things.
 
-Nevertheless, the I2C driver might indeed have even less dependencies overall.
+So I did some digging and there are multiple things at play. I am going
+to explain the second error first, since that one might be a problem
+with `pin_init`:
+- the `params` extension of the `module!` macro creates constants with
+   snake case names.
+- your `QueueData` struct has the same name as a field.
+- `pin_init!` generates `let $field_name =3D ...` statements for each
+   field you initialize
 
-Besides that, any additional initial user is desirable to get more evidence of
-correctness.
+Now when you define a constant in Rust, you are able to pattern-match
+with that constant, eg:
 
-So, maybe we just want to go with both as context for the review process?
+     const FOO: u8 =3D 0;
+    =20
+     fn main() {
+         match 10 {
+             FOO =3D> println!("foo"),
+             _ =3D> {}
+         }
+     }
 
-> The work is happening here [1] and is fully functional. Right now the
-> branch is not based on this series but based on the device
-> abstractions from the old `rust` branch + a few others picked-up from
-> the `asahi` tree and the mailing list.
+So when you do `let FOO =3D x;`, then it interprets `FOO` as the constant.
+This is still true if the constant has a snake case name.
+Since the expression in the `pin_init!` macro has type
+`DropGuard<$field_type>`, we get the error "expected
+`DropGuard<IRQMode>`, found `__rnull_mod_irq_mode`".
 
-That's what staging/rust-device [2] is basically based on as well.
+Now to the first error, this is a problem with the parameter handling of
+`module`. By the same argument above, your let binding in line 104:
 
-The idea was to come up with topic branches for infrastructure that is in the
-process of going upstream or in preparation for entering this process (hence the
-"staging" prefix), such that we have a common baseline for drivers that are in
-development. Instead of having every driver tree carrying those things in
-several different versions missing out on potential improvements a driver tree
-adds to them.
+     let irq_mode =3D (*irq_mode.read()).try_into()?;
 
-You are very welcome to base your project on this branch as well and provide
-feedback and / or improvements, if you like to.
+Tries to pattern-match the `irq_mode` constant with the right
+expression. Since you use the `try_into` function, it tries to search
+for a `TryInto` implementation for the type of `irq_mode` which is
+generated by the `module!` macro. The type is named
+__rnull_mod_irq_mode.
 
-- Danilo
 
-[1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
-[2] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
+Now what to do about this. For the second error (the one related to
+`pin_init`), I could create a patch that fixes it by adding the suffix
+`_guard` to those let bindings, preventing the issue. Not sure if we
+need that though, since it will not get rid of the first issue.
 
-> 
-> [0] https://github.com/Fabo/linux/commit/64a35401316aa9d77490eadb7c4bb731c7901f69
-> [1] https://github.com/Fabo/linux/commits/fparent/rust-ncv6336/
-> 
-> Fabien
-> 
+For the first issue, I think there is no other way than to use a
+different name for either the field or the constant. Since constants are
+usually named using screaming snake case, I think it should be renamed.
+I believe your reason for using a snake case name is that these names
+are used directly as the names for the parameters when loading the
+module and there the convention is to use snake case, right?
+In that case I think we could expect people to write the screaming snake
+case name in rust and have it automatically be lower-cased by the
+`module!` macro when it creates the names that the parameters are shown
+with.
+
+Hope this helps!
+
+--=20
+Cheers,
+Benno
 
