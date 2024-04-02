@@ -1,95 +1,96 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F12958211
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Apr 2024 09:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974C658AB0
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Apr 2024 09:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712051184; cv=none; b=V2MwuZ7VxzLYI1awhZqZorg8C1fHl111sRtIbFCPwBR3ZcM0ahhZYhuXO1vvjFb6DcrGOQW946JW0SqTDp0Lh4GdDn7zv5LXeSIo3sBWS1ta5kVa1M+y8Me7cm8BGmEVcKIFPaXM04Wk6Z5fq9L4iS3mwrkgROUfWfnctPpCvfM=
+	t=1712051212; cv=none; b=a7ql4OuF01UNrsKFbn7u2YqC1ILeVOJ7deLpHx0hY/a6wapHjjZVnEYr0UQ/ZJPOcOBTXZ9Gnv6cKYNK6KykGNnaM/33tinq8E+dODI9bWXCbble8zkXtz2n+LLnAULPmpjkRqYihPo4fMwS/TnWHWo+PI1oJQCJUjZc8OgTK+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712051184; c=relaxed/simple;
-	bh=XggWFGhtT/fWL1kIWx1OwviwIwPRpAp9kiwk6uVXE38=;
+	s=arc-20240116; t=1712051212; c=relaxed/simple;
+	bh=5KWH23f+CkrAqT9Dewsp1JwFaTdF1nWGTz25jhY/NPI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lf39t3fHGM7E2huG1Wez4ItW5uxIPRxzMiKhkRAYQpnJND2AAXUe9D7ueBQhHFgqp+5CQu98ATTwp5C0HShn59M6k7/2dTXxYhpBIZ05v72psbyUj0KW+xZqnAKcDLpa/iOXS/7EagZvD172YYMyJZTBxf+8q+f9BPXI+9uJBmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hooYKUIx; arc=none smtp.client-ip=209.85.222.46
+	 To:Cc:Content-Type; b=ElOn/LfU1AEtGaUkBj+hzjGJ8EniKUkpOkZGS2UwxuwDJMFif0mWqaKImXdKwsiibJcr/OM4rJEEPE0/TdZmtJWHrd7v2rb4ffdTft3+jXr+Li7U+XqHmx0YQ2lDQC+qfi9HmcnFCIdMoWuco35r55gUsic7uLlyktgf55oWOCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yLhI+zrw; arc=none smtp.client-ip=209.85.221.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hooYKUIx"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-7e376672375so523474241.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Apr 2024 02:46:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yLhI+zrw"
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4d8e4d0b267so911108e0c.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Apr 2024 02:46:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712051182; x=1712655982; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1712051209; x=1712656009; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B1dO/cGx1ctVP9vVa9nf8DWsXEGQBHZzRz0NgOZhVoY=;
-        b=hooYKUIx8HvBO2a+hT4X9jMCnm2liwwG0r+yh4zNemt26nFD9GHjG2nfNymuAWnGUZ
-         mfAJ0+PXLc7lL4M1t1LZUKC8/dlTlrJja4b9swyy6rnqHtl3N8aKlF7BbQNXnPVtM1oE
-         CfGn8PeVJgHLOSJrE/K2SqgEsnUC1JuzMxqibWPxBP0ynkMwH9doplxrtXQ3mNTaXFJt
-         RkvoPkK3c74tP2T+PO78/fNd1cXIAim49kh6F/zZgvDuOb/EtzE0bTjNNNHaNbvK3ibm
-         PzU+TXOoUOe4eSbxXBIOFpJ7jzil0FYTljsLoedzXMnbGzhb3LEM2vXOjHb+TVLd/qUr
-         CTBw==
+        bh=57Qln/YxVwij9SZ8Uk2+ZQTIMAfQPcYDAn1WRCFZujE=;
+        b=yLhI+zrwtxI3VaK5lxCY3ULGIPbwb04n6jpUe89ytnk0jfN++DmLywBLy/pvBXYw13
+         okgEQSs7ACndlT0jwHhTBAzxGz3qMzAMUkAbnlEXveLVARv35W1CtAX2s6k+GaxheO2+
+         IzYkG1yi6omVZhxLPrBNfhmnu7kJtPspsx1WZSOXvWMoVfE/IxN0N3+zWV7eQF3afi2P
+         S36FMQh/jxHJRilqE2EvM3S3ZKnix75CHNxSEv1GTO1XihECeL1GKPjEHn+6G5pQLWkI
+         F8GkqtLi40FpfYZYnp1wFYDhIyuRuJxFv1NEBAcCH3s9xljJpDbtOPBF6bIJ+roAzy+F
+         vl0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712051182; x=1712655982;
+        d=1e100.net; s=20230601; t=1712051209; x=1712656009;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B1dO/cGx1ctVP9vVa9nf8DWsXEGQBHZzRz0NgOZhVoY=;
-        b=NK92emgj5yBAf9NfwPYYREYeZBdVAu55AZo/8n4DiDRffF/s9rvbeoVdPY/nZQI9L7
-         BKKgRgjiUxz001+Sc1Pdvmf79EYcVvN7jcc+h9Uk7nlwq0ujKx6+dZFG9Z1O8xdlr0el
-         k/8RmTk2HOuv7h9mgzjWxvbSWOMx/l59n5kct/GvnbRLsLudoRHomAwDws49wbfEsd2d
-         bu3EfSUfgslKezr+hIQg+9+KHLpJTW7f9NXGKdiUoL0AJzJ3zvx6umCO/hFPJpta6BPj
-         pXibstJu2QlLBDTQxLs8WncgMaw6tuoWd5WJmJhsfHALfUqPJeDMuCXgmpAaYnIeBxMp
-         UEqw==
-X-Gm-Message-State: AOJu0YzVXWJUUKRJ5ddGNKxMMvDuglKX0LUjSgsxzYMzlXTp5y5xNR9Z
-	/Sm9ykwslKEEiA6ibg+4uTIzpDxWOzL4Ytgc9aD7AFN7H8QaxLDYXl/f6CYK7lA6UjWM7iZMPVk
-	oDL4mfl1EGmA3KHkM917bVI0Vqfw+g6XvWO5G
-X-Google-Smtp-Source: AGHT+IGW2GUJeyNma3DGOQ7j/A22qw/Kjx0LjOB0xzFOgSDElcWMye+6V8iEJOLXi5ctc1HqkuMdpOobkUY4Obtf/ns=
-X-Received: by 2002:a67:f8c9:0:b0:476:d833:ef6d with SMTP id
- c9-20020a67f8c9000000b00476d833ef6dmr9524383vsp.19.1712051182365; Tue, 02 Apr
- 2024 02:46:22 -0700 (PDT)
+        bh=57Qln/YxVwij9SZ8Uk2+ZQTIMAfQPcYDAn1WRCFZujE=;
+        b=aZjrCqcsof3KaDvurJ04TPk6lXHaXgzy3RJ8z3Zg9ZGidn7UTUc5ILdrvM8YgrAPsm
+         ffiusgXj7AeOqTwRyAxlP2E159jykOON0A8cFIAXHRgDNklhUgLTQQnbZHxNWsoBza2e
+         wnm8VuFhnBIZjhX+LS8JiwQKr8WzDjlTF+kAQXuUzFO3vlzISreSANVCOjKi1jEQ/bEE
+         June2F/qWKB1aE+/RPd8NeNmiIOAGxABvyy/KDkAD0NbO0ukGMbu2Pw3knzD7VRd98oN
+         wHI4mcwxOqle+koR86ZGjc3+pZ1ex6/DmdMoB3Otq9o9+KZPIr0xQdoC+erRQBy1vJX4
+         SHAA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJg6ZThLxQ3idrVm5DIbw+CYg4Dpyjkm4c11OwT168bI5R5KlUqnQiLljPUzIt794WVne1Th/bAPBRnYP73brnuFIJ2pClOB/JsJEp6SA=
+X-Gm-Message-State: AOJu0Yz3s0BHbF6o2I5A/ITEnqerfkS809qnh1doAD95yq7pIQMrOqSw
+	aA8PXszwKSuLa6l10jp0n0ncopEWK8G5ipRRuWwA+1aE2y1JOEwhnfpP8Oc9NkjHUOcFVM3aL0J
+	Q3Gdb3mB8tu+EQJBtHml6l7Pv174M8fTtS854
+X-Google-Smtp-Source: AGHT+IGQf3QzhQLw9j6incX1IXi9f33qMcGOHachbPjJXSe8XAem2rfd7FCRPcCKfwdQFdRHcq9OG/7bKX/RqoZHYWY=
+X-Received: by 2002:a05:6122:c90:b0:4d3:4aad:22d4 with SMTP id
+ ba16-20020a0561220c9000b004d34aad22d4mr9329783vkb.0.1712051209441; Tue, 02
+ Apr 2024 02:46:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240401214543.1242286-1-boqun.feng@gmail.com>
-In-Reply-To: <20240401214543.1242286-1-boqun.feng@gmail.com>
+References: <20240401212303.537355-1-ojeda@kernel.org> <20240401212303.537355-2-ojeda@kernel.org>
+In-Reply-To: <20240401212303.537355-2-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 2 Apr 2024 11:46:11 +0200
-Message-ID: <CAH5fLggN2PQeZs2pwR1EEeA6_O=xUo3=UvUgcuo=9YNtaBNrJw@mail.gmail.com>
-Subject: Re: [PATCH] rust: types: Make Opaque::get const
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 2 Apr 2024 11:46:38 +0200
+Message-ID: <CAH5fLgh7jbq8ea4CBJJRPY3gfm6=-_ck2mqArWDG6s+bLfMr7g@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: sync: implement `Default` for `LockClassKey`
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Obei Sideg <linux@obei.io>
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 1, 2024 at 11:46=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Mon, Apr 1, 2024 at 11:23=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> To support a potential usage:
+> In the upcoming Rust 1.78.0, Clippy suggests to implement `Default` even
+> when `new()` is `const`, since `Default::default()` may call `const`
+> functions even if it is not `const` itself [1]:
 >
->     static foo: Opaque<Foo> =3D ..; // Or defined in an extern block.
+>     error: you should consider adding a `Default` implementation for `Loc=
+kClassKey`
+>       --> rust/kernel/sync.rs:31:5
+>        |
+>     31 | /     pub const fn new() -> Self {
+>     32 | |         Self(Opaque::uninit())
+>     33 | |     }
+>        | |_____^
 >
->     ...
+> Thus implement it.
 >
->     fn bar() {
->         let ptr =3D foo.get();
->     }
->
-> `Opaque::get` need to be `const`, otherwise compiler will complain
-> because calls on statics are limited to const functions.
->
-> Also `Opaque::get` should be naturally `const` since it's a composition
-> of two `const` functions: `UnsafeCell::get` and `ptr::cast`.
->
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Link: https://github.com/rust-lang/rust-clippy/pull/10903 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
