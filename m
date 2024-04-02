@@ -1,86 +1,153 @@
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D995914A
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Apr 2024 09:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE9369979
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Apr 2024 12:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712051747; cv=none; b=sgK3qQBs0bvFtJp00EY5LZYD7BVlh8/zPP9BeybwKM/9KBY9/JqDHB1IZTojiiBW5rCpK8lmVGaX2MJpU3ZYyiDXx8omVYsH874q46x/5yy9b31MCkJG8o2+WIY2JtAvs+V2a2RR71Tm0YaAvgnhvildTD16HtUIIP/4Awnxvks=
+	t=1712060243; cv=none; b=aAimOEudMqRPfPeUnS6v+248QUfSVtKfco+BcJZnwBhPad7BRvVVfMr0Hf0VcZB5LsLdKm5sBBHbxweKcJ8QZyfNTBUH900uNIoZmhgVXSKaQbzu51UYZJa3SGdYUMFdUv69gYV6n3wKfboyIajVwQxrKhH/mlmj4OET/Jn0wpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712051747; c=relaxed/simple;
-	bh=a+YljDVrbcAwyR/tcUOKBAwbhaSbQeo8lJMXH+opy20=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I+0EcCJDeMzjjQGOryQsEcXWKLZKXuxzesHfahkBoxnRypzBBznDZPQMQi63qxE2ukZjXfB/5fZWVMXVcu2fvT+CuLOAnTP6ibq7wu3DlVhF5pyt8Bh6gyJcB8+GGs08iPv72zH0TY9dr0Q084uPzkjk8MbP5myHgBmQSWE76KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KsvBWpxz; arc=none smtp.client-ip=209.85.217.54
+	s=arc-20240116; t=1712060243; c=relaxed/simple;
+	bh=hb9YLfFeW6qyr//dfTe23L1QTb0/GkGG5H39Mioi6E4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hBknytKkvpftKgUTyT4lzg6pieul2n3GOpTv33iUpHC4v/oo/ARXBG+36rMQbMfCoSxfAWiOX6HYhox6wml6J44F45p6FDQtDU9SCZp9xZN9L3S9gfBGkFCmuiWawwc8c/mI7j7mB9lsdJNur7O5TI/gFOmMBtYJNRTrwTlw8bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4RJZ2Wh7; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KsvBWpxz"
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-4765e6cf37aso1346033137.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Apr 2024 02:55:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4RJZ2Wh7"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-611e89cf3b5so83640637b3.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Apr 2024 05:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712051744; x=1712656544; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a+YljDVrbcAwyR/tcUOKBAwbhaSbQeo8lJMXH+opy20=;
-        b=KsvBWpxzvxZIGoUiZxoyoVLoBnnOQr5jJFGAmVj6Bcex884PDy5mjSF17mTEouKYav
-         YL8DKHYIb1th5ZQ15mYwGhM0GdCx1U8+dc8SjF5ao7dkQUfmENfVzzEkPSdMpSTS1RVS
-         yhHVhvePqYceW4HzwvFWhAFk2tJUbyr/wDLgJQuzTrrz5kicjj/bl/icy4SxmOsPN+Un
-         /J+JdCRrjw1HeEGRKtjjiAMfgYQ79JVj53+/GkX6Aonx54orFhtm3Z/z7icotcunvbnH
-         vpg8IY1kSrXtrC+ecIrcYqXkXOcgDuX27ppYT07j0VSq5vnRvCv4oYodj1EkK+r/fIsn
-         sEbg==
+        d=google.com; s=20230601; t=1712060239; x=1712665039; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DjiqI8mRyYXqAtYdhAEsC5C9flNtT/OWZnrkh/1Nk4s=;
+        b=4RJZ2Wh72KZCY2PXDHV5/2l1HQa6meQ5lYCqfKe0jXZvtoCig59/Pux4aSd85AEPQQ
+         eZT26i3+CfJNxFnLflOHkGcugj9UJBCBKbjIFEieKDhpK7xwKRdId/du3L0yvCag0PlR
+         tesQMYTpKEsFYRpHSKq3wtuZMq65ctZqPhd98bIpe7MDM9e8s7Z1dQM6ZV6eZRcozplM
+         Q/jGpB3OC6hFi8PGlcp/Eo4YD0jsaXboTQuai8M8nULlAoe6b57gVSPPHsGOOLXyqqxD
+         7g3MhEPFJ1JRnPBbXPSC3k6hALOWR01KxOeLZQlWC13+Q+Iia229w91xEJ8IDEN1brZQ
+         9b5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712051744; x=1712656544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a+YljDVrbcAwyR/tcUOKBAwbhaSbQeo8lJMXH+opy20=;
-        b=GEXQ6GdECcFX5x3yNy1ix1b1gWs8Gui0E32yo/mw2TxW+q5KTXlQpzUllniMiH2Z6s
-         pKO1yBY7K9+OYryEa3ZXI1vBT3HSUy5JT3O0C4RhiCYnCzjhyYYo6n1GBiY4aW9yvSRM
-         DiLuWG66QUDTOYhLKqIApcNJN8t/S8WCZ1VkDJALhiGJyFrafxhpx2dAllh+gs4aVGjI
-         wjId6zH/fm65t2ALswgkmVA9u5gQb70h4t+0KYQiqlZrBn0o30AEHxzSszrbNK79C5SR
-         EfoNphBYaJlaWKDhMoPbL2UZSqq28IdpUU6JWS4XZ3YPG9jtmntWsD24UM387GfFbtAM
-         nj2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXbgj7PAVoC7VV2375HHH3JeDCu/9b7FYmUWTWZVwBcpW9KNzKwLNy7YupvhascsGPGsX3jGiimtlufMI7L//pTCN2/fbGheNusWDIe5YM=
-X-Gm-Message-State: AOJu0YxKghg9A58kkfKW3eZRurXi2y9+tYtbA3M+F8dKoej0TBhcXnGv
-	DBa/LM2z0EeMn5A7HprPqrnCdZRlHQKB4rlop+WZ0C0Zqqg8oQNHm9nix4Gso3tnwVxySN4yYDm
-	IL+08+9Eh6Nuq5ZXSkOtj1+IvOZFGXVdFFA3k
-X-Google-Smtp-Source: AGHT+IGv3VAH51GyjjtjsnXbb/DrFswdNA8szNO89cktWs1ewiqSuc3VC/AWKEjqHLDt3jRpmLOWygntlWniMVRckAo=
-X-Received: by 2002:a05:6102:378:b0:475:fe59:f33 with SMTP id
- f24-20020a056102037800b00475fe590f33mr6501047vsa.29.1712051744314; Tue, 02
- Apr 2024 02:55:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712060239; x=1712665039;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DjiqI8mRyYXqAtYdhAEsC5C9flNtT/OWZnrkh/1Nk4s=;
+        b=UQFhRU9o0HTmZccImR4eEHOBORjM0bH6BghnF7Ih3aZww/NSNFyT6Hd3F/S1sGpZwX
+         ZGgaeTlvu1FsTdSKiNGE3PtLhyZLBw1D6ZF3daFfoLbBY+SwEZ1FF4zHNnF4J36iQCev
+         Azws+n8QQkPiSD3snnCpv09jExNCVSSKcxSbBhgTMaeKnZa4m8yAJnjbzjfHoSuiZWY+
+         oa+6k7RGluDKa94w8reYBVSIF5kDu7psdUMpSxuHsq5pJKjGq9DybCw3romtwvKzP5mX
+         jkvxtTPVhOyVVGQzEZSnjboIVMGBAxhpQYb7+mNUaWVrxBWJfVy3iCIr28ZPwH2nol3X
+         zBXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUyqqC7uHdeFIPrPzMmAt7s1bBtCRXPDL5ZzWZ3LXAbZgNEKNJUd17Xat3z10/9BAq/GZkI58Ldom5RhrP2eZaAw68MiIG6h/4LriTTYMY=
+X-Gm-Message-State: AOJu0YytNzUsvA3RCnDN5iDGKase4JLtUAvFoRizT1zNbraflZMQUwiq
+	gzQJS2vwMB+3sbut81anw/uHmF8YWWhWEJRxjpZ6yALetEp+MhFYT2UWurgsaGYBB2SlQR5KylF
+	3ZeA9urCcMI49AA==
+X-Google-Smtp-Source: AGHT+IETf0y2x9+0Il6X7o1SicU337VQZAfyTSoBezHqdc2NUU9vqiIk4G3iBLGaUZFk4S9O9osTq3oflFJhPHc=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:b98:b0:614:935:a299 with SMTP
+ id ck24-20020a05690c0b9800b006140935a299mr3044145ywb.1.1712060239438; Tue, 02
+ Apr 2024 05:17:19 -0700 (PDT)
+Date: Tue, 02 Apr 2024 12:16:57 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240217002602.57270-1-ojeda@kernel.org>
-In-Reply-To: <20240217002602.57270-1-ojeda@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADn3C2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDIyND3ZzMvOzUFCBVXKJrZGpoZploaZBokpKqBNRRUJSallkBNi06trY WABJanWZdAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2767; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=hb9YLfFeW6qyr//dfTe23L1QTb0/GkGG5H39Mioi6E4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmC/dHtvJud93RLZvdv6d9mhlvN2Fsz9HC/J4z+
+ B8E9nKCekyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZgv3RwAKCRAEWL7uWMY5
+ RpqRD/9jTyQm9pFd55v3VDn+UbynCM+WGdAl5VQru105YREvXo8QQD0r9oe9X70i2RRxZ3tQvvy
+ n428+KUXKrvYw3DYiK+nOMlnTQmrP8mm5DRVNVxCt3/vxaA+7ABT67zKt2u8yT2l1yv6sKuTxfH
+ sS27HWjFS5YAIFKSkO1ioS14Aq6gGd4PYhPXQ+CZZOewBdmeSmf+28CCtAvzn8b7x2mslcwaU+M
+ 9Zmkm7uSusf4FdDlIMnfKW4WzTiPSfQQ8d7psE8yVmE+hF/CuhPAijMcQYSGR85LWjEeWoMlpwb
+ aFC7ikSv6jP2bnBEtHXXE4j9QwqiwKWU6kfXkUVBWK/ZoFhrfcxweerdt4MpkS/y6cDTRYYiqHg
+ XN1cSWoDKPaJaNQ5fuw65hBt+zSs+RnlbJ667rfbhWHqB6r7JBg4WOiGvJIsLpw8uRfmqfFlH5T
+ cm57zmnjCfxyLQKIa82pY/vFpTO+fxW6MePhKRiPXnHPAQiLapjMEFLnAEL/XLsvLJysA8MMwqt
+ dHbT0VP4y+VOeiO2kRjWatMek66+STlMiqd7c8s6v4gB0C9Iwpd7SAlKuyt4Vu4SnjSZCcgbRDl
+ Q2/u/dDKxXkHShXzDh5nVv0YieqlJ2V3xA2hEW7FrpIGSV+aPiNj0ABk/Sn2qL80N74+EwMn/C4 HTUTqt7voriDxOA==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com>
+Subject: [PATCH 0/9] Add Rust linked list for reference counted values
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 2 Apr 2024 11:55:33 +0200
-Message-ID: <CAH5fLggb8jr2yaQwcQFmrP935_h+SRPT=xH+tRQe7dngiLB2fA@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: use `-Zdwarf-version` to support DWARFv5
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, 
+	Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
+	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Sat, Feb 17, 2024 at 1:26=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Rust 1.64.0 introduced (unstable) support for the `-Zdwarf-version`
-> flag, which allows to select DWARFv5, thus use it.
->
-> Link: https://github.com/rust-lang/rust/issues/103057
-> Link: https://github.com/rust-lang/rust/pull/98350
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This patchset contains a Rust implementation of a doubly-linked list for
+use with reference counted values. Linked lists are famously hard to
+implement in Rust [1] given the cyclic nature of the pointers, and
+indeed, this implementation uses unsafe to get around that.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Linked lists aren't great for cache locality reasons, but it can be hard
+to avoid them for cases where you need data structures that don't
+allocate. Most linked lists in Binder are for collections where order
+matters (usually stacks or queues). There are also a few lists that are
+just collections, but linked lists are only used for this purpose in
+cases where the linked list is cold and performance isn't that
+important. The linked list is chosen over Vec in this case so that I
+don't have to worry about reducing the capacity of the vector. (Our
+red/black trees are a much better place to look for improving cache
+locality of collections in Rust Binder, and the upcoming xarray bindings
+would help with that.)
+
+Please see the Rust Binder RFC [2] for usage examples.
+
+The linked lists are used all over Rust Binder, but some pointers for
+where to look for examples:
+
+[PATCH RFC 04/20] rust_binder: add work lists
+Implements the work lists that store heterogeneous items. Uses the
+various macros a bunch.
+
+[PATCH RFC 10/20] rust_binder: add death notifications
+Uses the cursor. Also has objects with multiple prev/next pointer pairs.
+
+[PATCH RFC 15/20] rust_binder: add process freezing
+Uses the iterator with for loops.
+
+This patchset depends on [3].
+
+Link: https://rust-unofficial.github.io/too-many-lists/ [1]
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [2]
+Link: https://lore.kernel.org/rust-for-linux/20240311-arc-for-list-v3-0-cba1883c62eb@google.com/ [3]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (9):
+      rust: list: add ListArc
+      rust: list: add tracking for ListArc
+      rust: list: add struct with prev/next pointers
+      rust: list: add macro for implementing ListItem
+      rust: list: add List
+      rust: list: add iterators
+      rust: list: add cursor
+      rust: list: support heterogeneous lists
+      rust: list: add ListArcField
+
+ rust/kernel/lib.rs                     |   1 +
+ rust/kernel/list.rs                    | 637 +++++++++++++++++++++++++++++++++
+ rust/kernel/list/arc.rs                | 431 ++++++++++++++++++++++
+ rust/kernel/list/arc_field.rs          |  94 +++++
+ rust/kernel/list/impl_list_item_mod.rs | 181 ++++++++++
+ 5 files changed, 1344 insertions(+)
+---
+base-commit: 98ebc2e1c5bd188fd3140a0f812b302bb9c3ad26
+change-id: 20240221-linked-list-25169a90a4de
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
