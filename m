@@ -1,42 +1,42 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30255200D4
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Apr 2024 22:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A115F2260B;
+	Tue,  2 Apr 2024 23:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712097347; cv=none; b=OiHnzAV2l4LbxsAEA/24UX3RfELOet+wK3G3p9xRQX61+w3mtF+TmLeOAxd3lTjFfJJMoG7oMM0pW4nkn4M0zbov+bNZDXVPFpCRfb35+ZzYIbziM+mAxgWezJ8ZWgj1gxcsdbm66wg+YU4/FTV5NFNjq7O8ZmnzMOVy50YT9NI=
+	t=1712099397; cv=none; b=mtR6/02H1ZFSJgWPWRtPQ2aSHrp2dd/Ua+4e4h7IneOFdNnAwaI2PCgbU/rf4ZcauYEA6udAzrJABajjZg8mmOKMVQWC5hPh2RabGs0QgOgfJtXseOt+9taYIRj73vpvJCYnL4DoPp0Y9nTORlPPLNw64HlDoKF801c/6+hADTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712097347; c=relaxed/simple;
-	bh=jkjZO7jwr0PCImAu66df4aVlb2K6kWhUeVLD66IVeD8=;
+	s=arc-20240116; t=1712099397; c=relaxed/simple;
+	bh=zTNnWCsplfyp5T2nWgn8oJWZzr3uiuiOLHN2o/GFkwI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bwvNCN7cryhpU27XcOOCZT8TAi1GRxM90UhCx4sdExTfIFzaAzK04MgF6F/nMYlH7SNRdMiGQbB6iQq8d5unAS8dk0jeWXOsxpffjipT5TKzCtuot/Bo9awjFo1ws389adOv6UxKb9ym0wW+fC4nSWR+fsVR/wAZwObYOmNJXVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Y6alFi2P; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=NjM/oh1p4yx5Yq6SOjpfypoCtqMA/hSz3Di83iuwSUDRqB0hNC8CyD8zeJXP5WlfXmr102V+5dDIJ6rDQx6AhZkooNZtrumyUI+F5bOgXYLaKxGcuXd/5PqZAUsjnpGjrSobal4zH7/UWRyQYnSiVNd+hGeebIkmwD3V9Fl8erk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Hm+6z5W0; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Y6alFi2P"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Hm+6z5W0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712097336; x=1712356536;
-	bh=ZR6oanZJrjCoyu/0f+lqsJmEQvmkfNvERkB55FpMbLg=;
+	s=protonmail; t=1712099393; x=1712358593;
+	bh=BwgrpotDzagmgWcu+/Ta2cDFG0k8Ub+uczrR9L3a+SM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Y6alFi2PVO8tJG/+5EOowTtK6yQ+6aIb1zfjGhrRz4XFdszTaso4nG7qq2q1l6LY+
-	 UjBcXlcQgC1v+9CJIw/VhW9joS+lqyz4GMBIHL+jlObSUxBQAQqya602hokAIoiUFP
-	 b3kQoeWnN5BPVxHGvKa9kLXAs+T3zKIyP7HzmNWETIAH/pB1V+ulitRQKT7+3/s908
-	 1Czkrja20NNZrbd02NDy4tBSDb1XkLEWJ4/0CKsw0hbl36F8YidFnW6vrLaLG0HK0N
-	 S+03aHDnbdVnBf9lFuYk+FA4/L2msRvXoAopXACBRbWwZTCzalO59KEDknT+nycfxA
-	 l2Dax32bzBzbA==
-Date: Tue, 02 Apr 2024 22:35:32 +0000
+	b=Hm+6z5W0XCTQzxG2hgNVqDN4l5wIcESAC+yGWiBo+D23KLk/IzuDXJdtVKuz5Iojy
+	 WQWi7fF+4z+QblXHDa1kYZ5f2Cu07vffSRhyv6PU/yRnarmWYAf29en3TpGwGsiDrX
+	 /nAlwoz6+ObdcnhSSBjdWSL4SYdJ+iS82Onom7XgVMaP5lTo/fekdAuTMlPpLkPUxT
+	 SVoNMLSCgpABTMGlsCbH09H4QfXVVgEFrx8l3rM+q3Zu+4WwMgZKPrCuAvCkJvFC+L
+	 25BMpu2Bo4SOwUi52YT31oYfQ85VJHeVFDo1z+pljh6Cr2rOgtp19+wHBFpL0KnvI1
+	 RJgdZHXLSuFjQ==
+Date: Tue, 02 Apr 2024 23:09:49 +0000
 To: Andreas Hindborg <nmi@metaspace.dk>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
 	<da.gomez@samsung.com>, open list <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 4/5] rust: block: add rnull, Rust null_blk implementation
-Message-ID: <1e8a2a1f-abbf-44ba-8344-705a9cbb1627@proton.me>
-In-Reply-To: <87msqc3p0e.fsf@metaspace.dk>
-References: <20240313110515.70088-1-nmi@metaspace.dk> <20240313110515.70088-5-nmi@metaspace.dk> <QqpNcEOxhslSB7-34znxmQK_prPJfe2GT0ejWLesj-Dlse1ueCacbzsJOM0LK3YmgQsUWAR58ZFPPh1MUCliionIXrvLNsOqTS_Ee3bXEuQ=@proton.me> <87msqc3p0e.fsf@metaspace.dk>
+Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
+Message-ID: <7ed2a8df-3088-42a1-b257-dba3c2c9fc92@proton.me>
+In-Reply-To: <871q7o54el.fsf@metaspace.dk>
+References: <86cd5566-5f1b-434a-9163-2b2d60a759d1@proton.me> <871q7o54el.fsf@metaspace.dk>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -47,219 +47,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 02.04.24 14:52, Andreas Hindborg wrote:
+On 23.03.24 07:32, Andreas Hindborg wrote:
 > Benno Lossin <benno.lossin@proton.me> writes:
->=20
 >> On 3/13/24 12:05, Andreas Hindborg wrote:
->>> +module! {
->>> +    type: NullBlkModule,
->>> +    name: "rnull_mod",
->>> +    author: "Andreas Hindborg",
->>> +    license: "GPL v2",
->>> +    params: {
->>> +        param_memory_backed: bool {
->>> +            default: true,
->>> +            permissions: 0,
->>> +            description: "Use memory backing",
->>> +        },
->>> +        // Problems with pin_init when `irq_mode`
+>>> +//! implementations of the `Operations` trait.
+>>> +//!
+>>> +//! IO requests are passed to the driver as [`Request`] references. Th=
+e
+>>> +//! `Request` type is a wrapper around the C `struct request`. The dri=
+ver must
+>>> +//! mark start of request processing by calling [`Request::start`] and=
+ end of
+>>> +//! processing by calling one of the [`Request::end`], methods. Failur=
+e to do so
+>>> +//! can lead to IO failures.
 >>
->> Can you elaborate?
+>> I am unfamiliar with this, what are "IO failures"?
+>> Do you think that it might be better to change the API to use a
+>> callback? So instead of calling start and end, you would do
+>>
+>>       request.handle(|req| {
+>>           // do the stuff that would be done between start and end
+>>       });
+>>
+>> I took a quick look at the rnull driver and there you are calling
+>> `Request::end_ok` from a different function. So my suggestion might not
+>> be possible, since you really need the freedom.
+>>
+>> Do you think that a guard approach might work better? ie `start` returns
+>> a guard that when dropped will call `end` and you need the guard to
+>> operate on the request.
 >=20
-> I think we discussed this before, but I do not recall what you decided
-> was the issue.
-
-Ah I vaguely remember.
-
-> It is probably easier if you can apply the patches and try to build with
-> this on top:
+> I don't think that would fit, since the driver might not complete the
+> request immediately. We might be able to call `start` on behalf of the
+> driver.
 >=20
-> diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
-> index 04bdb6668558..bd089c5e6e89 100644
-> --- a/drivers/block/rnull.rs
-> +++ b/drivers/block/rnull.rs
-> @@ -48,7 +48,7 @@
->              description: "Use memory backing",
->          },
->          // Problems with pin_init when `irq_mode`
-> -        param_irq_mode: u8 {
-> +        irq_mode: u8 {
->              default: 0,
->              permissions: 0,
->              description: "IRQ Mode (0: None, 1: Soft, 2: Timer)",
-> @@ -101,7 +101,7 @@ fn add_disk(tagset: Arc<TagSet<NullBlkDevice>>) -> Re=
-sult<GenDisk<NullBlkDevice>
->          return Err(kernel::error::code::EINVAL);
->      }
+> At any rate, since the request is reference counted now, we can
+> automatically fail a request when the last reference is dropped and it
+> was not marked successfully completed. I would need to measure the
+> performance implications of such a feature.
+
+Are there cases where you still need access to the request after you
+have called `end`? If no, I think it would be better for the request to
+be consumed by the `end` function.
+This is a bit difficult with `ARef`, since the user can just clone it
+though... Do you think that it might be necessary to clone requests?
+
+Also what happens if I call `end_ok` and then `end_err` or vice versa?
+
+>>> +    pub fn data_ref(&self) -> &T::RequestData {
+>>> +        let request_ptr =3D self.0.get().cast::<bindings::request>();
+>>> +
+>>> +        // SAFETY: `request_ptr` is a valid `struct request` because `=
+ARef` is
+>>> +        // `repr(transparent)`
+>>> +        let p: *mut c_void =3D unsafe { bindings::blk_mq_rq_to_pdu(req=
+uest_ptr) };
+>>> +
+>>> +        let p =3D p.cast::<T::RequestData>();
+>>> +
+>>> +        // SAFETY: By C API contract, `p` is initialized by a call to
+>>> +        // `OperationsVTable::init_request_callback()`. By existence o=
+f `&self`
+>>> +        // it must be valid for use as a shared reference.
+>>> +        unsafe { &*p }
+>>> +    }
+>>> +}
+>>> +
+>>> +// SAFETY: It is impossible to obtain an owned or mutable `Request`, s=
+o we can
+>>
+>> What do you mean by "mutable `Request`"? There is the function to obtain
+>> a `&mut Request`.
 >=20
-> -    let irq_mode =3D (*param_irq_mode.read()).try_into()?;
-> +    let irq_mode =3D (*irq_mode.read()).try_into()?;
+> The idea behind this comment is that it is not possible to have an owned
+> `Request` instance. You can only ever have something that will deref
+> (shared) to `Request`. Construction of the `Request` type is not
+> possible in safe driver code. At least that is the intention.
 >=20
->      let queue_data =3D Box::pin_init(pin_init!(
->          QueueData {
->=20
-> ---
->=20
-> There is some kind of name clash issue when using `pin_init!` in the expr=
-ession on
-> line 106:
->=20
->     let queue_data =3D Box::pin_init(pin_init!(
->         QueueData {
->             tree <- TreeContainer::new(),
->             completion_time_nsec: *param_completion_time_nsec.read(),
->             irq_mode,
->             memory_backed: *param_memory_backed.read(),
->             block_size,
->         }
->     ))?;
->=20
-> I cannot immediately decipher the error message:
->=20
->   RUSTC [M] drivers/block/rnull.o
-> error[E0277]: the trait bound `__rnull_mod_irq_mode: From<u8>` is not sat=
-isfied
->    --> /home/aeh/src/linux-rust/linux/drivers/block/rnull.rs:104:39
->     |
-> 104 |     let irq_mode =3D (*irq_mode.read()).try_into()?;
->     |                                       ^^^^^^^^ the trait `From<u8>`=
- is not implemented for `__rnull_mod_irq_mode`
->     |
->     =3D note: required for `u8` to implement `Into<__rnull_mod_irq_mode>`
->     =3D note: required for `__rnull_mod_irq_mode` to implement `TryFrom<u=
-8>`
->     =3D note: required for `u8` to implement `TryInto<__rnull_mod_irq_mod=
-e>`
->=20
-> error[E0308]: mismatched types
->     --> /home/aeh/src/linux-rust/linux/drivers/block/rnull.rs:106:36
->      |
-> 106  |       let queue_data =3D Box::pin_init(pin_init!(
->      |  ____________________________________^
-> 107  | |         QueueData {
-> 108  | |             tree <- TreeContainer::new(),
-> 109  | |             completion_time_nsec: *param_completion_time_nsec.re=
-ad(),
-> ...    |
-> 113  | |         }
-> 114  | |     ))?;
->      | |     ^
->      | |     |
->      | |_____expected `IRQMode`, found `__rnull_mod_irq_mode`
->      |       arguments to this function are incorrect
->      |
-> note: function defined here
->     --> /home/aeh/.rustup/toolchains/1.74.1-x86_64-unknown-linux-gnu/lib/=
-rustlib/src/rust/library/core/src/ptr/mod.rs:1365:21
->      |
-> 1365 | pub const unsafe fn write<T>(dst: *mut T, src: T) {
->      |                     ^^^^^
->      =3D note: this error originates in the macro `$crate::__init_interna=
-l` which comes from the expansion of the macro `pin_init` (in Nightly build=
-s, run with -Z macro-backtrace for more info)
->=20
-> error[E0308]: mismatched types
->    --> /home/aeh/src/linux-rust/linux/drivers/block/rnull.rs:106:36
->     |
-> 39  | / module! {
-> 40  | |     type: NullBlkModule,
-> 41  | |     name: "rnull_mod",
-> 42  | |     author: "Andreas Hindborg",
-> ...   |
-> 71  | |     },
-> 72  | | }
->     | |_- constant defined here
-> ...
-> 106 |       let queue_data =3D Box::pin_init(pin_init!(
->     |  ____________________________________^
->     | |____________________________________|
->     | |____________________________________|
->     | |____________________________________|
->     | |
-> 107 | |         QueueData {
-> 108 | |             tree <- TreeContainer::new(),
-> 109 | |             completion_time_nsec: *param_completion_time_nsec.rea=
-d(),
-> ...   |
-> 113 | |         }
-> 114 | |     ))?;
->     | |     ^
->     | |_____|
->     | |_____expected `DropGuard<IRQMode>`, found `__rnull_mod_irq_mode`
->     | |_____this expression has type `DropGuard<IRQMode>`
->     | |_____`irq_mode` is interpreted as a constant, not a new binding
->     |       help: introduce a new binding instead: `other_irq_mode`
->     |
->     =3D note: expected struct `DropGuard<IRQMode>`
->                found struct `__rnull_mod_irq_mode`
->     =3D note: this error originates in the macro `$crate::__init_internal=
-` which comes from the expansion of the macro `pin_init` (in Nightly builds=
-, run with -Z macro-backtrace for more info)
->=20
-> error: aborting due to 3 previous errors
->=20
-> Some errors have detailed explanations: E0277, E0308.
-> For more information about an error, try `rustc --explain E0277`.
-> make[5]: *** [/home/aeh/src/linux-rust/linux/scripts/Makefile.build:293: =
-drivers/block/rnull.o] Error 1
+> The `from_ptr_mut` is unsafe, and could be downgraded to
+> `from_ptr`, since `Operations::complete` takes a shared reference
+> anyway. Bottom line is that user code does not handle `&mut Request`.
 
+Ah I see what you mean. But the user is able to have an `ARef<Request>`.
+Which you own, if it is the only refcount currently held on that
+request. When you drop it, you will run the destructor of the request.
 
-So I did some digging and there are multiple things at play. I am going
-to explain the second error first, since that one might be a problem
-with `pin_init`:
-- the `params` extension of the `module!` macro creates constants with
-   snake case names.
-- your `QueueData` struct has the same name as a field.
-- `pin_init!` generates `let $field_name =3D ...` statements for each
-   field you initialize
-
-Now when you define a constant in Rust, you are able to pattern-match
-with that constant, eg:
-
-     const FOO: u8 =3D 0;
-    =20
-     fn main() {
-         match 10 {
-             FOO =3D> println!("foo"),
-             _ =3D> {}
-         }
-     }
-
-So when you do `let FOO =3D x;`, then it interprets `FOO` as the constant.
-This is still true if the constant has a snake case name.
-Since the expression in the `pin_init!` macro has type
-`DropGuard<$field_type>`, we get the error "expected
-`DropGuard<IRQMode>`, found `__rnull_mod_irq_mode`".
-
-Now to the first error, this is a problem with the parameter handling of
-`module`. By the same argument above, your let binding in line 104:
-
-     let irq_mode =3D (*irq_mode.read()).try_into()?;
-
-Tries to pattern-match the `irq_mode` constant with the right
-expression. Since you use the `try_into` function, it tries to search
-for a `TryInto` implementation for the type of `irq_mode` which is
-generated by the `module!` macro. The type is named
-__rnull_mod_irq_mode.
-
-
-Now what to do about this. For the second error (the one related to
-`pin_init`), I could create a patch that fixes it by adding the suffix
-`_guard` to those let bindings, preventing the issue. Not sure if we
-need that though, since it will not get rid of the first issue.
-
-For the first issue, I think there is no other way than to use a
-different name for either the field or the constant. Since constants are
-usually named using screaming snake case, I think it should be renamed.
-I believe your reason for using a snake case name is that these names
-are used directly as the names for the parameters when loading the
-module and there the convention is to use snake case, right?
-In that case I think we could expect people to write the screaming snake
-case name in rust and have it automatically be lower-cased by the
-`module!` macro when it creates the names that the parameters are shown
-with.
-
-Hope this helps!
+A more suitable safety comment would be "SAFETY: A `struct request` may
+be destroyed from any thread.".
 
 --=20
 Cheers,
