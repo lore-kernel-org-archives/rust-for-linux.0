@@ -1,141 +1,157 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BEF6E60F
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 12:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E4E56B64
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 12:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712146791; cv=none; b=Oat/6QgKdOZpYv6zcgZ/+OhW1+Mh+b9TXEMwGRHsKnT5h/Y1aoX+rp7dI5DPxt0s+XEdb+Yf1UVgJ685IuoJoXRtebYUFDtpzOMNihSTgoV4zRClUV9xcjjwe+kPdXG/+v5NM8evdneEpWuP91eXmbNf6PLucy44+iPY+CmBvE0=
+	t=1712148565; cv=none; b=V9jnU9pRY3VEeuaOwUjB+6QXriVgVaq4JPvjWpWpIyKXJKQENPGv+tWORJmsIfj44OojOSyPDP5teoTqus++nVQQlgu6ppZFRu0ndYiW2jSVZx4mBRftz/85DzSUYjByWqq92rSK1B80w/zaedeGKEDOxfXQev0tAaE7B9/11j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712146791; c=relaxed/simple;
-	bh=DtimUzcCiaEemuoUaPjn4n0jKJP0VTmi4Z8kvystU2g=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MvIcQobks+qSFRzAzXoU0SnpWQt3NcxflYqFYQzr0V++LW0Z89n+51v7ECpaDQzUuqFc4y+lvaH5Zi9iPE0Y5NAC25fDabyeUY8h0d9TSehHDig0EY95cQdTCnG8lNM5UJrCXTzjfDLe3NRnnHSDY2VSaZz12ojNaWVpXGMtVXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Xv9GRf4L; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1712148565; c=relaxed/simple;
+	bh=ROVG0xiHSnIs7KwRvfSwwYBgADFkDIzMA1GXsgZfjG8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gONXJKHeJKnWdIGqpnolKuuODe2lW7VCntJHUtNk/8VHBULHGcIpGIRVVs2QZx5J22yb3zJGjXxdLjj8qvykVSYo7q5ryAwVUy4pLHX29bHFFPfx+YH1NRxPY1WPoC3bbxNEGpUYv+nlzOYyeKkOlWurXdyf91wgZPdm8mMZW9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cL+MwWSw; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Xv9GRf4L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712146786; x=1712405986;
-	bh=0bM9BhDiM99LAuLM/L3WaFL905yHSxqRHWxKfPusUgY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Xv9GRf4LDL0m+M7PmKZenEhuN4QhZyqARnY2A1tSww0dcPL+oQJ8jDjRdwfmqGkua
-	 uNUvQaZGvm7d3Gxt96PKHN6uFes5rb2r79tYvvN5l1BccQRwxRDIt6dy9j0SV3C6N0
-	 VqJysdzsgv7fd68HyQJvlvUkUyXdY/WnSdO/EAzmyFL3dB8NuRRCjMr3ZtYmcbY2ur
-	 G6/HsNy1jaJL88pqL5j5IVAv5O+XwQSaip4c9J1Ilmf1J1X7ANn9Caw/8W3KuBGpnw
-	 7Jlakk0IQa8eoubezehHvRZg03s1WXIsRLLzQhd9qXq9a38k4rHafG02GUQqmtHggJ
-	 T97UyL1iq3JBw==
-Date: Wed, 03 Apr 2024 12:19:38 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 7/9] rust: list: add cursor
-Message-ID: <4aaf7fd7-49ed-4b3e-b691-0d8d7d426d3a@proton.me>
-In-Reply-To: <20240402-linked-list-v1-7-b1c59ba7ae3b@google.com>
-References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-7-b1c59ba7ae3b@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cL+MwWSw"
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4da702e48e0so1048600e0c.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Apr 2024 05:49:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1712148562; x=1712753362; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t2Ars11R43M3g3ak506J2E1E1SdVC3fdtd6pwR1tGRQ=;
+        b=cL+MwWSwzNVWBigFR/rg1aENaXWlU2/dlbDGdjYhVZW5Md+8KiJAU0rwpLnO/YWTal
+         oYOb93BREIVbIeYolIynQu9QeeEG+6oVT0DQUVRCcka1a9lsKzGUJuAN7PUGA8bd4HEI
+         EALQUfUI68jY14LaDwlkc4ZZtVE9ICyQSTTEbqVYXk1pp0PXK6ov9iceae/+t0z0mAU3
+         qOCqS+HHnY3nKoeeVE3WAzvbIKBO1LyDAeYlqCD7BWDWt6BMd4xGpWzy0MVR5eHVy2+q
+         bYF3pM/9+3gWkVJpfZDwIjyq3TGaRD9Oi04GTE7F8iXFGptS7t6s3ltSyowuaBQ/WVbw
+         +eYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712148562; x=1712753362;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t2Ars11R43M3g3ak506J2E1E1SdVC3fdtd6pwR1tGRQ=;
+        b=sReoTOgL2h90qyW3iqdxGcmTLT+0YM3+UkiTc6ZGC8kMXahpE7eenWHLIqeryfIVVX
+         ItkA+linMzITFiTLfzHjsGH9+Qcx7JF9N1Z6cIFKGYrIJzDeHR80RWWDjStDD5vGV/SC
+         dJgt1N/L3F5DfK1yzx0iwIkhbGCLFxzPPk91Rq1Q7vUiO12afQN08IC/DyaIzm1dBrnX
+         yPARFwuCBqViqU+DwICN0SRX897li1uxl+guMuAtea1PprseBHLpWO7oiv0Mcu1AOSqF
+         tMarsJ6BV0owWRNhiiK5zRs45YlKUxPIRlwJ03cVjEt9ys6QzCpG32bTgCM2MZCcCzES
+         7w0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWVKhQIhgUSpV8FIMVfFP5dqJOA18fO5fOZ+vpjVuOotUcwozPp2KrgLjrcJ8volpG98/yXqiKIwmvVoakIJQcLyDeeOHzzbjBm8bRJZO0=
+X-Gm-Message-State: AOJu0YxoDRuQwr3TD6RV6LkG3pPBJtkSb1U7bMEdj4sz2tYAa85cnFY4
+	GKNCeEX7iNJHwL/9ri+jxl7tU3YJNRbcYS2dQ9IIAmHd3V1VfQ0xxNZWYO1fc1/ERvFuEWnPjks
+	iNcQ3wYyFVSJv4llQhs5gU1pPZyoVzleEtOsY
+X-Google-Smtp-Source: AGHT+IGpGV6qmNqrrvcbmVo3EjMPGgz6/E5lSHMdShUkmEzO4ELmFUZsaP3K2B+eJuIeKzDyPL73JKf/NC1FkGRyx1o=
+X-Received: by 2002:a1f:cdc2:0:b0:4d3:36b9:2c26 with SMTP id
+ d185-20020a1fcdc2000000b004d336b92c26mr2131961vkg.14.1712148562485; Wed, 03
+ Apr 2024 05:49:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com>
+ <20240402-linked-list-v1-7-b1c59ba7ae3b@google.com> <4aaf7fd7-49ed-4b3e-b691-0d8d7d426d3a@proton.me>
+In-Reply-To: <4aaf7fd7-49ed-4b3e-b691-0d8d7d426d3a@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 3 Apr 2024 14:49:11 +0200
+Message-ID: <CAH5fLghEg37m_PhJxE8FVORHGROE9rd1CJttaWBGc7cXZCX+yQ@mail.gmail.com>
+Subject: Re: [PATCH 7/9] rust: list: add cursor
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, 
+	Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
+	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 02.04.24 14:17, Alice Ryhl wrote:
-> diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-> index 892705dd0571..47e52818c7bd 100644
-> --- a/rust/kernel/list.rs
-> +++ b/rust/kernel/list.rs
-> @@ -408,6 +408,20 @@ pub fn push_all_back(&mut self, other: &mut List<T, =
-ID>) {
->          other.first =3D ptr::null_mut();
->      }
->=20
-> +    /// Returns a cursor to the first element of the list.
-> +    ///
-> +    /// If the list is empty, this returns `None`.
-> +    pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
-> +        if self.first.is_null() {
-> +            None
-> +        } else {
-> +            Some(Cursor {
+On Wed, Apr 3, 2024 at 2:19=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>
+> On 02.04.24 14:17, Alice Ryhl wrote:
+> > diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
+> > index 892705dd0571..47e52818c7bd 100644
+> > --- a/rust/kernel/list.rs
+> > +++ b/rust/kernel/list.rs
+> > @@ -408,6 +408,20 @@ pub fn push_all_back(&mut self, other: &mut List<T=
+, ID>) {
+> >          other.first =3D ptr::null_mut();
+> >      }
+> >
+> > +    /// Returns a cursor to the first element of the list.
+> > +    ///
+> > +    /// If the list is empty, this returns `None`.
+> > +    pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
+> > +        if self.first.is_null() {
+> > +            None
+> > +        } else {
+> > +            Some(Cursor {
+>
+> Missing INVARIANT comment.
+>
+> > +                current: self.first,
+> > +                list: self,
+> > +            })
+> > +        }
+> > +    }
+> > +
+> >      /// Creates an iterator over the list.
+> >      pub fn iter(&self) -> Iter<'_, T, ID> {
+> >          // INVARIANT: If the list is empty, both pointers are null. Ot=
+herwise, both pointers point
+> > @@ -476,6 +490,69 @@ fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
+> >      }
+> >  }
+> >
+> > +/// A cursor into a [`List`].
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The `current` pointer points a value in `list`.
+> > +pub struct Cursor<'a, T: ?Sized + ListItem<ID>, const ID: u64 =3D 0> {
+> > +    current: *mut ListLinksFields,
+> > +    list: &'a mut List<T, ID>,
+> > +}
+> > +
+> > +impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Cursor<'a, T, ID> {
+> > +    /// Access the current element of this cursor.
+> > +    pub fn current(&self) -> ArcBorrow<'_, T> {
+> > +        // SAFETY: The `current` pointer points a value in the list.
+> > +        let me =3D unsafe { T::view_value(ListLinks::from_fields(self.=
+current)) };
+> > +        // SAFETY:
+> > +        // * All values in a list are stored in an `Arc`.
+> > +        // * The value cannot be removed from the list for the duratio=
+n of the lifetime annotated
+> > +        //   on the returned `ArcBorrow`, because removing it from the=
+ list would require mutable
+> > +        //   access to the cursor or the list. However, the `ArcBorrow=
+` holds an immutable borrow
+> > +        //   on the cursor, which in turn holds an immutable borrow on=
+ the list, so any such
+>
+> The cursor has a mutable borrow on the list.
+>
+>
+> > +        //   mutable access requires first releasing the immutable bor=
+row on the cursor.
+> > +        // * Values in a list never have a `UniqueArc` reference.
+>
+> Is there some type invariant guaranteeing this?
 
-Missing INVARIANT comment.
+The List owns a ListArc reference to the value. It would be unsound
+for there to also be a UniqueArc reference to it.
 
-> +                current: self.first,
-> +                list: self,
-> +            })
-> +        }
-> +    }
-> +
->      /// Creates an iterator over the list.
->      pub fn iter(&self) -> Iter<'_, T, ID> {
->          // INVARIANT: If the list is empty, both pointers are null. Othe=
-rwise, both pointers point
-> @@ -476,6 +490,69 @@ fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
->      }
->  }
->=20
-> +/// A cursor into a [`List`].
-> +///
-> +/// # Invariants
-> +///
-> +/// The `current` pointer points a value in `list`.
-> +pub struct Cursor<'a, T: ?Sized + ListItem<ID>, const ID: u64 =3D 0> {
-> +    current: *mut ListLinksFields,
-> +    list: &'a mut List<T, ID>,
-> +}
-> +
-> +impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Cursor<'a, T, ID> {
-> +    /// Access the current element of this cursor.
-> +    pub fn current(&self) -> ArcBorrow<'_, T> {
-> +        // SAFETY: The `current` pointer points a value in the list.
-> +        let me =3D unsafe { T::view_value(ListLinks::from_fields(self.cu=
-rrent)) };
-> +        // SAFETY:
-> +        // * All values in a list are stored in an `Arc`.
-> +        // * The value cannot be removed from the list for the duration =
-of the lifetime annotated
-> +        //   on the returned `ArcBorrow`, because removing it from the l=
-ist would require mutable
-> +        //   access to the cursor or the list. However, the `ArcBorrow` =
-holds an immutable borrow
-> +        //   on the cursor, which in turn holds an immutable borrow on t=
-he list, so any such
-
-The cursor has a mutable borrow on the list.
-
-
-> +        //   mutable access requires first releasing the immutable borro=
-w on the cursor.
-> +        // * Values in a list never have a `UniqueArc` reference.
-
-Is there some type invariant guaranteeing this?
-
---=20
-Cheers,
-Benno
-
-> +        unsafe { ArcBorrow::from_raw(me) }
-> +    }
-> +
-> +    /// Move the cursor to the next element.
-> +    pub fn next(self) -> Option<Cursor<'a, T, ID>> {
-> +        // SAFETY: The `current` field is always in a list.
-> +        let next =3D unsafe { (*self.current).next };
-> +
-> +        if next =3D=3D self.list.first {
-> +            None
-> +        } else {
-> +            Some(Cursor {
-> +                current: next,
-> +                list: self.list,
-> +            })
-> +        }
-> +    }
-
+Alice
