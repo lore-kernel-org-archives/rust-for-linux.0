@@ -1,81 +1,173 @@
-Received: from mail-io1-f73.google.com (mail-io1-f73.google.com [209.85.166.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3F9158A38
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 17:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95983524DC;
+	Wed,  3 Apr 2024 19:37:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164685; cv=none; b=M+uXKU+I/qjoiY4PJoMBVCbAYVXlXATww0RNnv5VYTWAqSB8ldoPwCrZTpAAQGSPvdjkarFEtT9XG4lG39tnXi6QfpyZMlSI73wk/jW/RSRx51KW42xkRcCGI1qySYWGNkVCd2p/NLP2rAFetEH+1+L7iTXA2Dvr/4PtlSUWkXk=
+	t=1712173074; cv=none; b=oIhomqI3guofSDFqhCfWShSNAcvk/6UMczAiLR/OihQgCLb82vLO/4s6bIwrxI596mBixNIIzMHAjw4nvIMRjMp+4xhAABFCGtJij9mKaB0wt3EoKcXKfBp1aZmM+neggbKse6ugEOQUMGU8KwdTsO4wVRQ9Q1LA+2Al3j2SFts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164685; c=relaxed/simple;
-	bh=cgIpFTm99MpdTzyPZYKw3D/coSq1ZoRn4annV/LzkvY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=S8cma77K/yHfRhuDKQ9QUJuTFm5I/hzkVrX5Fcve/Z5yMh4xLmHWne8i5XW62apyMrRSEXmuQEs42ZPsT+QuKqtSdl6qdPAdmqtOBTXB6UG/hvAnrr4dt0XcHvND1ksnUJUJz68/lyRuPZXZ1aVNdJz6tz3tyLVcsSYV6fxTUf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kanepyork.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LRzAGhJ4; arc=none smtp.client-ip=209.85.166.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kanepyork.bounces.google.com
+	s=arc-20240116; t=1712173074; c=relaxed/simple;
+	bh=dXEOpxiE2RCJ9FBYM438Z1FVC+BmQcHQgxYhuc5OAqM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rMrWqSuapPKQpJPaXvLSU5IVw7MuDLDmZ7ls65pMN5H9Rtt0UY5/4weA0D61c9cBQ6QH022jMI2h03CaVZ7jbbTCnqrfOeWNN+40bvkeMdQArjTJZNYc71DrTALPzoC/NH/tei/DyfVvADF6IgRQ+7Vd4IvQpwFm48BU95ceiVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eRTf/YaV; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LRzAGhJ4"
-Received: by mail-io1-f73.google.com with SMTP id ca18e2360f4ac-7c8a98e52b5so7708139f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Apr 2024 10:18:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712164683; x=1712769483; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZbkcCXkYZtxutNxWMBfyXkJ46XFZsRUkulK3ZanFA0o=;
-        b=LRzAGhJ4ouI3rFLgWzh4+u2zHBlLtSj5Tqn7OzCfcEJb+bee3qOAYcr6coE6vz6Uzg
-         fXTPYQ0mjJQ1joWv+vz0WG1GvjNtFwsLGA4f3nctSF9s+HMJAoCaM+dnceSCmXusM5un
-         oWRwbre4xLMe4GNq/rLk5ubLxUQYSiPUgx5ZmeUzQH0MR8r/yLgW6wlk1aLox2H36k/x
-         MPYh2Ogsf6ZFt20liE36b+2+ZqBPHYlKz6TMNmq1oMnX91RBdDLK28Ooqn1S71eNPE/m
-         DyUFdkrNaEnRFtc32SZLVO+CUMhgIby/vibpqIV7UgXzy6htrWij0Z9qTebNtw1GXojt
-         g/3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712164683; x=1712769483;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZbkcCXkYZtxutNxWMBfyXkJ46XFZsRUkulK3ZanFA0o=;
-        b=eukqSHIxa4YmuoALpdkY6tlyXOsfSdehNxziNl/gJ3Qm7V6Y8ZnLa3y4lto3TmHFay
-         HzJlzp6WMoh1AclcAMPh+I+tcfj6RjJIQ4WUNuQcWl0k5lWYbHi+K+Mz0prJ/MQx1iPz
-         Dtc3J4tBGDqZ1ZcqKYt5GVdhykqlZBskajAo29nn88QD+lmGsUuEc1q0002MCWYwWOED
-         4+wTRPdJ2oio3dqEC9rLKRK0RnZC60NA8JCKP4kI/Ub8eSXZ8aP2gdoPSsFnWUXG8trp
-         2B9CWDGbT9Fszcb6Befzgol/cHQK+oTNErxZm4pDyob9OtUnRVfw/xd7X6atc+v7uflG
-         eKlA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtZ1bCQjLqaOy0immrgLQfEJmueUILYrlQl7OoCKjHOEZJi9ce8JKYXywBlgY2PL3q7myk6hqdzPBaiw2zKg+Sbg/vkuXH/5Q+yJl9emA=
-X-Gm-Message-State: AOJu0Yyv5MOUWoB+plHBgLXkoi5krTsiCN0cbgbKhg7+lQovYTjY5FYZ
-	+0Gb+ctaExQnvptyH7qByi2FskAISueSsz+RChQD3TGRqJ5anaKhW/lDcZNN+fz8kGcSKOwGkly
-	l9TX/PEnY0k1Lhw==
-X-Google-Smtp-Source: AGHT+IGDgAUSghRSCaSK7FjK7l3p/vhfcyCUDJB3xx9wufV3VhcTqFeASbZhs3nQpc/lW/EtiNCOEuhK8aWBfXs=
-X-Received: from kanepyork-c.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:1c38])
- (user=kanepyork job=sendgmr) by 2002:a05:6602:27c9:b0:7cf:16d5:181c with SMTP
- id l9-20020a05660227c900b007cf16d5181cmr12816ios.4.1712164683013; Wed, 03 Apr
- 2024 10:18:03 -0700 (PDT)
-Date: Wed,  3 Apr 2024 17:18:01 +0000
-In-Reply-To: <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eRTf/YaV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712173069; x=1712432269;
+	bh=vLw1EUqqXu0E0eV8EO0iY5ZyKumQlE4AJba1Jz1x2ok=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=eRTf/YaVgrIkJNR0WTMp4U/nw7/iMQrP+XEuzQm95Y6Cbc0k5V8oyCBAXcj0uwPg2
+	 JrZ2mrYoc8XBDwj9LyX3Ovhz9XVubhjCTrQZBXMMrPrLG+hOSxKqjBYODcxhwtBks6
+	 PFCf3LWUNfdeWlv4+xxO0GZdsC6Zev7ge0xZZBzk5D+kYVjRx05iXRU4HGd1h/1RH0
+	 qZ+Oa2anQp9jKemSCTS8RtOZ7JnZVVH0aZjGVsKHXBu+XEI9ytSajehXXIv+9SQhIq
+	 Dy5WlMhBwmmY5/UlVzj+p0gRP5nmF0uRI0Jky7TMOrrNnshpAg6+mqEe1tJ5+E3jgT
+	 nb7KeDofat4RQ==
+Date: Wed, 03 Apr 2024 19:37:44 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
+	<da.gomez@samsung.com>, open list <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>, Ming Lei <ming.lei@redhat.com>
+Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
+Message-ID: <f405ff55-fcb0-4592-ae4b-e1188eae9953@proton.me>
+In-Reply-To: <87v84ysujo.fsf@metaspace.dk>
+References: <86cd5566-5f1b-434a-9163-2b2d60a759d1@proton.me> <871q7o54el.fsf@metaspace.dk> <7ed2a8df-3088-42a1-b257-dba3c2c9fc92@proton.me> <87v84ysujo.fsf@metaspace.dk>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com>
-X-Mailer: git-send-email 2.44.0.478.gd926399ef9-goog
-Message-ID: <20240403171801.1774333-1-kanepyork@google.com>
-Subject: Re: [PATCH 1/9] rust: list: add ListArc
-From: Kane York <kanepyork@google.com>
-To: aliceryhl@google.com
-Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	colyli@suse.de, elver@google.com, gary@garyguo.net, keescook@chromium.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, mingo@kernel.org, 
-	ojeda@kernel.org, pabeni@redhat.com, pierre.gondois@arm.com, 
-	richard.weiyang@gmail.com, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com, 
-	willy@infradead.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> +impl<T: ListArcSafe<ID>, const ID: u64> ListArc<T, ID> {
-> +    /// Constructs a new reference counted instance of `T`.
-> +    pub fn try_new(contents: T) -> Result<Self, AllocError> {
-> +        Ok(Self::from_unique(UniqueArc::try_new(contents)?))
-> +    }
+On 03.04.24 10:46, Andreas Hindborg wrote:
+> Benno Lossin <benno.lossin@proton.me> writes:
+>=20
+>> On 23.03.24 07:32, Andreas Hindborg wrote:
+>>> Benno Lossin <benno.lossin@proton.me> writes:
+>>>> On 3/13/24 12:05, Andreas Hindborg wrote:
+>>>>> +//! implementations of the `Operations` trait.
+>>>>> +//!
+>>>>> +//! IO requests are passed to the driver as [`Request`] references. =
+The
+>>>>> +//! `Request` type is a wrapper around the C `struct request`. The d=
+river must
+>>>>> +//! mark start of request processing by calling [`Request::start`] a=
+nd end of
+>>>>> +//! processing by calling one of the [`Request::end`], methods. Fail=
+ure to do so
+>>>>> +//! can lead to IO failures.
+>>>>
+>>>> I am unfamiliar with this, what are "IO failures"?
+>>>> Do you think that it might be better to change the API to use a
+>>>> callback? So instead of calling start and end, you would do
+>>>>
+>>>>        request.handle(|req| {
+>>>>            // do the stuff that would be done between start and end
+>>>>        });
+>>>>
+>>>> I took a quick look at the rnull driver and there you are calling
+>>>> `Request::end_ok` from a different function. So my suggestion might no=
+t
+>>>> be possible, since you really need the freedom.
+>>>>
+>>>> Do you think that a guard approach might work better? ie `start` retur=
+ns
+>>>> a guard that when dropped will call `end` and you need the guard to
+>>>> operate on the request.
+>>>
+>>> I don't think that would fit, since the driver might not complete the
+>>> request immediately. We might be able to call `start` on behalf of the
+>>> driver.
+>>>
+>>> At any rate, since the request is reference counted now, we can
+>>> automatically fail a request when the last reference is dropped and it
+>>> was not marked successfully completed. I would need to measure the
+>>> performance implications of such a feature.
+>>
+>> Are there cases where you still need access to the request after you
+>> have called `end`?
+>=20
+> In general no, there is no need to handle the request after calling end.
+> C drivers are not allowed to, because this transfers ownership of the
+> request back to the block layer. This patch series defer the transfer of
+> ownership to the point when the ARef<Request> refcount goes to zero, so
+> there should be no danger associated with touching the `Request` after
+> end.
+>=20
+>> If no, I think it would be better for the request to
+>> be consumed by the `end` function.
+>> This is a bit difficult with `ARef`, since the user can just clone it
+>> though... Do you think that it might be necessary to clone requests?
+>=20
+> Looking into the details now I see that calling `Request::end` more than
+> once will trigger UAF, because C code decrements the refcount on the
+> request. When we have `ARef<Request>` around, that is a problem. It
+> probably also messes with other things in C land. Good catch.
+>=20
+> I did implement `Request::end` to consume the request at one point
+> before I fell back on reference counting. It works fine for simple
+> drivers. However, most drivers will need to use the block layer tag set
+> service, that allows conversion of an integer id to a request pointer.
+> The abstraction for this feature is not part of this patch set. But the
+> block layer manages a mapping of integer to request mapping, and drivers
+> typically use this to identify the request that corresponds to
+> completion messages that arrive from hardware. When drivers are able to
+> turn integers into requests like this, consuming the request in the call
+> to `end` makes little sense (because we can just construct more).
 
-This needs to be updated for the `alloc` changes to accept allocator flags.
+How do you ensure that this is fine?:
+
+     let r1 =3D tagset.get(0);
+     let r2 =3D tagset.get(0);
+     r1.end_ok();
+     r2.do_something_that_would_only_be_done_while_active();
+
+One thing that comes to my mind would be to only give out `&Request`
+from the tag set. And to destroy, you could have a separate operation
+that also removes the request from the tag set. (I am thinking of a tag
+set as a `HashMap<u64, Request>`.
+
+>=20
+> What I do now is issue the an `Option<ARef<Request>>` with
+> `bindings::req_ref_inc_not_zero(rq_ptr)`, to make sure that the request
+> is currently owned by the driver.
+>=20
+> I guess we can check the absolute value of the refcount, and only issue
+> a request handle if the count matches what we expect. Then we can be cert=
+ain
+> that the handle is unique, and we can require transfer of ownership of
+> the handle to `Request::end` to make sure it can never be called more
+> than once.
+>=20
+> Another option is to error out in `Request::end` if the
+> refcount is not what we expect.
+
+I am a bit confused, why does the refcount matter in this case? Can't
+the user just have multiple `ARef`s?
+
+I think it would be weird to use `ARef<Request>` if you expect the
+refcount to be 1. Maybe the API should be different?
+As I understand it, a request has the following life cycle (please
+correct me if I am wrong):
+1. A new request is created, it is given to the driver via `queue_rq`.
+2. The driver can now decide what to do with it (theoretically it can
+    store it somewhere and later do something with it), but it should at
+    some point call `Request::start`.
+3. Work happens and eventually the driver calls `Request::end`.
+
+To me this does not seem like something where we need a refcount (we
+still might need one for safety, but it does not need to be exposed to
+the user).
+
+--=20
+Cheers,
+Benno
+
