@@ -1,41 +1,41 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9222D146A96;
-	Wed,  3 Apr 2024 15:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE1114AD04;
+	Wed,  3 Apr 2024 15:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712159514; cv=none; b=Sk+apQFCpyUn4esQVTpwW6glmiTTdM7w0cIZeNYP7Epljnj4jlVeyV8ZUaHpotBL55ogAVlQHin2kmGCfKuniwM32jWvZ5JBny6Lyv8vPe06bT1ppwV5OVP4mQHP7GVxe9ShZ1NTKpyWIpfZPTlOcPZZbmsDFrvnFaKIgT9Ypxc=
+	t=1712159575; cv=none; b=kD3isNOpz1GXD1XDQZr1aupZ2VgKSeblqR5uHF+6wo/tyQqdMWYR8bHPAZZsNpH9vh6ccxoM5kSKbDxdpyxgtCVslCPwNgNLfKHFHbv/iK9drldbWe89Ri4dErWPTR8ltdvLdnf3KE4ppUDzYrwI8QBWk3HodyrPnCbT+O5DloM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712159514; c=relaxed/simple;
-	bh=wOtVDkDP5TIIgmnuGlntttCWA3GnSxnAWVJEuBaypkw=;
+	s=arc-20240116; t=1712159575; c=relaxed/simple;
+	bh=/vZX2get8gvrEKmp5nQhazHtD6ekfyGqU9MLUrfMpH8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OtiHsKHTSsX8k1Jseap+FrpOZXuKg64+TjfjPMeMggafC0o/Q27ZBUmLKa49GtMP++RTJUQVGDOBYY66Wmz3UwFsr2hskkHE+UJOYYE9gU98sB5LuGxQrjew70dBIzlZ4HU6LGfBMXau/U9jKk8hOdCTlL2XV+vJ2bUvHJj++24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=a4SGYtwi; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=KrRQE7Ceka9tlEXy6qy4T/d3C6lzClBN5RL7oEpQOJU1tSbj/qV2PsB99g086C7EuCqzjdila88hEHtfD1C/+ZGIcjU8HLfzzXJwYq5Gt9mJwSZmvS1yFLm6VvNqZSRI9TK1uIIOMTTIblG7MqZGxkfxhFoP1M9aSpkHdpvdjEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PvdkV5kN; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="a4SGYtwi"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PvdkV5kN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712159508; x=1712418708;
-	bh=UW23mqUm97ijKHcnsCqAhKuKRDp8kBhzeRwm31J4K/E=;
+	s=protonmail; t=1712159569; x=1712418769;
+	bh=LEM29//9PWH9+2k8SgrjQzlMlVMJZcFkdCQis3k3reQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=a4SGYtwiY6BXaeQNZkqHurT+AkVChaN1RMlIRu+oPuTJ9UvfV22vAs953oSyDuVgo
-	 sSsk9CS4xQlq2z3RrXf/aXnP9djkNLaWtS4+z5h7nVkfQTgRwcfBGe4loJiMs7z74S
-	 DE8/LPB5jTFt9BR/xhCAnR3D1l4GNSWbjG74PLFw7ZIpPXNj/9i5uIkok+rFwJO0XU
-	 ODnThcf8N/S3rVxPO3qTRg5A9DTpb0ZwpOfzWXrqMdbet1Ztwf8h8JGcs3OD7orzWy
-	 CksfvKS64XwVcBpwheqG6CRfqBshxTK1eA+vkcsYNTImlnaJRzoxI6GxbtDLzOX+t8
-	 clMNPE9Zom7iQ==
-Date: Wed, 03 Apr 2024 15:51:42 +0000
+	b=PvdkV5kNtHJJBOipgvrD3z+DNffsZR6IVqpZHOSc9EIbPWb4pRokHhh5n9l6DY7+E
+	 YEqNFAhpyOy4ZfAEKJVWnuj1q7LhmXWtgqf7BTy97a3QkZsX2mEbqICfeJgyzmJ+g4
+	 mZpvRZpHLF+YXpaRgSJcnfsWujAPWxjoIAeIMLiAmZMU/jHSqhTkVRVbIQ89XwZyE7
+	 f1tlIFCsaSMWLks0/OZ45FkHFkBadm6UReCBzEvIxcCTTMOjhfH5SjORrEwv/foLvr
+	 ZxFP54IGolbJa10O+va2oNYTtVLN/NSeyex7uNi7hikbrYlpeBHyDjEVYBSpCD/1/R
+	 8b9OumxApYDHA==
+Date: Wed, 03 Apr 2024 15:52:45 +0000
 To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/9] rust: list: add ListArc
-Message-ID: <2f25f21e-fad8-48bb-aa2b-d61bf8909a41@proton.me>
-In-Reply-To: <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com>
-References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com>
+Subject: Re: [PATCH 2/9] rust: list: add tracking for ListArc
+Message-ID: <36306930-0390-4342-830d-03c11ec4a3a7@proton.me>
+In-Reply-To: <20240402-linked-list-v1-2-b1c59ba7ae3b@google.com>
+References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-2-b1c59ba7ae3b@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,145 +46,119 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
+I think the commit one-line description sounds a bit strange, how about
+"rust: list: add ListArc tracking strategies"?
+
 On 02.04.24 14:16, Alice Ryhl wrote:
-> +impl<T: ListArcSafe<ID>, const ID: u64> ListArc<T, ID> {
-> +    /// Constructs a new reference counted instance of `T`.
-> +    pub fn try_new(contents: T) -> Result<Self, AllocError> {
-> +        Ok(Self::from_unique(UniqueArc::try_new(contents)?))
-> +    }
-> +
-> +    /// Use the given initializer to in-place initialize a `T`.
-> +    ///
-> +    /// If `T: !Unpin` it will not be able to move afterwards.
-> +    pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Self>
-> +    where
-> +        Error: From<E>,
-> +    {
-> +        Ok(Self::from_pin_unique(UniqueArc::pin_init(init)?))
-> +    }
-
-pin-init has a general trait for this: InPlaceInit. I don't know if the
-other functions that it provides would help you.
-
+> @@ -33,19 +34,64 @@ pub trait ListArcSafe<const ID: u64 =3D 0> {
+>      unsafe fn on_drop_list_arc(&self);
+>  }
+>=20
+> +/// Declares that this type is able to safely attempt to create `ListArc=
+`s at any time.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that `try_new_list_arc` does not return `tr=
+ue` if a `ListArc` already
+> +/// exists.
+> +pub unsafe trait TryNewListArc<const ID: u64 =3D 0>: ListArcSafe<ID> {
+> +    /// Attempts to convert an `Arc<Self>` into an `ListArc<Self>`. Retu=
+rns `true` if the
+> +    /// conversion was successful.
+> +    fn try_new_list_arc(&self) -> bool;
 > +}
 > +
-> +impl<T, const ID: u64> ListArc<T, ID>
-> +where
-> +    T: ListArcSafe<ID> + ?Sized,
-> +{
-> +    /// Convert a [`UniqueArc`] into a [`ListArc`].
-> +    pub fn from_unique(mut unique: UniqueArc<T>) -> Self {
-> +        // SAFETY: We have a `UniqueArc`, so there is no `ListArc`.
-> +        unsafe { T::on_create_list_arc_from_unique(&mut unique) };
-> +        let arc =3D Arc::from(unique);
-> +        // SAFETY: We just called `on_create_list_arc_from_unique` on an=
- arc without a `ListArc`,
-> +        // so we can create a `ListArc`.
-> +        unsafe { Self::transmute_from_arc(arc) }
-> +    }
-> +
-> +    /// Convert a pinned [`UniqueArc`] into a [`ListArc`].
-> +    pub fn from_pin_unique(unique: Pin<UniqueArc<T>>) -> Self {
-> +        // SAFETY: We continue to treat this pointer as pinned after thi=
-s call, since `ListArc`
-> +        // implicitly pins its value.
+>  /// Declares that this type supports [`ListArc`].
+>  ///
+> -/// When using this macro, it will only be possible to create a [`ListAr=
+c`] from a [`UniqueArc`].
+> +/// When using this macro, you may choose between the `untracked` strate=
+gy where it is not tracked
+> +/// whether a [`ListArc`] exists, and the `tracked_by` strategy where th=
+e tracking is deferred to a
+> +/// field of the struct. The `tracked_by` strategy can be combined with =
+a field of type
+> +/// [`AtomicListArcTracker`] to track whether a [`ListArc`] exists.
+>  #[macro_export]
+>  macro_rules! impl_list_arc_safe {
+>      (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty { untrack=
+ed; } $($rest:tt)*) =3D> {
+> -        impl$(<$($generics)*>)? $crate::list::ListArcSafe<$num> for $t {
+> +        impl$(<$($generics)*>)? ListArcSafe<$num> for $t {
 
-This is not sufficient, since you also rely on `Self::from_unique` to
-handle the parameter as if it were pinned, which it does not. Since it
-calls `T::on_create_list_arc_from_unique` which just gets a `&mut self`
-as a parameter and it could move stuff out.
+This change seems unintentional.
 
-> +        Self::from_unique(unsafe { Pin::into_inner_unchecked(unique) })
-> +    }
-> +
-> +    /// Like [`from_unique`], but creates two `ListArcs`.
-> +    ///
-> +    /// The two ids must be different.
-> +    ///
-> +    /// [`from_unique`]: ListArc::from_unique
-> +    pub fn pair_from_unique<const ID2: u64>(mut unique: UniqueArc<T>) ->=
- (Self, ListArc<T, ID2>)
-> +    where
-> +        T: ListArcSafe<ID2>,
-> +    {
-> +        assert_ne!(ID, ID2);
+>              unsafe fn on_create_list_arc_from_unique(&mut self) {}
+>              unsafe fn on_drop_list_arc(&self) {}
+>          }
+>          $crate::list::impl_list_arc_safe! { $($rest)* }
+>      };
+>=20
+> +    (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty {
+> +        tracked_by $field:ident : $fty:ty;
+> +    } $($rest:tt)*) =3D> {
+> +        impl$(<$($generics)*>)? ListArcSafe<$num> for $t {
 
-Can this be a `build_assert!`?
+Here you also want to access `ListArcSafe` via
+`$crate::list::ListArcSafe`.
 
-> +
-> +        // SAFETY: We have a `UniqueArc`, so we can call this method.
+> +            unsafe fn on_create_list_arc_from_unique(&mut self) {
+> +                let me =3D self as *mut Self;
+> +                let field: *mut $fty =3D unsafe { ::core::ptr::addr_of_m=
+ut!((*me).$field) };
 
-I liked the comment from above better:
+I think we should also have `SAFETY` comments in macros.
 
-     // SAFETY: We have a `UniqueArc`, so there is no `ListArc`.
+Also why can't this be done using safe code?:
 
-Maybe use the variation "so there are no `ListArc`s for any ID.".
+     let field: &mut $fty =3D &mut self.$field;
 
-> +        unsafe { <T as ListArcSafe<ID>>::on_create_list_arc_from_unique(=
-&mut unique) };
-> +        // SAFETY: We have a `UniqueArc`, so we can call this method. Th=
-e two ids are not equal.
-> +        unsafe { <T as ListArcSafe<ID2>>::on_create_list_arc_from_unique=
-(&mut unique) };
-> +
-> +        let arc1 =3D Arc::from(unique);
-> +        let arc2 =3D Arc::clone(&arc1);
-> +
-> +        // SAFETY: We just called `on_create_list_arc_from_unique` on an=
- arc without a `ListArc`,
-> +        // so we can create a `ListArc`.
+> +                unsafe { <$fty as $crate::list::ListArcSafe<$num>>::on_c=
+reate_list_arc_from_unique(
+> +                        &mut *field
+> +                ) };
 
-I would mention the two different IDs again.
+Formatting? rustfmt gives me this:
 
-> +        unsafe {
-> +            (
-> +                Self::transmute_from_arc(arc1),
-> +                ListArc::transmute_from_arc(arc2),
-> +            )
-> +        }
-> +    }
-> +
-> +    /// Like [`pair_from_unique`], but uses a pinned arc.
-> +    ///
-> +    /// The two ids must be different.
-> +    ///
-> +    /// [`pair_from_unique`]: ListArc::pair_from_unique
-> +    pub fn pair_from_pin_unique<const ID2: u64>(
-> +        unique: Pin<UniqueArc<T>>,
-> +    ) -> (Self, ListArc<T, ID2>)
-> +    where
-> +        T: ListArcSafe<ID2>,
-> +    {
-> +        // SAFETY: We continue to treat this pointer as pinned after thi=
-s call, since `ListArc`
-> +        // implicitly pins its value.
-> +        Self::pair_from_unique(unsafe { Pin::into_inner_unchecked(unique=
-) })
-> +    }
-> +
-> +    /// Transmutes an [`Arc`] into a `ListArc` without updating the trac=
-king inside `T`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * The value must not already have a `ListArc` reference.
-> +    /// * The tracking inside `T` must think that there is a `ListArc` r=
-eference.
-> +    #[inline]
-> +    unsafe fn transmute_from_arc(me: Arc<T>) -> Self {
-> +        // INVARIANT: By the safety requirements, the invariants on `Lis=
-tArc` are satisfied.
-> +        // SAFETY: ListArc is repr(transparent).
-> +        unsafe { core::mem::transmute(me) }
+                 unsafe {
+                     <$fty as $crate::list::ListArcSafe<$num>>::on_create_l=
+ist_arc_from_unique(
+                         &mut *field
+                     )
+                 };
 
-Why do you need a transmute here? Can't you just construct the struct?
-
-     Self { arc: me }
+(maybe the `;` should be inside the `unsafe` block in this case?)
 
 --=20
 Cheers,
 Benno
 
-> +    }
+> +            }
+> +            unsafe fn on_drop_list_arc(&self) {
+> +                let me =3D self as *const Self;
+> +                let field: *const $fty =3D unsafe { ::core::ptr::addr_of=
+!((*me).$field) };
+> +                unsafe { <$fty as $crate::list::ListArcSafe<$num>>::on_d=
+rop_list_arc(&*field) };
+> +            }
+> +        }
+> +        unsafe impl$(<$($generics)*>)? TryNewListArc<$num> for $t
+> +        where
+> +            $fty: TryNewListArc<$num>,
+> +        {
+> +            fn try_new_list_arc(&self) -> bool {
+> +                let me =3D self as *const Self;
+> +                let field: *const $fty =3D unsafe { ::core::ptr::addr_of=
+!((*me).$field) };
+> +                unsafe { <$fty as $crate::list::TryNewListArc<$num>>::tr=
+y_new_list_arc(&*field) }
+> +            }
+> +        }
+> +        $crate::list::impl_list_arc_safe! { $($rest)* }
+> +    };
 > +
+>      () =3D> {};
+>  }
+>  pub use impl_list_arc_safe;
 
