@@ -1,187 +1,135 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mr85p00im-ztdg06021701.me.com (mr85p00im-ztdg06021701.me.com [17.58.23.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EB415530C
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 19:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C91156649
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 21:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712173427; cv=none; b=OspqNHazzOBcAlEDWPKDJafJJ9wiRmlSgaTOJADjhKYdlwqAR2YR3Ljm0CRZjPq8vv6KlVkVlIPn6brAsLY7+2al8m83vh9vCPTM1ukRxXi8z9Ze7uLoK4hsqySCH/GAFzPYDVfrD9KPpDdNbRKUrz2MbrNQApcX+WMIcBg3aos=
+	t=1712178435; cv=none; b=tmlCPAJXWZuUMcrs9PQ8v7dVauSuSr78t4MPYedMxJeD+dAjkVtLYyl+s61L4CO/H+6lfLyqvsW5k1TagbMHtJO7fhUm+YoJBIOeGOx4Z6/ulglau0XLSByNSZJSO/99N061QUaSLtaeUI0VS2YeTratwuLiNlIhpqCuYEraqlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712173427; c=relaxed/simple;
-	bh=lzf+ES6yHZZVg6XniA+JFvQLjo8zG+VMBXl7BaaBibs=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ExN9QwfjrSrzjUgkR7YY7qMY0mRHuafZ5zOh0p/QIudNIeeoAzmIUcz1aEuIuYaW7NH21TUjyJOebqYmm3Ql8doYodB/3VWB5/f4VGLYyLwPa4qjBRMlOgicEb7HjgSVzC0hPJVH7C+HdMSpOCEaRZvBz8RL8MjKbjRsttVjZzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CWdGqKKH; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1712178435; c=relaxed/simple;
+	bh=0AiZM6PiLalckeV63JNhtHUusQZnUdQA6buUd7aeJDk=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=d+7T1RJJWys3dgILWGzBLtRq/F4HJIWbd6omWrsNG1l93/CmEuZNuGwd6ftsKfcdX7VaYrDUzeyLpldwgLGvJV6UKJ0dG7VAoGFUN00sFLiZzm0b1+LmMuP/qf/S6hgHfcZPBlutu0QwL6OKMfkqhGa/km/6JJKCUec2q2GtNmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=xErRji5z; arc=none smtp.client-ip=17.58.23.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CWdGqKKH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712173422; x=1712432622;
-	bh=Z/cYaiGjtg8Hl/T+kAOXPPgB1Msfoi/aGGBHya0iD3M=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=CWdGqKKHsAsyjwmhI5qIPRNj3R979LLdUL13yfBfn2xREbHxs/5Nqcjh2uILvfI5O
-	 JZPJy+Otrd+NutyHe9h+ONVRsSIcKOyBuiuVFYGba+GsQZOau3ZW71NpEozrU/2Z+x
-	 hRaj2IQzTATd50O0EiLt6V546HEYTYe68Od/d9CRFpVqGj93a2ImfgGU9tw0TGQHyL
-	 vC+QA1/BmpAGTnSRjtsFB/UUFtIByWdp6Mm5f1FlbL/Qvnr9rWXpnCOdWkFcmyF65q
-	 7F/PnsO8oMpJD4it0zHRM5+iv2zdkOloAKCXUACNaGtzddHCLsi5ZEbREfo8KUXJUB
-	 npe1RSrkHXkMQ==
-Date: Wed, 03 Apr 2024 19:43:37 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: init: change the generated name of guard variables
-Message-ID: <20240403194321.88716-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="xErRji5z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+	t=1712178433; bh=AY0YVT2/pYp771gvWdGaXCfqZ7KgXeM1P5FSEBqw7YA=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To;
+	b=xErRji5zX/NvKMQXFwcPYZhTN9qkg6tJPFvY6PX5I/0F+sgx8NG0zyQFlJznXCvkQ
+	 WpCgF3C/PJOga/QRYZ4GJgLmZ94IcGMQOtVsJwVOUwGo1UFeYrVxr/cAhmQXfIMH6U
+	 bN3Qzbv+Do8UPEd6BiG3wAC4ccO/nADUAWNh+oxT7wF0b5Pz13dUvilASFejaCZv0E
+	 niketQZbu3RTE/WSO4xbpV3Q+CqO930sZrm/tsa/uLTVIpPkvW7Ef/X5nrZSlf5eJ/
+	 5sVZb0DBHac+AHoeU04c4xWtxOYhF2fKkIGogV0kAPiXRaO88d03NmTIHs7Q3W4DQR
+	 hKNW4lQhzgZRQ==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-ztdg06021701.me.com (Postfix) with ESMTPSA id 6E37E26335A3;
+	Wed,  3 Apr 2024 21:07:11 +0000 (UTC)
+From: Laine Taffin Altman <alexanderaltman@me.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: [PATCH v4] rust: init: remove impl Zeroable for Infallible
+Message-Id: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
+Date: Wed, 3 Apr 2024 14:06:59 -0700
+Cc: stable@vger.kernel.org
+To: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ rust-for-linux@vger.kernel.org,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ lkml <linux-kernel@vger.kernel.org>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
+X-Proofpoint-ORIG-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
+X-Proofpoint-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-03_22,2024-04-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 bulkscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2404030144
 
-The initializers created by the `[try_][pin_]init!` macros utilize the
-guard pattern to drop already initialized fields, when initialization
-fails mid-way. These guards are generated to have the same name as the
-field that they handle. To prevent namespacing issues when the field
-name is the same as e.g. a constant name, add `__` as a prefix and
-`_guard` as the suffix.
+In Rust, producing an invalid value of any type is immediate undefined
+behavior (UB); this includes via zeroing memory.  Therefore, since an
+uninhabited type has no valid values, producing any values at all for it =
+is
+UB.
 
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+The Rust standard library type `core::convert::Infallible` is =
+uninhabited,
+by virtue of having been declared as an enum with no cases, which always
+produces uninhabited types in Rust.
+
+The current kernel code allows this UB to be triggered, for example by =
+code
+like `Box::<core::convert::Infallible>::init(kernel::init::zeroed())`.
+
+Thus, remove the implementation of `Zeroable` for `Infallible`, thereby
+avoiding the unsoundness (potential for future UB).
+
+Cc: stable@vger.kernel.org
+Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
+`init::zeroed` function")
+Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 ---
- rust/kernel/init/macros.rs | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+V3 -> V4: Address review nits; run checkpatch properly.
+V2 -> V3: Email formatting correction.
+V1 -> V2: Added more documentation to the comment, with links; also =
+added more details to the commit message.
 
-diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index cb6e61b6c50b..93bf4c3080f9 100644
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -250,7 +250,7 @@
- //!                     // error type is `Infallible`) we will need to dro=
-p this field if there
- //!                     // is an error later. This `DropGuard` will drop t=
-he field when it gets
- //!                     // dropped and has not yet been forgotten.
--//!                     let t =3D unsafe {
-+//!                     let __t_guard =3D unsafe {
- //!                         ::pinned_init::__internal::DropGuard::new(::co=
-re::addr_of_mut!((*slot).t))
- //!                     };
- //!                     // Expansion of `x: 0,`:
-@@ -261,14 +261,14 @@
- //!                         unsafe { ::core::ptr::write(::core::addr_of_mu=
-t!((*slot).x), x) };
- //!                     }
- //!                     // We again create a `DropGuard`.
--//!                     let x =3D unsafe {
-+//!                     let __x_guard =3D unsafe {
- //!                         ::kernel::init::__internal::DropGuard::new(::c=
-ore::addr_of_mut!((*slot).x))
- //!                     };
- //!                     // Since initialization has successfully completed=
-, we can now forget
- //!                     // the guards. This is not `mem::forget`, since we=
- only have
- //!                     // `&DropGuard`.
--//!                     ::core::mem::forget(x);
--//!                     ::core::mem::forget(t);
-+//!                     ::core::mem::forget(__x_guard);
-+//!                     ::core::mem::forget(__t_guard);
- //!                     // Here we use the type checker to ensure that eve=
-ry field has been
- //!                     // initialized exactly once, since this is `if fal=
-se` it will never get
- //!                     // executed, but still type-checked.
-@@ -461,16 +461,16 @@
- //!             {
- //!                 unsafe { ::core::ptr::write(::core::addr_of_mut!((*slo=
-t).a), a) };
- //!             }
--//!             let a =3D unsafe {
-+//!             let __a_guard =3D unsafe {
- //!                 ::kernel::init::__internal::DropGuard::new(::core::add=
-r_of_mut!((*slot).a))
- //!             };
- //!             let init =3D Bar::new(36);
- //!             unsafe { data.b(::core::addr_of_mut!((*slot).b), b)? };
--//!             let b =3D unsafe {
-+//!             let __b_guard =3D unsafe {
- //!                 ::kernel::init::__internal::DropGuard::new(::core::add=
-r_of_mut!((*slot).b))
- //!             };
--//!             ::core::mem::forget(b);
--//!             ::core::mem::forget(a);
-+//!             ::core::mem::forget(__b_guard);
-+//!             ::core::mem::forget(__a_guard);
- //!             #[allow(unreachable_code, clippy::diverging_sub_expression=
-)]
- //!             let _ =3D || {
- //!                 unsafe {
-@@ -1192,14 +1192,14 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *m=
-ut T) {}
-         // We use `paste!` to create new hygiene for `$field`.
-         ::kernel::macros::paste! {
-             // SAFETY: We forget the guard later when initialization has s=
-ucceeded.
--            let [<$field>] =3D unsafe {
-+            let [< __ $field _guard >] =3D unsafe {
-                 $crate::init::__internal::DropGuard::new(::core::ptr::addr=
-_of_mut!((*$slot).$field))
-             };
-=20
-             $crate::__init_internal!(init_slot($use_data):
-                 @data($data),
-                 @slot($slot),
--                @guards([<$field>], $($guards,)*),
-+                @guards([< __ $field _guard >], $($guards,)*),
-                 @munch_fields($($rest)*),
-             );
-         }
-@@ -1223,14 +1223,14 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *m=
-ut T) {}
-         // We use `paste!` to create new hygiene for `$field`.
-         ::kernel::macros::paste! {
-             // SAFETY: We forget the guard later when initialization has s=
-ucceeded.
--            let [<$field>] =3D unsafe {
-+            let [< __ $field _guard >] =3D unsafe {
-                 $crate::init::__internal::DropGuard::new(::core::ptr::addr=
-_of_mut!((*$slot).$field))
-             };
-=20
-             $crate::__init_internal!(init_slot():
-                 @data($data),
-                 @slot($slot),
--                @guards([<$field>], $($guards,)*),
-+                @guards([< __ $field _guard >], $($guards,)*),
-                 @munch_fields($($rest)*),
-             );
-         }
-@@ -1255,14 +1255,14 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *m=
-ut T) {}
-         // We use `paste!` to create new hygiene for `$field`.
-         ::kernel::macros::paste! {
-             // SAFETY: We forget the guard later when initialization has s=
-ucceeded.
--            let [<$field>] =3D unsafe {
-+            let [< __ $field _guard >] =3D unsafe {
-                 $crate::init::__internal::DropGuard::new(::core::ptr::addr=
-_of_mut!((*$slot).$field))
-             };
-=20
-             $crate::__init_internal!(init_slot($($use_data)?):
-                 @data($data),
-                 @slot($slot),
--                @guards([<$field>], $($guards,)*),
-+                @guards([< __ $field _guard >], $($guards,)*),
-                 @munch_fields($($rest)*),
-             );
-         }
+ rust/kernel/init.rs | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-base-commit: 9ffe2a730313f27cebd0859ea856247ac59c576c
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 424257284d16..3859c7ff81b7 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1292,8 +1292,15 @@ macro_rules! impl_zeroable {
+     i8, i16, i32, i64, i128, isize,
+     f32, f64,
+=20
+-    // SAFETY: These are ZSTs, there is nothing to zero.
+-    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, =
+Infallible, (),
++    // Note: do not add uninhabited types (such as `!` or =
+`core::convert::Infallible`) to this list;
++    // creating an instance of an uninhabited type is immediate =
+undefined behavior.  For more on
++    // uninhabited/empty types, consult The Rustonomicon:
++    // =
+https://doc.rust-lang.org/stable/nomicon/exotic-sizes.html#empty-types =
+The Rust Reference
++    // also has information on undefined behavior:
++    // =
+https://doc.rust-lang.org/stable/reference/behavior-considered-undefined.h=
+tml
++    //
++    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a =
+valid value exists.
++    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
+=20
+     // SAFETY: Type is allowed to take any value, including all zeros.
+     {<T>} MaybeUninit<T>,
+
+base-commit: c85af715cac0a951eea97393378e84bb49384734
 --=20
 2.44.0
-
 
