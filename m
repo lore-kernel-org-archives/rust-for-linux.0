@@ -1,222 +1,122 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46D871B3C
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 08:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904C612FB0A
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 09:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712133990; cv=none; b=Au4CdDv7Mlw7VawQYOmIGRVyzqEIphbb0QV4/wNbMqeldlGNb3vgLRmK7nKHozFDLMtxEqqk8isWDZ0uuW1JHwkcxNb4PbrGBrwkPNugtlpvgPtCOT8nRuTt4C1zE/XcydcgYIKeESdOPlWFv9B95pleoIBjvTa9QJHFCi94Whg=
+	t=1712136297; cv=none; b=MyEZeYe6EVnW72QcnKByKmH107KprVcNrAJ3d23ptUSXH2tgKPCQEx3DIsHMyvkKRAc1WuPS9+9vI92uKjc7QHbJEJfMdCeMyi1fM7MbqokC/TajBDZFaQKrFEEdHGWgEclk6k5+wuEMo02AvX1ziUYT+hbWhnUCZDQiaBi9yCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712133990; c=relaxed/simple;
-	bh=CnCNaZzl5rEH+QwH0mfl8Hi6Yca+JPC01k5/o/eFevs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oP2W1hm7jDM1IxDFVBwwwSTJgWoWo3llriOE6jswzbJeHAEl//QVO/R0WC+A0XGGzRv6XUMT6TJrIVP8h2J8DBX0GxmM5MrxHTtSRk/9DxDnrSNlBRjRMq3oln/3ociIJBGPSq3RH77FjDf8R5ATqWD+02N9JwuwfrwRxinsue4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=vHlPntHc; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1712136297; c=relaxed/simple;
+	bh=92mPhUlzzfNV0qTQVkW5nYHAFA+RzGdjVgEd9UIRvNQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mzUfgMoNY7jrJ7EzJ/IjTBQL1zcCDwlFzrDC67Qg85uTsgxxZqlNY7p+4JARjda7ZLF/qMWQdX+7omZAkLtqqe7DaGrp2XVGILCE0N86shflMUzd/r4KKfm6IIg7x28RM4x87S3JUns8MYDfiAwjZVTqIesOH3SYyRAlyGJW1GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=o/NzRqmu; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="vHlPntHc"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-56dc9955091so3399330a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Apr 2024 01:46:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1712133986; x=1712738786; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=H/ZMejo28/LllyfJA5g9nwz3RGVzU+8WXzt/3Z5s4wA=;
-        b=vHlPntHcV3neZhL+d8OrTCOLohiXlSLDh6Ra9sMTNc/vREXX/2C8ev4B4JSlnbhxjw
-         7q99LKyw+CQwZgwgfxvpYj/Z2jC8AWtDwit42nVn30QyrGlALTCn/uU6SXAAXTSpO7wu
-         AzRjlzfPHsNuhEf/fvPQNw3wGEI9gpY1jzl1/3wM5Woba0opiuM9QPP29BVSICxe/+HW
-         NKusdeTNiQzpDBrxf6EgL3XRrdWH/Z7mGEpqJ0NECyJxhoid0vf5rAjQB6ZcPo+fpFb3
-         rEIAg5TTKGf03lbbWbumZl1KRp369qZm7IbtweUgAWuN0owAwYpoaFc9W0Q9d9M3kf2k
-         WK9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712133986; x=1712738786;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H/ZMejo28/LllyfJA5g9nwz3RGVzU+8WXzt/3Z5s4wA=;
-        b=hwWT6s04sfug+Y7FXP/QFEA3OAHmkDrJm6g+heVwlbkSFG8wcgcV45WClsk11WCbIc
-         nmyoUB4vyPA9uBfiBbktkX8DhDf/qgvnHPya08QhTDZDIPkqem0qhaRRi3XYAv0c6ypD
-         Q2KM+4Wzp1u/V/HxewniECL3uN0mt3cwk01gZpMgVS72hGCjkEQohYcd/fSQOCLWQHom
-         E/N0PnYYRA2TJ4k0pY5gJ8PnS+actqkIcNVE7HWxBOvwHk+DrWQJFAurbYdXRyObM1+Z
-         M15J/hZCzTzeDCZ2sUsJgZq79/EFa8nTqppOQoq8sX9cYiDwj/ckTQtf65yKMriFerTN
-         3qcA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcrD6euU0X4BP3eR2WliEM33GBbVTfTAN59yag/7EbuC/eVMFctk/laiOkz6Y1FobcxWgJRhwPS5kA7TXIMDCeiL8YSrCbwAqibLKHWnc=
-X-Gm-Message-State: AOJu0YxnPnOuC/PlcvwgROiq6bCuj0uvD1mqaTdjG/GlkEHDvqfyx0N8
-	vACL8jFVn1/g3z+b6KXyCwaBauaLq6Tke9r4q79NuaFGLerIhq5XJUxLKy/Dk3c=
-X-Google-Smtp-Source: AGHT+IGo0b98RS6TrT3TIulpj9uf0OgGe9HgqnWXsEMXgCAc3KB/kjdbiHGYBrypbUj2L0uEeH3M1A==
-X-Received: by 2002:a05:6402:5111:b0:56e:447:1e44 with SMTP id m17-20020a056402511100b0056e04471e44mr1297850edd.8.1712133985643;
-        Wed, 03 Apr 2024 01:46:25 -0700 (PDT)
-Received: from localhost ([194.62.217.1])
-        by smtp.gmail.com with ESMTPSA id l24-20020aa7cad8000000b00562d908daf4sm7753421edt.84.2024.04.03.01.46.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Apr 2024 01:46:25 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Keith
- Busch <kbusch@kernel.org>,  Damien Le Moal <Damien.LeMoal@wdc.com>,  Bart
- Van Assche <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,
-  "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,  Andreas
- Hindborg <a.hindborg@samsung.com>,  Wedson Almeida Filho
- <wedsonaf@gmail.com>,  Niklas Cassel <Niklas.Cassel@wdc.com>,  Greg KH
- <gregkh@linuxfoundation.org>,  Matthew Wilcox <willy@infradead.org>,
-  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Alice Ryhl <aliceryhl@google.com>,
-  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis Chamberlain
- <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,  Sergio
- =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
- Granados
- <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
- <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  open
- list <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
- <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
- <gost.dev@samsung.com>, Ming Lei <ming.lei@redhat.com>
-Subject: Re: [RFC PATCH 1/5] rust: block: introduce `kernel::block::mq` module
-In-Reply-To: <7ed2a8df-3088-42a1-b257-dba3c2c9fc92@proton.me> (Benno Lossin's
-	message of "Tue, 02 Apr 2024 23:09:49 +0000")
-References: <86cd5566-5f1b-434a-9163-2b2d60a759d1@proton.me>
-	<871q7o54el.fsf@metaspace.dk>
-	<7ed2a8df-3088-42a1-b257-dba3c2c9fc92@proton.me>
-User-Agent: mu4e 1.12.2; emacs 29.3
-Date: Wed, 03 Apr 2024 10:46:19 +0200
-Message-ID: <87v84ysujo.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="o/NzRqmu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1712136293;
+	bh=92mPhUlzzfNV0qTQVkW5nYHAFA+RzGdjVgEd9UIRvNQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=o/NzRqmujkp/ilEqEilJXwAjBboAnI583x/SZw5LJnCAJuOzlDHefFQJhij//w3SE
+	 U8P3bl+Qs8O0qm2Q90NOSXvtAV2gfTshtGyfdRlN6QYp/861UKGKj0MHd4NAKYaJip
+	 2Rl+sy3GEYe3RmhuGSrvC2lSYVtfBvWxTUPaVFmlVUeUBObgHGQNht/AYnIou5quvY
+	 A5CZwljTTcQlG6I1pyZHb1flHoABQQETPUpp/fiJHlED3+SjMrNM+Fi1JT0J713E0m
+	 gjTXOJJgpiUdhnbfJe+cwC0oN+XgrIDCpzlwFmrDRrU1CqElJubzxs8ceaCImGwxrk
+	 75d5iVN3sVsZA==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id CCFCA3782089;
+	Wed,  3 Apr 2024 09:24:52 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com
+Cc: boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	rust-for-linux@vger.kernel.org,
+	kernel-linux@vger.kernel.org,
+	dirk.behme@de.bosch.com,
+	kernel@valentinobst.de,
+	kernel@collabora.com,
+	Laura Nao <laura.nao@collabora.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: [PATCH v2] docs: rust: Add instructions for the Rust kselftest
+Date: Wed,  3 Apr 2024 11:24:52 +0200
+Message-Id: <20240403092452.30300-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Benno Lossin <benno.lossin@proton.me> writes:
+Add section describing how to build and run the Rust kselftest.
 
-> On 23.03.24 07:32, Andreas Hindborg wrote:
->> Benno Lossin <benno.lossin@proton.me> writes:
->>> On 3/13/24 12:05, Andreas Hindborg wrote:
->>>> +//! implementations of the `Operations` trait.
->>>> +//!
->>>> +//! IO requests are passed to the driver as [`Request`] references. The
->>>> +//! `Request` type is a wrapper around the C `struct request`. The driver must
->>>> +//! mark start of request processing by calling [`Request::start`] and end of
->>>> +//! processing by calling one of the [`Request::end`], methods. Failure to do so
->>>> +//! can lead to IO failures.
->>>
->>> I am unfamiliar with this, what are "IO failures"?
->>> Do you think that it might be better to change the API to use a
->>> callback? So instead of calling start and end, you would do
->>>
->>>       request.handle(|req| {
->>>           // do the stuff that would be done between start and end
->>>       });
->>>
->>> I took a quick look at the rnull driver and there you are calling
->>> `Request::end_ok` from a different function. So my suggestion might not
->>> be possible, since you really need the freedom.
->>>
->>> Do you think that a guard approach might work better? ie `start` returns
->>> a guard that when dropped will call `end` and you need the guard to
->>> operate on the request.
->> 
->> I don't think that would fit, since the driver might not complete the
->> request immediately. We might be able to call `start` on behalf of the
->> driver.
->> 
->> At any rate, since the request is reference counted now, we can
->> automatically fail a request when the last reference is dropped and it
->> was not marked successfully completed. I would need to measure the
->> performance implications of such a feature.
->
-> Are there cases where you still need access to the request after you
-> have called `end`?
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+Changes in v2:
+- Use plural to account for potential other tests added later
+- Omit details about the test_probe_samples test
+- Clarify that kselftests are intended to be executed on a system running the same kernel to be tested
+---
+ Documentation/rust/testing.rst | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-In general no, there is no need to handle the request after calling end.
-C drivers are not allowed to, because this transfers ownership of the
-request back to the block layer. This patch series defer the transfer of
-ownership to the point when the ARef<Request> refcount goes to zero, so
-there should be no danger associated with touching the `Request` after
-end.
+diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+index 6658998d1b6c..64f58c4308f8 100644
+--- a/Documentation/rust/testing.rst
++++ b/Documentation/rust/testing.rst
+@@ -6,10 +6,11 @@ Testing
+ This document contains useful information how to test the Rust code in the
+ kernel.
+ 
+-There are two sorts of tests:
++There are three sorts of tests:
+ 
+ - The KUnit tests.
+ - The ``#[test]`` tests.
++- The Kselftests.
+ 
+ The KUnit tests
+ ---------------
+@@ -133,3 +134,25 @@ Additionally, there are the ``#[test]`` tests. These can be run using the
+ This requires the kernel ``.config`` and downloads external repositories. It
+ runs the ``#[test]`` tests on the host (currently) and thus is fairly limited in
+ what these tests can test.
++
++The Kselftests
++--------------
++
++Kselftests are also available in the tools/testing/selftests/rust folder.
++
++The kernel config options required for the test are listed in the
++tools/testing/selftests/rust/config file and can be included with the aid
++of the merge_config.sh script::
++
++	./scripts/kconfig/merge_config.sh .config tools/testing/selftests/rust/config
++
++The kselftests are built within the kernel source tree and are intended to
++be executed on a system that is running the same kernel.
++
++Once a kernel matching the source tree has been booted, the tests
++can be compiled and executed using the following command::
++
++	make TARGETS="rust" kselftest
++
++Refer to Documentation/dev-tools/kselftest.rst for the general Kselftest
++documentation.
+-- 
+2.30.2
 
-> If no, I think it would be better for the request to
-> be consumed by the `end` function.
-> This is a bit difficult with `ARef`, since the user can just clone it
-> though... Do you think that it might be necessary to clone requests?
-
-Looking into the details now I see that calling `Request::end` more than
-once will trigger UAF, because C code decrements the refcount on the
-request. When we have `ARef<Request>` around, that is a problem. It
-probably also messes with other things in C land. Good catch.
-
-I did implement `Request::end` to consume the request at one point
-before I fell back on reference counting. It works fine for simple
-drivers. However, most drivers will need to use the block layer tag set
-service, that allows conversion of an integer id to a request pointer.
-The abstraction for this feature is not part of this patch set. But the
-block layer manages a mapping of integer to request mapping, and drivers
-typically use this to identify the request that corresponds to
-completion messages that arrive from hardware. When drivers are able to
-turn integers into requests like this, consuming the request in the call
-to `end` makes little sense (because we can just construct more).
-
-What I do now is issue the an `Option<ARef<Request>>` with
-`bindings::req_ref_inc_not_zero(rq_ptr)`, to make sure that the request
-is currently owned by the driver.
-
-I guess we can check the absolute value of the refcount, and only issue
-a request handle if the count matches what we expect. Then we can be certain
-that the handle is unique, and we can require transfer of ownership of
-the handle to `Request::end` to make sure it can never be called more
-than once.
-
-Another option is to error out in `Request::end` if the
-refcount is not what we expect.
-
->
-> Also what happens if I call `end_ok` and then `end_err` or vice versa?
-
-That would be similar to calling end twice.
-
->
->>>> +    pub fn data_ref(&self) -> &T::RequestData {
->>>> +        let request_ptr = self.0.get().cast::<bindings::request>();
->>>> +
->>>> +        // SAFETY: `request_ptr` is a valid `struct request` because `ARef` is
->>>> +        // `repr(transparent)`
->>>> +        let p: *mut c_void = unsafe { bindings::blk_mq_rq_to_pdu(request_ptr) };
->>>> +
->>>> +        let p = p.cast::<T::RequestData>();
->>>> +
->>>> +        // SAFETY: By C API contract, `p` is initialized by a call to
->>>> +        // `OperationsVTable::init_request_callback()`. By existence of `&self`
->>>> +        // it must be valid for use as a shared reference.
->>>> +        unsafe { &*p }
->>>> +    }
->>>> +}
->>>> +
->>>> +// SAFETY: It is impossible to obtain an owned or mutable `Request`, so we can
->>>
->>> What do you mean by "mutable `Request`"? There is the function to obtain
->>> a `&mut Request`.
->> 
->> The idea behind this comment is that it is not possible to have an owned
->> `Request` instance. You can only ever have something that will deref
->> (shared) to `Request`. Construction of the `Request` type is not
->> possible in safe driver code. At least that is the intention.
->> 
->> The `from_ptr_mut` is unsafe, and could be downgraded to
->> `from_ptr`, since `Operations::complete` takes a shared reference
->> anyway. Bottom line is that user code does not handle `&mut Request`.
->
-> Ah I see what you mean. But the user is able to have an `ARef<Request>`.
-> Which you own, if it is the only refcount currently held on that
-> request. When you drop it, you will run the destructor of the request.
->
-> A more suitable safety comment would be "SAFETY: A `struct request` may
-> be destroyed from any thread.".
-
-I see, I will update the comment.
-
-
-BR Andreas
