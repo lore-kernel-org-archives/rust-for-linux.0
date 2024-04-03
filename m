@@ -1,92 +1,43 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B8A1353EF
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 09:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E34C137933;
+	Wed,  3 Apr 2024 10:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712137648; cv=none; b=B6BhtsLJ4UA8eQXxrbtmBvhulz9AnjWLk8/ZVJVNy/DzszuS3FKBIMJfj/y5+jtjjoD1zq4ia4G6/UdsdcTd6aR1CaU9ZD3Ow2p/1AKqlE/Xuf2h+3o2IMYjuFniw0sNWxENQF7AHTKT129Pc6S2wbS2Oxh/9EMlJHhQj7dahu0=
+	t=1712140165; cv=none; b=UWC8IBR7jt1zAgCWH4vz/aVnMZqNel+Mf1k42KQYmIxz9/3oTjs+/MD0A3WMjY68++KsMHKoATuHdlihNjfpgRKG4ttb3uLImgCbEBlYydt+o82MA3SCl92liiOf2H8eeSExFWXDxBm7vG2pfe1cLo4wf2o5n1b5uN4KVav9SWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712137648; c=relaxed/simple;
-	bh=GRfag88koxETtlzSVNB41LuzJOoQ5upi+5Ad5sKRA7g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZQ9nv0+LCQ4Spvx3mXzrLMsX/mylQ5spGRMWO6dKSLzbDIFjwfb42OqET6Ke5bpQ8qFTin+RXH1b9xYNJpa5znk1cpIgJHxJtnqty+xIP9Bpe8url9nRxE/GTLEMedEqrnZ5ZOlqQUNCzqt3PjEgS8fZt4BmLR1aWE1hc72XUBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=1q8H9D3R; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1712140165; c=relaxed/simple;
+	bh=TRgmSCS47XmztYBTKUWIVfivwGiaA9pcBJdWmp920Y0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gNTOrO7ICgMauK1uKZeJdW91nyOTtOBCfclAn6FS7tcKOvWgqfvTOWTTWgfd4UafifHo40CHlAdcCh8BSNIqW8T78nJSZnJK4vDpY9uROlPi9pl5L5DLxR1e28q/D5JkZYWP4VXou8Wx1i0WIK+9fhErdsh/OAT4ksx/8/VmFUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BQKDUtR0; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="1q8H9D3R"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-513e25afabaso6836254e87.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Apr 2024 02:47:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1712137644; x=1712742444; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=38SEkdXIN7qI57DkSuG7SyOZVG7UjoZz3fx+kBnmeVk=;
-        b=1q8H9D3RzPDHhPPW4oaXaZvc7oz9L7SA26PXsYzg9aJb7w0nJs77TmQf4sne7GpRyp
-         8f+2IRi+bET4fzqdjNgBWX0GF1cY/6++n4eXh1B+TUSb8r3SPA8Qy+7gCGRQmZVdXCqv
-         Gt/DNTfEPvAsm6LrazzTyVsYRu9vjYBJ+qOjCmby6PCkvP8p2TMILUxCQRBSF3Y6T7+y
-         DX4pHS3CEzoR2K+i6bATZ8xtk/z9I7RIZ3PApLsQX8+f3ouPxW9KVR0QvLNcWJ0hP+Ki
-         UikiKhmT1iwwy64yKoByLHAcGOTjYBPJqOq1B4bB1f3ca1VKViCSSEY2ROa4HoI5ehfD
-         HoHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712137644; x=1712742444;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=38SEkdXIN7qI57DkSuG7SyOZVG7UjoZz3fx+kBnmeVk=;
-        b=Xz7Mu28aKBH5uNiY0RAe6tLnPu/BGOaNnzRuKwOz+/uF5QLmMov3DYVE4bExS6OiSh
-         x4QRSfskBweRnAG10mLXKqcKLAKR+bwDhWdVtLbyNtlF9nq4YkqGnW4CltyTRQ4ycplB
-         PW+5EMCiCCna34ye9eDU7Jx5h4V0Mrd8FD4XnVtAWNsc10Xa/Nh9FdMFhf/juVYcl0Wv
-         Vb6OLbaJ38M4uWciZUgx+8yImwRH+i3nGOqPN8Jai3aY63uw11j2UTjEJAyPnXy8HCae
-         cnIXJWxX146whnSjzoeVpGaIuPJXqxl90KiSRQdmOZ0U4C2n/uLSZND8RQ3ufd4Fclrp
-         1iOg==
-X-Forwarded-Encrypted: i=1; AJvYcCX2pnkHsqWx4yqvkG3FlyZQD2hiPVVYcQaHLxZ3cqyMH8E4PvW9ui2bJlRStNRvSQ4yjIrsUxl3gZKBf+JW8rUcbS5JKGKaKTFanjZLzDg=
-X-Gm-Message-State: AOJu0YyLSIX+ITQPCaQpPqU13NjTc0sI25hrde44+UYpIlQHM6HAtHBW
-	jpKunDg8ktJLT4/oeWPPM4idFsRw/t5PQ3oFzyoEmwd1bYEMgdswz9fi2cJh3/g=
-X-Google-Smtp-Source: AGHT+IF/utXEsQEWDyjGiPzaJJWG210MR6/6WD7WsBEga3lRMhAkUP0TtaJbNUiFtWdGFRhMNlrSRg==
-X-Received: by 2002:a05:6512:480b:b0:516:26ca:c1fe with SMTP id eo11-20020a056512480b00b0051626cac1femr7053161lfb.8.1712137643891;
-        Wed, 03 Apr 2024 02:47:23 -0700 (PDT)
-Received: from localhost ([147.161.155.112])
-        by smtp.gmail.com with ESMTPSA id en19-20020a056000421300b0034365152f2asm4259837wrb.97.2024.04.03.02.47.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Apr 2024 02:47:23 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Keith
- Busch <kbusch@kernel.org>,  Damien Le Moal <Damien.LeMoal@wdc.com>,  Bart
- Van Assche <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,
-  "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,  Andreas
- Hindborg <a.hindborg@samsung.com>,  Niklas Cassel <Niklas.Cassel@wdc.com>,
-  Greg KH <gregkh@linuxfoundation.org>,  Matthew Wilcox
- <willy@infradead.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
- <alex.gaynor@gmail.com>,  Wedson Almeida Filho <wedsonaf@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Alice Ryhl <aliceryhl@google.com>,
-  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis Chamberlain
- <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,  Sergio
- =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
- Granados
- <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
- <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  open
- list <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
- <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
- <gost.dev@samsung.com>
-Subject: Re: [RFC PATCH 4/5] rust: block: add rnull, Rust null_blk
- implementation
-In-Reply-To: <1e8a2a1f-abbf-44ba-8344-705a9cbb1627@proton.me> (Benno Lossin's
-	message of "Tue, 02 Apr 2024 22:35:32 +0000")
-References: <20240313110515.70088-1-nmi@metaspace.dk>
-	<20240313110515.70088-5-nmi@metaspace.dk>
-	<QqpNcEOxhslSB7-34znxmQK_prPJfe2GT0ejWLesj-Dlse1ueCacbzsJOM0LK3YmgQsUWAR58ZFPPh1MUCliionIXrvLNsOqTS_Ee3bXEuQ=@proton.me>
-	<87msqc3p0e.fsf@metaspace.dk>
-	<1e8a2a1f-abbf-44ba-8344-705a9cbb1627@proton.me>
-User-Agent: mu4e 1.12.2; emacs 29.3
-Date: Wed, 03 Apr 2024 11:47:18 +0200
-Message-ID: <87edbmsrq1.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BQKDUtR0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712140160; x=1712399360;
+	bh=0+ZIPpVWWwhVkx/Hb3rlBLHGyanMXDiQ9rN4MJdAnNY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=BQKDUtR0/xH56lQmHK6WPW02i619kMS0v1m/KZwLkooNedsvp87IYuFRRdEYcMXTw
+	 ZMy7A2R2AhFuAYLOH6L4O8u7SUboXHeRAqjsVONajAPWE3kyCgjfigxJA8wJymP0AD
+	 lxkxtCcdjbyR9g4Q6Zb2BUQELlDRuYwAkBu2X6NblG/qs28i5ASZg34Dna1gv2U2Ph
+	 Bp9dgw12Jk+Z0149K7A9oHZOqHscuzz8tSrGleGUNM8JOdGpEox7PbyvAxndkWDfPP
+	 +mWbNWXi6NV8zff6vejQOma5AJx8adfyIjUE6nX/TebaZ5Rinc1gSoGxgrf9g/uCxN
+	 GvvM82j0CjurQ==
+Date: Wed, 03 Apr 2024 10:29:12 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
+	<da.gomez@samsung.com>, open list <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: Re: [RFC PATCH 4/5] rust: block: add rnull, Rust null_blk implementation
+Message-ID: <7e6874d0-786d-4e02-a203-a2524cf8ff9e@proton.me>
+In-Reply-To: <87edbmsrq1.fsf@metaspace.dk>
+References: <20240313110515.70088-1-nmi@metaspace.dk> <20240313110515.70088-5-nmi@metaspace.dk> <QqpNcEOxhslSB7-34znxmQK_prPJfe2GT0ejWLesj-Dlse1ueCacbzsJOM0LK3YmgQsUWAR58ZFPPh1MUCliionIXrvLNsOqTS_Ee3bXEuQ=@proton.me> <87msqc3p0e.fsf@metaspace.dk> <1e8a2a1f-abbf-44ba-8344-705a9cbb1627@proton.me> <87edbmsrq1.fsf@metaspace.dk>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -96,95 +47,118 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Benno Lossin <benno.lossin@proton.me> writes:
+On 03.04.24 11:47, Andreas Hindborg wrote:
+> Benno Lossin <benno.lossin@proton.me> writes:
+>=20
+> [...]
+>=20
+>>
+>>
+>> So I did some digging and there are multiple things at play. I am going
+>> to explain the second error first, since that one might be a problem
+>> with `pin_init`:
+>> - the `params` extension of the `module!` macro creates constants with
+>>     snake case names.
+>> - your `QueueData` struct has the same name as a field.
+>> - `pin_init!` generates `let $field_name =3D ...` statements for each
+>>     field you initialize
+>>
+>> Now when you define a constant in Rust, you are able to pattern-match
+>> with that constant, eg:
+>>
+>>       const FOO: u8 =3D 0;
+>>
+>>       fn main() {
+>>           match 10 {
+>>               FOO =3D> println!("foo"),
+>>               _ =3D> {}
+>>           }
+>>       }
+>>
+>> So when you do `let FOO =3D x;`, then it interprets `FOO` as the constan=
+t.
+>> This is still true if the constant has a snake case name.
+>> Since the expression in the `pin_init!` macro has type
+>> `DropGuard<$field_type>`, we get the error "expected
+>> `DropGuard<IRQMode>`, found `__rnull_mod_irq_mode`".
+>=20
+> Thanks for the analysis!
+>=20
+> So in this expanded code:
+>=20
+> 1   {
+> 2       unsafe { ::core::ptr::write(&raw mut ((*slot).irq_mode), irq_mode=
+) };
+> 3   }
+> 4   let irq_mode =3D unsafe {
+> 5       $crate::init::__internal::DropGuard::new(&raw mut ((*slot).irq_mo=
+de))
+> 6   };
+>=20
+> the `irq_mode` on line 2 will refer to the correct thing, but the one on
+> line 6 will be a pattern match against a constant? That is really
+> surprising to me. Can we make the let binding in line 6 be `let
+> irq_mode_pin_init` or something similar?
 
-[...]
+The first occurrence of `irq_mode` in line 2 will refer to the field of
+`QueueData`. The second one in line 2 will refer to the constant.
+The one in line 4 is a pattern-match of the constant (since the type of
+the constant is a fieldless struct, only one value exists. Thus making
+the match irrefutable.) The occurrence in line 5 is again referring to
+the field of `QueueData`.
 
->
->
-> So I did some digging and there are multiple things at play. I am going
-> to explain the second error first, since that one might be a problem
-> with `pin_init`:
-> - the `params` extension of the `module!` macro creates constants with
->    snake case names.
-> - your `QueueData` struct has the same name as a field.
-> - `pin_init!` generates `let $field_name =3D ...` statements for each
->    field you initialize
->
-> Now when you define a constant in Rust, you are able to pattern-match
-> with that constant, eg:
->
->      const FOO: u8 =3D 0;
->=20=20=20=20=20=20
->      fn main() {
->          match 10 {
->              FOO =3D> println!("foo"),
->              _ =3D> {}
->          }
->      }
->
-> So when you do `let FOO =3D x;`, then it interprets `FOO` as the constant.
-> This is still true if the constant has a snake case name.
-> Since the expression in the `pin_init!` macro has type
-> `DropGuard<$field_type>`, we get the error "expected
-> `DropGuard<IRQMode>`, found `__rnull_mod_irq_mode`".
+If you have a constant `FOO`, you are unable to create a local binding
+with the name `FOO`. So by creating the `irq_mode` constant, you cannot
+create (AFAIK) a `irq_mode` local variable (if the constant is in-scope).
 
-Thanks for the analysis!
+>=20
+>>
+>> Now to the first error, this is a problem with the parameter handling of
+>> `module`. By the same argument above, your let binding in line 104:
+>>
+>>       let irq_mode =3D (*irq_mode.read()).try_into()?;
+>>
+>> Tries to pattern-match the `irq_mode` constant with the right
+>> expression. Since you use the `try_into` function, it tries to search
+>> for a `TryInto` implementation for the type of `irq_mode` which is
+>> generated by the `module!` macro. The type is named
+>> __rnull_mod_irq_mode.
+>>
+>>
+>> Now what to do about this. For the second error (the one related to
+>> `pin_init`), I could create a patch that fixes it by adding the suffix
+>> `_guard` to those let bindings, preventing the issue. Not sure if we
+>> need that though, since it will not get rid of the first issue.
+>=20
+> I think that is a good idea =F0=9F=91=8D
 
-So in this expanded code:
+Will do that.
 
-1   {
-2       unsafe { ::core::ptr::write(&raw mut ((*slot).irq_mode), irq_mode) =
-};
-3   }
-4   let irq_mode =3D unsafe {
-5       $crate::init::__internal::DropGuard::new(&raw mut ((*slot).irq_mode=
-))
-6   };
+>=20
+>>
+>> For the first issue, I think there is no other way than to use a
+>> different name for either the field or the constant. Since constants are
+>> usually named using screaming snake case, I think it should be renamed.
+>> I believe your reason for using a snake case name is that these names
+>> are used directly as the names for the parameters when loading the
+>> module and there the convention is to use snake case, right?
+>> In that case I think we could expect people to write the screaming snake
+>> case name in rust and have it automatically be lower-cased by the
+>> `module!` macro when it creates the names that the parameters are shown
+>> with.
+>=20
+> I was thinking about putting the parameters in a separate name space,
+> but making them screaming snake case is also a good idea. So it would
+> be `module_parameters::IRQ_MODE` to access the parameter with the name
+> `irq_mode` exposed towards the user. Developers can always opt in to brin=
+ging
+> the symbols into scope with a `use`.
 
-the `irq_mode` on line 2 will refer to the correct thing, but the one on
-line 6 will be a pattern match against a constant? That is really
-surprising to me. Can we make the let binding in line 6 be `let
-irq_mode_pin_init` or something similar?
+I really like the idea of putting them in a module. At the very first
+glance at the usage, I thought "where does this come from?!". So having
+`module_parameters` in front is really valuable.
 
->
-> Now to the first error, this is a problem with the parameter handling of
-> `module`. By the same argument above, your let binding in line 104:
->
->      let irq_mode =3D (*irq_mode.read()).try_into()?;
->
-> Tries to pattern-match the `irq_mode` constant with the right
-> expression. Since you use the `try_into` function, it tries to search
-> for a `TryInto` implementation for the type of `irq_mode` which is
-> generated by the `module!` macro. The type is named
-> __rnull_mod_irq_mode.
->
->
-> Now what to do about this. For the second error (the one related to
-> `pin_init`), I could create a patch that fixes it by adding the suffix
-> `_guard` to those let bindings, preventing the issue. Not sure if we
-> need that though, since it will not get rid of the first issue.
+--=20
+Cheers,
+Benno
 
-I think that is a good idea =F0=9F=91=8D
-
->
-> For the first issue, I think there is no other way than to use a
-> different name for either the field or the constant. Since constants are
-> usually named using screaming snake case, I think it should be renamed.
-> I believe your reason for using a snake case name is that these names
-> are used directly as the names for the parameters when loading the
-> module and there the convention is to use snake case, right?
-> In that case I think we could expect people to write the screaming snake
-> case name in rust and have it automatically be lower-cased by the
-> `module!` macro when it creates the names that the parameters are shown
-> with.
-
-I was thinking about putting the parameters in a separate name space,
-but making them screaming snake case is also a good idea. So it would
-be `module_parameters::IRQ_MODE` to access the parameter with the name
-`irq_mode` exposed towards the user. Developers can always opt in to bringi=
-ng
-the symbols into scope with a `use`.
-
-Best regards,
-Andreas
