@@ -1,122 +1,190 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904C612FB0A
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 09:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B8A1353EF
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 09:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712136297; cv=none; b=MyEZeYe6EVnW72QcnKByKmH107KprVcNrAJ3d23ptUSXH2tgKPCQEx3DIsHMyvkKRAc1WuPS9+9vI92uKjc7QHbJEJfMdCeMyi1fM7MbqokC/TajBDZFaQKrFEEdHGWgEclk6k5+wuEMo02AvX1ziUYT+hbWhnUCZDQiaBi9yCU=
+	t=1712137648; cv=none; b=B6BhtsLJ4UA8eQXxrbtmBvhulz9AnjWLk8/ZVJVNy/DzszuS3FKBIMJfj/y5+jtjjoD1zq4ia4G6/UdsdcTd6aR1CaU9ZD3Ow2p/1AKqlE/Xuf2h+3o2IMYjuFniw0sNWxENQF7AHTKT129Pc6S2wbS2Oxh/9EMlJHhQj7dahu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712136297; c=relaxed/simple;
-	bh=92mPhUlzzfNV0qTQVkW5nYHAFA+RzGdjVgEd9UIRvNQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mzUfgMoNY7jrJ7EzJ/IjTBQL1zcCDwlFzrDC67Qg85uTsgxxZqlNY7p+4JARjda7ZLF/qMWQdX+7omZAkLtqqe7DaGrp2XVGILCE0N86shflMUzd/r4KKfm6IIg7x28RM4x87S3JUns8MYDfiAwjZVTqIesOH3SYyRAlyGJW1GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=o/NzRqmu; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1712137648; c=relaxed/simple;
+	bh=GRfag88koxETtlzSVNB41LuzJOoQ5upi+5Ad5sKRA7g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZQ9nv0+LCQ4Spvx3mXzrLMsX/mylQ5spGRMWO6dKSLzbDIFjwfb42OqET6Ke5bpQ8qFTin+RXH1b9xYNJpa5znk1cpIgJHxJtnqty+xIP9Bpe8url9nRxE/GTLEMedEqrnZ5ZOlqQUNCzqt3PjEgS8fZt4BmLR1aWE1hc72XUBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=1q8H9D3R; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="o/NzRqmu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1712136293;
-	bh=92mPhUlzzfNV0qTQVkW5nYHAFA+RzGdjVgEd9UIRvNQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=o/NzRqmujkp/ilEqEilJXwAjBboAnI583x/SZw5LJnCAJuOzlDHefFQJhij//w3SE
-	 U8P3bl+Qs8O0qm2Q90NOSXvtAV2gfTshtGyfdRlN6QYp/861UKGKj0MHd4NAKYaJip
-	 2Rl+sy3GEYe3RmhuGSrvC2lSYVtfBvWxTUPaVFmlVUeUBObgHGQNht/AYnIou5quvY
-	 A5CZwljTTcQlG6I1pyZHb1flHoABQQETPUpp/fiJHlED3+SjMrNM+Fi1JT0J713E0m
-	 gjTXOJJgpiUdhnbfJe+cwC0oN+XgrIDCpzlwFmrDRrU1CqElJubzxs8ceaCImGwxrk
-	 75d5iVN3sVsZA==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id CCFCA3782089;
-	Wed,  3 Apr 2024 09:24:52 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	rust-for-linux@vger.kernel.org,
-	kernel-linux@vger.kernel.org,
-	dirk.behme@de.bosch.com,
-	kernel@valentinobst.de,
-	kernel@collabora.com,
-	Laura Nao <laura.nao@collabora.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>
-Subject: [PATCH v2] docs: rust: Add instructions for the Rust kselftest
-Date: Wed,  3 Apr 2024 11:24:52 +0200
-Message-Id: <20240403092452.30300-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="1q8H9D3R"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-513e25afabaso6836254e87.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Apr 2024 02:47:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1712137644; x=1712742444; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=38SEkdXIN7qI57DkSuG7SyOZVG7UjoZz3fx+kBnmeVk=;
+        b=1q8H9D3RzPDHhPPW4oaXaZvc7oz9L7SA26PXsYzg9aJb7w0nJs77TmQf4sne7GpRyp
+         8f+2IRi+bET4fzqdjNgBWX0GF1cY/6++n4eXh1B+TUSb8r3SPA8Qy+7gCGRQmZVdXCqv
+         Gt/DNTfEPvAsm6LrazzTyVsYRu9vjYBJ+qOjCmby6PCkvP8p2TMILUxCQRBSF3Y6T7+y
+         DX4pHS3CEzoR2K+i6bATZ8xtk/z9I7RIZ3PApLsQX8+f3ouPxW9KVR0QvLNcWJ0hP+Ki
+         UikiKhmT1iwwy64yKoByLHAcGOTjYBPJqOq1B4bB1f3ca1VKViCSSEY2ROa4HoI5ehfD
+         HoHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712137644; x=1712742444;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=38SEkdXIN7qI57DkSuG7SyOZVG7UjoZz3fx+kBnmeVk=;
+        b=Xz7Mu28aKBH5uNiY0RAe6tLnPu/BGOaNnzRuKwOz+/uF5QLmMov3DYVE4bExS6OiSh
+         x4QRSfskBweRnAG10mLXKqcKLAKR+bwDhWdVtLbyNtlF9nq4YkqGnW4CltyTRQ4ycplB
+         PW+5EMCiCCna34ye9eDU7Jx5h4V0Mrd8FD4XnVtAWNsc10Xa/Nh9FdMFhf/juVYcl0Wv
+         Vb6OLbaJ38M4uWciZUgx+8yImwRH+i3nGOqPN8Jai3aY63uw11j2UTjEJAyPnXy8HCae
+         cnIXJWxX146whnSjzoeVpGaIuPJXqxl90KiSRQdmOZ0U4C2n/uLSZND8RQ3ufd4Fclrp
+         1iOg==
+X-Forwarded-Encrypted: i=1; AJvYcCX2pnkHsqWx4yqvkG3FlyZQD2hiPVVYcQaHLxZ3cqyMH8E4PvW9ui2bJlRStNRvSQ4yjIrsUxl3gZKBf+JW8rUcbS5JKGKaKTFanjZLzDg=
+X-Gm-Message-State: AOJu0YyLSIX+ITQPCaQpPqU13NjTc0sI25hrde44+UYpIlQHM6HAtHBW
+	jpKunDg8ktJLT4/oeWPPM4idFsRw/t5PQ3oFzyoEmwd1bYEMgdswz9fi2cJh3/g=
+X-Google-Smtp-Source: AGHT+IF/utXEsQEWDyjGiPzaJJWG210MR6/6WD7WsBEga3lRMhAkUP0TtaJbNUiFtWdGFRhMNlrSRg==
+X-Received: by 2002:a05:6512:480b:b0:516:26ca:c1fe with SMTP id eo11-20020a056512480b00b0051626cac1femr7053161lfb.8.1712137643891;
+        Wed, 03 Apr 2024 02:47:23 -0700 (PDT)
+Received: from localhost ([147.161.155.112])
+        by smtp.gmail.com with ESMTPSA id en19-20020a056000421300b0034365152f2asm4259837wrb.97.2024.04.03.02.47.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Apr 2024 02:47:23 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Keith
+ Busch <kbusch@kernel.org>,  Damien Le Moal <Damien.LeMoal@wdc.com>,  Bart
+ Van Assche <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,
+  "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,  Andreas
+ Hindborg <a.hindborg@samsung.com>,  Niklas Cassel <Niklas.Cassel@wdc.com>,
+  Greg KH <gregkh@linuxfoundation.org>,  Matthew Wilcox
+ <willy@infradead.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
+ <alex.gaynor@gmail.com>,  Wedson Almeida Filho <wedsonaf@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Alice Ryhl <aliceryhl@google.com>,
+  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis Chamberlain
+ <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,  Sergio
+ =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
+ Granados
+ <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
+ <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  open
+ list <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
+ <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
+ <gost.dev@samsung.com>
+Subject: Re: [RFC PATCH 4/5] rust: block: add rnull, Rust null_blk
+ implementation
+In-Reply-To: <1e8a2a1f-abbf-44ba-8344-705a9cbb1627@proton.me> (Benno Lossin's
+	message of "Tue, 02 Apr 2024 22:35:32 +0000")
+References: <20240313110515.70088-1-nmi@metaspace.dk>
+	<20240313110515.70088-5-nmi@metaspace.dk>
+	<QqpNcEOxhslSB7-34znxmQK_prPJfe2GT0ejWLesj-Dlse1ueCacbzsJOM0LK3YmgQsUWAR58ZFPPh1MUCliionIXrvLNsOqTS_Ee3bXEuQ=@proton.me>
+	<87msqc3p0e.fsf@metaspace.dk>
+	<1e8a2a1f-abbf-44ba-8344-705a9cbb1627@proton.me>
+User-Agent: mu4e 1.12.2; emacs 29.3
+Date: Wed, 03 Apr 2024 11:47:18 +0200
+Message-ID: <87edbmsrq1.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Add section describing how to build and run the Rust kselftest.
+Benno Lossin <benno.lossin@proton.me> writes:
 
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
-Changes in v2:
-- Use plural to account for potential other tests added later
-- Omit details about the test_probe_samples test
-- Clarify that kselftests are intended to be executed on a system running the same kernel to be tested
----
- Documentation/rust/testing.rst | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+[...]
 
-diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
-index 6658998d1b6c..64f58c4308f8 100644
---- a/Documentation/rust/testing.rst
-+++ b/Documentation/rust/testing.rst
-@@ -6,10 +6,11 @@ Testing
- This document contains useful information how to test the Rust code in the
- kernel.
- 
--There are two sorts of tests:
-+There are three sorts of tests:
- 
- - The KUnit tests.
- - The ``#[test]`` tests.
-+- The Kselftests.
- 
- The KUnit tests
- ---------------
-@@ -133,3 +134,25 @@ Additionally, there are the ``#[test]`` tests. These can be run using the
- This requires the kernel ``.config`` and downloads external repositories. It
- runs the ``#[test]`` tests on the host (currently) and thus is fairly limited in
- what these tests can test.
-+
-+The Kselftests
-+--------------
-+
-+Kselftests are also available in the tools/testing/selftests/rust folder.
-+
-+The kernel config options required for the test are listed in the
-+tools/testing/selftests/rust/config file and can be included with the aid
-+of the merge_config.sh script::
-+
-+	./scripts/kconfig/merge_config.sh .config tools/testing/selftests/rust/config
-+
-+The kselftests are built within the kernel source tree and are intended to
-+be executed on a system that is running the same kernel.
-+
-+Once a kernel matching the source tree has been booted, the tests
-+can be compiled and executed using the following command::
-+
-+	make TARGETS="rust" kselftest
-+
-+Refer to Documentation/dev-tools/kselftest.rst for the general Kselftest
-+documentation.
--- 
-2.30.2
+>
+>
+> So I did some digging and there are multiple things at play. I am going
+> to explain the second error first, since that one might be a problem
+> with `pin_init`:
+> - the `params` extension of the `module!` macro creates constants with
+>    snake case names.
+> - your `QueueData` struct has the same name as a field.
+> - `pin_init!` generates `let $field_name =3D ...` statements for each
+>    field you initialize
+>
+> Now when you define a constant in Rust, you are able to pattern-match
+> with that constant, eg:
+>
+>      const FOO: u8 =3D 0;
+>=20=20=20=20=20=20
+>      fn main() {
+>          match 10 {
+>              FOO =3D> println!("foo"),
+>              _ =3D> {}
+>          }
+>      }
+>
+> So when you do `let FOO =3D x;`, then it interprets `FOO` as the constant.
+> This is still true if the constant has a snake case name.
+> Since the expression in the `pin_init!` macro has type
+> `DropGuard<$field_type>`, we get the error "expected
+> `DropGuard<IRQMode>`, found `__rnull_mod_irq_mode`".
 
+Thanks for the analysis!
+
+So in this expanded code:
+
+1   {
+2       unsafe { ::core::ptr::write(&raw mut ((*slot).irq_mode), irq_mode) =
+};
+3   }
+4   let irq_mode =3D unsafe {
+5       $crate::init::__internal::DropGuard::new(&raw mut ((*slot).irq_mode=
+))
+6   };
+
+the `irq_mode` on line 2 will refer to the correct thing, but the one on
+line 6 will be a pattern match against a constant? That is really
+surprising to me. Can we make the let binding in line 6 be `let
+irq_mode_pin_init` or something similar?
+
+>
+> Now to the first error, this is a problem with the parameter handling of
+> `module`. By the same argument above, your let binding in line 104:
+>
+>      let irq_mode =3D (*irq_mode.read()).try_into()?;
+>
+> Tries to pattern-match the `irq_mode` constant with the right
+> expression. Since you use the `try_into` function, it tries to search
+> for a `TryInto` implementation for the type of `irq_mode` which is
+> generated by the `module!` macro. The type is named
+> __rnull_mod_irq_mode.
+>
+>
+> Now what to do about this. For the second error (the one related to
+> `pin_init`), I could create a patch that fixes it by adding the suffix
+> `_guard` to those let bindings, preventing the issue. Not sure if we
+> need that though, since it will not get rid of the first issue.
+
+I think that is a good idea =F0=9F=91=8D
+
+>
+> For the first issue, I think there is no other way than to use a
+> different name for either the field or the constant. Since constants are
+> usually named using screaming snake case, I think it should be renamed.
+> I believe your reason for using a snake case name is that these names
+> are used directly as the names for the parameters when loading the
+> module and there the convention is to use snake case, right?
+> In that case I think we could expect people to write the screaming snake
+> case name in rust and have it automatically be lower-cased by the
+> `module!` macro when it creates the names that the parameters are shown
+> with.
+
+I was thinking about putting the parameters in a separate name space,
+but making them screaming snake case is also a good idea. So it would
+be `module_parameters::IRQ_MODE` to access the parameter with the name
+`irq_mode` exposed towards the user. Developers can always opt in to bringi=
+ng
+the symbols into scope with a `use`.
+
+Best regards,
+Andreas
