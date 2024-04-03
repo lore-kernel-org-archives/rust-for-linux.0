@@ -1,135 +1,234 @@
-Received: from mr85p00im-ztdg06021701.me.com (mr85p00im-ztdg06021701.me.com [17.58.23.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C91156649
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Apr 2024 21:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F512C683;
+	Wed,  3 Apr 2024 21:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712178435; cv=none; b=tmlCPAJXWZuUMcrs9PQ8v7dVauSuSr78t4MPYedMxJeD+dAjkVtLYyl+s61L4CO/H+6lfLyqvsW5k1TagbMHtJO7fhUm+YoJBIOeGOx4Z6/ulglau0XLSByNSZJSO/99N061QUaSLtaeUI0VS2YeTratwuLiNlIhpqCuYEraqlc=
+	t=1712179293; cv=none; b=kSW1PJeuaxszeO8Zdg8BlfyUUV0VrLYfagoMu95oj+o3IJLjrijieHhLTg99glfxj4gLIGYbBKflv7PMtb91dIVKVWCIt/VE4pqbLWfGtkdVoja0PxTOAmX1y7eCaluBuP9HyfI4PE44MJuYtrDVbV6bXKfctyFOBPx0xpddzcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712178435; c=relaxed/simple;
-	bh=0AiZM6PiLalckeV63JNhtHUusQZnUdQA6buUd7aeJDk=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=d+7T1RJJWys3dgILWGzBLtRq/F4HJIWbd6omWrsNG1l93/CmEuZNuGwd6ftsKfcdX7VaYrDUzeyLpldwgLGvJV6UKJ0dG7VAoGFUN00sFLiZzm0b1+LmMuP/qf/S6hgHfcZPBlutu0QwL6OKMfkqhGa/km/6JJKCUec2q2GtNmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=xErRji5z; arc=none smtp.client-ip=17.58.23.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+	s=arc-20240116; t=1712179293; c=relaxed/simple;
+	bh=pHedwJ02tuqxgOwaae637BdCbJIBZjwoubdKjUsH4nc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=STTNhf0KhCHQFpfJ1nU7csMn6KNk4NF3YeOj4bahktkixKtK4DuNiBQdnt+a0Xu09yHOSr9AKgLHFusrBzPRqs0XDp/P1/VzCU6eaPih78sOpzS/o7AxkgXIh0Df6gH4XHUSAIIXq+DZO+Ytzcv27+RzBoSByMLpNMoJXe1jx8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGMQG/4V; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="xErRji5z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-	t=1712178433; bh=AY0YVT2/pYp771gvWdGaXCfqZ7KgXeM1P5FSEBqw7YA=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To;
-	b=xErRji5zX/NvKMQXFwcPYZhTN9qkg6tJPFvY6PX5I/0F+sgx8NG0zyQFlJznXCvkQ
-	 WpCgF3C/PJOga/QRYZ4GJgLmZ94IcGMQOtVsJwVOUwGo1UFeYrVxr/cAhmQXfIMH6U
-	 bN3Qzbv+Do8UPEd6BiG3wAC4ccO/nADUAWNh+oxT7wF0b5Pz13dUvilASFejaCZv0E
-	 niketQZbu3RTE/WSO4xbpV3Q+CqO930sZrm/tsa/uLTVIpPkvW7Ef/X5nrZSlf5eJ/
-	 5sVZb0DBHac+AHoeU04c4xWtxOYhF2fKkIGogV0kAPiXRaO88d03NmTIHs7Q3W4DQR
-	 hKNW4lQhzgZRQ==
-Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06021701.me.com (Postfix) with ESMTPSA id 6E37E26335A3;
-	Wed,  3 Apr 2024 21:07:11 +0000 (UTC)
-From: Laine Taffin Altman <alexanderaltman@me.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGMQG/4V"
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3c3e67fd552so108086b6e.3;
+        Wed, 03 Apr 2024 14:21:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712179290; x=1712784090; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BmpB/z2gJc3FNiFKYDU+JCxW+LpIlT5gVHp7aI7deT4=;
+        b=OGMQG/4VaOsBGrgKqAu0AO666+3KzNF2DuzNBKOqvBxYJAZefqwFuZu0jUJdtoky+A
+         2wYgyGKtJs4FkTi3lSLyr4vlHTNL4uDQjJzFpku5tFy/zZhWIi08KaV9PIAwWt4N+GD1
+         xzO/k7d/cAsDCgy+PMVTcOoPL9ykpXHqeo2eNoasfOZaBSuMhABXvWO4fHBtsYWlYSsl
+         cDSH871DTzU+j9lXhkf52qmhF7Y72F0nnb6oZXXRYNfabQOxcRZlWjxGJ/jxXh/dWlc3
+         ErCQ/ihbfNMM4I6UmU6uPO2aEtP0BoQfcYSVZKlQBbOD4VjIsssh1x2GZ3DXTh3aOnJj
+         DLPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712179290; x=1712784090;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BmpB/z2gJc3FNiFKYDU+JCxW+LpIlT5gVHp7aI7deT4=;
+        b=Ddl5utxENBI9oUvT1sZYJh3dwccMEM+iaraGpUJHSlaNDr9yVpXxpp3PwhOD82xUpy
+         kSmOF+4vBaVNJmTJvEGs84hjv4oT5LAZMZYkM/VaDxP7vDlt8visUBZhJGk6GzU3eX8/
+         B9vh96hg+HpQ1Q/0NoABgCto4y7LzJRTwQVDI+knVDTr8zNrRnAsc/+Zwp2cYNY0srLm
+         9C4B9l1ZUfvZbL0dVguSrj1TDV3Iaf85/Aec79erHyUCKD0oWf7rBhC21j6IbLxzD0MD
+         46p+IqO0r8AKdOkC/Z3mAATTMmy2PgeVpPM+7OmFUMqe6cH1L97vg639JJ0G6rtQa8eI
+         ieKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWXZ12gQgeYr/3oPKCH5BNho5CYSet8+s3oZ8HxM5kC5FpdAL56UU7dtLVcXRp86Ai+ijKZGJfvyk65XbrwD5LDQF3Tse5BtSPQSssLELRdPvKHmOdvSyqrvg1ySVHrjZQ0rlJ2dzW3NpKYQiQ=
+X-Gm-Message-State: AOJu0YzviN2bzikwwSHjtPWSRjW582w3CHEKz1tiusPmy8uanY3Sj5YG
+	sm9EQ9/U6LNTxVs9zeLkOim3PWMP9oYY5OH5G2qjYShrmjKiS5Pv
+X-Google-Smtp-Source: AGHT+IHq1NGwE3dkTvk5FXmP7pUa3PuT8uPh6e9VzJr/IOXzZiQsbUJ4J+pSBWaSkWhciyL54FqS3g==
+X-Received: by 2002:a05:6808:2019:b0:3c3:9cd9:c2b5 with SMTP id q25-20020a056808201900b003c39cd9c2b5mr598315oiw.10.1712179289006;
+        Wed, 03 Apr 2024 14:21:29 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id os39-20020a05620a812700b0078a2b5faab7sm5343907qkn.50.2024.04.03.14.21.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Apr 2024 14:21:28 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 247111200066;
+	Wed,  3 Apr 2024 17:21:28 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Wed, 03 Apr 2024 17:21:28 -0400
+X-ME-Sender: <xms:V8gNZs4ln5fFspcocdevwQ5dYMLxbbSubyQO9eooEJdG-nPxwS3fkw>
+    <xme:V8gNZt5ImFDaLGt7PuTRya4eyV4w22D_PWWF29ZCSZfRcK_xDmjfw5UNWvd3QitEs
+    x_S5jTWVVhreb3WGg>
+X-ME-Received: <xmr:V8gNZrfSVsroD9yR-j643vIPdRTIubqhLWpcpRucE-ClqE9JVEbrzid6hI8Nxg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefiedguddujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:V8gNZhKO31_FgnWK87nPBEeE-ie-bC-VLkZT3jHj9JoNmWGNr8MI3Q>
+    <xmx:V8gNZgJur3wvEikrtR8Bx76XSHWsgvybMrvEHQkRa0QGm_ghx_6jbA>
+    <xmx:V8gNZiw_RlqdYakBYJaNMMv2oem_WWrO-hlc8xugc_uJQJD17tALuA>
+    <xmx:V8gNZkL_12Nt-8uulO3L98r9zsh10l8b6giB9-ksPYFqr5Hlr7U4sw>
+    <xmx:WMgNZtCEtTC-E6aTkdDuc77Il9Gk7tA5hKNwDiBF3SHi5ena-sQJvqYy>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Apr 2024 17:21:27 -0400 (EDT)
+Date: Wed, 3 Apr 2024 14:20:29 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: init: change the generated name of guard variables
+Message-ID: <Zg3IHZfYVEOh7nc4@boqun-archlinux>
+References: <20240403194321.88716-1-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: [PATCH v4] rust: init: remove impl Zeroable for Infallible
-Message-Id: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
-Date: Wed, 3 Apr 2024 14:06:59 -0700
-Cc: stable@vger.kernel.org
-To: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- rust-for-linux@vger.kernel.org,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- lkml <linux-kernel@vger.kernel.org>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-X-Proofpoint-ORIG-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
-X-Proofpoint-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-03_22,2024-04-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
- mlxscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2404030144
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240403194321.88716-1-benno.lossin@proton.me>
 
-In Rust, producing an invalid value of any type is immediate undefined
-behavior (UB); this includes via zeroing memory.  Therefore, since an
-uninhabited type has no valid values, producing any values at all for it =
-is
-UB.
+On Wed, Apr 03, 2024 at 07:43:37PM +0000, Benno Lossin wrote:
+> The initializers created by the `[try_][pin_]init!` macros utilize the
+> guard pattern to drop already initialized fields, when initialization
+> fails mid-way. These guards are generated to have the same name as the
+> field that they handle. To prevent namespacing issues when the field
 
-The Rust standard library type `core::convert::Infallible` is =
-uninhabited,
-by virtue of having been declared as an enum with no cases, which always
-produces uninhabited types in Rust.
+Do you have an example of this kind of issues?
 
-The current kernel code allows this UB to be triggered, for example by =
-code
-like `Box::<core::convert::Infallible>::init(kernel::init::zeroed())`.
+Regards,
+Boqun
 
-Thus, remove the implementation of `Zeroable` for `Infallible`, thereby
-avoiding the unsoundness (potential for future UB).
-
-Cc: stable@vger.kernel.org
-Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
-`init::zeroed` function")
-Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
-Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
----
-V3 -> V4: Address review nits; run checkpatch properly.
-V2 -> V3: Email formatting correction.
-V1 -> V2: Added more documentation to the comment, with links; also =
-added more details to the commit message.
-
- rust/kernel/init.rs | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 424257284d16..3859c7ff81b7 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -1292,8 +1292,15 @@ macro_rules! impl_zeroable {
-     i8, i16, i32, i64, i128, isize,
-     f32, f64,
-=20
--    // SAFETY: These are ZSTs, there is nothing to zero.
--    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, =
-Infallible, (),
-+    // Note: do not add uninhabited types (such as `!` or =
-`core::convert::Infallible`) to this list;
-+    // creating an instance of an uninhabited type is immediate =
-undefined behavior.  For more on
-+    // uninhabited/empty types, consult The Rustonomicon:
-+    // =
-https://doc.rust-lang.org/stable/nomicon/exotic-sizes.html#empty-types =
-The Rust Reference
-+    // also has information on undefined behavior:
-+    // =
-https://doc.rust-lang.org/stable/reference/behavior-considered-undefined.h=
-tml
-+    //
-+    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a =
-valid value exists.
-+    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
-=20
-     // SAFETY: Type is allowed to take any value, including all zeros.
-     {<T>} MaybeUninit<T>,
-
-base-commit: c85af715cac0a951eea97393378e84bb49384734
---=20
-2.44.0
-
+> name is the same as e.g. a constant name, add `__` as a prefix and
+> `_guard` as the suffix.
+> 
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> ---
+>  rust/kernel/init/macros.rs | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
+> index cb6e61b6c50b..93bf4c3080f9 100644
+> --- a/rust/kernel/init/macros.rs
+> +++ b/rust/kernel/init/macros.rs
+> @@ -250,7 +250,7 @@
+>  //!                     // error type is `Infallible`) we will need to drop this field if there
+>  //!                     // is an error later. This `DropGuard` will drop the field when it gets
+>  //!                     // dropped and has not yet been forgotten.
+> -//!                     let t = unsafe {
+> +//!                     let __t_guard = unsafe {
+>  //!                         ::pinned_init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).t))
+>  //!                     };
+>  //!                     // Expansion of `x: 0,`:
+> @@ -261,14 +261,14 @@
+>  //!                         unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).x), x) };
+>  //!                     }
+>  //!                     // We again create a `DropGuard`.
+> -//!                     let x = unsafe {
+> +//!                     let __x_guard = unsafe {
+>  //!                         ::kernel::init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).x))
+>  //!                     };
+>  //!                     // Since initialization has successfully completed, we can now forget
+>  //!                     // the guards. This is not `mem::forget`, since we only have
+>  //!                     // `&DropGuard`.
+> -//!                     ::core::mem::forget(x);
+> -//!                     ::core::mem::forget(t);
+> +//!                     ::core::mem::forget(__x_guard);
+> +//!                     ::core::mem::forget(__t_guard);
+>  //!                     // Here we use the type checker to ensure that every field has been
+>  //!                     // initialized exactly once, since this is `if false` it will never get
+>  //!                     // executed, but still type-checked.
+> @@ -461,16 +461,16 @@
+>  //!             {
+>  //!                 unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).a), a) };
+>  //!             }
+> -//!             let a = unsafe {
+> +//!             let __a_guard = unsafe {
+>  //!                 ::kernel::init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).a))
+>  //!             };
+>  //!             let init = Bar::new(36);
+>  //!             unsafe { data.b(::core::addr_of_mut!((*slot).b), b)? };
+> -//!             let b = unsafe {
+> +//!             let __b_guard = unsafe {
+>  //!                 ::kernel::init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).b))
+>  //!             };
+> -//!             ::core::mem::forget(b);
+> -//!             ::core::mem::forget(a);
+> +//!             ::core::mem::forget(__b_guard);
+> +//!             ::core::mem::forget(__a_guard);
+>  //!             #[allow(unreachable_code, clippy::diverging_sub_expression)]
+>  //!             let _ = || {
+>  //!                 unsafe {
+> @@ -1192,14 +1192,14 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
+>          // We use `paste!` to create new hygiene for `$field`.
+>          ::kernel::macros::paste! {
+>              // SAFETY: We forget the guard later when initialization has succeeded.
+> -            let [<$field>] = unsafe {
+> +            let [< __ $field _guard >] = unsafe {
+>                  $crate::init::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+>              };
+>  
+>              $crate::__init_internal!(init_slot($use_data):
+>                  @data($data),
+>                  @slot($slot),
+> -                @guards([<$field>], $($guards,)*),
+> +                @guards([< __ $field _guard >], $($guards,)*),
+>                  @munch_fields($($rest)*),
+>              );
+>          }
+> @@ -1223,14 +1223,14 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
+>          // We use `paste!` to create new hygiene for `$field`.
+>          ::kernel::macros::paste! {
+>              // SAFETY: We forget the guard later when initialization has succeeded.
+> -            let [<$field>] = unsafe {
+> +            let [< __ $field _guard >] = unsafe {
+>                  $crate::init::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+>              };
+>  
+>              $crate::__init_internal!(init_slot():
+>                  @data($data),
+>                  @slot($slot),
+> -                @guards([<$field>], $($guards,)*),
+> +                @guards([< __ $field _guard >], $($guards,)*),
+>                  @munch_fields($($rest)*),
+>              );
+>          }
+> @@ -1255,14 +1255,14 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
+>          // We use `paste!` to create new hygiene for `$field`.
+>          ::kernel::macros::paste! {
+>              // SAFETY: We forget the guard later when initialization has succeeded.
+> -            let [<$field>] = unsafe {
+> +            let [< __ $field _guard >] = unsafe {
+>                  $crate::init::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+>              };
+>  
+>              $crate::__init_internal!(init_slot($($use_data)?):
+>                  @data($data),
+>                  @slot($slot),
+> -                @guards([<$field>], $($guards,)*),
+> +                @guards([< __ $field _guard >], $($guards,)*),
+>                  @munch_fields($($rest)*),
+>              );
+>          }
+> 
+> base-commit: 9ffe2a730313f27cebd0859ea856247ac59c576c
+> -- 
+> 2.44.0
+> 
+> 
+> 
