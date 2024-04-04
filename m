@@ -1,108 +1,131 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692B415EA6;
-	Thu,  4 Apr 2024 14:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986B012B82
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 14:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712241232; cv=none; b=QebNiiaeUVIigJxD0RHwmQwVS3CTrWB4x73Kiib3EDyyt2X6w2frHRUNk/6k0R9BfHk80rYrKtmGjq4sr+p3h6a/KdipPH5LCH2XV3AbAnGrmyf4ljiplkj9CrvYmCKSOyA0LOCi2VEjG/9nqxgI3H1zkDFIwumF5GxzbDobRaY=
+	t=1712241418; cv=none; b=P9KmYSt9Rm1bTw2hi2UAi3dQPcQdcmekctIcaPbk19IRVxrhqX4X5h4Ei+TexHDPkIpZG6k7Nb9WuS2Nzp5+h0e2aHKPSajuc4qqdKQVuynV5LuvXlRYbfeJOT/ezr4HzcsoAzr0Jc8l9Y8W6GH3MBiiI9E3Tuov0MLNvNYE1zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712241232; c=relaxed/simple;
-	bh=jpF7tTa5Sd3tDtJxZDaT9Swi8PyGNUK+y0VMQ7cXB4o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KWg3TIzPpjUdeAJAdLVMEi1KUX59IbEAW6qRC9FIhbJ3ck18WZlvX+mf+/1k855PpasDTc4bOdJrzp5wrvAU5MK4co82UdSQ/LhxYJHy9RNbLkrliKJgcGSKUnmLrpWI0wtmCx/TqyvSeWAHRMrsf1m1EPMpoY6bQq8zkmNR1Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3IDwNJd; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712241418; c=relaxed/simple;
+	bh=g5tQ467b5au3ekidhW50/WYDE3pKT7OHsNVp75ID7vE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UmNHPejT5R2CIlmgY3aHoL9+kGKEh94VycVnOM/UtS5zObEBS/fZ08WSSmrDsUykl0CPvFpEz+B6FnGuJo2bl1/6DaQX9hOivz89OkBh50pryyP2rjxIGdznVoWgCMajFrCuc0fq7PLBJuwWnKxWMxmvFmmzT5jhyiXUVtR3tHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=T9sxEjyu; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3IDwNJd"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-53fa455cd94so905560a12.2;
-        Thu, 04 Apr 2024 07:33:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712241230; x=1712846030; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jpF7tTa5Sd3tDtJxZDaT9Swi8PyGNUK+y0VMQ7cXB4o=;
-        b=M3IDwNJdiyZ4qFR05T+FfB15+HQK9J3X4VLsA/UlyweDiZhCEZHVAQVcsKKrdVNegF
-         /369KiTIZirVN1gQ53sP/GsFkl3XqWIYtL9Fd8JfXlxNA+qlNSzgieaBEYbD4qYN+vpK
-         rQJGC09Q0hbiboWMzrxJRcVVchc4qn7E7YRJ7TdkWRKmQD8dz7s3Mxcm/VewvgyHH/mE
-         X6jq0OCnO5ex/DNI/KMIje5XrHJDCINYLxg8+tpt+j105WFE9YWmPsde4tOdSjuLA0yv
-         uy1mV7MB3/pPSBboyJAY8ysTgnnQsuTHX+yyGJzGmg1e1pTmcWII/hDZJuHU/srtxMqn
-         /nlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712241230; x=1712846030;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jpF7tTa5Sd3tDtJxZDaT9Swi8PyGNUK+y0VMQ7cXB4o=;
-        b=q7WjwBqhxq/Pvl3xYvC9oG0Co2l1D466u09n/Gj6IcUnKm9WP+CG+/g06H4Gf5sOzR
-         HSgoUvgMaFIo7oxhzvol6VaxBueY8XSCu1JG6eS156J8VvmYl4QIZKsTeWKkhxvF58Ot
-         bvl7bKsCIEOWRHONuecORGrwAllSYtCCkrlzrOhe0iUkdO4RQXcuKr6E0q5hs9NVkThs
-         B9UXU349JbDCvUtLz5qATq4TV+dEpSHxonUtMh/CkdzLnJhyPDpnODMeHMeY/MVg4s0W
-         wNJhn226PSaK7eZqmYy1CHJQaroSpHykDUjpwEzP9c2RdyRqjDvF0u6GUA3oJ+CYzQyt
-         OJoA==
-X-Forwarded-Encrypted: i=1; AJvYcCWD909KEA3nsUAiJwyjoW4vbGJz76USkfooaAWmi1IoxXfIEZoWGWvRhWqpT2EcaEM33JomFw8bV1xItoeuYV1gMw4PUdOuoINPlFnl48UxQovweHR9m7CAxM1jljSbOAlnle3Kf/1hiDc3VzIoEcQiBr3IR9FpfdMbtVjf7gecR43zdhk=
-X-Gm-Message-State: AOJu0YyF5q/hrJdvUMxRev7exbrX1Gi7Fwui/GhCM0CH16XEWWf+Iiv8
-	Wl8dxzWBnYudHin13C6DJNFzQA5+VztdkdbUJwvE2WgoqMU+qvsMEAd5HZcJH/qxF9FJwSTE+4n
-	C3CqOPuWL5KBWROrtYySbRI1BA/8=
-X-Google-Smtp-Source: AGHT+IG20eNpSzNkxnsgTkafpuA97Ew4OmO4JnqBaV5mNVNvOzgcdHEwHOPWG79O1UTpYlFkEm87j6CqNJkr6GVC/L4=
-X-Received: by 2002:a17:90b:f18:b0:29d:dd93:5865 with SMTP id
- br24-20020a17090b0f1800b0029ddd935865mr2399668pjb.46.1712241230437; Thu, 04
- Apr 2024 07:33:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="T9sxEjyu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712241408; x=1712500608;
+	bh=sFcdFq5/NQHONR503i97zG4JgDNzJtYW69mQiJroSFs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=T9sxEjyulG6zzMsMry2SYr2AC7rDKl89spkDwlwT8RGW07Mu2TSMZsKteSG3I5gBY
+	 MVUB6lJ2GaeTMS20gDHWvA12BHj1fiiEt139/WDiYKtHB1Uo8DGJYfQaPCei4s6Mkj
+	 L+xvQWLrs3cK1JJ3UmEMy5g8okyrExCVgyM3NSJlnmOBv1hL5WDDHNHzc/YgfFA52p
+	 OxB3zePnxdYIi8VrJ9Ubfu5ogfYRzdpazUX/CL/nix1OmH6j/NVUPhgTj//0L4Jb8L
+	 wY152tO2DfAvPaRsMqmxCGdZXntQrJvT7v+p9PZMCvy7KYPGgz9ryGp92vtu3RAHDd
+	 UZeb1vpZnOYlw==
+Date: Thu, 04 Apr 2024 14:36:42 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 6/9] rust: list: add iterators
+Message-ID: <98449574-4c1b-4281-bbd3-3ac2767020cb@proton.me>
+In-Reply-To: <20240402-linked-list-v1-6-b1c59ba7ae3b@google.com>
+References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-6-b1c59ba7ae3b@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240404-providing-emporium-e652e359c711@spud>
-In-Reply-To: <20240404-providing-emporium-e652e359c711@spud>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 4 Apr 2024 16:33:08 +0200
-Message-ID: <CANiq72m9YAu=dr1=WMSHOqfpszj4S6OkMEQ05vqbv_zKO5pOsg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-riscv@lists.infradead.org, Conor Dooley <conor.dooley@microchip.com>, 
-	stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
-	Kees Cook <keescook@chromium.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, 
-	Matthew Maurer <mmaurer@google.com>, Ramon de C Valle <rcvalle@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 4, 2024 at 4:17=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
->
-> From: Conor Dooley <conor.dooley@microchip.com>
->
-> On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
-> loading a rust module will trigger a kernel panic. Support for
-> sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
-> they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
-> to prevent configuring a kernel without symmetrical support for kfi.
->
-> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
-> Sending this one on its own, there's no explicit dep on this for the
-> riscv enabling patch, v3 to continue the numbering from there. Nothing
-> has changed since v2.
->
-> CC: Miguel Ojeda <ojeda@kernel.org>
-> CC: Alex Gaynor <alex.gaynor@gmail.com>
-> CC: Wedson Almeida Filho <wedsonaf@gmail.com>
-> CC: linux-kernel@vger.kernel.org (open list)
-> CC: rust-for-linux@vger.kernel.org
-> CC: Sami Tolvanen <samitolvanen@google.com>
-> CC: Kees Cook <keescook@chromium.org>
-> CC: Nathan Chancellor <nathan@kernel.org>
-> CC: llvm@lists.linux.dev
+On 02.04.24 14:17, Alice Ryhl wrote:
+> @@ -414,3 +427,92 @@ fn drop(&mut self) {
+>          }
+>      }
+>  }
+> +
+> +/// An iterator into a [`List`].
+> +///
+> +/// # Invariants
+> +///
+> +/// The `current` pointer points at a value in a list, or it is null if =
+the iterator has reached
 
-Cc'ing Matthew & Ramon as well so that they are aware and in case they
-want to comment.
+I think "list" should link to [`List`].
 
+> +/// the end of the list. The `stop` pointer points at the first value in=
+ the same list, or it is
+> +/// null if the list is empty.
+> +#[derive(Clone)]
+> +pub struct Iter<'a, T: ?Sized + ListItem<ID>, const ID: u64 =3D 0> {
+> +    current: *mut ListLinksFields,
+> +    stop: *mut ListLinksFields,
+> +    _ty: PhantomData<&'a ListArc<T, ID>>,
+> +}
+> +
+> +impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Iterator for Iter<'a, =
+T, ID> {
+> +    type Item =3D ArcBorrow<'a, T>;
+> +
+> +    fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
+> +        if self.current.is_null() {
+> +            return None;
+> +        }
+> +
+> +        let current =3D self.current;
+> +
+> +        // SAFETY: We just checked that `current` is not null, so it is =
+in a list, and hence not
+> +        // dangling. There's no race because the iterator holds an immut=
+able borrow to the list.
+
+This (that the iterator holds an immutable borrow) is not true (there
+is no `&List` field in `Iter`), but you can make that an invariant
+instead.
+
+> +        let next =3D unsafe { (*current).next };
+> +        // INVARIANT: If `current` was the last element of the list, the=
+n this updates it to null.
+> +        // Otherwise, we update it to the next element.
+> +        self.current =3D if next !=3D self.stop {
+> +            next
+> +        } else {
+> +            ptr::null_mut()
+> +        };
+> +
+> +        // SAFETY: The `current` pointer points a value in the list.
+
+Typo: "points a value" -> "points at a value"
+
+I think you should also use consistent naming when referring to the
+elements/items/values of a list.
+
+--=20
 Cheers,
-Miguel
+Benno
+
+> +        let item =3D unsafe { T::view_value(ListLinks::from_fields(curre=
+nt)) };
+> +        // SAFETY:
+> +        // * All values in a list are stored in an `Arc`.
+> +        // * The value cannot be removed from the list for the duration =
+of the lifetime annotated
+> +        //   on the returned `ArcBorrow`, because removing it from the l=
+ist would require mutable
+> +        //   access to the list. However, the `ArcBorrow` is annotated w=
+ith the iterator's
+> +        //   lifetime, and the list is immutably borrowed for that lifet=
+ime.
+> +        // * Values in a list never have a `UniqueArc` reference.
+> +        Some(unsafe { ArcBorrow::from_raw(item) })
+> +    }
+> +}
+
