@@ -1,111 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA93C1292EE;
-	Thu,  4 Apr 2024 15:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B771292F3;
+	Thu,  4 Apr 2024 15:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712244781; cv=none; b=Ap1X0x0yW7X8vUxpvUpPFI5SX/oFwheKh1BRjk/8SOrov4vcKsrfuLWmdN1LGsek8AVy7WybS8Zs+pQB7wQf8u0Uc0WeFGB+lAliMz4WBJ5se+pR6XWYz8LCbyUIVLPbwMzzghIRj1voJ6xFMXhCP/Zf2y7TXs2vOzwm6Mp+QMQ=
+	t=1712244961; cv=none; b=RAdIp7ntuYITiedWwEBEIhrTDLpCsPdKYk1YwU/Y3sQl+uo2Awy/qKtD/VONvA/N+XkBJReCDoGdj0Oy0MNSxCfDtszqxmboyDKqzWCDdSHeSCykeHNKKdAwvbb1oJoKjQ6pVpei6MLtDqHIpR5UckcV7i+64zQF0Qflh5hak+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712244781; c=relaxed/simple;
-	bh=+ihKIoYDSDX/L3rUTACaGuGGhf6TLUZ/+4aywDsnmIM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UEt5xSpdYo0uctKDX1QyToz6xN01HMRwwuwzURpBDcd3VELKQzzpo7gRiAql9aFF8mFNv7JzBZkpms7RATLwSjS36yQ2dRDH8f+6QEi/kTOtAts+YpzNgv2wLYliqdBCuFvEHRJ2qJL0Dv0bR23r6L+ZP43rrDto7pXeJg5Qehw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQLRQoQ8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712244961; c=relaxed/simple;
+	bh=fYbjEPVccjvYnn46iD7vpnVoAkxI1If0zG6IiW1R9Yc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EX+PRgUQw7YpSmwqTOBSy+qF1/juGKzfBp93YWykG4CXus2UpewSMY9z5Sf82SdcfXc3Ojaz8cK9EYPF2LfpJm6GtQFvsUX1wytsnbU9A6/YcpydpfFPcyg7rj/WKtfND06kUMlvSCWzQiSNrN12CZDpawdNEEB3urTsqsWxozQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kG5CqHgg; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQLRQoQ8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96471C433F1;
-	Thu,  4 Apr 2024 15:33:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712244781;
-	bh=+ihKIoYDSDX/L3rUTACaGuGGhf6TLUZ/+4aywDsnmIM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PQLRQoQ8m3JLC2Td7LqTr9Gyx8iw2LqCI4y/rdO3jtZZbS+Jx+i1K/p9KSnZBmeME
-	 +c29ns5saD6bgCr/l+2SX/f4nFyiiSIxm/5E9rcRe8PW0ZE7NZpGIwjxhx5E89VL15
-	 82t9Vd7JFQgbffAMgIwa0aZMPBP883Z6LDkVPEtCDYG8PJHV9dhQXrPGeZxtYv/B+S
-	 TdPsbPup6lVeq9b/AlKD3BSDhXEVHVqOEnkLN8LdjH60jD/0MagUPdIpfuABSjbPKn
-	 Ca++IKiyI5MdVDhXG+zD+xnTEBgDZk67+RLYMxMdw2G32RjOdiVttZUzTgVOGqjsQP
-	 tS4iFvBCBEjKg==
-Date: Thu, 4 Apr 2024 08:32:58 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-riscv@lists.infradead.org,
-	Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Kees Cook <keescook@chromium.org>, llvm@lists.linux.dev
-Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
-Message-ID: <20240404153258.GA852748@dev-arch.thelio-3990X>
-References: <20240404-providing-emporium-e652e359c711@spud>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kG5CqHgg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712244956; x=1712504156;
+	bh=DMdXBi/0LZqIUvhAKHpVgBvC+3bzEmZ+xPRxQLFsuwM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=kG5CqHgg3sWkxpkV4h1CY2VTd2fIjN6bWbDfeKo76m48UFkcTGqap3UjOvpv+WneM
+	 4C+Mpd5Z1Tb0jSdnnLiKCuagArdS+Y/7Q8J0zbBytdw+JqnjCekcdErlq5Me/BQ0TO
+	 u2PwF84SRv0suewmB5wHBzXP7471tALVTIo2EVgOj7TH3JVtbD7LdqHMdEwyP6Ndq4
+	 DaNRQ6Jh7sBaAPAnt3hdVAxWBi3K347iiSPSHlelfKULtsJTybwkN/pFR6B+M+E4KT
+	 m3jx/FP+aMM7v7CIvcFi9c4TN6Cms2R55sXKDyvdhWZyz5bDpv2yNUkpCAematsTcs
+	 DB6GUR9U2HJJw==
+Date: Thu, 04 Apr 2024 15:35:51 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 8/9] rust: list: support heterogeneous lists
+Message-ID: <18698be5-fe4b-44ed-a12e-444ebffd4b32@proton.me>
+In-Reply-To: <20240402-linked-list-v1-8-b1c59ba7ae3b@google.com>
+References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-8-b1c59ba7ae3b@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240404-providing-emporium-e652e359c711@spud>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 04, 2024 at 03:17:02PM +0100, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
-> loading a rust module will trigger a kernel panic. Support for
-> sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
-> they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
-> to prevent configuring a kernel without symmetrical support for kfi.
-> 
-> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+On 02.04.24 14:17, Alice Ryhl wrote:
+> @@ -180,6 +184,41 @@ unsafe fn from_fields(me: *mut ListLinksFields) -> *=
+mut Self {
+>      }
+>  }
+>=20
+> +/// Similar to [`ListLinks`], but also contains a pointer to the full va=
+lue.
+> +///
+> +/// This type can be used instead of [`ListLinks`] to support lists with=
+ trait objects.
+> +#[repr(C)]
+> +pub struct ListLinksSelfPtr<T: ?Sized, const ID: u64 =3D 0> {
+> +    /// The `ListLinks` field inside this value.
+> +    ///
+> +    /// This is public so that it can be used with `impl_has_list_links!=
+`.
+> +    pub inner: ListLinks<ID>,
+> +    self_ptr: UnsafeCell<MaybeUninit<*const T>>,
+> +}
+> +
+> +unsafe impl<T: ?Sized + Send, const ID: u64> Send for ListLinksSelfPtr<T=
+, ID> {}
+> +unsafe impl<T: ?Sized + Sync, const ID: u64> Sync for ListLinksSelfPtr<T=
+, ID> {}
 
-Acked-by: Nathan Chancellor <nathan@kernel.org>
+Missing SAFETY comments.
 
-It seems like this won't be forgotten about but if there is not already
-an issue open for this somewhere, it would be good to have one, since we
-obviously want this for both C and Rust code.
+> +
+> +impl<T: ?Sized, const ID: u64> ListLinksSelfPtr<T, ID> {
+> +    /// The offset from the [`ListLinks`] to the self pointer field.
+> +    pub const LIST_LINKS_SELF_PTR_OFFSET: usize =3D core::mem::offset_of=
+!(Self, self_ptr);
+> +
+> +    /// Creates a new initializer for this type.
+> +    pub fn new() -> impl PinInit<Self> {
+> +        // INVARIANT: Pin-init initializers can't be used on an existing=
+ `Arc`, so this value will
+> +        // not be constructed in an `Arc` that already has a `ListArc`.
+> +        Self {
+> +            inner: ListLinks {
+> +                inner: Opaque::new(ListLinksFields {
+> +                    prev: ptr::null_mut(),
+> +                    next: ptr::null_mut(),
+> +                }),
+> +            },
 
-As a general meta comment not directed at anyone in particualr, I think
-these 'depends on !' should all have some sort of comment or description
-as to why they are disabled. I can infer from most of them but it would
-still be good to be explicit, especially since someone might want to
-work on fixing the ones that are due to missing support and such.
+Why don't you use `inner <- ListLinks::new(),`?
 
-> ---
-> Sending this one on its own, there's no explicit dep on this for the
-> riscv enabling patch, v3 to continue the numbering from there. Nothing
-> has changed since v2.
-> 
-> CC: Miguel Ojeda <ojeda@kernel.org>
-> CC: Alex Gaynor <alex.gaynor@gmail.com>
-> CC: Wedson Almeida Filho <wedsonaf@gmail.com>
-> CC: linux-kernel@vger.kernel.org (open list)
-> CC: rust-for-linux@vger.kernel.org
-> CC: Sami Tolvanen <samitolvanen@google.com>
-> CC: Kees Cook <keescook@chromium.org>
-> CC: Nathan Chancellor <nathan@kernel.org>
-> CC: llvm@lists.linux.dev
-> ---
->  init/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/init/Kconfig b/init/Kconfig
-> index aa02aec6aa7d..ad9a2da27dc9 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -1899,6 +1899,7 @@ config RUST
->  	bool "Rust support"
->  	depends on HAVE_RUST
->  	depends on RUST_IS_AVAILABLE
-> +	depends on !CFI_CLANG
->  	depends on !MODVERSIONS
->  	depends on !GCC_PLUGINS
->  	depends on !RANDSTRUCT
-> -- 
-> 2.43.0
-> 
-> 
+> +            self_ptr: UnsafeCell::new(MaybeUninit::zeroed()),
+> +        }
+> +    }
+> +}
+> +
+>  impl<T: ?Sized + ListItem<ID>, const ID: u64> List<T, ID> {
+>      /// Creates a new empty list.
+>      pub const fn new() -> Self {
+
+[...]
+
+> @@ -94,5 +137,45 @@ unsafe fn post_remove(me: *mut ListLinks<$num>) -> *c=
+onst Self {
+>              }
+>          }
+>      };
+> +
+> +    (
+> +        impl$({$($generics:tt)*})? ListItem<$num:tt> for $t:ty {
+> +            using ListLinksSelfPtr;
+> +        } $($rest:tt)*
+> +    ) =3D> {
+> +        unsafe impl$(<$($generics)*>)? ListItem<$num> for $t {
+> +            unsafe fn prepare_to_insert(me: *const Self) -> *mut ListLin=
+ks<$num> {
+> +                let links_field =3D unsafe { Self::view_links(me) };
+> +
+> +                let spoff =3D ListLinksSelfPtr::<Self, $num>::LIST_LINKS=
+_SELF_PTR_OFFSET;
+> +                let self_ptr =3D unsafe { (links_field as *const u8).add=
+(spoff)
+> +                    as *const ::core::cell::UnsafeCell<*const Self> };
+> +                let cell_inner =3D ::core::cell::UnsafeCell::raw_get(sel=
+f_ptr);
+> +
+> +                unsafe { ::core::ptr::write(cell_inner, me) };
+> +                links_field
+> +            }
+> +
+> +            unsafe fn view_links(me: *const Self) -> *mut ListLinks<$num=
+> {
+> +                unsafe {
+> +                    <Self as HasListLinks<$num>>::raw_get_list_links(me.=
+cast_mut())
+> +                }
+> +            }
+> +
+> +            unsafe fn view_value(links_field: *mut ListLinks<$num>) -> *=
+const Self {
+> +                let spoff =3D ListLinksSelfPtr::<Self, $num>::LIST_LINKS=
+_SELF_PTR_OFFSET;
+> +                let self_ptr =3D unsafe { (links_field as *const u8).add=
+(spoff)
+> +                    as *const ::core::cell::UnsafeCell<*const Self> };
+> +                let cell_inner =3D ::core::cell::UnsafeCell::raw_get(sel=
+f_ptr);
+> +                unsafe {
+> +                    ::core::ptr::read(cell_inner)
+> +                }
+> +            }
+> +
+> +            unsafe fn post_remove(me: *mut ListLinks<$num>) -> *const Se=
+lf {
+> +                unsafe { Self::view_value(me) }
+> +            }
+> +        }
+> +    };
+
+The paths in this macro should use `$crate::...` to prevent import
+errors.
+
+--=20
+Cheers,
+Benno
+
