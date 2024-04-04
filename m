@@ -1,41 +1,41 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2782D71B42
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 08:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2281B7F4;
+	Thu,  4 Apr 2024 09:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712220813; cv=none; b=caNiRpUwJXyr3coc4pDHtSvoi/6fno3E979angZY43WeOHUcV3oRhg/GB1SujSgafdXbMulIFtG3WbQYtuxQ2vKGsvDjaFkzizWR3b/HzgcM0g/bxCHnAuP1fDWk37fh/McfXUxfcRUcAifW3jOA9OLUeydU2wNwjVepfXoM7hg=
+	t=1712221299; cv=none; b=kEyNyC1aTrHZnrjUt+j3gsqLEv4w59zv9uUFvA0LciTQg4/FDlh6HBr5MNgjeELDKeSfn5uPUETtDHKUb6jXYZ0B5uwhh4ebJ3PGV7OxmbBWhixp0fzZUcjJRkWPMAivVnoEk1txFFxJnembVc8L9CYF+vgjYxlJ/nmsI4Pg+vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712220813; c=relaxed/simple;
-	bh=QnqiA7cqOqWHyrF7A1C3zhzdsaPCJ71GOtHW696ZnKQ=;
+	s=arc-20240116; t=1712221299; c=relaxed/simple;
+	bh=Z/+X+5Tr3shbeJv5Dt06oyq1ofubRAN9gc2I5U/VGZU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V2WgWyebf8Dsa2d+/0f8TmTn5ldsHNUCNj3c1WkBvzvXnxZA//G9x6zNluzu36bjzaqqtAdWDpNJDJjq+v/NppLc8qQ64EUmg2vO4Enc712SS+UIi/7ll9iqWwGAHzQKdziIfuKFhFSikEL13bezLMo0CRwV57RV/xDntUU1iVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZQY+fOGL; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=jxngPP2taxHYMKoJJSKKFVLMRzOtn5CK+/H2y6OasLNnzzcj53pUzR4gNIlv6/xvwajyOkynVwO7LlPzCJyfTF3M5wPB88on4rrgdFU0Ap4bIERBT/6SAXJ+THwZ6uI1anLc1bItIk/KKkPWur8KSZSbpKckMattc6O5K1EKEsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=n3IppDF2; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZQY+fOGL"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="n3IppDF2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=k36xzs2vbbcnhm7bjcihyouree.protonmail; t=1712220810; x=1712480010;
-	bh=QnqiA7cqOqWHyrF7A1C3zhzdsaPCJ71GOtHW696ZnKQ=;
+	s=protonmail; t=1712221296; x=1712480496;
+	bh=IsWHRkAXzz0UFSHl8jcWKwFQLylEunjH34ao/KOO2o4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ZQY+fOGLftwavMBKHACHzh9s0Y91H5obfbsw6fw5H+crmXOk5pZI8LXOHr+z+l5vv
-	 0d7/NQct7rZ52LKr4dYu+CiubbUS8cR7sXAMBRlRU6bd0qaXS9hJKl7R1Kdjrb7Ayt
-	 8RYKbusYlRPN2oLFCiiMu4dtOji2Asucv44zKhF5f5okGJ1D8OCcVxG+T9uOLt6NqO
-	 U64H3FYS0C/ARjLKzjKcSnPp2QY5FBIHZvKscDBji3qv4Fw2E282Msz+qN2/kkUjFX
-	 yCu9esAhSWxPEPApanpPLDijR7qnOrImdmMG+TNrlBY2sZG+gXwE95xFtzza/NpQpD
-	 Zyn1D44d5C2vg==
-Date: Thu, 04 Apr 2024 08:53:22 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
+	b=n3IppDF26eBYlHo3/SjMpauyZtRy38wc3c/ljWVqqL5zgkDHpFYElSp7LPeB3T0K7
+	 Awby4gLHSFodM8e3Z6XP7WHuMtVuW6XZNM1KLaVkfESbvu1JKK8YN4WPhcEaaJbv63
+	 Avf6LdO4GGGX/wZVBV+aKslc1YrRJkrOj/+ulqpYl8dAkMCqO2wbTUKx3xZqQzClFB
+	 49e0DuVVcrDmxVVLTwixKU9Ete9f9l68ooAvLD7G5yq7Ddx/e9ucpybIBG56qSkaUi
+	 vToTqyhD/N+CLkJJRsOGwkT9tTcpMRn4KdW9dZfqnUDj69favdBsn9bPITmcOOZ1eX
+	 BT7QflqDLPBhA==
+Date: Thu, 04 Apr 2024 09:01:26 +0000
+To: Laine Taffin Altman <alexanderaltman@me.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, lkml <linux-kernel@vger.kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: init: change the generated name of guard variables
-Message-ID: <331cfa9d-9687-4922-a7f8-5579173d66c0@proton.me>
-In-Reply-To: <Zg3aVLUHkRFxqAh3@boqun-archlinux>
-References: <20240403194321.88716-1-benno.lossin@proton.me> <Zg3IHZfYVEOh7nc4@boqun-archlinux> <ef1400ae-ba9e-4656-98db-a882ac720c1e@proton.me> <Zg3aVLUHkRFxqAh3@boqun-archlinux>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
+Message-ID: <d3423fb5-c117-4bd1-9f86-db35590a0562@proton.me>
+In-Reply-To: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
+References: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,32 +46,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 04.04.24 00:38, Boqun Feng wrote:
-> On Wed, Apr 03, 2024 at 10:09:49PM +0000, Benno Lossin wrote:
->> On 03.04.24 23:20, Boqun Feng wrote:
->>> On Wed, Apr 03, 2024 at 07:43:37PM +0000, Benno Lossin wrote:
->>>> The initializers created by the `[try_][pin_]init!` macros utilize the
->>>> guard pattern to drop already initialized fields, when initialization
->>>> fails mid-way. These guards are generated to have the same name as the
->>>> field that they handle. To prevent namespacing issues when the field
->>>
->>> Do you have an example of this kind of issues?
->>
->> https://lore.kernel.org/rust-for-linux/1e8a2a1f-abbf-44ba-8344-705a9cbb1=
-627@proton.me/
->>
+On 03.04.24 23:06, Laine Taffin Altman wrote:
+> In Rust, producing an invalid value of any type is immediate undefined
+> behavior (UB); this includes via zeroing memory.  Therefore, since an
+> uninhabited type has no valid values, producing any values at all for it =
+is
+> UB.
 >=20
-> Ok, so a new binding cannot shadow the name of a constant, that's a bit
-> surprising, but seems makes sense.
+> The Rust standard library type `core::convert::Infallible` is uninhabited=
+,
+> by virtue of having been declared as an enum with no cases, which always
+> produces uninhabited types in Rust.
 >=20
-> The solution is not ideal (for example, a constant can have the name
-> "__something_guard"), but nothing better we could I guess.
+> The current kernel code allows this UB to be triggered, for example by co=
+de
+> like `Box::<core::convert::Infallible>::init(kernel::init::zeroed())`.
+>=20
+> Thus, remove the implementation of `Zeroable` for `Infallible`, thereby
+> avoiding the unsoundness (potential for future UB).
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed`=
+ function")
+> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-Yeah that would also be problematic. I think the problem from the thread
-is best solved by making the constant there upper case, so it would also
-avoid this issue.
-But debugging the error in the macro is a bit annoying, so if someone
-encounters this again, they don't have to deal with that.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+> ---
+> V3 -> V4: Address review nits; run checkpatch properly.
+> V2 -> V3: Email formatting correction.
+> V1 -> V2: Added more documentation to the comment, with links; also added=
+ more details to the commit message.
+>=20
+>  rust/kernel/init.rs | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+> index 424257284d16..3859c7ff81b7 100644
+> --- a/rust/kernel/init.rs
+> +++ b/rust/kernel/init.rs
+> @@ -1292,8 +1292,15 @@ macro_rules! impl_zeroable {
+>      i8, i16, i32, i64, i128, isize,
+>      f32, f64,
+>=20
+> -    // SAFETY: These are ZSTs, there is nothing to zero.
+> -    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, Infallibl=
+e, (),
+> +    // Note: do not add uninhabited types (such as `!` or `core::convert=
+::Infallible`) to this list;
+> +    // creating an instance of an uninhabited type is immediate undefine=
+d behavior.  For more on
+> +    // uninhabited/empty types, consult The Rustonomicon:
+> +    // https://doc.rust-lang.org/stable/nomicon/exotic-sizes.html#empty-=
+types The Rust Reference
+> +    // also has information on undefined behavior:
+> +    // https://doc.rust-lang.org/stable/reference/behavior-considered-un=
+defined.html
+> +    //
+> +    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a =
+valid value exists.
+> +    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
+>=20
+>      // SAFETY: Type is allowed to take any value, including all zeros.
+>      {<T>} MaybeUninit<T>,
+>=20
+> base-commit: c85af715cac0a951eea97393378e84bb49384734
+
+I don't see this commit in the kernel tree, what did you specify as
+`--base` when running `git format`?
 
 --=20
 Cheers,
