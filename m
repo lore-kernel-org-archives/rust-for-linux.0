@@ -1,86 +1,181 @@
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A6486AFE
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 12:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71528627B
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 12:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712234275; cv=none; b=M/u3+SzPaEaavLHej7owt2KDbVClKQg4CX/oEn+IP/suo/0iLGiNr3KjLfCZIObjOrkJIBmnT1EWHWdztqyu+wAWuiqdUGGnvuk6dOd1IbgJAV914kpIvW4Xw9uzDE4TzOC/rv3v3KE9dqxsfJpLfc2aiaGeSalU8TeT60Aaumk=
+	t=1712234486; cv=none; b=a0Qeo5pT8gG3c/80xnBybk3FSB3TE3S3Jt9UjGYSbz0e9lpZajO1yTy57eSEwDkBq0ja1/7UuMGebaUPSufwVs8BNmrr+dTOwnPMJC3lNozQhkE/d4geYjDnd4DtrGgM+wT86EmYBzk6qoy9nI60YFwPuQ1FGLsfkSCDSLhmgOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712234275; c=relaxed/simple;
-	bh=1UOOj7HVrQt0h9PL4XvYt/N7rCt5/4KjtyqyN7vPb0g=;
+	s=arc-20240116; t=1712234486; c=relaxed/simple;
+	bh=VB1gjWxgq3H3NWgFmMgqv5zGPvWFQxnyCbF71rK8suI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bUpY850Gh4NQZ/PzzZFI9BT7l9uV4FnhInZnSxKnQSv/aIxs0ntgJw0fxrxlB4GjhD5smpUGtetUR6d8HzCTOFZ9sGlJj6dJGoKiRC8q4IjgGUBaToqse/0b9uMl8mqZGJSZkWcdrQEQkv6GF77wwXbcYict//WhZhCHXnHeAz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CNvk5Qg4; arc=none smtp.client-ip=209.85.217.53
+	 To:Cc:Content-Type; b=bT1UI/KejRMGcW3uFUvsazw8prrNIGPdJlJMTeX1Dp4PeT525m3fOjsq2Zn7rzAl4Xj+AUtOa3HJd6VaWKqLRUaD9w/c4WLAG6ahh1vmDjHnEwsPWftT+8SshxDibrmVhWz5+QCCc1rHlcbGxgnt6Iuf5bzahI8twForeCX/Rm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qy1ePvkI; arc=none smtp.client-ip=209.85.217.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CNvk5Qg4"
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-4783964353dso356772137.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Apr 2024 05:37:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qy1ePvkI"
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-479d46673ccso43511137.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Apr 2024 05:41:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712234272; x=1712839072; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1712234483; x=1712839283; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1UOOj7HVrQt0h9PL4XvYt/N7rCt5/4KjtyqyN7vPb0g=;
-        b=CNvk5Qg4jn4MASHaVNXKBCfCKe5E/9ZkYIdfc6c90M075koIeArWeT4g/7n6e+Uh1r
-         xbJk99XY8ZBJ3mciA8lwcExeOVc6q88b1Ez6d2VLxn53XARBN0ZPLqScMctrA7XRbQPS
-         BvF6UEG7lNCko6rugP+M5K85/LM75YxVz7G6kEP8G/8aZtJM76sD08Lc07RZadvx230R
-         E8pRPs4tKosnBZGQhZaDqS6fTbRIH5l5a8EUqui9ef22hUp8Et6ob1HBUmL41zTPGf7C
-         HOKh2N5qR6fPNbFVX09weqQh/liwqKiV06Pa1srQZLZ6AZQ52TObwUEog9Vsb8CoaB+a
-         EDxg==
+        bh=bHQ1Hof4gKb6D2NbosG6UAy+Sr/kwbAbAaqsg+GZo3M=;
+        b=Qy1ePvkIpEeKVx5r2hWz1rtWhyOnJDoZc5CbaRenjPfppRgetFmbzBOx7yqBYo7MIW
+         Mrco8kiG9qpqDsqTjeXOZrOOkjuRmhqRJUW5OIRMUMeAPrk2OPJ5Xqe+swUp774mCIOG
+         ldAXHkmogdYs9czovxgUs3FiiiQTFC+x0GnXcTpat4QHUzPyVr2xCOfYS3cFLvm1NF1y
+         +wbbJPHlhY7lUMQyhn8LHOPTcVdmMIvTTz0Dq3aQayb3Hk8Fzp3uH3kP99lSYF0wcsec
+         aheHdHRLK92e81esFD+QBo1ZVHXbQ5jMRKbTtduftWIICoJqe/nwY6yHtwgLt5K0231V
+         bE2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712234272; x=1712839072;
+        d=1e100.net; s=20230601; t=1712234483; x=1712839283;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1UOOj7HVrQt0h9PL4XvYt/N7rCt5/4KjtyqyN7vPb0g=;
-        b=ke7DFDjxRabG7Md5qwtNcZ2v/oyHWaYDSzp6MIwJgjnhBPA2XoKtiMOwOrUZt8L5f1
-         R455HTxJk/2mBvlcP8NUglnx8WdoMmrPik7O/jcK7/R2yNGN0vWz3fi2EDlw2oxzco3r
-         r4lJJ0XsKgQ8/jJpVNts0dkhenEuOZjgq7mpvWvoLMers0EnJPJMo+aRF2ualTwgaJnC
-         jCb9dfx0sGHL6pVCHAR/0Z/HZZCHsgzgRe3TMg84l5e1XqaZC+xaWInCXQGm8WUKmeuE
-         RwPZlL3T7K6owVWnMV0aN4rjbA1nhsYUrDA/DN6JrFmEhg8sVt1gITh3lVZXTj3+T3yH
-         IXKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUToxSgsetaRtHce3ftqQDQKcOCrpA0P5tPLp/v5GRayk9+tKl7elCLmLzYJwmTRbKY1RqIYiBNc+nOuwKd20MAEm0f35IaBEqHenc4u0k=
-X-Gm-Message-State: AOJu0YyQ1q/o8DeHcqDDVd+Dj0s+vuqLwidLm3HTr3RblYlcJRBcgFFu
-	fZuI160j2TE8Ij1lhxlR9rAUM+9BI8/kWurBlx9JkhgBpBw271acLj2h0/rCsCrQHxqfR0otQ+y
-	2XnwlWOmfZin44mRcvCQRWDXmn2qQ+WytRbfh
-X-Google-Smtp-Source: AGHT+IEwd7Gf6hgJAw4LIn1Bho0OU4WXw10FA6rDXMkVbkwBgy1MbcK51lDeLQeZtkXBfDSj49VYXwad3mLdbMUlAsM=
-X-Received: by 2002:a05:6102:1898:b0:478:5850:cc64 with SMTP id
- ji24-20020a056102189800b004785850cc64mr2168641vsb.6.1712234272614; Thu, 04
- Apr 2024 05:37:52 -0700 (PDT)
+        bh=bHQ1Hof4gKb6D2NbosG6UAy+Sr/kwbAbAaqsg+GZo3M=;
+        b=Tbr9jddpBSJWV/2RKm0Dc+p29nFE/myco7QTwvZCmMvroWsZRrkdBuOzi02qkwFQfz
+         zdXrLMeYhlHA+KqWybJDE1cXv5734sP9aeqJJ8o010yVbZDJ7Of0HO+Rh+cFNu9P31ay
+         09fHf2WzG95F1ZvDphJdUQU0EUYb7YzJqhVxqe1+zlRSpCfA66BNqqe5qG49WXv8D9fP
+         3IjeiUuEhZluAI4ipQNR6/nznXWvCwFSZu8H6UVfo8W5ateavqLTBj7xRewMIQbJLOxZ
+         7uGto9hwKlGmM1+EPOdyQmVoBcX66uEpofBZ/cszL3JpDMiFO+eXNYGXCarJYE4BjXaA
+         K7BA==
+X-Forwarded-Encrypted: i=1; AJvYcCXiRTOv8qAx7iuzdyg4/GfIf/pHE3gznUqTM5OWrfAQdodtBLhVgyA7T16VbWKPog9aDfDVD2FzpBG+jBbr+QeWQYpZ216Vf96vkuHnupM=
+X-Gm-Message-State: AOJu0YxoJy7XmY2fXqjCKEr4tUIYvv9HycPBYf6b390gp8Edgs9JQl+m
+	qbnxFZkX0ZJewC0/ltt719hR+ov6x3pA5hE7ucVZUv1LLpfrf2Sm648Qsr9BRKBSi6xOHYXk0Om
+	LNbo2Ro9TQLOnjqi/ozCtK33wPpYsLOx2tUKc
+X-Google-Smtp-Source: AGHT+IFPUV3XDlGbaJh0qXH0CVflqRkGjDzOhIshfasLsrm7uDlKmnUOsZ0i2TrnZBi4+kj/z4V7VA3vArBGT/irjZQ=
+X-Received: by 2002:a67:fb4d:0:b0:479:bffa:1b53 with SMTP id
+ e13-20020a67fb4d000000b00479bffa1b53mr1975366vsr.7.1712234483409; Thu, 04 Apr
+ 2024 05:41:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240403194321.88716-1-benno.lossin@proton.me>
-In-Reply-To: <20240403194321.88716-1-benno.lossin@proton.me>
+References: <20240401212303.537355-1-ojeda@kernel.org> <20240401212303.537355-4-ojeda@kernel.org>
+In-Reply-To: <20240401212303.537355-4-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Apr 2024 14:37:41 +0200
-Message-ID: <CAH5fLghG1W0ivtERe_WZrGn1zSAxE7v0W7YDCh21_XO1Pgpqdw@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: change the generated name of guard variables
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Thu, 4 Apr 2024 14:41:12 +0200
+Message-ID: <CAH5fLgiLCraafBG5+n_TLZ_hRHM7Yj49QDd=TudHJVkomXyLqw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] rust: upgrade to Rust 1.78.0
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 3, 2024 at 9:43=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
-> wrote:
+On Mon, Apr 1, 2024 at 11:23=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> The initializers created by the `[try_][pin_]init!` macros utilize the
-> guard pattern to drop already initialized fields, when initialization
-> fails mid-way. These guards are generated to have the same name as the
-> field that they handle. To prevent namespacing issues when the field
-> name is the same as e.g. a constant name, add `__` as a prefix and
-> `_guard` as the suffix.
+> This is the next upgrade to the Rust toolchain, from 1.77.1 to 1.78.0
+> (i.e. the latest) [1].
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> See the upgrade policy [2] and the comments on the first upgrade in
+> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+>
+> # Unstable features
+>
+> There have been no changes to the set of unstable features used in
+> our own code. Therefore, the only unstable features allowed to be used
+> outside the `kernel` crate is still `new_uninit`.
+>
+> However, since we are finally dropping our `alloc` fork [3], all the
+> unstable features used by `alloc` (~30 language ones, ~60 library ones)
+> are not a concern anymore. This reduces the maintenance burden, increases
+> the chances of new compiler versions working without changes and gets
+> us closer to the goal of supporting several compiler versions.
+>
+> It also means that, ignoring non-language/library features, we are
+> currently left with just the few language features needed to implement th=
+e
+> kernel `Arc`, the `new_uninit` library feature, the `compiler_builtins`
+> marker and the few `no_*` `cfg`s we pass when compiling `core`/`alloc`.
+>
+> Please see [4] for details.
+>
+> # Required changes
+>
+> ## LLVM's data layout
+>
+> Rust 1.77.0 (i.e. the previous upgrade) introduced a check for matching
+> LLVM data layouts [5]. Then, Rust 1.78.0 upgraded LLVM's bundled major
+> version from 17 to 18 [6], which changed the data layout in x86 [7]. Thus
+> update the data layout in our custom target specification for x86 so
+> that the compiler does not complain about the mismatch:
+>
+>     error: data-layout for target `target-5559158138856098584`,
+>     `e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S1=
+28`,
+>     differs from LLVM target's `x86_64-linux-gnu` default layout,
+>     `e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16=
+:32:64-S128`
+>
+> In the future, the goal is to drop the custom target specifications.
+> Meanwhile, if we want to support other LLVM versions used in `rustc`
+> (e.g. for LTO), we will need to add some extra logic (e.g. conditional on
+> LLVM's version, or extracting the data layout from an existing built-in
+> target specification).
+>
+> ## `unused_imports`
+>
+> Rust's `unused_imports` lint covers both unused and redundant imports.
+> Now, in 1.78.0, the lint detects more cases of redundant imports [8].
+> Thus one of the previous patches cleaned them up.
+>
+> ## Clippy's `new_without_default`
+>
+> Clippy now suggests to implement `Default` even when `new()` is `const`,
+> since `Default::default()` may call `const` functions even if it is not
+> `const` itself [9]. Thus one of the previous patches implemented it.
+>
+> # Other changes in Rust
+>
+> Rust 1.78.0 introduced `feature(asm_goto)` [10] [11]. This feature was
+> discussed in the past [12].
+>
+> Rust 1.78.0 introduced support for mutable pointers to Rust statics,
+> including a test case for the Linux kernel's `VTABLE` use case [13].
+>
+> Rust 1.78.0 with debug assertions enabled (i.e. `-Cdebug-assertions=3Dy`,
+> kernel's `CONFIG_RUST_DEBUG_ASSERTIONS=3Dy`) now always checks all unsafe
+> preconditions, without a way to opt-out for particular cases [14].
+>
+> Rust 1.78.0 also improved a couple issues we reported when giving feedbac=
+k
+> for the new `--check-cfg` feature [15] [16].
+>
+> # `alloc` upgrade and reviewing
+>
+> As mentioned above, compiler upgrades will not update `alloc` anymore,
+> since we are dropping our `alloc` fork [3].
+>
+> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1=
+780-2024-05-02 [1]
+> Link: https://rust-for-linux.com/rust-version-policy [2]
+> Link: https://lore.kernel.org/rust-for-linux/20240328013603.206764-1-weds=
+onaf@gmail.com/ [3]
+> Link: https://github.com/Rust-for-Linux/linux/issues/2 [4]
+> Link: https://github.com/rust-lang/rust/pull/120062 [5]
+> Link: https://github.com/rust-lang/rust/pull/120055 [6]
+> Link: https://reviews.llvm.org/D86310 [7]
+> Link: https://github.com/rust-lang/rust/pull/117772 [8]
+> Link: https://github.com/rust-lang/rust-clippy/pull/10903 [9]
+> Link: https://github.com/rust-lang/rust/pull/119365 [10]
+> Link: https://github.com/rust-lang/rust/issues/119364 [11]
+> Link: https://lore.kernel.org/rust-for-linux/ZWipTZysC2YL7qsq@Boquns-Mac-=
+mini.home/ [12]
+> Link: https://github.com/rust-lang/rust/pull/120932 [13]
+> Link: https://github.com/rust-lang/rust/issues/120969 [14]
+> Link: https://github.com/rust-lang/rust/pull/121202 [15]
+> Link: https://github.com/rust-lang/rust/pull/121237 [16]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
