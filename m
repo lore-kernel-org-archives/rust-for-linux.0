@@ -1,55 +1,55 @@
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87EB12883A
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 14:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4625B1272BB
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 14:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712239268; cv=none; b=JdrLCz4Rg5WTVXJCmFut/ehe0LF8zLcjBwbZo4oacPOB1C7LI18paL3eLrxgupxWDGCOQ5GMs3lnQwnsbr39iL81nHvXdQKNQZdkpApPIXKkc+qkV3k2E8c79xy6eImV9MonJGMv1c7q6cMnPxxCNNlSnfK/mZ+FbaVdz0eE2jE=
+	t=1712239432; cv=none; b=e4+/pl4NE9BooeLbyMgj8Ill6rr2I2G/3HE+1i2ZTwdpJzV+Sa0X179q/bUDhon1WWllDr1fD6+a+cZzmXMfrlxXsS9UEP064BPLAcc6to3YudtSkKh0JcLt/dFsexbUb4NQDW+7y/IU+F98uqhQkEZYHx36a7ZHMGHXV3ywpMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712239268; c=relaxed/simple;
-	bh=udVQSjhfnqy52V1XS3ehV4LRge6VDAk7Xg6f3XGDtsA=;
+	s=arc-20240116; t=1712239432; c=relaxed/simple;
+	bh=vMu0LL9ltMkRityf3ku4FuM/lwy4EpU8+q5p5WfKSBI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tEnLt6x0f0DOIaWdfmy6LFeMQ34W3lqV/xy28D/XNJpiwiUWDD4RtRTOkWmM6nXHP0zUNPO9zytrILK/3KioDsxYiZK3gV8sRqrVrlhIKZnSmeQva59AmaTGruaWKbFTTBsJ4z1mWPrhfD3RwFfRakSqdhtgJ3UYTk3Emo+1NCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JAIO5Z0l; arc=none smtp.client-ip=209.85.222.44
+	 To:Cc:Content-Type; b=UzS+zXRbG+jRM5yaevcO9VctBflhijAslYYnCqzvcR8JffcA+FfEO13OaiYhNQ8GZ4dz6V6kqmklMOUvw4ukm64cQmm3wuUwvP/sLKoRZskkh5bjVGsFRc2OCvtq04l/uiAlzE5ZkZGCVOKw0xFH7DKyAj0InGudXJm/NHikul4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mDxvgZgY; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JAIO5Z0l"
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-7e057fb0b69so330581241.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Apr 2024 07:01:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mDxvgZgY"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-69682bdf1d5so5288256d6.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Apr 2024 07:03:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712239265; x=1712844065; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1712239430; x=1712844230; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+tyEmoQXrb2vn5ihqj4opABMTJZwudykixVbhG5rjFw=;
-        b=JAIO5Z0lN+FMY8KriBO1L5F4biqddFWpFsvsRLnRKkgpW/+uFMH6Y7gJLFhnAi2YJr
-         JxDLmzUj54hoFMfz8A05+joT1aduHrpVoa5vFirhvYv7xTpTwel7JlzPhk1Et9+g28kT
-         q533raz+09LY6/vQWYvtr0BnpxaRw987BRxN3U5rkgM4L/OfOWQVKul2pGB32Xe0cQ+U
-         C/0NDB1/xOLOQ1i73JPobVhI5lOXlpMRD/qYcq43kLPgcA77iaTJya8z5SbEu6Dw2FZn
-         ZeZH7GaI65SxPqHsB/4fUprqpbp+frjmHE4dAT2g6ESN5TOA0zmX68bDraUduC5wU4Cd
-         hH2A==
+        bh=bDF2zaMYbn25r5wA1TfRjMdRiEFg3+k+XSId485H2dY=;
+        b=mDxvgZgYCIElilxjr+QUpfhCI8gQmuewuIvsRJxMsWQhXHpUrzblEdwbFg2AmEvL/c
+         5JmaCkoc1Q0vkm/AzJ+57/YzEvOYj8qvi+FH4Exox0mo6kyzfuSymX+IeCsprtF375SH
+         DU+Ji+YVnR7vKwXgNL43ZhzagdYLFHNQ/QA7GmMnBAMwzozEgv+5j7X0tQWc6lH8ysLY
+         5dd+8QjxzFeVFHllzcD+1XpETdCRWGof9mwa2srYAITYxHunXCEQgvgXc9TL071nbBiI
+         JxPYPP9yjYWHKPyitj1qxbddu6PiNs4OOJ4zSutPG7D44xnFEXLmT1dZQscw35rfk54b
+         O4wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712239265; x=1712844065;
+        d=1e100.net; s=20230601; t=1712239430; x=1712844230;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+tyEmoQXrb2vn5ihqj4opABMTJZwudykixVbhG5rjFw=;
-        b=h6ErYNV+JOuWWfV1zs9fHc13n8VXmohrM1hA6LpPFNMUFciHDIdbet9wh8KNfz/sLH
-         rImPw4gx1fm7RFnnaXssoX9d01Uy/fd+Jw6tH7Cb/4sWFOyzTYFGFLEpESr/o/nXOE7g
-         500wbTKZwf4zO4fSAV7heNRWzpfprnixvusVkBrB/u7rVY76i7A+6tusIzJC74tJGFp6
-         +ivzWfZhtXDaWKIWvmC5j/sX650OiOTdysNfSePP91c1kDHJzpPGORd8zNYXaA3gCyLV
-         sczDuq4t+KEslAQODXUFMTezVMCfZ1OT065QwEKePEg91VFExAsF+OYQ1VTnSzVwHJX0
-         SpDg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlH9HqC8SHfjSWqgqsDsf8LGQw02r2YI9nFZo8+eCL5D6v4oglzE2gEOKjQ5rcGVQQa21H/lafKsimLAgcyyZjI3Jt+jIFHGPFrhdB2wo=
-X-Gm-Message-State: AOJu0YysMOU1HOhtrhU9COq6WvgN7+pqmIQ78uvBezkaWVnFWHEulW2K
-	EG4SXh9QVHd5zSzcpUNeSw2HDb+kmBteAMGZ1BakTUZWj2mHZM9ArcBAlwlGqo3bR4f5RmhP7wq
-	omjSTvqe4B1pA7TswqQbeZZOs1u1ob8wgPKcD
-X-Google-Smtp-Source: AGHT+IHuf1JaoB9Kt4ln2E4Z2CuYaFwp+MyoMrdetoJGO8NiLwRIu6qbZt3P3mTkRUo42hJ0+bU9hJU64Uy7WfWyC7g=
-X-Received: by 2002:a05:6102:2455:b0:476:e72e:271d with SMTP id
- g21-20020a056102245500b00476e72e271dmr2127513vss.13.1712239264885; Thu, 04
- Apr 2024 07:01:04 -0700 (PDT)
+        bh=bDF2zaMYbn25r5wA1TfRjMdRiEFg3+k+XSId485H2dY=;
+        b=cvFfMjao3CNhiPpYJiquvbipVuWQYDvm82RbZVGyvC+xas6oAzGdtFb0hZ1t62IbOG
+         uq4V9hWuIcKcFWH2V7Cw6Xhjm9lWxn5QgkygKjfDkeJSJARckO5zMmkHTzxyPGRk7NJ9
+         cM0C1pTVkd/CaWEBKPistKvNNxbxo5eIQBv/i2mfUBRMTTtWOu1OjOCB4sykzzNY5Ojg
+         74U91WqYlyKoYyZrC2tOxlXGxLQ+Fp47Oikf9t9Y3JXAUP6SR+iOLq1PbjGOYhAVqO62
+         qfLOQwvCDmEwgMgbxywnaNnph48FBpxV70f1+WNCO9bdHqyUWUxkdWfSLxEJiju++2nK
+         457g==
+X-Forwarded-Encrypted: i=1; AJvYcCW0z75F0z5BqXR86BeFjRJJy6RxVQtRe/w1Ub1yoJLRUtcE4f7RrzGQyp1D0MFFsGhb8IvDJqYMRdpmr9csmope0N5bIfzkYuHGtmvnk78=
+X-Gm-Message-State: AOJu0YxyN6sJ+eln0vmBgleL/mBVv7n+Lnw7RuJPWjKNbW1QrJ9byQ5l
+	fZHkTXflRTsSraIXu3IZqer4/ncrdpiStc836D7/VHd/++MsVYCQxwkCWhBF8J8+Y80OXc6nzyY
+	MfbDdCj5Oa0pwZMXv5U0fouzR2lIGjIY7bppo
+X-Google-Smtp-Source: AGHT+IH9nVJTFBf6KYHVkWq5I3dTrlUqSuMe+JgthNlKh222XhK+A4MXytM7wglRKaRV8iIDAr29miZUuh1n5Ol7cbU=
+X-Received: by 2002:a05:6214:d07:b0:698:6e84:95e5 with SMTP id
+ 7-20020a0562140d0700b006986e8495e5mr2270945qvh.16.1712239425130; Thu, 04 Apr
+ 2024 07:03:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,12 +57,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com>
- <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com> <2f25f21e-fad8-48bb-aa2b-d61bf8909a41@proton.me>
-In-Reply-To: <2f25f21e-fad8-48bb-aa2b-d61bf8909a41@proton.me>
+ <20240402-linked-list-v1-3-b1c59ba7ae3b@google.com> <2500d66a-e54e-46d8-97cb-37fd9fc00c45@proton.me>
+In-Reply-To: <2500d66a-e54e-46d8-97cb-37fd9fc00c45@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Apr 2024 16:00:53 +0200
-Message-ID: <CAH5fLgjqyfExjckh7KnSLnT+Ok+yjcoJ+DpDkj0gUZRmoz=M8Q@mail.gmail.com>
-Subject: Re: [PATCH 1/9] rust: list: add ListArc
+Date: Thu, 4 Apr 2024 16:03:33 +0200
+Message-ID: <CAH5fLghJtSvW-zNnDNFVgtb-px2d4W-xUk2++QdvyMYFMBGM-Q@mail.gmail.com>
+Subject: Re: [PATCH 3/9] rust: list: add struct with prev/next pointers
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
@@ -77,158 +77,47 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 3, 2024 at 5:51=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+On Wed, Apr 3, 2024 at 5:57=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
 > wrote:
 >
-> On 02.04.24 14:16, Alice Ryhl wrote:
-> > +impl<T: ListArcSafe<ID>, const ID: u64> ListArc<T, ID> {
-> > +    /// Constructs a new reference counted instance of `T`.
-> > +    pub fn try_new(contents: T) -> Result<Self, AllocError> {
-> > +        Ok(Self::from_unique(UniqueArc::try_new(contents)?))
-> > +    }
-> > +
-> > +    /// Use the given initializer to in-place initialize a `T`.
+> On 02.04.24 14:17, Alice Ryhl wrote:
+> > +/// Implemented by types where a [`ListArc<Self>`] can be inserted int=
+o a `List`.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementers must ensure that they provide the guarantees document=
+ed on the three methods
+> > +/// below.
+> > +///
+> > +/// [`ListArc<Self>`]: ListArc
+> > +pub unsafe trait ListItem<const ID: u64 =3D 0>: ListArcSafe<ID> {
+> > +    /// Views the [`ListLinks`] for this value.
 > > +    ///
-> > +    /// If `T: !Unpin` it will not be able to move afterwards.
-> > +    pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Self=
->
-> > +    where
-> > +        Error: From<E>,
-> > +    {
-> > +        Ok(Self::from_pin_unique(UniqueArc::pin_init(init)?))
-> > +    }
->
-> pin-init has a general trait for this: InPlaceInit. I don't know if the
-> other functions that it provides would help you.
-
-I will use that.
-
-> > +}
-> > +
-> > +impl<T, const ID: u64> ListArc<T, ID>
-> > +where
-> > +    T: ListArcSafe<ID> + ?Sized,
-> > +{
-> > +    /// Convert a [`UniqueArc`] into a [`ListArc`].
-> > +    pub fn from_unique(mut unique: UniqueArc<T>) -> Self {
-> > +        // SAFETY: We have a `UniqueArc`, so there is no `ListArc`.
-> > +        unsafe { T::on_create_list_arc_from_unique(&mut unique) };
-> > +        let arc =3D Arc::from(unique);
-> > +        // SAFETY: We just called `on_create_list_arc_from_unique` on =
-an arc without a `ListArc`,
-> > +        // so we can create a `ListArc`.
-> > +        unsafe { Self::transmute_from_arc(arc) }
-> > +    }
-> > +
-> > +    /// Convert a pinned [`UniqueArc`] into a [`ListArc`].
-> > +    pub fn from_pin_unique(unique: Pin<UniqueArc<T>>) -> Self {
-> > +        // SAFETY: We continue to treat this pointer as pinned after t=
-his call, since `ListArc`
-> > +        // implicitly pins its value.
->
-> This is not sufficient, since you also rely on `Self::from_unique` to
-> handle the parameter as if it were pinned, which it does not. Since it
-> calls `T::on_create_list_arc_from_unique` which just gets a `&mut self`
-> as a parameter and it could move stuff out.
-
-I'll swap these so that from_unique calls from_pin_unique instead.
-I'll also change on_create_list_arc_from_unique to take a Pin<&mut
-Self>.
-
-> > +        Self::from_unique(unsafe { Pin::into_inner_unchecked(unique) }=
-)
-> > +    }
-> > +
-> > +    /// Like [`from_unique`], but creates two `ListArcs`.
+> > +    /// # Guarantees
 > > +    ///
-> > +    /// The two ids must be different.
-> > +    ///
-> > +    /// [`from_unique`]: ListArc::from_unique
-> > +    pub fn pair_from_unique<const ID2: u64>(mut unique: UniqueArc<T>) =
--> (Self, ListArc<T, ID2>)
-> > +    where
-> > +        T: ListArcSafe<ID2>,
-> > +    {
-> > +        assert_ne!(ID, ID2);
+> > +    /// * If there is a currently active call to `prepare_to_insert`, =
+then this returns the same
+> > +    ///   pointer as the one returned by the currently active call to =
+`prepare_to_insert`.
 >
-> Can this be a `build_assert!`?
-
-Most likely.
-
-> > +
-> > +        // SAFETY: We have a `UniqueArc`, so we can call this method.
+> I was a bit confused by the term "active call to `prepare_to_insert`",
+> since I thought that the function would need to be executed at this
+> moment. I inferred from below that you mean by this that there has been
+> a `prepare_to_insert` call, but not yet a corresponding `post_remove`
+> call.
+> I did not yet find a better way to phrase this.
 >
-> I liked the comment from above better:
->
->      // SAFETY: We have a `UniqueArc`, so there is no `ListArc`.
->
-> Maybe use the variation "so there are no `ListArc`s for any ID.".
+> I like putting the guarantees on the functions very much.
 
-Will do.
+How about this?
 
-> > +        unsafe { <T as ListArcSafe<ID>>::on_create_list_arc_from_uniqu=
-e(&mut unique) };
-> > +        // SAFETY: We have a `UniqueArc`, so we can call this method. =
-The two ids are not equal.
-> > +        unsafe { <T as ListArcSafe<ID2>>::on_create_list_arc_from_uniq=
-ue(&mut unique) };
-> > +
-> > +        let arc1 =3D Arc::from(unique);
-> > +        let arc2 =3D Arc::clone(&arc1);
-> > +
-> > +        // SAFETY: We just called `on_create_list_arc_from_unique` on =
-an arc without a `ListArc`,
-> > +        // so we can create a `ListArc`.
->
-> I would mention the two different IDs again.
+If there is a previous call to `prepare_to_insert` and there is no
+call to `post_remove` since the most recent such call, then this
+returns the same pointer as the one returned by the most recent call
+to `prepare_to_insert`.
 
-Sure.
-
-> > +        unsafe {
-> > +            (
-> > +                Self::transmute_from_arc(arc1),
-> > +                ListArc::transmute_from_arc(arc2),
-> > +            )
-> > +        }
-> > +    }
-> > +
-> > +    /// Like [`pair_from_unique`], but uses a pinned arc.
-> > +    ///
-> > +    /// The two ids must be different.
-> > +    ///
-> > +    /// [`pair_from_unique`]: ListArc::pair_from_unique
-> > +    pub fn pair_from_pin_unique<const ID2: u64>(
-> > +        unique: Pin<UniqueArc<T>>,
-> > +    ) -> (Self, ListArc<T, ID2>)
-> > +    where
-> > +        T: ListArcSafe<ID2>,
-> > +    {
-> > +        // SAFETY: We continue to treat this pointer as pinned after t=
-his call, since `ListArc`
-> > +        // implicitly pins its value.
-> > +        Self::pair_from_unique(unsafe { Pin::into_inner_unchecked(uniq=
-ue) })
-> > +    }
-> > +
-> > +    /// Transmutes an [`Arc`] into a `ListArc` without updating the tr=
-acking inside `T`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// * The value must not already have a `ListArc` reference.
-> > +    /// * The tracking inside `T` must think that there is a `ListArc`=
- reference.
-> > +    #[inline]
-> > +    unsafe fn transmute_from_arc(me: Arc<T>) -> Self {
-> > +        // INVARIANT: By the safety requirements, the invariants on `L=
-istArc` are satisfied.
-> > +        // SAFETY: ListArc is repr(transparent).
-> > +        unsafe { core::mem::transmute(me) }
->
-> Why do you need a transmute here? Can't you just construct the struct?
->
->      Self { arc: me }
-
-Yeah, I guess that works.
+Otherwise, the returned pointer points at a read-only [`ListLinks`]
+with two null pointers.
 
 Alice
