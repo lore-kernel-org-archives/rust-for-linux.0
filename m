@@ -1,85 +1,100 @@
-Received: from mr85p00im-ztdg06021701.me.com (mr85p00im-ztdg06021701.me.com [17.58.23.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4417512D1EA
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 17:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E857129E88;
+	Thu,  4 Apr 2024 17:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712251709; cv=none; b=TyYlTSjxHIZbpJ0RJOxrzuu2QKEjiYUvkSMxDFp5rqwo/LhdXo57p8xOyLvtxJnrOjxQNnwF6BQL48Q3jp/iXlCuQezexXzbeBMvv3qkNbQemAsraJ1ZcN/Q1M0LpdQeX1kBc6Kce6+VsO9p32S0QdiZ8vt8yfnUcXjFADXsPVc=
+	t=1712252921; cv=none; b=fpnOoblxHUL9/Uc8xCKrvKUbI617ELdJLte6CZxMrHbRC1WW9J6So2E37PhgFAWoTQtozjWw89ktqWhNnhLBLtg/vuWrvii7Vsyi/8i7ypozCARJmdqvS4vK75MRAyGJqiG9cy0rOTlVP0Ykl3JFMvf99kU4uySsCBw45CUPK+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712251709; c=relaxed/simple;
-	bh=Hgw8YDYeXIbAur1VdjrAw21TWVkSGL7n1rv1sgu7sus=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=MWbiEj7OWtUmYHCp0YutX/nbABp97MruIP8mqzSomfCn5kLNogdBXWbkPxdWfHdjA3HXBsh+QU65YiOCgpE3P4np336WvGB6QSm39xjOSQFeFDnIWzkkdk0ind9Td99WvPaijUYL3y735WN+Sx9yaroafB/qSAdaCz7pDDXuPH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=K6Sf7z4N; arc=none smtp.client-ip=17.58.23.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+	s=arc-20240116; t=1712252921; c=relaxed/simple;
+	bh=vI4MrMdOzvU45Up4bUbJqH4cKKBdKrNwuFYQDyoAvgA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ta4jCYkWiF9TL/n7BDzwmdbdqF5gv6nm1+/YvC/NU35rWxwtD8aicOHM/40j8EFFiYxH7PvXmDKuQ1ORSy1KPrZTOkBX6J9IJ1oFyyMW3dmieqHp/wInapnS28Tk5U56hF4L/X1IKVlHEizeY+c4mUjnCG1KgEQ22dcO3tvgsQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THdJiLxO; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="K6Sf7z4N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-	t=1712251707; bh=nlxGTSwQ7v0Ep4e8zvJarUYi6YExHbW8T1sRZDS375Y=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To;
-	b=K6Sf7z4Nr7QiFWmn+X1PDtxtBEWa0hwwkPt1fXSxwjleugocm4HwQj6J39jdtw4kt
-	 +6J82DQC0rKm3+0MWgjkrOPG/IGamEFWwmXg3rRkbd9J8ibjnsv7qjvJ4cppeCokl9
-	 VUUi+SVBPCxHKScwnJFkLrAOGD88tSUni5bcSFcYGsnJ1PH+nf7uuOJ8SEThYDvquV
-	 Tq4uy1NnwS/Kr6ByUZDso4z2UCwjvDzPLIquUSDH2Egnl6VvlLOxq0PVBHtfAqk6HF
-	 fI45hf1pbozauPBNJ4ZceFl24ng+QVxmxdfZmpWuh6138lEon0q19k45PhuWr+u7sx
-	 HQ3xZniwS7q4g==
-Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06021701.me.com (Postfix) with ESMTPSA id C1C892633A4B;
-	Thu,  4 Apr 2024 17:28:26 +0000 (UTC)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Laine Taffin Altman <alexanderaltman@me.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THdJiLxO"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2a2474f2595so992595a91.1;
+        Thu, 04 Apr 2024 10:48:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712252920; x=1712857720; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vI4MrMdOzvU45Up4bUbJqH4cKKBdKrNwuFYQDyoAvgA=;
+        b=THdJiLxOtd45CdBOa5lP3B7wGUPMMqH9QU+JNjtZB1HGMq8GJTSwJXPZDx3/+4BL4D
+         gWNv6Z/jRzguwRA4mAi97VJHU6Wp20/myxTl2zMDgfdg7OnadGG5glSDMggcONddPO/T
+         6SDgvhuTIC2wPrqeH8SwVwgiI5UxBCpWmOnz/yefAzapKo6ywm1gbUy/ONzXWw+BoCD2
+         uYTzENDarPILW3OZexlaiC8IOtRgHXLSPB+SYSTYXy08Lb1EJbkXEgdGqxdWKxNbXYJ4
+         z+IABgUqD/tUPGBa5j8vwmDIjYNoA5dKMNa7AmGNsrvLW1NHCxdg6mnrPbXDApO6Z/wD
+         lcTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712252920; x=1712857720;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vI4MrMdOzvU45Up4bUbJqH4cKKBdKrNwuFYQDyoAvgA=;
+        b=xHCRYjVyN7Ntpk19wPrzPzVJpdSeDBNIm9rj7cuaqpA704MwLQ5u3c8fPi90lfHmvJ
+         Gt6/YzSLXWotGdDzw6D+miBxiV2EJDLnEes5PG3JLiESWYQtpIgbEhc8/izbZXH8AFq9
+         6x+y2QWREZGSdLUOgi4wf9rHlMEoH8XpkXEcwucedLP5+Wzl+UxSYEL8Lkx+WixxkX+G
+         jAVicP86LZBpW4IymVqLI+hOK8IU4BtpliYyWmhZk3rYiBiXgfzcgvP9K56doyLqkMxV
+         ELm87zg5rxPn0Kp5Bn1wLk2zAEPNu6HfOuUqOQcyIeAA++wh/oJBlKCg9j4MCU3D55wh
+         J+bw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTfple234HKuArmpHKmjD7q4t84VZ6lcxYlB8Bc/QGkq2mVN3JKCmohkQDELdW7EkujwKSr3NTlRKYOZmcKPxxfnMd+o/KYFJveLjFdx1yMDOw2KLfPt02x7seRk4PYnGlOxaWFsIotWCSsv4uqBXGW0BMpxyHXpgfdFwv3opo5wPL/wA=
+X-Gm-Message-State: AOJu0Yw0xLLrKaWwzc4WGah+KYC7ezSLwrm3WT7jJ8SxJt5G3GBOKLkI
+	Or+TpLEmRsRCzGCP/kMa1xxAq2ERLSWqJZyqbY8OdSXq+WhwiFKzOGYTW7Rz8bO8GePCRRTMn/5
+	Lju62R6diioQZCxh1rqDsRN20Hu8=
+X-Google-Smtp-Source: AGHT+IHlscXTFbzvBDaANjdzeyYIU2Bzi1Z2mFW5dyNypC3v8GETs6/WUkm6FkEiMiVsMdRl7+HJ3JxRl5EHvirEJQY=
+X-Received: by 2002:a17:90a:e604:b0:2a2:ba9:ba61 with SMTP id
+ j4-20020a17090ae60400b002a20ba9ba61mr3674127pjy.34.1712252919635; Thu, 04 Apr
+ 2024 10:48:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
-Date: Thu, 4 Apr 2024 10:28:13 -0700
-Message-Id: <A68286F0-AB83-4D64-99E3-EE47F03D1AAE@me.com>
-References: <CANiq72nyqxH2C1gr=UUCOftaKe0zSuuB++mMUD9zXo-pPBVMVg@mail.gmail.com>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-In-Reply-To: <CANiq72nyqxH2C1gr=UUCOftaKe0zSuuB++mMUD9zXo-pPBVMVg@mail.gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Benno Lossin <benno.lossin@proton.me>
-X-Mailer: iPhone Mail (21F5048f)
-X-Proofpoint-GUID: xqsL6JBfzVb3C1dazRHJ2W53D_pWPobU
-X-Proofpoint-ORIG-GUID: xqsL6JBfzVb3C1dazRHJ2W53D_pWPobU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-04_13,2024-04-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
- mlxlogscore=980 clxscore=1011 adultscore=0 mlxscore=0 spamscore=0
- suspectscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2308100000 definitions=main-2404040123
+MIME-Version: 1.0
+References: <20240404-providing-emporium-e652e359c711@spud>
+ <CANiq72m9YAu=dr1=WMSHOqfpszj4S6OkMEQ05vqbv_zKO5pOsg@mail.gmail.com> <CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com>
+In-Reply-To: <CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 4 Apr 2024 19:47:57 +0200
+Message-ID: <CANiq72k2HQHesGNaU3_yFZ7j8SKtWfZDAWdfoCDxo_bOEyn2ew@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
+	Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
+	Kees Cook <keescook@chromium.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, 
+	Ramon de C Valle <rcvalle@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Apr 4, 2024, at 4:03=E2=80=AFAM, Miguel Ojeda <miguel.ojeda.sandonis@gmai=
-l.com> wrote:
->=20
-> =EF=BB=BFOn Thu, Apr 4, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.lossi=
-n@proton.me> wrote:
->>=20
->> I don't see this commit in the kernel tree, what did you specify as
->> `--base` when running `git format`?
->=20
-> Yeah, I don't have it either, but it seems to apply cleanly.
->=20
-> Cheers,
-> Miguel
+On Thu, Apr 4, 2024 at 5:25=E2=80=AFPM Matthew Maurer <mmaurer@google.com> =
+wrote:
+>
+> This patch is fine by me - the last patch needed for KCFI to be
+> functional in Rust just landed upstream last night, so we should
+> revisit this (in the form of enabling it) once we move to
+> `rustc-1.79.0` or later. In case anyone wants it for local
+> experimentation, I have a backport branch [1] which applies these to
+> the 1.73.0 compiler and enables it in the kernel [2] (not upstreamed
+> because the feature isn't yet in kernel's `rustc`), which Android will
+> be using for the Rust binder driver. This patch will require a recent
+> (last year or so) clang, as it relies on
+> `-fsanitize-cfi-icall-experimental-normalize-integers`.
+>
+> [1]: https://github.com/maurer/rust/tree/1.73.0%2Bcfi
+> [2]: https://android-review.git.corp.google.com/c/kernel/common/+/2930616
 
-I ran `git format-patch origin/master --base=3Dorigin/master`.  I
-can=E2=80=99t imagine how that could have resulted in a nonexistent commit
-hash?
+Thanks for the update, Matthew!
 
-Thanks,
-Laine=
+I guess the public link is:
+https://android-review.googlesource.com/c/kernel/common/+/2930616
+
+Cheers,
+Miguel
