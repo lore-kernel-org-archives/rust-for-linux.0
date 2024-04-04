@@ -1,237 +1,114 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAAD286A6;
-	Thu,  4 Apr 2024 22:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB3B6F514
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 22:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712270043; cv=none; b=ME9ogmWDakd9d78GGJ6ojhALBSVgbixoBpw9t6XMOAPybI8WoVNv71XlT4XG30Fx4gq7a869jJttLlHYZCxkQP4134u4mNaRA1ktxNRtBJ4o4utaM9QLTO16Qehn8jOL5gWQeDIuU+b3L6vM1bOs7hSP4eMiGvyVTrjk64q042o=
+	t=1712270476; cv=none; b=ErOoXLOsvn9ySH8e1MJGT95jsgmUbXhYIvATISXrQunVnFzZuypZaHx9OJfZfZqZKvIFKiSZXEjLMcC7fIcppW56RT4sMRzdIRZbaP7ExjcDQ8THMhjmWtpMn7EEOkuTK2hG9Gfs5BXBZfrzuvn4dpl9PaEy5VfohZdlMP8Bcw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712270043; c=relaxed/simple;
-	bh=2CeE+2aVUqJcRU7QmoWqM5Y+xjY/bn15DEc+RQneXmM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CBK23mRpuF0WnvsCyH3vjFdN4F6SQPgN5YnGZGjYTbVZXVuzxm9pYvL/rW8xmJFRnukDgZYVO9zjCCG+aYD5egqgS965PRnEjqa45vjxah+JzzW6bNp92ibhJzzX34e6BGGtYrtH3aJPWVR+mMrsWrC4od1STl2kH3zKoMevu38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KwgD1BTs; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1712270476; c=relaxed/simple;
+	bh=8A5tKiFBa0lbUbCLGluriwofV6tCs9WRKtzaqV10d5w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D4MXG8yfZAImTnvnCFam0SvtpDubiERfxW9j1Gfp5KTOkDjjt/qbLJbUsjghIEQFFrwQbaY/k1b+t6OEdMmQiGK3NwUwQKXwG/bXSbGKkA+kMBcqjt9H3fzhodd4DZGBA48cukqMm9XX13u9W81DYQDKlFb+gS93EZxB13QiSM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3SVQEvFL; arc=none smtp.client-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KwgD1BTs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=i72cbelw3nfq7acf5fidjehlti.protonmail; t=1712270032; x=1712529232;
-	bh=ZVL2Z0cS5q+LN/fYP+ykEsgKaNFbc8NkPR7q7d8Y7Bo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=KwgD1BTs62V/7Rke9wK4bxM66yt20AtPTwOGpJq0vS+Fh7Xo1SYkE58+jw7TBknSa
-	 M4rt9UsmzBMP7ZKbLymXNE2/S/8DJ9/yADXe7xQlwyOnBkwJw/Hw7JT5Qzzpl9a8Ms
-	 +WnwMUUBfiurWz5wW032w6aA+E8VTyWo+qL3rRCIXtqup0Isx7OBV06ngQZ8YvTaYC
-	 rnNaciU1wzvdJiQuIRb3gnQZt1EwGU3Civ5HOcJIGWO6zEbQh/tlDF5+1egGblZaEw
-	 g6tPHb6txJ1nBScmvpB+g6gso0CqJQafBzvu+4TnqZ/es6DSX3ySX+w/gdquTX/WWC
-	 WT7fe/TPrmJ8w==
-Date: Thu, 04 Apr 2024 22:33:42 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v4 4/4] rust: add abstraction for `struct page`
-Message-ID: <a48b2347-b58b-432e-bdb8-d5449016ab57@proton.me>
-In-Reply-To: <20240404-alice-mm-v4-4-49a84242cf02@google.com>
-References: <20240404-alice-mm-v4-0-49a84242cf02@google.com> <20240404-alice-mm-v4-4-49a84242cf02@google.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3SVQEvFL"
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4daa8466d6fso314304e0c.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Apr 2024 15:41:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1712270473; x=1712875273; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8A5tKiFBa0lbUbCLGluriwofV6tCs9WRKtzaqV10d5w=;
+        b=3SVQEvFLH5hC8C+pSGkZZOrGdYOXWU+uy6P1oO6NXphX+DIuoAD1HcgsF7Ybj4L+hn
+         PgMJwUkNWSsK3X159h6sgPIjoRXOpaw2PKdQTbPs2GzNA1GFIORCW6j3Eo5Q9LQVg3ey
+         tKHzxPWjf0Rc3f4+KpNdArHsnZ06QvXIIUgBbDw6/e4/j7Gh10WHfhfFsPZwENn3qMik
+         OXGcI3MK4td73qHmiJcuE9H8b8/QffXDvBcKBKS7iPgM9skUNk4bYdrNu/hsrtzyWD89
+         3Mrandzr92ryjSTXiANP4mDjMDUk0yy38jwgisdDpHpRnMKfdi6dCkrHLk2IwZuy1JF4
+         bHRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712270473; x=1712875273;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8A5tKiFBa0lbUbCLGluriwofV6tCs9WRKtzaqV10d5w=;
+        b=CyJob7wB/RQL22Ucz1/BpLX0dxrVc6bhq8qPT5KGYiBab6e6oyhxvA6LeoIf4ybrvA
+         7t7XL4PnQabFOGrDBDxtlhlzU2vsdyTTUb8HiFo3FZj/3w4A/Y48pwPBt4UVrk0epbfW
+         7iTcBfCx6ApFrSNdwRqu9QpKfBLOaSyEMes6JMQtemWbNyweVVRhaKMFMCwAcbU5lVaC
+         UofeqGf6hzUbnAXeM1X8CFSxM1G8ZlGceozyGIlJN/lsYp+lA8Etp4fcdJ+SVWhp6Mjb
+         PDfxveinwzjA6LESKxuYEOpIdd8wcl2GkdEYtrEWaRAxjohL/2KDF4tDlZ60Nu585ywS
+         EYbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrCQjT9vtwWMHg2MR3Y+1x89nuyvQ7wmAbQbXDUu8AvVxoGgyPcFVIJYNPGIDqc4MqYqzNZYR9QX0sntDuCLzF2jYJWIHi5lFq8RwUnls=
+X-Gm-Message-State: AOJu0YyNn0+fuFD34GllsuvJ/x9Jmtc9Bnim11D5CuXRkjr8rZkFXqjK
+	mTfgNVhBNzRFwntzI/0y9AXQct5YVlXm31ATdoj99dy4wGkEpXdHu8izI0op40V25IoXD41itZM
+	6EEBqJQL9ctQqRR5Nruobt1ruFQ1Ez5l458/L
+X-Google-Smtp-Source: AGHT+IFZOijUz7nc+slBJ8zOHyZ8cj9MgnjzviT3lXApOXO2vYVNI4DlpN571/pk/cWTagxBQ7uu8R14TkT0NKKSOs4=
+X-Received: by 2002:ac5:cdf3:0:b0:4d3:3a0f:77ce with SMTP id
+ v19-20020ac5cdf3000000b004d33a0f77cemr3746386vkn.13.1712270473349; Thu, 04
+ Apr 2024 15:41:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20240404-providing-emporium-e652e359c711@spud>
+ <20240404153258.GA852748@dev-arch.thelio-3990X> <CANiq72kSfC2j07mAaV591i4kDwejWRYcFTvASgQmNnHVe5ZwCw@mail.gmail.com>
+In-Reply-To: <CANiq72kSfC2j07mAaV591i4kDwejWRYcFTvASgQmNnHVe5ZwCw@mail.gmail.com>
+From: Ramon de C Valle <rcvalle@google.com>
+Date: Fri, 5 Apr 2024 00:41:02 +0200
+Message-ID: <CAOcBZOS2kPyH0Dm7Fuh4GC3=v7nZhyzBj_-dKu3PfAnrHZvaxg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
+	Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
+	Kees Cook <keescook@chromium.org>, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 04.04.24 14:31, Alice Ryhl wrote:
-> Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> This struct is assumed to hold ownership over the page, so that Rust
-> code can allocate and manage pages directly.
->=20
-> The page type has various methods for reading and writing into the page.
-> These methods will temporarily map the page to allow the operation. All
-> of these methods use a helper that takes an offset and length, performs
-> bounds checks, and returns a pointer to the given offset in the page.
->=20
-> This patch only adds support for pages of order zero, as that is all
-> Rust Binder needs. However, it is written to make it easy to add support
-> for higher-order pages in the future. To do that, you would add a const
-> generic parameter to `Page` that specifies the order. Most of the
-> methods do not need to be adjusted, as the logic for dealing with
-> mapping multiple pages at once can be isolated to just the
-> `with_pointer_into_page` method. Finally, the struct can be renamed to
-> `Pages<ORDER>`, and the type alias `Page =3D Pages<0>` can be introduced.
+>
+> We track the unstable feature(s) at
+> https://github.com/Rust-for-Linux/linux/issues/2 (I just moved this
+> one there since it is close to ready, but it was in #355 previously,
+> and cleaned things up a bit).
 
-This part seems outdated, I think we probably make `ORDER` default to 0.
+Sorry about that, I should've done this already. In addition to the
+link you added above, here's a tracking issue for KCFI support for
+Rust:
+https://github.com/rust-lang/rust/issues/123479
 
->=20
-> Rust Binder needs to manage pages directly as that is how transactions
-> are delivered: Each process has an mmap'd region for incoming
-> transactions. When an incoming transaction arrives, the Binder driver
-> will choose a region in the mmap, allocate and map the relevant pages
-> manually, and copy the incoming transaction directly into the page. This
-> architecture allows the driver to copy transactions directly from the
-> address space of one process to another, without an intermediate copy
-> to a kernel buffer.
+There are still a few unresolved questions that I'd like to hear from
+you as you experiment with it, which the tl,dr. is: KCFI support for
+Rust shares most of its implementation with the CFI support, with some
+key differences:
 
-[...]
+KCFI performs type tests differently and are implemented as different
+LLVM passes than CFI to not require LTO.
+KCFI has the limitation that a function or method may have one type id
+assigned only.
 
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> new file mode 100644
-> index 000000000000..5aba0261242d
-> --- /dev/null
-> +++ b/rust/kernel/page.rs
-> @@ -0,0 +1,259 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Kernel page allocation and management.
-> +
-> +use crate::{bindings, error::code::*, error::Result, uaccess::UserSliceR=
-eader};
-> +use core::{
-> +    alloc::AllocError,
-> +    ptr::{self, NonNull},
-> +};
-> +
-> +/// A bitwise shift for the page size.
-> +#[allow(clippy::unnecessary_cast)]
+Because of limitation listed above (2), the current KCFI
+implementation (not CFI) does reifying of types (i.e., adds
+shims/trampolines for indirect calls in these cases) for:
 
-Why can't you remove the cast?
+Supporting casting between function items, closures, and Fn trait objects.
+Supporting methods being cast as function pointers.
 
-> +pub const PAGE_SHIFT: usize =3D bindings::PAGE_SHIFT as usize;
-> +
-> +/// The number of bytes in a page.
-> +#[allow(clippy::unnecessary_cast)]
-> +pub const PAGE_SIZE: usize =3D bindings::PAGE_SIZE as usize;
-> +
-> +/// A bitmask that gives the page containing a given address.
-> +pub const PAGE_MASK: usize =3D !(PAGE_SIZE-1);
+There may be possible costs of these added levels of indirections for
+KCFI for cache coherence/locality and performance, possible
+introduction of gadgets or KCFI bypasses, and increased
+artifact/binary sizes, which haven't been looked at yet, and I'm
+honestly not super happy about it (but it's better than the original
+proposal of adding shims/trampolines to every virtual call in the Rust
+compiler), so I'd be interested in any performance results or
+regressions you may have while experimenting with it, more
+specifically:
 
-This line doesn't seem to be correctly formatted.
-
-> +
-> +/// Flags for the "get free page" function that underlies all memory all=
-ocations.
-> +pub mod flags {
-> +    /// gfp flags.
-> +    #[allow(non_camel_case_types)]
-> +    pub type gfp_t =3D bindings::gfp_t;
-> +
-> +    /// `GFP_KERNEL` is typical for kernel-internal allocations. The cal=
-ler requires `ZONE_NORMAL`
-> +    /// or a lower zone for direct access but can direct reclaim.
-> +    pub const GFP_KERNEL: gfp_t =3D bindings::GFP_KERNEL;
-> +    /// `GFP_ZERO` returns a zeroed page on success.
-> +    pub const __GFP_ZERO: gfp_t =3D bindings::__GFP_ZERO;
-> +    /// `GFP_HIGHMEM` indicates that the allocated memory may be located=
- in high memory.
-> +    pub const __GFP_HIGHMEM: gfp_t =3D bindings::__GFP_HIGHMEM;
-> +}
-> +
-> +/// A pointer to a page that owns the page allocation.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer is valid, and has ownership over the page.
-> +pub struct Page {
-> +    page: NonNull<bindings::page>,
-> +}
-> +
-> +// SAFETY: Pages have no logic that relies on them staying on a given th=
-read, so
-> +// moving them across threads is safe.
-> +unsafe impl Send for Page {}
-> +
-> +// SAFETY: Pages have no logic that relies on them not being accessed
-> +// concurrently, so accessing them concurrently is safe.
-> +unsafe impl Sync for Page {}
-> +
-> +impl Page {
-> +    /// Allocates a new page.
-> +    pub fn alloc_page(gfp_flags: flags::gfp_t) -> Result<Self, AllocErro=
-r> {
-> +        // SAFETY: Depending on the value of `gfp_flags`, this call may =
-sleep.
-> +        // Other than that, it is always safe to call this method.
-> +        let page =3D unsafe { bindings::alloc_pages(gfp_flags, 0) };
-> +        let page =3D NonNull::new(page).ok_or(AllocError)?;
-> +        // INVARIANT: We just successfully allocated a page, so we now h=
-ave
-> +        // ownership of the newly allocated page. We transfer that owner=
-ship to
-> +        // the new `Page` object.
-> +        Ok(Self { page })
-> +    }
-> +
-> +    /// Returns a raw pointer to the page.
-> +    pub fn as_ptr(&self) -> *mut bindings::page {
-> +        self.page.as_ptr()
-> +    }
-> +
-> +    /// Runs a piece of code with this page mapped to an address.
-> +    ///
-> +    /// The page is unmapped when this call returns.
-> +    ///
-> +    /// # Using the raw pointer
-> +    ///
-> +    /// It is up to the caller to use the provided raw pointer correctly=
-. The
-> +    /// pointer is valid for `PAGE_SIZE` bytes and for the duration in w=
-hich the
-> +    /// closure is called. The pointer might only be mapped on the curre=
-nt
-> +    /// thread, and when that is the case, dereferencing it on other thr=
-eads is
-> +    /// UB. Other than that, the usual rules for dereferencing a raw poi=
-nter
-> +    /// apply: don't cause data races, the memory may be uninitialized, =
-and so
-> +    /// on.
-> +    ///
-> +    /// If multiple threads map the same page at the same time, then the=
-y may
-> +    /// reference with different addresses. However, even if the address=
-es are
-> +    /// different, the underlying memory is still the same for these pur=
-poses
-> +    /// (e.g., it's still a data race if they both write to the same und=
-erlying
-> +    /// byte at the same time).
-
-This is nice.
-
---=20
-Cheers,
-Benno
-
-> +    fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) -> T {
-> +        // SAFETY: `page` is valid due to the type invariants on `Page`.
-> +        let mapped_addr =3D unsafe { bindings::kmap_local_page(self.as_p=
-tr()) };
-> +
-> +        let res =3D f(mapped_addr.cast());
-> +
-> +        // This unmaps the page mapped above.
-> +        //
-> +        // SAFETY: Since this API takes the user code as a closure, it c=
-an only
-> +        // be used in a manner where the pages are unmapped in reverse o=
-rder.
-> +        // This is as required by `kunmap_local`.
-> +        //
-> +        // In other words, if this call to `kunmap_local` happens when a
-> +        // different page should be unmapped first, then there must nece=
-ssarily
-> +        // be a call to `kmap_local_page` other than the call just above=
- in
-> +        // `with_page_mapped` that made that possible. In this case, it =
-is the
-> +        // unsafe block that wraps that other call that is incorrect.
-> +        unsafe { bindings::kunmap_local(mapped_addr) };
-> +
-> +        res
-> +    }
-
+Linux Kernel without KCFI vs Linux Kernel with KCFI vs Linux Kernel
+with Rust and KCFI, possibly isolated to the code of a driver that has
+an implementation in C vs an alternative implementation in Rust.
