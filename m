@@ -1,41 +1,41 @@
 Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986B012B82
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 14:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9081BC4F
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712241418; cv=none; b=P9KmYSt9Rm1bTw2hi2UAi3dQPcQdcmekctIcaPbk19IRVxrhqX4X5h4Ei+TexHDPkIpZG6k7Nb9WuS2Nzp5+h0e2aHKPSajuc4qqdKQVuynV5LuvXlRYbfeJOT/ezr4HzcsoAzr0Jc8l9Y8W6GH3MBiiI9E3Tuov0MLNvNYE1zQ=
+	t=1712241713; cv=none; b=Nr5tv4AcJbWOPu5wum4Q7q4MYNw2bIQkrSgtpxCiGWNtW9Z/hs3RJr6HTctmtjDJEpF+Q6InR6bik55gqgp1RqOoJntBtF8FDbw+LRWYu6Y02tmxm7JibLtmnTPBg35JiKawvzTS2tWRTyyr+9JJIRyRVvFb7plpclCJ99V3K3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712241418; c=relaxed/simple;
-	bh=g5tQ467b5au3ekidhW50/WYDE3pKT7OHsNVp75ID7vE=;
+	s=arc-20240116; t=1712241713; c=relaxed/simple;
+	bh=c2FcGaMs92bL0DW+4qQKped7KrfVqul8MtmSpvK1eno=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UmNHPejT5R2CIlmgY3aHoL9+kGKEh94VycVnOM/UtS5zObEBS/fZ08WSSmrDsUykl0CPvFpEz+B6FnGuJo2bl1/6DaQX9hOivz89OkBh50pryyP2rjxIGdznVoWgCMajFrCuc0fq7PLBJuwWnKxWMxmvFmmzT5jhyiXUVtR3tHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=T9sxEjyu; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=IQzuh2u2HDR08E76lS8rHw+oYwnCbSvkl7QQX/9wEqwf8ih/AFoZjlKlP7z7sjilWJyTOPZ2VKVVUFamW/AtGmZiWFk0Ws+IBcjIlyxCDa9aenLaMHK6Ho/NJjO36vXO4zTc2gLJpD+G/ovZTJ9Ld7TqbgBHwe7rJOEoMWwUonM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XKdTzwkM; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="T9sxEjyu"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XKdTzwkM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712241408; x=1712500608;
-	bh=sFcdFq5/NQHONR503i97zG4JgDNzJtYW69mQiJroSFs=;
+	s=protonmail; t=1712241706; x=1712500906;
+	bh=1QVEMvbvy2roz2lqgS24Q8cvcM+QzhUJa+rGii5XAPQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=T9sxEjyulG6zzMsMry2SYr2AC7rDKl89spkDwlwT8RGW07Mu2TSMZsKteSG3I5gBY
-	 MVUB6lJ2GaeTMS20gDHWvA12BHj1fiiEt139/WDiYKtHB1Uo8DGJYfQaPCei4s6Mkj
-	 L+xvQWLrs3cK1JJ3UmEMy5g8okyrExCVgyM3NSJlnmOBv1hL5WDDHNHzc/YgfFA52p
-	 OxB3zePnxdYIi8VrJ9Ubfu5ogfYRzdpazUX/CL/nix1OmH6j/NVUPhgTj//0L4Jb8L
-	 wY152tO2DfAvPaRsMqmxCGdZXntQrJvT7v+p9PZMCvy7KYPGgz9ryGp92vtu3RAHDd
-	 UZeb1vpZnOYlw==
-Date: Thu, 04 Apr 2024 14:36:42 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+	b=XKdTzwkMHugQPI19Ye5RMZ4bdXUCX+VLl48GQcwLIxO6YBg80Cjj+sgfSfdZbngNg
+	 L9F5t9xc+1l16VskyW9UDUcCYa9kULtrqo9H+m9wTgMN4mQnxV2bu5+ajvxbSi3T62
+	 eSHDOqzrdSPPbyZwi4nyV5nzBJU/mTlXqjz3koXu1JOUK5eWjh2G2Q/C/NRbKczFAy
+	 JFKnKh5NvHD1BILK66X9uDipRnuYmybuCgfSE9GEkwkZYy/GUwNf88XXLiTCegBOoZ
+	 eBVfQS3cYMf4Ql6AQEL8xg9Dw7DM4vS2l7mso4JlAnbWjr1KGtemezD1BPesMRLUAP
+	 5sNF1ELEJzYiA==
+Date: Thu, 04 Apr 2024 14:41:40 +0000
+To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 6/9] rust: list: add iterators
-Message-ID: <98449574-4c1b-4281-bbd3-3ac2767020cb@proton.me>
-In-Reply-To: <20240402-linked-list-v1-6-b1c59ba7ae3b@google.com>
-References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-6-b1c59ba7ae3b@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/9] rust: list: add tracking for ListArc
+Message-ID: <69c87a65-59a4-4f65-8b93-a1dafef36d31@proton.me>
+In-Reply-To: <CAH5fLghHmuHxw1BL1F2-VF5KUXQLOwMqW6PfiAoLBXRE0Gyu=g@mail.gmail.com>
+References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-2-b1c59ba7ae3b@google.com> <36306930-0390-4342-830d-03c11ec4a3a7@proton.me> <CAH5fLghHmuHxw1BL1F2-VF5KUXQLOwMqW6PfiAoLBXRE0Gyu=g@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,86 +46,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 02.04.24 14:17, Alice Ryhl wrote:
-> @@ -414,3 +427,92 @@ fn drop(&mut self) {
->          }
->      }
->  }
-> +
-> +/// An iterator into a [`List`].
-> +///
-> +/// # Invariants
-> +///
-> +/// The `current` pointer points at a value in a list, or it is null if =
-the iterator has reached
+On 04.04.24 16:14, Alice Ryhl wrote:
+> On Wed, Apr 3, 2024 at 5:52=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>> On 02.04.24 14:16, Alice Ryhl wrote:
+>>> +                unsafe { <$fty as $crate::list::ListArcSafe<$num>>::on=
+_create_list_arc_from_unique(
+>>> +                        &mut *field
+>>> +                ) };
+>>
+>> Formatting? rustfmt gives me this:
+>>
+>>                   unsafe {
+>>                       <$fty as $crate::list::ListArcSafe<$num>>::on_crea=
+te_list_arc_from_unique(
+>>                           &mut *field
+>>                       )
+>>                   };
+>>
+>> (maybe the `;` should be inside the `unsafe` block in this case?)
+>=20
+> I can make the change, but rustfmt does not affect macros.
 
-I think "list" should link to [`List`].
-
-> +/// the end of the list. The `stop` pointer points at the first value in=
- the same list, or it is
-> +/// null if the list is empty.
-> +#[derive(Clone)]
-> +pub struct Iter<'a, T: ?Sized + ListItem<ID>, const ID: u64 =3D 0> {
-> +    current: *mut ListLinksFields,
-> +    stop: *mut ListLinksFields,
-> +    _ty: PhantomData<&'a ListArc<T, ID>>,
-> +}
-> +
-> +impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Iterator for Iter<'a, =
-T, ID> {
-> +    type Item =3D ArcBorrow<'a, T>;
-> +
-> +    fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
-> +        if self.current.is_null() {
-> +            return None;
-> +        }
-> +
-> +        let current =3D self.current;
-> +
-> +        // SAFETY: We just checked that `current` is not null, so it is =
-in a list, and hence not
-> +        // dangling. There's no race because the iterator holds an immut=
-able borrow to the list.
-
-This (that the iterator holds an immutable borrow) is not true (there
-is no `&List` field in `Iter`), but you can make that an invariant
-instead.
-
-> +        let next =3D unsafe { (*current).next };
-> +        // INVARIANT: If `current` was the last element of the list, the=
-n this updates it to null.
-> +        // Otherwise, we update it to the next element.
-> +        self.current =3D if next !=3D self.stop {
-> +            next
-> +        } else {
-> +            ptr::null_mut()
-> +        };
-> +
-> +        // SAFETY: The `current` pointer points a value in the list.
-
-Typo: "points a value" -> "points at a value"
-
-I think you should also use consistent naming when referring to the
-elements/items/values of a list.
+I think we still should try to format macros correctly, it increases
+readability. I take the in-macro code, remove all `$` and other
+macro-only symbols, then use rustfmt and then manually format the code
+accordingly. I also find it tedious, but the unformatted code also
+doesn't look good :)
 
 --=20
 Cheers,
 Benno
-
-> +        let item =3D unsafe { T::view_value(ListLinks::from_fields(curre=
-nt)) };
-> +        // SAFETY:
-> +        // * All values in a list are stored in an `Arc`.
-> +        // * The value cannot be removed from the list for the duration =
-of the lifetime annotated
-> +        //   on the returned `ArcBorrow`, because removing it from the l=
-ist would require mutable
-> +        //   access to the list. However, the `ArcBorrow` is annotated w=
-ith the iterator's
-> +        //   lifetime, and the list is immutably borrowed for that lifet=
-ime.
-> +        // * Values in a list never have a `UniqueArc` reference.
-> +        Some(unsafe { ArcBorrow::from_raw(item) })
-> +    }
-> +}
 
