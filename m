@@ -1,118 +1,268 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA9F1CF8B
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 14:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE7315EA6;
+	Thu,  4 Apr 2024 14:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712241727; cv=none; b=C4YQk+gT+UuUZ0MyrxdeHtl7yGL91QNQj/P4F19+fsOOYeLpHrvnMG/xZCzuEXwrXohLgHFg2dCx6rVyCGOHIVRMRxEbwHUKsndfGl/tsA0XVrhFk/AScevGP+Ays5cXgNx2nGi9JVIGolLoot7puRIKTpTrvHiJ2fblGJNyUdE=
+	t=1712242284; cv=none; b=L/JVzS+0Nf4fvW6oq9OqAh6n0RhufX59Y9tRAYzhsVD21BY1U4mG8jKqOJRCZE9Za6xiUKT3fQedEirHDlctR6YMs7/h6qpfHgT86MPMe1X0Dj3NLgoEqjgih91Z8kCEd0uYwUQi0H/ArM0e0uKare8EGLLCRwH2+uwzJiYMDvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712241727; c=relaxed/simple;
-	bh=Tl6OJL3Ay3elBPXJKELrFjWgQUqYUPxNsWZDIG4ldSU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KuPnvXLJvJuLJGlRxFvhO0K6tB4P8KW2I9AsVQQboJnf4ES+c3fmqvU16H+Ytxiun7wjxRvBMY7V0tJ9fA3L8bHC2b6m4Hq7oRnzbq7r1uFegQ3K05zDh0QgmymUNtRqtNlvbfqTh8sxR+vhFA3iLlDcuJxVDDBODtyH9R8jt/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mcnzliWR; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1712242284; c=relaxed/simple;
+	bh=9F4bE6RFEhkRy0ov/bMHMaKCv6iNYmCPVd5GJvpQkj0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YzMI+XpQriKwsPWiZp7EQu1D02WL1rsjozJVuLbPvNTIdgjkdbggN+liy/rFy5nuhYhCbqQP+v+zfP5J408X2tjeOCHoJr9wTmVCj7PAxKPF8RJrcaAqYsQ8sGCmCzuRvBleaErZriwg1XbaISzqFhSWys1u8rdVyazo+haPNkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HiyOn/bU; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mcnzliWR"
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4d43d602cd6so369427e0c.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Apr 2024 07:42:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712241724; x=1712846524; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sCOieR3KDrxseidIEeQxtseySKtvl+xDkoYPv0qKlDU=;
-        b=mcnzliWRODP+SepwivmCwrju+LYKFpk9FTbZmo2UMq/Bx03djm/3f0l5qtZjfi9e1/
-         BDJPCHpkvD9UI80S5XWeyFFR4EpR8YVxcUTAmCgafUSNg7AHtRh0r/HHND1N6+DXhVUz
-         accmja2zxN4Pt0mYiXEp5rNcY5WNeheUZpQhnJXAHnRXbMriB9K99FdORYLjbo5NdyL8
-         CqNF7MjqfFWgIsZC74Op/8DST3V3D60/q0GajPKK08nDwbw++64oKX4ipnZTkJkcZLPZ
-         dwYaviKRVzWWW7Pwv5wnZ3gAUIm9D8Emf3FXQNY3dMZlOsT1a6k75AF973B1LiJKaKbI
-         dfSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712241724; x=1712846524;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sCOieR3KDrxseidIEeQxtseySKtvl+xDkoYPv0qKlDU=;
-        b=qk+EPkVzc2RUAmsNFZJYyPP5qLeHf19ztlVOUUx3OLjt8tzhtyEzqJwyjJWEGqOwFe
-         oQVpsKpp/YIaNi7gMjSj986DnMcft4goKVEPAhrQ7R8RDZPTn9Ht/eXRo5Ry4goUr/I8
-         WEoArioq2tRLKDXLojvfkMUzvUuGs+dw8AI7T+v+xKPyirWaD+OHn4Kdr0lZ14t2MnVf
-         xXaxRsaYA2jdzA6PPnQeaa6b2gIpTTpftT2fxvBmMQpbk4jFf1Ff5953E8edfywE5InM
-         QVVUdJ5GzL1A+vkYF7/e06e5Q+5KerTj30x75DvHtk/jKzuR8TXN1LH5a8hpzmHvj/M+
-         k1yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWR1dQtqXN9pVKFKDS89slumCS1vbMXAt8rIaDhLrs+H105G3go4YQ+QdsfN1dMeBxdjqngiR3ShXGCAv9s+mhkYk2HclShyRUk+5mO2UY=
-X-Gm-Message-State: AOJu0YxU2jOVhLMxbZKUMjbbwoNwtGBVMsQpepCpQiFMNA5BuEuEIpqn
-	nAVdeoMn4ONXFdeei1cvnUODwuhbrbxPzgV8a0jHPWsdOFp3HhmFDRigjti0RtNqxJ1p/KsbkKR
-	zAQBukdF8yILWvo2nLlG34Maw+vUFLcWAh5fc
-X-Google-Smtp-Source: AGHT+IESWmyAscr9En8d8fr10/tEJzgqLsplPhrY4zQ0QFQYN4d+/iDrBX4FqYfT00rTM8f4CM+gF4C9U3UA8ocAC8U=
-X-Received: by 2002:a1f:f84e:0:b0:4d3:362f:f9c1 with SMTP id
- w75-20020a1ff84e000000b004d3362ff9c1mr2282476vkh.13.1712241724504; Thu, 04
- Apr 2024 07:42:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HiyOn/bU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=46r6zabnkjcrdj3jci6p6oyzwa.protonmail; t=1712242280; x=1712501480;
+	bh=0Jzi1SJxdrZbAiksLrRC8eagzCOdwlYfNKWFhLLRZ30=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=HiyOn/bUh/O0/cUk95114wulc/Dt1gYbWDYi+OG0mACzWIchMlHepzmIIHH/kFuWW
+	 cMz9PxPSkdOJv6xNO6KW2oSpJXUGUrPGAZMGfxihyjZherYPP+eF6xxPg1qTNb5Y6X
+	 6X7KZ2uklWfx/tkvBlLcHk/GMwQ4SRJpPE3rEIzbjtRPp6TWTX/dUQMKIsOU2Mcd3g
+	 7kpGojHWNE5mFVCeCO1mGEvfVbMx+vTpYSYjiMA+pqmIhrXMv2IFvwo0dc6u+forkG
+	 l6qaEFe2nfSL53SsxW8N4cjnRGv1HkveWidTMaZ+MzogxIkYLH3C7ZyWF7G2mnnq6n
+	 65nstalLpIEGA==
+Date: Thu, 04 Apr 2024 14:51:16 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 5/9] rust: list: add List
+Message-ID: <3f3cf5ae-30df-4032-b752-77126035784c@proton.me>
+In-Reply-To: <CAH5fLgiN3jcd_HMgmP7H-026daMw0xkMk=CGaGc9AM7uHkFXFA@mail.gmail.com>
+References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-5-b1c59ba7ae3b@google.com> <d896a813-3081-40b4-985b-ef257d55cec2@proton.me> <CAH5fLgiN3jcd_HMgmP7H-026daMw0xkMk=CGaGc9AM7uHkFXFA@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com>
- <20240402-linked-list-v1-6-b1c59ba7ae3b@google.com> <98449574-4c1b-4281-bbd3-3ac2767020cb@proton.me>
-In-Reply-To: <98449574-4c1b-4281-bbd3-3ac2767020cb@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Apr 2024 16:41:53 +0200
-Message-ID: <CAH5fLggS3qtCy20Y=kuxULUY9Q_4dSzJN5n2WitU362cYuqPLA@mail.gmail.com>
-Subject: Re: [PATCH 6/9] rust: list: add iterators
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, 
-	Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
-	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 4, 2024 at 4:36=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
-> wrote:
->
-> On 02.04.24 14:17, Alice Ryhl wrote:
-> > +/// the end of the list. The `stop` pointer points at the first value =
-in the same list, or it is
-> > +/// null if the list is empty.
-> > +#[derive(Clone)]
-> > +pub struct Iter<'a, T: ?Sized + ListItem<ID>, const ID: u64 =3D 0> {
-> > +    current: *mut ListLinksFields,
-> > +    stop: *mut ListLinksFields,
-> > +    _ty: PhantomData<&'a ListArc<T, ID>>,
-> > +}
-> > +
-> > +impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Iterator for Iter<'a=
-, T, ID> {
-> > +    type Item =3D ArcBorrow<'a, T>;
-> > +
-> > +    fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
-> > +        if self.current.is_null() {
-> > +            return None;
-> > +        }
-> > +
-> > +        let current =3D self.current;
-> > +
-> > +        // SAFETY: We just checked that `current` is not null, so it i=
-s in a list, and hence not
-> > +        // dangling. There's no race because the iterator holds an imm=
-utable borrow to the list.
->
-> This (that the iterator holds an immutable borrow) is not true (there
-> is no `&List` field in `Iter`), but you can make that an invariant
-> instead.
+On 04.04.24 16:12, Alice Ryhl wrote:
+> On Thu, Apr 4, 2024 at 4:03=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>> On 02.04.24 14:17, Alice Ryhl wrote:
+>>> +
+>>> +        if self.first.is_null() {
+>>> +            self.first =3D item;
+>>> +            // SAFETY: The caller just gave us ownership of these fiel=
+ds.
+>>> +            // INVARIANT: A linked list with one item should be cyclic=
+.
+>>> +            unsafe {
+>>> +                (*item).next =3D item;
+>>> +                (*item).prev =3D item;
+>>> +            }
+>>> +        } else {
+>>> +            let next =3D self.first;
+>>> +            // SAFETY: We just checked that `next` is non-null.
+>>
+>> Missing mention of the type invariant.
+>=20
+> SAFETY: By the type invariant, this pointer is valid or null. We just
+> checked that it's not null, so it must be valid.
 
-What I mean is that the borrow-checker will consider the `List` to be
-borrowed by `Iter`. Whether or not there is a real reference or not
-doesn't matter.
+Sounds good.
 
-Alice
+[...]
+
+>>> +    /// Removes the first item from this list.
+>>> +    pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
+>>> +        if self.first.is_null() {
+>>> +            return None;
+>>> +        }
+>>> +
+>>> +        // SAFETY: The first item of this list is in this list.
+>>> +        Some(unsafe { self.remove_internal(self.first) })
+>>> +    }
+>>> +
+>>> +    /// Removes the provided item from this list and returns it.
+>>> +    ///
+>>> +    /// This returns `None` if the item is not in the list.
+>>
+>> I think this should say "Returns `None` if the item is not in a list.".
+>> (Technically it should be "is not in a `List<T, ID>`", since it *can* be
+>> in another list with a different ID.)
+>=20
+> I'm not really convinced. The phrases "the list" and "a list" are
+> equivalent given the safety requirement for this method, but "the
+> list" seems more natural to me. The `remove` method of any other
+> collection would say "the list" too.
+
+They are equivalent, but saying "the list" has the potential for this
+confusion: "If the function returns `None` if the item is not in the
+list, then why do I need to ensure that it is not in a different list?".
+>=20
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// The provided item must not be in a different linked list.
+>>> +    pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>=
+> {
+>>> +        let mut item =3D unsafe { ListLinks::fields(T::view_links(item=
+)) };
+>>> +        // SAFETY: The user provided a reference, and reference are ne=
+ver dangling.
+>>> +        //
+>>> +        // As for why this is not a data race, there are two cases:
+>>> +        //
+>>> +        //  * If `item` is not in any list, then these fields are read=
+-only and null.
+>>> +        //  * If `item` is in this list, then we have exclusive access=
+ to these fields since we
+>>> +        //    have a mutable reference to the list.
+>>> +        //
+>>> +        // In either case, there's no race.
+>>> +        let ListLinksFields { next, prev } =3D unsafe { *item };
+>>> +
+>>> +        debug_assert_eq!(next.is_null(), prev.is_null());
+>>> +        if !next.is_null() {
+>>> +            // This is really a no-op, but this ensures that `item` is=
+ a raw pointer that was
+>>> +            // obtained without going through a pointer->reference->po=
+inter conversion rountrip.
+>>> +            // This ensures that the list is valid under the more rest=
+rictive strict provenance
+>>> +            // ruleset.
+>>> +            //
+>>> +            // SAFETY: We just checked that `next` is not null, and it=
+'s not dangling by the
+>>> +            // list invariants.
+>>> +            unsafe {
+>>> +                debug_assert_eq!(item, (*next).prev);
+>>> +                item =3D (*next).prev;
+>>> +            }
+>>> +
+>>> +            // SAFETY: We just checked that `item` is in a list, so th=
+e caller guarantees that it
+>>> +            // is in this list. The pointers are in the right order.
+>>> +            Some(unsafe { self.remove_internal_inner(item, next, prev)=
+ })
+>>> +        } else {
+>>> +            None
+>>> +        }
+>>> +    }
+>>> +
+>>> +    /// Removes the provided item from the list.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// The pointer must point at an item in this list.
+>>> +    unsafe fn remove_internal(&mut self, item: *mut ListLinksFields) -=
+> ListArc<T, ID> {
+>>> +        // SAFETY: The caller promises that this pointer is not dangli=
+ng, and there's no data race
+>>> +        // since we have a mutable reference to the list containing `i=
+tem`.
+>>> +        let ListLinksFields { next, prev } =3D unsafe { *item };
+>>> +        // SAFETY: The pointers are ok and in the right order.
+>>> +        unsafe { self.remove_internal_inner(item, next, prev) }
+>>> +    }
+>>> +
+>>> +    /// Removes the provided item from the list.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// The `item` pointer must point at an item in this list, and we =
+must have `(*item).next =3D=3D
+>>> +    /// next` and `(*item).prev =3D=3D prev`.
+>>> +    unsafe fn remove_internal_inner(
+>>> +        &mut self,
+>>> +        item: *mut ListLinksFields,
+>>> +        next: *mut ListLinksFields,
+>>> +        prev: *mut ListLinksFields,
+>>> +    ) -> ListArc<T, ID> {
+>>> +        // SAFETY: We have exclusive access to items in the list, and =
+prev/next pointers are
+>>
+>> I think you mean that you have exclusive access to the prev/next fields
+>> of the `ListLinks` associated with `ID`... But that is rather long.
+>> Does anyone have any idea to shorten this?
+>=20
+> SAFETY: We have exclusive access to the pointers of items in the list,
+> and the prev/next pointers are never null for items in a list.
+
+I would say that they are valid instead of never null, since you
+dereference them below. Otherwise sounds good.
+
+>=20
+>>> +        // never null for items in a list.
+>>> +        //
+>>> +        // INVARIANT: There are three cases:
+>>> +        //  * If the list has at least three items, then after removin=
+g the item, `prev` and `next`
+>>> +        //    will be next to each other.
+>>> +        //  * If the list has two items, then the remaining item will =
+point at itself.
+>>> +        //  * If the list has one item, then `next =3D=3D prev =3D=3D =
+item`, so these writes have no effect
+>>> +        //    due to the writes to `item` below.
+>>
+>> I think the writes do not have an effect. (no need to reference the
+>> writes to `item` below)
+>=20
+> ?
+
+The first write is
+
+     (*next).prev =3D prev;
+
+Using the fact that `next =3D=3D prev =3D=3D item` we have
+
+     (*item).prev =3D prev;
+
+But that is already true, since the function requirement is that
+`(*item).prev =3D=3D prev`. So the write has no effect.
+The same should hold for `(*prev).next =3D next`.
+
+>=20
+>>> +        unsafe {
+>>> +            (*next).prev =3D prev;
+>>> +            (*prev).next =3D next;
+>>> +        }
+>>> +        // SAFETY: We have exclusive access to items in the list.
+>>> +        // INVARIANT: The item is no longer in a list, so the pointers=
+ should be null.
+>>> +        unsafe {
+>>> +            (*item).prev =3D ptr::null_mut();
+>>> +            (*item).next =3D ptr::null_mut();
+>>> +        }
+>>> +        // INVARIANT: There are three cases:
+>>> +        //  * If `item` was not the first item, then `self.first` shou=
+ld remain unchanged.
+>>> +        //  * If `item` was the first item and there is another item, =
+then we just updated
+>>> +        //    `prev->next` to `next`, which is the new first item, and=
+ setting `item->next` to null
+>>> +        //    did not modify `prev->next`.
+>>> +        //  * If `item` was the only item in the list, then `prev =3D=
+=3D item`, and we just set
+>>> +        //    `item->next` to null, so this correctly sets `first` to =
+null now that the list is
+>>> +        //    empty.
+>>> +        if self.first =3D=3D item {
+>>> +            // SAFETY: The `prev` field of an item in a list is never =
+dangling.
+>>
+>> I don't think this SAFETY comment makes sense.
+>>
+>>> +            self.first =3D unsafe { (*prev).next };
+>=20
+> SAFETY: `prev` is the `prev` pointer from a `ListLinks` in a `List`,
+> so the pointer is valid. There's no race, since we have exclusive
+> access to the list.
+
+Sounds good.
+
+--=20
+Cheers,
+Benno
+
