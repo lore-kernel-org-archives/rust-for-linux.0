@@ -1,114 +1,94 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB3B6F514
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Apr 2024 22:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FCB13D258
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Apr 2024 07:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712270476; cv=none; b=ErOoXLOsvn9ySH8e1MJGT95jsgmUbXhYIvATISXrQunVnFzZuypZaHx9OJfZfZqZKvIFKiSZXEjLMcC7fIcppW56RT4sMRzdIRZbaP7ExjcDQ8THMhjmWtpMn7EEOkuTK2hG9Gfs5BXBZfrzuvn4dpl9PaEy5VfohZdlMP8Bcw4=
+	t=1712303062; cv=none; b=GMbwXc9uKHfkeL60Ys4eVIjGosMIGHxSvqnd/1GZtAcM+fb/XmKSaMbimYW8MGw8CHonU580WDSxfA7vib7wrlm55VGuhEeO29g7RamahQBJTtvCGfBwYUlZi7PnNMGiA6/+TxXg3aWhspVVuoBJjEdNyeKTiVmNH1wlhzcpKXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712270476; c=relaxed/simple;
-	bh=8A5tKiFBa0lbUbCLGluriwofV6tCs9WRKtzaqV10d5w=;
+	s=arc-20240116; t=1712303062; c=relaxed/simple;
+	bh=SHGbtYE78WACdauHUN0T3sz6l7y4v0ZFIs1aCPJUAfs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D4MXG8yfZAImTnvnCFam0SvtpDubiERfxW9j1Gfp5KTOkDjjt/qbLJbUsjghIEQFFrwQbaY/k1b+t6OEdMmQiGK3NwUwQKXwG/bXSbGKkA+kMBcqjt9H3fzhodd4DZGBA48cukqMm9XX13u9W81DYQDKlFb+gS93EZxB13QiSM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3SVQEvFL; arc=none smtp.client-ip=209.85.221.178
+	 To:Cc:Content-Type; b=DcmJJvvufslToR1XXF+7Hy6pTCsva8FCDICyEAq50+bhfeNcJS73Du3PrPZvVOJm3YW4Qhiha7jvz8wWg8uvTafSyfINUY0k7NAAlnI4Zaw9AhWwveXw3K6YIqrO7UNptZ1l3ad6TWE24IVSbgA/Eg1Rn9V7DLz/jqJO8/FwXWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=okUN6yzJ; arc=none smtp.client-ip=209.85.222.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3SVQEvFL"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4daa8466d6fso314304e0c.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Apr 2024 15:41:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="okUN6yzJ"
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7e5f9c15d83so135177241.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Apr 2024 00:44:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712270473; x=1712875273; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8A5tKiFBa0lbUbCLGluriwofV6tCs9WRKtzaqV10d5w=;
-        b=3SVQEvFLH5hC8C+pSGkZZOrGdYOXWU+uy6P1oO6NXphX+DIuoAD1HcgsF7Ybj4L+hn
-         PgMJwUkNWSsK3X159h6sgPIjoRXOpaw2PKdQTbPs2GzNA1GFIORCW6j3Eo5Q9LQVg3ey
-         tKHzxPWjf0Rc3f4+KpNdArHsnZ06QvXIIUgBbDw6/e4/j7Gh10WHfhfFsPZwENn3qMik
-         OXGcI3MK4td73qHmiJcuE9H8b8/QffXDvBcKBKS7iPgM9skUNk4bYdrNu/hsrtzyWD89
-         3Mrandzr92ryjSTXiANP4mDjMDUk0yy38jwgisdDpHpRnMKfdi6dCkrHLk2IwZuy1JF4
-         bHRg==
+        d=google.com; s=20230601; t=1712303059; x=1712907859; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SHGbtYE78WACdauHUN0T3sz6l7y4v0ZFIs1aCPJUAfs=;
+        b=okUN6yzJEqwBDFZGJZL0LcADDUilMBNKJN8H7jWZR05NbtB4cpOanmzpMjHANSONZV
+         99U6ofHCD42rVReWS4zc6lFac32qpV0ihfRwWZSZQLTKqiSDg9DEL10UKYMMrWzPGeK3
+         EeauzsP/2fK3E7GeMPc1E+qRrnLULQ4XRqUPaPTvrKlw48pac09Mn9K75w7k4z61uKoV
+         TsOWZo2DND3gVyfh50eMzslQXDWlLaXrEAhA12adDuRbzCiU5aaQ9jFE9RkX8Q8dt7CV
+         eY4Iy7ZAm/LpmJz4w2mZuePUZbVwFSgmhyeMGh2RixH5ki2R7qlfUBhkuHHVTJws9j+N
+         B+bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712270473; x=1712875273;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8A5tKiFBa0lbUbCLGluriwofV6tCs9WRKtzaqV10d5w=;
-        b=CyJob7wB/RQL22Ucz1/BpLX0dxrVc6bhq8qPT5KGYiBab6e6oyhxvA6LeoIf4ybrvA
-         7t7XL4PnQabFOGrDBDxtlhlzU2vsdyTTUb8HiFo3FZj/3w4A/Y48pwPBt4UVrk0epbfW
-         7iTcBfCx6ApFrSNdwRqu9QpKfBLOaSyEMes6JMQtemWbNyweVVRhaKMFMCwAcbU5lVaC
-         UofeqGf6hzUbnAXeM1X8CFSxM1G8ZlGceozyGIlJN/lsYp+lA8Etp4fcdJ+SVWhp6Mjb
-         PDfxveinwzjA6LESKxuYEOpIdd8wcl2GkdEYtrEWaRAxjohL/2KDF4tDlZ60Nu585ywS
-         EYbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrCQjT9vtwWMHg2MR3Y+1x89nuyvQ7wmAbQbXDUu8AvVxoGgyPcFVIJYNPGIDqc4MqYqzNZYR9QX0sntDuCLzF2jYJWIHi5lFq8RwUnls=
-X-Gm-Message-State: AOJu0YyNn0+fuFD34GllsuvJ/x9Jmtc9Bnim11D5CuXRkjr8rZkFXqjK
-	mTfgNVhBNzRFwntzI/0y9AXQct5YVlXm31ATdoj99dy4wGkEpXdHu8izI0op40V25IoXD41itZM
-	6EEBqJQL9ctQqRR5Nruobt1ruFQ1Ez5l458/L
-X-Google-Smtp-Source: AGHT+IFZOijUz7nc+slBJ8zOHyZ8cj9MgnjzviT3lXApOXO2vYVNI4DlpN571/pk/cWTagxBQ7uu8R14TkT0NKKSOs4=
-X-Received: by 2002:ac5:cdf3:0:b0:4d3:3a0f:77ce with SMTP id
- v19-20020ac5cdf3000000b004d33a0f77cemr3746386vkn.13.1712270473349; Thu, 04
- Apr 2024 15:41:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712303059; x=1712907859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SHGbtYE78WACdauHUN0T3sz6l7y4v0ZFIs1aCPJUAfs=;
+        b=nwP0k29fXk09tLUm05CCbp/zsMJEGn0ik+cCODKVTtEOOLHEyGxiRThMCjOcWcJNEY
+         ykQLjb4d5+tcaY9kJ//Ssmcv/54nKPAvANxwoWAvPYaT2ASq3RdAEiZ2ZgXosv57brBd
+         HsBTVzKWZGdFThvcigqpUdxF4QSedblnmRgagqXzgbwHgvJVSDDNfp3Jfy85T++RtXoj
+         3IZNJvrsJJoaJKgK56KObGuli8EJM1zgfNr/Eb425UtAgdhx2GY25M0aVI05tYmD0/MD
+         X+7+LTdZB13XBmu8wEtxvreEuEUCvDWs9KhWcMaNvMw2hmbbz7Z38e6TrlzNZELqsTfd
+         Sd+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXRD8RXc8mlz8jUgUrHDSHSW067xquDEorQuSbQYJ+oHaBDMYiETcqExsuTroC2PKA3DXpmNdVdOAifiHtOrX9kC6fD0zf+M08QLc85glo=
+X-Gm-Message-State: AOJu0YxzyA3hngggdzbRR8znHZ7kg+moQBXFQ9xAXjPjbA955qLHTGuE
+	aQT1tJN+JMytofLcQJvZqtO8mLER7Mii2nbVKrLyhAFTiOZN2JFXRRAHVKe6jwcXRPR2V9cPlui
+	RdzmbShYB6YmJQK5JRStfgwg8WtPZNpNq2+yn
+X-Google-Smtp-Source: AGHT+IGMeMqrXZ0hb7q26iSJbPXd6dY3rpQtcLC3/bDQAURqKv3BShFGpUtYoVqS9r2ldERtJ0iVFeg0BVc9I60Wl/c=
+X-Received: by 2002:a05:6102:512c:b0:479:c401:824 with SMTP id
+ bm44-20020a056102512c00b00479c4010824mr1516533vsb.6.1712303059454; Fri, 05
+ Apr 2024 00:44:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240404-providing-emporium-e652e359c711@spud>
- <20240404153258.GA852748@dev-arch.thelio-3990X> <CANiq72kSfC2j07mAaV591i4kDwejWRYcFTvASgQmNnHVe5ZwCw@mail.gmail.com>
-In-Reply-To: <CANiq72kSfC2j07mAaV591i4kDwejWRYcFTvASgQmNnHVe5ZwCw@mail.gmail.com>
-From: Ramon de C Valle <rcvalle@google.com>
-Date: Fri, 5 Apr 2024 00:41:02 +0200
-Message-ID: <CAOcBZOS2kPyH0Dm7Fuh4GC3=v7nZhyzBj_-dKu3PfAnrHZvaxg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
-	Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
-	Kees Cook <keescook@chromium.org>, llvm@lists.linux.dev
+References: <20240404-alice-mm-v4-0-49a84242cf02@google.com>
+ <20240404-alice-mm-v4-4-49a84242cf02@google.com> <a48b2347-b58b-432e-bdb8-d5449016ab57@proton.me>
+In-Reply-To: <a48b2347-b58b-432e-bdb8-d5449016ab57@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 5 Apr 2024 09:44:06 +0200
+Message-ID: <CAH5fLgg3wpcDE+n6nd0CGtDzyXSrD2nLhY8RxdTHjAD8hQ9VDQ@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] rust: add abstraction for `struct page`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Apr 5, 2024 at 12:33=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> We track the unstable feature(s) at
-> https://github.com/Rust-for-Linux/linux/issues/2 (I just moved this
-> one there since it is close to ready, but it was in #355 previously,
-> and cleaned things up a bit).
+> On 04.04.24 14:31, Alice Ryhl wrote:
+> > +/// A bitwise shift for the page size.
+> > +#[allow(clippy::unnecessary_cast)]
+>
+> Why can't you remove the cast?
 
-Sorry about that, I should've done this already. In addition to the
-link you added above, here's a tracking issue for KCFI support for
-Rust:
-https://github.com/rust-lang/rust/issues/123479
+Bindgen could decide to use a different type in the future or on
+different platforms.
 
-There are still a few unresolved questions that I'd like to hear from
-you as you experiment with it, which the tl,dr. is: KCFI support for
-Rust shares most of its implementation with the CFI support, with some
-key differences:
-
-KCFI performs type tests differently and are implemented as different
-LLVM passes than CFI to not require LTO.
-KCFI has the limitation that a function or method may have one type id
-assigned only.
-
-Because of limitation listed above (2), the current KCFI
-implementation (not CFI) does reifying of types (i.e., adds
-shims/trampolines for indirect calls in these cases) for:
-
-Supporting casting between function items, closures, and Fn trait objects.
-Supporting methods being cast as function pointers.
-
-There may be possible costs of these added levels of indirections for
-KCFI for cache coherence/locality and performance, possible
-introduction of gadgets or KCFI bypasses, and increased
-artifact/binary sizes, which haven't been looked at yet, and I'm
-honestly not super happy about it (but it's better than the original
-proposal of adding shims/trampolines to every virtual call in the Rust
-compiler), so I'd be interested in any performance results or
-regressions you may have while experimenting with it, more
-specifically:
-
-Linux Kernel without KCFI vs Linux Kernel with KCFI vs Linux Kernel
-with Rust and KCFI, possibly isolated to the code of a driver that has
-an implementation in C vs an alternative implementation in Rust.
+Alice
