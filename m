@@ -1,86 +1,58 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F48D16C68F
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Apr 2024 11:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD27016F913
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Apr 2024 15:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712315405; cv=none; b=MGcN3l5sOWLKxSHNC7TfE6gpfIK+M5fbEOVNqJ8MiuV3AQ/difKfBo03QyTT3YiRMquNSfv8bOgQvBpdiAtaDVGHKvItG8EDzOBNRvQsVPXRFAPT3yfwmQj6tnx0jtNXMTL9C6jyc18tyk1WI07WUAr3Qq4st9sjDMDGCGh+v7A=
+	t=1712331544; cv=none; b=SWQ5FNOIg9vod8lJdLq6pWoh87rm999Ab3Z9PdKe2K3Tx6NTk88qZYmzRlsIlN46bO1NlNgcrmbQ8rx3/iqVP3B5VgELvxioqlcjRUEjOjSriR4OZ5sBNnP/zwuDZeA/uZZri8/TGOUsgPfZ75Ro6VgyBCA8m2p+zIA8i8ZCmZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712315405; c=relaxed/simple;
-	bh=oJ0Xk5ltsUzu+JZRjpvBKqDh2i8n3mVzm5U30u1RFic=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JZFLSRuyps68L5X0wU44n/SX6LxToad5ljNuz8XToEX3fq+w1nfgaBQMbYJGfTeY9xYP8Gt0ihgYl6iTgwiMm/6+FH3430GXl4ar5uMixZXCkC/svbAMS5mwYlyG6qEETXRla/efvjzna21T4pVB/9tarIbJ+5sxvpHxMRSNsv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fh8wBnw7; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712331544; c=relaxed/simple;
+	bh=mpBfLCwWGTb2DhqecllOoxL1uYU9sVI8qGOMODrtZy8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uuticHEOKYxl+WKOF4D7qG/gMLjMGOcXJ8m3lSHvw5+TkTnzAiK3DCtNPTvbWZO/PloTq8OXYpp4x3WAt9Uy9BQoFhpATVnjRQ9K/LCTP0CIydgozAulvLmgs1M00JCEC0PNv7EufI+fUae0MQT/Qp8tXK38CKU2i+CaWLPjDUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=BvQHJQuv; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fh8wBnw7"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e3ca4fe4cfso1024625ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Apr 2024 04:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712315402; x=1712920202; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ys2+MgQ3wDlipfHVv7Q6NNeD/t7+Th7HLHKb6mu7BLE=;
-        b=Fh8wBnw7hDzzYdD/s3mlOCL6n/BRvfJVfMWPPrvntKBZam9VS0SyPObxRCeg8xn/k0
-         4B32wlfoHtZ/4Way/ADAbmBihWMS1cKxtxnulV05oADTwdZLwemdgRieYqOW4rWV/4UT
-         5rm3IAtEMwVMZlwsij2zw9zvKepfj3W0baJItCV7hi0taFHsxEBMxGursmMdK3+SFMkR
-         Inhv/QHtl5X0qewZ6OatQQglcag82IrDS8krwENPZL0hys6lBBHFOiPLmn6bl1ubZoer
-         iHEVcVZ5xxAJHF68i0l/+I1+M5278kOJUTEV5SG8M3b2gMGpG6+zadJweGxjUIN+MmL+
-         IUSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712315402; x=1712920202;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ys2+MgQ3wDlipfHVv7Q6NNeD/t7+Th7HLHKb6mu7BLE=;
-        b=S3pqpI6PgsP+T9oYlkCihtPIVTawRUOik50aWnokG4mpxmPw8r1wS+iMpFBIkxhhxb
-         BlH/bZg/DNZjcnwicXenWh83vFmuKGOmySs0MAoJ2BGA0rYNeIlR6VQLGXARtLeHaoju
-         Twfzza7WhcIdo7ENflyv+ocELNTPJjOyd7FU0qIyn8ESTIwnpfXdX5qs5Q5Ki+qqdU5L
-         AJvfEuJKci7wRk5CoxZVDRIf87e6HsO3EQVcUbYMcNyxsh9fFdw+EPGdgbkSu7SKucCn
-         L/e/RY1n+WGnpHeQC2eNAh5QQz54V1w7dq1hECGjKYvDqZgRWYynxlBjbShvQQVoIu5e
-         abfA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzKbLOGS0PhH7K0yxfxoagfKttRWyHAbBzMUSbniQeA1XaCBwwKjGRLwHx3d0UJeQZYG/rTMWZqFcjobSZ749qKr2KHbCGbdWcwYjn1p4=
-X-Gm-Message-State: AOJu0YypPnDXlnmsj9RetYjtNgaCmCZpP1iWZP15mQCQ85KRIf/rC6vq
-	SIahQYosLwe/Ncxsh9O80+R6mShvY/u+Rj0uAp2xBlsedX/K22iBi+DwEIWQBj8=
-X-Google-Smtp-Source: AGHT+IHY008fVlaXyLCmPu4dOH9eJ8BuR16MLkMWqRpMFG6rw8TwPA5CEyLsSKF/R0JagteMrv6iVg==
-X-Received: by 2002:a17:902:d4c4:b0:1e2:1df1:5ac0 with SMTP id o4-20020a170902d4c400b001e21df15ac0mr1301311plg.9.1712315402338;
-        Fri, 05 Apr 2024 04:10:02 -0700 (PDT)
-Received: from localhost ([122.172.85.136])
-        by smtp.gmail.com with ESMTPSA id l17-20020a170902d05100b001dddf29b6e8sm1297065pll.299.2024.04.05.04.10.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Apr 2024 04:10:01 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="BvQHJQuv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1712331540;
+	bh=mpBfLCwWGTb2DhqecllOoxL1uYU9sVI8qGOMODrtZy8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BvQHJQuvFz8y3AFbMwN9bTotX/ms4B9CoE42ix10iEpyK4sur114ZNFdyOURSATw+
+	 hPIYtLDESGCEE2xQ7zM76Fy08s0TiFly4N3JPR0ldJpAZqXlOHJDAXax9QhMZNIaoG
+	 Lk1+NI5KKULa5Ty8htTEX0C9Jkr/U/zZikJ+3b5slkbxQPVvyl4VaGhS3wm9smjtVo
+	 +h2Bs2A2HfP83wmmDxR0TN8HwGK7e4d8206VwBmjoJMsGVM1bu6klm4M0rtco0+V5m
+	 ypv2U03KSb7L6WdpM2zFaxIRhamj5gHKsWTMrgOr9coeP9gDKksz8cvRrEv0XsmWdx
+	 rTkaoF17yr2/Q==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id B3548378200D;
+	Fri,  5 Apr 2024 15:38:59 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com
+Cc: boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
 	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 3/3] cpufreq: Add Rust based cpufreq-dt driver
-Date: Fri,  5 Apr 2024 16:39:40 +0530
-Message-Id: <1792467a772b7a8355c6d0cb0cbacfbffff08afd.1712314032.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1712314032.git.viresh.kumar@linaro.org>
-References: <cover.1712314032.git.viresh.kumar@linaro.org>
+	kernel-linux@vger.kernel.org,
+	dirk.behme@de.bosch.com,
+	kernel@valentinobst.de,
+	kernel@collabora.com,
+	Laura Nao <laura.nao@collabora.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: [PATCH v3] docs: rust: Add instructions for the Rust kselftest
+Date: Fri,  5 Apr 2024 17:38:41 +0200
+Message-Id: <20240405153841.320459-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -89,326 +61,66 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This commit adds a Rust based cpufreq-dt driver, which covers most of
-the functionality of the existing C based driver. Only a handful of
-things are left, like fetching platform data from cpufreq-dt-platdev.c.
+Add section describing how to build and run the Rust kselftest.
 
-This is tested with the help of QEMU for now and switching of
-frequencies work as expected.
-
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Valentin Obst <kernel@valentinobst.de>
 ---
- drivers/cpufreq/Kconfig        |  12 ++
- drivers/cpufreq/Makefile       |   1 +
- drivers/cpufreq/rcpufreq_dt.rs | 264 +++++++++++++++++++++++++++++++++
- 3 files changed, 277 insertions(+)
- create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+Changes in v3:
+- s/test/tests/
+- Specify that the test kernel needs to be installed
+Changes in v2:
+- Use plural to account for potential other tests added later
+- Omit details about the test_probe_samples test
+- Clarify that kselftests are intended to be executed on a system running the same kernel to be tested
+---
+ Documentation/rust/testing.rst | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index 94e55c40970a..eb9359bd3c5c 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -217,6 +217,18 @@ config CPUFREQ_DT
+diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+index 6658998d1b6c..eb58b2475042 100644
+--- a/Documentation/rust/testing.rst
++++ b/Documentation/rust/testing.rst
+@@ -6,10 +6,11 @@ Testing
+ This document contains useful information how to test the Rust code in the
+ kernel.
  
- 	  If in doubt, say N.
+-There are two sorts of tests:
++There are three sorts of tests:
  
-+config CPUFREQ_DT_RUST
-+	tristate "Rust based Generic DT based cpufreq driver"
-+	depends on HAVE_CLK && OF && RUST
-+	select CPUFREQ_DT_PLATDEV
-+	select PM_OPP
-+	help
-+	  This adds a Rust based generic DT based cpufreq driver for frequency
-+	  management.  It supports both uniprocessor (UP) and symmetric
-+	  multiprocessor (SMP) systems.
-+
-+	  If in doubt, say N.
-+
- config CPUFREQ_DT_PLATDEV
- 	tristate "Generic DT based cpufreq platdev driver"
- 	depends on OF
-diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-index 8d141c71b016..4981d908b803 100644
---- a/drivers/cpufreq/Makefile
-+++ b/drivers/cpufreq/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_COMMON)		+= cpufreq_governor.o
- obj-$(CONFIG_CPU_FREQ_GOV_ATTR_SET)	+= cpufreq_governor_attr_set.o
+ - The KUnit tests.
+ - The ``#[test]`` tests.
++- The Kselftests.
  
- obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
-+obj-$(CONFIG_CPUFREQ_DT_RUST)		+= rcpufreq_dt.o
- obj-$(CONFIG_CPUFREQ_DT_PLATDEV)	+= cpufreq-dt-platdev.o
- 
- # Traces
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-new file mode 100644
-index 000000000000..d29182eba75e
---- /dev/null
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -0,0 +1,264 @@
-+// SPDX-License-Identifier: GPL-2.0
+ The KUnit tests
+ ---------------
+@@ -133,3 +134,25 @@ Additionally, there are the ``#[test]`` tests. These can be run using the
+ This requires the kernel ``.config`` and downloads external repositories. It
+ runs the ``#[test]`` tests on the host (currently) and thus is fairly limited in
+ what these tests can test.
 +
-+//! Rust based implementation of the cpufreq-dt driver.
++The Kselftests
++--------------
 +
-+use core::{format_args, ptr};
++Kselftests are also available in the tools/testing/selftests/rust folder.
 +
-+use kernel::{
-+    b_str, bindings, c_str, cpufreq, define_of_id_table,
-+    device::{self, Device, RawDevice},
-+    error::{code::*, to_result},
-+    fmt,
-+    macros::vtable,
-+    module_platform_driver, of, opp, platform,
-+    prelude::*,
-+    str::CString,
-+    sync::Arc,
-+};
++The kernel config options required for the tests are listed in the
++tools/testing/selftests/rust/config file and can be included with the aid
++of the merge_config.sh script::
 +
-+// Finds exact supply name from the OF node.
-+fn find_supply_name_exact(np: *mut bindings::device_node, name: &str) -> Option<CString> {
-+    let sname = CString::try_from_fmt(fmt!("{}-supply", name)).ok()?;
++	./scripts/kconfig/merge_config.sh .config tools/testing/selftests/rust/config
 +
-+    // SAFETY: The OF node is guaranteed by the C code to be valid.
-+    let pp = unsafe { bindings::of_find_property(np, sname.as_ptr() as *mut _, ptr::null_mut()) };
-+    if pp.is_null() {
-+        None
-+    } else {
-+        CString::try_from_fmt(fmt!("{}", name)).ok()
-+    }
-+}
++The kselftests are built within the kernel source tree and are intended to
++be executed on a system that is running the same kernel.
 +
-+// Finds supply name for the CPU from DT.
-+fn find_supply_names(dev: &Device, cpu: u32) -> Option<Vec<CString>> {
-+    // SAFETY: The requirements are satisfied by the existence of `RawDevice` and its safety
-+    // requirements. The OF node is guaranteed by the C code to be valid or NULL and
-+    // `of_node_get()` handles both the cases safely.
-+    let np = unsafe { bindings::of_node_get((*dev.raw_device()).of_node) };
-+    if np.is_null() {
-+        return None;
-+    }
++Once a kernel matching the source tree has been installed and booted, the
++tests can be compiled and executed using the following command::
 +
-+    // Try "cpu0" for older DTs.
-+    let mut name = if cpu == 0 {
-+        find_supply_name_exact(np, "cpu0")
-+    } else {
-+        None
-+    };
++	make TARGETS="rust" kselftest
 +
-+    if name.is_none() {
-+        name = find_supply_name_exact(np, "cpu");
-+    }
-+
-+    // SAFETY: It is safe to drop reference to the OF node we just took.
-+    unsafe { bindings::of_node_put(np) };
-+
-+    match name {
-+        Some(name) => {
-+            let mut list = Vec::try_with_capacity(1).ok()?;
-+            list.try_push(name).ok()?;
-+
-+            // SAFETY: The slice is fully initialized now.
-+            Some(list)
-+        }
-+
-+        None => None,
-+    }
-+}
-+
-+// Represents the cpufreq dt device.
-+struct CPUFreqDTDevice {
-+    opp_table: opp::Table,
-+    freq_table: opp::FreqTable,
-+    #[allow(dead_code)]
-+    config: Option<opp::Config<Self>>,
-+    #[allow(dead_code)]
-+    clk: cpufreq::Clk,
-+}
-+
-+#[vtable]
-+impl opp::ConfigOps for CPUFreqDTDevice {}
-+
-+#[vtable]
-+impl cpufreq::DriverOps for CPUFreqDTDevice {
-+    type PData = Arc<Self>;
-+
-+    fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
-+        let cpu = policy.cpu();
-+
-+        // SAFETY: It is safe to call `get_cpu_device()` for any CPU.
-+        let dev = unsafe { bindings::get_cpu_device(cpu) };
-+        if dev.is_null() {
-+            return Err(ENODEV);
-+        }
-+
-+        // SAFETY: `dev` is valid, non-null, and has a non-zero reference count.
-+        let dev = unsafe { Device::new(dev) };
-+
-+        policy.set_cpus(cpu);
-+
-+        let config = if let Some(names) = find_supply_names(&dev, cpu) {
-+            let mut config = opp::Config::<Self>::new();
-+            config.set_regulator_names(names)?;
-+            config.set(&dev)?;
-+            Some(config)
-+        } else {
-+            None
-+        };
-+
-+        // Get OPP-sharing information from "operating-points-v2" bindings.
-+        let fallback = match opp::Table::of_sharing_cpus(&dev, policy.cpus()) {
-+            Ok(_) => false,
-+            Err(e) => {
-+                if e != ENOENT {
-+                    return Err(e);
-+                }
-+
-+                // "operating-points-v2" not supported. If the platform hasn't
-+                // set sharing CPUs, fallback to all CPUs share the `Policy`
-+                // for backward compatibility.
-+                opp::Table::sharing_cpus(&dev, policy.cpus()).is_err()
-+            }
-+        };
-+
-+        // Initialize OPP tables for all policy cpus.
-+        //
-+        // For platforms not using "operating-points-v2" bindings, we do this
-+        // before updating policy cpus. Otherwise, we will end up creating
-+        // duplicate OPPs for the CPUs.
-+        //
-+        // OPPs might be populated at runtime, don't fail for error here unless
-+        // it is -EPROBE_DEFER.
-+        let mut opp_table = match opp::Table::from_of_cpumask(&dev, policy.cpus()) {
-+            Ok(table) => table,
-+            Err(e) => {
-+                if e == EPROBE_DEFER {
-+                    return Err(e);
-+                }
-+
-+                // The table is added dynamically ?
-+                opp::Table::from_dev(&dev)?
-+            }
-+        };
-+
-+        // The OPP table must be initialized, statically or dynamically, by this point.
-+        opp_table.opp_count()?;
-+
-+        // Set sharing cpus for fallback scenario.
-+        if fallback {
-+            policy.set_all_cpus();
-+            opp_table.set_sharing_cpus(policy.cpus())?;
-+        }
-+
-+        let mut transition_latency = opp_table.max_transition_latency() as u32;
-+        if transition_latency == 0 {
-+            transition_latency = cpufreq::ETERNAL_LATENCY;
-+        }
-+
-+        let freq_table = opp_table.to_cpufreq_table()?;
-+        policy.set_freq_table(freq_table.table());
-+        policy.set_dvfs_possible_from_any_cpu();
-+        policy.set_suspend_freq((opp_table.suspend_freq() / 1000) as u32);
-+        policy.set_transition_latency(transition_latency);
-+        let clk = policy.set_clk(&dev, None)?;
-+
-+        Ok(Arc::try_new(CPUFreqDTDevice {
-+            opp_table,
-+            config,
-+            freq_table,
-+            clk,
-+        })?)
-+    }
-+
-+    fn exit(_policy: &mut cpufreq::Policy, _data: Option<Self::PData>) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn online(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // We did light-weight tear down earlier, nothing to do here.
-+        Ok(())
-+    }
-+
-+    fn offline(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // Preserve policy->data and don't free resources on light-weight
-+        // tear down.
-+        Ok(())
-+    }
-+
-+    fn suspend(policy: &mut cpufreq::Policy) -> Result<()> {
-+        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
-+        // use it now.
-+        to_result(unsafe { bindings::cpufreq_generic_suspend(policy.as_ptr()) })
-+    }
-+
-+    fn verify(data: &mut cpufreq::PolicyData) -> Result<()> {
-+        // SAFETY: By the type invariants, we know that `data` owns a reference received from the C
-+        // code, so it is safe to use it now.
-+        to_result(unsafe { bindings::cpufreq_generic_frequency_table_verify(data.as_ptr()) })
-+    }
-+
-+    fn target_index(policy: &mut cpufreq::Policy, index: u32) -> Result<()> {
-+        let data = match policy.data::<Self::PData>() {
-+            Some(data) => data,
-+            None => return Err(ENOENT),
-+        };
-+
-+        let freq = data.freq_table.freq(index.try_into().unwrap())? as u64;
-+        data.opp_table.set_rate(freq * 1000)
-+    }
-+
-+    fn get(policy: &mut cpufreq::Policy) -> Result<u32> {
-+        // SAFETY: It is safe to call `cpufreq_generic_get()` for policy's CPU.
-+        Ok(unsafe { bindings::cpufreq_generic_get(policy.cpu()) })
-+    }
-+
-+    fn set_boost(_policy: &mut cpufreq::Policy, _state: i32) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn register_em(policy: &mut cpufreq::Policy) {
-+        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
-+        // use it now.
-+        unsafe { bindings::cpufreq_register_em_with_opp(policy.as_ptr()) };
-+    }
-+}
-+
-+type DeviceData = device::Data<cpufreq::Registration<CPUFreqDTDevice>, (), ()>;
-+
-+struct CPUFreqDTDriver;
-+
-+impl platform::Driver for CPUFreqDTDriver {
-+    type Data = Arc<DeviceData>;
-+
-+    define_of_id_table! {(), [
-+        (of::DeviceId::Compatible(b_str!("operating-points-v2")), None),
-+    ]}
-+
-+    fn probe(_dev: &mut platform::Device, _id_info: Option<&Self::IdInfo>) -> Result<Self::Data> {
-+        let data = Arc::<DeviceData>::from(kernel::new_device_data!(
-+            cpufreq::Registration::new(),
-+            (),
-+            (),
-+            "CPUFreqDT::Registration"
-+        )?);
-+        let flags = cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV;
-+        let boost = true;
-+
-+        data.registrations()
-+            .ok_or(ENXIO)?
-+            .as_pinned_mut()
-+            .register(c_str!("cpufreq-dt"), (), flags, boost)?;
-+
-+        pr_info!("CPUFreq DT driver registered\n");
-+
-+        Ok(data)
-+    }
-+}
-+
-+module_platform_driver! {
-+    type: CPUFreqDTDriver,
-+    name: "cpufreq_dt",
-+    author: "Viresh Kumar <viresh.kumar@linaro.org>",
-+    description: "Generic CPUFreq DT driver",
-+    license: "GPL v2",
-+}
++Refer to Documentation/dev-tools/kselftest.rst for the general Kselftest
++documentation.
 -- 
-2.31.1.272.g89b43f80a514
+2.30.2
 
