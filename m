@@ -1,41 +1,41 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAF5748F;
-	Sun,  7 Apr 2024 08:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CC81170F
+	for <rust-for-linux@vger.kernel.org>; Sun,  7 Apr 2024 08:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712480211; cv=none; b=MU+rir1BjA8fKawZPBgfpsK7BsV2PZcriNRGai00qQMqidr9APXr0QsdE8UvFQE1T6a0hxf4MwsFFQXO8Djpd6xTd0L8SXcn1whDkCUYEX2I+ArrP7a6MhgRZ7itxIgOfQHMW1K5TdaUKffH63ABaPgbieCbU8dPT/8iEgCyRF8=
+	t=1712480343; cv=none; b=sw/5a8wdmKF0ShfgnqhfQGjjUrqWCx9KasdwdlC6suPuM0dCuHXgx68cHjgeLbqYczc1BwxYZZwTIWG629wi7//tMECCFYx8kxMOdD8jM0Rw+GrfNEKsa9BUQzGG2PFVZ+g51xyfuUIuL1dQzasMMqqrdhSmSP2qt5JxSAIoM9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712480211; c=relaxed/simple;
-	bh=lcxJexEkoHogdNOtOs2qWf4QkdeM/dGq8DJ6At4V7Ns=;
+	s=arc-20240116; t=1712480343; c=relaxed/simple;
+	bh=APMjPK8g5pOGPv0dwlk1KSseSXNGp/4m07t8x/ixSo0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iB6bD1hCpUxr5ol6DEOQhEllIPq/J+hk3RqtpB4tB5YDw8YdVsshRjs2gApteRHqqtIOCGiWGL3kfIJqIKUG35+Uz57mtwSOu1qSoAi+Ni/0uN/70Cny5ig7j76LCbID8GF2mdV3HODabvs87WZnE4gd2kWIhQLKv+ZJQaojyPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZgJMAxvj; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=rENAwyih+zOqxIKT+KN1x0uc4uAvd41w0SX0TYlnInbzz6O0/6u/y7IxzkNQClUThJnNmODNwCP2sUQxuUEYIqr+xGpXb1fBB9zt6ajM/PoCbnwlLZCdDxqiAc/4Q+pCJkhqH/s8DSsS0gKGVA8xTZO02Dy8ni9OCvQhd8oas78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W4KM894T; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZgJMAxvj"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W4KM894T"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712480199; x=1712739399;
-	bh=fkLAMTA9SYFbeV2VtvwPt35anLNFZH3MmztMTzZClDY=;
+	s=pqs54sg6ifhbtj7unmv7pp4qau.protonmail; t=1712480338; x=1712739538;
+	bh=APMjPK8g5pOGPv0dwlk1KSseSXNGp/4m07t8x/ixSo0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ZgJMAxvjg/nMNDu66DoiwGc8Qh7cfbFSk9Ogx0240Ih+NUZcYNXC0WZByINQbrNSa
-	 tSH1UZgeDqn5VRKuVtsxNRmLGWB4O7Dm+dbl97MWCdKsuFWvprJSEUi6sJ9WlCqody
-	 rOgqVhtZ1gvWY/gkz/IosmLOj/CsfAn17WkiuozUo06nbJTEmtZIb6n3QXrLEjh86r
-	 jA3jOIQ0W8eNnHoBi0uCwgZioMZqV0nMWROqotKvIa+tuqtbtTlb7ebZzwed1nYibM
-	 ETlSjctnwfvSIvi4XHey1emXm9vSf4fXrkltsGsrTLQMYXhd+mG77Tztv6ZKMXMiwC
-	 TP1DVyXtiRAuA==
-Date: Sun, 07 Apr 2024 08:56:31 +0000
-To: Laine Taffin Altman <alexanderaltman@me.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+	b=W4KM894T30Nvu/5Jg8f5a0pedkYEE9Ylz9e18LTSxXUYXznis8BometXs7Yrf7al6
+	 SU7+lWst6jQZdOOyRDFBM4ps0WD/pkIt0cuSbgU/hFttyxhj/p200c9O7D+XSdfb2S
+	 uBHSq2l8JFwrOVb0vV5qUJJBwELvvFxrP+TIly1xKnw+TtGeonf4Nbe6+WS5Hbxw+K
+	 yUf4ubNEklQZ6OhSeku5G9NqwLaSOlliVdOFsQfQ9jMqApNkCEYE6SaYH1ys5XNRdZ
+	 QWtDcR6Vmwyy/qSS+nnNS6xXzmjxAq4y124thVRZB8Agf5UZkjV6GOdNCMWsht4a4D
+	 caZhhArNRMktA==
+Date: Sun, 07 Apr 2024 08:58:50 +0000
+To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
-Message-ID: <3ecba34f-95a2-4f18-9729-f9cb3a4366c0@proton.me>
-In-Reply-To: <A68286F0-AB83-4D64-99E3-EE47F03D1AAE@me.com>
-References: <CANiq72nyqxH2C1gr=UUCOftaKe0zSuuB++mMUD9zXo-pPBVMVg@mail.gmail.com> <A68286F0-AB83-4D64-99E3-EE47F03D1AAE@me.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v4 4/4] rust: add abstraction for `struct page`
+Message-ID: <c130a6f5-77d7-4d9e-984d-7a8bf48ff918@proton.me>
+In-Reply-To: <CAH5fLgg3wpcDE+n6nd0CGtDzyXSrD2nLhY8RxdTHjAD8hQ9VDQ@mail.gmail.com>
+References: <20240404-alice-mm-v4-0-49a84242cf02@google.com> <20240404-alice-mm-v4-4-49a84242cf02@google.com> <a48b2347-b58b-432e-bdb8-d5449016ab57@proton.me> <CAH5fLgg3wpcDE+n6nd0CGtDzyXSrD2nLhY8RxdTHjAD8hQ9VDQ@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,33 +46,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 04.04.24 19:28, Laine Taffin Altman wrote:
-> On Apr 4, 2024, at 4:03=E2=80=AFAM, Miguel Ojeda <miguel.ojeda.sandonis@g=
-mail.com> wrote:
+On 05.04.24 09:44, Alice Ryhl wrote:
+> On Fri, Apr 5, 2024 at 12:33=E2=80=AFAM Benno Lossin <benno.lossin@proton=
+.me> wrote:
 >>
->> =EF=BB=BFOn Thu, Apr 4, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.los=
-sin@proton.me> wrote:
->>>
->>> I don't see this commit in the kernel tree, what did you specify as
->>> `--base` when running `git format`?
+>> On 04.04.24 14:31, Alice Ryhl wrote:
+>>> +/// A bitwise shift for the page size.
+>>> +#[allow(clippy::unnecessary_cast)]
 >>
->> Yeah, I don't have it either, but it seems to apply cleanly.
->>
->> Cheers,
->> Miguel
+>> Why can't you remove the cast?
 >=20
-> I ran `git format-patch origin/master --base=3Dorigin/master`.  I
-> can=E2=80=99t imagine how that could have resulted in a nonexistent commi=
-t
-> hash?
+> Bindgen could decide to use a different type in the future or on
+> different platforms.
 
-That heavily depends on what `origin/master` is. Is `origin` pointing to
-Torvald's git? In that case it would explain why we don't have that
-commit hash yet.
-Normally you should base your work on the tree listed in the `T:` entry
-of the subsystem in the MAINTAINERS file. In our case it is `rust-next`.
-But no worries, since it applies cleanly it should be fine for this
-patch. Just something to keep in mind if you submit any future patches.
+Did that already happen?
+
+I think that we might want to know if the type changes, since then the
+value might change?
 
 --=20
 Cheers,
