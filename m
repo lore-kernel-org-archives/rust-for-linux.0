@@ -1,41 +1,41 @@
 Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CC81170F
-	for <rust-for-linux@vger.kernel.org>; Sun,  7 Apr 2024 08:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDB01400A;
+	Sun,  7 Apr 2024 09:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712480343; cv=none; b=sw/5a8wdmKF0ShfgnqhfQGjjUrqWCx9KasdwdlC6suPuM0dCuHXgx68cHjgeLbqYczc1BwxYZZwTIWG629wi7//tMECCFYx8kxMOdD8jM0Rw+GrfNEKsa9BUQzGG2PFVZ+g51xyfuUIuL1dQzasMMqqrdhSmSP2qt5JxSAIoM9Y=
+	t=1712483669; cv=none; b=k6SUiO2xkgjKAPqllnGK9B0p6k6TBc8iOYoPQZMAoWh1QBDVOYzGXjvvzTdnno2wKW8V73vgUtt2fphJgODgP5CHvdLvxs0XRBX+cDSVNFgj6Lmx2J4vNRqG8y9/JSCzmdEO6bH/sbsrjtiBFbTjqkhgv9hl6h+JzrOyeppipsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712480343; c=relaxed/simple;
-	bh=APMjPK8g5pOGPv0dwlk1KSseSXNGp/4m07t8x/ixSo0=;
+	s=arc-20240116; t=1712483669; c=relaxed/simple;
+	bh=i8Pf56totbaL2ToXcQKolVxiIZ/TpmMBAZ0t/LCkK3w=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rENAwyih+zOqxIKT+KN1x0uc4uAvd41w0SX0TYlnInbzz6O0/6u/y7IxzkNQClUThJnNmODNwCP2sUQxuUEYIqr+xGpXb1fBB9zt6ajM/PoCbnwlLZCdDxqiAc/4Q+pCJkhqH/s8DSsS0gKGVA8xTZO02Dy8ni9OCvQhd8oas78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W4KM894T; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=rhonBt7I33DAy3G2CIYqRWZqLmalo0Efb8Fbms11oUw0ShCQrxIQbkl0PX0wGyu2dKkyo3DzVd9zlzAnFoQZSd6tRSSUQ/LcjARqTboBS3+9DgQpZOzdSLJBiFa3ObWu53aaRNER8tJygYStqC5TU5DyeDShvQsOwv2VOijLybA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=loS8/9k4; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W4KM894T"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="loS8/9k4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=pqs54sg6ifhbtj7unmv7pp4qau.protonmail; t=1712480338; x=1712739538;
-	bh=APMjPK8g5pOGPv0dwlk1KSseSXNGp/4m07t8x/ixSo0=;
+	s=protonmail; t=1712483664; x=1712742864;
+	bh=FpPOsxrlm7kGglog0YaejIMtnmrT68wmHt8AAfV1foA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=W4KM894T30Nvu/5Jg8f5a0pedkYEE9Ylz9e18LTSxXUYXznis8BometXs7Yrf7al6
-	 SU7+lWst6jQZdOOyRDFBM4ps0WD/pkIt0cuSbgU/hFttyxhj/p200c9O7D+XSdfb2S
-	 uBHSq2l8JFwrOVb0vV5qUJJBwELvvFxrP+TIly1xKnw+TtGeonf4Nbe6+WS5Hbxw+K
-	 yUf4ubNEklQZ6OhSeku5G9NqwLaSOlliVdOFsQfQ9jMqApNkCEYE6SaYH1ys5XNRdZ
-	 QWtDcR6Vmwyy/qSS+nnNS6xXzmjxAq4y124thVRZB8Agf5UZkjV6GOdNCMWsht4a4D
-	 caZhhArNRMktA==
-Date: Sun, 07 Apr 2024 08:58:50 +0000
-To: Alice Ryhl <aliceryhl@google.com>
+	b=loS8/9k4aV1FTA3BHgGAukGuWqqeBVljBwDIWzkAUljm/0zq6hSqJ8lBwn2P5rfB7
+	 7hgv5H2yThaIDK4kSj+MbPpjK7d++cHJcljgs/mFixr8gzLtHjkP/88V2kHVawH6js
+	 7P3nOU6SklxAWyFecLxPypNogf82q7zCbK7g2raSQfhM4Ov7Py6moiNoNxkxRwWR2e
+	 MmkVjKt1ESsQQMsKZEFCIQwNNeUCgVQLjaUEB7KskCCP5DUYbizydYKDirxFuoNagl
+	 v4xhZwOUDNXemN2PNDfDaWK9UrfSplCR2bBZk8bxfFt5paquQALAo39ev4FS7oslvb
+	 tv2kLnKfdTylg==
+Date: Sun, 07 Apr 2024 09:54:19 +0000
+To: Viresh Kumar <viresh.kumar@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v4 4/4] rust: add abstraction for `struct page`
-Message-ID: <c130a6f5-77d7-4d9e-984d-7a8bf48ff918@proton.me>
-In-Reply-To: <CAH5fLgg3wpcDE+n6nd0CGtDzyXSrD2nLhY8RxdTHjAD8hQ9VDQ@mail.gmail.com>
-References: <20240404-alice-mm-v4-0-49a84242cf02@google.com> <20240404-alice-mm-v4-4-49a84242cf02@google.com> <a48b2347-b58b-432e-bdb8-d5449016ab57@proton.me> <CAH5fLgg3wpcDE+n6nd0CGtDzyXSrD2nLhY8RxdTHjAD8hQ9VDQ@mail.gmail.com>
+Cc: linux-pm@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, Joakim Bech <joakim.bech@linaro.org>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/3] rust: Add bindings for OPP framework
+Message-ID: <ff6c7d5e-d6e9-4331-b8cc-eab139160e59@proton.me>
+In-Reply-To: <06bb914eae00671a69b393bf86bb01ddec86c16f.1712314032.git.viresh.kumar@linaro.org>
+References: <cover.1712314032.git.viresh.kumar@linaro.org> <06bb914eae00671a69b393bf86bb01ddec86c16f.1712314032.git.viresh.kumar@linaro.org>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,23 +46,72 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 05.04.24 09:44, Alice Ryhl wrote:
-> On Fri, Apr 5, 2024 at 12:33=E2=80=AFAM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>
->> On 04.04.24 14:31, Alice Ryhl wrote:
->>> +/// A bitwise shift for the page size.
->>> +#[allow(clippy::unnecessary_cast)]
->>
->> Why can't you remove the cast?
->=20
-> Bindgen could decide to use a different type in the future or on
-> different platforms.
+Hi,
 
-Did that already happen?
+I took a quick look and left some comments from the Rust side of view.
 
-I think that we might want to know if the type changes, since then the
-value might change?
+On 05.04.24 13:09, Viresh Kumar wrote:
+> +/// Equivalent to `struct dev_pm_opp_config` in the C Code.
+> +pub struct Config<T: ConfigOps> {
+> +    token: Option<i32>,
+> +    clk_names: Option<Pin<Vec<CString>>>,
+
+Why are you using `Pin<Vec<_>>`? The vector may reallocate the backing
+storage at any point in time.
+
+> +    prop_name: Option<Pin<CString>>,
+> +    regulator_names: Option<Pin<Vec<CString>>>,
+> +    genpd_names: Option<Pin<Vec<CString>>>,
+> +    supported_hw: Option<Pin<Vec<u32>>>,
+> +    required_devs: Option<Pin<Vec<Device>>>,
+> +    _data: PhantomData<T>,
+> +}
+
+[...]
+
+> +    /// Sets the configuration with the OPP core.
+> +    pub fn set(&mut self, dev: &Device) -> Result<()> {
+> +        // Already configured.
+> +        if self.token.is_some() {
+
+Why does the config hold onto this token? Would it make sense to consume
+the config and return a `Handle` or `Token` abstraction? Then you don't
+need to check if the config has been "used" before.
+
+> +            return Err(EBUSY);
+> +        }
+> +
+> +        let (_clk_list, clk_names) =3D match &self.clk_names {
+> +            Some(x) =3D> {
+> +                let list =3D to_c_str_array(x)?;
+> +                let ptr =3D list.as_ptr();
+> +                (Some(list), ptr)
+> +            }
+> +            None =3D> (None, ptr::null()),
+> +        };
+
+[...]
+
+> +/// Operating performance point (OPP).
+> +///
+> +/// # Invariants
+> +///
+> +/// `ptr` is valid, non-null, and has a non-zero reference count. One of=
+ the references is owned by
+> +/// `self`, and will be decremented when `self` is dropped.
+> +#[repr(transparent)]
+> +pub struct OPP(*mut bindings::dev_pm_opp);
+
+I think you should use the `ARef` pattern instead:
+
+     #[repr(transparent)]
+     pub struct OPP(Opaque<bindings::dev_pm_opp>);
+
+     unsafe impl AlwaysRefCounted for OPP {
+         // ...
+     }
+
+Then you can use `ARef<OPP>` everywhere you use `OPP` currently.
 
 --=20
 Cheers,
