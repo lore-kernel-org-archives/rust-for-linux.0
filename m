@@ -1,105 +1,135 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DA23D988;
-	Sun,  7 Apr 2024 20:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A65F405FF;
+	Sun,  7 Apr 2024 20:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712520212; cv=none; b=BUlT1+muV1y1u0oL74gZgHVb2kOyAMnn5Yeu90xHN4nzwc8NMMa1154Eulg/r1MkBFN4QUzUsLE16NVeIz7gV7zFLdJ9EZMm3YEQ8vsi5M9d+Jw9nZNteo4zkqp0+r7QfRL3kdGPcHT21ZwYbPmckQt4d5l3orfIeE/OHqI5Wp8=
+	t=1712520945; cv=none; b=VpFG3HyzkGxvZXdZC47/QZGtmfMHfVkx2Xwd//hENhfYeU0RLaC15iZ/7K9egX3E0rzDDBBKkRmswJqve1PMlTVs1b1WSC8H05W0R75pT/crhB+sBrN5c28D79y62XFqhJ0ZfM1HvEuiQJ5ExOtnjkm+/8h4HM61NuLXhgV5rkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712520212; c=relaxed/simple;
-	bh=zzYff9yQtgJXPQgk/ATjyS1y8lhCcN/zh2bqNrpQlq0=;
+	s=arc-20240116; t=1712520945; c=relaxed/simple;
+	bh=I5ZKo+3mZRhbiLdn+T4f7m57VZu1rJ059WV8i4DH3uI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bTnQoS/Mqx6OzCNkQB+NDIIWkFF4KB3IJinCLaGC07nCfjlw/23VXaqaJ4HQoC1mm7GMvelq7UmrRSxXZFfte9Kip4tIRtaVpaM89r4DwMACjiaauv+AwqLY3d4J1f4Ct0dcFlsv43HKYKj9xadzXDkFzZ6HFyAcFT5wjUIq3R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rz+iIqt7; arc=none smtp.client-ip=209.85.216.47
+	 To:Cc:Content-Type; b=ASaIZsk5TM8tKt323HHyCa5dF+MJtllpjewWXA1yKpkjUngF3PkIrfhdSMT6U2iJU/X5x5Wi5qEfTC94nG//FJDN+K97tWHwdQTJdXGp3fPR9mH1bLak++Ha+vTrl4HAe/SArDaSloQUnlaILxme8EkQzGoMuQv9l5z+Oq6uR/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ws3dNtOv; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rz+iIqt7"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2a4bdef3d8eso511209a91.1;
-        Sun, 07 Apr 2024 13:03:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ws3dNtOv"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-29b7164eef6so3084156a91.2;
+        Sun, 07 Apr 2024 13:15:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712520210; x=1713125010; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712520943; x=1713125743; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yfMh48UYa1lhTnaBkcMEl7zleuPMjILYPz6KbF68Au8=;
-        b=Rz+iIqt77VMsFA2kA24zP2sI+lF2ahNvmzO2Y73uclmnTzfVvs/TheyeWfSFyzncGd
-         sidu3lYxMk0n4rQfOXpQ4yr3J6Xt6OlFQKq0BGWO76lkp4wqRC3xIvVIfnXADosyq9Xx
-         H1nu3iJR14XxVh1mFiNbzAAZq0/c0PQ3AnyMvbSfZI/cyfjOwg5L7e6Zrl3rZBRjvjw0
-         HvuHZSLbBiGDvfegcxPUQicWgAq9VspLZU7SN3K17urkMORclNip9axr6arCulQa/Zff
-         1/SVu5hO05cRUdxnXTYRQ+TSetEcUlrOT6btJh13/apj9Tghfrse5X5pzgpr2P9J82Qa
-         ebaA==
+        bh=G4MVq0Ml1b3or0ua0UTIbRspNGgQTqV2giV4okTyNok=;
+        b=Ws3dNtOvqAlry0b95aGkt3BknbOrOLcxTKGCRdibtw6j4FKdumhQUH5DfAPcP1h40G
+         dp3NqbwL13VSDLHLBOqPt0FERc4tpK67lzK+jDnmpS+s+ZcOPsIudQKRBa5gJgOsCSnQ
+         MxSyAurzH+OXLf+ziFotV+xtPIaqnZZI70hig/BYM8cx9LOb4wIXF9dARPfSvfBVKYc6
+         9M0VaHx8CSkswQqBYiJ3VLrg/F4ojQozl/EV3I//iX1KQsDf9hS3VFOM2nDtAgxxm8fD
+         xsKb1zzkoVtFC8KAYD+Gc9HrBy/IUAiD+bcz7SjNjD5bl7QeR25EVOsKUxlqXS24WtG2
+         n6bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712520210; x=1713125010;
+        d=1e100.net; s=20230601; t=1712520943; x=1713125743;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yfMh48UYa1lhTnaBkcMEl7zleuPMjILYPz6KbF68Au8=;
-        b=Tcurf4/yuc0fAEnTOQ63MQ2e6QMUiOmgL34EmybXq97hIMYPL4/1w9+Suh6hNBeW+r
-         FbghTqpj0QaJtkwcKoZcS9kgBg9v47JnbxcEru8uCN54QtzrvOnaGFTXYjFRIKtsDkbH
-         aBRYusSMBcIqJN+Kc/kO+OSfyjFJPJjwLh+l/xd4MlktrOfeXdPkTZor5g7tbGHE1SLz
-         o7BtsaBqYBrvVlpugzAt5lCUIvtR6a0Acql42ndDHxkUAX40ozrMyay0CTYtz39OyQmx
-         ZYtlCenEttdtd4+qcNWjN2gqZ/kmg9SwTRpB4HPHdGy6R0cR9uEkgJ5PzW3sF1lNkD4L
-         z8GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEAVGKNBvKFt5FgpVEKGh96BOuwrTpSpU81pB8GtkwaDzp52ji4BUhnJUviy5teyXRHbPpfqy1Y44gMFQ7YpJ6WSUCz6bxTNad6wPiWoee2xvPpKK2+NlR3U2GjkfIiPBUgYTwa0Qg6ZQM9LNEVXjNl6JF9NrxpOSZpZXfpq1AfB5OFFM=
-X-Gm-Message-State: AOJu0YwxWE64tqqnUckTbvxqfj+A+hxImuPlEMzaEO+PHpm6FVYQWj1e
-	WMHMs//PhK+HnrCDCWBchHO7jgwr1sjhDhFKg13jTaRSX5ETybpIf9Fj+eJ+L1UVsOgwp3VOnMd
-	dpxKtHA7ZV5KRg/Wt4zUVJtn/sRM=
-X-Google-Smtp-Source: AGHT+IEIt1Lru4k/Tnepu4IBYtQBsXst4gyHMFJlhgjYVHRQdcRfEYeE8aY/BvrRmgDuYCRzjKItROgB6OPb0gkL7mQ=
-X-Received: by 2002:a17:90a:4dc6:b0:2a4:f53d:e732 with SMTP id
- r6-20020a17090a4dc600b002a4f53de732mr810440pjl.13.1712520210362; Sun, 07 Apr
- 2024 13:03:30 -0700 (PDT)
+        bh=G4MVq0Ml1b3or0ua0UTIbRspNGgQTqV2giV4okTyNok=;
+        b=HmkxjkvJtjQQaiXu/dtDzWBCSc/oerL+Ok6gHjf0d3sU4q0McwL6Xz2Alj1mppeIom
+         MIlWcuVtSq53nZxo5boLTGzm6gEnVvL4X/FGMZ6c3odJD+KiWVXXC954RiezPGpZublu
+         8oVTEAogxDCPnslxpKLYBA8OREzgrKIy3N/PpeN8cKMXKWmQbS4r6rwbFO6yoh7XMebY
+         AHhLy0UBzrRCYU3wW8nQGrKL/iKeYq491oGoP7onc+NzbPAZfBkE/S7dURFmeXkp4vS0
+         LFag9z6QyLdTZn7piQKRB7UFGOqtlwdOjeuxX4ZrMqtufdSco+ISM9t46zw1tiszYgQG
+         J3bA==
+X-Forwarded-Encrypted: i=1; AJvYcCVqiVh9ms0T8GrlxsGxYEF0s/n2GVHe3DLVfTW3RLKMEp1nu1JgYNwU1EvVFMwgUU1wuwXOuaEPA9dIdMyu+Oyp6zWl1C7wwZlAmsD4CV10EtyqZo/Brh0r36LgQJ+IFq4G3dE2j3WpOnzZLKk=
+X-Gm-Message-State: AOJu0Yx1SR9eJ3mmXIXpfcCBq/PKpf58Rd/FIoSWvpdgC8cYc6WN36kS
+	79XRYaKytzCcma0sZKm9Pf3oOn80wuamYsm2BVVXjJxvSCJVs6O0BSKrXbfA9Fl3UJ6UvtrRocx
+	D+xUsKDA94SwFIUuAza+AsxjuN6o=
+X-Google-Smtp-Source: AGHT+IGFnwzxcGlpNltHX6ySVFvgxFS4P1qHLfiIuJCj5kuiYAueNQ1y21322FatkqziP4Nen/68trmWEXYR2YLEbAY=
+X-Received: by 2002:a17:90b:3ecb:b0:29f:7672:7fee with SMTP id
+ rm11-20020a17090b3ecb00b0029f76727feemr6403942pjb.31.1712520943403; Sun, 07
+ Apr 2024 13:15:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240404-providing-emporium-e652e359c711@spud>
-In-Reply-To: <20240404-providing-emporium-e652e359c711@spud>
+References: <20240309155243.482334-1-benno.lossin@proton.me>
+In-Reply-To: <20240309155243.482334-1-benno.lossin@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 7 Apr 2024 22:02:46 +0200
-Message-ID: <CANiq72mUGAXj+ajfojfMgOD7S22Q0Y0Y4QCTxNLoNxwCSpksdg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-riscv@lists.infradead.org, Conor Dooley <conor.dooley@microchip.com>, 
-	stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
-	Kees Cook <keescook@chromium.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev
+Date: Sun, 7 Apr 2024 22:15:00 +0200
+Message-ID: <CANiq72=6=BCCoeb9_bzXT+PKiS97sxSWpOu9jh9T1yD8V4S+9w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] rust: macros: add `decl_generics` to `parse_generics()`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 4, 2024 at 4:17=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
+On Sat, Mar 9, 2024 at 4:53=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
 >
-> From: Conor Dooley <conor.dooley@microchip.com>
+> The generic parameters on a type definition can specify default values.
+> Currently `parse_generics()` cannot handle this though. For example when
+> parsing the following generics:
 >
-> On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
-> loading a rust module will trigger a kernel panic. Support for
-> sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
-> they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
-> to prevent configuring a kernel without symmetrical support for kfi.
+>     <T: Clone, const N: usize =3D 0>
 >
-> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> The `impl_generics` will be set to `T: Clone, const N: usize =3D 0` and
+> `ty_generics` will be set to `T, N`. Now using the `impl_generics` on an
+> impl block:
+>
+>     impl<$($impl_generics)*> Foo {}
+>
+> will result in invalid Rust code, because default values are only
+> available on type definitions.
+>
+> Therefore add parsing support for generic parameter default values using
+> a new kind of generics called `decl_generics` and change the old
+> behavior of `impl_generics` to not contain the generic parameter default
+> values.
+>
+> Now `Generics` has three fields:
+> - `impl_generics`: the generics with bounds
+>   (e.g. `T: Clone, const N: usize`)
+> - `decl_generics`: the generics with bounds and default values
+>   (e.g. `T: Clone, const N: usize =3D 0`)
+> - `ty_generics`:  contains the generics without bounds and without
+>   default values (e.g. `T, N`)
+>
+> `impl_generics` is designed to be used on `impl<$impl_generics>`,
+> `decl_generics` for the type definition, so `struct Foo<$decl_generics>`
+> and `ty_generics` whenever you use the type, so `Foo<$ty_generics>`.
+>
+> Here is an example that uses all three different types of generics:
+>
+>     let (Generics { decl_generics, impl_generics, ty_generics }, rest) =
+=3D parse_generics(input);
+>     quote! {
+>         struct Foo<$($decl_generics)*> {
+>             // ...
+>         }
+>
+>         impl<$impl_generics> Foo<$ty_generics> {
+>             fn foo() {
+>                 // ...
+>             }
+>         }
+>     }
+>
+> The next commit contains a fix to the `#[pin_data]` macro making it
+> compatible with generic parameter default values by relying on this new
+> behavior.
+>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-[ Matthew Maurer writes [1]:
-
-    This patch is fine by me - the last patch needed for KCFI to be
-    functional in Rust just landed upstream last night, so we should
-    revisit this (in the form of enabling it) once we move to
-    `rustc-1.79.0` or later.
-
-  Ramon de C Valle also gave feedback [2] on the status of KCFI for
-  Rust and created a tracking issue [3] in upstream Rust.   - Miguel ]
-
-[ Added feedback from the list, links, and used Cc for the tag. ]
-
-Applied to `rust-fixes` -- thanks everyone! Please feel free to send
-more tags for this one.
+Applied series to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
