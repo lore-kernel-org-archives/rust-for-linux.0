@@ -1,104 +1,106 @@
-Received: from ms11p00im-qufo17282001.me.com (ms11p00im-qufo17282001.me.com [17.58.38.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813433BB24
-	for <rust-for-linux@vger.kernel.org>; Sun,  7 Apr 2024 17:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29F53FBA6;
+	Sun,  7 Apr 2024 20:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712512565; cv=none; b=nEaSx647fZW3n9m2zj2ZASUOR+wFbxydvE9se+frIgcJvL2kgv/cRnuoOkP2K+0sRaGseFCbskd6wMFoQ8ssei63YmxDOG6OQc3Bng0iOGRaHkahhhiasMqS0qB7tfvP7PRZit2bxzdC4dTZZrEItfl9TpRtCNxZ7ppLP5DHR5A=
+	t=1712520201; cv=none; b=cuFDWZmLvXzfdQIvopMnc/boMoQcbRSVerfUF9xWmn7RRIduwd2OELtSZuSxZG1G0CMEuM126r2jFPlhNTqO8gSpgeMj4HvQwpmQ4cW+Ehcpau7T62rTnT1yN4zu/8k8zv6mPBj/XklzsA6GX7C3arzoDUKV3BkoudI46Tf9Gpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712512565; c=relaxed/simple;
-	bh=UQxU8jMJyYiRRgiZP1/TGp9KcB4J3dMChQI1iPB7laM=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=bno3jiUFAfJfKEF54nDLbux5o4rE0zkeXYiY8yXLR6uQXNb/KtERiA41x5DGWHe00YQ0P1HqbI7n7yfYaVBeoxDPjd8fvUb1mlJZG0hNgKikYGEL2dGpKB/2wN3Weeyt6BsVfpUY2VzgFj2lfXi7sp0AYKSMoF0hCKrd+iz0We4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=1hcwIUJ0; arc=none smtp.client-ip=17.58.38.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+	s=arc-20240116; t=1712520201; c=relaxed/simple;
+	bh=nkz3V1KnJRU4OVxZTLpNwOjleUUcWRpMJl+ozZfP2W8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ShuCEoXGh/Srln99OkztnSD4c8FTX4qIVvd7SSA7UoM/cc4WAZYwvwfA49GrcQoSsOmTgwTryT6TRPnwedTy34nBfIdRbr0g93zff3Ny4b6ROczwWbmTvyTK6rBICSqjqv0+sw3ufSWxzAaEN/Axf+slsxHtOA/1k2I+mRenVrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VKnuCAY2; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="1hcwIUJ0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-	t=1712512561; bh=1L55z9HgcsBeCtGk8EKGjwew88mtrI15AkRnFNg6k6k=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To;
-	b=1hcwIUJ0Ru5XygPZsAYM7oeJlg35Jghl99W8h6j/2q3fuhXklLry9m0n1G4b0D/TA
-	 pMGCOjk/5x8yz41Brzvo48/+ShiUuNkyoq/276HvwmzVBZ+bFAXMKDK/m4YOUF0ROd
-	 V3UUUY+mTv2HSzX6zwnOhHQ/2xO4zzQyXEBJFOJoWxIUepG4bW2xXPP4vP17FtbvUj
-	 GAiUY3nOB36u3hmZFsmuGH+wIvH2m93ADS1R2ZdiQY5k9GErMG6hmysXAOjPn7sd//
-	 uKsZa5nfjj0LU9b0fhzmKtQex95Xp1eEKlHDyVTL0n4Y7i3z0dBFT0EPhPz7jxBns9
-	 LIy3YAAUeRyzQ==
-Received: from smtpclient.apple (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
-	by ms11p00im-qufo17282001.me.com (Postfix) with ESMTPSA id 203561E0230;
-	Sun,  7 Apr 2024 17:56:01 +0000 (UTC)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Laine Taffin Altman <alexanderaltman@me.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VKnuCAY2"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5ce07cf1e5dso2691050a12.2;
+        Sun, 07 Apr 2024 13:03:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712520199; x=1713124999; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VB+pCgMJeT4HJ3tkJqRN6FhCakVW1xLtQCZILiBA4o0=;
+        b=VKnuCAY265HIr1RkUS0OPWh77AE3bZXqKsOOu10bg4khDnF22cvuHOEJcH0qxHNZYA
+         GzufhCCPy0WpOXWMpFVoV8/x6RMjVeQrC8rhgTWaWFaz5GxPE0/KJPt/nAjhgzPrQlfo
+         L1yfyH6j4EeqC5gTqNOobjZHGlC4o7+HS2Q7YrojoPIF2ht2X0UOKzxCNXbW4M6qLWIp
+         HHIhmSEUTAvjDd9JN6ZGxXyCJp/L82BfXsBybijpiSPXtuMHE4sxAsLxoBysyPAXK8UW
+         /gJSltCIpTLFlvxRgZP8SUq/79ZhhgOimV3HKoVfSRDoUeWUaZIvlJOXY5402zdCx307
+         KZzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712520199; x=1713124999;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VB+pCgMJeT4HJ3tkJqRN6FhCakVW1xLtQCZILiBA4o0=;
+        b=CRsJLzFKD0eeFpGhDuYik6uAlwAM0BVoScdjcNbBheT7OlRF8Zu9XRrcZsvL97NB4t
+         3GRDWfgecNKvgzYU2GaJYv4z0NsRBZt+LqcJKX6jyvoAWsSxLzWvAtIqm6mJ3QZ+pTjY
+         kzG80OXy5HaJSz2PhgJb/vZqdY+p+kc6bDGVpPz/gXgQOzUQ8N+s/Gl8RDZBuHzu8qZi
+         OGIKPTKOpXKZipAn+JPhsgB8kEWLchZNMU7GPNBMRRpIqqck8ZgbVX9V7XuE/NS7Mj9T
+         nwbu/LFO2gxZ00T4qepf8Iay0HlgYXntz8q5zAHCBfy7M7mimZZgTAp5nhbsDRNx8gXA
+         selg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtA64UgK9vxJ/54/aI5XYHvDv1r+pVuQvfu5cCqNJ8L65n4Amk1gVdEIJlZDpQ9TF4qUmpzAhGCw38AN11rBD3SFAqbSOtOQNr2dNFXrrvcmrRwtzGXqd35w9rh3CWqWMHHLEij08lNtyoUDf5HDQ9Nzt4GX/eyz4G2DEwRiNBZSrT5iE=
+X-Gm-Message-State: AOJu0Yyvo6eDVcavE++qpajp4Tv29q4L5BTWmvAXKyX28+J7cv4HdzpR
+	kwmGlLQ5QakPqM9X3HbmQNMTzOUTKsT0hXDFuUb5OezBbEoSA2b5JNZK5LQWsiLC9oLKpqAh1qT
+	yOy3j/tUuLpkl7jcmlAgEwiZeO+w=
+X-Google-Smtp-Source: AGHT+IF7TZyQOhtPwpbAJHeWULkLO56UWnBYQO7dp+kN2Xtnf2cGiSkKTtgaF3dO0S0E9x8sBshO5W1GD0QnNBZ5j1w=
+X-Received: by 2002:a17:90a:fb4c:b0:2a4:8706:ed44 with SMTP id
+ iq12-20020a17090afb4c00b002a48706ed44mr4614220pjb.19.1712520199108; Sun, 07
+ Apr 2024 13:03:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
-Date: Sun, 7 Apr 2024 10:55:49 -0700
-Message-Id: <37A7EC35-7889-4378-A30C-126B1AD668C8@me.com>
-References: <3ecba34f-95a2-4f18-9729-f9cb3a4366c0@proton.me>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-In-Reply-To: <3ecba34f-95a2-4f18-9729-f9cb3a4366c0@proton.me>
+MIME-Version: 1.0
+References: <20240401185222.12015-1-benno.lossin@proton.me>
+In-Reply-To: <20240401185222.12015-1-benno.lossin@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 7 Apr 2024 22:02:35 +0200
+Message-ID: <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
 To: Benno Lossin <benno.lossin@proton.me>
-X-Mailer: iPhone Mail (21F5048f)
-X-Proofpoint-ORIG-GUID: Iezh0l9YPBfilfTXNVUoheAnYZ2BgIsK
-X-Proofpoint-GUID: Iezh0l9YPBfilfTXNVUoheAnYZ2BgIsK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-07_11,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 clxscore=1015
- mlxlogscore=821 bulkscore=0 adultscore=0 mlxscore=0 spamscore=0
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2308100000 definitions=main-2404070145
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, 
+	Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, 
+	Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, 
+	Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Apr 7, 2024, at 1:56=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me> wr=
-ote:
-> =EF=BB=BFOn 04.04.24 19:28, Laine Taffin Altman wrote:
->>> On Apr 4, 2024, at 4:03=E2=80=AFAM, Miguel Ojeda <miguel.ojeda.sandonis@=
-gmail.com> wrote:
->>>=20
->>> =EF=BB=BFOn Thu, Apr 4, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.los=
-sin@proton.me> wrote:
->>>>=20
->>>> I don't see this commit in the kernel tree, what did you specify as
->>>> `--base` when running `git format`?
->>>=20
->>> Yeah, I don't have it either, but it seems to apply cleanly.
->>>=20
->>> Cheers,
->>> Miguel
->>=20
->> I ran `git format-patch origin/master --base=3Dorigin/master`.  I
->> can=E2=80=99t imagine how that could have resulted in a nonexistent commi=
-t
->> hash?
->=20
-> That heavily depends on what `origin/master` is. Is `origin` pointing to
-> Torvald's git? In that case it would explain why we don't have that
-> commit hash yet.
-> Normally you should base your work on the tree listed in the `T:` entry
-> of the subsystem in the MAINTAINERS file. In our case it is `rust-next`.
-> But no worries, since it applies cleanly it should be fine for this
-> patch. Just something to keep in mind if you submit any future patches.
->=20
-> --
-> Cheers,
-> Benno
+On Mon, Apr 1, 2024 at 8:53=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>
+> The `module!` macro creates glue code that are called by C to initialize
+> the Rust modules using the `Module::init` function. Part of this glue
+> code are the local functions `__init` and `__exit` that are used to
+> initialize/destroy the Rust module.
+> These functions are safe and also visible to the Rust mod in which the
+> `module!` macro is invoked. This means that they can be called by other
+> safe Rust code. But since they contain `unsafe` blocks that rely on only
+> being called at the right time, this is a soundness issue.
+>
+> Wrap these generated functions inside of two private modules, this
+> guarantees that the public functions cannot be called from the outside.
+> Make the safe functions `unsafe` and add SAFETY comments.
+>
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/Rust-for-Linux/linux/issues/629
+> Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Ah, that makes sense!  Indeed it was pointing there.  I=E2=80=99ll remember f=
-or next time!
+[ Capitalized comments, avoided newline in non-list SAFETY comments
+  and reworded to add Reported-by and newline. ]
 
-Thanks,
-Laine=
+Applied to `rust-fixes` -- thanks everyone!
+
+Cheers,
+Miguel
