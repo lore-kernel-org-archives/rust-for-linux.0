@@ -1,134 +1,108 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0B53C472
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Apr 2024 08:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B60E3FBBE;
+	Mon,  8 Apr 2024 09:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712566279; cv=none; b=hOYK8XF/0gpecb3cc/JZzc481gZS51DqcModm7MKWkP4dkrbHn7n65+7QUvK1EPI2If7GUNl8CQC0CEltas1BrE/n4jvPOx/IjUxtRYuLVfiK1q5N3nvjmglIBTlCvrv6KmfCoGrUELks9aj0DB73SYnyHsQDzKHkgWt8bXplH4=
+	t=1712567977; cv=none; b=DctyotTFJ6Qfv24b4PzvyoeuwsfEv71T+Ms62XeLTVR6qHUGyNKSqdO9LSfo5CvQzfT6oulL2QuIkcxrMB1ru+kSNw6cRnV5ziuhdzEfuDxTedRAnQ/8DzBVy/N3idelkWJzfQnGArzGSK+KtfKVSZ7EmpoQIzBDO6d02iDqTB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712566279; c=relaxed/simple;
-	bh=LrHR5P/LrNI/UQPu1hlqeRHQWbUqR3Ke0r8v10Mpe2c=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F0eJnf9j+RuN+/SXS2wrgoP+5hFXRzmGYRasJdFVKVLBBC1pN7OBORkzCP3Wz8U2QZncj4FUCo7BT8I71+NnKAmhPX5D0ITIZuJcJrszG3x96pj3IWRmRydoy0ay+apeJoYb7JF+McQRQWOCEle6Df04q1G0a+B2AqfC67p7pAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=j1cr+GRr; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1712567977; c=relaxed/simple;
+	bh=xpv4GXaNvHbwNmLZOBogoUexAaRgl91nGHRAWB70R1c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jFgf9RsxuM82rLCzAQQPflgHAEupubUX9NJuvxejHIXk3zM15YN8FS+iNxhTgn0rzHnKtsjKM065DNGrshZ/PVA1Znq6iyVwEyZDtwEVTerMLyEAUrYUMfOB+FAYjgIVoD2RPZicm+NWxUWsbfVdIPlv7Fk8Pu+Rk3IF6lQDTFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kbSW43LS; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="j1cr+GRr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712566268; x=1712825468;
-	bh=CUkPAONzwDRb/Nkur4cZQic06C81obmvAaXkWg3RRnE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=j1cr+GRrMMDEkZcscWsT32bBHzNmnUv2/sPLO4VMfHQ4WnUlopjx3XddPs8HG7wJQ
-	 Kf+AcdxPcMhQTVUvM1mValC43tW63xzJrRISZ4s77mQlvR6EW2V/6+uB+rKayebDhg
-	 SCKC+p8UstTdDBVEUZ/nvdmVDNKz7D+c9WnkaL/I9gpcFCfJiMYm4gqVjH6+3SI6vM
-	 g/LwBLJz+/VXvwC9c+6Jm5MeljxZywSpgz8gbiP9X4HsFWDpZcbNUi8A/ug1nPVQ6m
-	 Amg9Q9foy4phbHdWfWV9bMYg2drenU45LTXhDaCSTHTgd3vA8FMeDP/7HG3rSSXrKX
-	 xYmHkxCcbUlQg==
-Date: Mon, 08 Apr 2024 08:51:04 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 5/9] rust: list: add List
-Message-ID: <f51231b2-46a4-4fea-af9d-d16b0ea59bf5@proton.me>
-In-Reply-To: <CAH5fLggF=dBYzySEt-TgNT+Tr-SNYvQxp3A26NktXNb2SNhDDg@mail.gmail.com>
-References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-5-b1c59ba7ae3b@google.com> <d896a813-3081-40b4-985b-ef257d55cec2@proton.me> <CAH5fLgiN3jcd_HMgmP7H-026daMw0xkMk=CGaGc9AM7uHkFXFA@mail.gmail.com> <3f3cf5ae-30df-4032-b752-77126035784c@proton.me> <CAH5fLggF=dBYzySEt-TgNT+Tr-SNYvQxp3A26NktXNb2SNhDDg@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kbSW43LS"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2a526803fccso302123a91.1;
+        Mon, 08 Apr 2024 02:19:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712567976; x=1713172776; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CMNyRdQrOSFasuq0gOdjmdHM1CPNAmXdupymxZqTDfQ=;
+        b=kbSW43LS53/RHgzEBoQV7dtqa2HscbuSZOvIFMVtd2wua84SWQboW+E1NMRIzwM8Kw
+         5V3JJZJCHi39ZP/Ak3wvPSyN06+4yjxANEtz1bydeWbjtkxGNVqX9MFL5dFuTxbSnkGe
+         gkY5xOTnNSeF+HggYpc2eMwcgwNv9VNR23GnoYsxKYm13IU2+X61N3K7l/bt7rib1CKt
+         txB4b8EpQQgpm5FV7TAZuqNbw4KtiFio1hRyfbz9a5OmS99/dVNmiO/7DHxSHAQkEw2s
+         F+E1j2IIrWDnL/UnoMVUzU2/R8IZenDSB4G7R2vshYAC4yzm8mMTlrCRq04HMP3TYFRZ
+         B/LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712567976; x=1713172776;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CMNyRdQrOSFasuq0gOdjmdHM1CPNAmXdupymxZqTDfQ=;
+        b=i6JxahFk6Jv1Pn9xib1agVVHHEgahx9Q8GO4feK9OOyTKGYHZL2LmjrFKdcYthhE0p
+         h5pOATMtrLLCKk6VBvmVUaoyEPBcHPbLeJAEEFrOHPEGc5Uqsbov+uPvZUKPh6zBe7w+
+         yiZhMmONveuIr0pd1RPZW31iXroErgc344caiJtroPcTW0Gp1F6Q7tK7qqBdgd6645yL
+         JJP6n+zkVm54oa0kCd2MlDglrdFZHl3gLo2N3ceGIW3KKwvsZb7oxhDuoK0k+zH2Tzv8
+         /KeWFA/lIUEwaVuKTRz6n2zPVy+gNuata+NnBgGhd11hD0AzHHAukOnfBMQxleT3NkMW
+         k3mQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVA/tMcVAmoRgfjuZJwh/6iTIt1WsJ2G1aNvyzkqBIrZtGwDBj4LVeBZcTLtUsKNKYRlZbDp593HZYwUl+oSiQHhe0gw6J+N078RDEvYpaDba6W8okWIS7i9uoROLI6X0DRuhu4PRNJurvTf18=
+X-Gm-Message-State: AOJu0YzI3vk8W+tqpLBMelDsqYf/Bo6mX2l89Ve2GIDp0SZ6DylXzhSi
+	9L/3uHfvp8nWfkcjNTtbw+jnJmfAiRQ8q8YLG2Sey1iprW37p5WnVG+2JxSLb/NiO/NSq70AO2l
+	EzGlbKPGJ+EUigf+bb+NqGG7wO+4=
+X-Google-Smtp-Source: AGHT+IFhMRh7Af+1ofz2RUc8GsbDJVtkVO04aivZzCObwcByfet4XkSJddJNLUkQxaNSLaJfOd2L+aFtpEY4xfTHT9E=
+X-Received: by 2002:a17:90a:e50f:b0:2a2:97ce:24f5 with SMTP id
+ t15-20020a17090ae50f00b002a297ce24f5mr7693686pjy.35.1712567975830; Mon, 08
+ Apr 2024 02:19:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240404-alice-mm-v4-0-49a84242cf02@google.com>
+ <20240404-alice-mm-v4-4-49a84242cf02@google.com> <a48b2347-b58b-432e-bdb8-d5449016ab57@proton.me>
+ <CAH5fLgg3wpcDE+n6nd0CGtDzyXSrD2nLhY8RxdTHjAD8hQ9VDQ@mail.gmail.com>
+ <c130a6f5-77d7-4d9e-984d-7a8bf48ff918@proton.me> <CAH5fLgigLV17+6U75MC43XFnYeqtgvrrTWD7JmDSB-ebNjCVvw@mail.gmail.com>
+In-Reply-To: <CAH5fLgigLV17+6U75MC43XFnYeqtgvrrTWD7JmDSB-ebNjCVvw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 8 Apr 2024 11:18:52 +0200
+Message-ID: <CANiq72mZ5QPrb1-jWiKFhO2OF517Xvx=Js3zwM+_VyVL=dy2LA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] rust: add abstraction for `struct page`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 08.04.24 10:04, Alice Ryhl wrote:
-> On Thu, Apr 4, 2024 at 4:51=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->>
->> On 04.04.24 16:12, Alice Ryhl wrote:
->>> On Thu, Apr 4, 2024 at 4:03=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>>> On 02.04.24 14:17, Alice Ryhl wrote:
->>>>> +        // never null for items in a list.
->>>>> +        //
->>>>> +        // INVARIANT: There are three cases:
->>>>> +        //  * If the list has at least three items, then after remov=
-ing the item, `prev` and `next`
->>>>> +        //    will be next to each other.
->>>>> +        //  * If the list has two items, then the remaining item wil=
-l point at itself.
->>>>> +        //  * If the list has one item, then `next =3D=3D prev =3D=
-=3D item`, so these writes have no effect
->>>>> +        //    due to the writes to `item` below.
->>>>
->>>> I think the writes do not have an effect. (no need to reference the
->>>> writes to `item` below)
->>>
->>> ?
->>
->> The first write is
->>
->>       (*next).prev =3D prev;
->>
->> Using the fact that `next =3D=3D prev =3D=3D item` we have
->>
->>       (*item).prev =3D prev;
->>
->> But that is already true, since the function requirement is that
->> `(*item).prev =3D=3D prev`. So the write has no effect.
->> The same should hold for `(*prev).next =3D next`.
->=20
-> Oh, you are arguing that we aren't changing the value? I hadn't
-> actually realized that this was the case. But the reason that they end
-> up with the correct values according to the invariants is the writes
-> below that set them to null - not the fact that we don't change them
-> here. After all, setting them to a non-null value is wrong according
-> to the invariants.
+On Mon, Apr 8, 2024 at 9:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> From bindgen's point of view, this constant is just an integer literal
+> with no type information. So I don't see how we can expect it to
+> always be generated as a usize?
 
-I just was confused by the "due to the writes to `item` below".
-In the single element case, I also think that the INVARIANT comment of
-the next `unsafe` block (still visible in this mail) is a bit weird,
-since the element still is in the list.
-For a single item, removing it is setting the prev, next and first
-pointers to null. So I think you might be able to use this for the last
-bullet point:
+In the case of `PAGE_SIZE`, there is type information (`size_t`),
+since it comes from the constant helper:
 
-     * If the list has one item, then `next =3D=3D prev =3D=3D item`, so th=
-ese
-       writes have no effect, since also `(*item).prev =3D=3D prev` and
-       `(*item).next =3D=3D next` by function requirement.
+    const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
 
-For the INVARIANT comment below, I think you also need the case
-distinction:
+For the other one, `PAGE_SHIFT`, there is also type information
+(`int`), but bindgen currently picks a type based on the value for
+those (but ideally/eventually bindgen should respect it instead).
 
-     * If the list had more than one item, `item` is no longer in the
-       list, so the pointers should be null.
-     * If the list had one item, then `item` points to itself, to remove
-       it, we set `prev` and `next` to null and later also `self.first`.
+So for the former, the allow and the cast are not needed since we are
+already handling it explicitly. And for the latter, if we want to have
+it as `usize`, we should have the cast but not the allow, because now
+it does `u32`, but if it respected the type, it would be `c_int` or
+`i32`. So either way we would need the cast.
 
-What do you think?
-
---=20
 Cheers,
-Benno
-
->=20
-> Alice
->=20
->>>>> +        unsafe {
->>>>> +            (*next).prev =3D prev;
->>>>> +            (*prev).next =3D next;
->>>>> +        }
->>>>> +        // SAFETY: We have exclusive access to items in the list.
->>>>> +        // INVARIANT: The item is no longer in a list, so the pointe=
-rs should be null.
->>>>> +        unsafe {
->>>>> +            (*item).prev =3D ptr::null_mut();
->>>>> +            (*item).next =3D ptr::null_mut();
->>>>> +        }
-
+Miguel
