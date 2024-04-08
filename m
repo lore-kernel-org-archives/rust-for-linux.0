@@ -1,146 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14B71119A;
-	Mon,  8 Apr 2024 18:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08461272C4
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Apr 2024 20:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712602060; cv=none; b=lgdunCBSJZXSISm5qXrrQnhm7nGiLJ7xu1c/Xvk6ws69gZWjh6/3U1AQ2N1JCTZfKagBBxff7AzAT989NQweuZieIV14peGiyBIuWwpLBIofEck/j6D0oCohmx9UUSSWDxJyQ/f85Ql8rytzDRDwZ57+eNgk+iezWeCafH6Is/g=
+	t=1712606741; cv=none; b=FJcAhpuRcl6laxErVN5x1xwQK99N704ePcDJPz02Lrz1XyaB+S2gMQXLrkStMGv5ECJYV7jsEg7RCKc2ye5/qwTJibWOhGQD1W4uGueeqpKdXb+E6V7PDsFFE7N+UmnR5Gf9eWGgJO+PIAhfPmCLx0heLTYNDBdwtF6BgARZ8nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712602060; c=relaxed/simple;
-	bh=SYyVUdi9VjoNm97IS/XTV920oO6eW28EJnO10HujZm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BAD1uGh5/jiEisr7PO2yg9oUKY485YTarDPD1+eXGVLB7fx9XsfUWXQOYwGE6VuOaGCyhEWojXZ1SWneUy9/lAPKHRsjX8JXTVM+JAPFqJwLpGN+PdwGFkPilREbowxgQUMVaRk3U2N87QDV4dqJ9bgf4u7Z5YdV3OgaRlSQgWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QH3VMMm5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712606741; c=relaxed/simple;
+	bh=82F1MgsQLgdYIQgatWxiRfAXR/TCmhkAjQEqWWRhptw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jhicjhUSgwJP/DunFR/gEwKVcpYE2/KE5ddOp9RJEqEjwBMbVnsyKJzYIBELldTxoHM5owKxpV+DRDptIJ/1bQZm4U5cINUOCBmIfu8/Ur5elsQ3JhYq0VNXU1eN1dRQCXhcOsphHceMeKLbm+W/JOYU2DpBC43w5CDAGtLofUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=dnMrHPrw; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QH3VMMm5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7457AC433C7;
-	Mon,  8 Apr 2024 18:47:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712602059;
-	bh=SYyVUdi9VjoNm97IS/XTV920oO6eW28EJnO10HujZm8=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=QH3VMMm5SOy+a5/Le74mjOj7Gdef3Nx9WwKw4QdG6/4a+h1jicQcuUxj5+AbinxgI
-	 5O0WFSLX1tLKfiZqZk9z4W57aYMdLzXxokbye8N4IAJTRT10k5C02VRxNvZLANEXPH
-	 96FljbScvGcjKUjEf5DwEKEM5c1SQmnDIiMku/rAZriOl1SsozESEUU/P8SlrWCidN
-	 AipWE/sidcx/TcflQso3P15T0WQ+VhU8rBrSGPPBvGDzMSc4OkBRiugBoJDyCVH95M
-	 4e8DhZGuKYDGFqEyanXAB5XTPjkKaLhR1rfGz4FVPrUCAKzWUpjPKSi5TP6PlVxXdc
-	 VWuo/YoxOqJ0w==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 17CC2CE126C; Mon,  8 Apr 2024 11:47:39 -0700 (PDT)
-Date: Mon, 8 Apr 2024 11:47:39 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-Message-ID: <c3e507cb-26bb-4fdc-b1dc-b512c7bfc093@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20240322233838.868874-1-boqun.feng@gmail.com>
- <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
- <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
- <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
- <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
- <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
- <ZhQVHZnU3beOhEGU@casper.infradead.org>
- <fec60bba-e414-43d1-bc3e-870f5ffe4626@paulmck-laptop>
- <ZhQjT4xdS3h-GbtC@casper.infradead.org>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="dnMrHPrw"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d4a8bddc21so68975301fa.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Apr 2024 13:05:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1712606738; x=1713211538; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rRKPouMe4xkFwANgjkQYrxaOlNKZlWPMAGzB1iq7Iyc=;
+        b=dnMrHPrwpi3IPqZ2QRyqVC2qmh3Viza0nL1o4K3Z4Jw1r6h+NSUcLwrkWFsycj6xxZ
+         1ZdNlvTQruC0UF620knG26qA02oyQFESDUumfmHiLo82SaVUKfH+DlOdFxS8LKmuBjTM
+         3GCA8xDghZ/4wAHmTYV1sn/5KhdrrZCtn2GRg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712606738; x=1713211538;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rRKPouMe4xkFwANgjkQYrxaOlNKZlWPMAGzB1iq7Iyc=;
+        b=pSiggrUASQ89V0GRe78MJYO0CvwvZMjB0X2aAaya3YiHmutdlsUgykMkNkX+UCj1Wm
+         NXi9otPIhg0KNLweDFmzld3xKHEJUWbPNFZGXm7Lt5+gl1wU+RSZ+cNwUb0cfPFhh5li
+         w3HoZK++3FtxIdd08ZLyFxK706VfiAYoJoyzxbur+M7h0pVfsRJXQmjkCcMXB7m11qFH
+         uN7HyUsmDRB+YYbLrRIiSvU/fcUHdudKQwZSFOtvWzFyUbyFNjWts6Jx0FxkFzH2TRr4
+         zdzfjqIZxTf9yb49C3hewyQ098xsutnHM748sKgCvyWj+0Js60OnldXuQjIFdgTBknDa
+         7/lw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzr9ooDhgKTq/v63bK0ZnxdIOAiOqrVQT/N5m0ACQjgrYT7KDBdP5wC/+BjUhOtep1hAxli4zy1blckKMRH9YJg0G1DDOmtpfL2k1pcL4=
+X-Gm-Message-State: AOJu0YyOqaIuH89BjFuutx+xoeC17ATUQ4o+XGL7Z4b0mfG2tGOkPDOL
+	LYmLsU8TJsMBaQZuqdCD63QCl+3l5dXR+xA3r6F6JqOjqlsVWl5MMTjo994+c+f3FqQy7Q/Vgtp
+	53+pNog==
+X-Google-Smtp-Source: AGHT+IFM9UZ4tMHlt3rgSJ/AzLwh4d73rOa6yDX4iL+wRgdQukG0aSj8s6BAMr5aYwY8wQqRR3IucA==
+X-Received: by 2002:a2e:7d15:0:b0:2d8:63a2:50dc with SMTP id y21-20020a2e7d15000000b002d863a250dcmr6717450ljc.48.1712606737807;
+        Mon, 08 Apr 2024 13:05:37 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
+        by smtp.gmail.com with ESMTPSA id z26-20020a2ebe1a000000b002d80e833d7asm1275727ljq.81.2024.04.08.13.05.37
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Apr 2024 13:05:37 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-516d09bd434so5071065e87.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Apr 2024 13:05:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVUhxsxZiTv/dLISQeJa8IE5e62LZz0Zqasf7JQyrrSsZkFFY6geDa0YcrJSpJv2/y8OsvyOkstVUBsPMV1mCwMwdeWvTCj+T9tL0mXRIU=
+X-Received: by 2002:a05:6512:60f:b0:516:9fdc:2621 with SMTP id
+ b15-20020a056512060f00b005169fdc2621mr6538971lfe.0.1712606737016; Mon, 08 Apr
+ 2024 13:05:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZhQjT4xdS3h-GbtC@casper.infradead.org>
+References: <20240322233838.868874-1-boqun.feng@gmail.com> <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
+ <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
+ <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
+ <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
+ <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
+ <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
+ <ZhQVHZnU3beOhEGU@casper.infradead.org> <CAHk-=whmmeU_r_o+sPMcr7tPr-EU+HLnmL+GaWUkMUW0kDzDxw@mail.gmail.com>
+ <20240408181436.GO538574@ZenIV>
+In-Reply-To: <20240408181436.GO538574@ZenIV>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 8 Apr 2024 13:05:20 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wispSt+JezguriGPKnJ0xOUWG_LFDgaM-NVJu6cVa+-xw@mail.gmail.com>
+Message-ID: <CAHk-=wispSt+JezguriGPKnJ0xOUWG_LFDgaM-NVJu6cVa+-xw@mail.gmail.com>
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Matthew Wilcox <willy@infradead.org>, Philipp Stanner <pstanner@redhat.com>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
+	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
+	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
+	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Apr 08, 2024 at 06:03:11PM +0100, Matthew Wilcox wrote:
-> On Mon, Apr 08, 2024 at 09:55:23AM -0700, Paul E. McKenney wrote:
-> > On Mon, Apr 08, 2024 at 05:02:37PM +0100, Matthew Wilcox wrote:
-> > > In my ideal world, the compiler would turn this into:
-> > > 
-> > > 	newfolio->flags |= folio->flags & MIGRATE_MASK;
-> > 
-> > Why not accumulate the changes in a mask, and then apply the mask the
-> > one time?  (In situations where __folio_set_foo() need not apply.)
-> 
-> Yes, absolutely, we can, should and probably eventually will do this
-> when it gets to the top of somebody's todo list.  But it irks me that
-> we can't tell the compiler this is a safe transformation for it to make.
-> There are a number of places where similar things happen.
-> 
-> $ git grep folio_test.*folio_test
-> 
-> will find you 82 of them (where they happen to be on the same line)
-> 
->                 if (folio_test_dirty(folio) || folio_test_locked(folio) ||
->                                 folio_test_writeback(folio))
->                         break;
-> 
-> turns into:
-> 
->     1f41:       48 8b 29                mov    (%rcx),%rbp
->     1f44:       48 c1 ed 04             shr    $0x4,%rbp
->     1f48:       83 e5 01                and    $0x1,%ebp
->     1f4b:       0f 85 d5 00 00 00       jne    2026 <filemap_range_has_writeback+0x1a6>
->     1f51:       48 8b 29                mov    (%rcx),%rbp
->     1f54:       83 e5 01                and    $0x1,%ebp
->     1f57:       0f 85 c9 00 00 00       jne    2026 <filemap_range_has_writeback+0x1a6>
->     1f5d:       48 8b 29                mov    (%rcx),%rbp
->     1f60:       48 d1 ed                shr    $1,%rbp
->     1f63:       83 e5 01                and    $0x1,%ebp
->     1f66:       0f 85 ba 00 00 00       jne    2026 <filemap_range_has_writeback+0x1a6>
-> 
-> rather than _one_ load from rcx and a test against a mask.
+On Mon, 8 Apr 2024 at 11:14, Al Viro <viro@zeniv.linux.org.uk> wrote:
+>
+> FWIW, PA-RISC is no better - the same "fetch and replace with constant"
+> kind of primitive as for sparc32, only the constant is (u32)0 instead
+> of (u8)~0.  And unlike sparc64, 64bit variant didn't get better.
 
-Agreed, it would be nice if we could convince the compiler to do this
-for us, preferably without breaking anything.
+Heh. The thing about PA-RISC is that it is actually *so* much worse
+that it was never useful for an arithmetic type.
 
-> > If it turns out that we really do need a not-quite-volatile, what exactly
-> > does it do?  You clearly want it to be able to be optimized so as to merge
-> > similar accesses.  Is there a limit to the number of accesses that can
-> > be merged or to the region of code over which such merging is permitted?
-> > Either way, how is the compiler informed of these limits?
-> 
-> Right, like I said, it's not going to be easy to define exactly what we
-> want.
+IOW, the fact that sparc used just a byte meant that the aotmic_t
+hackery on sparc still gave us 24 useful bits in a 32-bit atomic_t.
 
-Or to convince the usual suspects that any definition we might come up
-with is useful/implementable/teacheable/...  :-/
+So long ago, we used to have an arithmetic atomic_t that was 32-bit on
+all sane architectures, but only had a 24-bit range on sparc.
 
-							Thanx, Paul
+And I know you know all this, I'm just explaining the horror for the audience.
+
+On PA-RISC you couldn't do that horrendous trick, so parist just used
+the "we use a hashed spinlock for all atomics", and "atomic_t" was a
+regular full-sized integer type.
+
+Anyway, the sparc 24-bit atomics were actually replaced by the PA-RISC
+version back twenty years ago (almost to the day):
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commit/?id=373f1583c5c5
+
+and while we still had some left-over of that horror in the git tree
+up until 2011 (until commit 348738afe530: "sparc32: drop unused
+atomic24 support") we probably should have made the
+"arch_atomic_xyz()" ops work on generic types rather than "atomic_t"
+for a long long time, so that you could use them on other things than
+"atomic_t" and friends.
+
+You can see the casting horror here, for example:
+
+   include/asm-generic/bitops/atomic.h
+
+where we do that cast from "volatile unsigned long *p" to
+"atomic_long_t *" just to use the raw_atomic_long_xyz() operations.
+
+It would make more sense if the raw atomics took that "native"
+volatile unsigned long pointer directly.
+
+(And here that "volatile" is not because it's necessary used as a
+volatile - it is - but simply because it's the most permissive type of
+pointer. You can see other places using "const volatile unsigned long"
+pointers for the same reason: passing in a non-const or non-volatile
+pointer is perfectly fine).
+
+              Linus
