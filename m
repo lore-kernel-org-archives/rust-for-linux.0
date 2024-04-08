@@ -1,140 +1,152 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE331419A9;
-	Mon,  8 Apr 2024 15:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF41420D5;
+	Mon,  8 Apr 2024 16:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712590267; cv=none; b=Xafd7UbciFuyBBFoMmH8npYbiToAoAIyKsCrbspIvKuovB99Fk9Ws6btNxD2vDPOGJUNI8QlPxUiufl0iSxl+R8GDhYC0OINaZYo7iq72XZj01SLlMx/ilVRnmNUYbEOcfDd9NeyOQXPRpC57xzes0qDdo8AikJ+WGDjjeje4D8=
+	t=1712592168; cv=none; b=Oie8SiX3o90Z/DH+06Xm0fUokeaI3BQZngI8GndNvBB52g9erZy7I6bzMZ6jcLl/57JwPXhLJfwPF10vrzrSIuulIcQJJ5U+5oevdi3JdggVp82SiaMFDPXqUmQyDQf2/1RufDmzJRGrC1RGaHZkZb2xH2WYuykNiqFH6Bql1B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712590267; c=relaxed/simple;
-	bh=+z2w7i+pXbMoc2p8XQel83YU0QDWMIDOLJeexi/+aJA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uOhUELkVlOV7NDDHVyTrCjc6JkH2fPld3sPfBFO/8PyCDWrnSrCuFQLVpRUOEfPSvAqTC6dEkh0D5a4vLOeQ7zfSxcDRUdmlNa6zTusevqu6qmABPRVe89xOOiAssOlHQnlZzPBX66xY6PR9I1x8FRGI+YU23VLWLHRmQ0ejmc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y7i0wLNY; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712592168; c=relaxed/simple;
+	bh=Y30PmaNhnezUuMlBCV6pB7+TsKy2Xq+rK8IH/JfTHog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j0MGV4YI7tsSvB/Ap2QCkEZGnQIOQ4TuQJmJRyEegQPmD+1cDaYEiFXpxrMWzXbKmxO1dmCExYnQNIgyMi5rL9e+z7vANgt2JGwe1TSLWxB1fICxstVjWZ2Td2rre+wb88LnfeTp/d+Z0CWngYBFGVNhWc2FaIYKpo2D4cSIZ5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=iBigXMxg; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y7i0wLNY"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-56c5d05128dso5197188a12.0;
-        Mon, 08 Apr 2024 08:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712590263; x=1713195063; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+z2w7i+pXbMoc2p8XQel83YU0QDWMIDOLJeexi/+aJA=;
-        b=Y7i0wLNYXDZ6xQmNyv4EuR4je9bcJMN+lJ8QCd0oZqS9VdRDHYiU3q0hvXsWzDChjA
-         Xgb1OMo3ZMecxivfALR1jaoRTLzpC4LSg1dB0beV/EenT9skoNHuAe655unXoxW0dnC+
-         FPRQHwkIBI5wJTXuhIZLs+NozdoxwTPV48G/c+xyROBlsMgqvuy0YV5Uv6vG6IYq9W1h
-         TZKL+bkmk+/gtbNe+0XwRVB5fL+n8pI53DdPuRklgkUPlobBWgvqmZiqyC3ilVZLIpUf
-         HwP6mWI+pndI4cY1NAMQMnbYj+GNSMQosul/kA3mdMEaVOWfE7cLM49uWttgCyBjeGOE
-         9vmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712590263; x=1713195063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+z2w7i+pXbMoc2p8XQel83YU0QDWMIDOLJeexi/+aJA=;
-        b=Xpp8onWWaEyfI00lCTrBAT+1xMF5fnJ72DWYAWqEMNjfxE3uus3Jsw84wXjS4jMIT8
-         NaS9UGldcll5FsQcUi6oA07z8f4SmQK+8zOEAhqDHYpuW9dBzIzESwYGMqKLGVjLbZJv
-         2iKgHGjD0uavLQXDn+RV8rG078u2pChGpNYBGyWxiKkY+riXEMeXVcLhI6wxUnfGDwUl
-         yVAIWI4hE5SCdG+o2wapbydRUdDk9oNmYdNyzgH4+knzyMh0npGIJtBfjT6qIbRbAwSZ
-         giTl4FBhCOwW90QnlYkGKbG3I8FVYA+N9xgJeuv7wO8mFr7ms5spBzGxdXuKYnX+Wita
-         jqEA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2/HZeOgT6W2LNv/fmic7tZV11wIJnxZ33lq95UhuHrCxnnROp9ouZmmDZKZz1tLiId//ffAIrzoXXYCivlkUPPpIzUXSXIOzszvCzXMVSNJxE6TRGoU8L5tQD5EuH2qAX+QOjrJ5P/taG/6w=
-X-Gm-Message-State: AOJu0YyFhYWq5jJw+yk77obnpWxKwxGSf9XYrtMHfqnrFE6rwtVEKwit
-	HXoHhVwJGao+LrVsAFdpDBR1mDkG0vBcYz/9sVQdX6ZiWws+eiVNHu8EJAYk4zL4p8iOGfsC9im
-	UnkuYwsniL2gQqQE5IzrJTKFduwo=
-X-Google-Smtp-Source: AGHT+IE24hOKRWtdyRnN5kV7dEx7IzpFfbNgFzIQKfPkyq+EWHkDQFobfa/zb1BfIbF5hqyJuyd4swQMFiZdMr3WRS8=
-X-Received: by 2002:a50:9fca:0:b0:56b:c4ad:ae29 with SMTP id
- c68-20020a509fca000000b0056bc4adae29mr7698934edf.3.1712590263281; Mon, 08 Apr
- 2024 08:31:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iBigXMxg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=izUM//YtAco+VvWir8uJwOQef2J3aIrjmbstnFNAkDI=; b=iBigXMxgZi2deI/ZFxgrEINoG9
+	ynsx+q7hfmtWcVmHw0IWtJMqsPdA9jDQbFF8f1uvh+/Kee0EfWOzl7xMVtCZhzF8TQWvru7Zcin4M
+	OzwZ002fnCE6hxU5qx5ssj62e5dsuNMzauIyLwg5+q/6YeFmfVBQKqsGbo9TGdSr9qBr2MqdFmVuW
+	iFw0QPZR6RKbpTRKzGHN6XuxlgGcYz4T7bKnfvCEWmPIRjmBq/zSkf9/B43LCOtdXtmDZx926JW9S
+	TZNQSKznDjkDVm1i5h/AcUiheZt1qx1v8cYU0PN7RPGq5MySGKDLaqm+U86RIdVuGRZuglLRmVIDF
+	OXJt75vQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rtrS9-000000009mo-2kya;
+	Mon, 08 Apr 2024 16:02:37 +0000
+Date: Mon, 8 Apr 2024 17:02:37 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Philipp Stanner <pstanner@redhat.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+Message-ID: <ZhQVHZnU3beOhEGU@casper.infradead.org>
+References: <20240322233838.868874-1-boqun.feng@gmail.com>
+ <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
+ <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
+ <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
+ <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
+ <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
+ <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72meap5C9bkj5rNDE=0U5gb5OKwDrrTSrVRwJbkAPWgUsg@mail.gmail.com>
- <d912f0e0-19d5-4cde-a548-10db94da15a9@yahoo.de> <CAA76j92Sd-YN=UYET7jyMyBuzyhET+rwqF-Rxo-0S_60+TUX1Q@mail.gmail.com>
-In-Reply-To: <CAA76j92Sd-YN=UYET7jyMyBuzyhET+rwqF-Rxo-0S_60+TUX1Q@mail.gmail.com>
-From: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date: Mon, 8 Apr 2024 17:30:24 +0200
-Message-ID: <CAA76j90Vw+kdaqJa23S=6-vo7XG2jjK4rgSk2BXQeVJCpch0iQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/insn_decoder_test: allow longer symbol-names
-To: david@readahead.eu
-Cc: miguel.ojeda.sandonis@gmail.com, tglx@linutronix.de, x86@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
-	davidgow@google.com, hpa@zytor.com, john.m.baublitz@gmail.com, 
-	linux-kernel@vger.kernel.org, mhiramat@kernel.org, mingo@kernel.org, 
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <danilokrummrich@yahoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
 
-David,
+On Mon, Mar 25, 2024 at 10:44:43AM -0700, Linus Torvalds wrote:
+> So I actually think most compiler people are perfectly fine with the
+> kernel model of mostly doing 'volatile' not on the data structures
+> themselves, but as accesses through casts.
+> 
+> It's very traditional C, and there's actually nothing particularly odd
+> about it. Not even from a compiler standpoint.
+> 
+> In fact, I personally will argue that it is fundamentally wrong to
+> think that the underlying data has to be volatile. A variable may be
+> entirely stable in some cases (ie locks held), but not in others.
+> 
+> So it's not the *variable* (aka "object") that is 'volatile', it's the
+> *context* that makes a particular access volatile.
+> 
+> That explains why the kernel has basically zero actual volatile
+> objects, and 99% of all volatile accesses are done through accessor
+> functions that use a cast to mark a particular access volatile.
 
- Do you mind if we push the fix you proposed?
+What annoys me is that 'volatile' accesses have (at least) two distinct
+meanings:
+ - Make this access untorn
+ - Prevent various optimisations (code motion,
+   common-subexpression-elimination, ...)
 
-Best regards,
- Sergio
+As an example, folio_migrate_flags() (in mm/migrate.c):
 
-On Mon, 8 Apr 2024 at 17:22, Sergio Gonz=C3=A1lez Collado
-<sergio.collado@gmail.com> wrote:
->
-> Hello,
->
-> I was just waiting in case there was feedback from David Rheinsberg.
->
-> Cheers!
->
-> On Mon, 8 Apr 2024 at 14:52, Danilo Krummrich <danilokrummrich@yahoo.de> =
-wrote:
-> >
-> > On 2/20/24 18:07, Miguel Ojeda wrote:
-> > >
-> > > On Fri, Jan 27, 2023 at 11:39=E2=80=AFAM David Rheinsberg <david@read=
-ahead.eu> wrote:
-> > >>
-> > >> The current workaround is to just disable CONFIG_X86_DECODER_SELFTES=
-T, which I thought is a sad state. I can gladly use `256 + KSYM_NAME_LEN` a=
-nd add a comment ala "room for insn-encoding and a symbol name". Would that=
- be acceptable? The alternative would be to try to dyn-alloc a buffer and i=
-ncrease it to the actual line-length?
-> > >
-> > > John independently hit this issue again. Could we fix this? Going for
-> > > the `256 + KSYM_NAME_LEN` sounds good enough for the moment since it
-> > > would be a clear improvement, though I agree this could be cleaned up
-> > > further.
-> >
-> > I hit this independently as well. Miguel pointed me on this mail thread
-> > when I sent another fix for this in [1].
-> >
-> > >
-> > > Sergio took the approach David suggested in a related patch [1], but
-> > > perhaps it is best to submit the fix on its own so that it is easier
-> > > to put it in. David, would you be so kind as to submit a v2 with that=
-?
-> > > Hopefully x86 can pick it up, otherwise with an Acked-by I am happy t=
-o
-> > > take it too; and then Sergio can submit his patch on top again.
-> >
-> > Sergio, David: Do you intend to follow up on this? Otherwise, I can als=
-o
-> > pick this up and re-submit.
-> >
-> > - Danilo
-> >
-> > >
-> > > Thanks!
-> > >
-> > > (Cc'ing also Masami who wrote this originally)
-> > >
-> > > [1] https://lore.kernel.org/rust-for-linux/20231119180145.157455-1-se=
-rgio.collado@gmail.com/
-> > >
-> > > Cheers,
-> > > Miguel
-> >
-> > [1] https://lore.kernel.org/rust-for-linux/20240325174924.95899-2-dakr@=
-redhat.com/
+        if (folio_test_error(folio))
+                folio_set_error(newfolio);
+        if (folio_test_referenced(folio))
+                folio_set_referenced(newfolio);
+        if (folio_test_uptodate(folio))
+                folio_mark_uptodate(newfolio);
+
+... which becomes...
+
+      1f:       f6 c4 04                test   $0x4,%ah
+      22:       74 05                   je     29 <folio_migrate_flags+0x19>
+      24:       f0 80 4f 01 04          lock orb $0x4,0x1(%rdi)
+      29:       48 8b 03                mov    (%rbx),%rax
+      2c:       a8 04                   test   $0x4,%al
+      2e:       74 05                   je     35 <folio_migrate_flags+0x25>
+      30:       f0 80 4d 00 04          lock orb $0x4,0x0(%rbp)
+      35:       48 8b 03                mov    (%rbx),%rax
+      38:       a8 08                   test   $0x8,%al
+      3a:       74 05                   je     41 <folio_migrate_flags+0x31>
+      3c:       f0 80 4d 00 08          lock orb $0x8,0x0(%rbp)
+
+In my ideal world, the compiler would turn this into:
+
+	newfolio->flags |= folio->flags & MIGRATE_MASK;
+
+but because folio_test_foo() and folio_set_foo() contain all manner of
+volatile casts, the compiler is forced to do individual tests and sets.
+
+Part of that is us being dumb; folio_set_foo() should be __folio_set_foo()
+because this folio is newly allocated and nobody else can be messing
+with its flags word yet.  I failed to spot that at the time I was doing
+the conversion from SetPageFoo to folio_set_foo.
+
+But if the compiler people could give us something a little more
+granular than "scary volatile access disable everything", that would
+be nice.  Also hard, because now you have to figure out what this new
+thing interacts with and when is it safe to do what.
