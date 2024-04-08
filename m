@@ -1,55 +1,55 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B60E3FBBE;
-	Mon,  8 Apr 2024 09:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1C44645B
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Apr 2024 09:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712567977; cv=none; b=DctyotTFJ6Qfv24b4PzvyoeuwsfEv71T+Ms62XeLTVR6qHUGyNKSqdO9LSfo5CvQzfT6oulL2QuIkcxrMB1ru+kSNw6cRnV5ziuhdzEfuDxTedRAnQ/8DzBVy/N3idelkWJzfQnGArzGSK+KtfKVSZ7EmpoQIzBDO6d02iDqTB8=
+	t=1712568396; cv=none; b=qH+rHGJsdOb/qY/hwsindbrKrWxDd/pv3upnPGXn07gjcgLz48KFlwUKS9X44PT2bXMFW5NNo+wE/OHspoGuWMEokoo6oSDJ6GtGGseSHV1n70NuGznxQpGPnNflmLvhQgoAZg5xhGn52GQipDNAvR6nBGHVFZi4iJcwBaX6LQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712567977; c=relaxed/simple;
-	bh=xpv4GXaNvHbwNmLZOBogoUexAaRgl91nGHRAWB70R1c=;
+	s=arc-20240116; t=1712568396; c=relaxed/simple;
+	bh=oFfg9XsxElE7cRN9U3m13pRPYNa0LsdhfdKdd2Ctvkw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jFgf9RsxuM82rLCzAQQPflgHAEupubUX9NJuvxejHIXk3zM15YN8FS+iNxhTgn0rzHnKtsjKM065DNGrshZ/PVA1Znq6iyVwEyZDtwEVTerMLyEAUrYUMfOB+FAYjgIVoD2RPZicm+NWxUWsbfVdIPlv7Fk8Pu+Rk3IF6lQDTFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kbSW43LS; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=ezUCV3XsI725tspb3mBiA2CD2QjpovxhGM1KfpqeJ+XJT6PWqvrhC1k43TcRH47tl+yyTkORAetdb59JyhE7uZaZUodt8dqdZ00SZujJ43JyPllV9KbnygqiKeK/GDYVgRVW913c8tVR8HPZg+y6v3b19mxkaDwt5tSqxj6m4K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3WaA6Qpf; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kbSW43LS"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2a526803fccso302123a91.1;
-        Mon, 08 Apr 2024 02:19:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3WaA6Qpf"
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4daa1be011dso1157399e0c.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Apr 2024 02:26:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712567976; x=1713172776; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1712568394; x=1713173194; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CMNyRdQrOSFasuq0gOdjmdHM1CPNAmXdupymxZqTDfQ=;
-        b=kbSW43LS53/RHgzEBoQV7dtqa2HscbuSZOvIFMVtd2wua84SWQboW+E1NMRIzwM8Kw
-         5V3JJZJCHi39ZP/Ak3wvPSyN06+4yjxANEtz1bydeWbjtkxGNVqX9MFL5dFuTxbSnkGe
-         gkY5xOTnNSeF+HggYpc2eMwcgwNv9VNR23GnoYsxKYm13IU2+X61N3K7l/bt7rib1CKt
-         txB4b8EpQQgpm5FV7TAZuqNbw4KtiFio1hRyfbz9a5OmS99/dVNmiO/7DHxSHAQkEw2s
-         F+E1j2IIrWDnL/UnoMVUzU2/R8IZenDSB4G7R2vshYAC4yzm8mMTlrCRq04HMP3TYFRZ
-         B/LA==
+        bh=oIy9SeLJ1nvzPDO0+gT7LUDRnqZqv1g2qTZnmvRtF8w=;
+        b=3WaA6QpftjDJHVSsMe+qcWz50x+ihCAkGZh+u3P3CwtfeEuG8nTgS0uek+mJ3MfFbU
+         Nj+bZVQtfkMHjDv1BIsPNqjSTgVOOP2UK0nDIxBxXXOE3doe9ZJ5htj3mGqyjoAIBQGk
+         g6Kmqd9aLtx67ni/9jciuA+CmaZlDUTUgLB3FY8DTJTdHRcwA8btvKn/fSKDiPi6st8O
+         JwdGdVNLvzrca8Ykee5YoW+97hUZCB/HIB9e53UN1v9X7vEPboSXopJvkZoaH+kPV28M
+         oBe1Ejh51vL93C7Vd/VWXYizchLe31aBRCewg4umCXOSarIN8CZke96MhJT5WTH5Oeke
+         FUkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712567976; x=1713172776;
+        d=1e100.net; s=20230601; t=1712568394; x=1713173194;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CMNyRdQrOSFasuq0gOdjmdHM1CPNAmXdupymxZqTDfQ=;
-        b=i6JxahFk6Jv1Pn9xib1agVVHHEgahx9Q8GO4feK9OOyTKGYHZL2LmjrFKdcYthhE0p
-         h5pOATMtrLLCKk6VBvmVUaoyEPBcHPbLeJAEEFrOHPEGc5Uqsbov+uPvZUKPh6zBe7w+
-         yiZhMmONveuIr0pd1RPZW31iXroErgc344caiJtroPcTW0Gp1F6Q7tK7qqBdgd6645yL
-         JJP6n+zkVm54oa0kCd2MlDglrdFZHl3gLo2N3ceGIW3KKwvsZb7oxhDuoK0k+zH2Tzv8
-         /KeWFA/lIUEwaVuKTRz6n2zPVy+gNuata+NnBgGhd11hD0AzHHAukOnfBMQxleT3NkMW
-         k3mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVA/tMcVAmoRgfjuZJwh/6iTIt1WsJ2G1aNvyzkqBIrZtGwDBj4LVeBZcTLtUsKNKYRlZbDp593HZYwUl+oSiQHhe0gw6J+N078RDEvYpaDba6W8okWIS7i9uoROLI6X0DRuhu4PRNJurvTf18=
-X-Gm-Message-State: AOJu0YzI3vk8W+tqpLBMelDsqYf/Bo6mX2l89Ve2GIDp0SZ6DylXzhSi
-	9L/3uHfvp8nWfkcjNTtbw+jnJmfAiRQ8q8YLG2Sey1iprW37p5WnVG+2JxSLb/NiO/NSq70AO2l
-	EzGlbKPGJ+EUigf+bb+NqGG7wO+4=
-X-Google-Smtp-Source: AGHT+IFhMRh7Af+1ofz2RUc8GsbDJVtkVO04aivZzCObwcByfet4XkSJddJNLUkQxaNSLaJfOd2L+aFtpEY4xfTHT9E=
-X-Received: by 2002:a17:90a:e50f:b0:2a2:97ce:24f5 with SMTP id
- t15-20020a17090ae50f00b002a297ce24f5mr7693686pjy.35.1712567975830; Mon, 08
- Apr 2024 02:19:35 -0700 (PDT)
+        bh=oIy9SeLJ1nvzPDO0+gT7LUDRnqZqv1g2qTZnmvRtF8w=;
+        b=hzCoqiFdGJJCiRdwLxzZazCJ273r4TN+RNUbHKvyZ22HpaJH+9c0UoVHGd9Qvg7ICG
+         wLWeBAQO6j0XNGzO8kDVBov8TxAcVejM0SzaIOLYdy13q06stEQ3INOj8ZN2WdIEmFPY
+         cJBDrwm+3Jp5yKsCOUwiQFyDwpPfL9/CKp7gnBNcLakVWMpRr8hTqEsI1dwFxOb5YD5F
+         af4/sgRvrMYLQHMBz5yI1LIU4mmgalelVQx8UPvaso5PTgz8Od3txbEhXUWtoLust7R3
+         QA3HUhKUOcpLYJWFRoY3OPOBqrh4tZkZhW90iCpk1QDZG9DBjoiSXvXh4UrlKkID9TAz
+         pUhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWug3F6a4gEBCCWw7C6NGdGz/1GnlVajkqEQ7WZqx1S6vvEqxoLfm4GsUzMUgbg830ZzKqnYX2yTEXFYLb4i1h87S2Hkcna0+96YKj8+FM=
+X-Gm-Message-State: AOJu0YxFcsBWH4KZgMWTkeqM8FzOfAAcmvhYOIBmbAvyGnyxnHOYAX3W
+	EIBUD1vgCcSvsYNa2pcITibKPeKIgVRuW1uFkQSsP7AwhXZRsLzqlt6tJKSHE8HqKNSJNQMGumG
+	HKO1oXpXgZWEA1/kA69mG+GTicfBC3F/XPvdc
+X-Google-Smtp-Source: AGHT+IE3ctn60mbisPE+3PgDQzWKYFH4fz7jLn6kIz89GDQBsxDl4h15/TtK0Z8YFRnQV/FF1toMip/RgGPmLJg1kxc=
+X-Received: by 2002:a05:6122:4809:b0:4d3:35ac:3553 with SMTP id
+ ef9-20020a056122480900b004d335ac3553mr4054281vkb.10.1712568394315; Mon, 08
+ Apr 2024 02:26:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,12 +60,13 @@ References: <20240404-alice-mm-v4-0-49a84242cf02@google.com>
  <20240404-alice-mm-v4-4-49a84242cf02@google.com> <a48b2347-b58b-432e-bdb8-d5449016ab57@proton.me>
  <CAH5fLgg3wpcDE+n6nd0CGtDzyXSrD2nLhY8RxdTHjAD8hQ9VDQ@mail.gmail.com>
  <c130a6f5-77d7-4d9e-984d-7a8bf48ff918@proton.me> <CAH5fLgigLV17+6U75MC43XFnYeqtgvrrTWD7JmDSB-ebNjCVvw@mail.gmail.com>
-In-Reply-To: <CAH5fLgigLV17+6U75MC43XFnYeqtgvrrTWD7JmDSB-ebNjCVvw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 8 Apr 2024 11:18:52 +0200
-Message-ID: <CANiq72mZ5QPrb1-jWiKFhO2OF517Xvx=Js3zwM+_VyVL=dy2LA@mail.gmail.com>
+ <CANiq72mZ5QPrb1-jWiKFhO2OF517Xvx=Js3zwM+_VyVL=dy2LA@mail.gmail.com>
+In-Reply-To: <CANiq72mZ5QPrb1-jWiKFhO2OF517Xvx=Js3zwM+_VyVL=dy2LA@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 8 Apr 2024 11:26:23 +0200
+Message-ID: <CAH5fLgjr57qB2qp+b7xQ3wsKGyT0zsOkhQj0Q-z0KLo2jhCsTQ@mail.gmail.com>
 Subject: Re: [PATCH v4 4/4] rust: add abstraction for `struct page`
-To: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
 	Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, 
 	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, 
@@ -82,27 +83,31 @@ Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 8, 2024 at 9:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Mon, Apr 8, 2024 at 11:19=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> From bindgen's point of view, this constant is just an integer literal
-> with no type information. So I don't see how we can expect it to
-> always be generated as a usize?
+> On Mon, Apr 8, 2024 at 9:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> >
+> > From bindgen's point of view, this constant is just an integer literal
+> > with no type information. So I don't see how we can expect it to
+> > always be generated as a usize?
+>
+> In the case of `PAGE_SIZE`, there is type information (`size_t`),
+> since it comes from the constant helper:
+>
+>     const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
+>
+> For the other one, `PAGE_SHIFT`, there is also type information
+> (`int`), but bindgen currently picks a type based on the value for
+> those (but ideally/eventually bindgen should respect it instead).
+>
+> So for the former, the allow and the cast are not needed since we are
+> already handling it explicitly. And for the latter, if we want to have
+> it as `usize`, we should have the cast but not the allow, because now
+> it does `u32`, but if it respected the type, it would be `c_int` or
+> `i32`. So either way we would need the cast.
 
-In the case of `PAGE_SIZE`, there is type information (`size_t`),
-since it comes from the constant helper:
+Good point. Will fix this for next version.
 
-    const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
-
-For the other one, `PAGE_SHIFT`, there is also type information
-(`int`), but bindgen currently picks a type based on the value for
-those (but ideally/eventually bindgen should respect it instead).
-
-So for the former, the allow and the cast are not needed since we are
-already handling it explicitly. And for the latter, if we want to have
-it as `usize`, we should have the cast but not the allow, because now
-it does `u32`, but if it respected the type, it would be `c_int` or
-`i32`. So either way we would need the cast.
-
-Cheers,
-Miguel
+Alice
