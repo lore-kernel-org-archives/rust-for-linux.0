@@ -1,100 +1,139 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AF7137C4B;
-	Tue,  9 Apr 2024 15:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0039015539C;
+	Tue,  9 Apr 2024 17:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712678149; cv=none; b=VlUrIEGoxba2LJnfVgS6ToE4j9Tj9u1ft4bJafX9+6w/t/QFOp3Jatg8adL4njjnQvr4uZKuPMl6cFTUR8K4OVQS2eWd6/wn/gK+qheUJDekPsS68eVhAkBS86sGH4aAGJ1C4O0TWw5cHifLeMGrWRclK3kGZikTQi9rJf+ndxM=
+	t=1712683523; cv=none; b=Grjw7cVjP9G5cigW+z0b6FhOA4k2wIiElafH3vRM9QKReS/N+YuLo0Gr1tPDgALt3+5MZkcBXb3UUH7JKGLV/WgdMD7nS2kmOkvL8/Njh+vMfvvITw+xR/usuv90S7q1WSA8OgylhFhXqJ+i4fC6jUvrqkqJGf7lbD7RvhgAh3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712678149; c=relaxed/simple;
-	bh=yUKisf+hNaAY9pCVyNA3uiO6miIBAOlujYSfIxr5gac=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YsHzqe91yC4yo1y5EWA4MXL5HLrGSUaRFpCocAs3uTj3x9PD1UpNQfo7HxTiQFSb2KEOH1Z/3oDGHAdoxWDwFJfLRMM4V1iKLc3h1bcjOZ4NcUj1OfeAwKv7jBdxI6CTtpi4eVAVbwGYcWdCWsBWGlXUjgiF131taCorgqicyLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GC2gw7Ny; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712683523; c=relaxed/simple;
+	bh=Z7G26vJ7drjhQBqY768GVlza2RGDKJV6xJzSOxOV+Ac=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kX2gZ4xSL2bW/H4rLFPZw/DVt5NeII/X3Rm2t+Ox4aUZX1h+M6rJGXOMNeMX5Qy5Rybc8UF8lPwx95gt70XgZC+EvR65MvT3nvy7e7tCCPlN8Bc/AJT7jPYMGxFhAdiK5nQVD01t12thuKrIiLLLCZHHD8RcpvYYhRQjL5g1eeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FtJpo53N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GC2gw7Ny"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2a2f82ded89so3051698a91.1;
-        Tue, 09 Apr 2024 08:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712678147; x=1713282947; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yUKisf+hNaAY9pCVyNA3uiO6miIBAOlujYSfIxr5gac=;
-        b=GC2gw7NyMXsWQSwR8Aiz9+URfToJFSLGeI9wDUoqwmhJMajRMukSyBd9PwXkrFhVEN
-         TqEadsfXZB/TRlX4SvJiA52C0VEy25O6jPjw3PBxkQXw7+HJoso3Lib8QmCxLxgwjc59
-         2KxyUusSpvZAxJ+H4b6QXiMHw9iCjNzvSp+Bc5MG5RbDIk92UWm1HwCkXnbtkdPyq+IV
-         9+RgxyWyM7Ai09yXybKKw+Cp6S/qVReSN3ls9hWBlgqQ4MMGYDlbKlkXxCqDjdMyIgGY
-         C2uyleVVJ3wwxzpKI8KnJrflNzxc6zXuFN+oKEOguqi4vTj8OVl+knfqdGlCo/15hizf
-         Aq4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712678147; x=1713282947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yUKisf+hNaAY9pCVyNA3uiO6miIBAOlujYSfIxr5gac=;
-        b=t6OUUyhQUfKJiD6krTbSjRLEEq84TgZ7S792Q+WDUbMFutifDDgclEX4cJNJuOz2MR
-         2XyDfM6uGTjb5EMA+hc3uL3Mio7RCfi6ij/8EEVsmScW8eQvHSbB+mKZB22xx/KlAVl8
-         Tcyu6vV3v7KBrZau35OnUWEHyZ5AfrdmqUCdlWagkvphstIdsDw/3ZBnpZIJRoZ5eGXx
-         1lKhfFyE++tVXtXTxmsETvjykEmerM5dTbWDUeGPfz39SFObOtmo4NyBsCUFFqMIUKOw
-         4B03tXv1FEVc3t7jlNebzXoXopgcZ6nDQVcEHdoXIM3gaK5FCN4CVXTac/dlRVFQmmGZ
-         IzrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYHps5BSi5/8GzFKkceiGqav5HOoIWIbAftjL4YdhkL2JxAklwaay9Ctyf1QIN1FEGurAK7kR+Gp0UPxiO4F1o3vKivigvu2Jgnj64yFtqgBKHu1VcrGqv+QJDE5DxO2+1UYvLlxMxhCkInGyJCTzLryRkR9uSTbaTSaFanuKxYxMELu6yykV4yfU=
-X-Gm-Message-State: AOJu0YypXcfMxtq0uUlJntWQrcPIHH842o3VPiT4iOfX55k6MxtTVXb6
-	KAZ7VAxAdcXoFgpPxBMNfyX7zgrWzyuNFaSOb07BmySca8Z7XYu156RkBMgzPYN6g+ywvjscdAa
-	VexlQqZe13/uc5Rej5Gx4mXDsAdA=
-X-Google-Smtp-Source: AGHT+IGDusmzO139V37ZKEkzzEmBz+O9TMPBtKoZ3qfSPtaGE0n0s9Aeh1Zn06FGOo4xJEV6zlHHblpSpgdlfNtqRcQ=
-X-Received: by 2002:a17:90b:278a:b0:2a2:35e5:f04f with SMTP id
- pw10-20020a17090b278a00b002a235e5f04fmr21722pjb.38.1712678147518; Tue, 09 Apr
- 2024 08:55:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtJpo53N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1450CC433F1;
+	Tue,  9 Apr 2024 17:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712683522;
+	bh=Z7G26vJ7drjhQBqY768GVlza2RGDKJV6xJzSOxOV+Ac=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FtJpo53NtrsGi0x7/1DjifT6PbQ15bJ7LWhF0g/Hx+vT8eKEcS/ZCx2Cmb6mVgzja
+	 lg3s6b0HjfMK0I0K4/ZtBW1quMJTMna+WqxR1MYR2SHNTn22vT8g3flWIUHSZANvoo
+	 oxhp32sdJ1ETlfK+9F3s2LgUX3Ma5N0sF4yvXLyiteN/CJ08MyYSHQXX+3AioLSs9l
+	 YAnf84ILVJr6jsi0v9CUycXXvcJRIUdY670pH4cZPAJe4cA9tQ1HRgVLR9bksHmQJE
+	 ONVIS5XbnArcoDXpnGjALyOIgJapzffN9acXMW4Jj9CccObKivFpP18BqHp7L2yvz1
+	 hK9TMdkBLarDw==
+From: Conor Dooley <conor@kernel.org>
+To: linux-riscv@lists.infradead.org
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v3 0/1] RISC-V: enable rust
+Date: Tue,  9 Apr 2024 18:25:15 +0100
+Message-ID: <20240409-unsaddle-skittle-c93eb77732bb@spud>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com>
- <CANiq72mCzRBW7_H5Q4VQF8PGRFwaKJzQwOe8LOP2NbStz4husg@mail.gmail.com> <20240409103120.GA22557@willie-the-truck>
-In-Reply-To: <20240409103120.GA22557@willie-the-truck>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Apr 2024 17:55:04 +0200
-Message-ID: <CANiq72mzMBDJnkSW_EDaVdAEHbWtsLL6-unY0R2nOpexhHbfhg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
-To: Will Deacon <will@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Valentin Obst <kernel@valentinobst.de>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2917; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=jBURk0m47eQdKCm4nsBSeG1Pgaujx2S3yr8amWAalEA=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDGmilb/fpZtkTudRfTNRPWJyUuKBlfHWbe1qz/7HOzzr+ vWEQXprRykLgxgHg6yYIkvi7b4WqfV/XHY497yFmcPKBDKEgYtTACbSz8Dw38UquCjqvY73ndsO zGF/f/u//lDq2+rdPOmcC8OpKLXYCob/aa1ad8KXBRkkiD6OjTqRZCgS/Wy3hI6AxpPb937Uusz gBgA=
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 9, 2024 at 12:31=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
-:
->
-> I think we have time to do this properly, like we did for the clang
-> enablement a few years ago. In hindsight, avoiding hacks for the early
-> toolchains back then was a really good idea because it meant we could
-> rely on a solid baseline set of compiler features from the start.
+From: Conor Dooley <conor.dooley@microchip.com>
 
-Yeah, it sounds fair, thanks!
+I've intentionally not turned on the gcc support, as discussed on
+v1. I've also switched over to using the target, but it is a bit heavier
+than the one arm64 seems to be using. RISC-V has fewer targets available
+and this was the closest. I preserved the redzone disabling, just moved
+into the Makefile. Any comment from Gary or the LLVM lads on the target
+would be great I think:
+https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/spec/targets/riscv64imac_unknown_none_elf.rs
+arm64 is using:
+https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/spec/targets/aarch64_unknown_none.rs
 
-After the warning is fixed (i.e. `-Zfixed-x18` or similar is
-implemented etc.), I would recommend adding support to the kernel for
-the `-Z` (unstable) flags, similar to this patch, in order to test
-them easily and getting `rustc` to stabilize them. Then the only
-change required should be a name change to `-C` or similar.
+I was gonna send this yesterday, but found out last minute I had invalid
+code in the target generation script. The kernel test robot had given my
+branch the global all-clear - the rust coverage with all the
+"depends on !FOO" must really limit the build coverage. I built for x86
+with rust enabled locally this time to make sure..
 
-Cheers,
-Miguel
+As this as lifted from the state of the Rust-for-Linux tree, the commit
+messages from there cannot be preserved, so these patches have commit
+messages that I wrote.
+
+I've tested this on Icicle, and the modules seem to work as expected.
+Unfortunately there appear to be implicit 32-bit divisions (or similar)
+in core Rust code, so, as in the downstream Rust-for-Linux tree, Rust is
+only enabled for 64-bit.
+
+Thanks,
+Conor.
+
+Changes in v3:
+- Use a builtin target and modify it in kbuild
+- Drop the kCFI patch, that's been merged independently
+
+Changes in v2:
+- Rebase, since a good bit of time has passed!
+- Add the extra patch, disabling when CFI_CLANG is enabled.
+
+Changes in v1:
+- rebase on v6.3-rc1
+- resort the `um` entry in the arch-support table while adding RISC-V
+  to it
+- drop 32-bit bits
+- have another crack at assigning authorship
+
+Changes in RFC-RESEND:
+- fix the asymmetrical additions in the Makefile bits
+- add cc-cover to my git send-email command...
+
+CC: Miguel Ojeda <ojeda@kernel.org>
+CC: Alex Gaynor <alex.gaynor@gmail.com>
+CC: Wedson Almeida Filho <wedsonaf@gmail.com>
+CC: Boqun Feng <boqun.feng@gmail.com>
+CC: Gary Guo <gary@garyguo.net>
+CC: Björn Roy Baron <bjorn3_gh@protonmail.com>
+CC: Jonathan Corbet <corbet@lwn.net>
+CC: Paul Walmsley <paul.walmsley@sifive.com>
+CC: Palmer Dabbelt <palmer@dabbelt.com>
+CC: Nathan Chancellor <nathan@kernel.org>
+CC: Nick Desaulniers <ndesaulniers@google.com>
+CC: rust-for-linux@vger.kernel.org
+CC: linux-doc@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+CC: linux-riscv@lists.infradead.org
+CC: llvm@lists.linux.dev
+
+Miguel Ojeda (1):
+  RISC-V: enable building 64-bit kernels with rust support
+
+ Documentation/rust/arch-support.rst | 1 +
+ arch/riscv/Kconfig                  | 1 +
+ arch/riscv/Makefile                 | 7 +++++++
+ scripts/generate_rust_target.rs     | 6 ++++++
+ 4 files changed, 15 insertions(+)
+
+-- 
+2.43.0
+
