@@ -1,119 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6613BBE4;
-	Tue,  9 Apr 2024 04:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C1F55E55;
+	Tue,  9 Apr 2024 10:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712638025; cv=none; b=sYLEMwWgx4tPHuSEU9FxyHEiRgMXUoTMZgj2KH8cOvIYJ+V5ZXYAHBqeIMC+UlLCi0jldS3DgKwFiT/L4rpIFvra26MVmKtOC6V2X8doBjr5/2FHtuN0UTx49keL1qm64iue3OHbavf4FOBpZOZSfjt3nmuNW6Q+J/sAdAsraXY=
+	t=1712658689; cv=none; b=t1N7UP5kUsJSQNsyVBsXty4XUX/BjZL8Q4y8du/bAigPZay9P8eBLEre7Dblo+PcTKfpcauKzCnKr2VwWsQz+aUCTNq2Lt0pjX2YaoDurIEeIDFjyJbwYeereKQLiqAb+E3quzl2CIr8S8Y5pUgesFLfEyEo2kW08Q1mO7d/IcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712638025; c=relaxed/simple;
-	bh=/wRns2YHr/e81UAE5ln2nftiOF08Py5b8V2ul1ELJLo=;
+	s=arc-20240116; t=1712658689; c=relaxed/simple;
+	bh=95/eNQEA2hT6GJXXuLkMPQn2OkasoWu1BXdBrwzlGl4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kOYjYKpg1TZAgZWHhGw+EU1tewpVcEEFTeAJBRu6L3dcVsyysYgZApFJGh42X7V7grd8jaOjIPiUvB08YaQZkOyPeoIPd/OIZqzpw0FL7z7iwUCSta/Wy0jbf6fxHM7/Hocl1yHg3G+Czlz9GHX/I40rgmRpBkkhyxJrBlClAw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1TuIwKI; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=gNy4aGWQvDcfnFpcQ/4egtePglLG3uSJMnkGZKzdxyh+vgZPgGP0QfD6k6OQ3ECphQ97qmi/Z4xkVpSipOGZo9zys2w2tgSiQ7HC8Wjpv5DAgPTfe4eKzag3/plEsKtC/g8ndrqgsKwxe02baiBzsRePQY3OZmcBoss3Uc+4GG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCMlo02B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1TuIwKI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1ABC433F1;
-	Tue,  9 Apr 2024 04:47:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCMlo02B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAC0C433C7;
+	Tue,  9 Apr 2024 10:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712638025;
-	bh=/wRns2YHr/e81UAE5ln2nftiOF08Py5b8V2ul1ELJLo=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=X1TuIwKIKFgH28lx1aWSzHSc/l9q/5WsShWTyf1COXe+KH8o5qkJx/+4l/MZAGdp5
-	 tY3Ii6O3xstLwGlLDwl0ILyJ7iLmlhqJpVaf9zwMAbt2nTNVKmLFa7ltyTVmS1NTjZ
-	 tGQeJYyeNoqkSiziXYMahy4CWp65HxqT8GXv8eYg5hxNH7UTpcJlX4wLvi5xJ22Ds+
-	 gB4OedgEhtiGv0uIRIAN1xSU0atqatc0m59MImyALJFnXLBTf2f8uK3EZb/RfJs8NM
-	 /sxh6FUkFe9z/bUfWj9DDmpuNCe2M5nqp4kqYkxUFErlAYmYmP2tP3htmQfirFktDf
-	 Og+X9lFiXyI0g==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id B751ACE12F2; Mon,  8 Apr 2024 21:47:04 -0700 (PDT)
-Date: Mon, 8 Apr 2024 21:47:04 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+	s=k20201202; t=1712658688;
+	bh=95/eNQEA2hT6GJXXuLkMPQn2OkasoWu1BXdBrwzlGl4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vCMlo02BzURuyLxdIwDM+tm84sC14IiCKw/etLEfkWoG5XTGPfhAcNwtgmsdxDopb
+	 dOBmNQaH7pVfZgic9BN2s/9AYAY1XJqHi/9OSqSKBZ6+h16bNg0Ja8hPL0nikETbWk
+	 yQvnepDHRjxP3xU0dDip6S9ChKKhIrZq4wigumZObFRIS0QG3n9vfLNLghTpw+3Qt+
+	 2lQLSERMJCEkHKRzffBCjnxHG+0omIYX0HOk01rwRZoFyPT8AuzOBJspi+VvrZg5Wk
+	 MedIFW0D57TX18j8Nu6aHI+/wP4nhckgb3DwJ1ERW+hRNkcHoGEm6x4mauog3M83EE
+	 ahXNuM7XR3/9g==
+Date: Tue, 9 Apr 2024 11:31:20 +0100
+From: Will Deacon <will@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Kees Cook <keescook@chromium.org>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
-Message-ID: <6fa87fef-5676-4a26-86d9-45eca6ebd798@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <s2jeqq22n5ef5jknaps37mfdjvuqrns4w7i22qp2r7r4bzjqs2@my3eyxoa3pl3>
- <CAHk-=whY5A=S=bLwCFL=043DoR0TTgSDUmfPDx2rXhkk3KANPQ@mail.gmail.com>
- <u2suttqa4c423q4ojehbucaxsm6wguqtgouj7vudp55jmuivq3@okzfgryarwnv>
- <CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com>
- <c51227c9a4103ad1de43fc3cda5396b1196c31d7.camel@redhat.com>
- <CAHk-=wjP1i014DGPKTsAC6TpByC3xeNHDjVA4E4gsnzUgJBYBQ@mail.gmail.com>
- <ZhQVHZnU3beOhEGU@casper.infradead.org>
- <fec60bba-e414-43d1-bc3e-870f5ffe4626@paulmck-laptop>
- <ZhQjT4xdS3h-GbtC@casper.infradead.org>
- <bmbsx3zfgedqo5ef6yzzvpnwx2ukhzhm33ovb6zyhq4g6vutnn@b7qlnf2pyxvj>
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
+Message-ID: <20240409103120.GA22557@willie-the-truck>
+References: <20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com>
+ <CANiq72mCzRBW7_H5Q4VQF8PGRFwaKJzQwOe8LOP2NbStz4husg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bmbsx3zfgedqo5ef6yzzvpnwx2ukhzhm33ovb6zyhq4g6vutnn@b7qlnf2pyxvj>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mCzRBW7_H5Q4VQF8PGRFwaKJzQwOe8LOP2NbStz4husg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Apr 08, 2024 at 08:58:18PM -0400, Kent Overstreet wrote:
-> On Mon, Apr 08, 2024 at 06:03:11PM +0100, Matthew Wilcox wrote:
-> > On Mon, Apr 08, 2024 at 09:55:23AM -0700, Paul E. McKenney wrote:
-> > > On Mon, Apr 08, 2024 at 05:02:37PM +0100, Matthew Wilcox wrote:
-> > > > In my ideal world, the compiler would turn this into:
-> > > > 
-> > > > 	newfolio->flags |= folio->flags & MIGRATE_MASK;
-> > > 
-> > > Why not accumulate the changes in a mask, and then apply the mask the
-> > > one time?  (In situations where __folio_set_foo() need not apply.)
-> > 
-> > But it irks me that we can't tell the compiler this is a safe
-> > transformation for it to make. There are a number of places where
-> > similar things happen.
+On Tue, Mar 05, 2024 at 01:14:19PM +0100, Miguel Ojeda wrote:
+> On Tue, Mar 5, 2024 at 12:58 PM Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > Add flags to support the shadow call stack sanitizer, both in the
+> > dynamic and non-dynamic modes.
+> >
+> > Right now, the compiler will emit the warning "unknown feature specified
+> > for `-Ctarget-feature`: `reserve-x18`". However, the compiler still
+> > passes it to the codegen backend, so the flag will work just fine. Once
+> > rustc starts recognizing the flag (or provides another way to enable the
+> > feature), it will stop emitting this warning. See [1] for the relevant
+> > issue.
+> >
+> > Currently, the compiler thinks that the aarch64-unknown-none target
+> > doesn't support -Zsanitizer=shadow-call-stack, so the build will fail if
+> > you enable shadow call stack in non-dynamic mode. However, I still think
+> > it is reasonable to add the flag now, as it will at least fail the build
+> > when using an invalid configuration, until the Rust compiler is fixed to
+> > list -Zsanitizer=shadow-call-stack as supported for the target. See [2]
+> > for the feature request to add this.
+> >
+> > I have tested this change with Rust Binder on an Android device using
+> > CONFIG_DYNAMIC_SCS. Without the -Ctarget-feature=+reserve-x18 flag, the
+> > phone crashes immediately on boot, and with the flag, the phone appears
+> > to work normally.
+> >
+> > This contains a TODO to add the -Zuse-sync-unwind=n flag. The flag
+> > defaults to n, so it isn't a problem today, but the flag is unstable, so
+> > the default could change in a future compiler release.
+> >
+> > Link: https://github.com/rust-lang/rust/issues/121970 [1]
+> > Link: https://github.com/rust-lang/rust/issues/121972 [2]
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > This patch raises the question of whether we should change the Rust
+> > aarch64 support to use a custom target.json specification. If we do
+> > that, then we can fix both the warning for dynamic SCS and the
+> > build-failure for non-dynamic SCS without waiting for a new version of
+> > rustc with the mentioned issues fixed.
 > 
-> Same thing comes up with bignum code - you really want to be able to
-> tell the compiler "you can apply x/y/z optimizations for these
-> functions", e.g. replace add(mul(a, b), c) with fma(a, b, c).
+> If the arm64 maintainers are OK with the warning being triggered in that case:
+
+Sorry, I meant to reply on this at the time...
+
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
 > 
-> Compiler optimizations are just algebraic transformations, we just need
-> a way to tell the compiler what the algebraic properties of our
-> functions are.
+> Otherwise partially reverting to the `target.json` approach sounds good too.
+> 
+> I added the `-Zuse-sync-unwind=n` to the list at
+> https://github.com/Rust-for-Linux/linux/issues/2. Given the default is
+> what we want, I have put it in the "Good to have" section.
 
-That might indeed be more straightforward than doing this on a per-type
-basis.  But the C++ guys would likely just start shouting "template
-metaprogramming!!!"  ;-)
+I think we have time to do this properly, like we did for the clang
+enablement a few years ago. In hindsight, avoiding hacks for the early
+toolchains back then was a really good idea because it meant we could
+rely on a solid baseline set of compiler features from the start.
 
-							Thanx, Paul
+So, please can we fix this in rustc and just have SCS dependent on that?
+
+Cheers,
+
+Will
