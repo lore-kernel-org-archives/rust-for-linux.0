@@ -1,131 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C1F55E55;
-	Tue,  9 Apr 2024 10:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2690C823AE;
+	Tue,  9 Apr 2024 10:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712658689; cv=none; b=t1N7UP5kUsJSQNsyVBsXty4XUX/BjZL8Q4y8du/bAigPZay9P8eBLEre7Dblo+PcTKfpcauKzCnKr2VwWsQz+aUCTNq2Lt0pjX2YaoDurIEeIDFjyJbwYeereKQLiqAb+E3quzl2CIr8S8Y5pUgesFLfEyEo2kW08Q1mO7d/IcI=
+	t=1712659841; cv=none; b=h/yZy94C2zJgbCJrFFSHSJnfGvAmsGCggBYIzQzLzN0a++6ytLRmPsQs5n30WBAG4ifeQtfcCFobaTaEn+nbJEWKDdj881kKpT1I0aBhMNvmIi8JImbTN+ZJoj/yGDH0VsHtXun2zxIwCKPZiqQFd1NbUrpzZjyxykJHl33Z9ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712658689; c=relaxed/simple;
-	bh=95/eNQEA2hT6GJXXuLkMPQn2OkasoWu1BXdBrwzlGl4=;
+	s=arc-20240116; t=1712659841; c=relaxed/simple;
+	bh=7d49H/3MDKc37vAmRfm+8BB1JMNOPrM2MZ5puWV2Yvo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gNy4aGWQvDcfnFpcQ/4egtePglLG3uSJMnkGZKzdxyh+vgZPgGP0QfD6k6OQ3ECphQ97qmi/Z4xkVpSipOGZo9zys2w2tgSiQ7HC8Wjpv5DAgPTfe4eKzag3/plEsKtC/g8ndrqgsKwxe02baiBzsRePQY3OZmcBoss3Uc+4GG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCMlo02B; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=dy3UBQLITymu/Ecm0KDnRnu+dbOr+UcUKio5dY9Y7L0OkSD0+3Ugsd7Px5UUmJ25QKzM1YxJXjpDzxz9FdJjMQH7rZBDIqch7rYM4HcqgIfuuBXwn075pwBqSDga3RxLBIcmChy2/pjsUFKy6s/iG/LKhh5qkJ/BaZZDra1s/OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=A6+c2l4N; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCMlo02B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAC0C433C7;
-	Tue,  9 Apr 2024 10:31:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712658688;
-	bh=95/eNQEA2hT6GJXXuLkMPQn2OkasoWu1BXdBrwzlGl4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vCMlo02BzURuyLxdIwDM+tm84sC14IiCKw/etLEfkWoG5XTGPfhAcNwtgmsdxDopb
-	 dOBmNQaH7pVfZgic9BN2s/9AYAY1XJqHi/9OSqSKBZ6+h16bNg0Ja8hPL0nikETbWk
-	 yQvnepDHRjxP3xU0dDip6S9ChKKhIrZq4wigumZObFRIS0QG3n9vfLNLghTpw+3Qt+
-	 2lQLSERMJCEkHKRzffBCjnxHG+0omIYX0HOk01rwRZoFyPT8AuzOBJspi+VvrZg5Wk
-	 MedIFW0D57TX18j8Nu6aHI+/wP4nhckgb3DwJ1ERW+hRNkcHoGEm6x4mauog3M83EE
-	 ahXNuM7XR3/9g==
-Date: Tue, 9 Apr 2024 11:31:20 +0100
-From: Will Deacon <will@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Kees Cook <keescook@chromium.org>, Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="A6+c2l4N"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=fdPl3WFCWHLRN70qmtNx/X3LaV4RnMmwDJdJ+T0QErQ=; b=A6+c2l4NtzCr3n9/z3r782zwiM
+	t8LFZ2Y+6asvkVk0ieqbUPKWxtF67/X0IAKbJiidA9qgUMCQu80Bd3Ys70P+z1te0VntRDE6sSgSY
+	od9Q4gM6yCXEsrnDuoAvwP49i2cA1aJ4AV5t5dJJJ9TI4oHZ6vjCMcMcrqZTcf8Xm5TXOwyzEkmJD
+	aeVg+rKtRVKRuL2YMkIfLqGYTnjFPe+NQBKSioszfByY63QFkGFeO0C4uaypuWZ4L2Qd1pDGR4ooc
+	xgsclxyA2Ldrsb2q7geUJ5Qs31a4NVyzYmJc97Jplwk1LT2VPVVjQylOoLtgQk5zMsBgGEgMjtG9B
+	zNw4txXA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1ru93Q-00000007Z81-2AVo;
+	Tue, 09 Apr 2024 10:50:17 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 0C0F630040C; Tue,  9 Apr 2024 12:50:16 +0200 (CEST)
+Date: Tue, 9 Apr 2024 12:50:15 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	"Bj\"orn Roy Baron" <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
-Message-ID: <20240409103120.GA22557@willie-the-truck>
-References: <20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com>
- <CANiq72mCzRBW7_H5Q4VQF8PGRFwaKJzQwOe8LOP2NbStz4husg@mail.gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [WIP 0/3] Memory model and atomic API in Rust
+Message-ID: <20240409105015.GC21779@noisy.programming.kicks-ass.net>
+References: <20240322233838.868874-1-boqun.feng@gmail.com>
+ <ZgFVnar3nS4F8eIX@FVFF77S0Q05N>
+ <ZgHly_fioG7X4wGE@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mCzRBW7_H5Q4VQF8PGRFwaKJzQwOe8LOP2NbStz4husg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <ZgHly_fioG7X4wGE@boqun-archlinux>
 
-On Tue, Mar 05, 2024 at 01:14:19PM +0100, Miguel Ojeda wrote:
-> On Tue, Mar 5, 2024 at 12:58 PM Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > Add flags to support the shadow call stack sanitizer, both in the
-> > dynamic and non-dynamic modes.
-> >
-> > Right now, the compiler will emit the warning "unknown feature specified
-> > for `-Ctarget-feature`: `reserve-x18`". However, the compiler still
-> > passes it to the codegen backend, so the flag will work just fine. Once
-> > rustc starts recognizing the flag (or provides another way to enable the
-> > feature), it will stop emitting this warning. See [1] for the relevant
-> > issue.
-> >
-> > Currently, the compiler thinks that the aarch64-unknown-none target
-> > doesn't support -Zsanitizer=shadow-call-stack, so the build will fail if
-> > you enable shadow call stack in non-dynamic mode. However, I still think
-> > it is reasonable to add the flag now, as it will at least fail the build
-> > when using an invalid configuration, until the Rust compiler is fixed to
-> > list -Zsanitizer=shadow-call-stack as supported for the target. See [2]
-> > for the feature request to add this.
-> >
-> > I have tested this change with Rust Binder on an Android device using
-> > CONFIG_DYNAMIC_SCS. Without the -Ctarget-feature=+reserve-x18 flag, the
-> > phone crashes immediately on boot, and with the flag, the phone appears
-> > to work normally.
-> >
-> > This contains a TODO to add the -Zuse-sync-unwind=n flag. The flag
-> > defaults to n, so it isn't a problem today, but the flag is unstable, so
-> > the default could change in a future compiler release.
-> >
-> > Link: https://github.com/rust-lang/rust/issues/121970 [1]
-> > Link: https://github.com/rust-lang/rust/issues/121972 [2]
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> > This patch raises the question of whether we should change the Rust
-> > aarch64 support to use a custom target.json specification. If we do
-> > that, then we can fix both the warning for dynamic SCS and the
-> > build-failure for non-dynamic SCS without waiting for a new version of
-> > rustc with the mentioned issues fixed.
+On Mon, Mar 25, 2024 at 01:59:55PM -0700, Boqun Feng wrote:
+> On Mon, Mar 25, 2024 at 10:44:45AM +0000, Mark Rutland wrote:
+> [...]
+> > > 
+> > > * I choose to re-implement atomics in Rust `asm` because we are still
+> > >   figuring out how we can make it easy and maintainable for Rust to call
+> > >   a C function _inlinely_ (Gary makes some progress [2]). Otherwise,
+> > >   atomic primitives would be function calls, and that can be performance
+> > >   bottleneck in a few cases.
+> > 
+> > I don't think we want to maintain two copies of each architecture's atomics.
+> > This gets painful very quickly (e.g. as arm64's atomics get patched between
+> > LL/SC and LSE forms).
+> > 
 > 
-> If the arm64 maintainers are OK with the warning being triggered in that case:
+> No argument here ;-)
 
-Sorry, I meant to reply on this at the time...
+Didn't we talk about bindgen being able to convert inline C functions
+into equivalent inline Rust functions? ISTR that getting stuck on Rust
+not having a useful inline asm.
 
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> 
-> Otherwise partially reverting to the `target.json` approach sounds good too.
-> 
-> I added the `-Zuse-sync-unwind=n` to the list at
-> https://github.com/Rust-for-Linux/linux/issues/2. Given the default is
-> what we want, I have put it in the "Good to have" section.
-
-I think we have time to do this properly, like we did for the clang
-enablement a few years ago. In hindsight, avoiding hacks for the early
-toolchains back then was a really good idea because it meant we could
-rely on a solid baseline set of compiler features from the start.
-
-So, please can we fix this in rustc and just have SCS dependent on that?
-
-Cheers,
-
-Will
+But fixing all that in a hurry seems like the much saner path forward.
