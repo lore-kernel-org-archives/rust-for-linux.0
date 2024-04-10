@@ -1,91 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8993815ECD2;
-	Wed, 10 Apr 2024 13:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C228215EFD3;
+	Wed, 10 Apr 2024 14:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712755364; cv=none; b=COI0WN0pijHgZYQY3fG5wPMz3lKa9/hmW4ateSjdvxxVO9by3gpL1ctsS7i3vODtxU+zQST8Wmc3wS1aov0C/7JbHfK277SZbw9tf1isgrGZNVWo+02kfgiP4WoBZNY+mOxCy0CUJxARdArwAfP7Gjx30rtbRol4qANb19y1IMk=
+	t=1712758833; cv=none; b=rbgmjldMgkkwtiQcNL5XFRbJzk1H2bqdn5daz7wzenJDKyaJk5Erkp8JvssF2o1NYmy3VUMPXHvNx36KWF4xKdQql+OKx4HGjywOqSoWd+Zrs7grBsLbkoPfCOXIZ1kRe9M0hAsh10aN+/PFgYKmNT/6hILpXommYHR1hWd+88A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712755364; c=relaxed/simple;
-	bh=03D0DQleB9vxk8wekat4Pmx/RVLXpwIuxViW/1q3BPE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CnQr18+SNjO7Rdyq5Zpg4f52quwewq+38ykfmpJhVCNDeUMd5lzKaXB7fWdrQp6JqHuK4w25QJWe88eAhqeR9TjBBc5xzGJzwXPq9ftCLC2wJh6bEhqLHauCsE+y/ZZpu8YH+ATeu4aIFibf41h9Ps50cJSNedbgpbFF7pa8jVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPub9SDT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712758833; c=relaxed/simple;
+	bh=96EroGBucN/XgCKG058lK4TrE/wjf9osJZ/hchKA2Qc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=S6Hhv6S3XBGFzQMG2ENRphWWAhohSixc9sChKIS05PJdBobyzj+pP2gxyTzhu+OG4hcr+ft9vXfb9orboajlPzK838fTXQQAAEf/kpjtTLcGWuUlXFexCPotHqRuKuq+fqhk6l0U9B7ckgAWoS4xCkifKhRbITRv16DVpOio2dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8vc0L8S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPub9SDT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FF6C433C7;
-	Wed, 10 Apr 2024 13:22:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8vc0L8S"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 69078C43394;
+	Wed, 10 Apr 2024 14:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712755364;
-	bh=03D0DQleB9vxk8wekat4Pmx/RVLXpwIuxViW/1q3BPE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cPub9SDTJInpTD3h3i5Bm0XMXXDO2+Pu3RoVexjDEgpyIom8aOKTpUnOi2fKfG0v/
-	 Z21+mTqNAwQ3B0ZxoDkdf+ioemD5P4CiEswiaqPYR2YMFl0r6A7CF6u2sRUasBR0fI
-	 q3A3FvUeBdN0WnAVvvxKzvY9zqoV+OKEv93rhNpW8YB4lul59+n6aXt7SE73+lxvAm
-	 UUp6giFw1XTo2UdIUxitRqf07eVX36sLFl2qCFX3CNINltqlz6x/1WSFC209Y5iFfx
-	 f9yEfchlx+Wdet8CZIpQ7odYqnkYwAV2OIENdLL2IhQRy+7gqbGhgMQRycR3Pyrrb5
-	 3f7InogKyfqbQ==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org
-Cc: conor@kernel.org, Conor Dooley <conor.dooley@microchip.com>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
- Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers
- <ndesaulniers@google.com>, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v3 0/1] RISC-V: enable rust
-In-Reply-To: <20240409-unsaddle-skittle-c93eb77732bb@spud>
-References: <20240409-unsaddle-skittle-c93eb77732bb@spud>
-Date: Wed, 10 Apr 2024 15:22:40 +0200
-Message-ID: <871q7d73of.fsf@all.your.base.are.belong.to.us>
+	s=k20201202; t=1712758833;
+	bh=96EroGBucN/XgCKG058lK4TrE/wjf9osJZ/hchKA2Qc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=q8vc0L8SS+ED/SjnwXPSCTK/WjTR5+3x7tIMpmnNdvBupgN/Lc/A7g2ygw7978BME
+	 miUzhSbeVbmDcWBMp1ZA9Dnf1PWEU4hklH0n1CJJ7ytWmLcoWow0ptvKXloPkIOiT1
+	 Nl3QJ/MXEcttk4CsgHCiVJoN95uTi2g1s/VYhyIt8ExwomIk5xQPa72ls1vF8SV5Ab
+	 MV0FoVmc0YTIfDcL8x8Ms/hfsLGG0CJ8mlCY2+aSU1470yOkK/C04J3U/n4TkQlwfM
+	 K9usfAt75uDvCBr7H0FyG1R+P2hiXESDbTenHwZiiT5oQLYCZdEsTOF/Pztoe+Otpn
+	 hNDYfBKwNLAUA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5ACFDC395F8;
+	Wed, 10 Apr 2024 14:20:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 0/1] RISC-V: enable rust
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <171275883336.18495.14519035632596668351.git-patchwork-notify@kernel.org>
+Date: Wed, 10 Apr 2024 14:20:33 +0000
+References: <20240409-unsaddle-skittle-c93eb77732bb@spud>
+In-Reply-To: <20240409-unsaddle-skittle-c93eb77732bb@spud>
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-riscv@lists.infradead.org, conor.dooley@microchip.com,
+ ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ corbet@lwn.net, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ nathan@kernel.org, ndesaulniers@google.com, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
 
-Conor Dooley <conor@kernel.org> writes:
+Hello:
 
+This patch was applied to riscv/linux.git (for-next)
+by Palmer Dabbelt <palmer@rivosinc.com>:
+
+On Tue,  9 Apr 2024 18:25:15 +0100 you wrote:
 > From: Conor Dooley <conor.dooley@microchip.com>
->
+> 
 > I've intentionally not turned on the gcc support, as discussed on
 > v1. I've also switched over to using the target, but it is a bit heavier
 > than the one arm64 seems to be using. RISC-V has fewer targets available
 > and this was the closest. I preserved the redzone disabling, just moved
 > into the Makefile. Any comment from Gary or the LLVM lads on the target
 > would be great I think:
-> https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/s=
-pec/targets/riscv64imac_unknown_none_elf.rs
+> https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/spec/targets/riscv64imac_unknown_none_elf.rs
 > arm64 is using:
-> https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/s=
-pec/targets/aarch64_unknown_none.rs
->
-> I was gonna send this yesterday, but found out last minute I had invalid
-> code in the target generation script. The kernel test robot had given my
-> branch the global all-clear - the rust coverage with all the
-> "depends on !FOO" must really limit the build coverage. I built for x86
-> with rust enabled locally this time to make sure..
->
-> As this as lifted from the state of the Rust-for-Linux tree, the commit
-> messages from there cannot be preserved, so these patches have commit
-> messages that I wrote.
->
-> I've tested this on Icicle, and the modules seem to work as expected.
-> Unfortunately there appear to be implicit 32-bit divisions (or similar)
-> in core Rust code, so, as in the downstream Rust-for-Linux tree, Rust is
-> only enabled for 64-bit.
+> https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/spec/targets/aarch64_unknown_none.rs
+> 
+> [...]
 
-Nice, works with my simple test on VisionFive 2 as well! Cool to have
-Rust support in! Now, BTF just needs to be supported, and I can have
-Rust *and* BPF in my kernels! :-P \o/
+Here is the summary with links:
+  - [v3,1/1] RISC-V: enable building 64-bit kernels with rust support
+    https://git.kernel.org/riscv/c/81889e8523e6
 
-Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
