@@ -1,84 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C228215EFD3;
-	Wed, 10 Apr 2024 14:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E998617B51B;
+	Wed, 10 Apr 2024 16:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712758833; cv=none; b=rbgmjldMgkkwtiQcNL5XFRbJzk1H2bqdn5daz7wzenJDKyaJk5Erkp8JvssF2o1NYmy3VUMPXHvNx36KWF4xKdQql+OKx4HGjywOqSoWd+Zrs7grBsLbkoPfCOXIZ1kRe9M0hAsh10aN+/PFgYKmNT/6hILpXommYHR1hWd+88A=
+	t=1712768279; cv=none; b=kSPF8ycWlwQEBXbZEmHXRF00+dKfCJjewYBqaY0AH/OHtVuCTCwXh+6if0ZBVKwFmC+kknM3oelJhTXZHttetMns0kSJh1N25VVxHY0lqb2DaEybyovUvJXltJq1wmi5ayjsPeDbn6maRya47EUrnxjU7kRRtl1y1AoYt7TwPqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712758833; c=relaxed/simple;
-	bh=96EroGBucN/XgCKG058lK4TrE/wjf9osJZ/hchKA2Qc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=S6Hhv6S3XBGFzQMG2ENRphWWAhohSixc9sChKIS05PJdBobyzj+pP2gxyTzhu+OG4hcr+ft9vXfb9orboajlPzK838fTXQQAAEf/kpjtTLcGWuUlXFexCPotHqRuKuq+fqhk6l0U9B7ckgAWoS4xCkifKhRbITRv16DVpOio2dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8vc0L8S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712768279; c=relaxed/simple;
+	bh=Z/ZgqaypGaV5swi15SPT/jtzv4HSULo1UI0nOqmEKes=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bFX8FCdYmCUWPmmtVL7J2Gs8krU1n+NU+8+Q3mGykH7+j8hHo0S0dxs49z1v8OExHKwyX7xQc0yYS5AdzQmhrEIC14hD0mOm6XjBOrGECbA1L4c984MKHKwIHk4BHxiX6EV3Cz3Oe/xJCmU5UdPpQVYm+meM8AAz/O42+SwPQAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EiizNN1U; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L2QjUseu; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8vc0L8S"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 69078C43394;
-	Wed, 10 Apr 2024 14:20:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712758833;
-	bh=96EroGBucN/XgCKG058lK4TrE/wjf9osJZ/hchKA2Qc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=q8vc0L8SS+ED/SjnwXPSCTK/WjTR5+3x7tIMpmnNdvBupgN/Lc/A7g2ygw7978BME
-	 miUzhSbeVbmDcWBMp1ZA9Dnf1PWEU4hklH0n1CJJ7ytWmLcoWow0ptvKXloPkIOiT1
-	 Nl3QJ/MXEcttk4CsgHCiVJoN95uTi2g1s/VYhyIt8ExwomIk5xQPa72ls1vF8SV5Ab
-	 MV0FoVmc0YTIfDcL8x8Ms/hfsLGG0CJ8mlCY2+aSU1470yOkK/C04J3U/n4TkQlwfM
-	 K9usfAt75uDvCBr7H0FyG1R+P2hiXESDbTenHwZiiT5oQLYCZdEsTOF/Pztoe+Otpn
-	 hNDYfBKwNLAUA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5ACFDC395F8;
-	Wed, 10 Apr 2024 14:20:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EiizNN1U";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L2QjUseu"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712768276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z/ZgqaypGaV5swi15SPT/jtzv4HSULo1UI0nOqmEKes=;
+	b=EiizNN1UGYKYXzf7NRbZWq2tkmt5yiBlDPHkpDAh9Ri1hi8XJ5nzE99AE4MhnhNBLewiSM
+	wHUwV0D6NYfWxaQjQKHRhhhSOA6SE5J/Agy/1Wy4uomoxh4WOH89ZrMHojmSi1gW3wPY3U
+	jYeA1eHDmfEyrTgBmvPpPjWi+IEwG84JkPhO0S6YDG66RuvF0geKWLM9t+YgftTfCkjM56
+	2587eF+AcK9qi0/E3Jrc4QvKVKpn6Vcd3VIbyI/5UAcGXBs3n0v0YBaKUTvyFODSIS3fFb
+	6J1qxOAg2BSKMgku5QHBZ7K71Uopcd8RFnLGC2J5LkeMG/BhRfNLEmGbWyUvAg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712768276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z/ZgqaypGaV5swi15SPT/jtzv4HSULo1UI0nOqmEKes=;
+	b=L2QjUseufo3EpamzfqlCtxYv+wy8YLexNGrqOW2E5n24SXMLLo33ABn9a/7QKMYA17/ilC
+	N0G5TERtlqRbXYDw==
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, John
+ Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Andreas Hindborg
+ <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2] rust: time: add Ktime
+In-Reply-To: <20240322-rust-ktime_ms_delta-v2-1-d98de1f7c282@google.com>
+References: <20240322-rust-ktime_ms_delta-v2-1-d98de1f7c282@google.com>
+Date: Wed, 10 Apr 2024 18:57:55 +0200
+Message-ID: <87v84p2m0c.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 0/1] RISC-V: enable rust
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <171275883336.18495.14519035632596668351.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Apr 2024 14:20:33 +0000
-References: <20240409-unsaddle-skittle-c93eb77732bb@spud>
-In-Reply-To: <20240409-unsaddle-skittle-c93eb77732bb@spud>
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-riscv@lists.infradead.org, conor.dooley@microchip.com,
- ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- corbet@lwn.net, paul.walmsley@sifive.com, palmer@dabbelt.com,
- nathan@kernel.org, ndesaulniers@google.com, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain
 
-Hello:
+On Fri, Mar 22 2024 at 08:59, Alice Ryhl wrote:
+> Introduce a wrapper around `ktime_t` with a few different useful
+> methods.
+>
+> Rust Binder will use these bindings to compute how many milliseconds a
+> transaction has been active for when dumping the current state of the
+> Binder driver. This replicates the logic in C Binder [1].
+>
+> For a usage example in Rust Binder, see [2].
+>
+> The `ktime_get` method cannot be safely called in NMI context. This
+> requirement is not checked by these abstractions, but it is intended
+> that klint [3] or a similar tool will be used to check it in the future.
+>
+> Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830fab.1682333709.git.zhangchuang3@xiaomi.com/ [1]
+> Link: https://r.android.com/3004103 [2]
+> Link: https://rust-for-linux.com/klint [3]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-This patch was applied to riscv/linux.git (for-next)
-by Palmer Dabbelt <palmer@rivosinc.com>:
-
-On Tue,  9 Apr 2024 18:25:15 +0100 you wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> I've intentionally not turned on the gcc support, as discussed on
-> v1. I've also switched over to using the target, but it is a bit heavier
-> than the one arm64 seems to be using. RISC-V has fewer targets available
-> and this was the closest. I preserved the redzone disabling, just moved
-> into the Makefile. Any comment from Gary or the LLVM lads on the target
-> would be great I think:
-> https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/spec/targets/riscv64imac_unknown_none_elf.rs
-> arm64 is using:
-> https://github.com/rust-lang/rust/blob/master/compiler/rustc_target/src/spec/targets/aarch64_unknown_none.rs
-> 
-> [...]
-
-Here is the summary with links:
-  - [v3,1/1] RISC-V: enable building 64-bit kernels with rust support
-    https://git.kernel.org/riscv/c/81889e8523e6
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
