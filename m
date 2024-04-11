@@ -1,81 +1,87 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E998617B51B;
-	Wed, 10 Apr 2024 16:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4D81D6381;
+	Thu, 11 Apr 2024 15:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712768279; cv=none; b=kSPF8ycWlwQEBXbZEmHXRF00+dKfCJjewYBqaY0AH/OHtVuCTCwXh+6if0ZBVKwFmC+kknM3oelJhTXZHttetMns0kSJh1N25VVxHY0lqb2DaEybyovUvJXltJq1wmi5ayjsPeDbn6maRya47EUrnxjU7kRRtl1y1AoYt7TwPqQ=
+	t=1712850000; cv=none; b=Ys/fatOUG5SiwTJm2SNAIbHohIKtyt/5WNlkXkCcdnIilbvlPjMUuE8kPcEVyDctVoYXeS/CdVGGpiSg/G9ONuF1jX7VvMW7C0LPc7HUzmoBW419Nbzur4XmCkE0dMIpiGZzlVYtsG1YA0IOleqGle13a+Px0TmALNxg3FHc8Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712768279; c=relaxed/simple;
-	bh=Z/ZgqaypGaV5swi15SPT/jtzv4HSULo1UI0nOqmEKes=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bFX8FCdYmCUWPmmtVL7J2Gs8krU1n+NU+8+Q3mGykH7+j8hHo0S0dxs49z1v8OExHKwyX7xQc0yYS5AdzQmhrEIC14hD0mOm6XjBOrGECbA1L4c984MKHKwIHk4BHxiX6EV3Cz3Oe/xJCmU5UdPpQVYm+meM8AAz/O42+SwPQAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EiizNN1U; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L2QjUseu; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1712850000; c=relaxed/simple;
+	bh=mOTXpPdaiY/n+o5yUlSF9VJPmoTrThEaztMjh6xCFc8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RmzmD49Nxnyx8pYcs3Rkz6PKUTzAb0ximiDVin5AeQAn96O/BcA71+2BgvCiq/qud1JP+8FsyHrvVjkLHrFX9PM0MPp/6i/AS9cKBGGZ6Y0YdcIzgNyTfAdnGc/3KzMFjsqHes0pnr0dOuffRuVjvqSZspSPuc2Z9cgLGiLaM98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEVv67mH; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EiizNN1U";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L2QjUseu"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712768276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/ZgqaypGaV5swi15SPT/jtzv4HSULo1UI0nOqmEKes=;
-	b=EiizNN1UGYKYXzf7NRbZWq2tkmt5yiBlDPHkpDAh9Ri1hi8XJ5nzE99AE4MhnhNBLewiSM
-	wHUwV0D6NYfWxaQjQKHRhhhSOA6SE5J/Agy/1Wy4uomoxh4WOH89ZrMHojmSi1gW3wPY3U
-	jYeA1eHDmfEyrTgBmvPpPjWi+IEwG84JkPhO0S6YDG66RuvF0geKWLM9t+YgftTfCkjM56
-	2587eF+AcK9qi0/E3Jrc4QvKVKpn6Vcd3VIbyI/5UAcGXBs3n0v0YBaKUTvyFODSIS3fFb
-	6J1qxOAg2BSKMgku5QHBZ7K71Uopcd8RFnLGC2J5LkeMG/BhRfNLEmGbWyUvAg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712768276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/ZgqaypGaV5swi15SPT/jtzv4HSULo1UI0nOqmEKes=;
-	b=L2QjUseufo3EpamzfqlCtxYv+wy8YLexNGrqOW2E5n24SXMLLo33ABn9a/7QKMYA17/ilC
-	N0G5TERtlqRbXYDw==
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, John
- Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Andreas Hindborg
- <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust: time: add Ktime
-In-Reply-To: <20240322-rust-ktime_ms_delta-v2-1-d98de1f7c282@google.com>
-References: <20240322-rust-ktime_ms_delta-v2-1-d98de1f7c282@google.com>
-Date: Wed, 10 Apr 2024 18:57:55 +0200
-Message-ID: <87v84p2m0c.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEVv67mH"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cdbc4334edso4898619a12.3;
+        Thu, 11 Apr 2024 08:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712849998; x=1713454798; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mOTXpPdaiY/n+o5yUlSF9VJPmoTrThEaztMjh6xCFc8=;
+        b=EEVv67mH0srdDt9sS0VMvtb1qDrZeTMxhOI4IpT54v5wbZf4y3VKK0koxLgeZfuguY
+         cbIKu76Q4tTlZwYz4Kzt0ywRO6y3dlrta/gG1Tw9VlhdtU5bb8lxWPyCPv7ODv0+Wt82
+         fDzIHlPm3qL20NMtz22CjeuPESlI67eBx/k9vtSxiuGKqr3qoNHLpvEqNk3pvEhGnyfG
+         Os0m2EGGkcKTkxq65DYpZgzm2E8ts2OrcIug8+MYnrWJk2ePAAuMv4jVSV8yu7dPsG01
+         4YP0Jz0N+2TrAHOq36z0hMf3cAcCvGrhJ1+zO3Oldd7oZYdcjgF2UO5a8NPx67Dc+iWe
+         jvqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712849998; x=1713454798;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mOTXpPdaiY/n+o5yUlSF9VJPmoTrThEaztMjh6xCFc8=;
+        b=ic0Ls/AcNXTRls1aFOvEMxylj/2czMZA7wBgIbC6ZLoBTHLgGXs0YynGWb3fSXP7bh
+         xl+F4zGTtsh0nI70JbDZ8GxBVHHaysX9zt29qS5YIMVwZd8aW1+AqB67zaVgxscTUmY1
+         bZsMz77gdz/auOSikgfWHCpMuiEZWb/uyyqIGecxO6Os1izNmAabjwliwkG6JWe1Hqcr
+         2XRriUkUAtVaKbUKeKGp4dr7sGBdKAtLC5FPM2fwVOr62PQ4TyPF8nyNir/gNKTosJQM
+         evW2pdYEf1zo/4Qvp42lJUSRDfl1qOQUxG+6p/si59lhO2s0Lid3FXIltMKnAlHUIWO6
+         J3Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhbGsaPIxEJMvGJsGlBAgnw3nBLK5tuYj6Hu1Mm0bfn2SfVxtroxX+h75eLCPHYZuHEujncNvtj15eeDbYcIfuvSyK1gEV4LWEy9bR+Yk8Kq54vKnUWwJNoUxq7R5oVBnvzOpL/KbQSB4w25s=
+X-Gm-Message-State: AOJu0Yw8SKj3SUbIqpHSoDGDxTG1SME+CU90+lAc/t7WXj4e1E/EcJHa
+	Hz/ddKkLtg8/WlTtcd7ChL/+lIwXo5IHT/Cy9FfNIJ4sK2vcO4kVyvLQ9T0PXk83TSLZfVK9GLq
+	iig8GXFh5uKREsAWLWs/S1EYvzr8=
+X-Google-Smtp-Source: AGHT+IG4q0v3GRTjlxffhMx0OJyMhxg2Z8Fefx5FWiiVhR+otNHOIDhD9CRH/kdE+O9XbKMNEKe4c5HUktwBTuZPx1U=
+X-Received: by 2002:a17:90a:b384:b0:2a4:9441:13d3 with SMTP id
+ e4-20020a17090ab38400b002a4944113d3mr5562497pjr.12.1712849998503; Thu, 11 Apr
+ 2024 08:39:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240322-rust-ktime_ms_delta-v2-1-d98de1f7c282@google.com> <87v84p2m0c.ffs@tglx>
+In-Reply-To: <87v84p2m0c.ffs@tglx>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 11 Apr 2024 17:39:07 +0200
+Message-ID: <CANiq72=FSPqAq+jEnC=sjtdkJK45-0CgXKrSFXXOF0KSTcLLCQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: time: add Ktime
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 22 2024 at 08:59, Alice Ryhl wrote:
-> Introduce a wrapper around `ktime_t` with a few different useful
-> methods.
+On Wed, Apr 10, 2024 at 6:57=E2=80=AFPM Thomas Gleixner <tglx@linutronix.de=
+> wrote:
 >
-> Rust Binder will use these bindings to compute how many milliseconds a
-> transaction has been active for when dumping the current state of the
-> Binder driver. This replicates the logic in C Binder [1].
->
-> For a usage example in Rust Binder, see [2].
->
-> The `ktime_get` method cannot be safely called in NMI context. This
-> requirement is not checked by these abstractions, but it is intended
-> that klint [3] or a similar tool will be used to check it in the future.
->
-> Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830fab.1682333709.git.zhangchuang3@xiaomi.com/ [1]
-> Link: https://r.android.com/3004103 [2]
-> Link: https://rust-for-linux.com/klint [3]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Thanks Thomas -- if you pick it up through timers/core, please feel free to=
+ add:
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Cheers,
+Miguel
