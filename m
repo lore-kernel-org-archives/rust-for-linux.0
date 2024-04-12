@@ -1,55 +1,55 @@
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D6885645
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Apr 2024 13:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955F81422CD;
+	Fri, 12 Apr 2024 14:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712929886; cv=none; b=Sw6g6hjLlab69L2LMO+Z1841yM6N84Brws2EDi2G9W9euFirCaAOk5iqdWhR0BY0rlKnvILnIK/ojTTw2BEzBCkUeuQ66B8jaKuWwo7GP+cHSF+AWa35LCWLVzBokZkIvsW2LX5b3zAfl56BZGb3dG+bzevqX2vxPqx28KSMYTA=
+	t=1712932940; cv=none; b=EvzLaYdzbbQ3PHWKU6XdxT5Ns1C1TheRxEBEb/5DT7H36RqUHSghAPfbJlU9EHf338rKDBil/TxUVTvdu6K+w0Oc69DewbY8Wpws7li/T3ROw+NElM3t3kxAJWbOhHwS+DLc+KqkfLOF7DPnxA8ryrKuo3BKPaXQaZA61B5k0Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712929886; c=relaxed/simple;
-	bh=53Cs+42uICznC+Xas0chinXqpYt7sWkCvzQ690iV654=;
+	s=arc-20240116; t=1712932940; c=relaxed/simple;
+	bh=Vx9AcN4PoALM5/qtOiCZ6N7gbWAJhqxvNWL/3pXbHDQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IUm6w/sii62IBmK5pQzxUdcNCIPk6fQmMJg+rp5T/Ciwb385MTn/a6eZldk3Io1gXUNWHIereUtxpTmUGl1z6dZRt9o32LfU+WhgR+oCJ8YkyDaxOvmI25GUrhVtbAAMCMsX5HNFsqNyqpef/Q3ap8q1d6zYc2M50FrLLrcQuBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dphFY/ob; arc=none smtp.client-ip=209.85.222.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=BHsg2jLtYK3MevF4xIMq/eERY82hfIzMD/uN7PzBGArHLZxhbIczOyF80AlItlJUHA4g8ifol6pPMm5C/8AC7pHsTwn3WEw8UrQ3mgGiqYzXk71GH9zjVMuWWOiLVHaqfKnabCdL1aNp3dT0u3mej7zRyRMfuyKT9gIRLwgWG0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CaaXOpS1; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dphFY/ob"
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7e81870648cso224957241.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Apr 2024 06:51:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CaaXOpS1"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5dbcfa0eb5dso743415a12.3;
+        Fri, 12 Apr 2024 07:42:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712929884; x=1713534684; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712932938; x=1713537738; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tJnR5552tR98GvdFl2I9gJzxKsxtaACk6KQyxfOH2CQ=;
-        b=dphFY/obs5pjYf4o3FSjgCLJBTcJ5+J+d6Nj3Xr8Vh3rlZExJMe13QB67253zP/c/l
-         QIR+hqVyoDeIivtI1e2aZDdRbH9wM0RpMn6C1cGzUoes85ok1cNlCAvIq3M9+p/Pk/ba
-         Hc/coAOxhbGvVSzefTAA1fnoP/6TXU5bJRkuSNQD45a6cPrEM5vwTfnjowBMuEMC6CUb
-         gxUIlHDNSO360mWTLE9uP/qildXmKhKNqhqxPu2GD0GpJHf9zY+WXuV0RwjsRIgEsv9t
-         RgzCAvmf9PPTWpNqAyDyI8ojxFQxtPhC2B6N8FuNww4p8k/o+Z9P2GfIDrqIO1Y43Mwf
-         B0cw==
+        bh=6QFhwob2H+YmXGrRuSyJw5ag+KZ6vVeg830c04nwrNg=;
+        b=CaaXOpS13Ccuz7QZIsx9i19yM84GIdG0To3bsPxJH6uToHI4HSfVtLKK0KZXFbrvnD
+         w8TCaVpZtcllS5EHipk3QyUqLhyGO+BIRdNjWqlQ+aHQJIose6+7m5K0mP/UBLemFkEK
+         To9l1NOajPXy8i+OoPl3kUMwvH/Uc27Wr3SNyRL2TpWDh9u8HfGlTk97yZnMKoEXbem6
+         v6TXOXdIlmciBVlhkoUsffWVgBXqIxClmNgw7o5KHHiqdFXtSliF4BbQEU5wihpujsar
+         ssNyMxeyHu2Krl2acGpNU6Fpodu5Eu07IP+av+9vLumB3rtKQ3d1eiOyQyO99KxO9Upl
+         SLbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712929884; x=1713534684;
+        d=1e100.net; s=20230601; t=1712932938; x=1713537738;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tJnR5552tR98GvdFl2I9gJzxKsxtaACk6KQyxfOH2CQ=;
-        b=vELfsnxtKarJixus9KFyWJCBaRfrFu5tu9WZZN0s5OBO9taefHMPTcVsOVPZI8lf9G
-         /eoZMeVpPSaneJB+aVXryEmCzFG5aqJoKHe+d/j6eGphGS+cbS2teK6r6ZDKizoPRGqD
-         nMw7XyJFrMs5XNV58ZDbhQouC4FbSv60oGgGUfw6ZGSwkrDD0KxzW5Fz1Pd+48XAIG6G
-         q6VXps2d7O4aA8ar13bXOJwtu/t9CIpMKSDx1dUnws8E7m/tQhEL/2WZo9bq5Uc66oki
-         jFXEeyyDkMFcNxPcjgDJpad1EbBh0peFAxzNB/+uJKcQVuop81y5ScJfXUkmN3pwvHJL
-         s7tg==
-X-Forwarded-Encrypted: i=1; AJvYcCVxwghh9RgntEWWSGONAE28TyYYLX7bJA2CIpyu07t+g0g18IwcJkESkOsgZU2uThEU7p2YSdEqlKRaB/3WtwSv8f8jRgMK0BVCuioYs4o=
-X-Gm-Message-State: AOJu0YxrPGRck3lh1PcYU46+guwD5uDBsiOrMbsTb1DNLe1vYEjdDHdv
-	x8BPhDKZdn0DaETHtl2vd0Kx+letBshjAJxRcBFaQ5j3NWRx68bxHkmeBtEt4GqlwOe3vdhrAb8
-	kMb2LAGea9FYUBtAr7YnYImbGiOxptLMPu6E7
-X-Google-Smtp-Source: AGHT+IHxgfhOwDhXlQkc4GDre4LJSpeZ5vnnJ1PuHWiqe7qJwFHXNft4Odbv4126CJsS+HrJIjBy3eOB/r89t4EkPWM=
-X-Received: by 2002:a05:6102:160b:b0:47a:3ce6:6cfb with SMTP id
- cu11-20020a056102160b00b0047a3ce66cfbmr3725899vsb.19.1712929884209; Fri, 12
- Apr 2024 06:51:24 -0700 (PDT)
+        bh=6QFhwob2H+YmXGrRuSyJw5ag+KZ6vVeg830c04nwrNg=;
+        b=nXE6KVBUhkMpaJqLL/wj3WmoyE6wDudpqaIkmq8UUiUpRi1/9BsleYBIt3+dSbsyAs
+         nJ/0Gt9HDjxFTfrCSUMphf9jAK9PgMaIo4GK1DMxqinFh+/clfcIdvjUrkzM9K+I7W4g
+         JfY26b87P1ZFd/y6j/NKn83nDT6SpFLktT/knnuqD3qUjA2oH/A8MnDWYBWDZXT3BRuH
+         nmXFye72AR4QSCHPwqMpqFOGwT1+qiTdd8mCWAR6iuDCd8oYRiveZ+5h8VFZeGFd39kn
+         9HWBJ5MlL33v7Q7vb9uFHLKwcxRKEGZfXJ3+uhaUAkqnDDU7zBXg4cJBK2WF2H9ReW5c
+         jlVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAhV9dQVQHH2JQvpGXZArB9qpW7z7A8h4Sp5Y8a2xAAQqBBv3tKJMeFSZBcUt1W+6LamWjErUm/2JfurIFizrJwdtBvUGQBqzJ4wpxhHDroKJapQ6/QOiIUFRXvysLlZ1MhkcWNXv15EMthUQ=
+X-Gm-Message-State: AOJu0Yxx/iOFcNbzs6+iyRswCeqeJvseQvLQZfuDs1KrosNdyzECQ6N9
+	izekgh2dFsLhHT3zhExIOKsVjJHOSBbXqXxXrO5Ng1MTTMn8Tu3aLo6I/+38/fcOGOGY6ir6WNL
+	zso3sOEt3SDsL7ZbiEygypXITGco=
+X-Google-Smtp-Source: AGHT+IE9wnsUg4rH8z6mmvraJI+4Eo9u935Luu9KrcObKEviVUPWS/ECrhs1BDPQihTBCvx/S6Hyv8KVZGvxU0Dc4t4=
+X-Received: by 2002:a17:90a:8c0e:b0:2a5:d313:4d3f with SMTP id
+ a14-20020a17090a8c0e00b002a5d3134d3fmr2963704pjo.34.1712932937744; Fri, 12
+ Apr 2024 07:42:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,68 +57,100 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240411230801.1504496-1-boqun.feng@gmail.com>
- <20240411230801.1504496-3-boqun.feng@gmail.com> <CAH5fLgg0CkZO9KF58boui6Y5ajpXHuGh0OxyNru2aEG5pNObwQ@mail.gmail.com>
- <Zhk0q-0eM4z5JHqn@Boquns-Mac-mini.home>
-In-Reply-To: <Zhk0q-0eM4z5JHqn@Boquns-Mac-mini.home>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 12 Apr 2024 15:51:12 +0200
-Message-ID: <CAH5fLghL=G-ihevf1_D0aGffmJMtxtSpMDoTGtrmdiDfhwpKnw@mail.gmail.com>
+ <20240411230801.1504496-3-boqun.feng@gmail.com> <CANiq72nSSAVkynVaAq7bQKoL6N8K2JUXp8AOVvu7vN+siAhk-Q@mail.gmail.com>
+ <Zhk4Uqc4LImR2n_r@Boquns-Mac-mini.home>
+In-Reply-To: <Zhk4Uqc4LImR2n_r@Boquns-Mac-mini.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 12 Apr 2024 16:41:26 +0200
+Message-ID: <CANiq72ka4UvJzb4dN12fpA1WirgDHXcvPurvc7B9t+iPUfWnew@mail.gmail.com>
 Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
 To: Boqun Feng <boqun.feng@gmail.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>, 
 	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	bjorn3_gh@protonmail.com, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Vegard Nossum <vegard.nossum@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 12, 2024 at 3:18=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+On Fri, Apr 12, 2024 at 3:34=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
 rote:
 >
-> On Fri, Apr 12, 2024 at 10:36:05AM +0200, Alice Ryhl wrote:
-> > On Fri, Apr 12, 2024 at 1:08=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > Currently since Rust code is compiled with "-Coverflow-checks=3Dy", s=
-o a
-> > > normal substraction may be compiled as an overflow checking and panic
-> > > if overflow happens:
-> > >
-> > >         subq    %rsi, %rdi
-> > >         jo      .LBB0_2
-> > >         movq    %rdi, %rax
-> > >         retq
-> > > .LBB0_2:
-> > >         pushq   %rax
-> > >         leaq    str.0(%rip), %rdi
-> > >         leaq    .L__unnamed_1(%rip), %rdx
-> > >         movl    $33, %esi
-> > >         callq   *core::panicking::panic::h59297120e85ea178@GOTPCREL(%=
-rip)
-> > >
-> > > although overflow detection is nice to have, however this makes
-> > > `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's n=
-ot
-> > > clear that the overflow checking is helpful, since for example, the
-> > > current binder usage[1] doesn't have the checking.
-> >
-> > I don't think this is a good idea at all. Any code that triggers an
-> > overflow in Ktime::sub is wrong, and anyone who enables
-> > CONFIG_RUST_OVERFLOW_CHECKS does so because they want such bugs to be
-> > caught. You may have been able to find one example of a subtraction
-> > that doesn't have a risk of overflow, but overflow bugs really do
->
-> The point is you won't panic the kernel because of an overflow. I
-> agree that overflow is something we want to catch, but currently
-> ktime_t doesn't panic if overflow happens.
+> That works for me, although I would prefer `Ktime::sub()` is wrapping
+> sub and we have another function doing a safe version of sub.
 
-What the CONFIG_RUST_OVERFLOW_CHECKS option does is enable panics on
-overflow. So I don't understand how "it panics on overflow" is an
-argument for removing the overflow check. That's what you asked for!
-One could perhaps argue about whether CONFIG_RUST_OVERFLOW_CHECKS is a
-good idea (I think it is), but that is orthogonal. When
-CONFIG_RUST_OVERFLOW_CHECKS is enabled, you should respect the flag.
+Why? It goes against the "normal" case in integers. It is also not
+what `ktime_sub()` does, which is the "normal" case here, vs.
+`_unsafe()` and `_safe()` ones.
 
-Alice
+> Exactly, ktime_add_safe() doesn't panic if overflow happens, right?
+> I think that's pretty clear on how time subsystem wants to handle
+> overflow (saturating it, or zeroing it instead of panicing).
+
+There are three variants in C (for addition) that I can see:
+
+  - No suffix: not supposed to wrap.
+  - `_unsafe()`: wraps.
+  - `_safe()`: saturates.
+
+The first one, in normal C, would be UB. In kernel C, it wraps but may
+be detected by UBSAN (this is what Kees is re-introducing very
+recently with 557f8c582a9b ("ubsan: Reintroduce signed overflow
+sanitizer")).
+
+So, in Rust terms, the three options above would map to:
+
+  - Raw operators.
+  - `wrapping_`.
+  - `saturating_`.
+
+Because the raw operators are what we use for arithmetic that is "not
+supposed to wrap" too. That is, they wrap, but may be checked by the
+Kconfig option. Of course, it may be worth having an intermediate
+option that does not actually go for a full-blown Rust-panic for that,
+but the point is that the current "not supposed to wrap" methods are
+the raw operators.
+
+All three, in fact, are "safe" in Rust terms, since none can actually
+trigger UB (in kernel C at least -- it would be different in normal C:
+the first one would map to an unsafe Rust method, i.e. `unchecked_`).
+
+Instead, in the C side, `_unsafe()` seems to be used to mean instead
+"you should be checking for overflow if needed, because it will never
+be reported by UBSAN unlike the raw one". Again, this is based on my
+reading of that commit and the docs on `_unsafe()`. It may be wrong,
+or maybe the subtraction is supposed to be different. It should
+probably be clarified in the C side anyway.
+
+And, relatedly, I see that when the `union` was removed in commit
+2456e8553544 ("ktime: Get rid of the union"), `ktime_add_unsafe()`
+stopped returning a `ktime_t` even when both inputs are `ktime_t`s
+themselves:
+
+    static_assert(_Generic(ktime_add(a, b), ktime_t: true, default:
+false)); // OK
+    static_assert(_Generic(ktime_add_unsafe(a, b), ktime_t: true,
+default: false)); // Bad
+
+It returns an `u64` now, which could surprise users, and probably
+should be fixed. The only user just puts the result into a `ktime_t`,
+so there is no actual issue today.
+
+> I must defer this to Thomas.
+
+Yeah, the question on the C API was meant for Thomas et al.
+
+> Maybe, however neither of this function probably shouldn't have the
+> panic-on-overflow behavior. So I agree that overflow checking is not a
+> bad thing, but when to check and how to handle overflow should be
+> controlled by the users, and making the default behavior
+> panic-on-overflow doesn't look reasonable to me.
+
+Yes, it should be controlled by callers, but the point above is that,
+from the looks of it, these interfaces are not meant to overflow to
+begin with.
+
+Cheers,
+Miguel
