@@ -1,90 +1,150 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D82233997;
-	Fri, 12 Apr 2024 07:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B8B4C601
+	for <rust-for-linux@vger.kernel.org>; Fri, 12 Apr 2024 07:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712906152; cv=none; b=ZCTyfOkRM2DVA8TjagwnVfcvF+cv+J8+ZDI3ruz2KwN4osy/G8uOtNMfA+Zx0wyM+dPqbgJuU6Ye8II1CZ57RifZAp1MdpNra72rLfczc3fvmhVJ/WFcXRGmmUQK2pQK+RqngI0eKfgXkX+mWCAQgcV23Qk/L6AHh9HV9j1eLgg=
+	t=1712907812; cv=none; b=OCWOAZr+KrbHrNtmIw2bhCWIjhjzVtB4iHw6lJ7xnzPmyL1p0QnimEvuWNerKzd+r+NZD2W57l+WuB9nPIT+N58rnZit5O3TJq6wFIEFtz5L/LWKfuJxlROv0htaFieuJOgQKJOvQGrUu3MRRA8gA28ItyOzgL5nkzUZzB4g+dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712906152; c=relaxed/simple;
-	bh=UjP+u8inUNDeGn6EQjkZzP5Cof1Lxv2OjXKfvLD8OVs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EGC62nHKfAiNvHBG/Vwk8RuN3wWR82e9xcftLrgLxuIfAV8WWhwnh05vwbNWuQaFivjoEr3nojWeOPKhCXv+fu1Bcs250mqdc941e6W2AlqKChtsqH4GydFoixVbfmc1c0tts5HNYkdky3SoZoX93Yatnd2hL9BR7QZZ86PJU7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mKOYWLqs; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712907812; c=relaxed/simple;
+	bh=qc0S/CJU4kowJo7WTVvoeKMKqd4touOpNFtnd9qaJws=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kYvlti5GO2KNAcsBl1GL5nmTQs00+NwCsNtV82hYG/Dce/CSAgKWBR/5N+MwMeq8EznHyPYaBfvtidN9d/gIUQ56ya69Kbj87GXpsh/hIiTfA9IlCOHgV2nNStLUjnbNK2QTw8QlvtYjq0lywLWSFcwxcS4huUsWzCD/HiXrt1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hYTBrWPt; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mKOYWLqs"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2a6fa7773d3so164003a91.3;
-        Fri, 12 Apr 2024 00:15:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712906151; x=1713510951; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UjP+u8inUNDeGn6EQjkZzP5Cof1Lxv2OjXKfvLD8OVs=;
-        b=mKOYWLqsZSesXx2hd+cpYCOdwrgbBD29vMzYbfa/VxzmjpH9HTWhoUr/Or7A2Y7ArD
-         ZZjC5JTnpvaxKk3zOy1LLcOJ/AToHI/mTjDdNrrTxHPnlrMTNqdJ1ex+y6wg5SwV/V7i
-         J3gttC96w+co3mB8ZT7ZRwkV7QxEW8xSUkC+UrAyvKaQwgxvyoJlpRlT59GgG6qlk38r
-         h6zwW3Po8R+YkG6WbuubC/5Ln8HipoaEDS55tk3k5tSWkiPJbyIJfHVxofVuVomT/Wgn
-         WSnQ6Tek1NFiXc5BbBzdW8ryHGv68uzVGEYdQ3OVRyZ0dDBpnKh0ZYg7zqJROe9lE8m9
-         qggg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hYTBrWPt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712907809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qc0S/CJU4kowJo7WTVvoeKMKqd4touOpNFtnd9qaJws=;
+	b=hYTBrWPtfLWyTXk4TaF9tGAZVcWseXZYAxzDxuXaTzxDhWK0LP2Y0637awCab389WDNhnp
+	RL7oSdWlM2u4gYlRiExfNv7+1V+VY4npvpxViH4m67e8WLubW1P8iDPA3fBR36ZjhnfWIY
+	kPY5AKoAnioQQ6KbLFjS0tZJ0tLWdzI=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-43-_fbE_oNnMFS1-dWgGXxlaQ-1; Fri, 12 Apr 2024 03:43:28 -0400
+X-MC-Unique: _fbE_oNnMFS1-dWgGXxlaQ-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-69b147e856aso3371356d6.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 12 Apr 2024 00:43:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712906151; x=1713510951;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UjP+u8inUNDeGn6EQjkZzP5Cof1Lxv2OjXKfvLD8OVs=;
-        b=jTwsROtOngBqjbBd4rW6ztZ4I3SzQYPpyrrbeEfk4U3wEfHRo/zHZCXSkJynwVhv3w
-         6YColM1gZRuUvjI7mnbl7IP65Wmw07YBo32XrUjpWy0cU2a1bobkZRPdcUOc4QLivcMT
-         UxzvZP3EnTso8AcoPJZ7JyRVqgDYAs590tEch96Gd/5d0lod4p6PqfgIVQs2I+BEfshm
-         tCwkXBhgxI++KbmIs0NeEiRKEKEq7Kau/o1SkZ6FfWJU52UGAeX7ewQ+q3Nkw8hLYYiU
-         UpEsgThONUyM9N/y2hxnDgkXXtOhmHxIdkKc5AOsFnhsh0tnHU6yPOctuB7XD9tOmZ/g
-         mpMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBLitnrH/Kjzmj1NtkNi5N9f6ujEdOd/FSWFp2SfXfJMlxSJh5MMYvM5rtqFDdr+Fn0zOmgWuhOE2GdJ95J/DEE/x7ipa3sVPShjER/rtXOL3RFLpofrSNrCPvDKn/R///XJdYxSdnjrcZVUc=
-X-Gm-Message-State: AOJu0YwOvavKh+3Fp+0/b4VWANBemfZ2zBUudAWZgMm3RCIph0laFI3e
-	0QWs40SYMoFcB1SnZ4Vx1X5Nfy7xtlJnzXawv/7X/Id84Q2pijKWtQiEZtUiOhXdQTyCb3pSPnk
-	z+tQ85gFKIKdaTxkKe0HJ/igD9+8=
-X-Google-Smtp-Source: AGHT+IFt21iC+I+98dYYB0YgyXWL2iQiZOsddukFqRXo3hCJ1kcb9XT34v8rvaaS1nanvJYssP/fN+fAcX3BuT4vluE=
-X-Received: by 2002:a17:90b:1a8d:b0:2a2:3223:1930 with SMTP id
- ng13-20020a17090b1a8d00b002a232231930mr1686269pjb.8.1712906150831; Fri, 12
- Apr 2024 00:15:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712907808; x=1713512608;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qc0S/CJU4kowJo7WTVvoeKMKqd4touOpNFtnd9qaJws=;
+        b=llOh2km98M18R98qisjpTjNKoV1w4l/9pGFILTdWMFTVr8nf45ooUMi1rT/veKBbMA
+         0YmUJ0j36pDbuEWgArd8Kyg/tRscSJPTYzmUe6nztabTY3WsadqsRAh3slDl/LfV7EU3
+         EfMAOnaOiDayPImNCBWyBRNMFYXy0XI/3QNjSljxoY9960gL9/7z8NcPRsktdL/xEzkh
+         gXdps8Nq76BVrFKzWDj5EhRvFShlonlqCNUoPixY2BvU22kK6rrk1GgqAZnTp3xuj0gE
+         niBsQrV+4hQKkojsUwgApaQyzlTx6zH09GIxsWQGIdCir+qN/Qup2O1ZKhP1/WUPlJFL
+         wClA==
+X-Forwarded-Encrypted: i=1; AJvYcCUm4qdVTGa0CluUdr6L9ayYVJBQlOy5H2pf0dteQ7IS2WNFr7HYSCO7uVmtMXf1UZIW/gTGLdbGkYWlKmHDgXe6vvJB/lZnF0xPgw4Fb0k=
+X-Gm-Message-State: AOJu0YxFiLiVG6ZfVNaoUr55zbDuKt4RjQfBO0Q9+KJOxNDD8i3i3iaE
+	PS+pjcWe7lmcztHGp1LlNgZqMn+Ezv6y+0Qq3kIDOxKHJlOL27/4okOAkmufF2HsNsvK23xpwgk
+	iwwgasdkjlppIA/wYSlul1ivRTuPuvXZ3thPDOD96Gr8vvWS5Tq856WMOSBQWgcDIJmVUirwe
+X-Received: by 2002:ad4:5bce:0:b0:696:6f95:4421 with SMTP id t14-20020ad45bce000000b006966f954421mr1970844qvt.1.1712907807782;
+        Fri, 12 Apr 2024 00:43:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhbJzhAj6YWiTxFFMhWnlebwH14TqL2Kj0GSChQpwNRps3BhQh6ASMCG3Py+7Kp5JK7f0ATg==
+X-Received: by 2002:ad4:5bce:0:b0:696:6f95:4421 with SMTP id t14-20020ad45bce000000b006966f954421mr1970825qvt.1.1712907807497;
+        Fri, 12 Apr 2024 00:43:27 -0700 (PDT)
+Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id f6-20020a056214164600b0069b10d78445sm1956974qvw.142.2024.04.12.00.43.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Apr 2024 00:43:27 -0700 (PDT)
+Message-ID: <f08c06a4e8361f2cb55cd0dc1fa2bc2b0a046049.camel@redhat.com>
+Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Boqun Feng
+	 <boqun.feng@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>,  Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,  Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
+ Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Date: Fri, 12 Apr 2024 09:43:24 +0200
+In-Reply-To: <CANiq72nSSAVkynVaAq7bQKoL6N8K2JUXp8AOVvu7vN+siAhk-Q@mail.gmail.com>
+References: <20240411230801.1504496-1-boqun.feng@gmail.com>
+	 <20240411230801.1504496-3-boqun.feng@gmail.com>
+	 <CANiq72nSSAVkynVaAq7bQKoL6N8K2JUXp8AOVvu7vN+siAhk-Q@mail.gmail.com>
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240411230801.1504496-1-boqun.feng@gmail.com> <20240411230801.1504496-2-boqun.feng@gmail.com>
-In-Reply-To: <20240411230801.1504496-2-boqun.feng@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 12 Apr 2024 09:15:00 +0200
-Message-ID: <CANiq72kzLfe1=wDboKb8zzz8i5GHQxhohgz22+x4Ut+sqEyc2g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: time: doc: Add missing C header links
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	bjorn3_gh@protonmail.com, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 12, 2024 at 1:08=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> The definitions related to jiffies are at linux/jiffies.h, and the
-> definitions related to ktime_t are at linux/ktime.h, since
-> `kernel::time` provides the functionality dealing with jiffies and
-> ktime_t, it makes sense to add links to them from Rust's time module.
->
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+On Fri, 2024-04-12 at 09:14 +0200, Miguel Ojeda wrote:
+> On Fri, Apr 12, 2024 at 1:08=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com>
+> wrote:
+> >=20
+> > Currently since Rust code is compiled with "-Coverflow-checks=3Dy",
+> > so a
+>=20
+> Nit: it is enabled by default, but configurable
+> (`CONFIG_RUST_OVERFLOW_CHECKS`).
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Is that going to remain enabled by default or what was the plan here?
 
-Thanks Boqun!
+P.
 
-Cheers,
-Miguel
+
+>=20
+> > although overflow detection is nice to have, however this makes
+> > `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's
+> > not
+> > clear that the overflow checking is helpful, since for example, the
+> > current binder usage[1] doesn't have the checking.
+> >=20
+> > Therefore make `Ktime::sub()` have the same semantics as
+> > `ktime_sub()`:
+> > overflow behaves like 2s-complement wrapping sub.
+>=20
+> If `ktime_sub()`'s callers rely on wrapping in some cases, then an
+> alternative we should consider is having a method for explicitly
+> wrapping, like the integers. This would allow callers to decide and
+> it
+> would make the expected semantics clear since the beginning (which is
+> the easiest time to add this kind of thing) for Rust code.
+>=20
+> Otherwise, I agree we should at least document the preconditions
+> clearly.
+>=20
+> Having said that, I see a `ktime_add_unsafe()` too, which was added
+> due to a UBSAN report for `ktime_add()` in commit 979515c56458
+> ("time:
+> Avoid undefined behaviour in ktime_add_safe()"). There is also a
+> private `ktime_add_safe()` too, which is a saturating one.
+>=20
+> So, given that, can callers actually rely on wrapping for these
+> functions, or not? The documentation on the C side could perhaps be
+> clarified here (including the mention of UB in `ktime_add_unsafe()` -
+> -
+> we use `-fno-strict-overflow`) and perhaps using the `wrapping_*()` C
+> functions too.
+>=20
+> In addition, Binder calls `ktime_ms_delta()`, not `ktime_sub()`,
+> right? In that case the arguments are called `later` and `earlier`,
+> perhaps those have a different expectation even if `ktime_sub()` is
+> allowed to overflow and thus it would make sense to check in that
+> function only instead? (and document accordingly)
+>=20
+> Thanks!
+>=20
+> Cheers,
+> Miguel
+>=20
+
