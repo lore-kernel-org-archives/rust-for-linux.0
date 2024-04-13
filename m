@@ -1,224 +1,128 @@
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A008663C8;
-	Sat, 13 Apr 2024 01:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8107ABE40;
+	Sat, 13 Apr 2024 02:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712971841; cv=none; b=O9KnBJWriym+gWDZoZIc6MWvr4MkznOWvB4DfP3uUXNEUS+PwbnE2kb+SrsuT88pCuNy86kDhaBqo8WHMupez+blh/G0oEj4D/vHJQatqaJKU31Pw1SBNVwTQLGVJUS/wEHVsaNyiWJecPFKy/6EJgM36zR8NZyBy8+N5bmpX/8=
+	t=1712974665; cv=none; b=dQACvDUx6a7jFEnKzEKJOOc295gyBl9VFQpy09veIqmnBY8MS4xHHc7AyfW17P7IhvFHONqFS/cOuwl2MNY7mn2jI9WToeGe1Bxoyk+i6RXnMQdq4L/05ALfDF06dQhIEaVT7jz8SGgMW+EkpM/l+PVWAfSaGs9ysqRtlL1NRCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712971841; c=relaxed/simple;
-	bh=RlBJ6FJhdBQgcIf20qlpXCjBXGhLET1XFZuTUNZ6Yaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PlTXTVGljOLmpmtOs1LxxE9DkPI24dm0SHmGG3WmkWSk78HE1xTZIbDTJAhPt9wmcNpn0JZMF/V+VPYhEiSi0UHuUvAHjQTeki+oqdIeOYQOp+gMWihpjvgS641Fy1no8XHqIU+fdZlWQCD4ctqO9FIlFXbnzKbER+grLuLFuaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QSJzKSm6; arc=none smtp.client-ip=209.85.217.48
+	s=arc-20240116; t=1712974665; c=relaxed/simple;
+	bh=8H5mcOiwbA6iWP7BER7hyEiAZ3aCJSzdPSLLamrrlUU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xg3tlpye4VEOfkQXTSGCsC9SxMXC/NKVeqGrGw6erp7XJIBpuxGnXVt717e7AgvJLXdCJRLd+4JgeE6q+r5+mDS3MiZMfJPjZt3CLCa7SNMcjMas125wIVGFpVwe6kAOEBt6CkW8n8f9rqOZ3pFXeG54m6f4mOvr5i4tHl4xUTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Efbp56OA; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QSJzKSm6"
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-479c0e8b1c5so413327137.1;
-        Fri, 12 Apr 2024 18:30:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Efbp56OA"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2a52c544077so1084985a91.1;
+        Fri, 12 Apr 2024 19:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712971838; x=1713576638; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=WGZV+9Baru/G/BJ7iBWX/ai40r2yV5HMJ8W7pjdUee8=;
-        b=QSJzKSm6XfIKekPqtsNuLo5Wb3MR1lTlXXZg3T4hZBCnJo1dkAGZcAOP2GzeP/faeH
-         oP771Pe0z0nVSXOBLrZe58SSQPGDtag4hwgnPKNynlmoIKN3vzj76V/1gRalpt7UdloT
-         pkHeu632xx7lfI2j+EYHJWkWqI26689mcCtZ41cACl6gcLLU1dmpjXvSJfKUUNdyZack
-         ksdg7dCzX1ze7CRCR68Tp7dfSP+4maxRVxHYv+TX37Urz+s2//DSB7PybXTHmx8965di
-         a1drbW1ciPVcSayNHC2rIMhq7i0NeRs7g/5+BLUw38XUkidsn2DQG6FUIKXfMXQux5pP
-         0jhQ==
+        d=gmail.com; s=20230601; t=1712974664; x=1713579464; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8H5mcOiwbA6iWP7BER7hyEiAZ3aCJSzdPSLLamrrlUU=;
+        b=Efbp56OA8wvYldi70to+mUaL38U1sDL9OXCuOlNc50PNy+niflbQ/5FQytkHhtO3vR
+         0DBHHUMXg7Dm43xI/FUlVja1FUNsCcFyD7YE21tP46otSlDroIuwp4Ize5B53IQlM5jX
+         r4JCzeMONN5NYwF0QMsE6BVYo97qzg9HIZX6kgec8X9qzvGQ8U29xrZUn1jqAFy9vrlE
+         SRKF/gsws6S/52JE5f1Bn0VtqDcYPCfxMbAxdPm9RYLBROFpmNfluQaDcX5PxjCGQ/hK
+         ZYgMd27ZkfQ0yDCuj1/J5WR+H6l05Kj/mfTcopXndO+lwdVTrI3E2xQ14FP8GQJzZ60K
+         tBLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712971838; x=1713576638;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WGZV+9Baru/G/BJ7iBWX/ai40r2yV5HMJ8W7pjdUee8=;
-        b=HHUmq/aX9yJkEXz1OjPEY4kdx+KwmI7MFmo26ZOf2BzMXHGdyTQAdwGA7tqoTKAy1I
-         03xB+DSHh6DztB76Kzpz4VKmgWPG+IoqMK2wOv2QB8/MKqp3TH7fCn9cUwKJeJG5dSoT
-         /4nkoaaVKEvZdPx+AGmIq6fwr2zNHrJZupZhcflRTpr/Spdn3mLqd41bCDx83G+YBjvh
-         O1Z/5X7GBQBUwWreZKAjCV9c9U4eK0BkmDUVFwJ7harmevBRavBz8CrChjWzKBrhXA1N
-         0a7kLuWrDKSPcmEH1S5bQCp4/JbuaqnET4CKkpkSsE2REX5bAc99fCy/VdHmL+XwDz7l
-         DsSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWifcDAJQMri2BMoMupIZw6JYkIUrA79GbLYY1ooPsE/XxQ5dZ3l1QocKTBYb5Cc0qvMgZG9jwona/OCaoFfQ2COI+YC2FJ1VNg3pVNg2XFCQV5JBZgo8X3i2YSob5vlqUgMWcji0O6NX4UDI8=
-X-Gm-Message-State: AOJu0Yy05vAnAja5AshHQmZazDL2x55YD0MjMFnOjj64Kkkd/SLYZcNj
-	UFDz64liMY4N2cKBsL8QSjd9P59D6bgXfinQpHbrslys4U3LwUm1
-X-Google-Smtp-Source: AGHT+IHS/N8QDRdQcxdF97ORpJiSqEdWxBgscXHLMzsACh9++T2iQtEGnwLq3nWivu3FBHa+C9qWDQ==
-X-Received: by 2002:a05:6102:f94:b0:47a:42c4:4cde with SMTP id e20-20020a0561020f9400b0047a42c44cdemr5751224vsv.18.1712971838479;
-        Fri, 12 Apr 2024 18:30:38 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d24-20020ac85358000000b004364d940d3dsm2878244qto.96.2024.04.12.18.30.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Apr 2024 18:30:37 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 11B261200066;
-	Fri, 12 Apr 2024 21:30:37 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Fri, 12 Apr 2024 21:30:37 -0400
-X-ME-Sender: <xms:POAZZihf7kZ8o-pThSc6ydkfq_pk4FB6usxnDrWN9MhcHdkC59VS1g>
-    <xme:POAZZjCQ0g31iflkM9t3F4k5P6M-NcwV0nCf8o5_rtmRR_7a24N2ngizzHzIaZVYj
-    ar1VyrT55bLrJu8Jg>
-X-ME-Received: <xmr:POAZZqHc0pN7NsOxptgyVot2cNbAbWu20bsHYvOK_LxPB9HlZVBqUFFcUA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeihedgtdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefh
-    gfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:POAZZrQCUKoXT_bnydx2daT60K3T-1r2MO79noUpm_c9eEBTO9w30A>
-    <xmx:POAZZvyisjjaISvpviSNW6f8yp3qDYnX6g2tAjs2nYieq_OT-karwQ>
-    <xmx:POAZZp5ptOs5M9SsEEDxRz7DpmNDE6LleF3CEIkVXC5sLbY5GGzLxw>
-    <xmx:POAZZsx9-kZ_gSdKTGj34w7jx59jk8CadewHA84ku4AZC6CmWLBKUw>
-    <xmx:PeAZZrikbS4JyF6GkM5KxnDoLCGW7vkkFZrtkFuOhR2cYjs2DaO_g2PS>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Apr 2024 21:30:36 -0400 (EDT)
-Date: Fri, 12 Apr 2024 18:30:34 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vegard Nossum <vegard.nossum@oracle.com>
-Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
-Message-ID: <ZhngOs7Xze65i9Qy@Boquns-Mac-mini.home>
-References: <20240411230801.1504496-1-boqun.feng@gmail.com>
- <20240411230801.1504496-3-boqun.feng@gmail.com>
- <CANiq72nSSAVkynVaAq7bQKoL6N8K2JUXp8AOVvu7vN+siAhk-Q@mail.gmail.com>
- <Zhk4Uqc4LImR2n_r@Boquns-Mac-mini.home>
- <CANiq72ka4UvJzb4dN12fpA1WirgDHXcvPurvc7B9t+iPUfWnew@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1712974664; x=1713579464;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8H5mcOiwbA6iWP7BER7hyEiAZ3aCJSzdPSLLamrrlUU=;
+        b=EfeXbqzw22Jy4IBu/UYHlQ0ApudU4PBRHx/R/CEGwjIoS/makzB1s+gE1MHRNdchLQ
+         XrYdmpip67s7uYAM6UGVNlFLP78tsnt+bBtHjbxbFh+LGBMIfATt1eThSftxWMfNxtvj
+         MSfmtkaeoh+mvUr/tU/xGSrw375p7/CTgqssrCkskiT2GY6/MnreKippWryetRLfCLFu
+         xHiw5q9teV59NBPXxT9Wi4Hbgit+lYusPJc40Xl3KhKQmLPYQb4yRRINe56VYh4uNaJ5
+         proGOEXmvtJe6NmGtH8rwYmydb5+7iuLwlBsD5zHRQ6847l+9EBuUrzBSkh2dQvlN24N
+         6Yiw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnUkOZDk5YPNTVWAEoJJ0BMMKEGUOZ5BmZXBsB/kMej+HBzqOtIFp5KkzPOU3NH23OjYfdHT52weY430MG5Xdjo8vEEUyUN01fhnPdiDNdSujPco+SXZW8k7ie8y8x7L1lCWyJcWCS1b9nuRw=
+X-Gm-Message-State: AOJu0YzrjnVf8uB4tSH5iGaAMTRfJxeB3T4lSZMtNdLQWQXcgl8jN06t
+	q/p8DADS5+9uAhwSIAm39rE3Qic1xcTLsmQDNZgKyioQOuZjw15muXnpuXyiVl4891FksSMpn5K
+	6wn+jqAo/tQLEGhE+zuodUP4+kL4=
+X-Google-Smtp-Source: AGHT+IH6mcBye0oMl6nLhuG4Z4sw3LAzzSUksMULw9UmEp/wN5kpVQ/iY0+x5BwzKABNOubsDydvGI4rrlbjNAxKsx0=
+X-Received: by 2002:a17:90b:1243:b0:2a5:bf83:8db8 with SMTP id
+ gx3-20020a17090b124300b002a5bf838db8mr4003963pjb.4.1712974663770; Fri, 12 Apr
+ 2024 19:17:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72ka4UvJzb4dN12fpA1WirgDHXcvPurvc7B9t+iPUfWnew@mail.gmail.com>
+References: <20240411230801.1504496-1-boqun.feng@gmail.com>
+ <20240411230801.1504496-3-boqun.feng@gmail.com> <CANiq72nSSAVkynVaAq7bQKoL6N8K2JUXp8AOVvu7vN+siAhk-Q@mail.gmail.com>
+ <Zhk4Uqc4LImR2n_r@Boquns-Mac-mini.home> <CANiq72ka4UvJzb4dN12fpA1WirgDHXcvPurvc7B9t+iPUfWnew@mail.gmail.com>
+ <ZhngOs7Xze65i9Qy@Boquns-Mac-mini.home>
+In-Reply-To: <ZhngOs7Xze65i9Qy@Boquns-Mac-mini.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 13 Apr 2024 04:16:52 +0200
+Message-ID: <CANiq72mwx6uA4cWRjpUxu4E1MLZhnofuwXLBnYFn-eUG7-aN3w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	bjorn3_gh@protonmail.com, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 12, 2024 at 04:41:26PM +0200, Miguel Ojeda wrote:
-> On Fri, Apr 12, 2024 at 3:34 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > That works for me, although I would prefer `Ktime::sub()` is wrapping
-> > sub and we have another function doing a safe version of sub.
-> 
-> Why? It goes against the "normal" case in integers. It is also not
-> what `ktime_sub()` does, which is the "normal" case here, vs.
+On Sat, Apr 13, 2024 at 3:30=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> Based on your reply to Philipp, I take it that
+> CONFIG_RUST_CHECK_OVERFLOWS can be enabled in a production kernel,
+> right? IOW, it's not a debug-only feature like UBSAN (or maybe I'm way
 
-Seems we have a different reading of `ktime_sub()` ;-)
+Yeah, it is intended to be used in production (for those that want it,
+i.e. not everybody will want it; and probably we will want to provide
+other modes of operation when the check fails as I was mentioning,
+e.g. report and continue with wrap).
 
-Based on your reply to Philipp, I take it that
-CONFIG_RUST_CHECK_OVERFLOWS can be enabled in a production kernel,
-right? IOW, it's not a debug-only feature like UBSAN (or maybe I'm way
-wrong, that UBSAN is also a feature that production kernel can or
-already use?). If so, then the current `Ktime::sub()` has a different
-behavior compared to `ktime_sub()`: it will perform overflow checks and
-panic (which is BUG()) in production kernels.
+> wrong, that UBSAN is also a feature that production kernel can or
+> already use?). If so, then the current `Ktime::sub()` has a different
 
-Now I wasn't trying to say substraction overflows shouldn't be checked
-(by default), the thing is that `Ktime` is just a `ktime_t` wrapper, so
-it's natural that it provides as least difference as possible. If it was
-a standalone abstraction, then by all means let's add different APIs for
-different purpose.
+Generally userspace sanitizers aren't, but they may be (like the
+minimal runtime in Clang).
 
-If you look at ktime API, ktime_sub() is the only one doing
-substraction between two ktime_t, there is no raw or unsafe or safe API,
-So as a minimal abstraction, it's natural for a user to expect
-`Ktime::sub()` behaves like `ktime_sub()`.
+Not sure about the "status" of each kernel one, Cc'ing Kees (sorry,
+you got dropped), but I imagine things like the integer overflow ones
+with `UBSAN_TRAP=3Dy` may be fine in production.
 
-That's my reasoning, but it depends one a few "if"s and what time
-subsystem wants to do.
+> Now I wasn't trying to say substraction overflows shouldn't be checked
+> (by default), the thing is that `Ktime` is just a `ktime_t` wrapper, so
+> it's natural that it provides as least difference as possible. If it was
+> a standalone abstraction, then by all means let's add different APIs for
+> different purpose.
 
-> `_unsafe()` and `_safe()` ones.
-> 
-> > Exactly, ktime_add_safe() doesn't panic if overflow happens, right?
-> > I think that's pretty clear on how time subsystem wants to handle
-> > overflow (saturating it, or zeroing it instead of panicing).
-> 
-> There are three variants in C (for addition) that I can see:
-> 
->   - No suffix: not supposed to wrap.
->   - `_unsafe()`: wraps.
->   - `_safe()`: saturates.
-> 
-> The first one, in normal C, would be UB. In kernel C, it wraps but may
-> be detected by UBSAN (this is what Kees is re-introducing very
-> recently with 557f8c582a9b ("ubsan: Reintroduce signed overflow
-> sanitizer")).
-> 
-> So, in Rust terms, the three options above would map to:
-> 
->   - Raw operators.
->   - `wrapping_`.
->   - `saturating_`.
-> 
-> Because the raw operators are what we use for arithmetic that is "not
-> supposed to wrap" too. That is, they wrap, but may be checked by the
-> Kconfig option. Of course, it may be worth having an intermediate
-> option that does not actually go for a full-blown Rust-panic for that,
-> but the point is that the current "not supposed to wrap" methods are
-> the raw operators.
-> 
-> All three, in fact, are "safe" in Rust terms, since none can actually
-> trigger UB (in kernel C at least -- it would be different in normal C:
-> the first one would map to an unsafe Rust method, i.e. `unchecked_`).
-> 
-> Instead, in the C side, `_unsafe()` seems to be used to mean instead
-> "you should be checking for overflow if needed, because it will never
-> be reported by UBSAN unlike the raw one". Again, this is based on my
-> reading of that commit and the docs on `_unsafe()`. It may be wrong,
-> or maybe the subtraction is supposed to be different. It should
-> probably be clarified in the C side anyway.
-> 
-> And, relatedly, I see that when the `union` was removed in commit
-> 2456e8553544 ("ktime: Get rid of the union"), `ktime_add_unsafe()`
-> stopped returning a `ktime_t` even when both inputs are `ktime_t`s
-> themselves:
-> 
->     static_assert(_Generic(ktime_add(a, b), ktime_t: true, default:
-> false)); // OK
->     static_assert(_Generic(ktime_add_unsafe(a, b), ktime_t: true,
-> default: false)); // Bad
-> 
-> It returns an `u64` now, which could surprise users, and probably
-> should be fixed. The only user just puts the result into a `ktime_t`,
-> so there is no actual issue today.
-> 
-> > I must defer this to Thomas.
-> 
-> Yeah, the question on the C API was meant for Thomas et al.
-> 
+Agreed that we should generally avoid surprises, but here the C side
+may be actually expecting the same (i.e. no overflows).
 
-Maybe it's wise to just wait for them to reply, I don't think you and I
-have much disagree other than ktime_t API semantics ;-)
+But if that is not the case, and then you think we should call this a
+different name than `Ktime` to avoid confusion, that is fair.
 
-Regards,
-Boqun
+> If you look at ktime API, ktime_sub() is the only one doing
+> substraction between two ktime_t, there is no raw or unsafe or safe API,
+> So as a minimal abstraction, it's natural for a user to expect
+> `Ktime::sub()` behaves like `ktime_sub()`.
 
-> > Maybe, however neither of this function probably shouldn't have the
-> > panic-on-overflow behavior. So I agree that overflow checking is not a
-> > bad thing, but when to check and how to handle overflow should be
-> > controlled by the users, and making the default behavior
-> > panic-on-overflow doesn't look reasonable to me.
-> 
-> Yes, it should be controlled by callers, but the point above is that,
-> from the looks of it, these interfaces are not meant to overflow to
-> begin with.
-> 
-> Cheers,
-> Miguel
+Yeah, but as I was mentioning, in the `add` case, it seems like it is
+not intended to overflow. Thus one could assume (perhaps naively) the
+subtraction isn't, either.
+
+> Maybe it's wise to just wait for them to reply, I don't think you and I
+> have much disagree other than ktime_t API semantics ;-)
+
+Indeed :)
+
+Cheers,
+Miguel
