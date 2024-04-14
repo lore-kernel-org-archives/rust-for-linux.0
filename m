@@ -1,128 +1,93 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from gw.d.sender-sib.com (gw.d.sender-sib.com [77.32.148.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8107ABE40;
-	Sat, 13 Apr 2024 02:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D93E42078
+	for <rust-for-linux@vger.kernel.org>; Sun, 14 Apr 2024 13:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.32.148.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712974665; cv=none; b=dQACvDUx6a7jFEnKzEKJOOc295gyBl9VFQpy09veIqmnBY8MS4xHHc7AyfW17P7IhvFHONqFS/cOuwl2MNY7mn2jI9WToeGe1Bxoyk+i6RXnMQdq4L/05ALfDF06dQhIEaVT7jz8SGgMW+EkpM/l+PVWAfSaGs9ysqRtlL1NRCk=
+	t=1713100898; cv=none; b=nrGNSTgF3lF+bXnv00yT2HbXS0S/DlpN7eYERCqmr8T2ye53GFDOAteo7/9V+CIv9lDjPXg1BYmmh+X53xkpYOu1itai7XJWeu91pgcy1p4dwd9JlOS8T0U7lVjXp1BlEZmRoGDZcwoLILH0yTYZNPcI9yEpckRBc4O6i+kUvSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712974665; c=relaxed/simple;
-	bh=8H5mcOiwbA6iWP7BER7hyEiAZ3aCJSzdPSLLamrrlUU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xg3tlpye4VEOfkQXTSGCsC9SxMXC/NKVeqGrGw6erp7XJIBpuxGnXVt717e7AgvJLXdCJRLd+4JgeE6q+r5+mDS3MiZMfJPjZt3CLCa7SNMcjMas125wIVGFpVwe6kAOEBt6CkW8n8f9rqOZ3pFXeG54m6f4mOvr5i4tHl4xUTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Efbp56OA; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713100898; c=relaxed/simple;
+	bh=TD6uMI7QAWgg3XSqO08rarrvGml8Sx7m6ell7wkf6CU=;
+	h=Date:Subject:Mime-Version:Message-Id:To:From; b=mVBJ1aeg1EhJG2uy6I4EBNauHXVyOQG2pPBIHA9bOUvgnyMe9GGA+ph+5mj5A/rpfjw133een++ZovtNX+11j0cnB5W7JJ+wIeUit60NfhcGoPI08pj2MC2W1MThctxIdesXh5Huh5iYykjiyAFwTTWSZO/jxEAPmN+x0bZhZfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raxyte.com; spf=pass smtp.mailfrom=gw.d.sender-sib.com; dkim=pass (1024-bit key) header.d=raxyte.com header.i=@raxyte.com header.b=pAaePoZO; arc=none smtp.client-ip=77.32.148.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raxyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gw.d.sender-sib.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Efbp56OA"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2a52c544077so1084985a91.1;
-        Fri, 12 Apr 2024 19:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712974664; x=1713579464; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8H5mcOiwbA6iWP7BER7hyEiAZ3aCJSzdPSLLamrrlUU=;
-        b=Efbp56OA8wvYldi70to+mUaL38U1sDL9OXCuOlNc50PNy+niflbQ/5FQytkHhtO3vR
-         0DBHHUMXg7Dm43xI/FUlVja1FUNsCcFyD7YE21tP46otSlDroIuwp4Ize5B53IQlM5jX
-         r4JCzeMONN5NYwF0QMsE6BVYo97qzg9HIZX6kgec8X9qzvGQ8U29xrZUn1jqAFy9vrlE
-         SRKF/gsws6S/52JE5f1Bn0VtqDcYPCfxMbAxdPm9RYLBROFpmNfluQaDcX5PxjCGQ/hK
-         ZYgMd27ZkfQ0yDCuj1/J5WR+H6l05Kj/mfTcopXndO+lwdVTrI3E2xQ14FP8GQJzZ60K
-         tBLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712974664; x=1713579464;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8H5mcOiwbA6iWP7BER7hyEiAZ3aCJSzdPSLLamrrlUU=;
-        b=EfeXbqzw22Jy4IBu/UYHlQ0ApudU4PBRHx/R/CEGwjIoS/makzB1s+gE1MHRNdchLQ
-         XrYdmpip67s7uYAM6UGVNlFLP78tsnt+bBtHjbxbFh+LGBMIfATt1eThSftxWMfNxtvj
-         MSfmtkaeoh+mvUr/tU/xGSrw375p7/CTgqssrCkskiT2GY6/MnreKippWryetRLfCLFu
-         xHiw5q9teV59NBPXxT9Wi4Hbgit+lYusPJc40Xl3KhKQmLPYQb4yRRINe56VYh4uNaJ5
-         proGOEXmvtJe6NmGtH8rwYmydb5+7iuLwlBsD5zHRQ6847l+9EBuUrzBSkh2dQvlN24N
-         6Yiw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnUkOZDk5YPNTVWAEoJJ0BMMKEGUOZ5BmZXBsB/kMej+HBzqOtIFp5KkzPOU3NH23OjYfdHT52weY430MG5Xdjo8vEEUyUN01fhnPdiDNdSujPco+SXZW8k7ie8y8x7L1lCWyJcWCS1b9nuRw=
-X-Gm-Message-State: AOJu0YzrjnVf8uB4tSH5iGaAMTRfJxeB3T4lSZMtNdLQWQXcgl8jN06t
-	q/p8DADS5+9uAhwSIAm39rE3Qic1xcTLsmQDNZgKyioQOuZjw15muXnpuXyiVl4891FksSMpn5K
-	6wn+jqAo/tQLEGhE+zuodUP4+kL4=
-X-Google-Smtp-Source: AGHT+IH6mcBye0oMl6nLhuG4Z4sw3LAzzSUksMULw9UmEp/wN5kpVQ/iY0+x5BwzKABNOubsDydvGI4rrlbjNAxKsx0=
-X-Received: by 2002:a17:90b:1243:b0:2a5:bf83:8db8 with SMTP id
- gx3-20020a17090b124300b002a5bf838db8mr4003963pjb.4.1712974663770; Fri, 12 Apr
- 2024 19:17:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=raxyte.com header.i=@raxyte.com header.b="pAaePoZO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=raxyte.com;
+ q=dns/txt; s=mail; bh=CRndFbjNIKMcK8zR6tbvt/PU4cTYUy67e6MOk0bjXFY=;
+ h=from:subject:date:to:mime-version:content-transfer-encoding:x-csa-complaints:list-unsubscribe-post;
+        b=pAaePoZOskZ9WmQ4QnxPKvkkeS6BJy+KJFQHrN0agCfWt/jKUc2I9adcEsEM32NB+mvU8WW9AVfo
+        cmQfP9EOE3cTXI2+HLasz4OpdIZs1hici6RMcc3wuxJk5trW41oy+W4pDzqpXL3GHDZyNNEnE4zt
+        NiHMwNO0gJh/HT36XEs=
+Received: by smtp-relay.sendinblue.com with ESMTP id eba70259-9b10-4bf7-ac4f-d7accf6b8891; Sun, 14 April 2024 13:20:26 +0000 (UTC)
+X-Mailin-EID: MjY2MTUxODYyfnJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZ348MjAyNDA0MTQxMzE5MjguODQ2NjI1LTEtZGV2QHJheHl0ZS5jb20%2Bfmd3LmQuc2VuZGVyLXNpYi5jb20%3D
+Date: Sun, 14 Apr 2024 18:49:28 +0530
+Subject: [PATCH] rust: update `dbg!()` to format column number
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240411230801.1504496-1-boqun.feng@gmail.com>
- <20240411230801.1504496-3-boqun.feng@gmail.com> <CANiq72nSSAVkynVaAq7bQKoL6N8K2JUXp8AOVvu7vN+siAhk-Q@mail.gmail.com>
- <Zhk4Uqc4LImR2n_r@Boquns-Mac-mini.home> <CANiq72ka4UvJzb4dN12fpA1WirgDHXcvPurvc7B9t+iPUfWnew@mail.gmail.com>
- <ZhngOs7Xze65i9Qy@Boquns-Mac-mini.home>
-In-Reply-To: <ZhngOs7Xze65i9Qy@Boquns-Mac-mini.home>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 13 Apr 2024 04:16:52 +0200
-Message-ID: <CANiq72mwx6uA4cWRjpUxu4E1MLZhnofuwXLBnYFn-eUG7-aN3w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	bjorn3_gh@protonmail.com, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <eba70259-9b10-4bf7-ac4f-d7accf6b8891@smtp-relay.sendinblue.com>
+Origin-messageId: <20240414131928.846625-1-dev@raxyte.com>
+To: <ojeda@kernel.org>,<alex.gaynor@gmail.com>,<wedsonaf@gmail.com>,<boqun.feng@gmail.com>,<gary@garyguo.net>,<bjorn3_gh@protonmail.com>,<benno.lossin@proton.me>,<a.hindborg@samsung.com>,<aliceryhl@google.com>,<dev@raxyte.com>,<rust-for-linux@vger.kernel.org>,<linux-kernel@vger.kernel.org>
+X-sib-id: PBQn2B5lkUgJCh1TzLqzJhATSBZgXBkTr7nDplb1TJIafW9q6s-F6d7NNgbwtr9g3rBIMcF-p1RXqMGI-S9dmbqJD2dATyNsUc0TPyacmkiIqjlnCSobK5o-2MT6kXVW0Vk09FJA8nczIclMe81gW_2Ird6Sh2KJnOXfhHFDe1or-OkCl8ys1eR44TA
+X-CSA-Complaints: csa-complaints@eco.de
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Feedback-ID: 77.32.148.23:7517309_-1:7517309:Sendinblue
+From: <dev@raxyte.com>
 
-On Sat, Apr 13, 2024 at 3:30=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> Based on your reply to Philipp, I take it that
-> CONFIG_RUST_CHECK_OVERFLOWS can be enabled in a production kernel,
-> right? IOW, it's not a debug-only feature like UBSAN (or maybe I'm way
+In Rust 1.76.0, the `dbg!()` macro was updated to also format the column
+number. The reason cited was usage of a few characters worth of
+horizontal space while allowing direct jumps to the source location. [1]
 
-Yeah, it is intended to be used in production (for those that want it,
-i.e. not everybody will want it; and probably we will want to provide
-other modes of operation when the check fails as I was mentioning,
-e.g. report and continue with wrap).
+Link: https://github.com/rust-lang/rust/pull/114962 [1]
+Link: https://github.com/Rust-for-Linux/linux/issues/1065
 
-> wrong, that UBSAN is also a feature that production kernel can or
-> already use?). If so, then the current `Ktime::sub()` has a different
+Signed-off-by: Raghav Narang <dev@raxyte.com>
+---
+ Branch rust-next=20
 
-Generally userspace sanitizers aren't, but they may be (like the
-minimal runtime in Clang).
+ rust/kernel/std=5Fvendor.rs | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Not sure about the "status" of each kernel one, Cc'ing Kees (sorry,
-you got dropped), but I imagine things like the integer overflow ones
-with `UBSAN_TRAP=3Dy` may be fine in production.
+diff --git a/rust/kernel/std=5Fvendor.rs b/rust/kernel/std=5Fvendor.rs
+index 388d6a514..39679a960 100644
+--- a/rust/kernel/std=5Fvendor.rs
++++ b/rust/kernel/std=5Fvendor.rs
+@@ -146,15 +146,16 @@ macro=5Frules! dbg {
+     // `$val` expression could be a block (`{ .. }`), in which case the =
+`pr=5Finfo!`
+     // will be malformed.
+     () =3D> {
+-        $crate::pr=5Finfo!(=22[{}:{}]\n=22, ::core::file!(), ::core::line!=
+())
++        $crate::pr=5Finfo!(=22[{}:{}:{}]\n=22, ::core::file!(), =
+::core::line!(), ::core::column!())
+     };
+     ($val:expr $(,)=3F) =3D> {
+         // Use of `match` here is intentional because it affects the =
+lifetimes
+         // of temporaries - https://stackoverflow.com/a/48732525/1063961
+         match $val {
+             tmp =3D> {
+-                $crate::pr=5Finfo!(=22[{}:{}] {} =3D {:#=3F}\n=22,
+-                    ::core::file!(), ::core::line!(), ::core::stringify!=
+($val), &tmp);
++                $crate::pr=5Finfo!(=22[{}:{}:{}] {} =3D {:#=3F}\n=22,
++                    ::core::file!(), ::core::line!(), ::core::column!(),
++                    ::core::stringify!($val), &tmp);
+                 tmp
+             }
+         }
 
-> Now I wasn't trying to say substraction overflows shouldn't be checked
-> (by default), the thing is that `Ktime` is just a `ktime_t` wrapper, so
-> it's natural that it provides as least difference as possible. If it was
-> a standalone abstraction, then by all means let's add different APIs for
-> different purpose.
+base-commit: 8db31d3f3bd5dbc8cf3a22bba04b4b4add7f984e
+--=20
+2.44.0
 
-Agreed that we should generally avoid surprises, but here the C side
-may be actually expecting the same (i.e. no overflows).
 
-But if that is not the case, and then you think we should call this a
-different name than `Ktime` to avoid confusion, that is fair.
-
-> If you look at ktime API, ktime_sub() is the only one doing
-> substraction between two ktime_t, there is no raw or unsafe or safe API,
-> So as a minimal abstraction, it's natural for a user to expect
-> `Ktime::sub()` behaves like `ktime_sub()`.
-
-Yeah, but as I was mentioning, in the `add` case, it seems like it is
-not intended to overflow. Thus one could assume (perhaps naively) the
-subtraction isn't, either.
-
-> Maybe it's wise to just wait for them to reply, I don't think you and I
-> have much disagree other than ktime_t API semantics ;-)
-
-Indeed :)
-
-Cheers,
-Miguel
