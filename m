@@ -1,122 +1,188 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F49135A6B
-	for <rust-for-linux@vger.kernel.org>; Sun, 14 Apr 2024 18:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EB1225DA
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 07:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713118179; cv=none; b=oMvZZwwpnbRl65ENJDr+J4cFBxqm4XlbyP4zek1pvxBAdHQ6+UwgDvSlyPJg8g8BtlOI+tVmvNjR689M6hV8MPq57i2sktwsUhmAByM0kAIGm9WfM3jTqnZNZGLaBwxQIToncZKuDxKX4Na0QrCeoY90FlVcEI3zD2NuDxfKDxM=
+	t=1713165258; cv=none; b=G7yssN7NsE+fGi6iZhQ4QLKk6XRn4ORo+QbVPaML4l9+ZU8FgLkuheDQmGWgHTqyGnDD/ZUC1TdwXM/Lsy7U433uJ6wdKbf8LoQ3WJR/ZCvnesMMbHVyRFHmtZbU0sFAtVS0Q96/kmUZumLFzHvWx5kb1iz/1sQYFpL5Ttxt+KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713118179; c=relaxed/simple;
-	bh=vBlOcpqf8bV1MOEYIpsswDV3lmfUajJD1hPa7hpwkdU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=POpSHKs1sQ4IO8S9w3wd3D1hywglG+2tUdSYZuA2Nc+yxTrEkH67KMz/O6IoVxichQHgq6mqZ/ECcIb3BL96f2iayyBdq89nP5uUYh6NkitVTkCCWCGIwNoziAapquRI/GTv2L5gYRZOTBhVaRrr4maIsP5DDQjmyNpuqziCv/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ij97lIGn; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713165258; c=relaxed/simple;
+	bh=2e1X85rvz6Dc/ugdTsdRjXFp5/BAFi5T5i940mZmfps=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TRTcwITgDPtbOkhYngeYjt/M47HHi5Fj5qqQBlckgYK4utwebuwgGySuM8YMkz98t6lxtAVrN2qGdfzCdNLdvx0uL7MKnkSqJdCox6sO+okSU0QGNtu/y1XppfXpVc5Ub1P5i0vfTSFG/ksI1i7M7IDRzGOFeUQ7pLybtViiUM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O/G3tb7E; arc=none smtp.client-ip=209.85.167.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ij97lIGn"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4167fce0a41so18407535e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 14 Apr 2024 11:09:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O/G3tb7E"
+Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-51701401bd4so2003954e87.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 00:14:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713118176; x=1713722976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ACx9ELK4+gQsZktkmaxguvQ4vPw2r3i3YhGuQZZsHik=;
-        b=ij97lIGngrGGZIJnmiJ11e2SHwJ9SOO5EdwVvaYZASSU+m4OL4BWMHZx26G+ANM/hP
-         MU7diRH3inXnwgYqrXEEPL2ABT99S+AmvX6MD42I+gaLnjheuWyhLjzNg6CZBGPpzmli
-         7TMRLp+hSFLjre/ae9luGVRpKUXVs1OYxh3FPkjaDQJVXo/158LvKnNSxaRzI8NBrDr6
-         cD2n1Kn9MkRlogYHBBAjY2MjB5QGH6UgHeSU2G41rFzNmp9MzzaCO41Ie5Ef66dvzUEq
-         K2qrWujbdlV1y3ltbCcWiEq2OPpWvEjfQUiqF8xb4sFEwQSL/wPxwAA/n3yEIejXkjeH
-         90ew==
+        d=google.com; s=20230601; t=1713165255; x=1713770055; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4GRRmywA9h466COkiWztO2k7QWi4sp/9u/vk8Vh//Fs=;
+        b=O/G3tb7ExuXnI0/T5IGDQIwtri/cuekJ66kPEomTWgZ4YMm6WnNbtxFLUV1TuAE79p
+         RA4JxkIltCMYDgCbp+E5qMAXM8fCRFyLijTxmua6j/db23ZDb7E51585obFa8RML4kYR
+         QT9AYdUY8j0m3jcYugSvnKKgN3DK0GCXQUjnXEDDsRU2hNuc25jEuZe+Fv30tgkSmsBt
+         eo+qSjMGOlzSXw2o32trj48XrZjA11N9YomyeX+gmtEiDvsj9p27QGw6VDNgA5LKFaBO
+         eypdCrGvAIja8k2Psy9As6tEuvJ9LGuiqlJVNRXzxOjFB73LNfzo14EPZBkv/LrEkfrH
+         eL8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713118176; x=1713722976;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ACx9ELK4+gQsZktkmaxguvQ4vPw2r3i3YhGuQZZsHik=;
-        b=syPTIKd63jj6V79e/3XNaln8HteGiJ9pIwfcML3vfWmuA0lC3WKp+tcBAD/izL8uHa
-         R0mK4TwtXANMoENMzV/xSpuua4QFHD85Y8HjbpR6/RJiKDouwi9ZlLSqQfhAVoP2lDHn
-         6gydNHDYGn75KQty5SXZKPPeQboDtDxZ3FdBCtabruHmWag+dVoEu2FQ5uozg0UfD0zj
-         gupY3qypoS6sYaE2Hsb7qiLHoYA31OLt2SOyyWnQag5cJfDtQC3eyM6c85XkGJwwIEQj
-         ImzGL3ROFzBg7wvzs7+Paw1DpRxyBnntBT9EQaftXBEAdhyFsOsxv+Lqflg9i7Su7Quv
-         HBfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV4/3a1FimBQRH6Gt02h8keQsGE29FR8sX4UU4uYagHp67BrejnIMHhEwueHLkJI0oJDfZnsCXypaPhQz1JqxP964u3hpUDGj6MVvbpFns=
-X-Gm-Message-State: AOJu0YztdXxR3KCsDAp7YizCO2ysh0qnUEG+ErgxvQh0rFv2pPO4sIAV
-	s+NUgzUgFibsjhbPeXRRv6+dSh72jE2AGpOU8Wxa3QfdK48AcJqo/r08U2Bm
-X-Google-Smtp-Source: AGHT+IFsgSxf1wjphJG9+i5E4Uj6HXcd9SpdW8mlmukqrrQZl3t1libkpo/i8lJnjE198akQYnn1Yw==
-X-Received: by 2002:adf:ebc6:0:b0:33e:d139:412c with SMTP id v6-20020adfebc6000000b0033ed139412cmr8340735wrn.30.1713118176064;
-        Sun, 14 Apr 2024 11:09:36 -0700 (PDT)
-Received: from laptop.home (63.75.217.87.dynamic.jazztel.es. [87.217.75.63])
-        by smtp.gmail.com with ESMTPSA id a14-20020adffb8e000000b00347363b77dasm5470547wrr.33.2024.04.14.11.09.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Apr 2024 11:09:35 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: David Rheinsberg <david@readahead.eu>,
-	John Baublitz <john.m.baublitz@gmail.com>,
-	Danilo Krummrich <danilokrummrich@yahoo.de>,
-	x86@kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-Subject: [PATCH] Add room for insn-enconding and symbol name
-Date: Sun, 14 Apr 2024 20:09:29 +0200
-Message-Id: <20240414180929.79033-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1713165255; x=1713770055;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4GRRmywA9h466COkiWztO2k7QWi4sp/9u/vk8Vh//Fs=;
+        b=tN1kTJVvV5bFU7QAJGJIiPu6w1qxlnEfWbFZ4yaU6xIqdfcF/ciDun5BS8E2ubZj8W
+         EY6/EQ4rvW8PhEOJRTDcMEsrZATUemWa9fBakDs6jyeX9xVkmp3tN0VgYBKpgkWvpc5O
+         ZDX1BjWSwLUZ4pJk/H+Rc2vwqWJmRuUClHjd5mgx97ZvwyS3Ihk1T4RaplsbSkb5irFO
+         arpUjLvvzkWIa/RI6ypCOBh0/F3oJHdkFA4/qKXXazasb+Z6/gUw5HL1fwLH/2zi/1hy
+         6O96iYd8mAEE3XN3tDgLDU2XTjXBa5WfNtrNtlEhiYoj5SXtacaFGaffNC6jdWVuzeQC
+         MEWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWk6Ca4tfliRnBpuJJvEaalqoriqEqV/eaSmZfKPVKCN8dbfpjPeGxIf0o3yYRS1WkWbvWg39qZsbUGnKj1kmPeoKuwNWFjDgBECQn6RiE=
+X-Gm-Message-State: AOJu0YzhwAxx3zCjvgyxY/IpaY0SMduSYEVA3YgCS4XhyN9DWOvDWOjn
+	OeG5qTFy1CgpJYZrmI1MHWBTiwCi2GmfKX3roIS4up7gKPvNpkHxz6K/c9aIrKBLVFzNLQp9AWZ
+	Fk1AU/Z+gweRcIQ==
+X-Google-Smtp-Source: AGHT+IFP1799A/INBTP1ZJNrG0CuTASrln5KTO4oyjuvBqEvXsF1x0e0IOk1vY1Jk/fFjJUdDNNJnn97kfGjtR8=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a19:e005:0:b0:517:7879:5b8a with SMTP id
+ x5-20020a19e005000000b0051778795b8amr7915lfg.13.1713165254748; Mon, 15 Apr
+ 2024 00:14:14 -0700 (PDT)
+Date: Mon, 15 Apr 2024 07:13:52 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIALDTHGYC/2XOwQ7CIAwG4FdZOIuB0k305HsYD6zrJokTsxmiM
+ Xt3Oy+bMZz+wveXtxp5iDyqQ/FWA+c4xnSTUG4KRZdw61jHRrICA85a8DpcI7Hue11T6RyWFTF
+ 7Jc/vA7fx+a06nSVf4vhIw+vbnO08nUvQWMClJFttdGNDTUzeEeKxS6m78pZSr+aWDIsEs1qfY ZYeLJRygaH6k26R8vWVdCKpaXe1CyL39CdxkXJWEkXiPngEBGoN/Mhpmj6wdeXSTwEAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3730; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=2e1X85rvz6Dc/ugdTsdRjXFp5/BAFi5T5i940mZmfps=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmHNO+dW58xo4FQMfR8kYfnMJW1eEv/m7+aySBj
+ faN9axF5O6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZhzTvgAKCRAEWL7uWMY5
+ RqgsD/9bR2gcW5Kx64xZTwO+cA3WFov2fLiqMOmd4VlEM+cQvQ5K6wZJKJGim5eoXJbqr0Ygd57
+ RSaurpgg+TG7q6zK97W7lgmNAuf8sMzPisSJXokZnCFiNIJcLAGLL6WbvaS35BoofR3q9jFQFDV
+ stsO2IKubIwGh8R2k7lBE+kukvNBjspgRgMW2q+WLP6gartfgMiPChR2QzLzkuxH35KLcY+OG37
+ SG+rSze9LKShYJ+JFBkdylxmPWKyc5Rtuq75+HMP9aDmOd1PqNVSxZfc/J3wiUEePLjlIKNxXYU
+ 4qGI1Zhs+0ktT+2XRwCA0DD2ruJp+Fx6NpBtELI/6EbZhSrs4/hyJTb6qDs8s/nqc0C688v1hHC
+ PfXWl30Zkzbhn+otAQ3m92tFQFIp8bMIl22BEQMgrF7BtR82nABtx4vPFeRYCkms7hE0tZs3PrX
+ UmmPBFFjvyJueHDxgPzEVSEbr35NQ3i9RkGibDHMiDVmyj7rD8MCmqS6UGEy7UNdGW44RPf1Vyr
+ rMm2uZp64T+LfgYi1+qCY24J1YukH8H+nWupUAlndXjin1RDB3PE0S5CMjbaNPhoCPhDn9kcuDL
+ LsDAS8zH3a7XvODIMPrNfaG2bMgto7dRV0oSjPwGU+vKfabSd9sJSzE7j3Dz99FJ+007Pmhg+V/ 0YIJLw3r4Gm6XRQ==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com>
+Subject: [PATCH v5 0/4] Memory management patches needed by Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
-in the reference [1]. This patch adds room for insn-encoding and a
-symbol name, as proposed in [2]
+This patchset contains some abstractions needed by the Rust
+implementation of the Binder driver for passing data between userspace,
+kernelspace, and directly into other processes.
 
-[1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
-[2] https://lore.kernel.org/lkml/16641a56-9139-4396-a5a8-89606bedd1f1@app.fastmail.com/
+These abstractions do not exactly match what was included in the Rust
+Binder RFC - I have made various improvements and simplifications since
+then. Nonetheless, please see the Rust Binder RFC [1] to get an
+understanding for how this will be used:
 
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+Users of "rust: add userspace pointers"
+     and "rust: add typed accessors for userspace pointers":
+	rust_binder: add binderfs support to Rust binder
+	rust_binder: add threading support
+	rust_binder: add nodes and context managers
+	rust_binder: add oneway transactions
+	rust_binder: add death notifications
+	rust_binder: send nodes in transactions
+	rust_binder: add BINDER_TYPE_PTR support
+	rust_binder: add BINDER_TYPE_FDA support
+	rust_binder: add process freezing
+
+Users of "rust: add abstraction for `struct page`":
+	rust_binder: add oneway transactions
+	rust_binder: add vma shrinker
+
+Links: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- arch/x86/tools/insn_decoder_test.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes in v5:
+- Fix casts in declarations of PAGE_* constants.
+- Fix formatting of PAGE_MASK.
+- Reformat comments at 100 line length.
+- Minor fixes to safety comments of `read_raw` and `write_slice`.
+- Link to v4: https://lore.kernel.org/rust-for-linux/20240404-alice-mm-v4-0-49a84242cf02@google.com/
 
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-index 472540aeabc2..add51bfc2260 100644
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -10,6 +10,7 @@
- #include <assert.h>
- #include <unistd.h>
- #include <stdarg.h>
-+#include <linux/kallsym.h>
- 
- #define unlikely(cond) (cond)
- 
-@@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
- 	}
- }
- 
--#define BUFSIZE 256
-+#define BUFSIZE (256 + KSYM_NAME_LEN)
- 
- int main(int argc, char **argv)
- {
+Changes in v4:
+- Rephrase when we fail with EFAULT.
+- Remove `pub` from examples.
+- Use slices for raw uaccess methods.
+- Fix PAGE_MASK constant.
+- Rephrase most safety comments in Page abstraction.
+- Make with_pointer_into_page and with_page_mapped private.
+- Explain how raw pointers into pages are used correctly.
+- Other minor doc improvements.
+- Link to v3: https://lore.kernel.org/rust-for-linux/20240311-alice-mm-v3-0-cdf7b3a2049c@google.com/
+
+Changes in v3:
+- Fix bug in read_all.
+- Add missing `#include <linux/nospec.h>`.
+- Mention that the second patch passes CONFIG_TEST_USER_COPY.
+- Add gfp flags for Page.
+- Minor documentation adjustments.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20240208-alice-mm-v2-0-d821250204a6@google.com/
+
+Changes in v2:
+- Rename user_ptr module to uaccess.
+- Use srctree-relative links.
+- Improve documentation.
+- Rename UserSlicePtr to UserSlice.
+- Make read_to_end append to the buffer.
+- Use named fields for uaccess types.
+- Add examples.
+- Use _copy_from/to_user to skip check_object_size.
+- Rename traits and move to kernel::types.
+- Remove PAGE_MASK constant.
+- Rename page methods to say _raw.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240124-alice-mm-v1-0-d1abcec83c44@google.com/
+
+---
+Alice Ryhl (2):
+      rust: uaccess: add typed accessors for userspace pointers
+      rust: add abstraction for `struct page`
+
+Arnd Bergmann (1):
+      uaccess: always export _copy_[from|to]_user with CONFIG_RUST
+
+Wedson Almeida Filho (1):
+      rust: uaccess: add userspace pointers
+
+ include/linux/uaccess.h         |  38 ++--
+ lib/usercopy.c                  |  30 +---
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers.c                  |  34 ++++
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/page.rs             | 240 ++++++++++++++++++++++++++
+ rust/kernel/types.rs            |  63 +++++++
+ rust/kernel/uaccess.rs          | 371 ++++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 740 insertions(+), 40 deletions(-)
+---
+base-commit: 4cece764965020c22cff7665b18a012006359095
+change-id: 20231128-alice-mm-bc533456cee8
+
+Best regards,
 -- 
-2.39.2
+Alice Ryhl <aliceryhl@google.com>
 
