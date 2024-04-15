@@ -1,128 +1,135 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C773A2C6B7
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 08:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093361DFEA;
+	Mon, 15 Apr 2024 09:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713168665; cv=none; b=Hmc/bd7R+ZYR6zMj6mrncHzSYxmj3xVThatKz6lad8GVQlCZaapt2Zy5JKFDXb8uZwrPEdQqmFgU6VBzL9zWE6AWkPyCn0Ut12nK81a1tnOQCokXaVxI8Fz2qVhbaLNCA02jn091FQMVYgr3HQh801seSXhlsUh+KmUr+6x31DU=
+	t=1713173835; cv=none; b=gG6MB3Ou7Diz3tNOak+Zd5+ELqYJCYNHxOsgIP7Zth5JaCKTlZygu31efrgUfWd690f6hNlNaPFPyVtsZkO1XK7lnXynd/vYu2IUxx5YMnfKesbsyp+oVPc8iLEgk7HM4wKQrjI0l5howisJS50pqXYDJzzkObVhSR0I27/e0EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713168665; c=relaxed/simple;
-	bh=zv5YTVuVpK0uEb+PQ488dEDxv7U+R1SjCDPDwfMdrbU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=m30QnEmEVp4wBspukxaxmtQdhOR/QNwCi7chIK0Ixuvx6aaxBeCqMMPZjKHJ+S1xZQ4Nl1J9PKg/GBIaJAH00F9FQ6Ci/NkDXhplv8xMqBB+5n2qkscvKLR4/6JejnffDmkOC+nKAyx9330ZRDES/9MaIaAgtaQkaV9y1Ku5D/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=b+yWIR7q; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1713173835; c=relaxed/simple;
+	bh=ZAkP50PAdTGqIT00FGajg5KBZSuTl2Zi2Yedfzdv5X4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eUCzAdJdZOgHlMsHGd6kJ2+4szQU00KKrtb8CWK45CoAzU4r8ToZ6/5voEonUphYrYobB4gqiDLPOpQSSgDOU+IVe6J8I13Y6+GgtW1FwEXgG18mO3cIzG7QQxCSfGoRGu7azF1PqJGH4RwIiQRjSaC7DATpL2n9eMBhLHm+4QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OtCZE2Gc; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="b+yWIR7q"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a5200202c1bso355849966b.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 01:11:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1713168662; x=1713773462; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zv5YTVuVpK0uEb+PQ488dEDxv7U+R1SjCDPDwfMdrbU=;
-        b=b+yWIR7qrhztk9PDFeg4HD0WDU8cpOkhXfWO2X+7AW+IgjUBmLXYTm/RwDZIo6K781
-         gkkpr+YclzYNsspFgE+ySapVkstXCcdvr3FScTjdapvNroko9huhSy8qeekJ0GtCa0b/
-         F5pRiXN9jwNeQZWcK4LrMegomBVa1VGXfSPTawx6P/8nOS5fTTyp+FFSjNx7bL4TRAG2
-         WJzrVzBUnc8Ogy2zJgyI+Hsj/BnfBJ7Vd4tYebmjSkSn28yP6pPZMzwup28JgqP96sRZ
-         4nipp1bGEIL+VjU4PTMu0q/4cZq7g3xC5kTDD5GIwCQ6KGkbmkdM6HXOUgURHSbfLCkB
-         BCJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713168662; x=1713773462;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zv5YTVuVpK0uEb+PQ488dEDxv7U+R1SjCDPDwfMdrbU=;
-        b=nHyuw3MLejBIGWoOfueIeQUjXgi0hPEn9bugJH65YMKxKug4N78447m8C+lDAk3xez
-         JYCRXpQ7isGDj1yIJPIY2TiPL6EPpLPSlGnuLed+NAYk1AWe0mqpTafRA7YV/+Asx1vT
-         3xsU8W+WJpnHHF89Z3mzcShWjqjh1Mec07fIMcw21iWboJpORN3dbtto0IxYxrOCbuct
-         PQsYZ6lve7jruBUoGxGd87m6sTNlv+9wbCoZHMK0g5w/MoVoWIIOBUvYrRGhPw4cC31+
-         UEJOialATM+k5w+EAl+U5P6M8YiZ/wP2ZMqbhVNCiuNNAoILAQl4OpOpSMzL6fBsRZDm
-         4ZWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUo8SFV0nW9E1qzGTAwuj2+5i1Y+s5ixH4K9vd7OSmfc4BuLoBcqg6YKN/vxnK1igtR6OV71+prfAiwtpBL+vSPtp7UBpIf8vUXf7+bN54=
-X-Gm-Message-State: AOJu0Ywn8QPfpnIxWsdCBAYrs2bKebJy15ww5NbAHYJAXmhNVAnsVhJH
-	wRtevpVHqBMK1Wz3Q2AIRgGuDvaSYHyo56F4GUgfm/z9Wyu24Tl62/PCiFzni2M=
-X-Google-Smtp-Source: AGHT+IEmro/z4RIN6GSVHudfugd2GkdsT2hNxezDpNHADO1XqkCrWaYgEi/s3syKd6RfY4DayBQjlA==
-X-Received: by 2002:a17:906:590b:b0:a52:42ee:4e10 with SMTP id h11-20020a170906590b00b00a5242ee4e10mr5567894ejq.8.1713168661716;
-        Mon, 15 Apr 2024 01:11:01 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id 15-20020a170906300f00b00a521e5856f6sm5122991ejz.51.2024.04.15.01.11.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 01:11:01 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Matthew Wilcox <willy@infradead.org>,
-  Al Viro <viro@zeniv.linux.org.uk>,  Andrew Morton
- <akpm@linux-foundation.org>,  Kees Cook <keescook@chromium.org>,  Alex
- Gaynor <alex.gaynor@gmail.com>,  Wedson Almeida Filho
- <wedsonaf@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>,  Benno
- Lossin <benno.lossin@proton.me>,  Andreas Hindborg
- <a.hindborg@samsung.com>,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?=
- <arve@android.com>,  Todd
- Kjos <tkjos@android.com>,  Martijn Coenen <maco@android.com>,  Joel
- Fernandes <joel@joelfernandes.org>,  Carlos Llamas <cmllamas@google.com>,
-  Suren Baghdasaryan <surenb@google.com>,  Arnd Bergmann <arnd@arndb.de>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  rust-for-linux@vger.kernel.org,  Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v5 4/4] rust: add abstraction for `struct page`
-In-Reply-To: <20240415-alice-mm-v5-4-6f55e4d8ef51@google.com> (Alice Ryhl's
-	message of "Mon, 15 Apr 2024 07:13:56 +0000")
-References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com>
-	<20240415-alice-mm-v5-4-6f55e4d8ef51@google.com>
-User-Agent: mu4e 1.12.2; emacs 29.3
-Date: Mon, 15 Apr 2024 10:10:48 +0200
-Message-ID: <87il0jm4fr.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OtCZE2Gc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1713173823; x=1713433023;
+	bh=p1EtZ30uvut0peHMj2MGXUDT4+1A886YAPfyu8wzS+o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=OtCZE2Gcf48z1GRL3TfFWnx+/2Ld3oUzuWrpovC4uLBIfddJEmt53KdLyL9i1arQM
+	 R9Oo+wLpeefAMZmRozQ044xIh6fEww62Kf8hx5uFVn/a0OBTZkj/Nx6FgUXeH70cjH
+	 Tv24NKvrIu//f+qbYMNOEyU1+FtKIx123W3pQTxTz6FqHDy62jxKb5nLa7jDRYIbF2
+	 oSUaVXzRKPmXXkAlXacw7vO5lzJ5vYT9SYpKeXfoka6QVyz2BcU4YtHlyVzeTZ2b1S
+	 5+jHrosdq9s3dH9TPAtpjmRSCepNtVdY5T50lvhrkjLGXM5D4TZ13Air1r9QnSGT6/
+	 7KsIUcSFjO/3A==
+Date: Mon, 15 Apr 2024 09:36:56 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+Message-ID: <2cae6fd4-906c-44ad-88be-0dfed090d07c@proton.me>
+In-Reply-To: <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
+References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com> <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Alice Ryhl <aliceryhl@google.com> writes:
+On 15.04.24 09:13, Alice Ryhl wrote:
+> +impl UserSlice {
+> +    /// Constructs a user slice from a raw pointer and a length in bytes=
+.
+> +    ///
+> +    /// Constructing a [`UserSlice`] performs no checks on the provided =
+address and length, it can
+> +    /// safely be constructed inside a kernel thread with no current use=
+rspace process. Reads and
+> +    /// writes wrap the kernel APIs `copy_from_user` and `copy_to_user`,=
+ which check the memory map
+> +    /// of the current process and enforce that the address range is wit=
+hin the user range (no
+> +    /// additional calls to `access_ok` are needed).
+> +    ///
+> +    /// Callers must be careful to avoid time-of-check-time-of-use (TOCT=
+OU) issues. The simplest way
+> +    /// is to create a single instance of [`UserSlice`] per user memory =
+block as it reads each byte
+> +    /// at most once.
+> +    pub fn new(ptr: *mut c_void, length: usize) -> Self {
 
-> Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> This struct is assumed to hold ownership over the page, so that Rust
-> code can allocate and manage pages directly.
->
-> The page type has various methods for reading and writing into the page.
-> These methods will temporarily map the page to allow the operation. All
-> of these methods use a helper that takes an offset and length, performs
-> bounds checks, and returns a pointer to the given offset in the page.
->
-> This patch only adds support for pages of order zero, as that is all
-> Rust Binder needs. However, it is written to make it easy to add support
-> for higher-order pages in the future. To do that, you would add a const
-> generic parameter to `Page` that specifies the order. Most of the
-> methods do not need to be adjusted, as the logic for dealing with
-> mapping multiple pages at once can be isolated to just the
-> `with_pointer_into_page` method.
->
-> Rust Binder needs to manage pages directly as that is how transactions
-> are delivered: Each process has an mmap'd region for incoming
-> transactions. When an incoming transaction arrives, the Binder driver
-> will choose a region in the mmap, allocate and map the relevant pages
-> manually, and copy the incoming transaction directly into the page. This
-> architecture allows the driver to copy transactions directly from the
-> address space of one process to another, without an intermediate copy
-> to a kernel buffer.
->
-> This code is based on Wedson's page abstractions from the old rust
-> branch, but it has been modified by Alice by removing the incomplete
-> support for higher-order pages, by introducing the `with_*` helpers
-> to consolidate the bounds checking logic into a single place, and by
-> introducing gfp flags.
->
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+What would happen if I call this with a kernel pointer and then
+read/write to it? For example
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+     let mut arr =3D [MaybeUninit::uninit(); 64];
+     let ptr: *mut [MaybeUninit<u8>] =3D &mut arr;
+     let ptr =3D ptr.cast::<c_void>();
+
+     let slice =3D UserSlice::new(ptr, 64);
+     let (mut r, mut w) =3D slice.reader_writer();
+
+     r.read_raw(&mut arr)?;
+     // SAFETY: `arr` was initialized above.
+     w.write_slice(unsafe { MaybeUninit::slice_assume_init_ref(&arr) })?;
+
+I think this would violate the exclusivity of `&mut` without any
+`unsafe` code. (the `unsafe` block at the end cannot possibly be wrong)
+
+> +        UserSlice { ptr, length }
+> +    }
+
+[...]
+
+> +    /// Returns `true` if no data is available in the io buffer.
+> +    pub fn is_empty(&self) -> bool {
+> +        self.length =3D=3D 0
+> +    }
+> +
+> +    /// Reads raw data from the user slice into a kernel buffer.
+> +    ///
+> +    /// After a successful call to this method, all bytes in `out` are i=
+nitialized.
+
+I think we should put things like this into a `# Guarantees` section.
+
+--=20
+Cheers,
+Benno
+
+> +    ///
+> +    /// Fails with `EFAULT` if the read happens on a bad address.
+> +    pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
+> +        let len =3D out.len();
+> +        let out_ptr =3D out.as_mut_ptr().cast::<c_void>();
+> +        if len > self.length {
+> +            return Err(EFAULT);
+> +        }
+> +        let Ok(len_ulong) =3D c_ulong::try_from(len) else {
+> +            return Err(EFAULT);
+> +        };
+> +        // SAFETY: `out_ptr` points into a mutable slice of length `len_=
+ulong`, so we may write
+> +        // that many bytes to it.
+> +        let res =3D unsafe { bindings::copy_from_user(out_ptr, self.ptr,=
+ len_ulong) };
+> +        if res !=3D 0 {
+> +            return Err(EFAULT);
+> +        }
+> +        // Userspace pointers are not directly dereferencable by the ker=
+nel, so we cannot use `add`,
+> +        // which has C-style rules for defined behavior.
+> +        self.ptr =3D self.ptr.wrapping_byte_add(len);
+> +        self.length -=3D len;
+> +        Ok(())
+> +    }
 
