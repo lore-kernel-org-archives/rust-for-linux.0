@@ -1,109 +1,232 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E95683CAF
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 17:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C42315748F;
+	Mon, 15 Apr 2024 21:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713200913; cv=none; b=qL6SBcdYWbGGQjTWKPaFbKdZE3IrduZr9u97/1UKXJTiD8K4gYhJNxdXl4K9iy7+ruMHbB4EV9p9GX5isSzRzHqTSuoNPjnKhs/S8rxBD7sg53JPbdNzGaecmi51ol4/cATifqs54t1NEJ5kZbMc6bow5laMO5+cewTG8PnwaWM=
+	t=1713218007; cv=none; b=I3KybHy26y3eey8fImJkoGK6pPBnfS/GXxD9Evo6PPDQtS848m8XFuYm+ia7hDfICd1mFj9Tplu3aexwJ4g0eJ6d1ZjJYF1qogwVxBEEGple7qiW+CsPF/a2XMcODFInWTN+MZuy/L5SqUWIZwiZvaZpqkzX4fIKtPlF2hbzMZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713200913; c=relaxed/simple;
-	bh=RugWEcPj7mLc+ykQmVDXsINc+yUnD4Z6zG9Nxnjmzg4=;
+	s=arc-20240116; t=1713218007; c=relaxed/simple;
+	bh=SGvEdSzbVNIXs1MJvKUdxXW7XodkwPkxff947Nmcznk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lE9E2nwPg4xmWIxJvY7WsoOcXJBtG/vTW1WyPtnrCo7ff4RNNMSx2jO2RwCbHgTqcm0sz1zDIU1geMz0T3V2BU6gQ592HSsvDThBg0GLRqAtJxvyk8wEontL0z3dhos5gvY2UzujgJ4OCO0bjNn67qzYkWuZFsSZFhE4mp71gFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SKn8gTAj; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=OVOVRFmSbfAo/c3A3+KXePuqOCPS8B0SL9YYySvemgvQul1SxNhy75FTsXFDwcGOTv3Q8sQjX2wh85S5WWKY5jhR6V7p1qVy8+U6yEaHJIBokXmu0u36meAJFbwbiL0kAl0CC1PM2EbNzIkzhWcN79GW9Dw6P4Gp2LMuUP05U6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X2Wl6ORK; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SKn8gTAj"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6ecee1f325bso3232064b3a.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 10:08:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X2Wl6ORK"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-434b7ab085fso41637051cf.1;
+        Mon, 15 Apr 2024 14:53:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1713200912; x=1713805712; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hcAaLIzTeGt6hWYjO1jT3BQBc4jW6jSrXxhMBGNGb14=;
-        b=SKn8gTAjJKMUvDZi51tQf5VIfrSZN+ezeWMCFyhWIQuVkBf3DI03hUSfmFLlpn1Sca
-         i8fXbZyQ9jey1yfwJzRDWlVII6iil+ugpBmqJy41XE5qkLEg25lotpxunJd20OZspQpw
-         DS+Nrj5isK6se5THFuGK7fI4fFGvYKJPmNQD0=
+        d=gmail.com; s=20230601; t=1713218005; x=1713822805; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X4QjxBzsTXB7diBcl5dTgdSW8x93qRsLQtekUiqvII8=;
+        b=X2Wl6ORKNems0fbCb+yACb/WTNhMuuCFlL2xm9xZQtQG2ZOWmoQWFsS8XCMQ61Zo0x
+         p7fE8DEGha9NdZVm+skX0ty9NipE8e0oTatDZ1Udz7Oeow0/2AisNsc0XR9GskJp5TPz
+         UiwOfa2Z4NQLO9ALBYvY47YkaJHi/OjCfy/5BZck2coCsV4ghUTu/W+Qvc8/MxBLhM14
+         uYdkS0ssocba/JjzMMW591t0bmFIyN6zPufrQvuzS3UuiJMiJwLD6+svRq/LUzzuUX2G
+         /mooQ+ETgFmJAWzpaCZ3UGH1UGnFCkrBmbnlVZ3wVqgRXD+JJj4L4KYWM03OFjwmIBIE
+         z6XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713200912; x=1713805712;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hcAaLIzTeGt6hWYjO1jT3BQBc4jW6jSrXxhMBGNGb14=;
-        b=KDlKkAunLF3PBMgx2MmcXB4IYbkVItIVXTFHgToWMRaXYKKDtUITjtQsTVZe+k4h02
-         8h8P78wrZwCJ9/ARUgLPR/yNSwi7Y4g8ccswT5vSCEdub4R2FyYnftEJ31aVwgSTL5J8
-         0tntTaWcVh7hOMmh93cRSuKsSSukH4kKwMjlfjtyOt4nxaS63gPlnx7DvDzvuJcVygV0
-         tiSfDLR/n9Q1v9tBDHqTuDBkaGXuAjVO0uxUysep6/ZDvxVvB2aLRoCiPwA+pJm8VBZ6
-         +j/45GzAFWLtxrE7eiywP/oJ/d/OhWMkkYLvNuiVDlky4DRIkRH7Znw9N1p6Vvoum1dD
-         CpPg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDuFPgtIrb3g32vf+z40v+kCThgm1ftXxKooPN2I9j1jouOClkIGdZVAPvcHC+4FPgRr1bxgo+siRdU8pTGmlNAOnfnlr2zqiyfaPjs9U=
-X-Gm-Message-State: AOJu0YyacuLiIAHo/66YHmCyKLbRbfhIY3iyZzYqbz4E50iEK7gFzyyB
-	m8XEKrcTWTXOB39HF4vDALEP4OYcq37nrjIBbQrQuv9IIoaEe/xHGpVmb6WcpA==
-X-Google-Smtp-Source: AGHT+IFS60V/7PQX7NA/39zXZhcKumbWVEL+/evOE3BhhEe5wnSkFy5tdvukgRaWDCkry3aMCaVenQ==
-X-Received: by 2002:a05:6a20:734e:b0:1a9:9d07:c431 with SMTP id v14-20020a056a20734e00b001a99d07c431mr15727248pzc.53.1713200911943;
-        Mon, 15 Apr 2024 10:08:31 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id k28-20020a63ba1c000000b005f0793db2ebsm6302106pgf.74.2024.04.15.10.08.31
+        d=1e100.net; s=20230601; t=1713218005; x=1713822805;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X4QjxBzsTXB7diBcl5dTgdSW8x93qRsLQtekUiqvII8=;
+        b=uJ1a1kIDZhZhh91AaaZki+B4BaFxDi7DB5YSk5mx7+M+752U9Gvr1Kw3Iwue4F4FW5
+         d3pcjnhZnwrxnvmCxAmry47sWlDnSO2L2+juGvUHEuBAzc+JcN5SsBF+Z1jR39JxbLt6
+         UmFtwo/LHgO6p+4UTnCzIlk1sOqhvnj1yKrYZBetYexnRth3wpfS6cHbNnJr0OxgFgua
+         2DC30imb3ba/HRfwFZfDLQT1MX3Rm0vOLwHxv8fgD/K8/y7ok6nWVnoDuti7zGqzbOq8
+         GD5CaTXEZSiHQuzfnzUe9d1xvPoidtBzv8HUdEdrLtQVA61fA530aOH1HNWXd0wKywO1
+         1seg==
+X-Forwarded-Encrypted: i=1; AJvYcCUsIQ77ifuqs0090QeTJl54GXCPwAMvTho6RspEViCapbvIsvkrvUARHGOyiiTVrmh6jV6g2ieVXbdYNIH9NBKpKnDsi/hl6ChA3Ij3cbRvTiuZBbeUtumvp8/v9W+Srl1MuKkBFwfm7s8x3m0=
+X-Gm-Message-State: AOJu0YyxUyJ1YM1cNy69H41b1qqzDT5TSvodq8cl8qL5IpGkx0+Zs6vT
+	ZTmkkceENVTfLO1Wa6VFe5t7dEyKPWKPykAxJR0zLVvg7QvejY07
+X-Google-Smtp-Source: AGHT+IGfTlcT01C0SngR63rLuC0OJbsEwwsCHS3hFr45/xbB+8hfJ+Wejt8gAURALG3QrWoVnNJJ3w==
+X-Received: by 2002:ac8:5741:0:b0:434:e7d6:b51b with SMTP id 1-20020ac85741000000b00434e7d6b51bmr1616157qtx.31.1713218004948;
+        Mon, 15 Apr 2024 14:53:24 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id fu28-20020a05622a5d9c00b00436510ddc5esm6517347qtb.34.2024.04.15.14.53.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 10:08:31 -0700 (PDT)
-Date: Mon, 15 Apr 2024 10:08:30 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Philipp Stanner <pstanner@redhat.com>, Kees Cook <kees@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miguel Ojeda <ojeda@kernel.org>, John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+        Mon, 15 Apr 2024 14:53:24 -0700 (PDT)
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 8E4381200066;
+	Mon, 15 Apr 2024 17:53:23 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Mon, 15 Apr 2024 17:53:23 -0400
+X-ME-Sender: <xms:06EdZnbbQsUxwI70OOpFVwVBknIqzstgBF3Dcl3RjOpREREYr0DidA>
+    <xme:06EdZmaRYft-3hFYAxqAtXI2pdojN1VHDxq9LlOz5FdmKQUfMm6PqqWSf2bSs9yoQ
+    C5J3YJSnOcn8L29yw>
+X-ME-Received: <xmr:06EdZp_klCYwjnxXnNolqcKumqyt2PIrSzTc0SEKaJvRQNAKkXWI6GkpLug>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejfedgtddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:06EdZtqdQxxTQQ8KLC1OnHbTi7thQxoXyL_4HNFUSsLl-nhKzLmRvg>
+    <xmx:06EdZirW15UQnC31snfijPs7Z04o54oZl5e7flxp08qRCf2tEG85mw>
+    <xmx:06EdZjSI7hIAp0sfzDZ6TJOsmLQYzMy8JDwVtPLzvAZNAWDt3xkZ5A>
+    <xmx:06EdZqpHfHhU2EV4NAOUgMyOmfNUVGTayouj-IgVMoaeFHCo1LUmsw>
+    <xmx:06EdZj4Mtno7waCTRl_37lhLDXx69MSjfE1JyRjYVkvEjTs6-b3WEHkE>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 15 Apr 2024 17:53:22 -0400 (EDT)
+Date: Mon, 15 Apr 2024 14:53:07 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
-Message-ID: <202404151005.EB7F67A@keescook>
-References: <20240411230801.1504496-1-boqun.feng@gmail.com>
- <20240411230801.1504496-3-boqun.feng@gmail.com>
- <CANiq72nSSAVkynVaAq7bQKoL6N8K2JUXp8AOVvu7vN+siAhk-Q@mail.gmail.com>
- <f08c06a4e8361f2cb55cd0dc1fa2bc2b0a046049.camel@redhat.com>
- <CANiq72kMZ6mpK+LaL9Xfsp032CZOfAEtr6Dp9A2R-m6dC3gkWQ@mail.gmail.com>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+Message-ID: <Zh2hw0uQrkN5yVVA@boqun-archlinux>
+References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com>
+ <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kMZ6mpK+LaL9Xfsp032CZOfAEtr6Dp9A2R-m6dC3gkWQ@mail.gmail.com>
+In-Reply-To: <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
 
-On Fri, Apr 12, 2024 at 09:58:57AM +0200, Miguel Ojeda wrote:
-> On Fri, Apr 12, 2024 at 9:43 AM Philipp Stanner <pstanner@redhat.com> wrote:
-> >
-> > Is that going to remain enabled by default or what was the plan here?
+On Mon, Apr 15, 2024 at 07:13:53AM +0000, Alice Ryhl wrote:
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > 
-> The plan is to ideally keep it enabled by default, but I defer to Kees
-> with whom we discussed this back then (Cc'd).
+> A pointer to an area in userspace memory, which can be either read-only
+> or read-write.
+> 
+> All methods on this struct are safe: attempting to read or write on bad
+> addresses (either out of the bound of the slice or unmapped addresses)
+> will return `EFAULT`. Concurrent access, *including data races to/from
+> userspace memory*, is permitted, because fundamentally another userspace
+> thread/process could always be modifying memory at the same time (in the
+> same way that userspace Rust's `std::io` permits data races with the
+> contents of files on disk). In the presence of a race, the exact byte
+> values read/written are unspecified but the operation is well-defined.
+> Kernelspace code should validate its copy of data after completing a
+> read, and not expect that multiple reads of the same address will return
+> the same value.
+> 
+> These APIs are designed to make it difficult to accidentally write
+> TOCTOU bugs. Every time you read from a memory location, the pointer is
+> advanced by the length so that you cannot use that reader to read the
+> same memory location twice. Preventing double-fetches avoids TOCTOU
+> bugs. This is accomplished by taking `self` by value to prevent
+> obtaining multiple readers on a given `UserSlicePtr`, and the readers
+> only permitting forward reads. If double-fetching a memory location is
+> necessary for some reason, then that is done by creating multiple
+> readers to the same memory location.
+> 
+> Constructing a `UserSlicePtr` performs no checks on the provided
+> address and length, it can safely be constructed inside a kernel thread
+> with no current userspace process. Reads and writes wrap the kernel APIs
+> `copy_from_user` and `copy_to_user`, which check the memory map of the
+> current process and enforce that the address range is within the user
+> range (no additional calls to `access_ok` are needed).
+> 
+> This code is based on something that was originally written by Wedson on
+> the old rust branch. It was modified by Alice by removing the
+> `IoBufferReader` and `IoBufferWriter` traits, and various other changes.
+> 
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Yeah, we want to keep "trap on overflow" the default for Rust. We're
-slowly making our way there[1] for C in Linux, so I don't want to
-regress the Rust code.
+Thanks!
 
-> The goal is that Rust code, since the beginning, has all wrapping
-> operations marked explicitly as such.
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-Exactly. We have to not perpetuate the ambiguity of arithmetic
-operations. It should be clear from the operator or the type what the
-expected bounds are for a calculation.
+Two small nits below..
 
--Kees
+> ---
+>  rust/helpers.c         |  14 +++
+>  rust/kernel/lib.rs     |   1 +
+>  rust/kernel/uaccess.rs | 304 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 319 insertions(+)
+> 
+[...]
+> +    /// Reads raw data from the user slice into a kernel buffer.
+> +    ///
+> +    /// Fails with `EFAULT` if the read happens on a bad address.
 
-[1] https://lore.kernel.org/lkml/20240205093725.make.582-kees@kernel.org/
+... we probably want to mention that `out` may get modified even in
+failure cases.
 
--- 
-Kees Cook
+> +    pub fn read_slice(&mut self, out: &mut [u8]) -> Result {
+> +        // SAFETY: The types are compatible and `read_raw` doesn't write uninitialized bytes to
+> +        // `out`.
+> +        let out = unsafe { &mut *(out as *mut [u8] as *mut [MaybeUninit<u8>]) };
+> +        self.read_raw(out)
+> +    }
+> +
+[...]
+> +
+> +impl UserSliceWriter {
+[...]
+> +
+> +    /// Writes raw data to this user pointer from a kernel buffer.
+> +    ///
+> +    /// Fails with `EFAULT` if the write happens on a bad address.
+
+Same here, probably mention that: the userspace memory may be modified
+even in failure cases.
+
+Anyway, they are not correctness critical, so we can do these in later
+patches.
+
+Regards,
+Boqun
+
+> +    pub fn write_slice(&mut self, data: &[u8]) -> Result {
+> +        let len = data.len();
+> +        let data_ptr = data.as_ptr().cast::<c_void>();
+> +        if len > self.length {
+> +            return Err(EFAULT);
+> +        }
+> +        let Ok(len_ulong) = c_ulong::try_from(len) else {
+> +            return Err(EFAULT);
+> +        };
+> +        // SAFETY: `data_ptr` points into an immutable slice of length `len_ulong`, so we may read
+> +        // that many bytes from it.
+> +        let res = unsafe { bindings::copy_to_user(self.ptr, data_ptr, len_ulong) };
+> +        if res != 0 {
+> +            return Err(EFAULT);
+> +        }
+> +        // Userspace pointers are not directly dereferencable by the kernel, so
+> +        // we cannot use `add`, which has C-style rules for defined behavior.
+> +        self.ptr = self.ptr.wrapping_byte_add(len);
+> +        self.length -= len;
+> +        Ok(())
+> +    }
+> +}
+> 
+> -- 
+> 2.44.0.683.g7961c838ac-goog
+> 
+> 
