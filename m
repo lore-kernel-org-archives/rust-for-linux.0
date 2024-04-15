@@ -1,42 +1,42 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3B274C19;
-	Mon, 15 Apr 2024 13:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F5E71B3A;
+	Mon, 15 Apr 2024 13:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713187822; cv=none; b=cl5ep9yV4ZJTU4Vv/n7ATYPdGa+Fc5JKVhHPYcnqOrMojhBUTPurzD8Zy8CmCBZCuehBNJ0w/UlWakMD6ykhIoljyhdSMxReaQY6E07sfqJ6PyY4lmyGv5Xwh3diCnDtI6nU+RH2167g0oJurdT+crnQfW85wk16eBuE9A3jXvk=
+	t=1713188942; cv=none; b=A+43J3jPwt7m8NHvZfoKTffm22cKTTFC3GGWSeHzAGp1CRyFevKS9X252UTUKOlHX3wwAbPXKPfWTxDxh7qZiXAGGbjKUR02l8Xq7AAMg9cqiDgvb7ksY/D/H2vm1z/yw28Cd729KJskGyhrtSu93YFwMCqYXrDf7K5n/4TKY74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713187822; c=relaxed/simple;
-	bh=VLN7U2MWXkfek+C+HetpHRqueVgKzdk7GVGfNILmQKo=;
+	s=arc-20240116; t=1713188942; c=relaxed/simple;
+	bh=byyuGKFmlI3hbdOTLduNttEhM/F2miZWWsgZSr4EnV8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eVgQtkGRUuD4+nH869drGqXKWfm9Ezekeh7Ie3qquvx5m0WiXP/Fkizh0OViy55KGcTDLo2MGeWYx9DOGuBNZKTIIptGnRgvQkK2gb8UlKQpDoQVLUzeg2RzQxemsEYjlZWpZlshVSGUfAQVVijXiEYxttdBxxSSJTHDIYpomMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gsQYRiTO; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=FxaBLPcexTdUTLfl5BCdad1LXu2s9rdNe9h9Qn0FUe6xUeisNkDoCbUdSEZ0VldnF/iGnO1nKkVMbjbEhji5Ws7F6u/eWg0cD34Du58kmkL7Bzameuwe3Oiv96yFe9eihV/F8QJEnXA/u+UfWdjk/Ph3KI3pSIRbCLF2lsL5Iy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Z9PnMCIl; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gsQYRiTO"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Z9PnMCIl"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=L1ekA2H1TmIH/kCPYXXx1HrbqYaNja5ekOaa2gNDg/o=; b=gsQYRiTOvcIs5Hso82D6qn3ABi
-	iskB3fzR2M7HQUdi+sgGpFhxBWQ+MtmD/nfYnndRds+kqRhoNF8fVAHfk+kizmnOBwQZt3O6ogKaq
-	KXqfMDnFilxpaTAIL6rz1vyviTV1Xwq3PFFYTMaMaAb6m6G3qp8EaUfOXWP6xvGCmKMc=;
+	bh=TPq2gpyOaK+VTqdSdtQAk4akDRexl59i2+mZeKq+Lcc=; b=Z9PnMCIl/Q9N6BHPxVuZ8nfZ3i
+	usaBt+YErrZYZuhAXWr7VAYCBg5Gwwc8Tw9QXqa1Y/XRXAkWgVZRFqPpDMeNRkhjiYKqdxgUfaR4O
+	jnpkdCHjiuPhNy8ka9+7kOEGasYNo7hVEq3ztMLwUIMAizEQ935cXK3sxTu5PL4cVghU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1rwMPY-00D2eo-6x; Mon, 15 Apr 2024 15:30:16 +0200
-Date: Mon, 15 Apr 2024 15:30:16 +0200
+	id 1rwMhe-00D2q0-HP; Mon, 15 Apr 2024 15:48:58 +0200
+Date: Mon, 15 Apr 2024 15:48:58 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>
-Subject: Re: [PATCH net-next v1 3/4] rust: net::phy support Firmware API
-Message-ID: <d5713492-73e9-460e-a2df-8d72991d0b8b@lunn.ch>
+	tmgross@umich.edu
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <94f86118-4e2e-460b-9f52-911835c22065@lunn.ch>
 References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
- <20240415104701.4772-4-fujita.tomonori@gmail.com>
+ <20240415104701.4772-5-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,16 +45,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240415104701.4772-4-fujita.tomonori@gmail.com>
+In-Reply-To: <20240415104701.4772-5-fujita.tomonori@gmail.com>
 
-On Mon, Apr 15, 2024 at 07:47:00PM +0900, FUJITA Tomonori wrote:
-> This patch adds support to the following basic Firmware API:
-> 
-> - request_firmware
-> - release_firmware
+> +        let phy_id = dev.c45_read(MDIO_MMD_PMAPMD, 0xd001)?;
+> +        if (phy_id >> 8) & 0xff != 0xb3 {
+> +            return Ok(());
+> +        }
+> +
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0000)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC302, 0x4)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC319, 0x0038)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC31A, 0x0098)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0026, 0x0E00)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0027, 0x0893)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0028, 0xA528)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0029, 0x03)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC30A, 0x06E1)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0002)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0xE854, 0x00C0)?;
+> +
+> +        let mut j = 0x8000;
+> +        let mut a = MDIO_MMD_PCS;
+> +        for (i, val) in fw.data().iter().enumerate() {
+> +            if i == 0x4000 {
 
-I fully agree with GregKH here. You should be writing a generic Rust
-abstraction around firmware loading any Linux driver can use. There
-should not be anything PHY specific in it.
+I'm assuming enumerate() does the same as Python enumerate. So `i` will
+be the offset into the firmware. There is actually two different
+firmware blobs in the file, and you write one into the PCS and the
+second into the PHYXS?
 
-	Andrew
+> +                a = MDIO_MMD_PHYXS;
+> +                j = 0x8000;
+> +            }
+> +            dev.c45_write(a, j, (*val).into())?;
+
+Maybe my limitation with Rust. Is this writing a byte or a u16 to the
+register? PHY registers are generally u16. And if it is a u16, what
+about endianness?
+
+Firmware should not be trusted. What about the case the firmware does
+not have 0x4000 words in it? Is the size of the second blob known?
+Also 0x4000?
+
+It would be more normal to load firmware into the PHY during probe,
+not config_init.
+
+    Andrew
