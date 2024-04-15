@@ -1,42 +1,41 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F5E71B3A;
-	Mon, 15 Apr 2024 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BF9757E4;
+	Mon, 15 Apr 2024 14:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713188942; cv=none; b=A+43J3jPwt7m8NHvZfoKTffm22cKTTFC3GGWSeHzAGp1CRyFevKS9X252UTUKOlHX3wwAbPXKPfWTxDxh7qZiXAGGbjKUR02l8Xq7AAMg9cqiDgvb7ksY/D/H2vm1z/yw28Cd729KJskGyhrtSu93YFwMCqYXrDf7K5n/4TKY74=
+	t=1713190820; cv=none; b=XFPFNNTlUk/cQAHfgQcPsHxIpG3H+USreu4uwbSS66oBSZjo2BPKmfaPdfqb3iRGcs0OoMkXJYoB0nr+PC2PcfJ7UnC1PBAYneVVJJsYchzmZ/1whqdNd7A/t7dgUOm2L6tXl/I3PbvBs5bAGhUApLzguZo2ve80DB7b0spZk1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713188942; c=relaxed/simple;
-	bh=byyuGKFmlI3hbdOTLduNttEhM/F2miZWWsgZSr4EnV8=;
+	s=arc-20240116; t=1713190820; c=relaxed/simple;
+	bh=DB+wKIghJsG01+WF97RgjuS7cJliGqMTntLYVzdVb0o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FxaBLPcexTdUTLfl5BCdad1LXu2s9rdNe9h9Qn0FUe6xUeisNkDoCbUdSEZ0VldnF/iGnO1nKkVMbjbEhji5Ws7F6u/eWg0cD34Du58kmkL7Bzameuwe3Oiv96yFe9eihV/F8QJEnXA/u+UfWdjk/Ph3KI3pSIRbCLF2lsL5Iy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Z9PnMCIl; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=jqdwmJXwhL50zupbu17y8bpr8aJlPkI+Aje5YjPtMXtSKdGCIqVGjog7naq+S2VPOnh0T/0jEky8lIrn3p9R7UhjTmKxjFvZ/oe4rWO1O6ivwBJqgTmFBandDO+WuZ7upVgRuF0IZi/1ZQAaem6rc/c5zK/a8/VZqBrQY4n6P3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DDdrXqdb; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Z9PnMCIl"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DDdrXqdb"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TPq2gpyOaK+VTqdSdtQAk4akDRexl59i2+mZeKq+Lcc=; b=Z9PnMCIl/Q9N6BHPxVuZ8nfZ3i
-	usaBt+YErrZYZuhAXWr7VAYCBg5Gwwc8Tw9QXqa1Y/XRXAkWgVZRFqPpDMeNRkhjiYKqdxgUfaR4O
-	jnpkdCHjiuPhNy8ka9+7kOEGasYNo7hVEq3ztMLwUIMAizEQ935cXK3sxTu5PL4cVghU=;
+	bh=lSbObex15wOwgO7da4ym39y3O/1y80iGBehBgnC+1gE=; b=DDdrXqdbwir/2TzR3+XlxaC6jl
+	W5sna3A77bv1WYPIRWO4Xyhudb/WMpNJYdHTo67yQG8lc0OxInV6zKwZ0RNpDFSqqxMDuzamzsMxR
+	sOybOq/moTbqsMuKNxrjXeBxYSizAhmWnhI7kVaUHvpYUXfdBcI9kWSfr9dQmE29lKbg=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1rwMhe-00D2q0-HP; Mon, 15 Apr 2024 15:48:58 +0200
-Date: Mon, 15 Apr 2024 15:48:58 +0200
+	id 1rwNBw-00D31b-2F; Mon, 15 Apr 2024 16:20:16 +0200
+Date: Mon, 15 Apr 2024 16:20:16 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	tmgross@umich.edu
-Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
- driver
-Message-ID: <94f86118-4e2e-460b-9f52-911835c22065@lunn.ch>
+Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
+Message-ID: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch>
 References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
- <20240415104701.4772-5-fujita.tomonori@gmail.com>
+ <20240415104701.4772-3-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,52 +44,74 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240415104701.4772-5-fujita.tomonori@gmail.com>
+In-Reply-To: <20240415104701.4772-3-fujita.tomonori@gmail.com>
 
-> +        let phy_id = dev.c45_read(MDIO_MMD_PMAPMD, 0xd001)?;
-> +        if (phy_id >> 8) & 0xff != 0xb3 {
-> +            return Ok(());
-> +        }
-> +
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0000)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC302, 0x4)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC319, 0x0038)?;
-> +
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC31A, 0x0098)?;
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0026, 0x0E00)?;
-> +
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0027, 0x0893)?;
-> +
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0028, 0xA528)?;
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0029, 0x03)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC30A, 0x06E1)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0002)?;
-> +        dev.c45_write(MDIO_MMD_PCS, 0xE854, 0x00C0)?;
-> +
-> +        let mut j = 0x8000;
-> +        let mut a = MDIO_MMD_PCS;
-> +        for (i, val) in fw.data().iter().enumerate() {
-> +            if i == 0x4000 {
+On Mon, Apr 15, 2024 at 07:46:59PM +0900, FUJITA Tomonori wrote:
+> This patch adds the following helper functions for Clause 45:
+> 
+> - mdiobus_c45_read
+> - mdiobus_c45_write
+> - genphy_c45_read_status
 
-I'm assuming enumerate() does the same as Python enumerate. So `i` will
-be the offset into the firmware. There is actually two different
-firmware blobs in the file, and you write one into the PCS and the
-second into the PHYXS?
+We need to be very careful here, and try to avoid an issue we have in
+the phylib core, if possible. C45 is a mix of two different things:
 
-> +                a = MDIO_MMD_PHYXS;
-> +                j = 0x8000;
-> +            }
-> +            dev.c45_write(a, j, (*val).into())?;
+* The C45 MDIO bus protocol
+* The C45 registers
 
-Maybe my limitation with Rust. Is this writing a byte or a u16 to the
-register? PHY registers are generally u16. And if it is a u16, what
-about endianness?
+You can access C45 registers using the C45 bus protocol. You can also
+access C45 registers using C45 over C22. So there are two access
+mechanisms to the C45 registers.
 
-Firmware should not be trusted. What about the case the firmware does
-not have 0x4000 words in it? Is the size of the second blob known?
-Also 0x4000?
+A PHY driver just wants to access C45 registers. It should not care
+about what access mechanism is used, be it C45 bus protocol, or C45
+over C22.
 
-It would be more normal to load firmware into the PHY during probe,
-not config_init.
+> +    /// Reads a given C45 PHY register.
+> +    /// This function reads a hardware register and updates the stats so takes `&mut self`.
+> +    pub fn c45_read(&mut self, devad: u8, regnum: u16) -> Result<u16> {
+> +        let phydev = self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+> +        // So it's just an FFI call.
+> +        let ret = unsafe {
+> +            bindings::mdiobus_c45_read(
+> +                (*phydev).mdio.bus,
+> +                (*phydev).mdio.addr,
+> +                devad as i32,
+> +                regnum.into(),
+> +            )
 
-    Andrew
+So you have wrapped the C function mdiobus_c45_read(). This is going
+to do a C45 bus protocol read. For this to work, the MDIO bus master
+needs to support C45 bus protocol, and the PHY also needs to support
+the C45 bus protocol. Not all MDIO bus masters and PHY devices
+do. Some will need to use C45 over C22.
+
+A PHY driver should know if a PHY device supports C45 bus protocol,
+and if it supports C45 over C22. However, i PHY driver has no idea
+what the bus master supports.
+
+In phylib, we have a poorly defined phydev->is_c45. Its current
+meaning is: "The device was found using the C45 bus protocol, not C22
+protocol". One of the things phylib core then uses is_c45 for it to
+direct the C functions phy_read_mmd() and phy_write_mmd() to perform a
+C45 bus protocol access if true. If it is false, C45 over C22 is
+performed instead. As a result, if a PHY is discovered using C22, C45
+register access is then performed using C45 over C22, even thought the
+PHY and bus might support C45 bus protocol. is_c45 is also used in
+other places, e.g. to trigger auto-negotiation using C45 registers,
+not C22 registers.
+
+In summary, the C API is a bit of a mess.
+
+For the Rust API we have two sensible choices:
+
+1) It is the same mess as the C API, so hopefully one day we will fix
+   both at the same time.
+
+2) We define a different API which correctly separate C45 bus access
+   from C45 registers.
+
+How you currently defined the Rust API is neither of these.
+
+       Andrew
