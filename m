@@ -1,127 +1,105 @@
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBBA4085C
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 09:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A299E4D121
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 09:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713174287; cv=none; b=o2+8j6dxduXUFraTGjXYIG6g6Ue72VgM1xV+FJhfxl6rPJcXaYlViNQBXjHw58dDbef2l/WTC3bvj4/55BBw60qpEOJpW7dHI1n/9ZVBfGn2b1u7pv49vzscEoFJUuPJUwlwuJ8P77H7bve/Y/tVsZD27SbO3VqSj2qdOnISuxg=
+	t=1713174740; cv=none; b=MAnlS8IhyGDAqVHpIYWGTNLPQshfOHpiG3ElFWD8g2BQeqtMLWF4t9OI9BZn7XAFrrP13FaXBK3XtTCa0NdLzx2ZBBXUH4iH08a6LipyPW5PWHfkxPB6BNLDwjmsy7W3SdlEFXZDmodMZRTylOjaeKVgHybmAdHiDt6gk91ewsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713174287; c=relaxed/simple;
-	bh=gba+sm2E9ePiUcK4VdEn+S71kqNe3vHsP4roaANqYZQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B58juSNd5Spe52ftaGJ409WI966QPNxO9oI17bsh4bfsa/BmDT3+BtwytMDupsZL+/zrBPrS/ShEO7yHAF4Q5safgGrEGOf09zaDV1/3YnC2feRIa8B35OJZG2zx8hyxRYw8cLo23/nXDxgVxawEhS0+w+4iiDrlr1mONCxC5IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XoQ2BrCs; arc=none smtp.client-ip=209.85.221.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1713174740; c=relaxed/simple;
+	bh=wRVTJ0UbYbZDQRp6UEkosuQ5Xv/tRLFqmEIuhSEGVu4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eBxfgmQRs4gS+tgQ64muUe3iNxXz3YasjMCDTihKtASBmB2JjWe92MsM9nCAHvz9/IJzgjVZIITYy6f2J34v8Oof+qZfZwxesSEUYFOjbDC3CAL/nzN7iqYHV6cZh2MXoiLQFr0vJovVtwV+EDPDfeTcxw7+yO2i4PH81Ubh9EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H4m/cOlC; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XoQ2BrCs"
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4dca51ef1cfso842916e0c.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 02:44:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713174285; x=1713779085; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CSLoiB2mZ+syImFaap979pBovjFFHgK5JL5uKJwM15M=;
-        b=XoQ2BrCsSSi552IZiY+s5HsdFrU9bkzS2JPOtArpzFK0VzYW/ljZcvU74jdsNbpWDn
-         c7uGzvsErny2Xz5iraH8hSySM3TgTSDvfb29SGlmyDC3UlF8oYlpZu1NgpQvam1zX72Y
-         inKPVjNxhEgIcvyx9CZ4947qy//ieHNaY1LhtuST4MBIetzcL6wYE5Vy7CQ2R8ZdXk9h
-         V67A9+zcfKtkhhk9iE9D2mmxYqUBIakYeUqPYOgTvLDwno/9Rc1YVKKe5nLT1Z/mf4xF
-         zHmZdK9ejJsSF3wz5d6UvfGADaPrK4gq2cxXl7wTVV+8/ngEvX+4BzWI+Ts/blYXk+sY
-         nZ7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713174285; x=1713779085;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CSLoiB2mZ+syImFaap979pBovjFFHgK5JL5uKJwM15M=;
-        b=MM5WjHcEIi6+V7mUdjezYl3dN2a73usl6UP9waIoE363Hxg6xKdR95vFpiUY8CG5Tu
-         tfN2NBPEzRRp4jOReTMf1oY+nv7mRthTzONXPzVfqi/sBoiVuaIYXzRXS+57XNY5+IY1
-         bmF0d6cDksmmkjOeyqu2G0+iojWqbnmazOoP8aiYq6Ltegp8HsTqzuEkk2DTrSAh15zP
-         jsLgqEPFQ/x2gtrLwfiKMTDolG4tdoPKceXJtU6kC7p2MDPHJHNm+VV6AKl5AEA8sQHN
-         73cxDvc8ZqPS3Po/5H0ptf3xQYCe6yKji723yl+82s3rp0h2QrKTDjQ14d6DpYohs4GS
-         +XZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDQGMlNMWcOxyM+BLBteMwwWDZUv1Gq4hv8Dy2FqrShDNzEZKhA9bICgw6+hgohD+Z1+TzTZlCSDEpbMIir2XWfZok8liaFPBMWUjMksg=
-X-Gm-Message-State: AOJu0YwWyXRW0Ow4f1r03R7bheNU9NVQQ+PHwOAuZ30ad1Ip1hIuJChc
-	5XJNBHCAKWPmUoefR7XrolfpT9r5fFd2vsSzPyp3RROHYAR/t7Z6rzLk748/dW4ZFpNdW+ow1ub
-	ue9pfrm3AcD/iWj+5VDKC+Vq6pZoGFLv0V8N3
-X-Google-Smtp-Source: AGHT+IEkhwcc26gJYhEUGK0Rz98TITLvdkASwy8xab0jVCJOyrzEUfOPadfPmhxaylFC0rFqS6AhEhBJ09WImT7Whzc=
-X-Received: by 2002:a05:6122:3681:b0:4d8:74a2:6d35 with SMTP id
- ec1-20020a056122368100b004d874a26d35mr7925511vkb.9.1713174285085; Mon, 15 Apr
- 2024 02:44:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H4m/cOlC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1713174736; x=1713433936;
+	bh=c6ckz4hhAbktVZkF1RuxUbUmw/jaVAkQ7dsloKnHX8M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=H4m/cOlCahXLO+0GLUL9cXxPqoObTqJqbMgZaX0TOJbG4YwQf5PO4XUDPkJ7/d85Y
+	 1z6MlUat8q+X7wyjRBLEpLI86mo77Iir0TCVWoiiyaVSK7GTVSITXAhnpFYJrx5G9L
+	 5VwJ7e2Vecmjew40OzAOwZ3W/RLVqQAbhRISYnsBhDpt+i91x37qze+C/S8arERy2v
+	 NARZhDhUhivIqHZ+LHnxFbfWJsXvzgWoNrEDFfHZF66n8uxgU1Um0Kg/G3c0ULZCQr
+	 dJds5xaHflmkLw+dKiWj2w/RIBKaJegRspfuavfuEWEshLTJNpskEsxbQAECMBfV3Y
+	 QNOmEt1kDxQRg==
+Date: Mon, 15 Apr 2024 09:51:47 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+Message-ID: <36c22716-ba41-46e0-8e18-991f1a14b208@proton.me>
+In-Reply-To: <CAH5fLgjT3hAdtdNeb7FgX491UhvMGa-JHevz_EqC=N4zVViBjw@mail.gmail.com>
+References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com> <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com> <2cae6fd4-906c-44ad-88be-0dfed090d07c@proton.me> <CAH5fLgjT3hAdtdNeb7FgX491UhvMGa-JHevz_EqC=N4zVViBjw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com>
- <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com> <2cae6fd4-906c-44ad-88be-0dfed090d07c@proton.me>
-In-Reply-To: <2cae6fd4-906c-44ad-88be-0dfed090d07c@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 15 Apr 2024 11:44:33 +0200
-Message-ID: <CAH5fLgjT3hAdtdNeb7FgX491UhvMGa-JHevz_EqC=N4zVViBjw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 15, 2024 at 11:37=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> On 15.04.24 09:13, Alice Ryhl wrote:
-> > +impl UserSlice {
-> > +    /// Constructs a user slice from a raw pointer and a length in byt=
+On 15.04.24 11:44, Alice Ryhl wrote:
+> On Mon, Apr 15, 2024 at 11:37=E2=80=AFAM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> On 15.04.24 09:13, Alice Ryhl wrote:
+>>> +impl UserSlice {
+>>> +    /// Constructs a user slice from a raw pointer and a length in byt=
 es.
-> > +    ///
-> > +    /// Constructing a [`UserSlice`] performs no checks on the provide=
+>>> +    ///
+>>> +    /// Constructing a [`UserSlice`] performs no checks on the provide=
 d address and length, it can
-> > +    /// safely be constructed inside a kernel thread with no current u=
+>>> +    /// safely be constructed inside a kernel thread with no current u=
 serspace process. Reads and
-> > +    /// writes wrap the kernel APIs `copy_from_user` and `copy_to_user=
+>>> +    /// writes wrap the kernel APIs `copy_from_user` and `copy_to_user=
 `, which check the memory map
-> > +    /// of the current process and enforce that the address range is w=
+>>> +    /// of the current process and enforce that the address range is w=
 ithin the user range (no
-> > +    /// additional calls to `access_ok` are needed).
-> > +    ///
-> > +    /// Callers must be careful to avoid time-of-check-time-of-use (TO=
+>>> +    /// additional calls to `access_ok` are needed).
+>>> +    ///
+>>> +    /// Callers must be careful to avoid time-of-check-time-of-use (TO=
 CTOU) issues. The simplest way
-> > +    /// is to create a single instance of [`UserSlice`] per user memor=
+>>> +    /// is to create a single instance of [`UserSlice`] per user memor=
 y block as it reads each byte
-> > +    /// at most once.
-> > +    pub fn new(ptr: *mut c_void, length: usize) -> Self {
->
-> What would happen if I call this with a kernel pointer and then
-> read/write to it? For example
->
->      let mut arr =3D [MaybeUninit::uninit(); 64];
->      let ptr: *mut [MaybeUninit<u8>] =3D &mut arr;
->      let ptr =3D ptr.cast::<c_void>();
->
->      let slice =3D UserSlice::new(ptr, 64);
->      let (mut r, mut w) =3D slice.reader_writer();
->
->      r.read_raw(&mut arr)?;
->      // SAFETY: `arr` was initialized above.
->      w.write_slice(unsafe { MaybeUninit::slice_assume_init_ref(&arr) })?;
->
-> I think this would violate the exclusivity of `&mut` without any
-> `unsafe` code. (the `unsafe` block at the end cannot possibly be wrong)
+>>> +    /// at most once.
+>>> +    pub fn new(ptr: *mut c_void, length: usize) -> Self {
+>>
+>> What would happen if I call this with a kernel pointer and then
+>> read/write to it? For example
+>>
+>>       let mut arr =3D [MaybeUninit::uninit(); 64];
+>>       let ptr: *mut [MaybeUninit<u8>] =3D &mut arr;
+>>       let ptr =3D ptr.cast::<c_void>();
+>>
+>>       let slice =3D UserSlice::new(ptr, 64);
+>>       let (mut r, mut w) =3D slice.reader_writer();
+>>
+>>       r.read_raw(&mut arr)?;
+>>       // SAFETY: `arr` was initialized above.
+>>       w.write_slice(unsafe { MaybeUninit::slice_assume_init_ref(&arr) })=
+?;
+>>
+>> I think this would violate the exclusivity of `&mut` without any
+>> `unsafe` code. (the `unsafe` block at the end cannot possibly be wrong)
+>=20
+> This will fail with an EFAULT error. There is a check on the C side
+> that verifies that the address is in userspace. (The access_ok call.)
 
-This will fail with an EFAULT error. There is a check on the C side
-that verifies that the address is in userspace. (The access_ok call.)
+I see, that makes a lot of sense.
 
-Alice
+Regardless of whether you fix the nit about the guarantees section:
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+--=20
+Cheers,
+Benno
+
