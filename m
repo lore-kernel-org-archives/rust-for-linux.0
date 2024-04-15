@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06955C8E6;
-	Mon, 15 Apr 2024 11:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5525D49F;
+	Mon, 15 Apr 2024 11:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713179462; cv=none; b=rKl97Ezf72lCwF87UDmJplOhhIoko1canHS3wDNa73BUf6F6Driq9r+sM0UimPrYgPAgBeIUebL/StuVK9LCiTbJ+fEBqbEfghVneYyqqFyQvrJudgBkdvHRCL6+ANA+0UOiYKmcNiTMmS5+vwZye+zBKF/fQQ7Mbav5BuFesdg=
+	t=1713179711; cv=none; b=K4sbknlu0OdrO1w9UFajbsBLNaELSHeGaVbCM7yUSBWpCeMRNaygwPBoS9MrJc9l6hMD0m9nkYtw3SBkGjy41CtP4SKp+I1IpmlDFz88CMjRHky5LSwhZjWbrZ223R7mzA6TbBP48Bd0oDclXmUBmYne6QBdnA2L5N3LEL3fw0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713179462; c=relaxed/simple;
-	bh=Wdx8tH2jh2Lm6GmSbmIxPnRH1Em82bPbtDQpebbbnS4=;
+	s=arc-20240116; t=1713179711; c=relaxed/simple;
+	bh=gfoSa9kp+IaCBIggHvTB3T3RKsXbSDiVaXSLI28z6hQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YP+ny3UY6lF2SF/BQ248Tn/oxCady3OkxPCEl98Ajv8gt9YOOvTvcrMxBLXGa2bqq3yAJHn3bamP7OiYPFWL1iDrMrrZN691hNyiRJ6wGjUcAaKScNiPBrM2st5OGwiEB1ItXVNh8lroFYSmuyxH2cTq7rGhM931qhKtXzWKYfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKhCu5vc; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tslzcj4W/xXlJsTYMBzMEUWi4zhwv+Z8jjLOsdV2zGPvNa+dUfvW4Pye+2t1BxB+3oypuCkCvApY06yHAOUAIB5+qI10bdIE6ZxJT2AqZJstAHqK3WgqgbeKf+q+4r0oKUcz4E+IcHNNlbJFkUrefmVT55/ld5ZGrNqYYeyMXFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OapMzZWj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKhCu5vc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E55DC113CC;
-	Mon, 15 Apr 2024 11:11:01 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OapMzZWj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C44C2BD11;
+	Mon, 15 Apr 2024 11:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713179462;
-	bh=Wdx8tH2jh2Lm6GmSbmIxPnRH1Em82bPbtDQpebbbnS4=;
+	s=korg; t=1713179710;
+	bh=gfoSa9kp+IaCBIggHvTB3T3RKsXbSDiVaXSLI28z6hQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oKhCu5vcwtkWbnkFvKKdHbXs0hOsITh7rD4EEyxmny0pdAWcrBjDeIAJu9b9DmzpR
-	 fbkAn5YhtfeYuEPIGRjrb7LNafPCWtlIml41YEkt14jPOtDdf93KBFJUnqN6lTzq8T
-	 hhECBDAkTgXAPs801iWmZgsMEqf9nAUxPnO5wyHc=
-Date: Mon, 15 Apr 2024 13:10:59 +0200
+	b=OapMzZWj6ycBdS8HFT8Uu9osGc5i83QF/sbkHWCMUg948/meMik4lEb8BiSyWhOo5
+	 lnfCu2ybIqxOjH1p7HH616HgYNgKGq8VHpe8bC/6UIxnpRN7gVWSN6bDBBvpTFLXnt
+	 Y6ODZP+pM3KKeqKJNeo5kFZHM7yHmFGn54wWutj0=
+Date: Mon, 15 Apr 2024 13:15:08 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>
-Subject: Re: [PATCH net-next v1 3/4] rust: net::phy support Firmware API
-Message-ID: <2024041554-lagged-attest-586d@gregkh>
+	tmgross@umich.edu
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <2024041549-voicing-legged-3341@gregkh>
 References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
- <20240415104701.4772-4-fujita.tomonori@gmail.com>
+ <20240415104701.4772-5-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,134 +41,168 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240415104701.4772-4-fujita.tomonori@gmail.com>
+In-Reply-To: <20240415104701.4772-5-fujita.tomonori@gmail.com>
 
-On Mon, Apr 15, 2024 at 07:47:00PM +0900, FUJITA Tomonori wrote:
-> This patch adds support to the following basic Firmware API:
+On Mon, Apr 15, 2024 at 07:47:01PM +0900, FUJITA Tomonori wrote:
+> This driver supports Applied Micro Circuits Corporation QT2025 PHY,
+> based on a driver for Tehuti Networks TN40xx chips.
 > 
-> - request_firmware
-> - release_firmware
+> The original driver for TN40xx chips supports multiple PHY hardware
+> (AMCC QT2025, TI TLK10232, Aqrate AQR105, and Marvell 88X3120,
+> 88X3310, and MV88E2010). This driver is extracted from the original
+> driver and modified to a PHY driver in Rust.
+> 
+> This has been tested with Edimax EN-9320SFP+ 10G network adapter.
 > 
 > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> CC: Luis Chamberlain <mcgrof@kernel.org>
-> CC: Russ Weight <russ.weight@linux.dev>
 > ---
->  drivers/net/phy/Kconfig         |  1 +
->  rust/bindings/bindings_helper.h |  1 +
->  rust/kernel/net/phy.rs          | 45 +++++++++++++++++++++++++++++++++
-
-Please do not bury this in the phy.rs file, put it in drivers/base/ next
-to the firmware functions it is calling.
-
->  3 files changed, 47 insertions(+)
+>  MAINTAINERS               |  7 ++++
+>  drivers/net/phy/Kconfig   |  6 ++++
+>  drivers/net/phy/Makefile  |  1 +
+>  drivers/net/phy/qt2025.rs | 75 +++++++++++++++++++++++++++++++++++++++
+>  rust/uapi/uapi_helper.h   |  1 +
+>  5 files changed, 90 insertions(+)
+>  create mode 100644 drivers/net/phy/qt2025.rs
 > 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 5ba3fe6ac09c..f2d86e221ba3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1540,6 +1540,13 @@ F:	Documentation/admin-guide/perf/xgene-pmu.rst
+>  F:	Documentation/devicetree/bindings/perf/apm-xgene-pmu.txt
+>  F:	drivers/perf/xgene_pmu.c
+>  
+> +APPLIED MICRO QT2025 PHY DRIVER
+> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+> +L:	netdev@vger.kernel.org
+> +L:	rust-for-linux@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/net/phy/qt2025.rs
+> +
+>  APTINA CAMERA SENSOR PLL
+>  M:	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+>  L:	linux-media@vger.kernel.org
 > diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index 7fddc8306d82..3ad04170aa4e 100644
+> index 3ad04170aa4e..8293c3d14229 100644
 > --- a/drivers/net/phy/Kconfig
 > +++ b/drivers/net/phy/Kconfig
-> @@ -64,6 +64,7 @@ config RUST_PHYLIB_ABSTRACTIONS
->          bool "Rust PHYLIB abstractions support"
->          depends on RUST
->          depends on PHYLIB=y
-> +        depends on FW_LOADER=y
->          help
->            Adds support needed for PHY drivers written in Rust. It provides
->            a wrapper around the C phylib core.
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 65b98831b975..556f95c55b7b 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -9,6 +9,7 @@
->  #include <kunit/test.h>
->  #include <linux/errname.h>
->  #include <linux/ethtool.h>
-> +#include <linux/firmware.h>
->  #include <linux/jiffies.h>
->  #include <linux/mdio.h>
->  #include <linux/phy.h>
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 421a231421f5..095dc3ccc553 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -9,6 +9,51 @@
->  use crate::{bindings, error::*, prelude::*, str::CStr, types::Opaque};
+> @@ -110,6 +110,12 @@ config ADIN1100_PHY
+>  	  Currently supports the:
+>  	  - ADIN1100 - Robust,Industrial, Low Power 10BASE-T1L Ethernet PHY
 >  
->  use core::marker::PhantomData;
-> +use core::ptr::{self, NonNull};
+> +config AMCC_QT2025_PHY
+> +	tristate "AMCC QT2025 PHY"
+> +	depends on RUST_PHYLIB_ABSTRACTIONS
+> +	help
+> +	  Adds support for the Applied Micro Circuits Corporation QT2025 PHY.
 > +
-> +/// A pointer to the kernel's `struct firmware`.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer points at a `struct firmware`, and has ownership over the object.
-> +pub struct Firmware(NonNull<bindings::firmware>);
+>  source "drivers/net/phy/aquantia/Kconfig"
+>  
+>  config AX88796B_PHY
+> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+> index 1d8be374915f..75d0b07a392a 100644
+> --- a/drivers/net/phy/Makefile
+> +++ b/drivers/net/phy/Makefile
+> @@ -36,6 +36,7 @@ obj-$(CONFIG_ADIN_PHY)		+= adin.o
+>  obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
+>  obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
+>  obj-$(CONFIG_AMD_PHY)		+= amd.o
+> +obj-$(CONFIG_AMCC_QT2025_PHY)	+= qt2025.o
+>  obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
+>  ifdef CONFIG_AX88796B_RUST_PHY
+>    obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
+> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+> new file mode 100644
+> index 000000000000..e42b77753717
+> --- /dev/null
+> +++ b/drivers/net/phy/qt2025.rs
+> @@ -0,0 +1,75 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (C) Tehuti Networks Ltd.
+> +// Copyright (C) 2024 FUJITA Tomonori <fujita.tomonori@gmail.com>
 > +
-> +impl Firmware {
-> +    /// Loads a firmware.
-> +    pub fn new(name: &CStr, dev: &Device) -> Result<Firmware> {
-> +        let phydev = dev.0.get();
-
-That's risky, how do you "know" this device really is a phydev?  That's
-not how the firmware api works, use a real 'struct device' please.
-
-
-> +        let mut ptr: *mut bindings::firmware = ptr::null_mut();
-> +        let p_ptr: *mut *mut bindings::firmware = &mut ptr;
-
-I'm sorry, but I don't understand the two step thing here, you need a
-pointer for where the C code can put something, is this really how you
-do that in rust?  Shouldn't it point to data somehow down below?
-
-> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
-
-Again, phydev is not part of the firmware api.
-
-> +        // So it's just an FFI call.
-> +        let ret = unsafe {
-> +            bindings::request_firmware(
-> +                p_ptr as *mut *const bindings::firmware,
-
-Where is this coming from?
-
-> +                name.as_char_ptr().cast(),
-> +                &mut (*phydev).mdio.dev,
-> +            )
-> +        };
-> +        let fw = NonNull::new(ptr).ok_or_else(|| Error::from_errno(ret))?;
-> +        // INVARIANT: We checked that the firmware was successfully loaded.
-> +        Ok(Firmware(fw))
-> +    }
+> +//! Applied Micro Circuits Corporation QT2025 PHY driver
+> +use kernel::c_str;
+> +use kernel::net::phy::{self, DeviceId, Driver, Firmware};
+> +use kernel::prelude::*;
+> +use kernel::uapi;
 > +
-> +    /// Accesses the firmware contents.
-> +    pub fn data(&self) -> &[u8] {
-
-But firmware is not a u8, it's a structure.  Can't the rust bindings
-handle that?  Oh wait, data is a u8, but the bindings should show that,
-right?
-
-
-> +        // SAFETY: The type invariants guarantee that `self.0.as_ptr()` is valid.
-> +        // They also guarantee that `self.0.as_ptr().data` pointers to
-> +        // a valid memory region of size `self.0.as_ptr().size`.
-> +        unsafe { core::slice::from_raw_parts((*self.0.as_ptr()).data, (*self.0.as_ptr()).size) }
-
-If new fails, does accessing this also fail?
-
-And how are you using this?  I guess I'll dig in the next patch...
-
-> +    }
+> +kernel::module_phy_driver! {
+> +    drivers: [PhyQT2025],
+> +    device_table: [
+> +        DeviceId::new_with_driver::<PhyQT2025>(),
+> +    ],
+> +    name: "qt2025_phy",
+> +    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
+> +    description: "AMCC QT2025 PHY driver",
+> +    license: "GPL",
 > +}
+
+What about support for MODULE_FIRMWARE() so it will be properly loaded
+into the initramfs of systems now that you are needing it for this
+driver?  To ignore that is going to cause problems :(
+
+
+
 > +
-> +impl Drop for Firmware {
-> +    fn drop(&mut self) {
-> +        // SAFETY: By the type invariants, `self.0.as_ptr()` is valid and
-> +        // we have ownership of the object so can free it.
-> +        unsafe { bindings::release_firmware(self.0.as_ptr()) }
+> +const MDIO_MMD_PMAPMD: u8 = uapi::MDIO_MMD_PMAPMD as u8;
+> +const MDIO_MMD_PCS: u8 = uapi::MDIO_MMD_PCS as u8;
+> +const MDIO_MMD_PHYXS: u8 = uapi::MDIO_MMD_PHYXS as u8;
+> +
+> +struct PhyQT2025;
+> +
+> +#[vtable]
+> +impl Driver for PhyQT2025 {
+> +    const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
+> +    const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x0043A400);
+> +
+> +    fn config_init(dev: &mut phy::Device) -> Result<()> {
+> +        let fw = Firmware::new(c_str!("qt2025-2.0.3.3.fw"), dev)?;
+> +
+> +        let phy_id = dev.c45_read(MDIO_MMD_PMAPMD, 0xd001)?;
+> +        if (phy_id >> 8) & 0xff != 0xb3 {
+> +            return Ok(());
+> +        }
+> +
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0000)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC302, 0x4)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC319, 0x0038)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC31A, 0x0098)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0026, 0x0E00)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0027, 0x0893)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0028, 0xA528)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0029, 0x03)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC30A, 0x06E1)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0002)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0xE854, 0x00C0)?;
+> +
+> +        let mut j = 0x8000;
+> +        let mut a = MDIO_MMD_PCS;
+> +        for (i, val) in fw.data().iter().enumerate() {
 
-So drop will never be called if new fails?
+So you are treating the firmware image as able to be iterated over here?
 
-Again, please don't put this in the phy driver, put it where it belongs
-so we can add the other firmware functions when needed.
+
+> +            if i == 0x4000 {
+
+What does 0x4000 mean here?
+
+> +                a = MDIO_MMD_PHYXS;
+> +                j = 0x8000;
+
+What does 0x8000 mean here?
+
+> +            }
+> +            dev.c45_write(a, j, (*val).into())?;
+> +
+> +            j += 1;
+> +        }
+> +        dev.c45_write(MDIO_MMD_PCS, 0xe854, 0x0040)?;
+
+Lots of magic values in this driver, is that intentional?
 
 thanks,
 
