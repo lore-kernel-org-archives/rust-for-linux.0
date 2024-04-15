@@ -1,41 +1,41 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A299E4D121
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 09:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FFD3BB25;
+	Mon, 15 Apr 2024 09:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713174740; cv=none; b=MAnlS8IhyGDAqVHpIYWGTNLPQshfOHpiG3ElFWD8g2BQeqtMLWF4t9OI9BZn7XAFrrP13FaXBK3XtTCa0NdLzx2ZBBXUH4iH08a6LipyPW5PWHfkxPB6BNLDwjmsy7W3SdlEFXZDmodMZRTylOjaeKVgHybmAdHiDt6gk91ewsc=
+	t=1713174899; cv=none; b=PQmhOG9V/DmOBqLa7mjMpRIJ4C1YRgbODroePcU+XNUyLLPeStBirf2fWVUiakUoiUWtWYE2ptMdNohnAGzcALpAPy5OyHEjgJLpl5kLOIoyNq4p4RJkPvEoQV1HMKhoQBTmqH+YBGJYNwTAVLj0/fFK161SsRAchb8GbnV0DK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713174740; c=relaxed/simple;
-	bh=wRVTJ0UbYbZDQRp6UEkosuQ5Xv/tRLFqmEIuhSEGVu4=;
+	s=arc-20240116; t=1713174899; c=relaxed/simple;
+	bh=5g24jBRQ5fF3UkTMQfAJxotvoOH2so5edFW4DlrEWsw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eBxfgmQRs4gS+tgQ64muUe3iNxXz3YasjMCDTihKtASBmB2JjWe92MsM9nCAHvz9/IJzgjVZIITYy6f2J34v8Oof+qZfZwxesSEUYFOjbDC3CAL/nzN7iqYHV6cZh2MXoiLQFr0vJovVtwV+EDPDfeTcxw7+yO2i4PH81Ubh9EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H4m/cOlC; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=KJXQZU5+lMR0OPU2a8B06AvcmrUqje8D0z8OG+nrTDCnMm17x1b2RHHmclWZB7R5bf5UOfSy9iOZOa00/BBOGgfhiRdwQzCXXmqeyPEAxAN2N/DQpebC26LROksM0Q1JYYx0/pIppmRhmghlaSCYDcoU9lalWVqUZvYw9O1ualQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=jggoFhwR; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H4m/cOlC"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="jggoFhwR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1713174736; x=1713433936;
-	bh=c6ckz4hhAbktVZkF1RuxUbUmw/jaVAkQ7dsloKnHX8M=;
+	s=protonmail; t=1713174895; x=1713434095;
+	bh=t8wo9oBZ3T0/ktHZWfSC05XgtiqQfwhxlvieiuSqOyE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=H4m/cOlCahXLO+0GLUL9cXxPqoObTqJqbMgZaX0TOJbG4YwQf5PO4XUDPkJ7/d85Y
-	 1z6MlUat8q+X7wyjRBLEpLI86mo77Iir0TCVWoiiyaVSK7GTVSITXAhnpFYJrx5G9L
-	 5VwJ7e2Vecmjew40OzAOwZ3W/RLVqQAbhRISYnsBhDpt+i91x37qze+C/S8arERy2v
-	 NARZhDhUhivIqHZ+LHnxFbfWJsXvzgWoNrEDFfHZF66n8uxgU1Um0Kg/G3c0ULZCQr
-	 dJds5xaHflmkLw+dKiWj2w/RIBKaJegRspfuavfuEWEshLTJNpskEsxbQAECMBfV3Y
-	 QNOmEt1kDxQRg==
-Date: Mon, 15 Apr 2024 09:51:47 +0000
-To: Alice Ryhl <aliceryhl@google.com>
+	b=jggoFhwRhcdTbNRIjpMSKlUsYFgcBrwbZEv0XKICXZ8SZPsbHOcIXYuq/dxBy0cDF
+	 qoDDh3Ni4OIeKz/VGQANYpA6Exrf2VZgtBS2maIQBHWev6wdib9L3F0vESKTl77V3O
+	 LA3y+KsfIZiUOTlBzOnX11tuCPIMRExAHvRpoA8nM+5zF/V0cYolbZGa3HDk3vqeww
+	 /B9Wn1zV3fPR+GToPiAHa6og1a/3BVIoFXlEDVUXds/WmpNsGuQlBSbexqvEETwZuG
+	 yHi9RJhIugbXYN1o22owWxWSrtvAWJpOiFkCqp1F2rHvcT8Cchp0EjOQR0AKfOdxOi
+	 CYBfqXaQQpd7Q==
+Date: Mon, 15 Apr 2024 09:54:07 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
-Message-ID: <36c22716-ba41-46e0-8e18-991f1a14b208@proton.me>
-In-Reply-To: <CAH5fLgjT3hAdtdNeb7FgX491UhvMGa-JHevz_EqC=N4zVViBjw@mail.gmail.com>
-References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com> <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com> <2cae6fd4-906c-44ad-88be-0dfed090d07c@proton.me> <CAH5fLgjT3hAdtdNeb7FgX491UhvMGa-JHevz_EqC=N4zVViBjw@mail.gmail.com>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v5 4/4] rust: add abstraction for `struct page`
+Message-ID: <7918eb1a-2c3a-4c5a-b309-1306573dbd1f@proton.me>
+In-Reply-To: <20240415-alice-mm-v5-4-6f55e4d8ef51@google.com>
+References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com> <20240415-alice-mm-v5-4-6f55e4d8ef51@google.com>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -46,56 +46,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 15.04.24 11:44, Alice Ryhl wrote:
-> On Mon, Apr 15, 2024 at 11:37=E2=80=AFAM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>
->> On 15.04.24 09:13, Alice Ryhl wrote:
->>> +impl UserSlice {
->>> +    /// Constructs a user slice from a raw pointer and a length in byt=
-es.
->>> +    ///
->>> +    /// Constructing a [`UserSlice`] performs no checks on the provide=
-d address and length, it can
->>> +    /// safely be constructed inside a kernel thread with no current u=
-serspace process. Reads and
->>> +    /// writes wrap the kernel APIs `copy_from_user` and `copy_to_user=
-`, which check the memory map
->>> +    /// of the current process and enforce that the address range is w=
-ithin the user range (no
->>> +    /// additional calls to `access_ok` are needed).
->>> +    ///
->>> +    /// Callers must be careful to avoid time-of-check-time-of-use (TO=
-CTOU) issues. The simplest way
->>> +    /// is to create a single instance of [`UserSlice`] per user memor=
-y block as it reads each byte
->>> +    /// at most once.
->>> +    pub fn new(ptr: *mut c_void, length: usize) -> Self {
->>
->> What would happen if I call this with a kernel pointer and then
->> read/write to it? For example
->>
->>       let mut arr =3D [MaybeUninit::uninit(); 64];
->>       let ptr: *mut [MaybeUninit<u8>] =3D &mut arr;
->>       let ptr =3D ptr.cast::<c_void>();
->>
->>       let slice =3D UserSlice::new(ptr, 64);
->>       let (mut r, mut w) =3D slice.reader_writer();
->>
->>       r.read_raw(&mut arr)?;
->>       // SAFETY: `arr` was initialized above.
->>       w.write_slice(unsafe { MaybeUninit::slice_assume_init_ref(&arr) })=
-?;
->>
->> I think this would violate the exclusivity of `&mut` without any
->> `unsafe` code. (the `unsafe` block at the end cannot possibly be wrong)
+On 15.04.24 09:13, Alice Ryhl wrote:
+> Adds a new struct called `Page` that wraps a pointer to `struct page`.
+> This struct is assumed to hold ownership over the page, so that Rust
+> code can allocate and manage pages directly.
 >=20
-> This will fail with an EFAULT error. There is a check on the C side
-> that verifies that the address is in userspace. (The access_ok call.)
-
-I see, that makes a lot of sense.
-
-Regardless of whether you fix the nit about the guarantees section:
+> The page type has various methods for reading and writing into the page.
+> These methods will temporarily map the page to allow the operation. All
+> of these methods use a helper that takes an offset and length, performs
+> bounds checks, and returns a pointer to the given offset in the page.
+>=20
+> This patch only adds support for pages of order zero, as that is all
+> Rust Binder needs. However, it is written to make it easy to add support
+> for higher-order pages in the future. To do that, you would add a const
+> generic parameter to `Page` that specifies the order. Most of the
+> methods do not need to be adjusted, as the logic for dealing with
+> mapping multiple pages at once can be isolated to just the
+> `with_pointer_into_page` method.
+>=20
+> Rust Binder needs to manage pages directly as that is how transactions
+> are delivered: Each process has an mmap'd region for incoming
+> transactions. When an incoming transaction arrives, the Binder driver
+> will choose a region in the mmap, allocate and map the relevant pages
+> manually, and copy the incoming transaction directly into the page. This
+> architecture allows the driver to copy transactions directly from the
+> address space of one process to another, without an intermediate copy
+> to a kernel buffer.
+>=20
+> This code is based on Wedson's page abstractions from the old rust
+> branch, but it has been modified by Alice by removing the incomplete
+> support for higher-order pages, by introducing the `with_*` helpers
+> to consolidate the bounds checking logic into a single place, and by
+> introducing gfp flags.
+>=20
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/helpers.c                  |  20 ++++
+>  rust/kernel/lib.rs              |   1 +
+>  rust/kernel/page.rs             | 240 ++++++++++++++++++++++++++++++++++=
+++++++
+>  4 files changed, 263 insertions(+)
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
