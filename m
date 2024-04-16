@@ -1,202 +1,246 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6176211720
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 04:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7418738385
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 05:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713242085; cv=none; b=GSUa9MmyXuu/6Osn3FvbiqTexOAxBhlNIvwWm3azQA97wB/2/qCGeXlgJ+SlT7jO3bqX4lP8WpSZdIpfFBSkmNaul3dPZ40f36UqBWkSDEcIoyI7gxjKeQSy8mammMI6mKJu7UXQbB0/X+VHSUzgxJJm7h99VmUd553F6AbcI+0=
+	t=1713243935; cv=none; b=mMp++TjzgvApNYOk4RKXRvhfFwBaTT2eNFuZ+RoPxaQ/ysrU79Ntee4Dv5i68hDD5ujH5zoChssiZJNQKh+EYAHgaw/oVsaIDvJ/ed+CO3wjTuctP3GtkKYbKVIKTgo9pgw3KK8kZELy9IQMaPwngFiq7JvSSn3+hWJf7ICmRno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713242085; c=relaxed/simple;
-	bh=ckuFnaAZyrvaPmoW29Qcog/aA0EJPKftH0hR/DYCVxA=;
+	s=arc-20240116; t=1713243935; c=relaxed/simple;
+	bh=hfrS2yAKVWrmnlB0XBYaEg3EmwdL7jtCR9WpkagwQzY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dNkE2Ih66sXBfuSrkybZNIF2vTxyZ2acXINccELVEAtXuNVyon/JJIvtj576uRP/1oPCHtcjyyHqMiGFjyN60lUiZGzlKpHvGrq3RbVSds3Zc4r7+q3jaSuBBB8tTBH8Mymd+SKAzfkdJDnWJjNyhZ+V7BQ6YVAT/E2lJ5HXOY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=do3WCFXP; arc=none smtp.client-ip=209.85.219.179
+	 To:Cc:Content-Type; b=r+4XrNY1cZ8JyGpa/Mif0IQahlUYXmbxWTSqYZGU6iwlgCZdFwDl3ZHLcuGupjPJVkLBWii12Wg4QM+5jcNRgZ0aiRN8fEWGpC5EVWHRVS1TEa6arR8ixpT1GrVScO/imNwjOlxcHJsftxnQ2f+s3xpde5dUstROUMOhEcTkIYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=YAjzm/qZ; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="do3WCFXP"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dc6d8bd612dso3948859276.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 21:34:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="YAjzm/qZ"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6150670d372so35647437b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 22:05:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1713242081; x=1713846881; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1713243931; x=1713848731; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VVnb03bD1Z8TQFj1cA3icDceZSAeMVLYBfSfOHapuPU=;
-        b=do3WCFXPnvf9hOyKRMgCadwlSk6dAT56SUIoLsj4D1aitkmhyfyFloDo72lxNbKevK
-         frbWB1E1vx+8HHiLHmsc3J6CSdi/HCTwbtuQ6w4nu2amkLv4xpZrx7GK++n4DCRrUwC3
-         MG5sbf7TB6hWIAjOi52jRERfA4/yV+uLqyGsiAT1eB5iFq4oNR6w88vTpziCJZ8CrUFr
-         eUMdZnFho4RuWuTrve8sjknO736/K2kd3lX3+4WViP1m2Fi9Ho+4SGhd/BFjQoAR0puj
-         QF72/UNtt0dfiwQSz9LhqqYDvxnKyYt/0LoFWlqL0t0LE4qsdsptXuVJjOvZiQjz8PRq
-         MMpg==
+        bh=qJmDU0qCtC6xbk/2Z6msCh6alcZpNMwqU1+ATj0oOrg=;
+        b=YAjzm/qZ/R1hse1bDtoP/wgCKaOM3uDAUbsMnNNtF7WxSfyHIuV5G5Aa3UUCBqWsHz
+         7DcNQvy7OOllrvR287oJQoTI3nZYJUn8iCDedGBMQ3CC/sHtE4A4Q+kN9jlL07C9HZan
+         wZL7tEjAHiJK8yD+p8XeO4FADRGtCU0nxbFeH7E1SV1fx4+XZ+G1tiTanrBRYZKHSPW8
+         Z4OeyErCEAud3YmpCTwEovJuKRepniZJriKlHYR3GFp9qqSDjcjFlVEmhGTXlI+ZQ1iW
+         m0f7FUK+dxVg6CkkLsF6TPpInumaOigtKdOGQ2FAOFPVJofTj5zT/2K2GkYAkbmDAusI
+         62qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713242081; x=1713846881;
+        d=1e100.net; s=20230601; t=1713243931; x=1713848731;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VVnb03bD1Z8TQFj1cA3icDceZSAeMVLYBfSfOHapuPU=;
-        b=VCDNhsvXMcD4SQ4We9xHKM2IKU0NR9qpq5u4xPj+CWDdhItsi3m9svdnbBNo8H7wm7
-         0jsZy0q2b2XuiYgMWvq7hx3JjzGZEfe+1ebNt4Th1jZfS6qhdJazJ9w9Z+o9GrMTTlga
-         YBj9VHYRIKw4qM8GfMf/cu8JqF2qPIXBlzjOsaTbSr9pTJu1/Qrypitxsi7xaEbX5D+3
-         lKUKFXLRNtC/x2IgFWi7ukKxUhp3F2aIkw+lZ1gEO56wknzB0L8v1SFyvxNCscAIG4XK
-         9a74eq4UzMwlCaMXwVLiXREpaR4Z8BbUlUXBkhqtD5EYQYKyhZqFe+zswUfkqU64Dn4t
-         sJ3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVY61Rg3/iTyl50P09JFyYYzNdnAH/3oKuDHfcSx7tczX+q9HcExN+J1/BBRIf5WiSundyc+batDYSRrx055x8UoKYwdRh8M0SJFCeaUAU=
-X-Gm-Message-State: AOJu0YzCc/QljMPfWagfCuk3fHCAUjFuLkBIH3hTQLX1qa5ALCDgA5WH
-	DomkHeE0HLNT06dxBuAzNSYdbQODqbMGu8sKJ5P6fyqn9mLqgaDSP/qOZ1UMgMMMJoVdNE4l5FQ
-	FCyvOiFayQQdslmxOp+TlSlZCWOZpGWECzg0pgA==
-X-Google-Smtp-Source: AGHT+IEAbxIA+OY9506mxCbXOCtoissDBk6PAajWelbGc+T6BABwSPxhobkhj7tZC19fvPBDx2j6cUxcnSVSIQLMs1s=
-X-Received: by 2002:a25:7405:0:b0:de3:ec94:2e94 with SMTP id
- p5-20020a257405000000b00de3ec942e94mr3519723ybc.15.1713242081392; Mon, 15 Apr
- 2024 21:34:41 -0700 (PDT)
+        bh=qJmDU0qCtC6xbk/2Z6msCh6alcZpNMwqU1+ATj0oOrg=;
+        b=KUNmwuwHS97cRFIkCAWk7xugd70/oedKW7As6fmUHyA4afsiLIq0BhcHtMZnuSl6rx
+         ZXREZeS226+Jq3lEu3GYDtXTtASoltZyefFleSeSu2f6UoPWnhE30hntYrSKCm84uLGP
+         D89NDjw0nUlZYR/dc6DeCGtYxbdn7bezUiJ0vSLfD1gBKxbX44xhKExxVh7miCYAhtYo
+         iuKcE7jH1NVgePqFiKunnmugiiDM6ygbMgRuWil+/lB1oIVqCQpmck3Bss4VZJxR33pg
+         QK9gJ3DMYc6CbK8U6LDQr0ZNizbVdTlv2Q+zWp/lYeuE6QpnzcvnGG3EKYsBk7XEUrMK
+         5J3w==
+X-Forwarded-Encrypted: i=1; AJvYcCX/4bISLL7ggJbA5UVyJORGWseK1nL+vl+PfiMDUL4qukzkedAfMAuTRxJJS49cGFCC/JIRxggZqSiAxyq7HSBoSUJ+lqOrXnOBQtiC68g=
+X-Gm-Message-State: AOJu0YxvfP7N+v+57+DYbIn10LKsK3sNGsPJdVOB7+GadkHauFmrQe/3
+	/OO4lWpumYOkDMUUVSALMPJ5qawONmy+pC+0XTeq5XGLkdGIXCqSTpRGhc6qu7SjwtInHAOzlqV
+	J25Tl7ifMKpmG8ex5GPEEF7aQyCqq7F7Z6JkrWw==
+X-Google-Smtp-Source: AGHT+IGA2IjVKw8IkJCjL9FhLOVDIrOwEj1lKKmglsv29PQSjP7wQuUdMHMf3ycCLE4DIaLikqvNM7nDkFaVD2tnzjE=
+X-Received: by 2002:a25:ea05:0:b0:de1:27f4:38a5 with SMTP id
+ p5-20020a25ea05000000b00de127f438a5mr10411763ybd.14.1713243931364; Mon, 15
+ Apr 2024 22:05:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415104701.4772-1-fujita.tomonori@gmail.com> <20240415104701.4772-5-fujita.tomonori@gmail.com>
-In-Reply-To: <20240415104701.4772-5-fujita.tomonori@gmail.com>
+References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com> <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
+In-Reply-To: <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 16 Apr 2024 00:34:30 -0400
-Message-ID: <CALNs47v+35RX4+ibHrcZgrJEJ52RqWRQUBa=_Aky_6gk1ika4w@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY driver
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, rust-for-linux@vger.kernel.org
+Date: Tue, 16 Apr 2024 01:05:20 -0400
+Message-ID: <CALNs47vRk0cKKDkpkhy2XUkxcjtPW-CABUexAZfGZ6PHT=wKng@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 15, 2024 at 6:47=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Mon, Apr 15, 2024 at 3:14=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> This driver supports Applied Micro Circuits Corporation QT2025 PHY,
-> based on a driver for Tehuti Networks TN40xx chips.
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 >
-> The original driver for TN40xx chips supports multiple PHY hardware
-> (AMCC QT2025, TI TLK10232, Aqrate AQR105, and Marvell 88X3120,
-> 88X3310, and MV88E2010). This driver is extracted from the original
-> driver and modified to a PHY driver in Rust.
+> A pointer to an area in userspace memory, which can be either read-only
+> or read-write.
 >
-> This has been tested with Edimax EN-9320SFP+ 10G network adapter.
+> All methods on this struct are safe: attempting to read or write on bad
+> addresses (either out of the bound of the slice or unmapped addresses)
+> will return `EFAULT`. Concurrent access, *including data races to/from
+> userspace memory*, is permitted, because fundamentally another userspace
+> thread/process could always be modifying memory at the same time (in the
+> same way that userspace Rust's `std::io` permits data races with the
+> contents of files on disk). In the presence of a race, the exact byte
+> values read/written are unspecified but the operation is well-defined.
+> Kernelspace code should validate its copy of data after completing a
+> read, and not expect that multiple reads of the same address will return
+> the same value.
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> [...]
-> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+> These APIs are designed to make it difficult to accidentally write
+> TOCTOU bugs. Every time you read from a memory location, the pointer is
+> advanced by the length so that you cannot use that reader to read the
+> same memory location twice. Preventing double-fetches avoids TOCTOU
+> bugs. This is accomplished by taking `self` by value to prevent
+> obtaining multiple readers on a given `UserSlicePtr`, and the readers
+> only permitting forward reads. If double-fetching a memory location is
+> necessary for some reason, then that is done by creating multiple
+> readers to the same memory location.
+>
+> Constructing a `UserSlicePtr` performs no checks on the provided
+> address and length, it can safely be constructed inside a kernel thread
+> with no current userspace process. Reads and writes wrap the kernel APIs
+> `copy_from_user` and `copy_to_user`, which check the memory map of the
+> current process and enforce that the address range is within the user
+> range (no additional calls to `access_ok` are needed).
+>
+> This code is based on something that was originally written by Wedson on
+> the old rust branch. It was modified by Alice by removing the
+> `IoBufferReader` and `IoBufferWriter` traits, and various other changes.
+>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+
+I left some suggestions for documentation improvements and one
+question, but mostly LGTM.
+
+> ---
+>  rust/helpers.c         |  14 +++
+>  rust/kernel/lib.rs     |   1 +
+>  rust/kernel/uaccess.rs | 304 +++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  3 files changed, 319 insertions(+)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index be68d5e567b1..37f84223b83f 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -49,6 +49,7 @@
+>  pub mod task;
+>  pub mod time;
+>  pub mod types;
+> +pub mod uaccess;
+>  pub mod workqueue;
+>
+>  #[doc(hidden)]
+> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
 > new file mode 100644
-> index 000000000000..e42b77753717
+> index 000000000000..c97029cdeba1
 > --- /dev/null
-> +++ b/drivers/net/phy/qt2025.rs
-> @@ -0,0 +1,75 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (C) Tehuti Networks Ltd.
-> +// Copyright (C) 2024 FUJITA Tomonori <fujita.tomonori@gmail.com>
-> +
-> +//! Applied Micro Circuits Corporation QT2025 PHY driver
-> +use kernel::c_str;
-> +use kernel::net::phy::{self, DeviceId, Driver, Firmware};
-> +use kernel::prelude::*;
-> +use kernel::uapi;
-> +
-> +kernel::module_phy_driver! {
-> +    drivers: [PhyQT2025],
-> +    device_table: [
-> +        DeviceId::new_with_driver::<PhyQT2025>(),
-> +    ],
-> +    name: "qt2025_phy",
-> +    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
-> +    description: "AMCC QT2025 PHY driver",
-> +    license: "GPL",
-> +}
-> +
-> +const MDIO_MMD_PMAPMD: u8 =3D uapi::MDIO_MMD_PMAPMD as u8;
-> +const MDIO_MMD_PCS: u8 =3D uapi::MDIO_MMD_PCS as u8;
-> +const MDIO_MMD_PHYXS: u8 =3D uapi::MDIO_MMD_PHYXS as u8;
-> +
-> +struct PhyQT2025;
-> +
-> +#[vtable]
-> +impl Driver for PhyQT2025 {
-> +    const NAME: &'static CStr =3D c_str!("QT2025 10Gpbs SFP+");
+> +++ b/rust/kernel/uaccess.rs
+> @@ -0,0 +1,304 @@
+> [...]
+> +impl UserSlice {
+> +    /// Constructs a user slice from a raw pointer and a length in bytes=
+.
+> +    ///
+> +    /// Constructing a [`UserSlice`] performs no checks on the provided =
+address and length, it can
+> +    /// safely be constructed inside a kernel thread with no current use=
+rspace process. Reads and
+> +    /// writes wrap the kernel APIs `copy_from_user` and `copy_to_user`,=
+ which check the memory map
+> +    /// of the current process and enforce that the address range is wit=
+hin the user range (no
+> +    /// additional calls to `access_ok` are needed).
 
-Since 1.77 we have C string literals, `c"QT2025 10Gpbs SFP+"` (woohoo)
+I would just add a note that pointer should be a valid userspace
+pointer, but that gets checked at read/write time
 
-> +    const PHY_DEVICE_ID: phy::DeviceId =3D phy::DeviceId::new_with_exact=
-_mask(0x0043A400);
-> +
-> +    fn config_init(dev: &mut phy::Device) -> Result<()> {
-> +        let fw =3D Firmware::new(c_str!("qt2025-2.0.3.3.fw"), dev)?;
+> +    /// Callers must be careful to avoid time-of-check-time-of-use (TOCT=
+OU) issues. The simplest way
+> +    /// is to create a single instance of [`UserSlice`] per user memory =
+block as it reads each byte
+> +    /// at most once.
+> +    pub fn new(ptr: *mut c_void, length: usize) -> Self {
+> +        UserSlice { ptr, length }
+> +    }
 
-Same as above
+> +impl UserSliceReader {
+> [...]
+> +    /// Reads raw data from the user slice into a kernel buffer.
+> +    ///
+> +    /// After a successful call to this method, all bytes in `out` are i=
+nitialized.
 
-> +        let phy_id =3D dev.c45_read(MDIO_MMD_PMAPMD, 0xd001)?;
-> +        if (phy_id >> 8) & 0xff !=3D 0xb3 {
-> +            return Ok(());
+If this is guaranteed, could it return `Result<&mut [u8]>`? So the
+caller doesn't need to unsafely `assume_init` anything.
+
+> +    /// Fails with `EFAULT` if the read happens on a bad address.
+
+This should also mention that the slice cannot be bigger than the
+reader's length.
+
+> +    pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
+> +        let len =3D out.len();
+> +        let out_ptr =3D out.as_mut_ptr().cast::<c_void>();
+> +        if len > self.length {
+> +            return Err(EFAULT);
 > +        }
-
-Could you add a note about why you are returning early? Also some magic num=
-bers
-
-> +
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0000)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC302, 0x4)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC319, 0x0038)?;
-> +
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC31A, 0x0098)?;
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0026, 0x0E00)?;
-> +
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0027, 0x0893)?;
-> +
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0028, 0xA528)?;
-> +        dev.c45_write(MDIO_MMD_PCS, 0x0029, 0x03)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC30A, 0x06E1)?;
-> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0002)?;
-> +        dev.c45_write(MDIO_MMD_PCS, 0xE854, 0x00C0)?;
-
-It might be nicer to put this in a table, like
-
-    const QT2025_INIT_ROUTINE: &[(u8, u16, u16)] =3D &[
-        // Add some notes about what the registers do, or put them in
-separate consts
-        (MDIO_MMD_PMAPMD, 0xC300, 0x0000),
-        (MDIO_MMD_PMAPMD, 0xC302, 0x4),
-        // ...
-    ];
-
-    for (add reg, val) in QT2025_INIT_ROUTINE {
-        dev.c45_write(add, reg, val)?;
-    }
-
-> +        let mut j =3D 0x8000;
-
-Could you give this one a name?
-
-> +        let mut a =3D MDIO_MMD_PCS;
-> +        for (i, val) in fw.data().iter().enumerate() {
-> +            if i =3D=3D 0x4000 {
-> +                a =3D MDIO_MMD_PHYXS;
-> +                j =3D 0x8000;
-> +            }
-
-Looks like firmware is split between PCS and PHYXS at 0x4000, but like
-Greg said you should probably explain where this comes from.
-
-> +            dev.c45_write(a, j, (*val).into())?;
-
-I think this is writing one byte at a time, to answer Andrew's
-question. Can you write a `u16::from_le_bytes(...)` to alternating
-addresses instead? This would be pretty easy by doing
-`fw.data().chunks(2)`.
-
-> +
-> +            j +=3D 1;
+> +        let Ok(len_ulong) =3D c_ulong::try_from(len) else {
+> +            return Err(EFAULT);
+> +        };
+> +        // SAFETY: `out_ptr` points into a mutable slice of length `len_=
+ulong`, so we may write
+> +        // that many bytes to it.
+> +        let res =3D unsafe { bindings::copy_from_user(out_ptr, self.ptr,=
+ len_ulong) };
+> +        if res !=3D 0 {
+> +            return Err(EFAULT);
 > +        }
-> +        dev.c45_write(MDIO_MMD_PCS, 0xe854, 0x0040)?;
-> +
+> +        // Userspace pointers are not directly dereferencable by the ker=
+nel, so we cannot use `add`,
+> +        // which has C-style rules for defined behavior.
+> +        self.ptr =3D self.ptr.wrapping_byte_add(len);
+> +        self.length -=3D len;
 > +        Ok(())
 > +    }
 > +
-> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
-> +        dev.genphy_c45_read_status()
+> +    /// Reads raw data from the user slice into a kernel buffer.
+> +    ///
+> +    /// Fails with `EFAULT` if the read happens on a bad address.
+> +    pub fn read_slice(&mut self, out: &mut [u8]) -> Result {
+> +        // SAFETY: The types are compatible and `read_raw` doesn't write=
+ uninitialized bytes to
+> +        // `out`.
+> +        let out =3D unsafe { &mut *(out as *mut [u8] as *mut [MaybeUnini=
+t<u8>]) };
+> +        self.read_raw(out)
 > +    }
-> +}
+
+If this is just a safe version of read_raw, could you crosslink the docs?
+
+> +impl UserSliceWriter {
+> +
+> +    /// Writes raw data to this user pointer from a kernel buffer.
+> +    ///
+> +    /// Fails with `EFAULT` if the write happens on a bad address.
+> +    pub fn write_slice(&mut self, data: &[u8]) -> Result {
+>   [...]
+> +    }
+
+Could use a note about length like `read_raw`.
