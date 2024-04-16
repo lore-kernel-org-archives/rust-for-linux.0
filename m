@@ -1,67 +1,67 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79AE11C92
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 03:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6176211720
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 04:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713237937; cv=none; b=Lq+3ZSkC+V/vIPSeGOMs0LOA5zMNQKwYaNpLoquGT1kLrupTfMzXceZRswepTZEWWSF8y+wVGYlGE2ybSpC0M5P+BPv22qPqGRSdr0moa43+kUJ2KigzMdlYtNK33YMxuAH2vgawCpdKtOxX+DEDjbeSZcuj2APftIjVGt4pV64=
+	t=1713242085; cv=none; b=GSUa9MmyXuu/6Osn3FvbiqTexOAxBhlNIvwWm3azQA97wB/2/qCGeXlgJ+SlT7jO3bqX4lP8WpSZdIpfFBSkmNaul3dPZ40f36UqBWkSDEcIoyI7gxjKeQSy8mammMI6mKJu7UXQbB0/X+VHSUzgxJJm7h99VmUd553F6AbcI+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713237937; c=relaxed/simple;
-	bh=5u4IqC43ipuEAkRDPZ3NfLs9iokoA9eSZLj0W4K46TI=;
+	s=arc-20240116; t=1713242085; c=relaxed/simple;
+	bh=ckuFnaAZyrvaPmoW29Qcog/aA0EJPKftH0hR/DYCVxA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hgfc4NaFE6Io434V5+ueQ0ljj6Trz5EzaBIE8vxvL7NX4zlk5zVykypu4g76ydCb6G2QmOYfyh5dkvHu9qi//7dHk2eY6ASuERw00BSkKYYu5GqS4mszyJzd7HylneLJBcoLH0BafY7N8WyurYax5/DZj86N93kgtv0V88MT4wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=Mxb7aFqO; arc=none smtp.client-ip=209.85.219.180
+	 To:Cc:Content-Type; b=dNkE2Ih66sXBfuSrkybZNIF2vTxyZ2acXINccELVEAtXuNVyon/JJIvtj576uRP/1oPCHtcjyyHqMiGFjyN60lUiZGzlKpHvGrq3RbVSds3Zc4r7+q3jaSuBBB8tTBH8Mymd+SKAzfkdJDnWJjNyhZ+V7BQ6YVAT/E2lJ5HXOY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=do3WCFXP; arc=none smtp.client-ip=209.85.219.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Mxb7aFqO"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dcbc6a6808fso3723946276.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 20:25:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="do3WCFXP"
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dc6d8bd612dso3948859276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 21:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1713237934; x=1713842734; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1713242081; x=1713846881; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zkw2Yl+TD51SHy98hT0iftYNGABYn450n8OBsTQ7BwM=;
-        b=Mxb7aFqO8AKszE+R90/4IPgzsqP441iXHA3l8QyanBTq5MNNo4b5lVWQvAGtHm1vaE
-         M+yZpaDvPBHAg6yUY9IuyjJgVwqliW8yOg3zMybkXWx1Dw0tR9TpPisnpLmNt8YjDeI+
-         bjQVv1PeJCWjCG55VOQ6yZO68uOUpu4b85l9Pi/ObKMmEMFlmJEs3eANOjIq+P19n6Wc
-         VdKBYV8lGoEJdi4XQU80r/xGazX+MXDlwUdTq0Iu69OV4PVwvQ7yBugN+dPhOmhI/5pL
-         hI5ZnYI8ls5sZyYWCqjf3qshoiPuyxFc8wTtPZ/Awp9258kjINc2qlASlk2nPm5bI01P
-         Zrtg==
+        bh=VVnb03bD1Z8TQFj1cA3icDceZSAeMVLYBfSfOHapuPU=;
+        b=do3WCFXPnvf9hOyKRMgCadwlSk6dAT56SUIoLsj4D1aitkmhyfyFloDo72lxNbKevK
+         frbWB1E1vx+8HHiLHmsc3J6CSdi/HCTwbtuQ6w4nu2amkLv4xpZrx7GK++n4DCRrUwC3
+         MG5sbf7TB6hWIAjOi52jRERfA4/yV+uLqyGsiAT1eB5iFq4oNR6w88vTpziCJZ8CrUFr
+         eUMdZnFho4RuWuTrve8sjknO736/K2kd3lX3+4WViP1m2Fi9Ho+4SGhd/BFjQoAR0puj
+         QF72/UNtt0dfiwQSz9LhqqYDvxnKyYt/0LoFWlqL0t0LE4qsdsptXuVJjOvZiQjz8PRq
+         MMpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713237934; x=1713842734;
+        d=1e100.net; s=20230601; t=1713242081; x=1713846881;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Zkw2Yl+TD51SHy98hT0iftYNGABYn450n8OBsTQ7BwM=;
-        b=J+ksscyN02/89u49Cg1Zda3DuRaYWSmrN6kSbTcCcpdpcJ56oyFkdLCCBO0zuKexrk
-         0NJf+JwfN4dT0U4JSClEZHDysgQ5Twiqt1+3Im3c3sJzKeOec7XIYDOfavt9VfHERAc8
-         wgksTAsUj8reJyZemV05onEhm6IRjb5rNEc0vEPKtnmO0HLDIAcPHuroYfmTM4Sq0eqX
-         JwakvhlKv79ObgQVdaNEB7lmKjkMlPZtoK8OvzFb1hDxGeHbdxoFmm5x5a0yxSFEl2BX
-         kaIXdRP52fFs7bPE04+fsvN6iNC40t81sPCGBntwEm2uSsgh0xVdgndggNfJ5LtV1fXf
-         1ywQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDl+fq+bXtzeh3+D8s/n/awaze9QBUO0UAK5dsmhm5RKczx0EjaUuELYOE4GhdaMAP2WbsiUx1Sm5AYoIf5K6dMF94tHfmZC2Kiao+qFA=
-X-Gm-Message-State: AOJu0Yx8Ne7QDNv4+xQAddQFxLwa2N9DkLmA8G9TvmCkcJsO7vsUYlSJ
-	TL2G516ztggaMzehhSsn454O575qJJ6U5ZqFRIbQK5paYeVpgxesxEcyCqug1uNKwK2QerZq3n3
-	NGtyUhkLFZ3LBtzUM8wmQRR5e6heI4TBkN8JpUw==
-X-Google-Smtp-Source: AGHT+IFrJmLvi4vRnX1dZLLLS6KxyIa1VK1FW7aBEzzN9FjDmlgBrihG8RGfeBlVCkeDRH95ozQmE17XCXQJkP5TV6M=
-X-Received: by 2002:a25:7455:0:b0:dcc:97e4:bc61 with SMTP id
- p82-20020a257455000000b00dcc97e4bc61mr11960479ybc.57.1713237933834; Mon, 15
- Apr 2024 20:25:33 -0700 (PDT)
+        bh=VVnb03bD1Z8TQFj1cA3icDceZSAeMVLYBfSfOHapuPU=;
+        b=VCDNhsvXMcD4SQ4We9xHKM2IKU0NR9qpq5u4xPj+CWDdhItsi3m9svdnbBNo8H7wm7
+         0jsZy0q2b2XuiYgMWvq7hx3JjzGZEfe+1ebNt4Th1jZfS6qhdJazJ9w9Z+o9GrMTTlga
+         YBj9VHYRIKw4qM8GfMf/cu8JqF2qPIXBlzjOsaTbSr9pTJu1/Qrypitxsi7xaEbX5D+3
+         lKUKFXLRNtC/x2IgFWi7ukKxUhp3F2aIkw+lZ1gEO56wknzB0L8v1SFyvxNCscAIG4XK
+         9a74eq4UzMwlCaMXwVLiXREpaR4Z8BbUlUXBkhqtD5EYQYKyhZqFe+zswUfkqU64Dn4t
+         sJ3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVY61Rg3/iTyl50P09JFyYYzNdnAH/3oKuDHfcSx7tczX+q9HcExN+J1/BBRIf5WiSundyc+batDYSRrx055x8UoKYwdRh8M0SJFCeaUAU=
+X-Gm-Message-State: AOJu0YzCc/QljMPfWagfCuk3fHCAUjFuLkBIH3hTQLX1qa5ALCDgA5WH
+	DomkHeE0HLNT06dxBuAzNSYdbQODqbMGu8sKJ5P6fyqn9mLqgaDSP/qOZ1UMgMMMJoVdNE4l5FQ
+	FCyvOiFayQQdslmxOp+TlSlZCWOZpGWECzg0pgA==
+X-Google-Smtp-Source: AGHT+IEAbxIA+OY9506mxCbXOCtoissDBk6PAajWelbGc+T6BABwSPxhobkhj7tZC19fvPBDx2j6cUxcnSVSIQLMs1s=
+X-Received: by 2002:a25:7405:0:b0:de3:ec94:2e94 with SMTP id
+ p5-20020a257405000000b00de3ec942e94mr3519723ybc.15.1713242081392; Mon, 15 Apr
+ 2024 21:34:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415104701.4772-1-fujita.tomonori@gmail.com> <20240415104701.4772-3-fujita.tomonori@gmail.com>
-In-Reply-To: <20240415104701.4772-3-fujita.tomonori@gmail.com>
+References: <20240415104701.4772-1-fujita.tomonori@gmail.com> <20240415104701.4772-5-fujita.tomonori@gmail.com>
+In-Reply-To: <20240415104701.4772-5-fujita.tomonori@gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 15 Apr 2024 23:25:22 -0400
-Message-ID: <CALNs47t0FDS59xckUV0QkozbX-RAs8U3woN_sBc0TVm8d=dKNA@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
+Date: Tue, 16 Apr 2024 00:34:30 -0400
+Message-ID: <CALNs47v+35RX4+ibHrcZgrJEJ52RqWRQUBa=_Aky_6gk1ika4w@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY driver
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -69,57 +69,134 @@ Content-Transfer-Encoding: quoted-printable
 
 On Mon, Apr 15, 2024 at 6:47=E2=80=AFAM FUJITA Tomonori
 <fujita.tomonori@gmail.com> wrote:
-> +    /// Reads a given C45 PHY register.
-> +    /// This function reads a hardware register and updates the stats so=
- takes `&mut self`.
-> +    pub fn c45_read(&mut self, devad: u8, regnum: u16) -> Result<u16> {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        // So it's just an FFI call.
-
-Depending on the response to Andrew's notes, these SAFETY comments
-will probably need to be updated to say why we know C45 is supported.
-
-> +        let ret =3D unsafe {
-> +            bindings::mdiobus_c45_read(
-> +                (*phydev).mdio.bus,
-> +                (*phydev).mdio.addr,
-> +                devad as i32,
-
-This could probably also be from/.into()
-
-> +                regnum.into(),
-> +            )
-> +        };
-> +        if ret < 0 {
-> +            Err(Error::from_errno(ret))
-> +        } else {
-> +            Ok(ret as u16)
-> +        }
-
-Could this be simplified with to_result?
-
-> +    }
+>
+> This driver supports Applied Micro Circuits Corporation QT2025 PHY,
+> based on a driver for Tehuti Networks TN40xx chips.
+>
+> The original driver for TN40xx chips supports multiple PHY hardware
+> (AMCC QT2025, TI TLK10232, Aqrate AQR105, and Marvell 88X3120,
+> 88X3310, and MV88E2010). This driver is extracted from the original
+> driver and modified to a PHY driver in Rust.
+>
+> This has been tested with Edimax EN-9320SFP+ 10G network adapter.
+>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> [...]
+> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+> new file mode 100644
+> index 000000000000..e42b77753717
+> --- /dev/null
+> +++ b/drivers/net/phy/qt2025.rs
+> @@ -0,0 +1,75 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (C) Tehuti Networks Ltd.
+> +// Copyright (C) 2024 FUJITA Tomonori <fujita.tomonori@gmail.com>
 > +
-> +    /// Writes a given C45 PHY register.
-> +    pub fn c45_write(&mut self, devad: u8, regnum: u16, val: u16) -> Res=
-ult {
-> +        let phydev =3D self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        // So it's just an FFI call.
-> +        to_result(unsafe {
-> +            bindings::mdiobus_c45_write(
-> +                (*phydev).mdio.bus,
-> +                (*phydev).mdio.addr,
-> +                devad as i32,
+> +//! Applied Micro Circuits Corporation QT2025 PHY driver
+> +use kernel::c_str;
+> +use kernel::net::phy::{self, DeviceId, Driver, Firmware};
+> +use kernel::prelude::*;
+> +use kernel::uapi;
+> +
+> +kernel::module_phy_driver! {
+> +    drivers: [PhyQT2025],
+> +    device_table: [
+> +        DeviceId::new_with_driver::<PhyQT2025>(),
+> +    ],
+> +    name: "qt2025_phy",
+> +    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
+> +    description: "AMCC QT2025 PHY driver",
+> +    license: "GPL",
+> +}
+> +
+> +const MDIO_MMD_PMAPMD: u8 =3D uapi::MDIO_MMD_PMAPMD as u8;
+> +const MDIO_MMD_PCS: u8 =3D uapi::MDIO_MMD_PCS as u8;
+> +const MDIO_MMD_PHYXS: u8 =3D uapi::MDIO_MMD_PHYXS as u8;
+> +
+> +struct PhyQT2025;
+> +
+> +#[vtable]
+> +impl Driver for PhyQT2025 {
+> +    const NAME: &'static CStr =3D c_str!("QT2025 10Gpbs SFP+");
+
+Since 1.77 we have C string literals, `c"QT2025 10Gpbs SFP+"` (woohoo)
+
+> +    const PHY_DEVICE_ID: phy::DeviceId =3D phy::DeviceId::new_with_exact=
+_mask(0x0043A400);
+> +
+> +    fn config_init(dev: &mut phy::Device) -> Result<()> {
+> +        let fw =3D Firmware::new(c_str!("qt2025-2.0.3.3.fw"), dev)?;
 
 Same as above
 
-> +                regnum.into(),
-> +                val,
-> +            )
-> +        })
+> +        let phy_id =3D dev.c45_read(MDIO_MMD_PMAPMD, 0xd001)?;
+> +        if (phy_id >> 8) & 0xff !=3D 0xb3 {
+> +            return Ok(());
+> +        }
+
+Could you add a note about why you are returning early? Also some magic num=
+bers
+
+> +
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0000)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC302, 0x4)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC319, 0x0038)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC31A, 0x0098)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0026, 0x0E00)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0027, 0x0893)?;
+> +
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0028, 0xA528)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0x0029, 0x03)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC30A, 0x06E1)?;
+> +        dev.c45_write(MDIO_MMD_PMAPMD, 0xC300, 0x0002)?;
+> +        dev.c45_write(MDIO_MMD_PCS, 0xE854, 0x00C0)?;
+
+It might be nicer to put this in a table, like
+
+    const QT2025_INIT_ROUTINE: &[(u8, u16, u16)] =3D &[
+        // Add some notes about what the registers do, or put them in
+separate consts
+        (MDIO_MMD_PMAPMD, 0xC300, 0x0000),
+        (MDIO_MMD_PMAPMD, 0xC302, 0x4),
+        // ...
+    ];
+
+    for (add reg, val) in QT2025_INIT_ROUTINE {
+        dev.c45_write(add, reg, val)?;
+    }
+
+> +        let mut j =3D 0x8000;
+
+Could you give this one a name?
+
+> +        let mut a =3D MDIO_MMD_PCS;
+> +        for (i, val) in fw.data().iter().enumerate() {
+> +            if i =3D=3D 0x4000 {
+> +                a =3D MDIO_MMD_PHYXS;
+> +                j =3D 0x8000;
+> +            }
+
+Looks like firmware is split between PCS and PHYXS at 0x4000, but like
+Greg said you should probably explain where this comes from.
+
+> +            dev.c45_write(a, j, (*val).into())?;
+
+I think this is writing one byte at a time, to answer Andrew's
+question. Can you write a `u16::from_le_bytes(...)` to alternating
+addresses instead? This would be pretty easy by doing
+`fw.data().chunks(2)`.
+
+> +
+> +            j +=3D 1;
+> +        }
+> +        dev.c45_write(MDIO_MMD_PCS, 0xe854, 0x0040)?;
+> +
+> +        Ok(())
 > +    }
 > +
+> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
+> +        dev.genphy_c45_read_status()
+> +    }
+> +}
