@@ -1,209 +1,128 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A6012E1E8;
-	Tue, 16 Apr 2024 17:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ED91327ED
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 17:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713287267; cv=none; b=NOmnJ7MMZfSwVXrtifAIWyOo6ky7ewrMDAtvCOi9k+6m9mGVIGJGBzQfPYt2eO/SkX1YsvhOq9/KHtxhwg/UnhYRlL58ceo/ejjgiqIZqd/7MRx6xcweBuL2LXeY5G2lxlCTWSrdNpiEDqa8GkfrMalfSpcc83qUXmSDnexqYW0=
+	t=1713289691; cv=none; b=NMOkaLssgD5BGb3fZdOqdbHDcFYVDYxqhBKMG41x3Sh94DuemmO/nlhqaW5DLHsHr+QkdDToXQSxe/9fU5HOT69LZ2lGd7BhSohV9BEf/6NmzUepE7RBOCP9G+hZhLjANJvkJ6FQn3KmDhto/bRsBtaPwaN63vVPlQ7N5Fl55ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713287267; c=relaxed/simple;
-	bh=f/fnrdxNCDGyBxu0Cw8TMeUPmrR90+CCa02nHl4h05Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f7zWmGL+stjEsph69KqxOK/zx+Deh7xHX5A+GzdrqxyMswnSAScBSoYcm+JnkXKU48E7cbNPQRQEunkHHhsoNtsr26UAYPPXF3wkxU3D9APdN5ydCE6wJk+Rb4gDPukJibij/7udRZ5qs2pVxb33aY6yX+l+bdLYrzaktFcmLqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPTXOQq9; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713289691; c=relaxed/simple;
+	bh=CFLPbaTqHgy35LCkZ8/WIR4fdR8dupvDJeKom1cb3Tc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t+08vVsPOnt/WUF45H7Z+uzmzQLxfbowlYAIv40q90rP1RGWnhJMw8KkNNxmJK8QtNPL6a1mb+9p+VtZ0k3AEo6aMiPsRQj/aYo3bBgtDukOoAjS1MCMTX1MOWLseezMash+X4DFBiJPQ7ZmX7pX8fUDdj7SXmXnpGKqcPE4LXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=eUDKjTlB; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPTXOQq9"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-434d12e9662so21108881cf.2;
-        Tue, 16 Apr 2024 10:07:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="eUDKjTlB"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-614ec7ee902so43389987b3.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 10:48:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713287265; x=1713892065; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ORGQ4FpFUr8CNMJ8nGMv1TvXQGc9fladS7kaSrCMW9A=;
-        b=dPTXOQq9kXN8Ntvs4v9lI4U1T2+EFtP6Q1/mgZNYooHD975V/e8AqZkGexMMf5dB20
-         zjVY0HLXDMUpCqDnwVm1etmuZnvxP3nrnFJtFcTodHrIPLZHzkRNcVIxAcJBKN/mDfni
-         AsX785qwK9/6e8k1SyEOlxkEDciZJ9PFsoHl3VoE0qaZYntPA4un+Ua9nBZzuW7LGYKH
-         Z2BYGLSJMKqhsP7eXCl2iFUxiDCKfEsO1z2DuqGRJBtmiOgv8Ry2ka1ZLHoSRng/roTJ
-         7xYFHsHo1OeJdMAk+ol/mEvGfg00uBlOKGHE52kII7OccI+XF/dx/uESwGxXFwcW67dQ
-         SlPQ==
+        d=umich.edu; s=google-2016-06-03; t=1713289688; x=1713894488; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cgxo59IYhnHPL9WU4YKhZaxzeo3fMP1MrECdS5RGdv8=;
+        b=eUDKjTlBT29qfAlDcoUy2U1r+7cY8RglJ/6AU7pb+GfackqEn8tjBT63fCwXj8r6ph
+         vIHzVswQ1aD1xiHv3jXV5FyJALVltYXvFK8pgG/Ym5HtTIZHS++PW5hZah87Wml7yFqC
+         b+ai5iO//SnTNatl1C9pDoSOlvT+H28FDhW0HH5ET4iHKkgFrg8EtXaQdyCG4Brk0rVw
+         GGlB04Mij1r/0jNX2/DBE3PYmw5kSLimADJz4MjfJkwumGoGhb7HiAHFI+oih90oPeDW
+         h9EkLvDAH3lmGV09U8//u6YmLnZk6eWYVlgDGIge1PQ0xs8gv8whaCKZ5MbPaI6SKCEb
+         Kx9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713287265; x=1713892065;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ORGQ4FpFUr8CNMJ8nGMv1TvXQGc9fladS7kaSrCMW9A=;
-        b=ma6JSDxOJ9PoPvpZzaSymz7Q5TgFaproGLymfmviSzvyuwD+scEQ2KgVPUHqnE5Yum
-         RKdDa5r/k2QK/ohZ4QdWzx5N3SGiqT7kssNSbM0HFbybXFDArucx9SBhL9cBACedwKnu
-         ktiC0vlmBDJiVIPrpXHNPAGpIXC+I5eVIQtHA0A7gmzzHbaPTu+5QSwM7qHDUn4eYKdK
-         rS6HSand7+azxyE2LXEgbZVURZkpupuDxZNrlV57BpQhW2jEdKeZZUXXAP5ciG22bkGd
-         Me3SVBZGeRoqPI3hHUCRFmj+dmXWkmlmgPDiw2P76HI+5ZAmkPzAZ7cKqx8CRrI8sb/V
-         LT2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVrrrwwuMKRRSyXpvhKR/ec2CHPcWp3C0y/RiyD0+0DYdiirUSFSewdsFW+Xlff566eYw0yRyA57d5CAGlMLvggekfHk68sjWzlqULFZFShfJPSJAB3c+YrpPj5z7g/b85vNCBjwMITmsEIC0h6tdH6D7H0KbYhuGpRX/YZ7VvhBxWgcUs=
-X-Gm-Message-State: AOJu0Yzq1oh4VfH9HbBU2rjG3fi/gJASRvPIiwS4ShVkxBcxYNEuYZ4X
-	53NHvZWcZJZuc8xJWRGUWHc0grhOoYsV+ETZ2E6rIO0+UIHNq1J5
-X-Google-Smtp-Source: AGHT+IH4K1C8oUNKr5v3XEp6bWsc4NZ9GBMoBMOkM/9G+fGLZvPAXtNsSr4sY5xa7gudhKIFSR3AKQ==
-X-Received: by 2002:ac8:58d0:0:b0:436:73ac:8129 with SMTP id u16-20020ac858d0000000b0043673ac8129mr19448010qta.61.1713287265180;
-        Tue, 16 Apr 2024 10:07:45 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id i9-20020ac860c9000000b004343d542598sm7328319qtm.62.2024.04.16.10.07.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 10:07:44 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 3D4501200066;
-	Tue, 16 Apr 2024 13:07:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Tue, 16 Apr 2024 13:07:43 -0400
-X-ME-Sender: <xms:X7AeZmCDxp6AsgYautBwC_DXlCFkgQ6Laxu_AgglfwplvhVCWyFq_g>
-    <xme:X7AeZghMBJm5BuId6WpUW6HbhBYegfnFfSkdWcc4bn0NUbxrTGUmp-ola0a5mtepr
-    mRIrdod-NhGu6iMww>
-X-ME-Received: <xmr:X7AeZpnn4wG--Ad9jQMfXtylQ6mYGnNyoJLKYHT8Ow3EVzJEAfDbQG3WgQDOUQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejiedggeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepffdvudegieehffdvtdeivefhgfehgedtffdugfekffeuheevheffieek
-    tedujeejnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpiihulhhiphgthhgrthdrtg
-    homhdpihguvghnthhifhhivghrshdrshgrfhgvthihnecuvehluhhsthgvrhfuihiivgep
-    tdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhph
-    gvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdr
-    fhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:X7AeZkx-DATjGs_MOBhrBCqZdjQ26sAwl-rTbPKI9W65iPbVL3cdrA>
-    <xmx:X7AeZrTSHYW5YWZX_8VfqPJfQd86OPJAueRQ7ejTGTLamq8AhHJxNg>
-    <xmx:X7AeZvYK1096IPo8NfsO6GWVkXFJuUbsOuBwlRUnjc-fjHtxUcvy6A>
-    <xmx:X7AeZkRAzhO8GWG4vo-h7Sjy9pqnw5fzr1vM49LuuPuE2-HgqJlyYg>
-    <xmx:X7AeZtBB7_viBL6XxlqnEdeO_9_XamuixjGZLymcXKVetYwNELi2Z79p>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 16 Apr 2024 13:07:42 -0400 (EDT)
-Date: Tue, 16 Apr 2024 10:07:24 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Asahi Lina <lina@asahilina.net>,
-	Sumera Priyadarsini <sylphrenadin@gmail.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Andrea Righi <andrea.righi@canonical.com>,
-	Matthew Bakhtiari <dev@mtbk.me>,
-	Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@google.com>,
-	Finn Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <Zh6wTDoMgvjJZ7T9@boqun-archlinux>
-References: <20240401185222.12015-1-benno.lossin@proton.me>
- <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1713289688; x=1713894488;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cgxo59IYhnHPL9WU4YKhZaxzeo3fMP1MrECdS5RGdv8=;
+        b=X9NXxnakdHRkJLjo2YiMV/ae7/u5CNt1niKgEvCHJt8X71gMAl1rBpR0/N1KmOVvRo
+         DyiEKijcMLkcjPvyhpPAXvN31HzQFx5cOSKOiJQfWiNbCRM4GoUHrCUN72+L4fcPHLoN
+         HZ5yEJ7pMYNtTBupMxDaAr+xNDzqdQLkImU1Infw7uJ9VpZQmr/Fj9/PMMmtUZsseAkO
+         08u7/QEtEIA1nZ0pRkzdcoSfThl5NyC1BsmRtZpZyCjhx7SEEbqAAcmEZ/2gatA83Q+j
+         1yq61S+Gx+L64GghMHyOKP1lIjNfxISRxveZyxZiMZxk3t6g2bFLFNF7Eyx6RX+lUnwC
+         JP1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWnm4Syr1vxYbnse2FA1VGShFyb5b2wEvNPVnV7TLnQsryZJ5rsuQd5XE6/UU6GBxtskTRPPblbmh6twb1TU62HOBTKCKxmm8vm7LU5SBE=
+X-Gm-Message-State: AOJu0YxEV572+ii+P/HFPShWL7VLN9zr8IOExRTlH0yTYi06gG9s7EOC
+	Zrwdv39tIWGN+e7VGAIVPM5mJrxfAsGfCje4grLiNGf+htMHWJ49mMxP4WyYy2E6TJg4cDPS6DG
+	HnTWWblPWNtTxFqHzb0sZzEUx1WXDSe4ENxx+Bg==
+X-Google-Smtp-Source: AGHT+IFEcewgx6K0H5JoHC0s7S4uCrcrKg0tuesPZ6/XjGUTZZkpFY+pctxrZr4MfL7ku3gK9QgVdIyhlEaUIc8tLro=
+X-Received: by 2002:a25:2f0f:0:b0:de0:d728:1b21 with SMTP id
+ v15-20020a252f0f000000b00de0d7281b21mr10940224ybv.54.1713289688081; Tue, 16
+ Apr 2024 10:48:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
+References: <CALNs47tEZqL201jsExfF1j7m+yW37YRAws-NTF6hwsxohSKoQA@mail.gmail.com>
+ <20240416095333.1108884-1-aliceryhl@google.com>
+In-Reply-To: <20240416095333.1108884-1-aliceryhl@google.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Tue, 16 Apr 2024 13:47:56 -0400
+Message-ID: <CALNs47vUXA9z8+bM4TOU-Q_NY3wbux3OA4nBVxegAWykzTd2zQ@mail.gmail.com>
+Subject: Re: [PATCH v5 4/4] rust: add abstraction for `struct page`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: a.hindborg@samsung.com, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
+	arnd@arndb.de, arve@android.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, brauner@kernel.org, 
+	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joel@joelfernandes.org, keescook@chromium.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, maco@android.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, surenb@google.com, tkjos@android.com, 
+	viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 07, 2024 at 10:02:35PM +0200, Miguel Ojeda wrote:
-> On Mon, Apr 1, 2024 at 8:53 PM Benno Lossin <benno.lossin@proton.me> wrote:
+On Tue, Apr 16, 2024 at 5:53=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> >> +/// Flags for the "get free page" function that underlies all memory =
+allocations.
+> >> +pub mod flags {
+> >> +    /// gfp flags.
 > >
-> > The `module!` macro creates glue code that are called by C to initialize
-> > the Rust modules using the `Module::init` function. Part of this glue
-> > code are the local functions `__init` and `__exit` that are used to
-> > initialize/destroy the Rust module.
-> > These functions are safe and also visible to the Rust mod in which the
-> > `module!` macro is invoked. This means that they can be called by other
-> > safe Rust code. But since they contain `unsafe` blocks that rely on only
-> > being called at the right time, this is a soundness issue.
+> > Uppercase acronym, maybe with a description:
 > >
-> > Wrap these generated functions inside of two private modules, this
-> > guarantees that the public functions cannot be called from the outside.
-> > Make the safe functions `unsafe` and add SAFETY comments.
+> >     GFP (Get Free Page) flags.
 > >
-> > Cc: stable@vger.kernel.org
-> > Closes: https://github.com/Rust-for-Linux/linux/issues/629
-> > Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-> > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> 
-> [ Capitalized comments, avoided newline in non-list SAFETY comments
->   and reworded to add Reported-by and newline. ]
-> 
-> Applied to `rust-fixes` -- thanks everyone!
-> 
+> >> +    #[allow(non_camel_case_types)]
+> >> +    pub type gfp_t =3D bindings::gfp_t;
+> >
+> > Why not GfpFlags, do we do this elsewhere?
+> >
+> >> +    /// `GFP_KERNEL` is typical for kernel-internal allocations. The =
+caller requires `ZONE_NORMAL`
+> >> +    /// or a lower zone for direct access but can direct reclaim.
+> >> +    pub const GFP_KERNEL: gfp_t =3D bindings::GFP_KERNEL;
+> >> +    /// `GFP_ZERO` returns a zeroed page on success.
+> >> +    pub const __GFP_ZERO: gfp_t =3D bindings::__GFP_ZERO;
+> >> +    /// `GFP_HIGHMEM` indicates that the allocated memory may be loca=
+ted in high memory.
+> >> +    pub const __GFP_HIGHMEM: gfp_t =3D bindings::__GFP_HIGHMEM;
+> >
+> > It feels a bit weird to have dunder constants on the rust side that
+> > aren't also `#[doc(hidden)]` or just nonpublic. Makes me think they
+> > are an implementation detail or not really meant to be used - could
+> > you update the docs if this is the case?
+>
+> All of this is going away in the next version because it will be based
+> on [1], which defines the gfp flags type for us.
+>
+> [1]: https://lore.kernel.org/rust-for-linux/20240328013603.206764-1-wedso=
+naf@gmail.com/
 
-As reported by Dirk Behme:
+Great, thanks for the link.
 
-	https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/How.20to.20use.20THIS_MODULE.20with.20.22.20rust.3A.20macros.3A.20fix.20soundness.20.2E.22/near/433512583
+> > Could you add an example of how to use this correctly?
+>
+> This is a private function, you're not supposed to use it directly.
+> Anyone who is modifying this file directly can look at the existing
+> users for examples.
 
-The following is needed to allow modules using `THIS_MODULE` as a static
-variable. That being said, maybe we can merge this patch as it is, since
-it doesn't break mainline, and the following change can be done in a
-separate patch.
+Ah you're right, missed this bit.
 
-Regards,
-Boqun
+Thanks for the followup.
 
------------------------------>8
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 293beca0a583..0664b957a70a 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -199,6 +199,17 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             /// Used by the printing macros, e.g. [`info!`].
-             const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
- 
-+            // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
-+            // freed until the module is unloaded.
-+            #[cfg(MODULE)]
-+            static THIS_MODULE: kernel::ThisModule = unsafe {{
-+                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
-+            }};
-+            #[cfg(not(MODULE))]
-+            static THIS_MODULE: kernel::ThisModule = unsafe {{
-+                kernel::ThisModule::from_ptr(core::ptr::null_mut())
-+            }};
-+
-             // Double nested modules, since then nobody can access the public items inside.
-             mod __module_init {{
-                 mod __module_init {{
-@@ -215,17 +226,6 @@ mod __module_init {{
- 
-                     static mut __MOD: Option<{type_}> = None;
- 
--                    // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
--                    // freed until the module is unloaded.
--                    #[cfg(MODULE)]
--                    static THIS_MODULE: kernel::ThisModule = unsafe {{
--                        kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
--                    }};
--                    #[cfg(not(MODULE))]
--                    static THIS_MODULE: kernel::ThisModule = unsafe {{
--                        kernel::ThisModule::from_ptr(core::ptr::null_mut())
--                    }};
--
-                     // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-                     /// # Safety
-                     ///
-@@ -301,7 +301,7 @@ mod __module_init {{
-                     ///
-                     /// This function must only be called once.
-                     unsafe fn __init() -> core::ffi::c_int {{
--                        match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
-+                        match <{type_} as kernel::Module>::init(&super::super::THIS_MODULE) {{
-                             Ok(m) => {{
-                                 // SAFETY:
-                                 // no data race, since `__MOD` can only be accessed by this module and
+Trevor
