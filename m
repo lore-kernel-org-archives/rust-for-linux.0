@@ -1,95 +1,118 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B0741C76;
-	Tue, 16 Apr 2024 12:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE0312C49B;
+	Tue, 16 Apr 2024 13:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713271096; cv=none; b=V9rdnjctWpPGDQNNxduJ444y7/72wobJ7f2twcSEMFA7HWEx4R6JUzn+nxCSbR8XkytQeVbErTUdBjKaTD0jatbYsVN23AQCh6vRDys1OHBO0m92GjhQIv46bwv24lny4fiflBV0glJWtowFnQu+ZntDRk2g9AVXJQFdqaWAaRc=
+	t=1713273697; cv=none; b=S9Am1md4xe0ApmEQGgIsBwdy3gCO+dO/NI5RpE1eptsFctNm/4ZR2gZ9ZBD3RFb5zhnfp0jJ9reDsW3nVV31KSjxslgJvfB7xw1XISKimMW0Dw5HgC8ueK/QIxN/h3sfyP1pqMGU89AkQujMMoZ8Jo3wDoXeFjSP/Kw5D+EWeNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713271096; c=relaxed/simple;
-	bh=WR+teDh3Y/vyQl9w9sj78EP+soKBCsqUlGifgTOzjrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E6K8vITTdyHBbsaS5pakI2QzrCK889vV05V3a1j9yf5BsfDvhX88WFDsEkApZvcjwHclfHtMC1RxIxQRmtCMK6waJGwrErrt//dPRRKme5VnY66o3/yxXEWfNMSGIR8kg1sooal2CWRJeEI56TWI7jh/0PTgPec/BGLHnzzp4OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=A3EmeitC; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1713273697; c=relaxed/simple;
+	bh=rECNAQA2b5JeKpe3ThQ0Ts912GhBjOsctzDrRD27EuI=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=hVAvPWjgWJMgZmT5yx0z1dYp81QfC7kKtc1P2K8f5dRyji/6eVtifRxhrPY5poEJ2HyIdV/dwauDQ2nBriO8cKbZFRdMKjdKdkriOQsXfSLVOxCzSH6/mbwvyF5rwE2lnUwhfOAreR8+NtpZaRkZFVW8ez/r/nPeEEVUNTJ0YVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NMMiLWnA; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="A3EmeitC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=y52FjE6AcbCrRQiPpnoR7jIgNDrTM9Q7iVrh+4x3zbU=; b=A3EmeitCc7OYaNK2JTkvtBqNsC
-	b73PC+MYWTcJW7DCDECMChK4qzTU6EBaCzATBWQKOgrJaUlpO65d0r/vt8grPMuXka+z5K3tHx+o3
-	zGKgARbMzK4ip8IlLux1q8xmvs1+mLTGMwLLHuHN+qqFLwsK1w27vvSes6WTyjJWSS0I=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rwi4h-00D8PU-DA; Tue, 16 Apr 2024 14:38:11 +0200
-Date: Tue, 16 Apr 2024 14:38:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NMMiLWnA"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-58962bf3f89so950298a12.0;
+        Tue, 16 Apr 2024 06:21:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713273694; x=1713878494; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=549tbuOuKpI8ovt9UKf5mDbOdIqq2Ll6o+uA6hkmv4s=;
+        b=NMMiLWnAZfvws60pjBkhxpTG3mGcc5bXWQ0j5YYV9mwaax4un/unRPGvrU0QZYlHZr
+         4Dxr6RNO34UitP5/RRwOaAS+Z7cl45ilQwGOniORw/hS+ibK+oSzGQvkr8i4KvvHEXhJ
+         NapP2iy4Hst2OCLJ9HtPkJtCUftQathq5q42QveDyXd6uBJ/RuEghhi40KpjP0CgGH64
+         ZSukGFKw3FkGmFpIhbUiI4yCCMVO5gf7f0wwgQe4vMznTbrSmBIQxFRa/59Cmjc+szrV
+         608n0niPsHWYRa6uyzqnb0cyvSZvWi+HZ/i7fbpjWdEXPEezzYtuQvMkN4/T+vnz+9L6
+         wHgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713273694; x=1713878494;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=549tbuOuKpI8ovt9UKf5mDbOdIqq2Ll6o+uA6hkmv4s=;
+        b=ZymI4xVKb89Bf3a1U8EqGAIeQo8cMG8SRIrsgqsESOdgs86uKQM5J6mv8djC5upXtt
+         Nc2bmDsPmRYOoRpVqw3crucKoAIopnMkrSg1dw4MR97wx4kxOn71epIUg08WfOPExNxD
+         YNxXv7WvXfJedhkvFOIab9bJvc+uyflgXWqlHUpBWnbHj/8GIkWAYPTuKdEquqDzBSKS
+         J/LDd1Bx30lpgpXl7g3uJxeReel/aCNt1rmnQSh3JLDE398UH8PABtMNsw0nzVsFXaiL
+         CH8YXy7MVXRsBJ01wtEjH/IPqa65VM9XSfNBCcoZiN68BNCYtwWoeitfaN31TddH2JiT
+         6Z0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUI1OF7X16PeCGz715eLnTmBjH0tKNGOHoA15DUxAEJ13r0LPWc+r2j95Tw6ossUVaiHJfCjxSCcRVycoBJUzk6Z1FjY22ixCh6WXtcP0c79OjIowbOsv1LjLd7LdGHepGvBJhHGJw=
+X-Gm-Message-State: AOJu0YwCRVYU/loSzwtTjuJSTdhX1XEuFFvCL7u6Oaj/yMFBETu4lVKs
+	FdiwKhGWn0EU6jyTNkQzqURxfpq21etpIr9qw4pY3IqgJy1yVTKI
+X-Google-Smtp-Source: AGHT+IE0ul1+uFXU8qmq1kSK8DZLpSv/2o/mhnlYSWClPGMyGx3wejSwcw6EqGxsbBrLMX8AmRuKtw==
+X-Received: by 2002:a05:6a20:c41b:b0:1aa:584f:3b6b with SMTP id en27-20020a056a20c41b00b001aa584f3b6bmr832897pzb.2.1713273693676;
+        Tue, 16 Apr 2024 06:21:33 -0700 (PDT)
+Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
+        by smtp.gmail.com with ESMTPSA id z2-20020a17090a6d0200b002a5290ad3d4sm9762831pjj.3.2024.04.16.06.21.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Apr 2024 06:21:33 -0700 (PDT)
+Date: Tue, 16 Apr 2024 22:21:19 +0900 (JST)
+Message-Id: <20240416.222119.1989306221012409360.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
 Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
-Message-ID: <26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch>
-References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
- <20240415104701.4772-3-fujita.tomonori@gmail.com>
- <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch>
- <20240416.204030.1728964191738742483.fujita.tomonori@gmail.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch>
+References: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch>
+	<20240416.204030.1728964191738742483.fujita.tomonori@gmail.com>
+	<26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240416.204030.1728964191738742483.fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> > In summary, the C API is a bit of a mess.
-> > 
-> > For the Rust API we have two sensible choices:
-> > 
-> > 1) It is the same mess as the C API, so hopefully one day we will fix
-> >    both at the same time.
-> > 
-> > 2) We define a different API which correctly separate C45 bus access
-> >    from C45 registers.
-> > 
-> > How you currently defined the Rust API is neither of these.
+Hi,
+
+On Tue, 16 Apr 2024 14:38:11 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
+
+>> If I correctly understand the original driver code, C45 bus protocol
+>> is used. Adding functions for C45 bus protocol read/write would be
+>> enough for this driver, I guess.
 > 
-> Which do your prefer?
+> Now i've read more of the patches, i can see that the MDIO bus master
+> is C45 only. At least, that is all that is implemented in the
+> driver. So for this combination of MAC and PHY, forcing C45 register
+> access using C45 bus protocol will work.
+
+Thanks a lot!
+
+> However, can you combine this PHY with some other MDIO bus master,
+> which does not support C45? Then C45 over C22 would need to be used?
+> Looking at the data sheet i found online, there is no suggestion it
+> does support C22 bus protocol. All the diagrams/tables only show C45
+> bus protocol.
+
+qt2025_ds3014.pdf?
+
+> So this PHY is a special case. So you can use wrapper methods which
+> force C45 bus protocol, and ignore phylib support for performing C45
+> over C22 when needed. However, while doing this:
 > 
-> If I correctly understand the original driver code, C45 bus protocol
-> is used. Adding functions for C45 bus protocol read/write would be
-> enough for this driver, I guess.
+> 1: Clearly document that these helpers are not generic, they force C45
+>    register access using C45 bus protocol, and should only by used PHY
+>    drivers which know the PHY device does not support C45 over C22
+> 
+> 2: Think about naming. At some point we are going to add the generic
+>    helpers for accessing C45 registers which leave the core to decide
+>    if to perform a C45 bus protocol access or C45 over C22. Those
+>    generic helpers need to have the natural name for accessing a C45
+>    register since 99% of drivers will be using them. The helpers you
+>    add now need to use a less common name.
 
-Now i've read more of the patches, i can see that the MDIO bus master
-is C45 only. At least, that is all that is implemented in the
-driver. So for this combination of MAC and PHY, forcing C45 register
-access using C45 bus protocol will work.
+Sounds like we should save the names of c45_read and c45_write.
 
-However, can you combine this PHY with some other MDIO bus master,
-which does not support C45? Then C45 over C22 would need to be used?
-Looking at the data sheet i found online, there is no suggestion it
-does support C22 bus protocol. All the diagrams/tables only show C45
-bus protocol.
+read_with_c45_bus_protocol and write_with_c45_bus_protocol?
 
-So this PHY is a special case. So you can use wrapper methods which
-force C45 bus protocol, and ignore phylib support for performing C45
-over C22 when needed. However, while doing this:
-
-1: Clearly document that these helpers are not generic, they force C45
-   register access using C45 bus protocol, and should only by used PHY
-   drivers which know the PHY device does not support C45 over C22
-
-2: Think about naming. At some point we are going to add the generic
-   helpers for accessing C45 registers which leave the core to decide
-   if to perform a C45 bus protocol access or C45 over C22. Those
-   generic helpers need to have the natural name for accessing a C45
-   register since 99% of drivers will be using them. The helpers you
-   add now need to use a less common name.
-
-	Andrew
+They call mdiobus_c45_*, right?
