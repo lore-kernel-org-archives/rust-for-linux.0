@@ -1,118 +1,209 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE0312C49B;
-	Tue, 16 Apr 2024 13:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A6012E1E8;
+	Tue, 16 Apr 2024 17:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713273697; cv=none; b=S9Am1md4xe0ApmEQGgIsBwdy3gCO+dO/NI5RpE1eptsFctNm/4ZR2gZ9ZBD3RFb5zhnfp0jJ9reDsW3nVV31KSjxslgJvfB7xw1XISKimMW0Dw5HgC8ueK/QIxN/h3sfyP1pqMGU89AkQujMMoZ8Jo3wDoXeFjSP/Kw5D+EWeNE=
+	t=1713287267; cv=none; b=NOmnJ7MMZfSwVXrtifAIWyOo6ky7ewrMDAtvCOi9k+6m9mGVIGJGBzQfPYt2eO/SkX1YsvhOq9/KHtxhwg/UnhYRlL58ceo/ejjgiqIZqd/7MRx6xcweBuL2LXeY5G2lxlCTWSrdNpiEDqa8GkfrMalfSpcc83qUXmSDnexqYW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713273697; c=relaxed/simple;
-	bh=rECNAQA2b5JeKpe3ThQ0Ts912GhBjOsctzDrRD27EuI=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=hVAvPWjgWJMgZmT5yx0z1dYp81QfC7kKtc1P2K8f5dRyji/6eVtifRxhrPY5poEJ2HyIdV/dwauDQ2nBriO8cKbZFRdMKjdKdkriOQsXfSLVOxCzSH6/mbwvyF5rwE2lnUwhfOAreR8+NtpZaRkZFVW8ez/r/nPeEEVUNTJ0YVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NMMiLWnA; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1713287267; c=relaxed/simple;
+	bh=f/fnrdxNCDGyBxu0Cw8TMeUPmrR90+CCa02nHl4h05Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f7zWmGL+stjEsph69KqxOK/zx+Deh7xHX5A+GzdrqxyMswnSAScBSoYcm+JnkXKU48E7cbNPQRQEunkHHhsoNtsr26UAYPPXF3wkxU3D9APdN5ydCE6wJk+Rb4gDPukJibij/7udRZ5qs2pVxb33aY6yX+l+bdLYrzaktFcmLqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPTXOQq9; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NMMiLWnA"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-58962bf3f89so950298a12.0;
-        Tue, 16 Apr 2024 06:21:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPTXOQq9"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-434d12e9662so21108881cf.2;
+        Tue, 16 Apr 2024 10:07:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713273694; x=1713878494; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=549tbuOuKpI8ovt9UKf5mDbOdIqq2Ll6o+uA6hkmv4s=;
-        b=NMMiLWnAZfvws60pjBkhxpTG3mGcc5bXWQ0j5YYV9mwaax4un/unRPGvrU0QZYlHZr
-         4Dxr6RNO34UitP5/RRwOaAS+Z7cl45ilQwGOniORw/hS+ibK+oSzGQvkr8i4KvvHEXhJ
-         NapP2iy4Hst2OCLJ9HtPkJtCUftQathq5q42QveDyXd6uBJ/RuEghhi40KpjP0CgGH64
-         ZSukGFKw3FkGmFpIhbUiI4yCCMVO5gf7f0wwgQe4vMznTbrSmBIQxFRa/59Cmjc+szrV
-         608n0niPsHWYRa6uyzqnb0cyvSZvWi+HZ/i7fbpjWdEXPEezzYtuQvMkN4/T+vnz+9L6
-         wHgQ==
+        d=gmail.com; s=20230601; t=1713287265; x=1713892065; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ORGQ4FpFUr8CNMJ8nGMv1TvXQGc9fladS7kaSrCMW9A=;
+        b=dPTXOQq9kXN8Ntvs4v9lI4U1T2+EFtP6Q1/mgZNYooHD975V/e8AqZkGexMMf5dB20
+         zjVY0HLXDMUpCqDnwVm1etmuZnvxP3nrnFJtFcTodHrIPLZHzkRNcVIxAcJBKN/mDfni
+         AsX785qwK9/6e8k1SyEOlxkEDciZJ9PFsoHl3VoE0qaZYntPA4un+Ua9nBZzuW7LGYKH
+         Z2BYGLSJMKqhsP7eXCl2iFUxiDCKfEsO1z2DuqGRJBtmiOgv8Ry2ka1ZLHoSRng/roTJ
+         7xYFHsHo1OeJdMAk+ol/mEvGfg00uBlOKGHE52kII7OccI+XF/dx/uESwGxXFwcW67dQ
+         SlPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713273694; x=1713878494;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=549tbuOuKpI8ovt9UKf5mDbOdIqq2Ll6o+uA6hkmv4s=;
-        b=ZymI4xVKb89Bf3a1U8EqGAIeQo8cMG8SRIrsgqsESOdgs86uKQM5J6mv8djC5upXtt
-         Nc2bmDsPmRYOoRpVqw3crucKoAIopnMkrSg1dw4MR97wx4kxOn71epIUg08WfOPExNxD
-         YNxXv7WvXfJedhkvFOIab9bJvc+uyflgXWqlHUpBWnbHj/8GIkWAYPTuKdEquqDzBSKS
-         J/LDd1Bx30lpgpXl7g3uJxeReel/aCNt1rmnQSh3JLDE398UH8PABtMNsw0nzVsFXaiL
-         CH8YXy7MVXRsBJ01wtEjH/IPqa65VM9XSfNBCcoZiN68BNCYtwWoeitfaN31TddH2JiT
-         6Z0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUI1OF7X16PeCGz715eLnTmBjH0tKNGOHoA15DUxAEJ13r0LPWc+r2j95Tw6ossUVaiHJfCjxSCcRVycoBJUzk6Z1FjY22ixCh6WXtcP0c79OjIowbOsv1LjLd7LdGHepGvBJhHGJw=
-X-Gm-Message-State: AOJu0YwCRVYU/loSzwtTjuJSTdhX1XEuFFvCL7u6Oaj/yMFBETu4lVKs
-	FdiwKhGWn0EU6jyTNkQzqURxfpq21etpIr9qw4pY3IqgJy1yVTKI
-X-Google-Smtp-Source: AGHT+IE0ul1+uFXU8qmq1kSK8DZLpSv/2o/mhnlYSWClPGMyGx3wejSwcw6EqGxsbBrLMX8AmRuKtw==
-X-Received: by 2002:a05:6a20:c41b:b0:1aa:584f:3b6b with SMTP id en27-20020a056a20c41b00b001aa584f3b6bmr832897pzb.2.1713273693676;
-        Tue, 16 Apr 2024 06:21:33 -0700 (PDT)
-Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
-        by smtp.gmail.com with ESMTPSA id z2-20020a17090a6d0200b002a5290ad3d4sm9762831pjj.3.2024.04.16.06.21.31
+        d=1e100.net; s=20230601; t=1713287265; x=1713892065;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ORGQ4FpFUr8CNMJ8nGMv1TvXQGc9fladS7kaSrCMW9A=;
+        b=ma6JSDxOJ9PoPvpZzaSymz7Q5TgFaproGLymfmviSzvyuwD+scEQ2KgVPUHqnE5Yum
+         RKdDa5r/k2QK/ohZ4QdWzx5N3SGiqT7kssNSbM0HFbybXFDArucx9SBhL9cBACedwKnu
+         ktiC0vlmBDJiVIPrpXHNPAGpIXC+I5eVIQtHA0A7gmzzHbaPTu+5QSwM7qHDUn4eYKdK
+         rS6HSand7+azxyE2LXEgbZVURZkpupuDxZNrlV57BpQhW2jEdKeZZUXXAP5ciG22bkGd
+         Me3SVBZGeRoqPI3hHUCRFmj+dmXWkmlmgPDiw2P76HI+5ZAmkPzAZ7cKqx8CRrI8sb/V
+         LT2A==
+X-Forwarded-Encrypted: i=1; AJvYcCVrrrwwuMKRRSyXpvhKR/ec2CHPcWp3C0y/RiyD0+0DYdiirUSFSewdsFW+Xlff566eYw0yRyA57d5CAGlMLvggekfHk68sjWzlqULFZFShfJPSJAB3c+YrpPj5z7g/b85vNCBjwMITmsEIC0h6tdH6D7H0KbYhuGpRX/YZ7VvhBxWgcUs=
+X-Gm-Message-State: AOJu0Yzq1oh4VfH9HbBU2rjG3fi/gJASRvPIiwS4ShVkxBcxYNEuYZ4X
+	53NHvZWcZJZuc8xJWRGUWHc0grhOoYsV+ETZ2E6rIO0+UIHNq1J5
+X-Google-Smtp-Source: AGHT+IH4K1C8oUNKr5v3XEp6bWsc4NZ9GBMoBMOkM/9G+fGLZvPAXtNsSr4sY5xa7gudhKIFSR3AKQ==
+X-Received: by 2002:ac8:58d0:0:b0:436:73ac:8129 with SMTP id u16-20020ac858d0000000b0043673ac8129mr19448010qta.61.1713287265180;
+        Tue, 16 Apr 2024 10:07:45 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id i9-20020ac860c9000000b004343d542598sm7328319qtm.62.2024.04.16.10.07.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 06:21:33 -0700 (PDT)
-Date: Tue, 16 Apr 2024 22:21:19 +0900 (JST)
-Message-Id: <20240416.222119.1989306221012409360.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch>
-References: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch>
-	<20240416.204030.1728964191738742483.fujita.tomonori@gmail.com>
-	<26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch>
+        Tue, 16 Apr 2024 10:07:44 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 3D4501200066;
+	Tue, 16 Apr 2024 13:07:43 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 16 Apr 2024 13:07:43 -0400
+X-ME-Sender: <xms:X7AeZmCDxp6AsgYautBwC_DXlCFkgQ6Laxu_AgglfwplvhVCWyFq_g>
+    <xme:X7AeZghMBJm5BuId6WpUW6HbhBYegfnFfSkdWcc4bn0NUbxrTGUmp-ola0a5mtepr
+    mRIrdod-NhGu6iMww>
+X-ME-Received: <xmr:X7AeZpnn4wG--Ad9jQMfXtylQ6mYGnNyoJLKYHT8Ow3EVzJEAfDbQG3WgQDOUQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejiedggeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepffdvudegieehffdvtdeivefhgfehgedtffdugfekffeuheevheffieek
+    tedujeejnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpiihulhhiphgthhgrthdrtg
+    homhdpihguvghnthhifhhivghrshdrshgrfhgvthihnecuvehluhhsthgvrhfuihiivgep
+    tdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhph
+    gvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdr
+    fhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:X7AeZkx-DATjGs_MOBhrBCqZdjQ26sAwl-rTbPKI9W65iPbVL3cdrA>
+    <xmx:X7AeZrTSHYW5YWZX_8VfqPJfQd86OPJAueRQ7ejTGTLamq8AhHJxNg>
+    <xmx:X7AeZvYK1096IPo8NfsO6GWVkXFJuUbsOuBwlRUnjc-fjHtxUcvy6A>
+    <xmx:X7AeZkRAzhO8GWG4vo-h7Sjy9pqnw5fzr1vM49LuuPuE2-HgqJlyYg>
+    <xmx:X7AeZtBB7_viBL6XxlqnEdeO_9_XamuixjGZLymcXKVetYwNELi2Z79p>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Apr 2024 13:07:42 -0400 (EDT)
+Date: Tue, 16 Apr 2024 10:07:24 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Asahi Lina <lina@asahilina.net>,
+	Sumera Priyadarsini <sylphrenadin@gmail.com>,
+	Neal Gompa <neal@gompa.dev>,
+	Thomas Bertschinger <tahbertschinger@gmail.com>,
+	Andrea Righi <andrea.righi@canonical.com>,
+	Matthew Bakhtiari <dev@mtbk.me>,
+	Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@google.com>,
+	Finn Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
+Message-ID: <Zh6wTDoMgvjJZ7T9@boqun-archlinux>
+References: <20240401185222.12015-1-benno.lossin@proton.me>
+ <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
 
-Hi,
-
-On Tue, 16 Apr 2024 14:38:11 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
->> If I correctly understand the original driver code, C45 bus protocol
->> is used. Adding functions for C45 bus protocol read/write would be
->> enough for this driver, I guess.
+On Sun, Apr 07, 2024 at 10:02:35PM +0200, Miguel Ojeda wrote:
+> On Mon, Apr 1, 2024 at 8:53 PM Benno Lossin <benno.lossin@proton.me> wrote:
+> >
+> > The `module!` macro creates glue code that are called by C to initialize
+> > the Rust modules using the `Module::init` function. Part of this glue
+> > code are the local functions `__init` and `__exit` that are used to
+> > initialize/destroy the Rust module.
+> > These functions are safe and also visible to the Rust mod in which the
+> > `module!` macro is invoked. This means that they can be called by other
+> > safe Rust code. But since they contain `unsafe` blocks that rely on only
+> > being called at the right time, this is a soundness issue.
+> >
+> > Wrap these generated functions inside of two private modules, this
+> > guarantees that the public functions cannot be called from the outside.
+> > Make the safe functions `unsafe` and add SAFETY comments.
+> >
+> > Cc: stable@vger.kernel.org
+> > Closes: https://github.com/Rust-for-Linux/linux/issues/629
+> > Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+> > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > 
-> Now i've read more of the patches, i can see that the MDIO bus master
-> is C45 only. At least, that is all that is implemented in the
-> driver. So for this combination of MAC and PHY, forcing C45 register
-> access using C45 bus protocol will work.
-
-Thanks a lot!
-
-> However, can you combine this PHY with some other MDIO bus master,
-> which does not support C45? Then C45 over C22 would need to be used?
-> Looking at the data sheet i found online, there is no suggestion it
-> does support C22 bus protocol. All the diagrams/tables only show C45
-> bus protocol.
-
-qt2025_ds3014.pdf?
-
-> So this PHY is a special case. So you can use wrapper methods which
-> force C45 bus protocol, and ignore phylib support for performing C45
-> over C22 when needed. However, while doing this:
+> [ Capitalized comments, avoided newline in non-list SAFETY comments
+>   and reworded to add Reported-by and newline. ]
 > 
-> 1: Clearly document that these helpers are not generic, they force C45
->    register access using C45 bus protocol, and should only by used PHY
->    drivers which know the PHY device does not support C45 over C22
+> Applied to `rust-fixes` -- thanks everyone!
 > 
-> 2: Think about naming. At some point we are going to add the generic
->    helpers for accessing C45 registers which leave the core to decide
->    if to perform a C45 bus protocol access or C45 over C22. Those
->    generic helpers need to have the natural name for accessing a C45
->    register since 99% of drivers will be using them. The helpers you
->    add now need to use a less common name.
 
-Sounds like we should save the names of c45_read and c45_write.
+As reported by Dirk Behme:
 
-read_with_c45_bus_protocol and write_with_c45_bus_protocol?
+	https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/How.20to.20use.20THIS_MODULE.20with.20.22.20rust.3A.20macros.3A.20fix.20soundness.20.2E.22/near/433512583
 
-They call mdiobus_c45_*, right?
+The following is needed to allow modules using `THIS_MODULE` as a static
+variable. That being said, maybe we can merge this patch as it is, since
+it doesn't break mainline, and the following change can be done in a
+separate patch.
+
+Regards,
+Boqun
+
+----------------------------->8
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 293beca0a583..0664b957a70a 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -199,6 +199,17 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+             /// Used by the printing macros, e.g. [`info!`].
+             const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
+ 
++            // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
++            // freed until the module is unloaded.
++            #[cfg(MODULE)]
++            static THIS_MODULE: kernel::ThisModule = unsafe {{
++                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
++            }};
++            #[cfg(not(MODULE))]
++            static THIS_MODULE: kernel::ThisModule = unsafe {{
++                kernel::ThisModule::from_ptr(core::ptr::null_mut())
++            }};
++
+             // Double nested modules, since then nobody can access the public items inside.
+             mod __module_init {{
+                 mod __module_init {{
+@@ -215,17 +226,6 @@ mod __module_init {{
+ 
+                     static mut __MOD: Option<{type_}> = None;
+ 
+-                    // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
+-                    // freed until the module is unloaded.
+-                    #[cfg(MODULE)]
+-                    static THIS_MODULE: kernel::ThisModule = unsafe {{
+-                        kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
+-                    }};
+-                    #[cfg(not(MODULE))]
+-                    static THIS_MODULE: kernel::ThisModule = unsafe {{
+-                        kernel::ThisModule::from_ptr(core::ptr::null_mut())
+-                    }};
+-
+                     // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
+                     /// # Safety
+                     ///
+@@ -301,7 +301,7 @@ mod __module_init {{
+                     ///
+                     /// This function must only be called once.
+                     unsafe fn __init() -> core::ffi::c_int {{
+-                        match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
++                        match <{type_} as kernel::Module>::init(&super::super::THIS_MODULE) {{
+                             Ok(m) => {{
+                                 // SAFETY:
+                                 // no data race, since `__MOD` can only be accessed by this module and
