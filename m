@@ -1,106 +1,109 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E632943C;
-	Tue, 16 Apr 2024 19:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F36E44C6B;
+	Tue, 16 Apr 2024 21:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713296253; cv=none; b=c559PKy0QojNWWl7s3Z2b2J9ZUNinI9QzfWpwQCAQs8x2VwH1q2sc4V2ToQ1RE826uy9+Vdo3W+ZPES9CcKlamawmutlsGQNPLlbMtcN+GdodPPAgW/s9kuKWf6APKpKb4KgyBAcQHK0lhnuwOpsRAz9rWWnr4Z0EzZKl/951wc=
+	t=1713301477; cv=none; b=pjgwYdtEneBRzxMwQQ1NszQo9TRTShBrwx8/0jEmIWayL98a2ClLLHEwGGvF0kH9kNXj7/c0bLEByhAxlA/5SwQHuTI7u7LJU6KoUff4ZmHWApDpntJdWe0niXYAXSQmBHnEfRlO0r0cBGuBYHvPJsxqY8rCphVWwfntH5emrro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713296253; c=relaxed/simple;
-	bh=F6vLZMw5iKbm8/K6P0sUwSZXxcZ1d1VPqXfAJPc1ClE=;
+	s=arc-20240116; t=1713301477; c=relaxed/simple;
+	bh=N9qE6JgV6fYnyVb+pQl76YXT2IELRhILEDrXUvW1SO4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p5TG7N4bCpFLlVJDTBfST+bEH7UYmWkTSo80/X7IaeHCxppdvLm7YTw/QcQQ10aMXMixxoDDvdIs2FA7VkJCL88lseyHIp5PsRJBNUbviLunNHMHObGgq5T9TBR17CgZSxZdydARTrb2xUp1eIq7iE1wM/kn3aMRhYQhz4eLwJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WMXi/bbN; arc=none smtp.client-ip=209.85.167.47
+	 To:Cc:Content-Type; b=WLPvWg45SoRkUVmDIgFMJQ/gd2lATKl8sJPdOwnmn9aGSCCvdKPA9gcJ8Igq9iZ8fhJvgbq5CESLs9rLaWziI/XIWIjBF4KRy/HYwPHJc8684jPQQmb4tZCgzeXqxKjCseSLNpf8CM/s3jv/1N/n2GyFJyiT+4w0Kd1UWha4XBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DV2gZ5qW; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WMXi/bbN"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-518e5a74702so88164e87.1;
-        Tue, 16 Apr 2024 12:37:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DV2gZ5qW"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6edb76d83d0so4469158b3a.0;
+        Tue, 16 Apr 2024 14:04:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713296250; x=1713901050; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1713301476; x=1713906276; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bhWQKc/eYOwik0yE3g6ijPo7WAzZsqUpRV7UJ5RlYZU=;
-        b=WMXi/bbNsOSmogIMC9C18YcFhLsiKGKEYUUIZwmagPvQ3yxDHooK1xtAOLiiHZzHZS
-         j4VMm37RjOqEUBNJh0Ma7/43Dlk2SXyrYKMv0LXncXACUJInyMZG/hcfZPjTyyH5AXoF
-         3SQgqxd3/wgeJvwYcPF2M6XmFK+7jL0/gAINLK70YePQVSbXn6RTnk+m+BNFdfBz12+G
-         jmUPNeG6KQM/c43KOVyQYV40WGvqaAz676YUDc2d4yzANop7wsAFmuUUi/iauHdfY5lL
-         4adMfXxF4SAvCS19TMdOiVvBWdLmiBETxMGtnias8j8Ym4NPpEvo59ATJmphO1x9eWrR
-         VtEw==
+        bh=W3DFIF9J4IlfEcwvIp7AKlf9Ly/QtvztUm7AJm8wPds=;
+        b=DV2gZ5qWjyXsPPEa4mCi2vkHoRuMyvFtnN+iAm9t3XhGDVKp4Sj6lPacRDTbjgcg6l
+         DXitqGvrffai0kWGhhFPFhUlu1cb36bp5Stectqfaa75RlQQK/ks/qvwgFgjUtYcAp7Y
+         qYMeMrWfR2761BK5Oes5VNFIzeAxl3Nwxf+rH+SPpivaTqh8+zn6UdViXtkXrDC9bXGW
+         mlagjEBw5MfnyhBHwBK5WLh+QwC5vtTfG3XSYW+6lOSu0etXWoBdXwUxXaopAwn7tiv8
+         cdMjJHTu3aUw7HmqY7PSQMwPDEaMQTpnbLTv4qYDco3aIyyyX/iEcncPUii43ySocy+9
+         Zg1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713296250; x=1713901050;
+        d=1e100.net; s=20230601; t=1713301476; x=1713906276;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bhWQKc/eYOwik0yE3g6ijPo7WAzZsqUpRV7UJ5RlYZU=;
-        b=UM7WA56DItfDCe0+TpTN4WW6WR/2jCrQnzaIelwk29f/zk+Hy0vCrAPIuGlcBr8oSP
-         SAUNDj/H+XGcecZvfbr9QKB/MCCSaYYWGp2HD6Oc3C4/cSyhR5BHGFdvB7OK2Au4VvjA
-         EXeAignAewozd181OYppKNJYBKuELeur/5sO3R/vBGtEdRG1DRBy64EzHsQ9ERouccCM
-         3XE3K+ljIk+br6HOf9NaCOGWVxfHYUJgKJ7HBsB67CdoVkotro7QEat/k+DD+m4dFfjo
-         a/20WK6aLhCZJSZVPluSlKlCXJE0q6fusJ1LpI5Zvgsqc9E4JNEN9Nn7dvrtCCPCBGgY
-         j5NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvphNQmojbAKa5dw7+OOE0O74iNOvpB9QqCatdfIqWbqRMLgxOwGN2EXbnpEbvxY75KENrO4YuBWG3rNPG6LHg3h49IEOWtV2K4pRtyBb3VbUOSZ/fc5s6H45BNhJzMJfVcmI13UuuH00Qc/4VcrdLFRNoT0K4UxYpPv2vDOHDu7dV4WQ=
-X-Gm-Message-State: AOJu0Yw/M1JeuJhOV6rfj1P2syhrq8fSfW9NHPoSuIFnmwMH2Dh1TcXX
-	tmvWvcwfu25q6pQxOR4gOSkgD2y6Pgjadh1yrMwss2f4sf3tOT64y/YUOkoqlgAqlElkqd4gp57
-	YwulPiNE2Sci7hltuW6SmZ3ppCYk=
-X-Google-Smtp-Source: AGHT+IH9hPdu6JNc6JS8yjgqhAuaq5GbLqml3teWtRplC+EvlAKU3fTiFGUAx2AXF00rfhMM9xrkMQebrE8LWS5Kmiw=
-X-Received: by 2002:a2e:6e0c:0:b0:2da:f300:90ff with SMTP id
- j12-20020a2e6e0c000000b002daf30090ffmr700414ljc.2.1713296249388; Tue, 16 Apr
- 2024 12:37:29 -0700 (PDT)
+        bh=W3DFIF9J4IlfEcwvIp7AKlf9Ly/QtvztUm7AJm8wPds=;
+        b=VEM0y0DyYdNYNVi+eDgNZ1zEvZMS1bM56VeZe3s4Q2xB//wR51iwCdpl/uUiQpVzTp
+         xRMyax7ilB3ApfURNNhtElJlH0N5An8/OUvyEqfMVMbDz1OPYq7NCNm6ypph1SXWTJvK
+         ixkOvXXdEgsBkSbREg8vICMGP/HOGBDrJT685adpv3p3vNoDzlfTYLvhlQP+xaX9Iqdy
+         Ty6fV62l65k5pPUfa7w69EG4wTI+1gkiclgW+lWKQzpAa1xre1s0GhGUtGdoAB7e+Bpc
+         YvXBL1pjW8V2GQaJ5rpvVy7DKB0IlEefoIqmmLoqmwFaDxLOE+EDgLMDUFsHaTYqmnH9
+         htsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTkkUEbPgcK8zLwIag9yBH6YVzivfhJvh4Eob1fOTJ/SW/r/Qu4mmwsFwnG6Havk/v9q56eNfAhmYLHj2GW5o8Y92yO9n1/VFa1z5T
+X-Gm-Message-State: AOJu0Yw5AV7+W/s1ZGU5fGkEtyOKLtivlxtY7dA+GcmtpvSgACmGU6W9
+	UgP30ypSTf/wfLJxNZ3tv1HaYPIf5XMfUGr8RSlzJAo4yA8kckLS7B5sHd+NfnTWyMKk6NeyTyp
+	O9gBD8U5meLRGhRU301494H8n+9zPbOZ3MYk=
+X-Google-Smtp-Source: AGHT+IFnpvZjwCkWjtauwG9vAXFhLTFxYjS5vEHbXTVtTyqiuAqErbGDYlngGUrdD0INSqPnD3v+cgRLHFvY5JHsuMA=
+X-Received: by 2002:a05:6a21:3e0a:b0:1a7:a478:d5e0 with SMTP id
+ bk10-20020a056a213e0a00b001a7a478d5e0mr15746684pzc.12.1713301475678; Tue, 16
+ Apr 2024 14:04:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240401185222.12015-1-benno.lossin@proton.me>
- <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com> <Zh6wTDoMgvjJZ7T9@boqun-archlinux>
-In-Reply-To: <Zh6wTDoMgvjJZ7T9@boqun-archlinux>
+References: <20240328013603.206764-1-wedsonaf@gmail.com>
+In-Reply-To: <20240328013603.206764-1-wedsonaf@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 16 Apr 2024 21:36:30 +0200
-Message-ID: <CANiq72m4P8NNr7M0Bv6bFpLonPu=WZC_x-k1KdtzqUd=vtLObA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
-	Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, 
-	Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, 
-	Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, 
-	Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 16 Apr 2024 23:03:37 +0200
+Message-ID: <CANiq72k=x_P1adyVV+9t_g9fzRznaoO8+kqsYDsunuvZjrUX8g@mail.gmail.com>
+Subject: Re: [PATCH v3 00/10] Allocation APIs
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	Wedson Almeida Filho <walmeida@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 16, 2024 at 7:07=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Thu, Mar 28, 2024 at 2:36=E2=80=AFAM Wedson Almeida Filho <wedsonaf@gmai=
+l.com> wrote:
 >
-> As reported by Dirk Behme:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
 >
->         https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/t=
-opic/How.20to.20use.20THIS_MODULE.20with.20.22.20rust.3A.20macros.3A.20fix.=
-20soundness.20.2E.22/near/433512583
+> Revamp how we use the `alloc` crate.
 >
-> The following is needed to allow modules using `THIS_MODULE` as a static
-> variable. That being said, maybe we can merge this patch as it is, since
-> it doesn't break mainline, and the following change can be done in a
-> separate patch.
+> We currently have a fork of the crate with changes to `Vec`; other
+> changes have been upstreamed (to the Rust project). This series removes
+> the fork and exposes all the functionality as extension traits.
+>
+> Additionally, it also introduces allocation flag parameters to all
+> functions that may result in allocations (e.g., `Box::new`, `Arc::new`,
+> `Vec::push`, etc.) without the `try_` prefix -- the names are available
+> because we build `alloc` with `no_global_oom_handling`.
+>
+> Lastly, the series also removes our reliance on the `allocator_api`
+> unstable feature.
+>
+> Long term, we still want to make such functionality available in
+> upstream Rust, but this allows us to make progress now and reduces our
+> maintainance burden.
+>
+> In summary:
+> 1. Removes `alloc` fork
+> 2. Removes use of `allocator_api` unstable feature
+> 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
 
-Fixed in `rust-fixes` now.
+Applied to `rust-next` -- thanks everyone!
 
-    [ Moved `THIS_MODULE` out of the private-in-private modules since it
-      should remain public, as Dirk Behme noticed [1]. Capitalized comments=
-,
-      avoided newline in non-list SAFETY comments and reworded to add
-      Reported-by and newline. ]
-    Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/t=
-opic/x/near/433512583
-[1]
+    [ Used `Box::write()` to avoid one `unsafe` block as suggested by Boqun=
+. ]
 
 Cheers,
 Miguel
