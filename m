@@ -1,106 +1,90 @@
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A2685953
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 09:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644D3763F1;
+	Tue, 16 Apr 2024 11:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713261437; cv=none; b=E+oFUquncoC/UY8s6gIGP2wD/Z8bD4Vlg2ulTyJJmD260wBWGCJDtrus7nMxkKTzQaKfN0LXRIdV/HX6NOBctEO69PWpcMW/etLtlGION+PaeZ6TJkbsRb1Guju1A1QytG2C/pDoZysBA7FR29NtBmdk1ElVHmhu2dqHhiXwlR8=
+	t=1713266179; cv=none; b=Cl+1M59MjmgaBodEtQ0u5vqVCz/K8gF5P/1jDHHLUmsET4XGKTX60Kz5mKmufztxOjZuQ1bI7ptOPBZ7UoDMhQLBc+KCn4qiiDwdsLLuVMa6U22D9LfTGL7dcMubkiXnVawt6CDtWOBPmg0q4KBnvarb4hZ4KwdIQ6037y/LFW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713261437; c=relaxed/simple;
-	bh=NHiCoxCRUNDM+U/esFCAFumYpu6ndbBWZi/5QFnqRTc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V2eeG2vT0Dko0TTQXH6sB0BhXoUkQTH+5r1JjHz6D4Mzr9MBL7Q+nBhxdb0rVVa1fut/R2ueSXyLYUcIQe6UDIKBC/7TmcdVLHyhNolub0sejjEP4G+ybUDqsZfsSEB8DwwEh3V2Maoqz8PY+RGS95ziZrJTyZ73IhLllDrwLLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FbuDV7Ew; arc=none smtp.client-ip=209.85.217.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1713266179; c=relaxed/simple;
+	bh=TGbR3JnUzJ3sa+v4fZa7yWG+DybFD/U+zGFtAXB+ESA=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=I32K/S7NzKYK8uWk+3mS1Vw8YOm9v4NHG2ntKBDWzAbMBv/AdDzIrpZUwX/wazH6LQD+NSBvgeym0pON1+yeBn0KWkulpmaD1o408vg3p3p/mEv/HzShWLbLOh0pMD+HdpC2wAHTX4aY3jlZ+ooZ3/M1enfL4KMhIamjcBhb1DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VyDQQGT9; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FbuDV7Ew"
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-47a404c6decso1113703137.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 02:57:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VyDQQGT9"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3c6febc1506so544629b6e.1;
+        Tue, 16 Apr 2024 04:16:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713261435; x=1713866235; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NHiCoxCRUNDM+U/esFCAFumYpu6ndbBWZi/5QFnqRTc=;
-        b=FbuDV7EwX+FwQw93U6rtrmn01IWg6/YjrdhIk21GdG9dQ3oDnnsqJktJjTvtaPouHD
-         +OZUJcC1c3R7WEqRae5PcN5GZ8QyOHxULY7fePWEyzFnLr7dWVLoJiTNaZNLNPavVH7N
-         0bkOWmSpkheevBAWtGk082wEB5u/giX9SSZ7B1VgGT1oe2z6wgNE7nYvsK2vtzaR4dLW
-         hGWKpRugoPFuUA03fAfQrecF1rMG45bv6kIVl/PKYk37yfb6OW2buNkaDOBfbuFqghl4
-         5cmLhkccCeC1fuJ9XgcCSA+10AUqZ5OZkw4ZjymDQiOOxuwhq5HlhjmRNiPPsQG+YPIu
-         jnyA==
+        d=gmail.com; s=20230601; t=1713266177; x=1713870977; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TGbR3JnUzJ3sa+v4fZa7yWG+DybFD/U+zGFtAXB+ESA=;
+        b=VyDQQGT9Diqc0bD3xfCNg7RAMYdo5LhE9o+wSPK1mZ9R/PR4XNEdazGnoWvS6n+K3o
+         H5QAihhYJ38WdnT3jt8CaoN3Ul0oZnOHxsKLOkLKiqV02tZwum6mMtM8DKnO5yGK1LQy
+         X5VcTiuLvKaeRjGE4qQPfXXCOm+qqmkpF7Jj/uM1TEBtYk9kUnSCeLO3nEqXVZQeqh8D
+         vwxdeL4VVHHtM1ksipLho9ZXueI7cLlO/kj0hXXJ87P0hK4yzcOPWkk8ZNN0UtF/ZJV8
+         bA+WHD8obuq3DSh0AzwP3O5vbJhNk+R51VEN2sOYE0B5ZbIKjrIiPr4XmBMnc4PRReAT
+         c7Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713261435; x=1713866235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NHiCoxCRUNDM+U/esFCAFumYpu6ndbBWZi/5QFnqRTc=;
-        b=TtV2oonc/MPsCdvDAhnaVBsi9h/7sTkrF0WAQJeM81V6SdNeMp5ngXRsPGA/wSLHl/
-         wQMNx9+gvn1w9Bfaj4IZ5EdjBFmnAwvOEJTrpWTD6AbAcBmqrX47yFHLpcv7rRmWNEUK
-         jxY4xRHjPiEX3/5s8BBQzUxUFiyxICZEgAR0Mv4E7FVdPJV+KUUVL773ervr8fyTusvA
-         W6tQ6uYmxeMhmS0OBt86dDNurhYy4liF7gweDF3zipYMEYHAB3OzRTG0ZL4LtIWqXaQJ
-         q3MQtK/lLvLDpol+DIQM9EYmGcYLQQI9pb0O6slKjDwkI2WWYYTAqUUKHzWpJ0nQ2aJy
-         4Uhg==
-X-Forwarded-Encrypted: i=1; AJvYcCXeF+iUWHomaYW1Cbr7DOvLcmskzyfo3d6bERdbTMDXOiUMlyulO1wQVlDsX8uLiQ0IjkXis7XI9+MKlm3HNEUmQhn3uEN3ZjbhmMsFoyY=
-X-Gm-Message-State: AOJu0YzrJDxW3NlIj4ucY7ugcvHNqMrokLIc+RGbmyi8tBHX9ML4gq2b
-	xVb8+q5duNfwF1nhWj1AEgyaWKEgs3+uMGVvOtC0/USXRtHCdG7WsxZSuDG5e/peNVuxMsFW4Jo
-	yR2J1tJ8CbNBWviM02WXxXz9GcXaUJxZGhduf
-X-Google-Smtp-Source: AGHT+IEPsW05phYUIrlx5Uy8pAv8kP3cZvEoCRY/OH7h5cbl24CtY5s86HrRZB2SYuf+ooWwSmXNWVN1t06Z6diHe0c=
-X-Received: by 2002:a05:6102:dcd:b0:47a:296c:def with SMTP id
- e13-20020a0561020dcd00b0047a296c0defmr11930644vst.29.1713261435254; Tue, 16
- Apr 2024 02:57:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713266177; x=1713870977;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TGbR3JnUzJ3sa+v4fZa7yWG+DybFD/U+zGFtAXB+ESA=;
+        b=jhQHiIabrtrZDCgn+Ro04XUdhJDjT08J0+wBhtGoTMXZ7G0eQC/MsZ5vVq5NwfBV6+
+         H3D01GWcIH33RRqmfdFIiNuiJerAIwXzPIjzboBrmKuLSeBFcxqE3vTUdOiuFHc51HI/
+         DZ+aKz816E5NEXUWqa2/+HvmfT+rFitlKdENHr+SzZ0KTZ+Fhj0PExxniZvUdrA5RqD/
+         VUa556drabZNpfWP8kXKg4Gtbp1WPLHzMQMV1M9xsRmb+T48q+DWc/FPwPk6SUOviVjs
+         w+2Pu4XCzssZR3SWCB6tjVBg90L1GABP2kedgx6B60EI+/2kroRJFXHf4Vq/SslDiCBt
+         9qhw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8AHBqpGCM1oi0pV1JCsYni6sKG4Z51cLlCdJ+W5Ah6Gq6L/hUFbEYo+ZIZU+/2Ju7mfyriu8si8c2ZvnsLwuBKfFuHqpe9C5zI52bIWXXbsnwQagdXysfZCPzmCHL1txe37GuvZY=
+X-Gm-Message-State: AOJu0YxS5b+lew1bukxx7a66PgDVBTEU7dqUDS+7FeiP4GZ0g2EsrM4z
+	WfuKb3kCXAHODclN1v2Q4lAgm23DM7FvZyYTtwL1uo0I1Ns3/P+P
+X-Google-Smtp-Source: AGHT+IGit+fB/42fmhXB1CelgMMRSX/STdA8s0Oi8gy02MLaCnX9EzJC64HMWIkFPTWeD00J+20aKA==
+X-Received: by 2002:a05:6870:5248:b0:220:bd4d:674d with SMTP id o8-20020a056870524800b00220bd4d674dmr13671443oai.5.1713266177341;
+        Tue, 16 Apr 2024 04:16:17 -0700 (PDT)
+Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
+        by smtp.gmail.com with ESMTPSA id o11-20020a056a001b4b00b006ed5ffc3751sm8789565pfv.139.2024.04.16.04.16.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Apr 2024 04:16:17 -0700 (PDT)
+Date: Tue, 16 Apr 2024 20:16:03 +0900 (JST)
+Message-Id: <20240416.201603.1026787007638816255.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: tmgross@umich.edu, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ andrew@lunn.ch, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
+ driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <89f6cd1e-2e3c-4fc1-b9a5-2932480f8e60@proton.me>
+References: <20240415104701.4772-5-fujita.tomonori@gmail.com>
+	<CALNs47v+35RX4+ibHrcZgrJEJ52RqWRQUBa=_Aky_6gk1ika4w@mail.gmail.com>
+	<89f6cd1e-2e3c-4fc1-b9a5-2932480f8e60@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com>
- <20240415-alice-mm-v5-2-6f55e4d8ef51@google.com> <202404151605.6EFC791E@keescook>
-In-Reply-To: <202404151605.6EFC791E@keescook>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 16 Apr 2024 11:57:03 +0200
-Message-ID: <CAH5fLgg1UiU0b-1Wewz9Wm_V_G44G+TUb4L1beQF7mkAcCXKfg@mail.gmail.com>
-Subject: Re: [PATCH v5 2/4] uaccess: always export _copy_[from|to]_user with CONFIG_RUST
-To: Kees Cook <keescook@chromium.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Tue, Apr 16, 2024 at 1:05=E2=80=AFAM Kees Cook <keescook@chromium.org> w=
-rote:
->
-> On Mon, Apr 15, 2024 at 07:13:54AM +0000, Alice Ryhl wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > Rust code needs to be able to access _copy_from_user and _copy_to_user
-> > so that it can skip the check_copy_size check in cases where the length
-> > is known at compile-time, mirroring the logic for when C code will skip
-> > check_copy_size. To do this, we ensure that exported versions of these
-> > methods are available when CONFIG_RUST is enabled.
-> >
-> > Alice has verified that this patch passes the CONFIG_TEST_USER_COPY tes=
-t
-> > on x86 using the Android cuttlefish emulator.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> Thanks for the updates and the comment on testing. :)
->
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-
-Thanks for taking a look :)
-
-Alice
+SGksDQoNCk9uIFR1ZSwgMTYgQXByIDIwMjQgMDY6NTg6MzggKzAwMDANCkJlbm5vIExvc3NpbiA8
+YmVubm8ubG9zc2luQHByb3Rvbi5tZT4gd3JvdGU6DQoNCj4gT24gMTYuMDQuMjQgMDY6MzQsIFRy
+ZXZvciBHcm9zcyB3cm90ZToNCj4+IE9uIE1vbiwgQXByIDE1LCAyMDI0IGF0IDY6NDfigK9BTSBG
+VUpJVEEgVG9tb25vcmkNCj4+IDxmdWppdGEudG9tb25vcmlAZ21haWwuY29tPiB3cm90ZToNCj4+
+PiArc3RydWN0IFBoeVFUMjAyNTsNCj4+PiArDQo+Pj4gKyNbdnRhYmxlXQ0KPj4+ICtpbXBsIERy
+aXZlciBmb3IgUGh5UVQyMDI1IHsNCj4+PiArICAgIGNvbnN0IE5BTUU6ICYnc3RhdGljIENTdHIg
+PSBjX3N0ciEoIlFUMjAyNSAxMEdwYnMgU0ZQKyIpOw0KPj4gDQo+PiBTaW5jZSAxLjc3IHdlIGhh
+dmUgQyBzdHJpbmcgbGl0ZXJhbHMsIGBjIlFUMjAyNSAxMEdwYnMgU0ZQKyJgICh3b29ob28pDQo+
+IA0KPiBXZSBoYXZlIG91ciBvd24gYENTdHJgIGluIHRoZSBga2VybmVsOjpzdHI6OkNTdHJgLCBz
+byB3ZSBjYW5ub3QgcmVwbGFjZQ0KPiB0aGUgYGNfc3RyIWAgbWFjcm8gYnkgdGhlIGxpdGVyYWwg
+ZGlyZWN0bHkuIEluc3RlYWQgd2UgYWxzbyBuZWVkIHRvDQo+IHJlbW92ZSBvdXIgb3duIGBDU3Ry
+YC4gV2UgYWxyZWFkeSBoYXZlIGFuIGlzc3VlIGZvciB0aGF0Og0KPiBodHRwczovL2dpdGh1Yi5j
+b20vUnVzdC1mb3ItTGludXgvbGludXgvaXNzdWVzLzEwNzUNCg0KU2VlbXMgdGhhdCBzb21lb25l
+IGFscmVhZHkgc3RhcnRlZCB0byB3b3JrIG9uIHRoaXMgaXNzdWUgc28gSSdsbCBrZWVwDQp0aGlz
+IGFsb25lIGZvciBub3cuDQo=
