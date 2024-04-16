@@ -1,134 +1,86 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9612912883A;
-	Tue, 16 Apr 2024 11:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A50683CCD;
+	Tue, 16 Apr 2024 12:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713267645; cv=none; b=lyhYpEJexTYSnW4Bxuu1mEbo/weQGcpHmvNpdxAF7J2CYjvFDkwlaEMGdHEIT4aXIpZvraKbINXZU3tsVVYmU+hNycACjueLvksH1tdGqel3EYk84qh1wyLSZI8T6/HSrS261cn2dAhKHHKaK1+oTPPyzh9dekSmv/HvaM83Ezk=
+	t=1713269323; cv=none; b=oyPJlUNO8qOdF+QCKfgxrdzwkCpwc89Qm+Srth57gi4vW+nr81MG1WdFPzNRTQUlQRw1jnwGQ3Fix6ZDQxT4AtIGyDvenw5HARye/QvsK+L+rtcCv4A7qm+05K1M8tbE/aCauWemw+OgSJZ6lu3us3BNBAOGhPDnLSABesWl7Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713267645; c=relaxed/simple;
-	bh=3VtSKxuv+1qS0wmMVAOum07FDATDvk15aJ1S6BYLmhA=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=mTqd7OSPNQE8mqAmFO7JwgkFJuCECmhaTJm3RQAJxB/PgtuBw9Po3Uss5WNb6rzFa3WV+6xGy00ftTuLH858lBSl350Ztecfnw6WNmQeUq6juqBaI81nb5JnZyeCrpcNZ4/kU3KWdawaWF6+UtcVKTo3RsdoD8iwN3FEMWXSGJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DbSmZU52; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713269323; c=relaxed/simple;
+	bh=JPUAg8CKdAIwgdoZNkQeMsiJ4zY6KVT0YCL6rtRwpTs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jn1MsZyP2z5wYAD/QFSB6g9KZ/eygWfKyMKxDVofBvsua296hQwh+k3NC4+beJiUWr8YndbAL7AOx6C7sYHkwsY/BpAn24reRtXDauwCQqzZh++MM/R8nbsxkGwGOhTR4gblL+5AzaeceyrCKvZZRC9VnSjtQZ5+DwSbJAdI7vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=b00vZ9g7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DbSmZU52"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1e45f339708so7490315ad.0;
-        Tue, 16 Apr 2024 04:40:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713267644; x=1713872444; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ODu1iiX3pT8i2zdeQxtu7wDKMDr6vALv/AqQUtSOwu0=;
-        b=DbSmZU52YFOIXde+nsL57Nl6lszqsb6v7uzs0AtlDsoYO5lZpwS5A7VYRnMaLcY8tB
-         Ja+TS4gPutbpenY+Hbx4XiL+uXqAHgUpHQLl7DKfbrpjIHOGpLN8q0j5isyYpoQN8oQP
-         QYTjrM8XQQ8TfhlZzJS33htJtLfCIIh2AztmGJJdBlkh3GvBW06R76oZHE1Nd6F0nQK6
-         Xur2pVX0aE1TeDLcyfRvwZNvKfglbQUdHZ5e059hejBXZf6LdtmnTUDNyuEn1zSju9Li
-         QN6o9jd8QEqbjMNG4vfW/wb5yRPblCPz79Gaj8OwHTjrYp54TkpJfzk+1KgdLl0hQAey
-         pqhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713267644; x=1713872444;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ODu1iiX3pT8i2zdeQxtu7wDKMDr6vALv/AqQUtSOwu0=;
-        b=bHBwAyMsbdqZUwc5pwKU4wknn9DSw3Nbb9TuDTl1bRnqyYU1HXWKlNcvub4o7aE6gn
-         2L9BN/MU6RwzA5DzGtPd+NnBIzt5QIBycvW7v32lNV/gkHNvuVN74nFKJfMfAcGPgikh
-         B1sxdyXm9SXvN6ukQOIds1podF7Nt0pf5BNMkHvzboaZ5ZU8HKcob2O+rIR7ShZ+4H2k
-         u+72yEOvNiEiWWIePbUtOB9XAd5PVtoeFZC7RKY3bGTtqQOY6xw+ooXZmUoBHah40jcP
-         BNUtCV4s2f0NYQUCR4antCKcg88zUch77myYomrpJnUflbFH7Zyb9OxUEdz9XT+sVo0T
-         xb/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVrfzWo9fkwtW8TAqZ1rYPV4WoQbiGT/T/e1OMqKhO4eSdDHx9jLYy5p8bybaxAKhWY2s8qL9XegMyrpHtUx+BZVj79sJ81Z1exLAA5OYpK5ucXZBpmofExqs8rBZGpUR9KpQPiDt4=
-X-Gm-Message-State: AOJu0YwCEwJN5D/pr1hQ4668rmrDoUXfArCtcq89nugsyxdo+nXbqZz6
-	lESfdN5jEVgDCTpFWMZ3+u4Ipsd6B2Ngkygpvi6JVpAg4o065V9t
-X-Google-Smtp-Source: AGHT+IGrTyV6EAI58R4mzM1vGINWdfDbdBMiSmNj/EoDbT2wN8Sj2IFutZpvuHF3ph0jAWgrP65vww==
-X-Received: by 2002:a17:902:e845:b0:1e0:c887:f93f with SMTP id t5-20020a170902e84500b001e0c887f93fmr16323453plg.1.1713267643784;
-        Tue, 16 Apr 2024 04:40:43 -0700 (PDT)
-Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
-        by smtp.gmail.com with ESMTPSA id q5-20020a17090311c500b001e77d1e6b64sm3243726plh.241.2024.04.16.04.40.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 04:40:43 -0700 (PDT)
-Date: Tue, 16 Apr 2024 20:40:30 +0900 (JST)
-Message-Id: <20240416.204030.1728964191738742483.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="b00vZ9g7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=FS9J2Fip8TfYkPZ+m/CmO8+R1mu1fbpLQrM1HAAlF2o=; b=b00vZ9g7YvlqFvkMK/6ur5FRpO
+	mXezNz5Rvi1bQ0+3+hCCImuGH/999eEkaAwdxJqAG+6UDYwed9P8W1MziW/9+0UbkAqj3bUNHW1Ee
+	rNiUBpcIFfQPrVZ18+UPJbpEBt5GnLgMbgsUp0cVNAeqfQRcLg2Wt7UytCR5PFWVIvCk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rwhc0-00D8Fc-7N; Tue, 16 Apr 2024 14:08:32 +0200
+Date: Tue, 16 Apr 2024 14:08:32 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Trevor Gross <tmgross@umich.edu>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <0aa87df5-a2b8-45b8-a483-37eee86739bc@lunn.ch>
 References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
-	<20240415104701.4772-3-fujita.tomonori@gmail.com>
-	<e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch>
+ <20240415104701.4772-5-fujita.tomonori@gmail.com>
+ <CALNs47v+35RX4+ibHrcZgrJEJ52RqWRQUBa=_Aky_6gk1ika4w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALNs47v+35RX4+ibHrcZgrJEJ52RqWRQUBa=_Aky_6gk1ika4w@mail.gmail.com>
 
-Hi,
-
-On Mon, 15 Apr 2024 16:20:16 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
->> +    /// Reads a given C45 PHY register.
->> +    /// This function reads a hardware register and updates the stats so takes `&mut self`.
->> +    pub fn c45_read(&mut self, devad: u8, regnum: u16) -> Result<u16> {
->> +        let phydev = self.0.get();
->> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->> +        // So it's just an FFI call.
->> +        let ret = unsafe {
->> +            bindings::mdiobus_c45_read(
->> +                (*phydev).mdio.bus,
->> +                (*phydev).mdio.addr,
->> +                devad as i32,
->> +                regnum.into(),
->> +            )
+> > +        let mut a = MDIO_MMD_PCS;
+> > +        for (i, val) in fw.data().iter().enumerate() {
+> > +            if i == 0x4000 {
+> > +                a = MDIO_MMD_PHYXS;
+> > +                j = 0x8000;
+> > +            }
 > 
-> So you have wrapped the C function mdiobus_c45_read(). This is going
-> to do a C45 bus protocol read. For this to work, the MDIO bus master
-> needs to support C45 bus protocol, and the PHY also needs to support
-> the C45 bus protocol. Not all MDIO bus masters and PHY devices
-> do. Some will need to use C45 over C22.
+> Looks like firmware is split between PCS and PHYXS at 0x4000, but like
+> Greg said you should probably explain where this comes from.
 > 
-> A PHY driver should know if a PHY device supports C45 bus protocol,
-> and if it supports C45 over C22. However, i PHY driver has no idea
-> what the bus master supports.
+> > +            dev.c45_write(a, j, (*val).into())?;
 > 
-> In phylib, we have a poorly defined phydev->is_c45. Its current
-> meaning is: "The device was found using the C45 bus protocol, not C22
-> protocol". One of the things phylib core then uses is_c45 for it to
-> direct the C functions phy_read_mmd() and phy_write_mmd() to perform a
-> C45 bus protocol access if true. If it is false, C45 over C22 is
-> performed instead. As a result, if a PHY is discovered using C22, C45
-> register access is then performed using C45 over C22, even thought the
-> PHY and bus might support C45 bus protocol. is_c45 is also used in
-> other places, e.g. to trigger auto-negotiation using C45 registers,
-> not C22 registers.
+> I think this is writing one byte at a time, to answer Andrew's
+> question. Can you write a `u16::from_le_bytes(...)` to alternating
+> addresses instead? This would be pretty easy by doing
+> `fw.data().chunks(2)`.
 
-Thanks a lot for the details!
+That probably does not work, given my understanding of what is going
+on. A C45 register is a u16.
 
+The data sheet says:
 
-> In summary, the C API is a bit of a mess.
-> 
-> For the Rust API we have two sensible choices:
-> 
-> 1) It is the same mess as the C API, so hopefully one day we will fix
->    both at the same time.
-> 
-> 2) We define a different API which correctly separate C45 bus access
->    from C45 registers.
-> 
-> How you currently defined the Rust API is neither of these.
+  The 24kB of program memory space is accessible by
+  MDIO. The first 16kB of memory is located in the
+  address range 3.8000h - 3.BFFFh. The next 8kB of
+  memory is located at 4.8000h - 4.9FFFh.
 
-Which do your prefer?
+0x3bfff-0x3800 = 0x0x3fff = 16K.
 
-If I correctly understand the original driver code, C45 bus protocol
-is used. Adding functions for C45 bus protocol read/write would be
-enough for this driver, I guess.
+So there are 16K u16 registers mapped onto 16K bytes of SRAM. So each
+register holds one byte. Trying to write two bytes every other
+register is not something which the datasheet talks about. So i doubt
+it will work. Which is shame, because it would double the download
+speed.
+
+	Andrew
