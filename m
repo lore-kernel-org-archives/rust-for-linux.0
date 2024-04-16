@@ -1,106 +1,125 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE621B80F
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 23:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79AE11C92
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 03:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713222321; cv=none; b=cqp5TlOM6oR5Bf2RG09EBB/SwgBWkK9V6Z4T2IaUzn67WaZ3Gtlkaun/PpVUIK2A4LqULN5a8jBrvnmN2uqj7TGmw9B6DYinpU9NpLQ+okEhzXQCkZLYtjeu5PNNR3SbqKMpXuWTXCKmwj8PHX0AMirOOuYSrJFVAxrJ9L7F/m4=
+	t=1713237937; cv=none; b=Lq+3ZSkC+V/vIPSeGOMs0LOA5zMNQKwYaNpLoquGT1kLrupTfMzXceZRswepTZEWWSF8y+wVGYlGE2ybSpC0M5P+BPv22qPqGRSdr0moa43+kUJ2KigzMdlYtNK33YMxuAH2vgawCpdKtOxX+DEDjbeSZcuj2APftIjVGt4pV64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713222321; c=relaxed/simple;
-	bh=0W2WWM+WXMki7GHsigtUNVnOpWEGnshZxotBdbsJZ+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zq2yhQlJVo83gqy+C9AsyN/mSYzSMt4YDkfXul6E0DSHzB7+UHV1pDRqBQLS1b9LNBSaymODNteEAJLte4LiIs/PuBjTWjnlh0JN6Nofbwa/A0skR+8wsszGoq4S9keazKHwwqG1zFd+AtY+td3wgkB3J43notPPW1/iJJwAJXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=OO3BEPOA; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1713237937; c=relaxed/simple;
+	bh=5u4IqC43ipuEAkRDPZ3NfLs9iokoA9eSZLj0W4K46TI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hgfc4NaFE6Io434V5+ueQ0ljj6Trz5EzaBIE8vxvL7NX4zlk5zVykypu4g76ydCb6G2QmOYfyh5dkvHu9qi//7dHk2eY6ASuERw00BSkKYYu5GqS4mszyJzd7HylneLJBcoLH0BafY7N8WyurYax5/DZj86N93kgtv0V88MT4wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=Mxb7aFqO; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="OO3BEPOA"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6ee12766586so2474161b3a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 16:05:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Mxb7aFqO"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dcbc6a6808fso3723946276.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 20:25:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1713222319; x=1713827119; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yo3EV3bfEx0E8U36ciba2hXn2Sc3b8SZ2s8fl04bgqI=;
-        b=OO3BEPOAYipo0Xa+PU68F2I+F6RFB2ginNYj5MUILjvMpwS0oc2w9MQVhxzQAfL7z3
-         NMSecf1vTZImbiPvN4crZIBZlLg8QH9j/Tag7FpDnRiGmZyE9cLb2ItEU6tKy3HvJTUd
-         xSRdE/w+OrCiQN3YXuKAT169JHf019DlzQVy8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713222319; x=1713827119;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1713237934; x=1713842734; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yo3EV3bfEx0E8U36ciba2hXn2Sc3b8SZ2s8fl04bgqI=;
-        b=jWDufbGmVe1lnBK716DpWklK0EnBXKR1Zp5B3oCUaoap8EIBEVrMi88H8EUHaR+1xg
-         PU35G2XaBu02NNW9WsbI76ocONGqRP3BFqEQ9FEu4uFOxV4egbmk0R0LQRGsJrVj/sNp
-         b5Yb9aiXRjK7HOT4pz51gJ/GAllkhKxxNwJz4oyJWGCRJ/D3FYJ7XUPjn0rTfpd/WOZK
-         EEA+c3UMLrL3FjC4/TW73k0K832z2dyXqr0YALktsOiDYmj/otoCIG1KArqLT9VMe1Aq
-         N+gXXAgJaHWA4dQoVsQ1/N/21i0hMrBxc7TcNmxd5J2rAWdnxxlNBzWp9M2RvTIg+/wX
-         6Uzw==
-X-Forwarded-Encrypted: i=1; AJvYcCULJsrnRlJm5rjSwd0AHtRC3zRPSmqOf8PcEPvkgVHzYLiRYWRo0VWwgtMMNxT96SFMAiA0JJqUYN8e9emuSSQuL94iS6A9FBmJAjpieug=
-X-Gm-Message-State: AOJu0Yz5dMoJAKE9sB4yciNCbB7hjH0Ag9xqBgDmdMd8WTVT2q4RmNIH
-	Hr08bRGJOJlg6fPqegMvUA+iFcTQ03bXnrduBDqc0t4Ue6PV32ZqCcB5F04elA==
-X-Google-Smtp-Source: AGHT+IGTBq9q7AM8q4+LZ3+6+QGsHiulh5UsMTdIVVs8PznllX0dxzqZuDAxGin0wxHjpYsY0HUEZw==
-X-Received: by 2002:a05:6a00:1787:b0:6ec:ef1c:4dcd with SMTP id s7-20020a056a00178700b006ecef1c4dcdmr541831pfg.6.1713222319125;
-        Mon, 15 Apr 2024 16:05:19 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id go26-20020a056a003b1a00b006edceb4ea9dsm7679876pfb.166.2024.04.15.16.05.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 16:05:18 -0700 (PDT)
-Date: Mon, 15 Apr 2024 16:05:17 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v5 2/4] uaccess: always export _copy_[from|to]_user with
- CONFIG_RUST
-Message-ID: <202404151605.6EFC791E@keescook>
-References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com>
- <20240415-alice-mm-v5-2-6f55e4d8ef51@google.com>
+        bh=Zkw2Yl+TD51SHy98hT0iftYNGABYn450n8OBsTQ7BwM=;
+        b=Mxb7aFqO8AKszE+R90/4IPgzsqP441iXHA3l8QyanBTq5MNNo4b5lVWQvAGtHm1vaE
+         M+yZpaDvPBHAg6yUY9IuyjJgVwqliW8yOg3zMybkXWx1Dw0tR9TpPisnpLmNt8YjDeI+
+         bjQVv1PeJCWjCG55VOQ6yZO68uOUpu4b85l9Pi/ObKMmEMFlmJEs3eANOjIq+P19n6Wc
+         VdKBYV8lGoEJdi4XQU80r/xGazX+MXDlwUdTq0Iu69OV4PVwvQ7yBugN+dPhOmhI/5pL
+         hI5ZnYI8ls5sZyYWCqjf3qshoiPuyxFc8wTtPZ/Awp9258kjINc2qlASlk2nPm5bI01P
+         Zrtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713237934; x=1713842734;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zkw2Yl+TD51SHy98hT0iftYNGABYn450n8OBsTQ7BwM=;
+        b=J+ksscyN02/89u49Cg1Zda3DuRaYWSmrN6kSbTcCcpdpcJ56oyFkdLCCBO0zuKexrk
+         0NJf+JwfN4dT0U4JSClEZHDysgQ5Twiqt1+3Im3c3sJzKeOec7XIYDOfavt9VfHERAc8
+         wgksTAsUj8reJyZemV05onEhm6IRjb5rNEc0vEPKtnmO0HLDIAcPHuroYfmTM4Sq0eqX
+         JwakvhlKv79ObgQVdaNEB7lmKjkMlPZtoK8OvzFb1hDxGeHbdxoFmm5x5a0yxSFEl2BX
+         kaIXdRP52fFs7bPE04+fsvN6iNC40t81sPCGBntwEm2uSsgh0xVdgndggNfJ5LtV1fXf
+         1ywQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDl+fq+bXtzeh3+D8s/n/awaze9QBUO0UAK5dsmhm5RKczx0EjaUuELYOE4GhdaMAP2WbsiUx1Sm5AYoIf5K6dMF94tHfmZC2Kiao+qFA=
+X-Gm-Message-State: AOJu0Yx8Ne7QDNv4+xQAddQFxLwa2N9DkLmA8G9TvmCkcJsO7vsUYlSJ
+	TL2G516ztggaMzehhSsn454O575qJJ6U5ZqFRIbQK5paYeVpgxesxEcyCqug1uNKwK2QerZq3n3
+	NGtyUhkLFZ3LBtzUM8wmQRR5e6heI4TBkN8JpUw==
+X-Google-Smtp-Source: AGHT+IFrJmLvi4vRnX1dZLLLS6KxyIa1VK1FW7aBEzzN9FjDmlgBrihG8RGfeBlVCkeDRH95ozQmE17XCXQJkP5TV6M=
+X-Received: by 2002:a25:7455:0:b0:dcc:97e4:bc61 with SMTP id
+ p82-20020a257455000000b00dcc97e4bc61mr11960479ybc.57.1713237933834; Mon, 15
+ Apr 2024 20:25:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240415-alice-mm-v5-2-6f55e4d8ef51@google.com>
+References: <20240415104701.4772-1-fujita.tomonori@gmail.com> <20240415104701.4772-3-fujita.tomonori@gmail.com>
+In-Reply-To: <20240415104701.4772-3-fujita.tomonori@gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Mon, 15 Apr 2024 23:25:22 -0400
+Message-ID: <CALNs47t0FDS59xckUV0QkozbX-RAs8U3woN_sBc0TVm8d=dKNA@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 15, 2024 at 07:13:54AM +0000, Alice Ryhl wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Rust code needs to be able to access _copy_from_user and _copy_to_user
-> so that it can skip the check_copy_size check in cases where the length
-> is known at compile-time, mirroring the logic for when C code will skip
-> check_copy_size. To do this, we ensure that exported versions of these
-> methods are available when CONFIG_RUST is enabled.
-> 
-> Alice has verified that this patch passes the CONFIG_TEST_USER_COPY test
-> on x86 using the Android cuttlefish emulator.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Mon, Apr 15, 2024 at 6:47=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+> +    /// Reads a given C45 PHY register.
+> +    /// This function reads a hardware register and updates the stats so=
+ takes `&mut self`.
+> +    pub fn c45_read(&mut self, devad: u8, regnum: u16) -> Result<u16> {
+> +        let phydev =3D self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        // So it's just an FFI call.
 
-Thanks for the updates and the comment on testing. :)
+Depending on the response to Andrew's notes, these SAFETY comments
+will probably need to be updated to say why we know C45 is supported.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+> +        let ret =3D unsafe {
+> +            bindings::mdiobus_c45_read(
+> +                (*phydev).mdio.bus,
+> +                (*phydev).mdio.addr,
+> +                devad as i32,
 
--- 
-Kees Cook
+This could probably also be from/.into()
+
+> +                regnum.into(),
+> +            )
+> +        };
+> +        if ret < 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(ret as u16)
+> +        }
+
+Could this be simplified with to_result?
+
+> +    }
+> +
+> +    /// Writes a given C45 PHY register.
+> +    pub fn c45_write(&mut self, devad: u8, regnum: u16, val: u16) -> Res=
+ult {
+> +        let phydev =3D self.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
+variant of `Self`.
+> +        // So it's just an FFI call.
+> +        to_result(unsafe {
+> +            bindings::mdiobus_c45_write(
+> +                (*phydev).mdio.bus,
+> +                (*phydev).mdio.addr,
+> +                devad as i32,
+
+Same as above
+
+> +                regnum.into(),
+> +                val,
+> +            )
+> +        })
+> +    }
+> +
