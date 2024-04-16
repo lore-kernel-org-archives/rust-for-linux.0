@@ -1,67 +1,67 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7418738385
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 05:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480883B7A8
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 05:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713243935; cv=none; b=mMp++TjzgvApNYOk4RKXRvhfFwBaTT2eNFuZ+RoPxaQ/ysrU79Ntee4Dv5i68hDD5ujH5zoChssiZJNQKh+EYAHgaw/oVsaIDvJ/ed+CO3wjTuctP3GtkKYbKVIKTgo9pgw3KK8kZELy9IQMaPwngFiq7JvSSn3+hWJf7ICmRno=
+	t=1713246039; cv=none; b=K33x4i7CWX3dAXI4WN1tEkLpH2b+8rLmwJia87+wZhuBdGmYCE/OZMmWuSVXmVDr5ZxB5TwwT+FxdWP85Ouu65cJBo97HC+VkqR9lr73WaTmwSQroTc7j+GEAtUCRJNlygu9c63iBxG2yT7jtuedeGa+WZawjw+d/tGg0YZAlRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713243935; c=relaxed/simple;
-	bh=hfrS2yAKVWrmnlB0XBYaEg3EmwdL7jtCR9WpkagwQzY=;
+	s=arc-20240116; t=1713246039; c=relaxed/simple;
+	bh=qdY6jPNtZdRKwxkv5vlWMVyHFL3sMFt8KXejXwuxxxo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+4XrNY1cZ8JyGpa/Mif0IQahlUYXmbxWTSqYZGU6iwlgCZdFwDl3ZHLcuGupjPJVkLBWii12Wg4QM+5jcNRgZ0aiRN8fEWGpC5EVWHRVS1TEa6arR8ixpT1GrVScO/imNwjOlxcHJsftxnQ2f+s3xpde5dUstROUMOhEcTkIYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=YAjzm/qZ; arc=none smtp.client-ip=209.85.128.174
+	 To:Cc:Content-Type; b=Hlf3LFNqdLqRj/lrG4F107I1ZH39hG1EvMRDDqKjviMXkyL8LDX4Yq92lrMTFD3h6HQO2P7CfcIFpg6jUBcqGCr3IgVIStZgBG4ESN3daniJ0vzk7opmCtsVEJqpOdInGDhg0xVx/tDc4xywC39jsSuUCvRalCD8u0cexC4wFBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=SvL06M4l; arc=none smtp.client-ip=209.85.219.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="YAjzm/qZ"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6150670d372so35647437b3.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 22:05:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="SvL06M4l"
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dc742543119so3534413276.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Apr 2024 22:40:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1713243931; x=1713848731; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1713246036; x=1713850836; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qJmDU0qCtC6xbk/2Z6msCh6alcZpNMwqU1+ATj0oOrg=;
-        b=YAjzm/qZ/R1hse1bDtoP/wgCKaOM3uDAUbsMnNNtF7WxSfyHIuV5G5Aa3UUCBqWsHz
-         7DcNQvy7OOllrvR287oJQoTI3nZYJUn8iCDedGBMQ3CC/sHtE4A4Q+kN9jlL07C9HZan
-         wZL7tEjAHiJK8yD+p8XeO4FADRGtCU0nxbFeH7E1SV1fx4+XZ+G1tiTanrBRYZKHSPW8
-         Z4OeyErCEAud3YmpCTwEovJuKRepniZJriKlHYR3GFp9qqSDjcjFlVEmhGTXlI+ZQ1iW
-         m0f7FUK+dxVg6CkkLsF6TPpInumaOigtKdOGQ2FAOFPVJofTj5zT/2K2GkYAkbmDAusI
-         62qg==
+        bh=jZnTsFH2u/jd95rE0nScFwnMla46fGdQkSBISp00WVA=;
+        b=SvL06M4ljd9vfAK2aQ871KaS+ZIRrVIgPmuEXsYMCRJz4uXuLTOqB/30LlwpELGSfp
+         p1ciZ57Wt+3mwtxxHe8ST0v8t2CCeNnRddpTg+CXIv2yg633daIRGJp330AaK8UWh7lM
+         yO3sdszLsvS86QAbBwPjuyhlbTrsPXfUN5EjPXeqbpbs/l1ZDMAcOSjRy15vLT2a8bF+
+         RZLSwESFYHEf23XcZTCMNyDRAhXqG6+uRC6yMYDYPpgEwNDyaw0g3UYJUtrR6mgTfDPW
+         q/rw/gM+6JIFDxmYcYA3KvhbzZON2+HAHs5uf3iyVNwhWXcZUlHnPYJ70v5+GD3ggCd7
+         bCRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713243931; x=1713848731;
+        d=1e100.net; s=20230601; t=1713246036; x=1713850836;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qJmDU0qCtC6xbk/2Z6msCh6alcZpNMwqU1+ATj0oOrg=;
-        b=KUNmwuwHS97cRFIkCAWk7xugd70/oedKW7As6fmUHyA4afsiLIq0BhcHtMZnuSl6rx
-         ZXREZeS226+Jq3lEu3GYDtXTtASoltZyefFleSeSu2f6UoPWnhE30hntYrSKCm84uLGP
-         D89NDjw0nUlZYR/dc6DeCGtYxbdn7bezUiJ0vSLfD1gBKxbX44xhKExxVh7miCYAhtYo
-         iuKcE7jH1NVgePqFiKunnmugiiDM6ygbMgRuWil+/lB1oIVqCQpmck3Bss4VZJxR33pg
-         QK9gJ3DMYc6CbK8U6LDQr0ZNizbVdTlv2Q+zWp/lYeuE6QpnzcvnGG3EKYsBk7XEUrMK
-         5J3w==
-X-Forwarded-Encrypted: i=1; AJvYcCX/4bISLL7ggJbA5UVyJORGWseK1nL+vl+PfiMDUL4qukzkedAfMAuTRxJJS49cGFCC/JIRxggZqSiAxyq7HSBoSUJ+lqOrXnOBQtiC68g=
-X-Gm-Message-State: AOJu0YxvfP7N+v+57+DYbIn10LKsK3sNGsPJdVOB7+GadkHauFmrQe/3
-	/OO4lWpumYOkDMUUVSALMPJ5qawONmy+pC+0XTeq5XGLkdGIXCqSTpRGhc6qu7SjwtInHAOzlqV
-	J25Tl7ifMKpmG8ex5GPEEF7aQyCqq7F7Z6JkrWw==
-X-Google-Smtp-Source: AGHT+IGA2IjVKw8IkJCjL9FhLOVDIrOwEj1lKKmglsv29PQSjP7wQuUdMHMf3ycCLE4DIaLikqvNM7nDkFaVD2tnzjE=
-X-Received: by 2002:a25:ea05:0:b0:de1:27f4:38a5 with SMTP id
- p5-20020a25ea05000000b00de127f438a5mr10411763ybd.14.1713243931364; Mon, 15
- Apr 2024 22:05:31 -0700 (PDT)
+        bh=jZnTsFH2u/jd95rE0nScFwnMla46fGdQkSBISp00WVA=;
+        b=hy/BIQYckINDBUK4jW/nTMCrZlpuLQ0DKQjc7hu7+jmYK6J7q2j+UkE5dL9rc5joB1
+         mK8qBQWEoAq/Fggy3GtoODWJKGZoKcWotvmltHsOYREtYtMcWTaLhEVU3A4Aw7d2A9xi
+         vK9u5K0V7jgRKhj+hPnnCTonGXR2hdOwB+2iJ4r9S05wjur1sC96eAVVyg2ZblymrBSy
+         IICNiTirlkc6Bpc2AGeVJ4ocP55z4qSbW49jGhX8Jo86hehWPUNTnIQc9Bixy2wNTadk
+         uXi5AejOhY1xxm9CZYWLsEcMKy2lrgtdAJa64QI98pYq1UOEotMdog89jMFzpg5U6ao+
+         2cfg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkZmBT+4a9zpG8WRYNbKuY7JgX8Zr7vrZkhxOjq/+JBYvGwS8MC0lyyX5PpQBlpU4CcSqRseq/4cT0LiVduxRlSFPeeSzJMfyXx3FgEFc=
+X-Gm-Message-State: AOJu0YygFicEHLK7ZtTGUa/GlLtHjcf/u4V4+BQ1F7brLmgBFtYBJDgG
+	S+M9masesAtigoxd009uFQ6O8afaBDavlG6EwTg5lzmbZmcs14EpQ48xVIx17vtYoGkztnlb8VV
+	i7IS0lJ8cUz7dtDVrohNkyeNvd64xQTn7T6OJmA==
+X-Google-Smtp-Source: AGHT+IGuUXE3/S314JFZlsIl8KEIWGV1s7fbLfZ+EKGCMv6cWkNb4R6jL13/UiXlkh0SwJJUedsQg35/YYR3WhhU/6g=
+X-Received: by 2002:a25:9ac1:0:b0:dcf:f535:dad6 with SMTP id
+ t1-20020a259ac1000000b00dcff535dad6mr9792461ybo.56.1713246036166; Mon, 15 Apr
+ 2024 22:40:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com> <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
-In-Reply-To: <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com>
+References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com> <20240415-alice-mm-v5-4-6f55e4d8ef51@google.com>
+In-Reply-To: <20240415-alice-mm-v5-4-6f55e4d8ef51@google.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 16 Apr 2024 01:05:20 -0400
-Message-ID: <CALNs47vRk0cKKDkpkhy2XUkxcjtPW-CABUexAZfGZ6PHT=wKng@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+Date: Tue, 16 Apr 2024 01:40:25 -0400
+Message-ID: <CALNs47tEZqL201jsExfF1j7m+yW37YRAws-NTF6hwsxohSKoQA@mail.gmail.com>
+Subject: Re: [PATCH v5 4/4] rust: add abstraction for `struct page`
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -78,169 +78,256 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 15, 2024 at 3:14=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+On Mon, Apr 15, 2024 at 3:15=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Adds a new struct called `Page` that wraps a pointer to `struct page`.
+> This struct is assumed to hold ownership over the page, so that Rust
+> code can allocate and manage pages directly.
 >
-> A pointer to an area in userspace memory, which can be either read-only
-> or read-write.
+> The page type has various methods for reading and writing into the page.
+> These methods will temporarily map the page to allow the operation. All
+> of these methods use a helper that takes an offset and length, performs
+> bounds checks, and returns a pointer to the given offset in the page.
 >
-> All methods on this struct are safe: attempting to read or write on bad
-> addresses (either out of the bound of the slice or unmapped addresses)
-> will return `EFAULT`. Concurrent access, *including data races to/from
-> userspace memory*, is permitted, because fundamentally another userspace
-> thread/process could always be modifying memory at the same time (in the
-> same way that userspace Rust's `std::io` permits data races with the
-> contents of files on disk). In the presence of a race, the exact byte
-> values read/written are unspecified but the operation is well-defined.
-> Kernelspace code should validate its copy of data after completing a
-> read, and not expect that multiple reads of the same address will return
-> the same value.
+> This patch only adds support for pages of order zero, as that is all
+> Rust Binder needs. However, it is written to make it easy to add support
+> for higher-order pages in the future. To do that, you would add a const
+> generic parameter to `Page` that specifies the order. Most of the
+> methods do not need to be adjusted, as the logic for dealing with
+> mapping multiple pages at once can be isolated to just the
+> `with_pointer_into_page` method.
 >
-> These APIs are designed to make it difficult to accidentally write
-> TOCTOU bugs. Every time you read from a memory location, the pointer is
-> advanced by the length so that you cannot use that reader to read the
-> same memory location twice. Preventing double-fetches avoids TOCTOU
-> bugs. This is accomplished by taking `self` by value to prevent
-> obtaining multiple readers on a given `UserSlicePtr`, and the readers
-> only permitting forward reads. If double-fetching a memory location is
-> necessary for some reason, then that is done by creating multiple
-> readers to the same memory location.
+> Rust Binder needs to manage pages directly as that is how transactions
+> are delivered: Each process has an mmap'd region for incoming
+> transactions. When an incoming transaction arrives, the Binder driver
+> will choose a region in the mmap, allocate and map the relevant pages
+> manually, and copy the incoming transaction directly into the page. This
+> architecture allows the driver to copy transactions directly from the
+> address space of one process to another, without an intermediate copy
+> to a kernel buffer.
 >
-> Constructing a `UserSlicePtr` performs no checks on the provided
-> address and length, it can safely be constructed inside a kernel thread
-> with no current userspace process. Reads and writes wrap the kernel APIs
-> `copy_from_user` and `copy_to_user`, which check the memory map of the
-> current process and enforce that the address range is within the user
-> range (no additional calls to `access_ok` are needed).
+> This code is based on Wedson's page abstractions from the old rust
+> branch, but it has been modified by Alice by removing the incomplete
+> support for higher-order pages, by introducing the `with_*` helpers
+> to consolidate the bounds checking logic into a single place, and by
+> introducing gfp flags.
 >
-> This code is based on something that was originally written by Wedson on
-> the old rust branch. It was modified by Alice by removing the
-> `IoBufferReader` and `IoBufferWriter` traits, and various other changes.
->
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+
+I have a couple questions about naming, and think an example would be
+good for the functions that are trickier to use correctly. But I
+wouldn't block on this, implementation looks good to me.
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
 
-I left some suggestions for documentation improvements and one
-question, but mostly LGTM.
+> +++ b/rust/kernel/page.rs
+> @@ -0,0 +1,240 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Kernel page allocation and management.
+> +
+> +use crate::{bindings, error::code::*, error::Result, uaccess::UserSliceR=
+eader};
+> +use core::{
+> +    alloc::AllocError,
+> +    ptr::{self, NonNull},
+> +};
+> +
+> +/// A bitwise shift for the page size.
+> +pub const PAGE_SHIFT: usize =3D bindings::PAGE_SHIFT as usize;
+> +
+> +/// The number of bytes in a page.
+> +pub const PAGE_SIZE: usize =3D bindings::PAGE_SIZE;
+> +
+> +/// A bitmask that gives the page containing a given address.
+> +pub const PAGE_MASK: usize =3D !(PAGE_SIZE - 1);
+> +
+> +/// Flags for the "get free page" function that underlies all memory all=
+ocations.
+> +pub mod flags {
+> +    /// gfp flags.
 
-> ---
->  rust/helpers.c         |  14 +++
->  rust/kernel/lib.rs     |   1 +
->  rust/kernel/uaccess.rs | 304 +++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 319 insertions(+)
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index be68d5e567b1..37f84223b83f 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -49,6 +49,7 @@
->  pub mod task;
->  pub mod time;
->  pub mod types;
-> +pub mod uaccess;
->  pub mod workqueue;
->
->  #[doc(hidden)]
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> new file mode 100644
-> index 000000000000..c97029cdeba1
-> --- /dev/null
-> +++ b/rust/kernel/uaccess.rs
-> @@ -0,0 +1,304 @@
+Uppercase acronym, maybe with a description:
+
+    GFP (Get Free Page) flags.
+
+> +    #[allow(non_camel_case_types)]
+> +    pub type gfp_t =3D bindings::gfp_t;
+
+Why not GfpFlags, do we do this elsewhere?
+
+> +    /// `GFP_KERNEL` is typical for kernel-internal allocations. The cal=
+ler requires `ZONE_NORMAL`
+> +    /// or a lower zone for direct access but can direct reclaim.
+> +    pub const GFP_KERNEL: gfp_t =3D bindings::GFP_KERNEL;
+> +    /// `GFP_ZERO` returns a zeroed page on success.
+> +    pub const __GFP_ZERO: gfp_t =3D bindings::__GFP_ZERO;
+> +    /// `GFP_HIGHMEM` indicates that the allocated memory may be located=
+ in high memory.
+> +    pub const __GFP_HIGHMEM: gfp_t =3D bindings::__GFP_HIGHMEM;
+
+It feels a bit weird to have dunder constants on the rust side that
+aren't also `#[doc(hidden)]` or just nonpublic. Makes me think they
+are an implementation detail or not really meant to be used - could
+you update the docs if this is the case?
+
+> +
+> +impl Page {
+> +    /// Allocates a new page.
+
+Could you add a small example here?
+
+> +    pub fn alloc_page(gfp_flags: flags::gfp_t) -> Result<Self, AllocErro=
+r> {
 > [...]
-> +impl UserSlice {
-> +    /// Constructs a user slice from a raw pointer and a length in bytes=
-.
-> +    ///
-> +    /// Constructing a [`UserSlice`] performs no checks on the provided =
-address and length, it can
-> +    /// safely be constructed inside a kernel thread with no current use=
-rspace process. Reads and
-> +    /// writes wrap the kernel APIs `copy_from_user` and `copy_to_user`,=
- which check the memory map
-> +    /// of the current process and enforce that the address range is wit=
-hin the user range (no
-> +    /// additional calls to `access_ok` are needed).
-
-I would just add a note that pointer should be a valid userspace
-pointer, but that gets checked at read/write time
-
-> +    /// Callers must be careful to avoid time-of-check-time-of-use (TOCT=
-OU) issues. The simplest way
-> +    /// is to create a single instance of [`UserSlice`] per user memory =
-block as it reads each byte
-> +    /// at most once.
-> +    pub fn new(ptr: *mut c_void, length: usize) -> Self {
-> +        UserSlice { ptr, length }
-> +    }
-
-> +impl UserSliceReader {
-> [...]
-> +    /// Reads raw data from the user slice into a kernel buffer.
-> +    ///
-> +    /// After a successful call to this method, all bytes in `out` are i=
-nitialized.
-
-If this is guaranteed, could it return `Result<&mut [u8]>`? So the
-caller doesn't need to unsafely `assume_init` anything.
-
-> +    /// Fails with `EFAULT` if the read happens on a bad address.
-
-This should also mention that the slice cannot be bigger than the
-reader's length.
-
-> +    pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
-> +        let len =3D out.len();
-> +        let out_ptr =3D out.as_mut_ptr().cast::<c_void>();
-> +        if len > self.length {
-> +            return Err(EFAULT);
-> +        }
-> +        let Ok(len_ulong) =3D c_ulong::try_from(len) else {
-> +            return Err(EFAULT);
-> +        };
-> +        // SAFETY: `out_ptr` points into a mutable slice of length `len_=
-ulong`, so we may write
-> +        // that many bytes to it.
-> +        let res =3D unsafe { bindings::copy_from_user(out_ptr, self.ptr,=
- len_ulong) };
-> +        if res !=3D 0 {
-> +            return Err(EFAULT);
-> +        }
-> +        // Userspace pointers are not directly dereferencable by the ker=
-nel, so we cannot use `add`,
-> +        // which has C-style rules for defined behavior.
-> +        self.ptr =3D self.ptr.wrapping_byte_add(len);
-> +        self.length -=3D len;
-> +        Ok(())
 > +    }
 > +
-> +    /// Reads raw data from the user slice into a kernel buffer.
-> +    ///
-> +    /// Fails with `EFAULT` if the read happens on a bad address.
-> +    pub fn read_slice(&mut self, out: &mut [u8]) -> Result {
-> +        // SAFETY: The types are compatible and `read_raw` doesn't write=
- uninitialized bytes to
-> +        // `out`.
-> +        let out =3D unsafe { &mut *(out as *mut [u8] as *mut [MaybeUnini=
-t<u8>]) };
-> +        self.read_raw(out)
+> +    /// Returns a raw pointer to the page.
+
+Could you add a note about how the pointer needs to be used correctly,
+if it is for anything more than interfacing with kernel APIs?
+
+> +    pub fn as_ptr(&self) -> *mut bindings::page {
+> +        self.page.as_ptr()
 > +    }
-
-If this is just a safe version of read_raw, could you crosslink the docs?
-
-> +impl UserSliceWriter {
 > +
-> +    /// Writes raw data to this user pointer from a kernel buffer.
+> +    /// Runs a piece of code with this page mapped to an address.
 > +    ///
-> +    /// Fails with `EFAULT` if the write happens on a bad address.
-> +    pub fn write_slice(&mut self, data: &[u8]) -> Result {
->   [...]
+> +    /// The page is unmapped when this call returns.
+> +    ///
+> +    /// # Using the raw pointer
+> +    ///
+> +    /// It is up to the caller to use the provided raw pointer correctly=
+. The pointer is valid for
+> +    /// `PAGE_SIZE` bytes and for the duration in which the closure is c=
+alled. The pointer might
+> +    /// only be mapped on the current thread, and when that is the case,=
+ dereferencing it on other
+> +    /// threads is UB. Other than that, the usual rules for dereferencin=
+g a raw pointer apply: don't
+> +    /// cause data races, the memory may be uninitialized, and so on.
+> +    ///
+> +    /// If multiple threads map the same page at the same time, then the=
+y may reference with
+> +    /// different addresses. However, even if the addresses are differen=
+t, the underlying memory is
+> +    /// still the same for these purposes (e.g., it's still a data race =
+if they both write to the
+> +    /// same underlying byte at the same time).
+> +    fn with_page_mapped<T>(&self, f: impl FnOnce(*mut u8) -> T) -> T {
+> [...]
 > +    }
 
-Could use a note about length like `read_raw`.
+Could you add an example of how to use this correctly?
+
+> +    /// Runs a piece of code with a raw pointer to a slice of this page,=
+ with bounds checking.
+> +    ///
+> +    /// If `f` is called, then it will be called with a pointer that poi=
+nts at `off` bytes into the
+> +    /// page, and the pointer will be valid for at least `len` bytes. Th=
+e pointer is only valid on
+> +    /// this task, as this method uses a local mapping.
+> +    ///
+> +    /// If `off` and `len` refers to a region outside of this page, then=
+ this method returns
+> +    /// `EINVAL` and does not call `f`.
+> +    ///
+> +    /// # Using the raw pointer
+> +    ///
+> +    /// It is up to the caller to use the provided raw pointer correctly=
+. The pointer is valid for
+> +    /// `len` bytes and for the duration in which the closure is called.=
+ The pointer might only be
+> +    /// mapped on the current thread, and when that is the case, derefer=
+encing it on other threads
+> +    /// is UB. Other than that, the usual rules for dereferencing a raw =
+pointer apply: don't cause
+> +    /// data races, the memory may be uninitialized, and so on.
+> +    ///
+> +    /// If multiple threads map the same page at the same time, then the=
+y may reference with
+> +    /// different addresses. However, even if the addresses are differen=
+t, the underlying memory is
+> +    /// still the same for these purposes (e.g., it's still a data race =
+if they both write to the
+> +    /// same underlying byte at the same time).
+
+This could probably also use an example. A note about how to select
+between with_pointer_into_page and with_page_mapped would also be nice
+to guide usage, e.g. "prefer with_pointer_into_page for all cases
+except when..."
+
+> +    fn with_pointer_into_page<T>(
+> +        &self,
+> +        off: usize,
+> +        len: usize,
+> +        f: impl FnOnce(*mut u8) -> Result<T>,
+> +    ) -> Result<T> {
+> [...]
+> +    /// Maps the page and zeroes the given slice.
+> +    ///
+> +    /// This method will perform bounds checks on the page offset. If `o=
+ffset .. offset+len` goes
+> +    /// outside ot the page, then this call returns `EINVAL`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that this call does not race with a read or =
+write to the same page that
+> +    /// overlaps with this write.
+> +    pub unsafe fn fill_zero(&self, offset: usize, len: usize) -> Result =
+{
+> +        self.with_pointer_into_page(offset, len, move |dst| {
+> +            // SAFETY: If `with_pointer_into_page` calls into this closu=
+re, then it has performed a
+> +            // bounds check and guarantees that `dst` is valid for `len`=
+ bytes.
+> +            //
+> +            // There caller guarantees that there is no data race.
+> +            unsafe { ptr::write_bytes(dst, 0u8, len) };
+> +            Ok(())
+> +        })
+> +    }
+
+Could this be named `fill_zero_raw` to leave room for a safe
+`fill_zero(&mut self, ...)`?
+
+> +    /// Copies data from userspace into this page.
+> +    ///
+> +    /// This method will perform bounds checks on the page offset. If `o=
+ffset .. offset+len` goes
+> +    /// outside ot the page, then this call returns `EINVAL`.
+> +    ///
+> +    /// Like the other `UserSliceReader` methods, data races are allowed=
+ on the userspace address.
+> +    /// However, they are not allowed on the page you are copying into.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that this call does not race with a read or =
+write to the same page that
+> +    /// overlaps with this write.
+> +    pub unsafe fn copy_from_user_slice(
+> +        &self,
+> +        reader: &mut UserSliceReader,
+> +        offset: usize,
+> +        len: usize,
+> +    ) -> Result {
+> +        self.with_pointer_into_page(offset, len, move |dst| {
+> +            // SAFETY: If `with_pointer_into_page` calls into this closu=
+re, then it has performed a
+> +            // bounds check and guarantees that `dst` is valid for `len`=
+ bytes. Furthermore, we have
+> +            // exclusive access to the slice since the caller guarantees=
+ that there are no races.
+> +            reader.read_raw(unsafe { core::slice::from_raw_parts_mut(dst=
+.cast(), len) })
+> +        })
+> +    }
+> +}
+
+Same as above, `copy_from_user_slice_raw` would leave room for a safe API.
