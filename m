@@ -1,109 +1,116 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F36E44C6B;
-	Tue, 16 Apr 2024 21:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5B17736
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Apr 2024 22:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713301477; cv=none; b=pjgwYdtEneBRzxMwQQ1NszQo9TRTShBrwx8/0jEmIWayL98a2ClLLHEwGGvF0kH9kNXj7/c0bLEByhAxlA/5SwQHuTI7u7LJU6KoUff4ZmHWApDpntJdWe0niXYAXSQmBHnEfRlO0r0cBGuBYHvPJsxqY8rCphVWwfntH5emrro=
+	t=1713305260; cv=none; b=IRO36tiU4jsOP73BzNGh/tGUsyDP91qdKqZaruL/KH0Umglx9+a/ow8UiKN1SUk/GxnMmKX8DFL39qUZ7Vq/6piNQy0xloRKZvDTz3QkML3mvd0Jys+j8c1CKK8u7qnGUe649u6Gq0uOtDpgI6WVKTCoVNQHjgih4pg8XKn3Oiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713301477; c=relaxed/simple;
-	bh=N9qE6JgV6fYnyVb+pQl76YXT2IELRhILEDrXUvW1SO4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WLPvWg45SoRkUVmDIgFMJQ/gd2lATKl8sJPdOwnmn9aGSCCvdKPA9gcJ8Igq9iZ8fhJvgbq5CESLs9rLaWziI/XIWIjBF4KRy/HYwPHJc8684jPQQmb4tZCgzeXqxKjCseSLNpf8CM/s3jv/1N/n2GyFJyiT+4w0Kd1UWha4XBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DV2gZ5qW; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713305260; c=relaxed/simple;
+	bh=cYGVboTlIfqElffrNlKni+yFnpS+35l9+bJ/YL6PBGc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xh9FbVIbaDp7GigQu8a0vv1j/odIib4hyEOLG/+7nVgIqrL6IKRkVCjlS9RpHRsNC51eA4RoPtFtsL8WQQOLEiOPb8lghvZrosREtG7LSWNRn8D9ez5bY3qotDNX1IQiPl2Eeu65+ns0DHS600QqAEvQxcXOadCb0xg2wGAT0p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kWSLtw4H; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DV2gZ5qW"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6edb76d83d0so4469158b3a.0;
-        Tue, 16 Apr 2024 14:04:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713301476; x=1713906276; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W3DFIF9J4IlfEcwvIp7AKlf9Ly/QtvztUm7AJm8wPds=;
-        b=DV2gZ5qWjyXsPPEa4mCi2vkHoRuMyvFtnN+iAm9t3XhGDVKp4Sj6lPacRDTbjgcg6l
-         DXitqGvrffai0kWGhhFPFhUlu1cb36bp5Stectqfaa75RlQQK/ks/qvwgFgjUtYcAp7Y
-         qYMeMrWfR2761BK5Oes5VNFIzeAxl3Nwxf+rH+SPpivaTqh8+zn6UdViXtkXrDC9bXGW
-         mlagjEBw5MfnyhBHwBK5WLh+QwC5vtTfG3XSYW+6lOSu0etXWoBdXwUxXaopAwn7tiv8
-         cdMjJHTu3aUw7HmqY7PSQMwPDEaMQTpnbLTv4qYDco3aIyyyX/iEcncPUii43ySocy+9
-         Zg1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713301476; x=1713906276;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W3DFIF9J4IlfEcwvIp7AKlf9Ly/QtvztUm7AJm8wPds=;
-        b=VEM0y0DyYdNYNVi+eDgNZ1zEvZMS1bM56VeZe3s4Q2xB//wR51iwCdpl/uUiQpVzTp
-         xRMyax7ilB3ApfURNNhtElJlH0N5An8/OUvyEqfMVMbDz1OPYq7NCNm6ypph1SXWTJvK
-         ixkOvXXdEgsBkSbREg8vICMGP/HOGBDrJT685adpv3p3vNoDzlfTYLvhlQP+xaX9Iqdy
-         Ty6fV62l65k5pPUfa7w69EG4wTI+1gkiclgW+lWKQzpAa1xre1s0GhGUtGdoAB7e+Bpc
-         YvXBL1pjW8V2GQaJ5rpvVy7DKB0IlEefoIqmmLoqmwFaDxLOE+EDgLMDUFsHaTYqmnH9
-         htsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTkkUEbPgcK8zLwIag9yBH6YVzivfhJvh4Eob1fOTJ/SW/r/Qu4mmwsFwnG6Havk/v9q56eNfAhmYLHj2GW5o8Y92yO9n1/VFa1z5T
-X-Gm-Message-State: AOJu0Yw5AV7+W/s1ZGU5fGkEtyOKLtivlxtY7dA+GcmtpvSgACmGU6W9
-	UgP30ypSTf/wfLJxNZ3tv1HaYPIf5XMfUGr8RSlzJAo4yA8kckLS7B5sHd+NfnTWyMKk6NeyTyp
-	O9gBD8U5meLRGhRU301494H8n+9zPbOZ3MYk=
-X-Google-Smtp-Source: AGHT+IFnpvZjwCkWjtauwG9vAXFhLTFxYjS5vEHbXTVtTyqiuAqErbGDYlngGUrdD0INSqPnD3v+cgRLHFvY5JHsuMA=
-X-Received: by 2002:a05:6a21:3e0a:b0:1a7:a478:d5e0 with SMTP id
- bk10-20020a056a213e0a00b001a7a478d5e0mr15746684pzc.12.1713301475678; Tue, 16
- Apr 2024 14:04:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kWSLtw4H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=emox6spn4zeddk32fj3u476rna.protonmail; t=1713305256; x=1713564456;
+	bh=PjHGitF/8tyOooreLZws1UPxqnJB/DnU8P0pBnlRMJE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=kWSLtw4HvgFsnzlpnxOjwMFUtMxAATyUF7lCWqI+ZHRTUq1eb3QpsQGA0E/OcaIS5
+	 6mnI+MT0uwcNHMMTnvgZSEMWQpFI95Ppc2mqOavByCOL32mSwqNAnf5UtwF/noSv3U
+	 eNRwjkppMmhR3JvrDACipeUdU40sfWHUzgqB8OG7xIG7lC4k5JtSiF50vn4z56nkw7
+	 oYYSkvgvOBQuXa6XnHkRqWSnsNfREKhcoO5kxroe3bHfX+72CVH3SsocDVuZCBsy0r
+	 5pU+ibizJEEuuukweK78GcaQupE80/Wqz+M13iXtxn4oRqPMJo8BWGbcI8O0Yv/7CX
+	 9zKDudJCv9peg==
+Date: Tue, 16 Apr 2024 22:07:26 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, andrew@lunn.ch
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
+Message-ID: <b03584c7-205e-483f-96f0-dde533cf0536@proton.me>
+In-Reply-To: <20240416.222119.1989306221012409360.fujita.tomonori@gmail.com>
+References: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch> <20240416.204030.1728964191738742483.fujita.tomonori@gmail.com> <26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch> <20240416.222119.1989306221012409360.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328013603.206764-1-wedsonaf@gmail.com>
-In-Reply-To: <20240328013603.206764-1-wedsonaf@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 16 Apr 2024 23:03:37 +0200
-Message-ID: <CANiq72k=x_P1adyVV+9t_g9fzRznaoO8+kqsYDsunuvZjrUX8g@mail.gmail.com>
-Subject: Re: [PATCH v3 00/10] Allocation APIs
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 28, 2024 at 2:36=E2=80=AFAM Wedson Almeida Filho <wedsonaf@gmai=
-l.com> wrote:
->
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->
-> Revamp how we use the `alloc` crate.
->
-> We currently have a fork of the crate with changes to `Vec`; other
-> changes have been upstreamed (to the Rust project). This series removes
-> the fork and exposes all the functionality as extension traits.
->
-> Additionally, it also introduces allocation flag parameters to all
-> functions that may result in allocations (e.g., `Box::new`, `Arc::new`,
-> `Vec::push`, etc.) without the `try_` prefix -- the names are available
-> because we build `alloc` with `no_global_oom_handling`.
->
-> Lastly, the series also removes our reliance on the `allocator_api`
-> unstable feature.
->
-> Long term, we still want to make such functionality available in
-> upstream Rust, but this allows us to make progress now and reduces our
-> maintainance burden.
->
-> In summary:
-> 1. Removes `alloc` fork
-> 2. Removes use of `allocator_api` unstable feature
-> 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
+On 16.04.24 15:21, FUJITA Tomonori wrote:
+> Hi,
+>=20
+> On Tue, 16 Apr 2024 14:38:11 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
+>=20
+>>> If I correctly understand the original driver code, C45 bus protocol
+>>> is used. Adding functions for C45 bus protocol read/write would be
+>>> enough for this driver, I guess.
+>>
+>> Now i've read more of the patches, i can see that the MDIO bus master
+>> is C45 only. At least, that is all that is implemented in the
+>> driver. So for this combination of MAC and PHY, forcing C45 register
+>> access using C45 bus protocol will work.
+>=20
+> Thanks a lot!
+>=20
+>> However, can you combine this PHY with some other MDIO bus master,
+>> which does not support C45? Then C45 over C22 would need to be used?
+>> Looking at the data sheet i found online, there is no suggestion it
+>> does support C22 bus protocol. All the diagrams/tables only show C45
+>> bus protocol.
+>=20
+> qt2025_ds3014.pdf?
+>=20
+>> So this PHY is a special case. So you can use wrapper methods which
+>> force C45 bus protocol, and ignore phylib support for performing C45
+>> over C22 when needed. However, while doing this:
+>>
+>> 1: Clearly document that these helpers are not generic, they force C45
+>>     register access using C45 bus protocol, and should only by used PHY
+>>     drivers which know the PHY device does not support C45 over C22
+>>
+>> 2: Think about naming. At some point we are going to add the generic
+>>     helpers for accessing C45 registers which leave the core to decide
+>>     if to perform a C45 bus protocol access or C45 over C22. Those
+>>     generic helpers need to have the natural name for accessing a C45
+>>     register since 99% of drivers will be using them. The helpers you
+>>     add now need to use a less common name.
+>=20
+> Sounds like we should save the names of c45_read and c45_write.
+>=20
+> read_with_c45_bus_protocol and write_with_c45_bus_protocol?
+>=20
+> They call mdiobus_c45_*, right?
 
-Applied to `rust-next` -- thanks everyone!
+I think we could also do a more rusty solution. For example we could
+have these generic functions for `phy::Device`:
 
-    [ Used `Box::write()` to avoid one `unsafe` block as suggested by Boqun=
-. ]
+     fn read_register<R: Register>(&mut self, which: R::Index) -> Result<R:=
+:Value>;
+     fn write_register<R: Register>(&mut self, which: R::Index, value: R::V=
+alue) -> Result;
 
+That way we can support many different registers without polluting the
+namespace. We can then have a `C45` register and a `C22` register and a
+`C45OrC22` (maybe we should use `C45_OrC22` instead, since I can read
+that better, but let's bikeshed when we have the actual patch).
+
+Calling those functions would look like this:
+
+     let value =3D dev.read_register::<C45>(reg1)?;
+     dev.write_register::<C45>(reg2, value)?;
+
+--=20
 Cheers,
-Miguel
+Benno
+
