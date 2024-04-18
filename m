@@ -1,39 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1893313247D;
-	Thu, 18 Apr 2024 13:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506C915E7E7;
+	Thu, 18 Apr 2024 13:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713445642; cv=none; b=MMrJWLcde3bjIwf5ebXjZCKXDgsU3W7KRMWVufmQlCW900mLl27FcfxvVwa9GkKR1VMn6pfoo1HiSaaBPNYpJLKE9ui6SowGp55e0Nqg8+gsu+iegeP7ksLqfhoGhJ8yM08Soi03aldfXpl9GoOiTo6/2WTz4nQtMEEHsKMJHTQ=
+	t=1713445839; cv=none; b=mmKdX4EFeNQM6/5+VlEMr6ZQiaONV6SNz5O5f6x88fNv0/bP/XJcGdmkWiHG9UbB3Aexm9UpjaoI4wXe/DizejFUe29CAnnWakaP2EknrHHw52fDC+c0M3ynHyxinZBWJiRTJVJHcH/FI0JLDxBjQZvRMBwpjnPA3rFpywMBxtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713445642; c=relaxed/simple;
-	bh=ZQmRZwntijmUzO0RJofTZbGiAQg+OTI6y2iSSjPaG+I=;
+	s=arc-20240116; t=1713445839; c=relaxed/simple;
+	bh=TCPgT8xXertTlcQkGaswLBetbbLcmmhBrhPdmn6CHJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J2Rk3ZoUGL8qOlAe/lLa+nuQ/TU5n6DJS0GdwmWn12xS2gnKqJFtS8N3DL2HLWReom6arg5SVqYeYllZ2JGYNw7TztD/9Ain817w3Cn890vXOv54DMhjellc2k93t0TJziHAKQtnIwviurkrD5BEp3YUroGkekXfbAz8dTELe/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evrpzN/N; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UsZRzJQjJHpxrYY991AG00cRgpwiC8CW3iEcJv6/k3EGH+U0sRHES9u2KbldGA/9AlUQWU56bLFy/s3kqV5s6thl1/xyVbA5EDv/x3Y37/aZGXVNmrK7l3+P0y9UpdyB2tm2Bbp4ENua77Xcx1Y7j8hvg4tiHQpQ8C5/6W+ZO+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxvXuZQJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evrpzN/N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B584C113CC;
-	Thu, 18 Apr 2024 13:07:21 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxvXuZQJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805DFC113CC;
+	Thu, 18 Apr 2024 13:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713445641;
-	bh=ZQmRZwntijmUzO0RJofTZbGiAQg+OTI6y2iSSjPaG+I=;
+	s=korg; t=1713445838;
+	bh=TCPgT8xXertTlcQkGaswLBetbbLcmmhBrhPdmn6CHJg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=evrpzN/NyFcR3av0bWND/+cKKKoHBp5A4LjBTEmtcTfSKedCuje/mGlvFv2toJgGZ
-	 +LNrLSHCzleFmBRy4A++9odF9EmYKhuFfAbdiiKrA6ksELw3CAnwBE/xUiGYi9x2/4
-	 XpKdo2PpIDuyejZpqhEes0mzU+M0c3n1oSTyqJ2o=
-Date: Thu, 18 Apr 2024 15:07:19 +0200
+	b=oxvXuZQJWIvfyenn8iELyyqOqTl+7ClIS2fCrttMgnFjiRF+T4inCN2HTAHnKlVuN
+	 VkBO6dB3JdJDwyX47LBuZt6GDYR5Rjn6M4Ps7tuwiBFRLg7eLToE/hAqHHWJa87AJL
+	 +Bs3sQXA78Dfn131R21gQ8bEacLlIwVabzK6WPaQ=
+Date: Thu, 18 Apr 2024 15:10:36 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, mcgrof@kernel.org, russ.weight@linux.dev
-Subject: Re: [PATCH net-next v1 3/4] rust: net::phy support Firmware API
-Message-ID: <2024041800-justice-rectify-3715@gregkh>
+	tmgross@umich.edu
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <2024041801-anteater-cultivate-d8a0@gregkh>
 References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
- <20240415104701.4772-4-fujita.tomonori@gmail.com>
- <2024041554-lagged-attest-586d@gregkh>
- <20240418.215108.816248101599824703.fujita.tomonori@gmail.com>
+ <20240415104701.4772-5-fujita.tomonori@gmail.com>
+ <2024041549-voicing-legged-3341@gregkh>
+ <20240418.220047.226895073727611433.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,38 +43,32 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240418.215108.816248101599824703.fujita.tomonori@gmail.com>
+In-Reply-To: <20240418.220047.226895073727611433.fujita.tomonori@gmail.com>
 
-On Thu, Apr 18, 2024 at 09:51:08PM +0900, FUJITA Tomonori wrote:
-> >> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> >> index 421a231421f5..095dc3ccc553 100644
-> >> --- a/rust/kernel/net/phy.rs
-> >> +++ b/rust/kernel/net/phy.rs
-> >> @@ -9,6 +9,51 @@
-> >>  use crate::{bindings, error::*, prelude::*, str::CStr, types::Opaque};
-> >>  
-> >>  use core::marker::PhantomData;
-> >> +use core::ptr::{self, NonNull};
-> >> +
-> >> +/// A pointer to the kernel's `struct firmware`.
-> >> +///
-> >> +/// # Invariants
-> >> +///
-> >> +/// The pointer points at a `struct firmware`, and has ownership over the object.
-> >> +pub struct Firmware(NonNull<bindings::firmware>);
-> >> +
-> >> +impl Firmware {
-> >> +    /// Loads a firmware.
-> >> +    pub fn new(name: &CStr, dev: &Device) -> Result<Firmware> {
-> >> +        let phydev = dev.0.get();
+On Thu, Apr 18, 2024 at 10:00:47PM +0900, FUJITA Tomonori wrote:
+> >> +            if i == 0x4000 {
 > > 
-> > That's risky, how do you "know" this device really is a phydev?
+> > What does 0x4000 mean here?
+> > 
+> >> +                a = MDIO_MMD_PHYXS;
+> >> +                j = 0x8000;
+> > 
+> > What does 0x8000 mean here?
+> > 
+> >> +            }
+> >> +            dev.c45_write(a, j, (*val).into())?;
+> >> +
+> >> +            j += 1;
+> >> +        }
+> >> +        dev.c45_write(MDIO_MMD_PCS, 0xe854, 0x0040)?;
+> > 
+> > Lots of magic values in this driver, is that intentional?
 > 
-> That's guaranteed. The above `Device` is phy::Device.
+> The original driver uses lots of magic values. I simply use them. As
+> Andrew wrote, we could infer some. I'll try to comment these.
 
-How are we supposed to know that from reading this diff?  I think you
-all need to work on naming things better, as that's going to get _VERY_
-confusing very quickly.
+Wait, this is a rewrite of an existing driver in the tree into Rust?
+Why is that happening again?  Why not a new one instead?
 
 thanks,
 
