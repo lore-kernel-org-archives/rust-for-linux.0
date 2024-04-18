@@ -1,48 +1,44 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AD86FB0;
-	Thu, 18 Apr 2024 14:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CFA6FB0;
+	Thu, 18 Apr 2024 14:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713450766; cv=none; b=JKZQXq+hyprBKMgup8xCvC4svNU2rR3UEo5tNe0s1+f4sEV5PR6YdkdkrweHNhchSDl52/wno0fD8qTtnCnFWMV+E6iuhOHclf/rDxgEDxliACzZHRA9GneBl+hUsexmNQZod0FoO8YZbdCbwUTgTLNaWFfWHna9Wta5SNogPhg=
+	t=1713451359; cv=none; b=rOz88ubd8HPhmaHgju5+Jqm7KrVxpJ8ER+psBGE457ONVS11gU/mBaIdEWF2Oq4CKSUU/YKF6Kh3+CSg6JKcE/lyjJE9+lrewjgKZCOBH8qod/3/Wfe1Y6XHQHHUeWWp9bOUM1qni+W3Iq3xa92YBNJzAy/etUBepXyp1TADK+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713450766; c=relaxed/simple;
-	bh=nCMIMkUZD4xA2FXfjaiSTFskbrMOmFMJvKZgCiV/oV0=;
+	s=arc-20240116; t=1713451359; c=relaxed/simple;
+	bh=X/X/TboqyfyUYTUVWHRPVjdRoe8kWfo0nNRba0UUe3U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M5CuQ6z5Ht2UGiRECQfHGOVY4rXvYPs8zAJsaVV05NtcCIEzryNxWftr/IpgRvUTkXY/NjlcRN5qwGJ0ojiHQ6xm2n9hgvOzt9Per7dMHgfxRtF2szOl4pnKK82yJqH6FgfohnTzGY4FPB8aK/GCBrHXbwwniq5wWKkSqIuvv/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wYos3Wab; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=npCsQidWbccnnuVzMGyt+OKK7q2+IQC4/krc6oReKy48axX8LKossELD9o8uFLLmqt/Gka26IbfGIs+8YM+6KlqXe605bc8EU29wry7j/qcOyZqyhoWchc5r5sodpOV6VEr72R5WvyMrD2LxoqwgsJRN06WM07CweHfc0KFClCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=M13ziffz; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wYos3Wab"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="M13ziffz"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=XSpvfjcaAXW5G7jqabTaSSigyt23MWCMe58+uF8u7ho=; b=wYos3WabfCrqvYiEC37KItheeB
-	RUues0JP6WvMEeLpW6lJ6NXWZXaDd0iXR96zdHcpo9iJdmAzdwRu8yXvUNczQPXDCOqEW5gsogbCJ
-	TVG8lHbj6Yq0qnbFg5G/N1YF7wDS5Fcv5QFXxRbmm6a1QbuiLAk779Z3YIXZxrta5SrI=;
+	bh=exe9fv7oChxO5dkJDmvKHfPoF5uNIcU4b4Fk47PWcJs=; b=M13ziffz/YyFgNDh+s5EP6JkLz
+	RQLWcoKOi6kSxj0F6z29pP14vOvkqXZn3xpvq7+VcLWlbkkwPPWfoWOpJR8iSv73gTtv1R540raXC
+	xkM6jU3cQq8mdkB0Bxoeil5jrjtbXYixs+esMcHSJCMPLJ2WN3P/2Du+bsoNJ5xHQjFM=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1rxSoS-00DMHV-5y; Thu, 18 Apr 2024 16:32:32 +0200
-Date: Thu, 18 Apr 2024 16:32:32 +0200
+	id 1rxSy9-00DMJm-3I; Thu, 18 Apr 2024 16:42:33 +0200
+Date: Thu, 18 Apr 2024 16:42:33 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: gregkh@linuxfoundation.org, netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
-Message-ID: <aee3bb68-2b5f-4d3a-ae4e-43380e112d46@lunn.ch>
-References: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch>
- <20240416.204030.1728964191738742483.fujita.tomonori@gmail.com>
- <26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch>
- <20240416.222119.1989306221012409360.fujita.tomonori@gmail.com>
- <b03584c7-205e-483f-96f0-dde533cf0536@proton.me>
- <f908e54a-b0e6-49d5-b4ff-768072755a78@lunn.ch>
- <92b60274-6b32-4dfd-9e46-d447184572d2@proton.me>
- <49c221e6-92d0-42ef-b48b-829c7c47d790@lunn.ch>
- <903a21b5-38d1-4d7c-8eb0-610b629c9856@proton.me>
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <176fe839-7142-49be-9fba-1e105dc8d4de@lunn.ch>
+References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
+ <20240415104701.4772-5-fujita.tomonori@gmail.com>
+ <2024041549-voicing-legged-3341@gregkh>
+ <20240418.220047.226895073727611433.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,22 +47,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <903a21b5-38d1-4d7c-8eb0-610b629c9856@proton.me>
+In-Reply-To: <20240418.220047.226895073727611433.fujita.tomonori@gmail.com>
 
-> Thanks for the explanation. What about having the following register
-> representing types:
-> - `C22` accesses a C22 register
-> - `C45` accesses a C45 register using whatever method phylib decides
-> - `C45Bus` accesses a C45 register over the C45 bus protocol (or
->    `C45Direct`)
+> >> +            if i == 0x4000 {
+> > 
+> > What does 0x4000 mean here?
+> > 
+> >> +                a = MDIO_MMD_PHYXS;
+> >> +                j = 0x8000;
+> > 
+> > What does 0x8000 mean here?
+> > 
+> >> +            }
+> >> +            dev.c45_write(a, j, (*val).into())?;
+> >> +
+> >> +            j += 1;
+> >> +        }
+> >> +        dev.c45_write(MDIO_MMD_PCS, 0xe854, 0x0040)?;
+> > 
+> > Lots of magic values in this driver, is that intentional?
 > 
-> Or are you opposed to the idea of accessing any type of register via
-> `dev.read_register::<RegType>(..)`?
+> The original driver uses lots of magic values. I simply use them. As
+> Andrew wrote, we could infer some. I'll try to comment these.
 
-I'm not against this, it is good to use Rust features if they make the
-code easier to understand.
-
-We can bike shed C45Bus vs C45Direct vs ... . I would probably go for
-C45Direct, because C45 over C22 is often called indirect.
+When you start from a Vendor crap driver, part of the process of
+getting it into Mainline is getting it up to Mainline quality. If this
+was C code, i would be trying to replace as many of the magic numbers
+with #define. And then add comments about the best guess what things
+are doing, based on the datasheet. The data sheet however does not
+explain all the bits, nor give every register a name. But you should
+use as much information as possible from the datasheet to make the
+code as readable as possible.
 
 	Andrew
