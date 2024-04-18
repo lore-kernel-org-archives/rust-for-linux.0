@@ -1,90 +1,215 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F20941C78
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 12:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E96F7D40E;
+	Thu, 18 Apr 2024 12:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713444434; cv=none; b=tTNNNGO2Rrn6KOcZa1bB3+rkGZyp+N+lFK0SFyNy2G/J3IGw4vJjdAfc7kxL4oZow+FuXlTZ+AyPrl6X7Oev7AkI1MKVKlzw/p9lp0gzjBrLWIj+1nvvolFRMpvoPikQDJRddrErFV5jTP/Eg8N1rO2lo0gUMiYFNFGY63t2nUs=
+	t=1713444683; cv=none; b=hznv8xOj1y5h/dmHOP7oiYmRwiH8pKikyadsr+iQZ7gQ+YcXkigiDHo0ALfznWRQrT1GOMHW18+JjLaREmxqdV55iDI67koKp+g5887C+0dbfkrjkVTeGtk9vj+8xeUUsv/kdleWj/DpLUWHKs3KXq8njgrZedmv5IYBzhydMfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713444434; c=relaxed/simple;
-	bh=OjM2+q5IrJPgChlmxtugg0H+0Nb0jlZfH7lYr+xWFu4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HgJBy7rTMvePwT7a51J6jzHAJj4cik/xiZ8s8eP3tZhix/+znK0ZT37BJCyHIR51YOZrW73dGIU6Wrn7I69FcpkIIU1teNs9CIl82bk2UZdn+HuYqSFh8hntAmrc7iYN8TsSc1crxKz5knlnD2kmfnHCIZCWgns9Mrvd+3SzaYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OQFWOT4n; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1713444683; c=relaxed/simple;
+	bh=r7GWD0cnvUzk4BrLd0lA2y+WxClZliaU2V71i+ooL+Y=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=al6uGVlvM7ihJgNQYgVkaHPfuXOznwb2MZ16YBNfgUnkY+16DS+MqKL4QxJq+FszdRszdBXcB/jpckXVCqEhDuDcJ53K5W5oF9ced4f3dBsLgKsLSqfLJRbT/o03/W4y4IfyPg5p0b13gmLesiYwTyJfrQYYwEcLb+8b5gC9A40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J2+3dKX7; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OQFWOT4n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1713444425; x=1713703625;
-	bh=FtZD2Q+I7uEMMS0HuDMeXjCn3Hzk9KekmIGEGtElOmA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=OQFWOT4n7hQKYh/WtuVLTkWuicl2a7g7QVaRl1U0PTQvwRQz8IDlFjpc2vsMHds6u
-	 tjeHywzj/ysunVZCQLGTg09t1utLz+JpOuXdyATwz1Q8rIuaSPnz4n0CC45o+B/+6Z
-	 CrKYx4gIdyWToWAtG5Tz3ffrXMkb+7UQ2nGSHpXMrEgPZEE9L1OUqFGPBcsi6KKqyD
-	 7D91lCfMo1BRU6s9xvTaw3lRBKDyKrje1LznhlW5ywgTUWtIu7GG6Dpp2NyD/HiCRE
-	 uE9ptWWX/KlpgnXBy1cwIBRPAfZVunaElHvlDQTHUg9OWOefVXXKYRujmG/bBVtiq1
-	 yWWpkSinOIjnA==
-Date: Thu, 18 Apr 2024 12:47:01 +0000
-To: Andrew Lunn <andrew@lunn.ch>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
-Message-ID: <903a21b5-38d1-4d7c-8eb0-610b629c9856@proton.me>
-In-Reply-To: <49c221e6-92d0-42ef-b48b-829c7c47d790@lunn.ch>
-References: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch> <20240416.204030.1728964191738742483.fujita.tomonori@gmail.com> <26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch> <20240416.222119.1989306221012409360.fujita.tomonori@gmail.com> <b03584c7-205e-483f-96f0-dde533cf0536@proton.me> <f908e54a-b0e6-49d5-b4ff-768072755a78@lunn.ch> <92b60274-6b32-4dfd-9e46-d447184572d2@proton.me> <49c221e6-92d0-42ef-b48b-829c7c47d790@lunn.ch>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3792599aafbe9dbff3b9f38b5134902b4bcc77a4
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J2+3dKX7"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2abae23d682so229211a91.3;
+        Thu, 18 Apr 2024 05:51:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713444681; x=1714049481; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AYQQ6x5PQs+7pRarP8H6SbmAo0a0VwHa5Gdfjk8N7ks=;
+        b=J2+3dKX7m2NEMJvUgMsVImlpiwSao4kvgxTv8m5W6RwxCeVJhxg/mEeNdTedDIki+s
+         0NJEvEZiQ+0XEWwT+KpDGOvA6qXbT4QseGinhU6qf4jbV6DooGWYGhm6c5JXSWWbOePQ
+         GxlGXiWtv9m2Eo3WWOJB52pSUBKWJe5dCUMQ/5tr5ZnPsV2Ogq/bLLeMSwwU+N6f9cNa
+         2kKicSn3Pnwifu3Qv5nivo4OofziIuwgO8w67mR6S0t6zBciqLIszgwBcfFxkktcBJJi
+         iQVjFW+K/2PjOKvXtVqrPl38qolDG5vGLn3kqJWQgOr+Xe6bEdTUgeBQ2FCrCaVgZ91B
+         xCWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713444681; x=1714049481;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AYQQ6x5PQs+7pRarP8H6SbmAo0a0VwHa5Gdfjk8N7ks=;
+        b=NinNDFu26nainypIWpuU89JfiHJLYbJwy2wc6wB4D3C5bMMdxILoiPm0LXixy/TLc6
+         DdnEOB5N9SoeyYGthWdj39v7TaS3jRPNXyvVLsy7KTEk6XROCHDU8UfvovgdHYHXDxPr
+         6be2ZuioYvgNhowW9mpMeedFPOPXCtrFdmnHAvft4oEe/fhSMOVYF9tGTllzTSSpUGVs
+         iFHN6ime72kwk9QZdOXQuACpnRZE4yBFPTo+8V5eiGD3vcBTPUR1lCh7CgKMo9FoIm77
+         wYoxJ+eLVXaC8BWtPkCHxu/Kn8+ogDv/qw8NvUU3Ln3uPZrVmSC+PF/952E64PdLqaTK
+         MP6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWBkTzDseNBpfjNYvCNpapeBVk8EFWXqYp26sYXDepuajpO/KicFHSi9zvxu8wf/wkqLgvvfD0HgTZnMXIHJaCk9KtFtNDzDM+D9aKIhcBjvuyC486T4OLNB4iHKcPOUWFDW3sOL60=
+X-Gm-Message-State: AOJu0Yz+ydsxZ/5AeiHPtN/8+Q2Ves1lC2QZ7cE8//0LADWrdiPFXcde
+	PnaYyJzOqtGBA7jfCNKKun1IJpH5lPmwTkEA4HY2mIoVDPdf0z5o+whB2ANO
+X-Google-Smtp-Source: AGHT+IHbq+6w80vWYaxKCglkniAg6WlEJa2DDh2HnK+6ckiKxndHkvdO4ik0XyWpyg3QMl++6pXjcw==
+X-Received: by 2002:a17:90a:c7c8:b0:2ab:be54:85ed with SMTP id gf8-20020a17090ac7c800b002abbe5485edmr2104020pjb.0.1713444681486;
+        Thu, 18 Apr 2024 05:51:21 -0700 (PDT)
+Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
+        by smtp.gmail.com with ESMTPSA id v12-20020a17090a778c00b002ab534866dcsm2782641pjk.26.2024.04.18.05.51.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Apr 2024 05:51:21 -0700 (PDT)
+Date: Thu, 18 Apr 2024 21:51:08 +0900 (JST)
+Message-Id: <20240418.215108.816248101599824703.fujita.tomonori@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org, andrew@lunn.ch,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu, mcgrof@kernel.org,
+ russ.weight@linux.dev
+Subject: Re: [PATCH net-next v1 3/4] rust: net::phy support Firmware API
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <2024041554-lagged-attest-586d@gregkh>
+References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
+	<20240415104701.4772-4-fujita.tomonori@gmail.com>
+	<2024041554-lagged-attest-586d@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On 17.04.24 15:34, Andrew Lunn wrote:
->> If the driver shouldn't be concerned with how the access gets handled,
->> why do we even have a naming problem?
->=20
-> History.
->=20
-> The current C code does not cleanly separate register spaces from
-> access mechanisms.
->=20
-> C22 register space is simple, you can only access it using C22 bus
-> protocol. However C45 register space can be accessed in two ways,
-> either using C45 bus protocol, or using C45 over C22. The driver
-> should not care, it just wants to read/write a C45 register.  But the
-> current core mixes the two concepts of C45 register space and access
-> mechanisms. There have been a few attempts to clean this up, but
-> nothing landed yet.
->=20
-> Now this driver is somewhat special. The PHY itself only implements
-> one of the two access mechanisms, C45 bus protocol. So this driver
-> could side-step this mess and define access functions which go
-> straight to C45 bus protocol. However, some day a non-special
-> device/driver will come along, and we will need the generic access
-> functions, which leave the core to decide on C45 bus protocol or C45
-> over C22. Ideally these generic functions should have the natural name
-> for accessing C45 registers, and the special case in this driver
-> should use a different name.
+Hi,
 
-Thanks for the explanation. What about having the following register
-representing types:
-- `C22` accesses a C22 register
-- `C45` accesses a C45 register using whatever method phylib decides
-- `C45Bus` accesses a C45 register over the C45 bus protocol (or
-   `C45Direct`)
+On Mon, 15 Apr 2024 13:10:59 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-Or are you opposed to the idea of accessing any type of register via
-`dev.read_register::<RegType>(..)`?
+> On Mon, Apr 15, 2024 at 07:47:00PM +0900, FUJITA Tomonori wrote:
+>> This patch adds support to the following basic Firmware API:
+>> 
+>> - request_firmware
+>> - release_firmware
+>> 
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> CC: Luis Chamberlain <mcgrof@kernel.org>
+>> CC: Russ Weight <russ.weight@linux.dev>
+>> ---
+>>  drivers/net/phy/Kconfig         |  1 +
+>>  rust/bindings/bindings_helper.h |  1 +
+>>  rust/kernel/net/phy.rs          | 45 +++++++++++++++++++++++++++++++++
+> 
+> Please do not bury this in the phy.rs file, put it in drivers/base/ next
+> to the firmware functions it is calling.
 
---=20
-Cheers,
-Benno
+Sure. I had a version of creating rust/kernel/firmware.rs but I wanted
+to know if a temporary solution could be accepted.
 
+With the build system for Rust, we can't put it in drivers/base/ yet.
+
+
+>> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+>> index 421a231421f5..095dc3ccc553 100644
+>> --- a/rust/kernel/net/phy.rs
+>> +++ b/rust/kernel/net/phy.rs
+>> @@ -9,6 +9,51 @@
+>>  use crate::{bindings, error::*, prelude::*, str::CStr, types::Opaque};
+>>  
+>>  use core::marker::PhantomData;
+>> +use core::ptr::{self, NonNull};
+>> +
+>> +/// A pointer to the kernel's `struct firmware`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// The pointer points at a `struct firmware`, and has ownership over the object.
+>> +pub struct Firmware(NonNull<bindings::firmware>);
+>> +
+>> +impl Firmware {
+>> +    /// Loads a firmware.
+>> +    pub fn new(name: &CStr, dev: &Device) -> Result<Firmware> {
+>> +        let phydev = dev.0.get();
+> 
+> That's risky, how do you "know" this device really is a phydev?
+
+That's guaranteed. The above `Device` is phy::Device.
+
+> That's not how the firmware api works, use a real 'struct device' please.
+
+Right, I'll do in v2.
+
+> 
+>> +        let mut ptr: *mut bindings::firmware = ptr::null_mut();
+>> +        let p_ptr: *mut *mut bindings::firmware = &mut ptr;
+> 
+> I'm sorry, but I don't understand the two step thing here, you need a
+> pointer for where the C code can put something, is this really how you
+> do that in rust?  Shouldn't it point to data somehow down below?
+
+Oops, can be simpler:
+
+let mut ptr: *const bindings::firmware = ptr::null_mut();
+let ret = unsafe {
+        bindings::request_firmware(&mut ptr, name.as_char_ptr().cast(), &mut (*phydev).mdio.dev)
+};
+
+>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+> 
+> Again, phydev is not part of the firmware api.
+> 
+>> +        // So it's just an FFI call.
+>> +        let ret = unsafe {
+>> +            bindings::request_firmware(
+>> +                p_ptr as *mut *const bindings::firmware,
+> 
+> Where is this coming from?
+> 
+>> +                name.as_char_ptr().cast(),
+>> +                &mut (*phydev).mdio.dev,
+>> +            )
+>> +        };
+>> +        let fw = NonNull::new(ptr).ok_or_else(|| Error::from_errno(ret))?;
+>> +        // INVARIANT: We checked that the firmware was successfully loaded.
+>> +        Ok(Firmware(fw))
+>> +    }
+>> +
+>> +    /// Accesses the firmware contents.
+>> +    pub fn data(&self) -> &[u8] {
+> 
+> But firmware is not a u8, it's a structure.  Can't the rust bindings
+> handle that?  Oh wait, data is a u8, but the bindings should show that,
+> right?
+
+In the C side:
+
+struct firmware {
+        size_t size;
+        const u8 *data;
+        /* firmware loader private fields */
+        void *priv;
+};
+
+data() function allows a driver in Rust to access to the above data
+member in Rust.
+
+A driver could define its own structure over &[u8]. 
+
+> 
+>> +        // SAFETY: The type invariants guarantee that `self.0.as_ptr()` is valid.
+>> +        // They also guarantee that `self.0.as_ptr().data` pointers to
+>> +        // a valid memory region of size `self.0.as_ptr().size`.
+>> +        unsafe { core::slice::from_raw_parts((*self.0.as_ptr()).data, (*self.0.as_ptr()).size) }
+> 
+> If new fails, does accessing this also fail?
+
+If a new() fails, a Firmware object isn't created. So data() function
+cannot be called.
+
+
+> And how are you using this?  I guess I'll dig in the next patch...
+> 
+>> +    }
+>> +}
+>> +
+>> +impl Drop for Firmware {
+>> +    fn drop(&mut self) {
+>> +        // SAFETY: By the type invariants, `self.0.as_ptr()` is valid and
+>> +        // we have ownership of the object so can free it.
+>> +        unsafe { bindings::release_firmware(self.0.as_ptr()) }
+> 
+> So drop will never be called if new fails?
+
+Yes, like data() function.
