@@ -1,241 +1,132 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B597917335B;
-	Thu, 18 Apr 2024 18:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9127417BB2C
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 19:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713466406; cv=none; b=h7CiSt/X/vqlbSSZIOdyjiqibORyYI3Ow6xJG7pyEeBrFTDNuvjYx9HdlOOFtm3iIlV/WtAwC/fDLy0M8MPQvNHeurpEWb6QZP1K2tEyqK8duoWuMR8dm2w9xmPYnPZYDzbK8ODXbmIOeEc8XxZk7f/WXPkwujTlhcy5mgWLa6E=
+	t=1713468968; cv=none; b=CtbwJy3Y81LdykHsa4iD0AbrPM8u4uoTmTVlw1rLg/6V/D+gShA6Hqb5rjfVHmFpN8jeWZkvVywvQb1ztqYb6SWY4N0Idqlkk9I48fMmdefpmqy6EFNDMAxlwSbn4abSD2oU4DdvNk2yQRGXAuU3xZS0r8zPuLxNxF9h/RQyjgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713466406; c=relaxed/simple;
-	bh=NErdMtdTcltTG+B8NDqZl8S8L5b+1hC0gXiSoSWJphI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eg3JOFr8mRHnEFun+9eaj+zuRqKp2697F6WaOsqZALPaxtSnJNQRjwwxi+8DIA1mN57uU4dj3DG6yNuE4pC3IAtZb6pSlJeD06s7oSbSJ00aoMlSU2bnyaNOprwrv0T1ypwblUehtPBOg+ORlptpVjVAL9DYA0j1xBoRXBlP8I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DDVi0ibU; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713468968; c=relaxed/simple;
+	bh=4wnmGBPm7QXnFuYr3SnHPxOZEt/EMqUAhmJpVbdQCQY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UhcdepDtWSxCg2GU33ARyioQqsEwua4/Mvybcg3up6L4jBXjAu5pzmPb94MwmoKQoMkKST53pr9hpvZ7eiUraF4dd87SiJjlAa7Bn8luua3Ch8gb/ZPS1Us01Lcp6774pxYLuDO0MiIDdhXggNPGTWCB96A8gRhvHuwoQa8ahFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=necsN8/n; arc=none smtp.client-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DDVi0ibU"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-69b137d09e3so7960746d6.1;
-        Thu, 18 Apr 2024 11:53:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="necsN8/n"
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-7eb89aa9176so315770241.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 12:36:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713466403; x=1714071203; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1713468965; x=1714073765; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9r7Cqzwpa0N6ahjvlQwho0MrL0UhOcI3CGtbp3521uQ=;
-        b=DDVi0ibUTpoixT6pxbPuB9zcUQp8Jy6yLnHBc8J4V854m+7WnEQg5bybQ3Lj9DHgDT
-         63/UFKtSd/hjEOjYBOhNdtVH7GQsgWDxUeLdry0wDq0o5ctFZUmwfshCqZxk9nWfDf8v
-         hhAaLB4iFN6VaIiBaM9CrwzCNLkhFCSCcL5R3OIEPQ9bnzOhm9FTj3pNFL29davtdiJF
-         AiZlEyH/MDkaQgTYPCaYgIQJd+r/X4aQq4iOl2Wotz9J50LyfXHJ3SBS97hO9/czl5ZL
-         6Q3YaSFkgClFfzeDyB4nDQqCzRb5wDtm7U7tL+g8IZBv2XlAz1pa1wwFXbSJO4x+JfJz
-         JHOQ==
+        bh=LDw45IBLdxhM9LjWeyHX6+dY7iByC19AmUWN5RO+9ZI=;
+        b=necsN8/nbNrlCCZ/hWYYg/qlHEzSSUAe2ndDeoK2YUvEoNjFpGYUGIb1Ks+8yz+E4d
+         IybkuIIq/E2x5W7AyKJsXul0NafZ8e3MMYgsMss8gthbxtJpY6qlP5U9+YAekULqwyJp
+         YSMaWZzfvnm2x8IYWItnempkbKuhDYBxcdm3aEXWwt2P7BIgL8J3XY5SPwyiXuGwQ44g
+         RCyGCIhk4ZNEiQ3AATvSL/gywd7E0OsmAOkNybQr7UgdfAclUNZLfRU8C8U1Gmp8iPGr
+         qIlOCRqB1dUIcXnAkGU2yaHeFFk/fDf38bsX20d6jDJBWLP3qPzRhsmpY6TOhSKzeqRJ
+         LQIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713466403; x=1714071203;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1713468965; x=1714073765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9r7Cqzwpa0N6ahjvlQwho0MrL0UhOcI3CGtbp3521uQ=;
-        b=Bk3XN9RC4saLbS/+YkfFsCtc7OqEc3XKXbLCeHqbn33M1UcWWJkCE+Lrk2Ay905YlI
-         udAr3yyG5TWAA6zzUixcrrlUpdeOUYqsjMZZlxMF9OKtndx16W7HXbKKUbLExSq6SSlU
-         FzvjTF0NOrhx5VAtjE4mpjwoNp69bs++KDtoLXmo4p40mnXdKlk3rOUydTE80zYM56nL
-         DPyTigU92B+/gQHsBkQ7QykkoTX0DKZgtqMFe+nf58t9+au7uqClo7OettDuf7vi8HTg
-         +mO4XRNLpWMaCKk3afRIwmVi1ff/ZOWDb+Hm3tWxmwo3fnlmLntG+W1g8jjgSJrph04E
-         mU+g==
-X-Forwarded-Encrypted: i=1; AJvYcCVg3BPGliM7Sk9w8V5F0ADH52OlEWxCa7nj0ZLpIK0Cu84iub0xA211jjNE55YAvM5tuld5Lw5NIx3uRjmSL+Fmt9T+CaL3dKByjeRbxVfOZmtVHu4Q3wMLezMY7jBkkMIQFNoz7JfdRfJZfNU=
-X-Gm-Message-State: AOJu0YzC93nHSJJFkndazzpGRvC+/TmoTBR60nKamgVcEkbIm5swKUjy
-	CCywBxJPku7UTKZvnEypj73cRboEnP/rLe8muzSFUNJKHLMvG72G
-X-Google-Smtp-Source: AGHT+IGYj8Z9DdNusXwRbFDJgf6QW2DcyYlg/XNuCin6S3U7WarnpdkqqVX9H+XSmkhJvov6jUOCIA==
-X-Received: by 2002:a0c:c252:0:b0:69b:1e3b:61d8 with SMTP id w18-20020a0cc252000000b0069b1e3b61d8mr3630668qvh.29.1713466403444;
-        Thu, 18 Apr 2024 11:53:23 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id g11-20020a0caacb000000b006994062299dsm886050qvb.33.2024.04.18.11.53.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 11:53:22 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id DC63D1200032;
-	Thu, 18 Apr 2024 14:53:21 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Thu, 18 Apr 2024 14:53:21 -0400
-X-ME-Sender: <xms:IWwhZpAlkd8M4B55j5SLy8hO71yigh1lbfnJbE3xFfBBVT8hGDjOmg>
-    <xme:IWwhZnh6QmEVCGYPvxysUF9jSq5LdI_OcMED9jut6ySM5GhB0DL4hpkssbkVnf-J9
-    Q28S0liH1AId6JmlQ>
-X-ME-Received: <xmr:IWwhZklNVhHXyjyv_U3HOh4xA-NL26snAoJbiTvFV1nc-cdEH7roV8uFEJ-Jug>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudektddguddvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:IWwhZjzqXb0hAKxR8W28ZtpfTJyLOMucSPtxL1mynN5RSfSFLCwAsA>
-    <xmx:IWwhZuRnAjVe6y1VkbSYyQ-ZYszZWK7Rfxce4bm4WgThEXF7Xaptgg>
-    <xmx:IWwhZmawc7rr28an9vUnC2Ax4S1isr1rfagk8GjM4XDdv7WHYCEzLA>
-    <xmx:IWwhZvRQY9gkdKoOulybi4fP0MVSeT2qs-QccQnSr42_VPqRhOvXAw>
-    <xmx:IWwhZsB8pZ6HxZhyR4VlL30sVFvh9-NpJUzjK8Vcn_Cgf06CFbkSIdec>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 18 Apr 2024 14:53:21 -0400 (EDT)
-Date: Thu, 18 Apr 2024 11:52:56 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v6 4/4] rust: add abstraction for `struct page`
-Message-ID: <ZiFsCLb-BZWbBHsu@boqun-archlinux>
-References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com>
- <20240418-alice-mm-v6-4-cb8f3e5d688f@google.com>
+        bh=LDw45IBLdxhM9LjWeyHX6+dY7iByC19AmUWN5RO+9ZI=;
+        b=GX2SIXyrm3U3GtUWkvam95b97aq/TRy/RPJQJgmPnnCsCzjN7UTrjsPoMsT/h90yak
+         U15m3iBDMsMQf+Y0PfZL5Xfa51vSryCl5O9WBQvlwkl0Mr+Wc8mPCZDP1MjJBvhmccIU
+         qMuWT6SVTF/lbo0muFnZhe7uOM/nvZOUl7BQVQpHAYGdITWb+jecZ2T+LEhFVqRpmbxK
+         17GBMxW13P61A/s7B/KPX4W4s7u3bLgDr9uoaW5PtEV2OzlLr4rteEiQaAZ4hG8Vg+bE
+         pjSJcdtaltbpGQ4fgmPdrXnNoIoBvw6jR5Qc4xS/2w1T6jLOOMRzAOBLLQR7uupaN7ve
+         SNqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXG67n4szKFsdbe9GrBgEqo4xFFCzHDDK8YFIpjguYzyAHi0WtxRcBt9mEpws0cYHF7R6LgrgeW5yoHB5jZa44isOGvVnqa0RtIavpKKMI=
+X-Gm-Message-State: AOJu0YxWTSpJZR/oGgIonsXUDPYrEjIDT7IH8Umbqp+MNN9va9adDIQR
+	d5PsqO4Z0U6AJvujkMR4bhY3MPljrbtcvNEu0Zq9AmJt3w+sG9QJsOq40PMNAUv4yknMtJ1phfr
+	2Hi9K347Rt3bh9wcN21z8lGEiaUKql3tDim+V
+X-Google-Smtp-Source: AGHT+IHWSmA+AfhQF9/pyCrR3PIU8inWb525EGlHJDtOQVNbZNkBZXIDGXbngqcol+h71pHrWWwtbSq3HJMU/ZUYWPc=
+X-Received: by 2002:a05:6122:178f:b0:4d1:4e40:bd6f with SMTP id
+ o15-20020a056122178f00b004d14e40bd6fmr4926638vkf.10.1713468965153; Thu, 18
+ Apr 2024 12:36:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240418-alice-mm-v6-4-cb8f3e5d688f@google.com>
+References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com>
+ <20240418-alice-mm-v6-3-cb8f3e5d688f@google.com> <5fd684d8-d46d-4009-bcf8-134dab342322@proton.me>
+ <CAH5fLgiMLxmmm0AVX_5HQF61FzzN69GCKabrr-uM_oV-rRMuHw@mail.gmail.com>
+ <c6239407-8410-49e2-a8a1-16be8468ab88@proton.me> <ZiFWIFMSBbU0i8JF@boqun-archlinux>
+In-Reply-To: <ZiFWIFMSBbU0i8JF@boqun-archlinux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 18 Apr 2024 21:35:53 +0200
+Message-ID: <CAH5fLghTqbK-b4z_GJYJF9PFj8JkkKE+dNNpELFZspC2o9Oa1A@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] rust: uaccess: add typed accessors for userspace pointers
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 18, 2024 at 08:59:20AM +0000, Alice Ryhl wrote:
-> Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> This struct is assumed to hold ownership over the page, so that Rust
-> code can allocate and manage pages directly.
-> 
-> The page type has various methods for reading and writing into the page.
-> These methods will temporarily map the page to allow the operation. All
-> of these methods use a helper that takes an offset and length, performs
-> bounds checks, and returns a pointer to the given offset in the page.
-> 
-> This patch only adds support for pages of order zero, as that is all
-> Rust Binder needs. However, it is written to make it easy to add support
-> for higher-order pages in the future. To do that, you would add a const
-> generic parameter to `Page` that specifies the order. Most of the
-> methods do not need to be adjusted, as the logic for dealing with
-> mapping multiple pages at once can be isolated to just the
-> `with_pointer_into_page` method.
-> 
+On Thu, Apr 18, 2024 at 7:27=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Thu, Apr 18, 2024 at 04:23:06PM +0000, Benno Lossin wrote:
+> > On 18.04.24 15:17, Alice Ryhl wrote:
+> > > On Thu, Apr 18, 2024 at 3:02=E2=80=AFPM Benno Lossin <benno.lossin@pr=
+oton.me> wrote:
+> > >>
+> > >> On 18.04.24 10:59, Alice Ryhl wrote:
+> > >>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > >>> index 8fad61268465..9c57c6c75553 100644
+> > >>> --- a/rust/kernel/types.rs
+> > >>> +++ b/rust/kernel/types.rs
+> > >>> @@ -409,3 +409,67 @@ pub enum Either<L, R> {
+> > >>>       /// Constructs an instance of [`Either`] containing a value o=
+f type `R`.
+> > >>>       Right(R),
+> > >>>   }
+> > >>> +
+> > >>> +/// Types for which any bit pattern is valid.
+> > >>> +///
+> > >>> +/// Not all types are valid for all values. For example, a `bool` =
+must be either zero or one, so
+> > >>> +/// reading arbitrary bytes into something that contains a `bool` =
+is not okay.
+> > >>> +///
+> > >>> +/// It's okay for the type to have padding, as initializing those =
+bytes has no effect.
+> > >>> +///
+> > >>> +/// # Safety
+> > >>> +///
+> > >>> +/// All bit-patterns must be valid for this type. This type must n=
+ot have interior mutability.
+> > >>
+> > >> What is the reason for disallowing interior mutability here? I agree
+> > >> that it is necessary for `AsBytes`, but I don't think we need it her=
+e.
+>
+> Hmm.. technically, if the interior mutability behaves in a way that each
+> byte is still initialized during the modification, then it should be
+> fine for `AsBytes`, for example and `AtomicI32` (implemented by asm
+> blocks)? Not making any change suggestion, just checking my understand.
 
-Thank you for doing this, and breaking the chicken-and-egg problem chain
-;-) For sure, the whole package of page API would need more time to
-design, implement and review, but this patch looks good enough to me.
+No, that's UB. When the type is not interior mutable, then any two
+loads from the same immutable reference may be assumed to return the
+same value. Changing it with an atomic would violate that since the
+value changes.
 
-> Rust Binder needs to manage pages directly as that is how transactions
-> are delivered: Each process has an mmap'd region for incoming
-> transactions. When an incoming transaction arrives, the Binder driver
-> will choose a region in the mmap, allocate and map the relevant pages
-> manually, and copy the incoming transaction directly into the page. This
-> architecture allows the driver to copy transactions directly from the
-> address space of one process to another, without an intermediate copy
-> to a kernel buffer.
-> 
-> This code is based on Wedson's page abstractions from the old rust
-> branch, but it has been modified by Alice by removing the incomplete
-> support for higher-order pages, by introducing the `with_*` helpers
-> to consolidate the bounds checking logic into a single place, and
-> various other changes.
-> 
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-
-Something I want to bring up for discussion below:
-
-[...]
-
-> +    /// Runs a piece of code with a raw pointer to a slice of this page, with bounds checking.
-> +    ///
-> +    /// If `f` is called, then it will be called with a pointer that points at `off` bytes into the
-> +    /// page, and the pointer will be valid for at least `len` bytes. The pointer is only valid on
-> +    /// this task, as this method uses a local mapping.
-> +    ///
-> +    /// If `off` and `len` refers to a region outside of this page, then this method returns
-> +    /// `EINVAL` and does not call `f`.
-> +    ///
-> +    /// # Using the raw pointer
-> +    ///
-> +    /// It is up to the caller to use the provided raw pointer correctly. The pointer is valid for
-> +    /// `len` bytes and for the duration in which the closure is called. The pointer might only be
-> +    /// mapped on the current thread, and when that is the case, dereferencing it on other threads
-> +    /// is UB. Other than that, the usual rules for dereferencing a raw pointer apply: don't cause
-> +    /// data races, the memory may be uninitialized, and so on.
-> +    ///
-> +    /// If multiple threads map the same page at the same time, then they may reference with
-> +    /// different addresses. However, even if the addresses are different, the underlying memory is
-> +    /// still the same for these purposes (e.g., it's still a data race if they both write to the
-> +    /// same underlying byte at the same time).
-> +    fn with_pointer_into_page<T>(
-> +        &self,
-> +        off: usize,
-> +        len: usize,
-> +        f: impl FnOnce(*mut u8) -> Result<T>,
-
-I wonder whether the way to go here is making this function signature:
-
-    fn with_slice_in_page<T> (
-        &self,
-	off: usize,
-	len: usize,
-	f: iml FnOnce(&UnsafeCell<[u8]>) -> Result<T>
-    ) -> Result<T>
-
-, because in this way, it makes a bit more clear that what memory that
-`f` can access, in other words, the users are less likely to use the
-pointer in a wrong way.
-
-But that depends on whether `&UnsafeCell<[u8]>` is the correct
-abstraction and the ecosystem around it: for example, I feel like these
-two functions:
-
-	fn len(slice: &UnsafeCell<[u8]>) -> usize
-	fn as_ptr(slice: &UnsafeCell<[u8]>) -> *mut u8
-
-should be trivially safe, but I might be wrong. Again this is just for
-future discussion.
-
-Regards,
-Boqun
-
-> +    ) -> Result<T> {
-> +        let bounds_ok = off <= PAGE_SIZE && len <= PAGE_SIZE && (off + len) <= PAGE_SIZE;
-> +
-> +        if bounds_ok {
-> +            self.with_page_mapped(move |page_addr| {
-> +                // SAFETY: The `off` integer is at most `PAGE_SIZE`, so this pointer offset will
-> +                // result in a pointer that is in bounds or one off the end of the page.
-> +                f(unsafe { page_addr.add(off) })
-> +            })
-> +        } else {
-> +            Err(EINVAL)
-> +        }
-> +    }
-> +
-[...]
-> 
-> -- 
-> 2.44.0.683.g7961c838ac-goog
-> 
+Alice
