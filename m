@@ -1,187 +1,219 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2060.outbound.protection.outlook.com [40.107.20.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5D539FFD
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 07:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713424005; cv=fail; b=imkwNWyKhV/vGGewqvrwL/AC0xVP2PQNG/ZMRIAwtQIkQHqEwzW/rTZ12Ki+GwF/FNU6Bc/ty9dJWTJRQeu5qELc2GS1WfLJoZeDHJKRjWHwaZD/VnntSKWi/1VM2Rlj0nGe1SirYG4ZBW0BATHQrk0r/STj7//BTJYPl2rLlxk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713424005; c=relaxed/simple;
-	bh=hOYnEOC4M9Bpo+DjoC7UXNoi7+b9yhcvmMVJAw9b03Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nhlfaf27FGTezQ/Qdp7LTM02BY8XFhXoi80c45pnFrO9lr+S4lhPxUDujVS8rE1lmPybbObWMTWIh6cjLodkKXTmF+TeEl5nykSiR7ra0jq0j4HOeXOFPUNMokHqDSMjkV3JdXDQ8DenDL29wAC/kcl13r50X8oSs1FCLDUBymk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=bx+UNmuR; arc=fail smtp.client-ip=40.107.20.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523BB1E498
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 08:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713430774; cv=none; b=F1kvTPf0sWsgf9vAKwrIfw7eBs2kKvfJ+1N+RnSpaWFETGGTnBX6FTCMbfw5oaQYYn6ynh8jorX0XbsePqcq3fMP9gbqW4ezQU7HTjmnJHFiOqNiTWqvkm+7SU5H8+JW6AnmOXiyr9K0CyxApu/Nq1NXzxZL8ZNTt4WEpGnWAnU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713430774; c=relaxed/simple;
+	bh=EKOb+HQOdPSDwGBxYIVC+gfTRfSx/aJkWNgqulepRkI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WG8QdlIhLjCXegCJFDUdARWqlCG2187hCpAfu805O9XdUtj3eHkjYRt5CNzW0Bx+4SriIaFJMCvKxJcHI2GJIDNOX+kQQ2qt+tfMLYoO+/Z/zHk+v4jTZvdIel13SC2pEYGM+otZPj4cIMOZjAnse+wkZA1O6gSVXnxg2r6wko4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bemWftTu; arc=none smtp.client-ip=209.85.208.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="bx+UNmuR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QmzPZY0jl+Ru4NGqhdrICIIyrIlNvgW5cr++kheheWo3+rQvYEwe8UD4UiWQnK/M0k5gmqIzFBrmMZFdzc/wiHo2kDkBo6YAZ6D6xtl03nZtBlHaDiUUQAA2IDCzrj++wjgQ4y5kVbnl7ieYUclvnAUz/DjlPbz7+U5/UJ0LtIrWSluoVxMixQ+uxeR4/y0etITMScRIKYNGwYPfMZ6fhoto1FsNIarBH9I3ORbRlAYo5OhYBZ3zIBL+dZlweJnZ7s57WAxrqcgp4GG+rG1BIbmKFHlY/ZEzndczsfjB88eAqJjET1wk7GwXlNN9Z1FegW9HsllfuONLd2CourB5kQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XqpfmJ/3PODEUpa3tYAlsrKKL8gEg6pikoNZdG7YFQA=;
- b=TNlo9VxGo/cmaU1KsKJKQm/22yq/92zlbpoBRcHuSwPzk5xlS2VeJHx0mflz/1leCsVZQ3zIGrBvYueWbejx5TmcvPjONeCJEAOHF949UlB+Ze3AJDgBZzAdATrPpsy3SLyMkK3Z4qF6ERhZFfB/sqRFUni/IvZSvvEnTQVxXFm7/v0vpXf0IVUb4aXSRB40LmaoA5AGKUS2/YP0ERn0gbgO4T4sLPVAhihqPoPvM5omvdqc+zzcrogOrMJDZp5VZHEf1seRz5J0roMNBB2xd7Y+hKEyY0Af47xRWGpbLgGUKklK8jDJ1tprJKMQXiJrfGnOyPFcSLRdP1K9flPnBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XqpfmJ/3PODEUpa3tYAlsrKKL8gEg6pikoNZdG7YFQA=;
- b=bx+UNmuR26lTGnUMESkBJQh/vFtmF3XqBTYiP2B1kK9zDzVBrnTjK3vJ8692inZH3FRlm0vCuUH+fRZwZ5wl15MCkBqdanpxsSvE6cwEkeU/KdOXnA4QcW+KFDIqNL/Ebe67An+vkKrnp8oCSa/IgyR4etVjO+T3T/ebfgOjLaKmkKi65ZPS4vWTXwnh/vUVVOchoSRYiMQBm6aeM7Rmy8SH9WfdvmEEoIq0lF02BC0ITCOBL3+yv0O5jHnTzPSPs7vJRA66UTZRUuZUxVNRsL2jLJqgDtc7z2F7FLwDH2w8WR2t107NVqGHae24MNRjGRLmNmDnuzBkpM0i2FieZQ==
-Received: from DB9PR02CA0007.eurprd02.prod.outlook.com (2603:10a6:10:1d9::12)
- by AS8PR10MB7706.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:63f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.40; Thu, 18 Apr
- 2024 07:06:36 +0000
-Received: from DB5PEPF00014B98.eurprd02.prod.outlook.com
- (2603:10a6:10:1d9:cafe::bd) by DB9PR02CA0007.outlook.office365.com
- (2603:10a6:10:1d9::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.20 via Frontend
- Transport; Thu, 18 Apr 2024 07:06:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- DB5PEPF00014B98.mail.protection.outlook.com (10.167.8.165) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7452.22 via Frontend Transport; Thu, 18 Apr 2024 07:06:36 +0000
-Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 18 Apr
- 2024 09:06:26 +0200
-Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
- FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.37; Thu, 18 Apr 2024 09:06:26 +0200
-From: Dirk Behme <dirk.behme@de.bosch.com>
-To: <rust-for-linux@vger.kernel.org>
-CC: Dirk Behme <dirk.behme@de.bosch.com>, Valentin Obst
-	<kernel@valentinobst.de>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda
-	<ojeda@kernel.org>
-Subject: [PATCH v4] docs: rust: extend abstraction and binding documentation
-Date: Thu, 18 Apr 2024 09:06:18 +0200
-Message-ID: <20240418070618.3962736-1-dirk.behme@de.bosch.com>
-X-Mailer: git-send-email 2.28.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bemWftTu"
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2d8781cabdaso4863471fa.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 01:59:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1713430770; x=1714035570; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tjcuz1zEduZDelE435DU7CODjxYuJ/nMkJoF3xPyrOQ=;
+        b=bemWftTuIBV+TrcMcKdOA0I2VCjpXdZfFu8ILwMZYPOM3kyJxIPFjDWopz4RRKf28T
+         HgmHcQAgVJ3CYX6H8C4ZHkjkfXGDwunUgz4XKUSB7en0TGGaryKE5X6nGSfULBtvubnO
+         ZomyC7dA37Rn4BL9q8iKFyXh1U/9C0IyMa/oiZKk5nSyom/ejBZkbMCl1qANG4qnOV67
+         rZGb0yZzMsWys+nN2BV3tGqS51OhMj22It8i8D1aH64zE4VAOgz3DJ/PxTk0ZJ5+zaRC
+         lm89KFJQFzdILt4AWGhZPHrsqtLC/IHZwb2NdIobmjOkIGPWhtXYtsT6opsBNsL2c98o
+         ctsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713430770; x=1714035570;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tjcuz1zEduZDelE435DU7CODjxYuJ/nMkJoF3xPyrOQ=;
+        b=DeFjf+eVQAfJhnxB8Kt2ZcKl/iVpYvCLFF5E4wj7Ggi2KLCQGeYpcuPr5qdwWd8VVr
+         kOsEVPSgD2l8kJbuh1eoXPRbaOUpDsGo4bwB+UujHNdQbDaZ9jNxqSb2UvZXDbFC5J6Q
+         cCBzK0THg+YxiT35mlF9yVgDN0hNpjtzRpQZKQjR/yqaLCDqmv7nV3MLu5dNEnaV3AE4
+         co5P5r7D5wLFOyUO9GfLGzOs/aVgVACzdSjXuGDExmrPMa46+825SVt6RpWyYc+G4bwb
+         2lGsldR+qPdwkayYJSDNI9fW/LoNOTf5eyJcZypZnA+7JtwZP1dll8I2IZirGmaLspq1
+         iwFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUM2gcpEz7Z95JkGPaUgTlQfo1Pi1Ukql1YIkd3673N7/QmuiziF059jrxPpIN6KW4YXZLoz9ssRWLvnTObAs0l8Te+eUgdUKfYcyo1ovQ=
+X-Gm-Message-State: AOJu0YzhlXCDnpBIlPaZKcEce5nPmLy5ucTzuciQfH9xxsq/wEP1j8te
+	Xq2y/s51WLLlEHiwHIfFrXnWMxeawEElfCjOJIDlQfXjhe/w8Fr0AMCvFMFrOe40kB9TaTfn6o2
+	BkPg0AHndl6MyWA==
+X-Google-Smtp-Source: AGHT+IFD4zFEKLzwwqRcxHO2U42hED49hamO66nHcnOSUg2YEF8UQokeTd73CF3AhLyw0IFIrk8AVfurp0BM69Q=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a2e:a801:0:b0:2dc:14d2:20f7 with SMTP id
+ l1-20020a2ea801000000b002dc14d220f7mr203ljq.9.1713430770579; Thu, 18 Apr 2024
+ 01:59:30 -0700 (PDT)
+Date: Thu, 18 Apr 2024 08:59:16 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B98:EE_|AS8PR10MB7706:EE_
-X-MS-Office365-Filtering-Correlation-Id: 821d38b8-26d1-4377-8c66-08dc5f761671
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	UM18r5Mh6mknYnEYjmYwZnnM0eaDhyJ86IulAh0zSHLdjMmI7FH5bmj3Rjx7TMEcORzDqoIwg/ro2rbDHheeTesyqpsBY3ftiD9euqMvC2oShJFBjTIwMhddlgCWh3u6Pb94zeULYLZAqEEepiJTaF+bnqxdkUTx764SLv/BcBASvKj2IBiA5tN7QGVTA5l1Ja7pDf8jfDtgj5RL3KXP9it6+OZ4wo/EnqcVikXxl5Am6byEy+F+HrBUfr7FT6f6WPRzxKObsQC8D5dv4SJKF4/HFVbb7Bu+tJOGbrfWA9NLWF6EVm1XSiJO+qnotNFeElyIzf1zVaCeAhA37CPTFPhStbpxIvSaAekZ/5XFyDjE/wfg7l0j0WCEH/5vv1fQuj3ca5JobRsDLriR04VN1Vs3hPyKT/XjtOwE3UGvMYbgoGgwUxU0NhhyoOycIrCbXD/U0SpjiJeiB5606+kzP0bs14FpOHDsUlTurzHxbmN2/5AgjEge0xU5B9XWX6YFWu4FUzSUbMqJ1dMT9LYgswDnOxpXN4wQ5BJC2/ukNGFK+ifsbrcaJ28177N4qr4HLcbZkPWtMdtYhmPy54YOnTn1yrskXNQsL6jCx01tBruwfmnQoGCFtwy8/erceaMU3nLkv4BtJG9I0YGpL/gBggx5vxellm2lpSSHKdsYKtzzLM45vq/FGiEkwo6rTvrHZr5R+AxoH7DBbFDiOV9mHOELeKYxHNKomFgEL2KxJ1hrrdGlZIXqW8oot+LMUMOW
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(376005)(1800799015)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 07:06:36.5993
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 821d38b8-26d1-4377-8c66-08dc5f761671
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B98.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB7706
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAOTgIGYC/2XOwW7DIAwG4FepOI8JjMnoTnuPaQfimBSpKVUyo
+ U1V3n1OL2GKOP2G7zcPtfCceVHvp4eaueYll5uE7uWk6BJvI+s8SFZgwFkLQcdrJtbTpHvyzqH
+ viDkoeX6fOeWfZ9Xnl+RLXr7L/PtsrnabbiVoLOBeUq02erCxJ6bgCPFjLGW88iuVSW0tFXYJp
+ llfYZMBLHi5wNgdpNulfL2RTiQN6a13UeSZDhJ3KaeRKBLPMSAgUDJwkL6R1jfSi+yS94xD4OT tP7mu6x9zHjE7iQEAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5147; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=EKOb+HQOdPSDwGBxYIVC+gfTRfSx/aJkWNgqulepRkI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmIODpvn8YfthhJyGIeqFlR8yHa3C9Ul13gEsd0
+ HVls3uAQBOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZiDg6QAKCRAEWL7uWMY5
+ RkZ/D/96tk+NcZHWL5a1hchXVUpuXjVL0AymcssJSlYyOWYe2xnTOVbpQwg4Oo5cANiWPFyOoya
+ hNONBYZCjpxUbQRkVi+yYKhVjHgILqf+b2vuR2xRKD+b4OPCIMO9GMvn+HAdZOEBqbxTN4S9vR3
+ PMVu1Ma8aAYwHNIcvrRc84iTW+q9C6Ez8UfwGfN8Wro1WFguJmsInBfPzy0DDDAJbK3kmafpwqg
+ 8VNMHnr111Psg88SZVCQOjehLlTCLWEv9xO89rW4vMZ0g4alszYGUF06g2haQdCuEhanwo8bQ06
+ 6KWwpx948WfAwIQCh6A4yBlKJUfpVNzdfODsahr0OohgelmIwdGPVaToBY4xSybBr8niN4Kn0Ak
+ OBChHRyJEKlDWE5U6slhYZ9WDNllPAurIDjB9Aegml7F3OYc21dSbUs0CGxUglTp6WKN9pjBSd/
+ 45IjwxJpi3fxfA5+bYFgIT2u5CmztdV5tqMj5g9aRVSk5ildy9fY8yYw+Jp75Yvpq4gbp96sZZY
+ G14q8FZHYM2LN6lVC8Xem1i4SfGgLICM3FCQInMdQJUK7Q1JkxJ7H4sbrYYW+2xiQJvAm6LCbGo
+ TY26fZqZGx3HOUD8p8CYZxtMJjNqZjWshi3MP5iwgUNtHDgkk099IVwMrCsAz1bEidgr2VOWK1w xmOk2hZb3SGJ73Q==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com>
+Subject: [PATCH v6 0/4] Memory management patches needed by Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-Add some basics explained by Miguel in [1] to the documentation.
-And connect it with some hints where this is implemented in the
-kernel.
+This patchset contains some abstractions needed by the Rust
+implementation of the Binder driver for passing data between userspace,
+kernelspace, and directly into other processes.
 
-[1] https://www.linuxfoundation.org/webinars/rust-for-linux-writing-abstractions-and-drivers
+These abstractions do not exactly match what was included in the Rust
+Binder RFC - I have made various improvements and simplifications since
+then. Nonetheless, please see the Rust Binder RFC [1] to get an
+understanding for how this will be used:
 
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Users of "rust: add userspace pointers"
+     and "rust: add typed accessors for userspace pointers":
+	rust_binder: add binderfs support to Rust binder
+	rust_binder: add threading support
+	rust_binder: add nodes and context managers
+	rust_binder: add oneway transactions
+	rust_binder: add death notifications
+	rust_binder: send nodes in transactions
+	rust_binder: add BINDER_TYPE_PTR support
+	rust_binder: add BINDER_TYPE_FDA support
+	rust_binder: add process freezing
+
+Users of "rust: add abstraction for `struct page`":
+	rust_binder: add oneway transactions
+	rust_binder: add vma shrinker
+
+Links: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- Documentation/rust/general-information.rst | 56 ++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+Changes in v6:
+- Base on top of Wedson's Allocation APIs patchset.
+  - Do not define my own gfp flags, instead use the ones that are now
+    available in `kernel::alloc`.
+  - Add gfp flags to `read_all` methods instead of always using
+    GFP_KERNEL.
+  - The __GFP_HIGHMEM flag is not provided by the Allocation APIs
+    patchset, and I do not add it here. I will send a separate patchset
+    for adding it.
+- Use usize instead of void pointer for userspace address.
+- Add _raw suffix to `fill_zero` and `copy_from_user_slice`.
+- Do not allow interior mutability in AsBytes/FromBytes.
+- Doc changes:
+  - Mention that validity of user slices is checked at read/write time,
+    not in the constructor of the user slice.
+  - Mention that methods can also return EFAULT if a bounds check fails.
+  - Mention that methods may have partially copied data even if they
+    return EFAULT.
+  - Add link from `read_raw` to `read_slice`.
+  - Move comment about initialized memory on `read_raw` to
+    `# Guarantees` section.
+  - Add examples for `Page::alloc_page`.
+  - A previous version renamed UserSlicePtr to UserSlice but forgot to
+    update that in the commit message. Commit message fixed in this
+    version.
+- Add Reviewed-by tags submitted on v5.
+- Link to v5: https://lore.kernel.org/rust-for-linux/20240415-alice-mm-v5-0-6f55e4d8ef51@google.com/
 
-Changes in v4: Rebase against rust-dev v6.9-rc1 to re-start this topic. If
-               the reviewers are too busy and its not a good time for it
-               just let me know :)
+Changes in v5:
+- Fix casts in declarations of PAGE_* constants.
+- Fix formatting of PAGE_MASK.
+- Reformat comments at 100 line length.
+- Minor fixes to safety comments of `read_raw` and `write_slice`.
+- Link to v4: https://lore.kernel.org/rust-for-linux/20240404-alice-mm-v4-0-49a84242cf02@google.com/
 
-diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
-index 081397827a7e..6c6fb3a5e318 100644
---- a/Documentation/rust/general-information.rst
-+++ b/Documentation/rust/general-information.rst
-@@ -64,6 +64,62 @@ but it is intended that coverage is expanded as time goes on. "Leaf" modules
- (e.g. drivers) should not use the C bindings directly. Instead, subsystems
- should provide as-safe-as-possible abstractions as needed.
- 
-+.. code-block::
-+
-+	                                                rust/bindings/
-+                                                       (rust/helpers.c)
-+
-+                                                          include/ -----+ <-+
-+                                                                        |   |
-+         drivers/              rust/kernel/              +----------+ <-+   |
-+           fs/                                           | bindgen  |       |
-+          .../            +-------------------+          +----------+ --+   |
-+                          |    Abstractions   |                         |   |
-+       +---------+        | +------+ +------+ |          +----------+   |   |
-+       | my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | <-+   |
-+       | driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          |       |
-+       +---------+        | |system| |system| |          | bindings | <-----+
-+            |             | +------+ +------+ |          |  crate   |       |
-+            |             |   kernel crate    |          +----------+       |
-+            |             +-------------------+                             |
-+            |                                                               |
-+            +------------------# FORBIDDEN #--------------------------------+
-+
-+The main idea is to encapsulate all direct interaction with the kernel's C APIs
-+into carefully reviewed and documented abstractions. These are then considered to
-+be sound. The goal is that users of these abstractions ("my_foo driver") cannot
-+introduce undefined behavior (UB) as long as:
-+
-+#. the abstractions are correct.
-+#. they don't use ``unsafe{..}``. Or they uphold the preconditions of all unsafe
-+   operations that they perform if they use ``unsafe{..}`` for performance optimizations
-+   or to call unsafe abstractions.
-+
-+Bindings
-+~~~~~~~~
-+
-+By including a C header from ``include/`` into ``rust/bindings/bindings_helper.h``
-+the ``bindgen`` tool will auto-generate the bindings for the included subsystem.
-+After building, see the ``*_generated.rs`` output files in the ``rust/bindings/``
-+directory.
-+
-+For parts of the C header that ``bindgen`` doesn't auto generate, e.g. C ``inline``
-+functions or macros, it is acceptable to add a small wrapper function
-+to ``rust/helpers.c`` to make it available for the Rust side as well.
-+
-+Abstractions
-+~~~~~~~~~~~~
-+
-+Abstractions are the layer between the bindings and the in-kernel users. They are
-+located in ``rust/kernel/`` and their role is to encapsulate the unsafe access
-+to the bindings into an as-safe-as-possible API that they expose to their users.
-+Users of the abstractions include things like drivers or file systems written in Rust.
-+
-+Besides the safety aspect, the abstractions are supposed to be "ergonomic", in the
-+sense that they turn the C interfaces into "idiomatic" Rust code. Basic examples are
-+to turn the C resource acquisition and release into Rust constructors and destructors
-+or C integer error codes into Rust's ``Result``.
-+
- 
- Conditional compilation
- -----------------------
+Changes in v4:
+- Rephrase when we fail with EFAULT.
+- Remove `pub` from examples.
+- Use slices for raw uaccess methods.
+- Fix PAGE_MASK constant.
+- Rephrase most safety comments in Page abstraction.
+- Make with_pointer_into_page and with_page_mapped private.
+- Explain how raw pointers into pages are used correctly.
+- Other minor doc improvements.
+- Link to v3: https://lore.kernel.org/rust-for-linux/20240311-alice-mm-v3-0-cdf7b3a2049c@google.com/
+
+Changes in v3:
+- Fix bug in read_all.
+- Add missing `#include <linux/nospec.h>`.
+- Mention that the second patch passes CONFIG_TEST_USER_COPY.
+- Add gfp flags for Page.
+- Minor documentation adjustments.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20240208-alice-mm-v2-0-d821250204a6@google.com/
+
+Changes in v2:
+- Rename user_ptr module to uaccess.
+- Use srctree-relative links.
+- Improve documentation.
+- Rename UserSlicePtr to UserSlice.
+- Make read_to_end append to the buffer.
+- Use named fields for uaccess types.
+- Add examples.
+- Use _copy_from/to_user to skip check_object_size.
+- Rename traits and move to kernel::types.
+- Remove PAGE_MASK constant.
+- Rename page methods to say _raw.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240124-alice-mm-v1-0-d1abcec83c44@google.com/
+
+---
+Alice Ryhl (2):
+      rust: uaccess: add typed accessors for userspace pointers
+      rust: add abstraction for `struct page`
+
+Arnd Bergmann (1):
+      uaccess: always export _copy_[from|to]_user with CONFIG_RUST
+
+Wedson Almeida Filho (1):
+      rust: uaccess: add userspace pointers
+
+ include/linux/uaccess.h         |  38 ++--
+ lib/usercopy.c                  |  30 +---
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |  34 ++++
+ rust/kernel/alloc.rs            |   7 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/page.rs             | 250 ++++++++++++++++++++++++++
+ rust/kernel/types.rs            |  64 +++++++
+ rust/kernel/uaccess.rs          | 388 ++++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 774 insertions(+), 40 deletions(-)
+---
+base-commit: 2c1092853f163762ef0aabc551a630ef233e1be3
+change-id: 20231128-alice-mm-bc533456cee8
+
+Best regards,
 -- 
-2.28.0
+Alice Ryhl <aliceryhl@google.com>
 
