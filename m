@@ -1,82 +1,96 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CFA6FB0;
-	Thu, 18 Apr 2024 14:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC4916F29F;
+	Thu, 18 Apr 2024 16:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713451359; cv=none; b=rOz88ubd8HPhmaHgju5+Jqm7KrVxpJ8ER+psBGE457ONVS11gU/mBaIdEWF2Oq4CKSUU/YKF6Kh3+CSg6JKcE/lyjJE9+lrewjgKZCOBH8qod/3/Wfe1Y6XHQHHUeWWp9bOUM1qni+W3Iq3xa92YBNJzAy/etUBepXyp1TADK+A=
+	t=1713457403; cv=none; b=CT/5/K73rJgoss6o7euXV/asJj9YXNS496Jj6gLZk5mNQyIH3cDJws5WeSb/4umV/qSpY6h9IZ3czMwis7uf54a2sPBifqTTF3TcbDrCjldxlKUOnjGVJHzfBJnQqDT6FMZE47sVzhwqtn+2JDQqJCl2aKU+w4fXu3Pu54zASMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713451359; c=relaxed/simple;
-	bh=X/X/TboqyfyUYTUVWHRPVjdRoe8kWfo0nNRba0UUe3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=npCsQidWbccnnuVzMGyt+OKK7q2+IQC4/krc6oReKy48axX8LKossELD9o8uFLLmqt/Gka26IbfGIs+8YM+6KlqXe605bc8EU29wry7j/qcOyZqyhoWchc5r5sodpOV6VEr72R5WvyMrD2LxoqwgsJRN06WM07CweHfc0KFClCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=M13ziffz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1713457403; c=relaxed/simple;
+	bh=EoyUGkSRon5me4u477D3F6b2mgkPBf5LCRtyQDMlmIo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZtG5GLd9c85+pk/DOjoTrCrw/cW0R22zbvUvqjYqwHjk5wHaMCbMwpqWug86Vw3Gx5Cx2qS38OfR4TQ4VoEC/yiOVsRC66hZV5n08o5SoFeGR+kH2csrV70RLzfzDj7LqEc3e0sqLywaAzep7Sjz7OqbQqKBruutPG/RW9iQJ+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bqcMauNu; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="M13ziffz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=exe9fv7oChxO5dkJDmvKHfPoF5uNIcU4b4Fk47PWcJs=; b=M13ziffz/YyFgNDh+s5EP6JkLz
-	RQLWcoKOi6kSxj0F6z29pP14vOvkqXZn3xpvq7+VcLWlbkkwPPWfoWOpJR8iSv73gTtv1R540raXC
-	xkM6jU3cQq8mdkB0Bxoeil5jrjtbXYixs+esMcHSJCMPLJ2WN3P/2Du+bsoNJ5xHQjFM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rxSy9-00DMJm-3I; Thu, 18 Apr 2024 16:42:33 +0200
-Date: Thu, 18 Apr 2024 16:42:33 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: gregkh@linuxfoundation.org, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
- driver
-Message-ID: <176fe839-7142-49be-9fba-1e105dc8d4de@lunn.ch>
-References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
- <20240415104701.4772-5-fujita.tomonori@gmail.com>
- <2024041549-voicing-legged-3341@gregkh>
- <20240418.220047.226895073727611433.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bqcMauNu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1713457398; x=1713716598;
+	bh=joJLcNdcZBVDplNSaumr4msMoffl415nR/qqHXU34iE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bqcMauNuZz2HzbaAiPbBPEPe4i/D7cTybrt1CNaNuIfE4VMoISgGD0od7h/PLWCep
+	 dif+yNtBkoNbt58LRaHswSQCQSd8Hg8E9HSgn52zZZX6BwgSTv7BKyjxsVR8NnOX3C
+	 50Jrwfty4DDf5Xf6EiQ07oytt0Ecsy3hkV59MCXtsXUaK68AI7+UL5OVNqTcsoRTF2
+	 V5w6uajW1okZXbW+p3N729V965XZmuWojRNfnBylzDza7Wm85xjWqQc6NODpEsIM8i
+	 TvP3J/gdXaAV1735aps+DmE/J2b1zFTMMuiJXg/+VC08PV46fI2SsvSEZbC6PgBXc6
+	 Se9AlUa2KZoAA==
+Date: Thu, 18 Apr 2024 16:23:06 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v6 3/4] rust: uaccess: add typed accessors for userspace pointers
+Message-ID: <c6239407-8410-49e2-a8a1-16be8468ab88@proton.me>
+In-Reply-To: <CAH5fLgiMLxmmm0AVX_5HQF61FzzN69GCKabrr-uM_oV-rRMuHw@mail.gmail.com>
+References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com> <20240418-alice-mm-v6-3-cb8f3e5d688f@google.com> <5fd684d8-d46d-4009-bcf8-134dab342322@proton.me> <CAH5fLgiMLxmmm0AVX_5HQF61FzzN69GCKabrr-uM_oV-rRMuHw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: e9cdc856a7738c0450991f733d19c0c90cba2cad
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240418.220047.226895073727611433.fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> >> +            if i == 0x4000 {
-> > 
-> > What does 0x4000 mean here?
-> > 
-> >> +                a = MDIO_MMD_PHYXS;
-> >> +                j = 0x8000;
-> > 
-> > What does 0x8000 mean here?
-> > 
-> >> +            }
-> >> +            dev.c45_write(a, j, (*val).into())?;
-> >> +
-> >> +            j += 1;
-> >> +        }
-> >> +        dev.c45_write(MDIO_MMD_PCS, 0xe854, 0x0040)?;
-> > 
-> > Lots of magic values in this driver, is that intentional?
-> 
-> The original driver uses lots of magic values. I simply use them. As
-> Andrew wrote, we could infer some. I'll try to comment these.
+On 18.04.24 15:17, Alice Ryhl wrote:
+> On Thu, Apr 18, 2024 at 3:02=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 18.04.24 10:59, Alice Ryhl wrote:
+>>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>>> index 8fad61268465..9c57c6c75553 100644
+>>> --- a/rust/kernel/types.rs
+>>> +++ b/rust/kernel/types.rs
+>>> @@ -409,3 +409,67 @@ pub enum Either<L, R> {
+>>>       /// Constructs an instance of [`Either`] containing a value of ty=
+pe `R`.
+>>>       Right(R),
+>>>   }
+>>> +
+>>> +/// Types for which any bit pattern is valid.
+>>> +///
+>>> +/// Not all types are valid for all values. For example, a `bool` must=
+ be either zero or one, so
+>>> +/// reading arbitrary bytes into something that contains a `bool` is n=
+ot okay.
+>>> +///
+>>> +/// It's okay for the type to have padding, as initializing those byte=
+s has no effect.
+>>> +///
+>>> +/// # Safety
+>>> +///
+>>> +/// All bit-patterns must be valid for this type. This type must not h=
+ave interior mutability.
+>>
+>> What is the reason for disallowing interior mutability here? I agree
+>> that it is necessary for `AsBytes`, but I don't think we need it here.
+>> For example it is fine to convert `u8` to `UnsafeCell<u8>`. Niches also
+>> should not be a problem, since eg `Option<UnsafeCell<NonNull<u8>>>`
+>> already fails the "All bit-patterns must be valid for this type".
+>=20
+> If T: FromBytes allows transmuting &[u8; size_of::<T>] into &T, then
+> it would be a problem as you could then use it to modify the original
+> &[u8].
 
-When you start from a Vendor crap driver, part of the process of
-getting it into Mainline is getting it up to Mainline quality. If this
-was C code, i would be trying to replace as many of the magic numbers
-with #define. And then add comments about the best guess what things
-are doing, based on the datasheet. The data sheet however does not
-explain all the bits, nor give every register a name. But you should
-use as much information as possible from the datasheet to make the
-code as readable as possible.
+Ahh that makes a lot of sense.
 
-	Andrew
+--=20
+Cheers,
+Benno
+
+
