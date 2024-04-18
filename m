@@ -1,69 +1,69 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A3A69DF5;
-	Thu, 18 Apr 2024 13:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A11411E4;
+	Thu, 18 Apr 2024 13:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713446569; cv=none; b=OhRWsntuFDNuyzED7ClUPgiBV5BRkDIEpKq7ZeeFUUr8uiscHJzLdrAiXnR7YJJIySJ4RTqo3gzxZNIMO5RPEUMzVelwLWK+HbG3Gst8HF/xxI/+9H33QsjgQfGsqHWXccZzNayvVf8QBi0JcTgMUKXcW7MaKl/ewSPXZ4iDFe0=
+	t=1713447324; cv=none; b=r7J5AutYJ5WmUvISjxsT142MdFZn/nX2wKK7PfzjC8dxJPGCSe1swY1iElwPzwdHD9Of6hONUZagHy8o7m2VyClyURodyDvneCt2sMjLAt8/wHR5g+KUj8MlgDXS98MSu/17nnKXxni8gW4Oxql+3569nXfjscgv1E3GYeEr1WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713446569; c=relaxed/simple;
-	bh=Krmtk53Nn9bXQ1UTb1fUNAQvTji+4AjXJghIHMRiNf0=;
+	s=arc-20240116; t=1713447324; c=relaxed/simple;
+	bh=GHcWg8xMlKQHbp/W0r8Tw+Ei2EAuP/0oWQw8TdvUzWs=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=W2bLMlvqABzPfYEVGXCtgfVWhL6ocEMLMXwvKdS7ePgjFbKR5Xj6gyhAcWZzG6N/jlSkE1I8SEa4SgimD34VjL1grLjLAzqGGVHw0Cv7ITL6b5yascrzTZZbgSE1asDo7rXhwKtB0pGsXjE9XQ2kBHW7h2DcXSErj4MmPgYz+wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IWbpaOfY; arc=none smtp.client-ip=209.85.215.178
+	 Mime-Version:Content-Type; b=egOvJp3iblMeYKOwQDesc2Qe/nTn9e8RsgBC5VbGREKt8wTRc7ZBmhgzbCnfNOZVNdQFhTu8o/qIJrhNjB1adKoOx8kHHv2OZni/EbfdmqoBmtWbBtTMekUapa04GKLQTlGR8OBnKQCMtF8pBnL/I2R/0hVZQ3785ZePYN4JLKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HFXmUxwk; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IWbpaOfY"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-58962bf3f89so225472a12.0;
-        Thu, 18 Apr 2024 06:22:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HFXmUxwk"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5d862e8b163so229387a12.1;
+        Thu, 18 Apr 2024 06:35:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713446568; x=1714051368; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1713447319; x=1714052119; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vnEIxVC8cY7hf7SzMttR6bIl9eeb9SLXmm4fBuco5OU=;
-        b=IWbpaOfYo6BTlwYB8hudzWCOSe45e195sL3l8Q0/QBl474laR+bOtirZGElqdwGO/Y
-         9qEUtkdLOK1K1W1hnbG3BEzotD0VAEK4Jx4ObNyW3gQD4KbdtC2oPUUizFPr4HnRTDR0
-         GrGF1HYh+QJ93B+lRpupnxGbTRx3ZbhOU8NadQSaAj9s0tJzolhd8D06dR1Rnzd1n4cB
-         ks+5XGyJuoITtrAKR4VeBF2+KPzeYeFgigTbc7pSQKCoS4bR22omrDtIzUQF9t1fTUP/
-         AAm17MIZC7oSjpQS+qSQ/yYtx/gfRXNOwhs8Snc834uYEQMhTV4a0b+FWCTiWP7wF2QC
-         EFfw==
+        bh=vPNCQjwFtl1wCNPwQLt88ugCpW4RlnqoD7yNsANf8+c=;
+        b=HFXmUxwkc+CXFIcKUsuTETU3kgavSdfO7hinwTwTGCn3ZY10UEf3M7IiBWfAIvQNgM
+         0pHObotb8z34WtjzkAYY6XpgkfwlZRKqUZp3MqeL10AYu5XGRNy/tXnL4fwXGwof0LS8
+         RXs/G3xtM2HJt+aAT7SXx8lSaydUwudSb6NB5rvJrK0UFfiVx/bMiXwiRNLc3yY65HaA
+         OoTXpWQjSqZun0GHMA/YWpLzpF2FcbCbE5pS4YZckAO3rxm2wdTBy08qe5Hl97PPW12A
+         8Yr/QoCUzmORklViY+UHA4DJUOUSC1/8mRV9rtqBhWsx890PKa5y3MHW3leFprRqaDS4
+         a7pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713446568; x=1714051368;
+        d=1e100.net; s=20230601; t=1713447319; x=1714052119;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=vnEIxVC8cY7hf7SzMttR6bIl9eeb9SLXmm4fBuco5OU=;
-        b=uRS8RnaezTGdcIaz4qG0nFB0A69gzMdHo8DOgAv9PZYlb9aqqXVBTfYz6d5h9ZtlJf
-         1ha9L6KfjKSmDxQp/UIWbQ2fNwQU+4Ikm9b05TfWwhWo8ApwVaYgwt2egn+jVt2jot1K
-         sq4fGtaj2xCxIbesvhFi7W+WzFftK+nhOzJLqxmtbLeUb/jo3kFXHPtMzA0eMcwzSG6P
-         kvm63Y93vjwbymbka4nyTr9RfM/+d0HCUoXr50yFO0clnQ1dpas4r5z2f/0FHZxJVUsu
-         XGmd5aKs4+d+dEz8ngi4zCyuprPzX0CZ6e1aXuTnDKBYf+ozFdnO2VQbC1fTF44mqZ4Z
-         xYKg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5j4It/x+AurMWP93V3TYHrYg7kxuQDDpQTguHTTp5hOti9oeyMc4EwR5B8PaogJDIASFkvRZ37yFSPt04yDiooWK4u+KjF8HSMU3XiLF7Mfn9KV/inJFUzCV/Ty3Z0bd1F0AOlHM=
-X-Gm-Message-State: AOJu0YyWn+bvOMmRgubhYq0emR32y52z5X2WAdzYlMFEPqhIND16l6NH
-	Krp2/XSlImkfVG9D0SfVxIiY+mzE3qS5SWGLO90hDowm/odMR30h
-X-Google-Smtp-Source: AGHT+IENSG2n2rPgzUpACTMKkindKnuv/3BA6BobGUN4O2GVcTrz0XFnByHcS8eJ9brT9hRKwsGisA==
-X-Received: by 2002:a17:902:7b95:b0:1e2:2ac1:aef0 with SMTP id w21-20020a1709027b9500b001e22ac1aef0mr3038293pll.2.1713446567729;
-        Thu, 18 Apr 2024 06:22:47 -0700 (PDT)
+        bh=vPNCQjwFtl1wCNPwQLt88ugCpW4RlnqoD7yNsANf8+c=;
+        b=fSCKTin+6P5A+GsR68qlUxIOLCPk93oxWBeW/qZ0gssTc4sEv8StQOy3MYbjD7V0YG
+         O1Gi62MzrdBnzRkgJM35WSHRvJyccudfp7VcopUwU1fNwC3EuqSHOh1+BvA5dO5ZPgSI
+         ywCiKSdPMlnLdJbn5psJy1S4reynxEo5NUbGg2IrlCWfmvZ+dxVEFR8CNWXiONIZrmlI
+         DYHUwMCItOV6SMbXBxj4d4jZx5LTEpgerqrtvDndSn6gwuMfNW/ATlRExYWWAtPa6z61
+         5Sv8uCTt/xbxG6qc5cyjP79ZPhFaDf+/8BLzL6g1iEgjV/Fytn6k5BwIJlvjHwiWkBct
+         jdmg==
+X-Forwarded-Encrypted: i=1; AJvYcCWwwtB/JRfLMc4AKesDW/YuDGQcimNouWPsbgCBUnQeB2j31fXBl1ozM78a2VNFw7CVYrPQs/gtBkAGfiM2e08X537DakpgobM3oadJD2LiSZQmwA0DVq0sI2PrRwMngGgoHpg6kCI=
+X-Gm-Message-State: AOJu0Ywvtv6V1EhCPtYHugIOB+ZqCMwhQ7sEBsZ/AmMEr4nA0IjasvCx
+	gieNB+9vHQyfVOTZGaZ1hhQAwBtwMitAKLr8/vXnS5soX7ZeW3JS
+X-Google-Smtp-Source: AGHT+IESJo3tUDg6w6iKA/ZFR4+ySWD9UKFY7lCTYdxze+XW9+dKMEInu+mo6hiktPLcVmj5GXZ2YA==
+X-Received: by 2002:a17:90a:d196:b0:2a6:d054:3214 with SMTP id fu22-20020a17090ad19600b002a6d0543214mr2824468pjb.0.1713447319287;
+        Thu, 18 Apr 2024 06:35:19 -0700 (PDT)
 Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
-        by smtp.gmail.com with ESMTPSA id h2-20020a170902f54200b001e2bbc0a672sm1477635plf.188.2024.04.18.06.22.46
+        by smtp.gmail.com with ESMTPSA id u10-20020a170903124a00b001e3d38c9e70sm1489521plh.125.2024.04.18.06.35.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 06:22:47 -0700 (PDT)
-Date: Thu, 18 Apr 2024 22:22:37 +0900 (JST)
-Message-Id: <20240418.222237.2262785113908798789.fujita.tomonori@gmail.com>
+        Thu, 18 Apr 2024 06:35:18 -0700 (PDT)
+Date: Thu, 18 Apr 2024 22:35:08 +0900 (JST)
+Message-Id: <20240418.223508.1645077134421913977.fujita.tomonori@gmail.com>
 To: gregkh@linuxfoundation.org
 Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org, andrew@lunn.ch,
- rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
- driver
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu, mcgrof@kernel.org,
+ russ.weight@linux.dev
+Subject: Re: [PATCH net-next v1 3/4] rust: net::phy support Firmware API
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <2024041801-anteater-cultivate-d8a0@gregkh>
-References: <2024041549-voicing-legged-3341@gregkh>
-	<20240418.220047.226895073727611433.fujita.tomonori@gmail.com>
-	<2024041801-anteater-cultivate-d8a0@gregkh>
+In-Reply-To: <2024041800-justice-rectify-3715@gregkh>
+References: <2024041554-lagged-attest-586d@gregkh>
+	<20240418.215108.816248101599824703.fujita.tomonori@gmail.com>
+	<2024041800-justice-rectify-3715@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,33 +75,47 @@ Content-Transfer-Encoding: 7bit
 
 Hi,
 
-On Thu, 18 Apr 2024 15:10:36 +0200
+On Thu, 18 Apr 2024 15:07:19 +0200
 Greg KH <gregkh@linuxfoundation.org> wrote:
 
-> On Thu, Apr 18, 2024 at 10:00:47PM +0900, FUJITA Tomonori wrote:
->> >> +            if i == 0x4000 {
->> > 
->> > What does 0x4000 mean here?
->> > 
->> >> +                a = MDIO_MMD_PHYXS;
->> >> +                j = 0x8000;
->> > 
->> > What does 0x8000 mean here?
->> > 
->> >> +            }
->> >> +            dev.c45_write(a, j, (*val).into())?;
+> On Thu, Apr 18, 2024 at 09:51:08PM +0900, FUJITA Tomonori wrote:
+>> >> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+>> >> index 421a231421f5..095dc3ccc553 100644
+>> >> --- a/rust/kernel/net/phy.rs
+>> >> +++ b/rust/kernel/net/phy.rs
+>> >> @@ -9,6 +9,51 @@
+>> >>  use crate::{bindings, error::*, prelude::*, str::CStr, types::Opaque};
+>> >>  
+>> >>  use core::marker::PhantomData;
+>> >> +use core::ptr::{self, NonNull};
 >> >> +
->> >> +            j += 1;
->> >> +        }
->> >> +        dev.c45_write(MDIO_MMD_PCS, 0xe854, 0x0040)?;
+>> >> +/// A pointer to the kernel's `struct firmware`.
+>> >> +///
+>> >> +/// # Invariants
+>> >> +///
+>> >> +/// The pointer points at a `struct firmware`, and has ownership over the object.
+>> >> +pub struct Firmware(NonNull<bindings::firmware>);
+>> >> +
+>> >> +impl Firmware {
+>> >> +    /// Loads a firmware.
+>> >> +    pub fn new(name: &CStr, dev: &Device) -> Result<Firmware> {
+>> >> +        let phydev = dev.0.get();
 >> > 
->> > Lots of magic values in this driver, is that intentional?
+>> > That's risky, how do you "know" this device really is a phydev?
 >> 
->> The original driver uses lots of magic values. I simply use them. As
->> Andrew wrote, we could infer some. I'll try to comment these.
+>> That's guaranteed. The above `Device` is phy::Device.
 > 
-> Wait, this is a rewrite of an existing driver in the tree into Rust?
+> How are we supposed to know that from reading this diff?  I think you
+> all need to work on naming things better, as that's going to get _VERY_
+> confusing very quickly.
 
-No. As I exampled in the cover-letter of the patchset, the vendor
-released drivers but they haven't merged into the tree. The vendor
-went out of bushiness and the drivers have been abandoned.
+I guess that usually a path to a module prevent confusion. For
+example, a MAC driver could look like:
+
+fn probe(dev: &mut pci::Device, _: pci::DeviceId) -> Result {
+    let netdev = net::Device::new()?;
+    let phydev = phy::Device::new()?;
+    ...
+
+    Ok(())
+}
