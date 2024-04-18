@@ -1,99 +1,76 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095F315DBD6;
-	Thu, 18 Apr 2024 13:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078D8823A2;
+	Thu, 18 Apr 2024 13:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713445341; cv=none; b=mPzAnEVGs6EQxc2YLWVmVLgzhXfFMR+Mvz7C8iqpnsnanKPs+NTQ9WTf0t3AGt9q7ZhILJjk/mFFfWSSUet9GpMPY+uG4QER8NlYca0+6NdzrM8pmqhulDsDDLj2CL5rVKUAX46wqKwgAQkk3gxa0xe4weJuFaSYdRbEsPM5qHQ=
+	t=1713445538; cv=none; b=ufKNwYW2tfnLP9A2oMGp6MfCvTKF2dmGa4Z8JLLKPxCUUuCIB6kJgmPssTFSeUas65QHEZ1uQRg7AXdwFnF173c48pOJGiE+h2vgPosTB8XGUoIHWXLWV8vLrFjqC1HWpgCV3RhC0nm5ICjtNkF49bxLiiCdmKP2U4GuYrI6JTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713445341; c=relaxed/simple;
-	bh=wNhnXhJl0BimI0FnxrFsan2/eQTs5jA8t+ECKzsx8yI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RCDeFAdOxb0UnixZqfamW51HZPAMcnr0hX1GznqBnvq88f0zYy6NX5hTANw5nQsfr1RralHXegsMKQ02YHGszpwJknydUJ4fod6O+Kzmj37IE+omNgFpKOrMKgmwJW44rTahGm1UvwiwJc9LRcHj+Moe4q5T8qND9Z7eMf8YpXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=RpVqEyPH; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1713445538; c=relaxed/simple;
+	bh=oX2L1ktLDVgXz54XJCiyMPpSERt1/U10LKvx1j13dmQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NGQZMX7EW6E37pnqSlKuXXE82jrWHR+3AMiC7ePLb9kcqpMOcUNu8KCXJn7hObuHUBTz0MTYzgdW66kB+nKrWzZkqr6OVWPFwg8s9G7g49ZpSRFS/up7pTWZfvoTDoz5m8hNNUHqCbt1WAoI/0+iYfNB72Kf8tG71lzL9fq8qPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyGmx9Mf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="RpVqEyPH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1713445325; x=1713704525;
-	bh=ABmUIlM/+0TTsmSAW6kea20HyxX5pv8vg2oi+dkTWWw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=RpVqEyPHGYdAeCCRn9WA4rKt34/0xi/epM4XaGUJRiThGqiJiC0GMruCZ2ZZOPAw1
-	 l7ul+FmMjMNDUNdqq98y7CfOnwxfG4dHaiUvUXhjQyiSf6sUeYldhxnUdVL9doS5DD
-	 3lS4z/zMb6f2frGgts8W1QFMvgKrrkZtwR5NPL+Pw47KNGWpSIBirIGKmiyvGvmaGF
-	 slX5qCs83Kgm4bkQrDQ7mh29h8FwC9wpkhb82MtJ6oxt3Ac5qWtwCVbAzBJvhVoSGN
-	 TSKzko6TxoCYdmqNSc2clKK/lI+IBIN4Q5tloLfaTo37hhCmABoLD2s9I/1YqFdGIh
-	 GUivWSumPFT0A==
-Date: Thu, 18 Apr 2024 13:01:20 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v6 3/4] rust: uaccess: add typed accessors for userspace pointers
-Message-ID: <5fd684d8-d46d-4009-bcf8-134dab342322@proton.me>
-In-Reply-To: <20240418-alice-mm-v6-3-cb8f3e5d688f@google.com>
-References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com> <20240418-alice-mm-v6-3-cb8f3e5d688f@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 73974adc566aff94727dc6833659914e59314d2f
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyGmx9Mf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA0AC113CC;
+	Thu, 18 Apr 2024 13:05:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713445537;
+	bh=oX2L1ktLDVgXz54XJCiyMPpSERt1/U10LKvx1j13dmQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tyGmx9Mf8IonQSUN4N+iBpN/PSUXMYrby75Y4IT2x7/UKywDlf/fauVaOLiHLMh+e
+	 D86Tr0UJBEjI/m6fJZlzuwvkBBvPfajSzHI6jk2eTVM4ot4y/CuR8f0j44npyj9aHX
+	 8xg2FrL2ofdAyVb0ZfZvbHLdXgCnAeWzuj6E6zWE=
+Date: Thu, 18 Apr 2024 15:05:34 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, mcgrof@kernel.org, russ.weight@linux.dev
+Subject: Re: [PATCH net-next v1 3/4] rust: net::phy support Firmware API
+Message-ID: <2024041825-sprinkled-popcorn-8a85@gregkh>
+References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
+ <20240415104701.4772-4-fujita.tomonori@gmail.com>
+ <2024041554-lagged-attest-586d@gregkh>
+ <20240418.215108.816248101599824703.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240418.215108.816248101599824703.fujita.tomonori@gmail.com>
 
-On 18.04.24 10:59, Alice Ryhl wrote:
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 8fad61268465..9c57c6c75553 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -409,3 +409,67 @@ pub enum Either<L, R> {
->      /// Constructs an instance of [`Either`] containing a value of type =
-`R`.
->      Right(R),
->  }
-> +
-> +/// Types for which any bit pattern is valid.
-> +///
-> +/// Not all types are valid for all values. For example, a `bool` must b=
-e either zero or one, so
-> +/// reading arbitrary bytes into something that contains a `bool` is not=
- okay.
-> +///
-> +/// It's okay for the type to have padding, as initializing those bytes =
-has no effect.
-> +///
-> +/// # Safety
-> +///
-> +/// All bit-patterns must be valid for this type. This type must not hav=
-e interior mutability.
+On Thu, Apr 18, 2024 at 09:51:08PM +0900, FUJITA Tomonori wrote:
+> Hi,
+> 
+> On Mon, 15 Apr 2024 13:10:59 +0200
+> Greg KH <gregkh@linuxfoundation.org> wrote:
+> 
+> > On Mon, Apr 15, 2024 at 07:47:00PM +0900, FUJITA Tomonori wrote:
+> >> This patch adds support to the following basic Firmware API:
+> >> 
+> >> - request_firmware
+> >> - release_firmware
+> >> 
+> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> >> CC: Luis Chamberlain <mcgrof@kernel.org>
+> >> CC: Russ Weight <russ.weight@linux.dev>
+> >> ---
+> >>  drivers/net/phy/Kconfig         |  1 +
+> >>  rust/bindings/bindings_helper.h |  1 +
+> >>  rust/kernel/net/phy.rs          | 45 +++++++++++++++++++++++++++++++++
+> > 
+> > Please do not bury this in the phy.rs file, put it in drivers/base/ next
+> > to the firmware functions it is calling.
+> 
+> Sure. I had a version of creating rust/kernel/firmware.rs but I wanted
+> to know if a temporary solution could be accepted.
+> 
+> With the build system for Rust, we can't put it in drivers/base/ yet.
 
-What is the reason for disallowing interior mutability here? I agree
-that it is necessary for `AsBytes`, but I don't think we need it here.
-For example it is fine to convert `u8` to `UnsafeCell<u8>`. Niches also
-should not be a problem, since eg `Option<UnsafeCell<NonNull<u8>>>`
-already fails the "All bit-patterns must be valid for this type".
-
---=20
-Cheers,
-Benno
-
-> +pub unsafe trait FromBytes {}
-> +
-> +// SAFETY: All bit patterns are acceptable values of the types below.
-> +unsafe impl FromBytes for u8 {}
-> +unsafe impl FromBytes for u16 {}
-> +unsafe impl FromBytes for u32 {}
-> +unsafe impl FromBytes for u64 {}
-> +unsafe impl FromBytes for usize {}
-> +unsafe impl FromBytes for i8 {}
-> +unsafe impl FromBytes for i16 {}
-> +unsafe impl FromBytes for i32 {}
-> +unsafe impl FromBytes for i64 {}
-> +unsafe impl FromBytes for isize {}
+What is the status of fixing that?
 
