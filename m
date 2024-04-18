@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078D8823A2;
-	Thu, 18 Apr 2024 13:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1893313247D;
+	Thu, 18 Apr 2024 13:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713445538; cv=none; b=ufKNwYW2tfnLP9A2oMGp6MfCvTKF2dmGa4Z8JLLKPxCUUuCIB6kJgmPssTFSeUas65QHEZ1uQRg7AXdwFnF173c48pOJGiE+h2vgPosTB8XGUoIHWXLWV8vLrFjqC1HWpgCV3RhC0nm5ICjtNkF49bxLiiCdmKP2U4GuYrI6JTo=
+	t=1713445642; cv=none; b=MMrJWLcde3bjIwf5ebXjZCKXDgsU3W7KRMWVufmQlCW900mLl27FcfxvVwa9GkKR1VMn6pfoo1HiSaaBPNYpJLKE9ui6SowGp55e0Nqg8+gsu+iegeP7ksLqfhoGhJ8yM08Soi03aldfXpl9GoOiTo6/2WTz4nQtMEEHsKMJHTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713445538; c=relaxed/simple;
-	bh=oX2L1ktLDVgXz54XJCiyMPpSERt1/U10LKvx1j13dmQ=;
+	s=arc-20240116; t=1713445642; c=relaxed/simple;
+	bh=ZQmRZwntijmUzO0RJofTZbGiAQg+OTI6y2iSSjPaG+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NGQZMX7EW6E37pnqSlKuXXE82jrWHR+3AMiC7ePLb9kcqpMOcUNu8KCXJn7hObuHUBTz0MTYzgdW66kB+nKrWzZkqr6OVWPFwg8s9G7g49ZpSRFS/up7pTWZfvoTDoz5m8hNNUHqCbt1WAoI/0+iYfNB72Kf8tG71lzL9fq8qPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyGmx9Mf; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=J2Rk3ZoUGL8qOlAe/lLa+nuQ/TU5n6DJS0GdwmWn12xS2gnKqJFtS8N3DL2HLWReom6arg5SVqYeYllZ2JGYNw7TztD/9Ain817w3Cn890vXOv54DMhjellc2k93t0TJziHAKQtnIwviurkrD5BEp3YUroGkekXfbAz8dTELe/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evrpzN/N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyGmx9Mf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA0AC113CC;
-	Thu, 18 Apr 2024 13:05:37 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evrpzN/N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B584C113CC;
+	Thu, 18 Apr 2024 13:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713445537;
-	bh=oX2L1ktLDVgXz54XJCiyMPpSERt1/U10LKvx1j13dmQ=;
+	s=korg; t=1713445641;
+	bh=ZQmRZwntijmUzO0RJofTZbGiAQg+OTI6y2iSSjPaG+I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tyGmx9Mf8IonQSUN4N+iBpN/PSUXMYrby75Y4IT2x7/UKywDlf/fauVaOLiHLMh+e
-	 D86Tr0UJBEjI/m6fJZlzuwvkBBvPfajSzHI6jk2eTVM4ot4y/CuR8f0j44npyj9aHX
-	 8xg2FrL2ofdAyVb0ZfZvbHLdXgCnAeWzuj6E6zWE=
-Date: Thu, 18 Apr 2024 15:05:34 +0200
+	b=evrpzN/NyFcR3av0bWND/+cKKKoHBp5A4LjBTEmtcTfSKedCuje/mGlvFv2toJgGZ
+	 +LNrLSHCzleFmBRy4A++9odF9EmYKhuFfAbdiiKrA6ksELw3CAnwBE/xUiGYi9x2/4
+	 XpKdo2PpIDuyejZpqhEes0mzU+M0c3n1oSTyqJ2o=
+Date: Thu, 18 Apr 2024 15:07:19 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, rust-for-linux@vger.kernel.org,
 	tmgross@umich.edu, mcgrof@kernel.org, russ.weight@linux.dev
 Subject: Re: [PATCH net-next v1 3/4] rust: net::phy support Firmware API
-Message-ID: <2024041825-sprinkled-popcorn-8a85@gregkh>
+Message-ID: <2024041800-justice-rectify-3715@gregkh>
 References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
  <20240415104701.4772-4-fujita.tomonori@gmail.com>
  <2024041554-lagged-attest-586d@gregkh>
@@ -45,32 +45,36 @@ Content-Disposition: inline
 In-Reply-To: <20240418.215108.816248101599824703.fujita.tomonori@gmail.com>
 
 On Thu, Apr 18, 2024 at 09:51:08PM +0900, FUJITA Tomonori wrote:
-> Hi,
-> 
-> On Mon, 15 Apr 2024 13:10:59 +0200
-> Greg KH <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Mon, Apr 15, 2024 at 07:47:00PM +0900, FUJITA Tomonori wrote:
-> >> This patch adds support to the following basic Firmware API:
-> >> 
-> >> - request_firmware
-> >> - release_firmware
-> >> 
-> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >> CC: Luis Chamberlain <mcgrof@kernel.org>
-> >> CC: Russ Weight <russ.weight@linux.dev>
-> >> ---
-> >>  drivers/net/phy/Kconfig         |  1 +
-> >>  rust/bindings/bindings_helper.h |  1 +
-> >>  rust/kernel/net/phy.rs          | 45 +++++++++++++++++++++++++++++++++
+> >> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> >> index 421a231421f5..095dc3ccc553 100644
+> >> --- a/rust/kernel/net/phy.rs
+> >> +++ b/rust/kernel/net/phy.rs
+> >> @@ -9,6 +9,51 @@
+> >>  use crate::{bindings, error::*, prelude::*, str::CStr, types::Opaque};
+> >>  
+> >>  use core::marker::PhantomData;
+> >> +use core::ptr::{self, NonNull};
+> >> +
+> >> +/// A pointer to the kernel's `struct firmware`.
+> >> +///
+> >> +/// # Invariants
+> >> +///
+> >> +/// The pointer points at a `struct firmware`, and has ownership over the object.
+> >> +pub struct Firmware(NonNull<bindings::firmware>);
+> >> +
+> >> +impl Firmware {
+> >> +    /// Loads a firmware.
+> >> +    pub fn new(name: &CStr, dev: &Device) -> Result<Firmware> {
+> >> +        let phydev = dev.0.get();
 > > 
-> > Please do not bury this in the phy.rs file, put it in drivers/base/ next
-> > to the firmware functions it is calling.
+> > That's risky, how do you "know" this device really is a phydev?
 > 
-> Sure. I had a version of creating rust/kernel/firmware.rs but I wanted
-> to know if a temporary solution could be accepted.
-> 
-> With the build system for Rust, we can't put it in drivers/base/ yet.
+> That's guaranteed. The above `Device` is phy::Device.
 
-What is the status of fixing that?
+How are we supposed to know that from reading this diff?  I think you
+all need to work on naming things better, as that's going to get _VERY_
+confusing very quickly.
 
+thanks,
+
+greg k-h
