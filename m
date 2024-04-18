@@ -1,43 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A601C15EFBB
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 11:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F20941C78
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 12:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713441350; cv=none; b=UyBRvbR4vVdAt7TtjZYQmNHA/xypkZY1x0kbz29d1/DE5ITtrAGwy93vod8WGLSPa7P6AJZrQTx4YI1m8ZY4HC8xMp2RDTUs71dzNNaQYU0ua/0BUgH0DfTEXl0pu8vUf9eTi7SFD2NYK/0YKPfXIHWNhUAFz23ppr8UChGdAfo=
+	t=1713444434; cv=none; b=tTNNNGO2Rrn6KOcZa1bB3+rkGZyp+N+lFK0SFyNy2G/J3IGw4vJjdAfc7kxL4oZow+FuXlTZ+AyPrl6X7Oev7AkI1MKVKlzw/p9lp0gzjBrLWIj+1nvvolFRMpvoPikQDJRddrErFV5jTP/Eg8N1rO2lo0gUMiYFNFGY63t2nUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713441350; c=relaxed/simple;
-	bh=kWwv23Xmgvsgj2YhpzCieenmpVIqMjh7rBPrJrdPiJU=;
+	s=arc-20240116; t=1713444434; c=relaxed/simple;
+	bh=OjM2+q5IrJPgChlmxtugg0H+0Nb0jlZfH7lYr+xWFu4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PPkKDDHmq/UPIDo6QOm/14m3QfhL92GAesGHil+w4OydHc0kmSEnqZnv4sovBKdFlbBnfzfplU6UPcUMfZu/yq0bb+MlZeCC5GxrI4Ai3LBn7AGf97tURuUUFetdhlxXuaiDd5gXu7WA1/qqPEhJ15UHT7fnFJHmgFY0a5SJojs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=g6WWhKhv; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=HgJBy7rTMvePwT7a51J6jzHAJj4cik/xiZ8s8eP3tZhix/+znK0ZT37BJCyHIR51YOZrW73dGIU6Wrn7I69FcpkIIU1teNs9CIl82bk2UZdn+HuYqSFh8hntAmrc7iYN8TsSc1crxKz5knlnD2kmfnHCIZCWgns9Mrvd+3SzaYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OQFWOT4n; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="g6WWhKhv"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OQFWOT4n"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1713441340; x=1713700540;
-	bh=vIt3tGGJDLzoysWW9pyqRGHlAGJMnjOxLghruIfsJaQ=;
+	s=protonmail; t=1713444425; x=1713703625;
+	bh=FtZD2Q+I7uEMMS0HuDMeXjCn3Hzk9KekmIGEGtElOmA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=g6WWhKhvDnC+vJ9odB7JQ1XhtErZqeeLg8RK7rplL0tkup2kQjArMfc7ObGigfsQ8
-	 knJXeRq6KzT5WsS+6iiIed0lFoyr85vPqoPeFJcTJWc90Ci93yJDPpfWEmYFHQCJqU
-	 Dd2OYN4MvgPhknWGwtsw7b/ei1qrOdYCY26eU/yUB2JLkiu3wQyYtmttqGXGYlGdZz
-	 JhueXDfWDorTc3VZgo+e7D45C+y4X0hW5dJlhE73Y8+M37l9KZwQAc5ZvUBU659IcC
-	 uqMy67abki84pd5jv2flPh6lV5ByYRK3Bk4gzPqycSzRzaqHBFIWIGWA74HXp17dGf
-	 xWGewwdZQeWcQ==
-Date: Thu, 18 Apr 2024 11:55:34 +0000
-To: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org
+	b=OQFWOT4n7hQKYh/WtuVLTkWuicl2a7g7QVaRl1U0PTQvwRQz8IDlFjpc2vsMHds6u
+	 tjeHywzj/ysunVZCQLGTg09t1utLz+JpOuXdyATwz1Q8rIuaSPnz4n0CC45o+B/+6Z
+	 CrKYx4gIdyWToWAtG5Tz3ffrXMkb+7UQ2nGSHpXMrEgPZEE9L1OUqFGPBcsi6KKqyD
+	 7D91lCfMo1BRU6s9xvTaw3lRBKDyKrje1LznhlW5ywgTUWtIu7GG6Dpp2NyD/HiCRE
+	 uE9ptWWX/KlpgnXBy1cwIBRPAfZVunaElHvlDQTHUg9OWOefVXXKYRujmG/bBVtiq1
+	 yWWpkSinOIjnA==
+Date: Thu, 18 Apr 2024 12:47:01 +0000
+To: Andrew Lunn <andrew@lunn.ch>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Valentin Obst <kernel@valentinobst.de>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH v4] docs: rust: extend abstraction and binding documentation
-Message-ID: <5c8aeb78-6f36-40ca-8965-43717c1333f4@proton.me>
-In-Reply-To: <20240418070618.3962736-1-dirk.behme@de.bosch.com>
-References: <20240418070618.3962736-1-dirk.behme@de.bosch.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
+Message-ID: <903a21b5-38d1-4d7c-8eb0-610b629c9856@proton.me>
+In-Reply-To: <49c221e6-92d0-42ef-b48b-829c7c47d790@lunn.ch>
+References: <e8a440c7-d0a6-4a5e-97ff-a8bcde662583@lunn.ch> <20240416.204030.1728964191738742483.fujita.tomonori@gmail.com> <26f64e48-4fd3-4e0f-b7c5-e77abeee391a@lunn.ch> <20240416.222119.1989306221012409360.fujita.tomonori@gmail.com> <b03584c7-205e-483f-96f0-dde533cf0536@proton.me> <f908e54a-b0e6-49d5-b4ff-768072755a78@lunn.ch> <92b60274-6b32-4dfd-9e46-d447184572d2@proton.me> <49c221e6-92d0-42ef-b48b-829c7c47d790@lunn.ch>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 675b39ff1ce9f97ae03ea67563d72ec48f22ffa0
+X-Pm-Message-ID: 3792599aafbe9dbff3b9f38b5134902b4bcc77a4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,144 +47,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 18.04.24 09:06, Dirk Behme wrote:
-> Add some basics explained by Miguel in [1] to the documentation.
-> And connect it with some hints where this is implemented in the
-> kernel.
+On 17.04.24 15:34, Andrew Lunn wrote:
+>> If the driver shouldn't be concerned with how the access gets handled,
+>> why do we even have a naming problem?
 >=20
-> [1] https://www.linuxfoundation.org/webinars/rust-for-linux-writing-abstr=
-actions-and-drivers
+> History.
 >=20
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-> ---
->  Documentation/rust/general-information.rst | 56 ++++++++++++++++++++++
->  1 file changed, 56 insertions(+)
+> The current C code does not cleanly separate register spaces from
+> access mechanisms.
 >=20
-> Changes in v4: Rebase against rust-dev v6.9-rc1 to re-start this topic. I=
-f
->                the reviewers are too busy and its not a good time for it
->                just let me know :)
+> C22 register space is simple, you can only access it using C22 bus
+> protocol. However C45 register space can be accessed in two ways,
+> either using C45 bus protocol, or using C45 over C22. The driver
+> should not care, it just wants to read/write a C45 register.  But the
+> current core mixes the two concepts of C45 register space and access
+> mechanisms. There have been a few attempts to clean this up, but
+> nothing landed yet.
 >=20
-> diff --git a/Documentation/rust/general-information.rst b/Documentation/r=
-ust/general-information.rst
-> index 081397827a7e..6c6fb3a5e318 100644
-> --- a/Documentation/rust/general-information.rst
-> +++ b/Documentation/rust/general-information.rst
-> @@ -64,6 +64,62 @@ but it is intended that coverage is expanded as time g=
-oes on. "Leaf" modules
->  (e.g. drivers) should not use the C bindings directly. Instead, subsyste=
-ms
->  should provide as-safe-as-possible abstractions as needed.
->=20
-> +.. code-block::
-> +
-> +=09                                                rust/bindings/
-> +                                                       (rust/helpers.c)
+> Now this driver is somewhat special. The PHY itself only implements
+> one of the two access mechanisms, C45 bus protocol. So this driver
+> could side-step this mess and define access functions which go
+> straight to C45 bus protocol. However, some day a non-special
+> device/driver will come along, and we will need the generic access
+> functions, which leave the core to decide on C45 bus protocol or C45
+> over C22. Ideally these generic functions should have the natural name
+> for accessing C45 registers, and the special case in this driver
+> should use a different name.
 
-This needs updating when [1] lands, I don't know if Miguel wants to do
-it when picking this, or if you should do this before.
+Thanks for the explanation. What about having the following register
+representing types:
+- `C22` accesses a C22 register
+- `C45` accesses a C45 register using whatever method phylib decides
+- `C45Bus` accesses a C45 register over the C45 bus protocol (or
+   `C45Direct`)
 
-> +
-> +                                                          include/ -----=
-+ <-+
-> +                                                                        =
-|   |
-> +         drivers/              rust/kernel/              +----------+ <-=
-+   |
-> +           fs/                                           | bindgen  |   =
-    |
-> +          .../            +-------------------+          +----------+ --=
-+   |
-> +                          |    Abstractions   |                         =
-|   |
-> +       +---------+        | +------+ +------+ |          +----------+   =
-|   |
-> +       | my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | <-=
-+   |
-> +       | driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          |   =
-    |
-> +       +---------+        | |system| |system| |          | bindings | <-=
-----+
-> +            |             | +------+ +------+ |          |  crate   |   =
-    |
-> +            |             |   kernel crate    |          +----------+   =
-    |
-> +            |             +-------------------+                         =
-    |
-> +            |                                                           =
-    |
-> +            +------------------# FORBIDDEN #----------------------------=
-----+
-> +
-> +The main idea is to encapsulate all direct interaction with the kernel's=
- C APIs
-> +into carefully reviewed and documented abstractions. These are then cons=
-idered to
-> +be sound. The goal is that users of these abstractions ("my_foo driver")=
- cannot
-> +introduce undefined behavior (UB) as long as:
-> +
-> +#. the abstractions are correct.
-> +#. they don't use ``unsafe{..}``. Or they uphold the preconditions of al=
-l unsafe
-> +   operations that they perform if they use ``unsafe{..}`` for performan=
-ce optimizations
-> +   or to call unsafe abstractions.
-> +
-> +Bindings
-> +~~~~~~~~
-> +
-> +By including a C header from ``include/`` into ``rust/bindings/bindings_=
-helper.h``
-> +the ``bindgen`` tool will auto-generate the bindings for the included su=
-bsystem.
-> +After building, see the ``*_generated.rs`` output files in the ``rust/bi=
-ndings/``
-> +directory.
-> +
-> +For parts of the C header that ``bindgen`` doesn't auto generate, e.g. C=
- ``inline``
-> +functions or macros, it is acceptable to add a small wrapper function
-> +to ``rust/helpers.c`` to make it available for the Rust side as well.
-
-Also here.
-
-> +
-> +Abstractions
-> +~~~~~~~~~~~~
-> +
-> +Abstractions are the layer between the bindings and the in-kernel users.=
- They are
-> +located in ``rust/kernel/`` and their role is to encapsulate the unsafe =
-access
-> +to the bindings into an as-safe-as-possible API that they expose to thei=
-r users.
-> +Users of the abstractions include things like drivers or file systems wr=
-itten in Rust.
-> +
-> +Besides the safety aspect, the abstractions are supposed to be "ergonomi=
-c", in the
-> +sense that they turn the C interfaces into "idiomatic" Rust code. Basic =
-examples are
-> +to turn the C resource acquisition and release into Rust constructors an=
-d destructors
-> +or C integer error codes into Rust's ``Result``.
-> +
->=20
->  Conditional compilation
->  -----------------------
-> --
-> 2.28.0
->=20
->
-
-Otherwise, this looks good to me:
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-[1]: https://lore.kernel.org/rust-for-linux/20240416074607.1395481-1-nmi@me=
-taspace.dk/
+Or are you opposed to the idea of accessing any type of register via
+`dev.read_register::<RegType>(..)`?
 
 --=20
 Cheers,
