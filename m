@@ -1,234 +1,187 @@
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2060.outbound.protection.outlook.com [40.107.20.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6371482F0
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Apr 2024 15:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713368173; cv=none; b=BzokjpIAASD93iFtoOzuMk9psayvF2f5PO1Im7LgODMYJJcvhcciGS4IRnj77cYTefs8tPsIu3q2WmLV1hpekmVuugM5P25UMpYgIEwlUqWK3t+YiFwZt1sHH9IqJFzNXM8F79Yu+LQ8pY5cayus5SyRIxuc5Sbfs14eVnQlWQo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713368173; c=relaxed/simple;
-	bh=VIrsNerujZ8+PtTYveVk1Mj9pGEnbz49H9qMK6+Fxpw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+FQt7aRdnPHN4QCf+iDKU6fUortkWshR3VmyXo/oPb5GiEj9H0oAZPCNBxbqRb+QPZ+WRmUx1hIEdmJ5wdCtbfRM7WZKuFfGs8N/60QOiKfqzyxfUyIfD7Le1H/HsxRvPmP4twoY6Ff+LpRTVjx5Su8FDd7YzlM0K5iqOCHW3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3p6VRU/8; arc=none smtp.client-ip=209.85.161.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5D539FFD
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Apr 2024 07:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713424005; cv=fail; b=imkwNWyKhV/vGGewqvrwL/AC0xVP2PQNG/ZMRIAwtQIkQHqEwzW/rTZ12Ki+GwF/FNU6Bc/ty9dJWTJRQeu5qELc2GS1WfLJoZeDHJKRjWHwaZD/VnntSKWi/1VM2Rlj0nGe1SirYG4ZBW0BATHQrk0r/STj7//BTJYPl2rLlxk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713424005; c=relaxed/simple;
+	bh=hOYnEOC4M9Bpo+DjoC7UXNoi7+b9yhcvmMVJAw9b03Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nhlfaf27FGTezQ/Qdp7LTM02BY8XFhXoi80c45pnFrO9lr+S4lhPxUDujVS8rE1lmPybbObWMTWIh6cjLodkKXTmF+TeEl5nykSiR7ra0jq0j4HOeXOFPUNMokHqDSMjkV3JdXDQ8DenDL29wAC/kcl13r50X8oSs1FCLDUBymk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=bx+UNmuR; arc=fail smtp.client-ip=40.107.20.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3p6VRU/8"
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5aa1b7a37b5so3978070eaf.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Apr 2024 08:36:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713368170; x=1713972970; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7STbkb0kc4uO9A+FOCYz3iBH+d6D+yCiN6yb3DAcBlQ=;
-        b=3p6VRU/8l5jGbAXpiq+/cmcRQEw9OLMH0AiPdehFBb2bfGPIY7BFpU5crhXaBnPkmB
-         775oABNgKmHx+3oiDc99AZScDcO628KQrMkc7wQYwPPxykY52A3JuyMm5pPJRDvN7Ze0
-         bOORR5I96olz3LGdb+tW3pGor1qSIeIrY+50iNgEQkHYdto5TEgwa0GGOhsWYULD8No/
-         EsEwtU+xqClfrBXPw8xZ9iBy4Psb6ye8XID6P7z7oUhAVnLUVP4RP93tkEHDJPcMW4Pf
-         9OX5kxRi/CX87/+fNzXLMBpCOXM2IHrkG63EjWxh6P7gN+4zTgLcQVn8GdcKyhOhq4Za
-         7BMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713368170; x=1713972970;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7STbkb0kc4uO9A+FOCYz3iBH+d6D+yCiN6yb3DAcBlQ=;
-        b=Wm7OK3egBx/dI0GFwYvQr0FXuR2PvOO/5YV6+t5tg76hbvUJs+w2RXoa45RSMaGh7m
-         La9gfjAvX/g3z9nh58vBn+78q1ZVEsVPqroh4Kt9EzGU35WEoEq/ej+b2cilEVQcE+2T
-         wb4eqj73JkZs/llBIexB6HRZzuDPu48PI40XJx4wxYPpfsvQ2aajP1TwebyYDufXQZhI
-         27lB96jdCugVEKFRMameChpnBJJQjSqmShA8gkgWbBWc0+3Ls2JTumgekrrAq1ai8foe
-         UCbiFMl9/xCd1Ey3CHoN1jR9Q9FuSul/F47KxdFz6nYJPnMTwe45tzY6QqVk886gxmhN
-         Ppdg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1pExRVotKc7zE6wzwK8EvtO9uCVyUhz067ozSfBKhQZzaVz4M4LoUG1rtvl5vTyk2Ib0slk3H79OmljpZGMjiRnPxof/vMOo/QMsZcj4=
-X-Gm-Message-State: AOJu0Yz0x1IkEMrWvEo1HAb5yqWGYFaL2mcpQBwXLb0N25pqY0nU/t98
-	6c+RpU4moOMgyQiUvHDRnYKwLLWKnsTP7Mpur1P3HnL7QfPtZZEmAS77aEWdCnyxUl3zKHOH+K5
-	+PEOwALxhSyhqMvoz9UqHX/D0d3ny/JNHB6Sj
-X-Google-Smtp-Source: AGHT+IEMzi3flnGGABxiUZthG7GHk4bJeCL8d7G0v1u9soflo+40Qg2LO67Au8RewgmGKPOf25nQ1dU2JqYa7YwdIKc=
-X-Received: by 2002:a05:6358:688b:b0:186:2720:2122 with SMTP id
- z11-20020a056358688b00b0018627202122mr13281274rwh.2.1713368170317; Wed, 17
- Apr 2024 08:36:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="bx+UNmuR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QmzPZY0jl+Ru4NGqhdrICIIyrIlNvgW5cr++kheheWo3+rQvYEwe8UD4UiWQnK/M0k5gmqIzFBrmMZFdzc/wiHo2kDkBo6YAZ6D6xtl03nZtBlHaDiUUQAA2IDCzrj++wjgQ4y5kVbnl7ieYUclvnAUz/DjlPbz7+U5/UJ0LtIrWSluoVxMixQ+uxeR4/y0etITMScRIKYNGwYPfMZ6fhoto1FsNIarBH9I3ORbRlAYo5OhYBZ3zIBL+dZlweJnZ7s57WAxrqcgp4GG+rG1BIbmKFHlY/ZEzndczsfjB88eAqJjET1wk7GwXlNN9Z1FegW9HsllfuONLd2CourB5kQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XqpfmJ/3PODEUpa3tYAlsrKKL8gEg6pikoNZdG7YFQA=;
+ b=TNlo9VxGo/cmaU1KsKJKQm/22yq/92zlbpoBRcHuSwPzk5xlS2VeJHx0mflz/1leCsVZQ3zIGrBvYueWbejx5TmcvPjONeCJEAOHF949UlB+Ze3AJDgBZzAdATrPpsy3SLyMkK3Z4qF6ERhZFfB/sqRFUni/IvZSvvEnTQVxXFm7/v0vpXf0IVUb4aXSRB40LmaoA5AGKUS2/YP0ERn0gbgO4T4sLPVAhihqPoPvM5omvdqc+zzcrogOrMJDZp5VZHEf1seRz5J0roMNBB2xd7Y+hKEyY0Af47xRWGpbLgGUKklK8jDJ1tprJKMQXiJrfGnOyPFcSLRdP1K9flPnBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XqpfmJ/3PODEUpa3tYAlsrKKL8gEg6pikoNZdG7YFQA=;
+ b=bx+UNmuR26lTGnUMESkBJQh/vFtmF3XqBTYiP2B1kK9zDzVBrnTjK3vJ8692inZH3FRlm0vCuUH+fRZwZ5wl15MCkBqdanpxsSvE6cwEkeU/KdOXnA4QcW+KFDIqNL/Ebe67An+vkKrnp8oCSa/IgyR4etVjO+T3T/ebfgOjLaKmkKi65ZPS4vWTXwnh/vUVVOchoSRYiMQBm6aeM7Rmy8SH9WfdvmEEoIq0lF02BC0ITCOBL3+yv0O5jHnTzPSPs7vJRA66UTZRUuZUxVNRsL2jLJqgDtc7z2F7FLwDH2w8WR2t107NVqGHae24MNRjGRLmNmDnuzBkpM0i2FieZQ==
+Received: from DB9PR02CA0007.eurprd02.prod.outlook.com (2603:10a6:10:1d9::12)
+ by AS8PR10MB7706.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:63f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.40; Thu, 18 Apr
+ 2024 07:06:36 +0000
+Received: from DB5PEPF00014B98.eurprd02.prod.outlook.com
+ (2603:10a6:10:1d9:cafe::bd) by DB9PR02CA0007.outlook.office365.com
+ (2603:10a6:10:1d9::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.20 via Frontend
+ Transport; Thu, 18 Apr 2024 07:06:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB5PEPF00014B98.mail.protection.outlook.com (10.167.8.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7452.22 via Frontend Transport; Thu, 18 Apr 2024 07:06:36 +0000
+Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 18 Apr
+ 2024 09:06:26 +0200
+Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
+ FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.37; Thu, 18 Apr 2024 09:06:26 +0200
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>
+CC: Dirk Behme <dirk.behme@de.bosch.com>, Valentin Obst
+	<kernel@valentinobst.de>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda
+	<ojeda@kernel.org>
+Subject: [PATCH v4] docs: rust: extend abstraction and binding documentation
+Date: Thu, 18 Apr 2024 09:06:18 +0200
+Message-ID: <20240418070618.3962736-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.28.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415-alice-mm-v5-0-6f55e4d8ef51@google.com>
- <20240415-alice-mm-v5-1-6f55e4d8ef51@google.com> <20240417152802.6b7a7384@eugeo>
- <CAH5fLgjcO0mrQ=X2QG1qS+sTpWDnBfGxXGWn-3wBQzn3MP8pQQ@mail.gmail.com> <b7305f21-3e0b-4bfe-8902-5fc9367c2291@proton.me>
-In-Reply-To: <b7305f21-3e0b-4bfe-8902-5fc9367c2291@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 17 Apr 2024 17:35:58 +0200
-Message-ID: <CAH5fLgjCbvZxSnjzibiFzyEz1Qjw3bAw=qU4sjrBrgosMBKKnA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B98:EE_|AS8PR10MB7706:EE_
+X-MS-Office365-Filtering-Correlation-Id: 821d38b8-26d1-4377-8c66-08dc5f761671
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	UM18r5Mh6mknYnEYjmYwZnnM0eaDhyJ86IulAh0zSHLdjMmI7FH5bmj3Rjx7TMEcORzDqoIwg/ro2rbDHheeTesyqpsBY3ftiD9euqMvC2oShJFBjTIwMhddlgCWh3u6Pb94zeULYLZAqEEepiJTaF+bnqxdkUTx764SLv/BcBASvKj2IBiA5tN7QGVTA5l1Ja7pDf8jfDtgj5RL3KXP9it6+OZ4wo/EnqcVikXxl5Am6byEy+F+HrBUfr7FT6f6WPRzxKObsQC8D5dv4SJKF4/HFVbb7Bu+tJOGbrfWA9NLWF6EVm1XSiJO+qnotNFeElyIzf1zVaCeAhA37CPTFPhStbpxIvSaAekZ/5XFyDjE/wfg7l0j0WCEH/5vv1fQuj3ca5JobRsDLriR04VN1Vs3hPyKT/XjtOwE3UGvMYbgoGgwUxU0NhhyoOycIrCbXD/U0SpjiJeiB5606+kzP0bs14FpOHDsUlTurzHxbmN2/5AgjEge0xU5B9XWX6YFWu4FUzSUbMqJ1dMT9LYgswDnOxpXN4wQ5BJC2/ukNGFK+ifsbrcaJ28177N4qr4HLcbZkPWtMdtYhmPy54YOnTn1yrskXNQsL6jCx01tBruwfmnQoGCFtwy8/erceaMU3nLkv4BtJG9I0YGpL/gBggx5vxellm2lpSSHKdsYKtzzLM45vq/FGiEkwo6rTvrHZr5R+AxoH7DBbFDiOV9mHOELeKYxHNKomFgEL2KxJ1hrrdGlZIXqW8oot+LMUMOW
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(376005)(1800799015)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 07:06:36.5993
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 821d38b8-26d1-4377-8c66-08dc5f761671
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B98.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB7706
 
-On Wed, Apr 17, 2024 at 5:27=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 17.04.24 16:40, Alice Ryhl wrote:
-> > On Wed, Apr 17, 2024 at 4:28=E2=80=AFPM Gary Guo <gary@garyguo.net> wro=
-te:
-> >>
-> >> On Mon, 15 Apr 2024 07:13:53 +0000
-> >> Alice Ryhl <aliceryhl@google.com> wrote:
-> >>
-> >>> From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> >>>
-> >>> A pointer to an area in userspace memory, which can be either read-on=
-ly
-> >>> or read-write.
-> >>>
-> >>> All methods on this struct are safe: attempting to read or write on b=
-ad
-> >>> addresses (either out of the bound of the slice or unmapped addresses=
-)
-> >>> will return `EFAULT`. Concurrent access, *including data races to/fro=
-m
-> >>> userspace memory*, is permitted, because fundamentally another usersp=
-ace
-> >>> thread/process could always be modifying memory at the same time (in =
-the
-> >>> same way that userspace Rust's `std::io` permits data races with the
-> >>> contents of files on disk). In the presence of a race, the exact byte
-> >>> values read/written are unspecified but the operation is well-defined=
-.
-> >>> Kernelspace code should validate its copy of data after completing a
-> >>> read, and not expect that multiple reads of the same address will ret=
-urn
-> >>> the same value.
-> >>>
-> >>> These APIs are designed to make it difficult to accidentally write
-> >>> TOCTOU bugs. Every time you read from a memory location, the pointer =
-is
-> >>> advanced by the length so that you cannot use that reader to read the
-> >>> same memory location twice. Preventing double-fetches avoids TOCTOU
-> >>> bugs. This is accomplished by taking `self` by value to prevent
-> >>> obtaining multiple readers on a given `UserSlicePtr`, and the readers
-> >>> only permitting forward reads. If double-fetching a memory location i=
-s
-> >>> necessary for some reason, then that is done by creating multiple
-> >>> readers to the same memory location.
-> >>>
-> >>> Constructing a `UserSlicePtr` performs no checks on the provided
-> >>> address and length, it can safely be constructed inside a kernel thre=
-ad
-> >>> with no current userspace process. Reads and writes wrap the kernel A=
-PIs
-> >>> `copy_from_user` and `copy_to_user`, which check the memory map of th=
-e
-> >>> current process and enforce that the address range is within the user
-> >>> range (no additional calls to `access_ok` are needed).
-> >>>
-> >>> This code is based on something that was originally written by Wedson=
- on
-> >>> the old rust branch. It was modified by Alice by removing the
-> >>> `IoBufferReader` and `IoBufferWriter` traits, and various other chang=
-es.
-> >>>
-> >>> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> >>> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> >>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >>> ---
-> >>>   rust/helpers.c         |  14 +++
-> >>>   rust/kernel/lib.rs     |   1 +
-> >>>   rust/kernel/uaccess.rs | 304 ++++++++++++++++++++++++++++++++++++++=
-+++++++++++
-> >>>   3 files changed, 319 insertions(+)
-> >>>
-> >>> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> >>
-> >>> +/// [`std::io`]: https://doc.rust-lang.org/std/io/index.html
-> >>> +/// [`clone_reader`]: UserSliceReader::clone_reader
-> >>> +pub struct UserSlice {
-> >>> +    ptr: *mut c_void,
-> >>> +    length: usize,
-> >>> +}
-> >>
-> >> How useful is the `c_void` in the struct and new signature? They tend
-> >> to not be very useful in Rust. Given that provenance doesn't matter
-> >> for userspace pointers, could this be `usize` simply?
-> >>
-> >> I think `*mut u8` or `*mut ()` makes more sense than `*mut c_void` for
-> >> Rust code even if we don't want to use `usize`.
-> >
-> > I don't have a strong opinion here. I suppose a usize could make
-> > sense. But I also think c_void is fine, and I lean towards not
-> > changing it. :)
-> >
-> >> Some thinking aloud and brainstorming bits about the API.
-> >>
-> >> I wonder if it make sense to have `User<[u8]>` instead of `UserSlice`?
-> >> The `User` type can be defined like this:
-> >>
-> >> ```rust
-> >> struct User<T: ?Sized> {
-> >>     ptr: *mut T,
-> >> }
-> >> ```
-> >>
-> >> and this allows arbitrary T as long as it's POD. So we could have
-> >> `User<[u8]>`, `User<u32>`, `User<PodStruct>`. I imagine the
-> >> `User<[u8]>` would be the general usage and the latter ones can be
-> >> especially helpful if you are trying to implement ioctl and need to
-> >> copy fixed size data structs from userspace.
-> >
-> > Hmm, we have to be careful here. Generally, when you get a user slice
-> > via an ioctl, you should make sure to use the length you get from
-> > userspace. In binder, it looks like this:
-> >
-> > let user_slice =3D UserSlice::new(arg, _IOC_SIZE(cmd));
-> >
-> > so whichever API we use, we must make sure to get the length as an
-> > argument in bytes. What should we do if the length is not a multiple
-> > of size_of(T)?
->
-> We could print a warning and then just floor to the next multiple of
-> `size_of::<T>()`. I agree that is not perfect, but if one uses the
-> current API, one also needs to do the length check eventually.
+Add some basics explained by Miguel in [1] to the documentation.
+And connect it with some hints where this is implemented in the
+kernel.
 
-Right now, the length check happens when you call `read::<T>` and get
-EFAULT if the size of T is greater than the length of the user slice.
-That works pretty well. And there are real-world use-cases for
-userspace passing in a length longer than what the kernel expects -
-often adding fields to the end of the struct is how the kernel makes
-ioctls extensible. So I don't think printing a warning in that case
-would be good.
+[1] https://www.linuxfoundation.org/webinars/rust-for-linux-writing-abstractions-and-drivers
 
-In Binder, I also have use-cases where I alternate between reading
-bytes and various different structs. Basically, I read two user slices
-in lockstep, where the next value in one userslice determines whether
-I should read some amount of bytes or a specific struct from the other
-user slice. That's much easier with the current API than this
-proposal.
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+---
+ Documentation/rust/general-information.rst | 56 ++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-> > Another issue is that there's no stable way to get the length from a
-> > `*mut [T]` without creating a reference, which is not okay for a user
-> > slice.
->
-> Seems like `<* const [T]>::len` (feature `slice_ptr_len`) [1] was just
-> stabilized 5 days ago [1].
->
-> [1]: https://doc.rust-lang.org/std/primitive.pointer.html#method.len-1
-> [2]: https://github.com/rust-lang/rust/pull/123868
+Changes in v4: Rebase against rust-dev v6.9-rc1 to re-start this topic. If
+               the reviewers are too busy and its not a good time for it
+               just let me know :)
 
-Okay.
+diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+index 081397827a7e..6c6fb3a5e318 100644
+--- a/Documentation/rust/general-information.rst
++++ b/Documentation/rust/general-information.rst
+@@ -64,6 +64,62 @@ but it is intended that coverage is expanded as time goes on. "Leaf" modules
+ (e.g. drivers) should not use the C bindings directly. Instead, subsystems
+ should provide as-safe-as-possible abstractions as needed.
+ 
++.. code-block::
++
++	                                                rust/bindings/
++                                                       (rust/helpers.c)
++
++                                                          include/ -----+ <-+
++                                                                        |   |
++         drivers/              rust/kernel/              +----------+ <-+   |
++           fs/                                           | bindgen  |       |
++          .../            +-------------------+          +----------+ --+   |
++                          |    Abstractions   |                         |   |
++       +---------+        | +------+ +------+ |          +----------+   |   |
++       | my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | <-+   |
++       | driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          |       |
++       +---------+        | |system| |system| |          | bindings | <-----+
++            |             | +------+ +------+ |          |  crate   |       |
++            |             |   kernel crate    |          +----------+       |
++            |             +-------------------+                             |
++            |                                                               |
++            +------------------# FORBIDDEN #--------------------------------+
++
++The main idea is to encapsulate all direct interaction with the kernel's C APIs
++into carefully reviewed and documented abstractions. These are then considered to
++be sound. The goal is that users of these abstractions ("my_foo driver") cannot
++introduce undefined behavior (UB) as long as:
++
++#. the abstractions are correct.
++#. they don't use ``unsafe{..}``. Or they uphold the preconditions of all unsafe
++   operations that they perform if they use ``unsafe{..}`` for performance optimizations
++   or to call unsafe abstractions.
++
++Bindings
++~~~~~~~~
++
++By including a C header from ``include/`` into ``rust/bindings/bindings_helper.h``
++the ``bindgen`` tool will auto-generate the bindings for the included subsystem.
++After building, see the ``*_generated.rs`` output files in the ``rust/bindings/``
++directory.
++
++For parts of the C header that ``bindgen`` doesn't auto generate, e.g. C ``inline``
++functions or macros, it is acceptable to add a small wrapper function
++to ``rust/helpers.c`` to make it available for the Rust side as well.
++
++Abstractions
++~~~~~~~~~~~~
++
++Abstractions are the layer between the bindings and the in-kernel users. They are
++located in ``rust/kernel/`` and their role is to encapsulate the unsafe access
++to the bindings into an as-safe-as-possible API that they expose to their users.
++Users of the abstractions include things like drivers or file systems written in Rust.
++
++Besides the safety aspect, the abstractions are supposed to be "ergonomic", in the
++sense that they turn the C interfaces into "idiomatic" Rust code. Basic examples are
++to turn the C resource acquisition and release into Rust constructors and destructors
++or C integer error codes into Rust's ``Result``.
++
+ 
+ Conditional compilation
+ -----------------------
+-- 
+2.28.0
 
-Alice
