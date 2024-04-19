@@ -1,164 +1,138 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C4C1E491;
-	Fri, 19 Apr 2024 08:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD491292F2
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Apr 2024 13:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713515786; cv=none; b=b0gOOmGR0uAjw5PNZYrl0u+58E8i6o3yFeFan3XJy66kgfsK1t2yGhnA3nIZIDtqWMTK3sRIUX4h22EyXwYx6+c45cNb9FaoMr9L6L46z+ASKFEsp+RihPb6uH00ugPtUSyNsEpwZsIXKzVDvj1Lu6W2WWjpO6LISbWtepb/GVw=
+	t=1713534848; cv=none; b=jp35en9VBA2iU+kEikNjtk0AA6pFha9Mbo9USGcAaF8Pcs6KOhQ5MsIMsSjWLSp8ArSLGZslAWF6Ypi99roQ++X/pJtAjEZmEFkUpJtnR7EYsjKT2Hi9pOsWodDjSo/NX79ZqWh7DyT5CGgkez+5+cwj4eRKJwc0jvsw7urnPNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713515786; c=relaxed/simple;
-	bh=cHrXCKoKJLnXn3cGgKmUX7l9FKAPRGU8deld9SgpXQk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NzIr/yjxt3anxFwdqDsaCeFXRLEiWfTJCD3OjUzLjGZaurT0KNvTNM7idDnieyr2KJy8yuCqgygF5cpzDT6Cb0nFwkn7yuDyADNDrfuP0gfP/6EUABm0Qj6ZL7Jy/EVt9fEW5KwSqPCFmNazd+PusWLb/Up+2zRY35JijULGbjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=b+hIFPUz; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1713534848; c=relaxed/simple;
+	bh=jXQz9x1uOQ6eEOlhNAo6z/ngwGczgkwyleRkzUnc0+s=;
+	h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type; b=FT2yKBNU3fkjyI6k9steDVzmRB7RCQ7oXXBO4j8wXDtJu3LKQRfpXNrOLNAbTw3fWbSNtVnB1L1gyw7xXYoLfYZ2bH5WZfXSEtm5ndvCTsBbY3ybQ2Rl15LHTIqMAgzHlbR8qs2GxeRpbhRXqxhjsRoPjpIGGuhKQphh24FNG3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dTy0u22b; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="b+hIFPUz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1713515779; x=1713774979;
-	bh=GNZayvSmS5HRg6gaz/dtwX1+NRrHmVzmTZGPE4Ro8Bk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=b+hIFPUz3QO4BSP9l86BymyS8jeeT04gztsZSJOjK+Mn1kc8SR+n7jWsZ/faaBHGS
-	 I5YqzIgHAoRZxNNFmLiPMmXzy4z2vSH8V6aHuol9+m29n9SFvJDUdCN+G1hVR5XMPA
-	 2Hw7XBupHcL5hDPTGqv9B/o7rO1NyF6kX/3MbRt4IMsrKdqxan4Q6yDTURIkppSBfa
-	 r2t8rPUEuaoJNmN3MZZLmrdXZNthFXpD1A06i3k0R5G0rIxn1DiWXMcCxx+BU+babv
-	 bKNTwmWqpEnYlCQm4LFRLAIBUOlmL89HV8nnkpgVvxftNqQx9Os63DmbxGGGttriml
-	 2/QqAv3dP8dgw==
-Date: Fri, 19 Apr 2024 08:36:11 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v6 4/4] rust: add abstraction for `struct page`
-Message-ID: <079c88af-2e6d-45fe-bf58-afebbf7583b4@proton.me>
-In-Reply-To: <ZiGnFI7cz5v-cowt@boqun-archlinux>
-References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com> <20240418-alice-mm-v6-4-cb8f3e5d688f@google.com> <ZiFsCLb-BZWbBHsu@boqun-archlinux> <87dc4cdf-ccf6-4b08-8915-313aad313f93@proton.me> <ZiGlC5AtRRikE1AI@boqun-archlinux> <ZiGnFI7cz5v-cowt@boqun-archlinux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ad15b522de4b58dd3101eb7a34f97ddc12b90f13
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dTy0u22b"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1e825c6c10fso3416855ad.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 19 Apr 2024 06:54:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713534846; x=1714139646; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:from:subject:to:message-id
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+YHbF+YkAmsx7Q17nYp7HCgecnl6kkP+ExoL173qsLo=;
+        b=dTy0u22bpSD9O5aPgH6G6e7H1EwSxP4YEB2gSsjzIxQHdaaWXC6VEGjTPxFCEii79Y
+         ut8N6URGq3NG4TVDRNwfwVOPDwB7flu8UMePteXnHlXw0Z9B+Bf+f+VsjdGdan7x42vR
+         rWprAh1ZrBEubr8dgaLX53Pi0JupqLRQWhpG4Xr7l6jDnc5pO+swtTTeSzBE6PPKCxvI
+         za6AqWIQT9HtAa/QGqxf1mEZgGAlEmz0Q4NYFdYCGwP3TObgtmiz+v5jv0KI5hl0A8q/
+         XYKYev+zCtnBOmEYTLcXBvpnfjBw75Xly7fEovQ3S8wyC+7vGkhazw18hucv659W/hSp
+         q/gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713534846; x=1714139646;
+        h=content-transfer-encoding:mime-version:from:subject:to:message-id
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+YHbF+YkAmsx7Q17nYp7HCgecnl6kkP+ExoL173qsLo=;
+        b=rk7UdXiS20V8jhFkx0frZaIOFBs3URwjygrEY6u/6OOE3toV2qpbG7TQ3m9YO8s4Y8
+         dSHSFjlXgNN8JMIy1CMhjT5ZJdeV3cMm33YprTrT/NtefcTqUGrph8wY1NQrXHz/IYBe
+         SWWcUnre1W4UDlcMjc9FhGI5cNuiQxBMOGKkAhTP/UsMWcGBOvKlaRev91Q/H4H6JCDT
+         1sXPJkNmhg4uHcpX8eHzQdplROAX2GGvwqSklwiNMJvT9ln2bFk3CTcQcxLEXOTvkiI5
+         eXPB4RIU77nsXPCfiyJg6EGOAZtRS5kATtZS9kre0yxyVT7QcxtTauPzLy0p2GALpo29
+         39sg==
+X-Gm-Message-State: AOJu0YzRzQN8A/Nw3sLFdIyEVDCK+7BDlGYe2wiD7fPMlMzc0oIioqEt
+	NYFdIqrioiDRGtuBJ7hVBH+uuGnhYuM0SpPhEHwQBXmkFTC8+e82exSS/g==
+X-Google-Smtp-Source: AGHT+IH6HVTsq+jxAmChJx89tMK5xr/zkWUm2PWKrYf0ECtUQyE1AkllJtSDHKHl8rTiAhO9Q0sZGQ==
+X-Received: by 2002:a17:902:8d8b:b0:1dd:b54c:df51 with SMTP id v11-20020a1709028d8b00b001ddb54cdf51mr2374216plo.4.1713534845651;
+        Fri, 19 Apr 2024 06:54:05 -0700 (PDT)
+Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
+        by smtp.gmail.com with ESMTPSA id c8-20020a170902724800b001e2a42a2e34sm3352231pll.65.2024.04.19.06.54.04
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Apr 2024 06:54:05 -0700 (PDT)
+Date: Fri, 19 Apr 2024 22:53:53 +0900 (JST)
+Message-Id: <20240419.225353.364631939354183191.fujita.tomonori@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Subject: [PATCH RFC v1] rust: add 'firmware' tag support to module! macro
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On 19.04.24 01:04, Boqun Feng wrote:
-> On Thu, Apr 18, 2024 at 03:56:11PM -0700, Boqun Feng wrote:
->> On Thu, Apr 18, 2024 at 10:08:40PM +0000, Benno Lossin wrote:
->>> On 18.04.24 20:52, Boqun Feng wrote:
->>>> On Thu, Apr 18, 2024 at 08:59:20AM +0000, Alice Ryhl wrote:
->>>>> +    /// Runs a piece of code with a raw pointer to a slice of this p=
-age, with bounds checking.
->>>>> +    ///
->>>>> +    /// If `f` is called, then it will be called with a pointer that=
- points at `off` bytes into the
->>>>> +    /// page, and the pointer will be valid for at least `len` bytes=
-. The pointer is only valid on
->>>>> +    /// this task, as this method uses a local mapping.
->>>>> +    ///
->>>>> +    /// If `off` and `len` refers to a region outside of this page, =
-then this method returns
->>>>> +    /// `EINVAL` and does not call `f`.
->>>>> +    ///
->>>>> +    /// # Using the raw pointer
->>>>> +    ///
->>>>> +    /// It is up to the caller to use the provided raw pointer corre=
-ctly. The pointer is valid for
->>>>> +    /// `len` bytes and for the duration in which the closure is cal=
-led. The pointer might only be
->>>>> +    /// mapped on the current thread, and when that is the case, der=
-eferencing it on other threads
->>>>> +    /// is UB. Other than that, the usual rules for dereferencing a =
-raw pointer apply: don't cause
->>>>> +    /// data races, the memory may be uninitialized, and so on.
->>>>> +    ///
->>>>> +    /// If multiple threads map the same page at the same time, then=
- they may reference with
->>>>> +    /// different addresses. However, even if the addresses are diff=
-erent, the underlying memory is
->>>>> +    /// still the same for these purposes (e.g., it's still a data r=
-ace if they both write to the
->>>>> +    /// same underlying byte at the same time).
->>>>> +    fn with_pointer_into_page<T>(
->>>>> +        &self,
->>>>> +        off: usize,
->>>>> +        len: usize,
->>>>> +        f: impl FnOnce(*mut u8) -> Result<T>,
->>>>
->>>> I wonder whether the way to go here is making this function signature:
->>>>
->>>>       fn with_slice_in_page<T> (
->>>>           &self,
->>>> =09       off: usize,
->>>> =09       len: usize,
->>>> =09       f: iml FnOnce(&UnsafeCell<[u8]>) -> Result<T>
->>>>       ) -> Result<T>
->>>>
->>>> , because in this way, it makes a bit more clear that what memory that
->>>> `f` can access, in other words, the users are less likely to use the
->>>> pointer in a wrong way.
->>>>
->>>> But that depends on whether `&UnsafeCell<[u8]>` is the correct
->>>> abstraction and the ecosystem around it: for example, I feel like thes=
-e
->>>> two functions:
->>>>
->>>> =09    fn len(slice: &UnsafeCell<[u8]>) -> usize
->>>> =09    fn as_ptr(slice: &UnsafeCell<[u8]>) -> *mut u8
->>>>
->>>> should be trivially safe, but I might be wrong. Again this is just for
->>>> future discussion.
->>>
->>> I think the "better" type would be `&[UnsafeCell<u8>]`. Since there you
->>> can always access the length.
->>>
->>
->> Hmm.. here is the thing, having `&UnsafeCell<[u8]>` means having a `*mut
->> [u8]>`, and it should always be safe to get a "length" of `*mut [u8]`,
->> right? I haven't found any method doing that, but the length should be
->> just a part of fat pointer, so I think getting that is a defined
->> behavior. But maybe I'm missing something.
+Hi,
 
-There is `to_raw_parts` [1], but that is unstable. (Note that
-`<[T] as Pointee>::Metadata =3D usize`, see [2])
+This patch is necessary for a new QT2025 PHY driver in Rust:
 
->>
->=20
-> Hmm... but I guess one of the problems of this approach, is how to
-> construct a `&UnsafeCell<[u8]>` from a pointer and length...
+https://lwn.net/Articles/969888/
 
-We could use `from_raw_parts` [3]. But when making the slice the outer
-type, we can use a stable function to convert a pointer and a length to
-a slice [4].
+Are there places to be fixed or imporved before sending this in the v2
+of the PHY driver patchset?
 
->=20
-> Regards,
-> Boqun
->=20
->>> Another question would be if page allows for uninitialized bits, in tha=
-t
->>> case, we would need `&[Opaque<u8>]`.
->>>
->>
->> Yes, or `&Opaque<[u8>]`.
 
-I don't think that putting the slice on the inside is what we want. Also
-note that `Opaque<T>` requires that `T: Sized` and that is not the case
-for `[u8]`.
+-
+This adds 'firmware' tag support to module! macro, corresponds to
+MODULE_FIRMWARE macro.
 
-[1]: https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.t=
-o_raw_parts
-[2]: https://doc.rust-lang.org/nightly/core/ptr/trait.Pointee.html#pointer-=
-metadata
-[3]: https://doc.rust-lang.org/nightly/core/ptr/fn.from_raw_parts.html
-[4]: https://doc.rust-lang.org/nightly/core/slice/fn.from_raw_parts.html
+A module can have multiple 'firmware' tags like 'alias'.
 
---=20
-Cheers,
-Benno
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/macros/module.rs | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 27979e582e4b..5fdaac17a733 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -97,14 +97,22 @@ struct ModuleInfo {
+     author: Option<String>,
+     description: Option<String>,
+     alias: Option<Vec<String>>,
++    firmware: Option<Vec<String>>,
+ }
+ 
+ impl ModuleInfo {
+     fn parse(it: &mut token_stream::IntoIter) -> Self {
+         let mut info = ModuleInfo::default();
+ 
+-        const EXPECTED_KEYS: &[&str] =
+-            &["type", "name", "author", "description", "license", "alias"];
++        const EXPECTED_KEYS: &[&str] = &[
++            "type",
++            "name",
++            "author",
++            "description",
++            "license",
++            "alias",
++            "firmware",
++        ];
+         const REQUIRED_KEYS: &[&str] = &["type", "name", "license"];
+         let mut seen_keys = Vec::new();
+ 
+@@ -131,6 +139,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+                 "description" => info.description = Some(expect_string(it)),
+                 "license" => info.license = expect_string_ascii(it),
+                 "alias" => info.alias = Some(expect_string_array(it)),
++                "firmware" => info.firmware = Some(expect_string_array(it)),
+                 _ => panic!(
+                     "Unknown key \"{}\". Valid keys are: {:?}.",
+                     key, EXPECTED_KEYS
+@@ -186,6 +195,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+             modinfo.emit("alias", &alias);
+         }
+     }
++    if let Some(firmware) = info.firmware {
++        for fw in firmware {
++            modinfo.emit("firmware", &fw);
++        }
++    }
+ 
+     // Built-in modules also export the `file` modinfo string.
+     let file =
+-- 
+2.34.1
 
