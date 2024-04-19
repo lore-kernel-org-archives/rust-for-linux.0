@@ -1,155 +1,203 @@
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A36813AD02
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Apr 2024 18:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810B513C9A2
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Apr 2024 19:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713550359; cv=none; b=gg/DUpwOMEx9mc2SCIVKQgJg/eeogMaf6Vz3IZwgHxf/vy9z7w9qM6Q+cBar/4pe613Weo8MNPmH2EffpBPO09udSOhW5MWnrN+niRTs0E+x4ZctKhKTN4ccbg2Q6XDrNF17rBtCh9aLkbnPpCvUtsYr6ExA00cOpXMcx/OrahM=
+	t=1713554686; cv=none; b=kMGfeQdjbc8IxoOeCyl0HAJLreJIrbV6Utf3WZl3Fp8t8HKn3dNgdnrGIBHdTiGpb77xYbj/b8ZGWQyTv4GGmBMbrdXRqWUrlSA8GmVO6YrHHIwRazP+76vwrK1T4arjle1jJpDILgnRJC1ICVQ9N9D08Aw4zVnu/gB5WgLrLRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713550359; c=relaxed/simple;
-	bh=5OoEVXRanZ24jLnT2Kd6vCgLBegTb1q/k9NQXr41LEw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DrKU2RALeFgLEx8eVvWMDzbeqMWl4Vnr9wBEyC7yPnE36g1p9nhaXU+XUKeJZbXmfYYVzOjEJJ6p3FI0zbPgujOpzwuHKC5VEhjxL0lVFgLc/jbLpxNcahInxU8q0pHskOtetRWitKAu44+pHg6IakukUb7uZEqx1EJRSeyMSIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CDhuYTbj; arc=none smtp.client-ip=209.85.222.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1713554686; c=relaxed/simple;
+	bh=KgdfRfZxHoDqdsAw65ukQuf/Dz7cxkXN/32luMZXWUU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XoNQ/bDEEEylueG70edcF0074SayG3yqOcOk1HM5Z14fMHTn2eiAfSmLPaBaPpQNVqMhhH2+z6dTZJPODTOG41Kyu0ja2YKVIAcCIhgnTNEV64jTLalKCiYU2ErBlisAyaOWOacZWM9o9ef/uqk5AP6pAUamKwPNO6yIj7k/v9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QU97x+Q+; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CDhuYTbj"
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-7ec48a0306bso702801241.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Apr 2024 11:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713550356; x=1714155156; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pr4pi+Kny8bbVl+Iz+PAepuZ7kpgc/VuFcgkzz8aTw4=;
-        b=CDhuYTbj3VMN44oaNXnXxu27FtJXw/vS8mw1ORPB+RdOKvkG6MzSDK1Zf9LSM9bI46
-         ZrxThK4rGMaaCTZUfKDeEZJJK1HsaKI/+wwEFyXpF+umz6gNkzcZ1aqA9y7zs09QeEDw
-         lefHg3x1vMfrscfG8kz5QsZ8KU4kWSqFOLvqj5Fi+ZdvlqQrwKmHdrHGn6s/a2FJE6vN
-         liFXM0z1xQsNd25NoPAYkWDXD0SoPpCJr5FS+tHm9tPyVUi30nYzRM3VxQN71KFqh+iE
-         4uBYaTONRyZYQeKOruSS9MystM32a2sq/mtE5KBj7u4igNq+blWNZ0gza/y07v8D0gmt
-         gosA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713550356; x=1714155156;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pr4pi+Kny8bbVl+Iz+PAepuZ7kpgc/VuFcgkzz8aTw4=;
-        b=JgmOy0QIqs2hFT9Utg/Od4/GlceDst4r3Livs68oYnkv0qix5c+exVksi9LiDfFdmP
-         xkMSsv2bLvSojmH2gVNPRYBfByRBIn6PWVKpjy5zQDezQCu5DXu7a2LbD95Qxrppuu4j
-         2ejxuQmYhn8WXbWj/vFnWIF/wa+xFVOXJ//eHH3I3XQZ0riItnf+wBXKtbr/01x6qIdk
-         DShby/1h8U+FhFK+ELxnj7FQtHpFxsvU/EtyqhQ+aLXA3rtH2NcioY/gMhk36uJADFVW
-         IBB/i+PRSFJxS6SIu47yJKAk86FiS7JY5ShOi6KolipwFamr4EQr2sBLJNGcjRHrR5KN
-         zMCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAYwT3gEvdNlhpqtQvNtdmZFy5Acw+dIuqt7ETOjO9c0Arz/7JNq21/uMGtSZsnmikN0xiSJc9avAFO7EFBdJlk5Ef2ibS+QRuD7vL85w=
-X-Gm-Message-State: AOJu0YzpUhVR2/+3uSMpDtWv5k5hR8TE3YN4CqNNPNC27wEOI+FT5iuj
-	d4Gqn7Nm3Lj8lA/RHwVNO/Yo4Ztyhxkz+fTdNd4D2lwj+c0BttGnJvKh+nZnv3HKrZJpodO1hJM
-	OBKymGahAXASa7uov9ZxmIqwZJ+Pbmse29en6
-X-Google-Smtp-Source: AGHT+IGKWqj19fr6lCGVBtuwAdS9DytWE1K5v7+RkbOscyxSEB74jIiRfprxzzsCH+WqgTqKdbso+jk/KyNVUnSu+YU=
-X-Received: by 2002:a05:6102:2844:b0:47b:5f05:5a57 with SMTP id
- az4-20020a056102284400b0047b5f055a57mr8647652vsb.16.1713550356213; Fri, 19
- Apr 2024 11:12:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QU97x+Q+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1713554676; x=1713813876;
+	bh=vCvePluHAcwgBw7ggt1O7z9u1s71ZLFHHPwyUG7O1aA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=QU97x+Q+uDPS0SdkO6EHo/RbHvPmEyCBeePZ9HCFVsz+d6ZrRGSMKl1sxvqgJkBbk
+	 reD8jB2hChO4rck/EVbn0IoXWbMLDtr9/6a8trMM3uGa0zm0k6yMpEliBg+ZhyKJ9b
+	 fy2WGKzcP28AAQzv2mzmTHCuabUlD/8AZZZh23GgYJfh3WnrjGCfOEnOkpVZdFEMz6
+	 w5AVy6PV1yxwikPO6S81SBVeDXE13wEzeEVf1pV9QzekcZQFLasv1UAWENmtMoTDCM
+	 xiSxsPW7++PhSAQvhJPQcKTtg1fPdA7/kxS67tENUIkJ/DwSTrVI8WxbSVesWTuKNt
+	 ZijcbRKnfvXbQ==
+Date: Fri, 19 Apr 2024 19:24:31 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v6 4/4] rust: add abstraction for `struct page`
+Message-ID: <c500f9c6-8811-44c4-89a4-603a67d09e78@proton.me>
+In-Reply-To: <ZiKooOjXh209i8je@boqun-archlinux>
+References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com> <20240418-alice-mm-v6-4-cb8f3e5d688f@google.com> <ZiFsCLb-BZWbBHsu@boqun-archlinux> <87dc4cdf-ccf6-4b08-8915-313aad313f93@proton.me> <ZiGlC5AtRRikE1AI@boqun-archlinux> <ZiGnFI7cz5v-cowt@boqun-archlinux> <079c88af-2e6d-45fe-bf58-afebbf7583b4@proton.me> <ZiKooOjXh209i8je@boqun-archlinux>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 99067a81dd80b83b29b9214a862a2f3e3d937d32
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com>
- <20240418-alice-mm-v6-1-cb8f3e5d688f@google.com> <ZiKltinLGvKlBivm@boqun-archlinux>
-In-Reply-To: <ZiKltinLGvKlBivm@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 19 Apr 2024 20:12:24 +0200
-Message-ID: <CAH5fLgh0rFMQcAA4a=Vk8uEkyHP455KeihR-2BkkOpgHS6teKA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/4] rust: uaccess: add userspace pointers
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 19, 2024 at 7:11=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On 19.04.24 19:23, Boqun Feng wrote:
+> On Fri, Apr 19, 2024 at 08:36:11AM +0000, Benno Lossin wrote:
+>> On 19.04.24 01:04, Boqun Feng wrote:
+>>> On Thu, Apr 18, 2024 at 03:56:11PM -0700, Boqun Feng wrote:
+>>>> On Thu, Apr 18, 2024 at 10:08:40PM +0000, Benno Lossin wrote:
+>>>>> On 18.04.24 20:52, Boqun Feng wrote:
+>>>>>> On Thu, Apr 18, 2024 at 08:59:20AM +0000, Alice Ryhl wrote:
+>>>>>>> +    /// Runs a piece of code with a raw pointer to a slice of this=
+ page, with bounds checking.
+>>>>>>> +    ///
+>>>>>>> +    /// If `f` is called, then it will be called with a pointer th=
+at points at `off` bytes into the
+>>>>>>> +    /// page, and the pointer will be valid for at least `len` byt=
+es. The pointer is only valid on
+>>>>>>> +    /// this task, as this method uses a local mapping.
+>>>>>>> +    ///
+>>>>>>> +    /// If `off` and `len` refers to a region outside of this page=
+, then this method returns
+>>>>>>> +    /// `EINVAL` and does not call `f`.
+>>>>>>> +    ///
+>>>>>>> +    /// # Using the raw pointer
+>>>>>>> +    ///
+>>>>>>> +    /// It is up to the caller to use the provided raw pointer cor=
+rectly. The pointer is valid for
+>>>>>>> +    /// `len` bytes and for the duration in which the closure is c=
+alled. The pointer might only be
+>>>>>>> +    /// mapped on the current thread, and when that is the case, d=
+ereferencing it on other threads
+>>>>>>> +    /// is UB. Other than that, the usual rules for dereferencing =
+a raw pointer apply: don't cause
+>>>>>>> +    /// data races, the memory may be uninitialized, and so on.
+>>>>>>> +    ///
+>>>>>>> +    /// If multiple threads map the same page at the same time, th=
+en they may reference with
+>>>>>>> +    /// different addresses. However, even if the addresses are di=
+fferent, the underlying memory is
+>>>>>>> +    /// still the same for these purposes (e.g., it's still a data=
+ race if they both write to the
+>>>>>>> +    /// same underlying byte at the same time).
+>>>>>>> +    fn with_pointer_into_page<T>(
+>>>>>>> +        &self,
+>>>>>>> +        off: usize,
+>>>>>>> +        len: usize,
+>>>>>>> +        f: impl FnOnce(*mut u8) -> Result<T>,
+>>>>>>
+>>>>>> I wonder whether the way to go here is making this function signatur=
+e:
+>>>>>>
+>>>>>>        fn with_slice_in_page<T> (
+>>>>>>            &self,
+>>>>>> =09       off: usize,
+>>>>>> =09       len: usize,
+>>>>>> =09       f: iml FnOnce(&UnsafeCell<[u8]>) -> Result<T>
+>>>>>>        ) -> Result<T>
+>>>>>>
+>>>>>> , because in this way, it makes a bit more clear that what memory th=
+at
+>>>>>> `f` can access, in other words, the users are less likely to use the
+>>>>>> pointer in a wrong way.
+>>>>>>
+>>>>>> But that depends on whether `&UnsafeCell<[u8]>` is the correct
+>>>>>> abstraction and the ecosystem around it: for example, I feel like th=
+ese
+>>>>>> two functions:
+>>>>>>
+>>>>>> =09    fn len(slice: &UnsafeCell<[u8]>) -> usize
+>>>>>> =09    fn as_ptr(slice: &UnsafeCell<[u8]>) -> *mut u8
+>>>>>>
+>>>>>> should be trivially safe, but I might be wrong. Again this is just f=
+or
+>>>>>> future discussion.
+>>>>>
+>>>>> I think the "better" type would be `&[UnsafeCell<u8>]`. Since there y=
+ou
+>>>>> can always access the length.
+>>>>>
+>>>>
+>>>> Hmm.. here is the thing, having `&UnsafeCell<[u8]>` means having a `*m=
+ut
+>>>> [u8]>`, and it should always be safe to get a "length" of `*mut [u8]`,
+>>>> right? I haven't found any method doing that, but the length should be
+>>>> just a part of fat pointer, so I think getting that is a defined
+>>>> behavior. But maybe I'm missing something.
+>>
+>> There is `to_raw_parts` [1], but that is unstable. (Note that
+>> `<[T] as Pointee>::Metadata =3D usize`, see [2])
+>>
+>=20
+> Oh, that's good to know, thank you! ;-)
 >
-> On Thu, Apr 18, 2024 at 08:59:17AM +0000, Alice Ryhl wrote:
-> [...]
-> > +    /// Reads the entirety of the user slice, appending it to the end =
-of the provided buffer.
-> > +    ///
-> > +    /// Fails with `EFAULT` if the read happens on a bad address.
-> > +    pub fn read_all(mut self, buf: &mut Vec<u8>, flags: Flags) -> Resu=
-lt {
-> > +        let len =3D self.length;
-> > +        buf.reserve(len, flags)?;
->
-> (Reportedy by Miguel)
->
-> When compile with `make rusttest`, kernel crate is compiled as userspace
-> program, so we need to explicitly pick where the `reserve` comes from
-> (Vec or VecExt), the current version will hit the following error:
->
->         error[E0061]: this method takes 1 argument but 2 arguments were s=
-upplied
->            --> rust/kernel/uaccess.rs:296:13
->             |
->         296 |         buf.reserve(len, flags)?;
->             |             ^^^^^^^    -------
->             |                        | |
->             |                        | unexpected argument of type `Flags=
-`
->             |                        help: remove the extra argument
->             |
->         note: method defined here
->            --> /home/boqun/linux-rust/rust/test/sysroot/lib/rustlib/src/r=
-ust/library/alloc/src/vec/mod.rs:910:12
->             |
->         910 |     pub fn reserve(&mut self, additional: usize) {
->             |            ^^^^^^^
->
->         error[E0277]: the `?` operator can only be applied to values that=
- implement `Try`
->            --> rust/kernel/uaccess.rs:296:9
->             |
->         296 |         buf.reserve(len, flags)?;
->             |         ^^^^^^^^^^^^^^^^^^^^^^^^ the `?` operator cannot be=
- applied to type `()`
->             |
->             =3D help: the trait `Try` is not implemented for `()`
->
->         error: aborting due to 2 previous errors
->
->         Some errors have detailed explanations: E0061, E0277.
->         For more information about an error, try `rustc --explain E0061`.
->
-> and we need to the following fix
->
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index 39481e374c40..80f7e7ca2f5e 100644
-> --- a/rust/kernel/uaccess.rs
-> +++ b/rust/kernel/uaccess.rs
-> @@ -293,7 +293,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T> {
->      /// Fails with `EFAULT` if the read happens on a bad address.
->      pub fn read_all(mut self, buf: &mut Vec<u8>, flags: Flags) -> Result=
- {
->          let len =3D self.length;
-> -        buf.reserve(len, flags)?;
-> +        VecExt::<u8>::reserve(buf, len, flags)?;
->
->          // The call to `try_reserve` was successful, so the spare capaci=
-ty is at least `len` bytes
->          // long.
+>>> Hmm... but I guess one of the problems of this approach, is how to
+>>> construct a `&UnsafeCell<[u8]>` from a pointer and length...
+>>
+>> We could use `from_raw_parts` [3]. But when making the slice the outer
+>> type, we can use a stable function to convert a pointer and a length to
+>> a slice [4].
+>>
+>=20
+> Yes, but there appears no way to get a pointer with larger provenance
+> from a `&[UnsafeCell<u8>]`, right?
 
-I'm sorry, what? This seems like a problem with `make rusttest`.
+What do you mean by "larger provenance"?
 
-Alice
+>>>>> Another question would be if page allows for uninitialized bits, in t=
+hat
+>>>>> case, we would need `&[Opaque<u8>]`.
+>>>>>
+>>>>
+>>>> Yes, or `&Opaque<[u8>]`.
+>>
+>> I don't think that putting the slice on the inside is what we want. Also
+>=20
+> Hmm.. why? So in `&UnsafeCell<[u8]>` vs `&[UnsafeCell<u8>]` case, I
+> think the former represent "a slice of u8 that can be modified in the
+> same time" very well, and this is what a pointer-and-length pair usually
+> represents in kernel, I think. But yes, the latter is OK to me as well,
+> just hard to play the provenance game I guess?
+
+Ultimately it again comes down to missing field projections :)
+
+The type `&UnsafeCell<[u8]>` is less *useful*, since you cannot even get
+the length of the slice. Also indexing into this type is not easily
+possible. This is because the only way to get/change the inner value of
+an `UnsafeCell` is via `get`.
+
+Compare this with the slice type. It allows getting the length, indexing
+into it (ie a form of field projections, if we consider slices as having
+a variable amount of fields).
+
+All those issues would be solved by (good) field projections.
+
+
+Field projections also give a reason for why using `&[UnsafeCell<u8>]`
+is not really different from `&UnsafeCell<[u8]>`: At any point in time
+we ought to be able to project `&UnsafeCell<[u8]> -> &[UnsafeCell<u8>]`.
+
+So it's fine to just use that from the get-go.
+
+>> note that `Opaque<T>` requires that `T: Sized` and that is not the case
+>> for `[u8]`.
+>=20
+> Oh, you're right. In case of MaybeUninit, it requires `T: Sized`, so
+> `Opaque<[u8]>` doesn't quite work.
+>=20
+> Moving forward, maybe the first step is to see whether `&[Opaque<u8>]`
+> and `&[UnsafeCell<u8>]` can have a good way to generate a pointer with
+> proper provenance? Time to ping t-opsem maybe?
+
+Good idea, do you want to do that, or should I do it?
+
+--=20
+Cheers,
+Benno
+
