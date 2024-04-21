@@ -1,122 +1,78 @@
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610EC8BEE
-	for <rust-for-linux@vger.kernel.org>; Sat, 20 Apr 2024 01:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD933D963
+	for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 18:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713575674; cv=none; b=GazOxMrgGaCx4nF/jYTtf+n9YDXBqhGUxPRqOa7Id836mwslJUiqxrkkH874CADHd5zyR759uWqJXb78MjJ4HSDUm+5qbMwl5EMItYhOpVZZOk7S8AhDsxl/e8Fkf/RozgMjAr29Y5eJ57OCA5Jj21apW9cP+KGuvaD7OtTL++o=
+	t=1713722928; cv=none; b=Nm0iOrSFvooPHKLNfKzN+Ia4y3zvUATZJXh4YosAfr7dlb1Eqb6r9hS7mR2eaezN5ir8Lgn8IuMH8p+8hplUzYI11vpoLb10IS3AUpAxA5yhq5aIFAqFyFhn5YtEj6wa9DO4lCFfdCdul8A6Q5tLfz5HmOI4YIJjXi11cTXN9Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713575674; c=relaxed/simple;
-	bh=HHew0I5F5jRFe2w/lRVUND1JlBCx15dYK3TIwwFEs1E=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=NvLeYRRMMSc0AHR+869VohfNWyHiJT1pifqbIEht7a4Q62JFs5Ay4531QHcuLW3o83LAhoN79jC9m0sVQh2peQoPDv5pR0paEj9ROnhaxHC9udhvTnxaKfZ2YqC+BKr5YvEXNQAaJwic3NZB5vKqEcF0+QUH/BoTLtI6cgeWqRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cP2dlzhG; arc=none smtp.client-ip=209.85.166.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cP2dlzhG"
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7d67d1073easo19175339f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Apr 2024 18:14:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713575672; x=1714180472; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J8NnoaB3Tu+UzSU3xeEFgtSobbhOZBTGXyzMA0SXm5w=;
-        b=cP2dlzhG8y7Tk8yGOtik/mj1VxPzu4YZKJChRTmQELEMH/pCMIPz6iv8ZhoRcyeDKM
-         VOPcgfzZiP5T5HFj1RzBkSolPohShLMFuMIn05isMu7aub+CaTtfYtBpRu3OSb4QTwDJ
-         M9Y58Av6PIkP9xAuMdB98QGXtuAs2gPYsQQTkLs9ylXdBRUNtYtB68lws98TTEpd6PxX
-         OjZEYFGwFJS5XDdmBOOomZzxJtl59NMiGO/I8oK3YBRvx60dQeenZmt7rHYYqyJoAL24
-         E6c3W2Yb4RJu05aGqKuBlOUuuqT5vBm6hiDEJ1zlkvR5bm5Z6Bn/MidmLx1chYGQAKWd
-         iOrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713575672; x=1714180472;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=J8NnoaB3Tu+UzSU3xeEFgtSobbhOZBTGXyzMA0SXm5w=;
-        b=BKkHJAQggcKfrUUkQNf1JnolJSG234Sp3wP1aLbXXlA+AYgGdVGTQqW4WM3/nLqYw4
-         qH8vjusv7Ny8iX3hKgs9Kcmzr5W21yGNI1StPMBCGtBM/G44Qio4OhARAV+jSDKVEm9X
-         jcUMczf9P3XMEb3JW5FVTiyEu6V/03pBwJr8fifRxnKaWA6KN4u0IbqffzhCa+6bLha8
-         gU4I3HkRT83q/hyEAUcws2m4qxBvxHZr4dBhemFpNR7BJ71E63D7wzjmBuAV6v01wl9T
-         G6EYwigmCiBWCfuUAxvbhuJas7jwJYMUgBO1bNgi8cXNbUe2E6QGIl7ZjlsLyTRfhW7a
-         WGSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJZIJF0U0l4puKsKK6+R/GJOBYYt2OYyfjUenIaUIV/knJHA4R64xKrXG1K3k8BdeaMtoWHtM0B9qFLLu1JQ67AbWIhBYaiDshhmkKN7Y=
-X-Gm-Message-State: AOJu0YwYyh5aYohN+Ac2FUNGs8QL6Mt402Al7lvamCdrdjt956t9w/Sd
-	dwisvc9vZZmECPEQX9zhFLvJ3hmviM511EfVXfS1+/L1sVmEajkD
-X-Google-Smtp-Source: AGHT+IE60909L2neFmIwAAmO2Kh31d714wfqGg737yOB8p51jfEOi4B+ejjbJKH2NLCTmqbNS8SKtQ==
-X-Received: by 2002:a05:6e02:2187:b0:36a:2d25:3d82 with SMTP id j7-20020a056e02218700b0036a2d253d82mr4810793ila.0.1713575672456;
-        Fri, 19 Apr 2024 18:14:32 -0700 (PDT)
-Received: from localhost (p5315239-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.87.239])
-        by smtp.gmail.com with ESMTPSA id o6-20020a635d46000000b005f769b41a58sm3782065pgm.4.2024.04.19.18.14.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Apr 2024 18:14:32 -0700 (PDT)
-Date: Sat, 20 Apr 2024 10:14:21 +0900 (JST)
-Message-Id: <20240420.101421.329379978497339506.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RFC v1] rust: add 'firmware' tag support to module!
- macro
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <b66e7e78-35bc-48df-9e3b-0a57996491ad@proton.me>
-References: <20240419.225353.364631939354183191.fujita.tomonori@gmail.com>
-	<b66e7e78-35bc-48df-9e3b-0a57996491ad@proton.me>
+	s=arc-20240116; t=1713722928; c=relaxed/simple;
+	bh=gUDiCMIV5dDgsOhLmHcr73y0oYouPqr4oEueMKW9clg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=jD2YByl5J6DyHuzP8Y60CszBHKQGA96Vpmu24dzy4aERTjHf4+PStXgLn8konJkf4C6/wIQ91q7V59VscUMrrztBfpNYczQDLnI4/7rDo6+HmBmScVWDi0fS/d/gAlyGY4lbr3VzyRYbyC2UPMd7wAjZREm/X/09VC+btI7hvBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-253-VTIi08JTPsaBNLatHnFI1w-1; Sun, 21 Apr 2024 19:08:36 +0100
+X-MC-Unique: VTIi08JTPsaBNLatHnFI1w-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sun, 21 Apr
+ 2024 19:08:02 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Sun, 21 Apr 2024 19:08:02 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Alice Ryhl' <aliceryhl@google.com>, "boqun.feng@gmail.com"
+	<boqun.feng@gmail.com>
+CC: "a.hindborg@samsung.com" <a.hindborg@samsung.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "arnd@arndb.de"
+	<arnd@arndb.de>, "arve@android.com" <arve@android.com>,
+	"benno.lossin@proton.me" <benno.lossin@proton.me>, "bjorn3_gh@protonmail.com"
+	<bjorn3_gh@protonmail.com>, "brauner@kernel.org" <brauner@kernel.org>,
+	"cmllamas@google.com" <cmllamas@google.com>, "gary@garyguo.net"
+	<gary@garyguo.net>, "gregkh@linuxfoundation.org"
+	<gregkh@linuxfoundation.org>, "joel@joelfernandes.org"
+	<joel@joelfernandes.org>, "keescook@chromium.org" <keescook@chromium.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "maco@android.com"
+	<maco@android.com>, "ojeda@kernel.org" <ojeda@kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"surenb@google.com" <surenb@google.com>, "tkjos@android.com"
+	<tkjos@android.com>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
+	"wedsonaf@gmail.com" <wedsonaf@gmail.com>, "willy@infradead.org"
+	<willy@infradead.org>
+Subject: RE: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+Thread-Topic: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+Thread-Index: AQHaj+PoXR+cvvbs7Um8Z9suLdW8qbFzDUqQ
+Date: Sun, 21 Apr 2024 18:08:02 +0000
+Message-ID: <5a45ccc04cae4976900d031989104737@AcuMS.aculab.com>
+References: <Zh2hw0uQrkN5yVVA@boqun-archlinux>
+ <20240416095323.1107928-1-aliceryhl@google.com>
+In-Reply-To: <20240416095323.1107928-1-aliceryhl@google.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-Hi,
+U2hvdWxkIHlvdSBiZSBpbXBsZW1lbnRpbmcgJ3N0cnVjdCBpb3ZfaXRlcicgPw0KDQpFdmVuIGlm
+IGl0IG1lYW5zIGNyZWF0aW5nIGFuIElPX1VCVUYgZm9yIGlvY3Rscz8NCihBbHRob3VnaCB0aGF0
+IG1pZ2h0IHRha2Ugc29tZSAnZmV0dGxpbmcnIGZvciByZWFkK3dyaXRlIGZvciBpb2N0bHMuKQ0K
+DQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQs
+IE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86
+IDEzOTczODYgKFdhbGVzKQ0K
 
-On Fri, 19 Apr 2024 16:41:36 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
-> On 19.04.24 15:53, FUJITA Tomonori wrote:
->> Hi,
->> 
->> This patch is necessary for a new QT2025 PHY driver in Rust:
->> 
->> https://lwn.net/Articles/969888/
->> 
->> Are there places to be fixed or imporved before sending this in the v2
->> of the PHY driver patchset?
-> 
-> Please also update the documentation.
-> 
-> Also what exactly is expected as the parameter to the firmware field?
-
-Oops, I overlooked the documentation in rust/macros/lib.rs
-
-
-> What do the strings in the array mean? If there is documentation on the
-> C side, please link to it or explain it again.
-
-I can't find any on the C side. They are used when building
-initrd. How about the following?
-
-
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index f489f3157383..19175b3e7172 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -35,6 +35,7 @@
- ///     author: "Rust for Linux Contributors",
- ///     description: "My very own kernel module!",
- ///     license: "GPL",
-+///     firmware: ["file0", "file1"],
- ///     params: {
- ///        my_i32: i32 {
- ///            default: 42,
-@@ -74,6 +75,7 @@
- ///   - `description`: byte array of the description of the kernel module.
- ///   - `license`: byte array of the license of the kernel module (required).
- ///   - `alias`: byte array of alias name of the kernel module.
-+///   - `firmware`: array of firmware names required by the kernel module.
- #[proc_macro]
- pub fn module(ts: TokenStream) -> TokenStream {
-     module::module(ts)
