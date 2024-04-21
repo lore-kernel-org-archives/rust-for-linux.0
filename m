@@ -1,78 +1,95 @@
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD933D963
-	for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 18:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA66E224FA
+	for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 18:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713722928; cv=none; b=Nm0iOrSFvooPHKLNfKzN+Ia4y3zvUATZJXh4YosAfr7dlb1Eqb6r9hS7mR2eaezN5ir8Lgn8IuMH8p+8hplUzYI11vpoLb10IS3AUpAxA5yhq5aIFAqFyFhn5YtEj6wa9DO4lCFfdCdul8A6Q5tLfz5HmOI4YIJjXi11cTXN9Ac=
+	t=1713724672; cv=none; b=dVHTPX5S/dOuoudnz2g7g7nWK1ggrgSM1IMgxa4a9mODG9StWRH+l1oVWgo3T6muuc7503V9nDs66qCbPU9JY4X5C5+Uqbj0MvQmYhDktOXbu5QGCEz+7U8WgQsVEPUHba2rMRVVYxDrmp5rtn0+TAH4JSfzsL+NUcq76DEuO7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713722928; c=relaxed/simple;
-	bh=gUDiCMIV5dDgsOhLmHcr73y0oYouPqr4oEueMKW9clg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=jD2YByl5J6DyHuzP8Y60CszBHKQGA96Vpmu24dzy4aERTjHf4+PStXgLn8konJkf4C6/wIQ91q7V59VscUMrrztBfpNYczQDLnI4/7rDo6+HmBmScVWDi0fS/d/gAlyGY4lbr3VzyRYbyC2UPMd7wAjZREm/X/09VC+btI7hvBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-253-VTIi08JTPsaBNLatHnFI1w-1; Sun, 21 Apr 2024 19:08:36 +0100
-X-MC-Unique: VTIi08JTPsaBNLatHnFI1w-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sun, 21 Apr
- 2024 19:08:02 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Sun, 21 Apr 2024 19:08:02 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Alice Ryhl' <aliceryhl@google.com>, "boqun.feng@gmail.com"
-	<boqun.feng@gmail.com>
-CC: "a.hindborg@samsung.com" <a.hindborg@samsung.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "arnd@arndb.de"
-	<arnd@arndb.de>, "arve@android.com" <arve@android.com>,
-	"benno.lossin@proton.me" <benno.lossin@proton.me>, "bjorn3_gh@protonmail.com"
-	<bjorn3_gh@protonmail.com>, "brauner@kernel.org" <brauner@kernel.org>,
-	"cmllamas@google.com" <cmllamas@google.com>, "gary@garyguo.net"
-	<gary@garyguo.net>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "joel@joelfernandes.org"
-	<joel@joelfernandes.org>, "keescook@chromium.org" <keescook@chromium.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "maco@android.com"
-	<maco@android.com>, "ojeda@kernel.org" <ojeda@kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"surenb@google.com" <surenb@google.com>, "tkjos@android.com"
-	<tkjos@android.com>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
-	"wedsonaf@gmail.com" <wedsonaf@gmail.com>, "willy@infradead.org"
-	<willy@infradead.org>
-Subject: RE: [PATCH v5 1/4] rust: uaccess: add userspace pointers
-Thread-Topic: [PATCH v5 1/4] rust: uaccess: add userspace pointers
-Thread-Index: AQHaj+PoXR+cvvbs7Um8Z9suLdW8qbFzDUqQ
-Date: Sun, 21 Apr 2024 18:08:02 +0000
-Message-ID: <5a45ccc04cae4976900d031989104737@AcuMS.aculab.com>
-References: <Zh2hw0uQrkN5yVVA@boqun-archlinux>
- <20240416095323.1107928-1-aliceryhl@google.com>
-In-Reply-To: <20240416095323.1107928-1-aliceryhl@google.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1713724672; c=relaxed/simple;
+	bh=W0qXdv+3SHyokXrLV1y0MFYXcFm8D5IujwYvjvLIrU4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qRWhrRNutrxvlRgScRQbsz0p9p/BNq9+IOAcVI+9W09LRRfkNe079PL6B01Xsse+zkjUtVpjBdumMwfPZv2bypaYwBAx+tqM8I5XRIkcnlni7+/2DYqKkeLhh1YSiEqlNmR326/5GhulUwnXMMy2C6gyiwO3szhPas5U4rxMA8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ya9ajvWO; arc=none smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ya9ajvWO"
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-7ed38f80242so363927241.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 11:37:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1713724670; x=1714329470; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W0qXdv+3SHyokXrLV1y0MFYXcFm8D5IujwYvjvLIrU4=;
+        b=Ya9ajvWOysApoUVKR/09qKBEwN6FcjPde9U02kMMfGNQw6XMkJb5HehsZsJuErfRAf
+         NBbtf0kFQSkm37X4/ApHH1QCPfP116ECgCqfwiIZ7OTk1LEUb4iD8sRvIKJ3z0qWOOdZ
+         rftdo3/kP+/Gpo9mPwRry7UVwUIS40cVIv/1xcrMiB/3Kk7sh9LcjkmoyMroT4Ce/uB9
+         vW+qKB9XhPxbUrS2+EIHFe1QE764PHgZ+0zPOlfe79kYCyuUHogBe7GMYQrrbSiIf34u
+         t7tDESJMR0XjOq2iDTJkMlZD069pNqdnTz+TmtJEuS8TnUL3sw74+FV8EK4ryd/E46+t
+         KUEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713724670; x=1714329470;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W0qXdv+3SHyokXrLV1y0MFYXcFm8D5IujwYvjvLIrU4=;
+        b=f4gFWdNdRp2kErMJ0Xqbd5+bu5ofljhAa6Xlgd0ppFD6Q5rcHOEVs7ugiKUSTV1Vs2
+         ZOvx8oBAdlwCU+BQZhw0Q2JIVpYrzT81H5xCuqueJ5K5BV8HNkVxnX4HQ+xxQz8XIsKh
+         usKl8k214zfGnzAZ2+xvSqujUyvd83z2wul8x/RexETwtTBfHIfYyp5jdPK4MuZojT5d
+         BylcB0jjQMg6r23mH0CLswBI/bW+ortCyJ2XTCDzuZ520CUYWvhYDXcZTDCEqumpnli3
+         bJeUiU3Or7m/Mr9DkueEcWw8VNL2A0MFK/8dfbCG3117v73JrS5QO0zcqzf7Hod4jO4V
+         LX0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVk/FbHPoxipNDxfWKYBqqySHDrZlqmPgdu0DVIfv0GWfJSCJJDr4RLmyVwi/KaKkpphAOVobE5Z1MxHu3dg9KncC2Kl7tDYlo6L2Xkn/8=
+X-Gm-Message-State: AOJu0Yw2237fSJvXBYqVXZmhngPJTJMizpZdMi6U9uaP8tyrQlB/mSfU
+	MwK28LSc/U2DxKBqRIl74hB0HWZ+86TgVghC7T0fj2GRPIKZIZCis1oOi4xfkK4jLybw3rnNxOQ
+	ZoDf8knRmIxCVg0796ff4lNb7UlrXWzW4PLBH
+X-Google-Smtp-Source: AGHT+IE0S7CkW6ce5AaFQOsR60gb8bjk0JT06KmI7f9o8pfwt/TS8eDEruGkyzxb5KdYD+veTuyDkqVJq6m+Eqwjavg=
+X-Received: by 2002:a05:6122:2191:b0:4c9:a9c9:4b3b with SMTP id
+ j17-20020a056122219100b004c9a9c94b3bmr8241148vkd.9.1713724669627; Sun, 21 Apr
+ 2024 11:37:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <Zh2hw0uQrkN5yVVA@boqun-archlinux> <20240416095323.1107928-1-aliceryhl@google.com>
+ <5a45ccc04cae4976900d031989104737@AcuMS.aculab.com>
+In-Reply-To: <5a45ccc04cae4976900d031989104737@AcuMS.aculab.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sun, 21 Apr 2024 20:37:38 +0200
+Message-ID: <CAH5fLgj9xt9RnohE1fbLfWBAHv47AgwzrMf8cWZO4hEYC2Mnkw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] rust: uaccess: add userspace pointers
+To: David Laight <David.Laight@aculab.com>
+Cc: "boqun.feng@gmail.com" <boqun.feng@gmail.com>, "a.hindborg@samsung.com" <a.hindborg@samsung.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
+	"arnd@arndb.de" <arnd@arndb.de>, "arve@android.com" <arve@android.com>, 
+	"benno.lossin@proton.me" <benno.lossin@proton.me>, 
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "brauner@kernel.org" <brauner@kernel.org>, 
+	"cmllamas@google.com" <cmllamas@google.com>, "gary@garyguo.net" <gary@garyguo.net>, 
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, 
+	"joel@joelfernandes.org" <joel@joelfernandes.org>, "keescook@chromium.org" <keescook@chromium.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"maco@android.com" <maco@android.com>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "surenb@google.com" <surenb@google.com>, 
+	"tkjos@android.com" <tkjos@android.com>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, 
+	"wedsonaf@gmail.com" <wedsonaf@gmail.com>, "willy@infradead.org" <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-U2hvdWxkIHlvdSBiZSBpbXBsZW1lbnRpbmcgJ3N0cnVjdCBpb3ZfaXRlcicgPw0KDQpFdmVuIGlm
-IGl0IG1lYW5zIGNyZWF0aW5nIGFuIElPX1VCVUYgZm9yIGlvY3Rscz8NCihBbHRob3VnaCB0aGF0
-IG1pZ2h0IHRha2Ugc29tZSAnZmV0dGxpbmcnIGZvciByZWFkK3dyaXRlIGZvciBpb2N0bHMuKQ0K
-DQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQs
-IE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86
-IDEzOTczODYgKFdhbGVzKQ0K
+On Sun, Apr 21, 2024 at 8:08=E2=80=AFPM David Laight <David.Laight@aculab.c=
+om> wrote:
+>
+> Should you be implementing 'struct iov_iter' ?
+>
+> Even if it means creating an IO_UBUF for ioctls?
+> (Although that might take some 'fettling' for read+write for ioctls.)
 
+That seems to be intended for when you have several chunks of memory
+in userspace that you want to treat as one contiguous chunk. That's
+not something I need in the Android Binder driver.
+
+Alice
