@@ -1,68 +1,67 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EF4175AB
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Apr 2024 06:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DA4175AB
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Apr 2024 06:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713765940; cv=none; b=uPSQ19RpH7IVILejo4HzCYPOO/aM61l1c0+zjlHGt/Ge67zkPiCVp5xAS1qMV6uHza3lcMpZkmbfVhnh61OKg9A3S2eIBKxYiGzTz6gSbZxha78cjDgbQSJYkRueL+V4QMb+Y7LfrkyyYfIfwhwF1scSruUmnAI7XLVPjFqgOV4=
+	t=1713765959; cv=none; b=brWSH0PHWGpTSNgkSDv2ZJCfFCx4V0aWK1on40CN+1GM1GqKC/fDopoMgm7NsT0mdmN1zSGJ7aoSIi/vvyuyLIO1vAceFNqJnv+JQo9Y7CFd5wp23gk65TvYFHQvOSTOptkzwz3rxKdqx1qL6zvASFN6z7G/layQunXvhclJpzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713765940; c=relaxed/simple;
-	bh=+YgMqfSk0sb1Wwg0ylywQooAjviRNpVbBkZ3sknbcoY=;
+	s=arc-20240116; t=1713765959; c=relaxed/simple;
+	bh=lCl6QJP1B8UBfCPNz7DDPWWQHa4kLQj5Rl1wB09Z2Zk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c0mH4z0grOeP3QsQIZ0kqklriHhXPwOOMa7eX8xFHbf/NdWmd8pI/a+XOKW3Det59CLN0T2VwYts2JvCi+EwT/JwdqzCyICHA0/8CHN0s6dLIXlGdgElOeGHhx/lYPB/DaqFHUEvMJaIm+l5c8ndhXUVoA1dgXiMMngIdQg6cGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kGRYZ+1l; arc=none smtp.client-ip=209.85.221.180
+	 To:Cc:Content-Type; b=ItzJMb1PazVsNX8a1uMPN/6qHg9Y3sjzWBien86q4wR7AUt76mWXI60UhRCxNoXL3z+L1ycdrlPXxZBkL6MMH/BUkGRPx01gEguK6q5nrGA+Av3srdR/ZJZW//W9v7IeTEGCkRmPTfqWnLhbnuLN54VQfculxE/WC5UO4to1Q4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kS2qUo4g; arc=none smtp.client-ip=209.85.217.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kGRYZ+1l"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4dcf9659603so1240518e0c.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 23:05:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kS2qUo4g"
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-479c3616fceso361696137.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 23:05:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713765938; x=1714370738; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1713765957; x=1714370757; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+YgMqfSk0sb1Wwg0ylywQooAjviRNpVbBkZ3sknbcoY=;
-        b=kGRYZ+1lpGrz/McUUVWiOlcQzDx1GZUuRRIIHsA1xGI1C/xZtHUQwrY28Ham850FD7
-         TlZNCYnO7XYKHB3rXgGmexIGoBFnVILbdab8tGJ8HIiGZhQlsIGGmk8XUHs/rDWzTl5R
-         WBybbnPJ7Q/2qwWzYMBaKhpdXynlqruh1FUDdofYWw/wE8V7XvW/LUAMmvBBoOM6kqiw
-         J98GzRRCr67pOav1AKlz/m7Un0TVYKmvJT2DcZUEjZhGsJQx5le7pV8jaE+/EQKryEaz
-         868b4qTJXe+eTtULzr1+Cjm5Lp2h9Xj1r0iq8Pn/qP9RFgT/HD+i2n7cS0ui/fZ0bFXb
-         CEKg==
+        bh=lCl6QJP1B8UBfCPNz7DDPWWQHa4kLQj5Rl1wB09Z2Zk=;
+        b=kS2qUo4giOEEqM55rSq8Lwdst8+VhEy7cOdlgZhT5jzBdSlbzzn4E15XW1+yPW6b2U
+         m5qIG7zol6uZyWHhwJYy6ebwwG7ljN3vbbYWAKna1jy2Way7/1lBdLH2gMwW9qqKMoVw
+         79rM10fIPXkPHDDREGRfLDe116oHrv8iypgloH7sAvpDPX6VzQCIYYdWLgZkqfN1nE5T
+         Zn+c/EXp64RgWB1jV9H12RAptN7sV5gg+2eHoyNY0gVUF/EE2p4FX63d+KnlyIRqGzUI
+         dvA5pplLEtMhiAI0+BhLzz17Ko+QcjYmqfx58HUSd7Z5jEX/EB/NUYkYD34eo0ZGUL4Z
+         JSQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713765938; x=1714370738;
+        d=1e100.net; s=20230601; t=1713765957; x=1714370757;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+YgMqfSk0sb1Wwg0ylywQooAjviRNpVbBkZ3sknbcoY=;
-        b=uS9rjdEzGZOEqIXck7QmMKbQsBDp/JxbmhKrqF7dRGDm6u6OS1/nqbfWiZ0dneoWyE
-         iHnygbCbwAPBhAT/pFM/R52Gx5T0RbGZsCSz8YQ3gfIT5rIp1IlMs+jh3I8FPZ2J2jus
-         U21v8xQGMiaCg7SyBy6mX2F1/uhSEFnqWjEBphK4OvsSyZUJZQbYYicUnm022T8DZc7V
-         W212Ili7T/7w0Ftb6XJSoFHAHmldMXGj2PqpiLeGUQNC7L7keqKhE32jMdfSN13MHR6O
-         Rr/k/0RFPzBLIVJf64FkvLzoMn73zs1Pa5IRr5y1nrDrhKMdrY/DMo0t4YAhWaqYNPYV
-         3OOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGTWayAa+VZmMIp+pqEcfZPPLhpIfv9z67iyWFIvOPdI/65n+BZpw3gxeWZlC0Q04EUZ/Sz7yLjibAM2MT9AT6rMQtXLSMHZq1k8/fL00=
-X-Gm-Message-State: AOJu0YxTNhQBrMOQbM6jbp0TYDTbhH3HG0AZYMmKi0g2wMHO6RSdQKfw
-	VtF+LT9bYG/RKQ2LABcFdZEbtbCVyUPMeUCj6etu7yK5HUu83zrJ4NevUQOO15a7ykbm+HhLvND
-	9iob0Tt08I/SYOzwDmcZIBs16Jryyvhwrw5NE
-X-Google-Smtp-Source: AGHT+IHz/+ML1NRTkk8bE9PnwDI4ZmxY0v9g1TAYfhDF0l8eDzbSajUDWsp//6e+XjIkWzGWnY3677xPH9ahRkTtHVw=
-X-Received: by 2002:a05:6122:134d:b0:4d8:37eb:9562 with SMTP id
- f13-20020a056122134d00b004d837eb9562mr10096241vkp.0.1713765936435; Sun, 21
- Apr 2024 23:05:36 -0700 (PDT)
+        bh=lCl6QJP1B8UBfCPNz7DDPWWQHa4kLQj5Rl1wB09Z2Zk=;
+        b=qjBuSU54G/TlZQR+rq9oumj2L4tOXuZYBZghGMg0Z5PUpEGEidl9SSU+2Xj4Q2VWmR
+         a55FFEPQFMzOuWBEoIqblADpFg3b+kQAOg5KeCd5a2uBn65HH3i7f6Vvae+mHStU1FpI
+         QvpI4CgPUsKob6duH051PeV1dVrIpTnC4YbEnuQJfsie2tA5E7PbEszeA34Ztr4Gh1So
+         iiERZ9KlRJUeFsdF1B9gCLzW8CANl2TE2g29FZoBzjxlnKHRe8A2/uHwwiFL/NjQWm7K
+         0/9es6CKM11hJu6mdKcamgWLvyi56IvWJIgw1fnx/VsyZi5s95F0/BAHDEwuU1QxUVkp
+         mtag==
+X-Forwarded-Encrypted: i=1; AJvYcCWpwz7tIDZlde8mxymnNIbqT2IJ+dYpf5Qx7eZTshOGYLmxuxh7bV3WiN+cC/eLbS0DqAw6JP+etldnjKr/xnjvtEuM8Z9TkKdLGBHI600=
+X-Gm-Message-State: AOJu0YzmGAhNItIkDiz9o4HR7G6E92n3JMW5eyUlE5QmQWESHxN/Vlp6
+	AiUBHDlQCgwQm5ZnvYbCGo4i6kQ+f4RO8993+dx7kXgSMr6mkhFE1gAKL8cWBdItFLDhaJoDwop
+	BkzYhVpAV1d0l9oeoemp1urXclclLH6OQDp1f
+X-Google-Smtp-Source: AGHT+IGrXhoj50VRacaNACHV2T9HmrB4w3kzmX7FT4+AKHtU3DCilLuZwt0FQmkcZ+AR6p0IKsbkwlEDEofzcsV2OkA=
+X-Received: by 2002:a67:eb89:0:b0:47b:ca6a:c5d9 with SMTP id
+ e9-20020a67eb89000000b0047bca6ac5d9mr7227768vso.28.1713765956934; Sun, 21 Apr
+ 2024 23:05:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240419215015.157258-1-aswinunni01@gmail.com> <20240419215015.157258-2-aswinunni01@gmail.com>
-In-Reply-To: <20240419215015.157258-2-aswinunni01@gmail.com>
+References: <20240419215015.157258-1-aswinunni01@gmail.com> <20240419215015.157258-3-aswinunni01@gmail.com>
+In-Reply-To: <20240419215015.157258-3-aswinunni01@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 22 Apr 2024 08:05:25 +0200
-Message-ID: <CAH5fLgjLXBgoh5d9K6zQ4jtUo0R-ov_DyoMTaU8f+4xzH52VFA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: add example for `alias` argument in `module`
- macro documentation
+Date: Mon, 22 Apr 2024 08:05:46 +0200
+Message-ID: <CAH5fLggrknsAxUeVj6e9487Sg9T_j05Kiwa976JR2OBcWOXQWw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] rust: fix datatype in docs for `module` macro arguments
 To: Aswin Unnikrishnan <aswinunni01@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -75,8 +74,8 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Apr 19, 2024 at 11:50=E2=80=AFPM Aswin Unnikrishnan
 <aswinunni01@gmail.com> wrote:
 >
-> Add example for `alias` argument supported by `module` macro.
-> `alias` accepts an array of alternate names for the module as string.
+> Remove the mention of byte array as datatype for `module` macro arguments
+> since the arguments are defined as string, and `alias` is a string array.
 >
 > Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
 
