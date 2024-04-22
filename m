@@ -1,81 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2824A17C8
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Apr 2024 01:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD16525E
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Apr 2024 01:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713750442; cv=none; b=ZZ5UNo6tLD1sks1PBOJUD6ExEQEuJwaavBx7mkA5fGjXlmWFs4lDjikarslZgEE3Uk76qJQ0yK4XvpSWJ6I+atRlVFm8hY4gJOH+FGJPplhFJwLpdvn72ZFcF3rG0NW/a6K2CQXXsew4IyJ+YVYgQP5XAQDoI7yy01iWImaAgYI=
+	t=1713750874; cv=none; b=fvoEmOvHqHP8fHpHUQ9VLEBjLGDarIzCXNTbARkaZDrM01b5xpbX87PqepzAyWaGRkYqJq+yRAnq1wFp3Jkby89H011NC1DgYQCcrnendRCKA9Qe14SpV4nzCXj4xxNyKSt1/H1hg0hXPbCbstz8RxfpKK3ITls8Qhu3Uqv25t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713750442; c=relaxed/simple;
-	bh=yx73zqQ33O64RzGII3neJtJQBGW4x6JXDHVdLNprsMQ=;
+	s=arc-20240116; t=1713750874; c=relaxed/simple;
+	bh=SfhdMqqsGb/GVXHl6IHUVQQdHafTxfe3mLLG/FzGS/w=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HP1iBPV4KWrTS7N4DbxHZdxG2b0tE+BGWBA95rH4c/LpXVzFgrMYgkanKZaMOxzPFS8TvB+ed3HpA2rVFAis8rv6b/kDbRjyCzLjNKeH6B/G3XAOu/wZgSf0hrQf7PZ47BRTija9JLJGdmw2ijU5GGwL5wLaPiIplS4EnmRpQpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TSP4LRVY; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=BizBiLi6Kw7ZcIZjI+FshkeE5ddZkY51zFROtfv75+rRhe8jNZ5bq5SpvuPh18WqFcTXMNm94+lOAbNypBqv9fxN5LrMrn4X1V0vmOQb134sSrZn6hKHF2uqnfzeABM+IP6LLolfTO2GcAcirtv8tYZAlE4MBT6iaUzPu2Ja/Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ATJhwCF8; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TSP4LRVY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ATJhwCF8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713750439;
+	s=mimecast20190719; t=1713750871;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yx73zqQ33O64RzGII3neJtJQBGW4x6JXDHVdLNprsMQ=;
-	b=TSP4LRVYgDipwBt01rG0DASNyolqwBLzY6EvtauVDVwnfgDXPps7kSb8lPnig0jnXtvOmM
-	VCQm7E25OYnXP55oP2eVaHKd7ss2xvJautAIOntfBjNUWNj7NbuIheqX5Q9UBNzsotawa8
-	WqpwfX1kTdbL6PEbPvK12IN7G28ys/o=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=SfhdMqqsGb/GVXHl6IHUVQQdHafTxfe3mLLG/FzGS/w=;
+	b=ATJhwCF8PT2i8S9vuSAROek3bq+scktUrN2IHI5nu76dKrA8eEwWWLMYpz6HRkTpPNNb8T
+	i+wOHN+r2bwZ6TWQ170qWMjKb+iV9PpQ5oXelSy0lGefbtx3gx1Bgb/Jq2QTfI/CYiqaJN
+	kQRdC/PPAjWTQ3z41AfnplSzd7YAO0E=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-IBn1mlvhNxWL0rXYCMYBfw-1; Sun, 21 Apr 2024 21:47:17 -0400
-X-MC-Unique: IBn1mlvhNxWL0rXYCMYBfw-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-78f13d9e125so445248985a.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 18:47:17 -0700 (PDT)
+ us-mta-45-yTdmgo-lNeCD9ek63h--4g-1; Sun, 21 Apr 2024 21:54:28 -0400
+X-MC-Unique: yTdmgo-lNeCD9ek63h--4g-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-69b6fe789e9so53592626d6.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 21 Apr 2024 18:54:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713750437; x=1714355237;
+        d=1e100.net; s=20230601; t=1713750868; x=1714355668;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :autocrypt:references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yx73zqQ33O64RzGII3neJtJQBGW4x6JXDHVdLNprsMQ=;
-        b=pljFla0qIh+HeLW3aH253QJ/sJxWmxNlCqPg7gjvWnI7PWPGJO1qmQT2OZAfypWahM
-         +pQX2l/Zxr6M0RERRkeO6TiS1QluF5c97o1nNew8WGla29zjTFX6oNbWJZbNMcLuPlZP
-         7CR+82i8ZrOKQjRQve+3Alk6JgjapXFYLQIBpGvsYBpfoP03zTSV5mbOdz14bDVzjfTj
-         6b8nZeGFsXA6t0RMvvue4jpfVAOGxMTcaRbq1pQoNan13yAXTl0kNOlZfkWDBw008HnY
-         PA6evZad5um7PLex7H5TE+5en2gaPiztJe/ogqZXi74jsG19Q2lxIsnTbPLXjvr03SgB
-         +9cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4PCmBQ0nrrXm2uFgTIb/RsKy/TUTQQ9174wRE6kSFo4S9tIn7Ptpazd1dtDdkXjoFSPDRdB+WDUULt+IEOkPjjsSL1lpYxLCny9bgjEc=
-X-Gm-Message-State: AOJu0YxL7X5stK0HB0J8CeJqs0ojPf/j6m3/0+Li/kveWT+B/ZWSV++A
-	Z2gyLiRPrq3bq+oyT83ypM5tcDHrieeqphD8SxpRZ1m1NBwWd78woOzvDD2lr5GtVwTbsiXwat8
-	EvIyfEQaSG8joy0CS3jbjkAYmNvSFPGDyBBVdY3sScwsCCFYBsJPOlym9+VIEtonH
-X-Received: by 2002:a05:620a:16d3:b0:78d:4424:b286 with SMTP id a19-20020a05620a16d300b0078d4424b286mr9704237qkn.39.1713750436993;
-        Sun, 21 Apr 2024 18:47:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF0oypAvB+arR5uvxvYXe7Ljf37RyOviz88X5auzveVSUU+ahart74vndDVPjmznqguhXiGlQ==
-X-Received: by 2002:a05:620a:16d3:b0:78d:4424:b286 with SMTP id a19-20020a05620a16d300b0078d4424b286mr9704211qkn.39.1713750436622;
-        Sun, 21 Apr 2024 18:47:16 -0700 (PDT)
+        bh=SfhdMqqsGb/GVXHl6IHUVQQdHafTxfe3mLLG/FzGS/w=;
+        b=Fj3Pms+UGod1NKULuXwOJN0YCetcaWGDPcIQeAqBNh+Jj3yJmIJkEnNuBwAC15afBv
+         solODcb0pUgSw+Jik32Kb0dgHAQxjEA1I92tsb/YpD16hsLzR7Pn2mm+33Hb1cn+wDn4
+         T+4nGAV2E0g/8/Gm/J2Uffmm+PKUorN5RGdODjKHo20gD+VpSbTxfmmU8xFY84ey+l4O
+         EKk3WvLpnrAWb7one920Koe70fazYr3WoA4w1nbvTM6LeiQjzzuJzMGdeJ0D+6F+Xwhy
+         oOf7MdQXri9AnGcGT31P77q2j79gaRFl50HnC1KGEpqrWDHIGZtyHgECt5qtwPku20vR
+         7Ztw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFyHpg1Sq+Glg3DypIX4w9RBh8FV4jASSK0E/u+eXWyqEb8WTC4StxA9AyC82TDaUojSrEKa426El1SVpmzpDDXZAVVP4YWvA2qdAl+Ns=
+X-Gm-Message-State: AOJu0Yy/nVqJ5aJrt+JKZU6FboCSn11gdOSUI5gjJpvk5vWuh3xsP3ji
+	cc6QX4kmjCvJc/cu0ibCRqkO7tpN6uzIVRPCutmYESWblVrtmm/YKu3BfWtu9qDgBKWYUfgwWf7
+	NwKvdbfZdosJp3MQnuuISWMsYX0r3bkvOzTljI1i8U+8/aHwMHdP6fOGx5sMIAXL6
+X-Received: by 2002:a05:6214:812:b0:69c:9d5c:4181 with SMTP id df18-20020a056214081200b0069c9d5c4181mr8634536qvb.32.1713750868086;
+        Sun, 21 Apr 2024 18:54:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH6JLAg3JjLcRgAI5pETD9qvk949nYd1H9AD604B3cVyG1mc0bmHKKfvRQ6uMsbg5ImmOdb6w==
+X-Received: by 2002:a05:6214:812:b0:69c:9d5c:4181 with SMTP id df18-20020a056214081200b0069c9d5c4181mr8634527qvb.32.1713750867810;
+        Sun, 21 Apr 2024 18:54:27 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c6c:a300::789? ([2600:4040:5c6c:a300::789])
-        by smtp.gmail.com with ESMTPSA id j12-20020a05620a0a4c00b0078d6120fad0sm3870260qka.108.2024.04.21.18.47.14
+        by smtp.gmail.com with ESMTPSA id x18-20020a0ca892000000b0069b16a0f26esm397246qva.58.2024.04.21.18.54.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Apr 2024 18:47:15 -0700 (PDT)
-Message-ID: <9fd1fea40f5d053e371bd076d9cb095ba3d77d93.camel@redhat.com>
-Subject: Re: [PATCH 1/4] WIP: rust: Add basic KMS bindings
+        Sun, 21 Apr 2024 18:54:26 -0700 (PDT)
+Message-ID: <6a16f0023b62beba4658677bebcc4786da1ea4be.camel@redhat.com>
+Subject: Re: [PATCH 2/4] WIP: drm: Introduce rvkms
 From: Lyude Paul <lyude@redhat.com>
 To: Benno Lossin <benno.lossin@proton.me>, dri-devel@lists.freedesktop.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Asahi
- Lina <lina@asahilina.net>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Danilo Krummrich
- <dakr@redhat.com>, linux-kernel@vger.kernel.org,
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida
+ Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
-Date: Sun, 21 Apr 2024 21:47:14 -0400
-In-Reply-To: <0785452f-7714-4384-838b-879e0b224c3c@proton.me>
+Date: Sun, 21 Apr 2024 21:54:25 -0400
+In-Reply-To: <b41f707d-7e06-4c1a-93f0-d74ee242b650@proton.me>
 References: <20240322221305.1403600-1-lyude@redhat.com>
-	 <20240322221305.1403600-2-lyude@redhat.com>
-	 <0785452f-7714-4384-838b-879e0b224c3c@proton.me>
+	 <20240322221305.1403600-3-lyude@redhat.com>
+	 <b41f707d-7e06-4c1a-93f0-d74ee242b650@proton.me>
 Autocrypt: addr=lyude@redhat.com; prefer-encrypt=mutual; keydata=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
@@ -95,310 +95,84 @@ X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2024-03-27 at 20:50 +0000, Benno Lossin wrote:
-> Hi,
->=20
-> I just took a quick look and commented on the things that stuck
-> out to me. Some general things:
-> - several `unsafe` blocks have missing SAFETY comments,
-> - missing documentation and examples.
-
-This is really early on - so I had wanted to post a WIP before I
-actually wrote up everything to make sure I'm going in the right
-direction (I'm certainly not planning on leaving things undocumented
-when this is actually ready for submission :).
-
->=20
+On Wed, 2024-03-27 at 21:06 +0000, Benno Lossin wrote:
 > On 22.03.24 23:03, Lyude Paul wrote:
-> > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> > ---
-> > =C2=A0rust/bindings/bindings_helper.h=C2=A0 |=C2=A0=C2=A0 4 +
-> > =C2=A0rust/helpers.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 17 ++
-> > =C2=A0rust/kernel/drm/device.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0=C2=A0 2 +
-> > =C2=A0rust/kernel/drm/drv.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | 115 +++++++--
-> > =C2=A0rust/kernel/drm/kms.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | 146 +++++++++++
-> > =C2=A0rust/kernel/drm/kms/connector.rs | 404
-> > +++++++++++++++++++++++++++++++
-> > =C2=A0rust/kernel/drm/kms/crtc.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 300 +=
-++++++++++++++++++++++
-> > =C2=A0rust/kernel/drm/kms/encoder.rs=C2=A0=C2=A0 | 175 +++++++++++++
-> > =C2=A0rust/kernel/drm/kms/plane.rs=C2=A0=C2=A0=C2=A0=C2=A0 | 300 ++++++=
-+++++++++++++++++
-> > =C2=A0rust/kernel/drm/mod.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> > =C2=A010 files changed, 1448 insertions(+), 16 deletions(-)
->=20
-> Please try to break this up into smaller patches. It makes review
-> a lot easier!
-
-I'll definitely try to do that next time!
-
->=20
-> [...]
->=20
-> > diff --git a/rust/kernel/drm/kms.rs b/rust/kernel/drm/kms.rs
+> > diff --git a/drivers/gpu/drm/rvkms/connector.rs
+> > b/drivers/gpu/drm/rvkms/connector.rs
 > > new file mode 100644
-> > index 0000000000000..b55d14415367a
+> > index 0000000000000..40f84d38437ee
 > > --- /dev/null
-> > +++ b/rust/kernel/drm/kms.rs
-> > @@ -0,0 +1,146 @@
-> > +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> > +++ b/drivers/gpu/drm/rvkms/connector.rs
+> > @@ -0,0 +1,55 @@
+> > +// TODO: License and stuff
+> > +// Contain's rvkms's drm_connector implementation
 > > +
-> > +//! KMS driver abstractions for rust.
-> > +
-> > +pub mod connector;
-> > +pub mod crtc;
-> > +pub mod encoder;
-> > +pub mod plane;
-> > +
-> > +use crate::{
-> > +=C2=A0=C2=A0=C2=A0 drm::{drv, device::Device},
+> > +use super::{RvkmsDriver, RvkmsDevice, MAX_RES, DEFAULT_RES};
+> > +use kernel::{
 > > +=C2=A0=C2=A0=C2=A0 prelude::*,
-> > +=C2=A0=C2=A0=C2=A0 types::ARef,
-> > +=C2=A0=C2=A0=C2=A0 private::Sealed
-> > +};
-> > +use core::{
-> > +=C2=A0=C2=A0=C2=A0 ops::Deref,
-> > +=C2=A0=C2=A0=C2=A0 ptr,
-> > +};
-> > +use bindings;
-> > +
-> > +#[derive(Copy, Clone)]
-> > +pub struct ModeConfigInfo {
-> > +=C2=A0=C2=A0=C2=A0 /// The minimum (w, h) resolution this driver can s=
-upport
-> > +=C2=A0=C2=A0=C2=A0 pub min_resolution: (i32, i32),
-> > +=C2=A0=C2=A0=C2=A0 /// The maximum (w, h) resolution this driver can s=
-upport
-> > +=C2=A0=C2=A0=C2=A0 pub max_resolution: (i32, i32),
-> > +=C2=A0=C2=A0=C2=A0 /// The maximum (w, h) cursor size this driver can =
-support
-> > +=C2=A0=C2=A0=C2=A0 pub max_cursor: (u32, u32),
-> > +=C2=A0=C2=A0=C2=A0 /// The preferred depth for dumb ioctls
-> > +=C2=A0=C2=A0=C2=A0 pub preferred_depth: u32,
-> > +}
-> > +
-> > +// TODO: I am not totally sure about this. Ideally, I'd like a
-> > nice way of hiding KMS-specific
-> > +// functions for DRM drivers which don't implement KMS - so that
-> > we don't have to have a bunch of
-> > +// random modesetting functions all over the DRM device trait.
-> > But, unfortunately I don't know of
-> > +// any nice way of doing that yet :(
->=20
-> I don't follow, can't you put the KMS specific functions into the
-> KmsDriver trait?
-
-I can, lol. I realized how that would work a little while after writing
-this, so I'm not quite sure where my confusion was with this - so I'll
-fix this on the next version I send out.
-
->=20
-> > +
-> > +/// An atomic KMS driver implementation
-> > +pub trait KmsDriver: drv::Driver { }
-> > +
-> > +impl<T: KmsDriver> Device<T> {
-> > +=C2=A0=C2=A0=C2=A0 pub fn mode_config_reset(&self) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: The previous bui=
-ld assertion ensures this can
-> > only be called for devices with KMS
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // support, which means mod=
-e_config is initialized
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::drm_mode=
-_config_reset(self.drm.get()) }
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +}
-> > +
-> > +/// Main trait for a modesetting object in DRM
-> > +pub trait ModeObject: Sealed + Send + Sync {
-> > +=C2=A0=C2=A0=C2=A0 /// The parent driver for this ModeObject
-> > +=C2=A0=C2=A0=C2=A0 type Driver: KmsDriver;
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Return the `drv::Device` for this `ModeObject`
-> > +=C2=A0=C2=A0=C2=A0 fn drm_dev(&self) -> &Device<Self::Driver>;
-> > +}
->=20
-> [...]
->=20
-> > diff --git a/rust/kernel/drm/kms/connector.rs
-> > b/rust/kernel/drm/kms/connector.rs
-> > new file mode 100644
-> > index 0000000000000..88dfa946d306b
-> > --- /dev/null
-> > +++ b/rust/kernel/drm/kms/connector.rs
-> > @@ -0,0 +1,404 @@
-> > +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> > +
-> > +//! Rust bindings for DRM connectors
-> > +
-> > +use crate::{
-> > +=C2=A0=C2=A0=C2=A0 bindings,
-> > +=C2=A0=C2=A0=C2=A0 sync::ArcBorrow,
 > > +=C2=A0=C2=A0=C2=A0 drm::{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 drv::{Driver, FEAT_MODESET}=
-,
 > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 device::Device,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kms::{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 con=
+nector::{self, ConnectorGuard},
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Mod=
+eConfigGuard
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
 > > +=C2=A0=C2=A0=C2=A0 },
-> > +=C2=A0=C2=A0=C2=A0 types::{AlwaysRefCounted, Opaque, ARef},
-> > +=C2=A0=C2=A0=C2=A0 prelude::*,
-> > +=C2=A0=C2=A0=C2=A0 init::Zeroable,
-> > +=C2=A0=C2=A0=C2=A0 error::{to_result, from_result},
-> > +=C2=A0=C2=A0=C2=A0 build_error,
+> > +=C2=A0=C2=A0=C2=A0 prelude::*
 > > +};
-> > +use core::{
-> > +=C2=A0=C2=A0=C2=A0 marker::PhantomPinned,
-> > +=C2=A0=C2=A0=C2=A0 ptr::null_mut,
-> > +=C2=A0=C2=A0=C2=A0 mem,
-> > +=C2=A0=C2=A0=C2=A0 ptr::{self, NonNull},
-> > +=C2=A0=C2=A0=C2=A0 ffi::*,
-> > +=C2=A0=C2=A0=C2=A0 ops::Deref,
-> > +};
-> > +use super::{
-> > +=C2=A0=C2=A0=C2=A0 ModeObject,
-> > +=C2=A0=C2=A0=C2=A0 ModeConfigGuard,
-> > +=C2=A0=C2=A0=C2=A0 encoder::{Encoder, DriverEncoder},
-> > +=C2=A0=C2=A0=C2=A0 KmsDriver,
-> > +};
-> > +use macros::pin_data;
+> > +use core::marker::PhantomPinned;
 > > +
-> > +// XXX: This is :\, figure out a better way at some point?
-> > +pub use bindings::{
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_Unknown,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_VGA,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_DVII,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_DVID,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_DVIA,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_Composite,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_SVIDEO,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_LVDS,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_Component,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_9PinDIN,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_DisplayPort,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_HDMIA,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_HDMIB,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_TV,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_eDP,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_VIRTUAL,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_DSI,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_DPI,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_WRITEBACK,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_SPI,
-> > +=C2=A0=C2=A0=C2=A0 DRM_MODE_CONNECTOR_USB,
-> > +};
-> > +
-> > +/// A DRM connector implementation
-> > +pub trait DriverConnector: Send + Sync + Sized {
-> > +=C2=A0=C2=A0=C2=A0 /// The return type of the new() function. Should b=
-e `impl
-> > PinInit<Self, Error>`.
-> > +=C2=A0=C2=A0=C2=A0 /// TODO: Remove this when return_position_impl_tra=
-it_in_trait
-> > is stable.
-> > +=C2=A0=C2=A0=C2=A0 type Initializer: PinInit<Self, Error>;
+> > +#[pin_data]
+> > +pub(crate) struct DriverConnector {
+> > +=C2=A0=C2=A0=C2=A0 #[pin]
+> > +=C2=A0=C2=A0=C2=A0 _p: PhantomPinned
+> > +}
 >=20
-> This has been stabilized in 1.75.0, so now you should be able to
-> write
+> This struct does not need to be annotated with `#[pin_data]`, this
+> should just work:
 >=20
-> =C2=A0=C2=A0=C2=A0=C2=A0 fn new(dev: &Device<Self::Driver>, args: Self::A=
-rgs) -> impl
-> PinInit<Self, Error>;
-
-Ack for this and the below comment as well!
-
+> pub(crate) struct DriverConnector;
 >=20
 > > +
-> > +=C2=A0=C2=A0=C2=A0 /// The data type to use for passing incoming argum=
-ents for
-> > new `Connector<T>` instances
-> > +=C2=A0=C2=A0=C2=A0 /// Drivers which don't care about this can just us=
-e `()`
-> > +=C2=A0=C2=A0=C2=A0 type Args;
+> > +pub(crate) type Connector =3D connector::Connector<DriverConnector>;
 > > +
-> > +=C2=A0=C2=A0=C2=A0 /// The parent driver for this DRM connector implem=
-entation
-> > +=C2=A0=C2=A0=C2=A0 type Driver: KmsDriver;
+> > +impl connector::DriverConnector for DriverConnector {
+> > +=C2=A0=C2=A0=C2=A0 type Initializer =3D impl PinInit<Self, Error>;
 > > +
-> > +=C2=A0=C2=A0=C2=A0 /// The atomic state implementation for this DRM co=
-nnector
-> > implementation
-> > +=C2=A0=C2=A0=C2=A0 type State: DriverConnectorState;
+> > +=C2=A0=C2=A0=C2=A0 type State =3D ConnectorState;
 > > +
-> > +=C2=A0=C2=A0=C2=A0 /// Create a new instance of the private driver dat=
-a struct
-> > for this connector in-place
+> > +=C2=A0=C2=A0=C2=A0 type Driver =3D RvkmsDriver;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 type Args =3D ();
+> > +
 > > +=C2=A0=C2=A0=C2=A0 fn new(dev: &Device<Self::Driver>, args: Self::Args=
 ) ->
-> > Self::Initializer;
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Retrieve a list of available display modes for =
-this
-> > connector
-> > +=C2=A0=C2=A0=C2=A0 fn get_modes<'a>(
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 connector: ConnectorGuard<'=
-a, Self>,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guard: &ModeConfigGuard<'a,=
- Self::Driver>
-> > +=C2=A0=C2=A0=C2=A0 ) -> i32;
-> > +}
+> > Self::Initializer {
 >=20
-> [...]
+> And then here just return `Self`.
 >=20
-> > diff --git a/rust/kernel/drm/kms/crtc.rs
-> > b/rust/kernel/drm/kms/crtc.rs
-> > new file mode 100644
-> > index 0000000000000..3d072028a4884
-> > --- /dev/null
-> > +++ b/rust/kernel/drm/kms/crtc.rs
-> > @@ -0,0 +1,300 @@
-> > +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> > +
-> > +//! KMS driver abstractions for rust.
-> > +
-> > +use super::{
-> > +=C2=A0=C2=A0=C2=A0 plane::*,
-> > +=C2=A0=C2=A0=C2=A0 ModeObject,
-> > +=C2=A0=C2=A0=C2=A0 StaticModeObject,
-> > +=C2=A0=C2=A0=C2=A0 KmsDriver
-> > +};
-> > +use crate::{
-> > +=C2=A0=C2=A0=C2=A0 bindings,
-> > +=C2=A0=C2=A0=C2=A0 drm::{drv::Driver, device::Device},
-> > +=C2=A0=C2=A0=C2=A0 device,
-> > +=C2=A0=C2=A0=C2=A0 prelude::*,
-> > +=C2=A0=C2=A0=C2=A0 types::Opaque,
-> > +=C2=A0=C2=A0=C2=A0 init::Zeroable,
-> > +=C2=A0=C2=A0=C2=A0 sync::Arc,
-> > +=C2=A0=C2=A0=C2=A0 error::to_result,
-> > +};
-> > +use core::{
-> > +=C2=A0=C2=A0=C2=A0 cell::UnsafeCell,
-> > +=C2=A0=C2=A0=C2=A0 marker::PhantomPinned,
-> > +=C2=A0=C2=A0=C2=A0 ptr::{null, null_mut},
-> > +=C2=A0=C2=A0=C2=A0 ops::Deref,
-> > +};
-> > +use macros::vtable;
-> > +
-> > +/// A typed KMS CRTC with a specific driver.
-> > +#[repr(C)]
-> > +#[pin_data]
-> > +pub struct Crtc<T: DriverCrtc> {
-> > +=C2=A0=C2=A0=C2=A0 // The FFI drm_crtc object
-> > +=C2=A0=C2=A0=C2=A0 pub(super) crtc: Opaque<bindings::drm_crtc>,
-> > +=C2=A0=C2=A0=C2=A0 /// The driver's private inner data
-> > +=C2=A0=C2=A0=C2=A0 #[pin]
-> > +=C2=A0=C2=A0=C2=A0 inner: T,
-> > +=C2=A0=C2=A0=C2=A0 #[pin]
-> > +=C2=A0=C2=A0=C2=A0 _p: PhantomPinned,
+> This works, since there is a blanket impl `PinInit<T, E> for T`.
 >=20
-> Instead of adding this field, you can mark the `crtc` field above as
-> `#[pin]`. This is because of 0b4e3b6f6b79 ("rust: types: make
-> `Opaque`
-> be `!Unpin`").
+> Looking at how you use this API, I am not sure if you actually need
+> pin-init for the type that implements `DriverConnector`.
+> Do you need to store eg `Mutex<T>` or something else that needs
+> pin-init in here in a more complex driver?
+
+Most likely yes - a lot of drivers have various private locks contained
+within their subclassed mode objects. I'm not sure we will in rvkms's
+connector since vkms doesn't really do much with connectors - but we at
+a minimum be using pinned types (spinlocks and hrtimers) in our
+DriverCrtc implementation once I've started implementing support for
+vblanks[1]
+
+[1]
+https://www.kernel.org/doc/html/v6.9-rc5/gpu/drm-kms.html?highlight=3Dvblan=
+k#vertical-blanking
+
+In nova (the main reason I'm working on rvkms in the first place),
+we'll definitely have locks in our connectors and possibly other types.
+
 >=20
 
 --=20
