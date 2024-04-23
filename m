@@ -1,99 +1,71 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A653142E97;
-	Tue, 23 Apr 2024 21:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B1D3E47F
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Apr 2024 23:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713906718; cv=none; b=SPOHQ5hauxuJqGOw2ytLIBQJ+lBfejf5aGdOy4Xke3KmLN5VKP7DEFBiGun/V7PqFcQb+1lT+EzxoK+sl4K0+uBsHXA0T5v0hyipibNgNf/fV9Rj/fj8JiykfX6Qxbj4kOiPCA9LNw+tb0GKJG5NbYynE4CwsJ1sCZtM76YnQSU=
+	t=1713915442; cv=none; b=ep6a/kOP71LQTLy+uOBQEkE+OrCvxcwnroB5VPs54pJDHgxNEP6g3p5mHWN/OyyWmGUCl2Uw9P7MZVlaMHl47u1L73d79mzR5xTQctc/wFigbnUgfPG7b53xQ+B93eAQnpmbG0GqwfxZi3F9natTu59gg1yrh8/IUNYBAvcP/sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713906718; c=relaxed/simple;
-	bh=BCvCUEpG1dWWFdyB0viZeQh4dMtu9PpK7XpuEOqeMzo=;
+	s=arc-20240116; t=1713915442; c=relaxed/simple;
+	bh=ikZqLASnUD5BrgYBEPLKj4B+w5S2wpgaP0n66J2xSLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lrcgPo6Yl5XwJ8Lv6vD039GeDfKBVTPtpiqqs7zy0I2JZ27omV3mqWMuJMLHzPJEE4wU5oKyJ93d0BM0lezuauMmNakpahV7kBFWbIFq5y5nsmt/3aUACIZKWv9dyqztx1HrLKjFVXtc0F9eTYlgVffJ5vgOVq/ZHXJvchm51Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d9jN9Hpf; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=g1FVACMBbMiyPHNxkPqOcquuFfNzqQ91rbzJ4MwHQLU7SW/xcgWOvDGtnGAYxPhixXfuVUkhuukUHB0ElnE4v3QKqNLQPY/Eevs8MhG3++0sbyih8xH0+2hQEB15/p8Dvmvkse8hBS/3OmyJEG+ytSIjcfh2gfqZbhpqDW0msac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TbOyZxd0; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d9jN9Hpf"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3c71c7e2d40so1726494b6e.3;
-        Tue, 23 Apr 2024 14:11:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TbOyZxd0"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2a484f772e2so4107515a91.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Apr 2024 16:37:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713906716; x=1714511516; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1713915440; x=1714520240; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UC62SSmjBqgn/WCf7krMQgCSYCyzmYRam3I6GpOx66w=;
-        b=d9jN9HpfIo8iJv6ZDqv8rYemaZArEhCPuBTJKaSlExHukviS4a4wqjyec/vSkzDGNH
-         Xb09Us79+KphWzOJSE8s5cWdm43V/lg04q/XldJMOBgXRQJqbFOalMEpCjr0UwSwBAPJ
-         i3CUYOq0DQUErv90L5GXCMHJdqulgHhhBZ5ghM5v/OGw27QSdNgN9aQC7xAgx7b4UTKx
-         QB2GYNuciNtlTSFwviBzWU0oqy4nbxZXOWo7RTeNIg6UoFBCnWDn6kkx6aX0nPmOBjuP
-         todJsCfiOoCC2P65orQvrKd4axaVqx+37+NBIt/z/wxeLFDmo0UQCT/yYj6S/yvgshFA
-         4dyA==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8oQOmoluKhr1R+Ar7Ae5lF+M+nWQtjuLiRMks0qxRaQ=;
+        b=TbOyZxd0DIOwoJYNva6LaAnVLo8TsbjNSYE7DqvtJH31OL9GRPJwjPMRrze7KQc3ji
+         3B80BDYlX1/EvruWnFHOE/9W3K3HIOXYDGkbnCI+P6hMVBiDLvqCrYUYYUEdzsc4YT1i
+         EFEteQCKRGz/85lendmGr7fv2qz+xprb83vSw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713906716; x=1714511516;
+        d=1e100.net; s=20230601; t=1713915440; x=1714520240;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UC62SSmjBqgn/WCf7krMQgCSYCyzmYRam3I6GpOx66w=;
-        b=AnN5aRhCzwFb1GCdlkgDmNKxH1V24aXbnZXFk3U2q5nPOOMdflA1ny8YDsk9jM2CgN
-         VIHCPNXvhyxlfLnjFr4hv9UooSfoHRiAjG/qhhY4OzwUx690pnG6eaVuTn5XUGwCPHUf
-         hWB9EOX2v4HrV6WM4s1LwvvFAgQ4YJ/JX4EApuyu+FSOwrE6Apn6mm0eWKghdD4kCAVk
-         9lUu1jLI8g+Xt143Kvb1aELXjqOgIxn4im2nmgGIe5fiB5N6uHZcxTFJWX036JfgId8j
-         OWeiH/FaUKi2RVFh3Pyw+G2yWynvZg1sMk/4Yz4HUwL3mdDXAR8pdidzVKsAtwzlRwmG
-         yl1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXsm6NXvZbqv1MEEK0C4oDIRfl+8GF+fxyELID7gcLsH/wVwVGzyODy3S8ja8q6wYtXS8MMgqoHsSJRmOwY1ymgLpZ+PYnDFEwoyz0o/tDsZJ56dmuoEXIsxrkN0DNOj6UlPiVP2UWQUKj4nLA=
-X-Gm-Message-State: AOJu0YyK7ib+uaDVwRSDJOQkMGTkyIoBhgVN+brAeGMoOLaYEmzQVv/0
-	orrROYZ1/CHZ3hkEjXF+4azc7evtId5Hh7KpmfisXdB+FJ63hyaJ
-X-Google-Smtp-Source: AGHT+IEAGMS00VbhqfFBWsfVSykVB1kntpVJBjlm4lod2mX9JgXgeLsGyeiQxu8jUZyBJKidb6cqKQ==
-X-Received: by 2002:a05:6808:3946:b0:3c7:2607:c541 with SMTP id en6-20020a056808394600b003c72607c541mr531525oib.13.1713906716541;
-        Tue, 23 Apr 2024 14:11:56 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id ez4-20020ad45904000000b00690c77505bdsm4599305qvb.37.2024.04.23.14.11.55
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8oQOmoluKhr1R+Ar7Ae5lF+M+nWQtjuLiRMks0qxRaQ=;
+        b=rtG9FOKYdPcJK+rNpKQNC/bOSaadS2sGvV2Kn4sk97nAmZP9BAI9tRrXp9ChYJQLJh
+         WoZAhz5Ga4WLngQqZlwnfM0v/PVxgRGu4kb46gqz3nslKmo0Ef05/NPVtXMGz/OEMnlG
+         eld43k8RutVAaLb1/9WqRV+3kk+NqPudRGeLZz43Q9+7dop1uX/oenbDynLWDMu31cqD
+         SagDZR5Nj2e/I1BvMWuHjmgIpjE89RWDNMutJIj8BCbM2Ls1hO5W/d09n/QGJSIZoY+v
+         Q+e58Dx6DNw3Mfs4PQNCxBipKHiCEkCtuXFEUmfq9jVPHb0z5JqFw19hCVUpANG1jyCi
+         89eg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCdFe0X/2mnTh9jebXUOdqdYN/+fUbzSEJCKLwImUUKaAJfxQQZcmwdt/fQEYxmpGpYi6ZDFIOb+z93GLKrbpMLz92MfbMC+LOHTgqi4Q=
+X-Gm-Message-State: AOJu0Yz/m6RbeACpxx1tAV25T99/n17wwjKxyvfkgMh8kvSj/VE4oPjy
+	DiISBLsDb5A27aWmZ/w4Fhi8io4IpnR5pE+5OgJAqiprzpzlJrgex01zTzGL5w==
+X-Google-Smtp-Source: AGHT+IHDkobZHch1s5O+S0fUWwcd6UP6yxod9NgVQHFZPNzzaoj/pjZPW5c+t940wYewU3d9rnZJkQ==
+X-Received: by 2002:a17:90a:100f:b0:2a2:97ce:24f5 with SMTP id b15-20020a17090a100f00b002a297ce24f5mr823646pja.35.1713915439966;
+        Tue, 23 Apr 2024 16:37:19 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id i8-20020a17090a718800b002a2e6152f55sm11740139pjk.25.2024.04.23.16.37.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Apr 2024 14:11:55 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 4C93F1200032;
-	Tue, 23 Apr 2024 17:11:27 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Tue, 23 Apr 2024 17:11:27 -0400
-X-ME-Sender: <xms:_yMoZmhFRcIK8DVwWc8fVIFmCA7b2Qo21YprbLdxX7KvRy3bku3aNg>
-    <xme:_yMoZnAZsGdnKr0u73bo4MqdbeDD0xnid2mnf57ZVMq7zKgudabWfFsThoK39f3P4
-    MXfGsR3Ji63STeDNQ>
-X-ME-Received: <xmr:_yMoZuHMdefAp0cy2y0K7psNtY67MOUydvChnZSYA4eRBjlWZ8So72p5EqM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeluddgudeitdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeeg
-    vddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhht
-    hhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquh
-    hnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:_yMoZvTNiaVV8nrPP30lODW96KszhoKxVBejmKnDQ3J5L6JECDxUug>
-    <xmx:_yMoZjyt6fvmjs_p_2LjlAzbx-W3Lo1I5HKe3QgvZv0DrJZIKk6_CA>
-    <xmx:_yMoZt5GWXBCIUebkyJylJM_aZMQcQofHW_LEO-Pp1wBi_bMMVHQmA>
-    <xmx:_yMoZgwy9FYWPuEPzInIxRS_bGFjoCwIcZNZ3c7TJk6fd9Pb3RihEw>
-    <xmx:_yMoZvjjsP7E35pfrWuVUdAGtQCtpbf9wwqmn_7N9DfzRmuFHKp1UCl4>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Apr 2024 17:11:26 -0400 (EDT)
-Date: Tue, 23 Apr 2024 14:11:22 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>
-Cc: John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+        Tue, 23 Apr 2024 16:37:18 -0700 (PDT)
+Date: Tue, 23 Apr 2024 16:37:17 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	justinstitt@google.com
 Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
-Message-ID: <Zigj-lY5lnBSKuib@boqun-archlinux>
+Message-ID: <202404231630.20B2693D@keescook>
 References: <20240411230801.1504496-1-boqun.feng@gmail.com>
  <20240411230801.1504496-3-boqun.feng@gmail.com>
+ <Zigj-lY5lnBSKuib@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -102,63 +74,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240411230801.1504496-3-boqun.feng@gmail.com>
+In-Reply-To: <Zigj-lY5lnBSKuib@boqun-archlinux>
 
-On Thu, Apr 11, 2024 at 04:08:01PM -0700, Boqun Feng wrote:
-> Currently since Rust code is compiled with "-Coverflow-checks=y", so a
-> normal substraction may be compiled as an overflow checking and panic
-> if overflow happens:
+On Tue, Apr 23, 2024 at 02:11:22PM -0700, Boqun Feng wrote:
+> On Thu, Apr 11, 2024 at 04:08:01PM -0700, Boqun Feng wrote:
+> > Currently since Rust code is compiled with "-Coverflow-checks=y", so a
+> > normal substraction may be compiled as an overflow checking and panic
+> > if overflow happens:
+> > 
+> >         subq    %rsi, %rdi
+> >         jo      .LBB0_2
+> >         movq    %rdi, %rax
+> >         retq
+> > .LBB0_2:
+> >         pushq   %rax
+> >         leaq    str.0(%rip), %rdi
+> >         leaq    .L__unnamed_1(%rip), %rdx
+> >         movl    $33, %esi
+> >         callq   *core::panicking::panic::h59297120e85ea178@GOTPCREL(%rip)
+> > 
+> > although overflow detection is nice to have, however this makes
+> > `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's not
+> > clear that the overflow checking is helpful, since for example, the
+> > current binder usage[1] doesn't have the checking.
+> > 
 > 
->         subq    %rsi, %rdi
->         jo      .LBB0_2
->         movq    %rdi, %rax
->         retq
-> .LBB0_2:
->         pushq   %rax
->         leaq    str.0(%rip), %rdi
->         leaq    .L__unnamed_1(%rip), %rdx
->         movl    $33, %esi
->         callq   *core::panicking::panic::h59297120e85ea178@GOTPCREL(%rip)
+> Ping. Thomas, John and Stepthen. Could you take a look at this, and the
+> discussion between Miguel and me? The key question is the behavior when
+> ktime_sub() hits a overflow, I think. Thanks!
 > 
-> although overflow detection is nice to have, however this makes
-> `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's not
-> clear that the overflow checking is helpful, since for example, the
-> current binder usage[1] doesn't have the checking.
-> 
+> (Cc Kees as well)
 
-Ping. Thomas, John and Stepthen. Could you take a look at this, and the
-discussion between Miguel and me? The key question is the behavior when
-ktime_sub() hits a overflow, I think. Thanks!
+While working on the signed (and unsigned) integer overflow sanitizer
+support on the C side for the kernel, I've also run into timekeeping
+being a questionable area[1]. I *think* from what I can tell, it's always
+expected to have wrapping behavior.
 
-(Cc Kees as well)
+Can we define the type itself to be wrapping? (This has been my plan on
+the C side, but we're still waiting on a finalized implementation of the
+"wraps" attribute.[2])
 
-Regards,
-Boqun
+-Kees
 
-> Therefore make `Ktime::sub()` have the same semantics as `ktime_sub()`:
-> overflow behaves like 2s-complement wrapping sub.
-> 
-> Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830fab.1682333709.git.zhangchuang3@xiaomi.com/ [1]
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/kernel/time.rs | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index e3bb5e89f88d..3cb15d3079f4 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -77,7 +77,9 @@ impl core::ops::Sub for Ktime {
->      #[inline]
->      fn sub(self, other: Ktime) -> Ktime {
->          Self {
-> -            inner: self.inner - other.inner,
-> +            // Mirrors `ktime_sub()`, kernel defines signed overflow to behave like 2s-complement,
-> +            // hence `wrapping_sub()` is used.
-> +            inner: self.inner.wrapping_sub(other.inner),
->          }
->      }
->  }
-> -- 
-> 2.44.0
-> 
+[1] This is strictly WIP, as I think fixing the _types_ is going to be
+    the more sustainable solution, but you can see some of what I was
+    poking at:
+    https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/commit/?h=devel/overflow/enable-unsigned-sanitizer&id=284464817a59b14f00d397bfbf1bf05683ed2f58
+[2] https://github.com/llvm/llvm-project/pull/86618
+
+-- 
+Kees Cook
