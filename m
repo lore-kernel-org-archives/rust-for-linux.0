@@ -1,23 +1,23 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9D4134CC0;
-	Tue, 23 Apr 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8395134427;
+	Tue, 23 Apr 2024 13:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713877678; cv=none; b=iL+zA2Qt25cWvKY3uZV0es2u+hcACk1KPZ/d/ds2Hh4ADMlREzSIjdvBP5XUw9/YlGoUfROIUol+zGY8FG9csjHdQTTN/4HWG09zjieVVUQQyqiakiF6Vhofyy/YCZX78EtzJtg0uKh5fjDMcIVijL3g0G85L7IBrpUUmHdPRp8=
+	t=1713877777; cv=none; b=jA9jJUfNTdIfglmjUnohU0wDORV6pQed4u+xhAQ0xQYeVGHzOA1o5wPfyK+n7jTh4DhNnHdZFv/nU3cdKuEtkCUZe4dT/RHLdvf4A9lLKq1tQ4jNsmzSktjlkLSk0+f3YhW4XxIg7+8YsrDVQZrYw3xT6AhvjmdBDwnwqs5gxFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713877678; c=relaxed/simple;
-	bh=6ObOY6a19iSWeHzXcI4y0Y4L9Oh0YmS59AXiA+sMsEU=;
+	s=arc-20240116; t=1713877777; c=relaxed/simple;
+	bh=fSubFCZuzCHzqZTiGxX6f3bOK3HYq69IKsu1L0DWdf0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YHRpX7GiS69D49d5Q03mj1Ly/PuePoxQjT/54PNlRN1naK5VbEaaYC12PX71WX4FdssJjaK9CC8XsRxlf4fSNRMMw+RNLJf0ybywp20tTk3D2UbKKHPSb7Rd6oztPwg92FF5etQnlFHsv7+mN0qMtYb53EKyQghCd6gVUe8Lung=
+	 MIME-Version:Content-Type; b=SmFOZC80VgeQwOX+H9qadNjxzi/vcoMAjK8daDZ7uuTPRWDpew0iiUj2pPw9JAdU477U/XVbqUTNH3SgyDGVBt1rVRUpHmaGOSQl8vI5fqpiX+hNm6zkhW/FhU08G3uBoxN/Ly/OPT4zBabkbk3l6FZKyeS1VMnyBnOP9bv+BoA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [112.20.112.218])
-	by gateway (Coremail) with SMTP id _____8DxNvCosidmQWQBAA--.7892S3;
-	Tue, 23 Apr 2024 21:07:52 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8BxSfENsydmgWQBAA--.8151S3;
+	Tue, 23 Apr 2024 21:09:33 +0800 (CST)
 Received: from localhost.localdomain (unknown [112.20.112.218])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8CxTN6esidmK18CAA--.10071S4;
-	Tue, 23 Apr 2024 21:07:49 +0800 (CST)
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxjlcJsydma18CAA--.4989S2;
+	Tue, 23 Apr 2024 21:09:31 +0800 (CST)
 From: Yanteng Si <siyanteng@loongson.cn>
 To: ojeda@kernel.org,
 	corbet@lwn.net,
@@ -39,9 +39,9 @@ Cc: Yanteng Si <siyanteng@loongson.cn>,
 	linux-doc@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH v1 2/4] docs/zh_CN/rust: Update the translation of coding-guidelines to 6.9-rc4
-Date: Tue, 23 Apr 2024 21:07:27 +0800
-Message-Id: <c1d41290e80fc1e6364682c258445132c42442e4.1713875158.git.siyanteng@loongson.cn>
+Subject: [PATCH v1 3/4] docs/zh_CN/rust: Update the translation of general-information to 6.9-rc4
+Date: Tue, 23 Apr 2024 21:09:26 +0800
+Message-Id: <94690e4a231ba63018b11182203ee2f0db8998d8.1713875158.git.siyanteng@loongson.cn>
 X-Mailer: git-send-email 2.31.4
 In-Reply-To: <cover.1713875158.git.siyanteng@loongson.cn>
 References: <cover.1713875158.git.siyanteng@loongson.cn>
@@ -53,57 +53,49 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8CxTN6esidmK18CAA--.10071S4
+X-CM-TRANSID:AQAAf8AxjlcJsydma18CAA--.4989S2
 X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrtFWDJw13Cr4fWF15Cry8WFX_yoWkXrb_ur
-	n7XrW0yw1xAFn7uF48AFy5Jr1rZayIkFy8CFn8tws8Cw1DAwsIq3WkJrykZanxWr4Dur98
-	GayfAFyftrsFqosvyTuYvTs0mTUanT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqE5I8CrVACY4xI64kE6c02F40Ex7xfMIIYY7kG6xAYrbIjqfuFe4nvWSU5
-	nxnvy29KBjDU0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zV
-	CF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY
-	1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20x
-	vEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2
-	jsIEc7CjxVAFwI0_Cr1j6rxdM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv04
-	87Mc804VCY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IY
-	x2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2Iq
-	xVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r
-	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkvb40E47kJ
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUY
-	-BMJUUUUU==
+X-Coremail-Antispam: 1Uk129KBj9xXoWrKr13Gr43Cr17uF4ktr43urX_yoWkCFc_uw
+	s7JFZ0yFyUtryIgr48JFnxKr1xZayF9ryF9F1vvas5G34DKws8Ga4DJrZrXayfXr45ur98
+	CasrurnayrsrCosvyTuYvTs0mTUanT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbh8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVWxJr0_GcWln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26rWY
+	6Fy7McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
+	6r1j6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
+	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26F1j6w1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04
+	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26F4j6r4UJwCI42IY6I8E87Iv6xkF
+	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU3o7KUUUUU
 
-Update to commit bc2e7d5c298a ("rust: support `srctree`-relative links")
+Update to commit ba4abeb13d5e ("docs: rust: Move testing to a
+separate page")
+commit be412baf7240 ("docs: rust: Add rusttest info")
+commit bd9e54a42ce2 ("docs: rust: update Rust docs output path")
 
 Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
 ---
- .../translations/zh_CN/rust/coding-guidelines.rst    | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/translations/zh_CN/rust/general-information.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/translations/zh_CN/rust/coding-guidelines.rst b/Documentation/translations/zh_CN/rust/coding-guidelines.rst
-index 6c0bdbbc5a2a..d02e2dbff509 100644
---- a/Documentation/translations/zh_CN/rust/coding-guidelines.rst
-+++ b/Documentation/translations/zh_CN/rust/coding-guidelines.rst
-@@ -157,6 +157,18 @@ https://commonmark.org/help/
+diff --git a/Documentation/translations/zh_CN/rust/general-information.rst b/Documentation/translations/zh_CN/rust/general-information.rst
+index 6b91dfe1834a..251f6ee2bb44 100644
+--- a/Documentation/translations/zh_CN/rust/general-information.rst
++++ b/Documentation/translations/zh_CN/rust/general-information.rst
+@@ -32,7 +32,7 @@ Rust内核代码使用其内置的文档生成器 ``rustdoc`` 进行记录。
  
- 	https://doc.rust-lang.org/rustdoc/how-to-write-documentation.html
+ 要在你的网络浏览器中本地阅读该文档，请运行如::
  
-+此外，内核支持通过在链接目标前缀 ``srctree/`` 来创建相对于源代码树的链接。例如:
-+
-+.. code-block:: rust
-+
-+       //! C header: [`include/linux/printk.h`](srctree/include/linux/printk.h)
-+
-+或者:
-+
-+.. code-block:: rust
-+
-+       /// [`struct mutex`]: srctree/include/linux/mutex.h
-+
+-	xdg-open rust/doc/kernel/index.html
++	xdg-open Documentation/output/rust/rustdoc/kernel/index.html
  
- 命名
- ----
+ 要了解如何编写文档，请看 coding-guidelines.rst 。
+ 
 -- 
 2.31.4
 
