@@ -1,234 +1,164 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD37113BAFE
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Apr 2024 15:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A653142E97;
+	Tue, 23 Apr 2024 21:11:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713886997; cv=none; b=jP5SzIAcJn9eJVpHgSlLKvkzSmzv5w2xZOnad29TtwGwP1K+0HqL7U4F96yMdvYjOPh6DgwZY90sgRTxOGXyICTrvSaPx+vTMzPuO+0UvCFg8Fp/dxm1A1FuGoesg+d00VMyJzjeBWICzDxB+AqrcTmRUfmhBvgwQ1L1auKOYas=
+	t=1713906718; cv=none; b=SPOHQ5hauxuJqGOw2ytLIBQJ+lBfejf5aGdOy4Xke3KmLN5VKP7DEFBiGun/V7PqFcQb+1lT+EzxoK+sl4K0+uBsHXA0T5v0hyipibNgNf/fV9Rj/fj8JiykfX6Qxbj4kOiPCA9LNw+tb0GKJG5NbYynE4CwsJ1sCZtM76YnQSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713886997; c=relaxed/simple;
-	bh=icLDvFvpV72zmE8xOhKfWko0Ndyksl7RQK+s9PmbDeE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eLRo0wvdAZZl77BqwMK3OquatoPMEpjUinJa/YR1FSQTYTRVHcFCtzKE7XetSUjhTnbrc1CX6DYp2UwFZNvgU/Bj6Nj3DdfDXjH+PnWNyPNTWfJ6tyKaHIatUQbrxhOD7Q/bAsQOddh/M2tWc+2iUI27ts6xnjh9GYeipXoz8q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TXfNz+2J; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1713906718; c=relaxed/simple;
+	bh=BCvCUEpG1dWWFdyB0viZeQh4dMtu9PpK7XpuEOqeMzo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lrcgPo6Yl5XwJ8Lv6vD039GeDfKBVTPtpiqqs7zy0I2JZ27omV3mqWMuJMLHzPJEE4wU5oKyJ93d0BM0lezuauMmNakpahV7kBFWbIFq5y5nsmt/3aUACIZKWv9dyqztx1HrLKjFVXtc0F9eTYlgVffJ5vgOVq/ZHXJvchm51Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d9jN9Hpf; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TXfNz+2J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713886994;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zjKkFTxUJOrFDTkrrK48AIMAMR331JfkUWmmHYXPNWc=;
-	b=TXfNz+2JQQllT53d30+UFJKY0zlJUHt2MRK0f7Er3U8LjqG7W0MVc5w/RBf3kmGfpVhcUf
-	esL7OYo1U6Ca/Gfh7Yf/q4apdeCq9X2pshIEa3AibKXwXHP5kaekUj185FDcy0WcFRNSTN
-	a1qiMxuwySg5qlEfRsCNv2E8ISyKYqg=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-RZErGh4LPEy4GlIGoqwH-g-1; Tue, 23 Apr 2024 11:43:13 -0400
-X-MC-Unique: RZErGh4LPEy4GlIGoqwH-g-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4396267ee26so79147271cf.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Apr 2024 08:43:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713886993; x=1714491793;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d9jN9Hpf"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3c71c7e2d40so1726494b6e.3;
+        Tue, 23 Apr 2024 14:11:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713906716; x=1714511516; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zjKkFTxUJOrFDTkrrK48AIMAMR331JfkUWmmHYXPNWc=;
-        b=VgYXNIu5Xy06mMVnFYxilQcsS0T6VqLeXwVKu+uYmXfKRxgdR5o9BgWXtoEFcu7Rx2
-         XEhqyE1g/y2n6VBsSufD2yXiVLLS2N1QJZFb8vabLB+TDtjnay5KpSNgc/Heq98HfZjr
-         YbIqqO4zns7g62FTWG6+Dp7MBSqFlJWcxvDgcwB+uTtHB7kE/ck8DaxUbTt9V6Tx3F+Q
-         M0tJZZZsdAs5eULqqzSKUpzi5Hh2nQmKO25buZdccdBJIHt1Y2+xOFYLryMrNGrRyRWz
-         O2M5/HFAfl2ePBEThq2sR7mAzz7lpN4V6+yKLZLZCuccinEbF6QC9nN9mpwEHmnMSDyN
-         3Hqw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/aREeBbuj5CV1ysQ5NWwWZZaVi8bfnLVly4HywGCeQJDGZ2qMylgcQWtEHHXni90oxh7JxFoYZzQegP7E5oBBtqQjb/n9UZ98FsUv8c8=
-X-Gm-Message-State: AOJu0YxKACjc6QhfXvypddX2BPHzuApJXavdeca2DTK4mo6cDU/9syyF
-	MSFsv2zY8TohhUaNFN/fs+GFnstQA4AKuJmYydWlmsl18Fw10B3ibL5deJZGs6RpAODVY5kqyU6
-	06JRyWpctR1zP81TJ7g7Vdoj1VG+PPVHpBtrBskyg+O3ZLcVNDl7M80MB58s4ULPO
-X-Received: by 2002:ac8:7f03:0:b0:437:cc65:bbfd with SMTP id f3-20020ac87f03000000b00437cc65bbfdmr5683342qtk.8.1713886992711;
-        Tue, 23 Apr 2024 08:43:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVbJXkNB9mPOWQi1awKT+drHechIbxwnI05S+Ty2UC4FXxVkYjTJWlzQwHhj9FWazhjx1ucw==
-X-Received: by 2002:ac8:7f03:0:b0:437:cc65:bbfd with SMTP id f3-20020ac87f03000000b00437cc65bbfdmr5683305qtk.8.1713886992321;
-        Tue, 23 Apr 2024 08:43:12 -0700 (PDT)
-Received: from [10.32.64.131] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id do7-20020a05622a478700b0043999fccc10sm2461453qtb.62.2024.04.23.08.43.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Apr 2024 08:43:11 -0700 (PDT)
-Message-ID: <cbeae504-2752-4ef0-b103-e62fcf45ab93@redhat.com>
-Date: Tue, 23 Apr 2024 17:43:08 +0200
+        bh=UC62SSmjBqgn/WCf7krMQgCSYCyzmYRam3I6GpOx66w=;
+        b=d9jN9HpfIo8iJv6ZDqv8rYemaZArEhCPuBTJKaSlExHukviS4a4wqjyec/vSkzDGNH
+         Xb09Us79+KphWzOJSE8s5cWdm43V/lg04q/XldJMOBgXRQJqbFOalMEpCjr0UwSwBAPJ
+         i3CUYOq0DQUErv90L5GXCMHJdqulgHhhBZ5ghM5v/OGw27QSdNgN9aQC7xAgx7b4UTKx
+         QB2GYNuciNtlTSFwviBzWU0oqy4nbxZXOWo7RTeNIg6UoFBCnWDn6kkx6aX0nPmOBjuP
+         todJsCfiOoCC2P65orQvrKd4axaVqx+37+NBIt/z/wxeLFDmo0UQCT/yYj6S/yvgshFA
+         4dyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713906716; x=1714511516;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UC62SSmjBqgn/WCf7krMQgCSYCyzmYRam3I6GpOx66w=;
+        b=AnN5aRhCzwFb1GCdlkgDmNKxH1V24aXbnZXFk3U2q5nPOOMdflA1ny8YDsk9jM2CgN
+         VIHCPNXvhyxlfLnjFr4hv9UooSfoHRiAjG/qhhY4OzwUx690pnG6eaVuTn5XUGwCPHUf
+         hWB9EOX2v4HrV6WM4s1LwvvFAgQ4YJ/JX4EApuyu+FSOwrE6Apn6mm0eWKghdD4kCAVk
+         9lUu1jLI8g+Xt143Kvb1aELXjqOgIxn4im2nmgGIe5fiB5N6uHZcxTFJWX036JfgId8j
+         OWeiH/FaUKi2RVFh3Pyw+G2yWynvZg1sMk/4Yz4HUwL3mdDXAR8pdidzVKsAtwzlRwmG
+         yl1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXsm6NXvZbqv1MEEK0C4oDIRfl+8GF+fxyELID7gcLsH/wVwVGzyODy3S8ja8q6wYtXS8MMgqoHsSJRmOwY1ymgLpZ+PYnDFEwoyz0o/tDsZJ56dmuoEXIsxrkN0DNOj6UlPiVP2UWQUKj4nLA=
+X-Gm-Message-State: AOJu0YyK7ib+uaDVwRSDJOQkMGTkyIoBhgVN+brAeGMoOLaYEmzQVv/0
+	orrROYZ1/CHZ3hkEjXF+4azc7evtId5Hh7KpmfisXdB+FJ63hyaJ
+X-Google-Smtp-Source: AGHT+IEAGMS00VbhqfFBWsfVSykVB1kntpVJBjlm4lod2mX9JgXgeLsGyeiQxu8jUZyBJKidb6cqKQ==
+X-Received: by 2002:a05:6808:3946:b0:3c7:2607:c541 with SMTP id en6-20020a056808394600b003c72607c541mr531525oib.13.1713906716541;
+        Tue, 23 Apr 2024 14:11:56 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id ez4-20020ad45904000000b00690c77505bdsm4599305qvb.37.2024.04.23.14.11.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Apr 2024 14:11:55 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 4C93F1200032;
+	Tue, 23 Apr 2024 17:11:27 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Tue, 23 Apr 2024 17:11:27 -0400
+X-ME-Sender: <xms:_yMoZmhFRcIK8DVwWc8fVIFmCA7b2Qo21YprbLdxX7KvRy3bku3aNg>
+    <xme:_yMoZnAZsGdnKr0u73bo4MqdbeDD0xnid2mnf57ZVMq7zKgudabWfFsThoK39f3P4
+    MXfGsR3Ji63STeDNQ>
+X-ME-Received: <xmr:_yMoZuHMdefAp0cy2y0K7psNtY67MOUydvChnZSYA4eRBjlWZ8So72p5EqM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeluddgudeitdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeeg
+    vddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhht
+    hhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquh
+    hnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:_yMoZvTNiaVV8nrPP30lODW96KszhoKxVBejmKnDQ3J5L6JECDxUug>
+    <xmx:_yMoZjyt6fvmjs_p_2LjlAzbx-W3Lo1I5HKe3QgvZv0DrJZIKk6_CA>
+    <xmx:_yMoZt5GWXBCIUebkyJylJM_aZMQcQofHW_LEO-Pp1wBi_bMMVHQmA>
+    <xmx:_yMoZgwy9FYWPuEPzInIxRS_bGFjoCwIcZNZ3c7TJk6fd9Pb3RihEw>
+    <xmx:_yMoZvjjsP7E35pfrWuVUdAGtQCtpbf9wwqmn_7N9DfzRmuFHKp1UCl4>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Apr 2024 17:11:26 -0400 (EDT)
+Date: Tue, 23 Apr 2024 14:11:22 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>
+Cc: John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
+Message-ID: <Zigj-lY5lnBSKuib@boqun-archlinux>
+References: <20240411230801.1504496-1-boqun.feng@gmail.com>
+ <20240411230801.1504496-3-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/10] Allocation APIs
-To: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- Wedson Almeida Filho <walmeida@microsoft.com>, ajanulgu@redhat.com
-References: <20240328013603.206764-1-wedsonaf@gmail.com>
-From: Danilo Krummrich <dakr@redhat.com>
-Organization: RedHat
-In-Reply-To: <20240328013603.206764-1-wedsonaf@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240411230801.1504496-3-boqun.feng@gmail.com>
 
-Hi all,
-
-On 3/28/24 02:35, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
+On Thu, Apr 11, 2024 at 04:08:01PM -0700, Boqun Feng wrote:
+> Currently since Rust code is compiled with "-Coverflow-checks=y", so a
+> normal substraction may be compiled as an overflow checking and panic
+> if overflow happens:
 > 
-> Revamp how we use the `alloc` crate.
+>         subq    %rsi, %rdi
+>         jo      .LBB0_2
+>         movq    %rdi, %rax
+>         retq
+> .LBB0_2:
+>         pushq   %rax
+>         leaq    str.0(%rip), %rdi
+>         leaq    .L__unnamed_1(%rip), %rdx
+>         movl    $33, %esi
+>         callq   *core::panicking::panic::h59297120e85ea178@GOTPCREL(%rip)
 > 
-> We currently have a fork of the crate with changes to `Vec`; other
-> changes have been upstreamed (to the Rust project). This series removes
-> the fork and exposes all the functionality as extension traits.
+> although overflow detection is nice to have, however this makes
+> `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's not
+> clear that the overflow checking is helpful, since for example, the
+> current binder usage[1] doesn't have the checking.
 > 
-> Additionally, it also introduces allocation flag parameters to all
-> functions that may result in allocations (e.g., `Box::new`, `Arc::new`,
-> `Vec::push`, etc.) without the `try_` prefix -- the names are available
-> because we build `alloc` with `no_global_oom_handling`.
+
+Ping. Thomas, John and Stepthen. Could you take a look at this, and the
+discussion between Miguel and me? The key question is the behavior when
+ktime_sub() hits a overflow, I think. Thanks!
+
+(Cc Kees as well)
+
+Regards,
+Boqun
+
+> Therefore make `Ktime::sub()` have the same semantics as `ktime_sub()`:
+> overflow behaves like 2s-complement wrapping sub.
 > 
-> Lastly, the series also removes our reliance on the `allocator_api`
-> unstable feature.
-> 
-> Long term, we still want to make such functionality available in
-> upstream Rust, but this allows us to make progress now and reduces our
-> maintainance burden.
-> 
-> In summary:
-> 1. Removes `alloc` fork
-> 2. Removes use of `allocator_api` unstable feature
-> 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
-
-With that series, how do we implement alternative allocators, such as
-(k)vmalloc or DMA coherent?
-
-For instance, I recently sketched up some firmware bindings we want to
-use in Nova providing
-
-fn copy<A: core::alloc::Allocator>(&self, alloc: A) -> Result<Vec<u8, 
-A>> [1]
-
-making use of Vec::try_with_capacity_in(). How would I implement
-something similar now?
-
-- Danilo
-
-[1] 
-https://gitlab.freedesktop.org/drm/nova/-/blob/topic/firmware/rust/kernel/firmware.rs?ref_type=heads#L63
-
-> 
+> Link: https://lore.kernel.org/lkml/5ac8c0d09392290be789423f0dd78a520b830fab.1682333709.git.zhangchuang3@xiaomi.com/ [1]
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
+>  rust/kernel/time.rs | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> Changes in v3:
-> - Rebased on top of the latest `rust-next` branch.
-> - Updated `krealloc_aligned` to use `Flags` instead of `bindings::gfp_t`.
-> - Added __GFP_ZERO to flags, as part of the previous change.
-> - Avoiding temporary stack value in `Box::new_uninit`.
-> - Implement `Box::new` using `Box::new_uninit` (so only one of them actually
->    allocates).
-> - Added examples/tests to `VecExt` methods.
-> - Fixed bug in length in `extend_from_slice`
-> - Link to v2: https://lore.kernel.org/rust-for-linux/20240327023531.187880-1-wedsonaf@gmail.com/T/#t
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index e3bb5e89f88d..3cb15d3079f4 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -77,7 +77,9 @@ impl core::ops::Sub for Ktime {
+>      #[inline]
+>      fn sub(self, other: Ktime) -> Ktime {
+>          Self {
+> -            inner: self.inner - other.inner,
+> +            // Mirrors `ktime_sub()`, kernel defines signed overflow to behave like 2s-complement,
+> +            // hence `wrapping_sub()` is used.
+> +            inner: self.inner.wrapping_sub(other.inner),
+>          }
+>      }
+>  }
+> -- 
+> 2.44.0
 > 
-> Changes in v2:
-> - Updated description of `alloc` crate.
-> - Renamed vecext and boxext modules to vec_ext and box_ext.
-> - Added derive directive to `AllocError`.
-> - Updated safety comment in `BoxExt::new`.
-> - Updated `VecExt::push` and `VecExt::extend_from_slice` to use
->    `spare_capacity_mut`
-> - Added directive to not compile `destructure` and `rebuild` when `test` or
->    `testlib` are configured. Otherwise we have a warning because `push` and
->    `extend_from_slice` don't use them anymore.
-> - Updated indentation in `Arc::new_uninit`
-> - Moved the removal of `TryReserveError` convesion to `Error` to patch 7, where
->    usage of `TryReserveError` is actually removed.
-> - Link to v1: https://lore.kernel.org/rust-for-linux/20240325195418.166013-1-wedsonaf@gmail.com/T/#t
-> 
-> Wedson Almeida Filho (10):
->    rust: kernel: move `allocator` module under `alloc`
->    rust: alloc: introduce the `VecExt` trait
->    kbuild: use the upstream `alloc` crate
->    rust: alloc: remove our fork of the `alloc` crate
->    rust: alloc: introduce allocation flags
->    rust: alloc: introduce the `BoxExt` trait
->    rust: alloc: update `VecExt` to take allocation flags
->    rust: sync: update `Arc` and `UniqueArc` to take allocation flags
->    rust: init: update `init` module to take allocation flags
->    rust: kernel: remove usage of `allocator_api` unstable feature
-> 
->   rust/Makefile                        |   16 +-
->   rust/alloc/README.md                 |   36 -
->   rust/alloc/alloc.rs                  |  452 ----
->   rust/alloc/boxed.rs                  | 2463 -----------------
->   rust/alloc/collections/mod.rs        |  160 --
->   rust/alloc/lib.rs                    |  288 --
->   rust/alloc/raw_vec.rs                |  611 -----
->   rust/alloc/slice.rs                  |  890 -------
->   rust/alloc/vec/drain.rs              |  255 --
->   rust/alloc/vec/extract_if.rs         |  115 -
->   rust/alloc/vec/into_iter.rs          |  454 ----
->   rust/alloc/vec/is_zero.rs            |  204 --
->   rust/alloc/vec/mod.rs                | 3683 --------------------------
->   rust/alloc/vec/partial_eq.rs         |   49 -
->   rust/alloc/vec/set_len_on_drop.rs    |   35 -
->   rust/alloc/vec/spec_extend.rs        |  119 -
->   rust/bindings/bindings_helper.h      |    3 +
->   rust/kernel/alloc.rs                 |   74 +
->   rust/kernel/{ => alloc}/allocator.rs |   17 +-
->   rust/kernel/alloc/box_ext.rs         |   59 +
->   rust/kernel/alloc/vec_ext.rs         |  176 ++
->   rust/kernel/error.rs                 |   13 +-
->   rust/kernel/init.rs                  |   57 +-
->   rust/kernel/lib.rs                   |    5 +-
->   rust/kernel/prelude.rs               |    2 +
->   rust/kernel/str.rs                   |    6 +-
->   rust/kernel/sync/arc.rs              |   50 +-
->   rust/kernel/sync/condvar.rs          |    2 +-
->   rust/kernel/sync/lock/mutex.rs       |    2 +-
->   rust/kernel/sync/lock/spinlock.rs    |    2 +-
->   rust/kernel/types.rs                 |    4 +-
->   rust/kernel/workqueue.rs             |   14 +-
->   samples/rust/rust_minimal.rs         |    6 +-
->   samples/rust/rust_print.rs           |    4 +-
->   scripts/generate_rust_analyzer.py    |    2 +-
->   35 files changed, 405 insertions(+), 9923 deletions(-)
->   delete mode 100644 rust/alloc/README.md
->   delete mode 100644 rust/alloc/alloc.rs
->   delete mode 100644 rust/alloc/boxed.rs
->   delete mode 100644 rust/alloc/collections/mod.rs
->   delete mode 100644 rust/alloc/lib.rs
->   delete mode 100644 rust/alloc/raw_vec.rs
->   delete mode 100644 rust/alloc/slice.rs
->   delete mode 100644 rust/alloc/vec/drain.rs
->   delete mode 100644 rust/alloc/vec/extract_if.rs
->   delete mode 100644 rust/alloc/vec/into_iter.rs
->   delete mode 100644 rust/alloc/vec/is_zero.rs
->   delete mode 100644 rust/alloc/vec/mod.rs
->   delete mode 100644 rust/alloc/vec/partial_eq.rs
->   delete mode 100644 rust/alloc/vec/set_len_on_drop.rs
->   delete mode 100644 rust/alloc/vec/spec_extend.rs
->   create mode 100644 rust/kernel/alloc.rs
->   rename rust/kernel/{ => alloc}/allocator.rs (86%)
->   create mode 100644 rust/kernel/alloc/box_ext.rs
->   create mode 100644 rust/kernel/alloc/vec_ext.rs
-> 
-> 
-> base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
-
