@@ -1,43 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5FA153812;
-	Thu, 25 Apr 2024 21:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14095155A47
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 21:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714080898; cv=none; b=TwjicXxRGIHGalQm6zYL81FOKC4BQL298m/HJkxbKg+ixPGQbJenH4nvQ9a7gOMDXLT5pj7CFNG3YfcGCbljfjIKh2qqp6WGWQHYMP7hjmwP/KA8sL30c4iY9Gz4hk03lat/tQPiXPWO3JOliFdGV7WQdxBX53mORnrV7FQEduI=
+	t=1714081562; cv=none; b=M3ce9jKueRoAGCVtkQVPB651fYHB8rlTQDjZmW3CHd/0ka0MjyXGt5P3F+5cxXz3DhHvXYe2cm9MG7zVYjHu1YVcFi2UzqPl8uI60OVtliqfVdufPEZY1hEjMT2020pnqfehnmtbSMk32jxcUgW5DYZvgynIXkBPbB4HWJ2Zscs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714080898; c=relaxed/simple;
-	bh=YtT+9N11G/oagDxFwRs8nvK/R4iQrquRafZwkitYN7k=;
+	s=arc-20240116; t=1714081562; c=relaxed/simple;
+	bh=YKw6OAais4gM4JicLcbq2kNDKCivA0K/YpqzcFf016A=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DJS3WdUpT8vq4u4vIbCa9ZtELWnFW9HggqSnKxrEPt2+zcOIiWYYiVuxfezKb4WTwE4xGMWcvTh/CIgpfdO/LQ+DE8LykRNtciNOpPOkTKM8Idoo8zOmetN/6UP2tMXol0/xTfcN8e2siuatnu8wkD2p7V2Ovw7+T6uZqY3+ofc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=gmH+hgnV; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=k/h9kywZVskv5cM/r+tYjN7OyBakZ91ZKxAVLxt9MJyMYkkvHznh4Rc/3qFk3e0CooHcBAw4f94VwRS+zBuSHIsGNL93g15CmcsX5mBWkVM3vrnhnJDtQ4NptVX7soyU3WnVht1uYyp8Y3Yc9/i5+gzHjfWHqn3uUeyxSqm48oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Mge3iFRK; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gmH+hgnV"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Mge3iFRK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1714080887; x=1714340087;
-	bh=UJd86kWm35t/O3VTlkvSGLGEC+zSkf49elPIO6KdbFY=;
+	s=protonmail; t=1714081557; x=1714340757;
+	bh=97Q4StEMSnaGADHQavqUT0bLsHbHLwxhsBOtn/7AolM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=gmH+hgnVw8qfTX37fl+0eCO6I/Bt3A4JMWO6ab7NggAjrSkyEDrWXQJrsFMbWnVm0
-	 YG5IznlBMmt2imUFw033mRKJY9Pm1VMmNgEUwfNmvOlHdYkle0+bfY5p8fYiwg+gsO
-	 nM/kUgoTuhQvi6s6aXDbs8WOZse0NU2XlEPjeZ0G7E5O35UIPXHJVBc98hhICRnqUG
-	 uovJko74t5sHFjX/Rcor62H4rwyYkfR9ZD7GhWZxoC0iikOIWkqKn8/GzBKvZgUlNb
-	 3gbBp/TI10NbdfMWpX4yttZ+Au0FvKc++6kFvKvPokn23FTxYdTNhKjSMvy1WndmoY
-	 FuozYaKBrN8cw==
-Date: Thu, 25 Apr 2024 21:34:44 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+	b=Mge3iFRKSiHxa2lzkeSAmzi7MjU65qn/kz2OEqCeBlMYcml1Y9jkU5wpk6KM71UHe
+	 +jY6HrpERqdbmTONqVtNQsYJRNm3dkKoBFw94dzw9qzJK84x9WNh8jZ52D8H7iWerm
+	 ZwF1m5Q3AE+hcej/oYJgdRnRE0+3iQmVgV/ywv2J5cuxIT8Dt1679Yg3kgBj+QiK0j
+	 rZT6lQcHdtFNnOeKm1wKOeq0rXWn3Ms+7FMHr9tIhlVuh6Gi91WDR+MuSSdBPd5OtV
+	 DT0pAiuIE42FxLmWPxBEbdLN4kxe/l/J2JYCDDMDNhKZLieElRazx+gSvqR0kaM/rj
+	 i+QeS9JtMNBig==
+Date: Thu, 25 Apr 2024 21:45:54 +0000
+To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rust: init: add re-initialization functions
-Message-ID: <20240425213419.3904105-2-benno.lossin@proton.me>
-In-Reply-To: <20240425213419.3904105-1-benno.lossin@proton.me>
-References: <20240425213419.3904105-1-benno.lossin@proton.me>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] rust: rbtree: add `RBTreeIterator`
+Message-ID: <ba946689-d10b-4752-989f-4c6404d7ee55@proton.me>
+In-Reply-To: <20240418-b4-rbtree-v3-2-323e134390ce@google.com>
+References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-2-323e134390ce@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fd954416d514fda6cdb8e68aded583cacd674889
+X-Pm-Message-ID: e011ff89a2cfa0e9231357b446c0d1d40cbda54c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,177 +47,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Sometimes it is necessary to split allocation and initialization into
-two steps. One such situation is when reusing existing allocations
-obtained via `Box::drop_contents`. See [1] for an example.
-In order to support this use case add `re_[pin_]init` functions to the
-pin-init API. These functions operate on already allocated smart
-pointers that contain `MaybeUninit<T>`.
+On 18.04.24 16:15, Matt Gilbride wrote:
+> @@ -188,6 +212,25 @@ pub fn try_reserve_node() -> Result<RBTreeNodeReserv=
+ation<K, V>> {
+>      pub fn try_allocate_node(key: K, value: V) -> Result<RBTreeNode<K, V=
+>> {
+>          Ok(Self::try_reserve_node()?.into_node(key, value))
+>      }
+> +
+> +    /// Returns an iterator over the tree nodes, sorted by key.
+> +    pub fn iter(&self) -> RBTreeIterator<'_, K, V> {
+> +        RBTreeIterator {
 
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57ad3f=
-5bc592@proton.me/ [1]
----
- rust/kernel/init.rs    | 88 ++++++++++++++++++++++++++++++------------
- rust/kernel/prelude.rs |  2 +-
- 2 files changed, 65 insertions(+), 25 deletions(-)
+There is a missing `INVARIANT` comment here justifying the invariants of
+`RBTreeIterator`.
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 9608f2bd2211..b37b23f07bf7 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -1159,13 +1159,8 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: =
-Flags) -> Result<Pin<Self>,
-     where
-         E: From<AllocError>,
-     {
--        let mut this =3D <Box<_> as BoxExt<_>>::new_uninit(flags)?;
--        let slot =3D this.as_mut_ptr();
--        // SAFETY: When init errors/panics, slot will get deallocated but =
-not dropped,
--        // slot is valid and will not be moved, because we pin it later.
--        unsafe { init.__pinned_init(slot)? };
--        // SAFETY: All fields have been initialized.
--        Ok(unsafe { this.assume_init() }.into())
-+        let this =3D <Box<_> as BoxExt<_>>::new_uninit(flags)?;
-+        this.re_pin_init(init)
-     }
-=20
-     #[inline]
-@@ -1173,13 +1168,8 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) =
--> Result<Self, E>
-     where
-         E: From<AllocError>,
-     {
--        let mut this =3D <Box<_> as BoxExt<_>>::new_uninit(flags)?;
--        let slot =3D this.as_mut_ptr();
--        // SAFETY: When init errors/panics, slot will get deallocated but =
-not dropped,
--        // slot is valid.
--        unsafe { init.__init(slot)? };
--        // SAFETY: All fields have been initialized.
--        Ok(unsafe { this.assume_init() })
-+        let this =3D <Box<_> as BoxExt<_>>::new_uninit(flags)?;
-+        this.re_init(init)
-     }
- }
-=20
-@@ -1189,13 +1179,8 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: =
-Flags) -> Result<Pin<Self>,
-     where
-         E: From<AllocError>,
-     {
--        let mut this =3D UniqueArc::new_uninit(flags)?;
--        let slot =3D this.as_mut_ptr();
--        // SAFETY: When init errors/panics, slot will get deallocated but =
-not dropped,
--        // slot is valid and will not be moved, because we pin it later.
--        unsafe { init.__pinned_init(slot)? };
--        // SAFETY: All fields have been initialized.
--        Ok(unsafe { this.assume_init() }.into())
-+        let this =3D UniqueArc::new_uninit(flags)?;
-+        this.re_pin_init(init)
-     }
-=20
-     #[inline]
-@@ -1203,13 +1188,68 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags)=
- -> Result<Self, E>
-     where
-         E: From<AllocError>,
-     {
--        let mut this =3D UniqueArc::new_uninit(flags)?;
--        let slot =3D this.as_mut_ptr();
-+        let this =3D UniqueArc::new_uninit(flags)?;
-+        this.re_init(init)
-+    }
-+}
-+
-+/// Smart pointer that can re-initialize its content.
-+pub trait InPlaceReInit<T> {
-+    /// The type `Self` turns into when re-initialized.
-+    type Initialized;
-+
-+    /// Re-initializes `self` with the given initializer.
-+    ///
-+    /// Does not drop the current value and considers it as uninitialized =
-memory.
-+    fn re_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initialized=
-, E>;
-+
-+    /// Re-initializes `self` with the given initializer.
-+    ///
-+    /// Does not drop the current value and considers it as uninitialized =
-memory.
-+    fn re_pin_init<E>(self, init: impl PinInit<T, E>) -> Result<Pin<Self::=
-Initialized>, E>;
-+}
-+
-+impl<T> InPlaceReInit<T> for Box<MaybeUninit<T>> {
-+    type Initialized =3D Box<T>;
-+
-+    fn re_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initial=
-ized, E> {
-+        let slot =3D self.as_mut_ptr();
-         // SAFETY: When init errors/panics, slot will get deallocated but =
-not dropped,
-         // slot is valid.
-         unsafe { init.__init(slot)? };
-         // SAFETY: All fields have been initialized.
--        Ok(unsafe { this.assume_init() })
-+        Ok(unsafe { self.assume_init() })
-+    }
-+
-+    fn re_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Se=
-lf::Initialized>, E> {
-+        let slot =3D self.as_mut_ptr();
-+        // SAFETY: When init errors/panics, slot will get deallocated but =
-not dropped,
-+        // slot is valid and will not be moved, because we pin it later.
-+        unsafe { init.__pinned_init(slot)? };
-+        // SAFETY: All fields have been initialized.
-+        Ok(unsafe { self.assume_init() }.into())
-+    }
-+}
-+
-+impl<T> InPlaceReInit<T> for UniqueArc<MaybeUninit<T>> {
-+    type Initialized =3D UniqueArc<T>;
-+
-+    fn re_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initial=
-ized, E> {
-+        let slot =3D self.as_mut_ptr();
-+        // SAFETY: When init errors/panics, slot will get deallocated but =
-not dropped,
-+        // slot is valid.
-+        unsafe { init.__init(slot)? };
-+        // SAFETY: All fields have been initialized.
-+        Ok(unsafe { self.assume_init() })
-+    }
-+
-+    fn re_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Se=
-lf::Initialized>, E> {
-+        let slot =3D self.as_mut_ptr();
-+        // SAFETY: When init errors/panics, slot will get deallocated but =
-not dropped,
-+        // slot is valid and will not be moved, because we pin it later.
-+        unsafe { init.__pinned_init(slot)? };
-+        // SAFETY: All fields have been initialized.
-+        Ok(unsafe { self.assume_init() }.into())
-     }
- }
-=20
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index b37a0b3180fb..078b2b1d84ae 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -37,6 +37,6 @@
-=20
- pub use super::{str::CStr, ThisModule};
-=20
--pub use super::init::{InPlaceInit, Init, PinInit};
-+pub use super::init::{InPlaceInit, InPlaceReInit, Init, PinInit};
-=20
- pub use super::current;
+> +            _tree: PhantomData,
+> +            // SAFETY: `root` is valid as it's embedded in `self` and we=
+ have a valid `self`.
+> +            next: unsafe { bindings::rb_first(&self.root) },
+> +        }
+> +    }
+> +
+> +    /// Returns an iterator over the keys of the nodes in the tree, in s=
+orted order.
+> +    pub fn keys(&self) -> impl Iterator<Item =3D &'_ K> {
+> +        self.iter().map(|(k, _)| k)
+> +    }
+> +
+> +    /// Returns an iterator over the values of the nodes in the tree, so=
+rted by key.
+> +    pub fn values(&self) -> impl Iterator<Item =3D &'_ V> {
+> +        self.iter().map(|(_, v)| v)
+> +    }
+>  }
+>=20
+>  impl<K, V> RBTree<K, V>
+> @@ -373,6 +416,56 @@ fn drop(&mut self) {
+>      }
+>  }
+>=20
+> +impl<'a, K, V> IntoIterator for &'a RBTree<K, V> {
+> +    type Item =3D (&'a K, &'a V);
+> +    type IntoIter =3D RBTreeIterator<'a, K, V>;
+> +
+> +    fn into_iter(self) -> Self::IntoIter {
+> +        self.iter()
+> +    }
+> +}
+> +
+> +/// An iterator over the nodes of a [`RBTree`].
+> +///
+> +/// Instances are created by calling [`RBTree::iter`].
+> +///
+> +/// # Invariants
+> +/// - `self.next` is a valid pointer.
+> +/// - `self.next` points to a node stored inside of a valid `RBTree`.
+> +pub struct RBTreeIterator<'a, K, V> {
+> +    _tree: PhantomData<&'a RBTree<K, V>>,
+> +    next: *mut bindings::rb_node,
+> +}
+> +
+> +// SAFETY: The [`RBTreeIterator`] gives out immutable references to K an=
+d V, so it has the same
+> +// thread safety requirements as immutable references.
+> +unsafe impl<'a, K: Sync, V: Sync> Send for RBTreeIterator<'a, K, V> {}
+
+The bounds on `K` and `V` look like typos to me. They should be `Send`
+instead.
+
+> +
+> +// SAFETY: The [`RBTreeIterator`] gives out immutable references to K an=
+d V, so it has the same
+> +// thread safety requirements as immutable references.
+> +unsafe impl<'a, K: Sync, V: Sync> Sync for RBTreeIterator<'a, K, V> {}
+> +
+> +impl<'a, K, V> Iterator for RBTreeIterator<'a, K, V> {
+> +    type Item =3D (&'a K, &'a V);
+> +
+> +    fn next(&mut self) -> Option<Self::Item> {
+> +        if self.next.is_null() {
+> +            return None;
+> +        }
+> +
+> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_nod=
+e` pointers stored in `self`
+
+This is not an invariant of `Self`, but rather `RBTree` and `self`
+should be "`RBtree`s".
+
 --=20
-2.44.0
+Cheers,
+Benno
 
+> +        // point to the links field of `Node<K, V>` objects.
+> +        let cur =3D unsafe { container_of!(self.next, Node<K, V>, links)=
+ };
+> +
+> +        // SAFETY: `self.next` is a valid tree node by the type invarian=
+ts.
+> +        self.next =3D unsafe { bindings::rb_next(self.next) };
+> +
+> +        // SAFETY: By the same reasoning above, it is safe to dereferenc=
+e the node. Additionally,
+> +        // it is ok to return a reference to members because the iterato=
+r must outlive it.
+> +        Some(unsafe { (&(*cur).key, &(*cur).value) })
+> +    }
+> +}
+> +
+>  /// A memory reservation for a red-black tree node.
+>  ///
+>  /// It contains the memory needed to hold a node that can be inserted in=
+to a red-black tree. One
+>=20
+> --
+> 2.44.0.769.g3c40516874-goog
+>=20
 
