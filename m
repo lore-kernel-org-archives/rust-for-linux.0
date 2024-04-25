@@ -1,43 +1,43 @@
 Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABF78528D;
-	Thu, 25 Apr 2024 16:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF2614A0BC;
+	Thu, 25 Apr 2024 16:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714063341; cv=none; b=MudVVORRxx+EWOIvOpb9KNvxq2jW8vT3PTPubIOXZwqNrHQ9LaTAuZGJ1k877lMZWU+lwhzU9qKR9w+b5RSB/D3Z6vRGcTmaHkGCUrg8uh/3CqG0osxRMypt3ShT33RwgagHLizYlVidcIThX5xM+CwHzuttrexPIzcZ1hsNBkU=
+	t=1714063525; cv=none; b=Jkb09s99xXclyzLXfCiSEclzheZqXRTLRiAkVlgBWKmKCiAqNjVFCPWoUtk9qopx0DCiKUf/Dii9ektB/gXJkbibIr+yZImkGq3G9FAXsvOzhyB9QKQUT/IJ9Nv0Blqdntsm3MT0Falm0Fd1CMM3IbSup+iUrOLw1ZQhJsPvNao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714063341; c=relaxed/simple;
-	bh=Q/D/pXTwAfQjRhdoTeFpIBY9vbHFtbsg1krUpeEtO1I=;
+	s=arc-20240116; t=1714063525; c=relaxed/simple;
+	bh=j5UZ+cQV4SXINoKHgY4xZ6cPUqoxlcu39Ruy2XEaKgQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G9v4k05XvJ5hW8jnqdWePAeDc1oqKG8BcZWlpVC4VFNaAyBwuko3o7sw76pVECCSjUl2LsvzwxejKkFmTuzQ5tMXy18suHQf47XzA2y2axYtyu6ZRzWbWVTk/stlfc/w6EJY2zmQyR1DsmypOyjBi7B97ezzKGjHkdulHjIN/3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mtUdiBGs; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=faTXknj2Kgr8gYhpCTwFFtiVOP9F5PI+1u9pwcuIYwfkNcWS3b8j9y6eikabBglu3LkUX4IQyjKcAfaDynjwSuF9qAV5WfKRoqprZhx7cOyJmXElNgNGdl+0s4z+0nf0SLZ4fkyGNLXx8MYk/vubsj9bUR4knzXipEezY8q5KXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=egrSn6Uy; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mtUdiBGs"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="egrSn6Uy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=2wfsuboutvaw7hlox4qfx64uai.protonmail; t=1714060471; x=1714319671;
-	bh=l6ejzdU+/oJTsZFPqAfrkNNF2qMH3A6mlJ13xMJmIUU=;
+	s=protonmail; t=1714061397; x=1714320597;
+	bh=zKyfqDvrv1iM+SS0y6qDUkiVXJnVCCSFwwXsqVZwxgg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=mtUdiBGsCrBGGwlAZiHmz9FeQhbxTP52ufvoZLR2FkOCkUvgOKCCx/ios0HZxuj+z
-	 bIZowo0duS37tSX/lMt/3KkW0jCAaF+RCCvMSxhORHB3AGi8paUuXHPI5N8AByQ9Yv
-	 iaUIfiOgaqW/lcOVOfUof735OWGY9Ki81MSDXCB02aldeRQT6rfmjkHCJpfQAWRgO5
-	 hiScGQ7GvgJLzVzSEfVDYp7PixaBHSw8YB03cTXRlmSvJYsS0JGNZ+BEsxcBtAFhnh
-	 OgnfgeseSEXrK06FVrh59KV1l93F8Lc8QQpfpDCb7egAaY0EVkGl0tU2ryWAk1AJsW
-	 5EkTfiQYzgQsw==
-Date: Thu, 25 Apr 2024 15:54:27 +0000
-To: Viresh Kumar <viresh.kumar@linaro.org>
+	b=egrSn6UybOkpEtfOhezwa0BtBqQ35NzpKW2wa4tINIsjE5Gf5cVNIFmP4wV7V/z3T
+	 gIeVFv3XgJhiPQy/Ir1XZGYpRzNgNPn0zVpMDY17zZDRDJSzOLtc0GopGqkhOSskO8
+	 zSN3slWSKhb3u/gEbIGi/szG8zljTLlTww3vlimRrfP0rTLc8vkOgYFf78O1GyuPGy
+	 WWc9o3wZYR4uSm5DnvCO/Y3/GMDF6cPBUUltxGiXv7loqWIFyvYmqrGWNIfoOpSv38
+	 2Ea/C6/IUif57bhnMgWisY3Zw47U/0WFUHE/Ytrk/lfLVCGISrR4lKac5Tw0fJj5h6
+	 4cUpP8LVvSbWw==
+Date: Thu, 25 Apr 2024 16:09:46 +0000
+To: Danilo Krummrich <dakr@redhat.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, Joakim Bech <joakim.bech@linaro.org>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 3/3] cpufreq: Add Rust based cpufreq-dt driver
-Message-ID: <f02e0c3f-1e24-4ecc-8729-81d99f7543fc@proton.me>
-In-Reply-To: <20240422103050.tiecvamrd5upunou@vireshk-i7>
-References: <cover.1712314032.git.viresh.kumar@linaro.org> <1792467a772b7a8355c6d0cb0cbacfbffff08afd.1712314032.git.viresh.kumar@linaro.org> <4ff5f30b-f2b8-4625-b3cd-ac08e4ffb068@proton.me> <8c4f2053-acbc-4f4a-93de-18f149c80869@proton.me> <20240422103050.tiecvamrd5upunou@vireshk-i7>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>, ajanulgu@redhat.com, Andy Currid <acurrid@nvidia.com>, Neo Jia <cjia@nvidia.com>, John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v3 00/10] Allocation APIs
+Message-ID: <74cbdaf7-360e-47e3-bda4-4661422a11ae@proton.me>
+In-Reply-To: <Zip4dFpt8xhk7UBL@cassiopeiae>
+References: <Zip4dFpt8xhk7UBL@cassiopeiae>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 5d0be9780b09350ea47be15e0ac7434cd03a4b54
+X-Pm-Message-ID: 1d4e6985a2bfda98d609c203fecb91f144d65ed4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,46 +47,131 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 22.04.24 12:30, Viresh Kumar wrote:
-> On 07-04-24, 10:17, Benno Lossin wrote:
->> On 07.04.24 11:54, Benno Lossin wrote:
->>> On 05.04.24 13:09, Viresh Kumar wrote:
->>>> +// Finds exact supply name from the OF node.
->>>> +fn find_supply_name_exact(np: *mut bindings::device_node, name: &str)=
- -> Option<CString> {
->>>> +    let sname =3D CString::try_from_fmt(fmt!("{}-supply", name)).ok()=
-?;
->>>> +
->>>> +    // SAFETY: The OF node is guaranteed by the C code to be valid.
->>>> +    let pp =3D unsafe { bindings::of_find_property(np, sname.as_ptr()=
- as *mut _, ptr::null_mut()) };
->>>
->>> Drivers should avoid calling `unsafe` code as much as possible. They
->>> also should not be calling `bindings` code directly. Please write (or
->>> find) abstractions for these `unsafe` calls.
+On 25.04.24 17:36, Danilo Krummrich wrote:
+> (adding folks from [1])
+>=20
+> On Tue, Apr 23, 2024 at 05:43:08PM +0200, Danilo Krummrich wrote:
+>> Hi all,
 >>
->> Having re-read the cover letter, I see that you are already aware of
->> this. If you need any help with creating the abstractions, feel free to
->> reach out!
+>> On 3/28/24 02:35, Wedson Almeida Filho wrote:
+>>> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>>>
+>>> Revamp how we use the `alloc` crate.
+>>>
+>>> We currently have a fork of the crate with changes to `Vec`; other
+>>> changes have been upstreamed (to the Rust project). This series removes
+>>> the fork and exposes all the functionality as extension traits.
+>>>
+>>> Additionally, it also introduces allocation flag parameters to all
+>>> functions that may result in allocations (e.g., `Box::new`, `Arc::new`,
+>>> `Vec::push`, etc.) without the `try_` prefix -- the names are available
+>>> because we build `alloc` with `no_global_oom_handling`.
+>>>
+>>> Lastly, the series also removes our reliance on the `allocator_api`
+>>> unstable feature.
+>>>
+>>> Long term, we still want to make such functionality available in
+>>> upstream Rust, but this allows us to make progress now and reduces our
+>>> maintainance burden.
+>>>
+>>> In summary:
+>>> 1. Removes `alloc` fork
+>>> 2. Removes use of `allocator_api` unstable feature
+>>> 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
+>>
+>> With that series, how do we implement alternative allocators, such as
+>> (k)vmalloc or DMA coherent?
+>>
+>> For instance, I recently sketched up some firmware bindings we want to
+>> use in Nova providing
+>>
+>> fn copy<A: core::alloc::Allocator>(&self, alloc: A) -> Result<Vec<u8, A>=
+>
+>> [1]
+>>
+>> making use of Vec::try_with_capacity_in(). How would I implement
+>> something similar now?
 >=20
-> Thanks Benno. I am not sure what's the right approach here as there
-> are so many missing things (frameworks) I need. Though I don't need
-> full support for them but just a handful of APIs.
+> I want to follow up on this topic after also bringing it up in yesterday'=
+s
+> weekly Rust call.
 >=20
-> And then there is dependency on the generic support for device/driver,
-> platform device/driver, etc.
+> In the call a few ideas were discussed, e.g. whether we could just re-ena=
+ble the
+> allocator_api feature and try getting it stabilized.
+>=20
+> With the introduction of alloc::Flags (gfp_t abstraction) allocator_api m=
+ight
+> not be a viable choice anymore.
 
-I don't know exactly what you are referring to, but you can try to reach
-out to other people on our zulip. Splitting the work with others could
-help you :)
+Bringing in some more context from the meeting: Gary suggested we create
+a custom trait for allocators that can also handle allocation flags:
 
-Also if the frameworks that you need are particularly difficult to
-upstream, because they have a lot of dependencies, then you can try to
-create something similar to [1].
+     pub trait AllocatorWithFlags: Allocator {
+         type Flags;
+        =20
+         fn allocate_with_flags(&self, layout: Layout, flags: Self::Flags) =
+-> Result<NonNull<[u8]>, AllocError>;
 
-[1]: https://github.com/Rust-for-Linux/linux/issues/1004
+         /* ... */
+     }
+    =20
+     impl AllocatorWithFlags for Global { /* ... */ }
+    =20
+     impl<T, A> VecExt<T> for Vec<T, A> where A: AllocatorWithFlags {
+         /* ... */
+     }
+
+I think that this would work, but we would have to ensure that users are
+only allowed to call allocating functions if they are functions that we
+control. For example `Vec::try_reserve` [1] would still use the normal
+`Allocator` trait that doesn't support our flags.
+Gary noted that this could be solved by `klint` [2].
+
+
+But we only need to extend the allocator API, if you want to use the std
+library types that allocate. If you would also be happy with a custom
+newtype wrapper, then we could also do that.
+I think that we probably want a more general solution (ie `Allocator`
+enriched with flags), but we would have to design that before you can
+use it.
+
+
+[1]: https://doc.rust-lang.org/alloc/vec/struct.Vec.html#method.try_reserve
+[2]: https://github.com/Rust-for-Linux/klint
+
+>=20
+> I think it would work for (k)vmalloc, where we could pass the page flags =
+through
+> const generics for instance.
+>=20
+> But I don't see how it could work with kmem_cache, where we can't just cr=
+eate a
+> new allocator instance when we want to change the page flags, but need to
+> support allocations with different page flags on the same allocator (same
+> kmem_cache) instance.
+
+I think that you can write the `kmem_cache` abstraction without using
+the allocator api. You just give the function that allocates a `flags`
+argument like in C.
+
+The `Allocator` API might make it more *convenient* to use it, because
+you don't have to explicitly pass the flags every time (since the flags
+are determined by the allocator). But I have also heard that it might be
+desirable to always be explicit.
 
 --=20
 Cheers,
 Benno
+
+>=20
+> So, I think we have to create our own allocator trait / API.
+>=20
+> Any other thoughts on that?
+>=20
+> - Danilo
+>=20
+> [1] https://lore.kernel.org/rust-for-linux/20240408094738.00005e59.zhiw@n=
+vidia.com/
+>=20
 
