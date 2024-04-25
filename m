@@ -1,43 +1,39 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE662153812
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 21:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10133153812;
+	Thu, 25 Apr 2024 21:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714080393; cv=none; b=SaGpAjyMwie5lUuJFbi1A82Fht+dKBiW27WfMdQb9va83QLXF5+7Narb3JGhQrHIBXAik9Y/dRG7BuwUOuFeco315Uvu33vXydKjBn0IxoBn04jaa3YQbvOqvlGd+VG02urdSWsYzlrmiu4xJQAJ+vSWFhFWjCFuGtoM8xovig0=
+	t=1714080888; cv=none; b=Y5rbsX5i/YXaqXcyQ8o5WBm15Lg+9Zu9z28cIfgEMmA8NJoif+50ZimniOrsqyCHdgbxQQna9jh8pSPdr0GUfWeGDGdx5m+cO4ok6KqBYvK+Kjtgn18RleUfzI78rq5iFNPzkI6pAELyj4YWne2f+47RoaNn8dZxEgT7yOm+9E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714080393; c=relaxed/simple;
-	bh=OGJY41svwj1KsHB2NXgqa3jKEspKo9hZFX1N8pEPz5w=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MmjT7JX2LRMsr3LkJwRAEWmmihqH1dvZK5td6P+GhwHpPK0z5uN6A2CQOvks+R4fkkdiu6saRcKNaX6BSJ78OqvaN8uor2kgBpnRKX6IP9tc+B1P0vKqsZ23sK5sHP0mfZbnc1LgvutHRENnninl9gtVp6kl2p+ZRJB/2EkbO8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Kut+xywb; arc=none smtp.client-ip=185.70.43.22
+	s=arc-20240116; t=1714080888; c=relaxed/simple;
+	bh=1jEwCYzNB8KZbUyYi19vFP2ySyNVjrczet9hqIFk0KA=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=M4X9Gif14XQBh2u16fmbOAyInSwD+6+8SnAJyJD/qAaBpJDXeSkpeBgernx4ogNoL7cKKo1FV8PXmjpQ/8on7IdA66tVPOa5Rhs1ZrIa6nfphuVJPblK1FcC9SEgNjDTEwv8TVcPscQZ8tVc8jXA/Av+xXdFkIrpRC4m9KWhMnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IFOUnr9Z; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Kut+xywb"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IFOUnr9Z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=wywttca6drde7ebdbqx56qtb3y.protonmail; t=1714080389; x=1714339589;
-	bh=/Q06pgsNCa5kGWP4sxOXcijGesvZMcptNNSOERHlzig=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Kut+xywbD7k7ruUp+Gy90oThj9UAz/gqifxOi9BgUXC7H6GqiRzqox/SvMlioPgH2
-	 6xL5hWsaqLN8SzDVkE1Je0eX6oLLXxLOpmEdJWevDD9AyPLHPx4TJWOXQq6y3Okt8E
-	 hP9NvfvES+ckn/GP6hDewEQBmXeVLK+4GVQB0PlkXg+isPf4REi8BQ0DOK8agfeXtY
-	 wlDrxTcf/eFPFIKCS2zpZgOu2CKRPho5o7KfFChwXPgPSNjW+Verp91Od5ZMt+hhuG
-	 hf+dmbD7YWD7fv4QReLorvARyelt6LX3gySzTk23sRr5LzKPlGo2WsIYT+LxCnYrKU
-	 av4mQ1SEZpILQ==
-Date: Thu, 25 Apr 2024 21:26:25 +0000
-To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+	s=protonmail; t=1714080885; x=1714340085;
+	bh=utx6L/Qp4Am0TTK7zosCdDO/Mu0LhitYxGbkj94CChY=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=IFOUnr9ZehTGA8hkvg8hxUk6wygwVMDLyz/NoqDhDKia/ZLgpTsVq03UlbXfD5G5H
+	 zVIasK8El/NVnbd3SxIVm0hRIHHp1JmCot+Rs6oXEm+ETdiv43FJkSUj10bfudooC8
+	 0ZjN703WyJtEKB7XPHfK6SyHj/bwcRP3kXtAd93GFyxUzgWkXI1FaBjqKYAfI7NQrx
+	 44x5CtJzWflaZW4iEvhldAoLF5tyUgqtZLUto//tvDTHi7Ccz3GbU5a3z3oNAVwc4W
+	 95Q9SQDZV+T3O+8IKocU2edXYy2M5mTcB5/059hGXaGm/Eh1uJqBAa2ZaSdJGBEpb9
+	 tetH8mslPmbvQ==
+Date: Thu, 25 Apr 2024 21:34:38 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] rust: rbtree: add red-black tree implementation backed by the C version
-Message-ID: <f026532f-8594-4f18-9aa5-57ad3f5bc592@proton.me>
-In-Reply-To: <20240418-b4-rbtree-v3-1-323e134390ce@google.com>
-References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-1-323e134390ce@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] rust: kernel: add `drop_contents` to `BoxExt`
+Message-ID: <20240425213419.3904105-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 48befda4b3564fcd9a079aaa74e9d878b90c3123
+X-Pm-Message-ID: aaeb4b917333a0c3cb20c9072f8f6dfc323866c0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,187 +43,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 18.04.24 16:15, Matt Gilbride wrote:
-> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> new file mode 100644
-> index 000000000000..ad406fc32d67
-> --- /dev/null
-> +++ b/rust/kernel/rbtree.rs
-> @@ -0,0 +1,425 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Red-black trees.
-> +//!
-> +//! C header: [`include/linux/rbtree.h`](srctree/include/linux/rbtree.h)
-> +//!
-> +//! Reference: <https://www.kernel.org/doc/html/latest/core-api/rbtree.h=
-tml>
-> +
-> +use crate::{bindings, container_of, error::Result, prelude::*};
-> +use alloc::boxed::Box;
-> +use core::{
-> +    cmp::{Ord, Ordering},
-> +    convert::Infallible,
-> +    marker::PhantomData,
-> +    mem::MaybeUninit,
-> +    ptr::{addr_of_mut, NonNull},
-> +};
-> +
-> +struct Node<K, V> {
-> +    links: bindings::rb_node,
-> +    key: K,
-> +    value: V,
-> +}
+Sometimes (see [1]) it is necessary to drop the value inside of a
+`Box<T>`, but retain the allocation. For example to reuse the allocation
+in the future.
+Introduce a new function `drop_contents` that turns a `Box<T>` into
+`Box<MaybeUninit<T>>` by dropping the value.
 
-Personal preference: I prefer putting items that give a high-level
-overview of the module to the top. I don't feel like I gain anything
-from seeing the definition of the `Node` type this early.
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e13=
+4390ce@google.com/ [1]
+---
+ rust/kernel/alloc/box_ext.rs | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-[...]
-
-> +impl<K, V> RBTree<K, V> {
-> +    /// Creates a new and empty tree.
-> +    pub fn new() -> Self {
-> +        Self {
-> +            // INVARIANT: There are no nodes in the tree, so the invaria=
-nt holds vacuously.
-> +            root: bindings::rb_root::default(),
-> +            _p: PhantomData,
-> +        }
-> +    }
-> +
-> +    /// Allocates memory for a node to be eventually initialised and ins=
-erted into the tree via a
-> +    /// call to [`RBTree::insert`].
-> +    pub fn try_reserve_node() -> Result<RBTreeNodeReservation<K, V>> {
-
-This function creates a `RBTreeNodeReservation`, I think it would make
-sense to move it to that type and just name this function `new`.
-
-> +        Ok(RBTreeNodeReservation {
-> +            node: Box::init::<Infallible>(crate::init::uninit())?,
-
-`Box::new_uninit()` probably makes more sense here. (what you did is not
-wrong, but I think the intent is better captured by `new_uninit`)
-
-> +        })
-> +    }
-> +
-> +    /// Allocates and initialises a node that can be inserted into the t=
-ree via
-> +    /// [`RBTree::insert`].
-> +    pub fn try_allocate_node(key: K, value: V) -> Result<RBTreeNode<K, V=
->> {
-
-Same with this function, I would move it to `RBTreeNode` and call it
-`new`.
-
-> +        Ok(Self::try_reserve_node()?.into_node(key, value))
-> +    }
-> +}
-> +
-> +impl<K, V> RBTree<K, V>
-> +where
-> +    K: Ord,
-
-Citing the rust docs [1] on the requirements that implementations of the
-`Ord` trait need to satsify:
-
-"[...] Violating these requirements is a logic error. The behavior
-resulting from a logic error is not specified, but users of the trait
-must ensure that such logic errors do not result in undefined behavior.
-This means that `unsafe` code **must not** rely on the correctness of
-these methods."
-
-I haven't yet fully checked this, since I would have to delve into the
-C side. But I wanted to ask if you have given any thought to this issue.
-In particular this means that you must not rely on `<` (or `cmp`) being
-eg transitive in `unsafe` code.
- From what I have seen in this patch, I think there are no issues with
-the way you use `Ord`.
-
-[1]: https://doc.rust-lang.org/core/cmp/trait.Ord.html
-
-> +{
-
-[...]
-
-> +impl<K, V> RBTreeNodeReservation<K, V> {
-> +    /// Initialises a node reservation.
-> +    ///
-> +    /// It then becomes an [`RBTreeNode`] that can be inserted into a tr=
-ee.
-> +    pub fn into_node(mut self, key: K, value: V) -> RBTreeNode<K, V> {
-> +        let node_ptr =3D self.node.as_mut_ptr();
-> +        // SAFETY: `node_ptr` is valid, and so are its fields.
-> +        unsafe { addr_of_mut!((*node_ptr).links).write(bindings::rb_node=
-::default()) };
-> +        // SAFETY: `node_ptr` is valid, and so are its fields.
-> +        unsafe { addr_of_mut!((*node_ptr).key).write(key) };
-> +        // SAFETY: `node_ptr` is valid, and so are its fields.
-> +        unsafe { addr_of_mut!((*node_ptr).value).write(value) };
-> +        RBTreeNode {
-> +            // SAFETY: The pointer came from a `MaybeUninit<Node>` whose=
- fields have all been
-> +            // initialised. Additionally, it has the same layout as `Nod=
-e`.
-> +            node: unsafe { Box::<MaybeUninit<_>>::assume_init(self.node)=
- },
-> +        }
-
-I really dislike the verbosity of this function. Also what will ensure
-that you really did initialize all fields? I think I have a way to
-improve this using a new function on `Box`:
-
-     impl<T> Box<MaybeUninit<T>> {
-         fn re_init(self, init: impl Init<T, E>) -> Result<Box<T>, E>;
+diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
+index cdbb5ad166d9..3ddb353b776e 100644
+--- a/rust/kernel/alloc/box_ext.rs
++++ b/rust/kernel/alloc/box_ext.rs
+@@ -5,6 +5,7 @@
+ use super::{AllocError, Flags};
+ use alloc::boxed::Box;
+ use core::mem::MaybeUninit;
++use core::ptr;
+ use core::result::Result;
+=20
+ /// Extensions to [`Box`].
+@@ -18,6 +19,18 @@ pub trait BoxExt<T>: Sized {
+     ///
+     /// The allocation may fail, in which case an error is returned.
+     fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>=
+;
++
++    /// Drops the contents, but keeps the allocation.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// let value =3D Box::new([0; 32], flags::GFP_KERNEL)
++    /// let value =3D value.drop_contents();
++    /// // Now we can re-use `value`:
++    /// Box::write(value, [1; 32]);
++    /// ```
++    fn drop_contents(self) -> Box<MaybeUninit<T>>;
+ }
+=20
+ impl<T> BoxExt<T> for Box<T> {
+@@ -54,4 +67,12 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>=
+>, AllocError> {
+         // zero-sized types, we use `NonNull::dangling`.
+         Ok(unsafe { Box::from_raw(ptr) })
      }
-
-Then you could do this instead:
-
-     pub fn into_node(mut self, key: K, value: V) -> RBTreeNode<K, V> {
-         let node =3D init!(Node {
-             key,
-             value,
-             links: bindings::rb_node::default(),
-         });
-         RBTreeNode { node: self.node.re_init(node) }
-     }
-
-All the `unsafe` vanishes!
-
-I think this is useful in general, so I am going to send a patch with
-the above mentioned method. In addition to that I am also going to
-extend `Box` to allow converting `Box<T> -> Box<MaybeUninit<T>>` to
-simplify `into_reservation` from patch 5.
-
++
++    fn drop_contents(self) -> Box<MaybeUninit<T>> {
++        let ptr =3D Box::into_raw(self);
++        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
++        unsafe { ptr::drop_in_place(ptr) };
++        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
++        unsafe { Box::from_raw(ptr) }
++    }
+ }
 --=20
-Cheers,
-Benno
+2.44.0
 
-> +    }
-> +}
-> +
-> +/// A red-black tree node.
-> +///
-> +/// The node is fully initialised (with key and value) and can be insert=
-ed into a tree without any
-> +/// extra allocations or failure paths.
-> +pub struct RBTreeNode<K, V> {
-> +    node: Box<Node<K, V>>,
-> +}
-> +
-> +// SAFETY: If K and V can be sent across threads, then it's also okay to=
- send [`RBTreeNode`] across
-> +// threads.
-> +unsafe impl<K: Send, V: Send> Send for RBTreeNode<K, V> {}
-> +
-> +// SAFETY: If K and V can be accessed without synchronization, then it's=
- also okay to access
-> +// [`RBTreeNode`] without synchronization.
-> +unsafe impl<K: Sync, V: Sync> Sync for RBTreeNode<K, V> {}
->=20
-> --
-> 2.44.0.769.g3c40516874-goog
->=20
 
