@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3001F153811;
-	Thu, 25 Apr 2024 20:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE662153812
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 21:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714078346; cv=none; b=g1HHcyU1GDxmiidu2Zs1dlr99FSXTWAJQB3Lf8G++TXEIngli3eMj5mttsley0tN3IXEpz9DxqSHUvH3keGrkWr4IVXSQ5LtakaSucrVbwIfgi2e1u+UNCF1jR0nCc8MnnovMGlp6tQobSenagYdD7NxzHyngXwPBZVHZO/7oRo=
+	t=1714080393; cv=none; b=SaGpAjyMwie5lUuJFbi1A82Fht+dKBiW27WfMdQb9va83QLXF5+7Narb3JGhQrHIBXAik9Y/dRG7BuwUOuFeco315Uvu33vXydKjBn0IxoBn04jaa3YQbvOqvlGd+VG02urdSWsYzlrmiu4xJQAJ+vSWFhFWjCFuGtoM8xovig0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714078346; c=relaxed/simple;
-	bh=QhmTDV0HN3ntsJ7iNLe4i8FOQ2T+E1ksRlQTmHVtun4=;
+	s=arc-20240116; t=1714080393; c=relaxed/simple;
+	bh=OGJY41svwj1KsHB2NXgqa3jKEspKo9hZFX1N8pEPz5w=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T3PmzBvMh29AosDhstGBuxCYTvoOfhX9qDZ3spFrIoidWIqk+j1eg+msNjdTLEJgCClYJxj1ZzSE7lc979y8R+4GR35To2PJ9j9jOdLzRYNfXkmCRdi6ThHoUoMl5f6T1HeaYcgloFdcLmgLaH4ZDsoK+S/CsWxEQG7fLgzvugI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ncgASzbR; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=MmjT7JX2LRMsr3LkJwRAEWmmihqH1dvZK5td6P+GhwHpPK0z5uN6A2CQOvks+R4fkkdiu6saRcKNaX6BSJ78OqvaN8uor2kgBpnRKX6IP9tc+B1P0vKqsZ23sK5sHP0mfZbnc1LgvutHRENnninl9gtVp6kl2p+ZRJB/2EkbO8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Kut+xywb; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ncgASzbR"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Kut+xywb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=6kwi4qc6qneolo3aj2w7josh7e.protonmail; t=1714078340; x=1714337540;
-	bh=kuBMwu2qu8Edmmb81SBFVZfp0S8IZhGnSfV57gB5Muk=;
+	s=wywttca6drde7ebdbqx56qtb3y.protonmail; t=1714080389; x=1714339589;
+	bh=/Q06pgsNCa5kGWP4sxOXcijGesvZMcptNNSOERHlzig=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ncgASzbRMHjgOejiG18rtJZazqlmyqKnGZlYEfym4oqMCt6xIUy4KVQyniKouMMae
-	 PIDb1NyzOzRL3QQ73gPOi9A9zNiICrDOjKXt+phkEg6wnu2OF6G6UHOyAoHqT4nMWe
-	 iWeHiQ53V98U3JcAlFMCyAVzUNU2sBOG+SYNZ//MSWElxgQZzn/+W5nRWnVwjuJuTg
-	 xer8gYOlnHnoN79hV/1RS+1ZiYkrGHGXgAFgQUp9iYAuS6faydZXfpxZ/nRRAYi8Gg
-	 mndzlHq/XM3AP3J0ljRxysoslnMQt1Frc8t/eNJE4r7FE0xZ32siRJpbAfRl9adWQL
-	 SDH0bPWGkHukA==
-Date: Thu, 25 Apr 2024 20:52:16 +0000
-To: Danilo Krummrich <dakr@redhat.com>
+	b=Kut+xywbD7k7ruUp+Gy90oThj9UAz/gqifxOi9BgUXC7H6GqiRzqox/SvMlioPgH2
+	 6xL5hWsaqLN8SzDVkE1Je0eX6oLLXxLOpmEdJWevDD9AyPLHPx4TJWOXQq6y3Okt8E
+	 hP9NvfvES+ckn/GP6hDewEQBmXeVLK+4GVQB0PlkXg+isPf4REi8BQ0DOK8agfeXtY
+	 wlDrxTcf/eFPFIKCS2zpZgOu2CKRPho5o7KfFChwXPgPSNjW+Verp91Od5ZMt+hhuG
+	 hf+dmbD7YWD7fv4QReLorvARyelt6LX3gySzTk23sRr5LzKPlGo2WsIYT+LxCnYrKU
+	 av4mQ1SEZpILQ==
+Date: Thu, 25 Apr 2024 21:26:25 +0000
+To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>, ajanulgu@redhat.com, Andy Currid <acurrid@nvidia.com>, Neo Jia <cjia@nvidia.com>, John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v3 00/10] Allocation APIs
-Message-ID: <f71c4e07-9f6f-4709-a3bb-012e644c4845@proton.me>
-In-Reply-To: <ZiqkIQTHe9apd-LW@pollux>
-References: <Zip4dFpt8xhk7UBL@cassiopeiae> <74cbdaf7-360e-47e3-bda4-4661422a11ae@proton.me> <ZiqkIQTHe9apd-LW@pollux>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] rust: rbtree: add red-black tree implementation backed by the C version
+Message-ID: <f026532f-8594-4f18-9aa5-57ad3f5bc592@proton.me>
+In-Reply-To: <20240418-b4-rbtree-v3-1-323e134390ce@google.com>
+References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-1-323e134390ce@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6fff10a820791c06d4527c15c2d28dd49efc0741
+X-Pm-Message-ID: 48befda4b3564fcd9a079aaa74e9d878b90c3123
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,219 +47,187 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 25.04.24 20:42, Danilo Krummrich wrote:
-> On Thu, Apr 25, 2024 at 04:09:46PM +0000, Benno Lossin wrote:
->> On 25.04.24 17:36, Danilo Krummrich wrote:
->>> (adding folks from [1])
->>>
->>> On Tue, Apr 23, 2024 at 05:43:08PM +0200, Danilo Krummrich wrote:
->>>> Hi all,
->>>>
->>>> On 3/28/24 02:35, Wedson Almeida Filho wrote:
->>>>> From: Wedson Almeida Filho <walmeida@microsoft.com>
->>>>>
->>>>> Revamp how we use the `alloc` crate.
->>>>>
->>>>> We currently have a fork of the crate with changes to `Vec`; other
->>>>> changes have been upstreamed (to the Rust project). This series remov=
-es
->>>>> the fork and exposes all the functionality as extension traits.
->>>>>
->>>>> Additionally, it also introduces allocation flag parameters to all
->>>>> functions that may result in allocations (e.g., `Box::new`, `Arc::new=
-`,
->>>>> `Vec::push`, etc.) without the `try_` prefix -- the names are availab=
-le
->>>>> because we build `alloc` with `no_global_oom_handling`.
->>>>>
->>>>> Lastly, the series also removes our reliance on the `allocator_api`
->>>>> unstable feature.
->>>>>
->>>>> Long term, we still want to make such functionality available in
->>>>> upstream Rust, but this allows us to make progress now and reduces ou=
-r
->>>>> maintainance burden.
->>>>>
->>>>> In summary:
->>>>> 1. Removes `alloc` fork
->>>>> 2. Removes use of `allocator_api` unstable feature
->>>>> 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
->>>>
->>>> With that series, how do we implement alternative allocators, such as
->>>> (k)vmalloc or DMA coherent?
->>>>
->>>> For instance, I recently sketched up some firmware bindings we want to
->>>> use in Nova providing
->>>>
->>>> fn copy<A: core::alloc::Allocator>(&self, alloc: A) -> Result<Vec<u8, =
-A>>
->>>> [1]
->>>>
->>>> making use of Vec::try_with_capacity_in(). How would I implement
->>>> something similar now?
->>>
->>> I want to follow up on this topic after also bringing it up in yesterda=
-y's
->>> weekly Rust call.
->>>
->>> In the call a few ideas were discussed, e.g. whether we could just re-e=
-nable the
->>> allocator_api feature and try getting it stabilized.
->>>
->>> With the introduction of alloc::Flags (gfp_t abstraction) allocator_api=
- might
->>> not be a viable choice anymore.
->>
->> Bringing in some more context from the meeting: Gary suggested we create
->> a custom trait for allocators that can also handle allocation flags:
->>
->>       pub trait AllocatorWithFlags: Allocator {
->>           type Flags;
->>
->>           fn allocate_with_flags(&self, layout: Layout, flags: Self::Fla=
-gs) -> Result<NonNull<[u8]>, AllocError>;
->>
->>           /* ... */
->>       }
->>
->>       impl AllocatorWithFlags for Global { /* ... */ }
->>
->>       impl<T, A> VecExt<T> for Vec<T, A> where A: AllocatorWithFlags {
->>           /* ... */
->>       }
->>
->> I think that this would work, but we would have to ensure that users are
->> only allowed to call allocating functions if they are functions that we
->> control. For example `Vec::try_reserve` [1] would still use the normal
->> `Allocator` trait that doesn't support our flags.
->> Gary noted that this could be solved by `klint` [2].
->=20
-> I agree, extending the Allocator trait should work.
->=20
-> Regarding allocating functions we don't control, isn't that the case alre=
-ady?
-> AFAICS, we're currently always falling back to GFP_KERNEL when calling
-> Vec::try_reserve().
+On 18.04.24 16:15, Matt Gilbride wrote:
+> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> new file mode 100644
+> index 000000000000..ad406fc32d67
+> --- /dev/null
+> +++ b/rust/kernel/rbtree.rs
+> @@ -0,0 +1,425 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Red-black trees.
+> +//!
+> +//! C header: [`include/linux/rbtree.h`](srctree/include/linux/rbtree.h)
+> +//!
+> +//! Reference: <https://www.kernel.org/doc/html/latest/core-api/rbtree.h=
+tml>
+> +
+> +use crate::{bindings, container_of, error::Result, prelude::*};
+> +use alloc::boxed::Box;
+> +use core::{
+> +    cmp::{Ord, Ordering},
+> +    convert::Infallible,
+> +    marker::PhantomData,
+> +    mem::MaybeUninit,
+> +    ptr::{addr_of_mut, NonNull},
+> +};
+> +
+> +struct Node<K, V> {
+> +    links: bindings::rb_node,
+> +    key: K,
+> +    value: V,
+> +}
 
-Yes we're falling back to that, but
-1. there are currently no calls to `try_reserve` in tree,
-2. if you use eg a `vmalloc` allocator, then I don't know if it would be
-    fine to reallocate that pointer using `krealloc`. I assumed that that
-    would not be OK (hence my extra care with functions outside of our
-    control).
+Personal preference: I prefer putting items that give a high-level
+overview of the module to the top. I don't feel like I gain anything
+from seeing the definition of the `Node` type this early.
 
-> But yes, I also think it would be better to enforce being explicit.
->=20
-> Given that, is there any value extending the existing Allocator trait at =
-all?
+[...]
 
-This is what I meant in the meeting by "do you really need the allocator
-trait?". What you lose is the ability to use `Vec` and `Box`, instead
-you have to use your own wrapper types (see below). But what you gain is
-freedom to experiment. In the end we should still try to upstream our
-findings to Rust or at least share our knowledge, but doing that from
-the get-go is not ideal for productivity.
+> +impl<K, V> RBTree<K, V> {
+> +    /// Creates a new and empty tree.
+> +    pub fn new() -> Self {
+> +        Self {
+> +            // INVARIANT: There are no nodes in the tree, so the invaria=
+nt holds vacuously.
+> +            root: bindings::rb_root::default(),
+> +            _p: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Allocates memory for a node to be eventually initialised and ins=
+erted into the tree via a
+> +    /// call to [`RBTree::insert`].
+> +    pub fn try_reserve_node() -> Result<RBTreeNodeReservation<K, V>> {
 
->> But we only need to extend the allocator API, if you want to use the std
->> library types that allocate. If you would also be happy with a custom
->> newtype wrapper, then we could also do that.
->=20
-> What do you mean with "custom newtype wrapper"?
+This function creates a `RBTreeNodeReservation`, I think it would make
+sense to move it to that type and just name this function `new`.
 
-You create a newtype struct ("newtype" means that it wraps an inner type
-and adds/removes/changes features from the inner type):
+> +        Ok(RBTreeNodeReservation {
+> +            node: Box::init::<Infallible>(crate::init::uninit())?,
 
-     pub struct BigVec<T>(Vec<T>);
+`Box::new_uninit()` probably makes more sense here. (what you did is not
+wrong, but I think the intent is better captured by `new_uninit`)
 
-And then you implement the common operations on it:
+> +        })
+> +    }
+> +
+> +    /// Allocates and initialises a node that can be inserted into the t=
+ree via
+> +    /// [`RBTree::insert`].
+> +    pub fn try_allocate_node(key: K, value: V) -> Result<RBTreeNode<K, V=
+>> {
 
-     impl<T> BigVec<T> {
-         pub fn push(&mut self, item: T) -> Result {
-             self.reserve(1)?;
+Same with this function, I would move it to `RBTreeNode` and call it
+`new`.
 
-             self.0.spare_capacity_mut()[0].write(item);
+> +        Ok(Self::try_reserve_node()?.into_node(key, value))
+> +    }
+> +}
+> +
+> +impl<K, V> RBTree<K, V>
+> +where
+> +    K: Ord,
 
-             // SAFETY: <omitted for brevity>
-             unsafe { self.0.set_len(self.0.len() + 1) };
-             Ok(())
-         }
+Citing the rust docs [1] on the requirements that implementations of the
+`Ord` trait need to satsify:
 
-         pub fn reserve(&mut self, additional: usize) -> Result {
-             /*
-              * implemented like `VecExt::reserve` from this patchset,
-              * except that it uses `vmalloc` instead of `krealloc`.
-              */
-         }
+"[...] Violating these requirements is a logic error. The behavior
+resulting from a logic error is not specified, but users of the trait
+must ensure that such logic errors do not result in undefined behavior.
+This means that `unsafe` code **must not** rely on the correctness of
+these methods."
+
+I haven't yet fully checked this, since I would have to delve into the
+C side. But I wanted to ask if you have given any thought to this issue.
+In particular this means that you must not rely on `<` (or `cmp`) being
+eg transitive in `unsafe` code.
+ From what I have seen in this patch, I think there are no issues with
+the way you use `Ord`.
+
+[1]: https://doc.rust-lang.org/core/cmp/trait.Ord.html
+
+> +{
+
+[...]
+
+> +impl<K, V> RBTreeNodeReservation<K, V> {
+> +    /// Initialises a node reservation.
+> +    ///
+> +    /// It then becomes an [`RBTreeNode`] that can be inserted into a tr=
+ee.
+> +    pub fn into_node(mut self, key: K, value: V) -> RBTreeNode<K, V> {
+> +        let node_ptr =3D self.node.as_mut_ptr();
+> +        // SAFETY: `node_ptr` is valid, and so are its fields.
+> +        unsafe { addr_of_mut!((*node_ptr).links).write(bindings::rb_node=
+::default()) };
+> +        // SAFETY: `node_ptr` is valid, and so are its fields.
+> +        unsafe { addr_of_mut!((*node_ptr).key).write(key) };
+> +        // SAFETY: `node_ptr` is valid, and so are its fields.
+> +        unsafe { addr_of_mut!((*node_ptr).value).write(value) };
+> +        RBTreeNode {
+> +            // SAFETY: The pointer came from a `MaybeUninit<Node>` whose=
+ fields have all been
+> +            // initialised. Additionally, it has the same layout as `Nod=
+e`.
+> +            node: unsafe { Box::<MaybeUninit<_>>::assume_init(self.node)=
+ },
+> +        }
+
+I really dislike the verbosity of this function. Also what will ensure
+that you really did initialize all fields? I think I have a way to
+improve this using a new function on `Box`:
+
+     impl<T> Box<MaybeUninit<T>> {
+         fn re_init(self, init: impl Init<T, E>) -> Result<Box<T>, E>;
      }
 
-If we need several of these, we can also create a general API that
-makes it easier to create them and avoids the duplication.
+Then you could do this instead:
 
->> I think that we probably want a more general solution (ie `Allocator`
->> enriched with flags), but we would have to design that before you can
->> use it.
->>
->>
->> [1]: https://doc.rust-lang.org/alloc/vec/struct.Vec.html#method.try_rese=
-rve
->> [2]: https://github.com/Rust-for-Linux/klint
->>
->>>
->>> I think it would work for (k)vmalloc, where we could pass the page flag=
-s through
->>> const generics for instance.
->>>
->>> But I don't see how it could work with kmem_cache, where we can't just =
-create a
->>> new allocator instance when we want to change the page flags, but need =
-to
->>> support allocations with different page flags on the same allocator (sa=
-me
->>> kmem_cache) instance.
->>
->> I think that you can write the `kmem_cache` abstraction without using
->> the allocator api. You just give the function that allocates a `flags`
->> argument like in C.
->=20
-> Guess you mean letting the kmem_cache implementation construct the corres=
-ponding
-> container? Something like:
->=20
-> KmemCache<T>::alloc_box(flags: alloc::Flags) -> Box<T>
->=20
-> I think that'd make a lot of sense, since the size of an allocation is fi=
-xed
-> anyways.
-
-Yes, but you would probably need a newtype return type, since you need
-to control how it is being freed. Also in the example above there is no
-`kmem_cache` object that stores the state.
-
-I think that the API would look more like this:
-
-     impl<T> KMemCache<T> {
-         pub fn alloc(&self, value: T, flags: Flags) -> Result<KMemObj<'_, =
-T>>;
+     pub fn into_node(mut self, key: K, value: V) -> RBTreeNode<K, V> {
+         let node =3D init!(Node {
+             key,
+             value,
+             links: bindings::rb_node::default(),
+         });
+         RBTreeNode { node: self.node.re_init(node) }
      }
 
-Here are a couple of interesting elements of this API:
-- I don't know if `kmem_cache` uses the same flags as the alloc module,
-   if not you will need a custom `Flags` type.
-- I assume that an object allocated by a `kmem_cache` is only valid
-   while the cache still exists (ie if you drop the cache, all allocated
-   objects are also invalidated). That is why the return type contains a
-   lifetime (`'_` refers to the elided lifetime on the `&self` parameter.
-   It means that the `KMemObj` is only valid while the `KMemCache` is
-   also valid).
-- The return type is its own kind of smart pointer that allows you to
-   modify the inner value like `Box`, but it takes care of all the
-   `kmem_cache` specifics (eg ensuring that the associated cache is still
-   valid, freeing the object etc).r
+All the `unsafe` vanishes!
 
-Since I assumed several things, in the end the API might look different,
-but I think that this could be a more fruitful starting point.
+I think this is useful in general, so I am going to send a patch with
+the above mentioned method. In addition to that I am also going to
+extend `Box` to allow converting `Box<T> -> Box<MaybeUninit<T>>` to
+simplify `into_reservation` from patch 5.
 
 --=20
 Cheers,
 Benno
+
+> +    }
+> +}
+> +
+> +/// A red-black tree node.
+> +///
+> +/// The node is fully initialised (with key and value) and can be insert=
+ed into a tree without any
+> +/// extra allocations or failure paths.
+> +pub struct RBTreeNode<K, V> {
+> +    node: Box<Node<K, V>>,
+> +}
+> +
+> +// SAFETY: If K and V can be sent across threads, then it's also okay to=
+ send [`RBTreeNode`] across
+> +// threads.
+> +unsafe impl<K: Send, V: Send> Send for RBTreeNode<K, V> {}
+> +
+> +// SAFETY: If K and V can be accessed without synchronization, then it's=
+ also okay to access
+> +// [`RBTreeNode`] without synchronization.
+> +unsafe impl<K: Sync, V: Sync> Sync for RBTreeNode<K, V> {}
+>=20
+> --
+> 2.44.0.769.g3c40516874-goog
+>=20
 
