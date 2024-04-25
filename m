@@ -1,258 +1,98 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810D214B083
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 15:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FC614A600;
+	Thu, 25 Apr 2024 15:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714059392; cv=none; b=ikLPnscb2Zuk9rGbXRaCgfwL80ITM25dWybp3cMaAIzp56zUhgPhVDQ2NeCnOb13kTJeOLIIPJyKzdsC/6enlHxgAldFWWItzvQFd3zXNOn2JLhFAiKSiZ2SK1ExT4zLZAo+6rz9BMc85j0LYhQaB9pGRSKKRgXJDzmMtH+yUNQ=
+	t=1714059987; cv=none; b=bdHLhNSv/NML4pT/ecpmKLSiiZ+ypXL21HKC80MpCoA5AFxKz6Q4oFdJB5pvO4o4NOlvm4F/GWy5CWtr+ylWeNkFYIdNkMi3a+UdC/LRkbwL7VvzniRUf/GcqRJK4OtaMv3xHnUNdg1IH/TAGdqDFRmFMpRg+vAQDbe9CP8wySg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714059392; c=relaxed/simple;
-	bh=WjDBIMcb7Z/djvyYzrIXjgOygVW96mvVWV/YViPU0mE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
-	 Content-Type:Content-Disposition; b=YezWXNPYot+3eTI+PDaA2AvjDFwb+9PUAtTwpr3h1rCTpNFkmyu/1pbSfNzEAvsfKRwbdx6npGCOkAGsHcyGkCjTr9DTJRlxtorxZaGgIXichWRqrQGJuZhVwnl48kca19mfDCoa6rfuiDJg3KEsis6/FlnpDN0wL/12uSOx02E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UTg1APm7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1714059987; c=relaxed/simple;
+	bh=BdnPwz8X5VjIlyxGHTHB1xmygmV3v31FLtNCSVMN0D4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a8IzXX26VG5FoljMm0PUZhyg5jwdhUYBL+FcmU1jCUoTM+keO8JN34qdnDbzaEGNvVUsjUIqfZqQ00evQ5lFcBu9WfQlD61qVVVMoRwMjXXIMmIuLCi2ZoU3tFCToKs8R+Sp/gO4tgYtq/731Kw1x6Sov6sARVpptcq6wsg7L8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HMZCcv4d; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UTg1APm7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714059388;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=wm/bDQ2CJwJaBgMxRCiDr2NfP9BS/U56N3DlTTB7Mp4=;
-	b=UTg1APm7hf2e6AFZzmV7yt9zzxiuQdd1OovNJIuD22OXmnmIaXVPjGS5PQZkA6hrNhYTBy
-	xTpUjmOeINf32UpJIBaYEc9VUrIwUd6459w2YuqSVSjTrHoSuYzwCSdaLaTsAquLTFR61a
-	YzfTitVUqT1tNaRiqbHKOma+7aUgLTQ=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-28jlbGlcNz2456oitVf8OQ-1; Thu, 25 Apr 2024 11:36:26 -0400
-X-MC-Unique: 28jlbGlcNz2456oitVf8OQ-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-343c6bb1f21so697262f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 08:36:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714059385; x=1714664185;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wm/bDQ2CJwJaBgMxRCiDr2NfP9BS/U56N3DlTTB7Mp4=;
-        b=E0oppcjBg9+iZ7Pomoka1hiDzDKs23O6dgPUVxV9FRty4OOdaMCa5Do1XC3zNKYrdV
-         DRprxbnPAxNPjjVzUsTlzY2zikkK2oB2GZ+UqY+xiT0V4CUJRN/DRSpYXsVEaK0kHEBt
-         0r0X2sHEZJ+cqTx6ROnCeONwBkMAM5L6f/8TPd3sEuXDqMrxN/H7M79aXhnW0BjZ2J7x
-         r9qExFnOgI+0VUUyYAN9urXZQM0eGSLKRPiEUWgpWqM/aR1CX4ZtRYYA9CyQSYJz8mLg
-         zYgCg9Tqy5FG56VqK8YxSUiAD8KQvQ3ok+SjYXbYmqaMDdvVkqJo+Shbv31VMRqqZFAC
-         AebA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrVjFVgXpOHvg/Nqf37uvWEVCqsmLWvWcYck94nOHt851VKl77eBpEzgnyDcnOc59FA2w2j6wITroUEcPBQv4ZrS/lCdLjTYgHPX5uuBs=
-X-Gm-Message-State: AOJu0Yzo9w/fAgw4/brfFOkqfmu3wWZELRDLqbDUrLVBwjAgmRtjqtCC
-	5i/8WWJRQgMBHEqd1N82RgmJVAY4XcgHAUOvhd9exv4mYohHjtfWTvkOA/viFkceneb5RDH0owg
-	AB22nu5fHWxQXmThwmDoDIrKRcs15OTGuuLcsDa5jgf99RyvYIDx5YLOS55wqLHR3
-X-Received: by 2002:adf:f70d:0:b0:346:f830:8a53 with SMTP id r13-20020adff70d000000b00346f8308a53mr4675426wrp.1.1714059384575;
-        Thu, 25 Apr 2024 08:36:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5ZHd6JoD03ue53EPEGvwersTc3pFDQuhz/2riBWbEoMOcdB+IHqMk/1/G5xxJCdQUEtGzOQ==
-X-Received: by 2002:adf:f70d:0:b0:346:f830:8a53 with SMTP id r13-20020adff70d000000b00346f8308a53mr4675400wrp.1.1714059383861;
-        Thu, 25 Apr 2024 08:36:23 -0700 (PDT)
-Received: from cassiopeiae ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id g4-20020adff3c4000000b00343c1cd5aedsm20080251wrp.52.2024.04.25.08.36.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Apr 2024 08:36:23 -0700 (PDT)
-Date: Thu, 25 Apr 2024 17:36:20 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Wedson Almeida Filho <wedsonaf@gmail.com>, Zhi Wang <zhiw@nvidia.com>,
-	rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>, ajanulgu@redhat.com,
-	Andy Currid <acurrid@nvidia.com>, Neo Jia <cjia@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v3 00/10] Allocation APIs
-Message-ID: <Zip4dFpt8xhk7UBL@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HMZCcv4d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1714059977; x=1714319177;
+	bh=7jYU4x9SG+HzxaQPBZY9kv9tKEO30Ph+k3fkjG3u5NU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=HMZCcv4d0BzKDpblcZGIwbOk3RmoAhA/+tFRH63hwaUiN4O86P6ylvMu1HKbeE+AU
+	 zHAQgUzL8N5vjrvfWjPFkgEYnyyhHV5d6r04PJAym1bBsX9T7e8adQy0u4bSQtu3BX
+	 bpZbFiu5Hzc4KnKODFcP9smXpANOcclBMQDmNDF0TfxBuHRMxD4szqeHKx8PJXi5nu
+	 C7AO959VexM/iJIJ5YeoFsfGh+kErnwPHeR3Or8pvg0aOkf/BygIY9DER4fGM1Z4Dr
+	 S6ha4tT7WwlKX5BemzU210QuVwlmAV+qregOx2x9knfQ0UdbnngE7U5pJSapoBQShZ
+	 m+IUKkNmNsVGg==
+Date: Thu, 25 Apr 2024 15:46:14 +0000
+To: Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/4] WIP: drm: Introduce rvkms
+Message-ID: <c04294b3-a08a-44af-b74a-27f6b873c6b8@proton.me>
+In-Reply-To: <6a16f0023b62beba4658677bebcc4786da1ea4be.camel@redhat.com>
+References: <20240322221305.1403600-1-lyude@redhat.com> <20240322221305.1403600-3-lyude@redhat.com> <b41f707d-7e06-4c1a-93f0-d74ee242b650@proton.me> <6a16f0023b62beba4658677bebcc4786da1ea4be.camel@redhat.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 045ae0f74a45c39b91a85c78c275bb36ea47dee4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <cbeae504-2752-4ef0-b103-e62fcf45ab93@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-(adding folks from [1])
-
-On Tue, Apr 23, 2024 at 05:43:08PM +0200, Danilo Krummrich wrote:
-> Hi all,
-> 
-> On 3/28/24 02:35, Wedson Almeida Filho wrote:
-> > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> > 
-> > Revamp how we use the `alloc` crate.
-> > 
-> > We currently have a fork of the crate with changes to `Vec`; other
-> > changes have been upstreamed (to the Rust project). This series removes
-> > the fork and exposes all the functionality as extension traits.
-> > 
-> > Additionally, it also introduces allocation flag parameters to all
-> > functions that may result in allocations (e.g., `Box::new`, `Arc::new`,
-> > `Vec::push`, etc.) without the `try_` prefix -- the names are available
-> > because we build `alloc` with `no_global_oom_handling`.
-> > 
-> > Lastly, the series also removes our reliance on the `allocator_api`
-> > unstable feature.
-> > 
-> > Long term, we still want to make such functionality available in
-> > upstream Rust, but this allows us to make progress now and reduces our
-> > maintainance burden.
-> > 
-> > In summary:
-> > 1. Removes `alloc` fork
-> > 2. Removes use of `allocator_api` unstable feature
-> > 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
-> 
-> With that series, how do we implement alternative allocators, such as
-> (k)vmalloc or DMA coherent?
-> 
-> For instance, I recently sketched up some firmware bindings we want to
-> use in Nova providing
-> 
-> fn copy<A: core::alloc::Allocator>(&self, alloc: A) -> Result<Vec<u8, A>>
+On 22.04.24 03:54, Lyude Paul wrote:
+> On Wed, 2024-03-27 at 21:06 +0000, Benno Lossin wrote:
+>> On 22.03.24 23:03, Lyude Paul wrote:
+>>> +
+>>> +pub(crate) type Connector =3D connector::Connector<DriverConnector>;
+>>> +
+>>> +impl connector::DriverConnector for DriverConnector {
+>>> +    type Initializer =3D impl PinInit<Self, Error>;
+>>> +
+>>> +    type State =3D ConnectorState;
+>>> +
+>>> +    type Driver =3D RvkmsDriver;
+>>> +
+>>> +    type Args =3D ();
+>>> +
+>>> +    fn new(dev: &Device<Self::Driver>, args: Self::Args) ->
+>>> Self::Initializer {
+>>
+>> And then here just return `Self`.
+>>
+>> This works, since there is a blanket impl `PinInit<T, E> for T`.
+>>
+>> Looking at how you use this API, I am not sure if you actually need
+>> pin-init for the type that implements `DriverConnector`.
+>> Do you need to store eg `Mutex<T>` or something else that needs
+>> pin-init in here in a more complex driver?
+>=20
+> Most likely yes - a lot of drivers have various private locks contained
+> within their subclassed mode objects. I'm not sure we will in rvkms's
+> connector since vkms doesn't really do much with connectors - but we at
+> a minimum be using pinned types (spinlocks and hrtimers) in our
+> DriverCrtc implementation once I've started implementing support for
+> vblanks[1]
+>=20
 > [1]
-> 
-> making use of Vec::try_with_capacity_in(). How would I implement
-> something similar now?
+> https://www.kernel.org/doc/html/v6.9-rc5/gpu/drm-kms.html?highlight=3Dvbl=
+ank#vertical-blanking
+>=20
+> In nova (the main reason I'm working on rvkms in the first place),
+> we'll definitely have locks in our connectors and possibly other types.
 
-I want to follow up on this topic after also bringing it up in yesterday's
-weekly Rust call.
+I see, in that case it would be a good idea to either have an RFC of
+the nova driver (or something else that needs pinned types) as
+motivation for why it needs to be pin-initialized.
 
-In the call a few ideas were discussed, e.g. whether we could just re-enable the
-allocator_api feature and try getting it stabilized.
-
-With the introduction of alloc::Flags (gfp_t abstraction) allocator_api might
-not be a viable choice anymore.
-
-I think it would work for (k)vmalloc, where we could pass the page flags through
-const generics for instance.
-
-But I don't see how it could work with kmem_cache, where we can't just create a
-new allocator instance when we want to change the page flags, but need to
-support allocations with different page flags on the same allocator (same
-kmem_cache) instance.
-
-So, I think we have to create our own allocator trait / API.
-
-Any other thoughts on that?
-
-- Danilo
-
-[1] https://lore.kernel.org/rust-for-linux/20240408094738.00005e59.zhiw@nvidia.com/
-
-> 
-> - Danilo
-> 
-> [1] https://gitlab.freedesktop.org/drm/nova/-/blob/topic/firmware/rust/kernel/firmware.rs?ref_type=heads#L63
-> 
-> > 
-> > ---
-> > 
-> > Changes in v3:
-> > - Rebased on top of the latest `rust-next` branch.
-> > - Updated `krealloc_aligned` to use `Flags` instead of `bindings::gfp_t`.
-> > - Added __GFP_ZERO to flags, as part of the previous change.
-> > - Avoiding temporary stack value in `Box::new_uninit`.
-> > - Implement `Box::new` using `Box::new_uninit` (so only one of them actually
-> >    allocates).
-> > - Added examples/tests to `VecExt` methods.
-> > - Fixed bug in length in `extend_from_slice`
-> > - Link to v2: https://lore.kernel.org/rust-for-linux/20240327023531.187880-1-wedsonaf@gmail.com/T/#t
-> > 
-> > Changes in v2:
-> > - Updated description of `alloc` crate.
-> > - Renamed vecext and boxext modules to vec_ext and box_ext.
-> > - Added derive directive to `AllocError`.
-> > - Updated safety comment in `BoxExt::new`.
-> > - Updated `VecExt::push` and `VecExt::extend_from_slice` to use
-> >    `spare_capacity_mut`
-> > - Added directive to not compile `destructure` and `rebuild` when `test` or
-> >    `testlib` are configured. Otherwise we have a warning because `push` and
-> >    `extend_from_slice` don't use them anymore.
-> > - Updated indentation in `Arc::new_uninit`
-> > - Moved the removal of `TryReserveError` convesion to `Error` to patch 7, where
-> >    usage of `TryReserveError` is actually removed.
-> > - Link to v1: https://lore.kernel.org/rust-for-linux/20240325195418.166013-1-wedsonaf@gmail.com/T/#t
-> > 
-> > Wedson Almeida Filho (10):
-> >    rust: kernel: move `allocator` module under `alloc`
-> >    rust: alloc: introduce the `VecExt` trait
-> >    kbuild: use the upstream `alloc` crate
-> >    rust: alloc: remove our fork of the `alloc` crate
-> >    rust: alloc: introduce allocation flags
-> >    rust: alloc: introduce the `BoxExt` trait
-> >    rust: alloc: update `VecExt` to take allocation flags
-> >    rust: sync: update `Arc` and `UniqueArc` to take allocation flags
-> >    rust: init: update `init` module to take allocation flags
-> >    rust: kernel: remove usage of `allocator_api` unstable feature
-> > 
-> >   rust/Makefile                        |   16 +-
-> >   rust/alloc/README.md                 |   36 -
-> >   rust/alloc/alloc.rs                  |  452 ----
-> >   rust/alloc/boxed.rs                  | 2463 -----------------
-> >   rust/alloc/collections/mod.rs        |  160 --
-> >   rust/alloc/lib.rs                    |  288 --
-> >   rust/alloc/raw_vec.rs                |  611 -----
-> >   rust/alloc/slice.rs                  |  890 -------
-> >   rust/alloc/vec/drain.rs              |  255 --
-> >   rust/alloc/vec/extract_if.rs         |  115 -
-> >   rust/alloc/vec/into_iter.rs          |  454 ----
-> >   rust/alloc/vec/is_zero.rs            |  204 --
-> >   rust/alloc/vec/mod.rs                | 3683 --------------------------
-> >   rust/alloc/vec/partial_eq.rs         |   49 -
-> >   rust/alloc/vec/set_len_on_drop.rs    |   35 -
-> >   rust/alloc/vec/spec_extend.rs        |  119 -
-> >   rust/bindings/bindings_helper.h      |    3 +
-> >   rust/kernel/alloc.rs                 |   74 +
-> >   rust/kernel/{ => alloc}/allocator.rs |   17 +-
-> >   rust/kernel/alloc/box_ext.rs         |   59 +
-> >   rust/kernel/alloc/vec_ext.rs         |  176 ++
-> >   rust/kernel/error.rs                 |   13 +-
-> >   rust/kernel/init.rs                  |   57 +-
-> >   rust/kernel/lib.rs                   |    5 +-
-> >   rust/kernel/prelude.rs               |    2 +
-> >   rust/kernel/str.rs                   |    6 +-
-> >   rust/kernel/sync/arc.rs              |   50 +-
-> >   rust/kernel/sync/condvar.rs          |    2 +-
-> >   rust/kernel/sync/lock/mutex.rs       |    2 +-
-> >   rust/kernel/sync/lock/spinlock.rs    |    2 +-
-> >   rust/kernel/types.rs                 |    4 +-
-> >   rust/kernel/workqueue.rs             |   14 +-
-> >   samples/rust/rust_minimal.rs         |    6 +-
-> >   samples/rust/rust_print.rs           |    4 +-
-> >   scripts/generate_rust_analyzer.py    |    2 +-
-> >   35 files changed, 405 insertions(+), 9923 deletions(-)
-> >   delete mode 100644 rust/alloc/README.md
-> >   delete mode 100644 rust/alloc/alloc.rs
-> >   delete mode 100644 rust/alloc/boxed.rs
-> >   delete mode 100644 rust/alloc/collections/mod.rs
-> >   delete mode 100644 rust/alloc/lib.rs
-> >   delete mode 100644 rust/alloc/raw_vec.rs
-> >   delete mode 100644 rust/alloc/slice.rs
-> >   delete mode 100644 rust/alloc/vec/drain.rs
-> >   delete mode 100644 rust/alloc/vec/extract_if.rs
-> >   delete mode 100644 rust/alloc/vec/into_iter.rs
-> >   delete mode 100644 rust/alloc/vec/is_zero.rs
-> >   delete mode 100644 rust/alloc/vec/mod.rs
-> >   delete mode 100644 rust/alloc/vec/partial_eq.rs
-> >   delete mode 100644 rust/alloc/vec/set_len_on_drop.rs
-> >   delete mode 100644 rust/alloc/vec/spec_extend.rs
-> >   create mode 100644 rust/kernel/alloc.rs
-> >   rename rust/kernel/{ => alloc}/allocator.rs (86%)
-> >   create mode 100644 rust/kernel/alloc/box_ext.rs
-> >   create mode 100644 rust/kernel/alloc/vec_ext.rs
-> > 
-> > 
-> > base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
+--=20
+Cheers,
+Benno
 
