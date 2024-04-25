@@ -1,105 +1,43 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC4E763F1;
-	Thu, 25 Apr 2024 14:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EFA14B09F
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 15:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714055331; cv=none; b=nRjH4v+J1uxqdrbBHKxcb75VsatH1t0evRRR17vS/LXvUSYryAvw9i+TDpGv+QXE0ZpjiWSR5ei90lvspsthhP0iRAgJw1tQIA4T/6cuvX0V4TaNR0EJlAnyk47rYkFvfdw7WQfTXFCpucCJNMocRcIsYCsZEQriQq/zKEJLDv8=
+	t=1714059359; cv=none; b=IqHXUVrEMLsI3TtNBWYLjlyB1P6wOVwU/6Crdzp2yvqPYrBthSC0eBDcsfCHGG1gv5YSpdvGo4BBehFiKrBetK5gC4tidJPEdBumJySBQ0nR4He2LJ57WwyW2Qvis1HHZoNa16vyNn9OUUFnS6AgpIKyIfHUh2fnVThuSyw8/rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714055331; c=relaxed/simple;
-	bh=xbNVq1GeT15x3KtRKYWeAIzqUgsbPeVW9DovaUqSTCM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HB7At/ydagloR6CLoA9Kwik+oPLO7G8VxJPV3sQqvytye0N5rvbWkp7/sRXG9lFHaoLzQR2S9uxJYCvrhbmGLbH/Cw+DHpcBgrVbu3ZtPrBNs70cn18Xb8x+ErxP2Bp02aRxnWWQrONDqRUhDZlpasBnKHDZ3cC3S2JJ/eagXXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HQYXhIiM; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1714059359; c=relaxed/simple;
+	bh=EYFzu7TtQPYBdaMH8b1TB2whJvsDPa20PFjx6wCWMAI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S9tX82QLMPIIAoETt6eDUkxUkMrTUXL79FxyIvqE+etMoU+4bqyUk2gIP8B/Xjx/tnb8R3HBHD44zrKingM8MnELg/eh3RO8nuzLXmClNI/G13hm8HSMZNVMIqzeMCMsJKU5vziZbZve9XFOUpKP8/6OfBGN+s6jtbD0VSEsxSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=lu62jiaB; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HQYXhIiM"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-78edc3ad5fdso98371585a.0;
-        Thu, 25 Apr 2024 07:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714055329; x=1714660129; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=rn302mOlE6lx5HQwiCG5zCrZGkXLkA8PRwPNsmFPHcA=;
-        b=HQYXhIiMKm3P8a9vve7Nm/uuE3GDiK941JEuq0MXFYlMAVNmvaIPjnylI616EXe2UV
-         DyrI766IlEnndP2BRnZoV6gfRPWVodLXv6Hstd0suqoIVRMJ3rWwsTFQ8F9u+BQ6MzKj
-         CEsrpK6n0z6J5Lg0CbRgl+3QWUQoE4owVdyDOX/KqWkHqr/iMCEOuFqsM+DwTjQZjE+8
-         tRvn2PlTMZ5qdcJO2FFrj1IMZZjaWMDCkmU4fupsf6k+XTGBOqd7JLju2EXdoY2om8Nm
-         8jpokimIRAGcqqHwArhlE+gkaQsbW9VhaX6icEwLy2guPSE5ZVWyKVVsQBCCmx9fesq0
-         Fy4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714055329; x=1714660129;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rn302mOlE6lx5HQwiCG5zCrZGkXLkA8PRwPNsmFPHcA=;
-        b=HLL9yfp8DuulSfnyh461Pc8DM5Gw+5nuTw4P8oBYLavj2MuPB34/LgaAGavbish3pz
-         zzYXi8eklaydtq+XEkqgEWbrVYwvcZC9jnhkOvB079E2m96e/qrSmNCvOKLCVpIw8LZy
-         gZyXoDoJHhTDXK4jlV14PygJN5RQR245GGn1EF24QZles7d0XTyKPrj/vMtvdhsJ8xpC
-         hl+Fufhy7Bldpw757Y8lfZrluTnoH/EgLitb3EUXShInXMFwKRoxpR1unCUfHG6WRCG4
-         l7fYLfj6UItafu1vEnA6aHuKQvdczAScUWR9djSMQhPlgp4TmnzAdChd1f391emW6JsQ
-         MZmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvePE2+6tgoXDSPSOGhIeAwIPkPymKShvRfyHV9u+X1pPA+foaLF9WNWxctNlDyadt6AjusQVTodCz80L+E8lRk0bhw+OyCBHWmel5yVVtwSylKqnWN3JLvVGzffgaIc/BViVqMgMwBFZVmQ8=
-X-Gm-Message-State: AOJu0YwFzkOib/JGdIFeJH2kOS+Znsv3jDPMexfTF1W2GPnOOOthNagR
-	zNNdDiLHWXV0Sq9Q1hm5GiKDoq1naXKdGHM5C14psAjTW40MYf6H
-X-Google-Smtp-Source: AGHT+IFkcNqvcsJjprkk/iE6VuGNgJP35p310+NI7j+3CpzA+/hcy/h6t5jknfaX2IvHgrjQ0/QkHQ==
-X-Received: by 2002:a05:620a:3907:b0:78f:ff3:7c8e with SMTP id qr7-20020a05620a390700b0078f0ff37c8emr5497169qkn.7.1714055328724;
-        Thu, 25 Apr 2024 07:28:48 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id w16-20020a05620a149000b0078f1a57ac0csm6049360qkj.83.2024.04.25.07.28.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Apr 2024 07:28:48 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id A93941200032;
-	Thu, 25 Apr 2024 10:28:47 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Thu, 25 Apr 2024 10:28:47 -0400
-X-ME-Sender: <xms:n2gqZodfZMtgF37AyQc52e8JOzwowA1bnPMGnHBF9TDKSMfkutplDQ>
-    <xme:n2gqZqMS-jGLtmiCV_UsAlggeD5uO6J3ph9Gf4_rWD8j0oWWFP44X8zuO2Yw56iDO
-    r1QhZX1SbbIB_2NQw>
-X-ME-Received: <xmr:n2gqZpi53HM1T6XfWhDEy8MOuCjQter_lr6imE1WT3HYULq-lC9GPrK5cA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeljedgjeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepieehfeekgfdvfeetjeejudekhfeiveelfeefveehheeffffhkefhteev
-    ffevhffgnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrh
-    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhp
-    rghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsg
-    hoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:n2gqZt8BvdD9ZZg7R--ZQgVnw9XbKJbTM9ynSeNpdweqzZto-Dc0zw>
-    <xmx:n2gqZkvq_wdTPmpNC3vu3SGHbIdCEs3FiOZFBAc-5xlxqblsrYuSHw>
-    <xmx:n2gqZkHAgNyzj7dbT6V6swC0iZsGcp8WOIorcJXICjq4T6sdcgVV5w>
-    <xmx:n2gqZjPTFZwKue9z5S7Zrr_OcJQAok7XAsJLGFpuyat2mCj_u5hciw>
-    <xmx:n2gqZpOLvwZ5jReMKsbRVMr8tH0_DDZoT2hJKYl1H9dt2zdkD0ctM-eg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 25 Apr 2024 10:28:46 -0400 (EDT)
-Date: Thu, 25 Apr 2024 07:28:45 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Alice Ryhl <aliceryhl@google.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Miguel Ojeda <ojeda@kernel.org>, John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
-Message-ID: <ZiponXmzv1iIO3dJ@Boquns-Mac-mini.home>
-References: <20240411230801.1504496-1-boqun.feng@gmail.com>
- <20240411230801.1504496-3-boqun.feng@gmail.com>
- <CAH5fLgg0CkZO9KF58boui6Y5ajpXHuGh0OxyNru2aEG5pNObwQ@mail.gmail.com>
- <Zhk0q-0eM4z5JHqn@Boquns-Mac-mini.home>
- <CAH5fLghL=G-ihevf1_D0aGffmJMtxtSpMDoTGtrmdiDfhwpKnw@mail.gmail.com>
- <877cgln7f4.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lu62jiaB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1714059349; x=1714318549;
+	bh=N4m+Zc5UeyF/ixop+KCMHglQtS528W3Y8nCBh/YrTJA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=lu62jiaB6TCRQDmtUXRlt1FDxcUOm9UYL7wRc53UytNpv77FfLUo6Nfbi/W145zmp
+	 +h9OjhAbsdTgqk1vsMWmPIMvWeonBNCycFd5w2U1MCQl5atjSHqPsyJJwnXWnEznrN
+	 viM1ah3F5TQOr9BC17bKBw65rdR2wZMVvIB6taU5LAaJpwAZdJnpWfMvZb0qah9wUo
+	 qRa/BlyhP6aM4mMoy22IPR0XtmjOgFJnXqJgoiVcFE++sp3t7CSo1xQTrbpWSHchW0
+	 5NOdBUwbz98d3V/1X+RzUzSx7zxvWCVFUIbR6v1ZjWYbKpBR7JBJooTFiiDQBe1Whv
+	 uvtmgiFqn2Msw==
+Date: Thu, 25 Apr 2024 15:35:44 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH RFC v1] rust: add 'firmware' tag support to module! macro
+Message-ID: <c613d60a-4136-4a4b-a2d3-9c849b245cab@proton.me>
+In-Reply-To: <20240420.101421.329379978497339506.fujita.tomonori@gmail.com>
+References: <20240419.225353.364631939354183191.fujita.tomonori@gmail.com> <b66e7e78-35bc-48df-9e3b-0a57996491ad@proton.me> <20240420.101421.329379978497339506.fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 7342902969d933f69618aae801f8b5e965b36d2f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -107,78 +45,90 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <877cgln7f4.fsf@metaspace.dk>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 25, 2024 at 11:00:31AM +0200, Andreas Hindborg wrote:
-> Alice Ryhl <aliceryhl@google.com> writes:
-> 
-> > On Fri, Apr 12, 2024 at 3:18 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >>
-> >> On Fri, Apr 12, 2024 at 10:36:05AM +0200, Alice Ryhl wrote:
-> >> > On Fri, Apr 12, 2024 at 1:08 AM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >> > >
-> >> > > Currently since Rust code is compiled with "-Coverflow-checks=y", so a
-> >> > > normal substraction may be compiled as an overflow checking and panic
-> >> > > if overflow happens:
-> >> > >
-> >> > >         subq    %rsi, %rdi
-> >> > >         jo      .LBB0_2
-> >> > >         movq    %rdi, %rax
-> >> > >         retq
-> >> > > .LBB0_2:
-> >> > >         pushq   %rax
-> >> > >         leaq    str.0(%rip), %rdi
-> >> > >         leaq    .L__unnamed_1(%rip), %rdx
-> >> > >         movl    $33, %esi
-> >> > >         callq   *core::panicking::panic::h59297120e85ea178@GOTPCREL(%rip)
-> >> > >
-> >> > > although overflow detection is nice to have, however this makes
-> >> > > `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's not
-> >> > > clear that the overflow checking is helpful, since for example, the
-> >> > > current binder usage[1] doesn't have the checking.
-> >> >
-> >> > I don't think this is a good idea at all. Any code that triggers an
-> >> > overflow in Ktime::sub is wrong, and anyone who enables
-> >> > CONFIG_RUST_OVERFLOW_CHECKS does so because they want such bugs to be
-> >> > caught. You may have been able to find one example of a subtraction
-> >> > that doesn't have a risk of overflow, but overflow bugs really do
-> >>
-> >> The point is you won't panic the kernel because of an overflow. I
-> >> agree that overflow is something we want to catch, but currently
-> >> ktime_t doesn't panic if overflow happens.
-> >
-> > What the CONFIG_RUST_OVERFLOW_CHECKS option does is enable panics on
-> > overflow. So I don't understand how "it panics on overflow" is an
-> > argument for removing the overflow check. That's what you asked for!
-> > One could perhaps argue about whether CONFIG_RUST_OVERFLOW_CHECKS is a
-> > good idea (I think it is), but that is orthogonal. When
-> > CONFIG_RUST_OVERFLOW_CHECKS is enabled, you should respect the flag.
-> 
-> I would agree. If users do not want panics on overflow, they disable
-> RUST_OVERFLOW_CHECKS. If the config is enabled, overflows in ktime sub
-> should panic, even if it does not do so in equivalent C code.
-> 
+On 20.04.24 03:14, FUJITA Tomonori wrote:
+> Hi,
+>=20
+> On Fri, 19 Apr 2024 16:41:36 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>=20
+>> On 19.04.24 15:53, FUJITA Tomonori wrote:
+>>> Hi,
+>>>
+>>> This patch is necessary for a new QT2025 PHY driver in Rust:
+>>>
+>>> https://lwn.net/Articles/969888/
+>>>
+>>> Are there places to be fixed or imporved before sending this in the v2
+>>> of the PHY driver patchset?
+>>
+>> Please also update the documentation.
+>>
+>> Also what exactly is expected as the parameter to the firmware field?
+>=20
+> Oops, I overlooked the documentation in rust/macros/lib.rs
+>=20
+>=20
+>> What do the strings in the array mean? If there is documentation on the
+>> C side, please link to it or explain it again.
+>=20
+> I can't find any on the C side. They are used when building
+> initrd. How about the following?
 
-What's reason then? If we think a piece of API should have a different
-semantics than its C counterpart, that suggests we also need to change
-the C side for the same reason. Don't keep good stuffs only to ourselves
-;-)
+What does that mean? For the other fields, I know what they mean, but
+when I see firmware I don't know if what I am thinking is correct.
+A couple of questions:
+- How do I know that I need to put anything in that field (and also what
+   do I need to put there?)?
+- Are those firmware files in the kernel tree?
+- How are they "used" when building the initrd?
 
-Plus, what if users don't want to panic on ktime API but still want
-overflow checks for other parts? Using RUST_OVERFLOW_CHECKS to determine
-whether ktime should perform overflow checkings seems a bad to me
-regardless of what semantics we end up with. For reference, the Rust std
-`Duration` performs always overflow checking:
+This might just be my lack of knowledge. But as you did not find any
+docs on the C side, I think we should take this as an opportunity to
+improve the state of things.
 
-	https://doc.rust-lang.org/src/std/time.rs.html#429-435
+You don't need to answer all of the questions above perfectly, but
+provide at least some starting point to learn more.
 
-We shouldn't define that overflow checking of ktime follows the general
-rule of overflow checking of any i64, instead, we should have a clear
-rule for it.
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index f489f3157383..19175b3e7172 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -35,6 +35,7 @@
+>  ///     author: "Rust for Linux Contributors",
+>  ///     description: "My very own kernel module!",
+>  ///     license: "GPL",
+> +///     firmware: ["file0", "file1"],
 
-Regards,
-Boqun
+Changing the example is good, but "file0" is not really meaningful...
 
-> BR Andreas
+It might also lead people to believe that they need the firmware field,
+so I think it should be its own example.
+
+>  ///     params: {
+>  ///        my_i32: i32 {
+>  ///            default: 42,
+> @@ -74,6 +75,7 @@
+>  ///   - `description`: byte array of the description of the kernel modul=
+e.
+>  ///   - `license`: byte array of the license of the kernel module (requi=
+red).
+>  ///   - `alias`: byte array of alias name of the kernel module.
+> +///   - `firmware`: array of firmware names required by the kernel modul=
+e.
+
+I think it is fine to keep the entry in this list, since this list
+describes the types that are expected for the parameters, but please
+extend the docs as I detailed above.
+
+--=20
+Cheers,
+Benno
+
+>  #[proc_macro]
+>  pub fn module(ts: TokenStream) -> TokenStream {
+>      module::module(ts)
+
+
+
