@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14095155A47
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 21:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6716615575F
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 21:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714081562; cv=none; b=M3ce9jKueRoAGCVtkQVPB651fYHB8rlTQDjZmW3CHd/0ka0MjyXGt5P3F+5cxXz3DhHvXYe2cm9MG7zVYjHu1YVcFi2UzqPl8uI60OVtliqfVdufPEZY1hEjMT2020pnqfehnmtbSMk32jxcUgW5DYZvgynIXkBPbB4HWJ2Zscs=
+	t=1714082222; cv=none; b=KrmPkIVD0qDizuXfzOwfx8HIhEkkHb0A/ETiH/7GHZnWwZ6hUvcMwKgJSW8s91RIbCe7vThNtmeC2Th2XCi1vAKEavLUwpx8zACf6nvNz2AKQBMp6kMJXrmJU+y+Hz20G7wVK+54B7uQZwbuYpxuAc0l5Lu+xUDPmGE8XE2ipxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714081562; c=relaxed/simple;
-	bh=YKw6OAais4gM4JicLcbq2kNDKCivA0K/YpqzcFf016A=;
+	s=arc-20240116; t=1714082222; c=relaxed/simple;
+	bh=2AC9sknLoDsBrHZj6JPOUgXsHl0ckGSbKEILsuBcFn8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k/h9kywZVskv5cM/r+tYjN7OyBakZ91ZKxAVLxt9MJyMYkkvHznh4Rc/3qFk3e0CooHcBAw4f94VwRS+zBuSHIsGNL93g15CmcsX5mBWkVM3vrnhnJDtQ4NptVX7soyU3WnVht1uYyp8Y3Yc9/i5+gzHjfWHqn3uUeyxSqm48oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Mge3iFRK; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=Kjkeh2xOEbfcEc78BzxYWRQwtVVUrrpwpcyR9fyTziHObi6G4p4tLpmoZOazjwkQ0WcC023k3rAxFq1VBm/uYuy68st/imVUtf4258Qapt7/a91FtFBBHlEPVRub2pf4vCPBIjUK9nrFzmcOMQOwoGhQ6HFBAbMUuFQYjLr+hYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SiqyAVSj; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Mge3iFRK"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SiqyAVSj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1714081557; x=1714340757;
-	bh=97Q4StEMSnaGADHQavqUT0bLsHbHLwxhsBOtn/7AolM=;
+	s=xoici6hpxjgnho75p7nsvwzjhm.protonmail; t=1714082219; x=1714341419;
+	bh=ssR1QDbWXYl4zvVV2r1hbcZe90jbbir7db4PC/qkIxw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Mge3iFRKSiHxa2lzkeSAmzi7MjU65qn/kz2OEqCeBlMYcml1Y9jkU5wpk6KM71UHe
-	 +jY6HrpERqdbmTONqVtNQsYJRNm3dkKoBFw94dzw9qzJK84x9WNh8jZ52D8H7iWerm
-	 ZwF1m5Q3AE+hcej/oYJgdRnRE0+3iQmVgV/ywv2J5cuxIT8Dt1679Yg3kgBj+QiK0j
-	 rZT6lQcHdtFNnOeKm1wKOeq0rXWn3Ms+7FMHr9tIhlVuh6Gi91WDR+MuSSdBPd5OtV
-	 DT0pAiuIE42FxLmWPxBEbdLN4kxe/l/J2JYCDDMDNhKZLieElRazx+gSvqR0kaM/rj
-	 i+QeS9JtMNBig==
-Date: Thu, 25 Apr 2024 21:45:54 +0000
+	b=SiqyAVSjPIZTVEUW7Y+8oEW/BRlMJBDBE86ccDZJeHaExhb9IPkM8YozY6go0x13h
+	 W/s9+m85Ibcwodaw/VIWgzEj51Y5I2Eu9YqSzdZsyjcbI/0gy3Pa1EBEroAW3FkeEf
+	 u9Qg4hMbMnzpj9xP7GzoHCTOCSXfwodJpDFfuC3RC9wl4AEcOPWoKVUL8SE+XU+1p6
+	 2KLmWzqMDSbaDctlxAyDQlPmuqmlKetc7JvI9wU2HvLlNddQ956r9EGyzgy17numSU
+	 ldE6nEkbebDpV+WZSoL4NoYfoj2Aw7KEzpsz6iPE6r6JkAN5sWftXBuqLLH2fP4uzi
+	 bEva6PwM7ZNMg==
+Date: Thu, 25 Apr 2024 21:56:54 +0000
 To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 2/5] rust: rbtree: add `RBTreeIterator`
-Message-ID: <ba946689-d10b-4752-989f-4c6404d7ee55@proton.me>
-In-Reply-To: <20240418-b4-rbtree-v3-2-323e134390ce@google.com>
-References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-2-323e134390ce@google.com>
+Message-ID: <85fdf6ae-3838-46ff-828f-3179cbad1d30@proton.me>
+In-Reply-To: <ba946689-d10b-4752-989f-4c6404d7ee55@proton.me>
+References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-2-323e134390ce@google.com> <ba946689-d10b-4752-989f-4c6404d7ee55@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e011ff89a2cfa0e9231357b446c0d1d40cbda54c
+X-Pm-Message-ID: 8f60004c9bd63e1dddb642f104a09560ba8a6505
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,121 +47,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 18.04.24 16:15, Matt Gilbride wrote:
-> @@ -188,6 +212,25 @@ pub fn try_reserve_node() -> Result<RBTreeNodeReserv=
-ation<K, V>> {
->      pub fn try_allocate_node(key: K, value: V) -> Result<RBTreeNode<K, V=
->> {
->          Ok(Self::try_reserve_node()?.into_node(key, value))
->      }
-> +
-> +    /// Returns an iterator over the tree nodes, sorted by key.
-> +    pub fn iter(&self) -> RBTreeIterator<'_, K, V> {
-> +        RBTreeIterator {
-
-There is a missing `INVARIANT` comment here justifying the invariants of
-`RBTreeIterator`.
-
-> +            _tree: PhantomData,
-> +            // SAFETY: `root` is valid as it's embedded in `self` and we=
- have a valid `self`.
-> +            next: unsafe { bindings::rb_first(&self.root) },
-> +        }
-> +    }
-> +
-> +    /// Returns an iterator over the keys of the nodes in the tree, in s=
-orted order.
-> +    pub fn keys(&self) -> impl Iterator<Item =3D &'_ K> {
-> +        self.iter().map(|(k, _)| k)
-> +    }
-> +
-> +    /// Returns an iterator over the values of the nodes in the tree, so=
-rted by key.
-> +    pub fn values(&self) -> impl Iterator<Item =3D &'_ V> {
-> +        self.iter().map(|(_, v)| v)
-> +    }
->  }
+On 25.04.24 23:45, Benno Lossin wrote:
+> On 18.04.24 16:15, Matt Gilbride wrote:
+>> @@ -373,6 +416,56 @@ fn drop(&mut self) {
+>>       }
+>>   }
+>>
+>> +impl<'a, K, V> IntoIterator for &'a RBTree<K, V> {
+>> +    type Item =3D (&'a K, &'a V);
+>> +    type IntoIter =3D RBTreeIterator<'a, K, V>;
+>> +
+>> +    fn into_iter(self) -> Self::IntoIter {
+>> +        self.iter()
+>> +    }
+>> +}
+>> +
+>> +/// An iterator over the nodes of a [`RBTree`].
+>> +///
+>> +/// Instances are created by calling [`RBTree::iter`].
+>> +///
+>> +/// # Invariants
+>> +/// - `self.next` is a valid pointer.
+>> +/// - `self.next` points to a node stored inside of a valid `RBTree`.
+>> +pub struct RBTreeIterator<'a, K, V> {
+>> +    _tree: PhantomData<&'a RBTree<K, V>>,
+>> +    next: *mut bindings::rb_node,
+>> +}
+>> +
+>> +// SAFETY: The [`RBTreeIterator`] gives out immutable references to K a=
+nd V, so it has the same
+>> +// thread safety requirements as immutable references.
+>> +unsafe impl<'a, K: Sync, V: Sync> Send for RBTreeIterator<'a, K, V> {}
 >=20
->  impl<K, V> RBTree<K, V>
-> @@ -373,6 +416,56 @@ fn drop(&mut self) {
->      }
->  }
->=20
-> +impl<'a, K, V> IntoIterator for &'a RBTree<K, V> {
-> +    type Item =3D (&'a K, &'a V);
-> +    type IntoIter =3D RBTreeIterator<'a, K, V>;
-> +
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.iter()
-> +    }
-> +}
-> +
-> +/// An iterator over the nodes of a [`RBTree`].
-> +///
-> +/// Instances are created by calling [`RBTree::iter`].
-> +///
-> +/// # Invariants
-> +/// - `self.next` is a valid pointer.
-> +/// - `self.next` points to a node stored inside of a valid `RBTree`.
-> +pub struct RBTreeIterator<'a, K, V> {
-> +    _tree: PhantomData<&'a RBTree<K, V>>,
-> +    next: *mut bindings::rb_node,
-> +}
-> +
-> +// SAFETY: The [`RBTreeIterator`] gives out immutable references to K an=
-d V, so it has the same
-> +// thread safety requirements as immutable references.
-> +unsafe impl<'a, K: Sync, V: Sync> Send for RBTreeIterator<'a, K, V> {}
+> The bounds on `K` and `V` look like typos to me. They should be `Send`
+> instead.
 
-The bounds on `K` and `V` look like typos to me. They should be `Send`
-instead.
-
-> +
-> +// SAFETY: The [`RBTreeIterator`] gives out immutable references to K an=
-d V, so it has the same
-> +// thread safety requirements as immutable references.
-> +unsafe impl<'a, K: Sync, V: Sync> Sync for RBTreeIterator<'a, K, V> {}
-> +
-> +impl<'a, K, V> Iterator for RBTreeIterator<'a, K, V> {
-> +    type Item =3D (&'a K, &'a V);
-> +
-> +    fn next(&mut self) -> Option<Self::Item> {
-> +        if self.next.is_null() {
-> +            return None;
-> +        }
-> +
-> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_nod=
-e` pointers stored in `self`
-
-This is not an invariant of `Self`, but rather `RBTree` and `self`
-should be "`RBtree`s".
+Oops, scratch this comment, what you wrote is correct, since we treat
+`RBTreeIterator` as `(&K, &V)`.
 
 --=20
 Cheers,
 Benno
-
-> +        // point to the links field of `Node<K, V>` objects.
-> +        let cur =3D unsafe { container_of!(self.next, Node<K, V>, links)=
- };
-> +
-> +        // SAFETY: `self.next` is a valid tree node by the type invarian=
-ts.
-> +        self.next =3D unsafe { bindings::rb_next(self.next) };
-> +
-> +        // SAFETY: By the same reasoning above, it is safe to dereferenc=
-e the node. Additionally,
-> +        // it is ok to return a reference to members because the iterato=
-r must outlive it.
-> +        Some(unsafe { (&(*cur).key, &(*cur).value) })
-> +    }
-> +}
-> +
->  /// A memory reservation for a red-black tree node.
->  ///
->  /// It contains the memory needed to hold a node that can be inserted in=
-to a red-black tree. One
->=20
-> --
-> 2.44.0.769.g3c40516874-goog
->=20
 
