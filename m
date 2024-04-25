@@ -1,372 +1,312 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFE012BF28;
-	Thu, 25 Apr 2024 22:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A3F15381B
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 22:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714083637; cv=none; b=pXbvGx1/cZsnVLrZ3oNehUm9PrjegRRpbgVhMDBYzRKc/gqup3Vz2FxQ5oFFshMS6JxbOQPmx0qgA8cG563myHOrkxvVwR3rYrRV7gc7hXB4Ap4xPysQzvSdYjBdLwT3ai5FN1UDZ8di+19ZAwPQ0HhLconQzZIrE4GvxGj2Osw=
+	t=1714085843; cv=none; b=nza7P201JwwGK8+D4B8wiIruBQhlnfbAT5CJHEBJgTHzczL1EMnNC8Rq0APiVU6+qHn9XFNYM1YN8n2TCOIM7UbZVil+7j5Yb2bmV4no16mkjPFanZsAyFJ1J+ChM3A+P98L1dNDVy9CPOC6qA3jKxJzthlyf126BJ263HCFp4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714083637; c=relaxed/simple;
-	bh=eFXnJkqs/cZiDYAJ2loxQUSzW4V0P2cEE6ve4E8dmF4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SiiQnHceLQRReqFbcZ05KjG8Y0lau/ax3deU/qpCn0IdyYJ6tpf3EcZ1UGwMpdX3Snb507h+R6s6ETWvvWI4EkwldxtBZtQcB1IQPVUG3VM/axhwTyOfvExyV3PzoQfyZghwGnX6BRtmEsPa3U2J5NdOQeOufQ+25UUHdtgIKWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ezHuqltE; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1714085843; c=relaxed/simple;
+	bh=v+pIQkCp/d0XMM62nKcndPkFSsemwxbmh9VmlslHl6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=ovMLKIvodSWU/RgfRI1BnzbX0wThy5Cdea81C4QnYKHLlWoWKZm1d5sTOLkLin0zJLjCgfDDp9bGnDq37OfgJWyjSmV0HbfvB7jjG5sF4yZav6UdDuMZcSY+ndqh1kWIsejcW4j+8S78Dq6splvcePa5yJRxmqEqGDuGkJx/dBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h6R1E8+N; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ezHuqltE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=4r5jppq7xja7vc4akxf5zkw5dy.protonmail; t=1714083632; x=1714342832;
-	bh=x8XINNQlG+ME5cqW30DA+XLIbTnCIlyS+hje8cQijCY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=ezHuqltEwrYYavslXKaCmlxFY3aV3bFVSDrsvufzjrmJCGOP/w0guX3UeliENgZ8V
-	 wydICZit57EokMAo6gdLmzo+7aj7hwoB/6kOdTv7z6ZkA+3+/zKF9c8F4JQswhmE1l
-	 N6JQnMVGcGDUbJILEsz7VjrnzkdL7PNS/9N5RSMi/SbKwPQyni0fnIAvq7S9Xjj9IJ
-	 nvHAV9AVESPl7b1f0SdVVSx5+zfO94/GGwbU/CkJ6z9Zw+1P0zZLJ8PVLkwHcDN9BX
-	 oypalv7RVcZtGkEZnpUpvKcFmW0IxsHkCt9J5IZiRyJ2n0LfAnyqOn9v1ktm+/oq9v
-	 BiBOMy300lnFw==
-Date: Thu, 25 Apr 2024 22:20:27 +0000
-To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/5] rust: rbtree: add `RBTreeCursor`
-Message-ID: <1af2f75d-4f5d-408e-9ce7-8a3671cc0962@proton.me>
-In-Reply-To: <20240418-b4-rbtree-v3-4-323e134390ce@google.com>
-References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-4-323e134390ce@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 96f4001a6063c079d1feb633337affe829918d02
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h6R1E8+N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714085840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y1zc8KxI490UVDtoXR0x+4igsV+4WxEoDguutCn+fls=;
+	b=h6R1E8+NTezDD03GD0yFFypysl+a/0M/+yg+RgcuOm2kejTQbjtn9NKXDbIL9AYPJ7IcGo
+	930idDKuYogrW2FyA5EDgqtaZKEVcXqWOQrMiV1CS4mQKzcbu0CuFw9getRx8LX5cqlp6m
+	32/zc07kQbErh6Cdc3qHNTscRdXXszs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-168-qkLo9NjbPaGAVmdSwPM9Eg-1; Thu, 25 Apr 2024 18:57:18 -0400
+X-MC-Unique: qkLo9NjbPaGAVmdSwPM9Eg-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-416ac21981dso7824645e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Apr 2024 15:57:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714085837; x=1714690637;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y1zc8KxI490UVDtoXR0x+4igsV+4WxEoDguutCn+fls=;
+        b=GqmGYEypiG4l1e37H2TXcudazmpsOgaF+QjY/DctG0BjVZwgT0vYlYrM6JFjPlcwoa
+         LHjtRFCSfEycxA8n5Rct8Uy+mgHzGQvvkkrTukwroj04aNhwJJMXAmXXmdSNt2De5qhr
+         Yx1u3C8rsL6o7mWJhlom6rotVI8E0kD1f4wKNmAjtmY1RteUV4WCO6azyCaCw8qSzREI
+         tLnaUW5Wt2HA6zC+C9lYsDhsZomc+KAfRhCX3ojKaZyQu185QdZQKgkt1pUGwyh3VuEZ
+         dXW9cDjBfdo9QK0mNsnhzNS1T77ia4tc+SdjvFGgRFVFSZgIfCrmeAzPmPQwa5hBwNsx
+         d15Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUpwfJ3I2B/izv1WlC4K7WlwXDc19A+3oQioUyHno29gOLbwn5NZGUXPPSnvWtKBGk3c0AZGCvFDdX7sQhFiU+vyqbjPT842zHS6f1EmCo=
+X-Gm-Message-State: AOJu0YzZHx/7L1pDqmCXwIuWzKwyp0wZ9NzICwdXR0CKdZEVNUGUErir
+	hFRfYBm4iiuUsqk4RVPdyW7W7sYtNQMZzAxeXggz6w10Jb686cOSnVO/u0OwgnWNgTae6NzZmQf
+	CAlOYcdgtaRrKSzMX+bbNu5AL28nV6+7fGJKCqIFTfym7TDcgg6QI/skFWdRLIOL5
+X-Received: by 2002:a05:600c:1c20:b0:418:91ae:befc with SMTP id j32-20020a05600c1c2000b0041891aebefcmr3409373wms.0.1714085837395;
+        Thu, 25 Apr 2024 15:57:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElHmk9dKRrTbmlPorTMkzfsWk0eCWrVogI2z7mJOFY62iXxZOgQ/VEGrXfIfl/QLQyodQ1bA==
+X-Received: by 2002:a05:600c:1c20:b0:418:91ae:befc with SMTP id j32-20020a05600c1c2000b0041891aebefcmr3409364wms.0.1714085837005;
+        Thu, 25 Apr 2024 15:57:17 -0700 (PDT)
+Received: from cassiopeiae ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
+        by smtp.gmail.com with ESMTPSA id p3-20020a5d6383000000b00341b451a31asm20782804wru.36.2024.04.25.15.57.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Apr 2024 15:57:16 -0700 (PDT)
+Date: Fri, 26 Apr 2024 00:57:14 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Zhi Wang <zhiw@nvidia.com>,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>, ajanulgu@redhat.com,
+	Andy Currid <acurrid@nvidia.com>, Neo Jia <cjia@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v3 00/10] Allocation APIs
+Message-ID: <Zirfyp_NiYCRQYvk@cassiopeiae>
+References: <Zip4dFpt8xhk7UBL@cassiopeiae>
+ <74cbdaf7-360e-47e3-bda4-4661422a11ae@proton.me>
+ <ZiqkIQTHe9apd-LW@pollux>
+ <f71c4e07-9f6f-4709-a3bb-012e644c4845@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <f71c4e07-9f6f-4709-a3bb-012e644c4845@proton.me>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 18.04.24 16:15, Matt Gilbride wrote:
-> @@ -400,6 +442,72 @@ fn remove_node(&mut self, key: &K) -> Option<RBTreeN=
-ode<K, V>> {
->      pub fn remove(&mut self, key: &K) -> Option<V> {
->          self.remove_node(key).map(|node| node.node.value)
+On Thu, Apr 25, 2024 at 08:52:16PM +0000, Benno Lossin wrote:
+> On 25.04.24 20:42, Danilo Krummrich wrote:
+> > On Thu, Apr 25, 2024 at 04:09:46PM +0000, Benno Lossin wrote:
+> >> On 25.04.24 17:36, Danilo Krummrich wrote:
+> >>> (adding folks from [1])
+> >>>
+> >>> On Tue, Apr 23, 2024 at 05:43:08PM +0200, Danilo Krummrich wrote:
+> >>>> Hi all,
+> >>>>
+> >>>> On 3/28/24 02:35, Wedson Almeida Filho wrote:
+> >>>>> From: Wedson Almeida Filho <walmeida@microsoft.com>
+> >>>>>
+> >>>>> Revamp how we use the `alloc` crate.
+> >>>>>
+> >>>>> We currently have a fork of the crate with changes to `Vec`; other
+> >>>>> changes have been upstreamed (to the Rust project). This series removes
+> >>>>> the fork and exposes all the functionality as extension traits.
+> >>>>>
+> >>>>> Additionally, it also introduces allocation flag parameters to all
+> >>>>> functions that may result in allocations (e.g., `Box::new`, `Arc::new`,
+> >>>>> `Vec::push`, etc.) without the `try_` prefix -- the names are available
+> >>>>> because we build `alloc` with `no_global_oom_handling`.
+> >>>>>
+> >>>>> Lastly, the series also removes our reliance on the `allocator_api`
+> >>>>> unstable feature.
+> >>>>>
+> >>>>> Long term, we still want to make such functionality available in
+> >>>>> upstream Rust, but this allows us to make progress now and reduces our
+> >>>>> maintainance burden.
+> >>>>>
+> >>>>> In summary:
+> >>>>> 1. Removes `alloc` fork
+> >>>>> 2. Removes use of `allocator_api` unstable feature
+> >>>>> 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
+> >>>>
+> >>>> With that series, how do we implement alternative allocators, such as
+> >>>> (k)vmalloc or DMA coherent?
+> >>>>
+> >>>> For instance, I recently sketched up some firmware bindings we want to
+> >>>> use in Nova providing
+> >>>>
+> >>>> fn copy<A: core::alloc::Allocator>(&self, alloc: A) -> Result<Vec<u8, A>>
+> >>>> [1]
+> >>>>
+> >>>> making use of Vec::try_with_capacity_in(). How would I implement
+> >>>> something similar now?
+> >>>
+> >>> I want to follow up on this topic after also bringing it up in yesterday's
+> >>> weekly Rust call.
+> >>>
+> >>> In the call a few ideas were discussed, e.g. whether we could just re-enable the
+> >>> allocator_api feature and try getting it stabilized.
+> >>>
+> >>> With the introduction of alloc::Flags (gfp_t abstraction) allocator_api might
+> >>> not be a viable choice anymore.
+> >>
+> >> Bringing in some more context from the meeting: Gary suggested we create
+> >> a custom trait for allocators that can also handle allocation flags:
+> >>
+> >>       pub trait AllocatorWithFlags: Allocator {
+> >>           type Flags;
+> >>
+> >>           fn allocate_with_flags(&self, layout: Layout, flags: Self::Flags) -> Result<NonNull<[u8]>, AllocError>;
+> >>
+> >>           /* ... */
+> >>       }
+> >>
+> >>       impl AllocatorWithFlags for Global { /* ... */ }
+> >>
+> >>       impl<T, A> VecExt<T> for Vec<T, A> where A: AllocatorWithFlags {
+> >>           /* ... */
+> >>       }
+> >>
+> >> I think that this would work, but we would have to ensure that users are
+> >> only allowed to call allocating functions if they are functions that we
+> >> control. For example `Vec::try_reserve` [1] would still use the normal
+> >> `Allocator` trait that doesn't support our flags.
+> >> Gary noted that this could be solved by `klint` [2].
+> > 
+> > I agree, extending the Allocator trait should work.
+> > 
+> > Regarding allocating functions we don't control, isn't that the case already?
+> > AFAICS, we're currently always falling back to GFP_KERNEL when calling
+> > Vec::try_reserve().
+> 
+> Yes we're falling back to that, but
+> 1. there are currently no calls to `try_reserve` in tree,
+> 2. if you use eg a `vmalloc` allocator, then I don't know if it would be
+>     fine to reallocate that pointer using `krealloc`. I assumed that that
+>     would not be OK (hence my extra care with functions outside of our
+>     control).
+
+Well, this would indeed not be valid. However, a vmalloc allocater wouldn't
+implement realloc() this way.
+
+Or are you saying that Vec always uses the global allocator in that case? Why
+would it do that?
+
+> 
+> > But yes, I also think it would be better to enforce being explicit.
+> > 
+> > Given that, is there any value extending the existing Allocator trait at all?
+> 
+> This is what I meant in the meeting by "do you really need the allocator
+> trait?". What you lose is the ability to use `Vec` and `Box`, instead
+
+Oh, indeed. I forgot about that when I wrote that. In that case I feel like it's
+worth extending the existing allocator_api.
+
+> you have to use your own wrapper types (see below). But what you gain is
+> freedom to experiment. In the end we should still try to upstream our
+> findings to Rust or at least share our knowledge, but doing that from
+> the get-go is not ideal for productivity.
+> 
+> >> But we only need to extend the allocator API, if you want to use the std
+> >> library types that allocate. If you would also be happy with a custom
+> >> newtype wrapper, then we could also do that.
+> > 
+> > What do you mean with "custom newtype wrapper"?
+> 
+> You create a newtype struct ("newtype" means that it wraps an inner type
+> and adds/removes/changes features from the inner type):
+> 
+>      pub struct BigVec<T>(Vec<T>);
+> 
+> And then you implement the common operations on it:
+> 
+>      impl<T> BigVec<T> {
+>          pub fn push(&mut self, item: T) -> Result {
+>              self.reserve(1)?;
+> 
+>              self.0.spare_capacity_mut()[0].write(item);
+> 
+>              // SAFETY: <omitted for brevity>
+>              unsafe { self.0.set_len(self.0.len() + 1) };
+>              Ok(())
+>          }
+> 
+>          pub fn reserve(&mut self, additional: usize) -> Result {
+>              /*
+>               * implemented like `VecExt::reserve` from this patchset,
+>               * except that it uses `vmalloc` instead of `krealloc`.
+>               */
+>          }
 >      }
-> +
-> +    /// Returns a cursor over the tree nodes based on the given key.
-> +    ///
-> +    /// If the given key exists, the cursor starts there.
-> +    /// Otherwise it starts with the first larger key in sort order.
-> +    /// If there is no larger key, it returns [`None`].
-> +    pub fn cursor_lower_bound(&mut self, key: &K) -> Option<RBTreeCursor=
-<'_, K, V>>
-> +    where
-> +        K: Ord,
-> +    {
-> +        let mut node =3D self.root.rb_node;
-> +        let mut best_match: Option<NonNull<Node<K, V>>> =3D None;
-> +        while !node.is_null() {
-> +            // SAFETY: By the type invariant of `Self`, all non-null `rb=
-_node` pointers stored in `self`
-> +            // point to the links field of `Node<K, V>` objects.
-> +            let this =3D unsafe { container_of!(node, Node<K, V>, links)=
- }.cast_mut();
-> +            // SAFETY: `this` is a non-null node so it is valid by the t=
-ype invariants.
-> +            let this_key =3D unsafe { &(*this).key };
-> +            // SAFETY: `node` is a non-null node so it is valid by the t=
-ype invariants.
-> +            let left_child =3D unsafe { (*node).rb_left };
-> +            // SAFETY: `node` is a non-null node so it is valid by the t=
-ype invariants.
-> +            let right_child =3D unsafe { (*node).rb_right };
+> 
+> If we need several of these, we can also create a general API that
+> makes it easier to create them and avoids the duplication.
 
-Since you have this pattern multiple times, I think you could have a
-single function that walks the tree and takes care of most of the
-`unsafe` stuff. A good starting point might be this:
+Thanks for for explaining.
 
-     unsafe fn walk<F, R>(node: *mut bindings::rb_node, dir: F) -> R
-     where
-                /*     this,             key */
-         F: FnMut(*mut bindings::rb_node, &K) -> Either<Direction, R>;
+I'd probably tend to extending allocator_api then. Do you see any major
+advantages / disadvantages doing one or the other?
 
-> +            if key =3D=3D this_key {
-> +                // INVARIANT:
-> +                // - `self.root` and `node` are valid pointers.
-> +                // - `self.root` is the root of an [`RBTree`].
-> +                // - `node` is a valid node in an [`RBTree`].
-> +                // - Due to the type signature of this function, the ret=
-urned [`RBTreeCursor`]
-> +                //   borrows from `self`.
-> +                return Some(RBTreeCursor {
-> +                    _tree: PhantomData,
-> +                    root: addr_of_mut!(self.root),
-> +                    current: node,
-> +                });
-> +            } else {
-> +                node =3D if key > this_key {
-> +                    right_child
-> +                } else {
-> +                    let is_better_match =3D match best_match {
-> +                        None =3D> true,
-> +                        Some(best) =3D> {
-> +                            // SAFETY: `best` is a non-null node so it i=
-s valid by the type invariants.
-> +                            let best_key =3D unsafe { &(*best.as_ptr()).=
-key };
-> +                            best_key > this_key
-> +                        }
-> +                    };
-> +                    if is_better_match {
-> +                        best_match =3D NonNull::new(this);
-> +                    }
-> +                    left_child
-> +                }
-> +            };
-> +        }
-> +        // INVARIANT:
-> +        // - `self.root` and `best` are valid pointers.
-> +        // - `self.root` is the root of an [`RBTree`].
-> +        // - `best` is a valid node in an [`RBTree`].
-> +        // - Due to the type signature of this function, the returned [`=
-RBTreeCursor`]
-> +        //   borrows from `self`.
-> +        best_match.map(|best| RBTreeCursor {
-> +            _tree: PhantomData,
-> +            root: addr_of_mut!(self.root),
-> +            // SAFETY: `best` is a non-null node so it is valid by the t=
-ype invariants.
-> +            current: unsafe { addr_of_mut!((*best.as_ptr()).links) },
-> +        })
-> +    }
->  }
->=20
->  impl<K, V> Default for RBTree<K, V> {
+> 
+> >> I think that we probably want a more general solution (ie `Allocator`
+> >> enriched with flags), but we would have to design that before you can
+> >> use it.
+> >>
+> >>
+> >> [1]: https://doc.rust-lang.org/alloc/vec/struct.Vec.html#method.try_reserve
+> >> [2]: https://github.com/Rust-for-Linux/klint
+> >>
+> >>>
+> >>> I think it would work for (k)vmalloc, where we could pass the page flags through
+> >>> const generics for instance.
+> >>>
+> >>> But I don't see how it could work with kmem_cache, where we can't just create a
+> >>> new allocator instance when we want to change the page flags, but need to
+> >>> support allocations with different page flags on the same allocator (same
+> >>> kmem_cache) instance.
+> >>
+> >> I think that you can write the `kmem_cache` abstraction without using
+> >> the allocator api. You just give the function that allocates a `flags`
+> >> argument like in C.
+> > 
+> > Guess you mean letting the kmem_cache implementation construct the corresponding
+> > container? Something like:
+> > 
+> > KmemCache<T>::alloc_box(flags: alloc::Flags) -> Box<T>
+> > 
+> > I think that'd make a lot of sense, since the size of an allocation is fixed
+> > anyways.
+> 
+> Yes, but you would probably need a newtype return type, since you need
+> to control how it is being freed. Also in the example above there is no
+> `kmem_cache` object that stores the state.
 
-[...]
+Sure, the above was just meant to see whether I understood you correctly.
 
-> +/// # Invariants
-> +/// - `root` and `current` are valid pointers.
-> +/// - `root` points to the `root` node of an [`RBTree`].
-> +/// - `current` points to a node that is in the same [`RBTree`] that `ro=
-ot` is pointing to.
-> +/// - A cursor must borrow the [`RBTree`] containing `root` and `current=
-` mutably.
-> +pub struct RBTreeCursor<'a, K, V> {
-> +    _tree: PhantomData<&'a RBTree<K, V>>,
+> 
+> I think that the API would look more like this:
+> 
+>      impl<T> KMemCache<T> {
+>          pub fn alloc(&self, value: T, flags: Flags) -> Result<KMemObj<'_, T>>;
+>      }
+> 
+> Here are a couple of interesting elements of this API:
+> - I don't know if `kmem_cache` uses the same flags as the alloc module,
+>    if not you will need a custom `Flags` type.
+> - I assume that an object allocated by a `kmem_cache` is only valid
+>    while the cache still exists (ie if you drop the cache, all allocated
+>    objects are also invalidated). That is why the return type contains a
+>    lifetime (`'_` refers to the elided lifetime on the `&self` parameter.
+>    It means that the `KMemObj` is only valid while the `KMemCache` is
+>    also valid).
+> - The return type is its own kind of smart pointer that allows you to
+>    modify the inner value like `Box`, but it takes care of all the
+>    `kmem_cache` specifics (eg ensuring that the associated cache is still
+>    valid, freeing the object etc).r
+> 
+> Since I assumed several things, in the end the API might look different,
+> but I think that this could be a more fruitful starting point.
 
-Why is this not `&'a mut RBTree<K, V>`?
+Thanks for the hints - your assumptions are correct. The page flags are the same.
 
-> +    root: *mut bindings::rb_root,
-> +    current: *mut bindings::rb_node,
-> +}
-> +
-> +// SAFETY: The [`RBTreeCursor`] gives out immutable references to K and =
-mutable references to V,
-> +// so it has the same thread safety requirements as mutable references.
-> +unsafe impl<'a, K: Send, V: Send> Send for RBTreeCursor<'a, K, V> {}
-> +
-> +// SAFETY: The [`RBTreeCursor`] gives out immutable references to K and =
-mutable references to V,
-> +// so it has the same thread safety requirements as mutable references.
-> +unsafe impl<'a, K: Sync, V: Sync> Sync for RBTreeCursor<'a, K, V> {}
-> +
-> +impl<'a, K, V> RBTreeCursor<'a, K, V> {
-> +    /// The current node
-> +    pub fn current(&self) -> (&K, &V) {
-> +        // SAFETY:
-> +        // - `self.current` is a valid node by the type invariants.
-> +        // - We have an immutable reference by the function signature.
-> +        unsafe { Self::to_key_value(self.current) }
-> +    }
-> +
-> +    /// The current node, with a mutable value
-> +    pub fn current_mut(&mut self) -> (&K, &mut V) {
-> +        // SAFETY:
-> +        // - `self.current` is a valid node by the type invariants.
-> +        // - We have an mutable reference by the function signature.
-> +        unsafe { Self::to_key_value_mut(self.current) }
-> +    }
-> +
-> +    /// Remove the current node from the tree.
-> +    ///
-> +    /// Returns a cursor to the next node, if it exists,
-> +    /// else the previous node. Returns [`None`] if the tree
-> +    /// becomes empty.
-> +    pub fn remove_current(self) -> Option<Self> {
-> +        let prev =3D self.get_neighbor_raw(Direction::Prev);
-> +        let next =3D self.get_neighbor_raw(Direction::Next);
-> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_nod=
-e` pointers stored in `self`
-> +        // point to the links field of `Node<K, V>` objects.
-> +        let this =3D unsafe { container_of!(self.current, Node<K, V>, li=
-nks) }.cast_mut();
-> +        // SAFETY: The reference to the tree used to create the cursor o=
-utlives the cursor, so
-> +        // the tree cannot change. By the tree invariant, all nodes are =
-valid.
-> +        unsafe { bindings::rb_erase(&mut (*this).links, self.root) };
-> +
-> +        let current =3D match (prev, next) {
-> +            (_, Some(next)) =3D> next,
-> +            (Some(prev), None) =3D> prev,
-> +            (None, None) =3D> {
-> +                return None;
-> +            }
-> +        };
-> +
-> +        // INVARIANT:
-> +        // - `self.root` and `current` are valid pointers.
-> +        // - `self.root` is the root of an [`RBTree`].
-> +        // - `current` is a valid node in an [`RBTree`].
-> +        // - Due to the function signature, `self` is an owned [`RBTreeC=
-ursor`],
-> +        //   and [`RBTreeCursor`]s are only created via functions with a=
- mutable reference
-> +        //   to an [`RBTree`].
-> +        Some(Self {
-> +            current,
-> +            _tree: self._tree,
-> +            root: self.root,
-> +        })
-> +    }
-> +
-> +    /// Remove the previous node, returning it if it exists.
-> +    pub fn remove_prev(&mut self) -> Option<(K, V)> {
-
-Why do these functions not return `Option<RBTreeNode<K, V>>`?
-
-> +        self.remove_neighbor(Direction::Prev)
-> +    }
-> +
-> +    /// Remove the next node, returning it if it exists.
-> +    pub fn remove_next(&mut self) -> Option<(K, V)> {
-> +        self.remove_neighbor(Direction::Next)
-> +    }
-> +
-> +    fn remove_neighbor(&mut self, direction: Direction) -> Option<(K, V)=
-> {
-> +        if let Some(neighbor) =3D self.get_neighbor_raw(direction) {
-> +            // SAFETY: The reference to the tree used to create the curs=
-or outlives the cursor, so
-> +            // the tree cannot change. By the tree invariant, all nodes =
-are valid.
-> +            unsafe { bindings::rb_erase(neighbor, self.root) };
-> +            // SAFETY: By the type invariant of `Self`, all non-null `rb=
-_node` pointers stored in `self`
-> +            // point to the links field of `Node<K, V>` objects.
-> +            let this =3D unsafe { container_of!(neighbor, Node<K, V>, li=
-nks) }.cast_mut();
-> +            // SAFETY: `this` is valid by the type invariants as describ=
-ed above.
-> +            let n =3D unsafe { Box::from_raw(this) };
-> +            return Some((n.key, n.value));
-> +        }
-> +        None
-> +    }
-> +
-> +    /// Move the cursor to the previous node, returning [`None`] if it d=
-oesn't exist.
-> +    pub fn move_prev(self) -> Option<Self> {
-> +        self.mv(Direction::Prev)
-> +    }
-> +
-> +    /// Move the cursor to the next node, returning [`None`] if it doesn=
-'t exist.
-> +    pub fn move_next(self) -> Option<Self> {
-> +        self.mv(Direction::Next)
-> +    }
-> +
-> +    fn mv(self, direction: Direction) -> Option<Self> {
-
-Does it hurt to name this `move`?
-
-> +        // INVARIANT:
-> +        // - `self.root` and `neighbor` are valid pointers.
-> +        // - `self.root` is the root of an [`RBTree`].
-> +        // - `neighbor` is a valid node in an [`RBTree`].
-> +        // - Due to the function signature, `self` is an owned [`RBTreeC=
-ursor`],
-> +        //   and [`RBTreeCursor`]s are only created via functions with a=
- mutable reference
-> +        //   to an [`RBTree`].
-> +        self.get_neighbor_raw(direction).map(|neighbor| Self {
-> +            _tree: self._tree,
-> +            root: self.root,
-> +            current: neighbor,
-> +        })
-> +    }
-
-[...]
-
-> +    /// SAFETY:
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to `node` for the duration of =
-'a.
-> +    unsafe fn to_key_value(node: *mut bindings::rb_node) -> (&'a K, &'a =
-V) {
-> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_nod=
-e` pointers stored in `self`
-> +        // point to the links field of `Node<K, V>` objects.
-> +        let this =3D unsafe { container_of!(node, Node<K, V>, links) };
-> +        // SAFETY: The passed `node` is the current node or a non-null n=
-eighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let k =3D unsafe { &(*this).key };
-> +        // SAFETY: The passed `node` is the current node or a non-null n=
-eighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let v =3D unsafe { &(*this).value };
-> +        (k, v)
-> +    }
-> +
-> +    /// SAFETY:
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has mutable access to `node` for the duration of 'a=
-.
-> +    unsafe fn to_key_value_mut(node: *mut bindings::rb_node) -> (&'a K, =
-&'a mut V) {
-> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_nod=
-e` pointers stored in `self`
-> +        // point to the links field of `Node<K, V>` objects.
-> +        let this =3D unsafe { container_of!(node, Node<K, V>, links) }.c=
-ast_mut();
-> +        // SAFETY: The passed `node` is the current node or a non-null n=
-eighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let k =3D unsafe { &(*this).key };
-> +        // SAFETY: The passed `node` is the current node or a non-null n=
-eighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let v =3D unsafe { &mut (*this).value };
-> +        (k, v)
-> +    }
-
-You can create a single function that does the `container_of!` stuff and
-that returns `(*mut K, *mut V)` and implement these two in terms of that
-one.
-
---=20
-Cheers,
-Benno
-
-> +}
-> +
-> +/// Direction for [`RBTreeCursor`] operations.
-> +enum Direction {
-> +    /// the node immediately before, in sort order
-> +    Prev,
-> +    /// the node immediately after, in sort order
-> +    Next,
-> +}
-> +
->  impl<'a, K, V> IntoIterator for &'a RBTree<K, V> {
->      type Item =3D (&'a K, &'a V);
->      type IntoIter =3D RBTreeIterator<'a, K, V>;
->=20
-> --
-> 2.44.0.769.g3c40516874-goog
->=20
-
+> 
+> -- 
+> Cheers,
+> Benno
+> 
 
