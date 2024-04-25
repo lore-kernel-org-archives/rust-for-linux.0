@@ -1,75 +1,77 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2092.outbound.protection.outlook.com [40.107.122.92])
+Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2138.outbound.protection.outlook.com [40.107.122.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A6614D28C;
-	Thu, 25 Apr 2024 16:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B541F14D281;
+	Thu, 25 Apr 2024 16:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.138
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714061647; cv=fail; b=jr6lQe3VL0zjIvMUbZCMJtTZ8NrQa/fJ1JdVHH7Erl8uZahIUOKojoTbNW4j6+uw0GTWGSKTNMX1tJzHSq4AygnN/dOnn/9vgk6Yqo4BY+EeNhaW9m+180mp6NErT2cvE7uu6zTmXd+YcpRrRJsnG5IW6ioB9Nv7VV0ZwBxqHzQ=
+	t=1714062025; cv=fail; b=IY2U+B+xyiTphkon7rzOEedus8Pn56H4WZukGbfVTXhG/vxHaceW4Z6scDxmfdPFpTD+Otu3A4gY+m/LdEHBRNcuqPHX1GHV5bCCxX/ZJDSn0+HYg2/Sz1BkImP40mFzk8AWL0Bram/qduNfJVqrUqNfbRv7B1YKE0x/FnUWA0M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714061647; c=relaxed/simple;
-	bh=B3ZvofMv/LYkm9y8o+eScz/5uLtowDeDt/0uuL4bCjY=;
+	s=arc-20240116; t=1714062025; c=relaxed/simple;
+	bh=V4TmXVZe06bVg3MxGuPMPL5PUad6wJoIOFu5bIErTic=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FkcpCrI2rLUgXqFqEGrhg2cpSII+BwsX1rxIEfvSKxEl1WdRXLnT+lzT4ZX9jDhb6nj3oyU1+HQAScB6SobhGMGFD3ffYLeLJO69kifku1lWIn0MUKHDOiWPyimDAQssC/82SMylXzGhyahMwVJkRuKx5dvujmTfP0EX3ZY9wpY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ULNrofaM; arc=fail smtp.client-ip=40.107.122.92
+	 Content-Type:MIME-Version; b=i+rkXwIfxkRdMJzhX4+PF2Q83VWvZJYJAmRuZfhaf0L3bJu29z+uKnojTU023elmzwVz9jsGL5l7UZCNnR2YyuP2b39SQyOrRsLrBSPsrzqfRiH6ID3EapooVZ6zpirdt69EPEyj8fWYtTkBnEryxL6G+7wsxGWK/pi/o/J0jSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=PFkC5eKS; arc=fail smtp.client-ip=40.107.122.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ULNrofaM"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="PFkC5eKS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kH8qNqIu5oEyvzykULUNRkEtz6wA/zTw69qgTfjWA5GoAlbt27qsT/mce8wjXbyCFQnO2Yzjv6aFDhK8fxR6mTbxszTf1i85iPsrbZ5SunWAIeJGtgd/1YhjqKtKF485gs8kCbTU/PPbVU85Rut99bKShR5ZMWITyJAEGFbzJ+wHoEMMhs/5jjaSJDuasA+gDCt+tlXg9DzvEE/AM4NxmpoekaPiLVK3wPw95Ys424BkryIEikZjkyUwY/IrdAWR2voozwyEzvNPbEAc/vnX2OVUWZMI9gyuqao6jk9gBkgdF+4X5hxW0J4NpsEpc5Uy01xMSBGmiEwCYWj9OvjWxQ==
+ b=HWnrXqsAvKfnZ3ySC3pucBvorc4o7SoAXAicdV4mRefK5JMIMH++b0w4m+Heiuttrbc9TxE3YMxJQX3wRJmukP6j/tIaTUH2k15isVq/Xf9Lkfo+ntEgqBhfEoYxEIIrnh6dBUzcAyeQDEKm6X5tdVa2GGLLSaOmF+1rcAgl0WLIwkKHrCCsVZcpnBVuK9RJXrewZGxbl0Ymu8miBSNHgHxMGuzxdCKT4dsUGWL06IaeLwOZJJFoThe8CaDdazKY0TjlH+IcKxB4px133g7WmcnFIRA2N07+q+fZoqcAaaK4UdfFjehWYif4Ei73aeAtDIbMoRJFl9TjdVJtATTQYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ep/WTszA2WkQDXe+kAenwxtFlCAbYxNsfy38azCFbA4=;
- b=fbXwCrC+t2a8Gh2li1Wkxc3ZBJaPt1ijNrX5x9/Ualm+Uga62sjc1Wpl8+7+hezZ2tLXkxE0hLftSRIId/DjDjv11q6PE5Er03Twf6sEhIq4VFJSey9W8QdyRmNzjvkgOjWXW+ypGTep+i9kJyE5FiaUxWPkJX4r3XxSDLEjxAs+f19QZ9lhBnLrL3HxswWl2aOLSRGMzQirkquSZv/aii4uU/Z7BLgp8G8MrtDhG9owQj/igG8R/7u0c32IidGqfBYuLrPiUYolo4ueenKGSg7MKH7UtC/UBZSN74InLSKgv6F/uzpJeTiw4NYTgjYYp7sB4Lzc7E2JlPNZmnQOIw==
+ bh=xyoZazaRhnkLfJmtW0hIX7Gjev36GnuHZyUQrVpuKk0=;
+ b=jWRD6BA79CnvEE8wStl++0FEA2nWji63W+h5qGJAXr1C+xgD/MaLnQRQncooxvme7Z7UbQiDSqdBMRHK1W9rR+OiYoIFMYGuE+1gKbJWVaP6z4YzvtEopRAT4Q+P48tnceSna8ipUOtQAG4v2CmlGSbk9gl9we86Ee3WYBCIF0rf60SyWKPxYXd9x9cacjQvwxRV6iVbn5pcZt+0+4ADPTQ9v27YTnsKkzvToDNx9eVkJEjoQErAj2pCucHdGn2StC/Ef7umWt53xLVT+IK08lRyB3O7MHUedPyMuyC5oHWX7U6/JmNq7tSjoIp0ArQXdz1Z5GH1HaJpOTuoKxBMkA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ep/WTszA2WkQDXe+kAenwxtFlCAbYxNsfy38azCFbA4=;
- b=ULNrofaMYjEM3tkTKs3P6LgMt439Lu54xZPF3TQmHZbBFsf5zf76k0Gb1t4WJSf4AcKWkG9II+VlZi2/zZdLUtTg8fyoi1L+WRBqSe3BHDgBvjc+HJADoo/ft5niN0ODWMcSU0Bohadpe7NI6XlYVAj5q2jJlh+iko7QOdG1NEU=
+ bh=xyoZazaRhnkLfJmtW0hIX7Gjev36GnuHZyUQrVpuKk0=;
+ b=PFkC5eKSoZ21NBU7qFw+cATzrzy6/tGZtUQihlZ6QZ2vAmxdpTYogxjddyv3rF+xYrkkUT/aRVReAiXK7JzIaEi9dgiwlpYSHAJIUt6cQal9Zx8iMvwVo3Gi4Dq71sMnPNZcM5S8Ap0YicqKgI4etYBhMBatyw5opd2Yd5YGiFw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB5970.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cf::5) with
+ by LOYP265MB1872.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:f2::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22; Thu, 25 Apr
- 2024 16:14:02 +0000
+ 2024 16:20:20 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.7472.044; Thu, 25 Apr 2024
- 16:14:02 +0000
-Date: Thu, 25 Apr 2024 17:13:58 +0100
+ 16:20:20 +0000
+Date: Thu, 25 Apr 2024 17:20:18 +0100
 From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Alice Ryhl
+ <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox
+ <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton
  <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Arve =?UTF-8?B?SGrDuG5uZXbDpWc=?="
- <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen
- <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas
- <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Arnd
- Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v6 3/4] rust: uaccess: add typed accessors for userspace
- pointers
-Message-ID: <20240425171358.54dc96e4@eugeo>
-In-Reply-To: <20240418-alice-mm-v6-3-cb8f3e5d688f@google.com>
+ <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg
+ <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Arve =?UTF-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
+ <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren
+ Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor
+ Gross <tmgross@umich.edu>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian
+ Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v6 4/4] rust: add abstraction for `struct page`
+Message-ID: <20240425172018.015e1afd@eugeo>
+In-Reply-To: <ZiGlC5AtRRikE1AI@boqun-archlinux>
 References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com>
-	<20240418-alice-mm-v6-3-cb8f3e5d688f@google.com>
+	<20240418-alice-mm-v6-4-cb8f3e5d688f@google.com>
+	<ZiFsCLb-BZWbBHsu@boqun-archlinux>
+	<87dc4cdf-ccf6-4b08-8915-313aad313f93@proton.me>
+	<ZiGlC5AtRRikE1AI@boqun-archlinux>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P302CA0002.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c2::8) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0184.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:311::10) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -78,163 +80,89 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB5970:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3eb642ba-7e25-4c00-4741-08dc6542b905
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LOYP265MB1872:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a6bba20-5763-4867-4808-08dc65439a5e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|1800799015|7416005;
+X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|1800799015|7416005|366007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8G/L776Wnv6DbtGhAgn6HMnGi2OAE8SjKXvqZIYPEG7qLtx6V2KC1NRZGb2T?=
- =?us-ascii?Q?K6WCOjrkBEzDzGgv1AeIvVPba8MmrKgUokNG+zy5gXXd38ErX8m0yVNrJXvq?=
- =?us-ascii?Q?4Ot58KA+xVNT9OUdgg3W/tpBxV9rGSV/ULvOp4adfEwJ9Y6LTLSHjJlC+DAq?=
- =?us-ascii?Q?WlR9ZElruu+6NAKX8o0eVy6GfGq2HDlPJMvJH+Lp560+pHWY+/IB/j6Wx67j?=
- =?us-ascii?Q?uES07BpWqkah1MH4IX8egZ62yZYG+TOorcvpjVx3LNpL1nZ5OeLNXOKRqxLa?=
- =?us-ascii?Q?Dzlm7DIgyxgZfr0q9VdOicKt4MMvn4QhH9KgTdenXwfTiSR8t3RkzocRvls6?=
- =?us-ascii?Q?2qXSNXvAAIg4NwuGdjLLOv+OQ6hUftOOrtMqI1VzTmUTvuFNQBo+5ylEi/YQ?=
- =?us-ascii?Q?msS15WlmQppFhrKBFTScLTChcHsXjoUzunf9RW5vRN9IXR+uCv2iR/HYAkSQ?=
- =?us-ascii?Q?Whkgv1CVeD9gS6MaoN1xvf0u1/pHBG0MWS6zoTYYXX/FKzJXtAK0GXy4W8KB?=
- =?us-ascii?Q?8V49C/bzNpp0QJzfHRjkQm7LMBL7NkN/V7IC7bximhG6DpnjlqOmlvveQFzH?=
- =?us-ascii?Q?KloxtDWi5IRGu0+8S9duQBKbwn/XBi0GcIWFy74z7WxYzwY+ah54Yz6rM+UN?=
- =?us-ascii?Q?G0UrVx9rxdSZMsSbsummWXqOLBYlLGsdO79aya66CeY6qNjAGqY4GfcVPlPT?=
- =?us-ascii?Q?pCAjvMpV35M4CaGxt3NOv7g9yvOhgOR6GAJXGTKIQaP9h+sY7h3OSgKCEaNp?=
- =?us-ascii?Q?JfhJ4l8DmMPJ171+Lra+6u/blVx5Sb8dg/4AjPsSGyM8KWsQtmIGKffoTVT1?=
- =?us-ascii?Q?FduMNUpcwQcvqygJBJLxNihD2sNLOoAhPVrtuBrd0KJtuuw695jZkswngr5c?=
- =?us-ascii?Q?HkuGAe3lfaBki3ST2t1+ydvfLY9qEXdLVw0dPpcdlPU4YPYzW/IO4yYo/OCV?=
- =?us-ascii?Q?Gx0sDJrVi8kkrGQBfSmdGkOOoYeVGOTbJA0+AW0SF9mvit0YWrk26XEaq27v?=
- =?us-ascii?Q?RASFZp8DQCnHgqBL2ErEaCe28iHmxdhchKzwDDzHqnMQVjsZv1EBFAVIHSJC?=
- =?us-ascii?Q?ke33KUPVOqU6CMiacKQZHX+bgYngBkFvAEhOxMTfZSwR+HTP2s/iqdeCl/sK?=
- =?us-ascii?Q?EgV5h8M2CfVkXoxRKXCubxs4Slvy8+qiK0Fo1g+DjVVil57rXJU8C0nG3ROB?=
- =?us-ascii?Q?KBoKdr1LJTlVnTW0ZvG4g9yCDAIJB6eONC5U5dre7rOB06OYFKuATcYD0T9U?=
- =?us-ascii?Q?OcAxUJuvi5i3iYonFTT0klFM1AbC7e9Z0Ds87jGzxw=3D=3D?=
+	=?us-ascii?Q?0JXJD7d9vA3WU51OmTdGDbR8i6JSRNEdEFvecg7QZgKPKQoaHGzvdEaugTDQ?=
+ =?us-ascii?Q?cVrIQVLTasRuuaEQhFtYwZf57KblPBe4oO3TyeolbUXqzrczAc3uLDehkvAo?=
+ =?us-ascii?Q?IbFFr6hyszD4IGyZYRo7YUErfQn2nsjRxq/ymSx6oLZ59N7gfmSkEqov2zSN?=
+ =?us-ascii?Q?ai9BKzTg39gi1c1Sd+Uuj+RI5KHFWTsrA1u789ADLktU73gJNIZqwwshDQKx?=
+ =?us-ascii?Q?+YUiuzjHQoVgJYirdio4vTv3hitxW/V5iVRUI62R8Unh8HG1xCfIKwY/BOxC?=
+ =?us-ascii?Q?fW3atFHDFt+oA2g7oT0xsWh+foephjtvZVS8+wOkW1gVm2saWtT5Gw48YLBS?=
+ =?us-ascii?Q?3m+/W2Fedu6MvhiKZhLNJO+D5AWKwOuBOjk33o15CKF+lQMklLJx+NdADdE2?=
+ =?us-ascii?Q?nzyfwXaUyxbk0UnRsGfL9HKYiCHSK/NSDEhD3KFuZ+K632Db+/JrdBBZNXE2?=
+ =?us-ascii?Q?mvspa+EIMbMf90o/zB4bFTTAsnLekjLEVhGsDO3mo9WGFiW4C0u8JxWhOzeR?=
+ =?us-ascii?Q?MmEf4CrfFszuJj5+8Gs0N+72SuHmwPUZqEEPi6PxF5p4zwA7XHV1Dk8eLjKh?=
+ =?us-ascii?Q?/BKM3Wyi7bOm/VUbvwBtcsPO3dq4I3R1yLFwc5cQlruMe1R2skgvU3qQeSBM?=
+ =?us-ascii?Q?a8OEWjZF3XxR7o9v8q4AP3eT/WPLCXMH6jg53ZJUWHkeetYS28/zHI7TD6UG?=
+ =?us-ascii?Q?+ejM6oibsgvDoxT69TefWi5owCg0064r/MkwN5j3D98ouuCbq/QTcVhG2UC5?=
+ =?us-ascii?Q?5vylqkQCgLGhyE2guocXWIEk8ntSOSGijcqcQ78PKiKcI0O8AjtstuOYXUh3?=
+ =?us-ascii?Q?TiqdMKL5KCiYNR3d+SO9TbDXe8K84+LBrLnu5ZTg7SH+Vm61cNpAB+mgrpDD?=
+ =?us-ascii?Q?L2YhRJF/zk1IizKN98XeKIpzFnfLgaTVhMbrZ+C/a8rMTpRclMEamrsQjMKR?=
+ =?us-ascii?Q?4qVZUwqLQXDMs4gIQylhfGKR9YEN8cDieH4oy2QiPKitXozVb2UazB+Ey3ns?=
+ =?us-ascii?Q?futL/Y9GsGUWtaJcbbNpOFFSzPOeQjOBVFzg4s5w7KPVV/F8fZEXrd7E2aBV?=
+ =?us-ascii?Q?6CHKl5WldIq9BA4xHvpySKRC0UGO8DBj09xXadR4tGfJsB197WLKKf03HzvN?=
+ =?us-ascii?Q?oQIshsYyNBF8GH3W9D0p+/TWwhgef7HADwkEMLxKXEOi9ktbDIp8GzggbFRv?=
+ =?us-ascii?Q?4LO4WboenSEiVFTM+r609nSTvxvzo2IfuuBe8OH1P1XNzFqWzNmns19RSR5r?=
+ =?us-ascii?Q?jKfywmZidR6Gs1vBRVgcKooMPmusDWyN44HQYOZGGw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(7416005);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(7416005)(366007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OP/iGgRX26+mOxvzl/+tMM+FDkSPSuV+HKQ7zg/4IogwWprAI44tiuDL/TQ/?=
- =?us-ascii?Q?bFGQ3wsPFzO2V/SEGBe5bSX4HjjiUVwbQuEZUrUacm+5QtlXpR7xTnSVFdQJ?=
- =?us-ascii?Q?PG3aMD7JiONduTHYFCzxHM24+yP+hfTWYxlrX4InwDi5Isi/3SmXzDAmRkjz?=
- =?us-ascii?Q?OacLpdP5Ucz4FVasA8a9vXC/fBM38kiQbyUXFYvwAIv+lNbZuaAbiXN+vtxe?=
- =?us-ascii?Q?3cmop3V49wJvteCvVKo0kUlnz6DSdUefArEzd2nGmk8F0pwPUCO02Ma9AsZ4?=
- =?us-ascii?Q?0peOJwRwupBHHAfp662NmFMJOszyemhsaupbur0c/ObVEFsTbtmoq1ElGcvA?=
- =?us-ascii?Q?WeltL+X8/x76f/7BNPYXI61tB5I3jwYSDsVimPmfbmo2AxmNlL1F27Tp3+5q?=
- =?us-ascii?Q?xeaIBIXdhTz/5tiw9EH8Q7GQNY0I9LnLEGXPpEBwMXSUuWCrxVs7wpGXVPN+?=
- =?us-ascii?Q?z4HkUdunSra9NxV2T2igAze27NMqX//efNLJa5O3cx6NIVuWw9zaMysGlBwF?=
- =?us-ascii?Q?xXB9xP298c2R0VaHqhbIrbfw1rgXP/50JDopKWPL3I1w26Wa0LfH2ZciMAHM?=
- =?us-ascii?Q?O36EAq8enMXMCTWWQIvTsYOuUw0ISBBZapN4om9cm0/ZPxfZXL+lUZRNJ7a9?=
- =?us-ascii?Q?wcxFcKtWTdajRPQlSHo5AWIcMp9nTo/+WLPuNlWUjiYQTZ0zGy7Fu3F9xkZM?=
- =?us-ascii?Q?16zoQLEpbdM06hz0UrLs5Zb/MQfDHgR0TR9I0BG/c3wyDxkiQUffhtqXkNJo?=
- =?us-ascii?Q?cDlKvfbI7NYMiijKSwiDKtH6VBjuBe52V+F1UkjL/2PTfBWn9Wfwd7qhwlEs?=
- =?us-ascii?Q?RrB0yTx/UuNvat57W/KZD175r0GnMU69mDHidExB1XKEhOBWC72VFxfcaupn?=
- =?us-ascii?Q?nBx9JCOWlko+hWT0X7cH24eGZI3G31b0W2p3QE2bQ3q3IDsPbM4eqTlt5BCI?=
- =?us-ascii?Q?wgP4JkC9o1aJWNDic3BuEwy9nv6lSRvyb/ZDJ7iFc2iaSC/OT7T5K52NKlgn?=
- =?us-ascii?Q?XIetrz7B07AhSfxct5EmV10JP52zBCo/c/I0gY+7cyB4t1mJVmvAVpdZLvXc?=
- =?us-ascii?Q?7NuYaSq1I54d4/PwN3P9Skgm1hMh7tFn2x1kK+Je9PjxprVBtkHBVEbc/7zl?=
- =?us-ascii?Q?tyNzYkF/y3V5+VRsuAbLLgnAzZ6tlQpbAt57Bp9NQog0BFnw0FYpbbbl6vP4?=
- =?us-ascii?Q?TSUD/uunkPwX4dIHRcrXXZchVNKt7HanYEWON5cCJ43ujVMlNgJbB6Pooqm2?=
- =?us-ascii?Q?NXoSu8ufH9lq2g8aofGyV//xrrfD0Qlg8x761fVz4PQ0kOK1FfqGWD3vyybX?=
- =?us-ascii?Q?3IrsL0SQk4OTQ6BHEQ8AyU7mqlTTY7Jy3RHKcoKFF2LF5HJZq6knilmq2V32?=
- =?us-ascii?Q?wjv5/HSqe6LsjkWzc4Rv4mKm8lTj4b87Jo2in9jad61fvtoMBJ6qGkSsbouF?=
- =?us-ascii?Q?JsA8rFJrFrcsKu1UHPv+va9VryqtfZNRw32uzkmBaATPsZvH79albQ4vwf95?=
- =?us-ascii?Q?qicW6M0LhbwSGnxjzpTdb+VO0ZImONh1K10fpYBBZF6nJ3CEKvqFMAg7ZHla?=
- =?us-ascii?Q?JmnxYZHbvH19Y727+QSRrzIOesU97OUV7F04H+nH?=
+	=?us-ascii?Q?0bplDmqb9JLh9F17Q2BmWQzSJIy6tUqtGNm972LLzx3cTLY4bJCMatJJU4VX?=
+ =?us-ascii?Q?qccoRAqNHyLHObQ3RvIRuAfVO5/TBFdF6SPOauqkvPBy5RTS+8igZpHE6QxP?=
+ =?us-ascii?Q?AjrXt6O+taxsPjaQ/0qDLYZabuz6Mugj25rQ9xpW7dy1Evc01HIPamCMZBoi?=
+ =?us-ascii?Q?9srtwYI+9dn6w0oaV+F1kgQNbgJOM1ZZ+6S1P4rvHHzes2xUsvNOxixepMCZ?=
+ =?us-ascii?Q?HJ+OX6AmsU24HZKmTkn/07W1txaF909/YfRjOZTIupszNYxYiLVPaohnylfu?=
+ =?us-ascii?Q?6IUAY0+a3c5BF9tPRjqicb0bEMC8xDnz5yTHFse9k7OUmuzHMS5JDqVUpqU/?=
+ =?us-ascii?Q?mjKIkSTDZ/4Q8R3GyhSYJ7EXYEYhoql0Sk/U+3isJZGxUU6SRw8OJxZuEXc9?=
+ =?us-ascii?Q?FDPSYC1p14FKMKkFpShTNpuhVOLy904HQL3SugXjCSyIqykhA+FtxifRBhVZ?=
+ =?us-ascii?Q?5DMveBr+S+FO5EneE1DGGaZ315uzzw3Pw6INScD8VzFrvQvbdxPTlNTYjqBV?=
+ =?us-ascii?Q?SyChcRRgaLKRCEzLMrti7sBICfLxKthZIHCQIlmtlFSvh2rb8eJcuRr+/Grz?=
+ =?us-ascii?Q?t6mu+GTrbN35SExk+hwGD4Q5Q24vJHYDnJU4a6nbOYE7AGDUeUy9zN/CmzZg?=
+ =?us-ascii?Q?RU+sQ9xTmQx7UnP0Vhd3623Zt7UThKJm+cT84xccq7Hvvq1fgDh7a44kaFcX?=
+ =?us-ascii?Q?SU40sHwBym1gcVzkVqkAruOp0i2b5z0d3xav5JRy4mMkyqpG/h62OsGvHzUp?=
+ =?us-ascii?Q?l8I4DK2L1YIsvwkBxx9lB8Zi19Fp66tUpWzONEyY5JIpNcoAuhI0hDwcZnM0?=
+ =?us-ascii?Q?FBE+Q8fpBj+rLqM1asryh5hERNEKCg3sHN2Mr1lWR1DbpxqEOWy44BgbqmQb?=
+ =?us-ascii?Q?Oe8gMSKIk8iWZuRkUqk5hW8HfA/UwPaqN9ikUDFJwbC/jq7b35zHMzuPZ1Uh?=
+ =?us-ascii?Q?ZMmVDmr1EQa7PYhOKRwScJOkiEYXjl8SJloNTD5/BoG2ImQ2++LSZxIvWRf4?=
+ =?us-ascii?Q?JbfFtlzOw1MuYTZnf32l7lLM5QCFBChdfO9U1VCFS27faMU8yknNVXt/hWVE?=
+ =?us-ascii?Q?UcmAjyvwpvo5gLwQIRdGQJxoUcwHwDFGpR4IWzBZAvY50pGKW1pdvT4BUpy2?=
+ =?us-ascii?Q?Xd0pfT33SJHyWv6Pw9UO9PT+uRX9tRSz4CwNJPQLuFVqfWWp9AvgpVVZTXyM?=
+ =?us-ascii?Q?IsSd1I2VVrDNa8TFw0GBuhYPLRT3rgjhPchdg6Y7MDfjxcZZ3SGxhnYO3hb9?=
+ =?us-ascii?Q?Me6UKOyQTRTr6dXXvE6GEfWdM8AARB2WxbwrRh6EQl++yavWQxZritILNWyZ?=
+ =?us-ascii?Q?mY8irwXturpa7wGdyt8hmieo0dwL0wdNIeoyqj0WugdCFh9FvZCqucmts3AO?=
+ =?us-ascii?Q?IYGKyzrG7LjfgpzuexGryYB+PBEERdjCBvCMizlaffLhWiqI8Q5bGZPwKQp8?=
+ =?us-ascii?Q?TTh9H6eXU57+oz5cwfQHJW4F7gWBeaA2oaeKRzgYVayAjueTcrVNgz4PwLgG?=
+ =?us-ascii?Q?gCO9yZVa0Xz5+2e4CUJBY6x64+gtVkp1UwxFahlRfn6IPHsvgOc53546k5nA?=
+ =?us-ascii?Q?l3j7ap7x+zUHwBbl7CP0Ghd922IoMz4tELwG/viO?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3eb642ba-7e25-4c00-4741-08dc6542b905
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a6bba20-5763-4867-4808-08dc65439a5e
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2024 16:14:02.7654
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2024 16:20:20.8212
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eQMgL4gAAKImO8lMZuR6fOwwEVPmh8ORlY6NXvY1saT97ma12sXvs8Mro8sx4KUr11UEngJY6Bd6RNVE/mvP0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5970
+X-MS-Exchange-CrossTenant-UserPrincipalName: jiQ8ftvZnnrUtMReH8auCDPUcCpPjL7c2oKFp8HUJUHvJCsVIbKcu9lbUYaxQ3rmyEjhtwzJa6po4taXagN3rw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB1872
 
-On Thu, 18 Apr 2024 08:59:19 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Thu, 18 Apr 2024 15:56:11 -0700
+Boqun Feng <boqun.feng@gmail.com> wrote:
+ 
+> Hmm.. here is the thing, having `&UnsafeCell<[u8]>` means having a `*mut
+> [u8]>`, and it should always be safe to get a "length" of `*mut [u8]`,  
+> right? I haven't found any method doing that, but the length should be
+> just a part of fat pointer, so I think getting that is a defined
+> behavior. But maybe I'm missing something.
 
-> Add safe methods for reading and writing Rust values to and from
-> userspace pointers.
-> 
-> The C methods for copying to/from userspace use a function called
-> `check_object_size` to verify that the kernel pointer is not dangling.
-> However, this check is skipped when the length is a compile-time
-> constant, with the assumption that such cases trivially have a correct
-> kernel pointer.
-> 
-> In this patch, we apply the same optimization to the typed accessors.
-> For both methods, the size of the operation is known at compile time to
-> be size_of of the type being read or written. Since the C side doesn't
-> provide a variant that skips only this check, we create custom helpers
-> for this purpose.
-> 
-> The majority of reads and writes to userspace pointers in the Rust
-> Binder driver uses these accessor methods. Benchmarking has found that
-> skipping the `check_object_size` check makes a big difference for the
-> cases being skipped here. (And that the check doesn't make a difference
-> for the cases that use the raw read/write methods.)
-> 
-> This code is based on something that was originally written by Wedson on
-> the old rust branch. It was modified by Alice to skip the
-> `check_object_size` check, and to update various comments, including the
-> notes about kernel pointers in `WritableToBytes`.
-> 
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+You can just use `unsafe_cell.get().len()`. `len` method exists on
+raw slice pointers, gated by the `slice_ptr_len` feature, which will
+be stable in 1.79.0.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
-> ---
->  rust/kernel/types.rs   | 64 ++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/uaccess.rs | 79 ++++++++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 141 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 8fad61268465..9c57c6c75553 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
->
-> +/// Types that can be viewed as an immutable slice of initialized bytes.
-> +///
-> +/// If a struct implements this trait, then it is okay to copy it byte-for-byte to userspace. This
-> +/// means that it should not have any padding, as padding bytes are uninitialized. Reading
-> +/// uninitialized memory is not just undefined behavior, it may even lead to leaking sensitive
-> +/// information on the stack to userspace.
-> +///
-> +/// The struct should also not hold kernel pointers, as kernel pointer addresses are also considered
-> +/// sensitive. However, leaking kernel pointers is not considered undefined behavior by Rust, so
-> +/// this is a correctness requirement, but not a safety requirement.
-> +///
-> +/// # Safety
-> +///
-> +/// Values of this type may not contain any uninitialized bytes. This type must not have interior
-> +/// mutability.
-> +pub unsafe trait AsBytes {}
-> +
-> +// SAFETY: Instances of the following types have no uninitialized portions.
-> +unsafe impl AsBytes for u8 {}
-> +unsafe impl AsBytes for u16 {}
-> +unsafe impl AsBytes for u32 {}
-> +unsafe impl AsBytes for u64 {}
-> +unsafe impl AsBytes for usize {}
-> +unsafe impl AsBytes for i8 {}
-> +unsafe impl AsBytes for i16 {}
-> +unsafe impl AsBytes for i32 {}
-> +unsafe impl AsBytes for i64 {}
-> +unsafe impl AsBytes for isize {}
-> +unsafe impl AsBytes for bool {}
-> +unsafe impl AsBytes for char {}
-> +unsafe impl AsBytes for str {}
-> +// SAFETY: If individual values in an array have no uninitialized portions, then the array itself
-> +// does not have any uninitialized portions either.
-> +unsafe impl<T: AsBytes> AsBytes for [T] {}
-
-nit: I would move `str` to here, since `str` is essentially `[u8]` with
-UTF-8 guarantee.
-
-> +unsafe impl<T: AsBytes, const N: usize> AsBytes for [T; N] {}
-
-
+Best,
+Gary
