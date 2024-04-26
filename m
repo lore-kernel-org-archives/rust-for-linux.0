@@ -1,198 +1,197 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66CF13A3ED;
-	Fri, 26 Apr 2024 07:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4890E13A268
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Apr 2024 07:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714114967; cv=none; b=UZbM9iDp2VnktQbRoTbZG5anS/HiYxlUrBn0zugezjsScQ8v70j2q5TcMChCvAJg4l05Btl0E6E5v3XvtMfcplWYCn5EMgK64poY3g+FIT5KV4MP3jOGt0A2Ss07BQu7jXqemfFb74DVe4pEmC0aht7A885Kj+3F31KvhN8/xp0=
+	t=1714115119; cv=none; b=mgRe2OBvjdNV68qACnRvuH27LoXf3oIy3yo3EIBOBOIm2WS6WPbVuLUTD+0R2mM8SN9f16a9tKJs41SdjpoglioYLPePnJSH4ZiOVFQHPhiHDRDZvTFb7XAITLkq1uhetbjy/jxKVLvrm+MsEhIRV8tUIWxO/5QmHnOiNroNQgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714114967; c=relaxed/simple;
-	bh=GaSMvxmMOp8Eji2z5Xo8ZYQH5edYvjro7N4Lgxz2XG8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MhUZXryBmCT2R/FZRIvNALrMbbymQ0SjVGDzKB2De2p5YjpHkQm9dknTSgQSRTztSu6kHkX5o80cXLkjXUoeeHhj6BkqNt909nQYYTX/SdyN3E5lYLD2MiZiAqDbXZzKlgXoswUnKc8udBG1gtZ9s0jHjzXA5IcF05Hr7I/oSBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [112.20.112.218])
-	by gateway (Coremail) with SMTP id _____8CxLOuTUStmJFkDAA--.7347S3;
-	Fri, 26 Apr 2024 15:02:43 +0800 (CST)
-Received: from localhost.localdomain (unknown [112.20.112.218])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxKOSMUStmFAMGAA--.19261S2;
-	Fri, 26 Apr 2024 15:02:37 +0800 (CST)
-From: Yanteng Si <siyanteng@loongson.cn>
-To: ojeda@kernel.org,
-	corbet@lwn.net,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	alexs@kernel.org,
-	dzm91@hust.edu.cn
-Cc: Yanteng Si <siyanteng@loongson.cn>,
-	linux-doc@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v2 4/4] docs/zh_CN/rust: Update the translation of quick-start to 6.9-rc4
-Date: Fri, 26 Apr 2024 15:02:35 +0800
-Message-Id: <aff560c262f255e873c07cc66891cf8140ad433d.1714113680.git.siyanteng@loongson.cn>
-X-Mailer: git-send-email 2.31.4
-In-Reply-To: <cover.1714113680.git.siyanteng@loongson.cn>
-References: <cover.1714113680.git.siyanteng@loongson.cn>
+	s=arc-20240116; t=1714115119; c=relaxed/simple;
+	bh=Qe8Lqqo+ycVRs0Kho6vUc3FzJtZNIGo6l62UG5/3wQM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TkKNoo9HTLo4iyaAwtjOqzV7EPwFo3qsPS4HrQi9z9ZZPehpUYOgqr5q+6dYccacCxI3YVMNzXjAX7oEB2m6Dc/7KIwzH9b+UNRCuzgbZmqNpZzJuvyWl6lT0m+jy76Vl2TUM/KRl0r6r5qxr94GV2Yc4lf+VuOYB2d9laYRVFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=h/YNJVMM; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="h/YNJVMM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1714115112; x=1714374312;
+	bh=y3LYOKqrYRady6hOEaLPtSsj8+WxuMjdGo8/K8WqyFU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=h/YNJVMMU5BVlUUD80e025RXV26uIZ3rrDWUCn6cGAdYmQjoCdjtxGJpu1yidLsld
+	 7+GcX8TfEtJT4xK3iaj1GT0Nyy+TubUjaYWk8MgphLK8cVRGgputQebsp3wXWjLx6Y
+	 L1XWsMLxFxVrQ4eD0aCPQXtpEmRSU5qOVJZK+jcI53CHZPA4+3y4NZ0kmot6abeqH6
+	 mduC0kV27tgMXEuerKoZRbEXvHH/sBfSMoRvi8gobWswIDnLwlpLwxxl6JZ3IW7hzc
+	 GK8/RRZHhcGZLWWqgr2f1TrM9YJV5WpRp4i9jNfqWmjC80rQYPksmD+YDSh58iLcqE
+	 /4z8t8mDHSaBg==
+Date: Fri, 26 Apr 2024 07:05:07 +0000
+To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 5/5] rust: rbtree: add `RBTree::entry`
+Message-ID: <d243524f-96af-4375-a8c9-44196a110853@proton.me>
+In-Reply-To: <20240418-b4-rbtree-v3-5-323e134390ce@google.com>
+References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-5-323e134390ce@google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 58ac6332e697b6c130eac39a82b67d3b8298f19a
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8AxKOSMUStmFAMGAA--.19261S2
-X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Ar18Kry3Ww18Xw1kKFWfWFX_yoW7ZryDpF
-	yqkr93ur4xAFy8ZryIkFyUuF15Ca95Z342q3WDJa42krs5Jr4kKw4Iyry3Ca17ZayxArW2
-	gF18Zryj9rsakFbCm3ZEXasCq-sJn29KB7ZKAUJUUUUk529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBlb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26r4UJVWxJr1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
-	kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
-	6rWY6Fy7McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
-	c4AY6r1j6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-	Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
-	6xIIjxv20xvE14v26F1j6w1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcV
-	CF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26F4j6r4UJwCI42IY6I8E87Iv
-	6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IUnbAw7UUUUU==
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Update to commit 711cbfc71765 ("docs: rust: Clarify that 'rustup
-override' applies to build directory")
-commit 7583ce66ddf7 ("docs: rust: remove `CC=clang` mentions")
-commit 2285eb2f2429 ("docs: rust: clarify what 'rustup override' does")
-commit 8cb40124cf92 ("docs: rust: update instructions for obtaining
-'core' source")
-commit b603c6cc405a ("docs: rust: add command line to rust-analyzer
-section")
-commit 08ab786556ff ("rust: bindgen: upgrade to 0.65.1")
-commit eae90172c5b8 ("docs: rust: add paragraph about finding a
-suitable `libclang`")
-commit 6883b29c6cae ("docs: rust: point directly to the standalone
-installers")
+On 18.04.24 16:15, Matt Gilbride wrote:
+> @@ -332,63 +338,54 @@ pub fn insert(&mut self, RBTreeNode { node }: RBTre=
+eNode<K, V>) -> Option<RBTree
+>          // we store `parent` and `child_field_of_parent`, and the new `n=
+ode` will go somewhere
+>          // in the subtree of `parent` that `child_field_of_parent` point=
+s at. Once
+>          // we find an empty subtree, we can insert the new node using `r=
+b_link_node`.
+> -        let mut parent =3D core::ptr::null_mut();
+>          let mut child_field_of_parent: &mut *mut bindings::rb_node =3D &=
+mut self.root.rb_node;
+> -        while !child_field_of_parent.is_null() {
+> -            parent =3D *child_field_of_parent;
+> +        let mut parent =3D core::ptr::null_mut();
 
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
----
- .../translations/zh_CN/rust/quick-start.rst   | 50 +++++++++++++------
- 1 file changed, 34 insertions(+), 16 deletions(-)
+Nit: why are you moving this line below `child_field_of_parent`? Just an
+artifact of rebasing?
 
-diff --git a/Documentation/translations/zh_CN/rust/quick-start.rst b/Documentation/translations/zh_CN/rust/quick-start.rst
-index a4b8e8a50a89..8616556ae4d7 100644
---- a/Documentation/translations/zh_CN/rust/quick-start.rst
-+++ b/Documentation/translations/zh_CN/rust/quick-start.rst
-@@ -37,13 +37,18 @@ rustc
- 需要一个特定版本的Rust编译器。较新的版本可能会也可能不会工作，因为就目前而言，内核依赖
- 于一些不稳定的Rust特性。
- 
--如果使用的是 ``rustup`` ，请进入检出的源代码目录并运行::
-+如果使用的是 ``rustup`` ，请进入内核编译目录（或者用 ``--path=<build-dir>`` 参数
-+来 ``设置`` sub-command)并运行::
- 
- 	rustup override set $(scripts/min-tool-version.sh rustc)
- 
--或者从以下网址获取一个独立的安装程序或安装 ``rustup`` ：
-++这将配置你的工作目录使用正确版本的 ``rustc``，而不影响你的默认工具链。
- 
--	https://www.rust-lang.org
-+请注意覆盖应用当前的工作目录（和它的子目录）。
-+
-+如果你使用 ``rustup``， 可以从下面的链接拉取一个单独的安装程序:
-+
-+	https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
- 
- 
- Rust标准库源代码
-@@ -57,21 +62,23 @@ Rust标准库的源代码是必需的，因为构建系统会交叉编译 ``core
- 
- 这些组件是按工具链安装的，因此以后升级Rust编译器版本需要重新添加组件。
- 
--否则，如果使用独立的安装程序，可以将Rust仓库克隆到工具链的安装文件夹中::
-+否则，如果使用独立的安装程序，可以将Rust源码树下载到安装工具链的文件夹中::
- 
--	git clone --recurse-submodules \
--		--branch $(scripts/min-tool-version.sh rustc) \
--		https://github.com/rust-lang/rust \
--		$(rustc --print sysroot)/lib/rustlib/src/rust
-+       curl -L "https://static.rust-lang.org/dist/rust-src-$(scripts/min-tool-version.sh rustc).tar.gz" |
-+               tar -xzf - -C "$(rustc --print sysroot)/lib" \
-+               "rust-src-$(scripts/min-tool-version.sh rustc)/rust-src/lib/" \
-+               --strip-components=3
- 
--在这种情况下，以后升级Rust编译器版本需要手动更新这个克隆的仓库。
-+在这种情况下，以后升级Rust编译器版本需要手动更新这个源代码树（这可以通过移除
-+``$(rustc --print sysroot)/lib/rustlib/src/rust`` ，然后重新执行上
-+面的命令做到）。
- 
- 
- libclang
- ********
- 
- ``bindgen`` 使用 ``libclang`` （LLVM的一部分）来理解内核中的C代码，这意味着需要安
--装LLVM；同在开启 ``CC=clang`` 或 ``LLVM=1`` 时编译内核一样。
-+装LLVM；同在开启``LLVM=1`` 时编译内核一样。
- 
- Linux发行版中可能会有合适的包，所以最好先检查一下。
- 
-@@ -94,7 +101,20 @@ bindgen
- 
- 通过以下方式安装它（注意，这将从源码下载并构建该工具）::
- 
--	cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen
-+	cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen-cli
-+
-+``bindgen`` 需要找到合适的 ``libclang`` 才能工作。如果没有找到（或者找到的
-+``libclang`` 与应该使用的 ``libclang`` 不同），则可以使用 ``clang-sys``
-+理解的环境变量（Rust绑定创建的 ``bindgen`` 用来访问 ``libclang``）:
-+
-+
-+* ``LLVM_CONFIG_PATH`` 可以指向一个 ``llvm-config`` 可执行文件。
-+
-+* 或者 ``LIBCLANG_PATH`` 可以指向 ``libclang`` 共享库或包含它的目录。
-+
-+* 或者 ``CLANG_PATH`` 可以指向 ``clang`` 可执行文件。
-+
-+详情请参阅 ``clang-sys`` 的文档:
- 
- 
- 开发依赖
-@@ -163,7 +183,9 @@ rust-analyzer
- 一起使用，以实现语法高亮、补全、转到定义和其他功能。
- 
- ``rust-analyzer`` 需要一个配置文件， ``rust-project.json``, 它可以由 ``rust-analyzer``
--Make 目标生成。
-+Make 目标生成::
-+
-+       make LLVM=1 rust-analyzer
- 
- 
- 配置
-@@ -189,10 +211,6 @@ Rust支持（CONFIG_RUST）需要在 ``General setup`` 菜单中启用。在其
- 
- 	make LLVM=1
- 
--对于不支持完整LLVM工具链的架构，使用::
--
--	make CC=clang
--
- 使用GCC对某些配置也是可行的，但目前它是非常试验性的。
- 
- 
--- 
-2.31.4
+> +        while !(*child_field_of_parent).is_null() {
+> +            let curr =3D *child_field_of_parent;
+> +            // SAFETY: All links fields we create are in a `Node<K, V>`.
+> +            let node =3D unsafe { container_of!(curr, Node<K, V>, links)=
+ };
+
+[...]
+
+> @@ -1119,3 +1099,177 @@ unsafe impl<K: Send, V: Send> Send for RBTreeNode=
+<K, V> {}
+>  // SAFETY: If K and V can be accessed without synchronization, then it's=
+ also okay to access
+>  // [`RBTreeNode`] without synchronization.
+>  unsafe impl<K: Sync, V: Sync> Sync for RBTreeNode<K, V> {}
+> +
+> +impl<K, V> RBTreeNode<K, V> {
+> +    /// Drop the key and value, but keep the allocation.
+> +    ///
+> +    /// It then becomes a reservation that can be re-initialised into a =
+different node (i.e., with
+> +    /// a different key and/or value).
+> +    ///
+> +    /// The existing key and value are dropped in-place as part of this =
+operation, that is, memory
+> +    /// may be freed (but only for the key/value; memory for the node it=
+self is kept for reuse).
+> +    pub fn into_reservation(self) -> RBTreeNodeReservation<K, V> {
+> +        let raw =3D Box::into_raw(self.node);
+> +        let mut ret =3D RBTreeNodeReservation {
+> +            // SAFETY: The pointer came from a valid `Node`, which has t=
+he same layout as
+> +            // `MaybeUninit<Node>`.
+> +            node: unsafe { Box::from_raw(raw as _) },
+> +        };
+> +        // SAFETY: Although the type is `MaybeUninit<Node>`, we know it =
+has been initialised
+> +        // because it came from a `Node`. So it is safe to drop it.
+> +        unsafe { core::ptr::drop_in_place::<Node<K, V>>(ret.node.as_mut_=
+ptr()) };
+> +        ret
+> +    }
+
+With my patch [1] this can be simplified.
+
+[1]: https://lore.kernel.org/rust-for-linux/20240425213419.3904105-1-benno.=
+lossin@proton.me/
+
+> +}
+> +
+> +/// A view into a single entry in a map, which may either be vacant or o=
+ccupied.
+> +///
+> +/// This enum is constructed from the [`entry`] method on [`RBTree`].
+
+You could just write [`RBTree::entry`].
+
+> +///
+> +/// [`entry`]: fn@RBTree::entry
+> +pub enum Entry<'a, K, V> {
+> +    /// This [`RBTree`] does not have a node with this key.
+> +    Vacant(VacantEntry<'a, K, V>),
+> +    /// This [`RBTree`] already has a node with this key.
+> +    Occupied(OccupiedEntry<'a, K, V>),
+> +}
+
+[...]
+
+> +impl<'a, K, V> RawVacantEntry<'a, K, V> {
+> +    /// Inserts the given node into the [`RBTree`] at this entry.
+> +    ///
+> +    /// The `node` must have a key such that inserting it here does not =
+break the ordering of this
+> +    /// [`RBTree`].
+> +    fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
+> +        let node =3D Box::into_raw(node.node);
+> +
+> +        // SAFETY: `node` is valid at least until we call `Box::from_raw=
+`, which only happens when
+> +        // the node is removed or replaced.
+> +        let node_links =3D unsafe { addr_of_mut!((*node).links) };
+> +
+> +        // INVARIANT: We are linking in a new node, which is valid. It r=
+emains valid because we
+> +        // "forgot" it with `Box::into_raw`.
+> +        // SAFETY: All pointers are null or valid in an appropriate way.
+
+I don't like the formulation "valid in an appropriate way", since if you
+don't know what the appropriate way is, this doesn't help you.
+
+> +        unsafe { bindings::rb_link_node(node_links, self.parent, self.ch=
+ild_field_of_parent) };
+> +
+> +        // SAFETY: All pointers are valid. `node` has just been inserted=
+ into the tree.
+> +        unsafe { bindings::rb_insert_color(node_links, &mut self.rbtree.=
+root) };
+> +
+> +        // SAFETY: The node is valid until we remove it from the tree.
+> +        unsafe { &mut (*node).value }
+> +    }
+> +}
+> +
+> +impl<'a, K, V> VacantEntry<'a, K, V> {
+> +    /// Inserts the given node into the [`RBTree`] at this entry.
+> +    pub fn insert(self, value: V, reservation: RBTreeNodeReservation<K, =
+V>) -> &'a mut V {
+> +        self.raw.insert(reservation.into_node(self.key, value))
+> +    }
+> +}
+> +
+> +/// A view into an occupied entry in a [`RBTree`]. It is part of the [`E=
+ntry`] enum.
+> +///
+> +/// # Invariants
+> +/// - `node_links` is a valid, non-null pointer to a tree node.
+
+It should be the same tree as `self.rbtree`, right? (I see you calling
+`rb_replace_node` below with the rbtree root used)
+
+--=20
+Cheers,
+Benno
+
+> +pub struct OccupiedEntry<'a, K, V> {
+> +    rbtree: &'a mut RBTree<K, V>,
+> +    /// The node that this entry corresponds to.
+> +    node_links: *mut bindings::rb_node,
+> +}
 
