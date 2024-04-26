@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4890E13A268
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Apr 2024 07:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC5413B295
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Apr 2024 07:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714115119; cv=none; b=mgRe2OBvjdNV68qACnRvuH27LoXf3oIy3yo3EIBOBOIm2WS6WPbVuLUTD+0R2mM8SN9f16a9tKJs41SdjpoglioYLPePnJSH4ZiOVFQHPhiHDRDZvTFb7XAITLkq1uhetbjy/jxKVLvrm+MsEhIRV8tUIWxO/5QmHnOiNroNQgA=
+	t=1714115512; cv=none; b=dnR0yEkCunKkU0tD1VdXCpKkeSYYmQJMYWBx7qmyfGoS3maYTMwxTgGOHH4zBFZJIteZG9NxXUxi9fajPPjQjfDvSgIiz6oWkilrjsz/eIkXm8hscf8nep0mNihQrXALLdy7le6ApbrucbC+/izE/JNcNb2Z9T3dp+L2zuuz8RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714115119; c=relaxed/simple;
-	bh=Qe8Lqqo+ycVRs0Kho6vUc3FzJtZNIGo6l62UG5/3wQM=;
+	s=arc-20240116; t=1714115512; c=relaxed/simple;
+	bh=+sz86jtRbMg7SwwzU1wqCqv6zZBXkkWbS53qL1EyX4E=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TkKNoo9HTLo4iyaAwtjOqzV7EPwFo3qsPS4HrQi9z9ZZPehpUYOgqr5q+6dYccacCxI3YVMNzXjAX7oEB2m6Dc/7KIwzH9b+UNRCuzgbZmqNpZzJuvyWl6lT0m+jy76Vl2TUM/KRl0r6r5qxr94GV2Yc4lf+VuOYB2d9laYRVFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=h/YNJVMM; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=u9UL8hOA9iJx/jPEBxIEtPiudNsHEW0K0X1/HA5oECIAnC53aSrFttzrRR5ZQVvipPcbRV2Bxrn5IVd6S6aO93FVJFB0gRCpBzNQqao1VFCZX+KVkHiBKYlxTQOXchCrvGFj6qp2zIEMXcO5rkIAwBiEB8T9JN+stPL8dE9oQwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=imqDkbLF; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="h/YNJVMM"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="imqDkbLF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1714115112; x=1714374312;
-	bh=y3LYOKqrYRady6hOEaLPtSsj8+WxuMjdGo8/K8WqyFU=;
+	s=protonmail; t=1714115508; x=1714374708;
+	bh=dpyvbr3LcdkLNBpkmO1oSD6NoCCElh58CU+Cna0btSg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=h/YNJVMMU5BVlUUD80e025RXV26uIZ3rrDWUCn6cGAdYmQjoCdjtxGJpu1yidLsld
-	 7+GcX8TfEtJT4xK3iaj1GT0Nyy+TubUjaYWk8MgphLK8cVRGgputQebsp3wXWjLx6Y
-	 L1XWsMLxFxVrQ4eD0aCPQXtpEmRSU5qOVJZK+jcI53CHZPA4+3y4NZ0kmot6abeqH6
-	 mduC0kV27tgMXEuerKoZRbEXvHH/sBfSMoRvi8gobWswIDnLwlpLwxxl6JZ3IW7hzc
-	 GK8/RRZHhcGZLWWqgr2f1TrM9YJV5WpRp4i9jNfqWmjC80rQYPksmD+YDSh58iLcqE
-	 /4z8t8mDHSaBg==
-Date: Fri, 26 Apr 2024 07:05:07 +0000
-To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+	b=imqDkbLFlozbOOJXJ3ZrKEUuGyddtWQCK1Gj8aul19RFTl5B3SrXu9q/qTUcKI+tx
+	 jb2/YTntLlle91PtvWhFSZCg3hgbPnX6JEnOQlCYKB/WmCqRKUxdisx79brp2hdVg9
+	 9k0PXjFEKY7LHyUp1PjhXP1ODedi4MGwKvNphLTBCkLwUCGPXonb23vqXgygYJgkBe
+	 MfbORgVwD91pykHqwqWnbT5XWc3Ex3VdIO/K0hcFUX5gUlraVhv5pUb39RNuUzA6wC
+	 dKGNAfCQnOKTRG0vv8DA4cjHvdxxpPJGvBUfcJaCSNSvZxWiyjI6I5shLa3f71uVDc
+	 yvZaxRChDm0ag==
+Date: Fri, 26 Apr 2024 07:11:46 +0000
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 5/5] rust: rbtree: add `RBTree::entry`
-Message-ID: <d243524f-96af-4375-a8c9-44196a110853@proton.me>
-In-Reply-To: <20240418-b4-rbtree-v3-5-323e134390ce@google.com>
-References: <20240418-b4-rbtree-v3-0-323e134390ce@google.com> <20240418-b4-rbtree-v3-5-323e134390ce@google.com>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH RFC v1] rust: add 'firmware' tag support to module! macro
+Message-ID: <1c214b8c-cfc5-479a-a5be-4dc1e75931a0@proton.me>
+In-Reply-To: <20240426.101055.990464946230867124.fujita.tomonori@gmail.com>
+References: <b66e7e78-35bc-48df-9e3b-0a57996491ad@proton.me> <20240420.101421.329379978497339506.fujita.tomonori@gmail.com> <c613d60a-4136-4a4b-a2d3-9c849b245cab@proton.me> <20240426.101055.990464946230867124.fujita.tomonori@gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 58ac6332e697b6c130eac39a82b67d3b8298f19a
+X-Pm-Message-ID: ec15d2f5e51628f325bf018ad604aee65bccd46f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,151 +47,140 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 18.04.24 16:15, Matt Gilbride wrote:
-> @@ -332,63 +338,54 @@ pub fn insert(&mut self, RBTreeNode { node }: RBTre=
-eNode<K, V>) -> Option<RBTree
->          // we store `parent` and `child_field_of_parent`, and the new `n=
-ode` will go somewhere
->          // in the subtree of `parent` that `child_field_of_parent` point=
-s at. Once
->          // we find an empty subtree, we can insert the new node using `r=
-b_link_node`.
-> -        let mut parent =3D core::ptr::null_mut();
->          let mut child_field_of_parent: &mut *mut bindings::rb_node =3D &=
-mut self.root.rb_node;
-> -        while !child_field_of_parent.is_null() {
-> -            parent =3D *child_field_of_parent;
-> +        let mut parent =3D core::ptr::null_mut();
+On 26.04.24 03:10, FUJITA Tomonori wrote:
+> Hi,
+>=20
+> On Thu, 25 Apr 2024 15:35:44 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>=20
+>>>> What do the strings in the array mean? If there is documentation on th=
+e
+>>>> C side, please link to it or explain it again.
+>>>
+>>> I can't find any on the C side. They are used when building
+>>> initrd. How about the following?
+>>
+>> What does that mean? For the other fields, I know what they mean, but
+>> when I see firmware I don't know if what I am thinking is correct.
+>> A couple of questions:
+>> - How do I know that I need to put anything in that field (and also what
+>>     do I need to put there?)?
+>=20
+> If you implement a device driver which requires firmware and the
+> driver is likely added to an initramfs image, you need to put the
+> names of firmware in that field.
+>=20
+>> - Are those firmware files in the kernel tree?
+>=20
+> I don't think so.
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.g=
+it/
+>=20
+>> - How are they "used" when building the initrd?
+>=20
+> initramfs is used before the real root file system is mounted. So
+> device drivers in initramfs can't use firmware on the real root file
+> system. An initramfs image needs include drivers with necessary
+> firmware. If you put the names of firmware in 'firmware' field, the
+> names are embedded in modinfo section in the module file. A tool to
+> build an initramfs image can use that information.
 
-Nit: why are you moving this line below `child_field_of_parent`? Just an
-artifact of rebasing?
+Thanks for the answer, can you also put this into the documentation, so
+that it is not lost. Please also use markdown back-tics (`) for stuff
+that should be rendered in a monospace font (eg the `firmware` field).
 
-> +        while !(*child_field_of_parent).is_null() {
-> +            let curr =3D *child_field_of_parent;
-> +            // SAFETY: All links fields we create are in a `Node<K, V>`.
-> +            let node =3D unsafe { container_of!(curr, Node<K, V>, links)=
- };
+>> This might just be my lack of knowledge. But as you did not find any
+>> docs on the C side, I think we should take this as an opportunity to
+>> improve the state of things.
+>>
+>> You don't need to answer all of the questions above perfectly, but
+>> provide at least some starting point to learn more.
+>>
+>>> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+>>> index f489f3157383..19175b3e7172 100644
+>>> --- a/rust/macros/lib.rs
+>>> +++ b/rust/macros/lib.rs
+>>> @@ -35,6 +35,7 @@
+>>>   ///     author: "Rust for Linux Contributors",
+>>>   ///     description: "My very own kernel module!",
+>>>   ///     license: "GPL",
+>>> +///     firmware: ["file0", "file1"],
+>>
+>> Changing the example is good, but "file0" is not really meaningful...
+>=20
+> ["device-driver-fw0", "device-driver-fw1"] are better?
 
-[...]
+They look better to me.
 
-> @@ -1119,3 +1099,177 @@ unsafe impl<K: Send, V: Send> Send for RBTreeNode=
-<K, V> {}
->  // SAFETY: If K and V can be accessed without synchronization, then it's=
- also okay to access
->  // [`RBTreeNode`] without synchronization.
->  unsafe impl<K: Sync, V: Sync> Sync for RBTreeNode<K, V> {}
-> +
-> +impl<K, V> RBTreeNode<K, V> {
-> +    /// Drop the key and value, but keep the allocation.
-> +    ///
-> +    /// It then becomes a reservation that can be re-initialised into a =
-different node (i.e., with
-> +    /// a different key and/or value).
-> +    ///
-> +    /// The existing key and value are dropped in-place as part of this =
-operation, that is, memory
-> +    /// may be freed (but only for the key/value; memory for the node it=
-self is kept for reuse).
-> +    pub fn into_reservation(self) -> RBTreeNodeReservation<K, V> {
-> +        let raw =3D Box::into_raw(self.node);
-> +        let mut ret =3D RBTreeNodeReservation {
-> +            // SAFETY: The pointer came from a valid `Node`, which has t=
-he same layout as
-> +            // `MaybeUninit<Node>`.
-> +            node: unsafe { Box::from_raw(raw as _) },
-> +        };
-> +        // SAFETY: Although the type is `MaybeUninit<Node>`, we know it =
-has been initialised
-> +        // because it came from a `Node`. So it is safe to drop it.
-> +        unsafe { core::ptr::drop_in_place::<Node<K, V>>(ret.node.as_mut_=
-ptr()) };
-> +        ret
-> +    }
+> Can you tell me your proposal?
 
-With my patch [1] this can be simplified.
+This is really not my area of expertise. I have no idea what you would
+use here and hoped you knew :)
 
-[1]: https://lore.kernel.org/rust-for-linux/20240425213419.3904105-1-benno.=
-lossin@proton.me/
+>> It might also lead people to believe that they need the firmware field,
+>> so I think it should be its own example.
+>=20
+> You want to add the complete example for 'firmware' field like the
+> following?
+>=20
+> /// ```ignore
+> /// use kernel::prelude::*;
+> ///
+> /// module!{
+> ///     type: MyDeviceDriverModule,
+> ///     name: "my_device_driver_module",
+> ///     author: "Rust for Linux Contributors",
+> ///     description: "A device driver requres firmware",
+> ///     license: "GPL",
+> ///     firmware: ["device-driver-fw0", "device-driver-fw1"],
+> /// }
+> ///
+> /// struct MyDeviceDriverModule;
+> ///
+> /// impl kernel::Module for MyDeviceDriverModule {
+> ///     fn init() -> Result<Self> {
+> ///         Ok(Self)
+> ///     }
+> /// }
+> /// ```
 
-> +}
-> +
-> +/// A view into a single entry in a map, which may either be vacant or o=
-ccupied.
-> +///
-> +/// This enum is constructed from the [`entry`] method on [`RBTree`].
+That looks good, but please add another sentence above like "when
+needing to specify firmware, do this...".
 
-You could just write [`RBTree::entry`].
+>>>   ///     params: {
+>>>   ///        my_i32: i32 {
+>>>   ///            default: 42,
+>>> @@ -74,6 +75,7 @@
+>>>   ///   - `description`: byte array of the description of the kernel mo=
+dule.
+>>>   ///   - `license`: byte array of the license of the kernel module (re=
+quired).
+>>>   ///   - `alias`: byte array of alias name of the kernel module.
+>>> +///   - `firmware`: array of firmware names required by the kernel mod=
+ule.
+>>
+>> I think it is fine to keep the entry in this list, since this list
+>> describes the types that are expected for the parameters, but please
+>> extend the docs as I detailed above.
+>=20
+> Where you want the `firmware` explanation? Extending like the
+> following works for you?
+>=20
+> - `firmware`: array of firmware names required by the kernel
+>    module. This field is optional, used as a hint to build an initramfs
+>    image with firmware included.
 
-> +///
-> +/// [`entry`]: fn@RBTree::entry
-> +pub enum Entry<'a, K, V> {
-> +    /// This [`RBTree`] does not have a node with this key.
-> +    Vacant(VacantEntry<'a, K, V>),
-> +    /// This [`RBTree`] already has a node with this key.
-> +    Occupied(OccupiedEntry<'a, K, V>),
-> +}
+I think the list above should only be a short list explaining the types
+that are accepted for the various fields.
 
-[...]
+> If you want the explanation of the 'firmware' field elsewhere, please
+> tell me where.
 
-> +impl<'a, K, V> RawVacantEntry<'a, K, V> {
-> +    /// Inserts the given node into the [`RBTree`] at this entry.
-> +    ///
-> +    /// The `node` must have a key such that inserting it here does not =
-break the ordering of this
-> +    /// [`RBTree`].
-> +    fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
-> +        let node =3D Box::into_raw(node.node);
-> +
-> +        // SAFETY: `node` is valid at least until we call `Box::from_raw=
-`, which only happens when
-> +        // the node is removed or replaced.
-> +        let node_links =3D unsafe { addr_of_mut!((*node).links) };
-> +
-> +        // INVARIANT: We are linking in a new node, which is valid. It r=
-emains valid because we
-> +        // "forgot" it with `Box::into_raw`.
-> +        // SAFETY: All pointers are null or valid in an appropriate way.
-
-I don't like the formulation "valid in an appropriate way", since if you
-don't know what the appropriate way is, this doesn't help you.
-
-> +        unsafe { bindings::rb_link_node(node_links, self.parent, self.ch=
-ild_field_of_parent) };
-> +
-> +        // SAFETY: All pointers are valid. `node` has just been inserted=
- into the tree.
-> +        unsafe { bindings::rb_insert_color(node_links, &mut self.rbtree.=
-root) };
-> +
-> +        // SAFETY: The node is valid until we remove it from the tree.
-> +        unsafe { &mut (*node).value }
-> +    }
-> +}
-> +
-> +impl<'a, K, V> VacantEntry<'a, K, V> {
-> +    /// Inserts the given node into the [`RBTree`] at this entry.
-> +    pub fn insert(self, value: V, reservation: RBTreeNodeReservation<K, =
-V>) -> &'a mut V {
-> +        self.raw.insert(reservation.into_node(self.key, value))
-> +    }
-> +}
-> +
-> +/// A view into an occupied entry in a [`RBTree`]. It is part of the [`E=
-ntry`] enum.
-> +///
-> +/// # Invariants
-> +/// - `node_links` is a valid, non-null pointer to a tree node.
-
-It should be the same tree as `self.rbtree`, right? (I see you calling
-`rb_replace_node` below with the rbtree root used)
+You can put it below the list, maybe in its own section `## Firmware`
+for example.
 
 --=20
 Cheers,
 Benno
-
-> +pub struct OccupiedEntry<'a, K, V> {
-> +    rbtree: &'a mut RBTree<K, V>,
-> +    /// The node that this entry corresponds to.
-> +    node_links: *mut bindings::rb_node,
-> +}
 
