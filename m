@@ -1,248 +1,103 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59679631
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Apr 2024 06:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1B913AA2F;
+	Fri, 26 Apr 2024 07:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714113160; cv=none; b=V4s1s5WD4pUuDu1zp6UY4n+NpTCgJlCgM1jlenW7bEC5IOSrcS/KIeSKTahcO9NDQTdYDy8wCWIDULmXuD4t7OGZQTrX9x3qFd+M6j8FC/RfH6vQZTg5oIHZSziqPBr5n+r6UTTA4EBl2A3nzOMVsTUTxHTExvuKo42FUhSFq+s=
+	t=1714114820; cv=none; b=Uwk3VnKkfB2XG6SQfBRgiMxdf6xuSKp+xT9XYJ8hrihNGSyWa0TqH9bWho3i/mJ2zGgBq34wL4B8PPnLrnjhMVEZE4hjPjTtPCw9TP5kVCoFQSr/k9EQ04dhqJSdpTIvQWm3RzAfLSWDuAz0rWgSSbUbOoBSBgQCb47gjmvmkfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714113160; c=relaxed/simple;
-	bh=rtUGVKsO10LJIWRTFpXOF9wdVjJzy6xZKY26OOTm/Is=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u/D9b4DdDeHthlMnZki5QZZ3exZiRNJicQypZk2IxKMcfH7ZlI0tOM0HqPAYyqGc2mJVlQ2JJeNlf2IYRubkM2/mWzxVt41jF5G+Qg3sUb4+XImKOXaE/eLmpBjrIRs/w+7d75CKl+Fa35Wl3Xx13v0ft5oIZ1sgQF7zljRFBK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W5KyuVI9; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W5KyuVI9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=bumkvdrs3vb7pdpoegwbmhrw3a.protonmail; t=1714113150; x=1714372350;
-	bh=r7oVaw4lyexpBvPL+bwDK6PgFxfu0wR1UC6/ArBRmvQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=W5KyuVI96XxmnIj2xaQr+XAxmGY1ENLMiLlm0aDDE+MBjh8nFryx9wPrHUQ76ol2H
-	 AuyIMnhxrvY3bdOHiWZPPRH9vk1tyOconkzOCda0fE1PNYS6RAzpIu/DQRye37WMKZ
-	 nNOgooyQkiQ0bk/bYFKhC9HfsSTry/qJoBtN2MUzxfcNqzlu9g+N/qIeWaqNTc5fE/
-	 6FMAuSFH5asmIvILC5wvHiFKuRycLJHmPEPM5bxi8OwQ6YWu6JlUNVgnb1JGTPR056
-	 YOkQURAs8NCD2blLZHRKlp03DHEwkXzGXRlKxR1vz0BIQF0DNxNh/B08PsEJdE6ppJ
-	 dW6sEEbmo+Hgg==
-Date: Fri, 26 Apr 2024 06:32:26 +0000
-To: Danilo Krummrich <dakr@redhat.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>, ajanulgu@redhat.com, Andy Currid <acurrid@nvidia.com>, Neo Jia <cjia@nvidia.com>, John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v3 00/10] Allocation APIs
-Message-ID: <71dd99fe-0d64-47cc-b367-8fdd4fcdbdca@proton.me>
-In-Reply-To: <Zirfyp_NiYCRQYvk@cassiopeiae>
-References: <Zip4dFpt8xhk7UBL@cassiopeiae> <74cbdaf7-360e-47e3-bda4-4661422a11ae@proton.me> <ZiqkIQTHe9apd-LW@pollux> <f71c4e07-9f6f-4709-a3bb-012e644c4845@proton.me> <Zirfyp_NiYCRQYvk@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 4054ead838636b1f6f56c2ad711aafe46f1920da
+	s=arc-20240116; t=1714114820; c=relaxed/simple;
+	bh=Kp/6EzHFseCjwd4VVe5bygkVZd/6QTzkT0oK1Qhuexc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=k0Zp12CPxvi2aAX7qeT1KQz5KmsN506/LiTnqDnUKgaWXaEK7Gll8x/I/QbdNiHYqsY0Ra8jegoUVU01UXPonvWGW+4TludxbymYcxgT6Mg8Q5CQBgzHrC8EbsVBaLO+l/bGRD2QL5UW9WNYYtcSE54Zuy8A4PTapZVtfoo0Nas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [112.20.112.218])
+	by gateway (Coremail) with SMTP id _____8DxGuryUCtmplgDAA--.1746S3;
+	Fri, 26 Apr 2024 15:00:02 +0800 (CST)
+Received: from localhost.localdomain (unknown [112.20.112.218])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxhFbvUCtmPQIGAA--.2873S2;
+	Fri, 26 Apr 2024 15:00:00 +0800 (CST)
+From: Yanteng Si <siyanteng@loongson.cn>
+To: ojeda@kernel.org,
+	corbet@lwn.net,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	alexs@kernel.org,
+	dzm91@hust.edu.cn
+Cc: Yanteng Si <siyanteng@loongson.cn>,
+	linux-doc@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v2 0/4] rust: docs: Update the translation of rust to 6.9-rc4
+Date: Fri, 26 Apr 2024 14:59:47 +0800
+Message-Id: <cover.1714113680.git.siyanteng@loongson.cn>
+X-Mailer: git-send-email 2.31.4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAf8AxhFbvUCtmPQIGAA--.2873S2
+X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrKFyDZw13WFy8GF4DZF18Zwc_yoWkGrX_A3
+	y8ZFWjya1kAF4xKFWxGrW7urW8Cay0v348JFn0q3yDG34DArWDXr1DXF93Wr1fuF45Kry3
+	GrZ7J34fCrs3WosvyTuYvTs0mTUanT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbSxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
+	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUstxhDUUUU
 
-On 26.04.24 00:57, Danilo Krummrich wrote:
-> On Thu, Apr 25, 2024 at 08:52:16PM +0000, Benno Lossin wrote:
->> On 25.04.24 20:42, Danilo Krummrich wrote:
->>> On Thu, Apr 25, 2024 at 04:09:46PM +0000, Benno Lossin wrote:
->>>> On 25.04.24 17:36, Danilo Krummrich wrote:
->>>>> (adding folks from [1])
->>>>>
->>>>> On Tue, Apr 23, 2024 at 05:43:08PM +0200, Danilo Krummrich wrote:
->>>>>> Hi all,
->>>>>>
->>>>>> On 3/28/24 02:35, Wedson Almeida Filho wrote:
->>>>>>> From: Wedson Almeida Filho <walmeida@microsoft.com>
->>>>>>>
->>>>>>> Revamp how we use the `alloc` crate.
->>>>>>>
->>>>>>> We currently have a fork of the crate with changes to `Vec`; other
->>>>>>> changes have been upstreamed (to the Rust project). This series rem=
-oves
->>>>>>> the fork and exposes all the functionality as extension traits.
->>>>>>>
->>>>>>> Additionally, it also introduces allocation flag parameters to all
->>>>>>> functions that may result in allocations (e.g., `Box::new`, `Arc::n=
-ew`,
->>>>>>> `Vec::push`, etc.) without the `try_` prefix -- the names are avail=
-able
->>>>>>> because we build `alloc` with `no_global_oom_handling`.
->>>>>>>
->>>>>>> Lastly, the series also removes our reliance on the `allocator_api`
->>>>>>> unstable feature.
->>>>>>>
->>>>>>> Long term, we still want to make such functionality available in
->>>>>>> upstream Rust, but this allows us to make progress now and reduces =
-our
->>>>>>> maintainance burden.
->>>>>>>
->>>>>>> In summary:
->>>>>>> 1. Removes `alloc` fork
->>>>>>> 2. Removes use of `allocator_api` unstable feature
->>>>>>> 3. Introduces flags (e.g., GFP_KERNEL, GFP_ATOMIC) when allocating
->>>>>>
->>>>>> With that series, how do we implement alternative allocators, such a=
-s
->>>>>> (k)vmalloc or DMA coherent?
->>>>>>
->>>>>> For instance, I recently sketched up some firmware bindings we want =
-to
->>>>>> use in Nova providing
->>>>>>
->>>>>> fn copy<A: core::alloc::Allocator>(&self, alloc: A) -> Result<Vec<u8=
-, A>>
->>>>>> [1]
->>>>>>
->>>>>> making use of Vec::try_with_capacity_in(). How would I implement
->>>>>> something similar now?
->>>>>
->>>>> I want to follow up on this topic after also bringing it up in yester=
-day's
->>>>> weekly Rust call.
->>>>>
->>>>> In the call a few ideas were discussed, e.g. whether we could just re=
--enable the
->>>>> allocator_api feature and try getting it stabilized.
->>>>>
->>>>> With the introduction of alloc::Flags (gfp_t abstraction) allocator_a=
-pi might
->>>>> not be a viable choice anymore.
->>>>
->>>> Bringing in some more context from the meeting: Gary suggested we crea=
-te
->>>> a custom trait for allocators that can also handle allocation flags:
->>>>
->>>>        pub trait AllocatorWithFlags: Allocator {
->>>>            type Flags;
->>>>
->>>>            fn allocate_with_flags(&self, layout: Layout, flags: Self::=
-Flags) -> Result<NonNull<[u8]>, AllocError>;
->>>>
->>>>            /* ... */
->>>>        }
->>>>
->>>>        impl AllocatorWithFlags for Global { /* ... */ }
->>>>
->>>>        impl<T, A> VecExt<T> for Vec<T, A> where A: AllocatorWithFlags =
-{
->>>>            /* ... */
->>>>        }
->>>>
->>>> I think that this would work, but we would have to ensure that users a=
-re
->>>> only allowed to call allocating functions if they are functions that w=
-e
->>>> control. For example `Vec::try_reserve` [1] would still use the normal
->>>> `Allocator` trait that doesn't support our flags.
->>>> Gary noted that this could be solved by `klint` [2].
->>>
->>> I agree, extending the Allocator trait should work.
->>>
->>> Regarding allocating functions we don't control, isn't that the case al=
-ready?
->>> AFAICS, we're currently always falling back to GFP_KERNEL when calling
->>> Vec::try_reserve().
->>
->> Yes we're falling back to that, but
->> 1. there are currently no calls to `try_reserve` in tree,
->> 2. if you use eg a `vmalloc` allocator, then I don't know if it would be
->>      fine to reallocate that pointer using `krealloc`. I assumed that th=
-at
->>      would not be OK (hence my extra care with functions outside of our
->>      control).
->=20
-> Well, this would indeed not be valid. However, a vmalloc allocater wouldn=
-'t
-> implement realloc() this way.
+v2:
+* As Miguel's comments, translate commit 01848eee20c6
+  into Chinese, as well as commit 81889e8523e6. By the way,
+  these two patches haven't appeared in the doc development
+  tree yet, maybe we could consider merging them into the
+  rust tree?
+* As Dongliang's comments, translation "在... 前添加" other
+  than "前缀".
 
-Oh yeah that is correct.
+v1:
+The Chinese version of rust seems to be way behind,
+even though we did translate to Chinese at the beginning.
+Let's keep them up to date. :)
 
-> Or are you saying that Vec always uses the global allocator in that case?=
- Why
-> would it do that?
+Yanteng Si (4):
+  docs/zh_CN/rust: Update the translation of arch-support to 6.9-rc4
+  docs/zh_CN/rust: Update the translation of coding-guidelines to
+    6.9-rc4
+  docs/zh_CN/rust: Update the translation of general-information to
+    6.9-rc4
+  docs/zh_CN/rust: Update the translation of quick-start to 6.9-rc4
 
-No, it would use the vmalloc allocator.
+ .../translations/zh_CN/rust/arch-support.rst  | 14 ++++--
+ .../zh_CN/rust/coding-guidelines.rst          | 12 +++++
+ .../zh_CN/rust/general-information.rst        |  2 +-
+ .../translations/zh_CN/rust/quick-start.rst   | 50 +++++++++++++------
+ 4 files changed, 56 insertions(+), 22 deletions(-)
 
-So I guess the issue isn't as bad as I at first thought. I still think
-we should lint for this though (but maybe a warning instead of an error).
-
->>> But yes, I also think it would be better to enforce being explicit.
->>>
->>> Given that, is there any value extending the existing Allocator trait a=
-t all?
->>
->> This is what I meant in the meeting by "do you really need the allocator
->> trait?". What you lose is the ability to use `Vec` and `Box`, instead
->=20
-> Oh, indeed. I forgot about that when I wrote that. In that case I feel li=
-ke it's
-> worth extending the existing allocator_api.
->=20
->> you have to use your own wrapper types (see below). But what you gain is
->> freedom to experiment. In the end we should still try to upstream our
->> findings to Rust or at least share our knowledge, but doing that from
->> the get-go is not ideal for productivity.
->>
->>>> But we only need to extend the allocator API, if you want to use the s=
-td
->>>> library types that allocate. If you would also be happy with a custom
->>>> newtype wrapper, then we could also do that.
->>>
->>> What do you mean with "custom newtype wrapper"?
->>
->> You create a newtype struct ("newtype" means that it wraps an inner type
->> and adds/removes/changes features from the inner type):
->>
->>       pub struct BigVec<T>(Vec<T>);
->>
->> And then you implement the common operations on it:
->>
->>       impl<T> BigVec<T> {
->>           pub fn push(&mut self, item: T) -> Result {
->>               self.reserve(1)?;
->>
->>               self.0.spare_capacity_mut()[0].write(item);
->>
->>               // SAFETY: <omitted for brevity>
->>               unsafe { self.0.set_len(self.0.len() + 1) };
->>               Ok(())
->>           }
->>
->>           pub fn reserve(&mut self, additional: usize) -> Result {
->>               /*
->>                * implemented like `VecExt::reserve` from this patchset,
->>                * except that it uses `vmalloc` instead of `krealloc`.
->>                */
->>           }
->>       }
->>
->> If we need several of these, we can also create a general API that
->> makes it easier to create them and avoids the duplication.
->=20
-> Thanks for for explaining.
->=20
-> I'd probably tend to extending allocator_api then. Do you see any major
-> advantages / disadvantages doing one or the other?
-
-So aside from being able to use `Vec` and `Box` etc, I don't think there
-are any advantages to using `allocator_api`. The disadvantages are that
-it's another unstable feature that we need to get stabilized in some
-form. So it increases the amount of time it takes for us to be able to
-support multiple versions of Rust.
-
-I think it's fine for you to experiment with the `allocator_api` and see
-where that leads you. But when we discuss merging patches that enable
-unstable features, we should be sure that the feature is truly needed.
-And that it cannot be replaced by custom code (it also depends on how
-complicated it is, but I think `allocator_api` would be simple enough).
-
---=20
-Cheers,
-Benno
+-- 
+2.31.4
 
