@@ -1,96 +1,92 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31165144D3C;
-	Fri, 26 Apr 2024 11:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02554145B0B;
+	Fri, 26 Apr 2024 12:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714130783; cv=none; b=fiE8x9od7E5DEJ3qjTBn5zU4hvvJwGzt4LGwtGJLzgxLZyyT82fV4esJiCg2I+MmTqZ87DqSTQoCJL+wlaLAy1QB2psZjr6Ve7Yx8lofCndduwvh/g/nHk/dAI91TMEEhYVmyjTyC+u7fuVEbC6Nm7aiyXn0gmyJFnDOnh5jdvg=
+	t=1714134070; cv=none; b=CD9PxpjuyLh4ul4+oVifINMbWwHNXHi5yWOFYYgmCGMeyRuShaPzWezyl/Xesu0nHrYumSQoINOGRZ7UA1hCWxOA/BOlvd2C8STnnJexjlMBgH2iu5b69D7/K24kVUuueH5fH7HImY0hIrtyc3Gcw6bZG2+oGcXgXLC+1ngIe6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714130783; c=relaxed/simple;
-	bh=eAvAWrFgtQ2mFDBBY05se0TP4T0wymaT6lQRQYtN9iM=;
+	s=arc-20240116; t=1714134070; c=relaxed/simple;
+	bh=VFUk/8mezBkp2jG4lxOgugvzQyyyqYxEDgBoU4W+9R0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O44Sx6ec6cSiAQdwvHl32BnJoA2kLM05k8zY6AaxDz+Bpb3UuRyrGy7vxCN2UmMpa4QWPPcoz8IhQfQdHKbMeV5VObxKGp3MSb/idEyRgRPK3GEzY33L0fLl6NGTZEsq8OVqVWyJ2oPGTWn5ptGkELJUfyhsiVytyOpyqRF70fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l8rA2F0k; arc=none smtp.client-ip=209.85.215.173
+	 To:Cc:Content-Type; b=KGqRuRj3H2jcPPMpMYUfAl7tqhFo47V2AWe9XKNwxFZAMq+q612KNmk+GTft3B8B7v/oYh227YaLdrDInvTrAGmRPFbJMhP0D2Dzf61X/2NDErFzqlRTIY5iyLQ4Q7FKwnw3Uxy05ibvO+gHP75X869ZOIGEBha5D3rb2M3QGKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DEqylk0u; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l8rA2F0k"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5d3907ff128so1603270a12.3;
-        Fri, 26 Apr 2024 04:26:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DEqylk0u"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2a2d248a2e1so2334588a91.0;
+        Fri, 26 Apr 2024 05:21:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714130781; x=1714735581; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714134068; x=1714738868; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eAvAWrFgtQ2mFDBBY05se0TP4T0wymaT6lQRQYtN9iM=;
-        b=l8rA2F0kR+kwnZUhSmt1eDypphiOcFPTFo3LNGUWF/rFM3DRN2zeB1FSMHaagbXTu0
-         jxRM6GbNleQZAc/L9a51V6YBGt2fn2G2LkF/ADVU61qLFWxggmytXUo+M198YfDWYdUe
-         t/M5cmdnWDnzjXBK8pGLCpPbgiA08GH4e2GsmGftcXC7gnVeam6rUCDGo9KZaTqW7tnr
-         z9XpN4t41GOSPgS4GTlvEaVB/BU9/IahowEdPT6oj6YAGd2KeOfi4e0IePN1eoHqA7Rk
-         u82PV85WXtGu32zQ7n3c2OHeJ1f8pen7sz8v6RO4QzFK/H6OmhL5lBftsdfqprDyjz7X
-         1ziQ==
+        bh=VFUk/8mezBkp2jG4lxOgugvzQyyyqYxEDgBoU4W+9R0=;
+        b=DEqylk0uEUvtFSNqHjqyT4X9HgIoKx6/BAEipxEwiR69CL9ZBiO58G6NeHGG4OzgFC
+         aHLCumcD5JEXzO0qNFBiAXmjtpcb4m9WlNJjiPthUPFYpzjLVE5WCC9Z8rzBeydSlnOQ
+         rfyO+ktnMFs7OmrfoxG39Cm8pxbJsfJjGlNeTn0ZIY74OPAFxGr25cGb8YvS+nWsjjCD
+         A2+ru4bEqLdPcu53q/HL5wCmsvnzZLXkJNWh2mfju1SYWw17nRfxajLdSvEU+id59B3O
+         8g9fPvj3vDMeDu4udfEneA2eulaGkaJcLxKsHYmlZ8h3mRTfu1FWE2RjMF+uWdL8C3x1
+         Z+oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714130781; x=1714735581;
+        d=1e100.net; s=20230601; t=1714134068; x=1714738868;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eAvAWrFgtQ2mFDBBY05se0TP4T0wymaT6lQRQYtN9iM=;
-        b=rnFvW47Nw7heDE1PmPhn0yh1wg0a8Gwmbh5qHefWcxma9w8rUCIxO9ty7G260s3SCJ
-         TinBWF/7kHzshNP+ExDcfHv4CPtCS5DDeIQB+fcgN+NkAZ0ojOGgui/PmRJ3gAeFClw3
-         AIaQRDxzfLgiIuxbYr1bEhRa7T2cUnpgt0EGYTIURxUOYqj39OQFTKIyI6nJTuwNfDyg
-         QqgktDYAAooadjDbuVQOesrM279eH1bdGEuPhKPpsIBQ2gDXQq55enLEpXaRKKSQeQiB
-         DYULSbt6SGo1fxNiZkYArMTEyMXdDnfV86rFxfo4sXzCCj4ZENZbKKSEWD39KepP0Nhh
-         h/ow==
-X-Forwarded-Encrypted: i=1; AJvYcCUwYHIq8Elytf2bbL8FBm/KS5Fvv8Z9OWTTqHlMtfsI97r3fMvINjWhdSW4C+p1GAVIoDPMml8tIhb2jNaqei3en1Rf3EEg1vY4CuN43CI=
-X-Gm-Message-State: AOJu0YzcAT1vpfDuLq1FpqmxxSwJnLxn1o2rd7GxuU6TiBDeptiQFvuL
-	j1bWZbjzPcjJTLoL0JF7Q6ywP/dAFl+VX9BFK67fmzqVy/eyER08R+4hF14YfXOp6qf/LNdo0PD
-	d8PqDikuMlvvycOjWpiFaijuXaWXsr4Z00R4=
-X-Google-Smtp-Source: AGHT+IF1aD14GTOBzmDDv5Agsa8peRMfGaM/ZoBYA3pFgL0Y85zBnwguHZYg7B6kmxdTNIcaxeUCJvgWc9lFyJEHm7s=
-X-Received: by 2002:a17:90a:7895:b0:2ad:a5d2:8e2d with SMTP id
- x21-20020a17090a789500b002ada5d28e2dmr2757829pjk.14.1714130781430; Fri, 26
- Apr 2024 04:26:21 -0700 (PDT)
+        bh=VFUk/8mezBkp2jG4lxOgugvzQyyyqYxEDgBoU4W+9R0=;
+        b=bUwwjvaiSMYvxZsN0J5zFyFS5LaLm2n0Q71QmVsK2MZxyZV+GEfdhWOSrh6h5coWsl
+         Pf2y7tePDM2+QAcarpDn14kFZtDpRtr4BYYjHpHg7fBv7DTbCwFebR8e7OjUep1Pv1Vk
+         H76yKRW2mn3ybucBDFeLfaTrCTmhYUV56YLv43R+YbRGE+krRRc/dG97P3zzdn5wieW6
+         3kHswQl13kaUBzkIpw5fagXgZO7Veiq/2WRjHESZf/+aLgEEywzdvYlwgHrYftQkq1p3
+         FLXeyikWio+AN0o3D6m1P5mH3Jcf0pgwdTMnNEA0fAWXrF07FooI3YR4iK/sur8uCUcN
+         J88A==
+X-Forwarded-Encrypted: i=1; AJvYcCW5Sy0vAfqHjNemh1se3hZgZG1wRmB1XZTG662IjgXl3aFDNV4Lnph/ncM63mC/dnoxbwAAbuLueBEu2jrKu2tVq8h2a6OII2w/uzr43FVFwiyOz8NC0rPAsLdoONDWaRu9e7/HupF5t6Q=
+X-Gm-Message-State: AOJu0Yz0CU4AzBOmJCJdt1/HFPPK1Ypv2HVIPweR7b0baB9hnRWhhVQp
+	/2gZvlMyidKvWzV9MX0klNotELnX8eCAn+H71WftsaSYb+ug6slUFtE9tepUgoGUfGWipwA6xny
+	XH7IFKoabcyhOSF14gye7IC9UhVw=
+X-Google-Smtp-Source: AGHT+IHQ0i2Z+JiSphGpy0VElFmysG0D6y1RO6zJ2spHmtLaNeadT9T7sGBsWfuOBTgfYf9daaHlhTS+KLOAtOcApTc=
+X-Received: by 2002:a17:90b:28cb:b0:2a5:575:c58d with SMTP id
+ qj11-20020a17090b28cb00b002a50575c58dmr8343368pjb.16.1714134068133; Fri, 26
+ Apr 2024 05:21:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANcniXsneeNs+Hfr9PScU2aYPyvn6re=5T0Cu5dgAa4N_b7m4A@mail.gmail.com>
-In-Reply-To: <CANcniXsneeNs+Hfr9PScU2aYPyvn6re=5T0Cu5dgAa4N_b7m4A@mail.gmail.com>
+References: <cover.1714113680.git.siyanteng@loongson.cn> <CANiq72meE9txt5b09Y7cUJd-hEqcZX1ZtRc_0YYDZqWQgyo3wA@mail.gmail.com>
+ <9cae4c4a-55a6-4c6c-9780-866f796a52c0@loongson.cn>
+In-Reply-To: <9cae4c4a-55a6-4c6c-9780-866f796a52c0@loongson.cn>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 26 Apr 2024 13:25:15 +0200
-Message-ID: <CANiq72mzHj+4pB4F5FbuyKVP7o751LxHosNeEu4UhHyWqwOmdg@mail.gmail.com>
-Subject: Re: Problem with rust module
-To: qwer trump <vivazsj@gmail.com>
-Cc: linux-kbuild@vger.kernel.org, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
+Date: Fri, 26 Apr 2024 14:20:02 +0200
+Message-ID: <CANiq72=b=G3GPVWQ2XV1MT-wdT0KL4jZVQfD55Mcz_st-G7r=Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] rust: docs: Update the translation of rust to 6.9-rc4
+To: Yanteng Si <siyanteng@loongson.cn>
+Cc: ojeda@kernel.org, corbet@lwn.net, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, nathan@kernel.org, ndesaulniers@google.com, 
+	morbo@google.com, justinstitt@google.com, alexs@kernel.org, dzm91@hust.edu.cn, 
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 26, 2024 at 11:46=E2=80=AFAM qwer trump <vivazsj@gmail.com> wro=
-te:
+On Fri, Apr 26, 2024 at 12:35=E2=80=AFPM Yanteng Si <siyanteng@loongson.cn>=
+ wrote:
 >
-> ERROR: modpost: too long symbol
-> "_RNvNtNtCschHAZg3Q02y_6kernel5print14format_strings4INFO"
-> [/linux-rust/samples/rust/rust_minimal.ko]
+> I'm thinking that I'm two commits ahead of the doc tree, it doesn't seem
+> to fit
 >
-> But I see there are many long symbols in Module.symvers. So I guess there=
-'s
-> something wrong with modpost.
+> merge into the doc tree in this window, and there might be conflicts on
+>
+> linux-next if I splite the patch out more.
 
-This shows up with `CONFIG_MODVERSIONS=3Dy`, but you should not be able
-to enable the Rust support if you have that enabled (until it gets
-resolved, see [1][2]).
-
-Do you have `CONFIG_MODVERSIONS` enabled?
-
-Thanks!
+Hmm... I am not sure I follow -- conflicts with what? These patches
+only change the translations and they all get applied by the doc tree,
+right?
 
 Cheers,
 Miguel
-
-[1] https://lore.kernel.org/rust-for-linux/20230111161155.1349375-1-gary@ga=
-ryguo.net/
-[2] https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mmaurer=
-@google.com/
