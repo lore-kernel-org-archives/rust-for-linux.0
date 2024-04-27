@@ -1,88 +1,118 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4DE12C493;
-	Fri, 26 Apr 2024 16:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822313CF73;
+	Sat, 27 Apr 2024 04:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714150118; cv=none; b=PCvgimkLhfMaiFx6pghrN+H77iuCeDfIIbywW46foVlaXro+KZOxvYFxnzqD4ijqRrBVLVLJXYFQPDsILNDVbjH7q4jrHgPGOzDBcEbJwDsqRBdoyuIc+xO34f1cipo3UH3My8+kIt1JyLl4W+o01adL/dLjnbBC8FV/aaQmTQ4=
+	t=1714191949; cv=none; b=Jr1LXEUAyvXt2zM5vhJ+riY8JvHvONrjgebSdfsoBXHFOZeCS6AnxPJjNnlLMav5JBv8wct7ZpHtoLpHAIyuP8krhB1VUSHHRxidPLGIvNZTh8LEOawBGJ0Hh9OqwYG/RvZ/IHEDDIJRHOeQt3j+I4/v9ghgHPM4YiTG/cPajD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714150118; c=relaxed/simple;
-	bh=isJanjft6Ijm3USO7GK2BudIrWLYWU6b2nnmV6911CY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qyPYkL1jayWR9EnXY/BagWnlXa0hqAxGC17Ac1zeKPBiroatZUVvVtc7lo0818GGA6nB8vIaSk61Jdlgc+bcS6irIflbPSMbLxxi9c4vIPk1uzQSLhh4njA65NyDplG3kuYMf38KKgVDxkTveCDGORK+EwYB8nrQWUV3h1LFPbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4GNtGnY; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4GNtGnY"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2a5ef566c7aso2094048a91.1;
-        Fri, 26 Apr 2024 09:48:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714150117; x=1714754917; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JmMXkGy7VPsvwtkKsXV/wpxBJRPdn7aku2j+I7TeRZI=;
-        b=i4GNtGnYY6gYNWxYnMkIMW5cM20mJTmbKrCH42IHcL164NoIIsHwyjlWyQJTGeNLI/
-         A4HjgxdIxAiYSuELIV2QlK8bYhEoD4MrLUDx7ZH2IOmmIoL8lxQogUj+I9CLqIRtaO75
-         gDQNAUJeq1WH/qUFELUdbSr+VtitFBXPOemRWIayRAkjNMqmHdUz50mdqxpdrzb7qYpK
-         gI+iLOGoz+A+Wef4VjfFdqcEbgrjyD5D2svIzhOFJfRYhkNHCj9at31geztNtsypLwb8
-         YZ69pK/g88DMsAYN6nbX68nsW+ZcrLmJ02U0SLiQYljswZWWTakgoNCmHpIhoqwyxz6/
-         tD0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714150117; x=1714754917;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JmMXkGy7VPsvwtkKsXV/wpxBJRPdn7aku2j+I7TeRZI=;
-        b=sQFEc7bvL4GnIo+TuiuQK5szxhL9C5jm0zVXQJt148i7JXGcpnSYOeoO9/iYT3BG+2
-         Ha4Xfvz5aRlaOiipP3Uvo3P8LE/9KBhc4xjBr182prweq1j70YMng2wSNmD+rRCZJbe4
-         tQYKpl9a1rqBk6bUrd+ZML9saUN058sMKS651acjAJ4LqipOUslDFGRPTxdcMn1lqamZ
-         HG/zhvOsB8tNKxkeXwpKiqRlfkbzyIhxzteC5wLpRupN8J12shlKYiiqYOmbMmYZHOiu
-         Vz57G6XxVvNO4yTDAesTgNjBpZX7o7wl0QhAG7sfSx8LNJkYzWVClaDq2ZG8Ab0izkdD
-         Effw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnRa4Zdt8w/exTfUcXx9JIipd79g2CkeWnyzzpB91lJ075fNhjEXWvqxCuv6/UBN+fLXU6Zw4JmT+PjEOg8B4w8SSK16BrnuxhUZmhYALrvLcfhXbe4idD5Wb6AtzQE4M2vmWk3UY1N48=
-X-Gm-Message-State: AOJu0YzmuvUiBKDGszklP8M4QqbAbAzt1TkxmYu4elz64vOmp7UjzFVL
-	19y5yoHO7sCuElzbIcN8Ey293FLRj36Z8v3XOacMLsphslGVDyis/COAZs889S8/9KSISw77lYU
-	b65RZo48gYEe1exCXW2NtEn4YLOeJveZ3
-X-Google-Smtp-Source: AGHT+IGUzYot4aWxYmJQmmtJTaU0cDPgRlNF43MSJ+xR+zOvk17sLDT893O9A18W2SmanyZEbP3mYQ0mJ7tS2z0ZCN8=
-X-Received: by 2002:a17:90a:34c2:b0:2ab:9819:64bc with SMTP id
- m2-20020a17090a34c200b002ab981964bcmr3011377pjf.32.1714150116642; Fri, 26 Apr
- 2024 09:48:36 -0700 (PDT)
+	s=arc-20240116; t=1714191949; c=relaxed/simple;
+	bh=X2gig5u+4kkxfvwDP2PFggk8gIpIlYRNQFFkvmtEtcg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MX/M+WuaO4ejdSBNinL+dmMrlOc1qd1jy8T8zY5S+OlRdJo9X3c9cE4p45Vnk9czRFec8DvgzIKTuXvsbhwa27hAqc9YgIkUthufgUd8vshOgdLS1BBDz3lBJCjQRbfZUJITn/k3lP4x/fuNy6EU5rPwAVI9UU99v8j4T82n61o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [112.20.112.218])
+	by gateway (Coremail) with SMTP id _____8AxR_BIfixmYN0DAA--.15406S3;
+	Sat, 27 Apr 2024 12:25:44 +0800 (CST)
+Received: from [192.168.100.8] (unknown [112.20.112.218])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxP1VFfixmABcHAA--.4027S3;
+	Sat, 27 Apr 2024 12:25:42 +0800 (CST)
+Message-ID: <f402bf42-98c9-4433-9efc-c3e13b0853e9@loongson.cn>
+Date: Sat, 27 Apr 2024 12:25:40 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1714113680.git.siyanteng@loongson.cn> <CANiq72meE9txt5b09Y7cUJd-hEqcZX1ZtRc_0YYDZqWQgyo3wA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] rust: docs: Update the translation of rust to
+ 6.9-rc4
+To: Jonathan Corbet <corbet@lwn.net>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
+ justinstitt@google.com, alexs@kernel.org, dzm91@hust.edu.cn,
+ linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ llvm@lists.linux.dev
+References: <cover.1714113680.git.siyanteng@loongson.cn>
+ <CANiq72meE9txt5b09Y7cUJd-hEqcZX1ZtRc_0YYDZqWQgyo3wA@mail.gmail.com>
  <87zftgnsun.fsf@meer.lwn.net>
+Content-Language: en-US
+From: Yanteng Si <siyanteng@loongson.cn>
 In-Reply-To: <87zftgnsun.fsf@meer.lwn.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 26 Apr 2024 18:47:30 +0200
-Message-ID: <CANiq72mHoh=qgOGPj29hpS7EhVcXi5Q_7GYsycKhYwj3QbsTag@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] rust: docs: Update the translation of rust to 6.9-rc4
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Yanteng Si <siyanteng@loongson.cn>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, nathan@kernel.org, ndesaulniers@google.com, 
-	morbo@google.com, justinstitt@google.com, alexs@kernel.org, dzm91@hust.edu.cn, 
-	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAf8AxP1VFfixmABcHAA--.4027S3
+X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CF15Zw13WryUCF17Jw4xuFX_yoW8XFykpF
+	sxKa43Kw1DGr1IyF4fur4UZa4Ikr13GF4UJr1DW3s8Cw13XF1SkrWSvw4Y9FWxCrn5Ww1j
+	qr40yrZ3u3Z8ZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUk529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Eb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	kF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4U
+	MxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
+	0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
+	14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20x
+	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8
+	JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0L0ePUUUUU==
 
-On Fri, Apr 26, 2024 at 3:42=E2=80=AFPM Jonathan Corbet <corbet@lwn.net> wr=
-ote:
+
+在 2024/4/26 21:42, Jonathan Corbet 写道:
+> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
 >
+>> On Fri, Apr 26, 2024 at 9:00 AM Yanteng Si <siyanteng@loongson.cn> wrote:
+>>> v2:
+>>> * As Miguel's comments, translate commit 01848eee20c6
+>>>    into Chinese, as well as commit 81889e8523e6. By the way,
+>>>    these two patches haven't appeared in the doc development
+>>>    tree yet, maybe we could consider merging them into the
+>>>    rust tree?
+>> The former is in `rust-fixes`, which will be sent to Linus for this
+>> cycle. So the English docs will be updated sooner than these updates,
+>> if that is what you are asking.
+>>
+>> For the other one, it is in the RISC-V tree and I assume it will be
+>> sent into the next merge window. I don't know how you normally handle
+>> that (i.e. translations being updated at the same time or after a
+>> cycle), but either way, I am not sure why you would want them to be
+>> merged into the Rust tree?
 > I guess I don't see any reason why the translation couldn't go through
 > docs-next as usual?  It will all even out during the merge window,
 > right?  Or am I missing something?
 
-Yeah, that is what I am thinking as well, although Yanteng is
-mentioning conflicts somewhere, so I may be missing something too.
+Yes, you're right.
 
-Cheers,
-Miguel
+
+I mean, in order of order, I should translate these two patches in the 
+next window,
+
+because these two patches are not merged into the doc tree yet, and if 
+they are
+
+merged into the doc tree, this may cause confusion for readers and 
+reviewers.
+
+
+That's why I mentioned it on the cover letter. Of course, it would be 
+great if the
+
+patch sets were  merged into the doc tree after reviewed.
+
+
+Thanks,
+
+Yanteng
+
+>
+>
+
