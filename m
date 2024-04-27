@@ -1,25 +1,25 @@
-Received: from zg8tmtu5ljy1ljeznc42.icoremail.net (zg8tmtu5ljy1ljeznc42.icoremail.net [159.65.134.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE333D966;
-	Sat, 27 Apr 2024 04:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.65.134.6
+Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67F841744;
+	Sat, 27 Apr 2024 05:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714193895; cv=none; b=Gw2w63HJ0nSLS9vXq4plllrd9jR8iGg1meF+dOrgF/oH84M6I5EVzJ3Ya+UpIoxyVNjyCXo4GVAGA5g9avPwMgLV/eFmZyP/du9RDUz9IAc4EPakBCUt3efMgMCCJmP561wyPIo4x3ApWs5G15uhtvczuGm4bhtlr2kKLTzrv2I=
+	t=1714195810; cv=none; b=rckIY1FG9Of3ieJ7aA+H/H32KDqZmOWppEc1pI/1RUC6uToTINGJaWa/bmENL7MBQTYTdKj5klVa/IsDCR/PCQhUuPfmXBMDHrjCEApXAw8b/lyjulyZhmGugJoz6p+Ps2okXP9ETTEZ38w7M1bOa4NILyBrIC01zi73rnMws7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714193895; c=relaxed/simple;
-	bh=aM2Luehj5+ffkrgeKoI0aifHQ4Kms4zk+9w4xyw7XR0=;
+	s=arc-20240116; t=1714195810; c=relaxed/simple;
+	bh=KTsCJMHRLKqmgeETLE/O2lS3v9IJ15G/SkJgvACXWhg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HQp+qTZ8ApzSZGEG8+O3P816BMugRSS+p4o4XLIl9/oEc+gcWJlqgqWHTatzoOzlvhr6j491/lt60tlNtnanZ7+eVTVfDeW75MOoYlCP1G6Q8bU+xW8xatavxW9Fv0E193+c2TAaPsJ8zmvYfJ7YvlSXetl+Oe5T4HKMaHVsSEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=159.65.134.6
+	 In-Reply-To:Content-Type; b=A2EOz2w0CvnY1jjP/fHxBzYIvV7RVeWekmqERHXxuVEjKndNih94Y12t6vvHTn0rFiT9nE0ych4o84yiSV9e9e9/XNsz7+y3utiOkNN+ZvrQnqH+Gs2yiomlIZf+jSI8YMIhag20lzwxo/VsZHvRtTz52cqZVlPBtX61T1FnWUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=206.189.79.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app1 (Coremail) with SMTP id HgEQrADX2SjHhSxmcIp7BQ--.43098S2;
-	Sat, 27 Apr 2024 12:57:43 +0800 (CST)
+Received: from hust.edu.cn (unknown [172.16.0.50])
+	by app1 (Coremail) with SMTP id HgEQrACnr4M5jSxmy797BQ--.329S2;
+	Sat, 27 Apr 2024 13:29:29 +0800 (CST)
 Received: from [192.168.130.49] (unknown [61.242.129.158])
-	by gateway (Coremail) with SMTP id _____wAnAdrFhSxmvgvfAQ--.31060S2;
-	Sat, 27 Apr 2024 12:57:43 +0800 (CST)
-Message-ID: <9ce2bf52-375e-42a7-902c-72de1dc90af2@hust.edu.cn>
-Date: Sat, 27 Apr 2024 12:57:41 +0800
+	by gateway (Coremail) with SMTP id _____wC3+TU1jSxmRmc7AQ--.46385S2;
+	Sat, 27 Apr 2024 13:29:28 +0800 (CST)
+Message-ID: <fe4654fc-75ff-4e66-94eb-1c1cb5d5bed7@hust.edu.cn>
+Date: Sat, 27 Apr 2024 13:29:25 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -27,8 +27,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] rust: docs: Update the translation of rust to
- 6.9-rc4
+Subject: Re: [PATCH v2 1/4] docs/zh_CN/rust: Update the translation of
+ arch-support to 6.9-rc4
 To: Yanteng Si <siyanteng@loongson.cn>, ojeda@kernel.org, corbet@lwn.net,
  alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
  gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
@@ -38,64 +38,76 @@ To: Yanteng Si <siyanteng@loongson.cn>, ojeda@kernel.org, corbet@lwn.net,
 Cc: linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
  llvm@lists.linux.dev
 References: <cover.1714113680.git.siyanteng@loongson.cn>
+ <e61eee747275c4e258416e079315b8e23fe3fde5.1714113680.git.siyanteng@loongson.cn>
 From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <cover.1714113680.git.siyanteng@loongson.cn>
+In-Reply-To: <e61eee747275c4e258416e079315b8e23fe3fde5.1714113680.git.siyanteng@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HgEQrADX2SjHhSxmcIp7BQ--.43098S2
+X-CM-TRANSID:HgEQrACnr4M5jSxmy797BQ--.329S2
 Authentication-Results: app1; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvJXoW7Jw45Cry3XF15tFy3Kw4fuFg_yoW8Jr45pF
-	Z8GFyfJ3Z5trn7Cw1fCF4rZF4fGFs3G3y5Jr12q3s5Jrs8GF1rtrW7t34Y93y8urWxZF4r
-	Zr4rKrZ8uF4rCrJanT9S1TB71UUUU0UqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQ2b7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZFy5Cr18XrWfJF4kJF4kXrb_yoW8tF4fp3
+	WDCryxJF1UJryUGr17Wr1UXr1UGr18G34UJr18Ga47Xr4DJF18Jr1UtFn8Jr1Uur18AryU
+	JF1UGryUJw4UAFUanT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQFb7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
 	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	4a6rW5M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
-	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
-	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWrXVW3AwCF04
-	k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_GFv_Wrylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUy4CGUUUUU
+	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vE
+	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAaw2AFwI0_Jw
+	0_GFylnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
+	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0EF7xvrVAajcxG14v26r
+	4UJVWxJr1lYx0E74AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1l
+	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r1q6r43MxAIw2
+	8IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFW3Jr1UJwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jPiSLUUUUU=
 X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
 
 
 On 2024/4/26 14:59, Yanteng Si wrote:
-> v2:
-> * As Miguel's comments, translate commit 01848eee20c6
->    into Chinese, as well as commit 81889e8523e6. By the way,
->    these two patches haven't appeared in the doc development
->    tree yet, maybe we could consider merging them into the
->    rust tree?
-> * As Dongliang's comments, translation "在... 前添加" other
->    than "前缀".
+> Update to commit 81889e8523e6 ("RISC-V: enable building
+> 64-bit kernels with rust support")
+> commit 01848eee20c6 ("docs: rust: fix improper rendering in
+> Arch Supportpage")
+> commit 724a75ac9542 ("arm64: rust: Enable Rust support
+> for AArch64")
+> commit 90868ff9cade ("LoongArch: Enable initial Rust support")
+> commit e5e86572e3f2 ("rust: sort uml documentation arch support table")
+> commit 04df97e150c8 ("Documentation: rust: Fix arch support table")
+> commit 0438aadfa69a ("rust: arch/um: Add support for CONFIG_RUST
+> under x86_64 UML")
 >
-> v1:
-> The Chinese version of rust seems to be way behind,
-> even though we did translate to Chinese at the beginning.
-> Let's keep them up to date. :)
+> Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
 
 Looks good to me.
 
 Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
 
+> ---
+>   .../translations/zh_CN/rust/arch-support.rst       | 14 +++++++++-----
+>   1 file changed, 9 insertions(+), 5 deletions(-)
 >
-> Yanteng Si (4):
->    docs/zh_CN/rust: Update the translation of arch-support to 6.9-rc4
->    docs/zh_CN/rust: Update the translation of coding-guidelines to
->      6.9-rc4
->    docs/zh_CN/rust: Update the translation of general-information to
->      6.9-rc4
->    docs/zh_CN/rust: Update the translation of quick-start to 6.9-rc4
->
->   .../translations/zh_CN/rust/arch-support.rst  | 14 ++++--
->   .../zh_CN/rust/coding-guidelines.rst          | 12 +++++
->   .../zh_CN/rust/general-information.rst        |  2 +-
->   .../translations/zh_CN/rust/quick-start.rst   | 50 +++++++++++++------
->   4 files changed, 56 insertions(+), 22 deletions(-)
->
+> diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Documentation/translations/zh_CN/rust/arch-support.rst
+> index afbd02afec45..abd708d48f82 100644
+> --- a/Documentation/translations/zh_CN/rust/arch-support.rst
+> +++ b/Documentation/translations/zh_CN/rust/arch-support.rst
+> @@ -16,8 +16,12 @@
+>   
+>   下面是目前可以工作的架构的一般总结。支持程度与 ``MAINTAINERS`` 文件中的``S`` 值相对应:
+>   
+> -============  ================  ==============================================
+> -架构          支持水平          限制因素
+> -============  ================  ==============================================
+> -``x86``       Maintained        只有 ``x86_64``
+> -============  ================  ==============================================
+> +=============  ================  ==============================================
+> +架构           支持水平           限制因素
+> +=============  ================  ==============================================
+> +``arm64``      Maintained        只有小端序
+> +``loongarch``  Maintained        \-
+> +``riscv``      Maintained        只有 ``riscv64``
+> +``um``         Maintained        只有 ``x86_64``
+> +``x86``        Maintained        只有 ``x86_64``
+> +=============  ================  ==============================================
 
