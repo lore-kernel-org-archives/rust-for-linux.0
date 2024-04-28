@@ -1,63 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46363BBCA;
-	Sat, 27 Apr 2024 19:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1BA64A;
+	Sun, 28 Apr 2024 01:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714245427; cv=none; b=WbH/O+9v2caufH3cNHiYIIKy5neZH3dSHwr4/bCrZnI1CDRY8jMryPSrAuuBxqOWqEpSCoBRaImST/Br6eHaqpV6afswDSBV6OtaFJmc6nxN8/vFYo5bw5wslf39R4elVYfckc6x1zWoXoxSLoHHBxRFqzEgl+X9hERSjc/RYq4=
+	t=1714266061; cv=none; b=frpHQUI1Od4HwUycQ2hP/IBDbuPnHbRmvWvZB2r9sJRd8xz9L8Pe0LeG/kSq4cgUHO3M3vTkg1jpvl/egaBGkuIupBN6t9wf+nk2lpJTw0PZTSIh9YfrCh3n90O18IB7mgjFFlJh7cxNTsL4SA/OMZvf/JIfPhz7lNO9zD4igYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714245427; c=relaxed/simple;
-	bh=qH6rAUVxPnGAasGcVjXu81zgc5DrQQueOu04FpSapWc=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=QFWDrYzuWcqg+M9LY44To+5B/JGeyrpohvJ8wex+vaMjg73eY7XP4yfZpI9IjM98+GNypJib8L48zdr9N5/OSBDBO9dJulT0XES9D2itOwS2jIGyJWx82m8bhNC53iJ1ZPZD3aAVTu/7BF4m+8Su6d55MF75NwShQEWv1ACj+uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfAuyPyN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714266061; c=relaxed/simple;
+	bh=CQPq4P7Mc2rn5q+BxrpMTetHqp2L2IxLk48gCda0ihs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AEWAf9QqAAF+VcTjP/OIj+XZEWHO4zoQXjduYGR1bFpF+OjlnUXx9djpOFf0pK/WYZJqq2SZkzifvbyjcvXsNXzf7nZ0Z9iLAGTM0eVagX0+5d/CfR7ojtL4idy2u7BQ6cbXldlsJRM/2jzTBAlpPM7t9MK3qwi2hS0/fjQ2V+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eSdcbDAY; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfAuyPyN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 86863C32781;
-	Sat, 27 Apr 2024 19:17:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714245427;
-	bh=qH6rAUVxPnGAasGcVjXu81zgc5DrQQueOu04FpSapWc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=hfAuyPyNgHGOIJlutOpocDofMer7EziUrgGISYxqE4iZJqmr97TvA++OVMGkYpfwS
-	 gYa8WZe/6dSr9xxm3EM/mYQZodgxVm756XCOmhKZSZsdX2+/Rgn+p3zHCEZe01kVEy
-	 6ZlUV4oeDCu0ij2jNsWHLBxzzgpFdBqYrw+WT1p4SACLs7Msy4ZLho8qSD1odGaRaN
-	 6SY3f8uUhJt4dDhvbtn8gaVcdv/JvfTYDsx9TufkcBFs7fM4znmH/BiF2VJrh0XBst
-	 5hbYJxY05/jOSlYPS+boRpNXduEqel1oBN4Bk+svr0Bv5Q06CRZaKc1GOEoLQAGzRF
-	 SLWQh/FKUl+0Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7B199DF3C9F;
-	Sat, 27 Apr 2024 19:17:07 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.9
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20240427171549.934651-1-ojeda@kernel.org>
-References: <20240427171549.934651-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20240427171549.934651-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.9
-X-PR-Tracked-Commit-Id: 19843452dca40e28d6d3f4793d998b681d505c7f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 2c8159388952f530bd260e097293ccc0209240be
-Message-Id: <171424542750.11751.13148491105823774138.pr-tracker-bot@kernel.org>
-Date: Sat, 27 Apr 2024 19:17:07 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eSdcbDAY"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4dac3cbc8fdso985784e0c.0;
+        Sat, 27 Apr 2024 18:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714266059; x=1714870859; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CQPq4P7Mc2rn5q+BxrpMTetHqp2L2IxLk48gCda0ihs=;
+        b=eSdcbDAYiyL1ZzEQwAgcPuJI9iObp7T7yz4H3XuebUPAMwdHar0PECpDLaNxiX+zwW
+         GRputQKMIv3an/wj4NWWOrvu5kM1RMSeZueV96gobcGbRf1DTOLtP1RT33cyAsb3SPpo
+         o74BV/u4LhTZxkn3VHzOAzY8qc1ulSW6B4W7nz+Pu7ExjkOIZHX5RiwLlwUJckZ6B0Zk
+         G2jpDYJMXEPUCxRqE9DALsEzvMlpH3VbORIx637c8k9hUvluudEjuXVaNuhWBU0eTVVw
+         fJnhRoT+yL3hX3X+IVlkziM8M11qKiwyUJWPxysKLe0N/c8D6IagZ476Gc3G4T/GdZ09
+         wjgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714266059; x=1714870859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CQPq4P7Mc2rn5q+BxrpMTetHqp2L2IxLk48gCda0ihs=;
+        b=IvuCQnviPbjp3Erb9JTAUJkP0nTBhatjJx+PoqXcADtuQrZCU+PlsYAMemHRDFhpOr
+         v7JNcgqpdAdmUD/8ppiYaQVPAymV8l5BX7gPZ7XQG5bHRVthzaNjKY217YVTGoz+3SLi
+         WP5tVl/uLAN9rTWdopd/gvGxwTMvSYW98WwLEib3xsI+DxGjQjX9nl2Q8sOQGUoF8fO8
+         WM4ko/UGh7YlNBf5w5mXBdOtLLfI6V/Gdy6LO27NUWeU/8OepeGVp36hhWoHxEct1gRI
+         shqkmTGoQF4nkCai0nii5fzuHrkyID9EhSJl8F72kn8ZMRgOesgac/ybvvtsrbjwv2jZ
+         pRTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQK94x7oEcHyxgcA8a669vEzrzW3GRflMYWb18YPumAPeh3mtVuTIsBlNOKKyI3ReBNn20xOkhiQ/OpdAtFlSnrlPSi0xlnBZkImI7FrQ=
+X-Gm-Message-State: AOJu0YxDqRtLb/m1IYXVR9tIqi9EWxQOjgxVjSqfYwL3pkCGdvtcKwvb
+	9a4cvsuQXWssggMVDgXh6xwvEfrbM2qL9XYP9lU8OS2Cx9xJL8uPu7ndDD8e1EGjZj5jCGrqUHu
+	2QY3jeimtCnEEe7LbUYPoW3stbTE=
+X-Google-Smtp-Source: AGHT+IFY48aMbbZY9HMorCJuLm/mwNLuIm3ybUEhG4NpAhRibAQeWTEsdhKs74InLXZdraTp0py/AQdQxiF6MOacQVw=
+X-Received: by 2002:a05:6122:c8d:b0:4c0:1bb6:322 with SMTP id
+ ba13-20020a0561220c8d00b004c01bb60322mr7003998vkb.15.1714266058164; Sat, 27
+ Apr 2024 18:00:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CANcniXsneeNs+Hfr9PScU2aYPyvn6re=5T0Cu5dgAa4N_b7m4A@mail.gmail.com>
+ <CANiq72mzHj+4pB4F5FbuyKVP7o751LxHosNeEu4UhHyWqwOmdg@mail.gmail.com>
+In-Reply-To: <CANiq72mzHj+4pB4F5FbuyKVP7o751LxHosNeEu4UhHyWqwOmdg@mail.gmail.com>
+From: qwer trump <vivazsj@gmail.com>
+Date: Sun, 28 Apr 2024 09:00:47 +0800
+Message-ID: <CANcniXtiRnNjcFCwfJpUrnnheep1ZC8yPuCsC6WJSWHgtHQa+w@mail.gmail.com>
+Subject: Re: Problem with rust module
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: linux-kbuild@vger.kernel.org, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The pull request you sent on Sat, 27 Apr 2024 19:15:49 +0200:
+Hi=EF=BC=8CMiguel
+Thanks for your reply. I really have this config enabled.
 
-> https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.9
+Best Regards
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/2c8159388952f530bd260e097293ccc0209240be
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> =E4=BA=8E2024=E5=B9=B44=E6=
+=9C=8826=E6=97=A5=E5=91=A8=E4=BA=94 19:26=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, Apr 26, 2024 at 11:46=E2=80=AFAM qwer trump <vivazsj@gmail.com> w=
+rote:
+> >
+> > ERROR: modpost: too long symbol
+> > "_RNvNtNtCschHAZg3Q02y_6kernel5print14format_strings4INFO"
+> > [/linux-rust/samples/rust/rust_minimal.ko]
+> >
+> > But I see there are many long symbols in Module.symvers. So I guess the=
+re's
+> > something wrong with modpost.
+>
+> This shows up with `CONFIG_MODVERSIONS=3Dy`, but you should not be able
+> to enable the Rust support if you have that enabled (until it gets
+> resolved, see [1][2]).
+>
+> Do you have `CONFIG_MODVERSIONS` enabled?
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
+>
+> [1] https://lore.kernel.org/rust-for-linux/20230111161155.1349375-1-gary@=
+garyguo.net/
+> [2] https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mmaur=
+er@google.com/
