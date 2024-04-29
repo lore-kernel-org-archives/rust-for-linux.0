@@ -1,60 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2029614039D
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 20:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE30914039D
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 20:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714421554; cv=none; b=qioQHJJFwbTvnKsiaiPN2X/ciQYMQY4RAyHrWk759q2N0XooaBnfi3FFX5PUiEYu3qa3wWLj+pWgj4YqFWwEMyvPXWNBXeTnSLDHV6+mNit41hZtzGyMDl4yGfTd9EwSc628hn8OFTCpX7jJTh2AenFsBA2tZyjEop5GUtHpCcI=
+	t=1714421557; cv=none; b=ALCZ/93UucFquMK8j8cNd7xBy7zTI2LLx1qQBzCc2JzNJrPB1ieBo4F46qCnFYMzcOWLDm04cCwQpCDF7wxANgs6JOXAUlVi7IBc/WPjNEoYoUdAJkAslTzuAMeu858Ysdi3KJZbwND60BFZ0O7GYK5zCme/CPP/rEFNEVxgvIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714421554; c=relaxed/simple;
-	bh=buY3Y0PXz9swddSdvsSpHjKAM7W5PkIKVyxjeP9ajlU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O6JQY17QhgqrJm9QIZdHGpER7ZNhiU6eXf53a1NepdQ2MOuOos2QgtMfrWufbO3tlEoa+AA3iShNpFHxx8fO8hHLXi8txrX1uGIAk3Z6/NX0A4DBtQ4rCUJ6jMF4kUUTXYptpXotoRuX7VfFSyFWFiWaT0ywhKBcwY0bDxbdxWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eYwc5f9I; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1714421557; c=relaxed/simple;
+	bh=7Rw6oHtZE0HVviOqFmzxDEkBzCN0dAdjRPvLcrI4qGI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eFuObjI92pm76NHNTXTRhDeCOjjFG1ucMduIS7aVf1cN/MUtqhNndhhPWaJhUrhSAo81PctOgUnb5r7qbMt0tkwqNZAtwnLNfAV+ZGsFWjHhxLvQgyo3/ZcUJ0Dc/Bucmt51XpebyyDFfU5MELJGR+ttsU4tLscpLxbukX+3wcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a1W66bxR; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eYwc5f9I"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a1W66bxR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714421551;
+	s=mimecast20190719; t=1714421554;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=/RVkey3AXMVOLhbuQElRmtfyOstNWZxdHhTfBGUgPz8=;
-	b=eYwc5f9Ii9NDi7KJGqjvs4j1ZXInfZD2ufMVUJHz87lg8ur8SyZxwsEAj1m+Fh6MBm2hgd
-	4hMsVlOyaKWzR84b2+DTTBY4QNVkB7qzv+g8CLHVRiiD5k0VqiJXUmieuNiVtj/ywSBKoU
-	5vknu93eRf6SRDjogu/j7VpQd4ctD1Y=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wtt6YExF5M4OAPl3+UIh0S6Tqultx52XlAUrAwUyoYQ=;
+	b=a1W66bxRx9QXGpRWU3Vpkmg6+6NqsFeGVuZtyfdX8O0wjYEtF85L1Zs4ti5ePFL68NG+Om
+	zW14RkION3Y5dsgXbvJ+2hPjA2x5DJX2z4Ufr/C5cHAXliixXi0ZHojAGrkdEc+zG50iNJ
+	+GEoFe36cnH5e52xJSbQ3pbTCokYJoA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-275-Z-cHR5tfPFacq3MB0ri8tA-1; Mon, 29 Apr 2024 16:12:29 -0400
-X-MC-Unique: Z-cHR5tfPFacq3MB0ri8tA-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-41aa1bbddadso19541755e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 13:12:29 -0700 (PDT)
+ us-mta-137-FLQ1nT2rOvakJRBNYq1H_g-1; Mon, 29 Apr 2024 16:12:33 -0400
+X-MC-Unique: FLQ1nT2rOvakJRBNYq1H_g-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-34a4ded7d49so4731603f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 13:12:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714421548; x=1715026348;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/RVkey3AXMVOLhbuQElRmtfyOstNWZxdHhTfBGUgPz8=;
-        b=Ba156FkmaYa9h9Bst541PbjRNCug/gPb+w3zZRiqnjiaETBY1duYSotyPSAk4CKDPz
-         Nhn+wiaO+Oj0Y14DWhQ3mi4+T3JkBLuvltNqANo5tlWU+fnuhJe9uFstjCe9eTLMCKja
-         PWBTD+zZKAwEc9LB6gpOykAS3wsRajnoj7sqqKV9Zl+lLhGMFZpoVDqZuj3K9fZNbYzb
-         mH4LX1mdcN/v8VhvMDSYqugYlymNpNzRtBqXTK0GqEfnzUpVMs7SVhU3S2AuBDz3GHjG
-         RCloPTRQYviZBFHyJJY8ZvCwpvl6w8wOxFam/cBiwALOajPZzs+hyPMG2oODMCOvpykP
-         gI5g==
-X-Gm-Message-State: AOJu0YwGz3l65lDQrY3V//7y71yue0C1byQj4oe9fsUTKveEy7XyHgXi
-	Si0h/5OUENSDWs/2Z1MachJBIPVW9MMY6aXKDJu7ASdfWIvMmEB9Sf57hQyrxpsoGBm2DS4hAZ+
-	JR04hHvmMGnBMMDkhDO4cVjptj4QcTTsxTXqimilwflKO2Nlp/L+nC5owlVhVsOT0
-X-Received: by 2002:a05:600c:1e16:b0:41b:f788:9c0b with SMTP id ay22-20020a05600c1e1600b0041bf7889c0bmr6119854wmb.14.1714421548323;
-        Mon, 29 Apr 2024 13:12:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHW+YelMB5x+8QJBlbTLZf7PWJ55wNtN2xmq9oPbJEmoait8B+cBOstlEvVfA5YqZTMlqxh3w==
-X-Received: by 2002:a05:600c:1e16:b0:41b:f788:9c0b with SMTP id ay22-20020a05600c1e1600b0041bf7889c0bmr6119834wmb.14.1714421547882;
-        Mon, 29 Apr 2024 13:12:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714421552; x=1715026352;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wtt6YExF5M4OAPl3+UIh0S6Tqultx52XlAUrAwUyoYQ=;
+        b=qmhDPhllBRAc+vsSKy3YXeIVMZO6keTSRPzHVEWIKNdROOZKAQgIPV4VEBds5St55U
+         JmvqIDsrHmqGktwC9rqCujUVMFqWzHDI7KGhYa/GABM51fy7cLJZuqg2n7tc9jKI7OO2
+         5e11A9j/Vaeh8E6YN3QYr9XpQj7ANSwVMFcJFMqdfzkvJVSK88DmInvirdLEH5zBlTaJ
+         juGRjDqVTFFd+rov9s6iJQ2YgxGCId2/j5n8OPar+4Ir+9qL8HKeIW9v2E7yEJo3kEkT
+         aGILlTxS/sMgFG/pUnhm9uie1mUgyM6NKp13xb/mZHxVWEG+RAI1CLwgvAu1FIQodYuS
+         vOLw==
+X-Gm-Message-State: AOJu0Yyr+WoIubLP+61w1AL39yCdKHJToCN0JUkTVrkt2R9O5s9WO8VR
+	VFV9quRuiB3bys9G4BsFYpkmxh4ZwdAHnTH2b6VsOSSpCHkldoyQAcTeHQmVddumHa5wtaPuXDP
+	uiucI+iUwexADkuLdD/RmU8O8ZjpklD0aKc2G8bsEEBq0ZRqRTfESPkjSzJipP+Mm
+X-Received: by 2002:a05:6000:156e:b0:343:ef64:e0fd with SMTP id 14-20020a056000156e00b00343ef64e0fdmr8868683wrz.52.1714421552250;
+        Mon, 29 Apr 2024 13:12:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHcuJO+NMfP9sUUbTGfk7Z4+7gGZjhNnQAvQ+Dr9Ex+aOPEeHBq/GnXVVCpeRssslGtEIew6g==
+X-Received: by 2002:a05:6000:156e:b0:343:ef64:e0fd with SMTP id 14-20020a056000156e00b00343ef64e0fdmr8868666wrz.52.1714421551927;
+        Mon, 29 Apr 2024 13:12:31 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id p5-20020a5d48c5000000b0034afaa9ca47sm22141262wrs.1.2024.04.29.13.12.25
+        by smtp.gmail.com with ESMTPSA id bg5-20020a05600c3c8500b00419f419236fsm34089379wmb.41.2024.04.29.13.12.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 13:12:27 -0700 (PDT)
+        Mon, 29 Apr 2024 13:12:31 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
@@ -72,10 +74,12 @@ To: ojeda@kernel.org,
 	jhubbard@nvidia.com
 Cc: rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH WIP 0/8] Draft: Alternative allocator support
-Date: Mon, 29 Apr 2024 22:11:50 +0200
-Message-ID: <20240429201202.3490-1-dakr@redhat.com>
+Subject: [PATCH WIP 1/8] rust: alloc: re-enable allocator_api
+Date: Mon, 29 Apr 2024 22:11:51 +0200
+Message-ID: <20240429201202.3490-2-dakr@redhat.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240429201202.3490-1-dakr@redhat.com>
+References: <20240429201202.3490-1-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -87,56 +91,23 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-DISCLAIMER: This patch series does not raise a claim for inclusion in the kernel
-(yet) and, instead, serves as a baseline for further discussion.
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+---
+ rust/kernel/lib.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hi,
-
-This patch series re-enables the allocator_api and implements an extension trait
-AllocatorWithFlags expanding the Allocator trait to allow for arbitrary
-allocator implementations.
-
-It expands Box<T, A> and Vec<T, A> by adding the BoxExtAlloc<T, A> and
-VecExtAlloc<T, A> traits analogous to the existing BoxExt<T> and VecExt<T>
-traits and, as an example, implements the VmAllocator (vmalloc).
-
-This patch series is tested (I tested the VecExtAlloc<T, A> parts using my
-firmware abstractions) and it seems to work quite well. However, since it's just
-a draft there are no proper commit messages, no documentation and no safety
-comments.
-
-Also, I'm pretty sure there are some parts of BoxExtAlloc<T, A> and
-VecExtAlloc<T, A> that, somehow, can be generalized with the existing BoxExt<T>
-and VecExt<T> implementations.
-
-Please let me know what you think.
-
-- Danilo
-
-Danilo Krummrich (8):
-  rust: alloc: re-enable allocator_api
-  rust: alloc: use AllocError from core::alloc
-  rust: alloc: implement AllocatorWithFlags trait
-  rust: alloc: separate krealloc_aligned()
-  rust: alloc: implement AllocatorWithFlags for KernelAllocator
-  rust: alloc: implement BoxExtAlloc
-  rust: alloc: implement VecExtAlloc
-  rust: alloc: implement vmalloc allocator
-
- rust/kernel/alloc.rs           |  25 ++++++--
- rust/kernel/alloc/allocator.rs | 103 ++++++++++++++++++++++++++++++---
- rust/kernel/alloc/box_ext.rs   |  41 ++++++++++++-
- rust/kernel/alloc/vec_ext.rs   |  86 ++++++++++++++++++++++++++-
- rust/kernel/error.rs           |   3 +-
- rust/kernel/init.rs            |   3 +-
- rust/kernel/lib.rs             |   1 +
- rust/kernel/str.rs             |   3 +-
- rust/kernel/sync/arc.rs        |   4 +-
- rust/kernel/workqueue.rs       |   3 +-
- 10 files changed, 251 insertions(+), 21 deletions(-)
-
-
-base-commit: 2c1092853f163762ef0aabc551a630ef233e1be3
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 9a943d99c71a..1e910fe7c2c7 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -12,6 +12,7 @@
+ //! do so first instead of bypassing this crate.
+ 
+ #![no_std]
++#![feature(allocator_api)]
+ #![feature(coerce_unsized)]
+ #![feature(dispatch_from_dyn)]
+ #![feature(new_uninit)]
 -- 
 2.44.0
 
