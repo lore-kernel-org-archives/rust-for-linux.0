@@ -1,89 +1,136 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C599126F1E
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 17:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1824012B73
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 19:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714412668; cv=none; b=iyVDNTDzbnVvQ11vbXQFAwLjspvuCEonsxvTehc5qi9SrsRQfryFNdBR1bia26bkIRAPYgq3B9K5mwbeoE3hUZ7YFVCKM12lbRFiZz365njdJj2G8vT3DaL+sFBAqIZ/hvz811s2Q7AbWjFuzoJKsDvs0Fj20CeuL8nGsZkZqhY=
+	t=1714418684; cv=none; b=jOJlwAkqIZShcGCFLaepLe/I+CKSmogfJKdw2eSQYxIJSL0vFwncx78IifLlCmg8/SIZmLOlWkmoPtlWuC8xVXRO9+WxpCeVYoqWeo/AEZt2NULaaGOppaClyK1KpExggNNxglwHy+AbfbJzSC18xkrKZc5dPmp/1xf8fHHESO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714412668; c=relaxed/simple;
-	bh=OHfQy3ul0uJldKkAAD2jEbA5GG0EwQWPkz9F2GwnSwk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UkhLkRhvq34GMccBMPBA5ueGCRLDpb0e9+qRJ3c4eb6jp+pu+ijOHZ/DSO30iIMoNjsHH8WlEAK0NYsil8sCgTRypGlsQPewk/LIrrzlGdmRdK21lRLil64i9IKhw8Fkoi5bMuACMrOqFh1rhNoP4JCSMMs2pgq5G0rZ07VUHtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CpVuOMEf; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1714418684; c=relaxed/simple;
+	bh=m9JSqTpsJPtrP2bH8Rn0Ggu6tJy+0wr6nhT9ABzQfg0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W4mfCWC9HpZmIHjbLv9hwPmYAHDNtJf5bTJknxZ1KrYJbmj6MG2TyX9svib2RAi0MJg+5UqKJg56jNZzyPXrtL66IvHx0xxQs5J460JsO19CemmnSNmAYb0qPN38IgulSPfXLZUL1jx4AsWG0L0llk385ZDyDgkQNLpFxE1Ynng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xrb1WMNN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CpVuOMEf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1714412658; x=1714671858;
-	bh=OHfQy3ul0uJldKkAAD2jEbA5GG0EwQWPkz9F2GwnSwk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=CpVuOMEfhiBareejLuxq0hLh7zbxrwQ/GykeqzJcLa9ebtFMNbCTm5s9VZmyzm9bJ
-	 tWzL14T21dzBgZ5z5/rNuWVj4TZEd9GzWJjGuX1u1Jhno3ElH0uila5jsDJh1mi3XH
-	 +r9pe5EwjbfhtdafPXMH9B1tS3/9CUv9ovw+F5o7N8xcUZGamFlIGYVNZEcJo5YK/h
-	 1325U5sWLn0qkAdkbNqU0puyQX2AHmrsf9wtc9D0ZQ+cQP0BNBiM0xfup1ycCtD4as
-	 vVwJEEE1/pQkN0juSqP/GBmZAOu7oNnPVjPh7wYBbSdQurgUHL1X3blaAO2YzO9HeT
-	 K8eJBTDgtwFEw==
-Date: Mon, 29 Apr 2024 17:44:13 +0000
-To: Gary Guo <gary@garyguo.net>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: init: add re-initialization functions
-Message-ID: <d264de17-acc2-4345-96be-d5f4bcd3cffc@proton.me>
-In-Reply-To: <20240429132415.3039940d@eugeo>
-References: <20240425213419.3904105-1-benno.lossin@proton.me> <20240425213419.3904105-2-benno.lossin@proton.me> <20240429132415.3039940d@eugeo>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e96a42a100e9fa8aa33d798ae6d460c115f85155
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xrb1WMNN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714418682;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ziLkRLjfSHNVSmUHBqTEPxIDQCuJZFBq2ZOYE/paJ94=;
+	b=Xrb1WMNNF5ZtluhmFBF5ga2NW+CEfQ+uoqyu9mjhYmkaJqgYwjHYJPzMm0ttkVXtVm12CT
+	e6FcUysxjItHfWgrtL8+W8C2gPYJwE2Ey1KkgcsLc7J6KP3bdiHALG4rakWM4Xb2iTxTq8
+	Fl/c+Tk4mrkZa/buOrOCgix7t6y9wLA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-RYsiKwifOq627RCe6mcbcQ-1; Mon, 29 Apr 2024 15:24:40 -0400
+X-MC-Unique: RYsiKwifOq627RCe6mcbcQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-41bfb8c1ecaso9266535e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 12:24:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714418679; x=1715023479;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ziLkRLjfSHNVSmUHBqTEPxIDQCuJZFBq2ZOYE/paJ94=;
+        b=diwFHIMNltwV+SJnN8itFvxia8LZgVdciZPHBOjcMl+iizxq8/YWvSQCbKHDpGlXPG
+         AEOLa1Kb6A+5GDo0eM0M2TmH0o+lUHIgLV6ljUsSXXw3BdniNuZAcr7C/f/M4XX0QUFN
+         Q7RmxMcTy/s0aJeVcPXuv9xc6PWxiPcl9xlzMWZDr474sm08RcodewA4KeN4B74qpWkf
+         sJWvV2a8DaOTPWgcnj2WLrVgL7jq7Y/Xna4waVK2Hv4C+7/1e1wQ3YQC1m+NLjKcZ2Em
+         R4rzU2BG3XKi78F5BIBWG2rufNu9W/k2lJQObHcAk3oghp4007AsHJdreQWq0mCBacAu
+         iiTg==
+X-Gm-Message-State: AOJu0YzT+eR2YBuiyOx2Pro9iJiBxiYWAgtRqZIOr2FF9D+S8nZngxbB
+	QYtqGWsyWeGIurhoT5ralXuQOeQhK20lMe+bk/VMn2jaD204b9BlTGy4mee0bM0NgBnLynCccRe
+	zWONu+F5Uj24frSNOU3ezkwdM7zGgnTlWS6THnT/dWgZ9GgYqpArgLJu8yP4nbRXX
+X-Received: by 2002:a05:600c:354b:b0:419:f241:633c with SMTP id i11-20020a05600c354b00b00419f241633cmr524011wmq.4.1714418679459;
+        Mon, 29 Apr 2024 12:24:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWTMD4XaH1lI/4UmU5PS6euY/1XGi3ggOgjWfYDnxH9omiyGknfnAbO1DPiULUUtetGGpGaQ==
+X-Received: by 2002:a05:600c:354b:b0:419:f241:633c with SMTP id i11-20020a05600c354b00b00419f241633cmr523995wmq.4.1714418679072;
+        Mon, 29 Apr 2024 12:24:39 -0700 (PDT)
+Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
+        by smtp.gmail.com with ESMTPSA id bi24-20020a05600c3d9800b0041be4065adasm9691927wmb.22.2024.04.29.12.24.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 12:24:38 -0700 (PDT)
+From: Danilo Krummrich <dakr@redhat.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>
+Subject: [PATCH] rust: alloc: fix dangling pointer in VecExt<T>::reserve()
+Date: Mon, 29 Apr 2024 21:24:04 +0200
+Message-ID: <20240429192435.2235-1-dakr@redhat.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On 29.04.24 14:24, Gary Guo wrote:
-> On Thu, 25 Apr 2024 21:34:44 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
->=20
->> Sometimes it is necessary to split allocation and initialization into
->> two steps. One such situation is when reusing existing allocations
->> obtained via `Box::drop_contents`. See [1] for an example.
->> In order to support this use case add `re_[pin_]init` functions to the
->> pin-init API. These functions operate on already allocated smart
->> pointers that contain `MaybeUninit<T>`.
->>
->> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->> Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57a=
-d3f5bc592@proton.me/ [1]
->=20
->=20
-> I don't find the re_init name very intuitive. From the name I would
-> imagine these functions be taking a `Box<T>` and a `impl Init<T, E>`,
-> dropping the content and produces a `Box<T>` again.
+Currently, a Vec<T>'s ptr value, after calling Vec<T>::new(), is
+initialized to Unique::dangling(). Hence, in VecExt<T>::reserve(), we're
+passing a dangling pointer (instead of NULL) to krealloc() whenever a
+new Vec<T> is created through VecExt<T> extension functions.
 
-I see your point, but if you look at the link [1] from above, you will
-see that there such a function wouldn't be helpful.
+This only works since it happens that Unique::dangling()'s value (0x1)
+falls within the range between 0x0 and ZERO_SIZE_PTR (0x10) and
+krealloc() hence treats it the same as a NULL pointer however.
 
-> Would it make more to rename the existing functions to have `new` in
-> their name to indiciate that they allocate, e.g. `pin_new`, and have
-> these functions that only does initialisation `init`/`pin_init`?
+This isn't a case we should rely on, especially since other kernel
+allocators are not as tolerant. Instead, pass a real NULL pointer to
+krealloc_aligned() if Vec<T>'s capacity is zero.
 
-Since we now have full control over `Box::new` (via `BoxExt`), we could
-also make it take a `impl Init<T, E>` instead of just `T`.
-And we could also provide `fn pin(impl PinInit<T>) -> Pin<Box<T>>`.
+Fixes: 5ab560ce12ed ("rust: alloc: update `VecExt` to take allocation flags")
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+---
+ rust/kernel/alloc/vec_ext.rs | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-I would happily rename the `re_init` functions to `init` in that case.
-But if we don't want to do the other rename, then I think it would be
-confusing to have the functions `new(T)`, `pin(T)`,
-`pin_new(impl PinInit<T, E>)` and `new_in_place(impl Init<T, E>)`...
+diff --git a/rust/kernel/alloc/vec_ext.rs b/rust/kernel/alloc/vec_ext.rs
+index 6a916fcf8bf1..ffcf8a19f715 100644
+--- a/rust/kernel/alloc/vec_ext.rs
++++ b/rust/kernel/alloc/vec_ext.rs
+@@ -4,6 +4,7 @@
+ 
+ use super::{AllocError, Flags};
+ use alloc::vec::Vec;
++use core::ptr;
+ use core::result::Result;
+ 
+ /// Extensions to [`Vec`].
+@@ -137,6 +138,15 @@ fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocError>
+ 
+         let (ptr, len, cap) = destructure(self);
+ 
++        // We need to make sure that ptr is either NULL or comes from a previous call to
++        // `krealloc_aligned`. A `Vec<T>`'s `ptr` value is not guaranteed to be NULL and might be
++        // dangling after being created with `Vec::new`. Instead, we can rely on `Vec<T>'s capacity
++        // to be zero if no memory has been allocated yet.
++        let ptr = match cap {
++            0 => ptr::null_mut(),
++            _ => ptr,
++        };
++
+         // SAFETY: `ptr` is valid because it's either NULL or comes from a previous call to
+         // `krealloc_aligned`. We also verified that the type is not a ZST.
+         let new_ptr = unsafe { super::allocator::krealloc_aligned(ptr.cast(), layout, flags) };
 
---
-Cheers,
-Benno
+base-commit: 2c1092853f163762ef0aabc551a630ef233e1be3
+-- 
+2.44.0
 
