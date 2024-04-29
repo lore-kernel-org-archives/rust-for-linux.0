@@ -1,62 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF7714039D
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 20:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7B914039D
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 20:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714421577; cv=none; b=nnG6IN0b5wo4akjKw1Z2nzDQviw37kTGdmm4L7+6mf+v64Vrk3ruEEfDZza5DrC6jrATAiqEMDzGLS/6zrIl9N08DxuC0TDJkGsj/HhAF9tZn2kGsTR51Ojs8exoDOWIrXwInBn2FRm/aorQu8cRjKhoXfwkqr2xbmXZhqE+p8c=
+	t=1714421581; cv=none; b=YIvsOUs1UcRyer0IbmUbtG4sEUBh0HWPX0+7oyo+7/ioNlXnglg0dFF6avw5+lRhfwKhuESujAH2bYtk6fCBPHrTLZANE5QqNTF4Sp2+28YY2EaKOPCjBMf8MCr7TeEi1MhJ8mtcC9f+DCU86EWFJx6eJOVaWcWJkg1Yn12zt2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714421577; c=relaxed/simple;
-	bh=Jz32H7oq+CzNBqqdMkV5livvDbGtH6/b6qNGdLTjS5o=;
+	s=arc-20240116; t=1714421581; c=relaxed/simple;
+	bh=aFVXXxvoisGrVLT3arV7hCZfMOg/cWcnYvFGJbuf4ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pLXlSnQqVNFMJZUPbW6gnIutD28FfC1qw64MxQ4G0FakXxlAAUz6OX8kTKidPu9UoAmZW3HBf2hHBys65ywWsnyY04uHs9iGG1P7zaSwXKPGIbLsHPeoNeMYMvnf8AjGzeda1dyOVtAdTrAiLzQpNRJszsSA6HrWM067XnoLN5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JNDVRxgQ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=FM9vUfZyw792xuT5AkMZloo/7juoz+a+2Xx60+pXR+VSAw5wGBVkeu3xJ46BRUyTaHLQl3eB/Fgjkiqu2Nxw4izshd9BjqxOBaLgLnuaYcAintGeNFraYpc5xVppE56WVDrNAVQ9nfST11+w4qSpdI8rDw5VTY8HCv7FJyCg48U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CGn8c3OF; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JNDVRxgQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CGn8c3OF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714421574;
+	s=mimecast20190719; t=1714421578;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zBMG9ix/Qgg234TBB9JgmaOXRuhAUgGd/aMauXCUTmc=;
-	b=JNDVRxgQaOzEOovwoumeZ05TSRiMmB9Xpr1vdvZZR1ojAF4OBe/0Ar4Yp+2Wn2AaAh2Dka
-	FHA0vgQqAmK9yJJ+cZKDyc4WHvj5/+Kvoyz3KzHmd+9hCfNB52gJHQPLhmaufeDbi+6xWE
-	94zv1w6BrEic94GSfY15vp1HSqFXDP4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=VJSURqrk3HaDUjXnAjseyotEy81ga5jvdUt+VY+TK9g=;
+	b=CGn8c3OFO6a+K5haspP6CUNG5QWVjB1mcl6TLR1yFsql3wIuMsz1SKdTWYjNXKV0hZ35Xw
+	Y2xJUvoYRW48eMHnXWl8e77n65VN01jsD2KmDRAYI3M9UWsPI6SbanvpvovpNGs4oRTobL
+	6jeHXvQkMkcvi5xCVpa4R1cae19FKw8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-sOKn4-1CNM63VMdrn59n5A-1; Mon, 29 Apr 2024 16:12:53 -0400
-X-MC-Unique: sOKn4-1CNM63VMdrn59n5A-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-345aa380e51so3188607f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 13:12:52 -0700 (PDT)
+ us-mta-49-bvSWc7-UPiuP1_R9qAGp8g-1; Mon, 29 Apr 2024 16:12:56 -0400
+X-MC-Unique: bvSWc7-UPiuP1_R9qAGp8g-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-343f5059c5fso2884932f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 13:12:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714421572; x=1715026372;
+        d=1e100.net; s=20230601; t=1714421575; x=1715026375;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zBMG9ix/Qgg234TBB9JgmaOXRuhAUgGd/aMauXCUTmc=;
-        b=XDV5G+qidbuUqwhdJQOCePUClUHkSQxDcUuWMNZbpZDKtNF0aiaNSnIp/DUP8I3Itr
-         NeVW7QVolRLTK04tizmfkY3tNB0z/jZ68aPJFelSAf+JhTJau8uoI9oJlBrzYN8geXKG
-         /gOxSNv4pfWRXyHJPyyXpkuSiSyA4i6/2K4KdPRlIN5ymRSkP5dpyEU7ZsjOYxRvNkq3
-         ADoH9NhoOrauLkT/wrUsCuGOaEv8gsmcPGaJ39LykrUPVFujb5S4WZRyDdsk0E32G6yn
-         1aisOaezNMwDtoW19gJQQzgSlQqG4O4MkYeA1gkdz/hUgFywUFdNevuvWjdTicYz+iP5
-         K/rg==
-X-Gm-Message-State: AOJu0Yzu/bDZoxYXwDSy5++odf6rThNxDfUSeqL3OChXAPpQ5Avze/HC
-	hX8GegY1JiC7dpRbxW1dTB9DefEnectm1eq7D4WTcXOq1z0/9CEfqclDbda41TkEmQ/+TiogJeF
-	t6T0Ldsj+faPOqr07PSiff5/xaQb8bR6j124hx8CTI4HGBs9aSvTe+C7/xkuXrZRT
-X-Received: by 2002:a5d:64eb:0:b0:34d:742e:3dbf with SMTP id g11-20020a5d64eb000000b0034d742e3dbfmr238421wri.0.1714421571911;
-        Mon, 29 Apr 2024 13:12:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFfwhJKaYGq0NdWEk7/s79qau3rTktOjbYC8PwAitalzbdIUDamwMDo6VbnUo5rVeAZOsAFnQ==
-X-Received: by 2002:a5d:64eb:0:b0:34d:742e:3dbf with SMTP id g11-20020a5d64eb000000b0034d742e3dbfmr238410wri.0.1714421571673;
-        Mon, 29 Apr 2024 13:12:51 -0700 (PDT)
+        bh=VJSURqrk3HaDUjXnAjseyotEy81ga5jvdUt+VY+TK9g=;
+        b=u0OcB84U2ZAr3M3vBuuK/MmPkm1clkZgTHHSEobbQmXt8LyRIhQKnIqvQmGPCQ/RLS
+         xs/t9Wxqw6Cm7L/l7W3hXiBJgzHVCRhvGPVESWjNedh0yECre512KcTwFUQPOYgxDnky
+         sj5/lQkPyurTe8IqEt8p1HsbJ7ZgrayE9RDuPq2OpPKPjw2ieH3ZKrOErl9UnQg3JIHL
+         FA9YpffXvf344pQy2Vlxu2llnBnzTGk/20NkYmde+kSrnnmRWoLT1ixje9bcSblxcYCx
+         BEyYDLzXS00MS4H5w6fkhy596GefbVyWCGmeJSb/E7EGm8n1T4EbDk+F6IhuvZFoHDiN
+         klXg==
+X-Gm-Message-State: AOJu0YxokxRQX323XwOOs2X2UaAPbinWHHvKunYDRZAiXGri3Bx4o13K
+	Wei7oc+kfDm4po6tD1ZD6WnDaXF8EToYxVeM1Y9dL20VGQg4ExuhsCS65MmcdO+GdoK1S8NNpQT
+	PSvL+nWvsoq3K/B1HpsDSCqCRZ565B+XmnbwBxLNNuaLqPkrWAv6YyiNstJAArRMT
+X-Received: by 2002:adf:fe8a:0:b0:34c:f320:247 with SMTP id l10-20020adffe8a000000b0034cf3200247mr4043679wrr.49.1714421575596;
+        Mon, 29 Apr 2024 13:12:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHR5AJRXEkk6/msdTRjJzwWIjUwuVaOWQ42LewvnZnPpBJbysjIS2zbo/IHuEGcOWC01zRgXA==
+X-Received: by 2002:adf:fe8a:0:b0:34c:f320:247 with SMTP id l10-20020adffe8a000000b0034cf3200247mr4043668wrr.49.1714421575356;
+        Mon, 29 Apr 2024 13:12:55 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id n8-20020a5d6b88000000b0034c462f920csm10009736wrx.40.2024.04.29.13.12.50
+        by smtp.gmail.com with ESMTPSA id df15-20020a5d5b8f000000b0034cee43238fsm4467575wrb.27.2024.04.29.13.12.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 13:12:51 -0700 (PDT)
+        Mon, 29 Apr 2024 13:12:54 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
@@ -74,9 +74,9 @@ To: ojeda@kernel.org,
 	jhubbard@nvidia.com
 Cc: rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH WIP 6/8] rust: alloc: implement BoxExtAlloc
-Date: Mon, 29 Apr 2024 22:11:56 +0200
-Message-ID: <20240429201202.3490-7-dakr@redhat.com>
+Subject: [PATCH WIP 7/8] rust: alloc: implement VecExtAlloc
+Date: Mon, 29 Apr 2024 22:11:57 +0200
+Message-ID: <20240429201202.3490-8-dakr@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240429201202.3490-1-dakr@redhat.com>
 References: <20240429201202.3490-1-dakr@redhat.com>
@@ -93,74 +93,118 @@ Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/alloc/box_ext.rs | 40 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+ rust/kernel/alloc/vec_ext.rs | 85 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-index 76653d6f4257..74d6bb24e965 100644
---- a/rust/kernel/alloc/box_ext.rs
-+++ b/rust/kernel/alloc/box_ext.rs
-@@ -2,7 +2,7 @@
+diff --git a/rust/kernel/alloc/vec_ext.rs b/rust/kernel/alloc/vec_ext.rs
+index 1dc991b44be7..3ed33fdffe70 100644
+--- a/rust/kernel/alloc/vec_ext.rs
++++ b/rust/kernel/alloc/vec_ext.rs
+@@ -2,9 +2,10 @@
  
- //! Extensions to [`Box`] for fallible allocations.
+ //! Extensions to [`Vec`] for fallible allocations.
  
 -use super::Flags;
-+use super::{AllocatorWithFlags, Flags};
- use alloc::boxed::Box;
++use super::{AllocatorWithFlags,Flags};
+ use alloc::vec::Vec;
  use core::alloc::AllocError;
- use core::mem::MaybeUninit;
-@@ -21,6 +21,19 @@ pub trait BoxExt<T>: Sized {
-     fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
++use core::ptr;
+ use core::result::Result;
+ 
+ /// Extensions to [`Vec`].
+@@ -76,6 +77,76 @@ fn extend_from_slice(&mut self, other: &[T], flags: Flags) -> Result<(), AllocEr
+     fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocError>;
  }
  
-+/// Extensions to [`Box`].
-+pub trait BoxExtAlloc<T, A: AllocatorWithFlags>: Sized {
-+    /// Allocates a new box using a custom allocator.
-+    ///
-+    /// The allocation may fail, in which case an error is returned.
-+    fn new_in(x: T, alloc: A, flags: Flags) -> Result<Self, AllocError>;
-+
-+    /// Allocates a new uninitialised box using a custom allocator..
-+    ///
-+    /// The allocation may fail, in which case an error is returned.
-+    fn new_uninit_in(alloc: A, flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
++pub trait VecExtAlloc<T, A: AllocatorWithFlags>: Sized {
++    fn with_capacity_in(capacity: usize, alloc: A, flags: Flags) -> Result<Self, AllocError>;
++    fn extend_from_slice(&mut self, other: &[T], flags: Flags) -> Result<(), AllocError>
++    where
++        T: Clone;
++    fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocError>;
 +}
 +
- impl<T> BoxExt<T> for Box<T> {
-     fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
-         let b = <Self as BoxExt<_>>::new_uninit(flags)?;
-@@ -51,6 +64,31 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
-             ptr.cast::<MaybeUninit<T>>()
-         };
- 
-+        // SAFETY: For non-zero-sized types, we allocate above using the global allocator. For
-+        // zero-sized types, we use `NonNull::dangling`.
-+        Ok(unsafe { Box::from_raw(ptr) })
++impl<T, A> VecExtAlloc<T, A> for Vec<T, A> where A: AllocatorWithFlags {
++    fn with_capacity_in(capacity: usize, alloc: A, flags: Flags) -> Result<Self, AllocError> {
++        let mut v = Vec::new_in(alloc);
++        <Self as VecExtAlloc<_, A>>::reserve(&mut v, capacity, flags)?;
++        Ok(v)
 +    }
 +
-+}
++    fn extend_from_slice(&mut self, other: &[T], flags: Flags) -> Result<(), AllocError>
++    where
++        T: Clone,
++    {
++        <Self as VecExtAlloc<_, A>>::reserve(self, other.len(), flags)?;
++        for (slot, item) in core::iter::zip(self.spare_capacity_mut(), other) {
++            slot.write(item.clone());
++        }
 +
-+impl<T, A> BoxExtAlloc<T, A> for Box<T> where A: AllocatorWithFlags {
-+    fn new_in(x: T, alloc: A, flags: Flags) -> Result<Self, AllocError> {
-+        let b = <Self as BoxExtAlloc<_, A>>::new_uninit_in(alloc, flags)?;
-+        Ok(Box::write(b, x))
++        // SAFETY: We just initialised the `other.len()` spare entries, so it is safe to increase
++        // the length by the same amount. We also know that the new length is <= capacity because
++        // of the previous call to `reserve` above.
++        unsafe { self.set_len(self.len() + other.len()) };
++        Ok(())
 +    }
 +
-+    fn new_uninit_in(alloc: A, flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
-+        let ptr = if core::mem::size_of::<MaybeUninit<T>>() == 0 {
-+            core::ptr::NonNull::<_>::dangling().as_ptr()
-+        } else {
-+            let layout = core::alloc::Layout::new::<MaybeUninit<T>>();
++    fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocError> {
++        let len = self.len();
++        let cap = self.capacity();
 +
-+            let data = unsafe { alloc.alloc_flags(layout, flags)? };
-+            let ptr = data.as_ptr();
++        if cap - len >= additional {
++            return Ok(());
++        }
 +
-+            ptr.cast::<MaybeUninit<T>>()
++        if core::mem::size_of::<T>() == 0 {
++            // The capacity is already `usize::MAX` for SZTs, we can't go higher.
++            return Err(AllocError);
++        }
++
++        // We know cap is <= `isize::MAX` because `Layout::array` fails if the resulting byte size
++        // is greater than `isize::MAX`. So the multiplication by two won't overflow.
++        let new_cap = core::cmp::max(cap * 2, len.checked_add(additional).ok_or(AllocError)?);
++        let layout = core::alloc::Layout::array::<T>(new_cap).map_err(|_| AllocError)?;
++
++        let (ptr, len, cap, alloc) = destructure_alloc(self);
++
++        // We can't trust ptr to be a NULL pointer if cap is zero, hence explicitly assing a NULL
++        // pointer.
++        let ptr = match cap {
++            0 => ptr::null_mut(),
++            _ => ptr,
 +        };
 +
-         // SAFETY: For non-zero-sized types, we allocate above using the global allocator. For
-         // zero-sized types, we use `NonNull::dangling`.
-         Ok(unsafe { Box::from_raw(ptr) })
++        // SAFETY: `ptr` is valid because it's either NULL or comes from a previous call to
++        // `krealloc_aligned`. We also verified that the type is not a ZST.
++        let data = unsafe { alloc.realloc_flags(ptr.cast(), cap, layout, flags)? };
++        let new_ptr = data.as_ptr();
++
++        // SAFETY: `ptr` has been reallocated with the layout for `new_cap` elements. New cap
++        // is greater than `cap`, so it continues to be >= `len`.
++        unsafe { rebuild_alloc(self, alloc, new_ptr.cast::<T>(), len, new_cap) };
++        Ok(())
++    }
++}
++
+ impl<T> VecExt<T> for Vec<T> {
+     fn with_capacity(capacity: usize, flags: Flags) -> Result<Self, AllocError> {
+         let mut v = Vec::new();
+@@ -175,3 +246,15 @@ unsafe fn rebuild<T>(v: &mut Vec<T>, ptr: *mut T, len: usize, cap: usize) {
+     let mut tmp = unsafe { Vec::from_raw_parts(ptr, len, cap) };
+     core::mem::swap(&mut tmp, v);
+ }
++
++fn destructure_alloc<T, A: AllocatorWithFlags>(v: &mut Vec<T, A>) -> (*mut T, usize, usize, A) {
++    let mut tmp: Vec<T, A> = unsafe { core::mem::transmute_copy(v) };
++    core::mem::swap(&mut tmp, v);
++    tmp.into_raw_parts_with_alloc()
++}
++
++unsafe fn rebuild_alloc<T, A: AllocatorWithFlags>(v: &mut Vec<T, A>, alloc: A, ptr: *mut T, len: usize, cap: usize) {
++    // SAFETY: The safety requirements from this function satisfy those of `from_raw_parts`.
++    let mut tmp = unsafe { Vec::from_raw_parts_in(ptr, len, cap, alloc) };
++    core::mem::swap(&mut tmp, v);
++}
 -- 
 2.44.0
 
