@@ -1,218 +1,115 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA79E745C0
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 13:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF96745C5;
+	Mon, 29 Apr 2024 14:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714398477; cv=none; b=BlM0JemDi7LLATXp4aQsJ+P24AeQQWszwQxsCriwKja2VoWMmE5UqsJoWpcFQo3kXTlsVpb641QZW5oXlCFizUBcaYDKNIn08JVauYqgxvdZwm0jc9axRdxi4wR2tLlx7uVghXFtj1RInqPSmvutLDLD9eUVWaJnuKuOukcy/PQ=
+	t=1714402640; cv=none; b=kJsZ/lOVGAUNdAaXrl3dIPtzpr2KyIeB7+Y7UW8XS6stExCIRWko1y7wcO+7BLpfP0TbQcIqFiSHGGqbbQRgBJSZkUqIylFKKAbBzPVYeV+JjCkq71HguzgNR/oQMfGgRfK5RnPVsRTLjPuzrvefLJzpzwCGiXBJuVoNQxnTsfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714398477; c=relaxed/simple;
-	bh=ARPhoW58t0JAb+XhD4We4yq8qzr4Xlj7h6uPLXBL7yc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=toyhi6XGmcQPfeNDDF4pX2H1pt98Le7nHK8wv0E0mcWrhzZU/wp1Y5yXmmh8zQz8S8tsbERVa3whXEee67RoI0qRFvBMHE9IXjBa6R+u0hv5RfGu0wuxGw0tQkJla65ht3Ns0+jQPex9tucMA//q44ArzojuLdT/wNSqvBYuX3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=M/akvdJ0; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1714402640; c=relaxed/simple;
+	bh=2qC86aClp0UtN6uJjiF7wrJwhkXnl+N3MLCJdALvAic=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fojDJ43nm/a0/OHzABSMZRVhecinImgLRmsAammr09mxgi6lPBuHTQdFG4tI25ELo6HQlvGiOhQusAlWl+ArPCJADJ+ezCR/FtHKjak6mJr5Qv4XgX/qXIWNDwwxTsGQne1pH+iyDSo1qFJfxDnZwVy0oSX0pgR3jtqGELvr4AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frAOm+qO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="M/akvdJ0"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-516d2600569so5382766e87.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 06:47:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1714398473; x=1715003273; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fTbaPy+dJ2EwkSJYrQFFWcOz4izqUvcjbKkMYVCjdhM=;
-        b=M/akvdJ0tkfCpEjx2+tpWHbfuTw8nzp9xoOuDYZ5fd8D+Pwmg1w4AQ00TSJR1+xmwA
-         tj10fZGgjdRyuAAIGqQIDYqO+wIZ2IY/yocUQEfJMFQ8QsD/+CzeoB3m6M8yyhbsm3y1
-         TgzxmjpZCs1jbDMCs+jt29X4Jebixjswx1W+RHdBCaEOgTasx+Wu5TsDD0j3lFGBuAVO
-         /MQaT901Qsu3fL3sg6okdUH/0ByAh34niRLIg4tTCOJbogPYYKWJdB1SdKjY+s65xff3
-         hRcU0rurZS5GGMm1UqAYh1gAAmXhBFACSYum39X4zpl156hFCDL4zQDNoWYKel/hWWkQ
-         g8UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714398473; x=1715003273;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fTbaPy+dJ2EwkSJYrQFFWcOz4izqUvcjbKkMYVCjdhM=;
-        b=ZrRhA4GrbXHx/Cpm4DsNxeTx4SeyajVYB5iz51lAnwHBshd0cTmqt1QifR5RvCAQNc
-         n1qMq1+pkrO5xGdo/PkxX5kmGJeaYwwHj5JIx3uYlJF62DCXPq+tIppbU+QLVnhgJkZu
-         oP1EdCAhUsolITcj3cciHmQdqxmfHkG7F3SC61friljtZmb9mg3PjtrTkfAjXcKDZ1O/
-         YkPlR1gkLtwth4Pn5QZ1fZMnarrOtkqmewO3XBFzRBPW1oojPt+ijPSc6gWBN86q5nKp
-         kgK5Spg8ukSi50dfteYfzOVEvzUpyWwXntQMOlDgup8bL6Ehp+zZjLWC4QScRFZzXipG
-         gBZA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2xr8ZcdAeUrcfcxDzAZZi/Py/0QUUwk+GrF9DkqcvOCEBHXIrjR5KhyRC0VOFnmEGo8WxpVWa8jjgddGXprA6/6Np2soiBURSjcHLwqs=
-X-Gm-Message-State: AOJu0YwK196wSzt7/Aq2jD4WRhm7VSTWcbVcb7HbtdO6XP+n2cPq7pON
-	eom3Wk+Ru0sBn4bvaj4SdNKW9nOuCAkkY34yHJkUX44JAdYB0ZwagKSTcUgSa/U=
-X-Google-Smtp-Source: AGHT+IHvCP7iybwfg9JD3qH/GlFZDWAIgSbPT+EdmIP24wggfU7b0RC4JDQlZm6tM0m9ZlDxV2Mw5Q==
-X-Received: by 2002:a05:6512:1156:b0:51b:ebe0:a91a with SMTP id m22-20020a056512115600b0051bebe0a91amr5496821lfg.36.1714398473401;
-        Mon, 29 Apr 2024 06:47:53 -0700 (PDT)
-Received: from localhost ([194.62.217.2])
-        by smtp.gmail.com with ESMTPSA id a4-20020a170906368400b00a4e48e52ecbsm13834825ejc.198.2024.04.29.06.47.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 06:47:52 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: a.hindborg@samsung.com,  alex.gaynor@gmail.com,
-  anna-maria@linutronix.de,  benno.lossin@proton.me,
-  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,  frederic@kernel.org,
-  gary@garyguo.net,  linux-kernel@vger.kernel.org,  ojeda@kernel.org,
-  rust-for-linux@vger.kernel.org,  tglx@linutronix.de,  wedsonaf@gmail.com
-Subject: Re: [PATCH] rust: hrtimer: introduce hrtimer support
-In-Reply-To: <20240429124937.414056-1-aliceryhl@google.com> (Alice Ryhl's
-	message of "Mon, 29 Apr 2024 12:49:37 +0000")
-References: <20240425094634.262674-1-nmi@metaspace.dk>
-	<20240429124937.414056-1-aliceryhl@google.com>
-User-Agent: mu4e 1.12.4; emacs 29.3
-Date: Mon, 29 Apr 2024 15:47:47 +0200
-Message-ID: <87ttjkjn5o.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frAOm+qO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93829C4AF14;
+	Mon, 29 Apr 2024 14:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714402639;
+	bh=2qC86aClp0UtN6uJjiF7wrJwhkXnl+N3MLCJdALvAic=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=frAOm+qOBdq/+zsIZYbKbeAw+ChK+TWscpEmCKx33CY86ycVN4YqR8RqO6OqSYozQ
+	 0PczU9hTDMlBE0hx6LPBuHnnDodXyb7rokpy2OSV6BaWA7S9vxv/WP/aYYNdCu/oZr
+	 xQsFSBySIBcKEemmhcVOGjN+FkhRfImihCHuk3DRjPQKSbNaj8r7gzjd3x3VewPM/h
+	 /OEqXGcHNzbnm/7Mj1Vm3S/ZpoKsLN8D5CR3Dd/vIJSYDLb748F6NrLsu5OYjdK+10
+	 m48mWUwGtaRArgXyNkM+4GS7naHIS9sRN/wPaYR0nstgpdze80xRHJ9YdUDjxJB+m/
+	 dSXqUSmYzjcgg==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-51ac5923ef6so4085816e87.0;
+        Mon, 29 Apr 2024 07:57:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXb4khy7b7/Tol056rgcsvx9h3D5ym/eLq0RN1BqAY6Be4jBVj+/mvpaEtY2V9VLIDama9wdV/X38px7XYoZTINKpAvD5Zg51NtNZxeCmlU+NLCbbjy/mvh1TUKBxQR6uYZm/oL7JHoS1beR4o=
+X-Gm-Message-State: AOJu0Yzi5Mh0R3b01cx21ij8bZGrXPTqiJyrmdj4S+k4+HM6QC54QNMg
+	m3YjJcEQJ0FD+FO68fftLTCXeX3z+gE1mSL7FXSn7qk9Po0rUTrZoeF3sYpXRr8kKbovoBKX+Jh
+	yABjPEjJOLEjNFdxMxdHyiUgKOMw=
+X-Google-Smtp-Source: AGHT+IFId4C/5vntU+4Nd9/wPykz9KWIxkh1WI+LuPtX4sGwhNqAbERmLkR68d3VsAcM5KF3EjsebX0FdfwHbwWOTg4=
+X-Received: by 2002:ac2:42ce:0:b0:518:f4e9:201c with SMTP id
+ n14-20020ac242ce000000b00518f4e9201cmr2014891lfl.16.1714402638290; Mon, 29
+ Apr 2024 07:57:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CANcniXsneeNs+Hfr9PScU2aYPyvn6re=5T0Cu5dgAa4N_b7m4A@mail.gmail.com>
+ <CANiq72mzHj+4pB4F5FbuyKVP7o751LxHosNeEu4UhHyWqwOmdg@mail.gmail.com> <CANcniXtiRnNjcFCwfJpUrnnheep1ZC8yPuCsC6WJSWHgtHQa+w@mail.gmail.com>
+In-Reply-To: <CANcniXtiRnNjcFCwfJpUrnnheep1ZC8yPuCsC6WJSWHgtHQa+w@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 29 Apr 2024 23:56:41 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATt14bK+Fb0AKtVMZb9KoZsuCYJAnZsZmy4A_8NUvXGvg@mail.gmail.com>
+Message-ID: <CAK7LNATt14bK+Fb0AKtVMZb9KoZsuCYJAnZsZmy4A_8NUvXGvg@mail.gmail.com>
+Subject: Re: Problem with rust module
+To: qwer trump <vivazsj@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> Andreas Hindborg <nmi@metaspace.dk> writes:
->> From: Andreas Hindborg <a.hindborg@samsung.com>
->>=20
->> This patch adds support for intrusive use of the hrtimer system. For now=
-, only
->> one timer can be embedded in a Rust struct.
->>=20
->> The hrtimer Rust API is based on the intrusive style pattern introduced =
-by the
->> Rust workqueue API.
->>=20
->> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+On Sun, Apr 28, 2024 at 10:01=E2=80=AFAM qwer trump <vivazsj@gmail.com> wro=
+te:
 >
-> This patch is very similar to the workqueue I implemented. It seems like
-> we have the following correspondence between them:
->
-> * Your HasTimer is my HasWork.
-> * Your RawTimerCallback is my WorkItemPointer.
-> * Your TimerCallback is my WorkItem.
-> * Your RawTimer is my RawWorkItem. (but the match isn't great here)
->
-> I think it would make sense to have the names be more consistent. I
-> propose renaming RawTimerCallback to TimerCallbackPointer.
->
-> Or we can name them TimerEntry and RawTimerEntry?
+> Hi=EF=BC=8CMiguel
+> Thanks for your reply. I really have this config enabled.
 
-I took some advice from Benno and merged `RawTimerCallback` with
-`RawTimer` and renamed the resulting trait `TimerPointer`. There is not
-really any reason they should be split for the `hrtimer` as far as I can
-tell.
 
-> I also note that the method on your RawTimer trait seems to be the
-> public API of how you're supposed to schedule a timer, whereas the
-> workqueue RawWorkItem only provides a raw low-level method, and instead
-> has the "public API" be a function on the Workqueue struct.
->
-> I'm not such a big fan of having the primary method everying is supposed
-> to use be a method on a trait whose name starts with "Raw".
 
-I would remove the `Raw`.
+Then, you were attempting to build the rust module
+with CONFIG_RUST disabled.
 
-> It's worth
-> considering whether it makes more sense to have a free-standing function
-> called `schedule_timer` and have that be how you're supposed to schedule
-> timers, instead of the RawTimer trait.
 
-I think being able to call `my_timer_containing_struct.schedule()` is
-nice.
+RUST depends on !MODVERSIONS.
+
+
+
 
 >
->> +#[pinned_drop]
->> +impl<T> PinnedDrop for Timer<T> {
->> +    fn drop(self: Pin<&mut Self>) {
->> +        // SAFETY: By struct invariant `self.timer` was initialized by
->> +        // `hrtimer_init` so by C API contract it is safe to call
->> +        // `hrtimer_cancel`.
->> +        unsafe {
->> +            bindings::hrtimer_cancel(self.timer.get());
->> +        }
->> +    }
->> +}
+> Best Regards
 >
-> Assuming that this is mirroring the workqueue, then this is not
-> necessary. The timer owns a refcount to the element, so the destructor
-> cannot run while the timer is scheduled.
-
-Yes, it is very much a mirror. Yes, it is a leftover from trying to
-support stack allocated timers. I will remove it.
-
-
-> Also, as a generaly note, putting semicolons outside of unsafe blocks
-> formats better.
-
-=F0=9F=91=8D
-
->
->> +/// Implemented by pointer types that can be the target of a C timer ca=
-llback.
->> +pub trait RawTimerCallback: RawTimer {
->> +    /// Callback to be called from C.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// Only to be called by C code in `hrtimer`subsystem.
->> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::=
-hrtimer_restart;
->> +}
->
-> Safety comment is missing a space.
-
-Thanks.
-
->
->> +/// Implemented by pointers to structs that can the target of a timer c=
-allback
->> +pub trait TimerCallback {
->> +    /// Type of `this` argument for `run()`.
->> +    type Receiver: RawTimerCallback;
->> +
->> +    /// Called by the timer logic when the timer fires
->> +    fn run(this: Self::Receiver);
->> +}
->
-> The documentation says that this is implemented by pointers to structs,
-> but that is not the case.
-
-I will update the doc comment, it should say "implemented by structs that
-can be the target...". Thanks.
-
->
->> +impl<T> RawTimer for Arc<T>
->> +where
->> +    T: Send + Sync,
->> +    T: HasTimer<T>,
->> +{
->> +    fn schedule(self, expires: u64) {
->> +        let self_ptr =3D Arc::into_raw(self);
->> +
->> +        // SAFETY: `self_ptr` is a valid pointer to a `T`
->> +        let timer_ptr =3D unsafe { T::raw_get_timer(self_ptr) };
->> +
->> +        // `Timer` is `repr(transparent)`
->> +        let c_timer_ptr =3D timer_ptr.cast::<bindings::hrtimer>();
->
-> I would add an `raw_get` method to `Timer` instead of this cast,
-> analogous to `Work::raw_get`.
+> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> =E4=BA=8E2024=E5=B9=B44=E6=
+=9C=8826=E6=97=A5=E5=91=A8=E4=BA=94 19:26=E5=86=99=E9=81=93=EF=BC=9A
+> >
+> > On Fri, Apr 26, 2024 at 11:46=E2=80=AFAM qwer trump <vivazsj@gmail.com>=
+ wrote:
+> > >
+> > > ERROR: modpost: too long symbol
+> > > "_RNvNtNtCschHAZg3Q02y_6kernel5print14format_strings4INFO"
+> > > [/linux-rust/samples/rust/rust_minimal.ko]
+> > >
+> > > But I see there are many long symbols in Module.symvers. So I guess t=
+here's
+> > > something wrong with modpost.
+> >
+> > This shows up with `CONFIG_MODVERSIONS=3Dy`, but you should not be able
+> > to enable the Rust support if you have that enabled (until it gets
+> > resolved, see [1][2]).
+> >
+> > Do you have `CONFIG_MODVERSIONS` enabled?
+> >
+> > Thanks!
+> >
+> > Cheers,
+> > Miguel
+> >
+> > [1] https://lore.kernel.org/rust-for-linux/20230111161155.1349375-1-gar=
+y@garyguo.net/
+> > [2] https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mma=
+urer@google.com/
 >
 
-Why is that? It is a lot of extra code, extra safety comments, etc.
 
-In any case, would you prefer to implement said method with a cast
-(which we can because `Timer` is transparent), or by `Opaque::raw_get`:
-
-`Opaque::raw_get(core::ptr::addr_of!((*ptr).timer))`
+--
+Best Regards
 
 
-Best regards,
-Andreas
+Masahiro Yamada
