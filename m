@@ -1,108 +1,118 @@
-Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224BB12C549
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 11:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6293E13D26E
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 12:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475371; cv=none; b=fOFDHH7WzhxYXJMXGaEW7yrT4VGOLJx6xs3Gq2L0OsnbRZh7itg4N8ar6vQWkxdF9kTg2ES0ZGQGN078Sn4jHhWZeabqJQe66wD1jmtsP4u1nirkb4dMEqX3uxfxJoidXvvkhuNagPdCBUyF30Fp2VuzPscW/r9RNBDYmZ20Xoo=
+	t=1714478880; cv=none; b=lraeEk+iYGJjrKcoHWnhLs0GRz/hZVO2+EpWrM7ZaXHYE/3XBK2WvNAdcLepmwXuGJMUFiI3Why/xixucYv/E7EZzLx1FqltWLjF0iPZDU33fVGoLHfBltP+I3c5cBU+Gs4WWkDswSSqoaIGj4ap5n9o7dVHKuVQyU+oiqR/LOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475371; c=relaxed/simple;
-	bh=5C7WFXUnU2/7IaH9YHWdCtnfecFw80VZvXKGqyYQia0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=g2UD+h32E0KjmSiJl7enDbKzQ7lHs0n4z9yvyTwCBH03n5vzBVG3YZM0Muqljy+qoTPo9nQWRldIX5h4ktwuTLo7WlYhthEga61RziMH5odWC/mNSGKwwvCjYg+U0kCPyYE+9VsImGa1OpQH6D34OSoMgW3wp5bpIo2W5p/96vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fp3WFAYI; arc=none smtp.client-ip=209.85.167.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1714478880; c=relaxed/simple;
+	bh=m/uZ3Fx/jfrmry7TxCGyHOPQp8xtl9GIlL+btFuIcxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=iFfhENrFw4BX1pT81TqOoBSEq35A/eQZ4VVKcrZhogUPAMe3G0JbwCHsuiQXjY7lQM1Cpn62bI8Y3dRH50JHSS/W7ye7kDu004NinEt0PHXCJ/LOf4kHSPoEVPrmbYn6BCPeSgxWiQbMIv3lmQe4Xus/LKEYc2qptbSKRtaI0V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M3XY88Oc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fp3WFAYI"
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-51d2f1c3255so2601744e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 04:09:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1714475368; x=1715080168; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iEYB9mDUejJc4/pGtI2YjsxtjTa/nIHaNe2DmniH/60=;
-        b=Fp3WFAYIOM7uomyVeTcfyYCe5Aj1/fVo8gCQz1Rj1wXCnxmriJ4S05tM5289RndpCv
-         ZQbtVtu5yEPqsp7UhoTqqRBZvOrY0nuPrmR0poqPCNvGJDkedueamyNir5Ow60C8p7WT
-         IjWHJLzC3POA/eebzI7Jn/7SEI3l1XKU/IO+nhWTYBHHlzcfXpBdk7RQwTpRTh1J2Njk
-         3k6o5Eq8QwTE54fahn5VOq/CYKuEfDIBSrjWa2SSwVdfQap66gtCbzvWdcIGl498Kw6p
-         6MI1y12VmlMGVOX7y7ZqjrhoqzSsgRAFkQYyLv6BYLzVYWDo4Dw8frulIDtPmYjb3RPA
-         9MDQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M3XY88Oc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714478877;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1DyIzdZH/5thL8IQAH04plLBXGn+Pbh1rfGF/ecupVM=;
+	b=M3XY88Oc6t3X0bDF346ZRWrp9lYl/Or9KptJBy1+VVRKNxUmROgr1QRLLyUJoVWhWUeg/s
+	eSgf7JdygQgHbowKSpTFYAHf1ZVv1ogajVJVBdZIyA+zEivOUaFh3iy0zlMIoFTQGk3Vq6
+	SNxVH1tPVKrG9BZOQFLZ0xUeXXN+q3k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-S5IvZgkgPluKHf5k128f1w-1; Tue, 30 Apr 2024 08:07:56 -0400
+X-MC-Unique: S5IvZgkgPluKHf5k128f1w-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-41a38f6e371so24968225e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 05:07:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714475368; x=1715080168;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iEYB9mDUejJc4/pGtI2YjsxtjTa/nIHaNe2DmniH/60=;
-        b=WOipwREcqsXWmq+P0Rp8PboYrMDoACXNQhX4hXs+qjlPREQeiTC2xh9ynV5QmvZvp7
-         MClQ9Qh1Erl1S2O2iM6TRC/3SvbeJ5pWHYr0zha+0DrPeUxod/WAZgHEMIB9cymiHBH3
-         iE6+WqMmXf2tgpnQsb4bfB1lKKRpn6qU6GsRJEKWdbAK05Ady0sNuH01MeXe8+yQMoPb
-         nd3LsI+IW7cDmLS16vG1Z07PNG3Yojld/E8DTCjqxo+VkUu3dYO4tEkVLmeWMPwO0luo
-         QplxIs0ypVdxr1QtUGGqRCtsyXFkDCi/8g6SxTF0il1AEq+hiD+uuRs4zpLtGPsrI595
-         18Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCXx7/pqLzzYEQuBHCZpL5fi59O2KwSz682jHSJgtVKkUa14Rrh0BFkxuRNYhjcIntDnTL3pHJzANbBMsiyCwU6AvdCFdPpAaBDn+1K07Wo=
-X-Gm-Message-State: AOJu0YweKfGw0gJ6n4jOeVw9TRdtKzsdTT9Y4XEhX3jtKcxlifWEZ1AV
-	iGbrSltaI1sBqQgKIAes9Vkg9UVhU3fsrJr6Sfd5g2ChjJOsXf1TtMiLb5ii00Hb9UXn8t4kbDq
-	E+AgFIGieWZrNQg==
-X-Google-Smtp-Source: AGHT+IEwO9Q5sZ30zpSvkC99WHH3eLdnH6j0MxCIGWpnoajIsyuoEBhv50j1r9BA61IMy/c54vMsTNsgaQ6JEU8=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6512:33c1:b0:51c:fb60:5e18 with SMTP
- id d1-20020a05651233c100b0051cfb605e18mr10061lfg.4.1714475367865; Tue, 30 Apr
- 2024 04:09:27 -0700 (PDT)
-Date: Tue, 30 Apr 2024 11:09:25 +0000
-In-Reply-To: <20240409103120.GA22557@willie-the-truck>
+        d=1e100.net; s=20230601; t=1714478874; x=1715083674;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1DyIzdZH/5thL8IQAH04plLBXGn+Pbh1rfGF/ecupVM=;
+        b=qLb1DtrRmdDeXwQUyKgj19uT4RpVw4bz1bo5qHiHPMm0PWnUSclIUEeeP+tVbo6aXD
+         A0XzSz2W55vM3L8YJ/CuSg/tTcSpv34x6W/hMQJkMxF1dm9XoOijscPegrYMlsbkJHYT
+         9cBTdi5k6abVqa7tc0vnLsdVRjJkIvcGbzrjOjh2nP3lM60IAMzGMR3D589te7GcgVjE
+         b0op0GnVtw8Q27B9rXCNitR1s0fi5M+yO7iqR6hgQZpe0s/4ftavRYO8+TDbD3UewNZh
+         F3UJIPxnLK/7x5mZIEEEDfo3+vrIH6yV1pJ4VRErxttFb19Ux1MmdCtAxkZbNPs1OF9f
+         X3Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJXvREWdy7bfMqBKP98m71betbJnZgFD/Mau78Whm0+XSlBE8wqBJlsggNJs50vfGjbtfJG4cUIJeEhnRTdZjvReOjB4HWDw/jH/7vby8=
+X-Gm-Message-State: AOJu0YyqAxm6HcbAUCQOtwTKGl25A0bEjOkYkk7qeiMV39MtBFADBYRT
+	XYHWDhhKKhLVlL9ecfxO8MptG6veu8DWDKaZWTgoPb6C0qh2qRQRIBAxb2ZyDaEopmFRusWzyMy
+	rJ6GAIgguNewEYlEO7wRxzPdCA+2EDl+7NrNEb09ToTqrcGv/3PpXn+IyrS3FWgkF17JO/RT1
+X-Received: by 2002:a05:600c:1d92:b0:41b:b9ca:d1ae with SMTP id p18-20020a05600c1d9200b0041bb9cad1aemr8821433wms.16.1714478874363;
+        Tue, 30 Apr 2024 05:07:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEw/zOgP13xhsxDJLHWnBw9DNfKdpd5t3n7elzxcNU4Wmgo6KWKPpnBXIZ1hXDPt6cmxeaPuA==
+X-Received: by 2002:a05:600c:1d92:b0:41b:b9ca:d1ae with SMTP id p18-20020a05600c1d9200b0041bb9cad1aemr8821414wms.16.1714478874019;
+        Tue, 30 Apr 2024 05:07:54 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id h3-20020a05600c314300b0041abdaf8c6asm26834291wmo.13.2024.04.30.05.07.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Apr 2024 05:07:53 -0700 (PDT)
+Date: Tue, 30 Apr 2024 14:07:51 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: alloc: fix dangling pointer in VecExt<T>::reserve()
+Message-ID: <ZjDfF1bqe4TbCQTi@pollux>
+References: <20240429192435.2235-1-dakr@redhat.com>
+ <CAH5fLggzvBasL8UCm_A+9UQSmqzikhqMT82HW3SX47aHLgn0xA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240409103120.GA22557@willie-the-truck>
-X-Mailer: git-send-email 2.45.0.rc0.197.gbae5840b3b-goog
-Message-ID: <20240430110925.1064685-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
-From: Alice Ryhl <aliceryhl@google.com>
-To: will@kernel.org
-Cc: Jamie.Cunliffe@arm.com, a.hindborg@samsung.com, alex.gaynor@gmail.com, 
-	aliceryhl@google.com, ardb@kernel.org, benno.lossin@proton.me, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, broonie@kernel.org, 
-	catalin.marinas@arm.com, gary@garyguo.net, keescook@chromium.org, 
-	kernel@valentinobst.de, linux-arm-kernel@lists.infradead.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mark.rutland@arm.com, masahiroy@kernel.org, maz@kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, nathan@kernel.org, ndesaulniers@google.com, 
-	nicolas@fjasle.eu, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	samitolvanen@google.com, wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+In-Reply-To: <CAH5fLggzvBasL8UCm_A+9UQSmqzikhqMT82HW3SX47aHLgn0xA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Will Deacon <will@kernel.org> wrote:
-> On Tue, Mar 05, 2024 at 01:14:19PM +0100, Miguel Ojeda wrote:
->> Otherwise partially reverting to the `target.json` approach sounds good too.
->> 
->> I added the `-Zuse-sync-unwind=n` to the list at
->> https://github.com/Rust-for-Linux/linux/issues/2. Given the default is
->> what we want, I have put it in the "Good to have" section.
+On Tue, Apr 30, 2024 at 10:25:07AM +0200, Alice Ryhl wrote:
+> On Mon, Apr 29, 2024 at 9:24 PM Danilo Krummrich <dakr@redhat.com> wrote:
+> >
+> > Currently, a Vec<T>'s ptr value, after calling Vec<T>::new(), is
+> > initialized to Unique::dangling(). Hence, in VecExt<T>::reserve(), we're
+> > passing a dangling pointer (instead of NULL) to krealloc() whenever a
+> > new Vec<T> is created through VecExt<T> extension functions.
 > 
-> I think we have time to do this properly, like we did for the clang
-> enablement a few years ago. In hindsight, avoiding hacks for the early
-> toolchains back then was a really good idea because it meant we could
-> rely on a solid baseline set of compiler features from the start.
+> Good catch!
 > 
-> So, please can we fix this in rustc and just have SCS dependent on that?
+> > This only works since it happens that Unique::dangling()'s value (0x1)
+> > falls within the range between 0x0 and ZERO_SIZE_PTR (0x10) and
+> > krealloc() hence treats it the same as a NULL pointer however.
+> 
+> This isn't quite true. The value of Unique::dangling() is actually
+> align_of::<T>() rather than 0x1. So for types that have an alignment
+> of 0x20 or greater, it would not work today.
 
-Hi Will,
+Oh, indeed - gonna send a v2 fixing the commit message.
 
-Just to keep you in the loop, I've posted a PR to make rustc recognize
-the reserve-x18 target feature, so that the -Ctarget-feature=+reserve-x18
-flag stops emitting a warning.
+Thanks,
+Danilo
 
-This should be sufficient for adding support for CONFIG_DYNAMIC_SCS.
+> 
+> > This isn't a case we should rely on, especially since other kernel
+> > allocators are not as tolerant. Instead, pass a real NULL pointer to
+> > krealloc_aligned() if Vec<T>'s capacity is zero.
+> >
+> > Fixes: 5ab560ce12ed ("rust: alloc: update `VecExt` to take allocation flags")
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> 
 
-You can find it here:
-https://github.com/rust-lang/rust/pull/124323
-
-As for non-dynamic SCS, I plan to tackle that after the PR is merged.
-See the "Future possibilities" section in the linked PR for more info on
-that.
-
-Alice
