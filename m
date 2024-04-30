@@ -1,157 +1,99 @@
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E65B82D90
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 22:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9282E7BB15
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 08:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714428096; cv=none; b=KTOdbgSc/OKC9YJSTlxrN+CJMz4eUqSyWoPZsE2kN9m28dO151zWd/gQ2RdTmR7BvSbNvKVDCWg2VOXRxOIF/DroarZHObrb7D6GBEGxkRnqnJfOgg5tWEDHSsa2mYbTxJAy0v2etzXhETxwlY/TzooYmQuuXkcpjcdIP9r8F/U=
+	t=1714465522; cv=none; b=UVcJU7TbDPWeWOYxkpSSzaWsnqa3CE9ztMuF71d14EpVKjCXl9f9Fhdpkdy4JisBvwrcdTOomUEJWzYw3bS6ZyyShJWQQ5wfaLVXCG3uJDq4ydjd9EZ58E4EiJQtWMNJc0YIq5jbIyMv6EpxX4N7xG4U1O7wJG0+QpY4gD0ETXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714428096; c=relaxed/simple;
-	bh=D4VKtsVfH0vPxS1PWNUaaT/Ye6KrVQxw6qoXfC4tnVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y8yhqU7o9BQgj4v8uoI65GRdgHqVzYrrDXdjplTCZRAiSv+6skGFnsAsoWgDQYeYdomnYCL0YmzmEn0yWtTjI29tFuS4cv5032g6OWZwze4xDbWelHj0APsBA4isIBsUUvvuXjR5ToaERpsAtMpsNG0Ln6NSnwlmv0K5TiTc6jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZD5cGV/u; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1714465522; c=relaxed/simple;
+	bh=sFTRiPf6/6En/1sFQoIXjBsmP4fGZki0Qf60EkFHUcc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TVsaEat2KjB6ogh7QUZ6b8mosNANR7PQPgEhG1sP+SF5EOWBYB/uEzJOItsCteBDqwz2qqVH0A29LqNIJj12DUfGdcWkSVjOYDi4R+UmkFjhyQ8hD6PpkOFsbnIs9+1iWVj/YKeDXb2NNYbEoe+IGitm4+o3sQngX+D1SO/FQn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XzyUz9es; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZD5cGV/u"
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3c74b643aebso3014567b6e.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Apr 2024 15:01:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XzyUz9es"
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4dae34a3806so3242799e0c.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 01:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714428094; x=1715032894; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1714465519; x=1715070319; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vXGV+x7q6zILgsCSmpMEd7uczavhXhPjZKfOubjoGQE=;
-        b=ZD5cGV/uRIpBMP4VFSQdn/8MdE/xM435RPjGtGA6OiO4TgrxUf7HHz1yLT/BsLtFFT
-         U4sZtRsbfquEiYtOowL82Om4ID9pLEy/9mqcbTOWsmXzmdmea1hXFGos/gx69M6S9y54
-         AMQJfjbAA/LuhzQccTRgPhNr1s9nbxXo2Bm8dZVsh1UB679bO/s1ajEuRRMdlIaDTflU
-         44D9429iGwS+bwxv62cXI4cknWhzmAVecciTdhD37vOkAyPzFMeL3UynGVOt+9FtOiyG
-         iGo1t24HzeSB+hgIiC11f6AJozF3DVOEt8bEBSzSYvkQnRQzQ23SYDzwIaZReM4hRSEO
-         N/cg==
+        bh=sFTRiPf6/6En/1sFQoIXjBsmP4fGZki0Qf60EkFHUcc=;
+        b=XzyUz9es+GG+maE5A1JmHwLs8z1ewXRYkfE9ISUFRfOUSMNzl8Uh2r1VeSsWDGmOm8
+         aCNOMV0Hpg0RcXHiTac1sg+13a2c3oJIXaccJYuPTDTsHDWl5kgW5R67lvKnd4kkvoeJ
+         1ML9Grbncls84+Cn/HCtsGVzz81I9RnjSd+uIKduALxN8MGwXrAt5d9VlJEqyYlvwMLo
+         ze4rdIN5WiEcre0awXbflmeYj0jVZfbJ95acdMWdYkt4hS33ei0/dpW6QOtdOWe7qMKe
+         TKHh4hLxaT+maDuDOr61TPAN5YZyI43WzftdmQyBkg8e0kiT2mE1ecQCI7ldHEWAJqVR
+         7Ovg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714428094; x=1715032894;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1714465519; x=1715070319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vXGV+x7q6zILgsCSmpMEd7uczavhXhPjZKfOubjoGQE=;
-        b=iHF5ipUEy57X24vs004hgnl7/k9AqsQorSWTvA1Yo780tbaLRKpNC53jETIuQzYKDy
-         BUXIkjeCvQwgIxZ0Dr3ei+0+xMoEtCMnH7WN+YbInLu0EmmuNngPtlSik6DMYFApoxH0
-         QInKKNFqbTt+B9+oA7+6zZmR9zAZsJ+I94ZcJSobj15BDGouyMnMF5HM4X+RXkFfdXNq
-         KbUV7J70pITZs304pU2ZVzlSfCo2wfrJcm3A7ySNA2JKIRfHt3qC6M+dwlwQUdxpc8/r
-         dXCq13sHtEW9x1WxYY3itGpHjv5+LRGSqbksugT6tMhgmgoNc3R27M0QEPywbL3zIlNT
-         sLiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU763Bf6TLnqMr4U5sPU/++51p4jxMm0cLftL2lE0HwvE3TDVwiETSuiXGj99FnLVkhCTE3jOsKeK/Ikgqy+7iRluKhHXyhGMLVy77Cy+I=
-X-Gm-Message-State: AOJu0YzcUk6OVcwFdK7+UZwOONddpjtj40MoWgw5RBiEDiJ6zGDG9rCH
-	8YEpstjbcSdWtcObtnZcEqUG6PNrLMnbr+sfxyQ3dRJf6RRMlNtb
-X-Google-Smtp-Source: AGHT+IEAJ2U5M2ucMfeZiDMvkT/0P+JWDjvf9BLsMuI2IiJ9ai8AqCZt4Agki2qw4jTm+2EWpMpcgQ==
-X-Received: by 2002:aca:120b:0:b0:3c8:42f1:4059 with SMTP id 11-20020aca120b000000b003c842f14059mr13121343ois.14.1714428094279;
-        Mon, 29 Apr 2024 15:01:34 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id de18-20020ad45852000000b006a0d25c4892sm1033877qvb.65.2024.04.29.15.01.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 15:01:33 -0700 (PDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 28FEE1200032;
-	Mon, 29 Apr 2024 18:01:33 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Mon, 29 Apr 2024 18:01:33 -0400
-X-ME-Sender: <xms:vBgwZjv1biqB9lPAv93p6mmb78_uSTECXhVzCPKVZ0rq6x0LIvUX8Q>
-    <xme:vBgwZkeI60VZxMAzm1RWRNLtPAVXFlrMCgLmejShZi4kDMRIuW_YNBdd9Q1vOSYK1
-    HO0ZXIjpwpvUkz-Jg>
-X-ME-Received: <xmr:vBgwZmwojYzaginKwV1-BOCD9c1hb0sPsFIKGov3R7ExwaCAOukoxM8d0NY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdduvddgtdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:vBgwZiOq3tpQss7M4tug2c_85tIvq0xX-uk_V6dNY1Gb44xmKUt_dw>
-    <xmx:vBgwZj-nMayeTVzA1ttelXOgMhW5zDvZL_YpS7wgmrUyqPWmTu4TaQ>
-    <xmx:vBgwZiVsYT5j2VwDaxvzNGZ5M6dhghZoUsKYJFy6r6fjCvwohsMbVQ>
-    <xmx:vBgwZkfbXVG_bVQURjedxWE5h3LrFeyUiC0WHbvt9FuIgvWE3nt0kQ>
-    <xmx:vRgwZhf0HLhq9B1mS9Yfs06rH2uKVeCOhPIB42bLVojPwG8W1ALhEjqa>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Apr 2024 18:01:32 -0400 (EDT)
-Date: Mon, 29 Apr 2024 15:01:10 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: alloc: fix dangling pointer in VecExt<T>::reserve()
-Message-ID: <ZjAYpsFROI9agY_L@boqun-archlinux>
-References: <20240429192435.2235-1-dakr@redhat.com>
- <Zi_6aDHO4B_iY9zF@boqun-archlinux>
- <8b68878e-2ddd-4f31-9f82-4abe638bf148@redhat.com>
+        bh=sFTRiPf6/6En/1sFQoIXjBsmP4fGZki0Qf60EkFHUcc=;
+        b=wr/MH2o27t1+C+a6AZAoLHsTyaLgkGjFA5wNo4aNW1JposZsHEAKS6TYo2aiZAvZTV
+         DwO9U0nGF9dPNHXyImnb2ERHk0/JVvCuUGLYBNnkRZk5TBnR9NDlDLdZYp0qKy//b3Tc
+         I2ygm0XovFjDgkGpLxinzDLnhh9AkaoTwYPPwGag+lEP0qVntkZU9TcGFxJsRm4LotQ8
+         4aIBdwtZEZOYFVW0UdNKflORxCZV8x6UhSrsTCvkgDJSxbdOfTtd0Wv943jHiPMqmJDv
+         OCZt+kYa0URVv34waCMbVcxngmYZANheo2+Z/z2XaLbMJPUBucAbiFsZhDs6NvGDCipB
+         zXkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEqAUna2E3L3ms1508OMUffsVSIar0tqWySgJ1npXJ3FzCBy3WoPq54m8A+MTpzkGn43jJM3iji/mc8ZAKl+Y658j+saqVtyQ7NBr9+SQ=
+X-Gm-Message-State: AOJu0YyiJ9DdzK20GHBbBc9tTY3PxIlEjNxi2UjALzxUSEZym/5/BVDe
+	yERn5LaTHZBI6JwYyHXjMPBGyzuvYlHpW/AvLbrHix4qGKvLcz7BhYml9KNBgMZXS5HbH+FyIRl
+	Knkf67e6e/fYKcsmBDKezfkIMaIB1EVwicqtB
+X-Google-Smtp-Source: AGHT+IEWbjr57akosE+sXSWoYDZcRQiWimnVrCp+Z+7cGiNlwzeJIl5hFpZ9lYJ4zEfs3Yeh3fSlE5OqLoJ7nXYdD5c=
+X-Received: by 2002:a05:6122:894:b0:4da:ae51:b755 with SMTP id
+ 20-20020a056122089400b004daae51b755mr2135868vkf.3.1714465519381; Tue, 30 Apr
+ 2024 01:25:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8b68878e-2ddd-4f31-9f82-4abe638bf148@redhat.com>
+References: <20240429192435.2235-1-dakr@redhat.com>
+In-Reply-To: <20240429192435.2235-1-dakr@redhat.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 30 Apr 2024 10:25:07 +0200
+Message-ID: <CAH5fLggzvBasL8UCm_A+9UQSmqzikhqMT82HW3SX47aHLgn0xA@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: fix dangling pointer in VecExt<T>::reserve()
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 29, 2024 at 11:01:45PM +0200, Danilo Krummrich wrote:
-> On 4/29/24 21:52, Boqun Feng wrote:
-> > On Mon, Apr 29, 2024 at 09:24:04PM +0200, Danilo Krummrich wrote:
-> > > Currently, a Vec<T>'s ptr value, after calling Vec<T>::new(), is
-> > > initialized to Unique::dangling(). Hence, in VecExt<T>::reserve(), we're
-> > > passing a dangling pointer (instead of NULL) to krealloc() whenever a
-> > > new Vec<T> is created through VecExt<T> extension functions.
-> > > 
-> > > This only works since it happens that Unique::dangling()'s value (0x1)
-> > > falls within the range between 0x0 and ZERO_SIZE_PTR (0x10) and
-> > > krealloc() hence treats it the same as a NULL pointer however.
-> > > 
-> > 
-> > Good catch!
-> > 
-> > > This isn't a case we should rely on, especially since other kernel
-> > > allocators are not as tolerant. Instead, pass a real NULL pointer to
-> > > krealloc_aligned() if Vec<T>'s capacity is zero.
-> > > 
-> > > Fixes: 5ab560ce12ed ("rust: alloc: update `VecExt` to take allocation flags")
-> > 
-> > However, since this commit is not upstreamed yet, so it's suject to
-> > change, I'd avoid the "Fixes" tag here. Alternatively, Miguel can fold
-> > this patch into that commit in his tree.
-> 
-> I'd be surprised if rust-next wouldn't be fast-forward only, is it? If
+On Mon, Apr 29, 2024 at 9:24=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
+wrote:
+>
+> Currently, a Vec<T>'s ptr value, after calling Vec<T>::new(), is
+> initialized to Unique::dangling(). Hence, in VecExt<T>::reserve(), we're
+> passing a dangling pointer (instead of NULL) to krealloc() whenever a
+> new Vec<T> is created through VecExt<T> extension functions.
 
-Well, I cannot speak for Miguel, but there's no guarantee of that IMO.
+Good catch!
 
-> fast-forward only, the commit IDs should be preserved on merge, hence it should
-> be fine to keep the "Fixes" tag.
-> 
-> As for squashing fixes into existing commits, this is something I would generally
-> not recommend doing. This would be a non-fast-forward operation and hence break
-> potential references to other commits in general (not only "Fixes" tags). Plus,
+> This only works since it happens that Unique::dangling()'s value (0x1)
+> falls within the range between 0x0 and ZERO_SIZE_PTR (0x10) and
+> krealloc() hence treats it the same as a NULL pointer however.
 
-Yes, but here what you fix is a bug, and generally, if we find a bug in
-some commit and that commit is not upstreamed, we should rework that
-commit other than introducing another patch that fixes the bug. It'll
-provide better bisect and less confusion. It's the same reason that why
-we don't allow a patch series to include a bug in the middle.
+This isn't quite true. The value of Unique::dangling() is actually
+align_of::<T>() rather than 0x1. So for types that have an alignment
+of 0x20 or greater, it would not work today.
 
-> it's usually not providing a great motivation for potential contributors.
-> 
+> This isn't a case we should rely on, especially since other kernel
+> allocators are not as tolerant. Instead, pass a real NULL pointer to
+> krealloc_aligned() if Vec<T>'s capacity is zero.
+>
+> Fixes: 5ab560ce12ed ("rust: alloc: update `VecExt` to take allocation fla=
+gs")
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 
-With proper SoB tags and other tags, I don't see a big difference here,
-or I'm missing something subtle?
-
-Regards,
-Boqun
-
-> - Danilo
-> 
-[...]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
