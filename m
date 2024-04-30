@@ -1,302 +1,126 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647D4181CF6
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 18:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7AF1802DA
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 18:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714501129; cv=none; b=lukuuqjhybab5cKEOMfFZE/vWYCqD08PAacCZSgP1YKObhoZOgl3sFvsgI56GbvjnqKe/Q+Lz/Dk9ZfaZTkn4jyQwpYHd1+OPfoGXjNClDEGvb5v9H9WN3AeZqSFmchDqR+VzUpoalxLAMAeKCdr6NNmZrahIyPrPyp49NlZdXs=
+	t=1714501355; cv=none; b=kKyIC7A+A/sJ0LUxwskWG5c8DsMYTt7W5V45Zha9XZTL5OYXkFZzeVtTRWTJ4abldPNgMx0763I1LHXaYGgkUVsfw9xv3bESP2JvhxtfZB0vtXMHYMBGNa2y+1Sz469BF66RthvahKNYnuGvth2dqLGtupidpj3+Nzhsy2Q52+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714501129; c=relaxed/simple;
-	bh=FFxl8qB//45QrjrchX4PxOQlS4a82kqp/tHErEGvzkA=;
+	s=arc-20240116; t=1714501355; c=relaxed/simple;
+	bh=Tys9Vqu4Np9NrR4Q24ohGiMMf8UxyZr7+N9SeUjltmg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uYZAUaC3kFYycDHxLhj5OdBuUsQoP6LmGNbMi4cc8UpvUalWdg22ViskWJ6ccRW4CTOFwin63sVRg/5u4g0tdZTf3ZgQisD5YIXV6bxxKYZUHcLQdk7eYBz4zLrQ2Tke81RF0adm6VCQ5n9troS5f6tjrsjvg+hfOEkPSkBQVXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=HFeneyXh; arc=none smtp.client-ip=209.85.208.47
+	 MIME-Version:Content-Type; b=nt10hzo5U6/QUGnNR/7KudUF91NcAgQ43BvrcGYMy4bubP5yksHPoDBD4+FPLhb8r4/7L8NJp7oP2E1kqlX8nD45dkcACV4/iE9m+6rJnBJpmFM4fafyi+0aoSwzzIl0C2xjKXwpzdaatd/51upMLKtemYOzDcJWvXH59OXMaVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=jVdcxRlL; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="HFeneyXh"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5729fd821ebso1151466a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 11:18:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="jVdcxRlL"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a58f1f36427so415109566b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Apr 2024 11:22:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1714501124; x=1715105924; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XwbT0bDJS4cuvIKYJ5MCUzOonBi2XeLe/vBSN6rjmh0=;
-        b=HFeneyXhXnVGHGOCFHWSBQ1CKckNYAptrzjn//RxR7UeowGzO+Oz3T1FOhQpN/QZzI
-         Bh1+iWiQl3i7O8/+7FoB8PEvCab+K7CJf3xNF0IMs7uOTYHQxdgahn5uHi6PvVPGSgL4
-         9Z4HEOpZffD2r/nnAP2CRqLp0tzi62Lz9Wa1TXQRrJRFZ2RLCWLyZ+ureyIYj4AHXxDn
-         0QfYe31zTda2HAD3KyPNSOhnVz5MThhMpNl3OyKHNKeNjpVKCMr3UUsWhO/qQLPQe+SV
-         a8LUhEemzUCdmzsFlqP55uHKrvX5sQ695mWK3m5oxE3uMK14zBNNXkHD6b/7voI2rPGo
-         +uyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714501124; x=1715105924;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1714501352; x=1715106152; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XwbT0bDJS4cuvIKYJ5MCUzOonBi2XeLe/vBSN6rjmh0=;
-        b=oBZtPNxOpGgNpWqU0sFXUiZu+CNBMs8Y4V4UOZTbJLT1qanzbiRvqFvkCQajJC4eie
-         zP1JQj89TNDDZI58YtAlYSMleG2Oa3FKe8TQX2kkYbIef6jbH78d++p79XSQv5GKkRah
-         i17PVDBx2qOVWpCi6PA2UHy6RbWMY63+lEq+A8OwdmDdjnwRaAkL5St/xfBoS3TNcVRJ
-         p/8h+zeD8GWLnxAc5rZDPnGx8i8Kc/LKgn/ls/VydulrCdPeR4Ql3rH9lJBDSAxhB/HC
-         kDu70IcCv+yplVgmEytG3k2jV2rdhPhoYFB0WFU8qUn564d3IJAhuPh6fkudnh3E/G9V
-         AF3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWRzUQWhofL5Twy7JtTVU5+AHb2weiSmqV8XVWthrnK9B9uT6Rd4xech5akXPu+6i1VFlb9/Znd6Ls8zbmeLLt8Zebe+cat+MSgEhjLc+E=
-X-Gm-Message-State: AOJu0YxH/YWIQWiAkOWR6r2BVRi0Dxp0xV0KwadtAWM/s56oSKriLJkk
-	M3POAfvDCSQUQbimycNfmQ2xarnjktktJ37d5KUXSlBcdz5PdsYrbvS5adFUw4E=
-X-Google-Smtp-Source: AGHT+IGHmGpIIrCMvisGBGS0iI+hXs6bA+6kK8qgiREhkWEPZLRoNxMG2EyvoduAixViwuWUVHvVww==
-X-Received: by 2002:a50:9e25:0:b0:56b:dd0f:52e0 with SMTP id z34-20020a509e25000000b0056bdd0f52e0mr404637ede.18.1714501124267;
-        Tue, 30 Apr 2024 11:18:44 -0700 (PDT)
+        bh=Eim2qM9dw2NaPc5K3CL5p94YEvS81xT9DDWzSJ6rzVw=;
+        b=jVdcxRlL5j4m5yjl+WkqXscbtYgVttxc/4JvOHNJSKoCALCp8m5WMRqqDyNQCmsAA4
+         WChmteAaj0mZVrJnCchQERr0n1ieqhyYmztRykfsQJ8lMjLyD4kBUjPTGhhmdCk0MMJ1
+         ZqXLxputKkkwMaIlMws1NdafEq2PMpSbXYuqGSfNedb895+iaPrvIzXcuN/4LibEUcjx
+         Cx1fTACsnSES/HawFo/TwxuJ7jG6+oACt62OwtYWj8bJN47HBesy6pQd1AASEl63CHSf
+         rvj4vjVYZYyRwtANKrfZU7hdxVUMZfbaL5vgQ7EKZZAWENl/MEvXAhZAre7eiM0F7qtW
+         +C4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714501352; x=1715106152;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Eim2qM9dw2NaPc5K3CL5p94YEvS81xT9DDWzSJ6rzVw=;
+        b=CnVoxWV2dOs7ATehV0bWgfXoeN6UXzDi0oq3+MjpSVgcA97MC0G/h5NL39tLEDO3E/
+         57JBufxm4eecTXQ8ZUHhcc98VE8iHuFy8YzC0rerJukgBujRVpTm8iUwAmyjix/rKBZf
+         k0Pw6xgkSzSs/sRXNyRsZsLoae7D0YgaZoY7cg8WZuB3Vl7cHmXmOQwRYR4rHUzCt5FO
+         Qz/l68KbXgrIRKBjkO2TQW6+Aj66ZCZE+j8Age3NBECXj7E8d4lajfdUL8fdNilOQNYw
+         Fke6we/D4y2no5E6ugjo/GAcreIWxsxgyYae1gT88lJ1WqJQCMOu+q0fobrCCh5tm+KI
+         IW/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX6l3XDUunwDhVwinAjIMhmD4kDdXrosekY9Q87ugHG9l44oOJ3X07nCmHEsh1cTdgZ8EzNY1Fc2DZq2HXfIfkl3Daz9m1meX7LVviZebQ=
+X-Gm-Message-State: AOJu0YyIypFsS/oyASNuqYGhGatiHlYo4relCHXYvZDOk+RV1UD7WhMd
+	rsLV/7rLdGFGJrw/E+bqyG4maaJ2Wvwk0pUZeT5UZcO7y+zGM5oiVOaaMFFiTNw=
+X-Google-Smtp-Source: AGHT+IE5aiBScuaQ19uargUpEfy39/b85ALLx+hF4lmyoM77hZpnbkfe7n/+rxmBeqSK1orOCqLUdw==
+X-Received: by 2002:a17:906:c791:b0:a55:b592:7e0a with SMTP id cw17-20020a170906c79100b00a55b5927e0amr377859ejb.48.1714501352560;
+        Tue, 30 Apr 2024 11:22:32 -0700 (PDT)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id n5-20020a056402434500b0057278b1b139sm3442878edc.29.2024.04.30.11.18.43
+        by smtp.gmail.com with ESMTPSA id j11-20020a170906474b00b00a58eeb329d8sm3949305ejs.44.2024.04.30.11.22.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 11:18:43 -0700 (PDT)
+        Tue, 30 Apr 2024 11:22:32 -0700 (PDT)
 From: Andreas Hindborg <nmi@metaspace.dk>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Wedson Almeida Filho <wedsonaf@gmail.com>,  Anna-Maria Behnsen
- <anna-maria@linutronix.de>,  Frederic Weisbecker <frederic@kernel.org>,
-  Andreas Hindborg <a.hindborg@samsung.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,  Alice
- Ryhl <aliceryhl@google.com>,  rust-for-linux@vger.kernel.org,
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>,  Miguel Ojeda <ojeda@kernel.org>,
+  Alex Gaynor <alex.gaynor@gmail.com>,  Wedson Almeida Filho
+ <wedsonaf@gmail.com>,  Anna-Maria Behnsen <anna-maria@linutronix.de>,
+  Frederic Weisbecker <frederic@kernel.org>,  Thomas Gleixner
+ <tglx@linutronix.de>,  Andreas Hindborg <a.hindborg@samsung.com>,  Gary
+ Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Alice Ryhl <aliceryhl@google.com>,  rust-for-linux@vger.kernel.org,
   linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] rust: hrtimer: introduce hrtimer support
-In-Reply-To: <87r0emss0j.ffs@tglx> (Thomas Gleixner's message of "Tue, 30 Apr
-	2024 19:02:36 +0200")
-References: <20240425094634.262674-1-nmi@metaspace.dk> <87r0emss0j.ffs@tglx>
+In-Reply-To: <ZjELgVzzX4oru0gi@Boquns-Mac-mini.home> (Boqun Feng's message of
+	"Tue, 30 Apr 2024 08:17:21 -0700")
+References: <20240425094634.262674-1-nmi@metaspace.dk>
+	<a7a560c7-fb8c-4adf-9f46-2e272f24b335@proton.me>
+	<87v844lbhm.fsf@metaspace.dk> <Zi_Zb1lBOBBUFJFV@boqun-archlinux>
+	<87plu7jahd.fsf@metaspace.dk> <ZjELgVzzX4oru0gi@Boquns-Mac-mini.home>
 User-Agent: mu4e 1.12.4; emacs 29.3
-Date: Tue, 30 Apr 2024 20:18:37 +0200
-Message-ID: <87le4uk936.fsf@metaspace.dk>
+Date: Tue, 30 Apr 2024 20:22:25 +0200
+Message-ID: <87h6fik8wu.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+Boqun Feng <boqun.feng@gmail.com> writes:
 
-Hi Thomas,
+> On Tue, Apr 30, 2024 at 02:33:50PM +0200, Andreas Hindborg wrote:
+> [...]
+>> >
+>> > Could you see if you can replace this with a `SpinLock<bool>` +
+>> > `CondVar`? We shouldn't use Rust atomic in kernel now. I know it's
+>> > unfortunate that LKMM atomics are still work in process, but in real
+>> > world, you won't do busy waiting for a timer to fire, so a
+>> > `CondVar::wait` is better for example purpose.
+>>=20
+>> Since this is only using the atomic from Rust code, it should be fine
+>> right? There is no mixing of memory models on this memory location.
+>>=20
+>
+> It's better compared to mixing accesses on a same location, but it's
+> still not allowed (for now, at least) to avoid mixing memory models on
+> ordering guarantees, for example:
+>
+> (assume all memory location is initialized as 0)
+>
+> 	CPU 0				CPU 1
+> 	-----				-----
+> 	x.store(1, RELAXED); // Rust native atomic
+> 	smp_store_release(&y, 1); // LKMM atomic
+> 					let r0 =3D smp_load_acquire(&y);
+> 					let r1 =3D x.load(RELAXED);
+>
+> The smp_store_release() and smp_load_acquire() pairs per LKMM, and
+> provide certain rel-acq ordering. But to make it (r0 =3D=3D 1 && r1 =3D=
+=3D 0),
+> C11 memory model needs to understand this sort of orderings, but
+> currently there is no such thing as an "external ordering" to C11 memory
+> model.
+>
+> I admit this is much of a theorical concern for code reasoning, in real
+> world, it must "just work", but "if you want to have fun, start with
+> one" ;-)
 
-Thomas Gleixner <tglx@linutronix.de> writes:
+Alright, I will change it to a `CondVar` or a `SpinLock` =F0=9F=91=8D
 
-> Andreas!
->
-> On Thu, Apr 25 2024 at 11:46, Andreas Hindborg wrote:
->
-> I'm looking at this purely from a hrtimer perspective and please excuse
-> my minimal rust knowledge.
-
-Thanks for taking a look!
-
->
->> +// SAFETY: A `Timer` can be moved to other threads and used from there.
->> +unsafe impl<T> Send for Timer<T> {}
->> +
->> +// SAFETY: Timer operations are locked on C side, so it is safe to operate on a
->> +// timer from multiple threads
->
-> Kinda. Using an hrtimer from different threads needs some thought in the
-> implementation as obviously ordering matters:
->
->      T1                              T2
->      hrtimer_start()                 hrtimer_cancel()
->
-> So depending on whether T1 gets the internal lock first or T2 the
-> outcome is different. If T1 gets it first the timer is canceled by
-> T2. If T2 gets it first the timer ends up armed.
-
-That is all fine. What is meant here is that we will not get UB in the
-`hrtimer` subsystem when racing these operations. As far as I can tell
-from the C source, the operations are atomic, even though their
-interleaving will not be deterministic.
-
->
->> +unsafe impl<T> Sync for Timer<T> {}
->> +
->> +impl<T: TimerCallback> Timer<T> {
->> +    /// Return an initializer for a new timer instance.
->> +    pub fn new() -> impl PinInit<Self> {
->> +        crate::pin_init!( Self {
->> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrtimer| {
->> +                // SAFETY: By design of `pin_init!`, `place` is a pointer live
->> +                // allocation. hrtimer_init will initialize `place` and does not
->> +                // require `place` to be initialized prior to the call.
->> +                unsafe {
->> +                    bindings::hrtimer_init(
->> +                        place,
->> +                        bindings::CLOCK_MONOTONIC as i32,
->> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
->
-> This is odd. The initializer really should take a clock ID and a mode
-> argument. Otherwise you end up implementing a gazillion of different
-> timers.
-
-I implemented the minimum set of features to satisfy the requirements
-for the Rust null block driver. It is my understanding that most
-maintainers of existing infrastructure prefers to have a user for the
-implemented features, before wanting to merge them.
-
-I can try to extend the abstractions to cover a more complete `hrtimer`
-API. Or we can work on this subset and try to get that ready to merge,
-and then expand scope later.
-
-What would you prefer?
-
->
->> +                    );
->> +                }
->> +
->> +                // SAFETY: `place` is pointing to a live allocation, so the deref
->> +                // is safe. The `function` field might not be initialized, but
->> +                // `addr_of_mut` does not create a reference to the field.
->> +                let function: *mut Option<_> = unsafe { core::ptr::addr_of_mut!((*place).function) };
->> +
->> +                // SAFETY: `function` points to a valid allocation.
->> +                unsafe { core::ptr::write(function, Some(T::Receiver::run)) };
->
-> We probably should introduce hrtimer_setup(timer, clockid, mode, function)
-> to avoid this construct. That would allow to cleanup existing C code too.
-
-Do you want me to cook up a C patch for that, or would you prefer to do
-that yourself?
-
->
->> +            }),
->> +            _t: PhantomData,
->> +        })
->> +    }
->> +}
->> +
->> +#[pinned_drop]
->> +impl<T> PinnedDrop for Timer<T> {
->> +    fn drop(self: Pin<&mut Self>) {
->> +        // SAFETY: By struct invariant `self.timer` was initialized by
->> +        // `hrtimer_init` so by C API contract it is safe to call
->> +        // `hrtimer_cancel`.
->> +        unsafe {
->> +            bindings::hrtimer_cancel(self.timer.get());
->> +        }
->> +    }
->> +}
->> +
->> +/// Implemented by pointer types to structs that embed a [`Timer`]. This trait
->> +/// facilitates queueing the timer through the pointer that implements the
->> +/// trait.
->> +///
->> +/// Typical implementers would be [`Box<T>`], [`Arc<T>`], [`ARef<T>`] where `T`
->> +/// has a field of type `Timer`.
->> +///
->> +/// Target must be [`Sync`] because timer callbacks happen in another thread of
->> +/// execution.
->
-> Timer callbacks happen in hard or soft interrupt context.
-
-Thanks, I'll be sure to add that to the documentation.
-
->
->> +/// [`Box<T>`]: Box
->> +/// [`Arc<T>`]: Arc
->> +/// [`ARef<T>`]: crate::types::ARef
->> +pub trait RawTimer: Sync {
->> +    /// Schedule the timer after `expires` time units
->> +    fn schedule(self, expires: u64);
->
-> Don't we have some time related rust types in the kernel by now?
-
-There are patches on the list, but I think they are not applied to any
-tree yet? I did not want to depend on those patches before they are
-staged somewhere. Would you prefer this patch on top of the Rust `ktime`
-patches?
-
->
->> +}
->
->> +/// Implemented by pointer types that can be the target of a C timer callback.
->> +pub trait RawTimerCallback: RawTimer {
->> +    /// Callback to be called from C.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// Only to be called by C code in `hrtimer`subsystem.
->> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart;
->> +}
->> +
->> +/// Implemented by pointers to structs that can the target of a timer callback
->> +pub trait TimerCallback {
->> +    /// Type of `this` argument for `run()`.
->> +    type Receiver: RawTimerCallback;
->> +
->> +    /// Called by the timer logic when the timer fires
->> +    fn run(this: Self::Receiver);
->> +}
->> +
->> +impl<T> RawTimer for Arc<T>
->> +where
->> +    T: Send + Sync,
->> +    T: HasTimer<T>,
->> +{
->> +    fn schedule(self, expires: u64) {
->> +        let self_ptr = Arc::into_raw(self);
->> +
->> +        // SAFETY: `self_ptr` is a valid pointer to a `T`
->> +        let timer_ptr = unsafe { T::raw_get_timer(self_ptr) };
->> +
->> +        // `Timer` is `repr(transparent)`
->> +        let c_timer_ptr = timer_ptr.cast::<bindings::hrtimer>();
->> +
->> +        // Schedule the timer - if it is already scheduled it is removed and
->> +        // inserted
->> +
->> +        // SAFETY: c_timer_ptr points to a valid hrtimer instance that was
->> +        // initialized by `hrtimer_init`
->> +        unsafe {
->> +            bindings::hrtimer_start_range_ns(
->> +                c_timer_ptr.cast_mut(),
->> +                expires as i64,
->
-> same comment vs. time
->
->> +                0,
->> +                bindings::hrtimer_mode_HRTIMER_MODE_REL,
->
-> and mode.
->
->> +            );
->> +        }
->> +    }
->> +}
->> +
->> +impl<T> kernel::hrtimer::RawTimerCallback for Arc<T>
->> +where
->> +    T: Send + Sync,
->> +    T: HasTimer<T>,
->> +    T: TimerCallback<Receiver = Self>,
->> +{
->> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
->> +        // `Timer` is `repr(transparent)`
->> +        let timer_ptr = ptr.cast::<kernel::hrtimer::Timer<T>>();
->> +
->> +        // SAFETY: By C API contract `ptr` is the pointer we passed when
->> +        // enqueing the timer, so it is a `Timer<T>` embedded in a `T`
->> +        let data_ptr = unsafe { T::timer_container_of(timer_ptr) };
->> +
->> +        // SAFETY: This `Arc` comes from a call to `Arc::into_raw()`
->> +        let receiver = unsafe { Arc::from_raw(data_ptr) };
->> +
->> +        T::run(receiver);
->> +
->> +        bindings::hrtimer_restart_HRTIMER_NORESTART
->
-> One of the common use cases of hrtimers is to create periodic schedules
-> where the timer callback advances the expiry value and returns
-> HRTIMER_RESTART. It might be not required for your initial use case at
-> hand, but you'll need that in the long run IMO.
-
-If you are OK with taking that feature without a user, I will gladly add
-it.
-
-Best regards,
-Andreas
+BR Andreas
