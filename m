@@ -1,156 +1,110 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A157FBEA
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 May 2024 17:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F1A165FBF
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 May 2024 21:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714584648; cv=none; b=EZJzd44MQhoFUFcjVJSD1N0jUZw/8YEi/4IbgSEbAz941QPSI0FrczZUM4sfhtM7Q+Y2NafCFFclS+AlYhRxzZom2UrtnEBekG9Ag7L7jcr3N3ZhlcValAMKHbJGlNMAgSTxBgQctvzj1GIxQ/EpXK6sIA7VTJGENTbswLnnv6c=
+	t=1714599203; cv=none; b=RQCEP36bP5H32lAa/SzzCia/yiDrF/ChlUoj7H256USo8T3QvIbTkWeOwjMqQwrqaQl850XMQIprUXhDDEBCIZq1R0woXI2NAL/7L3djAQqwI0Xe8FFa60hFiZW6IQNCYoxav6wGHZiqyhm0bse0o+vdQ+HRpuXX5KHabKR6hBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714584648; c=relaxed/simple;
-	bh=UJaJnrreAUDESRHdrpS0xZ0X3HfoMldb0Jx3JmI7dp4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=mxXeW2MPaVBD8yWDdJOJitoeBcpG6axTnnjVpnFNauniEQuuzeySz8cjoq2YKfmiiA/vwX9hVTRck1s2yiDKg49eL+RqWAIpnriVNIM2jPF2uvbNwx4VH5hpUHTEeg57ykaXVUL81nQdYJe4MVqggxZTrwvTW4w2VpQoiM2MSxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bzbpn2ge; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1714599203; c=relaxed/simple;
+	bh=eaXyGvot57hCFSjw0DgV9IXg74Q2iZmH5MYlysQPwL8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=igYUUi4gGWYi34beFGCbhCWagFd2HJ3UDbgfeSNTyUzg9IAq2h2Q7UZBN92eRYTUuZ7JSyw+rk787ZqrvRRrkjM3R1Wg8aUPkxvgOiWooUVbbaOHUrnX32JXKL0dAzPkGzaYlnctnuJ5yJN9Yp4B7NW1m6a6PRpkPHtySlyawto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBoyWUQ0; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bzbpn2ge"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714584646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w5qYizQYzyGU/IBVWBTorM+cObgRuObNdre+tHgwe98=;
-	b=Bzbpn2ge1jsVRyM8pE82HnSQ5Mx23NPinnepyE5Dw3pIUML2ATSRVDRZ6CEmys8W8odh1N
-	cmSQy5bQqC6l8T8nOmrmQKYUakDI9LZf5aZfCjtwqKKIDeluPFb9Ks7xR1cZIJ/iYWJYRg
-	S/1VaxyruzeR39Ei1xcjRhK/gP5lOi4=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-l3vJdV0NN5KFQQkdg7az6A-1; Wed, 01 May 2024 13:30:42 -0400
-X-MC-Unique: l3vJdV0NN5KFQQkdg7az6A-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2d87f5937fcso63570171fa.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 May 2024 10:30:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714584641; x=1715189441;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBoyWUQ0"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2b2769f017aso1817084a91.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 May 2024 14:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714599200; x=1715204000; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w5qYizQYzyGU/IBVWBTorM+cObgRuObNdre+tHgwe98=;
-        b=QVHqxI0GeDMracO7PWWunc2kkOJ3B7kbauXRTdAebs+HqIkWIPGvx0GOmUXydeb1M6
-         AGttZs58Waa3eM7WI65+P2d06XICXsYG/g+ppLWJZS7iSUH6xDDiNlXvwHuDACsLwdYb
-         /Pp2Q65AUyEiYLM6fA4TE4nvAuIthmkaFBvD2KziTLEZdG9ES5l/SBkv+P0IDcGN6skN
-         NgWMEkbqY7jhzZ+Ip0+0JLMHN9ahvSYIm8+trPy+9ynPz5loZ9e03E9svKthP6iNppWm
-         d1lYR1tVxVPwYoHSF1l/QkfN6IHi4V8TnrOMCpo0n/A2abQ5pHktGQf2ruOEEpR0y+2t
-         Ko9w==
-X-Forwarded-Encrypted: i=1; AJvYcCWxAcVeXtZ3xqVlLg6hbi7QLFyegiRFR3bmfS1IlMVf6qwSfjDrx8yQmKLkMdopOXSKSHLKjEe/WnOkOnJi8RvWoL9xXonN0dGmi0mfMV8=
-X-Gm-Message-State: AOJu0Yyelp3cVmDAiORz6W2FDmKeKD8ywREc8WalZLbRSBgEVrdLj2FU
-	1vOE5tjFN25l7gU6s231Og6nq/SlpzBTwZjwtv7HKG8M51boDy4jMluxp83y7zvoECilK/Buwfi
-	rX6xfd51F2QlRpngsaOR44rU86n/7T8g1y26L+D3BTHSfsKL+Hl8lfLm0xlwqRap4
-X-Received: by 2002:a05:651c:552:b0:2e0:ffea:4298 with SMTP id q18-20020a05651c055200b002e0ffea4298mr2790300ljp.34.1714584641076;
-        Wed, 01 May 2024 10:30:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFI2qn9355zXZBSRD8IHu0ewYhlmOyvtO6zuGU5ulT1f9Rb8MAo7nrf0y6cu6cQ6kC7BZtuBA==
-X-Received: by 2002:a05:651c:552:b0:2e0:ffea:4298 with SMTP id q18-20020a05651c055200b002e0ffea4298mr2790281ljp.34.1714584640631;
-        Wed, 01 May 2024 10:30:40 -0700 (PDT)
-Received: from cassiopeiae ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id q4-20020a05600000c400b0034dfede0071sm546199wrx.46.2024.05.01.10.30.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 May 2024 10:30:40 -0700 (PDT)
-Date: Wed, 1 May 2024 19:30:38 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com, ajanulgu@redhat.com,
-	zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH WIP 6/8] rust: alloc: implement BoxExtAlloc
-Message-ID: <ZjJ8Poo9OYIPnUO3@cassiopeiae>
-References: <20240429201202.3490-1-dakr@redhat.com>
- <20240429201202.3490-7-dakr@redhat.com>
- <2324d22f-984d-4f92-8302-5c866f3387ac@proton.me>
- <ZjI-XkWfMfozaQ4F@pollux>
- <45f53c48-efa5-4f97-9fb2-72aaded3c260@proton.me>
+        bh=eaXyGvot57hCFSjw0DgV9IXg74Q2iZmH5MYlysQPwL8=;
+        b=MBoyWUQ0Xn5QBQXiYttUpNY/GTToxEo7YyzI025bMebJXLBQfMtAwaBv4ZhuE/Biua
+         xgLik6fAFWTGniKpTo9i4QUgsqdwHPo1E5cvPHR317Yp6BRuZ6R29wBehOGp7jm7zLnT
+         XJgI34fzKvHfx/xrevC6TUVQWou92t3MEQszFY6joLi7LvUTbzvZrj5Wpb6s24H15PCb
+         S7+B3iw1/T20Ty7UYHSCf4Suj80O4nIbT6x/cFbphL3b4Y5hufbDFwvM8TQjXeMZP2RX
+         aiN3r2ClZR04rLvdf4f/qmvWwn7BvUfFWEjxTCGPriToiOFSB3k1j/85mE1Tar6KVxUJ
+         tkvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714599200; x=1715204000;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eaXyGvot57hCFSjw0DgV9IXg74Q2iZmH5MYlysQPwL8=;
+        b=fsZrbPlWBjKjYd/K+tGaYgBKkwxFEK6A1wiT+K1MwsQfXz7RvlMcgFWbVZBNclBuCr
+         drCbuaSpUBlfr4+4bIYQjr9uV48xAjzZAyy6JWU2piWTEeNwLZXjdQqrhKTj0zarijHH
+         S28PNOvoEbx5cSavGzdSniNW23q+MoieViVGBtyoVinhgS296Fr7jtykgoSMUAG12i8r
+         IL8C9KR/BgqtxaHP0dkw0Y9TDqMxaypNfKzTFnitkWdv4IampaTOvvKNWlQDyGBCqOZL
+         946xNUF1SobawnJTBzoEnS87KpmnAtoDDIUP8L9DjUlsipGTs6JP1ROj3cMO3fq5+uuz
+         +uvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgkBVbIbQBDWiX/Qf0Si8m/rTCRoIC2lAaeTzmlbAf1CfsWXLvJRX3SttI3RY/VV72ivTYoQE6+d/homJiJKfLCthUeUKw3yGgisKTYR0=
+X-Gm-Message-State: AOJu0Yx4xWtBWnd/UnYbkFr9rCZH+7lsTbs7aGgtkRkCdh56Dpj2iSlk
+	5XcmqVqyTnuEu74OJ80BbQD/EA4MoYlVU0U+N+Z7TFYKJ4ESe7lcS0z5biGCg0kmJMfBlNcItgR
+	gDmvmD7UIEi0PAtmEA2kLOWh/IOd7VPe1Cq0=
+X-Google-Smtp-Source: AGHT+IFREHHZyoRI1P4uAOAzhoZfgXI9U1jFU/6dcsw923zMi9YmqV8m9sDGLYc/UuO/ug5aZV+WpyIlX3XXI+hdtc4=
+X-Received: by 2002:a17:90b:8c:b0:2a5:5a2c:6066 with SMTP id
+ bb12-20020a17090b008c00b002a55a2c6066mr3875878pjb.37.1714599199836; Wed, 01
+ May 2024 14:33:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <45f53c48-efa5-4f97-9fb2-72aaded3c260@proton.me>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240429201202.3490-1-dakr@redhat.com>
+In-Reply-To: <20240429201202.3490-1-dakr@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 1 May 2024 23:32:02 +0200
+Message-ID: <CANiq72=0BNw-KiURBjosLqfuUEPpjZPbRg1XMFZyobOzBt7aMA@mail.gmail.com>
+Subject: Re: [PATCH WIP 0/8] Draft: Alternative allocator support
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	ajanulgu@redhat.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, 
+	jhubbard@nvidia.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 01, 2024 at 03:46:31PM +0000, Benno Lossin wrote:
-> On 01.05.24 15:06, Danilo Krummrich wrote:
-> > On Wed, May 01, 2024 at 08:53:51AM +0000, Benno Lossin wrote:
-> >> On 29.04.24 22:11, Danilo Krummrich wrote:
-> >>> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> >>> ---
-> >>>   rust/kernel/alloc/box_ext.rs | 40 +++++++++++++++++++++++++++++++++++-
-> >>>   1 file changed, 39 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-> >>> index 76653d6f4257..74d6bb24e965 100644
-> >>> --- a/rust/kernel/alloc/box_ext.rs
-> >>> +++ b/rust/kernel/alloc/box_ext.rs
-> >>> @@ -2,7 +2,7 @@
-> >>>
-> >>>   //! Extensions to [`Box`] for fallible allocations.
-> >>>
-> >>> -use super::Flags;
-> >>> +use super::{AllocatorWithFlags, Flags};
-> >>>   use alloc::boxed::Box;
-> >>>   use core::alloc::AllocError;
-> >>>   use core::mem::MaybeUninit;
-> >>> @@ -21,6 +21,19 @@ pub trait BoxExt<T>: Sized {
-> >>>       fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
-> >>>   }
-> >>>
-> >>> +/// Extensions to [`Box`].
-> >>> +pub trait BoxExtAlloc<T, A: AllocatorWithFlags>: Sized {
-> >>
-> >> I think it would be better to put all of this stuff into the `BoxExt`
-> >> trait. Otherwise we will end up with even more extension traits...
-> > 
-> > That was my inital idea as well, but it wasn't quite obvious for me how to make
-> > this happen.
-> > 
-> > I think for BoxExt<T>, it's rather easy, since we don't need an implementation
-> > for Box<T, A>. What do you think about this [1]?
-> 
-> In the `.._in` functions you're not passing the allocator to the `Box`.
-> This will lead to problems, since it will use the global allocator to
-> deallocate the value when you drop the `Box`.
+On Mon, Apr 29, 2024 at 10:12=E2=80=AFPM Danilo Krummrich <dakr@redhat.com>=
+ wrote:
+>
+> Please let me know what you think.
 
-Indeed, good catch.
+Thanks Danilo for implementing this.
 
-> 
-> > For VecExt<T>, I'm not quite sure how this can work though, since we'd need to
-> > implement VecExt<T> for both Vec<T> and Vec<T, A>.
-> > 
-> > For instance, VecExt<T>::reserve() needs to be implemented for both Vec<T> and
-> > Vec<T, A>, but VecExt<T>::with_capacity() can only be implemented for Vec<T> and
-> > VecExt<T>::with_capacity_in() can only be implemented for Vec<T, A>. But we have
-> > to implement all trait functions for both types.
-> > 
-> > Do I miss something here?
-> 
-> You're right, we need two traits for that...
+I think we should explore options that avoid going back to
+`allocator_api` if possible (i.e. like for any other unstable
+feature).
 
-Ok, so I guess we keep BoxExt<T> for everthing and just separate VecExt<T> and
-VecExtAlloc<T, A>.
+In particular, `allocator_api` has been unstable for a while and it is
+not completely clear to me what the path forward there will be
+(especially with all the discussions around that particular unstable
+feature and previous efforts to make progress there, e.g. whether it
+would be fine for them to add more `try_*` methods and how to name
+them and the documentation concerns, and whether it may need to wait
+for other features like keyword generics / how exactly to avoid
+duplication of methods, and so on). It is also unclear if they could
+give us support on their side for flags per call site and so on.
 
-- Danilo
+So if we can find a way that does not use it and that does not have a
+performance penalty (or a big ergonomics penalty), then I think it is
+worth avoiding it.
 
-> 
-> -- 
-> Cheers,
-> Benno
-> 
-> > [1] https://gitlab.freedesktop.org/drm/nova/-/snippets/7784
-> 
+In fact, I would say what we really need is the flexibility to
+implement our own allocation APIs from scratch, including types like
+`Box`, `Vec`, `Arc`, etc. suited for particular kernel use cases, and
+giving those the methods that make sense in each case (whether or not
+wrapping/newtyping existing `alloc` types), rather than the ability to
+"just" customize the allocator for existing collections. To be fair,
+Rust is already willing to consider solutions for us on these matters,
+like they are doing with e.g. `derive(SmartPointer)`, which we really
+appreciate.
 
+Cheers,
+Miguel
