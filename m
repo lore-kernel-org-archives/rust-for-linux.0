@@ -1,113 +1,75 @@
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DB826296
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 May 2024 14:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7156FB8
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 May 2024 15:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714746976; cv=none; b=TDhIyb3zi/G1RLWXPfa9cnMX0gwELwg7D/h0GQPARbLNuJ6/7btuoeVYk3PUpgHafhHXhGJsdWCt55Ha20MSU2Ojr7ymmZrlNIrMlyjvK2U41165EgUJ8OinlgJZX0pDIOlzSSMB6IJSGfR98E6BNe/fyMng3SLi2caoEzuinaw=
+	t=1714748611; cv=none; b=RD4K8oQih2DZ8FW/IHkFl+zzE17ilN1eSX3WZS1quxI7RNA/nJRNw3Ym33S9xWcl510gRhYHVv7nJxxkeoXAxHVW+Cm0JbPxvgJqHjuRbzvAihYmBIl7CW/gO3yvMkyFhpKQ4yybDSGgqqELorMte6nbz7zgVu2p3lVJQm0WHoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714746976; c=relaxed/simple;
-	bh=daN1x2gi00cSob1DmX9fc38vEUCgnDKbKOdXdiCaBCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZiOXFcxRy5y6J6gj2xylac0qkkjJh4Nh26y+hqfC5tFjVkgZr8TYvZlkScm8gzD8kexGtXekEWGJDi2A78xnMA/KniaT0gJlcIWg4ybIECC7tqopNef/Z2gkvUuD0K6OcD/DkffQ0LfMxHyERkC4huUsAyB1bpGtXcm1tvuKIM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PNVOBWjT; arc=none smtp.client-ip=209.85.161.52
+	s=arc-20240116; t=1714748611; c=relaxed/simple;
+	bh=b1r7Jv7QR6u63mKEtKVtbnnaTIa90eUFGrtcTT/0dZY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Zu61huPRHJ5jnu8B6yQi7BRlLyVuEu0CrjBV5ict0+ExU2nlD2xAu5ahM493x7kFVrgtNLymO/1PSn9gFumSIu2kDw/Lb0oLHUjwdVF0O0I4/wx06GNRCsonHG8Q1sNi299UhdLh90uhmzrPWnTOjDFjrl3htjlwDl5qfzTF/8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J7e7T8At; arc=none smtp.client-ip=209.85.160.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PNVOBWjT"
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5aa4204bacdso5416269eaf.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 03 May 2024 07:36:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J7e7T8At"
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-23bd61fbd64so3878302fac.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 03 May 2024 08:03:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1714746974; x=1715351774; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ajN0BJTmgIGLTJx2+JqXb38Pd8n8N6KRNSjh1lBU7Gg=;
-        b=PNVOBWjTY0oFb8n1NssmzOAVRRL29bTP7eVtzsyehKp34w3gEQXEevvThQ353ZW4K8
-         0E8jXoesKUE0+m1OVThcl+t14OUX7saF1/DBmA2WlmV1W5q/nRvpZQxkFuR7vhXH7MnQ
-         csD/+vjPwLc41PpOj5j3IPYBfy7HlwAPs6t26JdKyerdNeewuNWtLTV5JahuDF5R4lFh
-         Ei885Oyb2RXkzCKC51R5mHFk6I7Le+vcjzX9X4dysFVaLK35S5tZVFbV18c/R19lUr7Q
-         I5QTMSTnFaqQn2gsOTi773F1585nS0Z/qvlAIbXvCP6ryVc3YEidffftugFXfRUwosh/
-         rxVw==
+        d=google.com; s=20230601; t=1714748609; x=1715353409; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=O+TYt2ACU8h/f6YhcJDUo571JbO60mR74nv1lNkdCms=;
+        b=J7e7T8At3UvtPMobTMYZsRC8MA7N0/yC+FmctxohZupxnJnsfSyE0ajpiJXOjfx3ly
+         O11RvkqKYRKEJu7bHvhsKhFpYnMszB4mTR5RLcr9OIu46RD6PXkeI8klyPP65SM30Iz9
+         jKGdY+7b4QOkRi/Wm8LGCgAe63gjqkhecXEm+ghXgQZFIhOMNFG1VpDLq2doGryvgyc2
+         HN/VjCXqG/bpkG87TOtPSzDAhNqHbyu5MKEXXrVvQwVpdA3jMKiufxVm6gCcnydIs/XH
+         GD590GTKTat3eRRklvrF7KYp07Wld/IESKipaaCBA9ivHd/g3jqzlR7QUizWtdtqxU8t
+         7clw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714746974; x=1715351774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ajN0BJTmgIGLTJx2+JqXb38Pd8n8N6KRNSjh1lBU7Gg=;
-        b=ZK1OFLIlA3rbpsQ2UcYi8fAgjG9JpQHvNqNAbsL4SARPvPdF1YdoWHPT+xqGgq3E7M
-         aG79mbGJPuXcXEF+Ajre5Nut8id1vgxdC3DVUb5xuopIBt//VxYciJYr89y479vC5CKJ
-         aufS97yN5ZGFsNIwrmGLcFyDX32r/G+BYBLpMVtgeDArhb8ZsiEMhGMInvBQb8ZXILmF
-         IV7l20bv2RvBNd5YsPZBcoSRpKwbT2FZwFqo2B9Q0v+Sxydf6I6yHbM4ChK0a88I7+gq
-         NOpwSZWZJ26QSZxnJMzEspw5nC+15P+WOfUvuiuaEAIFd8G3exP1JVATQHjOlLYusZoZ
-         1exQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNg5y1ukGk2uFS/KX//QhKofcyOHdkb7AQYk8knoKMyGP5Ccy/RkhoihMQcR8JkTdE9IrR5C3t9iXPecyzCcVLAsSFXFdsFhNMMNEPLlg=
-X-Gm-Message-State: AOJu0Yx30E/9J8/FQlmZxgTrvvZqmOwCM3SPJs402DiQ+Za62CfaBXYq
-	+e3E/fA4pHCpz3OVmU0xIcIbbHbAfkWhzVlZ8++OakV5GiD4geJl9a8wAQ+wRVLgyxuca5LBEoK
-	/Mf1eGRqFxrRV1GWI1ED4l/iSrMUyeR57vIEP
-X-Google-Smtp-Source: AGHT+IHoTU5A3vFElJmmz36t8Ht05rUxakrvP1P6x/IV4m/3JuZwplO8bo+8j4PHy+v5410tkSzd4K+jp31EaDezWyY=
-X-Received: by 2002:a05:6358:311c:b0:186:2ac7:316c with SMTP id
- c28-20020a056358311c00b001862ac7316cmr2859376rwe.20.1714746973495; Fri, 03
- May 2024 07:36:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714748609; x=1715353409;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O+TYt2ACU8h/f6YhcJDUo571JbO60mR74nv1lNkdCms=;
+        b=DUvQhPQfTFCK79BNhh4nHbwrvhvb5qRv9xeMl3jIBVlxJvkSF3GASVDIJ4JsGS6ASe
+         H2WxlnnSDMUUfzwcQiJkNNV344Ur8Q2oKlL2gLBafJHleVXWrXUqxOGd4i1zwahbvjXv
+         RYO74n60UDVmOoW6PTTElxy1zK+4ed5wyecWtskakzdDFweykEwuI+yKbYLqF5nPraFT
+         raJdufaMZr1TodK3SQMeH5w94932R71pG0r7Y7ha4dEQW8jQHguIVrQk5DdlHAfKwQ28
+         VTKyNAMZuzXskh63gum6zVMuFl//IkeG8perY5Ouz4E5P5UDsZv+9922GTOUEfTQhmX0
+         eO0Q==
+X-Gm-Message-State: AOJu0YwAWqhKRynBEmLEs2X1yvrgUyGoNEB3KUin1goSVhKkApP55TX/
+	ZOXZXOzNfIfq1tkcV1gBXx1yaOGapUs6cGKOhAFGOLUsvakzzL+HJ99sYqwXO5xtdv/MTfwaThZ
+	E2q4rN+Tr3wR1AJiXNSjkcMW6LAgJoqVMnVcDuY59U6o8Lm1cfTIFHDg=
+X-Google-Smtp-Source: AGHT+IFMvRWqj4rI1NhnAumTNcqYkG8SB7Wu9YVoXnuMbmcfhUuWfUixdYknfRuBml5ScLOB4LDiEDYvR3uVRXPSxLg=
+X-Received: by 2002:a05:6870:a918:b0:23c:ca14:bdd with SMTP id
+ eq24-20020a056870a91800b0023cca140bddmr3608894oab.47.1714748608832; Fri, 03
+ May 2024 08:03:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com>
- <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com> <2f25f21e-fad8-48bb-aa2b-d61bf8909a41@proton.me>
- <CAH5fLgjqyfExjckh7KnSLnT+Ok+yjcoJ+DpDkj0gUZRmoz=M8Q@mail.gmail.com>
-In-Reply-To: <CAH5fLgjqyfExjckh7KnSLnT+Ok+yjcoJ+DpDkj0gUZRmoz=M8Q@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 3 May 2024 16:36:02 +0200
-Message-ID: <CAH5fLgj49zs2=O-e3h=VqkRDDzhozvV6p=-5AKN_Q9-caT++cQ@mail.gmail.com>
-Subject: Re: [PATCH 1/9] rust: list: add ListArc
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, 
-	Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
-	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+Date: Fri, 3 May 2024 17:03:18 +0200
+Message-ID: <CAH5fLghwYAZkwjEQzhXK1RV6-J8SVBugk-a+OvjEC79evXdJAA@mail.gmail.com>
+Subject: Bug report: Deriving zeroable doesn't work with const generics
+To: rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 4, 2024 at 4:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> On Wed, Apr 3, 2024 at 5:51=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
-> >
-> > On 02.04.24 14:16, Alice Ryhl wrote:
-> > > +impl<T: ListArcSafe<ID>, const ID: u64> ListArc<T, ID> {
-> > > +    /// Constructs a new reference counted instance of `T`.
-> > > +    pub fn try_new(contents: T) -> Result<Self, AllocError> {
-> > > +        Ok(Self::from_unique(UniqueArc::try_new(contents)?))
-> > > +    }
-> > > +
-> > > +    /// Use the given initializer to in-place initialize a `T`.
-> > > +    ///
-> > > +    /// If `T: !Unpin` it will not be able to move afterwards.
-> > > +    pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Se=
-lf>
-> > > +    where
-> > > +        Error: From<E>,
-> > > +    {
-> > > +        Ok(Self::from_pin_unique(UniqueArc::pin_init(init)?))
-> > > +    }
-> >
-> > pin-init has a general trait for this: InPlaceInit. I don't know if the
-> > other functions that it provides would help you.
->
-> I will use that.
+Hi list,
 
-Turns out it's not possible to use the trait in this case, for the
-same reasons as why Arc isn't using them either.
+I noticed that the #[derive(Zeroable)] macro doesn't work on const
+generics. I get this error:
+
+error[E0404]: expected trait, found builtin type `u64`
+   --> rust/kernel/list.rs:105:32
+    |
+105 | pub struct ListLinks<const ID: u64 = 0> {
+    |                                ^^^ not a trait
+
+Anyone up for fixing it?
 
 Alice
