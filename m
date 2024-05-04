@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0091157CAE;
-	Sat,  4 May 2024 15:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EC4225D0;
+	Sat,  4 May 2024 15:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714837531; cv=none; b=GEn8pd4Dq58maFFMUg2lS2yN/n7+qiUgNj7iOFA/LrrAdZcTHhGrId9zz1Ivak6qicmkl6WrzxdH4e8xh3O+oxQQFPOeH69asgEeyUsNEn7nibRMc56n2RyOo44/PTrVMjmygQIl1cjLEd2Egk29MPpZhXAnySyY5sUWrHHBiW8=
+	t=1714837861; cv=none; b=YLh9LflR3Y6gAsrSTC1+lYZcVm1isfVdrX+lTDN8fxS5ESf6jCw4tDTVwPbfkHZ62zEban8Iiqk8l4zUBMjQtRPfvu3GpznJHdqr4Kiy38NfzlcwsGHoVoNy0bEmrB4r9B7Pj7D3oCWVOYyOlrn2iCr7EwFySTdjB6wC+iZZtCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714837531; c=relaxed/simple;
-	bh=ge8eSrWmG1QSzwW7t9UJrqZ0IDlqBkwqstyme4yNE5c=;
+	s=arc-20240116; t=1714837861; c=relaxed/simple;
+	bh=8Y5j+hHY5H5LYn2tND6jFGfaH8F4/fR8Qtsmq+cOp/A=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PK5x5AqRtJ/kjV2IPIZUm5aETYuuYjrQCrM6IL3lQbQUEN4o/yA7HmZ0HZTxDemYvVMJiI+v4YTkKNeirraeD+mzXq4k4tA0v35x7lDTWX/x+6HnJiv22ZTx33peyX2URuOFHL61b6FmY1uZnZ1+AcVX/G2DCz4qXW8i05QP+q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Q+yaRJya; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=fobw+QDH3MVDeOO3Qhtdqykc5OcU5yXH6Mn/ur8qb3+hGtCRbXEJ8SF5SSm5M0DPDQdWhWQjiD4dlsbOIzds7xSLIWvQGOg+/iASyEpZd/B3UZGYJQW1pVOUjwwEA9m/TpN2CSDkEEXCFJT5KxMTT4MO+OBVpskkZdwgqccYino=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=US+DjQxE; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Q+yaRJya"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="US+DjQxE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1714837519; x=1715096719;
-	bh=ge8eSrWmG1QSzwW7t9UJrqZ0IDlqBkwqstyme4yNE5c=;
+	s=protonmail; t=1714837856; x=1715097056;
+	bh=yDG0Dga8SN4IPSIg58hp6EWOUt/e8hhjmCWy38atFF0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Q+yaRJyaOA8VLNri/LpklXLordbIb6nISYDvqFQVPGFDoEACtQkIc2cZAZRw9ijGE
-	 8ES1G6S0zaFO92FJg+HvPXWKHqKWYe8TZ68TUsKD8W6Epz4CqhNH0bwKgAT60iDysX
-	 J3IJrRHUYqDBq0c9gWho+dvEwkTQcm+wzWKoL0ku2fOS327yzSfzcz/iiLckWLkqW5
-	 OyiWjl1P236Jzj5Tjt/8H7Y6H+pquCdu0mW8D5edrPHd5eYWp1KcFOBeyVxNzFCaTB
-	 bdWfghiXKoSbokukpj7s5OF1SRGQF7AdTJVRElUWeDxFxN9zydRGHVC1h+XikdxEnf
-	 5ABeX9/W6unCA==
-Date: Sat, 04 May 2024 15:45:09 +0000
+	b=US+DjQxEAntVV0nXuFezrp71IoYp+ILzZOPBboCUyQ/P7cwQgUqX5lms+XVzHjyrC
+	 Wo4WTY66spY6a6ftoNLM8YOrrJNA4L2yW/QRFx2WhIwY2RmGglrtZayAvsEdNC+Nrk
+	 ci98hu+rbBHjuskMs8EDZ57aaN8PtaTNoxcDdeomNWsu9AF0VgaJpm4AaF/InwkPNf
+	 Kp6Vp2b7L8ahF6ilBMWWvIrRpVG0GpcAhqQxBKmD8jCj96quZTzlSIu4lb0HkfwVn0
+	 UPJSnM+IH5GVCvjjkyHVhDgE2TQ+wXtE8pdkYynnJeryy0xYE8+bsGB7SJzzlju5Nh
+	 nkyX53feZA78Q==
+Date: Sat, 04 May 2024 15:50:51 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: init: add re-initialization functions
-Message-ID: <1fa87967-079f-4ff8-9946-81a571eb09bf@proton.me>
-In-Reply-To: <CAH5fLggj_MT=njdieD9BX_gV+4A02m0+zMyzPTJ9DR6hSkQhEg@mail.gmail.com>
-References: <20240425213419.3904105-1-benno.lossin@proton.me> <20240425213419.3904105-2-benno.lossin@proton.me> <CAH5fLggj_MT=njdieD9BX_gV+4A02m0+zMyzPTJ9DR6hSkQhEg@mail.gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/9] rust: list: add ListArc
+Message-ID: <ec5ae5ba-85eb-4dad-af4b-bd85fa189043@proton.me>
+In-Reply-To: <CAH5fLgj49zs2=O-e3h=VqkRDDzhozvV6p=-5AKN_Q9-caT++cQ@mail.gmail.com>
+References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com> <2f25f21e-fad8-48bb-aa2b-d61bf8909a41@proton.me> <CAH5fLgjqyfExjckh7KnSLnT+Ok+yjcoJ+DpDkj0gUZRmoz=M8Q@mail.gmail.com> <CAH5fLgj49zs2=O-e3h=VqkRDDzhozvV6p=-5AKN_Q9-caT++cQ@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f67d8b7b5a8af450ba0a34fba934da2883ac5ffc
+X-Pm-Message-ID: dd5e738b4551f3eb7829e604d9e22de8d31b309c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,26 +47,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 03.05.24 13:34, Alice Ryhl wrote:
-> On Thu, Apr 25, 2024 at 11:34=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
+On 03.05.24 16:36, Alice Ryhl wrote:
+> On Thu, Apr 4, 2024 at 4:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >>
->> Sometimes it is necessary to split allocation and initialization into
->> two steps. One such situation is when reusing existing allocations
->> obtained via `Box::drop_contents`. See [1] for an example.
->> In order to support this use case add `re_[pin_]init` functions to the
->> pin-init API. These functions operate on already allocated smart
->> pointers that contain `MaybeUninit<T>`.
+>> On Wed, Apr 3, 2024 at 5:51=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>>
+>>> On 02.04.24 14:16, Alice Ryhl wrote:
+>>>> +impl<T: ListArcSafe<ID>, const ID: u64> ListArc<T, ID> {
+>>>> +    /// Constructs a new reference counted instance of `T`.
+>>>> +    pub fn try_new(contents: T) -> Result<Self, AllocError> {
+>>>> +        Ok(Self::from_unique(UniqueArc::try_new(contents)?))
+>>>> +    }
+>>>> +
+>>>> +    /// Use the given initializer to in-place initialize a `T`.
+>>>> +    ///
+>>>> +    /// If `T: !Unpin` it will not be able to move afterwards.
+>>>> +    pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Sel=
+f>
+>>>> +    where
+>>>> +        Error: From<E>,
+>>>> +    {
+>>>> +        Ok(Self::from_pin_unique(UniqueArc::pin_init(init)?))
+>>>> +    }
+>>>
+>>> pin-init has a general trait for this: InPlaceInit. I don't know if the
+>>> other functions that it provides would help you.
 >>
->> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->> Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57a=
-d3f5bc592@proton.me/ [1]
+>> I will use that.
 >=20
-> I'm not a big fan of the name. Perhaps we can use a name similar to
-> `Box::write`?
+> Turns out it's not possible to use the trait in this case, for the
+> same reasons as why Arc isn't using them either.
 
-Sure, what would be your suggestion? I can only think of `write_pinned`,
-but no idea what to do for `impl Init<T>`...
+Ugh that is annoying, I think we can change `InPlaceInit` to have a
+`PinnedSelf` associated type. I will create a good-first-issue.
 
 --=20
 Cheers,
