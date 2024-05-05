@@ -1,89 +1,99 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EC4225D0;
-	Sat,  4 May 2024 15:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690D013774C;
+	Sun,  5 May 2024 22:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714837861; cv=none; b=YLh9LflR3Y6gAsrSTC1+lYZcVm1isfVdrX+lTDN8fxS5ESf6jCw4tDTVwPbfkHZ62zEban8Iiqk8l4zUBMjQtRPfvu3GpznJHdqr4Kiy38NfzlcwsGHoVoNy0bEmrB4r9B7Pj7D3oCWVOYyOlrn2iCr7EwFySTdjB6wC+iZZtCE=
+	t=1714948081; cv=none; b=sGdkA5C8ovZfKCoR93qnTh/NEIvDW/PDYGzVmW/J6uJjg0ESJfBzhs4uyMRd5wW5Xbxh4ywKcLj3biegxPNul3z1Xsf6rrL/ZnLUIkktxHAHxwKXq/9x2wsnqzhtxvvIMQAbOHoGKuLzeg165uK0x6TA12G/dO+pxqPAgVbaf4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714837861; c=relaxed/simple;
-	bh=8Y5j+hHY5H5LYn2tND6jFGfaH8F4/fR8Qtsmq+cOp/A=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fobw+QDH3MVDeOO3Qhtdqykc5OcU5yXH6Mn/ur8qb3+hGtCRbXEJ8SF5SSm5M0DPDQdWhWQjiD4dlsbOIzds7xSLIWvQGOg+/iASyEpZd/B3UZGYJQW1pVOUjwwEA9m/TpN2CSDkEEXCFJT5KxMTT4MO+OBVpskkZdwgqccYino=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=US+DjQxE; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1714948081; c=relaxed/simple;
+	bh=PnhuRaH7kHDqdvetOTUb+849eKiSXQDg8yfGRBbMzSQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YGolhU1u43W2VG8LDrab7QY22PFfytS7VtKXrzuKpyR5OZFn4ABy4013N6zUT1DvLdjEhTCTHqhKb7U0brvT6vnwSVuQOnTMubWTPvqhh1BbQAHkLxNRMz6bWbQ5S5HDhwyofPiHZ73nReaXDlCuP6Hskwfh1ct0PuLKzpdn0jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mDYPc1G1; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="US+DjQxE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1714837856; x=1715097056;
-	bh=yDG0Dga8SN4IPSIg58hp6EWOUt/e8hhjmCWy38atFF0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=US+DjQxEAntVV0nXuFezrp71IoYp+ILzZOPBboCUyQ/P7cwQgUqX5lms+XVzHjyrC
-	 Wo4WTY66spY6a6ftoNLM8YOrrJNA4L2yW/QRFx2WhIwY2RmGglrtZayAvsEdNC+Nrk
-	 ci98hu+rbBHjuskMs8EDZ57aaN8PtaTNoxcDdeomNWsu9AF0VgaJpm4AaF/InwkPNf
-	 Kp6Vp2b7L8ahF6ilBMWWvIrRpVG0GpcAhqQxBKmD8jCj96quZTzlSIu4lb0HkfwVn0
-	 UPJSnM+IH5GVCvjjkyHVhDgE2TQ+wXtE8pdkYynnJeryy0xYE8+bsGB7SJzzlju5Nh
-	 nkyX53feZA78Q==
-Date: Sat, 04 May 2024 15:50:51 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/9] rust: list: add ListArc
-Message-ID: <ec5ae5ba-85eb-4dad-af4b-bd85fa189043@proton.me>
-In-Reply-To: <CAH5fLgj49zs2=O-e3h=VqkRDDzhozvV6p=-5AKN_Q9-caT++cQ@mail.gmail.com>
-References: <20240402-linked-list-v1-0-b1c59ba7ae3b@google.com> <20240402-linked-list-v1-1-b1c59ba7ae3b@google.com> <2f25f21e-fad8-48bb-aa2b-d61bf8909a41@proton.me> <CAH5fLgjqyfExjckh7KnSLnT+Ok+yjcoJ+DpDkj0gUZRmoz=M8Q@mail.gmail.com> <CAH5fLgj49zs2=O-e3h=VqkRDDzhozvV6p=-5AKN_Q9-caT++cQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: dd5e738b4551f3eb7829e604d9e22de8d31b309c
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mDYPc1G1"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-53fa455cd94so1145098a12.2;
+        Sun, 05 May 2024 15:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714948080; x=1715552880; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CJO6mPxAclOgImrRki1ODylm8SwqUcxhxstV0gj46N4=;
+        b=mDYPc1G1WgUZSVu3hVlzsGtSMQjS/XMvQiRQue1GIekiOTM6Rdz6YXVL938cn8ceGx
+         iXFWHhgwJ4T8gSP5X001gEIakz+nowo6IZeUa40ZosLG0I7o5AWdunal7lcRG5qnkoX+
+         6RzY2Z5Eq5rMaEnx3n9rGQYWFTYxy0FMCIhpbcg3DJO8CRc3W2Giu2LJypT0C8bM5roa
+         PhrTHH8M3G4+bj7cVdPnnCH38smrZmXsNwZOeNIZRzee2wesjJkMxC58gHMkpSNCVuiG
+         HjykOiwuCDxdH4ppRPr0o1aUONo62fWty7FOm3hkMbHuKM74pZECpAx3H6QpVOhq40up
+         ElFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714948080; x=1715552880;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CJO6mPxAclOgImrRki1ODylm8SwqUcxhxstV0gj46N4=;
+        b=hKM3gfrCkORE59rNZAqamPAz89BO9B7ZcIDdg3dCNHUwl5vJXfASPEu/5xQLGzRmnW
+         YUVEfz7QA6pqDvS3OrxIWByjUlcQRiULPrJpwxjKKX6huKajBHXbRmKh0LinUoL9shQt
+         0HFXjNiI04iSCZ0tkq0RBuQT4/ByPrP/KSWVm0/kJs7PiZT351tYPOs2sPIYrMGxMFYw
+         AqluCGlXY6oYpv7rAYRq2Nd8Lxm0L8O9jS3Av/qMBvZS9TLXbH7gD6U+p2ZtXGlDE5Qt
+         KN8+HbTbpX2jL5GrPbL5P4fVR8L/F0Fz1a96Z1sG4CLQqsvr4fHD/raq+xdSKp939R+4
+         Y2sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXP/hTiYlDW2RjhSJ0bEpDU2+p6STYHy23sJYNM0PqhMhUDLrlZNtkvwKHxS5RNxffjqIGuflcQIZLZRbS0KqhS/c+S4xdfvfqeHHGe
+X-Gm-Message-State: AOJu0YyiEVVpu1N20blrSHB0coUGZqofngUlU9o5Kvd6Yvan7sZj5+wy
+	MudwX0XXKOZh0DVEJs01g/b0vrOpuf/RZ/GAmEfS2hvjY24O3lrgse+ZYCkYw+McQFaqc58QnGj
+	myU1l3L40bRLrN9IFhITPL9gF9jk=
+X-Google-Smtp-Source: AGHT+IG4ulaU6tR3gNMHRoRU5RYl0MWGDXaAG1VrXszEVrVYMtmTRrEDdFqEwCn0lIe/RtrGzUxqPNvAVJacuHl623o=
+X-Received: by 2002:a05:6a21:31c7:b0:1af:35c7:afb8 with SMTP id
+ zb7-20020a056a2131c700b001af35c7afb8mr8889237pzb.3.1714948079558; Sun, 05 May
+ 2024 15:27:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240401214543.1242286-1-boqun.feng@gmail.com>
+In-Reply-To: <20240401214543.1242286-1-boqun.feng@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 6 May 2024 00:26:34 +0200
+Message-ID: <CANiq72k64Z+kexebgi50dVTMpx6vsm=tt+kipe8HQH8Rhykqjg@mail.gmail.com>
+Subject: Re: [PATCH] rust: types: Make Opaque::get const
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Obei Sideg <linux@obei.io>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 03.05.24 16:36, Alice Ryhl wrote:
-> On Thu, Apr 4, 2024 at 4:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->>
->> On Wed, Apr 3, 2024 at 5:51=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>>
->>> On 02.04.24 14:16, Alice Ryhl wrote:
->>>> +impl<T: ListArcSafe<ID>, const ID: u64> ListArc<T, ID> {
->>>> +    /// Constructs a new reference counted instance of `T`.
->>>> +    pub fn try_new(contents: T) -> Result<Self, AllocError> {
->>>> +        Ok(Self::from_unique(UniqueArc::try_new(contents)?))
->>>> +    }
->>>> +
->>>> +    /// Use the given initializer to in-place initialize a `T`.
->>>> +    ///
->>>> +    /// If `T: !Unpin` it will not be able to move afterwards.
->>>> +    pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Sel=
-f>
->>>> +    where
->>>> +        Error: From<E>,
->>>> +    {
->>>> +        Ok(Self::from_pin_unique(UniqueArc::pin_init(init)?))
->>>> +    }
->>>
->>> pin-init has a general trait for this: InPlaceInit. I don't know if the
->>> other functions that it provides would help you.
->>
->> I will use that.
->=20
-> Turns out it's not possible to use the trait in this case, for the
-> same reasons as why Arc isn't using them either.
+On Mon, Apr 1, 2024 at 11:46=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> To support a potential usage:
+>
+>     static foo: Opaque<Foo> =3D ..; // Or defined in an extern block.
+>
+>     ...
+>
+>     fn bar() {
+>         let ptr =3D foo.get();
+>     }
+>
+> `Opaque::get` need to be `const`, otherwise compiler will complain
+> because calls on statics are limited to const functions.
+>
+> Also `Opaque::get` should be naturally `const` since it's a composition
+> of two `const` functions: `UnsafeCell::get` and `ptr::cast`.
+>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-Ugh that is annoying, I think we can change `InPlaceInit` to have a
-`PinnedSelf` associated type. I will create a good-first-issue.
+Applied to `rust-next` -- thanks everyone!
 
---=20
 Cheers,
-Benno
-
+Miguel
