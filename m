@@ -1,115 +1,104 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C8D157499
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 May 2024 17:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9D115B97A
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 May 2024 22:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715017905; cv=none; b=gFzVRbFhqO8OlZn8yVXYLJDlYViGqMrZwQVNrHbcW+q1Mbia/GjQxHv8TBPFBnJdIYkEeVLpCFyRhHb/frWBcx8iG5FXzMyGPyXk7uWWSKZ9cUOsgitdLjyETVLuUr+Hd0DopIrgMhZ+lcnA7lPaNcKzgKCnLrjyP7CZHIxVZd0=
+	t=1715034336; cv=none; b=bBZ6m6BGcDUfhNY4EUy5LXHBa8boJy8V7BDb0dBYRPBzqQzlNeoPB58Dji5Ur1bhDrGEACeZzDOv+d8uloz0EBQHbQVOoGGsc69IObPxsQ5MIQCYcysw2lCEGrEXOk05wuu7GW+i4UrvK8+IiheIYsIwws7eXr6JxHFYJeQPYEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715017905; c=relaxed/simple;
-	bh=n+ggXJuMDy3ztUuQdogsS5kTE6OjXKJK3NoOAxwDlUI=;
+	s=arc-20240116; t=1715034336; c=relaxed/simple;
+	bh=8eKWvn/G32hcGZ84G+dXhTvGjODQIauy7njWkNJhcAU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OruyEn/nONorOTIie+TfMir7lIEUZSoMesTjBvMCIZWX2gz+S9tDyRkBDip6hqfFUKAfq68U5IeOrVeLUdh3VuGYjBBoUaCLFQNrdMwDAqZ2EuKnAAKDyFWMrEo0AegHQjUdrdctM3DxnbJZjJJRELY3sZ8Ge9crm/9qE5ykVxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iA18VD8q; arc=none smtp.client-ip=209.85.210.177
+	 To:Cc:Content-Type; b=ssrrLEPbL8XAHnIdX/KozQQ6+HvRTZXVrqkiyU9EkqvCGnn/amRHNssTVZnnUMazYZDrx22J8nGv8zq28OCde8T/ILK1FuD/lLB33BiDSCBofr70pJ03tgaAvDrGPHE1qQ2vQw0+9NOd4JBC27PsSdNeXVYf/amA4LHGjLYl+Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yg/lXT45; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iA18VD8q"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6f457853950so1400038b3a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 May 2024 10:51:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yg/lXT45"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e65a1370b7so22517685ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 May 2024 15:25:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715017903; x=1715622703; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1715034334; x=1715639134; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wurQtlXnQruaxZGmjoZBz3RX7oXBHFU8dFMH3DGp+dM=;
-        b=iA18VD8qn/y7KfS6J+dzX3+7gd7ye/6lp+cRrJIJNZaeMSNLnjOObejkQs2Pu9JyeR
-         PqjPM0amRDKGYnvBsVw+/z4VKvGkzJ6bjAFcX7J4dKf5+biNtYkPmgjMS0bY9TzC5T3l
-         F6YTfYRKaD8RIvTiMrRPGW3P878GBURN1Ii1icnqG3opot7w5mfEioNO2+zPsZ8f5jl2
-         DXSVT5JuZ5RvD9xGQ8/X2VnM17wGwwlF0nOqNAwVvbrhP2NVJJ3TCUc5+/46oax4l3b5
-         scq1scJXt8YZgl7Wj1Kqt2Qj7XNKQMwu9jsAsw6NRWSXqwHL0sN8QYv4pDswvUMRmdD8
-         UgQg==
+        bh=8eKWvn/G32hcGZ84G+dXhTvGjODQIauy7njWkNJhcAU=;
+        b=Yg/lXT45/p25eCD+jl1aZM7bP8LOSkRnUH8rvXX3ftphM7qZSXeorKN/AOHK6Oc+sC
+         R5dNtxpOd+Bag8Sah095VfcDA5vf6eVrnBUviNX7Iz7U8f0ObNEjYP0EFGMoksfkv0C0
+         SrEFI/I8JZvghLJfsmLfQ4Ta14bl6kXR/tWmRmhkHLHjOVpSz0JXCufRZ+IaLvvgRa5y
+         WrAetsEMA16zL8NIhQA4sxtOTbFYZoVD6z8TpTHPKglzPUnH8V3xvtN2RkzdrG6qr75E
+         iUmgwxqBtBkdmcjFnWAyFDONBD/aE3SjnaKLAMkQh4ZfF8JGVlah7nlPwbOnIUYD3XZU
+         ZK+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715017903; x=1715622703;
+        d=1e100.net; s=20230601; t=1715034334; x=1715639134;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wurQtlXnQruaxZGmjoZBz3RX7oXBHFU8dFMH3DGp+dM=;
-        b=wuGD7jkUIb3+AAGYMRHLh7vf86YV2yPN/elf1uNUlMhzQ94XJCFTC4uk2pDkbBguWb
-         PK6x+modsU9UCEnrjv91AriFc/WHZoKjw7cy0keEWHWmq9EZ+F6qwQlI4yfV6LsHBSL8
-         X7jUuRamM8lOTNYvsYZpN/iF8jS2gavprFYBbW7yLihUijpLLLI1krE8PaIrIA9n5aCF
-         K7ycjEGUyLqExhlb4tfoTX3bspXsP0cddMEeTL+Rka00aJUP8dlncc2eaCUenyqzsbKf
-         qSL2hP4SowLnPbLNhnKFocYY7U0KE1ocqNkNuYVhRPhoSlSGpwAM4Nu8ftguFlMwWyVc
-         CMnw==
-X-Forwarded-Encrypted: i=1; AJvYcCXq3Q/eWW2ZdlrvLVvhSQ/aleUNq/6NR7fVmuKzL8XFNmKplZGE0tlWoqNykpAPRUcb+NyVL11Lu+6R3r0qUrBuoBQLIRkkzO/2SLs6G+k=
-X-Gm-Message-State: AOJu0YwAiVeuBiFv0y4lZwLeh7MlsZcQR1M4yCEeTahHfeV45kILXx5O
-	BGFPSqEqv7aLHB8ldT165cz9ImRv0+dY8eqG/IDzHx+IDz1j6BqP+ZSboQyCZWgXFFDaL+TGxCQ
-	EiHZf/+3CVzloD5fhirI0e9gT6MA=
-X-Google-Smtp-Source: AGHT+IH8Mt62MuKQL1ZkalGP87eZfS3iHdOlVOzv/LnegQfkY+vcem5lPH9/vG1mD904Dqwu09s/h5jE32xZ3xUCxHo=
-X-Received: by 2002:a05:6a20:1584:b0:1a7:9b0e:ded3 with SMTP id
- h4-20020a056a20158400b001a79b0eded3mr561016pzj.11.1715017903199; Mon, 06 May
- 2024 10:51:43 -0700 (PDT)
+        bh=8eKWvn/G32hcGZ84G+dXhTvGjODQIauy7njWkNJhcAU=;
+        b=KrjhGgkzpQzhv1DNa5vqaetzIQz9IUFFE/7+GlV4bqn86MT8+sd7+Vb71LgGkLY6Uw
+         AG6+JnxbppqrO4NIJ6Eq4IJFkK4cxgAqydvD7SWY1imz93e99PzhKHP41vOoqmDKk0as
+         KVVbY/niJQ0Jwnur7pn3z7UAMylDAgQq1bjtGhGLcEZKJoDfNoUdcG1ep/HqirQPzHv1
+         CIugvTtV2fuiw1DR5/qc7geBwCDYYt11HaZ/SBuGA6jqZULNW/pnmX2ygcxBn0BDQOVA
+         Dwn6fP+U7xMsoEQc55HIw4QsefV+ITIMiaM/cmy7gEPj5Dz9fuByuSnBe4CrWs6RvaCI
+         afnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWUpPsVdxAsTDlUJFWzZzDZ/+OmDxvcvoZ8q8qFULynKyzGD0NkaopWBFQZN0nlgV3YDgYwKwlcS+AyDq1fsNqvaP7wX4zxFKL/xgsgcW8=
+X-Gm-Message-State: AOJu0YzFLASVGB9w/4rx5dx3eDslIqOlsrKrme6ZZNTJS1QgI/4ch2wR
+	mK/JvuGvRBX9ghGEJenpjJE4w14gRTtZCOfyZ4L68heW1x7curTPlHVVeoPAC1fVkTnHW393WE5
+	Ll7KwdhsZESLIt8yo14sYv9XSQ3A=
+X-Google-Smtp-Source: AGHT+IExYnmktnkn/f0Z4ZZNj+O6iLpKUouGdmhXPAEzFxO8L7cgqgRDMSV5ONPGrH4v4xocBeK8ERk5K5nszaYgV04=
+X-Received: by 2002:a17:90b:92:b0:2a5:16c2:8551 with SMTP id
+ bb18-20020a17090b009200b002a516c28551mr9782458pjb.19.1715034333972; Mon, 06
+ May 2024 15:25:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240501134834.22323-1-dakr@redhat.com> <CANeycqoRh_hjUmAKyQCjNy-SJ+Ct5XR9yDMBc_HJaY3+EjajuA@mail.gmail.com>
- <82f42e39-b1a2-4915-b382-71f4c06c3f53@redhat.com>
-In-Reply-To: <82f42e39-b1a2-4915-b382-71f4c06c3f53@redhat.com>
+References: <20240501134834.22323-1-dakr@redhat.com>
+In-Reply-To: <20240501134834.22323-1-dakr@redhat.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 6 May 2024 19:50:19 +0200
-Message-ID: <CANiq72nHubtd7oB=JUTY8B0H9WA35jio1L0tfTSxDpJFLBcdMw@mail.gmail.com>
+Date: Tue, 7 May 2024 00:24:09 +0200
+Message-ID: <CANiq72nSQAE7c8ypWQA__BMoaBYqiEjXvHpuzn-=CsCky9uu7A@mail.gmail.com>
 Subject: Re: [PATCH v3] rust: alloc: fix dangling pointer in VecExt<T>::reserve()
 To: Danilo Krummrich <dakr@redhat.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
 	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
 	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 6, 2024 at 5:22=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> w=
+On Wed, May 1, 2024 at 3:48=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> w=
 rote:
 >
-> Is there any benefit using an if here, or is that your personal preferenc=
-e?
+> Currently, a Vec<T>'s ptr value, after calling Vec<T>::new(), is
+> initialized to Unique::dangling(). Hence, in VecExt<T>::reserve(), we're
+> passing a dangling pointer (instead of NULL) to krealloc() whenever a new
+> Vec<T>'s backing storage is allocated through VecExt<T> extension
+> functions.
+>
+> This only works as long as align_of::<T>(), used by Unique::dangling() to
+> derive the dangling pointer, resolves to a value between 0x0 and
+> ZERO_SIZE_PTR (0x10) and krealloc() hence treats it the same as a NULL
+> pointer however.
+>
+> This isn't a case we should rely on, since there may be types whose
+> alignment may exceed the range still covered by krealloc(), plus other
+> kernel allocators are not as tolerant either.
+>
+> Instead, pass a real NULL pointer to krealloc_aligned() if Vec<T>'s
+> capacity is zero.
+>
+> Fixes: 5ab560ce12ed ("rust: alloc: update `VecExt` to take allocation fla=
+gs")
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 
-`if` is meant to test a boolean condition, which is what you are doing
-here, so the question is why would we want to use a `match` here -- we
-should first of all try to be consistent.
-
-Now, I can understand the appeal of how the `match` looks like (e.g.
-less braces, less zig-zag indentation), and if this were a `if`-`else`
-chain with several cases and the wildcard `_` was not used, e.g.
-something like:
-
-    ... =3D match n {
-        1 =3D> ...
-        2 =3D> ...
-        3 =3D> ...
-    }
-
-then I agree it would be clearly better.
-
-Perhaps you are arguing for something like "let's always use `match`
-in cases where a value is returned, i.e. when used as an expression,
-and save `if` for the C-like cases". If so, would that mean then that
-we need to do:
-
-    match c {
-        false =3D> ...
-        true =3D> ...
-    }
-
-to be consistent?
-
-Then there are other things like `if let`, the potential `is` operator
-and postfix `match` that should probably be considered.
-
-Anyway, I am picking the fix as it is.
+Applied to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
