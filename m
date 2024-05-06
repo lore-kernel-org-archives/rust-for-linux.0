@@ -1,55 +1,55 @@
-Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827FD144315
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 May 2024 09:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D971448D9
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 May 2024 09:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714989245; cv=none; b=B9ZimjCNkPyOXBXSd1d1+8mVt7OlRspaVzcM9SGGjguXwGlWNWw/6KaE5yAusx9iB7wMQ/6Q+ZY0KW9zx7CI9c/lZ4VW8wxIplXygPpuFUd5s3JYtT1KYu1FuLCv/Oc3JC7H2izRFoqFWWlA6rwXreJ4PlTttU4cPpBEKvV5AhA=
+	t=1714989248; cv=none; b=uZQKAODMthgWFNLMJnwFGok6TQKY13GFEeGNN7X4pv+/I1wPAoB7+9PfXpfoD2nEPfrxEUZ7ZOnYGPQzm3SIu/UJooqWC8ShPwtYD7VkbbxVV5qLUFEMzQ+4X4ysi2WhApeJl/HrNCkuOV8g3EOITYbpGJpLpb08DdP8gYPsKkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714989245; c=relaxed/simple;
-	bh=L5UFSlBhqwQO+d3A4n2UzNrPer5KrDqp0xRe83Kkd9Y=;
+	s=arc-20240116; t=1714989248; c=relaxed/simple;
+	bh=TputigRZUR00q1xN1sbsYsPUvr9lDRrYeB9O4vnOPD0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VSsbvGEDI1YHv64Syeky3Dec6vPHuTCNEG3ZhcJ2LcMcu31/2nKQPb2AE9bOJB8P6bh5r9q1aikwQ/0PqivpPhMteF+OiXTjbiMhvE4UoIjwEqWXLfV+cflbTHIkmRlX/L82l0yGI9BQiZFevAEnam8CcejeWwa1Uh+AJ0W/68Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PfkUORsV; arc=none smtp.client-ip=209.85.167.74
+	 To:Cc:Content-Type; b=MqyjXQe+dX0xsTZQ6CpDSa8Z19d6fKLAdXQJLsljvPe7/1rQHndOazXy+at5jTf2YWLxcmfd/8xYdq8fTwv35ZTB+TEAbgasY5sxe1XjYDXG7ZDi5O2Z6frRd5NaVVOd95vE0d2iD0GpE81d1psC6c3GduebmCoaRJ+u2jz7aZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gqzn0fww; arc=none smtp.client-ip=209.85.208.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PfkUORsV"
-Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-51f8cf57f17so1238558e87.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 May 2024 02:54:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gqzn0fww"
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2e37e7829a2so1856011fa.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 May 2024 02:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1714989241; x=1715594041; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1714989244; x=1715594044; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/hIlTV0Cti9dUdSzkNL3rnm4RrYlyBh4GBegjEt7JM=;
-        b=PfkUORsVQRlg2BXxJgWyknxSktQdF+BHliP/ukBvOSTPHUyGOM77raFEkasreIP3GZ
-         ruVogJHyqjeCfWPO2HLxyFsFDLYat2/u/4Qcp+YZ6l7uqtEB90YDAIhFN+Zy92BHsKdn
-         BLj8bSDWh6SU7FjmG0o79kDSRfYoyn0p6t1knjcTkZV4saPCtAH1GcY5ZMs3DVTEEhTZ
-         oEzLpqY4xAkc88kXC0UaO4Gfx35go3gnbUNXUBoSR8tZOBxQ5QwuN4XbwWTyYLf+uScr
-         SJrByejyUsNrAvKtPtM9pxJwbZjRDavWY6TPZHeeFUNi7TvHKYm/fkkomTruv9TOZ2oG
-         Sd8A==
+        bh=ga8rU6TTAMlW0eYro+OQUU98vsuNjWANwmXQ6mKFv4I=;
+        b=gqzn0fwwCVnBIasKIp6/KwRLc9njsxfxmfI7U2ZbFYJ3d4nqRfN9+qIVnwXRZPJV9W
+         0Rh9m8Dmac0hUG7leJ0937MIvBVsihNqDaLvHhJdO4HKPuYTRkyG4vlJXAkAnjPtNb/Q
+         J3TSm2ShUCEkSkWUoa0TMxYD+4nPxnjozZRBesuy5GdYKLR6NCnjcquyk1VCmqUc6rp5
+         +sDn9d4QYaF/tdv+3ToJe1sk+PAhX+dzYKB2C3f2oDsRiTED4LTojgyj+Ex2rYWydyBe
+         g/kwWSG7NrPWZIKL5WpIadrMxQWgCcA9ueXUNtA31D0rNphZUYx3jrz3OYI/6stS0763
+         6lPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714989241; x=1715594041;
+        d=1e100.net; s=20230601; t=1714989244; x=1715594044;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/hIlTV0Cti9dUdSzkNL3rnm4RrYlyBh4GBegjEt7JM=;
-        b=sMS4zHd8uEEd7HuGDSrBv9D1OxKPqifD+z131bMtm6Hq1ouzxSuCcJjkG2jyhhJ5Jx
-         a95SOpDlie1EbeQmmzq49MvgQwiVKuRECOsGa4+0uDoN289/T6Yc407Eu3NjDvtiPt0P
-         RWyVJVqixHP3ZLT49mn/Ry0Ly3BEj2oEHimX2Hl74w09XvYw9ru45C+IZC2CAqJy9RZr
-         wVEqPfpLGmX3DvwaTwdtMdm8jVdhllPIOnHls/8BmRXah5hDlZa7TW4S6xweQDItRsMN
-         J57jGPT/Tnu76faZmMIXSvdxFg+d/f3DX47wFRaP7lrWeX/+KL22j5NJ1xrR9wDuOx+u
-         D1Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCX207ozbHnLKEnUULa+blFF9AemCR2bzftyKGGe7Dk58Orbl9wdGJXnHX2+gSeRwVylyegwo0crk5eLWuHhaTBDclfujQTo2ka54/06qqQ=
-X-Gm-Message-State: AOJu0YwSpJszGHquhtyzHfgInBJL/5lUy7UBRhaIaPdyimqBhVaomIVz
-	g9e0OXZBU+T1G+WRQHBPcRIwjz1184lFgb2MQ/v+OvJYmqnkoVj7lvz/bCYi3wdIwujPrhncpo7
-	xyj2iWGo5uUtdRA==
-X-Google-Smtp-Source: AGHT+IEWh+aqbvkbADDKXhGpa1qPZiaehDx0ZtZmmOgj77WAY8+UW+giS2V39r0x2uqJGwSYlkfBShhy1sNQB7k=
+        bh=ga8rU6TTAMlW0eYro+OQUU98vsuNjWANwmXQ6mKFv4I=;
+        b=uyAFxJ8CZi8Wk+PMulDHWPJhmiEzRdI0MX3ZdXi+Hcn3PqhW8YxeDQo29v+Rdb4n9Y
+         fdbn8dfGA29z3hI09GlJ+vXPvHUsQWCLZd6wzPFp03lLsNa2ZcKN6CezjViB4KdjUr15
+         RZ2j0TQbrCoQ6yCFEApTNiG7GYFXDS4+AtwjWsfkNmVkF7RS5w3fz02bvnTbdH7LbcC8
+         mj3h4zgfjbW4T7klT17PaJ3dJRYBe2ks8iNgf8BFQj6YinnWGQNIclt7NM24M4e2bGBw
+         mvmZ+WcjQyzU6ma2rHQfoMkjzlzCsLH7npeYAr1BuXJ99777OHEb5eBC4NRvLyLhLDO2
+         BSHw==
+X-Forwarded-Encrypted: i=1; AJvYcCVwqPOdLVcfqP5ySaILVDX3IDFZUG5yphuN95ui/VTFaDb45zNSsMrELp0Zxh3ktqMJeNpxXQEpwsHfkcFEZz2Ql0iM8vGYHeqICGOE2Mo=
+X-Gm-Message-State: AOJu0Yzwvklz2AuBILBfXh7SFqDLX7nWUUhuKu6POI2DVcmKpSi+tICd
+	u9EmY3EFpjNnaf2CqhWDuXK6bsPU4w603QRa670D4K8ekJdl9UQsMKaA9mTvTHqmZMR2COsbo9M
+	V683dcRZEvdKELQ==
+X-Google-Smtp-Source: AGHT+IHDpeEadcL9TpEMMczWSvQ8JpUf0k+ea4Le7z8CDI+TIQBGNZarotBKM+O9RL+vD+YiNEO4MtxIgHfb1Ak=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6512:4008:b0:51d:5d23:3ea8 with SMTP
- id br8-20020a056512400800b0051d5d233ea8mr9316lfb.6.1714989240682; Mon, 06 May
- 2024 02:54:00 -0700 (PDT)
-Date: Mon, 06 May 2024 09:53:26 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a2e:bcc3:0:b0:2e3:6e32:7a31 with SMTP id
+ z3-20020a2ebcc3000000b002e36e327a31mr2111ljp.0.1714989243811; Mon, 06 May
+ 2024 02:54:03 -0700 (PDT)
+Date: Mon, 06 May 2024 09:53:27 +0000
 In-Reply-To: <20240506-linked-list-v2-0-7b910840c91f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240506-linked-list-v2-0-7b910840c91f@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18797; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=L5UFSlBhqwQO+d3A4n2UzNrPer5KrDqp0xRe83Kkd9Y=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmOKilbVysmzce52eUOaFAKrk3RP1luXmGGAb7s
- RrIV9Buf02JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZjiopQAKCRAEWL7uWMY5
- Rv9hD/9XbFFx9f6Cv0K18UeqAV6fOt+MuFg2q8FZ+lP5lJIZrN5PERgTFybT5OLfCHRi9xQ8lIQ
- BYzx9Ssr1cWG6YDiPoqJKZdpfg0ZwgdUeLsXwg96sNtzoKh4h6X7qONVRzzDoGbT6o3iScfg6lA
- 5fuRwy7bN3X23SDIDlsLjrmxFvkMd2ZmM2QEQuMZpEoyNZ7MQ4aggq6/K8YZ8xV64FCVHzHKOhy
- 4spv8LsERKR43K0T1Aue3nEpUFC7ZQ2YfXMbHepsIhwCMdmjdTbMYRGHzHspa2IsMUcKUesZzKb
- DTRLtPaKFcsro/6EufmW3U//HYUtuprbwyfNEhYa9C+b+mHcNSy3QMy1FxftagU3JcNltVMegXz
- eN/9RzmnmAWowbhy9i2GtdG/3yZPgPOr5yWxLZp+Decbh39PZ4WVQdQDUJMjjxLwbf9tCBVZBN6
- y+6D/D7xbzTjRDFxLpsGLF9fXzwSI9pfl0u112nc1OD+vsvtyHMo0G4WZgjsq+icqXlYEoVhD+U
- Co3pksMtK9Eq3zMUTvHF7/mzIXyFnoiS1rdG1NYpnEN41+xDhbyMPKTCz97Zh/lKmkiInpQRFvk
- 3R4UX/vbAhInWbx2NsmatIxBw/gx9+0Wwcu0SYL1ki8gswxz4VyL809f0YsHuLQYssL5P0dGVIW VFCoemhEjS/jWRQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4976; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=TputigRZUR00q1xN1sbsYsPUvr9lDRrYeB9O4vnOPD0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmOKilpgrg2auL4BQjpffqhEAv7iAtgfTAjZkfx
+ 0OxrRlZXACJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZjiopQAKCRAEWL7uWMY5
+ Rkr+EACWvky+6jgSOyKwmOCDFtl45pa6K6XUS0Ui/1xL619TmIohZRkC8/Q4pp+For0qr0Czs2i
+ H+Gxc+VmLaxNJKqz7bzo8Egd1cLGuxH58jYd5fp7ZVG4lZcDMDiuQgL33U7ntJxEn0iDfyRY5Vd
+ r0I647mwFEDv09XJvKR641WdhLMkfU5UpFa65feb2wJQS0J3xCvBWsin7WKUJrhveVazV58fANN
+ v+3Ati/rTgrwYM5bKqvRNpLtjG1Z+3v5mtaD7v6dmrF3BUBcsQGQFaXLD2y+b8vQG86Y5ghECYv
+ t5J+pJIqCSZfQAXHpnWtJaXWQLYHmr1psZ0+A9G0qAW7Yt84sRG9HuoTFOCeyopkpm9wmpux5Ew
+ TNPbbpfba3/6LqnCiyCnsknrY3ZMZ/LHQ3NxtbuB9zmTHTO/eRB7jHX8HiSmWMAZ7AGU3GhRc7e
+ t++bhn1UX0DGbB4UzcFrsdL9+DINaSItUCqf7+wytGMXNfY6RtfKqeyYaPA1VG10MCXsX1pIavL
+ 3QOWaSr7lfOZMSJrIFZ0lhqLK6DE3qL7J4CiG3lF+bNjgt77eIWUGhf4NoD/Xu7t8ya11hYvjD0
+ 8Pua9x+rhgnTzOqwWkTM40agJ3XEg9M8nAO5UQifCq8yQKAb2ZOsdO9J8+6lehcdZYeglBtcocQ 24d3V3TFgZ021bw==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240506-linked-list-v2-5-7b910840c91f@google.com>
-Subject: [PATCH v2 5/9] rust: list: add List
+Message-ID: <20240506-linked-list-v2-6-7b910840c91f@google.com>
+Subject: [PATCH v2 6/9] rust: list: add iterators
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
@@ -88,430 +88,143 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.co
 	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Add the actual linked list itself.
+Rust Binder has lists containing stuff such as all contexts or all
+processes, and sometimes need to iterate over them. This patch enables
+Rust Binder to do that using a normal for loop.
 
-The linked list uses the following design: The List type itself just has
-a single pointer to the first element of the list. And the actual list
-items then form a cycle. So the last item is `first->prev`.
-
-This is slightly different from the usual kernel linked list. Matching
-that exactly would amount to giving List two pointers, and having it be
-part of the cycle of items. This alternate design has the advantage that
-the cycle is never completely empty, which can reduce the number of
-branches in some cases. However, it also has the disadvantage that List
-must be pinned, which this design is trying to avoid.
-
-Having the list items form a cycle rather than having null pointers at
-the beginning/end is convenient for several reasons. For one, it lets us
-store only one pointer in List, and it simplifies the implementation of
-several functions.
-
-Unfortunately, the `remove` function that removes an arbitrary element
-from the list has to be unsafe. This is needed because there is no way
-to handle the case where you pass an element from the wrong list. For
-example, if it is the first element of some other list, then that other
-list's `first` pointer would not be updated. Similarly, it could be a
-data race if you try to remove it from two different lists in parallel.
-(There's no problem with passing `remove` an item that's not in any
-list. Additionally, other removal methods such as `pop_front` need not
-be unsafe, as they can't be used to remove items from another list.)
+The iterator returns the ArcBorrow type, so it is possible to grab a
+refcount to values while iterating.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/list.rs     | 329 +++++++++++++++++++++++++++++++++++++++++++++++-
- rust/kernel/list/arc.rs |   6 +-
- 2 files changed, 330 insertions(+), 5 deletions(-)
+ rust/kernel/list.rs | 102 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
 
 diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index f2eca542e090..d0ff29a3e5d1 100644
+index d0ff29a3e5d1..e36afc7ee44a 100644
 --- a/rust/kernel/list.rs
 +++ b/rust/kernel/list.rs
-@@ -6,6 +6,7 @@
+@@ -5,7 +5,9 @@
+ //! A linked list implementation.
  
  use crate::init::PinInit;
++use crate::sync::ArcBorrow;
  use crate::types::Opaque;
-+use core::marker::PhantomData;
++use core::iter::{DoubleEndedIterator, FusedIterator};
+ use core::marker::PhantomData;
  use core::ptr;
  
- mod impl_list_item_mod;
-@@ -16,7 +17,40 @@
-     impl_list_arc_safe, AtomicListArcTracker, ListArc, ListArcSafe, TryNewListArc,
- };
- 
--/// Implemented by types where a [`ListArc<Self>`] can be inserted into a `List`.
-+/// A linked list.
-+///
-+/// All elements in this linked list will be [`ListArc`] references to the value. Since a value can
-+/// only have one `ListArc` (for each pair of prev/next pointers), this ensures that the same
-+/// prev/next pointers are not used for several linked lists.
-+///
-+/// # Invariants
-+///
-+/// * If the list is empty, then `first` is null. Otherwise, `first` points at the links field of
-+///   the first element in the list.
-+/// * All prev/next pointers of items in the list are valid and form a cycle.
-+pub struct List<T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
-+    first: *mut ListLinksFields,
-+    _ty: PhantomData<ListArc<T, ID>>,
-+}
-+
-+// SAFETY: This is a container of `ListArc<T, ID>`, and access to the container allows the same
-+// type of access to the `ListArc<T, ID>` elements.
-+unsafe impl<T, const ID: u64> Send for List<T, ID>
-+where
-+    ListArc<T, ID>: Send,
-+    T: ?Sized + ListItem<ID>,
-+{
-+}
-+// SAFETY: This is a container of `ListArc<T, ID>`, and access to the container allows the same
-+// type of access to the `ListArc<T, ID>` elements.
-+unsafe impl<T, const ID: u64> Sync for List<T, ID>
-+where
-+    ListArc<T, ID>: Sync,
-+    T: ?Sized + ListItem<ID>,
-+{
-+}
-+
-+/// Implemented by types where a [`ListArc<Self>`] can be inserted into a [`List`].
- ///
- /// # Safety
- ///
-@@ -57,7 +91,7 @@ pub unsafe trait ListItem<const ID: u64 = 0>: ListArcSafe<ID> {
-     ///   been called.
-     unsafe fn view_value(me: *mut ListLinks<ID>) -> *const Self;
- 
--    /// This is called when an item is inserted into a `List`.
-+    /// This is called when an item is inserted into a [`List`].
-     ///
-     /// # Guarantees
-     ///
-@@ -104,7 +138,6 @@ struct ListLinksFields {
- /// The fields are null if and only if this item is not in a list.
- #[repr(transparent)]
- pub struct ListLinks<const ID: u64 = 0> {
--    #[allow(dead_code)]
-     inner: Opaque<ListLinksFields>,
- }
- 
-@@ -126,4 +159,294 @@ pub fn new() -> impl PinInit<Self> {
-             }),
-         }
+@@ -435,6 +437,17 @@ pub fn push_all_back(&mut self, other: &mut List<T, ID>) {
+         // INVARIANT: The other list is now empty, so update its pointer.
+         other.first = ptr::null_mut();
      }
 +
-+    /// # Safety
-+    ///
-+    /// `me` must be dereferencable.
-+    #[inline]
-+    unsafe fn fields(me: *mut Self) -> *mut ListLinksFields {
-+        // SAFETY: The caller promises that the pointer is valid.
-+        unsafe { Opaque::raw_get(ptr::addr_of!((*me).inner)) }
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// `me` must be dereferencable.
-+    #[inline]
-+    unsafe fn from_fields(me: *mut ListLinksFields) -> *mut Self {
-+        me.cast()
-+    }
-+}
-+
-+impl<T: ?Sized + ListItem<ID>, const ID: u64> List<T, ID> {
-+    /// Creates a new empty list.
-+    pub const fn new() -> Self {
-+        Self {
-+            first: ptr::null_mut(),
++    /// Creates an iterator over the list.
++    pub fn iter(&self) -> Iter<'_, T, ID> {
++        // INVARIANT: If the list is empty, both pointers are null. Otherwise, both pointers point
++        // at the first element of the same list.
++        Iter {
++            current: self.first,
++            stop: self.first,
 +            _ty: PhantomData,
 +        }
 +    }
-+
-+    /// Returns whether this list is empty.
-+    pub fn is_empty(&self) -> bool {
-+        self.first.is_null()
-+    }
-+
-+    /// Add the provided item to the back of the list.
-+    pub fn push_back(&mut self, item: ListArc<T, ID>) {
-+        let raw_item = ListArc::into_raw(item);
-+        // SAFETY:
-+        // * We just got `raw_item` from a `ListArc`, so it's in an `Arc`.
-+        // * If this requirement is violated, then the previous caller of `prepare_to_insert`
-+        //   violated the safety requirement that they can't give up ownership of the `ListArc`
-+        //   until they call `post_remove`.
-+        // * We own the `ListArc`.
-+        // * Removing items from this list is always done using `remove_internal_inner`, which
-+        //   calls `post_remove` before giving up ownership.
-+        let list_links = unsafe { T::prepare_to_insert(raw_item) };
-+        // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
-+        let item = unsafe { ListLinks::fields(list_links) };
-+
-+        if self.first.is_null() {
-+            self.first = item;
-+            // SAFETY: The caller just gave us ownership of these fields.
-+            // INVARIANT: A linked list with one item should be cyclic.
-+            unsafe {
-+                (*item).next = item;
-+                (*item).prev = item;
-+            }
-+        } else {
-+            let next = self.first;
-+            // SAFETY: By the type invariant, this pointer is valid or null. We just checked that
-+            // it's not null, so it must be valid.
-+            let prev = unsafe { (*next).prev };
-+            // SAFETY: Pointers in a linked list are never dangling, and the caller just gave us
-+            // ownership of the fields on `item`.
-+            // INVARIANT: This correctly inserts `item` between `prev` and `next`.
-+            unsafe {
-+                (*item).next = next;
-+                (*item).prev = prev;
-+                (*prev).next = item;
-+                (*next).prev = item;
-+            }
-+        }
-+    }
-+
-+    /// Add the provided item to the front of the list.
-+    pub fn push_front(&mut self, item: ListArc<T, ID>) {
-+        let raw_item = ListArc::into_raw(item);
-+        // SAFETY:
-+        // * We just got `raw_item` from a `ListArc`, so it's in an `Arc`.
-+        // * If this requirement is violated, then the previous caller of `prepare_to_insert`
-+        //   violated the safety requirement that they can't give up ownership of the `ListArc`
-+        //   until they call `post_remove`.
-+        // * We own the `ListArc`.
-+        // * Removing items from this list is always done using `remove_internal_inner`, which
-+        //   calls `post_remove` before giving up ownership.
-+        let list_links = unsafe { T::prepare_to_insert(raw_item) };
-+        // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
-+        let item = unsafe { ListLinks::fields(list_links) };
-+
-+        if self.first.is_null() {
-+            // SAFETY: The caller just gave us ownership of these fields.
-+            // INVARIANT: A linked list with one item should be cyclic.
-+            unsafe {
-+                (*item).next = item;
-+                (*item).prev = item;
-+            }
-+        } else {
-+            let next = self.first;
-+            // SAFETY: We just checked that `next` is non-null.
-+            let prev = unsafe { (*next).prev };
-+            // SAFETY: Pointers in a linked list are never dangling, and the caller just gave us
-+            // ownership of the fields on `item`.
-+            // INVARIANT: This correctly inserts `item` between `prev` and `next`.
-+            unsafe {
-+                (*item).next = next;
-+                (*item).prev = prev;
-+                (*prev).next = item;
-+                (*next).prev = item;
-+            }
-+        }
-+        self.first = item;
-+    }
-+
-+    /// Removes the last item from this list.
-+    pub fn pop_back(&mut self) -> Option<ListArc<T, ID>> {
-+        if self.first.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: We just checked that the list is not empty.
-+        let last = unsafe { (*self.first).prev };
-+        // SAFETY: The last item of this list is in this list.
-+        Some(unsafe { self.remove_internal(last) })
-+    }
-+
-+    /// Removes the first item from this list.
-+    pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
-+        if self.first.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: The first item of this list is in this list.
-+        Some(unsafe { self.remove_internal(self.first) })
-+    }
-+
-+    /// Removes the provided item from this list and returns it.
-+    ///
-+    /// This returns `None` if the item is not in the list. (Note that by the safety requirements,
-+    /// this means that the item is not in any list.)
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided item must not be in a different linked list (with the same id).
-+    pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> {
-+        let mut item = unsafe { ListLinks::fields(T::view_links(item)) };
-+        // SAFETY: The user provided a reference, and reference are never dangling.
-+        //
-+        // As for why this is not a data race, there are two cases:
-+        //
-+        //  * If `item` is not in any list, then these fields are read-only and null.
-+        //  * If `item` is in this list, then we have exclusive access to these fields since we
-+        //    have a mutable reference to the list.
-+        //
-+        // In either case, there's no race.
-+        let ListLinksFields { next, prev } = unsafe { *item };
-+
-+        debug_assert_eq!(next.is_null(), prev.is_null());
-+        if !next.is_null() {
-+            // This is really a no-op, but this ensures that `item` is a raw pointer that was
-+            // obtained without going through a pointer->reference->pointer conversion rountrip.
-+            // This ensures that the list is valid under the more restrictive strict provenance
-+            // ruleset.
-+            //
-+            // SAFETY: We just checked that `next` is not null, and it's not dangling by the
-+            // list invariants.
-+            unsafe {
-+                debug_assert_eq!(item, (*next).prev);
-+                item = (*next).prev;
-+            }
-+
-+            // SAFETY: We just checked that `item` is in a list, so the caller guarantees that it
-+            // is in this list. The pointers are in the right order.
-+            Some(unsafe { self.remove_internal_inner(item, next, prev) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Removes the provided item from the list.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The pointer must point at an item in this list.
-+    unsafe fn remove_internal(&mut self, item: *mut ListLinksFields) -> ListArc<T, ID> {
-+        // SAFETY: The caller promises that this pointer is not dangling, and there's no data race
-+        // since we have a mutable reference to the list containing `item`.
-+        let ListLinksFields { next, prev } = unsafe { *item };
-+        // SAFETY: The pointers are ok and in the right order.
-+        unsafe { self.remove_internal_inner(item, next, prev) }
-+    }
-+
-+    /// Removes the provided item from the list.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The `item` pointer must point at an item in this list, and we must have `(*item).next ==
-+    /// next` and `(*item).prev == prev`.
-+    unsafe fn remove_internal_inner(
-+        &mut self,
-+        item: *mut ListLinksFields,
-+        next: *mut ListLinksFields,
-+        prev: *mut ListLinksFields,
-+    ) -> ListArc<T, ID> {
-+        // SAFETY: We have exclusive access to the pointers of items in the list, and the prev/next
-+        // pointers are always valid for items in a list.
-+        //
-+        // INVARIANT: There are three cases:
-+        //  * If the list has at least three items, then after removing the item, `prev` and `next`
-+        //    will be next to each other.
-+        //  * If the list has two items, then the remaining item will point at itself.
-+        //  * If the list has one item, then `next == prev == item`, so these writes have no
-+        //    effect. The list remains unchanged and `item` is still in the list for now.
-+        unsafe {
-+            (*next).prev = prev;
-+            (*prev).next = next;
-+        }
-+        // SAFETY: We have exclusive access to items in the list.
-+        // INVARIANT: `item` is being removed, so the pointers should be null.
-+        unsafe {
-+            (*item).prev = ptr::null_mut();
-+            (*item).next = ptr::null_mut();
-+        }
-+        // INVARIANT: There are three cases:
-+        //  * If `item` was not the first item, then `self.first` should remain unchanged.
-+        //  * If `item` was the first item and there is another item, then we just updated
-+        //    `prev->next` to `next`, which is the new first item, and setting `item->next` to null
-+        //    did not modify `prev->next`.
-+        //  * If `item` was the only item in the list, then `prev == item`, and we just set
-+        //    `item->next` to null, so this correctly sets `first` to null now that the list is
-+        //    empty.
-+        if self.first == item {
-+            // SAFETY: The `prev` pointer is the value that `item->prev` had when it was in this
-+            // list, so it must be valid. There is no race since `prev` is still in the list and we
-+            // still have exclusive access to the list.
-+            self.first = unsafe { (*prev).next };
-+        }
-+
-+        // SAFETY: `item` used to be in the list, so it is dereferencable by the type invariants
-+        // of `List`.
-+        let list_links = unsafe { ListLinks::from_fields(item) };
-+        // SAFETY: Any pointer in the list originates from a `prepare_to_insert` call.
-+        let raw_item = unsafe { T::post_remove(list_links) };
-+        // SAFETY: The above call to `post_remove` guarantees that we can recreate the `ListArc`.
-+        unsafe { ListArc::from_raw(raw_item) }
-+    }
-+
-+    /// Moves all items from `other` into `self`.
-+    ///
-+    /// The items of `other` are added to the back of `self`, so the last item of `other` becomes
-+    /// the last item of `self`.
-+    pub fn push_all_back(&mut self, other: &mut List<T, ID>) {
-+        // First, we insert the elements into `self`. At the end, we make `other` empty.
-+        if self.is_empty() {
-+            // INVARIANT: All of the elements in `other` become elements of `self`.
-+            self.first = other.first;
-+        } else if !other.is_empty() {
-+            let other_first = other.first;
-+            // SAFETY: The other list is not empty, so this pointer is valid.
-+            let other_last = unsafe { (*other_first).prev };
-+            let self_first = self.first;
-+            // SAFETY: The self list is not empty, so this pointer is valid.
-+            let self_last = unsafe { (*self_first).prev };
-+
-+            // SAFETY: We have exclusive access to both lists, so we can update the pointers.
-+            // INVARIANT: This correctly sets the pointers to merge both lists. We do not need to
-+            // update `self.first` because the first element of `self` does not change.
-+            unsafe {
-+                (*self_first).prev = other_last;
-+                (*other_last).next = self_first;
-+                (*self_last).next = other_first;
-+                (*other_first).prev = self_last;
-+            }
-+        }
-+
-+        // INVARIANT: The other list is now empty, so update its pointer.
-+        other.first = ptr::null_mut();
-+    }
-+}
-+
-+impl<T: ?Sized + ListItem<ID>, const ID: u64> Default for List<T, ID> {
-+    fn default() -> Self {
-+        List::new()
-+    }
-+}
-+
-+impl<T: ?Sized + ListItem<ID>, const ID: u64> Drop for List<T, ID> {
-+    fn drop(&mut self) {
-+        while let Some(item) = self.pop_front() {
-+            drop(item);
-+        }
-+    }
  }
-diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-index 4c2e33f40597..180ec8902705 100644
---- a/rust/kernel/list/arc.rs
-+++ b/rust/kernel/list/arc.rs
-@@ -101,8 +101,8 @@ fn try_new_list_arc(&self) -> bool {
- /// The `ListArc` type can be thought of as a special reference to a refcounted object that owns the
- /// permission to manipulate the `next`/`prev` pointers stored in the refcounted object. By ensuring
- /// that each object has only one `ListArc` reference, the owner of that reference is assured
--/// exclusive access to the `next`/`prev` pointers. When a `ListArc` is inserted into a `List`, the
--/// `List` takes ownership of the `ListArc` reference.
-+/// exclusive access to the `next`/`prev` pointers. When a `ListArc` is inserted into a [`List`],
-+/// the [`List`] takes ownership of the `ListArc` reference.
- ///
- /// There are various strategies to ensuring that a value has only one `ListArc` reference. The
- /// simplest is to convert a [`UniqueArc`] into a `ListArc`. However, the refcounted object could
-@@ -121,6 +121,8 @@ fn try_new_list_arc(&self) -> bool {
- ///
- /// * Each reference counted object has at most one `ListArc` for each value of `ID`.
- /// * The tracking inside `T` is aware that a `ListArc` reference exists.
+ 
+ impl<T: ?Sized + ListItem<ID>, const ID: u64> Default for List<T, ID> {
+@@ -450,3 +463,92 @@ fn drop(&mut self) {
+         }
+     }
+ }
++
++/// An iterator into a [`List`].
 +///
-+/// [`List`]: crate::list::List
- #[repr(transparent)]
- pub struct ListArc<T, const ID: u64 = 0>
- where
++/// # Invariants
++///
++/// * There must be a [`List`] that is immutably borrowed for the duration of `'a`.
++/// * The `current` pointer is null or points at a value in that [`List`].
++/// * The `stop` pointer is equal to the `first` field of the [`List`].
++#[derive(Clone)]
++pub struct Iter<'a, T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
++    current: *mut ListLinksFields,
++    stop: *mut ListLinksFields,
++    _ty: PhantomData<&'a ListArc<T, ID>>,
++}
++
++impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Iterator for Iter<'a, T, ID> {
++    type Item = ArcBorrow<'a, T>;
++
++    fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
++        if self.current.is_null() {
++            return None;
++        }
++
++        let current = self.current;
++
++        // SAFETY: We just checked that `current` is not null, so it is in a list, and hence not
++        // dangling. There's no race because the iterator holds an immutable borrow to the list.
++        let next = unsafe { (*current).next };
++        // INVARIANT: If `current` was the last element of the list, then this updates it to null.
++        // Otherwise, we update it to the next element.
++        self.current = if next != self.stop {
++            next
++        } else {
++            ptr::null_mut()
++        };
++
++        // SAFETY: The `current` pointer points at a value in the list.
++        let item = unsafe { T::view_value(ListLinks::from_fields(current)) };
++        // SAFETY:
++        // * All values in a list are stored in an `Arc`.
++        // * The value cannot be removed from the list for the duration of the lifetime annotated
++        //   on the returned `ArcBorrow`, because removing it from the list would require mutable
++        //   access to the list. However, the `ArcBorrow` is annotated with the iterator's
++        //   lifetime, and the list is immutably borrowed for that lifetime.
++        // * Values in a list never have a `UniqueArc` reference.
++        Some(unsafe { ArcBorrow::from_raw(item) })
++    }
++}
++
++impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
++
++impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> IntoIterator for &'a List<T, ID> {
++    type IntoIter = Iter<'a, T, ID>;
++    type Item = ArcBorrow<'a, T>;
++
++    fn into_iter(self) -> Iter<'a, T, ID> {
++        self.iter()
++    }
++}
++
++/// An owning iterator into a [`List`].
++pub struct IntoIter<T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
++    list: List<T, ID>,
++}
++
++impl<T: ?Sized + ListItem<ID>, const ID: u64> Iterator for IntoIter<T, ID> {
++    type Item = ListArc<T, ID>;
++
++    fn next(&mut self) -> Option<ListArc<T, ID>> {
++        self.list.pop_front()
++    }
++}
++
++impl<T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for IntoIter<T, ID> {}
++
++impl<T: ?Sized + ListItem<ID>, const ID: u64> DoubleEndedIterator for IntoIter<T, ID> {
++    fn next_back(&mut self) -> Option<ListArc<T, ID>> {
++        self.list.pop_back()
++    }
++}
++
++impl<T: ?Sized + ListItem<ID>, const ID: u64> IntoIterator for List<T, ID> {
++    type IntoIter = IntoIter<T, ID>;
++    type Item = ListArc<T, ID>;
++
++    fn into_iter(self) -> IntoIter<T, ID> {
++        IntoIter { list: self }
++    }
++}
 
 -- 
 2.45.0.rc1.225.g2a3ae87e7f-goog
