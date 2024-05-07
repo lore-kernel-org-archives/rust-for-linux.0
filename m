@@ -1,150 +1,158 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C736138DE9
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 May 2024 22:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502EDA5F
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 May 2024 00:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715034622; cv=none; b=LMZsey+C16vPcbWTWnI7KpYRrncqxTwNNc0uzS9oHtETxV10FPKVjrIuem2/i+9ZVcExeCv6TSVq6Bf2tdunbnvBc3PAVsW3mFBfCqDF1qTEhmFePwct0CuxFLZ8LFehPNs5+qiJdei9Q29n9j5CBMY/NyibBXf4TtnSSApKQN4=
+	t=1715042181; cv=none; b=fa2/hdR+ONBlHtPazbJKq8HltkXTPhq7QqytUzPXgyEe8ez4/kcmmx3eNg5MK1TU5kS0EbmUo7Ht2sTSMLTEmxPCBT6+jqHOK5+ePMH8WbGJcPdhW0VWaW3H3e1YGxBXGGSB3eYNA3op3lyBWQaCqnKWK1pL6pe7zVRiDTbpAL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715034622; c=relaxed/simple;
-	bh=5Jao47yGNn5uWXmNME35hrE5cB/O2dzktMV49xtOG/s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e6MfM2RneCUg5sXkgnJ3Sp4sL7Bo0eV/5UYvC2qhETudNwBLz896n6W5BH1v4wfsJK8bJwCUMr2tVkGSJ8LSR9fL7LYV/6TMXS+7wo4mDrgplMVn7vM9pMCsUcwkyXWEnjYGRCpmYwFSDGlu4AjJy4bVaBgspZAcwdZuvN7CNPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SmpkEFM4; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1715042181; c=relaxed/simple;
+	bh=mpF5jkXbAulXTvC9h6GGs20zEGzdED1LyrXOrZsJddc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H/F4AWIvkYkrT5XIJFlHTk/vO7oXdfS+HVnmozVKHVZ/S2QI/9PkOR77g8IZhJGeXGwMVItB5Mwnx1eSlQXmjMgMh6gvYrOEL5NqRQ7wzkyFGZBlEs4y4f5fxPBjVi+iUJIWivxykmsm8e0jVRV+faWqLVTMfwJvr8WpGoGQacg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O9sfr4MG; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SmpkEFM4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O9sfr4MG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715034619;
+	s=mimecast20190719; t=1715042178;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AuI9Uo2au3lLvKwKsRtdvIlF3og2vkLdxYmz96XBf3k=;
-	b=SmpkEFM4886U+h5jpKjhmKk99I1vFpy856I/Z5XUrpkCmvfBIzd99IfZvUhWrcDt3tfCHh
-	RwPKu2rbDJL0DJDNQrcFRSUZPlEjrLQDXeXnLuCOYt9HIFCns5L5oQcRvPLpmngbIFXJ4Y
-	jIaHhk9Od1T385eMRpmpIF0oyo/kjho=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=5LFpTCMWcP1eaJy4wfPjD6EyHt6gD2m+eNr7IWuZXU0=;
+	b=O9sfr4MG9fH0fXanUlKnYl1nA9WuNDai0dp/kHZp1KziDQLt5Dc9MmvopzTgpgeOCTMQV7
+	diFxWPIsIQcK88DH32kvyGlrg+cjZK7gb8lHwODjC4b7A8tUI9L4Niui1wvCfGzcZHyVCb
+	+ge4pMs0AJsMS/y7wiaF1HtX2aRwqmI=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-YkBE0_ATPcuegqoUWvtiwg-1; Mon, 06 May 2024 18:30:18 -0400
-X-MC-Unique: YkBE0_ATPcuegqoUWvtiwg-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-349cafdc8f0so1382821f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 May 2024 15:30:17 -0700 (PDT)
+ us-mta-665-H2jjRVXPNSO5T2vU9OPV6w-1; Mon, 06 May 2024 20:36:16 -0400
+X-MC-Unique: H2jjRVXPNSO5T2vU9OPV6w-1
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-5d8df7c5500so2472351a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 May 2024 17:36:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715034617; x=1715639417;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AuI9Uo2au3lLvKwKsRtdvIlF3og2vkLdxYmz96XBf3k=;
-        b=Nj/X1r7jgyhLuM3JqQN+yKEa2W5iXlZ7pKIUVoftJD3Dq0PW+UFIkIXLLZZZvOcddI
-         zOS3UPuhJdKYih7rGxJNDiKb4ppg8ogjBUnvg/crh0rFADatT+vo0LN3DEDbNTyaQxwX
-         wCVyXeTfxAYztDkKyIK648BhYGkPZ9Ti8YPGamIibU4QfQZIk1v9cUJ5ueJQHFohp/Yy
-         EevURRHIIzSY79UYMK9MWIFJKaUoeir4/B4gTeTAT4vNN42G9Tqw0vDav3QIJzIXM0/M
-         ZE9R2X9yUwRWPD6zQLGj5PcYNiw7iBKVXnz8JRQE8Pa5LyCtuct1wHQf7Sm2gU/KU0M6
-         Qdtw==
-X-Forwarded-Encrypted: i=1; AJvYcCV182M9pUVOa0Pb+rNMcPhraOXkIYXrprLB3p/vbdKZKirfj0UMtiR7Jly1mIzVMgLVX47ZQELlTNaeLR1bmk2QWGLJbEs4XHpSOeoaKrE=
-X-Gm-Message-State: AOJu0YwqGrxCxnsLcSyFxIyQQ8atVa3LCWenkOHOfiRAUs+JGMy1tP4f
-	IZAqhh9H0TdDYUVkvz/Eq05FRFIBjlzKnaqvmAx3cy8JlC7dUJBA1+1H1D9ryFPLBebnElj9mQG
-	MGmC4jbq6TWVcaWlzC9EhQA67wfPCj7Ls5j6ek/xi7xgL9qgboOUG/mItSSrBmd6G
-X-Received: by 2002:adf:e60c:0:b0:34c:71d0:1151 with SMTP id p12-20020adfe60c000000b0034c71d01151mr9708122wrm.10.1715034616994;
-        Mon, 06 May 2024 15:30:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGf7Ha3lBYpJRfv24nh6oaQZ2amr4RQGZKGH9W83Z0kwaRaoik6cKo2E5HLWOnGWLtKc5Hz1w==
-X-Received: by 2002:adf:e60c:0:b0:34c:71d0:1151 with SMTP id p12-20020adfe60c000000b0034c71d01151mr9708109wrm.10.1715034616624;
-        Mon, 06 May 2024 15:30:16 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id cw1-20020a056000090100b0034dec80428asm11510510wrb.67.2024.05.06.15.30.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 May 2024 15:30:16 -0700 (PDT)
-Message-ID: <b57dde93-06db-405b-ab94-864779c76010@redhat.com>
-Date: Tue, 7 May 2024 00:30:14 +0200
+        d=1e100.net; s=20230601; t=1715042176; x=1715646976;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5LFpTCMWcP1eaJy4wfPjD6EyHt6gD2m+eNr7IWuZXU0=;
+        b=VmUQtbyXrxy7iX27uO8HKt75KZ9DjTQTI09E2RHUjbybNV887elQlJm8T6MhBYJdps
+         /Oh91XqNDQHfft48Sp2fEsR5/qnpMHfpXPsJR5PjCZ8PZf413XNMN1OMAjXK2Nf9/eCE
+         44UczGWBeodTNsS86Iwv1bBzMMPK6nuP+yq5DKElqISuuZce5XusVyreJ1GpmqI9UdPw
+         ZlJbapAjZ/dUdiLbwWjYfGxIvQ/l3mGszAq6kYThn9rdCIrjjuim70i29JEbJrC/1raX
+         jPj3U6gPBLXnnC8b+G2l/B8rW1sAiGGI7szJ6dT7zDj/kAwIX/K77HA4L6qLYoi3j6cN
+         1hkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/erVyflhPGa/5sxPBBLmfluI+3pA8ysybLzYk5BbB8CL/yThvl5SOkAZpac+L1u968PvW9ayA3HbUXnqQL8Cxa+TsBDFMqnKFEGu0y2Y=
+X-Gm-Message-State: AOJu0Yx24yEcVuE6FvaHcqyDiPS50u1j8zFspViYBMvUCz8iFffDLnwN
+	lVzJUGDhHmbF572ka3WLdGC8rNhfNlrm2gX4Z8cJ51hW7s5tSVuy+uZ9coZJrXaxP9ij9+KYWtX
+	xYm/fcxUgupNiTkdxsdDFMTF8Ay6t12vHzqjb+b6YeuCMflrhVdnNsyTx4JS/332LR1sVtwjOiY
+	3a/sZWdGneyUFn/nv/rDjg9W9ou3AqKJn04GpM8pY=
+X-Received: by 2002:a05:6a20:6f8a:b0:1aa:59ff:5d31 with SMTP id gv10-20020a056a206f8a00b001aa59ff5d31mr13182319pzb.0.1715042175661;
+        Mon, 06 May 2024 17:36:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHv6PnHgfLBBL0IoGyfSTU6sRpdwRJpR2sO5o3zn41WNN14VLicYRW6zwzV1wQmoRv7tbHBTUV/NnMzTh0LP/k=
+X-Received: by 2002:a05:6a20:6f8a:b0:1aa:59ff:5d31 with SMTP id
+ gv10-20020a056a206f8a00b001aa59ff5d31mr13182302pzb.0.1715042175105; Mon, 06
+ May 2024 17:36:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: alloc: fix dangling pointer in
- VecExt<T>::reserve()
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, rust-for-linux@vger.kernel.org
-References: <20240501134834.22323-1-dakr@redhat.com>
- <CANeycqoRh_hjUmAKyQCjNy-SJ+Ct5XR9yDMBc_HJaY3+EjajuA@mail.gmail.com>
- <82f42e39-b1a2-4915-b382-71f4c06c3f53@redhat.com>
- <CANiq72nHubtd7oB=JUTY8B0H9WA35jio1L0tfTSxDpJFLBcdMw@mail.gmail.com>
-From: Danilo Krummrich <dakr@redhat.com>
-Organization: RedHat
-In-Reply-To: <CANiq72nHubtd7oB=JUTY8B0H9WA35jio1L0tfTSxDpJFLBcdMw@mail.gmail.com>
+References: <20240501134834.22323-1-dakr@redhat.com> <CANeycqoRh_hjUmAKyQCjNy-SJ+Ct5XR9yDMBc_HJaY3+EjajuA@mail.gmail.com>
+ <82f42e39-b1a2-4915-b382-71f4c06c3f53@redhat.com> <CANeycqppeewOc+OH_KPLOdbPLx1BMGMcmuye=uKM2-K80J7Vwg@mail.gmail.com>
+In-Reply-To: <CANeycqppeewOc+OH_KPLOdbPLx1BMGMcmuye=uKM2-K80J7Vwg@mail.gmail.com>
+From: David Airlie <airlied@redhat.com>
+Date: Tue, 7 May 2024 10:36:03 +1000
+Message-ID: <CAMwc25oNYPkHTm2NoCiP2Yc0K1J_JVPpv3gS5+9O2kwveLYgCw@mail.gmail.com>
+Subject: some aside maintainer advice (was Re: [PATCH v3] rust: alloc: fix
+ dangling pointer in VecExt<T>::reserve())
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	rust-for-linux@vger.kernel.org
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/6/24 19:50, Miguel Ojeda wrote:
-> On Mon, May 6, 2024 at 5:22 PM Danilo Krummrich <dakr@redhat.com> wrote:
->>
->> Is there any benefit using an if here, or is that your personal preference?
-> 
-> `if` is meant to test a boolean condition, which is what you are doing
-> here, so the question is why would we want to use a `match` here -- we
-> should first of all try to be consistent.
-> 
-> Now, I can understand the appeal of how the `match` looks like (e.g.
-> less braces, less zig-zag indentation), and if this were a `if`-`else`
-> chain with several cases and the wildcard `_` was not used, e.g.
-> something like:
-> 
->      ... = match n {
->          1 => ...
->          2 => ...
->          3 => ...
->      }
-> 
-> then I agree it would be clearly better.
-> 
-> Perhaps you are arguing for something like "let's always use `match`
-> in cases where a value is returned, i.e. when used as an expression,
-> and save `if` for the C-like cases". If so, would that mean then that
-> we need to do:
-> 
->      match c {
->          false => ...
->          true => ...
->      }
-> 
-> to be consistent?
-> 
-> Then there are other things like `if let`, the potential `is` operator
-> and postfix `match` that should probably be considered.
-> 
+> On Mon, 6 May 2024 at 12:22, Danilo Krummrich <dakr@redhat.com> wrote:
+> >
+> > On 5/6/24 16:11, Wedson Almeida Filho wrote:
+> > > On Wed, 1 May 2024 at 10:48, Danilo Krummrich <dakr@redhat.com> wrote:
+> > >>
+> > >> Currently, a Vec<T>'s ptr value, after calling Vec<T>::new(), is
+> > >> initialized to Unique::dangling(). Hence, in VecExt<T>::reserve(), we're
+> > >> passing a dangling pointer (instead of NULL) to krealloc() whenever a new
+> > >> Vec<T>'s backing storage is allocated through VecExt<T> extension
+> > >> functions.
+> > >>
+> > >> This only works as long as align_of::<T>(), used by Unique::dangling() to
+> > >> derive the dangling pointer, resolves to a value between 0x0 and
+> > >> ZERO_SIZE_PTR (0x10) and krealloc() hence treats it the same as a NULL
+> > >> pointer however.
+> > >>
+> > >> This isn't a case we should rely on, since there may be types whose
+> > >> alignment may exceed the range still covered by krealloc(), plus other
+> > >> kernel allocators are not as tolerant either.
+> > >>
+> > >> Instead, pass a real NULL pointer to krealloc_aligned() if Vec<T>'s
+> > >> capacity is zero.
+> > >>
+> > >> Fixes: 5ab560ce12ed ("rust: alloc: update `VecExt` to take allocation flags")
+> > >> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > >> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> > >> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> > >> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > >
+> > > Reviewed-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> > >
+> > >> +
+> > >> +        // We need to make sure that `ptr` is either NULL or comes from a previous call to
+> > >> +        // `krealloc_aligned`. A `Vec<T>`'s `ptr` value is not guaranteed to be NULL and might be
+> > >> +        // dangling after being created with `Vec::new`. Instead, we can rely on `Vec<T>`'s capacity
+> > >> +        // to be zero if no memory has been allocated yet.
+> > >> +        let ptr = match cap {
+> > >> +            0 => ptr::null_mut(),
+> > >> +            _ => old_ptr,
+> > >> +        };
+> > >
+> > > I still think this should be an `if`.
+> >
+> > Is there any benefit using an if here, or is that your personal preference?
+>
+> Readability.
+>
+> I don't remember ever seeing anyone implement a != 0 comparison with a
+> match or switch.
+>
+> But if you insist on innovating on what seems poor style to me, go
+> ahead. I'll fix it later.
 
-Thanks for your thoughts, but style wise I don't have a strong preference
-for either of those. My question was honestly about whether there is any
-other reason other than style.
+I'd like to just respond with a bit of maintainer experience here,
+please try and use less suggestive language and more requirements
+language in reviews if you want to see something change.
 
-However, I don't think using match is that unreasonable. There are cases
-in the std library as well, e.g. [1]. But again, I'm fine with either of
-those.
+"I still think this should be an 'if'" allows for disagreement and
+discussion, but clearly in some cases you want to directly inform the
+patch submitter of some maintainer requirement, I consider stylistic
+preference one of those cases.
 
-> Anyway, I am picking the fix as it is.
+If you are in the position as a code maintainer that you say "do
+whatever, I'll just fix it up myself later", it comes across as
+passive aggressive, whereas you could just have said that in the
+initial review,  "change this to an if for consistent style" or
+because of maintainer preference it leaves out any ambiguity that you
+want to be see the change in order to merge it. In my experience most
+contributors will just make changes and move on, and are happy with
+less ambiguity.
 
-Please feel free to change the match statement to an if statement if that's
-what you prefer.
+I'd suggest if we wanted to establish conventions and rules around if
+vs match we should hash it out on zulip and update some docs
+somewhere, or we can just leave it as is and have maintainers state
+their requirements to avoid ambiguity.
 
-- Danilo
-
-[1] https://doc.rust-lang.org/src/alloc/string.rs.html#1358
-
-> 
-> Cheers,
-> Miguel
-> 
+Dave.
 
