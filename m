@@ -1,89 +1,91 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A0278C76
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 May 2024 22:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2EC170832
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 May 2024 23:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122143; cv=none; b=loYmdVeLOa0zPa1yCCPQzB3kAm1zTpWhkhguXdBB6mDgJCU0P5nVQenuqu8u+/8VD0+56foCucuH9rVd+HjwC5TfljIWd1Vmi2V6J8fPH3B444G6h8y6nuzyqKCVmkU85IFVwPe5lWG3iAELzWL93Usg375vqATsPLPoVliCCrQ=
+	t=1715123512; cv=none; b=eS/avPiChb4jVV88prPZD27/sahXO6jxwqhXUqqPPK1yCXd8slTWP8T6xUp9CjAkAmNquMkeQ9N5PWsA2Ptgo1sXcxfc2fulgRPVU//aJWjU3HZaoHB12nlW4fWS5mLjxihMKjaJHbQNsvmpF3TC9Yl7G4pwK+qSvTLZauVE6EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122143; c=relaxed/simple;
-	bh=p0gmws3+PFxKX1tyD4Sv/qAWvBFqWtQ0cGEG/+5jqao=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FkT5g+74WqOIDr913NHgDKdISYZ5HgtjgWN1O4VliwO7jLrbOvwV5ZUVNzOjv9H268gayO2UOCSfiW4oRob/8pVLOaqx2tIAejXYbwxrwMnBS1qBCSy1xQqfFrcDWY1imLkfAFklyFT1Yot1YmrtsLB+0nvSMOxA2N9+XK/I7qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ghOx8KR0; arc=none smtp.client-ip=209.85.210.180
+	s=arc-20240116; t=1715123512; c=relaxed/simple;
+	bh=0SX0BNwibUDFZANnnHUBcDt70alMpiFZO4PS8ksCTUg=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=LwtRjb9rSununCdk0jOtXduXLHeEuAhEwx55i3D1irWyx5/KPBbjtEYRB2sExCBxTJzakHIZASX3b1yDKabPyX8BuX1gTNiFlbr30lsQIZG/qG/G1mm5vg3vaIyqJYxnFHLNYZf6rGHTHj1AmnWogjgbaIZOLd/aJBIEx2eyrEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WRZv8THU; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ghOx8KR0"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6ed3cafd766so2856792b3a.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 May 2024 15:49:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WRZv8THU"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2b33953a163so940965a91.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 May 2024 16:11:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715122142; x=1715726942; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p0gmws3+PFxKX1tyD4Sv/qAWvBFqWtQ0cGEG/+5jqao=;
-        b=ghOx8KR0vLdM6IRVxvSnXm33i7AbQueaoVdqv+DZlClLN1z3+ReeRORhjVMOg5JJ0T
-         HrVFf8m3Ti348pqZ+92yXHYLlFaOX+hptx61eXoFQGGqvHw/d/3Fe4RHDg326QJNdMqF
-         Sb6tX9JJMH/4O6oblUwQEWWbNX/jNBdRPTjTFZCuYajjxyWSwX4xGH269axGzWj5AhoD
-         C2eRsevzFDi8h3kLzQpaaxIXXrU4DIegM7PCXksR8dmgn5mLHqQSLtG/oTU8GceW/Q96
-         +NMtilo27ZJQ6TDQT1vxN3WnV2220cExdvFHCfn4a9vQLIgsT+YkZAYqEL1ysJW/z6nh
-         53QQ==
+        d=gmail.com; s=20230601; t=1715123510; x=1715728310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7qRrUTqNWuWok+20b1PpyiVQiM7lGZB5RKWWXzslyxo=;
+        b=WRZv8THUbPjKBxsxmSPAxsbfrwjue4cwtPwsE3V59lMyu4xOnZ4128TRhqLBwllgdd
+         fBSbMFjtjNSlDYELC+rGZ759iXHG+EM+fcQSrEQ923e5OykWacb1sd5tZk9z70f2METZ
+         XQbi36AfrLLrcjQW7wElDAK9pIfZR7LciEsmz2NHAwwJOgjtLEYfbSPO+/41cHPDmuLO
+         4AvljaWP8Yy12OHBng9umRoahkBxn6z4nvOjiYVqMYvwaIVCLOWPIn6DPJtAk3dkQl/t
+         usLIl6DV/yxL8zTVKaTpgQ8y7Ha73/JOs8out3MTp5BLaQTlAkIL/1vDJsttpfgDbm4V
+         /cSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715122142; x=1715726942;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p0gmws3+PFxKX1tyD4Sv/qAWvBFqWtQ0cGEG/+5jqao=;
-        b=QGEuq3kB9uhndp9BRFcmCQeqbWRPHEbuTrMNa7TgoQPseQzvQG2S3HwRV2dWzxcO55
-         dVnI/OpgH8BYQupTrLgiYNAkbyZrVOZdcOeQjIC9eZkZMBwKWp/b4HNqaXum/q8f3HlY
-         eVVLYvidsEvgXhjIAg6FFKweYEeRx6JazcbOc574raeHG9UL92xZkreK7akwWVR0Q8yV
-         CU/W8lLWpckVKaJ4X0mQDxJqqrG8zMGM8ma5T8mNO9Iv+qQxiOyZmp8lA1KSvUKFPjl5
-         XSRtIG1y8zuo3S64WAD+e1a2BQ9/NajDjrXrx35pK4qBBnjajTZNK5W3/He74e26hXVS
-         nhMw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4Qx+71kKlU/Fo3rwcY/Nr7+32DtyntZCTAmc+uek49TfUr8kePhaJiP3RY1LV5uKU+795WmffP9K3ueReLPVwTG7Qop+jMxlUuOHGymo=
-X-Gm-Message-State: AOJu0Yyh22e5O31p+Ot82KKwksWqtrFaJ8aAOr8Rax5fZc6TYZrfbyyR
-	4ddAF9J91oxIJVMyO7ToQQvPD8C/JZ4fStx5g7OPtkjpn66+dr44p+y7TupohXYdluuhLK8XYam
-	6b1Rpq1aabj1YQOu/TI7DXrfnDIE=
-X-Google-Smtp-Source: AGHT+IGT9Iag9fJ2bmjr4DUWTHwKuk8zVDbsWYpb88Ot0/Nta36dfL7G2v8j0BP0ZJhTuteLOX2ZfHhInJBnWG4kbm0=
-X-Received: by 2002:a05:6a21:920d:b0:1af:86da:3f7 with SMTP id
- adf61e73a8af0-1afc8d6025cmr1218570637.4.1715122141895; Tue, 07 May 2024
- 15:49:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1715123510; x=1715728310;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7qRrUTqNWuWok+20b1PpyiVQiM7lGZB5RKWWXzslyxo=;
+        b=Fh564zdGm54e5Ihd4fQBL6FCVaAdlDJTpIAYduR1FlkymZhnqGqFi2MV5HQ6fKv7+n
+         PdSbagIwXCYe18g9e3M0WUGs9YR1GhY6can4XaZIpIHl/jkVqeCyyit92KrdWZLmtxMY
+         Zh5VWRM30LKhcmu370q+Upa2yGCukI0ACwUtxaYryPSHUBvfoB5xxDJeFUsE/wI4mZ7d
+         zLaneaJsfY8Govvcwg+URi0xKLg2YdZzEKlG8bqIDllVT6IPRt3AT++FxAeZvuV9p77X
+         LUTFu3dGkyBr1xzAFsS/1yCYghifVxmYYiHwFXI6LmZBXzmf77VIarAgulN9ulKK+sGO
+         4/yQ==
+X-Gm-Message-State: AOJu0Yz5/LsGRGVz2T8whoABLqQSZFMxtwGNhfX6pHx5HoyLRd2D1GPl
+	DRjnwUmxKBju1mdggxm7zfPjLiJHWCRConKKuZTg/sy61NIzPeDROPNJxg==
+X-Google-Smtp-Source: AGHT+IEZSmvKL4ztCsDbSKmawL/LBv5Q1FiCBwDzfvustNW+eJty8+Dvl2aUk2rzhJ3/Nn5tO+zUgw==
+X-Received: by 2002:a05:6a20:f393:b0:1af:96e7:2bec with SMTP id adf61e73a8af0-1afc8b149bdmr1172685637.0.1715123510199;
+        Tue, 07 May 2024 16:11:50 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id g14-20020a170902f74e00b001ecbb0ad6d9sm10634396plw.99.2024.05.07.16.11.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 May 2024 16:11:49 -0700 (PDT)
+Date: Wed, 08 May 2024 08:11:44 +0900 (JST)
+Message-Id: <20240508.081144.1308480380091479358.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: rust-for-linux@vger.kernel.org, benno.lossin@proton.me
+Subject: Re: [PATCH v2] rust: add 'firmware' field support to module! macro
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20240501123548.51769-1-fujita.tomonori@gmail.com>
+References: <20240501123548.51769-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240507201709.105693-1-dakr@redhat.com>
-In-Reply-To: <20240507201709.105693-1-dakr@redhat.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 8 May 2024 00:47:37 +0200
-Message-ID: <CANiq72nBTHgg5HZOCcQ4E_0oX14MZCrLNivUcV63jiEmcRDfuQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: use `if` instead of `match` in VecExt<T>::reserve()
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 7, 2024 at 10:17=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> =
-wrote:
->
-> In commit 1161057f53f6 ("rust: alloc: fix dangling pointer in
-> VecExt<T>::reserve()") the check for zero of a vector's capacity has
-> been implemented using a `match` statement. Using an `if` statement
-> is the preferred style, hence change that.
->
-> Link: https://lore.kernel.org/rust-for-linux/2c69a6eb-67a2-439c-ad27-70be=
-130436d4@proton.me/T/
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Hi,
 
-Applied to `rust-next` as fixup for "[PATCH v3] rust: alloc: fix
-dangling pointer in VecExt<T>::reserve()" -- thanks!
+On Wed,  1 May 2024 21:35:48 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-Cheers,
-Miguel
+> This adds 'firmware' field support to module! macro, corresponds to
+> MODULE_FIRMWARE macro. You can specify the file names of binary
+> firmware that the kernel module requires. The information is embedded
+> in the modinfo section of the kernel module. For example, a tool to
+> build an initramfs uses this information to put the firmware files
+> into the initramfs image.
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> ---
+>  rust/macros/lib.rs    | 32 ++++++++++++++++++++++++++++++++
+>  rust/macros/module.rs | 18 ++++++++++++++++--
+>  2 files changed, 48 insertions(+), 2 deletions(-)
+
+Miguel, can you apply this to rust-next? Or you want to change
+something?
