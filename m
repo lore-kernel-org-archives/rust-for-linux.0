@@ -1,94 +1,105 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F8C14AD1A;
-	Thu,  9 May 2024 12:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1A41A2C25
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 11:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715256866; cv=none; b=sxbwpRSPTNzNSbw2kfPtE8uGK0PmWwkHrv7Eddx6BCKVL6jtqnd2N5aR07S1/hJQ1XW4bTou9tD+aYRyAQ75YmeWfyQvwbnjAbbJQiTbIKTYRD6fLBR4xypn9BV02pQOpyJAAu4b+YVdg76Ssf7WQXxuUSp5Vks9aFwWMmjCAzg=
+	t=1715513030; cv=none; b=ZI/O3RGNiJ6ncC7bT7mKTMYvnAU5Jl22NmeshFL7Y8o/hN/NCgoDpmBt1cCGmxt2uo+BQ2pfC+3zVhVkVMXkOn+LLRK/2LQh+BjbGYOclsMtrvYjch+zNf/zIGE4PyfJewIpBZyjaL2m8JM9ZVhmD4cj8Wj2zKoxW43Z63+HlpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715256866; c=relaxed/simple;
-	bh=N03P0gKUkMuybGCZFaql5yZdjIx87gfJbseTAmZcAxA=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
-	 Content-Type; b=JZvW638T6nP7Q1jZL90zJEUdaCtNqWGew4glJbotOPzdqZqZb6+kiBK/v/obmEFu9xojkaBbK+/AoQu58BRgpK26rkosw+TXB/Ol69j25yFP4I+vvMdmjQUKp7TXccm2AGWr6UPpLKQTGR5f5A92R4FZSBlg077lZQCX5o2x6co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GP9L7GMI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TGYbKxUa; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1715513030; c=relaxed/simple;
+	bh=1znuCdbJIknvKQOOFupps2xqm9RzkCmYR5LhPL6aQB4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qF6e0zzJxtiXU1Vxdf39nBr9cI+lGqHjhS/E2RpOnQQwRCEleZvf785UyUzhV2TU5uNvPhzB0CHKlFSO6DAaOgPCmKJgrxBtPgbNYF8dV0OuPh+toXE0iAtdyv1eG3Bn3F93uDeyqWk6tC0PGmT/lzkuEZCN1G8AHS4Vaih0XrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7+auKf3; arc=none smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GP9L7GMI";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TGYbKxUa"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1715256856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=s/L8Sw+C9CH9AHoAkPMdotLn7sOxVFfEx4oTON5PdOU=;
-	b=GP9L7GMIRTXDY7VhR2x/RfuFQl194lccTl1bO6dLzJqQmwJZNlojEw5TsoyqYGLH7cw1dU
-	mO20II4WZx0pQS76jsG1KQOkQMueml2xTrvPkZFvw5DSzvtsCEOCIu5dl4pYHXdzZChd+P
-	A/CdVloEGFiVkvCIYxOab7yl1C6mqGfqTNrg830HegWXqci8WyS6WHZNp8fXexsh2cR3qh
-	pwtRfDFaLWY+/aVu4fZ5w6GiuU+fDNLrUdi8vw9+Tb0tpgGk8hpZsoabO0++NVSeQVrIF/
-	ShHxg66dPvTTsA9VUKRazZ86jpDEmUI3xmfuhW9MO74P8AisoqmCheXiX2uXoA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1715256856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=s/L8Sw+C9CH9AHoAkPMdotLn7sOxVFfEx4oTON5PdOU=;
-	b=TGYbKxUaRYNlD6biJCoAwiR6babweEwIMvKiTSrMNVLxhFjBAVjfv1RQn64tbqLdKOPhi7
-	407TJi0ICQhXBCCA==
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
- Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
- Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
-In-Reply-To: <Zigj-lY5lnBSKuib@boqun-archlinux>
-Date: Thu, 09 May 2024 14:14:16 +0200
-Message-ID: <87cypvnpwn.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7+auKf3"
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-23db0b5dd28so2375314fac.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 04:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715513028; x=1716117828; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=762PUa8PRNB8OoXQopVe3c5CIMW93h5JHNgeBtDArnQ=;
+        b=d7+auKf3d0d5stPMecO7E+0Jbdr//PKhfVV40aVReiCz7ac1lUJgHN4oc38+8jNUCJ
+         J2lLkNv3TrAuKA5vblFv8osNGkZCUCUabmp4ZT5yZElytK5utg87eonNeznND+FcNwIL
+         Vd6/n9FeAeJNGPbbazrCGKKKyhp+74ufbz3tyHuiyvTgiB2GcgG2iv97MXqoZWCmnX/j
+         bwFd14Iyij9ESzKtlFPeJbJj+oEWMdZdYXL1t0Bz9G45O+fbe2pVyhuBlXacHbOLtVPG
+         iXfkGQxPjUwDYFQ6rC4OgUb8c2g0SVMarkmk/oQTLAjzogGJPBhPRnCGOwNbuFeI1tDj
+         mSlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715513028; x=1716117828;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=762PUa8PRNB8OoXQopVe3c5CIMW93h5JHNgeBtDArnQ=;
+        b=G32FdyPqpRScX221W07eKZh5KhCjYISsCJimaTqd7sbbHwV8NQxOz14BsLHPGaxRhk
+         IpD79fgTNfjE0hzpRS4zR93caNx+ICMxhhHL7OicrKYGsKanmCExv4bYwguD0dqsPwsn
+         3yTVVxhcqbFGwd1431ZCH/qUWOuxRvkPbGm+WXqfOkU3ekzZyT4Toc6s1zNF+FlxUJ92
+         fR+U7nruVWroKNdiEyKkAfsXgKZU3wFqiqspq3vfEYAYcbD8YSTgLN1mEScGDvXgoQJT
+         A336ZJNI9mDJcmGxi+UTnEgXa6xWwJrkwyEvbyAB2KoM5rIBZRgUZwC11RYggfhNTsK6
+         e6Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCVBo89x/Ks/D0jaq9elz25aHnbEFywmrJO4E1hDXbpzf5uvAuzLjxWWBHbgp+AhgoV5cOzoaZNuv6q7muAfUYXX865I/ddU49tOoWXdiGQ=
+X-Gm-Message-State: AOJu0YwoGLVcrCjyeEnku7Plo/t6Deh8XaghH7nCjZUAJPYOG+iw9Yh4
+	4A6mskW5+AtmvrYOytenwYrDLecKUG/pFgG049k7fxiQ7Bde3za4
+X-Google-Smtp-Source: AGHT+IHXOa8HBzXfqO0gf47uhRKRFePOsxcpAe4wv3DodlCgZnPecrecj4pGNeEMWBBGvdeMNeqQVg==
+X-Received: by 2002:a05:6870:f61f:b0:22d:fa53:5695 with SMTP id 586e51a60fabf-24172bcb9fcmr9355760fac.25.1715513028328;
+        Sun, 12 May 2024 04:23:48 -0700 (PDT)
+Received: from ubuntu.. ([49.37.171.111])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6340b767b36sm6029167a12.32.2024.05.12.04.23.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 May 2024 04:23:47 -0700 (PDT)
+From: Aswin Unnikrishnan <aswinunni01@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	Aswin Unnikrishnan <aswinunni01@gmail.com>
+Subject: [PATCH v2 1/2] rust: add example for `alias` argument in `module` macro documentation
+Date: Sun, 12 May 2024 11:23:20 +0000
+Message-ID: <20240512112324.8514-1-aswinunni01@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 23 2024 at 14:11, Boqun Feng wrote:
-> On Thu, Apr 11, 2024 at 04:08:01PM -0700, Boqun Feng wrote:
->> Currently since Rust code is compiled with "-Coverflow-checks=y", so a
->> normal substraction may be compiled as an overflow checking and panic
->> if overflow happens:
->> 
->>         subq    %rsi, %rdi
->>         jo      .LBB0_2
->>         movq    %rdi, %rax
->>         retq
->> .LBB0_2:
->>         pushq   %rax
->>         leaq    str.0(%rip), %rdi
->>         leaq    .L__unnamed_1(%rip), %rdx
->>         movl    $33, %esi
->>         callq   *core::panicking::panic::h59297120e85ea178@GOTPCREL(%rip)
->> 
->> although overflow detection is nice to have, however this makes
->> `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's not
->> clear that the overflow checking is helpful, since for example, the
->> current binder usage[1] doesn't have the checking.
->
-> Ping. Thomas, John and Stepthen. Could you take a look at this, and the
-> discussion between Miguel and me? The key question is the behavior when
-> ktime_sub() hits a overflow, I think. Thanks!
+Add example for `alias` argument supported by `module` macro.
+`alias` accepts an array of alternate names for the module as string.
 
-In principle ktime_sub() should not overflow for regular use cases.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
+---
 
-If the binder example overflows the substraction, then something is
-seriously wrong. Though in that case as it's only for debug purposes
-panicing would be totally counter productive. A warning might be
-appropriate though.
+Changes in v2:
+- Add Reviewed-by tag
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240419215015.157258-2-aswinunni01@gmail.com/
 
-Thanks,
+ rust/macros/lib.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-        tglx
-
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 520eae5fd792..aa89b41fa10e 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -35,6 +35,7 @@
+ ///     author: "Rust for Linux Contributors",
+ ///     description: "My very own kernel module!",
+ ///     license: "GPL",
++///     alias: ["alternate_module_name"],
+ /// }
+ ///
+ /// struct MyModule;
+-- 
+2.43.0
 
