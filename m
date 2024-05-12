@@ -1,119 +1,92 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED0D1A2C25
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 11:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E0ADDD7
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 16:55:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715513034; cv=none; b=RpQxZlr6WuhhcA4gMBvMdp7YyaIICqhFtc+EBO1dH7/ZbZI1iDflX2INdgFU3fODOqDcfY0+W3NzJASuKPjSjSjGVg7puYR28fgfBy1f231PijujG2sXU3eDFr3hGJ1Qmxdeg+8kjK+7VvrkQOYahFlHOYpjs9GeMEsddTZr1bQ=
+	t=1715532930; cv=none; b=tcTMfbQHP9IQKGhmul8GOqs47v7F/LQlEMABSoJ30/2OQ+IyD8FMMS8sFKK8LhZDSLSotH46ivF8IoWnpWcjxOp+PWsbKkpKAENEtA9DvHgpjobci4XoW709ZGktDn2bMJVnW0W4Mmwfskyuf6/TFxC9oiAei0ASzfAEQ3vcHxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715513034; c=relaxed/simple;
-	bh=eyJa+yGYTCAQFYw58420uWI/CPI3+K4qSk8eEs+LdlE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kq5Ucbw4F85HUV1h4tZSvBXYzvgsYWIQU4WDtkeHjRG7qoCY9yHqGQRzUcptx46Wct53Lr2GjDjTwy6Zg2eeIGcW2uCKP8L5NH37EpguDzM73SHAKxqknvru1JJ2ArQX5Cc/Ly0kxbZpHvsDXMrk9NNC8/YaMIoLWxM3r6Xhp/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TmvC91SD; arc=none smtp.client-ip=209.85.166.173
+	s=arc-20240116; t=1715532930; c=relaxed/simple;
+	bh=IgA3bYU4lLHrG3W23bHLbXx/xg6DVPmI7MgaJkYmRsc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rc6Jh6ZTxhoC1p4GG6vCfGLycKeKfWV80X/xxnM6/xGPZaw63L0nLlaBcoi4upJEx3wyAEgLapvcnIPYjSEAxAauljiNbDhhIP/IbhpnidhtKy60c020wf+m+jPi1a1qPwl+17AtJQlGft5IlD7Z04OS1Dl748FaGlLenVBR3ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hwRf11C1; arc=none smtp.client-ip=209.85.161.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TmvC91SD"
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-36c82ca80adso16600385ab.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 04:23:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hwRf11C1"
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5b279e04391so1940787eaf.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 09:55:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715513032; x=1716117832; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1715532928; x=1716137728; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DYTw5okqMUFiuNJHWD5ZtkN06OkuWq+OuMTJDTy5n00=;
-        b=TmvC91SD12BMy8BAifQGO6pydriEHJaZaK038FkqSqIv6y4gMf/+riBXj0oOhnlAwd
-         zhCu+t02WwVBdYeCPbNSNE6JrqsJOO5QxRNlwG2VrhwR2zRjBgU7WNqcwRW20v57j3Nc
-         +nG6p+FdCF+/TptdIOI71QzQ5kihCsajMaHHfPM6BtUCqBAt8MwGKHe9Stjr+DzN3Dwu
-         oJPTqWNtKj3WJ6dLRmxZ6eLaS85XXiLkUoJND0MS9nUIPAFLyz+hDWE14Meho2mewJ3g
-         mgHe6yFjpqbEfbZGq2HqgXOVqBRGDuQ/diWbQvwNkFKp/fUDZjk0SNt4NUK7mS6Y+r3r
-         AX2Q==
+        bh=IgA3bYU4lLHrG3W23bHLbXx/xg6DVPmI7MgaJkYmRsc=;
+        b=hwRf11C14cyajkjMtBwycXasjnncebY2YnKLoGdTX+uxFMxitWqrcS93k2W1usiyZh
+         DnZURdDA+EV0bDzwbBvA6kjznqbqQc3DaFrCGaly6u9FtqsFzZaMXO1NbjOSZOkR8GqD
+         +CXuQvxtUR6mtSffD0skHNAL+x5zGZR2Dp7PBlN0gUbAMVe+fsYjjsfEAZ7SJ/a21H94
+         MmEUu0czzUXHMQrDJcWk2mJhJWUbTUaXK6+lM060EL2EOQsSgPAZf6vXGz0i348RAa/O
+         YIr8vfIb0mEFo4Z2O18N9OVDT2mWxnpTQ8f8/zHcEOmnR0BG+K9V2hW0ecDIj6Lal+U5
+         wj5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715513032; x=1716117832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1715532928; x=1716137728;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DYTw5okqMUFiuNJHWD5ZtkN06OkuWq+OuMTJDTy5n00=;
-        b=fi5uobS4dO/Yj5ipkFaILx11a1TkurUpW7FHyS8OrN7XVAFlrtxaa6164njBm5dTcc
-         t1+hnBvWO+K5C7zTbWXjbAUoSYh6HpxybAgfxhzZB6aMyagXVU5nBZs5XQqQNp14pAIb
-         F2xpI8wRDDyX3vZwCvDypf3NzJl5QXf0cJHK4eiHZqCy6b3LuRcm2c38wq4MkZfuJQZF
-         mD3RhyOzN7DLtDsTwfKoIJEI5nQK3PdnbvANkl4ohPCFAvBECWbIZ35uAWMcopFlDg6u
-         ehI8wirAu05y89IPZWpoy+HIb4FuI7eTCkYJU0IhI+YinNcOrdvWPu8pA3WJPXyRyjAR
-         SuNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWE7IHa+FOR0AkOsYVV0/lfUFizCpMaSIcMntdEklgOHu4Gwd9bbC77QQcDOyzwgyLF54R4yQthmxyGdiJNQGwh3NRKbgaWvJ8liiFSS7o=
-X-Gm-Message-State: AOJu0YyzDIBOxh5ey9d+sjUNsSqL6jJCH0gWaubtvpO6zOv1k58Kbdnl
-	lUfRMSU2XrIZv3dbvuxXwvyQndtHo9nGajPCZ94mH2+jWK0Xph6m
-X-Google-Smtp-Source: AGHT+IFbOgEFx8mk8ALCqHCAWolSxvO2SI6NIFHBDh1fUUUI9BAJ+IYYPJHxlRgSNwcu1iom5RVPcg==
-X-Received: by 2002:a92:c26b:0:b0:36c:5486:83f8 with SMTP id e9e14a558f8ab-36cc14df709mr94834935ab.22.1715513032298;
-        Sun, 12 May 2024 04:23:52 -0700 (PDT)
-Received: from ubuntu.. ([49.37.171.111])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6340b767b36sm6029167a12.32.2024.05.12.04.23.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 May 2024 04:23:51 -0700 (PDT)
-From: Aswin Unnikrishnan <aswinunni01@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	Aswin Unnikrishnan <aswinunni01@gmail.com>
-Subject: [PATCH v2 2/2] rust: fix datatype in docs for `module` macro arguments
-Date: Sun, 12 May 2024 11:23:21 +0000
-Message-ID: <20240512112324.8514-2-aswinunni01@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240512112324.8514-1-aswinunni01@gmail.com>
-References: <20240512112324.8514-1-aswinunni01@gmail.com>
+        bh=IgA3bYU4lLHrG3W23bHLbXx/xg6DVPmI7MgaJkYmRsc=;
+        b=LJ1h0YD5j45yBmt9f5r2Cn+rujhQyKECWc/Uqo9LOY88WVZPqb6UieS4RoldCwICWy
+         yKXwx13LPif4DSxzP5gwqi3EI4zjNMsyvXUQS5KkFlDfVPBeugouHgmEVb9lfhuB6L2/
+         554PW3I6vPUM0wGFGLq8v8c5Gh97hSSup9fTNTBhCigaF09sWZtw+racWMt1GSSAASDi
+         67kjroz4Bq1NldkxmqFUvggiZu+2OcjxyS7mo1Nk2Md4D6N5arapaoMx1lC23e1ZOO2N
+         9gGN2Rq1KmLEpnof5/Zv53VtfgA5qbp7PgOJhduOvNBN87dU3zofeGNZdoY/PDD3WjAc
+         pWQA==
+X-Gm-Message-State: AOJu0YxqtNCt2x5qyL41456Y3couNbTaaD7lL1xZ9yxk5jDpwr/hnjRt
+	VnXKChPUy63xLJwPjp684W3E9HH8oHnSsX0qsBJJfoylbDlKclJvNX5Xo5SbDWNdcIlSUbJJz99
+	Yved2ke/5tI9VVrSrWH+H+vcgAdk=
+X-Google-Smtp-Source: AGHT+IHHY1QLWrDp5Cn+OrNBnG5pvy9ZOJEBlVV8ogPJK+MbT+M8xTz2S3ddC5DL+htA+KMi94pIHot8P8cZ+sgE9/4=
+X-Received: by 2002:a05:6358:280c:b0:183:f634:104 with SMTP id
+ e5c5f4694b2df-193bb50c50emr785670855d.7.1715532927789; Sun, 12 May 2024
+ 09:55:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240501123548.51769-1-fujita.tomonori@gmail.com>
+ <20240508.081144.1308480380091479358.fujita.tomonori@gmail.com>
+ <CANiq72nHkadpMt9wMTm+BJ5Up-EG6ymay68qi+56nv9uLXXcgg@mail.gmail.com> <20240509.085826.1793889118157877475.fujita.tomonori@gmail.com>
+In-Reply-To: <20240509.085826.1793889118157877475.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 12 May 2024 18:53:56 +0200
+Message-ID: <CANiq72kJQp_GHnr2cD7e8s5CJ=Sawz9ad_QVFrUxqDUppe4FNw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: add 'firmware' field support to module! macro
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, benno.lossin@proton.me
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Remove the mention of byte array as datatype for `module` macro arguments
-since the arguments are defined as string, and `alias` is a string array.
+On Thu, May 9, 2024 at 1:58=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> I'll try to push QT2025 for 6.11 via netdev tree. So I hope features
+> which QT2025 needs to be merged for 6.10, especially a feature that
+> would be conflicted in rust and netdev trees.
+>
+> That's exactly why I hope that this patch is merged for 6.10, as I
+> wrote above. The cleanup will be merged via rust tree. It makes
+> complicated to put this patch into QT2025 patchset for netdev tree.
+>
+> But I don't think that this patch is an exception to the -rc5 rule. So
+> please push this patch for 6.11. I'll think about a way to push
+> QT2025.
 
-Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
----
+Thanks for confirming. If netdev wants to apply QT2025 for 6.11, they
+could perhaps carry this patch with our Acked-by -- it seems simple
+enough. Another option is creating a branch and merge it in both trees
+if needed.
 
-Changes in v2:
-- Add expected string literal type in documentation for `module` macro
-  arguments since some `module` macro arguments expect ASCII string
-  literals.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20240419215015.157258-3-aswinunni01@gmail.com/T/#t
-
- rust/macros/lib.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index aa89b41fa10e..5214e07367c5 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -58,11 +58,11 @@
- ///
- /// # Supported argument types
- ///   - `type`: type which implements the [`Module`] trait (required).
--///   - `name`: byte array of the name of the kernel module (required).
--///   - `author`: byte array of the author of the kernel module.
--///   - `description`: byte array of the description of the kernel module.
--///   - `license`: byte array of the license of the kernel module (required).
--///   - `alias`: byte array of alias name of the kernel module.
-+///   - `name`: ASCII string literal of the name of the kernel module (required).
-+///   - `author`: string literal of the author of the kernel module.
-+///   - `description`: string literal of the description of the kernel module.
-+///   - `license`: ASCII string literal of the license of the kernel module (required).
-+///   - `alias`: array of ASCII string literals of the alias names of the kernel module.
- #[proc_macro]
- pub fn module(ts: TokenStream) -> TokenStream {
-     module::module(ts)
--- 
-2.43.0
-
+Cheers,
+Miguel
