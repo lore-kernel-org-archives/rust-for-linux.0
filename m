@@ -1,95 +1,46 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609144DA0C
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 18:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8A820DC3;
+	Sun, 12 May 2024 20:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715539130; cv=none; b=IIXN5sXiNL/7aFZGNtShFOH/WvL+XfffbSSlUqR6qp6UuEY8zyNqZBzQyAMxKIHG/kk8Irpc1S2v3LgX7oaCe250M2ohht8mrS0iVw2kiXH8NGzGBTiY43fvGW2kRYaJZgcXYpU7JwIfrC78AhO1MdmQ5G8B8HbPHjRim6xwlFU=
+	t=1715545429; cv=none; b=hwgtohV6MOaowA0YpGc37Il53UNi4K3S5UiJoHAsPgIdV8Tj02RO86z6QMWbfj3hAR9z4SzmdmEVT6I2rjWmi+AbKr0stIH82SLqvEzswcTHzMv0iD7BgdXEnJejl8Ds9ZnghvH0F1bdHv3PIHcAmGzHGBWdSO+bVMJ5nkrjlMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715539130; c=relaxed/simple;
-	bh=b5i2hqWqMMetERk5hQhn2SOVCTZcCAIel03ZVQRAcqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TXagneRr7pIJ/hgn/Emy137nVUiArWffYCvzAP3GGx46HruRM49IKIgXIJahiI8BVTxyns4/oEI5qmtg6TJ0FPX6feiwadppk5OEL5cBsLGltqVZ9o0h/iIz7lpNlHYHvQ2IDy4soGWi3swPouvUI5jTDSsii+FujIxoLPAttNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=qUgda+IF; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1715545429; c=relaxed/simple;
+	bh=j507y5C/La6NO82bSXcA9zpwefRJk9WhjjOLafJAwqU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kBuMkdN8fIVs+70KGD46YF/8kOsjg+lxD1OdJyuhYqgaWP9fa+fv0BVdCTMIgNFYSS/PtNsM5liPvsNgPACMut5KahpQV/6i6JycmxLIsV2wPME3ifswx4cXGnAw7JCIorM7020RQXYjN8qgIR3bm3F/kqbweQe8jRY/XVZvMAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B72AO/uo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="qUgda+IF"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1eecc71311eso30953085ad.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 May 2024 11:38:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1715539128; x=1716143928; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pTw6lc2ugV+pxnsE+unm7DWQd2E2uzUOLG4JPutFiY0=;
-        b=qUgda+IFj4T9eWO10xG76Vs70WTP0+FZHpiViE228WUida07OgblU26SXpJJkFeMXD
-         VA7nhet1ecYlm08dwBdarOWORyR5ySQ4nzuc/N/X/p1GQufU+3W3OvWpM3GExYzJwM97
-         Ti0BugEbZ+SrOxW9cAh/bGJtYxxlqY+/aNtro6vYogAkbKEluUDH0yLZkJrWTKQESyMW
-         kQYfmtE4XIwTV/sb9x/SsYa+XNSn9fkJ+AR1rjkBRbh1kPFkcTZjJywPyrnlcH04lMp6
-         Oluo7GdT8O4E1HDl1K+nP8rYJrFoZ7vKKhGm+adUsiKZHx5ro8IBrPF9SunmCLrFWTAA
-         7++A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715539128; x=1716143928;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pTw6lc2ugV+pxnsE+unm7DWQd2E2uzUOLG4JPutFiY0=;
-        b=hVZMOFLdCrOtVU/cpFEPPdtAyVENpljIuM+kqQ0tiN+QXRUY8EJiZFo1bkt8tybu/y
-         Kp6IVtr4umYflHCZQjmOpZfU+WWky4g+Ukzsi4IOkjVZRSKQ6/yVU+svh7Aj2dL/VMhc
-         tTSzed8Nj9WlkYKtZQom2EsFehrE34jX5CxrM2WZM8Ae08yZQAK8ECzdPYP4OIA4GNzO
-         d7xmq0DhH6YX2afJu9y5/ujvpjqS6P5fopL5O2YCSMexUeDbsehMB4L4Qk1ucc5LDHLT
-         tZzweMENzVymQAuaRGSVvEC2XddzcThWvT94z7at/N+Nynhf6s+o47qMvOqkB29X/4vu
-         poAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmF/nXFI4Owdes7BjM9rUVcmJw5HJCIoFAVQcWu9qCaR2/eDlB+GkCXbTnji2arTgMjPQL7jmVV2g5/6nC7O2C8RPkCZWiT/KtWgYQkXE=
-X-Gm-Message-State: AOJu0Yw1Wj0HIIH0Mcsn/oLBfAf900iiS8eTNkpT5fmLcc2Bec5Ybfrl
-	+z0xERz+XFPTHMYVm4JOB3kgSrfDJkYH33NLCtQLZS5qRIXmR+JMu9IEwIyyWBY=
-X-Google-Smtp-Source: AGHT+IHYI+JDwwHMS9qaOCTM3NFMH1XQ5+NtCnwnFUuRK9C6B3gqEBh9KT8mufB19yR5/TuoFY+YCw==
-X-Received: by 2002:a17:902:f647:b0:1eb:3df4:e63b with SMTP id d9443c01a7336-1ef43c0958dmr137532155ad.7.1715539127718;
-        Sun, 12 May 2024 11:38:47 -0700 (PDT)
-Received: from localhost ([50.204.89.33])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0b9d4733sm65063365ad.54.2024.05.12.11.38.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 May 2024 11:38:47 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Damien Le Moal <Damien.LeMoal@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B72AO/uo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AD3C116B1;
+	Sun, 12 May 2024 20:23:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715545428;
+	bh=j507y5C/La6NO82bSXcA9zpwefRJk9WhjjOLafJAwqU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=B72AO/uox60ibF+aGPIKuNFLNgx1jKkRU3Q/xTWPmvzgBEmDcyGIbwBv6CXDz0/2o
+	 NzaDcxaT3+zHpJEFVr/WGYlKVI8G0j70d1xzSVeIorjK7EWlkBZ+LnnAsVxD1h3aqu
+	 2er3FJg3tKkQg8OcPOXDkCeeGUW6Zw87kOOtX8QgTQg5AzPdQKNYq6L+dR5BatsWUr
+	 qnswJBpKR7z7QFgsvrmFruGTRZ9g68XEkMkCHZ+U7d6iIg8G6tYWNkXfVHwxF/giim
+	 NccpbqSFjVeloH7bc5wg/Zen2K0kyWPplEBGlVG9CEfwC6eWIbDIvzchqI5laXLAkI
+	 PV/2oSQNHYlCg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yexuan Yang <1182282462@bupt.edu.cn>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	Joel Granados <j.granados@samsung.com>,
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Conor Dooley <conor@kernel.org>,
-	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-	=?UTF-8?q?Matias=20Bj=C3=B8rling?= <m@bjorling.me>,
-	open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: [PATCH 0/3] Rust block device driver API and null block driver
-Date: Sun, 12 May 2024 12:39:45 -0600
-Message-ID: <20240512183950.1982353-1-nmi@metaspace.dk>
-X-Mailer: git-send-email 2.44.0
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust for 6.10
+Date: Sun, 12 May 2024 22:22:15 +0200
+Message-ID: <20240512202215.67763-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -98,88 +49,247 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+Hi Linus,
 
-Hi All!
+This is the next round of the Rust support.
 
-I am happy to finally send the first _non_ RFC patches for the Rust block device
-API.
+All the commits have been in linux-next for a week or more, except for
+the fix on top, which has been in 3 linux-next tags.
 
-This series provides an initial Rust block layer device driver API, and a very
-minimal null block driver to exercise the API. The driver has only one mode of
-operation and cannot be configured.
+A simple conflict with the Kbuild pull expected. It is resolved in
+linux-next. No changes to the C side.
 
-These patches are an updated and trimmed down version of the v2 RFC [1]. One of
-the requests for the v2 RFC was to split the abstractions into smaller pieces
-that are easier to review. This is the first part of the split patches.
+You will likely get initial Rust support for 64-bit RISC-V, as well as
+an abstraction for `ktime_t` (together with a small cleanup) and updates
+to the Chinese docs translation through their respective trees.
 
-A notable change in this patch set is that they no longer use the `ref` field of
-the C `struct request` to manage lifetime of the request structure.
+Please pull for v6.10 -- thanks!
 
-The removed features will be sent later, as their dependencies land upstream.
+Cheers,
+Miguel
 
-As mentioned before, I will gladly maintain this code if required.
+The following changes since commit 4cece764965020c22cff7665b18a012006359095:
 
-Canges from RFC v2:
+  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
 
-- Change request state tracking method
-- Use a slice rather than a raw pointer for `RawWriter`
-- Use typestate patttern for `GenDisk` to prevent mutation of non synchronized fields
-- Remove per gendisk  private data support
-- Remove per tag_set private data support
-- Remove per hwctx private data support
-- Remove per request private data support
-- Remove use of `ARef::into_raw`
-- Remove use of `Opaque::try_ffi_init`
-- Remove map_queues support
-- Remove bio iteration support
-- Remove methods to fail requests
-- Remove request introspection methods
-- Remove module configuration via module parameters
-- Remove timer completion support for Rust null block driver
-- Remove memory backing support for Rust null block driver
-- Remove soft-irq completion support for Rust null block driver
+are available in the Git repository at:
 
-Thanks for all the feedback and comments on the earlier versions!
+  https://github.com/Rust-for-Linux/linux.git tags/rust-6.10
 
-Best regards,
-Andreas Hindborg
+for you to fetch changes up to 97ab3e8eec0ce79d9e265e6c9e4c480492180409:
 
-Link: https://lore.kernel.org/all/20240313110515.70088-1-nmi@metaspace.dk/ [1]
+  rust: alloc: fix dangling pointer in VecExt<T>::reserve() (2024-05-08 00:43:30 +0200)
 
-Andreas Hindborg (3):
-  rust: block: introduce `kernel::block::mq` module
-  rust: block: add rnull, Rust null_blk implementation
-  MAINTAINERS: add entry for Rust block device driver API
+----------------------------------------------------------------
+Rust changes for v6.10
 
- MAINTAINERS                        |  14 ++
- drivers/block/Kconfig              |   9 ++
- drivers/block/Makefile             |   3 +
- drivers/block/rnull.rs             |  82 ++++++++++
- rust/bindings/bindings_helper.h    |   2 +
- rust/helpers.c                     |  16 ++
- rust/kernel/block.rs               |   5 +
- rust/kernel/block/mq.rs            | 109 +++++++++++++
- rust/kernel/block/mq/gen_disk.rs   | 205 ++++++++++++++++++++++++
- rust/kernel/block/mq/operations.rs | 245 +++++++++++++++++++++++++++++
- rust/kernel/block/mq/raw_writer.rs |  55 +++++++
- rust/kernel/block/mq/request.rs    | 227 ++++++++++++++++++++++++++
- rust/kernel/block/mq/tag_set.rs    |  93 +++++++++++
- rust/kernel/error.rs               |   5 +
- rust/kernel/lib.rs                 |   2 +
- scripts/Makefile.build             |   2 +-
- 16 files changed, 1073 insertions(+), 1 deletion(-)
- create mode 100644 drivers/block/rnull.rs
- create mode 100644 rust/kernel/block.rs
- create mode 100644 rust/kernel/block/mq.rs
- create mode 100644 rust/kernel/block/mq/gen_disk.rs
- create mode 100644 rust/kernel/block/mq/operations.rs
- create mode 100644 rust/kernel/block/mq/raw_writer.rs
- create mode 100644 rust/kernel/block/mq/request.rs
- create mode 100644 rust/kernel/block/mq/tag_set.rs
+The most notable change is the drop of the 'alloc' in-tree fork. This
+is nicely reflected in the diffstat as a ~10k lines drop. In turn, this
+makes the version upgrades way simpler and smaller in the future, e.g.
+the latest one in commit 56f64b370612 ("rust: upgrade to Rust 1.78.0").
 
+More importantly, this increases the chances that a newer compiler
+version just works, which in turn means supporting several compiler
+versions is easier now. Thus we will look into finally setting a minimum
+version in the near future.
 
-base-commit: fec50db7033ea478773b159e0e2efb135270e3b7
--- 
-2.44.0
+Toolchain and infrastructure:
 
+ - Upgrade to Rust 1.78.0.
+
+   This time around, due to how the kernel and Rust schedules have
+   aligned, there are two upgrades in fact. These allow us to remove one
+   more unstable feature ('offset_of') from the list, among other
+   improvements.
+
+ - Drop 'alloc' in-tree fork of the standard library crate, which means
+   all the unstable features used by 'alloc' (~30 language ones, ~60
+   library ones) are not a concern anymore.
+
+ - Support DWARFv5 via the '-Zdwarf-version' flag.
+
+ - Support zlib and zstd debuginfo compression via the
+   '-Zdebuginfo-compression' flag.
+
+'kernel' crate:
+
+ - Support allocation flags ('GFP_*'), particularly in 'Box' (via
+   'BoxExt'), 'Vec' (via 'VecExt'), 'Arc' and 'UniqueArc', as well as in
+   the 'init' module APIs.
+
+ - Remove usage of the 'allocator_api' unstable feature.
+
+ - Remove 'try_' prefix in allocation APIs' names.
+
+ - Add 'VecExt' (an extension trait) to be able to drop the 'alloc'
+   fork.
+
+ - Add the '{make,to}_{upper,lower}case()' methods to 'CStr'/'CString'.
+
+ - Add the 'as_ptr' method to 'ThisModule'.
+
+ - Add the 'from_raw' method to 'ArcBorrow'.
+
+ - Add the 'into_unique_or_drop' method to 'Arc'.
+
+ - Display column number in the 'dbg!' macro output by applying the
+   equivalent change done to the standard library one.
+
+ - Migrate 'Work' to '#[pin_data]' thanks to the changes in the 'macros'
+   crate, which allows to remove an unsafe call in its 'new' associated
+   function.
+
+ - Prevent namespacing issues when using the '[try_][pin_]init!' macros
+   by changing the generated name of guard variables.
+
+ - Make the 'get' method in 'Opaque' const.
+
+ - Implement the 'Default' trait for 'LockClassKey'.
+
+ - Remove unneeded 'kernel::prelude' imports from doctests.
+
+ - Remove redundant imports.
+
+'macros' crate:
+
+ - Add 'decl_generics' to 'parse_generics()' to support default values,
+   and use that to allow them in '#[pin_data]'.
+
+Helpers:
+
+ - Trivial English grammar fix.
+
+Documentation:
+
+ - Add section on Rust Kselftests to the "Testing" document.
+
+ - Expand the "Abstractions vs. bindings" section of the "General
+   Information" document.
+
+----------------------------------------------------------------
+Alice Ryhl (3):
+      rust: add `Module::as_ptr`
+      rust: sync: add `ArcBorrow::from_raw`
+      rust: sync: add `Arc::into_unique_or_drop`
+
+Benno Lossin (4):
+      rust: macros: add `decl_generics` to `parse_generics()`
+      rust: macros: allow generic parameter default values in `#[pin_data]`
+      rust: workqueue: add `#[pin_data]` to `Work`
+      rust: init: change the generated name of guard variables
+
+Boqun Feng (1):
+      rust: types: Make Opaque::get const
+
+Danilo Krummrich (2):
+      rust: str: add {make,to}_{upper,lower}case() to CString
+      rust: alloc: fix dangling pointer in VecExt<T>::reserve()
+
+Dirk Behme (1):
+      docs: rust: extend abstraction and binding documentation
+
+Laura Nao (1):
+      docs: rust: Add instructions for the Rust kselftest
+
+Miguel Ojeda (6):
+      rust: upgrade to Rust 1.77.1
+      kbuild: rust: use `-Zdwarf-version` to support DWARFv5
+      kbuild: rust: use `-Zdebuginfo-compression`
+      rust: sync: implement `Default` for `LockClassKey`
+      rust: kernel: remove redundant imports
+      rust: upgrade to Rust 1.78.0
+
+Nell Shamrell-Harrington (1):
+      rust: remove unneeded `kernel::prelude` imports from doctests
+
+Raghav Narang (1):
+      rust: update `dbg!()` to format column number
+
+Thorsten Blum (1):
+      rust: helpers: Fix grammar in comment
+
+Wedson Almeida Filho (10):
+      rust: kernel: move `allocator` module under `alloc`
+      rust: alloc: introduce the `VecExt` trait
+      kbuild: use the upstream `alloc` crate
+      rust: alloc: remove our fork of the `alloc` crate
+      rust: alloc: introduce allocation flags
+      rust: alloc: introduce the `BoxExt` trait
+      rust: alloc: update `VecExt` to take allocation flags
+      rust: sync: update `Arc` and `UniqueArc` to take allocation flags
+      rust: init: update `init` module to take allocation flags
+      rust: kernel: remove usage of `allocator_api` unstable feature
+
+ Documentation/process/changes.rst          |    2 +-
+ Documentation/rust/general-information.rst |   57 +
+ Documentation/rust/testing.rst             |   25 +-
+ rust/Makefile                              |   16 +-
+ rust/alloc/README.md                       |   36 -
+ rust/alloc/alloc.rs                        |  452 ----
+ rust/alloc/boxed.rs                        | 2463 -------------------
+ rust/alloc/collections/mod.rs              |  160 --
+ rust/alloc/lib.rs                          |  288 ---
+ rust/alloc/raw_vec.rs                      |  611 -----
+ rust/alloc/slice.rs                        |  890 -------
+ rust/alloc/vec/drain.rs                    |  255 --
+ rust/alloc/vec/extract_if.rs               |  115 -
+ rust/alloc/vec/into_iter.rs                |  454 ----
+ rust/alloc/vec/is_zero.rs                  |  204 --
+ rust/alloc/vec/mod.rs                      | 3683 ----------------------------
+ rust/alloc/vec/partial_eq.rs               |   49 -
+ rust/alloc/vec/set_len_on_drop.rs          |   35 -
+ rust/alloc/vec/spec_extend.rs              |  119 -
+ rust/bindings/bindings_helper.h            |    3 +
+ rust/helpers.c                             |    2 +-
+ rust/kernel/alloc.rs                       |   73 +
+ rust/kernel/{ => alloc}/allocator.rs       |   19 +-
+ rust/kernel/alloc/box_ext.rs               |   56 +
+ rust/kernel/alloc/vec_ext.rs               |  182 ++
+ rust/kernel/error.rs                       |   14 +-
+ rust/kernel/init.rs                        |   63 +-
+ rust/kernel/init/macros.rs                 |   47 +-
+ rust/kernel/lib.rs                         |   13 +-
+ rust/kernel/net/phy.rs                     |    2 +-
+ rust/kernel/prelude.rs                     |    2 +
+ rust/kernel/print.rs                       |    5 -
+ rust/kernel/std_vendor.rs                  |    7 +-
+ rust/kernel/str.rs                         |   98 +-
+ rust/kernel/sync.rs                        |    6 +
+ rust/kernel/sync/arc.rs                    |  189 +-
+ rust/kernel/sync/condvar.rs                |    3 +-
+ rust/kernel/sync/lock.rs                   |    2 +-
+ rust/kernel/sync/lock/mutex.rs             |    4 +-
+ rust/kernel/sync/lock/spinlock.rs          |    4 +-
+ rust/kernel/task.rs                        |    2 +-
+ rust/kernel/types.rs                       |    6 +-
+ rust/kernel/workqueue.rs                   |   54 +-
+ rust/macros/helpers.rs                     |  122 +-
+ rust/macros/pin_data.rs                    |    2 +
+ rust/macros/zeroable.rs                    |    1 +
+ samples/rust/rust_minimal.rs               |    6 +-
+ samples/rust/rust_print.rs                 |    4 +-
+ scripts/Makefile.build                     |    2 +-
+ scripts/Makefile.debug                     |    8 +
+ scripts/generate_rust_analyzer.py          |    2 +-
+ scripts/generate_rust_target.rs            |    2 +-
+ scripts/min-tool-version.sh                |    2 +-
+ 53 files changed, 878 insertions(+), 10043 deletions(-)
+ delete mode 100644 rust/alloc/README.md
+ delete mode 100644 rust/alloc/alloc.rs
+ delete mode 100644 rust/alloc/boxed.rs
+ delete mode 100644 rust/alloc/collections/mod.rs
+ delete mode 100644 rust/alloc/lib.rs
+ delete mode 100644 rust/alloc/raw_vec.rs
+ delete mode 100644 rust/alloc/slice.rs
+ delete mode 100644 rust/alloc/vec/drain.rs
+ delete mode 100644 rust/alloc/vec/extract_if.rs
+ delete mode 100644 rust/alloc/vec/into_iter.rs
+ delete mode 100644 rust/alloc/vec/is_zero.rs
+ delete mode 100644 rust/alloc/vec/mod.rs
+ delete mode 100644 rust/alloc/vec/partial_eq.rs
+ delete mode 100644 rust/alloc/vec/set_len_on_drop.rs
+ delete mode 100644 rust/alloc/vec/spec_extend.rs
+ create mode 100644 rust/kernel/alloc.rs
+ rename rust/kernel/{ => alloc}/allocator.rs (85%)
+ create mode 100644 rust/kernel/alloc/box_ext.rs
+ create mode 100644 rust/kernel/alloc/vec_ext.rs
