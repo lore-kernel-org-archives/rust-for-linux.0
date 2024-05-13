@@ -1,159 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9E1DF6C;
-	Mon, 13 May 2024 13:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BDA50279;
+	Mon, 13 May 2024 14:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715605724; cv=none; b=L2/OoBKNigAErHGeGHFoY8FcwThCc2ULN6OnWmnI+eEoTKN0dAuCUMYqXfY+lbIMPzgP7mgV0+9NIwjFWDuENaL6xieHWSqhbufaoNmZvgz1/pYbZ9flL7xu0HK4XUcq3QDe0gUEAd1ydNZCIJ7feaxBHacAGHdfcB7kdOPygsQ=
+	t=1715609193; cv=none; b=SzwPi+yhdtw7jJM2ZkIp7ErMwGM3Ex+8ueeRiZYgm8G0JZeeJw/lps0iretTubHeijXXoc2OnqvCc/NyH3JNncbgI9ZNnr6sE59YT7bWHgiZ2eBxfkCCW5S7qEpYmWSgjvNhJ2YGiIQd/t06WK6GSv6/l3RSN6SOTBgPWy36ekA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715605724; c=relaxed/simple;
-	bh=jMBP6V+KrQiY7ae7qCJD7wO2o7LlEvAAj86B765UqAE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZHY05MmvjgRjHn4EjgUXS8XgO+5YCPvGL8PXRmjL+j5In/+D9d2miQlOHABOW7TCaO6xi8RxVOFer+6nFP+1F4MX/TGObyFd9EUCRYMkoutaE4L1lf7zw6Ia9rsk4fxXSD4eRzO63AqfU1lkRkR/fZxQ4pkhtj7ccYuP/cHbbJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLHbT8oY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715609193; c=relaxed/simple;
+	bh=SxnE7rnuwXBi3EDidJwQErZKklISfFQ7ftxTwHnECuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=snCVkR8JvT7vVEEKpKX2ZWRZzlKxrReVe708w1unVn1StWkHfu+8Z8jaNj3zTjXhv71p08jWaGtN6KmJWOAJAoMSAr2efqigup8JReOwiTJEr8lqVZDDMiLVYSJRjkkWcQmLz7i053nbm1IyzuMqzpWUujqhwXGH+9SYOTZTcw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MDnREElo; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLHbT8oY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C93C32782;
-	Mon, 13 May 2024 13:08:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715605724;
-	bh=jMBP6V+KrQiY7ae7qCJD7wO2o7LlEvAAj86B765UqAE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KLHbT8oYxB7LFOPNmCzkTbTuUHu5Xo7HGa+GZJwAtDu9mh+NF94yhQVh5y31OmTv8
-	 +9RbHUHEXJhpll++YzGTK9bpuLBF8O5kpnE7eaa+P1SU6PTaIKzhXKNeoAkSaEXORE
-	 BNyAfhtWDUhzxfX7xYLTguzxzVa4HGM4XIhMi6t85K6rG1Tv8j0MPoEIsu/n5qVGzA
-	 Q6IdgpzRwpfmHUwmdBm8nUIjVteAZDvrp4Yu21v663slo2hGKd6fABS8rTMttFNi3l
-	 VP+7+2TpKxG5onWKhFoTFKs3N+dWo7OiXz+5mZtOJ/oJ8Yjb3fGBgO6wy/RnmiCrat
-	 eFg5LPWwUyRuQ==
-Message-ID: <f3a5d43c-b94b-49ef-a883-c27e4720c8a5@kernel.org>
-Date: Mon, 13 May 2024 22:08:43 +0900
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDnREElo"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-792c7704e09so283321385a.1;
+        Mon, 13 May 2024 07:06:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715609190; x=1716213990; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=97qvlrEWAPmxPYorX7UQV2kS8NfIOzG0eHj66y0TAo4=;
+        b=MDnREEloq4zsNQVJq2DJJAM63gmZFO240iTiYhQb/cppBcbaRVL32jBgo0QPVklonl
+         bG6tx236JHycDZj1emQMFFub1KIlbLsMHNTMoR9cHvr6k0/OG+7HYlZ+W9qzHoNUAe24
+         tyTU14PLqT1WGAUMcDdoac/mD9t7Q+bckZ9UtHhdYMGzyotRTos+Byy7043jB94cuOC/
+         dYvfVRgDTtOl4vh7xdSFMgdFjD/+Ik1OqbKtrkB5hSQJV6tgEU5kUTD+x1VaSimIT9lD
+         rmx211EtI70U6n8mgRRLdb0Kc9RS+hGcpHnpizD032mS0VeoYXvWJX4rJLnvlTuEAU+q
+         +Vxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715609190; x=1716213990;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=97qvlrEWAPmxPYorX7UQV2kS8NfIOzG0eHj66y0TAo4=;
+        b=lsgdBf1kRlpiXeUfozUp88UIujhre05ti7eNvY38knkNXohS7T+rvDb7kRBWZVMbt5
+         vMwxjgP/e2jBiyW9p7Cp9vH09rsfv0hA1J5K+ijOzTmMWRwedloYxJrwgYfzIy5GUbfj
+         kpFdHn9S/VRE9/Nq94Rb7KqFoIO2V2rkWz0vliMEA31p1swDd0vHuiwCzU3Dz6Advinw
+         aRju6J1si9ll+p/rXFI+uCPjDOLlEmnV6itg1a82YYEAA2rxBgj80n0FcBv1Y/lRm7Zz
+         COIaspGBHwa7rIk0qwImMQEFUTJVPKocxuna1myuU/hns7B3rs9RmZlJHJ8tp1C6HiX1
+         9hIw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0vPuRng+/Eht8OPNvUrAUi0k2vwgYOiwiqMsnQLm+s6WK9lKWbVxWUiRMZR08EyWmTv6q0CWSZhK14Mt1RsVacjBva8Bk9b511ShbJeduYMDykh3onkmK97NpfPx2RwxpbBpAuZbD7QigHOc=
+X-Gm-Message-State: AOJu0YxbZQm4RxgPv++W+F//n6LRs95xKU5oA94qwd/G6MPJEX9YkLUK
+	cF7n5ZXEYAR18jkm89ZLsgQYWWheXJsHfmbjRtYWf1AbgUJmwcwg
+X-Google-Smtp-Source: AGHT+IHcbAWlauuYuu89G0SaL1p+fkjOPQxOioCqkRiv6vcAaQvHx3eeai/M4AoB6cGDSMxsiUENjA==
+X-Received: by 2002:a05:620a:4448:b0:790:9dad:ec52 with SMTP id af79cd13be357-792bbdd9cfemr2314253385a.13.1715609190525;
+        Mon, 13 May 2024 07:06:30 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-792bf2fc3dbsm458274685a.96.2024.05.13.07.06.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 May 2024 07:06:29 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 0FBE11200066;
+	Mon, 13 May 2024 10:06:29 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Mon, 13 May 2024 10:06:29 -0400
+X-ME-Sender: <xms:ZB5CZkCkp5r9oUYz_3j6oq0jnbPqzovN2yk_NTREEG3SBSWvUCEJvg>
+    <xme:ZB5CZmiL6Kk-S22o7ITqtaZbN3qCFSAc4l3jjpLRKbtTWq0w_5pXF64jysInkzcB6
+    GvAo7WAh1cH_pF9Gw>
+X-ME-Received: <xmr:ZB5CZnkjg_ALpRlpzcLASh4U-ClvgtStNmuOIKbRJhgNbVTAQ-K0_84oc7AayA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeggedgjedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedvveevleevhfekhefftdek
+    ieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
+    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
+    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:ZB5CZqw8JCDBVFs_bmi_FCRulnhBEXP1Y9JwvnYCaoL8g50xLXCphw>
+    <xmx:ZB5CZpQhxJCiINKm1sQKqotT2EhfNzGE9fY207e3MnyBP87hHnKY6A>
+    <xmx:ZB5CZlbgA6dui3585w5ftZB0cGrx7HRu6cHdlGUvnIgn4QwnbHt45g>
+    <xmx:ZB5CZiRaGW550WxK5YAh7ISH7pt9qb-Sv3oqTZs8V9AAtW-1j2rFWg>
+    <xmx:ZR5CZjCGqAEm7WMd6eiWbKnfutUoJUEpTvUTFWXqL_0pwLRuP73QDsyb>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 13 May 2024 10:06:28 -0400 (EDT)
+Date: Mon, 13 May 2024 07:06:19 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, John Stultz <jstultz@google.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
+Message-ID: <ZkIeW_NgXFYsAx5M@boqun-archlinux>
+References: <Zigj-lY5lnBSKuib@boqun-archlinux>
+ <87cypvnpwn.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] rust: block: introduce `kernel::block::mq` module
-To: Andreas Hindborg <nmi@metaspace.dk>, Bart Van Assche <bvanassche@acm.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
- Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>,
- Hannes Reinecke <hare@suse.de>, Ming Lei <ming.lei@redhat.com>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- Chaitanya Kulkarni <chaitanyak@nvidia.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>,
- =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
- Joel Granados <j.granados@samsung.com>,
- "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
- Daniel Gomez <da.gomez@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>,
- Philipp Stanner <pstanner@redhat.com>, Conor Dooley <conor@kernel.org>,
- Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
- =?UTF-8?Q?Matias_Bj=C3=B8rling?= <m@bjorling.me>,
- open list <linux-kernel@vger.kernel.org>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
- "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
- "gost.dev@samsung.com" <gost.dev@samsung.com>
-References: <20240512183950.1982353-1-nmi@metaspace.dk>
- <20240512183950.1982353-2-nmi@metaspace.dk>
- <1b618942-a0fe-45d9-90de-eede429e7284@acm.org> <87r0e5j2st.fsf@metaspace.dk>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <87r0e5j2st.fsf@metaspace.dk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87cypvnpwn.ffs@tglx>
 
-On 2024/05/13 21:48, Andreas Hindborg wrote:
+On Thu, May 09, 2024 at 02:14:16PM +0200, Thomas Gleixner wrote:
+> On Tue, Apr 23 2024 at 14:11, Boqun Feng wrote:
+> > On Thu, Apr 11, 2024 at 04:08:01PM -0700, Boqun Feng wrote:
+> >> Currently since Rust code is compiled with "-Coverflow-checks=y", so a
+> >> normal substraction may be compiled as an overflow checking and panic
+> >> if overflow happens:
+> >> 
+> >>         subq    %rsi, %rdi
+> >>         jo      .LBB0_2
+> >>         movq    %rdi, %rax
+> >>         retq
+> >> .LBB0_2:
+> >>         pushq   %rax
+> >>         leaq    str.0(%rip), %rdi
+> >>         leaq    .L__unnamed_1(%rip), %rdx
+> >>         movl    $33, %esi
+> >>         callq   *core::panicking::panic::h59297120e85ea178@GOTPCREL(%rip)
+> >> 
+> >> although overflow detection is nice to have, however this makes
+> >> `Ktime::sub()` behave differently than `ktime_sub()`, moreover it's not
+> >> clear that the overflow checking is helpful, since for example, the
+> >> current binder usage[1] doesn't have the checking.
+> >
+> > Ping. Thomas, John and Stepthen. Could you take a look at this, and the
+> > discussion between Miguel and me? The key question is the behavior when
+> > ktime_sub() hits a overflow, I think. Thanks!
 > 
-> Hi Bart,
+> In principle ktime_sub() should not overflow for regular use cases.
 > 
-> Bart Van Assche <bvanassche@acm.org> writes:
-> 
->> On 5/12/24 11:39, Andreas Hindborg wrote:
->>> +    /// Set the logical block size of the device.
->>> +    ///
->>> +    /// This is the smallest unit the storage device can address. It is
->>> +    /// typically 512 bytes.
->>
->> Hmm ... all block devices that I have encountered recently have a
->> logical block size of 4096 bytes. Isn't this the preferred logical
->> block size for SSDs and for SMR hard disks?
-> 
-> Yes, that is probably true. This text was lifted from the entry on the
-> sysfs attribute in `Documentation/ABI/stable/sysfs-block`, but maybe
-> that needs to be updated as well.
-> 
->>
->>> +    /// Set the physical block size of the device.
->>> +    ///
->>> +    /// This is the smallest unit a physical storage device can write
->>> +    /// atomically. It is usually the same as the logical block size but may be
->>> +    /// bigger. One example is SATA drives with 4KB sectors that expose a
->>> +    /// 512-byte logical block size to the operating system.
->>
->> Please be consistent and change "4 KB sectors" into "4 KB physical block
->> size".
-> 
-> OK, I will. I can CC the changes to
-> `Documentation/ABI/stable/sysfs-block` then'
-> 
->>
->> I think that the physical block size can also be smaller than the
->> logical block size. From the SCSI SBC standard:
->>
->> Table 91 — LOGICAL BLOCKS PER PHYSICAL BLOCK EXPONENT field
->> -----  ------------------------------------------------------------
->> Code   Description
->> -----  ------------------------------------------------------------
->> 0      One or more physical blocks per logical block (the number of
->>        physical blocks per logical block is not reported).
->> n > 0  2**n logical blocks per physical block
->> -----  ------------------------------------------------------------
-
-That text is bad. 0 really means physical == logical. Otherwise, there is no way
-to know how to access the drive because the logical size is the unit for
-accessing the drive. In practice, the logical block size is always smaller or
-equal to the physical block size. The physical block size is always a power of 2
-number of logical blocks.
-
-> How does that work? Would the drive do a read/modify/write internally?
-
-Yes.
-
-> Would that not make the physical block size as seen from the OS equal to
-> the smaller logical block size?
-
-Not necessarily. There are a lot of 512e drives out there: 4K physical, 512B
-logical. So applications/hosts can still do 512B accesses for compatibility but
-performance may be bad. For such drive, the user should really do 4K aligned
-accesses.
-
-> 
->>
->>> +impl<T: Operations, S: GenDiskState> GenDisk<T, S> {
->>> +    /// Call to tell the block layer the capacity of the device in sectors (512B).
->>
->> Why to use any other unit than bytes in Rust block::mq APIs? sector_t
->> was introduced before 64-bit CPUs became available to reduce the number
->> of bytes required to represent offsets. I don't think that this is still
->> a concern today. Hence my proposal to be consistent in the Rust block::mq API
->> and to use bytes as the unit in all APIs.
-> 
-> I think that is very good idea. How do others feel about this?
-> 
-> BR Andreas
-> 
+> If the binder example overflows the substraction, then something is
+> seriously wrong. Though in that case as it's only for debug purposes
+> panicing would be totally counter productive. A warning might be
+> appropriate though.
 > 
 
--- 
-Damien Le Moal
-Western Digital Research
+Thanks! Looks to me, a reasonable implementation would be calling
+`overflowing_sub`[1] and print a warning if overflow happens:
 
+	<in the implementation of Sub trait of Ktime>
+
+	let (ret, overflow) = self.inner.overflowing_sub(other.inner);
+
+	if overflow {
+		pr_err!("Overflow on Ktime: {} - {}\n", self.inner, other.inner);
+	}
+
+	return ret;
+
+I will use this as a new version for more reviews.
+
+[1]: https://doc.rust-lang.org/std/primitive.i64.html#method.overflowing_sub
+
+Regards,
+Boqun
+
+> Thanks,
+> 
+>         tglx
+> 
+> 
