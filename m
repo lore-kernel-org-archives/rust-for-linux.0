@@ -1,165 +1,230 @@
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F11143740;
-	Tue, 14 May 2024 13:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246541448ED;
+	Tue, 14 May 2024 13:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715692390; cv=none; b=hs6YxOOVck+la3biKYGE+XRYCnXL2+C9knwK4qyuMN1HL5875dp84keNev6TYBJCIC+UaZYtrf6NtMVq3+5QVbRXqDRJMfijz8whG4ZVfalgIO63VZnFtsJBRIuK5RwzORPFt2qrxYt8G/gPGCSh4lmkebfVQHViFekEBmbyAvs=
+	t=1715692655; cv=none; b=ABM6MBmKi6q2j3GenZv5ShrhAZvOsGzhQh3B8elIlB3e2ETjjZkdrKIsX0pLtuxCH8/s311doFQQwaEnGT5Nrch5Wd1+SBoApVr8wazlNz96Fs1V8uFDldZDLEbHfXwRDq7yAGUKWLDAQio1JFO59K8OKhIMh2kVV/TpbYfRfCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715692390; c=relaxed/simple;
-	bh=2lHTd9vD3VaBq8JrPEYGQii+4KayEbxjkulRHrk3MWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rAV0c66vAyMPqKbLSanV9SbEFyVconFT7Hu8bWvrBb98bYVThFMlu5uaYw9ToqalUhQXhMWG/BxikCalJZD6ybByICY/leLPhNYp7Jq6LWoLaetLL1Q4iYrAVm2A2KRKD3Tn7I1I1nUxzfQvPRzIbyV7YdPCR22RloGvbC/g9x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LtDHnUEv; arc=none smtp.client-ip=209.85.167.182
+	s=arc-20240116; t=1715692655; c=relaxed/simple;
+	bh=dxfIijSCE4k/vVSJI5jpHtKZm2tg9+OL+IyXy4n8ttk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=risT42oC2b0lQwyifZ0ufSMIeBZiEN1gpsDvYuVqzmWHbTIrYhheoUzlGp1pkc7cXy4FlbIjLM72ZVZVUIYX5gZW+gGOSAbUMJGeaqh45A7VNF7OL1Syd3+ehWRL7KB2mRtfPC/CDQvJpmVooALMu5UiFIGRl6RGPoGaz6kaxp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LOxXn9Ny; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LtDHnUEv"
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3c999d53e04so2462342b6e.2;
-        Tue, 14 May 2024 06:13:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LOxXn9Ny"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1eca195a7c8so45598935ad.2;
+        Tue, 14 May 2024 06:17:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715692388; x=1716297188; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=aun1f18+4H8YVvMFiItfXiXA+SpbSD5X4Dn6XNELRpk=;
-        b=LtDHnUEvawTvQ9gHc53BkpB99aoyQAL3yGmMl7pAaU1F0JlEJPPaK+clG/Qd0aM1k7
-         rG/q/YhDi/jAyQUYmGMUCtTLiCreP0aGFBkd2zogwbMxUFdox5/9o55j0kdou5FD9/JG
-         7C+dfbI4O4VETLJsyqXrkgpoaKfnKaRp/SomI3ieRPzNwQQuKIgLr06PPI6p805tIfia
-         dnixFos01VL8azYHXEQiiGV3OT5Ia+5HlkqqvfHfHVfAYI3E+R67ZWArT70Yw0JeZsDd
-         +8TaXjHJIYWmfg56noA0e02DVIEs5VSR0iCuhbGOTyvrATKfhvjuswJjLum+wL1w0/xx
-         9y5Q==
+        d=gmail.com; s=20230601; t=1715692653; x=1716297453; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=exr7aat/FWCYrncbM0fcEUOaeQqr5aYv8sckR5lfn3E=;
+        b=LOxXn9Ny59zLC+DlpwnE8B4hjoR72a45rmJfyYr4AVmWyGmUV//kYAyky3Uf0Pq22a
+         XlgrzAc6j/wm075GHQJvG3bJfjmoBxIU2Tl5XNmMxDqR7fPu4JVKtzQnur+R+zoIsHiW
+         juixBuUJJym6L/O/jc2/VEsVcfc2kEJyu6q1/zd3tC033ZhTdHt3yg8uQaX1mACCoEGu
+         DN/7oWY3vH/sSAav3nL3kX/ffpx7QXlMWUlLBeZQiLZSicepthPePE3/hyqGTB218iEJ
+         rzG9KrGoFbPtoJQ1yUaUd+87We9IGXP5D08DlhlycXGQVSgGacirj5r46sVULhQm1NUu
+         xINA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715692388; x=1716297188;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1715692653; x=1716297453;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aun1f18+4H8YVvMFiItfXiXA+SpbSD5X4Dn6XNELRpk=;
-        b=Rcuh0OKqzBfecHwsLFNY/fG4GlRYE0z9bxGCeL0ZL33cSfz/JexbQwhwo+Z7CUk1Bv
-         H2lNEEia9lVCrhb+xOYaDAkpaojQkvyfyU57PzJXj0xae58eG41HyOywrbwxoNBD4Ncd
-         /0W4TINug6Ioq/sc85G+C9AOUXC31bm6RwJAQY+9dLRQvV4srw9jlvqXN3pnqjwA7XMp
-         A2gOHqecOEz5Dm1w+WRExitbJa8Rgkc+jIy+U1P5ElgA16eUnXXXwjmylM8372FnHh9T
-         /5KlPWRR8tOiIXCzmq5r7bRCiJMRaWe/+uIjAwYXPEPx3+LzKeQlwhr9lBtkcSHcHjGU
-         S4ig==
-X-Forwarded-Encrypted: i=1; AJvYcCWuUNMJosKkQrM+OC1Eu67pBzuVb4XlWux8PhSnBke6Ofd13rOr3xLoDpG/XgAm2Oa7lVElAlBZdyP/giwBWYFjswR05V8oRNlleafqKYT+aKH8JJ0KXHCDXYirA3YRw/uewue3PvJw68mESi8=
-X-Gm-Message-State: AOJu0YxBtitkM7vPM3PwhCCD196622AU1j4ByccAlZFAMEATLTHzujyk
-	u8NN9n4xqD7S1mx/VFkHJ1AYMq98J2LiUx9c/nmh53SBk3L3WvJt
-X-Google-Smtp-Source: AGHT+IF15FNrz0c/YsAcF06c7l9yWKhemZCZaq1+dTj53wOeDjDUvnmNbB+f+xaDjqjDDDJoEZXahw==
-X-Received: by 2002:a54:4702:0:b0:3c9:9567:e5bd with SMTP id 5614622812f47-3c9970ca982mr13658803b6e.54.1715692387116;
-        Tue, 14 May 2024 06:13:07 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-792bf27f625sm561460185a.33.2024.05.14.06.13.06
+        bh=exr7aat/FWCYrncbM0fcEUOaeQqr5aYv8sckR5lfn3E=;
+        b=c/7I4RyDtquJ6EdiGndP6Fn2I/aajYeC+bEysXJODzECrZaIaybgXot0xB3Sg/d+Nh
+         jAduDRocqMvz9EkUi+EjzGS4zTt1OFQwtXNDfk64b0tCl1jGNveBGXn0PCo4EWMKHY0v
+         DAeAdIG7xcEHiiHMJ+HIeRZxFsoAL+AQi3WVavrtY/FaifYor4/yIYHFaC2lZ7qmdQN7
+         k0z7H66T36eQMQCuEpErX/Zk4Cy18fF7Tax0lP2nzNsoM/3PJ1R+c/J2H71pZcfTULj4
+         mzBcr9XenrdhJ7Uo8wGEmqPWu6DivxYbz6jWo5dJ7Lt3AvZ0ZJ1/4T4BeND4HWgt3bzm
+         9/OA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQXNCi7YrimvK5nqp671WefhZsz6xyHuPDyO8JjLAqcgkp/LdZ1ZDU76eYrUTCrnhBKz4ORV3clB8GOL6w3+rmTxohkpIbMsDBFJFWAIXz36en6P2ihPGXTNe36J6Qn/jmsXKMtj2BE5aJCLdy3t9WrOl/1FHC86p7QOHJrdUufPKGEkpQfOYAlRyp
+X-Gm-Message-State: AOJu0YyS7oyvzoCIMQOANl+bwgxaSO/m0YTS0wpRaKa4f/zLol2js/pX
+	JE1iyFxDTLgGAw1uj4NZ7sgY5/wtWtJ9Dj/qHLCxOz5YptWOz4tL
+X-Google-Smtp-Source: AGHT+IFNUk9FNEeYd3kTqCAwEoYFl8xe6J6nOxovaCuVEKq5dmcbS/qnnHjmFB+qELcW291mGZE4xA==
+X-Received: by 2002:a17:902:efca:b0:1eb:ed2:f74c with SMTP id d9443c01a7336-1ef440596b4mr111334915ad.67.1715692653213;
+        Tue, 14 May 2024 06:17:33 -0700 (PDT)
+Received: from wedsonaf-dev.. ([50.204.89.32])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1ef0b9d18a4sm97277335ad.56.2024.05.14.06.17.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 May 2024 06:13:06 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 241F31200066;
-	Tue, 14 May 2024 09:13:06 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Tue, 14 May 2024 09:13:06 -0400
-X-ME-Sender: <xms:YWNDZuiMqNkaiks8U3N61vFl_qq6LfRH2wKzQ0bftso4ZGmDXhQyiQ>
-    <xme:YWNDZvCKMnkSd42lbbDE9yI1Bra6kqYQCD29mTlEOVbTaJVVj4Vo4lFOJJXRan5i1
-    cJFnHZmoedeks40NA>
-X-ME-Received: <xmr:YWNDZmEg-S9JBDv1u6SIRhGRzWEt777fqVTNaDv5a4ROA9KrI31E6OTGFVwHXA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegiedgieduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepgeekgeettdelffekfedtveelueeiudevjeegieekvdegkedufeetfeei
-    iedvueelnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhht
-    hhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquh
-    hnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:YWNDZnRbeXzQTVFS-8rlP951nqZ441rnFEu49vDRV2BBFzzL_jBPhg>
-    <xmx:YWNDZrzsCSsGm4KOB1fbmgykRDilC9jwZYGL1qqTrw8qv5x4Rh2Qww>
-    <xmx:YWNDZl5QIQRzovoG61DRbawlONVeNTNjFmTrpaus4gCrzl4DiK8hEw>
-    <xmx:YWNDZow9qb3YLxZ3Z9W-S9rTQtkIUC-Re9Bzc_A27CUe7Gs9IJIh9A>
-    <xmx:YmNDZnjJG_xY24h3SYKGk9vThvtAVqoAVaNlKq8fbR9C0FyT2FzU8WJe>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 May 2024 09:13:05 -0400 (EDT)
-Date: Tue, 14 May 2024 06:12:53 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-	Mara Bos <m-ou.se@m-ou.se>, Amanieu d'Antras <amanieu@gmail.com>
-Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
-Message-ID: <ZkNjVbqR6gYqg4YZ@boqun-archlinux>
-References: <Zigj-lY5lnBSKuib@boqun-archlinux>
- <87cypvnpwn.ffs@tglx>
- <CANiq72nGHhgRjfMOhz=ss51q2egHYexPMVvWTr0RES9WAmMF=A@mail.gmail.com>
+        Tue, 14 May 2024 06:17:32 -0700 (PDT)
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Dave Chinner <david@fromorbit.com>
+Cc: Kent Overstreet <kent.overstreet@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Subject: [RFC PATCH v2 00/30] Rust abstractions for VFS
+Date: Tue, 14 May 2024 10:16:41 -0300
+Message-Id: <20240514131711.379322-1-wedsonaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nGHhgRjfMOhz=ss51q2egHYexPMVvWTr0RES9WAmMF=A@mail.gmail.com>
 
-On Mon, May 13, 2024 at 05:04:43PM +0200, Miguel Ojeda wrote:
-> On Thu, May 9, 2024 at 2:14 PM Thomas Gleixner <tglx@linutronix.de> wrote:
-> >
-> > In principle ktime_sub() should not overflow for regular use cases.
-> >
-> > If the binder example overflows the substraction, then something is
-> > seriously wrong. Though in that case as it's only for debug purposes
-> > panicing would be totally counter productive. A warning might be
-> > appropriate though.
-> 
-> Thanks for the clarification Thomas.
-> 
-> Alice and I pinged about this in the RustNL Unconf, i.e. about having
-> a way to customize what happens on integer overflow (and, in general,
-> other panics too), which I had in:
-> 
->     https://github.com/Rust-for-Linux/linux/issues/354
-> 
-> e.g. like UBSan that allows a "report and continue" option.
-> 
-> We chatted with Mara and Amanieu, who were receptive. In particular,
-> Mara posted right away:
-> 
->     https://github.com/rust-lang/rfcs/pull/3632
-> 
-> as a possible first step to eventually have that ability, mentioning
-> Rust for Linux as a user.
-> 
-> If we get the ability to customize those, then this could simply be a
-> normal arithmetic operation, i.e. like any other. That is, considered
-> to be a bug if it overflows.
-> 
+This series introduces Rust abstractions that allow read-only file systems to
+be written in Rust.
 
-That is nice to have, thank you guys!
+There are three file systems implementations using these abstractions
+abstractions: ext2, tarfs, and puzzlefs. The first two are part of this series.
 
-> Meanwhile, one alternative is going with Boqun's approach, but I would
-> just use the standard operator (i.e. what we do elsewhere) and try to
-> get the customization happen as soon as possible since we will need it
-> for everything else (plus we avoid to make the code uglier with
-> changes that we will need to revert anyway; and it also allows us to
-> easily test any new customization feature from the compiler/library).
-> 
+Rust file system modules can be declared with the `module_fs` macro and are
+required to implement the following functions (which are part of the
+`FileSystem` trait):
 
-However, I must point out that it needs more than a customized panic
-handler to work: we also need to change the code generation (or adding
-a different flag similar to -Coverflow-checks), because the current code
-generation is Rust panic when overflow happens, which means the
-subsequent code is unreachable.
+    fn fill_super(
+        sb: &mut SuperBlock<Self, sb::New>,
+        mapper: Option<inode::Mapper>,
+    ) -> Result<Self::Data>;
 
-Regards,
-Boqun
+    fn init_root(sb: &SuperBlock<Self>) -> Result<dentry::Root<Self>>;
 
-> Cheers,
-> Miguel
+They can optionally implement the following:
+
+    fn read_xattr(
+        _dentry: &DEntry<Self>,
+        _inode: &INode<Self>,
+        _name: &CStr,
+        _outbuf: &mut [u8],
+    ) -> Result<usize>;
+
+    fn statfs(_dentry: &DEntry<Self>) -> Result<Stat>;
+
+They may also choose the type of the data they can attach to superblocks and/or
+inodes.
+
+Lastly, file systems can implement inode, file, and address space operations
+and attach them to inodes when they're created, similar to how C does it. They
+can get a ro address space operations table from an implementation of iomap
+operations, to be used with generic ro file operations.
+
+A git tree is available here:
+    git://github.com/wedsonaf/linux.git vfs-v2
+
+Web:
+    https://github.com/wedsonaf/linux/commits/vfs-v2
+
+---
+
+Changes in v2:
+
+- Rebased to latest rust-next tree
+- Removed buffer heads
+- Added iomap support
+- Removed `_pin` field from `Registration` as it's not needed anymore
+- Renamed sample filesystem to match the module's name
+- Using typestate instead of a separate type for superblock/new-superblock
+- Created separate submodules for superblocks, inodes, dentries, and files
+- Split out operations from FileSystem to inode/file/address_space ops, similar to how C does it
+- Removed usages of folio_set_error
+- Removed UniqueFolio, for now reading blocks from devices via the pagecache
+- Changed map() to return the entire folio if not in highmem
+- Added support for unlocking the folio asynchronously
+- Added `from_raw` to all new ref-counted types
+- Added explicit types in calls to cast()
+- Added typestate to folio
+- Added support for implementing get_link
+- Fixed data race when reading inode->i_state
+- Added nofs scope support during allocation
+- Link to v1: https://lore.kernel.org/rust-for-linux/20231018122518.128049-1-wedsonaf@gmail.com/
+
+---
+
+Wedson Almeida Filho (30):
+  rust: fs: add registration/unregistration of file systems
+  rust: fs: introduce the `module_fs` macro
+  samples: rust: add initial ro file system sample
+  rust: fs: introduce `FileSystem::fill_super`
+  rust: fs: introduce `INode<T>`
+  rust: fs: introduce `DEntry<T>`
+  rust: fs: introduce `FileSystem::init_root`
+  rust: file: move `kernel::file` to `kernel::fs::file`
+  rust: fs: generalise `File` for different file systems
+  rust: fs: add empty file operations
+  rust: fs: introduce `file::Operations::read_dir`
+  rust: fs: introduce `file::Operations::seek`
+  rust: fs: introduce `file::Operations::read`
+  rust: fs: add empty inode operations
+  rust: fs: introduce `inode::Operations::lookup`
+  rust: folio: introduce basic support for folios
+  rust: fs: add empty address space operations
+  rust: fs: introduce `address_space::Operations::read_folio`
+  rust: fs: introduce `FileSystem::read_xattr`
+  rust: fs: introduce `FileSystem::statfs`
+  rust: fs: introduce more inode types
+  rust: fs: add per-superblock data
+  rust: fs: allow file systems backed by a block device
+  rust: fs: allow per-inode data
+  rust: fs: export file type from mode constants
+  rust: fs: allow populating i_lnk
+  rust: fs: add `iomap` module
+  rust: fs: add memalloc_nofs support
+  tarfs: introduce tar fs
+  WIP: fs: ext2: add rust ro ext2 implementation
+
+ fs/Kconfig                        |   2 +
+ fs/Makefile                       |   2 +
+ fs/rust-ext2/Kconfig              |  13 +
+ fs/rust-ext2/Makefile             |   8 +
+ fs/rust-ext2/defs.rs              | 173 +++++++
+ fs/rust-ext2/ext2.rs              | 551 +++++++++++++++++++++
+ fs/tarfs/Kconfig                  |  15 +
+ fs/tarfs/Makefile                 |   8 +
+ fs/tarfs/defs.rs                  |  80 +++
+ fs/tarfs/tar.rs                   | 394 +++++++++++++++
+ rust/bindings/bindings_helper.h   |  11 +
+ rust/helpers.c                    | 182 +++++++
+ rust/kernel/block.rs              |  10 +-
+ rust/kernel/error.rs              |   8 +-
+ rust/kernel/file.rs               | 251 ----------
+ rust/kernel/folio.rs              | 305 ++++++++++++
+ rust/kernel/fs.rs                 | 492 +++++++++++++++++++
+ rust/kernel/fs/address_space.rs   |  90 ++++
+ rust/kernel/fs/dentry.rs          | 136 ++++++
+ rust/kernel/fs/file.rs            | 607 +++++++++++++++++++++++
+ rust/kernel/fs/inode.rs           | 780 ++++++++++++++++++++++++++++++
+ rust/kernel/fs/iomap.rs           | 281 +++++++++++
+ rust/kernel/fs/sb.rs              | 194 ++++++++
+ rust/kernel/lib.rs                |   6 +-
+ rust/kernel/mem_cache.rs          |   2 -
+ rust/kernel/user.rs               |   1 -
+ samples/rust/Kconfig              |  10 +
+ samples/rust/Makefile             |   1 +
+ samples/rust/rust_rofs.rs         | 202 ++++++++
+ scripts/generate_rust_analyzer.py |   2 +-
+ 30 files changed, 4555 insertions(+), 262 deletions(-)
+ create mode 100644 fs/rust-ext2/Kconfig
+ create mode 100644 fs/rust-ext2/Makefile
+ create mode 100644 fs/rust-ext2/defs.rs
+ create mode 100644 fs/rust-ext2/ext2.rs
+ create mode 100644 fs/tarfs/Kconfig
+ create mode 100644 fs/tarfs/Makefile
+ create mode 100644 fs/tarfs/defs.rs
+ create mode 100644 fs/tarfs/tar.rs
+ delete mode 100644 rust/kernel/file.rs
+ create mode 100644 rust/kernel/folio.rs
+ create mode 100644 rust/kernel/fs.rs
+ create mode 100644 rust/kernel/fs/address_space.rs
+ create mode 100644 rust/kernel/fs/dentry.rs
+ create mode 100644 rust/kernel/fs/file.rs
+ create mode 100644 rust/kernel/fs/inode.rs
+ create mode 100644 rust/kernel/fs/iomap.rs
+ create mode 100644 rust/kernel/fs/sb.rs
+ create mode 100644 samples/rust/rust_rofs.rs
+
+
+base-commit: 183ea65d1fcd71039cf4d111a22d69c337bfd344
+-- 
+2.34.1
+
