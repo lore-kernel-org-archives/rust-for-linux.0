@@ -1,83 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA68117F378;
-	Tue, 14 May 2024 17:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C305C180A6C
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 May 2024 20:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715707685; cv=none; b=NZEVaq4UsELjf4YyLf7Ph0kg1vONKmE1zRLfvQX8srgBu7mMJOwc7lMFq83D7p/Pba8LDAIKTTO7RAiXHFpabmoIHjkHirs1uXAQD1wKlzSpGelft0JUuhOccMu3ApUa0jTZD9TgbcEOGLq1/zSBG4PaMhmfrmQaVlU52JBNiRQ=
+	t=1715716832; cv=none; b=fqqYkPt4p6ZLzIZoIXoCGDYo5ovf93a2ZZzdbRtmOAPRL3gtJkZu3R/7R1akgU+5l+Ll7lGbfyb+IdUDX9TEzPopBY/J74LhgM0gSvEpXdRNMvJsv6soFEMbx59JOBj8ZpVpSS5SOP7D2jq6STmAuYqhRtX/sgOavAaCPLrSjrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715707685; c=relaxed/simple;
-	bh=Ex1jECYg9YCi18DK+c5M5YI2kVJQ/OqqOZjhQriYWAA=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=NI1WQN/+UjKaVBNGP79AUYxh4m6ECo80aBu9TFoTlDaVAGt7i8XPk4qR/DlWkK3pqayg7GrvrOqulG/fYHqZ15TQ69LWKK6I6x5Esws+acuBIgPiOoNQZ9BuwlzVoFGk+olFvylcXSn3eSnmW+wEE/CdTG4D0C6ZZca4WC1eELI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1/qr7dii; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715716832; c=relaxed/simple;
+	bh=F1BCusWVnox0inKiwWulDDxeUYd5ETJQa5nYC/mUo7w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FlzOA9p13J4c3opHMXxBk8wuaGyCWaJtK0OscIXBb2ZGius6mH1DOxgTM6eKm1A0mHa7r+FIN6ru56NegkQdAvFFPZYUMQO4rJ1b8dBwsaoClFbaAUNCSajqc7jyFt5fLzzfHuAfH19wFbYiEp+xNt3CTmXHMif2fHMMoG8EkxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=uZQHp6bg; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1/qr7dii"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646BCC2BD10;
-	Tue, 14 May 2024 17:28:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1715707684;
-	bh=Ex1jECYg9YCi18DK+c5M5YI2kVJQ/OqqOZjhQriYWAA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=1/qr7diiZFoMOkRRQAHecS9twVK6/XddQVf6LcYQfZ8frrVMFvQPtesA7vPTTbTlS
-	 b6lXYLnfiexNKGDEEeSSHJNv82F9Xc9xqceX5XyBR/td70xNUY8HsYwTZHF9+ceK3T
-	 eeiBtwEtzFdoNRXSrh9s41596Job3PtivO6KBaXw=
-Date: Tue, 14 May 2024 10:27:57 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Kees Cook <keescook@chromium.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?"Bj=F6rn_Roy_Baron"?= <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?ISO-8859-1?Q?"Arve_Hj?=
- =?ISO-8859-1?Q?=F8nnev=E5g"?= <arve@android.com>, Todd Kjos
- <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
- <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren
- Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor
- Gross <tmgross@umich.edu>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Christian
- Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v6 2/4] uaccess: always export _copy_[from|to]_user with
- CONFIG_RUST
-Message-Id: <20240514102757.b7034966a58e6cf44d75dc7d@linux-foundation.org>
-In-Reply-To: <20240418-alice-mm-v6-2-cb8f3e5d688f@google.com>
-References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com>
-	<20240418-alice-mm-v6-2-cb8f3e5d688f@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="uZQHp6bg"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2b8fb581e77so686110a91.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 May 2024 13:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1715716830; x=1716321630; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ll8ePMooaLJ++vSB+9syazdtLkK7b8/0TCj36hEfQbQ=;
+        b=uZQHp6bgXhVNv4WSPqVQvAiYLV3mF+NBc0Eiac6OZ/inaPjDmRqjOVmAbgvGCcbWSP
+         wTuX6JI/oeiW4Cgx5TrwyzkEEJwM962DpZ6X0Cwvxr0gzzTtPJeBStI754dEytgUv3BC
+         H5mvPBBnrmdkXJkr0XDJAyB23Xe1bAl1Ki6nc2kIziDDpmjsD2xvKnU9xYKD6XgjuHg9
+         WgKIkzJlskrafMzooda8nvLhVk3zOlFZinKclt/cjSO8fjjrVlIDtI+rpi5BkvInw/hw
+         I0KM7xMLpzbgS+ddFCk8X0zxdrlMD8S4jes6PhYm1lCIUueR2dK++Uncmmj3REjvKKPU
+         Vgvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715716830; x=1716321630;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ll8ePMooaLJ++vSB+9syazdtLkK7b8/0TCj36hEfQbQ=;
+        b=ZjDWUIcjfaEi0BZtbDGoS8L2TfLG2BDnrovzHGe5vit3oHBfKCHpYvmNH9jO0IcZOu
+         CcM30DMMD+gLeoiGPeWQYpw28qAtlwSvsagmW/tH/k5kfi9LB4niqNDXODYil8+PzSj+
+         CUuLwsTAxi22pWq4dqXpH56nvNdEnGXWX9ZtAfr9dclJznM7ffLZ/ppUKLBwR3zvfm73
+         z7m5Dk0wrMjmiaoYH7fGziK5jRmEUHCbKx1rzKa5yvDZThHCB+IXCh+nr1cJLiTtsrtC
+         S06OsmRhYNipsBFPN+C13nz44r95r3RL5bKHK54Mpt2sQSsDw+5Q5wNkMmOeUYV2KN8G
+         8IHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUD9Nscpe2fuQVUfaT1BudyaNjfUc7LWGI8NP1/jGupYEA1dHDJuwFmRCuliUgzV5iYRTSNXuh1lVwrvVFfvXUU+CMksf7/zmDf5l3YwkE=
+X-Gm-Message-State: AOJu0YzlTMLz+l8XtZGsHrfNDNtCpTKDIZWCxHNLgfUVrWOGQ5boIi/9
+	+h26ricI13iMcHLN7enXwcu5Tk9j3xR8BqNX2aA4DwbZGaJJEBrfpfusp+MP3j8=
+X-Google-Smtp-Source: AGHT+IFnBHUUmMWtiYG9e/YiHxcQJT/qNVtzttvhR+ZqrEmfm+gaRsCol3BlyeJlD0TCv2qEnJ75gA==
+X-Received: by 2002:a05:6a00:8986:b0:6ec:ee44:17bb with SMTP id d2e1a72fcca58-6f4e0343824mr14250305b3a.2.1715716829950;
+        Tue, 14 May 2024 13:00:29 -0700 (PDT)
+Received: from [172.21.2.105] ([50.204.89.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a819e7sm9572850b3a.56.2024.05.14.13.00.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 May 2024 13:00:29 -0700 (PDT)
+Message-ID: <593a98c9-baaa-496b-a9a7-c886463722e1@kernel.dk>
+Date: Tue, 14 May 2024 14:00:20 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] Rust block device driver API and null block driver
+To: Andreas Hindborg <nmi@metaspace.dk>, Christoph Hellwig <hch@lst.de>,
+ Keith Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>,
+ Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>,
+ Ming Lei <ming.lei@redhat.com>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Chaitanya Kulkarni <chaitanyak@nvidia.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>,
+ =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
+ Joel Granados <j.granados@samsung.com>,
+ "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ Daniel Gomez <da.gomez@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>,
+ Philipp Stanner <pstanner@redhat.com>, Conor Dooley <conor@kernel.org>,
+ Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+ =?UTF-8?Q?Matias_Bj=C3=B8rling?= <m@bjorling.me>,
+ open list <linux-kernel@vger.kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+ "gost.dev@samsung.com" <gost.dev@samsung.com>
+References: <20240512183950.1982353-1-nmi@metaspace.dk>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20240512183950.1982353-1-nmi@metaspace.dk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Thu, 18 Apr 2024 08:59:18 +0000 Alice Ryhl <aliceryhl@google.com> wrote:
-
-> From: Arnd Bergmann <arnd@arndb.de>
+On 5/12/24 12:39 PM, Andreas Hindborg wrote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
 > 
-> Rust code needs to be able to access _copy_from_user and _copy_to_user
-> so that it can skip the check_copy_size check in cases where the length
-> is known at compile-time, mirroring the logic for when C code will skip
-> check_copy_size. To do this, we ensure that exported versions of these
-> methods are available when CONFIG_RUST is enabled.
+> Hi All!
 > 
-> Alice has verified that this patch passes the CONFIG_TEST_USER_COPY test
-> on x86 using the Android cuttlefish emulator.
+> I am happy to finally send the first _non_ RFC patches for the Rust
+> block device API.
 > 
->  ...
->
-> -#ifdef INLINE_COPY_TO_USER
->  static inline __must_check unsigned long
-> -_copy_to_user(void __user *to, const void *from, unsigned long n)
-> +_inline_copy_to_user(void __user *to, const void *from, unsigned long n)
->  {
+> This series provides an initial Rust block layer device driver API,
+> and a very minimal null block driver to exercise the API. The driver
+> has only one mode of operation and cannot be configured.
+> 
+> These patches are an updated and trimmed down version of the v2 RFC
+> [1]. One of the requests for the v2 RFC was to split the abstractions
+> into smaller pieces that are easier to review. This is the first part
+> of the split patches.
+> 
+> A notable change in this patch set is that they no longer use the
+> `ref` field of the C `struct request` to manage lifetime of the
+> request structure.
+> 
+> The removed features will be sent later, as their dependencies land
+> upstream.
+> 
+> As mentioned before, I will gladly maintain this code if required.
 
-I think it would be helpful to have some comments in here describing
-why we're doing this _inline_* thing.  What problem is it avoiding?
+With the following stipulations (and the kernel test bot issues sorted),
+I think we should give this a go. We already covered this today at
+LSFMM, but for the sake of others, here's how I see the rust support for
+the block side of things:
 
+I see rust support for the block layer as a two stage kind of thing.
+Stage 1 would be including this patchset. In stage 1, all fallout from
+block layer changes fall upon Andreas and group to fix. Under no
+circumstance will changes from other contributors be held up, or
+contributors be held accountable, for breakages of the block rust code.
+Should contributors wish to sort out these issues themselves, then they
+are of course free to do so, but it won't be something that gatekeeps
+other changes.
+
+This leaves existing contributors free to go about their usual business.
+Kernels that don't enable rust (which won't happen unless you're setup
+for it anyway) won't even see build breakages. We will see some noise
+from the kernel test bot on the list, which does worry me a little bit.
+Not because it'll mark the rust side as being broken, but because it'll
+cause more noise which may make us miss breakages that are ultimately
+more important. I don't think this is a big risk, just highlighting that
+it is indeed a risk and will cause some potential annoyances.
+
+In stage 1, block rust is just there to enable people to experiment and
+play with it, and continue to develop it. Right now Andreas has a very
+(VERY) basic null_blk driver, I think we should move towards a fully
+fledged implementation of that so we at least have _something_ to test.
+We really need to full API to be used and exposed, this is generic
+kernel requirement - we just don't merge code that has no users, ever.
+Since a more complete rust null blk driver does exist out of tree,
+perhaps we can get something more complete for v2 of this patchset? I
+would highly recommend that.
+
+We may never exit stage 1, and I think during this particular stage, if
+things don't work out for whatever reason, the code can be removed
+again. As we have no critical drivers being rust exclusive at that
+point, it won't cause any issues yanking the code again. Moving into a
+stage 2 for block rust would mean that the rest of the kernel has fully
+adopted rust anyway, and being able (and willing) to write rust is just
+another part of the developer arsenal.
+
+I'd love to see the rust code moved to eg block/rust/, as I would
+greatly prefer to have it closer to the actual block code rather than
+sitting off in rust/kernel/block instead. I see this as a similar
+problem to having documentation away fro the actual code, it inevitably
+causes a drift between them. I understand from Andreas that this is
+actually something that is being worked on, and we can probably expect
+to see that in a cycle or two.
+
+tldr - as long as this doesn't encumer existing contributors, then I see
+absolutely no reason not to enable a rust playground for block drivers.
+
+-- 
+Jens Axboe
 
